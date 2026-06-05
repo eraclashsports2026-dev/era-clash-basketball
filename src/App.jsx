@@ -763,7 +763,7 @@ function ShareModal({result,myTeam,oppTeam,seriesType,onClose}){
   const winA=result.winner==="Gold"||result.winner==="A";
   const winner=winA?"Team Gold":"Team Blue";
   const format=seriesType==="single"?"Single Game":"Best of 7";
-  const shareText=`I just simulated ${myTeam.map(p=>p.name).join(", ")} vs ${oppTeam.map(p=>p.name).join(", ")} on EraClash Basketball. ${winner} won ${result.seriesResult}! Can you build a better squad?`;
+  const shareText=`I just simulated ${myTeam.filter(Boolean).map(p=>p.name).join(", ")} vs ${oppTeam.filter(Boolean).map(p=>p.name).join(", ")} on EraClash Basketball. ${winner} won ${result.seriesResult}! Can you build a better squad?`;
   const shareUrl="https://eraclashbasketball.com";
   const encodedText=encodeURIComponent(shareText);
   const encodedUrl=encodeURIComponent(shareUrl);
@@ -862,8 +862,8 @@ export default function App(){
     setModal(null);
   }
   function removePlayer(idx,r){ if(r==="my"){ const nt=[...myTeam]; nt[idx]=null; setMyTeam(nt); } else { const nt=[...oppTeam]; nt[idx]=null; setOppTeam(nt); } }
-  function handleRandomizeGold(){ setMyTeam(randomTeam(oppTeam.map(p=>p.id), oppTeam.map(p=>p.name))); }
-  function handleRandomize(){ setOppTeam(randomTeam(myTeam.map(p=>p.id), myTeam.map(p=>p.name))); }
+  function handleRandomizeGold(){ setMyTeam(randomTeam(oppFilled.map(p=>p.id), oppFilled.map(p=>p.name))); }
+  function handleRandomize(){ setOppTeam(randomTeam(myFilled.map(p=>p.id), myFilled.map(p=>p.name))); }
   function openSlot(roster,slotIndex){
     // Gold: always open in manual mode; Blue: always open in manual mode
     const pos=POSITIONS[slotIndex];
