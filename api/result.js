@@ -28,7 +28,7 @@ const sanitize = (r = {}) => {
     insight: typeof r.insight === "string" ? r.insight.slice(0, 200) : "",
     rating: Number.isFinite(Number(r.rating)) ? Number(r.rating) : null,
     chemistry: typeof r.chemistry === "string" ? r.chemistry.slice(0, 10) : null,
-    name: typeof r.name === "string" ? r.name.slice(0, 24) : null,
+    name: typeof r.name === "string" ? r.name.replace(/[<>]/g, "").slice(0, 24) : null,
     challengeId: typeof r.challengeId === "string" && /^[a-z0-9]{6,16}$/.test(r.challengeId) ? r.challengeId : null,
     ts: Date.now(),
   };

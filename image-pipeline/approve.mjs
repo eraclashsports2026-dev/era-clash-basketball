@@ -19,10 +19,30 @@ const CANDS = new URL("./candidates.json", import.meta.url).pathname;
 const APPROVED = new URL("../src/images/approved.json", import.meta.url).pathname;
 const ASSET_DIR = new URL("../public/players/originals/", import.meta.url).pathname;
 
+// SSRF guard: downloads are permitted ONLY from the explicit asset-host
+// allowlist over HTTPS on the default port. Never localhost, private ranges,
+// IPs, redirect targets, or user-supplied hosts (curl is invoked with -f and
+// no -L, so redirects are not followed).
+const ALLOWED_ASSET_HOSTS = new Set(["upload.wikimedia.org", "tile.loc.gov", "www.loc.gov"]);
+export const isAllowedAssetUrl = (url) => {
+  try {
+    const u = new URL(url);
+    if (u.protocol !== "https:") return false;
+    if (u.port && u.port !== "443") return false;
+    if (u.username || u.password) return false;
+    if (/^[\d.]+$/.test(u.hostname) || u.hostname.includes(":")) return false; // no raw IPs
+    return ALLOWED_ASSET_HOSTS.has(u.hostname.toLowerCase());
+  } catch { return false; }
+};
+
 const args = process.argv.slice(2);
 const rejectMode = args.includes("--reject");
 const acceptBySa = args.includes("--accept-by-sa");
 const ids = args.filter((a) => !a.startsWith("--"));
+
+// CLI-only from here down — tests import isAllowedAssetUrl without side effects.
+const isCli = process.argv[1] && import.meta.url === new URL(`file://${process.argv[1]}`).href;
+if (isCli) {
 if (!ids.length) { console.error("usage: approve.mjs [--reject] [--accept-by-sa] <candidate_id> ..."); process.exit(1); }
 
 const data = JSON.parse(readFileSync(CANDS, "utf8"));
@@ -43,12 +63,17 @@ for (const id of ids) {
     continue;
   }
 
+  if (!isAllowedAssetUrl(c.image_url)) {
+    console.error(`✗ ${id}: asset URL not on the approved host allowlist (${c.image_url.slice(0, 60)}…)`);
+    continue;
+  }
   const ext = (c.image_url.match(/\.(jpe?g|png)$/i) || [".jpg"])[0].toLowerCase();
   const localName = `${c.player_id}--${c.source_asset_id}${ext}`;
   const localPath = `${ASSET_DIR}${localName}`;
   try {
-    execFileSync("curl", ["-fsSL", "--max-filesize", "26214400", "-A",
-      "EraClashBasketball/2.2 (image pipeline)", "-o", localPath, c.image_url], { timeout: 60000 });
+    // -f fail on HTTP errors; NO -L: redirects are refused, not followed.
+    execFileSync("curl", ["-fsS", "--max-filesize", "26214400", "--proto", "=https", "-A",
+      "EraClashBasketball/2.3 (image pipeline)", "-o", localPath, c.image_url], { timeout: 60000 });
   } catch (e) {
     console.error(`✗ ${id}: download failed (${e.message})`);
     continue;
@@ -76,3 +101,4 @@ writeFileSync(CANDS, JSON.stringify(data, null, 1));
 writeFileSync(APPROVED, JSON.stringify(approved, null, 1));
 console.log(`\napproved.json now has ${approved.images.length} production images. Rebuild + redeploy to ship.`);
 console.log("Consider generating web-sized derivatives before deploy (originals can be large).");
+} // end CLI guard

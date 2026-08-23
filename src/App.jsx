@@ -2,22 +2,20 @@ import { useState, useEffect, useRef } from "react";
 import { PLAYERS, POSITIONS } from "./players.js";
 import { displayOVR, analyzeBalance, teamRating } from "./rating.js";
 import { T, card } from "./theme.js";
-import { mulberry32, simulateGame } from "./engine.js";
+import { mulberry32 } from "./engine.js";
 import { genPlayer, genRoster, genOpponent, todaySeed, todayKey } from "./draft.js";
-import { runSimulation } from "./simClient.js";
+import { runGame, requestNarrative } from "./gameClient.js";
 import { track, trackSessionStart } from "./analytics.js";
 import { installErrorMonitoring } from "./errors.js";
-import { getUid, getDisplayName } from "./identity.js";
 import {
   loadCareer, recordGame, recordWin82, recordTournamentWin, recordDraft,
   updateDailyStreak, syncCareer, computeDailyStreak,
 } from "./career.js";
-import { createChallenge, loadChallengeFromUrl, completeChallenge } from "./challengeClient.js";
+import { createChallenge, loadChallengeFromUrl } from "./challengeClient.js";
 import { publishResult, shareText } from "./share.js";
-import { USE_ENGINE_SEASON } from "./versions.js";
 import GameHeader from "./components/GameHeader.jsx";
 import Postgame from "./components/Postgame.jsx";
-import DailyPanel, { submitDailyResult } from "./components/DailyPanel.jsx";
+import DailyPanel from "./components/DailyPanel.jsx";
 import Profile from "./components/Profile.jsx";
 import Credits from "./components/Credits.jsx";
 import ChemistryMeter from "./components/ChemistryMeter.jsx";
@@ -77,6 +75,7 @@ export default function App() {
   const [challenge, setChallenge] = useState(null);
   const [sharedResult, setSharedResult] = useState(null);
   const [flashSlot, setFlashSlot] = useState(null);
+  const [narrative, setNarrative] = useState({ status: "none" }); // enhanced recap state
   const lastOppRef = useRef(null);
 
   const [saved, setSaved] = useState(() => ls("ec_saved", []));
@@ -185,11 +184,15 @@ export default function App() {
     const rng = z.seeded ? mulberry32(todaySeed() + z.roll * 7919) : Math.random;
     const respins = z.respin.filter(Boolean).length;
     if (respins) track("reroll_used", { roll: z.roll, respins });
+    const names = z.roster.filter((_, i) => z.keep[i]).map((p) => p.name); // one person per lineup
     const roster = z.roster.map((p, i) => {
       if (z.keep[i]) return p;
-      if (z.respin[i] === "position") return genPlayer(null, rng, { era: p.decade, eliteN: 10 });
-      if (z.respin[i] === "era") return genPlayer(POSITIONS[i], rng, { eliteN: 10 });
-      return genPlayer(POSITIONS[i], rng, { eliteN: 12 });
+      const opts = { excludeNames: [...names] };
+      const next = z.respin[i] === "position" ? genPlayer(null, rng, { ...opts, era: p.decade, eliteN: 10 })
+        : z.respin[i] === "era" ? genPlayer(POSITIONS[i], rng, { ...opts, eliteN: 10 })
+        : genPlayer(POSITIONS[i], rng, { ...opts, eliteN: 12 });
+      names.push(next.name);
+      return next;
     });
     if (z.roll === 3) { finalizeTeam(roster); return { ...z, roster, done: true }; }
     roster.forEach((p, i) => { if (!z.keep[i]) track("player_option_shown", { slot: POSITIONS[i], player_id: p.id, player_era: p.decade, roll: z.roll + 1 }); });
@@ -236,145 +239,142 @@ export default function App() {
     setCareer((c) => recordGame(c, { won, mode, score, mvp, vs }));
   };
 
-  // ── Simulations ────────────────────────────────────────────────────────────
+  // ── Simulations (server-authoritative, v2.3) ───────────────────────────────
+  // /api/game computes and stores every result; the client renders it and then
+  // requests the OPTIONAL enhanced recap. AI failure never fails a game.
+  const idsToPlayers = (ids) => (ids || []).map((id) => PLAYERS.find((p) => p.id === id)).filter(Boolean);
+
+  const viewSim = (record, n) => ({
+    ...record.core,
+    simulation_id: record.id,
+    summary: n?.summary || record.fallbackSummary,
+    teamAStrengths: n?.teamAStrengths?.length ? n.teamAStrengths : record.goldChem?.strengths || [],
+    teamAWeaknesses: n?.teamAWeaknesses?.length ? n.teamAWeaknesses : record.goldChem?.weaknesses || [],
+    teamBStrengths: n?.teamBStrengths?.length ? n.teamBStrengths : record.blueChem?.strengths || [],
+    teamBWeaknesses: n?.teamBWeaknesses?.length ? n.teamBWeaknesses : record.blueChem?.weaknesses || [],
+    mvpReason: n?.mvpReason || null,
+    turningPoint: n?.turningPoint || record.core?.turningPoint || null,
+  });
+
+  const fetchNarrative = (resultId, record, persisted) => {
+    if (!record?.core) { setNarrative({ status: "none" }); return; }
+    setNarrative({ status: "pending" });
+    requestNarrative({ resultId, result: record, persisted })
+      .then((data) => {
+        setNarrative({ status: "complete", data });
+        setResult((r) => {
+          if (!r || r.resultId !== resultId) return r;
+          const sim = viewSim(record, data);
+          return r.type === "82" ? { ...r, lastSim: sim } : { ...r, sim };
+        });
+      })
+      .catch((e) => setNarrative({ status: "failed", code: e.code }));
+  };
+
+  const applyDaily = (records, won) => {
+    setDaily((d) => {
+      const next = { ...d, [todayKey()]: { won } };
+      setCareer((c) => {
+        const c2 = updateDailyStreak(c, next);
+        if (c2.stats.dailyStreak >= 7) addBadge("daily_streak_7");
+        return c2;
+      });
+      return next;
+    });
+    addBadge("daily_done");
+    track(won ? "daily_challenge_completed" : "daily_challenge_failed", { result: won ? "win" : "loss", server_claimed: !!records?.daily?.claimed });
+  };
+
   const runSingle = async (oppOverride, tag) => {
     if (loading) return;
-    setLoading(true); setErr(""); setSimStage("");
+    setLoading(true); setErr(""); setSimStage(""); setNarrative({ status: "none" });
     noteGameStarted();
     const mode = tag || "single";
     try {
       const opp = oppOverride || opponent || genOpponent();
       lastOppRef.current = opp;
-      const sim = await runSimulation(team, opp, "single", { mode, onStage: setSimStage });
-      const w = String(sim.winner || "").toLowerCase().includes("gold");
-      bookkeepGame(w, mode, sim.seriesResult, sim.mvp, tag === "challenge" ? (challenge?.challengerName || "a friend") : "", opp);
+      const { resultId, result: record, records } = await runGame({
+        mode, gold: team, blue: opp,
+        challengeId: tag === "challenge" ? challenge?.id : undefined,
+        onStage: setSimStage,
+      });
+      const w = record.core.winner === "Gold";
+      bookkeepGame(w, mode, record.core.seriesResult, record.core.mvp, tag === "challenge" ? (challenge?.challengerName || "a friend") : "", opp);
 
       if (tag === "challenge") {
         if (w) addBadge("challenge_win");
         track(w ? "challenge_won" : "challenge_lost", { challenge_id: challenge?.id || null });
         track("challenge_completed", { challenge_id: challenge?.id || null });
-        if (challenge?.id) {
-          completeChallenge(challenge.id, team, { iWon: w, score: sim.seriesResult, mvp: sim.mvp }).then((updated) => {
-            if (updated) setChallenge((c) => (c ? { ...c, games: updated.games, rivalry: updated.record } : c));
-          });
+        if (records?.challenge?.record) {
+          setChallenge((c) => (c ? { ...c, rivalry: records.challenge.record } : c));
         }
       }
-      if (tag === "daily") {
-        setDaily((d) => {
-          const next = { ...d, [todayKey()]: { won: w } };
-          setCareer((c) => {
-            const c2 = updateDailyStreak(c, next);
-            if (c2.stats.dailyStreak >= 7) addBadge("daily_streak_7");
-            return c2;
-          });
-          return next;
-        });
-        addBadge("daily_done");
-        track(w ? "daily_challenge_completed" : "daily_challenge_failed", { result: w ? "win" : "loss" });
-        const m = String(sim.seriesResult || "").match(/^(\d{2,3})-(\d{2,3})$/);
-        const margin = m ? Math.abs(Number(m[1]) - Number(m[2])) * (w ? 1 : -1) : 0;
-        submitDailyResult({ uid: getUid(), name: getDisplayName(), won: w, margin });
-      }
-      setResult({ type: "single", sim, w, tag, opp });
-    } catch (e) { setErr(e.message || "Simulation failed. Please try again."); }
+      if (tag === "daily") applyDaily(records, w);
+
+      setResult({ type: "single", sim: viewSim(record), w, tag, opp, resultId, record, persisted: !!records?.persisted, dailyRank: records?.daily?.rank ?? null });
+      fetchNarrative(resultId, record, !!records?.persisted);
+    } catch (e) { setErr(e.message); }
     setLoading(false);
   };
 
   const runBest7 = async (oppOverride, tag) => {
     if (loading) return;
-    setLoading(true); setErr(""); setSimStage("");
+    setLoading(true); setErr(""); setSimStage(""); setNarrative({ status: "none" });
     noteGameStarted();
     track("best_of_7_started", { from: tag || "menu" });
     try {
       const opp = oppOverride || opponent || genOpponent();
       lastOppRef.current = opp;
-      const sim = await runSimulation(team, opp, "series7", { mode: "best7", onStage: setSimStage });
-      const won = String(sim.winner || "").toLowerCase().includes("gold");
-      bookkeepGame(won, "best7", sim.seriesResult, sim.mvp, "", opp);
-      setResult({ type: "best7", sim, won, tag, opp });
-    } catch (e) { setErr(e.message || "Simulation failed. Please try again."); }
+      const { resultId, result: record, records } = await runGame({ mode: "best7", gold: team, blue: opp, onStage: setSimStage });
+      const won = record.core.winner === "Gold";
+      bookkeepGame(won, "best7", record.core.seriesResult, record.core.mvp, "", opp);
+      setResult({ type: "best7", sim: viewSim(record), won, tag, opp, resultId, record, persisted: !!records?.persisted });
+      fetchNarrative(resultId, record, !!records?.persisted);
+    } catch (e) { setErr(e.message); }
     setLoading(false);
   };
 
   const runWin82 = async () => {
     if (loading) return;
-    setLoading(true); setErr(""); setSimStage(""); setProgress({ done: 0, total: 82, wins: 0 });
+    setLoading(true); setErr(""); setSimStage(""); setNarrative({ status: "none" });
     noteGameStarted();
-    let wins = 0, losses = 0;
     try {
-      if (USE_ENGINE_SEASON) {
-        for (let i = 0; i < 81; i++) {
-          const opp = genOpponent();
-          const g = simulateGame(team, opp);
-          const w = g.winner === "Gold";
-          if (w) { wins++; recordWinStreak(); } else { losses++; recordLossStreak(); }
-          if (i % 3 === 0) {
-            setProgress({ done: i + 1, total: 82, wins });
-            await new Promise((r) => setTimeout(r, 24));
-          }
-        }
-        setProgress({ done: 81, total: 82, wins, label: "Season finale" });
-        const opp = genOpponent();
-        lastOppRef.current = opp;
-        const sim = await runSimulation(team, opp, "single", { mode: "82", onStage: setSimStage });
-        const w = String(sim.winner || "").toLowerCase().includes("gold");
-        if (w) { wins++; recordWinStreak(); } else { losses++; recordLossStreak(); }
-        setProgress({ done: 82, total: 82, wins });
-        setCareer((c) => recordWin82(recordGame(c, { won: wins > losses, mode: "82", score: `${wins}-${losses}`, mvp: sim.mvp }), wins));
-        if (wins === 82) addBadge("perfect_82");
-        const bal = analyzeBalance(team);
-        if (wins >= 60 && bal.gaps.length === 0) addBadge("balanced_60");
-        setBoard((b) => [...b, { wins, team: team.map((p) => p.id), ts: Date.now() }].sort((a, c) => c.wins - a.wins).slice(0, 10));
-        setResult({ type: "82", wins, losses, lastSim: sim, opp });
-      } else {
-        let lastSim = null, lastOpp = null;
-        for (let i = 0; i < 82; i++) {
-          const opp = genOpponent();
-          lastOpp = opp;
-          const sim = await runSimulation(team, opp, "single", { mode: "82" });
-          const w = String(sim.winner || "").toLowerCase().includes("gold");
-          if (w) { wins++; recordWinStreak(); } else { losses++; recordLossStreak(); }
-          lastSim = sim;
-          setProgress({ done: i + 1, total: 82, wins });
-        }
-        if (wins === 82) addBadge("perfect_82");
-        const bal = analyzeBalance(team);
-        if (wins >= 60 && bal.gaps.length === 0) addBadge("balanced_60");
-        setCareer((c) => recordWin82(recordGame(c, { won: wins > losses, mode: "82", score: `${wins}-${losses}`, mvp: lastSim?.mvp }), wins));
-        setBoard((b) => [...b, { wins, team: team.map((p) => p.id), ts: Date.now() }].sort((a, c) => c.wins - a.wins).slice(0, 10));
-        setResult({ type: "82", wins, losses, lastSim, opp: lastOpp });
-      }
-    } catch (e) {
-      setErr("Simulation interrupted — partial season shown.");
-      if (wins + losses > 0) setResult({ type: "82", wins, losses, partial: true });
-    }
+      const { resultId, result: record, records } = await runGame({ mode: "82", gold: team, onStage: setSimStage });
+      const { wins, losses } = record;
+      // streaks: season summary counts once toward the win/loss streak
+      if (wins > losses) recordWinStreak(); else recordLossStreak();
+      setCareer((c) => recordWin82(recordGame(c, { won: wins > losses, mode: "82", score: `${wins}-${losses}`, mvp: record.core?.mvp }), wins));
+      if (wins === 82) addBadge("perfect_82");
+      const bal = analyzeBalance(team);
+      if (wins >= 60 && bal.gaps.length === 0) addBadge("balanced_60");
+      setBoard((b) => [...b, { wins, team: team.map((p) => p.id), ts: Date.now() }].sort((a, c) => c.wins - a.wins).slice(0, 10));
+      const opp = idsToPlayers(record.blueIds);
+      lastOppRef.current = opp.length === 5 ? opp : null;
+      setResult({ type: "82", wins, losses, lastSim: viewSim(record), opp, resultId, record, persisted: !!records?.persisted });
+      fetchNarrative(resultId, record, !!records?.persisted);
+    } catch (e) { setErr(e.message); }
     setLoading(false); setProgress(null);
   };
 
   const runTournament = async () => {
     if (loading) return;
-    setLoading(true); setErr(""); setSimStage("");
+    setLoading(true); setErr(""); setSimStage(""); setNarrative({ status: "none" });
     noteGameStarted();
-    const roundNames = ["Round 1", "Round 2", "Conference Finals", "Finals"];
-    const rounds = [];
     try {
-      for (let r = 0; r < 4; r++) {
-        const opp = genOpponent();
-        setProgress({ done: r + 1, total: 4, wins: rounds.filter((x) => x.advanced).length, label: roundNames[r], unit: "series" });
-        const sim = await runSimulation(team, opp, "series7", { mode: "tournament", onStage: setSimStage });
-        const advanced = String(sim.winner || "").toLowerCase().includes("gold");
-        if (advanced) recordWinStreak(); else recordLossStreak();
-        setCareer((c) => recordGame(c, { won: advanced, mode: "tournament", score: sim.seriesResult, mvp: sim.mvp }));
-        rounds.push({ name: roundNames[r], opp, sim, advanced });
-        if (!advanced) break;
+      const { resultId, result: record, records } = await runGame({ mode: "tournament", gold: team, onStage: setSimStage });
+      const rounds = (record.rounds || []).map((r) => ({
+        name: r.name,
+        opp: idsToPlayers(r.oppIds),
+        sim: { ...r.core, summary: r.fallbackSummary },
+        advanced: r.advanced,
+      }));
+      for (const r of rounds) {
+        if (r.advanced) recordWinStreak(); else recordLossStreak();
+        setCareer((c) => recordGame(c, { won: r.advanced, mode: "tournament", score: r.sim.seriesResult, mvp: r.sim.mvp }));
       }
-      const won = rounds.length === 4 && rounds[3].advanced;
-      if (won) { addBadge("tournament_champion"); setCareer((c) => recordTournamentWin(c)); }
-      setResult({ type: "tournament", rounds, won });
-    } catch {
-      setErr("Simulation failed mid-tournament.");
-      if (rounds.length) setResult({ type: "tournament", rounds, won: false, partial: true });
-    }
+      if (record.won) { addBadge("tournament_champion"); setCareer((c) => recordTournamentWin(c)); }
+      setResult({ type: "tournament", rounds, won: record.won, resultId, persisted: !!records?.persisted });
+    } catch (e) { setErr(e.message); }
     setLoading(false); setProgress(null);
   };
 
@@ -395,6 +395,7 @@ export default function App() {
   };
   const doBest7FromResult = () => { setResult(null); runBest7(lastOppRef.current, "from_result"); };
   const startSwap = () => { track("swap_one_started", {}); setResult(null); };
+  const retryNarrative = () => { if (result?.record) fetchNarrative(result.resultId, result.record, result.persisted); };
 
   // ── Share ──────────────────────────────────────────────────────────────────
   const buildSnapshot = () => {
@@ -641,6 +642,7 @@ export default function App() {
           {/* Postgame */}
           {result && (
             <ResultView result={result} team={team} feedbackCtx={feedbackCtx}
+              narrative={narrative} onRetryNarrative={retryNarrative}
               onRematch={() => doRematch(result?.tag)}
               onBest7={result.type !== "best7" ? doBest7FromResult : null}
               onChallenge={doShare} onSwap={startSwap} onShare={doShare}
@@ -781,7 +783,8 @@ function RollBuilder({ yz, ballIQ, isDaily, onStart, onKeep, onRespin, onRoll })
 }
 
 // ── Results ──────────────────────────────────────────────────────────────────
-function ResultView({ result, team, feedbackCtx, onRematch, onBest7, onChallenge, onSwap, onShare, onLeaderboard }) {
+function ResultView({ result, team, feedbackCtx, narrative, onRetryNarrative, onRematch, onBest7, onChallenge, onSwap, onShare, onLeaderboard }) {
+  const narrProps = { narrativeStatus: narrative?.status, onRetryNarrative, persisted: result.persisted };
   if (result.type === "82") {
     const pct = ((result.wins / 82) * 100).toFixed(1);
     return (
@@ -795,7 +798,7 @@ function ResultView({ result, team, feedbackCtx, onRematch, onBest7, onChallenge
         </div>
         {result.lastSim && (
           <Postgame sim={result.lastSim} won={String(result.lastSim.winner || "").toLowerCase().includes("gold")}
-            mode="single" seriesLabel="Season finale" team={team} opp={result.opp} feedbackCtx={feedbackCtx}
+            mode="single" seriesLabel="Season finale" team={team} opp={result.opp} feedbackCtx={feedbackCtx} {...narrProps}
             onRematch={onRematch} onBest7={onBest7} onChallenge={onChallenge} onSwap={onSwap} onShare={onShare} />
         )}
       </div>
@@ -803,11 +806,11 @@ function ResultView({ result, team, feedbackCtx, onRematch, onBest7, onChallenge
   }
   if (result.type === "single") {
     const pgMode = result.tag === "challenge" ? "challenge" : result.tag === "daily" ? "daily" : "single";
-    return <Postgame sim={result.sim} won={result.w} mode={pgMode} team={team} opp={result.opp} feedbackCtx={feedbackCtx}
+    return <Postgame sim={result.sim} won={result.w} mode={pgMode} team={team} opp={result.opp} feedbackCtx={feedbackCtx} {...narrProps}
       onRematch={onRematch} onBest7={onBest7} onChallenge={onChallenge} onSwap={onSwap} onShare={onShare} onLeaderboard={onLeaderboard} />;
   }
   if (result.type === "best7") {
-    return <Postgame sim={result.sim} won={result.won} mode="best7" seriesLabel="Best of 7" team={team} opp={result.opp} feedbackCtx={feedbackCtx}
+    return <Postgame sim={result.sim} won={result.won} mode="best7" seriesLabel="Best of 7" team={team} opp={result.opp} feedbackCtx={feedbackCtx} {...narrProps}
       onRematch={onRematch} onChallenge={onChallenge} onSwap={onSwap} onShare={onShare} />;
   }
   if (result.type === "tournament") {

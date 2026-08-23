@@ -3,6 +3,9 @@
 // find players/lineups/rating versions with high disbelief rates. Anonymous
 // (uid) — no login required. Without a store: accepted and dropped (204).
 import { hasStore, pipeline, setNX, rateLimit, clientIp, dayKey } from "./_lib/store.js";
+import { sameOrigin } from "./_lib/session.js";
+import { flags } from "./_lib/flags.js";
+import { cleanText } from "./_lib/validate.js";
 
 const CATEGORIES = new Set([
   "player_rating_wrong", "chemistry_wrong", "result_unrealistic",
@@ -11,6 +14,8 @@ const CATEGORIES = new Set([
 
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
+  if (!flags().feedback || flags().maintenance) return res.status(204).end();
+  if (!sameOrigin(req)) return res.status(403).json({ error: "Forbidden" });
 
   const b = req.body || {};
   const believable = b.believable === true || b.believable === false ? b.believable : null;
@@ -30,7 +35,7 @@ export default async function handler(req, res) {
     uid,
     believable,
     category: CATEGORIES.has(b.category) ? b.category : undefined,
-    comment: typeof b.comment === "string" ? b.comment.slice(0, 280) : undefined,
+    comment: typeof b.comment === "string" ? cleanText(b.comment, 280) : undefined,
     mode: typeof b.mode === "string" ? b.mode.slice(0, 24) : undefined,
     my_team: Array.isArray(b.my_team) ? b.my_team.slice(0, 5).map(String) : undefined,
     opp_team: Array.isArray(b.opp_team) ? b.opp_team.slice(0, 5).map(String) : undefined,

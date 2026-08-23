@@ -7,7 +7,7 @@
 // rating formula, chemistry engine, or API contract — activation deletes every
 // old cache so no client stays stuck on stale data. Keep in sync with
 // src/versions.js (app version).
-const CACHE = "eraclash-v2.2.0";
+const CACHE = "eraclash-v2.3.0";
 
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(["/"])));

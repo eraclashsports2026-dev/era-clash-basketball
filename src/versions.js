@@ -2,7 +2,7 @@
 // Every simulation record carries these so we can always tell which system
 // generated a result. Bump deliberately; never silently.
 export const VERSIONS = {
-  app: "2.2.0",
+  app: "2.3.0",
   rating: "2.0",          // src/rating.js — POS_WEIGHTS + OOP penalty (CEO approval required to change)
   chemistry: "2.5",       // rating.js analyzeBalance (v2, unchanged) + attributes.js insight layer (additive)
   simulation_engine: "2.1",
@@ -10,10 +10,8 @@ export const VERSIONS = {
   prompt: "2.1",          // api/simulate.js buildPrompt (adds turningPoint field)
 };
 
-// Engine-simulated Win 82 season: games 1–82 are resolved by the deterministic
-// local engine (seeded, reproducible) instead of 82 separate LLM calls; the LLM
-// narrates the season finale only. ~82x cost reduction per season run.
-// ⚠ CEO APPROVAL ITEM: this changes how Win 82 outcomes are decided. It ships in
-// the release candidate defaulted ON for cost/reliability, but flip this to
-// false before deploy if Joe wants the old behavior.
+// v2.3: ALL core results (every mode) are decided by the deterministic engine
+// on the server (/api/game); the AI layer only narrates stored results. This
+// flag is retained for documentation/back-compat — the server is authoritative
+// regardless of client flags.
 export const USE_ENGINE_SEASON = true;

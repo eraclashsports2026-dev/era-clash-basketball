@@ -14,7 +14,9 @@ export default function ManualPicker({ slotPos, excludeIds = [], onPick, onClose
   const [era, setEra] = useState("");
 
   const list = useMemo(() => {
-    let pool = PLAYERS.filter((p) => p.positions.includes(slotPos) && !excludeIds.includes(p.id));
+    // one PERSON per lineup: exclude every decade-entry of already-picked players
+    const excludeNames = new Set(excludeIds.map((id) => PLAYERS.find((p) => p.id === id)?.name).filter(Boolean));
+    let pool = PLAYERS.filter((p) => p.positions.includes(slotPos) && !excludeIds.includes(p.id) && !excludeNames.has(p.name));
     if (era) pool = pool.filter((p) => p.decade === era);
     if (q.trim()) {
       const needle = q.trim().toLowerCase();

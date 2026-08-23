@@ -14,6 +14,8 @@ export const genPlayer = (slotPos = null, rng = Math.random, opts = {}) => {
   if (slotPos) pool = pool.filter((p) => p.positions.includes(slotPos));
   if (opts.era) pool = pool.filter((p) => p.decade === opts.era);
   if (opts.excludeIds) pool = pool.filter((p) => !opts.excludeIds.includes(p.id));
+  // one PERSON per lineup: the same player from two decades is not allowed
+  if (opts.excludeNames) pool = pool.filter((p) => !opts.excludeNames.includes(p.name));
   if (pool.length === 0) pool = PLAYERS;
   const sorted = [...pool].sort((a, b) => slotRating(b, slotPos || b.pos) - slotRating(a, slotPos || a.pos));
   const eliteN = Math.min(opts.eliteN || 10, sorted.length);
@@ -25,8 +27,18 @@ export const genPlayer = (slotPos = null, rng = Math.random, opts = {}) => {
   return pick;
 };
 
-export const genRoster = (rng = Math.random) => POSITIONS.map((pos) => genPlayer(pos, rng, { eliteN: 12 }));
-export const genOpponent = (rng = Math.random) => POSITIONS.map((pos) => genPlayer(pos, rng, { eliteN: 8 }));
+const genFive = (rng, eliteN) => {
+  const roster = [];
+  const names = [];
+  for (const pos of POSITIONS) {
+    const p = genPlayer(pos, rng, { eliteN, excludeNames: names });
+    roster.push(p);
+    names.push(p.name);
+  }
+  return roster;
+};
+export const genRoster = (rng = Math.random) => genFive(rng, 12);
+export const genOpponent = (rng = Math.random) => genFive(rng, 8);
 
 // Daily seed helpers (local-date, unchanged from v2 so daily rolls stay stable)
 export const todaySeed = () => {

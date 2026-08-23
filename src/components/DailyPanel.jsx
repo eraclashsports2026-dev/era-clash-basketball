@@ -8,20 +8,8 @@ import { computeDailyStreak } from "../career.js";
 const utcDayKey = (d = new Date()) =>
   `${d.getUTCFullYear()}${String(d.getUTCMonth() + 1).padStart(2, "0")}${String(d.getUTCDate()).padStart(2, "0")}`;
 
-// Submit today's official result to the daily leaderboard. Called ONLY after a
-// simulation successfully completed — a failed API call never consumes the
-// attempt (the server also enforces one entry per uid via SET NX).
-export const submitDailyResult = async ({ uid, name, won, margin }) => {
-  try {
-    const res = await fetch("/api/daily", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action: "submit", uid, name, date: utcDayKey(), won, margin }),
-    });
-    if (!res.ok) return null;
-    return await res.json(); // {score, rank}
-  } catch { return null; }
-};
+// v2.3: the daily submit path is server-side — /api/game claims the official
+// attempt atomically from its own stored result. This panel only reads.
 
 const msToNextLocalMidnight = () => {
   const now = new Date();

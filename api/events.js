@@ -8,6 +8,7 @@
 // per user, second-game rate, share rate...) without a vendor. Without a store
 // this endpoint is a silent 204 no-op.
 import { hasStore, pipeline, rateLimit, clientIp, dayKey } from "./_lib/store.js";
+import { sameOrigin } from "./_lib/session.js";
 
 const ALLOWED = new Set([
   "session_started", "returning_session",
@@ -30,6 +31,7 @@ const MAX_EVENT_BYTES = 2000;
 
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
+  if (!sameOrigin(req)) return res.status(204).end(); // drop cross-origin noise silently
 
   const events = Array.isArray(req.body?.events) ? req.body.events.slice(0, MAX_BATCH) : [];
   if (!events.length) return res.status(204).end();

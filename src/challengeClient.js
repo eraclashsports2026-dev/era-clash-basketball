@@ -3,7 +3,7 @@
 // if /api/challenge is unavailable (no store configured, offline), links keep
 // working exactly like v2 (?c=base64). Both link formats stay decodable forever.
 import { PLAYERS } from "./players.js";
-import { getUid, getDisplayName } from "./identity.js";
+import { getDisplayName } from "./identity.js";
 import { track } from "./analytics.js";
 
 // Legacy v2 codec (kept verbatim — old shared links must never break)
@@ -35,12 +35,9 @@ export const createChallenge = async (team, record) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         action: "create",
-        challenger: {
-          uid: getUid(),
-          name: getDisplayName() || null,
-          teamIds: team.map((p) => p.id),
-          record: record || null,
-        },
+        name: getDisplayName() || null,
+        teamIds: team.map((p) => p.id),
+        record: record || null,
       }),
     });
     if (res.ok) {
@@ -86,26 +83,5 @@ export const loadChallengeFromUrl = async () => {
   } catch { return null; }
 };
 
-// Report a finished challenge game (persistent challenges only). winnerIsOpponent
-// is from the perspective of the challenge doc: the link-opener is "opponent".
-export const completeChallenge = async (challengeId, myTeam, { iWon, score, mvp }) => {
-  if (!challengeId) return null;
-  try {
-    const res = await fetch("/api/challenge", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        action: "complete",
-        id: challengeId,
-        opponent: {
-          uid: getUid(),
-          name: getDisplayName() || null,
-          teamIds: myTeam.map((p) => p.id),
-        },
-        game: { winner: iWon ? "opponent" : "challenger", score, mvp },
-      }),
-    });
-    if (!res.ok) return null;
-    return await res.json();
-  } catch { return null; }
-};
+// v2.3: challenge completion is server-side — /api/game appends the rivalry
+// game from its own stored result. The old client "complete" call is gone.

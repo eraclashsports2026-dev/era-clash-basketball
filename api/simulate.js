@@ -79,9 +79,11 @@ export default async function handler(req, res) {
   }
 
   try {
+    // DEPRECATED (v2.3): superseded by /api/game (authoritative core) +
+    // /api/narrative. Kept temporarily for clients on the previous bundle;
+    // remove after the next release settles.
     const { myTeam, oppTeam, seriesType, simulationId } = req.body || {};
 
-    // Validate input — only well-formed 5-player teams are accepted.
     if (
       !Array.isArray(myTeam) || myTeam.length !== 5 ||
       !Array.isArray(oppTeam) || oppTeam.length !== 5 ||
@@ -89,12 +91,27 @@ export default async function handler(req, res) {
     ) {
       return res.status(400).json({ error: "Invalid team data." });
     }
-    const valid = (t) => t.every(p => p && typeof p.name === "string" && p.name.length < 60 &&
-      typeof p.decade === "string" && typeof p.team === "string" && p.team.length < 60 &&
-      typeof p.pts === "number" && typeof p.reb === "number");
-    if (!valid(myTeam) || !valid(oppTeam)) {
+    // v2.3 hardening: the client may only choose WHICH canonical players play.
+    // Every submitted player is replaced by its canonical database entry, so
+    // fabricated stats or prompt-injection text in names/teams never reach the
+    // model or the result.
+    const { PLAYERS } = await import("../src/players.js");
+    const canonical = (t) => {
+      const out = [];
+      for (const p of t) {
+        const c = p && PLAYERS.find((x) => x.id === p.id);
+        if (!c) return null;
+        out.push(c);
+      }
+      return out;
+    };
+    const myCanon = canonical(myTeam);
+    const oppCanon = canonical(oppTeam);
+    if (!myCanon || !oppCanon) {
       return res.status(400).json({ error: "Invalid player data." });
     }
+    myTeam.splice(0, 5, ...myCanon);
+    oppTeam.splice(0, 5, ...oppCanon);
 
     // Idempotency: same simulationId returns the cached result — a retry or
     // double-submit never triggers a second model call.

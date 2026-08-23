@@ -282,7 +282,7 @@ function CTAs({ mode, won, onRematch, onBest7, onChallenge, onSwap, onShare, onL
 }
 
 // ── The Postgame ───────────────────────────────────────────────────────────────
-export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedbackCtx, onRematch, onBest7, onChallenge, onSwap, onShare, onLeaderboard }) {
+export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedbackCtx, narrativeStatus, onRetryNarrative, persisted, onRematch, onBest7, onChallenge, onSwap, onShare, onLeaderboard }) {
   const [showAnalysis, setShowAnalysis] = useState(false);
   const row = mvpRow(sim);
   const mvpP = mvpPlayer(sim, team, opp);
@@ -319,13 +319,31 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
           </div>
         )}
 
-        {/* Game summary */}
+        {/* Game summary (fallback analysis instantly; enhanced recap replaces it) */}
         {sim.summary && (
           <div style={{ marginTop: 14 }}>
             <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 2, color: won ? T.green : T.red }}>
               WHY YOU {won ? "WON" : "LOST"}
             </div>
             <p style={{ fontSize: 13.5, lineHeight: 1.65, margin: "6px 0 0" }}>{sim.summary}</p>
+          </div>
+        )}
+
+        {/* Enhanced analysis state — core result is complete either way */}
+        {narrativeStatus === "pending" && (
+          <div aria-live="polite" style={{ marginTop: 10, fontSize: 12, color: T.textDim, display: "flex", alignItems: "center", gap: 8 }}>
+            <span className="sim-spinner" style={{ width: 14, height: 14, borderWidth: 2 }} aria-hidden="true" />
+            Preparing enhanced game analysis…
+          </div>
+        )}
+        {narrativeStatus === "failed" && (
+          <div style={{ marginTop: 10, padding: "8px 12px", borderRadius: 8, background: T.bgCardHover, border: `1px solid ${T.border}`, fontSize: 12, color: T.textDim, display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+            <span>Enhanced game analysis is temporarily unavailable. {persisted ? "Your result is saved." : "Your result is shown from the game engine."}</span>
+            {onRetryNarrative && (
+              <button onClick={onRetryNarrative} style={{ padding: "5px 12px", fontSize: 11.5, fontWeight: 800, borderRadius: 7, border: `1px solid ${T.goldBorder}`, background: "transparent", color: T.gold, cursor: "pointer" }}>
+                Try Enhanced Recap Again
+              </button>
+            )}
           </div>
         )}
 
