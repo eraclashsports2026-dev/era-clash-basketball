@@ -41,22 +41,26 @@ export function FilledSlot({ p, pos, team, fit, hideStats, onSwap, flash }) {
   const arch = hideStats ? [] : playerArchetypes(p.id);
   const ovr = displayOVR(p, pos);
   return (
+    // minWidth: 0 + maxWidth: 100% are load-bearing: grid/flex items default to
+    // min-width:auto and refuse to shrink below content width, which pushed
+    // cards out of the team panel at ≤1440px. Never remove them.
     <div className={flash ? `slot-flash-${team}` : undefined} style={{
-      display: "flex", alignItems: "center", gap: 12, padding: "10px 12px", borderRadius: 10,
+      display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 10,
       background: T.bgCardHover, border: `1px solid ${T.border}`, minHeight: 58,
+      minWidth: 0, maxWidth: "100%", overflow: "hidden", boxSizing: "border-box",
     }}>
-      <span style={{ fontSize: 11, fontWeight: 900, color: accent, width: 26 }}>{pos}</span>
+      <span style={{ fontSize: 11, fontWeight: 900, color: accent, width: 24, flexShrink: 0 }}>{pos}</span>
       <PlayerImage player={p} variant="thumbnail" team={team} />
-      <div style={{ minWidth: 0, flex: 1 }}>
+      <div style={{ minWidth: 0, flex: "1 1 0%" }}>
         <div style={{ display: "flex", alignItems: "baseline", gap: 8, minWidth: 0 }}>
-          <span style={{ fontWeight: 800, fontSize: 14, whiteSpace: "nowrap", overflow: "hidden", textOverflowEllipsis: "ellipsis", textOverflow: "ellipsis" }}>{p.name}</span>
+          <span style={{ fontWeight: 800, fontSize: 14, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", minWidth: 0 }}>{p.name}</span>
           <span style={{ fontSize: 11, color: DECADE_COLORS[p.decade], fontWeight: 700, flexShrink: 0 }}>{p.decade}</span>
         </div>
         <div style={{ fontSize: 11, color: T.textDim, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
           {p.team}{!hideStats && ` · ${p.pts} PTS ${p.reb} REB ${p.ast} AST`}
         </div>
         {arch.length > 0 && (
-          <div style={{ fontSize: 9.5, color: accent, letterSpacing: 1, fontWeight: 700, marginTop: 1, textTransform: "uppercase" }}>
+          <div style={{ fontSize: 9.5, color: accent, letterSpacing: 1, fontWeight: 700, marginTop: 1, textTransform: "uppercase", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
             {arch.slice(0, 2).join(" · ")}
           </div>
         )}

@@ -58,14 +58,16 @@ const MODE_TO_ANALYTICS = { Win82: "82", Single: "single", Best7: "best7", Tourn
 // ── App ──────────────────────────────────────────────────────────────────────
 export default function App() {
   const [nav, setNav] = useState("Play");             // Play | Daily | Challenges | Board | Profile | Credits
+  const [view, setView] = useState("builder");        // builder | simulating | postgame
   const [gameMode, setGameMode] = useState("Single"); // Single | Best7 | Win82 | Tournament
   const [buildMethod, setBuildMethod] = useState("rolls"); // rolls (Chaos Draft) | manual
   const [yz, setYz] = useState(null);
   const [ballIQ, setBallIQ] = useState(false);
   const [team, setTeam] = useState(null);              // completed gold five
   const [manual, setManual] = useState([null, null, null, null, null]);
-  const [picker, setPicker] = useState(null);          // {slot, forSwap}
-  const [opponent, setOpponent] = useState(null);      // revealed blue five
+  const [blueManual, setBlueManual] = useState([null, null, null, null, null]);
+  const [picker, setPicker] = useState(null);          // {slot, target: gold-manual|gold-swap|blue-manual|blue-swap}
+  const [opponent, setOpponent] = useState(null);      // user-built blue five (never auto-locked)
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [simStage, setSimStage] = useState("");
@@ -142,16 +144,18 @@ export default function App() {
   const isDaily = nav === "Daily";
   const isChallenge = nav === "Challenges" && !!challenge;
   const activeMode = isDaily ? "Daily" : isChallenge ? "Challenge" : gameMode;
+  // modes where the user builds Team Blue (Win82/Tournament opponents are
+  // server-generated per game; Challenge locks the stored rival five)
+  const blueBuildable = !isChallenge && (activeMode === "Single" || activeMode === "Best7" || activeMode === "Daily");
 
   // Reveal the Blue five once Gold is complete (single/best7/daily). Same
   // generator the sim always used — just shown before tipoff now.
+  // Team Blue is USER-controlled: it stays empty until the user picks Manual or
+  // Random. The only exception is Challenge mode, where the rival five is the
+  // stored challenge lineup (that IS the game). No hidden auto-lock-in.
   useEffect(() => {
-    if (isChallenge) { setOpponent(challenge.team); return; } // rival five is visible immediately
-    if (!team) { setOpponent(null); return; }
-    if ((activeMode === "Single" || activeMode === "Best7" || activeMode === "Daily") && !opponent) {
-      setOpponent(genOpponent());
-    }
-  }, [team, activeMode, isChallenge]); // eslint-disable-line
+    if (isChallenge) setOpponent(challenge.team);
+  }, [isChallenge, challenge]); // eslint-disable-line
 
   // ── Draft: Chaos (yahtzee rolls) ───────────────────────────────────────────
   // Daily uses the shared authoritative generator (UTC seed from the server;
@@ -224,14 +228,20 @@ export default function App() {
     return { ...z, roll: z.roll + 1, roster, decisions, keep: [false, false, false, false, false], respin: [null, null, null, null, null] };
   });
 
-  // ── Draft: Manual ──────────────────────────────────────────────────────────
+  // ── Draft: Manual + Random (both teams) ────────────────────────────────────
   const pickManual = (p) => {
-    const slot = picker.slot;
-    if (picker.forSwap && team) {
-      const next = team.map((x, i) => (i === slot ? p : x));
-      setTeam(next); setResult(null); setOpponent(isChallenge ? challenge.team : null);
+    const { slot, target } = picker;
+    if (target === "gold-swap" && team) {
+      setTeam(team.map((x, i) => (i === slot ? p : x)));
+      setResult(null);
       setCareer((c) => recordDraft(c, [p]));
       track("player_selected", { slot: POSITIONS[slot], player_id: p.id, player_era: p.decade, method: "swap" });
+    } else if (target === "blue-manual" || target === "blue-swap") {
+      const base = target === "blue-swap" && opponent ? opponent : blueManual;
+      const next = base.map((x, i) => (i === slot ? p : x));
+      track("player_selected", { slot: POSITIONS[slot], player_id: p.id, player_era: p.decade, method: "blue-manual" });
+      if (next.every(Boolean)) { setOpponent(next); setBlueManual([null, null, null, null, null]); }
+      else setBlueManual(next);
     } else {
       const next = manual.map((x, i) => (i === slot ? p : x));
       if (!manual.some(Boolean)) track("draft_started", { mode: MODE_TO_ANALYTICS[activeMode], method: "manual", ball_iq: ballIQ });
@@ -244,6 +254,20 @@ export default function App() {
     setPicker(null);
   };
 
+  // Random Team: one click → a complete legal five of canonical player IDs.
+  // Same validation path as everything else — the server re-validates the ids.
+  const randomGold = () => {
+    const roster = genRoster(Math.random);
+    setYz(null); setManual([null, null, null, null, null]); setResult(null);
+    finalizeTeam(roster);
+    track("draft_started", { mode: MODE_TO_ANALYTICS[activeMode], method: "random" });
+  };
+  const randomBlue = () => {
+    setOpponent(genOpponent(Math.random));
+    setBlueManual([null, null, null, null, null]);
+    track("draft_started", { mode: MODE_TO_ANALYTICS[activeMode], method: "blue-random" });
+  };
+
   const abandonDraftIfNeeded = () => {
     if ((yz && !yz.done) || (manual.some(Boolean) && !manual.every(Boolean))) track("draft_abandoned", { roll: yz?.roll });
   };
@@ -251,7 +275,8 @@ export default function App() {
   const resetPlay = () => {
     abandonDraftIfNeeded();
     setYz(null); setTeam(null); setResult(null); setErr(""); setProgress(null);
-    setManual([null, null, null, null, null]); setOpponent(null); setPicker(null);
+    setManual([null, null, null, null, null]); setBlueManual([null, null, null, null, null]);
+    setOpponent(null); setPicker(null); setView("builder");
   };
   const handleNav = (id) => { resetPlay(); setSharedResult(null); setNav(id); };
 
@@ -277,7 +302,7 @@ export default function App() {
     teamAWeaknesses: n?.teamAWeaknesses?.length ? n.teamAWeaknesses : record.goldChem?.weaknesses || [],
     teamBStrengths: n?.teamBStrengths?.length ? n.teamBStrengths : record.blueChem?.strengths || [],
     teamBWeaknesses: n?.teamBWeaknesses?.length ? n.teamBWeaknesses : record.blueChem?.weaknesses || [],
-    mvpReason: n?.mvpReason || null,
+    mvpReason: n?.mvpReason || record.mvpFallback || null, // never blank: deterministic 2-3 sentence fallback
     turningPoint: n?.turningPoint || record.core?.turningPoint || null,
   });
 
@@ -310,8 +335,18 @@ export default function App() {
     track(won ? "daily_challenge_completed" : "daily_challenge_failed", { result: won ? "win" : "loss", server_claimed: !!records?.daily?.claimed });
   };
 
+  // Presentation pacing only: the arena transition holds briefly so a fast
+  // core result doesn't flash-cut. Stages shown are real; the hold is capped
+  // and ends immediately after — never blocks on AI.
+  const holdSimScreen = async (t0) => {
+    const remaining = 900 - (Date.now() - t0);
+    if (remaining > 0) await new Promise((r) => setTimeout(r, remaining));
+  };
+
   const runSingle = async (oppOverride, tag) => {
     if (loading) return;
+    const simT0 = Date.now();
+    setView("simulating");
     setLoading(true); setErr(""); setSimStage(""); setNarrative({ status: "none" });
     noteGameStarted();
     const mode = tag || "single";
@@ -339,12 +374,16 @@ export default function App() {
 
       setResult({ type: "single", sim: viewSim(record), w, tag, opp, resultId, record, persisted: !!records?.persisted, dailyRank: records?.daily?.rank ?? null });
       fetchNarrative(resultId, record, !!records?.persisted);
-    } catch (e) { setErr(e.message); }
+      await holdSimScreen(simT0);
+      setView("postgame");
+    } catch (e) { setErr(e.message); setView("builder"); }
     setLoading(false);
   };
 
   const runBest7 = async (oppOverride, tag) => {
     if (loading) return;
+    const simT0 = Date.now();
+    setView("simulating");
     setLoading(true); setErr(""); setSimStage(""); setNarrative({ status: "none" });
     noteGameStarted();
     track("best_of_7_started", { from: tag || "menu" });
@@ -356,12 +395,16 @@ export default function App() {
       bookkeepGame(won, "best7", record.core.seriesResult, record.core.mvp, "", opp);
       setResult({ type: "best7", sim: viewSim(record), won, tag, opp, resultId, record, persisted: !!records?.persisted });
       fetchNarrative(resultId, record, !!records?.persisted);
-    } catch (e) { setErr(e.message); }
+      await holdSimScreen(simT0);
+      setView("postgame");
+    } catch (e) { setErr(e.message); setView("builder"); }
     setLoading(false);
   };
 
   const runWin82 = async () => {
     if (loading) return;
+    const simT0 = Date.now();
+    setView("simulating");
     setLoading(true); setErr(""); setSimStage(""); setNarrative({ status: "none" });
     noteGameStarted();
     try {
@@ -378,12 +421,16 @@ export default function App() {
       lastOppRef.current = opp.length === 5 ? opp : null;
       setResult({ type: "82", wins, losses, lastSim: viewSim(record), opp, resultId, record, persisted: !!records?.persisted });
       fetchNarrative(resultId, record, !!records?.persisted);
-    } catch (e) { setErr(e.message); }
+      await holdSimScreen(simT0);
+      setView("postgame");
+    } catch (e) { setErr(e.message); setView("builder"); }
     setLoading(false); setProgress(null);
   };
 
   const runTournament = async () => {
     if (loading) return;
+    const simT0 = Date.now();
+    setView("simulating");
     setLoading(true); setErr(""); setSimStage(""); setNarrative({ status: "none" });
     noteGameStarted();
     try {
@@ -400,7 +447,9 @@ export default function App() {
       }
       if (record.won) { addBadge("tournament_champion"); setCareer((c) => recordTournamentWin(c)); }
       setResult({ type: "tournament", rounds, won: record.won, resultId, persisted: !!records?.persisted });
-    } catch (e) { setErr(e.message); }
+      await holdSimScreen(simT0);
+      setView("postgame");
+    } catch (e) { setErr(e.message); setView("builder"); }
     setLoading(false); setProgress(null);
   };
 
@@ -420,7 +469,8 @@ export default function App() {
     runSingle(tag === "challenge" ? challenge?.team : lastOppRef.current, tag);
   };
   const doBest7FromResult = () => { setResult(null); runBest7(lastOppRef.current, "from_result"); };
-  const startSwap = () => { track("swap_one_started", {}); setResult(null); };
+  // Swap One: back to the builder with BOTH squads preserved (spec #12/#13).
+  const startSwap = () => { track("swap_one_started", {}); setResult(null); setView("builder"); };
   const retryNarrative = () => { if (result?.record) fetchNarrative(result.resultId, result.record, result.persisted); };
 
   // ── Share ──────────────────────────────────────────────────────────────────
@@ -542,7 +592,7 @@ export default function App() {
                 <>
                   {/* Build method (Daily stays seeded rolls — that IS the daily) */}
                   {!isDaily && (
-                    <div role="tablist" aria-label="Build method" style={{ display: "flex", gap: 6, marginBottom: 12 }}>
+                    <div role="tablist" aria-label="Build method" style={{ display: "flex", gap: 6, marginBottom: 12, flexWrap: "wrap" }}>
                       {[["rolls", "🎲 Chaos Draft"], ["manual", "✍️ Manual Draft"]].map(([id, label]) => (
                         <button key={id} role="tab" aria-selected={buildMethod === id} onClick={() => { setBuildMethod(id); setYz(null); setManual([null, null, null, null, null]); }} style={{
                           flex: 1, padding: "8px 10px", fontSize: 12, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 40,
@@ -551,14 +601,18 @@ export default function App() {
                           color: buildMethod === id ? T.gold : T.textDim,
                         }}>{label}</button>
                       ))}
+                      <button onClick={randomGold} style={{
+                        flex: 1, padding: "8px 10px", fontSize: 12, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 40,
+                        border: `1px solid ${T.goldBorder}`, background: "rgba(253,185,39,0.08)", color: T.gold,
+                      }}>🔀 Random Team</button>
                     </div>
                   )}
                   {buildMethod === "manual" && !isDaily ? (
                     <div style={{ display: "grid", gap: 8 }}>
                       {POSITIONS.map((pos, i) => manual[i]
                         ? <FilledSlot key={pos} p={manual[i]} pos={pos} team="gold" hideStats={ballIQ} flash={flashSlot === i}
-                            onSwap={() => setPicker({ slot: i, forSwap: false })} />
-                        : <EmptySlot key={pos} pos={pos} team="gold" onAdd={() => setPicker({ slot: i, forSwap: false })} />)}
+                            onSwap={() => setPicker({ slot: i, target: "gold-manual" })} />
+                        : <EmptySlot key={pos} pos={pos} team="gold" onAdd={() => setPicker({ slot: i, target: "gold-manual" })} />)}
                     </div>
                   ) : (
                     <RollBuilder yz={yz} ballIQ={ballIQ} isDaily={isDaily}
@@ -573,7 +627,7 @@ export default function App() {
                     {POSITIONS.map((pos, i) => (
                       <FilledSlot key={pos} p={team[i]} pos={pos} team="gold" hideStats={false}
                         fit={teamFit(team, i)} flash={flashSlot === i}
-                        onSwap={!loading && !isDaily ? () => setPicker({ slot: i, forSwap: true }) : null} />
+                        onSwap={!loading && !isDaily ? () => setPicker({ slot: i, target: "gold-swap" }) : null} />
                     ))}
                   </div>
                   <div style={{ display: "flex", justifyContent: "space-between", marginTop: 10, fontSize: 12, color: T.textDim }}>
@@ -588,7 +642,12 @@ export default function App() {
             {/* CENTER: VS + preview + CTA */}
             <div style={{ flex: "0 1 340px", minWidth: 260, display: "flex", flexDirection: "column", gap: 12, alignSelf: "stretch", justifyContent: "center", margin: "0 auto" }}>
               <VsDivider active={!!team && !!opponent} />
-              <MatchupPreview gold={team} blue={opponent} />
+              <MatchupPreview gold={team} blue={blueBuildable ? opponent : null} />
+              {team && blueBuildable && !opponent && (
+                <div style={{ textAlign: "center", fontSize: 12, color: T.textDim, padding: "0 10px" }}>
+                  Build <b style={{ color: T.blue }}>Team Blue</b> — Manual or Random — to unlock the sim.
+                </div>
+              )}
               {team && (activeMode !== "Single" && activeMode !== "Best7" && activeMode !== "Daily" && activeMode !== "Challenge" ? true : !!opponent) && !result && !loading && (
                 <div className="sticky-sim">
                   <button onClick={runTheSim} disabled={isDaily && dailyDone} style={{
@@ -604,11 +663,6 @@ export default function App() {
                   </div>
                 </div>
               )}
-              {(activeMode === "Single" || activeMode === "Best7" || activeMode === "Daily") && team && opponent && !result && !loading && !isChallenge && (
-                <button onClick={() => setOpponent(genOpponent())} style={{ background: "none", border: `1px solid ${T.border}`, color: T.textDim, borderRadius: 8, padding: "8px 12px", cursor: "pointer", fontSize: 11.5, fontWeight: 700 }}>
-                  🔀 New opponent
-                </button>
-              )}
             </div>
 
             {/* TEAM BLUE */}
@@ -623,21 +677,57 @@ export default function App() {
                   )}
                 </div>
               )}
+              {/* Blue build methods — Team Blue is user-controlled, never auto-locked */}
+              {!isChallenge && blueBuildable && !opponent && (
+                <div role="tablist" aria-label="Blue build method" style={{ display: "flex", gap: 6, marginBottom: 12 }}>
+                  <button role="tab" onClick={() => setPicker({ slot: blueManual.findIndex((x) => !x) === -1 ? 0 : blueManual.findIndex((x) => !x), target: "blue-manual" })} style={{
+                    flex: 1, padding: "8px 10px", fontSize: 12, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 40,
+                    border: `1px solid ${T.border}`, background: "transparent", color: T.textDim,
+                  }}>✍️ Manual Draft</button>
+                  <button role="tab" onClick={randomBlue} style={{
+                    flex: 1, padding: "8px 10px", fontSize: 12, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 40,
+                    border: `1px solid ${T.blueBorder}`, background: "rgba(110,168,254,0.08)", color: T.blue,
+                  }}>🔀 Random Team</button>
+                </div>
+              )}
               {opponent ? (
                 <>
-                  <LineupList team={opponent} side="blue" />
-                  <div style={{ textAlign: "right", marginTop: 10, fontSize: 12, color: T.textDim }}>
-                    RATING <b style={{ color: T.blue }}>{teamRating(opponent)}</b>
+                  <div style={{ display: "grid", gap: 8 }}>
+                    {POSITIONS.map((pos, i) => (
+                      <FilledSlot key={pos} p={opponent[i]} pos={pos} team="blue" fit={teamFit(opponent, i)}
+                        onSwap={!isChallenge && !loading ? () => setPicker({ slot: i, target: "blue-swap" }) : null} />
+                    ))}
+                  </div>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 10, fontSize: 12, color: T.textDim }}>
+                    {!isChallenge ? (
+                      <span style={{ display: "flex", gap: 10 }}>
+                        <button onClick={randomBlue} style={{ background: "none", border: "none", color: T.textDim, cursor: "pointer", fontSize: 12, fontWeight: 700, padding: 0 }}>🔀 Re-roll</button>
+                        <button onClick={() => setOpponent(null)} style={{ background: "none", border: "none", color: T.textDim, cursor: "pointer", fontSize: 12, fontWeight: 700, padding: 0 }}>✕ Clear</button>
+                      </span>
+                    ) : <span />}
+                    <span>RATING <b style={{ color: T.blue }}>{teamRating(opponent)}</b></span>
                   </div>
                   <ChemistryMeter team={opponent} side="blue" compact />
                 </>
+              ) : blueBuildable && blueManual.some(Boolean) ? (
+                <div style={{ display: "grid", gap: 8 }}>
+                  {POSITIONS.map((pos, i) => blueManual[i]
+                    ? <FilledSlot key={pos} p={blueManual[i]} pos={pos} team="blue" flash={flashSlot === i}
+                        onSwap={() => setPicker({ slot: i, target: "blue-manual" })} />
+                    : <EmptySlot key={pos} pos={pos} team="blue" onAdd={() => setPicker({ slot: i, target: "blue-manual" })} />)}
+                </div>
+              ) : blueBuildable ? (
+                <div style={{ display: "grid", gap: 8 }}>
+                  {POSITIONS.map((pos, i) => (
+                    <EmptySlot key={pos} pos={pos} team="blue" onAdd={() => setPicker({ slot: i, target: "blue-manual" })} />
+                  ))}
+                </div>
               ) : (
                 <div>
                   <LineupList team={[]} side="blue" />
                   <div style={{ marginTop: 10, fontSize: 11.5, color: T.textDim, lineHeight: 1.6, textAlign: "center" }}>
                     {activeMode === "Win82" ? "82 rival squads from every era await — finish your five to start the season."
-                      : activeMode === "Tournament" ? "Four playoff rivals stand between you and the title."
-                      : "Your opponent is revealed when your five is locked."}
+                      : "Four playoff rivals stand between you and the title."}
                   </div>
                 </div>
               )}
@@ -659,31 +749,34 @@ export default function App() {
             </div>
           )}
 
-          {/* Loading */}
-          {loading && (
-            <SimulationLoading stage={simStage} progress={progress}
-              goldLabel="TEAM GOLD" blueLabel={isChallenge ? (challenge.challengerName || "TEAM BLUE").toUpperCase() : "TEAM BLUE"} />
-          )}
-
-          {/* Postgame */}
-          {result && (
-            <ResultView result={result} team={team} feedbackCtx={feedbackCtx}
-              narrative={narrative} onRetryNarrative={retryNarrative}
-              onRematch={() => doRematch(result?.tag)}
-              onBest7={result.type !== "best7" ? doBest7FromResult : null}
-              onChallenge={doShare} onSwap={startSwap} onShare={doShare}
-              onLeaderboard={() => handleNav("Daily")} />
-          )}
-          {result && result.tag === "daily" && <DailyPanel daily={daily} career={career} />}
-          {result && (
-            <div style={{ display: "flex", gap: 10, marginTop: 12, maxWidth: 700, margin: "12px auto 0" }}>
-              <button onClick={() => setSaved((s) => [...s, { id: Date.now(), name: `Squad ${s.length + 1}`, ids: team.map((p) => p.id), rating: teamRating(team) }])}
-                style={{ flex: 1, padding: 12, fontSize: 13, fontWeight: 800, borderRadius: 9, background: T.bgCardHover, color: T.text, cursor: "pointer", border: `1px solid ${T.border}` }}>💾 Save Squad</button>
-              <button onClick={resetPlay} style={{ flex: 1, padding: 12, fontSize: 13, fontWeight: 800, borderRadius: 9, background: T.bgCardHover, color: T.text, cursor: "pointer", border: `1px solid ${T.border}` }}>🎲 New Game</button>
-            </div>
-          )}
         </>
       )}
+    </div>
+  );
+
+  // ── Dedicated simulation transition (builder leaves the stage) ──────────────
+  const simulatingView = (
+    <div style={{ maxWidth: 720, margin: "8vh auto 0" }}>
+      <SimulationLoading stage={simStage} progress={progress}
+        goldLabel="TEAM GOLD" blueLabel={isChallenge ? (challenge?.challengerName || "TEAM BLUE").toUpperCase() : "TEAM BLUE"} />
+    </div>
+  );
+
+  // ── Dedicated Postgame view (no builder above it) ───────────────────────────
+  const postgameView = result && (
+    <div style={{ maxWidth: 900, margin: "0 auto" }}>
+      <ResultView result={result} team={team} feedbackCtx={feedbackCtx}
+        narrative={narrative} onRetryNarrative={retryNarrative}
+        onRematch={() => doRematch(result?.tag)}
+        onBest7={result.type !== "best7" ? doBest7FromResult : null}
+        onChallenge={doShare} onSwap={startSwap} onShare={doShare}
+        onLeaderboard={() => handleNav("Daily")} />
+      {result.tag === "daily" && <DailyPanel daily={daily} career={career} />}
+      <div style={{ display: "flex", gap: 10, maxWidth: 700, margin: "12px auto 0" }}>
+        <button onClick={() => setSaved((s) => [...s, { id: Date.now(), name: `Squad ${s.length + 1}`, ids: team.map((p) => p.id), rating: teamRating(team) }])}
+          style={{ flex: 1, padding: 12, fontSize: 13, fontWeight: 800, borderRadius: 9, background: T.bgCardHover, color: T.text, cursor: "pointer", border: `1px solid ${T.border}` }}>💾 Save Squad</button>
+        <button onClick={resetPlay} style={{ flex: 1, padding: 12, fontSize: 13, fontWeight: 800, borderRadius: 9, background: T.bgCardHover, color: T.text, cursor: "pointer", border: `1px solid ${T.border}` }}>🎲 New Game</button>
+      </div>
     </div>
   );
 
@@ -735,6 +828,10 @@ export default function App() {
           <div style={{ maxWidth: 860, margin: "16px auto 0" }}><Credits /></div>
         ) : nav === "Challenges" && !challenge ? (
           <div style={{ marginTop: 16 }}>{challengesHub}</div>
+        ) : view === "simulating" ? (
+          simulatingView
+        ) : view === "postgame" && result ? (
+          postgameView
         ) : (
           playView
         )}
@@ -742,7 +839,10 @@ export default function App() {
 
       {picker && (
         <ManualPicker slotPos={POSITIONS[picker.slot]}
-          excludeIds={(picker.forSwap && team ? team : manual).filter(Boolean).map((p) => p.id)}
+          excludeIds={(picker.target === "gold-swap" && team ? team
+            : picker.target === "blue-swap" && opponent ? opponent
+            : picker.target === "blue-manual" ? blueManual
+            : manual).filter(Boolean).map((p) => p.id)}
           onPick={pickManual} onClose={() => setPicker(null)} />
       )}
       {share && <ShareModal share={share} onClose={() => setShare(null)} />}

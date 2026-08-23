@@ -3,7 +3,6 @@
 // shifts to postgame. Every number comes from the structured result (validated
 // model output + deterministic engine data) — nothing invented for aesthetics.
 // Never a dead end: contextual CTAs lead back into another game or a share.
-import { useState } from "react";
 import { T, card } from "../theme.js";
 import { chemistryScore, chemistryLabel } from "../chemistryView.js";
 import { Feedback } from "./Feedback.jsx";
@@ -228,7 +227,7 @@ function ChemDial({ label, team, color }) {
 }
 
 // ── Contextual CTAs ────────────────────────────────────────────────────────────
-function CTAs({ mode, won, onRematch, onBest7, onChallenge, onSwap, onShare, onLeaderboard, onAnalysis }) {
+function CTAs({ mode, won, onRematch, onBest7, onChallenge, onSwap, onShare, onLeaderboard }) {
   const P = ({ onClick, children }) => (
     <button onClick={onClick} style={{ width: "100%", padding: 15, fontSize: 14, fontWeight: 900, border: "none", borderRadius: 10, background: T.gold, color: "#111", cursor: "pointer", letterSpacing: 0.5, minHeight: 48 }}>{children}</button>
   );
@@ -272,18 +271,12 @@ function CTAs({ mode, won, onRematch, onBest7, onChallenge, onSwap, onShare, onL
     <div style={{ marginTop: 14 }}>
       {primary}
       <div style={{ display: "flex", gap: 8, marginTop: 8, flexWrap: "wrap" }}>{secondaries.filter(Boolean)}</div>
-      {onAnalysis && (
-        <button onClick={onAnalysis} style={{ width: "100%", marginTop: 8, padding: 9, fontSize: 12, fontWeight: 700, borderRadius: 8, border: "none", background: "transparent", color: T.textDim, cursor: "pointer" }}>
-          📋 View full box score & analysis ↓
-        </button>
-      )}
     </div>
   );
 }
 
 // ── The Postgame ───────────────────────────────────────────────────────────────
 export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedbackCtx, narrativeStatus, onRetryNarrative, persisted, onRematch, onBest7, onChallenge, onSwap, onShare, onLeaderboard }) {
-  const [showAnalysis, setShowAnalysis] = useState(false);
   const row = mvpRow(sim);
   const mvpP = mvpPlayer(sim, team, opp);
   const mvpOnGold = (team || []).some((p) => p && p === mvpP);
@@ -294,11 +287,11 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
       <ScoreboardHero sim={sim} won={won} mode={mode} seriesLabel={seriesLabel} team={team} opp={opp} />
 
       <div style={{ padding: "0 16px 16px" }}>
-        {/* MVP feature card */}
+        {/* B. MVP feature card with a real explanation (narrative or deterministic fallback) */}
         {sim.mvp && (
-          <div style={{ display: "flex", alignItems: "center", gap: 16, padding: 16, borderRadius: 12, background: "linear-gradient(120deg, #2b230a 0%, #1a1610 100%)", border: `1px solid ${T.gold}` }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 16, padding: 16, borderRadius: 12, background: "linear-gradient(120deg, #2b230a 0%, #1a1610 100%)", border: `1px solid ${T.gold}`, flexWrap: "wrap" }}>
             {mvpP && <PlayerImage player={mvpP} variant="mvp" team={mvpOnGold ? "gold" : "blue"} />}
-            <div style={{ minWidth: 0, flex: 1 }}>
+            <div style={{ minWidth: 200, flex: 1 }}>
               <div style={{ fontSize: 10, letterSpacing: 3, color: T.gold, fontWeight: 800 }}>
                 ⭐ {mode === "best7" ? "SERIES MVP" : "GAME MVP"}
               </div>
@@ -314,12 +307,12 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
                   ))}
                 </div>
               )}
-              {sim.mvpReason && <div style={{ fontSize: 12, color: T.textDim, marginTop: 8, fontStyle: "italic", lineHeight: 1.5 }}>{sim.mvpReason}</div>}
+              {sim.mvpReason && <p style={{ fontSize: 12.5, color: T.text, marginTop: 10, marginBottom: 0, lineHeight: 1.6 }}>{sim.mvpReason}</p>}
             </div>
           </div>
         )}
 
-        {/* Game summary (fallback analysis instantly; enhanced recap replaces it) */}
+        {/* C. Game summary (deterministic recap instantly; enhanced recap replaces it) */}
         {sim.summary && (
           <div style={{ marginTop: 14 }}>
             <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 2, color: won ? T.green : T.red }}>
@@ -328,8 +321,6 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
             <p style={{ fontSize: 13.5, lineHeight: 1.65, margin: "6px 0 0" }}>{sim.summary}</p>
           </div>
         )}
-
-        {/* Enhanced analysis state — core result is complete either way */}
         {narrativeStatus === "pending" && (
           <div aria-live="polite" style={{ marginTop: 10, fontSize: 12, color: T.textDim, display: "flex", alignItems: "center", gap: 8 }}>
             <span className="sim-spinner" style={{ width: 14, height: 14, borderWidth: 2 }} aria-hidden="true" />
@@ -347,19 +338,33 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
           </div>
         )}
 
-        {/* Turning point (only when the result provides one — never invented) */}
+        {/* D. Turning point — 2-3 sentences from the computed result */}
         {turning?.text && (
           <div style={{ marginTop: 14, padding: 12, borderLeft: `3px solid ${T.orange}`, background: T.bgCardHover, borderRadius: "0 9px 9px 0" }}>
             <div style={{ fontSize: 10, letterSpacing: 2, color: T.orange, fontWeight: 800 }}>
-              ⚡ TURNING POINT{turning.game ? ` — ${turning.game}` : ""}{turning.quarter ? ` · ${turning.quarter}` : ""}{turning.clock ? ` · ${turning.clock}` : ""}
+              ⚡ TURNING POINT{turning.game ? ` — ${turning.game}` : ""}{turning.quarter ? ` · ${turning.quarter}` : ""}
             </div>
-            <div style={{ fontSize: 13, marginTop: 4, lineHeight: 1.5 }}>{turning.text}</div>
+            <p style={{ fontSize: 13, margin: "6px 0 0", lineHeight: 1.6 }}>{turning.text}</p>
           </div>
         )}
 
+        {/* E. Team-level matchup breakdown (default visible) */}
         <BreakdownBars sim={sim} />
 
-        {/* Chemistry dials (per team, from real chemistry state) */}
+        {/* F. FULL BOX SCORE — both teams, visible by default, no accordion */}
+        <div style={{ ...card, padding: 16, marginTop: 12 }}>
+          <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 2, color: T.textDim }}>FULL BOX SCORE</div>
+          <BoxTable label="TEAM GOLD" stats={sim.teamAStats} color={T.gold} mvpName={sim.mvp} />
+          <BoxTable label="TEAM BLUE" stats={sim.teamBStats} color={T.blue} mvpName={sim.mvp} />
+        </div>
+
+        {/* Pre-game engine edges */}
+        <EdgeBars edges={sim.edges} />
+
+        {/* H/I. Strengths & weaknesses quadrants */}
+        <AnalysisQuad sim={sim} />
+
+        {/* J. Chemistry dials */}
         {(team || opp) && (
           <div style={{ ...card, padding: 16, marginTop: 12, display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
             <ChemDial label="GOLD CHEMISTRY" team={team} color={T.gold} />
@@ -367,22 +372,13 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
           </div>
         )}
 
-        <AnalysisQuad sim={sim} />
+        {/* K. Believability feedback */}
+        {feedbackCtx && <Feedback ctx={feedbackCtx} />}
 
+        {/* L. Actions — never a dead end */}
         <CTAs mode={mode} won={won}
           onRematch={onRematch} onBest7={onBest7} onChallenge={onChallenge}
-          onSwap={onSwap} onShare={onShare} onLeaderboard={onLeaderboard}
-          onAnalysis={() => setShowAnalysis((s) => !s)} />
-
-        {showAnalysis && (
-          <div style={{ marginTop: 8 }}>
-            <BoxTable label="TEAM GOLD" stats={sim.teamAStats} color={T.gold} mvpName={sim.mvp} />
-            <BoxTable label="TEAM BLUE" stats={sim.teamBStats} color={T.blue} mvpName={sim.mvp} />
-            <EdgeBars edges={sim.edges} />
-          </div>
-        )}
-
-        {feedbackCtx && <Feedback ctx={feedbackCtx} />}
+          onSwap={onSwap} onShare={onShare} onLeaderboard={onLeaderboard} />
       </div>
     </div>
   );

@@ -69,7 +69,7 @@ Gold chemistry notes: +${result.goldChem.strengths.join(", +") || "none"}; -${re
 Blue chemistry notes: +${(result.blueChem?.strengths || []).join(", +") || "none"}; -${(result.blueChem?.weaknesses || []).join(", -") || "none"}
 
 Respond ONLY with valid JSON (no markdown):
-{"summary":"2-3 analytical sentences explaining WHY Team ${core.winner} won, grounded in the box score and edges above","teamAStrengths":["max 10 words","max 10 words","max 10 words"],"teamAWeaknesses":["max 10 words","max 10 words"],"teamBStrengths":["max 10 words","max 10 words","max 10 words"],"teamBWeaknesses":["max 10 words","max 10 words"],"mvpReason":"one sentence citing ${core.mvp}'s actual line above, max 15 words","turningPoint":"one concrete sentence consistent with the result, max 25 words"}`;
+{"summary":"2-3 analytical sentences explaining WHY Team ${core.winner} won, grounded in the box score and edges above","teamAStrengths":["max 10 words","max 10 words","max 10 words"],"teamAWeaknesses":["max 10 words","max 10 words"],"teamBStrengths":["max 10 words","max 10 words","max 10 words"],"teamBWeaknesses":["max 10 words","max 10 words"],"mvpReason":"2-3 sentences explaining WHY ${core.mvp} earned MVP: cite the actual line above, what that production did to the opposing defense, and how it decided the outcome. Max 70 words.","turningPoint":"2-3 sentences describing the pivotal stretch: what shifted, why it mattered given the edges above, and how it decided the game. Consistent with the fixed result; no invented exact timestamps. Max 80 words."}`;
 };
 
 // Validate narrative output: text-only fields, capped lengths. The narrative
@@ -86,8 +86,8 @@ const validateNarrative = (n) => {
     teamAWeaknesses: arr(n.teamAWeaknesses, 2, 80),
     teamBStrengths: arr(n.teamBStrengths, 3, 80),
     teamBWeaknesses: arr(n.teamBWeaknesses, 2, 80),
-    mvpReason: str(n.mvpReason, 140),
-    turningPoint: str(n.turningPoint, 200),
+    mvpReason: str(n.mvpReason, 550),
+    turningPoint: str(n.turningPoint, 600),
   };
 };
 

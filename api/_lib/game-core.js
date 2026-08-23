@@ -46,6 +46,29 @@ export const templateSummary = (core, goldChem, blueChem) => {
   return `${winner} won ${core.seriesResult} ${edgeText}.${chemText} ${core.mvp} led the way.`;
 };
 
+// Deterministic 2–3 sentence MVP explanation from the computed result only:
+// the MVP's actual line, their scoring rank in the game, the winning side, and
+// the winner's biggest real matchup edge. Used as the always-present fallback;
+// the AI narrative may replace it with a richer version, never a thinner one.
+export const mvpSummary = (core) => {
+  const row = core.mvpLine;
+  if (!row) return "";
+  const winName = core.winner === "Gold" ? "Team Gold" : "Team Blue";
+  const allRows = [...core.teamAStats, ...core.teamBStats];
+  const ledAll = row.pts >= Math.max(...allRows.map((r) => r.pts));
+  const contributions = [];
+  if (row.ast >= 5) contributions.push(`${row.ast} assists that kept the offense organized`);
+  if (row.reb >= 8) contributions.push(`${row.reb} rebounds that ended possessions`);
+  if (row.stl + row.blk >= 3) contributions.push(`${row.stl + row.blk} combined steals and blocks on the defensive end`);
+  const s1 = `${row.name} ${ledAll ? "led all scorers" : `paced ${winName}`} with ${row.pts} points${contributions.length ? `, adding ${contributions[0]}` : ` on the winning side`}.`;
+  const edge = core.keyEdge && Math.abs(core.keyEdge.edge) > 0 ? core.keyEdge : null;
+  const s2 = edge
+    ? `That production landed exactly where ${winName} already held its biggest edge — ${edge.category.toLowerCase()} (+${Math.abs(edge.edge)}) — turning a structural advantage into points.`
+    : `That production came in a matchup with no dominant structural edge, which made every bucket count double.`;
+  const s3 = `In a ${core.seriesResult} ${winName} win, no one did more to decide it.`;
+  return `${s1} ${s2} ${s3}`;
+};
+
 // Compute the full authoritative result for a validated request.
 // gold/blue: arrays of 5 canonical player objects. mode: validated.
 export const computeResult = (mode, gold, blue, seed) => {
@@ -79,6 +102,7 @@ export const computeResult = (mode, gold, blue, seed) => {
       blueChem: chemLabels(finaleOpp),
       core: finale,
       fallbackSummary: templateSummary(finale, base.goldChem, chemLabels(finaleOpp)),
+      mvpFallback: mvpSummary(finale),
     };
   }
 
@@ -95,6 +119,7 @@ export const computeResult = (mode, gold, blue, seed) => {
         core: s,
         advanced,
         fallbackSummary: templateSummary(s, base.goldChem, chemLabels(opp)),
+        mvpFallback: mvpSummary(s),
       });
       if (!advanced) break;
     }
@@ -109,6 +134,7 @@ export const computeResult = (mode, gold, blue, seed) => {
     mode,
     core,
     fallbackSummary: templateSummary(core, base.goldChem, base.blueChem),
+    mvpFallback: mvpSummary(core),
   };
 };
 

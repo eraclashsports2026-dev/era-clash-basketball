@@ -86,14 +86,31 @@ const allocateBox = (team, teamPts, rng, series) => {
 
 const gameScore = (s) => s.pts + 1.2 * s.reb + 1.5 * s.ast + 3 * s.stl + 3 * s.blk;
 
-const TURNING_TEMPLATES = {
-  "Perimeter Creation": "a fourth-quarter run built on relentless ball movement broke the game open",
-  "Interior Presence": "second-chance points in the paint wore the defense down late",
-  "Rim Protection": "back-to-back blocks in the final minutes shut the door at the rim",
-  "Rebounding": "control of the glass turned into a decisive extra-possession run",
-  "Perimeter Defense": "live-ball turnovers turned into transition points at the worst possible time",
-  "Spacing & Shooting": "consecutive threes forced the defense out of the paint and it never recovered",
-  "Star Power": "the star took over the closing stretch and the defense had no answer",
+const TURNING_MECHANISM = {
+  "Perimeter Creation": ["a run built on relentless ball movement", "kept generating open looks faster than the defense could rotate"],
+  "Interior Presence": ["a stretch of second-chance points in the paint", "wore the interior defense down possession after possession"],
+  "Rim Protection": ["a defensive stand anchored at the rim", "turned away drive after drive and stripped the offense of easy points"],
+  "Rebounding": ["control of the glass", "turned missed shots into extra possessions the other side never got back"],
+  "Perimeter Defense": ["pressure on the ball that produced live-ball turnovers", "fed transition scoring at the worst possible time for the trailing side"],
+  "Spacing & Shooting": ["a barrage of perimeter shooting", "forced the defense out of the paint and opened driving lanes it never closed again"],
+  "Star Power": ["a stretch of pure shot-making from the top of the roster", "left the defense without an answer in the half court"],
+};
+
+// 2–3 sentence turning-point analysis built ONLY from the computed result:
+// the winning side's biggest real edge, the actual margin, and the MVP's
+// actual line. Broad timing ("in the third quarter") comes from the seeded
+// simulation itself; no fabricated play-by-play or exact clock times.
+const turningPointText = (winner, keyEdge, margin, mvpRow, quarterLabel) => {
+  const winName = winner === "Gold" ? "Team Gold" : "Team Blue";
+  const loseName = winner === "Gold" ? "Team Blue" : "Team Gold";
+  const [mechanism, consequence] = TURNING_MECHANISM[keyEdge?.category] || TURNING_MECHANISM["Star Power"];
+  const edgeSize = Math.abs(keyEdge?.edge || 0);
+  const s1 = `The game turned ${quarterLabel} when ${winName} leaned on ${mechanism} — its biggest built-in advantage over ${loseName} (${keyEdge?.category ?? "overall edge"} ${edgeSize > 0 ? `+${edgeSize}` : ""}).`;
+  const s2 = `That stretch ${consequence}.`;
+  const s3 = mvpRow
+    ? `${mvpRow.name} carried the swing with ${mvpRow.pts} points${mvpRow.ast >= 4 ? ` and ${mvpRow.ast} assists` : mvpRow.reb >= 8 ? ` and ${mvpRow.reb} rebounds` : ""}, and ${winName} closed it out by ${margin}.`
+    : `${winName} closed it out by ${margin}.`;
+  return `${s1} ${s2} ${s3}`;
 };
 
 // Simulate one game. Returns a structured GameResult. Deterministic given rng.
@@ -125,13 +142,14 @@ export const simulateGame = (teamA, teamB, rng = Math.random) => {
   const winEdges = edges.filter((e) => (aWins ? e.edge > 0 : e.edge < 0));
   const keyEdge = winEdges[0] || edges[0];
 
-  const q = 3 + Math.floor(rng() * 2); // 3rd or 4th quarter
-  const clock = `${1 + Math.floor(rng() * 9)}:${String(Math.floor(rng() * 60)).padStart(2, "0")}`;
+  const q = 3 + Math.floor(rng() * 2); // simulated swing window: 3rd or 4th quarter
+  const quarterLabel = q === 3 ? "midway through the third quarter" : "early in the fourth quarter";
+  const winnerName = aWins ? "Gold" : "Blue";
 
   return {
     engine: "deterministic",
     versions: { ...VERSIONS },
-    winner: aWins ? "Gold" : "Blue",
+    winner: winnerName,
     finalScore: { gold: scoreA, blue: scoreB },
     seriesResult: `${scoreA}-${scoreB}`,
     teamAStats: boxA,
@@ -143,7 +161,7 @@ export const simulateGame = (teamA, teamB, rng = Math.random) => {
     edges,
     keyEdge,
     turningPoint: keyEdge
-      ? { quarter: `Q${q}`, clock, text: TURNING_TEMPLATES[keyEdge.category] || TURNING_TEMPLATES["Star Power"] }
+      ? { quarter: `Q${q}`, text: turningPointText(winnerName, keyEdge, margin, mvp, quarterLabel) }
       : null,
   };
 };
