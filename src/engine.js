@@ -190,7 +190,8 @@ export const simulateSeries = (teamA, teamB, rng = Math.random) => {
     engine: "deterministic",
     versions: { ...VERSIONS },
     winner: aWon ? "Gold" : "Blue",
-    seriesResult: `${a}-${b}`,
+    // winner-first, always: "4-2" means the WINNER took 4 (never "2-4")
+    seriesResult: aWon ? `${a}-${b}` : `${b}-${a}`,
     seriesScore: { gold: a, blue: b },
     games: games.map((g) => ({ winner: g.winner, score: g.seriesResult })),
     teamAStats: boxA,
