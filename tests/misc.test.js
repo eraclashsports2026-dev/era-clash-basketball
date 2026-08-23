@@ -88,17 +88,18 @@ describe("draft generation", () => {
   });
 });
 
-describe("daily streaks", () => {
-  const key = (d) => String(d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate());
+describe("daily streaks (UTC days)", () => {
+  const utc = (y, m, d) => new Date(Date.UTC(y, m, d, 12)); // midday UTC avoids boundary ambiguity
+  const key = (d) => `${d.getUTCFullYear()}${String(d.getUTCMonth() + 1).padStart(2, "0")}${String(d.getUTCDate()).padStart(2, "0")}`;
   it("counts consecutive days back from today", () => {
-    const now = new Date(2026, 7, 23);
+    const now = utc(2026, 7, 23);
     const daily = {};
-    for (let i = 0; i < 4; i++) daily[key(new Date(2026, 7, 23 - i))] = { won: true };
+    for (let i = 0; i < 4; i++) daily[key(utc(2026, 7, 23 - i))] = { won: true };
     expect(computeDailyStreak(daily, now)).toBe(4);
   });
   it("a gap breaks the streak; an unplayed today falls back to yesterday", () => {
-    const now = new Date(2026, 7, 23);
-    const daily = { [key(new Date(2026, 7, 22))]: { won: false }, [key(new Date(2026, 7, 21))]: { won: true }, [key(new Date(2026, 7, 19))]: { won: true } };
+    const now = utc(2026, 7, 23);
+    const daily = { [key(utc(2026, 7, 22))]: { won: false }, [key(utc(2026, 7, 21))]: { won: true }, [key(utc(2026, 7, 19))]: { won: true } };
     expect(computeDailyStreak(daily, now)).toBe(2); // 22nd + 21st; 19th cut off by gap
     expect(computeDailyStreak({}, now)).toBe(0);
   });

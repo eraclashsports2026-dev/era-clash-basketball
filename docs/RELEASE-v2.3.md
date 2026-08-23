@@ -2,6 +2,28 @@
 
 Prepared 2026-08-23 on branch `production-hardening`. **Not deployed.**
 
+## v2.3.1 addendum — launch-readiness fixes (same branch)
+
+- **Daily lineup legality is now fully server-verified** (`src/dailyChallenge.js`
+  shared by client and server): official challenge = server UTC date → seed →
+  pure deterministic draft. The client records its keep/re-spin decisions
+  (3 transitions — the Finalize click is Yahtzee roll 3); `/api/game` replays
+  them and rejects any five the official draft could not produce
+  (`DAILY_INVALID_LINEUP`, attempt never consumed). Client seeds/dates ignored.
+  `GET /api/daily?config=1` publishes the official config.
+- **Fixed a real fairness bug found during this work**: the old daily used the
+  browser's local date and the session-scoped variety guard, so different users
+  (and the same user after other games) got *different* "official" rolls. Daily
+  days are now UTC days everywhere (seed, claims, board, streaks, history).
+- **Production guards**: the in-memory test store is hard-disabled when
+  `NODE_ENV=production` (chaos hooks already were). Verified by test.
+- Tests: 80 vitest (13 new daily-verification tests incl. dream-team rejection,
+  decision tampering, foreign-seed rejection, 20-tab replay → 1 claim) +
+  7 Playwright (daily UI journey now exercises record→replay end-to-end).
+- Engine spot-check: elite five ≈ 64–74 wins/season, average draft ≈ 33, a
+  scoring-less lineup 2–4. Steep tails; flagged for post-launch tuning review,
+  not a launch defect.
+
 ## Architecture after this release
 
 ```

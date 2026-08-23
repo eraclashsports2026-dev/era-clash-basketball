@@ -9,6 +9,16 @@ import dailyHandler from "../api/daily.js";
 import profileHandler from "../api/profile.js";
 import healthHandler from "../api/health.js";
 import { isAllowedAssetUrl } from "../image-pipeline/approve.mjs";
+import { utcDateKey, dailySeed, replayDaily } from "../src/dailyChallenge.js";
+
+// A legal daily submission: replay today's official draft with keep-all.
+const KEEP_ALL = { keeps: [true, true, true, true, true], respins: [null, null, null, null, null] };
+const DAILY_DECISIONS = [KEEP_ALL, KEEP_ALL, KEEP_ALL];
+const legalDaily = () => ({
+  mode: "daily",
+  goldIds: replayDaily(dailySeed(utcDateKey()), DAILY_DECISIONS).map((p) => p.id),
+  dailyDecisions: DAILY_DECISIONS,
+});
 
 const GOLD = ["magic-80s", "jordan-90s", "bird-80s", "duncan-00s", "hak-90s"];
 const BLUE = ["curry-10s", "ray-00s", "durant-10s", "dirk-00s", "jokic-20s"];
@@ -103,25 +113,25 @@ describe("server-authoritative /api/game", () => {
 
   it("engine failure records nothing and does not burn the Daily attempt", async () => {
     const fail = mockRes();
-    await gameHandler(mockReq({ session: SESSION_A, body: gameBody({ mode: "daily" }), headers: { "x-chaos": "engine-fail" } }), fail);
+    await gameHandler(mockReq({ session: SESSION_A, body: gameBody(legalDaily()), headers: { "x-chaos": "engine-fail" } }), fail);
     expect(fail.statusCode).toBe(500);
     expect(fail.body.code).toBe("ENGINE_FAILURE");
     // the attempt was NOT consumed — a retry succeeds and claims it
     const ok = mockRes();
-    await gameHandler(mockReq({ session: SESSION_A, body: gameBody({ mode: "daily" }) }), ok);
+    await gameHandler(mockReq({ session: SESSION_A, body: gameBody(legalDaily()) }), ok);
     expect(ok.statusCode).toBe(200);
     expect(ok.body.records.daily.claimed).toBe(true);
   });
 
   it("daily: one official attempt per session; replays and refreshes rejected; other sessions unaffected", async () => {
     const first = mockRes();
-    await gameHandler(mockReq({ session: SESSION_A, body: gameBody({ mode: "daily", displayName: "Joe" }) }), first);
+    await gameHandler(mockReq({ session: SESSION_A, body: gameBody({ ...legalDaily(), displayName: "Joe" }) }), first);
     expect(first.body.records.daily.claimed).toBe(true);
     const again = mockRes();
-    await gameHandler(mockReq({ session: SESSION_A, body: gameBody({ mode: "daily" }) }), again);
+    await gameHandler(mockReq({ session: SESSION_A, body: gameBody(legalDaily()) }), again);
     expect(again.statusCode).toBe(409);
     const other = mockRes();
-    await gameHandler(mockReq({ session: SESSION_B, body: gameBody({ mode: "daily", displayName: "Rival" }) }), other);
+    await gameHandler(mockReq({ session: SESSION_B, body: gameBody({ ...legalDaily(), displayName: "Rival" }) }), other);
     expect(other.body.records.daily.claimed).toBe(true);
     // board has exactly two entries — duplicates suppressed
     const board = mockRes();

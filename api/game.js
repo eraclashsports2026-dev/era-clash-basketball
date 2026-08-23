@@ -7,12 +7,13 @@
 //
 // Reliability: this endpoint has NO AI dependency. Narration is a separate,
 // optional call (/api/narrative). An AI outage cannot fail a game here.
-import { hasStore, getJSON, setJSON, setNX, cmd, pipeline, rateLimit, clientIp, newId, dayKey } from "./_lib/store.js";
+import { hasStore, getJSON, setJSON, setNX, cmd, pipeline, rateLimit, clientIp, newId } from "./_lib/store.js";
 import { getOrCreateSession, sameOrigin } from "./_lib/session.js";
 import { sendError, newRequestId, logReq } from "./_lib/errors.js";
 import { flags, limits } from "./_lib/flags.js";
 import { tooLarge, MODES, validateTeamIds, validSimId, validChallengeId, cleanName } from "./_lib/validate.js";
 import { computeResult, dailyScore, newSeed } from "./_lib/game-core.js";
+import { utcDateKey, verifyDailyLineup } from "../src/dailyChallenge.js";
 
 const RESULT_TTL = 60 * 60 * 24 * 180;
 const IDEM_TTL = 60 * 60 * 24;
@@ -83,11 +84,22 @@ export default async function handler(req, res) {
       if (!blue) return sendError(res, "VALIDATION_FAILURE", requestId);
     } // 82/tournament: opponents generated server-side in computeResult
 
-    // Daily pre-check: server-dated, one official attempt per session.
-    const today = dayKey();
-    if (mode === "daily" && hasStore()) {
-      const existing = await getJSON(`daily:claim:${today}:${session}`);
-      if (existing) return sendError(res, "IDEMPOTENCY_CONFLICT", requestId);
+    // Daily gates: server UTC date is the ONLY date; the submitted lineup must
+    // be legally reachable from today's official seeded draft (the server
+    // replays the client's keep/re-spin decisions through the shared pure
+    // generator). Client-supplied seeds/dates are never read. A rejected
+    // lineup never consumes the official attempt.
+    const today = utcDateKey();
+    if (mode === "daily") {
+      const legal = verifyDailyLineup(today, b.dailyDecisions, gold.map((p) => p.id));
+      if (!legal.ok) {
+        logReq({ requestId, route: "game", mode, status: 400, error_code: "DAILY_INVALID_LINEUP", reason: legal.reason });
+        return sendError(res, "DAILY_INVALID_LINEUP", requestId);
+      }
+      if (hasStore()) {
+        const existing = await getJSON(`daily:claim:${today}:${session}`);
+        if (existing) return sendError(res, "IDEMPOTENCY_CONFLICT", requestId);
+      }
     }
 
     // Idempotency: same simulationId → same result, exactly once.

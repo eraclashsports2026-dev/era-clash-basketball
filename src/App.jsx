@@ -2,8 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { PLAYERS, POSITIONS } from "./players.js";
 import { displayOVR, analyzeBalance, teamRating } from "./rating.js";
 import { T, card } from "./theme.js";
-import { mulberry32 } from "./engine.js";
-import { genPlayer, genRoster, genOpponent, todaySeed, todayKey } from "./draft.js";
+import { genPlayer, genRoster, genOpponent } from "./draft.js";
+import { utcDateKey, dailySeed, dailyRoll1, applyDailyRoll } from "./dailyChallenge.js";
 import { runGame, requestNarrative } from "./gameClient.js";
 import { track, trackSessionStart } from "./analytics.js";
 import { installErrorMonitoring } from "./errors.js";
@@ -77,6 +77,7 @@ export default function App() {
   const [flashSlot, setFlashSlot] = useState(null);
   const [narrative, setNarrative] = useState({ status: "none" }); // enhanced recap state
   const lastOppRef = useRef(null);
+  const dailyDecisionsRef = useRef(null); // recorded daily draft decisions for server verification
 
   const [saved, setSaved] = useState(() => ls("ec_saved", []));
   const [streaks, setStreaks] = useState(() => ls("ec_streaks", { current: 0, personalBest: 0, thisWeekBest: 0, weekOf: "" }));
@@ -153,10 +154,22 @@ export default function App() {
   }, [team, activeMode, isChallenge]); // eslint-disable-line
 
   // ── Draft: Chaos (yahtzee rolls) ───────────────────────────────────────────
-  const startBuild = (seeded) => {
-    const rng = seeded ? mulberry32(todaySeed()) : Math.random;
-    const roster = genRoster(rng);
-    setYz({ roll: 1, roster, keep: [false, false, false, false, false], respin: [null, null, null, null, null], done: false, seeded: !!seeded });
+  // Daily uses the shared authoritative generator (UTC seed from the server;
+  // pure — identical rolls for everyone) and records every keep/re-spin
+  // decision so the server can replay and verify the final lineup.
+  const startBuild = async (seeded) => {
+    let roster, seed = null;
+    if (seeded) {
+      seed = dailySeed(utcDateKey());
+      try {
+        const cfg = await fetch("/api/daily?config=1").then((r) => (r.ok ? r.json() : null));
+        if (cfg?.seed != null) seed = cfg.seed; // server date wins over device clock
+      } catch { /* offline fallback: same computation from device UTC */ }
+      roster = dailyRoll1(seed);
+    } else {
+      roster = genRoster(Math.random);
+    }
+    setYz({ roll: 1, roster, keep: [false, false, false, false, false], respin: [null, null, null, null, null], done: false, seeded: !!seeded, seed, decisions: [] });
     setTeam(null); setResult(null); setProgress(null); setOpponent(null);
     track("draft_started", { mode: MODE_TO_ANALYTICS[activeMode], method: "rolls", ball_iq: ballIQ, seeded: !!seeded });
     if (seeded) track("daily_challenge_started", {});
@@ -181,22 +194,34 @@ export default function App() {
   };
 
   const doRoll = () => setYz((z) => {
-    const rng = z.seeded ? mulberry32(todaySeed() + z.roll * 7919) : Math.random;
     const respins = z.respin.filter(Boolean).length;
     if (respins) track("reroll_used", { roll: z.roll, respins });
-    const names = z.roster.filter((_, i) => z.keep[i]).map((p) => p.name); // one person per lineup
-    const roster = z.roster.map((p, i) => {
-      if (z.keep[i]) return p;
-      const opts = { excludeNames: [...names] };
-      const next = z.respin[i] === "position" ? genPlayer(null, rng, { ...opts, era: p.decade, eliteN: 10 })
-        : z.respin[i] === "era" ? genPlayer(POSITIONS[i], rng, { ...opts, eliteN: 10 })
-        : genPlayer(POSITIONS[i], rng, { ...opts, eliteN: 12 });
-      names.push(next.name);
-      return next;
-    });
-    if (z.roll === 3) { finalizeTeam(roster); return { ...z, roster, done: true }; }
+
+    let roster;
+    const decisions = z.seeded ? [...z.decisions, { keeps: [...z.keep], respins: [...z.respin] }] : z.decisions;
+    if (z.seeded) {
+      // shared authoritative generator — the server replays these exact steps
+      roster = applyDailyRoll(z.seed, z.roll, z.roster, z.keep, z.respin);
+    } else {
+      const rng = Math.random;
+      const names = z.roster.filter((_, i) => z.keep[i]).map((p) => p.name); // one person per lineup
+      roster = z.roster.map((p, i) => {
+        if (z.keep[i]) return p;
+        const opts = { excludeNames: [...names] };
+        const next = z.respin[i] === "position" ? genPlayer(null, rng, { ...opts, era: p.decade, eliteN: 10 })
+          : z.respin[i] === "era" ? genPlayer(POSITIONS[i], rng, { ...opts, eliteN: 10 })
+          : genPlayer(POSITIONS[i], rng, { ...opts, eliteN: 12 });
+        names.push(next.name);
+        return next;
+      });
+    }
+    if (z.roll === 3) {
+      if (z.seeded) dailyDecisionsRef.current = decisions;
+      finalizeTeam(roster);
+      return { ...z, roster, decisions, done: true };
+    }
     roster.forEach((p, i) => { if (!z.keep[i]) track("player_option_shown", { slot: POSITIONS[i], player_id: p.id, player_era: p.decade, roll: z.roll + 1 }); });
-    return { ...z, roll: z.roll + 1, roster, keep: [false, false, false, false, false], respin: [null, null, null, null, null] };
+    return { ...z, roll: z.roll + 1, roster, decisions, keep: [false, false, false, false, false], respin: [null, null, null, null, null] };
   });
 
   // ── Draft: Manual ──────────────────────────────────────────────────────────
@@ -273,7 +298,7 @@ export default function App() {
 
   const applyDaily = (records, won) => {
     setDaily((d) => {
-      const next = { ...d, [todayKey()]: { won } };
+      const next = { ...d, [utcDateKey()]: { won } };
       setCareer((c) => {
         const c2 = updateDailyStreak(c, next);
         if (c2.stats.dailyStreak >= 7) addBadge("daily_streak_7");
@@ -296,6 +321,7 @@ export default function App() {
       const { resultId, result: record, records } = await runGame({
         mode, gold: team, blue: opp,
         challengeId: tag === "challenge" ? challenge?.id : undefined,
+        dailyDecisions: tag === "daily" ? dailyDecisionsRef.current : undefined,
         onStage: setSimStage,
       });
       const w = record.core.winner === "Gold";
@@ -439,7 +465,7 @@ export default function App() {
     if (outcome !== "shared") setShare({ text, url });
   };
 
-  const dailyDone = !!daily[todayKey()];
+  const dailyDone = !!daily[utcDateKey()];
   const dailyStreak = computeDailyStreak(daily);
   const winnerClass = result ? ((result.w ?? result.won ?? (result.type === "82" && result.wins > result.losses)) ? "win-gold" : "win-blue") : "";
   const goldCount = team ? 5 : buildMethod === "manual" ? manual.filter(Boolean).length : (yz ? yz.roster.filter((_, i) => yz.keep[i]).length : 0);

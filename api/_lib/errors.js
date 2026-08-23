@@ -11,6 +11,7 @@ export const CODES = {
   VALIDATION_FAILURE: [400, "That request isn't valid."],
   RATE_LIMITED: [429, "Too many requests — slow down a little."],
   IDEMPOTENCY_CONFLICT: [409, "This request was already processed."],
+  DAILY_INVALID_LINEUP: [400, "That lineup doesn't match today's official Daily draft. Your attempt was not used."],
   UNAUTHORIZED: [401, "You need a session for that."],
   FORBIDDEN: [403, "You can't modify that."],
   NOT_FOUND: [404, "Not found or expired."],

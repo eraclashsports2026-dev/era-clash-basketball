@@ -66,9 +66,10 @@ export const recordDraft = (career, team) => {
 };
 
 // ── Daily streaks ──────────────────────────────────────────────────────────────
-// daily = { "20260823": {won:true}, ... } (local-date keyed, matches todayKey()).
+// daily = { "20260823": {won:true}, ... } — UTC-date keyed since v2.3.1 (Daily
+// days are UTC days everywhere: seed, claims, board, streaks).
 const dayMs = 864e5;
-const keyFor = (d) => String(d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate());
+const keyFor = (d) => `${d.getUTCFullYear()}${String(d.getUTCMonth() + 1).padStart(2, "0")}${String(d.getUTCDate()).padStart(2, "0")}`;
 
 export const computeDailyStreak = (daily, now = new Date()) => {
   let streak = 0;

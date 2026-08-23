@@ -14,10 +14,13 @@ const cfg = () => {
 };
 
 // ── In-memory store (tests + local load harness ONLY) ─────────────────────────
-// Activated by ECLASH_TEST_MEMORY_STORE=1 and never in production deployments.
-// Implements the exact Redis subset this codebase uses so integrity paths
-// (idempotency, atomic daily claims, immutable results) are fully testable.
-const memMode = () => process.env.ECLASH_TEST_MEMORY_STORE === "1";
+// Activated by ECLASH_TEST_MEMORY_STORE=1 — and HARD-DISABLED in production
+// (NODE_ENV=production on Vercel): a stray env var can never silently replace
+// real persistence with per-instance memory. Implements the exact Redis subset
+// this codebase uses so integrity paths (idempotency, atomic daily claims,
+// immutable results) are fully testable.
+const memMode = () =>
+  process.env.ECLASH_TEST_MEMORY_STORE === "1" && process.env.NODE_ENV !== "production";
 const mem = { kv: new Map(), exp: new Map(), h: new Map(), l: new Map(), z: new Map(), s: new Map() };
 export const _memReset = () => { for (const m of Object.values(mem)) m.clear(); };
 const alive = (k) => {

@@ -29,12 +29,12 @@ function Countdown() {
 
 function History({ daily }) {
   const days = [];
-  const now = new Date();
+  const now = Date.now();
   for (let i = 6; i >= 0; i--) {
-    const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() - i);
-    const key = String(d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate());
+    const d = new Date(now - i * 864e5);
+    const key = utcDayKey(d); // Daily days are UTC days
     days.push({
-      label: d.toLocaleDateString(undefined, { weekday: "short" }),
+      label: d.toLocaleDateString(undefined, { weekday: "short", timeZone: "UTC" }),
       entry: daily[key],
     });
   }

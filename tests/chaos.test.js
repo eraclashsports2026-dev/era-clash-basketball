@@ -7,6 +7,15 @@ import { _memReset } from "../api/_lib/store.js";
 import gameHandler from "../api/game.js";
 import narrativeHandler from "../api/narrative.js";
 import { circuitState } from "../api/_lib/ai.js";
+import { utcDateKey, dailySeed, replayDaily } from "../src/dailyChallenge.js";
+
+const KEEP_ALL = { keeps: [true, true, true, true, true], respins: [null, null, null, null, null] };
+const DAILY_DECISIONS = [KEEP_ALL, KEEP_ALL, KEEP_ALL];
+const legalDaily = () => ({
+  mode: "daily",
+  goldIds: replayDaily(dailySeed(utcDateKey()), DAILY_DECISIONS).map((p) => p.id),
+  dailyDecisions: DAILY_DECISIONS,
+});
 
 const GOLD = ["magic-80s", "jordan-90s", "bird-80s", "duncan-00s", "hak-90s"];
 const BLUE = ["curry-10s", "ray-00s", "durant-10s", "dirk-00s", "jokic-20s"];
@@ -87,7 +96,7 @@ describe("AI failure never becomes a game failure", () => {
 
   it("daily AI budget exhaustion disables narration only — never the game", async () => {
     process.env.MAX_AI_REQUESTS_PER_DAY = "0";
-    const game = await playGame({ mode: "daily" });
+    const game = await playGame(legalDaily());
     expect(game.statusCode).toBe(200);
     expect(game.body.records.daily.claimed).toBe(true); // gameplay unaffected
     const nar = mockRes();

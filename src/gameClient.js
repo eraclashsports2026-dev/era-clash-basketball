@@ -27,6 +27,7 @@ const FRIENDLY = {
   MAINTENANCE: "EraClash is briefly down for maintenance. Your team is saved.",
   ENGINE_FAILURE: "We couldn't complete this matchup. No result was recorded and your Daily attempt was not used.",
   VALIDATION_FAILURE: "That lineup couldn't be validated. Rebuild and try again.",
+  DAILY_INVALID_LINEUP: "That lineup doesn't match today's official Daily draft. Your attempt was not used — restart today's challenge.",
   IDEMPOTENCY_CONFLICT: "That game was already processed — check your recent results.",
   FEATURE_DISABLED: "This mode is temporarily disabled.",
   KV_UNAVAILABLE: "Cloud saving is temporarily unavailable.",
@@ -43,7 +44,7 @@ const parseError = async (res) => {
 // simulationId, so the server also sees one idempotent request.
 const inflight = new Map();
 
-// runGame({mode, gold, blue, challengeId, onStage}) → {resultId, result, records}
+// runGame({mode, gold, blue, challengeId, dailyDecisions, onStage}) → {resultId, result, records}
 export const runGame = (opts) => {
   const key = `${opts.mode}|${opts.gold.map((p) => p.id).join(",")}|${(opts.blue || []).map((p) => p.id).join(",")}|${opts.challengeId || ""}`;
   if (inflight.has(key)) return inflight.get(key);
@@ -52,7 +53,7 @@ export const runGame = (opts) => {
   return p;
 };
 
-async function _run({ mode, gold, blue, challengeId, onStage }) {
+async function _run({ mode, gold, blue, challengeId, dailyDecisions, onStage }) {
   const simulationId = newSimId();
   const started = Date.now();
   track("simulation_started", { mode, simulation_id: simulationId, team_rating: teamRating(gold) });
@@ -68,6 +69,7 @@ async function _run({ mode, gold, blue, challengeId, onStage }) {
         goldIds: gold.map((p) => p.id),
         blueIds: blue ? blue.map((p) => p.id) : undefined,
         challengeId: challengeId || undefined,
+        dailyDecisions: dailyDecisions || undefined,
         displayName: getDisplayName() || undefined,
         legacyUid: getUid(),
       }),
