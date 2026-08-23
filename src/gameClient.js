@@ -53,7 +53,7 @@ export const runGame = (opts) => {
   return p;
 };
 
-async function _run({ mode, gold, blue, challengeId, dailyDecisions, onStage }) {
+async function _run({ mode, gold, blue, challengeId, dailyDecisions, coachGoldId, coachBlueId, eraStyleId, onStage }) {
   const simulationId = newSimId();
   const started = Date.now();
   track("simulation_started", { mode, simulation_id: simulationId, team_rating: teamRating(gold) });
@@ -70,6 +70,9 @@ async function _run({ mode, gold, blue, challengeId, dailyDecisions, onStage }) 
         blueIds: blue ? blue.map((p) => p.id) : undefined,
         challengeId: challengeId || undefined,
         dailyDecisions: dailyDecisions || undefined,
+        coachGoldId: coachGoldId || undefined,
+        coachBlueId: coachBlueId || undefined,
+        eraStyleId: eraStyleId || undefined,
         displayName: getDisplayName() || undefined,
         legacyUid: getUid(),
       }),

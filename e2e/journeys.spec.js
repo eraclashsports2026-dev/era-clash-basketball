@@ -19,6 +19,18 @@ async function buildGoldManual(page) {
 const randomBlue = (page) => page.getByRole("tab", { name: /Random Team/ }).click();
 const randomGold = (page) => page.getByRole("button", { name: /Random Team/ }).first().click();
 
+// V3 flow: when the coach step is active (harness runs with V3 on), pick a
+// random coach for each completed team so RUN THE SIM unlocks.
+async function pickCoachesIfV3(page) {
+  for (let i = 0; i < 2; i++) {
+    const btn = page.getByRole("button", { name: /RANDOM COACH/ }).first();
+    if (await btn.count() && await btn.isVisible().catch(() => false)) {
+      await btn.click();
+      await page.waitForTimeout(250);
+    }
+  }
+}
+
 async function expectCorePostgame(page) {
   await expect(page.getByText(/TEAM (GOLD|BLUE) WINS/)).toBeVisible({ timeout: 15000 });
   await expect(page.getByText(/GAME MVP|SERIES MVP/)).toBeVisible();
@@ -53,6 +65,7 @@ test("J1+J2: manual Gold, Blue stays empty until user chooses, random Blue, sim 
   await expect(page.getByRole("button", { name: /RUN THE SIM/ })).toHaveCount(0);
   await expect(page.getByRole("tab", { name: /Random Team/ })).toBeVisible();
   await randomBlue(page);
+  await pickCoachesIfV3(page);
   await expect(page.getByRole("button", { name: /RUN THE SIM/ })).toBeVisible();
   // card containment: every filled Gold card stays inside the Gold panel
   const panel = await page.getByRole("region", { name: "TEAM GOLD" }).boundingBox();
@@ -70,6 +83,7 @@ test("J1b: Random Gold + Random Blue plays a full game", async ({ page }) => {
   await page.goto("/");
   await randomGold(page);
   await randomBlue(page);
+  await pickCoachesIfV3(page);
   await page.getByRole("button", { name: /RUN THE SIM/ }).click();
   await expectCorePostgame(page);
   // New Game returns to an empty builder: Gold back on Chaos Draft, Blue empty
@@ -85,6 +99,7 @@ test("J3: rapid double-click creates exactly one core result", async ({ page }) 
   await page.goto("/");
   await randomGold(page);
   await randomBlue(page);
+  await pickCoachesIfV3(page);
   const btn = page.getByRole("button", { name: /RUN THE SIM/ });
   await btn.click({ clickCount: 3, delay: 40 }).catch(() => {});
   await expectCorePostgame(page);
@@ -186,6 +201,7 @@ test("J10: per-team reset buttons free any lineup state without touching the oth
   // Gold: random complete → Reset Team returns to build methods, Blue untouched
   await page.getByRole("button", { name: /Random Team/ }).first().click();
   await page.getByRole("tab", { name: /Random Team/ }).click(); // blue random
+  await pickCoachesIfV3(page);
   await expect(page.getByRole("button", { name: /RUN THE SIM/ })).toBeVisible();
   await page.getByRole("button", { name: "Reset Team Gold" }).click();
   await expect(page.getByRole("tab", { name: /Chaos Draft/ })).toBeVisible(); // gold back to methods
@@ -195,4 +211,43 @@ test("J10: per-team reset buttons free any lineup state without touching the oth
   await page.getByRole("button", { name: "Reset Team Blue" }).click();
   await expect(page.getByRole("tab", { name: /Random Team/ })).toBeVisible(); // blue methods return
   await expect(page.getByText("Add Point Guard")).toHaveCount(2); // gold (manual mode) + blue both empty
+});
+
+test("J11 (V3): Team → Coach → Era Style → Run with possession postgame", async ({ page }) => {
+  await page.goto("/");
+  // 1 TEAM
+  await expect(page.getByText("1 TEAM")).toBeVisible();
+  await randomGold(page);
+  await randomBlue(page);
+  // 2 COACH — recommendations are roster-derived; no coach OVR anywhere
+  await expect(page.getByText("SELECT YOUR COACH").first()).toBeVisible();
+  await expect(page.getByText("RECOMMENDED FOR THIS ROSTER").first()).toBeVisible();
+  const body = await page.locator("body").innerText();
+  expect(body).not.toMatch(/coach ovr/i);
+  await page.getByRole("button", { name: /RANDOM COACH/ }).first().click();
+  await page.waitForTimeout(300);
+  await page.getByRole("button", { name: /RANDOM COACH/ }).first().click();
+  // 3 ERA STYLE — shared selector, dynamic matchup notes, no Gold+7 numbers
+  await expect(page.getByText("CHOOSE YOUR ERA STYLE")).toBeVisible();
+  await page.getByRole("button", { name: "90s", exact: true }).click();
+  await expect(page.getByText("HOW THIS AFFECTS THIS MATCHUP")).toBeVisible({ timeout: 8000 });
+  // RUN
+  await page.getByRole("button", { name: /RUN THE SIM/ }).click();
+  await expect(page.getByText(/TEAM (GOLD|BLUE) WINS/)).toBeVisible({ timeout: 15000 });
+  // V3 postgame: possessions, expectation, possession box, roles, assignments
+  await expect(page.getByText(/🏀 \d+ possessions/)).toBeVisible();
+  await expect(page.getByText(/pre-game expectation/)).toBeVisible();
+  await expect(page.getByText("POSSESSION BOX SCORE")).toBeVisible();
+  await expect(page.getByText("OFFENSIVE ROLES (USAGE)")).toBeVisible();
+  await expect(page.getByText("DEFENSIVE ASSIGNMENTS")).toBeVisible();
+  // era with no 3PT line: replay in the 60s and assert zero threes
+  const res = await page.request.post("/api/game", {
+    data: { mode: "single", simulationId: "e2e-v3-60s-" + Date.now(),
+      goldIds: ["curry-10s", "ray-00s", "durant-10s", "dirk-00s", "jokic-20s"],
+      blueIds: ["magic-80s", "jordan-90s", "bird-80s", "duncan-00s", "hak-90s"],
+      coachGoldId: "mike-dantoni", coachBlueId: "red-auerbach", eraStyleId: "1960s" },
+  });
+  const v3 = (await res.json()).result.v3;
+  expect(v3.teamTotals.gold.tpa).toBe(0);
+  expect(v3.teamTotals.blue.tpa).toBe(0);
 });

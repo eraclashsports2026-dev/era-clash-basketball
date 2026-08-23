@@ -21,6 +21,10 @@ const bool = (name, dflt) => {
 
 export const flags = () => ({
   maintenance: bool("MAINTENANCE_MODE", false),
+  // V3 possession engine: default OFF. Auto-enabled on Vercel PREVIEW
+  // deployments only — production traffic never sees V3 unless the env var is
+  // explicitly set (and this branch is never merged without approval).
+  simV3: bool("SIM_ENGINE_V3_ENABLED", process.env.VERCEL_ENV === "preview"),
   aiNarrative: bool("AI_NARRATIVE_ENABLED", true),
   challenges: bool("CHALLENGES_ENABLED", true),
   daily: bool("DAILY_ENABLED", true),

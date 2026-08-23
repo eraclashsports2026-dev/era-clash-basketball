@@ -35,6 +35,11 @@ export const validateTeamIds = (ids) => {
   return players;
 };
 
+export const validCoachId = (s) =>
+  typeof s === "string" && /^[a-z][a-z-]{2,40}$/.test(s) ? s : null;
+export const validEraId = (s) =>
+  typeof s === "string" && /^(19[5-9]0s|20[0-2]0s)$/.test(s) ? s : null;
+
 export const validSimId = (s) =>
   typeof s === "string" && /^[a-zA-Z0-9-]{8,64}$/.test(s) ? s : null;
 

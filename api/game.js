@@ -13,6 +13,8 @@ import { sendError, newRequestId, logReq } from "./_lib/errors.js";
 import { flags, limits } from "./_lib/flags.js";
 import { tooLarge, MODES, validateTeamIds, validSimId, validChallengeId, cleanName } from "./_lib/validate.js";
 import { computeResult, dailyScore, newSeed } from "./_lib/game-core.js";
+import { computeResultV3 } from "./_lib/game-core-v3.js";
+import { validCoachId, validEraId } from "./_lib/validate.js";
 import { utcDateKey, verifyDailyLineup } from "../src/dailyChallenge.js";
 
 const RESULT_TTL = 60 * 60 * 24 * 180;
@@ -119,7 +121,17 @@ export default async function handler(req, res) {
 
     // ── Compute the authoritative result ────────────────────────────────────
     const seed = newSeed();
-    const computed = computeResult(mode, gold, blue, seed);
+    // V3 possession engine (flag-gated; preview-only by default). Coach and
+    // Era Style ids are validated and loaded canonically server-side — the
+    // browser cannot author coach attributes or era modifiers.
+    const computed = f.simV3
+      ? computeResultV3(mode, gold, blue, {
+          coachGoldId: validCoachId(b.coachGoldId) || "neutral",
+          coachBlueId: validCoachId(b.coachBlueId) || "neutral",
+          eraStyleId: validEraId(b.eraStyleId) || undefined,
+          dailyDate: mode === "daily" ? today : undefined,
+        }, seed)
+      : computeResult(mode, gold, blue, seed);
     const resultId = newId(10);
     const record = {
       v: 1,

@@ -13,6 +13,7 @@ process.env.ECLASH_TEST_MEMORY_STORE ||= "1";
 process.env.ENABLE_CHAOS_TESTS ||= "true";
 process.env.ANTHROPIC_API_KEY ||= "harness-fake-key"; // narrative degrades gracefully
 process.env.MAX_AI_REQUESTS_PER_DAY ||= "0"; // budget-blocked: no real network calls
+process.env.SIM_ENGINE_V3_ENABLED ||= "true"; // V3 engine on in the test harness
 
 const PORT = Number(process.argv[2]) || 4173;
 const DIST = new URL("../dist", import.meta.url).pathname;
@@ -30,6 +31,7 @@ const routes = {
   "/api/result-page": (await import("../api/result-page.js")).default,
   "/api/challenge-page": (await import("../api/challenge-page.js")).default,
   "/api/simulate": (await import("../api/simulate.js")).default,
+  "/api/v3meta": (await import("../api/v3meta.js")).default,
 };
 
 const MIME = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".png": "image/png", ".svg": "image/svg+xml", ".webmanifest": "application/manifest+json" };

@@ -351,6 +351,15 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
           </div>
         )}
 
+        {/* V3: possession context + expectation honesty */}
+        {sim.v3 && (
+          <div style={{ marginTop: 12, padding: "10px 14px", borderRadius: 10, background: T.bgCardHover, border: `1px solid ${T.border}`, fontSize: 12, color: T.textDim, display: "flex", gap: 14, flexWrap: "wrap" }}>
+            <span>🏀 <b style={{ color: T.text }}>{sim.v3.possessions}</b> possessions{sim.v3.overtimes > 0 ? ` · ${sim.v3.overtimes} OT` : ""}</span>
+            <span>📈 pre-game expectation: <b style={{ color: T.gold }}>Gold {sim.v3.expectedGoldWinPct}%</b> · <b style={{ color: T.blue }}>Blue {100 - sim.v3.expectedGoldWinPct}%</b></span>
+            {sim.eraId && <span>🕰️ Era Style: <b style={{ color: T.text }}>{sim.eraId}</b></span>}
+          </div>
+        )}
+
         {/* E. Team-level matchup breakdown (default visible) */}
         <BreakdownBars sim={sim} />
 
@@ -360,6 +369,72 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
           <BoxTable label="TEAM GOLD" stats={sim.teamAStats} color={T.gold} mvpName={sim.mvp} />
           <BoxTable label="TEAM BLUE" stats={sim.teamBStats} color={T.blue} mvpName={sim.mvp} />
         </div>
+
+        {/* V3: extended possession box score */}
+        {sim.v3?.fullBox && (
+          <div style={{ ...card, padding: 16, marginTop: 12 }}>
+            <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 2, color: T.textDim }}>POSSESSION BOX SCORE</div>
+            {[["TEAM GOLD", sim.v3.fullBox.gold, T.gold], ["TEAM BLUE", sim.v3.fullBox.blue, T.blue]].map(([label, lines, color]) => (
+              <div key={label} style={{ marginTop: 10, overflowX: "auto" }}>
+                <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1.5, color, marginBottom: 4 }}>{label}</div>
+                <table style={{ width: "100%", fontSize: 11, borderCollapse: "collapse", minWidth: 520 }}>
+                  <thead><tr style={{ color: T.textDim, textAlign: "right" }}>
+                    <th style={{ textAlign: "left", padding: "3px 4px" }}>PLAYER</th>
+                    {["PTS", "FG", "3PT", "FT", "OREB", "DREB", "AST", "STL", "BLK", "TO"].map((h) => <th key={h} style={{ padding: "3px 4px" }}>{h}</th>)}
+                  </tr></thead>
+                  <tbody>
+                    {lines.map((l) => (
+                      <tr key={l.id} style={{ borderTop: `1px solid ${T.border}`, textAlign: "right" }}>
+                        <td style={{ textAlign: "left", padding: "4px", fontWeight: 600, whiteSpace: "nowrap" }}>{l.name}</td>
+                        <td style={{ padding: "4px", fontWeight: 800, color }}>{l.pts}</td>
+                        <td style={{ padding: "4px" }}>{l.fgm}-{l.fga}</td>
+                        <td style={{ padding: "4px" }}>{l.tpm}-{l.tpa}</td>
+                        <td style={{ padding: "4px" }}>{l.ftm}-{l.fta}</td>
+                        <td style={{ padding: "4px" }}>{l.oreb}</td><td style={{ padding: "4px" }}>{l.dreb}</td>
+                        <td style={{ padding: "4px" }}>{l.ast}</td><td style={{ padding: "4px" }}>{l.stl}</td>
+                        <td style={{ padding: "4px" }}>{l.blk}</td><td style={{ padding: "4px" }}>{l.to}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* V3: usage roles + defensive assignments — the basketball under the hood */}
+        {sim.v3?.usage && (
+          <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 12 }}>
+            <div style={{ flex: "1 1 260px", padding: 12, borderRadius: 10, background: T.bgCardHover, border: `1px solid ${T.border}` }}>
+              <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: 1.5, color: T.textDim, marginBottom: 6 }}>OFFENSIVE ROLES (USAGE)</div>
+              {[["gold", T.gold], ["blue", T.blue]].map(([side, color]) => (
+                <div key={side} style={{ marginBottom: 6 }}>
+                  {sim.v3.usage[side].map((u) => (
+                    <div key={u.id} style={{ display: "flex", justifyContent: "space-between", fontSize: 11, padding: "2px 0" }}>
+                      <span style={{ color: T.text }}>{u.id.split("-")[0]}</span>
+                      <span style={{ color: T.textDim }}>{u.role}</span>
+                      <span style={{ fontWeight: 800, color }}>{Math.round(u.share * 100)}%</span>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+            <div style={{ flex: "1 1 260px", padding: 12, borderRadius: 10, background: T.bgCardHover, border: `1px solid ${T.border}` }}>
+              <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: 1.5, color: T.textDim, marginBottom: 6 }}>DEFENSIVE ASSIGNMENTS</div>
+              {sim.v3.assignments.onGold.map((a, i) => (
+                <div key={i} style={{ fontSize: 11, padding: "2px 0", color: T.textDim }}>
+                  <b style={{ color: T.blue }}>{a.defender.split(" ").slice(-1)[0]}</b> guarded <b style={{ color: T.gold }}>{a.scorer.split(" ").slice(-1)[0]}</b>
+                </div>
+              ))}
+              <div style={{ height: 6 }} />
+              {sim.v3.assignments.onBlue.map((a, i) => (
+                <div key={i} style={{ fontSize: 11, padding: "2px 0", color: T.textDim }}>
+                  <b style={{ color: T.gold }}>{a.defender.split(" ").slice(-1)[0]}</b> guarded <b style={{ color: T.blue }}>{a.scorer.split(" ").slice(-1)[0]}</b>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Pre-game engine edges */}
         <EdgeBars edges={sim.edges} />

@@ -22,6 +22,8 @@ import ChemistryMeter from "./components/ChemistryMeter.jsx";
 import MatchupPreview, { VsDivider } from "./components/MatchupPreview.jsx";
 import SimulationLoading from "./components/SimulationLoading.jsx";
 import ManualPicker from "./components/ManualPicker.jsx";
+import CoachSelect from "./components/CoachSelect.jsx";
+import EraStyleSelect from "./components/EraStyleSelect.jsx";
 import { TeamShell, EmptySlot, FilledSlot, LineupList } from "./components/TeamSlots.jsx";
 import { teamFit } from "./chemistryView.js";
 
@@ -78,6 +80,10 @@ export default function App() {
   const [sharedResult, setSharedResult] = useState(null);
   const [flashSlot, setFlashSlot] = useState(null);
   const [narrative, setNarrative] = useState({ status: "none" }); // enhanced recap state
+  const [v3, setV3] = useState({ enabled: false, eras: [], coaches: [] }); // V3 engine meta (flag-gated)
+  const [coachGold, setCoachGold] = useState(null);
+  const [coachBlue, setCoachBlue] = useState(null);
+  const [eraStyle, setEraStyle] = useState("2020s");
   const lastOppRef = useRef(null);
   const dailyDecisionsRef = useRef(null); // recorded daily draft decisions for server verification
 
@@ -96,6 +102,15 @@ export default function App() {
   useEffect(() => {
     syncCareer(career, { badges, savedTeams: saved.map((t) => ({ name: t.name, ids: t.ids, rating: t.rating })), daily });
   }, [career, badges, saved, daily]);
+
+  useEffect(() => {
+    fetch("/api/health").then((r) => (r.ok ? r.json() : null)).then((h) => {
+      if (!h?.simV3) return;
+      fetch("/api/v3meta").then((r) => (r.ok ? r.json() : null)).then((m) => {
+        if (m) setV3({ enabled: true, eras: m.eras, coaches: m.coaches });
+      }).catch(() => {});
+    }).catch(() => {});
+  }, []);
 
   useEffect(() => {
     trackSessionStart();
@@ -147,6 +162,11 @@ export default function App() {
   // modes where the user builds Team Blue (Win82/Tournament opponents are
   // server-generated per game; Challenge locks the stored rival five)
   const blueBuildable = !isChallenge && (activeMode === "Single" || activeMode === "Best7" || activeMode === "Daily");
+  // V3 steps (TEAM → COACH → ERA STYLE) appear for standard modes only; Daily
+  // keeps its fairness model (neutral coaches, derived seed) and Challenge
+  // keeps the rival's five as-is.
+  const v3Steps = v3.enabled && !isChallenge && !isDaily;
+  const coachesReady = !v3Steps || (blueBuildable ? (!!coachGold && !!coachBlue) : !!coachGold);
 
   // Reveal the Blue five once Gold is complete (single/best7/daily). Same
   // generator the sim always used — just shown before tipoff now.
@@ -273,11 +293,13 @@ export default function App() {
   const resetGold = () => {
     if ((yz && !yz.done) || manual.some(Boolean)) track("draft_abandoned", { roll: yz?.roll });
     setYz(null); setManual([null, null, null, null, null]); setTeam(null); setResult(null);
+    setCoachGold(null);
     dailyDecisionsRef.current = null;
   };
   const resetBlue = () => {
     if (isChallenge) return; // the rival five is the challenge — not resettable
     setOpponent(null); setBlueManual([null, null, null, null, null]);
+    setCoachBlue(null);
   };
 
   const abandonDraftIfNeeded = () => {
@@ -316,6 +338,9 @@ export default function App() {
     teamBWeaknesses: n?.teamBWeaknesses?.length ? n.teamBWeaknesses : record.blueChem?.weaknesses || [],
     mvpReason: n?.mvpReason || record.mvpFallback || null, // never blank: deterministic 2-3 sentence fallback
     turningPoint: n?.turningPoint || record.core?.turningPoint || null,
+    v3: record.v3 || null,
+    eraId: record.eraId || null,
+    coachIds: record.coachIds || null,
   });
 
   const fetchNarrative = (resultId, record, persisted) => {
@@ -369,6 +394,9 @@ export default function App() {
         mode, gold: team, blue: opp,
         challengeId: tag === "challenge" ? challenge?.id : undefined,
         dailyDecisions: tag === "daily" ? dailyDecisionsRef.current : undefined,
+        coachGoldId: v3Steps ? coachGold?.id : undefined,
+        coachBlueId: v3Steps ? coachBlue?.id : undefined,
+        eraStyleId: v3Steps ? eraStyle : undefined,
         onStage: setSimStage,
       });
       const w = record.core.winner === "Gold";
@@ -402,7 +430,7 @@ export default function App() {
     try {
       const opp = oppOverride || opponent || genOpponent();
       lastOppRef.current = opp;
-      const { resultId, result: record, records } = await runGame({ mode: "best7", gold: team, blue: opp, onStage: setSimStage });
+      const { resultId, result: record, records } = await runGame({ mode: "best7", gold: team, blue: opp, coachGoldId: v3Steps ? coachGold?.id : undefined, coachBlueId: v3Steps ? coachBlue?.id : undefined, eraStyleId: v3Steps ? eraStyle : undefined, onStage: setSimStage });
       const won = record.core.winner === "Gold";
       bookkeepGame(won, "best7", record.core.seriesResult, record.core.mvp, "", opp);
       setResult({ type: "best7", sim: viewSim(record), won, tag, opp, resultId, record, persisted: !!records?.persisted });
@@ -420,7 +448,7 @@ export default function App() {
     setLoading(true); setErr(""); setSimStage(""); setNarrative({ status: "none" });
     noteGameStarted();
     try {
-      const { resultId, result: record, records } = await runGame({ mode: "82", gold: team, onStage: setSimStage });
+      const { resultId, result: record, records } = await runGame({ mode: "82", gold: team, coachGoldId: v3Steps ? coachGold?.id : undefined, eraStyleId: v3Steps ? eraStyle : undefined, onStage: setSimStage });
       const { wins, losses } = record;
       // streaks: season summary counts once toward the win/loss streak
       if (wins > losses) recordWinStreak(); else recordLossStreak();
@@ -446,7 +474,7 @@ export default function App() {
     setLoading(true); setErr(""); setSimStage(""); setNarrative({ status: "none" });
     noteGameStarted();
     try {
-      const { resultId, result: record, records } = await runGame({ mode: "tournament", gold: team, onStage: setSimStage });
+      const { resultId, result: record, records } = await runGame({ mode: "tournament", gold: team, coachGoldId: v3Steps ? coachGold?.id : undefined, eraStyleId: v3Steps ? eraStyle : undefined, onStage: setSimStage });
       const rounds = (record.rounds || []).map((r) => ({
         name: r.name,
         opp: idsToPlayers(r.oppIds),
@@ -653,20 +681,47 @@ export default function App() {
                     <span>RATING <b style={{ color: T.gold }}>{teamRating(team)}</b></span>
                   </div>
                   <ChemistryMeter team={team} side="gold" />
+                  {v3Steps && (
+                    <CoachSelect side="gold" teamIds={team.map((p) => p.id)} eraStyleId={eraStyle}
+                      selected={coachGold} onSelect={setCoachGold} allCoaches={v3.coaches} />
+                  )}
                 </>
               )}
             </TeamShell>
 
-            {/* CENTER: VS + preview + CTA */}
+            {/* CENTER: VS + steps + era + preview + CTA */}
             <div style={{ flex: "0 1 340px", minWidth: 260, display: "flex", flexDirection: "column", gap: 12, alignSelf: "stretch", justifyContent: "center", margin: "0 auto" }}>
+              {v3Steps && (
+                <div aria-label="Matchup progress" style={{ display: "flex", gap: 6, justifyContent: "center", fontSize: 10, fontWeight: 800, letterSpacing: 1 }}>
+                  {[["1 TEAM", !!team && (!blueBuildable || !!opponent)], ["2 COACH", coachesReady && !!team], ["3 ERA STYLE", coachesReady && !!team && !!eraStyle]].map(([label, done], i, arr) => {
+                    const current = !done && (i === 0 || arr[i - 1][1]);
+                    return (
+                      <span key={label} style={{
+                        padding: "5px 10px", borderRadius: 14,
+                        border: `1px solid ${done ? T.green : current ? T.gold : T.border}`,
+                        color: done ? T.green : current ? T.gold : T.textMuted,
+                      }}>{done ? "✓ " : ""}{label}</span>
+                    );
+                  })}
+                </div>
+              )}
               <VsDivider active={!!team && !!opponent} />
+              {v3Steps && !!team && (!blueBuildable || !!opponent) && coachesReady && (
+                <EraStyleSelect eras={v3.eras} selected={eraStyle} onSelect={setEraStyle}
+                  goldIds={team.map((p) => p.id)} blueIds={(opponent || team).map((p) => p.id)} />
+              )}
+              {v3Steps && !!team && (!blueBuildable || !!opponent) && !coachesReady && (
+                <div style={{ textAlign: "center", fontSize: 12, color: T.textDim }}>
+                  Pick a <b style={{ color: T.gold }}>coach</b> for {!coachGold ? "Team Gold" : "Team Blue"} to continue.
+                </div>
+              )}
               <MatchupPreview gold={team} blue={blueBuildable ? opponent : null} />
               {team && blueBuildable && !opponent && (
                 <div style={{ textAlign: "center", fontSize: 12, color: T.textDim, padding: "0 10px" }}>
                   Build <b style={{ color: T.blue }}>Team Blue</b> — Manual or Random — to unlock the sim.
                 </div>
               )}
-              {team && (activeMode !== "Single" && activeMode !== "Best7" && activeMode !== "Daily" && activeMode !== "Challenge" ? true : !!opponent) && !result && !loading && (
+              {team && (activeMode !== "Single" && activeMode !== "Best7" && activeMode !== "Daily" && activeMode !== "Challenge" ? true : !!opponent) && coachesReady && !result && !loading && (
                 <div className="sticky-sim">
                   <button onClick={runTheSim} disabled={isDaily && dailyDone} style={{
                     width: "100%", padding: "16px 20px", fontSize: 15, fontWeight: 900, letterSpacing: 1,
@@ -732,6 +787,10 @@ export default function App() {
                     <span>RATING <b style={{ color: T.blue }}>{teamRating(opponent)}</b></span>
                   </div>
                   <ChemistryMeter team={opponent} side="blue" compact />
+                  {v3Steps && (
+                    <CoachSelect side="blue" teamIds={opponent.map((p) => p.id)} eraStyleId={eraStyle}
+                      selected={coachBlue} onSelect={setCoachBlue} allCoaches={v3.coaches} />
+                  )}
                 </>
               ) : blueBuildable && blueManual.some(Boolean) ? (
                 <div style={{ display: "grid", gap: 8 }}>

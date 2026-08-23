@@ -32,5 +32,6 @@ export default async function handler(req, res) {
     coreEngine,
     persistence,
     aiNarrative: !f.aiNarrative ? "disabled" : circuit === "OPEN" ? "circuit_open" : "ok",
+    simV3: f.simV3,
   });
 }
