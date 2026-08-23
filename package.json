@@ -1,19 +1,30 @@
 {
   "name": "eraclash-basketball",
   "private": true,
-  "version": "1.0.0",
+  "version": "2.2.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest run",
+    "e2e": "playwright test",
+    "harness": "node scripts/harness.mjs",
+    "loadtest": "node scripts/loadtest.mjs",
+    "bench": "node benchmarks/run.mjs",
+    "images:discover": "node image-pipeline/discover.mjs",
+    "images:review": "node image-pipeline/review.mjs",
+    "images:approve": "node image-pipeline/approve.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.1",
     "@vitejs/plugin-react": "^4.3.1",
-    "vite": "^5.4.2"
+    "autocannon": "^8.0.0",
+    "vite": "^5.4.2",
+    "vitest": "^4.1.11"
   }
 }

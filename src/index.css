@@ -1,0 +1,102 @@
+/* ── EraClash arena environment ─────────────────────────────────────────────────
+   The arena is felt, not noticed: layered radial light pools, ultra-faint court
+   lines, seating-band gradients, vignette. Pure CSS — no image payload. */
+:root {
+  --bg: #0b0e17;
+  --gold: #fdb927;
+  --blue: #6ea8fe;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+
+body {
+  background: var(--bg);
+  color: #e8eaf2;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+/* Arena backdrop: overhead lights, seating bands, court sheen, vignette */
+.arena {
+  position: relative;
+  min-height: 100vh;
+  isolation: isolate;
+  background:
+    /* overhead light pools */
+    radial-gradient(560px 210px at 30% -4%, rgba(245, 240, 220, 0.055), transparent 70%),
+    radial-gradient(560px 210px at 70% -4%, rgba(245, 240, 220, 0.055), transparent 70%),
+    /* team-side ambience */
+    radial-gradient(700px 480px at 8% 46%, rgba(253, 185, 39, 0.05), transparent 70%),
+    radial-gradient(700px 480px at 92% 46%, rgba(110, 168, 254, 0.05), transparent 70%),
+    /* seating bands */
+    linear-gradient(180deg, #060810 0%, #0d1220 26%, #0b0e17 52%, #0a0d15 100%);
+}
+/* faint court lines + center circle, drawn once behind everything */
+.arena::before {
+  content: "";
+  position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(circle 130px at 50% 58%, transparent 128px, rgba(253, 185, 39, 0.035) 129px, transparent 131px),
+    linear-gradient(90deg, transparent 49.85%, rgba(232, 234, 242, 0.028) 50%, transparent 50.15%),
+    repeating-linear-gradient(90deg, transparent 0 119px, rgba(232, 234, 242, 0.012) 119px 120px);
+}
+/* vignette */
+.arena::after {
+  content: "";
+  position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(0, 0, 0, 0.5) 100%);
+}
+
+/* winner atmosphere shifts (postgame) */
+.arena.win-gold { box-shadow: inset 0 120px 220px -120px rgba(253, 185, 39, 0.16); }
+.arena.win-blue { box-shadow: inset 0 120px 220px -120px rgba(110, 168, 254, 0.18); }
+
+/* ── Microinteractions ── */
+@keyframes ec-slot-flash-gold {
+  0% { box-shadow: 0 0 0 0 rgba(253, 185, 39, 0.45); }
+  100% { box-shadow: 0 0 0 14px rgba(253, 185, 39, 0); }
+}
+@keyframes ec-slot-flash-blue {
+  0% { box-shadow: 0 0 0 0 rgba(110, 168, 254, 0.45); }
+  100% { box-shadow: 0 0 0 14px rgba(110, 168, 254, 0); }
+}
+.slot-flash-gold { animation: ec-slot-flash-gold 0.55s ease-out 1; }
+.slot-flash-blue { animation: ec-slot-flash-blue 0.55s ease-out 1; }
+
+@keyframes ec-rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.rise { animation: ec-rise 0.45s ease-out both; }
+.rise-2 { animation: ec-rise 0.45s ease-out 0.12s both; }
+.rise-3 { animation: ec-rise 0.45s ease-out 0.24s both; }
+
+@keyframes ec-chem-pulse { 0% { transform: scale(1); } 40% { transform: scale(1.06); } 100% { transform: scale(1); } }
+.chem-pulse { animation: ec-chem-pulse 0.5s ease-out 1; }
+
+@keyframes ec-spin { to { transform: rotate(360deg); } }
+.sim-spinner {
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 3px solid rgba(253, 185, 39, 0.18);
+  border-top-color: var(--gold);
+  animation: ec-spin 0.9s linear infinite;
+}
+
+@keyframes ec-vs-glow {
+  0%, 100% { text-shadow: 0 0 18px rgba(253, 185, 39, 0.25), 0 0 30px rgba(110, 168, 254, 0.18); }
+  50% { text-shadow: 0 0 30px rgba(253, 185, 39, 0.5), 0 0 44px rgba(110, 168, 254, 0.35); }
+}
+.vs-active { animation: ec-vs-glow 2.4s ease-in-out infinite; }
+
+/* accessibility */
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: 4px; }
+button { font-family: inherit; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
+
+/* mobile sticky sim CTA */
+.sticky-sim {
+  position: sticky; bottom: 12px; z-index: 40;
+}
+@media (min-width: 900px) {
+  .sticky-sim { position: static; }
+}
