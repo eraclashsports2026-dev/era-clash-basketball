@@ -87,15 +87,19 @@ const flightKey = (myTeam, oppTeam, seriesType) =>
 // ── Main entry ─────────────────────────────────────────────────────────────────
 // runSimulation(myTeam, oppTeam, seriesType, {mode}) → structured result:
 // the validated model sim + engine-computed edges/ratings + version metadata.
-export const runSimulation = (myTeam, oppTeam, seriesType, { mode = "single", maxRetries = 1 } = {}) => {
+// opts.onStage receives REAL lifecycle stages ("Preparing matchup", "Running
+// simulation", "Validating result", "Retrying…") — used by the loading UI.
+export const runSimulation = (myTeam, oppTeam, seriesType, { mode = "single", maxRetries = 1, onStage } = {}) => {
   const key = flightKey(myTeam, oppTeam, seriesType);
   if (inflight.has(key)) return inflight.get(key);
-  const p = _run(myTeam, oppTeam, seriesType, mode, maxRetries).finally(() => inflight.delete(key));
+  const p = _run(myTeam, oppTeam, seriesType, mode, maxRetries, onStage).finally(() => inflight.delete(key));
   inflight.set(key, p);
   return p;
 };
 
-async function _run(myTeam, oppTeam, seriesType, mode, maxRetries) {
+async function _run(myTeam, oppTeam, seriesType, mode, maxRetries, onStage) {
+  const stage = (s) => { try { onStage?.(s); } catch { /* UI only */ } };
+  stage("Preparing matchup");
   const simulation_id = newSimId();
   const started = Date.now();
   const myRating = teamRating(myTeam);
@@ -105,6 +109,7 @@ async function _run(myTeam, oppTeam, seriesType, mode, maxRetries) {
   let lastErr = null;
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
+      stage(attempt === 0 ? "Running simulation" : "Retrying simulation");
       const res = await fetch("/api/simulate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -117,6 +122,7 @@ async function _run(myTeam, oppTeam, seriesType, mode, maxRetries) {
       });
       if (res.status === 429) throw Object.assign(new Error("You're simulating too fast — give it a few seconds."), { friendly: true, noRetry: true });
       if (!res.ok) throw new Error(`sim http ${res.status}`);
+      stage("Validating result");
       const payload = await res.json();
       const sim = parseModelText(payload.text || "");
       const check = validateSim(sim, myTeam, oppTeam, seriesType);

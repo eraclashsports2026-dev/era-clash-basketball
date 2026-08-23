@@ -19,6 +19,7 @@ const ALLOWED = new Set([
   "challenge_created", "challenge_link_opened", "challenge_started", "challenge_completed",
   "challenge_won", "challenge_lost", "challenge_rematch_started",
   "share_initiated", "share_completed", "share_failed",
+  "result_created", "shared_link_opened",
   "pwa_install_prompt_shown", "pwa_installed",
   "frontend_error", "simulation_error",
   "feedback_submitted", "account_claimed",
