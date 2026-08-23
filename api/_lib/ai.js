@@ -64,7 +64,7 @@ Team Blue lineup: ${(result.blueIds || []).map(nameOf).join(", ")}
 Team Gold box: ${core.teamAStats.map(line).join(" | ")}
 Team Blue box: ${core.teamBStats.map(line).join(" | ")}
 MVP (fixed): ${core.mvp}
-Pre-game edges (positive = Gold advantage): ${core.edges.map((e) => `${e.category} ${e.edge}`).join(", ")}
+Pre-game edges: ${core.edges.map((e) => `${e.category}: ${e.edge === 0 ? "even" : `${e.edge > 0 ? "Gold" : "Blue"} +${Math.abs(e.edge)}`}`).join(", ")} (never write negative edge numbers — always name the side with the advantage)
 Positional duels (Gold vs Blue, same slot): ${(core.slotDuels || []).map((d) => `${d.pos}: ${d.gold.name} (${d.gold.pts}p/${d.gold.reb}r/${d.gold.ast}a) vs ${d.blue.name} (${d.blue.pts}p/${d.blue.reb}r/${d.blue.ast}a)`).join(" | ")}
 Gold chemistry notes: +${result.goldChem.strengths.join(", +") || "none"}; -${result.goldChem.weaknesses.join(", -") || "none"}
 Blue chemistry notes: +${(result.blueChem?.strengths || []).join(", +") || "none"}; -${(result.blueChem?.weaknesses || []).join(", -") || "none"}
