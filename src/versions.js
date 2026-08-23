@@ -2,10 +2,10 @@
 // Every simulation record carries these so we can always tell which system
 // generated a result. Bump deliberately; never silently.
 export const VERSIONS = {
-  app: "2.3.0",
+  app: "2.3.2",
   rating: "2.0",          // src/rating.js — POS_WEIGHTS + OOP penalty (CEO approval required to change)
   chemistry: "2.5",       // rating.js analyzeBalance (v2, unchanged) + attributes.js insight layer (additive)
-  simulation_engine: "2.1",
+  simulation_engine: "2.2",
   player_data: "2026-08-23", // 330 player-decade entries
   prompt: "2.1",          // api/simulate.js buildPrompt (adds turningPoint field)
 };
