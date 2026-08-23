@@ -56,20 +56,22 @@ export default function MatchupPreview({ gold, blue }) {
       <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: 2, color: T.gold, textAlign: "center", marginBottom: 10 }}>MATCHUP PREVIEW</div>
       {edges.map((e) => {
         const goldSide = e.edge >= 0;
+        const half = Math.min(45, Math.abs(e.edge) * 2.25); // % from center, capped
         return (
           <div key={e.category} style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 7, fontSize: 11.5 }}>
-            <span style={{ width: 84, textAlign: "right", color: T.textDim, flexShrink: 0 }}>{CATEGORY_SHORT[e.category] || e.category}</span>
+            <span style={{ width: 78, textAlign: "right", color: T.textDim, flexShrink: 0 }}>{CATEGORY_SHORT[e.category] || e.category}</span>
             <div style={{ flex: 1, height: 6, borderRadius: 3, background: T.border, position: "relative", overflow: "hidden" }}>
+              {/* bar grows from the center toward the leading team's panel */}
               <div style={{
                 position: "absolute", top: 0, bottom: 0,
-                left: goldSide ? "50%" : `${50 - Math.abs(e.edge) * 2.4}%`,
-                width: `${Math.abs(e.edge) * 2.4}%`,
+                left: goldSide ? `${50 - half}%` : "50%",
+                width: `${half}%`,
                 background: goldSide ? T.gold : T.blue, borderRadius: 3,
               }} />
               <div style={{ position: "absolute", left: "50%", top: 0, bottom: 0, width: 1, background: "rgba(232,234,242,0.25)" }} />
             </div>
-            <span style={{ width: 30, fontWeight: 800, color: goldSide ? T.gold : T.blue, flexShrink: 0 }}>
-              {e.edge === 0 ? "—" : `${goldSide ? "+" : ""}${e.edge}`}
+            <span style={{ width: 52, fontWeight: 800, color: goldSide ? T.gold : T.blue, flexShrink: 0 }}>
+              {e.edge === 0 ? "—" : `${goldSide ? "Gold" : "Blue"} +${Math.abs(e.edge)}`}
             </span>
           </div>
         );

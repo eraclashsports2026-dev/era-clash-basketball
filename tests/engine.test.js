@@ -56,6 +56,26 @@ describe("best-of-7", () => {
       expect(s.games.length).toBe(w + l);
     }
   });
+  it("seriesResult is WINNER-FIRST even when Blue wins (never '2-4')", () => {
+    // weak Gold vs elite Blue → Blue wins most series; every result must
+    // still read winner-first, and reconcile with the explicit seriesScore
+    const weak = ["bowen-2ks", "cooper-80s", "mookie-90s", "rodman-90s", "camby-2ks"].map(byId);
+    let blueWins = 0;
+    for (let seed = 1; seed <= 30; seed++) {
+      const s = simulateSeries(weak, A, mulberry32(seed));
+      const [w, l] = s.seriesResult.split("-").map(Number);
+      expect(w, s.seriesResult).toBe(4);
+      expect(l).toBeLessThanOrEqual(3);
+      if (s.winner === "Blue") {
+        blueWins++;
+        expect(s.seriesScore.blue).toBe(4);
+        expect(s.seriesResult).toBe(`${s.seriesScore.blue}-${s.seriesScore.gold}`);
+      } else {
+        expect(s.seriesResult).toBe(`${s.seriesScore.gold}-${s.seriesScore.blue}`);
+      }
+    }
+    expect(blueWins).toBeGreaterThan(15); // the scenario actually exercised Blue wins
+  });
 });
 
 describe("engine season", () => {

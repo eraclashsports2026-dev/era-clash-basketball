@@ -135,14 +135,17 @@ function EdgeBars({ edges }) {
       <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 2, color: T.textDim, marginBottom: 10 }}>PRE-GAME EDGES</div>
       {shown.map((e) => {
         const yours = e.edge > 0;
+        const half = Math.min(45, Math.abs(e.edge) * 2.25); // % from center, capped
         return (
           <div key={e.category} style={{ marginBottom: 9 }}>
             <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, marginBottom: 3 }}>
               <span style={{ fontWeight: 700 }}>{e.category}</span>
-              <span style={{ fontWeight: 900, color: yours ? T.gold : T.blue }}>{yours ? "Gold +" : "Blue +"}{Math.abs(e.edge)}</span>
+              <span style={{ fontWeight: 900, color: yours ? T.gold : T.blue }}>{yours ? "Gold" : "Blue"} +{Math.abs(e.edge)}</span>
             </div>
-            <div style={{ height: 6, background: T.border, borderRadius: 3, overflow: "hidden", display: "flex", justifyContent: yours ? "flex-start" : "flex-end" }}>
-              <div style={{ width: `${Math.min(100, Math.abs(e.edge) * 5)}%`, background: yours ? T.gold : T.blue, borderRadius: 3 }} />
+            <div style={{ height: 6, background: T.border, borderRadius: 3, position: "relative", overflow: "hidden" }}>
+              {/* bar grows from the center toward the leading team's side */}
+              <div style={{ position: "absolute", top: 0, bottom: 0, left: yours ? `${50 - half}%` : "50%", width: `${half}%`, background: yours ? T.gold : T.blue, borderRadius: 3 }} />
+              <div style={{ position: "absolute", left: "50%", top: 0, bottom: 0, width: 1, background: "rgba(232,234,242,0.25)" }} />
             </div>
           </div>
         );
