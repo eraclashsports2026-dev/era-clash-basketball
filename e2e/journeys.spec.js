@@ -174,3 +174,25 @@ test("J9: XSS payloads render harmlessly as text", async ({ page }) => {
   const prof = await (await page.request.get("/api/profile")).json();
   expect(prof.name || "").not.toMatch(/[<>]/);
 });
+
+test("J10: per-team reset buttons free any lineup state without touching the other side", async ({ page }) => {
+  await page.goto("/");
+  // Gold: manual partial → Reset clears it
+  await page.getByRole("tab", { name: /Manual Draft/ }).first().click();
+  await page.getByRole("button", { name: "Add Point Guard", exact: false }).first().click();
+  await page.getByRole("dialog").getByRole("button").nth(2).click();
+  await page.getByRole("button", { name: "Reset Team Gold" }).click();
+  await expect(page.getByRole("button", { name: "Add Point Guard", exact: false }).first()).toBeVisible();
+  // Gold: random complete → Reset Team returns to build methods, Blue untouched
+  await page.getByRole("button", { name: /Random Team/ }).first().click();
+  await page.getByRole("tab", { name: /Random Team/ }).click(); // blue random
+  await expect(page.getByRole("button", { name: /RUN THE SIM/ })).toBeVisible();
+  await page.getByRole("button", { name: "Reset Team Gold" }).click();
+  await expect(page.getByRole("tab", { name: /Chaos Draft/ })).toBeVisible(); // gold back to methods
+  await expect(page.getByRole("button", { name: /RUN THE SIM/ })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Reset Team Blue" })).toBeVisible(); // blue still built
+  // Blue: Reset clears the built five
+  await page.getByRole("button", { name: "Reset Team Blue" }).click();
+  await expect(page.getByRole("tab", { name: /Random Team/ })).toBeVisible(); // blue methods return
+  await expect(page.getByText("Add Point Guard")).toHaveCount(2); // gold (manual mode) + blue both empty
+});

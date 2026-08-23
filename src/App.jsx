@@ -268,6 +268,18 @@ export default function App() {
     track("draft_started", { mode: MODE_TO_ANALYTICS[activeMode], method: "blue-random" });
   };
 
+  // Per-team refresh: clear ONE side without touching the other. Available in
+  // every build method so no lineup state is ever a dead end.
+  const resetGold = () => {
+    if ((yz && !yz.done) || manual.some(Boolean)) track("draft_abandoned", { roll: yz?.roll });
+    setYz(null); setManual([null, null, null, null, null]); setTeam(null); setResult(null);
+    dailyDecisionsRef.current = null;
+  };
+  const resetBlue = () => {
+    if (isChallenge) return; // the rival five is the challenge — not resettable
+    setOpponent(null); setBlueManual([null, null, null, null, null]);
+  };
+
   const abandonDraftIfNeeded = () => {
     if ((yz && !yz.done) || (manual.some(Boolean) && !manual.every(Boolean))) track("draft_abandoned", { roll: yz?.roll });
   };
@@ -605,6 +617,12 @@ export default function App() {
                         flex: 1, padding: "8px 10px", fontSize: 12, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 40,
                         border: `1px solid ${T.goldBorder}`, background: "rgba(253,185,39,0.08)", color: T.gold,
                       }}>🔀 Random Team</button>
+                      <button onClick={resetGold} disabled={!yz && !manual.some(Boolean)} aria-label="Reset Team Gold" style={{
+                        flex: "0 0 auto", padding: "8px 12px", fontSize: 12, fontWeight: 800, borderRadius: 8, minHeight: 40,
+                        border: `1px solid ${T.border}`, background: "transparent",
+                        color: (!yz && !manual.some(Boolean)) ? T.textMuted : T.textDim,
+                        cursor: (!yz && !manual.some(Boolean)) ? "default" : "pointer",
+                      }}>↻ Reset</button>
                     </div>
                   )}
                   {buildMethod === "manual" && !isDaily ? (
@@ -631,7 +649,7 @@ export default function App() {
                     ))}
                   </div>
                   <div style={{ display: "flex", justifyContent: "space-between", marginTop: 10, fontSize: 12, color: T.textDim }}>
-                    <button onClick={resetPlay} style={{ background: "none", border: "none", color: T.textDim, cursor: "pointer", fontSize: 12, fontWeight: 700, padding: 0 }}>↺ Rebuild squad</button>
+                    <button onClick={resetGold} aria-label="Reset Team Gold" style={{ background: "none", border: "none", color: T.textDim, cursor: "pointer", fontSize: 12, fontWeight: 700, padding: 0 }}>↻ Reset Team</button>
                     <span>RATING <b style={{ color: T.gold }}>{teamRating(team)}</b></span>
                   </div>
                   <ChemistryMeter team={team} side="gold" />
@@ -688,6 +706,12 @@ export default function App() {
                     flex: 1, padding: "8px 10px", fontSize: 12, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 40,
                     border: `1px solid ${T.blueBorder}`, background: "rgba(110,168,254,0.08)", color: T.blue,
                   }}>🔀 Random Team</button>
+                  <button onClick={resetBlue} disabled={!blueManual.some(Boolean)} aria-label="Reset Team Blue" style={{
+                    flex: "0 0 auto", padding: "8px 12px", fontSize: 12, fontWeight: 800, borderRadius: 8, minHeight: 40,
+                    border: `1px solid ${T.border}`, background: "transparent",
+                    color: !blueManual.some(Boolean) ? T.textMuted : T.textDim,
+                    cursor: !blueManual.some(Boolean) ? "default" : "pointer",
+                  }}>↻ Reset</button>
                 </div>
               )}
               {opponent ? (
@@ -702,7 +726,7 @@ export default function App() {
                     {!isChallenge ? (
                       <span style={{ display: "flex", gap: 10 }}>
                         <button onClick={randomBlue} style={{ background: "none", border: "none", color: T.textDim, cursor: "pointer", fontSize: 12, fontWeight: 700, padding: 0 }}>🔀 Re-roll</button>
-                        <button onClick={() => setOpponent(null)} style={{ background: "none", border: "none", color: T.textDim, cursor: "pointer", fontSize: 12, fontWeight: 700, padding: 0 }}>✕ Clear</button>
+                        <button onClick={resetBlue} aria-label="Reset Team Blue" style={{ background: "none", border: "none", color: T.textDim, cursor: "pointer", fontSize: 12, fontWeight: 700, padding: 0 }}>↻ Reset</button>
                       </span>
                     ) : <span />}
                     <span>RATING <b style={{ color: T.blue }}>{teamRating(opponent)}</b></span>
