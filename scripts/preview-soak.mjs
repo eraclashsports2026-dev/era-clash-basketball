@@ -67,14 +67,26 @@ const main = async () => {
   const asset = assetPath ? await fetch(`${BASE}${assetPath}`) : null;
   out({ phase: "pwa_cache", sw_ok: sw.ok, sw_cache_name: (swText.match(/eraclash-v[\d.]+/) || [null])[0], sw_never_caches_api: swText.includes('startsWith("/api/")'), asset_cache: asset?.headers.get("cache-control"), api_cache: health.headers.get("cache-control"), manifest_ok: (await fetch(`${BASE}/manifest.json`)).ok });
 
-  // ── Scenario A: 50 core simulations, paced under 20/min/IP ─────────────────
+  // ── Scenario A: 50 core simulations, mixed build methods ────────────────────
+  const { genRoster, genOpponent } = await import("../src/draft.js");
+  const { dailyRoll1: chaosFive, dailySeed: chaosSeed } = await import("../src/dailyChallenge.js");
+  const lineupFor = (i) => {
+    // rotate sources like real users: manual/manual, manual/random,
+    // random/manual, random/random, chaos/random
+    const mode = i % 5;
+    const manualG = ROSTERS[i % ROSTERS.length], manualB = ROSTERS[(i + 3) % ROSTERS.length];
+    if (mode === 0) return [manualG, manualB];
+    if (mode === 1) return [manualG, genOpponent(Math.random).map((p) => p.id)];
+    if (mode === 2) return [genRoster(Math.random).map((p) => p.id), manualB];
+    if (mode === 3) return [genRoster(Math.random).map((p) => p.id), genOpponent(Math.random).map((p) => p.id)];
+    return [chaosFive(chaosSeed(String(20260101 + i))).map((p) => p.id), genOpponent(Math.random).map((p) => p.id)];
+  };
   const lat = []; let aOk = 0, aFail = [], resultIds = [];
   for (let batch = 0; batch < 3; batch++) {
     await freshMinute();
     const n = batch < 2 ? 18 : 14;
     for (let i = 0; i < n; i++) {
-      const gold = ROSTERS[(batch * 18 + i) % ROSTERS.length];
-      const blue = ROSTERS[(batch * 18 + i + 3) % ROSTERS.length];
+      const [gold, blue] = lineupFor(batch * 18 + i);
       const mode = i % 4 === 3 ? "best7" : "single";
       const r = await game(`a${(i % 6)}`, { mode, goldIds: gold, blueIds: blue });
       lat.push(r.ms);
@@ -158,6 +170,15 @@ const main = async () => {
     if (before?.games?.[0]?.score && after?.games?.[0]?.score === before.games[0].score) immut++;
     await sleep(500);
   }
+  // duplicate challenge completion: replaying the same simulationId must not
+  // append a second rivalry game
+  const dupChId = chIds[10];
+  const dupSim = simId("chdup");
+  const c1 = await call("r9", "/api/game", { method: "POST", body: { mode: "challenge", challengeId: dupChId, simulationId: dupSim, goldIds: BLUE } });
+  const c2 = await call("r9", "/api/game", { method: "POST", body: { mode: "challenge", challengeId: dupChId, simulationId: dupSim, goldIds: BLUE } });
+  const dupView = (await call("h", `/api/challenge?id=${dupChId}`)).json;
+  out({ scenario: "D2_duplicate_challenge_completion", first: c1.status, replay: { status: c2.status, replayed: c2.json?.replayed }, rivalry_games: dupView?.games?.length });
+
   // cross-user overwrite attempts (old complete action + arbitrary write)
   const ow1 = await call("evil", "/api/challenge", { method: "POST", body: { action: "complete", id: chIds[0], game: { winner: "opponent", score: "150-0" } } });
   const ow2 = await call("evil", "/api/challenge", { method: "POST", body: { action: "create", teamIds: ["fake-1", "x", "y", "z", "w"] } });
