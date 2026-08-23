@@ -26,24 +26,60 @@ const chemLabels = (team) => {
 };
 
 // Deterministic templated recap built only from calculated fields — the
-// Postgame fallback when AI narration is unavailable. No invented claims.
+// Postgame fallback when AI narration is unavailable. 4–6 sentences, grounded
+// in the slot-by-slot duels (names + actual box lines). No invented claims.
+const POS_LABEL = { PG: "the point", SG: "shooting guard", SF: "the wing", PF: "power forward", C: "center" };
+
 export const templateSummary = (core, goldChem, blueChem) => {
-  const winner = core.winner === "Gold" ? "Team Gold" : "Team Blue";
-  const loser = core.winner === "Gold" ? "Team Blue" : "Team Gold";
+  const goldWon = core.winner === "Gold";
+  const winner = goldWon ? "Team Gold" : "Team Blue";
+  const loser = goldWon ? "Team Blue" : "Team Gold";
+  const per = core.isSeries ? " a game" : "";
+  const W = (d) => (goldWon ? d.gold : d.blue);
+  const L = (d) => (goldWon ? d.blue : d.gold);
+
+  // s1: result + the real structural edges
   const winEdges = (core.edges || [])
-    .filter((e) => (core.winner === "Gold" ? e.edge > 0 : e.edge < 0))
+    .filter((e) => (goldWon ? e.edge > 0 : e.edge < 0))
     .slice(0, 2);
   const edgeText = winEdges.length
-    ? `behind ${winEdges.map((e) => `a ${Math.abs(e.edge) >= 10 ? "decisive" : "clear"} ${e.category.toLowerCase()} edge`).join(" and ")}`
-    : "in a matchup with no dominant statistical edge";
-  const chem = core.winner === "Gold" ? goldChem : blueChem;
-  const loserChem = core.winner === "Gold" ? blueChem : goldChem;
-  const chemText = loserChem.weaknesses.length
-    ? ` ${loser} was held back by ${loserChem.weaknesses[0].toLowerCase()}.`
+    ? `behind ${winEdges.map((e) => `a ${Math.abs(e.edge) >= 10 ? "decisive" : "clear"} ${e.category.toLowerCase()} edge (+${Math.abs(e.edge)})`).join(" and ")}`
+    : "in a matchup with no dominant structural edge";
+  const s1 = `${winner} ${core.isSeries ? "took the series" : "won"} ${core.seriesResult} ${edgeText}.`;
+
+  // s2–s3: the two most lopsided duels the winner claimed, by scoring gap
+  const duels = core.slotDuels || [];
+  const wonDuels = duels
+    .filter((d) => W(d).pts > L(d).pts)
+    .sort((a, b) => (W(b).pts - L(b).pts) - (W(a).pts - L(a).pts));
+  const duelSentence = (d, lead) => {
+    const w = W(d), l = L(d);
+    const extra = w.ast >= 5 ? ` and ${w.ast} assists` : w.reb >= 8 ? ` and ${w.reb} rebounds` : w.stl + w.blk >= 3 ? ` with ${w.stl + w.blk} combined steals and blocks` : "";
+    return `${lead} at ${POS_LABEL[d.pos]}, where ${w.name} outplayed ${l.name} — ${w.pts} points${per}${extra} to ${l.name.split(" ").slice(-1)[0]}'s ${l.pts}.`;
+  };
+  const s2 = wonDuels[0] ? duelSentence(wonDuels[0], "The defining mismatch came") : "";
+  const s3 = wonDuels[1] ? duelSentence(wonDuels[1], "The gap widened") : "";
+
+  // s4: the loser's best duel — honest about where they actually competed
+  const lostDuels = duels
+    .filter((d) => L(d).pts > W(d).pts)
+    .sort((a, b) => (L(b).pts - W(b).pts) - (L(a).pts - W(a).pts));
+  const s4 = lostDuels[0]
+    ? `${L(lostDuels[0]).name} gave ${loser} its best minutes, taking his matchup with ${W(lostDuels[0]).name} ${L(lostDuels[0]).pts}-${W(lostDuels[0]).pts}, but one duel was never going to swing it.`
+    : `No ${loser} starter clearly won his individual matchup, and that clean sweep across the five slots told the story.`;
+
+  // s5: chemistry context (real labels)
+  const chem = goldWon ? goldChem : blueChem;
+  const loserChem = goldWon ? blueChem : goldChem;
+  const s5 = loserChem.weaknesses.length
+    ? `Roster construction mattered too: ${loser} was fighting its own ${loserChem.weaknesses[0].toLowerCase()} all ${core.isSeries ? "series" : "game"}.`
     : chem.strengths.length
-      ? ` ${winner}'s ${chem.strengths[0].toLowerCase()} set the tone.`
+      ? `${winner}'s ${chem.strengths[0].toLowerCase()} kept every run organized.`
       : "";
-  return `${winner} won ${core.seriesResult} ${edgeText}.${chemText} ${core.mvp} led the way.`;
+
+  // s6: MVP capper
+  const s6 = `${core.mvp} led the way.`;
+  return [s1, s2, s3, s4, s5, s6].filter(Boolean).join(" ");
 };
 
 // Deterministic 2–3 sentence MVP explanation from the computed result only:

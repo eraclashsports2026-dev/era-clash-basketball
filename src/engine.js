@@ -86,6 +86,17 @@ const allocateBox = (team, teamPts, rng, series) => {
 
 const gameScore = (s) => s.pts + 1.2 * s.reb + 1.5 * s.ast + 3 * s.stl + 3 * s.blk;
 
+// Slot-by-slot duels: each position's Gold player vs the Blue counterpart,
+// with the rating gap and both ACTUAL box lines. This is the grounding data
+// for every mismatch sentence — nothing generic, nothing invented.
+const buildSlotDuels = (teamA, teamB, boxA, boxB) =>
+  POSITIONS.map((pos, i) => ({
+    pos,
+    gold: { name: teamA[i].name, ...boxA[i] },
+    blue: { name: teamB[i].name, ...boxB[i] },
+    ratingEdge: Math.round(slotRating(teamA[i], pos) - slotRating(teamB[i], pos)),
+  }));
+
 const TURNING_MECHANISM = {
   "Perimeter Creation": ["a run built on relentless ball movement", "kept generating open looks faster than the defense could rotate"],
   "Interior Presence": ["a stretch of second-chance points in the paint", "wore the interior defense down possession after possession"],
@@ -96,21 +107,42 @@ const TURNING_MECHANISM = {
   "Star Power": ["a stretch of pure shot-making from the top of the roster", "left the defense without an answer in the half court"],
 };
 
-// 2–3 sentence turning-point analysis built ONLY from the computed result:
-// the winning side's biggest real edge, the actual margin, and the MVP's
-// actual line. Broad timing ("in the third quarter") comes from the seeded
-// simulation itself; no fabricated play-by-play or exact clock times.
-const turningPointText = (winner, keyEdge, margin, mvpRow, quarterLabel) => {
+// 4–6 sentence turning-point analysis built ONLY from the computed result:
+// the winning side's biggest real edge, the specific positional duel that
+// powered it (names + actual box lines), the loser's failed answer, the
+// margin, and the MVP. Broad timing comes from the seeded simulation itself;
+// no fabricated play-by-play or exact clock times.
+const EDGE_SLOTS = {
+  "Rim Protection": ["C", "PF"], "Interior Presence": ["C", "PF"], "Rebounding": ["C", "PF"],
+  "Perimeter Creation": ["PG", "SG"], "Perimeter Defense": ["PG", "SG", "SF"],
+  "Spacing & Shooting": ["SG", "SF", "PG"], "Star Power": ["PG", "SG", "SF", "PF", "C"],
+};
+const per = (isSeries) => (isSeries ? " a game" : "");
+
+const turningPointText = (winner, keyEdge, margin, mvpRow, quarterLabel, duels, isSeries) => {
   const winName = winner === "Gold" ? "Team Gold" : "Team Blue";
   const loseName = winner === "Gold" ? "Team Blue" : "Team Gold";
+  const W = (d) => (winner === "Gold" ? d.gold : d.blue);
+  const L = (d) => (winner === "Gold" ? d.blue : d.gold);
   const [mechanism, consequence] = TURNING_MECHANISM[keyEdge?.category] || TURNING_MECHANISM["Star Power"];
   const edgeSize = Math.abs(keyEdge?.edge || 0);
+
+  // the duel most responsible for the key edge: winner's top scorer among the
+  // positions that drive that category
+  const slots = EDGE_SLOTS[keyEdge?.category] || EDGE_SLOTS["Star Power"];
+  const relevant = duels.filter((d) => slots.includes(d.pos));
+  const drive = [...relevant].sort((a, b) => W(b).pts - W(a).pts)[0] || duels[0];
+  // the loser's best answer anywhere on the floor
+  const answer = [...duels].sort((a, b) => L(b).pts - L(a).pts)[0];
+
   const s1 = `The game turned ${quarterLabel} when ${winName} leaned on ${mechanism} — its biggest built-in advantage over ${loseName} (${keyEdge?.category ?? "overall edge"} ${edgeSize > 0 ? `+${edgeSize}` : ""}).`;
-  const s2 = `That stretch ${consequence}.`;
-  const s3 = mvpRow
-    ? `${mvpRow.name} carried the swing with ${mvpRow.pts} points${mvpRow.ast >= 4 ? ` and ${mvpRow.ast} assists` : mvpRow.reb >= 8 ? ` and ${mvpRow.reb} rebounds` : ""}, and ${winName} closed it out by ${margin}.`
+  const s2 = `The swing ran straight through the ${drive.pos} matchup, where ${W(drive).name} was giving ${L(drive).name} problems all night — ${W(drive).pts} points${per(isSeries)}${W(drive).ast >= 5 ? ` with ${W(drive).ast} assists` : W(drive).reb >= 8 ? ` with ${W(drive).reb} rebounds` : ""} against a defender who never found an answer.`;
+  const s3 = `That stretch ${consequence}.`;
+  const s4 = `${answer.pos === drive.pos ? "Even so, " : ""}${L(answer).name} tried to answer with ${L(answer).pts} points${per(isSeries)} of his own, but with no second front opening up, ${loseName} could never turn stops into a run.`;
+  const s5 = mvpRow
+    ? `${mvpRow.name} kept the pressure on to the finish, and ${winName} closed it out by ${margin}.`
     : `${winName} closed it out by ${margin}.`;
-  return `${s1} ${s2} ${s3}`;
+  return `${s1} ${s2} ${s3} ${s4} ${s5}`;
 };
 
 // Simulate one game. Returns a structured GameResult. Deterministic given rng.
@@ -135,6 +167,7 @@ export const simulateGame = (teamA, teamB, rng = Math.random) => {
 
   const boxA = allocateBox(teamA, scoreA, rng, false);
   const boxB = allocateBox(teamB, scoreB, rng, false);
+  const slotDuels = buildSlotDuels(teamA, teamB, boxA, boxB);
 
   const winnerBox = aWins ? boxA : boxB;
   const mvp = [...winnerBox].sort((x, y) => gameScore(y) - gameScore(x))[0];
@@ -160,8 +193,9 @@ export const simulateGame = (teamA, teamB, rng = Math.random) => {
     chemistry: { gold: analyzeBalance(teamA), blue: analyzeBalance(teamB) },
     edges,
     keyEdge,
+    slotDuels,
     turningPoint: keyEdge
-      ? { quarter: `Q${q}`, text: turningPointText(winnerName, keyEdge, margin, mvp, quarterLabel) }
+      ? { quarter: `Q${q}`, text: turningPointText(winnerName, keyEdge, margin, mvp, quarterLabel, slotDuels, false) }
       : null,
   };
 };
@@ -182,6 +216,7 @@ export const simulateSeries = (teamA, teamB, rng = Math.random) => {
   });
   const boxA = avg(games.map((g) => g.teamAStats));
   const boxB = avg(games.map((g) => g.teamBStats));
+  const slotDuels = buildSlotDuels(teamA, teamB, boxA, boxB);
   const aWon = a === 4;
   const winnerBox = aWon ? boxA : boxB;
   const mvp = [...winnerBox].sort((x, y) => gameScore(y) - gameScore(x))[0];
@@ -202,8 +237,14 @@ export const simulateSeries = (teamA, teamB, rng = Math.random) => {
     chemistry: last.chemistry,
     edges: last.edges,
     keyEdge: last.keyEdge,
-    turningPoint: last.turningPoint
-      ? { ...last.turningPoint, game: `Game ${games.length}` }
+    slotDuels,
+    isSeries: true,
+    turningPoint: last.keyEdge
+      ? {
+          quarter: last.turningPoint?.quarter,
+          game: `Game ${games.length}`,
+          text: turningPointText(aWon ? "Gold" : "Blue", last.keyEdge, `taking the series ${Math.max(a, b)}-${Math.min(a, b)}`, mvp, "in the deciding stretch of the series", slotDuels, true),
+        }
       : null,
   };
 };
