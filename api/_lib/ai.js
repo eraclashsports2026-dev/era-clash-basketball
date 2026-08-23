@@ -65,11 +65,12 @@ Team Gold box: ${core.teamAStats.map(line).join(" | ")}
 Team Blue box: ${core.teamBStats.map(line).join(" | ")}
 MVP (fixed): ${core.mvp}
 Pre-game edges (positive = Gold advantage): ${core.edges.map((e) => `${e.category} ${e.edge}`).join(", ")}
+Positional duels (Gold vs Blue, same slot): ${(core.slotDuels || []).map((d) => `${d.pos}: ${d.gold.name} (${d.gold.pts}p/${d.gold.reb}r/${d.gold.ast}a) vs ${d.blue.name} (${d.blue.pts}p/${d.blue.reb}r/${d.blue.ast}a)`).join(" | ")}
 Gold chemistry notes: +${result.goldChem.strengths.join(", +") || "none"}; -${result.goldChem.weaknesses.join(", -") || "none"}
 Blue chemistry notes: +${(result.blueChem?.strengths || []).join(", +") || "none"}; -${(result.blueChem?.weaknesses || []).join(", -") || "none"}
 
 Respond ONLY with valid JSON (no markdown):
-{"summary":"2-3 analytical sentences explaining WHY Team ${core.winner} won, grounded in the box score and edges above","teamAStrengths":["max 10 words","max 10 words","max 10 words"],"teamAWeaknesses":["max 10 words","max 10 words"],"teamBStrengths":["max 10 words","max 10 words","max 10 words"],"teamBWeaknesses":["max 10 words","max 10 words"],"mvpReason":"2-3 sentences explaining WHY ${core.mvp} earned MVP: cite the actual line above, what that production did to the opposing defense, and how it decided the outcome. Max 70 words.","turningPoint":"2-3 sentences describing the pivotal stretch: what shifted, why it mattered given the edges above, and how it decided the game. Consistent with the fixed result; no invented exact timestamps. Max 80 words."}`;
+{"summary":"4-6 analytical sentences explaining WHY Team ${core.winner} won. REQUIRED: break down at least two specific positional duels BY NAME from the list above (who outplayed whom, citing their actual lines), name the losing side's best individual performance and why it wasn't enough, and tie it to the structural edges. No generic praise — every claim must trace to the numbers above. Max 160 words.","teamAStrengths":["max 10 words","max 10 words","max 10 words"],"teamAWeaknesses":["max 10 words","max 10 words"],"teamBStrengths":["max 10 words","max 10 words","max 10 words"],"teamBWeaknesses":["max 10 words","max 10 words"],"mvpReason":"2-3 sentences explaining WHY ${core.mvp} earned MVP: cite the actual line above, what that production did to the opposing defense, and how it decided the outcome. Max 70 words.","turningPoint":"4-6 sentences describing the pivotal stretch: what shifted, which specific positional duel drove it (BY NAME, consistent with the duels above), how the opponent's best player tried to answer and why it failed, and how it decided the ${result.mode === "best7" ? "series" : "game"}. No invented exact timestamps. Max 150 words."}`;
 };
 
 // Validate narrative output: text-only fields, capped lengths. The narrative
@@ -78,7 +79,7 @@ const validateNarrative = (n) => {
   if (!n || typeof n !== "object") return null;
   const str = (s, max) => (typeof s === "string" && s.trim() ? s.trim().slice(0, max) : null);
   const arr = (a, count, max) => Array.isArray(a) ? a.slice(0, count).map((s) => str(s, max)).filter(Boolean) : [];
-  const summary = str(n.summary, 500);
+  const summary = str(n.summary, 1400);
   if (!summary) return null;
   return {
     summary,
@@ -87,7 +88,7 @@ const validateNarrative = (n) => {
     teamBStrengths: arr(n.teamBStrengths, 3, 80),
     teamBWeaknesses: arr(n.teamBWeaknesses, 2, 80),
     mvpReason: str(n.mvpReason, 550),
-    turningPoint: str(n.turningPoint, 600),
+    turningPoint: str(n.turningPoint, 1400),
   };
 };
 
@@ -117,7 +118,7 @@ export const generateNarrative = async (result, apiKey, chaos) => {
         signal: controller.signal,
         headers: { "Content-Type": "application/json", "x-api-key": apiKey, "anthropic-version": "2023-06-01" },
         body: JSON.stringify({
-          model: MODEL, max_tokens: 900,
+          model: MODEL, max_tokens: 1400,
           messages: [{ role: "user", content: chaos === "ai-invalid" ? "Reply with the word banana only." : prompt }],
         }),
       });

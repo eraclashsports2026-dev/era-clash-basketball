@@ -41,6 +41,18 @@ describe("MVP explanation depth", () => {
       expect(text).toContain(String(core.mvpLine.pts));       // cites the actual points
     }
   });
+  it("summary fallback is 4–6 sentences naming duels from BOTH teams", () => {
+    for (let seed = 1; seed <= 8; seed++) {
+      const r = computeResult(seed % 2 ? "single" : "best7", gold, blue, seed);
+      const sents = sentences(r.fallbackSummary);
+      expect(sents.length, r.fallbackSummary).toBeGreaterThanOrEqual(4);
+      expect(sents.length).toBeLessThanOrEqual(6);
+      const goldNames = gold.map((p) => p.name), blueNames = blue.map((p) => p.name);
+      expect(goldNames.some((n) => r.fallbackSummary.includes(n))).toBe(true);
+      expect(blueNames.some((n) => r.fallbackSummary.includes(n))).toBe(true);
+    }
+  });
+
   it("every computed result payload carries mvpFallback", () => {
     const single = computeResult("single", gold, blue, newSeed());
     expect(sentences(single.mvpFallback).length).toBeGreaterThanOrEqual(2);
@@ -54,16 +66,32 @@ describe("MVP explanation depth", () => {
 describe("turning point depth", () => {
   const gold = ["gary-90s", "moncrief-80s", "pippen-90s", "kg-00s", "hak-90s"].map(byId);
   const blue = ["trae-20s", "ant-20s", "butler-10s", "draymond-10s", "bam-20s"].map(byId);
-  it("engine turning point is 2–3 sentences grounded in the real edge and margin", () => {
+  it("engine turning point is 4–6 sentences with named positional-duel breakdowns", () => {
     for (let seed = 1; seed <= 10; seed++) {
       const core = simulateGame(gold, blue, mulberry32(seed));
       expect(core.turningPoint?.text).toBeTruthy();
-      const sents = sentences(core.turningPoint.text);
-      expect(sents.length, core.turningPoint.text).toBeGreaterThanOrEqual(2);
-      expect(sents.length).toBeLessThanOrEqual(3);
-      // grounded: names the winner's biggest edge category and no exact clock times
-      expect(core.turningPoint.text.toLowerCase()).toContain(core.keyEdge.category.toLowerCase().slice(0, 8));
-      expect(core.turningPoint.text).not.toMatch(/\d+:\d{2}/);
+      const text = core.turningPoint.text;
+      const sents = sentences(text);
+      expect(sents.length, text).toBeGreaterThanOrEqual(4);
+      expect(sents.length).toBeLessThanOrEqual(6);
+      // grounded: the winner's biggest edge, a named winner-side duel driver,
+      // a named loser-side answer, and no exact clock times
+      expect(text.toLowerCase()).toContain(core.keyEdge.category.toLowerCase().slice(0, 8));
+      const winnerNames = (core.winner === "Gold" ? core.teamAStats : core.teamBStats).map((r) => r.name);
+      const loserNames = (core.winner === "Gold" ? core.teamBStats : core.teamAStats).map((r) => r.name);
+      expect(winnerNames.some((n) => text.includes(n)), text).toBe(true);
+      expect(loserNames.some((n) => text.includes(n)), text).toBe(true);
+      expect(text).not.toMatch(/\d+:\d{2}/);
+    }
+  });
+  it("slot duels carry names, real box lines, and rating gaps", () => {
+    const core = simulateGame(gold, blue, mulberry32(7));
+    expect(core.slotDuels.length).toBe(5);
+    for (const d of core.slotDuels) {
+      expect(["PG", "SG", "SF", "PF", "C"]).toContain(d.pos);
+      expect(typeof d.gold.pts).toBe("number");
+      expect(typeof d.blue.pts).toBe("number");
+      expect(Number.isFinite(d.ratingEdge)).toBe(true);
     }
   });
 });
