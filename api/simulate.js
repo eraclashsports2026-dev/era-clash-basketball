@@ -1,11 +1,20 @@
 // ── EraClash Basketball — Simulation API ──────────────────────────────────────
-// This serverless function runs on Vercel. It holds your Anthropic API key in a
-// server-side environment variable (ANTHROPIC_API_KEY) so it is NEVER exposed to
-// the browser. The frontend sends structured team data; this function builds the
-// analyst prompt and calls Claude. Users can only run basketball simulations —
-// they cannot send arbitrary prompts through your key.
+// Serverless (Vercel). Holds ANTHROPIC_API_KEY server-side; the frontend sends
+// structured team data only — users cannot send arbitrary prompts through the
+// key. v2.1 adds: per-IP rate limiting, idempotent responses keyed by
+// simulationId (double-click / retry never bills twice), and a timeout.
+import { hasStore, cmd, getJSON, setJSON, rateLimit, clientIp } from "./_lib/store.js";
 
 const POSITIONS = ["PG", "SG", "SF", "PF", "C"];
+const MODEL = "claude-sonnet-4-6";
+const RATE_LIMIT_PER_MIN = 20;
+
+// In-memory fallback dedupe for warm instances when no store is configured.
+const localCache = new Map();
+const localRemember = (k, v) => {
+  localCache.set(k, v);
+  if (localCache.size > 200) localCache.delete(localCache.keys().next().value);
+};
 
 function buildPrompt(myTeam, oppTeam, seriesType) {
   const sl = seriesType === "single" ? "single game" : "best-of-7 series";
@@ -19,8 +28,9 @@ function buildPrompt(myTeam, oppTeam, seriesType) {
     if (p.ad2) parts.push(`${p.ad2}x All-Defensive 2nd`);
     return parts.length ? ` | ${parts.join(", ")}` : "";
   };
+  const arch = (p) => (Array.isArray(p.archetypes) && p.archetypes.length ? ` | style: ${p.archetypes.slice(0, 3).join(", ")}` : "");
   const line = (p, i) =>
-    `- [${POSITIONS[i]}] ${p.name} (${p.decade}, ${p.team}): ${p.pts}pts ${p.reb}reb ${p.ast}ast ${p.stl}stl ${p.blk}blk${acc(p)}`;
+    `- [${POSITIONS[i]}] ${p.name} (${p.decade}, ${p.team}): ${p.pts}pts ${p.reb}reb ${p.ast}ast ${p.stl}stl ${p.blk}blk${acc(p)}${arch(p)}`;
 
   return `You are an elite NBA analytics engine with deep knowledge of basketball strategy, team construction, and historical player evaluation. Simulate a ${sl} between these two all-time teams. Always refer to them as "Team Gold" and "Team Blue".
 
@@ -52,13 +62,13 @@ OUTPUT RULES — these are mandatory for accuracy:
 3. CRITICAL: The team that wins MUST have a higher total than the team that loses. The winning team's five players' points must sum higher than the losing team's five players' points. Make the box scores internally consistent with the winner you choose.
 4. The MVP must be one of the 10 players listed above, and should be the standout performer from the WINNING team in almost all cases. The mvpReason should reference that player's actual box-score line you generated (not career stats).
 5. The summary and strengths/weaknesses must explain WHY teams win or lose based on construction, matchups, and fit. Do not reveal any scoring formula — narrate like an expert analyst.
+6. The turningPoint must describe the pivotal stretch of the ${seriesType === "single" ? "game" : "series"} in one concrete sentence, consistent with the box scores and winner you generated. Do not invent players not listed.
 
 Respond ONLY with valid JSON (no markdown, no backticks):
-{"winner":"Gold or Blue","seriesResult":"e.g. 108-101 or 4-2","teamAStats":[{"name":"","pts":0,"reb":0,"ast":0,"stl":0,"blk":0}],"teamBStats":[{"name":"","pts":0,"reb":0,"ast":0,"stl":0,"blk":0}],"summary":"2-3 sentences, analytical narrative using Team Gold and Team Blue — explain WHY the winner won based on team construction and matchups","teamAStrengths":["specific analytical strength, max 10 words","specific analytical strength, max 10 words","specific analytical strength, max 10 words"],"teamAWeaknesses":["specific analytical weakness, max 10 words","specific analytical weakness, max 10 words"],"teamBStrengths":["specific analytical strength, max 10 words","specific analytical strength, max 10 words","specific analytical strength, max 10 words"],"teamBWeaknesses":["specific analytical weakness, max 10 words","specific analytical weakness, max 10 words"],"mvp":"player name","mvpReason":"one sentence, max 15 words"}`;
+{"winner":"Gold or Blue","seriesResult":"e.g. 108-101 or 4-2","teamAStats":[{"name":"","pts":0,"reb":0,"ast":0,"stl":0,"blk":0}],"teamBStats":[{"name":"","pts":0,"reb":0,"ast":0,"stl":0,"blk":0}],"summary":"2-3 sentences, analytical narrative using Team Gold and Team Blue — explain WHY the winner won based on team construction and matchups","teamAStrengths":["specific analytical strength, max 10 words","specific analytical strength, max 10 words","specific analytical strength, max 10 words"],"teamAWeaknesses":["specific analytical weakness, max 10 words","specific analytical weakness, max 10 words"],"teamBStrengths":["specific analytical strength, max 10 words","specific analytical strength, max 10 words","specific analytical strength, max 10 words"],"teamBWeaknesses":["specific analytical weakness, max 10 words","specific analytical weakness, max 10 words"],"mvp":"player name","mvpReason":"one sentence, max 15 words","turningPoint":"one sentence describing the pivotal stretch, max 25 words"}`;
 }
 
 export default async function handler(req, res) {
-  // Only allow POST
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
@@ -69,10 +79,9 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { myTeam, oppTeam, seriesType } = req.body || {};
+    const { myTeam, oppTeam, seriesType, simulationId } = req.body || {};
 
     // Validate input — only well-formed 5-player teams are accepted.
-    // This prevents abuse: users can't send arbitrary prompts through your key.
     if (
       !Array.isArray(myTeam) || myTeam.length !== 5 ||
       !Array.isArray(oppTeam) || oppTeam.length !== 5 ||
@@ -80,27 +89,51 @@ export default async function handler(req, res) {
     ) {
       return res.status(400).json({ error: "Invalid team data." });
     }
-    const valid = (t) => t.every(p => p && p.name && p.decade && p.team &&
+    const valid = (t) => t.every(p => p && typeof p.name === "string" && p.name.length < 60 &&
+      typeof p.decade === "string" && typeof p.team === "string" && p.team.length < 60 &&
       typeof p.pts === "number" && typeof p.reb === "number");
     if (!valid(myTeam) || !valid(oppTeam)) {
       return res.status(400).json({ error: "Invalid player data." });
     }
 
-    const prompt = buildPrompt(myTeam, oppTeam, seriesType);
+    // Idempotency: same simulationId returns the cached result — a retry or
+    // double-submit never triggers a second model call.
+    const simKey = typeof simulationId === "string" && simulationId.length <= 64
+      ? `sim:${simulationId}` : null;
+    if (simKey) {
+      const cached = hasStore() ? await getJSON(simKey) : localCache.get(simKey);
+      if (cached?.text) return res.status(200).json({ text: cached.text, cached: true });
+    }
 
-    const anthropicRes = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": apiKey,
-        "anthropic-version": "2023-06-01",
-      },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-6",
-        max_tokens: 2500,
-        messages: [{ role: "user", content: prompt }],
-      }),
-    });
+    // Rate limit: per-IP, fails open if no store.
+    if (!(await rateLimit(`sim:${clientIp(req)}`, RATE_LIMIT_PER_MIN, 60))) {
+      return res.status(429).json({ error: "Too many simulations. Slow down a little." });
+    }
+
+    const prompt = buildPrompt(myTeam, oppTeam, seriesType);
+    const started = Date.now();
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 25000);
+    let anthropicRes;
+    try {
+      anthropicRes = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        signal: controller.signal,
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": apiKey,
+          "anthropic-version": "2023-06-01",
+        },
+        body: JSON.stringify({
+          model: MODEL,
+          max_tokens: 2500,
+          messages: [{ role: "user", content: prompt }],
+        }),
+      });
+    } finally {
+      clearTimeout(timeout);
+    }
 
     const data = await anthropicRes.json();
     if (data.error) {
@@ -109,8 +142,25 @@ export default async function handler(req, res) {
     }
 
     const text = data.content?.find(b => b.type === "text")?.text || "";
-    return res.status(200).json({ text });
+    const latency = Date.now() - started;
+
+    // Cache for idempotent retries + record cost telemetry (best-effort).
+    if (simKey) {
+      if (hasStore()) {
+        await setJSON(simKey, { text, model: MODEL, latency }, 3600);
+        const tokens = (data.usage?.input_tokens || 0) + (data.usage?.output_tokens || 0);
+        await cmd("HINCRBY", "sim:usage", "calls", 1);
+        if (tokens) await cmd("HINCRBY", "sim:usage", "tokens", tokens);
+      } else {
+        localRemember(simKey, { text });
+      }
+    }
+
+    return res.status(200).json({ text, model: MODEL, latency });
   } catch (err) {
+    if (err?.name === "AbortError") {
+      return res.status(504).json({ error: "Simulation timed out. Please try again." });
+    }
     console.error("Simulate handler error:", err);
     return res.status(500).json({ error: "Simulation failed. Please try again." });
   }

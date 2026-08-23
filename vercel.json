@@ -3,5 +3,9 @@
     "api/simulate.js": {
       "maxDuration": 30
     }
-  }
+  },
+  "rewrites": [
+    { "source": "/result/:id", "destination": "/api/result-page?id=:id" },
+    { "source": "/challenge/:id", "destination": "/api/challenge-page?id=:id" }
+  ]
 }
