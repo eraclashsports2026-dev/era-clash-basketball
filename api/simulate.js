@@ -9,8 +9,18 @@ const POSITIONS = ["PG", "SG", "SF", "PF", "C"];
 
 function buildPrompt(myTeam, oppTeam, seriesType) {
   const sl = seriesType === "single" ? "single game" : "best-of-7 series";
+  const acc = (p) => {
+    const parts = [];
+    if (p.mvp) parts.push(`${p.mvp}x MVP`);
+    if (p.fmvp) parts.push(`${p.fmvp}x Finals MVP`);
+    if (p.dpoy) parts.push(`${p.dpoy}x DPOY`);
+    if (p.an1) parts.push(`${p.an1}x All-NBA 1st`);
+    if (p.ad1) parts.push(`${p.ad1}x All-Defensive 1st`);
+    if (p.ad2) parts.push(`${p.ad2}x All-Defensive 2nd`);
+    return parts.length ? ` | ${parts.join(", ")}` : "";
+  };
   const line = (p, i) =>
-    `- [${POSITIONS[i]}] ${p.name} (${p.decade}, ${p.team}): ${p.pts}pts ${p.reb}reb ${p.ast}ast ${p.stl}stl ${p.blk}blk`;
+    `- [${POSITIONS[i]}] ${p.name} (${p.decade}, ${p.team}): ${p.pts}pts ${p.reb}reb ${p.ast}ast ${p.stl}stl ${p.blk}blk${acc(p)}`;
 
   return `You are an elite NBA analytics engine with deep knowledge of basketball strategy, team construction, and historical player evaluation. Simulate a ${sl} between these two all-time teams. Always refer to them as "Team Gold" and "Team Blue".
 
@@ -30,7 +40,7 @@ TEAM CHEMISTRY & BALANCE: Does the lineup flow together? Are there too many ball
 
 SPACING & SHOOTING: Can the team space the floor to enable drives and ball movement? A lineup with no perimeter shooting collapses defensively and offensively. Reward lineups that have shooting spread across multiple positions.
 
-DEFENSIVE VERSATILITY: Can players guard multiple positions? A team with multiple defenders who can switch is far superior to one that is a liability on defense. Rim protection + perimeter defense together create elite defensive teams.
+DEFENSIVE VERSATILITY: Can players guard multiple positions? A team with multiple defenders who can switch is far superior to one that is a liability on defense. Rim protection + perimeter defense together create elite defensive teams. IMPORTANT: use the awards listed (DPOY, All-Defensive selections) as primary evidence of defensive impact — steals and blocks alone dramatically undervalue elite defenders like lockdown wings whose impact never showed in counting stats.
 
 PLAYMAKING DEPTH: Who creates for others? If a team has only one playmaker, defenses can key on them. Teams with multiple assist threats create unsolvable defensive problems.
 
