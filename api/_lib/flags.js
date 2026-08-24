@@ -58,5 +58,10 @@ export const limits = () => ({
   // circuit breaker
   aiFailThreshold: num("AI_CIRCUIT_FAIL_THRESHOLD", 5),
   aiCircuitWindowSec: num("AI_CIRCUIT_WINDOW_SEC", 120),
-  aiTimeoutMs: num("AI_TIMEOUT_MS", 24000), // real recap latency is ~20s; 2 attempts + backoff must fit vercel.json maxDuration (60s)
+  // A single recap generation runs ~20-25s, so one attempt gets 34s (a lower
+  // cap made attempt 1 abort every time and doubled the user's wait). The
+  // total budget stays under vercel.json maxDuration (60s) so a hard failure
+  // still returns a handled error rather than a platform 504.
+  aiTimeoutMs: num("AI_TIMEOUT_MS", 34000),
+  aiTotalBudgetMs: num("AI_TOTAL_BUDGET_MS", 50000),
 });

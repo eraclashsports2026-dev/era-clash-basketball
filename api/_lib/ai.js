@@ -118,13 +118,13 @@ export const generateNarrative = async (result, apiKey, chaos) => {
   const prompt = buildPrompt(result);
   let lastCode = "MODEL_UNAVAILABLE";
 
-  // The whole handler must finish inside the platform function limit
-  // (vercel.json maxDuration). Two attempts at the full per-call timeout plus
-  // backoff used to exceed it, so a slow model produced a raw platform 504
-  // instead of a clean MODEL_TIMEOUT the client can handle. Budget it:
-  // attempt 1 gets the configured timeout, attempt 2 only what's left.
-  const deadline = Date.now() + Math.max(5000, aiTimeoutMs * 2);
-  const started = Date.now();
+  // Two budgets, both tied to the platform function limit (vercel.json
+  // maxDuration): aiTotalBudgetMs caps the WHOLE handler so we always return a
+  // clean MODEL_TIMEOUT instead of a raw platform 504, and aiTimeoutMs caps a
+  // single attempt. The per-attempt cap must exceed real recap latency — when
+  // it was set below it, attempt 1 always aborted and the retry doubled the
+  // user's wait for no reason.
+  const deadline = Date.now() + limits().aiTotalBudgetMs;
 
   for (let attempt = 0; attempt < 2; attempt++) {
     if (attempt > 0) {
@@ -144,7 +144,7 @@ export const generateNarrative = async (result, apiKey, chaos) => {
         signal: controller.signal,
         headers: { "Content-Type": "application/json", "x-api-key": apiKey, "anthropic-version": "2023-06-01" },
         body: JSON.stringify({
-          model: MODEL, max_tokens: 1400,
+          model: MODEL, max_tokens: 1100,
           messages: [{ role: "user", content: chaos === "ai-invalid" ? "Reply with the word banana only." : prompt }],
         }),
       });
