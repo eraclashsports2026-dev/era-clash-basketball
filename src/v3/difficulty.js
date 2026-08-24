@@ -34,7 +34,18 @@ export const DIFFICULTIES = {
     blurb: "Rebuilding teams: thinner talent and messy roster fits — nobody to create, no spacing.",
   },
   pro: {
-    id: "pro", label: "Pro", window: [8, 85], spread: 40, build: "median", candidates: 3,
+    // Pro is the only tier that models a WHOLE league rather than one band,
+    // because that is literally what its blurb promises. A season is ~22%
+    // contenders (well built, top of the pool), ~38% middle-of-the-pack, and
+    // ~40% lottery teams (deep pool, badly built). That mix is what makes Pro
+    // a genuine middle: contenders keep an all-time five honest, while the
+    // lottery nights give a modest roster games it can actually win.
+    id: "pro", label: "Pro",
+    mix: [
+      { share: 0.22, window: [0, 26], candidates: 2, build: "best" },    // contenders
+      { share: 0.38, window: [26, 85], candidates: 2, build: "median" }, // middle
+      { share: 0.40, window: [100, 168], candidates: 4, build: "worst" },// lottery
+    ],
     blurb: "A real league — contenders, middle of the pack, and lottery teams.",
   },
   allstar: {
@@ -78,25 +89,41 @@ const drawFive = (rng, window) => {
 
 // Build an opponent generator for a difficulty. Deterministic for a given rng
 // sequence, so seasons and brackets stay exactly reproducible from their seed.
+// Pick one roster from a set of candidates by construction quality.
+const chooseByBuild = (candidates, build) => {
+  if (candidates.length === 1) return candidates[0];
+  const ranked = candidates
+    .map((roster) => ({ roster, score: constructionScore(roster) }))
+    .sort((a, b) => a.score - b.score); // worst-built first
+  if (build === "worst") return ranked[0].roster;
+  if (build === "best") return ranked[ranked.length - 1].roster;
+  return ranked[Math.floor(ranked.length / 2)].roster; // median
+};
+
+// Build an opponent generator for a difficulty. Deterministic for a given rng
+// sequence, so seasons and brackets stay exactly reproducible from their seed.
 export const opponentGenerator = (difficultyId) => {
   const d = DIFFICULTIES[validDifficulty(difficultyId)];
   return (rng = Math.random) => {
-    // Talent depth is drawn per candidate, so a season faces a real spread of
-    // teams rather than 82 copies of one.
+    // League-composition tiers (Pro): roll which CLASS of team tonight is,
+    // then draw that class. This is what makes a season feel like a schedule.
+    if (d.mix) {
+      const roll = rng();
+      let acc = 0;
+      let tier = d.mix[d.mix.length - 1];
+      for (const t of d.mix) { acc += t.share; if (roll <= acc) { tier = t; break; } }
+      const candidates = [];
+      for (let i = 0; i < tier.candidates; i++) candidates.push(drawFive(rng, tier.window));
+      return chooseByBuild(candidates, tier.build);
+    }
+    // Single-band tiers: each candidate slides its own narrower window inside
+    // the tier's band, so one season still faces different classes of team.
     const candidates = [];
     for (let i = 0; i < d.candidates; i++) {
-      // each candidate slides its own narrower window inside the tier's band,
-      // so one season faces genuinely different classes of team
       const [lo, hi] = d.window;
       const start = Math.round(lo + rng() * Math.max(0, hi - lo - d.spread));
       candidates.push(drawFive(rng, [start, start + d.spread]));
     }
-    if (candidates.length === 1) return candidates[0];
-    const ranked = candidates
-      .map((roster) => ({ roster, score: constructionScore(roster) }))
-      .sort((a, b) => a.score - b.score); // worst-built first
-    if (d.build === "worst") return ranked[0].roster;
-    if (d.build === "best") return ranked[ranked.length - 1].roster;
-    return ranked[Math.floor(ranked.length / 2)].roster; // median
+    return chooseByBuild(candidates, d.build);
   };
 };

@@ -68,6 +68,28 @@ describe("Win 82 difficulty (was: superteams stuck near .500)", () => {
     expect(wins(modest, "legend", 3000)).toBeLessThan(15);
   });
 
+  it("Pro is a genuine middle — a real league, not a gauntlet", () => {
+    const modest = t(["mookie-90s", "hersey-90s", "calbert-90s", "popeye-90s", "luc-90s"]);
+    const proWins = [0, 1, 2].reduce((s, i) => s + wins(modest, "pro", 3000 + i), 0) / 3;
+    const rookieWins = wins(modest, "rookie", 3000);
+    const allstarWins = wins(modest, "allstar", 3000);
+    // Pro sits between its neighbours rather than hugging the hard end
+    expect(proWins).toBeGreaterThan(15);
+    expect(proWins).toBeLessThan(rookieWins);
+    expect(proWins).toBeGreaterThan(allstarWins);
+    // …while an all-time five still posts an all-time record on Pro
+    expect(wins(GOLD, "pro", 3000)).toBeGreaterThan(60);
+  });
+
+  it("Pro's schedule really is mixed — contenders AND lottery teams", () => {
+    const gen = opponentGenerator("pro");
+    const rng = (() => { let x = 11; return () => ((x = (x * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff); })();
+    const scores = [];
+    for (let i = 0; i < 40; i++) scores.push(constructionScore(gen(rng)));
+    const spread = Math.max(...scores) - Math.min(...scores);
+    expect(spread).toBeGreaterThan(4); // nights genuinely differ in quality
+  });
+
   it("softer tiers face weaker AND worse-built teams — never fabricated ones", () => {
     const sample = (tier) => {
       const gen = opponentGenerator(tier);
