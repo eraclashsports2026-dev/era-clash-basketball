@@ -2,7 +2,7 @@
 // Every simulation record carries these so we can always tell which system
 // generated a result. Bump deliberately; never silently.
 export const VERSIONS = {
-  app: "2.3.5",
+  app: "2.4.0",
   rating: "2.0",          // src/rating.js — POS_WEIGHTS + OOP penalty (CEO approval required to change)
   chemistry: "2.5",       // rating.js analyzeBalance (v2, unchanged) + attributes.js insight layer (additive)
   simulation_engine: "2.2",
