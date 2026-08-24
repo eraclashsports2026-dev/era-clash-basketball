@@ -35,6 +35,26 @@ const purePick = (slotPos, rng, { era = null, eliteN = 10, excludeNames = [] } =
   return top[Math.floor(rng() * top.length)];
 };
 
+
+// ── The day's OFFICIAL opponent (Addendum: Daily fairness) ────────────────────
+// The Daily is one puzzle for the whole world, so the opponent cannot be the
+// player's choice. Before this, Team Blue was freely re-rollable/hand-pickable
+// in the Daily, which let anyone hand-pick the weakest five in the pool and
+// bank a near-maximum score. The opponent is now DERIVED from the same UTC
+// date seed as the draft: identical for every player, every time, and the
+// server ignores any client-supplied blueIds for daily games.
+export const dailyOpponent = (dateKey) => {
+  const rng = mulberry32(dailySeed(dateKey) ^ 0x5EED0FF);
+  const roster = [];
+  const names = [];
+  for (const pos of POSITIONS) {
+    const p = purePick(pos, rng, { eliteN: 14, excludeNames: [...names] });
+    roster.push(p);
+    names.push(p.name);
+  }
+  return roster;
+};
+
 // Roll 1: the day's opening five (one person per lineup).
 export const dailyRoll1 = (seed) => {
   const rng = mulberry32(seed);

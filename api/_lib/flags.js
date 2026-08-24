@@ -58,5 +58,5 @@ export const limits = () => ({
   // circuit breaker
   aiFailThreshold: num("AI_CIRCUIT_FAIL_THRESHOLD", 5),
   aiCircuitWindowSec: num("AI_CIRCUIT_WINDOW_SEC", 120),
-  aiTimeoutMs: num("AI_TIMEOUT_MS", 20000),
+  aiTimeoutMs: num("AI_TIMEOUT_MS", 24000), // real recap latency is ~20s; 2 attempts + backoff must fit vercel.json maxDuration (60s)
 });

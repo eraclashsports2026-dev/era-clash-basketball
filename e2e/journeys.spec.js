@@ -24,6 +24,9 @@ const randomGold = (page) => page.getByRole("button", { name: /Random Team/ }).f
 async function pickCoachesIfV3(page) {
   for (let i = 0; i < 2; i++) {
     const btn = page.getByRole("button", { name: /RANDOM COACH/ }).first();
+    // recommendations arrive from /api/v3meta, so wait for the control to
+    // exist instead of sampling before the fetch resolves
+    try { await btn.waitFor({ state: "visible", timeout: 4000 }); } catch { /* no coach step here */ }
     if (await btn.count() && await btn.isVisible().catch(() => false)) {
       await btn.click();
       await page.waitForTimeout(250);
@@ -113,11 +116,16 @@ test("J4: Daily consumes one attempt, persists, and survives reload", async ({ p
   await page.getByRole("button", { name: /Roll 2/ }).click();
   await page.getByRole("button", { name: /Roll 3/ }).click();
   await page.getByRole("button", { name: /Finalize Squad/ }).click();
-  await randomBlue(page); // Blue is user-controlled in Daily too
+  // The Daily opponent is the day's seeded five — locked, identical worldwide.
+  // It must NOT be re-rollable or swappable, or the daily board is gameable.
+  await expect(page.getByText("Today's official opponent")).toBeVisible();
+  await expect(page.getByRole("button", { name: "Re-roll Team Blue" })).toHaveCount(0);
+  await expect(page.getByRole("tab", { name: /Random Team/ })).toHaveCount(0);
   await page.getByRole("button", { name: /RUN THE SIM/ }).click();
   await expect(page.getByText(/TEAM (GOLD|BLUE) WINS/)).toBeVisible({ timeout: 15000 });
   const board = await (await page.request.get("/api/daily")).json();
-  expect(board.count).toBe(1);
+  expect(board.count).toBeGreaterThanOrEqual(1); // shared harness store across specs
+  expect(Array.isArray(board.board)).toBe(true);
   await page.reload();
   await page.getByRole("button", { name: "Daily", exact: true }).click();
   await expect(page.getByText("Today's Clash is done")).toBeVisible();
@@ -127,7 +135,8 @@ test("J5+J7: core failure records nothing; fabricated scores are rejected server
   await page.goto("/");
   const fail = await page.request.post("/api/game", {
     headers: { "x-chaos": "engine-fail" },
-    data: { mode: "single", simulationId: "e2e-fail-123", goldIds: GOLD, blueIds: BLUE },
+    // unique per run: a fixed id hits the idempotency guard (409) on a warm harness
+    data: { mode: "single", simulationId: `e2efail${Date.now().toString(36)}`, goldIds: GOLD, blueIds: BLUE },
   });
   expect(fail.status()).toBe(500);
   expect((await fail.json()).code).toBe("ENGINE_FAILURE");
@@ -290,4 +299,31 @@ test("J11 (V3): Team → Coach → Era Style → Run with possession postgame", 
   const v3 = (await res.json()).result.v3;
   expect(v3.teamTotals.gold.tpa).toBe(0);
   expect(v3.teamTotals.blue.tpa).toBe(0);
+});
+
+test("J12: Tournament runs a real bracket and opponent difficulty is selectable", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("tab", { name: /TOURNAMENT/ }).click();
+  // difficulty only exists for the modes that generate a schedule
+  await expect(page.getByText("OPPONENT DIFFICULTY")).toBeVisible();
+  for (const level of ["Rookie", "Pro", "All-Star", "Legend"]) {
+    await expect(page.getByRole("tab", { name: `Difficulty ${level}` })).toBeVisible();
+  }
+  await page.getByRole("tab", { name: "Difficulty Rookie" }).click();
+  await randomGold(page);
+  await pickCoachesIfV3(page);
+  await page.getByRole("button", { name: /RUN THE SIM/ }).click();
+  // a bracket renders rounds — and never the engine-failure message
+  await expect(page.getByText(/Round 1/)).toBeVisible({ timeout: 30000 });
+  await expect(page.getByText(/ADVANCED|ELIMINATED/).first()).toBeVisible();
+  await expect(page.getByText(/couldn't complete this matchup/)).toHaveCount(0);
+});
+
+test("J13: difficulty is absent for modes without a generated schedule", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByText("OPPONENT DIFFICULTY")).toHaveCount(0); // Single
+  await page.getByRole("tab", { name: /BEST OF 7/ }).click();
+  await expect(page.getByText("OPPONENT DIFFICULTY")).toHaveCount(0);
+  await page.getByRole("tab", { name: /WIN 82/ }).click();
+  await expect(page.getByText("OPPONENT DIFFICULTY")).toBeVisible();
 });

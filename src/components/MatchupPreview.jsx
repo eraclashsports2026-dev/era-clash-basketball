@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { T } from "../theme.js";
 import { matchupEdges } from "../engine.js";
 import { teamRating } from "../rating.js";
+import { v3meta } from "../v3meta.js";
 
 // Same probability model as engine.simulateGame — kept in sync deliberately.
 export const winProbability = (teamA, teamB) => {
@@ -46,10 +47,8 @@ function KeyClashPreview({ gold, blue, v3 }) {
   useEffect(() => {
     let alive = true;
     setClash(null);
-    fetch("/api/v3meta", {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ goldIds, blueIds, coachGoldId: v3.coachGoldId, coachBlueId: v3.coachBlueId, eraStyleId: v3.eraStyleId }),
-    }).then((r) => (r.ok ? r.json() : null)).then((j) => { if (alive && j?.keyClash) setClash(j.keyClash); }).catch(() => {});
+    v3meta({ goldIds, blueIds, coachGoldId: v3.coachGoldId, coachBlueId: v3.coachBlueId, eraStyleId: v3.eraStyleId })
+      .then((j) => { if (alive && j?.keyClash) setClash(j.keyClash); });
     return () => { alive = false; };
   }, [JSON.stringify(goldIds), JSON.stringify(blueIds), v3.coachGoldId, v3.coachBlueId, v3.eraStyleId]); // eslint-disable-line
   return (
@@ -70,7 +69,7 @@ export default function MatchupPreview({ gold, blue, v3 }) {
       <div style={{ padding: "14px 16px", borderRadius: 12, background: "rgba(0,0,0,0.35)", border: `1px solid ${T.border}`, textAlign: "center", maxWidth: 340, margin: "0 auto" }}>
         <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: 2, color: T.gold }}>MATCHUP PREVIEW</div>
         <div style={{ fontSize: 12, color: T.textDim, marginTop: 6, lineHeight: 1.5 }}>
-          Complete both teams to see the matchup breakdown and prediction.
+          Complete both teams to see what this matchup comes down to.
         </div>
       </div>
     );

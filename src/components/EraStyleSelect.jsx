@@ -5,6 +5,7 @@
 // numbers: the dynamic note explains how THIS roster translates, nothing more.
 import { useEffect, useState } from "react";
 import { T, teamAccent } from "../theme.js";
+import { v3meta } from "../v3meta.js";
 
 export default function EraStyleSelect({ eras, selected, onSelect, teamIds, side = "gold" }) {
   const accent = teamAccent(side);
@@ -15,10 +16,8 @@ export default function EraStyleSelect({ eras, selected, onSelect, teamIds, side
     let alive = true;
     setNote(null);
     if (!selected || !teamIds?.length) return;
-    fetch("/api/v3meta", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ goldIds: teamIds, eraStyleId: selected }) })
-      .then((r) => (r.ok ? r.json() : null))
-      .then((j) => { if (alive) setNote(j?.eraNote || null); })
-      .catch(() => {});
+    v3meta({ goldIds: teamIds, eraStyleId: selected })
+      .then((j) => { if (alive) setNote(j?.eraNote || null); });
     return () => { alive = false; };
   }, [selected, JSON.stringify(teamIds)]); // eslint-disable-line
 

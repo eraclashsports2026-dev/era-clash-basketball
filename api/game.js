@@ -15,8 +15,9 @@ import { tooLarge, MODES, validateTeamIds, validSimId, validChallengeId, cleanNa
 import { computeResult, dailyScore, newSeed } from "./_lib/game-core.js";
 import { computeResultV3 } from "./_lib/game-core-v3.js";
 import { validCoachId, validEraId } from "./_lib/validate.js";
+import { validDifficulty } from "../src/v3/difficulty.js";
 import { findDuplicatePerson } from "../src/v3/persons.js";
-import { utcDateKey, verifyDailyLineup } from "../src/dailyChallenge.js";
+import { utcDateKey, verifyDailyLineup, dailyOpponent } from "../src/dailyChallenge.js";
 
 const RESULT_TTL = 60 * 60 * 24 * 180;
 const IDEM_TTL = 60 * 60 * 24;
@@ -82,10 +83,13 @@ export default async function handler(req, res) {
       if ((challenge.games || []).length >= 50) return sendError(res, "FORBIDDEN", requestId);
       blue = validateTeamIds(challenge.challenger?.teamIds); // authoritative: the stored rival five
       if (!blue) return sendError(res, "VALIDATION_FAILURE", requestId);
-    } else if (mode === "single" || mode === "best7" || mode === "daily") {
+    } else if (mode === "single" || mode === "best7") {
       blue = validateTeamIds(b.blueIds);
       if (!blue) return sendError(res, "VALIDATION_FAILURE", requestId);
     } // 82/tournament: opponents generated server-side in computeResult
+    // Daily: the opponent is DERIVED from the day's seed, identical for every
+    // player on Earth. Client-supplied blueIds are ignored — otherwise anyone
+    // could hand-pick the weakest five and bank a near-maximum daily score.
 
     // Daily gates: server UTC date is the ONLY date; the submitted lineup must
     // be legally reachable from today's official seeded draft (the server
@@ -94,6 +98,7 @@ export default async function handler(req, res) {
     // lineup never consumes the official attempt.
     const today = utcDateKey();
     if (mode === "daily") {
+      blue = dailyOpponent(today);
       const legal = verifyDailyLineup(today, b.dailyDecisions, gold.map((p) => p.id));
       if (!legal.ok) {
         logReq({ requestId, route: "game", mode, status: 400, error_code: "DAILY_INVALID_LINEUP", reason: legal.reason });
@@ -143,6 +148,7 @@ export default async function handler(req, res) {
           coachGoldId: validCoachId(b.coachGoldId) || "neutral",
           coachBlueId: validCoachId(b.coachBlueId) || "neutral",
           eraStyleId: validEraId(b.eraStyleId) || undefined,
+          difficulty: validDifficulty(b.difficulty),
           dailyDate: mode === "daily" ? today : undefined,
         }, seed)
       : computeResult(mode, gold, blue, seed);

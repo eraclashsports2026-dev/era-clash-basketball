@@ -79,12 +79,12 @@ Team Gold box: ${core.teamAStats.map(line).join(" | ")}
 Team Blue box: ${core.teamBStats.map(line).join(" | ")}
 MVP (fixed): ${core.mvp}
 Pre-game edges: ${core.edges.map((e) => `${e.category}: ${e.edge === 0 ? "even" : `${e.edge > 0 ? "Gold" : "Blue"} +${Math.abs(e.edge)}`}`).join(", ")} (never write negative edge numbers — always name the side with the advantage)
-Positional duels (Gold vs Blue, same slot): ${(core.slotDuels || []).map((d) => `${d.pos}: ${d.gold.name} (${d.gold.pts}p/${d.gold.reb}r/${d.gold.ast}a) vs ${d.blue.name} (${d.blue.pts}p/${d.blue.reb}r/${d.blue.ast}a)`).join(" | ")}
+Positional duels and WHO ACTUALLY GUARDED WHOM (from the engine — never contradict these matchups or invent your own): ${(core.slotDuels || []).map((d) => `${d.pos}: ${d.gold.name} (${d.gold.pts}p/${d.gold.reb}r/${d.gold.ast}a${d.gold.guardedBy ? `, guarded by ${d.gold.guardedBy}` : ""}) vs ${d.blue.name} (${d.blue.pts}p/${d.blue.reb}r/${d.blue.ast}a${d.blue.guardedBy ? `, guarded by ${d.blue.guardedBy}` : ""})`).join(" | ") || "(not recorded — do NOT invent defensive matchups; write about the box score instead)"}
 ${result.v3 ? v3Notes(result) : `Gold chemistry notes: +${(result.goldChem?.strengths || []).join(", +") || "none"}; -${(result.goldChem?.weaknesses || []).join(", -") || "none"}
 Blue chemistry notes: +${(result.blueChem?.strengths || []).join(", +") || "none"}; -${(result.blueChem?.weaknesses || []).join(", -") || "none"}`}
 
 Respond ONLY with valid JSON (no markdown):
-{"summary":"4-6 analytical sentences explaining WHY Team ${core.winner} won. REQUIRED: break down at least two specific positional duels BY NAME from the list above (who outplayed whom, citing their actual lines), name the losing side's best individual performance and why it wasn't enough, and tie it to the structural edges. No generic praise — every claim must trace to the numbers above. Max 160 words.","teamAStrengths":["max 10 words","max 10 words","max 10 words"],"teamAWeaknesses":["max 10 words","max 10 words"],"teamBStrengths":["max 10 words","max 10 words","max 10 words"],"teamBWeaknesses":["max 10 words","max 10 words"],"mvpReason":"2-3 sentences explaining WHY ${core.mvp} earned MVP: cite the actual line above, what that production did to the opposing defense, and how it decided the outcome. Max 70 words.","turningPoint":"4-6 sentences describing the pivotal stretch: what shifted, which specific positional duel drove it (BY NAME, consistent with the duels above), how the opponent's best player tried to answer and why it failed, and how it decided the ${result.mode === "best7" ? "series" : "game"}. No invented exact timestamps. Max 150 words."}`;
+{"summary":"4-6 analytical sentences explaining WHY Team ${core.winner} won. REQUIRED: break down at least two specific positional duels BY NAME from the list above, and when you say a defender guarded someone it MUST match the 'guarded by' pairings above exactly — never assert a matchup that is not listed (who outplayed whom, citing their actual lines), name the losing side's best individual performance and why it wasn't enough, and tie it to the structural edges. No generic praise — every claim must trace to the numbers above. Max 160 words.","teamAStrengths":["max 10 words","max 10 words","max 10 words"],"teamAWeaknesses":["max 10 words","max 10 words"],"teamBStrengths":["max 10 words","max 10 words","max 10 words"],"teamBWeaknesses":["max 10 words","max 10 words"],"mvpReason":"2-3 sentences explaining WHY ${core.mvp} earned MVP: cite the actual line above, what that production did to the opposing defense, and how it decided the outcome. Max 70 words.","turningPoint":"4-6 sentences describing the pivotal stretch: what shifted, which specific positional duel drove it (BY NAME, consistent with the duels and the 'guarded by' pairings above), how the opponent's best player tried to answer and why it failed, and how it decided the ${result.mode === "best7" ? "series" : "game"}. No invented exact timestamps. Max 150 words."}`;
 };
 
 // Validate narrative output: text-only fields, capped lengths. The narrative
@@ -118,10 +118,22 @@ export const generateNarrative = async (result, apiKey, chaos) => {
   const prompt = buildPrompt(result);
   let lastCode = "MODEL_UNAVAILABLE";
 
+  // The whole handler must finish inside the platform function limit
+  // (vercel.json maxDuration). Two attempts at the full per-call timeout plus
+  // backoff used to exceed it, so a slow model produced a raw platform 504
+  // instead of a clean MODEL_TIMEOUT the client can handle. Budget it:
+  // attempt 1 gets the configured timeout, attempt 2 only what's left.
+  const deadline = Date.now() + Math.max(5000, aiTimeoutMs * 2);
+  const started = Date.now();
+
   for (let attempt = 0; attempt < 2; attempt++) {
-    if (attempt > 0) await sleep(500 + Math.random() * 1000); // backoff + jitter
+    if (attempt > 0) {
+      await sleep(400 + Math.random() * 400); // backoff + jitter
+      if (Date.now() >= deadline - 2000) break; // no time for a real second try
+    }
     const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), aiTimeoutMs);
+    const remaining = deadline - Date.now();
+    const timer = setTimeout(() => controller.abort(), Math.max(2000, Math.min(aiTimeoutMs, remaining)));
     try {
       // chaos hooks (test/dev only — gated in the handler)
       if (chaos === "ai-timeout") { await sleep(aiTimeoutMs + 500); throw Object.assign(new Error("chaos"), { name: "AbortError" }); }

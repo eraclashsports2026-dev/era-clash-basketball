@@ -111,6 +111,63 @@ export const gameSummary = (result, gold, blue, coachG, coachB, era, expGold) =>
   return s.slice(0, 6).join(" ");
 };
 
+
+// ── Series summary (best-of-7 and tournament rounds) ─────────────────────────
+// Describes the SERIES, not its final game: series score, how it was won,
+// the series MVP by series averages, and the swing game. Everything is read
+// off the realized games — nothing is invented, nothing is borrowed from a
+// single night and presented as the whole story.
+export const seriesSummary = (series, gold, blue, coachG, coachB, era, expGold, mvp) => {
+  const won = series.winner === "Gold";
+  const winName = won ? "Team Gold" : "Team Blue";
+  const loseName = won ? "Team Blue" : "Team Gold";
+  const wKey = won ? "gold" : "blue", lKey = won ? "blue" : "gold";
+  const wCoach = won ? coachG : coachB;
+  const s = [];
+
+  const g = series.games.length;
+  const sweep = series.seriesScore.gold === 0 || series.seriesScore.blue === 0;
+  const expW = won ? expGold : 1 - expGold;
+  const klass = classifyOutcome(expW);
+
+  // 1 — how the series was won, against expectation
+  if (klass === "MAJOR_UPSET" || klass === "SIGNIFICANT_UPSET") {
+    s.push(`${winName} won the series ${series.seriesResult} as the underdog — ${loseName} was the stronger matchup on paper, and over ${g} games that edge never showed up.`);
+  } else if (sweep) {
+    s.push(`${winName} swept the series ${series.seriesResult} — over four straight games ${loseName} never found an answer.`);
+  } else {
+    s.push(`${winName} took the series ${series.seriesResult}${g === 7 ? " in a full seven" : ` in ${g} games`}, a result the engine rated a ${edgeBand(expW).toLowerCase()} in their favor.`);
+  }
+
+  // 2 — the series-long statistical story (averaged across every game)
+  const tot = (key, stat) => series.games.reduce((a, gm) => a + gm[key].totals[stat], 0);
+  const wFg = pct(tot(wKey, "fgm"), tot(wKey, "fga")), lFg = pct(tot(lKey, "fgm"), tot(lKey, "fga"));
+  const wTo = tot(wKey, "to") / g, lTo = tot(lKey, "to") / g;
+  const wOreb = tot(wKey, "oreb") / g, lOreb = tot(lKey, "oreb") / g;
+  if (wFg - lFg >= 3) s.push(`Across ${g} games ${winName} simply shot better — ${wFg}% from the field to ${lFg}%.`);
+  else if (lTo - wTo >= 2) s.push(`${winName} won the possession war, forcing ${(lTo - wTo).toFixed(1)} more turnovers a night than they gave away.`);
+  else if (wOreb - lOreb >= 2) s.push(`${winName} controlled the offensive glass by ${(wOreb - lOreb).toFixed(1)} boards a game, and those second chances added up over ${g} games.`);
+  else s.push(`Statistically these teams were nearly even over ${g} games — ${wFg}% to ${lFg}% shooting — which is exactly why it went the distance.`);
+
+  // 3 — the series MVP, by SERIES averages
+  if (mvp) s.push(`${mvp.name} was the difference, averaging ${mvp.pts} points${mvp.fga ? ` on ${mvp.fgm}-of-${mvp.fga} shooting` : ""}${mvp.ast >= 5 ? ` and ${mvp.ast} assists` : ""} a night.`);
+
+  // 4 — the swing game (largest margin the winner produced)
+  const swing = series.games
+    .map((gm, i) => ({ i, gm, margin: (gm.winner === series.winner ? 1 : -1) * Math.abs(gm.finalScore.gold - gm.finalScore.blue) }))
+    .sort((a, b) => b.margin - a.margin)[0];
+  if (swing && swing.margin > 0) s.push(`Game ${swing.i + 1} was the statement — a ${swing.margin}-point win that broke the series open.`);
+
+  // 5 — the losing side's best effort, named honestly
+  const lAvg = series.games[0][lKey].lines.map((_, i) => {
+    const rows = series.games.map((gm) => gm[lKey].lines[i]);
+    return { name: rows[0].name, pts: Math.round((rows.reduce((a, r) => a + r.pts, 0) / g) * 10) / 10 };
+  }).sort((a, b) => b.pts - a.pts)[0];
+  if (lAvg) s.push(`${lAvg.name} carried ${loseName} at ${lAvg.pts} a game, but one man was never going to be enough.`);
+
+  return s.slice(0, 6).join(" ");
+};
+
 // Turning-point analysis grounded in the biggest realized statistical swing.
 export const turningPointV3 = (result, era) => {
   const won = result.winner === "Gold";

@@ -4,6 +4,7 @@
 // OVR exists anywhere — evaluation is contextual (fit for THIS roster/era).
 import { useEffect, useState } from "react";
 import { T, card, teamAccent } from "../theme.js";
+import { v3meta } from "../v3meta.js";
 
 export default function CoachSelect({ side, teamIds, eraStyleId, selected, onSelect, allCoaches }) {
   const accent = teamAccent(side);
@@ -13,11 +14,8 @@ export default function CoachSelect({ side, teamIds, eraStyleId, selected, onSel
   useEffect(() => {
     let alive = true;
     setRecommended(null);
-    fetch("/api/v3meta", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ goldIds: teamIds, eraStyleId: eraStyleId || undefined }),
-    }).then((r) => (r.ok ? r.json() : null)).then((d) => { if (alive && d) setRecommended(d.recommended); }).catch(() => {});
+    v3meta({ goldIds: teamIds, eraStyleId: eraStyleId || undefined })
+      .then((d) => { if (alive && d) setRecommended(d.recommended); });
     return () => { alive = false; };
   }, [JSON.stringify(teamIds), eraStyleId]); // eslint-disable-line
 

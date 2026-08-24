@@ -27,6 +27,22 @@ export const genPlayer = (slotPos = null, rng = Math.random, opts = {}) => {
   return pick;
 };
 
+
+// Deterministic sibling of genPlayer with NO session variety guard: the same
+// rng sequence always yields the same player. Used for generated opponents so
+// a season/bracket is exactly reproducible from its seed (the variety guard is
+// shared mutable module state and would otherwise leak between simulations).
+export const purePickPlayer = (slotPos, rng, opts = {}) => {
+  let pool = PLAYERS;
+  if (slotPos) pool = pool.filter((p) => p.positions.includes(slotPos));
+  if (opts.era) pool = pool.filter((p) => p.decade === opts.era);
+  if (opts.excludeNames?.length) pool = pool.filter((p) => !opts.excludeNames.includes(p.name));
+  if (pool.length === 0) pool = PLAYERS.filter((p) => !(opts.excludeNames || []).includes(p.name));
+  const sorted = [...pool].sort((a, b) => slotRating(b, slotPos || b.pos) - slotRating(a, slotPos || a.pos));
+  const top = sorted.slice(0, Math.max(1, Math.min(opts.eliteN || 10, sorted.length)));
+  return top[Math.floor(rng() * top.length)];
+};
+
 const genFive = (rng, eliteN) => {
   const roster = [];
   const names = [];

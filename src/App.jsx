@@ -3,7 +3,7 @@ import { PLAYERS, POSITIONS } from "./players.js";
 import { displayOVR, analyzeBalance, teamRating } from "./rating.js";
 import { T, card } from "./theme.js";
 import { genPlayer, genRoster, genOpponent } from "./draft.js";
-import { utcDateKey, dailySeed, dailyRoll1, applyDailyRoll } from "./dailyChallenge.js";
+import { utcDateKey, dailySeed, dailyRoll1, applyDailyRoll, dailyOpponent } from "./dailyChallenge.js";
 import { runGame, requestNarrative } from "./gameClient.js";
 import { track, trackSessionStart } from "./analytics.js";
 import { installErrorMonitoring } from "./errors.js";
@@ -25,6 +25,7 @@ import ManualPicker from "./components/ManualPicker.jsx";
 import CoachSelect from "./components/CoachSelect.jsx";
 import EraStyleSelect from "./components/EraStyleSelect.jsx";
 import StrategyTabs from "./components/StrategyTabs.jsx";
+import { DIFFICULTIES, DEFAULT_DIFFICULTY } from "./v3/difficulty.js";
 import { TeamShell, EmptySlot, FilledSlot, LineupList } from "./components/TeamSlots.jsx";
 import { teamFit } from "./chemistryView.js";
 
@@ -63,6 +64,7 @@ export default function App() {
   const [nav, setNav] = useState("Play");             // Play | Daily | Challenges | Board | Profile | Credits
   const [view, setView] = useState("builder");        // builder | simulating | postgame
   const [gameMode, setGameMode] = useState("Single"); // Single | Best7 | Win82 | Tournament
+  const [difficulty, setDifficulty] = useState(DEFAULT_DIFFICULTY); // opponent pool for Win82/Tournament
   const [buildMethod, setBuildMethod] = useState("rolls"); // rolls (Chaos Draft) | manual
   const [yz, setYz] = useState(null);
   const [ballIQ, setBallIQ] = useState(false);
@@ -162,7 +164,10 @@ export default function App() {
   const activeMode = isDaily ? "Daily" : isChallenge ? "Challenge" : gameMode;
   // modes where the user builds Team Blue (Win82/Tournament opponents are
   // server-generated per game; Challenge locks the stored rival five)
-  const blueBuildable = !isChallenge && (activeMode === "Single" || activeMode === "Best7" || activeMode === "Daily");
+  // Team Blue is user-built only in the open modes. In the Daily the opponent
+  // is the day's seeded five (same for everyone) and in a Challenge it is the
+  // rival's stored lineup — neither is the player's to choose.
+  const blueBuildable = !isChallenge && (activeMode === "Single" || activeMode === "Best7");
   // V3 steps (TEAM → COACH → ERA STYLE) appear for standard modes only; Daily
   // keeps its fairness model (neutral coaches, derived seed) and Challenge
   // keeps the rival's five as-is.
@@ -464,7 +469,7 @@ export default function App() {
     setLoading(true); setErr(""); setSimStage(""); setNarrative({ status: "none" });
     noteGameStarted();
     try {
-      const { resultId, result: record, records } = await runGame({ mode: "82", gold: team, coachGoldId: v3Steps ? coachGold?.id : undefined, eraStyleId: v3Steps ? eraStyle : undefined, onStage: setSimStage });
+      const { resultId, result: record, records } = await runGame({ mode: "82", gold: team, coachGoldId: v3Steps ? coachGold?.id : undefined, eraStyleId: v3Steps ? eraStyle : undefined, difficulty, onStage: setSimStage });
       const { wins, losses } = record;
       // streaks: season summary counts once toward the win/loss streak
       if (wins > losses) recordWinStreak(); else recordLossStreak();
@@ -490,7 +495,7 @@ export default function App() {
     setLoading(true); setErr(""); setSimStage(""); setNarrative({ status: "none" });
     noteGameStarted();
     try {
-      const { resultId, result: record, records } = await runGame({ mode: "tournament", gold: team, coachGoldId: v3Steps ? coachGold?.id : undefined, eraStyleId: v3Steps ? eraStyle : undefined, onStage: setSimStage });
+      const { resultId, result: record, records } = await runGame({ mode: "tournament", gold: team, coachGoldId: v3Steps ? coachGold?.id : undefined, eraStyleId: v3Steps ? eraStyle : undefined, difficulty, onStage: setSimStage });
       const rounds = (record.rounds || []).map((r) => ({
         name: r.name,
         opp: idsToPlayers(r.oppIds),
@@ -572,6 +577,14 @@ export default function App() {
   };
 
   const dailyDone = !!daily[utcDateKey()];
+
+  // Show today's official opponent in the Daily (locked, identical worldwide).
+  // Re-asserted whenever it is missing, because starting the daily draft clears
+  // the opponent the way it does in the open modes — here it must come back.
+  useEffect(() => {
+    if (!isDaily || opponent) return;
+    setOpponent(dailyOpponent(utcDateKey()));
+  }, [isDaily, opponent]);
   const dailyStreak = computeDailyStreak(daily);
   const winnerClass = result ? ((result.w ?? result.won ?? (result.type === "82" && result.wins > result.losses)) ? "win-gold" : "win-blue") : "";
   const goldCount = team ? 5 : buildMethod === "manual" ? manual.filter(Boolean).length : (yz ? yz.roster.filter((_, i) => yz.keep[i]).length : 0);
@@ -614,6 +627,28 @@ export default function App() {
               ))}
             </div>
           )}
+        </div>
+      )}
+
+      {/* Opponent difficulty — only Win 82 and Tournament generate a schedule.
+          This changes WHO you face, never how a game is simulated. */}
+      {!isChallenge && !isDaily && !result && (gameMode === "Win82" || gameMode === "Tournament") && (
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, paddingBottom: 12 }}>
+          <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: 2, color: T.textDim }}>OPPONENT DIFFICULTY</div>
+          <div role="tablist" aria-label="Opponent difficulty" style={{ display: "flex", gap: 6, flexWrap: "wrap", justifyContent: "center" }}>
+            {Object.values(DIFFICULTIES).map((d) => (
+              <button key={d.id} role="tab" aria-selected={difficulty === d.id} aria-label={`Difficulty ${d.label}`}
+                onClick={() => setDifficulty(d.id)} style={{
+                  padding: "7px 14px", borderRadius: 9, cursor: "pointer", minHeight: 40, fontSize: 12, fontWeight: 800,
+                  border: `1px solid ${difficulty === d.id ? T.gold : T.border}`,
+                  background: difficulty === d.id ? "rgba(253,185,39,0.12)" : "rgba(0,0,0,0.25)",
+                  color: difficulty === d.id ? T.gold : T.textDim,
+                }}>{d.label}</button>
+            ))}
+          </div>
+          <div style={{ fontSize: 11, color: T.textDim, textAlign: "center", maxWidth: 420 }}>
+            {DIFFICULTIES[difficulty].blurb} <span style={{ color: T.textMuted }}>Games are simulated identically at every setting — only who you face changes.</span>
+          </div>
         </div>
       )}
 
@@ -806,11 +841,11 @@ export default function App() {
                   <div style={{ display: "grid", gap: 8 }}>
                     {POSITIONS.map((pos, i) => (
                       <FilledSlot key={pos} p={opponent[i]} pos={pos} team="blue" fit={teamFit(opponent, i)}
-                        onSwap={!isChallenge && !loading ? () => setPicker({ slot: i, target: "blue-swap" }) : null} />
+                        onSwap={!isChallenge && !isDaily && !loading ? () => setPicker({ slot: i, target: "blue-swap" }) : null} />
                     ))}
                   </div>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 10, fontSize: 12, color: T.textDim }}>
-                    {!isChallenge ? (
+                    {!isChallenge && !isDaily ? (
                       <span style={{ display: "flex", gap: 6 }}>
                         <button onClick={randomBlue} aria-label="Re-roll Team Blue" style={{
                           padding: "6px 11px", fontSize: 11.5, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 34,
@@ -821,6 +856,8 @@ export default function App() {
                           border: `1px solid ${T.border}`, background: "transparent", color: T.textDim,
                         }}>↻ Reset</button>
                       </span>
+                    ) : isDaily ? (
+                      <span style={{ fontSize: 11, color: T.textDim }}>🔒 Today's official opponent — same for everyone</span>
                     ) : <span />}
                     <span>RATING <b style={{ color: T.blue }}>{teamRating(opponent)}</b></span>
                   </div>

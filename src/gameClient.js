@@ -25,7 +25,7 @@ export class GameError extends Error {
 const FRIENDLY = {
   RATE_LIMITED: "EraClash is experiencing heavy traffic. Your team is saved — try again in a moment.",
   MAINTENANCE: "EraClash is briefly down for maintenance. Your team is saved.",
-  ENGINE_FAILURE: "We couldn't complete this matchup. No result was recorded and your Daily attempt was not used.",
+  ENGINE_FAILURE: "We couldn't complete this matchup. No result was recorded — nothing was counted against your record.",
   VALIDATION_FAILURE: "That lineup couldn't be validated. Rebuild and try again.",
   DAILY_INVALID_LINEUP: "That lineup doesn't match today's official Daily draft. Your attempt was not used — restart today's challenge.",
   IDEMPOTENCY_CONFLICT: "That game was already processed — check your recent results.",
@@ -46,14 +46,14 @@ const inflight = new Map();
 
 // runGame({mode, gold, blue, challengeId, dailyDecisions, onStage}) → {resultId, result, records}
 export const runGame = (opts) => {
-  const key = `${opts.mode}|${opts.gold.map((p) => p.id).join(",")}|${(opts.blue || []).map((p) => p.id).join(",")}|${opts.challengeId || ""}`;
+  const key = `${opts.mode}|${opts.gold.map((p) => p.id).join(",")}|${(opts.blue || []).map((p) => p.id).join(",")}|${opts.challengeId || ""}|${opts.difficulty || ""}`;
   if (inflight.has(key)) return inflight.get(key);
   const p = _run(opts).finally(() => inflight.delete(key));
   inflight.set(key, p);
   return p;
 };
 
-async function _run({ mode, gold, blue, challengeId, dailyDecisions, coachGoldId, coachBlueId, eraStyleId, onStage }) {
+async function _run({ mode, gold, blue, challengeId, dailyDecisions, coachGoldId, coachBlueId, eraStyleId, difficulty, onStage }) {
   const simulationId = newSimId();
   const started = Date.now();
   track("simulation_started", { mode, simulation_id: simulationId, team_rating: teamRating(gold) });
@@ -73,6 +73,7 @@ async function _run({ mode, gold, blue, challengeId, dailyDecisions, coachGoldId
         coachGoldId: coachGoldId || undefined,
         coachBlueId: coachBlueId || undefined,
         eraStyleId: eraStyleId || undefined,
+        difficulty: difficulty || undefined,
         displayName: getDisplayName() || undefined,
         legacyUid: getUid(),
       }),
@@ -90,6 +91,7 @@ async function _run({ mode, gold, blue, challengeId, dailyDecisions, coachGoldId
         coach_gold: coachGoldId || "neutral",
         coach_blue: coachBlueId || "neutral",
         era_style: eraStyleId || "2020s",
+        difficulty: difficulty || undefined,   // Win 82 / Tournament schedule strength
         expected_gold_pct: data.result.v3.expectedGoldWinPct,
         outcome_class: data.result.v3.outcomeClass,
         overtimes: data.result.v3.overtimes,
