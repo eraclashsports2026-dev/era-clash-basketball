@@ -1,68 +1,33 @@
 // ── EraClash Basketball Player Database ──────────────────────────────────────
-// 372 player-decade entries across 8 decades (v2.6: +42 1950s cards) (v2: +44 expansion, defense/playmaking emphasis)
+// 337 player-decade entries across 8 decades (1950s = NBA 75 members only)
 // pos = primary position, positions = all eligible positions
 export const PLAYERS = [
   // ═══ 1950s ═══
-  // The league's first decade. VERIFIED 2026-08-24: every line below was
-  // checked against the player's published career-statistics table (Wikipedia,
-  // which mirrors Basketball-Reference; b-ref itself blocks automated reads).
-  // 11 of 42 cards were already exact; 31 were corrected — including several
-  // All-NBA honors that had been credited in error (Mikkelsen and Wanzer never
-  // made an All-NBA First Team; Sears and Hutchins have no All-NBA selections
-  // in the source at all).
+  // The league's first decade, restricted to NBA 75th Anniversary Team members
+  // (CEO decision, 2026-08-24): of the 42 cards originally researched for this
+  // era, these 7 are the ones the NBA named to its 75th Anniversary Team.
   //
-  // Players who also hold a 1960s card (Pettit, Cousy, Russell, Arizin,
+  // VERIFIED 2026-08-24 against each player's published career-statistics table
+  // (Wikipedia, which mirrors Basketball-Reference; b-ref blocks automated
+  // reads). Players who also hold a 1960s card (Pettit, Cousy, Russell, Arizin,
   // Sharman) use ONLY their 1950s seasons, averaged from the per-season table,
   // so the two cards describe different players at different times.
   //
   // Steals and blocks are 0 for every card here: the NBA did not record either
   // statistic until 1973-74, and the engine treats those derived capabilities
   // as LOW-confidence estimates rather than measurements (see
-  // docs/simulation-v3/translation-doctrine.md). Where the source lists no
-  // All-NBA selection, the value is 0 rather than an assumption.
-  // ═══ 1950s ═══
-  { id:"mikan-50s",     name:"George Mikan",             decade:"1950s", pos:"C",  positions:["C"],           team:"Lakers",          pts:23.1, reb:13.4, ast:2.8,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:6, an2:0, an3:0, ad1:0, ad2:0, win:9, pop:10 },
+  // docs/simulation-v3/translation-doctrine.md).
+  //
+  // COVERAGE NOTE: this leaves exactly one SF-eligible player (Arizin), so an
+  // all-1950s five has only one legal shape. Era-filtered draft picks still
+  // resolve at every position; the tests below guard both facts.
+{ id:"mikan-50s",     name:"George Mikan",             decade:"1950s", pos:"C",  positions:["C"],           team:"Lakers",          pts:23.1, reb:13.4, ast:2.8,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:6, an2:0, an3:0, ad1:0, ad2:0, win:9, pop:10 },
   { id:"pettit-50s",    name:"Bob Pettit",               decade:"1950s", pos:"PF", positions:["PF","C"],      team:"Hawks",           pts:25.1, reb:15.9, ast:2.8,  stl:0.0, blk:0.0 , mvp:2, fmvp:0, dpoy:0, an1:6, an2:0, an3:0, ad1:0, ad2:0, win:6, pop:8 },
   { id:"schayes-50s",   name:"Dolph Schayes",            decade:"1950s", pos:"PF", positions:["PF","C"],      team:"Nationals",       pts:18.8, reb:12.5, ast:3.0,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:6, an2:4, an3:0, ad1:0, ad2:0, win:6, pop:7 },
   { id:"cousy-50s",     name:"Bob Cousy",                decade:"1950s", pos:"PG", positions:["PG"],          team:"Celtics",         pts:19.4, reb:5.8,  ast:7.6,  stl:0.0, blk:0.0 , mvp:1, fmvp:0, dpoy:0, an1:9, an2:0, an3:0, ad1:0, ad2:0, win:8, pop:9 },
   { id:"russell-50s",   name:"Bill Russell",             decade:"1950s", pos:"C",  positions:["C"],           team:"Celtics",         pts:16.6, reb:22.3, ast:2.9,  stl:0.0, blk:0.0 , mvp:1, fmvp:0, dpoy:0, an1:1, an2:2, an3:0, ad1:0, ad2:0, win:9, pop:8 },
   { id:"arizin-50s",    name:"Paul Arizin",              decade:"1950s", pos:"SF", positions:["SF","SG"],     team:"Warriors",        pts:22.9, reb:8.9,  ast:2.3,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:3, an2:1, an3:0, ad1:0, ad2:0, win:6, pop:7 },
   { id:"sharman-50s",   name:"Bill Sharman",             decade:"1950s", pos:"SG", positions:["SG","PG"],     team:"Celtics",         pts:17.8, reb:3.9,  ast:3,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:4, an2:3, an3:0, ad1:0, ad2:0, win:7, pop:7 },
-  { id:"johnston-50s",  name:"Neil Johnston",            decade:"1950s", pos:"C",  positions:["C","PF"],      team:"Warriors",        pts:19.4, reb:11.3, ast:2.5,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:4, an2:1, an3:0, ad1:0, ad2:0, win:5, pop:6 },
-  { id:"macauley-50s",  name:"Ed Macauley",              decade:"1950s", pos:"C",  positions:["C","PF"],      team:"Celtics/Hawks",   pts:17.5, reb:7.5,  ast:3.2,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:3, an2:1, an3:0, ad1:0, ad2:0, win:5, pop:6 },
-  { id:"pollard-50s",   name:"Jim Pollard",              decade:"1950s", pos:"SF", positions:["SF","PF"],     team:"Lakers",          pts:13.2, reb:7.8,  ast:3.2,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:2, an2:2, an3:0, ad1:0, ad2:0, win:8, pop:6 },
-  { id:"mikkelsen-50s", name:"Vern Mikkelsen",           decade:"1950s", pos:"PF", positions:["PF","C"],      team:"Lakers",          pts:14.4, reb:9.4,  ast:2.2,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:4, an3:0, ad1:0, ad2:0, win:8, pop:5 },
-  { id:"gallatin-50s",  name:"Harry Gallatin",           decade:"1950s", pos:"PF", positions:["PF","C"],      team:"Knicks",          pts:13.0, reb:11.9, ast:1.8,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:1, an2:1, an3:0, ad1:0, ad2:0, win:4, pop:5 },
-  { id:"slater-50s",    name:"Slater Martin",            decade:"1950s", pos:"PG", positions:["PG"],          team:"Lakers/Hawks",    pts:9.8,  reb:3.4,  ast:4.2,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:5, an3:0, ad1:0, ad2:0, win:8, pop:5 },
-  { id:"yardley-50s",   name:"George Yardley",           decade:"1950s", pos:"SF", positions:["SF","PF"],     team:"Pistons",         pts:19.2, reb:8.9,  ast:1.7,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:1, an2:1, an3:0, ad1:0, ad2:0, win:4, pop:6 },
-  { id:"hagan-50s",     name:"Cliff Hagan",              decade:"1950s", pos:"SF", positions:["SF","SG"],     team:"Hawks",           pts:18, reb:6.6,  ast:3.2,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:2, an3:0, ad1:0, ad2:0, win:6, pop:6 },
-  { id:"twyman-50s",    name:"Jack Twyman",              decade:"1950s", pos:"SF", positions:["SF","SG"],     team:"Royals",          pts:18.0, reb:6.6,  ast:2.3,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:1, an3:0, ad1:0, ad2:0, win:3, pop:6 },
-  { id:"stokes-50s",    name:"Maurice Stokes",           decade:"1950s", pos:"PF", positions:["PF","C"],      team:"Royals",          pts:16.4, reb:17.3, ast:5.3,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:3, an3:0, ad1:0, ad2:0, win:3, pop:6 },
-  { id:"lovellette-50s",name:"Clyde Lovellette",         decade:"1950s", pos:"C",  positions:["C","PF"],      team:"Lakers/Hawks",    pts:17.0, reb:9.5,  ast:1.6,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:1, an3:0, ad1:0, ad2:0, win:7, pop:5 },
-  { id:"foust-50s",     name:"Larry Foust",              decade:"1950s", pos:"C",  positions:["C","PF"],      team:"Pistons",         pts:13.7, reb:9.8,  ast:1.7,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:1, an2:1, an3:0, ad1:0, ad2:0, win:4, pop:4 },
-  { id:"braun-50s",     name:"Carl Braun",               decade:"1950s", pos:"SG", positions:["SG","PG"],     team:"Knicks",          pts:13.5, reb:3.4,  ast:3.7,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:1, an3:0, ad1:0, ad2:0, win:4, pop:5 },
-  { id:"mcguire-50s",   name:"Dick McGuire",             decade:"1950s", pos:"PG", positions:["PG"],          team:"Knicks",          pts:8.0,  reb:4.2,  ast:5.7,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:1, an3:0, ad1:0, ad2:0, win:4, pop:5 },
-  { id:"davies-50s",    name:"Bob Davies",               decade:"1950s", pos:"PG", positions:["PG"],          team:"Royals",          pts:14.3, reb:2.9,  ast:4.9,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:4, an2:1, an3:0, ad1:0, ad2:0, win:6, pop:6 },
-  { id:"wanzer-50s",    name:"Bobby Wanzer",             decade:"1950s", pos:"SG", positions:["SG","PG"],     team:"Royals",          pts:12.2, reb:4.5,  ast:3.2,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:3, an3:0, ad1:0, ad2:0, win:6, pop:5 },
-  { id:"phillip-50s",   name:"Andy Phillip",             decade:"1950s", pos:"PG", positions:["PG","SG"],     team:"Warriors/Pistons",pts:9.1,  reb:4.4,  ast:5.4,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:2, an3:0, ad1:0, ad2:0, win:5, pop:4 },
-  { id:"gola-50s",      name:"Tom Gola",                 decade:"1950s", pos:"SF", positions:["SF","PG"],     team:"Warriors",        pts:11.3, reb:8.0,  ast:4.2,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:1, an3:0, ad1:0, ad2:0, win:5, pop:6 },
-  { id:"risen-50s",     name:"Arnie Risen",              decade:"1950s", pos:"C",  positions:["C","PF"],      team:"Royals/Celtics",  pts:12, reb:9.7,  ast:1.7,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:1, an3:0, ad1:0, ad2:0, win:6, pop:4 },
-  { id:"ramsey-50s",    name:"Frank Ramsey",             decade:"1950s", pos:"SF", positions:["SF","SG"],     team:"Celtics",         pts:13.4, reb:5.5,  ast:1.8,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:8, pop:5 },
-  { id:"kerr-50s",      name:"Johnny Kerr",              decade:"1950s", pos:"C",  positions:["C","PF"],      team:"Nationals",       pts:13.8, reb:11.2, ast:2.2,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:5, pop:5 },
-  { id:"naulls-50s",    name:"Willie Naulls",            decade:"1950s", pos:"PF", positions:["PF","SF"],     team:"Knicks",          pts:15.8, reb:9.1,  ast:1.6,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:5, pop:5 },
-  { id:"shue-50s",      name:"Gene Shue",                decade:"1950s", pos:"PG", positions:["PG","SG"],     team:"Pistons",         pts:14.4, reb:4.1,  ast:3.7,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:1, an2:1, an3:0, ad1:0, ad2:0, win:3, pop:5 },
-  { id:"clifton-50s",   name:"Nat Clifton",              decade:"1950s", pos:"C",  positions:["C","PF"],      team:"Knicks",          pts:10.0, reb:8.2,  ast:2.5,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:4, pop:7 },
-  { id:"lloyd-50s",     name:"Earl Lloyd",               decade:"1950s", pos:"PF", positions:["PF","SF"],     team:"Nationals",       pts:8.4,  reb:6.4,  ast:1.4,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:5, pop:6 },
-  { id:"cooper-50s",    name:"Chuck Cooper",             decade:"1950s", pos:"SF", positions:["SF","PF"],     team:"Celtics",         pts:6.7,  reb:5.9,  ast:1.8,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:3, pop:6 },
-  { id:"barksdale-50s", name:"Don Barksdale",            decade:"1950s", pos:"PF", positions:["PF","C"],      team:"Bullets/Celtics", pts:11.0, reb:8.0,  ast:2.1,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:3, pop:6 },
-  { id:"sears-50s",     name:"Kenny Sears",              decade:"1950s", pos:"SF", positions:["SF","PF"],     team:"Knicks",          pts:13.9, reb:7.8,  ast:1.6,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:3, pop:5 },
-  { id:"hutchins-50s",  name:"Mel Hutchins",             decade:"1950s", pos:"PF", positions:["PF","SF"],     team:"Pistons/Knicks",  pts:11.1, reb:9.6,  ast:3,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:4, pop:4 },
-  { id:"seymour-50s",   name:"Paul Seymour",             decade:"1950s", pos:"PG", positions:["PG","SG"],     team:"Nationals",       pts:9.4,  reb:3.1,  ast:3.8,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:2, an3:0, ad1:0, ad2:0, win:5, pop:4 },
-  { id:"felix-50s",     name:"Ray Felix",                decade:"1950s", pos:"C",  positions:["C"],           team:"Bullets/Knicks",  pts:10.9, reb:8.9,  ast:0.7,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:3, pop:4 },
-  { id:"coleman-50s",   name:"Jack Coleman",             decade:"1950s", pos:"PF", positions:["PF","C"],      team:"Royals/Hawks",    pts:10.6,  reb:9.2,  ast:2.8,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:5, pop:3 },
-  { id:"share-50s",     name:"Charlie Share",            decade:"1950s", pos:"C",  positions:["C"],           team:"Hawks",           pts:8.3,  reb:8.4,  ast:1.4,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:5, pop:3 },
-  { id:"houbregs-50s",  name:"Bob Houbregs",             decade:"1950s", pos:"C",  positions:["C","PF"],      team:"Pistons",         pts:9.3,  reb:5.5,  ast:1.8,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:3, pop:3 },
-  { id:"boryla-50s",    name:"Vince Boryla",             decade:"1950s", pos:"SF", positions:["SF","PF"],     team:"Knicks",          pts:11.2, reb:3.7,  ast:2.1,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:4, pop:4 },
   // ═══ 1960s ═══
   { id:"wilt-60s",   name:"Wilt Chamberlain",        decade:"1960s", pos:"C",  positions:["C"],           team:"Warriors/76ers",  pts:37.6, reb:27.2, ast:4.2,  stl:0.0, blk:0.0 , mvp:4, fmvp:0, dpoy:0, an1:7, an2:0, an3:0, ad1:0, ad2:0, win:6, pop:9 },
   { id:"bill-60s",   name:"Bill Russell",             decade:"1960s", pos:"C",  positions:["C"],           team:"Celtics",         pts:16.2, reb:23.6, ast:4.3,  stl:0.0, blk:0.0 , mvp:5, fmvp:0, dpoy:0, an1:3, an2:4, an3:0, ad1:0, ad2:0, win:10, pop:9 },

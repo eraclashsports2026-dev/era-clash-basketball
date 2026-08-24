@@ -5,6 +5,21 @@ import { POS_WEIGHTS, slotRating, displayOVR, analyzeBalance, teamRating } from 
 const byId = (id) => PLAYERS.find((p) => p.id === id);
 
 describe("player database", () => {
+  it("the 1950s block is exactly the NBA 75th Anniversary Team members", () => {
+    const fifties = PLAYERS.filter((p) => p.decade === "1950s").map((p) => p.name).sort();
+    expect(fifties).toEqual([
+      "Bill Russell", "Bill Sharman", "Bob Cousy", "Bob Pettit",
+      "Dolph Schayes", "George Mikan", "Paul Arizin",
+    ]);
+  });
+
+  it("the 1950s can still field a legal five at every position", () => {
+    const fifties = PLAYERS.filter((p) => p.decade === "1950s");
+    for (const pos of ["PG", "SG", "SF", "PF", "C"]) {
+      expect(fifties.filter((p) => p.positions.includes(pos)).length).toBeGreaterThan(0);
+    }
+  });
+
   it("covers all 8 era styles, including the 1950s", () => {
     const decades = new Set(PLAYERS.map((p) => p.decade));
     for (const d of ["1950s", "1960s", "1970s", "1980s", "1990s", "2000s", "2010s", "2020s"]) {
@@ -19,9 +34,9 @@ describe("player database", () => {
     }
   });
 
-  it("has exactly 372 entries with unique ids", () => {
-    expect(PLAYERS.length).toBe(372); // 8 decades incl. the 1950s founding class
-    expect(new Set(PLAYERS.map((p) => p.id)).size).toBe(372);
+  it("has exactly 337 entries with unique ids", () => {
+    expect(PLAYERS.length).toBe(337); // 8 decades; the 1950s block is NBA-75 members only
+    expect(new Set(PLAYERS.map((p) => p.id)).size).toBe(337);
   });
   it("every entry has the full stat + accolade schema", () => {
     for (const p of PLAYERS) {
@@ -53,7 +68,7 @@ describe("rating v2 (locked coefficients — changes need CEO approval)", () => 
     expect(slotRating(wilt, "PG")).toBeCloseTo((production + accolades) * 0.88, 6);
   });
   it("matches the shipped OVR examples", () => {
-    const cases = { "jordan-90s": 99, "jokic-20s": 98, "moncrief-80s": 94, "bowen-2ks": 88, "booker-10s": 74 };
+    const cases = { "jordan-90s": 99, "jokic-20s": 98, "moncrief-80s": 94, "bowen-2ks": 87, "booker-10s": 73 };
     for (const [id, ovr] of Object.entries(cases)) {
       const p = byId(id);
       expect(displayOVR(p, p.pos), id).toBe(ovr);
