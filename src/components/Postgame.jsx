@@ -355,7 +355,13 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
         {sim.v3 && (
           <div style={{ marginTop: 12, padding: "10px 14px", borderRadius: 10, background: T.bgCardHover, border: `1px solid ${T.border}`, fontSize: 12, color: T.textDim, display: "flex", gap: 14, flexWrap: "wrap" }}>
             <span>🏀 <b style={{ color: T.text }}>{sim.v3.possessions}</b> possessions{sim.v3.overtimes > 0 ? ` · ${sim.v3.overtimes} OT` : ""}</span>
-            <span>📈 pre-game expectation: <b style={{ color: T.gold }}>Gold {sim.v3.expectedGoldWinPct}%</b> · <b style={{ color: T.blue }}>Blue {100 - sim.v3.expectedGoldWinPct}%</b></span>
+            <span>📈 pre-game read: <b style={{ color: sim.v3.expectedGoldWinPct >= 50 ? T.gold : T.blue }}>{sim.v3.expectedGoldWinPct >= 55 ? "Gold" : sim.v3.expectedGoldWinPct <= 45 ? "Blue" : "even"}{sim.v3.expectedBand ? ` · ${sim.v3.expectedBand}` : ""}</b></span>
+            {sim.v3.outcomeClass && sim.v3.outcomeClass.includes("UPSET") && (
+              <span>⚡ <b style={{ color: T.gold }}>{sim.v3.outcomeClass.replace(/_/g, " ")}</b></span>
+            )}
+            {sim.v3.expectedPoints && (
+              <span>🎯 shot quality (expected pts): <b style={{ color: T.gold }}>{Math.round(sim.v3.expectedPoints.gold)}</b> · <b style={{ color: T.blue }}>{Math.round(sim.v3.expectedPoints.blue)}</b></span>
+            )}
             {sim.eraId && <span>🕰️ Era Style: <b style={{ color: T.text }}>{sim.eraId}</b></span>}
           </div>
         )}
@@ -377,10 +383,10 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
             {[["TEAM GOLD", sim.v3.fullBox.gold, T.gold], ["TEAM BLUE", sim.v3.fullBox.blue, T.blue]].map(([label, lines, color]) => (
               <div key={label} style={{ marginTop: 10, overflowX: "auto" }}>
                 <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1.5, color, marginBottom: 4 }}>{label}</div>
-                <table style={{ width: "100%", fontSize: 11, borderCollapse: "collapse", minWidth: 520 }}>
+                <table style={{ width: "100%", fontSize: 11, borderCollapse: "collapse", minWidth: 560 }}>
                   <thead><tr style={{ color: T.textDim, textAlign: "right" }}>
                     <th style={{ textAlign: "left", padding: "3px 4px" }}>PLAYER</th>
-                    {["PTS", "FG", "3PT", "FT", "OREB", "DREB", "AST", "STL", "BLK", "TO"].map((h) => <th key={h} style={{ padding: "3px 4px" }}>{h}</th>)}
+                    {["PTS", "FG", "3PT", "FT", "OREB", "DREB", "AST", "STL", "BLK", "TO", "PF"].map((h) => <th key={h} style={{ padding: "3px 4px" }}>{h}</th>)}
                   </tr></thead>
                   <tbody>
                     {lines.map((l) => (
@@ -393,6 +399,7 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
                         <td style={{ padding: "4px" }}>{l.oreb}</td><td style={{ padding: "4px" }}>{l.dreb}</td>
                         <td style={{ padding: "4px" }}>{l.ast}</td><td style={{ padding: "4px" }}>{l.stl}</td>
                         <td style={{ padding: "4px" }}>{l.blk}</td><td style={{ padding: "4px" }}>{l.to}</td>
+                        <td style={{ padding: "4px" }}>{l.pf ?? 0}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -433,6 +440,19 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
                 </div>
               ))}
             </div>
+          </div>
+        )}
+
+        {/* V3: in-game coaching adjustments actually made by the engine */}
+        {sim.v3 && ((sim.v3.adjustments?.gold?.length || 0) + (sim.v3.adjustments?.blue?.length || 0) > 0) && (
+          <div style={{ marginTop: 12, padding: 12, borderRadius: 10, background: T.bgCardHover, border: `1px solid ${T.border}` }}>
+            <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: 1.5, color: T.textDim, marginBottom: 6 }}>IN-GAME ADJUSTMENTS</div>
+            {(sim.v3.adjustments.gold || []).map((a, i) => (
+              <div key={`g${i}`} style={{ fontSize: 11.5, padding: "2px 0", color: T.textDim }}><b style={{ color: T.gold }}>Gold:</b> {a}</div>
+            ))}
+            {(sim.v3.adjustments.blue || []).map((a, i) => (
+              <div key={`b${i}`} style={{ fontSize: 11.5, padding: "2px 0", color: T.textDim }}><b style={{ color: T.blue }}>Blue:</b> {a}</div>
+            ))}
           </div>
         )}
 

@@ -251,6 +251,19 @@ export default function App() {
   // ── Draft: Manual + Random (both teams) ────────────────────────────────────
   const pickManual = (p) => {
     const { slot, target } = picker;
+    // V3 duplicate-person rule: one team can't field two era-versions of the
+    // same player (server enforces this too; across teams it's allowed)
+    if (v3.enabled) {
+      const roster = target === "gold-swap" ? team
+        : target === "blue-swap" && opponent ? opponent
+        : target === "blue-manual" ? blueManual
+        : manual;
+      if (roster?.some((x, i) => x && i !== slot && x.name === p.name)) {
+        setErr(`${p.name} is already on this team — a lineup can't field two era-versions of the same player. (Different versions CAN face each other on opposite teams.)`);
+        setPicker(null);
+        return;
+      }
+    }
     if (target === "gold-swap" && team) {
       setTeam(team.map((x, i) => (i === slot ? p : x)));
       setResult(null);
@@ -715,7 +728,7 @@ export default function App() {
                   Pick a <b style={{ color: T.gold }}>coach</b> for {!coachGold ? "Team Gold" : "Team Blue"} to continue.
                 </div>
               )}
-              <MatchupPreview gold={team} blue={blueBuildable ? opponent : null} />
+              <MatchupPreview gold={team} blue={blueBuildable ? opponent : null} v3={v3Steps ? { enabled: true, coachGoldId: coachGold?.id, coachBlueId: coachBlue?.id, eraStyleId: eraStyle } : null} />
               {team && blueBuildable && !opponent && (
                 <div style={{ textAlign: "center", fontSize: 12, color: T.textDim, padding: "0 10px" }}>
                   Build <b style={{ color: T.blue }}>Team Blue</b> — Manual or Random — to unlock the sim.

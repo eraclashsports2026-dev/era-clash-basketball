@@ -15,6 +15,7 @@ import { tooLarge, MODES, validateTeamIds, validSimId, validChallengeId, cleanNa
 import { computeResult, dailyScore, newSeed } from "./_lib/game-core.js";
 import { computeResultV3 } from "./_lib/game-core-v3.js";
 import { validCoachId, validEraId } from "./_lib/validate.js";
+import { findDuplicatePerson } from "../src/v3/persons.js";
 import { utcDateKey, verifyDailyLineup } from "../src/dailyChallenge.js";
 
 const RESULT_TTL = 60 * 60 * 24 * 180;
@@ -120,6 +121,19 @@ export default async function handler(req, res) {
     if (chaos === "engine-fail") throw new Error("chaos engine failure");
 
     // ── Compute the authoritative result ────────────────────────────────────
+    // Duplicate-person rule: one team cannot field two era-versions of the
+    // same person (jordan-80s + jordan-90s). The primary gate is
+    // validateTeamIds (unique person names — long-standing shared behavior);
+    // this V3 check is defense-in-depth with a specific error code. ACROSS
+    // teams it is allowed — 80s Jordan vs 90s Jordan is a supported matchup.
+    if (f.simV3) {
+      const dupG = findDuplicatePerson(gold.map((p) => p.id));
+      const dupB = blue ? findDuplicatePerson(blue.map((p) => p.id)) : null;
+      if (dupG || dupB) {
+        logReq({ requestId, route: "game", mode, status: 400, error_code: "DUPLICATE_PERSON", person: dupG || dupB });
+        return sendError(res, "DUPLICATE_PERSON", requestId);
+      }
+    }
     const seed = newSeed();
     // V3 possession engine (flag-gated; preview-only by default). Coach and
     // Era Style ids are validated and loaded canonically server-side — the

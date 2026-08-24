@@ -3,6 +3,7 @@
 // are complete; then shows real engine matchup edges and the engine's actual
 // win probability (the same elo-style model that decides engine games —
 // nothing fabricated for aesthetics).
+import { useEffect, useState } from "react";
 import { T } from "../theme.js";
 import { matchupEdges } from "../engine.js";
 import { teamRating } from "../rating.js";
@@ -36,7 +37,33 @@ const CATEGORY_SHORT = {
   "Star Power": "Star Power",
 };
 
-export default function MatchupPreview({ gold, blue }) {
+// V3 pre-sim preview (Addendum 26): strategic tension only. No edge counts, no
+// expected winner, no probability — those would answer the question the SIM is
+// supposed to answer. The KEY CLASH is fetched from the server's V3 analysis.
+function KeyClashPreview({ gold, blue, v3 }) {
+  const [clash, setClash] = useState(null);
+  const goldIds = gold.map((p) => p.id), blueIds = blue.map((p) => p.id);
+  useEffect(() => {
+    let alive = true;
+    setClash(null);
+    fetch("/api/v3meta", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ goldIds, blueIds, coachGoldId: v3.coachGoldId, coachBlueId: v3.coachBlueId, eraStyleId: v3.eraStyleId }),
+    }).then((r) => (r.ok ? r.json() : null)).then((j) => { if (alive && j?.keyClash) setClash(j.keyClash); }).catch(() => {});
+    return () => { alive = false; };
+  }, [JSON.stringify(goldIds), JSON.stringify(blueIds), v3.coachGoldId, v3.coachBlueId, v3.eraStyleId]); // eslint-disable-line
+  return (
+    <div className="rise" style={{ padding: "14px 16px", borderRadius: 12, background: "rgba(0,0,0,0.45)", border: `1px solid ${T.border}`, maxWidth: 360, margin: "0 auto", width: "100%" }}>
+      <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: 2, color: T.gold, textAlign: "center" }}>KEY CLASH</div>
+      <div style={{ fontSize: 12.5, color: T.text, marginTop: 8, lineHeight: 1.6 }}>
+        {clash || "Reading the matchup…"}
+      </div>
+      <div style={{ fontSize: 10.5, color: T.textDim, marginTop: 8, textAlign: "center" }}>Run the sim to find out.</div>
+    </div>
+  );
+}
+
+export default function MatchupPreview({ gold, blue, v3 }) {
   const ready = gold?.filter(Boolean).length === 5 && blue?.filter(Boolean).length === 5;
   if (!ready) {
     return (
@@ -48,6 +75,7 @@ export default function MatchupPreview({ gold, blue }) {
       </div>
     );
   }
+  if (v3?.enabled) return <KeyClashPreview gold={gold} blue={blue} v3={v3} />;
   const edges = matchupEdges(gold, blue).slice(0, 5);
   const p = winProbability(gold, blue);
   const pg = Math.round(p * 100);

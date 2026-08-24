@@ -35,8 +35,15 @@ src/v3/defense.js            assignDefense(): threat-ranked greedy matching,
         ▼
 src/v3/possession.js         playGame(seed): alternating possessions at era
         │                    pace × coach tempo; TO → shooter (by share) →
-        │                    zone (era 3PA volume) → foul/FT → block-causes-
-        │                    miss → make/assist → rebound/putback; OT on ties
+        │                    zone (era 3PA volume) → foul/FT (PF attributed to
+        │                    a real defender) → block-causes-miss → make/assist
+        │                    → rebound/putback; GAME STATE (late-game urgency,
+        │                    lead protection, hack-a fouls) · FATIGUE (pace/
+        │                    pressure cost late, ≤6%, load-scaled) · CRASH vs
+        │                    GET-BACK (boards concede transition) · xPts shot-
+        │                    quality ledger · in-game coach adjustments at two
+        │                    checkpoints (adaptability-scaled, once per type,
+        │                    era-legal) · unbounded OT until a winner exists
         ▼
 src/v3/engine.js             simulateGameV3/SeriesV3/SeasonV3 — series/season
         │                    use deriveSeed(parent, i) children
@@ -105,6 +112,43 @@ preserves this without touching the existing daily module
 - Lineup legality remains validated server-side (`DAILY_INVALID_LINEUP`),
   claims stay atomic (SET NX) — no changes to storage or claim semantics.
 
+## Addendum systems (Advanced Simulation Integrity)
+
+- **Translation Doctrine** — [translation-doctrine.md](translation-doctrine.md):
+  transport the player, not their circumstances; relative-to-era normalization
+  (`data/leagueNorms.js`, verified league averages, stat-specific formulas);
+  graded confidence (HIGH/MEDIUM/LOW) that never feeds variance.
+- **Expected vs realized** — every game stores `expectedGoldWinPct` (computed
+  BEFORE the result, never rewritten), an `outcomeClass`
+  (EXPECTED / TOSS_UP / MILD_UPSET / SIGNIFICANT_UPSET / MAJOR_UPSET), and
+  per-team expected points (`xPts`) so postgame can say "Gold generated the
+  better looks but Blue converted the hard ones" honestly. Users see bands
+  (TOSS-UP → STRONG EDGE), never decimal probabilities.
+- **Coach career phases** — `data/coachPhases.js` (researched): multi-phase
+  coaches (Riley Showtime→Knicks grind, Nelson→Nellie-ball, Popovich
+  post→motion, 14 of 25 genuinely multi-phase) carry demonstrated toolkits
+  that inform in-game adjustments. One consumer coach card per coach, always.
+- **Duplicate persons** — `persons.js`: no two era-versions of one person on a
+  team (server error `DUPLICATE_PERSON` + client draft guard); cross-team
+  versions allowed (80s vs 90s Jordan is a supported matchup).
+- **Simulation fingerprint** — every result carries seed + engine/possession/
+  game-state/fatigue/player-data/coach-data/era-data/calibration versions.
+  `benchmarks/v3/replay.mjs` reproduces any stored game exactly; old results
+  are never recomputed on newer engines.
+- **Historical backtesting** — `benchmarks/v3/backtest.mjs`: 14 researched
+  real five-man units (from the pool, real coaches, native eras) checked for
+  identity direction (pace, 3PA volume, off/def efficiency field-relative,
+  usage hierarchy). Split 9 calibration / 5 holdout; formulas are tuned only
+  against calibration, holdout measures generalization every run.
+- **Meta telemetry** — `simulation_completed` analytics now carry coach ids,
+  era, expected%, outcome class, and overtime count for post-release balance
+  review (pick-rate vs win-rate analysis accounts for selection bias before
+  any rebalance).
+- **Preview discipline** — pre-sim, V3 shows only the KEY CLASH tension (via
+  /api/v3meta) — no edge counts, no expected winner; coach recommendations are
+  three strategically DIFFERENT lenses (Role Balance / Spacing-Movement /
+  Defensive Identity), never a solved top-3.
+
 ## What V3 never does
 
 - Never chooses a winner before simulating.
@@ -114,3 +158,6 @@ preserves this without touching the existing daily module
   stacking five 30%-usage stars emerges from the finite usage budget and
   off-ball retention.
 - Never grants an era or coach a numeric team bonus.
+- Never models home court, travel, altitude, crowds, or injuries (doctrine).
+- Never rewrites the pre-game expectation after seeing the final score.
+- Never lets data uncertainty masquerade as game variance.

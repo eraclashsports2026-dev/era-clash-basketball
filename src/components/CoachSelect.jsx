@@ -47,12 +47,13 @@ export default function CoachSelect({ side, teamIds, eraStyleId, selected, onSel
         <div style={{ fontSize: 12, color: T.textDim }}>Finding fits for this roster…</div>
       ) : (
         <div style={{ display: "grid", gap: 8 }}>
-          <div style={{ fontSize: 10, letterSpacing: 1.5, color: T.textDim }}>RECOMMENDED FOR THIS ROSTER</div>
+          <div style={{ fontSize: 10, letterSpacing: 1.5, color: T.textDim }}>THREE DIFFERENT WAYS TO COACH THIS ROSTER</div>
           {recommended.map((c) => (
             <button key={c.id} onClick={() => onSelect(c)} style={{
               textAlign: "left", padding: "10px 12px", borderRadius: 10, cursor: "pointer",
               background: T.bgCardHover, border: `1px solid ${T.border}`, color: T.text, minWidth: 0,
             }}>
+              {c.angle && <div style={{ fontSize: 9.5, fontWeight: 800, letterSpacing: 1.5, color: accent, marginBottom: 2 }}>{c.angle.toUpperCase()}</div>}
               <div style={{ display: "flex", alignItems: "baseline", gap: 8, flexWrap: "wrap" }}>
                 <span style={{ fontWeight: 900, fontSize: 14 }}>{c.name}</span>
                 <span style={{ fontSize: 10.5, color: T.textDim }}>{c.span} · {c.championships}× champ</span>

@@ -12,12 +12,20 @@ import { getCoach, NEUTRAL_COACH } from "./coaches.js";
 import { getEra, DEFAULT_ERA_ID } from "./eraStyles.js";
 
 export const V3_VERSIONS = {
-  engine: "3.0.0-alpha",
-  possessionModel: "1",
+  engine: "3.1.0-alpha",
+  possessionModel: "2",       // game state + fatigue + transition tradeoff + PF + xPts
+  gameStateModel: "1",
+  fatigueModel: "1",
   playerData: "2026-08-23",
-  coachData: "1",
+  coachData: "2",             // career phases informing adjustments
   eraData: "1",
+  calibration: "backtest-1",
 };
+
+// A stored result carries this complete fingerprint so EraClash Labs can
+// reproduce the exact game later (see benchmarks/v3/replay.mjs). Old results
+// are never recomputed with newer engine versions.
+export const fingerprint = (seed) => ({ seed, ...V3_VERSIONS });
 
 // Simulate ONE game. All inputs are canonical server-side objects; seed is the
 // server-generated game seed (deterministic replay guaranteed).
@@ -38,8 +46,8 @@ export const simulateGameV3 = (goldTeam, blueTeam, coachGold, coachBlue, era, se
   const gCtx = defenseContext(gDna, gPlan.scheme, era); // Gold's defense (faced by Blue)
   const bCtx = defenseContext(bDna, bPlan.scheme, era); // Blue's defense (faced by Gold)
 
-  const gSide = prepareSide(gAlloc, gPlan, era, bCtx, gAssign, rng);
-  const bSide = prepareSide(bAlloc, bPlan, era, gCtx, bAssign, rng);
+  const gSide = prepareSide(gAlloc, gPlan, era, bCtx, gAssign, rng, { coachName: coachGold.name });
+  const bSide = prepareSide(bAlloc, bPlan, era, gCtx, bAssign, rng, { coachName: coachBlue.name });
 
   const [gRes, bRes] = playGame(rng, gSide, bSide, era);
   const winner = gRes.totals.pts > bRes.totals.pts ? "Gold" : "Blue";
@@ -47,6 +55,7 @@ export const simulateGameV3 = (goldTeam, blueTeam, coachGold, coachBlue, era, se
   return {
     engine: "v3-possession",
     versions: { ...V3_VERSIONS },
+    fingerprint: fingerprint(seed),
     seed,
     eraId: era.id,
     coachIds: { gold: coachGold.id, blue: coachBlue.id },
@@ -57,8 +66,8 @@ export const simulateGameV3 = (goldTeam, blueTeam, coachGold, coachBlue, era, se
       : `${bRes.totals.pts}-${gRes.totals.pts}`,
     possessions: gRes.possessions,
     overtimes: gRes.overtimes,
-    gold: { lines: gRes.lines, totals: gRes.totals, usage: gAlloc.map((a) => ({ id: a.dna.id, share: a.share, natural: a.natural, role: roleLabel(a) })), plan: publicPlan(gPlan) },
-    blue: { lines: bRes.lines, totals: bRes.totals, usage: bAlloc.map((a) => ({ id: a.dna.id, share: a.share, natural: a.natural, role: roleLabel(a) })), plan: publicPlan(bPlan) },
+    gold: { lines: gRes.lines, totals: gRes.totals, xPts: gRes.xPts, adjustments: gRes.adjustments, usage: gAlloc.map((a) => ({ id: a.dna.id, share: a.share, natural: a.natural, role: roleLabel(a) })), plan: publicPlan(gPlan) },
+    blue: { lines: bRes.lines, totals: bRes.totals, xPts: bRes.xPts, adjustments: bRes.adjustments, usage: bAlloc.map((a) => ({ id: a.dna.id, share: a.share, natural: a.natural, role: roleLabel(a) })), plan: publicPlan(bPlan) },
     assignments: {
       // who guarded whom, by name — referenced in Postgame
       onGold: gAlloc.map((a, i) => ({ scorer: a.dna.name, defender: bDna[gAssign[i].defenderIdx].name, quality: Math.round(gAssign[i].quality * 10) / 10 })),

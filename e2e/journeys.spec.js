@@ -221,9 +221,15 @@ test("J11 (V3): Team → Coach → Era Style → Run with possession postgame", 
   await randomBlue(page);
   // 2 COACH — recommendations are roster-derived; no coach OVR anywhere
   await expect(page.getByText("SELECT YOUR COACH").first()).toBeVisible();
-  await expect(page.getByText("RECOMMENDED FOR THIS ROSTER").first()).toBeVisible();
+  await expect(page.getByText("THREE DIFFERENT WAYS TO COACH THIS ROSTER").first()).toBeVisible();
+  // strategically different lenses, not a solved top-3
+  await expect(page.getByText("BEST ROLE BALANCE").first()).toBeVisible();
+  await expect(page.getByText("BEST DEFENSIVE IDENTITY").first()).toBeVisible();
   const body = await page.locator("body").innerText();
   expect(body).not.toMatch(/coach ovr/i);
+  // pre-sim preview shows tension, never edge counts or an expected winner
+  await expect(page.getByText("KEY CLASH").first()).toBeVisible();
+  expect(body).not.toMatch(/(Gold|Blue) \+\d+/);
   await page.getByRole("button", { name: /RANDOM COACH/ }).first().click();
   await page.waitForTimeout(300);
   await page.getByRole("button", { name: /RANDOM COACH/ }).first().click();
@@ -236,7 +242,8 @@ test("J11 (V3): Team → Coach → Era Style → Run with possession postgame", 
   await expect(page.getByText(/TEAM (GOLD|BLUE) WINS/)).toBeVisible({ timeout: 15000 });
   // V3 postgame: possessions, expectation, possession box, roles, assignments
   await expect(page.getByText(/🏀 \d+ possessions/)).toBeVisible();
-  await expect(page.getByText(/pre-game expectation/)).toBeVisible();
+  await expect(page.getByText(/pre-game read/)).toBeVisible(); // bands, not decimals
+  await expect(page.getByText(/shot quality \(expected pts\)/)).toBeVisible();
   await expect(page.getByText("POSSESSION BOX SCORE")).toBeVisible();
   await expect(page.getByText("OFFENSIVE ROLES (USAGE)")).toBeVisible();
   await expect(page.getByText("DEFENSIVE ASSIGNMENTS")).toBeVisible();

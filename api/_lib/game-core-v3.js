@@ -5,7 +5,7 @@
 // carries a `v3` block with the possession-engine detail (full box, usage,
 // assignments, plans, expectation).
 import { simulateGameV3, simulateSeriesV3, simulateSeasonV3, resolveCoach, resolveEra, V3_VERSIONS } from "../../src/v3/engine.js";
-import { expectedWinPct, gameSummary, turningPointV3, matchupPreviewV3 } from "../../src/v3/analysis.js";
+import { expectedWinPct, gameSummary, turningPointV3, matchupPreviewV3, classifyOutcome, edgeBand } from "../../src/v3/analysis.js";
 import { mvpSummary } from "./game-core.js";
 import { genOpponent } from "../../src/draft.js";
 import { deriveSeed } from "../../src/v3/seed.js";
@@ -114,7 +114,18 @@ const mvpV3 = (game) => {
 const v3Block = (game, preview, exp) => ({
   possessions: game.possessions,
   overtimes: game.overtimes,
+  // expected vs realized (stored BEFORE anyone sees the score; never rewritten).
+  // The exact probability lives here for analytics; the UI shows bands only.
   expectedGoldWinPct: Math.round(exp * 100),
+  expectedBand: edgeBand(exp),
+  outcomeClass: classifyOutcome(game.winner === "Gold" ? exp : 1 - exp),
+  // shot QUALITY vs shot MAKING: expected points from the looks each team
+  // generated vs the points they actually scored
+  expectedPoints: { gold: game.gold.xPts, blue: game.blue.xPts },
+  // in-game coaching adjustments the possession engine actually made
+  adjustments: { gold: game.gold.adjustments, blue: game.blue.adjustments },
+  // complete reproduction fingerprint (see benchmarks/v3/replay.mjs)
+  fingerprint: game.fingerprint,
   fullBox: { gold: game.gold.lines, blue: game.blue.lines },
   teamTotals: { gold: game.gold.totals, blue: game.blue.totals },
   usage: { gold: game.gold.usage, blue: game.blue.usage },

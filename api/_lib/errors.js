@@ -12,6 +12,7 @@ export const CODES = {
   RATE_LIMITED: [429, "Too many requests — slow down a little."],
   IDEMPOTENCY_CONFLICT: [409, "This request was already processed."],
   DAILY_INVALID_LINEUP: [400, "That lineup doesn't match today's official Daily draft. Your attempt was not used."],
+  DUPLICATE_PERSON: [400, "A team can't field two era-versions of the same player. Different versions may face each other on opposite teams."],
   UNAUTHORIZED: [401, "You need a session for that."],
   FORBIDDEN: [403, "You can't modify that."],
   NOT_FOUND: [404, "Not found or expired."],

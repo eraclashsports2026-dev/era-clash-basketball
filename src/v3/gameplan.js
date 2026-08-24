@@ -22,7 +22,7 @@ export const buildGamePlan = (coach, dnas, era, oppDnas) => {
   const bend = (ideal, capable) => ideal + (capable - ideal) * (0.35 + adapt * 0.45);
   let threeEmphasis = bend(o.threeEmphasis, Math.min(o.threeEmphasis, rosterThreeT + 2));
   let postEmphasis = bend(o.post, Math.min(o.post, rosterPost + 1));
-  let paceTarget = bend(o.tempo, (o.tempo + rosterPace) / 2);
+  let paceTarget = bend(o.tempo, o.tempo * 0.65 + rosterPace * 0.35); // philosophy leads, legs follow
   const isoEmphasis = bend(o.iso, Math.min(o.iso, rosterCreation));
 
   // ── what the era allows ──────────────────────────────────────────────────

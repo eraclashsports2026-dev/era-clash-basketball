@@ -5,8 +5,17 @@
 // entirely through gameplan translation (ideal system × roster × era ×
 // opponent × adaptability).
 import coachData from "./data/coaches.js";
+import coachPhases from "./data/coachPhases.js";
 
-export const COACHES = coachData.coaches;
+// Career phases (Addendum 14): internal research merged onto each profile.
+// One consumer coach card per coach, always — phases inform the demonstrated
+// toolkit that in-game adjustments may draw on (never tactics a coach never
+// showed) and enrich adaptability context. They never create ratings.
+const phaseById = new Map(coachPhases.coaches.map((c) => [c.id, c]));
+export const COACHES = coachData.coaches.map((c) => {
+  const ph = phaseById.get(c.id);
+  return ph ? { ...c, careerPhases: ph.phases, multiPhase: ph.multiPhase, toolkit: ph.toolkit, phaseConfidence: ph.confidence } : c;
+});
 export const getCoach = (id) => COACHES.find((c) => c.id === id) || null;
 
 // League-typical baseline used when V3 runs without an explicit coach pick

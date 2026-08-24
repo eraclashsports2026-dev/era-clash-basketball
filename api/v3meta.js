@@ -5,11 +5,12 @@
 // need; there is no coach OVR to expose. Flag-gated with the engine.
 import { sendError, newRequestId } from "./_lib/errors.js";
 import { flags } from "./_lib/flags.js";
-import { tooLarge, validateTeamIds, validEraId } from "./_lib/validate.js";
+import { tooLarge, validateTeamIds, validEraId, validCoachId } from "./_lib/validate.js";
 import { COACHES } from "../src/v3/coaches.js";
 import { ERA_STYLES, ERA_NOTE, getEra, eraInteraction } from "../src/v3/eraStyles.js";
-import { recommendCoaches } from "../src/v3/analysis.js";
+import { recommendCoaches, matchupPreviewV3 } from "../src/v3/analysis.js";
 import { teamDNA } from "../src/v3/playerProfile.js";
+import { resolveCoach } from "../src/v3/engine.js";
 
 const publicCoach = (c) => ({
   id: c.id, name: c.name, span: c.span, championships: c.championships,
@@ -39,8 +40,21 @@ export default async function handler(req, res) {
   const team = validateTeamIds(req.body?.goldIds);
   if (!team) return sendError(res, "VALIDATION_FAILURE", requestId);
   const era = validEraId(req.body?.eraStyleId) ? getEra(req.body.eraStyleId) : null;
+
+  // Pre-sim KEY CLASH (Addendum 26): when BOTH rosters are known, return the
+  // strategic tension only — never edge counts, never an expected winner. The
+  // point of the preview is "I want to see how this plays out."
+  const blue = req.body?.blueIds ? validateTeamIds(req.body.blueIds) : null;
+  let keyClash = null;
+  if (blue) {
+    const cG = resolveCoach(validCoachId(req.body?.coachGoldId) || "neutral");
+    const cB = resolveCoach(validCoachId(req.body?.coachBlueId) || "neutral");
+    keyClash = matchupPreviewV3(team, blue, cG, cB, era).keyClash;
+  }
+
   return res.status(200).json({
     recommended: recommendCoaches(team, era, 3),
     eraNote: era ? eraInteraction(era, teamDNA(team)) : null,
+    keyClash,
   });
 }

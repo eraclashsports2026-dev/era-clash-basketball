@@ -24,6 +24,25 @@ export const expectedWinPct = (gold, blue, coachG, coachB, era, seed, n = 25) =>
 
 const pct = (m, a) => (a ? Math.round((m / a) * 1000) / 10 : 0);
 
+// ── expected vs realized (Addendum 12/23/40) ──────────────────────────────────
+// The matchup evaluation is computed BEFORE the game and never rewritten after
+// the final score. Users see honest bands, not false precision; the exact
+// probability stays in the stored v3 block for analytics.
+export const classifyOutcome = (winnerExpectedPct) => {
+  if (winnerExpectedPct >= 0.55) return "EXPECTED_RESULT";
+  if (winnerExpectedPct >= 0.45) return "TOSS_UP_RESULT";
+  if (winnerExpectedPct >= 0.30) return "MILD_UPSET";
+  if (winnerExpectedPct >= 0.15) return "SIGNIFICANT_UPSET";
+  return "MAJOR_UPSET";
+};
+export const edgeBand = (p) => {
+  const fav = Math.max(p, 1 - p);
+  if (fav < 0.55) return "TOSS-UP";
+  if (fav < 0.62) return "SLIGHT EDGE";
+  if (fav < 0.72) return "MODERATE EDGE";
+  return "STRONG EDGE";
+};
+
 // 4–6 sentence deterministic "why you won/lost" from real possession outcomes.
 export const gameSummary = (result, gold, blue, coachG, coachB, era, expGold) => {
   const won = result.winner === "Gold";
@@ -35,12 +54,27 @@ export const gameSummary = (result, gold, blue, coachG, coachB, era, expGold) =>
   const margin = Math.abs(result.finalScore.gold - result.finalScore.blue);
   const s = [];
 
-  // expectation honesty
+  // expectation honesty — bands, never decimal probabilities, and the matchup
+  // evaluation is never rewritten because of tonight's score
   const expW = won ? expGold : 1 - expGold;
-  if (expW < 0.42) {
-    s.push(`${winName} won a game it was expected to lose — over a large sample this matchup leans ${loseName} (${Math.round((1 - expW) * 100)}%), but tonight the better team didn't play the better game.`);
+  const klass = classifyOutcome(expW);
+  if (klass === "MAJOR_UPSET" || klass === "SIGNIFICANT_UPSET") {
+    s.push(`${winName} pulled off a genuine upset — ${loseName} entered with the stronger matchup on paper, but ${winName} produced the better game tonight.`);
+  } else if (klass === "MILD_UPSET") {
+    s.push(`${winName} won a game that leaned ${loseName} on paper — a mild upset, the kind a single night's shooting can swing.`);
+  } else if (klass === "TOSS_UP_RESULT") {
+    s.push(`${winName} took a genuine toss-up ${result.seriesResult} — these teams were built even, and tonight broke their way.`);
   } else {
-    s.push(`${winName} won ${result.seriesResult} in a matchup the engine ${expW > 0.6 ? "favored" : "rated close to even for"} them (${Math.round(expW * 100)}% expected).`);
+    s.push(`${winName} won ${result.seriesResult} in a matchup the engine saw as a ${edgeBand(expW).toLowerCase()} in their favor.`);
+  }
+
+  // shot quality vs shot making: good shots miss and bad shots go in — say
+  // which one actually happened instead of pretending the winner planned it
+  const wx = won ? result.gold.xPts : result.blue.xPts;
+  const lx = won ? result.blue.xPts : result.gold.xPts;
+  const wReal = W.totals.pts, lReal = L.totals.pts;
+  if (wx != null && lx != null && lx - wx >= 6 && wReal > lReal) {
+    s.push(`${loseName} actually generated the better looks (${Math.round(lx)} expected points to ${Math.round(wx)}), but ${winName} converted the harder shots at an unusually high rate.`);
   }
 
   // the shooting story (real numbers)
@@ -62,6 +96,10 @@ export const gameSummary = (result, gold, blue, coachG, coachB, era, expGold) =>
   const top = [...W.lines].sort((a, b) => b.pts - a.pts)[0];
   const topShare = W.usage.find((u) => u.id === top.id);
   s.push(`${top.name} led the winners with ${top.pts} points on ${top.fgm}-of-${top.fga} shooting as their ${topShare?.role?.toLowerCase() || "lead option"}.`);
+
+  // in-game adjustment that actually happened (from the possession engine's log)
+  const wAdj = (won ? result.gold.adjustments : result.blue.adjustments) || [];
+  if (wAdj.length) s.push(`${wAdj[0]} — and the game tilted after it.`);
 
   // coach/system note (from realized plans — never a flat bonus)
   const wPlan = W.plan, lPlan = L.plan;
@@ -99,17 +137,42 @@ export const turningPointV3 = (result, era) => {
   return s.join(" ");
 };
 
-// ── Coach recommendations: contextual, roster-driven, no OVR ─────────────────
+// ── Coach recommendations: strategically DIFFERENT good fits ─────────────────
+// Deliberately NOT a hidden ranking's top three (that would create a solved
+// meta: "always pick #1"). Each card is the best coach through a different
+// credible basketball lens, so choosing between them is a real strategy call.
 export const recommendCoaches = (team, era = null, n = 3) => {
   const dnas = teamDNA(team);
   const scored = COACHES.map((c) => {
     const fit = coachRosterFit(c, dnas);
     const eFit = era ? coachEraFit(c, era) : null;
-    return { coach: c, fit, eraFit: eFit, blend: fit + (eFit ?? 6) * 0.35 };
-  }).sort((a, b) => b.blend - a.blend);
-  return scored.slice(0, n).map(({ coach, fit, eraFit }) => ({
+    const o = c.offense, d = c.defense;
+    return {
+      coach: c, fit, eraFit: eFit,
+      blend: fit + (eFit ?? 6) * 0.35,
+      // three independent lenses over the same roster
+      balanceScore: fit + (10 - Math.abs(o.starFreedom - o.ballMovement)) * 0.3,
+      spacingScore: fit * 0.5 + (o.threeEmphasis + o.motion + o.offBall) * 0.4,
+      defenseScore: fit * 0.5 + (d.pressure + d.helpAggression + d.rimPriority) * 0.4,
+    };
+  });
+  const lenses = [
+    { key: "balanceScore", angle: "Best Role Balance" },
+    { key: "spacingScore", angle: "Best Spacing / Movement Fit" },
+    { key: "defenseScore", angle: "Best Defensive Identity" },
+  ];
+  const picked = [];
+  for (const lens of lenses) {
+    const best = scored
+      .filter((s) => !picked.some((p) => p.coach.id === s.coach.id))
+      .sort((a, b) => b[lens.key] - a[lens.key])[0];
+    if (best) picked.push({ ...best, angle: lens.angle });
+    if (picked.length >= n) break;
+  }
+  return picked.map(({ coach, fit, eraFit, angle }) => ({
     id: coach.id, name: coach.name, span: coach.span,
     championships: coach.championships, systemTags: coach.systemTags,
+    angle,
     whyItFits: coach.bestWith[0] || coach.systemTags[0],
     concern: coach.concern,
     teamFit: fitLabel(fit),

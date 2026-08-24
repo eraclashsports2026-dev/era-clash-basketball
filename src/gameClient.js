@@ -83,6 +83,17 @@ async function _run({ mode, gold, blue, challengeId, dailyDecisions, coachGoldId
       mode, simulation_id: simulationId, latency_ms: Date.now() - started,
       result: data.result?.core?.winner === "Gold" || (data.result?.wins > data.result?.losses) ? "win" : "loss",
       persisted: !!data.records?.persisted,
+      // V3 balance telemetry (Addendum 27/28): what was picked and how expected
+      // vs realized compared — the raw material for post-release meta review.
+      ...(data.result?.v3 ? {
+        engine: "v3",
+        coach_gold: coachGoldId || "neutral",
+        coach_blue: coachBlueId || "neutral",
+        era_style: eraStyleId || "2020s",
+        expected_gold_pct: data.result.v3.expectedGoldWinPct,
+        outcome_class: data.result.v3.outcomeClass,
+        overtimes: data.result.v3.overtimes,
+      } : {}),
     });
     return data;
   } catch (err) {
