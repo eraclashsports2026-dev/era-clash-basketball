@@ -62,7 +62,14 @@ const v3Notes = (result) => {
   return `Era Style: ${result.eraId} environment, ${v.possessions} possessions${v.overtimes ? ` (${v.overtimes} OT)` : ""}. Pre-game read: ${v.expectedBand || "even"}; outcome class: ${v.outcomeClass || "n/a"} (never rewrite the pre-game read to flatter the winner).
 Gold offensive roles (usage): ${roleLine("gold")}
 Blue offensive roles (usage): ${roleLine("blue")}
-Shot quality (expected points from the looks generated): Gold ${Math.round(v.expectedPoints?.gold ?? 0)}, Blue ${Math.round(v.expectedPoints?.blue ?? 0)} — if the winner generated FEWER expected points, they won on shot-making, not shot quality; say that honestly.
+Shot quality (expected points from the looks each team generated): Gold ${Math.round(v.expectedPoints?.gold ?? 0)}, Blue ${Math.round(v.expectedPoints?.blue ?? 0)}. CONCLUSION (already computed — state this, do not re-derive it): ${(() => {
+    const g = v.expectedPoints?.gold ?? 0, b = v.expectedPoints?.blue ?? 0, w = result.core.winner;
+    const wx = w === "Gold" ? g : b, lx = w === "Gold" ? b : g;
+    if (Math.abs(g - b) < 4) return `both teams generated similar shot quality, so the difference was conversion and possessions — do NOT claim either side won on shot quality.`;
+    return wx > lx
+      ? `Team ${w} won AND generated the better looks — their shot quality, not luck, drove it.`
+      : `Team ${w} won DESPITE generating worse looks — they won on shot-making, converting tougher shots. Say this honestly; do not credit them with better shot quality.`;
+  })()}
 In-game coaching adjustments that actually happened: ${adj.length ? adj.join(" | ") : "none"}
 There are no chemistry bonuses in this engine — explain the result through possessions, roles, matchups, and the era environment only.`;
 };
