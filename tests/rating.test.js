@@ -5,20 +5,12 @@ import { POS_WEIGHTS, slotRating, displayOVR, analyzeBalance, teamRating } from 
 const byId = (id) => PLAYERS.find((p) => p.id === id);
 
 describe("player database", () => {
-  it("the 1950s block is NBA-75 members plus Hall of Famers, nobody else", () => {
-    const fifties = PLAYERS.filter((p) => p.decade === "1950s");
-    expect(fifties).toHaveLength(30); // 7 on the NBA 75 team + 23 Hall of Famers
-    // the NBA 75 members must all be present
-    for (const n of ["George Mikan", "Bob Cousy", "Bob Pettit", "Dolph Schayes",
-                     "Bill Russell", "Paul Arizin", "Bill Sharman"]) {
-      expect(fifties.some((p) => p.name === n)).toBe(true);
-    }
-    // researched players who are neither must stay out
-    for (const n of ["Larry Foust", "Carl Braun", "Johnny Kerr", "Willie Naulls",
-                     "Gene Shue", "Kenny Sears", "Mel Hutchins", "Paul Seymour",
-                     "Ray Felix", "Jack Coleman", "Charlie Share", "Vince Boryla"]) {
-      expect(fifties.some((p) => p.name === n)).toBe(false);
-    }
+  it("the 1950s block is exactly the NBA 75th Anniversary Team members", () => {
+    const fifties = PLAYERS.filter((p) => p.decade === "1950s").map((p) => p.name).sort();
+    expect(fifties).toEqual([
+      "Bill Russell", "Bill Sharman", "Bob Cousy", "Bob Pettit",
+      "Dolph Schayes", "George Mikan", "Paul Arizin",
+    ]);
   });
 
   it("ERAS and DECADE_COLORS cover every decade present in the data", () => {
@@ -50,9 +42,9 @@ describe("player database", () => {
     }
   });
 
-  it("has exactly 395 entries with unique ids", () => {
-    expect(PLAYERS.length).toBe(395);
-    expect(new Set(PLAYERS.map((p) => p.id)).size).toBe(395);
+  it("has exactly 372 entries with unique ids", () => {
+    expect(PLAYERS.length).toBe(372);
+    expect(new Set(PLAYERS.map((p) => p.id)).size).toBe(372);
   });
   it("every entry has the full stat + accolade schema", () => {
     for (const p of PLAYERS) {
