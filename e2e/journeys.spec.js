@@ -258,10 +258,18 @@ test("J11 (V3): Team → Coach → Era Style → Run with possession postgame", 
   await page.getByRole("button", { name: /RANDOM COACH/ }).first().click();
   await page.waitForTimeout(300);
   await page.getByRole("button", { name: /RANDOM COACH/ }).first().click();
-  // 3 ERA STYLE — shared selector, dynamic matchup notes, no Gold+7 numbers
-  await expect(page.getByText("CHOOSE YOUR ERA STYLE")).toBeVisible();
+  // 3 ERA STYLE — a tab on BOTH team cards; one shared game era, per-team notes
+  await expect(page.getByRole("tab", { name: /ERA STYLE/ }).first()).toBeVisible();
+  await expect(page.getByRole("tab", { name: /ERA STYLE/ })).toHaveCount(2); // both sides
+  await page.getByRole("tab", { name: /ERA STYLE/ }).first().click();
+  await expect(page.getByText("CHOOSE YOUR ERA STYLE").first()).toBeVisible();
   await page.getByRole("button", { name: "90s", exact: true }).click();
-  await expect(page.getByText("HOW THIS AFFECTS THIS MATCHUP")).toBeVisible({ timeout: 8000 });
+  await expect(page.getByText("HOW THIS AFFECTS THIS MATCHUP").first()).toBeVisible({ timeout: 8000 });
+  await expect(page.getByText("One era per game — both teams play in this environment.").first()).toBeVisible();
+  // the blue card's tab shows the SAME shared era
+  await page.getByRole("tab", { name: /ERA STYLE/ }).nth(1).click();
+  await expect(page.locator('[aria-pressed="true"]', { hasText: "90s" }).first()).toBeVisible();
+  // era pick must not hide the run button flow — switch blue back to coach tab state is irrelevant
   // RUN
   await page.getByRole("button", { name: /RUN THE SIM/ }).click();
   await expect(page.getByText(/TEAM (GOLD|BLUE) WINS/)).toBeVisible({ timeout: 15000 });

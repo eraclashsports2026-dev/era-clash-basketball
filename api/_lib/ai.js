@@ -53,6 +53,20 @@ export const aiBudgetAvailable = async () => {
 // ── Prompt: explain a decided game — cannot change it ──────────────────────────
 const nameOf = (id) => PLAYERS.find((p) => p.id === id)?.name || id;
 
+// V3 records carry possession truths instead of V2 chemistry notes — the
+// narrative is grounded in whichever engine actually decided the game.
+const v3Notes = (result) => {
+  const v = result.v3;
+  const roleLine = (side) => (v.usage?.[side] || []).map((u) => `${nameOf(u.id)} ${Math.round(u.share * 100)}% (${u.role})`).join(", ");
+  const adj = [...(v.adjustments?.gold || []).map((a) => `Gold: ${a}`), ...(v.adjustments?.blue || []).map((a) => `Blue: ${a}`)];
+  return `Era Style: ${result.eraId} environment, ${v.possessions} possessions${v.overtimes ? ` (${v.overtimes} OT)` : ""}. Pre-game read: ${v.expectedBand || "even"}; outcome class: ${v.outcomeClass || "n/a"} (never rewrite the pre-game read to flatter the winner).
+Gold offensive roles (usage): ${roleLine("gold")}
+Blue offensive roles (usage): ${roleLine("blue")}
+Shot quality (expected points from the looks generated): Gold ${Math.round(v.expectedPoints?.gold ?? 0)}, Blue ${Math.round(v.expectedPoints?.blue ?? 0)} — if the winner generated FEWER expected points, they won on shot-making, not shot quality; say that honestly.
+In-game coaching adjustments that actually happened: ${adj.length ? adj.join(" | ") : "none"}
+There are no chemistry bonuses in this engine — explain the result through possessions, roles, matchups, and the era environment only.`;
+};
+
 const buildPrompt = (result) => {
   const core = result.core;
   const line = (row) => `${row.name}: ${row.pts}pts ${row.reb}reb ${row.ast}ast ${row.stl}stl ${row.blk}blk`;
@@ -66,8 +80,8 @@ Team Blue box: ${core.teamBStats.map(line).join(" | ")}
 MVP (fixed): ${core.mvp}
 Pre-game edges: ${core.edges.map((e) => `${e.category}: ${e.edge === 0 ? "even" : `${e.edge > 0 ? "Gold" : "Blue"} +${Math.abs(e.edge)}`}`).join(", ")} (never write negative edge numbers — always name the side with the advantage)
 Positional duels (Gold vs Blue, same slot): ${(core.slotDuels || []).map((d) => `${d.pos}: ${d.gold.name} (${d.gold.pts}p/${d.gold.reb}r/${d.gold.ast}a) vs ${d.blue.name} (${d.blue.pts}p/${d.blue.reb}r/${d.blue.ast}a)`).join(" | ")}
-Gold chemistry notes: +${result.goldChem.strengths.join(", +") || "none"}; -${result.goldChem.weaknesses.join(", -") || "none"}
-Blue chemistry notes: +${(result.blueChem?.strengths || []).join(", +") || "none"}; -${(result.blueChem?.weaknesses || []).join(", -") || "none"}
+${result.v3 ? v3Notes(result) : `Gold chemistry notes: +${(result.goldChem?.strengths || []).join(", +") || "none"}; -${(result.goldChem?.weaknesses || []).join(", -") || "none"}
+Blue chemistry notes: +${(result.blueChem?.strengths || []).join(", +") || "none"}; -${(result.blueChem?.weaknesses || []).join(", -") || "none"}`}
 
 Respond ONLY with valid JSON (no markdown):
 {"summary":"4-6 analytical sentences explaining WHY Team ${core.winner} won. REQUIRED: break down at least two specific positional duels BY NAME from the list above (who outplayed whom, citing their actual lines), name the losing side's best individual performance and why it wasn't enough, and tie it to the structural edges. No generic praise — every claim must trace to the numbers above. Max 160 words.","teamAStrengths":["max 10 words","max 10 words","max 10 words"],"teamAWeaknesses":["max 10 words","max 10 words"],"teamBStrengths":["max 10 words","max 10 words","max 10 words"],"teamBWeaknesses":["max 10 words","max 10 words"],"mvpReason":"2-3 sentences explaining WHY ${core.mvp} earned MVP: cite the actual line above, what that production did to the opposing defense, and how it decided the outcome. Max 70 words.","turningPoint":"4-6 sentences describing the pivotal stretch: what shifted, which specific positional duel drove it (BY NAME, consistent with the duels above), how the opponent's best player tried to answer and why it failed, and how it decided the ${result.mode === "best7" ? "series" : "game"}. No invented exact timestamps. Max 150 words."}`;

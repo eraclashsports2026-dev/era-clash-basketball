@@ -24,6 +24,7 @@ import SimulationLoading from "./components/SimulationLoading.jsx";
 import ManualPicker from "./components/ManualPicker.jsx";
 import CoachSelect from "./components/CoachSelect.jsx";
 import EraStyleSelect from "./components/EraStyleSelect.jsx";
+import StrategyTabs from "./components/StrategyTabs.jsx";
 import { TeamShell, EmptySlot, FilledSlot, LineupList } from "./components/TeamSlots.jsx";
 import { teamFit } from "./chemistryView.js";
 
@@ -708,8 +709,17 @@ export default function App() {
                   </div>
                   <ChemistryMeter team={team} side="gold" />
                   {v3Steps && (
-                    <CoachSelect side="gold" teamIds={team.map((p) => p.id)} eraStyleId={eraStyle}
-                      selected={coachGold} onSelect={setCoachGold} allCoaches={v3.coaches} />
+                    <StrategyTabs side="gold"
+                      coachName={coachGold ? coachGold.name.split(" ").slice(-1)[0] : null}
+                      eraLabel={v3.eras?.find((e) => e.id === eraStyle)?.label || null}
+                      coachContent={
+                        <CoachSelect side="gold" teamIds={team.map((p) => p.id)} eraStyleId={eraStyle}
+                          selected={coachGold} onSelect={setCoachGold} allCoaches={v3.coaches} />
+                      }
+                      eraContent={
+                        <EraStyleSelect side="gold" eras={v3.eras} selected={eraStyle} onSelect={setEraStyle}
+                          teamIds={team.map((p) => p.id)} />
+                      } />
                   )}
                 </>
               )}
@@ -732,13 +742,9 @@ export default function App() {
                 </div>
               )}
               <VsDivider active={!!team && !!opponent} />
-              {v3Steps && !!team && (!blueBuildable || !!opponent) && coachesReady && (
-                <EraStyleSelect eras={v3.eras} selected={eraStyle} onSelect={setEraStyle}
-                  goldIds={team.map((p) => p.id)} blueIds={(opponent || team).map((p) => p.id)} />
-              )}
               {v3Steps && !!team && (!blueBuildable || !!opponent) && !coachesReady && (
                 <div style={{ textAlign: "center", fontSize: 12, color: T.textDim }}>
-                  Pick a <b style={{ color: T.gold }}>coach</b> for {!coachGold ? "Team Gold" : "Team Blue"} to continue.
+                  Pick a <b style={{ color: !coachGold ? T.gold : T.blue }}>coach</b> for {!coachGold ? "Team Gold" : "Team Blue"} — the 🧠 COACH tab under its roster. The 🕰️ ERA STYLE tab sets the game's shared era.
                 </div>
               )}
               <MatchupPreview gold={team} blue={blueBuildable ? opponent : null} v3={v3Steps ? { enabled: true, coachGoldId: coachGold?.id, coachBlueId: coachBlue?.id, eraStyleId: eraStyle } : null} />
@@ -820,8 +826,17 @@ export default function App() {
                   </div>
                   <ChemistryMeter team={opponent} side="blue" compact />
                   {v3Steps && (
-                    <CoachSelect side="blue" teamIds={opponent.map((p) => p.id)} eraStyleId={eraStyle}
-                      selected={coachBlue} onSelect={setCoachBlue} allCoaches={v3.coaches} />
+                    <StrategyTabs side="blue"
+                      coachName={coachBlue ? coachBlue.name.split(" ").slice(-1)[0] : null}
+                      eraLabel={v3.eras?.find((e) => e.id === eraStyle)?.label || null}
+                      coachContent={
+                        <CoachSelect side="blue" teamIds={opponent.map((p) => p.id)} eraStyleId={eraStyle}
+                          selected={coachBlue} onSelect={setCoachBlue} allCoaches={v3.coaches} />
+                      }
+                      eraContent={
+                        <EraStyleSelect side="blue" eras={v3.eras} selected={eraStyle} onSelect={setEraStyle}
+                          teamIds={opponent.map((p) => p.id)} />
+                      } />
                   )}
                 </>
               ) : blueBuildable && blueManual.some(Boolean) ? (

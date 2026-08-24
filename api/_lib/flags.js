@@ -24,7 +24,10 @@ export const flags = () => ({
   // V3 possession engine: default OFF. Auto-enabled on Vercel PREVIEW
   // deployments only — production traffic never sees V3 unless the env var is
   // explicitly set (and this branch is never merged without approval).
-  simV3: bool("SIM_ENGINE_V3_ENABLED", process.env.VERCEL_ENV === "preview"),
+  // V3 possession engine: LIVE by default everywhere (CEO go, 2026-08-24).
+  // Kill switch: set SIM_ENGINE_V3_ENABLED=false in Vercel env and redeploy —
+  // the V2 engine remains in the codebase as the instant fallback path.
+  simV3: bool("SIM_ENGINE_V3_ENABLED", true),
   aiNarrative: bool("AI_NARRATIVE_ENABLED", true),
   challenges: bool("CHALLENGES_ENABLED", true),
   daily: bool("DAILY_ENABLED", true),
