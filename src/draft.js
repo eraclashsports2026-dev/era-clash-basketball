@@ -39,6 +39,18 @@ export const purePickPlayer = (slotPos, rng, opts = {}) => {
   if (opts.excludeNames?.length) pool = pool.filter((p) => !opts.excludeNames.includes(p.name));
   if (pool.length === 0) pool = PLAYERS.filter((p) => !(opts.excludeNames || []).includes(p.name));
   const sorted = [...pool].sort((a, b) => slotRating(b, slotPos || b.pos) - slotRating(a, slotPos || a.pos));
+  // Two selection modes:
+  //   eliteN      → uniform over the TOP N (a contender's shortlist)
+  //   rankWindow  → uniform over a RANK BAND [lo, hi) of the sorted pool, so a
+  //                 soft schedule can draw from the back of the pool instead of
+  //                 "the top 150", which still contains every all-time great.
+  if (opts.rankWindow) {
+    const [lo, hi] = opts.rankWindow;
+    const start = Math.max(0, Math.min(lo, sorted.length - 1));
+    const end = Math.max(start + 1, Math.min(hi, sorted.length));
+    const band = sorted.slice(start, end);
+    return band[Math.floor(rng() * band.length)];
+  }
   const top = sorted.slice(0, Math.max(1, Math.min(opts.eliteN || 10, sorted.length)));
   return top[Math.floor(rng() * top.length)];
 };

@@ -5,7 +5,7 @@ import { describe, it, expect, beforeAll } from "vitest";
 import { PLAYERS } from "../src/players.js";
 import { computeResultV3 } from "../api/_lib/game-core-v3.js";
 import { simulateSeasonV3, resolveCoach, resolveEra } from "../src/v3/engine.js";
-import { opponentGenerator, DIFFICULTIES, validDifficulty } from "../src/v3/difficulty.js";
+import { opponentGenerator, DIFFICULTIES, validDifficulty, constructionScore } from "../src/v3/difficulty.js";
 import { dailyOpponent, utcDateKey, dailySeed, replayDaily } from "../src/dailyChallenge.js";
 
 const t = (ids) => ids.map((id) => { const p = PLAYERS.find((x) => x.id === id); if (!p) throw new Error(`missing ${id}`); return p; });
@@ -56,6 +56,38 @@ describe("Win 82 difficulty (was: superteams stuck near .500)", () => {
     expect(rookie).toBeGreaterThan(allstar);
     expect(allstar).toBeGreaterThan(legend);
     expect(legend).toBeGreaterThan(20); // brutal, never hopeless for a great team
+  });
+
+  it("Rookie is genuinely forgiving for a modest roster", () => {
+    // the CEO ask: Rookie should be kind without the engine lying. A mid-tier
+    // five should be able to hold its own on the softest schedule…
+    const modest = t(["mookie-90s", "hersey-90s", "calbert-90s", "popeye-90s", "luc-90s"]);
+    const avg = [0, 1, 2].reduce((s, i) => s + wins(modest, "rookie", 3000 + i), 0) / 3;
+    expect(avg).toBeGreaterThan(30);
+    // …and still be overmatched against all-time teams, because that is true
+    expect(wins(modest, "legend", 3000)).toBeLessThan(15);
+  });
+
+  it("softer tiers face weaker AND worse-built teams — never fabricated ones", () => {
+    const sample = (tier) => {
+      const gen = opponentGenerator(tier);
+      let s = 0, n = 6;
+      const rng = (() => { let x = 7; return () => ((x = (x * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff); })();
+      for (let i = 0; i < n; i++) s += constructionScore(gen(rng));
+      return s / n;
+    };
+    // construction quality rises with difficulty
+    expect(sample("rookie")).toBeLessThan(sample("pro"));
+    expect(sample("pro")).toBeLessThan(sample("legend"));
+    // and every opponent is a real five of real, distinct people
+    const gen = opponentGenerator("rookie");
+    const rng = (() => { let x = 3; return () => ((x = (x * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff); })();
+    for (let i = 0; i < 5; i++) {
+      const five = gen(rng);
+      expect(five).toHaveLength(5);
+      expect(new Set(five.map((p) => p.name)).size).toBe(5);
+      for (const p of five) expect(PLAYERS.some((x) => x.id === p.id)).toBe(true);
+    }
   });
 
   it("every difficulty is a real spread of opponents, not 82 clones", () => {
