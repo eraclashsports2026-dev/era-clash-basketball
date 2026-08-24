@@ -292,12 +292,14 @@ export default function App() {
   const randomGold = () => {
     const roster = genRoster(Math.random);
     setYz(null); setManual([null, null, null, null, null]); setResult(null);
+    setCoachGold(null); // a coach picked for the OLD roster never survives a re-roll
     finalizeTeam(roster);
     track("draft_started", { mode: MODE_TO_ANALYTICS[activeMode], method: "random" });
   };
   const randomBlue = () => {
     setOpponent(genOpponent(Math.random));
     setBlueManual([null, null, null, null, null]);
+    setCoachBlue(null); setResult(null); // stale coach/result never survive a re-roll
     track("draft_started", { mode: MODE_TO_ANALYTICS[activeMode], method: "blue-random" });
   };
 
@@ -689,8 +691,19 @@ export default function App() {
                         onSwap={!loading && !isDaily ? () => setPicker({ slot: i, target: "gold-swap" }) : null} />
                     ))}
                   </div>
-                  <div style={{ display: "flex", justifyContent: "space-between", marginTop: 10, fontSize: 12, color: T.textDim }}>
-                    <button onClick={resetGold} aria-label="Reset Team Gold" style={{ background: "none", border: "none", color: T.textDim, cursor: "pointer", fontSize: 12, fontWeight: 700, padding: 0 }}>↻ Reset Team</button>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 10, fontSize: 12, color: T.textDim }}>
+                    <span style={{ display: "flex", gap: 6 }}>
+                      {!isDaily && (
+                        <button onClick={randomGold} aria-label="Re-roll Team Gold" style={{
+                          padding: "6px 11px", fontSize: 11.5, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 34,
+                          border: `1px solid ${T.goldBorder}`, background: "rgba(253,185,39,0.08)", color: T.gold,
+                        }}>🔀 Re-roll</button>
+                      )}
+                      <button onClick={resetGold} aria-label="Reset Team Gold" style={{
+                        padding: "6px 11px", fontSize: 11.5, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 34,
+                        border: `1px solid ${T.border}`, background: "transparent", color: T.textDim,
+                      }}>↻ Reset</button>
+                    </span>
                     <span>RATING <b style={{ color: T.gold }}>{teamRating(team)}</b></span>
                   </div>
                   <ChemistryMeter team={team} side="gold" />
@@ -792,9 +805,15 @@ export default function App() {
                   </div>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 10, fontSize: 12, color: T.textDim }}>
                     {!isChallenge ? (
-                      <span style={{ display: "flex", gap: 10 }}>
-                        <button onClick={randomBlue} style={{ background: "none", border: "none", color: T.textDim, cursor: "pointer", fontSize: 12, fontWeight: 700, padding: 0 }}>🔀 Re-roll</button>
-                        <button onClick={resetBlue} aria-label="Reset Team Blue" style={{ background: "none", border: "none", color: T.textDim, cursor: "pointer", fontSize: 12, fontWeight: 700, padding: 0 }}>↻ Reset</button>
+                      <span style={{ display: "flex", gap: 6 }}>
+                        <button onClick={randomBlue} aria-label="Re-roll Team Blue" style={{
+                          padding: "6px 11px", fontSize: 11.5, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 34,
+                          border: `1px solid ${T.blueBorder}`, background: "rgba(110,168,254,0.08)", color: T.blue,
+                        }}>🔀 Re-roll</button>
+                        <button onClick={resetBlue} aria-label="Reset Team Blue" style={{
+                          padding: "6px 11px", fontSize: 11.5, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 34,
+                          border: `1px solid ${T.border}`, background: "transparent", color: T.textDim,
+                        }}>↻ Reset</button>
                       </span>
                     ) : <span />}
                     <span>RATING <b style={{ color: T.blue }}>{teamRating(opponent)}</b></span>

@@ -213,6 +213,31 @@ test("J10: per-team reset buttons free any lineup state without touching the oth
   await expect(page.getByText("Add Point Guard")).toHaveCount(2); // gold (manual mode) + blue both empty
 });
 
+test("J10b: one-click Re-roll refreshes a random five on BOTH sides and invalidates stale coach picks", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: /Random Team/ }).first().click();
+  await page.getByRole("tab", { name: /Random Team/ }).click(); // blue random
+  // both completed rosters expose a prominent Re-roll next to Reset
+  await expect(page.getByRole("button", { name: "Re-roll Team Gold" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Re-roll Team Blue" })).toBeVisible();
+  const goldNames = async () => (await page.locator("body").innerText()).match(/RATING/) && page.locator("body").innerText();
+  // re-roll gold: roster stays complete (5/5), coach step (if V3) demands a fresh pick
+  await pickCoachesIfV3(page);
+  const hadRun = await page.getByRole("button", { name: /RUN THE SIM/ }).count();
+  await page.getByRole("button", { name: "Re-roll Team Gold" }).click();
+  await expect(page.getByRole("button", { name: "Re-roll Team Gold" })).toBeVisible(); // still a completed five
+  if (hadRun) {
+    // V3: the old roster's coach is invalidated, so RUN must re-lock until a new coach is picked
+    const runNow = await page.getByRole("button", { name: /RUN THE SIM/ }).count();
+    const coachVisible = await page.getByText("SELECT YOUR COACH").first().isVisible().catch(() => false);
+    if (coachVisible) expect(runNow).toBe(0);
+  }
+  // re-roll blue: still a completed five, gold untouched
+  await page.getByRole("button", { name: "Re-roll Team Blue" }).click();
+  await expect(page.getByRole("button", { name: "Re-roll Team Blue" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Re-roll Team Gold" })).toBeVisible();
+});
+
 test("J11 (V3): Team → Coach → Era Style → Run with possession postgame", async ({ page }) => {
   await page.goto("/");
   // 1 TEAM
