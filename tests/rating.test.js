@@ -5,9 +5,23 @@ import { POS_WEIGHTS, slotRating, displayOVR, analyzeBalance, teamRating } from 
 const byId = (id) => PLAYERS.find((p) => p.id === id);
 
 describe("player database", () => {
-  it("has exactly 330 entries with unique ids", () => {
-    expect(PLAYERS.length).toBe(330);
-    expect(new Set(PLAYERS.map((p) => p.id)).size).toBe(330);
+  it("covers all 8 era styles, including the 1950s", () => {
+    const decades = new Set(PLAYERS.map((p) => p.decade));
+    for (const d of ["1950s", "1960s", "1970s", "1980s", "1990s", "2000s", "2010s", "2020s"]) {
+      expect(decades.has(d)).toBe(true);
+    }
+  });
+
+  it("never claims steals or blocks before the NBA recorded them (1973-74)", () => {
+    for (const p of PLAYERS.filter((x) => x.decade === "1950s" || x.decade === "1960s")) {
+      expect(p.stl).toBe(0);
+      expect(p.blk).toBe(0);
+    }
+  });
+
+  it("has exactly 372 entries with unique ids", () => {
+    expect(PLAYERS.length).toBe(372); // 8 decades incl. the 1950s founding class
+    expect(new Set(PLAYERS.map((p) => p.id)).size).toBe(372);
   });
   it("every entry has the full stat + accolade schema", () => {
     for (const p of PLAYERS) {
@@ -39,7 +53,7 @@ describe("rating v2 (locked coefficients — changes need CEO approval)", () => 
     expect(slotRating(wilt, "PG")).toBeCloseTo((production + accolades) * 0.88, 6);
   });
   it("matches the shipped OVR examples", () => {
-    const cases = { "jordan-90s": 99, "jokic-20s": 98, "moncrief-80s": 94, "bowen-2ks": 88, "booker-10s": 73 };
+    const cases = { "jordan-90s": 99, "jokic-20s": 98, "moncrief-80s": 94, "bowen-2ks": 88, "booker-10s": 74 };
     for (const [id, ovr] of Object.entries(cases)) {
       const p = byId(id);
       expect(displayOVR(p, p.pos), id).toBe(ovr);
