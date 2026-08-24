@@ -1,5 +1,5 @@
 // ── EraClash Basketball Player Database ──────────────────────────────────────
-// 384 player-decade entries across 8 decades (1950s = NBA 75 + Hall of Fame)
+// 395 player-decade entries across 8 decades (1950s = NBA 75 + Hall of Fame)
 // pos = primary position, positions = all eligible positions
 export const PLAYERS = [
   // ═══ 1950s ═══
@@ -445,6 +445,18 @@ export const PLAYERS = [
   { id:"beal-20s",      name:"Bradley Beal",             decade:"2020s", pos:"SG", positions:["SG","PG"],     team:"Wizards/Suns",    pts:21.7, reb:3.7,  ast:4.7,  stl:1.0, blk:0.4 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:1, ad1:0, ad2:0, win:2, pop:6 },
   { id:"lavine-20s",    name:"Zach LaVine",              decade:"2020s", pos:"SG", positions:["SG","SF"],     team:"Bulls/Kings",     pts:23.5, reb:4.5,  ast:4.0,  stl:0.9, blk:0.3 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:2, pop:6 },
   { id:"klay-20s",      name:"Klay Thompson",            decade:"2020s", pos:"SG", positions:["SG","SF"],     team:"Warriors/Mavericks", pts:17.2, reb:3.4,  ast:2.2,  stl:0.6, blk:0.4 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:6, pop:7 },
+  // — 2025 draft class (rookie year 2025-26; stats are that season) —
+  { id:"flagg-20s",      name:"Cooper Flagg",             decade:"2020s", pos:"SF", positions:["SF","PF"],     team:"Mavericks",       pts:21.0, reb:6.7,  ast:4.5,  stl:1.2, blk:0.9 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:3, pop:8 },
+  { id:"knueppel-20s",   name:"Kon Knueppel",             decade:"2020s", pos:"SG", positions:["SG","SF"],     team:"Hornets",         pts:18.5, reb:5.3,  ast:3.4,  stl:0.7, blk:0.2 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:2, pop:6 },
+  { id:"edgecombe-20s",  name:"V.J. Edgecombe",           decade:"2020s", pos:"SG", positions:["SG","PG"],     team:"76ers",           pts:16.0, reb:5.6,  ast:4.2,  stl:1.4, blk:0.5 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:3, pop:6 },
+  { id:"fears-20s",      name:"Jeremiah Fears",           decade:"2020s", pos:"PG", positions:["PG","SG"],     team:"Pelicans",        pts:14.3, reb:3.7,  ast:3.4,  stl:1.2, blk:0.4 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:2, pop:5 },
+  { id:"acebailey-20s",  name:"Ace Bailey",               decade:"2020s", pos:"SF", positions:["SF","PF"],     team:"Jazz",            pts:13.8, reb:4.2,  ast:1.8,  stl:0.8, blk:0.7 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:2, pop:6 },
+  { id:"coward-20s",     name:"Cedric Coward",            decade:"2020s", pos:"SF", positions:["SF","SG"],     team:"Grizzlies",       pts:13.6, reb:5.9,  ast:2.8,  stl:0.6, blk:0.4 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:3, pop:5 },
+  { id:"trejohnson-20s", name:"Tre Johnson",              decade:"2020s", pos:"SG", positions:["SG","SF"],     team:"Wizards",         pts:12.2, reb:2.8,  ast:2.0,  stl:0.6, blk:0.3 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:2, pop:5 },
+  { id:"harper-20s",     name:"Dylan Harper",             decade:"2020s", pos:"PG", positions:["PG","SG"],     team:"Spurs",           pts:11.8, reb:3.4,  ast:3.9,  stl:0.8, blk:0.3 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:3, pop:6 },
+  { id:"queen-20s",      name:"Derik Queen",              decade:"2020s", pos:"C",  positions:["C","PF"],      team:"Pelicans",        pts:11.7, reb:7.1,  ast:3.7,  stl:1.0, blk:0.9 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:2, pop:5 },
+  { id:"cmb-20s",        name:"Collin Murray-Boyles",     decade:"2020s", pos:"PF", positions:["PF","C"],      team:"Raptors",         pts:8.5,  reb:5.0,  ast:1.9,  stl:0.9, blk:0.9 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:2, pop:4 },
+  { id:"clayton-20s",    name:"Walter Clayton Jr.",       decade:"2020s", pos:"PG", positions:["PG","SG"],     team:"Jazz/Grizzlies",  pts:7.8,  reb:2.0,  ast:4.0,  stl:0.6, blk:0.3 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:2, pop:4 },
 ];
 
 export const DECADE_COLORS = {
