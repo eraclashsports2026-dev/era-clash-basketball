@@ -39,6 +39,9 @@ export const flags = () => ({
   // into SIM_ENGINE_V3_ENABLED, which already means too many things. Default
   // false: no production route may select the possession engine.
   possessionEngine: bool("POSSESSION_ENGINE_ENABLED", false),
+  // Defensive matchup engine. Its own flag again — the possession engine can
+  // run without it, and that A/B is how the defensive system is measured.
+  defensiveMatchupEngine: bool("DEFENSIVE_MATCHUP_ENGINE_ENABLED", false),
   leaderboard: bool("PUBLIC_LEADERBOARD_ENABLED", true),
   feedback: bool("FEEDBACK_ENABLED", true),
 });
