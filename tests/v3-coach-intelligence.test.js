@@ -327,7 +327,10 @@ describe("coach intelligence — isolation & caching", () => {
   it("no simulation module or API imports Coach Intelligence", () => {
     const IMPORTS_CI = /(?:import|require)\s*\(?\s*[^;]*["'][^"']*coachIntelligence(?:\.js)?["']/;
     const dir = new URL("../src/v3/", import.meta.url);
-    for (const f of readdirSync(dir).filter((f) => f.endsWith(".js") && f !== "coachIntelligence.js")) {
+    // eraStyleIntelligence.js is EXEMPT and must be: coach-era fit is built
+    // deliberately ON TOP of Coach Intelligence, and it is itself unwired from
+    // the engine (guarded by tests/v5b-era-style.test.js).
+    for (const f of readdirSync(dir).filter((f) => f.endsWith(".js") && f !== "coachIntelligence.js" && f !== "eraStyleIntelligence.js")) {
       expect(readFileSync(new URL(f, dir), "utf8"), `${f}`).not.toMatch(IMPORTS_CI);
     }
     for (const f of readdirSync(new URL("../api/_lib/", import.meta.url)).filter((f) => f.endsWith(".js"))) {

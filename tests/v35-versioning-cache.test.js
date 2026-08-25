@@ -66,8 +66,13 @@ describe("naming resolution", () => {
     // an invented number. (playerCardDesignVersion is PLANNED but holds a
     // defined key SPEC — a settled identity with no renderer, which is a
     // different thing from a module that does not exist.)
-    for (const name of ["possessionEngineVersion", "eraStyleVersion"]) {
-      expect(versionOf(name), name).toBeNull();
+    // Only the possession engine remains unbuilt. eraStyleVersion,
+    // coachIntelligenceVersion and actionLibraryVersion were all built in later
+    // phases and are DEVELOPMENT — they have versions but affect no result.
+    expect(versionOf("possessionEngineVersion")).toBeNull();
+    for (const name of ["eraStyleVersion", "coachIntelligenceVersion", "actionLibraryVersion"]) {
+      expect(statusOf(name), name).toBe(VERSION_STATUS.DEVELOPMENT);
+      expect(affectsResult(name), name).toBe(false);
     }
     // Coach Intelligence was built in Phase 4: it now has a version, but it is
     // DEVELOPMENT — built and tested, wired to nothing — so it must still be
@@ -210,11 +215,13 @@ describe("cache-key registry", () => {
   });
 
   it("refuses to build a key from a PLANNED engine version", () => {
-    // Era Style does not exist yet, so an era cache identity cannot be built.
-    // Coach fit USED to throw here; Phase 4 built the module, so it now works —
-    // which is exactly the transition this guard is meant to track.
-    expect(() => cacheKeys.eraStyle({ eraId: "1980s" })).toThrow(/PLANNED/);
+    // The possession engine is the last unbuilt module, so its result key is
+    // the only one that still cannot be built. Coach fit threw here before
+    // Phase 4 and era style before Phase 5B — each became buildable exactly
+    // when its module shipped, which is what this guard tracks.
+    expect(() => cacheKeys.possessionResult({ resultId: "abc" })).toThrow(/PLANNED/);
     expect(() => cacheKeys.coachFit({ coachId: "phil-jackson", teamFingerprint: "abc" })).not.toThrow();
+    expect(() => cacheKeys.eraStyle({ eraId: "1980s" })).not.toThrow();
   });
 
   it("separates public-safe namespaces from private ones", () => {
@@ -460,11 +467,14 @@ describe("research cache", () => {
     expect(ignore).toMatch(/^\.cache\/?$/m);
   });
 
-  it("era research has infrastructure but fabricates nothing", async () => {
-    expect(ERA_SOURCES).toEqual([]);
-    const r = await runEraResearch({ log: () => {} });
-    expect(r.sources).toBe(0);
-    expect(verificationReport("eras").subjects).toBe(0);
+  it("era research is now populated, with rules and environment sourced separately", async () => {
+    // This asserted an EMPTY manifest in Phase 3.5, when populating it would
+    // have meant inventing era profiles. Phase 5B researched them.
+    expect(ERA_SOURCES.length).toBe(8);
+    for (const e of ERA_SOURCES) {
+      expect(e.sources.some((s) => s.kind === "rules"), e.eraId).toBe(true);
+      expect(e.sources.some((s) => s.kind === "environment"), e.eraId).toBe(true);
+    }
   });
 
   it("parses --coach style flags", () => {

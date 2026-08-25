@@ -72,7 +72,11 @@ export const REGISTRY = {
   // simulation module imports it, so it has never shaped a result and must not
   // appear in a result fingerprint.
   coachIntelligenceVersion: entry("1.0.0", DEVELOPMENT, "src/v3/coachIntelligence.js — contextual coach fit. No simulation module imports it."),
-  eraStyleVersion: entry(null, PLANNED, "Phase 5. Era STYLE intelligence, distinct from the era data the engine already uses."),
+  // DEVELOPMENT, not ACTIVE: the module exists and is tested, but no simulation
+  // module imports it, so it has never priced a result and must not appear in a
+  // result fingerprint. Distinct from eraDataVersion, which IS active — the
+  // engine already uses era DATA; this is the intelligence layer over it.
+  eraStyleVersion: entry("1.0.0", DEVELOPMENT, "src/v3/eraStyleIntelligence.js — strategic effects, coach-era and player-era translation. No simulation module imports it."),
 
   // ── datasets (independent of the algorithms that read them) ──
   playerDataVersion: entry("2026-08-24", ACTIVE, "src/players.js — 381 player-decade cards, 323 canonical persons."),
@@ -92,6 +96,11 @@ export const REGISTRY = {
   // module that does not exist. The cache identity is settled and testable so
   // the UI phase inherits it rather than inventing one; the renderer itself is
   // unbuilt, which PLANNED records.
+  // The action library the pick-and-roll model belongs to. DEVELOPMENT: it
+  // exists and is tested, and it is NOT the possession engine — one action is
+  // not an engine, and possessionEngineVersion stays null to say so.
+  actionLibraryVersion: entry("1.0.0", DEVELOPMENT, "src/v3/actions/ — versioned basketball action models. Pick-and-roll is the first.", false),
+
   playerCardDesignVersion: entry("1.0.0", PLANNED, "Player-card asset cache identity (spec v1). The RENDERER belongs to the UI phase; only the key shape exists today.", false),
 
   // ── calibration ──

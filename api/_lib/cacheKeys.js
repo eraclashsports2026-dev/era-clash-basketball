@@ -131,6 +131,15 @@ export const cacheKeys = {
   shareImage: ({ resultId, renderVersion }) =>
     `share-image:r${seg(renderVersion, "renderVersion")}:${seg(resultId, "resultId")}`,
 
+  /**
+   * A possession-engine result. Throws until possessionEngineVersion exists —
+   * the last remaining PLANNED module, and therefore the only key that still
+   * cannot be built. That is the point: a cache identity for a module that does
+   * not exist would be a key nobody could ever invalidate correctly.
+   */
+  possessionResult: ({ resultId }) =>
+    `result:pe${vtag("possessionEngineVersion")}:${seg(resultId, "resultId")}`,
+
   /** Public, immutable result page payload. */
   publicResult: ({ resultId }) =>
     `public-result:e${vtag("engineVersion")}:${seg(resultId, "resultId")}`,
