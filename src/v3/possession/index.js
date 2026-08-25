@@ -27,10 +27,11 @@ export const POSSESSION_ENGINE_STATUS = "DEVELOPMENT";
  * Chemistry is deliberately absent — it remains display-only and does not
  * touch a possession.
  */
-export const resultVersions = () => ({
+export const resultVersions = ({ defensiveMatchups = true } = {}) => ({
   engineVersion: versionOf("engineVersion"),
   possessionEngineVersion: versionOf("possessionEngineVersion"),
   actionLibraryVersion: versionOf("actionLibraryVersion"),
+  defensiveMatchupVersion: versionOf("defensiveMatchupVersion"),
   playerDataVersion: versionOf("playerDataVersion"),
   playerIntelligenceVersion: versionOf("playerIntelligenceVersion"),
   teamIntelligenceVersion: versionOf("teamIntelligenceVersion"),
@@ -56,6 +57,10 @@ export const runPossessionGame = (input, { assertInvariants = true, includeLedge
   const game = simulatePossessionGame(input);
 
   const fingerprint = {
+    // Only modules that ACTUALLY affected this result. With the defensive
+    // engine off the game is a Phase 6A game, so claiming a defensive module
+    // version would be a false reproducibility claim — and would invalidate
+    // stored flag-off games on an unrelated defensive edit.
     ...resultVersions(),
     matchupFingerprint: matchupFingerprint({
       goldIds: input.gold.playerCards.map((p) => p.id),
@@ -67,6 +72,12 @@ export const runPossessionGame = (input, { assertInvariants = true, includeLedge
     }),
     simulationSeed: game.simulationSeed,
   };
+
+  // Only modules that ACTUALLY affected this result belong in the fingerprint.
+  // With the defensive engine off the game is a Phase 6A game, so claiming a
+  // defensive module version would be a false reproducibility claim — and
+  // would invalidate stored flag-off games on an unrelated defensive edit.
+  if (!game.defensiveMatchupVersion) delete fingerprint.defensiveMatchupVersion;
 
   const violations = checkGame(game);
   if (assertInvariants) assertNoViolations(game);

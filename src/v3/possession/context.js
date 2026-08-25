@@ -14,6 +14,7 @@
 import { getEra } from "../eraStyles.js";
 import { strategicEffects } from "../eraStyleIntelligence.js";
 import { buildCoachIntelligence } from "../coachIntelligence.js";
+import { buildDefensivePlans } from "../defense/plan.js";
 import { NEUTRAL_COACH, getCoach } from "../coaches.js";
 
 const r2 = (x) => Math.round(x * 100) / 100;
@@ -302,12 +303,27 @@ export const preparePossessionContext = (input) => {
   // so the target trip rate follows from the era's FTA per game.
   const targetFtTripRate = clamp(num(envir.ftaPerGame, 24) / 2 / expectedPace, 0.04, 0.34);
 
+  // ── Defensive plans (Phase 6B1) ────────────────────────────────────────────
+  // Built HERE, in the prepared context, because a plan is preparation rather
+  // than resolution — and because it must be deterministic. It uses no game
+  // randomness at all: the same teams, positions, coaches, era and module
+  // versions always produce the same baseline plan. Switches and adjustments
+  // happen later, driven by deterministic possession events.
+  //
+  // Flag-gated: with the defensive engine off, no plan is built and the
+  // possession loop falls back to Phase 6A's positional matching unchanged,
+  // which is what makes the A/B comparison honest.
+  const defenseEnabled = input.defensiveMatchups !== false;
+  const defensivePlans = defenseEnabled ? buildDefensivePlans({ gold, blue, era, eff }) : null;
+
   return {
     simulationId: input.simulationId ?? null,
     simulationSeed: input.simulationSeed | 0,
     mode: input.mode ?? "single",
     eraStyleId: era.id,
     era, eff,
+    defensiveMatchupsEnabled: defenseEnabled,
+    defensivePlans,
     anchors: {
       expectedFgaPerTeam: r2(expectedFgaPerTeam),
       targetThreeShare: r3(targetThreeShare),

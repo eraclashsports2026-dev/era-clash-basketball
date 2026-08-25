@@ -143,9 +143,19 @@ export const ADJUSTMENT_RESPONSES = [
 ];
 
 // Evidence thresholds. Deliberately not one possession.
-export const ADJUSTMENT_MIN_EVENTS = 4;
-export const ADJUSTMENT_MIN_QUALITY = 6.2;   // mean conceded shot quality
-export const ADJUSTMENT_COOLDOWN = 12;       // possessions between changes
+export const ADJUSTMENT_MIN_EVENTS = 5;
+export const ADJUSTMENT_MIN_QUALITY = 6.4;   // mean conceded shot quality
+// Possessions between changes. Set from observed behaviour: at 12 the engine
+// produced ~3.3 assignment changes per game, which is not how coaches behave —
+// a real staff makes one or two matchup changes in a night. Raising it also
+// lets the cheaper responses (coverage, help) matter, instead of every problem
+// being answered by moving personnel.
+export const ADJUSTMENT_COOLDOWN = 34;
+// A personnel swap is the most disruptive answer available, so it has to clear
+// a real bar. Below it the coach changes coverage or help instead — which is
+// also the order a coach actually tries things in.
+export const SWAP_MIN_GAIN = 2.6;
+export const SWAP_MIN_NET = 1.0;
 
 /** Record what the offence did against a matchup. Quality, not points. */
 export const recordExploitation = (state, { offensivePlayerId, defenderId, shotQuality, action, isPost, isPnr }) => {
@@ -210,31 +220,54 @@ export const considerAdjustment = ({ state, plan, possessionIndex, defenders, th
     // on his own assignment is subtracted.
     const givesUp = clamp(otherThreat.usageShare * 10, 0, 4);
     const net = gain - givesUp;
-    if (gain >= 2 && (!bestSwap || net > bestSwap.net)) bestSwap = { otherOffId, otherDefId, gain: r1(gain), net: r1(net), cand };
+    if (gain >= SWAP_MIN_GAIN && (!bestSwap || net > bestSwap.net)) bestSwap = { otherOffId, otherDefId, gain: r1(gain), net: r1(net), cand };
   }
 
-  // Coverage or help changes are available when a personnel change is not.
-  let response, detail;
-  if (bestSwap && bestSwap.net > 0) {
-    response = "CHANGE_PRIMARY_DEFENDER";
-    detail = `${bestSwap.cand.name} takes ${threat.name}; ${beaten.name} picks up the vacated assignment`;
-  } else if (trigger === "POST_REPEATEDLY_EXPLOITED" && plan.scheme.doubleTeamAggression >= 3 && !plan.scheme.legality.illegalDefenseRestrictions) {
-    response = "INCREASE_DOUBLE_TEAM";
-    detail = `send a second defender at ${threat.name} on the catch`;
-  } else if (trigger === "PNR_REPEATEDLY_SUCCESSFUL") {
-    response = "CHANGE_BALL_SCREEN_COVERAGE";
-    detail = `move off ${plan.scheme.ballScreenCoverage} against this handler`;
-  } else if (plan.scheme.helpAggression < plan.scheme.legality.maxHelpAggression) {
-    response = "INCREASE_HELP";
-    detail = `load help toward ${threat.name} within era limits`;
-  } else {
+  // ── Response is chosen by TRIGGER, not by a fixed ladder ─────────────────
+  // A fixed "swap first, then coverage, then help" ladder meant a personnel
+  // swap answered every problem, because with five all-time defenders there is
+  // almost always a better one available — and the rest of the taxonomy never
+  // fired. That is also bad basketball: you double the post, you change the
+  // coverage against a screen, and you move a matchup only when the matchup
+  // itself is the problem.
+  const preferred = {
+    POST_REPEATEDLY_EXPLOITED: ["INCREASE_DOUBLE_TEAM", "CHANGE_PRIMARY_DEFENDER", "INCREASE_HELP"],
+    PNR_REPEATEDLY_SUCCESSFUL: ["CHANGE_BALL_SCREEN_COVERAGE", "INCREASE_HELP", "CHANGE_PRIMARY_DEFENDER"],
+    EXCESSIVE_RIM_PRESSURE: ["INCREASE_HELP", "CHANGE_PRIMARY_DEFENDER"],
+    SWITCH_MISMATCH_TARGETED: ["STOP_SWITCHING_MATCHUP", "CHANGE_PRIMARY_DEFENDER"],
+    HIDDEN_DEFENDER_DRAGGED_IN: ["REHIDE_WEAK_DEFENDER", "CHANGE_PRIMARY_DEFENDER", "INCREASE_HELP"],
+    MATCHUP_REPEATEDLY_BEATEN: ["CHANGE_PRIMARY_DEFENDER", "INCREASE_HELP", "CHANGE_BALL_SCREEN_COVERAGE"],
+  }[trigger] ?? ["CHANGE_PRIMARY_DEFENDER", "INCREASE_HELP"];
+
+  // Whether each response is actually available — era, scheme and personnel.
+  const supported = {
+    CHANGE_PRIMARY_DEFENDER: () => (bestSwap && bestSwap.net > SWAP_MIN_NET
+      ? `${bestSwap.cand.name} takes ${threat.name}; ${beaten.name} picks up the vacated assignment` : null),
+    INCREASE_DOUBLE_TEAM: () => (plan.scheme.doubleTeamAggression >= 3 && !plan.scheme.legality.illegalDefenseRestrictions
+      ? `send a second defender at ${threat.name} on the catch` : null),
+    CHANGE_BALL_SCREEN_COVERAGE: () => `move off ${plan.scheme.ballScreenCoverage} against this handler`,
+    INCREASE_HELP: () => (plan.scheme.helpAggression < plan.scheme.legality.maxHelpAggression
+      ? `load help toward ${threat.name} within era limits` : null),
+    STOP_SWITCHING_MATCHUP: () => (plan.scheme.switchingFrequency > 0
+      ? `stop switching the ${threat.name} screen and stay attached` : null),
+    REHIDE_WEAK_DEFENDER: () => (plan.scheme.weakDefenderHidePolicy === "ACTIVE"
+      ? `move ${beaten.name} off the action and hide him elsewhere` : null),
+    REDUCE_HELP: () => (plan.scheme.helpAggression > 2 ? "pull help back and stay home on shooters" : null),
+  };
+
+  let response = null, detail = null;
+  for (const r of preferred) {
+    const d = supported[r]?.();
+    if (d) { response = r; detail = d; break; }
+  }
+  if (!response) {
     // Nothing legitimate available. Recorded as a REJECTED consideration so
     // "why didn't the coach adjust" is answerable.
     return {
       rejected: true, possessionIndex, trigger, meanQuality,
       offensivePlayerId: worst.offensivePlayerId, defenderId: worst.defenderId,
       reason: "NO_SUPPORTED_ADJUSTMENT_AVAILABLE",
-      detail: "no personnel swap improved the matchup and no further help or coverage change was legal",
+      detail: `none of ${preferred.join(", ")} was supported by the roster, the scheme or ${plan.scheme.legality.eraStyleId} rules`,
     };
   }
 

@@ -17,9 +17,15 @@ const r1 = (x) => Math.round(x * 10) / 10;
 const dimension = (capability, threatMagnitude) => ({
   fit: r1(clamp(capability, 0, 10)),
   demand: r1(clamp(threatMagnitude, 0, 10)),
-  // Shortfall is the part that matters: capability below demand, scaled by how
-  // much demand there is. Surplus capability is not a bonus.
+  // Shortfall is capability below demand — the part that creates a problem.
   shortfall: r1(clamp(threatMagnitude - capability, 0, 10) * clamp(threatMagnitude / 10, 0, 1)),
+  // Surplus is capability ABOVE demand. It is deliberately NOT symmetric with
+  // shortfall in the optimizer (being able to guard someone twice over is not
+  // twice as useful, which is why the plan cost ignores it), but it IS real at
+  // possession level: a matchup the defence genuinely wins should lower shot
+  // quality, not merely fail to raise it. Without this the engine could only
+  // ever make offence better, and turning defence on RAISED scoring.
+  surplus: r1(clamp(capability - threatMagnitude, 0, 10) * clamp(threatMagnitude / 10, 0, 1)),
 });
 
 /** One pairing, fully decomposed. */
