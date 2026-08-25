@@ -14,9 +14,15 @@ export default async function handler(req, res) {
   const r = ok ? await getJSON(`re:${id}`) : null;
 
   res.setHeader("Content-Type", "text/html; charset=utf-8");
-  res.setHeader("Cache-Control", "public, max-age=300");
 
   if (!r) {
+    // NOT-FOUND MUST NOT BE PUBLICLY CACHED. This path returns 200 with a
+    // redirect-to-home body, and it previously inherited the same
+    // `public, max-age=300` as a real result — so a result shared moments after
+    // someone hit its URL would serve the "nothing here" page from CDN to
+    // everyone for the next five minutes. A miss is a transient state, not a
+    // cacheable document.
+    res.setHeader("Cache-Control", "no-store");
     return res.status(200).send(`<!doctype html><html><head>
 <meta charset="utf-8"><title>EraClash Basketball</title>
 <meta http-equiv="refresh" content="0;url=/"></head>
@@ -32,6 +38,13 @@ export default async function handler(req, res) {
     "Can your five beat this lineup? Play the challenge.",
   ].filter(Boolean).join(" — ");
   const url = `https://${req.headers.host}/result/${id}`;
+
+  // A share record is immutable once written: the game it describes cannot
+  // change. Cached for a day at the edge with a long stale-while-revalidate,
+  // rather than `immutable`, because the URL carries no render version — when
+  // the share renderer is versioned (see cache-key-registry.md) this can become
+  // a year-long immutable cache safely.
+  res.setHeader("Cache-Control", "public, max-age=86400, stale-while-revalidate=604800");
 
   return res.status(200).send(`<!doctype html><html lang="en"><head>
 <meta charset="utf-8">

@@ -14,7 +14,11 @@
     "bench": "node benchmarks/run.mjs",
     "images:discover": "node image-pipeline/discover.mjs",
     "images:review": "node image-pipeline/review.mjs",
-    "images:approve": "node image-pipeline/approve.mjs"
+    "images:approve": "node image-pipeline/approve.mjs",
+    "cache:report": "node scripts/cache-report.mjs",
+    "research:coaches": "node scripts/research/coaches.mjs",
+    "research:eras": "node scripts/research/eras.mjs",
+    "research:refresh": "node scripts/research/coaches.mjs --force"
   },
   "dependencies": {
     "react": "^18.3.1",

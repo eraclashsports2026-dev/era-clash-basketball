@@ -10,16 +10,22 @@ import { buildGamePlan } from "./gameplan.js";
 import { prepareSide, playGame } from "./possession.js";
 import { getCoach, NEUTRAL_COACH } from "./coaches.js";
 import { getEra, DEFAULT_ERA_ID } from "./eraStyles.js";
+import { versionOf } from "../versions.js";
 
+// DERIVED from the canonical registry (src/versions.js) rather than declared
+// here. Two independently-declared version lists is exactly how "V3" came to
+// mean both the live engine and the unbuilt possession engine at the same time.
+// The model-shape fields below are local to this engine and have no registry
+// domain, so they stay here.
 export const V3_VERSIONS = {
-  engine: "3.1.0-alpha",
+  engine: versionOf("engineVersion"),
   possessionModel: "2",       // game state + fatigue + transition tradeoff + PF + xPts
   gameStateModel: "1",
   fatigueModel: "1",
-  playerData: "2026-08-23",
-  coachData: "2",             // career phases informing adjustments
-  eraData: "1",
-  calibration: "backtest-1",
+  playerData: versionOf("playerDataVersion"),
+  coachData: versionOf("coachDataVersion"),
+  eraData: versionOf("eraDataVersion"),
+  calibration: versionOf("calibrationVersion"),
 };
 
 // A stored result carries this complete fingerprint so EraClash Labs can
