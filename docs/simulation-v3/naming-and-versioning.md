@@ -25,6 +25,29 @@
 | Narrative schema | `narrativeSchemaVersion` | **1.0.0** | ACTIVE (does **not** affect results) |
 | Player-card design | `playerCardDesignVersion` | `null` | PLANNED (does **not** affect results) |
 | Calibration | `calibrationVersion` | **backtest-1** | ACTIVE |
+| Calibration framework | `calibrationFrameworkVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Historical fixture data | `historicalFixtureDataVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Holdout set | `holdoutSetVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Benchmark seed set | `benchmarkSeedSetVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Possession calibration | `possessionCalibrationVersion` | `null` | PLANNED (does **not** affect results) |
+
+### Why calibration has two domains, not one
+
+`calibrationVersion` (**backtest-1**) is the **production** engine's calibration
+and is ACTIVE. It must never be repurposed: repointing it would silently change
+the identity of every stored production result.
+
+`possessionCalibrationVersion` is the development engine's calibration and is
+deliberately **`null` / PLANNED**. Phase 6C1 built the framework that will
+measure a calibration; it did not produce one. A non-null value here would
+assert that tuned coefficients exist, and they do not — `vtag()` therefore
+throws if anything tries to build a cache key from it, which is the correct
+behaviour for a system that has not been built yet.
+
+The other four are DEVELOPMENT because they describe measurement apparatus, not
+engine behaviour: changing the fixture corpus or the seed set changes what a
+benchmark MEASURES, so a cached benchmark must be invalidated, but no game
+result depends on them.
 
 Source of truth: **`src/versions.js`**. `versionOf()` throws on an unknown
 domain so a typo cannot silently become an unversioned cache key. The table

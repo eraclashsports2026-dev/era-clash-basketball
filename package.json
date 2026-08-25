@@ -28,7 +28,15 @@
     "simulation:replay": "node scripts/simulation-replay.mjs",
     "bench:possession": "node benchmarks/v3/possession-core.mjs",
     "defense:explain": "node scripts/defense-explain.mjs",
-    "calibration:freeze-baseline": "node scripts/calibration/freeze-baseline.mjs"
+    "calibration:freeze-baseline": "node scripts/calibration/freeze-baseline.mjs",
+    "calibration:run": "node scripts/calibration/run.mjs run",
+    "calibration:fixture": "node scripts/calibration/run.mjs fixture",
+    "calibration:era": "node scripts/calibration/run.mjs era",
+    "calibration:zone": "node scripts/calibration/run.mjs zone",
+    "calibration:coaches": "node scripts/calibration/run.mjs coaches",
+    "calibration:shooting-hierarchy": "node scripts/calibration/run.mjs shooting-hierarchy",
+    "calibration:diagnostics": "node scripts/calibration/run.mjs diagnostics",
+    "calibration:holdout": "node scripts/calibration/run.mjs holdout"
   },
   "dependencies": {
     "react": "^18.3.1",
