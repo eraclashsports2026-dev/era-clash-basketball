@@ -71,6 +71,15 @@ export const REGISTRY = {
   historicalFixtureDataVersion: entry("1.0.0", DEVELOPMENT,
     "The historical fixture corpus: units, coaches, era anchors, documented identities and sourced targets. A fixture edit must invalidate cached calibration output.", false),
 
+  historicalTargetSchemaVersion: entry("1.0.0", DEVELOPMENT,
+    "The shape of a calibration target record: fields, provenance requirements, availability vocabulary. Changing it changes what a target IS, so cached target output must be invalidated. Does NOT affect game results.", false),
+
+  historicalTargetDataVersion: entry("1.0.0", DEVELOPMENT,
+    "The target VALUES themselves. Bumped whenever targets are added, corrected or re-derived — including blind holdout enrichment, which changes the data without touching holdout membership. Does NOT affect game results: a target is what the engine is measured AGAINST, never an input to it.", false),
+
+  opportunityAllocationVersion: entry("1.0.0", DEVELOPMENT,
+    "Who receives each offensive opportunity. This one DOES change results — it changes which player shoots — so it belongs in development fingerprints, possession cache keys and replay identity.", true),
+
   holdoutSetVersion: entry("1.0.0", DEVELOPMENT,
     "The frozen holdout partition. Bumping it means the holdout changed, which is a deliberate act that invalidates every prior holdout measurement.", false),
 

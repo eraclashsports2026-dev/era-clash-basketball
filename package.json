@@ -36,7 +36,12 @@
     "calibration:coaches": "node scripts/calibration/run.mjs coaches",
     "calibration:shooting-hierarchy": "node scripts/calibration/run.mjs shooting-hierarchy",
     "calibration:diagnostics": "node scripts/calibration/run.mjs diagnostics",
-    "calibration:holdout": "node scripts/calibration/run.mjs holdout"
+    "calibration:holdout": "node scripts/calibration/run.mjs holdout",
+    "calibration:freeze-structural": "node scripts/calibration/freeze-structural.mjs",
+    "calibration:import-targets": "node scripts/calibration/import-targets.mjs import",
+    "calibration:verify-targets": "node scripts/calibration/import-targets.mjs verify",
+    "calibration:coverage": "node scripts/calibration/import-targets.mjs coverage",
+    "calibration:refresh-targets": "node scripts/calibration/import-targets.mjs import --refresh"
   },
   "dependencies": {
     "react": "^18.3.1",
