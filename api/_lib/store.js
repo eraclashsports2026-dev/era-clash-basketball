@@ -45,10 +45,22 @@ const memCmd = (args) => {
       return "OK";
     }
     case "INCR": { const v = Number(mem.kv.get(key) || 0) + 1; mem.kv.set(key, String(v)); return v; }
+    // Used to release a generation lock early. The lock's TTL remains the real
+    // guarantee — DEL is only an optimisation so the next caller does not wait.
+    case "DEL": { const had = mem.kv.delete(key); mem.h.delete(key); mem.exp.delete(key); return had ? 1 : 0; }
     case "EXPIRE": mem.exp.set(key, Date.now() + Number(rest[0]) * 1000); return 1;
     case "HINCRBY": {
       const h = mem.h.get(key) || mem.h.set(key, new Map()).get(key);
       const v = Number(h.get(rest[0]) || 0) + Number(rest[1]); h.set(rest[0], v); return v;
+    }
+    // Upstash returns HGETALL as a flat [field, value, ...] array; the memory
+    // store must match that shape or callers would need two code paths.
+    case "HGETALL": {
+      const h = mem.h.get(key);
+      if (!h) return null;
+      const flat = [];
+      for (const [f, v] of h) flat.push(f, String(v));
+      return flat;
     }
     case "PFADD": { const s = mem.s.get(key) || mem.s.set(key, new Set()).get(key); s.add(rest[0]); return 1; }
     case "LPUSH": { const l = mem.l.get(key) || mem.l.set(key, []).get(key); l.unshift(rest[0]); return l.length; }

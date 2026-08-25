@@ -7,7 +7,12 @@ import { PLAYERS } from "../../src/players.js";
 import { hasStore, cmd, dayKey } from "./store.js";
 import { limits } from "./flags.js";
 
-const MODEL = "claude-sonnet-4-6";
+// Exported so the narrative cache identity can name the exact model that
+// produced a narrative. Swapping models MUST produce a cache miss — text
+// written by a different model is a different artefact.
+export const MODEL = "claude-sonnet-4-6";
+export const PROVIDER = "anthropic";
+const MODEL_NAME = MODEL;
 
 // ── Circuit breaker (KV-backed fixed window; in-memory fallback) ──────────────
 const memCircuit = { window: 0, fails: 0 };
@@ -151,7 +156,7 @@ export const generateNarrative = async (result, apiKey, chaos) => {
         signal: controller.signal,
         headers: { "Content-Type": "application/json", "x-api-key": apiKey, "anthropic-version": "2023-06-01" },
         body: JSON.stringify({
-          model: MODEL, max_tokens: 1100,
+          model: MODEL_NAME, max_tokens: 1100,
           messages: [{ role: "user", content: chaos === "ai-invalid" ? "Reply with the word banana only." : prompt }],
         }),
       });
@@ -166,7 +171,7 @@ export const generateNarrative = async (result, apiKey, chaos) => {
       const narrative = validateNarrative(parsed);
       if (!narrative) { lastCode = "MODEL_INVALID_OUTPUT"; await recordFailure(); continue; }
       const usage = {
-        model: MODEL,
+        model: MODEL_NAME,
         input_tokens: data.usage?.input_tokens || 0,
         output_tokens: data.usage?.output_tokens || 0,
         latency_ms: Date.now() - started,

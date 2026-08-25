@@ -1,4 +1,4 @@
-// 25-coach research database — build-time research with provenance, fact-checked.
+// 30-coach research database — build-time research with provenance, fact-checked.
 // See docs/simulation-v3/coaches-research.md. NO universal coach OVR exists.
 export default {
   "coaches": [
@@ -2342,6 +2342,462 @@ export default {
         "Toronto Raptors and Philadelphia 76ers official team histories"
       ],
       "confidence": "MEDIUM"
+    },
+    {
+      "id": "doug-moe",
+      "name": "Doug Moe",
+      "span": "1976–1993",
+      "wins": 628,
+      "losses": 529,
+      "pct": 0.543,
+      "championships": 0,
+      "teams": [
+        "San Antonio Spurs",
+        "Denver Nuggets",
+        "Philadelphia 76ers"
+      ],
+      "eras": [
+        "1970s",
+        "1980s",
+        "1990s"
+      ],
+      "systemTags": [
+        "Passing game",
+        "Extreme pace",
+        "Read-and-react"
+      ],
+      "offense": {
+        "tempo": 10,
+        "transition": 10,
+        "motion": 10,
+        "pnr": 3,
+        "post": 3,
+        "iso": 2,
+        "threeEmphasis": 2,
+        "insideOut": 3,
+        "offBall": 9,
+        "ballMovement": 10,
+        "starFreedom": 6
+      },
+      "defense": {
+        "man": 6,
+        "zone": 2,
+        "switching": 4,
+        "drop": 4,
+        "pressure": 4,
+        "helpAggression": 4,
+        "rimPriority": 3,
+        "defRebPriority": 4
+      },
+      "management": {
+        "adaptability": 4,
+        "rotationDepth": 7,
+        "roleDiscipline": 3,
+        "starEmpowerment": 5,
+        "tacticalAdjustment": 4
+      },
+      "rosterFit": {
+        "traditionalCenters": 3,
+        "passingBigs": 9,
+        "shootingBigs": 4,
+        "primaryCreators": 4,
+        "multipleCreators": 8,
+        "switchableWings": 6,
+        "shooters": 7,
+        "defenders": 4,
+        "transitionAthletes": 10
+      },
+      "bestWith": [
+        "Five willing passers",
+        "Bigs who can pass and run the floor",
+        "High-IQ improvisers who need no set plays"
+      ],
+      "concern": "The passing game demands unselfish, high-IQ players and tolerates defensive breakdowns; it does not fit a roster built around one dominant isolation scorer",
+      "documented": [
+        "Career NBA regular-season record 628-529 (.543) across San Antonio, Denver and Philadelphia",
+        "NBA Coach of the Year, 1988",
+        "His 1981-82 Denver Nuggets scored 126.48 points per game — still the NBA record — and were the only team ever to score 100+ in all 82 games",
+        "Ran a 'passing game' with no set plays in which players were not to hold the ball longer than about two seconds",
+        "Derived his philosophy from Dean Smith's passing game but ran it at a far faster, more improvisational tempo",
+        "Disputed that his teams played poor defense, attributing high opponent scoring to pace"
+      ],
+      "inferred": [
+        "All 0-10 numeric ratings are analyst inference from the documented system and team statistics, not documented figures",
+        "tempo (10) and ballMovement (10) are anchored to the documented scoring record and two-second rule but the scale values are inference",
+        "Defensive ratings are inferred from Denver's points-allowed rankings and are the least certain part of this profile",
+        "rosterFit values project which archetypes the passing game rewards"
+      ],
+      "sources": [
+        "Wikipedia (Doug Moe), mirroring Basketball-Reference coaching record",
+        "NBA Coach of the Year records (1988)",
+        "NBA single-season team scoring records (1981-82 Denver Nuggets)"
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "id": "mike-fratello",
+      "name": "Mike Fratello",
+      "span": "1983–2006",
+      "wins": 667,
+      "losses": 548,
+      "pct": 0.549,
+      "championships": 0,
+      "teams": [
+        "Atlanta Hawks",
+        "Cleveland Cavaliers",
+        "Memphis Grizzlies"
+      ],
+      "eras": [
+        "1980s",
+        "1990s",
+        "2000s"
+      ],
+      "systemTags": [
+        "Tempo management",
+        "Half-court defense",
+        "Execution-first"
+      ],
+      "offense": {
+        "tempo": 1,
+        "transition": 2,
+        "motion": 5,
+        "pnr": 6,
+        "post": 7,
+        "iso": 6,
+        "threeEmphasis": 3,
+        "insideOut": 7,
+        "offBall": 5,
+        "ballMovement": 5,
+        "starFreedom": 5
+      },
+      "defense": {
+        "man": 8,
+        "zone": 3,
+        "switching": 3,
+        "drop": 7,
+        "pressure": 4,
+        "helpAggression": 6,
+        "rimPriority": 8,
+        "defRebPriority": 8
+      },
+      "management": {
+        "adaptability": 6,
+        "rotationDepth": 5,
+        "roleDiscipline": 9,
+        "starEmpowerment": 4,
+        "tacticalAdjustment": 8
+      },
+      "rosterFit": {
+        "traditionalCenters": 8,
+        "passingBigs": 5,
+        "shootingBigs": 4,
+        "primaryCreators": 5,
+        "multipleCreators": 4,
+        "switchableWings": 5,
+        "shooters": 5,
+        "defenders": 9,
+        "transitionAthletes": 2
+      },
+      "bestWith": [
+        "A defensive anchor at centre",
+        "Disciplined half-court executors",
+        "Players who accept a low-possession game"
+      ],
+      "concern": "Extreme tempo suppression wastes elite transition athletes and can leave a team without enough offence when the half-court stalls",
+      "documented": [
+        "Career NBA regular-season record 667-548 (.549) across 1,215 games with Atlanta, Cleveland and Memphis",
+        "NBA Coach of the Year, 1986",
+        "His 1995-96 Cleveland Cavaliers played at 82.32 pace — the slowest team pace in NBA history — roughly 10.3% below league average, and were the slowest team ever to make the playoffs",
+        "Cleveland finished last in the NBA in scoring in 1996-97 at 87.5 points per game while allowing 85.6",
+        "Preferred the term 'tempo management' to 'slowdown', and committed to it after the Cavaliers tried to run with Indiana early in 1994-95 and lost",
+        "His Cleveland teams ranked 25th, 17th, 29th, 27th and 26th in pace across his tenure",
+        "Nicknamed 'The Czar of the Telestrator' for his play-diagramming as a broadcaster"
+      ],
+      "inferred": [
+        "All 0-10 numeric ratings are analyst inference from the documented system and pace/scoring rankings",
+        "tempo (1) is anchored to the documented slowest-pace-in-history record but the scale value is inference",
+        "roleDiscipline (9) is inferred from the sustained execution required to hold that pace across five seasons",
+        "rosterFit values project which archetypes a low-possession half-court system rewards"
+      ],
+      "sources": [
+        "Wikipedia (Mike Fratello), mirroring Basketball-Reference coaching record",
+        "Sports Illustrated, 'Slaying Them Slowly' (9 January 1995)",
+        "NBA pace-factor records (1995-96 Cleveland Cavaliers)",
+        "NBA Coach of the Year records (1986)"
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "id": "hubie-brown",
+      "name": "Hubie Brown",
+      "span": "1976–1987, 2002–2004",
+      "wins": 357,
+      "losses": 476,
+      "pct": 0.429,
+      "championships": 0,
+      "teams": [
+        "Atlanta Hawks",
+        "New York Knicks",
+        "Memphis Grizzlies"
+      ],
+      "eras": [
+        "1970s",
+        "1980s",
+        "2000s"
+      ],
+      "systemTags": [
+        "Ten-man rotation",
+        "Defense-first teaching",
+        "Depth over stars"
+      ],
+      "offense": {
+        "tempo": 5,
+        "transition": 5,
+        "motion": 7,
+        "pnr": 6,
+        "post": 6,
+        "iso": 4,
+        "threeEmphasis": 3,
+        "insideOut": 6,
+        "offBall": 7,
+        "ballMovement": 7,
+        "starFreedom": 3
+      },
+      "defense": {
+        "man": 8,
+        "zone": 4,
+        "switching": 4,
+        "drop": 6,
+        "pressure": 7,
+        "helpAggression": 7,
+        "rimPriority": 6,
+        "defRebPriority": 7
+      },
+      "management": {
+        "adaptability": 9,
+        "rotationDepth": 10,
+        "roleDiscipline": 9,
+        "starEmpowerment": 3,
+        "tacticalAdjustment": 8
+      },
+      "rosterFit": {
+        "traditionalCenters": 6,
+        "passingBigs": 6,
+        "shootingBigs": 4,
+        "primaryCreators": 3,
+        "multipleCreators": 6,
+        "switchableWings": 6,
+        "shooters": 5,
+        "defenders": 8,
+        "transitionAthletes": 6
+      },
+      "bestWith": [
+        "A deep roster with no clear star hierarchy",
+        "Defenders who sustain intensity in short bursts",
+        "Role players who accept defined jobs"
+      ],
+      "concern": "A ten-man rotation deliberately caps star minutes; a roster whose value is concentrated in one or two players loses more than the depth returns",
+      "documented": [
+        "Career NBA regular-season record 357-476 (.429) with Atlanta, New York and Memphis",
+        "Won the 1975 ABA championship with the Kentucky Colonels (58-26)",
+        "NBA Coach of the Year twice, 26 years apart: 1978 (Atlanta) and 2004 (Memphis)",
+        "Coached Memphis with a ten-man rotation, deliberately reducing individual minutes to sustain defensive intensity across the roster",
+        "A noted defender as a player; defensive discipline was a foundational principle throughout his career"
+      ],
+      "inferred": [
+        "All 0-10 numeric ratings are analyst inference from the documented system and team results",
+        "rotationDepth (10) is anchored to the documented ten-man rotation; the scale value is inference",
+        "adaptability (9) is inferred from winning Coach of the Year in two different eras 26 years apart with very different personnel",
+        "starEmpowerment (3) is inferred from the minutes-capping rotation, not from any documented statement about stars",
+        "Offensive ratings are the least certain part of this profile: sources document his defensive philosophy far more thoroughly than his offensive sets"
+      ],
+      "sources": [
+        "Wikipedia (Hubie Brown), mirroring Basketball-Reference coaching record",
+        "NBA Coach of the Year records (1978, 2004)",
+        "ABA championship records (1975 Kentucky Colonels)"
+      ],
+      "confidence": "MEDIUM-HIGH"
+    },
+    {
+      "id": "tom-thibodeau",
+      "name": "Tom Thibodeau",
+      "span": "2010–2025",
+      "wins": 578,
+      "losses": 420,
+      "pct": 0.579,
+      "championships": 0,
+      "teams": [
+        "Chicago Bulls",
+        "Minnesota Timberwolves",
+        "New York Knicks"
+      ],
+      "eras": [
+        "2010s",
+        "2020s"
+      ],
+      "systemTags": [
+        "Elite team defense",
+        "Starter-heavy minutes",
+        "Detail and repetition"
+      ],
+      "offense": {
+        "tempo": 3,
+        "transition": 4,
+        "motion": 6,
+        "pnr": 7,
+        "post": 5,
+        "iso": 6,
+        "threeEmphasis": 4,
+        "insideOut": 6,
+        "offBall": 6,
+        "ballMovement": 6,
+        "starFreedom": 7
+      },
+      "defense": {
+        "man": 9,
+        "zone": 2,
+        "switching": 3,
+        "drop": 8,
+        "pressure": 6,
+        "helpAggression": 9,
+        "rimPriority": 9,
+        "defRebPriority": 8
+      },
+      "management": {
+        "adaptability": 5,
+        "rotationDepth": 2,
+        "roleDiscipline": 9,
+        "starEmpowerment": 7,
+        "tacticalAdjustment": 7
+      },
+      "rosterFit": {
+        "traditionalCenters": 8,
+        "passingBigs": 5,
+        "shootingBigs": 5,
+        "primaryCreators": 7,
+        "multipleCreators": 5,
+        "switchableWings": 5,
+        "shooters": 6,
+        "defenders": 10,
+        "transitionAthletes": 4
+      },
+      "bestWith": [
+        "A rim-protecting centre to anchor the shell",
+        "Wings who accept heavy minutes and defensive assignments",
+        "One clear primary creator"
+      ],
+      "concern": "Very short rotations concentrate load on starters; a lineup with no rim protection loses the foundation the whole defensive system is built on",
+      "documented": [
+        "Career NBA regular-season record 578-420 (.579) with Chicago, Minnesota and New York",
+        "NBA Coach of the Year twice: 2011 (Chicago, 62 wins — tied the record for a rookie head coach) and 2021 (New York)",
+        "Described by ESPN as the pinnacle of team defensive strategy in the NBA; his teams have consistently ranked in the league's top ten for defensive efficiency",
+        "Widely criticised for heavy reliance on starters and the resulting minutes load",
+        "His Chicago teams led the league in close-game winning percentage (.623)"
+      ],
+      "inferred": [
+        "All 0-10 numeric ratings are analyst inference from the documented system and defensive-efficiency rankings",
+        "rotationDepth (2) is anchored to the documented starter-minutes criticism; the scale value is inference",
+        "Offensive ratings are inference — sources document his defensive system far more thoroughly than his offensive sets",
+        "rosterFit values project which archetypes his documented defensive scheme rewards"
+      ],
+      "sources": [
+        "Wikipedia (Tom Thibodeau), mirroring Basketball-Reference coaching record",
+        "NBA Coach of the Year records (2011, 2021)",
+        "ESPN analysis of team defensive strategy"
+      ],
+      "confidence": "MEDIUM-HIGH"
+    },
+    {
+      "id": "stan-van-gundy",
+      "name": "Stan Van Gundy",
+      "span": "2003–2021",
+      "wins": 554,
+      "losses": 425,
+      "pct": 0.566,
+      "championships": 0,
+      "teams": [
+        "Miami Heat",
+        "Orlando Magic",
+        "Detroit Pistons",
+        "New Orleans Pelicans"
+      ],
+      "eras": [
+        "2000s",
+        "2010s",
+        "2020s"
+      ],
+      "systemTags": [
+        "Four-out one-in",
+        "Spacing around a centre",
+        "Pick-and-roll and kick"
+      ],
+      "offense": {
+        "tempo": 5,
+        "transition": 5,
+        "motion": 6,
+        "pnr": 9,
+        "post": 6,
+        "iso": 4,
+        "threeEmphasis": 9,
+        "insideOut": 10,
+        "offBall": 8,
+        "ballMovement": 8,
+        "starFreedom": 6
+      },
+      "defense": {
+        "man": 8,
+        "zone": 3,
+        "switching": 4,
+        "drop": 8,
+        "pressure": 5,
+        "helpAggression": 7,
+        "rimPriority": 9,
+        "defRebPriority": 7
+      },
+      "management": {
+        "adaptability": 7,
+        "rotationDepth": 5,
+        "roleDiscipline": 8,
+        "starEmpowerment": 6,
+        "tacticalAdjustment": 7
+      },
+      "rosterFit": {
+        "traditionalCenters": 9,
+        "passingBigs": 5,
+        "shootingBigs": 6,
+        "primaryCreators": 5,
+        "multipleCreators": 5,
+        "switchableWings": 6,
+        "shooters": 10,
+        "defenders": 7,
+        "transitionAthletes": 4
+      },
+      "bestWith": [
+        "A dominant rim-running, rim-protecting centre",
+        "Four perimeter shooters who can space the floor around him",
+        "A big who can pass out of a double team"
+      ],
+      "concern": "The system is built on one dominant interior anchor surrounded by shooting; without either the centre or the shooters it loses the geometry that makes it work",
+      "documented": [
+        "Career NBA regular-season record 554-425 (.566) with Miami, Orlando, Detroit and New Orleans",
+        "Reached the 2009 NBA Finals with Orlando; the Magic won 59 games in back-to-back seasons",
+        "Spaced four shooters around Dwight Howard — a prototype of the modern pace-and-space offence — with Rashard Lewis sliding from small forward to power forward",
+        "The system forced defences to choose between doubling Howard in the post and leaving a shooter open, or guarding him one-on-one",
+        "Three teams in NBA history have made 10 three-pointers per game while attempting fewer than 80 field goals; all three were Van Gundy's Magic teams, beginning with the 2009 Finals side",
+        "Van Gundy has said the four-out alignment arose from personnel necessity rather than design"
+      ],
+      "inferred": [
+        "All 0-10 numeric ratings are analyst inference from the documented system and team shooting profiles",
+        "insideOut (10) and shooters (10) are anchored to the documented four-out alignment and three-point records; the scale values are inference",
+        "Defensive ratings are inferred from Orlando's defensive rankings with Howard anchoring, and are less certain than the offensive profile",
+        "rosterFit values project which archetypes the four-out system rewards"
+      ],
+      "sources": [
+        "Wikipedia (Stan Van Gundy), mirroring Basketball-Reference coaching record",
+        "The Ringer, 'The 2009 Orlando Magic Are the Forgotten Innovators of the NBA's 3-Point Revolution' (6 June 2019)",
+        "Van Gundy interview on the origins of the Orlando four-out system (Basketball Network / Yahoo Sports)"
+      ],
+      "confidence": "HIGH"
     }
   ]
 };

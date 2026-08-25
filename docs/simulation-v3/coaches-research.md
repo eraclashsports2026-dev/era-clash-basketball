@@ -534,3 +534,98 @@ Build-time research compiled 2026-08-23. Every profile separates DOCUMENTED fact
   - rosterFit values are projections of which archetypes his documented schemes reward
   - Career W-L (298-256) covers 2018-19 through 2024-25 only; the 2025-26 season is not included
 - **Sources**: Basketball Reference coach page (Nick Nurse); NBA.com Coach of the Year announcement (2020); NBA.com and ESPN coverage of the 2019 NBA Finals (box-and-one vs. Stephen Curry); NBA G League championship records; Toronto Raptors and Philadelphia 76ers official team histories · **Confidence**: MEDIUM
+
+---
+
+# Phase 4 additions (2026-08-25) — 25 → 30 coaches
+
+Five coaches added for **tactical diversity the existing pool could not
+express**, not for fame. Selection rationale in `coach-pool-decision.md`.
+
+Every entry separates **documented fact** from **analyst inference**: a 0–10
+rating is inference even when the system behind it is documented.
+
+## Doug Moe · `doug-moe` · confidence HIGH
+628-529 (.543) · San Antonio 1976-80, Denver 1980-90, Philadelphia 1992-93 · COY 1988
+
+**Documented:** ran a "passing game" with no set plays in which players were not
+to hold the ball longer than about two seconds. His 1981-82 Nuggets scored
+**126.48 PPG — still the NBA record** — and were the only team ever to score
+100+ in all 82 games. Derived the philosophy from Dean Smith's passing game but
+ran it faster and more improvisationally. Disputed that his teams defended
+poorly, attributing opponent scoring to pace.
+
+**Inferred:** all numeric ratings. Defensive ratings are the least certain part
+of the profile.
+
+**Sources:** Wikipedia (mirroring Basketball-Reference); NBA COY records; NBA
+single-season team scoring records.
+
+## Mike Fratello · `mike-fratello` · confidence HIGH
+667-548 (.549) over 1,215 games · Atlanta 1983-90, Cleveland 1993-99, Memphis 2004-06 · COY 1986
+
+**Documented:** his 1995-96 Cavaliers played at **82.32 pace — the slowest team
+pace in NBA history**, ~10.3% below league average, and were the slowest team
+ever to make the playoffs. Cleveland finished last in the NBA in scoring in
+1996-97 (87.5 PPG, allowing 85.6). Preferred "tempo management" to "slowdown",
+committing to it after the Cavaliers tried to run with Indiana in 1994-95 and
+lost. His Cleveland teams ranked 25th, 17th, 29th, 27th, 26th in pace.
+
+**Inferred:** all numeric ratings; `roleDiscipline` 9 from the execution needed
+to sustain that pace for five seasons.
+
+**Sources:** Wikipedia; *Sports Illustrated*, "Slaying Them Slowly" (9 Jan 1995);
+NBA pace-factor records; NBA COY records.
+
+## Hubie Brown · `hubie-brown` · confidence MEDIUM-HIGH
+357-476 (.429) · Atlanta 1976-81, New York 1982-87, Memphis 2002-04 · **ABA title 1975** · COY 1978 **and** 2004
+
+**Documented:** coached Memphis with a **ten-man rotation**, deliberately
+reducing individual minutes to sustain defensive intensity across the roster.
+Won Coach of the Year twice, **26 years apart**. A noted defender as a player;
+defensive discipline was foundational throughout.
+
+**Inferred:** all numeric ratings; `adaptability` 9 from winning COY in two eras
+with very different personnel; `starEmpowerment` 3 from the minutes-capping
+rotation, not from any statement about stars. **Offensive ratings are the least
+certain part of this profile** — sources document his defence far more thoroughly.
+
+**Sources:** Wikipedia; NBA COY records (1978, 2004); ABA championship records.
+
+## Tom Thibodeau · `tom-thibodeau` · confidence MEDIUM-HIGH
+578-420 (.579) · Chicago 2010-15, Minnesota 2016-19, New York 2020-25 · COY 2011, 2021
+
+**Documented:** described by ESPN as the pinnacle of team defensive strategy in
+the NBA; his teams consistently rank top-ten in defensive efficiency. Widely
+criticised for heavy starter reliance. His Chicago teams led the league in
+close-game winning percentage (.623). The 2011 Bulls' 62 wins tied the record
+for a rookie head coach.
+
+**Inferred:** all numeric ratings; `rotationDepth` 2 from the documented
+minutes criticism. Offensive ratings are inference.
+
+**Sources:** Wikipedia; NBA COY records (2011, 2021); ESPN defensive analysis.
+
+## Stan Van Gundy · `stan-van-gundy` · confidence HIGH
+554-425 (.566) · Miami 2003-05, Orlando 2007-12, Detroit 2014-18, New Orleans 2020-21
+
+**Documented:** reached the 2009 Finals; Orlando won 59 games in back-to-back
+seasons. **Spaced four shooters around Dwight Howard** — a prototype of the
+modern pace-and-space offence — with Rashard Lewis sliding from the three to the
+four. The alignment forced defences to choose between doubling Howard and
+leaving a shooter open. **Three teams in NBA history have made 10 threes per
+game on fewer than 80 field-goal attempts; all three were his Magic teams.**
+Van Gundy has said the four-out look arose from personnel necessity, not design.
+
+**Inferred:** all numeric ratings; defensive ratings less certain than the
+offensive profile.
+
+**Sources:** Wikipedia; The Ringer, "The 2009 Orlando Magic Are the Forgotten
+Innovators of the NBA's 3-Point Revolution" (6 Jun 2019); Van Gundy interview on
+the origins of the four-out system.
+
+## Evaluated, not added
+
+**Frank Vogel** (480-422, 2020 title) and **Nate McMillan** — credible, but
+their defensive profiles overlap Thibodeau's, and the pool gains less from a
+third drop-coverage system than from bracketing an axis at both poles.

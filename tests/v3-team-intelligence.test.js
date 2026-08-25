@@ -319,15 +319,21 @@ describe("team intelligence — isolation from production", () => {
 
   it("no simulation module imports the team intelligence layer", () => {
     const dir = new URL("../src/v3/", import.meta.url);
+    // Match IMPORT STATEMENTS, not any mention. `teamIntelligenceVersion` is a
+    // version-registry domain name that legitimately appears in fingerprint.js
+    // and cacheKeys.js — naming a version is not importing a module.
+    const IMPORTS_TI = /(?:import|require)\s*\(?\s*[^;]*["'][^"']*teamIntelligence(?:\.js)?["']/;
     for (const f of readdirSync(dir).filter((f) => f.endsWith(".js") && f !== "teamIntelligence.js")) {
       const src = readFileSync(new URL(f, dir), "utf8");
-      expect(src, `${f} must not import teamIntelligence`).not.toMatch(/teamIntelligence/);
+      expect(src, `${f} must not import teamIntelligence`).not.toMatch(IMPORTS_TI);
     }
     for (const f of readdirSync(new URL("../api/_lib/", import.meta.url))) {
       if (!f.endsWith(".js")) continue;
       const src = readFileSync(new URL(`../api/_lib/${f}`, import.meta.url), "utf8");
-      expect(src, `api/_lib/${f} must not import teamIntelligence`).not.toMatch(/teamIntelligence/);
+      expect(src, `api/_lib/${f} must not import teamIntelligence`).not.toMatch(IMPORTS_TI);
     }
+    // the matcher must still catch a real import
+    expect('import { buildTeamIntelligence } from "./teamIntelligence.js";').toMatch(IMPORTS_TI);
   });
 
   it("declares its own non-use", () => {
