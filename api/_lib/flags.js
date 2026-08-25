@@ -31,6 +31,10 @@ export const flags = () => ({
   aiNarrative: bool("AI_NARRATIVE_ENABLED", true),
   challenges: bool("CHALLENGES_ENABLED", true),
   daily: bool("DAILY_ENABLED", true),
+  // Daily coach + Era Style integration. DEFAULT OFF everywhere. When off, the
+  // Daily behaves exactly as it does today, which is the rollback path: no
+  // coach selection, no official era, server-generated seed.
+  dailyCoachEra: bool("DAILY_COACH_ERA_ENABLED", false),
   leaderboard: bool("PUBLIC_LEADERBOARD_ENABLED", true),
   feedback: bool("FEEDBACK_ENABLED", true),
 });

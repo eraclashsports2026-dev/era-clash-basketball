@@ -44,6 +44,7 @@ import { personIdForCard } from "./data/persons.js";
 import { physicalFor } from "./data/physical.js";
 import { shootingFor, threePctIsMeaningful, SHOOTING_IDENTITY } from "./data/shooting.js";
 import { statBasisFor } from "./data/cardStatBasis.js";
+import { preRecordingDefense, BAND_FLOOR } from "./data/preRecordingDefense.js";
 
 const clamp10 = (v) => Math.max(0, Math.min(10, v));
 const r1 = (v) => Math.round(clamp10(v) * 10) / 10;
@@ -314,6 +315,21 @@ export const buildIntelligence = (p, ctx = {}) => {
     defensiveRebounding: r1(dna.defReb),
     schemeVersatility: r1(dna.switchability * 0.6 + dna.helpDef * 0.4),
   };
+  // ── pre-1974 defensive floors ───────────────────────────────────────────────
+  // Steals and blocks were not recorded until 1973-74, so these three
+  // attributes derive from zeroes for every earlier card — which is how Bill
+  // Russell arrived at an event-creation rating of 0.0. The review in
+  // data/preRecordingDefense.js supplies a categorical BAND per player, and the
+  // band lifts the derived value to a floor. A floor says "at least this good";
+  // it never claims a steal or block rate, because no such rate was ever
+  // measured. Curation still overrides afterwards.
+  const preDef = preRecordingDefense(p.id);
+  if (preDef) {
+    defense.eventCreation = r1(Math.max(defense.eventCreation, BAND_FLOOR[preDef.eventCreationBand]));
+    defense.interiorDeterrence = r1(Math.max(defense.interiorDeterrence, BAND_FLOOR[preDef.interiorBand]));
+    defense.perimeterContainment = r1(Math.max(defense.perimeterContainment, BAND_FLOOR[preDef.perimeterBand]));
+  }
+
   const fit = {
     roleScalability: r1(dna.offBall * 0.5 + (10 - dna.ballDominance) * 0.28 + (10 - dna.usageTendency) * 0.14 + dna.iq * 0.08),
     spacingContribution: r1(dna.outsideShooting * 0.6 + dna.threeTendency * 0.25 + dna.offBall * 0.15),
@@ -400,6 +416,9 @@ export const buildIntelligence = (p, ctx = {}) => {
       ? `MEASURED SPLITS (${shoot.precision}) — ${shoot.source}, read ${shoot.verifiedOn}; scope ${shoot.scope}. Categorical identity from the documented playing record.`
       : "CATEGORICAL ONLY — no measured splits obtained. Shooting attributes fall back to the position/era/volume inference in playerProfile.js.",
     statBasis: statBasisFor(p.id),
+    preRecordingDefense: preDef
+      ? `REVIEWED (${preDef.evidence}) — steals and blocks were unrecorded in this era, so defensive attributes carry a categorical BAND floor rather than a fabricated rate. interior=${preDef.interiorBand} perimeter=${preDef.perimeterBand} events=${preDef.eventCreationBand}.`
+      : null,
     eraIndependence: "Computed without reference to any game era. No era bonuses, multipliers, or branches exist in this layer.",
     engineUse: "NONE — no simulation module imports this file. Profiles do not affect game outcomes.",
   };

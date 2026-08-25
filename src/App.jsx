@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { PLAYERS, POSITIONS } from "./players.js";
 import { displayOVR, analyzeBalance, teamRating } from "./rating.js";
 import { T, card } from "./theme.js";
@@ -16,6 +16,7 @@ import { publishResult, shareText } from "./share.js";
 import GameHeader from "./components/GameHeader.jsx";
 import Postgame from "./components/Postgame.jsx";
 import DailyPanel from "./components/DailyPanel.jsx";
+import DailyCoachEra from "./components/DailyCoachEra.jsx";
 import Profile from "./components/Profile.jsx";
 import Credits from "./components/Credits.jsx";
 import ChemistryMeter from "./components/ChemistryMeter.jsx";
@@ -89,6 +90,12 @@ export default function App() {
   const [eraStyle, setEraStyle] = useState("2020s");
   const lastOppRef = useRef(null);
   const dailyDecisionsRef = useRef(null); // recorded daily draft decisions for server verification
+  // Official Daily configuration (server-authoritative). The browser renders
+  // it and submits ONE choice out of it — never the era, never the seed,
+  // never a coach that is not in today's three.
+  const [dailyCfg, setDailyCfg] = useState(null);
+  const [dailyCoach, setDailyCoach] = useState(null);
+  const dailyOptionsSeenRef = useRef(null); // one analytics event per dailyId
 
   const [saved, setSaved] = useState(() => ls("ec_saved", []));
   const [streaks, setStreaks] = useState(() => ls("ec_streaks", { current: 0, personalBest: 0, thisWeekBest: 0, weekOf: "" }));
@@ -173,6 +180,11 @@ export default function App() {
   // keeps the rival's five as-is.
   const v3Steps = v3.enabled && !isChallenge && !isDaily;
   const coachesReady = !v3Steps || (blueBuildable ? (!!coachGold && !!coachBlue) : !!coachGold);
+  // The Daily has its own coach step: three server-chosen options, one pick.
+  // The sim stays locked until the roster AND the coach are both settled —
+  // an unhired coach is an incomplete submission, not a default.
+  const dailyCoachRequired = isDaily && (dailyCfg?.coachOptions?.length || 0) > 0;
+  const dailyChoiceReady = !dailyCoachRequired || !!dailyCoach;
 
   // Reveal the Blue five once Gold is complete (single/best7/daily). Same
   // generator the sim always used — just shown before tipoff now.
@@ -194,6 +206,17 @@ export default function App() {
       try {
         const cfg = await fetch("/api/daily?config=1").then((r) => (r.ok ? r.json() : null));
         if (cfg?.seed != null) seed = cfg.seed; // server date wins over device clock
+        // A coach/era Daily also ships the official era and today's three
+        // coaches. When the flag is off the payload simply has neither and
+        // the Daily behaves exactly as it did before.
+        if (cfg?.coachOptions?.length) {
+          setDailyCfg(cfg);
+          setDailyCoach(null); // a new draft is a new decision
+          track("daily_config_loaded", { daily_id: cfg.dailyId, era_style: cfg.officialEraStyleId, options: cfg.coachOptions.length, cached: !!cfg.cached });
+          track("daily_era_viewed", { daily_id: cfg.dailyId, era_style: cfg.officialEraStyleId });
+        } else {
+          setDailyCfg(null); setDailyCoach(null);
+        }
       } catch { /* offline fallback: same computation from device UTC */ }
       roster = dailyRoll1(seed);
     } else {
@@ -315,6 +338,8 @@ export default function App() {
     if ((yz && !yz.done) || manual.some(Boolean)) track("draft_abandoned", { roll: yz?.roll });
     setYz(null); setManual([null, null, null, null, null]); setTeam(null); setResult(null);
     setCoachGold(null);
+    // The hired coach belonged to that roster; a new draft is a new decision.
+    setDailyCoach(null);
     dailyDecisionsRef.current = null;
   };
   const resetBlue = () => {
@@ -349,6 +374,15 @@ export default function App() {
   // requests the OPTIONAL enhanced recap. AI failure never fails a game.
   const idsToPlayers = (ids) => (ids || []).map((id) => PLAYERS.find((p) => p.id === id)).filter(Boolean);
 
+  // Coach id → display name. Today's Daily options first (the Daily may offer
+  // a coach the general V3 list has not loaded), then the V3 coach list.
+  const coachDisplayName = (id) => {
+    if (!id || id === "neutral") return null;
+    const fromDaily = (dailyCfg?.coachOptions || []).find((c) => c.coachId === id);
+    if (fromDaily) return fromDaily.name;
+    return v3.coaches?.find((c) => c.id === id)?.name || null;
+  };
+
   const viewSim = (record, n) => ({
     ...record.core,
     simulation_id: record.id,
@@ -362,6 +396,14 @@ export default function App() {
     v3: record.v3 || null,
     eraId: record.eraId || null,
     coachIds: record.coachIds || null,
+    // Names for display only, resolved from what the SERVER reported it used
+    // (record.coachIds), never from the local selection — the postgame should
+    // show what actually ran.
+    coachNames: {
+      gold: coachDisplayName(record.coachIds?.gold),
+      blue: coachDisplayName(record.coachIds?.blue),
+    },
+    eraLabel: dailyCfg?.era?.label && dailyCfg.era.id === record.eraId ? dailyCfg.era.label : null,
   });
 
   const fetchNarrative = (resultId, record, persisted) => {
@@ -378,6 +420,29 @@ export default function App() {
       })
       .catch((e) => setNarrative({ status: "failed", code: e.code }));
   };
+
+  // ── Daily coach step handlers ──────────────────────────────────────────────
+  const onDailyOptionsViewed = useCallback(() => {
+    const id = dailyCfg?.dailyId;
+    if (!id || dailyOptionsSeenRef.current === id) return; // once per Daily
+    dailyOptionsSeenRef.current = id;
+    track("daily_coach_options_viewed", {
+      daily_id: id,
+      era_style: dailyCfg?.officialEraStyleId,
+      option_ids: (dailyCfg?.coachOptions || []).map((c) => c.coachId).join(","),
+    });
+  }, [dailyCfg]);
+
+  const selectDailyCoach = useCallback((option) => {
+    setDailyCoach(option);
+    setResult(null);
+    track("daily_coach_selected", {
+      daily_id: dailyCfg?.dailyId,
+      era_style: dailyCfg?.officialEraStyleId,
+      coach_id: option.coachId,
+      strategy: option.strategy,
+    });
+  }, [dailyCfg]);
 
   const applyDaily = (records, won) => {
     setDaily((d) => {
@@ -411,13 +476,23 @@ export default function App() {
     try {
       const opp = oppOverride || opponent || genOpponent();
       lastOppRef.current = opp;
+      if (mode === "daily") {
+        track("daily_started", {
+          daily_id: dailyCfg?.dailyId || null,
+          era_style: dailyCfg?.officialEraStyleId || null,
+          coach_id: dailyCoach?.coachId || null,
+        });
+      }
       const { resultId, result: record, records } = await runGame({
         mode, gold: team, blue: opp,
         challengeId: tag === "challenge" ? challenge?.id : undefined,
         dailyDecisions: tag === "daily" ? dailyDecisionsRef.current : undefined,
-        coachGoldId: v3Steps ? coachGold?.id : undefined,
-        coachBlueId: v3Steps ? coachBlue?.id : undefined,
-        eraStyleId: v3Steps ? eraStyle : undefined,
+        // Daily: submit ONLY the coach id. The era, the opponent staff, the
+        // seed and every data version are the server's to decide — sending
+        // them from here is what would make the leaderboard meaningless.
+        coachGoldId: tag === "daily" ? (dailyCoach?.coachId || undefined) : (v3Steps ? coachGold?.id : undefined),
+        coachBlueId: tag === "daily" ? undefined : (v3Steps ? coachBlue?.id : undefined),
+        eraStyleId: tag === "daily" ? undefined : (v3Steps ? eraStyle : undefined),
         onStage: setSimStage,
       });
       const w = record.core.winner === "Gold";
@@ -431,13 +506,36 @@ export default function App() {
           setChallenge((c) => (c ? { ...c, rivalry: records.challenge.record } : c));
         }
       }
-      if (tag === "daily") applyDaily(records, w);
+      if (tag === "daily") {
+        applyDaily(records, w);
+        track("daily_completed", {
+          daily_id: dailyCfg?.dailyId || null,
+          era_style: record.eraId || null,
+          coach_id: record.coachIds?.gold || null,
+          result: w ? "win" : "loss",
+          rank: records?.daily?.rank ?? null,
+        });
+      }
 
       setResult({ type: "single", sim: viewSim(record), w, tag, opp, resultId, record, persisted: !!records?.persisted, dailyRank: records?.daily?.rank ?? null });
       fetchNarrative(resultId, record, !!records?.persisted);
       await holdSimScreen(simT0);
       setView("postgame");
-    } catch (e) { setErr(e.message); setView("builder"); }
+    } catch (e) {
+      // Daily rejections are their own signal: they mean the submission did
+      // not match the official configuration, and (verified server-side) the
+      // attempt was NOT consumed. A version mismatch means today's config
+      // moved under us, so drop the stale copy and make the player re-draft
+      // against the current one rather than retrying into the same rejection.
+      const code = e.code || "";
+      if (code === "DAILY_INVALID_COACH") track("daily_invalid_coach", { daily_id: dailyCfg?.dailyId || null, coach_id: dailyCoach?.coachId || null });
+      if (code === "DAILY_INVALID_ERA") track("daily_invalid_era", { daily_id: dailyCfg?.dailyId || null });
+      if (code === "DAILY_VERSION_MISMATCH") {
+        track("daily_version_mismatch", { daily_id: dailyCfg?.dailyId || null });
+        setDailyCfg(null); setDailyCoach(null); dailyOptionsSeenRef.current = null;
+      }
+      setErr(e.message); setView("builder");
+    }
     setLoading(false);
   };
 
@@ -777,6 +875,23 @@ export default function App() {
                 </div>
               )}
               <VsDivider active={!!team && !!opponent} />
+              {/* Daily coach + era step. Appears once the seeded roster is
+                  locked, because hiring a coach for a lineup you have not
+                  finished drafting is a decision with no information. */}
+              {dailyCoachRequired && !!team && !result && (
+                <DailyCoachEra
+                  config={dailyCfg}
+                  selectedCoachId={dailyCoach?.coachId || null}
+                  disabled={loading || dailyDone}
+                  onOptionsViewed={onDailyOptionsViewed}
+                  onSelectCoach={selectDailyCoach}
+                />
+              )}
+              {dailyCoachRequired && !!team && !dailyChoiceReady && !result && (
+                <div style={{ textAlign: "center", fontSize: 12, color: T.gold, fontWeight: 700 }}>
+                  Hire one of today's three coaches to unlock the sim.
+                </div>
+              )}
               {v3Steps && !!team && (!blueBuildable || !!opponent) && !coachesReady && (
                 <div style={{ textAlign: "center", fontSize: 12, color: T.textDim }}>
                   Pick a <b style={{ color: !coachGold ? T.gold : T.blue }}>coach</b> for {!coachGold ? "Team Gold" : "Team Blue"} — the 🧠 COACH tab under its roster. The 🕰️ ERA STYLE tab sets the game's shared era.
@@ -788,7 +903,7 @@ export default function App() {
                   Build <b style={{ color: T.blue }}>Team Blue</b> — Manual or Random — to unlock the sim.
                 </div>
               )}
-              {team && (activeMode !== "Single" && activeMode !== "Best7" && activeMode !== "Daily" && activeMode !== "Challenge" ? true : !!opponent) && coachesReady && !result && !loading && (
+              {team && (activeMode !== "Single" && activeMode !== "Best7" && activeMode !== "Daily" && activeMode !== "Challenge" ? true : !!opponent) && coachesReady && dailyChoiceReady && !result && !loading && (
                 <div className="sticky-sim">
                   <button onClick={runTheSim} disabled={isDaily && dailyDone} style={{
                     width: "100%", padding: "16px 20px", fontSize: 15, fontWeight: 900, letterSpacing: 1,

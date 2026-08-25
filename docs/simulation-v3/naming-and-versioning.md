@@ -4,25 +4,29 @@
 
 | Concept | Domain | Value | Status |
 | --- | --- | --- | --- |
-| Product release | `appVersion` | **2.7.2** | ACTIVE |
-| **Live production result engine** | `engineVersion` | **3.2.0** (family 3.x) | ACTIVE |
-| **Future event/possession engine** | `possessionEngineVersion` | `null` (family 1.x) | PLANNED |
-| Player Intelligence | `playerIntelligenceVersion` | 1.0.0 | DEVELOPMENT |
-| Team Intelligence | `teamIntelligenceVersion` | 1.0.0 | DEVELOPMENT |
-| Coach Intelligence | `coachIntelligenceVersion` | *(see Phase 4)* | — |
-| Era Style Intelligence | `eraStyleVersion` | `null` | PLANNED |
-| Player data | `playerDataVersion` | 2026-08-24 | ACTIVE |
-| Coach data | `coachDataVersion` | *(see Phase 4)* | ACTIVE |
-| Era data | `eraDataVersion` | 1.0.0 | ACTIVE |
-| Rating | `ratingVersion` | 2.0 | ACTIVE |
-| Chemistry | `chemistryVersion` | 2.5 | ACTIVE (does **not** affect results) |
-| Narrative prompt | `narrativePromptVersion` | 2.1 | ACTIVE |
-| Narrative schema | `narrativeSchemaVersion` | 1.0.0 | ACTIVE |
-| Player-card design | `playerCardDesignVersion` | 1.0.0 (spec only) | PLANNED |
-| Calibration | `calibrationVersion` | backtest-1 | ACTIVE |
+| Product release | `appVersion` | **2.7.2** | ACTIVE (does **not** affect results) |
+| **Live production result engine** | `engineVersion` | **3.2.0** | ACTIVE |
+| **Future event/possession engine** | `possessionEngineVersion` | `null` | PLANNED |
+| Player Intelligence | `playerIntelligenceVersion` | **1.0.0** | DEVELOPMENT |
+| Team Intelligence | `teamIntelligenceVersion` | **1.0.0** | DEVELOPMENT |
+| Coach Intelligence | `coachIntelligenceVersion` | **1.0.0** | DEVELOPMENT |
+| Era Style Intelligence | `eraStyleVersion` | **1.0.0** | DEVELOPMENT |
+| Action library (pick-and-roll) | `actionLibraryVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Daily configuration schema | `dailyConfigSchemaVersion` | **1.0.0** | ACTIVE (does **not** affect results) |
+| Player data | `playerDataVersion` | **2026-08-24** | ACTIVE |
+| Coach data | `coachDataVersion` | **1.1.0** | ACTIVE |
+| Era data | `eraDataVersion` | **1.0.0** | ACTIVE |
+| Rating | `ratingVersion` | **2.0** | ACTIVE |
+| Chemistry | `chemistryVersion` | **2.5** | ACTIVE (does **not** affect results) |
+| Narrative prompt | `narrativePromptVersion` | **2.1** | ACTIVE (does **not** affect results) |
+| Narrative schema | `narrativeSchemaVersion` | **1.0.0** | ACTIVE (does **not** affect results) |
+| Player-card design | `playerCardDesignVersion` | `null` | PLANNED (does **not** affect results) |
+| Calibration | `calibrationVersion` | **backtest-1** | ACTIVE |
 
 Source of truth: **`src/versions.js`**. `versionOf()` throws on an unknown
-domain so a typo cannot silently become an unversioned cache key.
+domain so a typo cannot silently become an unversioned cache key. The table
+above is asserted against the registry by a test, because a table maintained
+by hand drifts — this one did, across five rows, before that test existed.
 
 ## The collision, and how it is now impossible
 

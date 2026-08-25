@@ -46,6 +46,7 @@ export const FIELD_STATUS = {
   ACTIVE_CURRENT_ENGINE: "ACTIVE_CURRENT_ENGINE",
   ACTIVE_COACH_INTELLIGENCE: "ACTIVE_COACH_INTELLIGENCE",
   PLANNED_POSSESSION_ENGINE: "PLANNED_POSSESSION_ENGINE",
+  ACTIVE_ACTION_LIBRARY: "ACTIVE_ACTION_LIBRARY",
   RESEARCH_ONLY: "RESEARCH_ONLY",
   DEPRECATED_PENDING_REVIEW: "DEPRECATED_PENDING_REVIEW",
 };
@@ -62,8 +63,8 @@ export const COACH_FIELD_CONSUMPTION = [
   F("offense", "offBall", "ACTIVE_CURRENT_ENGINE", "gameplan.js", null),
   F("offense", "ballMovement", "ACTIVE_CURRENT_ENGINE", "gameplan.js", null),
   F("offense", "starFreedom", "ACTIVE_CURRENT_ENGINE", "gameplan.js → usage concentration", null),
-  F("offense", "pnr", "PLANNED_POSSESSION_ENGINE", "coachIntelligence.js (fit only)",
-    "The possession loop has no pick-and-roll ACTION to consume it. Now reads in coach fit; becomes engine-active when the possession engine models PnR."),
+  F("offense", "pnr", "ACTIVE_ACTION_LIBRARY", "actions/pickAndRoll.js + coachIntelligence.js",
+    "Was PLANNED_POSSESSION_ENGINE: the possession loop had no pick-and-roll action to consume it. Phase 5C built one. The field now drives variant SELECTION and frequency in a real action model — it never adds points. The possession engine remains the future consumer that will turn those action outcomes into possessions."),
   F("offense", "insideOut", "ACTIVE_COACH_INTELLIGENCE", "coachIntelligence.js (fit only)",
     "Zero engine consumers before Phase 4. Now drives the spacing/interior fit dimension."),
   // defense

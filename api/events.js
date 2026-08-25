@@ -17,6 +17,12 @@ const ALLOWED = new Set([
   "simulation_started", "simulation_completed", "simulation_failed",
   "second_game_started", "rematch_started", "best_of_7_started", "swap_one_started",
   "daily_challenge_started", "daily_challenge_completed", "daily_challenge_failed", "daily_result_shared",
+  // Coach/Era Daily (Phase 5D). Anything not named here is dropped, so an
+  // event added to the client without a line here is instrumentation that
+  // silently does nothing.
+  "daily_config_loaded", "daily_era_viewed", "daily_coach_options_viewed",
+  "daily_coach_selected", "daily_started", "daily_completed",
+  "daily_invalid_coach", "daily_invalid_era", "daily_version_mismatch",
   "challenge_created", "challenge_link_opened", "challenge_started", "challenge_completed",
   "challenge_won", "challenge_lost", "challenge_rematch_started",
   "share_initiated", "share_completed", "share_failed",

@@ -23,7 +23,7 @@
 // Every segment is validated. Keys never contain API keys, tokens, cookies,
 // authorization headers, or email addresses. Session identifiers are truncated
 // (never the full value) exactly as the pre-existing rate-limit keys do.
-import { versionOf } from "../../src/versions.js";
+import { versionOf, statusOf, VERSION_STATUS } from "../../src/versions.js";
 
 // Conservative allowlist. Anything outside it is rejected rather than escaped —
 // a cache key is not a place to be clever about sanitising user input.
@@ -37,8 +37,16 @@ const seg = (value, label) => {
 
 /** Short version tag for a key segment, e.g. "3.2.0" → "3-2-0". */
 const vtag = (domain) => {
+  // Guard on STATUS, not on the value. The old check only refused domains
+  // whose value happened to be null, so a PLANNED domain carrying a
+  // placeholder number built a key just fine — which is exactly what the
+  // registry exists to prevent, and the opposite of what the docs promised.
+  // A PLANNED system does not exist, so nothing it would key can be cached.
+  if (statusOf(domain) === VERSION_STATUS.PLANNED) {
+    throw new Error(`cacheKey: cannot build a key from PLANNED version domain "${domain}"`);
+  }
   const v = versionOf(domain);
-  if (v == null) throw new Error(`cacheKey: cannot build a key from PLANNED version domain "${domain}"`);
+  if (v == null) throw new Error(`cacheKey: version domain "${domain}" has no value`);
   return String(v).replace(/[^A-Za-z0-9]+/g, "-");
 };
 
@@ -73,6 +81,16 @@ export const cacheKeys = {
   challenge: (challengeId) => `ch:${seg(challengeId, "challengeId")}`,
   dailyBoard: (date) => `dl:${seg(date, "date")}:board`,
   dailyClaim: (date, session) => `daily:claim:${seg(date, "date")}:${seg(String(session).slice(0, 32), "session")}`,
+  /**
+   * The day's official Daily configuration. Versioned so a mid-day data change
+   * produces a NEW key instead of silently reinterpreting a Daily that players
+   * have already started — once a Daily is live its configuration is immutable
+   * for that date, and an emergency change needs a new config id.
+   */
+  dailyConfig: ({ utcDate }) =>
+    `daily:v${vtag("dailyConfigSchemaVersion")}:${seg(utcDate, "utcDate")}` +
+    `:pd${vtag("playerDataVersion")}:cd${vtag("coachDataVersion")}:ed${vtag("eraDataVersion")}`,
+
   profile: (sessionId) => `profile:${seg(String(sessionId).slice(0, 64), "sessionId")}`,
   rateLimit: (bucket, windowIndex) => `rl:${seg(bucket, "bucket")}:${seg(windowIndex, "window")}`,
   circuit: (service, windowIndex) => `circuit:${seg(service, "service")}:${seg(windowIndex, "window")}`,
@@ -130,6 +148,15 @@ export const cacheKeys = {
   /** An OpenGraph/share image for one result render configuration. */
   shareImage: ({ resultId, renderVersion }) =>
     `share-image:r${seg(renderVersion, "renderVersion")}:${seg(resultId, "resultId")}`,
+
+  /**
+   * A possession-engine result. Throws until possessionEngineVersion exists —
+   * the last remaining PLANNED module, and therefore the only key that still
+   * cannot be built. That is the point: a cache identity for a module that does
+   * not exist would be a key nobody could ever invalidate correctly.
+   */
+  possessionResult: ({ resultId }) =>
+    `result:pe${vtag("possessionEngineVersion")}:${seg(resultId, "resultId")}`,
 
   /** Public, immutable result page payload. */
   publicResult: ({ resultId }) =>

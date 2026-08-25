@@ -6,7 +6,7 @@ import { hasStore, getJSON, setJSON, setNX, cmd, rateLimit, clientIp } from "./_
 import { getOrCreateSession, sameOrigin } from "./_lib/session.js";
 import { sendError, newRequestId, logReq } from "./_lib/errors.js";
 import { flags, limits } from "./_lib/flags.js";
-import { tooLarge, validResultId } from "./_lib/validate.js";
+import { tooLarge, validResultId, validNarrativeKeyId } from "./_lib/validate.js";
 import { generateNarrative, circuitState, MODEL, PROVIDER } from "./_lib/ai.js";
 import { cacheKeys } from "./_lib/cacheKeys.js";
 import { cacheEvent, estimateCostUsd } from "./_lib/cacheTelemetry.js";
@@ -66,14 +66,26 @@ export default async function handler(req, res) {
     // Narrative identity: the immutable result PLUS the exact configuration
     // that would produce the text. A prompt, schema, provider or model change
     // is a different artefact and must miss rather than serve stale writing.
-    const narrativeId = resultId ? { resultId, provider: PROVIDER, model: MODEL } : null;
-    const narrKey = narrativeId ? cacheKeys.narrative(narrativeId) : null;
-    const lockKey = narrativeId ? cacheKeys.narrativeLock(narrativeId) : null;
+    //
+    // Identity is resolved AFTER the result is loaded, because a result may
+    // declare a shared identity of its own (see narrativeKeyId in api/game.js):
+    // a Daily where every player who chose the same coach played the exact
+    // same game should be narrated once, not once per player.
+    let narrativeId = null, narrKey = null, lockKey = null;
+    const bindIdentity = (id) => {
+      narrativeId = { resultId: id, provider: PROVIDER, model: MODEL };
+      narrKey = cacheKeys.narrative(narrativeId);
+      lockKey = cacheKeys.narrativeLock(narrativeId);
+    };
     let holdsLock = false;
 
     if (resultId && hasStore()) {
       result = await getJSON(`result:${resultId}`);
       if (!result) return sendError(res, "NOT_FOUND", requestId);
+      // Shared identity only from OUR OWN stored record — never from the
+      // request body, which the browser controls. A client that could name
+      // the narrative key could read another game's recap or poison one.
+      bindIdentity(validNarrativeKeyId(result.narrativeKeyId) || resultId);
       const cached = await getJSON(narrKey);
       if (cached?.status === "complete") {
         const inTok = cached.usage?.input_tokens, outTok = cached.usage?.output_tokens;

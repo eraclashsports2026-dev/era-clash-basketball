@@ -13,11 +13,12 @@
 // figures almost always do.
 //
 //   group             n     fully-rounded   reading
-//   verified-decade   16      0%            computed averages
+//   verified-decade   59      0%            computed averages (16 + Wave-1's 43)
 //   core-pool        286      3%            look computed, provenance undocumented
 //   modern-allstars   24      4%            look computed, provenance undocumented
 //   rookie-season     11      0%            one real season
-//   v2-expansion      44     77%            hand-set prime figures
+//   v2-expansion       1     --            hand-set prime figures (43 of 44 re-derived in Wave 1;
+//                                        maurice-lucas remains BLOCKED_BY_SOURCE)
 //
 // The 77% vs 3% split is the whole finding. It is not a rounding artefact.
 
@@ -73,6 +74,50 @@ const GROUP_MEMBERS = {
     "mikan-50s", "pettit-50s", "schayes-50s", "cousy-50s", "russell-50s", "arizin-50s",
     "sharman-50s", "eaton-80s", "mullin-90s", "petrovic-90s", "prince-00s", "finley-00s",
     "joshsmith-00s", "gwallace-00s", "walt-b-70s", "nance-90s",
+  
+    "arizin-60s",
+    "rodgers-60s",
+    "beaty-60s",
+    "guerin-60s",
+    "barry-60s",
+    "monroe-70s",
+    "murphy-70s",
+    "westphal-70s",
+    "marques-70s",
+    "hudson-70s",
+    "wicks-70s",
+    "moncrief-80s",
+    "king-80s",
+    "cooper-80s",
+    "toney-80s",
+    "sugar-80s",
+    "blackman-80s",
+    "mookie-90s",
+    "hornacek-90s",
+    "oakley-90s",
+    "spree-90s",
+    "bigdog-90s",
+    "kukoc-90s",
+    "majerle-90s",
+    "sheed-2ks",
+    "jermaine-2ks",
+    "ak47-2ks",
+    "artest-2ks",
+    "bowen-2ks",
+    "camby-2ks",
+    "deron-2ks",
+    "cassell-2ks",
+    "lowry-2010s",
+    "wall-2010s",
+    "demar-2010s",
+    "boogie-2010s",
+    "ibaka-2010s",
+    "drummond-2010s",
+    "jrue-20s",
+    "jjj-20s",
+    "zion-20s",
+    "smart-20s",
+    "siakam-20s",
   ],
   "core-pool": [
     "wilt-60s", "bill-60s", "oscar-60s", "jerry-60s", "elgin-60s", "hal-60s", "nate-60s",
@@ -120,14 +165,7 @@ const GROUP_MEMBERS = {
     "pg-20s", "dmitch-20s", "murray-20s",
   ],
   "v2-expansion": [
-    "arizin-60s", "rodgers-60s", "beaty-60s", "guerin-60s", "barry-60s", "monroe-70s",
-    "murphy-70s", "westphal-70s", "marques-70s", "hudson-70s", "wicks-70s", "lucas-m-70s",
-    "moncrief-80s", "king-80s", "cooper-80s", "toney-80s", "sugar-80s", "blackman-80s",
-    "mookie-90s", "hornacek-90s", "oakley-90s", "spree-90s", "bigdog-90s", "kukoc-90s",
-    "majerle-90s", "sheed-2ks", "jermaine-2ks", "ak47-2ks", "artest-2ks", "bowen-2ks",
-    "camby-2ks", "deron-2ks", "cassell-2ks", "lowry-2010s", "wall-2010s", "demar-2010s",
-    "boogie-2010s", "ibaka-2010s", "drummond-2010s", "jrue-20s", "jjj-20s", "zion-20s",
-    "smart-20s", "siakam-20s",
+     "lucas-m-70s",
   ],
   "modern-allstars": [
     "kat-20s", "maxey-20s", "gobert-20s", "randle-20s", "lamelo-20s", "middleton-20s",

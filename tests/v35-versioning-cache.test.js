@@ -66,8 +66,13 @@ describe("naming resolution", () => {
     // an invented number. (playerCardDesignVersion is PLANNED but holds a
     // defined key SPEC — a settled identity with no renderer, which is a
     // different thing from a module that does not exist.)
-    for (const name of ["possessionEngineVersion", "eraStyleVersion"]) {
-      expect(versionOf(name), name).toBeNull();
+    // Only the possession engine remains unbuilt. eraStyleVersion,
+    // coachIntelligenceVersion and actionLibraryVersion were all built in later
+    // phases and are DEVELOPMENT — they have versions but affect no result.
+    expect(versionOf("possessionEngineVersion")).toBeNull();
+    for (const name of ["eraStyleVersion", "coachIntelligenceVersion", "actionLibraryVersion"]) {
+      expect(statusOf(name), name).toBe(VERSION_STATUS.DEVELOPMENT);
+      expect(affectsResult(name), name).toBe(false);
     }
     // Coach Intelligence was built in Phase 4: it now has a version, but it is
     // DEVELOPMENT — built and tested, wired to nothing — so it must still be
@@ -210,11 +215,13 @@ describe("cache-key registry", () => {
   });
 
   it("refuses to build a key from a PLANNED engine version", () => {
-    // Era Style does not exist yet, so an era cache identity cannot be built.
-    // Coach fit USED to throw here; Phase 4 built the module, so it now works —
-    // which is exactly the transition this guard is meant to track.
-    expect(() => cacheKeys.eraStyle({ eraId: "1980s" })).toThrow(/PLANNED/);
+    // The possession engine is the last unbuilt module, so its result key is
+    // the only one that still cannot be built. Coach fit threw here before
+    // Phase 4 and era style before Phase 5B — each became buildable exactly
+    // when its module shipped, which is what this guard tracks.
+    expect(() => cacheKeys.possessionResult({ resultId: "abc" })).toThrow(/PLANNED/);
     expect(() => cacheKeys.coachFit({ coachId: "phil-jackson", teamFingerprint: "abc" })).not.toThrow();
+    expect(() => cacheKeys.eraStyle({ eraId: "1980s" })).not.toThrow();
   });
 
   it("separates public-safe namespaces from private ones", () => {
@@ -230,12 +237,52 @@ describe("cache-key registry", () => {
     expect(cacheKeys.dailyClaim("20260101", long)).not.toContain(long);
   });
 
-  it("player-card identity changes with theme, size, and design version", () => {
-    const k = (o) => cacheKeys.playerCard({ playerCardId: "curry-10s", theme: "dark", size: "lg", ...o });
-    expect(k()).toBe(k());
-    expect(k({ theme: "light" })).not.toBe(k());
-    expect(k({ size: "sm" })).not.toBe(k());
-    expect(k()).toContain(`d${String(versionOf("playerCardDesignVersion")).replace(/\./g, "-")}`);
+  it("the documented version table matches the registry", () => {
+    // A hand-maintained table drifts. This one had five wrong rows —
+    // coachIntelligenceVersion, eraStyleVersion, coachDataVersion and
+    // playerCardDesignVersion all stale, actionLibraryVersion and
+    // dailyConfigSchemaVersion missing entirely — while the doc claimed to
+    // describe the source of truth. Now the doc has to keep up.
+    const doc = readFileSync(new URL("../docs/simulation-v3/naming-and-versioning.md", import.meta.url), "utf8");
+    for (const [domain, entry] of Object.entries(REGISTRY)) {
+      const row = doc.split("\n").find((l) => l.includes(`\`${domain}\``));
+      expect(row, `${domain} is not documented`).toBeTruthy();
+      const shown = entry.value === null ? "`null`" : `**${entry.value}**`;
+      expect(row, `${domain} value is documented as something else`).toContain(shown);
+      expect(row, `${domain} status is documented as something else`).toContain(entry.status);
+    }
+  });
+
+  it("the player-card namespace refuses to key until the design ships", () => {
+    // The card RENDERER belongs to the UI phase, so playerCardDesignVersion is
+    // PLANNED. This test used to prove the key varied by theme and size — but
+    // it could only do that because the PLANNED domain carried a placeholder
+    // "1.0.0" and vtag guarded on a null VALUE rather than on STATUS. Caching
+    // an artefact produced by a renderer that does not exist is the bug; the
+    // key shape is specified, and building one must throw until it is real.
+    expect(statusOf("playerCardDesignVersion")).toBe(VERSION_STATUS.PLANNED);
+    expect(versionOf("playerCardDesignVersion"), "a PLANNED domain must be null, never a placeholder").toBeNull();
+    expect(() => cacheKeys.playerCard({ playerCardId: "curry-10s", theme: "dark", size: "lg" }))
+      .toThrow(/PLANNED version domain "playerCardDesignVersion"/);
+  });
+
+  it("no PLANNED version domain can build a cache key, whatever its value", () => {
+    // The guard must be about status. A PLANNED domain that someone gives a
+    // placeholder number must not silently start keying real cache entries —
+    // that is how a cache outlives the system that filled it.
+    //
+    // Every PLANNED domain needs a builder listed here. A new PLANNED domain
+    // with no entry FAILS this test rather than quietly going unguarded.
+    const BUILDERS = {
+      possessionEngineVersion: () => cacheKeys.possessionResult({ fingerprint: "abc123" }),
+      playerCardDesignVersion: () => cacheKeys.playerCard({ playerCardId: "curry-10s", theme: "dark", size: "lg" }),
+    };
+    const planned = Object.keys(versionsByStatus(VERSION_STATUS.PLANNED));
+    expect(planned.length, "no PLANNED domains left to guard").toBeGreaterThan(0);
+    for (const d of planned) {
+      expect(BUILDERS[d], `PLANNED domain "${d}" has no key builder under test`).toBeTypeOf("function");
+      expect(BUILDERS[d], `${d} must refuse to key`).toThrow(/PLANNED version domain/);
+    }
   });
 });
 
@@ -460,11 +507,14 @@ describe("research cache", () => {
     expect(ignore).toMatch(/^\.cache\/?$/m);
   });
 
-  it("era research has infrastructure but fabricates nothing", async () => {
-    expect(ERA_SOURCES).toEqual([]);
-    const r = await runEraResearch({ log: () => {} });
-    expect(r.sources).toBe(0);
-    expect(verificationReport("eras").subjects).toBe(0);
+  it("era research is now populated, with rules and environment sourced separately", async () => {
+    // This asserted an EMPTY manifest in Phase 3.5, when populating it would
+    // have meant inventing era profiles. Phase 5B researched them.
+    expect(ERA_SOURCES.length).toBe(8);
+    for (const e of ERA_SOURCES) {
+      expect(e.sources.some((s) => s.kind === "rules"), e.eraId).toBe(true);
+      expect(e.sources.some((s) => s.kind === "environment"), e.eraId).toBe(true);
+    }
   });
 
   it("parses --coach style flags", () => {
