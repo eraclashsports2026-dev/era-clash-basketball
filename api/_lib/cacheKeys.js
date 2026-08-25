@@ -110,6 +110,14 @@ export const cacheKeys = {
     `:ti${vtag("teamIntelligenceVersion")}:pi${vtag("playerIntelligenceVersion")}` +
     `:${seg(coachId, "coachId")}:${seg(teamFingerprint, "teamFingerprint")}`,
 
+  /**
+   * Era Style profile. Throws until Phase 5 gives eraStyleVersion a value —
+   * deliberately, because a cache identity for a module that does not exist
+   * would be a key nobody could ever invalidate correctly.
+   */
+  eraStyle: ({ eraId }) =>
+    `era:v${vtag("eraStyleVersion")}:${seg(eraId, "eraId")}`,
+
   /** A rendered player-card asset. Immutable per design + data + presentation. */
   playerCard: ({ playerCardId, theme, size }) =>
     `playercard:d${vtag("playerCardDesignVersion")}:pd${vtag("playerDataVersion")}` +

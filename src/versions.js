@@ -68,12 +68,15 @@ export const REGISTRY = {
   // ── intelligence layers (built, unwired) ──
   playerIntelligenceVersion: entry("1.0.0", DEVELOPMENT, "src/v3/intelligence.js — 381 profiles. No simulation module imports it."),
   teamIntelligenceVersion: entry("1.0.0", DEVELOPMENT, "src/v3/teamIntelligence.js — lineup construction. No simulation module imports it."),
-  coachIntelligenceVersion: entry(null, PLANNED, "Phase 4. Null until the module exists."),
+  // DEVELOPMENT, not ACTIVE: the module exists and is tested, but no
+  // simulation module imports it, so it has never shaped a result and must not
+  // appear in a result fingerprint.
+  coachIntelligenceVersion: entry("1.0.0", DEVELOPMENT, "src/v3/coachIntelligence.js — contextual coach fit. No simulation module imports it."),
   eraStyleVersion: entry(null, PLANNED, "Phase 5. Era STYLE intelligence, distinct from the era data the engine already uses."),
 
   // ── datasets (independent of the algorithms that read them) ──
   playerDataVersion: entry("2026-08-24", ACTIVE, "src/players.js — 381 player-decade cards, 323 canonical persons."),
-  coachDataVersion: entry("1.0.0", ACTIVE, "src/v3/data/coaches.js — 25 coaches. ACTIVE: coaches already shape the live game plan."),
+  coachDataVersion: entry("1.1.0", ACTIVE, "src/v3/data/coaches.js — 30 coaches. ACTIVE: coaches already shape the live game plan. Bumped 1.0.0→1.1.0 when the pool grew by five."),
   eraDataVersion: entry("1.0.0", ACTIVE, "src/v3/data/eras.js — 8 era styles. ACTIVE: era already shapes the live shared environment."),
 
   // ── scoring / display ──

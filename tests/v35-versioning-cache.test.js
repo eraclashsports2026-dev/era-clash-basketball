@@ -62,10 +62,18 @@ describe("naming resolution", () => {
     for (const [name, v] of Object.entries(REGISTRY)) {
       if (v.status !== VERSION_STATUS.ACTIVE) expect(isActive(name), `${name}`).toBe(false);
     }
-    // planned ENGINE modules carry null, not an invented number
-    for (const name of ["possessionEngineVersion", "coachIntelligenceVersion", "eraStyleVersion"]) {
+    // Every PLANNED domain that represents an unbuilt MODULE carries null, not
+    // an invented number. (playerCardDesignVersion is PLANNED but holds a
+    // defined key SPEC — a settled identity with no renderer, which is a
+    // different thing from a module that does not exist.)
+    for (const name of ["possessionEngineVersion", "eraStyleVersion"]) {
       expect(versionOf(name), name).toBeNull();
     }
+    // Coach Intelligence was built in Phase 4: it now has a version, but it is
+    // DEVELOPMENT — built and tested, wired to nothing — so it must still be
+    // excluded from result fingerprints.
+    expect(statusOf("coachIntelligenceVersion")).toBe(VERSION_STATUS.DEVELOPMENT);
+    expect(affectsResult("coachIntelligenceVersion")).toBe(false);
   });
 
   it("no second ambiguous SIM_ENGINE_V3_ENABLED-style flag was introduced", () => {
@@ -202,7 +210,11 @@ describe("cache-key registry", () => {
   });
 
   it("refuses to build a key from a PLANNED engine version", () => {
-    expect(() => cacheKeys.coachFit({ coachId: "phil-jackson", teamFingerprint: "abc" })).toThrow(/PLANNED/);
+    // Era Style does not exist yet, so an era cache identity cannot be built.
+    // Coach fit USED to throw here; Phase 4 built the module, so it now works —
+    // which is exactly the transition this guard is meant to track.
+    expect(() => cacheKeys.eraStyle({ eraId: "1980s" })).toThrow(/PLANNED/);
+    expect(() => cacheKeys.coachFit({ coachId: "phil-jackson", teamFingerprint: "abc" })).not.toThrow();
   });
 
   it("separates public-safe namespaces from private ones", () => {
