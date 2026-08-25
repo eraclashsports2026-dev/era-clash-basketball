@@ -43,6 +43,20 @@
 // is not his 1986-87 one), so scope is recorded on every record and
 // decade-scoped splits remain the honest future refinement.
 
+// ── SCOPE VOCABULARY ─────────────────────────────────────────────────────────
+// A percentage is meaningless without knowing WHAT it covers. A career split
+// silently used on a decade card is a real error: Michael Jordan's career
+// three-point mark describes neither his 1980s nor his 1990s card accurately.
+// Every record states its scope so a consumer can discount accordingly.
+export const SHOOTING_SCOPE = [
+  "DECADE_SCOPE",     // computed from the decade's seasons only — the ideal
+  "CAREER_SCOPE",     // whole career; safe for a person, lossy for a decade card
+  "SEASON_SCOPE",     // one season
+  "INFERRED",         // no measurement; derived from position/era/volume priors
+  "NOT_APPLICABLE",   // the statistic did not exist in this player's era
+  "UNKNOWN",          // nothing on file
+];
+
 export const SHOOTING_IDENTITY = [
   "MOVEMENT_SHOOTER",        // gravity generated while moving off screens
   "SPOT_UP_SHOOTER",         // stationary; punishes help without creating
@@ -59,8 +73,8 @@ export const SHOOTING_IDENTITY = [
 const W = "Wikipedia career statistics table (mirrors Basketball-Reference)";
 const D = "2026-08-24";
 // personId: [fgPct, threePct, ftPct, era, threeVolume, perimeterSkill, identity, precision]
-const R = (fgPct, threePct, ftPct, era, threeVolume, perimeterSkill, identity, precision = "EXACT", note = null) =>
-  ({ fgPct, threePct, ftPct, scope: "CAREER", threePointEra: era, threeVolume, perimeterSkill, identity, precision,
+const R = (fgPct, threePct, ftPct, era, threeVolume, perimeterSkill, identity, precision = "EXACT", note = null, scope = "CAREER_SCOPE") =>
+  ({ fgPct, threePct, ftPct, scope, threePointEra: era, threeVolume, perimeterSkill, identity, precision,
      source: fgPct == null && threePct == null && ftPct == null ? null : W,
      sourceTier: fgPct == null && threePct == null && ftPct == null ? null : 3,
      verifiedOn: D, note });
@@ -129,6 +143,48 @@ export const SHOOTING = {
                             "Holds the worst career FT% in NBA history at 1,000+ attempts. The .137 three-point figure is noise."),
   "mark-eaton":           R(0.458, 0.000, 0.649, "FULL", "NONE", "NONE", "NON_SHOOTER", "EXACT",
                             "A literal .000 three-point percentage — the clearest possible case of a true number that means nothing. threeVolume NONE is what stops a consumer reading it as measured inability at range versus never having tried."),
+
+  // ═══ Wave-1 verification pass (2026-08-25) — persons behind the 44 prime-form cards ═══
+  "paul-arizin": R(.421, null, .810, "NONE", "NOT_APPLICABLE", "GOOD", "MIDRANGE_CREATOR", "EXACT", null),
+  "guy-rodgers": R(.378, null, .721, "NONE", "NOT_APPLICABLE", "LIMITED", "MIDRANGE_CREATOR", "EXACT", "A .378 career mark from a pass-first guard; perimeter skill is judged limited even by the standards of his own era."),
+  "zelmo-beaty": R(.494, null, .771, "NONE", "NOT_APPLICABLE", "LIMITED", "POST_SCORER", "EXACT", null),
+  "richie-guerin": R(.416, null, .780, "NONE", "NOT_APPLICABLE", "AVERAGE", "MIDRANGE_CREATOR", "EXACT", null),
+  "rick-barry": R(.449, null, .900, "PARTIAL", "NONE", "ELITE", "HIGH_VOLUME_EFFICIENT", "EXACT", "A .900 career free-throw mark, shot underhand. The three-point line arrived only in his final season, so the ELITE perimeter judgement rests on shot-making rather than on attempts."),
+  "earl-monroe": R(.464, null, .807, "PARTIAL", "NONE", "GOOD", "PULL_UP_SHOOTER", "EXACT", null),
+  "calvin-murphy": R(.482, null, .892, "PARTIAL", "NONE", "ELITE", "PULL_UP_SHOOTER", "EXACT", "The shortest player in the pool at 5 ft 9 in; .892 career free-throw shooting is the evidence behind the shooting judgement."),
+  "paul-westphal": R(.504, null, .820, "PARTIAL", "NONE", "GOOD", "PULL_UP_SHOOTER", "EXACT", null),
+  "marques-johnson": R(.518, null, .739, "PARTIAL", "NONE", "AVERAGE", "RIM_SCORER", "EXACT", null),
+  "lou-hudson": R(.489, null, .797, "PARTIAL", "NONE", "GOOD", "MIDRANGE_CREATOR", "EXACT", null),
+  "sidney-wicks": R(.459, null, .685, "PARTIAL", "NONE", "LIMITED", "RIM_SCORER", "EXACT", null),
+  "maurice-lucas": R(null, null, null, "PARTIAL", "NONE", "LIMITED", "POST_SCORER", "NONE", "Categorical only: the source carries career totals but no shooting splits. The same gap blocks his card re-derivation."),
+  "bernard-king": R(.518, null, .730, "FULL", "LOW", "AVERAGE", "HIGH_VOLUME_EFFICIENT", "EXACT", "A .518 career mark on very heavy volume, almost entirely inside the arc."),
+  "andrew-toney": R(.500, null, .797, "FULL", "LOW", "GOOD", "PULL_UP_SHOOTER", "ROUNDED", "Career FG% given as 50% in prose rather than read from a table."),
+  "micheal-ray-richardson": R(.457, null, .690, "FULL", "LOW", "LIMITED", "MIDRANGE_CREATOR", "EXACT", null),
+  "rolando-blackman": R(.493, null, .840, "FULL", "LOW", "GOOD", "MIDRANGE_CREATOR", "EXACT", null),
+  "mookie-blaylock": R(.409, .336, .736, "FULL", "HIGH", "GOOD", "SPOT_UP_SHOOTER", "EXACT", "A .409 field-goal mark alongside .336 from three: an early high-volume three-point guard whose overall efficiency paid for it."),
+  "jeff-hornacek": R(.496, .403, .877, "FULL", "HIGH", "ELITE", "MOVEMENT_SHOOTER", "EXACT", null),
+  "charles-oakley": R(.471, .253, .761, "FULL", "NONE", "NONE", "NON_SHOOTER", "EXACT", "The .253 three-point mark is noise on trivial volume."),
+  "latrell-sprewell": R(.425, .337, .804, "FULL", "MODERATE", "AVERAGE", "HIGH_VOLUME_INEFFICIENT", "EXACT", null),
+  "glenn-robinson": R(.459, .340, .820, "FULL", "MODERATE", "GOOD", "MIDRANGE_CREATOR", "EXACT", null),
+  "toni-kukoc": R(.447, .335, .729, "FULL", "MODERATE", "GOOD", "SPOT_UP_SHOOTER", "EXACT", null),
+  "dan-majerle": R(.431, .358, .741, "FULL", "HIGH", "GOOD", "SPOT_UP_SHOOTER", "EXACT", null),
+  "rasheed-wallace": R(.467, .336, .721, "FULL", "MODERATE", "GOOD", "SPOT_UP_SHOOTER", "EXACT", "A big who shot threes at real volume well before it was standard for the position."),
+  "jermaine-o-neal": R(.467, .147, .715, "FULL", "NONE", "NONE", "POST_SCORER", "EXACT", "The .147 three-point mark is noise."),
+  "ron-artest": R(.414, .339, .715, "FULL", "MODERATE", "AVERAGE", "HIGH_VOLUME_INEFFICIENT", "EXACT", null),
+  "marcus-camby": R(.466, .205, .670, "FULL", "NONE", "NONE", "NON_SHOOTER", "EXACT", null),
+  "deron-williams": R(.445, .357, .822, "FULL", "MODERATE", "GOOD", "PULL_UP_SHOOTER", "EXACT", null),
+  "sam-cassell": R(.454, .331, .861, "FULL", "MODERATE", "GOOD", "PULL_UP_SHOOTER", "EXACT", null),
+  "kyle-lowry": R(.423, .367, .815, "FULL", "HIGH", "ELITE", "SPOT_UP_SHOOTER", "EXACT", null),
+  "john-wall": R(.430, .322, .776, "FULL", "MODERATE", "LIMITED", "RIM_SCORER", "EXACT", null),
+  "demar-derozan": R(.471, .302, .843, "FULL", "LOW", "LIMITED", "MIDRANGE_CREATOR", "EXACT", "One of the last high-volume midrange scorers; low three-point volume is a stylistic choice, not an inability."),
+  "demarcus-cousins": R(.460, .331, .737, "FULL", "MODERATE", "GOOD", "POST_SCORER", "EXACT", null),
+  "serge-ibaka": R(.513, .359, .757, "FULL", "MODERATE", "GOOD", "SPOT_UP_SHOOTER", "EXACT", null),
+  "andre-drummond": R(.539, .217, .489, "FULL", "NONE", "NONE", "NON_SHOOTER", "EXACT", "A .489 career free-throw mark on heavy volume; the .217 three-point figure is noise."),
+  "jrue-holiday": R(.461, .371, .790, "FULL", "MODERATE", "GOOD", "SPOT_UP_SHOOTER", "EXACT", null),
+  "jaren-jackson-jr": R(.467, .351, .793, "FULL", "MODERATE", "GOOD", "SPOT_UP_SHOOTER", "EXACT", null),
+  "zion-williamson": R(.591, .324, .695, "FULL", "NONE", "LIMITED", "RIM_SCORER", "EXACT", "A .591 career field-goal mark, almost entirely at the rim. The .324 three-point figure sits on negligible volume."),
+  "marcus-smart": R(.389, .324, .779, "FULL", "MODERATE", "LIMITED", "SPOT_UP_SHOOTER", "EXACT", null),
+  "pascal-siakam": R(.497, .342, .754, "FULL", "MODERATE", "GOOD", "RIM_SCORER", "EXACT", null),
 };
 
 /** Shooting record for a person, or an explicitly-unknown record. */

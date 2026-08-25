@@ -17,8 +17,8 @@
 //   3. Established statistical reference (Basketball-Reference, or Wikipedia
 //      where it mirrors it — b-ref blocks automated reads)
 //   4. Reputable historical source
-// Every entry below was read from the player's Wikipedia infobox on
-// 2026-08-24, which is tier 3. Upgrading high-traffic entries to tier 1 is a
+// Entries were read from each player's Wikipedia infobox — the original tranche
+// on 2026-08-24, the Wave-1 verification tranche on 2026-08-25. Both tier 3. Upgrading high-traffic entries to tier 1 is a
 // worthwhile future pass; the tier is recorded so that pass knows what to skip.
 //
 // WINGSPAN IS NULL EVERYWHERE. No tier-1..3 source publishes wingspan for
@@ -88,6 +88,48 @@ export const PHYSICAL = Object.fromEntries([
   P("shaquille-o-neal", 7, 1, 325),
   P("kareem-abdul-jabbar", 7, 2, 225),
   P("mark-eaton", 7, 4, 275),
+
+  // — Wave-1 verification pass (2026-08-25): the 44 prime-form cards' persons —
+  P("paul-arizin", 6, 4, 190),
+  P("guy-rodgers", 6, 0, 185),
+  P("zelmo-beaty", 6, 9, 225),
+  P("richie-guerin", 6, 4, 195),
+  P("rick-barry", 6, 7, 205),
+  P("earl-monroe", 6, 3, 185),
+  P("calvin-murphy", 5, 9, 165),
+  P("paul-westphal", 6, 4, 195),
+  P("marques-johnson", 6, 7, 218),
+  P("lou-hudson", 6, 5, 210),
+  P("sidney-wicks", 6, 9, 225),
+  P("maurice-lucas", 6, 9, 215),
+  P("bernard-king", 6, 7, 205),
+  P("andrew-toney", 6, 3, 178),
+  P("micheal-ray-richardson", 6, 5, 189),
+  P("rolando-blackman", 6, 6, 190),
+  P("mookie-blaylock", 6, 0, 180),
+  P("jeff-hornacek", 6, 4, 190),
+  P("charles-oakley", 6, 9, 245),
+  P("latrell-sprewell", 6, 5, 195),
+  P("glenn-robinson", 6, 7, 240),
+  P("toni-kukoc", 6, 11, 235),
+  P("dan-majerle", 6, 6, 222),
+  P("rasheed-wallace", 6, 11, 230),
+  P("jermaine-o-neal", 6, 11, 255),
+  P("ron-artest", 6, 7, 260),
+  P("marcus-camby", 6, 11, 240),
+  P("deron-williams", 6, 3, 200),
+  P("sam-cassell", 6, 3, 185),
+  P("kyle-lowry", 6, 0, 196),
+  P("john-wall", 6, 3, 210),
+  P("demar-derozan", 6, 6, 220),
+  P("demarcus-cousins", 6, 10, 270),
+  P("serge-ibaka", 6, 10, 236),
+  P("andre-drummond", 6, 11, 279),
+  P("jrue-holiday", 6, 4, 220),
+  P("jaren-jackson-jr", 6, 10, 242),
+  P("zion-williamson", 6, 6, 284),
+  P("marcus-smart", 6, 3, 220),
+  P("pascal-siakam", 6, 8, 245),
 ]);
 
 /** Physical record for a person, or a null-filled record with UNVERIFIED

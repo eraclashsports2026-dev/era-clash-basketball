@@ -3,11 +3,26 @@
 // API calls (/api/*) and non-GET requests are never cached — user data and
 // simulation responses must never be served stale.
 //
-// CACHE VERSIONING: bump CACHE whenever a release changes the player database,
-// rating formula, chemistry engine, or API contract — activation deletes every
-// old cache so no client stays stuck on stale data. Keep in sync with
-// src/versions.js (app version).
-const CACHE = "eraclash-v2.3.5";
+// ── CACHE IDENTITY IS BUILD-DERIVED, NOT HAND-MAINTAINED ─────────────────────
+// The token below is replaced at build time by the Vite plugin in
+// vite.config.js with `eraclash-assets:{appVersion}:{assetManifestHash}`.
+//
+// It used to be a hand-edited constant, and it drifted: the app shipped 2.7.2
+// while the service worker still said `eraclash-v2.3.5`. A stale cache name is
+// not a cosmetic problem — it means activation never deletes the old cache,
+// because the old cache IS the current one, so returning visitors keep an app
+// shell from four releases ago until they clear storage by hand.
+//
+// Deriving it from the asset manifest hash also makes it change when the
+// CONTENT changes, not merely when someone remembers to bump a number. Vite
+// content-hashes every asset filename, so any real change to the bundle
+// produces a new cache identity automatically.
+const BUILD_ID = "__ERACLASH_BUILD_ID__";
+const CACHE_PREFIX = "eraclash-assets:";
+// Dev fallback: when the placeholder is unreplaced (vite dev, or the file
+// served straight from public/), use a marker that can never collide with a
+// real build identity.
+const CACHE = BUILD_ID.startsWith("__ERACLASH") ? `${CACHE_PREFIX}dev` : BUILD_ID;
 
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(["/"])));
@@ -16,7 +31,15 @@ self.addEventListener("install", (e) => {
 
 self.addEventListener("activate", (e) => {
   e.waitUntil(
-    caches.keys().then((keys) => Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k))))
+    caches.keys().then((keys) =>
+      Promise.all(
+        keys
+          // Scope the sweep to OUR namespace. Deleting every cache key would
+          // also destroy caches this app does not own.
+          .filter((k) => k.startsWith(CACHE_PREFIX) && k !== CACHE)
+          .map((k) => caches.delete(k))
+      )
+    )
   );
   self.clients.claim();
 });
