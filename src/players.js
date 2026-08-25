@@ -33,7 +33,7 @@ export const PLAYERS = [
   // ═══ 1960s ═══
   { id:"wilt-60s",   name:"Wilt Chamberlain",        decade:"1960s", pos:"C",  positions:["C"],           team:"Warriors/76ers",  pts:37.6, reb:27.2, ast:4.2,  stl:0.0, blk:0.0 , mvp:4, fmvp:0, dpoy:0, an1:7, an2:0, an3:0, ad1:0, ad2:0, win:6, pop:9 },
   { id:"bill-60s",   name:"Bill Russell",             decade:"1960s", pos:"C",  positions:["C"],           team:"Celtics",         pts:16.2, reb:23.6, ast:4.3,  stl:0.0, blk:0.0 , mvp:5, fmvp:0, dpoy:0, an1:3, an2:4, an3:0, ad1:0, ad2:0, win:10, pop:9 },
-  { id:"oscar-60s",  name:"Oscar Robertson",          decade:"1960s", pos:"PG", positions:["PG","SG"],     team:"Royals",          pts:30.8, reb:10.4, ast:11.4, stl:0.0, blk:0.0 , mvp:1, fmvp:0, dpoy:0, an1:6, an2:2, an3:0, ad1:0, ad2:0, win:5, pop:9 },
+  { id:"oscar-60s",  name:"Oscar Robertson",          decade:"1960s", pos:"PG", positions:["PG","SG"],     team:"Royals",          pts:30.8, reb:10.4, ast:11.4, stl:0.0, blk:0.0 , mvp:1, fmvp:0, dpoy:0, an1:9, an2:1, an3:0, ad1:0, ad2:0, win:5, pop:9 },
   { id:"jerry-60s",  name:"Jerry West",               decade:"1960s", pos:"PG", positions:["PG","SG"],     team:"Lakers",          pts:27.0, reb:5.8,  ast:6.7,  stl:0.0, blk:0.0 , mvp:0, fmvp:1, dpoy:0, an1:4, an2:2, an3:0, ad1:0, ad2:0, win:6, pop:9 },
   { id:"elgin-60s",  name:"Elgin Baylor",             decade:"1960s", pos:"SF", positions:["SF","PF"],     team:"Lakers",          pts:34.8, reb:19.8, ast:4.6,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:5, an2:4, an3:0, ad1:0, ad2:0, win:5, pop:8 },
   { id:"hal-60s",    name:"Hal Greer",                decade:"1960s", pos:"SG", positions:["SG","PG"],     team:"76ers",           pts:22.1, reb:5.3,  ast:4.5,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:1, an3:2, ad1:0, ad2:0, win:6, pop:5 },
@@ -58,7 +58,7 @@ export const PLAYERS = [
   { id:"artis-70s",  name:"Artis Gilmore",            decade:"1970s", pos:"C",  positions:["C"],           team:"Bulls",           pts:22.3, reb:17.1, ast:2.8,  stl:1.0, blk:2.9 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:1, an3:0, ad1:0, ad2:0, win:5, pop:5 },
   { id:"john-h-70s", name:"John Havlicek",            decade:"1970s", pos:"SF", positions:["SF","SG"],     team:"Celtics",         pts:22.6, reb:7.2,  ast:5.5,  stl:1.5, blk:0.5 , mvp:0, fmvp:1, dpoy:0, an1:4, an2:0, an3:0, ad1:3, ad2:2, win:7, pop:8 },
   { id:"wilt-70s",   name:"Wilt Chamberlain",         decade:"1970s", pos:"C",  positions:["C"],           team:"Lakers",          pts:14.8, reb:19.2, ast:4.1,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:1, an2:0, an3:0, ad1:2, ad2:0, win:6, pop:8 },
-  { id:"oscar-70s",  name:"Oscar Robertson",          decade:"1970s", pos:"PG", positions:["PG","SG"],     team:"Bucks",           pts:15.5, reb:5.7,  ast:8.2,  stl:0.0, blk:0.0 , mvp:0, fmvp:1, dpoy:0, an1:0, an2:2, an3:0, ad1:0, ad2:0, win:7, pop:8 },
+  { id:"oscar-70s",  name:"Oscar Robertson",          decade:"1970s", pos:"PG", positions:["PG","SG"],     team:"Bucks",           pts:15.5, reb:5.7,  ast:8.2,  stl:0.0, blk:0.0 , mvp:0, fmvp:1, dpoy:0, an1:0, an2:1, an3:0, ad1:0, ad2:0, win:7, pop:8 },
   { id:"walt-70s",   name:"Walt Frazier",             decade:"1970s", pos:"PG", positions:["PG","SG"],     team:"Knicks",          pts:19.3, reb:6.1,  ast:6.9,  stl:1.8, blk:0.3 , mvp:0, fmvp:0, dpoy:0, an1:2, an2:2, an3:0, ad1:5, ad2:2, win:7, pop:8 },
   { id:"bob-l-70s",  name:"Bob Lanier",               decade:"1970s", pos:"C",  positions:["C","PF"],      team:"Pistons",         pts:22.7, reb:11.3, ast:3.1,  stl:0.9, blk:1.6 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:1, an3:1, ad1:0, ad2:0, win:4, pop:5 },
   { id:"gail-70s",   name:"Gail Goodrich",            decade:"1970s", pos:"SG", positions:["SG","PG"],     team:"Lakers",          pts:22.0, reb:3.5,  ast:5.3,  stl:1.1, blk:0.2 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:1, an3:0, ad1:0, ad2:0, win:6, pop:5 },
@@ -229,7 +229,7 @@ export const PLAYERS = [
   { id:"tom-b-70s",   name:"Tom Burleson",            decade:"1970s", pos:"C",  positions:["C"],           team:"Sonics",          pts:12.1, reb:9.5,  ast:1.5,  stl:0.6, blk:1.5 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:4, pop:2 },
   { id:"swen-70s",    name:"Swen Nater",              decade:"1970s", pos:"C",  positions:["C","PF"],      team:"Braves",          pts:12.2, reb:13.4, ast:1.4,  stl:0.6, blk:0.8 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:4, pop:2 },
   { id:"billy-p-70s", name:"Billy Paultz",            decade:"1970s", pos:"C",  positions:["C"],           team:"Spurs",           pts:14.6, reb:9.8,  ast:2.5,  stl:0.7, blk:1.4 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:4, pop:2 },
-  { id:"luol-70s",    name:"Curtis Perry",            decade:"1970s", pos:"PF", positions:["PF","C"],      team:"Bucks",           pts:10.5, reb:9.2,  ast:1.5,  stl:1.0, blk:0.6 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:5, pop:2 },
+  { id:"curtis-perry-70s", name:"Curtis Perry",            decade:"1970s", pos:"PF", positions:["PF","C"],      team:"Bucks",           pts:10.5, reb:9.2,  ast:1.5,  stl:1.0, blk:0.6 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:5, pop:2 },
   { id:"clint-70s",   name:"Clint Richardson",        decade:"1970s", pos:"SG", positions:["SG","PG"],     team:"76ers",           pts:10.9, reb:3.6,  ast:3.1,  stl:1.3, blk:0.4 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:4, pop:2 },
   { id:"connie-70s",  name:"Connie Hawkins",          decade:"1970s", pos:"SF", positions:["SF","PF"],     team:"Suns",            pts:20.0, reb:8.8,  ast:4.3,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:1, an2:0, an3:0, ad1:0, ad2:0, win:4, pop:5 },
   { id:"james-70s",   name:"James Silas",             decade:"1970s", pos:"PG", positions:["PG","SG"],     team:"Spurs",           pts:20.1, reb:3.0,  ast:5.5,  stl:1.6, blk:0.2 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:4, pop:3 },
@@ -495,3 +495,15 @@ export const DECADE_COLORS = {
 };
 export const POSITIONS = ["PG", "SG", "SF", "PF", "C"];
 export const ERAS = ["1950s", "1960s", "1970s", "1980s", "1990s", "2000s", "2010s", "2020s"];
+
+// ── Card lookup with alias resolution ───────────────────────────────────────
+// The ONLY lookup that should be used for an id that came from OUTSIDE this
+// process — a stored result, a saved team, a challenge link, a fingerprint.
+// A bare PLAYERS.find would return undefined for a retired alias and silently
+// break an old record.
+import { resolveCardId } from "./v3/data/cardAliases.js";
+
+const BY_ID = new Map(PLAYERS.map((p) => [p.id, p]));
+
+export const findCard = (id) => BY_ID.get(id) ?? BY_ID.get(resolveCardId(id)) ?? null;
+export const cardExists = (id) => findCard(id) != null;

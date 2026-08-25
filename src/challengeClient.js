@@ -2,7 +2,7 @@
 // Server-backed challenges with the v2 URL-encoded format as a fallback:
 // if /api/challenge is unavailable (no store configured, offline), links keep
 // working exactly like v2 (?c=base64). Both link formats stay decodable forever.
-import { PLAYERS } from "./players.js";
+import { PLAYERS, findCard } from "./players.js";
 import { getDisplayName } from "./identity.js";
 import { track } from "./analytics.js";
 
@@ -14,14 +14,14 @@ export const encodeChallenge = (team, record) => {
 export const decodeChallenge = (code) => {
   try {
     const [ids, record] = atob(code).split("|");
-    const team = ids.split(",").map((id) => PLAYERS.find((p) => p.id === id));
+    const team = ids.split(",").map((id) => findCard(id));
     if (team.some((p) => !p) || team.length !== 5) return null;
     return { team, record };
   } catch { return null; }
 };
 
 const idsToTeam = (ids) => {
-  const team = (ids || []).map((id) => PLAYERS.find((p) => p.id === id));
+  const team = (ids || []).map((id) => findCard(id));
   return team.length === 5 && !team.some((p) => !p) ? team : null;
 };
 

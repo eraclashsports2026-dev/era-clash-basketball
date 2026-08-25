@@ -147,7 +147,7 @@ const GROUP_MEMBERS = {
     "emmette-60s", "jon-m-60s", "fred-h-60s", "paul-s-60s", "leroy-60s", "larry-s-60s",
     "norm-70s", "jojo-70s", "phil-c-70s", "don-b-70s", "kevin-p-70s", "randy-70s",
     "charlie-70s", "mike-n-70s", "kenon-70s", "chet-70s", "bobby-70s", "rudy-t-70s",
-    "paul-s-70s", "dan-70s", "tom-b-70s", "swen-70s", "billy-p-70s", "luol-70s", "clint-70s",
+    "paul-s-70s", "dan-70s", "tom-b-70s", "swen-70s", "billy-p-70s", "curtis-perry-70s", "clint-70s",
     "connie-70s", "james-70s", "david-t-70s", "billy-k-70s", "john-d-70s", "dj-80s", "mo-80s",
     "kj-80s", "price-80s", "porter-80s", "sleepy-80s", "doc-80s", "lever-80s", "tiny-80s",
     "johnny-80s", "byron-80s", "vinnie-80s", "danny-80s", "dale-80s", "wdavis-80s", "ricky-80s",

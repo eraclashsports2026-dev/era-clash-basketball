@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { PLAYERS, POSITIONS } from "./players.js";
+import { PLAYERS, POSITIONS, findCard } from "./players.js";
 import { displayOVR, analyzeBalance, teamRating } from "./rating.js";
 import { T, card } from "./theme.js";
 import { genPlayer, genRoster, genOpponent } from "./draft.js";
@@ -372,7 +372,9 @@ export default function App() {
   // ── Simulations (server-authoritative, v2.3) ───────────────────────────────
   // /api/game computes and stores every result; the client renders it and then
   // requests the OPTIONAL enhanced recap. AI failure never fails a game.
-  const idsToPlayers = (ids) => (ids || []).map((id) => PLAYERS.find((p) => p.id === id)).filter(Boolean);
+  // findCard resolves retired aliases: a team saved before a card rename must
+  // still load.
+  const idsToPlayers = (ids) => (ids || []).map((id) => findCard(id)).filter(Boolean);
 
   // Coach id → display name. Today's Daily options first (the Daily may offer
   // a coach the general V3 list has not loaded), then the V3 coach list.
@@ -1089,7 +1091,7 @@ export default function App() {
         {sharedResult ? (
           <div style={{ maxWidth: 620, margin: "16px auto 0" }}>
             <SharedResultView snap={sharedResult} onPlay={() => {
-              const t = sharedResult.teamIds.map((id) => PLAYERS.find((p) => p.id === id));
+              const t = sharedResult.teamIds.map((id) => findCard(id));
               if (!t.some((x) => !x)) {
                 setChallenge({ id: sharedResult.challengeId || null, team: t, record: sharedResult.scoreline, challengerName: sharedResult.name, games: [], rivalry: null });
                 setSharedResult(null); setNav("Challenges");
@@ -1100,7 +1102,7 @@ export default function App() {
         ) : nav === "Profile" ? (
           <div style={{ maxWidth: 860, margin: "16px auto 0" }}>
             <Profile career={career} badges={badges} BADGES={BADGES} saved={saved} daily={daily}
-              onLoadTeam={(ids) => { const t = ids.map((id) => PLAYERS.find((p) => p.id === id)); if (!t.some((x) => !x)) { resetPlay(); setNav("Play"); setTeam(t); } }} />
+              onLoadTeam={(ids) => { const t = ids.map((id) => findCard(id)); if (!t.some((x) => !x)) { resetPlay(); setNav("Play"); setTeam(t); } }} />
           </div>
         ) : nav === "Board" ? (
           <div style={{ maxWidth: 720, margin: "16px auto 0" }}>
@@ -1258,7 +1260,7 @@ function ResultView({ result, team, feedbackCtx, narrative, onRetryNarrative, on
 
 // ── Shared result landing (/?r=id) ───────────────────────────────────────────
 function SharedResultView({ snap, onPlay }) {
-  const team = snap.teamIds.map((id) => PLAYERS.find((p) => p.id === id)).filter(Boolean);
+  const team = snap.teamIds.map((id) => findCard(id)).filter(Boolean);
   return (
     <div className="rise" style={{ ...card, padding: 22, borderColor: T.goldBorder, boxShadow: T.glowGold }}>
       <div style={{ textAlign: "center" }}>
@@ -1296,7 +1298,7 @@ function Board({ board, streaks, badges, BADGES }) {
         {board.length === 0 ? <p style={{ color: T.textDim, fontSize: 13 }}>No seasons completed yet. Run WIN 82 to get on the board.</p> : (
           <div style={{ display: "grid", gap: 8 }}>
             {board.map((r, i) => {
-              const t = r.team.map((id) => PLAYERS.find((p) => p.id === id)).filter(Boolean);
+              const t = r.team.map((id) => findCard(id)).filter(Boolean);
               return (
                 <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: 10, background: T.bgCardHover, borderRadius: 8 }}>
                   <div>

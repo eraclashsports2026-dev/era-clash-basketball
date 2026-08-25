@@ -37,7 +37,7 @@
 // Spacing Score, no Team IQ. The internal identity tags are descriptive
 // vocabulary for later layers, never a power rating.
 import { buildIntelligence } from "./intelligence.js";
-import { PLAYERS } from "../players.js";
+import { PLAYERS, findCard } from "../players.js";
 import { personIdForCard } from "./data/persons.js";
 
 export const TEAM_INTELLIGENCE_VERSION = "1.0.0";
@@ -427,7 +427,7 @@ export const buildTeamIntelligence = ({ playerCards, playerIntelligence = null, 
   if (playerCards.length !== 5) throw new Error(`buildTeamIntelligence: a lineup is exactly 5 players, received ${playerCards.length}`);
 
   const cards = playerCards.map((c, i) => {
-    const card = typeof c === "string" ? PLAYERS.find((p) => p.id === c) : c;
+    const card = typeof c === "string" ? findCard(c) : c;
     if (!card || !card.id) throw new Error(`buildTeamIntelligence: unknown player at index ${i}: ${JSON.stringify(c)}`);
     return card;
   });

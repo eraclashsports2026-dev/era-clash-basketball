@@ -3,7 +3,7 @@
 // players eligible for the slot position, sorted by slot OVR. Uses the same
 // database and rating logic as everything else.
 import { useMemo, useState } from "react";
-import { PLAYERS, DECADE_COLORS, ERAS } from "../players.js";
+import { PLAYERS, DECADE_COLORS, ERAS, findCard } from "../players.js";
 import { displayOVR, slotRating } from "../rating.js";
 import { playerArchetypes } from "../attributes.js";
 import { T, card } from "../theme.js";
@@ -15,7 +15,7 @@ export default function ManualPicker({ slotPos, excludeIds = [], onPick, onClose
 
   const list = useMemo(() => {
     // one PERSON per lineup: exclude every decade-entry of already-picked players
-    const excludeNames = new Set(excludeIds.map((id) => PLAYERS.find((p) => p.id === id)?.name).filter(Boolean));
+    const excludeNames = new Set(excludeIds.map((id) => findCard(id)?.name).filter(Boolean));
     let pool = PLAYERS.filter((p) => p.positions.includes(slotPos) && !excludeIds.includes(p.id) && !excludeNames.has(p.name));
     if (era) pool = pool.filter((p) => p.decade === era);
     if (q.trim()) {

@@ -3,8 +3,19 @@
 // client-supplied "authority" fields never reach game logic. Mass-assignment
 // safe: handlers read ONLY the fields validated here.
 import { PLAYERS } from "../../src/players.js";
+import { CARD_ID_ALIASES } from "../../src/v3/data/cardAliases.js";
 
-const byId = new Map(PLAYERS.map((p) => [p.id, p]));
+// Alias keys are included so a stored result or challenge link containing a
+// RETIRED card id still validates. Without this, renaming a card would reject
+// every old record that mentions it.
+const byId = (() => {
+  const m = new Map(PLAYERS.map((p) => [p.id, p]));
+  for (const [oldId, canonicalId] of Object.entries(CARD_ID_ALIASES)) {
+    const card = m.get(canonicalId);
+    if (card) m.set(oldId, card);
+  }
+  return m;
+})();
 
 export const MODES = new Set(["single", "best7", "82", "tournament", "daily", "challenge"]);
 
