@@ -117,7 +117,9 @@ describe("coach intelligence — dormant field resolution", () => {
       insideOut: "ACTIVE_COACH_INTELLIGENCE",
       starEmpowerment: "ACTIVE_COACH_INTELLIGENCE",
       tacticalAdjustment: "ACTIVE_COACH_INTELLIGENCE",
-      pnr: "PLANNED_POSSESSION_ENGINE",
+      // Was PLANNED_POSSESSION_ENGINE in Phase 4 because the loop had no
+      // pick-and-roll action to consume it. Phase 5C built one.
+      pnr: "ACTIVE_ACTION_LIBRARY",
       man: "RESEARCH_ONLY",
       rotationDepth: "RESEARCH_ONLY",
     };
@@ -127,7 +129,7 @@ describe("coach intelligence — dormant field resolution", () => {
       expect(entry.status, field).toBe(status);
     }
     // anything not active must carry a note explaining WHY
-    for (const f of [...fieldsByStatus("RESEARCH_ONLY"), ...fieldsByStatus("PLANNED_POSSESSION_ENGINE")]) {
+    for (const f of [...fieldsByStatus("RESEARCH_ONLY"), ...fieldsByStatus("PLANNED_POSSESSION_ENGINE"), ...fieldsByStatus("ACTIVE_ACTION_LIBRARY")]) {
       expect(f.note, `${f.field} has no explanation`).toBeTruthy();
       expect(f.note.length).toBeGreaterThan(40);
     }
