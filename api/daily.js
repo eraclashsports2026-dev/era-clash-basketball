@@ -6,6 +6,10 @@ import { hasStore, pipeline } from "./_lib/store.js";
 import { sendError, newRequestId } from "./_lib/errors.js";
 import { flags } from "./_lib/flags.js";
 import { utcDateKey, dailySeed } from "../src/dailyChallenge.js";
+import { dailyConfig, coachContrasts } from "../src/v3/dailyCoachEra.js";
+import { getEra } from "../src/v3/eraStyles.js";
+import { cacheKeys } from "./_lib/cacheKeys.js";
+import { getJSON, setJSON } from "./_lib/store.js";
 
 const validDate = (d) => /^\d{8}$/.test(d);
 
@@ -18,8 +22,55 @@ export default async function handler(req, res) {
   // a client render the same rolls the server will verify against.
   const config = { date: utcDateKey(), seed: dailySeed(utcDateKey()) };
   if (String(req.query?.config || "") === "1") {
+    const f = flags();
+    if (!f.dailyCoachEra) {
+      // Flag off: the historical shape exactly. This is the rollback path.
+      res.setHeader("Cache-Control", "public, max-age=60");
+      return res.status(200).json(config);
+    }
+
+    // ── Official coach/era configuration ─────────────────────────────────────
+    // Generated once per UTC date and reused all day. The cache key carries the
+    // schema and data versions, so a version change produces a NEW key rather
+    // than silently reinterpreting a Daily that players have already started.
+    const key = cacheKeys.dailyConfig({ utcDate: config.date });
+    let full = hasStore() ? await getJSON(key) : null;
+    let cached = Boolean(full);
+    if (!full) {
+      full = dailyConfig(config.date);
+      // Immutable for the day once written: SET only if absent, so two
+      // concurrent first-requests cannot disagree about today's options.
+      if (hasStore()) await setJSON(key, full, 60 * 60 * 30);
+    }
+    // "Why these three differ" is computed at read time from the same stored
+    // options, so a cached config from earlier today still renders the current
+    // copy. It is a contrast between today's options, never a ranking.
+    const withWhy = coachContrasts(full.coachOptions);
+    const era = getEra(full.officialEraStyleId);
     res.setHeader("Cache-Control", "public, max-age=60");
-    return res.status(200).json(config);
+    return res.status(200).json({
+      ...config,
+      dailyId: full.dailyId,
+      officialEraStyleId: full.officialEraStyleId,
+      // Documented era description for the UI: what the game looked like, in
+      // words. No pace numbers, no environment coefficients, no modifiers.
+      era: {
+        id: era.id,
+        label: era.label,
+        anchorSeason: era.anchorSeason,
+        summary: (era.styleSummary ?? []).slice(0, 3),
+      },
+      // UI support data only. Deliberately no coach ratings, no era
+      // calculations, no Team Intelligence scores, no coach OVR.
+      coachOptions: withWhy.map((c) => ({
+        coachId: c.coachId, name: c.name,
+        strategy: c.bucketLabel, systemTags: (c.systemTags ?? []).slice(0, 3),
+        whyDifferent: c.whyDifferent,
+      })),
+      configSchemaVersion: full.configSchemaVersion,
+      simulationSeedPolicy: full.simulationSeedPolicy,
+      cached,
+    });
   }
 
   if (!flags().leaderboard) return res.status(200).json({ ...config, board: [], count: 0, disabled: true });

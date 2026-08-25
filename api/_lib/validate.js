@@ -48,6 +48,14 @@ export const validChallengeId = (s) =>
 
 export const validResultId = validChallengeId;
 
+// A shared narrative identity, as written onto our OWN result record (see
+// narrativeKeyId in api/game.js). Deliberately a separate, wider shape from
+// validResultId: result ids are public handles and stay short and opaque,
+// while this is a content address built from a daily id and a seed. Validated
+// anyway — a corrupted record must not be able to author a cache key.
+export const validNarrativeKeyId = (s) =>
+  typeof s === "string" && /^[a-z0-9][a-z0-9._-]{5,120}$/.test(s) ? s : null;
+
 // Display names: plain text only. Strips angle brackets and control chars so
 // nothing executable can reach UI, OG metadata, logs, or admin tools.
 export const cleanName = (s, max = 24) =>

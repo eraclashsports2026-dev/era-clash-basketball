@@ -103,6 +103,12 @@ export const REGISTRY = {
 
   playerCardDesignVersion: entry("1.0.0", PLANNED, "Player-card asset cache identity (spec v1). The RENDERER belongs to the UI phase; only the key shape exists today.", false),
 
+  // ── Daily ──
+  // The SHAPE of an official Daily configuration. Bumping it produces a new
+  // cache key, which is how a live Daily is protected from being reinterpreted
+  // mid-day by a change to its own schema.
+  dailyConfigSchemaVersion: entry("1.0.0", ACTIVE, "src/v3/dailyCoachEra.js — official Daily configuration schema.", false),
+
   // ── calibration ──
   calibrationVersion: entry("backtest-1", ACTIVE, "Engine calibration pass the live tuning derives from."),
 };

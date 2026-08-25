@@ -362,7 +362,10 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
             {sim.v3.expectedPoints && (
               <span>🎯 shot quality (expected pts): <b style={{ color: T.gold }}>{Math.round(sim.v3.expectedPoints.gold)}</b> · <b style={{ color: T.blue }}>{Math.round(sim.v3.expectedPoints.blue)}</b></span>
             )}
-            {sim.eraId && <span>🕰️ Era Style: <b style={{ color: T.text }}>{sim.eraId}</b></span>}
+            {sim.eraId && <span>🕰️ Era Style: <b style={{ color: T.text }}>{sim.eraLabel || sim.eraId}</b></span>}
+            {/* Which coach actually ran the game. In the Daily this is the
+                one decision the player owned, so it belongs in the result. */}
+            {sim.coachNames?.gold && <span>🧠 Coach: <b style={{ color: T.gold }}>{sim.coachNames.gold}</b>{sim.coachNames.blue ? <> vs <b style={{ color: T.blue }}>{sim.coachNames.blue}</b></> : null}</span>}
           </div>
         )}
 

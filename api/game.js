@@ -18,6 +18,7 @@ import { validCoachId, validEraId } from "./_lib/validate.js";
 import { validDifficulty } from "../src/v3/difficulty.js";
 import { findDuplicatePerson } from "../src/v3/persons.js";
 import { utcDateKey, verifyDailyLineup, dailyOpponent } from "../src/dailyChallenge.js";
+import { dailyConfig, dailySimulationSeed, validateDailySelection, validateDailyVersions } from "../src/v3/dailyCoachEra.js";
 
 const RESULT_TTL = 60 * 60 * 24 * 180;
 const IDEM_TTL = 60 * 60 * 24;
@@ -97,6 +98,7 @@ export default async function handler(req, res) {
     // generator). Client-supplied seeds/dates are never read. A rejected
     // lineup never consumes the official attempt.
     const today = utcDateKey();
+    let dailyCfg = null;   // set only when the coach/era Daily flag is on
     if (mode === "daily") {
       blue = dailyOpponent(today);
       const legal = verifyDailyLineup(today, b.dailyDecisions, gold.map((p) => p.id));
@@ -106,7 +108,29 @@ export default async function handler(req, res) {
       }
       if (hasStore()) {
         const existing = await getJSON(`daily:claim:${today}:${session}`);
-        if (existing) return sendError(res, "IDEMPOTENCY_CONFLICT", requestId);
+        if (existing) return sendError(res, "DAILY_ALREADY_COMPLETED", requestId);
+      }
+
+      // ── Official coach + Era Style (flag-gated, default OFF) ──────────────
+      // When the flag is off none of this runs and the Daily behaves exactly as
+      // before, which is the rollback path.
+      //
+      // Everything authoritative is SERVER-GENERATED. The client may submit a
+      // coachId, and only a coachId, and only one drawn from today's official
+      // options. The era, the option pool, the date, the seed and the data
+      // versions are never the client's to supply.
+      if (f.dailyCoachEra) {
+        dailyCfg = dailyConfig(today);
+        const vers = validateDailyVersions({ config: dailyCfg, submitted: b.dailyVersions });
+        if (!vers.ok) {
+          logReq({ requestId, route: "game", mode, status: 409, error_code: vers.code, field: vers.field });
+          return sendError(res, vers.code, requestId);
+        }
+        const sel = validateDailySelection({ config: dailyCfg, coachId: b.coachGoldId, eraStyleId: b.eraStyleId });
+        if (!sel.ok) {
+          logReq({ requestId, route: "game", mode, status: 400, error_code: sel.code, submitted: String(b.coachGoldId).slice(0, 40) });
+          return sendError(res, sel.code, requestId);
+        }
       }
     }
 
@@ -139,17 +163,31 @@ export default async function handler(req, res) {
         return sendError(res, "DUPLICATE_PERSON", requestId);
       }
     }
-    const seed = newSeed();
+    // Daily seed policy: DERIVED from the official configuration and the
+    // player's legal choices, never from session, browser, or request time.
+    // Same decisions must reproduce the same game, and a refresh must not
+    // reroll it. Every other mode keeps server-random variance so rematches
+    // stay different.
+    const seed = dailyCfg
+      ? dailySimulationSeed({ config: dailyCfg, goldIds: gold.map((p) => p.id), coachId: b.coachGoldId }).seed
+      : newSeed();
     // V3 possession engine (flag-gated; preview-only by default). Coach and
     // Era Style ids are validated and loaded canonically server-side — the
     // browser cannot author coach attributes or era modifiers.
     const computed = f.simV3
       ? computeResultV3(mode, gold, blue, {
-          coachGoldId: validCoachId(b.coachGoldId) || "neutral",
-          coachBlueId: validCoachId(b.coachBlueId) || "neutral",
-          eraStyleId: validEraId(b.eraStyleId) || undefined,
+          // In a coach/era Daily the era is the OFFICIAL one and Blue takes the
+          // neutral staff, so the puzzle is identical for everyone and the only
+          // variable is the player's own coach choice.
+          coachGoldId: dailyCfg ? b.coachGoldId : (validCoachId(b.coachGoldId) || "neutral"),
+          coachBlueId: dailyCfg ? "neutral" : (validCoachId(b.coachBlueId) || "neutral"),
+          eraStyleId: dailyCfg ? dailyCfg.officialEraStyleId : (validEraId(b.eraStyleId) || undefined),
           difficulty: validDifficulty(b.difficulty),
           dailyDate: mode === "daily" ? today : undefined,
+          // The coach/era Daily derives its own seed above, including the
+          // active data versions, so the engine must not re-derive a
+          // version-blind one. One derivation, one owner.
+          dailySeedPolicy: dailyCfg ? "caller-derived" : undefined,
         }, seed)
       : computeResult(mode, gold, blue, seed);
     const resultId = newId(10);
@@ -163,6 +201,13 @@ export default async function handler(req, res) {
       ...computed,
       challengeId: challenge ? challenge.id : null,
       dailyDate: mode === "daily" ? today : null,
+      // Narrative identity for a coach/era Daily is the GAME, not the player.
+      // Everyone who makes the same official decisions gets a byte-identical
+      // result, so paying a provider call per player to write the same recap
+      // is pure waste. The narrative path holds no user identity (no name, no
+      // session, no uid), so one text is correct for all of them. Absent on
+      // every other mode, which keeps their per-result keying unchanged.
+      narrativeKeyId: dailyCfg ? `d.${dailyCfg.dailyId}.s${computed.seed >>> 0}` : null,
       core_result_status: "complete",
       narrative_status: "not_requested",
       created_at: Date.now(),

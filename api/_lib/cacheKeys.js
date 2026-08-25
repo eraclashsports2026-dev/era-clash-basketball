@@ -73,6 +73,16 @@ export const cacheKeys = {
   challenge: (challengeId) => `ch:${seg(challengeId, "challengeId")}`,
   dailyBoard: (date) => `dl:${seg(date, "date")}:board`,
   dailyClaim: (date, session) => `daily:claim:${seg(date, "date")}:${seg(String(session).slice(0, 32), "session")}`,
+  /**
+   * The day's official Daily configuration. Versioned so a mid-day data change
+   * produces a NEW key instead of silently reinterpreting a Daily that players
+   * have already started — once a Daily is live its configuration is immutable
+   * for that date, and an emergency change needs a new config id.
+   */
+  dailyConfig: ({ utcDate }) =>
+    `daily:v${vtag("dailyConfigSchemaVersion")}:${seg(utcDate, "utcDate")}` +
+    `:pd${vtag("playerDataVersion")}:cd${vtag("coachDataVersion")}:ed${vtag("eraDataVersion")}`,
+
   profile: (sessionId) => `profile:${seg(String(sessionId).slice(0, 64), "sessionId")}`,
   rateLimit: (bucket, windowIndex) => `rl:${seg(bucket, "bucket")}:${seg(windowIndex, "window")}`,
   circuit: (service, windowIndex) => `circuit:${seg(service, "service")}:${seg(windowIndex, "window")}`,

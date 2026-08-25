@@ -1,6 +1,12 @@
 // Playwright E2E against the local integration harness (real handlers,
 // in-memory store, chaos enabled). vitest owns tests/*.test.js; Playwright
 // owns e2e/*.spec.js.
+//
+// Two harnesses, deliberately: the default one runs with every preview flag
+// OFF, so the existing journeys keep proving that production behaviour is
+// unchanged. A second harness on 4174 runs with DAILY_COACH_ERA_ENABLED so
+// the new Daily flow can be exercised as a real user WITHOUT that flag
+// leaking into the isolation journeys.
 import { defineConfig } from "@playwright/test";
 
 export default defineConfig({
@@ -12,10 +18,30 @@ export default defineConfig({
     baseURL: "http://localhost:4173",
     viewport: { width: 1280, height: 900 },
   },
-  webServer: {
-    command: "node scripts/harness.mjs 4173",
-    url: "http://localhost:4173/api/health",
-    reuseExistingServer: true,
-    timeout: 30_000,
-  },
+  projects: [
+    {
+      name: "production-flags-off",
+      testIgnore: /daily-coach-era\.spec\.js/,
+    },
+    {
+      name: "daily-coach-era-preview",
+      testMatch: /daily-coach-era\.spec\.js/,
+      use: { baseURL: "http://localhost:4174" },
+    },
+  ],
+  webServer: [
+    {
+      command: "node scripts/harness.mjs 4173",
+      url: "http://localhost:4173/api/health",
+      reuseExistingServer: true,
+      timeout: 30_000,
+    },
+    {
+      command: "node scripts/harness.mjs 4174",
+      url: "http://localhost:4174/api/health",
+      reuseExistingServer: true,
+      timeout: 30_000,
+      env: { DAILY_COACH_ERA_ENABLED: "true" },
+    },
+  ],
 });
