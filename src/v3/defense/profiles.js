@@ -84,6 +84,38 @@ export const buildThreatProfile = ({ profile, card, usagePlanEntry, creationTier
     usageShare: usagePlanEntry?.share ?? 0.2,
     expectedTouchShare: r1((usagePlanEntry?.share ?? 0.2) * 100) / 100,
     creationTier,
+
+    // ── Creation locus ─────────────────────────────────────────────────────
+    // WHERE a player creates, not just how much. Treating all creation as
+    // point-of-attack creation charged a centre full perimeter-containment
+    // shortfall for guarding another centre — which is why Bill Russell on
+    // Nikola Jokic priced at 40.7 while Russell chasing Klay Thompson priced
+    // at 20.4, and the optimizer duly picked the absurd one.
+    creationLocus: (() => {
+      const onBall = num(o.selfCreation, 5) * 0.6 + perim * 0.4;
+      const interior = num(o.postThreat, 3) * 0.7 + num(o.rimThreat, 5) * 0.3;
+      const total = onBall + interior;
+      return total <= 0 ? { perimeter: 0.5, interior: 0.5 } : {
+        perimeter: Math.round((onBall / total) * 100) / 100,
+        interior: Math.round((interior / total) * 100) / 100,
+      };
+    })(),
+
+    // ── Defensive demand ───────────────────────────────────────────────────
+    // How much WORK this assignment is, which is NOT the same as how many
+    // touches the player gets. An elite movement shooter at 12% usage runs a
+    // defender off three screens a possession; weighting the assignment by
+    // on-ball usage alone made him look like a hiding spot.
+    //
+    // Deliberately general: no player id appears anywhere in this calculation.
+    defensiveDemand: r1(clamp(
+      Math.max(
+        (usagePlanEntry?.share ?? 0.2) * 22,
+        (movement * 0.34 + spotUp * 0.16 + num(o.offBallMovement, 5) * 0.2
+          + num(o.spacingGravity, 5) * 0.18 + clamp(perim * 0.12, 0, 2)) * (threeLegal ? 1 : 0.78),
+      ),
+      0, 10,
+    )),
     // Spacing gravity is lineup context, not a personal threat: it describes
     // how much the defence must respect him away from the ball.
     gravity: r1(num(o.spacingGravity, 5) * (threeLegal ? 1 : 0.55)),

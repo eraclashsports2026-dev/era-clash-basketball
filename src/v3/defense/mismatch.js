@@ -155,5 +155,105 @@ export const detectMismatches = ({ threat, defender, eff, era, usageShare }) => 
 
 /** Severity-weighted cost of a mismatch list. Bands map to costs, not decimals. */
 export const SEVERITY_COST = { MINOR: 0.5, MODERATE: 1.6, MAJOR: 4, SEVERE: 9 };
-export const mismatchCost = (list) => list.reduce((a, m) =>
-  a + (m.type === "LOW_USAGE_HIDE_ASSIGNMENT" ? 0 : SEVERITY_COST[m.severity] ?? 0), 0);
+
+// ── Correlated clusters ─────────────────────────────────────────────────────
+// One physical disadvantage legitimately produces several descriptive labels: a
+// small defender on a dominant centre is genuinely outsized, out-muscled,
+// out-posted, out-rebounded and in foul trouble. Those descriptions are all
+// true and worth keeping.
+//
+// But they are NOT six independent penalties. They are six symptoms of ONE
+// latent disadvantage, and summing them charged that disadvantage six times —
+// which is why small-ball-versus-size priced at 31 mismatch cost in a single
+// pairing and drowned every other consideration.
+//
+// A cluster is therefore priced as: the largest component in full, plus
+// steeply discounted secondary components, plus a small bounded interaction
+// term (the symptoms do compound — being outsized AND slow is worse than
+// either), capped.
+export const MISMATCH_CLUSTERS = {
+  INTERIOR_PHYSICAL: {
+    types: ["SIZE_MISMATCH", "STRENGTH_MISMATCH", "POST_MISMATCH", "REBOUNDING_MISMATCH", "FOUL_RISK_MISMATCH"],
+    // A physical disadvantage compounds meaningfully, so the interaction term
+    // is the largest of the four clusters.
+    secondaryDiscount: 0.30, interaction: 0.16, cap: 15,
+  },
+  PERIMETER_MOBILITY: {
+    types: ["SPEED_MISMATCH", "PULLUP_SHOOTING_MISMATCH", "MOVEMENT_SHOOTING_MISMATCH", "SCREEN_NAVIGATION_MISMATCH"],
+    // Being beaten off the dribble and being beaten off the ball are more
+    // separable than the interior symptoms — a slow defender may still
+    // navigate screens well — so secondaries retain more weight.
+    secondaryDiscount: 0.42, interaction: 0.10, cap: 14,
+  },
+  RIM_ACCESS: {
+    types: ["RIM_PRESSURE_MISMATCH", "RIM_PROTECTION_MISMATCH", "HELP_DEPENDENCY"],
+    secondaryDiscount: 0.35, interaction: 0.12, cap: 11,
+  },
+  SWITCHING: {
+    types: ["SWITCHABILITY_MISMATCH", "RECOVERY_MISMATCH"],
+    secondaryDiscount: 0.5, interaction: 0.08, cap: 7,
+  },
+};
+
+// A type may belong to more than one cluster (FOUL_RISK and RIM_PROTECTION do).
+// It is priced in its PRIMARY cluster only — the first that claims it — so
+// cluster membership cannot itself double-count.
+const PRIMARY_CLUSTER = (() => {
+  const m = {};
+  for (const [key, c] of Object.entries(MISMATCH_CLUSTERS)) {
+    for (const t of c.types) if (!(t in m)) m[t] = key;
+  }
+  return m;
+})();
+
+export const clusterOf = (type) => PRIMARY_CLUSTER[type] ?? "UNCLUSTERED";
+
+/**
+ * Cluster-aware numerical effect. Descriptive labels are untouched: this only
+ * changes what they COST.
+ */
+export const mismatchCost = (list) => {
+  const groups = {};
+  for (const m of list) {
+    if (m.type === "LOW_USAGE_HIDE_ASSIGNMENT") continue;
+    const key = clusterOf(m.type);
+    (groups[key] = groups[key] ?? []).push(SEVERITY_COST[m.severity] ?? 0);
+  }
+  let total = 0;
+  for (const [key, costs] of Object.entries(groups)) {
+    const cfg = MISMATCH_CLUSTERS[key];
+    costs.sort((a, b) => b - a);
+    if (!cfg) { total += costs.reduce((a, b) => a + b, 0); continue; }
+    const primary = costs[0] ?? 0;
+    const secondary = costs.slice(1).reduce((a, b) => a + b, 0) * cfg.secondaryDiscount;
+    // Interaction: symptoms compounding, scaled by how many there are, bounded.
+    const interaction = costs.length > 1 ? primary * cfg.interaction * Math.min(costs.length - 1, 3) : 0;
+    total += Math.min(cfg.cap, primary + secondary + interaction);
+  }
+  return Math.round(total * 10) / 10;
+};
+
+/** Diagnostic: the per-cluster breakdown behind a cost. */
+export const mismatchCostBreakdown = (list) => {
+  const groups = {};
+  for (const m of list) {
+    if (m.type === "LOW_USAGE_HIDE_ASSIGNMENT") continue;
+    const key = clusterOf(m.type);
+    (groups[key] = groups[key] ?? []).push({ type: m.type, severity: m.severity, cost: SEVERITY_COST[m.severity] ?? 0 });
+  }
+  return Object.entries(groups).map(([cluster, members]) => {
+    const cfg = MISMATCH_CLUSTERS[cluster];
+    const costs = members.map((x) => x.cost).sort((a, b) => b - a);
+    const naive = costs.reduce((a, b) => a + b, 0);
+    const primary = costs[0] ?? 0;
+    const secondary = costs.slice(1).reduce((a, b) => a + b, 0) * (cfg?.secondaryDiscount ?? 1);
+    const interaction = cfg && costs.length > 1 ? primary * cfg.interaction * Math.min(costs.length - 1, 3) : 0;
+    const clustered = cfg ? Math.min(cfg.cap, primary + secondary + interaction) : naive;
+    return {
+      cluster, members: members.map((x) => `${x.severity}:${x.type}`),
+      naiveSum: Math.round(naive * 10) / 10,
+      clustered: Math.round(clustered * 10) / 10,
+      capped: cfg ? primary + secondary + interaction > cfg.cap : false,
+    };
+  });
+};

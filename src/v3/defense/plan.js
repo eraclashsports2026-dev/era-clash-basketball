@@ -10,6 +10,7 @@ import { buildMatchupProfiles } from "./profiles.js";
 import { buildMatchupMatrix } from "./matrix.js";
 import { buildSchemePlan, eraLegality } from "./scheme.js";
 import { optimizeAssignments } from "./optimizer.js";
+import { rimPresenceReason, PAINT_LABELS } from "./paint.js";
 
 const r1 = (x) => Math.round(x * 10) / 10;
 const clamp = (x, lo, hi) => Math.min(hi, Math.max(lo, x));
@@ -80,7 +81,14 @@ export const buildDefensivePlan = ({ defendingTeam, offensiveTeam, era, eff }) =
     eff: effects, era, scheme,
   });
 
-  const best = optimizeAssignments({ matrix, scheme });
+  // The optimizer needs era effects for paint availability. Attach them to the
+  // scheme ONCE and store that same object on the plan — passing an
+  // eff-carrying scheme to the optimizer while returning an eff-less one made
+  // every downstream scorePlan call compute a different total than the
+  // optimizer did, so a "greedy beats exhaustive" comparison was measuring two
+  // different objectives.
+  const schemeWithEra = { ...scheme, eff: effects };
+  const best = optimizeAssignments({ matrix, scheme: schemeWithEra });
   const help = assignHelpResponsibilities({ pairs: best.pairs, scheme, legal });
 
   // Baseline assignments, with the reason retained per pairing so any assignment
@@ -108,10 +116,15 @@ export const buildDefensivePlan = ({ defendingTeam, offensiveTeam, era, eff }) =
       majorCount: cell.majorCount,
       mismatches: cell.mismatches,
       confidence: cell.confidence,
+      // Rim presence is now truthful: a nominal-centre assignment that empties
+      // the paint says ASSIGNS_NOMINAL_CENTER, not PRESERVE_RIM_PROTECTION.
+      rimPresence: rimPresenceReason({ threat, defender, eff: effects }),
       reason: {
         code: cell.isHide ? "HIDE_WEAK_DEFENDER"
+          : defender.roleAvailability.canProtectRim
+            ? rimPresenceReason({ threat, defender, eff: effects }).reason
+          : (threat.defensiveDemand ?? 0) >= 8.5 ? "CONTAIN_HIGH_DEMAND_THREAT"
           : threat.usageShare >= 0.24 ? "CONTAIN_PRIMARY_THREAT"
-          : defender.roleAvailability.canProtectRim && threat.threats.postScoring >= 4.5 ? "PRESERVE_RIM_PROTECTION"
           : threat.nominalPosition !== defender.nominalPosition ? "CROSS_MATCH_FOR_FIT"
           : "POSITIONAL_FIT",
         strongestDimension: strongest ? strongest[0] : null,
@@ -125,7 +138,7 @@ export const buildDefensivePlan = ({ defendingTeam, offensiveTeam, era, eff }) =
     side: defendingTeam.side,
     coachId: defendingTeam.coachId,
     eraStyleId: era.id,
-    scheme,
+    scheme: schemeWithEra,
     baselineAssignments,
     help,
     threats: offProfiles.threats,
