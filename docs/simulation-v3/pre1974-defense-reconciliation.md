@@ -55,35 +55,30 @@ cannot be trusted as recorded: **98 cards**.
 
 | Status | Cards |
 |---|---|
-| `RECORDED_STAT` | 2 |
-| `DOCUMENTED_ROLE` | 12 |
+| `RECORDED_STAT` | 44 |
+| `DOCUMENTED_ROLE` | 14 |
 | `CALCULATED` | 27 |
-| `INFERRED` | 4 |
+| `INFERRED` | 5 |
 | `CURATED_ATTRIBUTE` | 7 |
-| **Reviewed subtotal** | **52** |
-| `UNREVIEWED` | 45 |
+| **Reviewed subtotal** | **97** |
+| `UNREVIEWED` | **0** |
 | `BLOCKED` | 1 |
 | **Total** | **98** |
 
-Precedence: an evidence-graded band outranks a curated attribute, because a band carries a
-provenance grade while curation is a human vouching for a value without one. A curated entry counts
-as defensive review **only if it actually supplies a defensive field** — several curated cards patch
-offence alone, and counting those would inflate coverage without anyone having reviewed anything.
+**Three** review mechanisms, by precedence:
 
-## The remaining gap
+1. an evidence-graded band in `preRecordingDefense.js` (48 entries)
+2. a curated defensive attribute in `data/intelligence.js` (7 cards covered only this way)
+3. a **recorded event value on the card itself** — a non-zero steal or block average cannot have come
+   from a season where the statistic did not exist, so it is a measurement (44 cards)
 
-All **50** fully pre-recording cards are covered (44 bands + 6 curated). The **45 unreviewed** are:
+A band outranks curation, which outranks a recorded value, because a band carries a provenance grade
+while curation is a human vouching without one. A curated entry counts as defensive review **only if
+it actually supplies a defensive field**.
 
-- **40** `INDETERMINATE_WINDOW` — 1970s cards with no per-season rows
-- **5** `MIXED_RECORDING_WINDOW` — `monroe-70s`, `murphy-70s`, `westphal-70s`, `hudson-70s`, `wicks-70s`
-
-`BLOCKED`: **1** — `lucas-m-70s`, where no per-season NBA table is available, so the decade mean
-cannot be reproduced. Blocked is not reviewed and is not counted as such.
-
-These 45 are the population the possession engine will read defensive-event inputs for, so they are
-recorded in the risk register as a **Phase 6C calibration blocker**, not as a Phase 6A blocker: the
-engine must consume whatever confidence the data carries, and 6A's job is to propagate that
-confidence honestly rather than to pretend it away.
+Phase 6B2 closed the 45-card gap. See `pre-recording-defense-research.md`: 42 of those cards were
+never a data gap, and the three that genuinely carried zeros were reviewed against published sources.
+Two wrong accolades were found and corrected in the process.
 
 ## Data rules (unchanged, and enforced)
 

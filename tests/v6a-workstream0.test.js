@@ -58,13 +58,20 @@ describe("pre-1974 defensive reconciliation", () => {
     expect(a.overCovered, `over-coverage: ${a.overCovered.join(", ")}`).toHaveLength(0);
   });
 
-  it("both review mechanisms are counted, not just the banded one", () => {
+  it("all THREE review mechanisms are counted, not just the banded one", () => {
     // The contradictory 50-vs-45 reporting came from counting one mechanism.
     // preRecordingDefense.js holds bands; data/intelligence.js holds curated
-    // attribute patches. A count that sees only one is the original bug.
+    // attribute patches. Phase 6B2 added a third: a card with a NON-ZERO steal
+    // or block average cannot have derived it from a season where the statistic
+    // did not exist, so that value is a RECORDED measurement rather than a gap.
+    // A count that sees only one mechanism is the original bug.
     expect(a.coverageEntries).toBe(Object.keys(PRE_1974_DEFENSE).length);
     expect(a.curatedEntries, "curated-only defensive coverage must be counted").toBeGreaterThan(0);
-    expect(a.reviewed).toBe(a.coverageEntries + a.curatedEntries);
+    expect(a.byReview.RECORDED_STAT, "recorded-event coverage must be counted").toBeGreaterThan(0);
+    expect(a.reviewed).toBe(a.coverageEntries + a.curatedEntries + a.byReview.RECORDED_STAT - 2);
+    // ...the -2 being the two banded cards that ALSO carry recorded events, and
+    // which the band claims first by precedence.
+    expect(a.byReview.UNREVIEWED, "Phase 6B2 closed the gap").toBe(0);
   });
 
   it("a curated entry counts only when it supplies a defensive field", () => {

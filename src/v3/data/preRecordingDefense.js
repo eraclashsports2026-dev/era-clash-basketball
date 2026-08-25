@@ -32,6 +32,34 @@ const D = (interior, perimeter, eventBand, evidence, note = null) =>
 
 export const PRE_1974_DEFENSE = {
   // ── documented anchors ──
+  // ── Phase 6B2 Workstream 0C: the last three unreviewed cards ─────────────
+  // Every other affected card is now covered by an evidence-graded band, a
+  // curated attribute, or a RECORDED_STAT (a non-zero steal/block average
+  // cannot come from a season where the statistic did not exist). These three
+  // carry stl 0 / blk 0 and needed a source-verified review.
+  //
+  // Wilt Chamberlain, 1970s: NBA All-Defensive FIRST TEAM in 1971-72 and
+  // 1972-73 — both inside this card's decade — verified against the league
+  // All-Defensive Team listing. His final NBA season was 1972-73, so this card
+  // has NO recorded seasons at all and the zeros are correct. 19.2 rebounds
+  // per game on the card. The card previously claimed ONE All-Defensive First
+  // Team; it has two, and that was corrected.
+  "wilt-70s": D("ELITE", "AVERAGE", "ELITE", "DOCUMENTED_ROLE", "Two All-Defensive First Teams (1971-72, 1972-73) inside this decade, at 19.2 rebounds per game, in a career that ended before steals and blocks were recorded. Band documented by a recorded award; no rate is claimed."),
+
+  // Oscar Robertson, 1970s: verified against the All-Defensive Team listing
+  // AND a second source — he has NO All-Defensive selections in any season.
+  // The card previously claimed one, which was a fabricated defensive
+  // accolade and was corrected to zero. He did play 1973-74 (70 games,
+  // Milwaukee), so this card spans a mixed window, but its own averages carry
+  // no event data. A 6ft5 lead guard at 5.7 rebounds per game.
+  "oscar-70s": D("LIMITED", "AVERAGE", "AVERAGE", "INFERRED", "No All-Defensive selections in any season (verified twice). A large lead guard, 5.7 rebounds per game, on a championship team whose defence was anchored elsewhere. Inferred from position, rebounding and the documented ABSENCE of defensive honours."),
+
+  // Connie Hawkins, 1970s: played through 1975-76, and per-season records DO
+  // exist for his post-1973 seasons (1.5 steals / 1.4 blocks in 1973-74).
+  // This card's averages nonetheless carry zeros, so the band stands in for
+  // the decade rather than claiming a mean the card does not contain.
+  "connie-70s": D("AVERAGE", "STRONG", "STRONG", "DOCUMENTED_ROLE", "An athletic forward whose recorded 1973-74 season shows 1.5 steals and 1.4 blocks; 8.8 rebounds per game on this card. The band reflects that recorded evidence without asserting a decade mean the card does not contain."),
+
   "russell-50s": D("ELITE", "AVERAGE", "ELITE", "DOCUMENTED_ROLE", "The defining shot-blocker of the sport, on a defence built entirely around him. Eleven championships in thirteen years. The band is documented; no rate is claimed."),
   "mikan-50s": D("ELITE", "LIMITED", "STRONG", "DOCUMENTED_ROLE", "So dominant defensively that the NBA widened the lane in 1951 in response to him — a rule change is about as documented as a defensive role gets."),
   "nate-60s": D("ELITE", "AVERAGE", "ELITE", "DOCUMENTED_ROLE", "Widely regarded as the one centre who could guard Chamberlain and Abdul-Jabbar one-on-one; 22.0 rebounds per game on this card."),
