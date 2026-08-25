@@ -33,8 +33,13 @@ export const buildPossessionInput = ({
   goldIds, blueIds, coachGoldId = "neutral", coachBlueId = "neutral",
   eraStyleId = "2010s", simulationSeed = 12345, simulationId = "dev", mode = "single",
   defensiveMatchups = true, zoneResolution = true, expandedActions = true, offensiveAdjustments = true,
+  // Independently switchable, like the Phase 6B2 modules, because the
+  // before/after comparison for this phase depends on being able to run the
+  // same seeds with allocation off.
+  opportunityAllocation = true,
 }) => ({
   simulationId, simulationSeed, mode, eraStyleId, defensiveMatchups, zoneResolution, expandedActions, offensiveAdjustments,
+  opportunityAllocation,
   gold: buildTeamInput(goldIds, coachGoldId),
   blue: buildTeamInput(blueIds, coachBlueId),
 });

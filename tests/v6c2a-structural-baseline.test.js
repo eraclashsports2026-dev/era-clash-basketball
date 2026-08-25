@@ -1,7 +1,11 @@
 import { describe, it, expect } from "vitest";
 import { existsSync } from "node:fs";
-import { loadBaseline, captureBaseline, diffBaseline, hashBaseline, usageEntropy, BASELINE_PATH } from "../scripts/calibration/freeze-structural.mjs";
+import { loadBaseline, hashBaseline, usageEntropy, BASELINE_PATH } from "../scripts/calibration/freeze-structural.mjs";
 import { calibrationFixtures } from "../data/calibration/split.mjs";
+
+// Pinned. The pre-6C2A baseline must never move: it is the "before" half of
+// every structural comparison in this phase.
+const FROZEN_HASH = "b8ab4df715806ad862524e535128460b77b466e5649153bfd9e0b05a1c5db995";
 
 describe("pre-6C2A structural baseline", () => {
   const frozen = loadBaseline();
@@ -19,13 +23,23 @@ describe("pre-6C2A structural baseline", () => {
   });
 
   it("is not silently regenerated", () => {
-    // The whole value of a baseline is that it stops moving. Regenerating it
-    // must be a deliberate act (--write) that prints an explicit before/after,
-    // not something a test run does quietly on the way past.
-    const fresh = captureBaseline({ sims: frozen.sims });
-    const drift = diffBaseline(frozen, fresh);
-    expect(drift, `structural drift in ${drift.length} field(s):\n${drift.slice(0, 15).map((d) => `  ${d.path}: ${d.before} -> ${d.after}`).join("\n")}`).toEqual([]);
-    expect(hashBaseline(fresh)).toBe(hashBaseline(frozen));
+    // The pre-6C2A file is a HISTORICAL artifact: it records what the engine
+    // did before opportunity allocation existed. Re-running the engine against
+    // it would fail by design the moment the fix landed, which is the point of
+    // the fix — so the guard is a pinned content hash instead.
+    //
+    // Regenerating this file is therefore always a deliberate act, and always
+    // visible in a diff. Do not update the hash to make a failure go away:
+    // update it only alongside a stated reason for recapturing the "before".
+    expect(hashBaseline(frozen)).toBe(FROZEN_HASH);
+  });
+
+  it("predates opportunity allocation, which is what makes it the 'before'", () => {
+    // If this file had been captured after the allocator existed it would not
+    // be a before-state at all, and every delta computed from it would be
+    // measuring nothing.
+    expect(frozen.versions.opportunityAllocationVersion, "captured after the fix — not a before-state").toBeUndefined();
+    expect(frozen.phase).toBe("6C2A");
   });
 
   it("records the module versions it was captured under", () => {

@@ -134,6 +134,9 @@ const playPossession = ({ ctx, off, def, offBox, defBox, state, rng, ledger, per
   const shot = resolveAction({ type }, {
     offense: off, defense: def, eff: ctx.eff, state, eraStyleId: ctx.eraStyleId,
     defState, defPlan, zoneShell,
+    // The offence's own allocator: its targets and its live ledger. Per side,
+    // because saturation is a property of one team's distribution.
+    alloc: ctx.allocators?.[off.side] ?? null,
   }, rng);
 
   const shooter = shot.shooter;
@@ -574,6 +577,7 @@ export const simulatePossessionGame = (input) => {
     zoneResolutionUsed: Boolean(ctx.zoneResolutionEnabled && (ctx.defensivePlans?.gold.zoneShell || ctx.defensivePlans?.blue.zoneShell)),
     expandedActionsUsed: Boolean(ctx.expandedActionsEnabled),
     offensiveAdjustmentsUsed: Boolean(ctx.offensiveAdjustmentsEnabled),
+    opportunityAllocationUsed: Boolean(ctx.opportunityAllocationEnabled),
     zoneShells: ctx.defensivePlans ? {
       gold: ctx.defensivePlans.gold.zoneShell ? ctx.defensivePlans.gold.zoneShell.shellType : null,
       blue: ctx.defensivePlans.blue.zoneShell ? ctx.defensivePlans.blue.zoneShell.shellType : null,
