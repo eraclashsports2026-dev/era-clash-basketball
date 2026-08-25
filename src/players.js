@@ -1,5 +1,5 @@
 // ── EraClash Basketball Player Database ──────────────────────────────────────
-// 372 player-decade entries across 8 decades (1950s = NBA 75 team only)
+// 379 player-decade entries across 8 decades (1950s = NBA 75 team only)
 // pos = primary position, positions = all eligible positions
 export const PLAYERS = [
   // ═══ 1950s ═══
@@ -433,6 +433,37 @@ export const PLAYERS = [
   { id:"queen-20s",      name:"Derik Queen",              decade:"2020s", pos:"C",  positions:["C","PF"],      team:"Pelicans",        pts:11.7, reb:7.1,  ast:3.7,  stl:1.0, blk:0.9 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:2, pop:5 },
   { id:"cmb-20s",        name:"Collin Murray-Boyles",     decade:"2020s", pos:"PF", positions:["PF","C"],      team:"Raptors",         pts:8.5,  reb:5.0,  ast:1.9,  stl:0.9, blk:0.9 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:2, pop:4 },
   { id:"clayton-20s",    name:"Walter Clayton Jr.",       decade:"2020s", pos:"PG", positions:["PG","SG"],     team:"Jazz/Grizzlies",  pts:7.8,  reb:2.0,  ast:4.0,  stl:0.6, blk:0.3 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:2, pop:4 },
+  // ═══ v2.8 EXPANSION (+7) — profile anchors for the Player Intelligence layer ═══
+  // Seven player-decades the intelligence layer needs in order to express roles
+  // the pool could not previously describe: a pure rim-deterrent anchor (Eaton),
+  // two elite movement/off-ball shooters (Mullin, Petrovic), two low-usage
+  // wing defenders who hold value at minimum touches (Prince, Finley), and two
+  // event-generating help defenders (Smith, Wallace).
+  //
+  // VERIFIED 2026-08-24 against each player's published per-season career table
+  // (Wikipedia, which mirrors Basketball-Reference; b-ref blocks automated reads).
+  // Every accolade below was additionally cross-checked against the per-season
+  // NBA award pages — NOT taken from the player article alone, because player
+  // articles are where the previously-audited invented All-NBA honors came from.
+  //
+  // DECADE RULE (matches the verified 1950s pass; reverse-engineered from
+  // russell-50s): a season belongs to the decade of its STARTING year, and each
+  // stat is the UNWEIGHTED MEAN of that player's per-season averages inside the
+  // decade. So these are decade cards, not peak cards: Mullin's 16.7 includes
+  // his Indiana decline, and Wallace's 12.1 includes three Sacramento bench
+  // years. Petrovic's 1990-91 is games-weighted across his POR/NJN split first,
+  // then treated as one season.
+  //
+  // ACCOLADES ARE DECADE-SCOPED. Awards are dated by the season they were won
+  // in: Mullin's 1990 All-NBA Third Team belongs to the 1989-90 season and so
+  // sits in the 1980s, which is why it is absent here.
+  { id:"eaton-80s",     name:"Mark Eaton",               decade:"1980s", pos:"C",  positions:["C"],           team:"Jazz",            pts:6.7,  reb:8.5,  ast:1.1,  stl:0.4, blk:4.0 , mvp:0, fmvp:0, dpoy:2, an1:0, an2:0, an3:0, ad1:3, ad2:2, win:5, pop:5 },
+  { id:"mullin-90s",    name:"Chris Mullin",             decade:"1990s", pos:"SF", positions:["SF","SG"],     team:"Warriors/Pacers", pts:16.7, reb:4.1,  ast:3.3,  stl:1.5, blk:0.6 , mvp:0, fmvp:0, dpoy:0, an1:1, an2:1, an3:0, ad1:0, ad2:0, win:4, pop:7 },
+  { id:"petrovic-90s",  name:"Drazen Petrovic",          decade:"1990s", pos:"SG", positions:["SG"],          team:"Nets",            pts:17.7, reb:2.5,  ast:2.7,  stl:1.1, blk:0.1 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:1, ad1:0, ad2:0, win:3, pop:7 },
+  { id:"prince-00s",    name:"Tayshaun Prince",          decade:"2000s", pos:"SF", positions:["SF","PF"],     team:"Pistons",         pts:12.2, reb:4.6,  ast:2.6,  stl:0.6, blk:0.6 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:4, win:7, pop:6 },
+  { id:"finley-00s",    name:"Michael Finley",           decade:"2000s", pos:"SG", positions:["SG","SF"],     team:"Mavericks/Spurs", pts:13.9, reb:3.9,  ast:2.3,  stl:0.7, blk:0.3 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:6, pop:6 },
+  { id:"joshsmith-00s", name:"Josh Smith",               decade:"2000s", pos:"PF", positions:["PF","SF"],     team:"Hawks",           pts:14.3, reb:7.6,  ast:2.9,  stl:1.3, blk:2.3 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:1, win:3, pop:6 },
+  { id:"gwallace-00s",  name:"Gerald Wallace",           decade:"2000s", pos:"SF", positions:["SF","PF"],     team:"Kings/Bobcats",   pts:12.1, reb:5.6,  ast:1.8,  stl:1.4, blk:0.9 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:1, ad2:0, win:3, pop:6 },
 ];
 
 export const DECADE_COLORS = {
