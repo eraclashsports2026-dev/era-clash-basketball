@@ -32,7 +32,7 @@ const NAMED = [
 describe("player intelligence — coverage & validity", () => {
   it("builds one profile per card and every one validates", () => {
     expect(ALL.length).toBe(PLAYERS.length);
-    expect(ALL.length).toBe(379);
+    expect(ALL.length).toBe(381);
     const failures = ALL
       .map((p) => ({ id: p.id, ...validateIntelligence(p) }))
       .filter((r) => !r.valid);
@@ -46,11 +46,23 @@ describe("player intelligence — coverage & validity", () => {
   it("rejects a malformed profile rather than waving it through", () => {
     const good = byId("eaton-80s");
     expect(validateIntelligence(good).valid).toBe(true);
-    // an invented height is the exact failure this layer must never allow
-    const invented = { ...good, physical: { ...good.physical, heightIn: 88 } };
-    const r = validateIntelligence(invented);
+    // An UNSOURCED height is the exact failure this layer must never allow: it
+    // is indistinguishable from an invented one. A sourced height is fine.
+    const unsourced = { ...good, physical: { ...good.physical, heightIn: 88, source: null, sourceTier: null, verifiedOn: null } };
+    const r = validateIntelligence(unsourced);
     expect(r.valid).toBe(false);
-    expect(r.errors.join(" ")).toMatch(/heightIn must be null/);
+    expect(r.errors.join(" ")).toMatch(/carries no source/);
+    // wingspan may never be populated at all, sourced or not
+    const winged = { ...good, physical: { ...good.physical, wingspanIn: 90 } };
+    expect(validateIntelligence(winged).valid).toBe(false);
+    expect(validateIntelligence(winged).errors.join(" ")).toMatch(/wingspanIn must be null/);
+    // implausible measurements are rejected even with a source attached
+    expect(validateIntelligence({ ...good, physical: { ...good.physical, heightIn: 200 } }).valid).toBe(false);
+    // a pre-three-point player may not carry a three-point percentage
+    const cousy = byId("cousy-50s");
+    expect(validateIntelligence({ ...cousy, shooting: { ...cousy.shooting, threePct: 0.0 } }).valid).toBe(false);
+    // percentages must be fractions, not percents
+    expect(validateIntelligence({ ...good, shooting: { ...good.shooting, ftPct: 64.9 } }).valid).toBe(false);
     // out-of-range and unknown-role must also fail
     expect(validateIntelligence({ ...good, offense: { ...good.offense, selfCreation: 47 } }).valid).toBe(false);
     expect(validateIntelligence({ ...good, roles: { ...good.roles, primary: "Sixth Man" } }).valid).toBe(false);
@@ -59,13 +71,43 @@ describe("player intelligence — coverage & validity", () => {
 });
 
 describe("player intelligence — invents nothing", () => {
-  it("never carries a physical measurement, for any player, curated or not", () => {
+  it("never carries an unsourced measurement, and never a wingspan at all", () => {
+    let verified = 0;
     for (const p of ALL) {
-      expect(p.physical.heightIn, p.id).toBeNull();
-      expect(p.physical.weightLb, p.id).toBeNull();
+      // wingspan is null for everyone, always: unpublished for historical
+      // players and never derivable from height
       expect(p.physical.wingspanIn, p.id).toBeNull();
-      expect(p.confidence.physical).toBe("NONE (no data)");
+      if (p.physical.heightIn === null) {
+        expect(p.physical.weightLb, p.id).toBeNull();
+        expect(p.physical.basis, p.id).toBe("UNVERIFIED");
+        expect(p.confidence.physical, p.id).toMatch(/NONE/);
+      } else {
+        verified++;
+        // every populated measurement carries full provenance
+        expect(p.physical.source, p.id).toBeTruthy();
+        expect(p.physical.sourceTier, p.id).toBeGreaterThan(0);
+        expect(p.physical.verifiedOn, p.id).toBeTruthy();
+        expect(p.physical.basis, p.id).toBe("LISTED_ROSTER");
+        expect(p.physical.heightIn, p.id).toBeGreaterThanOrEqual(60);
+        expect(p.physical.heightIn, p.id).toBeLessThanOrEqual(96);
+      }
     }
+    expect(verified, "the verified physical tranche must be non-empty").toBeGreaterThan(40);
+  });
+
+  it("height is per-person, so every card of one human agrees", () => {
+    const byPerson = new Map();
+    for (const p of ALL) {
+      if (p.physical.heightIn === null) continue;
+      if (!byPerson.has(p.personId)) byPerson.set(p.personId, []);
+      byPerson.get(p.personId).push(p);
+    }
+    for (const [personId, cards] of byPerson) {
+      const heights = new Set(cards.map((c) => c.physical.heightIn));
+      expect(heights.size, `${personId} has conflicting heights across cards`).toBe(1);
+    }
+    // and the multi-card case is actually exercised
+    expect([...byPerson.values()].some((c) => c.length > 1)).toBe(true);
   });
 
   it("the curated file does not set physical measurements", () => {
@@ -111,7 +153,9 @@ describe("player intelligence — provenance & confidence", () => {
       expect(pv.dnaProvenance.confidence, p.id).toBeTruthy();
       expect(typeof pv.humanReviewed, p.id).toBe("boolean");
       expect(Array.isArray(pv.curatedFields), p.id).toBe(true);
-      expect(pv.physical, p.id).toMatch(/ABSENT/);
+      expect(pv.physical, p.id).toMatch(/ABSENT|VERIFIED/);
+      expect(pv.shooting, p.id).toBeTruthy();
+      expect(pv.statBasis?.basis, p.id).toBeTruthy();
       expect(pv.eraIndependence, p.id).toBeTruthy();
       expect(pv.engineUse, p.id).toMatch(/NONE/);
       for (const k of ["offense", "defense", "roles", "physical", "overall"]) {
@@ -142,7 +186,12 @@ describe("player intelligence — provenance & confidence", () => {
 
 describe("player intelligence — the eleven curated anchors", () => {
   it("all eleven named players carry HUMAN_REVIEWED profiles", () => {
-    expect(CURATED_IDS.sort()).toEqual([...NAMED].sort());
+    // the eleven original anchors must all still be curated; the set is
+    // expected to GROW as the risk-based review expands, so this is a subset
+    // check rather than an equality one
+    for (const id of NAMED) expect(CURATED_IDS, `${id} lost its curated profile`).toContain(id);
+    expect(CURATED_IDS.length).toBeGreaterThanOrEqual(NAMED.length);
+    expect(new Set(CURATED_IDS).size).toBe(CURATED_IDS.length);
     for (const id of NAMED) {
       const p = byId(id);
       expect(p.provenance.humanReviewed, id).toBe(true);
@@ -248,23 +297,23 @@ describe("player intelligence — role acceptance measures portability, not fame
   const LOW = ["harden-10s", "russ-10s", "ai-00s", "tiny-70s"];
 
   it("low-usage contributors score high", () => {
-    for (const id of HIGH) expect(byId(id).fit.roleAcceptance, id).toBeGreaterThanOrEqual(6.5);
+    for (const id of HIGH) expect(byId(id).fit.roleScalability, id).toBeGreaterThanOrEqual(6.5);
   });
 
   it("ball-dominant stars score low", () => {
-    for (const id of LOW) expect(byId(id).fit.roleAcceptance, id).toBeLessThanOrEqual(4);
+    for (const id of LOW) expect(byId(id).fit.roleScalability, id).toBeLessThanOrEqual(4);
   });
 
   it("every high-acceptance player outranks every ball-dominant one", () => {
-    const lowest = Math.min(...HIGH.map((id) => byId(id).fit.roleAcceptance));
-    const highest = Math.max(...LOW.map((id) => byId(id).fit.roleAcceptance));
+    const lowest = Math.min(...HIGH.map((id) => byId(id).fit.roleScalability));
+    const highest = Math.max(...LOW.map((id) => byId(id).fit.roleScalability));
     expect(lowest).toBeGreaterThan(highest);
   });
 
   it("acceptance and creation-dependence pull in opposite directions", () => {
     for (const id of [...HIGH, ...LOW]) {
       const p = byId(id);
-      expect(p.fit.roleAcceptance + p.fit.creationDependence, id).toBeLessThan(16);
+      expect(p.fit.roleScalability + p.fit.creationDependence, id).toBeLessThan(16);
     }
   });
 });
@@ -325,7 +374,14 @@ describe("player intelligence — ERA INDEPENDENCE", () => {
 describe("player intelligence — the live simulation is untouched", () => {
   it("no simulation module imports the intelligence layer", () => {
     const dir = new URL("../src/v3/", import.meta.url);
-    const files = readdirSync(dir).filter((f) => f.endsWith(".js") && f !== "intelligence.js");
+    // teamIntelligence.js is EXEMPT and must be: it is the next description
+    // layer up, built deliberately on top of Player Intelligence, and is itself
+    // unwired from the engine (guarded by tests/v3-team-intelligence.test.js).
+    // Every remaining file here is a simulation module, and none may import it.
+    const files = readdirSync(dir)
+      .filter((f) => f.endsWith(".js") && f !== "intelligence.js" && f !== "teamIntelligence.js");
+    expect(files).toContain("possession.js");
+    expect(files).toContain("engine.js");
     for (const f of files) {
       const src = readFileSync(new URL(f, dir), "utf8");
       expect(src, `${f} must not import the intelligence layer`).not.toMatch(/from\s+["'].*intelligence\.js["']/);

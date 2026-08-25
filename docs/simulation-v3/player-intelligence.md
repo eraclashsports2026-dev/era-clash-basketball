@@ -1,7 +1,7 @@
 # Player Intelligence (V3)
 
 **Status:** shipped, not wired. **Files:** `src/v3/intelligence.js`, `src/v3/data/intelligence.js`,
-`tests/v3-intelligence.test.js`. **Coverage:** 379 / 379 player-decades, 11 human-reviewed.
+`tests/v3-intelligence.test.js`, `tests/v3-player-data.test.js`. **Coverage:** 381 / 381 player-decades, 33 human-reviewed.
 
 > Build a smarter player database, not a bigger one.
 
@@ -17,7 +17,7 @@ actually asking four different questions:
 | --- | --- |
 | What **kind** of player is this? | `roles` |
 | What do they **need** in order to function? | `fit.creationDependence`, `offense.usageAppetite` |
-| What do they still give you when they get **nothing**? | `fit.roleAcceptance`, `fit.connectivity` |
+| What do they still give you when they get **nothing**? | `fit.roleScalability`, `fit.connectivity` |
 | How much of the above is actually **known**? | `provenance`, `confidence` |
 
 Player Intelligence is a read-only interpretive layer that answers those. It exists so the Team
@@ -39,8 +39,12 @@ imports it. Wiring it in is a later phase and a separate decision.
 ```js
 {
   id, name, decade, pos, positions,
+  personId,                       // the HUMAN this card depicts (see data/persons.js)
 
-  physical: { heightIn: null, weightLb: null, wingspanIn: null },   // always null — see §6
+  physical: { heightIn, weightLb, wingspanIn: null, source, sourceTier,
+              verifiedOn, basis },              // verified or null — see §6
+  shooting: { fgPct, threePct, ftPct, scope, threePointEra, threeVolume,
+              perimeterSkill, identity, precision, ... },   // see §6
 
   roles: {
     primary:   "Rim Protector",           // the headline label
@@ -111,16 +115,19 @@ and is exported so docs and any future UI describe attributes identically.
 
 | Attribute | Means |
 | --- | --- |
-| `roleAcceptance` | Value retained at **minimum touches**. |
+| `roleScalability` | How much value survives at **minimum touches** — measured from off-ball shooting, cutting, screening, passing, defence and rebounding. |
 | `spacingContribution` | How much easier this player makes the floor for the other four. |
 | `defensiveVersatility` | How many opposing player types they can be assigned to. |
 | `creationDependence` | How much value evaporates when someone else runs the offense. |
 | `connectivity` | Keeping the ball and the possession moving. |
 
-> **`roleAcceptance` is not a character judgement.** It is a skill-portability measurement. James
-> Harden scores 1.6 not because he is selfish but because his value is manufactured with the ball
-> in his hands, and a lineup that cannot give him the ball does not get that value. This is the
-> attribute that makes finite usage bite: it is *why* five 30%-usage stars do not add up.
+> **`roleScalability` is strictly mechanical and says nothing about the person.** It locates where a
+> player's value is *stored*, not how they would behave. James Harden scores 1.6 because his value
+> is manufactured with the ball in his hands, so a lineup that cannot give him the ball does not
+> get that value — the same reading applies to any player with the same skill distribution. It was
+> renamed from `roleAcceptance` in Phase 2B precisely because the old name invited a personality
+> reading the number does not support. This is the attribute that makes finite usage bite: it is
+> *why* five 30%-usage stars do not add up.
 
 ---
 
@@ -183,7 +190,7 @@ more portable skill while rebounding totals are the most era-inflated number in 
 
 ### 4.4 When nothing fits
 
-114 of 379 profiles clear no role. That is a real result, not a failure — a card with no defining
+Roughly a third of profiles clear no role. That is a real result, not a failure — a card with no defining
 skill. They still get a `primary` label so downstream code always has one, with `defining: false`
 recording plainly that it does not define them.
 
@@ -247,12 +254,31 @@ is** — it never feeds game variance. Low-confidence players are not made rando
 | `eraIndependence` | The §5 guarantee, restated on every profile. |
 | `engineUse` | Always `NONE`. |
 
-### Measurements are never invented
+### Measurements are verified or absent — never inferred
 
-`physical.heightIn`, `weightLb`, and `wingspanIn` are `null` on all 379 profiles, and
-`validateIntelligence` **rejects** a profile that sets one. The trusted dataset holds no
-measurements. A plausible height is still a fabricated one, and it would read like a record.
-Curated entries are forbidden from setting them too — a separate test asserts that.
+Phase 2B added verified height and weight for 44 persons (65 cards) from
+`src/v3/data/physical.js`. The rule is **not "no numbers" but "no unsourced numbers"**:
+`validateIntelligence` rejects a populated measurement that carries no source, tier, and date,
+because an unattributed height is indistinguishable from an invented one. Values outside
+plausible ranges are rejected even when sourced.
+
+**Wingspan remains null on all 381 profiles**, including curated ones. No accessible source
+publishes it for historical players, and it is not derivable from height — the whole reason it
+matters is that it diverges from height. Validation rejects any non-null wingspan outright.
+
+### Shooting is evidence-first, with two structural guards
+
+`src/v3/data/shooting.js` supplies measured career splits (43 cards) plus an evidence-backed
+categorical identity. `spacingGravity` now anchors on that evidence where it exists rather than
+inferring from position, decade, and scoring volume.
+
+Two guards matter more than the numbers. A player who retired before 1979-80 carries a **null**
+three-point percentage, never a zero — undefined is not inability, and `perimeterSkill` carries the
+era-neutral judgement instead (Jerry West: null 3P%, `ELITE`). And inside the three-point era, a
+percentage on trivial volume is noise: Mark Eaton's literal `.000` is true and meaningless, so
+`threeVolume` gates whether a percentage may be read as ability at all.
+
+See `player-data-completion.md` for the full policy.
 
 ### Two known data gaps, stated rather than hidden
 
@@ -266,8 +292,11 @@ Curated entries are forbidden from setting them too — a separate test asserts 
 
 ## 7. The curated overlay
 
-`src/v3/data/intelligence.js` holds 11 human-reviewed entries, deep-merged leaf-by-leaf over the
-derived profile. Roles are classified **after** attribute curation, so a corrected attribute
+`src/v3/data/intelligence.js` holds 33 human-reviewed entries, deep-merged leaf-by-leaf over the
+derived profile. Entries are chosen where the formulas are most likely to be WRONG, not where the
+players are most famous: pre-1974 players whose unrecorded steals and blocks derive an
+`eventCreation` of 0.0, big men whose post play is mislabelled as slashing or rebounding,
+nontraditional creators, and defenders whose value leaves no box-score trace. Roles are classified **after** attribute curation, so a corrected attribute
 propagates into classification; an explicitly curated role then wins over that.
 
 Curated profiles may claim a role the derivation cannot see — Prince's Wing Stopper is invisible to
@@ -321,6 +350,6 @@ prerequisite.
 
 ### Extending coverage
 
-Curated coverage is 11 / 379 (2.9%) — the profile anchors the vocabulary was calibrated against.
+Curated coverage is 33 / 381 (8.7%) — the profile anchors the vocabulary was calibrated against, plus the Phase 2B risk-based review set.
 Extending it is a data task requiring source verification per player, and explicitly **not**
 something to auto-generate. The 93 entries in `attributes.js` are the natural next tranche.

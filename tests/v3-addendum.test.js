@@ -140,13 +140,20 @@ describe("coach in-game adjustments (Addendum 13/36)", () => {
 });
 
 describe("duplicate-person rules (Addendum 16)", () => {
-  it("personKey strips every era-suffix form", () => {
-    expect(personKey("jordan-90s")).toBe("jordan");
-    expect(personKey("bowen-2ks")).toBe("bowen");
-    expect(personKey("lowry-2010s")).toBe("lowry");
+  it("personKey resolves a card to the HUMAN it depicts, not to its id stem", () => {
+    // Identity now comes from the canonical person registry. The returned value
+    // is a real personId, used only for equality and error labelling.
+    expect(personKey("jordan-90s")).toBe("michael-jordan");
+    expect(personKey("bowen-2ks")).toBe("bruce-bowen");
+    expect(personKey("lowry-2010s")).toBe("kyle-lowry");
+  });
+  it("falls back to the era-suffix strip for ids outside the player pool", () => {
+    // synthetic ids in tests and future cards must never throw
+    expect(personKey("notarealplayer-90s")).toBe("notarealplayer");
+    expect(personKey("madeup-2ks")).toBe("madeup");
   });
   it("flags two versions of one person on the same team", () => {
-    expect(findDuplicatePerson(["jordan-80s", "jordan-90s", "pippen-90s", "rodman-90s", "kukoc-90s"])).toBe("jordan");
+    expect(findDuplicatePerson(["jordan-80s", "jordan-90s", "pippen-90s", "rodman-90s", "kukoc-90s"])).toBe("michael-jordan");
     expect(findDuplicatePerson(["jordan-90s", "pippen-90s", "rodman-90s", "kukoc-90s", "luc-90s"])).toBeNull();
   });
   it("the same person on OPPOSITE teams is a supported matchup", () => {
