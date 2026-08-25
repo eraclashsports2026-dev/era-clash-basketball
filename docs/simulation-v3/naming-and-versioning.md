@@ -6,13 +6,15 @@
 | --- | --- | --- | --- |
 | Product release | `appVersion` | **2.7.2** | ACTIVE (does **not** affect results) |
 | **Live production result engine** | `engineVersion` | **3.2.0** | ACTIVE |
-| **Possession engine (development)** | `possessionEngineVersion` | **1.0.0** | DEVELOPMENT |
-| Defensive matchup engine | `defensiveMatchupVersion` | **1.0.0** | DEVELOPMENT |
+| **Possession engine (development)** | `possessionEngineVersion` | **1.1.0** | DEVELOPMENT |
+| Defensive matchup engine | `defensiveMatchupVersion` | **1.1.0** | DEVELOPMENT |
+| Zone resolution | `zoneResolutionVersion` | **1.0.0** | DEVELOPMENT |
+| Coach adjustment engine | `coachAdjustmentVersion` | **1.0.0** | DEVELOPMENT |
 | Player Intelligence | `playerIntelligenceVersion` | **1.0.0** | DEVELOPMENT |
 | Team Intelligence | `teamIntelligenceVersion` | **1.0.0** | DEVELOPMENT |
 | Coach Intelligence | `coachIntelligenceVersion` | **1.0.0** | DEVELOPMENT |
 | Era Style Intelligence | `eraStyleVersion` | **1.0.0** | DEVELOPMENT |
-| Action library (pick-and-roll) | `actionLibraryVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Action library (offensive families) | `actionLibraryVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |
 | Daily configuration schema | `dailyConfigSchemaVersion` | **1.0.0** | ACTIVE (does **not** affect results) |
 | Player data | `playerDataVersion` | **2026-08-24** | ACTIVE |
 | Coach data | `coachDataVersion` | **1.1.0** | ACTIVE |

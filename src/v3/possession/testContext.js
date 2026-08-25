@@ -32,9 +32,9 @@ export const buildTeamInput = (ids, coachId) => {
 export const buildPossessionInput = ({
   goldIds, blueIds, coachGoldId = "neutral", coachBlueId = "neutral",
   eraStyleId = "2010s", simulationSeed = 12345, simulationId = "dev", mode = "single",
-  defensiveMatchups = true,
+  defensiveMatchups = true, zoneResolution = true, expandedActions = true, offensiveAdjustments = true,
 }) => ({
-  simulationId, simulationSeed, mode, eraStyleId, defensiveMatchups,
+  simulationId, simulationSeed, mode, eraStyleId, defensiveMatchups, zoneResolution, expandedActions, offensiveAdjustments,
   gold: buildTeamInput(goldIds, coachGoldId),
   blue: buildTeamInput(blueIds, coachBlueId),
 });

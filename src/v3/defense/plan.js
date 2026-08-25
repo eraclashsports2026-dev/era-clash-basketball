@@ -11,6 +11,7 @@ import { buildMatchupMatrix } from "./matrix.js";
 import { buildSchemePlan, eraLegality } from "./scheme.js";
 import { optimizeAssignments } from "./optimizer.js";
 import { rimPresenceReason, PAINT_LABELS } from "./paint.js";
+import { selectZoneShell, buildZoneShell } from "./zone.js";
 
 const r1 = (x) => Math.round(x * 10) / 10;
 const clamp = (x, lo, hi) => Math.min(hi, Math.max(lo, x));
@@ -64,7 +65,7 @@ const assignHelpResponsibilities = ({ pairs, scheme, legal }) => {
  * @param defendingTeam prepared team (the defence)
  * @param offensiveTeam prepared team (the offence being planned against)
  */
-export const buildDefensivePlan = ({ defendingTeam, offensiveTeam, era, eff }) => {
+export const buildDefensivePlan = ({ defendingTeam, offensiveTeam, era, eff, zoneEnabled = true }) => {
   const effects = eff ?? strategicEffects(era);
   const legal = eraLegality(era);
 
@@ -90,6 +91,18 @@ export const buildDefensivePlan = ({ defendingTeam, offensiveTeam, era, eff }) =
   const schemeWithEra = { ...scheme, eff: effects };
   const best = optimizeAssignments({ matrix, scheme: schemeWithEra });
   const help = assignHelpResponsibilities({ pairs: best.pairs, scheme, legal });
+
+  // ── Zone shell (Phase 6B2) ───────────────────────────────────────────────
+  // Built only when the scheme actually calls for a zone AND the era permits
+  // one. Era rules are authoritative: a zone-preferring coach gets no zone in
+  // an era where zones were illegal, and the rejection is recorded.
+  const zoneSelection = zoneEnabled
+    ? selectZoneShell({ legality: legal, toolkit: scheme.toolkit, ceiling: scheme.personnelCeiling, threats: offProfiles.threats, defenders: defProfiles.defenders })
+    : { shell: null, available: [], rejected: [{ shell: "ALL", reason: "FLAG_DISABLED", detail: "zone resolution is behind ZONE_RESOLUTION_ENABLED" }] };
+  const useZone = Boolean(zoneSelection.shell) && scheme.zoneUsage >= 5;
+  const zoneShell = useZone
+    ? buildZoneShell({ shellKey: zoneSelection.shell, defenders: defProfiles.defenders, threats: offProfiles.threats, toolkit: scheme.toolkit, legality: legal, ceiling: scheme.personnelCeiling })
+    : null;
 
   // Baseline assignments, with the reason retained per pairing so any assignment
   // can be explained afterwards.
@@ -139,6 +152,8 @@ export const buildDefensivePlan = ({ defendingTeam, offensiveTeam, era, eff }) =
     coachId: defendingTeam.coachId,
     eraStyleId: era.id,
     scheme: schemeWithEra,
+    zoneShell,
+    zoneSelection,
     baselineAssignments,
     help,
     threats: offProfiles.threats,
@@ -170,7 +185,7 @@ export const buildDefensivePlan = ({ defendingTeam, offensiveTeam, era, eff }) =
 };
 
 /** Both plans for a matchup. Each team plans against the other's threats. */
-export const buildDefensivePlans = ({ gold, blue, era, eff }) => ({
-  gold: buildDefensivePlan({ defendingTeam: gold, offensiveTeam: blue, era, eff }),
-  blue: buildDefensivePlan({ defendingTeam: blue, offensiveTeam: gold, era, eff }),
+export const buildDefensivePlans = ({ gold, blue, era, eff, zoneEnabled = true }) => ({
+  gold: buildDefensivePlan({ defendingTeam: gold, offensiveTeam: blue, era, eff, zoneEnabled }),
+  blue: buildDefensivePlan({ defendingTeam: blue, offensiveTeam: gold, era, eff, zoneEnabled }),
 });

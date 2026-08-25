@@ -42,6 +42,11 @@ export const flags = () => ({
   // Defensive matchup engine. Its own flag again — the possession engine can
   // run without it, and that A/B is how the defensive system is measured.
   defensiveMatchupEngine: bool("DEFENSIVE_MATCHUP_ENGINE_ENABLED", false),
+  // Phase 6B2. Three separate flags because they are three separate systems
+  // and the A/B comparisons need them independently switchable.
+  zoneResolution: bool("ZONE_RESOLUTION_ENABLED", false),
+  expandedOffensiveActions: bool("EXPANDED_OFFENSIVE_ACTIONS_ENABLED", false),
+  offensiveCoachAdjustments: bool("OFFENSIVE_COACH_ADJUSTMENTS_ENABLED", false),
   leaderboard: bool("PUBLIC_LEADERBOARD_ENABLED", true),
   feedback: bool("FEEDBACK_ENABLED", true),
 });

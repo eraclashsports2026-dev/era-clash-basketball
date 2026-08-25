@@ -44,9 +44,12 @@ const play = (over = {}, opts) => runPossessionGame(mk(over), opts);
 
 // ── version, flag, status ────────────────────────────────────────────────────
 describe("possession engine status", () => {
-  it("is version 1.0.0 with DEVELOPMENT status", () => {
-    expect(POSSESSION_ENGINE_VERSION).toBe("1.0.0");
-    expect(versionOf("possessionEngineVersion")).toBe("1.0.0");
+  it("is version 1.x with DEVELOPMENT status", () => {
+    // Phase 6B2 bumped this to 1.1.0 (zone resolution and the expanded action
+    // families changed what a possession can be, without changing the engine's
+    // contract). What must hold is the family and the status.
+    expect(POSSESSION_ENGINE_VERSION).toMatch(/^1\./);
+    expect(versionOf("possessionEngineVersion")).toMatch(/^1\./);
     expect(statusOf("possessionEngineVersion")).toBe(VERSION_STATUS.DEVELOPMENT);
     expect(POSSESSION_ENGINE_STATUS).toBe("DEVELOPMENT");
   });
@@ -481,7 +484,8 @@ describe("shooting", () => {
     for (const r of shots) {
       expect(CATS.has(r.shot), r.shot).toBe(true);
       expect(r.primary).toBeTruthy();
-      expect(["PICK_AND_ROLL", "GENERIC_HALF_COURT", "TRANSITION"]).toContain(r.action);
+      expect(["PICK_AND_ROLL", "GENERIC_HALF_COURT", "TRANSITION", "POST_UP", "ISOLATION",
+        "SPOT_UP", "CUT", "OFF_BALL_SCREEN", "HANDOFF", "ZONE_ATTACK"]).toContain(r.action);
       expect(r.period).toBeGreaterThanOrEqual(1);
       expect(["gold", "blue"]).toContain(r.offense);
     }
@@ -563,18 +567,23 @@ describe("finite usage", () => {
 
 // ── actions ──────────────────────────────────────────────────────────────────
 describe("action interface", () => {
-  it("only the three honest action types occur", () => {
+  it("only implemented action families occur", () => {
+    // Phase 6A had three. Phase 6B2 implemented the families it names, and the
+    // rule is unchanged: nothing appears that is not actually modelled.
+    const IMPLEMENTED = ["PICK_AND_ROLL", "GENERIC_HALF_COURT", "TRANSITION", "POST_UP",
+      "ISOLATION", "SPOT_UP", "CUT", "OFF_BALL_SCREEN", "HANDOFF", "ZONE_ATTACK"];
     const g = play({ simulationSeed: 4242 });
     const kinds = new Set(g.possessionLedger.map((r) => r.action));
-    for (const k of kinds) expect(["PICK_AND_ROLL", "GENERIC_HALF_COURT", "TRANSITION"]).toContain(k);
+    for (const k of kinds) expect(IMPLEMENTED).toContain(k);
     expect(kinds.size).toBeGreaterThan(1);
   });
 
   it("no unimplemented action family is claimed as modelled", () => {
     const src = readFileSync(new URL("../src/v3/possession/actions.js", import.meta.url), "utf8");
-    // Naming them in a comment about what is NOT built is fine; producing them
-    // as action types is not.
-    expect(src).not.toMatch(/actionType:\s*"(POST_UP|ISOLATION|MOTION|HANDOFF|OFF_BALL_SCREEN)/);
+    // Post-up, isolation, handoff, off-ball screen, spot-up and cut ARE now
+    // implemented, so they may appear. Motion, Princeton and the triangle are
+    // not, and must not.
+    expect(src).not.toMatch(/actionType:\s*"(MOTION|PRINCETON|TRIANGLE_OFFENSE|FLEX)/);
     expect(src).toMatch(/GENERIC_HALF_COURT/);
   });
 
@@ -787,7 +796,13 @@ describe("fingerprint and cache identity", () => {
     ]) expect(g.fingerprint, k).toHaveProperty(k);
     // Chemistry is display-only and must not appear.
     expect(g.fingerprint).not.toHaveProperty("chemistryVersion");
-    expect(g.fingerprint.possessionEngineVersion).toBe("1.0.0");
+    // Phase 6B2 modules appear only when they actually shaped the result: this
+    // matchup plays man defence, so the zone version must be ABSENT rather
+    // than claimed. Listing a module the result did not depend on would
+    // invalidate stored games on an unrelated edit.
+    expect(g.fingerprint).toHaveProperty("coachAdjustmentVersion");
+    if (!g.zoneResolutionUsed) expect(g.fingerprint).not.toHaveProperty("zoneResolutionVersion");
+    expect(g.fingerprint.possessionEngineVersion).toMatch(/^1\./);
   });
 
   it("same matchup and seed reuse one cache entry; a new seed does not collide", () => {
@@ -804,8 +819,8 @@ describe("fingerprint and cache identity", () => {
     const g = play({ simulationSeed: 100 }, FAST);
     const k = cacheKeys.possessionResult({ matchupFingerprint: g.fingerprint.matchupFingerprint, simulationSeed: g.simulationSeed });
     expect(k).toContain(String(g.simulationSeed >>> 0));
-    expect(k).toContain("pe1-0-0");
-    expect(k).toContain("al1-0-0");
+    expect(k).toContain("pe1-1-0");
+    expect(k).toContain("al2-0-0");
   });
 
   it("development runs use a development namespace", () => {

@@ -17,6 +17,8 @@
 import { evaluatePickAndRoll } from "../actions/pickAndRoll.js";
 import { defenderFor, stateFor, canSwitch, applySwitch } from "../defense/liveState.js";
 import { selectCoverage } from "../defense/coverage.js";
+import { FAMILY_REGISTRY, FAMILY_CAPS, postMismatchFor, speedMismatchFor, chaseMismatchFor } from "../actions/families.js";
+import { attackZone } from "../defense/zone.js";
 
 const clamp = (x, lo, hi) => Math.min(hi, Math.max(lo, x));
 const r2 = (x) => Math.round(x * 100) / 100;
@@ -31,6 +33,15 @@ const COVERAGE_TO_LIBRARY = {
 
 export const ACTION_TYPES = ["PICK_AND_ROLL", "GENERIC_HALF_COURT", "TRANSITION"];
 
+// Phase 6B2: the expanded set. GENERIC_HALF_COURT stays as an honest fallback
+// rather than being suppressed — forcing its share down by picking an
+// inappropriate family would be worse than admitting the possession was
+// generic.
+export const EXPANDED_ACTION_TYPES = [
+  "PICK_AND_ROLL", "POST_UP", "ISOLATION", "OFF_BALL_SCREEN", "HANDOFF",
+  "SPOT_UP", "CUT", "GENERIC_HALF_COURT", "TRANSITION", "ZONE_ATTACK",
+];
+
 // A single action family must not dominate merely because it is the only one
 // modelled in detail. PnR is capped at a share the coach's own tendency has to
 // earn, and the cap is a basketball statement: no NBA offence runs 90% pick-
@@ -43,6 +54,59 @@ export const PNR_FREQUENCY_FLOOR = 0.06;
  * Coach tendency, roster construction and era conditions decide the mix; the
  * outcome of the chosen action is resolved separately.
  */
+/**
+ * Expanded frequency mix. Frequency ONLY — never effectiveness.
+ *
+ * Each family caps its own share so no single detailed family crowds out the
+ * rest simply because it has more fields, and the remainder falls to
+ * GENERIC_HALF_COURT, which stays a truthful fallback.
+ */
+export const expandedActionMix = ({ offense, defense, eff, state, defPlan, zoneShell, inTransition = false }) => {
+  if (inTransition) return { TRANSITION: 1 };
+  // Against a zone, the offence attacks the zone rather than running man
+  // actions at it. Zone-attack takes most of the possession share, and the
+  // families that still make sense against an area defence keep a slice.
+  if (zoneShell) {
+    const zoneShare = clamp(0.5 + offense.offense.passing * 0.03, 0.5, FAMILY_CAPS.ZONE_ATTACK);
+    const remaining = 1 - zoneShare;
+    return {
+      ZONE_ATTACK: r2(zoneShare),
+      POST_UP: r2(remaining * 0.28),
+      SPOT_UP: r2(remaining * 0.3),
+      CUT: r2(remaining * 0.18),
+      GENERIC_HALF_COURT: r2(remaining * 0.24),
+    };
+  }
+
+  const ctx = { offense, defense, eff, state, defPlan };
+  const mix = {};
+  // PnR keeps its existing model, unchanged.
+  const rosterSupport = clamp((offense.offense.shotCreation * 0.5 + offense.offense.postPlay * 0.2 + offense.offense.spacing * 0.3) / 10, 0.15, 1);
+  mix.PICK_AND_ROLL = r2(clamp((offense.pnrPref / 10) * 0.62 * rosterSupport + 0.05, PNR_FREQUENCY_FLOOR, FAMILY_CAPS.PICK_AND_ROLL));
+
+  for (const [key, fam] of Object.entries(FAMILY_REGISTRY)) {
+    mix[key] = fam.canSelect(ctx) ? r2(fam.weight(ctx)) : 0;
+  }
+
+  // ── Normalise ────────────────────────────────────────────────────────────
+  // The raw weights are independent per family and summed to ~1.5, which made
+  // GENERIC_HALF_COURT a FLOOR rather than a remainder and let every family sit
+  // at its cap. Normalising to a real distribution is what makes "generic
+  // share" a number worth reporting.
+  const claimed = Object.values(mix).reduce((a, b) => a + b, 0);
+  // A floor for generic, because some possessions genuinely are just offence.
+  const genericFloor = 0.1;
+  if (claimed > 1 - genericFloor) {
+    const scale = (1 - genericFloor) / claimed;
+    for (const k of Object.keys(mix)) mix[k] = r2(mix[k] * scale);
+    mix.GENERIC_HALF_COURT = genericFloor;
+  } else {
+    mix.GENERIC_HALF_COURT = r2(1 - claimed);
+  }
+  mix.TRANSITION = 0;
+  return mix;
+};
+
 export const actionMix = (offense, defense, eff, { inTransition = false } = {}) => {
   if (inTransition) return { TRANSITION: 1, PICK_AND_ROLL: 0, GENERIC_HALF_COURT: 0 };
 
@@ -54,7 +118,22 @@ export const actionMix = (offense, defense, eff, { inTransition = false } = {}) 
 };
 
 /** Pick the action for this possession. Deterministic given the rng. */
-export const selectAction = ({ offense, defense, eff, state, rng, inTransition }) => {
+export const selectAction = ({ offense, defense, eff, state, rng, inTransition, defPlan, zoneShell, expanded = false }) => {
+  if (expanded) {
+    const mix = expandedActionMix({ offense, defense, eff, state, defPlan, zoneShell, inTransition });
+    const keys = Object.keys(mix).filter((k) => mix[k] > 0);
+    const urgency = state?.lateGameUrgency ?? 0;
+    const type = rng.weighted(keys, (k) => {
+      // Late and trailing, a team hunts a creator: isolation and pick-and-roll
+      // rise, post entries and off-ball patience fall.
+      const bump = k === "ISOLATION" ? 1 + urgency * 0.7
+        : k === "PICK_AND_ROLL" ? 1 + urgency * 0.35
+        : k === "POST_UP" ? 1 - urgency * 0.4
+        : k === "CUT" || k === "OFF_BALL_SCREEN" ? 1 - urgency * 0.2 : 1;
+      return mix[k] * Math.max(0.05, bump);
+    });
+    return { type, mix };
+  }
   const mix = actionMix(offense, defense, eff, { inTransition });
   // Late and trailing, a team hunts a creator rather than running the base
   // offence. Bounded: it shifts the mix, it does not replace it.
@@ -412,10 +491,298 @@ const resolvePickAndRoll = ({ offense, defense, eff, state, rng, eraStyleId, def
   };
 };
 
+// ── Expanded family resolvers ───────────────────────────────────────────────
+// Each returns the SAME shot-context shape the possession loop already
+// consumes, so conservation and the box score are untouched. No family authors
+// a score, a winner or a player line.
+const familyBase = ({ shooter, defender, defState, defPlan, shotCategory = null }) => {
+  const mod = matchupModifiers({ defState, plan: defPlan, shooter, defender, shotCategory });
+  return { mod, shooter, defender };
+};
+
+const resolveFamily = (family, { offense, defense, eff, state, rng, defState, defPlan, zoneShell }) => {
+  const fam = FAMILY_REGISTRY[family];
+  const pick = (team, p) => pickDefender(team, p, defState);
+  const prep = fam.prepare({ offense, defense, defPlan, defState, rng, pickDefender: pick, state, eff });
+  const help = defPlan?.help.responsibilities ?? [];
+  const helpCommitment = defPlan ? clamp(defPlan.scheme.helpAggression / 10, 0, 1) : 0.5;
+
+  // ── POST_UP ──────────────────────────────────────────────────────────────
+  if (family === "POST_UP") {
+    const { poster, defender, entryPasser, helper, mismatch } = prep;
+    const base = familyBase({ shooter: poster, defender, defState, defPlan, shotCategory: "PAINT_OR_POST" });
+    // The defence answers. A double team is available only where the scheme
+    // and the era permit it, and it CONCEDES the kickout.
+    const canDouble = defPlan && defPlan.scheme.doubleTeamAggression >= 3 && !defPlan.scheme.legality.illegalDefenseRestrictions;
+    const doubled = canDouble && rng.chance(clamp(0.1 + defPlan.scheme.doubleTeamAggression * 0.035 + (mismatch ? 0.12 : 0), 0.05, 0.5));
+    // A kickout is a PASS, not a shot: the possession continues through a
+    // teammate, which is how a post mismatch creates weak-side offence.
+    if (doubled && rng.chance(clamp(0.35 + poster.passing * 0.05, 0.3, 0.8))) {
+      const receiver = rng.weighted(offense.players.filter((p) => p.index !== poster.index),
+        (p) => 0.2 + ({ ELITE: 3, STRONG: 2, AVERAGE: 1, LIMITED: 0.4, MINIMAL: 0.1 }[p.profile?.shooting?.perimeterSkill] ?? 1));
+      const rDef = pick(defense, receiver);
+      const rBase = familyBase({ shooter: receiver, defender: rDef, defState, defPlan });
+      return {
+        actionType: "POST_UP", actionVariant: "KICKOUT", actionLabel: "Post-up, kicked out of the double",
+        tacticalSpecificity: "MODELLED",
+        shooter: receiver, defender: rDef, primaryDefenderId: rDef.cardId,
+        secondaryPlayerId: poster.cardId, secondaryDefenderId: defender.cardId,
+        helpDefenderId: helper?.defenderId ?? null,
+        assignmentState: assignmentStateFor(defState, receiver),
+        targetedMismatch: mismatch?.type ?? null, mismatchType: mismatch?.type ?? null,
+        mismatchSeverity: mismatch?.severity ?? null,
+        schemeId: defPlan ? `${defPlan.scheme.shellType}:${defPlan.scheme.ballScreenCoverage}` : null,
+        passerCandidate: poster, assistLikelihood: clamp(0.55 + poster.passing * 0.035, 0.35, 0.88),
+        shotQuality: r2(clamp(5.4 + poster.passing * 0.2 - rBase.mod.shotQuality * -1 + rBase.mod.shotQuality, 1, 9.6)),
+        rimBias: -0.3, matchupMod: rBase.mod,
+        turnoverRisk: r2(clamp(2.6 + eff.turnoverPressure * 0.1 + rBase.mod.turnoverRisk, 0.5, 9)),
+        foulPressure: r2(clamp(2.8 + rBase.mod.foulPressure, 0.5, 9)),
+        blockPressure: r2(clamp(defense.defense.rimProtection * 0.35 + rBase.mod.blockPressure, 0, 10)),
+        reboundEdge: r2(rBase.mod.reboundEdge), helpCommitment, doubled: true,
+      };
+    }
+    // Otherwise the post player finishes, or turns it over into the double.
+    const sev = mismatch ? ({ SEVERE: 1.5, MAJOR: 1, MODERATE: 0.55, MINOR: 0.2 })[mismatch.severity] ?? 0 : 0;
+    return {
+      actionType: "POST_UP", actionVariant: doubled ? "DOUBLED_FINISH" : "POST_FINISH",
+      actionLabel: doubled ? "Post-up into a double team" : "Post-up",
+      tacticalSpecificity: "MODELLED",
+      shooter: poster, defender, primaryDefenderId: defender.cardId,
+      secondaryPlayerId: entryPasser?.cardId ?? null, secondaryDefenderId: null,
+      helpDefenderId: helper?.defenderId ?? null,
+      assignmentState: assignmentStateFor(defState, poster),
+      targetedMismatch: mismatch?.type ?? null, mismatchType: mismatch?.type ?? null,
+      mismatchSeverity: mismatch?.severity ?? null,
+      schemeId: defPlan ? `${defPlan.scheme.shellType}:${defPlan.scheme.ballScreenCoverage}` : null,
+      passerCandidate: entryPasser, assistLikelihood: clamp(0.3 + (entryPasser?.passing ?? 5) * 0.03, 0.2, 0.6),
+      // A mismatch RAISES quality; it never guarantees a basket, and a double
+      // takes some of it straight back.
+      shotQuality: r2(clamp(4.9 + poster.postThreat * 0.28 + sev - (doubled ? 1.6 : 0) + base.mod.shotQuality, 0.5, 9.6)),
+      rimBias: 0.5, matchupMod: base.mod,
+      turnoverRisk: r2(clamp(2.2 + (doubled ? 2.4 : 0) + eff.turnoverPressure * 0.08 + base.mod.turnoverRisk, 0.5, 9)),
+      // Post play draws fouls, and a mismatch draws more.
+      foulPressure: r2(clamp(4.4 + poster.postThreat * 0.16 + sev * 0.5 + base.mod.foulPressure, 0.5, 9.5)),
+      blockPressure: r2(clamp(defense.defense.rimProtection * 0.5 + base.mod.blockPressure, 0, 10)),
+      reboundEdge: r2(base.mod.reboundEdge + 0.06), helpCommitment, doubled,
+    };
+  }
+
+  // ── ISOLATION ────────────────────────────────────────────────────────────
+  if (family === "ISOLATION") {
+    const { creator, defender, helper, mismatch } = prep;
+    const base = familyBase({ shooter: creator, defender, defState, defPlan });
+    const sev = mismatch ? ({ SEVERE: 1.4, MAJOR: 0.95, MODERATE: 0.5, MINOR: 0.2 })[mismatch.severity] ?? 0 : 0;
+    // A size mismatch on the perimeter converts to a post attack — the same
+    // detected advantage, attacked from where the creator actually is.
+    const converts = mismatch?.type === "SIZE_MISMATCH" && creator.postThreat >= 5 && rng.chance(0.45);
+    return {
+      actionType: "ISOLATION", actionVariant: converts ? "POST_CONVERSION" : "ISO_ATTACK",
+      actionLabel: converts ? "Isolation, taken into the post" : "Isolation",
+      tacticalSpecificity: "MODELLED",
+      shooter: creator, defender, primaryDefenderId: defender.cardId,
+      secondaryPlayerId: null, secondaryDefenderId: null,
+      helpDefenderId: helper?.defenderId ?? null,
+      assignmentState: assignmentStateFor(defState, creator),
+      targetedMismatch: mismatch?.type ?? null, mismatchType: mismatch?.type ?? null,
+      mismatchSeverity: mismatch?.severity ?? null,
+      schemeId: defPlan ? `${defPlan.scheme.shellType}:${defPlan.scheme.ballScreenCoverage}` : null,
+      // Isolation is by definition unassisted.
+      passerCandidate: null, assistLikelihood: 0.02,
+      shotQuality: r2(clamp(4.3 + creator.selfCreation * 0.26 + sev
+        - (defPlan ? defPlan.scheme.helpAggression * 0.12 : 0.5) + base.mod.shotQuality, 0.5, 9.6)),
+      rimBias: converts ? 0.45 : r2(0.08 + creator.rimThreat * 0.028),
+      matchupMod: base.mod,
+      turnoverRisk: r2(clamp(2.5 + defense.defense.playmaking * 0.14 + base.mod.turnoverRisk, 0.5, 9)),
+      foulPressure: r2(clamp(3.9 + creator.rimThreat * 0.2 + sev * 0.4 + base.mod.foulPressure, 0.5, 9.5)),
+      blockPressure: r2(clamp(defense.defense.rimProtection * 0.42 + base.mod.blockPressure, 0, 10)),
+      // Isolation leaves the offence badly placed for the glass.
+      reboundEdge: r2(base.mod.reboundEdge - 0.12), helpCommitment, converts,
+    };
+  }
+
+  // ── OFF_BALL_SCREEN ──────────────────────────────────────────────────────
+  if (family === "OFF_BALL_SCREEN") {
+    const { shooter, screener, chaser, screenerDefender, mismatch } = prep;
+    const base = familyBase({ shooter, defender: chaser, defState, defPlan, shotCategory: "THREE_POINT" });
+    const nav = chaser.profile?.defense?.perimeterContainment ?? 5;
+    // Did the chaser get through? This is where chase burden becomes real.
+    const navigated = rng.chance(clamp(0.3 + nav * 0.045 - (shooter.profile?.offense?.offBallMovement ?? 5) * 0.028, 0.1, 0.8));
+    const variant = navigated ? "DENIED" : rng.chance(0.6) ? "CATCH_AND_SHOOT" : "CURL";
+    return {
+      actionType: "OFF_BALL_SCREEN", actionVariant: variant,
+      actionLabel: navigated ? "Off-ball screen, chased and denied" : `Off-ball screen (${variant.toLowerCase().replace(/_/g, " ")})`,
+      tacticalSpecificity: "MODELLED",
+      shooter: navigated ? screener : shooter,
+      defender: navigated ? screenerDefender : chaser,
+      primaryDefenderId: (navigated ? screenerDefender : chaser).cardId,
+      secondaryPlayerId: screener.cardId, secondaryDefenderId: screenerDefender.cardId,
+      helpDefenderId: help.find((h) => h.role === "WEAK_SIDE_ROTATION" || h.role === "NAIL_HELPER")?.defenderId ?? null,
+      assignmentState: assignmentStateFor(defState, shooter),
+      targetedMismatch: mismatch?.type ?? null, mismatchType: mismatch?.type ?? null,
+      mismatchSeverity: mismatch?.severity ?? null,
+      schemeId: defPlan ? `${defPlan.scheme.shellType}:${defPlan.scheme.ballScreenCoverage}` : null,
+      passerCandidate: rng.weighted(offense.players.filter((p) => p.index !== shooter.index), (p) => 0.3 + p.passing * 0.6),
+      assistLikelihood: navigated ? 0.28 : clamp(0.62 + offense.offense.passing * 0.025, 0.4, 0.9),
+      shotQuality: r2(clamp((navigated ? 3.6 : 6.1) + (shooter.profile?.offense?.offBallMovement ?? 5) * 0.16
+        + (mismatch ? 0.8 : 0) + base.mod.shotQuality, 0.5, 9.6)),
+      rimBias: variant === "CURL" ? 0.35 : -0.5,
+      matchupMod: base.mod,
+      turnoverRisk: r2(clamp(2.1 + (navigated ? 1.4 : 0) + base.mod.turnoverRisk, 0.5, 9)),
+      foulPressure: r2(clamp(2.6 + (variant === "CURL" ? 1.6 : 0) + base.mod.foulPressure, 0.5, 9)),
+      blockPressure: r2(clamp(defense.defense.rimProtection * 0.25 + base.mod.blockPressure, 0, 10)),
+      reboundEdge: r2(base.mod.reboundEdge - 0.05), helpCommitment, navigated,
+    };
+  }
+
+  // ── HANDOFF ──────────────────────────────────────────────────────────────
+  if (family === "HANDOFF") {
+    const { hub, receiver, hubDefender, receiverDefender } = prep;
+    const base = familyBase({ shooter: receiver, defender: receiverDefender, defState, defPlan });
+    const slipped = rng.chance(clamp(0.12 + hub.rimThreat * 0.02, 0.08, 0.35));
+    return {
+      actionType: "HANDOFF", actionVariant: slipped ? "SLIP" : "PULL_UP",
+      actionLabel: slipped ? "Handoff, hub slips to the rim" : "Handoff into a pull-up",
+      tacticalSpecificity: "MODELLED",
+      shooter: slipped ? hub : receiver,
+      defender: slipped ? hubDefender : receiverDefender,
+      primaryDefenderId: (slipped ? hubDefender : receiverDefender).cardId,
+      secondaryPlayerId: hub.cardId, secondaryDefenderId: hubDefender.cardId,
+      helpDefenderId: help.find((h) => h.role === "LOW_MAN" || h.role === "RIM_HELPER")?.defenderId ?? null,
+      assignmentState: assignmentStateFor(defState, slipped ? hub : receiver),
+      targetedMismatch: null, mismatchType: base.mod.worstMismatch?.type ?? null,
+      mismatchSeverity: base.mod.worstMismatch?.severity ?? null,
+      schemeId: defPlan ? `${defPlan.scheme.shellType}:${defPlan.scheme.ballScreenCoverage}` : null,
+      passerCandidate: slipped ? receiver : hub,
+      assistLikelihood: clamp(0.5 + hub.passing * 0.03, 0.3, 0.85),
+      shotQuality: r2(clamp(5.2 + hub.passing * 0.14 + receiver.selfCreation * 0.12 + (slipped ? 1.1 : 0) + base.mod.shotQuality, 0.5, 9.6)),
+      rimBias: slipped ? 0.6 : -0.2, matchupMod: base.mod,
+      turnoverRisk: r2(clamp(2.9 + eff.turnoverPressure * 0.1 + base.mod.turnoverRisk, 0.5, 9)),
+      foulPressure: r2(clamp(3.2 + (slipped ? 1.4 : 0) + base.mod.foulPressure, 0.5, 9)),
+      blockPressure: r2(clamp(defense.defense.rimProtection * (slipped ? 0.55 : 0.3) + base.mod.blockPressure, 0, 10)),
+      reboundEdge: r2(base.mod.reboundEdge), helpCommitment, slipped,
+    };
+  }
+
+  // ── SPOT_UP ──────────────────────────────────────────────────────────────
+  if (family === "SPOT_UP") {
+    const { shooter, passer, closeoutDefender } = prep;
+    const base = familyBase({ shooter, defender: closeoutDefender, defState, defPlan, shotCategory: "THREE_POINT" });
+    const drives = rng.chance(clamp(0.12 + shooter.rimThreat * 0.022, 0.08, 0.35));
+    return {
+      actionType: "SPOT_UP", actionVariant: drives ? "CLOSEOUT_DRIVE" : "CATCH_AND_SHOOT",
+      actionLabel: drives ? "Spot-up, drives the closeout" : "Spot-up catch-and-shoot",
+      tacticalSpecificity: "MODELLED",
+      shooter, defender: closeoutDefender, primaryDefenderId: closeoutDefender.cardId,
+      secondaryPlayerId: passer.cardId, secondaryDefenderId: null,
+      helpDefenderId: help.find((h) => h.role === "NAIL_HELPER" || h.role === "WEAK_SIDE_ROTATION")?.defenderId ?? null,
+      assignmentState: assignmentStateFor(defState, shooter),
+      targetedMismatch: null, mismatchType: base.mod.worstMismatch?.type ?? null,
+      mismatchSeverity: base.mod.worstMismatch?.severity ?? null,
+      schemeId: defPlan ? `${defPlan.scheme.shellType}:${defPlan.scheme.ballScreenCoverage}` : null,
+      passerCandidate: passer,
+      assistLikelihood: drives ? 0.12 : clamp(0.72 + offense.offense.passing * 0.02, 0.5, 0.92),
+      shotQuality: r2(clamp(5.6 + offense.offense.spacing * 0.14 + (drives ? -0.4 : 0.5) + base.mod.shotQuality, 0.5, 9.6)),
+      rimBias: drives ? 0.5 : -0.75, matchupMod: base.mod,
+      turnoverRisk: r2(clamp(1.7 + base.mod.turnoverRisk, 0.4, 9)),
+      foulPressure: r2(clamp((drives ? 4.2 : 1.9) + base.mod.foulPressure, 0.4, 9)),
+      blockPressure: r2(clamp(defense.defense.rimProtection * (drives ? 0.4 : 0.15) + base.mod.blockPressure, 0, 10)),
+      reboundEdge: r2(base.mod.reboundEdge - 0.08), helpCommitment,
+    };
+  }
+
+  // ── CUT ──────────────────────────────────────────────────────────────────
+  if (family === "CUT") {
+    const { cutter, passer, denier } = prep;
+    const base = familyBase({ shooter: cutter, defender: denier, defState, defPlan, shotCategory: "RIM" });
+    const denied = rng.chance(clamp(0.32 + (denier.profile?.defense?.schemeVersatility ?? 5) * 0.03, 0.15, 0.65));
+    return {
+      actionType: "CUT", actionVariant: denied ? "DENIED" : "OPEN_CUT",
+      actionLabel: denied ? "Cut, denied" : "Cut to the rim",
+      tacticalSpecificity: "MODELLED",
+      shooter: cutter, defender: denier, primaryDefenderId: denier.cardId,
+      secondaryPlayerId: passer.cardId, secondaryDefenderId: null,
+      helpDefenderId: help.find((h) => h.role === "RIM_HELPER" || h.role === "LOW_MAN")?.defenderId ?? null,
+      assignmentState: assignmentStateFor(defState, cutter),
+      targetedMismatch: null, mismatchType: base.mod.worstMismatch?.type ?? null,
+      mismatchSeverity: base.mod.worstMismatch?.severity ?? null,
+      schemeId: defPlan ? `${defPlan.scheme.shellType}:${defPlan.scheme.ballScreenCoverage}` : null,
+      passerCandidate: passer,
+      assistLikelihood: denied ? 0.2 : clamp(0.78 + offense.offense.passing * 0.015, 0.55, 0.94),
+      shotQuality: r2(clamp((denied ? 3.4 : 6.8) + cutter.rimThreat * 0.14 + base.mod.shotQuality, 0.5, 9.6)),
+      rimBias: 0.7, matchupMod: base.mod,
+      turnoverRisk: r2(clamp(2.4 + (denied ? 1.8 : 0) + base.mod.turnoverRisk, 0.5, 9)),
+      foulPressure: r2(clamp(4.6 + base.mod.foulPressure, 0.5, 9.5)),
+      blockPressure: r2(clamp(defense.defense.rimProtection * 0.6 + base.mod.blockPressure, 0, 10)),
+      reboundEdge: r2(base.mod.reboundEdge + 0.04), helpCommitment, denied,
+    };
+  }
+
+  throw new Error(`resolveFamily: unhandled family "${family}"`);
+};
+
+// ── ZONE_ATTACK ─────────────────────────────────────────────────────────────
+// Resolves against an AREA defence, not five primary assignments. There is no
+// primary defender in the man sense — the gap is what matters.
+const resolveZoneAttack = ({ offense, defense, eff, state, rng, defPlan, zoneShell }) => {
+  const threats = defPlan?.threats ?? [];
+  const atk = attackZone({ zoneShell, offense, threats, rng });
+  const GAP_TO_ACTION = {
+    HIGH_POST: "HIGH_POST_ENTRY", CORNER: "CORNER_SPOT_UP", SHORT_CORNER: "SHORT_CORNER",
+    SKIP_PASS: "SKIP_PASS", BASELINE: "BASELINE_CUT", LOW_POST: "ZONE_POST_SEAL",
+    ZONE_OVERLOAD: "ZONE_OVERLOAD", TOP: "TOP_OF_KEY_PULL_UP",
+  };
+  // Who takes the shot follows the gap, which is what makes the shell matter.
+  const weightFor = (p) => {
+    switch (atk.gap) {
+      case "HIGH_POST": return 0.2 + p.passing * 0.3 + p.postThreat * 0.3;
+      case "CORNER": case "SKIP_PASS": case "TOP":
+        return 0.15 + ({ ELITE: 3, STRONG: 2, AVERAGE: 1, LIMITED: 0.4, MINIMAL: 0.1 }[p.profile?.shooting?.perimeterSkill] ?? 1);
+      case "SHORT_CORNER": return 0.2 + p.postThreat * 0.25 + p.rimThreat * 0.2;
+      case "BASELINE": return 0.2 + (p.profile?.offense?.offBallMovement ?? 5) * 0.3 + p.rimThreat * 0.2;
+      case "LOW_POST": return 0.2 + p.postThreat * 0.6;
+      default: return 0.2 + p.usageShare * 4;
+    }
+  };
+  const shooter = rng.weighted(offense.players, weightFor);
+  const passer = rng.weighted(offense.players.filter((p) => p.index !== shooter.index), (p) => 0.3 + p.passing * 0.6);
+  const rimBias = { HIGH_POST: 0.05, CORNER: -0.8, SHORT_CORNER: 0.3, SKIP_PASS: -0.7, BASELINE: 0.65, LOW_POST: 0.6, ZONE_OVERLOAD: -0.4, TOP: -0.45 }[atk.gap] ?? 0;
+
+  return {
+    actionType: "ZONE_ATTACK", actionVariant: GAP_TO_ACTION[atk.gap] ?? atk.gap,
+    actionLabel: `Zone attack: ${(GAP_TO_ACTION[atk.gap] ?? atk.gap).toLowerCase().replace(/_/g, " ")}`,
+    tacticalSpecificity: "MODELLED",
+    shooter, defender: null,
+    // No primary defender: this is the honest difference from man defence.
+    primaryDefenderId: null,
+    secondaryPlayerId: passer.cardId, secondaryDefenderId: null,
+    helpDefenderId: zoneShell.reboundResponsibilities.primary,
+    assignmentState: "ZONE_AREA",
+    zoneGap: atk.gap, rotationClosed: atk.rotationClosed,
+    shellType: zoneShell.shellType,
+    targetedMismatch: null, mismatchType: null, mismatchSeverity: null,
+    schemeId: `ZONE:${zoneShell.shellType}`,
+    passerCandidate: passer,
+    assistLikelihood: clamp(0.6 + offense.offense.passing * 0.025, 0.35, 0.92),
+    // An open gap the rotation did not close is a good look; a closed one is not.
+    shotQuality: r2(clamp(3.4 + atk.gapVulnerability * 3.2 + atk.offensiveCapability * 0.2
+      - (atk.rotationClosed ? 2.4 : 0), 0.5, 9.6)),
+    rimBias,
+    turnoverRisk: r2(clamp(2.6 + (zoneShell.rotationRules.quality * 0.12) + eff.turnoverPressure * 0.1, 0.5, 9)),
+    foulPressure: r2(clamp(2.4 + Math.max(0, rimBias) * 3.2, 0.4, 9)),
+    blockPressure: r2(clamp(zoneShell.areas.rim * 8 * 0.6, 0, 10)),
+    // Zone defenders box out an area, not a man.
+    reboundEdge: r2(zoneShell.reboundResponsibilities.exposure),
+    helpCommitment: clamp(zoneShell.rotationRules.quality / 10, 0, 1),
+    matchupMod: { shotQuality: 0, turnoverRisk: 0, foulPressure: 0, blockPressure: 0, reboundEdge: 0, mismatches: [] },
+  };
+};
+
 /** Resolve the selected action into a shot context. */
 export const resolveAction = (action, ctx, rng) => {
   const args = { ...ctx, rng };
   if (action.type === "TRANSITION") return resolveTransition(args);
   if (action.type === "PICK_AND_ROLL") return resolvePickAndRoll({ ...args, eraStyleId: ctx.eraStyleId });
+  if (action.type === "ZONE_ATTACK" && ctx.zoneShell) return resolveZoneAttack(args);
+  if (FAMILY_REGISTRY[action.type]) return resolveFamily(action.type, args);
   return resolveGenericHalfCourt(args);
 };

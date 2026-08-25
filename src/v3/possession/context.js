@@ -180,9 +180,18 @@ const prepareTeam = (side, team, eff, era) => {
     return fallback;
   };
   const tempo = pick(coach.offense, ["tempo"], 5);
+  // Offensive action preferences, from the coach's documented system. These set
+  // HOW OFTEN a family is attempted, never how well it works — a coach is not
+  // a bonus. Coach Intelligence renames the raw fields, so both shapes are
+  // accepted before defaulting.
+  const postPref = pick(coach.offense, ["postUsage", "post"], 5);
+  const isoPref = pick(coach.offense, ["isolation", "iso"], 5);
+  const offBallPref = pick(coach.offense, ["offBallMovement", "offBall"], 5);
+  const motionPref = pick(coach.offense, ["motion"], 5);
+  const ballMovementPref = pick(coach.offense, ["ballMovement"], 5);
+  const insideOutPref = pick(coach.offense, ["insideOut"], 5);
   const transitionPref = pick(coach.offense, ["transitionEmphasis", "transition"], 5);
   const pnrPref = pick(coach.offense, ["pickAndRoll", "pnr"], 5);
-  const postPref = pick(coach.offense, ["postUsage", "post"], 5);
   const crashGlass = pick(coach.defense, ["defensiveReboundingPriority", "defRebPriority"], 5);
 
   return {
@@ -225,6 +234,12 @@ const prepareTeam = (side, team, eff, era) => {
     // means conceding transition the other way.
     crashGlass: r2(clamp(crashGlass * 0.6 + num(reb.offensiveGlass, 5) * 0.4, 0, 10)),
     tempo, transitionPref, pnrPref, postPref,
+    isoPref, offBallPref, motionPref, ballMovementPref, insideOutPref,
+    // Handoffs live between motion and inside-out in the documented fields;
+    // cuts between motion and ball movement. Named explicitly so a reader can
+    // see they are PROXIES rather than dedicated coach fields.
+    handoffPref: r2((motionPref * 0.55 + insideOutPref * 0.45)),
+    cutPref: r2((motionPref * 0.6 + ballMovementPref * 0.4)),
     confidence: ti.confidence ?? null,
   };
 };
@@ -314,7 +329,12 @@ export const preparePossessionContext = (input) => {
   // possession loop falls back to Phase 6A's positional matching unchanged,
   // which is what makes the A/B comparison honest.
   const defenseEnabled = input.defensiveMatchups !== false;
-  const defensivePlans = defenseEnabled ? buildDefensivePlans({ gold, blue, era, eff }) : null;
+  // Phase 6B2 systems, each independently switchable so the A/B comparisons
+  // can isolate them.
+  const zoneEnabled = input.zoneResolution !== false;
+  const expandedActions = input.expandedActions !== false;
+  const offensiveAdjustments = input.offensiveAdjustments !== false;
+  const defensivePlans = defenseEnabled ? buildDefensivePlans({ gold, blue, era, eff, zoneEnabled }) : null;
 
   return {
     simulationId: input.simulationId ?? null,
@@ -323,6 +343,9 @@ export const preparePossessionContext = (input) => {
     eraStyleId: era.id,
     era, eff,
     defensiveMatchupsEnabled: defenseEnabled,
+    zoneResolutionEnabled: zoneEnabled,
+    expandedActionsEnabled: expandedActions,
+    offensiveAdjustmentsEnabled: offensiveAdjustments,
     defensivePlans,
     anchors: {
       expectedFgaPerTeam: r2(expectedFgaPerTeam),

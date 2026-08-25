@@ -32,6 +32,8 @@ export const resultVersions = ({ defensiveMatchups = true } = {}) => ({
   possessionEngineVersion: versionOf("possessionEngineVersion"),
   actionLibraryVersion: versionOf("actionLibraryVersion"),
   defensiveMatchupVersion: versionOf("defensiveMatchupVersion"),
+  zoneResolutionVersion: versionOf("zoneResolutionVersion"),
+  coachAdjustmentVersion: versionOf("coachAdjustmentVersion"),
   playerDataVersion: versionOf("playerDataVersion"),
   playerIntelligenceVersion: versionOf("playerIntelligenceVersion"),
   teamIntelligenceVersion: versionOf("teamIntelligenceVersion"),
@@ -78,6 +80,10 @@ export const runPossessionGame = (input, { assertInvariants = true, includeLedge
   // defensive module version would be a false reproducibility claim — and
   // would invalidate stored flag-off games on an unrelated defensive edit.
   if (!game.defensiveMatchupVersion) delete fingerprint.defensiveMatchupVersion;
+  // Same rule for the Phase 6B2 modules: a version only belongs in the
+  // fingerprint if that module materially affected THIS result.
+  if (!game.zoneResolutionUsed) delete fingerprint.zoneResolutionVersion;
+  if (!game.offensiveAdjustmentsUsed) delete fingerprint.coachAdjustmentVersion;
 
   const violations = checkGame(game);
   if (assertInvariants) assertNoViolations(game);

@@ -116,13 +116,24 @@ const playPossession = ({ ctx, off, def, offBox, defBox, state, rng, ledger, per
   // resolved, so a switch from two possessions ago is not still in force.
   if (defState) recoverAssignments(defState, state.possessionIndex);
 
-  const { type } = selectAction({ offense: off, defense: def, eff: ctx.eff, state, rng, inTransition });
-  const shot = resolveAction({ type }, { offense: off, defense: def, eff: ctx.eff, state, eraStyleId: ctx.eraStyleId, defState, defPlan }, rng);
+  // A zone possession resolves against AREAS, so the zone shell replaces the
+  // man assignment as the thing the offence is attacking.
+  const zoneShell = ctx.zoneResolutionEnabled ? (defPlan?.zoneShell ?? null) : null;
+  const { type, mix } = selectAction({
+    offense: off, defense: def, eff: ctx.eff, state, rng, inTransition,
+    defPlan, zoneShell, expanded: ctx.expandedActionsEnabled,
+  });
+  const shot = resolveAction({ type }, {
+    offense: off, defense: def, eff: ctx.eff, state, eraStyleId: ctx.eraStyleId,
+    defState, defPlan, zoneShell,
+  }, rng);
 
   const shooter = shot.shooter;
   const record = {
     i: state.possessionIndex, period, offense: off.side,
-    action: shot.actionType, variant: shot.pnrVariant ?? null, coverage: shot.pnrCoverage ?? null,
+    action: shot.actionType,
+    variant: shot.pnrVariant ?? shot.actionVariant ?? null,
+    coverage: shot.pnrCoverage ?? null,
     route: shot.pnrRoute ?? null,
     primary: shooter.cardId, secondary: shot.passerCandidate?.cardId ?? null,
     step: rng.steps(),
@@ -139,6 +150,11 @@ const playPossession = ({ ctx, off, def, offBox, defBox, state, rng, ledger, per
       mismatchType: shot.mismatchType ?? null,
       mismatchSeverity: shot.mismatchSeverity ?? null,
       schemeId: shot.schemeId ?? null,
+      // Phase 6B2 additions, all compact reason codes.
+      ...(shot.targetedMismatch ? { targetedMismatch: shot.targetedMismatch } : {}),
+      ...(shot.secondaryPlayerId ? { secondaryPlayerId: shot.secondaryPlayerId } : {}),
+      ...(shot.secondaryDefenderId ? { secondaryDefenderId: shot.secondaryDefenderId } : {}),
+      ...(shot.zoneGap ? { zoneGap: shot.zoneGap, shellType: shot.shellType } : {}),
     } : {}),
   };
 
@@ -493,6 +509,15 @@ export const simulatePossessionGame = (input) => {
     // of it is needed to explain a result. The expanded objects stay available
     // to tests and the replay tool through the prepared context.
     defensiveMatchupVersion: ctx.defensivePlans ? ctx.defensivePlans.gold.defensiveMatchupVersion : null,
+    // Whether each Phase 6B2 module actually shaped this game, so the
+    // fingerprint can list only what mattered.
+    zoneResolutionUsed: Boolean(ctx.zoneResolutionEnabled && (ctx.defensivePlans?.gold.zoneShell || ctx.defensivePlans?.blue.zoneShell)),
+    expandedActionsUsed: Boolean(ctx.expandedActionsEnabled),
+    offensiveAdjustmentsUsed: Boolean(ctx.offensiveAdjustmentsEnabled),
+    zoneShells: ctx.defensivePlans ? {
+      gold: ctx.defensivePlans.gold.zoneShell ? ctx.defensivePlans.gold.zoneShell.shellType : null,
+      blue: ctx.defensivePlans.blue.zoneShell ? ctx.defensivePlans.blue.zoneShell.shellType : null,
+    } : null,
     defense: state.defense ? {
       gold: summariseDefense(ctx.defensivePlans.gold, state.defense.gold),
       blue: summariseDefense(ctx.defensivePlans.blue, state.defense.blue),
