@@ -49,15 +49,34 @@ The remaining risk is the 310 legacy cards, whose direction of error is now
 things that cannot distinguish Dennis Rodman from Dražen Petrović beyond
 "wing, 90s". Spacing conclusions for those cards rest on a prior, not a measurement.
 
-### R3 — Pre-1974 defensive blindness (MEDIUM → LOW)
-**Resolved for all 50 cards.** `src/v3/data/preRecordingDefense.js` assigns a
-categorical band per player with the evidence class recorded
-(RECORDED_STAT 2 · DOCUMENTED_ROLE 11 · CALCULATED 26 · INFERRED 4). Bands lift
-the derived value to a floor; **no steal or block rate is invented**, because a
-number looks like a measurement and an anecdote does not. Russell's event
-creation moved 0.0 → 8.5 via a documented-role band, not a fabricated rate.
-Residual risk: a band is coarser than a measurement, and the 4 INFERRED entries
-rest on historical consensus alone.
+### R3 — Pre-recording defensive blindness (MEDIUM)
+Canonical source: **`npm run audit:pre1974-defense`**. Do not quote a count that
+did not come from there — this entry previously said "resolved for all 50 cards"
+above an evidence breakdown that summed to 43, while a coverage table said 45
+and a risk line said 297. See `pre1974-defense-reconciliation.md`.
+
+Steals and blocks were not official statistics until **1973-74**. **98 of 381
+cards** have at least one represented season that predates recording, so their
+defensive event values cannot be measurements.
+
+**Reviewed: 52** — RECORDED_STAT 2 · DOCUMENTED_ROLE 12 · CALCULATED 27 ·
+INFERRED 4 · CURATED_ATTRIBUTE 7. Bands lift the derived value to a floor;
+**no steal or block rate is invented**, because a number looks like a
+measurement and an anecdote does not. Russell's event creation moved 0.0 → 8.5
+via a documented-role band, not a fabricated rate.
+
+**All 50 fully pre-recording cards are covered** (44 evidence-graded bands + 6
+curated attribute patches).
+
+**Unreviewed: 45** — 40 `INDETERMINATE_WINDOW` 1970s cards with no per-season
+rows, plus 5 `MIXED_RECORDING_WINDOW` cards (`monroe-70s`, `murphy-70s`,
+`westphal-70s`, `hudson-70s`, `wicks-70s`). **Blocked: 1** — `lucas-m-70s`.
+
+Residual risk: a band is coarser than a measurement; the 4 INFERRED entries rest
+on historical consensus alone; the 7 CURATED_ATTRIBUTE entries carry no evidence
+grade at all. The 45 unreviewed cards **block Phase 6C calibration**, not Phase
+6A — the possession engine must propagate their confidence honestly, not
+pretend it away.
 
 ### R4 — Sparse physical data (MEDIUM, reduced)
 74% of persons still have no verified measurement, down from 86%. Wingspan

@@ -6,7 +6,8 @@ import { hasStore, pipeline } from "./_lib/store.js";
 import { sendError, newRequestId } from "./_lib/errors.js";
 import { flags } from "./_lib/flags.js";
 import { utcDateKey, dailySeed } from "../src/dailyChallenge.js";
-import { dailyConfig, coachContrasts } from "../src/v3/dailyCoachEra.js";
+import { coachContrasts } from "../src/v3/dailyCoachEra.js";
+import { officialDailyConfig } from "./_lib/dailyOfficial.js";
 import { getEra } from "../src/v3/eraStyles.js";
 import { cacheKeys } from "./_lib/cacheKeys.js";
 import { getJSON, setJSON } from "./_lib/store.js";
@@ -33,15 +34,13 @@ export default async function handler(req, res) {
     // Generated once per UTC date and reused all day. The cache key carries the
     // schema and data versions, so a version change produces a NEW key rather
     // than silently reinterpreting a Daily that players have already started.
-    const key = cacheKeys.dailyConfig({ utcDate: config.date });
-    let full = hasStore() ? await getJSON(key) : null;
-    let cached = Boolean(full);
-    if (!full) {
-      full = dailyConfig(config.date);
-      // Immutable for the day once written: SET only if absent, so two
-      // concurrent first-requests cannot disagree about today's options.
-      if (hasStore()) await setJSON(key, full, 60 * 60 * 30);
-    }
+    // One resolver, shared with api/game.js: the stored record for this UTC
+    // date is authoritative for the rest of the day, including the data
+    // versions captured when it was created. A deployment reads; it does not
+    // regenerate. Concurrent first requests resolve to one record via SET NX.
+    const official = await officialDailyConfig(config.date);
+    const full = official.config;
+    const cached = official.cached;
     // "Why these three differ" is computed at read time from the same stored
     // options, so a cached config from earlier today still renders the current
     // copy. It is a contrast between today's options, never a ranking.
@@ -51,6 +50,8 @@ export default async function handler(req, res) {
     return res.status(200).json({
       ...config,
       dailyId: full.dailyId,
+      officialDailyId: full.officialDailyId ?? full.dailyId,
+      dailyRevision: full.dailyRevision ?? 1,
       officialEraStyleId: full.officialEraStyleId,
       // Documented era description for the UI: what the game looked like, in
       // words. No pace numbers, no environment coefficients, no modifiers.

@@ -18,7 +18,11 @@ import { validCoachId, validEraId } from "./_lib/validate.js";
 import { validDifficulty } from "../src/v3/difficulty.js";
 import { findDuplicatePerson } from "../src/v3/persons.js";
 import { utcDateKey, verifyDailyLineup, dailyOpponent } from "../src/dailyChallenge.js";
-import { dailyConfig, dailySimulationSeed, validateDailySelection, validateDailyVersions } from "../src/v3/dailyCoachEra.js";
+// NOTE: dailyConfig is deliberately NOT imported here. Building a config in
+// the game route is what split the Daily across a mid-day deploy; the route
+// must read the stored record via officialDailyConfig().
+import { dailySimulationSeed, validateDailySelection, validateDailyVersions } from "../src/v3/dailyCoachEra.js";
+import { officialDailyConfig } from "./_lib/dailyOfficial.js";
 
 const RESULT_TTL = 60 * 60 * 24 * 180;
 const IDEM_TTL = 60 * 60 * 24;
@@ -120,7 +124,10 @@ export default async function handler(req, res) {
       // options. The era, the option pool, the date, the seed and the data
       // versions are never the client's to supply.
       if (f.dailyCoachEra) {
-        dailyCfg = dailyConfig(today);
+        // The STORED record for today, not a fresh build from current
+        // versions. A mid-day deploy must not hand the afternoon a different
+        // era, different coaches, or a different derived seed than the morning.
+        dailyCfg = (await officialDailyConfig(today)).config;
         const vers = validateDailyVersions({ config: dailyCfg, submitted: b.dailyVersions });
         if (!vers.ok) {
           logReq({ requestId, route: "game", mode, status: 409, error_code: vers.code, field: vers.field });

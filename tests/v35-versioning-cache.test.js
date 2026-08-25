@@ -403,9 +403,16 @@ describe("cache telemetry & cost report", () => {
   });
 
   it("a fixture report is labelled a fixture and still balances", () => {
-    const r = buildReport({ ...FIXTURE, cost_avoided_microusd: null }, { source: "fixture" });
-    expect(r.source).toBe("fixture");
-    expect(r.requests).toBe(r.hits + r.providerCalls + r.pending);
+    const r = buildReport({ ...FIXTURE, cost_avoided_microusd: null }, { source: "TEST_FIXTURE" });
+    expect(r.source).toBe("TEST_FIXTURE");
+    expect(r.isLive, "a fixture must never read as live usage").toBe(false);
+    // Corrected identity: a lock-waiting request is a third resolution, not a
+    // leftover. It used to be counted as a request TWICE (cache_miss and
+    // cache_lock_wait both set narrativeRequest), so the balance only ever
+    // held by ignoring lock waits entirely.
+    expect(r.requests).toBe(r.hits + r.providerCalls + r.lockWaits);
+    expect(r.pending).toBe(0);
+    expect(r.providerFailures, "failures are a subset of provider calls").toBeLessThanOrEqual(r.providerCalls);
     expect(r.reconciles).toBe(true);
     expect(r.costMethod).toMatch(/configured/);
   });
