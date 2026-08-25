@@ -35,6 +35,10 @@ export const flags = () => ({
   // Daily behaves exactly as it does today, which is the rollback path: no
   // coach selection, no official era, server-generated seed.
   dailyCoachEra: bool("DAILY_COACH_ERA_ENABLED", false),
+  // Possession Engine 1.0. Its own explicit flag — deliberately NOT folded
+  // into SIM_ENGINE_V3_ENABLED, which already means too many things. Default
+  // false: no production route may select the possession engine.
+  possessionEngine: bool("POSSESSION_ENGINE_ENABLED", false),
   leaderboard: bool("PUBLIC_LEADERBOARD_ENABLED", true),
   feedback: bool("FEEDBACK_ENABLED", true),
 });

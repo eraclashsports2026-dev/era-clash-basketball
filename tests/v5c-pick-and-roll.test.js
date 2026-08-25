@@ -255,7 +255,12 @@ describe("pick-and-roll — isolation, versioning, benchmark", () => {
     expect(versionOf("actionLibraryVersion")).toBe("1.0.0");
     expect(statusOf("actionLibraryVersion")).toBe("DEVELOPMENT");
     expect(affectsResult("actionLibraryVersion")).toBe(false);
-    expect(versionOf("possessionEngineVersion"), "one action is not an engine").toBeNull();
+    // Phase 5C's point stands: one action is not an engine. Phase 6A then
+    // built the engine that consumes it, so the assertion is now that the two
+    // are SEPARATE version domains, both DEVELOPMENT, neither in production.
+    expect(versionOf("possessionEngineVersion")).toMatch(/^1\./);
+    expect(statusOf("possessionEngineVersion")).toBe("DEVELOPMENT");
+    expect(affectsResult("possessionEngineVersion")).toBe(false);
   });
 
   it("no simulation module imports the action library", () => {

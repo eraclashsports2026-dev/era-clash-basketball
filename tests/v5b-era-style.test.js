@@ -293,8 +293,10 @@ describe("era style — isolation & versioning", () => {
     expect(affectsResult("eraStyleVersion")).toBe(false);
     // era DATA is active — the engine already uses it. The two are distinct.
     expect(affectsResult("eraDataVersion")).toBe(true);
-    // and the possession engine is still not claimed to exist
-    expect(versionOf("possessionEngineVersion")).toBeNull();
+    // Phase 6A built the possession engine. It is DEVELOPMENT, so it likewise
+    // affects no production result — the distinction this test is about.
+    expect(statusOf("possessionEngineVersion")).toBe("DEVELOPMENT");
+    expect(affectsResult("possessionEngineVersion")).toBe(false);
   });
 
   it("no simulation module imports the era style intelligence layer", () => {

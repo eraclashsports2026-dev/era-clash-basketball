@@ -65,6 +65,7 @@ export const NAMESPACES = {
   era:             { versioned: true,  retention: "process-memory only by default", visibility: "private" },
   daily:           { versioned: false, retention: "until the daily rolls over", visibility: "private (claims) / public (board)" },
   "daily-ptr":     { versioned: true,  retention: "IMMUTABLE for the UTC date — advanced only by an explicit emergency revision", visibility: "public-safe (names the official config, holds no secrets)" },
+  "dev-possession": { versioned: true, retention: "DEVELOPMENT ONLY — safe to flush at any time; never read by a production route", visibility: "private (development engine output)" },
   "rate-limit":    { versioned: false, retention: "one window", visibility: "private" },
   circuit:         { versioned: false, retention: "2 × breaker window", visibility: "private" },
   playercard:      { versioned: true,  retention: "immutable — a design or data change produces a new URL", visibility: "public-safe (no private data, no photos)" },
@@ -173,8 +174,22 @@ export const cacheKeys = {
    * cannot be built. That is the point: a cache identity for a module that does
    * not exist would be a key nobody could ever invalidate correctly.
    */
-  possessionResult: ({ resultId }) =>
-    `result:pe${vtag("possessionEngineVersion")}:${seg(resultId, "resultId")}`,
+  /**
+   * A possession-engine result.
+   *
+   * Content-addressed: the identity is the MATCHUP plus the SEED plus every
+   * version that shaped the game. Keying by matchup alone would make a rematch
+   * collide with the game it is a rematch of — the whole point of a rematch is
+   * a new seed and a new game, and it must get its own entry.
+   *
+   * Deliberately in a DEVELOPMENT namespace. A development engine's runs must
+   * not land in the namespace production results live in.
+   */
+  possessionResult: ({ matchupFingerprint, simulationSeed }) =>
+    `dev-possession:pe${vtag("possessionEngineVersion")}:al${vtag("actionLibraryVersion")}` +
+    `:pd${vtag("playerDataVersion")}:pi${vtag("playerIntelligenceVersion")}:ti${vtag("teamIntelligenceVersion")}` +
+    `:cd${vtag("coachDataVersion")}:ci${vtag("coachIntelligenceVersion")}:ed${vtag("eraDataVersion")}:es${vtag("eraStyleVersion")}` +
+    `:${seg(matchupFingerprint, "matchupFingerprint")}:s${seg(String(simulationSeed >>> 0), "simulationSeed")}`,
 
   /** Public, immutable result page payload. */
   publicResult: ({ resultId }) =>

@@ -6,7 +6,7 @@
 | --- | --- | --- | --- |
 | Product release | `appVersion` | **2.7.2** | ACTIVE (does **not** affect results) |
 | **Live production result engine** | `engineVersion` | **3.2.0** | ACTIVE |
-| **Future event/possession engine** | `possessionEngineVersion` | `null` | PLANNED |
+| **Possession engine (development)** | `possessionEngineVersion` | **1.0.0** | DEVELOPMENT |
 | Player Intelligence | `playerIntelligenceVersion` | **1.0.0** | DEVELOPMENT |
 | Team Intelligence | `teamIntelligenceVersion` | **1.0.0** | DEVELOPMENT |
 | Coach Intelligence | `coachIntelligenceVersion` | **1.0.0** | DEVELOPMENT |
