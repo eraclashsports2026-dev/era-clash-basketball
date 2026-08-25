@@ -374,7 +374,14 @@ describe("player intelligence — ERA INDEPENDENCE", () => {
 describe("player intelligence — the live simulation is untouched", () => {
   it("no simulation module imports the intelligence layer", () => {
     const dir = new URL("../src/v3/", import.meta.url);
-    const files = readdirSync(dir).filter((f) => f.endsWith(".js") && f !== "intelligence.js");
+    // teamIntelligence.js is EXEMPT and must be: it is the next description
+    // layer up, built deliberately on top of Player Intelligence, and is itself
+    // unwired from the engine (guarded by tests/v3-team-intelligence.test.js).
+    // Every remaining file here is a simulation module, and none may import it.
+    const files = readdirSync(dir)
+      .filter((f) => f.endsWith(".js") && f !== "intelligence.js" && f !== "teamIntelligence.js");
+    expect(files).toContain("possession.js");
+    expect(files).toContain("engine.js");
     for (const f of files) {
       const src = readFileSync(new URL(f, dir), "utf8");
       expect(src, `${f} must not import the intelligence layer`).not.toMatch(/from\s+["'].*intelligence\.js["']/);
