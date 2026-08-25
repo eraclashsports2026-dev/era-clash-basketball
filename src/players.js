@@ -1,5 +1,5 @@
 // ── EraClash Basketball Player Database ──────────────────────────────────────
-// 379 player-decade entries across 8 decades (1950s = NBA 75 team only)
+// 381 player-decade entries across 8 decades (1950s = NBA 75 team only)
 // pos = primary position, positions = all eligible positions
 export const PLAYERS = [
   // ═══ 1950s ═══
@@ -256,7 +256,7 @@ export const PLAYERS = [
   { id:"ricky-80s",   name:"Ricky Pierce",            decade:"1980s", pos:"SG", positions:["SG"],          team:"Bucks",           pts:18.8, reb:3.0,  ast:2.7,  stl:1.0, blk:0.2 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:4, pop:3 },
   { id:"buck-80s",    name:"Buck Williams",           decade:"1980s", pos:"PF", positions:["PF","C"],      team:"Nets",            pts:16.4, reb:12.5, ast:1.3,  stl:0.9, blk:1.3 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:2, an3:1, ad1:0, ad2:2, win:5, pop:5 },
   { id:"chambers-80s",name:"Tom Chambers",           decade:"1980s", pos:"PF", positions:["PF","SF"],     team:"Suns",            pts:18.3, reb:6.7,  ast:2.1,  stl:0.8, blk:0.6 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:1, an3:0, ad1:0, ad2:0, win:4, pop:4 },
-  { id:"nance-80s",   name:"Larry Nance",             decade:"1980s", pos:"PF", positions:["PF","C"],      team:"Suns",            pts:16.5, reb:7.9,  ast:2.2,  stl:0.9, blk:2.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:5, pop:4 },
+  { id:"nance-80s",   name:"Larry Nance",             decade:"1980s", pos:"PF", positions:["PF","C"],      team:"Suns/Cavaliers",            pts:16.5, reb:7.9,  ast:2.2,  stl:0.9, blk:2.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:1, ad2:0, win:5, pop:4 }, // ad1 CORRECTED 0->1: All-Defensive First Team 1988-89, verified against that season's award page. Team widened: traded to Cleveland Feb 1988, so his 1980s window spans both clubs.
   { id:"xavier-80s",  name:"Xavier McDaniel",         decade:"1980s", pos:"PF", positions:["PF","SF"],     team:"Sonics",          pts:18.5, reb:7.5,  ast:1.7,  stl:1.0, blk:0.7 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:4, pop:4 },
   { id:"tree-80s",    name:"Tree Rollins",            decade:"1980s", pos:"C",  positions:["C"],           team:"Hawks",           pts:7.5,  reb:6.8,  ast:0.9,  stl:0.7, blk:2.7 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:4, pop:2 },
   { id:"brad-80s",    name:"Brad Daugherty",          decade:"1980s", pos:"C",  positions:["C"],           team:"Cavaliers",       pts:19.0, reb:9.5,  ast:3.4,  stl:0.6, blk:1.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:4, pop:3 },
@@ -464,6 +464,28 @@ export const PLAYERS = [
   { id:"finley-00s",    name:"Michael Finley",           decade:"2000s", pos:"SG", positions:["SG","SF"],     team:"Mavericks/Spurs", pts:13.9, reb:3.9,  ast:2.3,  stl:0.7, blk:0.3 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:6, pop:6 },
   { id:"joshsmith-00s", name:"Josh Smith",               decade:"2000s", pos:"PF", positions:["PF","SF"],     team:"Hawks",           pts:14.3, reb:7.6,  ast:2.9,  stl:1.3, blk:2.3 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:1, win:3, pop:6 },
   { id:"gwallace-00s",  name:"Gerald Wallace",           decade:"2000s", pos:"SF", positions:["SF","PF"],     team:"Kings/Bobcats",   pts:12.1, reb:5.6,  ast:1.8,  stl:1.4, blk:0.9 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:1, ad2:0, win:3, pop:6 },
+  // ═══ v2.8.1 — decade cards justified by the Phase 2B identity reconciliation ═══
+  // Both were assessed against the decade-card rule rather than added on
+  // request: a second card must describe a MATERIALLY DIFFERENT player, not
+  // repeat one. Both do.
+  //
+  // walt-b-70s — his 1960s card is a 20.1/13.7 interior force; this is the
+  //   declining-but-productive starter (15.6/12.1) of his Atlanta years.
+  //   GAMES THRESHOLD: his 1974-75 season is ONE game (6.0/5.0) and is
+  //   excluded. The unweighted-mean convention has no defence against a token
+  //   season — including it would have moved his card 2.4 points. Seasons under
+  //   20 games are not seasons, and this is the first card where that mattered.
+  //   Steals and blocks are 0.0 because three of his four qualifying seasons
+  //   predate official recording (1973-74). Averaging the one recorded season
+  //   would dress a single data point as a four-season rate; the 1950s/1960s
+  //   cards already treat unrecorded as 0.0 and this follows them.
+  //
+  // nance-90s — 2 All-Defensive Second Teams (1991-92, 1992-93) and an All-Star
+  //   berth (1993) that belong to the 1990s under the season-start-year rule and
+  //   therefore CANNOT sit on his 1980s card. He also blocked more shots in the
+  //   90s than the 80s card records.
+  { id:"walt-b-70s",   name:"Walt Bellamy",            decade:"1970s", pos:"C",  positions:["C","PF"],      team:"Hawks",           pts:15.6, reb:12.1, ast:2.7,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:4, pop:5 },
+  { id:"nance-90s",    name:"Larry Nance",             decade:"1990s", pos:"PF", positions:["PF","C"],      team:"Cavaliers",       pts:16.0, reb:8.1,  ast:2.6,  stl:0.8, blk:2.4 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:2, win:4, pop:5 },
 ];
 
 export const DECADE_COLORS = {

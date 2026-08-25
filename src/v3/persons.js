@@ -7,9 +7,26 @@
 //                      encouraged: 80s Jordan vs 90s Jordan is a core EraClash
 //                      fantasy. IDs stay distinct, so analytics, box scores,
 //                      and challenge validation all remain correct.
-// The person key strips the era suffix from a card id. Suffix forms in the
-// dataset: -50s … -20s, -2ks, -2010s.
-export const personKey = (id) => String(id).replace(/-(\d0s|2ks|2010s)$/, "");
+//
+// Identity now comes from the canonical person registry (data/persons.js),
+// which resolves a card to the HUMAN it depicts via that card's name. The
+// previous implementation stripped the era suffix off the card id and treated
+// the remainder as the person. That was a guess about a string rather than a
+// fact about a human, and it was wrong nine times in the 379-card pool — in
+// both directions. It let a lineup field russell-50s alongside bill-60s (two
+// Bill Russells) while refusing Chet Walker beside Chet Holmgren.
+//
+// The suffix strip survives ONLY as a fallback for ids that are not in the
+// player pool at all (synthetic ids in tests, future cards not yet loaded), so
+// this module never throws on an unknown id.
+import { personIdForCard } from "./data/persons.js";
+
+const stripEraSuffix = (id) => String(id).replace(/-(\d0s|2ks|2010s)$/, "");
+
+// Canonical person identity for a card id. Returns a real personId
+// ("michael-jordan") for known cards, and a suffix-stripped fallback for
+// unknown ones. Callers use it only for equality and error labelling.
+export const personKey = (id) => personIdForCard(id) ?? stripEraSuffix(id);
 
 // Returns the offending person key if the id list contains two versions of the
 // same person, else null.

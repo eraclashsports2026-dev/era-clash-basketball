@@ -42,9 +42,9 @@ describe("player database", () => {
     }
   });
 
-  it("has exactly 379 entries with unique ids", () => {
-    expect(PLAYERS.length).toBe(379);
-    expect(new Set(PLAYERS.map((p) => p.id)).size).toBe(379);
+  it("has exactly 381 entries with unique ids", () => {
+    expect(PLAYERS.length).toBe(381);
+    expect(new Set(PLAYERS.map((p) => p.id)).size).toBe(381);
   });
   it("every entry has the full stat + accolade schema", () => {
     for (const p of PLAYERS) {
