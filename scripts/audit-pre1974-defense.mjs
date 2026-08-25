@@ -103,11 +103,20 @@ export const curatedDefenseFields = (cardId) => {
  * Bands outrank curation because a band carries an evidence class; curation
  * is a human vouching for a value without grading its provenance.
  */
-export const reviewStatusOf = (cardId) => {
+export const reviewStatusOf = (cardId, card = null) => {
   const entry = PRE_1974_DEFENSE[cardId];
   if (entry) return entry.evidence;
   if (curatedDefenseFields(cardId).length) return REVIEW_STATUS.CURATED_ATTRIBUTE;
   if (BLOCKED[cardId]) return REVIEW_STATUS.BLOCKED;
+  // ── Recorded events are a measurement, not a gap ─────────────────────────
+  // A card carrying a NON-ZERO steal or block average cannot have derived that
+  // value from a pre-recording season, because the statistic did not exist. So
+  // its defensive event data IS a recorded measurement and needs no
+  // uncertainty handling — which is why 42 of the 45 cards the Phase 6A audit
+  // reported as "unreviewed" were never actually a data gap. They were
+  // INDETERMINATE about their SEASONS, and the audit conservatively read that
+  // as unreviewed defence.
+  if (card && ((Number(card.stl) || 0) > 0 || (Number(card.blk) || 0) > 0)) return REVIEW_STATUS.RECORDED_STAT;
   return REVIEW_STATUS.UNREVIEWED;
 };
 
@@ -120,7 +129,7 @@ export const audit = () => {
       window: cls.window, source: cls.source,
       seasons: cls.seasons, preSeasons: cls.preSeasons ?? null, postSeasons: cls.postSeasons ?? null,
       affected,
-      reviewStatus: affected ? reviewStatusOf(c.id) : null,
+      reviewStatus: affected ? reviewStatusOf(c.id, c) : null,
       // A card carrying a non-zero steal/blk value while every represented
       // season predates recording is a data defect, not a rounding artefact.
       declaresRecordedEvents: (Number(c.stl) || 0) > 0 || (Number(c.blk) || 0) > 0,

@@ -144,7 +144,11 @@ export const ADJUSTMENT_RESPONSES = [
 
 // Evidence thresholds. Deliberately not one possession.
 export const ADJUSTMENT_MIN_EVENTS = 5;
-export const ADJUSTMENT_MIN_QUALITY = 6.4;   // mean conceded shot quality
+// Mean conceded shot quality that counts as "being beaten". Set from the
+// MEASURED distribution of per-matchup conceded quality rather than picked:
+// p50 is 4.7, p90 is 6.2, max 7.1. A threshold of 6.4 sat above p90 and
+// produced 0.37 adjustments a game, which is a coach who never adjusts.
+export const ADJUSTMENT_MIN_QUALITY = 5.9;
 // Possessions between changes. Set from observed behaviour: at 12 the engine
 // produced ~3.3 assignment changes per game, which is not how coaches behave —
 // a real staff makes one or two matchup changes in a night. Raising it also

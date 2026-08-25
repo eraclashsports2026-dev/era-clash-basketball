@@ -45,8 +45,11 @@ const FAST = { assertInvariants: false, includeLedger: false };
 // ── versioning, flag, isolation ──────────────────────────────────────────────
 describe("versioning and isolation", () => {
   it("defensiveMatchupVersion is its own DEVELOPMENT domain", () => {
-    expect(DEFENSIVE_MATCHUP_VERSION).toBe("1.0.0");
-    expect(versionOf("defensiveMatchupVersion")).toBe("1.0.0");
+    // Phase 6B2 bumped this to 1.1.0: assignment quality corrections and real
+    // paint availability changed how a plan is chosen, without changing the
+    // module's contract.
+    expect(DEFENSIVE_MATCHUP_VERSION).toMatch(/^1\./);
+    expect(versionOf("defensiveMatchupVersion")).toMatch(/^1\./);
     expect(statusOf("defensiveMatchupVersion")).toBe(VERSION_STATUS.DEVELOPMENT);
     expect(affectsResult("defensiveMatchupVersion")).toBe(false);
     // Not the app version and not the possession-engine version.
@@ -84,7 +87,7 @@ describe("versioning and isolation", () => {
   it("the fingerprint carries the version only when the module affected the result", () => {
     const on = runPossessionGame(buildPossessionInput({ goldIds: SHOWTIME, blueIds: SPLASH, eraStyleId: "1990s", simulationSeed: 5 }), FAST);
     const off = runPossessionGame(buildPossessionInput({ goldIds: SHOWTIME, blueIds: SPLASH, eraStyleId: "1990s", simulationSeed: 5, defensiveMatchups: false }), FAST);
-    expect(on.fingerprint.defensiveMatchupVersion).toBe("1.0.0");
+    expect(on.fingerprint.defensiveMatchupVersion).toMatch(/^1\./);
     // A flag-off game is a Phase 6A game; claiming a defensive version would be
     // a false reproducibility claim and would invalidate it on an unrelated edit.
     expect("defensiveMatchupVersion" in off.fingerprint).toBe(false);
@@ -92,7 +95,9 @@ describe("versioning and isolation", () => {
 
   it("the development cache key includes the defensive module version", () => {
     const k = cacheKeys.possessionResult({ matchupFingerprint: "abc", simulationSeed: 1 });
-    expect(k).toContain("dm1-0-0");
+    expect(k).toContain("dm1-1-0");
+    expect(k, "Phase 6B2 modules join the identity").toContain("zr1-0-0");
+    expect(k).toContain("ca1-0-0");
     expect(k.startsWith("dev-possession:")).toBe(true);
   });
 

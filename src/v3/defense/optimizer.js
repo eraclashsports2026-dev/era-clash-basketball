@@ -11,6 +11,8 @@
 // and severe-mismatch count are properties of the whole plan, not sums of
 // pairwise costs. Exhaustive evaluation handles them directly and stays
 // readable.
+import { teamRimPreservation } from "./paint.js";
+
 const r1 = (x) => Math.round(x * 10) / 10;
 const clamp = (x, lo, hi) => Math.min(hi, Math.max(lo, x));
 
@@ -73,14 +75,15 @@ export const scorePlan = ({ pairs, defenders, threats, scheme }) => {
   const severeMismatches = pairs.reduce((a, p) => a + p.cell.severeCount, 0);
   const majorMismatches = pairs.reduce((a, p) => a + p.cell.majorCount, 0);
 
-  // ── rim-protector preservation (PART 12) ───────────────────────────────────
-  // Assigning the best rim protector to a movement shooter may win that pairing
-  // and lose the paint. Measured, not assumed: the cost is how much rim
-  // protection is left effectively near the basket.
+  // ── rim-protector preservation ─────────────────────────────────────────────
+  // Now derived from the ASSIGNMENT'S EXPECTED BEHAVIOUR, not from whether the
+  // opponent happens to post. The previous predicate counted "guards someone
+  // with postScoring >= 4.5" as preserved, which reported 1.0 for a rim
+  // protector assigned to a passing-hub big who plays above the break — the
+  // exact matchup that empties the paint.
   const rimProtectors = defenders.filter((d) => d.roleAvailability.canProtectRim);
-  const preserved = pairs.filter(({ defender, threat }) =>
-    defender.roleAvailability.canProtectRim && (threat.threats.postScoring >= 4.5 || threat.threats.rimPressure >= 6 || threat.threats.spotUpShooting <= 5.5));
-  const rimPreservation = rimProtectors.length === 0 ? 1 : preserved.length / rimProtectors.length;
+  const rimInfo = teamRimPreservation({ pairs, defenders, eff: scheme?.eff ?? null });
+  const rimPreservation = rimInfo.preservation;
   const paintWeight = scheme ? clamp(scheme.paintPriority / 10, 0.2, 1) : 0.6;
   const rimPenalty = (1 - rimPreservation) * 26 * paintWeight;
 
@@ -115,7 +118,8 @@ export const scorePlan = ({ pairs, defenders, threats, scheme }) => {
     total: r1(total),
     components: {
       pairCost: r1(pairCost), severeMismatches, majorMismatches,
-      rimPreservation: r1(rimPreservation * 100) / 100, rimPenalty: r1(rimPenalty),
+      rimPreservation: Math.round(rimPreservation * 100) / 100, rimPenalty: r1(rimPenalty),
+      rimDetail: rimInfo.detail,
       creatorPenalty: r1(creatorPenalty), hideCredit: r1(hideCredit),
       reboundShortfall: r1(reboundShortfall),
       severeBaselineViolations: violations.length,

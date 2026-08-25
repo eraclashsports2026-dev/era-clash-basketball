@@ -33,8 +33,16 @@ export const evaluatePairing = ({ threat, defender, eff, era, scheme }) => {
   const c = defender.capabilities;
   const t = threat.threats;
 
+  // Creation containment weighted by WHERE the player creates. A centre
+  // guarding a post creator does not need point-of-attack containment, and
+  // charging him for it made a centre-on-centre matchup cost twice what a
+  // centre chasing a shooter cost.
+  const locus = threat.creationLocus ?? { perimeter: 0.7, interior: 0.3 };
+  const containmentFit = (c.pointOfAttack * 0.6 + c.wingContainment * 0.4) * locus.perimeter
+    + (c.postDefense * 0.55 + c.interiorDefense * 0.45) * locus.interior;
+
   const dims = {
-    creationContainment: dimension(c.pointOfAttack * 0.6 + c.wingContainment * 0.4, t.primaryCreation),
+    creationContainment: dimension(containmentFit, t.primaryCreation),
     sizeCompatibility: dimension(
       // Size compatibility is symmetric-ish: too small against a post threat is
       // a problem, and so is too big against a mover. Bigger is not better.
@@ -43,7 +51,12 @@ export const evaluatePairing = ({ threat, defender, eff, era, scheme }) => {
         : c.postDefense * 0.5 + c.interiorDefense * 0.5,
       t.postScoring,
     ),
-    speedCompatibility: dimension(c.pointOfAttack * 0.5 + defender.physical.speed * 0.5, Math.max(t.primaryCreation, t.rimPressure)),
+    // Speed only matters against a threat that USES it. A post-oriented
+    // creator does not beat you with a first step.
+    speedCompatibility: dimension(
+      c.pointOfAttack * 0.5 + defender.physical.speed * 0.5,
+      Math.max(t.primaryCreation * locus.perimeter, t.rimPressure * 0.85),
+    ),
     postResistance: dimension(c.postDefense, t.postScoring),
     pullUpDefense: dimension(c.pointOfAttack * 0.55 + c.wingContainment * 0.45, t.pullUpShooting),
     movementChase: dimension(c.movementChasing, t.movementShooting),
@@ -66,10 +79,14 @@ export const evaluatePairing = ({ threat, defender, eff, era, scheme }) => {
 
   const mismatches = detectMismatches({ threat, defender, eff, era, usageShare: threat.usageShare });
 
-  // The optimizer's cost. Weighted by usage, because a problem against a 25%
-  // usage creator costs far more than the same problem against a 12% usage
-  // spot-up shooter — the offence chooses who to involve.
-  const usageWeight = clamp(0.35 + threat.usageShare * 3.2, 0.4, 1.5);
+  // The optimizer's cost, weighted by DEFENSIVE DEMAND rather than on-ball
+  // usage. Usage alone made an elite movement shooter at 11% look like a
+  // cheap assignment (weight 0.7) even though he runs a defender off three
+  // screens a possession — the brief's exact point: low on-ball usage is not
+  // low defensive demand. Usage still contributes, because the offence does
+  // choose who to involve; it is no longer the whole story.
+  const demand = threat.defensiveDemand ?? clamp(threat.usageShare * 22, 0, 10);
+  const usageWeight = clamp(0.4 + (demand / 10) * 0.75 + threat.usageShare * 1.1, 0.4, 1.6);
   const shortfallCost = Object.values(dims).reduce((a, d) => a + d.shortfall, 0);
 
   return {
@@ -80,6 +97,8 @@ export const evaluatePairing = ({ threat, defender, eff, era, scheme }) => {
     dimensions: dims,
     mismatches,
     usageWeight: r1(usageWeight),
+    defensiveDemand: r1(demand),
+    creationLocus: locus,
     // Two separate costs, kept separate on purpose: dimensional shortfall is
     // the smooth signal the optimizer needs, mismatch cost is the named-problem
     // signal a coach would actually talk about.

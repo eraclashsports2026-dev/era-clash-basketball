@@ -252,9 +252,13 @@ describe("pick-and-roll — coach field activation", () => {
 
 describe("pick-and-roll — isolation, versioning, benchmark", () => {
   it("actionLibraryVersion is DEVELOPMENT and the possession engine is still null", () => {
-    expect(versionOf("actionLibraryVersion")).toBe("1.0.0");
+    expect(versionOf("actionLibraryVersion")).toMatch(/^2\./);
     expect(statusOf("actionLibraryVersion")).toBe("DEVELOPMENT");
     expect(affectsResult("actionLibraryVersion")).toBe(false);
+    // Phase 6B2 bumped the action library to 2.x — a MAJOR bump, because the
+    // library went from one detailed action plus a generic fallback to a set of
+    // families with a shared interface, and 6B1 results are not comparable.
+    expect(versionOf("actionLibraryVersion")).toMatch(/^2\./);
     // Phase 5C's point stands: one action is not an engine. Phase 6A then
     // built the engine that consumes it, so the assertion is now that the two
     // are SEPARATE version domains, both DEVELOPMENT, neither in production.
