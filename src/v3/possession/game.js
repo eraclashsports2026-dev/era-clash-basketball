@@ -13,6 +13,10 @@ import { preparePossessionContext } from "./context.js";
 import { selectAction, resolveAction } from "./actions.js";
 import { createTeamBox, credit, finaliseBox } from "./boxScore.js";
 import { ftPctFor } from "./context.js";
+import {
+  createDefensiveState, recoverAssignments, recordExploitation,
+  considerAdjustment, applyAdjustment,
+} from "../defense/liveState.js";
 
 const clamp = (x, lo, hi) => Math.min(hi, Math.max(lo, x));
 const r2 = (x) => Math.round(x * 100) / 100;
@@ -105,8 +109,15 @@ const playPossession = ({ ctx, off, def, offBox, defBox, state, rng, ledger, per
   const inTransition = state.transitionFor === off.side;
   state.transitionFor = null;
 
+  // The DEFENCE's live state and plan — indexed by the defending side.
+  const defState = state.defense?.[def.side] ?? null;
+  const defPlan = ctx.defensivePlans?.[def.side] ?? null;
+  // Expired temporary switches return to the plan before this possession is
+  // resolved, so a switch from two possessions ago is not still in force.
+  if (defState) recoverAssignments(defState, state.possessionIndex);
+
   const { type } = selectAction({ offense: off, defense: def, eff: ctx.eff, state, rng, inTransition });
-  const shot = resolveAction({ type }, { offense: off, defense: def, eff: ctx.eff, state, eraStyleId: ctx.eraStyleId }, rng);
+  const shot = resolveAction({ type }, { offense: off, defense: def, eff: ctx.eff, state, eraStyleId: ctx.eraStyleId, defState, defPlan }, rng);
 
   const shooter = shot.shooter;
   const record = {
@@ -115,6 +126,20 @@ const playPossession = ({ ctx, off, def, offBox, defBox, state, rng, ledger, per
     route: shot.pnrRoute ?? null,
     primary: shooter.cardId, secondary: shot.passerCandidate?.cardId ?? null,
     step: rng.steps(),
+    // ── Defensive context (PART 28) ─────────────────────────────────────────
+    // Structured reason codes, no prose. Enough for a future Postgame to say
+    // who guarded whom, which mismatch was targeted, which coverage was played
+    // and which adjustment followed.
+    ...(defState ? {
+      primaryDefenderId: shot.primaryDefenderId ?? null,
+      helpDefenderId: shot.helpDefenderId ?? null,
+      coverageType: shot.coverageChoice?.coverage ?? null,
+      assignmentState: shot.assignmentState ?? "BASELINE",
+      forcedSwitch: shot.forcedSwitch ?? null,
+      mismatchType: shot.mismatchType ?? null,
+      mismatchSeverity: shot.mismatchSeverity ?? null,
+      schemeId: shot.schemeId ?? null,
+    } : {}),
   };
 
   // Load accrues for everyone on the floor; more for the focal player.
@@ -198,6 +223,17 @@ const playPossession = ({ ctx, off, def, offBox, defBox, state, rng, ledger, per
   const p = makeProbability({ category, shooter, shot, env: ctx.environment, fatigue: shooterFatigue, defender: shot.defender });
   record.expectedMake = r3(p);
 
+  // Evidence for a possible coach adjustment. SHOT QUALITY, not points — a
+  // made contested three must not read as a beaten matchup, and a wide-open
+  // miss must still count as one.
+  if (defState && shot.primaryDefenderId) {
+    recordExploitation(defState, {
+      offensivePlayerId: shooter.cardId, defenderId: shot.primaryDefenderId,
+      shotQuality: shot.shotQuality, action: shot.actionType,
+      isPost: category === "PAINT_OR_POST", isPnr: shot.actionType === "PICK_AND_ROLL",
+    });
+  }
+
   if (rng.chance(p)) {
     credit(offBox, shooter.index, "fgm");
     if (category === "THREE_POINT") credit(offBox, shooter.index, "tpm");
@@ -232,9 +268,14 @@ const playPossession = ({ ctx, off, def, offBox, defBox, state, rng, ledger, per
     state.load[def.side].reduce((a, b) => a + b, 0) / 5, FATIGUE_BOUNDS.reboundPenaltyMax,
   );
   const categoryLift = category === "THREE_POINT" ? -0.022 : category === "RIM" ? 0.03 : 0;
+  // Defensive assignment affects rebound POSITION, not the rebound itself: a
+  // rim protector pulled to the perimeter, a small defender switched onto a
+  // centre, or a cross-match after transition all leave the glass worse
+  // covered. Fed in as an edge; the resolver still assigns the board.
+  const positionPenalty = (shot.reboundEdge ?? 0) + (defState && shot.assignmentState !== "BASELINE" ? 0.012 : 0);
   const orebP = clamp(
     ctx.environment.orebPct + (offGlass - defGlass) * 0.022 + (off.crashGlass - 5) * 0.011
-    + (ctx.eff.offensiveReboundValue - 4) * 0.006 + categoryLift,
+    + (ctx.eff.offensiveReboundValue - 4) * 0.006 + categoryLift + positionPenalty,
     0.08, 0.46,
   );
 
@@ -262,6 +303,41 @@ const playPossession = ({ ctx, off, def, offBox, defBox, state, rng, ledger, per
   return { ended: true, retain: false };
 };
 
+/** Compact per-side defensive summary for the result record. */
+const summariseDefense = (plan, live) => ({
+  schemeId: live.schemeId,
+  scheme: {
+    shellType: plan.scheme.shellType,
+    ballScreenCoverage: plan.scheme.ballScreenCoverage,
+    switchingFrequency: plan.scheme.switchingFrequency,
+    helpAggression: plan.scheme.helpAggression,
+    zoneUsage: plan.scheme.zoneUsage,
+    pressureLevel: plan.scheme.pressureLevel,
+    constraints: plan.scheme.constraints,
+  },
+  baseline: plan.baselineAssignments.map((a) => ({
+    off: a.offensivePlayerId, def: a.defenderId, crossMatched: a.crossMatched,
+    isHide: a.isHide, reason: a.reason.code,
+    severe: a.severeCount, major: a.majorCount,
+  })),
+  help: plan.help.responsibilities.map((h) => ({ role: h.role, def: h.defenderId })),
+  changes: live.assignmentChangeHistory.map((c) => ({
+    id: c.id, at: c.possessionIndex, trigger: c.trigger,
+    response: c.rejected ? "REJECTED" : c.response, reason: c.rejected ? c.reason : null,
+    meanQuality: c.meanQuality,
+  })),
+  counters: {
+    switches: live.switchCount,
+    scrambles: live.scrambleCount,
+    transitionCrossMatches: live.crossMatchCount,
+    severeBaselineViolations: plan.optimization.severeBaselineViolations.length,
+  },
+  exploitation: [...live.exploitation.values()]
+    .filter((e) => e.events >= 3)
+    .map((e) => ({ off: e.offensivePlayerId, def: e.defenderId, events: e.events, meanQuality: Math.round((e.qualitySum / e.events) * 10) / 10 })),
+  confidence: plan.confidence,
+});
+
 // ── The game ─────────────────────────────────────────────────────────────────
 export const simulatePossessionGame = (input) => {
   const ctx = preparePossessionContext(input);
@@ -276,6 +352,12 @@ export const simulatePossessionGame = (input) => {
     transitionFor: null,
     lateGameUrgency: 0,
     load: { gold: ctx.gold.players.map(() => 0), blue: ctx.blue.players.map(() => 0) },
+    // Live defensive state per side. Null when the defensive engine is off, in
+    // which case every action falls back to Phase 6A positional matching.
+    defense: ctx.defensivePlans ? {
+      gold: createDefensiveState(ctx.defensivePlans.gold),
+      blue: createDefensiveState(ctx.defensivePlans.blue),
+    } : null,
   };
 
   const teamPossessionsPerPeriod = ctx.environment.pace / 4;
@@ -308,6 +390,22 @@ export const simulatePossessionGame = (input) => {
       state.possessionIndex++;
 
       offBox.totals.possessions++;
+
+      // ── Bounded coach adjustment (PARTS 21-22) ──────────────────────────
+      // Considered once per possession for the DEFENDING side, on accumulated
+      // shot-quality evidence and behind a cooldown. Deterministic: the same
+      // state at the same index always reaches the same decision.
+      if (state.defense) {
+        const dSide = offSide === "gold" ? "blue" : "gold";
+        const dState = state.defense[dSide];
+        const dPlan = ctx.defensivePlans[dSide];
+        const adj = considerAdjustment({
+          state: dState, plan: dPlan, possessionIndex: state.possessionIndex,
+          defenders: dPlan.defenders, threats: dPlan.threats,
+        });
+        if (adj) applyAdjustment(dState, adj);
+      }
+
       let guard = 0;
       // An offensive rebound continues THIS possession. Bounded so a
       // pathological rebound loop cannot hang the game.
@@ -389,6 +487,16 @@ export const simulatePossessionGame = (input) => {
     possessionLedger: ledger,
     rngSteps: rng.steps(),
     confidence: ctx.confidence,
+    // ── Defensive result metadata (PART 29) ─────────────────────────────────
+    // COMPACT on purpose. The full plan carries a 25-cell matrix and ten
+    // profiles per side; persisting that per game would be enormous and none
+    // of it is needed to explain a result. The expanded objects stay available
+    // to tests and the replay tool through the prepared context.
+    defensiveMatchupVersion: ctx.defensivePlans ? ctx.defensivePlans.gold.defensiveMatchupVersion : null,
+    defense: state.defense ? {
+      gold: summariseDefense(ctx.defensivePlans.gold, state.defense.gold),
+      blue: summariseDefense(ctx.defensivePlans.blue, state.defense.blue),
+    } : null,
     internalError: guardResolution,
     status: "DEVELOPMENT — CALIBRATION REQUIRED",
   };

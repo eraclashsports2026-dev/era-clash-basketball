@@ -7,6 +7,7 @@
 | Product release | `appVersion` | **2.7.2** | ACTIVE (does **not** affect results) |
 | **Live production result engine** | `engineVersion` | **3.2.0** | ACTIVE |
 | **Possession engine (development)** | `possessionEngineVersion` | **1.0.0** | DEVELOPMENT |
+| Defensive matchup engine | `defensiveMatchupVersion` | **1.0.0** | DEVELOPMENT |
 | Player Intelligence | `playerIntelligenceVersion` | **1.0.0** | DEVELOPMENT |
 | Team Intelligence | `teamIntelligenceVersion` | **1.0.0** | DEVELOPMENT |
 | Coach Intelligence | `coachIntelligenceVersion` | **1.0.0** | DEVELOPMENT |

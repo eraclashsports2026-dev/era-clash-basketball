@@ -62,6 +62,9 @@ export const REGISTRY = {
   // ── engines ──
   engineVersion: entry("3.2.0", ACTIVE,
     "The live production result engine (src/v3/engine.js). Family 3.x. Promoted from 3.1.0-alpha in Phase 3.5: it has been production since v2.5.0 and the alpha suffix was inaccurate."),
+  defensiveMatchupVersion: entry("1.0.0", DEVELOPMENT,
+    "Defensive assignment planning, era-legal schemes, mismatch classification, switching state and bounded coach adjustments. Its OWN domain: a change to how defenders are assigned is not a change to the possession loop, and conflating them would invalidate stored games on an unrelated edit. DEVELOPMENT — DEFENSIVE_MATCHUP_ENGINE_ENABLED defaults to false."),
+
   possessionEngineVersion: entry("1.0.0", DEVELOPMENT,
     "Possession Engine 1.0 core: the score and box score emerge from simulated possessions. Family 1.x, DEVELOPMENT — POSSESSION_ENGINE_ENABLED defaults to false and no production route selects it. It is not historically authoritative and carries no calibration claim until Phase 6C backtesting."),
 

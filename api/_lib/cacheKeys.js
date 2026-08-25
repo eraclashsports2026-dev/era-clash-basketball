@@ -187,6 +187,7 @@ export const cacheKeys = {
    */
   possessionResult: ({ matchupFingerprint, simulationSeed }) =>
     `dev-possession:pe${vtag("possessionEngineVersion")}:al${vtag("actionLibraryVersion")}` +
+    `:dm${vtag("defensiveMatchupVersion")}` +
     `:pd${vtag("playerDataVersion")}:pi${vtag("playerIntelligenceVersion")}:ti${vtag("teamIntelligenceVersion")}` +
     `:cd${vtag("coachDataVersion")}:ci${vtag("coachIntelligenceVersion")}:ed${vtag("eraDataVersion")}:es${vtag("eraStyleVersion")}` +
     `:${seg(matchupFingerprint, "matchupFingerprint")}:s${seg(String(simulationSeed >>> 0), "simulationSeed")}`,
