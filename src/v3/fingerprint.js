@@ -36,6 +36,7 @@
 // provenance it does not have. Team Intelligence is deliberately absent today
 // and enters automatically the moment its status becomes ACTIVE.
 import { REGISTRY, versionOf, isActive, affectsResult } from "../versions.js";
+import { resolveCardId } from "./data/cardAliases.js";
 
 const SLOT_ORDER = ["PG", "SG", "SF", "PF", "C"];
 
@@ -50,11 +51,18 @@ const fnv = (s, offset) => {
 };
 export const hash64 = (s) => fnv(s, 2166136261) + fnv(s, 1099511628) ;
 
-/** One side, normalised: five `slot=cardId` pairs in fixed slot order. */
+/**
+ * One side, normalised: five `slot=cardId` pairs in fixed slot order.
+ *
+ * Card ids are CANONICALISED first, so a retired alias and its canonical id
+ * produce the same fingerprint. That is what makes an old stored lineup
+ * re-derive to a stable identity after a card rename — the replay path reads
+ * stored goldIds and re-derives, it never compares a stored hash string.
+ */
 const canonicalSide = (ids, positions) => {
   if (!Array.isArray(ids) || ids.length !== 5) throw new Error("canonicalSide: expected 5 player ids");
   const slots = positions ?? [];
-  const pairs = ids.map((id, i) => ({ id: String(id), slot: slots[i] ?? SLOT_ORDER[i] }));
+  const pairs = ids.map((id, i) => ({ id: resolveCardId(String(id)), slot: slots[i] ?? SLOT_ORDER[i] }));
   return pairs
     .slice()
     .sort((a, b) => SLOT_ORDER.indexOf(a.slot) - SLOT_ORDER.indexOf(b.slot) || a.id.localeCompare(b.id))

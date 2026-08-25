@@ -3,7 +3,7 @@
 // server-side data for real requests. This helper exists so tests and
 // benchmarks can construct a valid context without one, and it lives beside the
 // engine so the two cannot drift.
-import { PLAYERS } from "../../players.js";
+import { PLAYERS, findCard } from "../../players.js";
 import { buildIntelligence } from "../intelligence.js";
 import { buildTeamIntelligence } from "../teamIntelligence.js";
 import { buildCoachIntelligence } from "../coachIntelligence.js";
@@ -13,7 +13,7 @@ const POSITIONS = ["PG", "SG", "SF", "PF", "C"];
 
 export const buildTeamInput = (ids, coachId) => {
   const playerCards = ids.map((id) => {
-    const c = PLAYERS.find((p) => p.id === id);
+    const c = findCard(id);
     if (!c) throw new Error(`unknown card "${id}"`);
     return c;
   });

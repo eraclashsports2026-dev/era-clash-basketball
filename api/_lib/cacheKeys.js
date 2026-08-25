@@ -66,6 +66,7 @@ export const NAMESPACES = {
   daily:           { versioned: false, retention: "until the daily rolls over", visibility: "private (claims) / public (board)" },
   "daily-ptr":     { versioned: true,  retention: "IMMUTABLE for the UTC date — advanced only by an explicit emergency revision", visibility: "public-safe (names the official config, holds no secrets)" },
   "dev-possession": { versioned: true, retention: "DEVELOPMENT ONLY — safe to flush at any time; never read by a production route", visibility: "private (development engine output)" },
+  "dev-calibration": { versioned: true, retention: "DEVELOPMENT ONLY — a calibration run is reproducible from its manifest and seed set, so discarding it costs only CPU", visibility: "private (calibration benchmark output)" },
   "rate-limit":    { versioned: false, retention: "one window", visibility: "private" },
   circuit:         { versioned: false, retention: "2 × breaker window", visibility: "private" },
   playercard:      { versioned: true,  retention: "immutable — a design or data change produces a new URL", visibility: "public-safe (no private data, no photos)" },
@@ -191,6 +192,43 @@ export const cacheKeys = {
     `:pd${vtag("playerDataVersion")}:pi${vtag("playerIntelligenceVersion")}:ti${vtag("teamIntelligenceVersion")}` +
     `:cd${vtag("coachDataVersion")}:ci${vtag("coachIntelligenceVersion")}:ed${vtag("eraDataVersion")}:es${vtag("eraStyleVersion")}` +
     `:${seg(matchupFingerprint, "matchupFingerprint")}:s${seg(String(simulationSeed >>> 0), "simulationSeed")}`,
+
+  /**
+   * A result from a CALIBRATED possession engine.
+   *
+   * The key shape is specified now and deliberately unbuildable: it carries
+   * `possessionCalibrationVersion`, which is PLANNED, so `vtag()` throws. That
+   * is the intended behaviour. A calibrated result cached before a calibration
+   * exists would be an untuned result wearing a tuned engine's identity, and
+   * nothing downstream could tell the difference later.
+   *
+   * Phase 6C2 gives the domain a value; this builder starts working the moment
+   * a real calibration exists, and not one commit before.
+   */
+  calibratedPossessionResult: ({ matchupFingerprint, simulationSeed }) =>
+    `dev-possession:pc${vtag("possessionCalibrationVersion")}:pe${vtag("possessionEngineVersion")}` +
+    `:${seg(matchupFingerprint, "matchupFingerprint")}:s${seg(String(simulationSeed >>> 0), "simulationSeed")}`,
+
+  /**
+   * A calibration benchmark run.
+   *
+   * The identity has to include the CORPUS and the SEED SET, not just the
+   * engine versions: the same engine measured against a different fixture set
+   * or different seeds is a different measurement, and serving one for the
+   * other would silently compare unlike results. It also includes the manifest
+   * hash, so editing a fixture invalidates every run that used it.
+   *
+   * `set` distinguishes calibration from holdout so a holdout run can never
+   * collide with — or be served from — a calibration run's entry.
+   */
+  calibrationRun: ({ set, manifestHash, scenario, seedCount }) =>
+    `dev-calibration:cf${vtag("calibrationFrameworkVersion")}:hf${vtag("historicalFixtureDataVersion")}` +
+    `:ho${vtag("holdoutSetVersion")}:bs${vtag("benchmarkSeedSetVersion")}` +
+    `:pe${vtag("possessionEngineVersion")}:al${vtag("actionLibraryVersion")}:dm${vtag("defensiveMatchupVersion")}` +
+    `:zr${vtag("zoneResolutionVersion")}:ca${vtag("coachAdjustmentVersion")}` +
+    `:pd${vtag("playerDataVersion")}:ed${vtag("eraDataVersion")}:es${vtag("eraStyleVersion")}` +
+    `:${seg(set, "calibrationSet")}:m${seg(manifestHash.slice(0, 16), "manifestHash")}` +
+    `:${seg(scenario, "scenario")}:n${seg(String(seedCount), "seedCount")}`,
 
   /** Public, immutable result page payload. */
   publicResult: ({ resultId }) =>

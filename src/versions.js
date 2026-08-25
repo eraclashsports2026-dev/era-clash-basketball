@@ -62,6 +62,28 @@ export const REGISTRY = {
   // ── engines ──
   engineVersion: entry("3.2.0", ACTIVE,
     "The live production result engine (src/v3/engine.js). Family 3.x. Promoted from 3.1.0-alpha in Phase 3.5: it has been production since v2.5.0 and the alpha suffix was inaccurate."),
+  // ── Phase 6C1 calibration framework ──────────────────────────────────────
+  // Separate from the PRODUCTION calibrationVersion ("backtest-1"), which
+  // belongs to engine 3.2.0 and must not be repurposed.
+  calibrationFrameworkVersion: entry("1.0.0", DEVELOPMENT,
+    "Calibration metrics, benchmark harness and reporting. Changing it changes what a measurement MEANS, so it belongs in the calibration cache identity.", false),
+
+  historicalFixtureDataVersion: entry("1.0.0", DEVELOPMENT,
+    "The historical fixture corpus: units, coaches, era anchors, documented identities and sourced targets. A fixture edit must invalidate cached calibration output.", false),
+
+  holdoutSetVersion: entry("1.0.0", DEVELOPMENT,
+    "The frozen holdout partition. Bumping it means the holdout changed, which is a deliberate act that invalidates every prior holdout measurement.", false),
+
+  benchmarkSeedSetVersion: entry("1.0.0", DEVELOPMENT,
+    "Fixed benchmark seed sets. Generated reproducibly rather than chosen; a new version is a new result identity so favourable-seed selection cannot hide in a re-run.", false),
+
+  // The CALIBRATED model does not exist yet. Phase 6C1 builds the framework and
+  // measures the untuned baseline; Phase 6C2 performs the tuning that would
+  // produce an approved calibration. Reporting a version here before then would
+  // claim a calibration that has not happened.
+  possessionCalibrationVersion: entry(null, PLANNED,
+    "The approved calibration of the possession engine. Deliberately null until Phase 6C2 tunes and an approved calibration exists.", false),
+
   zoneResolutionVersion: entry("1.0.0", DEVELOPMENT,
     "Zone shells, area responsibilities, gap vulnerabilities and zone possession resolution. Its own domain because Phase 6B1 shipped ZONE_MIXED as a scheme LABEL that resolved through man code — a real zone path is a different system, not a bigger label. DEVELOPMENT, ZONE_RESOLUTION_ENABLED defaults to false."),
 

@@ -37,7 +37,7 @@
 // regression slip past the era-independence test by returning a stale first
 // result. This layer is not on the possession hot path, so recomputation is
 // the cheaper mistake to avoid.
-import { PLAYERS } from "../players.js";
+import { PLAYERS, findCard } from "../players.js";
 import { playerDNA } from "./playerProfile.js";
 import CURATED from "./data/intelligence.js";
 import { personIdForCard } from "./data/persons.js";
@@ -538,7 +538,7 @@ export const validateIntelligence = (profile) => {
 
 // ── Convenience ───────────────────────────────────────────────────────────────
 export const intelligenceFor = (id, ctx) => {
-  const p = PLAYERS.find((x) => x.id === id);
+  const p = findCard(id);
   return p ? buildIntelligence(p, ctx) : null;
 };
 export const allIntelligence = (ctx) => PLAYERS.map((p) => buildIntelligence(p, ctx));

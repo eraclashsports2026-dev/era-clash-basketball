@@ -280,6 +280,7 @@ describe("cache-key registry", () => {
     const BUILDERS = {
       possessionEngineVersion: () => cacheKeys.possessionResult({ fingerprint: "abc123" }),
       playerCardDesignVersion: () => cacheKeys.playerCard({ playerCardId: "curry-10s", theme: "dark", size: "lg" }),
+      possessionCalibrationVersion: () => cacheKeys.calibratedPossessionResult({ matchupFingerprint: "abc123", simulationSeed: 1 }),
     };
     const planned = Object.keys(versionsByStatus(VERSION_STATUS.PLANNED));
     expect(planned.length, "no PLANNED domains left to guard").toBeGreaterThan(0);
