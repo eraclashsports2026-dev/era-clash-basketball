@@ -137,11 +137,25 @@ describe("daily configuration", () => {
     expect(reversed.map((o) => o.coachId)).toEqual(forward.map((o) => o.coachId));
   });
 
-  it("the cache key carries the schema and data versions", () => {
-    const k = cacheKeys.dailyConfig({ utcDate: "20260825" });
-    expect(k).toContain("daily:v1-0-0:20260825");
-    expect(k).toContain(`cd${versionOf("coachDataVersion").replace(/\./g, "-")}`);
-    expect(cacheKeys.dailyConfig({ utcDate: "20260826" })).not.toBe(k);
+  it("the cache key is keyed by DATE and REVISION, never by data version", () => {
+    // Phase 5D versioned this key so a data change could not silently
+    // reinterpret a Daily in progress. It achieved the opposite: a mid-day
+    // deploy changed the key, generated a SECOND official configuration, and
+    // split the day's leaderboard. Immutability belongs to the stored record —
+    // the key must be stable for the date, and only an explicit revision may
+    // name a different one.
+    const k = cacheKeys.dailyConfig({ utcDate: "20260825", revision: 1 });
+    expect(k).toBe("daily:v1-0-0:20260825:r1");
+    // Match the PREFIXED segments the old key used (pd.../cd.../ed...), not the
+    // bare values — eraDataVersion is 1.0.0 and so is the schema version, so a
+    // bare-value assertion would fail on the schema tag it is supposed to keep.
+    for (const prefix of ["pd", "cd", "ed"]) {
+      expect(k, `a ${prefix}* data-version segment must not appear`).not.toMatch(new RegExp(`:${prefix}[0-9]`));
+    }
+    expect(cacheKeys.dailyConfig({ utcDate: "20260826", revision: 1 })).not.toBe(k);
+    expect(cacheKeys.dailyConfig({ utcDate: "20260825", revision: 2 })).not.toBe(k);
+    // A revision is required: an unspecified revision must not silently key r"".
+    expect(() => cacheKeys.dailyConfig({ utcDate: "20260825" })).toThrow(/revision/);
   });
 });
 

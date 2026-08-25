@@ -70,8 +70,8 @@ export const bucketsFor = (coach) => COACH_BUCKETS.filter((b) => b.test(coach)).
  * player builds, which does not exist yet when the options are set, and
  * pre-selecting the best answer would remove the decision.
  */
-export const dailyCoachOptions = (dateKey, { pool = COACHES, count = DAILY_COACH_OPTION_COUNT } = {}) => {
-  const rng = mulberry32((Number(dateKey) | 0) ^ COACH_SALT);
+export const dailyCoachOptions = (dateKey, { pool = COACHES, count = DAILY_COACH_OPTION_COUNT, revision = 1 } = {}) => {
+  const rng = mulberry32(((Number(dateKey) | 0) ^ COACH_SALT) + revisionOffset(revision));
   const chosen = [];
   const taken = new Set();
 
@@ -178,8 +178,8 @@ export const coachContrasts = (options, { pool = COACHES } = {}) => {
 };
 
 /** The day's single official Era Style. Fixed for everyone, shown prominently. */
-export const dailyEraStyle = (dateKey) => {
-  const rng = mulberry32((Number(dateKey) | 0) ^ ERA_SALT);
+export const dailyEraStyle = (dateKey, { revision = 1 } = {}) => {
+  const rng = mulberry32(((Number(dateKey) | 0) ^ ERA_SALT) + revisionOffset(revision));
   const ids = ERA_STYLES.map((e) => e.id).sort();
   return ids[Math.floor(rng() * ids.length)];
 };
@@ -191,16 +191,41 @@ export const dailyEraStyle = (dateKey) => {
  * decisions and a coachId drawn from `coachOptionIds` — never the era, the
  * option pool, the date, the seed, the data versions, or the simulation seed.
  */
-export const dailyConfig = (dateKey) => {
-  const coachOptions = dailyCoachOptions(dateKey);
+export const DAILY_FIRST_REVISION = 1;
+
+// An emergency replacement must be a genuinely different puzzle — replacing a
+// Daily because its coach options were broken and then reissuing the same three
+// coaches would be pointless. Revision 1 contributes ZERO, so every existing
+// Daily is byte-identical to before this existed.
+const REVISION_STRIDE = 0x5f37101;
+const revisionOffset = (revision) => (Math.max(1, Number(revision) | 0) - 1) * REVISION_STRIDE;
+
+/**
+ * Build an official Daily configuration record.
+ *
+ * This CAPTURES the currently active versions into the record. It is not a
+ * lookup: calling it twice across a deployment produces two different records.
+ * Production must therefore go through officialDailyConfig() in
+ * api/_lib/dailyOfficial.js, which stores the first record for a UTC date and
+ * returns that same record for the rest of the day.
+ */
+export const dailyConfig = (dateKey, { revision = DAILY_FIRST_REVISION } = {}) => {
+  const coachOptions = dailyCoachOptions(dateKey, { revision });
+  const officialDailyId = `daily-${dateKey}-r${revision}`;
   return {
-    dailyId: `daily-${dateKey}-s${DAILY_CONFIG_SCHEMA_VERSION}`,
+    // dailyId and officialDailyId are the SAME identity under two names —
+    // dailyId is the shipped field used by the client and analytics. A test
+    // asserts they are identical so they cannot drift into two ideas.
+    dailyId: officialDailyId,
+    officialDailyId,
+    dailyRevision: revision,
+    dailyDate: dateKey,
     utcDate: dateKey,
     dailySeed: Number(dateKey) | 0,
     rosterConfiguration: { generator: "dailyChallenge.js", rolls: 3, opponent: "derived-from-date-seed" },
     coachOptionIds: coachOptions.map((c) => c.coachId),
     coachOptions,
-    officialEraStyleId: dailyEraStyle(dateKey),
+    officialEraStyleId: dailyEraStyle(dateKey, { revision }),
     playerDataVersion: versionOf("playerDataVersion"),
     playerIntelligenceVersion: versionOf("playerIntelligenceVersion"),
     teamIntelligenceVersion: versionOf("teamIntelligenceVersion"),

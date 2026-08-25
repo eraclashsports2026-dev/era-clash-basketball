@@ -122,9 +122,13 @@ export default async function handler(req, res) {
           await sleep(LOCK_POLL_MS);
           const done = await getJSON(narrKey);
           if (done?.status === "complete") {
+            // NOT narrativeRequest: the cache_miss above already counted this
+            // request. Counting it again here double-counted every lock-waiting
+            // request, which is why the cost report could never reconcile
+            // requests against hits + provider calls + lock waits.
             await cacheEvent("cache_lock_wait", {
               namespace: "narrative", key: narrKey, resultId, requestId, resolved: true,
-              lockWaitMs: Date.now() - waitStarted, narrativeRequest: true,
+              lockWaitMs: Date.now() - waitStarted,
               tokensAvoidedInput: done.usage?.input_tokens, tokensAvoidedOutput: done.usage?.output_tokens,
               costAvoidedUsd: estimateCostUsd(MODEL, done.usage?.input_tokens, done.usage?.output_tokens),
             });

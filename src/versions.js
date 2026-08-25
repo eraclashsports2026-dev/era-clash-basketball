@@ -62,8 +62,8 @@ export const REGISTRY = {
   // ── engines ──
   engineVersion: entry("3.2.0", ACTIVE,
     "The live production result engine (src/v3/engine.js). Family 3.x. Promoted from 3.1.0-alpha in Phase 3.5: it has been production since v2.5.0 and the alpha suffix was inaccurate."),
-  possessionEngineVersion: entry(null, PLANNED,
-    "The FUTURE event/possession architecture. Family 1.x. Deliberately null: reporting a version for a module that does not exist would be the same dishonesty the naming collision caused."),
+  possessionEngineVersion: entry("1.0.0", DEVELOPMENT,
+    "Possession Engine 1.0 core: the score and box score emerge from simulated possessions. Family 1.x, DEVELOPMENT — POSSESSION_ENGINE_ENABLED defaults to false and no production route selects it. It is not historically authoritative and carries no calibration claim until Phase 6C backtesting."),
 
   // ── intelligence layers (built, unwired) ──
   playerIntelligenceVersion: entry("1.0.0", DEVELOPMENT, "src/v3/intelligence.js — 381 profiles. No simulation module imports it."),

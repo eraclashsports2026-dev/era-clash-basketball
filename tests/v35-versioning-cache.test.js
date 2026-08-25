@@ -50,9 +50,12 @@ describe("naming resolution", () => {
     expect(V3_VERSIONS.engine).toBe(versionOf("engineVersion"));
   });
 
-  it("the future possession engine is 1.x and is NOT reported as active", () => {
-    expect(statusOf("possessionEngineVersion")).toBe(VERSION_STATUS.PLANNED);
-    expect(versionOf("possessionEngineVersion")).toBeNull();
+  it("the possession engine is 1.x, DEVELOPMENT, and NOT reported as active", () => {
+    // Phase 6A built it, so it is no longer PLANNED/null. What must still hold
+    // is that it is not ACTIVE: the live production engine remains 3.2.0 and
+    // nothing in production selects the possession engine.
+    expect(statusOf("possessionEngineVersion")).toBe(VERSION_STATUS.DEVELOPMENT);
+    expect(versionOf("possessionEngineVersion")).toMatch(/^1\./);
     expect(isActive("possessionEngineVersion")).toBe(false);
     // it must never appear among active versions
     expect(Object.keys(activeVersions())).not.toContain("possessionEngineVersion");
@@ -66,11 +69,11 @@ describe("naming resolution", () => {
     // an invented number. (playerCardDesignVersion is PLANNED but holds a
     // defined key SPEC — a settled identity with no renderer, which is a
     // different thing from a module that does not exist.)
-    // Only the possession engine remains unbuilt. eraStyleVersion,
-    // coachIntelligenceVersion and actionLibraryVersion were all built in later
-    // phases and are DEVELOPMENT — they have versions but affect no result.
-    expect(versionOf("possessionEngineVersion")).toBeNull();
-    for (const name of ["eraStyleVersion", "coachIntelligenceVersion", "actionLibraryVersion"]) {
+    // Phase 6A built the possession engine, so it joins the DEVELOPMENT set:
+    // it has a version now, and it still affects no production result. Nothing
+    // is left in the registry that is PLANNED and pretending to be a module —
+    // playerCardDesignVersion is a key SPEC with no renderer, and it is null.
+    for (const name of ["eraStyleVersion", "coachIntelligenceVersion", "actionLibraryVersion", "possessionEngineVersion"]) {
       expect(statusOf(name), name).toBe(VERSION_STATUS.DEVELOPMENT);
       expect(affectsResult(name), name).toBe(false);
     }
@@ -214,14 +217,15 @@ describe("cache-key registry", () => {
     expect(() => cacheKeys.narrative({ resultId: "ok", provider: "a:b", model: "m" })).toThrow(/invalid/);
   });
 
-  it("refuses to build a key from a PLANNED engine version", () => {
-    // The possession engine is the last unbuilt module, so its result key is
-    // the only one that still cannot be built. Coach fit threw here before
-    // Phase 4 and era style before Phase 5B — each became buildable exactly
-    // when its module shipped, which is what this guard tracks.
-    expect(() => cacheKeys.possessionResult({ resultId: "abc" })).toThrow(/PLANNED/);
+  it("a key becomes buildable exactly when its module ships", () => {
+    // Coach fit threw here before Phase 4, era style before Phase 5B, and the
+    // possession result before Phase 6A. Each became buildable the moment its
+    // module existed — that progression is what this guard tracks.
     expect(() => cacheKeys.coachFit({ coachId: "phil-jackson", teamFingerprint: "abc" })).not.toThrow();
     expect(() => cacheKeys.eraStyle({ eraId: "1980s" })).not.toThrow();
+    expect(() => cacheKeys.possessionResult({ matchupFingerprint: "abc", simulationSeed: 1 })).not.toThrow();
+    // ...and the only remaining PLANNED domain still refuses.
+    expect(() => cacheKeys.playerCard({ playerCardId: "curry-10s", theme: "dark", size: "lg" })).toThrow(/PLANNED/);
   });
 
   it("separates public-safe namespaces from private ones", () => {
@@ -403,9 +407,16 @@ describe("cache telemetry & cost report", () => {
   });
 
   it("a fixture report is labelled a fixture and still balances", () => {
-    const r = buildReport({ ...FIXTURE, cost_avoided_microusd: null }, { source: "fixture" });
-    expect(r.source).toBe("fixture");
-    expect(r.requests).toBe(r.hits + r.providerCalls + r.pending);
+    const r = buildReport({ ...FIXTURE, cost_avoided_microusd: null }, { source: "TEST_FIXTURE" });
+    expect(r.source).toBe("TEST_FIXTURE");
+    expect(r.isLive, "a fixture must never read as live usage").toBe(false);
+    // Corrected identity: a lock-waiting request is a third resolution, not a
+    // leftover. It used to be counted as a request TWICE (cache_miss and
+    // cache_lock_wait both set narrativeRequest), so the balance only ever
+    // held by ignoring lock waits entirely.
+    expect(r.requests).toBe(r.hits + r.providerCalls + r.lockWaits);
+    expect(r.pending).toBe(0);
+    expect(r.providerFailures, "failures are a subset of provider calls").toBeLessThanOrEqual(r.providerCalls);
     expect(r.reconciles).toBe(true);
     expect(r.costMethod).toMatch(/configured/);
   });

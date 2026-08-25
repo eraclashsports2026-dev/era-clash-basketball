@@ -1,0 +1,395 @@
+// ── The possession loop ──────────────────────────────────────────────────────
+// The product rule, restated because it is easy to violate by accident:
+//
+//   The engine does NOT pick a winner, pick a score, and then manufacture a
+//   box score to match. It plays possessions. Points are what the shots
+//   produced. The winner is whoever had more of them.
+//
+// Nothing in this file reads the score to decide an outcome. Game state feeds
+// PACE, URGENCY and SHOT SELECTION — the things a real late-game situation
+// changes — never make/miss.
+import { createRng } from "./rng.js";
+import { preparePossessionContext } from "./context.js";
+import { selectAction, resolveAction } from "./actions.js";
+import { createTeamBox, credit, finaliseBox } from "./boxScore.js";
+import { ftPctFor } from "./context.js";
+
+const clamp = (x, lo, hi) => Math.min(hi, Math.max(lo, x));
+const r2 = (x) => Math.round(x * 100) / 100;
+const r3 = (x) => Math.round(x * 1000) / 1000;
+
+export const REGULATION_PERIODS = 4;
+export const MAX_OVERTIMES = 6;          // guard, documented in PART 10
+export const OT_PERIOD_FRACTION = 5 / 12; // a 5-minute period against 12
+
+// Offensive rebounds continue a possession, so playPossession runs more than
+// once per team possession. Measured at ~1.15 calls per possession across eras.
+// Per-possession rates that are anchored on a documented per-game figure have
+// to be divided by this or they overshoot.
+const CALLS_PER_POSSESSION = 1.15;
+
+// ── Bounded fatigue (PART 26) ────────────────────────────────────────────────
+// Minimal by design. There are no substitutions, so fatigue must never be
+// strong enough to turn a great player into a poor one — it nudges the margins
+// of efficiency, ball security and effort. Every bound is stated here.
+export const FATIGUE_BOUNDS = {
+  maxLoad: 1.0,                 // normalised accumulated load
+  shootingPenaltyMax: 0.055,    // ≤5.5% relative shot-quality effect
+  turnoverPenaltyMax: 0.09,     // ≤9% relative turnover-risk increase
+  defencePenaltyMax: 0.07,      // ≤7% relative defensive-effectiveness effect
+  reboundPenaltyMax: 0.06,      // ≤6% relative rebounding-effort effect
+  quarterRecovery: 0.22,        // fraction of accumulated load shed at a break
+  perPossessionUsage: 0.016,    // load from being the focal player
+  perPossessionBase: 0.0045,    // load from simply being on the floor
+};
+
+const fatigueFactor = (load, maxPenalty) => 1 - clamp(load, 0, FATIGUE_BOUNDS.maxLoad) * maxPenalty;
+
+// ── Shot resolution ──────────────────────────────────────────────────────────
+// expectedShotQuality and realizedMakeOrMiss are deliberately separate
+// (PART 18). Quality is what the offence generated; the make is a bounded
+// seeded realisation of it. A great look misses, a bad one drops.
+const SHOT_POINTS = { RIM: 2, PAINT_OR_POST: 2, MIDRANGE: 2, THREE_POINT: 3 };
+
+const chooseShotCategory = (shooter, shot, env, rng, threeWeightScale = 1) => {
+  const w = { ...shooter.shotProfile };
+  // The era's documented three-point volume scales the ATTEMPT weight. The
+  // roster keeps its relative shape around that anchor.
+  w.THREE_POINT *= threeWeightScale;
+  // Rim bias comes from the ACTION (a roll to the rim, a transition attack),
+  // not from the shooter's habits alone.
+  const bias = shot.rimBias ?? 0;
+  w.RIM *= 1 + Math.max(0, bias) * 1.6;
+  w.PAINT_OR_POST *= 1 + Math.max(0, bias) * 0.5;
+  w.THREE_POINT *= 1 + Math.max(0, -bias) * 1.5;
+  w.MIDRANGE *= 1 + Math.max(0, -bias) * 0.6;
+  // A pre-three-point era removes the SHOT, not the SKILL: the weight goes to
+  // the long two the player would actually have taken (PART 17).
+  if (!env.threePointLegal) { w.MIDRANGE += w.THREE_POINT; w.THREE_POINT = 0; }
+  return rng.weighted(Object.keys(w), (k) => w[k]);
+};
+
+// Baseline conversion by category, anchored on the era's DOCUMENTED league
+// shooting environment rather than an invented constant.
+const baseMakePct = (category, env) => {
+  const fg = env.leagueFgPct;
+  switch (category) {
+    case "RIM": return clamp(fg + 0.155, 0.44, 0.75);
+    case "PAINT_OR_POST": return clamp(fg + 0.015, 0.34, 0.60);
+    case "MIDRANGE": return clamp(fg - 0.055, 0.28, 0.52);
+    case "THREE_POINT": return clamp(env.leagueThreePct, 0.22, 0.42);
+    default: return fg;
+  }
+};
+
+const makeProbability = ({ category, shooter, shot, env, fatigue, defender }) => {
+  const base = baseMakePct(category, env);
+  const skill = shooter.skill[category] ?? 5;
+  // Quality is centred at 5: a 5 look converts at the era baseline for that
+  // shot, a 9 look well above it, a 1 look well below.
+  const qualityShift = (shot.shotQuality - 5) * 0.021;
+  const skillShift = (skill - 5) * 0.026;
+  const contest = ((defender?.defense?.rim ?? 5) * 0.4 + (defender?.defense?.perimeter ?? 5) * 0.6 - 5)
+    * (category === "RIM" ? -0.011 : -0.007);
+  const p = (base + qualityShift + skillShift + contest) * fatigueFactor(fatigue, FATIGUE_BOUNDS.shootingPenaltyMax);
+  // Hard bounds: no shot is a certainty and none is hopeless. A great look at
+  // the rim can still miss; a contested three can still go in.
+  return clamp(p, 0.06, 0.86);
+};
+
+// ── One possession ───────────────────────────────────────────────────────────
+// Returns how the possession ended so the caller can maintain the ledger and
+// decide whether the SAME team retains the ball (offensive rebound) or the
+// other team gets it.
+const playPossession = ({ ctx, off, def, offBox, defBox, state, rng, ledger, period }) => {
+  const inTransition = state.transitionFor === off.side;
+  state.transitionFor = null;
+
+  const { type } = selectAction({ offense: off, defense: def, eff: ctx.eff, state, rng, inTransition });
+  const shot = resolveAction({ type }, { offense: off, defense: def, eff: ctx.eff, state, eraStyleId: ctx.eraStyleId }, rng);
+
+  const shooter = shot.shooter;
+  const record = {
+    i: state.possessionIndex, period, offense: off.side,
+    action: shot.actionType, variant: shot.pnrVariant ?? null, coverage: shot.pnrCoverage ?? null,
+    route: shot.pnrRoute ?? null,
+    primary: shooter.cardId, secondary: shot.passerCandidate?.cardId ?? null,
+    step: rng.steps(),
+  };
+
+  // Load accrues for everyone on the floor; more for the focal player.
+  for (const p of off.players) state.load[off.side][p.index] += FATIGUE_BOUNDS.perPossessionBase;
+  state.load[off.side][shooter.index] += FATIGUE_BOUNDS.perPossessionUsage;
+  for (const p of def.players) state.load[def.side][p.index] += FATIGUE_BOUNDS.perPossessionBase * 0.9;
+
+  const shooterFatigue = state.load[off.side][shooter.index];
+
+  // ── 1. Turnover ────────────────────────────────────────────────────────────
+  const toP = clamp(
+    (0.052 + shot.turnoverRisk * 0.0125) / fatigueFactor(shooterFatigue, FATIGUE_BOUNDS.turnoverPenaltyMax),
+    0.02, 0.28,
+  );
+  if (rng.chance(toP)) {
+    const loser = rng.weighted(off.players, (p) => p.usageShare * (11 - p.ballSecurity));
+    credit(offBox, loser.index, "to");
+    // Forced vs unforced. A steal may only be credited for a forced,
+    // live-ball turnover — and not every turnover has one, which is why
+    // steals are bounded BELOW opponent turnovers rather than equal to them.
+    const forcedP = clamp(0.34 + def.defense.playmaking * 0.035, 0.2, 0.72);
+    let stealer = null;
+    if (rng.chance(forcedP)) {
+      stealer = rng.weighted(def.players, (d) => 0.4 + d.defense.events * 0.7);
+      credit(defBox, stealer.index, "stl");
+      // A live-ball steal is the classic transition trigger.
+      state.transitionFor = def.side;
+    }
+    record.outcome = stealer ? "TURNOVER_STOLEN" : "TURNOVER_UNFORCED";
+    record.turnover = loser.cardId;
+    record.steal = stealer?.cardId ?? null;
+    ledger.push(record);
+    return { ended: true, retain: false };
+  }
+
+  // ── 2. Shooting foul ───────────────────────────────────────────────────────
+  const category = chooseShotCategory(shooter, shot, ctx.environment, rng, off.threeWeightScale);
+  // Foul rate is anchored on the era's documented free-throw environment; the
+  // action and the shot type move it around that anchor.
+  //
+  // Divided by CALLS_PER_POSSESSION because this roll happens once per call
+  // into playPossession, and an offensive rebound makes several calls within
+  // ONE team possession. Without it the realised free-throw rate overshot the
+  // documented era environment by about a third — measured, not assumed.
+  const foulBase = ctx.anchors.targetFtTripRate / CALLS_PER_POSSESSION;
+  const foulP = clamp(
+    foulBase * (0.55 + shot.foulPressure * 0.055) + (category === "RIM" ? foulBase * 0.35 : 0),
+    0.015, 0.30,
+  );
+  if (rng.chance(foulP)) {
+    const fouler = rng.weighted(def.players, (d) => 0.5 + d.defense.interior * 0.3 + d.defense.rim * 0.3);
+    credit(defBox, fouler.index, "_pf");
+    const shots = category === "THREE_POINT" ? 3 : 2;
+    const ftp = ftPctFor(shooter.skill.FREE_THROW, ctx.environment.leagueFtPct);
+    let made = 0;
+    for (let i = 0; i < shots; i++) {
+      credit(offBox, shooter.index, "fta");
+      if (rng.chance(ftp)) { credit(offBox, shooter.index, "ftm"); credit(offBox, shooter.index, "pts"); made++; }
+    }
+    record.outcome = "SHOOTING_FOUL";
+    record.freeThrows = { attempted: shots, made };
+    record.points = made;
+    // A missed final free throw is a live rebound. Modelled simply and
+    // honestly: the possession ends unless the offence wins that board.
+    if (made < shots && rng.chance(0.24 + off.rebounding.offensiveGlass * 0.012)) {
+      const reb = rng.weighted(off.players, (p) => 0.3 + p.postThreat * 0.3 + p.defense.rebounding * 0.5);
+      credit(offBox, reb.index, "oreb");
+      record.offensiveRebound = reb.cardId;
+      ledger.push(record);
+      return { ended: false, retain: true };
+    }
+    ledger.push(record);
+    return { ended: true, retain: false };
+  }
+
+  // ── 3. The shot ────────────────────────────────────────────────────────────
+  credit(offBox, shooter.index, "fga");
+  if (category === "THREE_POINT") credit(offBox, shooter.index, "tpa");
+  record.shot = category;
+
+  const p = makeProbability({ category, shooter, shot, env: ctx.environment, fatigue: shooterFatigue, defender: shot.defender });
+  record.expectedMake = r3(p);
+
+  if (rng.chance(p)) {
+    credit(offBox, shooter.index, "fgm");
+    if (category === "THREE_POINT") credit(offBox, shooter.index, "tpm");
+    const pts = SHOT_POINTS[category];
+    credit(offBox, shooter.index, "pts", pts);
+    // An assist requires a teammate's pass to have created the shot. It is
+    // credited HERE, on the made basket, never allocated afterwards.
+    if (shot.passerCandidate && shot.passerCandidate.index !== shooter.index && rng.chance(shot.assistLikelihood)) {
+      credit(offBox, shot.passerCandidate.index, "ast");
+      record.assist = shot.passerCandidate.cardId;
+    }
+    record.outcome = "MADE_FG";
+    record.points = pts;
+    ledger.push(record);
+    return { ended: true, retain: false };
+  }
+
+  // ── 4. Miss → block? → rebound ─────────────────────────────────────────────
+  // A blocked shot stays a field-goal attempt and a miss. It does not vanish.
+  const blockP = clamp(0.012 + shot.blockPressure * 0.0105 + (category === "RIM" ? 0.035 : 0), 0.005, 0.14);
+  if (rng.chance(blockP)) {
+    const blocker = rng.weighted(def.players, (d) => 0.2 + d.defense.rim * 0.55 + d.defense.interior * 0.35);
+    credit(defBox, blocker.index, "blk");
+    record.block = blocker.cardId;
+  }
+
+  // Offensive rebounding: player ability, lineup size, the era's documented
+  // offensive-rebound environment, the coach's crash-glass preference, and the
+  // shot category — a long three comes off differently than a rim miss.
+  const offGlass = off.rebounding.offensiveGlass * fatigueFactor(state.load[off.side][shooter.index], FATIGUE_BOUNDS.reboundPenaltyMax);
+  const defGlass = def.defense.defensiveRebounding * fatigueFactor(
+    state.load[def.side].reduce((a, b) => a + b, 0) / 5, FATIGUE_BOUNDS.reboundPenaltyMax,
+  );
+  const categoryLift = category === "THREE_POINT" ? -0.022 : category === "RIM" ? 0.03 : 0;
+  const orebP = clamp(
+    ctx.environment.orebPct + (offGlass - defGlass) * 0.022 + (off.crashGlass - 5) * 0.011
+    + (ctx.eff.offensiveReboundValue - 4) * 0.006 + categoryLift,
+    0.08, 0.46,
+  );
+
+  if (rng.chance(orebP)) {
+    const reb = rng.weighted(off.players, (p2) => 0.25 + p2.postThreat * 0.28 + p2.defense.rebounding * 0.52);
+    credit(offBox, reb.index, "oreb");
+    record.outcome = "MISS_OREB";
+    record.offensiveRebound = reb.cardId;
+    ledger.push(record);
+    // An offensive rebound CONTINUES the same team possession. It is not a new
+    // one, and the possession ledger must not count it as one (PART 11).
+    return { ended: false, retain: true };
+  }
+
+  const reb = rng.weighted(def.players, (d) => 0.25 + d.defense.rebounding * 0.6 + d.defense.interior * 0.15);
+  credit(defBox, reb.index, "dreb");
+  record.outcome = "MISS_DREB";
+  record.defensiveRebound = reb.cardId;
+  // A defensive rebound is the other classic transition trigger, and the
+  // rebounding team's willingness to run comes from its coach.
+  if (rng.chance(clamp(0.12 + def.transitionPref * 0.028 + ctx.eff.transitionFrequency * 0.012, 0.05, 0.5))) {
+    state.transitionFor = def.side;
+  }
+  ledger.push(record);
+  return { ended: true, retain: false };
+};
+
+// ── The game ─────────────────────────────────────────────────────────────────
+export const simulatePossessionGame = (input) => {
+  const ctx = preparePossessionContext(input);
+  const rng = createRng(ctx.simulationSeed);
+
+  const goldBox = createTeamBox(ctx.gold);
+  const blueBox = createTeamBox(ctx.blue);
+  const ledger = [];
+
+  const state = {
+    possessionIndex: 0,
+    transitionFor: null,
+    lateGameUrgency: 0,
+    load: { gold: ctx.gold.players.map(() => 0), blue: ctx.blue.players.map(() => 0) },
+  };
+
+  const teamPossessionsPerPeriod = ctx.environment.pace / 4;
+  let period = 0;
+  let overtimes = 0;
+  const periodScores = [];
+
+  const runPeriod = (targetPerTeam) => {
+    period++;
+    const startGold = goldBox.totals.pts, startBlue = blueBox.totals.pts;
+    // A small seeded jitter so every period is not identical in length.
+    const budget = Math.max(6, Math.round(targetPerTeam * 2 * (1 + rng.bell() * 0.06)));
+    let offSide = period % 2 === 1 ? "gold" : "blue";
+
+    for (let used = 0; used < budget; used++) {
+      const off = offSide === "gold" ? ctx.gold : ctx.blue;
+      const def = offSide === "gold" ? ctx.blue : ctx.gold;
+      const offBox = offSide === "gold" ? goldBox : blueBox;
+      const defBox = offSide === "gold" ? blueBox : goldBox;
+
+      // Game state, recomputed each possession. It shapes urgency and shot
+      // selection — never whether a shot goes in.
+      const margin = (offSide === "gold" ? 1 : -1) * (goldBox.totals.pts - blueBox.totals.pts);
+      const remaining = budget - used;
+      const isLate = period >= REGULATION_PERIODS && remaining <= 10;
+      state.lateGameUrgency = isLate
+        ? clamp((margin < 0 ? Math.min(-margin, 12) / 12 : 0) * (1 - remaining / 12), 0, 1)
+        : 0;
+      state.phase = period === 1 ? "EARLY" : isLate ? (Math.abs(margin) <= 6 ? "CLOSE_LATE" : margin > 0 ? "PROTECTING_LEAD" : "TRAILING_LATE") : "NORMAL";
+      state.possessionIndex++;
+
+      offBox.totals.possessions++;
+      let guard = 0;
+      // An offensive rebound continues THIS possession. Bounded so a
+      // pathological rebound loop cannot hang the game.
+      for (;;) {
+        const res = playPossession({ ctx, off, def, offBox, defBox, state, rng, ledger, period });
+        if (res.ended || !res.retain || ++guard > 8) break;
+      }
+      offSide = offSide === "gold" ? "blue" : "gold";
+    }
+
+    // Quarter break: a bounded, documented recovery.
+    for (const side of ["gold", "blue"]) {
+      state.load[side] = state.load[side].map((l) => l * (1 - FATIGUE_BOUNDS.quarterRecovery));
+    }
+    periodScores.push({ period, gold: goldBox.totals.pts - startGold, blue: blueBox.totals.pts - startBlue });
+  };
+
+  for (let i = 0; i < REGULATION_PERIODS; i++) runPeriod(teamPossessionsPerPeriod);
+
+  // ── Overtime (PART 10) ─────────────────────────────────────────────────────
+  // No random tie-breaker. Play another period; repeat while level.
+  let guardHit = false;
+  while (goldBox.totals.pts === blueBox.totals.pts) {
+    if (overtimes >= MAX_OVERTIMES) { guardHit = true; break; }
+    overtimes++;
+    runPeriod(teamPossessionsPerPeriod * OT_PERIOD_FRACTION);
+  }
+
+  // The guard exists so a pathological context cannot hang the process. If it
+  // is ever reached, resolution is still BASKETBALL: one more possession
+  // sequence for each team until the tie breaks — never a coin flip. That the
+  // guard fired is recorded as an internal error, because it means the
+  // parameters produced an implausible game.
+  let guardResolution = null;
+  if (guardHit) {
+    let extra = 0;
+    while (goldBox.totals.pts === blueBox.totals.pts && extra < 40) {
+      extra++;
+      overtimes++;
+      runPeriod(2);
+    }
+    guardResolution = {
+      code: "MAX_OVERTIME_GUARD",
+      maxOvertimes: MAX_OVERTIMES,
+      extraSequences: extra,
+      note: "The maximum-overtime guard fired. Resolution remained possession-based; no random tie-breaker was used. This is an internal error condition — a context that cannot break a tie in six overtimes is implausible and should be investigated.",
+    };
+  }
+
+  const gold = finaliseBox(goldBox);
+  const blue = finaliseBox(blueBox);
+  const winner = gold.totals.pts > blue.totals.pts ? "Gold" : "Blue";
+
+  const realizedEff = (box, opponentBox) => {
+    const poss = box.totals.possessions || 1;
+    return r2((box.totals.pts / poss) * 100);
+  };
+
+  return {
+    simulationId: ctx.simulationId,
+    simulationSeed: ctx.simulationSeed,
+    mode: ctx.mode,
+    eraStyleId: ctx.eraStyleId,
+    threePointLegal: ctx.environment.threePointLegal,
+    winner,
+    finalScore: { gold: gold.totals.pts, blue: blue.totals.pts },
+    periods: period,
+    overtimes,
+    periodScores,
+    gold, blue,
+    // Pregame expectation, stored BEFORE the game and never rewritten after
+    // seeing the winner (PART 30).
+    expectation: ctx.expectation,
+    realized: {
+      realizedEfficiencyGold: realizedEff(gold),
+      realizedEfficiencyBlue: realizedEff(blue),
+      realizedPace: r2((gold.totals.possessions + blue.totals.possessions) / 2 / (period <= 4 ? 1 : 1 + (period - 4) * OT_PERIOD_FRACTION)),
+    },
+    possessionLedger: ledger,
+    rngSteps: rng.steps(),
+    confidence: ctx.confidence,
+    internalError: guardResolution,
+    status: "DEVELOPMENT — CALIBRATION REQUIRED",
+  };
+};
