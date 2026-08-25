@@ -101,7 +101,7 @@ export const REGISTRY = {
   // not an engine, and possessionEngineVersion stays null to say so.
   actionLibraryVersion: entry("1.0.0", DEVELOPMENT, "src/v3/actions/ — versioned basketball action models. Pick-and-roll is the first.", false),
 
-  playerCardDesignVersion: entry("1.0.0", PLANNED, "Player-card asset cache identity (spec v1). The RENDERER belongs to the UI phase; only the key shape exists today.", false),
+  playerCardDesignVersion: entry(null, PLANNED, "Player-card asset cache identity. The RENDERER belongs to the UI phase; only the key SHAPE exists today, so the value stays null — a placeholder number here let a PLANNED domain build a real cache key.", false),
 
   // ── Daily ──
   // The SHAPE of an official Daily configuration. Bumping it produces a new

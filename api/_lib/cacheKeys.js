@@ -23,7 +23,7 @@
 // Every segment is validated. Keys never contain API keys, tokens, cookies,
 // authorization headers, or email addresses. Session identifiers are truncated
 // (never the full value) exactly as the pre-existing rate-limit keys do.
-import { versionOf } from "../../src/versions.js";
+import { versionOf, statusOf, VERSION_STATUS } from "../../src/versions.js";
 
 // Conservative allowlist. Anything outside it is rejected rather than escaped —
 // a cache key is not a place to be clever about sanitising user input.
@@ -37,8 +37,16 @@ const seg = (value, label) => {
 
 /** Short version tag for a key segment, e.g. "3.2.0" → "3-2-0". */
 const vtag = (domain) => {
+  // Guard on STATUS, not on the value. The old check only refused domains
+  // whose value happened to be null, so a PLANNED domain carrying a
+  // placeholder number built a key just fine — which is exactly what the
+  // registry exists to prevent, and the opposite of what the docs promised.
+  // A PLANNED system does not exist, so nothing it would key can be cached.
+  if (statusOf(domain) === VERSION_STATUS.PLANNED) {
+    throw new Error(`cacheKey: cannot build a key from PLANNED version domain "${domain}"`);
+  }
   const v = versionOf(domain);
-  if (v == null) throw new Error(`cacheKey: cannot build a key from PLANNED version domain "${domain}"`);
+  if (v == null) throw new Error(`cacheKey: version domain "${domain}" has no value`);
   return String(v).replace(/[^A-Za-z0-9]+/g, "-");
 };
 
