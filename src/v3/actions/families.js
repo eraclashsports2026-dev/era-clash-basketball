@@ -159,7 +159,11 @@ export const speedMismatchFor = ({ offense, defPlan, defState = null }) => {
     if (p.selfCreation < 5.5) continue;
     const defId = defState ? defState.currentAssignments.get(p.cardId) : defPlan.baselineAssignments.find((a) => a.offensivePlayerId === p.cardId)?.defenderId;
     if (!defId) continue;
-    const m = targetedMismatch({ defPlan, offCardId: p.cardId, defCardId: defId, kinds: ["SPEED_MISMATCH", "PULLUP_SHOOTING_MISMATCH", "FOUL_RISK_MISMATCH"] });
+    const m = targetedMismatch({ defPlan, offCardId: p.cardId, defCardId: defId, // SIZE_MISMATCH belongs here: a size advantage on the perimeter IS an
+    // isolation opportunity, and it is what the POST_CONVERSION variant
+    // attacks. Omitting it made that variant dead code — the conversion branch
+    // could never fire because a size mismatch was never the iso mismatch.
+    kinds: ["SPEED_MISMATCH", "PULLUP_SHOOTING_MISMATCH", "FOUL_RISK_MISMATCH", "SIZE_MISMATCH"] });
     if (!m) continue;
     if (!best || rank[m.severity] > rank[best.mismatch.severity]) best = { player: p, mismatch: m, defenderId: defId };
   }

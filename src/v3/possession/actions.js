@@ -118,9 +118,13 @@ export const actionMix = (offense, defense, eff, { inTransition = false } = {}) 
 };
 
 /** Pick the action for this possession. Deterministic given the rng. */
-export const selectAction = ({ offense, defense, eff, state, rng, inTransition, defPlan, zoneShell, expanded = false }) => {
+export const selectAction = ({ offense, defense, eff, state, rng, inTransition, defPlan, zoneShell, expanded = false, overrideMix = null }) => {
   if (expanded) {
-    const mix = expandedActionMix({ offense, defense, eff, state, defPlan, zoneShell, inTransition });
+    // A coach adjustment supplies an already-adjusted mix. Transition still
+    // overrides everything, because a live-ball break is not a called play.
+    const mix = inTransition
+      ? expandedActionMix({ offense, defense, eff, state, defPlan, zoneShell, inTransition })
+      : (overrideMix ?? expandedActionMix({ offense, defense, eff, state, defPlan, zoneShell, inTransition }));
     const keys = Object.keys(mix).filter((k) => mix[k] > 0);
     const urgency = state?.lateGameUrgency ?? 0;
     const type = rng.weighted(keys, (k) => {

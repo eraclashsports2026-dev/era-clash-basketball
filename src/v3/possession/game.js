@@ -17,6 +17,11 @@ import {
   createDefensiveState, recoverAssignments, recordExploitation,
   considerAdjustment, applyAdjustment,
 } from "../defense/liveState.js";
+import {
+  buildOffensivePlan, recordOffensiveOutcome, considerOffensiveAdjustment,
+  applyOffensiveAdjustment, refreshMismatchTargets,
+} from "../actions/offensivePlan.js";
+import { expandedActionMix } from "./actions.js";
 
 const clamp = (x, lo, hi) => Math.min(hi, Math.max(lo, x));
 const r2 = (x) => Math.round(x * 100) / 100;
@@ -119,9 +124,12 @@ const playPossession = ({ ctx, off, def, offBox, defBox, state, rng, ledger, per
   // A zone possession resolves against AREAS, so the zone shell replaces the
   // man assignment as the thing the offence is attacking.
   const zoneShell = ctx.zoneResolutionEnabled ? (defPlan?.zoneShell ?? null) : null;
+  const offPlan = state.offensePlan?.[off.side] ?? null;
   const { type, mix } = selectAction({
     offense: off, defense: def, eff: ctx.eff, state, rng, inTransition,
     defPlan, zoneShell, expanded: ctx.expandedActionsEnabled,
+    // A coach adjustment moves the MIX; the possession then resolves normally.
+    overrideMix: offPlan?.currentActionMix ?? null,
   });
   const shot = resolveAction({ type }, {
     offense: off, defense: def, eff: ctx.eff, state, eraStyleId: ctx.eraStyleId,
@@ -242,6 +250,12 @@ const playPossession = ({ ctx, off, def, offBox, defBox, state, rng, ledger, per
   // Evidence for a possible coach adjustment. SHOT QUALITY, not points — a
   // made contested three must not read as a beaten matchup, and a wide-open
   // miss must still count as one.
+  if (offPlan) {
+    recordOffensiveOutcome(offPlan, {
+      family: shot.actionType, shotQuality: shot.shotQuality,
+      outcome: null, shotCategory: category, targetedMismatch: shot.targetedMismatch ?? null,
+    });
+  }
   if (defState && shot.primaryDefenderId) {
     recordExploitation(defState, {
       offensivePlayerId: shooter.cardId, defenderId: shot.primaryDefenderId,
@@ -319,6 +333,22 @@ const playPossession = ({ ctx, off, def, offBox, defBox, state, rng, ledger, per
   return { ended: true, retain: false };
 };
 
+/** Compact per-side offensive summary. */
+const summariseOffense = (plan) => ({
+  coachId: plan.coachId,
+  baselineActionMix: plan.baselineActionMix,
+  finalActionMix: plan.currentActionMix,
+  paceTarget: plan.paceTarget,
+  crashGlassPriority: plan.crashGlassPriority,
+  zoneAttackPlan: plan.zoneAttackPlan,
+  initiator: plan.creatorHierarchy[0]?.cardId ?? null,
+  adjustments: plan.adjustmentHistory.map((a) => ({
+    id: a.id, at: a.possessionIndex, trigger: a.trigger,
+    response: a.rejected ? "REJECTED" : a.response,
+    reason: a.rejected ? a.reason : null, magnitude: a.magnitude ?? null,
+  })),
+});
+
 /** Compact per-side defensive summary for the result record. */
 const summariseDefense = (plan, live) => ({
   schemeId: live.schemeId,
@@ -374,6 +404,18 @@ export const simulatePossessionGame = (input) => {
       gold: createDefensiveState(ctx.defensivePlans.gold),
       blue: createDefensiveState(ctx.defensivePlans.blue),
     } : null,
+    // Live offensive game plan per side. The DEFENDING side's plan is the
+    // opposing one, so each offence plans against the defence it faces.
+    offensePlan: ctx.offensiveAdjustmentsEnabled && ctx.expandedActionsEnabled ? {
+      gold: buildOffensivePlan({
+        offense: ctx.gold, defense: ctx.blue, defPlan: ctx.defensivePlans?.blue ?? null, eff: ctx.eff,
+        baselineMix: expandedActionMix({ offense: ctx.gold, defense: ctx.blue, eff: ctx.eff, state: {}, defPlan: ctx.defensivePlans?.blue ?? null, zoneShell: ctx.zoneResolutionEnabled ? ctx.defensivePlans?.blue?.zoneShell ?? null : null }),
+      }),
+      blue: buildOffensivePlan({
+        offense: ctx.blue, defense: ctx.gold, defPlan: ctx.defensivePlans?.gold ?? null, eff: ctx.eff,
+        baselineMix: expandedActionMix({ offense: ctx.blue, defense: ctx.gold, eff: ctx.eff, state: {}, defPlan: ctx.defensivePlans?.gold ?? null, zoneShell: ctx.zoneResolutionEnabled ? ctx.defensivePlans?.gold?.zoneShell ?? null : null }),
+      }),
+    } : null,
   };
 
   const teamPossessionsPerPeriod = ctx.environment.pace / 4;
@@ -411,6 +453,24 @@ export const simulatePossessionGame = (input) => {
       // Considered once per possession for the DEFENDING side, on accumulated
       // shot-quality evidence and behind a cooldown. Deterministic: the same
       // state at the same index always reaches the same decision.
+      // Offensive adjustment for the team WITH the ball.
+      if (state.offensePlan) {
+        const oPlan = state.offensePlan[offSide];
+        const dSide2 = offSide === "gold" ? "blue" : "gold";
+        refreshMismatchTargets(oPlan, {
+          defPlan: ctx.defensivePlans?.[dSide2] ?? null,
+          defState: state.defense?.[dSide2] ?? null,
+          offense: offSide === "gold" ? ctx.gold : ctx.blue,
+        });
+        const oAdj = considerOffensiveAdjustment({
+          plan: oPlan, offense: offSide === "gold" ? ctx.gold : ctx.blue,
+          defPlan: ctx.defensivePlans?.[dSide2] ?? null,
+          defState: state.defense?.[dSide2] ?? null,
+          possessionIndex: state.possessionIndex, eff: ctx.eff,
+        });
+        if (oAdj) applyOffensiveAdjustment(oPlan, oAdj);
+      }
+
       if (state.defense) {
         const dSide = offSide === "gold" ? "blue" : "gold";
         const dState = state.defense[dSide];
@@ -517,6 +577,10 @@ export const simulatePossessionGame = (input) => {
     zoneShells: ctx.defensivePlans ? {
       gold: ctx.defensivePlans.gold.zoneShell ? ctx.defensivePlans.gold.zoneShell.shellType : null,
       blue: ctx.defensivePlans.blue.zoneShell ? ctx.defensivePlans.blue.zoneShell.shellType : null,
+    } : null,
+    offense: state.offensePlan ? {
+      gold: summariseOffense(state.offensePlan.gold),
+      blue: summariseOffense(state.offensePlan.blue),
     } : null,
     defense: state.defense ? {
       gold: summariseDefense(ctx.defensivePlans.gold, state.defense.gold),
