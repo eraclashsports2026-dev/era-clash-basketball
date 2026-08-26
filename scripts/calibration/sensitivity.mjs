@@ -190,7 +190,10 @@ const measureParameter = (paramId, seeds) => {
   return { id: paramId, module: p.module, defaultValue: p.defaultValue, min: p.min, max: p.max, perturbations: results };
 };
 
-if (!isMainThread) {
+// Tagged. This module is imported by the identifiability-v2 harness, whose
+// workers also see isMainThread === false; without the tag this block fired
+// there too and every v2 worker posted a second message in the wrong shape.
+if (!isMainThread && workerData?.harness === "sensitivity") {
   parentPort.postMessage(measureParameter(workerData.paramId, workerData.seeds));
 }
 
@@ -318,7 +321,7 @@ if (isMainThread && import.meta.url === `file://${process.argv[1]}`) {
       while (queue.length && active < pool) {
         const [i, p] = queue.shift();
         active++;
-        const w = new Worker(self, { workerData: { paramId: p.id, seeds } });
+        const w = new Worker(self, { workerData: { harness: "sensitivity", paramId: p.id, seeds } });
         w.on("message", (m) => { rows[i] = m; done++; process.stdout.write(`\r  ${done}/${params.length} parameters`); });
         w.on("error", reject);
         w.on("exit", () => { active--; next(); });

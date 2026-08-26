@@ -1,0 +1,1299 @@
+{
+  "calibrationReadinessVersion": "2.0.0",
+  "parameterIdentifiabilityVersion": "2.0.0",
+  "identifiabilityPolicyHash": "04c4b45bf1752ce02a4a38da45410516e2aa1c9be76a748bf0bc224ca989349b",
+  "purpose": "Exactly one calibration-eligibility class per active parameter, derived from measured identifiability and support. Phase 6C2C3 asserted these counts in prose without computing them; they summed to 59 against 53 parameters.",
+  "classes": {
+    "FREE_CALIBRATION": "Identifiable, distinct, practically meaningful, and supported by authorized historical numeric evidence.",
+    "STRONGLY_REGULARIZED_CALIBRATION": "Measurable and supported only by synthetic control or weak evidence. Small, heavily penalised movement only.",
+    "STRUCTURAL_CALIBRATION_ONLY": "Checkable for structural sanity — invariants, monotonicity, bounds — never fitted to a value.",
+    "DEFAULT_FROZEN_CONFOUNDED": "Cannot be separated from another parameter's effect on this corpus.",
+    "DEFAULT_FROZEN_NO_EFFECT": "No measurable effect inside its legal range, or a safety clamp that never binds.",
+    "DEFAULT_FROZEN_PENDING_EXTERNAL_DATA": "Measurable, possibly strongly so, but no authorized target can judge which direction is better."
+  },
+  "movementCaps": {
+    "FREE_CALIBRATION": 1,
+    "STRONGLY_REGULARIZED_CALIBRATION": 0.15,
+    "STRUCTURAL_CALIBRATION_ONLY": 0,
+    "DEFAULT_FROZEN_CONFOUNDED": 0,
+    "DEFAULT_FROZEN_NO_EFFECT": 0,
+    "DEFAULT_FROZEN_PENDING_EXTERNAL_DATA": 0
+  },
+  "activeParameterCount": 53,
+  "counts": {
+    "FREE_CALIBRATION": 0,
+    "STRONGLY_REGULARIZED_CALIBRATION": 0,
+    "STRUCTURAL_CALIBRATION_ONLY": 2,
+    "DEFAULT_FROZEN_CONFOUNDED": 7,
+    "DEFAULT_FROZEN_NO_EFFECT": 37,
+    "DEFAULT_FROZEN_PENDING_EXTERNAL_DATA": 7
+  },
+  "reconciliation": {
+    "sumOfClasses": 53,
+    "activeParameterCount": 53,
+    "reconciles": true,
+    "unknownClasses": [],
+    "eligibleForSearch": 0,
+    "frozen": 53
+  },
+  "nonActiveEntries": [
+    {
+      "id": "zone.selectionFrequency",
+      "registryClass": "DERIVED_PARAMETER"
+    },
+    {
+      "id": "zone.offensiveReboundExposure",
+      "registryClass": "DERIVED_PARAMETER"
+    }
+  ],
+  "parameters": [
+    {
+      "id": "opportunity.saturation.strength",
+      "module": "opportunityAllocation",
+      "defaultValue": 1.35,
+      "min": 0.6,
+      "max": 2.5,
+      "identifiability": "NO_MEASURABLE_EFFECT",
+      "bestPrimaryMetric": "usageEntropy",
+      "bestPooledT": 3.3139,
+      "directionConsistency": 0.8261,
+      "guardrailBreaches": [],
+      "support": "HISTORICAL_NUMERIC_SUPPORT",
+      "confoundedWith": [],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_NO_EFFECT",
+      "readinessReason": "No primary-family metric clears both family-wise significance and its practical effect threshold.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 1.35,
+        "hi": 1.35
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "opportunity.saturation.floor",
+      "module": "opportunityAllocation",
+      "defaultValue": 0.16,
+      "min": 0.05,
+      "max": 0.4,
+      "identifiability": "NO_MEASURABLE_EFFECT",
+      "bestPrimaryMetric": "leadingFgaShare",
+      "bestPooledT": 0.4082,
+      "directionConsistency": 0.6,
+      "guardrailBreaches": [],
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "confoundedWith": [],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_NO_EFFECT",
+      "readinessReason": "No primary-family metric clears both family-wise significance and its practical effect threshold.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 0.16,
+        "hi": 0.16
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "opportunity.saturation.underTargetCeiling",
+      "module": "opportunityAllocation",
+      "defaultValue": 1.35,
+      "min": 1,
+      "max": 2,
+      "identifiability": "NO_MEASURABLE_EFFECT",
+      "bestPrimaryMetric": "usageEntropy",
+      "bestPooledT": 4.091,
+      "directionConsistency": 0.875,
+      "guardrailBreaches": [],
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "confoundedWith": [],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_NO_EFFECT",
+      "readinessReason": "No primary-family metric clears both family-wise significance and its practical effect threshold.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 1.35,
+        "hi": 1.35
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "opportunity.saturation.warmupPossessions",
+      "module": "opportunityAllocation",
+      "defaultValue": 8,
+      "min": 0,
+      "max": 30,
+      "identifiability": "NO_MEASURABLE_EFFECT",
+      "bestPrimaryMetric": "leadingFgaShare",
+      "bestPooledT": -0.879,
+      "directionConsistency": 0.5417,
+      "guardrailBreaches": [],
+      "support": "STRUCTURAL_VALIDATION_ONLY",
+      "confoundedWith": [],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_NO_EFFECT",
+      "readinessReason": "No primary-family metric clears both family-wise significance and its practical effect threshold.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 8,
+        "hi": 8
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "opportunity.mismatch.severe",
+      "module": "opportunityAllocation",
+      "defaultValue": 2.6,
+      "min": 1,
+      "max": 4,
+      "identifiability": "NO_MEASURABLE_EFFECT",
+      "bestPrimaryMetric": "leadingFgaShare",
+      "bestPooledT": 2.3569,
+      "directionConsistency": 0.6842,
+      "guardrailBreaches": [],
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "confoundedWith": [],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_NO_EFFECT",
+      "readinessReason": "No primary-family metric clears both family-wise significance and its practical effect threshold.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 2.6,
+        "hi": 2.6
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "opportunity.mismatch.major",
+      "module": "opportunityAllocation",
+      "defaultValue": 2,
+      "min": 1,
+      "max": 3.5,
+      "identifiability": "NO_MEASURABLE_EFFECT",
+      "bestPrimaryMetric": "postShare",
+      "bestPooledT": 1.5412,
+      "directionConsistency": 0.7059,
+      "guardrailBreaches": [],
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "confoundedWith": [],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_NO_EFFECT",
+      "readinessReason": "No primary-family metric clears both family-wise significance and its practical effect threshold.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 2,
+        "hi": 2
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "opportunity.mismatch.moderate",
+      "module": "opportunityAllocation",
+      "defaultValue": 1.55,
+      "min": 1,
+      "max": 3,
+      "identifiability": "NO_MEASURABLE_EFFECT",
+      "bestPrimaryMetric": "leadingFgaShare",
+      "bestPooledT": 0.3866,
+      "directionConsistency": 0.75,
+      "guardrailBreaches": [],
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "confoundedWith": [],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_NO_EFFECT",
+      "readinessReason": "No primary-family metric clears both family-wise significance and its practical effect threshold.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 1.55,
+        "hi": 1.55
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "opportunity.mismatch.minor",
+      "module": "opportunityAllocation",
+      "defaultValue": 1.25,
+      "min": 1,
+      "max": 2,
+      "identifiability": "NO_MEASURABLE_EFFECT",
+      "bestPrimaryMetric": "leadingFgaShare",
+      "bestPooledT": -0.5831,
+      "directionConsistency": 0.6667,
+      "guardrailBreaches": [],
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "confoundedWith": [],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_NO_EFFECT",
+      "readinessReason": "No primary-family metric clears both family-wise significance and its practical effect threshold.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 1.25,
+        "hi": 1.25
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "opportunity.form.low",
+      "module": "opportunityAllocation",
+      "defaultValue": 0.82,
+      "min": 0.6,
+      "max": 1,
+      "identifiability": "NO_MEASURABLE_EFFECT",
+      "bestPrimaryMetric": "usageEntropy",
+      "bestPooledT": 0.6771,
+      "directionConsistency": 0.7,
+      "guardrailBreaches": [],
+      "support": "STRUCTURAL_VALIDATION_ONLY",
+      "confoundedWith": [
+        "opportunity.form.high"
+      ],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_NO_EFFECT",
+      "readinessReason": "No primary-family metric clears both family-wise significance and its practical effect threshold.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 0.82,
+        "hi": 0.82
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "opportunity.form.high",
+      "module": "opportunityAllocation",
+      "defaultValue": 1.18,
+      "min": 1,
+      "max": 1.6,
+      "identifiability": "NO_MEASURABLE_EFFECT",
+      "bestPrimaryMetric": "leadingFgaShare",
+      "bestPooledT": 0.9826,
+      "directionConsistency": 0.6667,
+      "guardrailBreaches": [],
+      "support": "STRUCTURAL_VALIDATION_ONLY",
+      "confoundedWith": [
+        "opportunity.form.low"
+      ],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_NO_EFFECT",
+      "readinessReason": "No primary-family metric clears both family-wise significance and its practical effect threshold.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 1.18,
+        "hi": 1.18
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "opportunity.lateGame.primaryBoost",
+      "module": "opportunityAllocation",
+      "defaultValue": 0.5,
+      "min": 0,
+      "max": 1.5,
+      "identifiability": "NO_MEASURABLE_EFFECT",
+      "bestPrimaryMetric": "leadingFgaShare",
+      "bestPooledT": 1.9797,
+      "directionConsistency": 0.7273,
+      "guardrailBreaches": [],
+      "support": "STRUCTURAL_VALIDATION_ONLY",
+      "confoundedWith": [],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_NO_EFFECT",
+      "readinessReason": "No primary-family metric clears both family-wise significance and its practical effect threshold.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 0.5,
+        "hi": 0.5
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "fitBand.SPOT_UP.lo",
+      "module": "opportunityAllocation",
+      "defaultValue": 0.2,
+      "min": 0.1,
+      "max": 1,
+      "identifiability": "NO_MEASURABLE_EFFECT",
+      "bestPrimaryMetric": "spotUpShare",
+      "bestPooledT": 1.6484,
+      "directionConsistency": 0.5789,
+      "guardrailBreaches": [],
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "confoundedWith": [],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_NO_EFFECT",
+      "readinessReason": "No primary-family metric clears both family-wise significance and its practical effect threshold.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 0.2,
+        "hi": 0.2
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "fitBand.SPOT_UP.hi",
+      "module": "opportunityAllocation",
+      "defaultValue": 2.4,
+      "min": 1,
+      "max": 3,
+      "identifiability": "NO_MEASURABLE_EFFECT",
+      "bestPrimaryMetric": "leadingFgaShare",
+      "bestPooledT": -1.4557,
+      "directionConsistency": 0.5714,
+      "guardrailBreaches": [],
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "confoundedWith": [],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_NO_EFFECT",
+      "readinessReason": "No primary-family metric clears both family-wise significance and its practical effect threshold.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 2.4,
+        "hi": 2.4
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "fitBand.OFF_BALL_SCREEN.lo",
+      "module": "opportunityAllocation",
+      "defaultValue": 0.25,
+      "min": 0.1,
+      "max": 1,
+      "identifiability": "NO_MEASURABLE_EFFECT",
+      "bestPrimaryMetric": "spotUpShare",
+      "bestPooledT": -2.377,
+      "directionConsistency": 0.85,
+      "guardrailBreaches": [],
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "confoundedWith": [],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_NO_EFFECT",
+      "readinessReason": "No primary-family metric clears both family-wise significance and its practical effect threshold.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 0.25,
+        "hi": 0.25
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "fitBand.OFF_BALL_SCREEN.hi",
+      "module": "opportunityAllocation",
+      "defaultValue": 2.2,
+      "min": 1,
+      "max": 3,
+      "identifiability": "NO_MEASURABLE_EFFECT",
+      "bestPrimaryMetric": "usageEntropy",
+      "bestPooledT": -1.578,
+      "directionConsistency": 0.7333,
+      "guardrailBreaches": [],
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "confoundedWith": [],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_NO_EFFECT",
+      "readinessReason": "No primary-family metric clears both family-wise significance and its practical effect threshold.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 2.2,
+        "hi": 2.2
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "fitBand.POST_UP.lo",
+      "module": "opportunityAllocation",
+      "defaultValue": 0.3,
+      "min": 0.1,
+      "max": 1,
+      "identifiability": "NO_MEASURABLE_EFFECT",
+      "bestPrimaryMetric": "usageEntropy",
+      "bestPooledT": -1.4219,
+      "directionConsistency": 0.6842,
+      "guardrailBreaches": [],
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "confoundedWith": [],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_NO_EFFECT",
+      "readinessReason": "No primary-family metric clears both family-wise significance and its practical effect threshold.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 0.3,
+        "hi": 0.3
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "fitBand.POST_UP.hi",
+      "module": "opportunityAllocation",
+      "defaultValue": 2.1,
+      "min": 1,
+      "max": 3,
+      "identifiability": "NO_MEASURABLE_EFFECT",
+      "bestPrimaryMetric": "usageEntropy",
+      "bestPooledT": 1.587,
+      "directionConsistency": 0.6842,
+      "guardrailBreaches": [],
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "confoundedWith": [],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_NO_EFFECT",
+      "readinessReason": "No primary-family metric clears both family-wise significance and its practical effect threshold.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 2.1,
+        "hi": 2.1
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "fitBand.HANDOFF.lo",
+      "module": "opportunityAllocation",
+      "defaultValue": 0.35,
+      "min": 0.1,
+      "max": 1,
+      "identifiability": "NO_MEASURABLE_EFFECT",
+      "bestPrimaryMetric": "leadingFgaShare",
+      "bestPooledT": -1.5895,
+      "directionConsistency": 0.6522,
+      "guardrailBreaches": [],
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "confoundedWith": [],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_NO_EFFECT",
+      "readinessReason": "No primary-family metric clears both family-wise significance and its practical effect threshold.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 0.35,
+        "hi": 0.35
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "fitBand.HANDOFF.hi",
+      "module": "opportunityAllocation",
+      "defaultValue": 2,
+      "min": 1,
+      "max": 3,
+      "identifiability": "NO_MEASURABLE_EFFECT",
+      "bestPrimaryMetric": "pnrShare",
+      "bestPooledT": 1.4376,
+      "directionConsistency": 0.55,
+      "guardrailBreaches": [],
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "confoundedWith": [],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_NO_EFFECT",
+      "readinessReason": "No primary-family metric clears both family-wise significance and its practical effect threshold.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 2,
+        "hi": 2
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "fitBand.ZONE_ATTACK.lo",
+      "module": "opportunityAllocation",
+      "defaultValue": 0.4,
+      "min": 0.1,
+      "max": 1,
+      "identifiability": "NO_MEASURABLE_EFFECT",
+      "bestPrimaryMetric": "zoneActionShare",
+      "bestPooledT": 1.5532,
+      "directionConsistency": 0.75,
+      "guardrailBreaches": [],
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "confoundedWith": [],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_NO_EFFECT",
+      "readinessReason": "No primary-family metric clears both family-wise significance and its practical effect threshold.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 0.4,
+        "hi": 0.4
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "fitBand.ZONE_ATTACK.hi",
+      "module": "opportunityAllocation",
+      "defaultValue": 1.9,
+      "min": 1,
+      "max": 3,
+      "identifiability": "NO_MEASURABLE_EFFECT",
+      "bestPrimaryMetric": "zoneActionShare",
+      "bestPooledT": -2.1253,
+      "directionConsistency": 1,
+      "guardrailBreaches": [],
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "confoundedWith": [],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_NO_EFFECT",
+      "readinessReason": "No primary-family metric clears both family-wise significance and its practical effect threshold.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 1.9,
+        "hi": 1.9
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "fitBand.CUT.lo",
+      "module": "opportunityAllocation",
+      "defaultValue": 0.4,
+      "min": 0.1,
+      "max": 1,
+      "identifiability": "NO_MEASURABLE_EFFECT",
+      "bestPrimaryMetric": "usageEntropy",
+      "bestPooledT": -0.6297,
+      "directionConsistency": 0.6875,
+      "guardrailBreaches": [],
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "confoundedWith": [],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_NO_EFFECT",
+      "readinessReason": "No primary-family metric clears both family-wise significance and its practical effect threshold.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 0.4,
+        "hi": 0.4
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "fitBand.CUT.hi",
+      "module": "opportunityAllocation",
+      "defaultValue": 1.9,
+      "min": 1,
+      "max": 3,
+      "identifiability": "NO_MEASURABLE_EFFECT",
+      "bestPrimaryMetric": "leadingFgaShare",
+      "bestPooledT": 0.8051,
+      "directionConsistency": 0.5333,
+      "guardrailBreaches": [],
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "confoundedWith": [],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_NO_EFFECT",
+      "readinessReason": "No primary-family metric clears both family-wise significance and its practical effect threshold.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 1.9,
+        "hi": 1.9
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "fitBand.ISOLATION.lo",
+      "module": "opportunityAllocation",
+      "defaultValue": 0.5,
+      "min": 0.1,
+      "max": 1,
+      "identifiability": "NO_MEASURABLE_EFFECT",
+      "bestPrimaryMetric": "usageEntropy",
+      "bestPooledT": 2.3673,
+      "directionConsistency": 0.7619,
+      "guardrailBreaches": [],
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "confoundedWith": [],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_NO_EFFECT",
+      "readinessReason": "No primary-family metric clears both family-wise significance and its practical effect threshold.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 0.5,
+        "hi": 0.5
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "fitBand.ISOLATION.hi",
+      "module": "opportunityAllocation",
+      "defaultValue": 1.8,
+      "min": 1,
+      "max": 3,
+      "identifiability": "NO_MEASURABLE_EFFECT",
+      "bestPrimaryMetric": "usageEntropy",
+      "bestPooledT": -2.0058,
+      "directionConsistency": 0.75,
+      "guardrailBreaches": [],
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "confoundedWith": [],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_NO_EFFECT",
+      "readinessReason": "No primary-family metric clears both family-wise significance and its practical effect threshold.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 1.8,
+        "hi": 1.8
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "fitBand.PICK_AND_ROLL.lo",
+      "module": "opportunityAllocation",
+      "defaultValue": 0.55,
+      "min": 0.1,
+      "max": 1,
+      "identifiability": "NO_MEASURABLE_EFFECT",
+      "bestPrimaryMetric": "usageEntropy",
+      "bestPooledT": -1.6391,
+      "directionConsistency": 0.5714,
+      "guardrailBreaches": [],
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "confoundedWith": [],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_NO_EFFECT",
+      "readinessReason": "No primary-family metric clears both family-wise significance and its practical effect threshold.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 0.55,
+        "hi": 0.55
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "fitBand.PICK_AND_ROLL.hi",
+      "module": "opportunityAllocation",
+      "defaultValue": 1.7,
+      "min": 1,
+      "max": 3,
+      "identifiability": "NO_MEASURABLE_EFFECT",
+      "bestPrimaryMetric": "usageEntropy",
+      "bestPooledT": 0.3089,
+      "directionConsistency": 0.6,
+      "guardrailBreaches": [],
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "confoundedWith": [],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_NO_EFFECT",
+      "readinessReason": "No primary-family metric clears both family-wise significance and its practical effect threshold.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 1.7,
+        "hi": 1.7
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "fitBand.TRANSITION.lo",
+      "module": "opportunityAllocation",
+      "defaultValue": 0.6,
+      "min": 0.1,
+      "max": 1,
+      "identifiability": "NO_MEASURABLE_EFFECT",
+      "bestPrimaryMetric": "leadingFgaShare",
+      "bestPooledT": 3.2332,
+      "directionConsistency": 0.7273,
+      "guardrailBreaches": [],
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "confoundedWith": [
+        "fitBand.TRANSITION.hi"
+      ],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_NO_EFFECT",
+      "readinessReason": "No primary-family metric clears both family-wise significance and its practical effect threshold.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 0.6,
+        "hi": 0.6
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "fitBand.TRANSITION.hi",
+      "module": "opportunityAllocation",
+      "defaultValue": 1.6,
+      "min": 1,
+      "max": 3,
+      "identifiability": "NO_MEASURABLE_EFFECT",
+      "bestPrimaryMetric": "leadingFgaShare",
+      "bestPooledT": -2.3715,
+      "directionConsistency": 0.6818,
+      "guardrailBreaches": [],
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "confoundedWith": [
+        "fitBand.TRANSITION.lo"
+      ],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_NO_EFFECT",
+      "readinessReason": "No primary-family metric clears both family-wise significance and its practical effect threshold.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 1.6,
+        "hi": 1.6
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "fitBand.GENERIC_HALF_COURT.lo",
+      "module": "opportunityAllocation",
+      "defaultValue": 0.75,
+      "min": 0.1,
+      "max": 1,
+      "identifiability": "NO_MEASURABLE_EFFECT",
+      "bestPrimaryMetric": "usageEntropy",
+      "bestPooledT": 0.5762,
+      "directionConsistency": 0.619,
+      "guardrailBreaches": [],
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "confoundedWith": [
+        "fitBand.GENERIC_HALF_COURT.hi"
+      ],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_NO_EFFECT",
+      "readinessReason": "No primary-family metric clears both family-wise significance and its practical effect threshold.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 0.75,
+        "hi": 0.75
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "fitBand.GENERIC_HALF_COURT.hi",
+      "module": "opportunityAllocation",
+      "defaultValue": 1.35,
+      "min": 1,
+      "max": 3,
+      "identifiability": "NO_MEASURABLE_EFFECT",
+      "bestPrimaryMetric": "usageEntropy",
+      "bestPooledT": -0.6662,
+      "directionConsistency": 0.619,
+      "guardrailBreaches": [],
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "confoundedWith": [
+        "fitBand.GENERIC_HALF_COURT.lo"
+      ],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_NO_EFFECT",
+      "readinessReason": "No primary-family metric clears both family-wise significance and its practical effect threshold.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 1.35,
+        "hi": 1.35
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "shotLocation.rimWeight",
+      "module": "possessionContext",
+      "defaultValue": 0.34,
+      "min": 0.15,
+      "max": 0.6,
+      "identifiability": "CONFOUNDED",
+      "bestPrimaryMetric": "rimShare",
+      "bestPooledT": 76.9432,
+      "directionConsistency": 1,
+      "guardrailBreaches": [],
+      "support": "UNSUPPORTED",
+      "confoundedWith": [
+        "shotLocation.rimBiasMultiplier"
+      ],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_CONFOUNDED",
+      "readinessReason": "Primary-family response parallel to shotLocation.rimBiasMultiplier. Fitting it would attribute a partner's effect to it.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 0.34,
+        "hi": 0.34
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "shotLocation.postWeight",
+      "module": "possessionContext",
+      "defaultValue": 0.42,
+      "min": 0.2,
+      "max": 0.7,
+      "identifiability": "UNSUPPORTED_BY_TARGET_DATA",
+      "bestPrimaryMetric": "paintShare",
+      "bestPooledT": 82.7866,
+      "directionConsistency": 1,
+      "guardrailBreaches": [],
+      "support": "UNSUPPORTED",
+      "confoundedWith": [],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_PENDING_EXTERNAL_DATA",
+      "readinessReason": "Measurable, but no authorized target can judge which direction is better. Awaiting external data or legal clearance.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 0.42,
+        "hi": 0.42
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "shotLocation.midrangeWeight",
+      "module": "possessionContext",
+      "defaultValue": 0.18,
+      "min": 0.05,
+      "max": 0.5,
+      "identifiability": "UNSUPPORTED_BY_TARGET_DATA",
+      "bestPrimaryMetric": "midShare",
+      "bestPooledT": 90.0057,
+      "directionConsistency": 1,
+      "guardrailBreaches": [],
+      "support": "UNSUPPORTED",
+      "confoundedWith": [],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_PENDING_EXTERNAL_DATA",
+      "readinessReason": "Measurable, but no authorized target can judge which direction is better. Awaiting external data or legal clearance.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 0.18,
+        "hi": 0.18
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "shotLocation.threeWeight",
+      "module": "possessionContext",
+      "defaultValue": 0.22,
+      "min": 0.05,
+      "max": 0.6,
+      "identifiability": "NO_MEASURABLE_EFFECT",
+      "bestPrimaryMetric": "threeShare",
+      "bestPooledT": 14.0277,
+      "directionConsistency": 1,
+      "guardrailBreaches": [],
+      "support": "UNSUPPORTED",
+      "confoundedWith": [
+        "shotLocation.perimeterBiasMultiplier"
+      ],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_NO_EFFECT",
+      "readinessReason": "No primary-family metric clears both family-wise significance and its practical effect threshold.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 0.22,
+        "hi": 0.22
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "shotLocation.rimBiasMultiplier",
+      "module": "possessionGame",
+      "defaultValue": 1.6,
+      "min": 0.5,
+      "max": 3,
+      "identifiability": "CONFOUNDED",
+      "bestPrimaryMetric": "rimShare",
+      "bestPooledT": 46.7319,
+      "directionConsistency": 1,
+      "guardrailBreaches": [],
+      "support": "UNSUPPORTED",
+      "confoundedWith": [
+        "shotLocation.rimWeight"
+      ],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_CONFOUNDED",
+      "readinessReason": "Primary-family response parallel to shotLocation.rimWeight. Fitting it would attribute a partner's effect to it.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 1.6,
+        "hi": 1.6
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "shotLocation.perimeterBiasMultiplier",
+      "module": "possessionGame",
+      "defaultValue": 1.5,
+      "min": 0.5,
+      "max": 3,
+      "identifiability": "CONFOUNDED",
+      "bestPrimaryMetric": "threeShare",
+      "bestPooledT": 30.4126,
+      "directionConsistency": 1,
+      "guardrailBreaches": [],
+      "support": "UNSUPPORTED",
+      "confoundedWith": [
+        "shotLocation.threeWeight"
+      ],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_CONFOUNDED",
+      "readinessReason": "Primary-family response parallel to shotLocation.threeWeight. Fitting it would attribute a partner's effect to it.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 1.5,
+        "hi": 1.5
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "conversion.rimBonus",
+      "module": "possessionGame",
+      "defaultValue": 0.155,
+      "min": 0.05,
+      "max": 0.28,
+      "identifiability": "UNSUPPORTED_BY_TARGET_DATA",
+      "bestPrimaryMetric": "rimMakeRate",
+      "bestPooledT": 50.3234,
+      "directionConsistency": 1,
+      "guardrailBreaches": [],
+      "support": "UNSUPPORTED",
+      "confoundedWith": [],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_PENDING_EXTERNAL_DATA",
+      "readinessReason": "Measurable, but no authorized target can judge which direction is better. Awaiting external data or legal clearance.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 0.155,
+        "hi": 0.155
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "conversion.paintBonus",
+      "module": "possessionGame",
+      "defaultValue": 0.015,
+      "min": -0.1,
+      "max": 0.12,
+      "identifiability": "UNSUPPORTED_BY_TARGET_DATA",
+      "bestPrimaryMetric": "paintMakeRate",
+      "bestPooledT": 39.4605,
+      "directionConsistency": 1,
+      "guardrailBreaches": [],
+      "support": "UNSUPPORTED",
+      "confoundedWith": [],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_PENDING_EXTERNAL_DATA",
+      "readinessReason": "Measurable, but no authorized target can judge which direction is better. Awaiting external data or legal clearance.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 0.015,
+        "hi": 0.015
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "conversion.midrangePenalty",
+      "module": "possessionGame",
+      "defaultValue": -0.055,
+      "min": -0.15,
+      "max": 0.02,
+      "identifiability": "UNSUPPORTED_BY_TARGET_DATA",
+      "bestPrimaryMetric": "midMakeRate",
+      "bestPooledT": 37.493,
+      "directionConsistency": 1,
+      "guardrailBreaches": [],
+      "support": "UNSUPPORTED",
+      "confoundedWith": [],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_PENDING_EXTERNAL_DATA",
+      "readinessReason": "Measurable, but no authorized target can judge which direction is better. Awaiting external data or legal clearance.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": -0.055,
+        "hi": -0.055
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "era.paceTempoScale",
+      "module": "possessionContext",
+      "defaultValue": 1.35,
+      "min": 0.5,
+      "max": 3,
+      "identifiability": "UNSUPPORTED_BY_TARGET_DATA",
+      "bestPrimaryMetric": "pace",
+      "bestPooledT": 13.5587,
+      "directionConsistency": 0.9583,
+      "guardrailBreaches": [],
+      "support": "UNSUPPORTED",
+      "confoundedWith": [],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_PENDING_EXTERNAL_DATA",
+      "readinessReason": "Measurable, but no authorized target can judge which direction is better. Awaiting external data or legal clearance.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 1.35,
+        "hi": 1.35
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "era.paceBoundFraction",
+      "module": "possessionContext",
+      "defaultValue": 0.14,
+      "min": 0.05,
+      "max": 0.3,
+      "identifiability": "NO_MEASURABLE_EFFECT",
+      "bestPrimaryMetric": "pace",
+      "bestPooledT": 0,
+      "directionConsistency": 0,
+      "guardrailBreaches": [],
+      "support": "UNSUPPORTED",
+      "confoundedWith": [],
+      "safetyClampNote": "Bounds realized pace around the era anchor. Measured unclamped pace lands at 96-98 inside an 82-109 band, so no coach tempo in the pool approaches it.",
+      "readiness": "DEFAULT_FROZEN_NO_EFFECT",
+      "readinessReason": "Reclassified as a safety clamp: a real consumer that only prevents impossible extremes, and never binds within the corpus. Tuning a guard rail is not calibration.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 0.14,
+        "hi": 0.14
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "era.threeAnchorMax",
+      "module": "possessionContext",
+      "defaultValue": 12,
+      "min": 2,
+      "max": 30,
+      "identifiability": "NO_MEASURABLE_EFFECT",
+      "bestPrimaryMetric": "threeShare",
+      "bestPooledT": 0,
+      "directionConsistency": 0,
+      "guardrailBreaches": [],
+      "support": "UNSUPPORTED",
+      "confoundedWith": [],
+      "safetyClampNote": "Upper clamp on the three-point odds-ratio anchor. Measured ratios run 1.1-2.1 against a clamp at 12; even perturbed to 5 it does not engage.",
+      "readiness": "DEFAULT_FROZEN_NO_EFFECT",
+      "readinessReason": "Reclassified as a safety clamp: a real consumer that only prevents impossible extremes, and never binds within the corpus. Tuning a guard rail is not calibration.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 12,
+        "hi": 12
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "era.freeThrowTripRate",
+      "module": "possessionContext",
+      "defaultValue": 0.5,
+      "min": 0.2,
+      "max": 1,
+      "identifiability": "UNSUPPORTED_BY_TARGET_DATA",
+      "bestPrimaryMetric": "ftr",
+      "bestPooledT": 63.9222,
+      "directionConsistency": 1,
+      "guardrailBreaches": [],
+      "support": "UNSUPPORTED",
+      "confoundedWith": [],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_PENDING_EXTERNAL_DATA",
+      "readinessReason": "Measurable, but no authorized target can judge which direction is better. Awaiting external data or legal clearance.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 0.5,
+        "hi": 0.5
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "zone.highPostVulnerability",
+      "module": "zoneResolution",
+      "defaultValue": 1,
+      "min": 0.3,
+      "max": 2,
+      "identifiability": "NO_MEASURABLE_EFFECT",
+      "bestPrimaryMetric": "zoneActionShare",
+      "bestPooledT": 0.8222,
+      "directionConsistency": 0.75,
+      "guardrailBreaches": [],
+      "support": "STRUCTURAL_VALIDATION_ONLY",
+      "confoundedWith": [],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_NO_EFFECT",
+      "readinessReason": "No primary-family metric clears both family-wise significance and its practical effect threshold.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 1,
+        "hi": 1
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "zone.cornerVulnerability",
+      "module": "zoneResolution",
+      "defaultValue": 1,
+      "min": 0.3,
+      "max": 2,
+      "identifiability": "IDENTIFIABLE",
+      "bestPrimaryMetric": "threePar",
+      "bestPooledT": 6.4221,
+      "directionConsistency": 1,
+      "guardrailBreaches": [],
+      "support": "STRUCTURAL_VALIDATION_ONLY",
+      "confoundedWith": [],
+      "safetyClampNote": null,
+      "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+      "readinessReason": "Only structural checks apply — invariants, monotonicity, bounds. There is no value to fit it to.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 1,
+        "hi": 1
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "coach.actionMixInfluence",
+      "module": "coachIntelligence",
+      "defaultValue": 1,
+      "min": 0.3,
+      "max": 2,
+      "identifiability": "CONFOUNDED",
+      "bestPrimaryMetric": "pnrShare",
+      "bestPooledT": 43.2703,
+      "directionConsistency": 0.9167,
+      "guardrailBreaches": [],
+      "support": "STRUCTURAL_VALIDATION_ONLY",
+      "confoundedWith": [
+        "coach.rosterSensitivity"
+      ],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_CONFOUNDED",
+      "readinessReason": "Primary-family response parallel to coach.rosterSensitivity. Fitting it would attribute a partner's effect to it.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 1,
+        "hi": 1
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "coach.rosterSensitivity",
+      "module": "coachIntelligence",
+      "defaultValue": 1,
+      "min": 0.3,
+      "max": 2,
+      "identifiability": "CONFOUNDED",
+      "bestPrimaryMetric": "pnrShare",
+      "bestPooledT": 37.5813,
+      "directionConsistency": 0.875,
+      "guardrailBreaches": [],
+      "support": "STRUCTURAL_VALIDATION_ONLY",
+      "confoundedWith": [
+        "coach.actionMixInfluence"
+      ],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_CONFOUNDED",
+      "readinessReason": "Primary-family response parallel to coach.actionMixInfluence. Fitting it would attribute a partner's effect to it.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 1,
+        "hi": 1
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "coach.offensiveAdjustmentMinEvents",
+      "module": "coachAdjustment",
+      "defaultValue": 6,
+      "min": 1,
+      "max": 16,
+      "identifiability": "CONFOUNDED",
+      "bestPrimaryMetric": "adjustments",
+      "bestPooledT": -82.121,
+      "directionConsistency": 1,
+      "guardrailBreaches": [],
+      "support": "STRUCTURAL_VALIDATION_ONLY",
+      "confoundedWith": [
+        "coach.offensiveAdjustmentCooldown"
+      ],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_CONFOUNDED",
+      "readinessReason": "Primary-family response parallel to coach.offensiveAdjustmentCooldown. Fitting it would attribute a partner's effect to it.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 6,
+        "hi": 6
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "coach.defensiveAdjustmentMinEvents",
+      "module": "coachAdjustment",
+      "defaultValue": 5,
+      "min": 1,
+      "max": 16,
+      "identifiability": "NO_MEASURABLE_EFFECT",
+      "bestPrimaryMetric": "adjustments",
+      "bestPooledT": -0.1443,
+      "directionConsistency": 0.6364,
+      "guardrailBreaches": [],
+      "support": "STRUCTURAL_VALIDATION_ONLY",
+      "confoundedWith": [],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_NO_EFFECT",
+      "readinessReason": "No primary-family metric clears both family-wise significance and its practical effect threshold.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 5,
+        "hi": 5
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "coach.offensiveAdjustmentCooldown",
+      "module": "coachAdjustment",
+      "defaultValue": 30,
+      "min": 4,
+      "max": 60,
+      "identifiability": "CONFOUNDED",
+      "bestPrimaryMetric": "adjustments",
+      "bestPooledT": -78.7498,
+      "directionConsistency": 1,
+      "guardrailBreaches": [],
+      "support": "STRUCTURAL_VALIDATION_ONLY",
+      "confoundedWith": [
+        "coach.offensiveAdjustmentMinEvents"
+      ],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_CONFOUNDED",
+      "readinessReason": "Primary-family response parallel to coach.offensiveAdjustmentMinEvents. Fitting it would attribute a partner's effect to it.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 30,
+        "hi": 30
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "coach.defensiveAdjustmentCooldown",
+      "module": "coachAdjustment",
+      "defaultValue": 34,
+      "min": 4,
+      "max": 60,
+      "identifiability": "NO_MEASURABLE_EFFECT",
+      "bestPrimaryMetric": "adjustments",
+      "bestPooledT": -1.3519,
+      "directionConsistency": 0.8182,
+      "guardrailBreaches": [],
+      "support": "STRUCTURAL_VALIDATION_ONLY",
+      "confoundedWith": [],
+      "safetyClampNote": null,
+      "readiness": "DEFAULT_FROZEN_NO_EFFECT",
+      "readinessReason": "No primary-family metric clears both family-wise significance and its practical effect threshold.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 34,
+        "hi": 34
+      },
+      "eligibleForSearch": false
+    },
+    {
+      "id": "coach.adjustmentMagnitude",
+      "module": "coachAdjustment",
+      "defaultValue": 0.06,
+      "min": 0.01,
+      "max": 0.2,
+      "identifiability": "IDENTIFIABLE",
+      "bestPrimaryMetric": "spotUpShare",
+      "bestPooledT": 20.9442,
+      "directionConsistency": 0.8333,
+      "guardrailBreaches": [],
+      "support": "STRUCTURAL_VALIDATION_ONLY",
+      "confoundedWith": [],
+      "safetyClampNote": null,
+      "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+      "readinessReason": "Only structural checks apply — invariants, monotonicity, bounds. There is no value to fit it to.",
+      "movementCapFractionOfRange": 0,
+      "searchBounds": {
+        "lo": 0.06,
+        "hi": 0.06
+      },
+      "eligibleForSearch": false
+    }
+  ],
+  "readinessHash": "63fbd507faa7488214f8c2879bb9a0d7c758018ecf9b53f558fe992b6024b059"
+}

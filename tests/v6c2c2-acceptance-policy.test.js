@@ -30,9 +30,29 @@ describe("frozen acceptance policy", () => {
     expect(POLICY.phase).toBe("6C2C2");
   });
 
-  it("registers every policy version in the canonical registry", () => {
+  // Phase 6C2C4 deliberately superseded four of the domains this policy pinned.
+  // The 6C2C2 policy file is NOT rewritten — its hash is asserted above, and
+  // editing it would erase the record of what 6C2C2 was judged against. The
+  // supersession is recorded here instead, with the reason.
+  const SUPERSEDED_IN_6C2C4 = {
+    parameterIdentifiabilityVersion: { was: "1.0.0", now: "2.0.0", why: "v1 tested max|t| over ~32 metrics against a threshold below its own null median. v2 uses declared metric families with family-wise control." },
+    internalCalibrationFoldVersion: { was: "2.0.0", now: "3.0.0", why: "Folds rebuilt with leakage grouping for scoped calibration." },
+    calibrationObjectiveVersion: { was: "2.0.0", now: "3.0.0", why: "Objective restructured for the scoped-calibration search." },
+    probabilityValidationVersion: { was: "1.0.0", now: "2.0.0", why: "Fresh validation seed block, so a candidate is not judged on the seeds its predecessor was measured against." },
+  };
+
+  it("registers every policy version, or records why it was superseded", () => {
     for (const [k, v] of Object.entries(POLICY_VERSIONS)) {
-      expect(versionOf(k), `${k} must exist in src/versions.js`).toBe(v);
+      const sup = SUPERSEDED_IN_6C2C4[k];
+      if (!sup) {
+        expect(versionOf(k), `${k} must exist in src/versions.js`).toBe(v);
+        continue;
+      }
+      // The policy recorded what this domain was at 6C2C2...
+      expect(sup.was, `${k} supersession must record the 6C2C2 value`).toBe(v);
+      // ...and the registry must now hold the declared successor.
+      expect(versionOf(k), `${k} must hold its declared successor`).toBe(sup.now);
+      expect(sup.why.length, `${k} supersession needs a reason`).toBeGreaterThan(40);
     }
   });
 
