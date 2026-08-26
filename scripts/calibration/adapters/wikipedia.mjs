@@ -241,3 +241,84 @@ export const parseRecord = (html) => {
   }
   return null;
 };
+
+// ── Player career tables ────────────────────────────────────────────────────
+// A player's own article carries a per-SEASON career table, which is the only
+// authorized route to season statistics for eras whose team-season articles
+// have no statistics table at all — the 1950s and much of the 1960s.
+//
+// The regular-season and playoff tables share identical headers, so they are
+// distinguished by content (games played, row count) rather than by position.
+
+const SEASON_LABEL = /^(\d{4})[–-](\d{2,4})$/;
+
+/** "1950–51" -> 1950. A bare year is a playoff row and is refused. */
+export const seasonStartYear = (label) => {
+  const m = SEASON_LABEL.exec(String(label).trim());
+  return m ? Number(m[1]) : null;
+};
+
+/**
+ * Every regular-season row from a player's career table.
+ *
+ * Returns per-season rows with the season's start year, so a caller can select
+ * the exact season a fixture needs rather than a career average.
+ */
+export const parsePlayerCareerTable = (html) => {
+  const candidates = [];
+  for (const t of tablesIn(html)) {
+    const rows = rowsOf(t);
+    if (rows.length < 3) continue;
+    const header = rows.find((r) => r.length >= 6 && r.every((c) => c.tag === "th"));
+    if (!header) continue;
+    const H = header.map((c) => c.text.toUpperCase().replace(/[^A-Z0-9%]/g, ""));
+    const col = (...names) => { for (const n of names) { const i = H.indexOf(n); if (i >= 0) return i; } return -1; };
+    const idx = {
+      year: col("YEAR", "SEASON"), team: col("TEAM"), gp: col("GP", "G"), gs: col("GS"),
+      mpg: col("MPG", "MIN"), fgPct: col("FG%"), tpPct: col("3P%"), ftPct: col("FT%"),
+      rpg: col("RPG", "REB"), apg: col("APG", "AST"), ppg: col("PPG", "PTS"),
+      spg: col("SPG", "STL"), bpg: col("BPG", "BLK"),
+    };
+    if (idx.year < 0 || idx.gp < 0 || idx.ppg < 0) continue;
+
+    const seasons = [];
+    for (const r of rows) {
+      if (r === header || r.every((c) => c.tag === "th")) continue;
+      const label = r[idx.year]?.text?.replace(/[*†‡^]/g, "").trim();
+      const start = seasonStartYear(label);
+      // A bare year ("1951") is a playoff row in these tables, and a career
+      // total row has no season at all. Both are refused rather than guessed at.
+      if (start == null) continue;
+      const get = (i) => (i >= 0 && i < r.length ? num(r[i].text) : null);
+      const pct = (v) => (v == null ? null : v > 1 ? Math.round((v / 100) * 10000) / 10000 : v);
+      const gp = get(idx.gp);
+      if (gp == null) continue;
+      seasons.push({
+        season: label, seasonStartYear: start,
+        team: r[idx.team]?.text?.replace(/[*†‡^]/g, "").trim() ?? null,
+        gp, gs: get(idx.gs), mpg: get(idx.mpg),
+        fgPct: pct(get(idx.fgPct)), threePct: pct(get(idx.tpPct)), ftPct: pct(get(idx.ftPct)),
+        rpg: get(idx.rpg), apg: get(idx.apg), ppg: get(idx.ppg),
+        spg: get(idx.spg), bpg: get(idx.bpg),
+      });
+    }
+    if (seasons.length) candidates.push({ headers: H, seasons, totalGames: seasons.reduce((a, s) => a + s.gp, 0) });
+  }
+  if (!candidates.length) return null;
+  // The regular-season table carries far more total games than the playoff
+  // table covering the same years, which separates them without relying on
+  // their position in the document.
+  return candidates.sort((a, b) => b.totalGames - a.totalGames)[0];
+};
+
+/** One player's line for one season, or null if that season is not in the table. */
+export const playerSeason = (html, startYear) => {
+  const t = parsePlayerCareerTable(html);
+  if (!t) return null;
+  const rows = t.seasons.filter((s) => s.seasonStartYear === startYear);
+  if (!rows.length) return null;
+  // A mid-season trade produces two rows. The one with more games is the
+  // season the player primarily belonged to; both are returned so the caller
+  // can check team membership rather than assume it.
+  return { rows: rows.sort((a, b) => b.gp - a.gp), primary: rows.sort((a, b) => b.gp - a.gp)[0] };
+};

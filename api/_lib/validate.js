@@ -35,6 +35,11 @@ export const validateTeamIds = (ids) => {
   const seenPerson = new Set();
   for (const id of ids) {
     if (typeof id !== "string") return null;
+    // Calibration-only player-season profiles live in the `cal:` namespace and
+    // must never reach the public product. They would already fail the lookup
+    // below, but an explicit rejection makes the isolation intentional and
+    // testable rather than a side effect of them being absent from PLAYERS.
+    if (id.startsWith("cal:")) return null;
     const p = byId.get(id);
     if (!p) return null;
     if (seenEntry.has(id)) return null;

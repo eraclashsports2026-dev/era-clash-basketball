@@ -55,7 +55,12 @@
     "calibration:coverage-v2": "node scripts/calibration/build-targets-v2.mjs coverage",
     "calibration:probability": "node scripts/calibration/probability-suite.mjs reliability",
     "calibration:strength-ladder": "node scripts/calibration/probability-suite.mjs strength-ladder",
-    "calibration:balanced-vs-ovr": "node scripts/calibration/probability-suite.mjs balanced-vs-ovr"
+    "calibration:balanced-vs-ovr": "node scripts/calibration/probability-suite.mjs balanced-vs-ovr",
+    "calibration:players:build": "node scripts/calibration/build-players-v3.mjs build",
+    "calibration:players:verify": "node scripts/calibration/build-players-v3.mjs verify",
+    "calibration:players:coverage": "node scripts/calibration/build-players-v3.mjs coverage",
+    "calibration:players:refresh": "node scripts/calibration/build-players-v3.mjs build --refresh",
+    "calibration:build-corpus-v3": "node scripts/calibration/build-corpus-v3.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",
