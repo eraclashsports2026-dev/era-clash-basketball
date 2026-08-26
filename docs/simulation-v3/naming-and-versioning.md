@@ -38,18 +38,25 @@
 | Historical holdout set | `historicalHoldoutSetVersion` | **3.0.0** | DEVELOPMENT (does **not** affect results) |
 | Synthetic stress set | `syntheticStressSetVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Calibration parameter registry | `calibrationParameterRegistryVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |
-| Calibration objective | `calibrationObjectiveVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |
-| Probability validation | `probabilityValidationVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Calibration objective | `calibrationObjectiveVersion` | **3.0.0** | DEVELOPMENT (does **not** affect results) |
+| Probability validation | `probabilityValidationVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |
 | Actual-game side symmetry | `actualGameSymmetryVersion` | **1.0.0** | DEVELOPMENT (**affects results**) |
 | Runtime parameter binding | `runtimeParameterBindingVersion` | **1.0.0** | DEVELOPMENT (**affects results**) |
 | Parameter connectivity | `parameterConnectivityVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Calibration readiness | `calibrationReadinessVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |
+| Calibration scope | `calibrationScopeVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Scoped calibration policy | `scopedCalibrationPolicyVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Calibration search | `calibrationSearchVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Calibration candidate set | `calibrationCandidateSetVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Parameter history | `parameterHistoryVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Side-symmetry validation | `sideSymmetryValidationVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |
 | Calibration support matrix | `calibrationSupportMatrixVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |
 | Parameter sensitivity seed set | `parameterSensitivitySeedSetVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Default parity fixtures | `defaultParityFixtureVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Tier B target data | `tierBTargetDataVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Independent source verification | `independentSourceVerificationVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
-| Parameter identifiability | `parameterIdentifiabilityVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
-| Internal calibration folds | `internalCalibrationFoldVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |
+| Parameter identifiability | `parameterIdentifiabilityVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |
+| Internal calibration folds | `internalCalibrationFoldVersion` | **3.0.0** | DEVELOPMENT (does **not** affect results) |
 | Holdout acceptance policy | `holdoutAcceptancePolicyVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Holdout validation | `holdoutValidationVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Private preview validation | `privatePreviewValidationVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |

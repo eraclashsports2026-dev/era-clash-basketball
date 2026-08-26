@@ -130,10 +130,10 @@ export const REGISTRY = {
   calibrationParameterRegistryVersion: entry("2.0.0", DEVELOPMENT,
     "The single registry every tunable coefficient must live in. A tuned value outside it is invisible to the parameter history, which is how a model becomes untraceable. v2 (Phase 6C2C3) is a STRUCTURAL change, not a calibration change: two entries were reclassified as derived, three were split or corrected to the values the engine actually runs, and every entry gained a registryClass. The prior snapshot and hash are preserved in data/calibration/registry-v1-snapshot.json.", false),
 
-  calibrationObjectiveVersion: entry("2.0.0", DEVELOPMENT,
+  calibrationObjectiveVersion: entry("3.0.0", DEVELOPMENT,
     "The objective function and its acceptance rules. Bumped whenever a weight or threshold changes, so a result can never be attributed to the wrong objective. v2 (Phase 6C2C2) adds separately-reported components for zone behaviour, coach identity, adjustment behaviour and probability reliability, and refuses to collapse them into one opaque score.", false),
 
-  probabilityValidationVersion: entry("1.0.0", DEVELOPMENT,
+  probabilityValidationVersion: entry("2.0.0", DEVELOPMENT,
     "The probability reliability suite: bins, scoring rules and the strength ladder. Does not affect game results.", false),
 
   historicalTargetSchemaVersion: entry("1.0.0", DEVELOPMENT,
@@ -151,6 +151,28 @@ export const REGISTRY = {
   // ── Phase 6C2C3 runtime wiring domains ───────────────────────────────────
   runtimeParameterBindingVersion: entry("1.0.0", DEVELOPMENT,
     "How the calibration registry reaches the running engine: the compiled parameter set, its threading through the prepared context, and each consumer binding. DOES affect results once wired — the engine now reads its coefficients from here — so it belongs in the development fingerprint.", true),
+
+  // ── Phase 6C2C4 scoped-calibration domains ───────────────────────────────
+  calibrationReadinessVersion: entry("2.0.0", DEVELOPMENT,
+    "The mapping from identifiability and support onto exactly one calibration-eligibility class per parameter. v2 because v1's readiness numbers were asserted in prose rather than computed, and did not reconcile to the active parameter count.", false),
+
+  calibrationScopeVersion: entry("1.0.0", DEVELOPMENT,
+    "Which parameters a calibration search may touch, with per-parameter bounds and movement limits. Frozen before search; mutating it mid-search would let the scope follow the results.", false),
+
+  scopedCalibrationPolicyVersion: entry("1.0.0", DEVELOPMENT,
+    "Acceptance rules for a scoped calibration candidate: fold structure, objective weights, regularization, movement caps and rejection criteria.", false),
+
+  calibrationSearchVersion: entry("1.0.0", DEVELOPMENT,
+    "The deterministic staged search procedure. Bumped when the search itself changes, so a candidate can never be attributed to the wrong procedure.", false),
+
+  calibrationCandidateSetVersion: entry("1.0.0", DEVELOPMENT,
+    "The locked candidate parameter values and their provenance.", false),
+
+  parameterHistoryVersion: entry("1.0.0", DEVELOPMENT,
+    "Append-only record of every candidate evaluated, accepted or rejected, with the reason.", false),
+
+  sideSymmetryValidationVersion: entry("2.0.0", DEVELOPMENT,
+    "The side-symmetry validation procedure and seed sets. v2 uses a fresh seed block so a candidate is not judged on the seeds its predecessor was measured against.", false),
 
   parameterConnectivityVersion: entry("1.0.0", DEVELOPMENT,
     "The procedure that proves each active parameter reaches a real runtime consumer and moves its intended output. A gate, not a computation.", false),
@@ -173,10 +195,10 @@ export const REGISTRY = {
   independentSourceVerificationVersion: entry("1.0.0", DEVELOPMENT,
     "The second-source verification policy and its coverage requirements. Bumped when the required coverage or the disagreement-resolution rules change.", false),
 
-  parameterIdentifiabilityVersion: entry("1.0.0", DEVELOPMENT,
+  parameterIdentifiabilityVersion: entry("2.0.0", DEVELOPMENT,
     "The sensitivity and confounding analysis that decides which parameters may be tuned at all. Bumped when a classification threshold changes — never to enlarge the tunable set after seeing a result.", false),
 
-  internalCalibrationFoldVersion: entry("2.0.0", DEVELOPMENT,
+  internalCalibrationFoldVersion: entry("3.0.0", DEVELOPMENT,
     "Fold membership for internal tuning and internal validation. Frozen before tuning; a bump means the split changed and every prior fold measurement is void.", false),
 
   holdoutAcceptancePolicyVersion: entry("1.0.0", DEVELOPMENT,
