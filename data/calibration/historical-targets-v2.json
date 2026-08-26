@@ -1,0 +1,2654 @@
+{
+  "targetDataVersion": "2.0.0",
+  "targetSchemaVersion": "1.0.0",
+  "historicalCorpusVersion": "2.0.0",
+  "authorizedSources": [
+    {
+      "name": "Wikipedia (Wikimedia Foundation)",
+      "type": "AUTHORIZED_PUBLIC_API",
+      "license": "CC BY-SA 4.0",
+      "note": "Wikipedia content, CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Reused with attribution. Only extracted numeric facts are stored; no article text is committed to the repository."
+    }
+  ],
+  "prohibitedSources": [
+    {
+      "name": "basketball-reference.com / Sports Reference LLC",
+      "status": "PROHIBITED_FOR_MODEL_CALIBRATION",
+      "reason": "Terms forbid using the statistics for training, fine-tuning, prompting or instructing AI models in any manner. Technical accessibility is not authorization.",
+      "used": false
+    },
+    {
+      "name": "stats.nba.com",
+      "status": "NO_AUTHORIZED_PATH",
+      "reason": "No response from this environment; nba.com denies robots.txt.",
+      "used": false
+    }
+  ],
+  "records": [
+    {
+      "fixtureId": "h2-1962-63-celtics",
+      "classification": "HISTORICAL_LINEUP",
+      "teamSeason": "1962–63 Boston Celtics",
+      "season": "1962-63",
+      "eraStyleId": "1960s",
+      "set": "historical-calibration",
+      "targetDataVersion": "2.0.0",
+      "targetSchemaVersion": "1.0.0",
+      "teamTargets": {
+        "games": {
+          "value": 80,
+          "availability": "RECORDED_STATISTIC",
+          "provenance": {
+            "sourceType": "AUTHORIZED_PUBLIC_API",
+            "publisher": "Wikipedia (Wikimedia Foundation)",
+            "sourceUrl": "https://en.wikipedia.org/wiki/1962%E2%80%9363_Boston_Celtics_season?oldid=1342683898",
+            "revisionId": 1342683898,
+            "contentHash": "2c89e3033816588261570b1b8ed8cfa1",
+            "retrievedAt": "2026-08-26",
+            "licenseNote": "Wikipedia content, CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Reused with attribution. Only extracted numeric facts are stored; no article text is committed to the repository.",
+            "verificationStatus": "PARSED_FROM_SOURCE",
+            "attribution": "Wikipedia contributors, CC BY-SA 4.0"
+          }
+        },
+        "wins": {
+          "value": 58,
+          "availability": "RECORDED_STATISTIC",
+          "provenance": {
+            "sourceType": "AUTHORIZED_PUBLIC_API",
+            "publisher": "Wikipedia (Wikimedia Foundation)",
+            "sourceUrl": "https://en.wikipedia.org/wiki/1962%E2%80%9363_Boston_Celtics_season?oldid=1342683898",
+            "revisionId": 1342683898,
+            "contentHash": "2c89e3033816588261570b1b8ed8cfa1",
+            "retrievedAt": "2026-08-26",
+            "licenseNote": "Wikipedia content, CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Reused with attribution. Only extracted numeric facts are stored; no article text is committed to the repository.",
+            "verificationStatus": "PARSED_FROM_SOURCE",
+            "attribution": "Wikipedia contributors, CC BY-SA 4.0"
+          }
+        },
+        "losses": {
+          "value": 22,
+          "availability": "RECORDED_STATISTIC",
+          "provenance": {
+            "sourceType": "AUTHORIZED_PUBLIC_API",
+            "publisher": "Wikipedia (Wikimedia Foundation)",
+            "sourceUrl": "https://en.wikipedia.org/wiki/1962%E2%80%9363_Boston_Celtics_season?oldid=1342683898",
+            "revisionId": 1342683898,
+            "contentHash": "2c89e3033816588261570b1b8ed8cfa1",
+            "retrievedAt": "2026-08-26",
+            "licenseNote": "Wikipedia content, CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Reused with attribution. Only extracted numeric facts are stored; no article text is committed to the repository.",
+            "verificationStatus": "PARSED_FROM_SOURCE",
+            "attribution": "Wikipedia contributors, CC BY-SA 4.0"
+          }
+        },
+        "pointsPerGame": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "pointsAllowedPerGame": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "fieldGoalAttempts": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "fieldGoalPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "twoPointAttempts": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "twoPointPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "threePointAttempts": {
+          "value": null,
+          "availability": "NOT_RECORDED_IN_ERA",
+          "provenance": null
+        },
+        "threePointPct": {
+          "value": null,
+          "availability": "NOT_RECORDED_IN_ERA",
+          "provenance": null
+        },
+        "freeThrowAttempts": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "freeThrowPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "rebounds": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "offensiveRebounds": {
+          "value": null,
+          "availability": "NOT_RECORDED_IN_ERA",
+          "provenance": null
+        },
+        "defensiveRebounds": {
+          "value": null,
+          "availability": "NOT_RECORDED_IN_ERA",
+          "provenance": null
+        },
+        "assists": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "steals": {
+          "value": null,
+          "availability": "NOT_RECORDED_IN_ERA",
+          "provenance": null
+        },
+        "blocks": {
+          "value": null,
+          "availability": "NOT_RECORDED_IN_ERA",
+          "provenance": null
+        },
+        "turnovers": {
+          "value": null,
+          "availability": "NOT_RECORDED_IN_ERA",
+          "provenance": null
+        },
+        "pace": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "offensiveRating": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "defensiveRating": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "netRating": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "efgPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "trueShootingPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "turnoverPct": {
+          "value": null,
+          "availability": "NOT_RECORDED_IN_ERA",
+          "provenance": null
+        },
+        "offensiveReboundPct": {
+          "value": null,
+          "availability": "NOT_RECORDED_IN_ERA",
+          "provenance": null
+        },
+        "freeThrowRate": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "threePointAttemptRate": {
+          "value": null,
+          "availability": "NOT_RECORDED_IN_ERA",
+          "provenance": null
+        }
+      },
+      "unitTargets": {
+        "unitType": "SELECTED_FIVE",
+        "selectedFiveOnly": true,
+        "availability": "SELECTED_FIVE_SEASON_SHARE_PROXY",
+        "confidence": "MEDIUM",
+        "confidenceCeiling": "HIGH",
+        "playerScoringShares": {
+          "cousy-60s": 0.1592,
+          "sam-60s": 0.2376,
+          "john-h-60s": 0.1725,
+          "tom-h-60s": 0.228,
+          "bill-60s": 0.2027
+        },
+        "playerReboundShares": {
+          "cousy-60s": 0.0553,
+          "sam-60s": 0.1135,
+          "john-h-60s": 0.1454,
+          "tom-h-60s": 0.1709,
+          "bill-60s": 0.5149
+        },
+        "playerAssistShares": {
+          "cousy-60s": 0.3787,
+          "sam-60s": 0.1772,
+          "john-h-60s": 0.125,
+          "tom-h-60s": 0.0698,
+          "bill-60s": 0.2493
+        },
+        "playerOpportunityShares": null,
+        "playerUsageShares": null,
+        "opportunityShareNote": "Field-goal-attempt share is not derivable from published per-game scoring. Scoring share is the validation surface and is a related but distinct quantity.",
+        "provenance": {
+          "sourceType": "AUTHORIZED_PUBLIC_API",
+          "publisher": "Wikipedia (Wikimedia Foundation)",
+          "sourceUrl": "https://en.wikipedia.org/wiki/1962%E2%80%9363_Boston_Celtics_season?oldid=1342683898",
+          "revisionId": 1342683898,
+          "contentHash": "2c89e3033816588261570b1b8ed8cfa1",
+          "retrievedAt": "2026-08-26",
+          "licenseNote": "Wikipedia content, CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Reused with attribution. Only extracted numeric facts are stored; no article text is committed to the repository.",
+          "verificationStatus": "PARSED_FROM_SOURCE",
+          "attribution": "Wikipedia contributors, CC BY-SA 4.0"
+        }
+      },
+      "identityTargets": [
+        {
+          "trait": "pace",
+          "value": "very fast",
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        },
+        {
+          "trait": "offense",
+          "value": "fast break from defensive rebounding, early offence",
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        },
+        {
+          "trait": "defense",
+          "value": "rim-anchored man",
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        },
+        {
+          "trait": "strengths",
+          "value": [
+            "transition volume",
+            "interior defence",
+            "rebounding"
+          ],
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        },
+        {
+          "trait": "weaknesses",
+          "value": [
+            "no perimeter shot exists in this era"
+          ],
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        }
+      ],
+      "confidence": "HIGH",
+      "evidence": "PLAYER_STATISTICS",
+      "notes": []
+    },
+    {
+      "fixtureId": "h2-1964-65-celtics",
+      "classification": "HISTORICAL_STARTER_PROXY",
+      "teamSeason": "1964–65 Boston Celtics",
+      "season": "1964-65",
+      "eraStyleId": "1960s",
+      "set": "historical-calibration",
+      "targetDataVersion": "2.0.0",
+      "targetSchemaVersion": "1.0.0",
+      "teamTargets": {
+        "games": {
+          "value": 80,
+          "availability": "RECORDED_STATISTIC",
+          "provenance": {
+            "sourceType": "AUTHORIZED_PUBLIC_API",
+            "publisher": "Wikipedia (Wikimedia Foundation)",
+            "sourceUrl": "https://en.wikipedia.org/wiki/1964%E2%80%9365_Boston_Celtics_season?oldid=1350025738",
+            "revisionId": 1350025738,
+            "contentHash": "63bfc8c8dd92cd44947bd0476c3c6710",
+            "retrievedAt": "2026-08-26",
+            "licenseNote": "Wikipedia content, CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Reused with attribution. Only extracted numeric facts are stored; no article text is committed to the repository.",
+            "verificationStatus": "PARSED_FROM_SOURCE",
+            "attribution": "Wikipedia contributors, CC BY-SA 4.0"
+          }
+        },
+        "wins": {
+          "value": 62,
+          "availability": "RECORDED_STATISTIC",
+          "provenance": {
+            "sourceType": "AUTHORIZED_PUBLIC_API",
+            "publisher": "Wikipedia (Wikimedia Foundation)",
+            "sourceUrl": "https://en.wikipedia.org/wiki/1964%E2%80%9365_Boston_Celtics_season?oldid=1350025738",
+            "revisionId": 1350025738,
+            "contentHash": "63bfc8c8dd92cd44947bd0476c3c6710",
+            "retrievedAt": "2026-08-26",
+            "licenseNote": "Wikipedia content, CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Reused with attribution. Only extracted numeric facts are stored; no article text is committed to the repository.",
+            "verificationStatus": "PARSED_FROM_SOURCE",
+            "attribution": "Wikipedia contributors, CC BY-SA 4.0"
+          }
+        },
+        "losses": {
+          "value": 18,
+          "availability": "RECORDED_STATISTIC",
+          "provenance": {
+            "sourceType": "AUTHORIZED_PUBLIC_API",
+            "publisher": "Wikipedia (Wikimedia Foundation)",
+            "sourceUrl": "https://en.wikipedia.org/wiki/1964%E2%80%9365_Boston_Celtics_season?oldid=1350025738",
+            "revisionId": 1350025738,
+            "contentHash": "63bfc8c8dd92cd44947bd0476c3c6710",
+            "retrievedAt": "2026-08-26",
+            "licenseNote": "Wikipedia content, CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Reused with attribution. Only extracted numeric facts are stored; no article text is committed to the repository.",
+            "verificationStatus": "PARSED_FROM_SOURCE",
+            "attribution": "Wikipedia contributors, CC BY-SA 4.0"
+          }
+        },
+        "pointsPerGame": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "pointsAllowedPerGame": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "fieldGoalAttempts": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "fieldGoalPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "twoPointAttempts": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "twoPointPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "threePointAttempts": {
+          "value": null,
+          "availability": "NOT_RECORDED_IN_ERA",
+          "provenance": null
+        },
+        "threePointPct": {
+          "value": null,
+          "availability": "NOT_RECORDED_IN_ERA",
+          "provenance": null
+        },
+        "freeThrowAttempts": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "freeThrowPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "rebounds": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "offensiveRebounds": {
+          "value": null,
+          "availability": "NOT_RECORDED_IN_ERA",
+          "provenance": null
+        },
+        "defensiveRebounds": {
+          "value": null,
+          "availability": "NOT_RECORDED_IN_ERA",
+          "provenance": null
+        },
+        "assists": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "steals": {
+          "value": null,
+          "availability": "NOT_RECORDED_IN_ERA",
+          "provenance": null
+        },
+        "blocks": {
+          "value": null,
+          "availability": "NOT_RECORDED_IN_ERA",
+          "provenance": null
+        },
+        "turnovers": {
+          "value": null,
+          "availability": "NOT_RECORDED_IN_ERA",
+          "provenance": null
+        },
+        "pace": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "offensiveRating": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "defensiveRating": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "netRating": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "efgPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "trueShootingPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "turnoverPct": {
+          "value": null,
+          "availability": "NOT_RECORDED_IN_ERA",
+          "provenance": null
+        },
+        "offensiveReboundPct": {
+          "value": null,
+          "availability": "NOT_RECORDED_IN_ERA",
+          "provenance": null
+        },
+        "freeThrowRate": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "threePointAttemptRate": {
+          "value": null,
+          "availability": "NOT_RECORDED_IN_ERA",
+          "provenance": null
+        }
+      },
+      "unitTargets": null,
+      "identityTargets": [
+        {
+          "trait": "pace",
+          "value": "very fast",
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        },
+        {
+          "trait": "offense",
+          "value": "fast break, balanced scoring",
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        },
+        {
+          "trait": "defense",
+          "value": "rim-anchored man",
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        },
+        {
+          "trait": "strengths",
+          "value": [
+            "defence",
+            "depth",
+            "rebounding"
+          ],
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        },
+        {
+          "trait": "weaknesses",
+          "value": [
+            "half-court spacing"
+          ],
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        }
+      ],
+      "confidence": "MEDIUM",
+      "evidence": "ROSTER_ONLY",
+      "notes": []
+    },
+    {
+      "fixtureId": "h2-1972-73-celtics",
+      "classification": "HISTORICAL_STARTER_PROXY",
+      "teamSeason": "1972–73 Boston Celtics",
+      "season": "1972-73",
+      "eraStyleId": "1970s",
+      "set": "historical-calibration",
+      "targetDataVersion": "2.0.0",
+      "targetSchemaVersion": "1.0.0",
+      "teamTargets": {
+        "games": {
+          "value": 82,
+          "availability": "RECORDED_STATISTIC",
+          "provenance": {
+            "sourceType": "AUTHORIZED_PUBLIC_API",
+            "publisher": "Wikipedia (Wikimedia Foundation)",
+            "sourceUrl": "https://en.wikipedia.org/wiki/1972%E2%80%9373_Boston_Celtics_season?oldid=1364389876",
+            "revisionId": 1364389876,
+            "contentHash": "8b277ada430c919531b409da3a3e5fb4",
+            "retrievedAt": "2026-08-26",
+            "licenseNote": "Wikipedia content, CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Reused with attribution. Only extracted numeric facts are stored; no article text is committed to the repository.",
+            "verificationStatus": "PARSED_FROM_SOURCE",
+            "attribution": "Wikipedia contributors, CC BY-SA 4.0"
+          }
+        },
+        "wins": {
+          "value": 68,
+          "availability": "RECORDED_STATISTIC",
+          "provenance": {
+            "sourceType": "AUTHORIZED_PUBLIC_API",
+            "publisher": "Wikipedia (Wikimedia Foundation)",
+            "sourceUrl": "https://en.wikipedia.org/wiki/1972%E2%80%9373_Boston_Celtics_season?oldid=1364389876",
+            "revisionId": 1364389876,
+            "contentHash": "8b277ada430c919531b409da3a3e5fb4",
+            "retrievedAt": "2026-08-26",
+            "licenseNote": "Wikipedia content, CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Reused with attribution. Only extracted numeric facts are stored; no article text is committed to the repository.",
+            "verificationStatus": "PARSED_FROM_SOURCE",
+            "attribution": "Wikipedia contributors, CC BY-SA 4.0"
+          }
+        },
+        "losses": {
+          "value": 14,
+          "availability": "RECORDED_STATISTIC",
+          "provenance": {
+            "sourceType": "AUTHORIZED_PUBLIC_API",
+            "publisher": "Wikipedia (Wikimedia Foundation)",
+            "sourceUrl": "https://en.wikipedia.org/wiki/1972%E2%80%9373_Boston_Celtics_season?oldid=1364389876",
+            "revisionId": 1364389876,
+            "contentHash": "8b277ada430c919531b409da3a3e5fb4",
+            "retrievedAt": "2026-08-26",
+            "licenseNote": "Wikipedia content, CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Reused with attribution. Only extracted numeric facts are stored; no article text is committed to the repository.",
+            "verificationStatus": "PARSED_FROM_SOURCE",
+            "attribution": "Wikipedia contributors, CC BY-SA 4.0"
+          }
+        },
+        "pointsPerGame": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "pointsAllowedPerGame": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "fieldGoalAttempts": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "fieldGoalPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "twoPointAttempts": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "twoPointPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "threePointAttempts": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "threePointPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "freeThrowAttempts": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "freeThrowPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "rebounds": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "offensiveRebounds": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "defensiveRebounds": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "assists": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "steals": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "blocks": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "turnovers": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "pace": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "offensiveRating": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "defensiveRating": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "netRating": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "efgPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "trueShootingPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "turnoverPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "offensiveReboundPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "freeThrowRate": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "threePointAttemptRate": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        }
+      },
+      "unitTargets": null,
+      "identityTargets": [
+        {
+          "trait": "pace",
+          "value": "fast",
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        },
+        {
+          "trait": "offense",
+          "value": "motion and off-ball movement, running game",
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        },
+        {
+          "trait": "defense",
+          "value": "switching, aggressive man",
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        },
+        {
+          "trait": "strengths",
+          "value": [
+            "pace",
+            "team defence",
+            "movement"
+          ],
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        },
+        {
+          "trait": "weaknesses",
+          "value": [
+            "interior size"
+          ],
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        }
+      ],
+      "confidence": "MEDIUM",
+      "evidence": "ROSTER_ONLY",
+      "notes": []
+    },
+    {
+      "fixtureId": "h2-1974-75-celtics",
+      "classification": "HISTORICAL_STARTER_PROXY",
+      "teamSeason": "1974–75 Boston Celtics",
+      "season": "1974-75",
+      "eraStyleId": "1970s",
+      "set": "historical-holdout",
+      "targetDataVersion": "2.0.0",
+      "targetSchemaVersion": "1.0.0",
+      "teamTargets": {
+        "games": {
+          "value": 82,
+          "availability": "RECORDED_STATISTIC",
+          "provenance": {
+            "sourceType": "AUTHORIZED_PUBLIC_API",
+            "publisher": "Wikipedia (Wikimedia Foundation)",
+            "sourceUrl": "https://en.wikipedia.org/wiki/1974%E2%80%9375_Boston_Celtics_season?oldid=1364390105",
+            "revisionId": 1364390105,
+            "contentHash": "35aec6d8fc00023af0a2fd5204a1d86d",
+            "retrievedAt": "2026-08-26",
+            "licenseNote": "Wikipedia content, CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Reused with attribution. Only extracted numeric facts are stored; no article text is committed to the repository.",
+            "verificationStatus": "PARSED_FROM_SOURCE",
+            "attribution": "Wikipedia contributors, CC BY-SA 4.0"
+          }
+        },
+        "wins": {
+          "value": 60,
+          "availability": "RECORDED_STATISTIC",
+          "provenance": {
+            "sourceType": "AUTHORIZED_PUBLIC_API",
+            "publisher": "Wikipedia (Wikimedia Foundation)",
+            "sourceUrl": "https://en.wikipedia.org/wiki/1974%E2%80%9375_Boston_Celtics_season?oldid=1364390105",
+            "revisionId": 1364390105,
+            "contentHash": "35aec6d8fc00023af0a2fd5204a1d86d",
+            "retrievedAt": "2026-08-26",
+            "licenseNote": "Wikipedia content, CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Reused with attribution. Only extracted numeric facts are stored; no article text is committed to the repository.",
+            "verificationStatus": "PARSED_FROM_SOURCE",
+            "attribution": "Wikipedia contributors, CC BY-SA 4.0"
+          }
+        },
+        "losses": {
+          "value": 22,
+          "availability": "RECORDED_STATISTIC",
+          "provenance": {
+            "sourceType": "AUTHORIZED_PUBLIC_API",
+            "publisher": "Wikipedia (Wikimedia Foundation)",
+            "sourceUrl": "https://en.wikipedia.org/wiki/1974%E2%80%9375_Boston_Celtics_season?oldid=1364390105",
+            "revisionId": 1364390105,
+            "contentHash": "35aec6d8fc00023af0a2fd5204a1d86d",
+            "retrievedAt": "2026-08-26",
+            "licenseNote": "Wikipedia content, CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Reused with attribution. Only extracted numeric facts are stored; no article text is committed to the repository.",
+            "verificationStatus": "PARSED_FROM_SOURCE",
+            "attribution": "Wikipedia contributors, CC BY-SA 4.0"
+          }
+        },
+        "pointsPerGame": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "pointsAllowedPerGame": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "fieldGoalAttempts": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "fieldGoalPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "twoPointAttempts": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "twoPointPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "threePointAttempts": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "threePointPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "freeThrowAttempts": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "freeThrowPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "rebounds": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "offensiveRebounds": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "defensiveRebounds": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "assists": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "steals": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "blocks": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "turnovers": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "pace": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "offensiveRating": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "defensiveRating": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "netRating": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "efgPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "trueShootingPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "turnoverPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "offensiveReboundPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "freeThrowRate": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "threePointAttemptRate": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        }
+      },
+      "unitTargets": null,
+      "identityTargets": [
+        {
+          "trait": "pace",
+          "value": "fast",
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        },
+        {
+          "trait": "offense",
+          "value": "motion, running game",
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        },
+        {
+          "trait": "defense",
+          "value": "aggressive man",
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        },
+        {
+          "trait": "strengths",
+          "value": [
+            "pace",
+            "movement"
+          ],
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        },
+        {
+          "trait": "weaknesses",
+          "value": [
+            "interior size"
+          ],
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        }
+      ],
+      "confidence": "MEDIUM",
+      "evidence": "ROSTER_ONLY",
+      "notes": []
+    },
+    {
+      "fixtureId": "h2-1983-84-celtics",
+      "classification": "HISTORICAL_LINEUP",
+      "teamSeason": "1983–84 Boston Celtics",
+      "season": "1983-84",
+      "eraStyleId": "1980s",
+      "set": "historical-calibration",
+      "targetDataVersion": "2.0.0",
+      "targetSchemaVersion": "1.0.0",
+      "teamTargets": {
+        "games": {
+          "value": 82,
+          "availability": "RECORDED_STATISTIC",
+          "provenance": {
+            "sourceType": "AUTHORIZED_PUBLIC_API",
+            "publisher": "Wikipedia (Wikimedia Foundation)",
+            "sourceUrl": "https://en.wikipedia.org/wiki/1983%E2%80%9384_Boston_Celtics_season?oldid=1341719445",
+            "revisionId": 1341719445,
+            "contentHash": "573dc732335abe86e95e14d3efa8dd99",
+            "retrievedAt": "2026-08-26",
+            "licenseNote": "Wikipedia content, CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Reused with attribution. Only extracted numeric facts are stored; no article text is committed to the repository.",
+            "verificationStatus": "PARSED_FROM_SOURCE",
+            "attribution": "Wikipedia contributors, CC BY-SA 4.0"
+          }
+        },
+        "wins": {
+          "value": 62,
+          "availability": "RECORDED_STATISTIC",
+          "provenance": {
+            "sourceType": "AUTHORIZED_PUBLIC_API",
+            "publisher": "Wikipedia (Wikimedia Foundation)",
+            "sourceUrl": "https://en.wikipedia.org/wiki/1983%E2%80%9384_Boston_Celtics_season?oldid=1341719445",
+            "revisionId": 1341719445,
+            "contentHash": "573dc732335abe86e95e14d3efa8dd99",
+            "retrievedAt": "2026-08-26",
+            "licenseNote": "Wikipedia content, CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Reused with attribution. Only extracted numeric facts are stored; no article text is committed to the repository.",
+            "verificationStatus": "PARSED_FROM_SOURCE",
+            "attribution": "Wikipedia contributors, CC BY-SA 4.0"
+          }
+        },
+        "losses": {
+          "value": 20,
+          "availability": "RECORDED_STATISTIC",
+          "provenance": {
+            "sourceType": "AUTHORIZED_PUBLIC_API",
+            "publisher": "Wikipedia (Wikimedia Foundation)",
+            "sourceUrl": "https://en.wikipedia.org/wiki/1983%E2%80%9384_Boston_Celtics_season?oldid=1341719445",
+            "revisionId": 1341719445,
+            "contentHash": "573dc732335abe86e95e14d3efa8dd99",
+            "retrievedAt": "2026-08-26",
+            "licenseNote": "Wikipedia content, CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Reused with attribution. Only extracted numeric facts are stored; no article text is committed to the repository.",
+            "verificationStatus": "PARSED_FROM_SOURCE",
+            "attribution": "Wikipedia contributors, CC BY-SA 4.0"
+          }
+        },
+        "pointsPerGame": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "pointsAllowedPerGame": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "fieldGoalAttempts": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "fieldGoalPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "twoPointAttempts": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "twoPointPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "threePointAttempts": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "threePointPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "freeThrowAttempts": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "freeThrowPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "rebounds": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "offensiveRebounds": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "defensiveRebounds": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "assists": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "steals": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "blocks": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "turnovers": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "pace": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "offensiveRating": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "defensiveRating": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "netRating": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "efgPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "trueShootingPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "turnoverPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "offensiveReboundPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "freeThrowRate": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "threePointAttemptRate": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        }
+      },
+      "unitTargets": {
+        "unitType": "SELECTED_FIVE",
+        "selectedFiveOnly": true,
+        "availability": "SELECTED_FIVE_SEASON_SHARE_PROXY",
+        "confidence": "MEDIUM",
+        "confidenceCeiling": "HIGH",
+        "playerScoringShares": {
+          "dj-80s": 0.1646,
+          "danny-80s": 0.0673,
+          "bird-80s": 0.3018,
+          "mcHale-80s": 0.2294,
+          "parish-80s": 0.2369
+        },
+        "playerReboundShares": {
+          "dj-80s": 0.1049,
+          "danny-80s": 0.049,
+          "bird-80s": 0.302,
+          "mcHale-80s": 0.223,
+          "parish-80s": 0.3211
+        },
+        "playerAssistShares": {
+          "dj-80s": 0.2625,
+          "danny-80s": 0.1418,
+          "bird-80s": 0.4089,
+          "mcHale-80s": 0.0788,
+          "parish-80s": 0.108
+        },
+        "playerOpportunityShares": null,
+        "playerUsageShares": null,
+        "opportunityShareNote": "Field-goal-attempt share is not derivable from published per-game scoring. Scoring share is the validation surface and is a related but distinct quantity.",
+        "provenance": {
+          "sourceType": "AUTHORIZED_PUBLIC_API",
+          "publisher": "Wikipedia (Wikimedia Foundation)",
+          "sourceUrl": "https://en.wikipedia.org/wiki/1983%E2%80%9384_Boston_Celtics_season?oldid=1341719445",
+          "revisionId": 1341719445,
+          "contentHash": "573dc732335abe86e95e14d3efa8dd99",
+          "retrievedAt": "2026-08-26",
+          "licenseNote": "Wikipedia content, CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Reused with attribution. Only extracted numeric facts are stored; no article text is committed to the repository.",
+          "verificationStatus": "PARSED_FROM_SOURCE",
+          "attribution": "Wikipedia contributors, CC BY-SA 4.0"
+        }
+      },
+      "identityTargets": [
+        {
+          "trait": "pace",
+          "value": "moderate",
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        },
+        {
+          "trait": "offense",
+          "value": "half-court execution, post and high-post passing",
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        },
+        {
+          "trait": "defense",
+          "value": "physical man",
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        },
+        {
+          "trait": "strengths",
+          "value": [
+            "front-line size",
+            "passing",
+            "half-court offence"
+          ],
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        },
+        {
+          "trait": "weaknesses",
+          "value": [
+            "perimeter speed"
+          ],
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        }
+      ],
+      "confidence": "HIGH",
+      "evidence": "PLAYER_STATISTICS",
+      "notes": []
+    },
+    {
+      "fixtureId": "h2-1985-86-celtics",
+      "classification": "HISTORICAL_LINEUP",
+      "teamSeason": "1985–86 Boston Celtics",
+      "season": "1985-86",
+      "eraStyleId": "1980s",
+      "set": "historical-calibration",
+      "targetDataVersion": "2.0.0",
+      "targetSchemaVersion": "1.0.0",
+      "teamTargets": {
+        "games": {
+          "value": 82,
+          "availability": "RECORDED_STATISTIC",
+          "provenance": {
+            "sourceType": "AUTHORIZED_PUBLIC_API",
+            "publisher": "Wikipedia (Wikimedia Foundation)",
+            "sourceUrl": "https://en.wikipedia.org/wiki/1985%E2%80%9386_Boston_Celtics_season?oldid=1357307744",
+            "revisionId": 1357307744,
+            "contentHash": "ed74d43c2b78019dc173a662d6ef970c",
+            "retrievedAt": "2026-08-26",
+            "licenseNote": "Wikipedia content, CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Reused with attribution. Only extracted numeric facts are stored; no article text is committed to the repository.",
+            "verificationStatus": "PARSED_FROM_SOURCE",
+            "attribution": "Wikipedia contributors, CC BY-SA 4.0"
+          }
+        },
+        "wins": {
+          "value": 67,
+          "availability": "RECORDED_STATISTIC",
+          "provenance": {
+            "sourceType": "AUTHORIZED_PUBLIC_API",
+            "publisher": "Wikipedia (Wikimedia Foundation)",
+            "sourceUrl": "https://en.wikipedia.org/wiki/1985%E2%80%9386_Boston_Celtics_season?oldid=1357307744",
+            "revisionId": 1357307744,
+            "contentHash": "ed74d43c2b78019dc173a662d6ef970c",
+            "retrievedAt": "2026-08-26",
+            "licenseNote": "Wikipedia content, CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Reused with attribution. Only extracted numeric facts are stored; no article text is committed to the repository.",
+            "verificationStatus": "PARSED_FROM_SOURCE",
+            "attribution": "Wikipedia contributors, CC BY-SA 4.0"
+          }
+        },
+        "losses": {
+          "value": 15,
+          "availability": "RECORDED_STATISTIC",
+          "provenance": {
+            "sourceType": "AUTHORIZED_PUBLIC_API",
+            "publisher": "Wikipedia (Wikimedia Foundation)",
+            "sourceUrl": "https://en.wikipedia.org/wiki/1985%E2%80%9386_Boston_Celtics_season?oldid=1357307744",
+            "revisionId": 1357307744,
+            "contentHash": "ed74d43c2b78019dc173a662d6ef970c",
+            "retrievedAt": "2026-08-26",
+            "licenseNote": "Wikipedia content, CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Reused with attribution. Only extracted numeric facts are stored; no article text is committed to the repository.",
+            "verificationStatus": "PARSED_FROM_SOURCE",
+            "attribution": "Wikipedia contributors, CC BY-SA 4.0"
+          }
+        },
+        "pointsPerGame": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "pointsAllowedPerGame": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "fieldGoalAttempts": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "fieldGoalPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "twoPointAttempts": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "twoPointPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "threePointAttempts": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "threePointPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "freeThrowAttempts": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "freeThrowPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "rebounds": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "offensiveRebounds": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "defensiveRebounds": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "assists": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "steals": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "blocks": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "turnovers": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "pace": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "offensiveRating": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "defensiveRating": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "netRating": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "efgPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "trueShootingPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "turnoverPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "offensiveReboundPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "freeThrowRate": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "threePointAttemptRate": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        }
+      },
+      "unitTargets": {
+        "unitType": "SELECTED_FIVE",
+        "selectedFiveOnly": true,
+        "availability": "SELECTED_FIVE_SEASON_SHARE_PROXY",
+        "confidence": "MEDIUM",
+        "confidenceCeiling": "HIGH",
+        "playerScoringShares": {
+          "dj-80s": 0.1743,
+          "danny-80s": 0.1196,
+          "bird-80s": 0.2882,
+          "mcHale-80s": 0.238,
+          "parish-80s": 0.1799
+        },
+        "playerReboundShares": {
+          "dj-80s": 0.1017,
+          "danny-80s": 0.0869,
+          "bird-80s": 0.2905,
+          "mcHale-80s": 0.2397,
+          "parish-80s": 0.2812
+        },
+        "playerAssistShares": {
+          "dj-80s": 0.2639,
+          "danny-80s": 0.2285,
+          "bird-80s": 0.3066,
+          "mcHale-80s": 0.1202,
+          "parish-80s": 0.0808
+        },
+        "playerOpportunityShares": null,
+        "playerUsageShares": null,
+        "opportunityShareNote": "Field-goal-attempt share is not derivable from published per-game scoring. Scoring share is the validation surface and is a related but distinct quantity.",
+        "provenance": {
+          "sourceType": "AUTHORIZED_PUBLIC_API",
+          "publisher": "Wikipedia (Wikimedia Foundation)",
+          "sourceUrl": "https://en.wikipedia.org/wiki/1985%E2%80%9386_Boston_Celtics_season?oldid=1357307744",
+          "revisionId": 1357307744,
+          "contentHash": "ed74d43c2b78019dc173a662d6ef970c",
+          "retrievedAt": "2026-08-26",
+          "licenseNote": "Wikipedia content, CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Reused with attribution. Only extracted numeric facts are stored; no article text is committed to the repository.",
+          "verificationStatus": "PARSED_FROM_SOURCE",
+          "attribution": "Wikipedia contributors, CC BY-SA 4.0"
+        }
+      },
+      "identityTargets": [
+        {
+          "trait": "pace",
+          "value": "moderate",
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        },
+        {
+          "trait": "offense",
+          "value": "half-court execution, elite passing front line",
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        },
+        {
+          "trait": "defense",
+          "value": "physical man",
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        },
+        {
+          "trait": "strengths",
+          "value": [
+            "front-line size",
+            "passing",
+            "shooting"
+          ],
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        },
+        {
+          "trait": "weaknesses",
+          "value": [
+            "perimeter speed"
+          ],
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        }
+      ],
+      "confidence": "HIGH",
+      "evidence": "PLAYER_STATISTICS",
+      "notes": []
+    },
+    {
+      "fixtureId": "h2-1984-85-lakers",
+      "classification": "HISTORICAL_STARTER_PROXY",
+      "teamSeason": "1984–85 Los Angeles Lakers",
+      "season": "1984-85",
+      "eraStyleId": "1980s",
+      "set": "historical-calibration",
+      "targetDataVersion": "2.0.0",
+      "targetSchemaVersion": "1.0.0",
+      "teamTargets": {
+        "games": {
+          "value": 82,
+          "availability": "RECORDED_STATISTIC",
+          "provenance": {
+            "sourceType": "AUTHORIZED_PUBLIC_API",
+            "publisher": "Wikipedia (Wikimedia Foundation)",
+            "sourceUrl": "https://en.wikipedia.org/wiki/1984%E2%80%9385_Los_Angeles_Lakers_season?oldid=1341739551",
+            "revisionId": 1341739551,
+            "contentHash": "d660baef93d439eba2a34623d6269332",
+            "retrievedAt": "2026-08-26",
+            "licenseNote": "Wikipedia content, CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Reused with attribution. Only extracted numeric facts are stored; no article text is committed to the repository.",
+            "verificationStatus": "PARSED_FROM_SOURCE",
+            "attribution": "Wikipedia contributors, CC BY-SA 4.0"
+          }
+        },
+        "wins": {
+          "value": 62,
+          "availability": "RECORDED_STATISTIC",
+          "provenance": {
+            "sourceType": "AUTHORIZED_PUBLIC_API",
+            "publisher": "Wikipedia (Wikimedia Foundation)",
+            "sourceUrl": "https://en.wikipedia.org/wiki/1984%E2%80%9385_Los_Angeles_Lakers_season?oldid=1341739551",
+            "revisionId": 1341739551,
+            "contentHash": "d660baef93d439eba2a34623d6269332",
+            "retrievedAt": "2026-08-26",
+            "licenseNote": "Wikipedia content, CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Reused with attribution. Only extracted numeric facts are stored; no article text is committed to the repository.",
+            "verificationStatus": "PARSED_FROM_SOURCE",
+            "attribution": "Wikipedia contributors, CC BY-SA 4.0"
+          }
+        },
+        "losses": {
+          "value": 20,
+          "availability": "RECORDED_STATISTIC",
+          "provenance": {
+            "sourceType": "AUTHORIZED_PUBLIC_API",
+            "publisher": "Wikipedia (Wikimedia Foundation)",
+            "sourceUrl": "https://en.wikipedia.org/wiki/1984%E2%80%9385_Los_Angeles_Lakers_season?oldid=1341739551",
+            "revisionId": 1341739551,
+            "contentHash": "d660baef93d439eba2a34623d6269332",
+            "retrievedAt": "2026-08-26",
+            "licenseNote": "Wikipedia content, CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Reused with attribution. Only extracted numeric facts are stored; no article text is committed to the repository.",
+            "verificationStatus": "PARSED_FROM_SOURCE",
+            "attribution": "Wikipedia contributors, CC BY-SA 4.0"
+          }
+        },
+        "pointsPerGame": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "pointsAllowedPerGame": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "fieldGoalAttempts": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "fieldGoalPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "twoPointAttempts": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "twoPointPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "threePointAttempts": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "threePointPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "freeThrowAttempts": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "freeThrowPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "rebounds": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "offensiveRebounds": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "defensiveRebounds": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "assists": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "steals": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "blocks": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "turnovers": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "pace": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "offensiveRating": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "defensiveRating": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "netRating": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "efgPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "trueShootingPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "turnoverPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "offensiveReboundPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "freeThrowRate": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "threePointAttemptRate": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        }
+      },
+      "unitTargets": {
+        "unitType": "SELECTED_FIVE",
+        "selectedFiveOnly": true,
+        "availability": "SELECTED_FIVE_SEASON_SHARE_PROXY",
+        "confidence": "LOW",
+        "confidenceCeiling": "MEDIUM_HIGH",
+        "playerScoringShares": {
+          "magic-80s": 0.2218,
+          "byron-80s": 0.1939,
+          "cooper-80s": 0.1042,
+          "worthy-80s": 0.2133,
+          "kareem-80s": 0.2668
+        },
+        "playerReboundShares": {
+          "magic-80s": 0.2366,
+          "byron-80s": 0.0992,
+          "cooper-80s": 0.1183,
+          "worthy-80s": 0.2443,
+          "kareem-80s": 0.3016
+        },
+        "playerAssistShares": {
+          "magic-80s": 0.4755,
+          "byron-80s": 0.1132,
+          "cooper-80s": 0.1962,
+          "worthy-80s": 0.0943,
+          "kareem-80s": 0.1208
+        },
+        "playerOpportunityShares": null,
+        "playerUsageShares": null,
+        "opportunityShareNote": "Field-goal-attempt share is not derivable from published per-game scoring. Scoring share is the validation surface and is a related but distinct quantity.",
+        "provenance": {
+          "sourceType": "AUTHORIZED_PUBLIC_API",
+          "publisher": "Wikipedia (Wikimedia Foundation)",
+          "sourceUrl": "https://en.wikipedia.org/wiki/1984%E2%80%9385_Los_Angeles_Lakers_season?oldid=1341739551",
+          "revisionId": 1341739551,
+          "contentHash": "d660baef93d439eba2a34623d6269332",
+          "retrievedAt": "2026-08-26",
+          "licenseNote": "Wikipedia content, CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Reused with attribution. Only extracted numeric facts are stored; no article text is committed to the repository.",
+          "verificationStatus": "PARSED_FROM_SOURCE",
+          "attribution": "Wikipedia contributors, CC BY-SA 4.0"
+        }
+      },
+      "identityTargets": [
+        {
+          "trait": "pace",
+          "value": "very fast",
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        },
+        {
+          "trait": "offense",
+          "value": "Showtime transition, early offence, post entry",
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        },
+        {
+          "trait": "defense",
+          "value": "man with help",
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        },
+        {
+          "trait": "strengths",
+          "value": [
+            "transition",
+            "passing",
+            "interior scoring"
+          ],
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        },
+        {
+          "trait": "weaknesses",
+          "value": [
+            "half-court defence against size"
+          ],
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        }
+      ],
+      "confidence": "MEDIUM_HIGH",
+      "evidence": "PLAYER_STATISTICS",
+      "notes": []
+    },
+    {
+      "fixtureId": "h2-1986-87-lakers",
+      "classification": "HISTORICAL_STARTER_PROXY",
+      "teamSeason": "1986–87 Los Angeles Lakers",
+      "season": "1986-87",
+      "eraStyleId": "1980s",
+      "set": "historical-calibration",
+      "targetDataVersion": "2.0.0",
+      "targetSchemaVersion": "1.0.0",
+      "teamTargets": {
+        "games": {
+          "value": 82,
+          "availability": "RECORDED_STATISTIC",
+          "provenance": {
+            "sourceType": "AUTHORIZED_PUBLIC_API",
+            "publisher": "Wikipedia (Wikimedia Foundation)",
+            "sourceUrl": "https://en.wikipedia.org/wiki/1986%E2%80%9387_Los_Angeles_Lakers_season?oldid=1353113534",
+            "revisionId": 1353113534,
+            "contentHash": "f68afe86d95ab428222849e4dd384096",
+            "retrievedAt": "2026-08-26",
+            "licenseNote": "Wikipedia content, CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Reused with attribution. Only extracted numeric facts are stored; no article text is committed to the repository.",
+            "verificationStatus": "PARSED_FROM_SOURCE",
+            "attribution": "Wikipedia contributors, CC BY-SA 4.0"
+          }
+        },
+        "wins": {
+          "value": 65,
+          "availability": "RECORDED_STATISTIC",
+          "provenance": {
+            "sourceType": "AUTHORIZED_PUBLIC_API",
+            "publisher": "Wikipedia (Wikimedia Foundation)",
+            "sourceUrl": "https://en.wikipedia.org/wiki/1986%E2%80%9387_Los_Angeles_Lakers_season?oldid=1353113534",
+            "revisionId": 1353113534,
+            "contentHash": "f68afe86d95ab428222849e4dd384096",
+            "retrievedAt": "2026-08-26",
+            "licenseNote": "Wikipedia content, CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Reused with attribution. Only extracted numeric facts are stored; no article text is committed to the repository.",
+            "verificationStatus": "PARSED_FROM_SOURCE",
+            "attribution": "Wikipedia contributors, CC BY-SA 4.0"
+          }
+        },
+        "losses": {
+          "value": 17,
+          "availability": "RECORDED_STATISTIC",
+          "provenance": {
+            "sourceType": "AUTHORIZED_PUBLIC_API",
+            "publisher": "Wikipedia (Wikimedia Foundation)",
+            "sourceUrl": "https://en.wikipedia.org/wiki/1986%E2%80%9387_Los_Angeles_Lakers_season?oldid=1353113534",
+            "revisionId": 1353113534,
+            "contentHash": "f68afe86d95ab428222849e4dd384096",
+            "retrievedAt": "2026-08-26",
+            "licenseNote": "Wikipedia content, CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Reused with attribution. Only extracted numeric facts are stored; no article text is committed to the repository.",
+            "verificationStatus": "PARSED_FROM_SOURCE",
+            "attribution": "Wikipedia contributors, CC BY-SA 4.0"
+          }
+        },
+        "pointsPerGame": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "pointsAllowedPerGame": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "fieldGoalAttempts": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "fieldGoalPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "twoPointAttempts": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "twoPointPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "threePointAttempts": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "threePointPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "freeThrowAttempts": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "freeThrowPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "rebounds": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "offensiveRebounds": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "defensiveRebounds": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "assists": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "steals": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "blocks": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "turnovers": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "pace": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "offensiveRating": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "defensiveRating": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "netRating": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "efgPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "trueShootingPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "turnoverPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "offensiveReboundPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "freeThrowRate": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "threePointAttemptRate": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        }
+      },
+      "unitTargets": {
+        "unitType": "SELECTED_FIVE",
+        "selectedFiveOnly": true,
+        "availability": "SELECTED_FIVE_SEASON_SHARE_PROXY",
+        "confidence": "LOW",
+        "confidenceCeiling": "MEDIUM_HIGH",
+        "playerScoringShares": {
+          "magic-80s": 0.2711,
+          "byron-80s": 0.1936,
+          "worthy-80s": 0.221,
+          "mychal-80s": 0.115,
+          "kareem-80s": 0.1993
+        },
+        "playerReboundShares": {
+          "magic-80s": 0.2396,
+          "byron-80s": 0.1326,
+          "worthy-80s": 0.2161,
+          "mychal-80s": 0.1567,
+          "kareem-80s": 0.255
+        },
+        "playerAssistShares": {
+          "magic-80s": 0.559,
+          "byron-80s": 0.1569,
+          "worthy-80s": 0.1262,
+          "mychal-80s": 0.0388,
+          "kareem-80s": 0.1191
+        },
+        "playerOpportunityShares": null,
+        "playerUsageShares": null,
+        "opportunityShareNote": "Field-goal-attempt share is not derivable from published per-game scoring. Scoring share is the validation surface and is a related but distinct quantity.",
+        "provenance": {
+          "sourceType": "AUTHORIZED_PUBLIC_API",
+          "publisher": "Wikipedia (Wikimedia Foundation)",
+          "sourceUrl": "https://en.wikipedia.org/wiki/1986%E2%80%9387_Los_Angeles_Lakers_season?oldid=1353113534",
+          "revisionId": 1353113534,
+          "contentHash": "f68afe86d95ab428222849e4dd384096",
+          "retrievedAt": "2026-08-26",
+          "licenseNote": "Wikipedia content, CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Reused with attribution. Only extracted numeric facts are stored; no article text is committed to the repository.",
+          "verificationStatus": "PARSED_FROM_SOURCE",
+          "attribution": "Wikipedia contributors, CC BY-SA 4.0"
+        }
+      },
+      "identityTargets": [
+        {
+          "trait": "pace",
+          "value": "very fast",
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        },
+        {
+          "trait": "offense",
+          "value": "Showtime transition, early offence",
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        },
+        {
+          "trait": "defense",
+          "value": "man with help",
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        },
+        {
+          "trait": "strengths",
+          "value": [
+            "transition",
+            "passing"
+          ],
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        },
+        {
+          "trait": "weaknesses",
+          "value": [
+            "half-court defence against size"
+          ],
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        }
+      ],
+      "confidence": "MEDIUM_HIGH",
+      "evidence": "PLAYER_STATISTICS",
+      "notes": []
+    },
+    {
+      "fixtureId": "h2-1987-88-lakers",
+      "classification": "HISTORICAL_STARTER_PROXY",
+      "teamSeason": "1987–88 Los Angeles Lakers",
+      "season": "1987-88",
+      "eraStyleId": "1980s",
+      "set": "historical-holdout",
+      "targetDataVersion": "2.0.0",
+      "targetSchemaVersion": "1.0.0",
+      "teamTargets": {
+        "games": {
+          "value": 82,
+          "availability": "RECORDED_STATISTIC",
+          "provenance": {
+            "sourceType": "AUTHORIZED_PUBLIC_API",
+            "publisher": "Wikipedia (Wikimedia Foundation)",
+            "sourceUrl": "https://en.wikipedia.org/wiki/1987%E2%80%9388_Los_Angeles_Lakers_season?oldid=1368875877",
+            "revisionId": 1368875877,
+            "contentHash": "ebc45994dfbe09a4373f21ac19d14344",
+            "retrievedAt": "2026-08-26",
+            "licenseNote": "Wikipedia content, CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Reused with attribution. Only extracted numeric facts are stored; no article text is committed to the repository.",
+            "verificationStatus": "PARSED_FROM_SOURCE",
+            "attribution": "Wikipedia contributors, CC BY-SA 4.0"
+          }
+        },
+        "wins": {
+          "value": 62,
+          "availability": "RECORDED_STATISTIC",
+          "provenance": {
+            "sourceType": "AUTHORIZED_PUBLIC_API",
+            "publisher": "Wikipedia (Wikimedia Foundation)",
+            "sourceUrl": "https://en.wikipedia.org/wiki/1987%E2%80%9388_Los_Angeles_Lakers_season?oldid=1368875877",
+            "revisionId": 1368875877,
+            "contentHash": "ebc45994dfbe09a4373f21ac19d14344",
+            "retrievedAt": "2026-08-26",
+            "licenseNote": "Wikipedia content, CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Reused with attribution. Only extracted numeric facts are stored; no article text is committed to the repository.",
+            "verificationStatus": "PARSED_FROM_SOURCE",
+            "attribution": "Wikipedia contributors, CC BY-SA 4.0"
+          }
+        },
+        "losses": {
+          "value": 20,
+          "availability": "RECORDED_STATISTIC",
+          "provenance": {
+            "sourceType": "AUTHORIZED_PUBLIC_API",
+            "publisher": "Wikipedia (Wikimedia Foundation)",
+            "sourceUrl": "https://en.wikipedia.org/wiki/1987%E2%80%9388_Los_Angeles_Lakers_season?oldid=1368875877",
+            "revisionId": 1368875877,
+            "contentHash": "ebc45994dfbe09a4373f21ac19d14344",
+            "retrievedAt": "2026-08-26",
+            "licenseNote": "Wikipedia content, CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Reused with attribution. Only extracted numeric facts are stored; no article text is committed to the repository.",
+            "verificationStatus": "PARSED_FROM_SOURCE",
+            "attribution": "Wikipedia contributors, CC BY-SA 4.0"
+          }
+        },
+        "pointsPerGame": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "pointsAllowedPerGame": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "fieldGoalAttempts": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "fieldGoalPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "twoPointAttempts": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "twoPointPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "threePointAttempts": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "threePointPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "freeThrowAttempts": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "freeThrowPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "rebounds": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "offensiveRebounds": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "defensiveRebounds": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "assists": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "steals": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "blocks": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "turnovers": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "pace": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "offensiveRating": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "defensiveRating": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "netRating": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "efgPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "trueShootingPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "turnoverPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "offensiveReboundPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "freeThrowRate": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "threePointAttemptRate": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        }
+      },
+      "unitTargets": {
+        "unitType": "SELECTED_FIVE",
+        "selectedFiveOnly": true,
+        "availability": "SELECTED_FIVE_SEASON_SHARE_PROXY",
+        "confidence": "LOW",
+        "confidenceCeiling": "MEDIUM_HIGH",
+        "playerScoringShares": {
+          "magic-80s": 0.2572,
+          "byron-80s": 0.2848,
+          "cooper-80s": 0.1142,
+          "mychal-80s": 0.1522,
+          "kareem-80s": 0.1916
+        },
+        "playerReboundShares": {
+          "magic-80s": 0.2375,
+          "byron-80s": 0.1571,
+          "cooper-80s": 0.1418,
+          "mychal-80s": 0.2337,
+          "kareem-80s": 0.2299
+        },
+        "playerAssistShares": {
+          "magic-80s": 0.5129,
+          "byron-80s": 0.1767,
+          "cooper-80s": 0.2026,
+          "mychal-80s": 0.0345,
+          "kareem-80s": 0.0733
+        },
+        "playerOpportunityShares": null,
+        "playerUsageShares": null,
+        "opportunityShareNote": "Field-goal-attempt share is not derivable from published per-game scoring. Scoring share is the validation surface and is a related but distinct quantity.",
+        "provenance": {
+          "sourceType": "AUTHORIZED_PUBLIC_API",
+          "publisher": "Wikipedia (Wikimedia Foundation)",
+          "sourceUrl": "https://en.wikipedia.org/wiki/1987%E2%80%9388_Los_Angeles_Lakers_season?oldid=1368875877",
+          "revisionId": 1368875877,
+          "contentHash": "ebc45994dfbe09a4373f21ac19d14344",
+          "retrievedAt": "2026-08-26",
+          "licenseNote": "Wikipedia content, CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Reused with attribution. Only extracted numeric facts are stored; no article text is committed to the repository.",
+          "verificationStatus": "PARSED_FROM_SOURCE",
+          "attribution": "Wikipedia contributors, CC BY-SA 4.0"
+        }
+      },
+      "identityTargets": [
+        {
+          "trait": "pace",
+          "value": "fast",
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        },
+        {
+          "trait": "offense",
+          "value": "half-court execution alongside transition",
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        },
+        {
+          "trait": "defense",
+          "value": "man with help",
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        },
+        {
+          "trait": "strengths",
+          "value": [
+            "experience",
+            "passing"
+          ],
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        },
+        {
+          "trait": "weaknesses",
+          "value": [
+            "ageing centre"
+          ],
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        }
+      ],
+      "confidence": "MEDIUM_HIGH",
+      "evidence": "PLAYER_STATISTICS",
+      "notes": []
+    },
+    {
+      "fixtureId": "h2-2003-04-pistons",
+      "classification": "HISTORICAL_STARTER_PROXY",
+      "teamSeason": "2003–04 Detroit Pistons",
+      "season": "2003-04",
+      "eraStyleId": "2000s",
+      "set": "historical-holdout",
+      "targetDataVersion": "2.0.0",
+      "targetSchemaVersion": "1.0.0",
+      "teamTargets": {
+        "games": {
+          "value": 82,
+          "availability": "RECORDED_STATISTIC",
+          "provenance": {
+            "sourceType": "AUTHORIZED_PUBLIC_API",
+            "publisher": "Wikipedia (Wikimedia Foundation)",
+            "sourceUrl": "https://en.wikipedia.org/wiki/2003%E2%80%9304_Detroit_Pistons_season?oldid=1368361845",
+            "revisionId": 1368361845,
+            "contentHash": "9038da6811f5f4a3d53104a986969d76",
+            "retrievedAt": "2026-08-26",
+            "licenseNote": "Wikipedia content, CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Reused with attribution. Only extracted numeric facts are stored; no article text is committed to the repository.",
+            "verificationStatus": "PARSED_FROM_SOURCE",
+            "attribution": "Wikipedia contributors, CC BY-SA 4.0"
+          }
+        },
+        "wins": {
+          "value": 54,
+          "availability": "RECORDED_STATISTIC",
+          "provenance": {
+            "sourceType": "AUTHORIZED_PUBLIC_API",
+            "publisher": "Wikipedia (Wikimedia Foundation)",
+            "sourceUrl": "https://en.wikipedia.org/wiki/2003%E2%80%9304_Detroit_Pistons_season?oldid=1368361845",
+            "revisionId": 1368361845,
+            "contentHash": "9038da6811f5f4a3d53104a986969d76",
+            "retrievedAt": "2026-08-26",
+            "licenseNote": "Wikipedia content, CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Reused with attribution. Only extracted numeric facts are stored; no article text is committed to the repository.",
+            "verificationStatus": "PARSED_FROM_SOURCE",
+            "attribution": "Wikipedia contributors, CC BY-SA 4.0"
+          }
+        },
+        "losses": {
+          "value": 28,
+          "availability": "RECORDED_STATISTIC",
+          "provenance": {
+            "sourceType": "AUTHORIZED_PUBLIC_API",
+            "publisher": "Wikipedia (Wikimedia Foundation)",
+            "sourceUrl": "https://en.wikipedia.org/wiki/2003%E2%80%9304_Detroit_Pistons_season?oldid=1368361845",
+            "revisionId": 1368361845,
+            "contentHash": "9038da6811f5f4a3d53104a986969d76",
+            "retrievedAt": "2026-08-26",
+            "licenseNote": "Wikipedia content, CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Reused with attribution. Only extracted numeric facts are stored; no article text is committed to the repository.",
+            "verificationStatus": "PARSED_FROM_SOURCE",
+            "attribution": "Wikipedia contributors, CC BY-SA 4.0"
+          }
+        },
+        "pointsPerGame": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "pointsAllowedPerGame": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "fieldGoalAttempts": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "fieldGoalPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "twoPointAttempts": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "twoPointPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "threePointAttempts": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "threePointPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "freeThrowAttempts": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "freeThrowPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "rebounds": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "offensiveRebounds": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "defensiveRebounds": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "assists": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "steals": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "blocks": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "turnovers": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "pace": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "offensiveRating": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "defensiveRating": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "netRating": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "efgPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "trueShootingPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "turnoverPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "offensiveReboundPct": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "freeThrowRate": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        },
+        "threePointAttemptRate": {
+          "value": null,
+          "availability": "SOURCE_BLOCKED_LICENSING",
+          "provenance": null
+        }
+      },
+      "unitTargets": {
+        "unitType": "SELECTED_FIVE",
+        "selectedFiveOnly": true,
+        "availability": "SELECTED_FIVE_SEASON_SHARE_PROXY",
+        "confidence": "LOW",
+        "confidenceCeiling": "MEDIUM_HIGH",
+        "playerScoringShares": {
+          "billups-00s": 0.2645,
+          "rip-00s": 0.2754,
+          "prince-00s": 0.1612,
+          "okur-00s": 0.1502,
+          "ben-00s": 0.1487
+        },
+        "playerReboundShares": {
+          "billups-00s": 0.1159,
+          "rip-00s": 0.1192,
+          "prince-00s": 0.1589,
+          "okur-00s": 0.1954,
+          "ben-00s": 0.4106
+        },
+        "playerAssistShares": {
+          "billups-00s": 0.3878,
+          "rip-00s": 0.2721,
+          "prince-00s": 0.1565,
+          "okur-00s": 0.068,
+          "ben-00s": 0.1156
+        },
+        "playerOpportunityShares": null,
+        "playerUsageShares": null,
+        "opportunityShareNote": "Field-goal-attempt share is not derivable from published per-game scoring. Scoring share is the validation surface and is a related but distinct quantity.",
+        "provenance": {
+          "sourceType": "AUTHORIZED_PUBLIC_API",
+          "publisher": "Wikipedia (Wikimedia Foundation)",
+          "sourceUrl": "https://en.wikipedia.org/wiki/2003%E2%80%9304_Detroit_Pistons_season?oldid=1368361845",
+          "revisionId": 1368361845,
+          "contentHash": "9038da6811f5f4a3d53104a986969d76",
+          "retrievedAt": "2026-08-26",
+          "licenseNote": "Wikipedia content, CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Reused with attribution. Only extracted numeric facts are stored; no article text is committed to the repository.",
+          "verificationStatus": "PARSED_FROM_SOURCE",
+          "attribution": "Wikipedia contributors, CC BY-SA 4.0"
+        }
+      },
+      "identityTargets": [
+        {
+          "trait": "pace",
+          "value": "slow",
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        },
+        {
+          "trait": "offense",
+          "value": "half-court, movement shooting off screens",
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        },
+        {
+          "trait": "defense",
+          "value": "elite man defence, rim protection",
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        },
+        {
+          "trait": "strengths",
+          "value": [
+            "defence",
+            "rim protection",
+            "wing length"
+          ],
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        },
+        {
+          "trait": "weaknesses",
+          "value": [
+            "half-court scoring",
+            "three-point volume"
+          ],
+          "kind": "DOCUMENTED_STYLE_COMPARISON",
+          "confidence": "MEDIUM"
+        }
+      ],
+      "confidence": "MEDIUM_HIGH",
+      "evidence": "PLAYER_STATISTICS",
+      "notes": []
+    }
+  ]
+}

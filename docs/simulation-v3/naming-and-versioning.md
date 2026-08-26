@@ -31,8 +31,31 @@
 | Benchmark seed set | `benchmarkSeedSetVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Possession calibration | `possessionCalibrationVersion` | `null` | PLANNED (does **not** affect results) |
 | Historical target schema | `historicalTargetSchemaVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
-| Historical target data | `historicalTargetDataVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Historical target data | `historicalTargetDataVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |
 | Opportunity allocation | `opportunityAllocationVersion` | **1.0.0** | DEVELOPMENT |
+| Fixture classification | `fixtureClassificationVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Historical corpus | `historicalCorpusVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |
+| Historical holdout set | `historicalHoldoutSetVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |
+| Synthetic stress set | `syntheticStressSetVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Calibration parameter registry | `calibrationParameterRegistryVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Calibration objective | `calibrationObjectiveVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Probability validation | `probabilityValidationVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+
+### Why there are two holdout version domains
+
+`holdoutSetVersion` (**1.0.0**) describes the **legacy mixed holdout** built in
+Phase 6C1. It stays at 1.0.0 forever. Phase 6C2A measurement showed that set
+mixes historical and synthetic fixtures under labels that overstated them, so it
+cannot serve as formal historical validation — but it has never been read, and
+overwriting it would destroy a genuinely unread artefact.
+
+`historicalHoldoutSetVersion` (**2.0.0**) describes the source-valid replacement,
+whose members are all verified against their own team-season rosters.
+
+`syntheticStressSetVersion` is a third, separate thing: it validates structure,
+balance and exploit resistance, and contributes **no** historical numerical
+error. Keeping it in its own domain is what stops a lineup that never played
+from quietly entering a number labelled "historical accuracy".
 
 ### Why a target version must never touch a result
 

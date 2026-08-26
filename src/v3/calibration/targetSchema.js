@@ -37,7 +37,11 @@ export const AVAILABILITY = Object.freeze({
   NOT_APPLICABLE_SYNTHETIC_LINEUP: "The fixture's roster spans multiple franchises, so no real team-season corresponds to it. A team-season target would be a comparison to a team that never played.",
 });
 
-export const CONFIDENCE = Object.freeze(["HIGH", "MEDIUM", "LOW"]);
+// One confidence vocabulary across the whole calibration layer. A second,
+// shorter list here would repeat the shooting-vocabulary defect: two modules
+// describing the same thing with different words, and values silently failing
+// to match.
+export const CONFIDENCE = Object.freeze(["HIGH", "MEDIUM_HIGH", "MEDIUM", "LOW", "SOURCE_BLOCKED"]);
 
 /** Every field the store accepts. Anything outside this is rejected, not stored. */
 export const TEAM_TARGET_FIELDS = Object.freeze([
