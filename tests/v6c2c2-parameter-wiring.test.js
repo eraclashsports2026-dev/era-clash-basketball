@@ -2,72 +2,61 @@ import { describe, it, expect, afterEach } from "vitest";
 import { runPossessionGame } from "../src/v3/possession/index.js";
 import { buildPossessionInput } from "../src/v3/possession/testContext.js";
 import { PARAMETERS, parameterSetHash, valueOf } from "../src/v3/calibration/parameters.js";
+import { compileRuntimeParameterSet, activeParameters } from "../src/v3/calibration/runtimeParameters.js";
 import { auditWiring } from "../scripts/calibration/wiring-audit.mjs";
 import { ARCHETYPES } from "../scripts/calibration/side-symmetry.mjs";
 import { buildMatrix } from "../scripts/calibration/support-matrix.mjs";
 
 const A = ARCHETYPES.SHOOTING_2010s;
 const B = ARCHETYPES.INTERIOR_2010s;
-const score = (seed) => {
+const score = (seed, parameterSet = null) => {
   const g = runPossessionGame(buildPossessionInput({
+    parameterSet,
     goldIds: A, blueIds: B, coachGoldId: "steve-kerr", coachBlueId: "tom-thibodeau",
     eraStyleId: "2010s", simulationSeed: seed,
   }), { includeLedger: false });
   return `${g.finalScore.gold}-${g.finalScore.blue}`;
 };
 
-afterEach(() => { for (const p of PARAMETERS) p.currentValue = p.defaultValue; });
-
 describe("parameter wiring", () => {
-  // These tests record a FAILURE STATE that Phase 6C2C2 found and did not fix:
-  // no registered parameter reaches the engine. They are written so that they
-  // start failing the moment wiring lands, which is the signal to re-run the
-  // identifiability analysis and update parameter-identifiability.md.
-  //
-  // Do not "fix" these by deleting them. Invert them.
+  // Phase 6C2C2 wrote these tests to FAIL once wiring landed, with instructions
+  // in the failure message to invert them. Phase 6C2C3 wired the registry, so
+  // they are inverted here. The history matters: the assertions now say the
+  // opposite of what they said, and that is the point.
 
-  it("has 53 registered parameters", () => {
-    expect(PARAMETERS).toHaveLength(53);
+  it("registers 55 entries, 53 of them active runtime tunables", () => {
+    // Was 53 flat. Phase 6C2C3 split two coach entries into four and
+    // reclassified two zone entries as derived.
+    expect(PARAMETERS).toHaveLength(55);
+    expect(activeParameters()).toHaveLength(53);
   });
 
-  it("CURRENTLY UNWIRED: moving every parameter to its maximum changes no result", () => {
-    const before = [1, 2, 3, 4, 5].map(score);
-    const hashBefore = parameterSetHash();
-
-    for (const p of PARAMETERS) p.currentValue = p.max;
-    expect(parameterSetHash(), "the hash must at least notice the change").not.toBe(hashBefore);
-    expect(valueOf("opportunity.saturation.strength")).toBe(
-      PARAMETERS.find((p) => p.id === "opportunity.saturation.strength").max);
-
-    const after = [1, 2, 3, 4, 5].map(score);
-    expect(after, [
-      "Parameters now reach the engine — results changed when they moved.",
-      "That is the GOAL, not a regression. Next steps:",
-      "  1. invert this test to assert results DO change,",
-      "  2. re-run npm run calibration:wiring-audit,",
-      "  3. re-run the identifiability analysis, which is now answerable,",
-      "  4. update docs/simulation-v3/parameter-identifiability.md.",
-    ].join("\n")).toEqual(before);
+  it("WIRED: moving a parameter through the compiled set changes results", () => {
+    // The old version of this test mutated p.currentValue and asserted results
+    // did NOT change. It passed for the wrong reason even after wiring, because
+    // the runtime reads a compiled set rather than the registry's mutable field.
+    // Overrides are the real mechanism, so the test uses them.
+    const base = [1, 2, 3, 4, 5].map((s) => score(s));
+    const moved = compileRuntimeParameterSet({
+      overrides: { "opportunity.saturation.strength": 2.5, "conversion.rimBonus": 0.28 },
+      label: "wiring-proof",
+    });
+    const after = [1, 2, 3, 4, 5].map((s) => score(s, moved));
+    expect(moved.parameterSetHash).not.toBe(compileRuntimeParameterSet().parameterSetHash);
+    expect(after, "a compiled override must reach the engine").not.toEqual(base);
   });
 
-  it("CURRENTLY UNWIRED: nothing outside the calibration plane imports the registry", () => {
+  it("WIRED: the engine imports the registry through the runtime binding", () => {
     const a = auditWiring();
-    expect(a.coverage.registryReachableFromEngine, [
-      "The engine now imports the parameter registry. Invert this test and",
-      "re-run the identifiability analysis.",
-    ].join("\n")).toBe(false);
-    expect(a.registryImportersOutsideCalibrationPlane).toEqual([]);
-    expect(a.valueOfCallersOutsideCalibrationPlane).toEqual([]);
-    expect(a.coverage.wired).toBe(0);
-    expect(a.coverage.unwired).toBe(53);
+    expect(a.coverage.registryReachableFromEngine).toBe(true);
+    expect(a.registryImportersOutsideCalibrationPlane.length).toBeGreaterThan(0);
   });
 
-  it("restores cleanly, so the audit cannot leak state into other tests", () => {
-    const h = parameterSetHash();
-    for (const p of PARAMETERS) p.currentValue = p.min;
-    expect(parameterSetHash()).not.toBe(h);
-    for (const p of PARAMETERS) p.currentValue = p.defaultValue;
-    expect(parameterSetHash()).toBe(h);
+  it("mutating the registry in place is impossible", () => {
+    // The pre-wiring trap: currentValue looked like it should change the engine
+    // and did not. Freezing removes the trap rather than documenting it.
+    expect(PARAMETERS.every(Object.isFrozen)).toBe(true);
+    expect(() => { PARAMETERS[0].currentValue = 999; }).toThrow(TypeError);
   });
 
   it("keeps every parameter inside its declared bounds at defaults", () => {
@@ -84,6 +73,18 @@ describe("parameter wiring", () => {
       expect(p.currentValue, `${p.id} is not at its default`).toBe(p.defaultValue);
     }
   });
+
+  it("records why each corrected default moved, and that it was not tuning", () => {
+    const corrected = PARAMETERS.filter((p) => p.correctedFrom);
+    expect(corrected.length).toBe(5);
+    for (const p of corrected) {
+      expect(p.correctionReason.length).toBeGreaterThan(60);
+      // A correction aligns the registry with what the engine already ran. If a
+      // corrected default equalled the old declared value it would not be a
+      // correction at all.
+      expect(p.defaultValue).not.toBe(p.correctedFrom.value);
+    }
+  });
 });
 
 describe("calibration support matrix", () => {
@@ -91,6 +92,8 @@ describe("calibration support matrix", () => {
 
   it("classifies every registered parameter", () => {
     expect(m.parameters).toHaveLength(53);
+    // Derived entries are reported but not given a support class they cannot use.
+    expect(m.nonActiveEntries).toHaveLength(2);
     for (const p of m.parameters) {
       expect(Object.keys(m.supportClasses)).toContain(p.support);
       expect(p.reason.length).toBeGreaterThan(20);
@@ -117,7 +120,10 @@ describe("calibration support matrix", () => {
     // publisher classified PROHIBITED_FOR_MODEL_CALIBRATION.
     expect(m.corpusEvidence.eraEnvironmentAuthorized).toBe(false);
     const blocked = m.parameters.filter((p) => p.blockedBySource);
-    expect(blocked.length).toBe(14);
+    // Was 14 in Phase 6C2C2. Phase 6C2C3 reclassified zone.selectionFrequency
+    // as DERIVED_PARAMETER — it has no 1:1 runtime coefficient — so it left the
+    // active set and is no longer counted here.
+    expect(blocked.length).toBe(13);
     for (const p of blocked) {
       expect(p.support).toBe("UNSUPPORTED");
       expect(p.tunableOnDataGrounds).toBe(false);
@@ -130,7 +136,13 @@ describe("calibration support matrix", () => {
         expect(p.tunableOnDataGrounds, `${p.id}`).toBe(false);
       }
     }
+    // Still 26, but the COMPOSITION changed: Phase 6C2C2 had 12 structural + 14
+    // unsupported; Phase 6C2C3 has 13 + 13, because zone.selectionFrequency left
+    // the active set as derived and the coach-adjustment split added structural
+    // entries. The total coinciding is arithmetic, not significance.
     expect(m.coverage.frozenOnDataGrounds).toBe(26);
+    expect(m.coverage.byClass.STRUCTURAL_VALIDATION_ONLY).toBe(13);
+    expect(m.coverage.byClass.UNSUPPORTED).toBe(13);
   });
 
   it("records that Tier B contributes almost nothing", () => {

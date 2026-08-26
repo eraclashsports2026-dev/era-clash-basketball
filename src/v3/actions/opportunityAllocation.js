@@ -22,6 +22,7 @@
 // weight to zero or to infinity, and a player is never made ineligible.
 import { versionOf } from "../../versions.js";
 import { perimeterSelectionWeight } from "../data/shooting.js";
+import { resolveParameterSet, noteParameterRead, traceEnabled } from "../calibration/runtimeParameters.js";
 
 export const OPPORTUNITY_ALLOCATION_VERSION = versionOf("opportunityAllocationVersion");
 
@@ -128,8 +129,13 @@ export const FIT_BANDS = Object.freeze({
 export const DEFAULT_FIT_BAND = Object.freeze({ lo: 0.55, hi: 1.7 });
 export const FIT_BAND = DEFAULT_FIT_BAND;
 
-export const boundedFit = (family, player, pool) => {
-  const band = FIT_BANDS[family] ?? DEFAULT_FIT_BAND;
+export const boundedFit = (family, player, pool, params = null) => {
+  const registered = params?.get?.fitBand?.[family];
+  const band = registered ? { lo: registered.lo, hi: registered.hi } : (FIT_BANDS[family] ?? DEFAULT_FIT_BAND);
+  if (registered && traceEnabled()) {
+    noteParameterRead(`fitBand.${family}.lo`, registered.lo);
+    noteParameterRead(`fitBand.${family}.hi`, registered.hi);
+  }
   const raw = rawFit(family, player);
   const best = Math.max(...pool.map((p) => rawFit(family, p)), 1e-6);
   return band.lo + clamp(raw / best, 0, 1) * (band.hi - band.lo);
@@ -226,7 +232,19 @@ export const createOpportunityLedger = (playerCardIds) => {
  * reaches zero — a saturated player stays eligible, because a genuine mismatch
  * late in a game is a reason to keep going to him.
  */
-export const saturationMultiplier = ({ realized, target, totalSoFar, cfg = SATURATION }) => {
+export const saturationMultiplier = ({ realized, target, totalSoFar, cfg = SATURATION, params = null }) => {
+  // The registry is authoritative when a set is supplied. `cfg` remains for the
+  // handful of unit tests that probe the curve shape directly.
+  if (params) {
+    const sat = params.get.opportunity.saturation;
+    cfg = { strength: sat.strength, floor: sat.floor, underTargetCeiling: sat.underTargetCeiling, warmupPossessions: sat.warmupPossessions };
+    if (traceEnabled()) {
+      noteParameterRead("opportunity.saturation.strength", sat.strength);
+      noteParameterRead("opportunity.saturation.floor", sat.floor);
+      noteParameterRead("opportunity.saturation.underTargetCeiling", sat.underTargetCeiling);
+      noteParameterRead("opportunity.saturation.warmupPossessions", sat.warmupPossessions);
+    }
+  }
   if (totalSoFar < cfg.warmupPossessions) return 1;
   if (!(target > 0)) return 1;
   const ratio = realized / target;
@@ -246,7 +264,7 @@ export const saturationMultiplier = ({ realized, target, totalSoFar, cfg = SATUR
  * Replaces the old override. A mismatch multiplies the relevant player's weight
  * rather than deleting everyone else's, so exploitation is real but not total.
  */
-export const mismatchMultiplier = ({ player, mismatch, family }) => {
+export const mismatchMultiplier = ({ player, mismatch, family, params = null }) => {
   if (!mismatch || mismatch.playerCardId !== player.cardId) return { mult: 1, reason: null };
   // Action-specific: a post mismatch is a reason to post up, not a reason to
   // shoot a spot-up three.
@@ -259,7 +277,14 @@ export const mismatchMultiplier = ({ player, mismatch, family }) => {
   };
   const kinds = RELEVANT[family];
   if (kinds && kinds.length && mismatch.type && !kinds.includes(mismatch.type)) return { mult: 1, reason: null };
-  const mult = MISMATCH_BIAS[mismatch.severity] ?? 1;
+  const bias = params
+    ? { SEVERE: params.get.opportunity.mismatch.severe, MAJOR: params.get.opportunity.mismatch.major,
+        MODERATE: params.get.opportunity.mismatch.moderate, MINOR: params.get.opportunity.mismatch.minor }
+    : MISMATCH_BIAS;
+  if (params && traceEnabled()) {
+    for (const k of ["severe", "major", "moderate", "minor"]) noteParameterRead(`opportunity.mismatch.${k}`, params.get.opportunity.mismatch[k]);
+  }
+  const mult = bias[mismatch.severity] ?? 1;
   return { mult, reason: `${mismatch.severity} ${mismatch.type ?? "mismatch"} exploited via ${family}` };
 };
 
@@ -267,7 +292,14 @@ export const mismatchMultiplier = ({ player, mismatch, family }) => {
  * Seeded game form. Derived from the seed and the player, BEFORE any outcome,
  * so a hot start can never feed itself more shots.
  */
-export const formMultiplier = ({ player, rng, band = FORM_BAND }) => {
+export const formMultiplier = ({ player, rng, band = FORM_BAND, params = null }) => {
+  if (params) {
+    band = { lo: params.get.opportunity.form.low, hi: params.get.opportunity.form.high };
+    if (traceEnabled()) {
+      noteParameterRead("opportunity.form.low", band.lo);
+      noteParameterRead("opportunity.form.high", band.hi);
+    }
+  }
   if (!rng?.formFor) return 1;
   const raw = rng.formFor(player.cardId);
   const volatility = clamp(1 - (player.profile?.fit?.roleScalability ?? 5) / 20, 0.6, 1);
@@ -284,7 +316,7 @@ export const formMultiplier = ({ player, rng, band = FORM_BAND }) => {
  */
 export const opportunityWeight = ({
   player, family, dimension = "shotAttempt", targets, ledger,
-  mismatch = null, state = null, rng = null, coachBias = 1, pool = null,
+  mismatch = null, state = null, rng = null, coachBias = 1, pool = null, params = null,
 }) => {
   const target = targets?.[player.cardId] ?? 0;
   const realized = ledger ? ledger.realizedShare(player.cardId, dimension) : 0;
@@ -293,15 +325,20 @@ export const opportunityWeight = ({
   const plan = Math.max(target, 0.01);
   // Bounded against the lineup when a pool is supplied; raw only when a caller
   // deliberately wants the unbounded shape.
-  const fit = pool ? boundedFit(family, player, pool) : rawFit(family, player);
-  const sat = saturationMultiplier({ realized, target, totalSoFar });
-  const { mult: mism, reason } = mismatchMultiplier({ player, mismatch, family });
-  const form = formMultiplier({ player, rng });
+  const fit = pool ? boundedFit(family, player, pool, params) : rawFit(family, player);
+  const sat = saturationMultiplier({ realized, target, totalSoFar, params });
+  const { mult: mism, reason } = mismatchMultiplier({ player, mismatch, family, params });
+  const form = formMultiplier({ player, rng, params });
 
   // Late-game urgency tilts toward creators. Bounded, and it does not stack
   // with the mismatch bias without limit.
   const urgency = state?.lateGameUrgency ?? 0;
-  const tierBoost = player.creationTier === "PRIMARY" ? 1 + urgency * 0.5
+  const primaryBoost = params ? params.get.opportunity.lateGame.primaryBoost : 0.5;
+  if (params && traceEnabled()) noteParameterRead("opportunity.lateGame.primaryBoost", primaryBoost);
+  // The SECONDARY multiplier (0.12) and the tertiary decay (0.3) are
+  // unregistered siblings, left as literals rather than given a parameter that
+  // does not describe them.
+  const tierBoost = player.creationTier === "PRIMARY" ? 1 + urgency * primaryBoost
     : player.creationTier === "SECONDARY" ? 1 + urgency * 0.12
     : Math.max(0.35, 1 - urgency * 0.3);
 
@@ -333,14 +370,14 @@ export const opportunityWeight = ({
  */
 export const selectForOpportunity = ({
   players, family, dimension = "shotAttempt", targets, ledger, rng,
-  mismatch = null, state = null, exclude = [], coachBiasFor = null, record = true,
+  mismatch = null, state = null, exclude = [], coachBiasFor = null, record = true, params = null,
 }) => {
   const pool = players.filter((p) => !exclude.includes(p.index) && !exclude.includes(p.cardId));
   if (!pool.length) throw new Error(`selectForOpportunity: no eligible player for ${family}`);
 
   const scored = pool.map((p) => ({
     player: p,
-    ...opportunityWeight({ player: p, family, dimension, targets, ledger, mismatch, state, rng, coachBias: coachBiasFor?.(p) ?? 1, pool }),
+    ...opportunityWeight({ player: p, family, dimension, targets, ledger, mismatch, state, rng, coachBias: coachBiasFor?.(p) ?? 1, pool, params }),
   }));
 
   const total = scored.reduce((a, s) => a + s.weight, 0);

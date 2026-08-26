@@ -54,10 +54,18 @@ export const allocate = ({ family, dimension = "shotAttempt", offense, alloc, rn
   if (!alloc) return legacy();
   return selectForOpportunity({
     players: offense.players, family, dimension,
-    targets: alloc.targets[dimension], ledger: alloc.ledger,
+    targets: alloc.targets[dimension], ledger: alloc.ledger, params: alloc.params,
     rng, mismatch, state, exclude,
   }).player;
 };
+
+
+// Coach identity and roster response each get one scalar, applied to the coach
+// term and the roster term of every family weight. At the default 1.0 both are
+// exact no-ops, which is what keeps default parity. SPOT_UP has no coach term,
+// so only its roster term is scaled.
+const coachScaleOf = (params) => (params ? params.get.coach.actionMixInfluence : 1);
+const rosterScaleOf = (params) => (params ? params.get.coach.rosterSensitivity : 1);
 
 export const ACTION_FAMILIES = [
   "POST_UP", "ISOLATION", "SPOT_UP", "CUT", "OFF_BALL_SCREEN", "HANDOFF",
@@ -92,14 +100,14 @@ export const targetedMismatch = ({ defPlan, offCardId, defCardId, kinds }) => {
 export const POST_UP = {
   key: "POST_UP",
   canSelect: ({ offense, defPlan }) => offense.players.some((p) => p.postThreat >= 5) && Boolean(defPlan),
-  weight: ({ offense, defPlan, eff, state }) => {
+  weight: ({ offense, defPlan, eff, state, params }) => {
     // Frequency from coach post tendency, roster post skill, and era interior
     // value — then RAISED by an actual detected post mismatch, which is the
     // whole point of this family existing.
     const best = Math.max(...offense.players.map((p) => p.postThreat));
     const coachPost = offense.postPref ?? 5;
     const eraInterior = eff.interiorDensity ?? 5;
-    let w = (coachPost / 10) * 0.16 + (best / 10) * 0.12 + clamp((eraInterior - 4) * 0.014, -0.03, 0.06);
+    let w = (coachPost / 10) * 0.16 * coachScaleOf(params) + (best / 10) * 0.12 * rosterScaleOf(params) + clamp((eraInterior - 4) * 0.014, -0.03, 0.06);
     // A detected mismatch RAISES the frequency — but scaled by how willing this
     // coach is to post at all. A coach whose documented system never posts does
     // not become a post team because a mismatch appeared; he posts a little
@@ -153,10 +161,10 @@ export const postMismatchFor = ({ offense, defPlan, defState = null }) => {
 export const ISOLATION = {
   key: "ISOLATION",
   canSelect: ({ offense }) => offense.players.some((p) => p.selfCreation >= 6),
-  weight: ({ offense, defPlan, eff, state }) => {
+  weight: ({ offense, defPlan, eff, state, params }) => {
     const best = Math.max(...offense.players.map((p) => p.selfCreation));
     const coachIso = offense.isoPref ?? 5;
-    let w = (coachIso / 10) * 0.15 + (best / 10) * 0.1;
+    let w = (coachIso / 10) * 0.15 * coachScaleOf(params) + (best / 10) * 0.1 * rosterScaleOf(params);
     const mism = speedMismatchFor({ offense, defPlan });
     if (mism) {
       const willingness = clamp(0.3 + (coachIso / 10) * 0.85, 0.3, 1.15);
@@ -208,9 +216,9 @@ export const speedMismatchFor = ({ offense, defPlan, defState = null }) => {
 export const OFF_BALL_SCREEN = {
   key: "OFF_BALL_SCREEN",
   canSelect: ({ offense }) => offense.players.some((p) => (p.profile?.offense?.offBallMovement ?? 0) >= 5.5),
-  weight: ({ offense, defPlan, eff, state }) => {
+  weight: ({ offense, defPlan, eff, state, params }) => {
     const mover = Math.max(...offense.players.map((p) => p.profile?.offense?.offBallMovement ?? 0));
-    const w = (offense.offBallPref ?? 5) / 10 * 0.15 + (mover / 10) * 0.13
+    const w = (offense.offBallPref ?? 5) / 10 * 0.15 * coachScaleOf(params) + (mover / 10) * 0.13 * rosterScaleOf(params)
       + clamp((eff.perimeterShotValue - 3) * 0.012, -0.02, 0.05);
     const chase = chaseMismatchFor({ offense, defPlan });
     return clamp(w + (chase ? 0.07 : 0), 0, FAMILY_CAPS.OFF_BALL_SCREEN);
@@ -252,16 +260,16 @@ export const chaseMismatchFor = ({ offense, defPlan, defState = null }) => {
 export const HANDOFF = {
   key: "HANDOFF",
   canSelect: ({ offense }) => offense.players.some((p) => p.passing >= 6 && (p.profile?.physical?.heightIn ?? 0) >= 78),
-  weight: ({ offense, eff }) => {
+  weight: ({ offense, eff, params }) => {
     const hub = Math.max(...offense.players.filter((p) => (p.profile?.physical?.heightIn ?? 0) >= 78).map((p) => p.passing), 0);
-    return clamp((offense.handoffPref ?? 5) / 10 * 0.13 + (hub / 10) * 0.12 + clamp((eff.perimeterShotValue - 3) * 0.01, -0.02, 0.04), 0, FAMILY_CAPS.HANDOFF);
+    return clamp((offense.handoffPref ?? 5) / 10 * 0.13 * coachScaleOf(params) + (hub / 10) * 0.12 * rosterScaleOf(params) + clamp((eff.perimeterShotValue - 3) * 0.01, -0.02, 0.04), 0, FAMILY_CAPS.HANDOFF);
   },
   prepare: ({ offense, defense, defState, rng, pickDefender, state, alloc }) => {
     // The hub HANDS OFF; the receiver shoots. Two different dimensions, so a
     // tall passer does not thereby become a volume scorer.
     const hub = alloc
       ? selectForOpportunity({ players: offense.players, family: "HANDOFF", dimension: "passing",
-          targets: alloc.targets.passing, ledger: alloc.ledger, rng, state }).player
+          targets: alloc.targets.passing, ledger: alloc.ledger, rng, state, params: alloc.params }).player
       : rng.weighted(offense.players, (p) => 0.15 + p.passing * 0.45 + ((p.profile?.physical?.heightIn ?? 76) - 74) * 0.12);
     const receiver = allocate({
       family: "HANDOFF", offense, alloc, rng, state, exclude: [hub.index],
@@ -277,7 +285,7 @@ export const HANDOFF = {
 export const SPOT_UP = {
   key: "SPOT_UP",
   canSelect: ({ offense, eff }) => eff.perimeterShotValue > 0 && offense.players.some((p) => perimeterSelectionWeight(p.profile?.shooting?.perimeterSkill) > 0.1),
-  weight: ({ offense, eff }) => clamp(0.05 + offense.offense.spacing * 0.014 + clamp((eff.perimeterShotValue - 3) * 0.014, -0.03, 0.06), 0, FAMILY_CAPS.SPOT_UP),
+  weight: ({ offense, eff, params }) => clamp(0.05 + offense.offense.spacing * 0.014 * rosterScaleOf(params) + clamp((eff.perimeterShotValue - 3) * 0.014, -0.03, 0.06), 0, FAMILY_CAPS.SPOT_UP),
   prepare: ({ offense, defense, defState, rng, pickDefender, state, alloc }) => {
     const shooter = allocate({
       family: "SPOT_UP", offense, alloc, rng, state,
@@ -294,7 +302,7 @@ export const SPOT_UP = {
 export const CUT = {
   key: "CUT",
   canSelect: ({ offense }) => offense.players.some((p) => (p.profile?.offense?.offBallMovement ?? 0) >= 5),
-  weight: ({ offense }) => clamp(0.04 + (offense.cutPref ?? 5) / 10 * 0.1 + offense.offense.passing * 0.008, 0, FAMILY_CAPS.CUT),
+  weight: ({ offense, params }) => clamp(0.04 + (offense.cutPref ?? 5) / 10 * 0.1 * coachScaleOf(params) + offense.offense.passing * 0.008 * rosterScaleOf(params), 0, FAMILY_CAPS.CUT),
   prepare: ({ offense, defense, defState, rng, pickDefender, state, alloc }) => {
     const cutter = allocate({
       family: "CUT", offense, alloc, rng, state,

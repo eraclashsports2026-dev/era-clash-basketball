@@ -14,8 +14,19 @@ import { versionOf } from "../../versions.js";
 
 export const CALIBRATION_PARAMETER_REGISTRY_VERSION = versionOf("calibrationParameterRegistryVersion");
 
-const P = ({ id, module, description, value, min, max, step, targetMetrics, calibrationSource, confidence, regularization = "MEDIUM", affectsResult = true }) => ({
-  id, module, description,
+const P = ({ id, module, description, value, min, max, step, targetMetrics, calibrationSource, confidence,
+  regularization = "MEDIUM", affectsResult = true,
+  // Phase 6C2C3. An entry only reaches the engine if it is ACTIVE_RUNTIME_TUNABLE.
+  // Anything else is recorded here so its absence from the runtime is a
+  // documented decision rather than an oversight.
+  registryClass = "ACTIVE_RUNTIME_TUNABLE", classNote = null,
+  // Where the registry's declared default was WRONG and has been corrected to
+  // the value the engine actually runs. Not tuning: the runtime is the truth
+  // about current default behaviour, and a registry that disagrees with it is a
+  // registry that would break parity the moment it was wired.
+  correctedFrom = null, correctionReason = null,
+}) => ({
+  id, module, description, registryClass, classNote, correctedFrom, correctionReason,
   currentValue: value,
   defaultValue: value,
   min, max, step,
@@ -28,6 +39,11 @@ const P = ({ id, module, description, value, min, max, step, targetMetrics, cali
   regularizationStrength: regularization,
   affectsResult,
   changeHistory: [],
+  // NOTE (Phase 6C2C3): `currentValue` is a REGISTRY field, not the runtime
+  // value. The engine reads a compiled set built from `defaultValue` plus
+  // explicit overrides (see calibration/runtimeParameters.js). Before wiring,
+  // mutating currentValue looked like it should change the engine and did not.
+  // Each entry is frozen below so that trap cannot be set again.
 });
 
 export const PARAMETERS = Object.freeze([
@@ -143,19 +159,24 @@ export const PARAMETERS = Object.freeze([
     value: 12, min: 2, max: 30, step: 1,
     targetMetrics: ["threePointAttempts", "threePointAttemptRate"], calibrationSource: "ERA_ENVIRONMENT", confidence: "MEDIUM" }),
   P({ id: "era.freeThrowTripRate", module: "possessionContext",
-    description: "Foul trips per possession, derived from the era's documented free-throw attempts.",
+    description: "Foul trips per free-throw attempt. A trip is ~2 attempts, so 0.5 is the divisor that turns the era's documented FTA per game into a trip rate.",
     value: 0.5, min: 0.2, max: 1.0, step: 0.01,
+    classNote: "Description corrected in Phase 6C2C3. It previously read 'foul trips per possession', which is the CLAMPED OUTPUT of the calculation (0.04-0.34) rather than this coefficient. Under that reading 0.5 was unreachable and the entry looked internally inconsistent. The value and bounds were always right for the correct reading.",
     targetMetrics: ["freeThrowRate", "freeThrowAttempts"], calibrationSource: "ERA_ENVIRONMENT", confidence: "MEDIUM" }),
 
   // ── Zone ──
   P({ id: "zone.selectionFrequency", module: "zoneResolution",
     description: "How often a zone-capable coach selects a shell. Phase 6C2A measured ~55% of possessions against real single-digit NBA usage.",
     value: 0.55, min: 0.02, max: 0.8, step: 0.01,
-    targetMetrics: ["zoneShare", "coachIdentitySpread"], calibrationSource: "ERA_ENVIRONMENT", confidence: "MEDIUM" }),
+    targetMetrics: ["zoneShare", "coachIdentitySpread"], calibrationSource: "ERA_ENVIRONMENT", confidence: "MEDIUM",
+    registryClass: "DERIVED_PARAMETER",
+    classNote: "No 1:1 runtime coefficient exists. Zone usage is the product of a BINARY per-game gate (defense/plan.js: scheme.zoneUsage >= 5, so a coach plays zone all game or never) and a per-possession attack share (possession/actions.js: 0.5 + passing * 0.03). The 0.55 is the measured emergent product of the two, i.e. an outcome. Wiring it to either literal would misrepresent what it means, and making shell selection probabilistic would change default behaviour, which this phase forbids. A genuine frequency lever needs a design change to shell selection." }),
   P({ id: "zone.offensiveReboundExposure", module: "zoneResolution",
     description: "Extra offensive rebounding conceded by a zone. Measured at ~+7 points of ORB%; real differentials run 2-4.",
     value: 0.073, min: 0.0, max: 0.15, step: 0.005,
-    targetMetrics: ["offensiveReboundPct", "zoneOrbDelta"], calibrationSource: "STRUCTURAL", confidence: "LOW" }),
+    targetMetrics: ["offensiveReboundPct", "zoneOrbDelta"], calibrationSource: "STRUCTURAL", confidence: "LOW",
+    registryClass: "DERIVED_PARAMETER",
+    classNote: "This is a TARGET METRIC that was registered as a parameter. The actual coefficients are five per-shell reboundExposure values in defense/zone.js (0.10 to 0.26), whose mean before the rim-ceiling offset is ~0.184. 0.073 is the realised ORB delta they produce, not any coefficient in the chain. A real lever would be a scalar over those five values, which is a different parameter with a different default." }),
   P({ id: "zone.highPostVulnerability", module: "zoneResolution",
     description: "How exposed a shell is through the high post.",
     value: 1.0, min: 0.3, max: 2.0, step: 0.05, targetMetrics: ["zoneGapDistribution"], calibrationSource: "STRUCTURAL", confidence: "LOW" }),
@@ -172,19 +193,45 @@ export const PARAMETERS = Object.freeze([
     description: "How far the roster moves the action mix away from the coach's baseline.",
     value: 1.0, min: 0.3, max: 2.0, step: 0.05,
     targetMetrics: ["rosterActionSpread"], calibrationSource: "STRUCTURAL", confidence: "MEDIUM" }),
-  P({ id: "coach.adjustmentThreshold", module: "coachAdjustment",
-    description: "Evidence required before a coach adjusts. Guards the rule that bad process may trigger a change even when shots went in.",
-    value: 3, min: 1, max: 10, step: 1,
-    targetMetrics: ["adjustmentsPerGame"], calibrationSource: "STRUCTURAL", confidence: "LOW" }),
-  P({ id: "coach.adjustmentCooldown", module: "coachAdjustment",
-    description: "Possessions before the same trigger may fire again.",
-    value: 12, min: 4, max: 40, step: 1,
-    targetMetrics: ["adjustmentsPerGame"], calibrationSource: "STRUCTURAL", confidence: "LOW" }),
+  // The offensive and defensive adjustment engines were tuned SEPARATELY and run
+  // different numbers. One registry entry cannot represent both without
+  // collapsing values that were chosen independently, so each is registered
+  // against the engine it governs.
+  P({ id: "coach.offensiveAdjustmentMinEvents", module: "coachAdjustment",
+    description: "Evidence events required before an OFFENSIVE adjustment may fire. Guards the rule that bad process may trigger a change even when shots went in.",
+    value: 6, min: 1, max: 16, step: 1,
+    targetMetrics: ["adjustmentsPerGame"], calibrationSource: "STRUCTURAL", confidence: "LOW",
+    correctedFrom: { id: "coach.adjustmentThreshold", value: 3 },
+    correctionReason: "The registry declared 3. The offensive engine runs OFF_ADJUSTMENT_MIN_EVENTS = 6 and the defensive engine runs 5, and both are further modified at runtime by coach adaptability. Wiring 3 would have changed adjustment behaviour on every possession, breaking default parity. The runtime value is the truth about current behaviour." }),
+  P({ id: "coach.defensiveAdjustmentMinEvents", module: "coachAdjustment",
+    description: "Evidence events required before a DEFENSIVE assignment adjustment may fire.",
+    value: 5, min: 1, max: 16, step: 1,
+    targetMetrics: ["adjustmentsPerGame"], calibrationSource: "STRUCTURAL", confidence: "LOW",
+    correctedFrom: { id: "coach.adjustmentThreshold", value: 3 },
+    correctionReason: "Split from coach.adjustmentThreshold, which conflated two independently tuned engines." }),
+  P({ id: "coach.offensiveAdjustmentCooldown", module: "coachAdjustment",
+    description: "Possessions before an offensive adjustment may fire again.",
+    value: 30, min: 4, max: 60, step: 1,
+    targetMetrics: ["adjustmentsPerGame"], calibrationSource: "STRUCTURAL", confidence: "LOW",
+    correctedFrom: { id: "coach.adjustmentCooldown", value: 12 },
+    correctionReason: "The registry declared 12. That value was DELIBERATELY ABANDONED: defense/liveState.js records that at 12 the engine produced ~3.3 assignment changes per game, 'which is not how coaches behave'. The offensive engine runs 30 and the defensive engine 34. Wiring 12 would have silently regressed a measured, deliberate fix and roughly tripled adjustment frequency." }),
+  P({ id: "coach.defensiveAdjustmentCooldown", module: "coachAdjustment",
+    description: "Possessions before a defensive assignment adjustment may fire again.",
+    value: 34, min: 4, max: 60, step: 1,
+    targetMetrics: ["adjustmentsPerGame"], calibrationSource: "STRUCTURAL", confidence: "LOW",
+    correctedFrom: { id: "coach.adjustmentCooldown", value: 12 },
+    correctionReason: "Split from coach.adjustmentCooldown. See the offensive entry for why 12 was abandoned." }),
   P({ id: "coach.adjustmentMagnitude", module: "coachAdjustment",
-    description: "How far one adjustment may move an action-family weight.",
-    value: 0.05, min: 0.01, max: 0.2, step: 0.005,
-    targetMetrics: ["actionMixDrift"], calibrationSource: "STRUCTURAL", confidence: "LOW" }),
+    description: "Base size of one adjustment's move to an action-family weight, before the 0.5-1.3x scaling by coach tactical adjustment.",
+    value: 0.06, min: 0.01, max: 0.2, step: 0.005,
+    targetMetrics: ["actionMixDrift"], calibrationSource: "STRUCTURAL", confidence: "LOW",
+    correctedFrom: { id: "coach.adjustmentMagnitude", value: 0.05 },
+    correctionReason: "The registry declared 0.05; ADJUSTMENT_STEP in actions/offensivePlan.js is 0.06. Wiring 0.05 would have shrunk every adjustment by a sixth and broken parity." }),
 ]);
+
+// Deep-frozen. A registry whose values can be edited in place is a registry that
+// can disagree with the engine, which is the failure Phase 6C2C3 removed.
+for (const p of PARAMETERS) Object.freeze(p);
 
 // ── Access ──────────────────────────────────────────────────────────────────
 const BY_ID = new Map(PARAMETERS.map((p) => [p.id, p]));
@@ -195,6 +242,11 @@ export const parameter = (id) => {
   return p;
 };
 
+/**
+ * The registry's declared value. NOT what a running simulation used — that is
+ * the compiled parameter set on the prepared context. Kept for registry
+ * inspection and diagnostics.
+ */
 export const valueOf = (id) => parameter(id).currentValue;
 
 export const duplicateIds = () => {
@@ -224,6 +276,16 @@ export const byModule = () =>
 export const parameterSetHash = (params = PARAMETERS) =>
   createHash("sha256")
     .update(JSON.stringify([...params].sort((a, b) => a.id.localeCompare(b.id)).map((p) => [p.id, p.currentValue])))
+    .digest("hex");
+
+/**
+ * The hash of the registry's DEFAULTS, which is what an unoverridden runtime set
+ * compiles from. Identical to parameterSetHash() while nothing is overridden;
+ * separate so the distinction is stated rather than assumed.
+ */
+export const registryDefaultsHash = (params = PARAMETERS) =>
+  createHash("sha256")
+    .update(JSON.stringify([...params].sort((a, b) => a.id.localeCompare(b.id)).map((p) => [p.id, p.defaultValue])))
     .digest("hex");
 
 export const snapshot = () => ({

@@ -8,6 +8,7 @@
 // separation, one broken play in the first quarter silently becomes the
 // matchup for the rest of the game, which is how Magic Johnson ends up
 // "guarding" David Robinson for 40 minutes with no explanation.
+import { noteParameterRead, traceEnabled } from "../calibration/runtimeParameters.js";
 const clamp = (x, lo, hi) => Math.min(hi, Math.max(lo, x));
 const r1 = (x) => Math.round(x * 10) / 10;
 
@@ -181,14 +182,23 @@ export const recordExploitation = (state, { offensivePlayerId, defenderId, shotQ
  * Adaptability governs how READILY a coach acts and how well the change fits;
  * it never grants a change the roster or the era cannot support.
  */
-export const considerAdjustment = ({ state, plan, possessionIndex, defenders, threats }) => {
+export const considerAdjustment = ({ state, plan, possessionIndex, defenders, threats, params = null }) => {
+  // Separate from the offensive engine's values on purpose: 34 and 30 were
+  // tuned independently, and one registry entry claiming 12 for both was the
+  // defect Phase 6C2C3 corrected.
+  const minEvents = params ? params.get.coach.defensiveAdjustmentMinEvents : ADJUSTMENT_MIN_EVENTS;
+  const cooldown = params ? params.get.coach.defensiveAdjustmentCooldown : ADJUSTMENT_COOLDOWN;
+  if (params && traceEnabled()) {
+    noteParameterRead("coach.defensiveAdjustmentMinEvents", minEvents);
+    noteParameterRead("coach.defensiveAdjustmentCooldown", cooldown);
+  }
   const last = state.assignmentChangeHistory[state.assignmentChangeHistory.length - 1];
-  if (last && possessionIndex - last.possessionIndex < ADJUSTMENT_COOLDOWN) return null;
+  if (last && possessionIndex - last.possessionIndex < cooldown) return null;
 
   const tk = plan.scheme.toolkit;
   // A low-adaptability coach demands more evidence before moving. This is the
   // difference between coaches, not a random gate.
-  const needed = ADJUSTMENT_MIN_EVENTS + Math.round(clamp((10 - tk.adaptability) * 0.6, 0, 5));
+  const needed = minEvents + Math.round(clamp((10 - tk.adaptability) * 0.6, 0, 5));
 
   const worst = [...state.exploitation.values()]
     .filter((e) => e.events >= needed && e.qualitySum / e.events >= ADJUSTMENT_MIN_QUALITY)

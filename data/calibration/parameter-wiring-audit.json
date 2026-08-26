@@ -1,37 +1,53 @@
 {
   "parameterIdentifiabilityVersion": "1.0.0",
-  "calibrationParameterRegistryVersion": "1.0.0",
+  "calibrationParameterRegistryVersion": "2.0.0",
   "purpose": "Whether changing a registered parameter changes anything the engine does. Asked before any sensitivity analysis, because a sensitivity measurement on an unwired parameter would measure nothing and report zero effect.",
   "engineFilesScanned": 70,
-  "registryImportersOutsideCalibrationPlane": [],
+  "registryImportersOutsideCalibrationPlane": [
+    "src/v3/actions/opportunityAllocation.js",
+    "src/v3/possession/context.js",
+    "src/v3/possession/game.js"
+  ],
+  "directRegistryImporters": [],
+  "runtimeBindingImporters": [
+    "src/v3/actions/opportunityAllocation.js",
+    "src/v3/possession/context.js",
+    "src/v3/possession/game.js"
+  ],
+  "accessorReaders": [
+    "src/challengeClient.js",
+    "src/v3/actions/opportunityAllocation.js",
+    "src/v3/possession/context.js",
+    "src/v3/possession/game.js"
+  ],
   "valueOfCallersOutsideCalibrationPlane": [],
   "coverage": {
-    "parameters": 53,
-    "wired": 0,
-    "unwired": 53,
-    "registryReachableFromEngine": false
+    "parameters": 55,
+    "wired": 24,
+    "unwired": 31,
+    "registryReachableFromEngine": true
   },
   "parameters": [
     {
       "id": "opportunity.saturation.strength",
       "module": "opportunityAllocation",
       "defaultValue": 1.35,
-      "idReferencedInEngine": false,
-      "literalOccurrences": 10,
+      "idReferencedInEngine": true,
+      "literalOccurrences": 9,
       "literalInClaimedModule": [
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 55,
+          "line": 56,
           "text": "strength: 1.35,"
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 61,
+          "line": 62,
           "text": "underTargetCeiling: 1.35,"
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 126,
+          "line": 127,
           "text": "GENERIC_HALF_COURT: { lo: 0.75, hi: 1.35 }, // mostly whose turn it is"
         }
       ],
@@ -43,27 +59,27 @@
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 55,
+          "line": 56,
           "text": "strength: 1.35,"
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 61,
+          "line": 62,
           "text": "underTargetCeiling: 1.35,"
         }
       ],
-      "wired": false
+      "wired": true
     },
     {
       "id": "opportunity.saturation.floor",
       "module": "opportunityAllocation",
       "defaultValue": 0.16,
-      "idReferencedInEngine": false,
+      "idReferencedInEngine": true,
       "literalOccurrences": 15,
       "literalInClaimedModule": [
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 58,
+          "line": 59,
           "text": "floor: 0.16,"
         }
       ],
@@ -75,7 +91,7 @@
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 58,
+          "line": 59,
           "text": "floor: 0.16,"
         },
         {
@@ -84,28 +100,28 @@
           "text": "if (defender.roleAvailability.canHideOnLowUsagePlayer && usageShare <= 0.16"
         }
       ],
-      "wired": false
+      "wired": true
     },
     {
       "id": "opportunity.saturation.underTargetCeiling",
       "module": "opportunityAllocation",
       "defaultValue": 1.35,
-      "idReferencedInEngine": false,
-      "literalOccurrences": 10,
+      "idReferencedInEngine": true,
+      "literalOccurrences": 9,
       "literalInClaimedModule": [
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 55,
+          "line": 56,
           "text": "strength: 1.35,"
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 61,
+          "line": 62,
           "text": "underTargetCeiling: 1.35,"
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 126,
+          "line": 127,
           "text": "GENERIC_HALF_COURT: { lo: 0.75, hi: 1.35 }, // mostly whose turn it is"
         }
       ],
@@ -117,27 +133,27 @@
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 55,
+          "line": 56,
           "text": "strength: 1.35,"
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 61,
+          "line": 62,
           "text": "underTargetCeiling: 1.35,"
         }
       ],
-      "wired": false
+      "wired": true
     },
     {
       "id": "opportunity.saturation.warmupPossessions",
       "module": "opportunityAllocation",
       "defaultValue": 8,
-      "idReferencedInEngine": false,
+      "idReferencedInEngine": true,
       "literalOccurrences": 409,
       "literalInClaimedModule": [
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 64,
+          "line": 65,
           "text": "warmupPossessions: 8,"
         }
       ],
@@ -158,18 +174,18 @@
           "text": "\"jerry-60s\":  A([\"Shot Creator\", \"Secondary Creator\"], { shotCreation: 9, outsideGravity: 4, rimPres"
         }
       ],
-      "wired": false
+      "wired": true
     },
     {
       "id": "opportunity.mismatch.severe",
       "module": "opportunityAllocation",
       "defaultValue": 2.6,
-      "idReferencedInEngine": false,
+      "idReferencedInEngine": true,
       "literalOccurrences": 20,
       "literalInClaimedModule": [
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 49,
+          "line": 50,
           "text": "export const MISMATCH_BIAS = Object.freeze({ SEVERE: 2.6, MAJOR: 2.0, MODERATE: 1.55, MINOR: 1.25 })"
         }
       ],
@@ -190,28 +206,28 @@
           "text": "{ id:\"ad-20s\",     name:\"Anthony Davis\",            decade:\"2020s\", pos:\"PF\", positions:[\"PF\",\"C\"], "
         }
       ],
-      "wired": false
+      "wired": true
     },
     {
       "id": "opportunity.mismatch.major",
       "module": "opportunityAllocation",
       "defaultValue": 2,
-      "idReferencedInEngine": false,
-      "literalOccurrences": 568,
+      "idReferencedInEngine": true,
+      "literalOccurrences": 569,
       "literalInClaimedModule": [
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 49,
+          "line": 50,
           "text": "export const MISMATCH_BIAS = Object.freeze({ SEVERE: 2.6, MAJOR: 2.0, MODERATE: 1.55, MINOR: 1.25 })"
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 117,
+          "line": 118,
           "text": "SPOT_UP: { lo: 0.2, hi: 2.4 },          // the action IS the shooting"
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 118,
+          "line": 119,
           "text": "OFF_BALL_SCREEN: { lo: 0.25, hi: 2.2 }, // likewise, plus movement"
         }
       ],
@@ -232,18 +248,18 @@
           "text": "\"jerry-60s\":  A([\"Shot Creator\", \"Secondary Creator\"], { shotCreation: 9, outsideGravity: 4, rimPres"
         }
       ],
-      "wired": false
+      "wired": true
     },
     {
       "id": "opportunity.mismatch.moderate",
       "module": "opportunityAllocation",
       "defaultValue": 1.55,
-      "idReferencedInEngine": false,
+      "idReferencedInEngine": true,
       "literalOccurrences": 2,
       "literalInClaimedModule": [
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 49,
+          "line": 50,
           "text": "export const MISMATCH_BIAS = Object.freeze({ SEVERE: 2.6, MAJOR: 2.0, MODERATE: 1.55, MINOR: 1.25 })"
         }
       ],
@@ -255,29 +271,29 @@
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 49,
+          "line": 50,
           "text": "export const MISMATCH_BIAS = Object.freeze({ SEVERE: 2.6, MAJOR: 2.0, MODERATE: 1.55, MINOR: 1.25 })"
         }
       ],
-      "wired": false
+      "wired": true
     },
     {
       "id": "opportunity.mismatch.minor",
       "module": "opportunityAllocation",
       "defaultValue": 1.25,
-      "idReferencedInEngine": false,
+      "idReferencedInEngine": true,
       "literalOccurrences": 4,
       "literalInClaimedModule": [
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 49,
+          "line": 50,
           "text": "export const MISMATCH_BIAS = Object.freeze({ SEVERE: 2.6, MAJOR: 2.0, MODERATE: 1.55, MINOR: 1.25 })"
         }
       ],
       "sampleSites": [
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 49,
+          "line": 50,
           "text": "export const MISMATCH_BIAS = Object.freeze({ SEVERE: 2.6, MAJOR: 2.0, MODERATE: 1.55, MINOR: 1.25 })"
         },
         {
@@ -291,18 +307,18 @@
           "text": "const eraPerimeterWeight = eff ? clamp(eff.perimeterShotValue / 6, 0.25, 1.25) : 1;"
         }
       ],
-      "wired": false
+      "wired": true
     },
     {
       "id": "opportunity.form.low",
       "module": "opportunityAllocation",
       "defaultValue": 0.82,
-      "idReferencedInEngine": false,
+      "idReferencedInEngine": true,
       "literalOccurrences": 5,
       "literalInClaimedModule": [
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 69,
+          "line": 70,
           "text": "export const FORM_BAND = Object.freeze({ lo: 0.82, hi: 1.18 });"
         }
       ],
@@ -314,7 +330,7 @@
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 69,
+          "line": 70,
           "text": "export const FORM_BAND = Object.freeze({ lo: 0.82, hi: 1.18 });"
         },
         {
@@ -323,25 +339,25 @@
           "text": "primaryCreation: r1(clamp(num(o.selfCreation, 5) * 0.6 + num(o.usageAppetite, 5) * 0.4, 0, 10) * (cr"
         }
       ],
-      "wired": false
+      "wired": true
     },
     {
       "id": "opportunity.form.high",
       "module": "opportunityAllocation",
       "defaultValue": 1.18,
-      "idReferencedInEngine": false,
+      "idReferencedInEngine": true,
       "literalOccurrences": 2,
       "literalInClaimedModule": [
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 69,
+          "line": 70,
           "text": "export const FORM_BAND = Object.freeze({ lo: 0.82, hi: 1.18 });"
         }
       ],
       "sampleSites": [
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 69,
+          "line": 70,
           "text": "export const FORM_BAND = Object.freeze({ lo: 0.82, hi: 1.18 });"
         },
         {
@@ -350,28 +366,28 @@
           "text": "const turnoverFactor = clamp(1.12 - (supply - 4) * 0.035 - (passing - 5) * 0.012, 0.85, 1.18);"
         }
       ],
-      "wired": false
+      "wired": true
     },
     {
       "id": "opportunity.lateGame.primaryBoost",
       "module": "opportunityAllocation",
       "defaultValue": 0.5,
-      "idReferencedInEngine": false,
+      "idReferencedInEngine": true,
       "literalOccurrences": 191,
       "literalInClaimedModule": [
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 123,
+          "line": 124,
           "text": "ISOLATION: { lo: 0.5, hi: 1.8 },        // creation matters, usage matters more"
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 159,
+          "line": 165,
           "text": "touchShareTarget: r4(usage * (0.75 + pass * 0.5)),"
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 167,
+          "line": 173,
           "text": "passingShareTarget: r4(usage * (0.5 + pass * 1.3)),"
         }
       ],
@@ -392,7 +408,7 @@
           "text": "{ id:\"john-h-70s\", name:\"John Havlicek\",            decade:\"1970s\", pos:\"SF\", positions:[\"SF\",\"SG\"],"
         }
       ],
-      "wired": false
+      "wired": true
     },
     {
       "id": "fitBand.SPOT_UP.lo",
@@ -403,17 +419,17 @@
       "literalInClaimedModule": [
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 79,
+          "line": 80,
           "text": "PICK_AND_ROLL: (p) => 0.2 + (p.selfCreation ?? 5) * 0.13,"
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 84,
+          "line": 85,
           "text": "TRANSITION: (p) => 0.2 + (p.rimThreat ?? 5) * 0.1 + (p.selfCreation ?? 5) * 0.06,"
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 85,
+          "line": 86,
           "text": "ZONE_ATTACK: (p) => 0.2 + perimeter(p) * 0.3 + (p.postThreat ?? 5) * 0.06,"
         }
       ],
@@ -445,7 +461,7 @@
       "literalInClaimedModule": [
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 117,
+          "line": 118,
           "text": "SPOT_UP: { lo: 0.2, hi: 2.4 },          // the action IS the shooting"
         }
       ],
@@ -477,12 +493,12 @@
       "literalInClaimedModule": [
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 82,
+          "line": 83,
           "text": "OFF_BALL_SCREEN: (p) => 0.1 + (p.profile?.offense?.offBallMovement ?? 5) * 0.13 + perimeter(p) * 0.2"
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 118,
+          "line": 119,
           "text": "OFF_BALL_SCREEN: { lo: 0.25, hi: 2.2 }, // likewise, plus movement"
         }
       ],
@@ -514,7 +530,7 @@
       "literalInClaimedModule": [
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 118,
+          "line": 119,
           "text": "OFF_BALL_SCREEN: { lo: 0.25, hi: 2.2 }, // likewise, plus movement"
         }
       ],
@@ -546,17 +562,17 @@
       "literalInClaimedModule": [
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 83,
+          "line": 84,
           "text": "HANDOFF: (p) => 0.15 + (p.selfCreation ?? 5) * 0.09 + perimeter(p) * 0.3,"
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 85,
+          "line": 86,
           "text": "ZONE_ATTACK: (p) => 0.2 + perimeter(p) * 0.3 + (p.postThreat ?? 5) * 0.06,"
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 119,
+          "line": 120,
           "text": "POST_UP: { lo: 0.3, hi: 2.1 },          // a guard does not post up a centre"
         }
       ],
@@ -588,12 +604,12 @@
       "literalInClaimedModule": [
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 119,
+          "line": 120,
           "text": "POST_UP: { lo: 0.3, hi: 2.1 },          // a guard does not post up a centre"
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 151,
+          "line": 157,
           "text": "const creationWeight = tier === \"PRIMARY\" ? 2.1 : tier === \"SECONDARY\" ? 1.2 : 0.45;"
         }
       ],
@@ -625,17 +641,17 @@
       "literalInClaimedModule": [
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 86,
+          "line": 87,
           "text": "GENERIC_HALF_COURT: (p) => 0.35 + (p.selfCreation ?? 5) * 0.06,"
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 120,
+          "line": 121,
           "text": "HANDOFF: { lo: 0.35, hi: 2.0 },"
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 306,
+          "line": 343,
           "text": ": Math.max(0.35, 1 - urgency * 0.3);"
         }
       ],
@@ -663,21 +679,21 @@
       "module": "opportunityAllocation",
       "defaultValue": 2,
       "idReferencedInEngine": false,
-      "literalOccurrences": 568,
+      "literalOccurrences": 569,
       "literalInClaimedModule": [
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 49,
+          "line": 50,
           "text": "export const MISMATCH_BIAS = Object.freeze({ SEVERE: 2.6, MAJOR: 2.0, MODERATE: 1.55, MINOR: 1.25 })"
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 117,
+          "line": 118,
           "text": "SPOT_UP: { lo: 0.2, hi: 2.4 },          // the action IS the shooting"
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 118,
+          "line": 119,
           "text": "OFF_BALL_SCREEN: { lo: 0.25, hi: 2.2 }, // likewise, plus movement"
         }
       ],
@@ -709,12 +725,12 @@
       "literalInClaimedModule": [
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 121,
+          "line": 122,
           "text": "ZONE_ATTACK: { lo: 0.4, hi: 1.9 },"
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 122,
+          "line": 123,
           "text": "CUT: { lo: 0.4, hi: 1.9 },"
         }
       ],
@@ -746,12 +762,12 @@
       "literalInClaimedModule": [
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 121,
+          "line": 122,
           "text": "ZONE_ATTACK: { lo: 0.4, hi: 1.9 },"
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 122,
+          "line": 123,
           "text": "CUT: { lo: 0.4, hi: 1.9 },"
         }
       ],
@@ -783,12 +799,12 @@
       "literalInClaimedModule": [
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 121,
+          "line": 122,
           "text": "ZONE_ATTACK: { lo: 0.4, hi: 1.9 },"
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 122,
+          "line": 123,
           "text": "CUT: { lo: 0.4, hi: 1.9 },"
         }
       ],
@@ -820,12 +836,12 @@
       "literalInClaimedModule": [
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 121,
+          "line": 122,
           "text": "ZONE_ATTACK: { lo: 0.4, hi: 1.9 },"
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 122,
+          "line": 123,
           "text": "CUT: { lo: 0.4, hi: 1.9 },"
         }
       ],
@@ -857,17 +873,17 @@
       "literalInClaimedModule": [
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 123,
+          "line": 124,
           "text": "ISOLATION: { lo: 0.5, hi: 1.8 },        // creation matters, usage matters more"
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 159,
+          "line": 165,
           "text": "touchShareTarget: r4(usage * (0.75 + pass * 0.5)),"
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 167,
+          "line": 173,
           "text": "passingShareTarget: r4(usage * (0.5 + pass * 1.3)),"
         }
       ],
@@ -899,7 +915,7 @@
       "literalInClaimedModule": [
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 123,
+          "line": 124,
           "text": "ISOLATION: { lo: 0.5, hi: 1.8 },        // creation matters, usage matters more"
         }
       ],
@@ -931,17 +947,17 @@
       "literalInClaimedModule": [
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 80,
+          "line": 81,
           "text": "SPOT_UP: (p) => 0.1 + perimeter(p) * 0.55,"
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 124,
+          "line": 125,
           "text": "PICK_AND_ROLL: { lo: 0.55, hi: 1.7 },"
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 128,
+          "line": 129,
           "text": "export const DEFAULT_FIT_BAND = Object.freeze({ lo: 0.55, hi: 1.7 });"
         }
       ],
@@ -973,12 +989,12 @@
       "literalInClaimedModule": [
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 124,
+          "line": 125,
           "text": "PICK_AND_ROLL: { lo: 0.55, hi: 1.7 },"
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 128,
+          "line": 129,
           "text": "export const DEFAULT_FIT_BAND = Object.freeze({ lo: 0.55, hi: 1.7 });"
         }
       ],
@@ -1010,17 +1026,17 @@
       "literalInClaimedModule": [
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 125,
+          "line": 126,
           "text": "TRANSITION: { lo: 0.6, hi: 1.6 },"
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 166,
+          "line": 172,
           "text": "finishingShareTarget: r4(usage * (0.6 + (player.rimThreat ?? 5) * 0.06)),"
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 273,
+          "line": 305,
           "text": "const volatility = clamp(1 - (player.profile?.fit?.roleScalability ?? 5) / 20, 0.6, 1);"
         }
       ],
@@ -1048,11 +1064,11 @@
       "module": "opportunityAllocation",
       "defaultValue": 1.6,
       "idReferencedInEngine": false,
-      "literalOccurrences": 36,
+      "literalOccurrences": 35,
       "literalInClaimedModule": [
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 125,
+          "line": 126,
           "text": "TRANSITION: { lo: 0.6, hi: 1.6 },"
         }
       ],
@@ -1084,12 +1100,12 @@
       "literalInClaimedModule": [
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 126,
+          "line": 127,
           "text": "GENERIC_HALF_COURT: { lo: 0.75, hi: 1.35 }, // mostly whose turn it is"
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 159,
+          "line": 165,
           "text": "touchShareTarget: r4(usage * (0.75 + pass * 0.5)),"
         }
       ],
@@ -1106,7 +1122,7 @@
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 126,
+          "line": 127,
           "text": "GENERIC_HALF_COURT: { lo: 0.75, hi: 1.35 }, // mostly whose turn it is"
         }
       ],
@@ -1117,21 +1133,21 @@
       "module": "opportunityAllocation",
       "defaultValue": 1.35,
       "idReferencedInEngine": false,
-      "literalOccurrences": 10,
+      "literalOccurrences": 9,
       "literalInClaimedModule": [
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 55,
+          "line": 56,
           "text": "strength: 1.35,"
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 61,
+          "line": 62,
           "text": "underTargetCeiling: 1.35,"
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 126,
+          "line": 127,
           "text": "GENERIC_HALF_COURT: { lo: 0.75, hi: 1.35 }, // mostly whose turn it is"
         }
       ],
@@ -1143,12 +1159,12 @@
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 55,
+          "line": 56,
           "text": "strength: 1.35,"
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 61,
+          "line": 62,
           "text": "underTargetCeiling: 1.35,"
         }
       ],
@@ -1158,8 +1174,8 @@
       "id": "shotLocation.rimWeight",
       "module": "possessionContext",
       "defaultValue": 0.34,
-      "idReferencedInEngine": false,
-      "literalOccurrences": 18,
+      "idReferencedInEngine": true,
+      "literalOccurrences": 17,
       "literalInClaimedModule": [],
       "sampleSites": [
         {
@@ -1178,14 +1194,14 @@
           "text": "const interiorPull = t.postScoring * 0.34 + t.rimPressure * 0.22"
         }
       ],
-      "wired": false
+      "wired": true
     },
     {
       "id": "shotLocation.postWeight",
       "module": "possessionContext",
       "defaultValue": 0.42,
-      "idReferencedInEngine": false,
-      "literalOccurrences": 15,
+      "idReferencedInEngine": true,
+      "literalOccurrences": 14,
       "literalInClaimedModule": [],
       "sampleSites": [
         {
@@ -1204,14 +1220,14 @@
           "text": "const closed = rng.chance(clamp(zoneShell.rotationRules.quality * 0.075 - (gaps[gap] ?? 0.5) * 0.35 "
         }
       ],
-      "wired": false
+      "wired": true
     },
     {
       "id": "shotLocation.midrangeWeight",
       "module": "possessionContext",
       "defaultValue": 0.18,
-      "idReferencedInEngine": false,
-      "literalOccurrences": 12,
+      "idReferencedInEngine": true,
+      "literalOccurrences": 11,
       "literalInClaimedModule": [],
       "sampleSites": [
         {
@@ -1230,14 +1246,14 @@
           "text": "if (key === \"MATCHUP\") v += toolkit.adaptability * 0.18;"
         }
       ],
-      "wired": false
+      "wired": true
     },
     {
       "id": "shotLocation.threeWeight",
       "module": "possessionContext",
       "defaultValue": 0.22,
-      "idReferencedInEngine": false,
-      "literalOccurrences": 15,
+      "idReferencedInEngine": true,
+      "literalOccurrences": 14,
       "literalInClaimedModule": [],
       "sampleSites": [
         {
@@ -1256,14 +1272,14 @@
           "text": "reboundExposure: 0.22,"
         }
       ],
-      "wired": false
+      "wired": true
     },
     {
       "id": "shotLocation.rimBiasMultiplier",
       "module": "possessionGame",
       "defaultValue": 1.6,
-      "idReferencedInEngine": false,
-      "literalOccurrences": 36,
+      "idReferencedInEngine": true,
+      "literalOccurrences": 35,
       "literalInClaimedModule": [],
       "sampleSites": [
         {
@@ -1282,14 +1298,14 @@
           "text": "{ id:\"malone-90s\", name:\"Karl Malone\",              decade:\"1990s\", pos:\"PF\", positions:[\"PF\",\"C\"], "
         }
       ],
-      "wired": false
+      "wired": true
     },
     {
       "id": "shotLocation.perimeterBiasMultiplier",
       "module": "possessionGame",
       "defaultValue": 1.5,
-      "idReferencedInEngine": false,
-      "literalOccurrences": 47,
+      "idReferencedInEngine": true,
+      "literalOccurrences": 46,
       "literalInClaimedModule": [],
       "sampleSites": [
         {
@@ -1308,30 +1324,24 @@
           "text": "{ id:\"tiny-70s\",   name:\"Nate Archibald\",           decade:\"1970s\", pos:\"PG\", positions:[\"PG\"],     "
         }
       ],
-      "wired": false
+      "wired": true
     },
     {
       "id": "conversion.rimBonus",
       "module": "possessionGame",
       "defaultValue": 0.155,
-      "idReferencedInEngine": false,
-      "literalOccurrences": 1,
+      "idReferencedInEngine": true,
+      "literalOccurrences": 0,
       "literalInClaimedModule": [],
-      "sampleSites": [
-        {
-          "file": "src/v3/possession/game.js",
-          "line": 87,
-          "text": "case \"RIM\": return clamp(fg + 0.155, 0.44, 0.75);"
-        }
-      ],
-      "wired": false
+      "sampleSites": [],
+      "wired": true
     },
     {
       "id": "conversion.paintBonus",
       "module": "possessionGame",
       "defaultValue": 0.015,
-      "idReferencedInEngine": false,
-      "literalOccurrences": 5,
+      "idReferencedInEngine": true,
+      "literalOccurrences": 4,
       "literalInClaimedModule": [],
       "sampleSites": [
         {
@@ -1350,24 +1360,24 @@
           "text": "assistLikelihood: denied ? 0.2 : clamp(0.78 + offense.offense.passing * 0.015, 0.55, 0.94),"
         }
       ],
-      "wired": false
+      "wired": true
     },
     {
       "id": "conversion.midrangePenalty",
       "module": "possessionGame",
       "defaultValue": -0.055,
-      "idReferencedInEngine": false,
+      "idReferencedInEngine": true,
       "literalOccurrences": 0,
       "literalInClaimedModule": [],
       "sampleSites": [],
-      "wired": false
+      "wired": true
     },
     {
       "id": "era.paceTempoScale",
       "module": "possessionContext",
       "defaultValue": 1.35,
-      "idReferencedInEngine": false,
-      "literalOccurrences": 10,
+      "idReferencedInEngine": true,
+      "literalOccurrences": 9,
       "literalInClaimedModule": [],
       "sampleSites": [
         {
@@ -1377,22 +1387,22 @@
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 55,
+          "line": 56,
           "text": "strength: 1.35,"
         },
         {
           "file": "src/v3/actions/opportunityAllocation.js",
-          "line": 61,
+          "line": 62,
           "text": "underTargetCeiling: 1.35,"
         }
       ],
-      "wired": false
+      "wired": true
     },
     {
       "id": "era.paceBoundFraction",
       "module": "possessionContext",
       "defaultValue": 0.14,
-      "idReferencedInEngine": false,
+      "idReferencedInEngine": true,
       "literalOccurrences": 14,
       "literalInClaimedModule": [],
       "sampleSites": [
@@ -1412,14 +1422,14 @@
           "text": "reboundExposure: 0.14,"
         }
       ],
-      "wired": false
+      "wired": true
     },
     {
       "id": "era.threeAnchorMax",
       "module": "possessionContext",
       "defaultValue": 12,
-      "idReferencedInEngine": false,
-      "literalOccurrences": 55,
+      "idReferencedInEngine": true,
+      "literalOccurrences": 54,
       "literalInClaimedModule": [],
       "sampleSites": [
         {
@@ -1438,13 +1448,13 @@
           "text": ": purePick(POSITIONS[i], rng, { ...opts, eliteN: 12 });"
         }
       ],
-      "wired": false
+      "wired": true
     },
     {
       "id": "era.freeThrowTripRate",
       "module": "possessionContext",
       "defaultValue": 0.5,
-      "idReferencedInEngine": false,
+      "idReferencedInEngine": true,
       "literalOccurrences": 191,
       "literalInClaimedModule": [],
       "sampleSites": [
@@ -1464,7 +1474,7 @@
           "text": "{ id:\"john-h-70s\", name:\"John Havlicek\",            decade:\"1970s\", pos:\"SF\", positions:[\"SF\",\"SG\"],"
         }
       ],
-      "wired": false
+      "wired": true
     },
     {
       "id": "zone.selectionFrequency",
@@ -1507,7 +1517,7 @@
       "module": "zoneResolution",
       "defaultValue": 1,
       "idReferencedInEngine": false,
-      "literalOccurrences": 891,
+      "literalOccurrences": 893,
       "literalInClaimedModule": [],
       "sampleSites": [
         {
@@ -1533,7 +1543,7 @@
       "module": "zoneResolution",
       "defaultValue": 1,
       "idReferencedInEngine": false,
-      "literalOccurrences": 891,
+      "literalOccurrences": 893,
       "literalInClaimedModule": [],
       "sampleSites": [
         {
@@ -1559,7 +1569,7 @@
       "module": "coachIntelligence",
       "defaultValue": 1,
       "idReferencedInEngine": false,
-      "literalOccurrences": 891,
+      "literalOccurrences": 893,
       "literalInClaimedModule": [
         {
           "file": "src/v3/coachIntelligence.js",
@@ -1596,7 +1606,7 @@
       "module": "coachIntelligence",
       "defaultValue": 1,
       "idReferencedInEngine": false,
-      "literalOccurrences": 891,
+      "literalOccurrences": 893,
       "literalInClaimedModule": [
         {
           "file": "src/v3/coachIntelligence.js",
@@ -1629,11 +1639,11 @@
       "wired": false
     },
     {
-      "id": "coach.adjustmentThreshold",
+      "id": "coach.offensiveAdjustmentMinEvents",
       "module": "coachAdjustment",
-      "defaultValue": 3,
+      "defaultValue": 6,
       "idReferencedInEngine": false,
-      "literalOccurrences": 565,
+      "literalOccurrences": 655,
       "literalInClaimedModule": [],
       "sampleSites": [
         {
@@ -1648,34 +1658,86 @@
         },
         {
           "file": "src/attributes.js",
-          "line": 47,
-          "text": "\"jerry-60s\":  A([\"Shot Creator\", \"Secondary Creator\"], { shotCreation: 9, outsideGravity: 4, rimPres"
+          "line": 46,
+          "text": "\"oscar-60s\":  A([\"Primary Creator\", \"Floor General\"], { shotCreation: 9, outsideGravity: 2, rimPress"
         }
       ],
       "wired": false
     },
     {
-      "id": "coach.adjustmentCooldown",
+      "id": "coach.defensiveAdjustmentMinEvents",
       "module": "coachAdjustment",
-      "defaultValue": 12,
+      "defaultValue": 5,
       "idReferencedInEngine": false,
-      "literalOccurrences": 55,
+      "literalOccurrences": 729,
       "literalInClaimedModule": [],
       "sampleSites": [
         {
           "file": "src/attributes.js",
-          "line": 184,
-          "text": "else if (prof.outsideGravity <= 12) gaps.push({ label: \"Cramped spacing\", detail: \"Defenses can pack"
+          "line": 44,
+          "text": "\"wilt-60s\":   A([\"Post Scorer\", \"Rim Protector\", \"Rebounding Specialist\"], { shotCreation: 8, outsid"
         },
         {
-          "file": "src/dailyChallenge.js",
-          "line": 64,
-          "text": "const p = purePick(pos, rng, { eliteN: 12, excludeNames: names });"
+          "file": "src/attributes.js",
+          "line": 45,
+          "text": "\"bill-60s\":   A([\"Rim Protector\", \"Rebounding Specialist\"], { shotCreation: 3, outsideGravity: 0, ri"
         },
         {
-          "file": "src/dailyChallenge.js",
-          "line": 86,
-          "text": ": purePick(POSITIONS[i], rng, { ...opts, eliteN: 12 });"
+          "file": "src/attributes.js",
+          "line": 46,
+          "text": "\"oscar-60s\":  A([\"Primary Creator\", \"Floor General\"], { shotCreation: 9, outsideGravity: 2, rimPress"
+        }
+      ],
+      "wired": false
+    },
+    {
+      "id": "coach.offensiveAdjustmentCooldown",
+      "module": "coachAdjustment",
+      "defaultValue": 30,
+      "idReferencedInEngine": false,
+      "literalOccurrences": 14,
+      "literalInClaimedModule": [],
+      "sampleSites": [
+        {
+          "file": "src/attributes.js",
+          "line": 183,
+          "text": "if (prof.outsideGravity >= 30) bonuses.push({ label: \"Elite spacing\", detail: \"Multiple shooters ben"
+        },
+        {
+          "file": "src/players.js",
+          "line": 36,
+          "text": "{ id:\"oscar-60s\",  name:\"Oscar Robertson\",          decade:\"1960s\", pos:\"PG\", positions:[\"PG\",\"SG\"],"
+        },
+        {
+          "file": "src/players.js",
+          "line": 52,
+          "text": "{ id:\"bob-mc-70s\", name:\"Bob McAdoo\",               decade:\"1970s\", pos:\"C\",  positions:[\"C\",\"PF\"], "
+        }
+      ],
+      "wired": false
+    },
+    {
+      "id": "coach.defensiveAdjustmentCooldown",
+      "module": "coachAdjustment",
+      "defaultValue": 34,
+      "idReferencedInEngine": false,
+      "literalOccurrences": 5,
+      "literalInClaimedModule": [],
+      "sampleSites": [
+        {
+          "file": "src/players.js",
+          "line": 38,
+          "text": "{ id:\"elgin-60s\",  name:\"Elgin Baylor\",             decade:\"1960s\", pos:\"SF\", positions:[\"SF\",\"PF\"],"
+        },
+        {
+          "file": "src/theme.js",
+          "line": 22,
+          "text": "glowGold: \"0 0 34px rgba(253,185,39,0.12)\","
+        },
+        {
+          "file": "src/theme.js",
+          "line": 27,
+          "text": "glowBlue: \"0 0 34px rgba(110,168,254,0.12)\","
         }
       ],
       "wired": false
@@ -1683,29 +1745,29 @@
     {
       "id": "coach.adjustmentMagnitude",
       "module": "coachAdjustment",
-      "defaultValue": 0.05,
+      "defaultValue": 0.06,
       "idReferencedInEngine": false,
-      "literalOccurrences": 27,
+      "literalOccurrences": 19,
       "literalInClaimedModule": [],
       "sampleSites": [
         {
           "file": "src/v3/actions/families.js",
-          "line": 214,
-          "text": "+ clamp((eff.perimeterShotValue - 3) * 0.012, -0.02, 0.05);"
+          "line": 102,
+          "text": "let w = (coachPost / 10) * 0.16 + (best / 10) * 0.12 + clamp((eraInterior - 4) * 0.014, -0.03, 0.06)"
+        },
+        {
+          "file": "src/v3/actions/families.js",
+          "line": 169,
+          "text": "w *= clamp(0.7 + offense.offense.spacing * 0.06, 0.7, 1.3);"
         },
         {
           "file": "src/v3/actions/families.js",
           "line": 280,
           "text": "weight: ({ offense, eff }) => clamp(0.05 + offense.offense.spacing * 0.014 + clamp((eff.perimeterSho"
-        },
-        {
-          "file": "src/v3/actions/offensivePlan.js",
-          "line": 274,
-          "text": "const room = Math.max(0.05, 0.9 - protectedSum);"
         }
       ],
       "wired": false
     }
   ],
-  "auditHash": "7413b102c6496312740fe36a23c762fdbf28672ef15fd4127276da706b3a2720"
+  "auditHash": "4a42146f47b822da4a5d5338e7c9e524e8699f0de100c9214f44c2dd39589db1"
 }

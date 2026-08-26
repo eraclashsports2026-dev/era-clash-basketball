@@ -12,6 +12,7 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { PARAMETERS, FIXED_NOT_CALIBRATABLE } from "../../src/v3/calibration/parameters.js";
+import { activeParameters } from "../../src/v3/calibration/runtimeParameters.js";
 import { versionOf } from "../../src/versions.js";
 
 export const SUPPORT_PATH = "data/calibration/calibration-support-matrix.json";
@@ -84,7 +85,10 @@ export const buildMatrix = () => {
 
   const have = { tierC: tierCPresent, tierD: tierDPresent, synthetic: true, eraEnvironmentAuthorized };
 
-  const rows = PARAMETERS.map((p) => {
+  // Only ACTIVE_RUNTIME_TUNABLE entries can be calibrated, so only they are
+  // classified for support. Derived entries are reported separately rather than
+  // being given a support class they cannot use.
+  const rows = activeParameters().map((p) => {
     const declared = p.calibrationSource ?? "STRUCTURAL";
     const spec = DECLARED_SOURCE_SUPPORT[declared] ?? {
       support: "STRUCTURAL_VALIDATION_ONLY", requires: null,
@@ -130,6 +134,8 @@ export const buildMatrix = () => {
       frozenOnDataGrounds: rows.filter((r) => !r.tunableOnDataGrounds).length,
       blockedBySource: rows.filter((r) => r.blockedBySource).length },
     fixedNotCalibratable: FIXED_NOT_CALIBRATABLE,
+    nonActiveEntries: PARAMETERS.filter((p) => p.registryClass !== "ACTIVE_RUNTIME_TUNABLE")
+      .map((p) => ({ id: p.id, registryClass: p.registryClass, classNote: p.classNote })),
     parameters: rows,
   };
 };

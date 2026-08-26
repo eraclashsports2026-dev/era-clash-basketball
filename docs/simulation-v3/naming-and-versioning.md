@@ -37,10 +37,15 @@
 | Historical corpus | `historicalCorpusVersion` | **3.0.0** | DEVELOPMENT (does **not** affect results) |
 | Historical holdout set | `historicalHoldoutSetVersion` | **3.0.0** | DEVELOPMENT (does **not** affect results) |
 | Synthetic stress set | `syntheticStressSetVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
-| Calibration parameter registry | `calibrationParameterRegistryVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Calibration parameter registry | `calibrationParameterRegistryVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |
 | Calibration objective | `calibrationObjectiveVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |
 | Probability validation | `probabilityValidationVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Actual-game side symmetry | `actualGameSymmetryVersion` | **1.0.0** | DEVELOPMENT (**affects results**) |
+| Runtime parameter binding | `runtimeParameterBindingVersion` | **1.0.0** | DEVELOPMENT (**affects results**) |
+| Parameter connectivity | `parameterConnectivityVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Calibration support matrix | `calibrationSupportMatrixVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |
+| Parameter sensitivity seed set | `parameterSensitivitySeedSetVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Default parity fixtures | `defaultParityFixtureVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Tier B target data | `tierBTargetDataVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Independent source verification | `independentSourceVerificationVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Parameter identifiability | `parameterIdentifiabilityVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
