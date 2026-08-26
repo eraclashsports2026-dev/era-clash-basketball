@@ -15,6 +15,7 @@ import { PLAYERS } from "../src/players.js";
 import { personIdForCard } from "../src/v3/data/persons.js";
 import COACHES from "../src/v3/data/coaches.js";
 import { versionOf, statusOf, VERSION_STATUS, REGISTRY } from "../src/versions.js";
+import { assertCalibrationLockInvariant } from "./helpers/calibrationLockInvariant.js";
 
 const store = loadPlayers();
 const corpus = loadCorpusV3();
@@ -401,9 +402,10 @@ describe("corpus v3 versioning", () => {
     }
   });
 
-  it("keeps the possession calibration unlocked", () => {
-    expect(versionOf("possessionCalibrationVersion")).toBeNull();
-    expect(statusOf("possessionCalibrationVersion")).toBe(VERSION_STATUS.PLANNED);
+  it("locks the possession calibration only with a passing manifest", () => {
+    const r = assertCalibrationLockInvariant();
+    expect(statusOf("possessionCalibrationVersion"))
+      .toBe(r.locked ? VERSION_STATUS.DEVELOPMENT_LOCKED_BASELINE : VERSION_STATUS.PLANNED);
   });
 
   it("advances the corpus and target domains to their third generation", () => {

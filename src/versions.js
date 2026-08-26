@@ -68,7 +68,7 @@ export const VERSION_STATUS = {
   /** A formal holdout rejected this parameter set. It may never be retuned against that holdout. */
   HOLDOUT_FAILED: "HOLDOUT_FAILED",
 };
-const { ACTIVE, DEVELOPMENT, PLANNED } = VERSION_STATUS;
+const { ACTIVE, DEVELOPMENT, PLANNED, DEVELOPMENT_LOCKED_BASELINE } = VERSION_STATUS;
 
 // `affectsResult` is separate from `status` on purpose. Chemistry is ACTIVE —
 // it ships, it is displayed, it has a real version — and it changes NOTHING
@@ -111,8 +111,8 @@ export const REGISTRY = {
   syntheticStressHoldoutVersion: entry("2.0.0", DEVELOPMENT,
     "A NEW sealed synthetic stress set. v2 rather than a reuse of v1 because 19 of v1's 25 fixtures had their outputs read during Phase 6C2A, which disqualifies it as a holdout.", false),
 
-  monteCarloProbabilityVersion: entry("1.0.0", DEVELOPMENT,
-    "The Monte Carlo win-probability estimator. Affects prediction fingerprints and probability cache keys; must NEVER affect a game simulation result.", false),
+  monteCarloProbabilityVersion: entry("1.1.0", DEVELOPMENT,
+    "The Monte Carlo win-probability estimator. Affects prediction fingerprints and probability cache keys; must NEVER affect a game simulation result. v1.1.0 reports the PAIRED orientation effect with the standard error appropriate to a paired design, alongside the half-scale quantity v1.0.0 published, and complement() now relabels its perspective team. This version tags the probability cache key, so v1.0.0 estimates stay replayable under their own tag rather than being silently reinterpreted.", false),
 
   predictionSeedSetVersion: entry("1.0.0", DEVELOPMENT,
     "Seeds used to ESTIMATE a probability. Disjoint from validation and actual-game seeds, so a probability is never validated against the games that produced it.", false),
@@ -141,8 +141,8 @@ export const REGISTRY = {
   calibrationObjectiveVersion: entry("3.0.0", DEVELOPMENT,
     "The objective function and its acceptance rules. Bumped whenever a weight or threshold changes, so a result can never be attributed to the wrong objective. v2 (Phase 6C2C2) adds separately-reported components for zone behaviour, coach identity, adjustment behaviour and probability reliability, and refuses to collapse them into one opaque score.", false),
 
-  probabilityValidationVersion: entry("2.0.0", DEVELOPMENT,
-    "The probability reliability suite: bins, scoring rules and the strength ladder. Does not affect game results.", false),
+  probabilityValidationVersion: entry("3.0.0", DEVELOPMENT,
+    "The probability reliability suite: bins, scoring rules and the strength ladder. Does not affect game results. v3.0.0 removes the per-cell side-bias equivalence gate from this suite and delegates it to probabilitySideBiasPolicyVersion 2.0.0, which escalates to 16,384 paired seeds per cell. At this suite's 128 paired seeds per cell a true null cannot be shown equivalent to +/-0.05, so a gate here would be powerless or wrong; the systematic-bias gate, which is a mean rather than a maximum, stays.", false),
 
   historicalTargetSchemaVersion: entry("1.0.0", DEVELOPMENT,
     "The shape of a calibration target record: fields, provenance requirements, availability vocabulary. Changing it changes what a target IS, so cached target output must be invalidated. Does NOT affect game results.", false),
@@ -188,6 +188,31 @@ export const REGISTRY = {
 
   calibrationReadinessV3Version: entry("1.0.0", DEVELOPMENT,
     "Readiness under the targeted-mechanic methodology, which adds classes for parameters that are active only in rare conditional contexts and for those a target cannot adjudicate at all. Separate from calibrationReadinessVersion so the v2 freeze stays byte-stable.", false),
+
+  // ── Phase 6C2C6: status reconciliation and probability side-bias ──────────
+  candidateSelectionArtifactVersion: entry("1.0.0", DEVELOPMENT,
+    "The artifact that records WHICH candidate the search selected. Deliberately separate from the lock: Phase 6C2C5 conflated the two and published a DEVELOPMENT_LOCKED_BASELINE status while possessionCalibrationVersion was still null and a gate was failing.", false),
+
+  candidateLockStatusVersion: entry("1.0.0", DEVELOPMENT,
+    "The artifact that records whether the selected candidate is LOCKED, and what blocks the lock if it is not. Selection is evidence about candidates; locking is a claim about readiness. A phase may legitimately establish the first and not the second.", false),
+
+  probabilitySideBiasPolicyVersion: entry("2.0.0", DEVELOPMENT,
+    "How Monte Carlo side-orientation bias is tested. v1 compared a per-cell POINT ESTIMATE against a fixed 0.05, with no multiplicity control across 30 cells and a standard error taken from the wrong sample. v2 uses paired-orientation equivalence testing with family-wise control. The 0.05 practical margin is preserved; only the method changes.", false),
+
+  probabilitySideBiasSeedSetVersion: entry("2.0.0", DEVELOPMENT,
+    "Seed block for side-bias validation. v2 because a cell that failed on one seed block must be retested on seeds it was not selected on — otherwise the retest re-measures the selection.", false),
+
+  probabilityOrientationAuditVersion: entry("1.0.0", DEVELOPMENT,
+    "The audit of what the probability harness's side-bias number actually measures: perspective, complement, cache, sample semantics and standard error. Added because the v1 gate failed on a statistic whose scale and uncertainty had never been verified.", false),
+
+  objectiveVisibilityResolutionVersion: entry("1.0.0", DEVELOPMENT,
+    "The record of which parameters an objective can and cannot adjudicate. A parameter that changes the engine but not the objective's statistic is neither identifiable nor refuted — it is unmeasured, and must be labelled as such rather than counted as tested.", false),
+
+  baselineCandidateLockManifestVersion: entry("1.0.0", DEVELOPMENT,
+    "The immutable manifest that content-addresses a locked baseline candidate. Its existence is a precondition for a non-null possessionCalibrationVersion.", false),
+
+  phase6C3ValidationPackageVersion: entry("1.0.0", DEVELOPMENT,
+    "The prepared, unexecuted formal-holdout validation package. DEVELOPMENT rather than PLANNED because the package document itself exists: in this registry PLANNED means the system does not exist and its version is null, and it must not key a cache. That the holdouts have not been RUN is a property recorded inside the package artifact, not of this version domain.", false),
 
   calibrationScopeVersion: entry("1.0.0", DEVELOPMENT,
     "Which parameters a calibration search may touch, with per-parameter bounds and movement limits. Frozen before search; mutating it mid-search would let the scope follow the results.", false),
@@ -259,8 +284,24 @@ export const REGISTRY = {
   // measures the untuned baseline; Phase 6C2 performs the tuning that would
   // produce an approved calibration. Reporting a version here before then would
   // claim a calibration that has not happened.
-  possessionCalibrationVersion: entry(null, PLANNED,
-    "The approved calibration of the possession engine. Deliberately null until Phase 6C2 tunes and an approved calibration exists.", false),
+  // Phase 6C2C6 set this, and it is the ONLY thing in this phase that changes a
+  // version from null. It is gated on 35 engineering gates passing, recorded in
+  // data/calibration/c6/baseline-candidate-lock.json, and the status-consistency
+  // tests refuse a non-null value here without a lock manifest and zero blockers.
+  //
+  // 1.0.0 does NOT mean "tuned". The locked candidate is Candidate 0: every one
+  // of the 53 active parameters at its registry default, because 84 on-grid
+  // alternatives were tested against an authorized historical target and none
+  // survived family-wise correction. A calibration that concluded "the defaults
+  // are the best-supported values" is a calibration result, not the absence of
+  // one, and it earns a version so that later phases can refer to exactly this
+  // parameter set.
+  //
+  // DEVELOPMENT_LOCKED_BASELINE, not ACTIVE: internal gates passed, both formal
+  // holdouts remain sealed and unread, no private preview has run, and nothing
+  // here authorises production.
+  possessionCalibrationVersion: entry("1.0.0", DEVELOPMENT_LOCKED_BASELINE,
+    "The approved development calibration of the possession engine: Candidate 0, all 53 active parameters at registry defaults, parameterSetHash 83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309. Locked in Phase 6C2C6 after the corrected probability side-bias gate passed. NOT holdout validated, NOT preview validated, NOT production ready.", false),
 
   zoneResolutionVersion: entry("1.0.0", DEVELOPMENT,
     "Zone shells, area responsibilities, gap vulnerabilities and zone possession resolution. Its own domain because Phase 6B1 shipped ZONE_MIXED as a scheme LABEL that resolved through man code — a real zone path is a different system, not a bigger label. DEVELOPMENT, ZONE_RESOLUTION_ENABLED defaults to false."),

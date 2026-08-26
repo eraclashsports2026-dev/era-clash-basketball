@@ -29,7 +29,7 @@
 | Historical fixture data | `historicalFixtureDataVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Holdout set | `holdoutSetVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Benchmark seed set | `benchmarkSeedSetVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
-| Possession calibration | `possessionCalibrationVersion` | `null` | PLANNED (does **not** affect results) |
+| Possession calibration | `possessionCalibrationVersion` | **1.0.0** | DEVELOPMENT_LOCKED_BASELINE (does **not** affect results) |
 | Historical target schema | `historicalTargetSchemaVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Historical target data | `historicalTargetDataVersion` | **3.0.0** | DEVELOPMENT (does **not** affect results) |
 | Opportunity allocation | `opportunityAllocationVersion` | **1.0.0** | DEVELOPMENT |
@@ -39,7 +39,7 @@
 | Synthetic stress set | `syntheticStressSetVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Calibration parameter registry | `calibrationParameterRegistryVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |
 | Calibration objective | `calibrationObjectiveVersion` | **3.0.0** | DEVELOPMENT (does **not** affect results) |
-| Probability validation | `probabilityValidationVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |
+| Probability validation | `probabilityValidationVersion` | **3.0.0** | DEVELOPMENT (does **not** affect results) |
 | Actual-game side symmetry | `actualGameSymmetryVersion` | **1.0.0** | DEVELOPMENT (**affects results**) |
 | Runtime parameter binding | `runtimeParameterBindingVersion` | **1.0.0** | DEVELOPMENT (**affects results**) |
 | Parameter connectivity | `parameterConnectivityVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
@@ -57,6 +57,14 @@
 | Targeted calibration policy | `targetedCalibrationPolicyVersion` | **1.0.0** | DEVELOPMENT |
 | Parameter identifiability v3 | `parameterIdentifiabilityV3Version` | **1.0.0** | DEVELOPMENT |
 | Calibration readiness v3 | `calibrationReadinessV3Version` | **1.0.0** | DEVELOPMENT |
+| Candidate selection artifact | `candidateSelectionArtifactVersion` | **1.0.0** | DEVELOPMENT |
+| Candidate lock status | `candidateLockStatusVersion` | **1.0.0** | DEVELOPMENT |
+| Probability side-bias policy | `probabilitySideBiasPolicyVersion` | **2.0.0** | DEVELOPMENT |
+| Probability side-bias seed set | `probabilitySideBiasSeedSetVersion` | **2.0.0** | DEVELOPMENT |
+| Probability orientation audit | `probabilityOrientationAuditVersion` | **1.0.0** | DEVELOPMENT |
+| Objective visibility resolution | `objectiveVisibilityResolutionVersion` | **1.0.0** | DEVELOPMENT |
+| Baseline candidate lock manifest | `baselineCandidateLockManifestVersion` | **1.0.0** | DEVELOPMENT |
+| Phase 6C3 validation package | `phase6C3ValidationPackageVersion` | **1.0.0** | DEVELOPMENT |
 | Parameter history | `parameterHistoryVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Side-symmetry validation | `sideSymmetryValidationVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |
 | Calibration support matrix | `calibrationSupportMatrixVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |
@@ -76,7 +84,7 @@
 | Historical calibration set | `historicalCalibrationSetVersion` | **3.0.0** | DEVELOPMENT (does **not** affect results) |
 | Synthetic development set | `syntheticDevelopmentSetVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |
 | Synthetic stress holdout | `syntheticStressHoldoutVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |
-| Monte Carlo probability | `monteCarloProbabilityVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Monte Carlo probability | `monteCarloProbabilityVersion` | **1.1.0** | DEVELOPMENT (does **not** affect results) |
 | Prediction seed set | `predictionSeedSetVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Probability validation seed set | `probabilityValidationSeedSetVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Probability cache schema | `probabilityCacheSchemaVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |

@@ -34,6 +34,11 @@ describe("frozen acceptance policy", () => {
   // The 6C2C2 policy file is NOT rewritten — its hash is asserted above, and
   // editing it would erase the record of what 6C2C2 was judged against. The
   // supersession is recorded here instead, with the reason.
+  // Phase 6C2C6 superseded two more. Recorded here for the same reason: the
+  // 6C2C2 policy file is hash-asserted and must not be rewritten.
+  const SUPERSEDED_LATER = {
+    probabilityValidationVersion: { was: "1.0.0", now: "3.0.0", why: "6C2C4 moved it to 2.0.0 for a fresh validation seed block. 6C2C6 moved it to 3.0.0 because the per-cell side-bias equivalence gate was statistically invalid at this suite's sample size and was delegated to side-bias policy v2, which escalates to 16,384 paired seeds per cell." },
+  };
   const SUPERSEDED_IN_6C2C4 = {
     parameterIdentifiabilityVersion: { was: "1.0.0", now: "2.0.0", why: "v1 tested max|t| over ~32 metrics against a threshold below its own null median. v2 uses declared metric families with family-wise control." },
     internalCalibrationFoldVersion: { was: "2.0.0", now: "3.0.0", why: "Folds rebuilt with leakage grouping for scoped calibration." },
@@ -43,7 +48,7 @@ describe("frozen acceptance policy", () => {
 
   it("registers every policy version, or records why it was superseded", () => {
     for (const [k, v] of Object.entries(POLICY_VERSIONS)) {
-      const sup = SUPERSEDED_IN_6C2C4[k];
+      const sup = SUPERSEDED_LATER[k] ?? SUPERSEDED_IN_6C2C4[k];
       if (!sup) {
         expect(versionOf(k), `${k} must exist in src/versions.js`).toBe(v);
         continue;
@@ -56,8 +61,34 @@ describe("frozen acceptance policy", () => {
     }
   });
 
-  it("keeps possessionCalibrationVersion null until internal gates pass", () => {
-    expect(versionOf("possessionCalibrationVersion")).toBeNull();
+  // This asserted `null` from Phase 6C2C2 until Phase 6C2C6, when the internal
+  // gates actually passed and the baseline candidate was locked. The assertion
+  // is REPLACED rather than deleted, and the replacement is strictly stronger:
+  // `null` was one bit, whereas this requires a lock manifest, all its
+  // engineering gates passing, zero unresolved blockers, and — for a BASELINE
+  // lock — zero parameter changes. A future phase cannot set this version
+  // without producing all of that.
+  it("allows a non-null possessionCalibrationVersion only with a passing lock manifest", () => {
+    const v = versionOf("possessionCalibrationVersion");
+    const lockPath = "data/calibration/c6/baseline-candidate-lock.json";
+    if (v == null) {
+      // Still uncalibrated: nothing may claim a lock.
+      expect(existsSync(lockPath) && JSON.parse(readFileSync(lockPath, "utf8")).data.candidateLockStatus === "LOCKED").toBe(false);
+      return;
+    }
+    expect(existsSync(lockPath), "a non-null calibration version requires a lock manifest").toBe(true);
+    const m = JSON.parse(readFileSync(lockPath, "utf8")).data;
+    expect(m.candidateLockStatus).toBe("LOCKED");
+    expect(m.allEngineeringGatesPass).toBe(true);
+    expect(m.candidateLockBlockers).toEqual([]);
+    expect(m.possessionCalibrationVersion).toBe(v);
+    if (m.calibrationStatus === "DEVELOPMENT_LOCKED_BASELINE") expect(m.parameterChanges).toBe(0);
+    // And it must never claim more than a development lock in this lifecycle.
+    for (const forbidden of ["HOLDOUT_VALIDATED", "PRIVATE_PREVIEW_VALIDATED", "PRODUCTION_READY", "ACTIVE"]) {
+      expect(m.calibrationStatus).not.toBe(forbidden);
+    }
+    expect(m.formalHoldoutAccessCounts.historicalHoldoutV3).toBe(0);
+    expect(m.formalHoldoutAccessCounts.syntheticStressHoldoutV2).toBe(0);
   });
 
   it("provides the calibration lifecycle statuses without inventing a version bump", () => {

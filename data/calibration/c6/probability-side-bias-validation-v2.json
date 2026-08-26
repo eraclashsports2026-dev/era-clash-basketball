@@ -1,0 +1,4486 @@
+{
+  "artifact": "probability-side-bias-validation-v2",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run calibration:c6:sidebias",
+  "generatedAt": "2026-08-26T17:47:16.292Z",
+  "gitCommit": "26d030a9aef4ebb25e5278cfe0e7f7a0f617a1a8",
+  "branch": "phase-6c2c6-probability-side-bias-lock",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {
+    "data/calibration/c6/probability-side-bias-policy-v2.json": "8b7dae098ae524e18ebb7e7d551f845551aef7e06cfb04216411c81a15db42f1"
+  },
+  "data": {
+    "probabilitySideBiasPolicyVersion": "2.0.0",
+    "probabilitySideBiasSeedSetVersion": "2.0.0",
+    "policyHash": "51005eccf853e9a609f8e7e2b1b026c89d90794e153c2adee95841fa6f3384a1",
+    "policyFrozenBeforeThisRun": true,
+    "familySize": 44,
+    "simultaneousAlpha": 0.00114,
+    "perCellMargin": 0.05,
+    "aggregateMargin": 0.01,
+    "totalGamesSimulated": 722944,
+    "classificationCounts": {
+      "EQUIVALENT": 44
+    },
+    "reconciliation": {
+      "label": "side-bias-cells",
+      "sum": 44,
+      "expectedTotal": 44,
+      "reconciles": true,
+      "problems": []
+    },
+    "aggregate": {
+      "pooledPairs": 361472,
+      "pooledDelta": -0.00185,
+      "pooledSe": 0.00145,
+      "pooledWald": {
+        "lower": -0.00469,
+        "upper": 0.001
+      },
+      "pooledBootstrap": {
+        "lower": -0.00475,
+        "upper": 0.00101
+      },
+      "meanAcrossCells": -0.00075,
+      "acrossCellsSe": 0.0012,
+      "acrossCellsInterval": {
+        "lower": -0.0031,
+        "upper": 0.00159
+      },
+      "withinAggregateMargin": true
+    },
+    "strata": {
+      "byEra": {
+        "2010s": {
+          "cells": 36,
+          "meanDelta": -0.00043,
+          "se": 0.00115,
+          "interval": {
+            "lower": -0.00268,
+            "upper": 0.00183
+          },
+          "withinAggregateMargin": true,
+          "sameDirectionSystematic": false
+        },
+        "1960s": {
+          "cells": 3,
+          "meanDelta": -0.0002,
+          "se": 0.00487,
+          "interval": {
+            "lower": -0.00975,
+            "upper": 0.00934
+          },
+          "withinAggregateMargin": true,
+          "sameDirectionSystematic": false
+        },
+        "2020s": {
+          "cells": 3,
+          "meanDelta": 0.0002,
+          "se": 0.01068,
+          "interval": {
+            "lower": -0.02073,
+            "upper": 0.02114
+          },
+          "withinAggregateMargin": false,
+          "sameDirectionSystematic": false
+        },
+        "1970s": {
+          "cells": 1,
+          "meanDelta": null,
+          "se": null,
+          "interval": {
+            "lower": null,
+            "upper": null
+          },
+          "withinAggregateMargin": null,
+          "sameDirectionSystematic": null
+        },
+        "1990s": {
+          "cells": 1,
+          "meanDelta": null,
+          "se": null,
+          "interval": {
+            "lower": null,
+            "upper": null
+          },
+          "withinAggregateMargin": null,
+          "sameDirectionSystematic": null
+        }
+      },
+      "byKind": {
+        "MIRROR": {
+          "cells": 14,
+          "meanDelta": -0.00337,
+          "se": 0.00198,
+          "interval": {
+            "lower": -0.00724,
+            "upper": 0.00051
+          },
+          "withinAggregateMargin": true,
+          "sameDirectionSystematic": false
+        },
+        "NON_MIRROR": {
+          "cells": 30,
+          "meanDelta": 0.00046,
+          "se": 0.00146,
+          "interval": {
+            "lower": -0.0024,
+            "upper": 0.00333
+          },
+          "withinAggregateMargin": true,
+          "sameDirectionSystematic": false
+        }
+      },
+      "byCoach": {
+        "gregg-popovich": {
+          "cells": 8,
+          "meanDelta": 0.00044,
+          "se": 0.00304,
+          "interval": {
+            "lower": -0.00551,
+            "upper": 0.0064
+          },
+          "withinAggregateMargin": true,
+          "sameDirectionSystematic": false
+        },
+        "mike-dantoni": {
+          "cells": 12,
+          "meanDelta": 0.00085,
+          "se": 0.00198,
+          "interval": {
+            "lower": -0.00302,
+            "upper": 0.00473
+          },
+          "withinAggregateMargin": true,
+          "sameDirectionSystematic": false
+        },
+        "steve-kerr": {
+          "cells": 11,
+          "meanDelta": -0.00011,
+          "se": 0.00302,
+          "interval": {
+            "lower": -0.00603,
+            "upper": 0.00581
+          },
+          "withinAggregateMargin": true,
+          "sameDirectionSystematic": false
+        },
+        "tom-thibodeau": {
+          "cells": 5,
+          "meanDelta": -0.00342,
+          "se": 0.00325,
+          "interval": {
+            "lower": -0.00979,
+            "upper": 0.00296
+          },
+          "withinAggregateMargin": true,
+          "sameDirectionSystematic": false
+        },
+        "red-auerbach": {
+          "cells": 2,
+          "meanDelta": 0.00452,
+          "se": 0.00208,
+          "interval": {
+            "lower": 0.00045,
+            "upper": 0.00858
+          },
+          "withinAggregateMargin": true,
+          "sameDirectionSystematic": false
+        },
+        "nick-nurse": {
+          "cells": 1,
+          "meanDelta": null,
+          "se": null,
+          "interval": {
+            "lower": null,
+            "upper": null
+          },
+          "withinAggregateMargin": null,
+          "sameDirectionSystematic": null
+        },
+        "lenny-wilkens": {
+          "cells": 1,
+          "meanDelta": null,
+          "se": null,
+          "interval": {
+            "lower": null,
+            "upper": null
+          },
+          "withinAggregateMargin": null,
+          "sameDirectionSystematic": null
+        },
+        "erik-spoelstra": {
+          "cells": 2,
+          "meanDelta": -0.00433,
+          "se": 0.00043,
+          "interval": {
+            "lower": -0.00517,
+            "upper": -0.0035
+          },
+          "withinAggregateMargin": true,
+          "sameDirectionSystematic": false
+        },
+        "jerry-sloan": {
+          "cells": 1,
+          "meanDelta": null,
+          "se": null,
+          "interval": {
+            "lower": null,
+            "upper": null
+          },
+          "withinAggregateMargin": null,
+          "sameDirectionSystematic": null
+        },
+        "phil-jackson": {
+          "cells": 1,
+          "meanDelta": null,
+          "se": null,
+          "interval": {
+            "lower": null,
+            "upper": null
+          },
+          "withinAggregateMargin": null,
+          "sameDirectionSystematic": null
+        }
+      },
+      "byPerspectiveTeam": {
+        "sd2-balanced-lower-ovr": {
+          "cells": 8,
+          "meanDelta": 0.00044,
+          "se": 0.00304,
+          "interval": {
+            "lower": -0.00551,
+            "upper": 0.0064
+          },
+          "withinAggregateMargin": true,
+          "sameDirectionSystematic": false
+        },
+        "sd2-creator-stack": {
+          "cells": 7,
+          "meanDelta": 0.00237,
+          "se": 0.00299,
+          "interval": {
+            "lower": -0.00349,
+            "upper": 0.00823
+          },
+          "withinAggregateMargin": true,
+          "sameDirectionSystematic": false
+        },
+        "sd2-elite-shooting": {
+          "cells": 6,
+          "meanDelta": -0.00035,
+          "se": 0.00317,
+          "interval": {
+            "lower": -0.00656,
+            "upper": 0.00587
+          },
+          "withinAggregateMargin": true,
+          "sameDirectionSystematic": false
+        },
+        "sd2-weak-shooting": {
+          "cells": 5,
+          "meanDelta": -0.00342,
+          "se": 0.00325,
+          "interval": {
+            "lower": -0.00979,
+            "upper": 0.00296
+          },
+          "withinAggregateMargin": true,
+          "sameDirectionSystematic": false
+        },
+        "sd2-extreme-size": {
+          "cells": 2,
+          "meanDelta": 0.00452,
+          "se": 0.00208,
+          "interval": {
+            "lower": 0.00045,
+            "upper": 0.00858
+          },
+          "withinAggregateMargin": true,
+          "sameDirectionSystematic": false
+        },
+        "sd2-extreme-small": {
+          "cells": 2,
+          "meanDelta": 0.0011,
+          "se": 0.01843,
+          "interval": {
+            "lower": -0.03503,
+            "upper": 0.03723
+          },
+          "withinAggregateMargin": false,
+          "sameDirectionSystematic": false
+        },
+        "sd2-passing-hub": {
+          "cells": 1,
+          "meanDelta": null,
+          "se": null,
+          "interval": {
+            "lower": null,
+            "upper": null
+          },
+          "withinAggregateMargin": null,
+          "sameDirectionSystematic": null
+        },
+        "sd2-no-rim-protection": {
+          "cells": 4,
+          "meanDelta": -0.00043,
+          "se": 0.0027,
+          "interval": {
+            "lower": -0.00573,
+            "upper": 0.00487
+          },
+          "withinAggregateMargin": true,
+          "sameDirectionSystematic": false
+        },
+        "sd2-movement-shooters": {
+          "cells": 3,
+          "meanDelta": -0.00045,
+          "se": 0.00181,
+          "interval": {
+            "lower": -0.004,
+            "upper": 0.0031
+          },
+          "withinAggregateMargin": true,
+          "sameDirectionSystematic": false
+        },
+        "sd2-post-mismatch": {
+          "cells": 1,
+          "meanDelta": null,
+          "se": null,
+          "interval": {
+            "lower": null,
+            "upper": null
+          },
+          "withinAggregateMargin": null,
+          "sameDirectionSystematic": null
+        },
+        "sd2-zone-attack": {
+          "cells": 2,
+          "meanDelta": -0.00433,
+          "se": 0.00043,
+          "interval": {
+            "lower": -0.00517,
+            "upper": -0.0035
+          },
+          "withinAggregateMargin": true,
+          "sameDirectionSystematic": false
+        },
+        "sd2-weak-defender-hiding": {
+          "cells": 1,
+          "meanDelta": null,
+          "se": null,
+          "interval": {
+            "lower": null,
+            "upper": null
+          },
+          "withinAggregateMargin": null,
+          "sameDirectionSystematic": null
+        },
+        "sd2-action-family-stress": {
+          "cells": 1,
+          "meanDelta": null,
+          "se": null,
+          "interval": {
+            "lower": null,
+            "upper": null
+          },
+          "withinAggregateMargin": null,
+          "sameDirectionSystematic": null
+        },
+        "sd2-cross-era": {
+          "cells": 1,
+          "meanDelta": null,
+          "se": null,
+          "interval": {
+            "lower": null,
+            "upper": null
+          },
+          "withinAggregateMargin": null,
+          "sameDirectionSystematic": null
+        }
+      }
+    },
+    "systematicStrata": [],
+    "noSystematicStratum": true,
+    "invariantViolations": 0,
+    "ties": 0,
+    "gates": {
+      "aggregateWithinMargin": true,
+      "everyCellEquivalent": true,
+      "noneMateriallyBiased": true,
+      "noneInconclusive": true,
+      "noSystematicStratum": true,
+      "zeroInvariantViolations": true,
+      "zeroTies": true
+    },
+    "gatePasses": true,
+    "cells": [
+      {
+        "id": "mirror:sd2-balanced-lower-ovr",
+        "kind": "MIRROR",
+        "era": "2010s",
+        "perspectiveTeam": "sd2-balanced-lower-ovr",
+        "teamA": "sd2-balanced-lower-ovr",
+        "teamB": "sd2-balanced-lower-ovr",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 4,
+        "finalPairs": 16384,
+        "finalGames": 32768,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": -0.03125,
+            "sd": 1.00147,
+            "se": 0.06259,
+            "discordantPairs": 256,
+            "simultaneousWald": {
+              "lower": -0.23495,
+              "upper": 0.17245
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.23437,
+              "upper": 0.17188
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.38226,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.61759,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": 0.00195,
+            "sd": 1.00049,
+            "se": 0.03127,
+            "discordantPairs": 1024,
+            "simultaneousWald": {
+              "lower": -0.0998,
+              "upper": 0.1037
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.10156,
+              "upper": 0.10156
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.06218,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.95019,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": 0.00342,
+            "sd": 1.00012,
+            "se": 0.01563,
+            "discordantPairs": 4096,
+            "simultaneousWald": {
+              "lower": -0.04744,
+              "upper": 0.05427
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.04785,
+              "upper": 0.05615
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.00144,
+            "holmAdjustedTostP": 0.01868,
+            "rawDetectionP": 0.82686,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 4,
+            "cumulativePairs": 16384,
+            "games": 32768,
+            "delta": 0.00012,
+            "sd": 1.00003,
+            "se": 0.00781,
+            "discordantPairs": 16384,
+            "simultaneousWald": {
+              "lower": -0.0253,
+              "upper": 0.02555
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.02429,
+              "upper": 0.026
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0,
+            "holmAdjustedTostP": 0,
+            "rawDetectionP": 0.98753,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "mirror:sd2-creator-stack",
+        "kind": "MIRROR",
+        "era": "2010s",
+        "perspectiveTeam": "sd2-creator-stack",
+        "teamA": "sd2-creator-stack",
+        "teamB": "sd2-creator-stack",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 4,
+        "finalPairs": 16384,
+        "finalGames": 32768,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": -0.02344,
+            "sd": 1.00168,
+            "se": 0.06261,
+            "discordantPairs": 256,
+            "simultaneousWald": {
+              "lower": -0.22718,
+              "upper": 0.1803
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.21875,
+              "upper": 0.17188
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.33568,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.70813,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": -0.00781,
+            "sd": 1.00046,
+            "se": 0.03126,
+            "discordantPairs": 1024,
+            "simultaneousWald": {
+              "lower": -0.10956,
+              "upper": 0.09393
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.11328,
+              "upper": 0.09375
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.08861,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.80268,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": -0.00098,
+            "sd": 1.00012,
+            "se": 0.01563,
+            "discordantPairs": 4096,
+            "simultaneousWald": {
+              "lower": -0.05183,
+              "upper": 0.04988
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.05273,
+              "upper": 0.04932
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.00085,
+            "holmAdjustedTostP": 0.0128,
+            "rawDetectionP": 0.95017,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 4,
+            "cumulativePairs": 16384,
+            "games": 32768,
+            "delta": 0.00098,
+            "sd": 1.00003,
+            "se": 0.00781,
+            "discordantPairs": 16384,
+            "simultaneousWald": {
+              "lower": -0.02445,
+              "upper": 0.0264
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.02515,
+              "upper": 0.02759
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0,
+            "holmAdjustedTostP": 0,
+            "rawDetectionP": 0.90053,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "mirror:sd2-elite-shooting",
+        "kind": "MIRROR",
+        "era": "2010s",
+        "perspectiveTeam": "sd2-elite-shooting",
+        "teamA": "sd2-elite-shooting",
+        "teamB": "sd2-elite-shooting",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 4,
+        "finalPairs": 16384,
+        "finalGames": 32768,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": -0.02344,
+            "sd": 1.00168,
+            "se": 0.06261,
+            "discordantPairs": 256,
+            "simultaneousWald": {
+              "lower": -0.22718,
+              "upper": 0.1803
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.21094,
+              "upper": 0.1875
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.33568,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.70813,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": -0.03711,
+            "sd": 0.9998,
+            "se": 0.03124,
+            "discordantPairs": 1024,
+            "simultaneousWald": {
+              "lower": -0.13879,
+              "upper": 0.06457
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.13867,
+              "upper": 0.06641
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.33996,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.23494,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": -0.01367,
+            "sd": 1.00003,
+            "se": 0.01563,
+            "discordantPairs": 4096,
+            "simultaneousWald": {
+              "lower": -0.06452,
+              "upper": 0.03718
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.06396,
+              "upper": 0.03467
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.01004,
+            "holmAdjustedTostP": 0.05019,
+            "rawDetectionP": 0.38159,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 4,
+            "cumulativePairs": 16384,
+            "games": 32768,
+            "delta": 0.00525,
+            "sd": 1.00002,
+            "se": 0.00781,
+            "discordantPairs": 16384,
+            "simultaneousWald": {
+              "lower": -0.02018,
+              "upper": 0.03067
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.01978,
+              "upper": 0.03186
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0,
+            "holmAdjustedTostP": 0,
+            "rawDetectionP": 0.50167,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "mirror:sd2-weak-shooting",
+        "kind": "MIRROR",
+        "era": "2010s",
+        "perspectiveTeam": "sd2-weak-shooting",
+        "teamA": "sd2-weak-shooting",
+        "teamB": "sd2-weak-shooting",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 4,
+        "finalPairs": 16384,
+        "finalGames": 32768,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": -0.05469,
+            "sd": 1.00046,
+            "se": 0.06253,
+            "discordantPairs": 256,
+            "simultaneousWald": {
+              "lower": -0.25818,
+              "upper": 0.14881
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.25,
+              "upper": 0.14844
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.52988,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.38179,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": 0.0293,
+            "sd": 1.00006,
+            "se": 0.03125,
+            "discordantPairs": 1024,
+            "simultaneousWald": {
+              "lower": -0.07241,
+              "upper": 0.131
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.07227,
+              "upper": 0.13867
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.25384,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.34853,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": 0.00781,
+            "sd": 1.00009,
+            "se": 0.01563,
+            "discordantPairs": 4096,
+            "simultaneousWald": {
+              "lower": -0.04304,
+              "upper": 0.05867
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.04443,
+              "upper": 0.06055
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.00347,
+            "holmAdjustedTostP": 0.03817,
+            "rawDetectionP": 0.61711,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 4,
+            "cumulativePairs": 16384,
+            "games": 32768,
+            "delta": -0.00854,
+            "sd": 0.99999,
+            "se": 0.00781,
+            "discordantPairs": 16384,
+            "simultaneousWald": {
+              "lower": -0.03397,
+              "upper": 0.01688
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.03259,
+              "upper": 0.0166
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0,
+            "holmAdjustedTostP": 0,
+            "rawDetectionP": 0.27406,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "mirror:sd2-extreme-size",
+        "kind": "MIRROR",
+        "era": "1960s",
+        "perspectiveTeam": "sd2-extreme-size",
+        "teamA": "sd2-extreme-size",
+        "teamB": "sd2-extreme-size",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 4,
+        "finalPairs": 16384,
+        "finalGames": 32768,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": 0.04688,
+            "sd": 1.00086,
+            "se": 0.06255,
+            "discordantPairs": 256,
+            "simultaneousWald": {
+              "lower": -0.1567,
+              "upper": 0.25045
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.17187,
+              "upper": 0.24219
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.48008,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.45364,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": -0.00391,
+            "sd": 1.00048,
+            "se": 0.03127,
+            "discordantPairs": 1024,
+            "simultaneousWald": {
+              "lower": -0.10565,
+              "upper": 0.09784
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.10742,
+              "upper": 0.09766
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.0702,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.90057,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": 0.00977,
+            "sd": 1.00007,
+            "se": 0.01563,
+            "discordantPairs": 4096,
+            "simultaneousWald": {
+              "lower": -0.04109,
+              "upper": 0.06062
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.04199,
+              "upper": 0.05908
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.00501,
+            "holmAdjustedTostP": 0.04179,
+            "rawDetectionP": 0.532,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 4,
+            "cumulativePairs": 16384,
+            "games": 32768,
+            "delta": 0.00659,
+            "sd": 1.00001,
+            "se": 0.00781,
+            "discordantPairs": 16384,
+            "simultaneousWald": {
+              "lower": -0.01883,
+              "upper": 0.03202
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.02014,
+              "upper": 0.03137
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0,
+            "holmAdjustedTostP": 0,
+            "rawDetectionP": 0.39881,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "mirror:sd2-extreme-small",
+        "kind": "MIRROR",
+        "era": "2020s",
+        "perspectiveTeam": "sd2-extreme-small",
+        "teamA": "sd2-extreme-small",
+        "teamB": "sd2-extreme-small",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 4,
+        "finalPairs": 16384,
+        "finalGames": 32768,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": -0.10937,
+            "sd": 0.99595,
+            "se": 0.06225,
+            "discordantPairs": 256,
+            "simultaneousWald": {
+              "lower": -0.31195,
+              "upper": 0.0932
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.3125,
+              "upper": 0.08594
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.82992,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.0789,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": -0.07422,
+            "sd": 0.99773,
+            "se": 0.03118,
+            "discordantPairs": 1024,
+            "simultaneousWald": {
+              "lower": -0.17569,
+              "upper": 0.02725
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.17383,
+              "upper": 0.0293
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.78135,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.01729,
+            "holmAdjustedDetectionP": 0.74362,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": -0.0415,
+            "sd": 0.99926,
+            "se": 0.01561,
+            "discordantPairs": 4096,
+            "simultaneousWald": {
+              "lower": -0.09232,
+              "upper": 0.00931
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.08984,
+              "upper": 0.00928
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.29317,
+            "holmAdjustedTostP": 0.58634,
+            "rawDetectionP": 0.00786,
+            "holmAdjustedDetectionP": 0.33779,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 4,
+            "cumulativePairs": 16384,
+            "games": 32768,
+            "delta": -0.01733,
+            "sd": 0.99988,
+            "se": 0.00781,
+            "discordantPairs": 16384,
+            "simultaneousWald": {
+              "lower": -0.04276,
+              "upper": 0.00809
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.04395,
+              "upper": 0.00793
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.00001,
+            "holmAdjustedTostP": 0.00043,
+            "rawDetectionP": 0.02649,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "mirror:sd2-passing-hub",
+        "kind": "MIRROR",
+        "era": "2020s",
+        "perspectiveTeam": "sd2-passing-hub",
+        "teamA": "sd2-passing-hub",
+        "teamB": "sd2-passing-hub",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 4,
+        "finalPairs": 16384,
+        "finalGames": 32768,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": 0.03125,
+            "sd": 1.00147,
+            "se": 0.06259,
+            "discordantPairs": 256,
+            "simultaneousWald": {
+              "lower": -0.17245,
+              "upper": 0.23495
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.17969,
+              "upper": 0.22656
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.38226,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.61759,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": -0.01367,
+            "sd": 1.0004,
+            "se": 0.03126,
+            "discordantPairs": 1024,
+            "simultaneousWald": {
+              "lower": -0.11541,
+              "upper": 0.08807
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.12109,
+              "upper": 0.08594
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.12261,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.66187,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": 0.00488,
+            "sd": 1.00011,
+            "se": 0.01563,
+            "discordantPairs": 4096,
+            "simultaneousWald": {
+              "lower": -0.04597,
+              "upper": 0.05574
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.0459,
+              "upper": 0.05713
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.00194,
+            "holmAdjustedTostP": 0.02332,
+            "rawDetectionP": 0.75469,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 4,
+            "cumulativePairs": 16384,
+            "games": 32768,
+            "delta": -0.00159,
+            "sd": 1.00003,
+            "se": 0.00781,
+            "discordantPairs": 16384,
+            "simultaneousWald": {
+              "lower": -0.02701,
+              "upper": 0.02384
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.02722,
+              "upper": 0.02393
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0,
+            "holmAdjustedTostP": 0,
+            "rawDetectionP": 0.83904,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "mirror:sd2-no-rim-protection",
+        "kind": "MIRROR",
+        "era": "2010s",
+        "perspectiveTeam": "sd2-no-rim-protection",
+        "teamA": "sd2-no-rim-protection",
+        "teamB": "sd2-no-rim-protection",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 4,
+        "finalPairs": 16384,
+        "finalGames": 32768,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": -0.03125,
+            "sd": 1.00147,
+            "se": 0.06259,
+            "discordantPairs": 256,
+            "simultaneousWald": {
+              "lower": -0.23495,
+              "upper": 0.17245
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.21875,
+              "upper": 0.16406
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.38226,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.61759,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": 0.00195,
+            "sd": 1.00049,
+            "se": 0.03127,
+            "discordantPairs": 1024,
+            "simultaneousWald": {
+              "lower": -0.0998,
+              "upper": 0.1037
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.10156,
+              "upper": 0.09961
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.06218,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.95019,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": -0.00049,
+            "sd": 1.00012,
+            "se": 0.01563,
+            "discordantPairs": 4096,
+            "simultaneousWald": {
+              "lower": -0.05134,
+              "upper": 0.05037
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.05225,
+              "upper": 0.05225
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.00077,
+            "holmAdjustedTostP": 0.01227,
+            "rawDetectionP": 0.97507,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 4,
+            "cumulativePairs": 16384,
+            "games": 32768,
+            "delta": 0.00659,
+            "sd": 1.00001,
+            "se": 0.00781,
+            "discordantPairs": 16384,
+            "simultaneousWald": {
+              "lower": -0.01883,
+              "upper": 0.03202
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.01819,
+              "upper": 0.03284
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0,
+            "holmAdjustedTostP": 0,
+            "rawDetectionP": 0.39881,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "mirror:sd2-movement-shooters",
+        "kind": "MIRROR",
+        "era": "2010s",
+        "perspectiveTeam": "sd2-movement-shooters",
+        "teamA": "sd2-movement-shooters",
+        "teamB": "sd2-movement-shooters",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 4,
+        "finalPairs": 16384,
+        "finalGames": 32768,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": 0.07813,
+            "sd": 0.9989,
+            "se": 0.06243,
+            "discordantPairs": 256,
+            "simultaneousWald": {
+              "lower": -0.12505,
+              "upper": 0.2813
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.11719,
+              "upper": 0.27344
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.67382,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.2108,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": 0.00977,
+            "sd": 1.00044,
+            "se": 0.03126,
+            "discordantPairs": 1024,
+            "simultaneousWald": {
+              "lower": -0.09198,
+              "upper": 0.11151
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.09766,
+              "upper": 0.10742
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.09906,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.75477,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": -0.02295,
+            "sd": 0.99986,
+            "se": 0.01562,
+            "discordantPairs": 4096,
+            "simultaneousWald": {
+              "lower": -0.07379,
+              "upper": 0.02789
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.07715,
+              "upper": 0.02734
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.04168,
+            "holmAdjustedTostP": 0.16673,
+            "rawDetectionP": 0.14184,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 4,
+            "cumulativePairs": 16384,
+            "games": 32768,
+            "delta": -0.00232,
+            "sd": 1.00003,
+            "se": 0.00781,
+            "discordantPairs": 16384,
+            "simultaneousWald": {
+              "lower": -0.02774,
+              "upper": 0.02311
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.02698,
+              "upper": 0.02344
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0,
+            "holmAdjustedTostP": 0,
+            "rawDetectionP": 0.76657,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "mirror:sd2-post-mismatch",
+        "kind": "MIRROR",
+        "era": "1970s",
+        "perspectiveTeam": "sd2-post-mismatch",
+        "teamA": "sd2-post-mismatch",
+        "teamB": "sd2-post-mismatch",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 4,
+        "finalPairs": 16384,
+        "finalGames": 32768,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": -0.0625,
+            "sd": 1,
+            "se": 0.0625,
+            "discordantPairs": 256,
+            "simultaneousWald": {
+              "lower": -0.2659,
+              "upper": 0.1409
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.25,
+              "upper": 0.13281
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.57926,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.31731,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": -0.03906,
+            "sd": 0.99973,
+            "se": 0.03124,
+            "discordantPairs": 1024,
+            "simultaneousWald": {
+              "lower": -0.14073,
+              "upper": 0.06261
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.13672,
+              "upper": 0.0625
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.36313,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.21117,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": -0.03564,
+            "sd": 0.99949,
+            "se": 0.01562,
+            "discordantPairs": 4096,
+            "simultaneousWald": {
+              "lower": -0.08647,
+              "upper": 0.01518
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.08594,
+              "upper": 0.01514
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.17899,
+            "holmAdjustedTostP": 0.53697,
+            "rawDetectionP": 0.02246,
+            "holmAdjustedDetectionP": 0.9435,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 4,
+            "cumulativePairs": 16384,
+            "games": 32768,
+            "delta": -0.00269,
+            "sd": 1.00003,
+            "se": 0.00781,
+            "discordantPairs": 16384,
+            "simultaneousWald": {
+              "lower": -0.02811,
+              "upper": 0.02274
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.02661,
+              "upper": 0.02295
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0,
+            "holmAdjustedTostP": 0,
+            "rawDetectionP": 0.73104,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "mirror:sd2-zone-attack",
+        "kind": "MIRROR",
+        "era": "2010s",
+        "perspectiveTeam": "sd2-zone-attack",
+        "teamA": "sd2-zone-attack",
+        "teamB": "sd2-zone-attack",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 4,
+        "finalPairs": 16384,
+        "finalGames": 32768,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": -0.00781,
+            "sd": 1.00193,
+            "se": 0.06262,
+            "discordantPairs": 256,
+            "simultaneousWald": {
+              "lower": -0.2116,
+              "upper": 0.19598
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.22656,
+              "upper": 0.20313
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.25025,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.90071,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": -0.00977,
+            "sd": 1.00044,
+            "se": 0.03126,
+            "discordantPairs": 1024,
+            "simultaneousWald": {
+              "lower": -0.11151,
+              "upper": 0.09198
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.11523,
+              "upper": 0.0957
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.09906,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.75477,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": -0.00977,
+            "sd": 1.00007,
+            "se": 0.01563,
+            "discordantPairs": 4096,
+            "simultaneousWald": {
+              "lower": -0.06062,
+              "upper": 0.04109
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.05908,
+              "upper": 0.04443
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.00501,
+            "holmAdjustedTostP": 0.04179,
+            "rawDetectionP": 0.532,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 4,
+            "cumulativePairs": 16384,
+            "games": 32768,
+            "delta": -0.00476,
+            "sd": 1.00002,
+            "se": 0.00781,
+            "discordantPairs": 16384,
+            "simultaneousWald": {
+              "lower": -0.03019,
+              "upper": 0.02066
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.03027,
+              "upper": 0.02161
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0,
+            "holmAdjustedTostP": 0,
+            "rawDetectionP": 0.54228,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "mirror:sd2-weak-defender-hiding",
+        "kind": "MIRROR",
+        "era": "2010s",
+        "perspectiveTeam": "sd2-weak-defender-hiding",
+        "teamA": "sd2-weak-defender-hiding",
+        "teamB": "sd2-weak-defender-hiding",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 4,
+        "finalPairs": 16384,
+        "finalGames": 32768,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": -0.00781,
+            "sd": 1.00193,
+            "se": 0.06262,
+            "discordantPairs": 256,
+            "simultaneousWald": {
+              "lower": -0.2116,
+              "upper": 0.19598
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.21094,
+              "upper": 0.17969
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.25025,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.90071,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": -0.02734,
+            "sd": 1.00011,
+            "se": 0.03125,
+            "discordantPairs": 1024,
+            "simultaneousWald": {
+              "lower": -0.12906,
+              "upper": 0.07437
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.125,
+              "upper": 0.07227
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.23425,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.38163,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": 0.00977,
+            "sd": 1.00007,
+            "se": 0.01563,
+            "discordantPairs": 4096,
+            "simultaneousWald": {
+              "lower": -0.04109,
+              "upper": 0.06062
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.03955,
+              "upper": 0.05664
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.00501,
+            "holmAdjustedTostP": 0.04179,
+            "rawDetectionP": 0.532,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 4,
+            "cumulativePairs": 16384,
+            "games": 32768,
+            "delta": -0.00464,
+            "sd": 1.00002,
+            "se": 0.00781,
+            "discordantPairs": 16384,
+            "simultaneousWald": {
+              "lower": -0.03006,
+              "upper": 0.02079
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.02808,
+              "upper": 0.02039
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0,
+            "holmAdjustedTostP": 0,
+            "rawDetectionP": 0.55269,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "mirror:sd2-action-family-stress",
+        "kind": "MIRROR",
+        "era": "1990s",
+        "perspectiveTeam": "sd2-action-family-stress",
+        "teamA": "sd2-action-family-stress",
+        "teamB": "sd2-action-family-stress",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 4,
+        "finalPairs": 16384,
+        "finalGames": 32768,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": -0.03125,
+            "sd": 1.00147,
+            "se": 0.06259,
+            "discordantPairs": 256,
+            "simultaneousWald": {
+              "lower": -0.23495,
+              "upper": 0.17245
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.24219,
+              "upper": 0.17188
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.38226,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.61759,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": -0.00195,
+            "sd": 1.00049,
+            "se": 0.03127,
+            "discordantPairs": 1024,
+            "simultaneousWald": {
+              "lower": -0.1037,
+              "upper": 0.0998
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.09961,
+              "upper": 0.0957
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.06218,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.95019,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": -0.00879,
+            "sd": 1.00008,
+            "se": 0.01563,
+            "discordantPairs": 4096,
+            "simultaneousWald": {
+              "lower": -0.05964,
+              "upper": 0.04207
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.05908,
+              "upper": 0.04492
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.00418,
+            "holmAdjustedTostP": 0.04179,
+            "rawDetectionP": 0.57381,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 4,
+            "cumulativePairs": 16384,
+            "games": 32768,
+            "delta": -0.01514,
+            "sd": 0.99992,
+            "se": 0.00781,
+            "discordantPairs": 16384,
+            "simultaneousWald": {
+              "lower": -0.04056,
+              "upper": 0.01029
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.03979,
+              "upper": 0.01196
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0,
+            "holmAdjustedTostP": 0.00013,
+            "rawDetectionP": 0.05266,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "mirror:sd2-cross-era",
+        "kind": "MIRROR",
+        "era": "1960s",
+        "perspectiveTeam": "sd2-cross-era",
+        "teamA": "sd2-cross-era",
+        "teamB": "sd2-cross-era",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 4,
+        "finalPairs": 16384,
+        "finalGames": 32768,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": 0.10156,
+            "sd": 0.99678,
+            "se": 0.0623,
+            "discordantPairs": 256,
+            "simultaneousWald": {
+              "lower": -0.10118,
+              "upper": 0.30431
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.10156,
+              "upper": 0.30469
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.79607,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.10305,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": 0.01758,
+            "sd": 1.00033,
+            "se": 0.03126,
+            "discordantPairs": 1024,
+            "simultaneousWald": {
+              "lower": -0.08416,
+              "upper": 0.11931
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.08789,
+              "upper": 0.12695
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.14983,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.5739,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": 0.00879,
+            "sd": 1.00008,
+            "se": 0.01563,
+            "discordantPairs": 4096,
+            "simultaneousWald": {
+              "lower": -0.04207,
+              "upper": 0.05964
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.04248,
+              "upper": 0.06152
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.00418,
+            "holmAdjustedTostP": 0.04179,
+            "rawDetectionP": 0.57381,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 4,
+            "cumulativePairs": 16384,
+            "games": 32768,
+            "delta": -0.00964,
+            "sd": 0.99998,
+            "se": 0.00781,
+            "discordantPairs": 16384,
+            "simultaneousWald": {
+              "lower": -0.03507,
+              "upper": 0.01578
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.03552,
+              "upper": 0.01636
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0,
+            "holmAdjustedTostP": 0,
+            "rawDetectionP": 0.21706,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "pair:sd2-balanced-lower-ovr|sd2-creator-stack",
+        "kind": "NON_MIRROR",
+        "era": "2010s",
+        "perspectiveTeam": "sd2-balanced-lower-ovr",
+        "teamA": "sd2-balanced-lower-ovr",
+        "teamB": "sd2-creator-stack",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 3,
+        "finalPairs": 4096,
+        "finalGames": 8192,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": -0.01562,
+            "sd": 0.63843,
+            "se": 0.0399,
+            "discordantPairs": 104,
+            "simultaneousWald": {
+              "lower": -0.14548,
+              "upper": 0.11423
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.14844,
+              "upper": 0.12109
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.19449,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.69537,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": -0.00977,
+            "sd": 0.64675,
+            "se": 0.02021,
+            "discordantPairs": 428,
+            "simultaneousWald": {
+              "lower": -0.07554,
+              "upper": 0.05601
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.07422,
+              "upper": 0.05566
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.02326,
+            "holmAdjustedTostP": 0.62789,
+            "rawDetectionP": 0.62896,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": 0.00439,
+            "sd": 0.64354,
+            "se": 0.01006,
+            "discordantPairs": 1696,
+            "simultaneousWald": {
+              "lower": -0.02833,
+              "upper": 0.03712
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.02759,
+              "upper": 0.03638
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0,
+            "holmAdjustedTostP": 0.00007,
+            "rawDetectionP": 0.66209,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "pair:sd2-balanced-lower-ovr|sd2-elite-shooting",
+        "kind": "NON_MIRROR",
+        "era": "2010s",
+        "perspectiveTeam": "sd2-balanced-lower-ovr",
+        "teamA": "sd2-balanced-lower-ovr",
+        "teamB": "sd2-elite-shooting",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 3,
+        "finalPairs": 4096,
+        "finalGames": 8192,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": 0.01172,
+            "sd": 0.54938,
+            "se": 0.03434,
+            "discordantPairs": 77,
+            "simultaneousWald": {
+              "lower": -0.10003,
+              "upper": 0.12346
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.10156,
+              "upper": 0.12891
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.13245,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.73288,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": 0.00684,
+            "sd": 0.53877,
+            "se": 0.01684,
+            "discordantPairs": 297,
+            "simultaneousWald": {
+              "lower": -0.04796,
+              "upper": 0.06163
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.04883,
+              "upper": 0.06152
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.00518,
+            "holmAdjustedTostP": 0.19159,
+            "rawDetectionP": 0.68473,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": -0.0083,
+            "sd": 0.56251,
+            "se": 0.00879,
+            "discordantPairs": 1296,
+            "simultaneousWald": {
+              "lower": -0.0369,
+              "upper": 0.0203
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.03638,
+              "upper": 0.02051
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0,
+            "holmAdjustedTostP": 0.00003,
+            "rawDetectionP": 0.34495,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "pair:sd2-balanced-lower-ovr|sd2-weak-shooting",
+        "kind": "NON_MIRROR",
+        "era": "2010s",
+        "perspectiveTeam": "sd2-balanced-lower-ovr",
+        "teamA": "sd2-balanced-lower-ovr",
+        "teamB": "sd2-weak-shooting",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 3,
+        "finalPairs": 4096,
+        "finalGames": 8192,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": -0.02344,
+            "sd": 0.52341,
+            "se": 0.03271,
+            "discordantPairs": 70,
+            "simultaneousWald": {
+              "lower": -0.1299,
+              "upper": 0.08302
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.125,
+              "upper": 0.07813
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.2084,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.47371,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": 0.00488,
+            "sd": 0.5406,
+            "se": 0.01689,
+            "discordantPairs": 299,
+            "simultaneousWald": {
+              "lower": -0.0501,
+              "upper": 0.05986
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.04883,
+              "upper": 0.06055
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.00379,
+            "holmAdjustedTostP": 0.14953,
+            "rawDetectionP": 0.77256,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": 0.01538,
+            "sd": 0.55559,
+            "se": 0.00868,
+            "discordantPairs": 1265,
+            "simultaneousWald": {
+              "lower": -0.01287,
+              "upper": 0.04363
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.01318,
+              "upper": 0.04419
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.00003,
+            "holmAdjustedTostP": 0.00067,
+            "rawDetectionP": 0.07643,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "pair:sd2-balanced-lower-ovr|sd2-no-rim-protection",
+        "kind": "NON_MIRROR",
+        "era": "2010s",
+        "perspectiveTeam": "sd2-balanced-lower-ovr",
+        "teamA": "sd2-balanced-lower-ovr",
+        "teamB": "sd2-no-rim-protection",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 3,
+        "finalPairs": 4096,
+        "finalGames": 8192,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": 0.08203,
+            "sd": 0.64254,
+            "se": 0.04016,
+            "discordantPairs": 107,
+            "simultaneousWald": {
+              "lower": -0.04866,
+              "upper": 0.21272
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.04687,
+              "upper": 0.21484
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.78745,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.04108,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": -0.04687,
+            "sd": 0.62667,
+            "se": 0.01958,
+            "discordantPairs": 404,
+            "simultaneousWald": {
+              "lower": -0.11061,
+              "upper": 0.01686
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.1084,
+              "upper": 0.01758
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.43661,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.01668,
+            "holmAdjustedDetectionP": 0.7341,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": -0.00439,
+            "sd": 0.62114,
+            "se": 0.00971,
+            "discordantPairs": 1580,
+            "simultaneousWald": {
+              "lower": -0.03598,
+              "upper": 0.02719
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.03613,
+              "upper": 0.02686
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0,
+            "holmAdjustedTostP": 0.00003,
+            "rawDetectionP": 0.6507,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "pair:sd2-balanced-lower-ovr|sd2-movement-shooters",
+        "kind": "NON_MIRROR",
+        "era": "2010s",
+        "perspectiveTeam": "sd2-balanced-lower-ovr",
+        "teamA": "sd2-balanced-lower-ovr",
+        "teamB": "sd2-movement-shooters",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 3,
+        "finalPairs": 4096,
+        "finalGames": 8192,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": -0.03125,
+            "sd": 0.65604,
+            "se": 0.041,
+            "discordantPairs": 110,
+            "simultaneousWald": {
+              "lower": -0.16469,
+              "upper": 0.10219
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.16797,
+              "upper": 0.10938
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.32373,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.44597,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": -0.00879,
+            "sd": 0.64297,
+            "se": 0.02009,
+            "discordantPairs": 423,
+            "simultaneousWald": {
+              "lower": -0.07418,
+              "upper": 0.0566
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.07129,
+              "upper": 0.05469
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.02013,
+            "holmAdjustedTostP": 0.5997,
+            "rawDetectionP": 0.66181,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": 0.00854,
+            "sd": 0.65572,
+            "se": 0.01025,
+            "discordantPairs": 1761,
+            "simultaneousWald": {
+              "lower": -0.0248,
+              "upper": 0.04189
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.02466,
+              "upper": 0.04395
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.00003,
+            "holmAdjustedTostP": 0.00055,
+            "rawDetectionP": 0.40427,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "pair:sd2-balanced-lower-ovr|sd2-zone-attack",
+        "kind": "NON_MIRROR",
+        "era": "2010s",
+        "perspectiveTeam": "sd2-balanced-lower-ovr",
+        "teamA": "sd2-balanced-lower-ovr",
+        "teamB": "sd2-zone-attack",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 3,
+        "finalPairs": 4096,
+        "finalGames": 8192,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": 0.05078,
+            "sd": 0.621,
+            "se": 0.03881,
+            "discordantPairs": 99,
+            "simultaneousWald": {
+              "lower": -0.07553,
+              "upper": 0.17709
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.07422,
+              "upper": 0.17188
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.50803,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.19075,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": 0.0166,
+            "sd": 0.60198,
+            "se": 0.01881,
+            "discordantPairs": 371,
+            "simultaneousWald": {
+              "lower": -0.04462,
+              "upper": 0.07782
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.04199,
+              "upper": 0.08008
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.03792,
+            "holmAdjustedTostP": 0.91001,
+            "rawDetectionP": 0.37751,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": -0.00244,
+            "sd": 0.60522,
+            "se": 0.00946,
+            "discordantPairs": 1500,
+            "simultaneousWald": {
+              "lower": -0.03322,
+              "upper": 0.02833
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.03394,
+              "upper": 0.02637
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0,
+            "holmAdjustedTostP": 0.00001,
+            "rawDetectionP": 0.79628,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "pair:sd2-balanced-lower-ovr|sd2-weak-defender-hiding",
+        "kind": "NON_MIRROR",
+        "era": "2010s",
+        "perspectiveTeam": "sd2-balanced-lower-ovr",
+        "teamA": "sd2-balanced-lower-ovr",
+        "teamB": "sd2-weak-defender-hiding",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 3,
+        "finalPairs": 4096,
+        "finalGames": 8192,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": -0.05469,
+            "sd": 0.45691,
+            "se": 0.02856,
+            "discordantPairs": 54,
+            "simultaneousWald": {
+              "lower": -0.14762,
+              "upper": 0.03825
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.14453,
+              "upper": 0.04297
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.56519,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.05548,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": -0.02832,
+            "sd": 0.49254,
+            "se": 0.01539,
+            "discordantPairs": 249,
+            "simultaneousWald": {
+              "lower": -0.07841,
+              "upper": 0.02177
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.08008,
+              "upper": 0.02148
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.07949,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.06578,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": -0.00977,
+            "sd": 0.52522,
+            "se": 0.00821,
+            "discordantPairs": 1130,
+            "simultaneousWald": {
+              "lower": -0.03647,
+              "upper": 0.01694
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.03613,
+              "upper": 0.01709
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0,
+            "holmAdjustedTostP": 0.00002,
+            "rawDetectionP": 0.23405,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "pair:sd2-creator-stack|sd2-elite-shooting",
+        "kind": "NON_MIRROR",
+        "era": "2010s",
+        "perspectiveTeam": "sd2-creator-stack",
+        "teamA": "sd2-creator-stack",
+        "teamB": "sd2-elite-shooting",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 3,
+        "finalPairs": 4096,
+        "finalGames": 8192,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": -0.00781,
+            "sd": 0.57389,
+            "se": 0.03587,
+            "discordantPairs": 84,
+            "simultaneousWald": {
+              "lower": -0.12454,
+              "upper": 0.10892
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.12891,
+              "upper": 0.10547
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.11976,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.82758,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": -0.00977,
+            "sd": 0.54504,
+            "se": 0.01703,
+            "discordantPairs": 304,
+            "simultaneousWald": {
+              "lower": -0.0652,
+              "upper": 0.04566
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.06543,
+              "upper": 0.04688
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.00908,
+            "holmAdjustedTostP": 0.30883,
+            "rawDetectionP": 0.56641,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": 0.00684,
+            "sd": 0.56599,
+            "se": 0.00884,
+            "discordantPairs": 1312,
+            "simultaneousWald": {
+              "lower": -0.02194,
+              "upper": 0.03562
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.02368,
+              "upper": 0.03638
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0,
+            "holmAdjustedTostP": 0.00002,
+            "rawDetectionP": 0.43953,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "pair:sd2-creator-stack|sd2-weak-shooting",
+        "kind": "NON_MIRROR",
+        "era": "2010s",
+        "perspectiveTeam": "sd2-creator-stack",
+        "teamA": "sd2-creator-stack",
+        "teamB": "sd2-weak-shooting",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 3,
+        "finalPairs": 4096,
+        "finalGames": 8192,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": 0.01563,
+            "sd": 0.57373,
+            "se": 0.03586,
+            "discordantPairs": 84,
+            "simultaneousWald": {
+              "lower": -0.10107,
+              "upper": 0.13232
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.10156,
+              "upper": 0.13672
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.16887,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.66302,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": 0.02051,
+            "sd": 0.56153,
+            "se": 0.01755,
+            "discordantPairs": 323,
+            "simultaneousWald": {
+              "lower": -0.0366,
+              "upper": 0.07762
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.03613,
+              "upper": 0.0791
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.04641,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.24253,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": 0.00488,
+            "sd": 0.55159,
+            "se": 0.00862,
+            "discordantPairs": 1246,
+            "simultaneousWald": {
+              "lower": -0.02317,
+              "upper": 0.03293
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.02173,
+              "upper": 0.0332
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0,
+            "holmAdjustedTostP": 0,
+            "rawDetectionP": 0.57102,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "pair:sd2-creator-stack|sd2-no-rim-protection",
+        "kind": "NON_MIRROR",
+        "era": "2010s",
+        "perspectiveTeam": "sd2-creator-stack",
+        "teamA": "sd2-creator-stack",
+        "teamB": "sd2-no-rim-protection",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 3,
+        "finalPairs": 4096,
+        "finalGames": 8192,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": -0.01172,
+            "sd": 0.61665,
+            "se": 0.03854,
+            "discordantPairs": 97,
+            "simultaneousWald": {
+              "lower": -0.13714,
+              "upper": 0.11371
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.14062,
+              "upper": 0.10938
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.16029,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.76108,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": -0.01367,
+            "sd": 0.6157,
+            "se": 0.01924,
+            "discordantPairs": 388,
+            "simultaneousWald": {
+              "lower": -0.07629,
+              "upper": 0.04894
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.07715,
+              "upper": 0.04785
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.02951,
+            "holmAdjustedTostP": 0.76718,
+            "rawDetectionP": 0.47735,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": 0.0022,
+            "sd": 0.60744,
+            "se": 0.00949,
+            "discordantPairs": 1511,
+            "simultaneousWald": {
+              "lower": -0.02869,
+              "upper": 0.03309
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.02783,
+              "upper": 0.03564
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0,
+            "holmAdjustedTostP": 0.00001,
+            "rawDetectionP": 0.81692,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "pair:sd2-creator-stack|sd2-movement-shooters",
+        "kind": "NON_MIRROR",
+        "era": "2010s",
+        "perspectiveTeam": "sd2-creator-stack",
+        "teamA": "sd2-creator-stack",
+        "teamB": "sd2-movement-shooters",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 3,
+        "finalPairs": 4096,
+        "finalGames": 8192,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": 0.04297,
+            "sd": 0.67017,
+            "se": 0.04189,
+            "discordantPairs": 115,
+            "simultaneousWald": {
+              "lower": -0.09334,
+              "upper": 0.17928
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.08594,
+              "upper": 0.17969
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.43334,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.30496,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": 0.00781,
+            "sd": 0.65727,
+            "se": 0.02054,
+            "discordantPairs": 442,
+            "simultaneousWald": {
+              "lower": -0.05903,
+              "upper": 0.07466
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.05762,
+              "upper": 0.07715
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.01999,
+            "holmAdjustedTostP": 0.5997,
+            "rawDetectionP": 0.70368,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": 0.00732,
+            "sd": 0.64161,
+            "se": 0.01003,
+            "discordantPairs": 1686,
+            "simultaneousWald": {
+              "lower": -0.0253,
+              "upper": 0.03995
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.0271,
+              "upper": 0.03833
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.00001,
+            "holmAdjustedTostP": 0.00023,
+            "rawDetectionP": 0.46504,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "pair:sd2-creator-stack|sd2-zone-attack",
+        "kind": "NON_MIRROR",
+        "era": "2010s",
+        "perspectiveTeam": "sd2-creator-stack",
+        "teamA": "sd2-creator-stack",
+        "teamB": "sd2-zone-attack",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 3,
+        "finalPairs": 4096,
+        "finalGames": 8192,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": -0.08203,
+            "sd": 0.55758,
+            "se": 0.03485,
+            "discordantPairs": 81,
+            "simultaneousWald": {
+              "lower": -0.19544,
+              "upper": 0.03138
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.19922,
+              "upper": 0.03125
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.82099,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.01858,
+            "holmAdjustedDetectionP": 0.81733,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": 0.00781,
+            "sd": 0.61422,
+            "se": 0.01919,
+            "discordantPairs": 386,
+            "simultaneousWald": {
+              "lower": -0.05465,
+              "upper": 0.07028
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.05664,
+              "upper": 0.06836
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.01398,
+            "holmAdjustedTostP": 0.44727,
+            "rawDetectionP": 0.68399,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": -0.0144,
+            "sd": 0.61803,
+            "se": 0.00966,
+            "discordantPairs": 1565,
+            "simultaneousWald": {
+              "lower": -0.04583,
+              "upper": 0.01702
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.04492,
+              "upper": 0.01709
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.00011,
+            "holmAdjustedTostP": 0.00204,
+            "rawDetectionP": 0.1358,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "pair:sd2-creator-stack|sd2-weak-defender-hiding",
+        "kind": "NON_MIRROR",
+        "era": "2010s",
+        "perspectiveTeam": "sd2-creator-stack",
+        "teamA": "sd2-creator-stack",
+        "teamB": "sd2-weak-defender-hiding",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 4,
+        "finalPairs": 16384,
+        "finalGames": 32768,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": 0.03125,
+            "sd": 0.54503,
+            "se": 0.03406,
+            "discordantPairs": 76,
+            "simultaneousWald": {
+              "lower": -0.07961,
+              "upper": 0.14211
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.08203,
+              "upper": 0.13281
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.29101,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.35894,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": 0.02734,
+            "sd": 0.54623,
+            "se": 0.01707,
+            "discordantPairs": 306,
+            "simultaneousWald": {
+              "lower": -0.02821,
+              "upper": 0.0829
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.02637,
+              "upper": 0.08496
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.09221,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.10918,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": 0.02393,
+            "sd": 0.54753,
+            "se": 0.00856,
+            "discordantPairs": 1230,
+            "simultaneousWald": {
+              "lower": -0.00392,
+              "upper": 0.05177
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.00391,
+              "upper": 0.05078
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.00115,
+            "holmAdjustedTostP": 0.01614,
+            "rawDetectionP": 0.00516,
+            "holmAdjustedDetectionP": 0.22722,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 4,
+            "cumulativePairs": 16384,
+            "games": 32768,
+            "delta": 0.00879,
+            "sd": 0.54671,
+            "se": 0.00427,
+            "discordantPairs": 4898,
+            "simultaneousWald": {
+              "lower": -0.00511,
+              "upper": 0.02269
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.00439,
+              "upper": 0.02203
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0,
+            "holmAdjustedTostP": 0,
+            "rawDetectionP": 0.03961,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "pair:sd2-elite-shooting|sd2-weak-shooting",
+        "kind": "NON_MIRROR",
+        "era": "2010s",
+        "perspectiveTeam": "sd2-elite-shooting",
+        "teamA": "sd2-elite-shooting",
+        "teamB": "sd2-weak-shooting",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 3,
+        "finalPairs": 4096,
+        "finalGames": 8192,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": 0.02734,
+            "sd": 0.62248,
+            "se": 0.03891,
+            "discordantPairs": 99,
+            "simultaneousWald": {
+              "lower": -0.09927,
+              "upper": 0.15396
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.09766,
+              "upper": 0.15625
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.28017,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.48216,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": 0.02246,
+            "sd": 0.61624,
+            "se": 0.01926,
+            "discordantPairs": 389,
+            "simultaneousWald": {
+              "lower": -0.04021,
+              "upper": 0.08513
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.04004,
+              "upper": 0.08398
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.07635,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.24347,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": 0.00269,
+            "sd": 0.61064,
+            "se": 0.00954,
+            "discordantPairs": 1527,
+            "simultaneousWald": {
+              "lower": -0.02837,
+              "upper": 0.03374
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.02783,
+              "upper": 0.03491
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0,
+            "holmAdjustedTostP": 0.00001,
+            "rawDetectionP": 0.77835,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "pair:sd2-elite-shooting|sd2-no-rim-protection",
+        "kind": "NON_MIRROR",
+        "era": "2010s",
+        "perspectiveTeam": "sd2-elite-shooting",
+        "teamA": "sd2-elite-shooting",
+        "teamB": "sd2-no-rim-protection",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 3,
+        "finalPairs": 4096,
+        "finalGames": 8192,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": 0.01563,
+            "sd": 0.66844,
+            "se": 0.04178,
+            "discordantPairs": 114,
+            "simultaneousWald": {
+              "lower": -0.12034,
+              "upper": 0.15159
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.11719,
+              "upper": 0.15625
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.20531,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.7084,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": -0.01367,
+            "sd": 0.63601,
+            "se": 0.01988,
+            "discordantPairs": 414,
+            "simultaneousWald": {
+              "lower": -0.07835,
+              "upper": 0.05101
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.08301,
+              "upper": 0.05273
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.03379,
+            "holmAdjustedTostP": 0.84472,
+            "rawDetectionP": 0.49152,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": -0.01123,
+            "sd": 0.63274,
+            "se": 0.00989,
+            "discordantPairs": 1640,
+            "simultaneousWald": {
+              "lower": -0.04341,
+              "upper": 0.02094
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.04199,
+              "upper": 0.01929
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.00004,
+            "holmAdjustedTostP": 0.00084,
+            "rawDetectionP": 0.25599,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "pair:sd2-elite-shooting|sd2-movement-shooters",
+        "kind": "NON_MIRROR",
+        "era": "2010s",
+        "perspectiveTeam": "sd2-elite-shooting",
+        "teamA": "sd2-elite-shooting",
+        "teamB": "sd2-movement-shooters",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 3,
+        "finalPairs": 4096,
+        "finalGames": 8192,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": 0.02344,
+            "sd": 0.61312,
+            "se": 0.03832,
+            "discordantPairs": 96,
+            "simultaneousWald": {
+              "lower": -0.10127,
+              "upper": 0.14815
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.10156,
+              "upper": 0.15234
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.2441,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.54079,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": -0.00195,
+            "sd": 0.5748,
+            "se": 0.01796,
+            "discordantPairs": 338,
+            "simultaneousWald": {
+              "lower": -0.06041,
+              "upper": 0.0565
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.06055,
+              "upper": 0.05566
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.00374,
+            "holmAdjustedTostP": 0.14953,
+            "rawDetectionP": 0.91341,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": -0.00928,
+            "sd": 0.59539,
+            "se": 0.0093,
+            "discordantPairs": 1452,
+            "simultaneousWald": {
+              "lower": -0.03955,
+              "upper": 0.021
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.04028,
+              "upper": 0.0188
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.00001,
+            "holmAdjustedTostP": 0.00014,
+            "rawDetectionP": 0.31865,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "pair:sd2-elite-shooting|sd2-zone-attack",
+        "kind": "NON_MIRROR",
+        "era": "2010s",
+        "perspectiveTeam": "sd2-elite-shooting",
+        "teamA": "sd2-elite-shooting",
+        "teamB": "sd2-zone-attack",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 3,
+        "finalPairs": 4096,
+        "finalGames": 8192,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": 0.00391,
+            "sd": 0.51257,
+            "se": 0.03204,
+            "discordantPairs": 67,
+            "simultaneousWald": {
+              "lower": -0.10035,
+              "upper": 0.10816
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.10156,
+              "upper": 0.10938
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.0751,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.90295,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": -0.00391,
+            "sd": 0.54511,
+            "se": 0.01703,
+            "discordantPairs": 304,
+            "simultaneousWald": {
+              "lower": -0.05934,
+              "upper": 0.05153
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.05859,
+              "upper": 0.05078
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.00341,
+            "holmAdjustedTostP": 0.14307,
+            "rawDetectionP": 0.81863,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": 0.00537,
+            "sd": 0.5608,
+            "se": 0.00876,
+            "discordantPairs": 1288,
+            "simultaneousWald": {
+              "lower": -0.02315,
+              "upper": 0.03389
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.02271,
+              "upper": 0.0354
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0,
+            "holmAdjustedTostP": 0.00001,
+            "rawDetectionP": 0.5399,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "pair:sd2-elite-shooting|sd2-weak-defender-hiding",
+        "kind": "NON_MIRROR",
+        "era": "2010s",
+        "perspectiveTeam": "sd2-elite-shooting",
+        "teamA": "sd2-elite-shooting",
+        "teamB": "sd2-weak-defender-hiding",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 3,
+        "finalPairs": 4096,
+        "finalGames": 8192,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": 0.01953,
+            "sd": 0.62904,
+            "se": 0.03932,
+            "discordantPairs": 101,
+            "simultaneousWald": {
+              "lower": -0.10842,
+              "upper": 0.14748
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.10156,
+              "upper": 0.14453
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.21917,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.61934,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": -0.01953,
+            "sd": 0.59945,
+            "se": 0.01873,
+            "discordantPairs": 368,
+            "simultaneousWald": {
+              "lower": -0.0805,
+              "upper": 0.04143
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.08008,
+              "upper": 0.04102
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.05192,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.29713,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": 0.00513,
+            "sd": 0.60702,
+            "se": 0.00948,
+            "discordantPairs": 1509,
+            "simultaneousWald": {
+              "lower": -0.02574,
+              "upper": 0.03599
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.02441,
+              "upper": 0.03638
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0,
+            "holmAdjustedTostP": 0.00003,
+            "rawDetectionP": 0.58882,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "pair:sd2-weak-shooting|sd2-no-rim-protection",
+        "kind": "NON_MIRROR",
+        "era": "2010s",
+        "perspectiveTeam": "sd2-weak-shooting",
+        "teamA": "sd2-weak-shooting",
+        "teamB": "sd2-no-rim-protection",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 3,
+        "finalPairs": 4096,
+        "finalGames": 8192,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": -0.08203,
+            "sd": 0.67236,
+            "se": 0.04202,
+            "discordantPairs": 117,
+            "simultaneousWald": {
+              "lower": -0.21879,
+              "upper": 0.05473
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.21875,
+              "upper": 0.05469
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.77704,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.05093,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": -0.02832,
+            "sd": 0.65596,
+            "se": 0.0205,
+            "discordantPairs": 441,
+            "simultaneousWald": {
+              "lower": -0.09503,
+              "upper": 0.03839
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.09473,
+              "upper": 0.03906
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.14512,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.16711,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": -0.01294,
+            "sd": 0.64324,
+            "se": 0.01005,
+            "discordantPairs": 1695,
+            "simultaneousWald": {
+              "lower": -0.04565,
+              "upper": 0.01977
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.04614,
+              "upper": 0.02075
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.00011,
+            "holmAdjustedTostP": 0.00204,
+            "rawDetectionP": 0.19794,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "pair:sd2-weak-shooting|sd2-movement-shooters",
+        "kind": "NON_MIRROR",
+        "era": "2010s",
+        "perspectiveTeam": "sd2-weak-shooting",
+        "teamA": "sd2-weak-shooting",
+        "teamB": "sd2-movement-shooters",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 3,
+        "finalPairs": 4096,
+        "finalGames": 8192,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": -0.02344,
+            "sd": 0.59362,
+            "se": 0.0371,
+            "discordantPairs": 90,
+            "simultaneousWald": {
+              "lower": -0.14418,
+              "upper": 0.09731
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.14844,
+              "upper": 0.09375
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.23701,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.52757,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": 0,
+            "sd": 0.59157,
+            "se": 0.01849,
+            "discordantPairs": 358,
+            "simultaneousWald": {
+              "lower": -0.06016,
+              "upper": 0.06016
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.05957,
+              "upper": 0.06055
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.00342,
+            "holmAdjustedTostP": 0.14307,
+            "rawDetectionP": 1,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": 0.00537,
+            "sd": 0.58677,
+            "se": 0.00917,
+            "discordantPairs": 1410,
+            "simultaneousWald": {
+              "lower": -0.02447,
+              "upper": 0.03521
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.02417,
+              "upper": 0.03467
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0,
+            "holmAdjustedTostP": 0.00002,
+            "rawDetectionP": 0.55798,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "pair:sd2-weak-shooting|sd2-zone-attack",
+        "kind": "NON_MIRROR",
+        "era": "2010s",
+        "perspectiveTeam": "sd2-weak-shooting",
+        "teamA": "sd2-weak-shooting",
+        "teamB": "sd2-zone-attack",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 3,
+        "finalPairs": 4096,
+        "finalGames": 8192,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": -0.03906,
+            "sd": 0.55874,
+            "se": 0.03492,
+            "discordantPairs": 80,
+            "simultaneousWald": {
+              "lower": -0.15271,
+              "upper": 0.07459
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.14844,
+              "upper": 0.07813
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.37706,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.26332,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": -0.02539,
+            "sd": 0.58437,
+            "se": 0.01826,
+            "discordantPairs": 350,
+            "simultaneousWald": {
+              "lower": -0.08482,
+              "upper": 0.03404
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.08301,
+              "upper": 0.03613
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.08889,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.16441,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": -0.00073,
+            "sd": 0.57182,
+            "se": 0.00893,
+            "discordantPairs": 1339,
+            "simultaneousWald": {
+              "lower": -0.02981,
+              "upper": 0.02834
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.02979,
+              "upper": 0.02856
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0,
+            "holmAdjustedTostP": 0,
+            "rawDetectionP": 0.93467,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "pair:sd2-weak-shooting|sd2-weak-defender-hiding",
+        "kind": "NON_MIRROR",
+        "era": "2010s",
+        "perspectiveTeam": "sd2-weak-shooting",
+        "teamA": "sd2-weak-shooting",
+        "teamB": "sd2-weak-defender-hiding",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 3,
+        "finalPairs": 4096,
+        "finalGames": 8192,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": -0.01562,
+            "sd": 0.6506,
+            "se": 0.04066,
+            "discordantPairs": 108,
+            "simultaneousWald": {
+              "lower": -0.14796,
+              "upper": 0.11671
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.15234,
+              "upper": 0.11328
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.19895,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.70079,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": -0.01074,
+            "sd": 0.61178,
+            "se": 0.01912,
+            "discordantPairs": 383,
+            "simultaneousWald": {
+              "lower": -0.07296,
+              "upper": 0.05148
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.07227,
+              "upper": 0.04883
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.02002,
+            "holmAdjustedTostP": 0.5997,
+            "rawDetectionP": 0.57419,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": -0.00024,
+            "sd": 0.62175,
+            "se": 0.00971,
+            "discordantPairs": 1583,
+            "simultaneousWald": {
+              "lower": -0.03186,
+              "upper": 0.03137
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.03174,
+              "upper": 0.03296
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0,
+            "holmAdjustedTostP": 0.00001,
+            "rawDetectionP": 0.97995,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "pair:sd2-extreme-size|sd2-cross-era",
+        "kind": "NON_MIRROR",
+        "era": "1960s",
+        "perspectiveTeam": "sd2-extreme-size",
+        "teamA": "sd2-extreme-size",
+        "teamB": "sd2-cross-era",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 3,
+        "finalPairs": 4096,
+        "finalGames": 8192,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": 0.01953,
+            "sd": 0.61645,
+            "se": 0.03853,
+            "discordantPairs": 97,
+            "simultaneousWald": {
+              "lower": -0.10585,
+              "upper": 0.14492
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.10156,
+              "upper": 0.15625
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.21452,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.6122,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": 0.00586,
+            "sd": 0.65729,
+            "se": 0.02054,
+            "discordantPairs": 442,
+            "simultaneousWald": {
+              "lower": -0.06099,
+              "upper": 0.07271
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.06543,
+              "upper": 0.07324
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.01582,
+            "holmAdjustedTostP": 0.49036,
+            "rawDetectionP": 0.77544,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": 0.00244,
+            "sd": 0.63707,
+            "se": 0.00995,
+            "discordantPairs": 1662,
+            "simultaneousWald": {
+              "lower": -0.02995,
+              "upper": 0.03484
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.03101,
+              "upper": 0.03467
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0,
+            "holmAdjustedTostP": 0.00002,
+            "rawDetectionP": 0.80625,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "pair:sd2-extreme-small|sd2-passing-hub",
+        "kind": "NON_MIRROR",
+        "era": "2020s",
+        "perspectiveTeam": "sd2-extreme-small",
+        "teamA": "sd2-extreme-small",
+        "teamB": "sd2-passing-hub",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 2,
+        "finalPairs": 1024,
+        "finalGames": 2048,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": 0.03125,
+            "sd": 0.26383,
+            "se": 0.01649,
+            "discordantPairs": 18,
+            "simultaneousWald": {
+              "lower": -0.02241,
+              "upper": 0.08491
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.02344,
+              "upper": 0.09375
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.12775,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.05807,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": 0.01953,
+            "sd": 0.27896,
+            "se": 0.00872,
+            "discordantPairs": 80,
+            "simultaneousWald": {
+              "lower": -0.00884,
+              "upper": 0.0479
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.00781,
+              "upper": 0.04785
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.00024,
+            "holmAdjustedTostP": 0.01043,
+            "rawDetectionP": 0.02506,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "pair:sd2-no-rim-protection|sd2-movement-shooters",
+        "kind": "NON_MIRROR",
+        "era": "2010s",
+        "perspectiveTeam": "sd2-no-rim-protection",
+        "teamA": "sd2-no-rim-protection",
+        "teamB": "sd2-movement-shooters",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 3,
+        "finalPairs": 4096,
+        "finalGames": 8192,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": -0.03125,
+            "sd": 0.58662,
+            "se": 0.03666,
+            "discordantPairs": 88,
+            "simultaneousWald": {
+              "lower": -0.15057,
+              "upper": 0.08807
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.14453,
+              "upper": 0.09375
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.30453,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.39402,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": -0.00586,
+            "sd": 0.60623,
+            "se": 0.01894,
+            "discordantPairs": 376,
+            "simultaneousWald": {
+              "lower": -0.06751,
+              "upper": 0.05579
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.06934,
+              "upper": 0.05957
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.0099,
+            "holmAdjustedTostP": 0.32682,
+            "rawDetectionP": 0.7571,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": 0.00098,
+            "sd": 0.62625,
+            "se": 0.00979,
+            "discordantPairs": 1606,
+            "simultaneousWald": {
+              "lower": -0.03087,
+              "upper": 0.03282
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.03125,
+              "upper": 0.03369
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0,
+            "holmAdjustedTostP": 0.00001,
+            "rawDetectionP": 0.9205,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "pair:sd2-no-rim-protection|sd2-zone-attack",
+        "kind": "NON_MIRROR",
+        "era": "2010s",
+        "perspectiveTeam": "sd2-no-rim-protection",
+        "teamA": "sd2-no-rim-protection",
+        "teamB": "sd2-zone-attack",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 3,
+        "finalPairs": 4096,
+        "finalGames": 8192,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": -0.00391,
+            "sd": 0.61036,
+            "se": 0.03815,
+            "discordantPairs": 95,
+            "simultaneousWald": {
+              "lower": -0.12805,
+              "upper": 0.12024
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.13281,
+              "upper": 0.11719
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.11346,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.91844,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": -0.00195,
+            "sd": 0.59977,
+            "se": 0.01874,
+            "discordantPairs": 368,
+            "simultaneousWald": {
+              "lower": -0.06295,
+              "upper": 0.05904
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.06445,
+              "upper": 0.06055
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.00518,
+            "holmAdjustedTostP": 0.19159,
+            "rawDetectionP": 0.91701,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": -0.00537,
+            "sd": 0.59503,
+            "se": 0.0093,
+            "discordantPairs": 1450,
+            "simultaneousWald": {
+              "lower": -0.03563,
+              "upper": 0.02489
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.03735,
+              "upper": 0.02539
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0,
+            "holmAdjustedTostP": 0.00002,
+            "rawDetectionP": 0.56347,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "pair:sd2-no-rim-protection|sd2-weak-defender-hiding",
+        "kind": "NON_MIRROR",
+        "era": "2010s",
+        "perspectiveTeam": "sd2-no-rim-protection",
+        "teamA": "sd2-no-rim-protection",
+        "teamB": "sd2-weak-defender-hiding",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 3,
+        "finalPairs": 4096,
+        "finalGames": 8192,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": 0.05469,
+            "sd": 0.57132,
+            "se": 0.03571,
+            "discordantPairs": 84,
+            "simultaneousWald": {
+              "lower": -0.06152,
+              "upper": 0.17089
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.06641,
+              "upper": 0.16797
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.55222,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.12564,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": -0.00293,
+            "sd": 0.56881,
+            "se": 0.01778,
+            "discordantPairs": 331,
+            "simultaneousWald": {
+              "lower": -0.06078,
+              "upper": 0.05492
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.05957,
+              "upper": 0.05664
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.00405,
+            "holmAdjustedTostP": 0.15382,
+            "rawDetectionP": 0.86909,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": -0.00391,
+            "sd": 0.59872,
+            "se": 0.00936,
+            "discordantPairs": 1468,
+            "simultaneousWald": {
+              "lower": -0.03435,
+              "upper": 0.02654
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.0354,
+              "upper": 0.02783
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0,
+            "holmAdjustedTostP": 0.00001,
+            "rawDetectionP": 0.67627,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "pair:sd2-movement-shooters|sd2-zone-attack",
+        "kind": "NON_MIRROR",
+        "era": "2010s",
+        "perspectiveTeam": "sd2-movement-shooters",
+        "teamA": "sd2-movement-shooters",
+        "teamB": "sd2-zone-attack",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 3,
+        "finalPairs": 4096,
+        "finalGames": 8192,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": -0.00391,
+            "sd": 0.59737,
+            "se": 0.03734,
+            "discordantPairs": 91,
+            "simultaneousWald": {
+              "lower": -0.12541,
+              "upper": 0.1176
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.125,
+              "upper": 0.12891
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.10849,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.91667,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": 0.00391,
+            "sd": 0.61743,
+            "se": 0.01929,
+            "discordantPairs": 390,
+            "simultaneousWald": {
+              "lower": -0.05889,
+              "upper": 0.0667
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.05957,
+              "upper": 0.06738
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.00845,
+            "holmAdjustedTostP": 0.29569,
+            "rawDetectionP": 0.83956,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": -0.0022,
+            "sd": 0.61105,
+            "se": 0.00955,
+            "discordantPairs": 1529,
+            "simultaneousWald": {
+              "lower": -0.03327,
+              "upper": 0.02887
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.03271,
+              "upper": 0.02881
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0,
+            "holmAdjustedTostP": 0.00001,
+            "rawDetectionP": 0.81798,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "pair:sd2-movement-shooters|sd2-weak-defender-hiding",
+        "kind": "NON_MIRROR",
+        "era": "2010s",
+        "perspectiveTeam": "sd2-movement-shooters",
+        "teamA": "sd2-movement-shooters",
+        "teamB": "sd2-weak-defender-hiding",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 3,
+        "finalPairs": 4096,
+        "finalGames": 8192,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": 0.01563,
+            "sd": 0.58053,
+            "se": 0.03628,
+            "discordantPairs": 86,
+            "simultaneousWald": {
+              "lower": -0.10245,
+              "upper": 0.1337
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.10547,
+              "upper": 0.13281
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.17171,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.66673,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": 0.00098,
+            "sd": 0.57735,
+            "se": 0.01804,
+            "discordantPairs": 341,
+            "simultaneousWald": {
+              "lower": -0.05774,
+              "upper": 0.05969
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.05859,
+              "upper": 0.05762
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.00329,
+            "holmAdjustedTostP": 0.14157,
+            "rawDetectionP": 0.95683,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": 0.00317,
+            "sd": 0.55798,
+            "se": 0.00872,
+            "discordantPairs": 1275,
+            "simultaneousWald": {
+              "lower": -0.0252,
+              "upper": 0.03155
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.02417,
+              "upper": 0.03174
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0,
+            "holmAdjustedTostP": 0,
+            "rawDetectionP": 0.71583,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      },
+      {
+        "id": "pair:sd2-zone-attack|sd2-weak-defender-hiding",
+        "kind": "NON_MIRROR",
+        "era": "2010s",
+        "perspectiveTeam": "sd2-zone-attack",
+        "teamA": "sd2-zone-attack",
+        "teamB": "sd2-weak-defender-hiding",
+        "finalClassification": "EQUIVALENT",
+        "stageReached": 3,
+        "finalPairs": 4096,
+        "finalGames": 8192,
+        "ties": 0,
+        "invariantViolations": 0,
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256,
+            "games": 512,
+            "delta": -0.02734,
+            "sd": 0.59014,
+            "se": 0.03688,
+            "discordantPairs": 89,
+            "simultaneousWald": {
+              "lower": -0.14738,
+              "upper": 0.09269
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.14844,
+              "upper": 0.09375
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.26952,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.45848,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024,
+            "games": 2048,
+            "delta": -0.03516,
+            "sd": 0.57031,
+            "se": 0.01782,
+            "discordantPairs": 334,
+            "simultaneousWald": {
+              "lower": -0.09316,
+              "upper": 0.02284
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.09375,
+              "upper": 0.02051
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0.20246,
+            "holmAdjustedTostP": 1,
+            "rawDetectionP": 0.04854,
+            "holmAdjustedDetectionP": 1,
+            "classification": "INCONCLUSIVE"
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096,
+            "games": 8192,
+            "delta": -0.00391,
+            "sd": 0.56946,
+            "se": 0.0089,
+            "discordantPairs": 1328,
+            "simultaneousWald": {
+              "lower": -0.03286,
+              "upper": 0.02505
+            },
+            "simultaneousBootstrap": {
+              "lower": -0.03198,
+              "upper": 0.02466
+            },
+            "intervalsAgree": true,
+            "rawTostP": 0,
+            "holmAdjustedTostP": 0,
+            "rawDetectionP": 0.66065,
+            "holmAdjustedDetectionP": 1,
+            "classification": "EQUIVALENT"
+          }
+        ]
+      }
+    ]
+  },
+  "outputHash": "be0e1ef7ad25f145bffb74a0d6e8875b4a75260436d7c8b96208c8695e7a2b36"
+}

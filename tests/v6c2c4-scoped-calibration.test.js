@@ -10,6 +10,7 @@ import { holm, pFromT, cosine, conditionNumber } from "../scripts/calibration/id
 import { readinessOf, MOVEMENT_CAP, SAFETY_CLAMPS, buildReadiness } from "../scripts/calibration/readiness.mjs";
 import { buildFolds, leakageKey, assertNoHoldout } from "../scripts/calibration/folds-v3.mjs";
 import { versionOf } from "../src/versions.js";
+import { assertCalibrationLockInvariant } from "./helpers/calibrationLockInvariant.js";
 
 const FROZEN_POLICY_HASH = "04c4b45bf1752ce0";
 
@@ -241,8 +242,16 @@ describe("internal folds v3", () => {
 
 // ── The phase outcome, asserted ─────────────────────────────────────────────
 describe("scoped calibration outcome", () => {
-  it("did not lock a calibration", () => {
-    expect(versionOf("possessionCalibrationVersion")).toBeNull();
+  // Phase 6C2C4 accepted no parameter change, which is still true and is what
+  // this test was really about. Phase 6C2C6 later locked a BASELINE calibration
+  // — a lock whose defining property is that no parameter moved — so the
+  // assertion becomes: if anything is locked, it is a baseline lock.
+  it("accepted no parameter change, so any later lock must be a baseline lock", () => {
+    const r = assertCalibrationLockInvariant();
+    if (r.locked) {
+      expect(r.status).toBe("DEVELOPMENT_LOCKED_BASELINE");
+      expect(r.parameterChanges).toBe(0);
+    }
   });
 
   it("left every parameter at its default", () => {

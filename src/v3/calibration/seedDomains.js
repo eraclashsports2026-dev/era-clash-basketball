@@ -16,7 +16,11 @@ import { versionOf } from "../../versions.js";
 export const PREDICTION_SEED_SET_VERSION = versionOf("predictionSeedSetVersion");
 export const PROBABILITY_VALIDATION_SEED_SET_VERSION = versionOf("probabilityValidationSeedSetVersion");
 
-export const DOMAINS = Object.freeze(["actual-game", "prediction", "probability-validation"]);
+// A fourth domain for Phase 6C2C6. A cell that failed on one seed block cannot
+// be retested on that same block: the retest would re-measure the selection
+// rather than the effect. Its master is distinct so overlap can be PROVEN
+// rather than assumed.
+export const DOMAINS = Object.freeze(["actual-game", "prediction", "probability-validation", "side-bias-v2"]);
 
 /**
  * A domain-separated master. Hashing the domain NAME into the master means two
@@ -37,6 +41,7 @@ export const MASTERS = Object.freeze({
   "actual-game": 0x6c2c1a,
   prediction: 0x6c2c1b,
   "probability-validation": 0x6c2c1c,
+  "side-bias-v2": 0x6c2c6a,
 });
 
 export const seedSetFor = (domain, count) =>

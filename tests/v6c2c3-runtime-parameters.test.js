@@ -11,6 +11,7 @@ import { buildPossessionInput } from "../src/v3/possession/testContext.js";
 import { CONSUMER_MANIFEST } from "../scripts/calibration/connectivity.mjs";
 import { PARITY_FIXTURES, captureBaseline, diffBaseline, assertNoHoldout, assertOvertimeCoverage, assertZoneCoverage } from "../scripts/calibration/freeze-pre-wiring.mjs";
 import { versionOf } from "../src/versions.js";
+import { assertCalibrationLockInvariant } from "./helpers/calibrationLockInvariant.js";
 
 const FIX = PARITY_FIXTURES.find((f) => f.id === "era-2010s");
 const play = (parameterSet, seed = 11, f = FIX) => runPossessionGame(buildPossessionInput({
@@ -84,10 +85,16 @@ describe("compiled parameter set", () => {
     expect(a.parameterSetHash).not.toBe(defaultRuntimeParameterSet().parameterSetHash);
   });
 
-  it("reports status truthfully — defaults are not a calibration", () => {
+  it("reports status truthfully — defaults are still defaults after a baseline lock", () => {
+    // status describes where the VALUES came from, and they came from the
+    // registry defaults; nothing tuned them. calibrationVersion describes what
+    // EVIDENCE stands behind them, which Phase 6C2C6 supplied by locking
+    // Candidate 0. Those are different claims and both stay honest: a baseline
+    // lock is precisely a lock in which no value moved.
     expect(defaultRuntimeParameterSet().status).toBe("UNCALIBRATED_DEFAULTS");
     expect(compileRuntimeParameterSet({ overrides: { "conversion.rimBonus": 0.2 } }).status).toBe("CANDIDATE_OVERRIDES");
-    expect(defaultRuntimeParameterSet().calibrationVersion).toBeNull();
+    expect(defaultRuntimeParameterSet().calibrationVersion).toBe(versionOf("possessionCalibrationVersion"));
+    assertCalibrationLockInvariant();
   });
 
   it("records which values were overridden and from what", () => {
@@ -261,9 +268,14 @@ describe("result and fingerprint identity", () => {
     expect(g.fingerprint.parameterSetStatus).toBe("UNCALIBRATED_DEFAULTS");
   });
 
-  it("keeps possessionCalibrationVersion null on the result", () => {
-    expect(play(null).possessionCalibrationVersion).toBeNull();
-    expect(versionOf("possessionCalibrationVersion")).toBeNull();
+  it("reports the same possessionCalibrationVersion on the result as the registry holds", () => {
+    // The result surface must never disagree with the registry about which
+    // calibration produced it. Null before Phase 6C2C6, 1.0.0 after, and equal
+    // to the registry either way.
+    const v = versionOf("possessionCalibrationVersion");
+    expect(play(null).possessionCalibrationVersion).toBe(v);
+    const r = assertCalibrationLockInvariant();
+    if (r.locked) expect(play(null).possessionCalibrationVersion).toBe(r.version);
   });
 
   it("gives a candidate a different fingerprint and status", () => {

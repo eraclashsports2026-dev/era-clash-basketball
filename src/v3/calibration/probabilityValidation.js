@@ -104,18 +104,33 @@ export const scoreCells = (cells) => {
     favoriteWinRate: r4(cells.filter((c) => Math.abs(c.predicted - 0.5) > 0.02)
       .filter((c) => (c.predicted > 0.5 ? c.empirical > 0.5 : c.empirical < 0.5)).length
       / Math.max(1, cells.filter((c) => Math.abs(c.predicted - 0.5) > 0.02).length)),
-    // The frozen threshold caps the WORST single cell. At 256 games the standard
-    // error of a 0.5 rate is 0.031, so one cell at 0.0625 is 2 SE — with 30 cells,
-    // ~1.4 such cells are expected from noise alone. Whether the bias is
-    // SYSTEMATIC is the question that matters, so both are reported and neither
-    // is allowed to stand in for the other.
+    // Side bias is REPORTED here and GATED elsewhere, deliberately.
+    //
+    // Phase 6C2C5 gated it here, on `maxAbsolutePerCell` against a fixed 0.05.
+    // Three things were wrong with that. The statistic is HALF the paired
+    // orientation effect, so the margin meant twice what it appeared to mean.
+    // `perCellStandardErrorAtSampleSize` was sqrt(0.25/n), a single-proportion
+    // formula under independence, while the design is paired on a shared seed.
+    // And taking the MAXIMUM over 30 cells and comparing it to an unadjusted
+    // threshold cannot see that 30 comparisons happened.
+    //
+    // This suite runs 128 paired seeds per cell. At that sample a true null
+    // CANNOT be shown equivalent to +/-0.05, so any gate here would either be
+    // powerless or wrong. The gate therefore lives in the dedicated side-bias
+    // validation, which escalates to 16,384 pairs per cell under a policy frozen
+    // in advance. Reporting a number here without gating it is honest; gating it
+    // here at 128 pairs would not be.
     sideBias: {
       maxAbsolutePerCell: r4(Math.max(...bs.map(Math.abs))),
+      maxAbsolutePerCellScale: "HALF_OF_PAIRED_EFFECT",
+      maxAbsolutePairedEffect: r4(2 * Math.max(...bs.map(Math.abs))),
       meanAcrossCells: r4(meanBias),
       standardError: r4(seBias),
       tStatistic: r4(seBias > 0 ? meanBias / seBias : 0),
       systematic: seBias > 0 ? Math.abs(meanBias / seBias) > 2 : false,
-      perCellStandardErrorAtSampleSize: r4(Math.sqrt(0.25 / (cells[0]?.outcomes?.length ?? 1))),
+      perCellStandardErrorNote: "Not reported as a single-proportion SE any more. The estimator now returns pairedStandardError per cell, computed from the observed discordance of the paired orientations, which is the uncertainty this statistic actually has.",
+      gatedBy: "probability-side-bias-policy-v2 / probability-side-bias-validation-v2.json",
+      gatedHere: false,
     },
     reliabilityBins: bins,
   };
@@ -127,7 +142,11 @@ export const evaluateGate = (s) => ({
   withinIrreducibleFloorPlusTolerance: s.outcomeScale.monteCarloBrier <= s.outcomeScale.irreducibleFloorBrier + 0.01,
   capturesMostAchievableSkill: s.outcomeScale.fractionOfAchievableSkill >= THRESHOLDS.minFractionOfAchievableSkill,
   calibrationWithinTolerance: s.expectedCalibrationError <= THRESHOLDS.maxExpectedCalibrationError,
-  sideBiasPerCellWithinTolerance: s.sideBias.maxAbsolutePerCell <= THRESHOLDS.maxSideBiasDifference,
+  // The per-cell equivalence gate moved to the dedicated side-bias validation,
+  // which has the power to answer it. What remains gateable at this sample size
+  // is whether the bias is SYSTEMATIC across cells, which is a mean rather than
+  // a maximum and does not need per-cell precision.
   sideBiasNotSystematic: !s.sideBias.systematic,
+  sideBiasGateDelegatedToPolicyV2: s.sideBias.gatedBy != null && s.sideBias.gatedHere === false,
   sharpnessReported: s.sharpness != null,
 });
