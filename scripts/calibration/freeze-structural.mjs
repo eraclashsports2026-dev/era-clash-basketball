@@ -21,6 +21,10 @@ import { fixtureSeeds } from "../../data/calibration/seeds.mjs";
 import { versionOf } from "../../src/versions.js";
 
 export const BASELINE_PATH = "tests/fixtures/calibration-framework/pre-6c2a/structural-baseline.json";
+// The AFTER state. Kept in a separate file so the "before" can never be
+// overwritten by a routine rerun — a before/after comparison whose before moves
+// is not a comparison.
+export const POST_PATH = "tests/fixtures/calibration-framework/post-6c2a/structural-baseline.json";
 
 // Deliberately modest: this file is a REGRESSION anchor, run on every test
 // pass, not the full 1,000-game diagnostic. The heavy runs live in the
@@ -161,7 +165,7 @@ const round = (x, n) => Math.round(x * 10 ** n) / 10 ** n;
 export const hashBaseline = (b) =>
   createHash("sha256").update(JSON.stringify({ rollup: b.rollup, fixtures: b.fixtures })).digest("hex");
 
-export const loadBaseline = () => (existsSync(BASELINE_PATH) ? JSON.parse(readFileSync(BASELINE_PATH, "utf8")) : null);
+export const loadBaseline = (path = BASELINE_PATH) => (existsSync(path) ? JSON.parse(readFileSync(path, "utf8")) : null);
 
 /** Field-level diff, so a regression names what moved rather than "hash differs". */
 export const diffBaseline = (before, after) => {
@@ -189,14 +193,16 @@ export const diffBaseline = (before, after) => {
 
 // ── CLI ─────────────────────────────────────────────────────────────────────
 if (import.meta.url === `file://${process.argv[1]}`) {
-  const write = process.argv.includes("--write");
+  const post = process.argv.includes("--post");
+  const path = post ? POST_PATH : BASELINE_PATH;
+  const write = process.argv.includes("--write") || post;
   const fresh = captureBaseline();
-  const existing = loadBaseline();
+  const existing = loadBaseline(path);
 
   if (!existing || write) {
-    mkdirSync("tests/fixtures/calibration-framework/pre-6c2a", { recursive: true });
-    writeFileSync(BASELINE_PATH, JSON.stringify(fresh, null, 2) + "\n");
-    console.log(`${existing ? "REWROTE" : "wrote"} ${BASELINE_PATH}`);
+    mkdirSync(post ? "tests/fixtures/calibration-framework/post-6c2a" : "tests/fixtures/calibration-framework/pre-6c2a", { recursive: true });
+    writeFileSync(path, JSON.stringify({ ...fresh, phase: post ? "6C2A-post" : fresh.phase }, null, 2) + "\n");
+    console.log(`${existing ? "REWROTE" : "wrote"} ${path}`);
     if (existing) {
       const d = diffBaseline(existing, fresh);
       console.log(`\n${d.length} field(s) changed — this is the explicit before/after a rewrite requires:\n`);
