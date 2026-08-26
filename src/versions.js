@@ -71,13 +71,43 @@ export const REGISTRY = {
   historicalFixtureDataVersion: entry("1.0.0", DEVELOPMENT,
     "The historical fixture corpus: units, coaches, era anchors, documented identities and sourced targets. A fixture edit must invalidate cached calibration output.", false),
 
+  calibrationPlayerSchemaVersion: entry("1.0.0", DEVELOPMENT,
+    "The shape of a calibration-only player-SEASON profile. Separate from the public card schema because a season profile and a decade card are different objects with different evidence.", false),
+
+  calibrationPlayerDataVersion: entry("1.0.0", DEVELOPMENT,
+    "The calibration-only player-season values. These NEVER enter the public product. They affect a development simulation only when a calibration fixture is run.", false),
+
+  fixtureSourceRegistryVersion: entry("1.0.0", DEVELOPMENT,
+    "Which sources are approved, prohibited or pending, and under what licence. A source's status gates whether its data may enter calibration at all.", false),
+
+  historicalCalibrationSetVersion: entry("3.0.0", DEVELOPMENT,
+    "The historical calibration partition. Separate from the corpus version because membership can change without the corpus changing.", false),
+
+  syntheticDevelopmentSetVersion: entry("2.0.0", DEVELOPMENT,
+    "Synthetic fixtures available for development and as tuning guardrails. Explicitly NOT a holdout.", false),
+
+  syntheticStressHoldoutVersion: entry("2.0.0", DEVELOPMENT,
+    "A NEW sealed synthetic stress set. v2 rather than a reuse of v1 because 19 of v1's 25 fixtures had their outputs read during Phase 6C2A, which disqualifies it as a holdout.", false),
+
+  monteCarloProbabilityVersion: entry("1.0.0", DEVELOPMENT,
+    "The Monte Carlo win-probability estimator. Affects prediction fingerprints and probability cache keys; must NEVER affect a game simulation result.", false),
+
+  predictionSeedSetVersion: entry("1.0.0", DEVELOPMENT,
+    "Seeds used to ESTIMATE a probability. Disjoint from validation and actual-game seeds, so a probability is never validated against the games that produced it.", false),
+
+  probabilityValidationSeedSetVersion: entry("1.0.0", DEVELOPMENT,
+    "Seeds used to measure empirical outcomes when validating a probability. Disjoint from prediction seeds by construction.", false),
+
+  probabilityCacheSchemaVersion: entry("1.0.0", DEVELOPMENT,
+    "The shape of a cached probability estimate. Bumping it invalidates every cached estimate, which is correct when the stored shape changes.", false),
+
   fixtureClassificationVersion: entry("1.0.0", DEVELOPMENT,
     "What KIND of thing each fixture is — historical lineup, proxy, synthetic archetype, cross-era stress test — and therefore what it may calibrate. Does not affect game results.", false),
 
-  historicalCorpusVersion: entry("2.0.0", DEVELOPMENT,
+  historicalCorpusVersion: entry("3.0.0", DEVELOPMENT,
     "The source-valid historical corpus. 2.0.0 because v1 mixed historical and synthetic fixtures under labels that overstated them; v1 is preserved unchanged as a frozen artefact.", false),
 
-  historicalHoldoutSetVersion: entry("2.0.0", DEVELOPMENT,
+  historicalHoldoutSetVersion: entry("3.0.0", DEVELOPMENT,
     "The source-valid historical holdout. Separate from holdoutSetVersion, which describes the legacy mixed holdout and stays at 1.0.0 forever.", false),
 
   syntheticStressSetVersion: entry("1.0.0", DEVELOPMENT,
@@ -95,7 +125,7 @@ export const REGISTRY = {
   historicalTargetSchemaVersion: entry("1.0.0", DEVELOPMENT,
     "The shape of a calibration target record: fields, provenance requirements, availability vocabulary. Changing it changes what a target IS, so cached target output must be invalidated. Does NOT affect game results.", false),
 
-  historicalTargetDataVersion: entry("2.0.0", DEVELOPMENT,
+  historicalTargetDataVersion: entry("3.0.0", DEVELOPMENT,
     "The target VALUES themselves. Bumped whenever targets are added, corrected or re-derived — including blind holdout enrichment, which changes the data without touching holdout membership. Does NOT affect game results: a target is what the engine is measured AGAINST, never an input to it.", false),
 
   opportunityAllocationVersion: entry("1.0.0", DEVELOPMENT,

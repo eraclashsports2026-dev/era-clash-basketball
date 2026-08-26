@@ -31,15 +31,38 @@
 | Benchmark seed set | `benchmarkSeedSetVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Possession calibration | `possessionCalibrationVersion` | `null` | PLANNED (does **not** affect results) |
 | Historical target schema | `historicalTargetSchemaVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
-| Historical target data | `historicalTargetDataVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |
+| Historical target data | `historicalTargetDataVersion` | **3.0.0** | DEVELOPMENT (does **not** affect results) |
 | Opportunity allocation | `opportunityAllocationVersion` | **1.0.0** | DEVELOPMENT |
 | Fixture classification | `fixtureClassificationVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
-| Historical corpus | `historicalCorpusVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |
-| Historical holdout set | `historicalHoldoutSetVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |
+| Historical corpus | `historicalCorpusVersion` | **3.0.0** | DEVELOPMENT (does **not** affect results) |
+| Historical holdout set | `historicalHoldoutSetVersion` | **3.0.0** | DEVELOPMENT (does **not** affect results) |
 | Synthetic stress set | `syntheticStressSetVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Calibration parameter registry | `calibrationParameterRegistryVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Calibration objective | `calibrationObjectiveVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Probability validation | `probabilityValidationVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Calibration player schema | `calibrationPlayerSchemaVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Calibration player data | `calibrationPlayerDataVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Fixture source registry | `fixtureSourceRegistryVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Historical calibration set | `historicalCalibrationSetVersion` | **3.0.0** | DEVELOPMENT (does **not** affect results) |
+| Synthetic development set | `syntheticDevelopmentSetVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |
+| Synthetic stress holdout | `syntheticStressHoldoutVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |
+| Monte Carlo probability | `monteCarloProbabilityVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Prediction seed set | `predictionSeedSetVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Probability validation seed set | `probabilityValidationSeedSetVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Probability cache schema | `probabilityCacheSchemaVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+
+### Why a Monte Carlo version must never touch a game result
+
+`monteCarloProbabilityVersion` describes how a probability is ESTIMATED. It
+enters prediction fingerprints and probability cache keys, and it must never
+enter a game-result identity — if it did, improving the estimator would change
+the games it estimates, and the estimate could no longer be checked against
+them.
+
+The same rule separates the seed domains. `predictionSeedSetVersion` and
+`probabilityValidationSeedSetVersion` are disjoint from each other and from the
+actual-game seed domain, so a probability is never validated against the very
+simulations that produced it.
 
 ### Why there are two holdout version domains
 
