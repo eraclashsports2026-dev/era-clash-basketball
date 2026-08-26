@@ -50,6 +50,23 @@ export const FROZEN_ARTIFACTS = Object.freeze([
 
 const sha = (p) => createHash("sha256").update(readFileSync(p)).digest("hex");
 
+/**
+ * Deliberate, reviewed changes to frozen artefacts.
+ *
+ * The freeze exists to make change VISIBLE, not to make it impossible. An
+ * artefact that must be corrected can be — but the correction is named here,
+ * with its reason, so it appears in the record instead of being absorbed
+ * silently. An unlisted change still fails.
+ */
+export const APPROVED_CORRECTIONS = Object.freeze([
+  {
+    path: "data/calibration/source-registry.json",
+    reason: "The prohibited-source entry asserted that the publisher's terms contain an AI/model-use clause. That was written from the policy's own wording rather than from the source's terms. A Phase 6C2C2 review found that NBA.com and Kaggle — both excluded — contain no AI clause at all; their exclusions rest on commercial-use and comprehensive-database clauses. Asserting a clause that may not exist would not survive legal review, so the entry now records the standing instruction and explicitly declines to characterise the contractual grounds.",
+    approvedIn: "phase-6c2c2-workstream-3",
+    changesClassification: false,
+  },
+]);
+
 export const buildFreeze = () => {
   const artefacts = {};
   const missing = [];
@@ -92,7 +109,17 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     for (const d of drift) console.log(`  ${d.change.padEnd(9)} ${d.path}${d.was ? `  ${d.was} -> ${d.now}` : ""}`);
     // Parameter movement is EXPECTED once calibration runs; artefact drift in
     // corpus, sets or seals is not. They are reported separately for that reason.
-    const structuralDrift = drift.filter((d) => !d.path.includes("parameters.js"));
+    const approved = new Set(APPROVED_CORRECTIONS.map((c) => c.path));
+    const structuralDrift = drift.filter((d) => !d.path.includes("parameters.js") && !approved.has(d.path));
+    const approvedDrift = drift.filter((d) => approved.has(d.path));
+    if (approvedDrift.length) {
+      console.log(`\n  approved corrections (${approvedDrift.length}):`);
+      for (const d of approvedDrift) {
+        const c = APPROVED_CORRECTIONS.find((x) => x.path === d.path);
+        console.log(`    ${d.path}  ${d.was} -> ${d.now}`);
+        console.log(`      ${c.reason.slice(0, 140)}...`);
+      }
+    }
     console.log(`\n  structural drift: ${structuralDrift.length}  ·  policy drift: ${policyMoved ? "YES" : "no"}`);
     process.exit(structuralDrift.length || policyMoved ? 2 : 0);
   }

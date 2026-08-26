@@ -7,7 +7,7 @@ import {
   PRIVATE_PREVIEW, PRODUCTION, EVIDENCE_STATES,
 } from "../src/v3/calibration/acceptancePolicy.js";
 import { versionOf, VERSION_STATUS } from "../src/versions.js";
-import { buildFreeze, FROZEN_ARTIFACTS, FREEZE_PATH } from "../scripts/calibration/freeze-precalibration.mjs";
+import { buildFreeze, FROZEN_ARTIFACTS, FREEZE_PATH, APPROVED_CORRECTIONS } from "../scripts/calibration/freeze-precalibration.mjs";
 
 // The hash of the policy as frozen in Workstream 0, before any 6C2C2
 // experiment ran. If this test fails, a threshold moved — which is allowed only
@@ -258,16 +258,32 @@ describe("pre-calibration artefact freeze", () => {
     }
   });
 
-  it("leaves the corpus, sets and seals unchanged so far", () => {
+  it("leaves the corpus, sets and seals unchanged apart from named corrections", () => {
     const frozen = JSON.parse(readFileSync(FREEZE_PATH, "utf8"));
     const current = buildFreeze();
-    // parameters.js is expected to move once calibration runs; the data plane
-    // and the seals are not.
-    const structural = Object.keys(frozen.artefacts).filter((p) => !p.includes("parameters.js"));
+    const approved = new Set(APPROVED_CORRECTIONS.map((c) => c.path));
+    // parameters.js is expected to move once calibration runs. Everything else
+    // must either match the freeze or appear in APPROVED_CORRECTIONS with a
+    // recorded reason — the freeze makes change visible, not impossible.
+    const structural = Object.keys(frozen.artefacts)
+      .filter((p) => !p.includes("parameters.js") && !approved.has(p));
     for (const p of structural) {
-      expect(current.artefacts[p], `${p} changed since the pre-calibration freeze`).toBe(frozen.artefacts[p]);
+      expect(current.artefacts[p], `${p} changed since the pre-calibration freeze and is not an approved correction`)
+        .toBe(frozen.artefacts[p]);
     }
   });
+
+  it("gives every approved correction a reason and a scope", () => {
+    for (const c of APPROVED_CORRECTIONS) {
+      expect(c.reason.length, `${c.path} needs a real reason`).toBeGreaterThan(80);
+      expect(c.approvedIn).toBeTruthy();
+      // A correction may fix how a classification is JUSTIFIED without changing
+      // the classification itself. One that changes the classification is a
+      // policy decision, not a correction.
+      expect(c.changesClassification).toBe(false);
+    }
+  });
+
 });
 
 describe("holdouts remain sealed through Workstream 0", () => {

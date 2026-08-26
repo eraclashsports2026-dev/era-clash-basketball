@@ -37,7 +37,17 @@ export const PROHIBITED_SOURCES = Object.freeze([
     id: "basketball-reference",
     publisher: "Sports Reference LLC",
     classification: "PROHIBITED_FOR_MODEL_CALIBRATION",
-    reason: "Terms prohibit use of the data to train, fine-tune, prompt, instruct, calibrate, evaluate or otherwise develop AI or model technologies.",
+    // CORRECTED in Phase 6C2C2. This entry previously asserted that the
+    // source's terms contain an AI/model-use clause. That characterisation was
+    // written from the policy's own wording rather than from the source's terms,
+    // and a Phase 6C2C2 review of adjacent publishers found that NBA.com and
+    // Kaggle — both excluded — contain NO AI clause at all; their exclusions
+    // rest on commercial-use and comprehensive-database clauses. Asserting a
+    // clause that may not exist would not survive review, so the stated ground
+    // is now the instruction that is actually in force.
+    classificationAuthority: "Standing CEO instruction, carried forward from the prior investigation. To be maintained unless qualified legal review provides written authorization.",
+    reason: "Classified PROHIBITED_FOR_MODEL_CALIBRATION by standing instruction. The specific contractual grounds are a matter for qualified legal review and are deliberately NOT characterised here — see classificationAuthority.",
+    policyGround: "Project policy forbids sources whose terms prohibit use in developing or calibrating model technologies. Whether this publisher's terms do so, and under which clause, has not been verified by this project and must not be asserted as if it had.",
     // Spelled out because each is a distinct way the prohibition could be
     // evaded while appearing compliant.
     excludedRoutes: [
