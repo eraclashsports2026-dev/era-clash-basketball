@@ -147,6 +147,12 @@ export const estimateWinProbability = ({
   let firstWinsAsGold = 0;
   let firstWinsAsBlue = 0;
   let goldWinsOverall = 0;
+  // The per-pair orientation difference. The side-bias statistic is a mean over
+  // PAIRS that share a seed, so its uncertainty depends on how often the two
+  // orientations disagree. Phase 6C2C5's gate reported sqrt(0.25/n), a single
+  // proportion under independence, which is the wrong variance for this design
+  // and wrong in the direction that hides real effects.
+  const orientationDiffs = new Int8Array(pairs);
 
   for (let i = 0; i < pairs; i++) {
     const seed = domainSeed(MASTERS.prediction, "prediction", i);
@@ -160,13 +166,25 @@ export const estimateWinProbability = ({
       coachGoldId: second.coachId, coachBlueId: first.coachId, eraStyleId, simulationSeed: seed }), { includeLedger: false });
     if (g2.finalScore.blue > g2.finalScore.gold) firstWinsAsBlue++;
     if (g2.finalScore.gold > g2.finalScore.blue) goldWinsOverall++;
+    orientationDiffs[i] = (g1.finalScore.gold > g1.finalScore.blue ? 1 : 0)
+      - (g2.finalScore.blue > g2.finalScore.gold ? 1 : 0);
   }
+
+  // Paired summary of D in {-1, 0, 1}.
+  let dSum = 0;
+  for (let i = 0; i < pairs; i++) dSum += orientationDiffs[i];
+  const dMean = dSum / pairs;
+  let dSq = 0; let discordant = 0;
+  for (let i = 0; i < pairs; i++) { dSq += (orientationDiffs[i] - dMean) ** 2; if (orientationDiffs[i] !== 0) discordant++; }
+  const dSd = pairs > 1 ? Math.sqrt(dSq / (pairs - 1)) : 0;
+  const dSe = pairs > 0 ? dSd / Math.sqrt(pairs) : null;
 
   const firstWins = firstWinsAsGold + firstWinsAsBlue;
   const p = firstWins / n;
 
   const result = Object.freeze({
     perspectiveTeamId: first.teamId ?? "first",
+    counterpartTeamId: second.teamId ?? "second",
     goldWinProbability: r4(p),
     blueWinProbability: r4(1 - p),
     goldWins: firstWins,
@@ -179,10 +197,24 @@ export const estimateWinProbability = ({
       // neutral court should give ~0.5.
       goldOrientationRate: r4(goldWinsOverall / n),
       blueOrientationRate: r4(1 - goldWinsOverall / n),
+      // Retained for continuity with Phase 6C2C5 artifacts. For this balanced
+      // paired design it is algebraically HALF the paired orientation effect
+      // below, which is why it must never be compared against a margin meant
+      // for the paired scale.
       difference: r4(goldWinsOverall / n - 0.5),
+      differenceScale: "HALF_OF_PAIRED_EFFECT",
       firstAsGoldWinRate: r4(firstWinsAsGold / pairs),
       firstAsBlueWinRate: r4(firstWinsAsBlue / pairs),
-      note: "Measured BEFORE pairing removes it. A systematic gold or blue advantage is a bug, not something to average away silently.",
+      // The paired orientation effect and its OWN uncertainty. delta =
+      // mean(Y_gold - Y_blue) over seeds, from the perspective of `first`.
+      pairedEffect: r4(dMean),
+      pairedSd: r4(dSd),
+      pairedStandardError: dSe == null ? null : r4(dSe),
+      pairedZ: dSe > 0 ? r4(dMean / dSe) : null,
+      discordantPairs: discordant,
+      pairs,
+      perspectiveTeamForPairedEffect: first.teamId ?? "first",
+      note: "Measured BEFORE pairing removes it. A systematic gold or blue advantage is a bug, not something to average away silently. `difference` is on the half scale; `pairedEffect` is the product-meaningful quantity and carries the standard error appropriate to a paired design.",
     },
     predictionFingerprint: createHash("sha256").update(key).digest("hex").slice(0, 32),
     matchupFingerprint,
@@ -205,7 +237,14 @@ export const estimateWinProbability = ({
 /** P(B beats A) = 1 - P(A beats B), from the same estimate. */
 export const complement = (r) => Object.freeze({
   ...r,
-  perspectiveTeamId: r.perspectiveTeamId === "first" ? "second" : r.perspectiveTeamId,
+  // The perspective genuinely swaps. The previous guard was `=== "first"`, which
+  // never matches a real team id, so a complemented estimate flipped its
+  // probability while still naming the ORIGINAL team as its perspective. 13 of
+  // the 30 Phase 6C2C5 cells took this path. It changed no number the validation
+  // published, because that reads goldWinProbability, but a label that
+  // contradicts its own number is a defect waiting to be believed.
+  perspectiveTeamId: r.counterpartTeamId ?? (r.perspectiveTeamId === "first" ? "second" : r.perspectiveTeamId),
+  counterpartTeamId: r.perspectiveTeamId,
   goldWinProbability: r4(1 - r.goldWinProbability),
   blueWinProbability: r4(r.goldWinProbability),
   goldWins: r.blueWins,

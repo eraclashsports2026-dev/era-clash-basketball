@@ -1,0 +1,326 @@
+{
+  "artifact": "probability-orientation-audit",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run calibration:c6:audit",
+  "generatedAt": "2026-08-26T17:33:41.503Z",
+  "gitCommit": "26d030a9aef4ebb25e5278cfe0e7f7a0f617a1a8",
+  "branch": "phase-6c2c6-probability-side-bias-lock",
+  "parameterSetHash": "210409189ebc1ff894bb90b8f0adb6ef2d06d6caac9fdcbe93e61d3521ed5940",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {
+    "data/calibration/c6/prior-failing-cell.json": "9d8f9f413a6bad5a9002305ba5a1eee6f05c02512caba447c00f44a2c491f90e",
+    "data/calibration/c6/probability-side-bias-policy-v2.json": "8b7dae098ae524e18ebb7e7d551f845551aef7e06cfb04216411c81a15db42f1"
+  },
+  "data": {
+    "probabilityOrientationAuditVersion": "1.0.0",
+    "cell": "sd2-balanced-lower-ovr vs sd2-movement-shooters",
+    "indexBlocks": {
+      "sideBiasValidation": [
+        0,
+        16384
+      ],
+      "actualGameControl": [
+        100000,
+        200000
+      ],
+      "adjacentControls": [
+        200000,
+        300000
+      ]
+    },
+    "semanticChecks": [
+      {
+        "name": "perspectiveTeamIdentified",
+        "pass": true,
+        "detail": "The estimator's perspective is the canonically-first team, sd2-balanced-lower-ovr. Reported: sd2-balanced-lower-ovr."
+      },
+      {
+        "name": "goldOrientationIsFirstTeamAsGold",
+        "pass": true,
+        "detail": "Orientation 1 places sd2-balanced-lower-ovr in the gold slot; orientation 2 swaps the same seed. Both are run for every pair."
+      },
+      {
+        "name": "winLabelsReadTheCorrectSide",
+        "pass": true,
+        "detail": "Orientation 1 counts a first-team win as finalScore.gold > finalScore.blue; orientation 2 counts it as finalScore.blue > finalScore.gold. The comparison follows the slot, not a fixed field."
+      },
+      {
+        "name": "complementAppliedExactlyOnce",
+        "pass": true,
+        "detail": "P(A beats B) 0.5391 + P(B beats A) 0.4609 = 1. A doubly-applied complement would not sum to 1."
+      },
+      {
+        "name": "complementLeavesSideBiasAlone",
+        "pass": true,
+        "detail": "Gold-slot rate is perspective-independent, so reversing the request must not change it. -0.0859 both ways."
+      },
+      {
+        "name": "cacheHitMatchesCacheMissForReversedRequest",
+        "pass": true,
+        "detail": "Reversed request: miss path 0.4609, hit path 0.4609. Both apply the complement, so a reversed request cannot depend on cache state."
+      },
+      {
+        "name": "canonicalCacheKeyIsPerspectiveFree",
+        "pass": true,
+        "detail": "Both request orders canonicalise to one fingerprint, so one Monte Carlo job serves both perspectives and the two can never disagree."
+      },
+      {
+        "name": "complementRelabelsItsPerspective",
+        "pass": false,
+        "detail": "DEFECT: complement() flips the probability but returns perspectiveTeamId \"sd2-balanced-lower-ovr\", the ORIGINAL team. Its guard is `=== \"first\"`, which never matches a real team id. 13 of 30 v1 cells took this path. Numerically harmless for the validation, which reads goldWinProbability, but the label contradicts the number."
+      },
+      {
+        "name": "sampleCountSemanticsAreGames",
+        "pass": true,
+        "detail": "sampleCount 256 counts GAMES across both orientations, i.e. 128 paired seeds. v1's per-cell figure of 256 was the EMPIRICAL validation count, a different measurement that happens to be the same number."
+      },
+      {
+        "name": "standardErrorMatchesThePairedDesign",
+        "pass": false,
+        "detail": "DEFECT: v1 reported SE 0.03125 = sqrt(0.25/256), a single-proportion formula under independence. The design is paired on a shared seed: 52 of 128 pairs discordant, sd(D) 0.62036 against the 0.70711 independence implies. True SE on v1's own scale is 0.02742. v1's SE was CONSERVATIVE here, so the observation sat at 2.84869 SE rather than the 2.4992 it implied."
+      },
+      {
+        "name": "pairedObservationsNotTreatedAsIndependent",
+        "pass": false,
+        "detail": "DEFECT: v1's variance assumed independent orientations. Pairing on a shared seed makes them positively correlated, which REDUCES variance. Assuming independence therefore overstates uncertainty and hides real effects."
+      },
+      {
+        "name": "bothOrientationsShareOneSeedFamily",
+        "pass": true,
+        "detail": "Both orientations of a pair draw the SAME prediction-domain seed by construction, so no orientation can be measured on a different seed family."
+      },
+      {
+        "name": "sharedSeedDrawsTheSameOpeningSide",
+        "pass": true,
+        "detail": "The opening-possession draw is identical in both orientations for 128/128 pairs, so the TEAM receiving it swaps with the slot. Team A receives it 60 times as Gold and 68 times as Blue — an imbalance of -8 driven purely by this seed block's draw, and exactly balanced at 128 of 256 games overall."
+      },
+      {
+        "name": "sameParameterSetBothOrientations",
+        "pass": true,
+        "detail": "One estimator call runs both orientations, so both necessarily use the same parameter set: 210409189ebc1ff8.... All 53 active parameters are at their registry default (0 drifted)."
+      },
+      {
+        "name": "teamArraysCanonicalisedConsistently",
+        "pass": true,
+        "detail": "canonicalPair orders by JSON of {ids, coach}; this cell is forward and 13 of the 30 v1 cells were reversed."
+      }
+    ],
+    "checksPassed": 12,
+    "checksFailed": 3,
+    "harnessDefectsFound": [
+      "complementRelabelsItsPerspective",
+      "standardErrorMatchesThePairedDesign",
+      "pairedObservationsNotTreatedAsIndependent"
+    ],
+    "harnessDefectsAffectReportedNumbers": false,
+    "harnessDefectNote": "complementRelabelsItsPerspective is a labelling defect: the probability is flipped but perspectiveTeamId is not. standardErrorMatchesThePairedDesign and pairedObservationsNotTreatedAsIndependent concern the REPORTED uncertainty, not the reported point estimate. None of the three changes a probability or a side-bias value that the v1 validation published.",
+    "threeQuestionsSeparated": {
+      "actualGameAggregateSymmetry": "Answered by the dedicated side-symmetry suite over 240,000 paired games, not by this audit.",
+      "probabilityEstimatorOrientationSymmetry": "Answered by the fresh side-bias validation over the frozen 44-cell family.",
+      "localCellAnomaly": "Answered here, by a high-powered actual-game control on the exact failing cell.",
+      "notInterchangeable": "A pass on one is not a pass on another. v1 conflated the third with the first."
+    },
+    "actualGameControl": {
+      "pairs": 5000,
+      "games": 10000,
+      "ledgerPairs": 500,
+      "perspectiveTeam": "sd2-balanced-lower-ovr",
+      "winEffect": {
+        "delta": -0.0102,
+        "sd": 0.64108,
+        "se": 0.00907,
+        "discordantPairs": 2055,
+        "waldInterval": {
+          "lower": -0.02797,
+          "upper": 0.00757
+        },
+        "bootstrapInterval": {
+          "lower": -0.0278,
+          "upper": 0.0076
+        },
+        "z": -1.12506,
+        "p": 0.26056
+      },
+      "scoreMarginEffect": {
+        "mean": -0.0942,
+        "se": 0.27881,
+        "z": -0.33787
+      },
+      "possessionEffect": {
+        "mean": -0.0616,
+        "se": 0.04123,
+        "z": -1.4942
+      },
+      "overtimeEffect": {
+        "mean": -0.0034,
+        "se": 0.00362
+      },
+      "actionMix": {
+        "goldTotal": 56165,
+        "blueTotal": 55971,
+        "shares": {
+          "CUT": {
+            "gold": 0.09112,
+            "blue": 0.09157,
+            "difference": -0.00044
+          },
+          "GENERIC_HALF_COURT": {
+            "gold": 0.09111,
+            "blue": 0.09103,
+            "difference": 0.00008
+          },
+          "HANDOFF": {
+            "gold": 0.10613,
+            "blue": 0.10464,
+            "difference": 0.00149
+          },
+          "ISOLATION": {
+            "gold": 0.0566,
+            "blue": 0.05603,
+            "difference": 0.00057
+          },
+          "OFF_BALL_SCREEN": {
+            "gold": 0.13158,
+            "blue": 0.13284,
+            "difference": -0.00126
+          },
+          "PICK_AND_ROLL": {
+            "gold": 0.15134,
+            "blue": 0.1522,
+            "difference": -0.00086
+          },
+          "POST_UP": {
+            "gold": 0.15891,
+            "blue": 0.15856,
+            "difference": 0.00034
+          },
+          "SPOT_UP": {
+            "gold": 0.07498,
+            "blue": 0.0745,
+            "difference": 0.00047
+          },
+          "TRANSITION": {
+            "gold": 0.13824,
+            "blue": 0.13863,
+            "difference": -0.00039
+          }
+        },
+        "maxAbsShareDifference": 0.00149
+      },
+      "zoneUsage": {
+        "goldPossessions": 0,
+        "bluePossessions": 0,
+        "difference": 0
+      },
+      "invariantViolations": 0,
+      "ties": 0
+    },
+    "actualGameControlEquivalent": true,
+    "adjacentControls": [
+      {
+        "label": "same teams, different era",
+        "teamA": "sd2-balanced-lower-ovr",
+        "teamB": "sd2-movement-shooters",
+        "era": "1960s",
+        "delta": -0.0025,
+        "sd": 0.65792,
+        "se": 0.01899,
+        "discordantPairs": 519,
+        "waldInterval": {
+          "lower": -0.03972,
+          "upper": 0.03472
+        },
+        "bootstrapInterval": {
+          "lower": -0.03917,
+          "upper": 0.03417
+        },
+        "z": -0.13163,
+        "p": 0.89528,
+        "pairs": 1200
+      },
+      {
+        "label": "mirror of team A",
+        "teamA": "sd2-balanced-lower-ovr",
+        "teamB": "sd2-balanced-lower-ovr",
+        "era": "2010s",
+        "delta": 0.03,
+        "sd": 0.99997,
+        "se": 0.02887,
+        "discordantPairs": 1200,
+        "waldInterval": {
+          "lower": -0.02658,
+          "upper": 0.08658
+        },
+        "bootstrapInterval": {
+          "lower": -0.02667,
+          "upper": 0.08667
+        },
+        "z": 1.03927,
+        "p": 0.29868,
+        "pairs": 1200
+      },
+      {
+        "label": "mirror of team B",
+        "teamA": "sd2-movement-shooters",
+        "teamB": "sd2-movement-shooters",
+        "era": "2010s",
+        "delta": -0.00833,
+        "sd": 1.00038,
+        "se": 0.02888,
+        "discordantPairs": 1200,
+        "waldInterval": {
+          "lower": -0.06493,
+          "upper": 0.04827
+        },
+        "bootstrapInterval": {
+          "lower": -0.065,
+          "upper": 0.04667
+        },
+        "z": -0.28856,
+        "p": 0.77291,
+        "pairs": 1200
+      },
+      {
+        "label": "nearby strength cell",
+        "teamA": "sd2-balanced-lower-ovr",
+        "teamB": "sd2-creator-stack",
+        "era": "2010s",
+        "delta": -0.01583,
+        "sd": 0.64879,
+        "se": 0.01873,
+        "discordantPairs": 505,
+        "waldInterval": {
+          "lower": -0.05254,
+          "upper": 0.02087
+        },
+        "bootstrapInterval": {
+          "lower": -0.0525,
+          "upper": 0.02
+        },
+        "z": -0.84539,
+        "p": 0.39789,
+        "pairs": 1200
+      }
+    ],
+    "rosterOrderIndependence": {
+      "pairs": 3000,
+      "teamIntelligenceByteIdentical": true,
+      "differingIndividualResults": 2997,
+      "pairedWinRateDifference": 0.00033,
+      "waldInterval": {
+        "lower": -0.02354,
+        "upper": 0.02421
+      },
+      "distributionEquivalentWithinMargin": true,
+      "finding": "REALIZATION_DIFFERENCE_NOT_BIAS",
+      "explanation": "The roster array order is part of the engine input, so reordering it changes which RNG draws land where and therefore changes individual game realizations. It does NOT change the distribution: the paired win-rate difference is within the policy's practical margin. Crucially, buildTeamIntelligence — the component that PROMISES order-independence — returns byte-identical output under the reorder. This is determinism in (input, seed), not a side or fairness defect, and it is unrelated to orientation bias."
+    },
+    "adjacentControlsNote": "Diagnostic localisation only. No parameter or engine behaviour was tuned from these cells.",
+    "classification": "SAMPLING_NOISE",
+    "reason": "A 10000-game actual-game control on seeds the v1 cell was never measured on puts the paired win effect at -0.0102, with both intervals inside +/-0.05. The engine shows no side effect for this matchup. The v1 failure was a point estimate on 128 pairs, selected as the maximum of 30 cells, gated without multiplicity control. Two genuine harness defects were also found (complementRelabelsItsPerspective, standardErrorMatchesThePairedDesign, pairedObservationsNotTreatedAsIndependent), but neither changes a number the v1 validation reported.",
+    "blocksLock": false
+  },
+  "outputHash": "20f87543f79d06d019579368d97a908d7b4e697201954949c2f97297cc409849"
+}

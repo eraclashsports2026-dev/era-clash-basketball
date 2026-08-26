@@ -65,6 +65,27 @@ export const APPROVED_CORRECTIONS = Object.freeze([
     approvedIn: "phase-6c2c2-workstream-3",
     changesClassification: false,
   },
+  {
+    path: "src/v3/calibration/seedDomains.js",
+    reason: "Phase 6C2C6 added a fourth seed domain, side-bias-v2, with its own master. The Monte Carlo cell that failed the v1 side-bias gate had to be retested, and retesting it on any existing domain would have re-measured the selection instead of the effect: that cell was chosen as the maximum of 30 cells measured on the prediction domain. The three pre-existing domains and their masters are BYTE-UNCHANGED, so every prior seed, fingerprint and replay is unaffected; the addition is proven disjoint from all three at 16,384 seeds with all seeds distinct. No existing measurement moves.",
+    approvedIn: "phase-6c2c6-workstream-2",
+    changesClassification: false,
+  },
+  {
+    path: "src/v3/calibration/monteCarloProbability.js",
+    reason: "Phase 6C2C6 fixed two harness defects the orientation audit found. complement() flipped a probability while returning the ORIGINAL team as its perspective, because its guard tested `=== \"first\"` and never matched a real team id; 13 of the 30 v1 cells took that path. And the estimator published a side-bias statistic without the uncertainty appropriate to its paired design, so it now returns pairedEffect, pairedSd, pairedStandardError, pairedZ and discordantPairs alongside the half-scale quantity v1 published. Neither fix changes any probability, any win count, or any game result: the half-scale `difference` field is unchanged and still present, and complement's numeric output is identical. monteCarloProbabilityVersion moved 1.0.0 -> 1.1.0, which tags the probability cache key, so v1.0.0 estimates remain replayable under their own tag rather than being silently reinterpreted.",
+    approvedIn: "phase-6c2c6-workstream-5",
+    changesClassification: false,
+  },
+  {
+    path: "src/v3/calibration/probabilityValidation.js",
+    reason: "Phase 6C2C6 REMOVED a gate from this suite, which needs the strictest justification of the three corrections here. sideBiasPerCellWithinTolerance compared a per-cell POINT ESTIMATE against a fixed 0.05, and it was invalid three ways: the statistic is algebraically HALF the paired orientation effect, so the margin meant twice what it appeared to; the reported standard error was sqrt(0.25/n), a single-proportion formula assuming independence, for a design paired on a shared seed; and taking the MAXIMUM over 30 cells and comparing it to an unadjusted threshold cannot see that 30 comparisons happened. The gate was not weakened or waived: it MOVED to side-bias policy v2, which tests the paired effect on the corrected scale at the SAME 0.05 margin, requires equivalence to be positively established rather than merely undetected, escalates to 16,384 paired seeds per cell against this suite's 128, and applies Holm correction across a 44-cell family. That is strictly stronger in every dimension. It had to move because at 128 paired seeds a true null CANNOT be shown equivalent to +/-0.05, so any gate at this sample size would be either powerless or wrong. The systematic-bias gate, which is a mean rather than a maximum and does not need per-cell precision, stays here. probabilityValidationVersion moved 2.0.0 -> 3.0.0 and the supersession is recorded in the acceptance-policy ledger.",
+    approvedIn: "phase-6c2c6-workstream-2",
+    changesClassification: false,
+    gateRemoved: "sideBiasPerCellWithinTolerance",
+    gateMovedTo: "probabilitySideBiasPolicyVersion 2.0.0 / probability-side-bias-validation-v2.json",
+    strictlyStronger: true,
+  },
 ]);
 
 export const buildFreeze = () => {

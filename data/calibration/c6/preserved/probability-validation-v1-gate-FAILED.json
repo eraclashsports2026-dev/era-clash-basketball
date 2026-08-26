@@ -1,0 +1,579 @@
+{
+  "thresholds": {
+    "probabilityValidationVersion": "2.0.0",
+    "reliabilityBinCount": 10,
+    "analyticalBaselineBrier": 0.2507,
+    "constantBaselineBrier": 0.25,
+    "maxExpectedCalibrationError": 0.1,
+    "maxSideBiasDifference": 0.05,
+    "mirrorTolerance": 0.03,
+    "minValidationGamesPerCell": 256,
+    "minFractionOfAchievableSkill": 0.75,
+    "requireMonotonicLadder": true,
+    "requireSharpnessReported": true
+  },
+  "tier": "STANDARD",
+  "validationGamesPerCell": 256,
+  "cells": [
+    {
+      "cell": "sd2-balanced-lower-ovr vs sd2-creator-stack",
+      "era": "2010s",
+      "predicted": 0.4727,
+      "empirical": 0.4648,
+      "games": 256,
+      "sideBias": -0.0195,
+      "ci": {
+        "method": "wilson",
+        "level": 0.95,
+        "lower": 0.4124,
+        "upper": 0.5338,
+        "halfWidth": 0.0607
+      }
+    },
+    {
+      "cell": "sd2-balanced-lower-ovr vs sd2-elite-shooting",
+      "era": "2010s",
+      "predicted": 0.75,
+      "empirical": 0.7461,
+      "games": 256,
+      "sideBias": 0.0469,
+      "ci": {
+        "method": "wilson",
+        "level": 0.95,
+        "lower": 0.6935,
+        "upper": 0.7991,
+        "halfWidth": 0.0528
+      }
+    },
+    {
+      "cell": "sd2-balanced-lower-ovr vs sd2-weak-shooting",
+      "era": "2010s",
+      "predicted": 0.7266,
+      "empirical": 0.7305,
+      "games": 256,
+      "sideBias": -0.0156,
+      "ci": {
+        "method": "wilson",
+        "level": 0.95,
+        "lower": 0.6689,
+        "upper": 0.7775,
+        "halfWidth": 0.0543
+      }
+    },
+    {
+      "cell": "sd2-balanced-lower-ovr vs sd2-no-rim-protection",
+      "era": "2010s",
+      "predicted": 0.6758,
+      "empirical": 0.6602,
+      "games": 256,
+      "sideBias": 0.0352,
+      "ci": {
+        "method": "wilson",
+        "level": 0.95,
+        "lower": 0.6162,
+        "upper": 0.7302,
+        "halfWidth": 0.057
+      }
+    },
+    {
+      "cell": "sd2-balanced-lower-ovr vs sd2-movement-shooters",
+      "era": "2010s",
+      "predicted": 0.5703,
+      "empirical": 0.4922,
+      "games": 256,
+      "sideBias": -0.0781,
+      "ci": {
+        "method": "wilson",
+        "level": 0.95,
+        "lower": 0.5091,
+        "upper": 0.6295,
+        "halfWidth": 0.0602
+      }
+    },
+    {
+      "cell": "sd2-balanced-lower-ovr vs sd2-zone-attack",
+      "era": "2010s",
+      "predicted": 0.582,
+      "empirical": 0.5664,
+      "games": 256,
+      "sideBias": -0.0352,
+      "ci": {
+        "method": "wilson",
+        "level": 0.95,
+        "lower": 0.5208,
+        "upper": 0.6408,
+        "halfWidth": 0.06
+      }
+    },
+    {
+      "cell": "sd2-balanced-lower-ovr vs sd2-weak-defender-hiding",
+      "era": "2010s",
+      "predicted": 0.7773,
+      "empirical": 0.8203,
+      "games": 256,
+      "sideBias": -0.0039,
+      "ci": {
+        "method": "wilson",
+        "level": 0.95,
+        "lower": 0.7225,
+        "upper": 0.824,
+        "halfWidth": 0.0508
+      }
+    },
+    {
+      "cell": "sd2-creator-stack vs sd2-elite-shooting",
+      "era": "2010s",
+      "predicted": 0.6758,
+      "empirical": 0.6992,
+      "games": 256,
+      "sideBias": -0.0195,
+      "ci": {
+        "method": "wilson",
+        "level": 0.95,
+        "lower": 0.6162,
+        "upper": 0.7302,
+        "halfWidth": 0.057
+      }
+    },
+    {
+      "cell": "sd2-creator-stack vs sd2-weak-shooting",
+      "era": "2010s",
+      "predicted": 0.7148,
+      "empirical": 0.7227,
+      "games": 256,
+      "sideBias": 0.0273,
+      "ci": {
+        "method": "wilson",
+        "level": 0.95,
+        "lower": 0.6567,
+        "upper": 0.7667,
+        "halfWidth": 0.055
+      }
+    },
+    {
+      "cell": "sd2-creator-stack vs sd2-no-rim-protection",
+      "era": "2010s",
+      "predicted": 0.6484,
+      "empirical": 0.6406,
+      "games": 256,
+      "sideBias": -0.0234,
+      "ci": {
+        "method": "wilson",
+        "level": 0.95,
+        "lower": 0.5881,
+        "upper": 0.7043,
+        "halfWidth": 0.0581
+      }
+    },
+    {
+      "cell": "sd2-creator-stack vs sd2-movement-shooters",
+      "era": "2010s",
+      "predicted": 0.582,
+      "empirical": 0.5898,
+      "games": 256,
+      "sideBias": 0.0352,
+      "ci": {
+        "method": "wilson",
+        "level": 0.95,
+        "lower": 0.5208,
+        "upper": 0.6408,
+        "halfWidth": 0.06
+      }
+    },
+    {
+      "cell": "sd2-creator-stack vs sd2-zone-attack",
+      "era": "2010s",
+      "predicted": 0.5117,
+      "empirical": 0.5195,
+      "games": 256,
+      "sideBias": -0.0273,
+      "ci": {
+        "method": "wilson",
+        "level": 0.95,
+        "lower": 0.4508,
+        "upper": 0.5723,
+        "halfWidth": 0.0608
+      }
+    },
+    {
+      "cell": "sd2-creator-stack vs sd2-weak-defender-hiding",
+      "era": "2010s",
+      "predicted": 0.7617,
+      "empirical": 0.7188,
+      "games": 256,
+      "sideBias": 0.0039,
+      "ci": {
+        "method": "wilson",
+        "level": 0.95,
+        "lower": 0.7059,
+        "upper": 0.8098,
+        "halfWidth": 0.0519
+      }
+    },
+    {
+      "cell": "sd2-elite-shooting vs sd2-weak-shooting",
+      "era": "2010s",
+      "predicted": 0.5,
+      "empirical": 0.5469,
+      "games": 256,
+      "sideBias": 0,
+      "ci": {
+        "method": "wilson",
+        "level": 0.95,
+        "lower": 0.4392,
+        "upper": 0.5608,
+        "halfWidth": 0.0608
+      }
+    },
+    {
+      "cell": "sd2-elite-shooting vs sd2-no-rim-protection",
+      "era": "2010s",
+      "predicted": 0.4609,
+      "empirical": 0.4414,
+      "games": 256,
+      "sideBias": 0.0234,
+      "ci": {
+        "method": "wilson",
+        "level": 0.95,
+        "lower": 0.4009,
+        "upper": 0.5221,
+        "halfWidth": 0.0606
+      }
+    },
+    {
+      "cell": "sd2-elite-shooting vs sd2-movement-shooters",
+      "era": "2010s",
+      "predicted": 0.3047,
+      "empirical": 0.293,
+      "games": 256,
+      "sideBias": -0.0156,
+      "ci": {
+        "method": "wilson",
+        "level": 0.95,
+        "lower": 0.2515,
+        "upper": 0.3636,
+        "halfWidth": 0.056
+      }
+    },
+    {
+      "cell": "sd2-elite-shooting vs sd2-zone-attack",
+      "era": "2010s",
+      "predicted": 0.2695,
+      "empirical": 0.293,
+      "games": 256,
+      "sideBias": -0.0117,
+      "ci": {
+        "method": "wilson",
+        "level": 0.95,
+        "lower": 0.2189,
+        "upper": 0.327,
+        "halfWidth": 0.0541
+      }
+    },
+    {
+      "cell": "sd2-elite-shooting vs sd2-weak-defender-hiding",
+      "era": "2010s",
+      "predicted": 0.543,
+      "empirical": 0.5313,
+      "games": 256,
+      "sideBias": 0.0039,
+      "ci": {
+        "method": "wilson",
+        "level": 0.95,
+        "lower": 0.4818,
+        "upper": 0.6029,
+        "halfWidth": 0.0606
+      }
+    },
+    {
+      "cell": "sd2-weak-shooting vs sd2-no-rim-protection",
+      "era": "2010s",
+      "predicted": 0.4844,
+      "empirical": 0.5117,
+      "games": 256,
+      "sideBias": -0.0312,
+      "ci": {
+        "method": "wilson",
+        "level": 0.95,
+        "lower": 0.4238,
+        "upper": 0.5454,
+        "halfWidth": 0.0608
+      }
+    },
+    {
+      "cell": "sd2-weak-shooting vs sd2-movement-shooters",
+      "era": "2010s",
+      "predicted": 0.2773,
+      "empirical": 0.293,
+      "games": 256,
+      "sideBias": 0.0195,
+      "ci": {
+        "method": "wilson",
+        "level": 0.95,
+        "lower": 0.2261,
+        "upper": 0.3352,
+        "halfWidth": 0.0545
+      }
+    },
+    {
+      "cell": "sd2-weak-shooting vs sd2-zone-attack",
+      "era": "2010s",
+      "predicted": 0.2617,
+      "empirical": 0.2773,
+      "games": 256,
+      "sideBias": -0.0273,
+      "ci": {
+        "method": "wilson",
+        "level": 0.95,
+        "lower": 0.2117,
+        "upper": 0.3188,
+        "halfWidth": 0.0536
+      }
+    },
+    {
+      "cell": "sd2-weak-shooting vs sd2-weak-defender-hiding",
+      "era": "2010s",
+      "predicted": 0.5469,
+      "empirical": 0.5352,
+      "games": 256,
+      "sideBias": -0.0156,
+      "ci": {
+        "method": "wilson",
+        "level": 0.95,
+        "lower": 0.4857,
+        "upper": 0.6067,
+        "halfWidth": 0.0605
+      }
+    },
+    {
+      "cell": "sd2-extreme-size vs sd2-cross-era",
+      "era": "1960s",
+      "predicted": 0.457,
+      "empirical": 0.4492,
+      "games": 256,
+      "sideBias": -0.0195,
+      "ci": {
+        "method": "wilson",
+        "level": 0.95,
+        "lower": 0.3971,
+        "upper": 0.5182,
+        "halfWidth": 0.0606
+      }
+    },
+    {
+      "cell": "sd2-extreme-small vs sd2-passing-hub",
+      "era": "2020s",
+      "predicted": 0.0742,
+      "empirical": 0.043,
+      "games": 256,
+      "sideBias": 0.0117,
+      "ci": {
+        "method": "wilson",
+        "level": 0.95,
+        "lower": 0.048,
+        "upper": 0.113,
+        "halfWidth": 0.0325
+      }
+    },
+    {
+      "cell": "sd2-no-rim-protection vs sd2-movement-shooters",
+      "era": "2010s",
+      "predicted": 0.375,
+      "empirical": 0.3242,
+      "games": 256,
+      "sideBias": -0.0234,
+      "ci": {
+        "method": "wilson",
+        "level": 0.95,
+        "lower": 0.318,
+        "upper": 0.4357,
+        "halfWidth": 0.0589
+      }
+    },
+    {
+      "cell": "sd2-no-rim-protection vs sd2-zone-attack",
+      "era": "2010s",
+      "predicted": 0.3789,
+      "empirical": 0.4023,
+      "games": 256,
+      "sideBias": 0.0039,
+      "ci": {
+        "method": "wilson",
+        "level": 0.95,
+        "lower": 0.3217,
+        "upper": 0.4397,
+        "halfWidth": 0.059
+      }
+    },
+    {
+      "cell": "sd2-no-rim-protection vs sd2-weak-defender-hiding",
+      "era": "2010s",
+      "predicted": 0.6563,
+      "empirical": 0.5508,
+      "games": 256,
+      "sideBias": 0.0313,
+      "ci": {
+        "method": "wilson",
+        "level": 0.95,
+        "lower": 0.5961,
+        "upper": 0.7117,
+        "halfWidth": 0.0578
+      }
+    },
+    {
+      "cell": "sd2-movement-shooters vs sd2-zone-attack",
+      "era": "2010s",
+      "predicted": 0.3828,
+      "empirical": 0.4258,
+      "games": 256,
+      "sideBias": -0.0078,
+      "ci": {
+        "method": "wilson",
+        "level": 0.95,
+        "lower": 0.3254,
+        "upper": 0.4437,
+        "halfWidth": 0.0591
+      }
+    },
+    {
+      "cell": "sd2-movement-shooters vs sd2-weak-defender-hiding",
+      "era": "2010s",
+      "predicted": 0.7773,
+      "empirical": 0.6797,
+      "games": 256,
+      "sideBias": -0.0195,
+      "ci": {
+        "method": "wilson",
+        "level": 0.95,
+        "lower": 0.7225,
+        "upper": 0.824,
+        "halfWidth": 0.0508
+      }
+    },
+    {
+      "cell": "sd2-zone-attack vs sd2-weak-defender-hiding",
+      "era": "2010s",
+      "predicted": 0.7656,
+      "empirical": 0.6797,
+      "games": 256,
+      "sideBias": -0.0391,
+      "ci": {
+        "method": "wilson",
+        "level": 0.95,
+        "lower": 0.71,
+        "upper": 0.8134,
+        "halfWidth": 0.0517
+      }
+    }
+  ],
+  "scores": {
+    "n": 30,
+    "validationGames": 7680,
+    "outcomeScale": {
+      "note": "Scored against individual binary game outcomes — the scale of the Phase 6C2B analytical baseline (0.2507), and the only scale on which that comparison is valid.",
+      "monteCarloBrier": 0.2209,
+      "constantBaselineBrier": 0.25,
+      "irreducibleFloorBrier": 0.2192,
+      "skillScoreVsConstant": 0.1165,
+      "fractionOfAchievableSkill": 0.9458,
+      "analyticalFractionOfAchievableSkill": -0.0227,
+      "monteCarloLogLoss": 0.6306,
+      "constantBaselineLogLoss": 0.6931
+    },
+    "rateScale": {
+      "note": "Scored against each cell's empirical rate. A calibration statistic. MUST NOT be compared to the 0.2507 outcome-scale baseline.",
+      "monteCarloBrier": 0.0017,
+      "constantBaselineBrier": 0.0308,
+      "meanAbsoluteError": 0.0298
+    },
+    "sharpness": 0.1836,
+    "expectedCalibrationError": 0.0145,
+    "maximumCalibrationError": 0.0312,
+    "upsetRate": 0.1,
+    "favoriteWinRate": 0.963,
+    "sideBias": {
+      "maxAbsolutePerCell": 0.0781,
+      "meanAcrossCells": -0.0064,
+      "standardError": 0.0049,
+      "tStatistic": -1.2901,
+      "systematic": false,
+      "perCellStandardErrorAtSampleSize": 0.0313
+    },
+    "reliabilityBins": [
+      {
+        "lo": 0,
+        "hi": 0.1,
+        "cells": 1,
+        "games": 256,
+        "meanPredicted": 0.0742,
+        "meanEmpirical": 0.043,
+        "gap": -0.0312
+      },
+      {
+        "lo": 0.2,
+        "hi": 0.3,
+        "cells": 3,
+        "games": 768,
+        "meanPredicted": 0.2695,
+        "meanEmpirical": 0.2878,
+        "gap": 0.0183
+      },
+      {
+        "lo": 0.3,
+        "hi": 0.4,
+        "cells": 4,
+        "games": 1024,
+        "meanPredicted": 0.3604,
+        "meanEmpirical": 0.3613,
+        "gap": 0.001
+      },
+      {
+        "lo": 0.4,
+        "hi": 0.5,
+        "cells": 4,
+        "games": 1024,
+        "meanPredicted": 0.4688,
+        "meanEmpirical": 0.4668,
+        "gap": -0.002
+      },
+      {
+        "lo": 0.5,
+        "hi": 0.6,
+        "cells": 7,
+        "games": 1792,
+        "meanPredicted": 0.548,
+        "meanEmpirical": 0.5402,
+        "gap": -0.0078
+      },
+      {
+        "lo": 0.6,
+        "hi": 0.7,
+        "cells": 4,
+        "games": 1024,
+        "meanPredicted": 0.6641,
+        "meanEmpirical": 0.6377,
+        "gap": -0.0264
+      },
+      {
+        "lo": 0.7,
+        "hi": 0.8,
+        "cells": 7,
+        "games": 1792,
+        "meanPredicted": 0.7533,
+        "meanEmpirical": 0.7283,
+        "gap": -0.0251
+      }
+    ]
+  },
+  "gate": {
+    "beatsAnalyticalOnOutcomeScale": true,
+    "beatsConstantOnOutcomeScale": true,
+    "withinIrreducibleFloorPlusTolerance": true,
+    "capturesMostAchievableSkill": true,
+    "calibrationWithinTolerance": true,
+    "sideBiasPerCellWithinTolerance": false,
+    "sideBiasNotSystematic": true,
+    "sharpnessReported": true
+  },
+  "label": "ERACLASH_MODEL_IMPLIED_PROBABILITY"
+}

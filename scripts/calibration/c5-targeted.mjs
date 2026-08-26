@@ -86,7 +86,7 @@ const GUARDRAILS = {
  * property of the fixture, not of the perturbation, and counting it on the moved
  * run would let a parameter that suppresses its own mechanic look under-exercised.
  */
-const measureAt = (paramId, value, seeds) => {
+export const measureAt = (paramId, value, seeds) => {
   const c = EXERCISE_CONTRACTS[paramId];
   const predicate = resolvePredicate(c.activation.predicate);
   const conds = c.conditional.map((m) => [m, resolveConditional(m)]);

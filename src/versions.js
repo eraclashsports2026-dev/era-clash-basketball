@@ -111,8 +111,8 @@ export const REGISTRY = {
   syntheticStressHoldoutVersion: entry("2.0.0", DEVELOPMENT,
     "A NEW sealed synthetic stress set. v2 rather than a reuse of v1 because 19 of v1's 25 fixtures had their outputs read during Phase 6C2A, which disqualifies it as a holdout.", false),
 
-  monteCarloProbabilityVersion: entry("1.0.0", DEVELOPMENT,
-    "The Monte Carlo win-probability estimator. Affects prediction fingerprints and probability cache keys; must NEVER affect a game simulation result.", false),
+  monteCarloProbabilityVersion: entry("1.1.0", DEVELOPMENT,
+    "The Monte Carlo win-probability estimator. Affects prediction fingerprints and probability cache keys; must NEVER affect a game simulation result. v1.1.0 reports the PAIRED orientation effect with the standard error appropriate to a paired design, alongside the half-scale quantity v1.0.0 published, and complement() now relabels its perspective team. This version tags the probability cache key, so v1.0.0 estimates stay replayable under their own tag rather than being silently reinterpreted.", false),
 
   predictionSeedSetVersion: entry("1.0.0", DEVELOPMENT,
     "Seeds used to ESTIMATE a probability. Disjoint from validation and actual-game seeds, so a probability is never validated against the games that produced it.", false),
@@ -141,8 +141,8 @@ export const REGISTRY = {
   calibrationObjectiveVersion: entry("3.0.0", DEVELOPMENT,
     "The objective function and its acceptance rules. Bumped whenever a weight or threshold changes, so a result can never be attributed to the wrong objective. v2 (Phase 6C2C2) adds separately-reported components for zone behaviour, coach identity, adjustment behaviour and probability reliability, and refuses to collapse them into one opaque score.", false),
 
-  probabilityValidationVersion: entry("2.0.0", DEVELOPMENT,
-    "The probability reliability suite: bins, scoring rules and the strength ladder. Does not affect game results.", false),
+  probabilityValidationVersion: entry("3.0.0", DEVELOPMENT,
+    "The probability reliability suite: bins, scoring rules and the strength ladder. Does not affect game results. v3.0.0 removes the per-cell side-bias equivalence gate from this suite and delegates it to probabilitySideBiasPolicyVersion 2.0.0, which escalates to 16,384 paired seeds per cell. At this suite's 128 paired seeds per cell a true null cannot be shown equivalent to +/-0.05, so a gate here would be powerless or wrong; the systematic-bias gate, which is a mean rather than a maximum, stays.", false),
 
   historicalTargetSchemaVersion: entry("1.0.0", DEVELOPMENT,
     "The shape of a calibration target record: fields, provenance requirements, availability vocabulary. Changing it changes what a target IS, so cached target output must be invalidated. Does NOT affect game results.", false),
