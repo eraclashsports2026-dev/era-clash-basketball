@@ -65,6 +65,12 @@
 | Objective visibility resolution | `objectiveVisibilityResolutionVersion` | **1.0.0** | DEVELOPMENT |
 | Baseline candidate lock manifest | `baselineCandidateLockManifestVersion` | **1.0.0** | DEVELOPMENT |
 | Phase 6C3 validation package | `phase6C3ValidationPackageVersion` | **1.0.0** | DEVELOPMENT |
+| Holdout supported scope | `holdoutSupportedScopeVersion` | **1.0.0** | DEVELOPMENT |
+| Candidate core manifest | `candidateCoreManifestVersion` | **1.0.0** | DEVELOPMENT |
+| Formal holdout run | `formalHoldoutRunVersion` | **1.0.0** | DEVELOPMENT |
+| Formal holdout verdict | `formalHoldoutVerdictVersion` | **1.0.0** | DEVELOPMENT |
+| Engine comparison | `engineComparisonVersion` | **1.0.0** | DEVELOPMENT |
+| Preview integration | `previewIntegrationVersion` | **1.0.0** | DEVELOPMENT |
 | Parameter history | `parameterHistoryVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Side-symmetry validation | `sideSymmetryValidationVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |
 | Calibration support matrix | `calibrationSupportMatrixVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |

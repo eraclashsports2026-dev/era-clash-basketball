@@ -214,6 +214,25 @@ export const REGISTRY = {
   phase6C3ValidationPackageVersion: entry("1.0.0", DEVELOPMENT,
     "The prepared, unexecuted formal-holdout validation package. DEVELOPMENT rather than PLANNED because the package document itself exists: in this registry PLANNED means the system does not exist and its version is null, and it must not key a cache. That the holdouts have not been RUN is a property recorded inside the package artifact, not of this version domain.", false),
 
+  // ── Phase 6C3: formal holdout validation and protected preview ────────────
+  holdoutSupportedScopeVersion: entry("1.0.0", DEVELOPMENT,
+    "Which holdout metrics carry enough target support to be evaluated at all, and which are excluded with a stated reason. Necessary because the historical holdout's team-level target coverage is 24 of 240 cells: 196 licence-blocked and 20 never recorded in their era. Excluded metrics contribute no error, no pass credit and no failure, and they are listed rather than silently dropped.", false),
+
+  candidateCoreManifestVersion: entry("1.0.0", DEVELOPMENT,
+    "The content hash of every file that can change a simulation result, taken before a holdout is opened. Its purpose is to make post-holdout tuning detectable rather than merely forbidden.", false),
+
+  formalHoldoutRunVersion: entry("1.0.0", DEVELOPMENT,
+    "The transactional holdout runner: one access event per set, incremental fixture results, deterministic resume under the same event, and refusal of a second run. A crash after unlock consumes the access event, because the set has been seen.", false),
+
+  formalHoldoutVerdictVersion: entry("1.0.0", DEVELOPMENT,
+    "The combined historical and synthetic holdout verdict. Immutable once issued.", false),
+
+  engineComparisonVersion: entry("1.0.0", DEVELOPMENT,
+    "Distributional comparison of the locked possession candidate against production engine 3.2.0 on non-holdout fixtures. Reports expressiveness and reproducibility, never historical accuracy, which only holdout evidence can support.", false),
+
+  previewIntegrationVersion: entry("1.0.0", DEVELOPMENT,
+    "Preview-only routing of the holdout-validated candidate: flags default false in Production, one engine manifest locked per competition object, and preview-isolated cache and persistence namespaces.", false),
+
   calibrationScopeVersion: entry("1.0.0", DEVELOPMENT,
     "Which parameters a calibration search may touch, with per-parameter bounds and movement limits. Frozen before search; mutating it mid-search would let the scope follow the results.", false),
 
