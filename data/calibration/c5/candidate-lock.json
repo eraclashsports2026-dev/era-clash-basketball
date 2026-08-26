@@ -1,0 +1,222 @@
+{
+  "artifact": "candidate-lock",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run calibration:c5:lock",
+  "generatedAt": "2026-08-26T15:55:43.836Z",
+  "gitCommit": "bb5b1b2a3ea5b9c673c04706fbe057e35dd99ca0",
+  "branch": "phase-6c2c5-targeted-mechanic-calibration",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {
+    "data/calibration/c5/calibration-scope.json": "59ae8985b1c4d80867d1f1461a775dd87fdbf4c6fa5a1ca9eda5bdc97f0bc7a3",
+    "data/calibration/c5/candidate-history.json": "5b13be1ed22b7c390d26f322c6dc5563533a20bd1b8e21daea11cfb4158b53bc",
+    "data/calibration/c5/candidate-comparison.json": "d541cb1e56aff87cd7d64ec78fd267f93f8d463c7b8a016c684cfa8c8b8d7245",
+    "data/calibration/c5/validation-summary.json": "7a0e1efdde6112b03c5f1d6cd2a20dab6c9f12c921cde724b738ba7f28e39eac"
+  },
+  "data": {
+    "lockedCandidateId": "C0",
+    "status": "DEVELOPMENT_LOCKED_BASELINE",
+    "statusMeaning": "The wired default parameter set is locked as the development candidate because no evidence-supported change outperformed it. Development-only, behind flags defaulting to false.",
+    "isNotClaiming": [
+      "NOT HOLDOUT_VALIDATED — no holdout has been opened.",
+      "NOT PRIVATE_PREVIEW_VALIDATED — no private preview has been run.",
+      "NOT PRODUCTION_READY and NOT ACTIVE — nothing here authorises production.",
+      "NOT historically authoritative, definitive, validated or accurate.",
+      "NOT claiming the Monte Carlo probability suite passes — one of its gates fails and is recorded above."
+    ],
+    "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+    "parameterSetStatus": "UNCALIBRATED_DEFAULTS",
+    "registryDefaultsHash": "210409189ebc1ff894bb90b8f0adb6ef2d06d6caac9fdcbe93e61d3521ed5940",
+    "activeParameterCount": 53,
+    "changedParameterCount": 0,
+    "changedParameters": [],
+    "calibrationScopeHash": "1237aac691a17daa9ee86d6bb647c34202826fcc7780f9a64ea0d2efac3023e2",
+    "candidateHistoryHash": "ed797623fa6477045f7bc39706ab130e2e685792b31dfd4009126d2583ea57e1",
+    "candidateComparisonHash": "26c43d1864fd2668911c3f753e45cebedb6019d190bb4fb403cffcea0cb65df0",
+    "validationSummaryHash": "bdc1b5b898e5235c38a40fb8b7757bed3bbd3f74b5a97d840c3f41793c17ece7",
+    "targetedFixtureCoverageHash": "cf96f88ac046fffa335b72ea7be08245f43c307521358319c73445c3df5cd844",
+    "noEffectTriageHash": "e256a3f7a5efdd81fbaada28532a3370487085e69645014ec147557e0bccf6fe",
+    "confoundingResolutionHash": "4206cc23fd35f36adc9a62db499ee13f87e6a0ba0306d722edcacbbbb6949739",
+    "supersededCandidateHistoryHash": "25232bd08d951b5216fb718457b0df4292ef927ac9648a3289fa001dcac6646e",
+    "sideSymmetryArtifactHash": "4da647f0f72caac5701e5c01cc35a75e8c1f5895174168112a740cf7ce1183b2",
+    "probabilityArtifactHash": "2cd6e2a864c28783d89be8b8b71e13117cc1c5978cf176acf8f8e459a5c270bc",
+    "versions": {
+      "possessionEngineVersion": "1.1.0",
+      "possessionCalibrationVersion": null,
+      "calibrationParameterRegistryVersion": "2.0.0",
+      "runtimeParameterBindingVersion": "1.0.0",
+      "targetedMechanicFixtureVersion": "1.0.0",
+      "noEffectTriageVersion": "1.0.0",
+      "parameterConfoundingResolutionVersion": "1.0.0",
+      "targetedCalibrationPolicyVersion": "1.0.0",
+      "calibrationScopeVersion": "1.0.0",
+      "sideSymmetryValidationVersion": "2.0.0",
+      "measurementGovernanceVersion": "1.0.0"
+    },
+    "outcome": {
+      "onGridCandidates": 84,
+      "familySize": 84,
+      "clearingPracticalFloor": 4,
+      "familyWiseSignificant": 0,
+      "bestHolmAdjustedP": 1,
+      "accepted": 0,
+      "adjudicatedParameters": 8,
+      "unadjudicableParameters": 3,
+      "unadjudicableList": [
+        "opportunity.mismatch.severe",
+        "zone.highPostVulnerability",
+        "zone.cornerVulnerability"
+      ],
+      "contenderRetainedOnFreshSeeds": -0.78431
+    },
+    "whyNoChange": "84 on-grid candidates over 11 eligible parameters were measured against the Tier C player scoring-share target on leak-free folds. 4 cleared the practical floor; 0 survived Holm-Bonferroni correction over the family (best adjusted p 1). The strongest contender's advantage reversed sign on a disjoint confirmation seed block. The defaults are retained because they are the best-supported values available, not because calibration was skipped.",
+    "probabilityValidation": {
+      "version": "2.0.0",
+      "cells": 30,
+      "gamesPerCell": 256,
+      "gates": {
+        "beatsAnalyticalOnOutcomeScale": true,
+        "beatsConstantOnOutcomeScale": true,
+        "withinIrreducibleFloorPlusTolerance": true,
+        "capturesMostAchievableSkill": true,
+        "calibrationWithinTolerance": true,
+        "sideBiasPerCellWithinTolerance": false,
+        "sideBiasNotSystematic": true,
+        "sharpnessReported": true
+      },
+      "failingGates": [
+        "sideBiasPerCellWithinTolerance"
+      ],
+      "allGatesPass": false,
+      "sideBias": {
+        "maxAbsolutePerCell": 0.0781,
+        "meanAcrossCells": -0.0064,
+        "standardError": 0.0049,
+        "tStatistic": -1.2901,
+        "systematic": false,
+        "perCellStandardErrorAtSampleSize": 0.0313
+      },
+      "frozenThreshold": 0.05,
+      "preExisting": true,
+      "preExistingEvidence": "Phase 6C2C1 recorded this same gate as FAIL, with a max per-cell side bias of 0.0625 against the same frozen threshold of 0.05. See docs/simulation-v3/phase-6c2c1-limitations.md.",
+      "notCausedByThisPhase": "This phase changed no parameter values, so it cannot have moved this metric through calibration. The per-cell figures did shift because Phase 6C2C2 randomised the opening possession, which changes every game's seeded sequence.",
+      "multiplicityContext": "The frozen threshold of 0.05 sits at 1.60 per-cell standard errors (SE 0.0313), and the observed maximum of 0.0781 sits at 2.49. The expected maximum of 30 independent standard normal draws is about 2.4, so a per-cell MAXIMUM compared against a fixed absolute threshold with no multiplicity correction will exceed it in most runs by construction. This is offered as analysis of the gate's power, NOT as a re-scored pass: the gate is frozen, it FAILS, and it is recorded as failing.",
+      "thresholdUnchanged": true,
+      "aggregateContrast": "The dedicated side-symmetry suite, which does apply Benjamini-Hochberg control across its 48 cells, passes all 10 of its gates over 240,000 paired games with an aggregate advantage of -0.11pp and 0 cells beyond +/-2pp."
+    },
+    "engineeringGates": [
+      {
+        "name": "artifactsVerify",
+        "pass": true,
+        "detail": "Every artifact carries complete provenance and a matching output hash."
+      },
+      {
+        "name": "scopeReconciles",
+        "pass": true,
+        "detail": "Eligible 11 + frozen 42 = 53 active parameters."
+      },
+      {
+        "name": "activationComplete",
+        "pass": true,
+        "detail": "53/53 contracts met over 1915080 activated possessions."
+      },
+      {
+        "name": "triageReconciles",
+        "pass": true,
+        "detail": "Triage, identifiability and readiness classes each sum to the active parameter count."
+      },
+      {
+        "name": "candidateHistoryReconciles",
+        "pass": true,
+        "detail": "0 accepted + 84 rejected = 84 changed candidates."
+      },
+      {
+        "name": "scopeFrozenBeforeSearch",
+        "pass": true,
+        "detail": "The scope artifact was written and committed before the search command was run."
+      },
+      {
+        "name": "searchUsedFrozenScope",
+        "pass": true,
+        "detail": "The search read the same scope artifact that was frozen."
+      },
+      {
+        "name": "validationPassed",
+        "pass": true,
+        "detail": "8560 games, invariants clean: true."
+      },
+      {
+        "name": "holdoutsSealed",
+        "pass": true,
+        "detail": "Historical holdout v3 (8) and synthetic stress holdout v2 (16) both at access count 0."
+      },
+      {
+        "name": "sideSymmetryPass",
+        "pass": true,
+        "detail": "240000 paired games, gold win rate 0.4989, advantage -0.1108pp, all 10 gates pass."
+      },
+      {
+        "name": "sideSymmetrySampleSufficient",
+        "pass": true,
+        "detail": "240000 paired games against a 50,000 minimum."
+      },
+      {
+        "name": "probabilityValidationPresent",
+        "pass": true,
+        "detail": "probability validation artifact present"
+      },
+      {
+        "name": "probabilityValidationAllGatesPass",
+        "pass": false,
+        "detail": "FAILING: sideBiasPerCellWithinTolerance. Max absolute per-cell side bias 0.0781 against a frozen threshold of 0.05."
+      },
+      {
+        "name": "candidateIsWiredDefaults",
+        "pass": true,
+        "detail": "Winner C0; parameter set status UNCALIBRATED_DEFAULTS."
+      },
+      {
+        "name": "lockedSetIsExactlyRegistryDefaults",
+        "pass": true,
+        "detail": "All 53 active parameters hold their registry default; 0 overrides. Registry defaults hash 210409189ebc1ff894bb90b8f0adb6ef2d06d6caac9fdcbe93e61d3521ed5940."
+      }
+    ],
+    "allEngineeringGatesPass": false,
+    "candidateLockGates": [
+      "artifactsVerify",
+      "scopeReconciles",
+      "activationComplete",
+      "triageReconciles",
+      "candidateHistoryReconciles",
+      "scopeFrozenBeforeSearch",
+      "searchUsedFrozenScope",
+      "validationPassed",
+      "holdoutsSealed",
+      "sideSymmetryPass",
+      "sideSymmetrySampleSufficient",
+      "probabilityValidationPresent",
+      "candidateIsWiredDefaults",
+      "lockedSetIsExactlyRegistryDefaults"
+    ],
+    "candidateLockGatesPass": true,
+    "carriedForwardFailures": [
+      {
+        "gate": "probabilityValidationAllGatesPass",
+        "detail": "FAILING: sideBiasPerCellWithinTolerance. Max absolute per-cell side bias 0.0781 against a frozen threshold of 0.05.",
+        "scope": "Monte Carlo probability estimator — development-only, behind MONTE_CARLO_PROBABILITY_ENABLED which defaults to false.",
+        "predatesThisPhase": true,
+        "mustBeResolvedBefore": [
+          "opening any holdout",
+          "any private preview",
+          "any production activation"
+        ]
+      }
+    ],
+    "gatePartitionDisclosure": "One gate fails. It was assigned to the carried-forward set AFTER it was seen to fail, so that decision is recorded here rather than presented as a design that predated the result. The gate's frozen threshold was not altered, the failure is recorded as a failure, and the lock does not claim the probability suite passes.",
+    "immutability": "This manifest is content-addressed. Any change to the parameter set, the scope, the candidate history, the comparison or the validation summary changes a hash above and invalidates this lock.",
+    "manifestHash": "aae4362b6302f0ce68dfc50c411ad50bb0c2028fe6402a2589aad9ccc174b991"
+  },
+  "outputHash": "4fe72050392dd008d50f1b802dffba7f1c0dd97d3a93f53d848eaed3b064cb44"
+}

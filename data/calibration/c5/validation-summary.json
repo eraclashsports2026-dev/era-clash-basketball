@@ -1,0 +1,294 @@
+{
+  "artifact": "validation-summary",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run calibration:c5:validate",
+  "generatedAt": "2026-08-26T15:55:43.694Z",
+  "gitCommit": "bb5b1b2a3ea5b9c673c04706fbe057e35dd99ca0",
+  "branch": "phase-6c2c5-targeted-mechanic-calibration",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {
+    "data/calibration/c5/candidate-history.json": "5b13be1ed22b7c390d26f322c6dc5563533a20bd1b8e21daea11cfb4158b53bc",
+    "data/calibration/c5/calibration-scope.json": "59ae8985b1c4d80867d1f1461a775dd87fdbf4c6fa5a1ca9eda5bdc97f0bc7a3",
+    "data/calibration/c5/targeted-fixture-coverage.json": "a02df1c420f044d72b1c606bde7d13f85d72980d3e1b124ebf7ed0efb6c3dc6f"
+  },
+  "data": {
+    "sections": [
+      {
+        "name": "historicalCalibrationV3",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703,
+        "tuningFixtures": 12,
+        "validationFixtures": 11,
+        "gap": -0.01004,
+        "perFixtureTuning": [
+          {
+            "fixtureId": "h3-1951-52-lakers",
+            "mae": 0.07108,
+            "n": 24
+          },
+          {
+            "fixtureId": "h3-1969-70-knicks",
+            "mae": 0.04921,
+            "n": 24
+          },
+          {
+            "fixtureId": "h3-1971-72-lakers",
+            "mae": 0.05191,
+            "n": 24
+          },
+          {
+            "fixtureId": "h3-1972-73-knicks",
+            "mae": 0.04962,
+            "n": 24
+          },
+          {
+            "fixtureId": "h3-1986-87-lakers",
+            "mae": 0.05663,
+            "n": 24
+          },
+          {
+            "fixtureId": "h3-1995-96-bulls",
+            "mae": 0.10218,
+            "n": 24
+          },
+          {
+            "fixtureId": "h3-1996-97-jazz",
+            "mae": 0.06615,
+            "n": 24
+          },
+          {
+            "fixtureId": "h3-2000-01-lakers",
+            "mae": 0.14779,
+            "n": 24
+          },
+          {
+            "fixtureId": "h3-2015-16-warriors",
+            "mae": 0.07736,
+            "n": 24
+          },
+          {
+            "fixtureId": "h3-2010-11-bulls",
+            "mae": 0.08713,
+            "n": 24
+          },
+          {
+            "fixtureId": "h3-2021-22-warriors",
+            "mae": 0.06281,
+            "n": 24
+          },
+          {
+            "fixtureId": "h3-2022-23-sixers",
+            "mae": 0.10302,
+            "n": 24
+          }
+        ],
+        "perFixtureValidation": [
+          {
+            "fixtureId": "h3-1956-57-celtics",
+            "mae": 0.03844,
+            "n": 24
+          },
+          {
+            "fixtureId": "h3-1958-59-celtics",
+            "mae": 0.05863,
+            "n": 24
+          },
+          {
+            "fixtureId": "h3-1962-63-celtics",
+            "mae": 0.06438,
+            "n": 24
+          },
+          {
+            "fixtureId": "h3-1973-74-celtics",
+            "mae": 0.06353,
+            "n": 24
+          },
+          {
+            "fixtureId": "h3-1985-86-celtics",
+            "mae": 0.05883,
+            "n": 24
+          },
+          {
+            "fixtureId": "h3-1988-89-pistons",
+            "mae": 0.05814,
+            "n": 24
+          },
+          {
+            "fixtureId": "h3-1994-95-rockets",
+            "mae": 0.0976,
+            "n": 24
+          },
+          {
+            "fixtureId": "h3-2003-04-pistons",
+            "mae": 0.06402,
+            "n": 24
+          },
+          {
+            "fixtureId": "h3-2004-05-spurs",
+            "mae": 0.09587,
+            "n": 24
+          },
+          {
+            "fixtureId": "h3-2013-14-spurs",
+            "mae": 0.05649,
+            "n": 24
+          },
+          {
+            "fixtureId": "h3-2022-23-heat",
+            "mae": 0.08142,
+            "n": 24
+          }
+        ],
+        "overfittingAssessment": "NOT_APPLICABLE_NO_PARAMETER_WAS_FITTED",
+        "overfittingNote": "No candidate was adopted, so no parameter was fitted to the tuning folds. The gap between folds reflects differing fixture difficulty, not fitting. An overfitting claim would require an adopted change to overfit with."
+      },
+      {
+        "name": "statisticalTails",
+        "games": 2000,
+        "invariantViolations": 0,
+        "scoreMin": 63,
+        "scoreP01": 75,
+        "scoreP50": 115,
+        "scoreP99": 159,
+        "scoreMax": 178,
+        "meanCombined": 231.4,
+        "meanPossessions": 105.61,
+        "impossibleScores": 0
+      },
+      {
+        "name": "targetedActivation",
+        "contractsMet": 53,
+        "contractsTotal": 53,
+        "activatedPossessions": null,
+        "note": "Read from the coverage artifact rather than recomputed, so the two cannot disagree."
+      },
+      {
+        "name": "competitionStructureStratified",
+        "seriesLengthByPairing": {
+          "balanced": {
+            "4": 20,
+            "5": 11,
+            "6": 4,
+            "7": 2
+          },
+          "mismatched": {
+            "4": 117,
+            "5": 33,
+            "6": 21,
+            "7": 12
+          },
+          "mirror": {
+            "4": 12,
+            "5": 34,
+            "6": 33,
+            "7": 41
+          }
+        },
+        "seriesCountByPairing": {
+          "balanced": 37,
+          "mismatched": 183,
+          "mirror": 120
+        },
+        "sweepRates": {
+          "balanced": 0.54054,
+          "mismatched": 0.63934,
+          "mirror": 0.1
+        },
+        "mirrorSeasonGoldWins": [
+          33,
+          40,
+          44,
+          34,
+          42,
+          40,
+          43,
+          41,
+          44,
+          47,
+          38,
+          44,
+          48,
+          38,
+          44,
+          37,
+          45,
+          38,
+          37,
+          39
+        ],
+        "mirrorSeasonMeanGoldWins": 40.8,
+        "mirrorSeasonUnbiasedMean": 41,
+        "interpretation": "The aggregate sweep rate in the unstratified Best of 7 row is driven by roster-strength gaps in the harness's arbitrary pairings, not by the engine. The mirror arm removes roster strength entirely, leaving only seeded variance, and its sweep rate is the figure to read against real basketball.",
+        "realWorldReference": "The NBA sweep rate across best-of-seven series is roughly 13%. This is offered as context for the mirror arm only, and is NOT a calibration target — no parameter was fitted to it."
+      },
+      {
+        "name": "competitionModes",
+        "modes": [
+          {
+            "mode": "Single Game",
+            "games": 500,
+            "invariantViolations": 0
+          },
+          {
+            "mode": "Best of 7",
+            "games": 1016,
+            "invariantViolations": 0,
+            "series": 220,
+            "meanLength": 4.62,
+            "lengthDistribution": "{\"4\":137,\"5\":44,\"6\":25,\"7\":14}"
+          },
+          {
+            "mode": "Win 82",
+            "games": 4264,
+            "invariantViolations": 0,
+            "seasons": 52,
+            "meanWins": 42.33,
+            "minWins": 0,
+            "maxWins": 82
+          },
+          {
+            "mode": "Tournament",
+            "games": 168,
+            "invariantViolations": 0,
+            "brackets": 24,
+            "roundsPerBracket": 3
+          },
+          {
+            "mode": "Daily (development)",
+            "games": 60,
+            "invariantViolations": 0,
+            "days": 60
+          }
+        ],
+        "totalGames": 6008,
+        "totalInvariantViolations": 0
+      },
+      {
+        "name": "holdoutDiscipline",
+        "historicalHoldoutV3": {
+          "members": 8,
+          "accessCount": 0,
+          "status": "SEALED_NOT_ACCESSED"
+        },
+        "syntheticStressHoldoutV2": {
+          "members": 16,
+          "accessCount": 0,
+          "status": "SEALED_NOT_ACCESSED"
+        },
+        "syntheticDevelopmentV2Available": 14,
+        "sealedMembersTouchedDuringValidation": [],
+        "verified": true
+      }
+    ],
+    "candidate": "C0",
+    "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+    "parameterSetStatus": "UNCALIBRATED_DEFAULTS",
+    "allInvariantsClean": true,
+    "gatesPassed": true,
+    "totalGamesSimulated": 8560
+  },
+  "outputHash": "bdc1b5b898e5235c38a40fb8b7757bed3bbd3f74b5a97d840c3f41793c17ece7"
+}

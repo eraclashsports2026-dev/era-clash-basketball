@@ -1,0 +1,3253 @@
+{
+  "artifact": "no-effect-triage",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run calibration:c5:triage",
+  "generatedAt": "2026-08-26T15:08:10.642Z",
+  "gitCommit": "d31b80e455637e73274f9c91d5000a723d805e95",
+  "branch": "phase-6c2c5-targeted-mechanic-calibration",
+  "parameterSetHash": null,
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {
+    "data/calibration/c5/targeted-fixture-coverage.json": "a02df1c420f044d72b1c606bde7d13f85d72980d3e1b124ebf7ed0efb6c3dc6f",
+    "data/calibration/calibration-support-matrix.json": "24edc1946e9f4628c98bf08bef083ee26068efeec052db3a376eeaa60f3bbe44"
+  },
+  "noEffectTriageVersion": "1.0.0",
+  "parameterIdentifiabilityVersion": "3.0.0",
+  "calibrationReadinessVersion": "3.0.0",
+  "contractsHash": "a69cdefc076e2589f2ee1ef9731727d9f74e769fea660eaf7a2636cdfad9d221",
+  "data": {
+    "priorNoEffectCount": 37,
+    "triageCounts": {
+      "RANGE_TOO_NARROW": 10,
+      "TRUE_NO_EFFECT": 19,
+      "TARGETED_EFFECT_CONFIRMED": 1,
+      "RARE_CONTEXT_ACTIVE": 5,
+      "GUARDRAIL_ONLY": 2
+    },
+    "identifiabilityCounts": {
+      "TRUE_NO_EFFECT": 29,
+      "IDENTIFIABLE": 5,
+      "CONTEXTUALLY_IDENTIFIABLE": 6,
+      "UNSUPPORTED_BY_TARGET_DATA": 9,
+      "CONFOUNDED": 2,
+      "GUARDRAIL_ONLY": 2
+    },
+    "readinessCounts": {
+      "DEFAULT_FROZEN_TRUE_NO_EFFECT": 29,
+      "STRUCTURAL_CALIBRATION_ONLY": 5,
+      "STRONGLY_REGULARIZED_CALIBRATION": 6,
+      "DEFAULT_FROZEN_PENDING_EXTERNAL_DATA": 9,
+      "DEFAULT_FROZEN_CONFOUNDED": 2,
+      "DEFAULT_FROZEN_GUARDRAIL": 2
+    },
+    "reconciliations": [
+      {
+        "label": "no-effect-triage",
+        "sum": 37,
+        "expectedTotal": 37,
+        "reconciles": true,
+        "problems": []
+      },
+      {
+        "label": "identifiability-v3",
+        "sum": 53,
+        "expectedTotal": 53,
+        "reconciles": true,
+        "problems": []
+      },
+      {
+        "label": "readiness-v3",
+        "sum": 53,
+        "expectedTotal": 53,
+        "reconciles": true,
+        "problems": []
+      }
+    ],
+    "allReconcile": true,
+    "eligibleForSearch": 11,
+    "frozen": 42,
+    "movementCaps": {
+      "FREE_CALIBRATION": 1,
+      "STRONGLY_REGULARIZED_CALIBRATION": 0.1,
+      "STRUCTURAL_CALIBRATION_ONLY": 0.2,
+      "DEFAULT_FROZEN_CONFOUNDED": 0,
+      "DEFAULT_FROZEN_GUARDRAIL": 0,
+      "DEFAULT_FROZEN_TRUE_NO_EFFECT": 0,
+      "DEFAULT_FROZEN_PENDING_EXTERNAL_DATA": 0
+    },
+    "conditionalPracticalThresholds": {
+      "count": 25,
+      "makeRate": 0.005,
+      "expectedMake": 0.02,
+      "pointsPerPossession": 0.02,
+      "primaryConcentration": 0.01,
+      "distinctPrimaries": 0.15,
+      "mixDistanceFromNeutral": 0.005,
+      "adjustmentCount": 0.25,
+      "possessions": 0.5,
+      "ftaPerPossession": 0.005,
+      "threeRate": 0.01
+    },
+    "confoundingResolutions": [
+      {
+        "a": "opportunity.form.low",
+        "b": "opportunity.form.high",
+        "resolution": "FREEZE_BOTH_PENDING_TARGET",
+        "tune": null,
+        "freeze": null
+      },
+      {
+        "a": "fitBand.TRANSITION.lo",
+        "b": "fitBand.TRANSITION.hi",
+        "resolution": "FREEZE_BOTH_PENDING_TARGET",
+        "tune": null,
+        "freeze": null
+      },
+      {
+        "a": "fitBand.GENERIC_HALF_COURT.lo",
+        "b": "fitBand.GENERIC_HALF_COURT.hi",
+        "resolution": "FREEZE_BOTH_PENDING_TARGET",
+        "tune": null,
+        "freeze": null
+      },
+      {
+        "a": "shotLocation.rimWeight",
+        "b": "shotLocation.rimBiasMultiplier",
+        "resolution": "KEEP_BOTH_CONTEXTUALLY_IDENTIFIED",
+        "tune": null,
+        "freeze": null
+      },
+      {
+        "a": "shotLocation.threeWeight",
+        "b": "shotLocation.perimeterBiasMultiplier",
+        "resolution": "FREEZE_BOTH_PENDING_TARGET",
+        "tune": null,
+        "freeze": null
+      },
+      {
+        "a": "coach.actionMixInfluence",
+        "b": "coach.rosterSensitivity",
+        "resolution": "KEEP_BOTH_CONTEXTUALLY_IDENTIFIED",
+        "tune": null,
+        "freeze": null
+      },
+      {
+        "a": "coach.offensiveAdjustmentMinEvents",
+        "b": "coach.offensiveAdjustmentCooldown",
+        "resolution": "FREEZE_ONE_TUNE_ONE",
+        "tune": "coach.offensiveAdjustmentMinEvents",
+        "freeze": "coach.offensiveAdjustmentCooldown"
+      }
+    ],
+    "freedByFactorial": [
+      "shotLocation.rimWeight",
+      "shotLocation.rimBiasMultiplier",
+      "coach.actionMixInfluence",
+      "coach.rosterSensitivity",
+      "coach.offensiveAdjustmentMinEvents"
+    ],
+    "parameters": [
+      {
+        "id": "opportunity.saturation.strength",
+        "module": "opportunityAllocation",
+        "defaultValue": 1.35,
+        "min": 0.6,
+        "max": 2.5,
+        "priorV2Category": "NO_MEASURABLE_EFFECT",
+        "wasPriorNoEffect": true,
+        "activatedPossessions": 56971,
+        "activationMet": true,
+        "activationPredicate": "afterWarmup:16",
+        "context": "possessions after the warmup window",
+        "conditionalTests": [
+          {
+            "metric": "primaryConcentration",
+            "spanAcrossRange": -0.0033,
+            "tAtEndpoint": 2.57421,
+            "p": 0.010046985427497919,
+            "practicalThreshold": 0.01,
+            "clearsPractical": false,
+            "adjustedP": 0.020093970854995837,
+            "significant": true
+          },
+          {
+            "metric": "distinctPrimaries",
+            "spanAcrossRange": 0,
+            "tAtEndpoint": 0,
+            "p": 0.9999999989503827,
+            "practicalThreshold": 0.15,
+            "clearsPractical": false,
+            "adjustedP": 0.9999999989503827,
+            "significant": false
+          }
+        ],
+        "conditionalEffectConfirmed": false,
+        "bestConditionalMetric": "primaryConcentration",
+        "bestConditionalSpan": -0.0033,
+        "guardrailBreaches": [],
+        "support": "HISTORICAL_NUMERIC_SUPPORT",
+        "confoundedWithV2": [],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": false,
+        "triage": "RANGE_TOO_NARROW",
+        "triageReason": "Statistically significant on primaryConcentration but no conditional metric clears its practical threshold across the full declared range (best span 0.0033 vs 0.01). The bounds cannot produce a basketball-relevant change.",
+        "identifiabilityV3": "TRUE_NO_EFFECT",
+        "readinessV3": "DEFAULT_FROZEN_TRUE_NO_EFFECT",
+        "readinessReason": "Mechanic activates and no conditional metric moves beyond noise across the full range.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 1.35,
+          "hi": 1.35
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "opportunity.saturation.floor",
+        "module": "opportunityAllocation",
+        "defaultValue": 0.16,
+        "min": 0.05,
+        "max": 0.4,
+        "priorV2Category": "NO_MEASURABLE_EFFECT",
+        "wasPriorNoEffect": true,
+        "activatedPossessions": 56971,
+        "activationMet": true,
+        "activationPredicate": "afterWarmup:16",
+        "context": "post-warmup possessions",
+        "conditionalTests": [
+          {
+            "metric": "primaryConcentration",
+            "spanAcrossRange": 0.00018,
+            "tAtEndpoint": 0.83706,
+            "p": 0.40255873231698297,
+            "practicalThreshold": 0.01,
+            "clearsPractical": false,
+            "adjustedP": 0.40255873231698297,
+            "significant": false
+          }
+        ],
+        "conditionalEffectConfirmed": false,
+        "bestConditionalMetric": "primaryConcentration",
+        "bestConditionalSpan": 0.00018,
+        "guardrailBreaches": [],
+        "support": "SYNTHETIC_CONTROL_SUPPORT",
+        "confoundedWithV2": [],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": false,
+        "triage": "TRUE_NO_EFFECT",
+        "triageReason": "Mechanic activated over 56971 possessions, full range tested, instrumentation verified, and no conditional metric moves beyond noise.",
+        "identifiabilityV3": "TRUE_NO_EFFECT",
+        "readinessV3": "DEFAULT_FROZEN_TRUE_NO_EFFECT",
+        "readinessReason": "Mechanic activates and no conditional metric moves beyond noise across the full range.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 0.16,
+          "hi": 0.16
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "opportunity.saturation.underTargetCeiling",
+        "module": "opportunityAllocation",
+        "defaultValue": 1.35,
+        "min": 1,
+        "max": 2,
+        "priorV2Category": "NO_MEASURABLE_EFFECT",
+        "wasPriorNoEffect": true,
+        "activatedPossessions": 56971,
+        "activationMet": true,
+        "activationPredicate": "afterWarmup:16",
+        "context": "post-warmup possessions",
+        "conditionalTests": [
+          {
+            "metric": "primaryConcentration",
+            "spanAcrossRange": -0.00376,
+            "tAtEndpoint": 3.56117,
+            "p": 0.00036928567238112984,
+            "practicalThreshold": 0.01,
+            "clearsPractical": false,
+            "adjustedP": 0.0007385713447622597,
+            "significant": true
+          },
+          {
+            "metric": "distinctPrimaries",
+            "spanAcrossRange": 0,
+            "tAtEndpoint": 0,
+            "p": 0.9999999989503827,
+            "practicalThreshold": 0.15,
+            "clearsPractical": false,
+            "adjustedP": 0.9999999989503827,
+            "significant": false
+          }
+        ],
+        "conditionalEffectConfirmed": false,
+        "bestConditionalMetric": "primaryConcentration",
+        "bestConditionalSpan": -0.00376,
+        "guardrailBreaches": [],
+        "support": "SYNTHETIC_CONTROL_SUPPORT",
+        "confoundedWithV2": [],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": false,
+        "triage": "RANGE_TOO_NARROW",
+        "triageReason": "Statistically significant on primaryConcentration but no conditional metric clears its practical threshold across the full declared range (best span 0.00376 vs 0.01). The bounds cannot produce a basketball-relevant change.",
+        "identifiabilityV3": "TRUE_NO_EFFECT",
+        "readinessV3": "DEFAULT_FROZEN_TRUE_NO_EFFECT",
+        "readinessReason": "Mechanic activates and no conditional metric moves beyond noise across the full range.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 1.35,
+          "hi": 1.35
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "opportunity.saturation.warmupPossessions",
+        "module": "opportunityAllocation",
+        "defaultValue": 8,
+        "min": 0,
+        "max": 30,
+        "priorV2Category": "NO_MEASURABLE_EFFECT",
+        "wasPriorNoEffect": true,
+        "activatedPossessions": 61665,
+        "activationMet": true,
+        "activationPredicate": "always",
+        "context": "whole game",
+        "conditionalTests": [
+          {
+            "metric": "primaryConcentration",
+            "spanAcrossRange": 0.00208,
+            "tAtEndpoint": 3.95385,
+            "p": 0.00007693705732845391,
+            "practicalThreshold": 0.01,
+            "clearsPractical": false,
+            "adjustedP": 0.00007693705732845391,
+            "significant": true
+          }
+        ],
+        "conditionalEffectConfirmed": false,
+        "bestConditionalMetric": "primaryConcentration",
+        "bestConditionalSpan": 0.00208,
+        "guardrailBreaches": [],
+        "support": "STRUCTURAL_VALIDATION_ONLY",
+        "confoundedWithV2": [],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": false,
+        "triage": "RANGE_TOO_NARROW",
+        "triageReason": "Statistically significant on primaryConcentration but no conditional metric clears its practical threshold across the full declared range (best span 0.00208 vs 0.01). The bounds cannot produce a basketball-relevant change.",
+        "identifiabilityV3": "TRUE_NO_EFFECT",
+        "readinessV3": "DEFAULT_FROZEN_TRUE_NO_EFFECT",
+        "readinessReason": "Mechanic activates and no conditional metric moves beyond noise across the full range.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 8,
+          "hi": 8
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "opportunity.mismatch.severe",
+        "module": "opportunityAllocation",
+        "defaultValue": 2.6,
+        "min": 1,
+        "max": 4,
+        "priorV2Category": "NO_MEASURABLE_EFFECT",
+        "wasPriorNoEffect": true,
+        "activatedPossessions": 20192,
+        "activationMet": true,
+        "activationPredicate": "mismatch:SEVERE",
+        "context": "possessions carrying a SEVERE mismatch",
+        "conditionalTests": [
+          {
+            "metric": "primaryConcentration",
+            "spanAcrossRange": 0.02011,
+            "tAtEndpoint": -6.14376,
+            "p": 8.09085842874681e-10,
+            "practicalThreshold": 0.01,
+            "clearsPractical": true,
+            "adjustedP": 2.4272575286240427e-9,
+            "significant": true
+          },
+          {
+            "metric": "count",
+            "spanAcrossRange": -1.1875,
+            "tAtEndpoint": 2.35449,
+            "p": 0.018548108485366307,
+            "practicalThreshold": 25,
+            "clearsPractical": false,
+            "adjustedP": 0.037096216970732614,
+            "significant": true
+          },
+          {
+            "metric": "pointsPerPossession",
+            "spanAcrossRange": 0.00831,
+            "tAtEndpoint": -1.73552,
+            "p": 0.08264866222090146,
+            "practicalThreshold": 0.02,
+            "clearsPractical": false,
+            "adjustedP": 0.08264866222090146,
+            "significant": false
+          }
+        ],
+        "conditionalEffectConfirmed": true,
+        "bestConditionalMetric": "primaryConcentration",
+        "bestConditionalSpan": 0.02011,
+        "guardrailBreaches": [],
+        "support": "SYNTHETIC_CONTROL_SUPPORT",
+        "confoundedWithV2": [],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": false,
+        "triage": "TARGETED_EFFECT_CONFIRMED",
+        "triageReason": "Conditional effect on primaryConcentration: span 0.02011 across the full range against a threshold of 0.01, adjusted p 0, over 20192 activated possessions.",
+        "identifiabilityV3": "IDENTIFIABLE",
+        "readinessV3": "STRUCTURAL_CALIBRATION_ONLY",
+        "readinessReason": "Identifiable with a confirmed conditional effect, and a structural control target. A tightly bounded structural search is permitted.",
+        "movementCapFractionOfRange": 0.2,
+        "searchBounds": {
+          "lo": 2,
+          "hi": 3.2
+        },
+        "eligibleForSearch": true
+      },
+      {
+        "id": "opportunity.mismatch.major",
+        "module": "opportunityAllocation",
+        "defaultValue": 2,
+        "min": 1,
+        "max": 3.5,
+        "priorV2Category": "NO_MEASURABLE_EFFECT",
+        "wasPriorNoEffect": true,
+        "activatedPossessions": 16870,
+        "activationMet": true,
+        "activationPredicate": "mismatch:MAJOR",
+        "context": "possessions carrying a MAJOR mismatch",
+        "conditionalTests": [
+          {
+            "metric": "primaryConcentration",
+            "spanAcrossRange": 0.01219,
+            "tAtEndpoint": 4.25645,
+            "p": 0.000020783880600207168,
+            "practicalThreshold": 0.01,
+            "clearsPractical": true,
+            "adjustedP": 0.0000623516418006215,
+            "significant": true
+          },
+          {
+            "metric": "pointsPerPossession",
+            "spanAcrossRange": -0.00065,
+            "tAtEndpoint": 0.97986,
+            "p": 0.3271552254125902,
+            "practicalThreshold": 0.02,
+            "clearsPractical": false,
+            "adjustedP": 0.6543104508251804,
+            "significant": false
+          },
+          {
+            "metric": "count",
+            "spanAcrossRange": -0.32422,
+            "tAtEndpoint": 0.74635,
+            "p": 0.4554558682501703,
+            "practicalThreshold": 25,
+            "clearsPractical": false,
+            "adjustedP": 0.6543104508251804,
+            "significant": false
+          }
+        ],
+        "conditionalEffectConfirmed": true,
+        "bestConditionalMetric": "primaryConcentration",
+        "bestConditionalSpan": 0.01219,
+        "guardrailBreaches": [],
+        "support": "SYNTHETIC_CONTROL_SUPPORT",
+        "confoundedWithV2": [],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": false,
+        "triage": "RARE_CONTEXT_ACTIVE",
+        "triageReason": "Conditional effect on primaryConcentration: span 0.01219 across the full range against a threshold of 0.01, adjusted p 0.00006, over 16870 activated possessions — a narrow context.",
+        "identifiabilityV3": "CONTEXTUALLY_IDENTIFIABLE",
+        "readinessV3": "STRONGLY_REGULARIZED_CALIBRATION",
+        "readinessReason": "Real effect in a narrow context. Small, heavily penalised movement only.",
+        "movementCapFractionOfRange": 0.1,
+        "searchBounds": {
+          "lo": 1.75,
+          "hi": 2.25
+        },
+        "eligibleForSearch": true
+      },
+      {
+        "id": "opportunity.mismatch.moderate",
+        "module": "opportunityAllocation",
+        "defaultValue": 1.55,
+        "min": 1,
+        "max": 3,
+        "priorV2Category": "NO_MEASURABLE_EFFECT",
+        "wasPriorNoEffect": true,
+        "activatedPossessions": 10126,
+        "activationMet": true,
+        "activationPredicate": "mismatch:MODERATE",
+        "context": "possessions carrying a MODERATE mismatch",
+        "conditionalTests": [
+          {
+            "metric": "primaryConcentration",
+            "spanAcrossRange": -0.00347,
+            "tAtEndpoint": -2.26704,
+            "p": 0.02338771063071623,
+            "practicalThreshold": 0.01,
+            "clearsPractical": false,
+            "adjustedP": 0.07016313189214868,
+            "significant": false
+          },
+          {
+            "metric": "count",
+            "spanAcrossRange": 0.23438,
+            "tAtEndpoint": -2.02042,
+            "p": 0.0433397020218363,
+            "practicalThreshold": 25,
+            "clearsPractical": false,
+            "adjustedP": 0.0866794040436726,
+            "significant": false
+          },
+          {
+            "metric": "pointsPerPossession",
+            "spanAcrossRange": -0.00365,
+            "tAtEndpoint": 1.6646,
+            "p": 0.0959925427112508,
+            "practicalThreshold": 0.02,
+            "clearsPractical": false,
+            "adjustedP": 0.0959925427112508,
+            "significant": false
+          }
+        ],
+        "conditionalEffectConfirmed": false,
+        "bestConditionalMetric": "primaryConcentration",
+        "bestConditionalSpan": -0.00347,
+        "guardrailBreaches": [],
+        "support": "SYNTHETIC_CONTROL_SUPPORT",
+        "confoundedWithV2": [],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": false,
+        "triage": "TRUE_NO_EFFECT",
+        "triageReason": "Mechanic activated over 10126 possessions, full range tested, instrumentation verified, and no conditional metric moves beyond noise.",
+        "identifiabilityV3": "TRUE_NO_EFFECT",
+        "readinessV3": "DEFAULT_FROZEN_TRUE_NO_EFFECT",
+        "readinessReason": "Mechanic activates and no conditional metric moves beyond noise across the full range.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 1.55,
+          "hi": 1.55
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "opportunity.mismatch.minor",
+        "module": "opportunityAllocation",
+        "defaultValue": 1.25,
+        "min": 1,
+        "max": 2,
+        "priorV2Category": "NO_MEASURABLE_EFFECT",
+        "wasPriorNoEffect": true,
+        "activatedPossessions": 748,
+        "activationMet": true,
+        "activationPredicate": "mismatch:MINOR",
+        "context": "possessions carrying a MINOR mismatch",
+        "conditionalTests": [
+          {
+            "metric": "primaryConcentration",
+            "spanAcrossRange": 0.00562,
+            "tAtEndpoint": 1.06041,
+            "p": 0.28895817054801054,
+            "practicalThreshold": 0.01,
+            "clearsPractical": false,
+            "adjustedP": 0.8668745116440316,
+            "significant": false
+          },
+          {
+            "metric": "count",
+            "spanAcrossRange": -0.03125,
+            "tAtEndpoint": -0.6701,
+            "p": 0.5027939027674998,
+            "practicalThreshold": 25,
+            "clearsPractical": false,
+            "adjustedP": 1,
+            "significant": false
+          },
+          {
+            "metric": "pointsPerPossession",
+            "spanAcrossRange": -0.00308,
+            "tAtEndpoint": 0.34374,
+            "p": 0.731041950370348,
+            "practicalThreshold": 0.02,
+            "clearsPractical": false,
+            "adjustedP": 1,
+            "significant": false
+          }
+        ],
+        "conditionalEffectConfirmed": false,
+        "bestConditionalMetric": "primaryConcentration",
+        "bestConditionalSpan": 0.00562,
+        "guardrailBreaches": [],
+        "support": "SYNTHETIC_CONTROL_SUPPORT",
+        "confoundedWithV2": [],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": false,
+        "triage": "TRUE_NO_EFFECT",
+        "triageReason": "Mechanic activated over 748 possessions, full range tested, instrumentation verified, and no conditional metric moves beyond noise.",
+        "identifiabilityV3": "TRUE_NO_EFFECT",
+        "readinessV3": "DEFAULT_FROZEN_TRUE_NO_EFFECT",
+        "readinessReason": "Mechanic activates and no conditional metric moves beyond noise across the full range.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 1.25,
+          "hi": 1.25
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "opportunity.form.low",
+        "module": "opportunityAllocation",
+        "defaultValue": 0.82,
+        "min": 0.6,
+        "max": 1,
+        "priorV2Category": "NO_MEASURABLE_EFFECT",
+        "wasPriorNoEffect": true,
+        "activatedPossessions": 56971,
+        "activationMet": true,
+        "activationPredicate": "afterWarmup:16",
+        "context": "post-warmup possessions",
+        "conditionalTests": [
+          {
+            "metric": "primaryConcentration",
+            "spanAcrossRange": -0.00093,
+            "tAtEndpoint": 1.84586,
+            "p": 0.06491241389366313,
+            "practicalThreshold": 0.01,
+            "clearsPractical": false,
+            "adjustedP": 0.12982482778732626,
+            "significant": false
+          },
+          {
+            "metric": "distinctPrimaries",
+            "spanAcrossRange": 0,
+            "tAtEndpoint": 0,
+            "p": 0.9999999989503827,
+            "practicalThreshold": 0.15,
+            "clearsPractical": false,
+            "adjustedP": 0.9999999989503827,
+            "significant": false
+          }
+        ],
+        "conditionalEffectConfirmed": false,
+        "bestConditionalMetric": "primaryConcentration",
+        "bestConditionalSpan": -0.00093,
+        "guardrailBreaches": [],
+        "support": "STRUCTURAL_VALIDATION_ONLY",
+        "confoundedWithV2": [
+          "opportunity.form.high"
+        ],
+        "confoundedWithAfterFactorial": [
+          "opportunity.form.high"
+        ],
+        "confoundingFreedByFactorial": false,
+        "triage": "TRUE_NO_EFFECT",
+        "triageReason": "Mechanic activated over 56971 possessions, full range tested, instrumentation verified, and no conditional metric moves beyond noise.",
+        "identifiabilityV3": "TRUE_NO_EFFECT",
+        "readinessV3": "DEFAULT_FROZEN_TRUE_NO_EFFECT",
+        "readinessReason": "Mechanic activates and no conditional metric moves beyond noise across the full range.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 0.82,
+          "hi": 0.82
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "opportunity.form.high",
+        "module": "opportunityAllocation",
+        "defaultValue": 1.18,
+        "min": 1,
+        "max": 1.6,
+        "priorV2Category": "NO_MEASURABLE_EFFECT",
+        "wasPriorNoEffect": true,
+        "activatedPossessions": 56971,
+        "activationMet": true,
+        "activationPredicate": "afterWarmup:16",
+        "context": "post-warmup possessions",
+        "conditionalTests": [
+          {
+            "metric": "primaryConcentration",
+            "spanAcrossRange": 0.00124,
+            "tAtEndpoint": 1.7478,
+            "p": 0.08049857965878254,
+            "practicalThreshold": 0.01,
+            "clearsPractical": false,
+            "adjustedP": 0.1609971593175651,
+            "significant": false
+          },
+          {
+            "metric": "distinctPrimaries",
+            "spanAcrossRange": 0,
+            "tAtEndpoint": 0,
+            "p": 0.9999999989503827,
+            "practicalThreshold": 0.15,
+            "clearsPractical": false,
+            "adjustedP": 0.9999999989503827,
+            "significant": false
+          }
+        ],
+        "conditionalEffectConfirmed": false,
+        "bestConditionalMetric": "primaryConcentration",
+        "bestConditionalSpan": 0.00124,
+        "guardrailBreaches": [],
+        "support": "STRUCTURAL_VALIDATION_ONLY",
+        "confoundedWithV2": [
+          "opportunity.form.low"
+        ],
+        "confoundedWithAfterFactorial": [
+          "opportunity.form.low"
+        ],
+        "confoundingFreedByFactorial": false,
+        "triage": "TRUE_NO_EFFECT",
+        "triageReason": "Mechanic activated over 56971 possessions, full range tested, instrumentation verified, and no conditional metric moves beyond noise.",
+        "identifiabilityV3": "TRUE_NO_EFFECT",
+        "readinessV3": "DEFAULT_FROZEN_TRUE_NO_EFFECT",
+        "readinessReason": "Mechanic activates and no conditional metric moves beyond noise across the full range.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 1.18,
+          "hi": 1.18
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "opportunity.lateGame.primaryBoost",
+        "module": "opportunityAllocation",
+        "defaultValue": 0.5,
+        "min": 0,
+        "max": 1.5,
+        "priorV2Category": "NO_MEASURABLE_EFFECT",
+        "wasPriorNoEffect": true,
+        "activatedPossessions": 10498,
+        "activationMet": true,
+        "activationPredicate": "lateGame",
+        "context": "fourth-quarter and overtime possessions",
+        "conditionalTests": [
+          {
+            "metric": "primaryConcentration",
+            "spanAcrossRange": 0.00345,
+            "tAtEndpoint": 2.40421,
+            "p": 0.01620744761062128,
+            "practicalThreshold": 0.01,
+            "clearsPractical": false,
+            "adjustedP": 0.03241489522124256,
+            "significant": true
+          },
+          {
+            "metric": "distinctPrimaries",
+            "spanAcrossRange": 0.02604,
+            "tAtEndpoint": -0.9041,
+            "p": 0.36594231380433145,
+            "practicalThreshold": 0.15,
+            "clearsPractical": false,
+            "adjustedP": 0.36594231380433145,
+            "significant": false
+          }
+        ],
+        "conditionalEffectConfirmed": false,
+        "bestConditionalMetric": "primaryConcentration",
+        "bestConditionalSpan": 0.00345,
+        "guardrailBreaches": [],
+        "support": "STRUCTURAL_VALIDATION_ONLY",
+        "confoundedWithV2": [],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": false,
+        "triage": "RANGE_TOO_NARROW",
+        "triageReason": "Statistically significant on primaryConcentration but no conditional metric clears its practical threshold across the full declared range (best span 0.00345 vs 0.01). The bounds cannot produce a basketball-relevant change.",
+        "identifiabilityV3": "TRUE_NO_EFFECT",
+        "readinessV3": "DEFAULT_FROZEN_TRUE_NO_EFFECT",
+        "readinessReason": "Mechanic activates and no conditional metric moves beyond noise across the full range.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 0.5,
+          "hi": 0.5
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "fitBand.SPOT_UP.lo",
+        "module": "opportunityAllocation",
+        "defaultValue": 0.2,
+        "min": 0.1,
+        "max": 1,
+        "priorV2Category": "NO_MEASURABLE_EFFECT",
+        "wasPriorNoEffect": true,
+        "activatedPossessions": 3614,
+        "activationMet": true,
+        "activationPredicate": "action:SPOT_UP",
+        "context": "SPOT_UP possessions only",
+        "conditionalTests": [
+          {
+            "metric": "distinctPrimaries",
+            "spanAcrossRange": 0.14583,
+            "tAtEndpoint": 2.65187,
+            "p": 0.008004820158923459,
+            "practicalThreshold": 0.15,
+            "clearsPractical": false,
+            "adjustedP": 0.024014460476770375,
+            "significant": true
+          },
+          {
+            "metric": "primaryConcentration",
+            "spanAcrossRange": -0.00754,
+            "tAtEndpoint": -2.21635,
+            "p": 0.02666744982175472,
+            "practicalThreshold": 0.01,
+            "clearsPractical": false,
+            "adjustedP": 0.05333489964350944,
+            "significant": false
+          },
+          {
+            "metric": "count",
+            "spanAcrossRange": 0.08333,
+            "tAtEndpoint": 0.85316,
+            "p": 0.39357048140007417,
+            "practicalThreshold": 25,
+            "clearsPractical": false,
+            "adjustedP": 0.39357048140007417,
+            "significant": false
+          }
+        ],
+        "conditionalEffectConfirmed": false,
+        "bestConditionalMetric": "distinctPrimaries",
+        "bestConditionalSpan": 0.14583,
+        "guardrailBreaches": [],
+        "support": "SYNTHETIC_CONTROL_SUPPORT",
+        "confoundedWithV2": [],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": false,
+        "triage": "RANGE_TOO_NARROW",
+        "triageReason": "Statistically significant on distinctPrimaries but no conditional metric clears its practical threshold across the full declared range (best span 0.14583 vs 0.15). The bounds cannot produce a basketball-relevant change.",
+        "identifiabilityV3": "TRUE_NO_EFFECT",
+        "readinessV3": "DEFAULT_FROZEN_TRUE_NO_EFFECT",
+        "readinessReason": "Mechanic activates and no conditional metric moves beyond noise across the full range.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 0.2,
+          "hi": 0.2
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "fitBand.SPOT_UP.hi",
+        "module": "opportunityAllocation",
+        "defaultValue": 2.4,
+        "min": 1,
+        "max": 3,
+        "priorV2Category": "NO_MEASURABLE_EFFECT",
+        "wasPriorNoEffect": true,
+        "activatedPossessions": 3614,
+        "activationMet": true,
+        "activationPredicate": "action:SPOT_UP",
+        "context": "SPOT_UP possessions only",
+        "conditionalTests": [
+          {
+            "metric": "distinctPrimaries",
+            "spanAcrossRange": -0.08333,
+            "tAtEndpoint": 2.21617,
+            "p": 0.02667977021582381,
+            "practicalThreshold": 0.15,
+            "clearsPractical": false,
+            "adjustedP": 0.08003931064747143,
+            "significant": false
+          },
+          {
+            "metric": "primaryConcentration",
+            "spanAcrossRange": 0.00523,
+            "tAtEndpoint": -1.89647,
+            "p": 0.05789778992782889,
+            "practicalThreshold": 0.01,
+            "clearsPractical": false,
+            "adjustedP": 0.11579557985565778,
+            "significant": false
+          },
+          {
+            "metric": "count",
+            "spanAcrossRange": -0.09375,
+            "tAtEndpoint": 1.50888,
+            "p": 0.13132950157470832,
+            "practicalThreshold": 25,
+            "clearsPractical": false,
+            "adjustedP": 0.13132950157470832,
+            "significant": false
+          }
+        ],
+        "conditionalEffectConfirmed": false,
+        "bestConditionalMetric": "distinctPrimaries",
+        "bestConditionalSpan": -0.08333,
+        "guardrailBreaches": [],
+        "support": "SYNTHETIC_CONTROL_SUPPORT",
+        "confoundedWithV2": [],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": false,
+        "triage": "TRUE_NO_EFFECT",
+        "triageReason": "Mechanic activated over 3614 possessions, full range tested, instrumentation verified, and no conditional metric moves beyond noise.",
+        "identifiabilityV3": "TRUE_NO_EFFECT",
+        "readinessV3": "DEFAULT_FROZEN_TRUE_NO_EFFECT",
+        "readinessReason": "Mechanic activates and no conditional metric moves beyond noise across the full range.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 2.4,
+          "hi": 2.4
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "fitBand.OFF_BALL_SCREEN.lo",
+        "module": "opportunityAllocation",
+        "defaultValue": 0.25,
+        "min": 0.1,
+        "max": 1,
+        "priorV2Category": "NO_MEASURABLE_EFFECT",
+        "wasPriorNoEffect": true,
+        "activatedPossessions": 5329,
+        "activationMet": true,
+        "activationPredicate": "action:OFF_BALL_SCREEN",
+        "context": "OFF_BALL_SCREEN possessions only",
+        "conditionalTests": [
+          {
+            "metric": "distinctPrimaries",
+            "spanAcrossRange": 0.08854,
+            "tAtEndpoint": 2.4101,
+            "p": 0.01594813891851792,
+            "practicalThreshold": 0.15,
+            "clearsPractical": false,
+            "adjustedP": 0.04784441675555376,
+            "significant": true
+          },
+          {
+            "metric": "primaryConcentration",
+            "spanAcrossRange": -0.00302,
+            "tAtEndpoint": -1.67894,
+            "p": 0.09316368716778901,
+            "practicalThreshold": 0.01,
+            "clearsPractical": false,
+            "adjustedP": 0.18632737433557803,
+            "significant": false
+          },
+          {
+            "metric": "count",
+            "spanAcrossRange": -0.06771,
+            "tAtEndpoint": 0.41278,
+            "p": 0.6797678837664708,
+            "practicalThreshold": 25,
+            "clearsPractical": false,
+            "adjustedP": 0.6797678837664708,
+            "significant": false
+          }
+        ],
+        "conditionalEffectConfirmed": false,
+        "bestConditionalMetric": "distinctPrimaries",
+        "bestConditionalSpan": 0.08854,
+        "guardrailBreaches": [],
+        "support": "SYNTHETIC_CONTROL_SUPPORT",
+        "confoundedWithV2": [],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": false,
+        "triage": "RANGE_TOO_NARROW",
+        "triageReason": "Statistically significant on distinctPrimaries but no conditional metric clears its practical threshold across the full declared range (best span 0.08854 vs 0.15). The bounds cannot produce a basketball-relevant change.",
+        "identifiabilityV3": "TRUE_NO_EFFECT",
+        "readinessV3": "DEFAULT_FROZEN_TRUE_NO_EFFECT",
+        "readinessReason": "Mechanic activates and no conditional metric moves beyond noise across the full range.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 0.25,
+          "hi": 0.25
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "fitBand.OFF_BALL_SCREEN.hi",
+        "module": "opportunityAllocation",
+        "defaultValue": 2.2,
+        "min": 1,
+        "max": 3,
+        "priorV2Category": "NO_MEASURABLE_EFFECT",
+        "wasPriorNoEffect": true,
+        "activatedPossessions": 5329,
+        "activationMet": true,
+        "activationPredicate": "action:OFF_BALL_SCREEN",
+        "context": "OFF_BALL_SCREEN possessions only",
+        "conditionalTests": [
+          {
+            "metric": "distinctPrimaries",
+            "spanAcrossRange": -0.03125,
+            "tAtEndpoint": 1.64016,
+            "p": 0.10097187519357739,
+            "practicalThreshold": 0.15,
+            "clearsPractical": false,
+            "adjustedP": 0.30291562558073215,
+            "significant": false
+          },
+          {
+            "metric": "primaryConcentration",
+            "spanAcrossRange": 0.00219,
+            "tAtEndpoint": -1.59118,
+            "p": 0.11156907326408494,
+            "practicalThreshold": 0.01,
+            "clearsPractical": false,
+            "adjustedP": 0.30291562558073215,
+            "significant": false
+          },
+          {
+            "metric": "count",
+            "spanAcrossRange": 0.01042,
+            "tAtEndpoint": 1.19211,
+            "p": 0.2332182371066698,
+            "practicalThreshold": 25,
+            "clearsPractical": false,
+            "adjustedP": 0.30291562558073215,
+            "significant": false
+          }
+        ],
+        "conditionalEffectConfirmed": false,
+        "bestConditionalMetric": "distinctPrimaries",
+        "bestConditionalSpan": -0.03125,
+        "guardrailBreaches": [],
+        "support": "SYNTHETIC_CONTROL_SUPPORT",
+        "confoundedWithV2": [],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": false,
+        "triage": "TRUE_NO_EFFECT",
+        "triageReason": "Mechanic activated over 5329 possessions, full range tested, instrumentation verified, and no conditional metric moves beyond noise.",
+        "identifiabilityV3": "TRUE_NO_EFFECT",
+        "readinessV3": "DEFAULT_FROZEN_TRUE_NO_EFFECT",
+        "readinessReason": "Mechanic activates and no conditional metric moves beyond noise across the full range.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 2.2,
+          "hi": 2.2
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "fitBand.POST_UP.lo",
+        "module": "opportunityAllocation",
+        "defaultValue": 0.3,
+        "min": 0.1,
+        "max": 1,
+        "priorV2Category": "NO_MEASURABLE_EFFECT",
+        "wasPriorNoEffect": true,
+        "activatedPossessions": 6468,
+        "activationMet": true,
+        "activationPredicate": "action:POST_UP",
+        "context": "POST_UP possessions only",
+        "conditionalTests": [
+          {
+            "metric": "primaryConcentration",
+            "spanAcrossRange": -0.01912,
+            "tAtEndpoint": -5.2055,
+            "p": 1.9384596402845578e-7,
+            "practicalThreshold": 0.01,
+            "clearsPractical": true,
+            "adjustedP": 5.815378920853673e-7,
+            "significant": true
+          },
+          {
+            "metric": "distinctPrimaries",
+            "spanAcrossRange": 0.06641,
+            "tAtEndpoint": 1.69777,
+            "p": 0.08955111927751687,
+            "practicalThreshold": 0.15,
+            "clearsPractical": false,
+            "adjustedP": 0.17910223855503374,
+            "significant": false
+          },
+          {
+            "metric": "count",
+            "spanAcrossRange": 0.17578,
+            "tAtEndpoint": 0.86676,
+            "p": 0.38607343125070664,
+            "practicalThreshold": 25,
+            "clearsPractical": false,
+            "adjustedP": 0.38607343125070664,
+            "significant": false
+          }
+        ],
+        "conditionalEffectConfirmed": true,
+        "bestConditionalMetric": "primaryConcentration",
+        "bestConditionalSpan": -0.01912,
+        "guardrailBreaches": [],
+        "support": "SYNTHETIC_CONTROL_SUPPORT",
+        "confoundedWithV2": [],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": false,
+        "triage": "RARE_CONTEXT_ACTIVE",
+        "triageReason": "Conditional effect on primaryConcentration: span -0.01912 across the full range against a threshold of 0.01, adjusted p 0, over 6468 activated possessions — a narrow context.",
+        "identifiabilityV3": "CONTEXTUALLY_IDENTIFIABLE",
+        "readinessV3": "STRONGLY_REGULARIZED_CALIBRATION",
+        "readinessReason": "Real effect in a narrow context. Small, heavily penalised movement only.",
+        "movementCapFractionOfRange": 0.1,
+        "searchBounds": {
+          "lo": 0.20999999999999996,
+          "hi": 0.39
+        },
+        "eligibleForSearch": true
+      },
+      {
+        "id": "fitBand.POST_UP.hi",
+        "module": "opportunityAllocation",
+        "defaultValue": 2.1,
+        "min": 1,
+        "max": 3,
+        "priorV2Category": "NO_MEASURABLE_EFFECT",
+        "wasPriorNoEffect": true,
+        "activatedPossessions": 6468,
+        "activationMet": true,
+        "activationPredicate": "action:POST_UP",
+        "context": "POST_UP possessions only",
+        "conditionalTests": [
+          {
+            "metric": "primaryConcentration",
+            "spanAcrossRange": 0.00589,
+            "tAtEndpoint": -2.37864,
+            "p": 0.017376613439087394,
+            "practicalThreshold": 0.01,
+            "clearsPractical": false,
+            "adjustedP": 0.052129840317262185,
+            "significant": false
+          },
+          {
+            "metric": "distinctPrimaries",
+            "spanAcrossRange": -0.09766,
+            "tAtEndpoint": 2.07895,
+            "p": 0.0376218157314934,
+            "practicalThreshold": 0.15,
+            "clearsPractical": false,
+            "adjustedP": 0.0752436314629868,
+            "significant": false
+          },
+          {
+            "metric": "count",
+            "spanAcrossRange": -0.16797,
+            "tAtEndpoint": 1.14062,
+            "p": 0.25402819256608433,
+            "practicalThreshold": 25,
+            "clearsPractical": false,
+            "adjustedP": 0.25402819256608433,
+            "significant": false
+          }
+        ],
+        "conditionalEffectConfirmed": false,
+        "bestConditionalMetric": "primaryConcentration",
+        "bestConditionalSpan": 0.00589,
+        "guardrailBreaches": [],
+        "support": "SYNTHETIC_CONTROL_SUPPORT",
+        "confoundedWithV2": [],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": false,
+        "triage": "TRUE_NO_EFFECT",
+        "triageReason": "Mechanic activated over 6468 possessions, full range tested, instrumentation verified, and no conditional metric moves beyond noise.",
+        "identifiabilityV3": "TRUE_NO_EFFECT",
+        "readinessV3": "DEFAULT_FROZEN_TRUE_NO_EFFECT",
+        "readinessReason": "Mechanic activates and no conditional metric moves beyond noise across the full range.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 2.1,
+          "hi": 2.1
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "fitBand.HANDOFF.lo",
+        "module": "opportunityAllocation",
+        "defaultValue": 0.35,
+        "min": 0.1,
+        "max": 1,
+        "priorV2Category": "NO_MEASURABLE_EFFECT",
+        "wasPriorNoEffect": true,
+        "activatedPossessions": 4331,
+        "activationMet": true,
+        "activationPredicate": "action:HANDOFF",
+        "context": "HANDOFF possessions only",
+        "conditionalTests": [
+          {
+            "metric": "primaryConcentration",
+            "spanAcrossRange": -0.0022,
+            "tAtEndpoint": 1.52451,
+            "p": 0.1273814015265989,
+            "practicalThreshold": 0.01,
+            "clearsPractical": false,
+            "adjustedP": 0.3821442045797967,
+            "significant": false
+          },
+          {
+            "metric": "distinctPrimaries",
+            "spanAcrossRange": 0.07813,
+            "tAtEndpoint": -1.15177,
+            "p": 0.24941570538588362,
+            "practicalThreshold": 0.15,
+            "clearsPractical": false,
+            "adjustedP": 0.49883141077176724,
+            "significant": false
+          },
+          {
+            "metric": "count",
+            "spanAcrossRange": -0.04687,
+            "tAtEndpoint": 0.55977,
+            "p": 0.5756362554385946,
+            "practicalThreshold": 25,
+            "clearsPractical": false,
+            "adjustedP": 0.5756362554385946,
+            "significant": false
+          }
+        ],
+        "conditionalEffectConfirmed": false,
+        "bestConditionalMetric": "primaryConcentration",
+        "bestConditionalSpan": -0.0022,
+        "guardrailBreaches": [],
+        "support": "SYNTHETIC_CONTROL_SUPPORT",
+        "confoundedWithV2": [],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": false,
+        "triage": "TRUE_NO_EFFECT",
+        "triageReason": "Mechanic activated over 4331 possessions, full range tested, instrumentation verified, and no conditional metric moves beyond noise.",
+        "identifiabilityV3": "TRUE_NO_EFFECT",
+        "readinessV3": "DEFAULT_FROZEN_TRUE_NO_EFFECT",
+        "readinessReason": "Mechanic activates and no conditional metric moves beyond noise across the full range.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 0.35,
+          "hi": 0.35
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "fitBand.HANDOFF.hi",
+        "module": "opportunityAllocation",
+        "defaultValue": 2,
+        "min": 1,
+        "max": 3,
+        "priorV2Category": "NO_MEASURABLE_EFFECT",
+        "wasPriorNoEffect": true,
+        "activatedPossessions": 4331,
+        "activationMet": true,
+        "activationPredicate": "action:HANDOFF",
+        "context": "HANDOFF possessions only",
+        "conditionalTests": [
+          {
+            "metric": "distinctPrimaries",
+            "spanAcrossRange": -0.07292,
+            "tAtEndpoint": -1.71419,
+            "p": 0.08649376746009055,
+            "practicalThreshold": 0.15,
+            "clearsPractical": false,
+            "adjustedP": 0.2594813023802717,
+            "significant": false
+          },
+          {
+            "metric": "primaryConcentration",
+            "spanAcrossRange": 0.0024,
+            "tAtEndpoint": 1.30762,
+            "p": 0.19100235854554198,
+            "practicalThreshold": 0.01,
+            "clearsPractical": false,
+            "adjustedP": 0.38200471709108397,
+            "significant": false
+          },
+          {
+            "metric": "count",
+            "spanAcrossRange": 0.00521,
+            "tAtEndpoint": 0.43916,
+            "p": 0.6605456585251805,
+            "practicalThreshold": 25,
+            "clearsPractical": false,
+            "adjustedP": 0.6605456585251805,
+            "significant": false
+          }
+        ],
+        "conditionalEffectConfirmed": false,
+        "bestConditionalMetric": "distinctPrimaries",
+        "bestConditionalSpan": -0.07292,
+        "guardrailBreaches": [],
+        "support": "SYNTHETIC_CONTROL_SUPPORT",
+        "confoundedWithV2": [],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": false,
+        "triage": "TRUE_NO_EFFECT",
+        "triageReason": "Mechanic activated over 4331 possessions, full range tested, instrumentation verified, and no conditional metric moves beyond noise.",
+        "identifiabilityV3": "TRUE_NO_EFFECT",
+        "readinessV3": "DEFAULT_FROZEN_TRUE_NO_EFFECT",
+        "readinessReason": "Mechanic activates and no conditional metric moves beyond noise across the full range.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 2,
+          "hi": 2
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "fitBand.ZONE_ATTACK.lo",
+        "module": "opportunityAllocation",
+        "defaultValue": 0.4,
+        "min": 0.1,
+        "max": 1,
+        "priorV2Category": "NO_MEASURABLE_EFFECT",
+        "wasPriorNoEffect": true,
+        "activatedPossessions": 17139,
+        "activationMet": true,
+        "activationPredicate": "zonePossession",
+        "context": "ZONE_ATTACK possessions only",
+        "conditionalTests": [
+          {
+            "metric": "primaryConcentration",
+            "spanAcrossRange": -0.00211,
+            "tAtEndpoint": 2.5439,
+            "p": 0.010962293023224264,
+            "practicalThreshold": 0.01,
+            "clearsPractical": false,
+            "adjustedP": 0.03288687906967279,
+            "significant": true
+          },
+          {
+            "metric": "count",
+            "spanAcrossRange": -0.11718,
+            "tAtEndpoint": 2.4421,
+            "p": 0.014602105643991376,
+            "practicalThreshold": 25,
+            "clearsPractical": false,
+            "adjustedP": 0.03288687906967279,
+            "significant": true
+          },
+          {
+            "metric": "distinctPrimaries",
+            "spanAcrossRange": 0,
+            "tAtEndpoint": 0,
+            "p": 0.9999999989503827,
+            "practicalThreshold": 0.15,
+            "clearsPractical": false,
+            "adjustedP": 0.9999999989503827,
+            "significant": false
+          }
+        ],
+        "conditionalEffectConfirmed": false,
+        "bestConditionalMetric": "primaryConcentration",
+        "bestConditionalSpan": -0.00211,
+        "guardrailBreaches": [],
+        "support": "SYNTHETIC_CONTROL_SUPPORT",
+        "confoundedWithV2": [],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": false,
+        "triage": "RANGE_TOO_NARROW",
+        "triageReason": "Statistically significant on primaryConcentration, count but no conditional metric clears its practical threshold across the full declared range (best span 0.00211 vs 0.01). The bounds cannot produce a basketball-relevant change.",
+        "identifiabilityV3": "TRUE_NO_EFFECT",
+        "readinessV3": "DEFAULT_FROZEN_TRUE_NO_EFFECT",
+        "readinessReason": "Mechanic activates and no conditional metric moves beyond noise across the full range.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 0.4,
+          "hi": 0.4
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "fitBand.ZONE_ATTACK.hi",
+        "module": "opportunityAllocation",
+        "defaultValue": 1.9,
+        "min": 1,
+        "max": 3,
+        "priorV2Category": "NO_MEASURABLE_EFFECT",
+        "wasPriorNoEffect": true,
+        "activatedPossessions": 17139,
+        "activationMet": true,
+        "activationPredicate": "zonePossession",
+        "context": "ZONE_ATTACK possessions only",
+        "conditionalTests": [
+          {
+            "metric": "count",
+            "spanAcrossRange": -0.1875,
+            "tAtEndpoint": 1.95718,
+            "p": 0.050326169497664004,
+            "practicalThreshold": 25,
+            "clearsPractical": false,
+            "adjustedP": 0.15097850849299202,
+            "significant": false
+          },
+          {
+            "metric": "primaryConcentration",
+            "spanAcrossRange": 0.0022,
+            "tAtEndpoint": -1.79757,
+            "p": 0.07224506961354289,
+            "practicalThreshold": 0.01,
+            "clearsPractical": false,
+            "adjustedP": 0.15097850849299202,
+            "significant": false
+          },
+          {
+            "metric": "distinctPrimaries",
+            "spanAcrossRange": 0,
+            "tAtEndpoint": 0,
+            "p": 0.9999999989503827,
+            "practicalThreshold": 0.15,
+            "clearsPractical": false,
+            "adjustedP": 0.9999999989503827,
+            "significant": false
+          }
+        ],
+        "conditionalEffectConfirmed": false,
+        "bestConditionalMetric": "count",
+        "bestConditionalSpan": -0.1875,
+        "guardrailBreaches": [],
+        "support": "SYNTHETIC_CONTROL_SUPPORT",
+        "confoundedWithV2": [],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": false,
+        "triage": "TRUE_NO_EFFECT",
+        "triageReason": "Mechanic activated over 17139 possessions, full range tested, instrumentation verified, and no conditional metric moves beyond noise.",
+        "identifiabilityV3": "TRUE_NO_EFFECT",
+        "readinessV3": "DEFAULT_FROZEN_TRUE_NO_EFFECT",
+        "readinessReason": "Mechanic activates and no conditional metric moves beyond noise across the full range.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 1.9,
+          "hi": 1.9
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "fitBand.CUT.lo",
+        "module": "opportunityAllocation",
+        "defaultValue": 0.4,
+        "min": 0.1,
+        "max": 1,
+        "priorV2Category": "NO_MEASURABLE_EFFECT",
+        "wasPriorNoEffect": true,
+        "activatedPossessions": 3393,
+        "activationMet": true,
+        "activationPredicate": "action:CUT",
+        "context": "CUT possessions only",
+        "conditionalTests": [
+          {
+            "metric": "distinctPrimaries",
+            "spanAcrossRange": 0.10938,
+            "tAtEndpoint": 1.93421,
+            "p": 0.053087175061749446,
+            "practicalThreshold": 0.15,
+            "clearsPractical": false,
+            "adjustedP": 0.15926152518524833,
+            "significant": false
+          },
+          {
+            "metric": "primaryConcentration",
+            "spanAcrossRange": -0.00073,
+            "tAtEndpoint": 0.78543,
+            "p": 0.43220136135279213,
+            "practicalThreshold": 0.01,
+            "clearsPractical": false,
+            "adjustedP": 0.8644027227055843,
+            "significant": false
+          },
+          {
+            "metric": "count",
+            "spanAcrossRange": 0.02083,
+            "tAtEndpoint": 0.69892,
+            "p": 0.4846018798286769,
+            "practicalThreshold": 25,
+            "clearsPractical": false,
+            "adjustedP": 0.8644027227055843,
+            "significant": false
+          }
+        ],
+        "conditionalEffectConfirmed": false,
+        "bestConditionalMetric": "distinctPrimaries",
+        "bestConditionalSpan": 0.10938,
+        "guardrailBreaches": [],
+        "support": "SYNTHETIC_CONTROL_SUPPORT",
+        "confoundedWithV2": [],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": false,
+        "triage": "TRUE_NO_EFFECT",
+        "triageReason": "Mechanic activated over 3393 possessions, full range tested, instrumentation verified, and no conditional metric moves beyond noise.",
+        "identifiabilityV3": "TRUE_NO_EFFECT",
+        "readinessV3": "DEFAULT_FROZEN_TRUE_NO_EFFECT",
+        "readinessReason": "Mechanic activates and no conditional metric moves beyond noise across the full range.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 0.4,
+          "hi": 0.4
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "fitBand.CUT.hi",
+        "module": "opportunityAllocation",
+        "defaultValue": 1.9,
+        "min": 1,
+        "max": 3,
+        "priorV2Category": "NO_MEASURABLE_EFFECT",
+        "wasPriorNoEffect": true,
+        "activatedPossessions": 3393,
+        "activationMet": true,
+        "activationPredicate": "action:CUT",
+        "context": "CUT possessions only",
+        "conditionalTests": [
+          {
+            "metric": "distinctPrimaries",
+            "spanAcrossRange": -0.08333,
+            "tAtEndpoint": 1.90926,
+            "p": 0.05622842423638136,
+            "practicalThreshold": 0.15,
+            "clearsPractical": false,
+            "adjustedP": 0.16868527270914407,
+            "significant": false
+          },
+          {
+            "metric": "count",
+            "spanAcrossRange": -0.04167,
+            "tAtEndpoint": 0.49033,
+            "p": 0.6239003989995312,
+            "practicalThreshold": 25,
+            "clearsPractical": false,
+            "adjustedP": 1,
+            "significant": false
+          },
+          {
+            "metric": "primaryConcentration",
+            "spanAcrossRange": -0.00034,
+            "tAtEndpoint": 0.26132,
+            "p": 0.793845856018922,
+            "practicalThreshold": 0.01,
+            "clearsPractical": false,
+            "adjustedP": 1,
+            "significant": false
+          }
+        ],
+        "conditionalEffectConfirmed": false,
+        "bestConditionalMetric": "distinctPrimaries",
+        "bestConditionalSpan": -0.08333,
+        "guardrailBreaches": [],
+        "support": "SYNTHETIC_CONTROL_SUPPORT",
+        "confoundedWithV2": [],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": false,
+        "triage": "TRUE_NO_EFFECT",
+        "triageReason": "Mechanic activated over 3393 possessions, full range tested, instrumentation verified, and no conditional metric moves beyond noise.",
+        "identifiabilityV3": "TRUE_NO_EFFECT",
+        "readinessV3": "DEFAULT_FROZEN_TRUE_NO_EFFECT",
+        "readinessReason": "Mechanic activates and no conditional metric moves beyond noise across the full range.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 1.9,
+          "hi": 1.9
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "fitBand.ISOLATION.lo",
+        "module": "opportunityAllocation",
+        "defaultValue": 0.5,
+        "min": 0.1,
+        "max": 1,
+        "priorV2Category": "NO_MEASURABLE_EFFECT",
+        "wasPriorNoEffect": true,
+        "activatedPossessions": 4677,
+        "activationMet": true,
+        "activationPredicate": "action:ISOLATION",
+        "context": "ISOLATION possessions only",
+        "conditionalTests": [
+          {
+            "metric": "primaryConcentration",
+            "spanAcrossRange": -0.01553,
+            "tAtEndpoint": -4.80598,
+            "p": 0.0000015419542402182233,
+            "practicalThreshold": 0.01,
+            "clearsPractical": true,
+            "adjustedP": 0.0000046258627206546696,
+            "significant": true
+          },
+          {
+            "metric": "distinctPrimaries",
+            "spanAcrossRange": 0.22265,
+            "tAtEndpoint": 3.52025,
+            "p": 0.0004312258587607568,
+            "practicalThreshold": 0.15,
+            "clearsPractical": true,
+            "adjustedP": 0.0008624517175215136,
+            "significant": true
+          },
+          {
+            "metric": "count",
+            "spanAcrossRange": -0.21875,
+            "tAtEndpoint": -2.14916,
+            "p": 0.031621605224936754,
+            "practicalThreshold": 25,
+            "clearsPractical": false,
+            "adjustedP": 0.031621605224936754,
+            "significant": true
+          }
+        ],
+        "conditionalEffectConfirmed": true,
+        "bestConditionalMetric": "primaryConcentration",
+        "bestConditionalSpan": -0.01553,
+        "guardrailBreaches": [],
+        "support": "SYNTHETIC_CONTROL_SUPPORT",
+        "confoundedWithV2": [],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": false,
+        "triage": "RARE_CONTEXT_ACTIVE",
+        "triageReason": "Conditional effect on primaryConcentration: span -0.01553 across the full range against a threshold of 0.01, adjusted p 0, over 4677 activated possessions — a narrow context.",
+        "identifiabilityV3": "CONTEXTUALLY_IDENTIFIABLE",
+        "readinessV3": "STRONGLY_REGULARIZED_CALIBRATION",
+        "readinessReason": "Real effect in a narrow context. Small, heavily penalised movement only.",
+        "movementCapFractionOfRange": 0.1,
+        "searchBounds": {
+          "lo": 0.41,
+          "hi": 0.59
+        },
+        "eligibleForSearch": true
+      },
+      {
+        "id": "fitBand.ISOLATION.hi",
+        "module": "opportunityAllocation",
+        "defaultValue": 1.8,
+        "min": 1,
+        "max": 3,
+        "priorV2Category": "NO_MEASURABLE_EFFECT",
+        "wasPriorNoEffect": true,
+        "activatedPossessions": 4677,
+        "activationMet": true,
+        "activationPredicate": "action:ISOLATION",
+        "context": "ISOLATION possessions only",
+        "conditionalTests": [
+          {
+            "metric": "primaryConcentration",
+            "spanAcrossRange": 0.01091,
+            "tAtEndpoint": -4.6817,
+            "p": 0.0000028482889664842986,
+            "practicalThreshold": 0.01,
+            "clearsPractical": true,
+            "adjustedP": 0.000008544866899452896,
+            "significant": true
+          },
+          {
+            "metric": "distinctPrimaries",
+            "spanAcrossRange": -0.14453,
+            "tAtEndpoint": 2.84868,
+            "p": 0.004390229261990372,
+            "practicalThreshold": 0.15,
+            "clearsPractical": false,
+            "adjustedP": 0.008780458523980744,
+            "significant": true
+          },
+          {
+            "metric": "count",
+            "spanAcrossRange": 0.12891,
+            "tAtEndpoint": -1.86724,
+            "p": 0.061867952549134964,
+            "practicalThreshold": 25,
+            "clearsPractical": false,
+            "adjustedP": 0.061867952549134964,
+            "significant": false
+          }
+        ],
+        "conditionalEffectConfirmed": true,
+        "bestConditionalMetric": "primaryConcentration",
+        "bestConditionalSpan": 0.01091,
+        "guardrailBreaches": [],
+        "support": "SYNTHETIC_CONTROL_SUPPORT",
+        "confoundedWithV2": [],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": false,
+        "triage": "RARE_CONTEXT_ACTIVE",
+        "triageReason": "Conditional effect on primaryConcentration: span 0.01091 across the full range against a threshold of 0.01, adjusted p 0.00001, over 4677 activated possessions — a narrow context.",
+        "identifiabilityV3": "CONTEXTUALLY_IDENTIFIABLE",
+        "readinessV3": "STRONGLY_REGULARIZED_CALIBRATION",
+        "readinessReason": "Real effect in a narrow context. Small, heavily penalised movement only.",
+        "movementCapFractionOfRange": 0.1,
+        "searchBounds": {
+          "lo": 1.6,
+          "hi": 2
+        },
+        "eligibleForSearch": true
+      },
+      {
+        "id": "fitBand.PICK_AND_ROLL.lo",
+        "module": "opportunityAllocation",
+        "defaultValue": 0.55,
+        "min": 0.1,
+        "max": 1,
+        "priorV2Category": "NO_MEASURABLE_EFFECT",
+        "wasPriorNoEffect": true,
+        "activatedPossessions": 6973,
+        "activationMet": true,
+        "activationPredicate": "action:PICK_AND_ROLL",
+        "context": "PICK_AND_ROLL possessions only",
+        "conditionalTests": [
+          {
+            "metric": "primaryConcentration",
+            "spanAcrossRange": -0.00355,
+            "tAtEndpoint": -1.8446,
+            "p": 0.06509562532321071,
+            "practicalThreshold": 0.01,
+            "clearsPractical": false,
+            "adjustedP": 0.19528687596963212,
+            "significant": false
+          },
+          {
+            "metric": "count",
+            "spanAcrossRange": -0.35417,
+            "tAtEndpoint": -1.16067,
+            "p": 0.24577623668247067,
+            "practicalThreshold": 25,
+            "clearsPractical": false,
+            "adjustedP": 0.49155247336494134,
+            "significant": false
+          },
+          {
+            "metric": "distinctPrimaries",
+            "spanAcrossRange": -0.01562,
+            "tAtEndpoint": -0.70618,
+            "p": 0.48007605764735745,
+            "practicalThreshold": 0.15,
+            "clearsPractical": false,
+            "adjustedP": 0.49155247336494134,
+            "significant": false
+          }
+        ],
+        "conditionalEffectConfirmed": false,
+        "bestConditionalMetric": "primaryConcentration",
+        "bestConditionalSpan": -0.00355,
+        "guardrailBreaches": [],
+        "support": "SYNTHETIC_CONTROL_SUPPORT",
+        "confoundedWithV2": [],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": false,
+        "triage": "TRUE_NO_EFFECT",
+        "triageReason": "Mechanic activated over 6973 possessions, full range tested, instrumentation verified, and no conditional metric moves beyond noise.",
+        "identifiabilityV3": "TRUE_NO_EFFECT",
+        "readinessV3": "DEFAULT_FROZEN_TRUE_NO_EFFECT",
+        "readinessReason": "Mechanic activates and no conditional metric moves beyond noise across the full range.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 0.55,
+          "hi": 0.55
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "fitBand.PICK_AND_ROLL.hi",
+        "module": "opportunityAllocation",
+        "defaultValue": 1.7,
+        "min": 1,
+        "max": 3,
+        "priorV2Category": "NO_MEASURABLE_EFFECT",
+        "wasPriorNoEffect": true,
+        "activatedPossessions": 6973,
+        "activationMet": true,
+        "activationPredicate": "action:PICK_AND_ROLL",
+        "context": "PICK_AND_ROLL possessions only",
+        "conditionalTests": [
+          {
+            "metric": "primaryConcentration",
+            "spanAcrossRange": 0.00261,
+            "tAtEndpoint": -1.68337,
+            "p": 0.09230343396668836,
+            "practicalThreshold": 0.01,
+            "clearsPractical": false,
+            "adjustedP": 0.27691030190006505,
+            "significant": false
+          },
+          {
+            "metric": "count",
+            "spanAcrossRange": 0.25,
+            "tAtEndpoint": -1.1483,
+            "p": 0.25084484433218146,
+            "practicalThreshold": 25,
+            "clearsPractical": false,
+            "adjustedP": 0.5016896886643629,
+            "significant": false
+          },
+          {
+            "metric": "distinctPrimaries",
+            "spanAcrossRange": 0.01562,
+            "tAtEndpoint": -0.78368,
+            "p": 0.4332277643765988,
+            "practicalThreshold": 0.15,
+            "clearsPractical": false,
+            "adjustedP": 0.5016896886643629,
+            "significant": false
+          }
+        ],
+        "conditionalEffectConfirmed": false,
+        "bestConditionalMetric": "primaryConcentration",
+        "bestConditionalSpan": 0.00261,
+        "guardrailBreaches": [],
+        "support": "SYNTHETIC_CONTROL_SUPPORT",
+        "confoundedWithV2": [],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": false,
+        "triage": "TRUE_NO_EFFECT",
+        "triageReason": "Mechanic activated over 6973 possessions, full range tested, instrumentation verified, and no conditional metric moves beyond noise.",
+        "identifiabilityV3": "TRUE_NO_EFFECT",
+        "readinessV3": "DEFAULT_FROZEN_TRUE_NO_EFFECT",
+        "readinessReason": "Mechanic activates and no conditional metric moves beyond noise across the full range.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 1.7,
+          "hi": 1.7
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "fitBand.TRANSITION.lo",
+        "module": "opportunityAllocation",
+        "defaultValue": 0.6,
+        "min": 0.1,
+        "max": 1,
+        "priorV2Category": "NO_MEASURABLE_EFFECT",
+        "wasPriorNoEffect": true,
+        "activatedPossessions": 6320,
+        "activationMet": true,
+        "activationPredicate": "action:TRANSITION",
+        "context": "TRANSITION possessions only",
+        "conditionalTests": [
+          {
+            "metric": "distinctPrimaries",
+            "spanAcrossRange": 0.11459,
+            "tAtEndpoint": -2.89066,
+            "p": 0.003844470663771442,
+            "practicalThreshold": 0.15,
+            "clearsPractical": false,
+            "adjustedP": 0.011533411991314326,
+            "significant": true
+          },
+          {
+            "metric": "primaryConcentration",
+            "spanAcrossRange": -0.00678,
+            "tAtEndpoint": 2.72299,
+            "p": 0.006469505997579827,
+            "practicalThreshold": 0.01,
+            "clearsPractical": false,
+            "adjustedP": 0.012939011995159655,
+            "significant": true
+          },
+          {
+            "metric": "count",
+            "spanAcrossRange": -0.07292,
+            "tAtEndpoint": 0.70865,
+            "p": 0.47854155122949465,
+            "practicalThreshold": 25,
+            "clearsPractical": false,
+            "adjustedP": 0.47854155122949465,
+            "significant": false
+          }
+        ],
+        "conditionalEffectConfirmed": false,
+        "bestConditionalMetric": "distinctPrimaries",
+        "bestConditionalSpan": 0.11459,
+        "guardrailBreaches": [],
+        "support": "SYNTHETIC_CONTROL_SUPPORT",
+        "confoundedWithV2": [
+          "fitBand.TRANSITION.hi"
+        ],
+        "confoundedWithAfterFactorial": [
+          "fitBand.TRANSITION.hi"
+        ],
+        "confoundingFreedByFactorial": false,
+        "triage": "RANGE_TOO_NARROW",
+        "triageReason": "Statistically significant on distinctPrimaries, primaryConcentration but no conditional metric clears its practical threshold across the full declared range (best span 0.11459 vs 0.15). The bounds cannot produce a basketball-relevant change.",
+        "identifiabilityV3": "TRUE_NO_EFFECT",
+        "readinessV3": "DEFAULT_FROZEN_TRUE_NO_EFFECT",
+        "readinessReason": "Mechanic activates and no conditional metric moves beyond noise across the full range.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 0.6,
+          "hi": 0.6
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "fitBand.TRANSITION.hi",
+        "module": "opportunityAllocation",
+        "defaultValue": 1.6,
+        "min": 1,
+        "max": 3,
+        "priorV2Category": "NO_MEASURABLE_EFFECT",
+        "wasPriorNoEffect": true,
+        "activatedPossessions": 6320,
+        "activationMet": true,
+        "activationPredicate": "action:TRANSITION",
+        "context": "TRANSITION possessions only",
+        "conditionalTests": [
+          {
+            "metric": "distinctPrimaries",
+            "spanAcrossRange": -0.08334,
+            "tAtEndpoint": -2.33605,
+            "p": 0.01948859339285616,
+            "practicalThreshold": 0.15,
+            "clearsPractical": false,
+            "adjustedP": 0.058465780178568474,
+            "significant": false
+          },
+          {
+            "metric": "primaryConcentration",
+            "spanAcrossRange": 0.00392,
+            "tAtEndpoint": -1.77278,
+            "p": 0.076265072122509,
+            "practicalThreshold": 0.01,
+            "clearsPractical": false,
+            "adjustedP": 0.152530144245018,
+            "significant": false
+          },
+          {
+            "metric": "count",
+            "spanAcrossRange": 0.07292,
+            "tAtEndpoint": 0.92021,
+            "p": 0.3574629774108328,
+            "practicalThreshold": 25,
+            "clearsPractical": false,
+            "adjustedP": 0.3574629774108328,
+            "significant": false
+          }
+        ],
+        "conditionalEffectConfirmed": false,
+        "bestConditionalMetric": "distinctPrimaries",
+        "bestConditionalSpan": -0.08334,
+        "guardrailBreaches": [],
+        "support": "SYNTHETIC_CONTROL_SUPPORT",
+        "confoundedWithV2": [
+          "fitBand.TRANSITION.lo"
+        ],
+        "confoundedWithAfterFactorial": [
+          "fitBand.TRANSITION.lo"
+        ],
+        "confoundingFreedByFactorial": false,
+        "triage": "TRUE_NO_EFFECT",
+        "triageReason": "Mechanic activated over 6320 possessions, full range tested, instrumentation verified, and no conditional metric moves beyond noise.",
+        "identifiabilityV3": "TRUE_NO_EFFECT",
+        "readinessV3": "DEFAULT_FROZEN_TRUE_NO_EFFECT",
+        "readinessReason": "Mechanic activates and no conditional metric moves beyond noise across the full range.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 1.6,
+          "hi": 1.6
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "fitBand.GENERIC_HALF_COURT.lo",
+        "module": "opportunityAllocation",
+        "defaultValue": 0.75,
+        "min": 0.1,
+        "max": 1,
+        "priorV2Category": "NO_MEASURABLE_EFFECT",
+        "wasPriorNoEffect": true,
+        "activatedPossessions": 3791,
+        "activationMet": true,
+        "activationPredicate": "action:GENERIC_HALF_COURT",
+        "context": "GENERIC_HALF_COURT possessions only",
+        "conditionalTests": [
+          {
+            "metric": "count",
+            "spanAcrossRange": -0.21875,
+            "tAtEndpoint": 2.84229,
+            "p": 0.0044792000579956005,
+            "practicalThreshold": 25,
+            "clearsPractical": false,
+            "adjustedP": 0.013437600173986802,
+            "significant": true
+          },
+          {
+            "metric": "primaryConcentration",
+            "spanAcrossRange": -0.00629,
+            "tAtEndpoint": -1.95646,
+            "p": 0.05041085022549943,
+            "practicalThreshold": 0.01,
+            "clearsPractical": false,
+            "adjustedP": 0.10082170045099886,
+            "significant": false
+          },
+          {
+            "metric": "distinctPrimaries",
+            "spanAcrossRange": 0.07813,
+            "tAtEndpoint": 1.89836,
+            "p": 0.05764854138011553,
+            "practicalThreshold": 0.15,
+            "clearsPractical": false,
+            "adjustedP": 0.10082170045099886,
+            "significant": false
+          }
+        ],
+        "conditionalEffectConfirmed": false,
+        "bestConditionalMetric": "count",
+        "bestConditionalSpan": -0.21875,
+        "guardrailBreaches": [],
+        "support": "SYNTHETIC_CONTROL_SUPPORT",
+        "confoundedWithV2": [
+          "fitBand.GENERIC_HALF_COURT.hi"
+        ],
+        "confoundedWithAfterFactorial": [
+          "fitBand.GENERIC_HALF_COURT.hi"
+        ],
+        "confoundingFreedByFactorial": false,
+        "triage": "RANGE_TOO_NARROW",
+        "triageReason": "Statistically significant on count but no conditional metric clears its practical threshold across the full declared range (best span 0.21875 vs 25). The bounds cannot produce a basketball-relevant change.",
+        "identifiabilityV3": "TRUE_NO_EFFECT",
+        "readinessV3": "DEFAULT_FROZEN_TRUE_NO_EFFECT",
+        "readinessReason": "Mechanic activates and no conditional metric moves beyond noise across the full range.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 0.75,
+          "hi": 0.75
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "fitBand.GENERIC_HALF_COURT.hi",
+        "module": "opportunityAllocation",
+        "defaultValue": 1.35,
+        "min": 1,
+        "max": 3,
+        "priorV2Category": "NO_MEASURABLE_EFFECT",
+        "wasPriorNoEffect": true,
+        "activatedPossessions": 3791,
+        "activationMet": true,
+        "activationPredicate": "action:GENERIC_HALF_COURT",
+        "context": "GENERIC_HALF_COURT possessions only",
+        "conditionalTests": [
+          {
+            "metric": "primaryConcentration",
+            "spanAcrossRange": 0.00672,
+            "tAtEndpoint": 2.22229,
+            "p": 0.026263624361482787,
+            "practicalThreshold": 0.01,
+            "clearsPractical": false,
+            "adjustedP": 0.07879087308444836,
+            "significant": false
+          },
+          {
+            "metric": "count",
+            "spanAcrossRange": 0.0677,
+            "tAtEndpoint": 1.94616,
+            "p": 0.051635383859189636,
+            "practicalThreshold": 25,
+            "clearsPractical": false,
+            "adjustedP": 0.10327076771837927,
+            "significant": false
+          },
+          {
+            "metric": "distinctPrimaries",
+            "spanAcrossRange": -0.04167,
+            "tAtEndpoint": 1.89836,
+            "p": 0.05764854138011553,
+            "practicalThreshold": 0.15,
+            "clearsPractical": false,
+            "adjustedP": 0.10327076771837927,
+            "significant": false
+          }
+        ],
+        "conditionalEffectConfirmed": false,
+        "bestConditionalMetric": "primaryConcentration",
+        "bestConditionalSpan": 0.00672,
+        "guardrailBreaches": [],
+        "support": "SYNTHETIC_CONTROL_SUPPORT",
+        "confoundedWithV2": [
+          "fitBand.GENERIC_HALF_COURT.lo"
+        ],
+        "confoundedWithAfterFactorial": [
+          "fitBand.GENERIC_HALF_COURT.lo"
+        ],
+        "confoundingFreedByFactorial": false,
+        "triage": "TRUE_NO_EFFECT",
+        "triageReason": "Mechanic activated over 3791 possessions, full range tested, instrumentation verified, and no conditional metric moves beyond noise.",
+        "identifiabilityV3": "TRUE_NO_EFFECT",
+        "readinessV3": "DEFAULT_FROZEN_TRUE_NO_EFFECT",
+        "readinessReason": "Mechanic activates and no conditional metric moves beyond noise across the full range.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 1.35,
+          "hi": 1.35
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "shotLocation.rimWeight",
+        "module": "possessionContext",
+        "defaultValue": 0.34,
+        "min": 0.15,
+        "max": 0.6,
+        "priorV2Category": "CONFOUNDED",
+        "wasPriorNoEffect": false,
+        "activatedPossessions": 99288,
+        "activationMet": true,
+        "activationPredicate": "anyShot",
+        "context": "all shot possessions",
+        "conditionalTests": [
+          {
+            "metric": "locationShare:RIM",
+            "spanAcrossRange": 0.18291,
+            "tAtEndpoint": -53.70297,
+            "p": 5e-324,
+            "practicalThreshold": 0.01,
+            "clearsPractical": true,
+            "adjustedP": 1e-323,
+            "significant": true
+          },
+          {
+            "metric": "locationShare:PAINT_OR_POST",
+            "spanAcrossRange": -0.08333,
+            "tAtEndpoint": 25.81264,
+            "p": 7.108813533205877e-147,
+            "practicalThreshold": 0.01,
+            "clearsPractical": true,
+            "adjustedP": 7.108813533205877e-147,
+            "significant": true
+          }
+        ],
+        "conditionalEffectConfirmed": true,
+        "bestConditionalMetric": "locationShare:RIM",
+        "bestConditionalSpan": 0.18291,
+        "guardrailBreaches": [],
+        "support": "UNSUPPORTED",
+        "confoundedWithV2": [
+          "shotLocation.rimBiasMultiplier"
+        ],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": true,
+        "triage": "TARGETED_EFFECT_CONFIRMED",
+        "triageReason": "Conditional effect on locationShare:RIM: span 0.18291 across the full range against a threshold of 0.01, adjusted p 0, over 99288 activated possessions.",
+        "identifiabilityV3": "UNSUPPORTED_BY_TARGET_DATA",
+        "readinessV3": "DEFAULT_FROZEN_PENDING_EXTERNAL_DATA",
+        "readinessReason": "Measurable, but no authorized target can judge which direction is better.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 0.34,
+          "hi": 0.34
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "shotLocation.postWeight",
+        "module": "possessionContext",
+        "defaultValue": 0.42,
+        "min": 0.2,
+        "max": 0.7,
+        "priorV2Category": "UNSUPPORTED_BY_TARGET_DATA",
+        "wasPriorNoEffect": false,
+        "activatedPossessions": 99288,
+        "activationMet": true,
+        "activationPredicate": "anyShot",
+        "context": "all shot possessions",
+        "conditionalTests": [
+          {
+            "metric": "locationShare:PAINT_OR_POST",
+            "spanAcrossRange": 0.1383,
+            "tAtEndpoint": 48.29366,
+            "p": 5e-324,
+            "practicalThreshold": 0.01,
+            "clearsPractical": true,
+            "adjustedP": 5e-324,
+            "significant": true
+          }
+        ],
+        "conditionalEffectConfirmed": true,
+        "bestConditionalMetric": "locationShare:PAINT_OR_POST",
+        "bestConditionalSpan": 0.1383,
+        "guardrailBreaches": [],
+        "support": "UNSUPPORTED",
+        "confoundedWithV2": [],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": false,
+        "triage": "TARGETED_EFFECT_CONFIRMED",
+        "triageReason": "Conditional effect on locationShare:PAINT_OR_POST: span 0.1383 across the full range against a threshold of 0.01, adjusted p 0, over 99288 activated possessions.",
+        "identifiabilityV3": "UNSUPPORTED_BY_TARGET_DATA",
+        "readinessV3": "DEFAULT_FROZEN_PENDING_EXTERNAL_DATA",
+        "readinessReason": "Measurable, but no authorized target can judge which direction is better.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 0.42,
+          "hi": 0.42
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "shotLocation.midrangeWeight",
+        "module": "possessionContext",
+        "defaultValue": 0.18,
+        "min": 0.05,
+        "max": 0.5,
+        "priorV2Category": "UNSUPPORTED_BY_TARGET_DATA",
+        "wasPriorNoEffect": false,
+        "activatedPossessions": 99288,
+        "activationMet": true,
+        "activationPredicate": "anyShot",
+        "context": "all shot possessions",
+        "conditionalTests": [
+          {
+            "metric": "locationShare:MIDRANGE",
+            "spanAcrossRange": 0.18782,
+            "tAtEndpoint": 61.87494,
+            "p": 5e-324,
+            "practicalThreshold": 0.01,
+            "clearsPractical": true,
+            "adjustedP": 5e-324,
+            "significant": true
+          }
+        ],
+        "conditionalEffectConfirmed": true,
+        "bestConditionalMetric": "locationShare:MIDRANGE",
+        "bestConditionalSpan": 0.18782,
+        "guardrailBreaches": [],
+        "support": "UNSUPPORTED",
+        "confoundedWithV2": [],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": false,
+        "triage": "TARGETED_EFFECT_CONFIRMED",
+        "triageReason": "Conditional effect on locationShare:MIDRANGE: span 0.18782 across the full range against a threshold of 0.01, adjusted p 0, over 99288 activated possessions.",
+        "identifiabilityV3": "UNSUPPORTED_BY_TARGET_DATA",
+        "readinessV3": "DEFAULT_FROZEN_PENDING_EXTERNAL_DATA",
+        "readinessReason": "Measurable, but no authorized target can judge which direction is better.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 0.18,
+          "hi": 0.18
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "shotLocation.threeWeight",
+        "module": "possessionContext",
+        "defaultValue": 0.22,
+        "min": 0.05,
+        "max": 0.6,
+        "priorV2Category": "NO_MEASURABLE_EFFECT",
+        "wasPriorNoEffect": true,
+        "activatedPossessions": 99288,
+        "activationMet": true,
+        "activationPredicate": "anyShot",
+        "context": "all shot possessions",
+        "conditionalTests": [
+          {
+            "metric": "locationShare:THREE_POINT",
+            "spanAcrossRange": 0.00621,
+            "tAtEndpoint": 7.41884,
+            "p": 1.1909246902045664e-13,
+            "practicalThreshold": 0.01,
+            "clearsPractical": false,
+            "adjustedP": 2.381849380409133e-13,
+            "significant": true
+          },
+          {
+            "metric": "threeRate",
+            "spanAcrossRange": 0.00641,
+            "tAtEndpoint": 3.92688,
+            "p": 0.00008609071893371497,
+            "practicalThreshold": 0.01,
+            "clearsPractical": false,
+            "adjustedP": 0.00008609071893371497,
+            "significant": true
+          }
+        ],
+        "conditionalEffectConfirmed": false,
+        "bestConditionalMetric": "locationShare:THREE_POINT",
+        "bestConditionalSpan": 0.00621,
+        "guardrailBreaches": [],
+        "support": "UNSUPPORTED",
+        "confoundedWithV2": [
+          "shotLocation.perimeterBiasMultiplier"
+        ],
+        "confoundedWithAfterFactorial": [
+          "shotLocation.perimeterBiasMultiplier"
+        ],
+        "confoundingFreedByFactorial": false,
+        "triage": "RANGE_TOO_NARROW",
+        "triageReason": "Statistically significant on locationShare:THREE_POINT, threeRate but no conditional metric clears its practical threshold across the full declared range (best span 0.00621 vs 0.01). The bounds cannot produce a basketball-relevant change.",
+        "identifiabilityV3": "TRUE_NO_EFFECT",
+        "readinessV3": "DEFAULT_FROZEN_TRUE_NO_EFFECT",
+        "readinessReason": "Mechanic activates and no conditional metric moves beyond noise across the full range.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 0.22,
+          "hi": 0.22
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "shotLocation.rimBiasMultiplier",
+        "module": "possessionGame",
+        "defaultValue": 1.6,
+        "min": 0.5,
+        "max": 3,
+        "priorV2Category": "CONFOUNDED",
+        "wasPriorNoEffect": false,
+        "activatedPossessions": 16686,
+        "activationMet": true,
+        "activationPredicate": "action:PICK_AND_ROLL,TRANSITION,CUT",
+        "context": "rim-biased action possessions",
+        "conditionalTests": [
+          {
+            "metric": "locationShare:RIM",
+            "spanAcrossRange": 0.10268,
+            "tAtEndpoint": -13.20384,
+            "p": 8.656442287678657e-40,
+            "practicalThreshold": 0.01,
+            "clearsPractical": true,
+            "adjustedP": 8.656442287678657e-40,
+            "significant": true
+          }
+        ],
+        "conditionalEffectConfirmed": true,
+        "bestConditionalMetric": "locationShare:RIM",
+        "bestConditionalSpan": 0.10268,
+        "guardrailBreaches": [],
+        "support": "UNSUPPORTED",
+        "confoundedWithV2": [
+          "shotLocation.rimWeight"
+        ],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": true,
+        "triage": "RARE_CONTEXT_ACTIVE",
+        "triageReason": "Conditional effect on locationShare:RIM: span 0.10268 across the full range against a threshold of 0.01, adjusted p 0, over 16686 activated possessions — a narrow context.",
+        "identifiabilityV3": "UNSUPPORTED_BY_TARGET_DATA",
+        "readinessV3": "DEFAULT_FROZEN_PENDING_EXTERNAL_DATA",
+        "readinessReason": "Measurable, but no authorized target can judge which direction is better.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 1.6,
+          "hi": 1.6
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "shotLocation.perimeterBiasMultiplier",
+        "module": "possessionGame",
+        "defaultValue": 1.5,
+        "min": 0.5,
+        "max": 3,
+        "priorV2Category": "CONFOUNDED",
+        "wasPriorNoEffect": false,
+        "activatedPossessions": 13274,
+        "activationMet": true,
+        "activationPredicate": "action:SPOT_UP,OFF_BALL_SCREEN,HANDOFF",
+        "context": "perimeter action possessions",
+        "conditionalTests": [
+          {
+            "metric": "locationShare:THREE_POINT",
+            "spanAcrossRange": 0.10533,
+            "tAtEndpoint": 15.52094,
+            "p": 2.6352502572727327e-54,
+            "practicalThreshold": 0.01,
+            "clearsPractical": true,
+            "adjustedP": 2.6352502572727327e-54,
+            "significant": true
+          }
+        ],
+        "conditionalEffectConfirmed": true,
+        "bestConditionalMetric": "locationShare:THREE_POINT",
+        "bestConditionalSpan": 0.10533,
+        "guardrailBreaches": [],
+        "support": "UNSUPPORTED",
+        "confoundedWithV2": [
+          "shotLocation.threeWeight"
+        ],
+        "confoundedWithAfterFactorial": [
+          "shotLocation.threeWeight"
+        ],
+        "confoundingFreedByFactorial": false,
+        "triage": "RARE_CONTEXT_ACTIVE",
+        "triageReason": "Conditional effect on locationShare:THREE_POINT: span 0.10533 across the full range against a threshold of 0.01, adjusted p 0, over 13274 activated possessions — a narrow context.",
+        "identifiabilityV3": "CONFOUNDED",
+        "readinessV3": "DEFAULT_FROZEN_CONFOUNDED",
+        "readinessReason": "Cannot be separated from a partner's effect on this corpus.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 1.5,
+          "hi": 1.5
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "conversion.rimBonus",
+        "module": "possessionGame",
+        "defaultValue": 0.155,
+        "min": 0.05,
+        "max": 0.28,
+        "priorV2Category": "UNSUPPORTED_BY_TARGET_DATA",
+        "wasPriorNoEffect": false,
+        "activatedPossessions": 39229,
+        "activationMet": true,
+        "activationPredicate": "shotAt:RIM",
+        "context": "rim attempts only",
+        "conditionalTests": [
+          {
+            "metric": "makeRate",
+            "spanAcrossRange": 0.22458,
+            "tAtEndpoint": 41.99749,
+            "p": 5e-324,
+            "practicalThreshold": 0.005,
+            "clearsPractical": true,
+            "adjustedP": 1e-323,
+            "significant": true
+          },
+          {
+            "metric": "expectedMake",
+            "spanAcrossRange": 0.22082,
+            "tAtEndpoint": 313.57509,
+            "p": 5e-324,
+            "practicalThreshold": 0.02,
+            "clearsPractical": true,
+            "adjustedP": 1e-323,
+            "significant": true
+          }
+        ],
+        "conditionalEffectConfirmed": true,
+        "bestConditionalMetric": "expectedMake",
+        "bestConditionalSpan": 0.22082,
+        "guardrailBreaches": [],
+        "support": "UNSUPPORTED",
+        "confoundedWithV2": [],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": false,
+        "triage": "TARGETED_EFFECT_CONFIRMED",
+        "triageReason": "Conditional effect on expectedMake: span 0.22082 across the full range against a threshold of 0.02, adjusted p 0, over 39229 activated possessions.",
+        "identifiabilityV3": "UNSUPPORTED_BY_TARGET_DATA",
+        "readinessV3": "DEFAULT_FROZEN_PENDING_EXTERNAL_DATA",
+        "readinessReason": "Measurable, but no authorized target can judge which direction is better.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 0.155,
+          "hi": 0.155
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "conversion.paintBonus",
+        "module": "possessionGame",
+        "defaultValue": 0.015,
+        "min": -0.1,
+        "max": 0.12,
+        "priorV2Category": "UNSUPPORTED_BY_TARGET_DATA",
+        "wasPriorNoEffect": false,
+        "activatedPossessions": 20563,
+        "activationMet": true,
+        "activationPredicate": "shotAt:PAINT_OR_POST",
+        "context": "paint attempts only",
+        "conditionalTests": [
+          {
+            "metric": "expectedMake",
+            "spanAcrossRange": 0.2066,
+            "tAtEndpoint": 313.62161,
+            "p": 5e-324,
+            "practicalThreshold": 0.02,
+            "clearsPractical": true,
+            "adjustedP": 1e-323,
+            "significant": true
+          },
+          {
+            "metric": "makeRate",
+            "spanAcrossRange": 0.20788,
+            "tAtEndpoint": -27.89715,
+            "p": 3.240554935496257e-171,
+            "practicalThreshold": 0.005,
+            "clearsPractical": true,
+            "adjustedP": 3.240554935496257e-171,
+            "significant": true
+          }
+        ],
+        "conditionalEffectConfirmed": true,
+        "bestConditionalMetric": "expectedMake",
+        "bestConditionalSpan": 0.2066,
+        "guardrailBreaches": [],
+        "support": "UNSUPPORTED",
+        "confoundedWithV2": [],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": false,
+        "triage": "TARGETED_EFFECT_CONFIRMED",
+        "triageReason": "Conditional effect on expectedMake: span 0.2066 across the full range against a threshold of 0.02, adjusted p 0, over 20563 activated possessions.",
+        "identifiabilityV3": "UNSUPPORTED_BY_TARGET_DATA",
+        "readinessV3": "DEFAULT_FROZEN_PENDING_EXTERNAL_DATA",
+        "readinessReason": "Measurable, but no authorized target can judge which direction is better.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 0.015,
+          "hi": 0.015
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "conversion.midrangePenalty",
+        "module": "possessionGame",
+        "defaultValue": -0.055,
+        "min": -0.15,
+        "max": 0.02,
+        "priorV2Category": "UNSUPPORTED_BY_TARGET_DATA",
+        "wasPriorNoEffect": false,
+        "activatedPossessions": 27552,
+        "activationMet": true,
+        "activationPredicate": "shotAt:MIDRANGE",
+        "context": "midrange attempts only",
+        "conditionalTests": [
+          {
+            "metric": "expectedMake",
+            "spanAcrossRange": 0.15987,
+            "tAtEndpoint": 199.9483,
+            "p": 5e-324,
+            "practicalThreshold": 0.02,
+            "clearsPractical": true,
+            "adjustedP": 1e-323,
+            "significant": true
+          },
+          {
+            "metric": "makeRate",
+            "spanAcrossRange": 0.15618,
+            "tAtEndpoint": -26.66165,
+            "p": 1.4630482689588687e-156,
+            "practicalThreshold": 0.005,
+            "clearsPractical": true,
+            "adjustedP": 1.4630482689588687e-156,
+            "significant": true
+          }
+        ],
+        "conditionalEffectConfirmed": true,
+        "bestConditionalMetric": "expectedMake",
+        "bestConditionalSpan": 0.15987,
+        "guardrailBreaches": [],
+        "support": "UNSUPPORTED",
+        "confoundedWithV2": [],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": false,
+        "triage": "TARGETED_EFFECT_CONFIRMED",
+        "triageReason": "Conditional effect on expectedMake: span 0.15987 across the full range against a threshold of 0.02, adjusted p 0, over 27552 activated possessions.",
+        "identifiabilityV3": "UNSUPPORTED_BY_TARGET_DATA",
+        "readinessV3": "DEFAULT_FROZEN_PENDING_EXTERNAL_DATA",
+        "readinessReason": "Measurable, but no authorized target can judge which direction is better.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": -0.055,
+          "hi": -0.055
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "era.paceTempoScale",
+        "module": "possessionContext",
+        "defaultValue": 1.35,
+        "min": 0.5,
+        "max": 3,
+        "priorV2Category": "UNSUPPORTED_BY_TARGET_DATA",
+        "wasPriorNoEffect": false,
+        "activatedPossessions": 123417,
+        "activationMet": true,
+        "activationPredicate": "always",
+        "context": "whole game",
+        "conditionalTests": [
+          {
+            "metric": "possessions",
+            "spanAcrossRange": 1.38086,
+            "tAtEndpoint": 7.49232,
+            "p": 6.82246632483844e-14,
+            "practicalThreshold": 0.5,
+            "clearsPractical": true,
+            "adjustedP": 6.82246632483844e-14,
+            "significant": true
+          }
+        ],
+        "conditionalEffectConfirmed": true,
+        "bestConditionalMetric": "possessions",
+        "bestConditionalSpan": 1.38086,
+        "guardrailBreaches": [],
+        "support": "UNSUPPORTED",
+        "confoundedWithV2": [],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": false,
+        "triage": "TARGETED_EFFECT_CONFIRMED",
+        "triageReason": "Conditional effect on possessions: span 1.38086 across the full range against a threshold of 0.5, adjusted p 0, over 123417 activated possessions.",
+        "identifiabilityV3": "UNSUPPORTED_BY_TARGET_DATA",
+        "readinessV3": "DEFAULT_FROZEN_PENDING_EXTERNAL_DATA",
+        "readinessReason": "Measurable, but no authorized target can judge which direction is better.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 1.35,
+          "hi": 1.35
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "era.paceBoundFraction",
+        "module": "possessionContext",
+        "defaultValue": 0.14,
+        "min": 0.05,
+        "max": 0.3,
+        "priorV2Category": "NO_MEASURABLE_EFFECT",
+        "wasPriorNoEffect": true,
+        "activatedPossessions": 123417,
+        "activationMet": true,
+        "activationPredicate": "always",
+        "context": "whole game",
+        "conditionalTests": [
+          {
+            "metric": "possessions",
+            "spanAcrossRange": 0,
+            "tAtEndpoint": 0,
+            "p": 0.9999999989503827,
+            "practicalThreshold": 0.5,
+            "clearsPractical": false,
+            "adjustedP": 0.9999999989503827,
+            "significant": false
+          }
+        ],
+        "conditionalEffectConfirmed": false,
+        "bestConditionalMetric": "possessions",
+        "bestConditionalSpan": 0,
+        "guardrailBreaches": [],
+        "support": "UNSUPPORTED",
+        "confoundedWithV2": [],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": false,
+        "triage": "GUARDRAIL_ONLY",
+        "triageReason": "Declared a suspected clamp before measurement, and no conditional metric moves across its full range. It bounds inputs the corpus does not contain.",
+        "identifiabilityV3": "GUARDRAIL_ONLY",
+        "readinessV3": "DEFAULT_FROZEN_GUARDRAIL",
+        "readinessReason": "A clamp that bounds impossible inputs. Tuning a guard rail is not calibration.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 0.14,
+          "hi": 0.14
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "era.threeAnchorMax",
+        "module": "possessionContext",
+        "defaultValue": 12,
+        "min": 2,
+        "max": 30,
+        "priorV2Category": "NO_MEASURABLE_EFFECT",
+        "wasPriorNoEffect": true,
+        "activatedPossessions": 99288,
+        "activationMet": true,
+        "activationPredicate": "anyShot",
+        "context": "all shot possessions",
+        "conditionalTests": [
+          {
+            "metric": "locationShare:THREE_POINT",
+            "spanAcrossRange": 0.00399,
+            "tAtEndpoint": -6.48634,
+            "p": 8.837649052844051e-11,
+            "practicalThreshold": 0.01,
+            "clearsPractical": false,
+            "adjustedP": 1.7675298105688102e-10,
+            "significant": true
+          },
+          {
+            "metric": "threeRate",
+            "spanAcrossRange": 0.00387,
+            "tAtEndpoint": -4.4028,
+            "p": 0.00001069500295431958,
+            "practicalThreshold": 0.01,
+            "clearsPractical": false,
+            "adjustedP": 0.00001069500295431958,
+            "significant": true
+          }
+        ],
+        "conditionalEffectConfirmed": false,
+        "bestConditionalMetric": "locationShare:THREE_POINT",
+        "bestConditionalSpan": 0.00399,
+        "guardrailBreaches": [],
+        "support": "UNSUPPORTED",
+        "confoundedWithV2": [],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": false,
+        "triage": "GUARDRAIL_ONLY",
+        "triageReason": "Declared a suspected clamp before measurement, and no conditional metric moves across its full range. It bounds inputs the corpus does not contain.",
+        "identifiabilityV3": "GUARDRAIL_ONLY",
+        "readinessV3": "DEFAULT_FROZEN_GUARDRAIL",
+        "readinessReason": "A clamp that bounds impossible inputs. Tuning a guard rail is not calibration.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 12,
+          "hi": 12
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "era.freeThrowTripRate",
+        "module": "possessionContext",
+        "defaultValue": 0.5,
+        "min": 0.2,
+        "max": 1,
+        "priorV2Category": "UNSUPPORTED_BY_TARGET_DATA",
+        "wasPriorNoEffect": false,
+        "activatedPossessions": 123417,
+        "activationMet": true,
+        "activationPredicate": "always",
+        "context": "whole game",
+        "conditionalTests": [
+          {
+            "metric": "ftaPerPossession",
+            "spanAcrossRange": 0.37914,
+            "tAtEndpoint": 53.18912,
+            "p": 5e-324,
+            "practicalThreshold": 0.005,
+            "clearsPractical": true,
+            "adjustedP": 5e-324,
+            "significant": true
+          }
+        ],
+        "conditionalEffectConfirmed": true,
+        "bestConditionalMetric": "ftaPerPossession",
+        "bestConditionalSpan": 0.37914,
+        "guardrailBreaches": [],
+        "support": "UNSUPPORTED",
+        "confoundedWithV2": [],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": false,
+        "triage": "TARGETED_EFFECT_CONFIRMED",
+        "triageReason": "Conditional effect on ftaPerPossession: span 0.37914 across the full range against a threshold of 0.005, adjusted p 0, over 123417 activated possessions.",
+        "identifiabilityV3": "UNSUPPORTED_BY_TARGET_DATA",
+        "readinessV3": "DEFAULT_FROZEN_PENDING_EXTERNAL_DATA",
+        "readinessReason": "Measurable, but no authorized target can judge which direction is better.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 0.5,
+          "hi": 0.5
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "zone.highPostVulnerability",
+        "module": "zoneResolution",
+        "defaultValue": 1,
+        "min": 0.3,
+        "max": 2,
+        "priorV2Category": "NO_MEASURABLE_EFFECT",
+        "wasPriorNoEffect": true,
+        "activatedPossessions": 1268,
+        "activationMet": true,
+        "activationPredicate": "zoneGap:HIGH_POST",
+        "context": "high-post attacks against a live zone",
+        "conditionalTests": [
+          {
+            "metric": "count",
+            "spanAcrossRange": 7.45703,
+            "tAtEndpoint": -26.55728,
+            "p": 2.359897828737599e-155,
+            "practicalThreshold": 25,
+            "clearsPractical": false,
+            "adjustedP": 9.439591314950395e-155,
+            "significant": true
+          },
+          {
+            "metric": "expectedMake",
+            "spanAcrossRange": 0.04239,
+            "tAtEndpoint": 7.33036,
+            "p": 2.3129092973826775e-13,
+            "practicalThreshold": 0.02,
+            "clearsPractical": true,
+            "adjustedP": 6.938727892148033e-13,
+            "significant": true
+          },
+          {
+            "metric": "pointsPerPossession",
+            "spanAcrossRange": 0.06095,
+            "tAtEndpoint": 3.07066,
+            "p": 0.00213599951887978,
+            "practicalThreshold": 0.02,
+            "clearsPractical": true,
+            "adjustedP": 0.00427199903775956,
+            "significant": true
+          },
+          {
+            "metric": "makeRate",
+            "spanAcrossRange": 0.04672,
+            "tAtEndpoint": 2.82073,
+            "p": 0.00479157525102495,
+            "practicalThreshold": 0.005,
+            "clearsPractical": true,
+            "adjustedP": 0.00479157525102495,
+            "significant": true
+          }
+        ],
+        "conditionalEffectConfirmed": true,
+        "bestConditionalMetric": "expectedMake",
+        "bestConditionalSpan": 0.04239,
+        "guardrailBreaches": [],
+        "support": "STRUCTURAL_VALIDATION_ONLY",
+        "confoundedWithV2": [],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": false,
+        "triage": "RARE_CONTEXT_ACTIVE",
+        "triageReason": "Conditional effect on expectedMake: span 0.04239 across the full range against a threshold of 0.02, adjusted p 0, over 1268 activated possessions — a narrow context.",
+        "identifiabilityV3": "CONTEXTUALLY_IDENTIFIABLE",
+        "readinessV3": "STRONGLY_REGULARIZED_CALIBRATION",
+        "readinessReason": "Real effect in a narrow context. Small, heavily penalised movement only.",
+        "movementCapFractionOfRange": 0.1,
+        "searchBounds": {
+          "lo": 0.83,
+          "hi": 1.17
+        },
+        "eligibleForSearch": true
+      },
+      {
+        "id": "zone.cornerVulnerability",
+        "module": "zoneResolution",
+        "defaultValue": 1,
+        "min": 0.3,
+        "max": 2,
+        "priorV2Category": "IDENTIFIABLE",
+        "wasPriorNoEffect": false,
+        "activatedPossessions": 9031,
+        "activationMet": true,
+        "activationPredicate": "zoneGap:CORNER",
+        "context": "corner attacks against a live zone",
+        "conditionalTests": [
+          {
+            "metric": "expectedMake",
+            "spanAcrossRange": 0.03154,
+            "tAtEndpoint": 26.36431,
+            "p": 3.9196614636253723e-153,
+            "practicalThreshold": 0.02,
+            "clearsPractical": true,
+            "adjustedP": 1.567864585450149e-152,
+            "significant": true
+          },
+          {
+            "metric": "count",
+            "spanAcrossRange": 16.96875,
+            "tAtEndpoint": -23.56654,
+            "p": 9.344330671297494e-123,
+            "practicalThreshold": 25,
+            "clearsPractical": false,
+            "adjustedP": 2.803299201389248e-122,
+            "significant": true
+          },
+          {
+            "metric": "pointsPerPossession",
+            "spanAcrossRange": 0.09471,
+            "tAtEndpoint": 5.29912,
+            "p": 1.166045740594992e-7,
+            "practicalThreshold": 0.02,
+            "clearsPractical": true,
+            "adjustedP": 2.332091481189984e-7,
+            "significant": true
+          },
+          {
+            "metric": "makeRate",
+            "spanAcrossRange": 0.04009,
+            "tAtEndpoint": 4.67067,
+            "p": 0.000003005558625169868,
+            "practicalThreshold": 0.005,
+            "clearsPractical": true,
+            "adjustedP": 0.000003005558625169868,
+            "significant": true
+          }
+        ],
+        "conditionalEffectConfirmed": true,
+        "bestConditionalMetric": "expectedMake",
+        "bestConditionalSpan": 0.03154,
+        "guardrailBreaches": [],
+        "support": "STRUCTURAL_VALIDATION_ONLY",
+        "confoundedWithV2": [],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": false,
+        "triage": "RARE_CONTEXT_ACTIVE",
+        "triageReason": "Conditional effect on expectedMake: span 0.03154 across the full range against a threshold of 0.02, adjusted p 0, over 9031 activated possessions — a narrow context.",
+        "identifiabilityV3": "CONTEXTUALLY_IDENTIFIABLE",
+        "readinessV3": "STRONGLY_REGULARIZED_CALIBRATION",
+        "readinessReason": "Real effect in a narrow context. Small, heavily penalised movement only.",
+        "movementCapFractionOfRange": 0.1,
+        "searchBounds": {
+          "lo": 0.83,
+          "hi": 1.17
+        },
+        "eligibleForSearch": true
+      },
+      {
+        "id": "coach.actionMixInfluence",
+        "module": "coachIntelligence",
+        "defaultValue": 1,
+        "min": 0.3,
+        "max": 2,
+        "priorV2Category": "CONFOUNDED",
+        "wasPriorNoEffect": false,
+        "activatedPossessions": 55966,
+        "activationMet": true,
+        "activationPredicate": "always",
+        "context": "whole game",
+        "conditionalTests": [
+          {
+            "metric": "actionShare:PICK_AND_ROLL",
+            "spanAcrossRange": 0.08721,
+            "tAtEndpoint": -31.60252,
+            "p": 3.880391483540479e-219,
+            "practicalThreshold": 0.01,
+            "clearsPractical": true,
+            "adjustedP": 1.1641174450621437e-218,
+            "significant": true
+          },
+          {
+            "metric": "mixDistanceFromNeutral",
+            "spanAcrossRange": 0.02487,
+            "tAtEndpoint": 7.42924,
+            "p": 1.1009837368898521e-13,
+            "practicalThreshold": 0.005,
+            "clearsPractical": true,
+            "adjustedP": 2.2019674737797042e-13,
+            "significant": true
+          },
+          {
+            "metric": "actionShare:POST_UP",
+            "spanAcrossRange": 0.00912,
+            "tAtEndpoint": 2.62869,
+            "p": 0.00857152305294404,
+            "practicalThreshold": 0.01,
+            "clearsPractical": false,
+            "adjustedP": 0.00857152305294404,
+            "significant": true
+          }
+        ],
+        "conditionalEffectConfirmed": true,
+        "bestConditionalMetric": "actionShare:PICK_AND_ROLL",
+        "bestConditionalSpan": 0.08721,
+        "guardrailBreaches": [],
+        "support": "STRUCTURAL_VALIDATION_ONLY",
+        "confoundedWithV2": [
+          "coach.rosterSensitivity"
+        ],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": true,
+        "triage": "TARGETED_EFFECT_CONFIRMED",
+        "triageReason": "Conditional effect on actionShare:PICK_AND_ROLL: span 0.08721 across the full range against a threshold of 0.01, adjusted p 0, over 55966 activated possessions.",
+        "identifiabilityV3": "IDENTIFIABLE",
+        "readinessV3": "STRUCTURAL_CALIBRATION_ONLY",
+        "readinessReason": "Identifiable with a confirmed conditional effect, and a structural control target. A tightly bounded structural search is permitted.",
+        "movementCapFractionOfRange": 0.2,
+        "searchBounds": {
+          "lo": 0.6599999999999999,
+          "hi": 1.34
+        },
+        "eligibleForSearch": true
+      },
+      {
+        "id": "coach.rosterSensitivity",
+        "module": "coachIntelligence",
+        "defaultValue": 1,
+        "min": 0.3,
+        "max": 2,
+        "priorV2Category": "CONFOUNDED",
+        "wasPriorNoEffect": false,
+        "activatedPossessions": 55966,
+        "activationMet": true,
+        "activationPredicate": "always",
+        "context": "whole game",
+        "conditionalTests": [
+          {
+            "metric": "actionShare:PICK_AND_ROLL",
+            "spanAcrossRange": 0.0563,
+            "tAtEndpoint": -27.87908,
+            "p": 5.366912966818479e-171,
+            "practicalThreshold": 0.01,
+            "clearsPractical": true,
+            "adjustedP": 1.6100738900455436e-170,
+            "significant": true
+          },
+          {
+            "metric": "actionShare:POST_UP",
+            "spanAcrossRange": -0.00233,
+            "tAtEndpoint": 3.66315,
+            "p": 0.00024919817712081835,
+            "practicalThreshold": 0.01,
+            "clearsPractical": false,
+            "adjustedP": 0.0004983963542416367,
+            "significant": true
+          },
+          {
+            "metric": "mixDistanceFromNeutral",
+            "spanAcrossRange": 0.00263,
+            "tAtEndpoint": -1.72023,
+            "p": 0.08539056939720342,
+            "practicalThreshold": 0.005,
+            "clearsPractical": false,
+            "adjustedP": 0.08539056939720342,
+            "significant": false
+          }
+        ],
+        "conditionalEffectConfirmed": true,
+        "bestConditionalMetric": "actionShare:PICK_AND_ROLL",
+        "bestConditionalSpan": 0.0563,
+        "guardrailBreaches": [],
+        "support": "STRUCTURAL_VALIDATION_ONLY",
+        "confoundedWithV2": [
+          "coach.actionMixInfluence"
+        ],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": true,
+        "triage": "TARGETED_EFFECT_CONFIRMED",
+        "triageReason": "Conditional effect on actionShare:PICK_AND_ROLL: span 0.0563 across the full range against a threshold of 0.01, adjusted p 0, over 55966 activated possessions.",
+        "identifiabilityV3": "IDENTIFIABLE",
+        "readinessV3": "STRUCTURAL_CALIBRATION_ONLY",
+        "readinessReason": "Identifiable with a confirmed conditional effect, and a structural control target. A tightly bounded structural search is permitted.",
+        "movementCapFractionOfRange": 0.2,
+        "searchBounds": {
+          "lo": 0.6599999999999999,
+          "hi": 1.34
+        },
+        "eligibleForSearch": true
+      },
+      {
+        "id": "coach.offensiveAdjustmentMinEvents",
+        "module": "coachAdjustment",
+        "defaultValue": 6,
+        "min": 1,
+        "max": 16,
+        "priorV2Category": "CONFOUNDED",
+        "wasPriorNoEffect": false,
+        "activatedPossessions": 55966,
+        "activationMet": true,
+        "activationPredicate": "always",
+        "context": "whole game",
+        "conditionalTests": [
+          {
+            "metric": "adjustmentCount",
+            "spanAcrossRange": -7.32812,
+            "tAtEndpoint": 42.12633,
+            "p": 5e-324,
+            "practicalThreshold": 0.25,
+            "clearsPractical": true,
+            "adjustedP": 1e-323,
+            "significant": true
+          },
+          {
+            "metric": "mixDistanceFromNeutral",
+            "spanAcrossRange": -0.0063,
+            "tAtEndpoint": 3.39265,
+            "p": 0.0006923043764075248,
+            "practicalThreshold": 0.005,
+            "clearsPractical": true,
+            "adjustedP": 0.0006923043764075248,
+            "significant": true
+          }
+        ],
+        "conditionalEffectConfirmed": true,
+        "bestConditionalMetric": "adjustmentCount",
+        "bestConditionalSpan": -7.32812,
+        "guardrailBreaches": [],
+        "support": "STRUCTURAL_VALIDATION_ONLY",
+        "confoundedWithV2": [
+          "coach.offensiveAdjustmentCooldown"
+        ],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": true,
+        "triage": "TARGETED_EFFECT_CONFIRMED",
+        "triageReason": "Conditional effect on adjustmentCount: span -7.32812 across the full range against a threshold of 0.25, adjusted p 0, over 55966 activated possessions.",
+        "identifiabilityV3": "IDENTIFIABLE",
+        "readinessV3": "STRUCTURAL_CALIBRATION_ONLY",
+        "readinessReason": "Identifiable with a confirmed conditional effect, and a structural control target. A tightly bounded structural search is permitted.",
+        "movementCapFractionOfRange": 0.2,
+        "searchBounds": {
+          "lo": 3,
+          "hi": 9
+        },
+        "eligibleForSearch": true
+      },
+      {
+        "id": "coach.defensiveAdjustmentMinEvents",
+        "module": "coachAdjustment",
+        "defaultValue": 5,
+        "min": 1,
+        "max": 16,
+        "priorV2Category": "NO_MEASURABLE_EFFECT",
+        "wasPriorNoEffect": true,
+        "activatedPossessions": 55966,
+        "activationMet": true,
+        "activationPredicate": "always",
+        "context": "whole game",
+        "conditionalTests": [
+          {
+            "metric": "adjustmentCount",
+            "spanAcrossRange": -0.05469,
+            "tAtEndpoint": -1.61091,
+            "p": 0.10719932892272195,
+            "practicalThreshold": 0.25,
+            "clearsPractical": false,
+            "adjustedP": 0.10719932892272195,
+            "significant": false
+          }
+        ],
+        "conditionalEffectConfirmed": false,
+        "bestConditionalMetric": "adjustmentCount",
+        "bestConditionalSpan": -0.05469,
+        "guardrailBreaches": [],
+        "support": "STRUCTURAL_VALIDATION_ONLY",
+        "confoundedWithV2": [],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": false,
+        "triage": "TRUE_NO_EFFECT",
+        "triageReason": "Mechanic activated over 55966 possessions, full range tested, instrumentation verified, and no conditional metric moves beyond noise.",
+        "identifiabilityV3": "TRUE_NO_EFFECT",
+        "readinessV3": "DEFAULT_FROZEN_TRUE_NO_EFFECT",
+        "readinessReason": "Mechanic activates and no conditional metric moves beyond noise across the full range.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 5,
+          "hi": 5
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "coach.offensiveAdjustmentCooldown",
+        "module": "coachAdjustment",
+        "defaultValue": 30,
+        "min": 4,
+        "max": 60,
+        "priorV2Category": "CONFOUNDED",
+        "wasPriorNoEffect": false,
+        "activatedPossessions": 55966,
+        "activationMet": true,
+        "activationPredicate": "always",
+        "context": "whole game",
+        "conditionalTests": [
+          {
+            "metric": "adjustmentCount",
+            "spanAcrossRange": -2.625,
+            "tAtEndpoint": -11.73806,
+            "p": 8.372765309079749e-32,
+            "practicalThreshold": 0.25,
+            "clearsPractical": true,
+            "adjustedP": 1.6745530618159498e-31,
+            "significant": true
+          },
+          {
+            "metric": "mixDistanceFromNeutral",
+            "spanAcrossRange": -0.0015,
+            "tAtEndpoint": 2.77018,
+            "p": 0.005602647145985985,
+            "practicalThreshold": 0.005,
+            "clearsPractical": false,
+            "adjustedP": 0.005602647145985985,
+            "significant": true
+          }
+        ],
+        "conditionalEffectConfirmed": true,
+        "bestConditionalMetric": "adjustmentCount",
+        "bestConditionalSpan": -2.625,
+        "guardrailBreaches": [],
+        "support": "STRUCTURAL_VALIDATION_ONLY",
+        "confoundedWithV2": [
+          "coach.offensiveAdjustmentMinEvents"
+        ],
+        "confoundedWithAfterFactorial": [
+          "coach.offensiveAdjustmentMinEvents"
+        ],
+        "confoundingFreedByFactorial": false,
+        "triage": "TARGETED_EFFECT_CONFIRMED",
+        "triageReason": "Conditional effect on adjustmentCount: span -2.625 across the full range against a threshold of 0.25, adjusted p 0, over 55966 activated possessions.",
+        "identifiabilityV3": "CONFOUNDED",
+        "readinessV3": "DEFAULT_FROZEN_CONFOUNDED",
+        "readinessReason": "Cannot be separated from a partner's effect on this corpus.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 30,
+          "hi": 30
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "coach.defensiveAdjustmentCooldown",
+        "module": "coachAdjustment",
+        "defaultValue": 34,
+        "min": 4,
+        "max": 60,
+        "priorV2Category": "NO_MEASURABLE_EFFECT",
+        "wasPriorNoEffect": true,
+        "activatedPossessions": 55966,
+        "activationMet": true,
+        "activationPredicate": "always",
+        "context": "whole game",
+        "conditionalTests": [
+          {
+            "metric": "adjustmentCount",
+            "spanAcrossRange": 0.01953,
+            "tAtEndpoint": -0.72694,
+            "p": 0.4672625633208904,
+            "practicalThreshold": 0.25,
+            "clearsPractical": false,
+            "adjustedP": 0.4672625633208904,
+            "significant": false
+          }
+        ],
+        "conditionalEffectConfirmed": false,
+        "bestConditionalMetric": "adjustmentCount",
+        "bestConditionalSpan": 0.01953,
+        "guardrailBreaches": [],
+        "support": "STRUCTURAL_VALIDATION_ONLY",
+        "confoundedWithV2": [],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": false,
+        "triage": "TRUE_NO_EFFECT",
+        "triageReason": "Mechanic activated over 55966 possessions, full range tested, instrumentation verified, and no conditional metric moves beyond noise.",
+        "identifiabilityV3": "TRUE_NO_EFFECT",
+        "readinessV3": "DEFAULT_FROZEN_TRUE_NO_EFFECT",
+        "readinessReason": "Mechanic activates and no conditional metric moves beyond noise across the full range.",
+        "movementCapFractionOfRange": 0,
+        "searchBounds": {
+          "lo": 34,
+          "hi": 34
+        },
+        "eligibleForSearch": false
+      },
+      {
+        "id": "coach.adjustmentMagnitude",
+        "module": "coachAdjustment",
+        "defaultValue": 0.06,
+        "min": 0.01,
+        "max": 0.2,
+        "priorV2Category": "IDENTIFIABLE",
+        "wasPriorNoEffect": false,
+        "activatedPossessions": 55966,
+        "activationMet": true,
+        "activationPredicate": "always",
+        "context": "whole game",
+        "conditionalTests": [
+          {
+            "metric": "mixDistanceFromNeutral",
+            "spanAcrossRange": 0.01351,
+            "tAtEndpoint": 6.28263,
+            "p": 3.3432916010580824e-10,
+            "practicalThreshold": 0.005,
+            "clearsPractical": true,
+            "adjustedP": 6.686583202116165e-10,
+            "significant": true
+          },
+          {
+            "metric": "actionShare:SPOT_UP",
+            "spanAcrossRange": 0.01118,
+            "tAtEndpoint": -4.47559,
+            "p": 0.000007626874648926982,
+            "practicalThreshold": 0.01,
+            "clearsPractical": true,
+            "adjustedP": 0.000007626874648926982,
+            "significant": true
+          }
+        ],
+        "conditionalEffectConfirmed": true,
+        "bestConditionalMetric": "mixDistanceFromNeutral",
+        "bestConditionalSpan": 0.01351,
+        "guardrailBreaches": [],
+        "support": "STRUCTURAL_VALIDATION_ONLY",
+        "confoundedWithV2": [],
+        "confoundedWithAfterFactorial": [],
+        "confoundingFreedByFactorial": false,
+        "triage": "TARGETED_EFFECT_CONFIRMED",
+        "triageReason": "Conditional effect on mixDistanceFromNeutral: span 0.01351 across the full range against a threshold of 0.005, adjusted p 0, over 55966 activated possessions.",
+        "identifiabilityV3": "IDENTIFIABLE",
+        "readinessV3": "STRUCTURAL_CALIBRATION_ONLY",
+        "readinessReason": "Identifiable with a confirmed conditional effect, and a structural control target. A tightly bounded structural search is permitted.",
+        "movementCapFractionOfRange": 0.2,
+        "searchBounds": {
+          "lo": 0.021999999999999992,
+          "hi": 0.098
+        },
+        "eligibleForSearch": true
+      }
+    ]
+  },
+  "outputHash": "e256a3f7a5efdd81fbaada28532a3370487085e69645014ec147557e0bccf6fe"
+}
