@@ -1,0 +1,2889 @@
+{
+  "artifact": "candidate-history",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run calibration:c5:search",
+  "generatedAt": "2026-08-26T15:31:48.444Z",
+  "gitCommit": "233a47f2e8a40ec45334ba9529d209054b3fecf8",
+  "branch": "phase-6c2c5-targeted-mechanic-calibration",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {
+    "data/calibration/c5/calibration-scope.json": "da96596a2412cdab5ce0501588427f29c319d4ec618f559bba7a0f19d3ad7c0f",
+    "data/calibration/c5/no-effect-triage.json": "6a35ee346ac030c60e025783f8ebd4c7e6aae8120a7aed215d227292a1306558",
+    "data/calibration/internal-folds-v3.json": "8c1e89f3e3ec7c95640a509d5847deb58b5e2d8bd01d47aa813e77c48113ef7a"
+  },
+  "targetedCalibrationPolicyVersion": "1.0.0",
+  "data": {
+    "policy": {
+      "version": "1.0.0",
+      "gridAnchoredAtDefault": true,
+      "seedsPerFixture": 24,
+      "minTuningImprovement": 0.0005,
+      "maxValidationDegradation": 0.01,
+      "familyWiseMethod": "holm-bonferroni",
+      "familyWiseAlpha": 0.05,
+      "pairedUnit": "(fixture, seed)",
+      "objective": "Tier C player scoring-share mean absolute error over the selected five, on historical calibration v3 fixtures",
+      "candidateZeroAlwaysCompetes": true,
+      "acceptanceRequires": [
+        "PRACTICAL_FLOOR",
+        "FAMILY_WISE_SIGNIFICANT",
+        "VALIDATION_NOT_DEGRADED"
+      ]
+    },
+    "calibrationScopePayloadHash": "3a49b4693355f01b76b54fb530763e785d1f9711069a0402e7d0a51dd914e062",
+    "supersedes": {
+      "artifact": "candidate-history-v1-superseded.json",
+      "reason": "The first run scanned off-grid values and applied no multiplicity correction. Both defects are recorded in that artifact. The correction is strictly stricter and was made after that result was seen."
+    },
+    "tuningFixtures": [
+      "h3-1951-52-lakers",
+      "h3-1969-70-knicks",
+      "h3-1971-72-lakers",
+      "h3-1972-73-knicks",
+      "h3-1986-87-lakers",
+      "h3-1995-96-bulls",
+      "h3-1996-97-jazz",
+      "h3-2000-01-lakers",
+      "h3-2015-16-warriors",
+      "h3-2010-11-bulls",
+      "h3-2021-22-warriors",
+      "h3-2022-23-sixers"
+    ],
+    "validationFixtures": [
+      "h3-1956-57-celtics",
+      "h3-1958-59-celtics",
+      "h3-1962-63-celtics",
+      "h3-1973-74-celtics",
+      "h3-1985-86-celtics",
+      "h3-1988-89-pistons",
+      "h3-1994-95-rockets",
+      "h3-2003-04-pistons",
+      "h3-2004-05-spurs",
+      "h3-2013-14-spurs",
+      "h3-2022-23-heat"
+    ],
+    "seedsPerFixture": 24,
+    "candidateZero": {
+      "tuningMae": 0.07707,
+      "validationMae": 0.06703,
+      "pairedCells": 288,
+      "perFixtureTuning": [
+        {
+          "fixtureId": "h3-1951-52-lakers",
+          "mae": 0.07108,
+          "n": 24
+        },
+        {
+          "fixtureId": "h3-1969-70-knicks",
+          "mae": 0.04921,
+          "n": 24
+        },
+        {
+          "fixtureId": "h3-1971-72-lakers",
+          "mae": 0.05191,
+          "n": 24
+        },
+        {
+          "fixtureId": "h3-1972-73-knicks",
+          "mae": 0.04962,
+          "n": 24
+        },
+        {
+          "fixtureId": "h3-1986-87-lakers",
+          "mae": 0.05663,
+          "n": 24
+        },
+        {
+          "fixtureId": "h3-1995-96-bulls",
+          "mae": 0.10218,
+          "n": 24
+        },
+        {
+          "fixtureId": "h3-1996-97-jazz",
+          "mae": 0.06615,
+          "n": 24
+        },
+        {
+          "fixtureId": "h3-2000-01-lakers",
+          "mae": 0.14779,
+          "n": 24
+        },
+        {
+          "fixtureId": "h3-2015-16-warriors",
+          "mae": 0.07736,
+          "n": 24
+        },
+        {
+          "fixtureId": "h3-2010-11-bulls",
+          "mae": 0.08713,
+          "n": 24
+        },
+        {
+          "fixtureId": "h3-2021-22-warriors",
+          "mae": 0.06281,
+          "n": 24
+        },
+        {
+          "fixtureId": "h3-2022-23-sixers",
+          "mae": 0.10302,
+          "n": 24
+        }
+      ]
+    },
+    "candidateCount": 85,
+    "changedCandidates": 84,
+    "familySize": 84,
+    "acceptedCount": 0,
+    "rejectedCount": 84,
+    "familyDiagnostics": {
+      "bestRawGain": 0.00102,
+      "worstRawGain": -0.00245,
+      "bestHolmAdjustedP": 1,
+      "candidatesClearingPracticalFloor": 4,
+      "candidatesFamilyWiseSignificant": 0
+    },
+    "adjudicability": {
+      "note": "Measured at the FULL registry range, wider than the search's own movement cap, so a zero here is not an artifact of a tight bound.",
+      "visibleToObjective": 8,
+      "blindToObjective": 3,
+      "blindParameters": [
+        "opportunity.mismatch.severe",
+        "zone.highPostVulnerability",
+        "zone.cornerVulnerability"
+      ],
+      "blindConsequence": "These parameters were NOT adjudicated by the search. They are locked at their defaults because no available authorized target can distinguish their values, not because a change was tested and rejected.",
+      "perParameter": {
+        "opportunity.mismatch.severe": {
+          "registryMin": 1,
+          "registryMax": 4,
+          "cellsDiffering": 0,
+          "cellsTotal": 288,
+          "maeAtMin": 0.07707,
+          "maeAtMax": 0.07707,
+          "objectiveAdjudicable": false
+        },
+        "opportunity.mismatch.major": {
+          "registryMin": 1,
+          "registryMax": 3.5,
+          "cellsDiffering": 120,
+          "cellsTotal": 288,
+          "maeAtMin": 0.07758,
+          "maeAtMax": 0.07701,
+          "objectiveAdjudicable": true
+        },
+        "fitBand.POST_UP.lo": {
+          "registryMin": 0.1,
+          "registryMax": 1,
+          "cellsDiffering": 229,
+          "cellsTotal": 288,
+          "maeAtMin": 0.07754,
+          "maeAtMax": 0.07627,
+          "objectiveAdjudicable": true
+        },
+        "fitBand.ISOLATION.lo": {
+          "registryMin": 0.1,
+          "registryMax": 1,
+          "cellsDiffering": 61,
+          "cellsTotal": 288,
+          "maeAtMin": 0.07678,
+          "maeAtMax": 0.07718,
+          "objectiveAdjudicable": true
+        },
+        "fitBand.ISOLATION.hi": {
+          "registryMin": 1,
+          "registryMax": 3,
+          "cellsDiffering": 50,
+          "cellsTotal": 288,
+          "maeAtMin": 0.07726,
+          "maeAtMax": 0.07707,
+          "objectiveAdjudicable": true
+        },
+        "zone.highPostVulnerability": {
+          "registryMin": 0.3,
+          "registryMax": 2,
+          "cellsDiffering": 0,
+          "cellsTotal": 288,
+          "maeAtMin": 0.07707,
+          "maeAtMax": 0.07707,
+          "objectiveAdjudicable": false
+        },
+        "zone.cornerVulnerability": {
+          "registryMin": 0.3,
+          "registryMax": 2,
+          "cellsDiffering": 0,
+          "cellsTotal": 288,
+          "maeAtMin": 0.07707,
+          "maeAtMax": 0.07707,
+          "objectiveAdjudicable": false
+        },
+        "coach.actionMixInfluence": {
+          "registryMin": 0.3,
+          "registryMax": 2,
+          "cellsDiffering": 288,
+          "cellsTotal": 288,
+          "maeAtMin": 0.07622,
+          "maeAtMax": 0.07667,
+          "objectiveAdjudicable": true
+        },
+        "coach.rosterSensitivity": {
+          "registryMin": 0.3,
+          "registryMax": 2,
+          "cellsDiffering": 288,
+          "cellsTotal": 288,
+          "maeAtMin": 0.07546,
+          "maeAtMax": 0.07702,
+          "objectiveAdjudicable": true
+        },
+        "coach.offensiveAdjustmentMinEvents": {
+          "registryMin": 1,
+          "registryMax": 16,
+          "cellsDiffering": 270,
+          "cellsTotal": 288,
+          "maeAtMin": 0.07578,
+          "maeAtMax": 0.07769,
+          "objectiveAdjudicable": true
+        },
+        "coach.adjustmentMagnitude": {
+          "registryMin": 0.01,
+          "registryMax": 0.2,
+          "cellsDiffering": 222,
+          "cellsTotal": 288,
+          "maeAtMin": 0.07904,
+          "maeAtMax": 0.07833,
+          "objectiveAdjudicable": true
+        }
+      }
+    },
+    "winner": "C0",
+    "winnerChanges": [],
+    "outcome": "CANDIDATE_ZERO_WINS_NO_CHANGE_ACCEPTED",
+    "reconciliation": {
+      "label": "candidate-history",
+      "sum": 84,
+      "expectedTotal": 84,
+      "reconciles": true,
+      "problems": []
+    },
+    "history": [
+      {
+        "candidateId": "C0",
+        "label": "wired defaults",
+        "changes": [],
+        "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703,
+        "pairedCells": 288,
+        "accepted": true,
+        "reason": "Candidate 0 is the incumbent and always competes."
+      },
+      {
+        "candidateId": "C1",
+        "label": "opportunity.mismatch.severe=2",
+        "changes": [
+          {
+            "id": "opportunity.mismatch.severe",
+            "from": 2.6,
+            "to": 2,
+            "step": 0.1,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "c2282c795b81f910f79ed5363349c2b5faee1250eab11693cc5ffd8c2864e058",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703,
+        "tuningGain": 0,
+        "validationRelativeDelta": 0,
+        "pairedN": 288,
+        "pairedMeanDiff": 0,
+        "t": null,
+        "rawP": 1,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": false,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain 0 < 0.0005); direction (the paired mean difference is 0, a worsening)."
+      },
+      {
+        "candidateId": "C2",
+        "label": "opportunity.mismatch.severe=2.1",
+        "changes": [
+          {
+            "id": "opportunity.mismatch.severe",
+            "from": 2.6,
+            "to": 2.1,
+            "step": 0.1,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "57ee2175398054bea5c582418faaa54ede0a2f698d43923de93f7ca27dc80b4a",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703,
+        "tuningGain": 0,
+        "validationRelativeDelta": 0,
+        "pairedN": 288,
+        "pairedMeanDiff": 0,
+        "t": null,
+        "rawP": 1,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": false,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain 0 < 0.0005); direction (the paired mean difference is 0, a worsening)."
+      },
+      {
+        "candidateId": "C3",
+        "label": "opportunity.mismatch.severe=2.2",
+        "changes": [
+          {
+            "id": "opportunity.mismatch.severe",
+            "from": 2.6,
+            "to": 2.2,
+            "step": 0.1,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "35652dba1ad875aec3623ccf0cd9094fb5af6dc24edd9445af3e4ba5c05527e1",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703,
+        "tuningGain": 0,
+        "validationRelativeDelta": 0,
+        "pairedN": 288,
+        "pairedMeanDiff": 0,
+        "t": null,
+        "rawP": 1,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": false,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain 0 < 0.0005); direction (the paired mean difference is 0, a worsening)."
+      },
+      {
+        "candidateId": "C4",
+        "label": "opportunity.mismatch.severe=2.3",
+        "changes": [
+          {
+            "id": "opportunity.mismatch.severe",
+            "from": 2.6,
+            "to": 2.3,
+            "step": 0.1,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "23e8a8e2f6b8a945c4eb7cb6c1491d1765215a59fd8ed0116fbe660099e95716",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703,
+        "tuningGain": 0,
+        "validationRelativeDelta": 0,
+        "pairedN": 288,
+        "pairedMeanDiff": 0,
+        "t": null,
+        "rawP": 1,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": false,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain 0 < 0.0005); direction (the paired mean difference is 0, a worsening)."
+      },
+      {
+        "candidateId": "C5",
+        "label": "opportunity.mismatch.severe=2.4",
+        "changes": [
+          {
+            "id": "opportunity.mismatch.severe",
+            "from": 2.6,
+            "to": 2.4,
+            "step": 0.1,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "78641856f42a43625165b9e41638e194f507c1f7eb5328a49cfb9bdcca23c8c7",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703,
+        "tuningGain": 0,
+        "validationRelativeDelta": 0,
+        "pairedN": 288,
+        "pairedMeanDiff": 0,
+        "t": null,
+        "rawP": 1,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": false,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain 0 < 0.0005); direction (the paired mean difference is 0, a worsening)."
+      },
+      {
+        "candidateId": "C6",
+        "label": "opportunity.mismatch.severe=2.5",
+        "changes": [
+          {
+            "id": "opportunity.mismatch.severe",
+            "from": 2.6,
+            "to": 2.5,
+            "step": 0.1,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "1d92ed3c6c00fa2aee00c695e31a50785b428f42bee452cb3bd1e254dabf6796",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703,
+        "tuningGain": 0,
+        "validationRelativeDelta": 0,
+        "pairedN": 288,
+        "pairedMeanDiff": 0,
+        "t": null,
+        "rawP": 1,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": false,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain 0 < 0.0005); direction (the paired mean difference is 0, a worsening)."
+      },
+      {
+        "candidateId": "C7",
+        "label": "opportunity.mismatch.severe=2.7",
+        "changes": [
+          {
+            "id": "opportunity.mismatch.severe",
+            "from": 2.6,
+            "to": 2.7,
+            "step": 0.1,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "3b5db84f14a2735e67e31989f7f3bf6fc5f1cf079ee17747058e2caebb51b4ce",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703,
+        "tuningGain": 0,
+        "validationRelativeDelta": 0,
+        "pairedN": 288,
+        "pairedMeanDiff": 0,
+        "t": null,
+        "rawP": 1,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": false,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain 0 < 0.0005); direction (the paired mean difference is 0, a worsening)."
+      },
+      {
+        "candidateId": "C8",
+        "label": "opportunity.mismatch.severe=2.8",
+        "changes": [
+          {
+            "id": "opportunity.mismatch.severe",
+            "from": 2.6,
+            "to": 2.8,
+            "step": 0.1,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "42cbdb3886498be09f81a2843b81e3c3687caab9a954693fe771d4dc3aef3809",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703,
+        "tuningGain": 0,
+        "validationRelativeDelta": 0,
+        "pairedN": 288,
+        "pairedMeanDiff": 0,
+        "t": null,
+        "rawP": 1,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": false,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain 0 < 0.0005); direction (the paired mean difference is 0, a worsening)."
+      },
+      {
+        "candidateId": "C9",
+        "label": "opportunity.mismatch.severe=2.9",
+        "changes": [
+          {
+            "id": "opportunity.mismatch.severe",
+            "from": 2.6,
+            "to": 2.9,
+            "step": 0.1,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "883aee0eb0b99a5bf2bb7051f85878835e8cebbf6739b27e6e780803934ada18",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703,
+        "tuningGain": 0,
+        "validationRelativeDelta": 0,
+        "pairedN": 288,
+        "pairedMeanDiff": 0,
+        "t": null,
+        "rawP": 1,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": false,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain 0 < 0.0005); direction (the paired mean difference is 0, a worsening)."
+      },
+      {
+        "candidateId": "C10",
+        "label": "opportunity.mismatch.severe=3",
+        "changes": [
+          {
+            "id": "opportunity.mismatch.severe",
+            "from": 2.6,
+            "to": 3,
+            "step": 0.1,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "5d2d29ddfc52430ebe69d783709c8e257c43f9d7f08507d638429bedadecac58",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703,
+        "tuningGain": 0,
+        "validationRelativeDelta": 0,
+        "pairedN": 288,
+        "pairedMeanDiff": 0,
+        "t": null,
+        "rawP": 1,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": false,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain 0 < 0.0005); direction (the paired mean difference is 0, a worsening)."
+      },
+      {
+        "candidateId": "C11",
+        "label": "opportunity.mismatch.severe=3.1",
+        "changes": [
+          {
+            "id": "opportunity.mismatch.severe",
+            "from": 2.6,
+            "to": 3.1,
+            "step": 0.1,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "888ab89e21ab653c1050ea648cac9d0d79ee78ac34f2d098b0c7da660a3916f2",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703,
+        "tuningGain": 0,
+        "validationRelativeDelta": 0,
+        "pairedN": 288,
+        "pairedMeanDiff": 0,
+        "t": null,
+        "rawP": 1,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": false,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain 0 < 0.0005); direction (the paired mean difference is 0, a worsening)."
+      },
+      {
+        "candidateId": "C12",
+        "label": "opportunity.mismatch.severe=3.2",
+        "changes": [
+          {
+            "id": "opportunity.mismatch.severe",
+            "from": 2.6,
+            "to": 3.2,
+            "step": 0.1,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "707eafebaa7b7649eb017758e983d2f9520cc9628b9d6484fc0e9feec8a8e690",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703,
+        "tuningGain": 0,
+        "validationRelativeDelta": 0,
+        "pairedN": 288,
+        "pairedMeanDiff": 0,
+        "t": null,
+        "rawP": 1,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": false,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain 0 < 0.0005); direction (the paired mean difference is 0, a worsening)."
+      },
+      {
+        "candidateId": "C13",
+        "label": "opportunity.mismatch.major=1.8",
+        "changes": [
+          {
+            "id": "opportunity.mismatch.major",
+            "from": 2,
+            "to": 1.8,
+            "step": 0.1,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "95c10e662a362886a5bd69f2f824fee5f65c8f67590c4c018067e2c57cbccb3d",
+        "tuningMae": 0.07709,
+        "validationMae": 0.06675,
+        "tuningGain": -0.00002,
+        "validationRelativeDelta": -0.00418,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.00002,
+        "t": 0.06854,
+        "rawP": 0.9454041542572182,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00002 < 0.0005); direction (the paired mean difference is 0.00002, a worsening)."
+      },
+      {
+        "candidateId": "C14",
+        "label": "opportunity.mismatch.major=1.9",
+        "changes": [
+          {
+            "id": "opportunity.mismatch.major",
+            "from": 2,
+            "to": 1.9,
+            "step": 0.1,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "19e83d1d73b00590b5a0eaef650c9953620dce78533694f1d608c0983d91c842",
+        "tuningMae": 0.07704,
+        "validationMae": 0.06679,
+        "tuningGain": 0.00003,
+        "validationRelativeDelta": -0.00358,
+        "pairedN": 288,
+        "pairedMeanDiff": -0.00003,
+        "t": -0.20577,
+        "rawP": 0.8371132175906991,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain 0.00003 < 0.0005); family-wise significance (Holm-adjusted p 1 > 0.05 over a family of 84)."
+      },
+      {
+        "candidateId": "C15",
+        "label": "opportunity.mismatch.major=2.1",
+        "changes": [
+          {
+            "id": "opportunity.mismatch.major",
+            "from": 2,
+            "to": 2.1,
+            "step": 0.1,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "cad3e6dc85cfb41c3afcc297503ad386198dec278669878155e609645817a10f",
+        "tuningMae": 0.07698,
+        "validationMae": 0.06729,
+        "tuningGain": 0.00009,
+        "validationRelativeDelta": 0.00388,
+        "pairedN": 288,
+        "pairedMeanDiff": -0.00009,
+        "t": -0.32011,
+        "rawP": 0.7491196821046366,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain 0.00009 < 0.0005); family-wise significance (Holm-adjusted p 1 > 0.05 over a family of 84)."
+      },
+      {
+        "candidateId": "C16",
+        "label": "opportunity.mismatch.major=2.2",
+        "changes": [
+          {
+            "id": "opportunity.mismatch.major",
+            "from": 2,
+            "to": 2.2,
+            "step": 0.1,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "781cdf61a8bb3e5d14a9152736e0593d3db1d19f5af2c6abfb4953c6e0174c86",
+        "tuningMae": 0.07682,
+        "validationMae": 0.06724,
+        "tuningGain": 0.00025,
+        "validationRelativeDelta": 0.00313,
+        "pairedN": 288,
+        "pairedMeanDiff": -0.00026,
+        "t": -0.78041,
+        "rawP": 0.4357931372467526,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain 0.00025 < 0.0005); family-wise significance (Holm-adjusted p 1 > 0.05 over a family of 84)."
+      },
+      {
+        "candidateId": "C17",
+        "label": "fitBand.POST_UP.lo=0.25",
+        "changes": [
+          {
+            "id": "fitBand.POST_UP.lo",
+            "from": 0.3,
+            "to": 0.25,
+            "step": 0.05,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "8b005cf022fda3df362456b55a70119708aee1cdd4071f3bcab96a0ff3e60430",
+        "tuningMae": 0.07756,
+        "validationMae": 0.06708,
+        "tuningGain": -0.00049,
+        "validationRelativeDelta": 0.00075,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.00048,
+        "t": 2.05601,
+        "rawP": 0.04068563849428107,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00049 < 0.0005); direction (the paired mean difference is 0.00048, a worsening)."
+      },
+      {
+        "candidateId": "C18",
+        "label": "fitBand.POST_UP.lo=0.35",
+        "changes": [
+          {
+            "id": "fitBand.POST_UP.lo",
+            "from": 0.3,
+            "to": 0.35,
+            "step": 0.05,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "0b72b5eee76468f52f8088926a6118d154f1a7d57a40ad7fe14d1cd26bbe8743",
+        "tuningMae": 0.07677,
+        "validationMae": 0.06684,
+        "tuningGain": 0.0003,
+        "validationRelativeDelta": -0.00283,
+        "pairedN": 288,
+        "pairedMeanDiff": -0.0003,
+        "t": -0.944,
+        "rawP": 0.3459634568544745,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain 0.0003 < 0.0005); family-wise significance (Holm-adjusted p 1 > 0.05 over a family of 84)."
+      },
+      {
+        "candidateId": "C19",
+        "label": "fitBand.ISOLATION.lo=0.45",
+        "changes": [
+          {
+            "id": "fitBand.ISOLATION.lo",
+            "from": 0.5,
+            "to": 0.45,
+            "step": 0.05,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "9d7ac6e82480d179a1a9b611784d28e7b11ed93ef1c2904c4673e5fd788a8667",
+        "tuningMae": 0.07715,
+        "validationMae": 0.06706,
+        "tuningGain": -0.00008,
+        "validationRelativeDelta": 0.00045,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.00008,
+        "t": 1.39025,
+        "rawP": 0.16553022564294295,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00008 < 0.0005); direction (the paired mean difference is 0.00008, a worsening)."
+      },
+      {
+        "candidateId": "C20",
+        "label": "fitBand.ISOLATION.lo=0.55",
+        "changes": [
+          {
+            "id": "fitBand.ISOLATION.lo",
+            "from": 0.5,
+            "to": 0.55,
+            "step": 0.05,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "50b568ab8370cc528e60d034b912d4334909c9d88501434210c67a012e2486d9",
+        "tuningMae": 0.07714,
+        "validationMae": 0.06714,
+        "tuningGain": -0.00007,
+        "validationRelativeDelta": 0.00164,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.00006,
+        "t": 1.24369,
+        "rawP": 0.21462694590332854,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00007 < 0.0005); direction (the paired mean difference is 0.00006, a worsening)."
+      },
+      {
+        "candidateId": "C21",
+        "label": "fitBand.ISOLATION.hi=1.6",
+        "changes": [
+          {
+            "id": "fitBand.ISOLATION.hi",
+            "from": 1.8,
+            "to": 1.6,
+            "step": 0.05,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "55f64482dce03831f3590bdbe778004d935ea6ddbdc7f3c48f368fbbe7a8ac7d",
+        "tuningMae": 0.07714,
+        "validationMae": 0.06714,
+        "tuningGain": -0.00007,
+        "validationRelativeDelta": 0.00164,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.00006,
+        "t": 1.24369,
+        "rawP": 0.21462694590332854,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00007 < 0.0005); direction (the paired mean difference is 0.00006, a worsening)."
+      },
+      {
+        "candidateId": "C22",
+        "label": "fitBand.ISOLATION.hi=1.65",
+        "changes": [
+          {
+            "id": "fitBand.ISOLATION.hi",
+            "from": 1.8,
+            "to": 1.65,
+            "step": 0.05,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "8611f1cc0307fc34121d988ba8274bd8746ec5003aab8517d86f7580e7127753",
+        "tuningMae": 0.07711,
+        "validationMae": 0.06714,
+        "tuningGain": -0.00004,
+        "validationRelativeDelta": 0.00164,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.00003,
+        "t": 0.82294,
+        "rawP": 0.41122600959803357,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00004 < 0.0005); direction (the paired mean difference is 0.00003, a worsening)."
+      },
+      {
+        "candidateId": "C23",
+        "label": "fitBand.ISOLATION.hi=1.7",
+        "changes": [
+          {
+            "id": "fitBand.ISOLATION.hi",
+            "from": 1.8,
+            "to": 1.7,
+            "step": 0.05,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "aa9aed11cd20d79a27a18b1ed33e03f56dc88e5004eef1ab6e327a16b5547c85",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06714,
+        "tuningGain": 0,
+        "validationRelativeDelta": 0.00164,
+        "pairedN": 288,
+        "pairedMeanDiff": -0.00001,
+        "t": -0.1758,
+        "rawP": 0.8605716455116174,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain 0 < 0.0005); family-wise significance (Holm-adjusted p 1 > 0.05 over a family of 84)."
+      },
+      {
+        "candidateId": "C24",
+        "label": "fitBand.ISOLATION.hi=1.75",
+        "changes": [
+          {
+            "id": "fitBand.ISOLATION.hi",
+            "from": 1.8,
+            "to": 1.75,
+            "step": 0.05,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "13feaebdf6e8f5791b63b764bed6a5aed63a42cc443a526334b6d2ee524dc872",
+        "tuningMae": 0.07705,
+        "validationMae": 0.06705,
+        "tuningGain": 0.00002,
+        "validationRelativeDelta": 0.0003,
+        "pairedN": 288,
+        "pairedMeanDiff": -0.00002,
+        "t": -1,
+        "rawP": 0.31815287659577074,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain 0.00002 < 0.0005); family-wise significance (Holm-adjusted p 1 > 0.05 over a family of 84)."
+      },
+      {
+        "candidateId": "C25",
+        "label": "fitBand.ISOLATION.hi=1.85",
+        "changes": [
+          {
+            "id": "fitBand.ISOLATION.hi",
+            "from": 1.8,
+            "to": 1.85,
+            "step": 0.05,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "ca2c93ef70502e298ffc9f697a0a990e82dce37d44b78e68f0f10035558b85e7",
+        "tuningMae": 0.07714,
+        "validationMae": 0.06703,
+        "tuningGain": -0.00007,
+        "validationRelativeDelta": 0,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.00007,
+        "t": 1.64083,
+        "rawP": 0.1019272713483309,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00007 < 0.0005); direction (the paired mean difference is 0.00007, a worsening)."
+      },
+      {
+        "candidateId": "C26",
+        "label": "fitBand.ISOLATION.hi=1.9",
+        "changes": [
+          {
+            "id": "fitBand.ISOLATION.hi",
+            "from": 1.8,
+            "to": 1.9,
+            "step": 0.05,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "eb391ca43dd45b62bce98bf287fe6039fd65ebf821e73c87cca983993620cfc7",
+        "tuningMae": 0.07714,
+        "validationMae": 0.06703,
+        "tuningGain": -0.00007,
+        "validationRelativeDelta": 0,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.00007,
+        "t": 1.29593,
+        "rawP": 0.19603935218983282,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00007 < 0.0005); direction (the paired mean difference is 0.00007, a worsening)."
+      },
+      {
+        "candidateId": "C27",
+        "label": "fitBand.ISOLATION.hi=1.95",
+        "changes": [
+          {
+            "id": "fitBand.ISOLATION.hi",
+            "from": 1.8,
+            "to": 1.95,
+            "step": 0.05,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "57165677cad49c5e212bf7bc9cb875ac078244c4b3be0794cc8f2dd2ec3c9c50",
+        "tuningMae": 0.07715,
+        "validationMae": 0.06703,
+        "tuningGain": -0.00008,
+        "validationRelativeDelta": 0,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.00007,
+        "t": 1.41193,
+        "rawP": 0.15905397954171108,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00008 < 0.0005); direction (the paired mean difference is 0.00007, a worsening)."
+      },
+      {
+        "candidateId": "C28",
+        "label": "fitBand.ISOLATION.hi=2",
+        "changes": [
+          {
+            "id": "fitBand.ISOLATION.hi",
+            "from": 1.8,
+            "to": 2,
+            "step": 0.05,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "8ee45bb21615f3cfd2707281c41d8090c9150266550513992abd80799aa3921e",
+        "tuningMae": 0.07715,
+        "validationMae": 0.06706,
+        "tuningGain": -0.00008,
+        "validationRelativeDelta": 0.00045,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.00008,
+        "t": 1.39025,
+        "rawP": 0.16553022564294295,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00008 < 0.0005); direction (the paired mean difference is 0.00008, a worsening)."
+      },
+      {
+        "candidateId": "C29",
+        "label": "zone.highPostVulnerability=0.85",
+        "changes": [
+          {
+            "id": "zone.highPostVulnerability",
+            "from": 1,
+            "to": 0.85,
+            "step": 0.05,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "7a0a2681efca2dc68c2c43a7a4cd739874825bade23acea2be3bd70ad99297a5",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703,
+        "tuningGain": 0,
+        "validationRelativeDelta": 0,
+        "pairedN": 288,
+        "pairedMeanDiff": 0,
+        "t": null,
+        "rawP": 1,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": false,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain 0 < 0.0005); direction (the paired mean difference is 0, a worsening)."
+      },
+      {
+        "candidateId": "C30",
+        "label": "zone.highPostVulnerability=0.9",
+        "changes": [
+          {
+            "id": "zone.highPostVulnerability",
+            "from": 1,
+            "to": 0.9,
+            "step": 0.05,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "558cbff74eceaab54e85b2e303d8198bae8f5699729f6e8386cd73f68b465f33",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703,
+        "tuningGain": 0,
+        "validationRelativeDelta": 0,
+        "pairedN": 288,
+        "pairedMeanDiff": 0,
+        "t": null,
+        "rawP": 1,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": false,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain 0 < 0.0005); direction (the paired mean difference is 0, a worsening)."
+      },
+      {
+        "candidateId": "C31",
+        "label": "zone.highPostVulnerability=0.95",
+        "changes": [
+          {
+            "id": "zone.highPostVulnerability",
+            "from": 1,
+            "to": 0.95,
+            "step": 0.05,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "de61008c7cc3effc1dd9655d206e0a4ff95ca550841173730dfa14494e1d46b6",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703,
+        "tuningGain": 0,
+        "validationRelativeDelta": 0,
+        "pairedN": 288,
+        "pairedMeanDiff": 0,
+        "t": null,
+        "rawP": 1,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": false,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain 0 < 0.0005); direction (the paired mean difference is 0, a worsening)."
+      },
+      {
+        "candidateId": "C32",
+        "label": "zone.highPostVulnerability=1.05",
+        "changes": [
+          {
+            "id": "zone.highPostVulnerability",
+            "from": 1,
+            "to": 1.05,
+            "step": 0.05,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "476c130e5b1ce93d2d4ee89326806acbd603eec3d292bf3c8cc5b27c57303dc2",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703,
+        "tuningGain": 0,
+        "validationRelativeDelta": 0,
+        "pairedN": 288,
+        "pairedMeanDiff": 0,
+        "t": null,
+        "rawP": 1,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": false,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain 0 < 0.0005); direction (the paired mean difference is 0, a worsening)."
+      },
+      {
+        "candidateId": "C33",
+        "label": "zone.highPostVulnerability=1.1",
+        "changes": [
+          {
+            "id": "zone.highPostVulnerability",
+            "from": 1,
+            "to": 1.1,
+            "step": 0.05,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "d319b2b79a48e55be55e08a42ad6e0e33b5bd60ec22aad42fd5416e7e8dbcb9b",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703,
+        "tuningGain": 0,
+        "validationRelativeDelta": 0,
+        "pairedN": 288,
+        "pairedMeanDiff": 0,
+        "t": null,
+        "rawP": 1,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": false,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain 0 < 0.0005); direction (the paired mean difference is 0, a worsening)."
+      },
+      {
+        "candidateId": "C34",
+        "label": "zone.highPostVulnerability=1.15",
+        "changes": [
+          {
+            "id": "zone.highPostVulnerability",
+            "from": 1,
+            "to": 1.15,
+            "step": 0.05,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "f75872bda0bd401a8b9119a24df381d10238af7788f4fa6ab6512e6e93171e2f",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703,
+        "tuningGain": 0,
+        "validationRelativeDelta": 0,
+        "pairedN": 288,
+        "pairedMeanDiff": 0,
+        "t": null,
+        "rawP": 1,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": false,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain 0 < 0.0005); direction (the paired mean difference is 0, a worsening)."
+      },
+      {
+        "candidateId": "C35",
+        "label": "zone.cornerVulnerability=0.85",
+        "changes": [
+          {
+            "id": "zone.cornerVulnerability",
+            "from": 1,
+            "to": 0.85,
+            "step": 0.05,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "75d4b7525c73138d59f8db180fc1af6e12a6b33157eb1daf938a65d40563e404",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703,
+        "tuningGain": 0,
+        "validationRelativeDelta": 0,
+        "pairedN": 288,
+        "pairedMeanDiff": 0,
+        "t": null,
+        "rawP": 1,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": false,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain 0 < 0.0005); direction (the paired mean difference is 0, a worsening)."
+      },
+      {
+        "candidateId": "C36",
+        "label": "zone.cornerVulnerability=0.9",
+        "changes": [
+          {
+            "id": "zone.cornerVulnerability",
+            "from": 1,
+            "to": 0.9,
+            "step": 0.05,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "a5f797a193c8d9b4201f67a8df77436ba183c6ea1954e6fc243614a8d33b5ca5",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703,
+        "tuningGain": 0,
+        "validationRelativeDelta": 0,
+        "pairedN": 288,
+        "pairedMeanDiff": 0,
+        "t": null,
+        "rawP": 1,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": false,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain 0 < 0.0005); direction (the paired mean difference is 0, a worsening)."
+      },
+      {
+        "candidateId": "C37",
+        "label": "zone.cornerVulnerability=0.95",
+        "changes": [
+          {
+            "id": "zone.cornerVulnerability",
+            "from": 1,
+            "to": 0.95,
+            "step": 0.05,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "e136f6d6d82d4c2e05133c2688df932710d8393e9ef86229ebd5d79ac6dffbe8",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703,
+        "tuningGain": 0,
+        "validationRelativeDelta": 0,
+        "pairedN": 288,
+        "pairedMeanDiff": 0,
+        "t": null,
+        "rawP": 1,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": false,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain 0 < 0.0005); direction (the paired mean difference is 0, a worsening)."
+      },
+      {
+        "candidateId": "C38",
+        "label": "zone.cornerVulnerability=1.05",
+        "changes": [
+          {
+            "id": "zone.cornerVulnerability",
+            "from": 1,
+            "to": 1.05,
+            "step": 0.05,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "d1a80c339058a0f510c219eb65f697127df9aac2e5ce98791d022cf63604cd1e",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703,
+        "tuningGain": 0,
+        "validationRelativeDelta": 0,
+        "pairedN": 288,
+        "pairedMeanDiff": 0,
+        "t": null,
+        "rawP": 1,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": false,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain 0 < 0.0005); direction (the paired mean difference is 0, a worsening)."
+      },
+      {
+        "candidateId": "C39",
+        "label": "zone.cornerVulnerability=1.1",
+        "changes": [
+          {
+            "id": "zone.cornerVulnerability",
+            "from": 1,
+            "to": 1.1,
+            "step": 0.05,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "144448653090d8010b658e5f1fedc8605f48e458aac083e8a3c41a32d564841b",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703,
+        "tuningGain": 0,
+        "validationRelativeDelta": 0,
+        "pairedN": 288,
+        "pairedMeanDiff": 0,
+        "t": null,
+        "rawP": 1,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": false,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain 0 < 0.0005); direction (the paired mean difference is 0, a worsening)."
+      },
+      {
+        "candidateId": "C40",
+        "label": "zone.cornerVulnerability=1.15",
+        "changes": [
+          {
+            "id": "zone.cornerVulnerability",
+            "from": 1,
+            "to": 1.15,
+            "step": 0.05,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "58e32d34bd47b5e43698916c968d035c5eac3c2f2ce9c6f3cd82c64de350f57f",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703,
+        "tuningGain": 0,
+        "validationRelativeDelta": 0,
+        "pairedN": 288,
+        "pairedMeanDiff": 0,
+        "t": null,
+        "rawP": 1,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": false,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain 0 < 0.0005); direction (the paired mean difference is 0, a worsening)."
+      },
+      {
+        "candidateId": "C41",
+        "label": "coach.actionMixInfluence=0.7",
+        "changes": [
+          {
+            "id": "coach.actionMixInfluence",
+            "from": 1,
+            "to": 0.7,
+            "step": 0.05,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "dbe46cdd75df8e19fe6db47e7cb0531604e8a7f4e198ce3f1cb3929559b0b644",
+        "tuningMae": 0.07898,
+        "validationMae": 0.06373,
+        "tuningGain": -0.00191,
+        "validationRelativeDelta": -0.04923,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.0019,
+        "t": 1.31039,
+        "rawP": 0.19111284870500378,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00191 < 0.0005); direction (the paired mean difference is 0.0019, a worsening)."
+      },
+      {
+        "candidateId": "C42",
+        "label": "coach.actionMixInfluence=0.75",
+        "changes": [
+          {
+            "id": "coach.actionMixInfluence",
+            "from": 1,
+            "to": 0.75,
+            "step": 0.05,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "b960a1526a41f660c380e680a67d158711b5c58a3adb7b9058d81f78c65aa167",
+        "tuningMae": 0.07919,
+        "validationMae": 0.06546,
+        "tuningGain": -0.00212,
+        "validationRelativeDelta": -0.02342,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.00212,
+        "t": 1.48402,
+        "rawP": 0.13890068811480072,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00212 < 0.0005); direction (the paired mean difference is 0.00212, a worsening)."
+      },
+      {
+        "candidateId": "C43",
+        "label": "coach.actionMixInfluence=0.8",
+        "changes": [
+          {
+            "id": "coach.actionMixInfluence",
+            "from": 1,
+            "to": 0.8,
+            "step": 0.05,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "a988f258474f601169d4c192ab39ba68726abf000abeca2a6d4547e109a2b17e",
+        "tuningMae": 0.07688,
+        "validationMae": 0.06624,
+        "tuningGain": 0.00019,
+        "validationRelativeDelta": -0.01179,
+        "pairedN": 288,
+        "pairedMeanDiff": -0.0002,
+        "t": -0.14358,
+        "rawP": 0.8859331588272699,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain 0.00019 < 0.0005); family-wise significance (Holm-adjusted p 1 > 0.05 over a family of 84)."
+      },
+      {
+        "candidateId": "C44",
+        "label": "coach.actionMixInfluence=0.85",
+        "changes": [
+          {
+            "id": "coach.actionMixInfluence",
+            "from": 1,
+            "to": 0.85,
+            "step": 0.05,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "2899ceb9f4a5e961be509e155b437b24b8e0cff3dc7ae3e9e8ce28c37391dc94",
+        "tuningMae": 0.07806,
+        "validationMae": 0.06731,
+        "tuningGain": -0.00099,
+        "validationRelativeDelta": 0.00418,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.00099,
+        "t": 0.69501,
+        "rawP": 0.48761340421551735,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00099 < 0.0005); direction (the paired mean difference is 0.00099, a worsening)."
+      },
+      {
+        "candidateId": "C45",
+        "label": "coach.actionMixInfluence=0.9",
+        "changes": [
+          {
+            "id": "coach.actionMixInfluence",
+            "from": 1,
+            "to": 0.9,
+            "step": 0.05,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "4fc05c0930abe911ad36ffefb27897a5dabc10a84b7e38fbebaae59b2e2ede95",
+        "tuningMae": 0.07878,
+        "validationMae": 0.06616,
+        "tuningGain": -0.00171,
+        "validationRelativeDelta": -0.01298,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.0017,
+        "t": 1.33606,
+        "rawP": 0.18258887355417086,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00171 < 0.0005); direction (the paired mean difference is 0.0017, a worsening)."
+      },
+      {
+        "candidateId": "C46",
+        "label": "coach.actionMixInfluence=0.95",
+        "changes": [
+          {
+            "id": "coach.actionMixInfluence",
+            "from": 1,
+            "to": 0.95,
+            "step": 0.05,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "d6fb7828d51cd07e43006255aa562ffb5b8a6725ac14bef3611078701533cd38",
+        "tuningMae": 0.07758,
+        "validationMae": 0.06868,
+        "tuningGain": -0.00051,
+        "validationRelativeDelta": 0.02462,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.00051,
+        "t": 0.44534,
+        "rawP": 0.656408105445754,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": false,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00051 < 0.0005); direction (the paired mean difference is 0.00051, a worsening); validation guard (relative delta 0.02462 > 0.01)."
+      },
+      {
+        "candidateId": "C47",
+        "label": "coach.actionMixInfluence=1.05",
+        "changes": [
+          {
+            "id": "coach.actionMixInfluence",
+            "from": 1,
+            "to": 1.05,
+            "step": 0.05,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "e19ec1f3219365bfdca501d9959992c29c052b2eef8d1fd1dcb02eb4de6857e5",
+        "tuningMae": 0.07755,
+        "validationMae": 0.06701,
+        "tuningGain": -0.00048,
+        "validationRelativeDelta": -0.0003,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.00048,
+        "t": 0.48151,
+        "rawP": 0.6305182153843716,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00048 < 0.0005); direction (the paired mean difference is 0.00048, a worsening)."
+      },
+      {
+        "candidateId": "C48",
+        "label": "coach.actionMixInfluence=1.1",
+        "changes": [
+          {
+            "id": "coach.actionMixInfluence",
+            "from": 1,
+            "to": 1.1,
+            "step": 0.05,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "63e45d58d29e4706c4c0fd05a13e2efad43b090edae3281daca5cb2a6d598cca",
+        "tuningMae": 0.07778,
+        "validationMae": 0.06713,
+        "tuningGain": -0.00071,
+        "validationRelativeDelta": 0.00149,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.0007,
+        "t": 0.57039,
+        "rawP": 0.568856956070882,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00071 < 0.0005); direction (the paired mean difference is 0.0007, a worsening)."
+      },
+      {
+        "candidateId": "C49",
+        "label": "coach.actionMixInfluence=1.15",
+        "changes": [
+          {
+            "id": "coach.actionMixInfluence",
+            "from": 1,
+            "to": 1.15,
+            "step": 0.05,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "e2118d82ad5c3bb448c431a2763b1689a40fe1839fa1813f4465b19c76b9ccfc",
+        "tuningMae": 0.07669,
+        "validationMae": 0.06711,
+        "tuningGain": 0.00038,
+        "validationRelativeDelta": 0.00119,
+        "pairedN": 288,
+        "pairedMeanDiff": -0.00039,
+        "t": -0.29926,
+        "rawP": 0.7649606785705234,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain 0.00038 < 0.0005); family-wise significance (Holm-adjusted p 1 > 0.05 over a family of 84)."
+      },
+      {
+        "candidateId": "C50",
+        "label": "coach.actionMixInfluence=1.2",
+        "changes": [
+          {
+            "id": "coach.actionMixInfluence",
+            "from": 1,
+            "to": 1.2,
+            "step": 0.05,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "cd34d161d8006d71b53b54dccd30792d8d6a977cf66e6c28a9a82f03657960f2",
+        "tuningMae": 0.07676,
+        "validationMae": 0.06705,
+        "tuningGain": 0.00031,
+        "validationRelativeDelta": 0.0003,
+        "pairedN": 288,
+        "pairedMeanDiff": -0.00032,
+        "t": -0.22885,
+        "rawP": 0.8191484830118514,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain 0.00031 < 0.0005); family-wise significance (Holm-adjusted p 1 > 0.05 over a family of 84)."
+      },
+      {
+        "candidateId": "C51",
+        "label": "coach.actionMixInfluence=1.25",
+        "changes": [
+          {
+            "id": "coach.actionMixInfluence",
+            "from": 1,
+            "to": 1.25,
+            "step": 0.05,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "d166a6e9526b549d9111e50907a3b6f1076b7813431f4c9f7e90488ee2bc09e0",
+        "tuningMae": 0.07676,
+        "validationMae": 0.06979,
+        "tuningGain": 0.00031,
+        "validationRelativeDelta": 0.04118,
+        "pairedN": 288,
+        "pairedMeanDiff": -0.00032,
+        "t": -0.24633,
+        "rawP": 0.8056005290898565,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": false,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain 0.00031 < 0.0005); family-wise significance (Holm-adjusted p 1 > 0.05 over a family of 84); validation guard (relative delta 0.04118 > 0.01)."
+      },
+      {
+        "candidateId": "C52",
+        "label": "coach.actionMixInfluence=1.3",
+        "changes": [
+          {
+            "id": "coach.actionMixInfluence",
+            "from": 1,
+            "to": 1.3,
+            "step": 0.05,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "6851479764b164258732e419f3a8a2326d59d2b85797d5f25713477538bf4154",
+        "tuningMae": 0.07681,
+        "validationMae": 0.06844,
+        "tuningGain": 0.00026,
+        "validationRelativeDelta": 0.02104,
+        "pairedN": 288,
+        "pairedMeanDiff": -0.00027,
+        "t": -0.19748,
+        "rawP": 0.8435917322676258,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": false,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain 0.00026 < 0.0005); family-wise significance (Holm-adjusted p 1 > 0.05 over a family of 84); validation guard (relative delta 0.02104 > 0.01)."
+      },
+      {
+        "candidateId": "C53",
+        "label": "coach.rosterSensitivity=0.7",
+        "changes": [
+          {
+            "id": "coach.rosterSensitivity",
+            "from": 1,
+            "to": 0.7,
+            "step": 0.05,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "074e58bdad7050d85ea3171869ba76fd3f2aac7cdf88ef6d6601337097825d3e",
+        "tuningMae": 0.0781,
+        "validationMae": 0.06486,
+        "tuningGain": -0.00103,
+        "validationRelativeDelta": -0.03237,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.00103,
+        "t": 0.68334,
+        "rawP": 0.49494282860869654,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00103 < 0.0005); direction (the paired mean difference is 0.00103, a worsening)."
+      },
+      {
+        "candidateId": "C54",
+        "label": "coach.rosterSensitivity=0.75",
+        "changes": [
+          {
+            "id": "coach.rosterSensitivity",
+            "from": 1,
+            "to": 0.75,
+            "step": 0.05,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "f87416a3464285856f1b44f41e901557d8e40042f34e90bb799f65bff95d1839",
+        "tuningMae": 0.07863,
+        "validationMae": 0.06429,
+        "tuningGain": -0.00156,
+        "validationRelativeDelta": -0.04088,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.00155,
+        "t": 1.05814,
+        "rawP": 0.2908791992972042,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00156 < 0.0005); direction (the paired mean difference is 0.00155, a worsening)."
+      },
+      {
+        "candidateId": "C55",
+        "label": "coach.rosterSensitivity=0.8",
+        "changes": [
+          {
+            "id": "coach.rosterSensitivity",
+            "from": 1,
+            "to": 0.8,
+            "step": 0.05,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "63db37dea4737aec8c3ca289c41d328a06fdb9e9732c96cc10a6ec31ef3e808e",
+        "tuningMae": 0.07766,
+        "validationMae": 0.0669,
+        "tuningGain": -0.00059,
+        "validationRelativeDelta": -0.00194,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.00059,
+        "t": 0.39703,
+        "rawP": 0.6916422646990344,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00059 < 0.0005); direction (the paired mean difference is 0.00059, a worsening)."
+      },
+      {
+        "candidateId": "C56",
+        "label": "coach.rosterSensitivity=0.85",
+        "changes": [
+          {
+            "id": "coach.rosterSensitivity",
+            "from": 1,
+            "to": 0.85,
+            "step": 0.05,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "a8430cd275f71db7ce3cac2841a400030f14037ca9e2a5126dca979ba3b5ece9",
+        "tuningMae": 0.0778,
+        "validationMae": 0.06624,
+        "tuningGain": -0.00073,
+        "validationRelativeDelta": -0.01179,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.00073,
+        "t": 0.50734,
+        "rawP": 0.6123069046837419,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00073 < 0.0005); direction (the paired mean difference is 0.00073, a worsening)."
+      },
+      {
+        "candidateId": "C57",
+        "label": "coach.rosterSensitivity=0.9",
+        "changes": [
+          {
+            "id": "coach.rosterSensitivity",
+            "from": 1,
+            "to": 0.9,
+            "step": 0.05,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "21ad0c8f6e2ae8078a8f75025ab4e438279fd7752a429204a810582cc9834ee3",
+        "tuningMae": 0.07907,
+        "validationMae": 0.06645,
+        "tuningGain": -0.002,
+        "validationRelativeDelta": -0.00865,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.002,
+        "t": 1.56289,
+        "rawP": 0.11917999130482448,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.002 < 0.0005); direction (the paired mean difference is 0.002, a worsening)."
+      },
+      {
+        "candidateId": "C58",
+        "label": "coach.rosterSensitivity=0.95",
+        "changes": [
+          {
+            "id": "coach.rosterSensitivity",
+            "from": 1,
+            "to": 0.95,
+            "step": 0.05,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "cd5d02a2f4f220bee4dd841c8a7299bd8c8ee91deea8dc7dd1f562c51bace9ec",
+        "tuningMae": 0.07878,
+        "validationMae": 0.06915,
+        "tuningGain": -0.00171,
+        "validationRelativeDelta": 0.03163,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.0017,
+        "t": 1.37658,
+        "rawP": 0.1697157866401423,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": false,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00171 < 0.0005); direction (the paired mean difference is 0.0017, a worsening); validation guard (relative delta 0.03163 > 0.01)."
+      },
+      {
+        "candidateId": "C59",
+        "label": "coach.rosterSensitivity=1.05",
+        "changes": [
+          {
+            "id": "coach.rosterSensitivity",
+            "from": 1,
+            "to": 1.05,
+            "step": 0.05,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "2b847246bcb611472985954683a8f4ff31646583610d73bc4fbbd4a3e1a04b90",
+        "tuningMae": 0.07755,
+        "validationMae": 0.06685,
+        "tuningGain": -0.00048,
+        "validationRelativeDelta": -0.00269,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.00048,
+        "t": 0.45581,
+        "rawP": 0.6488722030503856,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00048 < 0.0005); direction (the paired mean difference is 0.00048, a worsening)."
+      },
+      {
+        "candidateId": "C60",
+        "label": "coach.rosterSensitivity=1.1",
+        "changes": [
+          {
+            "id": "coach.rosterSensitivity",
+            "from": 1,
+            "to": 1.1,
+            "step": 0.05,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "f4cff21130436e1eb4546fbb5b1ad655e0251b6149d05730ebefd16f543963d9",
+        "tuningMae": 0.07726,
+        "validationMae": 0.06641,
+        "tuningGain": -0.00019,
+        "validationRelativeDelta": -0.00925,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.00018,
+        "t": 0.14922,
+        "rawP": 0.8814864589956544,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00019 < 0.0005); direction (the paired mean difference is 0.00018, a worsening)."
+      },
+      {
+        "candidateId": "C61",
+        "label": "coach.rosterSensitivity=1.15",
+        "changes": [
+          {
+            "id": "coach.rosterSensitivity",
+            "from": 1,
+            "to": 1.15,
+            "step": 0.05,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "b026ebf16b24b6ffa5b780873fb0834203754b41be8a4ce80d24625d42d23536",
+        "tuningMae": 0.07826,
+        "validationMae": 0.06674,
+        "tuningGain": -0.00119,
+        "validationRelativeDelta": -0.00433,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.00118,
+        "t": 1.01987,
+        "rawP": 0.30864961077489883,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00119 < 0.0005); direction (the paired mean difference is 0.00118, a worsening)."
+      },
+      {
+        "candidateId": "C62",
+        "label": "coach.rosterSensitivity=1.2",
+        "changes": [
+          {
+            "id": "coach.rosterSensitivity",
+            "from": 1,
+            "to": 1.2,
+            "step": 0.05,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "1c32ddb2201a97c5ad88fc4bd0f0448ce70bd3e4158fd12436b9e41482f8fa14",
+        "tuningMae": 0.07804,
+        "validationMae": 0.06715,
+        "tuningGain": -0.00097,
+        "validationRelativeDelta": 0.00179,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.00097,
+        "t": 0.75214,
+        "rawP": 0.45258260113242166,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00097 < 0.0005); direction (the paired mean difference is 0.00097, a worsening)."
+      },
+      {
+        "candidateId": "C63",
+        "label": "coach.rosterSensitivity=1.25",
+        "changes": [
+          {
+            "id": "coach.rosterSensitivity",
+            "from": 1,
+            "to": 1.25,
+            "step": 0.05,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "9c9e08fbba804fb4a16358b3facfec072d7e25af8f5bfa190c6e965fe7f977fc",
+        "tuningMae": 0.07605,
+        "validationMae": 0.06843,
+        "tuningGain": 0.00102,
+        "validationRelativeDelta": 0.02089,
+        "pairedN": 288,
+        "pairedMeanDiff": -0.00102,
+        "t": -0.77791,
+        "rawP": 0.4372642778019845,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": true,
+        "familyWiseSignificant": false,
+        "validationSafe": false,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on family-wise significance (Holm-adjusted p 1 > 0.05 over a family of 84); validation guard (relative delta 0.02089 > 0.01)."
+      },
+      {
+        "candidateId": "C64",
+        "label": "coach.rosterSensitivity=1.3",
+        "changes": [
+          {
+            "id": "coach.rosterSensitivity",
+            "from": 1,
+            "to": 1.3,
+            "step": 0.05,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "a8b90bd13baff96faddb4d7265a7dbec138369cb9caeb7279cad1abbb922a67b",
+        "tuningMae": 0.0791,
+        "validationMae": 0.06798,
+        "tuningGain": -0.00203,
+        "validationRelativeDelta": 0.01417,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.00203,
+        "t": 1.50371,
+        "rawP": 0.13375624418415044,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": false,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00203 < 0.0005); direction (the paired mean difference is 0.00203, a worsening); validation guard (relative delta 0.01417 > 0.01)."
+      },
+      {
+        "candidateId": "C65",
+        "label": "coach.offensiveAdjustmentMinEvents=3",
+        "changes": [
+          {
+            "id": "coach.offensiveAdjustmentMinEvents",
+            "from": 6,
+            "to": 3,
+            "step": 1,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "f137af7ff899707344960e4b341eee1c04b712900e7e9a54d464bf9e0d68817b",
+        "tuningMae": 0.07656,
+        "validationMae": 0.06599,
+        "tuningGain": 0.00051,
+        "validationRelativeDelta": -0.01552,
+        "pairedN": 288,
+        "pairedMeanDiff": -0.00051,
+        "t": -0.51841,
+        "rawP": 0.6045739930926347,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": true,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on family-wise significance (Holm-adjusted p 1 > 0.05 over a family of 84)."
+      },
+      {
+        "candidateId": "C66",
+        "label": "coach.offensiveAdjustmentMinEvents=4",
+        "changes": [
+          {
+            "id": "coach.offensiveAdjustmentMinEvents",
+            "from": 6,
+            "to": 4,
+            "step": 1,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "5f08fbd2ff6c52d18b999226b84c3032aa4b3f99ea1889fb710c93e3850d31a7",
+        "tuningMae": 0.07684,
+        "validationMae": 0.06514,
+        "tuningGain": 0.00023,
+        "validationRelativeDelta": -0.0282,
+        "pairedN": 288,
+        "pairedMeanDiff": -0.00023,
+        "t": -0.27418,
+        "rawP": 0.78414155511894,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain 0.00023 < 0.0005); family-wise significance (Holm-adjusted p 1 > 0.05 over a family of 84)."
+      },
+      {
+        "candidateId": "C67",
+        "label": "coach.offensiveAdjustmentMinEvents=5",
+        "changes": [
+          {
+            "id": "coach.offensiveAdjustmentMinEvents",
+            "from": 6,
+            "to": 5,
+            "step": 1,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "1d84c0b74670fa5a9210148648603621d8ecb9827d29d95cd6dc23fd1a00a3e3",
+        "tuningMae": 0.07688,
+        "validationMae": 0.06614,
+        "tuningGain": 0.00019,
+        "validationRelativeDelta": -0.01328,
+        "pairedN": 288,
+        "pairedMeanDiff": -0.00019,
+        "t": -0.30481,
+        "rawP": 0.7607329139080898,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain 0.00019 < 0.0005); family-wise significance (Holm-adjusted p 1 > 0.05 over a family of 84)."
+      },
+      {
+        "candidateId": "C68",
+        "label": "coach.offensiveAdjustmentMinEvents=7",
+        "changes": [
+          {
+            "id": "coach.offensiveAdjustmentMinEvents",
+            "from": 6,
+            "to": 7,
+            "step": 1,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "36fb006d139f61395096fa4c4fe25bb82f0e4f789a0724dd9dc442d935dabb69",
+        "tuningMae": 0.07693,
+        "validationMae": 0.06694,
+        "tuningGain": 0.00014,
+        "validationRelativeDelta": -0.00134,
+        "pairedN": 288,
+        "pairedMeanDiff": -0.00015,
+        "t": -0.25909,
+        "rawP": 0.7957525071564959,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain 0.00014 < 0.0005); family-wise significance (Holm-adjusted p 1 > 0.05 over a family of 84)."
+      },
+      {
+        "candidateId": "C69",
+        "label": "coach.offensiveAdjustmentMinEvents=8",
+        "changes": [
+          {
+            "id": "coach.offensiveAdjustmentMinEvents",
+            "from": 6,
+            "to": 8,
+            "step": 1,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "25cdc84969bb161db3a1ff7a6c588059814ef53e18e4d15cd6b9a882536b7cbc",
+        "tuningMae": 0.07635,
+        "validationMae": 0.06655,
+        "tuningGain": 0.00072,
+        "validationRelativeDelta": -0.00716,
+        "pairedN": 288,
+        "pairedMeanDiff": -0.00072,
+        "t": -1.06557,
+        "rawP": 0.28751245507200185,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": true,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on family-wise significance (Holm-adjusted p 1 > 0.05 over a family of 84)."
+      },
+      {
+        "candidateId": "C70",
+        "label": "coach.offensiveAdjustmentMinEvents=9",
+        "changes": [
+          {
+            "id": "coach.offensiveAdjustmentMinEvents",
+            "from": 6,
+            "to": 9,
+            "step": 1,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "80cc75fb98e6da1615496ae2df5e9d9800bcfd6612a0498f91cb90bef623d5ba",
+        "tuningMae": 0.07645,
+        "validationMae": 0.06749,
+        "tuningGain": 0.00062,
+        "validationRelativeDelta": 0.00686,
+        "pairedN": 288,
+        "pairedMeanDiff": -0.00062,
+        "t": -0.80858,
+        "rawP": 0.4194269036952205,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": true,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on family-wise significance (Holm-adjusted p 1 > 0.05 over a family of 84)."
+      },
+      {
+        "candidateId": "C71",
+        "label": "coach.adjustmentMagnitude=0.025",
+        "changes": [
+          {
+            "id": "coach.adjustmentMagnitude",
+            "from": 0.06,
+            "to": 0.025,
+            "step": 0.005,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "0cbc03be2a0ad1910a564285a928c2dcf27d5ab7286e939c8e556b2a745bf0eb",
+        "tuningMae": 0.07936,
+        "validationMae": 0.06722,
+        "tuningGain": -0.00229,
+        "validationRelativeDelta": 0.00283,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.00228,
+        "t": 2.18256,
+        "rawP": 0.02987883047265484,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00229 < 0.0005); direction (the paired mean difference is 0.00228, a worsening)."
+      },
+      {
+        "candidateId": "C72",
+        "label": "coach.adjustmentMagnitude=0.03",
+        "changes": [
+          {
+            "id": "coach.adjustmentMagnitude",
+            "from": 0.06,
+            "to": 0.03,
+            "step": 0.005,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "76df13df4240a8d0d8a2659b5e2b9222f2a18cc591aa2e325f6c010f30f0b96b",
+        "tuningMae": 0.07952,
+        "validationMae": 0.06708,
+        "tuningGain": -0.00245,
+        "validationRelativeDelta": 0.00075,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.00245,
+        "t": 2.40155,
+        "rawP": 0.016961791885742653,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00245 < 0.0005); direction (the paired mean difference is 0.00245, a worsening)."
+      },
+      {
+        "candidateId": "C73",
+        "label": "coach.adjustmentMagnitude=0.035",
+        "changes": [
+          {
+            "id": "coach.adjustmentMagnitude",
+            "from": 0.06,
+            "to": 0.035,
+            "step": 0.005,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "af160330b860f650e7ccab5a9bd9278c504c189ce26d4b7f69756bf899d52f17",
+        "tuningMae": 0.07881,
+        "validationMae": 0.06698,
+        "tuningGain": -0.00174,
+        "validationRelativeDelta": -0.00075,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.00173,
+        "t": 1.99132,
+        "rawP": 0.047393248712057516,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00174 < 0.0005); direction (the paired mean difference is 0.00173, a worsening)."
+      },
+      {
+        "candidateId": "C74",
+        "label": "coach.adjustmentMagnitude=0.04",
+        "changes": [
+          {
+            "id": "coach.adjustmentMagnitude",
+            "from": 0.06,
+            "to": 0.04,
+            "step": 0.005,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "812adfe541d846372dcb88a44efa59fe0d401baf1eb696ae53b3e3968f5f8fdb",
+        "tuningMae": 0.07864,
+        "validationMae": 0.06657,
+        "tuningGain": -0.00157,
+        "validationRelativeDelta": -0.00686,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.00156,
+        "t": 1.89275,
+        "rawP": 0.05939767979775583,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00157 < 0.0005); direction (the paired mean difference is 0.00156, a worsening)."
+      },
+      {
+        "candidateId": "C75",
+        "label": "coach.adjustmentMagnitude=0.045",
+        "changes": [
+          {
+            "id": "coach.adjustmentMagnitude",
+            "from": 0.06,
+            "to": 0.045,
+            "step": 0.005,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "608c8e9631a6e257bf990bddff321c71d814679cdc1cb1df8a8d98f86c8992fe",
+        "tuningMae": 0.07813,
+        "validationMae": 0.06691,
+        "tuningGain": -0.00106,
+        "validationRelativeDelta": -0.00179,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.00106,
+        "t": 1.46213,
+        "rawP": 0.14480046952514802,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00106 < 0.0005); direction (the paired mean difference is 0.00106, a worsening)."
+      },
+      {
+        "candidateId": "C76",
+        "label": "coach.adjustmentMagnitude=0.05",
+        "changes": [
+          {
+            "id": "coach.adjustmentMagnitude",
+            "from": 0.06,
+            "to": 0.05,
+            "step": 0.005,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "77e6c512712bc668197f3b896f0c0dfd4bc5b57780da46ed5462f6982d2674f6",
+        "tuningMae": 0.07828,
+        "validationMae": 0.06776,
+        "tuningGain": -0.00121,
+        "validationRelativeDelta": 0.01089,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.00121,
+        "t": 1.63404,
+        "rawP": 0.10334661715083304,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": false,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00121 < 0.0005); direction (the paired mean difference is 0.00121, a worsening); validation guard (relative delta 0.01089 > 0.01)."
+      },
+      {
+        "candidateId": "C77",
+        "label": "coach.adjustmentMagnitude=0.055",
+        "changes": [
+          {
+            "id": "coach.adjustmentMagnitude",
+            "from": 0.06,
+            "to": 0.055,
+            "step": 0.005,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "22725ec6b0bea37913e29a066f3022496665df947b89c3815cd8b84dfd68016f",
+        "tuningMae": 0.07752,
+        "validationMae": 0.06743,
+        "tuningGain": -0.00045,
+        "validationRelativeDelta": 0.00597,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.00044,
+        "t": 1.64425,
+        "rawP": 0.10121850020270307,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00045 < 0.0005); direction (the paired mean difference is 0.00044, a worsening)."
+      },
+      {
+        "candidateId": "C78",
+        "label": "coach.adjustmentMagnitude=0.065",
+        "changes": [
+          {
+            "id": "coach.adjustmentMagnitude",
+            "from": 0.06,
+            "to": 0.065,
+            "step": 0.005,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "172ec4317bc3695253efde5d739d4807aa75bd1f041371286afd2d74e15e2354",
+        "tuningMae": 0.07739,
+        "validationMae": 0.06755,
+        "tuningGain": -0.00032,
+        "validationRelativeDelta": 0.00776,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.00032,
+        "t": 0.7846,
+        "rawP": 0.4333363464441867,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00032 < 0.0005); direction (the paired mean difference is 0.00032, a worsening)."
+      },
+      {
+        "candidateId": "C79",
+        "label": "coach.adjustmentMagnitude=0.07",
+        "changes": [
+          {
+            "id": "coach.adjustmentMagnitude",
+            "from": 0.06,
+            "to": 0.07,
+            "step": 0.005,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "232d38c81f54f5abaac8253648122b2c6204cd4f1d5167131e2ae2572080b63e",
+        "tuningMae": 0.07798,
+        "validationMae": 0.06867,
+        "tuningGain": -0.00091,
+        "validationRelativeDelta": 0.02447,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.0009,
+        "t": 1.35577,
+        "rawP": 0.17623714258347423,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": false,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00091 < 0.0005); direction (the paired mean difference is 0.0009, a worsening); validation guard (relative delta 0.02447 > 0.01)."
+      },
+      {
+        "candidateId": "C80",
+        "label": "coach.adjustmentMagnitude=0.075",
+        "changes": [
+          {
+            "id": "coach.adjustmentMagnitude",
+            "from": 0.06,
+            "to": 0.075,
+            "step": 0.005,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "a1a83f15a89bfda9b027ce162b46c24f545fc6cae2ba91d918d76c6831fc8946",
+        "tuningMae": 0.07802,
+        "validationMae": 0.06767,
+        "tuningGain": -0.00095,
+        "validationRelativeDelta": 0.00955,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.00095,
+        "t": 1.14042,
+        "rawP": 0.2550604582752537,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00095 < 0.0005); direction (the paired mean difference is 0.00095, a worsening)."
+      },
+      {
+        "candidateId": "C81",
+        "label": "coach.adjustmentMagnitude=0.08",
+        "changes": [
+          {
+            "id": "coach.adjustmentMagnitude",
+            "from": 0.06,
+            "to": 0.08,
+            "step": 0.005,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "16246d050ada53a5b0a35b9020f9af08f0f619fe87f8b91d7a98a614a950316f",
+        "tuningMae": 0.07839,
+        "validationMae": 0.06629,
+        "tuningGain": -0.00132,
+        "validationRelativeDelta": -0.01104,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.00132,
+        "t": 1.61871,
+        "rawP": 0.10660858298612219,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00132 < 0.0005); direction (the paired mean difference is 0.00132, a worsening)."
+      },
+      {
+        "candidateId": "C82",
+        "label": "coach.adjustmentMagnitude=0.085",
+        "changes": [
+          {
+            "id": "coach.adjustmentMagnitude",
+            "from": 0.06,
+            "to": 0.085,
+            "step": 0.005,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "7e45dc20302cd62b06a3c8dd47338e82fcab3299b2a0c80822508d5518f3b72f",
+        "tuningMae": 0.07798,
+        "validationMae": 0.06615,
+        "tuningGain": -0.00091,
+        "validationRelativeDelta": -0.01313,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.00091,
+        "t": 1.03847,
+        "rawP": 0.29992582566905956,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00091 < 0.0005); direction (the paired mean difference is 0.00091, a worsening)."
+      },
+      {
+        "candidateId": "C83",
+        "label": "coach.adjustmentMagnitude=0.09",
+        "changes": [
+          {
+            "id": "coach.adjustmentMagnitude",
+            "from": 0.06,
+            "to": 0.09,
+            "step": 0.005,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "a98afe8bc906dc5b2c3bb75d8ec3a8e660a9c5aeb16213cb45b16f7a20da3788",
+        "tuningMae": 0.07814,
+        "validationMae": 0.06563,
+        "tuningGain": -0.00107,
+        "validationRelativeDelta": -0.02089,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.00106,
+        "t": 1.18106,
+        "rawP": 0.2385555125894787,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00107 < 0.0005); direction (the paired mean difference is 0.00106, a worsening)."
+      },
+      {
+        "candidateId": "C84",
+        "label": "coach.adjustmentMagnitude=0.095",
+        "changes": [
+          {
+            "id": "coach.adjustmentMagnitude",
+            "from": 0.06,
+            "to": 0.095,
+            "step": 0.005,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2,
+            "onGrid": true
+          }
+        ],
+        "parameterSetHash": "1e6e452f750c3bc4f0761ccc315884ce2ff65f4a8825e0260d50e4b78a3a7633",
+        "tuningMae": 0.07738,
+        "validationMae": 0.06573,
+        "tuningGain": -0.00031,
+        "validationRelativeDelta": -0.01939,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.00031,
+        "t": 0.32474,
+        "rawP": 0.7456168360389119,
+        "holmAdjustedP": 1,
+        "practicalFloorMet": false,
+        "familyWiseSignificant": false,
+        "validationSafe": true,
+        "objectiveAdjudicable": true,
+        "accepted": false,
+        "reason": "Rejected on practical floor (gain -0.00031 < 0.0005); direction (the paired mean difference is 0.00031, a worsening)."
+      }
+    ]
+  },
+  "outputHash": "fb30db15f9bb0ac8e117980bacb217a857d961d5384d3650904da371b3edde1d"
+}

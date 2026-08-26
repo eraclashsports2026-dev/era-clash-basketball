@@ -138,6 +138,10 @@ const play = (goldIds, blueIds, coachGoldId, coachBlueId, era, seed, opts) =>
   runPossessionGame(buildPossessionInput({
     goldIds, blueIds, coachGoldId, coachBlueId, eraStyleId: era, simulationSeed: seed,
     zoneResolution: opts?.zone !== false,
+    // A PLAIN overrides object, never a compiled set: cells cross a worker
+    // boundary by structured clone, and a compiled set carries its frozen
+    // accessor functions, which do not survive the trip.
+    parameterSet: opts?.overrides ?? null,
   }), { includeLedger: true });
 
 const summarise = (g) => ({
