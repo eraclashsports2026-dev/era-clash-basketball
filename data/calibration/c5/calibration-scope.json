@@ -1,0 +1,307 @@
+{
+  "artifact": "calibration-scope",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run calibration:c5:scope",
+  "generatedAt": "2026-08-26T15:19:28.728Z",
+  "gitCommit": "d31b80e455637e73274f9c91d5000a723d805e95",
+  "branch": "phase-6c2c5-targeted-mechanic-calibration",
+  "parameterSetHash": null,
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {
+    "data/calibration/c5/no-effect-triage.json": "6a35ee346ac030c60e025783f8ebd4c7e6aae8120a7aed215d227292a1306558",
+    "data/calibration/internal-folds-v3.json": "8c1e89f3e3ec7c95640a509d5847deb58b5e2d8bd01d47aa813e77c48113ef7a",
+    "data/calibration/historical-targets-v3.json": "a9b7eaf89bcb68baf37e6d992ea71d8a7caddd478365d890f9bfe2a73a8640ac"
+  },
+  "data": {
+    "calibrationScopeVersion": "1.0.0",
+    "scopedCalibrationPolicyVersion": "1.0.0",
+    "targetedCalibrationPolicyVersion": "1.0.0",
+    "internalCalibrationFoldVersion": "3.0.0",
+    "doctrine": "Era Style supplies the historical basketball environment. Player capability, team construction, coaching, matchups, and seeded variance determine how a particular roster performs inside that environment.",
+    "activeParameterCount": 53,
+    "eligibleCount": 11,
+    "frozenCount": 42,
+    "reconciliation": {
+      "label": "calibration-scope",
+      "sum": 53,
+      "expectedTotal": 53,
+      "reconciles": true,
+      "problems": []
+    },
+    "objective": {
+      "statistic": "Tier C player scoring-share mean absolute error over the selected five, on historical calibration v3 fixtures",
+      "targetClass": "TIER_C_SEASON_SHARE_PROXY",
+      "targetField": "unitTargets.playerScoringShares",
+      "availability": "SELECTED_FIVE_SEASON_SHARE_PROXY",
+      "normalisation": "Realised shares are normalised across the selected five, matching how the target was derived. Comparing an unnormalised realised share to a five-normalised target would measure the normalisation, not the engine.",
+      "matchup": "Each fixture plays a MIRROR of itself, so opponent quality cannot move the internal scoring distribution the target describes.",
+      "direction": "LOWER_IS_BETTER",
+      "whyThisObjective": "None of the eligible parameters carries historical numeric support in its own registry entry — 5 are SYNTHETIC_CONTROL_SUPPORT and 6 are STRUCTURAL_VALIDATION_ONLY. The Tier C share proxies are the only authorized numeric historical evidence in this corpus that these parameters could plausibly move, so they are the strongest available adjudicator. They remain a PROXY: derived season shares over a documented five, not observed possession-level allocation.",
+      "limitations": [
+        "A season share proxy cannot distinguish a correct allocation mechanism from a compensating pair of incorrect ones.",
+        "Five-player normalisation discards bench scoring entirely.",
+        "23 fixtures is a small corpus; a single fixture is ~4% of the objective."
+      ]
+    },
+    "folds": {
+      "grouping": {
+        "groups": 26,
+        "rule": "Historical fixtures group by franchise within a three-season window; synthetic fixtures group by their exact five. Fixtures sharing a key always share a fold."
+      },
+      "leakFree": true,
+      "tuningFolds": [
+        0,
+        2
+      ],
+      "validationFolds": [
+        1,
+        3
+      ],
+      "tuningFixtureCount": 12,
+      "validationFixtureCount": 11,
+      "tuningFixtures": [
+        "h3-1951-52-lakers",
+        "h3-1969-70-knicks",
+        "h3-1971-72-lakers",
+        "h3-1972-73-knicks",
+        "h3-1986-87-lakers",
+        "h3-1995-96-bulls",
+        "h3-1996-97-jazz",
+        "h3-2000-01-lakers",
+        "h3-2015-16-warriors",
+        "h3-2010-11-bulls",
+        "h3-2021-22-warriors",
+        "h3-2022-23-sixers"
+      ],
+      "validationFixtures": [
+        "h3-1956-57-celtics",
+        "h3-1958-59-celtics",
+        "h3-1962-63-celtics",
+        "h3-1973-74-celtics",
+        "h3-1985-86-celtics",
+        "h3-1988-89-pistons",
+        "h3-1994-95-rockets",
+        "h3-2003-04-pistons",
+        "h3-2004-05-spurs",
+        "h3-2013-14-spurs",
+        "h3-2022-23-heat"
+      ],
+      "assignedBeforeResults": true
+    },
+    "thresholds": {
+      "minTuningImprovement": 0.0005,
+      "maxValidationDegradation": 0.01,
+      "scanPointsPerParameter": 4,
+      "seedsPerFixture": 24,
+      "candidateZeroAlwaysCompetes": true,
+      "frozenBeforeAnyResult": true,
+      "note": "These thresholds may not be changed after seeing a result. If no changed candidate clears them, Candidate 0 wins and the lock is DEVELOPMENT_LOCKED_BASELINE."
+    },
+    "eligibleParameters": [
+      {
+        "id": "opportunity.mismatch.severe",
+        "module": "opportunityAllocation",
+        "defaultValue": 2.6,
+        "registryMin": 1,
+        "registryMax": 4,
+        "searchBounds": {
+          "lo": 2,
+          "hi": 3.2
+        },
+        "movementCapFractionOfRange": 0.2,
+        "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+        "identifiability": "IDENTIFIABLE",
+        "triage": "TARGETED_EFFECT_CONFIRMED",
+        "support": "SYNTHETIC_CONTROL_SUPPORT",
+        "activatedPossessions": 20192
+      },
+      {
+        "id": "opportunity.mismatch.major",
+        "module": "opportunityAllocation",
+        "defaultValue": 2,
+        "registryMin": 1,
+        "registryMax": 3.5,
+        "searchBounds": {
+          "lo": 1.75,
+          "hi": 2.25
+        },
+        "movementCapFractionOfRange": 0.1,
+        "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+        "identifiability": "CONTEXTUALLY_IDENTIFIABLE",
+        "triage": "RARE_CONTEXT_ACTIVE",
+        "support": "SYNTHETIC_CONTROL_SUPPORT",
+        "activatedPossessions": 16870
+      },
+      {
+        "id": "fitBand.POST_UP.lo",
+        "module": "opportunityAllocation",
+        "defaultValue": 0.3,
+        "registryMin": 0.1,
+        "registryMax": 1,
+        "searchBounds": {
+          "lo": 0.20999999999999996,
+          "hi": 0.39
+        },
+        "movementCapFractionOfRange": 0.1,
+        "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+        "identifiability": "CONTEXTUALLY_IDENTIFIABLE",
+        "triage": "RARE_CONTEXT_ACTIVE",
+        "support": "SYNTHETIC_CONTROL_SUPPORT",
+        "activatedPossessions": 6468
+      },
+      {
+        "id": "fitBand.ISOLATION.lo",
+        "module": "opportunityAllocation",
+        "defaultValue": 0.5,
+        "registryMin": 0.1,
+        "registryMax": 1,
+        "searchBounds": {
+          "lo": 0.41,
+          "hi": 0.59
+        },
+        "movementCapFractionOfRange": 0.1,
+        "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+        "identifiability": "CONTEXTUALLY_IDENTIFIABLE",
+        "triage": "RARE_CONTEXT_ACTIVE",
+        "support": "SYNTHETIC_CONTROL_SUPPORT",
+        "activatedPossessions": 4677
+      },
+      {
+        "id": "fitBand.ISOLATION.hi",
+        "module": "opportunityAllocation",
+        "defaultValue": 1.8,
+        "registryMin": 1,
+        "registryMax": 3,
+        "searchBounds": {
+          "lo": 1.6,
+          "hi": 2
+        },
+        "movementCapFractionOfRange": 0.1,
+        "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+        "identifiability": "CONTEXTUALLY_IDENTIFIABLE",
+        "triage": "RARE_CONTEXT_ACTIVE",
+        "support": "SYNTHETIC_CONTROL_SUPPORT",
+        "activatedPossessions": 4677
+      },
+      {
+        "id": "zone.highPostVulnerability",
+        "module": "zoneResolution",
+        "defaultValue": 1,
+        "registryMin": 0.3,
+        "registryMax": 2,
+        "searchBounds": {
+          "lo": 0.83,
+          "hi": 1.17
+        },
+        "movementCapFractionOfRange": 0.1,
+        "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+        "identifiability": "CONTEXTUALLY_IDENTIFIABLE",
+        "triage": "RARE_CONTEXT_ACTIVE",
+        "support": "STRUCTURAL_VALIDATION_ONLY",
+        "activatedPossessions": 1268
+      },
+      {
+        "id": "zone.cornerVulnerability",
+        "module": "zoneResolution",
+        "defaultValue": 1,
+        "registryMin": 0.3,
+        "registryMax": 2,
+        "searchBounds": {
+          "lo": 0.83,
+          "hi": 1.17
+        },
+        "movementCapFractionOfRange": 0.1,
+        "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+        "identifiability": "CONTEXTUALLY_IDENTIFIABLE",
+        "triage": "RARE_CONTEXT_ACTIVE",
+        "support": "STRUCTURAL_VALIDATION_ONLY",
+        "activatedPossessions": 9031
+      },
+      {
+        "id": "coach.actionMixInfluence",
+        "module": "coachIntelligence",
+        "defaultValue": 1,
+        "registryMin": 0.3,
+        "registryMax": 2,
+        "searchBounds": {
+          "lo": 0.6599999999999999,
+          "hi": 1.34
+        },
+        "movementCapFractionOfRange": 0.2,
+        "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+        "identifiability": "IDENTIFIABLE",
+        "triage": "TARGETED_EFFECT_CONFIRMED",
+        "support": "STRUCTURAL_VALIDATION_ONLY",
+        "activatedPossessions": 55966
+      },
+      {
+        "id": "coach.rosterSensitivity",
+        "module": "coachIntelligence",
+        "defaultValue": 1,
+        "registryMin": 0.3,
+        "registryMax": 2,
+        "searchBounds": {
+          "lo": 0.6599999999999999,
+          "hi": 1.34
+        },
+        "movementCapFractionOfRange": 0.2,
+        "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+        "identifiability": "IDENTIFIABLE",
+        "triage": "TARGETED_EFFECT_CONFIRMED",
+        "support": "STRUCTURAL_VALIDATION_ONLY",
+        "activatedPossessions": 55966
+      },
+      {
+        "id": "coach.offensiveAdjustmentMinEvents",
+        "module": "coachAdjustment",
+        "defaultValue": 6,
+        "registryMin": 1,
+        "registryMax": 16,
+        "searchBounds": {
+          "lo": 3,
+          "hi": 9
+        },
+        "movementCapFractionOfRange": 0.2,
+        "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+        "identifiability": "IDENTIFIABLE",
+        "triage": "TARGETED_EFFECT_CONFIRMED",
+        "support": "STRUCTURAL_VALIDATION_ONLY",
+        "activatedPossessions": 55966
+      },
+      {
+        "id": "coach.adjustmentMagnitude",
+        "module": "coachAdjustment",
+        "defaultValue": 0.06,
+        "registryMin": 0.01,
+        "registryMax": 0.2,
+        "searchBounds": {
+          "lo": 0.021999999999999992,
+          "hi": 0.098
+        },
+        "movementCapFractionOfRange": 0.2,
+        "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+        "identifiability": "IDENTIFIABLE",
+        "triage": "TARGETED_EFFECT_CONFIRMED",
+        "support": "STRUCTURAL_VALIDATION_ONLY",
+        "activatedPossessions": 55966
+      }
+    ],
+    "sealedSets": {
+      "historicalHoldoutV3": {
+        "count": 8,
+        "accessed": 0,
+        "status": "SEALED_NOT_ACCESSED"
+      },
+      "syntheticStressHoldoutV2": {
+        "count": 16,
+        "accessed": 0,
+        "status": "SEALED_NOT_ACCESSED"
+      },
+      "contaminationCheck": "PASS"
+    },
+    "defaultParameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309"
+  },
+  "outputHash": "3a49b4693355f01b76b54fb530763e785d1f9711069a0402e7d0a51dd914e062"
+}

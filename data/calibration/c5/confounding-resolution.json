@@ -1,0 +1,925 @@
+{
+  "artifact": "confounding-resolution",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run calibration:c5:confounding",
+  "generatedAt": "2026-08-26T15:07:03.371Z",
+  "gitCommit": "d31b80e455637e73274f9c91d5000a723d805e95",
+  "branch": "phase-6c2c5-targeted-mechanic-calibration",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {
+    ".cache/calibration/identifiability-v2.json": "a8d188f1a2471b2407cc715e65f75c6aae2db938c9f05c93ac4f6f8c1fef73d7"
+  },
+  "parameterConfoundingResolutionVersion": "1.0.0",
+  "seedsPerCell": 48,
+  "data": {
+    "groups": [
+      {
+        "a": "opportunity.form.low",
+        "b": "opportunity.form.high",
+        "cosine": -0.9445,
+        "fixtures": [
+          "balanced-vs-creators",
+          "shooters-vs-bigs",
+          "synthdev-sd2-extreme-size"
+        ],
+        "metrics": [
+          "primaryConcentration",
+          "distinctPrimaries"
+        ],
+        "results": [
+          {
+            "metric": "primaryConcentration",
+            "cells": {
+              "lowlow": {
+                "valueA": 0.6,
+                "valueB": 1,
+                "n": 144,
+                "mean": 0.15248,
+                "se": 0.00168
+              },
+              "highlow": {
+                "valueA": 1,
+                "valueB": 1,
+                "n": 144,
+                "mean": 0.15035,
+                "se": 0.00163
+              },
+              "lowhigh": {
+                "valueA": 0.6,
+                "valueB": 1.6,
+                "n": 144,
+                "mean": 0.15486,
+                "se": 0.00176
+              },
+              "highhigh": {
+                "valueA": 1,
+                "valueB": 1.6,
+                "n": 144,
+                "mean": 0.15223,
+                "se": 0.00163
+              }
+            },
+            "mainEffectA": -0.00238,
+            "mainEffectB": 0.00213,
+            "interaction": -0.00025,
+            "aAtBLow": -0.00213,
+            "aAtBHigh": -0.00263,
+            "bAtALow": 0.00238,
+            "bAtAHigh": 0.00188,
+            "pooledSe": 0.00168,
+            "tMainA": -1.42018,
+            "tMainB": 1.271,
+            "tInteraction": -0.14918
+          },
+          {
+            "metric": "distinctPrimaries",
+            "cells": {
+              "lowlow": {
+                "valueA": 0.6,
+                "valueB": 1,
+                "n": 144,
+                "mean": 10,
+                "se": 0
+              },
+              "highlow": {
+                "valueA": 1,
+                "valueB": 1,
+                "n": 144,
+                "mean": 10,
+                "se": 0
+              },
+              "lowhigh": {
+                "valueA": 0.6,
+                "valueB": 1.6,
+                "n": 144,
+                "mean": 10,
+                "se": 0
+              },
+              "highhigh": {
+                "valueA": 1,
+                "valueB": 1.6,
+                "n": 144,
+                "mean": 10,
+                "se": 0
+              }
+            },
+            "mainEffectA": 0,
+            "mainEffectB": 0,
+            "interaction": 0,
+            "aAtBLow": 0,
+            "aAtBHigh": 0,
+            "bAtALow": 0,
+            "bAtAHigh": 0,
+            "pooledSe": 0,
+            "tMainA": 0,
+            "tMainB": 0,
+            "tInteraction": 0
+          }
+        ],
+        "resolution": "FREEZE_BOTH_PENDING_TARGET",
+        "reason": "Neither main effect clears noise on any tested metric (best t -1.42018, 1.271). Nothing to separate."
+      },
+      {
+        "a": "fitBand.TRANSITION.lo",
+        "b": "fitBand.TRANSITION.hi",
+        "cosine": -0.9342,
+        "fixtures": [
+          "era-2010s",
+          "balanced-vs-creators",
+          "coach-mike-dantoni-vs-jerry-sloan"
+        ],
+        "metrics": [
+          "primaryConcentration",
+          "distinctPrimaries",
+          "count"
+        ],
+        "results": [
+          {
+            "metric": "primaryConcentration",
+            "cells": {
+              "lowlow": {
+                "valueA": 0.1,
+                "valueB": 1,
+                "n": 144,
+                "mean": 0.14808,
+                "se": 0.00163
+              },
+              "highlow": {
+                "valueA": 1,
+                "valueB": 1,
+                "n": 144,
+                "mean": 0.14712,
+                "se": 0.00166
+              },
+              "lowhigh": {
+                "valueA": 0.1,
+                "valueB": 3,
+                "n": 144,
+                "mean": 0.148,
+                "se": 0.00164
+              },
+              "highhigh": {
+                "valueA": 1,
+                "valueB": 3,
+                "n": 144,
+                "mean": 0.14765,
+                "se": 0.00164
+              }
+            },
+            "mainEffectA": -0.00066,
+            "mainEffectB": 0.00022,
+            "interaction": 0.0003,
+            "aAtBLow": -0.00096,
+            "aAtBHigh": -0.00035,
+            "bAtALow": -0.00008,
+            "bAtAHigh": 0.00053,
+            "pooledSe": 0.00164,
+            "tMainA": -0.39877,
+            "tMainB": 0.13698,
+            "tInteraction": 0.18569
+          },
+          {
+            "metric": "distinctPrimaries",
+            "cells": {
+              "lowlow": {
+                "valueA": 0.1,
+                "valueB": 1,
+                "n": 144,
+                "mean": 10,
+                "se": 0
+              },
+              "highlow": {
+                "valueA": 1,
+                "valueB": 1,
+                "n": 144,
+                "mean": 10,
+                "se": 0
+              },
+              "lowhigh": {
+                "valueA": 0.1,
+                "valueB": 3,
+                "n": 144,
+                "mean": 10,
+                "se": 0
+              },
+              "highhigh": {
+                "valueA": 1,
+                "valueB": 3,
+                "n": 144,
+                "mean": 10,
+                "se": 0
+              }
+            },
+            "mainEffectA": 0,
+            "mainEffectB": 0,
+            "interaction": 0,
+            "aAtBLow": 0,
+            "aAtBHigh": 0,
+            "bAtALow": 0,
+            "bAtAHigh": 0,
+            "pooledSe": 0,
+            "tMainA": 0,
+            "tMainB": 0,
+            "tInteraction": 0
+          },
+          {
+            "metric": "count",
+            "cells": {
+              "lowlow": {
+                "valueA": 0.1,
+                "valueB": 1,
+                "n": 144,
+                "mean": 219.09722,
+                "se": 0.6492
+              },
+              "highlow": {
+                "valueA": 1,
+                "valueB": 1,
+                "n": 144,
+                "mean": 219,
+                "se": 0.60447
+              },
+              "lowhigh": {
+                "valueA": 0.1,
+                "valueB": 3,
+                "n": 144,
+                "mean": 219.11806,
+                "se": 0.64951
+              },
+              "highhigh": {
+                "valueA": 1,
+                "valueB": 3,
+                "n": 144,
+                "mean": 218.77778,
+                "se": 0.62915
+              }
+            },
+            "mainEffectA": -0.21875,
+            "mainEffectB": -0.10069,
+            "interaction": -0.12153,
+            "aAtBLow": -0.09722,
+            "aAtBHigh": -0.34028,
+            "bAtALow": 0.02084,
+            "bAtAHigh": -0.22222,
+            "pooledSe": 0.63335,
+            "tMainA": -0.34538,
+            "tMainB": -0.15898,
+            "tInteraction": -0.19188
+          }
+        ],
+        "resolution": "FREEZE_BOTH_PENDING_TARGET",
+        "reason": "Neither main effect clears noise on any tested metric (best t -0.39877, 0.13698). Nothing to separate."
+      },
+      {
+        "a": "fitBand.GENERIC_HALF_COURT.lo",
+        "b": "fitBand.GENERIC_HALF_COURT.hi",
+        "cosine": -0.919,
+        "fixtures": [
+          "era-2010s",
+          "balanced-vs-creators",
+          "coach-mike-dantoni-vs-jerry-sloan"
+        ],
+        "metrics": [
+          "primaryConcentration",
+          "distinctPrimaries",
+          "count"
+        ],
+        "results": [
+          {
+            "metric": "primaryConcentration",
+            "cells": {
+              "lowlow": {
+                "valueA": 0.1,
+                "valueB": 1,
+                "n": 144,
+                "mean": 0.14939,
+                "se": 0.00166
+              },
+              "highlow": {
+                "valueA": 1,
+                "valueB": 1,
+                "n": 144,
+                "mean": 0.14633,
+                "se": 0.00156
+              },
+              "lowhigh": {
+                "valueA": 0.1,
+                "valueB": 3,
+                "n": 144,
+                "mean": 0.14953,
+                "se": 0.00166
+              },
+              "highhigh": {
+                "valueA": 1,
+                "valueB": 3,
+                "n": 144,
+                "mean": 0.14833,
+                "se": 0.00167
+              }
+            },
+            "mainEffectA": -0.00213,
+            "mainEffectB": 0.00107,
+            "interaction": 0.00093,
+            "aAtBLow": -0.00306,
+            "aAtBHigh": -0.0012,
+            "bAtALow": 0.00014,
+            "bAtAHigh": 0.002,
+            "pooledSe": 0.00164,
+            "tMainA": -1.30027,
+            "tMainB": 0.65319,
+            "tInteraction": 0.56773
+          },
+          {
+            "metric": "distinctPrimaries",
+            "cells": {
+              "lowlow": {
+                "valueA": 0.1,
+                "valueB": 1,
+                "n": 144,
+                "mean": 10,
+                "se": 0
+              },
+              "highlow": {
+                "valueA": 1,
+                "valueB": 1,
+                "n": 144,
+                "mean": 10,
+                "se": 0
+              },
+              "lowhigh": {
+                "valueA": 0.1,
+                "valueB": 3,
+                "n": 144,
+                "mean": 10,
+                "se": 0
+              },
+              "highhigh": {
+                "valueA": 1,
+                "valueB": 3,
+                "n": 144,
+                "mean": 10,
+                "se": 0
+              }
+            },
+            "mainEffectA": 0,
+            "mainEffectB": 0,
+            "interaction": 0,
+            "aAtBLow": 0,
+            "aAtBHigh": 0,
+            "bAtALow": 0,
+            "bAtAHigh": 0,
+            "pooledSe": 0,
+            "tMainA": 0,
+            "tMainB": 0,
+            "tInteraction": 0
+          },
+          {
+            "metric": "count",
+            "cells": {
+              "lowlow": {
+                "valueA": 0.1,
+                "valueB": 1,
+                "n": 144,
+                "mean": 219.58333,
+                "se": 0.70439
+              },
+              "highlow": {
+                "valueA": 1,
+                "valueB": 1,
+                "n": 144,
+                "mean": 218.78472,
+                "se": 0.64068
+              },
+              "lowhigh": {
+                "valueA": 0.1,
+                "valueB": 3,
+                "n": 144,
+                "mean": 219.4375,
+                "se": 0.70736
+              },
+              "highhigh": {
+                "valueA": 1,
+                "valueB": 3,
+                "n": 144,
+                "mean": 219.18056,
+                "se": 0.66387
+              }
+            },
+            "mainEffectA": -0.52777,
+            "mainEffectB": 0.12501,
+            "interaction": 0.27084,
+            "aAtBLow": -0.79861,
+            "aAtBHigh": -0.25694,
+            "bAtALow": -0.14583,
+            "bAtAHigh": 0.39584,
+            "pooledSe": 0.67965,
+            "tMainA": -0.77653,
+            "tMainB": 0.18392,
+            "tInteraction": 0.39849
+          }
+        ],
+        "resolution": "FREEZE_BOTH_PENDING_TARGET",
+        "reason": "Neither main effect clears noise on any tested metric (best t -1.30027, 0.65319). Nothing to separate."
+      },
+      {
+        "a": "shotLocation.rimWeight",
+        "b": "shotLocation.rimBiasMultiplier",
+        "cosine": 0.9354,
+        "fixtures": [
+          "era-1950s",
+          "era-1960s",
+          "era-1970s"
+        ],
+        "metrics": [
+          "locationShare:RIM",
+          "locationShare:PAINT_OR_POST"
+        ],
+        "results": [
+          {
+            "metric": "locationShare:RIM",
+            "cells": {
+              "lowlow": {
+                "valueA": 0.15,
+                "valueB": 0.5,
+                "n": 144,
+                "mean": 0.29056,
+                "se": 0.00281
+              },
+              "highlow": {
+                "valueA": 0.6,
+                "valueB": 0.5,
+                "n": 144,
+                "mean": 0.49355,
+                "se": 0.00271
+              },
+              "lowhigh": {
+                "valueA": 0.15,
+                "valueB": 3,
+                "n": 144,
+                "mean": 0.37888,
+                "se": 0.00254
+              },
+              "highhigh": {
+                "valueA": 0.6,
+                "valueB": 3,
+                "n": 144,
+                "mean": 0.58119,
+                "se": 0.00254
+              }
+            },
+            "mainEffectA": 0.20265,
+            "mainEffectB": 0.08798,
+            "interaction": -0.00034,
+            "aAtBLow": 0.20299,
+            "aAtBHigh": 0.20231,
+            "bAtALow": 0.08832,
+            "bAtAHigh": 0.08764,
+            "pooledSe": 0.00265,
+            "tMainA": 76.39911,
+            "tMainB": 33.16849,
+            "tInteraction": -0.12818
+          },
+          {
+            "metric": "locationShare:PAINT_OR_POST",
+            "cells": {
+              "lowlow": {
+                "valueA": 0.15,
+                "valueB": 0.5,
+                "n": 144,
+                "mean": 0.30756,
+                "se": 0.00277
+              },
+              "highlow": {
+                "valueA": 0.6,
+                "valueB": 0.5,
+                "n": 144,
+                "mean": 0.21279,
+                "se": 0.00235
+              },
+              "lowhigh": {
+                "valueA": 0.15,
+                "valueB": 3,
+                "n": 144,
+                "mean": 0.26696,
+                "se": 0.00223
+              },
+              "highhigh": {
+                "valueA": 0.6,
+                "valueB": 3,
+                "n": 144,
+                "mean": 0.17204,
+                "se": 0.00218
+              }
+            },
+            "mainEffectA": -0.09484,
+            "mainEffectB": -0.04068,
+            "interaction": -0.00007,
+            "aAtBLow": -0.09477,
+            "aAtBHigh": -0.09492,
+            "bAtALow": -0.0406,
+            "bAtAHigh": -0.04075,
+            "pooledSe": 0.00239,
+            "tMainA": -39.62146,
+            "tMainB": -16.99197,
+            "tInteraction": -0.03133
+          }
+        ],
+        "resolution": "KEEP_BOTH_CONTEXTUALLY_IDENTIFIED",
+        "effectRetention": {
+          "a": 0.99665,
+          "b": 0.9923
+        },
+        "reason": "On locationShare:RIM, both main effects clear noise (t 76.39911 and 33.16849), and each retains its effect when the other moves (A 0.20299 to 0.20231, retention 0.99665; B 0.08832 to 0.08764, retention 0.9923). Interaction -0.00034 does not dominate. Separable."
+      },
+      {
+        "a": "shotLocation.threeWeight",
+        "b": "shotLocation.perimeterBiasMultiplier",
+        "cosine": 0.9355,
+        "fixtures": [
+          "era-1950s",
+          "era-1960s",
+          "era-1970s"
+        ],
+        "metrics": [
+          "locationShare:THREE_POINT",
+          "threeRate"
+        ],
+        "results": [
+          {
+            "metric": "locationShare:THREE_POINT",
+            "cells": {
+              "lowlow": {
+                "valueA": 0.05,
+                "valueB": 0.5,
+                "n": 144,
+                "mean": 0,
+                "se": 0
+              },
+              "highlow": {
+                "valueA": 0.6,
+                "valueB": 0.5,
+                "n": 144,
+                "mean": 0,
+                "se": 0
+              },
+              "lowhigh": {
+                "valueA": 0.05,
+                "valueB": 3,
+                "n": 144,
+                "mean": 0,
+                "se": 0
+              },
+              "highhigh": {
+                "valueA": 0.6,
+                "valueB": 3,
+                "n": 144,
+                "mean": 0,
+                "se": 0
+              }
+            },
+            "mainEffectA": 0,
+            "mainEffectB": 0,
+            "interaction": 0,
+            "aAtBLow": 0,
+            "aAtBHigh": 0,
+            "bAtALow": 0,
+            "bAtAHigh": 0,
+            "pooledSe": 0,
+            "tMainA": 0,
+            "tMainB": 0,
+            "tInteraction": 0
+          },
+          {
+            "metric": "threeRate",
+            "cells": {
+              "lowlow": {
+                "valueA": 0.05,
+                "valueB": 0.5,
+                "n": 144,
+                "mean": 0,
+                "se": 0
+              },
+              "highlow": {
+                "valueA": 0.6,
+                "valueB": 0.5,
+                "n": 144,
+                "mean": 0,
+                "se": 0
+              },
+              "lowhigh": {
+                "valueA": 0.05,
+                "valueB": 3,
+                "n": 144,
+                "mean": 0,
+                "se": 0
+              },
+              "highhigh": {
+                "valueA": 0.6,
+                "valueB": 3,
+                "n": 144,
+                "mean": 0,
+                "se": 0
+              }
+            },
+            "mainEffectA": 0,
+            "mainEffectB": 0,
+            "interaction": 0,
+            "aAtBLow": 0,
+            "aAtBHigh": 0,
+            "bAtALow": 0,
+            "bAtAHigh": 0,
+            "pooledSe": 0,
+            "tMainA": 0,
+            "tMainB": 0,
+            "tInteraction": 0
+          }
+        ],
+        "resolution": "FREEZE_BOTH_PENDING_TARGET",
+        "reason": "Neither main effect clears noise on any tested metric (best t 0, 0). Nothing to separate."
+      },
+      {
+        "a": "coach.actionMixInfluence",
+        "b": "coach.rosterSensitivity",
+        "cosine": 0.9117,
+        "fixtures": [
+          "coach-phil-jackson-vs-gregg-popovich",
+          "coach-red-auerbach-vs-pat-riley",
+          "coach-mike-dantoni-vs-jerry-sloan"
+        ],
+        "metrics": [
+          "mixDistanceFromNeutral",
+          "actionShare:PICK_AND_ROLL",
+          "actionShare:POST_UP"
+        ],
+        "results": [
+          {
+            "metric": "mixDistanceFromNeutral",
+            "cells": {
+              "lowlow": {
+                "valueA": 0.3,
+                "valueB": 0.3,
+                "n": 144,
+                "mean": 0.1737,
+                "se": 0.0027
+              },
+              "highlow": {
+                "valueA": 2,
+                "valueB": 0.3,
+                "n": 144,
+                "mean": 0.1157,
+                "se": 0.00195
+              },
+              "lowhigh": {
+                "valueA": 0.3,
+                "valueB": 2,
+                "n": 144,
+                "mean": 0.09932,
+                "se": 0.00203
+              },
+              "highhigh": {
+                "valueA": 2,
+                "valueB": 2,
+                "n": 144,
+                "mean": 0.11535,
+                "se": 0.00219
+              }
+            },
+            "mainEffectA": -0.02099,
+            "mainEffectB": -0.03736,
+            "interaction": 0.03701,
+            "aAtBLow": -0.058,
+            "aAtBHigh": 0.01603,
+            "bAtALow": -0.07438,
+            "bAtAHigh": -0.00035,
+            "pooledSe": 0.00224,
+            "tMainA": -9.38255,
+            "tMainB": -16.70617,
+            "tInteraction": 16.54968
+          },
+          {
+            "metric": "actionShare:PICK_AND_ROLL",
+            "cells": {
+              "lowlow": {
+                "valueA": 0.3,
+                "valueB": 0.3,
+                "n": 144,
+                "mean": 0.06331,
+                "se": 0.00161
+              },
+              "highlow": {
+                "valueA": 2,
+                "valueB": 0.3,
+                "n": 144,
+                "mean": 0.11311,
+                "se": 0.00373
+              },
+              "lowhigh": {
+                "valueA": 0.3,
+                "valueB": 2,
+                "n": 144,
+                "mean": 0.08018,
+                "se": 0.00264
+              },
+              "highhigh": {
+                "valueA": 2,
+                "valueB": 2,
+                "n": 144,
+                "mean": 0.16964,
+                "se": 0.00235
+              }
+            },
+            "mainEffectA": 0.06963,
+            "mainEffectB": 0.0367,
+            "interaction": 0.01983,
+            "aAtBLow": 0.0498,
+            "aAtBHigh": 0.08946,
+            "bAtALow": 0.01687,
+            "bAtAHigh": 0.05653,
+            "pooledSe": 0.00269,
+            "tMainA": 25.86123,
+            "tMainB": 13.63072,
+            "tInteraction": 7.36505
+          },
+          {
+            "metric": "actionShare:POST_UP",
+            "cells": {
+              "lowlow": {
+                "valueA": 0.3,
+                "valueB": 0.3,
+                "n": 144,
+                "mean": 0.09146,
+                "se": 0.00262
+              },
+              "highlow": {
+                "valueA": 2,
+                "valueB": 0.3,
+                "n": 144,
+                "mean": 0.14229,
+                "se": 0.00354
+              },
+              "lowhigh": {
+                "valueA": 0.3,
+                "valueB": 2,
+                "n": 144,
+                "mean": 0.12481,
+                "se": 0.00247
+              },
+              "highhigh": {
+                "valueA": 2,
+                "valueB": 2,
+                "n": 144,
+                "mean": 0.12177,
+                "se": 0.00228
+              }
+            },
+            "mainEffectA": 0.0239,
+            "mainEffectB": 0.00642,
+            "interaction": -0.02693,
+            "aAtBLow": 0.05083,
+            "aAtBHigh": -0.00304,
+            "bAtALow": 0.03335,
+            "bAtAHigh": -0.02052,
+            "pooledSe": 0.00277,
+            "tMainA": 8.62583,
+            "tMainB": 2.31574,
+            "tInteraction": -9.72324
+          }
+        ],
+        "resolution": "KEEP_BOTH_CONTEXTUALLY_IDENTIFIED",
+        "effectRetention": {
+          "a": 0.55667,
+          "b": 0.29843
+        },
+        "reason": "On actionShare:PICK_AND_ROLL, both main effects clear noise (t 25.86123 and 13.63072), and each retains its effect when the other moves (A 0.0498 to 0.08946, retention 0.55667; B 0.01687 to 0.05653, retention 0.29843). Interaction 0.01983 does not dominate. Separable."
+      },
+      {
+        "a": "coach.offensiveAdjustmentMinEvents",
+        "b": "coach.offensiveAdjustmentCooldown",
+        "cosine": 0.9587,
+        "fixtures": [
+          "coach-phil-jackson-vs-gregg-popovich",
+          "coach-red-auerbach-vs-pat-riley",
+          "coach-mike-dantoni-vs-jerry-sloan"
+        ],
+        "metrics": [
+          "adjustmentCount",
+          "mixDistanceFromNeutral"
+        ],
+        "results": [
+          {
+            "metric": "adjustmentCount",
+            "cells": {
+              "lowlow": {
+                "valueA": 1,
+                "valueB": 4,
+                "n": 144,
+                "mean": 34.10417,
+                "se": 1.08844
+              },
+              "highlow": {
+                "valueA": 16,
+                "valueB": 4,
+                "n": 144,
+                "mean": 2.10417,
+                "se": 0.12059
+              },
+              "lowhigh": {
+                "valueA": 1,
+                "valueB": 60,
+                "n": 144,
+                "mean": 6.06944,
+                "se": 0.08515
+              },
+              "highhigh": {
+                "valueA": 16,
+                "valueB": 60,
+                "n": 144,
+                "mean": 1.77083,
+                "se": 0.09124
+              }
+            },
+            "mainEffectA": -18.14931,
+            "mainEffectB": -14.18404,
+            "interaction": 13.8507,
+            "aAtBLow": -32,
+            "aAtBHigh": -4.29861,
+            "bAtALow": -28.03473,
+            "bAtAHigh": -0.33334,
+            "pooledSe": 0.55109,
+            "tMainA": -32.93322,
+            "tMainB": -25.73795,
+            "tInteraction": 25.13309
+          },
+          {
+            "metric": "mixDistanceFromNeutral",
+            "cells": {
+              "lowlow": {
+                "valueA": 1,
+                "valueB": 4,
+                "n": 144,
+                "mean": 0.1158,
+                "se": 0.00218
+              },
+              "highlow": {
+                "valueA": 16,
+                "valueB": 4,
+                "n": 144,
+                "mean": 0.11439,
+                "se": 0.0027
+              },
+              "lowhigh": {
+                "valueA": 1,
+                "valueB": 60,
+                "n": 144,
+                "mean": 0.11209,
+                "se": 0.0024
+              },
+              "highhigh": {
+                "valueA": 16,
+                "valueB": 60,
+                "n": 144,
+                "mean": 0.11331,
+                "se": 0.00266
+              }
+            },
+            "mainEffectA": -0.00009,
+            "mainEffectB": -0.0024,
+            "interaction": 0.00131,
+            "aAtBLow": -0.00141,
+            "aAtBHigh": 0.00122,
+            "bAtALow": -0.00371,
+            "bAtAHigh": -0.00108,
+            "pooledSe": 0.00249,
+            "tMainA": -0.03809,
+            "tMainB": -0.96035,
+            "tInteraction": 0.52729
+          }
+        ],
+        "resolution": "FREEZE_ONE_TUNE_ONE",
+        "tune": "coach.offensiveAdjustmentMinEvents",
+        "freeze": "coach.offensiveAdjustmentCooldown",
+        "effectRetention": {
+          "a": 0.13433,
+          "b": 0.01189
+        },
+        "reason": "On adjustmentCount, both main effects are real but one absorbs the other: A retains 0.13433 of its effect when B moves, B retains 0.01189 (minimum 0.25). They are substitutes — either gate alone produces the effect — so coach.offensiveAdjustmentCooldown is frozen and coach.offensiveAdjustmentMinEvents carries the mechanism."
+      }
+    ],
+    "counts": {
+      "FREEZE_BOTH_PENDING_TARGET": 4,
+      "KEEP_BOTH_CONTEXTUALLY_IDENTIFIED": 2,
+      "FREEZE_ONE_TUNE_ONE": 1
+    },
+    "reconciliation": {
+      "label": "confounding-resolution",
+      "sum": 7,
+      "expectedTotal": 7,
+      "reconciles": true,
+      "problems": []
+    }
+  },
+  "outputHash": "4206cc23fd35f36adc9a62db499ee13f87e6a0ba0306d722edcacbbbb6949739"
+}
