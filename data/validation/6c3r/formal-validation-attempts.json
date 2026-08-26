@@ -1,0 +1,63 @@
+{
+  "artifact": "formal-validation-attempts",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run validation:6c3r:preflight",
+  "generatedAt": "2026-08-26T21:53:50.951Z",
+  "gitCommit": "ad60304c758ff04a5c7140b798c6bbecc80295bc",
+  "branch": "phase-6c3r-validation-surface-repair",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {
+    "data/validation/6c3/historical-holdout-results.json": "6493e2a69347f791eb24574fc0eda2ec8342aac830b30bf56646df3b83537876"
+  },
+  "data": {
+    "formalValidationAttemptRegistryVersion": "1.0.0",
+    "candidateStatus": {
+      "candidateId": "Candidate 0",
+      "candidateSelectionStatus": "SELECTED",
+      "candidateLockStatus": "LOCKED",
+      "possessionCalibrationVersion": "1.0.0",
+      "parameterChanges": 0,
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "candidateCoreHash": "58c5fb6974e694c29f87934ab107ff47ce32963a9c0695e36f941c2a70ae6683"
+    },
+    "statusModel": "Candidate lock status and validation-attempt status are different facts. Candidate 0 stays LOCKED through a failed validation attempt, because the lock records selection evidence and the attempt records whether a particular measurement design validated it.",
+    "attempts": [
+      {
+        "attemptId": "attempt-1-historical-v3",
+        "holdoutVersion": "3.0.0",
+        "candidateId": "Candidate 0",
+        "candidateCommit": "1a68d20e3885fca6c1b913237bb05df211b2daf6",
+        "candidateCoreHash": "58c5fb6974e694c29f87934ab107ff47ce32963a9c0695e36f941c2a70ae6683",
+        "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+        "policyHash": "a3583d6ada42d61ff9ee40322d999154250613ba94a2cd6f073e2196315919b0",
+        "scopePolicyHash": "594ec258891eebfcd11cdab9190a59f944c331fc4b219261b5fc076312302bf7",
+        "seedVersion": "actual-game @ 6030000+",
+        "accessEvent": {
+          "seq": 1,
+          "set": "historical-holdout-v3",
+          "actor": "CEO-authorized Phase 6C3",
+          "reason": "One-time formal validation of locked Candidate 0 (possessionCalibrationVersion 1.0.0, parameterSetHash 83f5a17d)",
+          "parameterVersion": null,
+          "commit": null,
+          "argv": [
+            "--unlock-holdout",
+            "--unlock-historical-holdout-v3"
+          ],
+          "openedAtCommit": "9a46217a5bf4eac9b171a62aa27ebd8f0d4e5b24"
+        },
+        "formalVerdict": "HISTORICAL_HOLDOUT_FAIL",
+        "failureClass": "NONIDENTIFIABLE_MEASUREMENT_SURFACE",
+        "createdAt": "phase-6c3",
+        "completedAt": "phase-6c3",
+        "supersededBy": "attempt-2-historical-v4 (pending) — supersession as the valid revalidation attempt, never as an erasure of this record",
+        "immutable": true
+      }
+    ],
+    "replacementValidationStatus": "PENDING",
+    "syntheticHoldoutV2Status": "SEALED_UNREAD"
+  },
+  "outputHash": "9b4ca857370f3b60f13f632c52d86a53100addec3fc7381edaa12beb5ccd0a7d"
+}

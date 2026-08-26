@@ -1,0 +1,66 @@
+{
+  "artifact": "historical-v3-failure-diagnosis",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run validation:6c3r:preflight",
+  "generatedAt": "2026-08-26T21:53:50.935Z",
+  "gitCommit": "ad60304c758ff04a5c7140b798c6bbecc80295bc",
+  "branch": "phase-6c3r-validation-surface-repair",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {
+    "data/validation/6c3/formal-holdout-verdict.json": "4303f44fe27bc1c7a88ac8a57bfa8115a816ca779eb001e2bd08707c30855edd"
+  },
+  "data": {
+    "formalVerdict": "HISTORICAL_HOLDOUT_FAIL",
+    "candidatePerformanceFailureEstablished": false,
+    "validationSurfaceFailureEstablished": true,
+    "failureClass": "NONIDENTIFIABLE_MEASUREMENT_SURFACE",
+    "replacementValidationRequired": true,
+    "evidenceBasis": "Existing Phase 6C3 artifacts only. Candidate 0 was not re-run on any V3 fixture, and no revised V3 verdict is computed.",
+    "surface": {
+      "design": "Every V3 fixture played a MIRROR of itself — correct for the Tier C share proxy, which describes a season's internal distribution with no opponent target, but fatal for opponent-relative identity claims.",
+      "algebraicDependence": "With both sides the same roster, pointsPerPossession and opponentPointsPerPossession are the same quantity up to seeded noise.",
+      "maxSeparationAcrossFixtures": 0.00348,
+      "contradiction": "ELITE_OFFENSE requires PPP above the reference median while ELITE_DEFENSE requires opponent PPP below it; on a mirror surface these are near-contradictory, and h3-2012-13-heat carried both tags, passing one and failing the other."
+    },
+    "traits": {
+      "scored": 7,
+      "failedOnMirrorAmbiguousMetrics": 3,
+      "failedOnObservableMetrics": 0,
+      "mirrorAmbiguousFailures": [
+        {
+          "fixtureId": "h3-1993-94-knicks",
+          "trait": "ELITE_DEFENSE",
+          "metric": "opponentPointsPerPossession",
+          "observed": 1.137,
+          "referenceMedian": 1.12067
+        },
+        {
+          "fixtureId": "h3-2006-07-suns",
+          "trait": "ELITE_OFFENSE",
+          "metric": "pointsPerPossession",
+          "observed": 1.10139,
+          "referenceMedian": 1.11979
+        },
+        {
+          "fixtureId": "h3-2012-13-heat",
+          "trait": "ELITE_DEFENSE",
+          "metric": "opponentPointsPerPossession",
+          "observed": 1.13769,
+          "referenceMedian": 1.12067
+        }
+      ],
+      "vocabularyCoverage": "7 of 58 identity traits had a rubric entry; 51 were recorded unscored."
+    },
+    "whatV3DidEstablish": {
+      "quantitative": "Internal composite share MAE 0.04338, holdout 0.04339, ratio 1.00026 against a frozen gate of 1.5. The calibration did not overfit its own folds.",
+      "structural": "32,768 games: zero invariant failures, zero final ties, replay exact everywhere, zero impossible statistics, opportunity concentration in bounds, era rules authoritative, zero catastrophic fixtures."
+    },
+    "whyTheVerdictRemainsFail": "The frozen policy produced it from a frozen rubric. Re-scoring opened holdout data under a corrected rubric — or reclassifying the FAIL because the failing gate was badly designed — is post-hoc gate movement in the self-serving direction, and it stays refused.",
+    "whyCandidateZeroRemainsLocked": "The lock records the selection evidence: 84 on-grid alternatives, none surviving family-wise correction. A validation-surface failure is not evidence against the candidate, so it does not unlock it — and it is not evidence FOR it either, which is why a replacement holdout is required rather than a waiver.",
+    "whyAReplacementHoldoutIsRequired": "historical holdout v3 is consumed at access count 1. A holdout that has been seen cannot measure generalisation again, for this or any candidate, whatever the reason it was opened."
+  },
+  "outputHash": "e931e9cc7e05e258d6829257b37539a45968cdaaad68fed39e4ab3e7829556cd"
+}
