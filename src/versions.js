@@ -148,6 +148,22 @@ export const REGISTRY = {
   // ── Phase 6C2C2 policy domains ───────────────────────────────────────────
   // Each governs a gate rather than a computation, so none affects a result.
   // They exist so that a threshold cannot move without leaving a trace.
+  // ── Phase 6C2C3 runtime wiring domains ───────────────────────────────────
+  runtimeParameterBindingVersion: entry("1.0.0", DEVELOPMENT,
+    "How the calibration registry reaches the running engine: the compiled parameter set, its threading through the prepared context, and each consumer binding. DOES affect results once wired — the engine now reads its coefficients from here — so it belongs in the development fingerprint.", true),
+
+  parameterConnectivityVersion: entry("1.0.0", DEVELOPMENT,
+    "The procedure that proves each active parameter reaches a real runtime consumer and moves its intended output. A gate, not a computation.", false),
+
+  calibrationSupportMatrixVersion: entry("2.0.0", DEVELOPMENT,
+    "Which parameters have evidence that could judge a change to them. v2 separates runtime connectivity from evidential support, because Phase 6C2C2 showed a parameter can be neither, either, or both.", false),
+
+  parameterSensitivitySeedSetVersion: entry("1.0.0", DEVELOPMENT,
+    "Fixed paired seeds for sensitivity and identifiability measurement, generated reproducibly so favourable-seed selection cannot hide in a re-run.", false),
+
+  defaultParityFixtureVersion: entry("1.0.0", DEVELOPMENT,
+    "The frozen pre-wiring behaviour corpus that default parity is judged against. Bumping it means the reference moved, which invalidates every parity claim made against the old one.", false),
+
   actualGameSymmetryVersion: entry("1.0.0", DEVELOPMENT,
     "How a single actual game assigns sides, opening possession, period order and RNG streams. This one DOES affect results — it changes who gets the ball — so it belongs in the development fingerprint.", true),
 
