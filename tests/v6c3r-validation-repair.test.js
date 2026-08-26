@@ -132,3 +132,99 @@ describe("preflight", () => {
     expect(d.failedGates).toEqual([]);
   });
 });
+
+// ── WS2: trait observability framework ──────────────────────────────────────
+describe("historical trait registry", () => {
+  const reg = () => A("historical-trait-registry").data;
+
+  it("classifies the complete vocabulary, every trait exactly once", async () => {
+    const { readFileSync } = await import("node:fs");
+    const targets = JSON.parse(readFileSync("data/calibration/historical-targets-v3.json", "utf8"));
+    const vocab = new Set();
+    for (const r of targets.records) for (const t of r.identityTargets ?? []) vocab.add(t.value);
+    const rows = reg().traits;
+    const ids = rows.map((t) => t.traitId);
+    expect(new Set(ids).size).toBe(ids.length);
+    for (const v of vocab) expect(ids, `vocabulary trait "${v}" must be classified`).toContain(v);
+    expect(rows.length).toBe(vocab.size);
+    const c = reg().counts;
+    expect(Object.values(c.byClass).reduce((a, b) => a + b, 0)).toBe(c.total);
+  });
+
+  it("gives every trait exactly one observability class", async () => {
+    const { OBSERVABILITY_CLASSES } = await import("../scripts/validation/traitRegistry.mjs");
+    for (const t of reg().traits) expect(OBSERVABILITY_CLASSES).toContain(t.observabilityClass);
+  });
+
+  it("never lets an unobservable trait be scoring-eligible", () => {
+    for (const t of reg().traits.filter((x) => x.observabilityClass === "UNOBSERVABLE_ON_THIS_SURFACE")) {
+      expect(t.scoringEligibility, t.traitId).toBe(false);
+      expect(t.primaryMetrics).toEqual([]);
+    }
+  });
+
+  it("classifies championship identities as unobservable rather than stretching a proxy", () => {
+    const bc = reg().traits.find((t) => t.traitId === "BALANCED_CHAMPION");
+    const nc = reg().traits.find((t) => t.traitId === "NON_CHAMPION");
+    expect(bc.observabilityClass).toBe("UNOBSERVABLE_ON_THIS_SURFACE");
+    expect(nc.observabilityClass).toBe("UNOBSERVABLE_ON_THIS_SURFACE");
+  });
+
+  it("requires opponent-paired surfaces for offence and defence quality", () => {
+    const eo = reg().traits.find((t) => t.traitId === "ELITE_OFFENSE");
+    const ed = reg().traits.find((t) => t.traitId === "ELITE_DEFENSE");
+    expect(eo.requiredMeasurementSurface).toBe("VS_ERA_REFERENCE");
+    expect(ed.requiredMeasurementSurface).toBe("REFERENCE_VS_TEAM");
+  });
+
+  it("was built without candidate output", () => {
+    expect(A("historical-trait-registry").data.builtFrom).toMatch(/No Candidate 0 output/);
+  });
+});
+
+describe("metric dependency graph", () => {
+  it("flags the mirror PPP identity and rejects the V3 rubric", async () => {
+    const d = A("metric-dependency-graph").data;
+    const g = d.dependencyGroups.find((x) => x.id === "MIRROR_PPP");
+    expect(g.members).toEqual(["pppVsReference", "refPppVsTeam"]);
+    expect(g.kind).toBe("ALGEBRAIC_IDENTITY_ON_MIRROR");
+    expect(d.v3RubricRejection.problems.length).toBeGreaterThanOrEqual(3);
+    expect(d.v3RubricRejection.problems.join(" ")).toMatch(/the exact V3 defect/);
+  });
+
+  it("hard-fails contradictory dependent criteria", async () => {
+    const { detectContradictions } = await import("../scripts/validation/traitRegistry.mjs");
+    // same metric both directions
+    expect(detectContradictions([
+      { traitId: "a", metric: "gamePace", direction: "ABOVE_REFERENCE_BASELINE", surface: "VS_ERA_REFERENCE" },
+      { traitId: "b", metric: "gamePace", direction: "BELOW_REFERENCE_BASELINE", surface: "VS_ERA_REFERENCE" },
+    ]).join(" ")).toMatch(/contradictory directions/);
+    // complementary shot mix both ABOVE
+    expect(detectContradictions([
+      { traitId: "a", metric: "threeShare", direction: "ABOVE_REFERENCE_BASELINE", surface: "VS_ERA_REFERENCE" },
+      { traitId: "b", metric: "interiorShotShare", direction: "ABOVE_REFERENCE_BASELINE", surface: "VS_ERA_REFERENCE" },
+    ]).join(" ")).toMatch(/near-complementary/);
+    // a clean rubric passes
+    expect(detectContradictions([
+      { traitId: "a", metric: "pppVsReference", direction: "ABOVE_REFERENCE_BASELINE", surface: "VS_ERA_REFERENCE" },
+      { traitId: "b", metric: "refPppVsTeam", direction: "BELOW_REFERENCE_BASELINE", surface: "REFERENCE_VS_TEAM" },
+    ])).toEqual([]);
+  });
+
+  it("keeps every scored metric identifiable only on declared surfaces", async () => {
+    const { METRICS } = await import("../scripts/validation/surface.mjs");
+    expect(METRICS.pppVsReference.identifiableOn).toEqual(["VS_ERA_REFERENCE"]);
+    expect(METRICS.refPppVsTeam.identifiableOn).toEqual(["REFERENCE_VS_TEAM"]);
+    expect(METRICS.gamePace.identifiableOn).toEqual(["VS_ERA_REFERENCE"]);
+    for (const [id, m] of Object.entries(METRICS)) {
+      expect(m.identifiableOn.length, id).toBeGreaterThan(0);
+    }
+  });
+
+  it("scoredTraits ∩ unobservableTraits = empty, as a set operation", () => {
+    const rows = A("trait-metric-observability").data.rows;
+    const scored = new Set(rows.filter((r) => r.scoringEligibility).map((r) => r.traitId));
+    const unobservable = new Set(rows.filter((r) => r.observabilityClass === "UNOBSERVABLE_ON_THIS_SURFACE").map((r) => r.traitId));
+    expect([...scored].filter((t) => unobservable.has(t))).toEqual([]);
+  });
+});
