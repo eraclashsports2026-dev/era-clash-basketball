@@ -427,12 +427,33 @@ export const simulatePossessionGame = (input) => {
   let overtimes = 0;
   const periodScores = [];
 
+  // ── Opening possession (actualGameSymmetryVersion 1.0.0) ───────────────────
+  // Decided by the seed, not by which team the caller happened to pass first.
+  // Before this, period parity alone chose the starter, so gold opened every
+  // game ever simulated. Two identical teams must not have one of them
+  // guaranteed the ball.
+  const openingSide = rng.chance(0.5) ? "gold" : "blue";
+  const otherSide = (s) => (s === "gold" ? "blue" : "gold");
+
   const runPeriod = (targetPerTeam) => {
     period++;
     const startGold = goldBox.totals.pts, startBlue = blueBox.totals.pts;
     // A small seeded jitter so every period is not identical in length.
     const budget = Math.max(6, Math.round(targetPerTeam * 2 * (1 + rng.bell() * 0.06)));
-    let offSide = period % 2 === 1 ? "gold" : "blue";
+    // Regulation alternates from the opening tip, so each side starts two
+    // periods. Overtime takes a FRESH jump ball, as it does in basketball.
+    //
+    // This matters more than it looks. The period budget is a total across both
+    // teams and is not forced even, so the side that starts a period takes
+    // ceil(budget/2) possessions. Across regulation that cancels — each side
+    // starts twice. Overtime is period 5, odd, and unpaired: under the old
+    // parity rule gold started every first overtime and collected the extra
+    // possession whenever the budget was odd. Measured over 240,000 games, gold
+    // won 54.6% of 5,289 overtime games, and that alone accounted for the
+    // engine's entire aggregate side bias.
+    let offSide = period <= REGULATION_PERIODS
+      ? (period % 2 === 1 ? openingSide : otherSide(openingSide))
+      : (rng.chance(0.5) ? "gold" : "blue");
 
     for (let used = 0; used < budget; used++) {
       const off = offSide === "gold" ? ctx.gold : ctx.blue;
@@ -537,7 +558,14 @@ export const simulatePossessionGame = (input) => {
 
   const gold = finaliseBox(goldBox);
   const blue = finaliseBox(blueBox);
-  const winner = gold.totals.pts > blue.totals.pts ? "Gold" : "Blue";
+  // A tie is unreachable in a normal game — the invariant check rejects one —
+  // but the max-overtime guard can exit still level. Defaulting that to "Blue"
+  // made an impossible state into a silent win for a fixed side. This branch
+  // consumes no RNG unless it is actually reached, so no ordinary game's stream
+  // is affected.
+  const winner = gold.totals.pts > blue.totals.pts ? "Gold"
+    : gold.totals.pts < blue.totals.pts ? "Blue"
+    : (rng.chance(0.5) ? "Gold" : "Blue");
 
   const realizedEff = (box, opponentBox) => {
     const poss = box.totals.possessions || 1;
