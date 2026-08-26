@@ -24,6 +24,12 @@ export const GOVERNANCE_VERSION = versionOf("measurementGovernanceVersion");
 
 export const ARTIFACT_DIR = "data/calibration/c5";
 
+// Phase 6C2C6 writes to its own directory. The c5 artifacts are evidence of what
+// c5 measured and must not be overwritten by a later phase that reaches a
+// different conclusion — the point of content-addressed artifacts is that the
+// earlier record survives.
+export const ARTIFACT_DIR_C6 = "data/calibration/c6";
+
 /** Required provenance on every artifact. A number with no provenance is a rumour. */
 export const REQUIRED_PROVENANCE = Object.freeze([
   "schemaVersion", "generationCommand", "generatedAt", "gitCommit", "branch",
@@ -48,7 +54,7 @@ export const payloadHash = (payload) => {
  * deterministic measurement produces an identical hash. A hash that changed on
  * every run could not detect drift, which is the only thing it is for.
  */
-export const writeArtifact = (name, data, { generationCommand, sourceArtifacts = [], extra = {} } = {}) => {
+export const writeArtifact = (name, data, { generationCommand, sourceArtifacts = [], extra = {}, dir = ARTIFACT_DIR } = {}) => {
   if (!generationCommand) throw new Error(`writeArtifact(${name}): generationCommand is required`);
   const parameterSetHash = extra.parameterSetHash ?? null;
   const payload = {
@@ -68,7 +74,7 @@ export const writeArtifact = (name, data, { generationCommand, sourceArtifacts =
   };
   payload.outputHash = payloadHash(payload);
 
-  const path = `${ARTIFACT_DIR}/${name}.json`;
+  const path = `${dir}/${name}.json`;
   mkdirSync(dirname(path), { recursive: true });
   writeFileSync(path, `${JSON.stringify(payload, null, 2)}\n`);
   return { path, payload };
@@ -76,17 +82,17 @@ export const writeArtifact = (name, data, { generationCommand, sourceArtifacts =
 
 export const sha256File = (p) => createHash("sha256").update(readFileSync(p)).digest("hex");
 
-export const readArtifact = (name) => {
-  const path = `${ARTIFACT_DIR}/${name}.json`;
+export const readArtifact = (name, dir = ARTIFACT_DIR) => {
+  const path = `${dir}/${name}.json`;
   if (!existsSync(path)) throw new Error(`artifact "${name}" has not been generated — run its command first`);
   return JSON.parse(readFileSync(path, "utf8"));
 };
 
-export const artifactExists = (name) => existsSync(`${ARTIFACT_DIR}/${name}.json`);
+export const artifactExists = (name, dir = ARTIFACT_DIR) => existsSync(`${dir}/${name}.json`);
 
 /** Provenance completeness and hash integrity, checked rather than assumed. */
-export const verifyArtifact = (name) => {
-  const a = readArtifact(name);
+export const verifyArtifact = (name, dir = ARTIFACT_DIR) => {
+  const a = readArtifact(name, dir);
   const missing = REQUIRED_PROVENANCE.filter((k) => a[k] === undefined);
   const recomputed = payloadHash(a);
   return {

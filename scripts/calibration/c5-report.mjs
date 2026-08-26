@@ -9,7 +9,7 @@
 // numbers were written by hand in prose; a renderer that computes is a renderer
 // that can disagree with its own artifact, so this one cannot compute.
 import { writeFileSync, mkdirSync } from "node:fs";
-import { readArtifact, fmt, countsTable } from "../../src/v3/calibration/artifacts.js";
+import { readArtifact, artifactExists, fmt, countsTable, ARTIFACT_DIR_C6 } from "../../src/v3/calibration/artifacts.js";
 import { versionOf } from "../../src/versions.js";
 // Everything below runs ONLY as a command, never on import. A calibration script
 // that executes at import time turns "read one constant from it" into "silently
@@ -30,6 +30,29 @@ const A = {
   validation: readArtifact("validation-summary"),
   lock: readArtifact("candidate-lock"),
 };
+
+// Phase 6C2C6 superseded this artifact's `status` field. The artifact itself is
+// preserved unedited — it is the record of what 6C2C5 concluded — but the
+// RENDERED report must not keep presenting a superseded status as current.
+// The correction is read from the c6 artifact, never hard-coded here.
+const supersession = artifactExists("candidate-status-reconciliation", ARTIFACT_DIR_C6)
+  ? readArtifact("candidate-status-reconciliation", ARTIFACT_DIR_C6).data
+  : null;
+const correctionBanner = supersession ? `> **SUPERSEDED — see \`candidate-status-reconciliation.md\`.**
+>
+> This document renders \`candidate-lock.json\`, whose \`status\` field said
+> \`${supersession.supersedes.was}\`. Phase 6C2C6 found that status incoherent with
+> the same artifact's own \`possessionCalibrationVersion: null\` and
+> \`allEngineeringGatesPass: false\`, and split the single field into separate
+> selection and lock claims:
+>
+> - \`candidateSelectionStatus\`: **${supersession.supersedes.nowSplitInto.candidateSelectionStatus}**
+> - \`candidateLockStatus\`: **${supersession.supersedes.nowSplitInto.candidateLockStatus}**
+> - \`calibrationStatus\`: **${supersession.supersedes.nowSplitInto.calibrationStatus}**
+>
+> The artifact below is retained unedited as the record of what 6C2C5 concluded.
+
+` : "";
 
 const provenance = (a) => [
   "<!-- RENDERED FROM ARTIFACT — do not edit by hand. -->",
@@ -379,7 +402,7 @@ ${strat.realWorldReference}
     ? d.carriedForwardFailures.map((c) => `### \`${c.gate}\`\n\n${c.detail}\n\n- scope: ${c.scope}\n- predates this phase: **${c.predatesThisPhase}**\n- must be resolved before: ${c.mustBeResolvedBefore.map((x) => `${x}`).join(", ")}`).join("\n\n")
     : "None.";
   const pv = d.probabilityValidation;
-  write("candidate-lock.md", `${provenance(A.lock)}# Candidate lock
+  write("candidate-lock.md", `${provenance(A.lock)}${correctionBanner}# Candidate lock
 
 - locked candidate: **${d.lockedCandidateId}**
 - status: **\`${d.status}\`**

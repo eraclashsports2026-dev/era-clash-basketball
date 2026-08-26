@@ -1,0 +1,168 @@
+{
+  "artifact": "candidate-status-reconciliation",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run calibration:c6:status",
+  "generatedAt": "2026-08-26T17:12:40.303Z",
+  "gitCommit": "420599380d6050a3282ab61818b95ad5a4a72690",
+  "branch": "phase-6c2c6-probability-side-bias-lock",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {
+    "data/calibration/c5/candidate-lock.json": "44b1d4556f0dbe70244e926820e195aef19bbd75427bbcdcc249cdd7a81a2710",
+    "data/calibration/c5/candidate-history.json": "5b13be1ed22b7c390d26f322c6dc5563533a20bd1b8e21daea11cfb4158b53bc",
+    "data/calibration/c5/candidate-comparison.json": "d541cb1e56aff87cd7d64ec78fd267f93f8d463c7b8a016c684cfa8c8b8d7245"
+  },
+  "data": {
+    "candidateSelectionArtifactVersion": "1.0.0",
+    "candidateLockStatusVersion": "1.0.0",
+    "contradictionFound": {
+      "detected": true,
+      "where": "A SINGLE artifact, not prose against the repository. data/calibration/c5/candidate-lock.json asserted a LOCKED status while its own versions.possessionCalibrationVersion was null and allEngineeringGatesPass was false.",
+      "publishedState": {
+        "source": "data/calibration/c5/candidate-lock.json",
+        "candidateId": "C0",
+        "status": "DEVELOPMENT_LOCKED_BASELINE",
+        "possessionCalibrationVersion": null,
+        "allEngineeringGatesPass": false,
+        "candidateLockGatesPass": true,
+        "carriedForwardFailures": [
+          "probabilityValidationAllGatesPass"
+        ],
+        "hadSelectionStatusField": false,
+        "hadLockStatusField": false
+      },
+      "violations": [
+        {
+          "invariant": "lockedRequiresCalibrationVersion",
+          "problem": "candidateLockStatus is LOCKED but possessionCalibrationVersion is null"
+        },
+        {
+          "invariant": "lockedRequiresZeroBlockers",
+          "problem": "candidateLockStatus is LOCKED with 1 unresolved blocker(s): probabilityValidationAllGatesPass"
+        }
+      ],
+      "rootCause": "One field carried two claims. Phase 6C2C5's artifact had no candidateSelectionStatus and no candidateLockStatus field; a single `status` field had to express both 'this is the selected candidate' and 'this candidate is locked'. Given a failing gate, the honest value for selection was SELECTED and for lock was UNLOCKED, and a single field cannot hold both, so the stronger word won.",
+      "notConcealed": "The 6C2C5 artifact is preserved unedited. It did record the failing gate, the carried-forward partition and a disclosure; what it got wrong was calling the resulting state LOCKED."
+    },
+    "truthfulCurrentState": {
+      "candidateId": "Candidate 0",
+      "candidateSelectionStatus": "SELECTED_PENDING_GATE",
+      "candidateLockStatus": "UNLOCKED",
+      "candidateSelectionReason": "84 on-grid candidates over 11 eligible parameters. 4 cleared the practical floor; 0 survived family-wise correction (best Holm-adjusted p 1). The strongest contender's advantage reversed sign on disjoint seeds (retention -0.78431). The wired defaults remain the strongest evidence-supported model.",
+      "candidateLockBlockers": [
+        "PROBABILITY_SIDE_BIAS_GATE_UNRESOLVED"
+      ],
+      "parameterChanges": 0,
+      "parameterValuesEqualRegistryDefaults": true,
+      "parameterDrift": [],
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "parameterSetStatus": "UNCALIBRATED_DEFAULTS",
+      "possessionCalibrationVersion": null,
+      "calibrationStatus": "NOT_LOCKED",
+      "lockManifestPresent": false
+    },
+    "statusInvariants": [
+      "lockedRequiresCalibrationVersion",
+      "lockedRequiresLockManifest",
+      "lockedRequiresZeroBlockers",
+      "unlockedForbidsDevelopmentLockedStatus",
+      "baselineLockRequiresZeroParameterChanges",
+      "scopedLockRequiresParameterChanges",
+      "calibrationVersionRequiresLock",
+      "selectionRequiresACandidate"
+    ],
+    "currentStateCoherent": true,
+    "currentStateViolations": [],
+    "reconciliation": {
+      "label": "status-invariants",
+      "sum": 8,
+      "expectedTotal": 8,
+      "reconciles": true,
+      "problems": []
+    },
+    "artifactVerification": {
+      "checked": 8,
+      "invalid": 0,
+      "results": [
+        {
+          "artifact": "targeted-fixture-coverage",
+          "missingProvenance": [],
+          "hashMatches": true,
+          "recordedHash": "cf96f88ac046fffa335b72ea7be08245f43c307521358319c73445c3df5cd844",
+          "recomputedHash": "cf96f88ac046fffa335b72ea7be08245f43c307521358319c73445c3df5cd844",
+          "valid": true
+        },
+        {
+          "artifact": "no-effect-triage",
+          "missingProvenance": [],
+          "hashMatches": true,
+          "recordedHash": "e256a3f7a5efdd81fbaada28532a3370487085e69645014ec147557e0bccf6fe",
+          "recomputedHash": "e256a3f7a5efdd81fbaada28532a3370487085e69645014ec147557e0bccf6fe",
+          "valid": true
+        },
+        {
+          "artifact": "confounding-resolution",
+          "missingProvenance": [],
+          "hashMatches": true,
+          "recordedHash": "4206cc23fd35f36adc9a62db499ee13f87e6a0ba0306d722edcacbbbb6949739",
+          "recomputedHash": "4206cc23fd35f36adc9a62db499ee13f87e6a0ba0306d722edcacbbbb6949739",
+          "valid": true
+        },
+        {
+          "artifact": "calibration-scope",
+          "missingProvenance": [],
+          "hashMatches": true,
+          "recordedHash": "1237aac691a17daa9ee86d6bb647c34202826fcc7780f9a64ea0d2efac3023e2",
+          "recomputedHash": "1237aac691a17daa9ee86d6bb647c34202826fcc7780f9a64ea0d2efac3023e2",
+          "valid": true
+        },
+        {
+          "artifact": "candidate-history",
+          "missingProvenance": [],
+          "hashMatches": true,
+          "recordedHash": "ed797623fa6477045f7bc39706ab130e2e685792b31dfd4009126d2583ea57e1",
+          "recomputedHash": "ed797623fa6477045f7bc39706ab130e2e685792b31dfd4009126d2583ea57e1",
+          "valid": true
+        },
+        {
+          "artifact": "candidate-comparison",
+          "missingProvenance": [],
+          "hashMatches": true,
+          "recordedHash": "26c43d1864fd2668911c3f753e45cebedb6019d190bb4fb403cffcea0cb65df0",
+          "recomputedHash": "26c43d1864fd2668911c3f753e45cebedb6019d190bb4fb403cffcea0cb65df0",
+          "valid": true
+        },
+        {
+          "artifact": "validation-summary",
+          "missingProvenance": [],
+          "hashMatches": true,
+          "recordedHash": "bdc1b5b898e5235c38a40fb8b7757bed3bbd3f74b5a97d840c3f41793c17ece7",
+          "recomputedHash": "bdc1b5b898e5235c38a40fb8b7757bed3bbd3f74b5a97d840c3f41793c17ece7",
+          "valid": true
+        },
+        {
+          "artifact": "candidate-lock",
+          "missingProvenance": [],
+          "hashMatches": true,
+          "recordedHash": "4fe72050392dd008d50f1b802dffba7f1c0dd97d3a93f53d848eaed3b064cb44",
+          "recomputedHash": "4fe72050392dd008d50f1b802dffba7f1c0dd97d3a93f53d848eaed3b064cb44",
+          "valid": true
+        }
+      ]
+    },
+    "supersedes": {
+      "artifact": "data/calibration/c5/candidate-lock.json",
+      "field": "status",
+      "was": "DEVELOPMENT_LOCKED_BASELINE",
+      "nowSplitInto": {
+        "candidateSelectionStatus": "SELECTED_PENDING_GATE",
+        "candidateLockStatus": "UNLOCKED",
+        "calibrationStatus": "NOT_LOCKED"
+      },
+      "preserved": true
+    }
+  },
+  "outputHash": "932bcb802b8d43289403b53cc400be1df243dad5442abdf37094a99ddce9e149"
+}

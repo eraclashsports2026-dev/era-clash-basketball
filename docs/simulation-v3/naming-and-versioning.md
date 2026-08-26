@@ -57,6 +57,14 @@
 | Targeted calibration policy | `targetedCalibrationPolicyVersion` | **1.0.0** | DEVELOPMENT |
 | Parameter identifiability v3 | `parameterIdentifiabilityV3Version` | **1.0.0** | DEVELOPMENT |
 | Calibration readiness v3 | `calibrationReadinessV3Version` | **1.0.0** | DEVELOPMENT |
+| Candidate selection artifact | `candidateSelectionArtifactVersion` | **1.0.0** | DEVELOPMENT |
+| Candidate lock status | `candidateLockStatusVersion` | **1.0.0** | DEVELOPMENT |
+| Probability side-bias policy | `probabilitySideBiasPolicyVersion` | **2.0.0** | DEVELOPMENT |
+| Probability side-bias seed set | `probabilitySideBiasSeedSetVersion` | **2.0.0** | DEVELOPMENT |
+| Probability orientation audit | `probabilityOrientationAuditVersion` | **1.0.0** | DEVELOPMENT |
+| Objective visibility resolution | `objectiveVisibilityResolutionVersion` | **1.0.0** | DEVELOPMENT |
+| Baseline candidate lock manifest | `baselineCandidateLockManifestVersion` | **1.0.0** | DEVELOPMENT |
+| Phase 6C3 validation package | `phase6C3ValidationPackageVersion` | **1.0.0** | DEVELOPMENT |
 | Parameter history | `parameterHistoryVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Side-symmetry validation | `sideSymmetryValidationVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |
 | Calibration support matrix | `calibrationSupportMatrixVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |

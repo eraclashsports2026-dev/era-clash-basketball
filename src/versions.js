@@ -189,6 +189,31 @@ export const REGISTRY = {
   calibrationReadinessV3Version: entry("1.0.0", DEVELOPMENT,
     "Readiness under the targeted-mechanic methodology, which adds classes for parameters that are active only in rare conditional contexts and for those a target cannot adjudicate at all. Separate from calibrationReadinessVersion so the v2 freeze stays byte-stable.", false),
 
+  // ── Phase 6C2C6: status reconciliation and probability side-bias ──────────
+  candidateSelectionArtifactVersion: entry("1.0.0", DEVELOPMENT,
+    "The artifact that records WHICH candidate the search selected. Deliberately separate from the lock: Phase 6C2C5 conflated the two and published a DEVELOPMENT_LOCKED_BASELINE status while possessionCalibrationVersion was still null and a gate was failing.", false),
+
+  candidateLockStatusVersion: entry("1.0.0", DEVELOPMENT,
+    "The artifact that records whether the selected candidate is LOCKED, and what blocks the lock if it is not. Selection is evidence about candidates; locking is a claim about readiness. A phase may legitimately establish the first and not the second.", false),
+
+  probabilitySideBiasPolicyVersion: entry("2.0.0", DEVELOPMENT,
+    "How Monte Carlo side-orientation bias is tested. v1 compared a per-cell POINT ESTIMATE against a fixed 0.05, with no multiplicity control across 30 cells and a standard error taken from the wrong sample. v2 uses paired-orientation equivalence testing with family-wise control. The 0.05 practical margin is preserved; only the method changes.", false),
+
+  probabilitySideBiasSeedSetVersion: entry("2.0.0", DEVELOPMENT,
+    "Seed block for side-bias validation. v2 because a cell that failed on one seed block must be retested on seeds it was not selected on — otherwise the retest re-measures the selection.", false),
+
+  probabilityOrientationAuditVersion: entry("1.0.0", DEVELOPMENT,
+    "The audit of what the probability harness's side-bias number actually measures: perspective, complement, cache, sample semantics and standard error. Added because the v1 gate failed on a statistic whose scale and uncertainty had never been verified.", false),
+
+  objectiveVisibilityResolutionVersion: entry("1.0.0", DEVELOPMENT,
+    "The record of which parameters an objective can and cannot adjudicate. A parameter that changes the engine but not the objective's statistic is neither identifiable nor refuted — it is unmeasured, and must be labelled as such rather than counted as tested.", false),
+
+  baselineCandidateLockManifestVersion: entry("1.0.0", DEVELOPMENT,
+    "The immutable manifest that content-addresses a locked baseline candidate. Its existence is a precondition for a non-null possessionCalibrationVersion.", false),
+
+  phase6C3ValidationPackageVersion: entry("1.0.0", DEVELOPMENT,
+    "The prepared, unexecuted formal-holdout validation package. DEVELOPMENT rather than PLANNED because the package document itself exists: in this registry PLANNED means the system does not exist and its version is null, and it must not key a cache. That the holdouts have not been RUN is a property recorded inside the package artifact, not of this version domain.", false),
+
   calibrationScopeVersion: entry("1.0.0", DEVELOPMENT,
     "Which parameters a calibration search may touch, with per-parameter bounds and movement limits. Frozen before search; mutating it mid-search would let the scope follow the results.", false),
 
