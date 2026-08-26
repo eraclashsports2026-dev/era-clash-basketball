@@ -8,6 +8,7 @@ import {
 } from "../src/v3/calibration/acceptancePolicy.js";
 import { versionOf, VERSION_STATUS } from "../src/versions.js";
 import { buildFreeze, FROZEN_ARTIFACTS, FREEZE_PATH, APPROVED_CORRECTIONS } from "../scripts/calibration/freeze-precalibration.mjs";
+import { assertSealDiscipline, assertImportChangedNoSeal, sealSnapshot } from "./helpers/sealDiscipline.js";
 
 // The hash of the policy as frozen in Workstream 0, before any 6C2C2
 // experiment ran. If this test fails, a threshold moved — which is allowed only
@@ -339,9 +340,6 @@ describe("pre-calibration artefact freeze", () => {
 
 describe("holdouts remain sealed through Workstream 0", () => {
   it("has opened nothing", async () => {
-    const { allSealStatuses } = await import("../src/v3/calibration/holdoutSeal.js");
-    for (const [id, v] of Object.entries(allSealStatuses())) {
-      expect(v.accessCount, `${id} was accessed`).toBe(0);
-    }
+    assertSealDiscipline();
   });
 });

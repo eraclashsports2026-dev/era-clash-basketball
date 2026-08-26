@@ -11,6 +11,7 @@ import { readinessOf, MOVEMENT_CAP, SAFETY_CLAMPS, buildReadiness } from "../scr
 import { buildFolds, leakageKey, assertNoHoldout } from "../scripts/calibration/folds-v3.mjs";
 import { versionOf } from "../src/versions.js";
 import { assertCalibrationLockInvariant } from "./helpers/calibrationLockInvariant.js";
+import { assertSealDiscipline, assertImportChangedNoSeal, sealSnapshot } from "./helpers/sealDiscipline.js";
 
 const FROZEN_POLICY_HASH = "04c4b45bf1752ce0";
 
@@ -268,8 +269,7 @@ describe("scoped calibration outcome", () => {
   });
 
   it("kept both formal holdouts sealed", async () => {
-    const { allSealStatuses } = await import("../src/v3/calibration/holdoutSeal.js");
-    for (const [id, v] of Object.entries(allSealStatuses())) expect(v.accessCount, id).toBe(0);
+    assertSealDiscipline();
   });
 
   it("used no holdout fixture in identifiability", async () => {

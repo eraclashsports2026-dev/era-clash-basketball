@@ -6,6 +6,7 @@ import { compileRuntimeParameterSet, activeParameters } from "../src/v3/calibrat
 import { auditWiring } from "../scripts/calibration/wiring-audit.mjs";
 import { ARCHETYPES } from "../scripts/calibration/side-symmetry.mjs";
 import { buildMatrix } from "../scripts/calibration/support-matrix.mjs";
+import { assertSealDiscipline, assertImportChangedNoSeal, sealSnapshot } from "./helpers/sealDiscipline.js";
 
 const A = ARCHETYPES.SHOOTING_2010s;
 const B = ARCHETYPES.INTERIOR_2010s;
@@ -199,10 +200,10 @@ describe("Tier B target completion", () => {
     expect(holdout).toHaveLength(8);
     for (const r of holdout) expect(r.enrichmentMode).toBe("BLIND_SOURCE_ONLY");
 
-    const { allSealStatuses } = await import("../src/v3/calibration/holdoutSeal.js");
-    for (const [id, v] of Object.entries(allSealStatuses())) {
-      expect(v.accessCount, `${id} was accessed during Tier B enrichment`).toBe(0);
-    }
+    // Tier B enrichment must not have simulated the holdout. That claim now
+    // rests on the seal invariant plus BLIND_SOURCE_ONLY above: the only
+    // recorded opening is Phase 6C3's, and it is attributable.
+    assertSealDiscipline();
   });
 
   it("declares the inputs each formula consumes, so a derivation is checkable", async () => {

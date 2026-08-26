@@ -9,6 +9,7 @@ import { domainSeed, MASTERS, seedSetFor, overlapBetween } from "../src/v3/calib
 import { THRESHOLDS } from "../scripts/calibration/probability-v3.mjs";
 import { assertCalibrationLockInvariant } from "./helpers/calibrationLockInvariant.js";
 import { versionOf } from "../src/versions.js";
+import { assertSealDiscipline, assertImportChangedNoSeal, sealSnapshot } from "./helpers/sealDiscipline.js";
 
 const A = { teamId: "A", playerIds: ["curry-10s", "klay-10s", "kawhi-10s", "draymond-10s", "jokic-10s"], coachId: "steve-kerr" };
 const B = { teamId: "B", playerIds: ["wall-2010s", "demar-2010s", "prince-00s", "ibaka-2010s", "drummond-2010s"], coachId: "tom-thibodeau" };
@@ -315,10 +316,11 @@ describe("scripts are inert on import", () => {
   });
 
   it("leaves every seal untouched when the probability script is imported", async () => {
-    const { allSealStatuses } = await import("../src/v3/calibration/holdoutSeal.js");
+    // The invariant was never "the counts are zero" — it is that an IMPORT
+    // does not change them. Comparing before and after says that directly, and
+    // keeps saying it now that one set has been legitimately opened.
+    const before = sealSnapshot();
     await import("../../scripts/calibration/probability-v3.mjs").catch(() => import("../scripts/calibration/probability-v3.mjs"));
-    for (const [id, v] of Object.entries(allSealStatuses())) {
-      expect(v.accessCount, `${id} was accessed by an import`).toBe(0);
-    }
+    assertImportChangedNoSeal(before);
   });
 });

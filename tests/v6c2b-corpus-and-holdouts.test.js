@@ -15,6 +15,7 @@ import { HOLDOUT_FIXTURE_IDS, buildManifest as buildV1Manifest } from "../data/c
 import { PLAYERS } from "../src/players.js";
 import { versionOf, statusOf, VERSION_STATUS, REGISTRY } from "../src/versions.js";
 import { assertCalibrationLockInvariant } from "./helpers/calibrationLockInvariant.js";
+import { assertSealDiscipline, assertImportChangedNoSeal, sealSnapshot } from "./helpers/sealDiscipline.js";
 
 const corpus = loadCorpusV2();
 const CARD = new Map(PLAYERS.map((p) => [p.id, p]));
@@ -308,7 +309,10 @@ describe("holdout seals", () => {
       expect(Object.keys(all)).toContain(id);
     }
     expect(Object.keys(all).length).toBeGreaterThanOrEqual(3);
-    for (const [id, v] of Object.entries(all)) expect(v.accessCount, `${id} has been accessed`).toBe(0);
+    // Phase 6C3 legitimately opened historical-holdout-v3 once. The bare
+    // "every count is 0" check is replaced by the seal invariant, which also
+    // verifies the opening is attributable and happened only once.
+    assertSealDiscipline();
   });
 });
 

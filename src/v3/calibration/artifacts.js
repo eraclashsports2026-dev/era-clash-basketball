@@ -30,6 +30,11 @@ export const ARTIFACT_DIR = "data/calibration/c5";
 // earlier record survives.
 export const ARTIFACT_DIR_C6 = "data/calibration/c6";
 
+// Phase 6C3 is formal VALIDATION rather than calibration, and its artifacts are
+// the evidence a holdout verdict rests on. Separate directory so a calibration
+// command can never overwrite a validation record.
+export const ARTIFACT_DIR_6C3 = "data/validation/6c3";
+
 /** Required provenance on every artifact. A number with no provenance is a rumour. */
 export const REQUIRED_PROVENANCE = Object.freeze([
   "schemaVersion", "generationCommand", "generatedAt", "gitCommit", "branch",
