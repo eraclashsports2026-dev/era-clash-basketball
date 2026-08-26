@@ -305,7 +305,7 @@ describe("roles are respected", () => {
 
   it("sends post-ups toward the post scorer and spot-ups toward the shooter", () => {
     const squad = [
-      mkPlayer("post", { index: 0, postThreat: 9.5, profile: { offense: { offBallMovement: 3 }, shooting: { perimeterSkill: "MINIMAL" }, fit: {} } }),
+      mkPlayer("post", { index: 0, postThreat: 9.5, profile: { offense: { offBallMovement: 3 }, shooting: { perimeterSkill: "NONE" }, fit: {} } }),
       mkPlayer("shooter", { index: 1, postThreat: 2, profile: { offense: { offBallMovement: 8 }, shooting: { perimeterSkill: "ELITE" }, fit: {} } }),
       mkPlayer("c", { index: 2 }), mkPlayer("d", { index: 3 }), mkPlayer("e", { index: 4 }),
     ];
@@ -315,7 +315,7 @@ describe("roles are respected", () => {
 
   it("does not turn a non-shooter into a volume perimeter shooter", () => {
     const squad = [
-      mkPlayer("nonshooter", { index: 0, profile: { offense: { offBallMovement: 3 }, shooting: { perimeterSkill: "MINIMAL" }, fit: {} } }),
+      mkPlayer("nonshooter", { index: 0, profile: { offense: { offBallMovement: 3 }, shooting: { perimeterSkill: "NONE" }, fit: {} } }),
       mkPlayer("elite", { index: 1, profile: { offense: { offBallMovement: 8 }, shooting: { perimeterSkill: "ELITE" }, fit: {} } }),
       mkPlayer("c", { index: 2 }), mkPlayer("d", { index: 3 }), mkPlayer("e", { index: 4 }),
     ];

@@ -62,9 +62,6 @@ const SHOT_POINTS = { RIM: 2, PAINT_OR_POST: 2, MIDRANGE: 2, THREE_POINT: 3 };
 
 const chooseShotCategory = (shooter, shot, env, rng, threeWeightScale = 1) => {
   const w = { ...shooter.shotProfile };
-  // The era's documented three-point volume scales the ATTEMPT weight. The
-  // roster keeps its relative shape around that anchor.
-  w.THREE_POINT *= threeWeightScale;
   // Rim bias comes from the ACTION (a roll to the rim, a transition attack),
   // not from the shooter's habits alone.
   const bias = shot.rimBias ?? 0;
@@ -72,6 +69,10 @@ const chooseShotCategory = (shooter, shot, env, rng, threeWeightScale = 1) => {
   w.PAINT_OR_POST *= 1 + Math.max(0, bias) * 0.5;
   w.THREE_POINT *= 1 + Math.max(0, -bias) * 1.5;
   w.MIDRANGE *= 1 + Math.max(0, -bias) * 0.6;
+  // The era's documented three-point volume scales the ATTEMPT weight. Position
+  // in this sequence is irrelevant — these are all multiplications on the same
+  // weight — so this ordering is for readability only.
+  w.THREE_POINT *= threeWeightScale;
   // A pre-three-point era removes the SHOT, not the SKILL: the weight goes to
   // the long two the player would actually have taken (PART 17).
   if (!env.threePointLegal) { w.MIDRANGE += w.THREE_POINT; w.THREE_POINT = 0; }

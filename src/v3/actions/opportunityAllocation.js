@@ -21,6 +21,7 @@
 // Every term is bounded and multiplicative, so no single term can drive a
 // weight to zero or to infinity, and a player is never made ineligible.
 import { versionOf } from "../../versions.js";
+import { perimeterSelectionWeight } from "../data/shooting.js";
 
 export const OPPORTUNITY_ALLOCATION_VERSION = versionOf("opportunityAllocationVersion");
 
@@ -85,10 +86,57 @@ const FIT = {
   GENERIC_HALF_COURT: (p) => 0.35 + (p.selfCreation ?? 5) * 0.06,
 };
 
-const PERIMETER_SCALE = { ELITE: 3.0, STRONG: 2.1, GOOD: 1.9, AVERAGE: 1.0, LIMITED: 0.45, MINIMAL: 0.12, NONE: 0.12 };
-const perimeter = (p) => PERIMETER_SCALE[p.profile?.shooting?.perimeterSkill] ?? 1.0;
+// The canonical scale, not a local copy. A private table here was how the
+// phantom vocabulary spread in the first place.
+const perimeter = (p) => perimeterSelectionWeight(p.profile?.shooting?.perimeterSkill);
 
-export const fitFor = (family, p) => (FIT[family] ?? FIT.GENERIC_HALF_COURT)(p);
+export const rawFit = (family, p) => (FIT[family] ?? FIT.GENERIC_HALF_COURT)(p);
+
+/**
+ * Fit is a BOUNDED MODULATOR of the plan, never a competitor to it.
+ *
+ * Raw fit spans roughly 3.6x between an elite post player and a poor one, while
+ * usage shares are compressed by design — a five-creator stack runs 0.177 to
+ * 0.213, a ratio of 1.20. Multiplying by raw fit therefore lets fit decide the
+ * distribution outright, and the bottom-usage player out-shot the top-usage one.
+ *
+ * This is the same trap an earlier phase had already fixed for the old shooter
+ * draw, and re-creating it here is exactly why that fix carried a comment.
+ * Raw fit is normalised against the best fit in THIS lineup and mapped into a
+ * bounded band, so a great post player gets more post-ups than a poor one and
+ * still does not get more TOUCHES than the primary creator.
+ */
+/**
+ * The band is PER FAMILY, because how much suitability should matter differs by
+ * action. A spot-up is almost entirely about who can shoot; a generic half-court
+ * possession is almost entirely about whose turn it is. One global band gets
+ * both wrong — a narrow band let a non-shooter take 16% of spot-ups, and a wide
+ * one let fit override the usage plan outright.
+ */
+export const FIT_BANDS = Object.freeze({
+  SPOT_UP: { lo: 0.2, hi: 2.4 },          // the action IS the shooting
+  OFF_BALL_SCREEN: { lo: 0.25, hi: 2.2 }, // likewise, plus movement
+  POST_UP: { lo: 0.3, hi: 2.1 },          // a guard does not post up a centre
+  HANDOFF: { lo: 0.35, hi: 2.0 },
+  ZONE_ATTACK: { lo: 0.4, hi: 1.9 },
+  CUT: { lo: 0.4, hi: 1.9 },
+  ISOLATION: { lo: 0.5, hi: 1.8 },        // creation matters, usage matters more
+  PICK_AND_ROLL: { lo: 0.55, hi: 1.7 },
+  TRANSITION: { lo: 0.6, hi: 1.6 },
+  GENERIC_HALF_COURT: { lo: 0.75, hi: 1.35 }, // mostly whose turn it is
+});
+export const DEFAULT_FIT_BAND = Object.freeze({ lo: 0.55, hi: 1.7 });
+export const FIT_BAND = DEFAULT_FIT_BAND;
+
+export const boundedFit = (family, player, pool) => {
+  const band = FIT_BANDS[family] ?? DEFAULT_FIT_BAND;
+  const raw = rawFit(family, player);
+  const best = Math.max(...pool.map((p) => rawFit(family, p)), 1e-6);
+  return band.lo + clamp(raw / best, 0, 1) * (band.hi - band.lo);
+};
+
+// Kept for callers that want the unbounded shape (diagnostics, profiles).
+export const fitFor = (family, p) => rawFit(family, p);
 
 /**
  * The pregame target profile for one player.
@@ -236,14 +284,16 @@ export const formMultiplier = ({ player, rng, band = FORM_BAND }) => {
  */
 export const opportunityWeight = ({
   player, family, dimension = "shotAttempt", targets, ledger,
-  mismatch = null, state = null, rng = null, coachBias = 1,
+  mismatch = null, state = null, rng = null, coachBias = 1, pool = null,
 }) => {
   const target = targets?.[player.cardId] ?? 0;
   const realized = ledger ? ledger.realizedShare(player.cardId, dimension) : 0;
   const totalSoFar = ledger ? ledger.total(dimension) : 0;
 
   const plan = Math.max(target, 0.01);
-  const fit = fitFor(family, player);
+  // Bounded against the lineup when a pool is supplied; raw only when a caller
+  // deliberately wants the unbounded shape.
+  const fit = pool ? boundedFit(family, player, pool) : rawFit(family, player);
   const sat = saturationMultiplier({ realized, target, totalSoFar });
   const { mult: mism, reason } = mismatchMultiplier({ player, mismatch, family });
   const form = formMultiplier({ player, rng });
@@ -290,7 +340,7 @@ export const selectForOpportunity = ({
 
   const scored = pool.map((p) => ({
     player: p,
-    ...opportunityWeight({ player: p, family, dimension, targets, ledger, mismatch, state, rng, coachBias: coachBiasFor?.(p) ?? 1 }),
+    ...opportunityWeight({ player: p, family, dimension, targets, ledger, mismatch, state, rng, coachBias: coachBiasFor?.(p) ?? 1, pool }),
   }));
 
   const total = scored.reduce((a, s) => a + s.weight, 0);

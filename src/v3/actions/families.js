@@ -14,6 +14,7 @@
 // DETECTED mismatch into actual exploitation. Before them the engine could
 // identify a post mismatch and had no way to attack it.
 import { selectForOpportunity } from "./opportunityAllocation.js";
+import { perimeterSelectionWeight } from "../data/shooting.js";
 
 const clamp = (x, lo, hi) => Math.min(hi, Math.max(lo, x));
 const r2 = (x) => Math.round(x * 100) / 100;
@@ -275,12 +276,12 @@ export const HANDOFF = {
 // weight is low on its own and they are mostly reached as continuations.
 export const SPOT_UP = {
   key: "SPOT_UP",
-  canSelect: ({ offense, eff }) => eff.perimeterShotValue > 0 && offense.players.some((p) => (p.profile?.shooting?.perimeterSkill ?? "AVERAGE") !== "MINIMAL"),
+  canSelect: ({ offense, eff }) => eff.perimeterShotValue > 0 && offense.players.some((p) => perimeterSelectionWeight(p.profile?.shooting?.perimeterSkill) > 0.1),
   weight: ({ offense, eff }) => clamp(0.05 + offense.offense.spacing * 0.014 + clamp((eff.perimeterShotValue - 3) * 0.014, -0.03, 0.06), 0, FAMILY_CAPS.SPOT_UP),
   prepare: ({ offense, defense, defState, rng, pickDefender, state, alloc }) => {
     const shooter = allocate({
       family: "SPOT_UP", offense, alloc, rng, state,
-      legacy: () => rng.weighted(offense.players, usageWeighted(offense.players, (p) => 0.15 + ({ ELITE: 3.2, STRONG: 2.2, AVERAGE: 1, LIMITED: 0.4, MINIMAL: 0.1 }[p.profile?.shooting?.perimeterSkill] ?? 1))),
+      legacy: () => rng.weighted(offense.players, usageWeighted(offense.players, (p) => 0.15 + perimeterSelectionWeight(p.profile?.shooting?.perimeterSkill))),
     });
     const passer = allocate({
       family: "SPOT_UP", dimension: "passing", offense, alloc, rng, state, exclude: [shooter.index],

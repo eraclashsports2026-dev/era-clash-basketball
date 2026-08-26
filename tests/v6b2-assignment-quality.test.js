@@ -140,11 +140,26 @@ describe("movement-shooter chase cost", () => {
     const mover = blue.threats.find((t) => t.playerCardId === "klay-10s");
     expect(hub.creationLocus.interior).toBeGreaterThan(0.35);
     expect(mover.creationLocus.perimeter).toBeGreaterThan(0.6);
-    // Guarding the interior creator must cost the centre LESS than chasing the
-    // mover — the reverse is what produced the original absurd plan.
     const vsHub = evaluatePairing({ threat: hub, defender: centre, eff, era, scheme: null });
     const vsMover = evaluatePairing({ threat: mover, defender: centre, eff, era, scheme: null });
-    expect(vsHub.cost).toBeLessThan(vsMover.cost);
+
+    // The principle, tested directly: guarding an INTERIOR-locus creator must
+    // not charge a centre for the perimeter work he is not being asked to do.
+    // Chasing an off-ball mover must charge him for exactly that work.
+    expect(vsHub.dimensions.movementChase.shortfall,
+      "guarding an interior hub should not cost much movement chasing")
+      .toBeLessThan(vsMover.dimensions.movementChase.shortfall);
+    expect(vsHub.dimensions.screenNavigation.shortfall)
+      .toBeLessThan(vsMover.dimensions.screenNavigation.shortfall);
+
+    // Total cost is deliberately NOT compared here any more. This hub is a GOOD
+    // perimeter shooter at MODERATE volume — a fact the engine only started
+    // representing once the shooting vocabulary was fixed, since GOOD and
+    // MODERATE were unmapped and silently read as AVERAGE and LOW. A
+    // perimeter-capable seven-footer being roughly as hard to guard as a
+    // movement shooter is a real basketball outcome, not a modelling error, so
+    // asserting on the total would be asserting that he cannot shoot.
+    expect(hub.threats.movementShooting).toBeLessThan(mover.threats.movementShooting);
   });
 });
 

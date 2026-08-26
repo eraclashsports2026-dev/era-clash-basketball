@@ -17,6 +17,7 @@ import { buildCoachIntelligence } from "../coachIntelligence.js";
 import { buildDefensivePlans } from "../defense/plan.js";
 import { NEUTRAL_COACH, getCoach } from "../coaches.js";
 import { buildOpportunityProfile, normaliseTargets, createOpportunityLedger, OPPORTUNITY_ALLOCATION_VERSION } from "../actions/opportunityAllocation.js";
+import { perimeterSkillScore, threeVolumeFactor } from "../data/shooting.js";
 
 const r2 = (x) => Math.round(x * 100) / 100;
 const r3 = (x) => Math.round(x * 1000) / 1000;
@@ -70,8 +71,8 @@ const shotProfileFor = (p) => {
   const sh = p.shooting || {};
   const rim = num(o.rimThreat, 5);
   const post = num(o.postThreat, 3);
-  const perim = { ELITE: 9, STRONG: 7.5, AVERAGE: 5, LIMITED: 3, MINIMAL: 1.5 }[sh.perimeterSkill] ?? 5;
-  const vol = { HIGH: 1.6, MEDIUM: 1.15, LOW: 0.7, NONE: 0.15 }[sh.threeVolume] ?? 0.7;
+  const perim = perimeterSkillScore(sh.perimeterSkill);
+  const vol = threeVolumeFactor(sh.threeVolume);
 
   const weights = {
     RIM: 1.0 + rim * 0.34,
@@ -91,7 +92,7 @@ const shotProfileFor = (p) => {
 const shootingSkillFor = (p) => {
   const o = p.offense || {};
   const sh = p.shooting || {};
-  const perim = { ELITE: 9, STRONG: 7.5, AVERAGE: 5, LIMITED: 3, MINIMAL: 1.5 }[sh.perimeterSkill] ?? 5;
+  const perim = perimeterSkillScore(sh.perimeterSkill);
   const measuredFg = Number.isFinite(Number(sh.fgPct)) ? clamp((Number(sh.fgPct) - 0.40) * 40 + 5, 0, 10) : null;
   const measuredThree = Number.isFinite(Number(sh.threePct)) ? clamp((Number(sh.threePct) - 0.30) * 55 + 5, 0, 10) : null;
   const finishing = num(o.rimThreat, 5);
@@ -316,10 +317,25 @@ export const preparePossessionContext = (input) => {
   // far fewer than anyone in 2020.
   const expectedFgaPerTeam = expectedPace * 0.92;
   const targetThreeShare = clamp(num(envir.tpaPerGame, 0) / expectedFgaPerTeam, 0, 0.62);
+  // The scale is an ODDS ratio, not a share ratio.
+  //
+  // It used to be `target / natural`, which does not solve for the share it
+  // claims to target. Multiplying one weight in a normalised vector without
+  // renormalising yields a share of target / (1 - natural + target), not
+  // target. Measured in the 2020s: a 0.403 target arriving as 0.3178, and
+  // 0.403 / (1 - 0.1349 + 0.403) = 0.3178 exactly. The anchor could not reach
+  // its own target by construction, and no coefficient tuning would have
+  // revealed why.
+  //
+  // Scaling the ODDS instead makes the resulting share equal the target:
+  //   w' = w · [target/(1-target)] / [natural/(1-natural)]
+  //   share(w') = target
   const anchorThreeScale = (team) => {
     if (!era.rules?.threePoint || targetThreeShare <= 0) return 0;
-    const natural = team.players.reduce((a, p) => a + p.usageShare * p.shotProfile.THREE_POINT, 0);
-    return r3(clamp(targetThreeShare / Math.max(0.02, natural), 0.05, 6));
+    const natural = clamp(team.players.reduce((a, p) => a + p.usageShare * p.shotProfile.THREE_POINT, 0), 0.02, 0.95);
+    const t = clamp(targetThreeShare, 0.001, 0.95);
+    const odds = (x) => x / (1 - x);
+    return r3(clamp(odds(t) / odds(natural), 0.05, 12));
   };
   gold.threeWeightScale = anchorThreeScale(gold);
   blue.threeWeightScale = anchorThreeScale(blue);

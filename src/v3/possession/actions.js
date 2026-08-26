@@ -19,6 +19,7 @@ import { defenderFor, stateFor, canSwitch, applySwitch } from "../defense/liveSt
 import { selectCoverage } from "../defense/coverage.js";
 import { FAMILY_REGISTRY, FAMILY_CAPS, postMismatchFor, speedMismatchFor, chaseMismatchFor, allocate } from "../actions/families.js";
 import { selectForOpportunity } from "../actions/opportunityAllocation.js";
+import { perimeterSelectionWeight } from "../data/shooting.js";
 import { attackZone } from "../defense/zone.js";
 
 const clamp = (x, lo, hi) => Math.min(hi, Math.max(lo, x));
@@ -536,7 +537,7 @@ const resolveFamily = (family, { offense, defense, eff, state, rng, defState, de
     // teammate, which is how a post mismatch creates weak-side offence.
     if (doubled && rng.chance(clamp(0.35 + poster.passing * 0.05, 0.3, 0.8))) {
       const receiver = rng.weighted(offense.players.filter((p) => p.index !== poster.index),
-        (p) => 0.2 + ({ ELITE: 3, STRONG: 2, AVERAGE: 1, LIMITED: 0.4, MINIMAL: 0.1 }[p.profile?.shooting?.perimeterSkill] ?? 1));
+        (p) => 0.2 + perimeterSelectionWeight(p.profile?.shooting?.perimeterSkill));
       const rDef = pick(defense, receiver);
       const rBase = familyBase({ shooter: receiver, defender: rDef, defState, defPlan });
       return {
@@ -753,7 +754,7 @@ const resolveZoneAttack = ({ offense, defense, eff, state, rng, defPlan, zoneShe
     switch (atk.gap) {
       case "HIGH_POST": return 0.2 + p.passing * 0.3 + p.postThreat * 0.3;
       case "CORNER": case "SKIP_PASS": case "TOP":
-        return 0.15 + ({ ELITE: 3, STRONG: 2, AVERAGE: 1, LIMITED: 0.4, MINIMAL: 0.1 }[p.profile?.shooting?.perimeterSkill] ?? 1);
+        return 0.15 + perimeterSelectionWeight(p.profile?.shooting?.perimeterSkill);
       case "SHORT_CORNER": return 0.2 + p.postThreat * 0.25 + p.rimThreat * 0.2;
       case "BASELINE": return 0.2 + (p.profile?.offense?.offBallMovement ?? 5) * 0.3 + p.rimThreat * 0.2;
       case "LOW_POST": return 0.2 + p.postThreat * 0.6;

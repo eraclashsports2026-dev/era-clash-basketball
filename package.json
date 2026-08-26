@@ -41,7 +41,13 @@
     "calibration:import-targets": "node scripts/calibration/import-targets.mjs import",
     "calibration:verify-targets": "node scripts/calibration/import-targets.mjs verify",
     "calibration:coverage": "node scripts/calibration/import-targets.mjs coverage",
-    "calibration:refresh-targets": "node scripts/calibration/import-targets.mjs import --refresh"
+    "calibration:refresh-targets": "node scripts/calibration/import-targets.mjs import --refresh",
+    "calibration:zone-matrix": "node scripts/calibration/diagnostics.mjs zone-matrix",
+    "calibration:shooting-all-eras": "node scripts/calibration/diagnostics.mjs shooting-all-eras",
+    "calibration:three-point-decomposition": "node scripts/calibration/diagnostics.mjs three-point-decomposition",
+    "calibration:coach-matrix": "node scripts/calibration/diagnostics.mjs coach-matrix",
+    "calibration:fg-decomposition": "node scripts/calibration/diagnostics.mjs fg-decomposition",
+    "calibration:player-tails": "node scripts/calibration/diagnostics.mjs player-tails"
   },
   "dependencies": {
     "react": "^18.3.1",
