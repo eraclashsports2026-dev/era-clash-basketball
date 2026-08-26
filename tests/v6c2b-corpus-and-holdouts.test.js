@@ -98,7 +98,10 @@ describe("eligibility matrix", () => {
 describe("historical corpus v2", () => {
   it("exists and is versioned", () => {
     expect(corpus, "corpus v2 not built").toBeTruthy();
-    expect(corpus.historicalCorpusVersion).toBe(versionOf("historicalCorpusVersion"));
+    // Corpus v2 is now a FROZEN ARCHIVE. Its recorded version must stay at
+    // 2.0.0 while the live registry moves on to v3 — an archive that tracked
+    // the current version would not be an archive.
+    expect(corpus.historicalCorpusVersion).toBe("2.0.0");
     expect(corpus.corpusHash).toMatch(/^[0-9a-f]{64}$/);
   });
 
@@ -216,10 +219,15 @@ describe("set membership and freezing", () => {
     }
   });
 
-  it("matches the committed manifests on disk", () => {
+  it("preserves the committed v2 manifests as frozen archives", () => {
+    // These manifests record what the v2 sets WERE. `buildManifest` now reads
+    // the live registry, which has moved to v3, so the two legitimately differ.
+    // What must hold is that the archived files still describe the same
+    // membership — the fixtures, not the version stamps.
     for (const kind of ["historical-calibration", "historical-holdout", "synthetic-stress"]) {
       const onDisk = JSON.parse(readFileSync(`data/calibration/${kind}-manifest.json`, "utf8"));
-      expect(onDisk, `${kind} manifest has drifted from the code`).toEqual(buildManifest(kind));
+      expect(onDisk.fixtureIds, `${kind} membership changed`).toEqual(buildManifest(kind).fixtureIds);
+      expect(onDisk.manifestHash, `${kind} hash changed`).toBe(buildManifest(kind).manifestHash);
     }
   });
 
@@ -290,10 +298,16 @@ describe("holdout seals", () => {
     expect(all["legacy-holdout-v1"].note).toMatch(/LEGACY_MIXED_HOLDOUT/);
   });
 
-  it("reports all three seal states together", () => {
+  it("reports every seal state together, including sets added after this phase", () => {
     const all = allSealStatuses();
-    expect(Object.keys(all)).toHaveLength(3);
-    for (const v of Object.values(all)) expect(v.accessCount).toBe(0);
+    // Phase 6C2C1 added historical-holdout-v3 and synthetic-stress-holdout-v2.
+    // This asserts the v2 seals are still reported rather than a fixed count,
+    // so a later phase adding a holdout does not break the check that matters.
+    for (const id of ["legacy-holdout-v1", "historical-holdout-v2", "synthetic-stress-v1"]) {
+      expect(Object.keys(all)).toContain(id);
+    }
+    expect(Object.keys(all).length).toBeGreaterThanOrEqual(3);
+    for (const [id, v] of Object.entries(all)) expect(v.accessCount, `${id} has been accessed`).toBe(0);
   });
 });
 
@@ -343,8 +357,11 @@ describe("set versioning", () => {
     expect(versionOf("possessionCalibrationVersion")).toBeNull();
   });
 
-  it("separates the new historical holdout version from the legacy one", () => {
-    expect(versionOf("historicalHoldoutSetVersion")).toBe("2.0.0");
+  it("separates every holdout generation by version", () => {
+    // Three generations, three domains. The legacy one never moves; v2 is
+    // archived at its own recorded version; the live domain advances to v3.
     expect(versionOf("holdoutSetVersion"), "the legacy holdout stays at 1.0.0 forever").toBe("1.0.0");
+    expect(versionOf("historicalHoldoutSetVersion")).toBe("3.0.0");
+    expect(loadCorpusV2().historicalCorpusVersion, "corpus v2 is frozen at its own version").toBe("2.0.0");
   });
 });

@@ -251,7 +251,8 @@ describe("historical target gate", () => {
   it("built targets for every corpus v2 fixture", () => {
     expect(store).toBeTruthy();
     expect(store.records).toHaveLength(loadCorpusV2().fixtures.length);
-    expect(store.targetDataVersion).toBe(versionOf("historicalTargetDataVersion"));
+    // Frozen at the version it was built under; the live domain is now 3.0.0.
+    expect(store.targetDataVersion).toBe("2.0.0");
   });
 
   it("used no prohibited source", () => {

@@ -482,104 +482,107 @@ const playerTails = () => {
 };
 
 // ── CLI ─────────────────────────────────────────────────────────────────────
-const cmd = process.argv[2];
-if (cmd === "zone-matrix") {
-  const z = zoneMatrix();
-  console.log(`ZONE SHELL MATRIX — ${z.design}\n`);
-  console.log("era     teamA                          teamB                          cond          A-shell B-shell  A-ORtg  A-eFG  A-ORB%  B-ORtg  B-ORB%  A-win");
-  for (const r of z.rows) {
-    console.log(`${r.eraStyleId}  ${r.teamA.padEnd(30)} ${r.teamB.padEnd(30)} ${r.condition.padEnd(13)} ${r.teamA_defensiveShell.padEnd(7)} ${r.teamB_defensiveShell.padEnd(7)} ${String(r.teamA_offensiveRating).padStart(6)} ${String(r.teamA_efg).padStart(6)} ${String(r.teamA_offensiveReboundPct).padStart(7)} ${String(r.teamB_offensiveRating).padStart(7)} ${String(r.teamB_offensiveReboundPct).padStart(7)} ${String(r.teamA_winRate).padStart(6)}`);
-  }
-  console.log(`\nzone-illegal era control (delta must be exactly 0):`);
-  for (const c of z.illegalControl) console.log(`  ${c.eraStyleId}  shells ${c.shellsSelected}  Δwin ${c.deltaWinRate}  ΔORtg ${c.deltaORtg}`);
-  console.log(`\nside-attribution violations: ${z.violations.length}${z.violations.length ? "\n  " + z.violations.join("\n  ") : " — every zone attack faced a shell held by the OTHER side"}`);
-  write("zone-matrix", z);
-} else if (cmd === "shooting-all-eras") {
-  const h = shootingHierarchy();
-  console.log("SHOOTING HIERARCHY — all eight Era Styles\n");
-  for (const e of h) {
-    console.log(`${e.eraStyleId}  (3PT ${e.threePointLegal ? "legal" : "does not exist"}, ${e.gradedCards} graded cards)`);
-    // Controlled first: it is the arm that isolates the shooting model, and it
-    // covers every era.
-    if (e.controlled) {
-      for (const r of e.controlled) {
-        console.log(`   ctrl  ${r.tier.padEnd(8)} eFG ${String(r.efg).padStart(6)}  TS ${String(r.ts).padStart(6)}  3PAr ${String(r.tpar).padStart(6)}  ORtg ${String(r.ortg).padStart(6)}`);
+// Guarded: importing this module for a helper must never run a command.
+if (import.meta.url === `file://${process.argv[1]}`) {
+  const cmd = process.argv[2];
+  if (cmd === "zone-matrix") {
+    const z = zoneMatrix();
+    console.log(`ZONE SHELL MATRIX — ${z.design}\n`);
+    console.log("era     teamA                          teamB                          cond          A-shell B-shell  A-ORtg  A-eFG  A-ORB%  B-ORtg  B-ORB%  A-win");
+    for (const r of z.rows) {
+      console.log(`${r.eraStyleId}  ${r.teamA.padEnd(30)} ${r.teamB.padEnd(30)} ${r.condition.padEnd(13)} ${r.teamA_defensiveShell.padEnd(7)} ${r.teamB_defensiveShell.padEnd(7)} ${String(r.teamA_offensiveRating).padStart(6)} ${String(r.teamA_efg).padStart(6)} ${String(r.teamA_offensiveReboundPct).padStart(7)} ${String(r.teamB_offensiveRating).padStart(7)} ${String(r.teamB_offensiveReboundPct).padStart(7)} ${String(r.teamA_winRate).padStart(6)}`);
+    }
+    console.log(`\nzone-illegal era control (delta must be exactly 0):`);
+    for (const c of z.illegalControl) console.log(`  ${c.eraStyleId}  shells ${c.shellsSelected}  Δwin ${c.deltaWinRate}  ΔORtg ${c.deltaORtg}`);
+    console.log(`\nside-attribution violations: ${z.violations.length}${z.violations.length ? "\n  " + z.violations.join("\n  ") : " — every zone attack faced a shell held by the OTHER side"}`);
+    write("zone-matrix", z);
+  } else if (cmd === "shooting-all-eras") {
+    const h = shootingHierarchy();
+    console.log("SHOOTING HIERARCHY — all eight Era Styles\n");
+    for (const e of h) {
+      console.log(`${e.eraStyleId}  (3PT ${e.threePointLegal ? "legal" : "does not exist"}, ${e.gradedCards} graded cards)`);
+      // Controlled first: it is the arm that isolates the shooting model, and it
+      // covers every era.
+      if (e.controlled) {
+        for (const r of e.controlled) {
+          console.log(`   ctrl  ${r.tier.padEnd(8)} eFG ${String(r.efg).padStart(6)}  TS ${String(r.ts).padStart(6)}  3PAr ${String(r.tpar).padStart(6)}  ORtg ${String(r.ortg).padStart(6)}`);
+        }
+        console.log(`   controlled ordering ELITE > AVERAGE > LIMITED: ${e.controlledOrderingHolds}`);
       }
-      console.log(`   controlled ordering ELITE > AVERAGE > LIMITED: ${e.controlledOrderingHolds}`);
+      if (e.realRosterUntestableReason) {
+        console.log(`   real rosters NOT TESTABLE — ${e.realRosterUntestableReason}\n`);
+        continue;
+      }
+      for (const r of [...e.realRoster].sort((a, b) => b.efg - a.efg)) {
+        console.log(`   real  ${r.group.padEnd(8)} eFG ${String(r.efg).padStart(6)}  TS ${String(r.ts).padStart(6)}  3PAr ${String(r.tpar).padStart(6)}  ORtg ${String(r.ortg).padStart(6)}`);
+      }
+      console.log(`   real ordering: elite>average ${e.realEliteAboveAverage}  average>weak ${e.realAverageAboveWeak}  full ${e.realOrderingHolds}\n`);
     }
-    if (e.realRosterUntestableReason) {
-      console.log(`   real rosters NOT TESTABLE — ${e.realRosterUntestableReason}\n`);
-      continue;
+    const ctrl = h.filter((x) => x.controlledOrderingHolds != null);
+    const real = h.filter((x) => !x.realRosterUntestableReason);
+    console.log(`controlled arm: ${ctrl.length}/8 eras testable, ordering holds in ${ctrl.filter((x) => x.controlledOrderingHolds).length}`);
+    console.log(`real-roster arm: ${real.length}/8 eras testable, ordering holds in ${real.filter((x) => x.realOrderingHolds).length}`);
+    write("shooting-all-eras", { eras: h });
+  } else if (cmd === "three-point-decomposition") {
+    const d = threePointDecomposition(process.argv[3] ?? "2020s");
+    console.log(`THREE-POINT DECOMPOSITION — ${d.era}\n`);
+    console.log(`  environment target 3PA/game : ${d.environmentTarget3PA}`);
+    console.log(`  simulated 3PA/game          : ${d.simulated3PA}   gap ${r1(d.simulated3PA - d.environmentTarget3PA)}`);
+    console.log(`  overall three rate          : ${d.overallThreeRate}\n`);
+    console.log(`  by action family (share of shots, and how often that action produces a three):`);
+    for (const [k, v] of Object.entries(d.byAction)) console.log(`    ${k.padEnd(22)} share ${String(v.share).padStart(6)}  threeRate ${String(v.threeRate).padStart(6)}`);
+    console.log(`\n  by shooter's curated tier:`);
+    for (const [k, v] of Object.entries(d.byShooterTier)) console.log(`    ${k.padEnd(22)} share ${String(v.share).padStart(6)}  threeRate ${String(v.threeRate).padStart(6)}`);
+    console.log(`\n  by coach (simulated 3PA/game):`);
+    for (const [k, v] of Object.entries(d.byCoach)) console.log(`    ${k.padEnd(22)} ${v}`);
+    console.log(`\n  by team:`);
+    for (const t of d.perTeam) console.log(`    ${t.fixtureId.padEnd(30)} 3PA ${String(t.simulated3PA).padStart(5)}  gap ${t.gap}`);
+    write("three-point-decomposition", d);
+  } else if (cmd === "coach-matrix") {
+    const m = coachMatrix();
+    console.log(`COACH IDENTITY MATRIX — ${m.design}\n`);
+    console.log("SAME ROSTER, DIFFERENT COACHES");
+    for (const r of m.sameRosterDifferentCoaches) {
+      const top = Object.entries(r.offensiveActionMix).sort((a, b) => b[1] - a[1]).slice(0, 4).map(([k, v]) => `${k} ${v}`).join("  ");
+      console.log(`  ${r.coachId.padEnd(20)} pace ${String(r.pace).padStart(5)}  zoneAttackVsOpponentZone ${String(r.zoneAttackShareAgainstOpponentZone).padStart(6)}  | ${top}`);
     }
-    for (const r of [...e.realRoster].sort((a, b) => b.efg - a.efg)) {
-      console.log(`   real  ${r.group.padEnd(8)} eFG ${String(r.efg).padStart(6)}  TS ${String(r.ts).padStart(6)}  3PAr ${String(r.tpar).padStart(6)}  ORtg ${String(r.ortg).padStart(6)}`);
+    console.log("\n  spread across coaches (range = max - min):");
+    for (const [f, s] of Object.entries(m.coachSpread).sort((a, b) => b[1].range - a[1].range)) console.log(`    ${f.padEnd(22)} min ${String(s.min).padStart(6)}  max ${String(s.max).padStart(6)}  range ${s.range}`);
+    console.log("\nSAME COACH, DIFFERENT ROSTERS");
+    for (const r of m.sameCoachDifferentRosters) {
+      const top = Object.entries(r.offensiveActionMix).sort((a, b) => b[1] - a[1]).slice(0, 4).map(([k, v]) => `${k} ${v}`).join("  ");
+      console.log(`  ${r.roster.padEnd(30)} pace ${String(r.pace).padStart(5)}  | ${top}`);
     }
-    console.log(`   real ordering: elite>average ${e.realEliteAboveAverage}  average>weak ${e.realAverageAboveWeak}  full ${e.realOrderingHolds}\n`);
+    console.log("\n  spread across rosters:");
+    for (const [f, s] of Object.entries(m.rosterSpread).sort((a, b) => b[1].range - a[1].range).slice(0, 6)) console.log(`    ${f.padEnd(22)} range ${s.range}`);
+    write("coach-matrix", m);
+  } else if (cmd === "fg-decomposition") {
+    const d = fgDecomposition();
+    console.log(`FIELD-GOAL DECOMPOSITION — ${d.totalShots} shots\n`);
+    console.log(`  overall realized make%      : ${d.overallRealizedMakePct}`);
+    console.log(`  mismatch-targeted share     : ${d.mismatchTargetedShare}\n`);
+    console.log(`  by action family:`);
+    console.log(`    ${"family".padEnd(22)} ${"share".padStart(6)} ${"expected".padStart(9)} ${"realized".padStart(9)} ${"diff".padStart(7)}`);
+    for (const [k, v] of Object.entries(d.byAction)) console.log(`    ${k.padEnd(22)} ${String(v.share).padStart(6)} ${String(v.expectedMakePct).padStart(9)} ${String(v.realizedMakePct).padStart(9)} ${String(v.expectedVsRealized).padStart(7)}`);
+    console.log(`\n  by shot category:`);
+    for (const [k, v] of Object.entries(d.byShotCategory)) console.log(`    ${k.padEnd(22)} ${String(v.share).padStart(6)} ${String(v.expectedMakePct).padStart(9)} ${String(v.realizedMakePct).padStart(9)} ${String(v.expectedVsRealized).padStart(7)}`);
+    console.log(`\n  by era (simulated vs the era environment):`);
+    for (const [k, v] of Object.entries(d.byEra)) console.log(`    ${k.padEnd(8)} sim ${String(v.simulatedFgPct).padStart(6)}  env ${String(v.environmentFgPct).padStart(6)}  gap ${v.gap}`);
+    write("fg-decomposition", d);
+  } else if (cmd === "player-tails") {
+    const t = playerTails();
+    console.log(`PLAYER TAILS — ${t.length} cards\n`);
+    console.log(`  highest scoring means:`);
+    console.log(`    ${"player".padEnd(24)} ${"mean".padStart(6)} ${"p95".padStart(5)} ${"p99".padStart(5)} ${"max".padStart(5)} ${"shotShare".padStart(10)}`);
+    for (const r of t.slice(0, 12)) console.log(`    ${r.name.padEnd(24)} ${String(r.pts.mean).padStart(6)} ${String(r.pts.p95).padStart(5)} ${String(r.pts.max).padStart(5)} ${String(r.pts.max).padStart(5)} ${String(r.shotShare.mean).padStart(10)}`);
+    console.log(`\n  highest shot shares:`);
+    for (const r of [...t].sort((a, b) => b.shotShare.mean - a.shotShare.mean).slice(0, 8)) console.log(`    ${r.name.padEnd(24)} share mean ${String(r.shotShare.mean).padStart(6)}  p95 ${String(r.shotShare.p95).padStart(6)}  max ${String(r.shotShare.max).padStart(6)}`);
+    console.log(`\n  rebound and assist ceilings:`);
+    for (const r of [...t].sort((a, b) => b.reb.max - a.reb.max).slice(0, 5)) console.log(`    ${r.name.padEnd(24)} reb mean ${String(r.reb.mean).padStart(5)} max ${String(r.reb.max).padStart(4)}`);
+    for (const r of [...t].sort((a, b) => b.ast.max - a.ast.max).slice(0, 5)) console.log(`    ${r.name.padEnd(24)} ast mean ${String(r.ast.mean).padStart(5)} max ${String(r.ast.max).padStart(4)}`);
+    write("player-tails", { players: t });
+  } else {
+    console.error(`unknown diagnostic "${cmd}"`);
+    process.exit(1);
   }
-  const ctrl = h.filter((x) => x.controlledOrderingHolds != null);
-  const real = h.filter((x) => !x.realRosterUntestableReason);
-  console.log(`controlled arm: ${ctrl.length}/8 eras testable, ordering holds in ${ctrl.filter((x) => x.controlledOrderingHolds).length}`);
-  console.log(`real-roster arm: ${real.length}/8 eras testable, ordering holds in ${real.filter((x) => x.realOrderingHolds).length}`);
-  write("shooting-all-eras", { eras: h });
-} else if (cmd === "three-point-decomposition") {
-  const d = threePointDecomposition(process.argv[3] ?? "2020s");
-  console.log(`THREE-POINT DECOMPOSITION — ${d.era}\n`);
-  console.log(`  environment target 3PA/game : ${d.environmentTarget3PA}`);
-  console.log(`  simulated 3PA/game          : ${d.simulated3PA}   gap ${r1(d.simulated3PA - d.environmentTarget3PA)}`);
-  console.log(`  overall three rate          : ${d.overallThreeRate}\n`);
-  console.log(`  by action family (share of shots, and how often that action produces a three):`);
-  for (const [k, v] of Object.entries(d.byAction)) console.log(`    ${k.padEnd(22)} share ${String(v.share).padStart(6)}  threeRate ${String(v.threeRate).padStart(6)}`);
-  console.log(`\n  by shooter's curated tier:`);
-  for (const [k, v] of Object.entries(d.byShooterTier)) console.log(`    ${k.padEnd(22)} share ${String(v.share).padStart(6)}  threeRate ${String(v.threeRate).padStart(6)}`);
-  console.log(`\n  by coach (simulated 3PA/game):`);
-  for (const [k, v] of Object.entries(d.byCoach)) console.log(`    ${k.padEnd(22)} ${v}`);
-  console.log(`\n  by team:`);
-  for (const t of d.perTeam) console.log(`    ${t.fixtureId.padEnd(30)} 3PA ${String(t.simulated3PA).padStart(5)}  gap ${t.gap}`);
-  write("three-point-decomposition", d);
-} else if (cmd === "coach-matrix") {
-  const m = coachMatrix();
-  console.log(`COACH IDENTITY MATRIX — ${m.design}\n`);
-  console.log("SAME ROSTER, DIFFERENT COACHES");
-  for (const r of m.sameRosterDifferentCoaches) {
-    const top = Object.entries(r.offensiveActionMix).sort((a, b) => b[1] - a[1]).slice(0, 4).map(([k, v]) => `${k} ${v}`).join("  ");
-    console.log(`  ${r.coachId.padEnd(20)} pace ${String(r.pace).padStart(5)}  zoneAttackVsOpponentZone ${String(r.zoneAttackShareAgainstOpponentZone).padStart(6)}  | ${top}`);
-  }
-  console.log("\n  spread across coaches (range = max - min):");
-  for (const [f, s] of Object.entries(m.coachSpread).sort((a, b) => b[1].range - a[1].range)) console.log(`    ${f.padEnd(22)} min ${String(s.min).padStart(6)}  max ${String(s.max).padStart(6)}  range ${s.range}`);
-  console.log("\nSAME COACH, DIFFERENT ROSTERS");
-  for (const r of m.sameCoachDifferentRosters) {
-    const top = Object.entries(r.offensiveActionMix).sort((a, b) => b[1] - a[1]).slice(0, 4).map(([k, v]) => `${k} ${v}`).join("  ");
-    console.log(`  ${r.roster.padEnd(30)} pace ${String(r.pace).padStart(5)}  | ${top}`);
-  }
-  console.log("\n  spread across rosters:");
-  for (const [f, s] of Object.entries(m.rosterSpread).sort((a, b) => b[1].range - a[1].range).slice(0, 6)) console.log(`    ${f.padEnd(22)} range ${s.range}`);
-  write("coach-matrix", m);
-} else if (cmd === "fg-decomposition") {
-  const d = fgDecomposition();
-  console.log(`FIELD-GOAL DECOMPOSITION — ${d.totalShots} shots\n`);
-  console.log(`  overall realized make%      : ${d.overallRealizedMakePct}`);
-  console.log(`  mismatch-targeted share     : ${d.mismatchTargetedShare}\n`);
-  console.log(`  by action family:`);
-  console.log(`    ${"family".padEnd(22)} ${"share".padStart(6)} ${"expected".padStart(9)} ${"realized".padStart(9)} ${"diff".padStart(7)}`);
-  for (const [k, v] of Object.entries(d.byAction)) console.log(`    ${k.padEnd(22)} ${String(v.share).padStart(6)} ${String(v.expectedMakePct).padStart(9)} ${String(v.realizedMakePct).padStart(9)} ${String(v.expectedVsRealized).padStart(7)}`);
-  console.log(`\n  by shot category:`);
-  for (const [k, v] of Object.entries(d.byShotCategory)) console.log(`    ${k.padEnd(22)} ${String(v.share).padStart(6)} ${String(v.expectedMakePct).padStart(9)} ${String(v.realizedMakePct).padStart(9)} ${String(v.expectedVsRealized).padStart(7)}`);
-  console.log(`\n  by era (simulated vs the era environment):`);
-  for (const [k, v] of Object.entries(d.byEra)) console.log(`    ${k.padEnd(8)} sim ${String(v.simulatedFgPct).padStart(6)}  env ${String(v.environmentFgPct).padStart(6)}  gap ${v.gap}`);
-  write("fg-decomposition", d);
-} else if (cmd === "player-tails") {
-  const t = playerTails();
-  console.log(`PLAYER TAILS — ${t.length} cards\n`);
-  console.log(`  highest scoring means:`);
-  console.log(`    ${"player".padEnd(24)} ${"mean".padStart(6)} ${"p95".padStart(5)} ${"p99".padStart(5)} ${"max".padStart(5)} ${"shotShare".padStart(10)}`);
-  for (const r of t.slice(0, 12)) console.log(`    ${r.name.padEnd(24)} ${String(r.pts.mean).padStart(6)} ${String(r.pts.p95).padStart(5)} ${String(r.pts.max).padStart(5)} ${String(r.pts.max).padStart(5)} ${String(r.shotShare.mean).padStart(10)}`);
-  console.log(`\n  highest shot shares:`);
-  for (const r of [...t].sort((a, b) => b.shotShare.mean - a.shotShare.mean).slice(0, 8)) console.log(`    ${r.name.padEnd(24)} share mean ${String(r.shotShare.mean).padStart(6)}  p95 ${String(r.shotShare.p95).padStart(6)}  max ${String(r.shotShare.max).padStart(6)}`);
-  console.log(`\n  rebound and assist ceilings:`);
-  for (const r of [...t].sort((a, b) => b.reb.max - a.reb.max).slice(0, 5)) console.log(`    ${r.name.padEnd(24)} reb mean ${String(r.reb.mean).padStart(5)} max ${String(r.reb.max).padStart(4)}`);
-  for (const r of [...t].sort((a, b) => b.ast.max - a.ast.max).slice(0, 5)) console.log(`    ${r.name.padEnd(24)} ast mean ${String(r.ast.mean).padStart(5)} max ${String(r.ast.max).padStart(4)}`);
-  write("player-tails", { players: t });
-} else {
-  console.error(`unknown diagnostic "${cmd}"`);
-  process.exit(1);
 }
