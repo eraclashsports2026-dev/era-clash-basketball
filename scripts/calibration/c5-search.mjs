@@ -32,7 +32,10 @@ import { writeArtifact, readArtifact, reconcile } from "../../src/v3/calibration
 import { versionOf } from "../../src/versions.js";
 
 const r5 = (x) => (x == null || !Number.isFinite(x) ? null : Math.round(x * 100000) / 100000);
-const seedAt = (i) => domainSeed(MASTERS["actual-game"], "actual-game", 150000 + i);
+// Seed index 150000 + i, shifted by an optional confirmation-block offset so a
+// later stage can re-measure on seeds the search never saw. Default 0 keeps the
+// search itself byte-identical.
+const seedAt = (i) => domainSeed(MASTERS["actual-game"], "actual-game", 150000 + (globalThis.__c5SeedOffset ?? 0) + i);
 
 // ── Frozen search policy ────────────────────────────────────────────────────
 export const SEARCH_POLICY = Object.freeze({
