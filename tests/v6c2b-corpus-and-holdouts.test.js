@@ -14,6 +14,7 @@ import { FIXTURES } from "../data/calibration/fixtures.mjs";
 import { HOLDOUT_FIXTURE_IDS, buildManifest as buildV1Manifest } from "../data/calibration/split.mjs";
 import { PLAYERS } from "../src/players.js";
 import { versionOf, statusOf, VERSION_STATUS, REGISTRY } from "../src/versions.js";
+import { assertCalibrationLockInvariant } from "./helpers/calibrationLockInvariant.js";
 
 const corpus = loadCorpusV2();
 const CARD = new Map(PLAYERS.map((p) => [p.id, p]));
@@ -352,9 +353,12 @@ describe("set versioning", () => {
     }
   });
 
-  it("keeps the possession calibration unlocked until the gates pass", () => {
-    expect(statusOf("possessionCalibrationVersion")).toBe(VERSION_STATUS.PLANNED);
-    expect(versionOf("possessionCalibrationVersion")).toBeNull();
+  // Was "unlocked until the gates pass". The gates passed in Phase 6C2C6, so
+  // this now asserts the thing that sentence actually meant.
+  it("locks the possession calibration only once the gates pass", () => {
+    const r = assertCalibrationLockInvariant();
+    if (!r.locked) expect(statusOf("possessionCalibrationVersion")).toBe(VERSION_STATUS.PLANNED);
+    else expect(statusOf("possessionCalibrationVersion")).toBe(VERSION_STATUS.DEVELOPMENT_LOCKED_BASELINE);
   });
 
   it("separates every holdout generation by version", () => {

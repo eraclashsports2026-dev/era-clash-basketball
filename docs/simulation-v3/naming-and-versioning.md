@@ -29,7 +29,7 @@
 | Historical fixture data | `historicalFixtureDataVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Holdout set | `holdoutSetVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Benchmark seed set | `benchmarkSeedSetVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
-| Possession calibration | `possessionCalibrationVersion` | `null` | PLANNED (does **not** affect results) |
+| Possession calibration | `possessionCalibrationVersion` | **1.0.0** | DEVELOPMENT_LOCKED_BASELINE (does **not** affect results) |
 | Historical target schema | `historicalTargetSchemaVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Historical target data | `historicalTargetDataVersion` | **3.0.0** | DEVELOPMENT (does **not** affect results) |
 | Opportunity allocation | `opportunityAllocationVersion` | **1.0.0** | DEVELOPMENT |
@@ -39,7 +39,7 @@
 | Synthetic stress set | `syntheticStressSetVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Calibration parameter registry | `calibrationParameterRegistryVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |
 | Calibration objective | `calibrationObjectiveVersion` | **3.0.0** | DEVELOPMENT (does **not** affect results) |
-| Probability validation | `probabilityValidationVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |
+| Probability validation | `probabilityValidationVersion` | **3.0.0** | DEVELOPMENT (does **not** affect results) |
 | Actual-game side symmetry | `actualGameSymmetryVersion` | **1.0.0** | DEVELOPMENT (**affects results**) |
 | Runtime parameter binding | `runtimeParameterBindingVersion` | **1.0.0** | DEVELOPMENT (**affects results**) |
 | Parameter connectivity | `parameterConnectivityVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
@@ -84,7 +84,7 @@
 | Historical calibration set | `historicalCalibrationSetVersion` | **3.0.0** | DEVELOPMENT (does **not** affect results) |
 | Synthetic development set | `syntheticDevelopmentSetVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |
 | Synthetic stress holdout | `syntheticStressHoldoutVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |
-| Monte Carlo probability | `monteCarloProbabilityVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Monte Carlo probability | `monteCarloProbabilityVersion` | **1.1.0** | DEVELOPMENT (does **not** affect results) |
 | Prediction seed set | `predictionSeedSetVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Probability validation seed set | `probabilityValidationSeedSetVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Probability cache schema | `probabilityCacheSchemaVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |

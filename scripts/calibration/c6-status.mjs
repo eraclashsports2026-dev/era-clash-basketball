@@ -125,20 +125,44 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     blockers.push("PROBABILITY_SIDE_BIAS_GATE_UNRESOLVED");
   }
 
-  const current = {
+  // The state this phase STARTED in, derived from the 6C2C5 blockers alone. It is
+  // recorded permanently: a phase that resolves a blocker should still be able to
+  // show what it was resolving, and re-running this command after the lock must
+  // not erase that.
+  const phaseStart = {
     candidateId: "Candidate 0",
     candidateSelectionStatus: blockers.length ? SELECTION_STATES.SELECTED_PENDING_GATE : SELECTION_STATES.SELECTED,
     candidateLockStatus: LOCK_STATES.UNLOCKED,
-    candidateSelectionReason: `${history.changedCandidates} on-grid candidates over ${history.adjudicability.visibleToObjective + history.adjudicability.blindToObjective} eligible parameters. ${history.familyDiagnostics.candidatesClearingPracticalFloor} cleared the practical floor; ${history.familyDiagnostics.candidatesFamilyWiseSignificant} survived family-wise correction (best Holm-adjusted p ${history.familyDiagnostics.bestHolmAdjustedP}). The strongest contender's advantage reversed sign on disjoint seeds (retention ${comparison.gainRetainedOnFreshSeeds}). The wired defaults remain the strongest evidence-supported model.`,
+    calibrationStatus: "NOT_LOCKED",
+    possessionCalibrationVersion: null,
+    parameterChanges: history.acceptedCount,
     candidateLockBlockers: blockers,
+    lockManifestPresent: false,
+  };
+  const phaseStartVerdict = evaluateStatus(phaseStart);
+
+  const lockManifestPresent = existsSync(`${ARTIFACT_DIR_C6}/baseline-candidate-lock.json`);
+  const lockManifest = lockManifestPresent
+    ? JSON.parse(readFileSync(`${ARTIFACT_DIR_C6}/baseline-candidate-lock.json`, "utf8")).data : null;
+  const locked = lockManifest?.allEngineeringGatesPass === true && registryVersion != null;
+
+  const current = {
+    candidateId: "Candidate 0",
+    candidateSelectionStatus: locked ? SELECTION_STATES.SELECTED
+      : (blockers.length ? SELECTION_STATES.SELECTED_PENDING_GATE : SELECTION_STATES.SELECTED),
+    candidateLockStatus: locked ? LOCK_STATES.LOCKED : LOCK_STATES.UNLOCKED,
+    candidateSelectionReason: `${history.changedCandidates} on-grid candidates over ${history.adjudicability.visibleToObjective + history.adjudicability.blindToObjective} eligible parameters. ${history.familyDiagnostics.candidatesClearingPracticalFloor} cleared the practical floor; ${history.familyDiagnostics.candidatesFamilyWiseSignificant} survived family-wise correction (best Holm-adjusted p ${history.familyDiagnostics.bestHolmAdjustedP}). The strongest contender's advantage reversed sign on disjoint seeds (retention ${comparison.gainRetainedOnFreshSeeds}). The wired defaults remain the strongest evidence-supported model.`,
+    candidateLockBlockers: locked ? [] : blockers,
+    resolvedBlockers: locked ? blockers : [],
     parameterChanges: history.acceptedCount,
     parameterValuesEqualRegistryDefaults: drift.length === 0,
     parameterDrift: drift.map((p) => p.id),
     parameterSetHash: def.parameterSetHash,
     parameterSetStatus: def.status,
     possessionCalibrationVersion: registryVersion,
-    calibrationStatus: registryVersion == null ? "NOT_LOCKED" : "LOCKED",
-    lockManifestPresent: existsSync(`${ARTIFACT_DIR_C6}/baseline-candidate-lock.json`),
+    calibrationStatus: registryVersion == null ? "NOT_LOCKED" : (lockManifest?.calibrationStatus ?? "LOCKED"),
+    lockManifestPresent,
+    lockManifestHash: lockManifest?.manifestHash ?? null,
   };
   const currentVerdict = evaluateStatus(current);
 
@@ -169,7 +193,11 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       notConcealed: "The 6C2C5 artifact is preserved unedited. It did record the failing gate, the carried-forward partition and a disclosure; what it got wrong was calling the resulting state LOCKED.",
     },
 
+    phaseStartState: phaseStart,
+    phaseStartCoherent: phaseStartVerdict.coherent,
+    phaseStartBlockers: blockers,
     truthfulCurrentState: current,
+    blockerResolved: locked && blockers.length > 0,
     statusInvariants: STATUS_INVARIANTS.map((i) => i.name),
     currentStateCoherent: currentVerdict.coherent,
     currentStateViolations: currentVerdict.violations,
@@ -200,6 +228,11 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   console.log(`    had candidateLockStatus?        ${published.hadLockStatusField}`);
   console.log(`    coherent                        ${publishedVerdict.coherent}`);
   for (const v of publishedVerdict.violations) console.log(`      VIOLATION  ${v.invariant}: ${v.problem}`);
+  console.log("\n  PHASE-START STATE (recorded permanently):");
+  console.log(`    candidateSelectionStatus        ${phaseStart.candidateSelectionStatus}`);
+  console.log(`    candidateLockStatus             ${phaseStart.candidateLockStatus}`);
+  console.log(`    candidateLockBlockers           ${blockers.join(", ") || "(none)"}`);
+  console.log(`    coherent                        ${phaseStartVerdict.coherent}`);
   console.log("\n  TRUTHFUL CURRENT STATE:");
   console.log(`    candidateId                     ${current.candidateId}`);
   console.log(`    candidateSelectionStatus        ${current.candidateSelectionStatus}`);

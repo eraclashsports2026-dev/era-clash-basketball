@@ -3,8 +3,8 @@
   "schemaVersion": "1.0.0",
   "measurementGovernanceVersion": "1.0.0",
   "generationCommand": "npm run calibration:c6:status",
-  "generatedAt": "2026-08-26T17:12:40.303Z",
-  "gitCommit": "420599380d6050a3282ab61818b95ad5a4a72690",
+  "generatedAt": "2026-08-26T18:03:54.781Z",
+  "gitCommit": "2c9a72ca4c18b3cff761b0b4b1d0ff685de0db08",
   "branch": "phase-6c2c6-probability-side-bias-lock",
   "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
   "registryVersion": "2.0.0",
@@ -46,12 +46,29 @@
       "rootCause": "One field carried two claims. Phase 6C2C5's artifact had no candidateSelectionStatus and no candidateLockStatus field; a single `status` field had to express both 'this is the selected candidate' and 'this candidate is locked'. Given a failing gate, the honest value for selection was SELECTED and for lock was UNLOCKED, and a single field cannot hold both, so the stronger word won.",
       "notConcealed": "The 6C2C5 artifact is preserved unedited. It did record the failing gate, the carried-forward partition and a disclosure; what it got wrong was calling the resulting state LOCKED."
     },
-    "truthfulCurrentState": {
+    "phaseStartState": {
       "candidateId": "Candidate 0",
       "candidateSelectionStatus": "SELECTED_PENDING_GATE",
       "candidateLockStatus": "UNLOCKED",
-      "candidateSelectionReason": "84 on-grid candidates over 11 eligible parameters. 4 cleared the practical floor; 0 survived family-wise correction (best Holm-adjusted p 1). The strongest contender's advantage reversed sign on disjoint seeds (retention -0.78431). The wired defaults remain the strongest evidence-supported model.",
+      "calibrationStatus": "NOT_LOCKED",
+      "possessionCalibrationVersion": null,
+      "parameterChanges": 0,
       "candidateLockBlockers": [
+        "PROBABILITY_SIDE_BIAS_GATE_UNRESOLVED"
+      ],
+      "lockManifestPresent": false
+    },
+    "phaseStartCoherent": true,
+    "phaseStartBlockers": [
+      "PROBABILITY_SIDE_BIAS_GATE_UNRESOLVED"
+    ],
+    "truthfulCurrentState": {
+      "candidateId": "Candidate 0",
+      "candidateSelectionStatus": "SELECTED",
+      "candidateLockStatus": "LOCKED",
+      "candidateSelectionReason": "84 on-grid candidates over 11 eligible parameters. 4 cleared the practical floor; 0 survived family-wise correction (best Holm-adjusted p 1). The strongest contender's advantage reversed sign on disjoint seeds (retention -0.78431). The wired defaults remain the strongest evidence-supported model.",
+      "candidateLockBlockers": [],
+      "resolvedBlockers": [
         "PROBABILITY_SIDE_BIAS_GATE_UNRESOLVED"
       ],
       "parameterChanges": 0,
@@ -59,10 +76,12 @@
       "parameterDrift": [],
       "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
       "parameterSetStatus": "UNCALIBRATED_DEFAULTS",
-      "possessionCalibrationVersion": null,
-      "calibrationStatus": "NOT_LOCKED",
-      "lockManifestPresent": false
+      "possessionCalibrationVersion": "1.0.0",
+      "calibrationStatus": "DEVELOPMENT_LOCKED_BASELINE",
+      "lockManifestPresent": true,
+      "lockManifestHash": "9f2f7e96ffddd864509093b2ab8dc6488814620456adeedea128ae15a810167e"
     },
+    "blockerResolved": true,
     "statusInvariants": [
       "lockedRequiresCalibrationVersion",
       "lockedRequiresLockManifest",
@@ -157,12 +176,12 @@
       "field": "status",
       "was": "DEVELOPMENT_LOCKED_BASELINE",
       "nowSplitInto": {
-        "candidateSelectionStatus": "SELECTED_PENDING_GATE",
-        "candidateLockStatus": "UNLOCKED",
-        "calibrationStatus": "NOT_LOCKED"
+        "candidateSelectionStatus": "SELECTED",
+        "candidateLockStatus": "LOCKED",
+        "calibrationStatus": "DEVELOPMENT_LOCKED_BASELINE"
       },
       "preserved": true
     }
   },
-  "outputHash": "932bcb802b8d43289403b53cc400be1df243dad5442abdf37094a99ddce9e149"
+  "outputHash": "935c55ed5f5008148df80cb1e57f8690564fc615e07ac27544df162480b8f1b5"
 }

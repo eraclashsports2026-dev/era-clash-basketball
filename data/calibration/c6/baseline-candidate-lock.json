@@ -1,0 +1,378 @@
+{
+  "artifact": "baseline-candidate-lock",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run calibration:c6:lock",
+  "generatedAt": "2026-08-26T18:04:47.120Z",
+  "gitCommit": "2c9a72ca4c18b3cff761b0b4b1d0ff685de0db08",
+  "branch": "phase-6c2c6-probability-side-bias-lock",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {
+    "data/calibration/c6/candidate-status-reconciliation.json": "c7437ea6333c01e5d0ffc4ae45e5a042777e7312ccf7b4308aa60a09719dcb21",
+    "data/calibration/c6/probability-side-bias-policy-v2.json": "8b7dae098ae524e18ebb7e7d551f845551aef7e06cfb04216411c81a15db42f1",
+    "data/calibration/c6/probability-side-bias-validation-v2.json": "7ff3fcfb438b58e9464a2aad7561d188ece0f8472d8a036db6d0eeb9bdff518a",
+    "data/calibration/c6/objective-visibility-resolution.json": "198df4dae7ae1c7c768ed339faf3df98b6c687f95c05983f9bb7f96c2fdf8d2e",
+    "data/calibration/c5/candidate-history.json": "5b13be1ed22b7c390d26f322c6dc5563533a20bd1b8e21daea11cfb4158b53bc"
+  },
+  "data": {
+    "baselineCandidateLockManifestVersion": "1.0.0",
+    "candidateId": "Candidate 0",
+    "candidateSelectionStatus": "SELECTED",
+    "candidateLockStatus": "LOCKED",
+    "calibrationStatus": "DEVELOPMENT_LOCKED_BASELINE",
+    "possessionCalibrationVersion": "1.0.0",
+    "parameterChanges": 0,
+    "candidateLockBlockers": [],
+    "lockManifestPresent": true,
+    "parameterValues": {
+      "opportunity.saturation.strength": 1.35,
+      "opportunity.saturation.floor": 0.16,
+      "opportunity.saturation.underTargetCeiling": 1.35,
+      "opportunity.saturation.warmupPossessions": 8,
+      "opportunity.mismatch.severe": 2.6,
+      "opportunity.mismatch.major": 2,
+      "opportunity.mismatch.moderate": 1.55,
+      "opportunity.mismatch.minor": 1.25,
+      "opportunity.form.low": 0.82,
+      "opportunity.form.high": 1.18,
+      "opportunity.lateGame.primaryBoost": 0.5,
+      "fitBand.SPOT_UP.lo": 0.2,
+      "fitBand.SPOT_UP.hi": 2.4,
+      "fitBand.OFF_BALL_SCREEN.lo": 0.25,
+      "fitBand.OFF_BALL_SCREEN.hi": 2.2,
+      "fitBand.POST_UP.lo": 0.3,
+      "fitBand.POST_UP.hi": 2.1,
+      "fitBand.HANDOFF.lo": 0.35,
+      "fitBand.HANDOFF.hi": 2,
+      "fitBand.ZONE_ATTACK.lo": 0.4,
+      "fitBand.ZONE_ATTACK.hi": 1.9,
+      "fitBand.CUT.lo": 0.4,
+      "fitBand.CUT.hi": 1.9,
+      "fitBand.ISOLATION.lo": 0.5,
+      "fitBand.ISOLATION.hi": 1.8,
+      "fitBand.PICK_AND_ROLL.lo": 0.55,
+      "fitBand.PICK_AND_ROLL.hi": 1.7,
+      "fitBand.TRANSITION.lo": 0.6,
+      "fitBand.TRANSITION.hi": 1.6,
+      "fitBand.GENERIC_HALF_COURT.lo": 0.75,
+      "fitBand.GENERIC_HALF_COURT.hi": 1.35,
+      "shotLocation.rimWeight": 0.34,
+      "shotLocation.postWeight": 0.42,
+      "shotLocation.midrangeWeight": 0.18,
+      "shotLocation.threeWeight": 0.22,
+      "shotLocation.rimBiasMultiplier": 1.6,
+      "shotLocation.perimeterBiasMultiplier": 1.5,
+      "conversion.rimBonus": 0.155,
+      "conversion.paintBonus": 0.015,
+      "conversion.midrangePenalty": -0.055,
+      "era.paceTempoScale": 1.35,
+      "era.paceBoundFraction": 0.14,
+      "era.threeAnchorMax": 12,
+      "era.freeThrowTripRate": 0.5,
+      "zone.highPostVulnerability": 1,
+      "zone.cornerVulnerability": 1,
+      "coach.actionMixInfluence": 1,
+      "coach.rosterSensitivity": 1,
+      "coach.offensiveAdjustmentMinEvents": 6,
+      "coach.defensiveAdjustmentMinEvents": 5,
+      "coach.offensiveAdjustmentCooldown": 30,
+      "coach.defensiveAdjustmentCooldown": 34,
+      "coach.adjustmentMagnitude": 0.06
+    },
+    "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+    "parameterSetStatus": "UNCALIBRATED_DEFAULTS",
+    "registryDefaultsHash": "210409189ebc1ff894bb90b8f0adb6ef2d06d6caac9fdcbe93e61d3521ed5940",
+    "activeParameterCount": 53,
+    "registryVersion": "2.0.0",
+    "runtimeBindingVersion": "1.0.0",
+    "engineVersions": {
+      "productionEngineVersion": "3.2.0",
+      "possessionEngineVersion": "1.1.0",
+      "actionLibraryVersion": "2.0.0",
+      "defensiveMatchupVersion": "1.1.0",
+      "zoneResolutionVersion": "1.0.0",
+      "coachAdjustmentVersion": "1.0.0",
+      "opportunityAllocationVersion": "1.0.0",
+      "monteCarloProbabilityVersion": "1.1.0",
+      "actualGameSymmetryVersion": "1.0.0"
+    },
+    "dataVersions": {
+      "historicalCorpusVersion": "3.0.0",
+      "historicalTargetSchemaVersion": "1.0.0",
+      "historicalTargetDataVersion": "3.0.0",
+      "tierBTargetDataVersion": "1.0.0",
+      "calibrationPlayerDataVersion": "1.0.0",
+      "playerDataVersion": "2026-08-24"
+    },
+    "candidateHistoryHash": "ed797623fa6477045f7bc39706ab130e2e685792b31dfd4009126d2583ea57e1",
+    "candidateSearchPolicyHash": "18ced230c601c725035791a699524b887bd6690d9a48c7e8721bf61d27e2e51a",
+    "candidateComparisonHash": "26c43d1864fd2668911c3f753e45cebedb6019d190bb4fb403cffcea0cb65df0",
+    "candidateStatusReconciliationHash": "935c55ed5f5008148df80cb1e57f8690564fc615e07ac27544df162480b8f1b5",
+    "probabilitySideBiasPolicyVersion": "2.0.0",
+    "probabilitySideBiasPolicyHash": "51005eccf853e9a609f8e7e2b1b026c89d90794e153c2adee95841fa6f3384a1",
+    "probabilitySideBiasSeedSetVersion": "2.0.0",
+    "probabilitySideBiasSeedSetHash": "648b82b5826ed4132c203fb181d87149cf5f2ed5eaf8f61dd1f67a52ed6c7346",
+    "probabilitySideBiasValidationHash": "be0e1ef7ad25f145bffb74a0d6e8875b4a75260436d7c8b96208c8695e7a2b36",
+    "priorFailingCellHash": "3525d79950dff9c33e7c0a9083a0e7621e356acbc9a75cb8e6944aecce275b6c",
+    "orientationAuditHash": "20f87543f79d06d019579368d97a908d7b4e697201954949c2f97297cc409849",
+    "probabilityValidationHash": "afe96ba41cb3aa98df2d66af69294bab29d2ccd7550ffd6ee81ec03a4a89ea5a",
+    "sideSymmetryValidationHash": "d45640d7efc07c8c68056606f1e96b5b19e907f8694086ba8a9e1f1ac3475183",
+    "internalValidationHash": "bdc1b5b898e5235c38a40fb8b7757bed3bbd3f74b5a97d840c3f41793c17ece7",
+    "competitionValidationHash": "bdc1b5b898e5235c38a40fb8b7757bed3bbd3f74b5a97d840c3f41793c17ece7",
+    "readinessHash": "0ed345d6892d50502a5139e57e5521e31ec2eb16264241d49a534949b7372c6d",
+    "objectiveVisibilityResolutionHash": "f764f904a1a197f6520270da3c375aa604f6d8a13a473de0c95c9cc723d2168c",
+    "targetedFixtureCoverageHash": "cf96f88ac046fffa335b72ea7be08245f43c307521358319c73445c3df5cd844",
+    "supersededV1GateArtifactHash": "2cd6e2a864c28783d89be8b8b71e13117cc1c5978cf176acf8f8e459a5c270bc",
+    "formalHoldoutHashes": {
+      "historicalHoldoutV3": "9e799c4bfc84eedf09c8f46b5a983dff0882e908404e6326cc1e8c874d6335fc",
+      "syntheticStressHoldoutV2": "71267875cbf69a9ffa2bd420a2f4bb87437ecb78d6ca2029e7b6826759dbcd19"
+    },
+    "formalHoldoutAccessCounts": {
+      "historicalHoldoutV3": 0,
+      "syntheticStressHoldoutV2": 0
+    },
+    "formalHoldoutState": {
+      "historicalHoldoutV3": "SEALED_UNREAD",
+      "syntheticStressHoldoutV2": "SEALED_UNREAD"
+    },
+    "unsupportedDomains": [
+      {
+        "class": "DEFAULT_FROZEN_PENDING_EXTERNAL_DATA",
+        "count": 9
+      }
+    ],
+    "unadjudicatedFrozenParameters": [
+      {
+        "id": "opportunity.mismatch.severe",
+        "defaultValue": 2.6,
+        "finalLockClassification": "DEFAULT_FROZEN_UNADJUDICATED",
+        "visibilityClass": "ADJUDICATED_BY_CONDITIONAL_MECHANICAL_TARGET",
+        "mechanicallyConsistent": true
+      },
+      {
+        "id": "zone.highPostVulnerability",
+        "defaultValue": 1,
+        "finalLockClassification": "DEFAULT_FROZEN_UNADJUDICATED",
+        "visibilityClass": "ADJUDICATED_BY_CONDITIONAL_MECHANICAL_TARGET",
+        "mechanicallyConsistent": true
+      },
+      {
+        "id": "zone.cornerVulnerability",
+        "defaultValue": 1,
+        "finalLockClassification": "DEFAULT_FROZEN_UNADJUDICATED",
+        "visibilityClass": "ADJUDICATED_BY_CONDITIONAL_MECHANICAL_TARGET",
+        "mechanicallyConsistent": true
+      }
+    ],
+    "readinessV4": {
+      "DEFAULT_FROZEN_TRUE_NO_EFFECT": 29,
+      "STRUCTURAL_CALIBRATION_ONLY": 4,
+      "STRONGLY_REGULARIZED_CALIBRATION": 4,
+      "DEFAULT_FROZEN_PENDING_EXTERNAL_DATA": 9,
+      "DEFAULT_FROZEN_CONFOUNDED": 2,
+      "DEFAULT_FROZEN_GUARDRAIL": 2,
+      "DEFAULT_FROZEN_UNADJUDICATED": 3
+    },
+    "scopeOfLock": {
+      "means": [
+        "Candidate 0 is immutable at this parameter set hash.",
+        "Candidate 0 is the strongest internally supported model: 84 on-grid alternatives were tested against an authorized historical target and none survived family-wise correction.",
+        "Every runtime parameter's mechanic was exercised and its activation counted.",
+        "Actual-game side symmetry passes at high power.",
+        "The corrected Monte Carlo side-bias gate passes on fresh, disjoint seeds.",
+        "Monte Carlo reliability is retained."
+      ],
+      "doesNotMean": [
+        "NOT fully historically calibrated.",
+        "NOT formal-holdout validated — both holdouts remain sealed and unread.",
+        "NOT private-preview validated.",
+        "NOT production ready and NOT active.",
+        "NOT legally or licensing cleared."
+      ]
+    },
+    "postLockMutationPolicy": "No parameter, policy, seed, candidate-history, validation, readiness, target or fixture change after this manifest. Any quantitative change requires a new possessionCalibrationVersion, a new parameterSetHash if parameters move, a new validation package, and a new holdout strategy if holdout evaluation has begun.",
+    "engineeringGates": [
+      {
+        "name": "allRequiredArtifactsPresent",
+        "pass": true,
+        "detail": "6 c6 + 7 c5 artifacts present"
+      },
+      {
+        "name": "everyArtifactVerifies",
+        "pass": true,
+        "detail": "13 artifacts, all with complete provenance and matching hashes (checked on `valid`, the field that exists — the 6C2C5 gate read `ok`, which does not)"
+      },
+      {
+        "name": "candidateStatusReconciled",
+        "pass": true,
+        "detail": "The 6C2C5 contradiction is recorded (2 invariant violations) and the current state is coherent."
+      },
+      {
+        "name": "candidateZeroSelected",
+        "pass": true,
+        "detail": "Winner C0; 84 on-grid candidates, 0 family-wise significant, 0 accepted."
+      },
+      {
+        "name": "zeroAcceptedParameterChanges",
+        "pass": true,
+        "detail": "acceptedCount 0"
+      },
+      {
+        "name": "everyValueIsTheRegistryDefault",
+        "pass": true,
+        "detail": "all 53 active parameters at their registry default, 0 overrides"
+      },
+      {
+        "name": "contenderDidNotHoldUpOnFreshSeeds",
+        "pass": true,
+        "detail": "Strongest contender retained -0.78431 of its gain on disjoint seeds; winner C0."
+      },
+      {
+        "name": "sideBiasPolicyFrozenBeforeResults",
+        "pass": true,
+        "detail": "policyHash 51005eccf853e9a6... matches the frozen module; declared frozen before any fresh result."
+      },
+      {
+        "name": "sideBiasPolicyUsedByTheValidation",
+        "pass": true,
+        "detail": "The validation ran under the same policy hash that was frozen and committed before it."
+      },
+      {
+        "name": "marginNotMovedAfterSeeingResults",
+        "pass": true,
+        "detail": "Per-cell margin is 0.05, the v1 value, against a v1 observation of 0.0781. Applied to the corrected paired scale, which is strictly stricter."
+      },
+      {
+        "name": "freshSeedsDisjointFromEveryPriorDomain",
+        "pass": true,
+        "detail": "16384 pairs in domain side-bias-v2, 16384 distinct, overlap {\"side-bias-v2|actual-game\":0,\"side-bias-v2|prediction\":0,\"side-bias-v2|probability-validation\":0}."
+      },
+      {
+        "name": "priorFailingCellIdentifiedFromArtifact",
+        "pass": true,
+        "detail": "sd2-balanced-lower-ovr vs sd2-movement-shooters: v1 point estimate -0.0781, corrected paired effect -0.1562, scale relationship verified."
+      },
+      {
+        "name": "orientationSemanticsAudited",
+        "pass": true,
+        "detail": "12 of 15 semantic checks pass; 3 defects found: complementRelabelsItsPerspective, standardErrorMatchesThePairedDesign, pairedObservationsNotTreatedAsIndependent."
+      },
+      {
+        "name": "auditClassificationDoesNotBlockLock",
+        "pass": true,
+        "detail": "classification SAMPLING_NOISE"
+      },
+      {
+        "name": "actualGameControlEquivalent",
+        "pass": true,
+        "detail": "10000 paired games on fresh seeds: delta -0.0102, CI [-0.02797, 0.00757]."
+      },
+      {
+        "name": "sideBiasV2GatePasses",
+        "pass": true,
+        "detail": "{\"EQUIVALENT\":44} over 44 cells, 722944 games."
+      },
+      {
+        "name": "everyCellEquivalent",
+        "pass": true,
+        "detail": "classifications {\"EQUIVALENT\":44}"
+      },
+      {
+        "name": "noCellMateriallyBiased",
+        "pass": true,
+        "detail": "MATERIALLY_BIASED count 0"
+      },
+      {
+        "name": "noCellInconclusive",
+        "pass": true,
+        "detail": "INCONCLUSIVE count 0"
+      },
+      {
+        "name": "aggregateSideBiasWithinMargin",
+        "pass": true,
+        "detail": "pooled delta -0.00185, CI [-0.00469, 0.001] against +/-0.01."
+      },
+      {
+        "name": "noSystematicStratum",
+        "pass": true,
+        "detail": "no era, kind, coach or perspective stratum shows a systematic same-direction effect"
+      },
+      {
+        "name": "sideBiasCellsReconcile",
+        "pass": true,
+        "detail": "{\"EQUIVALENT\":44} sums to 44"
+      },
+      {
+        "name": "objectiveInvisibleParametersResolved",
+        "pass": true,
+        "detail": "3 parameters unseen by the primary objective; 3 mechanically consistent; all frozen at default."
+      },
+      {
+        "name": "readinessAccountsForEveryParameterOnce",
+        "pass": true,
+        "detail": "readiness v4 sums to 53 against 53 active parameters"
+      },
+      {
+        "name": "noNewParameterSearchWasRun",
+        "pass": true,
+        "detail": "Values were measured at the registry minimum and maximum to establish DIRECTION. No value was scored against an objective, ranked, or selected. Every parameter remains at its registry default."
+      },
+      {
+        "name": "internalValidationPassed",
+        "pass": true,
+        "detail": "8560 games, invariants clean."
+      },
+      {
+        "name": "targetedActivationComplete",
+        "pass": true,
+        "detail": "53/53 contracts over 1915080 activated possessions."
+      },
+      {
+        "name": "zeroInvariantViolationsInSideBiasRun",
+        "pass": true,
+        "detail": "0 violations"
+      },
+      {
+        "name": "zeroTiesInSideBiasRun",
+        "pass": true,
+        "detail": "0 ties"
+      },
+      {
+        "name": "actualGameSideSymmetryPasses",
+        "pass": true,
+        "detail": "240000 paired games, gold win rate 0.4989, advantage -0.1108pp, all 10 gates pass."
+      },
+      {
+        "name": "sideSymmetrySampleSufficient",
+        "pass": true,
+        "detail": "240000 paired games against a 50,000 minimum"
+      },
+      {
+        "name": "probabilityReliabilitySuitePasses",
+        "pass": true,
+        "detail": "all 8 gates pass; Brier 0.2209, floor 0.2192, achievable-skill 0.9458, ECE 0.0145"
+      },
+      {
+        "name": "bothFormalHoldoutsSealedUnread",
+        "pass": true,
+        "detail": "historical holdout v3 (8 members) access 0; synthetic stress holdout v2 (16 members) access 0."
+      },
+      {
+        "name": "noSealedFixtureInTheSideBiasFamily",
+        "pass": true,
+        "detail": "none of 44 cells touches a sealed fixture"
+      },
+      {
+        "name": "productionEngineUnchanged",
+        "pass": true,
+        "detail": "engineVersion 3.2.0"
+      }
+    ],
+    "allEngineeringGatesPass": true,
+    "creationCommit": null,
+    "manifestHash": "4e0c814f0c5ddd32f6f5db9281908203a650e739ce95448ca27dc2ad858bc751"
+  },
+  "outputHash": "5b8582491ef0fdfdbbf7e8c824584affa297b62bfd8a74ec969ebf57993886c3"
+}

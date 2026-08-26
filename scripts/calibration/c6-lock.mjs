@@ -219,7 +219,9 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     },
     dataVersions: {
       historicalCorpusVersion: versionOf("historicalCorpusVersion"),
-      historicalTargetVersion: versionOf("historicalTargetVersion"),
+      historicalTargetSchemaVersion: versionOf("historicalTargetSchemaVersion"),
+      historicalTargetDataVersion: versionOf("historicalTargetDataVersion"),
+      tierBTargetDataVersion: versionOf("tierBTargetDataVersion"),
       calibrationPlayerDataVersion: versionOf("calibrationPlayerDataVersion"),
       playerDataVersion: versionOf("playerDataVersion"),
     },

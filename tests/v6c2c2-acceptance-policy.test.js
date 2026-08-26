@@ -61,8 +61,34 @@ describe("frozen acceptance policy", () => {
     }
   });
 
-  it("keeps possessionCalibrationVersion null until internal gates pass", () => {
-    expect(versionOf("possessionCalibrationVersion")).toBeNull();
+  // This asserted `null` from Phase 6C2C2 until Phase 6C2C6, when the internal
+  // gates actually passed and the baseline candidate was locked. The assertion
+  // is REPLACED rather than deleted, and the replacement is strictly stronger:
+  // `null` was one bit, whereas this requires a lock manifest, all its
+  // engineering gates passing, zero unresolved blockers, and — for a BASELINE
+  // lock — zero parameter changes. A future phase cannot set this version
+  // without producing all of that.
+  it("allows a non-null possessionCalibrationVersion only with a passing lock manifest", () => {
+    const v = versionOf("possessionCalibrationVersion");
+    const lockPath = "data/calibration/c6/baseline-candidate-lock.json";
+    if (v == null) {
+      // Still uncalibrated: nothing may claim a lock.
+      expect(existsSync(lockPath) && JSON.parse(readFileSync(lockPath, "utf8")).data.candidateLockStatus === "LOCKED").toBe(false);
+      return;
+    }
+    expect(existsSync(lockPath), "a non-null calibration version requires a lock manifest").toBe(true);
+    const m = JSON.parse(readFileSync(lockPath, "utf8")).data;
+    expect(m.candidateLockStatus).toBe("LOCKED");
+    expect(m.allEngineeringGatesPass).toBe(true);
+    expect(m.candidateLockBlockers).toEqual([]);
+    expect(m.possessionCalibrationVersion).toBe(v);
+    if (m.calibrationStatus === "DEVELOPMENT_LOCKED_BASELINE") expect(m.parameterChanges).toBe(0);
+    // And it must never claim more than a development lock in this lifecycle.
+    for (const forbidden of ["HOLDOUT_VALIDATED", "PRIVATE_PREVIEW_VALIDATED", "PRODUCTION_READY", "ACTIVE"]) {
+      expect(m.calibrationStatus).not.toBe(forbidden);
+    }
+    expect(m.formalHoldoutAccessCounts.historicalHoldoutV3).toBe(0);
+    expect(m.formalHoldoutAccessCounts.syntheticStressHoldoutV2).toBe(0);
   });
 
   it("provides the calibration lifecycle statuses without inventing a version bump", () => {

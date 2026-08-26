@@ -68,7 +68,7 @@ export const VERSION_STATUS = {
   /** A formal holdout rejected this parameter set. It may never be retuned against that holdout. */
   HOLDOUT_FAILED: "HOLDOUT_FAILED",
 };
-const { ACTIVE, DEVELOPMENT, PLANNED } = VERSION_STATUS;
+const { ACTIVE, DEVELOPMENT, PLANNED, DEVELOPMENT_LOCKED_BASELINE } = VERSION_STATUS;
 
 // `affectsResult` is separate from `status` on purpose. Chemistry is ACTIVE —
 // it ships, it is displayed, it has a real version — and it changes NOTHING
@@ -284,8 +284,24 @@ export const REGISTRY = {
   // measures the untuned baseline; Phase 6C2 performs the tuning that would
   // produce an approved calibration. Reporting a version here before then would
   // claim a calibration that has not happened.
-  possessionCalibrationVersion: entry(null, PLANNED,
-    "The approved calibration of the possession engine. Deliberately null until Phase 6C2 tunes and an approved calibration exists.", false),
+  // Phase 6C2C6 set this, and it is the ONLY thing in this phase that changes a
+  // version from null. It is gated on 35 engineering gates passing, recorded in
+  // data/calibration/c6/baseline-candidate-lock.json, and the status-consistency
+  // tests refuse a non-null value here without a lock manifest and zero blockers.
+  //
+  // 1.0.0 does NOT mean "tuned". The locked candidate is Candidate 0: every one
+  // of the 53 active parameters at its registry default, because 84 on-grid
+  // alternatives were tested against an authorized historical target and none
+  // survived family-wise correction. A calibration that concluded "the defaults
+  // are the best-supported values" is a calibration result, not the absence of
+  // one, and it earns a version so that later phases can refer to exactly this
+  // parameter set.
+  //
+  // DEVELOPMENT_LOCKED_BASELINE, not ACTIVE: internal gates passed, both formal
+  // holdouts remain sealed and unread, no private preview has run, and nothing
+  // here authorises production.
+  possessionCalibrationVersion: entry("1.0.0", DEVELOPMENT_LOCKED_BASELINE,
+    "The approved development calibration of the possession engine: Candidate 0, all 53 active parameters at registry defaults, parameterSetHash 83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309. Locked in Phase 6C2C6 after the corrected probability side-bias gate passed. NOT holdout validated, NOT preview validated, NOT production ready.", false),
 
   zoneResolutionVersion: entry("1.0.0", DEVELOPMENT,
     "Zone shells, area responsibilities, gap vulnerabilities and zone possession resolution. Its own domain because Phase 6B1 shipped ZONE_MIXED as a scheme LABEL that resolved through man code — a real zone path is a different system, not a bigger label. DEVELOPMENT, ZONE_RESOLUTION_ENABLED defaults to false."),

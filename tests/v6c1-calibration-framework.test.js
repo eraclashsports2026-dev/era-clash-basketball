@@ -18,6 +18,7 @@ import { requireHoldoutUnlock, sealStatus, HoldoutSealError } from "../src/v3/ca
 import { cacheKeys, namespaceOf, NAMESPACES } from "../api/_lib/cacheKeys.js";
 import { versionOf, statusOf, VERSION_STATUS } from "../src/versions.js";
 import { findCard } from "../src/players.js";
+import { assertCalibrationLockInvariant } from "./helpers/calibrationLockInvariant.js";
 
 describe("historical fixture corpus", () => {
   it("every fixture validates, with no fabricated values", () => {
@@ -352,13 +353,23 @@ describe("calibration versioning and cache identity", () => {
     }
   });
 
-  it("leaves the possession calibration PLANNED and null, because none exists yet", () => {
-    // The framework that MEASURES a calibration is not a calibration. A version
-    // value here would assert tuned coefficients exist, and they do not.
-    expect(statusOf("possessionCalibrationVersion")).toBe(VERSION_STATUS.PLANNED);
-    expect(versionOf("possessionCalibrationVersion")).toBeNull();
-    expect(() => cacheKeys.calibratedPossessionResult({ matchupFingerprint: "abc", simulationSeed: 1 }))
-      .toThrow(/PLANNED version domain "possessionCalibrationVersion"/);
+  // This asserted PLANNED and null until Phase 6C2C6 locked the baseline
+  // candidate. Replaced, not deleted, and the replacement is stronger: a
+  // non-null version must be backed by a manifest whose every gate passed.
+  it("permits a possession calibration version only when a lock manifest justifies it", () => {
+    const r = assertCalibrationLockInvariant();
+    if (!r.locked) {
+      expect(statusOf("possessionCalibrationVersion")).toBe(VERSION_STATUS.PLANNED);
+      expect(() => cacheKeys.calibratedPossessionResult({ matchupFingerprint: "abc", simulationSeed: 1 }))
+        .toThrow(/PLANNED version domain "possessionCalibrationVersion"/);
+      return;
+    }
+    // Once locked, the calibration MUST take part in the cache identity, so a
+    // stored result can never outlive the calibration that produced it.
+    const key = cacheKeys.calibratedPossessionResult({ matchupFingerprint: "abc", simulationSeed: 1 });
+    // Keys tag a version with dots replaced, so 1.0.0 appears as 1-0-0.
+    expect(key).toContain(r.version.replace(/\./g, "-"));
+    expect(statusOf("possessionCalibrationVersion")).toBe(VERSION_STATUS.DEVELOPMENT_LOCKED_BASELINE);
   });
 
   it("does not repurpose the production calibration domain", () => {

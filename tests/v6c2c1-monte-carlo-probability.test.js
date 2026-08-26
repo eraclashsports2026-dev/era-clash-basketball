@@ -7,6 +7,8 @@ import {
 import { buildPossessionInput } from "../src/v3/possession/testContext.js";
 import { domainSeed, MASTERS, seedSetFor, overlapBetween } from "../src/v3/calibration/seedDomains.js";
 import { THRESHOLDS } from "../scripts/calibration/probability-v3.mjs";
+import { assertCalibrationLockInvariant } from "./helpers/calibrationLockInvariant.js";
+import { versionOf } from "../src/versions.js";
 
 const A = { teamId: "A", playerIds: ["curry-10s", "klay-10s", "kawhi-10s", "draymond-10s", "jokic-10s"], coachId: "steve-kerr" };
 const B = { teamId: "B", playerIds: ["wall-2010s", "demar-2010s", "prince-00s", "ibaka-2010s", "drummond-2010s"], coachId: "tom-thibodeau" };
@@ -196,9 +198,16 @@ describe("probability cache key", () => {
     expect(k.length).toBeGreaterThan(80);
   });
 
-  it("states the uncalibrated status rather than omitting it", () => {
-    expect(activeVersionsFor().possessionCalibrationVersion).toBe("UNCALIBRATED");
-    expect(key()).toContain("UNCALIBRATED");
+  // This asserted the literal "UNCALIBRATED" until Phase 6C2C6 locked a
+  // calibration. The point was never that word — it was that the calibration
+  // state is STATED in the key rather than omitted, so a cached probability can
+  // never outlive the calibration behind it. That is what is asserted now, in
+  // both directions.
+  it("states the calibration state in the key rather than omitting it", () => {
+    const v = versionOf("possessionCalibrationVersion");
+    const stated = activeVersionsFor().possessionCalibrationVersion;
+    expect(stated).toBe(v ?? "UNCALIBRATED");
+    expect(key()).toContain(String(stated).replace(/\./g, "-"));
   });
 
   it("separates sample tiers and sample counts", () => {

@@ -162,3 +162,169 @@ describe("status vocabulary", () => {
     for (const i of STATUS_INVARIANTS) expect(typeof i.check).toBe("function");
   });
 });
+
+// ── Lock gates and package (appended: they depend on artifacts produced later
+// in the phase, and belong with the status invariants they enforce) ──────────
+describe("baseline candidate lock", () => {
+  it("verifies as an artifact", () => {
+    const v = verifyArtifact("baseline-candidate-lock", ARTIFACT_DIR_C6);
+    expect(v.missingProvenance).toEqual([]);
+    expect(v.valid).toBe(true);
+  });
+
+  it("locks Candidate 0 with zero parameter changes", () => {
+    const d = C6("baseline-candidate-lock").data;
+    expect(d.candidateId).toBe("Candidate 0");
+    expect(d.candidateSelectionStatus).toBe("SELECTED");
+    expect(d.candidateLockStatus).toBe("LOCKED");
+    expect(d.calibrationStatus).toBe("DEVELOPMENT_LOCKED_BASELINE");
+    expect(d.parameterChanges).toBe(0);
+    expect(d.candidateLockBlockers).toEqual([]);
+  });
+
+  it("is internally coherent under the status invariants", () => {
+    const d = C6("baseline-candidate-lock").data;
+    expect(evaluateStatus({
+      candidateId: d.candidateId, candidateSelectionStatus: d.candidateSelectionStatus,
+      candidateLockStatus: d.candidateLockStatus, calibrationStatus: d.calibrationStatus,
+      possessionCalibrationVersion: d.possessionCalibrationVersion,
+      parameterChanges: d.parameterChanges, candidateLockBlockers: d.candidateLockBlockers,
+      lockManifestPresent: true,
+    }).coherent).toBe(true);
+  });
+
+  it("agrees with the registry on the calibration version", () => {
+    const d = C6("baseline-candidate-lock").data;
+    expect(d.possessionCalibrationVersion).toBe(versionOf("possessionCalibrationVersion"));
+    expect(d.possessionCalibrationVersion).toBe("1.0.0");
+  });
+
+  it("holds every active parameter at its registry default", () => {
+    const d = C6("baseline-candidate-lock").data;
+    const def = defaultRuntimeParameterSet();
+    expect(d.parameterSetHash).toBe(def.parameterSetHash);
+    for (const p of activeParameters()) expect(d.parameterValues[p.id]).toBe(p.defaultValue);
+    expect(d.activeParameterCount).toBe(activeParameters().length);
+  });
+
+  it("passes every engineering gate", () => {
+    const d = C6("baseline-candidate-lock").data;
+    expect(d.allEngineeringGatesPass).toBe(true);
+    for (const g of d.engineeringGates) expect(g.pass, `${g.name}: ${g.detail}`).toBe(true);
+    expect(d.engineeringGates.length).toBeGreaterThanOrEqual(30);
+  });
+
+  it("content-addresses every input", () => {
+    const d = C6("baseline-candidate-lock").data;
+    for (const k of ["candidateHistoryHash", "candidateComparisonHash", "candidateStatusReconciliationHash",
+      "probabilitySideBiasPolicyHash", "probabilitySideBiasSeedSetHash", "probabilitySideBiasValidationHash",
+      "priorFailingCellHash", "orientationAuditHash", "probabilityValidationHash", "sideSymmetryValidationHash",
+      "internalValidationHash", "readinessHash", "objectiveVisibilityResolutionHash", "manifestHash"]) {
+      expect(d[k], `${k} must be present`).toBeTruthy();
+      expect(String(d[k]).length).toBeGreaterThanOrEqual(32);
+    }
+  });
+
+  it("keeps production untouched and both holdouts sealed", () => {
+    const d = C6("baseline-candidate-lock").data;
+    expect(d.engineVersions.productionEngineVersion).toBe("3.2.0");
+    expect(d.formalHoldoutAccessCounts.historicalHoldoutV3).toBe(0);
+    expect(d.formalHoldoutAccessCounts.syntheticStressHoldoutV2).toBe(0);
+    expect(d.formalHoldoutState.historicalHoldoutV3).toBe("SEALED_UNREAD");
+    expect(d.formalHoldoutState.syntheticStressHoldoutV2).toBe("SEALED_UNREAD");
+  });
+
+  it("refuses to overclaim", () => {
+    const d = C6("baseline-candidate-lock").data;
+    const text = d.scopeOfLock.doesNotMean.join(" ");
+    for (const s of ["holdout validated", "preview validated", "production ready"]) {
+      expect(text.toLowerCase()).toContain(s.toLowerCase());
+    }
+    for (const forbidden of ["HOLDOUT_VALIDATED", "PRIVATE_PREVIEW_VALIDATED", "PRODUCTION_READY", "ACTIVE"]) {
+      expect(d.calibrationStatus).not.toBe(forbidden);
+    }
+  });
+
+  it("declares a post-lock mutation policy", () => {
+    expect(C6("baseline-candidate-lock").data.postLockMutationPolicy).toMatch(/new possessionCalibrationVersion/);
+  });
+
+  it("records the phase-start state as well as the current one", () => {
+    const d = C6("candidate-status-reconciliation").data;
+    expect(d.phaseStartState.candidateLockStatus).toBe("UNLOCKED");
+    expect(d.phaseStartState.possessionCalibrationVersion).toBeNull();
+    expect(d.phaseStartBlockers).toContain("PROBABILITY_SIDE_BIAS_GATE_UNRESOLVED");
+    expect(d.phaseStartCoherent).toBe(true);
+    expect(d.blockerResolved).toBe(true);
+    expect(d.truthfulCurrentState.candidateLockStatus).toBe("LOCKED");
+  });
+});
+
+describe("internal regression under the locked candidate", () => {
+  it("verifies and passes", () => {
+    expect(verifyArtifact("c6-internal-regression", ARTIFACT_DIR_C6).valid).toBe(true);
+    expect(C6("c6-internal-regression").data.allPass).toBe(true);
+  });
+
+  it("replays identically, and the locked candidate equals the legacy result", () => {
+    const s = C6("c6-internal-regression").data.sections.find((x) => x.name === "replay");
+    for (const c of s.cases) expect(c.identical, c.label).toBe(true);
+    expect(s.lockedMatchesLegacy).toBe(true);
+    expect(s.probabilityReplayIdentical).toBe(true);
+    expect(s.complementExact).toBe(true);
+    expect(s.complementRelabels).toBe(true);
+    expect(s.estimatorReportsPairedUncertainty).toBe(true);
+  });
+
+  it("runs every competition mode with no violations and one parameter set", () => {
+    const s = C6("c6-internal-regression").data.sections.find((x) => x.name === "competitionModes");
+    expect(s.totalInvariantViolations).toBe(0);
+    expect(s.oneParameterSetPerCompetition).toBe(true);
+    const names = s.modes.map((m) => m.mode);
+    for (const m of ["Single Game", "Best of 7", "Win 82", "Tournament", "Daily (development)"]) expect(names).toContain(m);
+    expect(s.modes.find((m) => m.mode === "Best of 7").series).toBeGreaterThanOrEqual(200);
+    expect(s.modes.find((m) => m.mode === "Win 82").seasons).toBeGreaterThanOrEqual(50);
+    expect(s.modes.find((m) => m.mode === "Tournament").brackets).toBeGreaterThanOrEqual(20);
+  });
+
+  it("has zero final ties and zero impossible scores", () => {
+    const s = C6("c6-internal-regression").data.sections.find((x) => x.name === "statisticalInvariants");
+    expect(s.finalTies).toBe(0);
+    expect(s.impossibleScores).toBe(0);
+  });
+});
+
+describe("Phase 6C3 package is prepared and not run", () => {
+  it("verifies and names the locked candidate", () => {
+    expect(verifyArtifact("phase-6c3-validation-package", ARTIFACT_DIR_C6).valid).toBe(true);
+    const d = C6("phase-6c3-validation-package").data;
+    expect(d.state).toBe("PREPARED_NOT_RUN");
+    expect(d.lockedCandidate.lockManifestHash).toBe(C6("baseline-candidate-lock").data.manifestHash);
+    expect(d.lockedCandidate.parameterSetHash).toBe(defaultRuntimeParameterSet().parameterSetHash);
+  });
+
+  it("has executed zero holdout commands", () => {
+    const d = C6("phase-6c3-validation-package").data;
+    expect(d.holdoutCommandsExecuted).toBe(0);
+    for (const c of d.commandsPrepared) expect(c.executed).toBe(0);
+    for (const h of Object.values(d.holdouts)) {
+      expect(h.state).toBe("SEALED_UNREAD");
+      expect(h.comparisonAccessCount).toBe(0);
+    }
+  });
+
+  it("states its unmet preconditions rather than claiming readiness", () => {
+    const d = C6("phase-6c3-validation-package").data;
+    expect(d.preconditionsUnmet).toBeGreaterThan(0);
+    expect(d.readyToRun).toBe(false);
+    expect(d.unmetPreconditions.length).toBe(d.preconditionsUnmet);
+    expect(d.readinessNote).toMatch(/opened ONCE|opened once/i);
+  });
+
+  it("declines to claim holdout or preview validation", () => {
+    const t = C6("phase-6c3-validation-package").data.notClaimed.join(" ");
+    expect(t).toMatch(/have NOT been opened/);
+    expect(t).toMatch(/No private preview/);
+    expect(t).toMatch(/does not authorise production|Nothing here authorises production/);
+  });
+});
