@@ -298,10 +298,16 @@ describe("holdout seals", () => {
     expect(all["legacy-holdout-v1"].note).toMatch(/LEGACY_MIXED_HOLDOUT/);
   });
 
-  it("reports all three seal states together", () => {
+  it("reports every seal state together, including sets added after this phase", () => {
     const all = allSealStatuses();
-    expect(Object.keys(all)).toHaveLength(3);
-    for (const v of Object.values(all)) expect(v.accessCount).toBe(0);
+    // Phase 6C2C1 added historical-holdout-v3 and synthetic-stress-holdout-v2.
+    // This asserts the v2 seals are still reported rather than a fixed count,
+    // so a later phase adding a holdout does not break the check that matters.
+    for (const id of ["legacy-holdout-v1", "historical-holdout-v2", "synthetic-stress-v1"]) {
+      expect(Object.keys(all)).toContain(id);
+    }
+    expect(Object.keys(all).length).toBeGreaterThanOrEqual(3);
+    for (const [id, v] of Object.entries(all)) expect(v.accessCount, `${id} has been accessed`).toBe(0);
   });
 });
 

@@ -401,148 +401,151 @@ const runDiagnostics = (pool) => {
 };
 
 // ── main ────────────────────────────────────────────────────────────────────
-const cmd = process.argv[2] ?? "run";
-const arg = process.argv[3];
-mkdirSync(OUT_DIR, { recursive: true });
-const write = (name, payload) => {
-  const path = `${OUT_DIR}/${name}.json`;
-  writeFileSync(path, JSON.stringify(payload, null, 2) + "\n");
-  console.log(`\nwrote ${path}`);
-};
-const strip = (r) => { const { games, playerSample, predictions, ...rest } = r; return rest; };
+// Guarded: importing this module for a helper must never run a command.
+if (import.meta.url === `file://${process.argv[1]}`) {
+  const cmd = process.argv[2] ?? "run";
+  const arg = process.argv[3];
+  mkdirSync(OUT_DIR, { recursive: true });
+  const write = (name, payload) => {
+    const path = `${OUT_DIR}/${name}.json`;
+    writeFileSync(path, JSON.stringify(payload, null, 2) + "\n");
+    console.log(`\nwrote ${path}`);
+  };
+  const strip = (r) => { const { games, playerSample, predictions, ...rest } = r; return rest; };
 
-if (cmd === "run" || cmd === "holdout") {
-  const isHoldout = cmd === "holdout";
-  if (isHoldout) {
-    requireHoldoutUnlock({ reason: process.env.HOLDOUT_REASON ?? "manual calibration:holdout invocation", actor: process.env.USER ?? "unknown" });
-    console.log("⚠  HOLDOUT UNSEALED. This access is logged. Never tune on what you see here.\n");
-  }
-  const pool = isHoldout ? holdoutFixtures() : calibrationFixtures();
-  const manifest = buildManifest(isHoldout ? "holdout" : "calibration");
-  console.log(`${isHoldout ? "HOLDOUT" : "CALIBRATION"} SET — ${pool.length} fixtures · ${SIMS} sims each · manifest ${manifest.manifestHash.slice(0, 12)}`);
-  console.log(`engine possession-1.1 UNTUNED — this is a measurement, not a validation\n`);
-  const rows = [];
-  for (const f of pool) {
-    const opp = opponentFor(f, pool);
-    const run = runFixture(f, opp, { purpose: isHoldout ? "HOLDOUT" : "CALIBRATION" });
-    const cmpres = compare(f, run);
-    rows.push({ ...cmpres, run: strip(run) });
-    const avail = cmpres.errors.filter((e) => e.available).length;
-    console.log(`${f.fixtureId.padEnd(34)} ${String(f.sourceConfidence).padEnd(6)} pace ${String(run.dist.pace.mean).padStart(5)}  ORtg ${String(run.dist.offensiveRating.mean).padStart(5)}  eFG ${String(run.dist.efgPct.mean).padStart(5)}  targets ${avail}/${COMPARED.length}  ${avail ? `MAE ${cmpres.summary.mae}` : "NO_TARGETS"}`);
-  }
-  const roll = confidenceRollup(rows);
-  console.log(`\nweighted MAE: ${roll.weightedMae ?? "n/a — no numeric targets available"}`);
-  for (const [k, v] of Object.entries(roll.byConfidence)) console.log(`  ${k.padEnd(7)} n=${v.n} mae=${v.mae ?? "n/a"} rmse=${v.rmse ?? "n/a"} withinBand=${v.withinBandRate ?? "n/a"}`);
-  const unavailable = rows.flatMap((r) => r.errors).filter((e) => !e.available).length;
-  console.log(`\nunavailable comparisons: ${unavailable}/${rows.length * COMPARED.length} — targets blocked at source, NOT filled in`);
-  write(isHoldout ? "holdout-run" : "calibration-run", { manifest, sims: SIMS, rows, rollup: roll, seal: sealStatus() });
-} else if (cmd === "fixture") {
-  const f = fixtureById(arg);
-  if (!f) { console.error(`unknown fixture "${arg}"`); process.exit(1); }
-  const pool = FIXTURES;
-  const run = runFixture(f, opponentFor(f, pool), { sims: SIMS });
-  console.log(`${f.fixtureId} · ${f.eraStyleId} · ${f.coachId} · ${f.sourceConfidence} · vs ${run.opponentId}\n`);
-  for (const [k, q] of Object.entries(run.dist)) console.log(`  ${k.padEnd(24)} mean ${String(q.mean).padStart(7)}  median ${String(q.median).padStart(7)}  [p05 ${q.p05} .. p95 ${q.p95}]  sd ${q.sd}`);
-  console.log(`\n  winRate ${run.winRate}  otRate ${run.otRate}`);
-  console.log(`  action mix: ${Object.entries(run.style.share).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k} ${v}`).join("  ")}`);
-  console.log(`\n  targets:`);
-  for (const e of compare(f, run).errors) console.log(`    ${e.metric.padEnd(22)} ${e.available ? `target ${e.target}  sim ${e.simulatedMean}  abs ${e.absoluteError}  z ${e.standardizedError}  withinBand ${e.withinBand}` : `— ${e.reason}`}`);
-} else if (cmd === "era") {
-  const eras = arg ? [arg] : ERAS_COVERED;
-  const out = [];
-  for (const e of eras) {
-    const r = runEra(e, calibrationFixtures());
-    if (!r) { console.log(`${e}: fewer than 2 calibration fixtures — skipped`); continue; }
-    out.push(r);
-    console.log(`\n${e}  (${r.fixtures} fixtures)`);
-    console.log(`  pace       env ${String(r.environmentBaseline.pace ?? "—").padStart(6)}   sim ${String(r.simulated.pace.mean).padStart(6)}   Δ ${r.environmentDeviation.pace ?? "—"}`);
-    console.log(`  fg%        env ${String(r.environmentBaseline.fgPct ?? "—").padStart(6)}   sim ${String(r.simulated.fieldGoalPct.mean).padStart(6)}   Δ ${r.environmentDeviation.fieldGoalPct ?? "—"}`);
-    console.log(`  3pa        env ${String(r.environmentBaseline.tpaPerGame ?? "—").padStart(6)}   sim ${String(r.simulated.threePointAttempts.mean).padStart(6)}   Δ ${r.environmentDeviation.threePointAttempts ?? "—"}`);
-    console.log(`  ortg                     sim ${String(r.simulated.offensiveRating.mean).padStart(6)}`);
-  }
-  write("era-environment", { eras: out });
-} else if (cmd === "zone") {
-  const z = runZoneControlled(calibrationFixtures());
-  console.log(`CONTROLLED ZONE COMPARISON — ${z.design}\n`);
-  for (const r of z.rows) {
-    const status = !r.zoneLegalInEra ? "era-forbids  " : r.shellSelected ? "shell-selected" : "coach-declines";
-    console.log(`${r.eraStyleId}  ${r.fixtureId.padEnd(30)} ${status} shell ${(r.shellsUsed.join("/") || "—").padEnd(11)} heldBy ${r.shellHeldBy.padEnd(9)} zoneShare ${String(r.zoneShare).padEnd(7)} on ${r.zoneOn.winRate.toFixed(3)}  off ${r.zoneOff.winRate.toFixed(3)}  Δwin ${String(r.winRateDelta).padStart(7)}  ΔORtg ${String(r.ortgDelta).padStart(6)}  ΔDRtg ${String(r.drtgDelta).padStart(6)}`);
-  }
-  const forbidden = z.rows.filter((r) => !r.zoneLegalInEra);
-  const declined = z.rows.filter((r) => r.zoneLegalInEra && !r.shellSelected);
-  const active = z.rows.filter((r) => r.shellSelected);
-  const mean = (rs) => (rs.length ? Math.round((rs.reduce((a, r) => a + r.winRateDelta, 0) / rs.length) * 1000) / 1000 : "n/a");
-  console.log(`\nera forbids zone      (${forbidden.length}): mean Δwin ${mean(forbidden)} — must be exactly 0, and is`);
-  console.log(`era allows, coach declines (${declined.length}): mean Δwin ${mean(declined)} — also 0, but for a coach reason, not a rules reason`);
-  console.log(`shell actually selected (${active.length}): mean Δwin ${mean(active)}, mean ΔORtg ${active.length ? Math.round((active.reduce((a, r) => a + r.ortgDelta, 0) / active.length) * 10) / 10 : "n/a"}`);
-  console.log(`\nzone-capable coaches in the corpus are scarce, so the measured zone effect rests on ${active.length} matchup(s). That is a corpus limitation, reported rather than papered over.`);
-  for (const r of active) {
-    const facing = r.shellHeldBy === "opponent";
-    console.log(`\n${r.fixtureId}: the shell is held by the ${r.shellHeldBy}. Δwin ${r.winRateDelta} and ΔORtg ${r.ortgDelta} describe the ${facing ? "team ATTACKING the zone" : "team PLAYING the zone"}.`);
-    if (facing && r.winRateDelta > 0) console.log(`  So enabling zone made the zone-PLAYING side lose ${Math.abs(r.winRateDelta)} more often. Zone is a net negative here — the opposite of the earlier selection-biased 67.5% reading.`);
-  }
-  write("zone-controlled", z);
-} else if (cmd === "coaches") {
-  const c = runCoachIdentity(calibrationFixtures());
-  console.log("COACH ACTION IDENTITY\n");
-  for (const r of c.rows) console.log(`${r.coachId.padEnd(20)} ${Object.entries(r.meanShare).filter(([, v]) => v > 0.01).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k} ${v}`).join("  ")}`);
-  console.log("\nspread across coaches (range = max − min):");
-  for (const [fam, s] of Object.entries(c.spread).sort((a, b) => b[1].range - a[1].range)) console.log(`  ${fam.padEnd(22)} min ${s.min}  max ${s.max}  range ${s.range}`);
-  write("coach-identity", c);
-} else if (cmd === "shooting-hierarchy") {
-  console.log("SHOOTING HIERARCHY — measured from curated shooting tiers\n");
-  const tiers = runShootingTiers();
-  for (const e of tiers) {
-    if (!e.testable) { console.log(`${e.eraStyleId}: NOT TESTABLE — ${e.reason}`); continue; }
-    console.log(`${e.eraStyleId}:`);
-    for (const r of e.rows.sort((a, b) => b.efg - a.efg)) console.log(`   ${r.group.padEnd(8)} eFG ${r.efg}  TS ${r.ts}  3PAr ${r.tpar}   ${r.cards.join(", ")}`);
-    console.log(`   elite > average: ${e.eliteAboveAverage ?? "n/a"}   average > weak: ${e.averageAboveWeak ?? "n/a"}   full ordering: ${e.fullOrderingHolds ?? "n/a"}`);
-  }
-  const testable = tiers.filter((t) => t.testable);
-  const held = testable.filter((t) => t.fullOrderingHolds === true).length;
-  const broke = testable.filter((t) => t.fullOrderingHolds === false).length;
-  console.log(`\nfull ordering holds in ${held}/${testable.length} testable eras, breaks in ${broke}, ${tiers.length - testable.length} eras lack curated coverage`);
-  console.log("\n— secondary view: corpus fixture types —\n");
-  const h = runShootingHierarchy(calibrationFixtures());
-  for (const e of h) {
-    console.log(`${e.eraStyleId}:`);
-    for (const r of e.ranked) console.log(`   ${r.fixtureId.padEnd(32)} ${String(r.type).padEnd(16)} eFG ${r.efg}  TS ${r.ts}`);
-    console.log(`   ordering elite-offense above elite-defense: ${e.orderingHolds ?? "not testable in this era"}`);
-  }
-  write("shooting-hierarchy", { byShootingTier: tiers, byFixtureType: h });
-} else if (cmd === "diagnostics") {
-  const d = runDiagnostics(calibrationFixtures());
-  console.log(`ADJUSTMENT BASELINE — ${d.games} games\n`);
-  const a = d.adjustments;
-  console.log(`  adjustments per game: mean ${a.perGame.mean}  median ${a.perGame.median}  p95 ${a.perGame.p95}  max ${a.perGame.max}`);
-  console.log(`  games with zero adjustments: ${a.zeroAdjustmentGameRate}`);
-  console.log(`\n  offensive triggers (a single dominant row would mean the ladder collapsed to one response):`);
-  for (const [k, v] of Object.entries(a.offenseTriggers)) console.log(`    ${k.padEnd(52)} ${v}`);
-  console.log(`\n  defensive triggers:`);
-  const dt = Object.entries(a.defensiveTriggers);
-  if (!dt.length) console.log(`    none recorded — the defensive change log is not surfaced on this path`);
-  for (const [k, v] of dt) console.log(`    ${k.padEnd(52)} ${v}`);
+  if (cmd === "run" || cmd === "holdout") {
+    const isHoldout = cmd === "holdout";
+    if (isHoldout) {
+      requireHoldoutUnlock({ reason: process.env.HOLDOUT_REASON ?? "manual calibration:holdout invocation", actor: process.env.USER ?? "unknown" });
+      console.log("⚠  HOLDOUT UNSEALED. This access is logged. Never tune on what you see here.\n");
+    }
+    const pool = isHoldout ? holdoutFixtures() : calibrationFixtures();
+    const manifest = buildManifest(isHoldout ? "holdout" : "calibration");
+    console.log(`${isHoldout ? "HOLDOUT" : "CALIBRATION"} SET — ${pool.length} fixtures · ${SIMS} sims each · manifest ${manifest.manifestHash.slice(0, 12)}`);
+    console.log(`engine possession-1.1 UNTUNED — this is a measurement, not a validation\n`);
+    const rows = [];
+    for (const f of pool) {
+      const opp = opponentFor(f, pool);
+      const run = runFixture(f, opp, { purpose: isHoldout ? "HOLDOUT" : "CALIBRATION" });
+      const cmpres = compare(f, run);
+      rows.push({ ...cmpres, run: strip(run) });
+      const avail = cmpres.errors.filter((e) => e.available).length;
+      console.log(`${f.fixtureId.padEnd(34)} ${String(f.sourceConfidence).padEnd(6)} pace ${String(run.dist.pace.mean).padStart(5)}  ORtg ${String(run.dist.offensiveRating.mean).padStart(5)}  eFG ${String(run.dist.efgPct.mean).padStart(5)}  targets ${avail}/${COMPARED.length}  ${avail ? `MAE ${cmpres.summary.mae}` : "NO_TARGETS"}`);
+    }
+    const roll = confidenceRollup(rows);
+    console.log(`\nweighted MAE: ${roll.weightedMae ?? "n/a — no numeric targets available"}`);
+    for (const [k, v] of Object.entries(roll.byConfidence)) console.log(`  ${k.padEnd(7)} n=${v.n} mae=${v.mae ?? "n/a"} rmse=${v.rmse ?? "n/a"} withinBand=${v.withinBandRate ?? "n/a"}`);
+    const unavailable = rows.flatMap((r) => r.errors).filter((e) => !e.available).length;
+    console.log(`\nunavailable comparisons: ${unavailable}/${rows.length * COMPARED.length} — targets blocked at source, NOT filled in`);
+    write(isHoldout ? "holdout-run" : "calibration-run", { manifest, sims: SIMS, rows, rollup: roll, seal: sealStatus() });
+  } else if (cmd === "fixture") {
+    const f = fixtureById(arg);
+    if (!f) { console.error(`unknown fixture "${arg}"`); process.exit(1); }
+    const pool = FIXTURES;
+    const run = runFixture(f, opponentFor(f, pool), { sims: SIMS });
+    console.log(`${f.fixtureId} · ${f.eraStyleId} · ${f.coachId} · ${f.sourceConfidence} · vs ${run.opponentId}\n`);
+    for (const [k, q] of Object.entries(run.dist)) console.log(`  ${k.padEnd(24)} mean ${String(q.mean).padStart(7)}  median ${String(q.median).padStart(7)}  [p05 ${q.p05} .. p95 ${q.p95}]  sd ${q.sd}`);
+    console.log(`\n  winRate ${run.winRate}  otRate ${run.otRate}`);
+    console.log(`  action mix: ${Object.entries(run.style.share).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k} ${v}`).join("  ")}`);
+    console.log(`\n  targets:`);
+    for (const e of compare(f, run).errors) console.log(`    ${e.metric.padEnd(22)} ${e.available ? `target ${e.target}  sim ${e.simulatedMean}  abs ${e.absoluteError}  z ${e.standardizedError}  withinBand ${e.withinBand}` : `— ${e.reason}`}`);
+  } else if (cmd === "era") {
+    const eras = arg ? [arg] : ERAS_COVERED;
+    const out = [];
+    for (const e of eras) {
+      const r = runEra(e, calibrationFixtures());
+      if (!r) { console.log(`${e}: fewer than 2 calibration fixtures — skipped`); continue; }
+      out.push(r);
+      console.log(`\n${e}  (${r.fixtures} fixtures)`);
+      console.log(`  pace       env ${String(r.environmentBaseline.pace ?? "—").padStart(6)}   sim ${String(r.simulated.pace.mean).padStart(6)}   Δ ${r.environmentDeviation.pace ?? "—"}`);
+      console.log(`  fg%        env ${String(r.environmentBaseline.fgPct ?? "—").padStart(6)}   sim ${String(r.simulated.fieldGoalPct.mean).padStart(6)}   Δ ${r.environmentDeviation.fieldGoalPct ?? "—"}`);
+      console.log(`  3pa        env ${String(r.environmentBaseline.tpaPerGame ?? "—").padStart(6)}   sim ${String(r.simulated.threePointAttempts.mean).padStart(6)}   Δ ${r.environmentDeviation.threePointAttempts ?? "—"}`);
+      console.log(`  ortg                     sim ${String(r.simulated.offensiveRating.mean).padStart(6)}`);
+    }
+    write("era-environment", { eras: out });
+  } else if (cmd === "zone") {
+    const z = runZoneControlled(calibrationFixtures());
+    console.log(`CONTROLLED ZONE COMPARISON — ${z.design}\n`);
+    for (const r of z.rows) {
+      const status = !r.zoneLegalInEra ? "era-forbids  " : r.shellSelected ? "shell-selected" : "coach-declines";
+      console.log(`${r.eraStyleId}  ${r.fixtureId.padEnd(30)} ${status} shell ${(r.shellsUsed.join("/") || "—").padEnd(11)} heldBy ${r.shellHeldBy.padEnd(9)} zoneShare ${String(r.zoneShare).padEnd(7)} on ${r.zoneOn.winRate.toFixed(3)}  off ${r.zoneOff.winRate.toFixed(3)}  Δwin ${String(r.winRateDelta).padStart(7)}  ΔORtg ${String(r.ortgDelta).padStart(6)}  ΔDRtg ${String(r.drtgDelta).padStart(6)}`);
+    }
+    const forbidden = z.rows.filter((r) => !r.zoneLegalInEra);
+    const declined = z.rows.filter((r) => r.zoneLegalInEra && !r.shellSelected);
+    const active = z.rows.filter((r) => r.shellSelected);
+    const mean = (rs) => (rs.length ? Math.round((rs.reduce((a, r) => a + r.winRateDelta, 0) / rs.length) * 1000) / 1000 : "n/a");
+    console.log(`\nera forbids zone      (${forbidden.length}): mean Δwin ${mean(forbidden)} — must be exactly 0, and is`);
+    console.log(`era allows, coach declines (${declined.length}): mean Δwin ${mean(declined)} — also 0, but for a coach reason, not a rules reason`);
+    console.log(`shell actually selected (${active.length}): mean Δwin ${mean(active)}, mean ΔORtg ${active.length ? Math.round((active.reduce((a, r) => a + r.ortgDelta, 0) / active.length) * 10) / 10 : "n/a"}`);
+    console.log(`\nzone-capable coaches in the corpus are scarce, so the measured zone effect rests on ${active.length} matchup(s). That is a corpus limitation, reported rather than papered over.`);
+    for (const r of active) {
+      const facing = r.shellHeldBy === "opponent";
+      console.log(`\n${r.fixtureId}: the shell is held by the ${r.shellHeldBy}. Δwin ${r.winRateDelta} and ΔORtg ${r.ortgDelta} describe the ${facing ? "team ATTACKING the zone" : "team PLAYING the zone"}.`);
+      if (facing && r.winRateDelta > 0) console.log(`  So enabling zone made the zone-PLAYING side lose ${Math.abs(r.winRateDelta)} more often. Zone is a net negative here — the opposite of the earlier selection-biased 67.5% reading.`);
+    }
+    write("zone-controlled", z);
+  } else if (cmd === "coaches") {
+    const c = runCoachIdentity(calibrationFixtures());
+    console.log("COACH ACTION IDENTITY\n");
+    for (const r of c.rows) console.log(`${r.coachId.padEnd(20)} ${Object.entries(r.meanShare).filter(([, v]) => v > 0.01).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k} ${v}`).join("  ")}`);
+    console.log("\nspread across coaches (range = max − min):");
+    for (const [fam, s] of Object.entries(c.spread).sort((a, b) => b[1].range - a[1].range)) console.log(`  ${fam.padEnd(22)} min ${s.min}  max ${s.max}  range ${s.range}`);
+    write("coach-identity", c);
+  } else if (cmd === "shooting-hierarchy") {
+    console.log("SHOOTING HIERARCHY — measured from curated shooting tiers\n");
+    const tiers = runShootingTiers();
+    for (const e of tiers) {
+      if (!e.testable) { console.log(`${e.eraStyleId}: NOT TESTABLE — ${e.reason}`); continue; }
+      console.log(`${e.eraStyleId}:`);
+      for (const r of e.rows.sort((a, b) => b.efg - a.efg)) console.log(`   ${r.group.padEnd(8)} eFG ${r.efg}  TS ${r.ts}  3PAr ${r.tpar}   ${r.cards.join(", ")}`);
+      console.log(`   elite > average: ${e.eliteAboveAverage ?? "n/a"}   average > weak: ${e.averageAboveWeak ?? "n/a"}   full ordering: ${e.fullOrderingHolds ?? "n/a"}`);
+    }
+    const testable = tiers.filter((t) => t.testable);
+    const held = testable.filter((t) => t.fullOrderingHolds === true).length;
+    const broke = testable.filter((t) => t.fullOrderingHolds === false).length;
+    console.log(`\nfull ordering holds in ${held}/${testable.length} testable eras, breaks in ${broke}, ${tiers.length - testable.length} eras lack curated coverage`);
+    console.log("\n— secondary view: corpus fixture types —\n");
+    const h = runShootingHierarchy(calibrationFixtures());
+    for (const e of h) {
+      console.log(`${e.eraStyleId}:`);
+      for (const r of e.ranked) console.log(`   ${r.fixtureId.padEnd(32)} ${String(r.type).padEnd(16)} eFG ${r.efg}  TS ${r.ts}`);
+      console.log(`   ordering elite-offense above elite-defense: ${e.orderingHolds ?? "not testable in this era"}`);
+    }
+    write("shooting-hierarchy", { byShootingTier: tiers, byFixtureType: h });
+  } else if (cmd === "diagnostics") {
+    const d = runDiagnostics(calibrationFixtures());
+    console.log(`ADJUSTMENT BASELINE — ${d.games} games\n`);
+    const a = d.adjustments;
+    console.log(`  adjustments per game: mean ${a.perGame.mean}  median ${a.perGame.median}  p95 ${a.perGame.p95}  max ${a.perGame.max}`);
+    console.log(`  games with zero adjustments: ${a.zeroAdjustmentGameRate}`);
+    console.log(`\n  offensive triggers (a single dominant row would mean the ladder collapsed to one response):`);
+    for (const [k, v] of Object.entries(a.offenseTriggers)) console.log(`    ${k.padEnd(52)} ${v}`);
+    console.log(`\n  defensive triggers:`);
+    const dt = Object.entries(a.defensiveTriggers);
+    if (!dt.length) console.log(`    none recorded — the defensive change log is not surfaced on this path`);
+    for (const [k, v] of dt) console.log(`    ${k.padEnd(52)} ${v}`);
 
-  const u = d.usageConcentration;
-  console.log(`\n\nUSAGE CONCENTRATION\n`);
-  console.log(`  leading option's share of team FGA: mean ${u.topShotShare.mean}  median ${u.topShotShare.median}  p95 ${u.topShotShare.p95}  max ${u.topShotShare.max}`);
-  console.log(`  leading option's share of team PTS: mean ${u.topPointShare.mean}  median ${u.topPointShare.median}  p95 ${u.topPointShare.p95}  max ${u.topPointShare.max}`);
-  console.log(`  an even split across five would be ${u.evenSplitShare}\n`);
-  console.log(`  most concentrated fixtures:`);
-  for (const r of u.worstFixtures) console.log(`    ${r.fixtureId.padEnd(32)} ${String(r.meanTopShotShare).padStart(6)}  ${r.topName}`);
+    const u = d.usageConcentration;
+    console.log(`\n\nUSAGE CONCENTRATION\n`);
+    console.log(`  leading option's share of team FGA: mean ${u.topShotShare.mean}  median ${u.topShotShare.median}  p95 ${u.topShotShare.p95}  max ${u.topShotShare.max}`);
+    console.log(`  leading option's share of team PTS: mean ${u.topPointShare.mean}  median ${u.topPointShare.median}  p95 ${u.topPointShare.p95}  max ${u.topPointShare.max}`);
+    console.log(`  an even split across five would be ${u.evenSplitShare}\n`);
+    console.log(`  most concentrated fixtures:`);
+    for (const r of u.worstFixtures) console.log(`    ${r.fixtureId.padEnd(32)} ${String(r.meanTopShotShare).padStart(6)}  ${r.topName}`);
 
-  console.log(`\n\nPLAYER STATISTICAL CEILINGS AND FLOORS — ${d.extremes.length} cards\n`);
-  const byMax = [...d.extremes].sort((x, y) => y.pts.max - x.pts.max);
-  console.log(`  highest single-game point ceilings:`);
-  for (const r of byMax.slice(0, 10)) console.log(`    ${r.name.padEnd(22)} max ${String(r.pts.max).padStart(3)}  p95 ${String(r.pts.p95).padStart(3)}  mean ${String(r.pts.mean).padStart(5)}  min ${String(r.pts.min).padStart(3)}  (n=${r.appearances})`);
-  console.log(`\n  lowest floors among cards averaging 15+ (a star should have a floor, not a zero):`);
-  for (const r of d.extremes.filter((x) => x.pts.mean >= 15).sort((x, y) => x.pts.min - y.pts.min).slice(0, 8)) console.log(`    ${r.name.padEnd(22)} min ${String(r.pts.min).padStart(3)}  p05 ${String(r.pts.p05).padStart(3)}  mean ${String(r.pts.mean).padStart(5)}  max ${String(r.pts.max).padStart(3)}`);
-  console.log(`\n  widest rebound ceilings:`);
-  for (const r of [...d.extremes].sort((x, y) => y.reb.max - x.reb.max).slice(0, 6)) console.log(`    ${r.name.padEnd(22)} reb max ${String(r.reb.max).padStart(3)}  mean ${String(r.reb.mean).padStart(5)}`);
-  console.log(`\n  widest assist ceilings:`);
-  for (const r of [...d.extremes].sort((x, y) => y.ast.max - x.ast.max).slice(0, 6)) console.log(`    ${r.name.padEnd(22)} ast max ${String(r.ast.max).padStart(3)}  mean ${String(r.ast.mean).padStart(5)}`);
-  write("diagnostics", d);
-} else {
-  console.error(`unknown command "${cmd}"`);
-  process.exit(1);
+    console.log(`\n\nPLAYER STATISTICAL CEILINGS AND FLOORS — ${d.extremes.length} cards\n`);
+    const byMax = [...d.extremes].sort((x, y) => y.pts.max - x.pts.max);
+    console.log(`  highest single-game point ceilings:`);
+    for (const r of byMax.slice(0, 10)) console.log(`    ${r.name.padEnd(22)} max ${String(r.pts.max).padStart(3)}  p95 ${String(r.pts.p95).padStart(3)}  mean ${String(r.pts.mean).padStart(5)}  min ${String(r.pts.min).padStart(3)}  (n=${r.appearances})`);
+    console.log(`\n  lowest floors among cards averaging 15+ (a star should have a floor, not a zero):`);
+    for (const r of d.extremes.filter((x) => x.pts.mean >= 15).sort((x, y) => x.pts.min - y.pts.min).slice(0, 8)) console.log(`    ${r.name.padEnd(22)} min ${String(r.pts.min).padStart(3)}  p05 ${String(r.pts.p05).padStart(3)}  mean ${String(r.pts.mean).padStart(5)}  max ${String(r.pts.max).padStart(3)}`);
+    console.log(`\n  widest rebound ceilings:`);
+    for (const r of [...d.extremes].sort((x, y) => y.reb.max - x.reb.max).slice(0, 6)) console.log(`    ${r.name.padEnd(22)} reb max ${String(r.reb.max).padStart(3)}  mean ${String(r.reb.mean).padStart(5)}`);
+    console.log(`\n  widest assist ceilings:`);
+    for (const r of [...d.extremes].sort((x, y) => y.ast.max - x.ast.max).slice(0, 6)) console.log(`    ${r.name.padEnd(22)} ast max ${String(r.ast.max).padStart(3)}  mean ${String(r.ast.mean).padStart(5)}`);
+    write("diagnostics", d);
+  } else {
+    console.error(`unknown command "${cmd}"`);
+    process.exit(1);
+  }
 }
