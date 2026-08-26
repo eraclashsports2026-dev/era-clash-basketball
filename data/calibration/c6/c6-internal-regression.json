@@ -1,0 +1,115 @@
+{
+  "artifact": "c6-internal-regression",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run calibration:c6:regression",
+  "generatedAt": "2026-08-26T17:59:53.303Z",
+  "gitCommit": "bdd1f2af996b57eb05472092831bc7fd1a59c3bb",
+  "branch": "phase-6c2c6-probability-side-bias-lock",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "candidate": "Candidate 0",
+    "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+    "parameterSetStatus": "UNCALIBRATED_DEFAULTS",
+    "activeParameterCount": 53,
+    "monteCarloProbabilityVersion": "1.1.0",
+    "sections": [
+      {
+        "name": "replay",
+        "cases": [
+          {
+            "label": "legacy development (no set)",
+            "identical": true,
+            "gold": 116,
+            "blue": 120,
+            "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+            "parameterSetStatus": "UNCALIBRATED_DEFAULTS"
+          },
+          {
+            "label": "explicit defaults",
+            "identical": true,
+            "gold": 116,
+            "blue": 120,
+            "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+            "parameterSetStatus": "UNCALIBRATED_DEFAULTS"
+          },
+          {
+            "label": "locked baseline candidate",
+            "identical": true,
+            "gold": 116,
+            "blue": 120,
+            "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+            "parameterSetStatus": "UNCALIBRATED_DEFAULTS"
+          },
+          {
+            "label": "compiled default overrides {}",
+            "identical": true,
+            "gold": 116,
+            "blue": 120,
+            "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+            "parameterSetStatus": "UNCALIBRATED_DEFAULTS"
+          }
+        ],
+        "lockedMatchesLegacy": true,
+        "probabilityReplayIdentical": true,
+        "complementExact": true,
+        "complementRelabels": true,
+        "estimatorReportsPairedUncertainty": true,
+        "allPass": true
+      },
+      {
+        "name": "competitionModes",
+        "modes": [
+          {
+            "mode": "Single Game",
+            "games": 400,
+            "invariantViolations": 0
+          },
+          {
+            "mode": "Best of 7",
+            "games": 997,
+            "invariantViolations": 0,
+            "series": 210,
+            "lengths": "{\"4\":123,\"5\":38,\"6\":28,\"7\":21}"
+          },
+          {
+            "mode": "Win 82",
+            "games": 4264,
+            "invariantViolations": 0,
+            "seasons": 52,
+            "meanWins": 43.04
+          },
+          {
+            "mode": "Tournament",
+            "games": 154,
+            "invariantViolations": 0,
+            "brackets": 22
+          },
+          {
+            "mode": "Daily (development)",
+            "games": 60,
+            "invariantViolations": 0,
+            "days": 60
+          }
+        ],
+        "totalGames": 5875,
+        "totalInvariantViolations": 0,
+        "oneParameterSetPerCompetition": true,
+        "allPass": true
+      },
+      {
+        "name": "statisticalInvariants",
+        "gamesAsserted": 1200,
+        "finalTies": 0,
+        "impossibleScores": 0,
+        "allPass": true
+      }
+    ],
+    "allPass": true,
+    "totalGamesSimulated": 7087
+  },
+  "outputHash": "0ce0ec495dbd90fbc4e1e1f99a07e2b381b2669e1cc3efe229156ff3fce28580"
+}
