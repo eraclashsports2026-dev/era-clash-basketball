@@ -127,8 +127,8 @@ export const REGISTRY = {
   syntheticStressSetVersion: entry("1.0.0", DEVELOPMENT,
     "The synthetic stress holdout: archetypes, cross-era constructions and exploit tests. Validates structure and balance, never historical accuracy.", false),
 
-  calibrationParameterRegistryVersion: entry("1.0.0", DEVELOPMENT,
-    "The single registry every tunable coefficient must live in. A tuned value outside it is invisible to the parameter history, which is how a model becomes untraceable.", false),
+  calibrationParameterRegistryVersion: entry("2.0.0", DEVELOPMENT,
+    "The single registry every tunable coefficient must live in. A tuned value outside it is invisible to the parameter history, which is how a model becomes untraceable. v2 (Phase 6C2C3) is a STRUCTURAL change, not a calibration change: two entries were reclassified as derived, three were split or corrected to the values the engine actually runs, and every entry gained a registryClass. The prior snapshot and hash are preserved in data/calibration/registry-v1-snapshot.json.", false),
 
   calibrationObjectiveVersion: entry("2.0.0", DEVELOPMENT,
     "The objective function and its acceptance rules. Bumped whenever a weight or threshold changes, so a result can never be attributed to the wrong objective. v2 (Phase 6C2C2) adds separately-reported components for zone behaviour, coach identity, adjustment behaviour and probability reliability, and refuses to collapse them into one opaque score.", false),

@@ -21,6 +21,7 @@ import { FAMILY_REGISTRY, FAMILY_CAPS, postMismatchFor, speedMismatchFor, chaseM
 import { selectForOpportunity } from "../actions/opportunityAllocation.js";
 import { perimeterSelectionWeight } from "../data/shooting.js";
 import { attackZone } from "../defense/zone.js";
+import { noteParameterRead, traceEnabled } from "../calibration/runtimeParameters.js";
 
 const clamp = (x, lo, hi) => Math.min(hi, Math.max(lo, x));
 const r2 = (x) => Math.round(x * 100) / 100;
@@ -63,7 +64,7 @@ export const PNR_FREQUENCY_FLOOR = 0.06;
  * rest simply because it has more fields, and the remainder falls to
  * GENERIC_HALF_COURT, which stays a truthful fallback.
  */
-export const expandedActionMix = ({ offense, defense, eff, state, defPlan, zoneShell, inTransition = false }) => {
+export const expandedActionMix = ({ offense, defense, eff, state, defPlan, zoneShell, inTransition = false, params = null }) => {
   if (inTransition) return { TRANSITION: 1 };
   // Against a zone, the offence attacks the zone rather than running man
   // actions at it. Zone-attack takes most of the possession share, and the
@@ -80,11 +81,19 @@ export const expandedActionMix = ({ offense, defense, eff, state, defPlan, zoneS
     };
   }
 
-  const ctx = { offense, defense, eff, state, defPlan };
+  // params rides on the family context so each family's weight() can scale its
+  // coach and roster terms without every family signature changing.
+  const ctx = { offense, defense, eff, state, defPlan, params };
   const mix = {};
   // PnR keeps its existing model, unchanged.
-  const rosterSupport = clamp((offense.offense.shotCreation * 0.5 + offense.offense.postPlay * 0.2 + offense.offense.spacing * 0.3) / 10, 0.15, 1);
-  mix.PICK_AND_ROLL = r2(clamp((offense.pnrPref / 10) * 0.62 * rosterSupport + 0.05, PNR_FREQUENCY_FLOOR, FAMILY_CAPS.PICK_AND_ROLL));
+  const coachScale = params ? params.get.coach.actionMixInfluence : 1;
+  const rosterScale = params ? params.get.coach.rosterSensitivity : 1;
+  if (params && traceEnabled()) {
+    noteParameterRead("coach.actionMixInfluence", coachScale);
+    noteParameterRead("coach.rosterSensitivity", rosterScale);
+  }
+  const rosterSupport = clamp((offense.offense.shotCreation * 0.5 + offense.offense.postPlay * 0.2 + offense.offense.spacing * 0.3) / 10 * rosterScale, 0.15, 1);
+  mix.PICK_AND_ROLL = r2(clamp((offense.pnrPref / 10) * 0.62 * coachScale * rosterSupport + 0.05, PNR_FREQUENCY_FLOOR, FAMILY_CAPS.PICK_AND_ROLL));
 
   for (const [key, fam] of Object.entries(FAMILY_REGISTRY)) {
     mix[key] = fam.canSelect(ctx) ? r2(fam.weight(ctx)) : 0;
@@ -120,13 +129,13 @@ export const actionMix = (offense, defense, eff, { inTransition = false } = {}) 
 };
 
 /** Pick the action for this possession. Deterministic given the rng. */
-export const selectAction = ({ offense, defense, eff, state, rng, inTransition, defPlan, zoneShell, expanded = false, overrideMix = null }) => {
+export const selectAction = ({ offense, defense, eff, state, rng, inTransition, defPlan, zoneShell, expanded = false, overrideMix = null, params = null }) => {
   if (expanded) {
     // A coach adjustment supplies an already-adjusted mix. Transition still
     // overrides everything, because a live-ball break is not a called play.
     const mix = inTransition
-      ? expandedActionMix({ offense, defense, eff, state, defPlan, zoneShell, inTransition })
-      : (overrideMix ?? expandedActionMix({ offense, defense, eff, state, defPlan, zoneShell, inTransition }));
+      ? expandedActionMix({ offense, defense, eff, state, defPlan, zoneShell, inTransition, params })
+      : (overrideMix ?? expandedActionMix({ offense, defense, eff, state, defPlan, zoneShell, inTransition, params }));
     const keys = Object.keys(mix).filter((k) => mix[k] > 0);
     const urgency = state?.lateGameUrgency ?? 0;
     const type = rng.weighted(keys, (k) => {
@@ -163,7 +172,7 @@ export const pickShooter = (offense, rng, { state, preferCreator = 0, alloc = nu
   if (alloc) {
     return selectForOpportunity({
       players: offense.players, family, dimension: "shotAttempt",
-      targets: alloc.targets.shotAttempt, ledger: alloc.ledger, rng,
+      targets: alloc.targets.shotAttempt, ledger: alloc.ledger, rng, params: alloc.params,
       state: { ...(state ?? {}), lateGameUrgency: urgency },
     }).player;
   }
@@ -404,7 +413,7 @@ const resolveTransition = ({ offense, defense, eff, state, rng, defState, defPla
 const resolvePickAndRoll = ({ offense, defense, eff, state, rng, eraStyleId, defState, defPlan, alloc }) => {
   const handler = alloc
     ? selectForOpportunity({ players: offense.players, family: "PICK_AND_ROLL", dimension: "creation",
-        targets: alloc.targets.creation, ledger: alloc.ledger, rng, state }).player
+        targets: alloc.targets.creation, ledger: alloc.ledger, rng, state, params: alloc.params }).player
     : rng.weighted(offense.players, (p) => p.usageShare * (p.creationTier === "PRIMARY" ? 2.4 : p.creationTier === "SECONDARY" ? 1.3 : 0.5) * (0.4 + p.selfCreation * 0.09));
   const screener = rng.weighted(
     offense.players.filter((p) => p.index !== handler.index),
@@ -743,7 +752,7 @@ const resolveFamily = (family, { offense, defense, eff, state, rng, defState, de
 // primary defender in the man sense — the gap is what matters.
 const resolveZoneAttack = ({ offense, defense, eff, state, rng, defPlan, zoneShell, alloc }) => {
   const threats = defPlan?.threats ?? [];
-  const atk = attackZone({ zoneShell, offense, threats, rng });
+  const atk = attackZone({ zoneShell, offense, threats, rng, params: alloc?.params ?? null });
   const GAP_TO_ACTION = {
     HIGH_POST: "HIGH_POST_ENTRY", CORNER: "CORNER_SPOT_UP", SHORT_CORNER: "SHORT_CORNER",
     SKIP_PASS: "SKIP_PASS", BASELINE: "BASELINE_CUT", LOW_POST: "ZONE_POST_SEAL",
@@ -767,12 +776,12 @@ const resolveZoneAttack = ({ offense, defense, eff, state, rng, defPlan, zoneShe
   // the shot; the plan decides how often each player is involved.
   const shooter = alloc
     ? selectForOpportunity({ players: offense.players, family: "ZONE_ATTACK", dimension: "shotAttempt",
-        targets: alloc.targets.shotAttempt, ledger: alloc.ledger, rng, state,
+        targets: alloc.targets.shotAttempt, ledger: alloc.ledger, rng, state, params: alloc.params,
         coachBiasFor: (p) => clamp(weightFor(p) / 2, 0.25, 2.6) }).player
     : rng.weighted(offense.players, weightFor);
   const passer = alloc
     ? selectForOpportunity({ players: offense.players, family: "ZONE_ATTACK", dimension: "passing",
-        targets: alloc.targets.passing, ledger: alloc.ledger, rng, state, exclude: [shooter.index] }).player
+        targets: alloc.targets.passing, ledger: alloc.ledger, rng, state, exclude: [shooter.index], params: alloc.params }).player
     : rng.weighted(offense.players.filter((p) => p.index !== shooter.index), (p) => 0.3 + p.passing * 0.6);
   const rimBias = { HIGH_POST: 0.05, CORNER: -0.8, SHORT_CORNER: 0.3, SKIP_PASS: -0.7, BASELINE: 0.65, LOW_POST: 0.6, ZONE_OVERLOAD: -0.4, TOP: -0.45 }[atk.gap] ?? 0;
 

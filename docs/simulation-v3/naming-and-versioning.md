@@ -37,7 +37,7 @@
 | Historical corpus | `historicalCorpusVersion` | **3.0.0** | DEVELOPMENT (does **not** affect results) |
 | Historical holdout set | `historicalHoldoutSetVersion` | **3.0.0** | DEVELOPMENT (does **not** affect results) |
 | Synthetic stress set | `syntheticStressSetVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
-| Calibration parameter registry | `calibrationParameterRegistryVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Calibration parameter registry | `calibrationParameterRegistryVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |
 | Calibration objective | `calibrationObjectiveVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |
 | Probability validation | `probabilityValidationVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Actual-game side symmetry | `actualGameSymmetryVersion` | **1.0.0** | DEVELOPMENT (**affects results**) |

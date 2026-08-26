@@ -12,6 +12,7 @@
 // Bounded on purpose. Three base shells plus two evidence-gated specials — not
 // every zone in basketball history.
 import { versionOf } from "../../versions.js";
+import { noteParameterRead, traceEnabled } from "../calibration/runtimeParameters.js";
 
 const clamp = (x, lo, hi) => Math.min(hi, Math.max(lo, x));
 const r1 = (x) => Math.round(x * 10) / 10;
@@ -250,7 +251,21 @@ export const buildZoneShell = ({ shellKey, defenders, threats, toolkit, legality
  * Which gap the offence attacks this possession, and how well the zone gets
  * there. Deterministic given the rng.
  */
-export const attackZone = ({ zoneShell, offense, threats, rng }) => {
+export const attackZone = ({ zoneShell, offense, threats, rng, params = null }) => {
+  // Per-gap exposure scalars. The shell tables hold the base vulnerabilities;
+  // these say how much a shell's high post and corners may be exploited
+  // relative to them. Applied at EVERY site that reads a gap value — the
+  // selection weight, the rotation-closure probability and the reported
+  // vulnerability — because scaling one and not the others would make the
+  // weight and the closeout disagree about the same gap.
+  const gapScale = params
+    ? { HIGH_POST: params.get.zone.highPostVulnerability, CORNER: params.get.zone.cornerVulnerability }
+    : null;
+  if (gapScale && traceEnabled()) {
+    noteParameterRead("zone.highPostVulnerability", gapScale.HIGH_POST);
+    noteParameterRead("zone.cornerVulnerability", gapScale.CORNER);
+  }
+  const scaled = (k, v) => (gapScale && gapScale[k] !== undefined ? v * gapScale[k] : v);
   const gaps = zoneShell.gapVulnerabilities;
   // Weighted by how vulnerable the gap is AND whether the offence can use it.
   const capability = {
@@ -263,14 +278,14 @@ export const attackZone = ({ zoneShell, offense, threats, rng }) => {
     ZONE_OVERLOAD: offense.offense.passing * 0.6 + offense.offense.spacing * 0.4,
     TOP: Math.max(...threats.map((t) => t.threats.pullUpShooting)),
   };
-  const gap = rng.weighted(Object.keys(gaps), (k) => (gaps[k] ?? 0.2) * clamp((capability[k] ?? 5) / 10, 0.05, 1) * 10);
+  const gap = rng.weighted(Object.keys(gaps), (k) => scaled(k, gaps[k] ?? 0.2) * clamp((capability[k] ?? 5) / 10, 0.05, 1) * 10);
 
   // Did the rotation arrive? Better rotation closes the gap; a hard gap in a
   // vulnerable shell does not close.
-  const closed = rng.chance(clamp(zoneShell.rotationRules.quality * 0.075 - (gaps[gap] ?? 0.5) * 0.35 + 0.42, 0.08, 0.82));
+  const closed = rng.chance(clamp(zoneShell.rotationRules.quality * 0.075 - scaled(gap, gaps[gap] ?? 0.5) * 0.35 + 0.42, 0.08, 0.82));
   return {
     gap,
-    gapVulnerability: gaps[gap] ?? 0.5,
+    gapVulnerability: scaled(gap, gaps[gap] ?? 0.5),
     offensiveCapability: r1(capability[gap] ?? 5),
     rotationClosed: closed,
     closeoutQuality: r1(clamp(zoneShell.rotationRules.closeoutSpeed * (closed ? 1 : 0.45), 0, 10)),

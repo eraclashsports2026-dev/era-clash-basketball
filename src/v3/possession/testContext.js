@@ -37,9 +37,12 @@ export const buildPossessionInput = ({
   // before/after comparison for this phase depends on being able to run the
   // same seeds with allocation off.
   opportunityAllocation = true,
+  // A compiled runtime parameter set, or an overrides object, or null for defaults.
+  parameterSet = null,
 }) => ({
   simulationId, simulationSeed, mode, eraStyleId, defensiveMatchups, zoneResolution, expandedActions, offensiveAdjustments,
   opportunityAllocation,
+  parameterSet,
   gold: buildTeamInput(goldIds, coachGoldId),
   blue: buildTeamInput(blueIds, coachBlueId),
 });

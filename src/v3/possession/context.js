@@ -18,6 +18,7 @@ import { buildDefensivePlans } from "../defense/plan.js";
 import { NEUTRAL_COACH, getCoach } from "../coaches.js";
 import { buildOpportunityProfile, normaliseTargets, createOpportunityLedger, OPPORTUNITY_ALLOCATION_VERSION } from "../actions/opportunityAllocation.js";
 import { perimeterSkillScore, threeVolumeFactor } from "../data/shooting.js";
+import { resolveParameterSet, noteParameterRead, traceEnabled } from "../calibration/runtimeParameters.js";
 
 const r2 = (x) => Math.round(x * 100) / 100;
 const r3 = (x) => Math.round(x * 1000) / 1000;
@@ -66,7 +67,14 @@ export const validatePossessionInput = (input) => {
 // cards. A pre-three-point era zeroes the three-point weight at selection time,
 // not here, so outside SKILL is retained structurally even when the SHOT is not
 // available (see PART 17).
-const shotProfileFor = (p) => {
+const shotProfileFor = (p, params) => {
+  const sl = params.get.shotLocation;
+  if (traceEnabled()) {
+    noteParameterRead("shotLocation.rimWeight", sl.rimWeight);
+    noteParameterRead("shotLocation.postWeight", sl.postWeight);
+    noteParameterRead("shotLocation.midrangeWeight", sl.midrangeWeight);
+    noteParameterRead("shotLocation.threeWeight", sl.threeWeight);
+  }
   const o = p.offense || {};
   const sh = p.shooting || {};
   const rim = num(o.rimThreat, 5);
@@ -75,10 +83,13 @@ const shotProfileFor = (p) => {
   const vol = threeVolumeFactor(sh.threeVolume);
 
   const weights = {
-    RIM: 1.0 + rim * 0.34,
-    PAINT_OR_POST: 0.5 + post * 0.42,
-    MIDRANGE: 1.4 + perim * 0.18 + (sh.identity === "MIDRANGE_CREATOR" ? 1.6 : 0),
-    THREE_POINT: (0.4 + perim * 0.22) * vol,
+    RIM: 1.0 + rim * sl.rimWeight,
+    PAINT_OR_POST: 0.5 + post * sl.postWeight,
+    // The 1.6 here is the MIDRANGE_CREATOR identity bump, NOT
+    // shotLocation.rimBiasMultiplier, which shares the value 1.6 and lives in
+    // game.js. Two different coefficients that happen to be equal.
+    MIDRANGE: 1.4 + perim * sl.midrangeWeight + (sh.identity === "MIDRANGE_CREATOR" ? 1.6 : 0),
+    THREE_POINT: (0.4 + perim * sl.threeWeight) * vol,
   };
   const total = Object.values(weights).reduce((a, b) => a + b, 0);
   const profile = {};
@@ -114,7 +125,7 @@ const shootingSkillFor = (p) => {
 export const ftPctFor = (skill, eraFtBaseline) => clamp(eraFtBaseline + (skill - 5) * 0.031, 0.42, 0.93);
 
 // ── Team preparation ─────────────────────────────────────────────────────────
-const prepareTeam = (side, team, eff, era) => {
+const prepareTeam = (side, team, eff, era, params) => {
   const cards = team.playerCards;
   const profiles = team.playerIntelligence;
   const ti = team.teamIntelligence;
@@ -157,7 +168,7 @@ const prepareTeam = (side, team, eff, era) => {
       // Consistency governs how wide tonight's form can swing. It is a
       // basketball property, not a data-quality property.
       consistency: clamp(4 + num(p.offense?.shotSelection, 5) * 0.35 + num(p.offense?.ballSecurity, 5) * 0.25, 2, 9.5),
-      shotProfile: shotProfileFor(p),
+      shotProfile: shotProfileFor(p, params),
       skill: shootingSkillFor(p),
       defense: {
         perimeter: num(p.defense?.perimeterContainment, 5),
@@ -265,21 +276,35 @@ export const transitionVulnerability = (team, eff) =>
  */
 export const preparePossessionContext = (input) => {
   validatePossessionInput(input);
+  // Compiled once per simulation. The engine reads every registered coefficient
+  // from here rather than from module constants, so a candidate set travels with
+  // the matchup instead of being installed anywhere global.
+  const params = resolveParameterSet(input.parameterSet ?? null);
   const era = getEra(input.eraStyleId);
   const eff = strategicEffects(era);
   const envir = era.environment || {};
 
-  const gold = prepareTeam("gold", input.gold, eff, era);
-  const blue = prepareTeam("blue", input.blue, eff, era);
+  const gold = prepareTeam("gold", input.gold, eff, era, params);
+  const blue = prepareTeam("blue", input.blue, eff, era, params);
   gold.transitionVulnerability = transitionVulnerability(gold, eff);
   blue.transitionVulnerability = transitionVulnerability(blue, eff);
 
   // Expected pace: the era's documented possessions-per-48 moved by both
   // coaches' tempo. Bounded — a coach cannot invent a tempo the era's rules
   // and conditions never produced.
+  if (traceEnabled()) {
+    noteParameterRead("era.paceTempoScale", params.get.era.paceTempoScale);
+    noteParameterRead("era.paceBoundFraction", params.get.era.paceBoundFraction);
+    noteParameterRead("era.threeAnchorMax", params.get.era.threeAnchorMax);
+    noteParameterRead("era.freeThrowTripRate", params.get.era.freeThrowTripRate);
+  }
   const basePace = num(envir.pace, 96);
-  const tempoPush = ((gold.tempo + blue.tempo) / 2 - 5) * 1.35;
-  const expectedPace = r2(clamp(basePace + tempoPush, basePace * 0.86, basePace * 1.14));
+  const tempoPush = ((gold.tempo + blue.tempo) / 2 - 5) * params.get.era.paceTempoScale;
+  // The bound is ONE parameter expressed as two literals: the old code held
+  // 0.86 and 1.14, i.e. 1 - 0.14 and 1 + 0.14. Replacing only the upper bound
+  // would silently make the band asymmetric.
+  const paceBound = params.get.era.paceBoundFraction;
+  const expectedPace = r2(clamp(basePace + tempoPush, basePace * (1 - paceBound), basePace * (1 + paceBound)));
 
   // ── Pregame efficiency baseline (PART 30) ──────────────────────────────────
   // Stored BEFORE the game and never rewritten after seeing the winner.
@@ -335,14 +360,16 @@ export const preparePossessionContext = (input) => {
     const natural = clamp(team.players.reduce((a, p) => a + p.usageShare * p.shotProfile.THREE_POINT, 0), 0.02, 0.95);
     const t = clamp(targetThreeShare, 0.001, 0.95);
     const odds = (x) => x / (1 - x);
-    return r3(clamp(odds(t) / odds(natural), 0.05, 12));
+    return r3(clamp(odds(t) / odds(natural), 0.05, params.get.era.threeAnchorMax));
   };
   gold.threeWeightScale = anchorThreeScale(gold);
   blue.threeWeightScale = anchorThreeScale(blue);
 
   // Free-throw environment, likewise documented. A foul trip is ~2 attempts,
   // so the target trip rate follows from the era's FTA per game.
-  const targetFtTripRate = clamp(num(envir.ftaPerGame, 24) / 2 / expectedPace, 0.04, 0.34);
+  // The old divisor 2 is this parameter read as foul trips per attempt:
+  // fta / 2 / pace is identical to fta * 0.5 / pace.
+  const targetFtTripRate = clamp(num(envir.ftaPerGame, 24) * params.get.era.freeThrowTripRate / expectedPace, 0.04, 0.34);
 
   // ── Defensive plans (Phase 6B1) ────────────────────────────────────────────
   // Built HERE, in the prepared context, because a plan is preparation rather
@@ -374,6 +401,10 @@ export const preparePossessionContext = (input) => {
       targets: Object.fromEntries(["shotAttempt", "touch", "creation", "passing", "offBall", "finishing"]
         .map((d) => [d, normaliseTargets(profiles, d)])),
       ledger: createOpportunityLedger(team.players.map((p) => p.cardId)),
+      // Riding on the allocator means every selectForOpportunity call site
+      // already has the parameter set in scope, with no intermediate signature
+      // needing to know it exists.
+      params,
     };
   };
   const allocators = allocationEnabled ? { gold: buildAllocator(gold), blue: buildAllocator(blue) } : null;
@@ -384,6 +415,14 @@ export const preparePossessionContext = (input) => {
     mode: input.mode ?? "single",
     eraStyleId: era.id,
     era, eff,
+    // The compiled parameter set travels with the prepared context, so every
+    // downstream module reads the same immutable set and a candidate cannot
+    // leak between simulations through anything global.
+    parameterSet: params,
+    parameterSetHash: params.parameterSetHash,
+    runtimeParameterBindingVersion: params.runtimeParameterBindingVersion,
+    calibrationParameterRegistryVersion: params.registryVersion,
+    parameterSetStatus: params.status,
     opportunityAllocationEnabled: allocationEnabled,
     opportunityAllocationVersion: allocationEnabled ? OPPORTUNITY_ALLOCATION_VERSION : null,
     allocators,

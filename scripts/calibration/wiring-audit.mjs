@@ -26,9 +26,19 @@ export const auditWiring = () => {
   const files = engineFiles();
   const sources = new Map(files.map((f) => [f, readFileSync(f, "utf8")]));
 
-  // Does anything outside the calibration plane import the registry at all?
-  const importers = files.filter((f) => /from\s+["'][^"']*calibration\/parameters(\.js)?["']/.test(sources.get(f)));
+  // Does anything outside the calibration plane reach the registry at all?
+  //
+  // Two routes count. A direct import of parameters.js, and an import of
+  // runtimeParameters.js, which is the registry's runtime face — it compiles the
+  // registry into the immutable set the engine reads. Counting only the direct
+  // import would have reported "unwired" after Phase 6C2C3 wired everything
+  // through the compiler, which is the wrong answer for the right regex.
+  const directImporters = files.filter((f) => /from\s+["'][^"']*calibration\/parameters(\.js)?["']/.test(sources.get(f)));
+  const bindingImporters = files.filter((f) => /from\s+["'][^"']*calibration\/runtimeParameters(\.js)?["']/.test(sources.get(f)));
+  const importers = [...new Set([...directImporters, ...bindingImporters])];
   const valueOfCallers = files.filter((f) => /\bvalueOf\s*\(/.test(sources.get(f)));
+  // A consumer reads its coefficient off the compiled accessor tree.
+  const accessorReaders = files.filter((f) => /\bparams(eterSet)?\??\.get\b|\.parameterSet\b/.test(sources.get(f)));
 
   const rows = PARAMETERS.map((p) => {
     // Where does this parameter's default value physically live?
@@ -68,6 +78,9 @@ export const auditWiring = () => {
     purpose: "Whether changing a registered parameter changes anything the engine does. Asked before any sensitivity analysis, because a sensitivity measurement on an unwired parameter would measure nothing and report zero effect.",
     engineFilesScanned: files.length,
     registryImportersOutsideCalibrationPlane: importers,
+    directRegistryImporters: directImporters,
+    runtimeBindingImporters: bindingImporters,
+    accessorReaders,
     valueOfCallersOutsideCalibrationPlane: valueOfCallers,
     coverage: {
       parameters: rows.length,
@@ -90,6 +103,9 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   console.log(`PARAMETER WIRING AUDIT — ${a.coverage.parameters} registered parameters\n`);
   console.log(`  engine files scanned                       ${a.engineFilesScanned}`);
   console.log(`  files importing the registry               ${a.registryImportersOutsideCalibrationPlane.length}`);
+  console.log(`    direct registry imports                  ${a.directRegistryImporters.length}`);
+  console.log(`    runtime-binding imports                  ${a.runtimeBindingImporters.length}`);
+  console.log(`  files reading the compiled accessor tree   ${a.accessorReaders.length}`);
   console.log(`  files calling valueOf()                    ${a.valueOfCallersOutsideCalibrationPlane.length}`);
   console.log(`  registry reachable from the engine at all   ${a.coverage.registryReachableFromEngine}`);
   console.log(`\n  WIRED    ${a.coverage.wired}`);

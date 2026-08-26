@@ -11,6 +11,7 @@
 // coaching behaviour — that is Phase 6C — and nothing here claims otherwise.
 import { versionOf } from "../../versions.js";
 import { FAMILY_CAPS } from "./families.js";
+import { noteParameterRead, traceEnabled } from "../calibration/runtimeParameters.js";
 
 const clamp = (x, lo, hi) => Math.min(hi, Math.max(lo, x));
 const r2 = (x) => Math.round(x * 100) / 100;
@@ -117,14 +118,26 @@ export const recordOffensiveOutcome = (plan, { family, shotQuality, outcome, sho
  * Consider a bounded offensive adjustment. Deterministic given the same state
  * and possession index.
  */
-export const considerOffensiveAdjustment = ({ plan, offense, defPlan, defState, possessionIndex, eff }) => {
+export const considerOffensiveAdjustment = ({ plan, offense, defPlan, defState, possessionIndex, eff, params = null }) => {
+  // The registry's declared defaults for these were WRONG before Phase 6C2C3:
+  // it claimed a cooldown of 12, a value liveState.js records as deliberately
+  // abandoned because it produced ~3.3 assignment changes a game. The registry
+  // now carries the values the engine actually runs, split per engine.
+  const minEvents = params ? params.get.coach.offensiveAdjustmentMinEvents : OFF_ADJUSTMENT_MIN_EVENTS;
+  const cooldown = params ? params.get.coach.offensiveAdjustmentCooldown : OFF_ADJUSTMENT_COOLDOWN;
+  const step = params ? params.get.coach.adjustmentMagnitude : ADJUSTMENT_STEP;
+  if (params && traceEnabled()) {
+    noteParameterRead("coach.offensiveAdjustmentMinEvents", minEvents);
+    noteParameterRead("coach.offensiveAdjustmentCooldown", cooldown);
+    noteParameterRead("coach.adjustmentMagnitude", step);
+  }
   const last = plan.adjustmentHistory[plan.adjustmentHistory.length - 1];
-  if (last && possessionIndex - last.possessionIndex < OFF_ADJUSTMENT_COOLDOWN) return null;
+  if (last && possessionIndex - last.possessionIndex < cooldown) return null;
 
   const tk = plan.toolkit;
   // A rigid coach demands more evidence. This is the difference between
   // coaches, not a random gate.
-  const needed = OFF_ADJUSTMENT_MIN_EVENTS + Math.round(clamp((10 - tk.adaptability) * 0.7, 0, 6));
+  const needed = minEvents + Math.round(clamp((10 - tk.adaptability) * 0.7, 0, 6));
   const mean = (f) => {
     const e = plan.evidence[f];
     return e && e.events >= needed ? e.qualitySum / e.events : null;
@@ -207,7 +220,7 @@ export const considerOffensiveAdjustment = ({ plan, offense, defPlan, defState, 
       return {
         rejected: false, possessionIndex, trigger: c.trigger, response: c.response, detail: c.detail,
         // Adaptability shapes how much the mix moves, bounded.
-        magnitude: r2(ADJUSTMENT_STEP * clamp(0.5 + tk.tacticalAdjustment * 0.08, 0.5, 1.3)),
+        magnitude: r2(step * clamp(0.5 + tk.tacticalAdjustment * 0.08, 0.5, 1.3)),
       };
     }
   }

@@ -22,6 +22,7 @@ import {
   applyOffensiveAdjustment, refreshMismatchTargets,
 } from "../actions/offensivePlan.js";
 import { expandedActionMix } from "./actions.js";
+import { noteParameterRead, traceEnabled } from "../calibration/runtimeParameters.js";
 
 const clamp = (x, lo, hi) => Math.min(hi, Math.max(lo, x));
 const r2 = (x) => Math.round(x * 100) / 100;
@@ -60,14 +61,22 @@ const fatigueFactor = (load, maxPenalty) => 1 - clamp(load, 0, FATIGUE_BOUNDS.ma
 // seeded realisation of it. A great look misses, a bad one drops.
 const SHOT_POINTS = { RIM: 2, PAINT_OR_POST: 2, MIDRANGE: 2, THREE_POINT: 3 };
 
-const chooseShotCategory = (shooter, shot, env, rng, threeWeightScale = 1) => {
+const chooseShotCategory = (shooter, shot, env, rng, threeWeightScale = 1, params) => {
   const w = { ...shooter.shotProfile };
   // Rim bias comes from the ACTION (a roll to the rim, a transition attack),
   // not from the shooter's habits alone.
   const bias = shot.rimBias ?? 0;
-  w.RIM *= 1 + Math.max(0, bias) * 1.6;
+  const sl = params.get.shotLocation;
+  if (traceEnabled()) {
+    noteParameterRead("shotLocation.rimBiasMultiplier", sl.rimBiasMultiplier);
+    noteParameterRead("shotLocation.perimeterBiasMultiplier", sl.perimeterBiasMultiplier);
+  }
+  w.RIM *= 1 + Math.max(0, bias) * sl.rimBiasMultiplier;
+  // The paint and midrange siblings (0.5, 0.6) are unregistered: they ride the
+  // same rim bias but have no registry entry, so they stay as literals rather
+  // than borrowing a parameter that does not describe them.
   w.PAINT_OR_POST *= 1 + Math.max(0, bias) * 0.5;
-  w.THREE_POINT *= 1 + Math.max(0, -bias) * 1.5;
+  w.THREE_POINT *= 1 + Math.max(0, -bias) * sl.perimeterBiasMultiplier;
   w.MIDRANGE *= 1 + Math.max(0, -bias) * 0.6;
   // The era's documented three-point volume scales the ATTEMPT weight. Position
   // in this sequence is irrelevant — these are all multiplications on the same
@@ -81,19 +90,29 @@ const chooseShotCategory = (shooter, shot, env, rng, threeWeightScale = 1) => {
 
 // Baseline conversion by category, anchored on the era's DOCUMENTED league
 // shooting environment rather than an invented constant.
-const baseMakePct = (category, env) => {
+const baseMakePct = (category, env, params) => {
   const fg = env.leagueFgPct;
+  const cv = params.get.conversion;
+  if (traceEnabled()) {
+    noteParameterRead("conversion.rimBonus", cv.rimBonus);
+    noteParameterRead("conversion.paintBonus", cv.paintBonus);
+    noteParameterRead("conversion.midrangePenalty", cv.midrangePenalty);
+  }
   switch (category) {
-    case "RIM": return clamp(fg + 0.155, 0.44, 0.75);
-    case "PAINT_OR_POST": return clamp(fg + 0.015, 0.34, 0.60);
-    case "MIDRANGE": return clamp(fg - 0.055, 0.28, 0.52);
+    case "RIM": return clamp(fg + cv.rimBonus, 0.44, 0.75);
+    case "PAINT_OR_POST": return clamp(fg + cv.paintBonus, 0.34, 0.60);
+    // ADDED, not subtracted. The registry stores this penalty as a negative
+    // number (-0.055) and the old code read `fg - 0.055`. Substituting the
+    // parameter into the existing minus would double-negate it and turn a
+    // 5.5-point penalty into a 5.5-point bonus.
+    case "MIDRANGE": return clamp(fg + cv.midrangePenalty, 0.28, 0.52);
     case "THREE_POINT": return clamp(env.leagueThreePct, 0.22, 0.42);
     default: return fg;
   }
 };
 
-const makeProbability = ({ category, shooter, shot, env, fatigue, defender }) => {
-  const base = baseMakePct(category, env);
+const makeProbability = ({ category, shooter, shot, env, fatigue, defender, params }) => {
+  const base = baseMakePct(category, env, params);
   const skill = shooter.skill[category] ?? 5;
   // Quality is centred at 5: a 5 look converts at the era baseline for that
   // shot, a 9 look well above it, a 1 look well below.
@@ -131,6 +150,7 @@ const playPossession = ({ ctx, off, def, offBox, defBox, state, rng, ledger, per
     defPlan, zoneShell, expanded: ctx.expandedActionsEnabled,
     // A coach adjustment moves the MIX; the possession then resolves normally.
     overrideMix: offPlan?.currentActionMix ?? null,
+    params: ctx.parameterSet,
   });
   const shot = resolveAction({ type }, {
     offense: off, defense: def, eff: ctx.eff, state, eraStyleId: ctx.eraStyleId,
@@ -204,7 +224,7 @@ const playPossession = ({ ctx, off, def, offBox, defBox, state, rng, ledger, per
   }
 
   // ── 2. Shooting foul ───────────────────────────────────────────────────────
-  const category = chooseShotCategory(shooter, shot, ctx.environment, rng, off.threeWeightScale);
+  const category = chooseShotCategory(shooter, shot, ctx.environment, rng, off.threeWeightScale, ctx.parameterSet);
   // Foul rate is anchored on the era's documented free-throw environment; the
   // action and the shot type move it around that anchor.
   //
@@ -248,7 +268,7 @@ const playPossession = ({ ctx, off, def, offBox, defBox, state, rng, ledger, per
   if (category === "THREE_POINT") credit(offBox, shooter.index, "tpa");
   record.shot = category;
 
-  const p = makeProbability({ category, shooter, shot, env: ctx.environment, fatigue: shooterFatigue, defender: shot.defender });
+  const p = makeProbability({ category, shooter, shot, env: ctx.environment, fatigue: shooterFatigue, defender: shot.defender, params: ctx.parameterSet });
   record.expectedMake = r3(p);
 
   // Evidence for a possible coach adjustment. SHOT QUALITY, not points — a
@@ -413,11 +433,11 @@ export const simulatePossessionGame = (input) => {
     offensePlan: ctx.offensiveAdjustmentsEnabled && ctx.expandedActionsEnabled ? {
       gold: buildOffensivePlan({
         offense: ctx.gold, defense: ctx.blue, defPlan: ctx.defensivePlans?.blue ?? null, eff: ctx.eff,
-        baselineMix: expandedActionMix({ offense: ctx.gold, defense: ctx.blue, eff: ctx.eff, state: {}, defPlan: ctx.defensivePlans?.blue ?? null, zoneShell: ctx.zoneResolutionEnabled ? ctx.defensivePlans?.blue?.zoneShell ?? null : null }),
+        baselineMix: expandedActionMix({ offense: ctx.gold, defense: ctx.blue, eff: ctx.eff, state: {}, defPlan: ctx.defensivePlans?.blue ?? null, zoneShell: ctx.zoneResolutionEnabled ? ctx.defensivePlans?.blue?.zoneShell ?? null : null, params: ctx.parameterSet }),
       }),
       blue: buildOffensivePlan({
         offense: ctx.blue, defense: ctx.gold, defPlan: ctx.defensivePlans?.gold ?? null, eff: ctx.eff,
-        baselineMix: expandedActionMix({ offense: ctx.blue, defense: ctx.gold, eff: ctx.eff, state: {}, defPlan: ctx.defensivePlans?.gold ?? null, zoneShell: ctx.zoneResolutionEnabled ? ctx.defensivePlans?.gold?.zoneShell ?? null : null }),
+        baselineMix: expandedActionMix({ offense: ctx.blue, defense: ctx.gold, eff: ctx.eff, state: {}, defPlan: ctx.defensivePlans?.gold ?? null, zoneShell: ctx.zoneResolutionEnabled ? ctx.defensivePlans?.gold?.zoneShell ?? null : null, params: ctx.parameterSet }),
       }),
     } : null,
   };
@@ -491,7 +511,7 @@ export const simulatePossessionGame = (input) => {
           plan: oPlan, offense: offSide === "gold" ? ctx.gold : ctx.blue,
           defPlan: ctx.defensivePlans?.[dSide2] ?? null,
           defState: state.defense?.[dSide2] ?? null,
-          possessionIndex: state.possessionIndex, eff: ctx.eff,
+          possessionIndex: state.possessionIndex, eff: ctx.eff, params: ctx.parameterSet,
         });
         if (oAdj) applyOffensiveAdjustment(oPlan, oAdj);
       }
@@ -502,7 +522,7 @@ export const simulatePossessionGame = (input) => {
         const dPlan = ctx.defensivePlans[dSide];
         const adj = considerAdjustment({
           state: dState, plan: dPlan, possessionIndex: state.possessionIndex,
-          defenders: dPlan.defenders, threats: dPlan.threats,
+          defenders: dPlan.defenders, threats: dPlan.threats, params: ctx.parameterSet,
         });
         if (adj) applyAdjustment(dState, adj);
       }

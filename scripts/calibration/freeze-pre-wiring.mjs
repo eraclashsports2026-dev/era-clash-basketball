@@ -68,8 +68,21 @@ export const PARITY_FIXTURES = (() => {
     add({ id: `era-${era}`, era, gold: SHOOTERS, blue: BIGS, seed: 1000 + ERAS.indexOf(era) });
   }
   // Man vs zone in a zone-legal era, same seed, so the shell is the only change.
+  //
+  // NOTE: steve-kerr and tom-thibodeau never reach the zone gate, so these two
+  // fixtures are byte-identical and prove nothing about zone. They are KEPT
+  // because they were in the frozen baseline and still pass, and because a
+  // flag-toggle that changes nothing is itself worth pinning. The fixtures that
+  // actually exercise zone follow below.
   add({ id: "man-2010s", era: "2010s", gold: SHOOTERS, blue: BIGS, seed: 2001, zone: false });
   add({ id: "zone-2010s", era: "2010s", gold: SHOOTERS, blue: BIGS, seed: 2001, zone: true });
+  // Real zone. Only four coaches in the pool reach the zone gate; measured, not
+  // assumed. Each of these produces 56-75 zone actions per game and a live
+  // shell, which is what the zone gap parameters need in order to be observed.
+  for (const [i, coach] of ["nick-nurse", "erik-spoelstra", "rick-carlisle", "don-nelson"].entries()) {
+    add({ id: `real-zone-${coach}`, era: "2010s", gold: SHOOTERS, blue: BIGS,
+      coachGoldId: "steve-kerr", coachBlueId: coach, seed: 2100 + i, zone: true });
+  }
   // Coach systems.
   for (const [i, [cg, cb]] of [["phil-jackson", "gregg-popovich"], ["red-auerbach", "pat-riley"],
     ["mike-dantoni", "jerry-sloan"], ["neutral", "neutral"]].entries()) {
@@ -164,6 +177,19 @@ export const captureFixture = (f) => {
   };
 };
 
+/** A fixture that claims to exercise zone must actually produce zone actions. */
+export const assertZoneCoverage = (cases) => {
+  const zoneCases = cases.filter((c) => c.id.startsWith("real-zone-"));
+  if (!zoneCases.length) throw new Error("no real-zone fixture present");
+  for (const c of zoneCases) {
+    const shells = JSON.stringify(c.zoneShells ?? {});
+    if (!/2-3|3-2|MATCHUP|BOX|TRIANGLE/.test(shells)) {
+      throw new Error(`${c.id} produced no zone shell (${shells}) — find a coach who reaches the zone gate rather than renaming the fixture`);
+    }
+  }
+  return true;
+};
+
 /** A fixture that claims to be an overtime game must actually be one. */
 export const assertOvertimeCoverage = (cases) => {
   const single = cases.find((c) => c.id === "overtime-single");
@@ -177,6 +203,7 @@ export const captureBaseline = () => {
   assertNoHoldout(PARITY_FIXTURES);
   const cases = PARITY_FIXTURES.map(captureFixture);
   assertOvertimeCoverage(cases);
+  assertZoneCoverage(cases);
   return {
     defaultParityFixtureVersion: versionOf("defaultParityFixtureVersion"),
     purpose: "Exact post-side-symmetry engine behaviour, captured before any parameter was wired. Default parity is judged against this. If a fixture drifts, the wiring is wrong — this file is not re-recorded.",

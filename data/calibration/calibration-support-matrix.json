@@ -23,8 +23,8 @@
     "byClass": {
       "HISTORICAL_NUMERIC_SUPPORT": 1,
       "SYNTHETIC_CONTROL_SUPPORT": 26,
-      "STRUCTURAL_VALIDATION_ONLY": 12,
-      "UNSUPPORTED": 14
+      "STRUCTURAL_VALIDATION_ONLY": 13,
+      "UNSUPPORTED": 13
     },
     "byModule": {
       "opportunityAllocation": {
@@ -39,25 +39,24 @@
         "UNSUPPORTED": 5
       },
       "zoneResolution": {
-        "UNSUPPORTED": 1,
-        "STRUCTURAL_VALIDATION_ONLY": 3
+        "STRUCTURAL_VALIDATION_ONLY": 2
       },
       "coachIntelligence": {
         "STRUCTURAL_VALIDATION_ONLY": 2
       },
       "coachAdjustment": {
-        "STRUCTURAL_VALIDATION_ONLY": 3
+        "STRUCTURAL_VALIDATION_ONLY": 5
       }
     },
     "byDeclaredSource": {
       "HISTORICAL_TIER_C + SYNTHETIC_GUARDRAIL": 1,
       "SYNTHETIC_GUARDRAIL": 26,
-      "STRUCTURAL": 12,
-      "ERA_ENVIRONMENT": 14
+      "STRUCTURAL": 13,
+      "ERA_ENVIRONMENT": 13
     },
     "tunableOnDataGrounds": 27,
     "frozenOnDataGrounds": 26,
-    "blockedBySource": 14
+    "blockedBySource": 13
   },
   "fixedNotCalibratable": [
     {
@@ -79,6 +78,18 @@
     {
       "value": "steals and blocks before 1973-74",
       "why": "Not recorded. RESEARCH_ONLY, never invented."
+    }
+  ],
+  "nonActiveEntries": [
+    {
+      "id": "zone.selectionFrequency",
+      "registryClass": "DERIVED_PARAMETER",
+      "classNote": "No 1:1 runtime coefficient exists. Zone usage is the product of a BINARY per-game gate (defense/plan.js: scheme.zoneUsage >= 5, so a coach plays zone all game or never) and a per-possession attack share (possession/actions.js: 0.5 + passing * 0.03). The 0.55 is the measured emergent product of the two, i.e. an outcome. Wiring it to either literal would misrepresent what it means, and making shell selection probabilistic would change default behaviour, which this phase forbids. A genuine frequency lever needs a design change to shell selection."
+    },
+    {
+      "id": "zone.offensiveReboundExposure",
+      "registryClass": "DERIVED_PARAMETER",
+      "classNote": "This is a TARGET METRIC that was registered as a parameter. The actual coefficients are five per-shell reboundExposure values in defense/zone.js (0.10 to 0.26), whose mean before the rim-ceiling offset is ~0.184. 0.073 is the realised ORB delta they produce, not any coefficient in the chain. A real lever would be a scalar over those five values, which is a different parameter with a different default."
     }
   ],
   "parameters": [
@@ -778,38 +789,6 @@
       "tunableOnDataGrounds": false
     },
     {
-      "id": "zone.selectionFrequency",
-      "module": "zoneResolution",
-      "defaultValue": 0.55,
-      "min": 0.02,
-      "max": 0.8,
-      "targetMetrics": [
-        "zoneShare",
-        "coachIdentitySpread"
-      ],
-      "declaredCalibrationSource": "ERA_ENVIRONMENT",
-      "support": "UNSUPPORTED",
-      "reason": "Judged against Era Style environment values whose recorded source is the publisher classified PROHIBITED_FOR_MODEL_CALIBRATION. The target exists but may not be used to calibrate. This predates Phase 6C2C2 and is live production data — see independent-source-verification.md. The evidence it requires (eraEnvironmentAuthorized) is not available.",
-      "blockedBySource": true,
-      "tunableOnDataGrounds": false
-    },
-    {
-      "id": "zone.offensiveReboundExposure",
-      "module": "zoneResolution",
-      "defaultValue": 0.073,
-      "min": 0,
-      "max": 0.15,
-      "targetMetrics": [
-        "offensiveReboundPct",
-        "zoneOrbDelta"
-      ],
-      "declaredCalibrationSource": "STRUCTURAL",
-      "support": "STRUCTURAL_VALIDATION_ONLY",
-      "reason": "Checkable only for structural sanity — invariants, monotonicity, bounds — never fitted to a value.",
-      "blockedBySource": false,
-      "tunableOnDataGrounds": false
-    },
-    {
       "id": "zone.highPostVulnerability",
       "module": "zoneResolution",
       "defaultValue": 1,
@@ -872,11 +851,11 @@
       "tunableOnDataGrounds": false
     },
     {
-      "id": "coach.adjustmentThreshold",
+      "id": "coach.offensiveAdjustmentMinEvents",
       "module": "coachAdjustment",
-      "defaultValue": 3,
+      "defaultValue": 6,
       "min": 1,
-      "max": 10,
+      "max": 16,
       "targetMetrics": [
         "adjustmentsPerGame"
       ],
@@ -887,11 +866,41 @@
       "tunableOnDataGrounds": false
     },
     {
-      "id": "coach.adjustmentCooldown",
+      "id": "coach.defensiveAdjustmentMinEvents",
       "module": "coachAdjustment",
-      "defaultValue": 12,
+      "defaultValue": 5,
+      "min": 1,
+      "max": 16,
+      "targetMetrics": [
+        "adjustmentsPerGame"
+      ],
+      "declaredCalibrationSource": "STRUCTURAL",
+      "support": "STRUCTURAL_VALIDATION_ONLY",
+      "reason": "Checkable only for structural sanity — invariants, monotonicity, bounds — never fitted to a value.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": false
+    },
+    {
+      "id": "coach.offensiveAdjustmentCooldown",
+      "module": "coachAdjustment",
+      "defaultValue": 30,
       "min": 4,
-      "max": 40,
+      "max": 60,
+      "targetMetrics": [
+        "adjustmentsPerGame"
+      ],
+      "declaredCalibrationSource": "STRUCTURAL",
+      "support": "STRUCTURAL_VALIDATION_ONLY",
+      "reason": "Checkable only for structural sanity — invariants, monotonicity, bounds — never fitted to a value.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": false
+    },
+    {
+      "id": "coach.defensiveAdjustmentCooldown",
+      "module": "coachAdjustment",
+      "defaultValue": 34,
+      "min": 4,
+      "max": 60,
       "targetMetrics": [
         "adjustmentsPerGame"
       ],
@@ -904,7 +913,7 @@
     {
       "id": "coach.adjustmentMagnitude",
       "module": "coachAdjustment",
-      "defaultValue": 0.05,
+      "defaultValue": 0.06,
       "min": 0.01,
       "max": 0.2,
       "targetMetrics": [
@@ -917,5 +926,5 @@
       "tunableOnDataGrounds": false
     }
   ],
-  "matrixHash": "0dfebd4c17501897ed35ab3f2f69841727cd274cb0f4d7ac2e895d1d47ec3e01"
+  "matrixHash": "69cce9fcc829ba71bf1beefa31a90ed3b8d15ecc27ff40c12b87f2a26011af8f"
 }
