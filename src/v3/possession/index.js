@@ -65,6 +65,14 @@ export const runPossessionGame = (input, { assertInvariants = true, includeLedge
     // version would be a false reproducibility claim — and would invalidate
     // stored flag-off games on an unrelated defensive edit.
     ...resultVersions(),
+    // ── Runtime parameter identity (Phase 6C2C3) ─────────────────────────────
+    // The hash now DESCRIBES RUNTIME BEHAVIOUR. Before wiring it described a
+    // registry the engine never read, so two results with different hashes
+    // could be byte-identical — a reproducibility claim with nothing behind it.
+    runtimeParameterBindingVersion: game.runtimeParameterBindingVersion,
+    calibrationParameterRegistryVersion: game.calibrationParameterRegistryVersion,
+    parameterSetHash: game.parameterSetHash,
+    parameterSetStatus: game.parameterSetStatus,
     matchupFingerprint: matchupFingerprint({
       goldIds: input.gold.playerCards.map((p) => p.id),
       blueIds: input.blue.playerCards.map((p) => p.id),

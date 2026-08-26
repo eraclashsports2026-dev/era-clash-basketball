@@ -146,7 +146,9 @@ export const captureFixture = (f) => {
   const locationMix = {};
   for (const p of g.possessionLedger ?? []) {
     actionMix[p.action] = (actionMix[p.action] ?? 0) + 1;
-    if (p.shot?.location) locationMix[p.shot.location] = (locationMix[p.shot.location] ?? 0) + 1;
+    // p.shot is the location STRING, not an object. Reading p.shot.location
+    // left this map permanently empty, so the field compared equal trivially.
+    if (typeof p.shot === "string") locationMix[p.shot] = (locationMix[p.shot] ?? 0) + 1;
   }
   const playerLine = (box) => box.players.map((p) => `${p.cardId}:${p.pts}/${p.fga}/${p.fgm}/${p.tpa}/${p.tpm}/${p.fta}/${p.ftm}/${p.oreb}/${p.dreb}/${p.ast}/${p.stl}/${p.blk}/${p.to}`).join("|");
 

@@ -640,6 +640,13 @@ export const simulatePossessionGame = (input) => {
       blue: summariseDefense(ctx.defensivePlans.blue, state.defense.blue),
     } : null,
     internalError: guardResolution,
+    // Parameter identity travels with the result, so a stored game records the
+    // coefficients that produced it rather than whatever the registry holds later.
+    runtimeParameterBindingVersion: ctx.runtimeParameterBindingVersion,
+    calibrationParameterRegistryVersion: ctx.calibrationParameterRegistryVersion,
+    parameterSetHash: ctx.parameterSetHash,
+    parameterSetStatus: ctx.parameterSetStatus,
+    possessionCalibrationVersion: ctx.parameterSet.calibrationVersion,
     status: "DEVELOPMENT — CALIBRATION REQUIRED",
   };
 };

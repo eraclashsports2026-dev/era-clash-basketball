@@ -1,0 +1,1034 @@
+{
+  "parameterConnectivityVersion": "1.0.0",
+  "runtimeParameterBindingVersion": "1.0.0",
+  "calibrationParameterRegistryVersion": "2.0.0",
+  "purpose": "Per-parameter proof that a real consumer runs and that moving the value moves something. Static (declared manifest) and dynamic (trace plus result movement), because either alone is weak.",
+  "fixtures": 32,
+  "seedsPerExtreme": 6,
+  "coverage": {
+    "active": 53,
+    "connected": 53,
+    "disconnected": 0,
+    "observedDynamically": 53,
+    "movesAResult": 53,
+    "readButInert": 0,
+    "staticProblems": 0
+  },
+  "staticProblems": [],
+  "nonActiveEntries": [
+    {
+      "id": "zone.selectionFrequency",
+      "registryClass": "DERIVED_PARAMETER"
+    },
+    {
+      "id": "zone.offensiveReboundExposure",
+      "registryClass": "DERIVED_PARAMETER"
+    }
+  ],
+  "parameters": [
+    {
+      "id": "opportunity.saturation.strength",
+      "module": "opportunityAllocation",
+      "declaredConsumer": {
+        "file": "src/v3/actions/opportunityAllocation.js",
+        "fn": "saturationMultiplier",
+        "prior": "SATURATION.strength = 1.35",
+        "role": "How hard a player's weight decays above his target share"
+      },
+      "dynamicInvocations": 46916,
+      "fixturesWhoseResultMoves": 31,
+      "exampleFixtures": [
+        "era-1950s",
+        "era-1960s",
+        "era-1970s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "opportunity.saturation.floor",
+      "module": "opportunityAllocation",
+      "declaredConsumer": {
+        "file": "src/v3/actions/opportunityAllocation.js",
+        "fn": "saturationMultiplier",
+        "prior": "SATURATION.floor = 0.16",
+        "role": "Never fully suppress a saturated player"
+      },
+      "dynamicInvocations": 46916,
+      "fixturesWhoseResultMoves": 9,
+      "exampleFixtures": [
+        "era-1950s",
+        "era-1960s",
+        "era-1980s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "opportunity.saturation.underTargetCeiling",
+      "module": "opportunityAllocation",
+      "declaredConsumer": {
+        "file": "src/v3/actions/opportunityAllocation.js",
+        "fn": "saturationMultiplier",
+        "prior": "SATURATION.underTargetCeiling = 1.35",
+        "role": "Cap on the lift an under-target teammate receives"
+      },
+      "dynamicInvocations": 46916,
+      "fixturesWhoseResultMoves": 31,
+      "exampleFixtures": [
+        "era-1950s",
+        "era-1960s",
+        "era-1970s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "opportunity.saturation.warmupPossessions",
+      "module": "opportunityAllocation",
+      "declaredConsumer": {
+        "file": "src/v3/actions/opportunityAllocation.js",
+        "fn": "saturationMultiplier",
+        "prior": "SATURATION.warmupPossessions = 8",
+        "role": "Possessions before a realized share is trusted"
+      },
+      "dynamicInvocations": 46916,
+      "fixturesWhoseResultMoves": 31,
+      "exampleFixtures": [
+        "era-1950s",
+        "era-1960s",
+        "era-1970s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "opportunity.mismatch.severe",
+      "module": "opportunityAllocation",
+      "declaredConsumer": {
+        "file": "src/v3/actions/opportunityAllocation.js",
+        "fn": "mismatchMultiplier",
+        "prior": "MISMATCH_BIAS.SEVERE = 2.6",
+        "role": "Opportunity boost for a severe exploited mismatch"
+      },
+      "dynamicInvocations": 1042,
+      "fixturesWhoseResultMoves": 26,
+      "exampleFixtures": [
+        "era-1950s",
+        "era-1960s",
+        "era-1970s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "opportunity.mismatch.major",
+      "module": "opportunityAllocation",
+      "declaredConsumer": {
+        "file": "src/v3/actions/opportunityAllocation.js",
+        "fn": "mismatchMultiplier",
+        "prior": "MISMATCH_BIAS.MAJOR = 2.0",
+        "role": "Opportunity boost for a major exploited mismatch"
+      },
+      "dynamicInvocations": 1042,
+      "fixturesWhoseResultMoves": 26,
+      "exampleFixtures": [
+        "era-1950s",
+        "era-1960s",
+        "era-1970s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "opportunity.mismatch.moderate",
+      "module": "opportunityAllocation",
+      "declaredConsumer": {
+        "file": "src/v3/actions/opportunityAllocation.js",
+        "fn": "mismatchMultiplier",
+        "prior": "MISMATCH_BIAS.MODERATE = 1.55",
+        "role": "Opportunity boost for a moderate exploited mismatch"
+      },
+      "dynamicInvocations": 1042,
+      "fixturesWhoseResultMoves": 1,
+      "exampleFixtures": [
+        "synthdev-sd2-elite-shooting"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "opportunity.mismatch.minor",
+      "module": "opportunityAllocation",
+      "declaredConsumer": {
+        "file": "src/v3/actions/opportunityAllocation.js",
+        "fn": "mismatchMultiplier",
+        "prior": "MISMATCH_BIAS.MINOR = 1.25",
+        "role": "Opportunity boost for a minor exploited mismatch"
+      },
+      "dynamicInvocations": 1042,
+      "fixturesWhoseResultMoves": 6,
+      "exampleFixtures": [
+        "coach-phil-jackson-vs-gregg-popovich",
+        "coach-red-auerbach-vs-pat-riley",
+        "coach-mike-dantoni-vs-jerry-sloan"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "opportunity.form.low",
+      "module": "opportunityAllocation",
+      "declaredConsumer": {
+        "file": "src/v3/actions/opportunityAllocation.js",
+        "fn": "formMultiplier",
+        "prior": "FORM_BAND.lo = 0.82",
+        "role": "Lower bound of tonight's seeded form"
+      },
+      "dynamicInvocations": 46916,
+      "fixturesWhoseResultMoves": 31,
+      "exampleFixtures": [
+        "era-1950s",
+        "era-1960s",
+        "era-1970s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "opportunity.form.high",
+      "module": "opportunityAllocation",
+      "declaredConsumer": {
+        "file": "src/v3/actions/opportunityAllocation.js",
+        "fn": "formMultiplier",
+        "prior": "FORM_BAND.hi = 1.18",
+        "role": "Upper bound of tonight's seeded form"
+      },
+      "dynamicInvocations": 46916,
+      "fixturesWhoseResultMoves": 31,
+      "exampleFixtures": [
+        "era-1950s",
+        "era-1960s",
+        "era-1970s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "opportunity.lateGame.primaryBoost",
+      "module": "opportunityAllocation",
+      "declaredConsumer": {
+        "file": "src/v3/actions/opportunityAllocation.js",
+        "fn": "opportunityWeight",
+        "prior": "1 + urgency * 0.5",
+        "role": "How far late-game urgency tilts toward the primary creator"
+      },
+      "dynamicInvocations": 46916,
+      "fixturesWhoseResultMoves": 30,
+      "exampleFixtures": [
+        "era-1950s",
+        "era-1960s",
+        "era-1970s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "fitBand.SPOT_UP.lo",
+      "module": "opportunityAllocation",
+      "declaredConsumer": {
+        "file": "src/v3/actions/opportunityAllocation.js",
+        "fn": "boundedFit",
+        "prior": "FIT_BANDS.SPOT_UP.lo",
+        "role": "Lower bound on how far below the lineup a player's SPOT_UP fit may fall"
+      },
+      "dynamicInvocations": 5445,
+      "fixturesWhoseResultMoves": 30,
+      "exampleFixtures": [
+        "era-1950s",
+        "era-1960s",
+        "era-1970s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "fitBand.SPOT_UP.hi",
+      "module": "opportunityAllocation",
+      "declaredConsumer": {
+        "file": "src/v3/actions/opportunityAllocation.js",
+        "fn": "boundedFit",
+        "prior": "FIT_BANDS.SPOT_UP.hi",
+        "role": "Upper bound on how far above the lineup a player's SPOT_UP fit may rise"
+      },
+      "dynamicInvocations": 5445,
+      "fixturesWhoseResultMoves": 24,
+      "exampleFixtures": [
+        "era-2010s",
+        "man-2010s",
+        "zone-2010s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "fitBand.OFF_BALL_SCREEN.lo",
+      "module": "opportunityAllocation",
+      "declaredConsumer": {
+        "file": "src/v3/actions/opportunityAllocation.js",
+        "fn": "boundedFit",
+        "prior": "FIT_BANDS.OFF_BALL_SCREEN.lo",
+        "role": "Lower bound on how far below the lineup a player's OFF_BALL_SCREEN fit may fall"
+      },
+      "dynamicInvocations": 4295,
+      "fixturesWhoseResultMoves": 30,
+      "exampleFixtures": [
+        "era-1950s",
+        "era-1960s",
+        "era-1970s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "fitBand.OFF_BALL_SCREEN.hi",
+      "module": "opportunityAllocation",
+      "declaredConsumer": {
+        "file": "src/v3/actions/opportunityAllocation.js",
+        "fn": "boundedFit",
+        "prior": "FIT_BANDS.OFF_BALL_SCREEN.hi",
+        "role": "Upper bound on how far above the lineup a player's OFF_BALL_SCREEN fit may rise"
+      },
+      "dynamicInvocations": 4295,
+      "fixturesWhoseResultMoves": 21,
+      "exampleFixtures": [
+        "synthdev-sd2-creator-stack",
+        "synthdev-sd2-weak-shooting",
+        "era-1950s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "fitBand.POST_UP.lo",
+      "module": "opportunityAllocation",
+      "declaredConsumer": {
+        "file": "src/v3/actions/opportunityAllocation.js",
+        "fn": "boundedFit",
+        "prior": "FIT_BANDS.POST_UP.lo",
+        "role": "Lower bound on how far below the lineup a player's POST_UP fit may fall"
+      },
+      "dynamicInvocations": 5895,
+      "fixturesWhoseResultMoves": 29,
+      "exampleFixtures": [
+        "era-1950s",
+        "era-1960s",
+        "era-1970s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "fitBand.POST_UP.hi",
+      "module": "opportunityAllocation",
+      "declaredConsumer": {
+        "file": "src/v3/actions/opportunityAllocation.js",
+        "fn": "boundedFit",
+        "prior": "FIT_BANDS.POST_UP.hi",
+        "role": "Upper bound on how far above the lineup a player's POST_UP fit may rise"
+      },
+      "dynamicInvocations": 5895,
+      "fixturesWhoseResultMoves": 28,
+      "exampleFixtures": [
+        "era-1950s",
+        "era-1960s",
+        "era-2020s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "fitBand.HANDOFF.lo",
+      "module": "opportunityAllocation",
+      "declaredConsumer": {
+        "file": "src/v3/actions/opportunityAllocation.js",
+        "fn": "boundedFit",
+        "prior": "FIT_BANDS.HANDOFF.lo",
+        "role": "Lower bound on how far below the lineup a player's HANDOFF fit may fall"
+      },
+      "dynamicInvocations": 5706,
+      "fixturesWhoseResultMoves": 30,
+      "exampleFixtures": [
+        "era-1950s",
+        "era-1960s",
+        "era-1970s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "fitBand.HANDOFF.hi",
+      "module": "opportunityAllocation",
+      "declaredConsumer": {
+        "file": "src/v3/actions/opportunityAllocation.js",
+        "fn": "boundedFit",
+        "prior": "FIT_BANDS.HANDOFF.hi",
+        "role": "Upper bound on how far above the lineup a player's HANDOFF fit may rise"
+      },
+      "dynamicInvocations": 5706,
+      "fixturesWhoseResultMoves": 28,
+      "exampleFixtures": [
+        "era-1950s",
+        "era-1960s",
+        "era-1970s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "fitBand.ZONE_ATTACK.lo",
+      "module": "opportunityAllocation",
+      "declaredConsumer": {
+        "file": "src/v3/actions/opportunityAllocation.js",
+        "fn": "boundedFit",
+        "prior": "FIT_BANDS.ZONE_ATTACK.lo",
+        "role": "Lower bound on how far below the lineup a player's ZONE_ATTACK fit may fall"
+      },
+      "dynamicInvocations": 2259,
+      "fixturesWhoseResultMoves": 4,
+      "exampleFixtures": [
+        "real-zone-nick-nurse",
+        "real-zone-erik-spoelstra",
+        "real-zone-rick-carlisle"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "fitBand.ZONE_ATTACK.hi",
+      "module": "opportunityAllocation",
+      "declaredConsumer": {
+        "file": "src/v3/actions/opportunityAllocation.js",
+        "fn": "boundedFit",
+        "prior": "FIT_BANDS.ZONE_ATTACK.hi",
+        "role": "Upper bound on how far above the lineup a player's ZONE_ATTACK fit may rise"
+      },
+      "dynamicInvocations": 2259,
+      "fixturesWhoseResultMoves": 4,
+      "exampleFixtures": [
+        "real-zone-rick-carlisle",
+        "real-zone-nick-nurse",
+        "real-zone-erik-spoelstra"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "fitBand.CUT.lo",
+      "module": "opportunityAllocation",
+      "declaredConsumer": {
+        "file": "src/v3/actions/opportunityAllocation.js",
+        "fn": "boundedFit",
+        "prior": "FIT_BANDS.CUT.lo",
+        "role": "Lower bound on how far below the lineup a player's CUT fit may fall"
+      },
+      "dynamicInvocations": 5526,
+      "fixturesWhoseResultMoves": 29,
+      "exampleFixtures": [
+        "era-1950s",
+        "era-1960s",
+        "era-1970s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "fitBand.CUT.hi",
+      "module": "opportunityAllocation",
+      "declaredConsumer": {
+        "file": "src/v3/actions/opportunityAllocation.js",
+        "fn": "boundedFit",
+        "prior": "FIT_BANDS.CUT.hi",
+        "role": "Upper bound on how far above the lineup a player's CUT fit may rise"
+      },
+      "dynamicInvocations": 5526,
+      "fixturesWhoseResultMoves": 22,
+      "exampleFixtures": [
+        "era-2010s",
+        "man-2010s",
+        "zone-2010s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "fitBand.ISOLATION.lo",
+      "module": "opportunityAllocation",
+      "declaredConsumer": {
+        "file": "src/v3/actions/opportunityAllocation.js",
+        "fn": "boundedFit",
+        "prior": "FIT_BANDS.ISOLATION.lo",
+        "role": "Lower bound on how far below the lineup a player's ISOLATION fit may fall"
+      },
+      "dynamicInvocations": 3585,
+      "fixturesWhoseResultMoves": 28,
+      "exampleFixtures": [
+        "era-1950s",
+        "era-1960s",
+        "era-1970s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "fitBand.ISOLATION.hi",
+      "module": "opportunityAllocation",
+      "declaredConsumer": {
+        "file": "src/v3/actions/opportunityAllocation.js",
+        "fn": "boundedFit",
+        "prior": "FIT_BANDS.ISOLATION.hi",
+        "role": "Upper bound on how far above the lineup a player's ISOLATION fit may rise"
+      },
+      "dynamicInvocations": 3585,
+      "fixturesWhoseResultMoves": 25,
+      "exampleFixtures": [
+        "era-1950s",
+        "era-1970s",
+        "era-1980s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "fitBand.PICK_AND_ROLL.lo",
+      "module": "opportunityAllocation",
+      "declaredConsumer": {
+        "file": "src/v3/actions/opportunityAllocation.js",
+        "fn": "boundedFit",
+        "prior": "FIT_BANDS.PICK_AND_ROLL.lo",
+        "role": "Lower bound on how far below the lineup a player's PICK_AND_ROLL fit may fall"
+      },
+      "dynamicInvocations": 5380,
+      "fixturesWhoseResultMoves": 29,
+      "exampleFixtures": [
+        "era-1950s",
+        "era-1960s",
+        "era-1970s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "fitBand.PICK_AND_ROLL.hi",
+      "module": "opportunityAllocation",
+      "declaredConsumer": {
+        "file": "src/v3/actions/opportunityAllocation.js",
+        "fn": "boundedFit",
+        "prior": "FIT_BANDS.PICK_AND_ROLL.hi",
+        "role": "Upper bound on how far above the lineup a player's PICK_AND_ROLL fit may rise"
+      },
+      "dynamicInvocations": 5380,
+      "fixturesWhoseResultMoves": 27,
+      "exampleFixtures": [
+        "era-1950s",
+        "era-1960s",
+        "era-1970s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "fitBand.TRANSITION.lo",
+      "module": "opportunityAllocation",
+      "declaredConsumer": {
+        "file": "src/v3/actions/opportunityAllocation.js",
+        "fn": "boundedFit",
+        "prior": "FIT_BANDS.TRANSITION.lo",
+        "role": "Lower bound on how far below the lineup a player's TRANSITION fit may fall"
+      },
+      "dynamicInvocations": 5310,
+      "fixturesWhoseResultMoves": 30,
+      "exampleFixtures": [
+        "era-1950s",
+        "era-1960s",
+        "era-1970s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "fitBand.TRANSITION.hi",
+      "module": "opportunityAllocation",
+      "declaredConsumer": {
+        "file": "src/v3/actions/opportunityAllocation.js",
+        "fn": "boundedFit",
+        "prior": "FIT_BANDS.TRANSITION.hi",
+        "role": "Upper bound on how far above the lineup a player's TRANSITION fit may rise"
+      },
+      "dynamicInvocations": 5310,
+      "fixturesWhoseResultMoves": 28,
+      "exampleFixtures": [
+        "era-1970s",
+        "era-1980s",
+        "era-1990s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "fitBand.GENERIC_HALF_COURT.lo",
+      "module": "opportunityAllocation",
+      "declaredConsumer": {
+        "file": "src/v3/actions/opportunityAllocation.js",
+        "fn": "boundedFit",
+        "prior": "FIT_BANDS.GENERIC_HALF_COURT.lo",
+        "role": "Lower bound on how far below the lineup a player's GENERIC_HALF_COURT fit may fall"
+      },
+      "dynamicInvocations": 3515,
+      "fixturesWhoseResultMoves": 28,
+      "exampleFixtures": [
+        "era-1950s",
+        "era-1960s",
+        "era-1970s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "fitBand.GENERIC_HALF_COURT.hi",
+      "module": "opportunityAllocation",
+      "declaredConsumer": {
+        "file": "src/v3/actions/opportunityAllocation.js",
+        "fn": "boundedFit",
+        "prior": "FIT_BANDS.GENERIC_HALF_COURT.hi",
+        "role": "Upper bound on how far above the lineup a player's GENERIC_HALF_COURT fit may rise"
+      },
+      "dynamicInvocations": 3515,
+      "fixturesWhoseResultMoves": 24,
+      "exampleFixtures": [
+        "era-1950s",
+        "era-1960s",
+        "era-1970s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "shotLocation.rimWeight",
+      "module": "possessionContext",
+      "declaredConsumer": {
+        "file": "src/v3/possession/context.js",
+        "fn": "shotProfileFor",
+        "prior": "1.0 + rim * 0.34",
+        "role": "How rim threat scales the base rim weight"
+      },
+      "dynamicInvocations": 320,
+      "fixturesWhoseResultMoves": 32,
+      "exampleFixtures": [
+        "era-1950s",
+        "era-1960s",
+        "era-1970s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "shotLocation.postWeight",
+      "module": "possessionContext",
+      "declaredConsumer": {
+        "file": "src/v3/possession/context.js",
+        "fn": "shotProfileFor",
+        "prior": "0.5 + post * 0.42",
+        "role": "How post threat scales the base paint weight"
+      },
+      "dynamicInvocations": 320,
+      "fixturesWhoseResultMoves": 32,
+      "exampleFixtures": [
+        "era-1950s",
+        "era-1960s",
+        "era-1970s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "shotLocation.midrangeWeight",
+      "module": "possessionContext",
+      "declaredConsumer": {
+        "file": "src/v3/possession/context.js",
+        "fn": "shotProfileFor",
+        "prior": "1.4 + perim * 0.18",
+        "role": "How perimeter skill scales the base midrange weight"
+      },
+      "dynamicInvocations": 320,
+      "fixturesWhoseResultMoves": 32,
+      "exampleFixtures": [
+        "era-1950s",
+        "era-1960s",
+        "era-1970s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "shotLocation.threeWeight",
+      "module": "possessionContext",
+      "declaredConsumer": {
+        "file": "src/v3/possession/context.js",
+        "fn": "shotProfileFor",
+        "prior": "(0.4 + perim * 0.22) * vol",
+        "role": "How perimeter skill scales the base three-point weight"
+      },
+      "dynamicInvocations": 320,
+      "fixturesWhoseResultMoves": 30,
+      "exampleFixtures": [
+        "era-1950s",
+        "era-1960s",
+        "era-1980s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "shotLocation.rimBiasMultiplier",
+      "module": "possessionGame",
+      "declaredConsumer": {
+        "file": "src/v3/possession/game.js",
+        "fn": "chooseShotCategory",
+        "prior": "1 + max(0, bias) * 1.6",
+        "role": "How strongly an action's rim bias inflates the rim weight"
+      },
+      "dynamicInvocations": 6703,
+      "fixturesWhoseResultMoves": 32,
+      "exampleFixtures": [
+        "era-1950s",
+        "era-1960s",
+        "era-1970s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "shotLocation.perimeterBiasMultiplier",
+      "module": "possessionGame",
+      "declaredConsumer": {
+        "file": "src/v3/possession/game.js",
+        "fn": "chooseShotCategory",
+        "prior": "1 + max(0, -bias) * 1.5",
+        "role": "How strongly a negative rim bias inflates the three weight"
+      },
+      "dynamicInvocations": 6703,
+      "fixturesWhoseResultMoves": 27,
+      "exampleFixtures": [
+        "era-1980s",
+        "era-1990s",
+        "era-2000s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "conversion.rimBonus",
+      "module": "possessionGame",
+      "declaredConsumer": {
+        "file": "src/v3/possession/game.js",
+        "fn": "baseMakePct",
+        "prior": "fg + 0.155",
+        "role": "Rim make percentage above the era's league field-goal percentage"
+      },
+      "dynamicInvocations": 6024,
+      "fixturesWhoseResultMoves": 32,
+      "exampleFixtures": [
+        "era-1950s",
+        "era-1960s",
+        "era-1970s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "conversion.paintBonus",
+      "module": "possessionGame",
+      "declaredConsumer": {
+        "file": "src/v3/possession/game.js",
+        "fn": "baseMakePct",
+        "prior": "fg + 0.015",
+        "role": "Paint make percentage above the era baseline"
+      },
+      "dynamicInvocations": 6024,
+      "fixturesWhoseResultMoves": 32,
+      "exampleFixtures": [
+        "era-1950s",
+        "era-1960s",
+        "era-1970s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "conversion.midrangePenalty",
+      "module": "possessionGame",
+      "declaredConsumer": {
+        "file": "src/v3/possession/game.js",
+        "fn": "baseMakePct",
+        "prior": "fg - 0.055",
+        "role": "Midrange make percentage relative to the era baseline; negative by design"
+      },
+      "dynamicInvocations": 6024,
+      "fixturesWhoseResultMoves": 32,
+      "exampleFixtures": [
+        "era-1950s",
+        "era-1960s",
+        "era-1970s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "era.paceTempoScale",
+      "module": "possessionContext",
+      "declaredConsumer": {
+        "file": "src/v3/possession/context.js",
+        "fn": "preparePossessionContext",
+        "prior": "((goldTempo + blueTempo)/2 - 5) * 1.35",
+        "role": "How far both coaches' tempo moves the era's documented pace"
+      },
+      "dynamicInvocations": 32,
+      "fixturesWhoseResultMoves": 31,
+      "exampleFixtures": [
+        "era-1950s",
+        "era-1960s",
+        "era-1970s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "era.paceBoundFraction",
+      "module": "possessionContext",
+      "declaredConsumer": {
+        "file": "src/v3/possession/context.js",
+        "fn": "preparePossessionContext",
+        "prior": "basePace * 0.86 .. basePace * 1.14",
+        "role": "Fractional band around the era pace anchor that realized pace may occupy"
+      },
+      "dynamicInvocations": 32,
+      "fixturesWhoseResultMoves": 1,
+      "exampleFixtures": [
+        "synthdev-sd2-creator-stack"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "era.threeAnchorMax",
+      "module": "possessionContext",
+      "declaredConsumer": {
+        "file": "src/v3/possession/context.js",
+        "fn": "anchorThreeScale",
+        "prior": "clamp(oddsRatio, 0.05, 12)",
+        "role": "Upper clamp on the three-point odds-ratio anchor"
+      },
+      "dynamicInvocations": 32,
+      "fixturesWhoseResultMoves": 11,
+      "exampleFixtures": [
+        "era-2020s",
+        "coach-phil-jackson-vs-gregg-popovich",
+        "coach-red-auerbach-vs-pat-riley"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "era.freeThrowTripRate",
+      "module": "possessionContext",
+      "declaredConsumer": {
+        "file": "src/v3/possession/context.js",
+        "fn": "preparePossessionContext",
+        "prior": "ftaPerGame / 2 / pace",
+        "role": "Foul trips per free-throw attempt; a trip is ~2 attempts"
+      },
+      "dynamicInvocations": 32,
+      "fixturesWhoseResultMoves": 32,
+      "exampleFixtures": [
+        "era-1950s",
+        "era-1960s",
+        "era-1970s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "zone.highPostVulnerability",
+      "module": "zoneResolution",
+      "declaredConsumer": {
+        "file": "src/v3/defense/zone.js",
+        "fn": "attackZone",
+        "prior": "(new scalar; shell gap tables were unmultiplied)",
+        "role": "How far a shell's high post may be exploited relative to its table value"
+      },
+      "dynamicInvocations": 251,
+      "fixturesWhoseResultMoves": 4,
+      "exampleFixtures": [
+        "real-zone-nick-nurse",
+        "real-zone-erik-spoelstra",
+        "real-zone-rick-carlisle"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "zone.cornerVulnerability",
+      "module": "zoneResolution",
+      "declaredConsumer": {
+        "file": "src/v3/defense/zone.js",
+        "fn": "attackZone",
+        "prior": "(new scalar; shell gap tables were unmultiplied)",
+        "role": "How far a shell's corners may be exploited relative to its table value"
+      },
+      "dynamicInvocations": 251,
+      "fixturesWhoseResultMoves": 4,
+      "exampleFixtures": [
+        "real-zone-nick-nurse",
+        "real-zone-erik-spoelstra",
+        "real-zone-rick-carlisle"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "coach.actionMixInfluence",
+      "module": "coachIntelligence",
+      "declaredConsumer": {
+        "file": "src/v3/actions/families.js",
+        "fn": "weight (POST_UP, ISOLATION, OFF_BALL_SCREEN, HANDOFF, CUT) + possession/actions.js expandedActionMix (PICK_AND_ROLL)",
+        "prior": "(new scalar over six coach-preference terms)",
+        "role": "How strongly coach identity shapes the baseline action mix"
+      },
+      "dynamicInvocations": 58,
+      "fixturesWhoseResultMoves": 31,
+      "exampleFixtures": [
+        "era-1950s",
+        "era-1960s",
+        "era-1970s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "coach.rosterSensitivity",
+      "module": "coachIntelligence",
+      "declaredConsumer": {
+        "file": "src/v3/actions/families.js",
+        "fn": "weight (six families) + possession/actions.js rosterSupport",
+        "prior": "(new scalar over six roster-response terms)",
+        "role": "How strongly the action mix responds to roster composition"
+      },
+      "dynamicInvocations": 58,
+      "fixturesWhoseResultMoves": 31,
+      "exampleFixtures": [
+        "era-1950s",
+        "era-1960s",
+        "era-1970s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "coach.offensiveAdjustmentMinEvents",
+      "module": "coachAdjustment",
+      "declaredConsumer": {
+        "file": "src/v3/actions/offensivePlan.js",
+        "fn": "considerOffensiveAdjustment",
+        "prior": "OFF_ADJUSTMENT_MIN_EVENTS = 6",
+        "role": "Evidence events before an offensive adjustment may fire"
+      },
+      "dynamicInvocations": 6320,
+      "fixturesWhoseResultMoves": 31,
+      "exampleFixtures": [
+        "era-1950s",
+        "era-1960s",
+        "era-1970s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "coach.defensiveAdjustmentMinEvents",
+      "module": "coachAdjustment",
+      "declaredConsumer": {
+        "file": "src/v3/defense/liveState.js",
+        "fn": "considerAdjustment",
+        "prior": "ADJUSTMENT_MIN_EVENTS = 5",
+        "role": "Evidence events before a defensive assignment adjustment may fire"
+      },
+      "dynamicInvocations": 6511,
+      "fixturesWhoseResultMoves": 21,
+      "exampleFixtures": [
+        "era-1950s",
+        "era-1960s",
+        "era-1970s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "coach.offensiveAdjustmentCooldown",
+      "module": "coachAdjustment",
+      "declaredConsumer": {
+        "file": "src/v3/actions/offensivePlan.js",
+        "fn": "considerOffensiveAdjustment",
+        "prior": "OFF_ADJUSTMENT_COOLDOWN = 30",
+        "role": "Possessions before an offensive adjustment may fire again"
+      },
+      "dynamicInvocations": 6320,
+      "fixturesWhoseResultMoves": 29,
+      "exampleFixtures": [
+        "era-1950s",
+        "era-1960s",
+        "era-1970s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "coach.defensiveAdjustmentCooldown",
+      "module": "coachAdjustment",
+      "declaredConsumer": {
+        "file": "src/v3/defense/liveState.js",
+        "fn": "considerAdjustment",
+        "prior": "ADJUSTMENT_COOLDOWN = 34",
+        "role": "Possessions before a defensive adjustment may fire again"
+      },
+      "dynamicInvocations": 6511,
+      "fixturesWhoseResultMoves": 20,
+      "exampleFixtures": [
+        "era-1950s",
+        "era-1960s",
+        "era-1970s"
+      ],
+      "connected": true,
+      "readButInert": false
+    },
+    {
+      "id": "coach.adjustmentMagnitude",
+      "module": "coachAdjustment",
+      "declaredConsumer": {
+        "file": "src/v3/actions/offensivePlan.js",
+        "fn": "considerOffensiveAdjustment",
+        "prior": "ADJUSTMENT_STEP = 0.06",
+        "role": "Base size of one adjustment's move to an action-family weight"
+      },
+      "dynamicInvocations": 6320,
+      "fixturesWhoseResultMoves": 31,
+      "exampleFixtures": [
+        "era-1950s",
+        "era-1960s",
+        "era-1970s"
+      ],
+      "connected": true,
+      "readButInert": false
+    }
+  ],
+  "mapHash": "94559e9a083c9a7f8ff3b6eee6bea9fe3816eefaa6b21d21fc1a61dae6478897"
+}
