@@ -1,87 +1,68 @@
-# Phase 6C3 validation package
+# Phase 6C3 validation package — PREPARED, NOT RUN
 
-**State: NOT PREPARED. There is no candidate to validate.**
+This describes what a later phase would execute. **Nothing here has been run.**
+Both holdout sets remain sealed at access count 0, and running any part of this
+package is a decision for Phase 6C3, not a consequence of this document.
 
-Phase 6C3 opens the formal holdouts exactly once, against a locked candidate.
-Phase 6C2C4 locked nothing, so the package cannot be assembled — and assembling a
-placeholder would invite the one irreversible mistake available here: burning a
-one-time holdout on a parameter set identical to the defaults.
+## Preconditions, all of which must hold first
 
-## Holdout status — unchanged and must stay so
+| Precondition | Current state |
+| --- | --- |
+| A candidate is locked and immutable | **met** — Candidate 0, `DEVELOPMENT_LOCKED_BASELINE` |
+| All candidate-lock engineering gates pass | **met** — 14 of 14 |
+| Monte Carlo probability suite passes | **NOT met** — `sideBiasPerCellWithinTolerance` fails |
+| An authorized independent second source exists | **NOT met** — no source reaches "permitted" without purchase |
+| Tier B target coverage is adequate | **NOT met** — 2 of 384 fields |
+| `src/v3/data/eras.js` no longer cites the excluded publisher | **NOT met** |
 
-| Set | State | Access count |
-|---|---|---|
-| `historical-holdout-v3` | `SEALED_UNREAD` | **0** |
-| `synthetic-stress-holdout-v2` | `SEALED_UNREAD` | **0** |
-| `historical-holdout-v2` | `SEALED_UNREAD` | 0 |
-| `legacy-holdout-v1` | `SEALED_UNREAD` | 0 |
-| `synthetic-stress-v1` | `PREVIOUSLY_INSPECTED_ARCHIVE` | 0 |
+Three of six are unmet, and two of those are external-data blockers that
+engineering cannot resolve. A holdout opened against a model whose targets are
+2/384 covered would consume the holdout without being able to learn much from
+it — the holdout can only be opened once.
 
-**Do not open either formal holdout to validate the default parameter set.** The
-default set is not a calibration; it is the engine's existing behaviour. Measuring
-it against a holdout would consume the holdout and answer a question nobody asked.
+## Why the probability gate must be resolved before, not during
 
-## What Phase 6C3 needs before it can run
+Opening a holdout is irreversible. If the probability suite is still failing when
+the holdout is opened, a failed holdout cannot be attributed: it could be the
+parameter set, or it could be the estimator defect that was already known. The
+gate should either pass, or be revised with a justification written **before**
+the holdout is seen.
 
-1. A locked candidate: `possessionCalibrationVersion = 1.0.0`, status
-   `DEVELOPMENT_LOCKED_SCOPED`, with at least one parameter actually moved from
-   its default.
-2. That candidate's `parameterSetHash`, `calibrationScopeHash`, `foldHash` and
-   `identifiabilityPolicyHash` recorded in an immutable manifest.
-3. The lock commit pushed, working tree clean.
-4. A frozen holdout acceptance policy — already exists from Phase 6C2C2
-   (`holdoutAcceptancePolicyVersion 1.0.0`, ratio cap 1.50, zero catastrophic
-   fixtures, ≥1,000 games per fixture).
+## The package, in order
 
-Items 1 and 2 do not exist. Item 3 is satisfiable. Item 4 is done.
+1. **Re-verify the lock.** Recompute every hash in `candidate-lock.json`. Any
+   mismatch voids the package before anything is opened.
+2. **Resolve the probability gate.** Either fix the per-cell side bias, or revise
+   the gate with a multiplicity correction whose justification is recorded and
+   dated before step 4.
+3. **External data clearance.** Owner-managed. Until an authorized independent
+   second source exists, the 9 parameters frozen pending external data stay
+   frozen and no target-driven calibration of them is possible.
+4. **Open historical holdout v3 exactly once.** 8 fixtures. Record the access,
+   the timestamp, the parameter set hash, and the result — pass or fail — before
+   any interpretation.
+5. **Open synthetic stress holdout v2 exactly once.** 16 members.
+6. **Report the holdout result without adjustment.** If it fails, the phase
+   records `HOLDOUT_FAILED` and produces a replacement-holdout recommendation. A
+   failed holdout must not be re-run, re-scored, or re-scoped.
+7. **Private preview** only if the holdout passes.
+8. **Production activation** only on explicit CEO approval (`GO LIVE`). Inferred
+   approval and self-approval are forbidden, and no instruction to complete a
+   phase substitutes for it.
 
-## Commands, and what they must refuse
+## What must be true of the holdout run
 
-```bash
-npm run validation:historical-holdout -- --unlock-holdout
-npm run validation:synthetic-holdout -- --unlock-holdout
-npm run validation:engine-comparison
-npm run validation:private-preview
-```
+- Simulated once, with the locked parameter set hash recorded alongside.
+- No parameter may be changed after the holdout is opened. A change after that
+  point invalidates the holdout permanently.
+- Thresholds must already be frozen. This phase's own history is the argument:
+  the first search accepted a candidate under a threshold that had no
+  multiplicity control, and a stricter method turned that acceptance into a
+  rejection. A threshold chosen after seeing holdout data is worth nothing.
 
-These are **not created in this phase**. Creating an unlock command with no
-candidate to justify it makes the irreversible action one flag away from a
-curious operator.
+## Accidental access
 
-When they are created, the requirements are:
-
-- The unlock flag must be mandatory, and absent it every command refuses.
-- Each must verify the candidate's `parameterSetHash` matches the locked
-  manifest before reading a single fixture, and abort on mismatch.
-- Each must refuse a candidate whose status is not `DEVELOPMENT_LOCKED_SCOPED`.
-- Each must refuse when `possessionCalibrationVersion` is `null` — which is the
-  current state, and the reason none of them exists yet.
-- The access event must be written **before** the first simulation, so a crash
-  mid-run still records that the seal was broken.
-- No ordinary command may reach a holdout fixture. Every existing calibration
-  script already asserts this, and `npm run probability:estimate` already refuses
-  a holdout fixture id by name.
-
-## Prerequisites that are not engineering
-
-Recorded in [`external-calibration-prerequisites.md`](external-calibration-prerequisites.md).
-The two that need no procurement:
-
-1. **Legal clearance of `src/v3/data/eras.js`** — 64 values already in the
-   repository, blocking the 7 strongest measurable parameters.
-2. **Confounding-resolution fixtures** — a controlled pair where coach preference
-   and roster strength oppose each other, to separate `actionMixInfluence` from
-   `rosterSensitivity`.
-
-## What Phase 6C3 inherits and need not redo
-
-| Asset | Hash |
-|---|---|
-| Runtime wiring, 53/53 authoritative | binding `1.0.0` |
-| Default parity, 32/32 exact | fixture set `1.0.0` |
-| Identifiability v2 methodology | `04c4b45bf1752ce0` |
-| Internal folds v3, leak-free | `ab4af0cb555bbe24` |
-| Readiness reconciliation | `63fbd507faa74882` |
-| Default parameter set | `83f5a17dea0c36d4` |
-
-A future phase starts at the search, not at the plumbing.
+If any sealed member is accessed before Phase 6C3 authorises it: stop, record
+the exact access and what was observed, do not conceal it, do not claim the
+holdout remains valid, and produce a replacement-holdout recommendation. The
+access count in `validation-summary.json` is the field of record.
