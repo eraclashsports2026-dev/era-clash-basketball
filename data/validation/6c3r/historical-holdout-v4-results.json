@@ -1,0 +1,4558 @@
+{
+  "artifact": "historical-holdout-v4-results",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run validation:historical-holdout-v4",
+  "generatedAt": "2026-08-26T23:04:12.541Z",
+  "gitCommit": "800e482da0680044df345a2f4ca03d4bbb0ce86b",
+  "branch": "phase-6c3r-validation-surface-repair",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {
+    "data/validation/6c3r/historical-holdout-v4-policy.json": "dc3cdabee68d23ea7b407ba6efb0b5cbec8773cd9006b1cab0aff0d489cf53e1",
+    "data/validation/6c3r/historical-holdout-v4-manifest.json": "180899b07e15e30f330d8ef65652d3158b0d7b7585cc6675bc2cdb74f2e4fb48"
+  },
+  "data": {
+    "formalValidationAttemptVersion": "2.0.0",
+    "set": "historical-holdout-v4",
+    "verdict": "HISTORICAL_HOLDOUT_V4_FAIL",
+    "outcome": "FAIL",
+    "identity": {
+      "candidateCommit": "1a68d20e3885fca6c1b913237bb05df211b2daf6",
+      "coreHash": "58c5fb6974e694c29f87934ab107ff47ce32963a9c0695e36f941c2a70ae6683",
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "calibrationVersion": "1.0.0",
+      "policyHash": "6b607348f42ba4a4dc7c155c05944a80c87ccf04c92761993dc32370f8f9ec12",
+      "holdoutManifestHash": "5abab14d3b1674a917fa1084cd7e16c15e315896f45229f1237dca4c4f32213c",
+      "traitRegistryHash": "c034937be7e40bd18932fe53151e0b8a877dc47095004653e1bb11aa5c73a0cf",
+      "observabilityHash": "c8ef8c6a9f0b08b1818c890fea38c659af39a4aa498ac769683320be5a3816df",
+      "referenceOpponentHash": "6a6fb8a91ead4ca06a13bbb3901125d6a508259397f18a83e3f8233bc81f7e79",
+      "seedSetHash": "44262434aea65e22752285d57ed65fac6762fb64a5020d36119e38394c3604b0",
+      "seedStream": "historical-holdout-v4",
+      "pairsPerSurface": 2048
+    },
+    "accessEvent": {
+      "seq": 1,
+      "set": "historical-holdout-v4",
+      "actor": "CEO-authorized Phase 6C3R",
+      "reason": "One-time formal revalidation of locked Candidate 0 on the repaired opponent-paired surface (possessionCalibrationVersion 1.0.0, parameterSetHash 83f5a17d, replacing consumed historical-holdout-v3)",
+      "parameterVersion": null,
+      "commit": null,
+      "argv": [
+        "--unlock-holdout",
+        "--unlock-historical-holdout-v4"
+      ],
+      "openedAtCommit": "800e482da0680044df345a2f4ca03d4bbb0ce86b"
+    },
+    "accessCountBefore": 0,
+    "accessCountAfter": 1,
+    "runStatus": "COMPLETE",
+    "runHash": "90bd81ae4d2fe0951db3cc802c4ee67e4aca19bfcf85362438da88c873aa4b5b",
+    "matchupsEvaluated": 8,
+    "gamesPerSurface": 4096,
+    "totalGames": 98304,
+    "erasCovered": [
+      "1950s",
+      "1960s",
+      "1970s",
+      "1980s",
+      "1990s",
+      "2000s",
+      "2010s",
+      "2020s"
+    ],
+    "numeric": {
+      "teamSurfacesScored": 16,
+      "holdoutComposite": 0.04217,
+      "internalBaselineMean": 0.0431,
+      "ratio": 0.97839,
+      "ratioGate": 1.5,
+      "catastrophicThreshold": 0.13038,
+      "catastrophicTeams": []
+    },
+    "traits": {
+      "scored": 73,
+      "passed": 59,
+      "failed": 14,
+      "passRate": 0.80822,
+      "minPassRate": 0.75,
+      "hardFails": [
+        "PASSING_HUB",
+        "ELITE_OFFENSE",
+        "elite team man defence",
+        "ELITE_DEFENSE",
+        "STRONG_OFFENSIVE_REBOUNDING",
+        "elite physical man",
+        "ELITE_DEFENSE",
+        "ELITE_OFFENSE",
+        "MOTION",
+        "man with a dominant rebounder",
+        "THREE_POINT_HEAVY",
+        "ELITE_DEFENSE"
+      ],
+      "notScoredUnobservable": 21,
+      "perMatchupMajority": [
+        {
+          "matchupId": "v4p-1950s-1",
+          "scored": 10,
+          "failed": 0,
+          "failsMajority": false
+        },
+        {
+          "matchupId": "v4p-1960s-1",
+          "scored": 7,
+          "failed": 2,
+          "failsMajority": false
+        },
+        {
+          "matchupId": "v4p-1970s-2",
+          "scored": 9,
+          "failed": 5,
+          "failsMajority": true
+        },
+        {
+          "matchupId": "v4p-1980s-2",
+          "scored": 8,
+          "failed": 2,
+          "failsMajority": false
+        },
+        {
+          "matchupId": "v4p-1990s-x01",
+          "scored": 10,
+          "failed": 2,
+          "failsMajority": false
+        },
+        {
+          "matchupId": "v4p-2000s-1",
+          "scored": 11,
+          "failed": 1,
+          "failsMajority": false
+        },
+        {
+          "matchupId": "v4p-2010s-1",
+          "scored": 8,
+          "failed": 1,
+          "failsMajority": false
+        },
+        {
+          "matchupId": "v4p-2020s-1",
+          "scored": 10,
+          "failed": 1,
+          "failsMajority": false
+        }
+      ]
+    },
+    "gates": {
+      "everyMatchupExecuted": true,
+      "zeroInvariantFailures": true,
+      "zeroFinalTies": true,
+      "zeroImpossibleScores": true,
+      "zeroPreThreeEraThreePointAttempts": true,
+      "replayExactEverywhere": true,
+      "compositeRatioWithinPolicy": true,
+      "zeroCatastrophicTeams": true,
+      "traitPassRateMet": true,
+      "zeroTraitHardFails": false,
+      "noMatchupFailsMajorityOfTraits": false
+    },
+    "results": [
+      {
+        "matchupId": "v4p-1950s-1",
+        "eraStyleId": "1950s",
+        "pairType": "ACTUAL_REGULAR_SEASON_OPPONENTS",
+        "teamA": {
+          "fixtureId": "v4-1954-55-lakers",
+          "teamName": "Minneapolis Lakers",
+          "season": "1954-55",
+          "shareResults": {
+            "playerScoringShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.0424,
+              "perPlayer": [
+                {
+                  "id": "cal:MIN_LAKERS:1954:slater-martin",
+                  "target": 0.1871,
+                  "realised": 0.2109,
+                  "absoluteError": 0.0238
+                },
+                {
+                  "id": "cal:MIN_LAKERS:1954:whitey-skoog",
+                  "target": 0.1499,
+                  "realised": 0.19714,
+                  "absoluteError": 0.04724
+                },
+                {
+                  "id": "cal:MIN_LAKERS:1954:jim-pollard",
+                  "target": 0.1486,
+                  "realised": 0.18355,
+                  "absoluteError": 0.03495
+                },
+                {
+                  "id": "cal:MIN_LAKERS:1954:vern-mikkelsen",
+                  "target": 0.2572,
+                  "realised": 0.22331,
+                  "absoluteError": 0.03389
+                },
+                {
+                  "id": "cal:MIN_LAKERS:1954:clyde-lovellette",
+                  "target": 0.2572,
+                  "realised": 0.1851,
+                  "absoluteError": 0.0721
+                }
+              ]
+            },
+            "playerReboundShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.02054,
+              "perPlayer": [
+                {
+                  "id": "cal:MIN_LAKERS:1954:slater-martin",
+                  "target": 0.0978,
+                  "realised": 0.12743,
+                  "absoluteError": 0.02963
+                },
+                {
+                  "id": "cal:MIN_LAKERS:1954:whitey-skoog",
+                  "target": 0.1141,
+                  "realised": 0.13581,
+                  "absoluteError": 0.02171
+                },
+                {
+                  "id": "cal:MIN_LAKERS:1954:jim-pollard",
+                  "target": 0.1984,
+                  "realised": 0.19089,
+                  "absoluteError": 0.00751
+                },
+                {
+                  "id": "cal:MIN_LAKERS:1954:vern-mikkelsen",
+                  "target": 0.2772,
+                  "realised": 0.26248,
+                  "absoluteError": 0.01472
+                },
+                {
+                  "id": "cal:MIN_LAKERS:1954:clyde-lovellette",
+                  "target": 0.3125,
+                  "realised": 0.28339,
+                  "absoluteError": 0.02911
+                }
+              ]
+            },
+            "playerAssistShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.04371,
+              "perPlayer": [
+                {
+                  "id": "cal:MIN_LAKERS:1954:slater-martin",
+                  "target": 0.3856,
+                  "realised": 0.2923,
+                  "absoluteError": 0.0933
+                },
+                {
+                  "id": "cal:MIN_LAKERS:1954:whitey-skoog",
+                  "target": 0.2288,
+                  "realised": 0.21281,
+                  "absoluteError": 0.01599
+                },
+                {
+                  "id": "cal:MIN_LAKERS:1954:jim-pollard",
+                  "target": 0.1634,
+                  "realised": 0.17412,
+                  "absoluteError": 0.01072
+                },
+                {
+                  "id": "cal:MIN_LAKERS:1954:vern-mikkelsen",
+                  "target": 0.1307,
+                  "realised": 0.17076,
+                  "absoluteError": 0.04006
+                },
+                {
+                  "id": "cal:MIN_LAKERS:1954:clyde-lovellette",
+                  "target": 0.0915,
+                  "realised": 0.15001,
+                  "absoluteError": 0.05851
+                }
+              ]
+            },
+            "playerStealShares": {
+              "supported": false,
+              "reason": "no target map",
+              "mae": null
+            },
+            "playerBlockShares": {
+              "supported": false,
+              "reason": "no target map",
+              "mae": null
+            }
+          },
+          "compositeMae": 0.03555,
+          "supportedShareMetrics": [
+            "playerScoringShares",
+            "playerReboundShares",
+            "playerAssistShares"
+          ],
+          "traits": [
+            {
+              "traitId": "slow",
+              "metric": "gamePace",
+              "direction": "BELOW_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 118.70337,
+              "referenceMean": 120.0398,
+              "diff": -1.33643,
+              "z": -29.16735,
+              "ci95": {
+                "lower": -1.42624,
+                "upper": -1.24662
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "post-centred, interior scoring",
+              "metric": "postUpShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.24586,
+              "referenceMean": 0.14807,
+              "diff": 0.09779,
+              "z": 166.10403,
+              "ci95": {
+                "lower": 0.09664,
+                "upper": 0.09894
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "POST_HEAVY",
+              "metric": "postUpShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.24586,
+              "referenceMean": 0.14807,
+              "diff": 0.09779,
+              "z": 166.10403,
+              "ci95": {
+                "lower": 0.09664,
+                "upper": 0.09894
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "SIZE_HEAVY",
+              "metric": "interiorShotShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.62168,
+              "referenceMean": 0.61735,
+              "diff": 0.00433,
+              "z": 5.58907,
+              "ci95": {
+                "lower": 0.00281,
+                "upper": 0.00585
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "STRONG_OFFENSIVE_REBOUNDING",
+              "metric": "orebRate",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.37096,
+              "referenceMean": 0.35693,
+              "diff": 0.01403,
+              "z": 15.14921,
+              "ci95": {
+                "lower": 0.01221,
+                "upper": 0.01585
+              },
+              "result": "PASS",
+              "hardFail": false
+            }
+          ],
+          "notScored": [
+            {
+              "traitId": "physical man",
+              "result": "NOT_SCORED_UNOBSERVABLE"
+            }
+          ]
+        },
+        "teamB": {
+          "fixtureId": "v4-1954-55-celtics",
+          "teamName": "Boston Celtics",
+          "season": "1954-55",
+          "shareResults": {
+            "playerScoringShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.0451,
+              "perPlayer": [
+                {
+                  "id": "cal:BOS:1954:bob-cousy",
+                  "target": 0.2708,
+                  "realised": 0.21605,
+                  "absoluteError": 0.05475
+                },
+                {
+                  "id": "cal:BOS:1954:bill-sharman",
+                  "target": 0.235,
+                  "realised": 0.20309,
+                  "absoluteError": 0.03191
+                },
+                {
+                  "id": "cal:BOS:1954:frank-ramsey",
+                  "target": 0.143,
+                  "realised": 0.17533,
+                  "absoluteError": 0.03233
+                },
+                {
+                  "id": "cal:BOS:1954:jack-nichols",
+                  "target": 0.1264,
+                  "realised": 0.20682,
+                  "absoluteError": 0.08042
+                },
+                {
+                  "id": "cal:BOS:1954:ed-macauley",
+                  "target": 0.2248,
+                  "realised": 0.19871,
+                  "absoluteError": 0.02609
+                }
+              ]
+            },
+            "playerReboundShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.00953,
+              "perPlayer": [
+                {
+                  "id": "cal:BOS:1954:bob-cousy",
+                  "target": 0.1791,
+                  "realised": 0.18223,
+                  "absoluteError": 0.00313
+                },
+                {
+                  "id": "cal:BOS:1954:bill-sharman",
+                  "target": 0.1313,
+                  "realised": 0.15108,
+                  "absoluteError": 0.01978
+                },
+                {
+                  "id": "cal:BOS:1954:frank-ramsey",
+                  "target": 0.1881,
+                  "realised": 0.18902,
+                  "absoluteError": 0.00092
+                },
+                {
+                  "id": "cal:BOS:1954:jack-nichols",
+                  "target": 0.2478,
+                  "realised": 0.2353,
+                  "absoluteError": 0.0125
+                },
+                {
+                  "id": "cal:BOS:1954:ed-macauley",
+                  "target": 0.2537,
+                  "realised": 0.24238,
+                  "absoluteError": 0.01132
+                }
+              ]
+            },
+            "playerAssistShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.01965,
+              "perPlayer": [
+                {
+                  "id": "cal:BOS:1954:bob-cousy",
+                  "target": 0.3715,
+                  "realised": 0.33099,
+                  "absoluteError": 0.04051
+                },
+                {
+                  "id": "cal:BOS:1954:bill-sharman",
+                  "target": 0.1952,
+                  "realised": 0.18659,
+                  "absoluteError": 0.00861
+                },
+                {
+                  "id": "cal:BOS:1954:frank-ramsey",
+                  "target": 0.1381,
+                  "realised": 0.15315,
+                  "absoluteError": 0.01505
+                },
+                {
+                  "id": "cal:BOS:1954:jack-nichols",
+                  "target": 0.1095,
+                  "realised": 0.14085,
+                  "absoluteError": 0.03135
+                },
+                {
+                  "id": "cal:BOS:1954:ed-macauley",
+                  "target": 0.1857,
+                  "realised": 0.18843,
+                  "absoluteError": 0.00273
+                }
+              ]
+            },
+            "playerStealShares": {
+              "supported": false,
+              "reason": "no target map",
+              "mae": null
+            },
+            "playerBlockShares": {
+              "supported": false,
+              "reason": "no target map",
+              "mae": null
+            }
+          },
+          "compositeMae": 0.02476,
+          "supportedShareMetrics": [
+            "playerScoringShares",
+            "playerReboundShares",
+            "playerAssistShares"
+          ],
+          "traits": [
+            {
+              "traitId": "very fast",
+              "metric": "gamePace",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 122.71851,
+              "referenceMean": 120.0398,
+              "diff": 2.67871,
+              "z": 62.02518,
+              "ci95": {
+                "lower": 2.59406,
+                "upper": 2.76336
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "fast break, early offence",
+              "metric": "transitionShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.20818,
+              "referenceMean": 0.1734,
+              "diff": 0.03478,
+              "z": 60.60852,
+              "ci95": {
+                "lower": 0.03366,
+                "upper": 0.0359
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "TRANSITION",
+              "metric": "transitionShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.20818,
+              "referenceMean": 0.1734,
+              "diff": 0.03478,
+              "z": 60.60852,
+              "ci95": {
+                "lower": 0.03366,
+                "upper": 0.0359
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "PACE_EXTREME",
+              "metric": "gamePace",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 122.71851,
+              "referenceMean": 120.0398,
+              "diff": 2.67871,
+              "z": 62.02518,
+              "ci95": {
+                "lower": 2.59406,
+                "upper": 2.76336
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "WEAK_OFFENSIVE_REBOUNDING",
+              "metric": "orebRate",
+              "direction": "BELOW_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.31543,
+              "referenceMean": 0.35693,
+              "diff": -0.0415,
+              "z": -44.81056,
+              "ci95": {
+                "lower": -0.04332,
+                "upper": -0.03968
+              },
+              "result": "PASS",
+              "hardFail": false
+            }
+          ],
+          "notScored": [
+            {
+              "traitId": "gambling man defence",
+              "result": "NOT_SCORED_METRIC_UNCERTIFIED"
+            }
+          ]
+        },
+        "headToHead": {
+          "games": 4096,
+          "teamAWins": 0,
+          "teamAWinRate": 0
+        },
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleScores": 0,
+          "preThreeEraThreePointAttempts": 0,
+          "replayExactAllSurfaces": true
+        },
+        "gamesPlayed": 12288
+      },
+      {
+        "matchupId": "v4p-1960s-1",
+        "eraStyleId": "1960s",
+        "pairType": "ACTUAL_REGULAR_SEASON_OPPONENTS",
+        "teamA": {
+          "fixtureId": "v4-1969-70-76ers",
+          "teamName": "Philadelphia 76ers",
+          "season": "1969-70",
+          "shareResults": {
+            "playerScoringShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.04921,
+              "perPlayer": [
+                {
+                  "id": "cal:PHI:1969:archie-clark",
+                  "target": 0.2078,
+                  "realised": 0.20551,
+                  "absoluteError": 0.00229
+                },
+                {
+                  "id": "cal:PHI:1969:hal-greer",
+                  "target": 0.2321,
+                  "realised": 0.20473,
+                  "absoluteError": 0.02737
+                },
+                {
+                  "id": "cal:PHI:1969:billy-cunningham",
+                  "target": 0.2752,
+                  "realised": 0.18183,
+                  "absoluteError": 0.09337
+                },
+                {
+                  "id": "cal:PHI:1969:jim-washington",
+                  "target": 0.1414,
+                  "realised": 0.20826,
+                  "absoluteError": 0.06686
+                },
+                {
+                  "id": "cal:PHI:1969:darrall-imhoff",
+                  "target": 0.1435,
+                  "realised": 0.19967,
+                  "absoluteError": 0.05617
+                }
+              ]
+            },
+            "playerReboundShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.02179,
+              "perPlayer": [
+                {
+                  "id": "cal:PHI:1969:archie-clark",
+                  "target": 0.0966,
+                  "realised": 0.12756,
+                  "absoluteError": 0.03096
+                },
+                {
+                  "id": "cal:PHI:1969:hal-greer",
+                  "target": 0.1135,
+                  "realised": 0.13702,
+                  "absoluteError": 0.02352
+                },
+                {
+                  "id": "cal:PHI:1969:billy-cunningham",
+                  "target": 0.3285,
+                  "realised": 0.2823,
+                  "absoluteError": 0.0462
+                },
+                {
+                  "id": "cal:PHI:1969:jim-washington",
+                  "target": 0.2319,
+                  "realised": 0.22643,
+                  "absoluteError": 0.00547
+                },
+                {
+                  "id": "cal:PHI:1969:darrall-imhoff",
+                  "target": 0.2295,
+                  "realised": 0.22668,
+                  "absoluteError": 0.00282
+                }
+              ]
+            },
+            "playerAssistShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.03566,
+              "perPlayer": [
+                {
+                  "id": "cal:PHI:1969:archie-clark",
+                  "target": 0.2732,
+                  "realised": 0.23397,
+                  "absoluteError": 0.03923
+                },
+                {
+                  "id": "cal:PHI:1969:hal-greer",
+                  "target": 0.2787,
+                  "realised": 0.23934,
+                  "absoluteError": 0.03936
+                },
+                {
+                  "id": "cal:PHI:1969:billy-cunningham",
+                  "target": 0.235,
+                  "realised": 0.22445,
+                  "absoluteError": 0.01055
+                },
+                {
+                  "id": "cal:PHI:1969:jim-washington",
+                  "target": 0.0656,
+                  "realised": 0.12305,
+                  "absoluteError": 0.05745
+                },
+                {
+                  "id": "cal:PHI:1969:darrall-imhoff",
+                  "target": 0.1475,
+                  "realised": 0.1792,
+                  "absoluteError": 0.0317
+                }
+              ]
+            },
+            "playerStealShares": {
+              "supported": false,
+              "reason": "no target map",
+              "mae": null
+            },
+            "playerBlockShares": {
+              "supported": false,
+              "reason": "no target map",
+              "mae": null
+            }
+          },
+          "compositeMae": 0.03555,
+          "supportedShareMetrics": [
+            "playerScoringShares",
+            "playerReboundShares",
+            "playerAssistShares"
+          ],
+          "traits": [
+            {
+              "traitId": "fast",
+              "metric": "gamePace",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 123.8667,
+              "referenceMean": 121.8603,
+              "diff": 2.0064,
+              "z": 46.58694,
+              "ci95": {
+                "lower": 1.92199,
+                "upper": 2.09081
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "fast break and early offence",
+              "metric": "transitionShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.19799,
+              "referenceMean": 0.16931,
+              "diff": 0.02868,
+              "z": 51.63588,
+              "ci95": {
+                "lower": 0.02759,
+                "upper": 0.02977
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "TRANSITION",
+              "metric": "transitionShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.19799,
+              "referenceMean": 0.16931,
+              "diff": 0.02868,
+              "z": 51.63588,
+              "ci95": {
+                "lower": 0.02759,
+                "upper": 0.02977
+              },
+              "result": "PASS",
+              "hardFail": false
+            }
+          ],
+          "notScored": [
+            {
+              "traitId": "pressure man",
+              "result": "NOT_SCORED_METRIC_UNCERTIFIED"
+            }
+          ]
+        },
+        "teamB": {
+          "fixtureId": "v4-1969-70-supersonics",
+          "teamName": "Seattle SuperSonics",
+          "season": "1969-70",
+          "shareResults": {
+            "playerScoringShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.05081,
+              "perPlayer": [
+                {
+                  "id": "cal:SEA:1969:lenny-wilkens",
+                  "target": 0.22,
+                  "realised": 0.25554,
+                  "absoluteError": 0.03554
+                },
+                {
+                  "id": "cal:SEA:1969:dick-snyder",
+                  "target": 0.1681,
+                  "realised": 0.19657,
+                  "absoluteError": 0.02847
+                },
+                {
+                  "id": "cal:SEA:1969:tom-meschery",
+                  "target": 0.152,
+                  "realised": 0.17013,
+                  "absoluteError": 0.01813
+                },
+                {
+                  "id": "cal:SEA:1969:john-tresvant",
+                  "target": 0.1557,
+                  "realised": 0.20059,
+                  "absoluteError": 0.04489
+                },
+                {
+                  "id": "cal:SEA:1969:bob-rule",
+                  "target": 0.3042,
+                  "realised": 0.17717,
+                  "absoluteError": 0.12703
+                }
+              ]
+            },
+            "playerReboundShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.01762,
+              "perPlayer": [
+                {
+                  "id": "cal:SEA:1969:lenny-wilkens",
+                  "target": 0.1425,
+                  "realised": 0.15874,
+                  "absoluteError": 0.01624
+                },
+                {
+                  "id": "cal:SEA:1969:dick-snyder",
+                  "target": 0.1168,
+                  "realised": 0.13981,
+                  "absoluteError": 0.02301
+                },
+                {
+                  "id": "cal:SEA:1969:tom-meschery",
+                  "target": 0.2365,
+                  "realised": 0.21477,
+                  "absoluteError": 0.02173
+                },
+                {
+                  "id": "cal:SEA:1969:john-tresvant",
+                  "target": 0.2108,
+                  "realised": 0.21562,
+                  "absoluteError": 0.00482
+                },
+                {
+                  "id": "cal:SEA:1969:bob-rule",
+                  "target": 0.2934,
+                  "realised": 0.27107,
+                  "absoluteError": 0.02233
+                }
+              ]
+            },
+            "playerAssistShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.04297,
+              "perPlayer": [
+                {
+                  "id": "cal:SEA:1969:lenny-wilkens",
+                  "target": 0.4738,
+                  "realised": 0.39328,
+                  "absoluteError": 0.08052
+                },
+                {
+                  "id": "cal:SEA:1969:dick-snyder",
+                  "target": 0.2292,
+                  "realised": 0.20229,
+                  "absoluteError": 0.02691
+                },
+                {
+                  "id": "cal:SEA:1969:tom-meschery",
+                  "target": 0.1042,
+                  "realised": 0.12976,
+                  "absoluteError": 0.02556
+                },
+                {
+                  "id": "cal:SEA:1969:john-tresvant",
+                  "target": 0.099,
+                  "realised": 0.13562,
+                  "absoluteError": 0.03662
+                },
+                {
+                  "id": "cal:SEA:1969:bob-rule",
+                  "target": 0.0938,
+                  "realised": 0.13905,
+                  "absoluteError": 0.04525
+                }
+              ]
+            },
+            "playerStealShares": {
+              "supported": false,
+              "reason": "no target map",
+              "mae": null
+            },
+            "playerBlockShares": {
+              "supported": false,
+              "reason": "no target map",
+              "mae": null
+            }
+          },
+          "compositeMae": 0.03714,
+          "supportedShareMetrics": [
+            "playerScoringShares",
+            "playerReboundShares",
+            "playerAssistShares"
+          ],
+          "traits": [
+            {
+              "traitId": "fast",
+              "metric": "gamePace",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 121.81421,
+              "referenceMean": 121.8603,
+              "diff": -0.04609,
+              "z": -1.08934,
+              "ci95": {
+                "lower": -0.12902,
+                "upper": 0.03684
+              },
+              "result": "FAIL",
+              "hardFail": false
+            },
+            {
+              "traitId": "pick-and-roll around a lead guard",
+              "metric": "pnrShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.18168,
+              "referenceMean": 0.14168,
+              "diff": 0.04,
+              "z": 75.5794,
+              "ci95": {
+                "lower": 0.03896,
+                "upper": 0.04104
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "PICK_AND_ROLL",
+              "metric": "pnrShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.18168,
+              "referenceMean": 0.14168,
+              "diff": 0.04,
+              "z": 75.5794,
+              "ci95": {
+                "lower": 0.03896,
+                "upper": 0.04104
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "PASSING_HUB",
+              "metric": "assistedRate",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.40015,
+              "referenceMean": 0.41924,
+              "diff": -0.01909,
+              "z": -15.57395,
+              "ci95": {
+                "lower": -0.02149,
+                "upper": -0.01669
+              },
+              "result": "FAIL",
+              "hardFail": true
+            }
+          ],
+          "notScored": [
+            {
+              "traitId": "man with help",
+              "result": "NOT_SCORED_UNOBSERVABLE"
+            }
+          ]
+        },
+        "headToHead": {
+          "games": 4096,
+          "teamAWins": 0,
+          "teamAWinRate": 0
+        },
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleScores": 0,
+          "preThreeEraThreePointAttempts": 0,
+          "replayExactAllSurfaces": true
+        },
+        "gamesPlayed": 12288
+      },
+      {
+        "matchupId": "v4p-1970s-2",
+        "eraStyleId": "1970s",
+        "pairType": "SAME_ERA_CONTRAST_PAIR",
+        "teamA": {
+          "fixtureId": "v4-1977-78-spurs",
+          "teamName": "San Antonio Spurs",
+          "season": "1977-78",
+          "shareResults": {
+            "playerScoringShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.06848,
+              "perPlayer": [
+                {
+                  "id": "cal:SAS:1977:mike-gale",
+                  "target": 0.1125,
+                  "realised": 0.18451,
+                  "absoluteError": 0.07201
+                },
+                {
+                  "id": "cal:SAS:1977:george-gervin",
+                  "target": 0.3362,
+                  "realised": 0.20839,
+                  "absoluteError": 0.12781
+                },
+                {
+                  "id": "cal:SAS:1977:larry-kenon",
+                  "target": 0.2546,
+                  "realised": 0.21955,
+                  "absoluteError": 0.03505
+                },
+                {
+                  "id": "cal:SAS:1977:mark-olberding",
+                  "target": 0.1014,
+                  "realised": 0.2006,
+                  "absoluteError": 0.0992
+                },
+                {
+                  "id": "cal:SAS:1977:billy-paultz",
+                  "target": 0.1953,
+                  "realised": 0.18695,
+                  "absoluteError": 0.00835
+                }
+              ]
+            },
+            "playerReboundShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.024,
+              "perPlayer": [
+                {
+                  "id": "cal:SAS:1977:mike-gale",
+                  "target": 0.1036,
+                  "realised": 0.12726,
+                  "absoluteError": 0.02366
+                },
+                {
+                  "id": "cal:SAS:1977:george-gervin",
+                  "target": 0.165,
+                  "realised": 0.17739,
+                  "absoluteError": 0.01239
+                },
+                {
+                  "id": "cal:SAS:1977:larry-kenon",
+                  "target": 0.3075,
+                  "realised": 0.2475,
+                  "absoluteError": 0.06
+                },
+                {
+                  "id": "cal:SAS:1977:mark-olberding",
+                  "target": 0.1521,
+                  "realised": 0.17572,
+                  "absoluteError": 0.02362
+                },
+                {
+                  "id": "cal:SAS:1977:billy-paultz",
+                  "target": 0.2718,
+                  "realised": 0.27213,
+                  "absoluteError": 0.00033
+                }
+              ]
+            },
+            "playerAssistShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.02806,
+              "perPlayer": [
+                {
+                  "id": "cal:SAS:1977:mike-gale",
+                  "target": 0.3215,
+                  "realised": 0.27239,
+                  "absoluteError": 0.04911
+                },
+                {
+                  "id": "cal:SAS:1977:george-gervin",
+                  "target": 0.2202,
+                  "realised": 0.20639,
+                  "absoluteError": 0.01381
+                },
+                {
+                  "id": "cal:SAS:1977:larry-kenon",
+                  "target": 0.1964,
+                  "realised": 0.18917,
+                  "absoluteError": 0.00723
+                },
+                {
+                  "id": "cal:SAS:1977:mark-olberding",
+                  "target": 0.1012,
+                  "realised": 0.14686,
+                  "absoluteError": 0.04566
+                },
+                {
+                  "id": "cal:SAS:1977:billy-paultz",
+                  "target": 0.1607,
+                  "realised": 0.1852,
+                  "absoluteError": 0.0245
+                }
+              ]
+            },
+            "playerStealShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.06663,
+              "perPlayer": [
+                {
+                  "id": "cal:SAS:1977:mike-gale",
+                  "target": 0.3539,
+                  "realised": 0.24609,
+                  "absoluteError": 0.10781
+                },
+                {
+                  "id": "cal:SAS:1977:george-gervin",
+                  "target": 0.2615,
+                  "realised": 0.25718,
+                  "absoluteError": 0.00432
+                },
+                {
+                  "id": "cal:SAS:1977:larry-kenon",
+                  "target": 0.2154,
+                  "realised": 0.16095,
+                  "absoluteError": 0.05445
+                },
+                {
+                  "id": "cal:SAS:1977:mark-olberding",
+                  "target": 0.0923,
+                  "realised": 0.09855,
+                  "absoluteError": 0.00625
+                },
+                {
+                  "id": "cal:SAS:1977:billy-paultz",
+                  "target": 0.0769,
+                  "realised": 0.23723,
+                  "absoluteError": 0.16033
+                }
+              ]
+            },
+            "playerBlockShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.05885,
+              "perPlayer": [
+                {
+                  "id": "cal:SAS:1977:mike-gale",
+                  "target": 0.0851,
+                  "realised": 0.11779,
+                  "absoluteError": 0.03269
+                },
+                {
+                  "id": "cal:SAS:1977:george-gervin",
+                  "target": 0.2766,
+                  "realised": 0.22496,
+                  "absoluteError": 0.05164
+                },
+                {
+                  "id": "cal:SAS:1977:larry-kenon",
+                  "target": 0.0638,
+                  "realised": 0.10312,
+                  "absoluteError": 0.03932
+                },
+                {
+                  "id": "cal:SAS:1977:mark-olberding",
+                  "target": 0.0638,
+                  "realised": 0.1389,
+                  "absoluteError": 0.0751
+                },
+                {
+                  "id": "cal:SAS:1977:billy-paultz",
+                  "target": 0.5107,
+                  "realised": 0.41523,
+                  "absoluteError": 0.09547
+                }
+              ]
+            }
+          },
+          "compositeMae": 0.0492,
+          "supportedShareMetrics": [
+            "playerScoringShares",
+            "playerReboundShares",
+            "playerAssistShares",
+            "playerStealShares",
+            "playerBlockShares"
+          ],
+          "traits": [
+            {
+              "traitId": "very fast",
+              "metric": "gamePace",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 110.08496,
+              "referenceMean": 106.8677,
+              "diff": 3.21726,
+              "z": 83.47085,
+              "ci95": {
+                "lower": 3.14171,
+                "upper": 3.29281
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "running game, off-ball movement",
+              "metric": "transitionShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.19409,
+              "referenceMean": 0.16179,
+              "diff": 0.0323,
+              "z": 54.1806,
+              "ci95": {
+                "lower": 0.03113,
+                "upper": 0.03347
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "TRANSITION",
+              "metric": "transitionShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.19409,
+              "referenceMean": 0.16179,
+              "diff": 0.0323,
+              "z": 54.1806,
+              "ci95": {
+                "lower": 0.03113,
+                "upper": 0.03347
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "PACE_EXTREME",
+              "metric": "gamePace",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 110.08496,
+              "referenceMean": 106.8677,
+              "diff": 3.21726,
+              "z": 83.47085,
+              "ci95": {
+                "lower": 3.14171,
+                "upper": 3.29281
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "ELITE_OFFENSE",
+              "metric": "pppVsReference",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.91643,
+              "referenceMean": 0.96395,
+              "diff": -0.04752,
+              "z": -29.33948,
+              "ci95": {
+                "lower": -0.05069,
+                "upper": -0.04435
+              },
+              "result": "FAIL",
+              "hardFail": true
+            }
+          ],
+          "notScored": [
+            {
+              "traitId": "gambling man defence",
+              "result": "NOT_SCORED_METRIC_UNCERTIFIED"
+            }
+          ]
+        },
+        "teamB": {
+          "fixtureId": "v4-1978-79-supersonics",
+          "teamName": "Seattle SuperSonics",
+          "season": "1978-79",
+          "shareResults": {
+            "playerScoringShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.03055,
+              "perPlayer": [
+                {
+                  "id": "cal:SEA:1978:gus-williams",
+                  "target": 0.2554,
+                  "realised": 0.19883,
+                  "absoluteError": 0.05657
+                },
+                {
+                  "id": "cal:SEA:1978:dennis-johnson",
+                  "target": 0.2114,
+                  "realised": 0.1916,
+                  "absoluteError": 0.0198
+                },
+                {
+                  "id": "cal:SEA:1978:john-johnson",
+                  "target": 0.1463,
+                  "realised": 0.19259,
+                  "absoluteError": 0.04629
+                },
+                {
+                  "id": "cal:SEA:1978:lonnie-shelton",
+                  "target": 0.1795,
+                  "realised": 0.20437,
+                  "absoluteError": 0.02487
+                },
+                {
+                  "id": "cal:SEA:1978:jack-sikma",
+                  "target": 0.2074,
+                  "realised": 0.21261,
+                  "absoluteError": 0.00521
+                }
+              ]
+            },
+            "playerReboundShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.02534,
+              "perPlayer": [
+                {
+                  "id": "cal:SEA:1978:gus-williams",
+                  "target": 0.1016,
+                  "realised": 0.12721,
+                  "absoluteError": 0.02561
+                },
+                {
+                  "id": "cal:SEA:1978:dennis-johnson",
+                  "target": 0.1492,
+                  "realised": 0.16556,
+                  "absoluteError": 0.01636
+                },
+                {
+                  "id": "cal:SEA:1978:john-johnson",
+                  "target": 0.1587,
+                  "realised": 0.15961,
+                  "absoluteError": 0.00091
+                },
+                {
+                  "id": "cal:SEA:1978:lonnie-shelton",
+                  "target": 0.1968,
+                  "realised": 0.21725,
+                  "absoluteError": 0.02045
+                },
+                {
+                  "id": "cal:SEA:1978:jack-sikma",
+                  "target": 0.3937,
+                  "realised": 0.33036,
+                  "absoluteError": 0.06334
+                }
+              ]
+            },
+            "playerAssistShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.02784,
+              "perPlayer": [
+                {
+                  "id": "cal:SEA:1978:gus-williams",
+                  "target": 0.2424,
+                  "realised": 0.21197,
+                  "absoluteError": 0.03043
+                },
+                {
+                  "id": "cal:SEA:1978:dennis-johnson",
+                  "target": 0.2121,
+                  "realised": 0.20502,
+                  "absoluteError": 0.00708
+                },
+                {
+                  "id": "cal:SEA:1978:john-johnson",
+                  "target": 0.2668,
+                  "realised": 0.23471,
+                  "absoluteError": 0.03209
+                },
+                {
+                  "id": "cal:SEA:1978:lonnie-shelton",
+                  "target": 0.0848,
+                  "realised": 0.14378,
+                  "absoluteError": 0.05898
+                },
+                {
+                  "id": "cal:SEA:1978:jack-sikma",
+                  "target": 0.1939,
+                  "realised": 0.20452,
+                  "absoluteError": 0.01062
+                }
+              ]
+            },
+            "playerStealShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.03244,
+              "perPlayer": [
+                {
+                  "id": "cal:SEA:1978:gus-williams",
+                  "target": 0.3443,
+                  "realised": 0.26319,
+                  "absoluteError": 0.08111
+                },
+                {
+                  "id": "cal:SEA:1978:dennis-johnson",
+                  "target": 0.2131,
+                  "realised": 0.24156,
+                  "absoluteError": 0.02846
+                },
+                {
+                  "id": "cal:SEA:1978:john-johnson",
+                  "target": 0.1148,
+                  "realised": 0.1168,
+                  "absoluteError": 0.002
+                },
+                {
+                  "id": "cal:SEA:1978:lonnie-shelton",
+                  "target": 0.1639,
+                  "realised": 0.19718,
+                  "absoluteError": 0.03328
+                },
+                {
+                  "id": "cal:SEA:1978:jack-sikma",
+                  "target": 0.1639,
+                  "realised": 0.18127,
+                  "absoluteError": 0.01737
+                }
+              ]
+            },
+            "playerBlockShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.03145,
+              "perPlayer": [
+                {
+                  "id": "cal:SEA:1978:gus-williams",
+                  "target": 0.1081,
+                  "realised": 0.13556,
+                  "absoluteError": 0.02746
+                },
+                {
+                  "id": "cal:SEA:1978:dennis-johnson",
+                  "target": 0.3243,
+                  "realised": 0.25407,
+                  "absoluteError": 0.07023
+                },
+                {
+                  "id": "cal:SEA:1978:john-johnson",
+                  "target": 0.0811,
+                  "realised": 0.11729,
+                  "absoluteError": 0.03619
+                },
+                {
+                  "id": "cal:SEA:1978:lonnie-shelton",
+                  "target": 0.2703,
+                  "realised": 0.26191,
+                  "absoluteError": 0.00839
+                },
+                {
+                  "id": "cal:SEA:1978:jack-sikma",
+                  "target": 0.2162,
+                  "realised": 0.23116,
+                  "absoluteError": 0.01496
+                }
+              ]
+            }
+          },
+          "compositeMae": 0.02952,
+          "supportedShareMetrics": [
+            "playerScoringShares",
+            "playerReboundShares",
+            "playerAssistShares",
+            "playerStealShares",
+            "playerBlockShares"
+          ],
+          "traits": [
+            {
+              "traitId": "half-court motion and passing",
+              "metric": "movementShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0,
+              "referenceMean": 0,
+              "diff": 0,
+              "z": null,
+              "ci95": {
+                "lower": 0,
+                "upper": 0
+              },
+              "result": "FAIL",
+              "hardFail": false
+            },
+            {
+              "traitId": "elite team man defence",
+              "metric": "refPppVsTeam",
+              "direction": "BELOW_REFERENCE_BASELINE",
+              "surface": "REFERENCE_VS_TEAM",
+              "subjectMean": 1.05002,
+              "referenceMean": 0.96395,
+              "diff": 0.08607,
+              "z": 53.14077,
+              "ci95": {
+                "lower": 0.0829,
+                "upper": 0.08924
+              },
+              "result": "FAIL",
+              "hardFail": true
+            },
+            {
+              "traitId": "ELITE_DEFENSE",
+              "metric": "refPppVsTeam",
+              "direction": "BELOW_REFERENCE_BASELINE",
+              "surface": "REFERENCE_VS_TEAM",
+              "subjectMean": 1.05002,
+              "referenceMean": 0.96395,
+              "diff": 0.08607,
+              "z": 53.14077,
+              "ci95": {
+                "lower": 0.0829,
+                "upper": 0.08924
+              },
+              "result": "FAIL",
+              "hardFail": true
+            },
+            {
+              "traitId": "STRONG_OFFENSIVE_REBOUNDING",
+              "metric": "orebRate",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.25379,
+              "referenceMean": 0.32312,
+              "diff": -0.06933,
+              "z": -69.83109,
+              "ci95": {
+                "lower": -0.07128,
+                "upper": -0.06738
+              },
+              "result": "FAIL",
+              "hardFail": true
+            }
+          ],
+          "notScored": [
+            {
+              "traitId": "moderate",
+              "result": "NOT_SCORED_UNOBSERVABLE"
+            }
+          ]
+        },
+        "headToHead": {
+          "games": 4096,
+          "teamAWins": 0,
+          "teamAWinRate": 0
+        },
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleScores": 0,
+          "preThreeEraThreePointAttempts": 0,
+          "replayExactAllSurfaces": true
+        },
+        "gamesPlayed": 12288
+      },
+      {
+        "matchupId": "v4p-1980s-2",
+        "eraStyleId": "1980s",
+        "pairType": "ACTUAL_FINALS_OPPONENTS",
+        "teamA": {
+          "fixtureId": "v4-1989-90-pistons",
+          "teamName": "Detroit Pistons",
+          "season": "1989-90",
+          "shareResults": {
+            "playerScoringShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.02454,
+              "perPlayer": [
+                {
+                  "id": "cal:DET:1989:isiah-thomas",
+                  "target": 0.2392,
+                  "realised": 0.209,
+                  "absoluteError": 0.0302
+                },
+                {
+                  "id": "cal:DET:1989:joe-dumars",
+                  "target": 0.2315,
+                  "realised": 0.22062,
+                  "absoluteError": 0.01088
+                },
+                {
+                  "id": "cal:DET:1989:mark-aguirre",
+                  "target": 0.1834,
+                  "realised": 0.166,
+                  "absoluteError": 0.0174
+                },
+                {
+                  "id": "cal:DET:1989:james-edwards",
+                  "target": 0.1886,
+                  "realised": 0.18573,
+                  "absoluteError": 0.00287
+                },
+                {
+                  "id": "cal:DET:1989:bill-laimbeer",
+                  "target": 0.1573,
+                  "realised": 0.21866,
+                  "absoluteError": 0.06136
+                }
+              ]
+            },
+            "playerReboundShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.02439,
+              "perPlayer": [
+                {
+                  "id": "cal:DET:1989:isiah-thomas",
+                  "target": 0.1564,
+                  "realised": 0.16318,
+                  "absoluteError": 0.00678
+                },
+                {
+                  "id": "cal:DET:1989:joe-dumars",
+                  "target": 0.1152,
+                  "realised": 0.13599,
+                  "absoluteError": 0.02079
+                },
+                {
+                  "id": "cal:DET:1989:mark-aguirre",
+                  "target": 0.1605,
+                  "realised": 0.16369,
+                  "absoluteError": 0.00319
+                },
+                {
+                  "id": "cal:DET:1989:james-edwards",
+                  "target": 0.1728,
+                  "realised": 0.20302,
+                  "absoluteError": 0.03022
+                },
+                {
+                  "id": "cal:DET:1989:bill-laimbeer",
+                  "target": 0.3951,
+                  "realised": 0.33412,
+                  "absoluteError": 0.06098
+                }
+              ]
+            },
+            "playerAssistShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.04565,
+              "perPlayer": [
+                {
+                  "id": "cal:DET:1989:isiah-thomas",
+                  "target": 0.4922,
+                  "realised": 0.41638,
+                  "absoluteError": 0.07582
+                },
+                {
+                  "id": "cal:DET:1989:joe-dumars",
+                  "target": 0.2565,
+                  "realised": 0.21819,
+                  "absoluteError": 0.03831
+                },
+                {
+                  "id": "cal:DET:1989:mark-aguirre",
+                  "target": 0.0995,
+                  "realised": 0.12641,
+                  "absoluteError": 0.02691
+                },
+                {
+                  "id": "cal:DET:1989:james-edwards",
+                  "target": 0.0419,
+                  "realised": 0.09785,
+                  "absoluteError": 0.05595
+                },
+                {
+                  "id": "cal:DET:1989:bill-laimbeer",
+                  "target": 0.1099,
+                  "realised": 0.14117,
+                  "absoluteError": 0.03127
+                }
+              ]
+            },
+            "playerStealShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.06748,
+              "perPlayer": [
+                {
+                  "id": "cal:DET:1989:isiah-thomas",
+                  "target": 0.4359,
+                  "realised": 0.31569,
+                  "absoluteError": 0.12021
+                },
+                {
+                  "id": "cal:DET:1989:joe-dumars",
+                  "target": 0.2051,
+                  "realised": 0.15661,
+                  "absoluteError": 0.04849
+                },
+                {
+                  "id": "cal:DET:1989:mark-aguirre",
+                  "target": 0.1026,
+                  "realised": 0.12225,
+                  "absoluteError": 0.01965
+                },
+                {
+                  "id": "cal:DET:1989:james-edwards",
+                  "target": 0.0769,
+                  "realised": 0.13702,
+                  "absoluteError": 0.06012
+                },
+                {
+                  "id": "cal:DET:1989:bill-laimbeer",
+                  "target": 0.1795,
+                  "realised": 0.26843,
+                  "absoluteError": 0.08893
+                }
+              ]
+            },
+            "playerBlockShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.07026,
+              "perPlayer": [
+                {
+                  "id": "cal:DET:1989:isiah-thomas",
+                  "target": 0.1053,
+                  "realised": 0.14477,
+                  "absoluteError": 0.03947
+                },
+                {
+                  "id": "cal:DET:1989:joe-dumars",
+                  "target": 0,
+                  "realised": 0.09722,
+                  "absoluteError": 0.09722
+                },
+                {
+                  "id": "cal:DET:1989:mark-aguirre",
+                  "target": 0.1053,
+                  "realised": 0.14424,
+                  "absoluteError": 0.03894
+                },
+                {
+                  "id": "cal:DET:1989:james-edwards",
+                  "target": 0.2632,
+                  "realised": 0.25329,
+                  "absoluteError": 0.00991
+                },
+                {
+                  "id": "cal:DET:1989:bill-laimbeer",
+                  "target": 0.5262,
+                  "realised": 0.36047,
+                  "absoluteError": 0.16573
+                }
+              ]
+            }
+          },
+          "compositeMae": 0.04646,
+          "supportedShareMetrics": [
+            "playerScoringShares",
+            "playerReboundShares",
+            "playerAssistShares",
+            "playerStealShares",
+            "playerBlockShares"
+          ],
+          "traits": [
+            {
+              "traitId": "slow",
+              "metric": "gamePace",
+              "direction": "BELOW_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 99.72119,
+              "referenceMean": 101.1179,
+              "diff": -1.39671,
+              "z": -38.71449,
+              "ci95": {
+                "lower": -1.46742,
+                "upper": -1.326
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "elite physical man",
+              "metric": "refPppVsTeam",
+              "direction": "BELOW_REFERENCE_BASELINE",
+              "surface": "REFERENCE_VS_TEAM",
+              "subjectMean": 1.15148,
+              "referenceMean": 1.09314,
+              "diff": 0.05834,
+              "z": 33.34531,
+              "ci95": {
+                "lower": 0.05491,
+                "upper": 0.06177
+              },
+              "result": "FAIL",
+              "hardFail": true
+            },
+            {
+              "traitId": "ELITE_DEFENSE",
+              "metric": "refPppVsTeam",
+              "direction": "BELOW_REFERENCE_BASELINE",
+              "surface": "REFERENCE_VS_TEAM",
+              "subjectMean": 1.15148,
+              "referenceMean": 1.09314,
+              "diff": 0.05834,
+              "z": 33.34531,
+              "ci95": {
+                "lower": 0.05491,
+                "upper": 0.06177
+              },
+              "result": "FAIL",
+              "hardFail": true
+            },
+            {
+              "traitId": "SLOW_HALF_COURT",
+              "metric": "gamePace",
+              "direction": "BELOW_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 99.72119,
+              "referenceMean": 101.1179,
+              "diff": -1.39671,
+              "z": -38.71449,
+              "ci95": {
+                "lower": -1.46742,
+                "upper": -1.326
+              },
+              "result": "PASS",
+              "hardFail": false
+            }
+          ],
+          "notScored": [
+            {
+              "traitId": "isolation and post-up in the half court",
+              "result": "NOT_SCORED_METRIC_UNCERTIFIED"
+            },
+            {
+              "traitId": "ISOLATION_HEAVY",
+              "result": "NOT_SCORED_METRIC_UNCERTIFIED"
+            }
+          ]
+        },
+        "teamB": {
+          "fixtureId": "v4-1989-90-blazers",
+          "teamName": "Portland Trail Blazers",
+          "season": "1989-90",
+          "shareResults": {
+            "playerScoringShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.04061,
+              "perPlayer": [
+                {
+                  "id": "cal:POR:1989:terry-porter",
+                  "target": 0.203,
+                  "realised": 0.25827,
+                  "absoluteError": 0.05527
+                },
+                {
+                  "id": "cal:POR:1989:clyde-drexler",
+                  "target": 0.2687,
+                  "realised": 0.18884,
+                  "absoluteError": 0.07986
+                },
+                {
+                  "id": "cal:POR:1989:jerome-kersey",
+                  "target": 0.1845,
+                  "realised": 0.16283,
+                  "absoluteError": 0.02167
+                },
+                {
+                  "id": "cal:POR:1989:buck-williams",
+                  "target": 0.1569,
+                  "realised": 0.20211,
+                  "absoluteError": 0.04521
+                },
+                {
+                  "id": "cal:POR:1989:kevin-duckworth",
+                  "target": 0.1869,
+                  "realised": 0.18795,
+                  "absoluteError": 0.00105
+                }
+              ]
+            },
+            "playerReboundShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.01853,
+              "perPlayer": [
+                {
+                  "id": "cal:POR:1989:terry-porter",
+                  "target": 0.098,
+                  "realised": 0.1246,
+                  "absoluteError": 0.0266
+                },
+                {
+                  "id": "cal:POR:1989:clyde-drexler",
+                  "target": 0.1988,
+                  "realised": 0.19195,
+                  "absoluteError": 0.00685
+                },
+                {
+                  "id": "cal:POR:1989:jerome-kersey",
+                  "target": 0.2421,
+                  "realised": 0.218,
+                  "absoluteError": 0.0241
+                },
+                {
+                  "id": "cal:POR:1989:buck-williams",
+                  "target": 0.2824,
+                  "realised": 0.26704,
+                  "absoluteError": 0.01536
+                },
+                {
+                  "id": "cal:POR:1989:kevin-duckworth",
+                  "target": 0.1787,
+                  "realised": 0.19842,
+                  "absoluteError": 0.01972
+                }
+              ]
+            },
+            "playerAssistShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.04918,
+              "perPlayer": [
+                {
+                  "id": "cal:POR:1989:terry-porter",
+                  "target": 0.4595,
+                  "realised": 0.39132,
+                  "absoluteError": 0.06818
+                },
+                {
+                  "id": "cal:POR:1989:clyde-drexler",
+                  "target": 0.298,
+                  "realised": 0.24323,
+                  "absoluteError": 0.05477
+                },
+                {
+                  "id": "cal:POR:1989:jerome-kersey",
+                  "target": 0.1162,
+                  "realised": 0.13793,
+                  "absoluteError": 0.02173
+                },
+                {
+                  "id": "cal:POR:1989:buck-williams",
+                  "target": 0.0707,
+                  "realised": 0.1183,
+                  "absoluteError": 0.0476
+                },
+                {
+                  "id": "cal:POR:1989:kevin-duckworth",
+                  "target": 0.0556,
+                  "realised": 0.10922,
+                  "absoluteError": 0.05362
+                }
+              ]
+            },
+            "playerStealShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.03245,
+              "perPlayer": [
+                {
+                  "id": "cal:POR:1989:terry-porter",
+                  "target": 0.2879,
+                  "realised": 0.22526,
+                  "absoluteError": 0.06264
+                },
+                {
+                  "id": "cal:POR:1989:clyde-drexler",
+                  "target": 0.303,
+                  "realised": 0.28452,
+                  "absoluteError": 0.01848
+                },
+                {
+                  "id": "cal:POR:1989:jerome-kersey",
+                  "target": 0.2273,
+                  "realised": 0.23917,
+                  "absoluteError": 0.01187
+                },
+                {
+                  "id": "cal:POR:1989:buck-williams",
+                  "target": 0.1212,
+                  "realised": 0.14615,
+                  "absoluteError": 0.02495
+                },
+                {
+                  "id": "cal:POR:1989:kevin-duckworth",
+                  "target": 0.0606,
+                  "realised": 0.10489,
+                  "absoluteError": 0.04429
+                }
+              ]
+            },
+            "playerBlockShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.05804,
+              "perPlayer": [
+                {
+                  "id": "cal:POR:1989:terry-porter",
+                  "target": 0.04,
+                  "realised": 0.10791,
+                  "absoluteError": 0.06791
+                },
+                {
+                  "id": "cal:POR:1989:clyde-drexler",
+                  "target": 0.28,
+                  "realised": 0.22034,
+                  "absoluteError": 0.05966
+                },
+                {
+                  "id": "cal:POR:1989:jerome-kersey",
+                  "target": 0.32,
+                  "realised": 0.23457,
+                  "absoluteError": 0.08543
+                },
+                {
+                  "id": "cal:POR:1989:buck-williams",
+                  "target": 0.2,
+                  "realised": 0.22965,
+                  "absoluteError": 0.02965
+                },
+                {
+                  "id": "cal:POR:1989:kevin-duckworth",
+                  "target": 0.16,
+                  "realised": 0.20753,
+                  "absoluteError": 0.04753
+                }
+              ]
+            }
+          },
+          "compositeMae": 0.03976,
+          "supportedShareMetrics": [
+            "playerScoringShares",
+            "playerReboundShares",
+            "playerAssistShares",
+            "playerStealShares",
+            "playerBlockShares"
+          ],
+          "traits": [
+            {
+              "traitId": "fast",
+              "metric": "gamePace",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 102.43604,
+              "referenceMean": 101.1179,
+              "diff": 1.31814,
+              "z": 34.17402,
+              "ci95": {
+                "lower": 1.24254,
+                "upper": 1.39374
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "fast break, balanced scoring",
+              "metric": "transitionShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.15413,
+              "referenceMean": 0.13479,
+              "diff": 0.01934,
+              "z": 34.82001,
+              "ci95": {
+                "lower": 0.01825,
+                "upper": 0.02043
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "TRANSITION",
+              "metric": "transitionShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.15413,
+              "referenceMean": 0.13479,
+              "diff": 0.01934,
+              "z": 34.82001,
+              "ci95": {
+                "lower": 0.01825,
+                "upper": 0.02043
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "STRONG_OFFENSIVE_REBOUNDING",
+              "metric": "orebRate",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.33638,
+              "referenceMean": 0.31659,
+              "diff": 0.01979,
+              "z": 17.62125,
+              "ci95": {
+                "lower": 0.01759,
+                "upper": 0.02199
+              },
+              "result": "PASS",
+              "hardFail": false
+            }
+          ],
+          "notScored": [
+            {
+              "traitId": "pressure man with help",
+              "result": "NOT_SCORED_METRIC_UNCERTIFIED"
+            }
+          ]
+        },
+        "headToHead": {
+          "games": 4096,
+          "teamAWins": 0,
+          "teamAWinRate": 0
+        },
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleScores": 0,
+          "preThreeEraThreePointAttempts": 0,
+          "replayExactAllSurfaces": true
+        },
+        "gamesPlayed": 12288
+      },
+      {
+        "matchupId": "v4p-1990s-x01",
+        "eraStyleId": "1990s",
+        "pairType": "SAME_ERA_CONTRAST_PAIR",
+        "teamA": {
+          "fixtureId": "v4-1998-99-spurs",
+          "teamName": "San Antonio Spurs",
+          "season": "1998-99",
+          "shareResults": {
+            "playerScoringShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.05294,
+              "perPlayer": [
+                {
+                  "id": "cal:SAS:1998:avery-johnson",
+                  "target": 0.1424,
+                  "realised": 0.19391,
+                  "absoluteError": 0.05151
+                },
+                {
+                  "id": "cal:SAS:1998:mario-elie",
+                  "target": 0.1424,
+                  "realised": 0.20744,
+                  "absoluteError": 0.06504
+                },
+                {
+                  "id": "cal:SAS:1998:sean-elliott",
+                  "target": 0.1645,
+                  "realised": 0.18031,
+                  "absoluteError": 0.01581
+                },
+                {
+                  "id": "cal:SAS:1998:tim-duncan",
+                  "target": 0.3187,
+                  "realised": 0.22647,
+                  "absoluteError": 0.09223
+                },
+                {
+                  "id": "cal:SAS:1998:david-robinson",
+                  "target": 0.232,
+                  "realised": 0.19188,
+                  "absoluteError": 0.04012
+                }
+              ]
+            },
+            "playerReboundShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.02703,
+              "perPlayer": [
+                {
+                  "id": "cal:SAS:1998:avery-johnson",
+                  "target": 0.0774,
+                  "realised": 0.10804,
+                  "absoluteError": 0.03064
+                },
+                {
+                  "id": "cal:SAS:1998:mario-elie",
+                  "target": 0.0935,
+                  "realised": 0.12044,
+                  "absoluteError": 0.02694
+                },
+                {
+                  "id": "cal:SAS:1998:sean-elliott",
+                  "target": 0.1387,
+                  "realised": 0.14868,
+                  "absoluteError": 0.00998
+                },
+                {
+                  "id": "cal:SAS:1998:tim-duncan",
+                  "target": 0.3678,
+                  "realised": 0.3247,
+                  "absoluteError": 0.0431
+                },
+                {
+                  "id": "cal:SAS:1998:david-robinson",
+                  "target": 0.3226,
+                  "realised": 0.29813,
+                  "absoluteError": 0.02447
+                }
+              ]
+            },
+            "playerAssistShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.03288,
+              "perPlayer": [
+                {
+                  "id": "cal:SAS:1998:avery-johnson",
+                  "target": 0.4596,
+                  "realised": 0.37739,
+                  "absoluteError": 0.08221
+                },
+                {
+                  "id": "cal:SAS:1998:mario-elie",
+                  "target": 0.118,
+                  "realised": 0.14422,
+                  "absoluteError": 0.02622
+                },
+                {
+                  "id": "cal:SAS:1998:sean-elliott",
+                  "target": 0.1429,
+                  "realised": 0.1579,
+                  "absoluteError": 0.015
+                },
+                {
+                  "id": "cal:SAS:1998:tim-duncan",
+                  "target": 0.1491,
+                  "realised": 0.16285,
+                  "absoluteError": 0.01375
+                },
+                {
+                  "id": "cal:SAS:1998:david-robinson",
+                  "target": 0.1304,
+                  "realised": 0.15764,
+                  "absoluteError": 0.02724
+                }
+              ]
+            },
+            "playerStealShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.06333,
+              "perPlayer": [
+                {
+                  "id": "cal:SAS:1998:avery-johnson",
+                  "target": 0.2083,
+                  "realised": 0.12894,
+                  "absoluteError": 0.07936
+                },
+                {
+                  "id": "cal:SAS:1998:mario-elie",
+                  "target": 0.2083,
+                  "realised": 0.1405,
+                  "absoluteError": 0.0678
+                },
+                {
+                  "id": "cal:SAS:1998:sean-elliott",
+                  "target": 0.1042,
+                  "realised": 0.09303,
+                  "absoluteError": 0.01117
+                },
+                {
+                  "id": "cal:SAS:1998:tim-duncan",
+                  "target": 0.1875,
+                  "realised": 0.30511,
+                  "absoluteError": 0.11761
+                },
+                {
+                  "id": "cal:SAS:1998:david-robinson",
+                  "target": 0.2917,
+                  "realised": 0.33242,
+                  "absoluteError": 0.04072
+                }
+              ]
+            },
+            "playerBlockShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.04842,
+              "perPlayer": [
+                {
+                  "id": "cal:SAS:1998:avery-johnson",
+                  "target": 0.0351,
+                  "realised": 0.07742,
+                  "absoluteError": 0.04232
+                },
+                {
+                  "id": "cal:SAS:1998:mario-elie",
+                  "target": 0.0526,
+                  "realised": 0.09415,
+                  "absoluteError": 0.04155
+                },
+                {
+                  "id": "cal:SAS:1998:sean-elliott",
+                  "target": 0.0526,
+                  "realised": 0.08977,
+                  "absoluteError": 0.03717
+                },
+                {
+                  "id": "cal:SAS:1998:tim-duncan",
+                  "target": 0.4386,
+                  "realised": 0.37099,
+                  "absoluteError": 0.06761
+                },
+                {
+                  "id": "cal:SAS:1998:david-robinson",
+                  "target": 0.4211,
+                  "realised": 0.36767,
+                  "absoluteError": 0.05343
+                }
+              ]
+            }
+          },
+          "compositeMae": 0.04492,
+          "supportedShareMetrics": [
+            "playerScoringShares",
+            "playerReboundShares",
+            "playerAssistShares",
+            "playerStealShares",
+            "playerBlockShares"
+          ],
+          "traits": [
+            {
+              "traitId": "very slow",
+              "metric": "gamePace",
+              "direction": "BELOW_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 96.43604,
+              "referenceMean": 97.05895,
+              "diff": -0.62291,
+              "z": -16.68692,
+              "ci95": {
+                "lower": -0.69608,
+                "upper": -0.54974
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "post entry to a dominant centre",
+              "metric": "postUpShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.26069,
+              "referenceMean": 0.25444,
+              "diff": 0.00625,
+              "z": 8.89505,
+              "ci95": {
+                "lower": 0.00487,
+                "upper": 0.00763
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "ELITE_DEFENSE",
+              "metric": "refPppVsTeam",
+              "direction": "BELOW_REFERENCE_BASELINE",
+              "surface": "REFERENCE_VS_TEAM",
+              "subjectMean": 1.11646,
+              "referenceMean": 1.14712,
+              "diff": -0.03066,
+              "z": -16.50918,
+              "ci95": {
+                "lower": -0.0343,
+                "upper": -0.02702
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "SLOW_HALF_COURT",
+              "metric": "gamePace",
+              "direction": "BELOW_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 96.43604,
+              "referenceMean": 97.05895,
+              "diff": -0.62291,
+              "z": -16.68692,
+              "ci95": {
+                "lower": -0.69608,
+                "upper": -0.54974
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "POST_HEAVY",
+              "metric": "postUpShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.26069,
+              "referenceMean": 0.25444,
+              "diff": 0.00625,
+              "z": 8.89505,
+              "ci95": {
+                "lower": 0.00487,
+                "upper": 0.00763
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "SIZE_HEAVY",
+              "metric": "interiorShotShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.57409,
+              "referenceMean": 0.53348,
+              "diff": 0.04061,
+              "z": 47.04001,
+              "ci95": {
+                "lower": 0.03892,
+                "upper": 0.0423
+              },
+              "result": "PASS",
+              "hardFail": false
+            }
+          ],
+          "notScored": [
+            {
+              "traitId": "drop coverage with a rim anchor",
+              "result": "NOT_SCORED_METRIC_UNCERTIFIED"
+            }
+          ]
+        },
+        "teamB": {
+          "fixtureId": "v4-1991-92-bulls",
+          "teamName": "Chicago Bulls",
+          "season": "1991-92",
+          "shareResults": {
+            "playerScoringShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.09084,
+              "perPlayer": [
+                {
+                  "id": "cal:CHI:1991:john-paxson",
+                  "target": 0.0872,
+                  "realised": 0.1819,
+                  "absoluteError": 0.0947
+                },
+                {
+                  "id": "cal:CHI:1991:michael-jordan",
+                  "target": 0.3749,
+                  "realised": 0.20405,
+                  "absoluteError": 0.17085
+                },
+                {
+                  "id": "cal:CHI:1991:scottie-pippen",
+                  "target": 0.2615,
+                  "realised": 0.20525,
+                  "absoluteError": 0.05625
+                },
+                {
+                  "id": "cal:CHI:1991:horace-grant",
+                  "target": 0.1768,
+                  "realised": 0.23878,
+                  "absoluteError": 0.06198
+                },
+                {
+                  "id": "cal:CHI:1991:bill-cartwright",
+                  "target": 0.0996,
+                  "realised": 0.17002,
+                  "absoluteError": 0.07042
+                }
+              ]
+            },
+            "playerReboundShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.02799,
+              "perPlayer": [
+                {
+                  "id": "cal:CHI:1991:john-paxson",
+                  "target": 0.0395,
+                  "realised": 0.08778,
+                  "absoluteError": 0.04828
+                },
+                {
+                  "id": "cal:CHI:1991:michael-jordan",
+                  "target": 0.2105,
+                  "realised": 0.19637,
+                  "absoluteError": 0.01413
+                },
+                {
+                  "id": "cal:CHI:1991:scottie-pippen",
+                  "target": 0.2533,
+                  "realised": 0.22635,
+                  "absoluteError": 0.02695
+                },
+                {
+                  "id": "cal:CHI:1991:horace-grant",
+                  "target": 0.3289,
+                  "realised": 0.29999,
+                  "absoluteError": 0.02891
+                },
+                {
+                  "id": "cal:CHI:1991:bill-cartwright",
+                  "target": 0.1678,
+                  "realised": 0.1895,
+                  "absoluteError": 0.0217
+                }
+              ]
+            },
+            "playerAssistShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.03782,
+              "perPlayer": [
+                {
+                  "id": "cal:CHI:1991:john-paxson",
+                  "target": 0.1527,
+                  "realised": 0.16668,
+                  "absoluteError": 0.01398
+                },
+                {
+                  "id": "cal:CHI:1991:michael-jordan",
+                  "target": 0.3005,
+                  "realised": 0.26077,
+                  "absoluteError": 0.03973
+                },
+                {
+                  "id": "cal:CHI:1991:scottie-pippen",
+                  "target": 0.3448,
+                  "realised": 0.28997,
+                  "absoluteError": 0.05483
+                },
+                {
+                  "id": "cal:CHI:1991:horace-grant",
+                  "target": 0.133,
+                  "realised": 0.15719,
+                  "absoluteError": 0.02419
+                },
+                {
+                  "id": "cal:CHI:1991:bill-cartwright",
+                  "target": 0.069,
+                  "realised": 0.12539,
+                  "absoluteError": 0.05639
+                }
+              ]
+            },
+            "playerStealShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.03441,
+              "perPlayer": [
+                {
+                  "id": "cal:CHI:1991:john-paxson",
+                  "target": 0.0952,
+                  "realised": 0.08928,
+                  "absoluteError": 0.00592
+                },
+                {
+                  "id": "cal:CHI:1991:michael-jordan",
+                  "target": 0.3651,
+                  "realised": 0.30749,
+                  "absoluteError": 0.05761
+                },
+                {
+                  "id": "cal:CHI:1991:scottie-pippen",
+                  "target": 0.3016,
+                  "realised": 0.27911,
+                  "absoluteError": 0.02249
+                },
+                {
+                  "id": "cal:CHI:1991:horace-grant",
+                  "target": 0.1905,
+                  "realised": 0.25646,
+                  "absoluteError": 0.06596
+                },
+                {
+                  "id": "cal:CHI:1991:bill-cartwright",
+                  "target": 0.0476,
+                  "realised": 0.06765,
+                  "absoluteError": 0.02005
+                }
+              ]
+            },
+            "playerBlockShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.05473,
+              "perPlayer": [
+                {
+                  "id": "cal:CHI:1991:john-paxson",
+                  "target": 0.0256,
+                  "realised": 0.08107,
+                  "absoluteError": 0.05547
+                },
+                {
+                  "id": "cal:CHI:1991:michael-jordan",
+                  "target": 0.2308,
+                  "realised": 0.20165,
+                  "absoluteError": 0.02915
+                },
+                {
+                  "id": "cal:CHI:1991:scottie-pippen",
+                  "target": 0.2821,
+                  "realised": 0.2415,
+                  "absoluteError": 0.0406
+                },
+                {
+                  "id": "cal:CHI:1991:horace-grant",
+                  "target": 0.4102,
+                  "realised": 0.34312,
+                  "absoluteError": 0.06708
+                },
+                {
+                  "id": "cal:CHI:1991:bill-cartwright",
+                  "target": 0.0513,
+                  "realised": 0.13266,
+                  "absoluteError": 0.08136
+                }
+              ]
+            }
+          },
+          "compositeMae": 0.04916,
+          "supportedShareMetrics": [
+            "playerScoringShares",
+            "playerReboundShares",
+            "playerAssistShares",
+            "playerStealShares",
+            "playerBlockShares"
+          ],
+          "traits": [
+            {
+              "traitId": "triangle: post reads, cuts, spacing",
+              "metric": "postUpShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.2632,
+              "referenceMean": 0.25444,
+              "diff": 0.00876,
+              "z": 12.4673,
+              "ci95": {
+                "lower": 0.00738,
+                "upper": 0.01014
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "ELITE_OFFENSE",
+              "metric": "pppVsReference",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 1.08247,
+              "referenceMean": 1.14712,
+              "diff": -0.06465,
+              "z": -35.1556,
+              "ci95": {
+                "lower": -0.06825,
+                "upper": -0.06105
+              },
+              "result": "FAIL",
+              "hardFail": true
+            },
+            {
+              "traitId": "ELITE_DEFENSE",
+              "metric": "refPppVsTeam",
+              "direction": "BELOW_REFERENCE_BASELINE",
+              "surface": "REFERENCE_VS_TEAM",
+              "subjectMean": 1.13551,
+              "referenceMean": 1.14712,
+              "diff": -0.01161,
+              "z": -6.25152,
+              "ci95": {
+                "lower": -0.01525,
+                "upper": -0.00797
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "MOTION",
+              "metric": "movementShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0,
+              "referenceMean": 0.24373,
+              "diff": -0.24373,
+              "z": -840.44828,
+              "ci95": {
+                "lower": -0.2443,
+                "upper": -0.24316
+              },
+              "result": "FAIL",
+              "hardFail": true
+            }
+          ],
+          "notScored": [
+            {
+              "traitId": "moderate",
+              "result": "NOT_SCORED_UNOBSERVABLE"
+            },
+            {
+              "traitId": "pressure man with help",
+              "result": "NOT_SCORED_METRIC_UNCERTIFIED"
+            }
+          ]
+        },
+        "headToHead": {
+          "games": 4096,
+          "teamAWins": 0,
+          "teamAWinRate": 0
+        },
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleScores": 0,
+          "preThreeEraThreePointAttempts": 0,
+          "replayExactAllSurfaces": true
+        },
+        "gamesPlayed": 12288
+      },
+      {
+        "matchupId": "v4p-2000s-1",
+        "eraStyleId": "2000s",
+        "pairType": "ACTUAL_PLAYOFF_OPPONENTS",
+        "teamA": {
+          "fixtureId": "v4-2001-02-kings",
+          "teamName": "Sacramento Kings",
+          "season": "2001-02",
+          "shareResults": {
+            "playerScoringShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.06292,
+              "perPlayer": [
+                {
+                  "id": "cal:SAC:2001:mike-bibby",
+                  "target": 0.1661,
+                  "realised": 0.21892,
+                  "absoluteError": 0.05282
+                },
+                {
+                  "id": "cal:SAC:2001:doug-christie",
+                  "target": 0.1455,
+                  "realised": 0.21973,
+                  "absoluteError": 0.07423
+                },
+                {
+                  "id": "cal:SAC:2001:peja-stojakovic",
+                  "target": 0.257,
+                  "realised": 0.23332,
+                  "absoluteError": 0.02368
+                },
+                {
+                  "id": "cal:SAC:2001:chris-webber",
+                  "target": 0.2969,
+                  "realised": 0.16327,
+                  "absoluteError": 0.13363
+                },
+                {
+                  "id": "cal:SAC:2001:vlade-divac",
+                  "target": 0.1345,
+                  "realised": 0.16476,
+                  "absoluteError": 0.03026
+                }
+              ]
+            },
+            "playerReboundShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.01536,
+              "perPlayer": [
+                {
+                  "id": "cal:SAC:2001:mike-bibby",
+                  "target": 0.0897,
+                  "realised": 0.11937,
+                  "absoluteError": 0.02967
+                },
+                {
+                  "id": "cal:SAC:2001:doug-christie",
+                  "target": 0.1474,
+                  "realised": 0.15614,
+                  "absoluteError": 0.00874
+                },
+                {
+                  "id": "cal:SAC:2001:peja-stojakovic",
+                  "target": 0.1699,
+                  "realised": 0.16576,
+                  "absoluteError": 0.00414
+                },
+                {
+                  "id": "cal:SAC:2001:chris-webber",
+                  "target": 0.3238,
+                  "realised": 0.29783,
+                  "absoluteError": 0.02597
+                },
+                {
+                  "id": "cal:SAC:2001:vlade-divac",
+                  "target": 0.2692,
+                  "realised": 0.2609,
+                  "absoluteError": 0.0083
+                }
+              ]
+            },
+            "playerAssistShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.01513,
+              "perPlayer": [
+                {
+                  "id": "cal:SAC:2001:mike-bibby",
+                  "target": 0.2475,
+                  "realised": 0.2262,
+                  "absoluteError": 0.0213
+                },
+                {
+                  "id": "cal:SAC:2001:doug-christie",
+                  "target": 0.2079,
+                  "realised": 0.20447,
+                  "absoluteError": 0.00343
+                },
+                {
+                  "id": "cal:SAC:2001:peja-stojakovic",
+                  "target": 0.1238,
+                  "realised": 0.1569,
+                  "absoluteError": 0.0331
+                },
+                {
+                  "id": "cal:SAC:2001:chris-webber",
+                  "target": 0.2376,
+                  "realised": 0.22451,
+                  "absoluteError": 0.01309
+                },
+                {
+                  "id": "cal:SAC:2001:vlade-divac",
+                  "target": 0.1832,
+                  "realised": 0.18792,
+                  "absoluteError": 0.00472
+                }
+              ]
+            },
+            "playerStealShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.03642,
+              "perPlayer": [
+                {
+                  "id": "cal:SAC:2001:mike-bibby",
+                  "target": 0.1594,
+                  "realised": 0.13953,
+                  "absoluteError": 0.01987
+                },
+                {
+                  "id": "cal:SAC:2001:doug-christie",
+                  "target": 0.2899,
+                  "realised": 0.23229,
+                  "absoluteError": 0.05761
+                },
+                {
+                  "id": "cal:SAC:2001:peja-stojakovic",
+                  "target": 0.1594,
+                  "realised": 0.14583,
+                  "absoluteError": 0.01357
+                },
+                {
+                  "id": "cal:SAC:2001:chris-webber",
+                  "target": 0.2464,
+                  "realised": 0.27798,
+                  "absoluteError": 0.03158
+                },
+                {
+                  "id": "cal:SAC:2001:vlade-divac",
+                  "target": 0.1449,
+                  "realised": 0.20437,
+                  "absoluteError": 0.05947
+                }
+              ]
+            },
+            "playerBlockShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.05402,
+              "perPlayer": [
+                {
+                  "id": "cal:SAC:2001:mike-bibby",
+                  "target": 0.0606,
+                  "realised": 0.11027,
+                  "absoluteError": 0.04967
+                },
+                {
+                  "id": "cal:SAC:2001:doug-christie",
+                  "target": 0.0909,
+                  "realised": 0.12821,
+                  "absoluteError": 0.03731
+                },
+                {
+                  "id": "cal:SAC:2001:peja-stojakovic",
+                  "target": 0.0606,
+                  "realised": 0.10868,
+                  "absoluteError": 0.04808
+                },
+                {
+                  "id": "cal:SAC:2001:chris-webber",
+                  "target": 0.4243,
+                  "realised": 0.34181,
+                  "absoluteError": 0.08249
+                },
+                {
+                  "id": "cal:SAC:2001:vlade-divac",
+                  "target": 0.3636,
+                  "realised": 0.31104,
+                  "absoluteError": 0.05256
+                }
+              ]
+            }
+          },
+          "compositeMae": 0.03677,
+          "supportedShareMetrics": [
+            "playerScoringShares",
+            "playerReboundShares",
+            "playerAssistShares",
+            "playerStealShares",
+            "playerBlockShares"
+          ],
+          "traits": [
+            {
+              "traitId": "fast",
+              "metric": "gamePace",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 92.13818,
+              "referenceMean": 90.77025,
+              "diff": 1.36793,
+              "z": 38.6853,
+              "ci95": {
+                "lower": 1.29862,
+                "upper": 1.43724
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "motion, ball movement, high-post passing",
+              "metric": "movementShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.30355,
+              "referenceMean": 0.2579,
+              "diff": 0.04565,
+              "z": 57.84044,
+              "ci95": {
+                "lower": 0.0441,
+                "upper": 0.0472
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "ELITE_OFFENSE",
+              "metric": "pppVsReference",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 1.11471,
+              "referenceMean": 1.06487,
+              "diff": 0.04984,
+              "z": 24.91595,
+              "ci95": {
+                "lower": 0.04592,
+                "upper": 0.05376
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "MOTION",
+              "metric": "movementShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.30355,
+              "referenceMean": 0.2579,
+              "diff": 0.04565,
+              "z": 57.84044,
+              "ci95": {
+                "lower": 0.0441,
+                "upper": 0.0472
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "PASSING_HUB",
+              "metric": "assistedRate",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.53311,
+              "referenceMean": 0.50944,
+              "diff": 0.02367,
+              "z": 16.6864,
+              "ci95": {
+                "lower": 0.02089,
+                "upper": 0.02645
+              },
+              "result": "PASS",
+              "hardFail": false
+            }
+          ],
+          "notScored": [
+            {
+              "traitId": "man with help",
+              "result": "NOT_SCORED_UNOBSERVABLE"
+            }
+          ]
+        },
+        "teamB": {
+          "fixtureId": "v4-2001-02-lakers",
+          "teamName": "Los Angeles Lakers",
+          "season": "2001-02",
+          "shareResults": {
+            "playerScoringShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.13388,
+              "perPlayer": [
+                {
+                  "id": "cal:LAL:2001:derek-fisher",
+                  "target": 0.1432,
+                  "realised": 0.27866,
+                  "absoluteError": 0.13546
+                },
+                {
+                  "id": "cal:LAL:2001:kobe-bryant",
+                  "target": 0.3223,
+                  "realised": 0.18091,
+                  "absoluteError": 0.14139
+                },
+                {
+                  "id": "cal:LAL:2001:rick-fox",
+                  "target": 0.101,
+                  "realised": 0.20987,
+                  "absoluteError": 0.10887
+                },
+                {
+                  "id": "cal:LAL:2001:samaki-walker",
+                  "target": 0.0857,
+                  "realised": 0.17606,
+                  "absoluteError": 0.09036
+                },
+                {
+                  "id": "cal:LAL:2001:shaquille-o-neal",
+                  "target": 0.3478,
+                  "realised": 0.15449,
+                  "absoluteError": 0.19331
+                }
+              ]
+            },
+            "playerReboundShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.01694,
+              "perPlayer": [
+                {
+                  "id": "cal:LAL:2001:derek-fisher",
+                  "target": 0.07,
+                  "realised": 0.10345,
+                  "absoluteError": 0.03345
+                },
+                {
+                  "id": "cal:LAL:2001:kobe-bryant",
+                  "target": 0.1833,
+                  "realised": 0.17491,
+                  "absoluteError": 0.00839
+                },
+                {
+                  "id": "cal:LAL:2001:rick-fox",
+                  "target": 0.1567,
+                  "realised": 0.1597,
+                  "absoluteError": 0.003
+                },
+                {
+                  "id": "cal:LAL:2001:samaki-walker",
+                  "target": 0.2333,
+                  "realised": 0.2392,
+                  "absoluteError": 0.0059
+                },
+                {
+                  "id": "cal:LAL:2001:shaquille-o-neal",
+                  "target": 0.3567,
+                  "realised": 0.32274,
+                  "absoluteError": 0.03396
+                }
+              ]
+            },
+            "playerAssistShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.03484,
+              "perPlayer": [
+                {
+                  "id": "cal:LAL:2001:derek-fisher",
+                  "target": 0.1677,
+                  "realised": 0.17762,
+                  "absoluteError": 0.00992
+                },
+                {
+                  "id": "cal:LAL:2001:kobe-bryant",
+                  "target": 0.3549,
+                  "realised": 0.27786,
+                  "absoluteError": 0.07704
+                },
+                {
+                  "id": "cal:LAL:2001:rick-fox",
+                  "target": 0.2258,
+                  "realised": 0.21573,
+                  "absoluteError": 0.01007
+                },
+                {
+                  "id": "cal:LAL:2001:samaki-walker",
+                  "target": 0.0581,
+                  "realised": 0.12816,
+                  "absoluteError": 0.07006
+                },
+                {
+                  "id": "cal:LAL:2001:shaquille-o-neal",
+                  "target": 0.1935,
+                  "realised": 0.20062,
+                  "absoluteError": 0.00712
+                }
+              ]
+            },
+            "playerStealShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.09414,
+              "perPlayer": [
+                {
+                  "id": "cal:LAL:2001:derek-fisher",
+                  "target": 0.2138,
+                  "realised": 0.13936,
+                  "absoluteError": 0.07444
+                },
+                {
+                  "id": "cal:LAL:2001:kobe-bryant",
+                  "target": 0.3563,
+                  "realised": 0.23479,
+                  "absoluteError": 0.12151
+                },
+                {
+                  "id": "cal:LAL:2001:rick-fox",
+                  "target": 0.19,
+                  "realised": 0.15061,
+                  "absoluteError": 0.03939
+                },
+                {
+                  "id": "cal:LAL:2001:samaki-walker",
+                  "target": 0.0974,
+                  "realised": 0.19426,
+                  "absoluteError": 0.09686
+                },
+                {
+                  "id": "cal:LAL:2001:shaquille-o-neal",
+                  "target": 0.1425,
+                  "realised": 0.28098,
+                  "absoluteError": 0.13848
+                }
+              ]
+            },
+            "playerBlockShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.04961,
+              "perPlayer": [
+                {
+                  "id": "cal:LAL:2001:derek-fisher",
+                  "target": 0.0245,
+                  "realised": 0.08269,
+                  "absoluteError": 0.05819
+                },
+                {
+                  "id": "cal:LAL:2001:kobe-bryant",
+                  "target": 0.098,
+                  "realised": 0.1292,
+                  "absoluteError": 0.0312
+                },
+                {
+                  "id": "cal:LAL:2001:rick-fox",
+                  "target": 0.0735,
+                  "realised": 0.10813,
+                  "absoluteError": 0.03463
+                },
+                {
+                  "id": "cal:LAL:2001:samaki-walker",
+                  "target": 0.3137,
+                  "realised": 0.29395,
+                  "absoluteError": 0.01975
+                },
+                {
+                  "id": "cal:LAL:2001:shaquille-o-neal",
+                  "target": 0.4903,
+                  "realised": 0.38603,
+                  "absoluteError": 0.10427
+                }
+              ]
+            }
+          },
+          "compositeMae": 0.06588,
+          "supportedShareMetrics": [
+            "playerScoringShares",
+            "playerReboundShares",
+            "playerAssistShares",
+            "playerStealShares",
+            "playerBlockShares"
+          ],
+          "traits": [
+            {
+              "traitId": "slow",
+              "metric": "gamePace",
+              "direction": "BELOW_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 90.10474,
+              "referenceMean": 90.77025,
+              "diff": -0.66551,
+              "z": -18.61852,
+              "ci95": {
+                "lower": -0.73557,
+                "upper": -0.59545
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "triangle around a dominant post centre",
+              "metric": "postUpShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.22536,
+              "referenceMean": 0.18026,
+              "diff": 0.0451,
+              "z": 61.77503,
+              "ci95": {
+                "lower": 0.04367,
+                "upper": 0.04653
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "man with a dominant rebounder",
+              "metric": "orebRateAgainst",
+              "direction": "BELOW_REFERENCE_BASELINE",
+              "surface": "REFERENCE_VS_TEAM",
+              "subjectMean": 0.27932,
+              "referenceMean": 0.2619,
+              "diff": 0.01742,
+              "z": 15.75455,
+              "ci95": {
+                "lower": 0.01525,
+                "upper": 0.01959
+              },
+              "result": "FAIL",
+              "hardFail": true
+            },
+            {
+              "traitId": "POST_HEAVY",
+              "metric": "postUpShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.22536,
+              "referenceMean": 0.18026,
+              "diff": 0.0451,
+              "z": 61.77503,
+              "ci95": {
+                "lower": 0.04367,
+                "upper": 0.04653
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "SLOW_HALF_COURT",
+              "metric": "gamePace",
+              "direction": "BELOW_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 90.10474,
+              "referenceMean": 90.77025,
+              "diff": -0.66551,
+              "z": -18.61852,
+              "ci95": {
+                "lower": -0.73557,
+                "upper": -0.59545
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "ELITE_OFFENSE",
+              "metric": "pppVsReference",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 1.0788,
+              "referenceMean": 1.06487,
+              "diff": 0.01393,
+              "z": 6.77837,
+              "ci95": {
+                "lower": 0.0099,
+                "upper": 0.01796
+              },
+              "result": "PASS",
+              "hardFail": false
+            }
+          ],
+          "notScored": []
+        },
+        "headToHead": {
+          "games": 4096,
+          "teamAWins": 0,
+          "teamAWinRate": 0
+        },
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleScores": 0,
+          "preThreeEraThreePointAttempts": 0,
+          "replayExactAllSurfaces": true
+        },
+        "gamesPlayed": 12288
+      },
+      {
+        "matchupId": "v4p-2010s-1",
+        "eraStyleId": "2010s",
+        "pairType": "ACTUAL_PLAYOFF_OPPONENTS",
+        "teamA": {
+          "fixtureId": "v4-2017-18-rockets",
+          "teamName": "Houston Rockets",
+          "season": "2017-18",
+          "shareResults": {
+            "playerScoringShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.06872,
+              "perPlayer": [
+                {
+                  "id": "cal:HOU:2017:chris-paul",
+                  "target": 0.2217,
+                  "realised": 0.24347,
+                  "absoluteError": 0.02177
+                },
+                {
+                  "id": "cal:HOU:2017:james-harden",
+                  "target": 0.3623,
+                  "realised": 0.23612,
+                  "absoluteError": 0.12618
+                },
+                {
+                  "id": "cal:HOU:2017:trevor-ariza",
+                  "target": 0.1395,
+                  "realised": 0.18642,
+                  "absoluteError": 0.04692
+                },
+                {
+                  "id": "cal:HOU:2017:ryan-anderson",
+                  "target": 0.1108,
+                  "realised": 0.21391,
+                  "absoluteError": 0.10311
+                },
+                {
+                  "id": "cal:HOU:2017:clint-capela",
+                  "target": 0.1657,
+                  "realised": 0.12008,
+                  "absoluteError": 0.04562
+                }
+              ]
+            },
+            "playerReboundShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.01402,
+              "perPlayer": [
+                {
+                  "id": "cal:HOU:2017:chris-paul",
+                  "target": 0.1742,
+                  "realised": 0.16964,
+                  "absoluteError": 0.00456
+                },
+                {
+                  "id": "cal:HOU:2017:james-harden",
+                  "target": 0.1742,
+                  "realised": 0.18021,
+                  "absoluteError": 0.00601
+                },
+                {
+                  "id": "cal:HOU:2017:trevor-ariza",
+                  "target": 0.1419,
+                  "realised": 0.14914,
+                  "absoluteError": 0.00724
+                },
+                {
+                  "id": "cal:HOU:2017:ryan-anderson",
+                  "target": 0.1613,
+                  "realised": 0.1831,
+                  "absoluteError": 0.0218
+                },
+                {
+                  "id": "cal:HOU:2017:clint-capela",
+                  "target": 0.3484,
+                  "realised": 0.31791,
+                  "absoluteError": 0.03049
+                }
+              ]
+            },
+            "playerAssistShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.05417,
+              "perPlayer": [
+                {
+                  "id": "cal:HOU:2017:chris-paul",
+                  "target": 0.393,
+                  "realised": 0.33718,
+                  "absoluteError": 0.05582
+                },
+                {
+                  "id": "cal:HOU:2017:james-harden",
+                  "target": 0.4378,
+                  "realised": 0.3582,
+                  "absoluteError": 0.0796
+                },
+                {
+                  "id": "cal:HOU:2017:trevor-ariza",
+                  "target": 0.0796,
+                  "realised": 0.11008,
+                  "absoluteError": 0.03048
+                },
+                {
+                  "id": "cal:HOU:2017:ryan-anderson",
+                  "target": 0.0448,
+                  "realised": 0.10247,
+                  "absoluteError": 0.05767
+                },
+                {
+                  "id": "cal:HOU:2017:clint-capela",
+                  "target": 0.0448,
+                  "realised": 0.09207,
+                  "absoluteError": 0.04727
+                }
+              ]
+            },
+            "playerStealShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.06113,
+              "perPlayer": [
+                {
+                  "id": "cal:HOU:2017:chris-paul",
+                  "target": 0.2742,
+                  "realised": 0.20495,
+                  "absoluteError": 0.06925
+                },
+                {
+                  "id": "cal:HOU:2017:james-harden",
+                  "target": 0.2904,
+                  "realised": 0.25875,
+                  "absoluteError": 0.03165
+                },
+                {
+                  "id": "cal:HOU:2017:trevor-ariza",
+                  "target": 0.2419,
+                  "realised": 0.18998,
+                  "absoluteError": 0.05192
+                },
+                {
+                  "id": "cal:HOU:2017:ryan-anderson",
+                  "target": 0.0645,
+                  "realised": 0.08601,
+                  "absoluteError": 0.02151
+                },
+                {
+                  "id": "cal:HOU:2017:clint-capela",
+                  "target": 0.129,
+                  "realised": 0.26032,
+                  "absoluteError": 0.13132
+                }
+              ]
+            },
+            "playerBlockShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.07348,
+              "perPlayer": [
+                {
+                  "id": "cal:HOU:2017:chris-paul",
+                  "target": 0.0606,
+                  "realised": 0.11349,
+                  "absoluteError": 0.05289
+                },
+                {
+                  "id": "cal:HOU:2017:james-harden",
+                  "target": 0.2121,
+                  "realised": 0.18834,
+                  "absoluteError": 0.02376
+                },
+                {
+                  "id": "cal:HOU:2017:trevor-ariza",
+                  "target": 0.0606,
+                  "realised": 0.11307,
+                  "absoluteError": 0.05247
+                },
+                {
+                  "id": "cal:HOU:2017:ryan-anderson",
+                  "target": 0.0909,
+                  "realised": 0.16923,
+                  "absoluteError": 0.07833
+                },
+                {
+                  "id": "cal:HOU:2017:clint-capela",
+                  "target": 0.5758,
+                  "realised": 0.41586,
+                  "absoluteError": 0.15994
+                }
+              ]
+            }
+          },
+          "compositeMae": 0.0543,
+          "supportedShareMetrics": [
+            "playerScoringShares",
+            "playerReboundShares",
+            "playerAssistShares",
+            "playerStealShares",
+            "playerBlockShares"
+          ],
+          "traits": [
+            {
+              "traitId": "ELITE_OFFENSE",
+              "metric": "pppVsReference",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 1.11801,
+              "referenceMean": 1.10285,
+              "diff": 0.01516,
+              "z": 7.54715,
+              "ci95": {
+                "lower": 0.01122,
+                "upper": 0.0191
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "THREE_POINT_HEAVY",
+              "metric": "threeShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.28804,
+              "referenceMean": 0.29103,
+              "diff": -0.00299,
+              "z": -3.59122,
+              "ci95": {
+                "lower": -0.00462,
+                "upper": -0.00136
+              },
+              "result": "FAIL",
+              "hardFail": true
+            }
+          ],
+          "notScored": [
+            {
+              "traitId": "moderate",
+              "result": "NOT_SCORED_UNOBSERVABLE"
+            },
+            {
+              "traitId": "isolation and post-up in the half court",
+              "result": "NOT_SCORED_METRIC_UNCERTIFIED"
+            },
+            {
+              "traitId": "switching, aggressive man",
+              "result": "NOT_SCORED_METRIC_UNCERTIFIED"
+            },
+            {
+              "traitId": "ISOLATION_HEAVY",
+              "result": "NOT_SCORED_METRIC_UNCERTIFIED"
+            }
+          ]
+        },
+        "teamB": {
+          "fixtureId": "v4-2017-18-warriors",
+          "teamName": "Golden State Warriors",
+          "season": "2017-18",
+          "shareResults": {
+            "playerScoringShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.06384,
+              "perPlayer": [
+                {
+                  "id": "cal:GSW:2017:stephen-curry",
+                  "target": 0.296,
+                  "realised": 0.23004,
+                  "absoluteError": 0.06596
+                },
+                {
+                  "id": "cal:GSW:2017:klay-thompson",
+                  "target": 0.2242,
+                  "realised": 0.20497,
+                  "absoluteError": 0.01923
+                },
+                {
+                  "id": "cal:GSW:2017:kevin-durant",
+                  "target": 0.296,
+                  "realised": 0.22161,
+                  "absoluteError": 0.07439
+                },
+                {
+                  "id": "cal:GSW:2017:draymond-green",
+                  "target": 0.1233,
+                  "realised": 0.17269,
+                  "absoluteError": 0.04939
+                },
+                {
+                  "id": "cal:GSW:2017:zaza-pachulia",
+                  "target": 0.0605,
+                  "realised": 0.1707,
+                  "absoluteError": 0.1102
+                }
+              ]
+            },
+            "playerReboundShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.01151,
+              "perPlayer": [
+                {
+                  "id": "cal:GSW:2017:stephen-curry",
+                  "target": 0.1821,
+                  "realised": 0.17469,
+                  "absoluteError": 0.00741
+                },
+                {
+                  "id": "cal:GSW:2017:klay-thompson",
+                  "target": 0.1357,
+                  "realised": 0.14827,
+                  "absoluteError": 0.01257
+                },
+                {
+                  "id": "cal:GSW:2017:kevin-durant",
+                  "target": 0.2429,
+                  "realised": 0.23259,
+                  "absoluteError": 0.01031
+                },
+                {
+                  "id": "cal:GSW:2017:draymond-green",
+                  "target": 0.2714,
+                  "realised": 0.26035,
+                  "absoluteError": 0.01105
+                },
+                {
+                  "id": "cal:GSW:2017:zaza-pachulia",
+                  "target": 0.1679,
+                  "realised": 0.18411,
+                  "absoluteError": 0.01621
+                }
+              ]
+            },
+            "playerAssistShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.02878,
+              "perPlayer": [
+                {
+                  "id": "cal:GSW:2017:stephen-curry",
+                  "target": 0.2664,
+                  "realised": 0.23106,
+                  "absoluteError": 0.03534
+                },
+                {
+                  "id": "cal:GSW:2017:klay-thompson",
+                  "target": 0.1092,
+                  "realised": 0.1415,
+                  "absoluteError": 0.0323
+                },
+                {
+                  "id": "cal:GSW:2017:kevin-durant",
+                  "target": 0.2358,
+                  "realised": 0.21827,
+                  "absoluteError": 0.01753
+                },
+                {
+                  "id": "cal:GSW:2017:draymond-green",
+                  "target": 0.3187,
+                  "realised": 0.29962,
+                  "absoluteError": 0.01908
+                },
+                {
+                  "id": "cal:GSW:2017:zaza-pachulia",
+                  "target": 0.0699,
+                  "realised": 0.10955,
+                  "absoluteError": 0.03965
+                }
+              ]
+            },
+            "playerStealShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.05112,
+              "perPlayer": [
+                {
+                  "id": "cal:GSW:2017:stephen-curry",
+                  "target": 0.3137,
+                  "realised": 0.20468,
+                  "absoluteError": 0.10902
+                },
+                {
+                  "id": "cal:GSW:2017:klay-thompson",
+                  "target": 0.1569,
+                  "realised": 0.15018,
+                  "absoluteError": 0.00672
+                },
+                {
+                  "id": "cal:GSW:2017:kevin-durant",
+                  "target": 0.1373,
+                  "realised": 0.25758,
+                  "absoluteError": 0.12028
+                },
+                {
+                  "id": "cal:GSW:2017:draymond-green",
+                  "target": 0.2745,
+                  "realised": 0.282,
+                  "absoluteError": 0.0075
+                },
+                {
+                  "id": "cal:GSW:2017:zaza-pachulia",
+                  "target": 0.1176,
+                  "realised": 0.10555,
+                  "absoluteError": 0.01205
+                }
+              ]
+            },
+            "playerBlockShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.06299,
+              "perPlayer": [
+                {
+                  "id": "cal:GSW:2017:stephen-curry",
+                  "target": 0.05,
+                  "realised": 0.10396,
+                  "absoluteError": 0.05396
+                },
+                {
+                  "id": "cal:GSW:2017:klay-thompson",
+                  "target": 0.125,
+                  "realised": 0.14902,
+                  "absoluteError": 0.02402
+                },
+                {
+                  "id": "cal:GSW:2017:kevin-durant",
+                  "target": 0.45,
+                  "realised": 0.33557,
+                  "absoluteError": 0.11443
+                },
+                {
+                  "id": "cal:GSW:2017:draymond-green",
+                  "target": 0.325,
+                  "realised": 0.28197,
+                  "absoluteError": 0.04303
+                },
+                {
+                  "id": "cal:GSW:2017:zaza-pachulia",
+                  "target": 0.05,
+                  "realised": 0.12949,
+                  "absoluteError": 0.07949
+                }
+              ]
+            }
+          },
+          "compositeMae": 0.04365,
+          "supportedShareMetrics": [
+            "playerScoringShares",
+            "playerReboundShares",
+            "playerAssistShares",
+            "playerStealShares",
+            "playerBlockShares"
+          ],
+          "traits": [
+            {
+              "traitId": "fast",
+              "metric": "gamePace",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 98.12549,
+              "referenceMean": 96.0496,
+              "diff": 2.07589,
+              "z": 56.05971,
+              "ci95": {
+                "lower": 2.00331,
+                "upper": 2.14847
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "movement shooting, off-ball screens, handoffs",
+              "metric": "movementShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.29545,
+              "referenceMean": 0.19841,
+              "diff": 0.09704,
+              "z": 126.19637,
+              "ci95": {
+                "lower": 0.09553,
+                "upper": 0.09855
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "ELITE_OFFENSE",
+              "metric": "pppVsReference",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 1.13075,
+              "referenceMean": 1.10285,
+              "diff": 0.0279,
+              "z": 13.52252,
+              "ci95": {
+                "lower": 0.02386,
+                "upper": 0.03194
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "MOTION",
+              "metric": "movementShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.29545,
+              "referenceMean": 0.19841,
+              "diff": 0.09704,
+              "z": 126.19637,
+              "ci95": {
+                "lower": 0.09553,
+                "upper": 0.09855
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "THREE_POINT_HEAVY",
+              "metric": "threeShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.29314,
+              "referenceMean": 0.29103,
+              "diff": 0.00211,
+              "z": 2.53427,
+              "ci95": {
+                "lower": 0.00048,
+                "upper": 0.00374
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "PASSING_HUB",
+              "metric": "assistedRate",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.52409,
+              "referenceMean": 0.47158,
+              "diff": 0.05251,
+              "z": 38.99484,
+              "ci95": {
+                "lower": 0.04987,
+                "upper": 0.05515
+              },
+              "result": "PASS",
+              "hardFail": false
+            }
+          ],
+          "notScored": [
+            {
+              "traitId": "switching with a rim anchor",
+              "result": "NOT_SCORED_METRIC_UNCERTIFIED"
+            }
+          ]
+        },
+        "headToHead": {
+          "games": 4096,
+          "teamAWins": 0,
+          "teamAWinRate": 0
+        },
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleScores": 0,
+          "preThreeEraThreePointAttempts": 0,
+          "replayExactAllSurfaces": true
+        },
+        "gamesPlayed": 12288
+      },
+      {
+        "matchupId": "v4p-2020s-1",
+        "eraStyleId": "2020s",
+        "pairType": "ACTUAL_PLAYOFF_OPPONENTS",
+        "teamA": {
+          "fixtureId": "v4-2021-22-heat",
+          "teamName": "Miami Heat",
+          "season": "2021-22",
+          "shareResults": {
+            "playerScoringShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.09495,
+              "perPlayer": [
+                {
+                  "id": "cal:MIA:2021:kyle-lowry",
+                  "target": 0.1851,
+                  "realised": 0.23609,
+                  "absoluteError": 0.05099
+                },
+                {
+                  "id": "cal:MIA:2021:duncan-robinson",
+                  "target": 0.1506,
+                  "realised": 0.1984,
+                  "absoluteError": 0.0478
+                },
+                {
+                  "id": "cal:MIA:2021:jimmy-butler",
+                  "target": 0.2955,
+                  "realised": 0.15246,
+                  "absoluteError": 0.14304
+                },
+                {
+                  "id": "cal:MIA:2021:p-j-tucker",
+                  "target": 0.105,
+                  "realised": 0.24359,
+                  "absoluteError": 0.13859
+                },
+                {
+                  "id": "cal:MIA:2021:bam-adebayo",
+                  "target": 0.2638,
+                  "realised": 0.16946,
+                  "absoluteError": 0.09434
+                }
+              ]
+            },
+            "playerReboundShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.02062,
+              "perPlayer": [
+                {
+                  "id": "cal:MIA:2021:kyle-lowry",
+                  "target": 0.1573,
+                  "realised": 0.16511,
+                  "absoluteError": 0.00781
+                },
+                {
+                  "id": "cal:MIA:2021:duncan-robinson",
+                  "target": 0.0909,
+                  "realised": 0.12552,
+                  "absoluteError": 0.03462
+                },
+                {
+                  "id": "cal:MIA:2021:jimmy-butler",
+                  "target": 0.2063,
+                  "realised": 0.1965,
+                  "absoluteError": 0.0098
+                },
+                {
+                  "id": "cal:MIA:2021:p-j-tucker",
+                  "target": 0.1923,
+                  "realised": 0.20143,
+                  "absoluteError": 0.00913
+                },
+                {
+                  "id": "cal:MIA:2021:bam-adebayo",
+                  "target": 0.3532,
+                  "realised": 0.31144,
+                  "absoluteError": 0.04176
+                }
+              ]
+            },
+            "playerAssistShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.0344,
+              "perPlayer": [
+                {
+                  "id": "cal:MIA:2021:kyle-lowry",
+                  "target": 0.3731,
+                  "realised": 0.34109,
+                  "absoluteError": 0.03201
+                },
+                {
+                  "id": "cal:MIA:2021:duncan-robinson",
+                  "target": 0.0796,
+                  "realised": 0.11953,
+                  "absoluteError": 0.03993
+                },
+                {
+                  "id": "cal:MIA:2021:jimmy-butler",
+                  "target": 0.2736,
+                  "realised": 0.21962,
+                  "absoluteError": 0.05398
+                },
+                {
+                  "id": "cal:MIA:2021:p-j-tucker",
+                  "target": 0.1045,
+                  "realised": 0.14481,
+                  "absoluteError": 0.04031
+                },
+                {
+                  "id": "cal:MIA:2021:bam-adebayo",
+                  "target": 0.1692,
+                  "realised": 0.17495,
+                  "absoluteError": 0.00575
+                }
+              ]
+            },
+            "playerStealShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.01545,
+              "perPlayer": [
+                {
+                  "id": "cal:MIA:2021:kyle-lowry",
+                  "target": 0.2037,
+                  "realised": 0.19852,
+                  "absoluteError": 0.00518
+                },
+                {
+                  "id": "cal:MIA:2021:duncan-robinson",
+                  "target": 0.0926,
+                  "realised": 0.11012,
+                  "absoluteError": 0.01752
+                },
+                {
+                  "id": "cal:MIA:2021:jimmy-butler",
+                  "target": 0.2963,
+                  "realised": 0.26286,
+                  "absoluteError": 0.03344
+                },
+                {
+                  "id": "cal:MIA:2021:p-j-tucker",
+                  "target": 0.1481,
+                  "realised": 0.15263,
+                  "absoluteError": 0.00453
+                },
+                {
+                  "id": "cal:MIA:2021:bam-adebayo",
+                  "target": 0.2593,
+                  "realised": 0.27585,
+                  "absoluteError": 0.01655
+                }
+              ]
+            },
+            "playerBlockShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.05484,
+              "perPlayer": [
+                {
+                  "id": "cal:MIA:2021:kyle-lowry",
+                  "target": 0.15,
+                  "realised": 0.16174,
+                  "absoluteError": 0.01174
+                },
+                {
+                  "id": "cal:MIA:2021:duncan-robinson",
+                  "target": 0.1,
+                  "realised": 0.13078,
+                  "absoluteError": 0.03078
+                },
+                {
+                  "id": "cal:MIA:2021:jimmy-butler",
+                  "target": 0.25,
+                  "realised": 0.19459,
+                  "absoluteError": 0.05541
+                },
+                {
+                  "id": "cal:MIA:2021:p-j-tucker",
+                  "target": 0.1,
+                  "realised": 0.19459,
+                  "absoluteError": 0.09459
+                },
+                {
+                  "id": "cal:MIA:2021:bam-adebayo",
+                  "target": 0.4,
+                  "realised": 0.3183,
+                  "absoluteError": 0.0817
+                }
+              ]
+            }
+          },
+          "compositeMae": 0.04405,
+          "supportedShareMetrics": [
+            "playerScoringShares",
+            "playerReboundShares",
+            "playerAssistShares",
+            "playerStealShares",
+            "playerBlockShares"
+          ],
+          "traits": [
+            {
+              "traitId": "slow",
+              "metric": "gamePace",
+              "direction": "BELOW_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 100.06787,
+              "referenceMean": 100.7702,
+              "diff": -0.70233,
+              "z": -19.638,
+              "ci95": {
+                "lower": -0.77243,
+                "upper": -0.63223
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "movement shooting and handoffs",
+              "metric": "movementShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.26094,
+              "referenceMean": 0.22063,
+              "diff": 0.04031,
+              "z": 49.67089,
+              "ci95": {
+                "lower": 0.03872,
+                "upper": 0.0419
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "ELITE_DEFENSE",
+              "metric": "refPppVsTeam",
+              "direction": "BELOW_REFERENCE_BASELINE",
+              "surface": "REFERENCE_VS_TEAM",
+              "subjectMean": 1.24422,
+              "referenceMean": 1.2257,
+              "diff": 0.01852,
+              "z": 8.65676,
+              "ci95": {
+                "lower": 0.01433,
+                "upper": 0.02271
+              },
+              "result": "FAIL",
+              "hardFail": true
+            },
+            {
+              "traitId": "SLOW_HALF_COURT",
+              "metric": "gamePace",
+              "direction": "BELOW_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 100.06787,
+              "referenceMean": 100.7702,
+              "diff": -0.70233,
+              "z": -19.638,
+              "ci95": {
+                "lower": -0.77243,
+                "upper": -0.63223
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "MOTION",
+              "metric": "movementShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.26094,
+              "referenceMean": 0.22063,
+              "diff": 0.04031,
+              "z": 49.67089,
+              "ci95": {
+                "lower": 0.03872,
+                "upper": 0.0419
+              },
+              "result": "PASS",
+              "hardFail": false
+            }
+          ],
+          "notScored": [
+            {
+              "traitId": "zone-capable, scheme-heavy",
+              "result": "NOT_SCORED_METRIC_UNCERTIFIED"
+            },
+            {
+              "traitId": "ZONE_CAPABLE",
+              "result": "NOT_SCORED_METRIC_UNCERTIFIED"
+            }
+          ]
+        },
+        "teamB": {
+          "fixtureId": "v4-2021-22-76ers",
+          "teamName": "Philadelphia 76ers",
+          "season": "2021-22",
+          "shareResults": {
+            "playerScoringShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.06309,
+              "perPlayer": [
+                {
+                  "id": "cal:PHI:2021:tyrese-maxey",
+                  "target": 0.203,
+                  "realised": 0.20067,
+                  "absoluteError": 0.00233
+                },
+                {
+                  "id": "cal:PHI:2021:seth-curry",
+                  "target": 0.174,
+                  "realised": 0.21049,
+                  "absoluteError": 0.03649
+                },
+                {
+                  "id": "cal:PHI:2021:danny-green",
+                  "target": 0.0684,
+                  "realised": 0.18894,
+                  "absoluteError": 0.12054
+                },
+                {
+                  "id": "cal:PHI:2021:tobias-harris",
+                  "target": 0.1995,
+                  "realised": 0.2002,
+                  "absoluteError": 0.0007
+                },
+                {
+                  "id": "cal:PHI:2021:joel-embiid",
+                  "target": 0.3551,
+                  "realised": 0.19971,
+                  "absoluteError": 0.15539
+                }
+              ]
+            },
+            "playerReboundShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.02971,
+              "perPlayer": [
+                {
+                  "id": "cal:PHI:2021:tyrese-maxey",
+                  "target": 0.1159,
+                  "realised": 0.13906,
+                  "absoluteError": 0.02316
+                },
+                {
+                  "id": "cal:PHI:2021:seth-curry",
+                  "target": 0.1232,
+                  "realised": 0.13948,
+                  "absoluteError": 0.01628
+                },
+                {
+                  "id": "cal:PHI:2021:danny-green",
+                  "target": 0.0906,
+                  "realised": 0.12543,
+                  "absoluteError": 0.03483
+                },
+                {
+                  "id": "cal:PHI:2021:tobias-harris",
+                  "target": 0.2464,
+                  "realised": 0.23975,
+                  "absoluteError": 0.00665
+                },
+                {
+                  "id": "cal:PHI:2021:joel-embiid",
+                  "target": 0.4239,
+                  "realised": 0.35627,
+                  "absoluteError": 0.06763
+                }
+              ]
+            },
+            "playerAssistShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.02764,
+              "perPlayer": [
+                {
+                  "id": "cal:PHI:2021:tyrese-maxey",
+                  "target": 0.2529,
+                  "realised": 0.22679,
+                  "absoluteError": 0.02611
+                },
+                {
+                  "id": "cal:PHI:2021:seth-curry",
+                  "target": 0.2353,
+                  "realised": 0.21167,
+                  "absoluteError": 0.02363
+                },
+                {
+                  "id": "cal:PHI:2021:danny-green",
+                  "target": 0.0588,
+                  "realised": 0.12459,
+                  "absoluteError": 0.06579
+                },
+                {
+                  "id": "cal:PHI:2021:tobias-harris",
+                  "target": 0.2059,
+                  "realised": 0.20921,
+                  "absoluteError": 0.00331
+                },
+                {
+                  "id": "cal:PHI:2021:joel-embiid",
+                  "target": 0.2471,
+                  "realised": 0.22773,
+                  "absoluteError": 0.01937
+                }
+              ]
+            },
+            "playerStealShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.03074,
+              "perPlayer": [
+                {
+                  "id": "cal:PHI:2021:tyrese-maxey",
+                  "target": 0.1667,
+                  "realised": 0.16681,
+                  "absoluteError": 0.00011
+                },
+                {
+                  "id": "cal:PHI:2021:seth-curry",
+                  "target": 0.1905,
+                  "realised": 0.14545,
+                  "absoluteError": 0.04505
+                },
+                {
+                  "id": "cal:PHI:2021:danny-green",
+                  "target": 0.2381,
+                  "realised": 0.20631,
+                  "absoluteError": 0.03179
+                },
+                {
+                  "id": "cal:PHI:2021:tobias-harris",
+                  "target": 0.1429,
+                  "realised": 0.16815,
+                  "absoluteError": 0.02525
+                },
+                {
+                  "id": "cal:PHI:2021:joel-embiid",
+                  "target": 0.2618,
+                  "realised": 0.31328,
+                  "absoluteError": 0.05148
+                }
+              ]
+            },
+            "playerBlockShares": {
+              "supported": true,
+              "playersScored": 5,
+              "mae": 0.03899,
+              "perPlayer": [
+                {
+                  "id": "cal:PHI:2021:tyrese-maxey",
+                  "target": 0.1212,
+                  "realised": 0.14742,
+                  "absoluteError": 0.02622
+                },
+                {
+                  "id": "cal:PHI:2021:seth-curry",
+                  "target": 0.0606,
+                  "realised": 0.10255,
+                  "absoluteError": 0.04195
+                },
+                {
+                  "id": "cal:PHI:2021:danny-green",
+                  "target": 0.1818,
+                  "realised": 0.17829,
+                  "absoluteError": 0.00351
+                },
+                {
+                  "id": "cal:PHI:2021:tobias-harris",
+                  "target": 0.1818,
+                  "realised": 0.21112,
+                  "absoluteError": 0.02932
+                },
+                {
+                  "id": "cal:PHI:2021:joel-embiid",
+                  "target": 0.4546,
+                  "realised": 0.36063,
+                  "absoluteError": 0.09397
+                }
+              ]
+            }
+          },
+          "compositeMae": 0.03803,
+          "supportedShareMetrics": [
+            "playerScoringShares",
+            "playerReboundShares",
+            "playerAssistShares",
+            "playerStealShares",
+            "playerBlockShares"
+          ],
+          "traits": [
+            {
+              "traitId": "slow",
+              "metric": "gamePace",
+              "direction": "BELOW_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 100.08984,
+              "referenceMean": 100.7702,
+              "diff": -0.68036,
+              "z": -18.81798,
+              "ci95": {
+                "lower": -0.75122,
+                "upper": -0.6095
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "post-up and pick-and-roll around an MVP centre",
+              "metric": "postUpShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.16526,
+              "referenceMean": 0.15708,
+              "diff": 0.00818,
+              "z": 11.34689,
+              "ci95": {
+                "lower": 0.00677,
+                "upper": 0.00959
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "POST_HEAVY",
+              "metric": "postUpShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.16526,
+              "referenceMean": 0.15708,
+              "diff": 0.00818,
+              "z": 11.34689,
+              "ci95": {
+                "lower": 0.00677,
+                "upper": 0.00959
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "SLOW_HALF_COURT",
+              "metric": "gamePace",
+              "direction": "BELOW_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 100.08984,
+              "referenceMean": 100.7702,
+              "diff": -0.68036,
+              "z": -18.81798,
+              "ci95": {
+                "lower": -0.75122,
+                "upper": -0.6095
+              },
+              "result": "PASS",
+              "hardFail": false
+            },
+            {
+              "traitId": "PICK_AND_ROLL",
+              "metric": "pnrShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.21588,
+              "referenceMean": 0.15499,
+              "diff": 0.06089,
+              "z": 89.08294,
+              "ci95": {
+                "lower": 0.05955,
+                "upper": 0.06223
+              },
+              "result": "PASS",
+              "hardFail": false
+            }
+          ],
+          "notScored": [
+            {
+              "traitId": "drop coverage with a rim anchor",
+              "result": "NOT_SCORED_METRIC_UNCERTIFIED"
+            }
+          ]
+        },
+        "headToHead": {
+          "games": 4096,
+          "teamAWins": 0,
+          "teamAWinRate": 0
+        },
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleScores": 0,
+          "preThreeEraThreePointAttempts": 0,
+          "replayExactAllSurfaces": true
+        },
+        "gamesPlayed": 12288
+      }
+    ]
+  },
+  "outputHash": "abcc55ff39e1e85cd926925551e3133ca87b003735bef130c06a4360ee34d5e4"
+}

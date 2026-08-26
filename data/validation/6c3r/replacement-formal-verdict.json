@@ -1,0 +1,219 @@
+{
+  "artifact": "replacement-formal-verdict",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run validation:6c3r:verdict",
+  "generatedAt": "2026-08-26T23:07:14.690Z",
+  "gitCommit": "800e482da0680044df345a2f4ca03d4bbb0ce86b",
+  "branch": "phase-6c3r-validation-surface-repair",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {
+    "data/validation/6c3r/historical-holdout-v4-results.json": "c93c7feebfa954372ca6aa562bda87f79408bf25825eb27db3cecd6774884cb5",
+    "data/validation/6c3r/historical-v3-preservation-manifest.json": "c2947200890803b082dc4e2bc2c7d35727cd8c7930e6b458b1d3b5ef5da53bd5"
+  },
+  "data": {
+    "formalHoldoutVerdictVersion": "2.0.0",
+    "combinedVerdict": "HISTORICAL_V4_FAILED",
+    "calibrationStatusAfterVerdict": "HOLDOUT_FAILED",
+    "possessionCalibrationVersion": "1.0.0",
+    "historicalV3": {
+      "verdict": "HISTORICAL_HOLDOUT_FAIL",
+      "failureClass": "NONIDENTIFIABLE_MEASUREMENT_SURFACE",
+      "accessCount": 1,
+      "preserved": true,
+      "supersededAsValidAttemptBy": "attempt-2-historical-v4",
+      "note": "V4 supersedes V3 as the valid formal attempt because V3's surface could not identify what it scored. The V3 FAIL record itself is permanent."
+    },
+    "historicalV4": {
+      "verdict": "HISTORICAL_HOLDOUT_V4_FAIL",
+      "accessCountBefore": 0,
+      "accessCountAfter": 1,
+      "matchups": 8,
+      "totalGames": 98304,
+      "erasCovered": 8,
+      "runHash": "90bd81ae4d2fe0951db3cc802c4ee67e4aca19bfcf85362438da88c873aa4b5b",
+      "invalidRunRecovery": "The first invocation crashed after unlock on a runner-only defect (the profile map omitted the v3 store the era references live in). Under the frozen transactional policy the access event was consumed and the run RESUMED under the same event with identical identity hashes; no second attempt was created, and no hashed input changed.",
+      "gates": {
+        "everyMatchupExecuted": true,
+        "zeroInvariantFailures": true,
+        "zeroFinalTies": true,
+        "zeroImpossibleScores": true,
+        "zeroPreThreeEraThreePointAttempts": true,
+        "replayExactEverywhere": true,
+        "compositeRatioWithinPolicy": true,
+        "zeroCatastrophicTeams": true,
+        "traitPassRateMet": true,
+        "zeroTraitHardFails": false,
+        "noMatchupFailsMajorityOfTraits": false
+      },
+      "numeric": {
+        "teamSurfacesScored": 16,
+        "holdoutComposite": 0.04217,
+        "internalBaselineMean": 0.0431,
+        "ratio": 0.97839,
+        "ratioGate": 1.5,
+        "catastrophicThreshold": 0.13038,
+        "catastrophicTeams": []
+      },
+      "traits": {
+        "scored": 73,
+        "passed": 59,
+        "passRate": 0.80822,
+        "hardFails": 12,
+        "notScoredUnobservable": 21
+      }
+    },
+    "syntheticHoldoutV2": {
+      "verdict": "NOT_OPENED",
+      "accessCount": 0,
+      "state": "SEALED_UNREAD",
+      "notOpenedBecause": "The frozen failure policy forbids opening the synthetic holdout after a historical failure. It remains available to a future candidate or validation cycle."
+    },
+    "candidateImmutability": {
+      "coreHashAtV4": "58c5fb6974e694c29f87934ab107ff47ce32963a9c0695e36f941c2a70ae6683",
+      "coreHashNow": "58c5fb6974e694c29f87934ab107ff47ce32963a9c0695e36f941c2a70ae6683",
+      "coreUnchanged": true,
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "parameterUnchanged": true,
+      "parameterDrift": [],
+      "parameterChangesAfterHoldout": 0,
+      "policyChangesAfterHoldout": 0,
+      "seedChangesAfterHoldout": 0,
+      "targetChangesAfterHoldout": 0,
+      "referenceChangesAfterHoldout": 0,
+      "traitRegistryChangesAfterHoldout": 0,
+      "postHoldoutTuning": "NONE"
+    },
+    "whatV4Established": {
+      "surfaceValidity": "Unlike V3, every scored trait was certified observable on an identifiable surface before the run, so this verdict is about the CANDIDATE, not the ruler.",
+      "quantitative": "Composite five-share error 0.04217 against an internal baseline of 0.0431 on the same surface — ratio 0.97839, the second consecutive decisive pass of the generalisation gate. The share proxy generalises to sixteen never-seen team-seasons.",
+      "structural": "98304 games: zero invariant failures, zero final ties, replay exact on all twenty-four surfaces, zero impossible scores, zero three-point attempts in pre-three eras.",
+      "qualitative": "59 of 73 scored traits pass (0.80822); 12 are significantly opposite their documented direction, and the frozen policy allows zero."
+    },
+    "diagnosis": {
+      "verdictClass": "CANDIDATE_TRAIT_FIDELITY_FAILURE_ON_A_VALID_SURFACE",
+      "substantiveHardFails": [
+        {
+          "matchupId": "v4p-1970s-2",
+          "team": "San Antonio Spurs 1977-78",
+          "traitId": "ELITE_OFFENSE",
+          "metric": "pppVsReference",
+          "diff": -0.04752,
+          "z": -29.33948
+        },
+        {
+          "matchupId": "v4p-1970s-2",
+          "team": "Seattle SuperSonics 1978-79",
+          "traitId": "elite team man defence",
+          "metric": "refPppVsTeam",
+          "diff": 0.08607,
+          "z": 53.14077
+        },
+        {
+          "matchupId": "v4p-1970s-2",
+          "team": "Seattle SuperSonics 1978-79",
+          "traitId": "ELITE_DEFENSE",
+          "metric": "refPppVsTeam",
+          "diff": 0.08607,
+          "z": 53.14077
+        },
+        {
+          "matchupId": "v4p-1970s-2",
+          "team": "Seattle SuperSonics 1978-79",
+          "traitId": "STRONG_OFFENSIVE_REBOUNDING",
+          "metric": "orebRate",
+          "diff": -0.06933,
+          "z": -69.83109
+        },
+        {
+          "matchupId": "v4p-1980s-2",
+          "team": "Detroit Pistons 1989-90",
+          "traitId": "elite physical man",
+          "metric": "refPppVsTeam",
+          "diff": 0.05834,
+          "z": 33.34531
+        },
+        {
+          "matchupId": "v4p-1980s-2",
+          "team": "Detroit Pistons 1989-90",
+          "traitId": "ELITE_DEFENSE",
+          "metric": "refPppVsTeam",
+          "diff": 0.05834,
+          "z": 33.34531
+        },
+        {
+          "matchupId": "v4p-1990s-x01",
+          "team": "Chicago Bulls 1991-92",
+          "traitId": "ELITE_OFFENSE",
+          "metric": "pppVsReference",
+          "diff": -0.06465,
+          "z": -35.1556
+        },
+        {
+          "matchupId": "v4p-1990s-x01",
+          "team": "Chicago Bulls 1991-92",
+          "traitId": "MOTION",
+          "metric": "movementShare",
+          "diff": -0.24373,
+          "z": -840.44828
+        }
+      ],
+      "marginalHardFails": [
+        {
+          "matchupId": "v4p-1960s-1",
+          "team": "Seattle SuperSonics 1969-70",
+          "traitId": "PASSING_HUB",
+          "metric": "assistedRate",
+          "diff": -0.01909,
+          "z": -15.57395
+        },
+        {
+          "matchupId": "v4p-2000s-1",
+          "team": "Los Angeles Lakers 2001-02",
+          "traitId": "man with a dominant rebounder",
+          "metric": "orebRateAgainst",
+          "diff": 0.01742,
+          "z": 15.75455
+        },
+        {
+          "matchupId": "v4p-2010s-1",
+          "team": "Houston Rockets 2017-18",
+          "traitId": "THREE_POINT_HEAVY",
+          "metric": "threeShare",
+          "diff": -0.00299,
+          "z": -3.59122
+        },
+        {
+          "matchupId": "v4p-2020s-1",
+          "team": "Miami Heat 2021-22",
+          "traitId": "ELITE_DEFENSE",
+          "metric": "refPppVsTeam",
+          "diff": 0.01852,
+          "z": 8.65676
+        }
+      ],
+      "substantiveCount": 8,
+      "marginalCount": 4,
+      "substantiveReading": "Real candidate findings: documented elite defences (1978-79 SuperSonics +0.086, 1989-90 Pistons +0.058 points per possession conceded above the reference baseline) and elite offences (1991-92 Bulls -0.065, 1977-78 Spurs -0.048 below it) render directionally opposite their documented identity by practically meaningful margins, and the 1991-92 Bulls produce EXACTLY ZERO movement-family actions in 4,096 games under their documented motion identity — a degenerate coach-action rendering.",
+      "marginalReading": "Hard fails whose magnitudes are trivial (three-point share 0.003 low at z 3.6) exist because the frozen policy carries no practical-equivalence margin on the hard-fail rule. Phase 6C2C6 established exactly that discipline for side bias, and this policy failed to inherit it. Recorded as a policy-design defect for the next cycle; NOT used to re-score this run, because the substantive failures alone also breach the zero-hard-fail gate and the 1970s matchup fails a majority of its traits either way.",
+      "wouldTheVerdictChangeWithPracticalMargins": false
+    },
+    "consequences": [
+      "Candidate 0 is NOT holdout validated. calibrationStatus = HOLDOUT_FAILED.",
+      "Synthetic Stress Holdout V2 is NOT opened and remains sealed and unread, available to a future cycle.",
+      "No preview package is prepared. Preview preparation requires both holdouts passing.",
+      "Candidate 0 is NOT changed. Core, parameters, policies, seeds, targets, references and registry are untouched since the freeze.",
+      "historical holdout v4 is CONSUMED at access count 1. A future attempt requires a Historical Holdout V5 built from further unseen team-seasons.",
+      "Historical Holdout V3's formal FAIL remains preserved and unrescored."
+    ],
+    "nextEngineering": [
+      "The trait-fidelity failures are now specific and mechanical: era-reference-relative defensive quality for three documented elite defences, offensive quality for two documented elite offences, and a coach action-mix rendering that produces zero movement actions for one system. These are engine-behaviour findings a future candidate can address — which requires a NEW candidate version, a new parameter-set hash if parameters move, a Historical Holdout V5, and a fresh validation cycle.",
+      "Carry the 6C2C6 practical-equivalence discipline into the next trait policy: a hard fail should require BOTH statistical significance and a practical margin.",
+      "The unused eligible pool teams (13 remain) plus further source expansion can seed Historical Holdout V5 without re-using any consumed fixture."
+    ],
+    "verdictHash": "a6327af87ff430c8d6a097096f14ea98e4038fe6d329c27f3c22efa3931b3b94"
+  },
+  "outputHash": "54b23207fe2ee7fab5f4faef308295041d0dba57b3ad41a422ff46b66b473ed1"
+}

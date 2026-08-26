@@ -69,7 +69,14 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   };
 
   const corpus = loadCorpusV4(); const targetStore = loadTargetsV4(); const store = loadPlayersV4();
-  const profiles = new Map(store.profiles.map((p) => [p.calibrationPlayerId, p]));
+  // The holdout teams live in the V4 store; the era-reference fives are
+  // historical-calibration-v3 players, so the profile map must span BOTH
+  // stores. The first run omitted the v3 store and crashed on the first
+  // reference build — after the unlock, so the access event is consumed and
+  // this run resumes under it. The fix is runner-only: no hashed input moved.
+  const { loadPlayers } = await import("../calibration/build-players-v3.mjs");
+  const v3store = loadPlayers();
+  const profiles = new Map([...v3store.profiles, ...store.profiles].map((p) => [p.calibrationPlayerId, p]));
   const fixtures = new Map(corpus.fixtures.map((f) => [f.fixtureId, f]));
   const tm = new Map(targetStore.records.map((r) => [r.fixtureId, r]));
   const refs = loadReferences().data.references;

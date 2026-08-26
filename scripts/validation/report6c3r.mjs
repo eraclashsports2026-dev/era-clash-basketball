@@ -138,6 +138,211 @@ ${d.mirrorRule}
 `);
   }
 
+  if (has("observability-control-results")) {
+    const A = R("observability-control-results"); const d = A.data;
+    write("observability-control-certification.md", `${prov(A)}# Observability control certification
+
+${fmt(d.metricsCertified, 0)} of ${fmt(d.metricsTotal, 0)} metrics certified over ${fmt(d.gamesPerCell, 0)} games per cell
+against the frozen 2010s era reference. ${d.constructionBasis}
+
+## Criterion revision (pre-freeze, disclosed)
+
+${d.criterionRevision.revised}
+
+${d.criterionRevision.why}
+
+${d.criterionRevision.when}
+
+| Metric | Strong | Neutral | Weak | Reference | s-w z | Certified |
+| --- | --- | --- | --- | --- | --- | --- |
+${d.results.map((r) => `| \`${r.metric}\` | ${fmt(r.cells.strong.mean, 5)} | ${fmt(r.cells.neutral.mean, 5)} | ${fmt(r.cells.weak.mean, 5)} | ${fmt(r.referenceBaseline.mean, 5)} | ${fmt(r.strongVsWeak?.z, 2)} | ${r.certified ? "CERT" : "**FAIL** (" + Object.entries(r.checks).filter(([, v]) => !v).map(([k]) => k).join(", ") + ")"} |`).join("\n")}
+
+Failed metrics and the traits they take out of scoring: ${d.failedMetrics.map((m) => `\`${m}\``).join(", ")}.
+Final eligible traits: **${fmt(d.finalEligibleTraitCount, 0)}** of ${fmt(d.finalTraitEligibility.length, 0)}.
+`);
+  }
+
+  if (has("era-reference-opponents")) {
+    const A = R("era-reference-opponents"); const d = A.data;
+    write("era-reference-opponents.md", `${prov(A)}# Era-reference opponents
+
+${d.role} ${fmt(d.gamesPerReference, 0)} certification games each; certified **${fmt(d.certified, 0)}/${fmt(d.total, 0)}**.
+
+| Era | Five | Gold rate | 95% CI | Pace | PPP | Hash |
+| --- | --- | --- | --- | --- | --- | --- |
+${d.references.map((r) => `| ${r.era} | ${r.five.map((p) => p.name).join(", ")} | ${fmt(r.sideStability.goldWinRate, 4)} | [${fmt(r.sideStability.ci95.lower, 4)}, ${fmt(r.sideStability.ci95.upper, 4)}] | ${fmt(r.selfBaselines.gamePace.mean, 2)} | ${fmt(r.selfBaselines.pppVsReference.mean, 4)} | \`${r.referenceHash.slice(0, 12)}\` |`).join("\n")}
+`);
+  }
+
+  if (has("replacement-holdout-candidate-pool")) {
+    const A = R("replacement-holdout-candidate-pool"); const d = A.data;
+    write("replacement-holdout-candidate-pool.md", `${prov(A)}# Replacement holdout candidate pool
+
+- teams: **${fmt(d.teamCount, 0)}** (${fmt(d.eligibleTeams, 0)} eligible) · pairs: **${fmt(d.pairCount, 0)}** (${fmt(d.eligiblePairs, 0)} eligible)
+- eras with at least two eligible pairs: **${fmt(d.erasWithAtLeastTwoEligiblePairs, 0)}/8** — minimum met: **${d.meetsMinimum}**
+- Candidate 0 outputs used: **${fmt(d.candidateZeroOutputsUsed, 0)}**
+- pool hash: \`${d.poolHash}\`
+
+${d.selectionBasis}
+
+## Ineligible teams
+
+${d.teams.filter((t) => !t.eligible).map((t) => `- \`${t.fixtureId}\`: ${t.reasons.join("; ")}`).join("\n") || "- none"}
+`);
+  }
+
+  if (has("historical-holdout-v4-manifest")) {
+    const A = R("historical-holdout-v4-manifest"); const d = A.data;
+    write("historical-holdout-v4-selection.md", `${prov(A)}# Historical Holdout V4 — selection
+
+${d.selectionAlgorithm}
+
+| Era | Matchup | Pair type | Scored traits A/B |
+| --- | --- | --- | --- |
+${d.matchups.map((m) => `| ${m.eraStyleId} | ${m.teamA.teamName} ${m.teamA.season} vs ${m.teamB.teamName} ${m.teamB.season} | ${m.pairType} | ${fmt(m.teamA.scoredTraits.length, 0)}/${fmt(m.teamB.scoredTraits.length, 0)} |`).join("\n")}
+
+- matchups **${fmt(d.matchupCount, 0)}** · distinct teams **${fmt(d.teamCount, 0)}** · distinct lineups **${fmt(d.distinctLineups, 0)}**
+- pool hash \`${d.candidatePoolHash.slice(0, 16)}\` · selection hash \`${d.selectionHash.slice(0, 16)}\` · manifest hash \`${d.manifestHash.slice(0, 16)}\`
+- Candidate 0 outputs used: **${fmt(d.candidateZeroOutputsUsed, 0)}**
+`);
+  }
+
+  if (has("historical-holdout-v4-policy")) {
+    const A = R("historical-holdout-v4-policy"); const d = A.data;
+    write("historical-holdout-v4-policy.md", `${prov(A)}# Historical Holdout V4 — acceptance policy
+
+Frozen before any V4 output. Policy hash \`${d.policyHash}\`.
+
+- protocol: ${d.protocol.surfacesPerMatchup.join(" · ")}, side-balanced, ${fmt(d.protocol.gamesPerSurface, 0)} games per surface, ${fmt(d.protocol.totalGames, 0)} total
+- numeric gate: composite share error / internal baseline (${fmt(d.numericGates.compositeShareMae.internalBaselineMean, 5)}, same surface, same code) <= ${fmt(d.numericGates.compositeShareMae.maxHoldoutToInternalRatio, 2)}; zero catastrophic teams at ${fmt(d.numericGates.compositeShareMae.catastrophicThreshold, 5)}
+- trait gates: ${d.traitGates.perTrait} Aggregate: pass rate >= ${fmt(d.traitGates.aggregate.minTraitPassRate, 2)}, hard fails <= ${fmt(d.traitGates.aggregate.maxHardFails, 0)}, ${d.traitGates.aggregate.perFixtureRule}.
+- structural: zero invariant failures, zero ties, replay exact per surface, zero impossible scores, zero pre-three-era three-point attempts
+- ${d.numericGates.unavailableMetrics}
+`);
+  }
+
+  if (has("historical-holdout-v4-results")) {
+    const A = R("historical-holdout-v4-results"); const d = A.data;
+    write("historical-holdout-v4-validation.md", `${prov(A)}# Historical Holdout V4 — validation
+
+**Verdict: \`${d.verdict}\`.** Access ${fmt(d.accessCountBefore, 0)} -> ${fmt(d.accessCountAfter, 0)}, run \`${d.runStatus}\`, ${fmt(d.totalGames, 0)} games, ${fmt(d.erasCovered.length, 0)} eras.
+
+## Access
+
+| Field | Value |
+| --- | --- |
+| operator | ${d.accessEvent.actor} |
+| reason | ${d.accessEvent.reason} |
+| opened at commit | \`${d.accessEvent.openedAtCommit}\` |
+| run hash | \`${d.runHash}\` |
+
+## Identity
+
+| Field | Value |
+| --- | --- |
+${Object.entries(d.identity).map(([k, v]) => `| \`${k}\` | \`${v}\` |`).join("\n")}
+
+## Numeric generalisation
+
+| Measure | Value |
+| --- | --- |
+| team surfaces scored | ${fmt(d.numeric.teamSurfacesScored, 0)} |
+| holdout composite MAE | ${fmt(d.numeric.holdoutComposite, 5)} |
+| internal baseline (same surface) | ${fmt(d.numeric.internalBaselineMean, 5)} |
+| ratio | **${fmt(d.numeric.ratio, 5)}** (gate <= ${fmt(d.numeric.ratioGate, 2)}) |
+| catastrophic teams | ${fmt(d.numeric.catastrophicTeams.length, 0)} |
+
+## Traits
+
+${fmt(d.traits.passed, 0)}/${fmt(d.traits.scored, 0)} pass (${fmt(d.traits.passRate, 5)}, gate >= ${fmt(d.traits.minPassRate, 2)}) · hard fails **${fmt(d.traits.hardFails.length, 0)}** (gate 0) · excluded as unobservable/uncertified ${fmt(d.traits.notScoredUnobservable, 0)}
+
+## Gates
+
+| Gate | Verdict |
+| --- | --- |
+${Object.entries(d.gates).map(([k, v]) => `| \`${k}\` | ${v ? "PASS" : "**FAIL**"} |`).join("\n")}
+
+## Per matchup
+
+| Matchup | Era | A composite | B composite | Traits passed | Invariants | Replay |
+| --- | --- | --- | --- | --- | --- | --- |
+${d.results.map((r) => `| \`${r.matchupId}\` | ${r.eraStyleId} | ${fmt(r.teamA.compositeMae, 5)} | ${fmt(r.teamB.compositeMae, 5)} | ${fmt([...r.teamA.traits, ...r.teamB.traits].filter((t) => t.result === "PASS").length, 0)}/${fmt(r.teamA.traits.length + r.teamB.traits.length, 0)} | ${r.structural.invariantViolations} | ${r.structural.replayExactAllSurfaces ? "exact" : "FAIL"} |`).join("\n")}
+
+## Every scored trait
+
+${d.results.map((r) => [
+  `### \`${r.matchupId}\` — ${r.teamA.teamName} ${r.teamA.season} vs ${r.teamB.teamName} ${r.teamB.season}`,
+  ...[["A", r.teamA], ["B", r.teamB]].map(([side, t]) =>
+    `**${t.teamName} ${t.season}**\n\n` +
+    (t.traits.length ? `| Trait | Metric | Expected | Subject | Reference | diff | z | Result |\n| --- | --- | --- | --- | --- | --- | --- | --- |\n` +
+      t.traits.map((x) => `| ${x.traitId} | \`${x.metric}\` | ${x.direction === "ABOVE_REFERENCE_BASELINE" ? "above" : "below"} | ${fmt(x.subjectMean, 5)} | ${fmt(x.referenceMean, 5)} | ${fmt(x.diff, 5)} | ${fmt(x.z, 2)} | ${x.hardFail ? "**HARD FAIL**" : x.result} |`).join("\n") : "(no scored traits)") +
+    (t.notScored.length ? `\n\nNot scored: ${t.notScored.map((n) => `${n.traitId} (${n.result})`).join("; ")}` : "")),
+].join("\n\n")).join("\n\n")}
+`);
+  }
+
+  if (has("replacement-formal-verdict")) {
+    const A = R("replacement-formal-verdict"); const d = A.data;
+    write("replacement-formal-holdout-validation-report.md", `${prov(A)}# Replacement formal holdout validation report
+
+**Combined verdict: \`${d.combinedVerdict}\`. Calibration status: \`${d.calibrationStatusAfterVerdict}\`.**
+\`possessionCalibrationVersion\` remains ${d.possessionCalibrationVersion}. Verdict hash \`${d.verdictHash}\`.
+
+## The three attempts
+
+| Attempt | Verdict | Failure class | Access count |
+| --- | --- | --- | --- |
+| Historical Holdout V3 | ${d.historicalV3.verdict} | \`${d.historicalV3.failureClass}\` | ${fmt(d.historicalV3.accessCount, 0)} |
+| Historical Holdout V4 | ${d.historicalV4.verdict} | \`CANDIDATE_TRAIT_FIDELITY_FAILURE_ON_A_VALID_SURFACE\` | ${fmt(d.historicalV4.accessCountAfter, 0)} |
+| Synthetic Stress V2 | ${d.syntheticHoldoutV2.verdict} | — | ${fmt(d.syntheticHoldoutV2.accessCount, 0)} |
+
+${d.historicalV3.note}
+
+${d.syntheticHoldoutV2.notOpenedBecause}
+
+## Invalid-run recovery
+
+${d.historicalV4.invalidRunRecovery}
+
+## Candidate immutability
+
+| Field | Value |
+| --- | --- |
+${Object.entries(d.candidateImmutability).map(([k, v]) => `| \`${k}\` | \`${Array.isArray(v) ? (v.length ? v.join(", ") : "none") : v}\` |`).join("\n")}
+
+## What V4 established
+
+- **Surface validity.** ${d.whatV4Established.surfaceValidity}
+- **Quantitative.** ${d.whatV4Established.quantitative}
+- **Structural.** ${d.whatV4Established.structural}
+- **Qualitative.** ${d.whatV4Established.qualitative}
+
+## Diagnosis: \`${d.diagnosis.verdictClass}\`
+
+**Substantive hard fails (${fmt(d.diagnosis.substantiveCount, 0)}).** ${d.diagnosis.substantiveReading}
+
+| Matchup | Team | Trait | Metric | diff | z |
+| --- | --- | --- | --- | --- | --- |
+${d.diagnosis.substantiveHardFails.map((t) => `| \`${t.matchupId}\` | ${t.team} | ${t.traitId} | \`${t.metric}\` | ${fmt(t.diff, 5)} | ${fmt(t.z, 2)} |`).join("\n")}
+
+**Marginal hard fails (${fmt(d.diagnosis.marginalCount, 0)}).** ${d.diagnosis.marginalReading}
+
+| Matchup | Team | Trait | Metric | diff | z |
+| --- | --- | --- | --- | --- | --- |
+${d.diagnosis.marginalHardFails.map((t) => `| \`${t.matchupId}\` | ${t.team} | ${t.traitId} | \`${t.metric}\` | ${fmt(t.diff, 5)} | ${fmt(t.z, 2)} |`).join("\n")}
+
+Would the verdict change with practical margins: **${d.diagnosis.wouldTheVerdictChangeWithPracticalMargins}**.
+
+## Consequences
+
+${d.consequences.map((c) => `- ${c}`).join("\n")}
+
+## Next engineering
+
+${d.nextEngineering.map((c) => `- ${c}`).join("\n")}
+`);
+  }
+
   console.log(`RENDERED ${written.length} document(s)`);
   for (const p of written) console.log(`  ${p}`);
 }
