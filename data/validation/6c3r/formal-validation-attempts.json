@@ -1,0 +1,103 @@
+{
+  "artifact": "formal-validation-attempts",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run validation:6c3r:attempts",
+  "generatedAt": "2026-08-26T23:08:23.362Z",
+  "gitCommit": "800e482da0680044df345a2f4ca03d4bbb0ce86b",
+  "branch": "phase-6c3r-validation-surface-repair",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {
+    "data/validation/6c3r/historical-holdout-v4-results.json": "c93c7feebfa954372ca6aa562bda87f79408bf25825eb27db3cecd6774884cb5",
+    "data/validation/6c3r/replacement-formal-verdict.json": "720595b3027b23c42b7f102f51bf19860a8a4e511208fff1551f81eab35a7b77"
+  },
+  "data": {
+    "formalValidationAttemptRegistryVersion": "1.0.0",
+    "candidateStatus": {
+      "candidateId": "Candidate 0",
+      "candidateSelectionStatus": "SELECTED",
+      "candidateLockStatus": "LOCKED",
+      "possessionCalibrationVersion": "1.0.0",
+      "parameterChanges": 0,
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "candidateCoreHash": "58c5fb6974e694c29f87934ab107ff47ce32963a9c0695e36f941c2a70ae6683",
+      "calibrationStatus": "HOLDOUT_FAILED"
+    },
+    "statusModel": "Candidate lock status and validation-attempt status are different facts. Candidate 0 stays LOCKED through a failed validation attempt, because the lock records selection evidence and the attempt records whether a particular measurement design validated it.",
+    "attempts": [
+      {
+        "attemptId": "attempt-1-historical-v3",
+        "holdoutVersion": "3.0.0",
+        "candidateId": "Candidate 0",
+        "candidateCommit": "1a68d20e3885fca6c1b913237bb05df211b2daf6",
+        "candidateCoreHash": "58c5fb6974e694c29f87934ab107ff47ce32963a9c0695e36f941c2a70ae6683",
+        "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+        "policyHash": "a3583d6ada42d61ff9ee40322d999154250613ba94a2cd6f073e2196315919b0",
+        "scopePolicyHash": "594ec258891eebfcd11cdab9190a59f944c331fc4b219261b5fc076312302bf7",
+        "seedVersion": "actual-game @ 6030000+",
+        "accessEvent": {
+          "seq": 1,
+          "set": "historical-holdout-v3",
+          "actor": "CEO-authorized Phase 6C3",
+          "reason": "One-time formal validation of locked Candidate 0 (possessionCalibrationVersion 1.0.0, parameterSetHash 83f5a17d)",
+          "parameterVersion": null,
+          "commit": null,
+          "argv": [
+            "--unlock-holdout",
+            "--unlock-historical-holdout-v3"
+          ],
+          "openedAtCommit": "9a46217a5bf4eac9b171a62aa27ebd8f0d4e5b24"
+        },
+        "formalVerdict": "HISTORICAL_HOLDOUT_FAIL",
+        "failureClass": "NONIDENTIFIABLE_MEASUREMENT_SURFACE",
+        "createdAt": "phase-6c3",
+        "completedAt": "phase-6c3",
+        "supersededBy": "attempt-2-historical-v4 — supersession as the valid revalidation attempt; the V3 FAIL record itself is permanent",
+        "immutable": true
+      },
+      {
+        "attemptId": "attempt-2-historical-v4",
+        "holdoutVersion": "4.0.0",
+        "candidateId": "Candidate 0",
+        "candidateCommit": "1a68d20e3885fca6c1b913237bb05df211b2daf6",
+        "candidateCoreHash": "58c5fb6974e694c29f87934ab107ff47ce32963a9c0695e36f941c2a70ae6683",
+        "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+        "policyHash": "6b607348f42ba4a4dc7c155c05944a80c87ccf04c92761993dc32370f8f9ec12",
+        "seedVersion": "2.0.0 (stream historical-holdout-v4, hash 44262434aea65e22...)",
+        "accessEvent": {
+          "seq": 1,
+          "set": "historical-holdout-v4",
+          "actor": "CEO-authorized Phase 6C3R",
+          "reason": "One-time formal revalidation of locked Candidate 0 on the repaired opponent-paired surface (possessionCalibrationVersion 1.0.0, parameterSetHash 83f5a17d, replacing consumed historical-holdout-v3)",
+          "parameterVersion": null,
+          "commit": null,
+          "argv": [
+            "--unlock-holdout",
+            "--unlock-historical-holdout-v4"
+          ],
+          "openedAtCommit": "800e482da0680044df345a2f4ca03d4bbb0ce86b"
+        },
+        "accessCount": 1,
+        "formalVerdict": "HISTORICAL_HOLDOUT_V4_FAIL",
+        "failureClass": "CANDIDATE_TRAIT_FIDELITY_FAILURE_ON_A_VALID_SURFACE",
+        "createdAt": "phase-6c3r",
+        "completedAt": "phase-6c3r",
+        "supersededBy": null,
+        "immutable": true,
+        "invalidRunRecovery": "The first invocation crashed after unlock on a runner-only defect (the profile map omitted the v3 store the era references live in). Under the frozen transactional policy the access event was consumed and the run RESUMED under the same event with identical identity hashes; no second attempt was created, and no hashed input changed."
+      },
+      {
+        "attemptId": "synthetic-v2",
+        "holdoutVersion": "2.0.0",
+        "formalVerdict": "NOT_OPENED",
+        "accessCount": 0,
+        "reason": "The frozen failure policy forbids opening the synthetic holdout after a historical failure."
+      }
+    ],
+    "replacementValidationStatus": "FAILED",
+    "syntheticHoldoutV2Status": "SEALED_UNREAD"
+  },
+  "outputHash": "2697852bdb58dba50d80232f9656837eb4679f624ca348c0af75def2c0620498"
+}

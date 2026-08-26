@@ -86,6 +86,11 @@ export const SEALED_SETS = Object.freeze({
   // with different consequences.
   "historical-holdout-v3": "data/calibration/historical-holdout-v3-access-log.jsonl",
   "synthetic-stress-holdout-v2": "data/calibration/synthetic-stress-holdout-v2-access-log.jsonl",
+  // Phase 6C3R. historical-holdout-v3 is CONSUMED (opened once, formal FAIL on a
+  // non-identifiable measurement surface). Its replacement gets its own log,
+  // because "was V3 read?" and "was V4 read?" are different questions and the
+  // answer to the first is permanently yes.
+  "historical-holdout-v4": "data/calibration/historical-holdout-v4-access-log.jsonl",
 });
 
 /**
@@ -144,4 +149,5 @@ export const allSealStatuses = () => ({
   "synthetic-stress-v1": { ...setSealStatus("synthetic-stress-v1"), status: "PREVIOUSLY_INSPECTED_ARCHIVE", note: "Its counter reads 0 because the seal was created after the simulations. Not a holdout." },
   "historical-holdout-v3": setSealStatus("historical-holdout-v3"),
   "synthetic-stress-holdout-v2": setSealStatus("synthetic-stress-holdout-v2"),
+  "historical-holdout-v4": setSealStatus("historical-holdout-v4"),
 });

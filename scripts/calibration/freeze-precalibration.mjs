@@ -86,6 +86,12 @@ export const APPROVED_CORRECTIONS = Object.freeze([
     gateMovedTo: "probabilitySideBiasPolicyVersion 2.0.0 / probability-side-bias-validation-v2.json",
     strictlyStronger: true,
   },
+  {
+    path: "src/v3/calibration/holdoutSeal.js",
+    reason: "Phase 6C3R registered a new sealed set, historical-holdout-v4, with its own access log and its own entry in allSealStatuses. historical-holdout-v3 was opened once in Phase 6C3 and returned a formal FAIL caused by a non-identifiable measurement surface (mirror fixtures cannot separate offence from defence); a consumed holdout cannot validate any candidate again, so a replacement set needs a replacement seal. Every EXISTING seal, log path and access record is byte-unchanged: the v3 access log still holds exactly one event, the synthetic-stress-holdout-v2 log still does not exist, and this file is not in the candidate core closure, so the candidate core hash asserted by both holdout runs is untouched.",
+    approvedIn: "phase-6c3r-workstream-0",
+    changesClassification: false,
+  },
 ]);
 
 export const buildFreeze = () => {

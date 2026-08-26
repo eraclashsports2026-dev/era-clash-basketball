@@ -1,0 +1,2120 @@
+{
+  "artifact": "era-reference-opponents",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run validation:6c3r:references",
+  "generatedAt": "2026-08-26T22:20:08.209Z",
+  "gitCommit": "30bf619ce47e720b12d459617ff7df4c55490f32",
+  "branch": "phase-6c3r-validation-surface-repair",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {
+    "data/calibration/historical-corpus-v3.json": "d8c8e1edd2964392718bacda9af83f59f36928f8c498cb14b12014ff0085a6cc",
+    "data/calibration/calibration-players-v3.json": "18e1fdac447d9a77f70260363cb6c508b2afde48d045605679ee882a94101152"
+  },
+  "data": {
+    "historicalReferenceOpponentVersion": "1.0.0",
+    "pairsPerReference": 10000,
+    "gamesPerReference": 20000,
+    "references": [
+      {
+        "era": "1950s",
+        "five": [
+          {
+            "id": "cal:BOS:1958:bob-cousy",
+            "slot": "PG",
+            "person": "cal-person:bob-cousy",
+            "ppg": 20,
+            "name": "Bob Cousy"
+          },
+          {
+            "id": "cal:BOS:1958:bill-sharman",
+            "slot": "SG",
+            "person": "cal-person:bill-sharman",
+            "ppg": 20.4,
+            "name": "Bill Sharman"
+          },
+          {
+            "id": "cal:MIN_LAKERS:1951:jim-pollard",
+            "slot": "SF",
+            "person": "cal-person:jim-pollard",
+            "ppg": 15.5,
+            "name": "Jim Pollard"
+          },
+          {
+            "id": "cal:MIN_LAKERS:1951:vern-mikkelsen",
+            "slot": "PF",
+            "person": "cal-person:vern-mikkelsen",
+            "ppg": 15.3,
+            "name": "Vern Mikkelsen"
+          },
+          {
+            "id": "cal:BOS:1958:bill-russell",
+            "slot": "C",
+            "person": "cal-person:bill-russell",
+            "ppg": 16.7,
+            "name": "Bill Russell"
+          }
+        ],
+        "poolSize": 15,
+        "sourceFixtures": [
+          "h3-1956-57-celtics",
+          "h3-1958-59-celtics",
+          "h3-1951-52-lakers"
+        ],
+        "coach": "NEUTRAL_REFERENCE",
+        "construction": "median-scoring eligible player per slot from historical-calibration-v3 players of this era; persons deduplicated; ties broken by id",
+        "neutrality": {
+          "distinctPersons": true,
+          "positionLegal": true,
+          "ppgSpread": {
+            "min": 15.3,
+            "max": 20.4
+          },
+          "topScoringShareBaseline": 0.28557
+        },
+        "sideStability": {
+          "pairedGames": 20000,
+          "goldWinRate": 0.502,
+          "ci95": {
+            "lower": 0.4922,
+            "upper": 0.5118
+          },
+          "containsHalf": true,
+          "invariantViolations": 0,
+          "ties": 0
+        },
+        "varianceSufficiency": {
+          "gamePace": true,
+          "pppVsReference": true,
+          "refPppVsTeam": true,
+          "transitionShare": true,
+          "pnrShare": true,
+          "postUpShare": true,
+          "isolationShare": true,
+          "movementShare": true,
+          "threeShare": false,
+          "interiorShotShare": true,
+          "orebRate": true,
+          "orebRateAgainst": true,
+          "assistedRate": true,
+          "stealRateForced": true,
+          "rimShareAgainst": true,
+          "defensiveZoneShare": false,
+          "topScoringShare": true
+        },
+        "selfBaselines": {
+          "gamePace": {
+            "n": 20000,
+            "mean": 120.0398,
+            "sd": 2.5541,
+            "se": 0.01806,
+            "ci95": {
+              "lower": 120.0044,
+              "upper": 120.0752
+            }
+          },
+          "pppVsReference": {
+            "n": 20000,
+            "mean": 0.92218,
+            "sd": 0.09132,
+            "se": 0.00065,
+            "ci95": {
+              "lower": 0.92091,
+              "upper": 0.92344
+            }
+          },
+          "refPppVsTeam": {
+            "n": 20000,
+            "mean": 0.92218,
+            "sd": 0.09132,
+            "se": 0.00065,
+            "ci95": {
+              "lower": 0.92091,
+              "upper": 0.92344
+            }
+          },
+          "transitionShare": {
+            "n": 20000,
+            "mean": 0.1734,
+            "sd": 0.03115,
+            "se": 0.00022,
+            "ci95": {
+              "lower": 0.17297,
+              "upper": 0.17383
+            }
+          },
+          "pnrShare": {
+            "n": 20000,
+            "mean": 0.15788,
+            "sd": 0.02986,
+            "se": 0.00021,
+            "ci95": {
+              "lower": 0.15747,
+              "upper": 0.1583
+            }
+          },
+          "postUpShare": {
+            "n": 20000,
+            "mean": 0.14807,
+            "sd": 0.02921,
+            "se": 0.00021,
+            "ci95": {
+              "lower": 0.14766,
+              "upper": 0.14847
+            }
+          },
+          "isolationShare": {
+            "n": 20000,
+            "mean": 0.09149,
+            "sd": 0.02357,
+            "se": 0.00017,
+            "ci95": {
+              "lower": 0.09117,
+              "upper": 0.09182
+            }
+          },
+          "movementShare": {
+            "n": 20000,
+            "mean": 0.21436,
+            "sd": 0.03403,
+            "se": 0.00024,
+            "ci95": {
+              "lower": 0.21389,
+              "upper": 0.21483
+            }
+          },
+          "threeShare": {
+            "n": 20000,
+            "mean": 0,
+            "sd": 0,
+            "se": 0,
+            "ci95": {
+              "lower": 0,
+              "upper": 0
+            }
+          },
+          "interiorShotShare": {
+            "n": 20000,
+            "mean": 0.61735,
+            "sd": 0.04455,
+            "se": 0.00031,
+            "ci95": {
+              "lower": 0.61674,
+              "upper": 0.61797
+            }
+          },
+          "orebRate": {
+            "n": 20000,
+            "mean": 0.35693,
+            "sd": 0.05499,
+            "se": 0.00039,
+            "ci95": {
+              "lower": 0.35616,
+              "upper": 0.35769
+            }
+          },
+          "orebRateAgainst": {
+            "n": 20000,
+            "mean": 0.35693,
+            "sd": 0.05499,
+            "se": 0.00039,
+            "ci95": {
+              "lower": 0.35616,
+              "upper": 0.35769
+            }
+          },
+          "assistedRate": {
+            "n": 20000,
+            "mean": 0.43432,
+            "sd": 0.07763,
+            "se": 0.00055,
+            "ci95": {
+              "lower": 0.43324,
+              "upper": 0.43539
+            }
+          },
+          "stealRateForced": {
+            "n": 20000,
+            "mean": 0.05286,
+            "sd": 0.01828,
+            "se": 0.00013,
+            "ci95": {
+              "lower": 0.0526,
+              "upper": 0.05311
+            }
+          },
+          "rimShareAgainst": {
+            "n": 20000,
+            "mean": 0.61735,
+            "sd": 0.04455,
+            "se": 0.00031,
+            "ci95": {
+              "lower": 0.61674,
+              "upper": 0.61797
+            }
+          },
+          "defensiveZoneShare": {
+            "n": 20000,
+            "mean": 0,
+            "sd": 0,
+            "se": 0,
+            "ci95": {
+              "lower": 0,
+              "upper": 0
+            }
+          },
+          "topScoringShare": {
+            "n": 20000,
+            "mean": 0.28557,
+            "sd": 0.03936,
+            "se": 0.00028,
+            "ci95": {
+              "lower": 0.28502,
+              "upper": 0.28612
+            }
+          }
+        },
+        "referenceHash": "7e6fceda630ac1e89a0d7d89630310b696696b96ef4430eff846caa789e70490"
+      },
+      {
+        "era": "1960s",
+        "five": [
+          {
+            "id": "cal:BOS:1962:bob-cousy",
+            "slot": "PG",
+            "person": "cal-person:bob-cousy",
+            "ppg": 13.2,
+            "name": "Bob Cousy"
+          },
+          {
+            "id": "cal:NYK:1969:dick-barnett",
+            "slot": "SG",
+            "person": "cal-person:dick-barnett",
+            "ppg": 14.9,
+            "name": "Dick Barnett"
+          },
+          {
+            "id": "cal:BOS:1964:john-havlicek",
+            "slot": "SF",
+            "person": "cal-person:john-havlicek",
+            "ppg": 18.3,
+            "name": "John Havlicek"
+          },
+          {
+            "id": "cal:BOS:1964:tom-sanders",
+            "slot": "PF",
+            "person": "cal-person:tom-sanders",
+            "ppg": 11.8,
+            "name": "Tom Sanders"
+          },
+          {
+            "id": "cal:BOS:1962:bill-russell",
+            "slot": "C",
+            "person": "cal-person:bill-russell",
+            "ppg": 16.8,
+            "name": "Bill Russell"
+          }
+        ],
+        "poolSize": 15,
+        "sourceFixtures": [
+          "h3-1962-63-celtics",
+          "h3-1964-65-celtics",
+          "h3-1969-70-knicks"
+        ],
+        "coach": "NEUTRAL_REFERENCE",
+        "construction": "median-scoring eligible player per slot from historical-calibration-v3 players of this era; persons deduplicated; ties broken by id",
+        "neutrality": {
+          "distinctPersons": true,
+          "positionLegal": true,
+          "ppgSpread": {
+            "min": 11.8,
+            "max": 18.3
+          },
+          "topScoringShareBaseline": 0.26575
+        },
+        "sideStability": {
+          "pairedGames": 20000,
+          "goldWinRate": 0.4951,
+          "ci95": {
+            "lower": 0.4853,
+            "upper": 0.5049
+          },
+          "containsHalf": true,
+          "invariantViolations": 0,
+          "ties": 0
+        },
+        "varianceSufficiency": {
+          "gamePace": true,
+          "pppVsReference": true,
+          "refPppVsTeam": true,
+          "transitionShare": true,
+          "pnrShare": true,
+          "postUpShare": true,
+          "isolationShare": false,
+          "movementShare": false,
+          "threeShare": false,
+          "interiorShotShare": true,
+          "orebRate": true,
+          "orebRateAgainst": true,
+          "assistedRate": true,
+          "stealRateForced": true,
+          "rimShareAgainst": true,
+          "defensiveZoneShare": false,
+          "topScoringShare": true
+        },
+        "selfBaselines": {
+          "gamePace": {
+            "n": 20000,
+            "mean": 121.8603,
+            "sd": 2.60435,
+            "se": 0.01842,
+            "ci95": {
+              "lower": 121.82421,
+              "upper": 121.89639
+            }
+          },
+          "pppVsReference": {
+            "n": 20000,
+            "mean": 0.95968,
+            "sd": 0.08938,
+            "se": 0.00063,
+            "ci95": {
+              "lower": 0.95845,
+              "upper": 0.96092
+            }
+          },
+          "refPppVsTeam": {
+            "n": 20000,
+            "mean": 0.95968,
+            "sd": 0.08938,
+            "se": 0.00063,
+            "ci95": {
+              "lower": 0.95845,
+              "upper": 0.96092
+            }
+          },
+          "transitionShare": {
+            "n": 20000,
+            "mean": 0.16931,
+            "sd": 0.03053,
+            "se": 0.00022,
+            "ci95": {
+              "lower": 0.16889,
+              "upper": 0.16974
+            }
+          },
+          "pnrShare": {
+            "n": 20000,
+            "mean": 0.14168,
+            "sd": 0.02847,
+            "se": 0.0002,
+            "ci95": {
+              "lower": 0.14128,
+              "upper": 0.14207
+            }
+          },
+          "postUpShare": {
+            "n": 20000,
+            "mean": 0.16593,
+            "sd": 0.03061,
+            "se": 0.00022,
+            "ci95": {
+              "lower": 0.1655,
+              "upper": 0.16635
+            }
+          },
+          "isolationShare": {
+            "n": 20000,
+            "mean": 0,
+            "sd": 0,
+            "se": 0,
+            "ci95": {
+              "lower": 0,
+              "upper": 0
+            }
+          },
+          "movementShare": {
+            "n": 20000,
+            "mean": 0,
+            "sd": 0,
+            "se": 0,
+            "ci95": {
+              "lower": 0,
+              "upper": 0
+            }
+          },
+          "threeShare": {
+            "n": 20000,
+            "mean": 0,
+            "sd": 0,
+            "se": 0,
+            "ci95": {
+              "lower": 0,
+              "upper": 0
+            }
+          },
+          "interiorShotShare": {
+            "n": 20000,
+            "mean": 0.64888,
+            "sd": 0.04327,
+            "se": 0.00031,
+            "ci95": {
+              "lower": 0.64828,
+              "upper": 0.64948
+            }
+          },
+          "orebRate": {
+            "n": 20000,
+            "mean": 0.36769,
+            "sd": 0.05663,
+            "se": 0.0004,
+            "ci95": {
+              "lower": 0.36691,
+              "upper": 0.36848
+            }
+          },
+          "orebRateAgainst": {
+            "n": 20000,
+            "mean": 0.36769,
+            "sd": 0.05663,
+            "se": 0.0004,
+            "ci95": {
+              "lower": 0.36691,
+              "upper": 0.36848
+            }
+          },
+          "assistedRate": {
+            "n": 20000,
+            "mean": 0.41924,
+            "sd": 0.0733,
+            "se": 0.00052,
+            "ci95": {
+              "lower": 0.41822,
+              "upper": 0.42026
+            }
+          },
+          "stealRateForced": {
+            "n": 20000,
+            "mean": 0.05397,
+            "sd": 0.01844,
+            "se": 0.00013,
+            "ci95": {
+              "lower": 0.05372,
+              "upper": 0.05423
+            }
+          },
+          "rimShareAgainst": {
+            "n": 20000,
+            "mean": 0.64888,
+            "sd": 0.04327,
+            "se": 0.00031,
+            "ci95": {
+              "lower": 0.64828,
+              "upper": 0.64948
+            }
+          },
+          "defensiveZoneShare": {
+            "n": 20000,
+            "mean": 0,
+            "sd": 0,
+            "se": 0,
+            "ci95": {
+              "lower": 0,
+              "upper": 0
+            }
+          },
+          "topScoringShare": {
+            "n": 20000,
+            "mean": 0.26575,
+            "sd": 0.02931,
+            "se": 0.00021,
+            "ci95": {
+              "lower": 0.26534,
+              "upper": 0.26615
+            }
+          }
+        },
+        "referenceHash": "f9307f8c5e07133abc09174903ceed4dd1e9b9d4e3b275ada79b6760d61110ac"
+      },
+      {
+        "era": "1970s",
+        "five": [
+          {
+            "id": "cal:NYK:1972:walt-frazier",
+            "slot": "PG",
+            "person": "cal-person:walt-frazier",
+            "ppg": 21.1,
+            "name": "Walt Frazier"
+          },
+          {
+            "id": "cal:NYK:1972:earl-monroe",
+            "slot": "SG",
+            "person": "cal-person:earl-monroe",
+            "ppg": 15.5,
+            "name": "Earl Monroe"
+          },
+          {
+            "id": "cal:LAL:1971:jim-mcmillian",
+            "slot": "SF",
+            "person": "cal-person:jim-mcmillian",
+            "ppg": 18.8,
+            "name": "Jim McMillian"
+          },
+          {
+            "id": "cal:LAL:1971:happy-hairston",
+            "slot": "PF",
+            "person": "cal-person:happy-hairston",
+            "ppg": 13.1,
+            "name": "Happy Hairston"
+          },
+          {
+            "id": "cal:LAL:1971:wilt-chamberlain",
+            "slot": "C",
+            "person": "cal-person:wilt-chamberlain",
+            "ppg": 14.8,
+            "name": "Wilt Chamberlain"
+          }
+        ],
+        "poolSize": 15,
+        "sourceFixtures": [
+          "h3-1971-72-lakers",
+          "h3-1972-73-knicks",
+          "h3-1973-74-celtics"
+        ],
+        "coach": "NEUTRAL_REFERENCE",
+        "construction": "median-scoring eligible player per slot from historical-calibration-v3 players of this era; persons deduplicated; ties broken by id",
+        "neutrality": {
+          "distinctPersons": true,
+          "positionLegal": true,
+          "ppgSpread": {
+            "min": 13.1,
+            "max": 21.1
+          },
+          "topScoringShareBaseline": 0.26957
+        },
+        "sideStability": {
+          "pairedGames": 20000,
+          "goldWinRate": 0.4962,
+          "ci95": {
+            "lower": 0.4864,
+            "upper": 0.506
+          },
+          "containsHalf": true,
+          "invariantViolations": 0,
+          "ties": 0
+        },
+        "varianceSufficiency": {
+          "gamePace": true,
+          "pppVsReference": true,
+          "refPppVsTeam": true,
+          "transitionShare": true,
+          "pnrShare": true,
+          "postUpShare": true,
+          "isolationShare": false,
+          "movementShare": false,
+          "threeShare": false,
+          "interiorShotShare": true,
+          "orebRate": true,
+          "orebRateAgainst": true,
+          "assistedRate": true,
+          "stealRateForced": true,
+          "rimShareAgainst": true,
+          "defensiveZoneShare": false,
+          "topScoringShare": true
+        },
+        "selfBaselines": {
+          "gamePace": {
+            "n": 20000,
+            "mean": 106.8677,
+            "sd": 2.49428,
+            "se": 0.01764,
+            "ci95": {
+              "lower": 106.83313,
+              "upper": 106.90227
+            }
+          },
+          "pppVsReference": {
+            "n": 20000,
+            "mean": 0.96395,
+            "sd": 0.09625,
+            "se": 0.00068,
+            "ci95": {
+              "lower": 0.96261,
+              "upper": 0.96528
+            }
+          },
+          "refPppVsTeam": {
+            "n": 20000,
+            "mean": 0.96395,
+            "sd": 0.09625,
+            "se": 0.00068,
+            "ci95": {
+              "lower": 0.96261,
+              "upper": 0.96528
+            }
+          },
+          "transitionShare": {
+            "n": 20000,
+            "mean": 0.16179,
+            "sd": 0.0327,
+            "se": 0.00023,
+            "ci95": {
+              "lower": 0.16134,
+              "upper": 0.16225
+            }
+          },
+          "pnrShare": {
+            "n": 20000,
+            "mean": 0.15996,
+            "sd": 0.03249,
+            "se": 0.00023,
+            "ci95": {
+              "lower": 0.15951,
+              "upper": 0.16041
+            }
+          },
+          "postUpShare": {
+            "n": 20000,
+            "mean": 0.15041,
+            "sd": 0.03166,
+            "se": 0.00022,
+            "ci95": {
+              "lower": 0.14997,
+              "upper": 0.15085
+            }
+          },
+          "isolationShare": {
+            "n": 20000,
+            "mean": 0,
+            "sd": 0,
+            "se": 0,
+            "ci95": {
+              "lower": 0,
+              "upper": 0
+            }
+          },
+          "movementShare": {
+            "n": 20000,
+            "mean": 0,
+            "sd": 0,
+            "se": 0,
+            "ci95": {
+              "lower": 0,
+              "upper": 0
+            }
+          },
+          "threeShare": {
+            "n": 20000,
+            "mean": 0,
+            "sd": 0,
+            "se": 0,
+            "ci95": {
+              "lower": 0,
+              "upper": 0
+            }
+          },
+          "interiorShotShare": {
+            "n": 20000,
+            "mean": 0.61429,
+            "sd": 0.04818,
+            "se": 0.00034,
+            "ci95": {
+              "lower": 0.61362,
+              "upper": 0.61496
+            }
+          },
+          "orebRate": {
+            "n": 20000,
+            "mean": 0.32312,
+            "sd": 0.06176,
+            "se": 0.00044,
+            "ci95": {
+              "lower": 0.32226,
+              "upper": 0.32397
+            }
+          },
+          "orebRateAgainst": {
+            "n": 20000,
+            "mean": 0.32312,
+            "sd": 0.06176,
+            "se": 0.00044,
+            "ci95": {
+              "lower": 0.32226,
+              "upper": 0.32397
+            }
+          },
+          "assistedRate": {
+            "n": 20000,
+            "mean": 0.41859,
+            "sd": 0.07621,
+            "se": 0.00054,
+            "ci95": {
+              "lower": 0.41753,
+              "upper": 0.41964
+            }
+          },
+          "stealRateForced": {
+            "n": 20000,
+            "mean": 0.06183,
+            "sd": 0.02137,
+            "se": 0.00015,
+            "ci95": {
+              "lower": 0.06153,
+              "upper": 0.06212
+            }
+          },
+          "rimShareAgainst": {
+            "n": 20000,
+            "mean": 0.61429,
+            "sd": 0.04818,
+            "se": 0.00034,
+            "ci95": {
+              "lower": 0.61362,
+              "upper": 0.61496
+            }
+          },
+          "defensiveZoneShare": {
+            "n": 20000,
+            "mean": 0,
+            "sd": 0,
+            "se": 0,
+            "ci95": {
+              "lower": 0,
+              "upper": 0
+            }
+          },
+          "topScoringShare": {
+            "n": 20000,
+            "mean": 0.26957,
+            "sd": 0.03125,
+            "se": 0.00022,
+            "ci95": {
+              "lower": 0.26914,
+              "upper": 0.27001
+            }
+          }
+        },
+        "referenceHash": "20cb75dc847a5ff26dee8c2e7a0db89571a901b97268846c688e239afa947929"
+      },
+      {
+        "era": "1980s",
+        "five": [
+          {
+            "id": "cal:DET:1988:isiah-thomas",
+            "slot": "PG",
+            "person": "cal-person:isiah-thomas",
+            "ppg": 18.2,
+            "name": "Isiah Thomas"
+          },
+          {
+            "id": "cal:LAL:1986:byron-scott",
+            "slot": "SG",
+            "person": "cal-person:byron-scott",
+            "ppg": 17,
+            "name": "Byron Scott"
+          },
+          {
+            "id": "cal:LAL:1986:james-worthy",
+            "slot": "SF",
+            "person": "cal-person:james-worthy",
+            "ppg": 19.4,
+            "name": "James Worthy"
+          },
+          {
+            "id": "cal:LAL:1986:a-c-green",
+            "slot": "PF",
+            "person": "cal-person:a-c-green",
+            "ppg": 10.8,
+            "name": "A. C. Green"
+          },
+          {
+            "id": "cal:BOS:1985:robert-parish",
+            "slot": "C",
+            "person": "cal-person:robert-parish",
+            "ppg": 16.1,
+            "name": "Robert Parish"
+          }
+        ],
+        "poolSize": 15,
+        "sourceFixtures": [
+          "h3-1985-86-celtics",
+          "h3-1986-87-lakers",
+          "h3-1988-89-pistons"
+        ],
+        "coach": "NEUTRAL_REFERENCE",
+        "construction": "median-scoring eligible player per slot from historical-calibration-v3 players of this era; persons deduplicated; ties broken by id",
+        "neutrality": {
+          "distinctPersons": true,
+          "positionLegal": true,
+          "ppgSpread": {
+            "min": 10.8,
+            "max": 19.4
+          },
+          "topScoringShareBaseline": 0.26945
+        },
+        "sideStability": {
+          "pairedGames": 20000,
+          "goldWinRate": 0.5006,
+          "ci95": {
+            "lower": 0.4908,
+            "upper": 0.5104
+          },
+          "containsHalf": true,
+          "invariantViolations": 0,
+          "ties": 0
+        },
+        "varianceSufficiency": {
+          "gamePace": true,
+          "pppVsReference": true,
+          "refPppVsTeam": true,
+          "transitionShare": true,
+          "pnrShare": true,
+          "postUpShare": true,
+          "isolationShare": true,
+          "movementShare": true,
+          "threeShare": true,
+          "interiorShotShare": true,
+          "orebRate": true,
+          "orebRateAgainst": true,
+          "assistedRate": true,
+          "stealRateForced": true,
+          "rimShareAgainst": true,
+          "defensiveZoneShare": false,
+          "topScoringShare": true
+        },
+        "selfBaselines": {
+          "gamePace": {
+            "n": 20000,
+            "mean": 101.1179,
+            "sd": 2.25815,
+            "se": 0.01597,
+            "ci95": {
+              "lower": 101.0866,
+              "upper": 101.1492
+            }
+          },
+          "pppVsReference": {
+            "n": 20000,
+            "mean": 1.09314,
+            "sd": 0.10295,
+            "se": 0.00073,
+            "ci95": {
+              "lower": 1.09172,
+              "upper": 1.09457
+            }
+          },
+          "refPppVsTeam": {
+            "n": 20000,
+            "mean": 1.09314,
+            "sd": 0.10295,
+            "se": 0.00073,
+            "ci95": {
+              "lower": 1.09172,
+              "upper": 1.09457
+            }
+          },
+          "transitionShare": {
+            "n": 20000,
+            "mean": 0.13479,
+            "sd": 0.03136,
+            "se": 0.00022,
+            "ci95": {
+              "lower": 0.13436,
+              "upper": 0.13522
+            }
+          },
+          "pnrShare": {
+            "n": 20000,
+            "mean": 0.17309,
+            "sd": 0.035,
+            "se": 0.00025,
+            "ci95": {
+              "lower": 0.1726,
+              "upper": 0.17357
+            }
+          },
+          "postUpShare": {
+            "n": 20000,
+            "mean": 0.17503,
+            "sd": 0.04084,
+            "se": 0.00029,
+            "ci95": {
+              "lower": 0.17447,
+              "upper": 0.1756
+            }
+          },
+          "isolationShare": {
+            "n": 20000,
+            "mean": 0.11305,
+            "sd": 0.02921,
+            "se": 0.00021,
+            "ci95": {
+              "lower": 0.11264,
+              "upper": 0.11345
+            }
+          },
+          "movementShare": {
+            "n": 20000,
+            "mean": 0.22314,
+            "sd": 0.03834,
+            "se": 0.00027,
+            "ci95": {
+              "lower": 0.22261,
+              "upper": 0.22367
+            }
+          },
+          "threeShare": {
+            "n": 20000,
+            "mean": 0.05556,
+            "sd": 0.02347,
+            "se": 0.00017,
+            "ci95": {
+              "lower": 0.05524,
+              "upper": 0.05589
+            }
+          },
+          "interiorShotShare": {
+            "n": 20000,
+            "mean": 0.58424,
+            "sd": 0.05092,
+            "se": 0.00036,
+            "ci95": {
+              "lower": 0.58353,
+              "upper": 0.58494
+            }
+          },
+          "orebRate": {
+            "n": 20000,
+            "mean": 0.31659,
+            "sd": 0.0658,
+            "se": 0.00047,
+            "ci95": {
+              "lower": 0.31568,
+              "upper": 0.3175
+            }
+          },
+          "orebRateAgainst": {
+            "n": 20000,
+            "mean": 0.31659,
+            "sd": 0.0658,
+            "se": 0.00047,
+            "ci95": {
+              "lower": 0.31568,
+              "upper": 0.3175
+            }
+          },
+          "assistedRate": {
+            "n": 20000,
+            "mean": 0.44716,
+            "sd": 0.07536,
+            "se": 0.00053,
+            "ci95": {
+              "lower": 0.44612,
+              "upper": 0.44821
+            }
+          },
+          "stealRateForced": {
+            "n": 20000,
+            "mean": 0.04695,
+            "sd": 0.0193,
+            "se": 0.00014,
+            "ci95": {
+              "lower": 0.04668,
+              "upper": 0.04722
+            }
+          },
+          "rimShareAgainst": {
+            "n": 20000,
+            "mean": 0.58424,
+            "sd": 0.05092,
+            "se": 0.00036,
+            "ci95": {
+              "lower": 0.58353,
+              "upper": 0.58494
+            }
+          },
+          "defensiveZoneShare": {
+            "n": 20000,
+            "mean": 0,
+            "sd": 0,
+            "se": 0,
+            "ci95": {
+              "lower": 0,
+              "upper": 0
+            }
+          },
+          "topScoringShare": {
+            "n": 20000,
+            "mean": 0.26945,
+            "sd": 0.03096,
+            "se": 0.00022,
+            "ci95": {
+              "lower": 0.26902,
+              "upper": 0.26987
+            }
+          }
+        },
+        "referenceHash": "01b27f5bf48682ad7212112cc89a4168af7cf0df56fcb1918f10240d6b2d4094"
+      },
+      {
+        "era": "1990s",
+        "five": [
+          {
+            "id": "cal:HOU:1994:kenny-smith",
+            "slot": "PG",
+            "person": "cal-person:kenny-smith",
+            "ppg": 10.4,
+            "name": "Kenny Smith"
+          },
+          {
+            "id": "cal:HOU:1994:clyde-drexler",
+            "slot": "SG",
+            "person": "cal-person:clyde-drexler",
+            "ppg": 21.4,
+            "name": "Clyde Drexler"
+          },
+          {
+            "id": "cal:UTA:1996:bryon-russell",
+            "slot": "SF",
+            "person": "cal-person:bryon-russell",
+            "ppg": 10.8,
+            "name": "Bryon Russell"
+          },
+          {
+            "id": "cal:HOU:1994:otis-thorpe",
+            "slot": "PF",
+            "person": "cal-person:otis-thorpe",
+            "ppg": 13.3,
+            "name": "Otis Thorpe"
+          },
+          {
+            "id": "cal:CHI:1995:luc-longley",
+            "slot": "C",
+            "person": "cal-person:luc-longley",
+            "ppg": 9.1,
+            "name": "Luc Longley"
+          }
+        ],
+        "poolSize": 15,
+        "sourceFixtures": [
+          "h3-1995-96-bulls",
+          "h3-1996-97-jazz",
+          "h3-1994-95-rockets"
+        ],
+        "coach": "NEUTRAL_REFERENCE",
+        "construction": "median-scoring eligible player per slot from historical-calibration-v3 players of this era; persons deduplicated; ties broken by id",
+        "neutrality": {
+          "distinctPersons": true,
+          "positionLegal": true,
+          "ppgSpread": {
+            "min": 9.1,
+            "max": 21.4
+          },
+          "topScoringShareBaseline": 0.26899
+        },
+        "sideStability": {
+          "pairedGames": 20000,
+          "goldWinRate": 0.4998,
+          "ci95": {
+            "lower": 0.49,
+            "upper": 0.5096
+          },
+          "containsHalf": true,
+          "invariantViolations": 0,
+          "ties": 0
+        },
+        "varianceSufficiency": {
+          "gamePace": true,
+          "pppVsReference": true,
+          "refPppVsTeam": true,
+          "transitionShare": true,
+          "pnrShare": true,
+          "postUpShare": true,
+          "isolationShare": false,
+          "movementShare": true,
+          "threeShare": true,
+          "interiorShotShare": true,
+          "orebRate": true,
+          "orebRateAgainst": true,
+          "assistedRate": true,
+          "stealRateForced": true,
+          "rimShareAgainst": true,
+          "defensiveZoneShare": false,
+          "topScoringShare": true
+        },
+        "selfBaselines": {
+          "gamePace": {
+            "n": 20000,
+            "mean": 97.05895,
+            "sd": 2.15154,
+            "se": 0.01521,
+            "ci95": {
+              "lower": 97.02913,
+              "upper": 97.08877
+            }
+          },
+          "pppVsReference": {
+            "n": 20000,
+            "mean": 1.14712,
+            "sd": 0.10852,
+            "se": 0.00077,
+            "ci95": {
+              "lower": 1.14561,
+              "upper": 1.14862
+            }
+          },
+          "refPppVsTeam": {
+            "n": 20000,
+            "mean": 1.14712,
+            "sd": 0.10852,
+            "se": 0.00077,
+            "ci95": {
+              "lower": 1.14561,
+              "upper": 1.14862
+            }
+          },
+          "transitionShare": {
+            "n": 20000,
+            "mean": 0.12452,
+            "sd": 0.03123,
+            "se": 0.00022,
+            "ci95": {
+              "lower": 0.12408,
+              "upper": 0.12495
+            }
+          },
+          "pnrShare": {
+            "n": 20000,
+            "mean": 0.17835,
+            "sd": 0.03385,
+            "se": 0.00024,
+            "ci95": {
+              "lower": 0.17788,
+              "upper": 0.17882
+            }
+          },
+          "postUpShare": {
+            "n": 20000,
+            "mean": 0.25444,
+            "sd": 0.04112,
+            "se": 0.00029,
+            "ci95": {
+              "lower": 0.25387,
+              "upper": 0.25501
+            }
+          },
+          "isolationShare": {
+            "n": 20000,
+            "mean": 0,
+            "sd": 0,
+            "se": 0,
+            "ci95": {
+              "lower": 0,
+              "upper": 0
+            }
+          },
+          "movementShare": {
+            "n": 20000,
+            "mean": 0.24373,
+            "sd": 0.04118,
+            "se": 0.00029,
+            "ci95": {
+              "lower": 0.24316,
+              "upper": 0.2443
+            }
+          },
+          "threeShare": {
+            "n": 20000,
+            "mean": 0.11095,
+            "sd": 0.0329,
+            "se": 0.00023,
+            "ci95": {
+              "lower": 0.11049,
+              "upper": 0.1114
+            }
+          },
+          "interiorShotShare": {
+            "n": 20000,
+            "mean": 0.53348,
+            "sd": 0.05195,
+            "se": 0.00037,
+            "ci95": {
+              "lower": 0.53276,
+              "upper": 0.5342
+            }
+          },
+          "orebRate": {
+            "n": 20000,
+            "mean": 0.32073,
+            "sd": 0.068,
+            "se": 0.00048,
+            "ci95": {
+              "lower": 0.31979,
+              "upper": 0.32167
+            }
+          },
+          "orebRateAgainst": {
+            "n": 20000,
+            "mean": 0.32073,
+            "sd": 0.068,
+            "se": 0.00048,
+            "ci95": {
+              "lower": 0.31979,
+              "upper": 0.32167
+            }
+          },
+          "assistedRate": {
+            "n": 20000,
+            "mean": 0.48583,
+            "sd": 0.07507,
+            "se": 0.00053,
+            "ci95": {
+              "lower": 0.48479,
+              "upper": 0.48687
+            }
+          },
+          "stealRateForced": {
+            "n": 20000,
+            "mean": 0.04264,
+            "sd": 0.01912,
+            "se": 0.00014,
+            "ci95": {
+              "lower": 0.04237,
+              "upper": 0.0429
+            }
+          },
+          "rimShareAgainst": {
+            "n": 20000,
+            "mean": 0.53348,
+            "sd": 0.05195,
+            "se": 0.00037,
+            "ci95": {
+              "lower": 0.53276,
+              "upper": 0.5342
+            }
+          },
+          "defensiveZoneShare": {
+            "n": 20000,
+            "mean": 0,
+            "sd": 0,
+            "se": 0,
+            "ci95": {
+              "lower": 0,
+              "upper": 0
+            }
+          },
+          "topScoringShare": {
+            "n": 20000,
+            "mean": 0.26899,
+            "sd": 0.03095,
+            "se": 0.00022,
+            "ci95": {
+              "lower": 0.26856,
+              "upper": 0.26942
+            }
+          }
+        },
+        "referenceHash": "a984a5c965e0d60cb6b8957f6e4d260efc2a500b1bf97e2aaa0aa62685ba5551"
+      },
+      {
+        "era": "2000s",
+        "five": [
+          {
+            "id": "cal:SAS:2004:tony-parker",
+            "slot": "PG",
+            "person": "cal-person:tony-parker",
+            "ppg": 16.6,
+            "name": "Tony Parker"
+          },
+          {
+            "id": "cal:DET:2003:richard-hamilton",
+            "slot": "SG",
+            "person": "cal-person:richard-hamilton",
+            "ppg": 17.6,
+            "name": "Richard Hamilton"
+          },
+          {
+            "id": "cal:LAL:2000:rick-fox",
+            "slot": "SF",
+            "person": "cal-person:rick-fox",
+            "ppg": 9.6,
+            "name": "Rick Fox"
+          },
+          {
+            "id": "cal:DET:2003:rasheed-wallace",
+            "slot": "PF",
+            "person": "cal-person:rasheed-wallace",
+            "ppg": 13.7,
+            "name": "Rasheed Wallace"
+          },
+          {
+            "id": "cal:DET:2003:ben-wallace",
+            "slot": "C",
+            "person": "cal-person:ben-wallace",
+            "ppg": 9.5,
+            "name": "Ben Wallace"
+          }
+        ],
+        "poolSize": 15,
+        "sourceFixtures": [
+          "h3-2000-01-lakers",
+          "h3-2003-04-pistons",
+          "h3-2004-05-spurs"
+        ],
+        "coach": "NEUTRAL_REFERENCE",
+        "construction": "median-scoring eligible player per slot from historical-calibration-v3 players of this era; persons deduplicated; ties broken by id",
+        "neutrality": {
+          "distinctPersons": true,
+          "positionLegal": true,
+          "ppgSpread": {
+            "min": 9.5,
+            "max": 17.6
+          },
+          "topScoringShareBaseline": 0.30322
+        },
+        "sideStability": {
+          "pairedGames": 20000,
+          "goldWinRate": 0.5035,
+          "ci95": {
+            "lower": 0.4937,
+            "upper": 0.5133
+          },
+          "containsHalf": true,
+          "invariantViolations": 0,
+          "ties": 0
+        },
+        "varianceSufficiency": {
+          "gamePace": true,
+          "pppVsReference": true,
+          "refPppVsTeam": true,
+          "transitionShare": true,
+          "pnrShare": true,
+          "postUpShare": true,
+          "isolationShare": false,
+          "movementShare": true,
+          "threeShare": true,
+          "interiorShotShare": true,
+          "orebRate": true,
+          "orebRateAgainst": true,
+          "assistedRate": true,
+          "stealRateForced": true,
+          "rimShareAgainst": true,
+          "defensiveZoneShare": false,
+          "topScoringShare": true
+        },
+        "selfBaselines": {
+          "gamePace": {
+            "n": 20000,
+            "mean": 90.77025,
+            "sd": 2.03494,
+            "se": 0.01439,
+            "ci95": {
+              "lower": 90.74205,
+              "upper": 90.79845
+            }
+          },
+          "pppVsReference": {
+            "n": 20000,
+            "mean": 1.06487,
+            "sd": 0.11721,
+            "se": 0.00083,
+            "ci95": {
+              "lower": 1.06325,
+              "upper": 1.0665
+            }
+          },
+          "refPppVsTeam": {
+            "n": 20000,
+            "mean": 1.06487,
+            "sd": 0.11721,
+            "se": 0.00083,
+            "ci95": {
+              "lower": 1.06325,
+              "upper": 1.0665
+            }
+          },
+          "transitionShare": {
+            "n": 20000,
+            "mean": 0.13849,
+            "sd": 0.03415,
+            "se": 0.00024,
+            "ci95": {
+              "lower": 0.13802,
+              "upper": 0.13897
+            }
+          },
+          "pnrShare": {
+            "n": 20000,
+            "mean": 0.17287,
+            "sd": 0.03737,
+            "se": 0.00026,
+            "ci95": {
+              "lower": 0.17235,
+              "upper": 0.17339
+            }
+          },
+          "postUpShare": {
+            "n": 20000,
+            "mean": 0.18026,
+            "sd": 0.04068,
+            "se": 0.00029,
+            "ci95": {
+              "lower": 0.17969,
+              "upper": 0.18082
+            }
+          },
+          "isolationShare": {
+            "n": 20000,
+            "mean": 0,
+            "sd": 0,
+            "se": 0,
+            "ci95": {
+              "lower": 0,
+              "upper": 0
+            }
+          },
+          "movementShare": {
+            "n": 20000,
+            "mean": 0.2579,
+            "sd": 0.04298,
+            "se": 0.0003,
+            "ci95": {
+              "lower": 0.2573,
+              "upper": 0.25849
+            }
+          },
+          "threeShare": {
+            "n": 20000,
+            "mean": 0.21814,
+            "sd": 0.04477,
+            "se": 0.00032,
+            "ci95": {
+              "lower": 0.21752,
+              "upper": 0.21876
+            }
+          },
+          "interiorShotShare": {
+            "n": 20000,
+            "mean": 0.48111,
+            "sd": 0.05395,
+            "se": 0.00038,
+            "ci95": {
+              "lower": 0.48036,
+              "upper": 0.48186
+            }
+          },
+          "orebRate": {
+            "n": 20000,
+            "mean": 0.2619,
+            "sd": 0.06347,
+            "se": 0.00045,
+            "ci95": {
+              "lower": 0.26102,
+              "upper": 0.26278
+            }
+          },
+          "orebRateAgainst": {
+            "n": 20000,
+            "mean": 0.2619,
+            "sd": 0.06347,
+            "se": 0.00045,
+            "ci95": {
+              "lower": 0.26102,
+              "upper": 0.26278
+            }
+          },
+          "assistedRate": {
+            "n": 20000,
+            "mean": 0.50944,
+            "sd": 0.08385,
+            "se": 0.00059,
+            "ci95": {
+              "lower": 0.50828,
+              "upper": 0.5106
+            }
+          },
+          "stealRateForced": {
+            "n": 20000,
+            "mean": 0.04897,
+            "sd": 0.02114,
+            "se": 0.00015,
+            "ci95": {
+              "lower": 0.04868,
+              "upper": 0.04926
+            }
+          },
+          "rimShareAgainst": {
+            "n": 20000,
+            "mean": 0.48111,
+            "sd": 0.05395,
+            "se": 0.00038,
+            "ci95": {
+              "lower": 0.48036,
+              "upper": 0.48186
+            }
+          },
+          "defensiveZoneShare": {
+            "n": 20000,
+            "mean": 0,
+            "sd": 0,
+            "se": 0,
+            "ci95": {
+              "lower": 0,
+              "upper": 0
+            }
+          },
+          "topScoringShare": {
+            "n": 20000,
+            "mean": 0.30322,
+            "sd": 0.04691,
+            "se": 0.00033,
+            "ci95": {
+              "lower": 0.30257,
+              "upper": 0.30387
+            }
+          }
+        },
+        "referenceHash": "828f8a3295b51f5abe49f528bf819d98d0c221dee24832de94775eb638671215"
+      },
+      {
+        "era": "2010s",
+        "five": [
+          {
+            "id": "cal:CHI:2010:derrick-rose",
+            "slot": "PG",
+            "person": "cal-person:derrick-rose",
+            "ppg": 25,
+            "name": "Derrick Rose"
+          },
+          {
+            "id": "cal:SAS:2013:danny-green",
+            "slot": "SG",
+            "person": "cal-person:danny-green",
+            "ppg": 9.1,
+            "name": "Danny Green"
+          },
+          {
+            "id": "cal:SAS:2013:kawhi-leonard",
+            "slot": "SF",
+            "person": "cal-person:kawhi-leonard",
+            "ppg": 12.8,
+            "name": "Kawhi Leonard"
+          },
+          {
+            "id": "cal:SAS:2013:tim-duncan",
+            "slot": "PF",
+            "person": "cal-person:tim-duncan",
+            "ppg": 15.1,
+            "name": "Tim Duncan"
+          },
+          {
+            "id": "cal:SAS:2013:tiago-splitter",
+            "slot": "C",
+            "person": "cal-person:tiago-splitter",
+            "ppg": 8.2,
+            "name": "Tiago Splitter"
+          }
+        ],
+        "poolSize": 15,
+        "sourceFixtures": [
+          "h3-2015-16-warriors",
+          "h3-2013-14-spurs",
+          "h3-2010-11-bulls"
+        ],
+        "coach": "NEUTRAL_REFERENCE",
+        "construction": "median-scoring eligible player per slot from historical-calibration-v3 players of this era; persons deduplicated; ties broken by id",
+        "neutrality": {
+          "distinctPersons": true,
+          "positionLegal": true,
+          "ppgSpread": {
+            "min": 8.2,
+            "max": 25
+          },
+          "topScoringShareBaseline": 0.28048
+        },
+        "sideStability": {
+          "pairedGames": 20000,
+          "goldWinRate": 0.5032,
+          "ci95": {
+            "lower": 0.4934,
+            "upper": 0.513
+          },
+          "containsHalf": true,
+          "invariantViolations": 0,
+          "ties": 0
+        },
+        "varianceSufficiency": {
+          "gamePace": true,
+          "pppVsReference": true,
+          "refPppVsTeam": true,
+          "transitionShare": true,
+          "pnrShare": true,
+          "postUpShare": true,
+          "isolationShare": true,
+          "movementShare": true,
+          "threeShare": true,
+          "interiorShotShare": true,
+          "orebRate": true,
+          "orebRateAgainst": true,
+          "assistedRate": true,
+          "stealRateForced": true,
+          "rimShareAgainst": true,
+          "defensiveZoneShare": false,
+          "topScoringShare": true
+        },
+        "selfBaselines": {
+          "gamePace": {
+            "n": 20000,
+            "mean": 96.0496,
+            "sd": 2.04527,
+            "se": 0.01446,
+            "ci95": {
+              "lower": 96.02125,
+              "upper": 96.07795
+            }
+          },
+          "pppVsReference": {
+            "n": 20000,
+            "mean": 1.10285,
+            "sd": 0.12007,
+            "se": 0.00085,
+            "ci95": {
+              "lower": 1.10118,
+              "upper": 1.10451
+            }
+          },
+          "refPppVsTeam": {
+            "n": 20000,
+            "mean": 1.10285,
+            "sd": 0.12007,
+            "se": 0.00085,
+            "ci95": {
+              "lower": 1.10118,
+              "upper": 1.10451
+            }
+          },
+          "transitionShare": {
+            "n": 20000,
+            "mean": 0.14536,
+            "sd": 0.03379,
+            "se": 0.00024,
+            "ci95": {
+              "lower": 0.14489,
+              "upper": 0.14583
+            }
+          },
+          "pnrShare": {
+            "n": 20000,
+            "mean": 0.13894,
+            "sd": 0.03337,
+            "se": 0.00024,
+            "ci95": {
+              "lower": 0.13847,
+              "upper": 0.1394
+            }
+          },
+          "postUpShare": {
+            "n": 20000,
+            "mean": 0.24851,
+            "sd": 0.04195,
+            "se": 0.0003,
+            "ci95": {
+              "lower": 0.24793,
+              "upper": 0.24909
+            }
+          },
+          "isolationShare": {
+            "n": 20000,
+            "mean": 0.08775,
+            "sd": 0.02743,
+            "se": 0.00019,
+            "ci95": {
+              "lower": 0.08737,
+              "upper": 0.08813
+            }
+          },
+          "movementShare": {
+            "n": 20000,
+            "mean": 0.19841,
+            "sd": 0.03828,
+            "se": 0.00027,
+            "ci95": {
+              "lower": 0.19787,
+              "upper": 0.19894
+            }
+          },
+          "threeShare": {
+            "n": 20000,
+            "mean": 0.29103,
+            "sd": 0.04798,
+            "se": 0.00034,
+            "ci95": {
+              "lower": 0.29036,
+              "upper": 0.29169
+            }
+          },
+          "interiorShotShare": {
+            "n": 20000,
+            "mean": 0.435,
+            "sd": 0.0522,
+            "se": 0.00037,
+            "ci95": {
+              "lower": 0.43428,
+              "upper": 0.43572
+            }
+          },
+          "orebRate": {
+            "n": 20000,
+            "mean": 0.21832,
+            "sd": 0.05863,
+            "se": 0.00041,
+            "ci95": {
+              "lower": 0.21751,
+              "upper": 0.21913
+            }
+          },
+          "orebRateAgainst": {
+            "n": 20000,
+            "mean": 0.21832,
+            "sd": 0.05863,
+            "se": 0.00041,
+            "ci95": {
+              "lower": 0.21751,
+              "upper": 0.21913
+            }
+          },
+          "assistedRate": {
+            "n": 20000,
+            "mean": 0.47158,
+            "sd": 0.08054,
+            "se": 0.00057,
+            "ci95": {
+              "lower": 0.47047,
+              "upper": 0.4727
+            }
+          },
+          "stealRateForced": {
+            "n": 20000,
+            "mean": 0.0445,
+            "sd": 0.01979,
+            "se": 0.00014,
+            "ci95": {
+              "lower": 0.04422,
+              "upper": 0.04477
+            }
+          },
+          "rimShareAgainst": {
+            "n": 20000,
+            "mean": 0.435,
+            "sd": 0.0522,
+            "se": 0.00037,
+            "ci95": {
+              "lower": 0.43428,
+              "upper": 0.43572
+            }
+          },
+          "defensiveZoneShare": {
+            "n": 20000,
+            "mean": 0,
+            "sd": 0,
+            "se": 0,
+            "ci95": {
+              "lower": 0,
+              "upper": 0
+            }
+          },
+          "topScoringShare": {
+            "n": 20000,
+            "mean": 0.28048,
+            "sd": 0.03598,
+            "se": 0.00025,
+            "ci95": {
+              "lower": 0.27998,
+              "upper": 0.28097
+            }
+          }
+        },
+        "referenceHash": "3abb8eaafa6460511f631f682f23bc639f5660e037886399d2b1a06557a06869"
+      },
+      {
+        "era": "2020s",
+        "five": [
+          {
+            "id": "cal:PHI:2022:james-harden",
+            "slot": "PG",
+            "person": "cal-person:james-harden",
+            "ppg": 21,
+            "name": "James Harden"
+          },
+          {
+            "id": "cal:PHI:2022:tyrese-maxey",
+            "slot": "SG",
+            "person": "cal-person:tyrese-maxey",
+            "ppg": 20.3,
+            "name": "Tyrese Maxey"
+          },
+          {
+            "id": "cal:GSW:2021:andrew-wiggins",
+            "slot": "SF",
+            "person": "cal-person:andrew-wiggins",
+            "ppg": 17.2,
+            "name": "Andrew Wiggins"
+          },
+          {
+            "id": "cal:GSW:2021:draymond-green",
+            "slot": "PF",
+            "person": "cal-person:draymond-green",
+            "ppg": 7.5,
+            "name": "Draymond Green"
+          },
+          {
+            "id": "cal:MIA:2022:bam-adebayo",
+            "slot": "C",
+            "person": "cal-person:bam-adebayo",
+            "ppg": 20.4,
+            "name": "Bam Adebayo"
+          }
+        ],
+        "poolSize": 15,
+        "sourceFixtures": [
+          "h3-2021-22-warriors",
+          "h3-2022-23-heat",
+          "h3-2022-23-sixers"
+        ],
+        "coach": "NEUTRAL_REFERENCE",
+        "construction": "median-scoring eligible player per slot from historical-calibration-v3 players of this era; persons deduplicated; ties broken by id",
+        "neutrality": {
+          "distinctPersons": true,
+          "positionLegal": true,
+          "ppgSpread": {
+            "min": 7.5,
+            "max": 21
+          },
+          "topScoringShareBaseline": 0.29156
+        },
+        "sideStability": {
+          "pairedGames": 20000,
+          "goldWinRate": 0.5042,
+          "ci95": {
+            "lower": 0.4944,
+            "upper": 0.514
+          },
+          "containsHalf": true,
+          "invariantViolations": 0,
+          "ties": 0
+        },
+        "varianceSufficiency": {
+          "gamePace": true,
+          "pppVsReference": true,
+          "refPppVsTeam": true,
+          "transitionShare": true,
+          "pnrShare": true,
+          "postUpShare": true,
+          "isolationShare": true,
+          "movementShare": true,
+          "threeShare": true,
+          "interiorShotShare": true,
+          "orebRate": true,
+          "orebRateAgainst": true,
+          "assistedRate": true,
+          "stealRateForced": true,
+          "rimShareAgainst": true,
+          "defensiveZoneShare": false,
+          "topScoringShare": true
+        },
+        "selfBaselines": {
+          "gamePace": {
+            "n": 20000,
+            "mean": 100.7702,
+            "sd": 2.11776,
+            "se": 0.01497,
+            "ci95": {
+              "lower": 100.74085,
+              "upper": 100.79955
+            }
+          },
+          "pppVsReference": {
+            "n": 20000,
+            "mean": 1.2257,
+            "sd": 0.12462,
+            "se": 0.00088,
+            "ci95": {
+              "lower": 1.22398,
+              "upper": 1.22743
+            }
+          },
+          "refPppVsTeam": {
+            "n": 20000,
+            "mean": 1.2257,
+            "sd": 0.12462,
+            "se": 0.00088,
+            "ci95": {
+              "lower": 1.22398,
+              "upper": 1.22743
+            }
+          },
+          "transitionShare": {
+            "n": 20000,
+            "mean": 0.14628,
+            "sd": 0.03341,
+            "se": 0.00024,
+            "ci95": {
+              "lower": 0.14581,
+              "upper": 0.14674
+            }
+          },
+          "pnrShare": {
+            "n": 20000,
+            "mean": 0.15499,
+            "sd": 0.03445,
+            "se": 0.00024,
+            "ci95": {
+              "lower": 0.15451,
+              "upper": 0.15547
+            }
+          },
+          "postUpShare": {
+            "n": 20000,
+            "mean": 0.15708,
+            "sd": 0.0417,
+            "se": 0.00029,
+            "ci95": {
+              "lower": 0.15651,
+              "upper": 0.15766
+            }
+          },
+          "isolationShare": {
+            "n": 20000,
+            "mean": 0.11377,
+            "sd": 0.0308,
+            "se": 0.00022,
+            "ci95": {
+              "lower": 0.11335,
+              "upper": 0.1142
+            }
+          },
+          "movementShare": {
+            "n": 20000,
+            "mean": 0.22063,
+            "sd": 0.0436,
+            "se": 0.00031,
+            "ci95": {
+              "lower": 0.22002,
+              "upper": 0.22123
+            }
+          },
+          "threeShare": {
+            "n": 20000,
+            "mean": 0.43016,
+            "sd": 0.05119,
+            "se": 0.00036,
+            "ci95": {
+              "lower": 0.42945,
+              "upper": 0.43087
+            }
+          },
+          "interiorShotShare": {
+            "n": 20000,
+            "mean": 0.34003,
+            "sd": 0.04915,
+            "se": 0.00035,
+            "ci95": {
+              "lower": 0.33935,
+              "upper": 0.34072
+            }
+          },
+          "orebRate": {
+            "n": 20000,
+            "mean": 0.21043,
+            "sd": 0.05856,
+            "se": 0.00041,
+            "ci95": {
+              "lower": 0.20962,
+              "upper": 0.21124
+            }
+          },
+          "orebRateAgainst": {
+            "n": 20000,
+            "mean": 0.21043,
+            "sd": 0.05856,
+            "se": 0.00041,
+            "ci95": {
+              "lower": 0.20962,
+              "upper": 0.21124
+            }
+          },
+          "assistedRate": {
+            "n": 20000,
+            "mean": 0.51457,
+            "sd": 0.07546,
+            "se": 0.00053,
+            "ci95": {
+              "lower": 0.51352,
+              "upper": 0.51561
+            }
+          },
+          "stealRateForced": {
+            "n": 20000,
+            "mean": 0.04317,
+            "sd": 0.01928,
+            "se": 0.00014,
+            "ci95": {
+              "lower": 0.0429,
+              "upper": 0.04344
+            }
+          },
+          "rimShareAgainst": {
+            "n": 20000,
+            "mean": 0.34003,
+            "sd": 0.04915,
+            "se": 0.00035,
+            "ci95": {
+              "lower": 0.33935,
+              "upper": 0.34072
+            }
+          },
+          "defensiveZoneShare": {
+            "n": 20000,
+            "mean": 0,
+            "sd": 0,
+            "se": 0,
+            "ci95": {
+              "lower": 0,
+              "upper": 0
+            }
+          },
+          "topScoringShare": {
+            "n": 20000,
+            "mean": 0.29156,
+            "sd": 0.03921,
+            "se": 0.00028,
+            "ci95": {
+              "lower": 0.29102,
+              "upper": 0.29211
+            }
+          }
+        },
+        "referenceHash": "a24983f52b5cf2b787609f84bb7a68be146e21d2bd5c951d2aeb9b29373dc217"
+      }
+    ],
+    "erasCovered": [
+      "1950s",
+      "1960s",
+      "1970s",
+      "1980s",
+      "1990s",
+      "2000s",
+      "2010s",
+      "2020s"
+    ],
+    "certified": 8,
+    "total": 8,
+    "allCertified": true,
+    "holdoutOverlap": 0,
+    "frozenBeforeV4Selection": true,
+    "role": "A frozen measuring instrument, never historical truth. Every V4 trait criterion compares against these self-baselines."
+  },
+  "outputHash": "6a6fb8a91ead4ca06a13bbb3901125d6a508259397f18a83e3f8233bc81f7e79"
+}

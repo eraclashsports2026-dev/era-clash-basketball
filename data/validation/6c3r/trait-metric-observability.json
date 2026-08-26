@@ -1,0 +1,867 @@
+{
+  "artifact": "trait-metric-observability",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run validation:6c3r:traits",
+  "generatedAt": "2026-08-26T22:06:38.327Z",
+  "gitCommit": "612177cfcfb3c74fd3a9ccfe6a32445192fc871a",
+  "branch": "phase-6c3r-validation-surface-repair",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {
+    "data/validation/6c3r/historical-trait-registry.json": "212a39ac67b2872559c4a87102fc9d666b5d02019852a1cf5d464671d5069495"
+  },
+  "data": {
+    "observabilityCertificationVersion": "1.0.0",
+    "stage": "PRE_CERTIFICATION",
+    "note": "scoringEligibility here is the registry's pre-certification view. Final eligibility is granted only by observability-control-results.json: a trait whose metric fails its strong/neutral/weak controls loses eligibility whatever this file says.",
+    "rows": [
+      {
+        "traitId": "very fast",
+        "observabilityClass": "DIRECTLY_OBSERVABLE",
+        "primaryMetric": "gamePace",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "fast",
+        "observabilityClass": "DIRECTLY_OBSERVABLE",
+        "primaryMetric": "gamePace",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "moderate",
+        "observabilityClass": "DIRECTLY_OBSERVABLE",
+        "primaryMetric": null,
+        "expectedDirection": "NONE",
+        "requiredMeasurementSurface": "NONE",
+        "contextDependencies": [],
+        "scoringEligibility": false,
+        "eligibilityNote": "NOT_APPLICABLE_NO_DIRECTIONAL_CLAIM"
+      },
+      {
+        "traitId": "slow",
+        "observabilityClass": "DIRECTLY_OBSERVABLE",
+        "primaryMetric": "gamePace",
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "very slow",
+        "observabilityClass": "DIRECTLY_OBSERVABLE",
+        "primaryMetric": "gamePace",
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "ELITE_OFFENSE",
+        "observabilityClass": "PROXY_OBSERVABLE",
+        "primaryMetric": "pppVsReference",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "ELITE_DEFENSE",
+        "observabilityClass": "PROXY_OBSERVABLE",
+        "primaryMetric": "refPppVsTeam",
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "PACE_EXTREME",
+        "observabilityClass": "DIRECTLY_OBSERVABLE",
+        "primaryMetric": "gamePace",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "SLOW_HALF_COURT",
+        "observabilityClass": "DIRECTLY_OBSERVABLE",
+        "primaryMetric": "gamePace",
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "THREE_POINT_HEAVY",
+        "observabilityClass": "DIRECTLY_OBSERVABLE",
+        "primaryMetric": "threeShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [
+          "ERA_HAS_THREE_POINT_LINE"
+        ],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "LOW_THREE_POINT",
+        "observabilityClass": "DIRECTLY_OBSERVABLE",
+        "primaryMetric": "threeShare",
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [
+          "ERA_HAS_THREE_POINT_LINE"
+        ],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "POST_HEAVY",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "postUpShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "ISOLATION_HEAVY",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "isolationShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "PICK_AND_ROLL",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "pnrShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "MOTION",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "movementShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "TRANSITION",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "transitionShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "SMALL_BALL",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "interiorShotShare",
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "SIZE_HEAVY",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "interiorShotShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "STRONG_OFFENSIVE_REBOUNDING",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "orebRate",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "WEAK_OFFENSIVE_REBOUNDING",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "orebRate",
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "PASSING_HUB",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "assistedRate",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "ZONE_CAPABLE",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "defensiveZoneShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "contextDependencies": [
+          "ERA_ALLOWS_ZONE"
+        ],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "BALANCED_CHAMPION",
+        "observabilityClass": "UNOBSERVABLE_ON_THIS_SURFACE",
+        "primaryMetric": null,
+        "expectedDirection": "NONE",
+        "requiredMeasurementSurface": "NONE",
+        "contextDependencies": [],
+        "scoringEligibility": false,
+        "eligibilityNote": "NOT_SCORED_UNOBSERVABLE"
+      },
+      {
+        "traitId": "NON_CHAMPION",
+        "observabilityClass": "UNOBSERVABLE_ON_THIS_SURFACE",
+        "primaryMetric": null,
+        "expectedDirection": "NONE",
+        "requiredMeasurementSurface": "NONE",
+        "contextDependencies": [],
+        "scoringEligibility": false,
+        "eligibilityNote": "NOT_SCORED_UNOBSERVABLE"
+      },
+      {
+        "traitId": "Showtime transition and early offence",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "transitionShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "fast break and early offence",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "transitionShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "fast break from defensive rebounding",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "transitionShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "fast break, balanced scoring",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "transitionShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "fast break, depth scoring",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "transitionShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "fast break, early offence",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "transitionShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "running game, off-ball movement",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "transitionShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "transition and post scoring",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "transitionShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "the canonical pick-and-roll",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "pnrShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "pick-and-roll around a lead guard",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "pnrShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "seven seconds or less: pick-and-roll and spacing",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "pnrShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "post and pick-and-roll, disciplined",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "postUpShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "post entry to a dominant centre",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "postUpShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "post-centred, interior scoring",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "postUpShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "post-up and isolation, low volume",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "postUpShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "post-up and pick-and-roll around an MVP centre",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "postUpShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "post-up centre with perimeter spacing",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "postUpShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "triangle around a dominant post centre",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "postUpShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "triangle: post reads, cuts, spacing",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "postUpShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "isolation and post-up in the half court",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "isolationShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "motion and cutting",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "movementShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "motion, ball movement, high-post passing",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "movementShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "movement shooting and handoffs",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "movementShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "movement shooting off screens",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "movementShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "movement shooting, off-ball screens, handoffs",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "movementShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "spacing around a point-forward, cutting",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "movementShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "half-court motion and passing",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "movementShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "ball movement, drive and kick, corner threes",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "assistedRate",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "half-court execution, elite passing front line",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "assistedRate",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "passing-hub centre, cutting and movement",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "assistedRate",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "size-driven drives and offensive rebounding",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "orebRate",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "elite physical man",
+        "observabilityClass": "PROXY_OBSERVABLE",
+        "primaryMetric": "refPppVsTeam",
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "elite scheme-driven man",
+        "observabilityClass": "PROXY_OBSERVABLE",
+        "primaryMetric": "refPppVsTeam",
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "elite team man defence",
+        "observabilityClass": "PROXY_OBSERVABLE",
+        "primaryMetric": "refPppVsTeam",
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "elite team man",
+        "observabilityClass": "PROXY_OBSERVABLE",
+        "primaryMetric": "refPppVsTeam",
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "elite man with rim protection",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "rimShareAgainst",
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "rim-anchored man",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "rimShareAgainst",
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "rim-protected man",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "rimShareAgainst",
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "drop coverage with a rim anchor",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "rimShareAgainst",
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "switching with a rim anchor",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "rimShareAgainst",
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "size-heavy man",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "rimShareAgainst",
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "pressure man",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "stealRateForced",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "pressure man with help",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "stealRateForced",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "switching pressure man",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "stealRateForced",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "switching, aggressive man",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "stealRateForced",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "physical, trapping man",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "stealRateForced",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "aggressive switching and trapping",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "stealRateForced",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "gambling man defence",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "stealRateForced",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "man with a dominant rebounder",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "orebRateAgainst",
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "contextDependencies": [],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "zone-capable, long switching",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "defensiveZoneShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "contextDependencies": [
+          "ERA_ALLOWS_ZONE"
+        ],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "zone-capable, scheme-heavy",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "primaryMetric": "defensiveZoneShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "contextDependencies": [
+          "ERA_ALLOWS_ZONE"
+        ],
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "disciplined man",
+        "observabilityClass": "UNOBSERVABLE_ON_THIS_SURFACE",
+        "primaryMetric": null,
+        "expectedDirection": "NONE",
+        "requiredMeasurementSurface": "NONE",
+        "contextDependencies": [],
+        "scoringEligibility": false,
+        "eligibilityNote": "NOT_SCORED_UNOBSERVABLE"
+      },
+      {
+        "traitId": "disciplined team man",
+        "observabilityClass": "UNOBSERVABLE_ON_THIS_SURFACE",
+        "primaryMetric": null,
+        "expectedDirection": "NONE",
+        "requiredMeasurementSurface": "NONE",
+        "contextDependencies": [],
+        "scoringEligibility": false,
+        "eligibilityNote": "NOT_SCORED_UNOBSERVABLE"
+      },
+      {
+        "traitId": "help-heavy man",
+        "observabilityClass": "UNOBSERVABLE_ON_THIS_SURFACE",
+        "primaryMetric": null,
+        "expectedDirection": "NONE",
+        "requiredMeasurementSurface": "NONE",
+        "contextDependencies": [],
+        "scoringEligibility": false,
+        "eligibilityNote": "NOT_SCORED_UNOBSERVABLE"
+      },
+      {
+        "traitId": "man with help",
+        "observabilityClass": "UNOBSERVABLE_ON_THIS_SURFACE",
+        "primaryMetric": null,
+        "expectedDirection": "NONE",
+        "requiredMeasurementSurface": "NONE",
+        "contextDependencies": [],
+        "scoringEligibility": false,
+        "eligibilityNote": "NOT_SCORED_UNOBSERVABLE"
+      },
+      {
+        "traitId": "physical man",
+        "observabilityClass": "UNOBSERVABLE_ON_THIS_SURFACE",
+        "primaryMetric": null,
+        "expectedDirection": "NONE",
+        "requiredMeasurementSurface": "NONE",
+        "contextDependencies": [],
+        "scoringEligibility": false,
+        "eligibilityNote": "NOT_SCORED_UNOBSERVABLE"
+      },
+      {
+        "traitId": "switching small-ball",
+        "observabilityClass": "UNOBSERVABLE_ON_THIS_SURFACE",
+        "primaryMetric": null,
+        "expectedDirection": "NONE",
+        "requiredMeasurementSurface": "NONE",
+        "contextDependencies": [],
+        "scoringEligibility": false,
+        "eligibilityNote": "NOT_SCORED_UNOBSERVABLE"
+      }
+    ],
+    "counts": {
+      "total": 81,
+      "byClass": {
+        "DIRECTLY_OBSERVABLE": 9,
+        "PROXY_OBSERVABLE": 6,
+        "STRUCTURALLY_OBSERVABLE": 58,
+        "UNOBSERVABLE_ON_THIS_SURFACE": 8
+      },
+      "byFamily": {
+        "PACE": 7,
+        "OFFENSE_QUALITY": 1,
+        "DEFENSE_QUALITY": 11,
+        "SHOT_PROFILE": 3,
+        "ACTION_IDENTITY": 32,
+        "ROSTER_BALANCE": 1,
+        "REBOUNDING": 4,
+        "PLAYMAKING": 4,
+        "ZONE_IDENTITY": 3,
+        "ERA_EXPRESSION": 2,
+        "RIM_PROTECTION": 6,
+        "PRESSURE_DEFENSE": 7
+      },
+      "scoringEligible": 72
+    }
+  },
+  "outputHash": "8e1e01e97962cfee39253b2e90e0365e026eede272dfe815fee42c42e6c4374f"
+}

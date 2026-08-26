@@ -3,6 +3,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { allSealStatuses, setAccessCount } from "../../src/v3/calibration/holdoutSeal.js";
 
 const RESULTS = "data/validation/6c3/historical-holdout-results.json";
+const RESULTS_V4 = "data/validation/6c3r/historical-holdout-v4-results.json";
 
 /**
  * The seal invariant that replaced six separate "every accessCount is 0"
@@ -40,15 +41,29 @@ export const assertSealDiscipline = () => {
     expect(d.accessEvent.openedAtCommit, "the access event must record the commit").toBeTruthy();
   }
 
+  // Phase 6C3R opened the replacement set once; the same attributability rules
+  // bind it that bind V3.
+  const v4 = setAccessCount("historical-holdout-v4");
+  expect(v4, "a sealed set is opened at most once").toBeLessThanOrEqual(1);
+  if (v4 === 1) {
+    expect(existsSync(RESULTS_V4), "an opened V4 must leave a results artifact").toBe(true);
+    const d = JSON.parse(readFileSync(RESULTS_V4, "utf8")).data;
+    expect(d.set).toBe("historical-holdout-v4");
+    expect(d.accessCountBefore).toBe(0);
+    expect(d.accessCountAfter).toBe(1);
+    expect(d.accessEvent.actor).toBeTruthy();
+    expect(String(d.accessEvent.reason).length).toBeGreaterThan(20);
+  }
+
   // Everything else stays sealed, including the synthetic stress holdout.
   for (const [id, v] of Object.entries(all)) {
-    if (id === "historical-holdout-v3") continue;
+    if (id === "historical-holdout-v3" || id === "historical-holdout-v4") continue;
     expect(v.accessCount, `${id} has been accessed and should not have been`).toBe(0);
   }
   expect(setAccessCount("synthetic-stress-holdout-v2"),
-    "the synthetic stress holdout must remain sealed: the historical holdout failed").toBe(0);
+    "the synthetic stress holdout must remain sealed: no historical holdout has passed").toBe(0);
 
-  return { historicalHoldoutAccessCount: hist, allOthersSealed: true };
+  return { historicalHoldoutAccessCount: hist, historicalHoldoutV4AccessCount: v4, allOthersSealed: true };
 };
 
 /** An import must never change a seal count, whatever the counts happen to be. */
