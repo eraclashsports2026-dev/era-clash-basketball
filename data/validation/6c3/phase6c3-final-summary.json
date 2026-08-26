@@ -1,0 +1,163 @@
+{
+  "artifact": "phase6c3-final-summary",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run validation:summary",
+  "generatedAt": "2026-08-26T20:33:27.038Z",
+  "gitCommit": "26d5646a6e25d92929548b216d3215291e2c76e8",
+  "branch": "phase-6c3-formal-holdout-preview",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {
+    "data/validation/6c3/formal-holdout-verdict.json": "4303f44fe27bc1c7a88ac8a57bfa8115a816ca779eb001e2bd08707c30855edd",
+    "data/validation/6c3/historical-holdout-results.json": "6493e2a69347f791eb24574fc0eda2ec8342aac830b30bf56646df3b83537876"
+  },
+  "data": {
+    "phase": "6C3",
+    "finalVerdict": "HOLDOUT FAILED — CANDIDATE NOT VALIDATED",
+    "workstreamsCompleted": [
+      "WS0 preflight",
+      "WS1 policy and core manifest",
+      "WS2 pipeline dry run",
+      "WS3 historical holdout",
+      "WS5 formal verdict"
+    ],
+    "workstreamsNotRun": [
+      "WS4 synthetic holdout",
+      "WS6 engine comparison",
+      "WS7 preview integration",
+      "WS8 preview deployment",
+      "WS9 preview smoke",
+      "WS10 preview soak",
+      "WS11 browser QA",
+      "WS12 preview verdict",
+      "WS13 handoff"
+    ],
+    "workstreamsNotRunReason": "The frozen failure policy: on a historical holdout failure, do not open the synthetic holdout, do not deploy preview, end the phase with a formal failure verdict.",
+    "repository": {
+      "branch": "phase-6c3-formal-holdout-preview",
+      "headCommit": "26d5646a6e25d92929548b216d3215291e2c76e8",
+      "mainCommit": "9cd95ff8797f8cdef252bbe67d63158c01b9f9bd",
+      "mainUnchanged": true,
+      "workingTreeClean": false
+    },
+    "lockedCandidate": {
+      "candidateId": "Candidate 0",
+      "calibrationStatus": "HOLDOUT_FAILED",
+      "possessionCalibrationVersion": "1.0.0",
+      "parameterChanges": 0,
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "lockManifestHash": "4e0c814f0c5ddd32f6f5db9281908203a650e739ce95448ca27dc2ad858bc751",
+      "coreHash": "58c5fb6974e694c29f87934ab107ff47ce32963a9c0695e36f941c2a70ae6683",
+      "coreFileCount": 52,
+      "activeParameterCount": 53,
+      "coreUnchangedSinceHoldout": true,
+      "parameterDrift": []
+    },
+    "preflight": {
+      "formalValidationMayBegin": true,
+      "failedGates": []
+    },
+    "dryRun": {
+      "checksPassed": 18,
+      "checksTotal": 18,
+      "allPass": true
+    },
+    "referenceBaseline": {
+      "internalCompositeMean": 0.04338,
+      "fixturesContributing": 23,
+      "sealedFixturesUsed": 0,
+      "referenceHash": "488db9cecd25930751c379d60d0e9d72f72da33ae7d576d89f77464114c54d64"
+    },
+    "historicalHoldout": {
+      "verdict": "HISTORICAL_HOLDOUT_FAIL",
+      "accessCountBefore": 0,
+      "accessCountAfter": 1,
+      "fixtures": 8,
+      "gamesPerFixture": 4096,
+      "totalGames": 32768,
+      "erasCovered": 8,
+      "internalCompositeMae": 0.04338,
+      "holdoutCompositeMae": 0.04339,
+      "ratio": 1.00026,
+      "ratioGate": 1.5,
+      "gatesPassed": 10,
+      "gatesTotal": 12,
+      "failedGates": [
+        "identityDirectionallyPreserved",
+        "everyFixturePasses"
+      ],
+      "supportedScope": {
+        "teamFieldClassTotals": {
+          "NOT_APPLICABLE": 24,
+          "UNAVAILABLE": 216
+        },
+        "reconciliation": {
+          "label": "team-field-classes",
+          "sum": 240,
+          "expectedTotal": 240,
+          "reconciles": true,
+          "problems": []
+        },
+        "proxyShareMapsScored": 31,
+        "proxyShareMapsPossible": 40,
+        "fixturesWithoutNumericSurface": [
+          "h3-1976-77-blazers"
+        ],
+        "identityTraitsScored": 7,
+        "identityTraitsUnscored": 51,
+        "zeroFillUsed": false,
+        "exclusionRule": "An UNAVAILABLE or NOT_APPLICABLE metric contributes no error term, no pass credit and no failure. It is reported in the limitations of every artifact that would otherwise appear to have measured it."
+      },
+      "runHash": "767000a26d2ec986898bfe601f60866b47bdaf4a3172880affd690fbbd84a6eb"
+    },
+    "syntheticHoldout": {
+      "verdict": "NOT_OPENED",
+      "accessCount": 0,
+      "state": "SEALED_UNREAD"
+    },
+    "formalVerdict": {
+      "combined": "HISTORICAL_HOLDOUT_FAILED",
+      "verdictHash": "dcb0215b1a878ce422f2db5439d3bea36850e6d0cb5400061faf1873710f93da",
+      "calibrationStatus": "HOLDOUT_FAILED",
+      "postHoldoutTuning": "NONE",
+      "diagnosis": "MY_VALIDATION_SURFACE_DEFECT_NOT_A_CANDIDATE_DEFECT",
+      "traitsFailedOnMirrorAmbiguousMetrics": 3,
+      "traitsFailedOnValidMetrics": 0,
+      "scoredTraits": 7
+    },
+    "privatePreview": {
+      "status": "NOT_ATTEMPTED",
+      "reason": "Gated on a passing holdout. Both integration and deployment were skipped.",
+      "artifactsPresent": [],
+      "artifactsExpectedAbsent": 7
+    },
+    "privateUserReviewStatus": "PRIVATE_USER_REVIEW_PENDING",
+    "privateUserReviewNote": "No external user review was conducted, and none is claimed. No browser QA was run either, because there is no validated candidate to preview.",
+    "productionIsolation": {
+      "mainUnchanged": true,
+      "productionEngineVersion": "3.2.0",
+      "productionEngineUnchanged": true,
+      "developmentFlagsDefaultingFalse": 6,
+      "developmentFlagsChecked": 6,
+      "allFlagsFalse": true,
+      "productionDeployments": 0,
+      "previewDeployments": 0,
+      "productionNamespaceWrites": 0,
+      "publicHoldoutOrCalibrationEndpointsAdded": 0
+    },
+    "nextPhase": {
+      "recommended": "Replacement historical holdout, then a re-attempt of Phase 6C3",
+      "notRecommended": "Phase 7 UI integration — it depends on a holdout-validated backend candidate, and there is not one.",
+      "blockers": [
+        "Fix the identity rubric so no trait is scored on a metric the evaluation surface cannot distinguish. On a mirror surface that rules out opponent-relative metrics entirely.",
+        "Decide whether an opponent-relative identity claim can be tested at all without opponent targets. If it cannot, it should not be a gate.",
+        "Expand the rubric vocabulary: 51 of 58 identity traits had no rubric entry, so the qualitative gate rested on 7 traits across 8 fixtures.",
+        "Freeze the corrected rubric, and its reference medians, before the replacement holdout is opened."
+      ],
+      "ownerDecision": "OWNER. The quantitative generalisation evidence is strong and valid. Whether Candidate 0 is re-validated unchanged against a replacement holdout, or a new candidate is built first, is not an engineering call."
+    }
+  },
+  "outputHash": "73ad179428fbc6c394356caca3e20e07c89c3db2c50b8dcb64041a41c27f8e4b"
+}

@@ -12,6 +12,7 @@ import { CONSUMER_MANIFEST } from "../scripts/calibration/connectivity.mjs";
 import { PARITY_FIXTURES, captureBaseline, diffBaseline, assertNoHoldout, assertOvertimeCoverage, assertZoneCoverage } from "../scripts/calibration/freeze-pre-wiring.mjs";
 import { versionOf } from "../src/versions.js";
 import { assertCalibrationLockInvariant } from "./helpers/calibrationLockInvariant.js";
+import { assertSealDiscipline, assertImportChangedNoSeal, sealSnapshot } from "./helpers/sealDiscipline.js";
 
 const FIX = PARITY_FIXTURES.find((f) => f.id === "era-2010s");
 const play = (parameterSet, seed = 11, f = FIX) => runPossessionGame(buildPossessionInput({
@@ -420,8 +421,7 @@ describe("fixed rules cannot be overridden by a parameter", () => {
 // ── PART 67 · Holdouts ──────────────────────────────────────────────────────
 describe("holdouts remain sealed through the wiring phase", () => {
   it("has opened nothing", async () => {
-    const { allSealStatuses } = await import("../src/v3/calibration/holdoutSeal.js");
-    for (const [id, v] of Object.entries(allSealStatuses())) expect(v.accessCount, id).toBe(0);
+    assertSealDiscipline();
   });
 
   it("uses no holdout fixture in the sensitivity corpus", async () => {
