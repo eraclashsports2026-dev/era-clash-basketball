@@ -52,10 +52,10 @@ const matchesRow = (cardName, rowName) => {
   for (const [k, alts] of Object.entries(NAME_EQUIVALENTS)) {
     if ((a === k && alts.includes(b)) || (b === k && alts.includes(a))) return true;
   }
-  // Last-name plus first initial, for "Steph Curry" against "Stephen Curry".
-  const [af, ...ar] = a.split(" ");
-  const [bf, ...br] = b.split(" ");
-  return ar.length > 0 && br.length > 0 && ar.at(-1) === br.at(-1) && af[0] === bf[0];
+  // Exact or documented alias only. A last-name-plus-first-initial rule matched
+  // "Draymond Green" to Danny Green, which in a historical corpus is a
+  // fabrication rather than a convenience.
+  return false;
 };
 
 /** Normalise a set of values into shares that sum to exactly 1. */

@@ -71,10 +71,31 @@ export const REGISTRY = {
   historicalFixtureDataVersion: entry("1.0.0", DEVELOPMENT,
     "The historical fixture corpus: units, coaches, era anchors, documented identities and sourced targets. A fixture edit must invalidate cached calibration output.", false),
 
+  fixtureClassificationVersion: entry("1.0.0", DEVELOPMENT,
+    "What KIND of thing each fixture is — historical lineup, proxy, synthetic archetype, cross-era stress test — and therefore what it may calibrate. Does not affect game results.", false),
+
+  historicalCorpusVersion: entry("2.0.0", DEVELOPMENT,
+    "The source-valid historical corpus. 2.0.0 because v1 mixed historical and synthetic fixtures under labels that overstated them; v1 is preserved unchanged as a frozen artefact.", false),
+
+  historicalHoldoutSetVersion: entry("2.0.0", DEVELOPMENT,
+    "The source-valid historical holdout. Separate from holdoutSetVersion, which describes the legacy mixed holdout and stays at 1.0.0 forever.", false),
+
+  syntheticStressSetVersion: entry("1.0.0", DEVELOPMENT,
+    "The synthetic stress holdout: archetypes, cross-era constructions and exploit tests. Validates structure and balance, never historical accuracy.", false),
+
+  calibrationParameterRegistryVersion: entry("1.0.0", DEVELOPMENT,
+    "The single registry every tunable coefficient must live in. A tuned value outside it is invisible to the parameter history, which is how a model becomes untraceable.", false),
+
+  calibrationObjectiveVersion: entry("1.0.0", DEVELOPMENT,
+    "The objective function and its acceptance rules. Bumped whenever a weight or threshold changes, so a result can never be attributed to the wrong objective.", false),
+
+  probabilityValidationVersion: entry("1.0.0", DEVELOPMENT,
+    "The probability reliability suite: bins, scoring rules and the strength ladder. Does not affect game results.", false),
+
   historicalTargetSchemaVersion: entry("1.0.0", DEVELOPMENT,
     "The shape of a calibration target record: fields, provenance requirements, availability vocabulary. Changing it changes what a target IS, so cached target output must be invalidated. Does NOT affect game results.", false),
 
-  historicalTargetDataVersion: entry("1.0.0", DEVELOPMENT,
+  historicalTargetDataVersion: entry("2.0.0", DEVELOPMENT,
     "The target VALUES themselves. Bumped whenever targets are added, corrected or re-derived — including blind holdout enrichment, which changes the data without touching holdout membership. Does NOT affect game results: a target is what the engine is measured AGAINST, never an input to it.", false),
 
   opportunityAllocationVersion: entry("1.0.0", DEVELOPMENT,

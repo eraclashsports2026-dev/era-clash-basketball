@@ -73,3 +73,65 @@ export const sealStatus = () => {
       : `Read ${n} time(s). Check the access log before treating a holdout result as independent.`,
   };
 };
+
+// ── Phase 6C2B: two new sealed sets ─────────────────────────────────────────
+// Separate logs per set, because "was the historical holdout read?" and "was
+// the synthetic stress set read?" are different questions with different
+// consequences, and one shared counter could not answer either.
+export const SEALED_SETS = Object.freeze({
+  "historical-holdout-v2": "data/calibration/historical-holdout-v2-access-log.jsonl",
+  "synthetic-stress-v1": "data/calibration/synthetic-stress-v1-access-log.jsonl",
+});
+
+/**
+ * Throws unless the caller explicitly unlocked THIS set. A normal calibration
+ * command must never be able to reach either.
+ */
+export const requireSetUnlock = (set, { argv = process.argv, reason = null, actor = "unknown", parameterVersion = null, commit = null, log = true } = {}) => {
+  const path = SEALED_SETS[set];
+  if (!path) throw new HoldoutSealError(`unknown sealed set "${set}"`);
+  const flag = `--unlock-${set}`;
+  if (!argv.includes(flag)) {
+    throw new HoldoutSealError(
+      `The ${set} set is sealed. Pass ${flag} to read it.\n` +
+        "Before you do: this set exists to test whether tuning GENERALISED. Reading " +
+        "it during tuning destroys that permanently, and no later result restores it.",
+    );
+  }
+  if (!reason) throw new HoldoutSealError(`${flag} requires a reason. An unexplained access is not an audit record.`);
+  const record = {
+    seq: setAccessCount(set) + 1,
+    set, actor, reason, parameterVersion, commit,
+    argv: argv.slice(2).filter((a) => !a.startsWith("--token") && !a.includes("=")),
+  };
+  if (log) {
+    mkdirSync(dirname(path), { recursive: true });
+    appendFileSync(path, `${JSON.stringify(record)}\n`);
+  }
+  return record;
+};
+
+export const setAccessCount = (set) => {
+  const path = SEALED_SETS[set];
+  if (!path || !existsSync(path)) return 0;
+  return readFileSync(path, "utf8").split("\n").filter((l) => l.trim()).length;
+};
+
+export const setSealStatus = (set) => {
+  const n = setAccessCount(set);
+  return {
+    set,
+    accessCount: n,
+    status: n === 0 ? "SEALED_UNREAD" : "UNSEALED",
+    integrity: n === 0
+      ? "Never read. A Phase 6C3 validation against it is genuinely independent."
+      : `Read ${n} time(s). Check the access log before treating a result as independent.`,
+  };
+};
+
+/** Every sealed set's state, for the report. */
+export const allSealStatuses = () => ({
+  "legacy-holdout-v1": { ...sealStatus(), set: "legacy-holdout-v1", note: "LEGACY_MIXED_HOLDOUT — preserved unchanged, not reused for formal historical validation." },
+  "historical-holdout-v2": setSealStatus("historical-holdout-v2"),
+  "synthetic-stress-v1": setSealStatus("synthetic-stress-v1"),
+});

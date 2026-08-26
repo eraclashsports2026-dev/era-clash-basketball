@@ -190,6 +190,43 @@ export const parsePlayerTable = (html) => {
 
 const round3 = (x) => (x == null ? null : Math.round(x * 1000) / 1000);
 
+/**
+ * The season ROSTER table: who was on this team that season.
+ *
+ * Separate from the statistics table because Wikipedia's coverage of the two is
+ * independent — many older season articles carry a roster and no statistics at
+ * all. Membership is enough to verify that a fixture's five belong to the named
+ * team-season, which is a different and weaker claim than knowing what they
+ * produced, and the two are kept apart for exactly that reason.
+ */
+export const parseRosterTable = (html) => {
+  for (const t of tablesIn(html)) {
+    const rows = rowsOf(t);
+    if (rows.length < 6) continue;
+    const header = rows.find((r) => r.length >= 5 && r.every((c) => c.tag === "th"));
+    if (!header) continue;
+    const H = header.map((c) => c.text.toUpperCase().replace(/[^A-Z0-9%.]/g, ""));
+    const iPlayer = H.findIndex((h) => h === "PLAYER" || h === "NAME");
+    const iPos = H.findIndex((h) => h === "POS." || h === "POS" || h === "POSITION");
+    // A roster table has a position column and physical columns; a draft table
+    // has Round and Pick, and a statistics table has games and points.
+    const isDraft = H.includes("ROUND") || H.includes("PICK");
+    const isStats = H.includes("GP") || H.includes("PTS") || H.includes("PPG");
+    const hasPhysical = H.includes("HEIGHT") || H.includes("WEIGHT") || H.includes("FROM");
+    if (iPlayer < 0 || iPos < 0 || isDraft || isStats || !hasPhysical) continue;
+
+    const players = [];
+    for (const r of rows) {
+      if (r === header || r.every((c) => c.tag === "th")) continue;
+      const name = r[iPlayer]?.text?.replace(/[*\u2020\u2021^()]/g, "").replace(/\s+/g, " ").trim();
+      if (!name || name.length < 3) continue;
+      players.push({ name, position: r[iPos]?.text ?? null });
+    }
+    if (players.length >= 6) return { players, source: "ROSTER_TABLE" };
+  }
+  return null;
+};
+
 /** Team win-loss record from the season infobox. */
 export const parseRecord = (html) => {
   for (const t of tablesIn(html)) {
