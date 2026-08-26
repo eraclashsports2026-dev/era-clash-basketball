@@ -50,7 +50,12 @@
     "calibration:player-tails": "node scripts/calibration/diagnostics.mjs player-tails",
     "calibration:freeze-structural-post": "node scripts/calibration/freeze-structural.mjs --post",
     "calibration:scan-seasons": "node scripts/calibration/scan-seasons.mjs",
-    "calibration:build-corpus-v2": "node scripts/calibration/build-corpus-v2.mjs"
+    "calibration:build-corpus-v2": "node scripts/calibration/build-corpus-v2.mjs",
+    "calibration:build-targets-v2": "node scripts/calibration/build-targets-v2.mjs build",
+    "calibration:coverage-v2": "node scripts/calibration/build-targets-v2.mjs coverage",
+    "calibration:probability": "node scripts/calibration/probability-suite.mjs reliability",
+    "calibration:strength-ladder": "node scripts/calibration/probability-suite.mjs strength-ladder",
+    "calibration:balanced-vs-ovr": "node scripts/calibration/probability-suite.mjs balanced-vs-ovr"
   },
   "dependencies": {
     "react": "^18.3.1",
