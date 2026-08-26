@@ -16,6 +16,11 @@ import { readArtifact, writeArtifact } from "../../src/v3/calibration/artifacts.
 import { compileRuntimeParameterSet, defaultRuntimeParameterSet } from "../../src/v3/calibration/runtimeParameters.js";
 import { loadFixtures, objectiveOn, pairedDiffs, pairedTest, SEARCH_POLICY } from "./c5-search.mjs";
 import { domainSeed, MASTERS } from "../../src/v3/calibration/seedDomains.js";
+// Everything below runs ONLY as a command, never on import. A calibration script
+// that executes at import time turns "read one constant from it" into "silently
+// re-run the whole measurement" — which happened in Phase 6C2C2 to four scripts
+// at once, and once more here, to these five.
+if (import.meta.url === `file://${process.argv[1]}`) {
 
 const r5 = (x) => (x == null || !Number.isFinite(x) ? null : Math.round(x * 100000) / 100000);
 
@@ -103,3 +108,4 @@ const { path } = writeArtifact("candidate-comparison", {
   extra: { parameterSetHash: def.parameterSetHash },
 });
 console.log(`\nwrote ${path}`);
+}

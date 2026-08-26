@@ -282,8 +282,8 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     sourceArtifacts: ["data/calibration/c5/targeted-fixture-coverage.json", "data/calibration/calibration-support-matrix.json"],
     extra: {
       noEffectTriageVersion: versionOf("noEffectTriageVersion"),
-      parameterIdentifiabilityVersion: versionOf("parameterIdentifiabilityVersion"),
-      calibrationReadinessVersion: versionOf("calibrationReadinessVersion"),
+      parameterIdentifiabilityV3Version: versionOf("parameterIdentifiabilityV3Version"),
+      calibrationReadinessV3Version: versionOf("calibrationReadinessV3Version"),
       contractsHash: contractsHash(),
     },
   });

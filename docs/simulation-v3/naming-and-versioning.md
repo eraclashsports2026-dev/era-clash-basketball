@@ -47,7 +47,16 @@
 | Calibration scope | `calibrationScopeVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Scoped calibration policy | `scopedCalibrationPolicyVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Calibration search | `calibrationSearchVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
-| Calibration candidate set | `calibrationCandidateSetVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Calibration candidate set | `calibrationCandidateSetVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |
+| Measurement governance | `measurementGovernanceVersion` | **1.0.0** | DEVELOPMENT |
+| Calibration report artifact schema | `calibrationReportArtifactSchemaVersion` | **1.0.0** | DEVELOPMENT |
+| Calibration report renderer | `calibrationReportRendererVersion` | **1.0.0** | DEVELOPMENT |
+| Targeted mechanic fixtures | `targetedMechanicFixtureVersion` | **1.0.0** | DEVELOPMENT |
+| No-effect triage | `noEffectTriageVersion` | **1.0.0** | DEVELOPMENT |
+| Parameter confounding resolution | `parameterConfoundingResolutionVersion` | **1.0.0** | DEVELOPMENT |
+| Targeted calibration policy | `targetedCalibrationPolicyVersion` | **1.0.0** | DEVELOPMENT |
+| Parameter identifiability v3 | `parameterIdentifiabilityV3Version` | **1.0.0** | DEVELOPMENT |
+| Calibration readiness v3 | `calibrationReadinessV3Version` | **1.0.0** | DEVELOPMENT |
 | Parameter history | `parameterHistoryVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Side-symmetry validation | `sideSymmetryValidationVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |
 | Calibration support matrix | `calibrationSupportMatrixVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |

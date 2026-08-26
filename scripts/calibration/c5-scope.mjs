@@ -14,6 +14,11 @@ import { defaultRuntimeParameterSet, activeParameters } from "../../src/v3/calib
 import { SEARCH_POLICY, loadFixtures } from "./c5-search.mjs";
 import { versionOf } from "../../src/versions.js";
 import { HISTORICAL_HOLDOUT_V3_IDS, SYNTHETIC_STRESS_HOLDOUT_V2 } from "../../data/calibration/sets-v3.mjs";
+// Everything below runs ONLY as a command, never on import. A calibration script
+// that executes at import time turns "read one constant from it" into "silently
+// re-run the whole measurement" — which happened in Phase 6C2C2 to four scripts
+// at once, and once more here, to these five.
+if (import.meta.url === `file://${process.argv[1]}`) {
 
 const triage = readArtifact("no-effect-triage");
 const params = triage.data.parameters;
@@ -132,3 +137,4 @@ console.log(`\n  scopeHash              ${scopeHash}`);
 console.log(`  payloadHash            ${payload.outputHash}`);
 console.log(`\nwrote ${path}`);
 process.exit(rec.reconciles ? 0 : 2);
+}

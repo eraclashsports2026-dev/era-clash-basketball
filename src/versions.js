@@ -183,8 +183,11 @@ export const REGISTRY = {
   targetedCalibrationPolicyVersion: entry("1.0.0", DEVELOPMENT,
     "Scope, bounds, regularization, objective components and acceptance rules for a targeted bounded search. Frozen before search; Candidate 0 (the wired defaults) always competes.", false),
 
-  calibrationReadinessVersion: entry("3.0.0", DEVELOPMENT,
-    "The mapping from identifiability and support onto exactly one calibration-eligibility class per parameter. v2 because v1's readiness numbers were asserted in prose rather than computed, and did not reconcile to the active parameter count.", false),
+  calibrationReadinessVersion: entry("2.0.0", DEVELOPMENT,
+    "The mapping from identifiability and support onto exactly one calibration-eligibility class per parameter. v2 because v1's readiness numbers were asserted in prose rather than computed, and did not reconcile to the active parameter count. Held at 2.0.0 deliberately: the v2 policy object embeds this string, so bumping it here would silently change the frozen v2 policy hash even though the v2 methodology had not changed. The v3 methodology has its own key.", false),
+
+  calibrationReadinessV3Version: entry("1.0.0", DEVELOPMENT,
+    "Readiness under the targeted-mechanic methodology, which adds classes for parameters that are active only in rare conditional contexts and for those a target cannot adjudicate at all. Separate from calibrationReadinessVersion so the v2 freeze stays byte-stable.", false),
 
   calibrationScopeVersion: entry("1.0.0", DEVELOPMENT,
     "Which parameters a calibration search may touch, with per-parameter bounds and movement limits. Frozen before search; mutating it mid-search would let the scope follow the results.", false),
@@ -225,8 +228,11 @@ export const REGISTRY = {
   independentSourceVerificationVersion: entry("1.0.0", DEVELOPMENT,
     "The second-source verification policy and its coverage requirements. Bumped when the required coverage or the disagreement-resolution rules change.", false),
 
-  parameterIdentifiabilityVersion: entry("3.0.0", DEVELOPMENT,
-    "The sensitivity and confounding analysis that decides which parameters may be tuned at all. Bumped when a classification threshold changes — never to enlarge the tunable set after seeing a result.", false),
+  parameterIdentifiabilityVersion: entry("2.0.0", DEVELOPMENT,
+    "The sensitivity and confounding analysis that decides which parameters may be tuned at all. Bumped when a classification threshold changes — never to enlarge the tunable set after seeing a result. Held at 2.0.0 deliberately: IDENTIFIABILITY_V2 embeds this string in the object its own frozen hash covers, so bumping it for a NEW methodology would break the v2 freeze while claiming v2 was untouched. The v3 methodology has its own key.", false),
+
+  parameterIdentifiabilityV3Version: entry("1.0.0", DEVELOPMENT,
+    "Identifiability under the targeted-mechanic methodology: a parameter is judged inside the possession population it governs rather than against game-level aggregates, and is additionally probed for whether the objective can see it at all. Separate from parameterIdentifiabilityVersion so the v2 freeze stays byte-stable.", false),
 
   internalCalibrationFoldVersion: entry("3.0.0", DEVELOPMENT,
     "Fold membership for internal tuning and internal validation. Frozen before tuning; a bump means the split changed and every prior fold measurement is void.", false),

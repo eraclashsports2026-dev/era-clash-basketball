@@ -17,6 +17,11 @@ import { loadFixtures, objectiveOn } from "./c5-search.mjs";
 import { SYNTHETIC_DEVELOPMENT_V2, SYNTHETIC_STRESS_HOLDOUT_V2, HISTORICAL_HOLDOUT_V3_IDS } from "../../data/calibration/sets-v3.mjs";
 import { PLAYERS } from "../../src/players.js";
 import { personIdForCard } from "../../src/v3/data/persons.js";
+// Everything below runs ONLY as a command, never on import. A calibration script
+// that executes at import time turns "read one constant from it" into "silently
+// re-run the whole measurement" — which happened in Phase 6C2C2 to four scripts
+// at once, and once more here, to these five.
+if (import.meta.url === `file://${process.argv[1]}`) {
 
 const r5 = (x) => (x == null || !Number.isFinite(x) ? null : Math.round(x * 100000) / 100000);
 const r2 = (x) => (x == null || !Number.isFinite(x) ? null : Math.round(x * 100) / 100);
@@ -323,3 +328,4 @@ const { path } = writeArtifact("validation-summary", summary, {
 console.log(`\n  VALIDATION ${pass ? "PASSED" : "FAILED"} · ${summary.totalGamesSimulated} games simulated`);
 console.log(`\nwrote ${path}`);
 process.exit(pass ? 0 : 2);
+}
