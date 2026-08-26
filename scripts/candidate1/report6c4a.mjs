@@ -88,5 +88,76 @@ ${d.candidate0.replayGuarantee}.
 | Synthetic V2 | \`${d.syntheticV2.status}\` | ${d.syntheticV2.accessCount} |`);
   }
 
+  if (has("target-schema-validation")) {
+    const A = R("target-schema-validation"); const d = A.data;
+    const B = has("profile-resolution-audit") ? R("profile-resolution-audit") : null;
+    const C = has("runner-preflight-audit") ? R("runner-preflight-audit") : null;
+    write("validation-instrumentation-repairs.md", `${prov(A)}# Validation instrumentation repairs — Phase 6C4A
+
+Three instrumentation defects from 6C3R, repaired at the shared-module level
+and proven against the real stores.
+
+## 1. Typed target access (\`readTargetValue\`)
+
+${d.defectRepaired}.
+
+| census | count |
+| --- | ---: |
+| target entries | ${d.census.entriesTotal} |
+| usable under the typed accessor | **${d.census.typedUsable}** |
+| "available" under object truthiness | ${d.census.naiveAvailable} |
+| truthiness over-report | **${d.truthinessOverreport}** |
+| schema violations | ${d.schemaViolations} |
+
+Value-bearing statuses: ${d.valueBearingStatuses.map((x) => `\`${x}\``).join(", ")}. Everything else is
+typed as unusable — object truthiness is not evidence.
+${B ? `
+## 2. Exact profile resolution
+
+| fact | value |
+| --- | ---: |
+| combined profiles (v3 + v4) | ${B.data.combinedProfiles} |
+| unresolved | ${B.data.unresolved} |
+| duplicate ids | ${B.data.duplicateIds} |
+| last-name collisions (distinct persons sharing a surname) | ${B.data.lastNameCollisions} |
+| alias titles (exact, recorded) | ${B.data.aliasTitles.length} |
+| bare-surname resolutions | **${B.data.bareSurnameResolutions.length}** |
+
+${B.data.rule}` : ""}
+${C ? `
+## 3. Runner preflight on the exact profile map
+
+${C.data.defectRepaired}
+
+${C.data.rule}
+
+| preflight | result |
+| --- | ---: |
+| required profile ids (fixtures + era-reference fives) | ${C.data.exactMap.required} |
+| resolved through \`buildRunnerProfileMap()\` | ${C.data.exactMap.resolved} |
+| the simplified V4-only map would have missed | **${C.data.simplifiedMapWouldHaveMissed}** |` : ""}`);
+  }
+
+  if (has("trait-practical-margin-policy")) {
+    const A = R("trait-practical-margin-policy"); const d = A.data;
+    write("trait-practical-margin-policy.md", `${prov(A)}# Trait practical-margin policy (prospective)
+
+**Frozen. policyHash \`${d.policyHash}\`. Applies from ${d.appliesFrom}.**
+${d.neverAppliesTo}.
+
+A trait hard-fails only when **both** hold:
+
+- **statistical** — wrong direction and the 95% CI excludes zero (the V4 rule), and
+- **practical** — |difference| exceeds the metric's margin below.
+
+Wrong-direction results inside the margin are \`DIRECTIONAL_SOFT_FAIL\`s: reported, never verdict-driving.
+
+| metric | margin | unit | binding | 8×SE at n=${d.rule.protocolGamesPerSurface} | basis |
+| --- | ---: | --- | --- | ---: | --- |
+${Object.entries(d.metrics).map(([m, v]) => `| \`${m}\` | ${v.margin} | ${v.unit} | ${v.binding} | ${v.noiseComponent ?? "n/a"} | ${v.basis} |`).join("\n")}
+
+Noise basis: ${d.noiseBasis}.`);
+  }
+
   console.log(written.length ? written.join("\n") : "no 6c4a artifacts yet");
 }

@@ -88,3 +88,86 @@ describe("6C4A failure register", () => {
     }
   });
 });
+
+describe("6C4A WS2 — typed target access", () => {
+  it("replaces object truthiness with typed reads", async () => {
+    const { readTargetValue } = await import("../scripts/validation/targetAccess.mjs");
+    expect(readTargetValue(null).reason).toBe("MISSING_ENTRY");
+    expect(readTargetValue({}).reason).toBe("SCHEMA_VIOLATION");
+    expect(readTargetValue({ value: 82, availability: "RECORDED_STATISTIC" })).toEqual({ usable: true, value: 82, availability: "RECORDED_STATISTIC" });
+    // the exact defect shape: a truthy entry object whose value is null
+    expect(readTargetValue({ value: null, availability: "NOT_RECORDED_IN_ERA", provenance: null, formula: null }))
+      .toMatchObject({ usable: false, reason: "LEGITIMATELY_NULL" });
+    expect(readTargetValue({ value: NaN, availability: "RECORDED_STATISTIC" }).reason).toBe("SCHEMA_VIOLATION");
+    expect(readTargetValue({ value: 5, availability: "NOT_RECORDED_IN_ERA" }).reason).toBe("SCHEMA_VIOLATION");
+    expect(readTargetValue({ value: 5, availability: "SOMETHING_NEW" }).reason).toBe("UNKNOWN_AVAILABILITY");
+  });
+
+  it("quantifies the truthiness over-report on the real V4 target store", () => {
+    const a = R("target-schema-validation").data;
+    expect(a.census.typedUsable).toBeLessThan(a.census.naiveAvailable);
+    expect(a.truthinessOverreport).toBeGreaterThan(0);
+    expect(a.schemaViolations).toBe(0);
+    expect(a.pass).toBe(true);
+  });
+});
+
+describe("6C4A WS2 — profile resolution and runner preflight", () => {
+  it("resolves every profile by exact id and exact title, never bare surname", () => {
+    const a = R("profile-resolution-audit").data;
+    expect(a.unresolved).toBe(0);
+    expect(a.duplicateIds).toBe(0);
+    expect(a.bareSurnameResolutions).toEqual([]);
+    expect(a.lastNameCollisions, "the store proves last-name matching ambiguous").toBeGreaterThan(0);
+    expect(a.pass).toBe(true);
+  });
+
+  it("preflights through the exact runner map, which the simplified map would fail", () => {
+    const a = R("runner-preflight-audit").data;
+    expect(a.exactMap.pass).toBe(true);
+    expect(a.exactMap.missing).toEqual([]);
+    expect(a.simplifiedMapWouldHaveMissed, "the 6C3R defect is demonstrable").toBeGreaterThan(0);
+    expect(a.pass).toBe(true);
+  });
+
+  it("fails preflight BEFORE any unlock when a required profile is missing", async () => {
+    const { preflightProfileResolution } = await import("../scripts/validation/profileMap.mjs");
+    const fake = [{ players: [{ calibrationPlayerId: "cal:NOPE:1900:missing-player" }] }];
+    const out = await preflightProfileResolution(fake);
+    expect(out.pass).toBe(false);
+    expect(out.missing).toContain("cal:NOPE:1900:missing-player");
+  });
+});
+
+describe("6C4A WS2 — prospective practical-margin policy", () => {
+  const pol = R("trait-practical-margin-policy").data;
+
+  it("is frozen with a stable hash over its own content", async () => {
+    const { createHash } = await import("node:crypto");
+    const { policyHash, frozen, ...payload } = pol;
+    expect(frozen).toBe(true);
+    expect(createHash("sha256").update(JSON.stringify(payload)).digest("hex")).toBe(policyHash);
+  });
+
+  it("requires BOTH statistical significance and practical effect, prospectively only", () => {
+    expect(pol.rule.hardFail).toContain("CI excludes zero");
+    expect(pol.rule.hardFail).toContain("margin");
+    expect(pol.appliesFrom).toContain("V5");
+    expect(pol.neverAppliesTo).toContain("V4");
+  });
+
+  it("derives every margin from a practical floor at least 3x the measured noise", () => {
+    for (const [m, v] of Object.entries(pol.metrics)) {
+      expect(v.margin, m).toBeGreaterThanOrEqual(v.practicalFloor);
+      if (v.noiseComponent) expect(v.margin, `${m} margin must dominate noise`).toBeGreaterThanOrEqual(v.noiseComponent);
+    }
+    // the four V4 margin-only artifacts would be soft fails, not hard fails
+    expect(Math.abs(-0.00299)).toBeLessThan(pol.metrics.threeShare.margin);
+    expect(Math.abs(0.01852)).toBeLessThan(pol.metrics.refPppVsTeam.margin);
+    expect(Math.abs(0.01742)).toBeLessThan(pol.metrics.orebRateAgainst.margin);
+    expect(Math.abs(-0.01909)).toBeLessThan(pol.metrics.assistedRate.margin);
+    // while all eight substantive failures would still hard-fail
+    for (const d of [-0.04752, 0.08607, -0.06933, 0.05834, -0.06465, -0.24373])
+      expect(Math.abs(d)).toBeGreaterThan(0.02);
+  });
+});

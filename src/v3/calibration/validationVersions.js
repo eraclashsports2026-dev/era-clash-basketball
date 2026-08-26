@@ -30,6 +30,9 @@ export const VALIDATION_VERSIONS = Object.freeze({
   calibrationPlayerStoreV4Version: "1.0.0",
   historicalCorpusV4Version: "1.0.0",
   historicalTargetsV4Version: "1.0.0",
+  // Phase 6C4A: the prospective practical-margin rule (applies from V5 onward;
+  // V3/V4 verdicts stand as issued under the rules they froze).
+  traitPracticalMarginPolicyVersion: "1.0.0",
 });
 
 export const validationVersionOf = (k) => {
