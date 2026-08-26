@@ -81,6 +81,11 @@ export const sealStatus = () => {
 export const SEALED_SETS = Object.freeze({
   "historical-holdout-v2": "data/calibration/historical-holdout-v2-access-log.jsonl",
   "synthetic-stress-v1": "data/calibration/synthetic-stress-v1-access-log.jsonl",
+  // Phase 6C2C1. Separate logs again, because "was the historical holdout
+  // read?" and "was the synthetic stress set read?" remain different questions
+  // with different consequences.
+  "historical-holdout-v3": "data/calibration/historical-holdout-v3-access-log.jsonl",
+  "synthetic-stress-holdout-v2": "data/calibration/synthetic-stress-holdout-v2-access-log.jsonl",
 });
 
 /**
@@ -132,6 +137,11 @@ export const setSealStatus = (set) => {
 /** Every sealed set's state, for the report. */
 export const allSealStatuses = () => ({
   "legacy-holdout-v1": { ...sealStatus(), set: "legacy-holdout-v1", note: "LEGACY_MIXED_HOLDOUT — preserved unchanged, not reused for formal historical validation." },
-  "historical-holdout-v2": setSealStatus("historical-holdout-v2"),
-  "synthetic-stress-v1": setSealStatus("synthetic-stress-v1"),
+  "historical-holdout-v2": { ...setSealStatus("historical-holdout-v2"), note: "INSUFFICIENT_SAMPLE_ARCHIVE — genuinely unread, but three fixtures cannot validate generalisation. Superseded by v3 and archived rather than consumed." },
+  // Reported by measurement, not by its counter: 19 of its 25 fixtures were
+  // simulated during Phase 6C2A, under their original corpus v1 identities and
+  // before this seal existed.
+  "synthetic-stress-v1": { ...setSealStatus("synthetic-stress-v1"), status: "PREVIOUSLY_INSPECTED_ARCHIVE", note: "Its counter reads 0 because the seal was created after the simulations. Not a holdout." },
+  "historical-holdout-v3": setSealStatus("historical-holdout-v3"),
+  "synthetic-stress-holdout-v2": setSealStatus("synthetic-stress-holdout-v2"),
 });
