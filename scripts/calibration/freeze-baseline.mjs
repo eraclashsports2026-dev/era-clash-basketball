@@ -25,8 +25,13 @@ export const BASELINE_CASES = [
   { id: "stoppers-vs-splash-2020s-zone", goldIds: ["gary-90s", "moncrief-80s", "pippen-90s", "kg-00s", "bill-60s"], blueIds: ["curry-10s", "klay-10s", "bird-80s", "dirk-00s", "rob-90s"], eraStyleId: "2020s", coachGoldId: "nick-nurse", coachBlueId: "steve-kerr", simulationSeed: 4242 },
   { id: "size-vs-small-2010s", goldIds: ["magic-80s", "jordan-90s", "bird-80s", "kg-00s", "shaq-90s"], blueIds: ["curry-10s", "klay-10s", "lebron-10s", "draymond-10s", "jokic-20s"], eraStyleId: "2010s", coachGoldId: "jerry-sloan", coachBlueId: "steve-kerr", simulationSeed: 31337 },
   { id: "pre-three-point-1960s", goldIds: ["oscar-60s", "jerry-60s", "elgin-60s", "nate-60s", "wilt-60s"], blueIds: ["magic-80s", "jordan-90s", "bird-80s", "kg-00s", "shaq-90s"], eraStyleId: "1960s", coachGoldId: "red-auerbach", coachBlueId: "phil-jackson", simulationSeed: 1960 },
-  { id: "dantoni-pace-2020s", goldIds: ["luka-20s", "harden-10s", "jordan-90s", "lebron-10s", "jokic-20s"], blueIds: ["magic-80s", "klay-10s", "pippen-90s", "duncan-00s", "hak-90s"], eraStyleId: "2020s", coachGoldId: "mike-dantoni", coachBlueId: "tom-thibodeau", simulationSeed: 2020 },
-  { id: "flag-off-6b1-path", goldIds: ["magic-80s", "jordan-90s", "pippen-90s", "duncan-00s", "hak-90s"], blueIds: ["curry-10s", "klay-10s", "bird-80s", "dirk-00s", "rob-90s"], eraStyleId: "1990s", coachGoldId: "pat-riley", coachBlueId: "phil-jackson", simulationSeed: 777, expandedActions: false, zoneResolution: false, offensiveAdjustments: false },
+  // This is the corpus's ONLY overtime case, and the seed has had to move twice
+  // (2020 -> 39 -> 13) because each behaviour change shifted the scoreline out
+  // of overtime. When a deliberate rewrite drops OT coverage, find a new seed
+  // rather than relaxing the assertion that an overtime case exists — the OT
+  // path is otherwise untested.
+  { id: "dantoni-pace-2020s", goldIds: ["luka-20s", "harden-10s", "jordan-90s", "lebron-10s", "jokic-20s"], blueIds: ["magic-80s", "klay-10s", "pippen-90s", "duncan-00s", "hak-90s"], eraStyleId: "2020s", coachGoldId: "mike-dantoni", coachBlueId: "tom-thibodeau", simulationSeed: 13 },
+  { id: "flag-off-6b1-path", goldIds: ["magic-80s", "jordan-90s", "pippen-90s", "duncan-00s", "hak-90s"], blueIds: ["curry-10s", "klay-10s", "bird-80s", "dirk-00s", "rob-90s"], eraStyleId: "1990s", coachGoldId: "pat-riley", coachBlueId: "phil-jackson", simulationSeed: 777, expandedActions: false, zoneResolution: false, offensiveAdjustments: false, opportunityAllocation: false },
 ];
 
 const sha = (x) => createHash("sha256").update(typeof x === "string" ? x : JSON.stringify(x)).digest("hex").slice(0, 16);

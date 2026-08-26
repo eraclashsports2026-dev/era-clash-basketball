@@ -16,6 +16,8 @@ import { strategicEffects } from "../eraStyleIntelligence.js";
 import { buildCoachIntelligence } from "../coachIntelligence.js";
 import { buildDefensivePlans } from "../defense/plan.js";
 import { NEUTRAL_COACH, getCoach } from "../coaches.js";
+import { buildOpportunityProfile, normaliseTargets, createOpportunityLedger, OPPORTUNITY_ALLOCATION_VERSION } from "../actions/opportunityAllocation.js";
+import { perimeterSkillScore, threeVolumeFactor } from "../data/shooting.js";
 
 const r2 = (x) => Math.round(x * 100) / 100;
 const r3 = (x) => Math.round(x * 1000) / 1000;
@@ -69,8 +71,8 @@ const shotProfileFor = (p) => {
   const sh = p.shooting || {};
   const rim = num(o.rimThreat, 5);
   const post = num(o.postThreat, 3);
-  const perim = { ELITE: 9, STRONG: 7.5, AVERAGE: 5, LIMITED: 3, MINIMAL: 1.5 }[sh.perimeterSkill] ?? 5;
-  const vol = { HIGH: 1.6, MEDIUM: 1.15, LOW: 0.7, NONE: 0.15 }[sh.threeVolume] ?? 0.7;
+  const perim = perimeterSkillScore(sh.perimeterSkill);
+  const vol = threeVolumeFactor(sh.threeVolume);
 
   const weights = {
     RIM: 1.0 + rim * 0.34,
@@ -90,7 +92,7 @@ const shotProfileFor = (p) => {
 const shootingSkillFor = (p) => {
   const o = p.offense || {};
   const sh = p.shooting || {};
-  const perim = { ELITE: 9, STRONG: 7.5, AVERAGE: 5, LIMITED: 3, MINIMAL: 1.5 }[sh.perimeterSkill] ?? 5;
+  const perim = perimeterSkillScore(sh.perimeterSkill);
   const measuredFg = Number.isFinite(Number(sh.fgPct)) ? clamp((Number(sh.fgPct) - 0.40) * 40 + 5, 0, 10) : null;
   const measuredThree = Number.isFinite(Number(sh.threePct)) ? clamp((Number(sh.threePct) - 0.30) * 55 + 5, 0, 10) : null;
   const finishing = num(o.rimThreat, 5);
@@ -126,18 +128,26 @@ const prepareTeam = (side, team, eff, era) => {
   // Rounding in a five-way split does not sum to 1.0 on its own, and a
   // possession allocator that draws from a 0.999 distribution silently biases
   // the last player.
-  const rawShares = ti.usagePlan.map((u) => Math.max(0.02, num(u.share, 0.2)));
-  const shareTotal = rawShares.reduce((a, b) => a + b, 0);
+  //
+  // Keyed by CARD ID, not by index. `usagePlan` is canonicalised by Team
+  // Intelligence while `profiles` arrives in caller order, so pairing them
+  // positionally silently hands each player someone else's usage share
+  // whenever the two orders differ. It happens that every corpus fixture is
+  // already in canonical order, so no stored result was affected — but a
+  // reordered roster moved a player's shot share by nearly ten percentage
+  // points, which is a latent trap rather than a live bug only by luck.
+  const shareOf = new Map(ti.usagePlan.map((u) => [u.cardId, Math.max(0.02, num(u.share, 0.2))]));
+  const shareTotal = [...shareOf.values()].reduce((a, b) => a + b, 0);
   const players = profiles.map((p, i) => {
-    const u = ti.usagePlan[i];
+    const cardId = cards[i]?.id ?? p.id;
     return {
       index: i,
-      cardId: cards[i]?.id ?? p.id,
+      cardId,
       personId: p.personId ?? null,
       name: p.name ?? cards[i]?.name ?? `${side}-${i}`,
       position: ti.positionAssignments?.[i] ?? cards[i]?.pos ?? null,
-      usageShare: r3(rawShares[i] / shareTotal),
-      creationTier: (ti.creationHierarchy?.order || []).find((o) => o.cardId === (cards[i]?.id ?? p.id))?.tier ?? "TERTIARY",
+      usageShare: r3((shareOf.get(cardId) ?? 0.2) / shareTotal),
+      creationTier: (ti.creationHierarchy?.order || []).find((o) => o.cardId === cardId)?.tier ?? "TERTIARY",
       offBallValue: num(p.offense?.offBallMovement, 5),
       passing: num(p.offense?.passingVision, 5),
       ballSecurity: num(p.offense?.ballSecurity, 5),
@@ -158,7 +168,8 @@ const prepareTeam = (side, team, eff, era) => {
         rebounding: num(p.defense?.defensiveRebounding, 5),
       },
       profile: p,
-      usagePlanEntry: u,
+      // Also keyed by card id, for the same reason as usageShare above.
+      usagePlanEntry: ti.usagePlan.find((x) => x.cardId === cardId) ?? null,
     };
   });
 
@@ -306,10 +317,25 @@ export const preparePossessionContext = (input) => {
   // far fewer than anyone in 2020.
   const expectedFgaPerTeam = expectedPace * 0.92;
   const targetThreeShare = clamp(num(envir.tpaPerGame, 0) / expectedFgaPerTeam, 0, 0.62);
+  // The scale is an ODDS ratio, not a share ratio.
+  //
+  // It used to be `target / natural`, which does not solve for the share it
+  // claims to target. Multiplying one weight in a normalised vector without
+  // renormalising yields a share of target / (1 - natural + target), not
+  // target. Measured in the 2020s: a 0.403 target arriving as 0.3178, and
+  // 0.403 / (1 - 0.1349 + 0.403) = 0.3178 exactly. The anchor could not reach
+  // its own target by construction, and no coefficient tuning would have
+  // revealed why.
+  //
+  // Scaling the ODDS instead makes the resulting share equal the target:
+  //   w' = w · [target/(1-target)] / [natural/(1-natural)]
+  //   share(w') = target
   const anchorThreeScale = (team) => {
     if (!era.rules?.threePoint || targetThreeShare <= 0) return 0;
-    const natural = team.players.reduce((a, p) => a + p.usageShare * p.shotProfile.THREE_POINT, 0);
-    return r3(clamp(targetThreeShare / Math.max(0.02, natural), 0.05, 6));
+    const natural = clamp(team.players.reduce((a, p) => a + p.usageShare * p.shotProfile.THREE_POINT, 0), 0.02, 0.95);
+    const t = clamp(targetThreeShare, 0.001, 0.95);
+    const odds = (x) => x / (1 - x);
+    return r3(clamp(odds(t) / odds(natural), 0.05, 12));
   };
   gold.threeWeightScale = anchorThreeScale(gold);
   blue.threeWeightScale = anchorThreeScale(blue);
@@ -336,12 +362,31 @@ export const preparePossessionContext = (input) => {
   const offensiveAdjustments = input.offensiveAdjustments !== false;
   const defensivePlans = defenseEnabled ? buildDefensivePlans({ gold, blue, era, eff, zoneEnabled }) : null;
 
+  // ── Opportunity allocation ─────────────────────────────────────────────────
+  // One target profile and one live ledger per side. The ledger is per GAME:
+  // saturation must reset between games, or a series would accumulate pressure
+  // and the seventh game would look nothing like the first.
+  const allocationEnabled = input.opportunityAllocation !== false;
+  const buildAllocator = (team) => {
+    const profiles = team.players.map((player) => buildOpportunityProfile({ player, coach: team.coachIntelligence ?? null }));
+    return {
+      profiles,
+      targets: Object.fromEntries(["shotAttempt", "touch", "creation", "passing", "offBall", "finishing"]
+        .map((d) => [d, normaliseTargets(profiles, d)])),
+      ledger: createOpportunityLedger(team.players.map((p) => p.cardId)),
+    };
+  };
+  const allocators = allocationEnabled ? { gold: buildAllocator(gold), blue: buildAllocator(blue) } : null;
+
   return {
     simulationId: input.simulationId ?? null,
     simulationSeed: input.simulationSeed | 0,
     mode: input.mode ?? "single",
     eraStyleId: era.id,
     era, eff,
+    opportunityAllocationEnabled: allocationEnabled,
+    opportunityAllocationVersion: allocationEnabled ? OPPORTUNITY_ALLOCATION_VERSION : null,
+    allocators,
     defensiveMatchupsEnabled: defenseEnabled,
     zoneResolutionEnabled: zoneEnabled,
     expandedActionsEnabled: expandedActions,

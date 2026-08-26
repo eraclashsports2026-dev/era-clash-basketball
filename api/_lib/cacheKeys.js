@@ -188,6 +188,9 @@ export const cacheKeys = {
    */
   possessionResult: ({ matchupFingerprint, simulationSeed }) =>
     `dev-possession:pe${vtag("possessionEngineVersion")}:al${vtag("actionLibraryVersion")}` +
+    // Opportunity allocation decides which player takes each shot, so two runs
+    // that differ only in it are different games and must not share an entry.
+    `:oa${vtag("opportunityAllocationVersion")}` +
     `:dm${vtag("defensiveMatchupVersion")}:zr${vtag("zoneResolutionVersion")}:ca${vtag("coachAdjustmentVersion")}` +
     `:pd${vtag("playerDataVersion")}:pi${vtag("playerIntelligenceVersion")}:ti${vtag("teamIntelligenceVersion")}` +
     `:cd${vtag("coachDataVersion")}:ci${vtag("coachIntelligenceVersion")}:ed${vtag("eraDataVersion")}:es${vtag("eraStyleVersion")}` +
@@ -223,6 +226,13 @@ export const cacheKeys = {
    */
   calibrationRun: ({ set, manifestHash, scenario, seedCount }) =>
     `dev-calibration:cf${vtag("calibrationFrameworkVersion")}:hf${vtag("historicalFixtureDataVersion")}` +
+    // The TARGETS are half of every calibration number. Re-deriving a target,
+    // or adding one, changes what the report says without changing the engine,
+    // so a cached report built on older targets must not be served.
+    `:ts${vtag("historicalTargetSchemaVersion")}:td${vtag("historicalTargetDataVersion")}` +
+    // Who receives each opportunity changes the simulated side of the same
+    // comparison, so it belongs here too.
+    `:oa${vtag("opportunityAllocationVersion")}` +
     `:ho${vtag("holdoutSetVersion")}:bs${vtag("benchmarkSeedSetVersion")}` +
     `:pe${vtag("possessionEngineVersion")}:al${vtag("actionLibraryVersion")}:dm${vtag("defensiveMatchupVersion")}` +
     `:zr${vtag("zoneResolutionVersion")}:ca${vtag("coachAdjustmentVersion")}` +

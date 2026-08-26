@@ -157,9 +157,15 @@ describe("seeded determinism", () => {
     expect(a.steps()).toBeGreaterThan(0);
   });
 
-  it("a weighted pick with all-zero weights still returns an action", () => {
-    // A possession must always produce something; undefined is not an action.
-    expect(createRng(1).weighted(["a", "b"], () => 0)).toBe("a");
+  it("a weighted pick with all-zero weights throws instead of silently taking the first item", () => {
+    // This used to return items[0] so a possession always produced something.
+    // That is the wrong trade: it makes an invalid-weight bug indistinguishable
+    // from a modelling decision, and it hid a NaN that gave one player 3,749
+    // attempts in an 80-game sample. A development engine should fail loudly.
+    expect(() => createRng(1).weighted(["a", "b"], () => 0)).toThrow(/refusing to fall back/);
+    expect(() => createRng(1).weighted(["a", "b"], () => NaN)).toThrow(/zero or invalid/);
+    // A single valid weight is still a valid draw.
+    expect(createRng(1).weighted(["a", "b"], (x) => (x === "b" ? 1 : 0))).toBe("b");
   });
 
   it("the replay tool reproduces a stored game exactly", () => {

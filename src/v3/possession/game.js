@@ -62,9 +62,6 @@ const SHOT_POINTS = { RIM: 2, PAINT_OR_POST: 2, MIDRANGE: 2, THREE_POINT: 3 };
 
 const chooseShotCategory = (shooter, shot, env, rng, threeWeightScale = 1) => {
   const w = { ...shooter.shotProfile };
-  // The era's documented three-point volume scales the ATTEMPT weight. The
-  // roster keeps its relative shape around that anchor.
-  w.THREE_POINT *= threeWeightScale;
   // Rim bias comes from the ACTION (a roll to the rim, a transition attack),
   // not from the shooter's habits alone.
   const bias = shot.rimBias ?? 0;
@@ -72,6 +69,10 @@ const chooseShotCategory = (shooter, shot, env, rng, threeWeightScale = 1) => {
   w.PAINT_OR_POST *= 1 + Math.max(0, bias) * 0.5;
   w.THREE_POINT *= 1 + Math.max(0, -bias) * 1.5;
   w.MIDRANGE *= 1 + Math.max(0, -bias) * 0.6;
+  // The era's documented three-point volume scales the ATTEMPT weight. Position
+  // in this sequence is irrelevant — these are all multiplications on the same
+  // weight — so this ordering is for readability only.
+  w.THREE_POINT *= threeWeightScale;
   // A pre-three-point era removes the SHOT, not the SKILL: the weight goes to
   // the long two the player would actually have taken (PART 17).
   if (!env.threePointLegal) { w.MIDRANGE += w.THREE_POINT; w.THREE_POINT = 0; }
@@ -134,6 +135,9 @@ const playPossession = ({ ctx, off, def, offBox, defBox, state, rng, ledger, per
   const shot = resolveAction({ type }, {
     offense: off, defense: def, eff: ctx.eff, state, eraStyleId: ctx.eraStyleId,
     defState, defPlan, zoneShell,
+    // The offence's own allocator: its targets and its live ledger. Per side,
+    // because saturation is a property of one team's distribution.
+    alloc: ctx.allocators?.[off.side] ?? null,
   }, rng);
 
   const shooter = shot.shooter;
@@ -574,6 +578,7 @@ export const simulatePossessionGame = (input) => {
     zoneResolutionUsed: Boolean(ctx.zoneResolutionEnabled && (ctx.defensivePlans?.gold.zoneShell || ctx.defensivePlans?.blue.zoneShell)),
     expandedActionsUsed: Boolean(ctx.expandedActionsEnabled),
     offensiveAdjustmentsUsed: Boolean(ctx.offensiveAdjustmentsEnabled),
+    opportunityAllocationUsed: Boolean(ctx.opportunityAllocationEnabled),
     zoneShells: ctx.defensivePlans ? {
       gold: ctx.defensivePlans.gold.zoneShell ? ctx.defensivePlans.gold.zoneShell.shellType : null,
       blue: ctx.defensivePlans.blue.zoneShell ? ctx.defensivePlans.blue.zoneShell.shellType : null,

@@ -17,7 +17,9 @@
 import { evaluatePickAndRoll } from "../actions/pickAndRoll.js";
 import { defenderFor, stateFor, canSwitch, applySwitch } from "../defense/liveState.js";
 import { selectCoverage } from "../defense/coverage.js";
-import { FAMILY_REGISTRY, FAMILY_CAPS, postMismatchFor, speedMismatchFor, chaseMismatchFor } from "../actions/families.js";
+import { FAMILY_REGISTRY, FAMILY_CAPS, postMismatchFor, speedMismatchFor, chaseMismatchFor, allocate } from "../actions/families.js";
+import { selectForOpportunity } from "../actions/opportunityAllocation.js";
+import { perimeterSelectionWeight } from "../data/shooting.js";
 import { attackZone } from "../defense/zone.js";
 
 const clamp = (x, lo, hi) => Math.min(hi, Math.max(lo, x));
@@ -154,8 +156,17 @@ export const selectAction = ({ offense, defense, eff, state, rng, inTransition, 
 // ── Usage-weighted player selection ──────────────────────────────────────────
 // The five players share one ball. Shares come from Team Intelligence and sum
 // to 1.0; game state tilts WHO gets it, never how many touches exist.
-export const pickShooter = (offense, rng, { state, preferCreator = 0 } = {}) => {
+export const pickShooter = (offense, rng, { state, preferCreator = 0, alloc = null, family = "GENERIC_HALF_COURT" } = {}) => {
   const urgency = (state?.lateGameUrgency ?? 0) + preferCreator;
+  // Through the allocator when it is on, so the generic path saturates like
+  // every other family rather than being the one route with no memory.
+  if (alloc) {
+    return selectForOpportunity({
+      players: offense.players, family, dimension: "shotAttempt",
+      targets: alloc.targets.shotAttempt, ledger: alloc.ledger, rng,
+      state: { ...(state ?? {}), lateGameUrgency: urgency },
+    }).player;
+  }
   return rng.weighted(offense.players, (p) => {
     const tierBoost = p.creationTier === "PRIMARY" ? 1 + urgency * 0.55
       : p.creationTier === "SECONDARY" ? 1 + urgency * 0.12 : 1 - urgency * 0.25;
@@ -271,8 +282,8 @@ export const matchupModifiers = ({ defState, plan, shooter, defender, shotCatego
 // profile, spacing, rim pressure, the defensive profile, era and game state —
 // but it claims no tactical specificity, and its `tacticalSpecificity` field
 // says so explicitly so no downstream narrator can dress it up.
-const resolveGenericHalfCourt = ({ offense, defense, eff, state, rng, defState, defPlan }) => {
-  const shooter = pickShooter(offense, rng, { state });
+const resolveGenericHalfCourt = ({ offense, defense, eff, state, rng, defState, defPlan, alloc }) => {
+  const shooter = pickShooter(offense, rng, { state, alloc, family: "GENERIC_HALF_COURT" });
   const defender = pickDefender(defense, shooter, defState);
   const mod = matchupModifiers({ defState, plan: defPlan, shooter, defender });
 
@@ -316,8 +327,8 @@ const resolveGenericHalfCourt = ({ offense, defense, eff, state, rng, defState, 
 // Created by a live-ball turnover, a defensive rebound, or pace — never
 // spontaneously, and never worth automatic points. It can also be pulled out
 // into half-court, which is what usually happens when the defence gets back.
-const resolveTransition = ({ offense, defense, eff, state, rng, defState, defPlan }) => {
-  const shooter = pickShooter(offense, rng, { state, preferCreator: 0.15 });
+const resolveTransition = ({ offense, defense, eff, state, rng, defState, defPlan, alloc }) => {
+  const shooter = pickShooter(offense, rng, { state, preferCreator: 0.15, alloc, family: "TRANSITION" });
   // ── Transition cross-matching (PART 19) ──────────────────────────────────
   // In transition a defender takes the NEAREST credible threat, which is a
   // legitimate way an unusual matchup appears for a possession or two. It is
@@ -390,8 +401,11 @@ const resolveTransition = ({ offense, defense, eff, state, rng, defState, defPla
 // possession-event terms. There is no "+5 for PnR" anywhere: the coverage the
 // defence plays decides which consequence dominates, and the same action
 // produces a different possession against a drop than against a blitz.
-const resolvePickAndRoll = ({ offense, defense, eff, state, rng, eraStyleId, defState, defPlan }) => {
-  const handler = rng.weighted(offense.players, (p) => p.usageShare * (p.creationTier === "PRIMARY" ? 2.4 : p.creationTier === "SECONDARY" ? 1.3 : 0.5) * (0.4 + p.selfCreation * 0.09));
+const resolvePickAndRoll = ({ offense, defense, eff, state, rng, eraStyleId, defState, defPlan, alloc }) => {
+  const handler = alloc
+    ? selectForOpportunity({ players: offense.players, family: "PICK_AND_ROLL", dimension: "creation",
+        targets: alloc.targets.creation, ledger: alloc.ledger, rng, state }).player
+    : rng.weighted(offense.players, (p) => p.usageShare * (p.creationTier === "PRIMARY" ? 2.4 : p.creationTier === "SECONDARY" ? 1.3 : 0.5) * (0.4 + p.selfCreation * 0.09));
   const screener = rng.weighted(
     offense.players.filter((p) => p.index !== handler.index),
     (p) => 0.3 + p.postThreat * 0.35 + p.rimThreat * 0.35,
@@ -504,10 +518,10 @@ const familyBase = ({ shooter, defender, defState, defPlan, shotCategory = null 
   return { mod, shooter, defender };
 };
 
-const resolveFamily = (family, { offense, defense, eff, state, rng, defState, defPlan, zoneShell }) => {
+const resolveFamily = (family, { offense, defense, eff, state, rng, defState, defPlan, zoneShell, alloc }) => {
   const fam = FAMILY_REGISTRY[family];
   const pick = (team, p) => pickDefender(team, p, defState);
-  const prep = fam.prepare({ offense, defense, defPlan, defState, rng, pickDefender: pick, state, eff });
+  const prep = fam.prepare({ offense, defense, defPlan, defState, rng, pickDefender: pick, state, eff, alloc });
   const help = defPlan?.help.responsibilities ?? [];
   const helpCommitment = defPlan ? clamp(defPlan.scheme.helpAggression / 10, 0, 1) : 0.5;
 
@@ -523,7 +537,7 @@ const resolveFamily = (family, { offense, defense, eff, state, rng, defState, de
     // teammate, which is how a post mismatch creates weak-side offence.
     if (doubled && rng.chance(clamp(0.35 + poster.passing * 0.05, 0.3, 0.8))) {
       const receiver = rng.weighted(offense.players.filter((p) => p.index !== poster.index),
-        (p) => 0.2 + ({ ELITE: 3, STRONG: 2, AVERAGE: 1, LIMITED: 0.4, MINIMAL: 0.1 }[p.profile?.shooting?.perimeterSkill] ?? 1));
+        (p) => 0.2 + perimeterSelectionWeight(p.profile?.shooting?.perimeterSkill));
       const rDef = pick(defense, receiver);
       const rBase = familyBase({ shooter: receiver, defender: rDef, defState, defPlan });
       return {
@@ -727,7 +741,7 @@ const resolveFamily = (family, { offense, defense, eff, state, rng, defState, de
 // ── ZONE_ATTACK ─────────────────────────────────────────────────────────────
 // Resolves against an AREA defence, not five primary assignments. There is no
 // primary defender in the man sense — the gap is what matters.
-const resolveZoneAttack = ({ offense, defense, eff, state, rng, defPlan, zoneShell }) => {
+const resolveZoneAttack = ({ offense, defense, eff, state, rng, defPlan, zoneShell, alloc }) => {
   const threats = defPlan?.threats ?? [];
   const atk = attackZone({ zoneShell, offense, threats, rng });
   const GAP_TO_ACTION = {
@@ -740,15 +754,26 @@ const resolveZoneAttack = ({ offense, defense, eff, state, rng, defPlan, zoneShe
     switch (atk.gap) {
       case "HIGH_POST": return 0.2 + p.passing * 0.3 + p.postThreat * 0.3;
       case "CORNER": case "SKIP_PASS": case "TOP":
-        return 0.15 + ({ ELITE: 3, STRONG: 2, AVERAGE: 1, LIMITED: 0.4, MINIMAL: 0.1 }[p.profile?.shooting?.perimeterSkill] ?? 1);
+        return 0.15 + perimeterSelectionWeight(p.profile?.shooting?.perimeterSkill);
       case "SHORT_CORNER": return 0.2 + p.postThreat * 0.25 + p.rimThreat * 0.2;
       case "BASELINE": return 0.2 + (p.profile?.offense?.offBallMovement ?? 5) * 0.3 + p.rimThreat * 0.2;
       case "LOW_POST": return 0.2 + p.postThreat * 0.6;
       default: return 0.2 + p.usageShare * 4;
     }
   };
-  const shooter = rng.weighted(offense.players, weightFor);
-  const passer = rng.weighted(offense.players.filter((p) => p.index !== shooter.index), (p) => 0.3 + p.passing * 0.6);
+  // Zone attack was FIT_DOMINANT: the gap decided the shooter with no usage
+  // term at all outside the default branch, so a zone-heavy opponent could
+  // reshape a team's whole shot distribution. The gap still decides WHO SUITS
+  // the shot; the plan decides how often each player is involved.
+  const shooter = alloc
+    ? selectForOpportunity({ players: offense.players, family: "ZONE_ATTACK", dimension: "shotAttempt",
+        targets: alloc.targets.shotAttempt, ledger: alloc.ledger, rng, state,
+        coachBiasFor: (p) => clamp(weightFor(p) / 2, 0.25, 2.6) }).player
+    : rng.weighted(offense.players, weightFor);
+  const passer = alloc
+    ? selectForOpportunity({ players: offense.players, family: "ZONE_ATTACK", dimension: "passing",
+        targets: alloc.targets.passing, ledger: alloc.ledger, rng, state, exclude: [shooter.index] }).player
+    : rng.weighted(offense.players.filter((p) => p.index !== shooter.index), (p) => 0.3 + p.passing * 0.6);
   const rimBias = { HIGH_POST: 0.05, CORNER: -0.8, SHORT_CORNER: 0.3, SKIP_PASS: -0.7, BASELINE: 0.65, LOW_POST: 0.6, ZONE_OVERLOAD: -0.4, TOP: -0.45 }[atk.gap] ?? 0;
 
   return {

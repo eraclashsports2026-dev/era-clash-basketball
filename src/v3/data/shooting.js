@@ -215,3 +215,61 @@ export const threePctIsMeaningful = (rec) =>
   (rec.threeVolume === "HIGH" || rec.threeVolume === "MODERATE");
 
 export const SHOOTING_PERSON_IDS = Object.keys(SHOOTING);
+
+// ── Canonical shooting scales ───────────────────────────────────────────────
+// ONE mapping from the shooting vocabulary to numbers, because there were five,
+// and they used words the data never contained.
+//
+// The possession layer keyed on { ELITE, STRONG, AVERAGE, LIMITED, MINIMAL }
+// while the data uses { ELITE, GOOD, AVERAGE, LIMITED, NONE, UNKNOWN }. STRONG
+// and MINIMAL do not exist; GOOD and NONE were unhandled. Every unmatched value
+// fell through a `?? 5` to AVERAGE, so 317 of 381 cards were treated as average
+// shooters — including the 11 documented as NONE, which turned "this player
+// cannot shoot" into "this player is an average shooter".
+//
+// threeVolume had the same fault: the code expected MEDIUM, the data says
+// MODERATE, so 38 moderate-volume shooters were read as low-volume.
+//
+// The numbers below are the ORIGINAL intended values re-pointed at the real
+// vocabulary (STRONG -> GOOD, MINIMAL -> NONE, MEDIUM -> MODERATE). Nothing is
+// tuned here; this is a mapping correction.
+export const PERIMETER_SKILL_VALUES = Object.freeze(["ELITE", "GOOD", "AVERAGE", "LIMITED", "NONE", "UNKNOWN"]);
+export const THREE_VOLUME_VALUES = Object.freeze(["HIGH", "MODERATE", "LOW", "NONE", "NOT_APPLICABLE", "UNKNOWN"]);
+
+// UNKNOWN is a real answer meaning "no curated judgement exists", and it maps to
+// the neutral middle DELIBERATELY and visibly. NONE is not missing data — it is
+// a documented judgement, and it maps to the bottom.
+const PERIMETER_SKILL_SCORE = Object.freeze({ ELITE: 9, GOOD: 7.5, AVERAGE: 5, LIMITED: 3, NONE: 1.5, UNKNOWN: 5 });
+
+// NOT_APPLICABLE means the three-point line did not exist in this player's era.
+// Selection zeroes the three weight for such an era anyway, so this value never
+// reaches a live three-point attempt; it is neutral rather than punitive.
+const THREE_VOLUME_FACTOR = Object.freeze({ HIGH: 1.6, MODERATE: 1.15, LOW: 0.7, NONE: 0.15, NOT_APPLICABLE: 0.7, UNKNOWN: 0.7 });
+
+// Relative selection weight — how much MORE often this player is chosen for a
+// perimeter action than an average shooter.
+const PERIMETER_SELECTION_WEIGHT = Object.freeze({ ELITE: 3.0, GOOD: 2.0, AVERAGE: 1.0, LIMITED: 0.4, NONE: 0.1, UNKNOWN: 1.0 });
+
+const lookup = (table, value, label) => {
+  const v = value ?? "UNKNOWN";
+  if (!(v in table)) {
+    // Loud, not silent. The whole defect was an unrecognised value quietly
+    // becoming "average", which is indistinguishable from a real judgement.
+    throw new Error(`${label}: unrecognised value "${v}" — add it to the vocabulary rather than letting it default`);
+  }
+  return table[v];
+};
+
+/** Perimeter shot-making on a 0-10 scale. */
+export const perimeterSkillScore = (value) => lookup(PERIMETER_SKILL_SCORE, value, "perimeterSkillScore");
+
+/** How much the player's era and role let him actually shoot threes. */
+export const threeVolumeFactor = (value) => lookup(THREE_VOLUME_FACTOR, value, "threeVolumeFactor");
+
+/** Relative weight for choosing this player for a perimeter action. */
+export const perimeterSelectionWeight = (value) => lookup(PERIMETER_SELECTION_WEIGHT, value, "perimeterSelectionWeight");
+
+// A 0-10 reading of three-point VOLUME, for layers that compare capabilities on
+// a common scale (the defensive matrix) rather than scaling an attempt weight.
+const THREE_VOLUME_SCORE = Object.freeze({ HIGH: 9, MODERATE: 6, LOW: 3, NONE: 0.5, NOT_APPLICABLE: 3, UNKNOWN: 3 });
+export const threeVolumeScore = (value) => lookup(THREE_VOLUME_SCORE, value, "threeVolumeScore");

@@ -47,6 +47,10 @@ export const flags = () => ({
   zoneResolution: bool("ZONE_RESOLUTION_ENABLED", false),
   expandedOffensiveActions: bool("EXPANDED_OFFENSIVE_ACTIONS_ENABLED", false),
   offensiveCoachAdjustments: bool("OFFENSIVE_COACH_ADJUSTMENTS_ENABLED", false),
+  // Phase 6C2A. Its own flag for the same reason: the structural before/after
+  // is only measurable if allocation can be switched independently of the
+  // families that consume it.
+  opportunityAllocation: bool("OPPORTUNITY_ALLOCATION_ENABLED", false),
   leaderboard: bool("PUBLIC_LEADERBOARD_ENABLED", true),
   feedback: bool("FEEDBACK_ENABLED", true),
 });

@@ -30,6 +30,25 @@
 | Holdout set | `holdoutSetVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Benchmark seed set | `benchmarkSeedSetVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Possession calibration | `possessionCalibrationVersion` | `null` | PLANNED (does **not** affect results) |
+| Historical target schema | `historicalTargetSchemaVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Historical target data | `historicalTargetDataVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Opportunity allocation | `opportunityAllocationVersion` | **1.0.0** | DEVELOPMENT |
+
+### Why a target version must never touch a result
+
+`historicalTargetSchemaVersion` and `historicalTargetDataVersion` describe what
+the engine is measured **against**. They are result-neutral on purpose: if
+adding a historical target changed a stored game's identity, then measuring the
+engine would alter it, and no before/after comparison could mean anything.
+
+They do enter the **calibration** cache identity, because the targets are half
+of every calibration number — a report built on older targets says something
+different and must not be served for a newer one.
+
+`opportunityAllocationVersion` is the opposite case. It decides which player
+takes each shot, so it changes results directly and enters the development
+possession key, the development fingerprint and replay identity. Two runs
+differing only in it are different games.
 
 ### Why calibration has two domains, not one
 

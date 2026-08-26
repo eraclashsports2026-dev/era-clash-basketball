@@ -11,15 +11,16 @@
 // the point of attack, average against large wings, poor in the post, and
 // vulnerable chasing movement shooting, all at once.
 import { strategicEffects } from "../eraStyleIntelligence.js";
+import { perimeterSkillScore, threeVolumeScore } from "../data/shooting.js";
 
 const clamp = (x, lo, hi) => Math.min(hi, Math.max(lo, x));
 const r1 = (x) => Math.round(x * 10) / 10;
 const num = (x, d = 0) => (Number.isFinite(Number(x)) ? Number(x) : d);
 
 // Categorical shooting identity → a bounded numeric the matrix can compare.
-// Kept here so the mapping lives in one place.
-const PERIMETER_SKILL = { ELITE: 9, STRONG: 7.5, AVERAGE: 5, LIMITED: 3, MINIMAL: 1.5 };
-const THREE_VOLUME = { HIGH: 9, MEDIUM: 6, LOW: 3, NONE: 0.5 };
+// From the CANONICAL scale, not a local copy: the local table keyed on STRONG
+// and MEDIUM, which the shooting data never contains, so GOOD, NONE and
+// MODERATE all fell through to the neutral default.
 
 const hasRole = (profile, name) => (profile.roles?.all ?? []).includes(name);
 const roleRank = (profile, name) => {
@@ -37,8 +38,8 @@ const roleRank = (profile, name) => {
 export const buildThreatProfile = ({ profile, card, usagePlanEntry, creationTier, eff, era, positionAssignment }) => {
   const o = profile.offense ?? {};
   const sh = profile.shooting ?? {};
-  const perim = PERIMETER_SKILL[sh.perimeterSkill] ?? 5;
-  const vol = THREE_VOLUME[sh.threeVolume] ?? 3;
+  const perim = perimeterSkillScore(sh.perimeterSkill);
+  const vol = threeVolumeScore(sh.threeVolume);
   const threeLegal = Boolean(era.rules?.threePoint);
 
   // Movement vs spot-up shooting are different assignments: one is a chase,
@@ -237,4 +238,6 @@ export const buildMatchupProfiles = ({ team, eff, era }) => ({
   })),
 });
 
-export { PERIMETER_SKILL, THREE_VOLUME };
+// Re-exported under their original names for the callers that assert on the
+// mapping. They now come from the canonical scale rather than a local copy.
+export { perimeterSkillScore, threeVolumeScore };

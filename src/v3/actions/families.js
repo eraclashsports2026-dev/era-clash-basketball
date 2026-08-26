@@ -13,6 +13,9 @@
 // The point of post-up and isolation coming first: they are what turn a
 // DETECTED mismatch into actual exploitation. Before them the engine could
 // identify a post mismatch and had no way to attack it.
+import { selectForOpportunity } from "./opportunityAllocation.js";
+import { perimeterSelectionWeight } from "../data/shooting.js";
+
 const clamp = (x, lo, hi) => Math.min(hi, Math.max(lo, x));
 const r2 = (x) => Math.round(x * 100) / 100;
 
@@ -37,6 +40,25 @@ export const usageWeighted = (players, fitOf) => {
   // attempts in an 80-game sample before this was caught.
   return (p) => p.usageShare * (FIT_BAND.lo + clamp(fitOf(p) / maxFit, 0, 1) * (FIT_BAND.hi - FIT_BAND.lo));
 };
+/**
+ * Selection through the opportunity allocator, with a legacy path retained so
+ * the before/after comparison can be run.
+ *
+ * The mismatch is passed as CONTEXT, not used as an override. The old form —
+ *     const poster = mism ? mism.player : rng.weighted(...)
+ * — replaced the draw entirely, so a player with a standing mismatch took
+ * 100.0% of post-ups and 99.9% of isolations. Exploiting a mismatch is real
+ * basketball; taking every single possession is not.
+ */
+export const allocate = ({ family, dimension = "shotAttempt", offense, alloc, rng, mismatch = null, state = null, exclude = [], legacy }) => {
+  if (!alloc) return legacy();
+  return selectForOpportunity({
+    players: offense.players, family, dimension,
+    targets: alloc.targets[dimension], ledger: alloc.ledger,
+    rng, mismatch, state, exclude,
+  }).player;
+};
+
 export const ACTION_FAMILIES = [
   "POST_UP", "ISOLATION", "SPOT_UP", "CUT", "OFF_BALL_SCREEN", "HANDOFF",
   "PICK_AND_ROLL", "TRANSITION", "ZONE_ATTACK", "GENERIC_HALF_COURT",
@@ -92,13 +114,20 @@ export const POST_UP = {
     w *= 1 - (state?.lateGameUrgency ?? 0) * 0.35;
     return clamp(w, 0, FAMILY_CAPS.POST_UP);
   },
-  prepare: ({ offense, defense, defPlan, defState, rng, pickDefender }) => {
-    // Prefer the mismatch; otherwise the best post threat.
+  prepare: ({ offense, defense, defPlan, defState, rng, pickDefender, state, alloc }) => {
     const mism = postMismatchFor({ offense, defPlan });
-    const poster = mism ? mism.player
-      : rng.weighted(offense.players, usageWeighted(offense.players, (p) => 0.2 + p.postThreat * 0.6));
+    const poster = allocate({
+      family: "POST_UP", offense, alloc, rng, state,
+      mismatch: mism ? { playerCardId: mism.player.cardId, type: mism.mismatch?.type, severity: mism.mismatch?.severity } : null,
+      legacy: () => (mism ? mism.player : rng.weighted(offense.players, usageWeighted(offense.players, (p) => 0.2 + p.postThreat * 0.6))),
+    });
     const defender = pickDefender(defense, poster, defState);
-    const entryPasser = rng.weighted(offense.players.filter((p) => p.index !== poster.index), (p) => 0.4 + p.passing * 0.6);
+    // The entry passer is a DIFFERENT job from the shot. Keeping them separate
+    // is what stops a passing hub becoming a shot monopoly.
+    const entryPasser = allocate({
+      family: "POST_UP", dimension: "passing", offense, alloc, rng, state, exclude: [poster.index],
+      legacy: () => rng.weighted(offense.players.filter((p) => p.index !== poster.index), (p) => 0.4 + p.passing * 0.6),
+    });
     const helper = defPlan?.help.responsibilities.find((h) => h.role === "LOW_MAN" || h.role === "RIM_HELPER") ?? null;
     return { poster, defender, entryPasser, helper, mismatch: mism?.mismatch ?? null };
   },
@@ -140,10 +169,14 @@ export const ISOLATION = {
     w *= clamp(0.7 + offense.offense.spacing * 0.06, 0.7, 1.3);
     return clamp(w, 0, FAMILY_CAPS.ISOLATION);
   },
-  prepare: ({ offense, defense, defPlan, defState, rng, pickDefender, state }) => {
+  prepare: ({ offense, defense, defPlan, defState, rng, pickDefender, state, alloc }) => {
     const mism = speedMismatchFor({ offense, defPlan });
-    const creator = mism && !(state?.lateGameUrgency > 0.5) ? mism.player
-      : rng.weighted(offense.players, usageWeighted(offense.players, (p) => 0.15 + p.selfCreation * 0.5 * (1 + (state?.lateGameUrgency ?? 0))));
+    const creator = allocate({
+      family: "ISOLATION", offense, alloc, rng, state,
+      mismatch: mism ? { playerCardId: mism.player.cardId, type: mism.mismatch?.type, severity: mism.mismatch?.severity } : null,
+      legacy: () => (mism && !(state?.lateGameUrgency > 0.5) ? mism.player
+        : rng.weighted(offense.players, usageWeighted(offense.players, (p) => 0.15 + p.selfCreation * 0.5 * (1 + (state?.lateGameUrgency ?? 0))))),
+    });
     const defender = pickDefender(defense, creator, defState);
     const helper = defPlan?.help.responsibilities.find((h) => h.role === "NAIL_HELPER" || h.role === "RIM_HELPER") ?? null;
     return { creator, defender, helper, mismatch: mism?.mismatch ?? null };
@@ -182,10 +215,13 @@ export const OFF_BALL_SCREEN = {
     const chase = chaseMismatchFor({ offense, defPlan });
     return clamp(w + (chase ? 0.07 : 0), 0, FAMILY_CAPS.OFF_BALL_SCREEN);
   },
-  prepare: ({ offense, defense, defPlan, defState, rng, pickDefender }) => {
+  prepare: ({ offense, defense, defPlan, defState, rng, pickDefender, state, alloc }) => {
     const chase = chaseMismatchFor({ offense, defPlan });
-    const shooter = chase ? chase.player
-      : rng.weighted(offense.players, usageWeighted(offense.players, (p) => 0.2 + (p.profile?.offense?.offBallMovement ?? 5) * 0.5));
+    const shooter = allocate({
+      family: "OFF_BALL_SCREEN", dimension: "offBall", offense, alloc, rng, state,
+      mismatch: chase ? { playerCardId: chase.player.cardId, type: chase.mismatch?.type ?? "CHASE_MISMATCH", severity: chase.mismatch?.severity } : null,
+      legacy: () => (chase ? chase.player : rng.weighted(offense.players, usageWeighted(offense.players, (p) => 0.2 + (p.profile?.offense?.offBallMovement ?? 5) * 0.5))),
+    });
     const screener = rng.weighted(offense.players.filter((p) => p.index !== shooter.index), (p) => 0.3 + p.postThreat * 0.3 + (p.profile?.physical?.weightLb ?? 210) / 100);
     const chaser = pickDefender(defense, shooter, defState);
     const screenerDefender = pickDefender(defense, screener, defState);
@@ -220,9 +256,17 @@ export const HANDOFF = {
     const hub = Math.max(...offense.players.filter((p) => (p.profile?.physical?.heightIn ?? 0) >= 78).map((p) => p.passing), 0);
     return clamp((offense.handoffPref ?? 5) / 10 * 0.13 + (hub / 10) * 0.12 + clamp((eff.perimeterShotValue - 3) * 0.01, -0.02, 0.04), 0, FAMILY_CAPS.HANDOFF);
   },
-  prepare: ({ offense, defense, defState, rng, pickDefender }) => {
-    const hub = rng.weighted(offense.players, (p) => 0.15 + p.passing * 0.45 + ((p.profile?.physical?.heightIn ?? 76) - 74) * 0.12);
-    const receiver = rng.weighted(offense.players.filter((p) => p.index !== hub.index), (p) => (0.2 + p.selfCreation * 0.35 + (p.profile?.shooting?.perimeterSkill === "ELITE" ? 2 : 0.5)) * (0.5 + p.usageShare * 2.6));
+  prepare: ({ offense, defense, defState, rng, pickDefender, state, alloc }) => {
+    // The hub HANDS OFF; the receiver shoots. Two different dimensions, so a
+    // tall passer does not thereby become a volume scorer.
+    const hub = alloc
+      ? selectForOpportunity({ players: offense.players, family: "HANDOFF", dimension: "passing",
+          targets: alloc.targets.passing, ledger: alloc.ledger, rng, state }).player
+      : rng.weighted(offense.players, (p) => 0.15 + p.passing * 0.45 + ((p.profile?.physical?.heightIn ?? 76) - 74) * 0.12);
+    const receiver = allocate({
+      family: "HANDOFF", offense, alloc, rng, state, exclude: [hub.index],
+      legacy: () => rng.weighted(offense.players.filter((p) => p.index !== hub.index), (p) => (0.2 + p.selfCreation * 0.35 + (p.profile?.shooting?.perimeterSkill === "ELITE" ? 2 : 0.5)) * (0.5 + p.usageShare * 2.6)),
+    });
     return { hub, receiver, hubDefender: pickDefender(defense, hub, defState), receiverDefender: pickDefender(defense, receiver, defState) };
   },
 };
@@ -232,11 +276,17 @@ export const HANDOFF = {
 // weight is low on its own and they are mostly reached as continuations.
 export const SPOT_UP = {
   key: "SPOT_UP",
-  canSelect: ({ offense, eff }) => eff.perimeterShotValue > 0 && offense.players.some((p) => (p.profile?.shooting?.perimeterSkill ?? "AVERAGE") !== "MINIMAL"),
+  canSelect: ({ offense, eff }) => eff.perimeterShotValue > 0 && offense.players.some((p) => perimeterSelectionWeight(p.profile?.shooting?.perimeterSkill) > 0.1),
   weight: ({ offense, eff }) => clamp(0.05 + offense.offense.spacing * 0.014 + clamp((eff.perimeterShotValue - 3) * 0.014, -0.03, 0.06), 0, FAMILY_CAPS.SPOT_UP),
-  prepare: ({ offense, defense, defState, rng, pickDefender }) => {
-    const shooter = rng.weighted(offense.players, usageWeighted(offense.players, (p) => 0.15 + ({ ELITE: 3.2, STRONG: 2.2, AVERAGE: 1, LIMITED: 0.4, MINIMAL: 0.1 }[p.profile?.shooting?.perimeterSkill] ?? 1)));
-    const passer = rng.weighted(offense.players.filter((p) => p.index !== shooter.index), (p) => 0.3 + p.passing * 0.5 + (p.creationTier === "PRIMARY" ? 1.6 : 0));
+  prepare: ({ offense, defense, defState, rng, pickDefender, state, alloc }) => {
+    const shooter = allocate({
+      family: "SPOT_UP", offense, alloc, rng, state,
+      legacy: () => rng.weighted(offense.players, usageWeighted(offense.players, (p) => 0.15 + perimeterSelectionWeight(p.profile?.shooting?.perimeterSkill))),
+    });
+    const passer = allocate({
+      family: "SPOT_UP", dimension: "passing", offense, alloc, rng, state, exclude: [shooter.index],
+      legacy: () => rng.weighted(offense.players.filter((p) => p.index !== shooter.index), (p) => 0.3 + p.passing * 0.5 + (p.creationTier === "PRIMARY" ? 1.6 : 0)),
+    });
     return { shooter, passer, closeoutDefender: pickDefender(defense, shooter, defState) };
   },
 };
@@ -245,9 +295,15 @@ export const CUT = {
   key: "CUT",
   canSelect: ({ offense }) => offense.players.some((p) => (p.profile?.offense?.offBallMovement ?? 0) >= 5),
   weight: ({ offense }) => clamp(0.04 + (offense.cutPref ?? 5) / 10 * 0.1 + offense.offense.passing * 0.008, 0, FAMILY_CAPS.CUT),
-  prepare: ({ offense, defense, defState, rng, pickDefender }) => {
-    const cutter = rng.weighted(offense.players, usageWeighted(offense.players, (p) => 0.2 + (p.profile?.offense?.offBallMovement ?? 5) * 0.35 + p.rimThreat * 0.25));
-    const passer = rng.weighted(offense.players.filter((p) => p.index !== cutter.index), (p) => 0.3 + p.passing * 0.6);
+  prepare: ({ offense, defense, defState, rng, pickDefender, state, alloc }) => {
+    const cutter = allocate({
+      family: "CUT", offense, alloc, rng, state,
+      legacy: () => rng.weighted(offense.players, usageWeighted(offense.players, (p) => 0.2 + (p.profile?.offense?.offBallMovement ?? 5) * 0.35 + p.rimThreat * 0.25)),
+    });
+    const passer = allocate({
+      family: "CUT", dimension: "passing", offense, alloc, rng, state, exclude: [cutter.index],
+      legacy: () => rng.weighted(offense.players.filter((p) => p.index !== cutter.index), (p) => 0.3 + p.passing * 0.6),
+    });
     // Cut types stay broad: the data does not support claiming an exact
     // historical play design.
     return { cutter, passer, denier: pickDefender(defense, cutter, defState), cutType: null };

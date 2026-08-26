@@ -34,6 +34,7 @@ export const resultVersions = ({ defensiveMatchups = true } = {}) => ({
   defensiveMatchupVersion: versionOf("defensiveMatchupVersion"),
   zoneResolutionVersion: versionOf("zoneResolutionVersion"),
   coachAdjustmentVersion: versionOf("coachAdjustmentVersion"),
+  opportunityAllocationVersion: versionOf("opportunityAllocationVersion"),
   playerDataVersion: versionOf("playerDataVersion"),
   playerIntelligenceVersion: versionOf("playerIntelligenceVersion"),
   teamIntelligenceVersion: versionOf("teamIntelligenceVersion"),
@@ -84,6 +85,10 @@ export const runPossessionGame = (input, { assertInvariants = true, includeLedge
   // fingerprint if that module materially affected THIS result.
   if (!game.zoneResolutionUsed) delete fingerprint.zoneResolutionVersion;
   if (!game.offensiveAdjustmentsUsed) delete fingerprint.coachAdjustmentVersion;
+  // Same rule for opportunity allocation. It decides WHICH PLAYER SHOOTS, so
+  // when it is on it belongs in the fingerprint; when it is off, claiming it
+  // would invalidate every stored allocation-off game on an unrelated edit.
+  if (!game.opportunityAllocationUsed) delete fingerprint.opportunityAllocationVersion;
 
   const violations = checkGame(game);
   if (assertInvariants) assertNoViolations(game);

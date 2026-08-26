@@ -27,10 +27,41 @@ export const createRng = (seed) => {
   r.weighted = (items, weightOf) => {
     let total = 0;
     const w = items.map((it) => { const x = Math.max(0, Number(weightOf(it)) || 0); total += x; return x; });
-    if (total <= 0) return items[0];
+    // No silent first-item fallback. The old `return items[0]` turned every
+    // invalid weight into "pick the first player", which is indistinguishable
+    // from a modelling decision and hid a NaN bug that gave one player 3,749
+    // attempts in an 80-game sample. A development engine should fail loudly.
+    if (!(total > 0)) {
+      throw new Error(`rng.weighted: all ${items.length} weights are zero or invalid — refusing to fall back to the first item`);
+    }
     let t = r() * total;
     for (let i = 0; i < items.length; i++) { t -= w[i]; if (t <= 0) return items[i]; }
     return items[items.length - 1];
+  };
+
+  /**
+   * Seeded game form: this player's hot-or-cold night, as a value in [0,1).
+   *
+   * Derived from the game seed and the player id ONLY — never from anything
+   * that has already happened — so a player who makes his first two shots
+   * cannot thereby earn more shots. That runaway loop is the thing this design
+   * exists to prevent.
+   *
+   * Memoised, so form is one draw per player per game rather than a fresh
+   * value on every read, and so it does not consume the possession RNG stream
+   * (which would make form draws shift every later possession).
+   */
+  const form = new Map();
+  r.formFor = (cardId) => {
+    if (form.has(cardId)) return form.get(cardId);
+    let h = seed | 0;
+    const key = String(cardId);
+    for (let i = 0; i < key.length; i++) h = (Math.imul(h, 31) + key.charCodeAt(i)) | 0;
+    // A separate stream from the possession RNG, so adding form cannot change
+    // any other draw's sequence.
+    const v = (createRng(deriveSeed(h, 0x40524d))());
+    form.set(cardId, v);
+    return v;
   };
 
   r.steps = () => steps;
