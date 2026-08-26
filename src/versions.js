@@ -45,6 +45,20 @@ export const VERSION_STATUS = {
   DEVELOPMENT: "DEVELOPMENT",
   /** Does not exist yet. Value is null — never a fake number. */
   PLANNED: "PLANNED",
+
+  // ── Calibration lifecycle ────────────────────────────────────────────────
+  // A calibration earns its way forward through evidence, and the VALUE does
+  // not change as it does — 1.0.0 locked and 1.0.0 in production are the same
+  // parameters. Only the strength of the evidence behind them changes, so the
+  // status carries that and the version number stays honest.
+  /** Parameters frozen and hashed. Internal gates passed. No holdout opened yet. */
+  DEVELOPMENT_LOCKED: "DEVELOPMENT_LOCKED",
+  /** Both formal holdouts opened once and passed. Not yet previewed. */
+  HOLDOUT_VALIDATED: "HOLDOUT_VALIDATED",
+  /** Private preview soak and human review passed. Not yet in production. */
+  PRIVATE_PREVIEW_VALIDATED: "PRIVATE_PREVIEW_VALIDATED",
+  /** A formal holdout rejected this parameter set. It may never be retuned against that holdout. */
+  HOLDOUT_FAILED: "HOLDOUT_FAILED",
 };
 const { ACTIVE, DEVELOPMENT, PLANNED } = VERSION_STATUS;
 
@@ -116,8 +130,8 @@ export const REGISTRY = {
   calibrationParameterRegistryVersion: entry("1.0.0", DEVELOPMENT,
     "The single registry every tunable coefficient must live in. A tuned value outside it is invisible to the parameter history, which is how a model becomes untraceable.", false),
 
-  calibrationObjectiveVersion: entry("1.0.0", DEVELOPMENT,
-    "The objective function and its acceptance rules. Bumped whenever a weight or threshold changes, so a result can never be attributed to the wrong objective.", false),
+  calibrationObjectiveVersion: entry("2.0.0", DEVELOPMENT,
+    "The objective function and its acceptance rules. Bumped whenever a weight or threshold changes, so a result can never be attributed to the wrong objective. v2 (Phase 6C2C2) adds separately-reported components for zone behaviour, coach identity, adjustment behaviour and probability reliability, and refuses to collapse them into one opaque score.", false),
 
   probabilityValidationVersion: entry("1.0.0", DEVELOPMENT,
     "The probability reliability suite: bins, scoring rules and the strength ladder. Does not affect game results.", false),
@@ -130,6 +144,36 @@ export const REGISTRY = {
 
   opportunityAllocationVersion: entry("1.0.0", DEVELOPMENT,
     "Who receives each offensive opportunity. This one DOES change results — it changes which player shoots — so it belongs in development fingerprints, possession cache keys and replay identity.", true),
+
+  // ── Phase 6C2C2 policy domains ───────────────────────────────────────────
+  // Each governs a gate rather than a computation, so none affects a result.
+  // They exist so that a threshold cannot move without leaving a trace.
+  actualGameSymmetryVersion: entry("1.0.0", DEVELOPMENT,
+    "How a single actual game assigns sides, opening possession, period order and RNG streams. This one DOES affect results — it changes who gets the ball — so it belongs in the development fingerprint.", true),
+
+  tierBTargetDataVersion: entry("1.0.0", DEVELOPMENT,
+    "Advanced historical target values (pace, ratings, eFG%, TS%, TOV%, ORB%, DRB%, FTr, 3PAr, assist rate) and the formulas that derive them. A target is what the engine is measured against, never an input.", false),
+
+  independentSourceVerificationVersion: entry("1.0.0", DEVELOPMENT,
+    "The second-source verification policy and its coverage requirements. Bumped when the required coverage or the disagreement-resolution rules change.", false),
+
+  parameterIdentifiabilityVersion: entry("1.0.0", DEVELOPMENT,
+    "The sensitivity and confounding analysis that decides which parameters may be tuned at all. Bumped when a classification threshold changes — never to enlarge the tunable set after seeing a result.", false),
+
+  internalCalibrationFoldVersion: entry("2.0.0", DEVELOPMENT,
+    "Fold membership for internal tuning and internal validation. Frozen before tuning; a bump means the split changed and every prior fold measurement is void.", false),
+
+  holdoutAcceptancePolicyVersion: entry("1.0.0", DEVELOPMENT,
+    "The pass/fail rules a formal holdout is judged by, frozen before any holdout is opened. Changing this after an opening invalidates that holdout permanently.", false),
+
+  holdoutValidationVersion: entry("1.0.0", DEVELOPMENT,
+    "The holdout evaluation procedure and its recorded access events.", false),
+
+  privatePreviewValidationVersion: entry("1.0.0", DEVELOPMENT,
+    "Private preview soak volumes, latency and error thresholds, and the human-review requirement.", false),
+
+  productionRolloutPolicyVersion: entry("1.0.0", DEVELOPMENT,
+    "Staged rollout definition, per-stage activation thresholds and rollback triggers.", false),
 
   holdoutSetVersion: entry("1.0.0", DEVELOPMENT,
     "The frozen holdout partition. Bumping it means the holdout changed, which is a deliberate act that invalidates every prior holdout measurement.", false),

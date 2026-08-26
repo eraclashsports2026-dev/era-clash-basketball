@@ -38,8 +38,17 @@
 | Historical holdout set | `historicalHoldoutSetVersion` | **3.0.0** | DEVELOPMENT (does **not** affect results) |
 | Synthetic stress set | `syntheticStressSetVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Calibration parameter registry | `calibrationParameterRegistryVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
-| Calibration objective | `calibrationObjectiveVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Calibration objective | `calibrationObjectiveVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |
 | Probability validation | `probabilityValidationVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Actual-game side symmetry | `actualGameSymmetryVersion` | **1.0.0** | DEVELOPMENT (**affects results**) |
+| Tier B target data | `tierBTargetDataVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Independent source verification | `independentSourceVerificationVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Parameter identifiability | `parameterIdentifiabilityVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Internal calibration folds | `internalCalibrationFoldVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |
+| Holdout acceptance policy | `holdoutAcceptancePolicyVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Holdout validation | `holdoutValidationVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Private preview validation | `privatePreviewValidationVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
+| Production rollout policy | `productionRolloutPolicyVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Calibration player schema | `calibrationPlayerSchemaVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Calibration player data | `calibrationPlayerDataVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Fixture source registry | `fixtureSourceRegistryVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
@@ -168,3 +177,33 @@ The future possession engine gets its own flag — **`POSSESSION_ENGINE_ENABLED`
 | `VERSIONS.simulation_engine = "2.2"` | The **legacy V2 elo engine's own** version. Deliberately unchanged — it names a different engine. |
 | `V3_VERSIONS` | The V3 engine's record shape. Now derived from the registry; model-shape fields (`possessionModel`, `fatigueModel`) stay local as they have no registry domain. |
 | Service worker `eraclash-v2.3.5` | Bumped deliberately per release; not a registry domain. |
+
+
+## Phase 6C2C2 policy domains
+
+Nine of the domains above govern a **gate** rather than a computation, so none of
+them affects a result. They exist so that a threshold cannot move without leaving
+a trace: each is pinned by `src/v3/calibration/acceptancePolicy.js`, whose hash is
+asserted by a test.
+
+`actualGameSymmetryVersion` is the exception. How a single game assigns sides,
+opening possession, period order and RNG streams **does** change who gets the
+ball, so it belongs in the development fingerprint alongside the other
+result-shaping domains.
+
+### The calibration lifecycle
+
+`possessionCalibrationVersion` moves through statuses without changing its value,
+because 1.0.0 locked and 1.0.0 in production are the *same parameters* — only the
+strength of the evidence behind them differs:
+
+```
+PLANNED (null)
+  → DEVELOPMENT_LOCKED         internal gates passed, parameters hashed, no holdout opened
+  → HOLDOUT_VALIDATED          both formal holdouts opened once and passed
+  → PRIVATE_PREVIEW_VALIDATED  preview soak and human review passed
+  → ACTIVE                     explicit production approval, staged rollout complete
+```
+
+`HOLDOUT_FAILED` is terminal for that parameter set. It may never be retuned
+against the holdout that rejected it; a future attempt needs a new unseen one.

@@ -7,13 +7,19 @@
 // A violation is a defect, not a warning. The engine asserts these on every
 // game in development and the benchmark asserts them across thousands.
 
-const VIOLATION = (code, detail) => ({ code, detail });
+// `side` is carried as a field rather than only prefixed into `detail`, so
+// reporting can sample both sides evenly instead of parsing it back out of a
+// string. See assertNoViolations for why that matters.
+const VIOLATION = (code, detail, side = null) => ({ code, detail, side });
 
 /** Player lines must sum to the team line, for every counting statistic. */
 const SUMMED = ["pts", "fgm", "fga", "tpm", "tpa", "ftm", "fta", "oreb", "dreb", "reb", "ast", "stl", "blk", "to"];
 
 export const checkTeamBox = (box, opponentBox, label) => {
-  const v = [];
+  const raw = [];
+  // Collected without a side, then stamped once on return, so a new check
+  // added below cannot forget to label itself.
+  const v = raw;
   const t = box.totals;
 
   for (const stat of SUMMED) {
@@ -48,7 +54,7 @@ export const checkTeamBox = (box, opponentBox, label) => {
     // A block requires an opponent attempt to block.
     if (t.blk > opponentBox.totals.fga) v.push(VIOLATION("BLK_GT_OPP_FGA", `${label}: ${t.blk} blocks vs ${opponentBox.totals.fga} opponent attempts`));
   }
-  return v;
+  return raw.map((x) => ({ ...x, side: label }));
 };
 
 /** Whole-game invariants, including the ones about the game itself. */
@@ -82,8 +88,22 @@ export const checkGame = (game) => {
 export const assertNoViolations = (game) => {
   const v = checkGame(game);
   if (v.length) {
-    const lines = v.slice(0, 12).map((x) => `  ${x.code}: ${x.detail}`).join("\n");
-    throw new Error(`possession engine produced ${v.length} invariant violation(s):\n${lines}`);
+    // Gold's violations are collected before blue's, so a flat slice(0, 12)
+    // reported gold's and silently dropped blue's whenever there were more than
+    // twelve. A side-symmetry gate that reads "zero invariant failures" cannot
+    // rest on a message that can hide one side's failures, so the sample is
+    // drawn evenly from both.
+    const bySide = (side) => v.filter((x) => x.side === side);
+    const shown = [
+      ...bySide("gold").slice(0, 6),
+      ...bySide("blue").slice(0, 6),
+      ...v.filter((x) => x.side == null).slice(0, 4),
+    ];
+    const lines = shown.map((x) => `  ${x.code}: ${x.detail}`).join("\n");
+    const omitted = v.length - shown.length;
+    throw new Error(`possession engine produced ${v.length} invariant violation(s)`
+      + ` (gold ${bySide("gold").length}, blue ${bySide("blue").length}):\n${lines}`
+      + (omitted > 0 ? `\n  ... and ${omitted} more` : ""));
   }
   return true;
 };

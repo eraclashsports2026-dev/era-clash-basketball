@@ -16,7 +16,12 @@ import { runPossessionGame } from "../../src/v3/possession/index.js";
 import { buildPossessionInput } from "../../src/v3/possession/testContext.js";
 import { REGISTRY } from "../../src/versions.js";
 
-const OUT = new URL("../../tests/fixtures/calibration-framework/baseline-engine/engine-baseline.json", import.meta.url);
+// The original lives under baseline-engine/ and is FROZEN as a Phase 6C2A
+// artefact — prior reports were computed against it, so rewriting it would
+// silently invalidate them. Phase 6C2C2 deliberately changed engine behaviour
+// (seeded opening possession), so the live baseline moves to its own
+// phase-scoped path, exactly as the structural baselines did across 6C2A.
+const OUT = new URL("../../tests/fixtures/calibration-framework/post-6c2c2-symmetry/engine-baseline.json", import.meta.url);
 
 // Deliberately spans teams, coaches, eras, man and zone defence, and the
 // flag-off Phase 6B1 path.
@@ -25,12 +30,15 @@ export const BASELINE_CASES = [
   { id: "stoppers-vs-splash-2020s-zone", goldIds: ["gary-90s", "moncrief-80s", "pippen-90s", "kg-00s", "bill-60s"], blueIds: ["curry-10s", "klay-10s", "bird-80s", "dirk-00s", "rob-90s"], eraStyleId: "2020s", coachGoldId: "nick-nurse", coachBlueId: "steve-kerr", simulationSeed: 4242 },
   { id: "size-vs-small-2010s", goldIds: ["magic-80s", "jordan-90s", "bird-80s", "kg-00s", "shaq-90s"], blueIds: ["curry-10s", "klay-10s", "lebron-10s", "draymond-10s", "jokic-20s"], eraStyleId: "2010s", coachGoldId: "jerry-sloan", coachBlueId: "steve-kerr", simulationSeed: 31337 },
   { id: "pre-three-point-1960s", goldIds: ["oscar-60s", "jerry-60s", "elgin-60s", "nate-60s", "wilt-60s"], blueIds: ["magic-80s", "jordan-90s", "bird-80s", "kg-00s", "shaq-90s"], eraStyleId: "1960s", coachGoldId: "red-auerbach", coachBlueId: "phil-jackson", simulationSeed: 1960 },
-  // This is the corpus's ONLY overtime case, and the seed has had to move twice
-  // (2020 -> 39 -> 13) because each behaviour change shifted the scoreline out
-  // of overtime. When a deliberate rewrite drops OT coverage, find a new seed
-  // rather than relaxing the assertion that an overtime case exists — the OT
-  // path is otherwise untested.
-  { id: "dantoni-pace-2020s", goldIds: ["luka-20s", "harden-10s", "jordan-90s", "lebron-10s", "jokic-20s"], blueIds: ["magic-80s", "klay-10s", "pippen-90s", "duncan-00s", "hak-90s"], eraStyleId: "2020s", coachGoldId: "mike-dantoni", coachBlueId: "tom-thibodeau", simulationSeed: 13 },
+  // This is the corpus's ONLY overtime case, and the seed has now moved three
+  // times (2020 -> 39 -> 13 -> 36) because each behaviour change shifted the
+  // scoreline out of overtime. When a deliberate rewrite drops OT coverage,
+  // find a new seed rather than relaxing the assertion that an overtime case
+  // exists — the OT path is otherwise untested. Phase 6C2C2's seeded opening
+  // possession moved it again; 36 was chosen because it reaches DOUBLE
+  // overtime, which also exercises the repeat loop and the second overtime's
+  // independent jump ball.
+  { id: "dantoni-pace-2020s", goldIds: ["luka-20s", "harden-10s", "jordan-90s", "lebron-10s", "jokic-20s"], blueIds: ["magic-80s", "klay-10s", "pippen-90s", "duncan-00s", "hak-90s"], eraStyleId: "2020s", coachGoldId: "mike-dantoni", coachBlueId: "tom-thibodeau", simulationSeed: 36 },
   { id: "flag-off-6b1-path", goldIds: ["magic-80s", "jordan-90s", "pippen-90s", "duncan-00s", "hak-90s"], blueIds: ["curry-10s", "klay-10s", "bird-80s", "dirk-00s", "rob-90s"], eraStyleId: "1990s", coachGoldId: "pat-riley", coachBlueId: "phil-jackson", simulationSeed: 777, expandedActions: false, zoneResolution: false, offensiveAdjustments: false, opportunityAllocation: false },
 ];
 

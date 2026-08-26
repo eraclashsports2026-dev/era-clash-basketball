@@ -1,0 +1,921 @@
+{
+  "parameterIdentifiabilityVersion": "1.0.0",
+  "tierBTargetDataVersion": "1.0.0",
+  "purpose": "Whether any authorized target exists that could judge a change to each parameter. A data question, asked before any sensitivity question.",
+  "supportClasses": {
+    "HISTORICAL_NUMERIC_SUPPORT": "An authorized numeric historical target exists and is populated.",
+    "HISTORICAL_QUALITATIVE_SUPPORT": "Only documented qualitative identity exists — direction, not magnitude.",
+    "SYNTHETIC_CONTROL_SUPPORT": "No historical target, but a controlled synthetic comparison can bound it.",
+    "STRUCTURAL_VALIDATION_ONLY": "Can only be checked for structural sanity (invariants, monotonicity), not fitted.",
+    "UNSUPPORTED": "Moves the engine, but nothing authorized can judge which direction is better."
+  },
+  "corpusEvidence": {
+    "populatedTierBMetrics": [
+      "ftr"
+    ],
+    "tierCPresent": true,
+    "tierDPresent": true,
+    "eraEnvironmentAuthorized": false,
+    "eraEnvironmentNote": "src/v3/data/eras.js records its environment values as sourced from 'Basketball Reference league index'. Under the standing source policy those values cannot be used as calibration targets. This is pre-existing production data and was not introduced by Phase 6C2C2."
+  },
+  "coverage": {
+    "parameters": 53,
+    "byClass": {
+      "HISTORICAL_NUMERIC_SUPPORT": 1,
+      "SYNTHETIC_CONTROL_SUPPORT": 26,
+      "STRUCTURAL_VALIDATION_ONLY": 12,
+      "UNSUPPORTED": 14
+    },
+    "byModule": {
+      "opportunityAllocation": {
+        "HISTORICAL_NUMERIC_SUPPORT": 1,
+        "SYNTHETIC_CONTROL_SUPPORT": 26,
+        "STRUCTURAL_VALIDATION_ONLY": 4
+      },
+      "possessionContext": {
+        "UNSUPPORTED": 8
+      },
+      "possessionGame": {
+        "UNSUPPORTED": 5
+      },
+      "zoneResolution": {
+        "UNSUPPORTED": 1,
+        "STRUCTURAL_VALIDATION_ONLY": 3
+      },
+      "coachIntelligence": {
+        "STRUCTURAL_VALIDATION_ONLY": 2
+      },
+      "coachAdjustment": {
+        "STRUCTURAL_VALIDATION_ONLY": 3
+      }
+    },
+    "byDeclaredSource": {
+      "HISTORICAL_TIER_C + SYNTHETIC_GUARDRAIL": 1,
+      "SYNTHETIC_GUARDRAIL": 26,
+      "STRUCTURAL": 12,
+      "ERA_ENVIRONMENT": 14
+    },
+    "tunableOnDataGrounds": 27,
+    "frozenOnDataGrounds": 26,
+    "blockedBySource": 14
+  },
+  "fixedNotCalibratable": [
+    {
+      "value": "shot clock, backcourt count, three-point distance",
+      "why": "Rules of the era. Facts, not judgements."
+    },
+    {
+      "value": "REGULATION_PERIODS, OT_PERIOD_FRACTION",
+      "why": "Structural definitions of a game."
+    },
+    {
+      "value": "possession conservation identities",
+      "why": "Arithmetic. AST <= FGM is not a coefficient."
+    },
+    {
+      "value": "era zoneLegal / illegalDefenseRestrictions",
+      "why": "Historical rules. Era gating is authoritative."
+    },
+    {
+      "value": "steals and blocks before 1973-74",
+      "why": "Not recorded. RESEARCH_ONLY, never invented."
+    }
+  ],
+  "parameters": [
+    {
+      "id": "opportunity.saturation.strength",
+      "module": "opportunityAllocation",
+      "defaultValue": 1.35,
+      "min": 0.6,
+      "max": 2.5,
+      "targetMetrics": [
+        "leadingShareMean",
+        "leadingShareP95",
+        "usageEntropy",
+        "playerScoringShares"
+      ],
+      "declaredCalibrationSource": "HISTORICAL_TIER_C + SYNTHETIC_GUARDRAIL",
+      "support": "HISTORICAL_NUMERIC_SUPPORT",
+      "reason": "Judged against Tier C player-share targets (132 share maps across 30 fixtures) plus synthetic guardrails. Distributional support, not team efficiency.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": true
+    },
+    {
+      "id": "opportunity.saturation.floor",
+      "module": "opportunityAllocation",
+      "defaultValue": 0.16,
+      "min": 0.05,
+      "max": 0.4,
+      "targetMetrics": [
+        "leadingShareMax",
+        "outlierGameRate"
+      ],
+      "declaredCalibrationSource": "SYNTHETIC_GUARDRAIL",
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "reason": "No historical target. Bounded by controlled comparison on synthetic development v2, which development may inspect.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": true
+    },
+    {
+      "id": "opportunity.saturation.underTargetCeiling",
+      "module": "opportunityAllocation",
+      "defaultValue": 1.35,
+      "min": 1,
+      "max": 2,
+      "targetMetrics": [
+        "usageEntropy",
+        "meaningfulShooters"
+      ],
+      "declaredCalibrationSource": "SYNTHETIC_GUARDRAIL",
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "reason": "No historical target. Bounded by controlled comparison on synthetic development v2, which development may inspect.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": true
+    },
+    {
+      "id": "opportunity.saturation.warmupPossessions",
+      "module": "opportunityAllocation",
+      "defaultValue": 8,
+      "min": 0,
+      "max": 30,
+      "targetMetrics": [
+        "earlyGameDistribution"
+      ],
+      "declaredCalibrationSource": "STRUCTURAL",
+      "support": "STRUCTURAL_VALIDATION_ONLY",
+      "reason": "Checkable only for structural sanity — invariants, monotonicity, bounds — never fitted to a value.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": false
+    },
+    {
+      "id": "opportunity.mismatch.severe",
+      "module": "opportunityAllocation",
+      "defaultValue": 2.6,
+      "min": 1,
+      "max": 4,
+      "targetMetrics": [
+        "mismatchAttackShare",
+        "postUpConcentration"
+      ],
+      "declaredCalibrationSource": "SYNTHETIC_GUARDRAIL",
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "reason": "No historical target. Bounded by controlled comparison on synthetic development v2, which development may inspect.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": true
+    },
+    {
+      "id": "opportunity.mismatch.major",
+      "module": "opportunityAllocation",
+      "defaultValue": 2,
+      "min": 1,
+      "max": 3.5,
+      "targetMetrics": [
+        "mismatchAttackShare"
+      ],
+      "declaredCalibrationSource": "SYNTHETIC_GUARDRAIL",
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "reason": "No historical target. Bounded by controlled comparison on synthetic development v2, which development may inspect.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": true
+    },
+    {
+      "id": "opportunity.mismatch.moderate",
+      "module": "opportunityAllocation",
+      "defaultValue": 1.55,
+      "min": 1,
+      "max": 3,
+      "targetMetrics": [
+        "mismatchAttackShare"
+      ],
+      "declaredCalibrationSource": "SYNTHETIC_GUARDRAIL",
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "reason": "No historical target. Bounded by controlled comparison on synthetic development v2, which development may inspect.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": true
+    },
+    {
+      "id": "opportunity.mismatch.minor",
+      "module": "opportunityAllocation",
+      "defaultValue": 1.25,
+      "min": 1,
+      "max": 2,
+      "targetMetrics": [
+        "mismatchAttackShare"
+      ],
+      "declaredCalibrationSource": "SYNTHETIC_GUARDRAIL",
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "reason": "No historical target. Bounded by controlled comparison on synthetic development v2, which development may inspect.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": true
+    },
+    {
+      "id": "opportunity.form.low",
+      "module": "opportunityAllocation",
+      "defaultValue": 0.82,
+      "min": 0.6,
+      "max": 1,
+      "targetMetrics": [
+        "playerGameVariance"
+      ],
+      "declaredCalibrationSource": "STRUCTURAL",
+      "support": "STRUCTURAL_VALIDATION_ONLY",
+      "reason": "Checkable only for structural sanity — invariants, monotonicity, bounds — never fitted to a value.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": false
+    },
+    {
+      "id": "opportunity.form.high",
+      "module": "opportunityAllocation",
+      "defaultValue": 1.18,
+      "min": 1,
+      "max": 1.6,
+      "targetMetrics": [
+        "playerGameVariance",
+        "outlierGameRate"
+      ],
+      "declaredCalibrationSource": "STRUCTURAL",
+      "support": "STRUCTURAL_VALIDATION_ONLY",
+      "reason": "Checkable only for structural sanity — invariants, monotonicity, bounds — never fitted to a value.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": false
+    },
+    {
+      "id": "opportunity.lateGame.primaryBoost",
+      "module": "opportunityAllocation",
+      "defaultValue": 0.5,
+      "min": 0,
+      "max": 1.5,
+      "targetMetrics": [
+        "lateGameConcentration"
+      ],
+      "declaredCalibrationSource": "STRUCTURAL",
+      "support": "STRUCTURAL_VALIDATION_ONLY",
+      "reason": "Checkable only for structural sanity — invariants, monotonicity, bounds — never fitted to a value.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": false
+    },
+    {
+      "id": "fitBand.SPOT_UP.lo",
+      "module": "opportunityAllocation",
+      "defaultValue": 0.2,
+      "min": 0.1,
+      "max": 1,
+      "targetMetrics": [
+        "actionFamilyShares",
+        "roleFidelity"
+      ],
+      "declaredCalibrationSource": "SYNTHETIC_GUARDRAIL",
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "reason": "No historical target. Bounded by controlled comparison on synthetic development v2, which development may inspect.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": true
+    },
+    {
+      "id": "fitBand.SPOT_UP.hi",
+      "module": "opportunityAllocation",
+      "defaultValue": 2.4,
+      "min": 1,
+      "max": 3,
+      "targetMetrics": [
+        "actionFamilyShares",
+        "roleFidelity"
+      ],
+      "declaredCalibrationSource": "SYNTHETIC_GUARDRAIL",
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "reason": "No historical target. Bounded by controlled comparison on synthetic development v2, which development may inspect.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": true
+    },
+    {
+      "id": "fitBand.OFF_BALL_SCREEN.lo",
+      "module": "opportunityAllocation",
+      "defaultValue": 0.25,
+      "min": 0.1,
+      "max": 1,
+      "targetMetrics": [
+        "actionFamilyShares",
+        "roleFidelity"
+      ],
+      "declaredCalibrationSource": "SYNTHETIC_GUARDRAIL",
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "reason": "No historical target. Bounded by controlled comparison on synthetic development v2, which development may inspect.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": true
+    },
+    {
+      "id": "fitBand.OFF_BALL_SCREEN.hi",
+      "module": "opportunityAllocation",
+      "defaultValue": 2.2,
+      "min": 1,
+      "max": 3,
+      "targetMetrics": [
+        "actionFamilyShares",
+        "roleFidelity"
+      ],
+      "declaredCalibrationSource": "SYNTHETIC_GUARDRAIL",
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "reason": "No historical target. Bounded by controlled comparison on synthetic development v2, which development may inspect.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": true
+    },
+    {
+      "id": "fitBand.POST_UP.lo",
+      "module": "opportunityAllocation",
+      "defaultValue": 0.3,
+      "min": 0.1,
+      "max": 1,
+      "targetMetrics": [
+        "actionFamilyShares",
+        "roleFidelity"
+      ],
+      "declaredCalibrationSource": "SYNTHETIC_GUARDRAIL",
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "reason": "No historical target. Bounded by controlled comparison on synthetic development v2, which development may inspect.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": true
+    },
+    {
+      "id": "fitBand.POST_UP.hi",
+      "module": "opportunityAllocation",
+      "defaultValue": 2.1,
+      "min": 1,
+      "max": 3,
+      "targetMetrics": [
+        "actionFamilyShares",
+        "roleFidelity"
+      ],
+      "declaredCalibrationSource": "SYNTHETIC_GUARDRAIL",
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "reason": "No historical target. Bounded by controlled comparison on synthetic development v2, which development may inspect.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": true
+    },
+    {
+      "id": "fitBand.HANDOFF.lo",
+      "module": "opportunityAllocation",
+      "defaultValue": 0.35,
+      "min": 0.1,
+      "max": 1,
+      "targetMetrics": [
+        "actionFamilyShares",
+        "roleFidelity"
+      ],
+      "declaredCalibrationSource": "SYNTHETIC_GUARDRAIL",
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "reason": "No historical target. Bounded by controlled comparison on synthetic development v2, which development may inspect.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": true
+    },
+    {
+      "id": "fitBand.HANDOFF.hi",
+      "module": "opportunityAllocation",
+      "defaultValue": 2,
+      "min": 1,
+      "max": 3,
+      "targetMetrics": [
+        "actionFamilyShares",
+        "roleFidelity"
+      ],
+      "declaredCalibrationSource": "SYNTHETIC_GUARDRAIL",
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "reason": "No historical target. Bounded by controlled comparison on synthetic development v2, which development may inspect.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": true
+    },
+    {
+      "id": "fitBand.ZONE_ATTACK.lo",
+      "module": "opportunityAllocation",
+      "defaultValue": 0.4,
+      "min": 0.1,
+      "max": 1,
+      "targetMetrics": [
+        "actionFamilyShares",
+        "roleFidelity"
+      ],
+      "declaredCalibrationSource": "SYNTHETIC_GUARDRAIL",
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "reason": "No historical target. Bounded by controlled comparison on synthetic development v2, which development may inspect.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": true
+    },
+    {
+      "id": "fitBand.ZONE_ATTACK.hi",
+      "module": "opportunityAllocation",
+      "defaultValue": 1.9,
+      "min": 1,
+      "max": 3,
+      "targetMetrics": [
+        "actionFamilyShares",
+        "roleFidelity"
+      ],
+      "declaredCalibrationSource": "SYNTHETIC_GUARDRAIL",
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "reason": "No historical target. Bounded by controlled comparison on synthetic development v2, which development may inspect.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": true
+    },
+    {
+      "id": "fitBand.CUT.lo",
+      "module": "opportunityAllocation",
+      "defaultValue": 0.4,
+      "min": 0.1,
+      "max": 1,
+      "targetMetrics": [
+        "actionFamilyShares",
+        "roleFidelity"
+      ],
+      "declaredCalibrationSource": "SYNTHETIC_GUARDRAIL",
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "reason": "No historical target. Bounded by controlled comparison on synthetic development v2, which development may inspect.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": true
+    },
+    {
+      "id": "fitBand.CUT.hi",
+      "module": "opportunityAllocation",
+      "defaultValue": 1.9,
+      "min": 1,
+      "max": 3,
+      "targetMetrics": [
+        "actionFamilyShares",
+        "roleFidelity"
+      ],
+      "declaredCalibrationSource": "SYNTHETIC_GUARDRAIL",
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "reason": "No historical target. Bounded by controlled comparison on synthetic development v2, which development may inspect.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": true
+    },
+    {
+      "id": "fitBand.ISOLATION.lo",
+      "module": "opportunityAllocation",
+      "defaultValue": 0.5,
+      "min": 0.1,
+      "max": 1,
+      "targetMetrics": [
+        "actionFamilyShares",
+        "roleFidelity"
+      ],
+      "declaredCalibrationSource": "SYNTHETIC_GUARDRAIL",
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "reason": "No historical target. Bounded by controlled comparison on synthetic development v2, which development may inspect.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": true
+    },
+    {
+      "id": "fitBand.ISOLATION.hi",
+      "module": "opportunityAllocation",
+      "defaultValue": 1.8,
+      "min": 1,
+      "max": 3,
+      "targetMetrics": [
+        "actionFamilyShares",
+        "roleFidelity"
+      ],
+      "declaredCalibrationSource": "SYNTHETIC_GUARDRAIL",
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "reason": "No historical target. Bounded by controlled comparison on synthetic development v2, which development may inspect.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": true
+    },
+    {
+      "id": "fitBand.PICK_AND_ROLL.lo",
+      "module": "opportunityAllocation",
+      "defaultValue": 0.55,
+      "min": 0.1,
+      "max": 1,
+      "targetMetrics": [
+        "actionFamilyShares",
+        "roleFidelity"
+      ],
+      "declaredCalibrationSource": "SYNTHETIC_GUARDRAIL",
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "reason": "No historical target. Bounded by controlled comparison on synthetic development v2, which development may inspect.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": true
+    },
+    {
+      "id": "fitBand.PICK_AND_ROLL.hi",
+      "module": "opportunityAllocation",
+      "defaultValue": 1.7,
+      "min": 1,
+      "max": 3,
+      "targetMetrics": [
+        "actionFamilyShares",
+        "roleFidelity"
+      ],
+      "declaredCalibrationSource": "SYNTHETIC_GUARDRAIL",
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "reason": "No historical target. Bounded by controlled comparison on synthetic development v2, which development may inspect.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": true
+    },
+    {
+      "id": "fitBand.TRANSITION.lo",
+      "module": "opportunityAllocation",
+      "defaultValue": 0.6,
+      "min": 0.1,
+      "max": 1,
+      "targetMetrics": [
+        "actionFamilyShares",
+        "roleFidelity"
+      ],
+      "declaredCalibrationSource": "SYNTHETIC_GUARDRAIL",
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "reason": "No historical target. Bounded by controlled comparison on synthetic development v2, which development may inspect.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": true
+    },
+    {
+      "id": "fitBand.TRANSITION.hi",
+      "module": "opportunityAllocation",
+      "defaultValue": 1.6,
+      "min": 1,
+      "max": 3,
+      "targetMetrics": [
+        "actionFamilyShares",
+        "roleFidelity"
+      ],
+      "declaredCalibrationSource": "SYNTHETIC_GUARDRAIL",
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "reason": "No historical target. Bounded by controlled comparison on synthetic development v2, which development may inspect.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": true
+    },
+    {
+      "id": "fitBand.GENERIC_HALF_COURT.lo",
+      "module": "opportunityAllocation",
+      "defaultValue": 0.75,
+      "min": 0.1,
+      "max": 1,
+      "targetMetrics": [
+        "actionFamilyShares",
+        "roleFidelity"
+      ],
+      "declaredCalibrationSource": "SYNTHETIC_GUARDRAIL",
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "reason": "No historical target. Bounded by controlled comparison on synthetic development v2, which development may inspect.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": true
+    },
+    {
+      "id": "fitBand.GENERIC_HALF_COURT.hi",
+      "module": "opportunityAllocation",
+      "defaultValue": 1.35,
+      "min": 1,
+      "max": 3,
+      "targetMetrics": [
+        "actionFamilyShares",
+        "roleFidelity"
+      ],
+      "declaredCalibrationSource": "SYNTHETIC_GUARDRAIL",
+      "support": "SYNTHETIC_CONTROL_SUPPORT",
+      "reason": "No historical target. Bounded by controlled comparison on synthetic development v2, which development may inspect.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": true
+    },
+    {
+      "id": "shotLocation.rimWeight",
+      "module": "possessionContext",
+      "defaultValue": 0.34,
+      "min": 0.15,
+      "max": 0.6,
+      "targetMetrics": [
+        "rimShare",
+        "fieldGoalPct",
+        "efgPct"
+      ],
+      "declaredCalibrationSource": "ERA_ENVIRONMENT",
+      "support": "UNSUPPORTED",
+      "reason": "Judged against Era Style environment values whose recorded source is the publisher classified PROHIBITED_FOR_MODEL_CALIBRATION. The target exists but may not be used to calibrate. This predates Phase 6C2C2 and is live production data — see independent-source-verification.md. The evidence it requires (eraEnvironmentAuthorized) is not available.",
+      "blockedBySource": true,
+      "tunableOnDataGrounds": false
+    },
+    {
+      "id": "shotLocation.postWeight",
+      "module": "possessionContext",
+      "defaultValue": 0.42,
+      "min": 0.2,
+      "max": 0.7,
+      "targetMetrics": [
+        "paintShare",
+        "fieldGoalPct"
+      ],
+      "declaredCalibrationSource": "ERA_ENVIRONMENT",
+      "support": "UNSUPPORTED",
+      "reason": "Judged against Era Style environment values whose recorded source is the publisher classified PROHIBITED_FOR_MODEL_CALIBRATION. The target exists but may not be used to calibrate. This predates Phase 6C2C2 and is live production data — see independent-source-verification.md. The evidence it requires (eraEnvironmentAuthorized) is not available.",
+      "blockedBySource": true,
+      "tunableOnDataGrounds": false
+    },
+    {
+      "id": "shotLocation.midrangeWeight",
+      "module": "possessionContext",
+      "defaultValue": 0.18,
+      "min": 0.05,
+      "max": 0.5,
+      "targetMetrics": [
+        "midrangeShare"
+      ],
+      "declaredCalibrationSource": "ERA_ENVIRONMENT",
+      "support": "UNSUPPORTED",
+      "reason": "Judged against Era Style environment values whose recorded source is the publisher classified PROHIBITED_FOR_MODEL_CALIBRATION. The target exists but may not be used to calibrate. This predates Phase 6C2C2 and is live production data — see independent-source-verification.md. The evidence it requires (eraEnvironmentAuthorized) is not available.",
+      "blockedBySource": true,
+      "tunableOnDataGrounds": false
+    },
+    {
+      "id": "shotLocation.threeWeight",
+      "module": "possessionContext",
+      "defaultValue": 0.22,
+      "min": 0.05,
+      "max": 0.6,
+      "targetMetrics": [
+        "threePointAttemptRate"
+      ],
+      "declaredCalibrationSource": "ERA_ENVIRONMENT",
+      "support": "UNSUPPORTED",
+      "reason": "Judged against Era Style environment values whose recorded source is the publisher classified PROHIBITED_FOR_MODEL_CALIBRATION. The target exists but may not be used to calibrate. This predates Phase 6C2C2 and is live production data — see independent-source-verification.md. The evidence it requires (eraEnvironmentAuthorized) is not available.",
+      "blockedBySource": true,
+      "tunableOnDataGrounds": false
+    },
+    {
+      "id": "shotLocation.rimBiasMultiplier",
+      "module": "possessionGame",
+      "defaultValue": 1.6,
+      "min": 0.5,
+      "max": 3,
+      "targetMetrics": [
+        "rimShare",
+        "rimOrPaintShare"
+      ],
+      "declaredCalibrationSource": "ERA_ENVIRONMENT",
+      "support": "UNSUPPORTED",
+      "reason": "Judged against Era Style environment values whose recorded source is the publisher classified PROHIBITED_FOR_MODEL_CALIBRATION. The target exists but may not be used to calibrate. This predates Phase 6C2C2 and is live production data — see independent-source-verification.md. The evidence it requires (eraEnvironmentAuthorized) is not available.",
+      "blockedBySource": true,
+      "tunableOnDataGrounds": false
+    },
+    {
+      "id": "shotLocation.perimeterBiasMultiplier",
+      "module": "possessionGame",
+      "defaultValue": 1.5,
+      "min": 0.5,
+      "max": 3,
+      "targetMetrics": [
+        "threePointAttemptRate"
+      ],
+      "declaredCalibrationSource": "ERA_ENVIRONMENT",
+      "support": "UNSUPPORTED",
+      "reason": "Judged against Era Style environment values whose recorded source is the publisher classified PROHIBITED_FOR_MODEL_CALIBRATION. The target exists but may not be used to calibrate. This predates Phase 6C2C2 and is live production data — see independent-source-verification.md. The evidence it requires (eraEnvironmentAuthorized) is not available.",
+      "blockedBySource": true,
+      "tunableOnDataGrounds": false
+    },
+    {
+      "id": "conversion.rimBonus",
+      "module": "possessionGame",
+      "defaultValue": 0.155,
+      "min": 0.05,
+      "max": 0.28,
+      "targetMetrics": [
+        "fieldGoalPct",
+        "rimMakePct"
+      ],
+      "declaredCalibrationSource": "ERA_ENVIRONMENT",
+      "support": "UNSUPPORTED",
+      "reason": "Judged against Era Style environment values whose recorded source is the publisher classified PROHIBITED_FOR_MODEL_CALIBRATION. The target exists but may not be used to calibrate. This predates Phase 6C2C2 and is live production data — see independent-source-verification.md. The evidence it requires (eraEnvironmentAuthorized) is not available.",
+      "blockedBySource": true,
+      "tunableOnDataGrounds": false
+    },
+    {
+      "id": "conversion.paintBonus",
+      "module": "possessionGame",
+      "defaultValue": 0.015,
+      "min": -0.1,
+      "max": 0.12,
+      "targetMetrics": [
+        "fieldGoalPct"
+      ],
+      "declaredCalibrationSource": "ERA_ENVIRONMENT",
+      "support": "UNSUPPORTED",
+      "reason": "Judged against Era Style environment values whose recorded source is the publisher classified PROHIBITED_FOR_MODEL_CALIBRATION. The target exists but may not be used to calibrate. This predates Phase 6C2C2 and is live production data — see independent-source-verification.md. The evidence it requires (eraEnvironmentAuthorized) is not available.",
+      "blockedBySource": true,
+      "tunableOnDataGrounds": false
+    },
+    {
+      "id": "conversion.midrangePenalty",
+      "module": "possessionGame",
+      "defaultValue": -0.055,
+      "min": -0.15,
+      "max": 0.02,
+      "targetMetrics": [
+        "fieldGoalPct"
+      ],
+      "declaredCalibrationSource": "ERA_ENVIRONMENT",
+      "support": "UNSUPPORTED",
+      "reason": "Judged against Era Style environment values whose recorded source is the publisher classified PROHIBITED_FOR_MODEL_CALIBRATION. The target exists but may not be used to calibrate. This predates Phase 6C2C2 and is live production data — see independent-source-verification.md. The evidence it requires (eraEnvironmentAuthorized) is not available.",
+      "blockedBySource": true,
+      "tunableOnDataGrounds": false
+    },
+    {
+      "id": "era.paceTempoScale",
+      "module": "possessionContext",
+      "defaultValue": 1.35,
+      "min": 0.5,
+      "max": 3,
+      "targetMetrics": [
+        "pace",
+        "paceSpreadByCoach"
+      ],
+      "declaredCalibrationSource": "ERA_ENVIRONMENT",
+      "support": "UNSUPPORTED",
+      "reason": "Judged against Era Style environment values whose recorded source is the publisher classified PROHIBITED_FOR_MODEL_CALIBRATION. The target exists but may not be used to calibrate. This predates Phase 6C2C2 and is live production data — see independent-source-verification.md. The evidence it requires (eraEnvironmentAuthorized) is not available.",
+      "blockedBySource": true,
+      "tunableOnDataGrounds": false
+    },
+    {
+      "id": "era.paceBoundFraction",
+      "module": "possessionContext",
+      "defaultValue": 0.14,
+      "min": 0.05,
+      "max": 0.3,
+      "targetMetrics": [
+        "pace"
+      ],
+      "declaredCalibrationSource": "ERA_ENVIRONMENT",
+      "support": "UNSUPPORTED",
+      "reason": "Judged against Era Style environment values whose recorded source is the publisher classified PROHIBITED_FOR_MODEL_CALIBRATION. The target exists but may not be used to calibrate. This predates Phase 6C2C2 and is live production data — see independent-source-verification.md. The evidence it requires (eraEnvironmentAuthorized) is not available.",
+      "blockedBySource": true,
+      "tunableOnDataGrounds": false
+    },
+    {
+      "id": "era.threeAnchorMax",
+      "module": "possessionContext",
+      "defaultValue": 12,
+      "min": 2,
+      "max": 30,
+      "targetMetrics": [
+        "threePointAttempts",
+        "threePointAttemptRate"
+      ],
+      "declaredCalibrationSource": "ERA_ENVIRONMENT",
+      "support": "UNSUPPORTED",
+      "reason": "Judged against Era Style environment values whose recorded source is the publisher classified PROHIBITED_FOR_MODEL_CALIBRATION. The target exists but may not be used to calibrate. This predates Phase 6C2C2 and is live production data — see independent-source-verification.md. The evidence it requires (eraEnvironmentAuthorized) is not available.",
+      "blockedBySource": true,
+      "tunableOnDataGrounds": false
+    },
+    {
+      "id": "era.freeThrowTripRate",
+      "module": "possessionContext",
+      "defaultValue": 0.5,
+      "min": 0.2,
+      "max": 1,
+      "targetMetrics": [
+        "freeThrowRate",
+        "freeThrowAttempts"
+      ],
+      "declaredCalibrationSource": "ERA_ENVIRONMENT",
+      "support": "UNSUPPORTED",
+      "reason": "Judged against Era Style environment values whose recorded source is the publisher classified PROHIBITED_FOR_MODEL_CALIBRATION. The target exists but may not be used to calibrate. This predates Phase 6C2C2 and is live production data — see independent-source-verification.md. The evidence it requires (eraEnvironmentAuthorized) is not available.",
+      "blockedBySource": true,
+      "tunableOnDataGrounds": false
+    },
+    {
+      "id": "zone.selectionFrequency",
+      "module": "zoneResolution",
+      "defaultValue": 0.55,
+      "min": 0.02,
+      "max": 0.8,
+      "targetMetrics": [
+        "zoneShare",
+        "coachIdentitySpread"
+      ],
+      "declaredCalibrationSource": "ERA_ENVIRONMENT",
+      "support": "UNSUPPORTED",
+      "reason": "Judged against Era Style environment values whose recorded source is the publisher classified PROHIBITED_FOR_MODEL_CALIBRATION. The target exists but may not be used to calibrate. This predates Phase 6C2C2 and is live production data — see independent-source-verification.md. The evidence it requires (eraEnvironmentAuthorized) is not available.",
+      "blockedBySource": true,
+      "tunableOnDataGrounds": false
+    },
+    {
+      "id": "zone.offensiveReboundExposure",
+      "module": "zoneResolution",
+      "defaultValue": 0.073,
+      "min": 0,
+      "max": 0.15,
+      "targetMetrics": [
+        "offensiveReboundPct",
+        "zoneOrbDelta"
+      ],
+      "declaredCalibrationSource": "STRUCTURAL",
+      "support": "STRUCTURAL_VALIDATION_ONLY",
+      "reason": "Checkable only for structural sanity — invariants, monotonicity, bounds — never fitted to a value.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": false
+    },
+    {
+      "id": "zone.highPostVulnerability",
+      "module": "zoneResolution",
+      "defaultValue": 1,
+      "min": 0.3,
+      "max": 2,
+      "targetMetrics": [
+        "zoneGapDistribution"
+      ],
+      "declaredCalibrationSource": "STRUCTURAL",
+      "support": "STRUCTURAL_VALIDATION_ONLY",
+      "reason": "Checkable only for structural sanity — invariants, monotonicity, bounds — never fitted to a value.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": false
+    },
+    {
+      "id": "zone.cornerVulnerability",
+      "module": "zoneResolution",
+      "defaultValue": 1,
+      "min": 0.3,
+      "max": 2,
+      "targetMetrics": [
+        "zoneGapDistribution",
+        "threePointAttemptRate"
+      ],
+      "declaredCalibrationSource": "STRUCTURAL",
+      "support": "STRUCTURAL_VALIDATION_ONLY",
+      "reason": "Checkable only for structural sanity — invariants, monotonicity, bounds — never fitted to a value.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": false
+    },
+    {
+      "id": "coach.actionMixInfluence",
+      "module": "coachIntelligence",
+      "defaultValue": 1,
+      "min": 0.3,
+      "max": 2,
+      "targetMetrics": [
+        "coachActionSpread",
+        "actionFamilyShares"
+      ],
+      "declaredCalibrationSource": "STRUCTURAL",
+      "support": "STRUCTURAL_VALIDATION_ONLY",
+      "reason": "Checkable only for structural sanity — invariants, monotonicity, bounds — never fitted to a value.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": false
+    },
+    {
+      "id": "coach.rosterSensitivity",
+      "module": "coachIntelligence",
+      "defaultValue": 1,
+      "min": 0.3,
+      "max": 2,
+      "targetMetrics": [
+        "rosterActionSpread"
+      ],
+      "declaredCalibrationSource": "STRUCTURAL",
+      "support": "STRUCTURAL_VALIDATION_ONLY",
+      "reason": "Checkable only for structural sanity — invariants, monotonicity, bounds — never fitted to a value.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": false
+    },
+    {
+      "id": "coach.adjustmentThreshold",
+      "module": "coachAdjustment",
+      "defaultValue": 3,
+      "min": 1,
+      "max": 10,
+      "targetMetrics": [
+        "adjustmentsPerGame"
+      ],
+      "declaredCalibrationSource": "STRUCTURAL",
+      "support": "STRUCTURAL_VALIDATION_ONLY",
+      "reason": "Checkable only for structural sanity — invariants, monotonicity, bounds — never fitted to a value.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": false
+    },
+    {
+      "id": "coach.adjustmentCooldown",
+      "module": "coachAdjustment",
+      "defaultValue": 12,
+      "min": 4,
+      "max": 40,
+      "targetMetrics": [
+        "adjustmentsPerGame"
+      ],
+      "declaredCalibrationSource": "STRUCTURAL",
+      "support": "STRUCTURAL_VALIDATION_ONLY",
+      "reason": "Checkable only for structural sanity — invariants, monotonicity, bounds — never fitted to a value.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": false
+    },
+    {
+      "id": "coach.adjustmentMagnitude",
+      "module": "coachAdjustment",
+      "defaultValue": 0.05,
+      "min": 0.01,
+      "max": 0.2,
+      "targetMetrics": [
+        "actionMixDrift"
+      ],
+      "declaredCalibrationSource": "STRUCTURAL",
+      "support": "STRUCTURAL_VALIDATION_ONLY",
+      "reason": "Checkable only for structural sanity — invariants, monotonicity, bounds — never fitted to a value.",
+      "blockedBySource": false,
+      "tunableOnDataGrounds": false
+    }
+  ],
+  "matrixHash": "0dfebd4c17501897ed35ab3f2f69841727cd274cb0f4d7ac2e895d1d47ec3e01"
+}
