@@ -1,0 +1,414 @@
+{
+  "artifact": "assisted-offense-repair-results",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run c2:accept",
+  "generatedAt": "2026-08-27T15:05:50.951Z",
+  "gitCommit": "136b6446a8a65c7b9b551eed120cf0d4aa5078fd",
+  "branch": "phase-6c4c1-candidate2-trait-repair",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "version": "1.0.0",
+    "cluster": "assistedOffense",
+    "criteria": [
+      {
+        "criterionId": "A1_leverExists",
+        "group": "assistedOffense",
+        "pass": true,
+        "detail": "Spearman(ballMovement, assistedRate) 0 -> 0.80013 (need >= 0.70)",
+        "evidence": {
+          "candidate1": 0,
+          "candidate2": 0.80013,
+          "threshold": 0.7
+        }
+      },
+      {
+        "criterionId": "A2_leverIsMaterial",
+        "group": "assistedOffense",
+        "pass": true,
+        "detail": "ladder range 0.05176 -> 0.17884 (need >= 0.04)",
+        "evidence": {
+          "candidate1": 0.05176,
+          "candidate2": 0.17884,
+          "threshold": 0.04
+        }
+      },
+      {
+        "criterionId": "A3_neutralUnmoved",
+        "group": "assistedOffense",
+        "pass": true,
+        "detail": "neutral-coach assisted rate 0.56508 -> 0.5651 (delta 0.00002, allow 0.010)",
+        "evidence": {
+          "delta": 0.00002,
+          "threshold": 0.01
+        }
+      },
+      {
+        "criterionId": "A4_v5DiagnosticImproves",
+        "group": "assistedOffense",
+        "pass": true,
+        "detail": "ball-movement coach + compatible roster 0.57635 -> 0.68905 (+0.1127, need > 0.02)",
+        "evidence": {
+          "improvement": 0.1127,
+          "threshold": 0.02
+        }
+      },
+      {
+        "criterionId": "A5_nonV5AnalogsImprove",
+        "group": "assistedOffense",
+        "pass": true,
+        "detail": "AO-1 (compatible) +0.1127 exceeds AO-2 (incompatible roster) +0.10625",
+        "evidence": {
+          "compatible": 0.1127,
+          "incompatible": 0.10625
+        }
+      },
+      {
+        "criterionId": "A6_noUniversalInflation",
+        "group": "assistedOffense",
+        "pass": true,
+        "detail": "mean assisted rate on non-ball-movement cells 0.53535 -> 0.53327 (delta -0.00208, allow 0.010)",
+        "evidence": {
+          "delta": -0.00208,
+          "threshold": 0.01,
+          "cells": [
+            "AO-3",
+            "AO-4",
+            "AO-5",
+            "AO-6"
+          ]
+        }
+      },
+      {
+        "criterionId": "A7_selfCreationSurvives",
+        "group": "assistedOffense",
+        "pass": true,
+        "detail": "iso-heavy roster 0.57416 stays below the ladder mean 0.64188",
+        "evidence": {
+          "isoCell": 0.57416,
+          "ladderMean": 0.64188
+        }
+      },
+      {
+        "criterionId": "A8_astInvariant",
+        "group": "assistedOffense",
+        "pass": true,
+        "detail": "AST <= FGM on every cell, 0 violations across all measured games",
+        "evidence": {
+          "violations": 0
+        }
+      }
+    ],
+    "allPassed": true,
+    "candidate1Ladder": {
+      "spearman": 0,
+      "range": 0.05176,
+      "creditSpearman": 0.41825,
+      "creationSpearman": 0.34551
+    },
+    "candidate2Ladder": {
+      "spearman": 0.80013,
+      "range": 0.17884,
+      "creditSpearman": 0.94561,
+      "creationSpearman": 0.34551
+    },
+    "controls": {
+      "candidate1": [
+        {
+          "cellId": "AO-1",
+          "coach": "gregg-popovich",
+          "roster": "passingHub",
+          "ballMovement": 9,
+          "assistedRate": 0.57635,
+          "ppp": 1.01716,
+          "eligibleRate": 0.93677,
+          "assistCreditRate": 0.24538,
+          "turnoverRate": 0.09427,
+          "fgaPerPossession": 0.81724,
+          "astLeFgm": true,
+          "maxActionShare": 0.2485,
+          "actionEntropy": 2.07523,
+          "possessions": 178641,
+          "games": 1600,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "AO-2",
+          "coach": "gregg-popovich",
+          "roster": "isoHeavy",
+          "ballMovement": 9,
+          "assistedRate": 0.46791,
+          "ppp": 0.90561,
+          "eligibleRate": 0.91371,
+          "assistCreditRate": 0.18296,
+          "turnoverRate": 0.09545,
+          "fgaPerPossession": 0.81779,
+          "astLeFgm": true,
+          "maxActionShare": 0.20405,
+          "actionEntropy": 2.02706,
+          "possessions": 176317,
+          "games": 1600,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "AO-3",
+          "coach": "neutral",
+          "roster": "passingHub",
+          "ballMovement": 5,
+          "assistedRate": 0.56766,
+          "ppp": 1.02228,
+          "eligibleRate": 0.91309,
+          "assistCreditRate": 0.24987,
+          "turnoverRate": 0.0947,
+          "fgaPerPossession": 0.81721,
+          "astLeFgm": true,
+          "maxActionShare": 0.2411,
+          "actionEntropy": 2.10642,
+          "possessions": 178298,
+          "games": 1600,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "AO-4",
+          "coach": "mike-dantoni",
+          "roster": "passingHub",
+          "ballMovement": 6,
+          "assistedRate": 0.52761,
+          "ppp": 0.99639,
+          "eligibleRate": 0.87153,
+          "assistCreditRate": 0.23965,
+          "turnoverRate": 0.09466,
+          "fgaPerPossession": 0.82045,
+          "astLeFgm": true,
+          "maxActionShare": 0.19382,
+          "actionEntropy": 2.11494,
+          "possessions": 183719,
+          "games": 1600,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "AO-5",
+          "coach": "neutral",
+          "roster": "secondaryHigh",
+          "ballMovement": 5,
+          "assistedRate": 0.59254,
+          "ppp": 1.00496,
+          "eligibleRate": 0.90382,
+          "assistCreditRate": 0.26003,
+          "turnoverRate": 0.09261,
+          "fgaPerPossession": 0.81903,
+          "astLeFgm": true,
+          "maxActionShare": 0.24112,
+          "actionEntropy": 2.10778,
+          "possessions": 176566,
+          "games": 1600,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "AO-6",
+          "coach": "neutral",
+          "roster": "secondaryLow",
+          "ballMovement": 5,
+          "assistedRate": 0.45359,
+          "ppp": 0.91262,
+          "eligibleRate": 0.86415,
+          "assistCreditRate": 0.19176,
+          "turnoverRate": 0.09418,
+          "fgaPerPossession": 0.82057,
+          "astLeFgm": true,
+          "maxActionShare": 0.17117,
+          "actionEntropy": 2.05641,
+          "possessions": 176268,
+          "games": 1600,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        }
+      ],
+      "candidate2": [
+        {
+          "cellId": "AO-1",
+          "coach": "gregg-popovich",
+          "roster": "passingHub",
+          "ballMovement": 9,
+          "assistedRate": 0.68905,
+          "ppp": 1.01715,
+          "eligibleRate": 0.93677,
+          "assistCreditRate": 0.29334,
+          "turnoverRate": 0.09428,
+          "fgaPerPossession": 0.81724,
+          "astLeFgm": true,
+          "maxActionShare": 0.24842,
+          "actionEntropy": 2.07528,
+          "possessions": 178626,
+          "games": 1600,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "AO-2",
+          "coach": "gregg-popovich",
+          "roster": "isoHeavy",
+          "ballMovement": 9,
+          "assistedRate": 0.57416,
+          "ppp": 0.90563,
+          "eligibleRate": 0.91361,
+          "assistCreditRate": 0.22453,
+          "turnoverRate": 0.09544,
+          "fgaPerPossession": 0.81781,
+          "astLeFgm": true,
+          "maxActionShare": 0.20382,
+          "actionEntropy": 2.02726,
+          "possessions": 176323,
+          "games": 1600,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "AO-3",
+          "coach": "neutral",
+          "roster": "passingHub",
+          "ballMovement": 5,
+          "assistedRate": 0.56787,
+          "ppp": 1.02234,
+          "eligibleRate": 0.91314,
+          "assistCreditRate": 0.24994,
+          "turnoverRate": 0.09469,
+          "fgaPerPossession": 0.81713,
+          "astLeFgm": true,
+          "maxActionShare": 0.24115,
+          "actionEntropy": 2.1064,
+          "possessions": 178294,
+          "games": 1600,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "AO-4",
+          "coach": "mike-dantoni",
+          "roster": "passingHub",
+          "ballMovement": 6,
+          "assistedRate": 0.5185,
+          "ppp": 0.997,
+          "eligibleRate": 0.87035,
+          "assistCreditRate": 0.23571,
+          "turnoverRate": 0.09461,
+          "fgaPerPossession": 0.82038,
+          "astLeFgm": true,
+          "maxActionShare": 0.19464,
+          "actionEntropy": 2.1169,
+          "possessions": 183876,
+          "games": 1600,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "AO-5",
+          "coach": "neutral",
+          "roster": "secondaryHigh",
+          "ballMovement": 5,
+          "assistedRate": 0.59304,
+          "ppp": 1.00515,
+          "eligibleRate": 0.90379,
+          "assistCreditRate": 0.26045,
+          "turnoverRate": 0.09244,
+          "fgaPerPossession": 0.81931,
+          "astLeFgm": true,
+          "maxActionShare": 0.24116,
+          "actionEntropy": 2.10774,
+          "possessions": 176670,
+          "games": 1600,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "AO-6",
+          "coach": "neutral",
+          "roster": "secondaryLow",
+          "ballMovement": 5,
+          "assistedRate": 0.45368,
+          "ppp": 0.91266,
+          "eligibleRate": 0.86408,
+          "assistCreditRate": 0.19183,
+          "turnoverRate": 0.0942,
+          "fgaPerPossession": 0.82054,
+          "astLeFgm": true,
+          "maxActionShare": 0.17107,
+          "actionEntropy": 2.05652,
+          "possessions": 176252,
+          "games": 1600,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        }
+      ]
+    }
+  },
+  "outputHash": "69adeead49c6ff5781747b98d6c0fdb6fc9cbea145514139e750f279ec579d4d"
+}

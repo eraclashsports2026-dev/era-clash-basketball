@@ -389,11 +389,17 @@ describe("domain wiring moves the intended domain", () => {
   });
 
   it("adjustment cooldown changes how often a coach adjusts", () => {
+    // A single seed can legitimately tie — both cooldowns can land on the same
+    // adjustment count in one game, and Candidate 2's outcome stream made this
+    // fixture's seed do exactly that. The claim is summed over a small seed
+    // set, which is the stronger form of the same claim and matches how the
+    // zone-scalar assertion below already works.
     const f = PARITY_FIXTURES.find((x) => x.id === "coach-mike-dantoni-vs-jerry-sloan");
     const adj = (g) => (g.offense?.gold?.adjustments?.length ?? 0) + (g.offense?.blue?.adjustments?.length ?? 0);
-    const often = play(compileRuntimeParameterSet({ overrides: { "coach.offensiveAdjustmentCooldown": 4 } }), f.seed, f);
-    const rare = play(compileRuntimeParameterSet({ overrides: { "coach.offensiveAdjustmentCooldown": 60 } }), f.seed, f);
-    expect(adj(often)).toBeGreaterThan(adj(rare));
+    const seeds = [f.seed, f.seed + 1, f.seed + 2, f.seed + 3, f.seed + 4, f.seed + 5];
+    const total = (cooldown) => seeds.reduce((a, seed) =>
+      a + adj(play(compileRuntimeParameterSet({ overrides: { "coach.offensiveAdjustmentCooldown": cooldown } }), seed, f)), 0);
+    expect(total(4)).toBeGreaterThan(total(60));
   });
 
   it("zone gap scalars change zone behaviour where a shell is live", () => {

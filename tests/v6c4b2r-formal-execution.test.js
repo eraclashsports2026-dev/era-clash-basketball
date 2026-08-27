@@ -197,7 +197,7 @@ describe("6C4B2R — Candidate 1 was not changed or unlocked", () => {
     expect(st().candidateSelectionStatus).toBe("SELECTED");
     expect(st().candidateLockStatus).toBe("LOCKED");
     expect(st().possessionCalibrationVersion).toBe("1.1.0");
-    expect(versionOf("possessionCalibrationVersion")).toBe("1.1.0");
+    expect(versionOf("possessionCalibrationVersion")).toBe("1.2.0");
   });
 
   it("did not bump the calibration version for a status transition", () => {

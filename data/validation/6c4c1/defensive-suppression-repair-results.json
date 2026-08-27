@@ -1,0 +1,512 @@
+{
+  "artifact": "defensive-suppression-repair-results",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run c2:accept",
+  "generatedAt": "2026-08-27T15:05:50.969Z",
+  "gitCommit": "136b6446a8a65c7b9b551eed120cf0d4aa5078fd",
+  "branch": "phase-6c4c1-candidate2-trait-repair",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "version": "1.0.0",
+    "cluster": "defensiveSuppression",
+    "criteria": [
+      {
+        "criterionId": "D1_leverExists",
+        "group": "defensiveSuppression",
+        "pass": true,
+        "detail": "Spearman(helpIntent, opponentPPP) -0.14712 -> -0.88273 (need <= -0.70)",
+        "evidence": {
+          "candidate1": -0.14712,
+          "candidate2": -0.88273,
+          "threshold": -0.7
+        }
+      },
+      {
+        "criterionId": "D2_leverIsMaterial",
+        "group": "defensiveSuppression",
+        "pass": true,
+        "detail": "ladder range 0.01109 -> 0.06342 (need >= 0.020)",
+        "evidence": {
+          "candidate1": 0.01109,
+          "candidate2": 0.06342,
+          "threshold": 0.02
+        }
+      },
+      {
+        "criterionId": "D3_noInversionBelowNeutral",
+        "group": "defensiveSuppression",
+        "pass": true,
+        "detail": "0 personnel-truncation inversions across the eight V5 defences (was 6 under Candidate 1); 1 era-cap tie where the illegal-defence rules bind every coach identically",
+        "evidence": {
+          "personnelInversions": [],
+          "eraCapTies": [
+            "Los Angeles Lakers"
+          ],
+          "rows": [
+            {
+              "matchupId": "v5m-1950s",
+              "eraStyleId": "1950s",
+              "teamName": "Boston Celtics",
+              "coachId": "red-auerbach",
+              "helpIntent": 8,
+              "aboveNeutralIntent": true,
+              "coachHelp": 4.5,
+              "neutralHelp": 4.2,
+              "helpDifferential": 0.3,
+              "eraCapBindsBoth": false
+            },
+            {
+              "matchupId": "v5m-1960s",
+              "eraStyleId": "1960s",
+              "teamName": "Boston Celtics",
+              "coachId": "red-auerbach",
+              "helpIntent": 8,
+              "aboveNeutralIntent": true,
+              "coachHelp": 4.5,
+              "neutralHelp": 4,
+              "helpDifferential": 0.5,
+              "eraCapBindsBoth": false
+            },
+            {
+              "matchupId": "v5m-1970s",
+              "eraStyleId": "1970s",
+              "teamName": "Los Angeles Lakers",
+              "coachId": "bill-sharman",
+              "helpIntent": 6,
+              "aboveNeutralIntent": true,
+              "coachHelp": 4.5,
+              "neutralHelp": 4.5,
+              "helpDifferential": 0,
+              "eraCapBindsBoth": true
+            },
+            {
+              "matchupId": "v5m-1980s",
+              "eraStyleId": "1980s",
+              "teamName": "Boston Celtics",
+              "coachId": "kc-jones",
+              "helpIntent": 5,
+              "aboveNeutralIntent": false,
+              "coachHelp": 3.3,
+              "neutralHelp": 3.3,
+              "helpDifferential": 0,
+              "eraCapBindsBoth": true
+            },
+            {
+              "matchupId": "v5m-1990s",
+              "eraStyleId": "1990s",
+              "teamName": "Seattle SuperSonics",
+              "coachId": "george-karl",
+              "helpIntent": 8,
+              "aboveNeutralIntent": true,
+              "coachHelp": 4.5,
+              "neutralHelp": 3.4,
+              "helpDifferential": 1.1,
+              "eraCapBindsBoth": false
+            },
+            {
+              "matchupId": "v5m-2010s",
+              "eraStyleId": "2010s",
+              "teamName": "San Antonio Spurs",
+              "coachId": "gregg-popovich",
+              "helpIntent": 5,
+              "aboveNeutralIntent": false,
+              "coachHelp": 3.3,
+              "neutralHelp": 3.3,
+              "helpDifferential": 0,
+              "eraCapBindsBoth": true
+            },
+            {
+              "matchupId": "v5m-2020s",
+              "eraStyleId": "2020s",
+              "teamName": "New York Knicks",
+              "coachId": "tom-thibodeau",
+              "helpIntent": 9,
+              "aboveNeutralIntent": true,
+              "coachHelp": 5,
+              "neutralHelp": 3,
+              "helpDifferential": 2,
+              "eraCapBindsBoth": false
+            },
+            {
+              "matchupId": "v5m-2020s",
+              "eraStyleId": "2020s",
+              "teamName": "Philadelphia 76ers",
+              "coachId": "doc-rivers",
+              "helpIntent": 8,
+              "aboveNeutralIntent": true,
+              "coachHelp": 4.8,
+              "neutralHelp": 3.3,
+              "helpDifferential": 1.5,
+              "eraCapBindsBoth": false
+            }
+          ]
+        }
+      },
+      {
+        "criterionId": "D4_v5DiagnosticImproves",
+        "group": "defensiveSuppression",
+        "pass": true,
+        "detail": "strong defence + high-help coach opponent PPP 0.88596 -> 0.84323 (suppression +0.04273, need > 0.02)",
+        "evidence": {
+          "improvement": 0.04273,
+          "threshold": 0.02
+        }
+      },
+      {
+        "criterionId": "D5_patternNarrows",
+        "group": "defensiveSuppression",
+        "pass": true,
+        "detail": "the coach lever now has the right sign and more than twice the range; the per-fixture narrowing is recorded in defensive-suppression-repair-results.json",
+        "evidence": {
+          "spearman": [
+            -0.14712,
+            -0.88273
+          ],
+          "range": [
+            0.01109,
+            0.06342
+          ]
+        }
+      },
+      {
+        "criterionId": "D6_strongBeatsWeak",
+        "group": "defensiveSuppression",
+        "pass": true,
+        "detail": "strong suppresses more than weak under the same coach: DS-1 0.84323 < DS-3 0.99861, DS-2 0.89337 < DS-4 1.01567",
+        "evidence": {
+          "strongHelp": 0.84323,
+          "weakHelp": 0.99861,
+          "strongNeutral": 0.89337,
+          "weakNeutral": 1.01567
+        }
+      },
+      {
+        "criterionId": "D7_weakNotUniversallyLifted",
+        "group": "defensiveSuppression",
+        "pass": true,
+        "detail": "weak defence + neutral coach 1.0156 -> 1.01567 (delta 0.00007, allow 0.010) — a flat bonus would move this",
+        "evidence": {
+          "delta": 0.00007,
+          "threshold": 0.01
+        }
+      },
+      {
+        "criterionId": "D8_axesDoNotSubstitute",
+        "group": "defensiveSuppression",
+        "pass": true,
+        "detail": "rim/perimeter/rebounding/pressure cells remain distinguishable, spread 0.05025 (need >= 0.010)",
+        "evidence": {
+          "spread": 0.05025,
+          "cells": [
+            0.94334,
+            0.9511,
+            0.96739,
+            0.91714
+          ]
+        }
+      },
+      {
+        "criterionId": "D9_offenceNotSuppressedUniversally",
+        "group": "defensiveSuppression",
+        "pass": true,
+        "detail": "mean combined score across all eight eras 239.29469 -> 239.28594 (delta -0.00875, allow 2.0)",
+        "evidence": {
+          "delta": -0.00875,
+          "threshold": 2
+        }
+      }
+    ],
+    "allPassed": true,
+    "candidate1Ladder": {
+      "spearman": -0.14712,
+      "range": 0.01109
+    },
+    "candidate2Ladder": {
+      "spearman": -0.88273,
+      "range": 0.06342
+    },
+    "controls": {
+      "candidate1": [
+        {
+          "cellId": "DS-1",
+          "roster": "strongDefence",
+          "coach": "tom-thibodeau",
+          "helpIntent": 9,
+          "opponentPpp": 0.88596,
+          "opponentFgPct": 0.42226,
+          "turnoverForcedRate": 0.10026,
+          "possessions": 172587,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "DS-2",
+          "roster": "strongDefence",
+          "coach": "neutral",
+          "helpIntent": 5,
+          "opponentPpp": 0.89324,
+          "opponentFgPct": 0.42612,
+          "turnoverForcedRate": 0.0992,
+          "possessions": 175895,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "DS-3",
+          "roster": "weakDefence",
+          "coach": "tom-thibodeau",
+          "helpIntent": 9,
+          "opponentPpp": 1.01902,
+          "opponentFgPct": 0.49207,
+          "turnoverForcedRate": 0.09516,
+          "possessions": 169927,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "DS-4",
+          "roster": "weakDefence",
+          "coach": "neutral",
+          "helpIntent": 5,
+          "opponentPpp": 1.0156,
+          "opponentFgPct": 0.49018,
+          "turnoverForcedRate": 0.09292,
+          "possessions": 172449,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "DS-5",
+          "roster": "rimStrong",
+          "coach": "neutral",
+          "helpIntent": 5,
+          "opponentPpp": 0.94331,
+          "opponentFgPct": 0.45107,
+          "turnoverForcedRate": 0.09622,
+          "possessions": 173500,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "DS-6",
+          "roster": "perimStrong",
+          "coach": "neutral",
+          "helpIntent": 5,
+          "opponentPpp": 0.95104,
+          "opponentFgPct": 0.45884,
+          "turnoverForcedRate": 0.09747,
+          "possessions": 174457,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "DS-7",
+          "roster": "rebStrong",
+          "coach": "neutral",
+          "helpIntent": 5,
+          "opponentPpp": 0.96739,
+          "opponentFgPct": 0.46533,
+          "turnoverForcedRate": 0.0968,
+          "possessions": 175635,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "DS-8",
+          "roster": "pressStrong",
+          "coach": "neutral",
+          "helpIntent": 5,
+          "opponentPpp": 0.91739,
+          "opponentFgPct": 0.4379,
+          "turnoverForcedRate": 0.09971,
+          "possessions": 177927,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        }
+      ],
+      "candidate2": [
+        {
+          "cellId": "DS-1",
+          "roster": "strongDefence",
+          "coach": "tom-thibodeau",
+          "helpIntent": 9,
+          "opponentPpp": 0.84323,
+          "opponentFgPct": 0.39995,
+          "turnoverForcedRate": 0.10063,
+          "possessions": 173262,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "DS-2",
+          "roster": "strongDefence",
+          "coach": "neutral",
+          "helpIntent": 5,
+          "opponentPpp": 0.89337,
+          "opponentFgPct": 0.4262,
+          "turnoverForcedRate": 0.09931,
+          "possessions": 175857,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "DS-3",
+          "roster": "weakDefence",
+          "coach": "tom-thibodeau",
+          "helpIntent": 9,
+          "opponentPpp": 0.99861,
+          "opponentFgPct": 0.48031,
+          "turnoverForcedRate": 0.09485,
+          "possessions": 170257,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "DS-4",
+          "roster": "weakDefence",
+          "coach": "neutral",
+          "helpIntent": 5,
+          "opponentPpp": 1.01567,
+          "opponentFgPct": 0.49021,
+          "turnoverForcedRate": 0.09289,
+          "possessions": 172445,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "DS-5",
+          "roster": "rimStrong",
+          "coach": "neutral",
+          "helpIntent": 5,
+          "opponentPpp": 0.94334,
+          "opponentFgPct": 0.4511,
+          "turnoverForcedRate": 0.09626,
+          "possessions": 173486,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "DS-6",
+          "roster": "perimStrong",
+          "coach": "neutral",
+          "helpIntent": 5,
+          "opponentPpp": 0.9511,
+          "opponentFgPct": 0.45887,
+          "turnoverForcedRate": 0.09746,
+          "possessions": 174461,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "DS-7",
+          "roster": "rebStrong",
+          "coach": "neutral",
+          "helpIntent": 5,
+          "opponentPpp": 0.96739,
+          "opponentFgPct": 0.46533,
+          "turnoverForcedRate": 0.0968,
+          "possessions": 175635,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "DS-8",
+          "roster": "pressStrong",
+          "coach": "neutral",
+          "helpIntent": 5,
+          "opponentPpp": 0.91714,
+          "opponentFgPct": 0.4379,
+          "turnoverForcedRate": 0.09981,
+          "possessions": 177935,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        }
+      ]
+    }
+  },
+  "outputHash": "ddb00faabdacf4708f60ef234799279f5bb03b2890dfaa66b9d774e7f45007ba"
+}

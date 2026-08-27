@@ -109,8 +109,12 @@ export const PARITY_FIXTURES = (() => {
   // again (13 -> 99, 252 -> 1920 after the full WS4-WS7 repair set), found by search exactly as before. The STORED
   // pre-wiring baseline keeps Candidate 0's cases untouched; live coverage
   // uses these.
-  add({ id: "overtime-single", era: "2020s", gold: SHOOTERS, blue: BIGS, seed: 99 });
-  add({ id: "overtime-double", era: "2020s", gold: SHOOTERS, blue: BIGS, seed: 1920 });
+  // Seeds re-searched whenever engine behaviour deliberately changes, which is
+  // what the throw below instructs. Candidate 0 used 99 and 1920; Candidate 1
+  // re-searched them; Candidate 2's repairs moved the outcome stream again, so
+  // 99 and 1920 now reach regulation and these are the re-searched values.
+  add({ id: "overtime-single", era: "2020s", gold: SHOOTERS, blue: BIGS, seed: 39 });
+  add({ id: "overtime-double", era: "2020s", gold: SHOOTERS, blue: BIGS, seed: 1236 });
   // Synthetic development fixtures, which development is permitted to inspect.
   for (const [i, s] of SYNTHETIC_DEVELOPMENT_V2.slice(0, 6).entries()) {
     add({ id: `synthdev-${s.id}`, era: s.era, gold: s.five, blue: SYNTHETIC_DEVELOPMENT_V2[(i + 1) % 6].five,

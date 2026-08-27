@@ -4,6 +4,7 @@ import { versionOf } from "../../src/versions.js";
 
 const C0_LOCK_PATH = "data/calibration/c6/baseline-candidate-lock.json";
 const C1_LOCK_PATH = "data/validation/6c4a/candidate1-lock.json";
+const C2_LOCK_PATH = "data/validation/6c4c1/candidate2-lock.json";
 
 /**
  * The invariant that replaced seven separate `possessionCalibrationVersion is
@@ -24,8 +25,14 @@ export const assertCalibrationLockInvariant = () => {
   // The ACTIVE lock is the newest candidate's. Phase 6C4A introduced candidate
   // succession: Candidate 1's lock (1.1.0) is the registry's backing manifest,
   // while Candidate 0's stays LOCKED at 1.0.0 as the parent — verified below.
+  // Phase 6C4C1 added a second succession: Candidate 2's lock (1.2.0) becomes
+  // the registry's backing manifest while Candidate 1's stays LOCKED at 1.1.0
+  // as its parent, and Candidate 0's at 1.0.0 as the grandparent. The ACTIVE
+  // lock is always the newest that exists.
+  const c2Exists = existsSync(C2_LOCK_PATH);
   const c1Exists = existsSync(C1_LOCK_PATH);
-  const LOCK_PATH = c1Exists ? C1_LOCK_PATH : C0_LOCK_PATH;
+  const isSuccession = c2Exists || c1Exists;
+  const LOCK_PATH = c2Exists ? C2_LOCK_PATH : c1Exists ? C1_LOCK_PATH : C0_LOCK_PATH;
   const lockExists = existsSync(LOCK_PATH);
   const lock = lockExists ? JSON.parse(readFileSync(LOCK_PATH, "utf8")).data : null;
 
@@ -36,11 +43,25 @@ export const assertCalibrationLockInvariant = () => {
 
   expect(lockExists, `possessionCalibrationVersion is ${v} but ${LOCK_PATH} does not exist`).toBe(true);
   expect(lock.candidateLockStatus).toBe("LOCKED");
-  if (c1Exists) {
-    // the parent lock chain must be intact
-    const parent = JSON.parse(readFileSync(C0_LOCK_PATH, "utf8")).data;
-    expect(parent.candidateLockStatus, "the parent lock is never mutated").toBe("LOCKED");
-    expect(parent.possessionCalibrationVersion).toBe("1.0.0");
+  if (isSuccession) {
+    // the whole ancestor chain must be intact, not only the immediate parent
+    const c0 = JSON.parse(readFileSync(C0_LOCK_PATH, "utf8")).data;
+    expect(c0.candidateLockStatus, "the grandparent lock is never mutated").toBe("LOCKED");
+    expect(c0.possessionCalibrationVersion).toBe("1.0.0");
+    if (c2Exists) {
+      const c1 = JSON.parse(readFileSync(C1_LOCK_PATH, "utf8")).data;
+      expect(c1.candidateLockStatus, "the parent lock is never mutated").toBe("LOCKED");
+      expect(c1.possessionCalibrationVersion).toBe("1.1.0");
+      // The parent's CURRENT core is its re-certification's when one exists:
+      // Phase 6C4B1 re-certified Candidate 1 at a new core hash for identity
+      // reasons, so the original lock's hash is the superseded one and a
+      // successor must name the re-certified value.
+      const RECERT = "data/validation/6c4b1/candidate1-lock-recertification.json";
+      const parentCore = existsSync(RECERT)
+        ? JSON.parse(readFileSync(RECERT, "utf8")).data.coreHash : c1.coreHash;
+      expect(lock.parentCoreHash, "the succession names its parent's current core").toBe(parentCore);
+      expect(lock.coreHash, "a successor's core differs from its parent's").not.toBe(parentCore);
+    }
     expect(lock.parentCoreHash, "the succession names its parent").toBeTruthy();
     expect(lock.validationAttemptStatus, "a fresh lock has run no formal validation").toBe("NOT_RUN");
   }
@@ -58,12 +79,15 @@ export const assertCalibrationLockInvariant = () => {
   }
   // access counts as RECORDED AT LOCK TIME: Candidate 0 locked before any
   // holdout opened (0/0); Candidate 1 locked after V3 and V4 were consumed
-  // (1/1) with the synthetic stress set still sealed. Either way the manifest
-  // must record what was true, and synthetic must be 0.
+  // (1/1); Candidate 2 locked after V5 was consumed too, with the synthetic
+  // stress set still sealed throughout. Either way the manifest must record
+  // what was true, and synthetic must be 0.
   expect([0, 1]).toContain(lock.formalHoldoutAccessCounts.historicalHoldoutV3);
   expect(lock.formalHoldoutAccessCounts.syntheticStressHoldoutV2).toBe(0);
   // Production is never touched by a development lock.
   expect(lock.engineVersions.productionEngineVersion).toBe("3.2.0");
 
-  return { locked: true, version: v, status: lock.calibrationStatus, parameterChanges: lock.parameterChanges };
+  return { locked: true, version: v, status: lock.calibrationStatus,
+    parameterChanges: lock.parameterChanges, lockPath: LOCK_PATH,
+    generation: c2Exists ? 2 : c1Exists ? 1 : 0 };
 };

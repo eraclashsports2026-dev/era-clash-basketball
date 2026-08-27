@@ -319,8 +319,8 @@ export const REGISTRY = {
   // DEVELOPMENT_LOCKED_BASELINE, not ACTIVE: internal gates passed, both formal
   // holdouts remain sealed and unread, no private preview has run, and nothing
   // here authorises production.
-  possessionCalibrationVersion: entry("1.1.0", DEVELOPMENT_LOCKED_SCOPED,
-    "Candidate 1: the trait-fidelity repair of Candidate 0 (parent 1.0.0, which stays LOCKED at its recorded hashes and replays from its preservation commit). Engine changes are exactly the root-caused V4 repairs: movement/isolation eligibility floors with continuous tapers, era-honest movement and offensive-quality adapter inputs, per-possession continuous zone use, position-scoped defensive-accolade floors, and the offensive-glass wire. All 53 active parameters remain at registry defaults. Locked in Phase 6C4A, scoped to Historical Holdout V5. NOT holdout validated, NOT preview validated, NOT production ready.", false),
+  possessionCalibrationVersion: entry("1.2.0", DEVELOPMENT_LOCKED_SCOPED,
+    "Candidate 2: the identity-transfer repair of Candidate 1 (parent 1.1.0, which stays LOCKED at its recorded hashes and replays from its preservation commit; grandparent 1.0.0 likewise). Candidate 1 failed Historical Holdout V5 on one frozen gate, zeroTraitHardFails, with two independent measurement failures. Both root-caused to the same class of defect Candidate 1 itself was built to fix: an identity signal that reaches part of the engine and then stops. Two engine changes, both centred so a neutral coach is an exact fixed point. First, the offence's documented ball-movement identity now scales the finishing of a pass-created look into a credited assist, restoring a lever the possession rewrite dropped from src/v3/possession.js. Second, coach scheme intent transfers partially past the personnel ceiling instead of being truncated to it, and the resulting coaching differential reaches opponent shot quality. All 53 active parameters remain at registry defaults. Locked in Phase 6C4C1, scoped to a future Historical Holdout V6. NOT holdout validated, NOT preview validated, NOT production ready.", false),
 
   zoneResolutionVersion: entry("1.0.0", DEVELOPMENT,
     "Zone shells, area responsibilities, gap vulnerabilities and zone possession resolution. Its own domain because Phase 6B1 shipped ZONE_MIXED as a scheme LABEL that resolved through man code — a real zone path is a different system, not a bigger label. DEVELOPMENT, ZONE_RESOLUTION_ENABLED defaults to false."),
@@ -328,11 +328,11 @@ export const REGISTRY = {
   coachAdjustmentVersion: entry("1.0.0", DEVELOPMENT,
     "Offensive game-plan state, adjustment triggers and bounded responses. Separate from coachIntelligenceVersion: the DATA about a coach and the in-game ADJUSTMENT ENGINE change for different reasons, and conflating them would invalidate stored games on a data edit. DEVELOPMENT, OFFENSIVE_COACH_ADJUSTMENTS_ENABLED defaults to false."),
 
-  defensiveMatchupVersion: entry("1.1.0", DEVELOPMENT,
-    "Defensive assignment planning, era-legal schemes, mismatch classification, switching state and bounded coach adjustments. Its OWN domain: a change to how defenders are assigned is not a change to the possession loop, and conflating them would invalidate stored games on an unrelated edit. DEVELOPMENT — DEFENSIVE_MATCHUP_ENGINE_ENABLED defaults to false."),
+  defensiveMatchupVersion: entry("1.2.0", DEVELOPMENT,
+    "Defensive assignment planning, era-legal schemes, mismatch classification, switching state and bounded coach adjustments. Its OWN domain: a change to how defenders are assigned is not a change to the possession loop, and conflating them would invalidate stored games on an unrelated edit. DEVELOPMENT — DEFENSIVE_MATCHUP_ENGINE_ENABLED defaults to false. 1.2.0 (Candidate 2): switching, help and pressure now transfer coach intent partially past the personnel ceiling rather than truncating to it, and the plan exposes a per-dimension coaching differential against what the same personnel would realize under a generic coach. The era cap remains absolute."),
 
-  possessionEngineVersion: entry("1.1.0", DEVELOPMENT,
-    "Possession Engine 1.0 core: the score and box score emerge from simulated possessions. Family 1.x, DEVELOPMENT — POSSESSION_ENGINE_ENABLED defaults to false and no production route selects it. It is not historically authoritative and carries no calibration claim until Phase 6C backtesting."),
+  possessionEngineVersion: entry("1.2.0", DEVELOPMENT,
+    "Possession Engine 1.0 core: the score and box score emerge from simulated possessions. Family 1.x, DEVELOPMENT — POSSESSION_ENGINE_ENABLED defaults to false and no production route selects it. It is not historically authoritative and carries no calibration claim until Phase 6C backtesting. 1.2.0 (Candidate 2): assist crediting now scales with the offence's documented ball-movement identity, and shot make probability now carries a help-defence term reading the coach's scheme differential. Both are centred so a neutral coach contributes exactly zero."),
 
   // ── intelligence layers (built, unwired) ──
   playerIntelligenceVersion: entry("1.0.0", DEVELOPMENT, "src/v3/intelligence.js — 381 profiles. No simulation module imports it."),

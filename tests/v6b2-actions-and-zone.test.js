@@ -58,8 +58,8 @@ describe("Phase 6B2 versioning and isolation", () => {
     // plus a fallback to a family set. MINOR for the engines: new capability,
     // same contract.
     expect(versionOf("actionLibraryVersion")).toBe("2.0.0");
-    expect(versionOf("possessionEngineVersion")).toBe("1.1.0");
-    expect(versionOf("defensiveMatchupVersion")).toBe("1.1.0");
+    expect(versionOf("possessionEngineVersion")).toBe("1.2.0");
+    expect(versionOf("defensiveMatchupVersion")).toBe("1.2.0");
     expect(versionOf("engineVersion"), "production is untouched").toBe("3.2.0");
   });
 

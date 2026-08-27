@@ -6,8 +6,8 @@
 | --- | --- | --- | --- |
 | Product release | `appVersion` | **2.7.2** | ACTIVE (does **not** affect results) |
 | **Live production result engine** | `engineVersion` | **3.2.0** | ACTIVE |
-| **Possession engine (development)** | `possessionEngineVersion` | **1.1.0** | DEVELOPMENT |
-| Defensive matchup engine | `defensiveMatchupVersion` | **1.1.0** | DEVELOPMENT |
+| **Possession engine (development)** | `possessionEngineVersion` | **1.2.0** | DEVELOPMENT |
+| Defensive matchup engine | `defensiveMatchupVersion` | **1.2.0** | DEVELOPMENT |
 | Zone resolution | `zoneResolutionVersion` | **1.0.0** | DEVELOPMENT |
 | Coach adjustment engine | `coachAdjustmentVersion` | **1.0.0** | DEVELOPMENT |
 | Player Intelligence | `playerIntelligenceVersion` | **1.0.0** | DEVELOPMENT |
@@ -29,7 +29,7 @@
 | Historical fixture data | `historicalFixtureDataVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Holdout set | `holdoutSetVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Benchmark seed set | `benchmarkSeedSetVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
-| Possession calibration | `possessionCalibrationVersion` | **1.1.0** | DEVELOPMENT_LOCKED_SCOPED (does **not** affect results) |
+| Possession calibration | `possessionCalibrationVersion` | **1.2.0** | DEVELOPMENT_LOCKED_SCOPED (does **not** affect results) |
 | Historical target schema | `historicalTargetSchemaVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Historical target data | `historicalTargetDataVersion` | **3.0.0** | DEVELOPMENT (does **not** affect results) |
 | Opportunity allocation | `opportunityAllocationVersion` | **1.0.0** | DEVELOPMENT |

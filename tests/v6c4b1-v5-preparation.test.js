@@ -11,7 +11,7 @@ import { versionOf } from "../src/versions.js";
 import { runPossessionGame } from "../src/v3/possession/index.js";
 import { buildPossessionInput } from "../src/v3/possession/testContext.js";
 import { assertSealDiscipline } from "./helpers/sealDiscipline.js";
-import { successorManifest } from "./helpers/candidateLineage.js";
+import { successionChain, assertCoreHashLineage, successorManifest } from "./helpers/candidateLineage.js";
 
 const DIR = "data/validation/6c4b1";
 const A4 = "data/validation/6c4a";
@@ -32,7 +32,7 @@ describe("6C4B1 WS0 — Candidate 1 integrity", () => {
     const lock = R4("candidate1-lock").data;
     expect(lock.candidateLockStatus).toBe("LOCKED");
     expect(lock.validationAttemptStatus).toBe("NOT_RUN");
-    expect(versionOf("possessionCalibrationVersion")).toBe("1.1.0");
+    expect(versionOf("possessionCalibrationVersion")).toBe("1.2.0");
   });
 
   it("keeps every parameter at the locked value", () => {
@@ -176,11 +176,18 @@ describe("6C4B1 WS2 — identity separation", () => {
   });
 
   it("states the calibration version in every development result", () => {
+    // The point of this assertion is that the fingerprint CARRIES the
+    // calibration version at all — that was the Phase 6C4B1 repair, after
+    // Candidate 0 and Candidate 1 produced byte-identical fingerprints. It read
+    // a literal 1.1.0 because that was live at the time; the durable claim is
+    // that the fingerprint agrees with the registry, whichever candidate is
+    // live, so a stored result can never outlive its calibration.
     const g = runPossessionGame(buildPossessionInput({
       goldIds: ["curry-10s", "klay-10s", "lebron-10s", "draymond-10s", "jokic-20s"],
       blueIds: ["magic-80s", "jordan-90s", "bird-80s", "kg-00s", "shaq-90s"],
       eraStyleId: "2010s", simulationSeed: 99 }), { includeLedger: false });
-    expect(g.fingerprint.possessionCalibrationVersion).toBe("1.1.0");
+    expect(g.fingerprint.possessionCalibrationVersion).toBe(versionOf("possessionCalibrationVersion"));
+    expect(g.fingerprint.possessionCalibrationVersion).toBeTruthy();
   });
 
   it("records the stale module versions rather than quietly bumping them", () => {
@@ -211,11 +218,22 @@ describe("6C4B1 WS2 — lock re-certification", () => {
     expect(existsSync(`${A4}/candidate1-lock.json`)).toBe(true);
   });
 
-  it("is what the lineage helper now honours", () => {
-    const m = successorManifest();
-    expect(m.coreHash).toBe(rec.coreHash);
-    expect(m.behaviourIdentical).toBe(true);
-    expect(m.parentCoreHash).toBe(rec.parentCoreHash);
+  it("is what the lineage helper honours, as one hop in the succession chain", () => {
+    // successorManifest() returns the NEWEST manifest, which is Candidate 2's
+    // once that exists. What this test protects is that the Candidate 1
+    // re-certification is still honoured as a behaviour-neutral hop, so the
+    // chain from Candidate 0 through it to the live core is unbroken. That is
+    // now asserted on the chain itself rather than on whichever manifest
+    // happens to be newest.
+    const hops = successionChain();
+    const recert = hops.find((h) => h.kind === "RECERTIFICATION" && h.to === rec.coreHash);
+    expect(recert, "the Candidate 1 re-certification is a recognised hop").toBeTruthy();
+    expect(recert.from).toBe(rec.supersedesCoreHash);
+    expect(recert.behaviourIdentical).toBe(true);
+    // and the chain reaches the newest candidate's core from Candidate 0
+    const newest = successorManifest();
+    expect(assertCoreHashLineage(rec.parentCoreHash, newest.coreHash))
+      .toMatch(/IDENTICAL|ATTRIBUTABLE/);
   });
 
   it("claims nothing beyond the scoped development lock", () => {

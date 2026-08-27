@@ -1,0 +1,42 @@
+{
+  "artifact": "candidate0-preservation",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run c2:preflight",
+  "generatedAt": "2026-08-27T14:16:44.899Z",
+  "gitCommit": "d88cca10747f68c859a250ecf7996249b94afba6",
+  "branch": "phase-6c4c1-candidate2-trait-repair",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "candidateId": "Candidate 0",
+    "candidateLockStatus": "LOCKED",
+    "calibrationStatus": "HOLDOUT_FAILED",
+    "formalValidationStatus": "HOLDOUT_FAILED",
+    "possessionCalibrationVersion": "1.0.0",
+    "coreHash": "58c5fb6974e694c29f87934ab107ff47ce32963a9c0695e36f941c2a70ae6683",
+    "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+    "parameterChanges": 0,
+    "formalAttempts": [
+      {
+        "holdoutId": "historical-holdout-v3",
+        "accessCount": 1,
+        "formalVerdict": "FAIL",
+        "failureClass": "NONIDENTIFIABLE_MEASUREMENT_SURFACE"
+      },
+      {
+        "holdoutId": "historical-holdout-v4",
+        "accessCount": 1,
+        "formalVerdict": "FAIL",
+        "failureClass": "OBSERVABLE_HISTORICAL_TRAIT_FIDELITY_FAILURE"
+      }
+    ],
+    "lockArtifact": "data/calibration/c6/baseline-candidate-lock.json",
+    "lockArtifactSha256": "94e695648196b9efd3e7a6bbe24a559ec8e22c884852e75029fdbd5e0011a954",
+    "alteredInThisPhase": false,
+    "role": "immutable baseline and replay reference"
+  },
+  "outputHash": "1c60520d863826bdc62c34c397588fa0e6d4d86a1e020839e08924f7d0dadee5"
+}

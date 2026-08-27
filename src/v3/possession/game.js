@@ -111,7 +111,33 @@ const baseMakePct = (category, env, params) => {
   }
 };
 
-const makeProbability = ({ category, shooter, shot, env, fatigue, defender, params }) => {
+// How strongly an offence's documented ball-movement identity scales the
+// finishing of a pass-created look into a credited assist. Centred on 5 so the
+// neutral coach is a fixed point. The ball-movement and motion coefficients are
+// the prior engine generation's own values (src/v3/possession.js); the
+// isolation term is its mirror, so an iso-first identity reads as less assisted
+// rather than merely not-more-assisted.
+const ASSIST_IDENTITY = Object.freeze({
+  ballMovement: 0.030, motion: 0.020, isolation: 0.014,
+  minMultiplier: 0.72, maxMultiplier: 1.30,
+});
+
+// How much a coach's help-defence contribution moves an opponent's chance of
+// making a shot, per point of scheme differential. The differential is the
+// realized help minus what the SAME personnel would realize under a generic
+// coach, so a neutral coach contributes exactly zero on any roster and the
+// league mean does not move — a flat defensive bonus would move every team.
+//
+// Historical V5 exposed the gap: helpCommitment is computed for every action
+// family and carried on every shot, but it is consumed only for turnoverRisk
+// and, in one family, for shot quality. Coach help intent therefore correlated
+// with opponent scoring at Spearman +0.29 — the wrong sign — and the whole
+// dimension moved opponent points per possession by 0.014 across a ladder
+// spanning help 4 to 9. Help defence degrades the quality of the look it
+// contests; that is what this term expresses, and only that.
+const HELP_SUPPRESSION = Object.freeze({ perPoint: 0.005, rimBonus: 0.002, maxShift: 0.030 });
+
+const makeProbability = ({ category, shooter, shot, env, fatigue, defender, params, helpDifferential = 0 }) => {
   const base = baseMakePct(category, env, params);
   const skill = shooter.skill[category] ?? 5;
   // Quality is centred at 5: a 5 look converts at the era baseline for that
@@ -120,7 +146,12 @@ const makeProbability = ({ category, shooter, shot, env, fatigue, defender, para
   const skillShift = (skill - 5) * 0.026;
   const contest = ((defender?.defense?.rim ?? 5) * 0.4 + (defender?.defense?.perimeter ?? 5) * 0.6 - 5)
     * (category === "RIM" ? -0.011 : -0.007);
-  const p = (base + qualityShift + skillShift + contest) * fatigueFactor(fatigue, FATIGUE_BOUNDS.shootingPenaltyMax);
+  // Help arrives at the rim before it arrives at the arc, so the interior
+  // carries a small additional coefficient.
+  const helpShift = clamp(-helpDifferential
+    * (HELP_SUPPRESSION.perPoint + (category === "RIM" || category === "PAINT_OR_POST" ? HELP_SUPPRESSION.rimBonus : 0)),
+    -HELP_SUPPRESSION.maxShift, HELP_SUPPRESSION.maxShift);
+  const p = (base + qualityShift + skillShift + contest + helpShift) * fatigueFactor(fatigue, FATIGUE_BOUNDS.shootingPenaltyMax);
   // Hard bounds: no shot is a certainty and none is hopeless. A great look at
   // the rim can still miss; a contested three can still go in.
   return clamp(p, 0.06, 0.86);
@@ -273,7 +304,9 @@ const playPossession = ({ ctx, off, def, offBox, defBox, state, rng, ledger, per
   if (category === "THREE_POINT") credit(offBox, shooter.index, "tpa");
   record.shot = category;
 
-  const p = makeProbability({ category, shooter, shot, env: ctx.environment, fatigue: shooterFatigue, defender: shot.defender, params: ctx.parameterSet });
+  const p = makeProbability({ category, shooter, shot, env: ctx.environment, fatigue: shooterFatigue,
+    defender: shot.defender, params: ctx.parameterSet,
+    helpDifferential: defPlan?.scheme?.helpDifferential ?? 0 });
   record.expectedMake = r3(p);
 
   // Evidence for a possible coach adjustment. SHOT QUALITY, not points — a
@@ -300,7 +333,34 @@ const playPossession = ({ ctx, off, def, offBox, defBox, state, rng, ledger, per
     credit(offBox, shooter.index, "pts", pts);
     // An assist requires a teammate's pass to have created the shot. It is
     // credited HERE, on the made basket, never allocated afterwards.
-    if (shot.passerCandidate && shot.passerCandidate.index !== shooter.index && rng.chance(shot.assistLikelihood)) {
+    //
+    // The offence's own ball-movement identity scales how often a pass-created
+    // look is actually FINISHED as an assisted basket. Without this the coach
+    // identity reached action selection (cutPref) and stopped: Historical V5
+    // measured Steve Kerr at ballMovement 10 producing an assisted rate 0.0002
+    // BELOW the neutral coach, and the assist-crediting stage correlated with
+    // ball movement at Spearman -0.20. The previous engine generation had the
+    // lever — src/v3/possession.js computes assistedP from
+    // (ballMovement - 5) * 0.03 + (motion - 5) * 0.02 — and the possession
+    // rewrite dropped it. The same shape is restored here, as a multiplier so
+    // it scales each family's own likelihood rather than replacing it.
+    //
+    // Centred on 5: a neutral coach is a fixed point, so this differentiates
+    // identities without shifting the league mean. A pure multiplier cannot
+    // create an assist where no pass created the look, and the AST <= FGM
+    // invariant is untouched.
+    // Read from the prepared side, which is where context.js puts the coach's
+    // documented preferences. An earlier draft read them off state.offensePlan,
+    // which only exists when coach adjustments are enabled and carries the
+    // ADJUSTED action mix rather than the identity — so the lift silently
+    // stayed at 1 and the repair measured as inert.
+    const movementLift = clamp(1
+      + ((off.ballMovementPref ?? 5) - 5) * ASSIST_IDENTITY.ballMovement
+      + ((off.motionPref ?? 5) - 5) * ASSIST_IDENTITY.motion
+      - ((off.isoPref ?? 5) - 5) * ASSIST_IDENTITY.isolation,
+      ASSIST_IDENTITY.minMultiplier, ASSIST_IDENTITY.maxMultiplier);
+    const assistP = clamp(shot.assistLikelihood * movementLift, 0, 0.97);
+    if (shot.passerCandidate && shot.passerCandidate.index !== shooter.index && rng.chance(assistP)) {
       credit(offBox, shot.passerCandidate.index, "ast");
       record.assist = shot.passerCandidate.cardId;
     }
