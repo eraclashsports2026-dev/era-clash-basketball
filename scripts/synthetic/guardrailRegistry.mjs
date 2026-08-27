@@ -86,20 +86,26 @@ const DETAIL = {
   forbidUniversalShellDominance: {
     displayName: "No zone shell universally dominates",
     stressCategory: "ZONE_SCHEME", formalClass: "DIRECTIONAL_GUARDRAIL",
-    fixtureIds: byPurpose("ZONE_EDGE_CASE"), surfaces: ["MIRROR"],
+    // Every fixture, not only the two labelled ZONE_EDGE_CASE. A purpose label
+    // says what a fixture was designed to stress; a guardrail applies wherever
+    // its claim is decidable, and "universally" cannot be judged from one
+    // fixture. Era legality narrows this to the nine zone-legal fixtures.
+    fixtureIds: ALL, surfaces: ["ZONE_ASYMMETRIC"],
     mechanicUnderTest: "zone resolution: a shell must be a trade-off, not a free win or a free loss",
     primaryMetrics: ["shellSideWinRate"], secondaryMetrics: ["realizedZoneShare", "zoneAttackShare"],
-    structuralChecks: ["a shell counted only when possession state actually selected it (realized zone, not toolkit availability)"],
-    expectedBehavior: "on a mirror where one side zones, that side's win rate stays inside the frozen band",
+    structuralChecks: ["a shell counted only when possession state actually selected it (realized zone, not toolkit availability)",
+      "on a zone-illegal era the fixture is held instead to realized zone possessions === 0"],
+    expectedBehavior: "where one side zones and the other does not, the zoning side's win rate stays inside the frozen band",
     candidateFailureMeaning: "the zone is either an automatic advantage or an automatic handicap, so scheme choice is decorative.",
     adjudication: { rule: "minSingleShellWinRate <= shellSideWinRate <= maxSingleShellWinRate", scope: "PER_FIXTURE",
       thresholdKeys: ["maxSingleShellWinRate", "minSingleShellWinRate"], catastrophic: false,
-      unavailable: "A zone fixture in a zone-illegal era realizes no zone possessions. The guardrail is then NOT_APPLICABLE for that fixture — never a pass and never a failure." },
+      unavailable: "In a zone-illegal era no zone possession can be realized, so no shell win rate exists and the guardrail is NOT_APPLICABLE for that fixture — never a pass and never a failure. Those fixtures are held to the structural expectation of zero realized zone instead.",
+      confoundHandling: "the surface substitutes a matched coach pair, so a breach is checked against the zone-ablation twin before it is called a failure; a breach the twin explains is INDETERMINATE, not FAIL." },
   },
   maxSingleShellWinRate: {
     displayName: "Shell win-rate ceiling", stressCategory: "ZONE_SCHEME", formalClass: "THRESHOLD_PARAMETER",
     parameterOf: "forbidUniversalShellDominance",
-    fixtureIds: byPurpose("ZONE_EDGE_CASE"), surfaces: ["MIRROR"],
+    fixtureIds: ALL, surfaces: ["ZONE_ASYMMETRIC"],
     mechanicUnderTest: "n/a", primaryMetrics: ["shellSideWinRate"], secondaryMetrics: [], structuralChecks: [],
     expectedBehavior: "carried forward unchanged", candidateFailureMeaning: "n/a",
     adjudication: { rule: "n/a", scope: "PARAMETER", catastrophic: false },
@@ -107,7 +113,7 @@ const DETAIL = {
   minSingleShellWinRate: {
     displayName: "Shell win-rate floor", stressCategory: "ZONE_SCHEME", formalClass: "THRESHOLD_PARAMETER",
     parameterOf: "forbidUniversalShellDominance",
-    fixtureIds: byPurpose("ZONE_EDGE_CASE"), surfaces: ["MIRROR"],
+    fixtureIds: ALL, surfaces: ["ZONE_ASYMMETRIC"],
     mechanicUnderTest: "n/a", primaryMetrics: ["shellSideWinRate"], secondaryMetrics: [], structuralChecks: [],
     expectedBehavior: "carried forward unchanged", candidateFailureMeaning: "n/a",
     adjudication: { rule: "n/a", scope: "PARAMETER", catastrophic: false },

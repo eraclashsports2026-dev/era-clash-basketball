@@ -3,8 +3,8 @@
   "schemaVersion": "1.0.0",
   "measurementGovernanceVersion": "1.0.0",
   "generationCommand": "npm run syn:guardrails",
-  "generatedAt": "2026-08-27T12:07:22.550Z",
-  "gitCommit": "3231adc58fbfe6b71e4c13fac13acf396a447b91",
+  "generatedAt": "2026-08-27T12:31:09.114Z",
+  "gitCommit": "46fd4f99b29972c0baed17cd566b11eef7db2232",
   "branch": "phase-6c4b1s-synthetic-v2-package",
   "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
   "registryVersion": "2.0.0",
@@ -56,6 +56,7 @@
           "requireZeroInvariantFailures",
           "requireZeroImpossibleResults",
           "forbidUniversalActionDominance",
+          "forbidUniversalShellDominance",
           "requireSameSeedReplay",
           "requireNewSeedVariance",
           "requireConstructionCanBeatHigherOvr"
@@ -69,6 +70,7 @@
           "requireZeroInvariantFailures",
           "requireZeroImpossibleResults",
           "forbidUniversalActionDominance",
+          "forbidUniversalShellDominance",
           "requireSameSeedReplay",
           "requireNewSeedVariance",
           "requireConstructionCanBeatHigherOvr"
@@ -82,6 +84,7 @@
           "requireZeroInvariantFailures",
           "requireZeroImpossibleResults",
           "forbidUniversalActionDominance",
+          "forbidUniversalShellDominance",
           "requireSameSeedReplay",
           "requireNewSeedVariance",
           "requireConstructionCanBeatHigherOvr"
@@ -95,6 +98,7 @@
           "requireZeroInvariantFailures",
           "requireZeroImpossibleResults",
           "forbidUniversalActionDominance",
+          "forbidUniversalShellDominance",
           "requireSameSeedReplay",
           "requireNewSeedVariance",
           "requireConstructionCanBeatHigherOvr"
@@ -108,6 +112,7 @@
           "requireZeroInvariantFailures",
           "requireZeroImpossibleResults",
           "forbidUniversalActionDominance",
+          "forbidUniversalShellDominance",
           "requireSameSeedReplay",
           "requireNewSeedVariance"
         ]
@@ -146,6 +151,7 @@
           "requireZeroInvariantFailures",
           "requireZeroImpossibleResults",
           "forbidUniversalActionDominance",
+          "forbidUniversalShellDominance",
           "requireSameSeedReplay",
           "requireNewSeedVariance"
         ]
@@ -158,6 +164,7 @@
           "requireZeroInvariantFailures",
           "requireZeroImpossibleResults",
           "forbidUniversalActionDominance",
+          "forbidUniversalShellDominance",
           "requireSameSeedReplay",
           "requireNewSeedVariance"
         ]
@@ -170,6 +177,7 @@
           "requireZeroInvariantFailures",
           "requireZeroImpossibleResults",
           "forbidUniversalActionDominance",
+          "forbidUniversalShellDominance",
           "requireSameSeedReplay",
           "requireNewSeedVariance"
         ]
@@ -182,6 +190,7 @@
           "requireZeroInvariantFailures",
           "requireZeroImpossibleResults",
           "forbidUniversalActionDominance",
+          "forbidUniversalShellDominance",
           "requireSameSeedReplay",
           "requireNewSeedVariance"
         ]
@@ -194,6 +203,7 @@
           "requireZeroInvariantFailures",
           "requireZeroImpossibleResults",
           "forbidUniversalActionDominance",
+          "forbidUniversalShellDominance",
           "requireSameSeedReplay",
           "requireNewSeedVariance"
         ]
@@ -206,6 +216,7 @@
           "requireZeroInvariantFailures",
           "requireZeroImpossibleResults",
           "forbidUniversalActionDominance",
+          "forbidUniversalShellDominance",
           "requireSameSeedReplay",
           "requireNewSeedVariance"
         ]
@@ -218,6 +229,7 @@
           "requireZeroInvariantFailures",
           "requireZeroImpossibleResults",
           "forbidUniversalActionDominance",
+          "forbidUniversalShellDominance",
           "requireSameSeedReplay",
           "requireNewSeedVariance"
         ]
@@ -230,6 +242,7 @@
           "requireZeroInvariantFailures",
           "requireZeroImpossibleResults",
           "forbidUniversalActionDominance",
+          "forbidUniversalShellDominance",
           "requireSameSeedReplay",
           "requireNewSeedVariance",
           "requireConstructionCanBeatHigherOvr"
@@ -243,6 +256,7 @@
           "requireZeroInvariantFailures",
           "requireZeroImpossibleResults",
           "forbidUniversalActionDominance",
+          "forbidUniversalShellDominance",
           "requireSameSeedReplay",
           "requireNewSeedVariance",
           "requireExtremeTalentRemainsMeaningful"
@@ -447,11 +461,25 @@
         "stressCategory": "ZONE_SCHEME",
         "formalClass": "DIRECTIONAL_GUARDRAIL",
         "fixtureIds": [
+          "ss2-all-bigs",
+          "ss2-all-guards",
+          "ss2-no-spacing-1960s",
+          "ss2-no-spacing-modern",
+          "ss2-mismatch-chain",
           "ss2-zone-edge-legal",
-          "ss2-zone-edge-illegal"
+          "ss2-zone-edge-illegal",
+          "ss2-era-edge-old-in-modern",
+          "ss2-era-edge-modern-in-old",
+          "ss2-coach-toolkit-edge",
+          "ss2-usage-concentration",
+          "ss2-statistical-tails",
+          "ss2-series-variance",
+          "ss2-win82-variance",
+          "ss2-duplicate-role",
+          "ss2-extreme-strength-gap"
         ],
         "surfaces": [
-          "MIRROR"
+          "ZONE_ASYMMETRIC"
         ],
         "mechanicUnderTest": "zone resolution: a shell must be a trade-off, not a free win or a free loss",
         "primaryMetrics": [
@@ -462,9 +490,10 @@
           "zoneAttackShare"
         ],
         "structuralChecks": [
-          "a shell counted only when possession state actually selected it (realized zone, not toolkit availability)"
+          "a shell counted only when possession state actually selected it (realized zone, not toolkit availability)",
+          "on a zone-illegal era the fixture is held instead to realized zone possessions === 0"
         ],
-        "expectedBehavior": "on a mirror where one side zones, that side's win rate stays inside the frozen band",
+        "expectedBehavior": "where one side zones and the other does not, the zoning side's win rate stays inside the frozen band",
         "candidateFailureMeaning": "the zone is either an automatic advantage or an automatic handicap, so scheme choice is decorative.",
         "adjudication": {
           "rule": "minSingleShellWinRate <= shellSideWinRate <= maxSingleShellWinRate",
@@ -474,12 +503,12 @@
             "minSingleShellWinRate"
           ],
           "catastrophic": false,
-          "unavailable": "A zone fixture in a zone-illegal era realizes no zone possessions. The guardrail is then NOT_APPLICABLE for that fixture — never a pass and never a failure."
+          "unavailable": "In a zone-illegal era no zone possession can be realized, so no shell win rate exists and the guardrail is NOT_APPLICABLE for that fixture — never a pass and never a failure. Those fixtures are held to the structural expectation of zero realized zone instead.",
+          "confoundHandling": "the surface substitutes a matched coach pair, so a breach is checked against the zone-ablation twin before it is called a failure; a breach the twin explains is INDETERMINATE, not FAIL."
         },
         "measurementSurface": [
           {
-            "surface": "MIRROR",
-            "definition": "the fixture five against ITSELF, same coach both sides, side-balanced. The construction is the only variable, so an action-mix or shell result cannot be an artifact of the opponent."
+            "surface": "ZONE_ASYMMETRIC"
           }
         ],
         "sourceArtifact": "src/v3/calibration/acceptancePolicy.js (frozen, covered by the pre-calibration artifact freeze)"
@@ -551,11 +580,25 @@
         "formalClass": "THRESHOLD_PARAMETER",
         "parameterOf": "forbidUniversalShellDominance",
         "fixtureIds": [
+          "ss2-all-bigs",
+          "ss2-all-guards",
+          "ss2-no-spacing-1960s",
+          "ss2-no-spacing-modern",
+          "ss2-mismatch-chain",
           "ss2-zone-edge-legal",
-          "ss2-zone-edge-illegal"
+          "ss2-zone-edge-illegal",
+          "ss2-era-edge-old-in-modern",
+          "ss2-era-edge-modern-in-old",
+          "ss2-coach-toolkit-edge",
+          "ss2-usage-concentration",
+          "ss2-statistical-tails",
+          "ss2-series-variance",
+          "ss2-win82-variance",
+          "ss2-duplicate-role",
+          "ss2-extreme-strength-gap"
         ],
         "surfaces": [
-          "MIRROR"
+          "ZONE_ASYMMETRIC"
         ],
         "mechanicUnderTest": "n/a",
         "primaryMetrics": [
@@ -572,8 +615,7 @@
         },
         "measurementSurface": [
           {
-            "surface": "MIRROR",
-            "definition": "the fixture five against ITSELF, same coach both sides, side-balanced. The construction is the only variable, so an action-mix or shell result cannot be an artifact of the opponent."
+            "surface": "ZONE_ASYMMETRIC"
           }
         ],
         "sourceArtifact": "src/v3/calibration/acceptancePolicy.js (frozen, covered by the pre-calibration artifact freeze)"
@@ -591,11 +633,25 @@
         "formalClass": "THRESHOLD_PARAMETER",
         "parameterOf": "forbidUniversalShellDominance",
         "fixtureIds": [
+          "ss2-all-bigs",
+          "ss2-all-guards",
+          "ss2-no-spacing-1960s",
+          "ss2-no-spacing-modern",
+          "ss2-mismatch-chain",
           "ss2-zone-edge-legal",
-          "ss2-zone-edge-illegal"
+          "ss2-zone-edge-illegal",
+          "ss2-era-edge-old-in-modern",
+          "ss2-era-edge-modern-in-old",
+          "ss2-coach-toolkit-edge",
+          "ss2-usage-concentration",
+          "ss2-statistical-tails",
+          "ss2-series-variance",
+          "ss2-win82-variance",
+          "ss2-duplicate-role",
+          "ss2-extreme-strength-gap"
         ],
         "surfaces": [
-          "MIRROR"
+          "ZONE_ASYMMETRIC"
         ],
         "mechanicUnderTest": "n/a",
         "primaryMetrics": [
@@ -612,8 +668,7 @@
         },
         "measurementSurface": [
           {
-            "surface": "MIRROR",
-            "definition": "the fixture five against ITSELF, same coach both sides, side-balanced. The construction is the only variable, so an action-mix or shell result cannot be an artifact of the opponent."
+            "surface": "ZONE_ASYMMETRIC"
           }
         ],
         "sourceArtifact": "src/v3/calibration/acceptancePolicy.js (frozen, covered by the pre-calibration artifact freeze)"
@@ -827,7 +882,7 @@
     ],
     "pass": true,
     "failedGates": [],
-    "registryHash": "102a42124494b44d8f05b32bb46f802c543fc21e88d88744bb343646f93c8f92"
+    "registryHash": "9104e967c96deb358fb6a10675946160a0a68167085e45f62bc572fad077101a"
   },
-  "outputHash": "e27d6365e52ea4301dccfade4edb875e583218adae1b997c6dbe2eee918d4ade"
+  "outputHash": "e308e6544cb6f4b49ccb31fa98536cc12e0eac431d47cda961e845b8e55a3097"
 }

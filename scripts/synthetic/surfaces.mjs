@@ -31,12 +31,11 @@ import { writeArtifact } from "../../src/v3/calibration/artifacts.js";
 import { defaultRuntimeParameterSet } from "../../src/v3/calibration/runtimeParameters.js";
 import { SYNTHETIC_STRESS_HOLDOUT_V2, SYNTHETIC_DEVELOPMENT_V2 } from "../../data/calibration/sets-v3.mjs";
 import { PLAYERS, findCard } from "../../src/players.js";
-import { buildIntelligence } from "../../src/v3/intelligence.js";
 import { personIdForCard } from "../../src/v3/data/persons.js";
 import { coachToolkit, eraLegality } from "../../src/v3/defense/scheme.js";
 import COACH_DATA from "../../src/v3/data/coaches.js";
 import ERA_DATA from "../../src/v3/data/eras.js";
-import { cardRating } from "./controls.mjs";
+import { cardSlotRating, fiveRating, summedSlotRating, fiveDisplayOvr, buildRoleMatchedUpgrade, profileOf as canonProfileOf } from "./ratings.mjs";
 import { buildRegistry } from "./guardrailRegistry.mjs";
 import { DIR } from "./preflight.mjs";
 
@@ -78,7 +77,7 @@ export const chooseShellCoachPair = () => {
 // What makes a five a basketball team rather than a pile of cards. Defined on
 // the intelligence profile, not on the card's accolades, so it is a statement
 // about function rather than about fame.
-export const profileOf = (id) => buildIntelligence(findCard(id), {});
+export const profileOf = canonProfileOf;
 export const coherenceOf = (five) => {
   const ps = five.map(profileOf);
   const creators = ps.filter((p) => (p.offense?.selfCreation ?? 0) >= 6.5).length;
@@ -114,7 +113,8 @@ export const coherenceOf = (five) => {
  * Deterministic throughout: candidate ordering, anchor ordering and tie-breaks
  * are all by explicit key then card id.
  */
-export const buildControlFive = ({ targetRating, exclude = new Set(), anchorLimit = 12, beam = 24 }) => {
+export const buildControlFive = ({ targetRating, exclude = new Set(), anchorLimit = 12, beam = 24,
+  mustBeStrictlyBelow = null, mustBeStrictlyAbove = null, ratioTolerance = 0.08 }) => {
   const eligible = SLOTS.map((slot) => PLAYERS
     .filter((c) => (c.positions ?? [c.pos]).includes(slot) && !exclude.has(person(c.id))));
   const prof = new Map();
@@ -129,7 +129,7 @@ export const buildControlFive = ({ targetRating, exclude = new Set(), anchorLimi
   // ranked by how close the card sits to an even per-slot share of the target.
   const perSlot = targetRating / 5;
   const anchorsFor = (test) => SLOTS.flatMap((_, i) => eligible[i].filter((c) => test(c.id))
-    .map((c) => ({ slot: i, id: c.id, rating: cardRating(c) })))
+    .map((c) => ({ slot: i, id: c.id, rating: cardSlotRating(c.id, SLOTS[i]) })))
     .sort((a, b) => Math.abs(a.rating - perSlot) - Math.abs(b.rating - perSlot) || a.id.localeCompare(b.id))
     .slice(0, anchorLimit);
   const postAnchors = anchorsFor(isPost);
@@ -147,11 +147,12 @@ export const buildControlFive = ({ targetRating, exclude = new Set(), anchorLimi
       for (const st of states) {
         const want = (targetRating - st.rating) / Math.max(1, remainingSlots);
         const pool = eligible[i].filter((c) => !st.used.has(person(c.id)))
-          .sort((a, b) => Math.abs(cardRating(a) - want) - Math.abs(cardRating(b) - want) || a.id.localeCompare(b.id))
+          .sort((a, b) => Math.abs(cardSlotRating(a.id, SLOTS[i]) - want) - Math.abs(cardSlotRating(b.id, SLOTS[i]) - want)
+            || a.id.localeCompare(b.id))
           .slice(0, beam);
         for (const c of pool) {
           const ids = [...st.ids]; ids[i] = c.id;
-          next.push({ ids, used: new Set([...st.used, person(c.id)]), rating: st.rating + cardRating(c) });
+          next.push({ ids, used: new Set([...st.used, person(c.id)]), rating: st.rating + cardSlotRating(c.id, SLOTS[i]) });
         }
       }
       if (!next.length) return [];
@@ -185,12 +186,34 @@ export const buildControlFive = ({ targetRating, exclude = new Set(), anchorLimi
   if (!complete.length) {
     throw new Error(`no coherent legal five reachable at target rating ${r5(targetRating)} from the non-holdout pool`);
   }
-  complete.sort((a, b) => Math.abs(a.rating - targetRating) - Math.abs(b.rating - targetRating)
+  // A control on the wrong side of the reference rating does not test the
+  // guardrail: a "lower-rated" control that is actually higher-rated wins
+  // because it is better, not because it is better built. Measured on
+  // sd2-extreme-small, whose rating of 93.3 is below what a coherent five can
+  // cost, the unconstrained search returned a control at ratio 1.143 and a
+  // 0.777 win rate that would have read as construction beating talent.
+  for (const st of complete) st.teamRating = fiveRating(st.ids);
+  const admissible = complete.filter((st) =>
+    (mustBeStrictlyBelow == null || st.teamRating < mustBeStrictlyBelow)
+    && (mustBeStrictlyAbove == null || st.teamRating > mustBeStrictlyAbove));
+  if (!admissible.length) {
+    const err = new Error(`no coherent legal five is ${mustBeStrictlyBelow != null ? `strictly below ${r5(mustBeStrictlyBelow)}` : `strictly above ${r5(mustBeStrictlyAbove)}`} at target ${r5(targetRating)}; closest coherent five sums to ${r5(complete[0].rating)}`);
+    err.code = "CONTROL_PRECONDITION_UNREACHABLE";
+    err.closestRating = r5(complete[0].teamRating);
+    throw err;
+  }
+  admissible.sort((a, b) => Math.abs(a.teamRating - targetRating) - Math.abs(b.teamRating - targetRating)
     || a.ids.join().localeCompare(b.ids.join()));
-  const best = complete[0];
-  return { five: best.ids, summedRating: r5(best.rating), targetRating: r5(targetRating),
-    ratingError: r5(best.rating - targetRating), coherence: best.coh, anchors: best.anchors,
-    coherentCandidatesFound: complete.length,
+  const complete2 = admissible;
+  const best = complete2[0];
+  return { five: best.ids, summedRating: r5(best.teamRating), teamRating: best.teamRating,
+    summedSlotRating: r5(best.rating), displayOvr: fiveDisplayOvr(best.ids),
+    targetRating: r5(targetRating),
+    ratingError: r5(best.teamRating - targetRating), coherence: best.coh, anchors: best.anchors,
+    coherentCandidatesFound: complete.length, admissibleCandidates: complete2.length,
+    achievedRatio: null,
+    ratingErrorWithinTolerance: Math.abs(best.teamRating - targetRating) <= Math.abs(targetRating) * ratioTolerance,
+    ratioTolerance,
     rule: "anchor on the scarce coherence requirements (an interior scorer and a rim protector), fill the remaining slots by rating-targeted beam search one card per person, keep only fully coherent fives, then take the one closest to the target rating; all ordering deterministic by key then card id" };
 };
 
@@ -214,48 +237,54 @@ export const SURFACE_DEFS = Object.freeze({
   VS_COHERENT_LOWER_CONTROL: { id: "VS_COHERENT_LOWER_CONTROL",
     definition: "the fixture five against a coherent five built to a summed card rating strictly BELOW the fixture's, under the neutral coach on both sides so coaching cannot explain the result. The only decidable surface for a construction-beats-talent claim, because it needs two different constructions and a known rating direction.",
     decides: ["requireConstructionCanBeatHigherOvr"], usesFixtureCoach: false, controlBuiltPerFixture: true },
-  VS_TALENT_GAP_CONTROL: { id: "VS_TALENT_GAP_CONTROL",
-    definition: "the fixture five against a coherent five separated from it by a large summed-rating gap, under the neutral coach on both sides. The gap runs in whichever direction the non-holdout pool can supply: if a five rated at or above fixture x 1.75 exists the fixture is the WEAK side and the control must clearly win; otherwise the control is built at or below fixture / 1.75 and the fixture is the STRONG side and must clearly win. The guardrail is symmetric — it asks that a large talent gap still decides games, not which side holds the talent — so either direction decides it.",
+  VS_ROLE_MATCHED_UPGRADE: { id: "VS_ROLE_MATCHED_UPGRADE",
+    definition: "the fixture five against ITSELF UPGRADED SLOT BY SLOT: same five slots, same functional role in each, a strictly better card wherever the pool offers one, under the neutral coach on both sides and side-balanced. Card quality is the only thing that moved, so a win-rate difference is a talent effect and not a construction effect.",
     decides: ["requireExtremeTalentRemainsMeaningful"], usesFixtureCoach: false, controlBuiltPerFixture: true,
-    poolConstraint: "the sealed set holds many of the strongest cards in the pool. Once every person appearing in any sealed fixture is excluded, the best available control five sums to 294.41, which is below the two highest-rated fixtures. The direction rule exists so that constraint cannot silently disable the guardrail." },
+    whyNotARatingTargetedFive: "Targeting a rating level and letting a search return any five that reaches it does not isolate talent — the search is free to return a differently constructed five, and construction is the other axis under test. Measured on the calibration ladder, a five the earlier proxy rated 1.75x higher LOST about 60% of games in all three eras, because the search had produced an offence-heavy five facing a defensively dominant one. That is the engine behaving correctly on the construction axis, which is precisely why it cannot be the talent surface.",
+    ratingBasis: "src/rating.js teamRating and slotRating — the position-weighted rating the product computes and displays, not a proxy invented for this phase" },
 });
 
 /** Per-fixture control rating targets. Frozen multipliers. */
-export const CONTROL_TARGETS = Object.freeze({ lowerControlFactor: 0.80, eliteControlFactor: 1.75 });
+export const CONTROL_TARGETS = Object.freeze({
+  lowerControlFactor: 0.80,     // the coherent control's teamRating, as a fraction of the fixture's
+  upgradeFactor: 1.75,          // the per-slot rating multiple the role-matched upgrade aims for
+  minUpgradeTeamRatingRatio: 1.25,  // below this the upgrade is too small to call a talent gap
+});
 
-export const planFor = (fixtures) => {
+/**
+ * `forceAllSurfaces` builds every control surface regardless of the registry
+ * mapping. Used only for margin evidence on the development set, where the
+ * point is to observe each surface on as many non-holdout constructions as
+ * possible; the holdout plan always uses the registry mapping.
+ */
+export const planFor = (fixtures, { forceAllSurfaces = false } = {}) => {
   const pair = chooseShellCoachPair();
   const holdoutPersons = new Set(SYNTHETIC_STRESS_HOLDOUT_V2.flatMap((f) => f.five.map(person)));
   // Applicability comes from the guardrail registry, never from a second list
   // maintained here, so the two artifacts cannot drift apart.
   const { guardrails } = buildRegistry();
-  const appliesTo = (guardrailId, fixtureId) =>
-    guardrails.find((g) => g.guardrailId === guardrailId)?.fixtureIds.includes(fixtureId) ?? false;
+  const appliesTo = (guardrailId, fixtureId) => forceAllSurfaces
+    || (guardrails.find((g) => g.guardrailId === guardrailId)?.fixtureIds.includes(fixtureId) ?? false);
   return fixtures.map((f) => {
-    const rating = r5(f.five.reduce((a, id) => a + cardRating(findCard(id)), 0));
+    const rating = fiveRating(f.five);
     const zoneLegal = zoneLegalIn(f.era);
     // Controls exclude every person appearing anywhere in the sealed set, so a
     // control five can never be a partial reconstruction of a holdout lineup.
     const needsLower = appliesTo("requireConstructionCanBeatHigherOvr", f.id);
     const needsGap = appliesTo("requireExtremeTalentRemainsMeaningful", f.id);
-    const lower = needsLower
-      ? buildControlFive({ targetRating: rating * CONTROL_TARGETS.lowerControlFactor, exclude: holdoutPersons })
-      : null;
-    // Direction rule: try the elite side first; fall back to the weak side when
-    // the non-holdout pool cannot out-rate the fixture by the frozen factor.
-    let gap = null;
-    if (needsGap) {
-      const up = buildControlFive({ targetRating: rating * CONTROL_TARGETS.eliteControlFactor, exclude: holdoutPersons });
-      if (up.summedRating >= rating * CONTROL_TARGETS.eliteControlFactor * 0.97) {
-        gap = { ...up, direction: "CONTROL_IS_STRONG_SIDE", strongSide: "CONTROL",
-          requiredRatio: CONTROL_TARGETS.eliteControlFactor, achievedRatio: r5(up.summedRating / rating) };
-      } else {
-        const down = buildControlFive({ targetRating: rating / CONTROL_TARGETS.eliteControlFactor, exclude: holdoutPersons });
-        gap = { ...down, direction: "FIXTURE_IS_STRONG_SIDE", strongSide: "FIXTURE",
-          requiredRatio: r5(1 / CONTROL_TARGETS.eliteControlFactor), achievedRatio: r5(down.summedRating / rating),
-          fellBackBecause: `no non-holdout five reaches fixture rating ${rating} x ${CONTROL_TARGETS.eliteControlFactor}; the best available sums to ${up.summedRating}` };
+    let lower = null; let lowerUnreachable = null;
+    if (needsLower) {
+      try {
+        lower = buildControlFive({ targetRating: rating * CONTROL_TARGETS.lowerControlFactor,
+          exclude: holdoutPersons, mustBeStrictlyBelow: rating });
+      } catch (e) {
+        if (e.code !== "CONTROL_PRECONDITION_UNREACHABLE") throw e;
+        lowerUnreachable = e.message;
       }
     }
+    const upgrade = needsGap
+      ? buildRoleMatchedUpgrade({ five: f.five, factor: CONTROL_TARGETS.upgradeFactor, exclude: holdoutPersons })
+      : null;
     return { fixtureId: f.id, purpose: f.purpose, era: f.era, fixtureCoach: f.coach,
       fixtureSummedRating: rating, fixtureCoherence: coherenceOf(f.five),
       zoneLegalEra: zoneLegal,
@@ -265,21 +294,23 @@ export const planFor = (fixtures) => {
           ? { applicable: true, zoneCoachId: pair.zoneCoachId, manCoachId: pair.manCoachId }
           : { applicable: false, reason: `zone is illegal in ${f.era}, so no zone possession can be realized and no shell win rate exists`,
               structuralExpectationInstead: "realized zone possessions must be exactly 0" },
-        VS_COHERENT_LOWER_CONTROL: needsLower
+        VS_COHERENT_LOWER_CONTROL: needsLower && lower
           ? { applicable: true, control: lower,
+              achievedRatio: r5(lower.summedRating / rating),
               precondition: `control summed rating ${lower.summedRating} < fixture ${rating}`,
               preconditionMet: lower.summedRating < rating,
               coherencePrecondition: "the control must satisfy every coherence check, otherwise the surface is not testing coherent-versus-warped construction",
               coherencePreconditionMet: lower.coherence.coherent }
-          : { applicable: false, reason: "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry" },
-        VS_TALENT_GAP_CONTROL: needsGap
-          ? { applicable: true, control: gap, direction: gap.direction, strongSide: gap.strongSide,
-              precondition: gap.direction === "CONTROL_IS_STRONG_SIDE"
-                ? `control ${gap.summedRating} >= fixture ${rating} x ${CONTROL_TARGETS.eliteControlFactor}`
-                : `control ${gap.summedRating} <= fixture ${rating} / ${CONTROL_TARGETS.eliteControlFactor}`,
-              preconditionMet: gap.direction === "CONTROL_IS_STRONG_SIDE"
-                ? gap.summedRating >= rating * CONTROL_TARGETS.eliteControlFactor * 0.97
-                : gap.summedRating <= rating / CONTROL_TARGETS.eliteControlFactor * 1.03 }
+          : { applicable: false,
+              reason: lowerUnreachable
+                ? `CONTROL_PRECONDITION_UNREACHABLE — ${lowerUnreachable}. The guardrail is NOT_APPLICABLE on this fixture: no pass credit and no failure contribution.`
+                : "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry" },
+        VS_ROLE_MATCHED_UPGRADE: needsGap
+          ? { applicable: true, upgrade, strongSide: "UPGRADED",
+              precondition: `the upgraded five's teamRating ${upgrade.ratingAfter} exceeds the fixture's ${upgrade.ratingBefore} by at least ${CONTROL_TARGETS.minUpgradeTeamRatingRatio}x, no slot got worse, and every slot kept its functional role`,
+              achievedRatio: upgrade.achievedRatio,
+              preconditionMet: upgrade.achievedRatio >= CONTROL_TARGETS.minUpgradeTeamRatingRatio
+                && upgrade.noSlotGotWorse && upgrade.slotsUpgraded >= 3 }
           : { applicable: false, reason: "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry" },
       } };
   });
@@ -290,16 +321,16 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const pair = chooseShellCoachPair();
   const holdoutPersons2 = new Set(SYNTHETIC_STRESS_HOLDOUT_V2.flatMap((f) => f.five.map(person)));
   const holdoutPlan = planFor(SYNTHETIC_STRESS_HOLDOUT_V2);
-  const devPlan = planFor(SYNTHETIC_DEVELOPMENT_V2);
+  const devPlan = planFor(SYNTHETIC_DEVELOPMENT_V2, { forceAllSurfaces: true });
   const fail = [];
   const gate = (n, p, d) => { if (!p) fail.push(n); console.log(`  ${p ? "PASS" : "FAIL"}  ${n}\n        ${d}`); };
 
   console.log("SYNTHETIC V2 MEASUREMENT SURFACES\n");
   console.log(`  shell coach pair: ${pair.zoneCoachId} (zone ${pair.zonePreferenceHigh}) vs ${pair.manCoachId} (zone ${pair.zonePreferenceLow}), other-dimension distance ${pair.otherDimensionDistance}, chosen from ${pair.candidatePairsConsidered} candidate pairs\n`);
   for (const p of holdoutPlan) {
-    const l = p.surfaces.VS_COHERENT_LOWER_CONTROL, e = p.surfaces.VS_TALENT_GAP_CONTROL;
-    const lTxt = l.applicable ? `lower ${String(l.control.summedRating).padStart(6)}${l.preconditionMet && l.coherencePreconditionMet ? " ok" : " XX"}` : "lower      -   ";
-    const eTxt = e.applicable ? `gap ${String(e.control.summedRating).padStart(6)} ${e.strongSide.padEnd(7)}${e.preconditionMet ? " ok" : " XX"}` : "gap      -           ";
+    const l = p.surfaces.VS_COHERENT_LOWER_CONTROL, e = p.surfaces.VS_ROLE_MATCHED_UPGRADE;
+    const lTxt = l.applicable ? `lower ${String(l.control.teamRating).padStart(6)}${l.preconditionMet && l.coherencePreconditionMet ? " ok" : " XX"}` : "lower      -   ";
+    const eTxt = e.applicable ? `upgrade ${String(e.upgrade.ratingAfter).padStart(6)} x${String(e.achievedRatio).padEnd(6)}${e.preconditionMet ? " ok" : " XX"}` : "upgrade         -       ";
     console.log(`  ${p.fixtureId.padEnd(30)} ${p.era}  rating ${String(p.fixtureSummedRating).padStart(6)}  zone ${p.zoneLegalEra ? "LEGAL " : "illegal"}  ${lTxt}  ${eTxt}  coh ${p.fixtureCoherence.satisfied}/6`);
   }
   const zoneDecidable = holdoutPlan.filter((p) => p.zoneLegalEra);
@@ -313,23 +344,27 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       .every((g) => Object.values(SURFACE_DEFS).some((s) => s.decides.includes(g))),
     "all 8 adjudicable guardrails are claimed by exactly one deciding surface");
   const lowerUsed = holdoutPlan.filter((p) => p.surfaces.VS_COHERENT_LOWER_CONTROL.applicable);
-  const gapUsed = holdoutPlan.filter((p) => p.surfaces.VS_TALENT_GAP_CONTROL.applicable);
+  const gapUsed = holdoutPlan.filter((p) => p.surfaces.VS_ROLE_MATCHED_UPGRADE.applicable);
   gate("lowerControlPreconditionMetWhereTheSurfaceApplies",
     lowerUsed.length > 0 && lowerUsed.every((p) => p.surfaces.VS_COHERENT_LOWER_CONTROL.preconditionMet),
     `${lowerUsed.filter((p) => p.surfaces.VS_COHERENT_LOWER_CONTROL.preconditionMet).length}/${lowerUsed.length} applicable fixtures have a strictly lower-rated control`);
   gate("lowerControlIsItselfCoherent",
     lowerUsed.every((p) => p.surfaces.VS_COHERENT_LOWER_CONTROL.coherencePreconditionMet),
     `${lowerUsed.filter((p) => p.surfaces.VS_COHERENT_LOWER_CONTROL.coherencePreconditionMet).length}/${lowerUsed.length} lower controls satisfy every coherence check`);
-  gate("talentGapPreconditionMetWhereTheSurfaceApplies",
-    gapUsed.length > 0 && gapUsed.every((p) => p.surfaces.VS_TALENT_GAP_CONTROL.preconditionMet),
-    `${gapUsed.filter((p) => p.surfaces.VS_TALENT_GAP_CONTROL.preconditionMet).length}/${gapUsed.length} applicable fixtures reach the frozen rating gap (directions: ${gapUsed.map((p) => p.surfaces.VS_TALENT_GAP_CONTROL.direction).join(", ")})`);
+  gate("roleMatchedUpgradePreconditionMetWhereTheSurfaceApplies",
+    gapUsed.length > 0 && gapUsed.every((p) => p.surfaces.VS_ROLE_MATCHED_UPGRADE.preconditionMet),
+    `${gapUsed.filter((p) => p.surfaces.VS_ROLE_MATCHED_UPGRADE.preconditionMet).length}/${gapUsed.length} applicable fixtures reach a role-preserving upgrade of at least ${CONTROL_TARGETS.minUpgradeTeamRatingRatio}x teamRating (achieved: ${gapUsed.map((p) => p.surfaces.VS_ROLE_MATCHED_UPGRADE.achievedRatio).join(", ")})`);
+  gate("noUpgradeSlotGotWorseAndEveryRolePreserved",
+    gapUsed.every((p) => p.surfaces.VS_ROLE_MATCHED_UPGRADE.upgrade.noSlotGotWorse
+      && p.surfaces.VS_ROLE_MATCHED_UPGRADE.upgrade.slots.every((sl) => sl.role != null)),
+    `every upgraded slot is rated at or above the card it replaced and carries that card's primary functional role`);
   const allControlIds = (plan) => plan.flatMap((p) => [p.surfaces.VS_COHERENT_LOWER_CONTROL.control?.five ?? [],
-    p.surfaces.VS_TALENT_GAP_CONTROL.control?.five ?? []]).flat();
+    p.surfaces.VS_ROLE_MATCHED_UPGRADE.upgrade?.five ?? []]).flat();
   gate("noControlBorrowsAHoldoutPerson",
     allControlIds(holdoutPlan).every((id) => !holdoutPersons2.has(person(id))),
     "no control five contains any person who appears in any sealed fixture, so a control cannot partially reconstruct a holdout lineup");
   gate("everyControlIsLegalAndPersonUnique",
-    [...holdoutPlan, ...devPlan].every((p) => [p.surfaces.VS_COHERENT_LOWER_CONTROL.control, p.surfaces.VS_TALENT_GAP_CONTROL.control]
+    [...holdoutPlan, ...devPlan].every((p) => [p.surfaces.VS_COHERENT_LOWER_CONTROL.control, p.surfaces.VS_ROLE_MATCHED_UPGRADE.upgrade]
       .filter(Boolean).every(({ five }) => five.length === 5 && new Set(five.map(person)).size === 5
         && five.every((id, i) => (findCard(id).positions ?? [findCard(id).pos]).includes(SLOTS[i])))),
     "every control five fills all five slots legally with five distinct people");
@@ -344,6 +379,8 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     surfaces: SURFACE_DEFS, controlTargets: CONTROL_TARGETS,
     shellCoachPair: pair,
     zoneLegalityByEra: Object.fromEntries(ERAS.map((e) => [e.id, zoneLegalIn(e.id)])),
+    ratingBasis: { source: "src/rating.js", functions: ["teamRating", "slotRating", "displayOVR"],
+      note: "the position-weighted rating the product computes and displays. An earlier draft used a summed-stat proxy invented for this phase; the calibration ladder showed it was not monotonic with engine strength, so it was withdrawn." },
     coherenceDefinition: {
       basis: "the intelligence profile, not card accolades",
       checks: { hasALeadCreator: "at least one player with selfCreation >= 6.5",
@@ -357,7 +394,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   };
   payload.surfacePlanHash = createHash("sha256").update(JSON.stringify(holdoutPlan.map((p) => [p.fixtureId,
     p.surfaces.VS_COHERENT_LOWER_CONTROL.control?.five ?? null,
-    p.surfaces.VS_TALENT_GAP_CONTROL.control?.five ?? null, p.zoneLegalEra]))).digest("hex");
+    p.surfaces.VS_ROLE_MATCHED_UPGRADE.upgrade?.five ?? null, p.zoneLegalEra]))).digest("hex");
   writeArtifact("synthetic-v2-surface-plan", payload, {
     generationCommand: "npm run syn:surfaces", dir: DIR, extra: { parameterSetHash: def.parameterSetHash } });
   console.log(`\nSURFACE PLAN: ${payload.pass ? "PASS" : `FAIL (${fail.join(", ")})`} · hash ${payload.surfacePlanHash.slice(0, 16)}...`);

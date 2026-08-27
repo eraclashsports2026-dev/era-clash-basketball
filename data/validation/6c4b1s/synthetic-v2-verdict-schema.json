@@ -1,0 +1,75 @@
+{
+  "artifact": "synthetic-v2-verdict-schema",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run syn:verdict-policy",
+  "generatedAt": "2026-08-27T12:31:09.250Z",
+  "gitCommit": "46fd4f99b29972c0baed17cd566b11eef7db2232",
+  "branch": "phase-6c4b1s-synthetic-v2-package",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "syntheticVerdictSchemaVersion": "1.0.0",
+    "cellOutcomes": {
+      "PASS": "measured, decided, and inside the frozen threshold by at least the practical margin",
+      "FAIL": "measured, decided, and outside the frozen threshold by at least the practical margin",
+      "INDETERMINATE": "measured but not decidable — the observation sits inside the practical margin of the threshold, or the surface result is confounded beyond attribution. Contributes no pass credit and no failure.",
+      "NOT_APPLICABLE": "the surface does not exist for this fixture, so the claim cannot be posed at all. Contributes no pass credit and no failure, and is never recorded as zero.",
+      "NOT_MEASURED": "the run did not produce the games this cell needs. An apparatus fault, not a candidate result."
+    },
+    "fixtureVerdicts": {
+      "PASS": "every adjudicable guardrail mapped to this fixture is PASS or NOT_APPLICABLE, at least one is PASS, and no cell is FAIL or NOT_MEASURED",
+      "FAIL": "at least one adjudicable guardrail mapped to this fixture is FAIL",
+      "INVALID_RUN": "the fixture's games are missing, incomplete, or inconsistent with the frozen seed addressing — the apparatus failed, so the fixture carries no candidate verdict"
+    },
+    "perFixtureRecord": {
+      "required": [
+        "fixtureId",
+        "purpose",
+        "era",
+        "coach",
+        "verdict",
+        "cells",
+        "games",
+        "seedAddresses",
+        "measuredMetrics",
+        "surfacesRun",
+        "replayMismatchCount",
+        "structural"
+      ],
+      "cellShape": {
+        "guardrailId": "string",
+        "outcome": "one of the five cell outcomes",
+        "observed": "number or null — null is never coerced to zero",
+        "standardError": "number or null",
+        "threshold": "the frozen threshold this cell was compared against, or null",
+        "practicalMargin": "number",
+        "marginSatisfied": "boolean or null",
+        "surface": "the surface the observation came from",
+        "reason": "why an INDETERMINATE, NOT_APPLICABLE or NOT_MEASURED outcome is that outcome"
+      }
+    },
+    "catastrophicRule": "if a catastrophic guardrail (requireZeroInvariantFailures, requireZeroImpossibleResults, requireSameSeedReplay) FAILs on a fixture, that fixture's verdict is FAIL and every non-structural cell on it becomes INDETERMINATE, because those observations were measured on games the engine itself contradicts. A broken game must not grant pass credit to anything measured alongside it.",
+    "nullPolicy": "an unmeasurable metric stays null and its cell is NOT_APPLICABLE or NOT_MEASURED. It never becomes zero, never contributes pass credit, and never contributes failure.",
+    "frozenDefinitions": {
+      "universalDominance": {
+        "term": "universal dominance",
+        "definition": "A single action family or a single defensive shell is dominant on a fixture when its measured share (action family: share of that side's possessions; shell: win rate of the zoning side) lies outside the frozen threshold for that fixture by at least the practical margin. Dominance is UNIVERSAL when it occurs on a fixture at all: the frozen thresholds maxSingleActionFamilyShare, maxSingleShellWinRate and minSingleShellWinRate are per-fixture ceilings and floors, so the guardrail is evaluated per fixture and no fixture is permitted to breach one.",
+        "whyNotAFailureBudget": "A failure budget — 'k of 16 fixtures may breach' — would weaken a frozen numeric threshold, which this phase may not do. The protection against a noise-driven failure is the practical margin, not a tolerance for real breaches: an observation within the margin of the threshold is INDETERMINATE, never FAIL. So the strict reading costs nothing in robustness and invents no allowance the frozen policy does not contain.",
+        "measuredOn": "action-family share on MIRROR; shell win rate on ZONE_ASYMMETRIC. A mirror cannot decide the shell claim: with the same coach on both sides both defences draw zone with equal probability, so the zoning side is whichever side happened to draw more and the win rate is pinned to 0.5 by construction."
+      },
+      "constructionBeatingHigherOvr": {
+        "term": "better construction beating higher card rating",
+        "definition": "On the VS_COHERENT_LOWER_CONTROL surface a coherent five whose summed card rating is strictly below the fixture's, under the neutral coach on both sides and side-balanced, wins at least the frozen construction floor share of decided games. Coherence is the six-check functional definition in the surface plan (a lead creator, creation not collided, spacing, rim protection, interior scoring, a passer) evaluated on the intelligence profile rather than on card accolades.",
+        "whatItDoesNotClaim": "It does not require the weaker roster to WIN the matchup. The claim is that construction is CAPABLE of overcoming a card-rating deficit — a floor on the lower-rated side's win rate — not that it usually does. A rule that required the weaker five to win outright would fail an engine in which talent correctly matters.",
+        "itsMirrorImage": "requireExtremeTalentRemainsMeaningful is the same axis measured at the other end, on VS_TALENT_GAP_CONTROL: a large rating gap must still move the win rate clearly away from a coin flip. The two guardrails bracket the axis, so an engine cannot satisfy both by flattening talent or by making talent absolute."
+      }
+    },
+    "pass": true,
+    "failedGates": [],
+    "schemaHash": "7d56cbcf0d126daaacc0bd8f72e8546e9db50ac4bbae5a6be364e7f0d0247d36"
+  },
+  "outputHash": "c702785be80b5372e51ed572a29b4c953ac9b2178dcec71f4306fa56323bac01"
+}

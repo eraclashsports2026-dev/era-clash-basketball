@@ -3,8 +3,8 @@
   "schemaVersion": "1.0.0",
   "measurementGovernanceVersion": "1.0.0",
   "generationCommand": "npm run syn:surfaces",
-  "generatedAt": "2026-08-27T12:20:30.987Z",
-  "gitCommit": "3231adc58fbfe6b71e4c13fac13acf396a447b91",
+  "generatedAt": "2026-08-27T12:40:30.745Z",
+  "gitCommit": "46fd4f99b29972c0baed17cd566b11eef7db2232",
   "branch": "phase-6c4b1s-synthetic-v2-package",
   "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
   "registryVersion": "2.0.0",
@@ -56,20 +56,22 @@
         "usesFixtureCoach": false,
         "controlBuiltPerFixture": true
       },
-      "VS_TALENT_GAP_CONTROL": {
-        "id": "VS_TALENT_GAP_CONTROL",
-        "definition": "the fixture five against a coherent five separated from it by a large summed-rating gap, under the neutral coach on both sides. The gap runs in whichever direction the non-holdout pool can supply: if a five rated at or above fixture x 1.75 exists the fixture is the WEAK side and the control must clearly win; otherwise the control is built at or below fixture / 1.75 and the fixture is the STRONG side and must clearly win. The guardrail is symmetric — it asks that a large talent gap still decides games, not which side holds the talent — so either direction decides it.",
+      "VS_ROLE_MATCHED_UPGRADE": {
+        "id": "VS_ROLE_MATCHED_UPGRADE",
+        "definition": "the fixture five against ITSELF UPGRADED SLOT BY SLOT: same five slots, same functional role in each, a strictly better card wherever the pool offers one, under the neutral coach on both sides and side-balanced. Card quality is the only thing that moved, so a win-rate difference is a talent effect and not a construction effect.",
         "decides": [
           "requireExtremeTalentRemainsMeaningful"
         ],
         "usesFixtureCoach": false,
         "controlBuiltPerFixture": true,
-        "poolConstraint": "the sealed set holds many of the strongest cards in the pool. Once every person appearing in any sealed fixture is excluded, the best available control five sums to 294.41, which is below the two highest-rated fixtures. The direction rule exists so that constraint cannot silently disable the guardrail."
+        "whyNotARatingTargetedFive": "Targeting a rating level and letting a search return any five that reaches it does not isolate talent — the search is free to return a differently constructed five, and construction is the other axis under test. Measured on the calibration ladder, a five the earlier proxy rated 1.75x higher LOST about 60% of games in all three eras, because the search had produced an offence-heavy five facing a defensively dominant one. That is the engine behaving correctly on the construction axis, which is precisely why it cannot be the talent surface.",
+        "ratingBasis": "src/rating.js teamRating and slotRating — the position-weighted rating the product computes and displays, not a proxy invented for this phase"
       }
     },
     "controlTargets": {
       "lowerControlFactor": 0.8,
-      "eliteControlFactor": 1.75
+      "upgradeFactor": 1.75,
+      "minUpgradeTeamRatingRatio": 1.25
     },
     "shellCoachPair": {
       "zoneCoachId": "erik-spoelstra",
@@ -143,6 +145,15 @@
       "2010s": true,
       "2020s": true
     },
+    "ratingBasis": {
+      "source": "src/rating.js",
+      "functions": [
+        "teamRating",
+        "slotRating",
+        "displayOVR"
+      ],
+      "note": "the position-weighted rating the product computes and displays. An earlier draft used a summed-stat proxy invented for this phase; the calibration ladder showed it was not monotonic with engine strength, so it was withdrawn."
+    },
     "coherenceDefinition": {
       "basis": "the intelligence profile, not card accolades",
       "checks": {
@@ -160,7 +171,7 @@
         "purpose": "EXPLOIT_ROLE_OVERLAP",
         "era": "2000s",
         "fixtureCoach": "gregg-popovich",
-        "fixtureSummedRating": 193.08,
+        "fixtureSummedRating": 1009,
         "fixtureCoherence": {
           "checks": {
             "hasALeadCreator": true,
@@ -196,15 +207,24 @@
             "applicable": true,
             "control": {
               "five": [
-                "beal-20s",
-                "lenny-60s",
-                "rip-00s",
-                "nance-80s",
-                "boogie-2010s"
+                "mo-80s",
+                "moncrief-80s",
+                "cooper-80s",
+                "embiid-20s",
+                "jjj-20s"
               ],
-              "summedRating": 154.46,
-              "targetRating": 154.464,
-              "ratingError": -0.004,
+              "summedRating": 808,
+              "teamRating": 808,
+              "summedSlotRating": 807.675,
+              "displayOvr": [
+                87,
+                94,
+                92,
+                93,
+                86
+              ],
+              "targetRating": 807.2,
+              "ratingError": 0.8,
               "coherence": {
                 "checks": {
                   "hasALeadCreator": true,
@@ -220,24 +240,29 @@
                 "counts": {
                   "creators": 1,
                   "spacers": 2,
-                  "rimProtectors": 1,
+                  "rimProtectors": 2,
                   "posts": 1,
-                  "passers": 1
+                  "passers": 2
                 }
               },
               "anchors": {
-                "post": "boogie-2010s",
-                "rim": "nance-80s"
+                "post": "embiid-20s",
+                "rim": "embiid-20s"
               },
-              "coherentCandidatesFound": 1420,
+              "coherentCandidatesFound": 622,
+              "admissibleCandidates": 622,
+              "achievedRatio": null,
+              "ratingErrorWithinTolerance": true,
+              "ratioTolerance": 0.08,
               "rule": "anchor on the scarce coherence requirements (an interior scorer and a rim protector), fill the remaining slots by rating-targeted beam search one card per person, keep only fully coherent fives, then take the one closest to the target rating; all ordering deterministic by key then card id"
             },
-            "precondition": "control summed rating 154.46 < fixture 193.08",
+            "achievedRatio": 0.80079,
+            "precondition": "control summed rating 808 < fixture 1009",
             "preconditionMet": true,
             "coherencePrecondition": "the control must satisfy every coherence check, otherwise the surface is not testing coherent-versus-warped construction",
             "coherencePreconditionMet": true
           },
-          "VS_TALENT_GAP_CONTROL": {
+          "VS_ROLE_MATCHED_UPGRADE": {
             "applicable": false,
             "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
           }
@@ -248,7 +273,7 @@
         "purpose": "EXPLOIT_ROLE_OVERLAP",
         "era": "2010s",
         "fixtureCoach": "mike-dantoni",
-        "fixtureSummedRating": 226.86,
+        "fixtureSummedRating": 1199,
         "fixtureCoherence": {
           "checks": {
             "hasALeadCreator": true,
@@ -284,15 +309,24 @@
             "applicable": true,
             "control": {
               "five": [
-                "arenas-00s",
-                "kawhi-20s",
-                "vince-00s",
-                "boogie-2010s",
-                "yao-00s"
+                "ai-00s",
+                "kawhi-10s",
+                "cooper-80s",
+                "mcHale-80s",
+                "eaton-80s"
               ],
-              "summedRating": 181.49,
-              "targetRating": 181.488,
-              "ratingError": 0.002,
+              "summedRating": 960,
+              "teamRating": 960,
+              "summedSlotRating": 960.355,
+              "displayOvr": [
+                94,
+                97,
+                92,
+                91,
+                90
+              ],
+              "targetRating": 959.2,
+              "ratingError": 0.8,
               "coherence": {
                 "checks": {
                   "hasALeadCreator": true,
@@ -306,26 +340,31 @@
                 "total": 6,
                 "coherent": true,
                 "counts": {
-                  "creators": 2,
+                  "creators": 3,
                   "spacers": 2,
-                  "rimProtectors": 1,
-                  "posts": 2,
+                  "rimProtectors": 2,
+                  "posts": 1,
                   "passers": 1
                 }
               },
               "anchors": {
-                "post": "boogie-2010s",
-                "rim": "yao-00s"
+                "post": "mcHale-80s",
+                "rim": "eaton-80s"
               },
-              "coherentCandidatesFound": 4509,
+              "coherentCandidatesFound": 998,
+              "admissibleCandidates": 998,
+              "achievedRatio": null,
+              "ratingErrorWithinTolerance": true,
+              "ratioTolerance": 0.08,
               "rule": "anchor on the scarce coherence requirements (an interior scorer and a rim protector), fill the remaining slots by rating-targeted beam search one card per person, keep only fully coherent fives, then take the one closest to the target rating; all ordering deterministic by key then card id"
             },
-            "precondition": "control summed rating 181.49 < fixture 226.86",
+            "achievedRatio": 0.80067,
+            "precondition": "control summed rating 960 < fixture 1199",
             "preconditionMet": true,
             "coherencePrecondition": "the control must satisfy every coherence check, otherwise the surface is not testing coherent-versus-warped construction",
             "coherencePreconditionMet": true
           },
-          "VS_TALENT_GAP_CONTROL": {
+          "VS_ROLE_MATCHED_UPGRADE": {
             "applicable": false,
             "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
           }
@@ -336,7 +375,7 @@
         "purpose": "IMPOSSIBLE_SPACING",
         "era": "1960s",
         "fixtureCoach": "red-auerbach",
-        "fixtureSummedRating": 184.38,
+        "fixtureSummedRating": 700,
         "fixtureCoherence": {
           "checks": {
             "hasALeadCreator": false,
@@ -373,14 +412,23 @@
             "control": {
               "five": [
                 "billups-00s",
-                "glen-90s",
-                "middleton-20s",
+                "booker-20s",
+                "pg-20s",
                 "boogie-2010s",
                 "chet-20s"
               ],
-              "summedRating": 147.5,
-              "targetRating": 147.504,
-              "ratingError": -0.004,
+              "summedRating": 560,
+              "teamRating": 560,
+              "summedSlotRating": 559.55,
+              "displayOvr": [
+                87,
+                85,
+                83,
+                79,
+                79
+              ],
+              "targetRating": 560,
+              "ratingError": 0,
               "coherence": {
                 "checks": {
                   "hasALeadCreator": true,
@@ -394,26 +442,31 @@
                 "total": 6,
                 "coherent": true,
                 "counts": {
-                  "creators": 1,
+                  "creators": 2,
                   "spacers": 2,
                   "rimProtectors": 1,
                   "posts": 1,
-                  "passers": 1
+                  "passers": 2
                 }
               },
               "anchors": {
                 "post": "boogie-2010s",
                 "rim": "chet-20s"
               },
-              "coherentCandidatesFound": 781,
+              "coherentCandidatesFound": 2916,
+              "admissibleCandidates": 2916,
+              "achievedRatio": null,
+              "ratingErrorWithinTolerance": true,
+              "ratioTolerance": 0.08,
               "rule": "anchor on the scarce coherence requirements (an interior scorer and a rim protector), fill the remaining slots by rating-targeted beam search one card per person, keep only fully coherent fives, then take the one closest to the target rating; all ordering deterministic by key then card id"
             },
-            "precondition": "control summed rating 147.5 < fixture 184.38",
+            "achievedRatio": 0.8,
+            "precondition": "control summed rating 560 < fixture 700",
             "preconditionMet": true,
             "coherencePrecondition": "the control must satisfy every coherence check, otherwise the surface is not testing coherent-versus-warped construction",
             "coherencePreconditionMet": true
           },
-          "VS_TALENT_GAP_CONTROL": {
+          "VS_ROLE_MATCHED_UPGRADE": {
             "applicable": false,
             "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
           }
@@ -424,7 +477,7 @@
         "purpose": "IMPOSSIBLE_SPACING",
         "era": "2020s",
         "fixtureCoach": "tom-thibodeau",
-        "fixtureSummedRating": 147.74,
+        "fixtureSummedRating": 519,
         "fixtureCoherence": {
           "checks": {
             "hasALeadCreator": true,
@@ -460,15 +513,24 @@
             "applicable": true,
             "control": {
               "five": [
-                "doc-80s",
-                "petrovic-90s",
-                "tom-s-60s",
-                "boogie-2010s",
-                "eaton-80s"
+                "baron-00s",
+                "finley-00s",
+                "hudson-70s",
+                "elton-00s",
+                "brad-80s"
               ],
-              "summedRating": 120.48,
-              "targetRating": 118.192,
-              "ratingError": 2.288,
+              "summedRating": 415,
+              "teamRating": 415,
+              "summedSlotRating": 415.205,
+              "displayOvr": [
+                74,
+                70,
+                69,
+                78,
+                69
+              ],
+              "targetRating": 415.2,
+              "ratingError": -0.2,
               "coherence": {
                 "checks": {
                   "hasALeadCreator": true,
@@ -490,18 +552,23 @@
                 }
               },
               "anchors": {
-                "post": "boogie-2010s",
-                "rim": "eaton-80s"
+                "post": "brad-80s",
+                "rim": "elton-00s"
               },
-              "coherentCandidatesFound": 13,
+              "coherentCandidatesFound": 1913,
+              "admissibleCandidates": 1913,
+              "achievedRatio": null,
+              "ratingErrorWithinTolerance": true,
+              "ratioTolerance": 0.08,
               "rule": "anchor on the scarce coherence requirements (an interior scorer and a rim protector), fill the remaining slots by rating-targeted beam search one card per person, keep only fully coherent fives, then take the one closest to the target rating; all ordering deterministic by key then card id"
             },
-            "precondition": "control summed rating 120.48 < fixture 147.74",
+            "achievedRatio": 0.79961,
+            "precondition": "control summed rating 415 < fixture 519",
             "preconditionMet": true,
             "coherencePrecondition": "the control must satisfy every coherence check, otherwise the surface is not testing coherent-versus-warped construction",
             "coherencePreconditionMet": true
           },
-          "VS_TALENT_GAP_CONTROL": {
+          "VS_ROLE_MATCHED_UPGRADE": {
             "applicable": false,
             "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
           }
@@ -512,7 +579,7 @@
         "purpose": "DEFENSIVE_MISMATCH_CHAIN",
         "era": "2010s",
         "fixtureCoach": "erik-spoelstra",
-        "fixtureSummedRating": 239.11,
+        "fixtureSummedRating": 1128,
         "fixtureCoherence": {
           "checks": {
             "hasALeadCreator": true,
@@ -548,7 +615,7 @@
             "applicable": false,
             "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
           },
-          "VS_TALENT_GAP_CONTROL": {
+          "VS_ROLE_MATCHED_UPGRADE": {
             "applicable": false,
             "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
           }
@@ -559,7 +626,7 @@
         "purpose": "ZONE_EDGE_CASE",
         "era": "2020s",
         "fixtureCoach": "erik-spoelstra",
-        "fixtureSummedRating": 247.76,
+        "fixtureSummedRating": 940,
         "fixtureCoherence": {
           "checks": {
             "hasALeadCreator": true,
@@ -595,7 +662,7 @@
             "applicable": false,
             "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
           },
-          "VS_TALENT_GAP_CONTROL": {
+          "VS_ROLE_MATCHED_UPGRADE": {
             "applicable": false,
             "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
           }
@@ -606,7 +673,7 @@
         "purpose": "ZONE_EDGE_CASE",
         "era": "1970s",
         "fixtureCoach": "tom-heinsohn",
-        "fixtureSummedRating": 220.13,
+        "fixtureSummedRating": 869,
         "fixtureCoherence": {
           "checks": {
             "hasALeadCreator": true,
@@ -642,7 +709,7 @@
             "applicable": false,
             "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
           },
-          "VS_TALENT_GAP_CONTROL": {
+          "VS_ROLE_MATCHED_UPGRADE": {
             "applicable": false,
             "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
           }
@@ -653,7 +720,7 @@
         "purpose": "ERA_EDGE_CASE",
         "era": "2020s",
         "fixtureCoach": "red-auerbach",
-        "fixtureSummedRating": 221.98,
+        "fixtureSummedRating": 903,
         "fixtureCoherence": {
           "checks": {
             "hasALeadCreator": true,
@@ -689,7 +756,7 @@
             "applicable": false,
             "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
           },
-          "VS_TALENT_GAP_CONTROL": {
+          "VS_ROLE_MATCHED_UPGRADE": {
             "applicable": false,
             "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
           }
@@ -700,7 +767,7 @@
         "purpose": "ERA_EDGE_CASE",
         "era": "1950s",
         "fixtureCoach": "john-kundla",
-        "fixtureSummedRating": 273.08,
+        "fixtureSummedRating": 1381,
         "fixtureCoherence": {
           "checks": {
             "hasALeadCreator": true,
@@ -736,7 +803,7 @@
             "applicable": false,
             "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
           },
-          "VS_TALENT_GAP_CONTROL": {
+          "VS_ROLE_MATCHED_UPGRADE": {
             "applicable": false,
             "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
           }
@@ -747,7 +814,7 @@
         "purpose": "COACH_TOOLKIT_EDGE",
         "era": "1960s",
         "fixtureCoach": "mike-dantoni",
-        "fixtureSummedRating": 322.91,
+        "fixtureSummedRating": 1094,
         "fixtureCoherence": {
           "checks": {
             "hasALeadCreator": true,
@@ -783,7 +850,7 @@
             "applicable": false,
             "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
           },
-          "VS_TALENT_GAP_CONTROL": {
+          "VS_ROLE_MATCHED_UPGRADE": {
             "applicable": false,
             "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
           }
@@ -794,7 +861,7 @@
         "purpose": "USAGE_CONCENTRATION",
         "era": "1960s",
         "fixtureCoach": "red-auerbach",
-        "fixtureSummedRating": 298.2,
+        "fixtureSummedRating": 1030,
         "fixtureCoherence": {
           "checks": {
             "hasALeadCreator": true,
@@ -830,7 +897,7 @@
             "applicable": false,
             "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
           },
-          "VS_TALENT_GAP_CONTROL": {
+          "VS_ROLE_MATCHED_UPGRADE": {
             "applicable": false,
             "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
           }
@@ -841,7 +908,7 @@
         "purpose": "STATISTICAL_TAILS",
         "era": "1970s",
         "fixtureCoach": "lenny-wilkens",
-        "fixtureSummedRating": 279.76,
+        "fixtureSummedRating": 1143,
         "fixtureCoherence": {
           "checks": {
             "hasALeadCreator": true,
@@ -877,7 +944,7 @@
             "applicable": false,
             "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
           },
-          "VS_TALENT_GAP_CONTROL": {
+          "VS_ROLE_MATCHED_UPGRADE": {
             "applicable": false,
             "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
           }
@@ -888,7 +955,7 @@
         "purpose": "SERIES_VARIANCE",
         "era": "1990s",
         "fixtureCoach": "phil-jackson",
-        "fixtureSummedRating": 270.35,
+        "fixtureSummedRating": 1727,
         "fixtureCoherence": {
           "checks": {
             "hasALeadCreator": true,
@@ -924,7 +991,7 @@
             "applicable": false,
             "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
           },
-          "VS_TALENT_GAP_CONTROL": {
+          "VS_ROLE_MATCHED_UPGRADE": {
             "applicable": false,
             "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
           }
@@ -935,7 +1002,7 @@
         "purpose": "WIN82_VARIANCE",
         "era": "2000s",
         "fixtureCoach": "larry-brown",
-        "fixtureSummedRating": 210.38,
+        "fixtureSummedRating": 1347,
         "fixtureCoherence": {
           "checks": {
             "hasALeadCreator": true,
@@ -971,7 +1038,7 @@
             "applicable": false,
             "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
           },
-          "VS_TALENT_GAP_CONTROL": {
+          "VS_ROLE_MATCHED_UPGRADE": {
             "applicable": false,
             "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
           }
@@ -982,7 +1049,7 @@
         "purpose": "DUPLICATE_ROLE_OVERLOAD",
         "era": "2010s",
         "fixtureCoach": "steve-kerr",
-        "fixtureSummedRating": 208.86,
+        "fixtureSummedRating": 878,
         "fixtureCoherence": {
           "checks": {
             "hasALeadCreator": true,
@@ -1018,15 +1085,24 @@
             "applicable": true,
             "control": {
               "five": [
-                "dame-10s",
-                "wade-10s",
-                "jbrown-20s",
-                "franz-20s",
-                "yao-00s"
+                "jrue-20s",
+                "kyrie-10s",
+                "george-70s",
+                "mcHale-80s",
+                "nate-60s"
               ],
-              "summedRating": 167.09,
-              "targetRating": 167.088,
-              "ratingError": 0.002,
+              "summedRating": 702,
+              "teamRating": 702,
+              "summedSlotRating": 702.205,
+              "displayOvr": [
+                86,
+                91,
+                90,
+                91,
+                82
+              ],
+              "targetRating": 702.4,
+              "ratingError": -0.4,
               "coherence": {
                 "checks": {
                   "hasALeadCreator": true,
@@ -1041,25 +1117,30 @@
                 "coherent": true,
                 "counts": {
                   "creators": 3,
-                  "spacers": 3,
+                  "spacers": 2,
                   "rimProtectors": 1,
                   "posts": 1,
                   "passers": 2
                 }
               },
               "anchors": {
-                "post": "yao-00s",
-                "rim": "yao-00s"
+                "post": "mcHale-80s",
+                "rim": "mcHale-80s"
               },
-              "coherentCandidatesFound": 4273,
+              "coherentCandidatesFound": 1265,
+              "admissibleCandidates": 1265,
+              "achievedRatio": null,
+              "ratingErrorWithinTolerance": true,
+              "ratioTolerance": 0.08,
               "rule": "anchor on the scarce coherence requirements (an interior scorer and a rim protector), fill the remaining slots by rating-targeted beam search one card per person, keep only fully coherent fives, then take the one closest to the target rating; all ordering deterministic by key then card id"
             },
-            "precondition": "control summed rating 167.09 < fixture 208.86",
+            "achievedRatio": 0.79954,
+            "precondition": "control summed rating 702 < fixture 878",
             "preconditionMet": true,
             "coherencePrecondition": "the control must satisfy every coherence check, otherwise the surface is not testing coherent-versus-warped construction",
             "coherencePreconditionMet": true
           },
-          "VS_TALENT_GAP_CONTROL": {
+          "VS_ROLE_MATCHED_UPGRADE": {
             "applicable": false,
             "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
           }
@@ -1070,7 +1151,7 @@
         "purpose": "EXTREME_STRENGTH_GAP",
         "era": "2010s",
         "fixtureCoach": "tom-thibodeau",
-        "fixtureSummedRating": 132.17,
+        "fixtureSummedRating": 583,
         "fixtureCoherence": {
           "checks": {
             "hasALeadCreator": false,
@@ -1106,53 +1187,80 @@
             "applicable": false,
             "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
           },
-          "VS_TALENT_GAP_CONTROL": {
+          "VS_ROLE_MATCHED_UPGRADE": {
             "applicable": true,
-            "control": {
+            "upgrade": {
               "five": [
-                "russ-10s",
-                "tyrese-20s",
-                "bird-80s",
-                "bob-l-70s",
-                "nate-60s"
+                "kyrie-10s",
+                "kawhi-10s",
+                "wade-00s",
+                "embiid-20s",
+                "elvin-70s"
               ],
-              "summedRating": 231.29,
-              "targetRating": 231.2975,
-              "ratingError": -0.0075,
-              "coherence": {
-                "checks": {
-                  "hasALeadCreator": true,
-                  "creationNotCollided": true,
-                  "hasSpacing": true,
-                  "hasRimProtection": true,
-                  "hasInteriorScoring": true,
-                  "hasAPasser": true
+              "slots": [
+                {
+                  "slot": "PG",
+                  "from": "conley-10s",
+                  "to": "kyrie-10s",
+                  "fromRating": 75.82,
+                  "toRating": 157.74,
+                  "role": "Movement Shooter",
+                  "roleMatch": "SECONDARY",
+                  "reachedTarget": true
                 },
-                "satisfied": 6,
-                "total": 6,
-                "coherent": true,
-                "counts": {
-                  "creators": 3,
-                  "spacers": 2,
-                  "rimProtectors": 1,
-                  "posts": 1,
-                  "passers": 3
+                {
+                  "slot": "SG",
+                  "from": "klay-10s",
+                  "to": "kawhi-10s",
+                  "fromRating": 123.91,
+                  "toRating": 284.54,
+                  "role": "Movement Shooter",
+                  "roleMatch": "SECONDARY",
+                  "reachedTarget": true
+                },
+                {
+                  "slot": "SF",
+                  "from": "draymond-10s",
+                  "to": "wade-00s",
+                  "fromRating": 172.27,
+                  "toRating": 193.5,
+                  "role": "Help Defender",
+                  "roleMatch": "SECONDARY",
+                  "reachedTarget": false
+                },
+                {
+                  "slot": "PF",
+                  "from": "ibaka-2010s",
+                  "to": "embiid-20s",
+                  "fromRating": 102.61,
+                  "toRating": 185.925,
+                  "role": "Stretch Big",
+                  "roleMatch": "SECONDARY",
+                  "reachedTarget": true
+                },
+                {
+                  "slot": "C",
+                  "from": "dj-10s",
+                  "to": "elvin-70s",
+                  "fromRating": 86.42,
+                  "toRating": 153.96,
+                  "role": "Glass Cleaner",
+                  "roleMatch": "PRIMARY",
+                  "reachedTarget": true
                 }
-              },
-              "anchors": {
-                "post": "bob-l-70s",
-                "rim": "bob-l-70s"
-              },
-              "coherentCandidatesFound": 149,
-              "rule": "anchor on the scarce coherence requirements (an interior scorer and a rim protector), fill the remaining slots by rating-targeted beam search one card per person, keep only fully coherent fives, then take the one closest to the target rating; all ordering deterministic by key then card id",
-              "direction": "CONTROL_IS_STRONG_SIDE",
-              "strongSide": "CONTROL",
-              "requiredRatio": 1.75,
-              "achievedRatio": 1.74994
+              ],
+              "factor": 1.75,
+              "ratingBefore": 583,
+              "ratingAfter": 1054,
+              "achievedRatio": 1.80789,
+              "slotsUpgraded": 5,
+              "noSlotGotWorse": true,
+              "primaryRoleMatches": 1,
+              "rule": "per slot, the lowest-rated card that is legal in the slot, carries the original's primary functional role, is rated above the original, and reaches the target factor if any candidate does; primary-role matches preferred over secondary; ties by card id. A slot with no such card is left unchanged."
             },
-            "direction": "CONTROL_IS_STRONG_SIDE",
-            "strongSide": "CONTROL",
-            "precondition": "control 231.29 >= fixture 132.17 x 1.75",
+            "strongSide": "UPGRADED",
+            "precondition": "the upgraded five's teamRating 1054 exceeds the fixture's 583 by at least 1.25x, no slot got worse, and every slot kept its functional role",
+            "achievedRatio": 1.80789,
             "preconditionMet": true
           }
         }
@@ -1164,7 +1272,7 @@
         "purpose": "BALANCED_CONSTRUCTION",
         "era": "2010s",
         "fixtureCoach": "gregg-popovich",
-        "fixtureSummedRating": 183.64,
+        "fixtureSummedRating": 1054,
         "fixtureCoherence": {
           "checks": {
             "hasALeadCreator": true,
@@ -1197,12 +1305,140 @@
             "manCoachId": "steve-kerr"
           },
           "VS_COHERENT_LOWER_CONTROL": {
-            "applicable": false,
-            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+            "applicable": true,
+            "control": {
+              "five": [
+                "stock-90s",
+                "dj-80s",
+                "cooper-80s",
+                "kg-10s",
+                "embiid-20s"
+              ],
+              "summedRating": 843,
+              "teamRating": 843,
+              "summedSlotRating": 843.4,
+              "displayOvr": [
+                95,
+                91,
+                92,
+                87,
+                93
+              ],
+              "targetRating": 843.2,
+              "ratingError": -0.2,
+              "coherence": {
+                "checks": {
+                  "hasALeadCreator": true,
+                  "creationNotCollided": true,
+                  "hasSpacing": true,
+                  "hasRimProtection": true,
+                  "hasInteriorScoring": true,
+                  "hasAPasser": true
+                },
+                "satisfied": 6,
+                "total": 6,
+                "coherent": true,
+                "counts": {
+                  "creators": 1,
+                  "spacers": 2,
+                  "rimProtectors": 1,
+                  "posts": 1,
+                  "passers": 2
+                }
+              },
+              "anchors": {
+                "post": "embiid-20s",
+                "rim": "embiid-20s"
+              },
+              "coherentCandidatesFound": 768,
+              "admissibleCandidates": 768,
+              "achievedRatio": null,
+              "ratingErrorWithinTolerance": true,
+              "ratioTolerance": 0.08,
+              "rule": "anchor on the scarce coherence requirements (an interior scorer and a rim protector), fill the remaining slots by rating-targeted beam search one card per person, keep only fully coherent fives, then take the one closest to the target rating; all ordering deterministic by key then card id"
+            },
+            "achievedRatio": 0.79981,
+            "precondition": "control summed rating 843 < fixture 1054",
+            "preconditionMet": true,
+            "coherencePrecondition": "the control must satisfy every coherence check, otherwise the surface is not testing coherent-versus-warped construction",
+            "coherencePreconditionMet": true
           },
-          "VS_TALENT_GAP_CONTROL": {
-            "applicable": false,
-            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          "VS_ROLE_MATCHED_UPGRADE": {
+            "applicable": true,
+            "upgrade": {
+              "five": [
+                "magic-80s",
+                "kawhi-10s",
+                "rodman-90s",
+                "schayes-50s",
+                "kg-00s"
+              ],
+              "slots": [
+                {
+                  "slot": "PG",
+                  "from": "cp3-10s",
+                  "to": "magic-80s",
+                  "fromRating": 227.89,
+                  "toRating": 379.92,
+                  "role": "Primary Creator",
+                  "roleMatch": "SECONDARY",
+                  "reachedTarget": false
+                },
+                {
+                  "slot": "SG",
+                  "from": "kawhi-10s",
+                  "to": "kawhi-10s",
+                  "fromRating": 284.54,
+                  "toRating": 284.54,
+                  "role": "Wing Stopper",
+                  "roleMatch": "UNCHANGED",
+                  "reachedTarget": false,
+                  "reason": "the pool has no card legal at SG carrying the role \"Wing Stopper\" with a higher slot rating"
+                },
+                {
+                  "slot": "SF",
+                  "from": "butler-10s",
+                  "to": "rodman-90s",
+                  "fromRating": 123.15,
+                  "toRating": 218.16,
+                  "role": "Point-of-Attack Stopper",
+                  "roleMatch": "SECONDARY",
+                  "reachedTarget": true
+                },
+                {
+                  "slot": "PF",
+                  "from": "jokic-10s",
+                  "to": "schayes-50s",
+                  "fromRating": 105.74,
+                  "toRating": 187.355,
+                  "role": "Primary Creator",
+                  "roleMatch": "PRIMARY",
+                  "reachedTarget": true
+                },
+                {
+                  "slot": "C",
+                  "from": "dwight-10s",
+                  "to": "kg-00s",
+                  "fromRating": 252.97,
+                  "toRating": 285.25,
+                  "role": "Glass Cleaner",
+                  "roleMatch": "SECONDARY",
+                  "reachedTarget": false
+                }
+              ],
+              "factor": 1.75,
+              "ratingBefore": 1054,
+              "ratingAfter": 1437,
+              "achievedRatio": 1.36338,
+              "slotsUpgraded": 4,
+              "noSlotGotWorse": true,
+              "primaryRoleMatches": 1,
+              "rule": "per slot, the lowest-rated card that is legal in the slot, carries the original's primary functional role, is rated above the original, and reaches the target factor if any candidate does; primary-role matches preferred over secondary; ties by card id. A slot with no such card is left unchanged."
+            },
+            "strongSide": "UPGRADED",
+            "precondition": "the upgraded five's teamRating 1437 exceeds the fixture's 1054 by at least 1.25x, no slot got worse, and every slot kept its functional role",
+            "achievedRatio": 1.36338,
+            "preconditionMet": true
           }
         }
       },
@@ -1211,7 +1447,7 @@
         "purpose": "SUPERSTAR_STACK",
         "era": "2010s",
         "fixtureCoach": "mike-dantoni",
-        "fixtureSummedRating": 272.17,
+        "fixtureSummedRating": 1396,
         "fixtureCoherence": {
           "checks": {
             "hasALeadCreator": true,
@@ -1244,12 +1480,140 @@
             "manCoachId": "steve-kerr"
           },
           "VS_COHERENT_LOWER_CONTROL": {
-            "applicable": false,
-            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+            "applicable": true,
+            "control": {
+              "five": [
+                "moncrief-80s",
+                "kawhi-10s",
+                "jbrown-20s",
+                "rob-90s",
+                "dik-90s"
+              ],
+              "summedRating": 1117,
+              "teamRating": 1117,
+              "summedSlotRating": 1105.93,
+              "displayOvr": [
+                94,
+                97,
+                90,
+                97,
+                94
+              ],
+              "targetRating": 1116.8,
+              "ratingError": 0.2,
+              "coherence": {
+                "checks": {
+                  "hasALeadCreator": true,
+                  "creationNotCollided": true,
+                  "hasSpacing": true,
+                  "hasRimProtection": true,
+                  "hasInteriorScoring": true,
+                  "hasAPasser": true
+                },
+                "satisfied": 6,
+                "total": 6,
+                "coherent": true,
+                "counts": {
+                  "creators": 2,
+                  "spacers": 2,
+                  "rimProtectors": 2,
+                  "posts": 1,
+                  "passers": 1
+                }
+              },
+              "anchors": {
+                "post": "rob-90s",
+                "rim": "dik-90s"
+              },
+              "coherentCandidatesFound": 1122,
+              "admissibleCandidates": 1122,
+              "achievedRatio": null,
+              "ratingErrorWithinTolerance": true,
+              "ratioTolerance": 0.08,
+              "rule": "anchor on the scarce coherence requirements (an interior scorer and a rim protector), fill the remaining slots by rating-targeted beam search one card per person, keep only fully coherent fives, then take the one closest to the target rating; all ordering deterministic by key then card id"
+            },
+            "achievedRatio": 0.80014,
+            "precondition": "control summed rating 1117 < fixture 1396",
+            "preconditionMet": true,
+            "coherencePrecondition": "the control must satisfy every coherence check, otherwise the surface is not testing coherent-versus-warped construction",
+            "coherencePreconditionMet": true
           },
-          "VS_TALENT_GAP_CONTROL": {
-            "applicable": false,
-            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          "VS_ROLE_MATCHED_UPGRADE": {
+            "applicable": true,
+            "upgrade": {
+              "five": [
+                "magic-80s",
+                "kawhi-10s",
+                "lebron-10s",
+                "bird-80s",
+                "kg-00s"
+              ],
+              "slots": [
+                {
+                  "slot": "PG",
+                  "from": "harden-10s",
+                  "to": "magic-80s",
+                  "fromRating": 200.19,
+                  "toRating": 379.92,
+                  "role": "Primary Creator",
+                  "roleMatch": "SECONDARY",
+                  "reachedTarget": true
+                },
+                {
+                  "slot": "SG",
+                  "from": "russ-10s",
+                  "to": "kawhi-10s",
+                  "fromRating": 188.69,
+                  "toRating": 284.54,
+                  "role": "Primary Creator",
+                  "roleMatch": "SECONDARY",
+                  "reachedTarget": false
+                },
+                {
+                  "slot": "SF",
+                  "from": "lebron-10s",
+                  "to": "lebron-10s",
+                  "fromRating": 422.82,
+                  "toRating": 422.82,
+                  "role": "Primary Creator",
+                  "roleMatch": "UNCHANGED",
+                  "reachedTarget": false,
+                  "reason": "the pool has no card legal at SF carrying the role \"Primary Creator\" with a higher slot rating"
+                },
+                {
+                  "slot": "PF",
+                  "from": "durant-10s",
+                  "to": "bird-80s",
+                  "fromRating": 247.405,
+                  "toRating": 363.21,
+                  "role": "Primary Creator",
+                  "roleMatch": "SECONDARY",
+                  "reachedTarget": false
+                },
+                {
+                  "slot": "C",
+                  "from": "giannis-10s",
+                  "to": "kg-00s",
+                  "fromRating": 233.1,
+                  "toRating": 285.25,
+                  "role": "Glass Cleaner",
+                  "roleMatch": "SECONDARY",
+                  "reachedTarget": false
+                }
+              ],
+              "factor": 1.75,
+              "ratingBefore": 1396,
+              "ratingAfter": 1875,
+              "achievedRatio": 1.34312,
+              "slotsUpgraded": 4,
+              "noSlotGotWorse": true,
+              "primaryRoleMatches": 0,
+              "rule": "per slot, the lowest-rated card that is legal in the slot, carries the original's primary functional role, is rated above the original, and reaches the target factor if any candidate does; primary-role matches preferred over secondary; ties by card id. A slot with no such card is left unchanged."
+            },
+            "strongSide": "UPGRADED",
+            "precondition": "the upgraded five's teamRating 1875 exceeds the fixture's 1396 by at least 1.25x, no slot got worse, and every slot kept its functional role",
+            "achievedRatio": 1.34312,
+            "preconditionMet": true
           }
         }
       },
@@ -1258,7 +1622,7 @@
         "purpose": "ELITE_SHOOTING",
         "era": "2010s",
         "fixtureCoach": "steve-kerr",
-        "fixtureSummedRating": 209.47,
+        "fixtureSummedRating": 871,
         "fixtureCoherence": {
           "checks": {
             "hasALeadCreator": true,
@@ -1291,12 +1655,140 @@
             "manCoachId": "steve-kerr"
           },
           "VS_COHERENT_LOWER_CONTROL": {
-            "applicable": false,
-            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+            "applicable": true,
+            "control": {
+              "five": [
+                "dj-80s",
+                "booker-20s",
+                "jbrown-20s",
+                "mcHale-80s",
+                "nate-60s"
+              ],
+              "summedRating": 697,
+              "teamRating": 697,
+              "summedSlotRating": 696.905,
+              "displayOvr": [
+                91,
+                85,
+                90,
+                91,
+                82
+              ],
+              "targetRating": 696.8,
+              "ratingError": 0.2,
+              "coherence": {
+                "checks": {
+                  "hasALeadCreator": true,
+                  "creationNotCollided": true,
+                  "hasSpacing": true,
+                  "hasRimProtection": true,
+                  "hasInteriorScoring": true,
+                  "hasAPasser": true
+                },
+                "satisfied": 6,
+                "total": 6,
+                "coherent": true,
+                "counts": {
+                  "creators": 3,
+                  "spacers": 2,
+                  "rimProtectors": 1,
+                  "posts": 1,
+                  "passers": 2
+                }
+              },
+              "anchors": {
+                "post": "mcHale-80s",
+                "rim": "mcHale-80s"
+              },
+              "coherentCandidatesFound": 1289,
+              "admissibleCandidates": 1289,
+              "achievedRatio": null,
+              "ratingErrorWithinTolerance": true,
+              "ratioTolerance": 0.08,
+              "rule": "anchor on the scarce coherence requirements (an interior scorer and a rim protector), fill the remaining slots by rating-targeted beam search one card per person, keep only fully coherent fives, then take the one closest to the target rating; all ordering deterministic by key then card id"
+            },
+            "achievedRatio": 0.80023,
+            "precondition": "control summed rating 697 < fixture 871",
+            "preconditionMet": true,
+            "coherencePrecondition": "the control must satisfy every coherence check, otherwise the surface is not testing coherent-versus-warped construction",
+            "coherencePreconditionMet": true
           },
-          "VS_TALENT_GAP_CONTROL": {
-            "applicable": false,
-            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          "VS_ROLE_MATCHED_UPGRADE": {
+            "applicable": true,
+            "upgrade": {
+              "five": [
+                "magic-80s",
+                "kawhi-10s",
+                "bird-80s",
+                "dirk-10s",
+                "jjj-20s"
+              ],
+              "slots": [
+                {
+                  "slot": "PG",
+                  "from": "harden-10s",
+                  "to": "magic-80s",
+                  "fromRating": 200.19,
+                  "toRating": 379.92,
+                  "role": "Primary Creator",
+                  "roleMatch": "SECONDARY",
+                  "reachedTarget": true
+                },
+                {
+                  "slot": "SG",
+                  "from": "durant-10s",
+                  "to": "kawhi-10s",
+                  "fromRating": 247.95,
+                  "toRating": 284.54,
+                  "role": "Primary Creator",
+                  "roleMatch": "SECONDARY",
+                  "reachedTarget": false
+                },
+                {
+                  "slot": "SF",
+                  "from": "klay-10s",
+                  "to": "bird-80s",
+                  "fromRating": 124.41,
+                  "toRating": 364.23,
+                  "role": "Movement Shooter",
+                  "roleMatch": "PRIMARY",
+                  "reachedTarget": true
+                },
+                {
+                  "slot": "PF",
+                  "from": "dirk-10s",
+                  "to": "dirk-10s",
+                  "fromRating": 165.56,
+                  "toRating": 165.56,
+                  "role": "Movement Shooter",
+                  "roleMatch": "UNCHANGED",
+                  "reachedTarget": false,
+                  "reason": "the pool has no card legal at PF carrying the role \"Movement Shooter\" with a higher slot rating"
+                },
+                {
+                  "slot": "C",
+                  "from": "boogie-2010s",
+                  "to": "jjj-20s",
+                  "fromRating": 99.61,
+                  "toRating": 124.64,
+                  "role": "Spot-Up Spacer",
+                  "roleMatch": "SECONDARY",
+                  "reachedTarget": false
+                }
+              ],
+              "factor": 1.75,
+              "ratingBefore": 871,
+              "ratingAfter": 1424,
+              "achievedRatio": 1.6349,
+              "slotsUpgraded": 4,
+              "noSlotGotWorse": true,
+              "primaryRoleMatches": 1,
+              "rule": "per slot, the lowest-rated card that is legal in the slot, carries the original's primary functional role, is rated above the original, and reaches the target factor if any candidate does; primary-role matches preferred over secondary; ties by card id. A slot with no such card is left unchanged."
+            },
+            "strongSide": "UPGRADED",
+            "precondition": "the upgraded five's teamRating 1424 exceeds the fixture's 871 by at least 1.25x, no slot got worse, and every slot kept its functional role",
+            "achievedRatio": 1.6349,
+            "preconditionMet": true
           }
         }
       },
@@ -1305,7 +1797,7 @@
         "purpose": "WEAK_SHOOTING",
         "era": "2010s",
         "fixtureCoach": "tom-thibodeau",
-        "fixtureSummedRating": 174.03,
+        "fixtureSummedRating": 669,
         "fixtureCoherence": {
           "checks": {
             "hasALeadCreator": true,
@@ -1338,12 +1830,139 @@
             "manCoachId": "steve-kerr"
           },
           "VS_COHERENT_LOWER_CONTROL": {
-            "applicable": false,
-            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+            "applicable": true,
+            "control": {
+              "five": [
+                "dame-10s",
+                "bobby-70s",
+                "mullin-90s",
+                "bob-l-70s",
+                "boogie-2010s"
+              ],
+              "summedRating": 535,
+              "teamRating": 535,
+              "summedSlotRating": 534.61,
+              "displayOvr": [
+                85,
+                84,
+                78,
+                80,
+                79
+              ],
+              "targetRating": 535.2,
+              "ratingError": -0.2,
+              "coherence": {
+                "checks": {
+                  "hasALeadCreator": true,
+                  "creationNotCollided": true,
+                  "hasSpacing": true,
+                  "hasRimProtection": true,
+                  "hasInteriorScoring": true,
+                  "hasAPasser": true
+                },
+                "satisfied": 6,
+                "total": 6,
+                "coherent": true,
+                "counts": {
+                  "creators": 1,
+                  "spacers": 3,
+                  "rimProtectors": 1,
+                  "posts": 2,
+                  "passers": 2
+                }
+              },
+              "anchors": {
+                "post": "boogie-2010s",
+                "rim": "bob-l-70s"
+              },
+              "coherentCandidatesFound": 2496,
+              "admissibleCandidates": 2496,
+              "achievedRatio": null,
+              "ratingErrorWithinTolerance": true,
+              "ratioTolerance": 0.08,
+              "rule": "anchor on the scarce coherence requirements (an interior scorer and a rim protector), fill the remaining slots by rating-targeted beam search one card per person, keep only fully coherent fives, then take the one closest to the target rating; all ordering deterministic by key then card id"
+            },
+            "achievedRatio": 0.7997,
+            "precondition": "control summed rating 535 < fixture 669",
+            "preconditionMet": true,
+            "coherencePrecondition": "the control must satisfy every coherence check, otherwise the surface is not testing coherent-versus-warped construction",
+            "coherencePreconditionMet": true
           },
-          "VS_TALENT_GAP_CONTROL": {
-            "applicable": false,
-            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          "VS_ROLE_MATCHED_UPGRADE": {
+            "applicable": true,
+            "upgrade": {
+              "five": [
+                "magic-80s",
+                "ai-00s",
+                "kawhi-10s",
+                "moses-80s",
+                "elvin-70s"
+              ],
+              "slots": [
+                {
+                  "slot": "PG",
+                  "from": "russ-10s",
+                  "to": "magic-80s",
+                  "fromRating": 188.65,
+                  "toRating": 379.92,
+                  "role": "Primary Creator",
+                  "roleMatch": "SECONDARY",
+                  "reachedTarget": true
+                },
+                {
+                  "slot": "SG",
+                  "from": "demar-2010s",
+                  "to": "ai-00s",
+                  "fromRating": 96.25,
+                  "toRating": 197.95,
+                  "role": "Primary Creator",
+                  "roleMatch": "PRIMARY",
+                  "reachedTarget": true
+                },
+                {
+                  "slot": "SF",
+                  "from": "draymond-10s",
+                  "to": "kawhi-10s",
+                  "fromRating": 172.27,
+                  "toRating": 285.41,
+                  "role": "Help Defender",
+                  "roleMatch": "SECONDARY",
+                  "reachedTarget": false
+                },
+                {
+                  "slot": "PF",
+                  "from": "love-10s",
+                  "to": "moses-80s",
+                  "fromRating": 103.84,
+                  "toRating": 218.7,
+                  "role": "Glass Cleaner",
+                  "roleMatch": "PRIMARY",
+                  "reachedTarget": true
+                },
+                {
+                  "slot": "C",
+                  "from": "drummond-2010s",
+                  "to": "elvin-70s",
+                  "fromRating": 82.27,
+                  "toRating": 153.96,
+                  "role": "Glass Cleaner",
+                  "roleMatch": "PRIMARY",
+                  "reachedTarget": true
+                }
+              ],
+              "factor": 1.75,
+              "ratingBefore": 669,
+              "ratingAfter": 1335,
+              "achievedRatio": 1.99552,
+              "slotsUpgraded": 5,
+              "noSlotGotWorse": true,
+              "primaryRoleMatches": 3,
+              "rule": "per slot, the lowest-rated card that is legal in the slot, carries the original's primary functional role, is rated above the original, and reaches the target factor if any candidate does; primary-role matches preferred over secondary; ties by card id. A slot with no such card is left unchanged."
+            },
+            "strongSide": "UPGRADED",
+            "precondition": "the upgraded five's teamRating 1335 exceeds the fixture's 669 by at least 1.25x, no slot got worse, and every slot kept its functional role",
+            "achievedRatio": 1.99552,
+            "preconditionMet": true
           }
         }
       },
@@ -1352,7 +1971,7 @@
         "purpose": "EXTREME_SIZE",
         "era": "1960s",
         "fixtureCoach": "red-auerbach",
-        "fixtureSummedRating": 306.02,
+        "fixtureSummedRating": 1040,
         "fixtureCoherence": {
           "checks": {
             "hasALeadCreator": true,
@@ -1385,12 +2004,141 @@
             "structuralExpectationInstead": "realized zone possessions must be exactly 0"
           },
           "VS_COHERENT_LOWER_CONTROL": {
-            "applicable": false,
-            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+            "applicable": true,
+            "control": {
+              "five": [
+                "stock-90s",
+                "cooper-80s",
+                "george-70s",
+                "mcHale-80s",
+                "eaton-80s"
+              ],
+              "summedRating": 832,
+              "teamRating": 832,
+              "summedSlotRating": 831.825,
+              "displayOvr": [
+                95,
+                92,
+                90,
+                91,
+                90
+              ],
+              "targetRating": 832,
+              "ratingError": 0,
+              "coherence": {
+                "checks": {
+                  "hasALeadCreator": true,
+                  "creationNotCollided": true,
+                  "hasSpacing": true,
+                  "hasRimProtection": true,
+                  "hasInteriorScoring": true,
+                  "hasAPasser": true
+                },
+                "satisfied": 6,
+                "total": 6,
+                "coherent": true,
+                "counts": {
+                  "creators": 2,
+                  "spacers": 2,
+                  "rimProtectors": 2,
+                  "posts": 1,
+                  "passers": 1
+                }
+              },
+              "anchors": {
+                "post": "mcHale-80s",
+                "rim": "eaton-80s"
+              },
+              "coherentCandidatesFound": 646,
+              "admissibleCandidates": 646,
+              "achievedRatio": null,
+              "ratingErrorWithinTolerance": true,
+              "ratioTolerance": 0.08,
+              "rule": "anchor on the scarce coherence requirements (an interior scorer and a rim protector), fill the remaining slots by rating-targeted beam search one card per person, keep only fully coherent fives, then take the one closest to the target rating; all ordering deterministic by key then card id"
+            },
+            "achievedRatio": 0.8,
+            "precondition": "control summed rating 832 < fixture 1040",
+            "preconditionMet": true,
+            "coherencePrecondition": "the control must satisfy every coherence check, otherwise the surface is not testing coherent-versus-warped construction",
+            "coherencePreconditionMet": true
           },
-          "VS_TALENT_GAP_CONTROL": {
-            "applicable": false,
-            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          "VS_ROLE_MATCHED_UPGRADE": {
+            "applicable": true,
+            "upgrade": {
+              "five": [
+                "magic-80s",
+                "kawhi-10s",
+                "elgin-60s",
+                "moses-80s",
+                "wilt-60s"
+              ],
+              "slots": [
+                {
+                  "slot": "PG",
+                  "from": "oscar-60s",
+                  "to": "magic-80s",
+                  "fromRating": 251.1,
+                  "toRating": 379.92,
+                  "role": "Primary Creator",
+                  "roleMatch": "SECONDARY",
+                  "reachedTarget": false
+                },
+                {
+                  "slot": "SG",
+                  "from": "barry-60s",
+                  "to": "kawhi-10s",
+                  "fromRating": 126.01,
+                  "toRating": 284.54,
+                  "role": "Slasher",
+                  "roleMatch": "SECONDARY",
+                  "reachedTarget": true
+                },
+                {
+                  "slot": "SF",
+                  "from": "elgin-60s",
+                  "to": "elgin-60s",
+                  "fromRating": 208.94,
+                  "toRating": 208.94,
+                  "role": "Slasher",
+                  "roleMatch": "UNCHANGED",
+                  "reachedTarget": false,
+                  "reason": "the pool has no card legal at SF carrying the role \"Slasher\" with a higher slot rating"
+                },
+                {
+                  "slot": "PF",
+                  "from": "nate-60s",
+                  "to": "moses-80s",
+                  "fromRating": 109.57,
+                  "toRating": 218.7,
+                  "role": "Glass Cleaner",
+                  "roleMatch": "PRIMARY",
+                  "reachedTarget": true
+                },
+                {
+                  "slot": "C",
+                  "from": "wilt-60s",
+                  "to": "wilt-60s",
+                  "fromRating": 344.86,
+                  "toRating": 344.86,
+                  "role": "Glass Cleaner",
+                  "roleMatch": "UNCHANGED",
+                  "reachedTarget": false,
+                  "reason": "the pool has no card legal at C carrying the role \"Glass Cleaner\" with a higher slot rating"
+                }
+              ],
+              "factor": 1.75,
+              "ratingBefore": 1040,
+              "ratingAfter": 1523,
+              "achievedRatio": 1.46442,
+              "slotsUpgraded": 3,
+              "noSlotGotWorse": true,
+              "primaryRoleMatches": 1,
+              "rule": "per slot, the lowest-rated card that is legal in the slot, carries the original's primary functional role, is rated above the original, and reaches the target factor if any candidate does; primary-role matches preferred over secondary; ties by card id. A slot with no such card is left unchanged."
+            },
+            "strongSide": "UPGRADED",
+            "precondition": "the upgraded five's teamRating 1523 exceeds the fixture's 1040 by at least 1.25x, no slot got worse, and every slot kept its functional role",
+            "achievedRatio": 1.46442,
+            "preconditionMet": true
           }
         }
       },
@@ -1399,7 +2147,7 @@
         "purpose": "EXTREME_SMALL_BALL",
         "era": "2020s",
         "fixtureCoach": "steve-kerr",
-        "fixtureSummedRating": 93.28,
+        "fixtureSummedRating": 267,
         "fixtureCoherence": {
           "checks": {
             "hasALeadCreator": false,
@@ -1433,11 +2181,83 @@
           },
           "VS_COHERENT_LOWER_CONTROL": {
             "applicable": false,
-            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+            "reason": "CONTROL_PRECONDITION_UNREACHABLE — no coherent legal five is strictly below 267 at target 213.6; closest coherent five sums to 301.735. The guardrail is NOT_APPLICABLE on this fixture: no pass credit and no failure contribution."
           },
-          "VS_TALENT_GAP_CONTROL": {
-            "applicable": false,
-            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          "VS_ROLE_MATCHED_UPGRADE": {
+            "applicable": true,
+            "upgrade": {
+              "five": [
+                "toney-80s",
+                "maxey-20s",
+                "wade-10s",
+                "butler-20s",
+                "jack-80s"
+              ],
+              "slots": [
+                {
+                  "slot": "PG",
+                  "from": "clayton-20s",
+                  "to": "toney-80s",
+                  "fromRating": 43.48,
+                  "toRating": 76.43,
+                  "role": "Movement Shooter",
+                  "roleMatch": "PRIMARY",
+                  "reachedTarget": true
+                },
+                {
+                  "slot": "SG",
+                  "from": "trejohnson-20s",
+                  "to": "maxey-20s",
+                  "fromRating": 50.55,
+                  "toRating": 89.4,
+                  "role": "Movement Shooter",
+                  "roleMatch": "PRIMARY",
+                  "reachedTarget": true
+                },
+                {
+                  "slot": "SF",
+                  "from": "klay-20s",
+                  "to": "wade-10s",
+                  "fromRating": 85.54,
+                  "toRating": 162.2,
+                  "role": "Movement Shooter",
+                  "roleMatch": "PRIMARY",
+                  "reachedTarget": true
+                },
+                {
+                  "slot": "PF",
+                  "from": "acebailey-20s",
+                  "to": "butler-20s",
+                  "fromRating": 58.06,
+                  "toRating": 114.125,
+                  "role": "Movement Shooter",
+                  "roleMatch": "PRIMARY",
+                  "reachedTarget": true
+                },
+                {
+                  "slot": "C",
+                  "from": "cmb-20s",
+                  "to": "jack-80s",
+                  "fromRating": 46.94,
+                  "toRating": 86.48,
+                  "role": "Low-Usage Finisher",
+                  "roleMatch": "PRIMARY",
+                  "reachedTarget": true
+                }
+              ],
+              "factor": 1.75,
+              "ratingBefore": 267,
+              "ratingAfter": 523,
+              "achievedRatio": 1.9588,
+              "slotsUpgraded": 5,
+              "noSlotGotWorse": true,
+              "primaryRoleMatches": 5,
+              "rule": "per slot, the lowest-rated card that is legal in the slot, carries the original's primary functional role, is rated above the original, and reaches the target factor if any candidate does; primary-role matches preferred over secondary; ties by card id. A slot with no such card is left unchanged."
+            },
+            "strongSide": "UPGRADED",
+            "precondition": "the upgraded five's teamRating 523 exceeds the fixture's 267 by at least 1.25x, no slot got worse, and every slot kept its functional role",
+            "achievedRatio": 1.9588,
+            "preconditionMet": true
           }
         }
       },
@@ -1446,7 +2266,7 @@
         "purpose": "PASSING_HUB",
         "era": "2020s",
         "fixtureCoach": "nick-nurse",
-        "fixtureSummedRating": 223.45,
+        "fixtureSummedRating": 808,
         "fixtureCoherence": {
           "checks": {
             "hasALeadCreator": true,
@@ -1479,12 +2299,140 @@
             "manCoachId": "steve-kerr"
           },
           "VS_COHERENT_LOWER_CONTROL": {
-            "applicable": false,
-            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+            "applicable": true,
+            "control": {
+              "five": [
+                "dame-10s",
+                "ai-00s",
+                "dave-d-60s",
+                "boogie-2010s",
+                "yao-00s"
+              ],
+              "summedRating": 646,
+              "teamRating": 646,
+              "summedSlotRating": 645.55,
+              "displayOvr": [
+                85,
+                94,
+                86,
+                79,
+                81
+              ],
+              "targetRating": 646.4,
+              "ratingError": -0.4,
+              "coherence": {
+                "checks": {
+                  "hasALeadCreator": true,
+                  "creationNotCollided": true,
+                  "hasSpacing": true,
+                  "hasRimProtection": true,
+                  "hasInteriorScoring": true,
+                  "hasAPasser": true
+                },
+                "satisfied": 6,
+                "total": 6,
+                "coherent": true,
+                "counts": {
+                  "creators": 2,
+                  "spacers": 2,
+                  "rimProtectors": 1,
+                  "posts": 2,
+                  "passers": 2
+                }
+              },
+              "anchors": {
+                "post": "boogie-2010s",
+                "rim": "yao-00s"
+              },
+              "coherentCandidatesFound": 2449,
+              "admissibleCandidates": 2449,
+              "achievedRatio": null,
+              "ratingErrorWithinTolerance": true,
+              "ratioTolerance": 0.08,
+              "rule": "anchor on the scarce coherence requirements (an interior scorer and a rim protector), fill the remaining slots by rating-targeted beam search one card per person, keep only fully coherent fives, then take the one closest to the target rating; all ordering deterministic by key then card id"
+            },
+            "achievedRatio": 0.7995,
+            "precondition": "control summed rating 646 < fixture 808",
+            "preconditionMet": true,
+            "coherencePrecondition": "the control must satisfy every coherence check, otherwise the surface is not testing coherent-versus-warped construction",
+            "coherencePreconditionMet": true
           },
-          "VS_TALENT_GAP_CONTROL": {
-            "applicable": false,
-            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          "VS_ROLE_MATCHED_UPGRADE": {
+            "applicable": true,
+            "upgrade": {
+              "five": [
+                "stock-90s",
+                "wade-10s",
+                "bird-80s",
+                "jokic-20s",
+                "rodman-90s"
+              ],
+              "slots": [
+                {
+                  "slot": "PG",
+                  "from": "tyrese-20s",
+                  "to": "stock-90s",
+                  "fromRating": 106.56,
+                  "toRating": 203.08,
+                  "role": "Floor General",
+                  "roleMatch": "PRIMARY",
+                  "reachedTarget": true
+                },
+                {
+                  "slot": "SG",
+                  "from": "cade-20s",
+                  "to": "wade-10s",
+                  "fromRating": 84.64,
+                  "toRating": 161.81,
+                  "role": "Movement Shooter",
+                  "roleMatch": "PRIMARY",
+                  "reachedTarget": true
+                },
+                {
+                  "slot": "SF",
+                  "from": "luka-20s",
+                  "to": "bird-80s",
+                  "fromRating": 184.81,
+                  "toRating": 364.23,
+                  "role": "Primary Creator",
+                  "roleMatch": "SECONDARY",
+                  "reachedTarget": true
+                },
+                {
+                  "slot": "PF",
+                  "from": "jokic-20s",
+                  "to": "jokic-20s",
+                  "fromRating": 287.955,
+                  "toRating": 287.955,
+                  "role": "Post Hub",
+                  "roleMatch": "UNCHANGED",
+                  "reachedTarget": false,
+                  "reason": "the pool has no card legal at PF carrying the role \"Post Hub\" with a higher slot rating"
+                },
+                {
+                  "slot": "C",
+                  "from": "draymond-20s",
+                  "to": "rodman-90s",
+                  "fromRating": 112.85,
+                  "toRating": 221.99,
+                  "role": "Low-Usage Finisher",
+                  "roleMatch": "SECONDARY",
+                  "reachedTarget": true
+                }
+              ],
+              "factor": 1.75,
+              "ratingBefore": 808,
+              "ratingAfter": 1313,
+              "achievedRatio": 1.625,
+              "slotsUpgraded": 4,
+              "noSlotGotWorse": true,
+              "primaryRoleMatches": 2,
+              "rule": "per slot, the lowest-rated card that is legal in the slot, carries the original's primary functional role, is rated above the original, and reaches the target factor if any candidate does; primary-role matches preferred over secondary; ties by card id. A slot with no such card is left unchanged."
+            },
+            "strongSide": "UPGRADED",
+            "precondition": "the upgraded five's teamRating 1313 exceeds the fixture's 808 by at least 1.25x, no slot got worse, and every slot kept its functional role",
+            "achievedRatio": 1.625,
+            "preconditionMet": true
           }
         }
       },
@@ -1493,7 +2441,7 @@
         "purpose": "NO_RIM_PROTECTION",
         "era": "2010s",
         "fixtureCoach": "mike-dantoni",
-        "fixtureSummedRating": 209.65,
+        "fixtureSummedRating": 1074,
         "fixtureCoherence": {
           "checks": {
             "hasALeadCreator": true,
@@ -1526,12 +2474,142 @@
             "manCoachId": "steve-kerr"
           },
           "VS_COHERENT_LOWER_CONTROL": {
-            "applicable": false,
-            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+            "applicable": true,
+            "control": {
+              "five": [
+                "nash-00s",
+                "ai-00s",
+                "cooper-80s",
+                "camby-2ks",
+                "mcHale-80s"
+              ],
+              "summedRating": 859,
+              "teamRating": 859,
+              "summedSlotRating": 859.295,
+              "displayOvr": [
+                95,
+                94,
+                92,
+                86,
+                91
+              ],
+              "targetRating": 859.2,
+              "ratingError": -0.2,
+              "coherence": {
+                "checks": {
+                  "hasALeadCreator": true,
+                  "creationNotCollided": true,
+                  "hasSpacing": true,
+                  "hasRimProtection": true,
+                  "hasInteriorScoring": true,
+                  "hasAPasser": true
+                },
+                "satisfied": 6,
+                "total": 6,
+                "coherent": true,
+                "counts": {
+                  "creators": 3,
+                  "spacers": 2,
+                  "rimProtectors": 2,
+                  "posts": 1,
+                  "passers": 2
+                }
+              },
+              "anchors": {
+                "post": "mcHale-80s",
+                "rim": "mcHale-80s"
+              },
+              "coherentCandidatesFound": 729,
+              "admissibleCandidates": 729,
+              "achievedRatio": null,
+              "ratingErrorWithinTolerance": true,
+              "ratioTolerance": 0.08,
+              "rule": "anchor on the scarce coherence requirements (an interior scorer and a rim protector), fill the remaining slots by rating-targeted beam search one card per person, keep only fully coherent fives, then take the one closest to the target rating; all ordering deterministic by key then card id"
+            },
+            "achievedRatio": 0.79981,
+            "precondition": "control summed rating 859 < fixture 1074",
+            "preconditionMet": true,
+            "coherencePrecondition": "the control must satisfy every coherence check, otherwise the surface is not testing coherent-versus-warped construction",
+            "coherencePreconditionMet": true
           },
-          "VS_TALENT_GAP_CONTROL": {
-            "applicable": false,
-            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          "VS_ROLE_MATCHED_UPGRADE": {
+            "applicable": true,
+            "upgrade": {
+              "five": [
+                "curry-10s",
+                "kobe-10s",
+                "kawhi-10s",
+                "schayes-50s",
+                "barkley-90s"
+              ],
+              "slots": [
+                {
+                  "slot": "PG",
+                  "from": "curry-10s",
+                  "to": "curry-10s",
+                  "fromRating": 265.95,
+                  "toRating": 265.95,
+                  "role": "Movement Shooter",
+                  "roleMatch": "UNCHANGED",
+                  "reachedTarget": false,
+                  "reason": "the pool has no card legal at PG carrying the role \"Movement Shooter\" with a higher slot rating"
+                },
+                {
+                  "slot": "SG",
+                  "from": "kobe-10s",
+                  "to": "kobe-10s",
+                  "fromRating": 249.3,
+                  "toRating": 249.3,
+                  "role": "Primary Creator",
+                  "roleMatch": "UNCHANGED",
+                  "reachedTarget": false,
+                  "reason": "the pool has no card legal at SG carrying the role \"Primary Creator\" with a higher slot rating"
+                },
+                {
+                  "slot": "SF",
+                  "from": "kawhi-10s",
+                  "to": "kawhi-10s",
+                  "fromRating": 285.41,
+                  "toRating": 285.41,
+                  "role": "Wing Stopper",
+                  "roleMatch": "UNCHANGED",
+                  "reachedTarget": false,
+                  "reason": "the pool has no card legal at SF carrying the role \"Wing Stopper\" with a higher slot rating"
+                },
+                {
+                  "slot": "PF",
+                  "from": "melo-10s",
+                  "to": "schayes-50s",
+                  "fromRating": 88.26,
+                  "toRating": 187.355,
+                  "role": "Primary Creator",
+                  "roleMatch": "PRIMARY",
+                  "reachedTarget": true
+                },
+                {
+                  "slot": "C",
+                  "from": "jokic-10s",
+                  "to": "barkley-90s",
+                  "fromRating": 105.84,
+                  "toRating": 220.19,
+                  "role": "Primary Creator",
+                  "roleMatch": "PRIMARY",
+                  "reachedTarget": true
+                }
+              ],
+              "factor": 1.75,
+              "ratingBefore": 1074,
+              "ratingAfter": 1281,
+              "achievedRatio": 1.19274,
+              "slotsUpgraded": 2,
+              "noSlotGotWorse": true,
+              "primaryRoleMatches": 2,
+              "rule": "per slot, the lowest-rated card that is legal in the slot, carries the original's primary functional role, is rated above the original, and reaches the target factor if any candidate does; primary-role matches preferred over secondary; ties by card id. A slot with no such card is left unchanged."
+            },
+            "strongSide": "UPGRADED",
+            "precondition": "the upgraded five's teamRating 1281 exceeds the fixture's 1074 by at least 1.25x, no slot got worse, and every slot kept its functional role",
+            "achievedRatio": 1.19274,
+            "preconditionMet": false
           }
         }
       },
@@ -1540,7 +2618,7 @@
         "purpose": "MOVEMENT_SHOOTERS",
         "era": "2010s",
         "fixtureCoach": "steve-kerr",
-        "fixtureSummedRating": 222.07,
+        "fixtureSummedRating": 1156,
         "fixtureCoherence": {
           "checks": {
             "hasALeadCreator": true,
@@ -1573,12 +2651,142 @@
             "manCoachId": "steve-kerr"
           },
           "VS_COHERENT_LOWER_CONTROL": {
-            "applicable": false,
-            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+            "applicable": true,
+            "control": {
+              "five": [
+                "kyrie-10s",
+                "kawhi-10s",
+                "cooper-80s",
+                "mcHale-80s",
+                "alonzo-90s"
+              ],
+              "summedRating": 925,
+              "teamRating": 925,
+              "summedSlotRating": 916.155,
+              "displayOvr": [
+                91,
+                97,
+                92,
+                91,
+                89
+              ],
+              "targetRating": 924.8,
+              "ratingError": 0.2,
+              "coherence": {
+                "checks": {
+                  "hasALeadCreator": true,
+                  "creationNotCollided": true,
+                  "hasSpacing": true,
+                  "hasRimProtection": true,
+                  "hasInteriorScoring": true,
+                  "hasAPasser": true
+                },
+                "satisfied": 6,
+                "total": 6,
+                "coherent": true,
+                "counts": {
+                  "creators": 3,
+                  "spacers": 3,
+                  "rimProtectors": 2,
+                  "posts": 2,
+                  "passers": 1
+                }
+              },
+              "anchors": {
+                "post": "mcHale-80s",
+                "rim": "alonzo-90s"
+              },
+              "coherentCandidatesFound": 809,
+              "admissibleCandidates": 809,
+              "achievedRatio": null,
+              "ratingErrorWithinTolerance": true,
+              "ratioTolerance": 0.08,
+              "rule": "anchor on the scarce coherence requirements (an interior scorer and a rim protector), fill the remaining slots by rating-targeted beam search one card per person, keep only fully coherent fives, then take the one closest to the target rating; all ordering deterministic by key then card id"
+            },
+            "achievedRatio": 0.80017,
+            "precondition": "control summed rating 925 < fixture 1156",
+            "preconditionMet": true,
+            "coherencePrecondition": "the control must satisfy every coherence check, otherwise the surface is not testing coherent-versus-warped construction",
+            "coherencePreconditionMet": true
           },
-          "VS_TALENT_GAP_CONTROL": {
-            "applicable": false,
-            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          "VS_ROLE_MATCHED_UPGRADE": {
+            "applicable": true,
+            "upgrade": {
+              "five": [
+                "curry-10s",
+                "durant-10s",
+                "kawhi-10s",
+                "bird-80s",
+                "schayes-50s"
+              ],
+              "slots": [
+                {
+                  "slot": "PG",
+                  "from": "curry-10s",
+                  "to": "curry-10s",
+                  "fromRating": 265.95,
+                  "toRating": 265.95,
+                  "role": "Movement Shooter",
+                  "roleMatch": "UNCHANGED",
+                  "reachedTarget": false,
+                  "reason": "the pool has no card legal at PG carrying the role \"Movement Shooter\" with a higher slot rating"
+                },
+                {
+                  "slot": "SG",
+                  "from": "durant-10s",
+                  "to": "durant-10s",
+                  "fromRating": 247.95,
+                  "toRating": 247.95,
+                  "role": "Primary Creator",
+                  "roleMatch": "UNCHANGED",
+                  "reachedTarget": false,
+                  "reason": "the pool has no card legal at SG carrying the role \"Primary Creator\" with a higher slot rating"
+                },
+                {
+                  "slot": "SF",
+                  "from": "kawhi-10s",
+                  "to": "kawhi-10s",
+                  "fromRating": 285.41,
+                  "toRating": 285.41,
+                  "role": "Wing Stopper",
+                  "roleMatch": "UNCHANGED",
+                  "reachedTarget": false,
+                  "reason": "the pool has no card legal at SF carrying the role \"Wing Stopper\" with a higher slot rating"
+                },
+                {
+                  "slot": "PF",
+                  "from": "dirk-10s",
+                  "to": "bird-80s",
+                  "fromRating": 165.56,
+                  "toRating": 363.21,
+                  "role": "Movement Shooter",
+                  "roleMatch": "PRIMARY",
+                  "reachedTarget": true
+                },
+                {
+                  "slot": "C",
+                  "from": "jokic-10s",
+                  "to": "schayes-50s",
+                  "fromRating": 105.84,
+                  "toRating": 187.34,
+                  "role": "Primary Creator",
+                  "roleMatch": "PRIMARY",
+                  "reachedTarget": true
+                }
+              ],
+              "factor": 1.75,
+              "ratingBefore": 1156,
+              "ratingAfter": 1458,
+              "achievedRatio": 1.26125,
+              "slotsUpgraded": 2,
+              "noSlotGotWorse": true,
+              "primaryRoleMatches": 2,
+              "rule": "per slot, the lowest-rated card that is legal in the slot, carries the original's primary functional role, is rated above the original, and reaches the target factor if any candidate does; primary-role matches preferred over secondary; ties by card id. A slot with no such card is left unchanged."
+            },
+            "strongSide": "UPGRADED",
+            "precondition": "the upgraded five's teamRating 1458 exceeds the fixture's 1156 by at least 1.25x, no slot got worse, and every slot kept its functional role",
+            "achievedRatio": 1.26125,
+            "preconditionMet": false
           }
         }
       },
@@ -1587,7 +2795,7 @@
         "purpose": "POST_MISMATCH",
         "era": "1970s",
         "fixtureCoach": "lenny-wilkens",
-        "fixtureSummedRating": 244.08,
+        "fixtureSummedRating": 907,
         "fixtureCoherence": {
           "checks": {
             "hasALeadCreator": true,
@@ -1620,12 +2828,139 @@
             "structuralExpectationInstead": "realized zone possessions must be exactly 0"
           },
           "VS_COHERENT_LOWER_CONTROL": {
-            "applicable": false,
-            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+            "applicable": true,
+            "control": {
+              "five": [
+                "dj-80s",
+                "kyrie-10s",
+                "jbrown-20s",
+                "elvin-70s",
+                "kat-20s"
+              ],
+              "summedRating": 725,
+              "teamRating": 725,
+              "summedSlotRating": 724.785,
+              "displayOvr": [
+                91,
+                91,
+                90,
+                91,
+                81
+              ],
+              "targetRating": 725.6,
+              "ratingError": -0.6,
+              "coherence": {
+                "checks": {
+                  "hasALeadCreator": true,
+                  "creationNotCollided": true,
+                  "hasSpacing": true,
+                  "hasRimProtection": true,
+                  "hasInteriorScoring": true,
+                  "hasAPasser": true
+                },
+                "satisfied": 6,
+                "total": 6,
+                "coherent": true,
+                "counts": {
+                  "creators": 2,
+                  "spacers": 2,
+                  "rimProtectors": 1,
+                  "posts": 1,
+                  "passers": 2
+                }
+              },
+              "anchors": {
+                "post": "kat-20s",
+                "rim": "elvin-70s"
+              },
+              "coherentCandidatesFound": 1232,
+              "admissibleCandidates": 1232,
+              "achievedRatio": null,
+              "ratingErrorWithinTolerance": true,
+              "ratioTolerance": 0.08,
+              "rule": "anchor on the scarce coherence requirements (an interior scorer and a rim protector), fill the remaining slots by rating-targeted beam search one card per person, keep only fully coherent fives, then take the one closest to the target rating; all ordering deterministic by key then card id"
+            },
+            "achievedRatio": 0.79934,
+            "precondition": "control summed rating 725 < fixture 907",
+            "preconditionMet": true,
+            "coherencePrecondition": "the control must satisfy every coherence check, otherwise the surface is not testing coherent-versus-warped construction",
+            "coherencePreconditionMet": true
           },
-          "VS_TALENT_GAP_CONTROL": {
-            "applicable": false,
-            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          "VS_ROLE_MATCHED_UPGRADE": {
+            "applicable": true,
+            "upgrade": {
+              "five": [
+                "gary-90s",
+                "kawhi-10s",
+                "magic-80s",
+                "rob-90s",
+                "moses-80s"
+              ],
+              "slots": [
+                {
+                  "slot": "PG",
+                  "from": "pete-70s",
+                  "to": "gary-90s",
+                  "fromRating": 120.55,
+                  "toRating": 242.76,
+                  "role": "Primary Creator",
+                  "roleMatch": "SECONDARY",
+                  "reachedTarget": true
+                },
+                {
+                  "slot": "SG",
+                  "from": "rick-70s",
+                  "to": "kawhi-10s",
+                  "fromRating": 176.23,
+                  "toRating": 284.54,
+                  "role": "Primary Creator",
+                  "roleMatch": "SECONDARY",
+                  "reachedTarget": false
+                },
+                {
+                  "slot": "SF",
+                  "from": "julius-70s",
+                  "to": "magic-80s",
+                  "fromRating": 273.82,
+                  "toRating": 377.63,
+                  "role": "Slasher",
+                  "roleMatch": "SECONDARY",
+                  "reachedTarget": false
+                },
+                {
+                  "slot": "PF",
+                  "from": "elvin-70s",
+                  "to": "rob-90s",
+                  "fromRating": 153.635,
+                  "toRating": 277.95,
+                  "role": "Glass Cleaner",
+                  "roleMatch": "SECONDARY",
+                  "reachedTarget": true
+                },
+                {
+                  "slot": "C",
+                  "from": "artis-70s",
+                  "to": "moses-80s",
+                  "fromRating": 115.16,
+                  "toRating": 218.61,
+                  "role": "Glass Cleaner",
+                  "roleMatch": "PRIMARY",
+                  "reachedTarget": true
+                }
+              ],
+              "factor": 1.75,
+              "ratingBefore": 907,
+              "ratingAfter": 1514,
+              "achievedRatio": 1.66924,
+              "slotsUpgraded": 5,
+              "noSlotGotWorse": true,
+              "primaryRoleMatches": 1,
+              "rule": "per slot, the lowest-rated card that is legal in the slot, carries the original's primary functional role, is rated above the original, and reaches the target factor if any candidate does; primary-role matches preferred over secondary; ties by card id. A slot with no such card is left unchanged."
+            },
+            "strongSide": "UPGRADED",
+            "precondition": "the upgraded five's teamRating 1514 exceeds the fixture's 907 by at least 1.25x, no slot got worse, and every slot kept its functional role",
+            "achievedRatio": 1.66924,
+            "preconditionMet": true
           }
         }
       },
@@ -1634,7 +2969,7 @@
         "purpose": "ZONE_ATTACK",
         "era": "2010s",
         "fixtureCoach": "erik-spoelstra",
-        "fixtureSummedRating": 284.75,
+        "fixtureSummedRating": 1481,
         "fixtureCoherence": {
           "checks": {
             "hasALeadCreator": true,
@@ -1667,12 +3002,140 @@
             "manCoachId": "steve-kerr"
           },
           "VS_COHERENT_LOWER_CONTROL": {
-            "applicable": false,
-            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+            "applicable": true,
+            "control": {
+              "five": [
+                "dj-80s",
+                "kawhi-10s",
+                "bird-80s",
+                "mcHale-80s",
+                "alonzo-90s"
+              ],
+              "summedRating": 1181,
+              "teamRating": 1181,
+              "summedSlotRating": 1114.005,
+              "displayOvr": [
+                91,
+                97,
+                98,
+                91,
+                89
+              ],
+              "targetRating": 1184.8,
+              "ratingError": -3.8,
+              "coherence": {
+                "checks": {
+                  "hasALeadCreator": true,
+                  "creationNotCollided": true,
+                  "hasSpacing": true,
+                  "hasRimProtection": true,
+                  "hasInteriorScoring": true,
+                  "hasAPasser": true
+                },
+                "satisfied": 6,
+                "total": 6,
+                "coherent": true,
+                "counts": {
+                  "creators": 3,
+                  "spacers": 2,
+                  "rimProtectors": 2,
+                  "posts": 2,
+                  "passers": 2
+                }
+              },
+              "anchors": {
+                "post": "alonzo-90s",
+                "rim": "mcHale-80s"
+              },
+              "coherentCandidatesFound": 842,
+              "admissibleCandidates": 842,
+              "achievedRatio": null,
+              "ratingErrorWithinTolerance": true,
+              "ratioTolerance": 0.08,
+              "rule": "anchor on the scarce coherence requirements (an interior scorer and a rim protector), fill the remaining slots by rating-targeted beam search one card per person, keep only fully coherent fives, then take the one closest to the target rating; all ordering deterministic by key then card id"
+            },
+            "achievedRatio": 0.79743,
+            "precondition": "control summed rating 1181 < fixture 1481",
+            "preconditionMet": true,
+            "coherencePrecondition": "the control must satisfy every coherence check, otherwise the surface is not testing coherent-versus-warped construction",
+            "coherencePreconditionMet": true
           },
-          "VS_TALENT_GAP_CONTROL": {
-            "applicable": false,
-            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          "VS_ROLE_MATCHED_UPGRADE": {
+            "applicable": true,
+            "upgrade": {
+              "five": [
+                "magic-80s",
+                "kawhi-10s",
+                "lebron-10s",
+                "bird-80s",
+                "kg-00s"
+              ],
+              "slots": [
+                {
+                  "slot": "PG",
+                  "from": "harden-10s",
+                  "to": "magic-80s",
+                  "fromRating": 200.19,
+                  "toRating": 379.92,
+                  "role": "Primary Creator",
+                  "roleMatch": "SECONDARY",
+                  "reachedTarget": true
+                },
+                {
+                  "slot": "SG",
+                  "from": "curry-10s",
+                  "to": "kawhi-10s",
+                  "fromRating": 267.47,
+                  "toRating": 284.54,
+                  "role": "Movement Shooter",
+                  "roleMatch": "SECONDARY",
+                  "reachedTarget": false
+                },
+                {
+                  "slot": "SF",
+                  "from": "lebron-10s",
+                  "to": "lebron-10s",
+                  "fromRating": 422.82,
+                  "toRating": 422.82,
+                  "role": "Primary Creator",
+                  "roleMatch": "UNCHANGED",
+                  "reachedTarget": false,
+                  "reason": "the pool has no card legal at SF carrying the role \"Primary Creator\" with a higher slot rating"
+                },
+                {
+                  "slot": "PF",
+                  "from": "durant-10s",
+                  "to": "bird-80s",
+                  "fromRating": 247.405,
+                  "toRating": 363.21,
+                  "role": "Primary Creator",
+                  "roleMatch": "SECONDARY",
+                  "reachedTarget": false
+                },
+                {
+                  "slot": "C",
+                  "from": "giannis-10s",
+                  "to": "kg-00s",
+                  "fromRating": 233.1,
+                  "toRating": 285.25,
+                  "role": "Glass Cleaner",
+                  "roleMatch": "SECONDARY",
+                  "reachedTarget": false
+                }
+              ],
+              "factor": 1.75,
+              "ratingBefore": 1481,
+              "ratingAfter": 1875,
+              "achievedRatio": 1.26604,
+              "slotsUpgraded": 4,
+              "noSlotGotWorse": true,
+              "primaryRoleMatches": 0,
+              "rule": "per slot, the lowest-rated card that is legal in the slot, carries the original's primary functional role, is rated above the original, and reaches the target factor if any candidate does; primary-role matches preferred over secondary; ties by card id. A slot with no such card is left unchanged."
+            },
+            "strongSide": "UPGRADED",
+            "precondition": "the upgraded five's teamRating 1875 exceeds the fixture's 1481 by at least 1.25x, no slot got worse, and every slot kept its functional role",
+            "achievedRatio": 1.26604,
+            "preconditionMet": true
           }
         }
       },
@@ -1681,7 +3144,7 @@
         "purpose": "WEAK_DEFENDER_HIDING",
         "era": "2010s",
         "fixtureCoach": "mike-dantoni",
-        "fixtureSummedRating": 228.75,
+        "fixtureSummedRating": 959,
         "fixtureCoherence": {
           "checks": {
             "hasALeadCreator": true,
@@ -1714,12 +3177,139 @@
             "manCoachId": "steve-kerr"
           },
           "VS_COHERENT_LOWER_CONTROL": {
-            "applicable": false,
-            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+            "applicable": true,
+            "control": {
+              "five": [
+                "jrue-20s",
+                "wade-10s",
+                "clyde-80s",
+                "elvin-70s",
+                "mikan-50s"
+              ],
+              "summedRating": 767,
+              "teamRating": 767,
+              "summedSlotRating": 767.145,
+              "displayOvr": [
+                86,
+                92,
+                89,
+                91,
+                94
+              ],
+              "targetRating": 767.2,
+              "ratingError": -0.2,
+              "coherence": {
+                "checks": {
+                  "hasALeadCreator": true,
+                  "creationNotCollided": true,
+                  "hasSpacing": true,
+                  "hasRimProtection": true,
+                  "hasInteriorScoring": true,
+                  "hasAPasser": true
+                },
+                "satisfied": 6,
+                "total": 6,
+                "coherent": true,
+                "counts": {
+                  "creators": 3,
+                  "spacers": 2,
+                  "rimProtectors": 1,
+                  "posts": 1,
+                  "passers": 3
+                }
+              },
+              "anchors": {
+                "post": "mikan-50s",
+                "rim": "elvin-70s"
+              },
+              "coherentCandidatesFound": 1408,
+              "admissibleCandidates": 1408,
+              "achievedRatio": null,
+              "ratingErrorWithinTolerance": true,
+              "ratioTolerance": 0.08,
+              "rule": "anchor on the scarce coherence requirements (an interior scorer and a rim protector), fill the remaining slots by rating-targeted beam search one card per person, keep only fully coherent fives, then take the one closest to the target rating; all ordering deterministic by key then card id"
+            },
+            "achievedRatio": 0.79979,
+            "precondition": "control summed rating 767 < fixture 959",
+            "preconditionMet": true,
+            "coherencePrecondition": "the control must satisfy every coherence check, otherwise the surface is not testing coherent-versus-warped construction",
+            "coherencePreconditionMet": true
           },
-          "VS_TALENT_GAP_CONTROL": {
-            "applicable": false,
-            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          "VS_ROLE_MATCHED_UPGRADE": {
+            "applicable": true,
+            "upgrade": {
+              "five": [
+                "magic-80s",
+                "kawhi-10s",
+                "bird-80s",
+                "schayes-50s",
+                "rob-90s"
+              ],
+              "slots": [
+                {
+                  "slot": "PG",
+                  "from": "harden-10s",
+                  "to": "magic-80s",
+                  "fromRating": 200.19,
+                  "toRating": 379.92,
+                  "role": "Primary Creator",
+                  "roleMatch": "SECONDARY",
+                  "reachedTarget": true
+                },
+                {
+                  "slot": "SG",
+                  "from": "durant-10s",
+                  "to": "kawhi-10s",
+                  "fromRating": 247.95,
+                  "toRating": 284.54,
+                  "role": "Primary Creator",
+                  "roleMatch": "SECONDARY",
+                  "reachedTarget": false
+                },
+                {
+                  "slot": "SF",
+                  "from": "kobe-10s",
+                  "to": "bird-80s",
+                  "fromRating": 249.84,
+                  "toRating": 364.23,
+                  "role": "Primary Creator",
+                  "roleMatch": "SECONDARY",
+                  "reachedTarget": false
+                },
+                {
+                  "slot": "PF",
+                  "from": "melo-10s",
+                  "to": "schayes-50s",
+                  "fromRating": 88.26,
+                  "toRating": 187.355,
+                  "role": "Primary Creator",
+                  "roleMatch": "PRIMARY",
+                  "reachedTarget": true
+                },
+                {
+                  "slot": "C",
+                  "from": "embiid-10s",
+                  "to": "rob-90s",
+                  "fromRating": 135.51,
+                  "toRating": 278.14,
+                  "role": "Rim Protector",
+                  "roleMatch": "SECONDARY",
+                  "reachedTarget": true
+                }
+              ],
+              "factor": 1.75,
+              "ratingBefore": 959,
+              "ratingAfter": 1614,
+              "achievedRatio": 1.683,
+              "slotsUpgraded": 5,
+              "noSlotGotWorse": true,
+              "primaryRoleMatches": 1,
+              "rule": "per slot, the lowest-rated card that is legal in the slot, carries the original's primary functional role, is rated above the original, and reaches the target factor if any candidate does; primary-role matches preferred over secondary; ties by card id. A slot with no such card is left unchanged."
+            },
+            "strongSide": "UPGRADED",
+            "precondition": "the upgraded five's teamRating 1614 exceeds the fixture's 959 by at least 1.25x, no slot got worse, and every slot kept its functional role",
+            "achievedRatio": 1.683,
+            "preconditionMet": true
           }
         }
       },
@@ -1728,7 +3318,7 @@
         "purpose": "ACTION_FAMILY_STRESS",
         "era": "1990s",
         "fixtureCoach": "jerry-sloan",
-        "fixtureSummedRating": 257.12,
+        "fixtureSummedRating": 1444,
         "fixtureCoherence": {
           "checks": {
             "hasALeadCreator": true,
@@ -1761,12 +3351,140 @@
             "structuralExpectationInstead": "realized zone possessions must be exactly 0"
           },
           "VS_COHERENT_LOWER_CONTROL": {
-            "applicable": false,
-            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+            "applicable": true,
+            "control": {
+              "five": [
+                "jrue-20s",
+                "kawhi-10s",
+                "magic-80s",
+                "mcHale-80s",
+                "alonzo-90s"
+              ],
+              "summedRating": 1156,
+              "teamRating": 1156,
+              "summedSlotRating": 1090.585,
+              "displayOvr": [
+                86,
+                97,
+                99,
+                91,
+                89
+              ],
+              "targetRating": 1155.2,
+              "ratingError": 0.8,
+              "coherence": {
+                "checks": {
+                  "hasALeadCreator": true,
+                  "creationNotCollided": true,
+                  "hasSpacing": true,
+                  "hasRimProtection": true,
+                  "hasInteriorScoring": true,
+                  "hasAPasser": true
+                },
+                "satisfied": 6,
+                "total": 6,
+                "coherent": true,
+                "counts": {
+                  "creators": 3,
+                  "spacers": 2,
+                  "rimProtectors": 2,
+                  "posts": 3,
+                  "passers": 2
+                }
+              },
+              "anchors": {
+                "post": "alonzo-90s",
+                "rim": "mcHale-80s"
+              },
+              "coherentCandidatesFound": 984,
+              "admissibleCandidates": 984,
+              "achievedRatio": null,
+              "ratingErrorWithinTolerance": true,
+              "ratioTolerance": 0.08,
+              "rule": "anchor on the scarce coherence requirements (an interior scorer and a rim protector), fill the remaining slots by rating-targeted beam search one card per person, keep only fully coherent fives, then take the one closest to the target rating; all ordering deterministic by key then card id"
+            },
+            "achievedRatio": 0.80055,
+            "precondition": "control summed rating 1156 < fixture 1444",
+            "preconditionMet": true,
+            "coherencePrecondition": "the control must satisfy every coherence check, otherwise the surface is not testing coherent-versus-warped construction",
+            "coherencePreconditionMet": true
           },
-          "VS_TALENT_GAP_CONTROL": {
-            "applicable": false,
-            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          "VS_ROLE_MATCHED_UPGRADE": {
+            "applicable": true,
+            "upgrade": {
+              "five": [
+                "magic-80s",
+                "kawhi-10s",
+                "jordan-90s",
+                "barkley-90s",
+                "kg-00s"
+              ],
+              "slots": [
+                {
+                  "slot": "PG",
+                  "from": "isiah-90s",
+                  "to": "magic-80s",
+                  "fromRating": 125.58,
+                  "toRating": 379.92,
+                  "role": "Primary Creator",
+                  "roleMatch": "SECONDARY",
+                  "reachedTarget": true
+                },
+                {
+                  "slot": "SG",
+                  "from": "gary-90s",
+                  "to": "kawhi-10s",
+                  "fromRating": 242.29,
+                  "toRating": 284.54,
+                  "role": "Point-of-Attack Stopper",
+                  "roleMatch": "SECONDARY",
+                  "reachedTarget": false
+                },
+                {
+                  "slot": "SF",
+                  "from": "jordan-90s",
+                  "to": "jordan-90s",
+                  "fromRating": 586.08,
+                  "toRating": 586.08,
+                  "role": "Primary Creator",
+                  "roleMatch": "UNCHANGED",
+                  "reachedTarget": false,
+                  "reason": "the pool has no card legal at SF carrying the role \"Primary Creator\" with a higher slot rating"
+                },
+                {
+                  "slot": "PF",
+                  "from": "grant-90s",
+                  "to": "barkley-90s",
+                  "fromRating": 123.545,
+                  "toRating": 220.46,
+                  "role": "Primary Creator",
+                  "roleMatch": "PRIMARY",
+                  "reachedTarget": true
+                },
+                {
+                  "slot": "C",
+                  "from": "malone-90s",
+                  "to": "kg-00s",
+                  "fromRating": 259.35,
+                  "toRating": 285.25,
+                  "role": "Glass Cleaner",
+                  "roleMatch": "SECONDARY",
+                  "reachedTarget": false
+                }
+              ],
+              "factor": 1.75,
+              "ratingBefore": 1444,
+              "ratingAfter": 1897,
+              "achievedRatio": 1.31371,
+              "slotsUpgraded": 4,
+              "noSlotGotWorse": true,
+              "primaryRoleMatches": 1,
+              "rule": "per slot, the lowest-rated card that is legal in the slot, carries the original's primary functional role, is rated above the original, and reaches the target factor if any candidate does; primary-role matches preferred over secondary; ties by card id. A slot with no such card is left unchanged."
+            },
+            "strongSide": "UPGRADED",
+            "precondition": "the upgraded five's teamRating 1897 exceeds the fixture's 1444 by at least 1.25x, no slot got worse, and every slot kept its functional role",
+            "achievedRatio": 1.31371,
+            "preconditionMet": true
           }
         }
       },
@@ -1775,7 +3493,7 @@
         "purpose": "CROSS_ERA_TRANSLATION",
         "era": "1960s",
         "fixtureCoach": "phil-jackson",
-        "fixtureSummedRating": 368.18,
+        "fixtureSummedRating": 1901,
         "fixtureCoherence": {
           "checks": {
             "hasALeadCreator": true,
@@ -1808,12 +3526,142 @@
             "structuralExpectationInstead": "realized zone possessions must be exactly 0"
           },
           "VS_COHERENT_LOWER_CONTROL": {
-            "applicable": false,
-            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+            "applicable": true,
+            "control": {
+              "five": [
+                "walt-70s",
+                "kawhi-10s",
+                "bird-80s",
+                "kg-00s",
+                "rob-90s"
+              ],
+              "summedRating": 1521,
+              "teamRating": 1521,
+              "summedSlotRating": 1408.72,
+              "displayOvr": [
+                94,
+                97,
+                98,
+                97,
+                97
+              ],
+              "targetRating": 1520.8,
+              "ratingError": 0.2,
+              "coherence": {
+                "checks": {
+                  "hasALeadCreator": true,
+                  "creationNotCollided": true,
+                  "hasSpacing": true,
+                  "hasRimProtection": true,
+                  "hasInteriorScoring": true,
+                  "hasAPasser": true
+                },
+                "satisfied": 6,
+                "total": 6,
+                "coherent": true,
+                "counts": {
+                  "creators": 3,
+                  "spacers": 2,
+                  "rimProtectors": 2,
+                  "posts": 1,
+                  "passers": 3
+                }
+              },
+              "anchors": {
+                "post": "rob-90s",
+                "rim": "kg-00s"
+              },
+              "coherentCandidatesFound": 828,
+              "admissibleCandidates": 828,
+              "achievedRatio": null,
+              "ratingErrorWithinTolerance": true,
+              "ratioTolerance": 0.08,
+              "rule": "anchor on the scarce coherence requirements (an interior scorer and a rim protector), fill the remaining slots by rating-targeted beam search one card per person, keep only fully coherent fives, then take the one closest to the target rating; all ordering deterministic by key then card id"
+            },
+            "achievedRatio": 0.80011,
+            "precondition": "control summed rating 1521 < fixture 1901",
+            "preconditionMet": true,
+            "coherencePrecondition": "the control must satisfy every coherence check, otherwise the surface is not testing coherent-versus-warped construction",
+            "coherencePreconditionMet": true
           },
-          "VS_TALENT_GAP_CONTROL": {
-            "applicable": false,
-            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          "VS_ROLE_MATCHED_UPGRADE": {
+            "applicable": true,
+            "upgrade": {
+              "five": [
+                "magic-80s",
+                "jordan-90s",
+                "kawhi-10s",
+                "lebron-10s",
+                "wilt-60s"
+              ],
+              "slots": [
+                {
+                  "slot": "PG",
+                  "from": "oscar-60s",
+                  "to": "magic-80s",
+                  "fromRating": 251.1,
+                  "toRating": 379.92,
+                  "role": "Primary Creator",
+                  "roleMatch": "SECONDARY",
+                  "reachedTarget": false
+                },
+                {
+                  "slot": "SG",
+                  "from": "jordan-90s",
+                  "to": "jordan-90s",
+                  "fromRating": 585.43,
+                  "toRating": 585.43,
+                  "role": "Primary Creator",
+                  "roleMatch": "UNCHANGED",
+                  "reachedTarget": false,
+                  "reason": "the pool has no card legal at SG carrying the role \"Primary Creator\" with a higher slot rating"
+                },
+                {
+                  "slot": "SF",
+                  "from": "elgin-60s",
+                  "to": "kawhi-10s",
+                  "fromRating": 208.94,
+                  "toRating": 285.41,
+                  "role": "Slasher",
+                  "roleMatch": "SECONDARY",
+                  "reachedTarget": false
+                },
+                {
+                  "slot": "PF",
+                  "from": "lebron-10s",
+                  "to": "lebron-10s",
+                  "fromRating": 420.61,
+                  "toRating": 420.61,
+                  "role": "Primary Creator",
+                  "roleMatch": "UNCHANGED",
+                  "reachedTarget": false,
+                  "reason": "the pool has no card legal at PF carrying the role \"Primary Creator\" with a higher slot rating"
+                },
+                {
+                  "slot": "C",
+                  "from": "wilt-60s",
+                  "to": "wilt-60s",
+                  "fromRating": 344.86,
+                  "toRating": 344.86,
+                  "role": "Glass Cleaner",
+                  "roleMatch": "UNCHANGED",
+                  "reachedTarget": false,
+                  "reason": "the pool has no card legal at C carrying the role \"Glass Cleaner\" with a higher slot rating"
+                }
+              ],
+              "factor": 1.75,
+              "ratingBefore": 1901,
+              "ratingAfter": 2178,
+              "achievedRatio": 1.14571,
+              "slotsUpgraded": 2,
+              "noSlotGotWorse": true,
+              "primaryRoleMatches": 0,
+              "rule": "per slot, the lowest-rated card that is legal in the slot, carries the original's primary functional role, is rated above the original, and reaches the target factor if any candidate does; primary-role matches preferred over secondary; ties by card id. A slot with no such card is left unchanged."
+            },
+            "strongSide": "UPGRADED",
+            "precondition": "the upgraded five's teamRating 2178 exceeds the fixture's 1901 by at least 1.25x, no slot got worse, and every slot kept its functional role",
+            "achievedRatio": 1.14571,
+            "preconditionMet": false
           }
         }
       }
@@ -1821,7 +3669,7 @@
     "zoneDecidableFixtureCount": 9,
     "pass": true,
     "failedGates": [],
-    "surfacePlanHash": "e9c3913f708628206d1c6c68b1909e96f19a8cc1f005a4a57955ac6c530649df"
+    "surfacePlanHash": "9aaf2efaf09d47de8dae6d156ccdce966374fa37c73145c041af7265e2c7f122"
   },
-  "outputHash": "e06443198733fd4fa3f58ca1b852b890a062e41778f315cf2277000b6e1f7e7d"
+  "outputHash": "f189dc36cfc1f67b3b61818e7d84a716883f4374ae81bdd6b4be71cc40e495cd"
 }
