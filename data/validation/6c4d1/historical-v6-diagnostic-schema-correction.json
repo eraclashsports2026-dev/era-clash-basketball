@@ -1,0 +1,63 @@
+{
+  "artifact": "historical-v6-diagnostic-schema-correction",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run c3:preflight",
+  "generatedAt": "2026-08-27T21:42:53.683Z",
+  "gitCommit": "f60eee40216b7e873307f9ef9304ba2130c7637e",
+  "branch": "phase-6c4d1-candidate3-generalization-repair",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "hardFailDiagnosticSchemaVersion": "1.0.0",
+    "defect": {
+      "what": "the V6 cluster recorder read t.observed and t.reference; the trait records name those fields subjectMean and referenceMean.",
+      "consequence": "every cluster in the V6 formal record carries observed and reference as null, so its key reduced to (matchup, side, metric, surface, direction).",
+      "didItChangeTheV6Adjudication": false,
+      "proofFromThePriorPhase": "12 hard-fail labels · 8 clusters under the as-run key · 8 under the intended key with the real means · the gate requires 0"
+    },
+    "correction": {
+      "appliesFrom": "this register and every future hard-fail cluster recorder",
+      "neverAppliedTo": "Historical V6's stored verdict, gates, access event or results artifact — a consumed set is not rescored",
+      "requiredClusterFields": [
+        "matchupId",
+        "side",
+        "metricId",
+        "measurementSurface",
+        "expectedDirection",
+        "subjectMean",
+        "referenceMean",
+        "difference",
+        "practicalMargin",
+        "zScore"
+      ],
+      "traitSchemaFieldsObserved": [
+        "traitId",
+        "metric",
+        "direction",
+        "surface",
+        "subjectMean",
+        "referenceMean",
+        "diff",
+        "z",
+        "ci95",
+        "result",
+        "hardFail",
+        "practicalMargin",
+        "beyondPracticalMargin",
+        "statisticallyOpposite",
+        "indeterminate",
+        "reportedState"
+      ]
+    },
+    "enforcement": {
+      "nonNullMeansRequired": true,
+      "unknownFieldReadIsAHardFail": true,
+      "helper": "scripts/candidate3/clusterSchema.mjs validateHardFailCluster"
+    },
+    "pass": true
+  },
+  "outputHash": "4ec1fd7afa3c491c72d1fd82d5adea560a752398c7b068d363b71b50986042e3"
+}
