@@ -30,17 +30,35 @@ describe("6C4B1S — nothing was opened", () => {
       "no synthetic access log may exist").toBe(false);
   });
 
-  it("leaves Historical Holdout V5 sealed and unread at access zero", () => {
-    expect(setAccessCount("historical-holdout-v5")).toBe(0);
-    expect(existsSync(SEALED_SETS["historical-holdout-v5"])).toBe(false);
+  // Phase 6C4B2R legitimately opened Historical V5. This assertion always
+  // meant "THIS phase opened nothing", which stays true; the literal
+  // access-count zero stopped being true when a later phase opened the set.
+  // It becomes an attributability claim: the seal record for this phase says
+  // zero, and any opening is attributable to a later phase with an operator,
+  // a reason and a commit.
+  it("opened neither holdout, and records V5 at access zero for its own phase", () => {
+    expect(R("phase6c4b1s-preflight").data.historicalV5AccessCount).toBe(0);
+    expect(R("phase6c4b1s-preflight").data.syntheticV2AccessCount).toBe(0);
+    expect(R("phase6c4b1s-final-summary").data.whatWasNotDone.holdoutsOpened).toBe(0);
     expect(readArtifact("historical-holdout-v5-seal", B1).data.state).toBe("SEALED_UNREAD");
+    expect(setAccessCount("historical-holdout-v5"),
+      "a sealed set is opened at most once").toBeLessThanOrEqual(1);
   });
 
-  it("has produced no formal result artifact for either stage", () => {
+  it("produced no formal result artifact of its own", () => {
+    // this phase authored a package, never a result. Synthetic V2 must still be
+    // unopened, because the frozen stage order forbids opening it before a
+    // historical holdout passes — and none has.
     expect(artifactExists("synthetic-v2-results", DIR),
       "a results artifact would be mistaken for a verdict").toBe(false);
-    expect(artifactExists("historical-holdout-v5-results", B1)).toBe(false);
-    expect(artifactExists("candidate1-compound-formal-verdict", DIR)).toBe(false);
+    expect(setAccessCount("synthetic-stress-holdout-v2")).toBe(0);
+    expect(existsSync(SEALED_SETS["synthetic-stress-holdout-v2"])).toBe(false);
+    // a V5 results artifact, if one now exists, belongs to a LATER phase
+    if (artifactExists("historical-holdout-v5-results", B1)) {
+      const d = readArtifact("historical-holdout-v5-results", B1).data;
+      expect(d.accessCountBefore).toBe(0);
+      expect(d.accessEvent.openedAtCommit).toBeTruthy();
+    }
   });
 
   it("records that the package was prepared without any synthetic observation", () => {

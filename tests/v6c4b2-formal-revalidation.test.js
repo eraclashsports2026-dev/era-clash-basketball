@@ -19,10 +19,17 @@ const RB1 = (n) => readArtifact(n, B1);
 describe("6C4B2 — nothing was opened", () => {
   it("keeps every seal at its attributable count", () => assertSealDiscipline());
 
-  it("leaves Historical V5 sealed and unread at access zero", () => {
-    expect(setAccessCount("historical-holdout-v5")).toBe(0);
-    expect(existsSync(SEALED_SETS["historical-holdout-v5"]), "no V5 access log may exist").toBe(false);
+  // Phase 6C4B2R legitimately opened Historical V5. This assertion always
+  // meant "THIS phase opened nothing", which stays true; the literal
+  // access-count zero stopped being true when a later phase opened the set.
+  // It becomes an attributability claim: the seal record for this phase says
+  // zero, and any opening is attributable to a later phase with an operator,
+  // a reason and a commit.
+  it("opened Historical V5 zero times in THIS phase", () => {
+    expect(R("phase6c4b2-preflight").data.historicalV5AccessCount ?? 0).toBe(0);
     expect(RB1("historical-holdout-v5-seal").data.state).toBe("SEALED_UNREAD");
+    expect(setAccessCount("historical-holdout-v5"),
+      "a sealed set is opened at most once").toBeLessThanOrEqual(1);
   });
 
   it("leaves Synthetic Stress Holdout V2 sealed and unread at access zero", () => {
@@ -161,11 +168,15 @@ describe("6C4B2 — the second-stage blocker", () => {
     expect(existsSync("scripts/validation/synthetic-stress-holdout-v2.mjs")).toBe(true);
   });
 
-  it("still leaves both sets unopened, which is what the blocker was protecting", () => {
+  it("opened neither set itself, and Synthetic V2 is still unopened", () => {
     expect(b.holdoutsOpenedInThisPhase.historicalV5).toBe(0);
     expect(b.holdoutsOpenedInThisPhase.syntheticV2).toBe(0);
-    expect(setAccessCount("historical-holdout-v5")).toBe(0);
+    // the blocker's protection was that V5 not be spent while stage two was
+    // unusable. Stage two is now usable, so V5 could legitimately be opened
+    // afterwards; what must still hold is that Synthetic V2 stays sealed until
+    // a historical holdout PASSES.
     expect(setAccessCount("synthetic-stress-holdout-v2")).toBe(0);
+    expect(setAccessCount("historical-holdout-v5")).toBeLessThanOrEqual(1);
   });
 
   it("explains why V5 was not opened and why nothing was authored here", () => {
