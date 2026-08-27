@@ -22,6 +22,7 @@ import { personIdForCard } from "../../src/v3/data/persons.js";
 import { POOL_V4_SPEC } from "../../data/validation/corpus-v4-spec.mjs";
 import { NEW_V5_SPEC } from "../../data/validation/pool-v5-spec.mjs";
 import { POOL_V6_SPEC, POOL_V6_EXPANSION } from "../../data/validation/corpus-v6-spec.mjs";
+import { TRAIT_TABLE } from "../validation/traitRegistry.mjs";
 import { DIR, C1D, B1, B1S, B2R, git, sha } from "./reconcile.mjs";
 
 export const ERAS = Object.freeze(["1950s", "1960s", "1970s", "1980s", "1990s", "2000s", "2010s", "2020s"]);
@@ -37,6 +38,7 @@ export const ELIGIBILITY = Object.freeze({
     "Candidate 2 expected margin", "Candidate 2 probability", "any Candidate 2 result output",
     "similarity to Candidate 1's Historical V5 failures as a selection preference"],
   requirements: {
+    minScoreableTraits: 1,
     minProfiledPlayers: 5,
     minDocumentedStarters: 5,
     minPositionsCovered: 4,
@@ -44,6 +46,7 @@ export const ELIGIBILITY = Object.freeze({
     requireEraStyle: true,
     requireCoachIdentified: true,
     requireCoachNamedOnSeasonPage: true,
+    scoreableTraitNote: "a team-season with no scoring-eligible identity trait cannot be scored on any trait, so its side of a matchup would contribute only structural and numeric evidence. The V4 corpus builder already refused such a fixture; the first version of this policy omitted the rule and three selected sides had no scoreable trait at all.",
     coachNote: "coach identity is carried by the fixture spec rather than the player store, and is joined here on the canonical team-season key. Where the spec row exists, the coach must also have been verified as named on that season's own Wikipedia page at store-build time. A team-season with no resolvable, verified coach cannot be selected.",
   },
   hardExclusions: ["historical-calibration-v3", "historical-holdout-v3", "historical-holdout-v4",
@@ -203,6 +206,24 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     seenLineups.set(lineupKey(ids.map(person)), { origin: "CANDIDATE_2_CONTROL_FIXTURE", teamName: r, season: "n/a" });
   }
 
+  // Scoring eligibility comes from the Candidate 2 observability certification
+  // when it exists. Before it does, the policy still records the requirement and
+  // resolves it against the trait registry alone, so the field is never silently
+  // absent — an unresolvable requirement would pass every team by default.
+  const obsPath = `${DIR}/historical-v6-observability-certification.json`;
+  const obs = existsSync(obsPath) ? JSON.parse(readFileSync(obsPath, "utf8")).data : null;
+  const scoringEligible = obs
+    ? new Set(obs.traitEligibility.filter((t) => t.scoringEligibility).map((t) => t.traitId))
+    : new Set(Object.entries(TRAIT_TABLE).filter(([, t]) => t.claim?.metric).map(([id]) => id));
+  const traitBasis = obs ? "CANDIDATE_2_OBSERVABILITY_CERTIFICATION" : "TRAIT_REGISTRY_CLAIMS_ONLY";
+  const scoreableOf = (key) => {
+    const spec = specByKey.get(key) ?? null;
+    if (!spec?.identity) return { traits: [], metrics: [] };
+    const desc = [spec.identity.pace, spec.identity.offense, spec.identity.defense, ...(spec.identity.tags ?? [])];
+    const traits = desc.filter((d) => scoringEligible.has(d));
+    return { traits, metrics: [...new Set(traits.map((t) => TRAIT_TABLE[t]?.claim?.metric).filter(Boolean))] };
+  };
+
   // ── evaluate every team-season ──────────────────────────────────────────
   const rows = [];
   for (const t of universe.values()) {
@@ -220,6 +241,8 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     // coach named on that season's own page. Unverified is not a pass.
     if (t.fixtureId && specByFixture.has(t.fixtureId)
       && coachVerified.get(t.fixtureId)?.named !== true) reasons.push("COACH_NOT_VERIFIED_ON_SEASON_PAGE");
+    const sc = scoreableOf(t.key);
+    if (sc.traits.length < ELIGIBILITY.requirements.minScoreableTraits) reasons.push("NO_SCOREABLE_IDENTITY_TRAIT");
 
     // near-overlap against every seen lineup, on canonical people
     const mine = new Set(t.people);
@@ -232,6 +255,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     else if (worst.shared === 4) reasons.push("FOUR_OF_FIVE_LINEUP_PROXY");
 
     rows.push({ ...t, players: undefined, documentedStarters: starters.length,
+      scoreableTraits: sc.traits, scoreableMetrics: sc.metrics,
       positionsCovered: slots.size, lowConfidenceProfiles: lowConf,
       profiledPlayers: t.people.length,
       nearestSeenLineup: worst, exclusionReasons: [...new Set(reasons)],
@@ -281,9 +305,19 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   gate("minimumPairsPerEra", ERAS.every((e) => pairsByEra[e] >= 2),
     ERAS.map((e) => `${e} ${pairsByEra[e]}`).join(", "));
   gate("everyEraRepresented", ERAS.every((e) => byEra[e] > 0), `${ERAS.filter((e) => byEra[e] > 0).length}/8 eras`);
+  gate("everyEligibleTeamHasAScoreableTrait", eligible.every((x) => x.scoreableTraits.length >= 1),
+    `${eligible.length} eligible teams, fewest scoreable traits on any one of them ${eligible.length ? Math.min(...eligible.map((x) => x.scoreableTraits.length)) : 0} · basis ${traitBasis}`);
+  gate("poolCoversBothRepairedMechanisms",
+    eligible.some((x) => x.scoreableMetrics.includes("assistedRate"))
+    && eligible.some((x) => x.scoreableMetrics.includes("refPppVsTeam")),
+    `assistedRate claimed by ${eligible.filter((x) => x.scoreableMetrics.includes("assistedRate")).length} teams, refPppVsTeam by ${eligible.filter((x) => x.scoreableMetrics.includes("refPppVsTeam")).length} — the pool must be able to observe both mechanisms 6C4C1 repaired, or selection cannot cover them`);
 
   const policyPayload = {
-    historicalV6EligibilityPolicyVersion: "1.0.0",
+    historicalV6EligibilityPolicyVersion: "2.0.0",
+    supersedes: { version: "1.0.0", artifact: `${DIR}/superseded/historical-v6-eligibility-policy-v1.json`,
+      whatChanged: "adds minScoreableTraits. Version 1 omitted the rule the V4 corpus builder already had, so three of the sixteen sides the first selection chose had no scoring-eligible identity trait at all. No V6 game had been played when this was found, so nothing here is result-aware.",
+      notOverwritten: true },
+    scoringEligibilityBasis: traitBasis,
     frozenBeforeSelection: true,
     ...ELIGIBILITY,
     exclusionSetsResolved: {
@@ -296,6 +330,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       seenTeamSeasonKeys: seenTeamSeasons.size, seenLineupKeys: seenLineups.size,
     },
     universeSources: storeStats,
+    scoringEligibilityBasis: traitBasis,
     universeNote: "the corpus and the prior holdout manifests supply the exclusion set; the calibration player stores supply the candidates. A universe of consumed team-seasons alone yields 0 eligible, which is what the corrected policy returned before the stores were read.",
     priorPhaseDefectCorrected: {
       what: "Phase 6C4C1's pool added the calibration and Historical V3 exclusion lists as raw fixture ids while keying candidate rows as team-name-and-season, so neither exclusion could ever match.",
@@ -313,7 +348,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     generationCommand: "npm run v6:eligibility", dir: DIR, extra: { parameterSetHash: def.parameterSetHash } });
 
   const poolPayload = {
-    historicalV6PoolVersion: "2.0.0",
+    historicalV6PoolVersion: "3.0.0",
     supersedes: { artifact: `${C1D}/historical-v6-candidate-pool.json`, version: "1.0.0",
       why: policyPayload.priorPhaseDefectCorrected.what, notOverwritten: true },
     eligibilityPolicyHash: policyPayload.policyHash,

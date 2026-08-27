@@ -3,22 +3,15 @@
   "schemaVersion": "1.0.0",
   "measurementGovernanceVersion": "1.0.0",
   "generationCommand": "npm run v6:eligibility",
-  "generatedAt": "2026-08-27T19:57:18.681Z",
-  "gitCommit": "f8b7d7573e8e4e21742d6b36610433b458fbe5b4",
+  "generatedAt": "2026-08-27T19:36:01.735Z",
+  "gitCommit": "71a89a150ded4e22023667ad3339b2055151fa35",
   "branch": "phase-6c4c2-v6-freeze-and-seal",
   "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
   "registryVersion": "2.0.0",
   "bindingVersion": "1.0.0",
   "sourceArtifactHashes": {},
   "data": {
-    "historicalV6EligibilityPolicyVersion": "2.0.0",
-    "supersedes": {
-      "version": "1.0.0",
-      "artifact": "data/validation/6c4c2/superseded/historical-v6-eligibility-policy-v1.json",
-      "whatChanged": "adds minScoreableTraits. Version 1 omitted the rule the V4 corpus builder already had, so three of the sixteen sides the first selection chose had no scoring-eligible identity trait at all. No V6 game had been played when this was found, so nothing here is result-aware.",
-      "notOverwritten": true
-    },
-    "scoringEligibilityBasis": "CANDIDATE_2_OBSERVABILITY_CERTIFICATION",
+    "historicalV6EligibilityPolicyVersion": "1.0.0",
     "frozenBeforeSelection": true,
     "allowedInputs": [
       "team-season identity",
@@ -48,7 +41,6 @@
       "similarity to Candidate 1's Historical V5 failures as a selection preference"
     ],
     "requirements": {
-      "minScoreableTraits": 1,
       "minProfiledPlayers": 5,
       "minDocumentedStarters": 5,
       "minPositionsCovered": 4,
@@ -56,7 +48,6 @@
       "requireEraStyle": true,
       "requireCoachIdentified": true,
       "requireCoachNamedOnSeasonPage": true,
-      "scoreableTraitNote": "a team-season with no scoring-eligible identity trait cannot be scored on any trait, so its side of a matchup would contribute only structural and numeric evidence. The V4 corpus builder already refused such a fixture; the first version of this policy omitted the rule and three selected sides had no scoreable trait at all.",
       "coachNote": "coach identity is carried by the fixture spec rather than the player store, and is joined here on the canonical team-season key. Where the spec row exists, the coach must also have been verified as named on that season's own Wikipedia page at store-build time. A team-season with no resolvable, verified coach cannot be selected."
     },
     "hardExclusions": [
@@ -149,7 +140,7 @@
       "lineupKey": "the sorted, de-duplicated set of canonical person ids",
       "personResolution": "calibration-player ids resolve to their person segment; public card ids resolve through the person store"
     },
-    "policyHash": "b74c01b11abf5b1446fa14b2b13e2f0d226bde53893add5241d53f9ebad43439"
+    "policyHash": "303f37e023c3d4ea116478ff61f904f79c84a2b308f10cfb83229b544b734275"
   },
-  "outputHash": "f5845693ff366b684aa2e7d8da9e4710b3fb8a0eeb6a5b322f2506acdb0738ad"
+  "outputHash": "e5f2f317986e02f19608ed023767e318c3d42ae5784699cfc7a0ae6e07bbe3a3"
 }

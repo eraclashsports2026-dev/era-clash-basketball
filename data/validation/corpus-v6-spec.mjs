@@ -38,7 +38,7 @@ export const TEAM_ALIASES_V6 = Object.freeze({
   MIN_TWOLVES: ["Minnesota", "Minnesota Timberwolves"],
 });
 
-export const POOL_V6_SPEC = Object.freeze([
+const POOL_V6_SPEC_RAW = Object.freeze([
   // ── 1950s: gap +2 ────────────────────────────────────────────────────────
   { fixtureId: "v6-1952-53-lakers", eraStyleId: "1950s", teamId: "MIN_LAKERS", teamName: "Minneapolis Lakers",
     seasonStartYear: 1952, season: "1952-53", teamArticle: "1952–53 Minneapolis Lakers season",
@@ -124,7 +124,7 @@ export const POOL_V6_SPEC = Object.freeze([
  * the person played for that team that season. Where it refuses, the profile is
  * unresolved and the team-season drops out — it is never filled in.
  */
-export const POOL_V6_EXPANSION = Object.freeze([
+const POOL_V6_EXPANSION_RAW = Object.freeze([
   // ── 1950s ────────────────────────────────────────────────────────────────
   { fixtureId: "v6x-1950-51-celtics", eraStyleId: "1950s", teamId: "BOS", teamName: "Boston Celtics",
     seasonStartYear: 1950, season: "1950-51", teamArticle: "1950–51 Boston Celtics season",
@@ -305,6 +305,113 @@ export const V6_NAME_CORRECTIONS = Object.freeze([
     why: "Satch Sanders was drafted in 1960, so 1960-61 was his first season and he is not named on the 1959-60 Boston Celtics season page. Jim Loscutoff is named there and resolves from his own career table. A second roster correction, found the same way: the adapter refused rather than substituting a near match." },
 ]);
 
+/**
+ * Documented prose to controlled vocabulary.
+ *
+ * The trait registry is keyed by the descriptor STRING, so a style written as
+ * free prose is unscoreable: it resolves to no trait, no metric and no claim.
+ * Wave two was written in prose, and the result was that 50 of the 92
+ * descriptors across the selected sides matched nothing in the registry and
+ * three sides had no scoreable trait at all. That is a defect in this file, not
+ * in the registry.
+ *
+ * Every entry below is a translation of my own prose into the nearest existing
+ * registry term. It is applied mechanically and identically to every wave-two
+ * row, so no team gets a claim another team with the same documented style
+ * would not get. A prose term with no registry equivalent maps to null and is
+ * dropped rather than approximated — GUARD_HEAVY, PHYSICAL and WING_HEAVY
+ * describe rosters the registry has no metric for, and inventing one would be
+ * scoring a number nothing produces.
+ *
+ * The original prose is preserved on each row as `documentedStyle`. Nothing is
+ * rewritten away; the identity field is the scoreable projection of it.
+ */
+export const STYLE_TO_REGISTRY = Object.freeze({
+  pace: {
+    "extreme fast": "very fast", average: "moderate", balanced: "moderate",
+  },
+  offense: {
+    "guard-driven fast break": "fast break, early offence",
+    "fast break": "fast break, early offence",
+    "free-flowing high volume": "fast break and early offence",
+    "wing attack and transition": "fast break and early offence",
+    "transition and rim attack": "fast break and early offence",
+    "transition and short-roll passing": "fast break and early offence",
+    "isolation and transition": "isolation and post-up in the half court",
+    "structured isolation": "isolation and post-up in the half court",
+    "high-post isolation with spacing": "isolation and post-up in the half court",
+    "wing-centred": "isolation and post-up in the half court",
+    "passing motion": "motion, ball movement, high-post passing",
+    "passing motion, no set plays": "motion, ball movement, high-post passing",
+    "movement and mismatch hunting": "motion and cutting",
+    "corner-cut motion into the post": "motion and cutting",
+    "corner-cut motion": "motion and cutting",
+    "mid-range motion": "half-court motion and passing",
+    "off-ball shooting and post": "movement shooting off screens",
+    "post and wing": "post entry to a dominant centre",
+    "inside-out, four-out spacing": "post-up centre with perimeter spacing",
+    "pick and roll flex": "the canonical pick-and-roll",
+    "pick and roll with five-out spacing": "pick-and-roll around a lead guard",
+    "post-centred": "post-centred, interior scoring",
+    "fast break and movement": "fast break and early offence",
+    "movement and passing": "half-court motion and passing",
+    "pick-and-roll driven": "the canonical pick-and-roll",
+    "half-court execution": "half-court execution, elite passing front line",
+  },
+  defense: {
+    man: "disciplined man",
+    "athletic man": "disciplined man",
+    "team man with pressure": "pressure man with help",
+    "gambling man": "gambling man defence",
+    "man with a shot-blocking centre": "rim-anchored man",
+    "rim-anchored drop": "drop coverage with a rim anchor",
+    "drop-coverage man": "drop coverage with a rim anchor",
+    "zone-mixing man": "zone-capable, scheme-heavy",
+    "help man": "help-heavy man",
+    "scheme-heavy help man": "help-heavy man",
+    "team man": "disciplined team man",
+    "positional man": "disciplined man",
+  },
+  tags: {
+    BALL_MOVEMENT: "PASSING_HUB", MOVEMENT: "MOTION", OFF_BALL_SHOOTING: "MOTION",
+    STRONG_REBOUNDING: "STRONG_OFFENSIVE_REBOUNDING", POST_PRESENCE: "POST_HEAVY",
+    INSIDE_OUT: "POST_HEAVY", ISOLATION: "ISOLATION_HEAVY", SLOW_PACE: "SLOW_HALF_COURT",
+    HIGH_THREE_VOLUME: "THREE_POINT_HEAVY", LOW_THREE_VOLUME: "LOW_THREE_POINT",
+    POOR_PERIMETER_SHOOTING: "LOW_THREE_POINT", ZONE_MIXING: "ZONE_CAPABLE",
+    // no registry trait, and no metric that could score one: dropped, not approximated
+    GUARD_HEAVY: null, PHYSICAL: null, WING_HEAVY: null, PERIMETER_PRESSURE: null,
+    WEAK_DEFENSE: null, HELP_DEFENSE: null, RIM_PROTECTION: null, SPACING: null,
+    RIM_ATTACK: null, HIGH_VOLUME: null, WEAK_INTERIOR_DEFENSE: null, MID_RANGE: null,
+    STRONG_DEFENSIVE_REBOUNDING: null, BALANCED: null, MISMATCH_HUNTING: null,
+    EFFICIENT_SHOOTING: null,
+    PASSING: "PASSING_HUB", HALF_COURT: "SLOW_HALF_COURT",
+    // STRONG_DEFENSE is deliberately NOT mapped to ELITE_DEFENSE. The registry's
+    // only claim-bearing defensive-quality trait is ELITE, and promoting "strong"
+    // to "elite" would strengthen a documented claim to make it scoreable.
+    STRONG_DEFENSE: null,
+  },
+});
+
+const project = (identity) => {
+  const m = STYLE_TO_REGISTRY;
+  const tags = [...new Set((identity.tags ?? [])
+    .map((t) => (t in m.tags ? m.tags[t] : t)).filter(Boolean))];
+  return Object.freeze({
+    pace: m.pace[identity.pace] ?? identity.pace,
+    offense: m.offense[identity.offense] ?? identity.offense,
+    defense: m.defense[identity.defense] ?? identity.defense,
+    tags,
+  });
+};
+
+/**
+ * Wave-two rows, and the two wave-one rows still in the pool, with their
+ * identity projected onto the registry vocabulary and their prose retained.
+ */
+export const projectIdentities = (rows) => Object.freeze(rows.map((f) => Object.freeze({
+  ...f, documentedStyle: f.identity, identity: project(f.identity),
+})));
+
 export const V6_SPEC_RATIONALE = Object.freeze({
   gapClosed: { "1950s": 2, "1960s": 1, "1970s": 1, "1980s": 1, "2000s": 1, "2010s": 1 },
   selectionCriteria: ["unused in every prior set", "coach resolves to a repository coach id",
@@ -316,3 +423,6 @@ export const V6_SPEC_RATIONALE = Object.freeze({
     "scheme-heavy defence with slow pace (2011-12 Bulls)", "fast break (1959-60 and 1965-66 Celtics)",
     "post-centred (1952-53 Lakers)", "movement and passing (1974-75 Celtics)"],
 });
+
+export const POOL_V6_SPEC = projectIdentities(POOL_V6_SPEC_RAW);
+export const POOL_V6_EXPANSION = projectIdentities(POOL_V6_EXPANSION_RAW);

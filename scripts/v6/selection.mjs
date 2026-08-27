@@ -22,8 +22,27 @@ import { POOL_V4_SPEC } from "../../data/validation/corpus-v4-spec.mjs";
 import { NEW_V5_SPEC } from "../../data/validation/pool-v5-spec.mjs";
 
 /** The frozen selection rule. Source characteristics only, no outputs. */
+/**
+ * The two mechanisms Phase 6C4C1 repaired, and therefore the two a Historical V6
+ * verdict has to be able to observe. Version 1 of this policy did not require
+ * coverage, and its selection covered NEITHER: the preference order maximised
+ * tactical distance and freshness, which happened to pass over every pool team
+ * carrying an assistedRate or refPppVsTeam claim. A holdout that cannot observe
+ * the repair cannot validate it — V6 would have been a weaker test than the V5
+ * it replaces, on exactly the two metrics V5 failed.
+ */
+export const REQUIRED_METRIC_COVERAGE = Object.freeze([
+  { metric: "assistedRate", repairedBy: "c2-01/c2-02 assisted-offense movement lift",
+    v5Failure: "ASSISTED_OFFENSE_EXPRESSION cluster, v5m-2000s teamB" },
+  { metric: "refPppVsTeam", repairedBy: "c2-03 defensive help suppression and scheme transfer",
+    v5Failure: "DEFENSIVE_SUPPRESSION cluster, v5m-2020s teamA" },
+]);
+
 export const SELECTION = Object.freeze({
-  historicalV6SelectionPolicyVersion: "1.0.0",
+  historicalV6SelectionPolicyVersion: "2.0.0",
+  supersedes: { version: "1.0.0", artifact: "superseded/historical-v6-selection-policy-v1.json",
+    whatChanged: "adds a scoreable-trait constraint per side and whole-selection coverage of both repaired mechanisms, plus a metric-breadth preference. Version 1's selection covered neither repaired mechanism and included three sides with no scoreable trait. Found before any V6 game was played, so nothing here is result-aware.",
+    notOverwritten: true },
   shape: { matchups: 8, oneMatchupPerEraStyle: true, distinctTeamSeasons: 16,
     bothSidesSameEraStyle: true,
     whySameEra: "an Era Style matchup tests that era's construction against itself. Cross-era pairing would confound the era rules with the roster comparison, and Historical V5 was built the same way." },
@@ -34,6 +53,8 @@ export const SELECTION = Object.freeze({
     "the two sides have different coaches",
     "no team-season appears in more than one matchup",
     "every Era Style receives exactly one matchup",
+    "every selected side has at least one scoring-eligible identity trait",
+    "the sixteen selected sides together claim every metric in REQUIRED_METRIC_COVERAGE",
   ],
   /**
    * Applied in order. Every term is a source characteristic. Higher is better;
@@ -50,10 +71,19 @@ export const SELECTION = Object.freeze({
     { key: "coachDistinctnessAcrossSelection", direction: "MAXIMISE",
       what: "1 if neither coach already appears in an earlier-era selection, else 0",
       why: "spreads coach identity across the set instead of concentrating it." },
+    { key: "newMetricCoverage", direction: "MAXIMISE",
+      what: "count of certified metrics this pair claims that no earlier-era selection already claims",
+      why: "spreads the scored metrics across the set instead of testing pace eight times. Eras are processed in fixed chronological order, so this term is deterministic." },
     { key: "sourceCompleteness", direction: "MAXIMISE",
       what: "count of profiles across both sides at MEDIUM_HIGH confidence",
       why: "prefer the better-sourced pair when the preceding terms tie." },
   ],
+  coverageRepair: {
+    when: "the per-era preference pass leaves a REQUIRED_METRIC_COVERAGE metric unclaimed by all sixteen sides",
+    how: "for each uncovered metric, every era and every valid pair in that era that would cover it is enumerated with the rank it holds in its own era's preference ordering. The substitution with the smallest rank loss is applied, tie-broken by chronological era order then by the pair's tie hash. Repeat until covered or no pair can cover it.",
+    why: "the constraint is on the selection as a whole, so it cannot be enforced by a per-era greedy pass. Minimising rank loss keeps the deviation from the preference order as small as the constraint allows, and the enumeration is total so the repair is reorder-stable like the rest.",
+    ifImpossible: "SELECTION_CANNOT_COVER_REPAIRED_MECHANISM — a hard failure, not a waiver. It would mean the pool cannot observe the repair, which is a pool defect to fix before sealing.",
+  },
   tieBreak: {
     rule: "sha256 of `${eraStyleId}|${keyA}|${keyB}` with the two keys sorted, compared as a hex string, lowest wins",
     why: "a total order that depends only on identity, so it is stable under any input permutation and cannot be steered by a result.",
@@ -81,10 +111,13 @@ export const tacticalDistance = (a, b) => {
 };
 
 /** The lexicographic score vector for a candidate pair. */
-export const scorePair = (a, b, coachesUsed) => [
+export const pairMetrics = (a, b) => [...new Set([...(a.scoreableMetrics ?? []), ...(b.scoreableMetrics ?? [])])];
+
+export const scorePair = (a, b, coachesUsed, metricsUsed) => [
   tacticalDistance(a, b),
   10 - ((a.sharedWithNearestSeenLineup ?? 0) + (b.sharedWithNearestSeenLineup ?? 0)),
   (coachesUsed.has(a.coachId) || coachesUsed.has(b.coachId)) ? 0 : 1,
+  pairMetrics(a, b).filter((m) => !metricsUsed.has(m)).length,
   (a.mediumHighProfiles ?? 0) + (b.mediumHighProfiles ?? 0),
 ];
 
@@ -95,31 +128,79 @@ const cmp = (x, y) => { for (let i = 0; i < x.length; i += 1) if (x[i] !== y[i])
  * depend on it, because every era's pairs are fully enumerated and reduced by a
  * total order whose final term is a hash of identity alone.
  */
-export const select = (teams) => {
-  const chosen = [], coachesUsed = new Set(), used = new Set();
-  for (const era of ERAS) {
-    const pool = teams.filter((t) => t.era === era && !used.has(t.key));
-    let best = null;
-    for (let i = 0; i < pool.length; i += 1) {
-      for (let j = i + 1; j < pool.length; j += 1) {
-        const [a, b] = [pool[i], pool[j]];
-        if (a.teamId === b.teamId) continue;              // same franchise
-        if (a.coachId === b.coachId) continue;            // same coach
-        const [k1, k2] = [a.key, b.key].sort();
-        const cand = { era, a, b, score: scorePair(a, b, coachesUsed), tie: H(`${era}|${k1}|${k2}`) };
-        if (!best) { best = cand; continue; }
-        const c = cmp(cand.score, best.score);
-        if (c < 0 || (c === 0 && cand.tie < best.tie)) best = cand;
-      }
+/** Every valid pair in one era, fully enumerated and totally ordered. */
+const rankedPairs = (teams, era, coachesUsed, metricsUsed) => {
+  const pool = teams.filter((t) => t.era === era);
+  const out = [];
+  for (let i = 0; i < pool.length; i += 1) {
+    for (let j = i + 1; j < pool.length; j += 1) {
+      const [a, b] = [pool[i], pool[j]];
+      if (a.teamId === b.teamId) continue;                                  // same franchise
+      if (a.coachId === b.coachId) continue;                                // same coach
+      if (!(a.scoreableTraits ?? []).length || !(b.scoreableTraits ?? []).length) continue;
+      const [k1, k2] = [a.key, b.key].sort();
+      out.push({ era, a, b, score: scorePair(a, b, coachesUsed, metricsUsed), tie: H(`${era}|${k1}|${k2}`) });
     }
+  }
+  out.sort((x, y) => cmp(x.score, y.score) || (x.tie < y.tie ? -1 : x.tie > y.tie ? 1 : 0));
+  return out;
+};
+
+/**
+ * Deterministic selection. `teams` may arrive in any order; the result cannot
+ * depend on it, because every era's pairs are fully enumerated and reduced by a
+ * total order whose final term is a hash of identity alone. The coverage repair
+ * is enumerated the same way, so it is reorder-stable too.
+ */
+export const select = (teams) => {
+  const chosen = [], coachesUsed = new Set(), metricsUsed = new Set(), used = new Set();
+  const ranked = {};
+  for (const era of ERAS) {
+    const rp = rankedPairs(teams.filter((t) => !used.has(t.key)), era, coachesUsed, metricsUsed);
+    ranked[era] = rp;
+    const best = rp[0] ?? null;
     if (!best) { chosen.push({ era, unsatisfiable: true }); continue; }
-    // orient the sides by sorted key so A and B are identity-determined too
     const [sa, sb] = [best.a, best.b].sort((x, y) => (x.key < y.key ? -1 : 1));
-    chosen.push({ era, teamA: sa, teamB: sb, score: best.score, tieHash: best.tie });
+    chosen.push({ era, teamA: sa, teamB: sb, score: best.score, tieHash: best.tie, rankInEra: 0 });
     used.add(sa.key); used.add(sb.key);
     coachesUsed.add(sa.coachId); coachesUsed.add(sb.coachId);
+    for (const m of pairMetrics(sa, sb)) metricsUsed.add(m);
   }
-  return chosen;
+
+  // ── coverage repair ─────────────────────────────────────────────────────
+  const repairs = [];
+  const covered = () => new Set(chosen.filter((c) => !c.unsatisfiable)
+    .flatMap((c) => pairMetrics(c.teamA, c.teamB)));
+  for (const req of REQUIRED_METRIC_COVERAGE) {
+    if (covered().has(req.metric)) continue;
+    // every (era, pair) that would cover it, with the rank it holds in its era
+    const options = [];
+    for (const [ei, era] of ERAS.entries()) {
+      const rp = rankedPairs(teams, era, new Set(), new Set());   // era-local ordering
+      for (const [rank, cand] of rp.entries()) {
+        if (!pairMetrics(cand.a, cand.b).includes(req.metric)) continue;
+        options.push({ era, eraIndex: ei, rank, cand });
+      }
+    }
+    options.sort((x, y) => x.rank - y.rank || x.eraIndex - y.eraIndex
+      || (x.cand.tie < y.cand.tie ? -1 : x.cand.tie > y.cand.tie ? 1 : 0));
+    const pick = options[0] ?? null;
+    if (!pick) { repairs.push({ metric: req.metric, applied: false, reason: "SELECTION_CANNOT_COVER_REPAIRED_MECHANISM" }); continue; }
+    const slot = chosen.findIndex((c) => c.era === pick.era);
+    const before = chosen[slot];
+    const [sa, sb] = [pick.cand.a, pick.cand.b].sort((x, y) => (x.key < y.key ? -1 : 1));
+    chosen[slot] = { era: pick.era, teamA: sa, teamB: sb, score: pick.cand.score,
+      tieHash: pick.cand.tie, rankInEra: pick.rank, coverageRepaired: req.metric };
+    repairs.push({ metric: req.metric, applied: true, era: pick.era, rankLoss: pick.rank,
+      replaced: before.unsatisfiable ? null : `${before.teamA.key} vs ${before.teamB.key}`,
+      with: `${sa.key} vs ${sb.key}` });
+  }
+  // a repair may have introduced a team-season already used in another era; with
+  // one matchup per era and eras disjoint by construction this cannot happen,
+  // but assert it rather than trust it
+  const keys = chosen.filter((c) => !c.unsatisfiable).flatMap((c) => [c.teamA.key, c.teamB.key]);
+  const duplicated = keys.length !== new Set(keys).size;
+  return Object.assign(chosen, { coverageRepairs: repairs, duplicatedAfterRepair: duplicated });
 };
 
 /** A deterministic permutation, so the stability proof needs no randomness. */
@@ -167,6 +248,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     const spec = specByKey.get(`${t.teamName}|${t.season}`) ?? null;
     const prof = profiles.filter((p) => p.teamName === t.teamName && p.season === t.season);
     return { ...t, identity: spec?.identity ?? null,
+      scoreableTraits: t.scoreableTraits ?? [], scoreableMetrics: t.scoreableMetrics ?? [],
       sharedWithNearestSeenLineup: byKey.get(t.key)?.sharedWithNearestSeenLineup ?? 0,
       mediumHighProfiles: prof.filter((p) => p.confidence === "MEDIUM_HIGH").length };
   });
@@ -213,11 +295,23 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     "every selected side carries zero exclusion reasons in the frozen pool");
   gate("everySideOutputBlind", ok.every((c) => [c.teamA, c.teamB].every((t) => t.candidate2SimulationsUsed === 0)),
     "zero Candidate 2 simulations against any selected team-season");
+  const coveredMetrics = new Set(ok.flatMap((c) => pairMetrics(c.teamA, c.teamB)));
+  gate("everySideHasAScoreableTrait",
+    ok.every((c) => [c.teamA, c.teamB].every((t) => (t.scoreableTraits ?? []).length >= 1)),
+    `fewest scoreable traits on any selected side: ${Math.min(...ok.flatMap((c) => [c.teamA, c.teamB]).map((t) => (t.scoreableTraits ?? []).length))}`);
+  gate("bothRepairedMechanismsCovered",
+    REQUIRED_METRIC_COVERAGE.every((r) => coveredMetrics.has(r.metric)),
+    REQUIRED_METRIC_COVERAGE.map((r) => `${r.metric} ${coveredMetrics.has(r.metric) ? "covered" : "NOT COVERED"}`).join(", ")
+    + ` — version 1 of this policy covered neither`);
+  gate("noDuplicateTeamSeasonAfterCoverageRepair", chosen.duplicatedAfterRepair === false,
+    `${chosen.coverageRepairs.filter((r) => r.applied).length} coverage repairs applied, no team-season used twice`);
+  gate("metricBreadth", coveredMetrics.size >= 4,
+    `${coveredMetrics.size} distinct certified metrics claimed across the eight matchups: ${[...coveredMetrics].sort().join(", ")}`);
   gate("reorderStable", perms.every((p) => p.identical),
     `${perms.filter((p) => p.identical).length}/8 deterministic permutations reproduce the selection exactly`);
 
   const payload = {
-    historicalV6SelectionVersion: "1.0.0",
+    historicalV6SelectionVersion: "2.0.0",
     selectionPolicyHash: policyPayload.selectionPolicyHash,
     eligibilityPolicyHash: pool.eligibilityPolicyHash, poolHash: pool.poolHash,
     candidate2OutputUsed: false, candidate2SimulationsUsedForSelection: 0,
@@ -228,8 +322,14 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       teamB: { key: c.teamB.key, teamId: c.teamB.teamId, teamName: c.teamB.teamName,
         season: c.teamB.season, coachId: c.teamB.coachId, fixtureId: c.teamB.fixtureId },
       tacticalDistance: tacticalDistance(c.teamA, c.teamB),
+      scoreableMetrics: pairMetrics(c.teamA, c.teamB),
+      scoredTraits: { teamA: c.teamA.scoreableTraits ?? [], teamB: c.teamB.scoreableTraits ?? [] },
+      coverageRepaired: c.coverageRepaired ?? null, rankInEra: c.rankInEra ?? null,
       scoreVector: c.score, scoreKeys: SELECTION.preferenceOrder.map((p) => p.key), tieHash: c.tieHash,
     })),
+    requiredMetricCoverage: REQUIRED_METRIC_COVERAGE.map((r) => ({ ...r, covered: coveredMetrics.has(r.metric) })),
+    coveredMetrics: [...coveredMetrics].sort(),
+    coverageRepairs: chosen.coverageRepairs,
     reorderStability: { permutationsTested: perms.length, allIdentical: perms.every((p) => p.identical),
       baseFingerprint: base, permutations: perms,
       method: "each permutation orders the pool by sha256(salt|key), so the test needs no randomness and reproduces byte-identically" },

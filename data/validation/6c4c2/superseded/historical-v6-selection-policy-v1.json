@@ -3,21 +3,15 @@
   "schemaVersion": "1.0.0",
   "measurementGovernanceVersion": "1.0.0",
   "generationCommand": "npm run v6:selection",
-  "generatedAt": "2026-08-27T19:58:24.603Z",
-  "gitCommit": "f8b7d7573e8e4e21742d6b36610433b458fbe5b4",
+  "generatedAt": "2026-08-27T19:36:12.001Z",
+  "gitCommit": "71a89a150ded4e22023667ad3339b2055151fa35",
   "branch": "phase-6c4c2-v6-freeze-and-seal",
   "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
   "registryVersion": "2.0.0",
   "bindingVersion": "1.0.0",
   "sourceArtifactHashes": {},
   "data": {
-    "historicalV6SelectionPolicyVersion": "2.0.0",
-    "supersedes": {
-      "version": "1.0.0",
-      "artifact": "superseded/historical-v6-selection-policy-v1.json",
-      "whatChanged": "adds a scoreable-trait constraint per side and whole-selection coverage of both repaired mechanisms, plus a metric-breadth preference. Version 1's selection covered neither repaired mechanism and included three sides with no scoreable trait. Found before any V6 game was played, so nothing here is result-aware.",
-      "notOverwritten": true
-    },
+    "historicalV6SelectionPolicyVersion": "1.0.0",
     "shape": {
       "matchups": 8,
       "oneMatchupPerEraStyle": true,
@@ -31,9 +25,7 @@
       "the two sides are different franchises",
       "the two sides have different coaches",
       "no team-season appears in more than one matchup",
-      "every Era Style receives exactly one matchup",
-      "every selected side has at least one scoring-eligible identity trait",
-      "the sixteen selected sides together claim every metric in REQUIRED_METRIC_COVERAGE"
+      "every Era Style receives exactly one matchup"
     ],
     "preferenceOrder": [
       {
@@ -55,24 +47,12 @@
         "why": "spreads coach identity across the set instead of concentrating it."
       },
       {
-        "key": "newMetricCoverage",
-        "direction": "MAXIMISE",
-        "what": "count of certified metrics this pair claims that no earlier-era selection already claims",
-        "why": "spreads the scored metrics across the set instead of testing pace eight times. Eras are processed in fixed chronological order, so this term is deterministic."
-      },
-      {
         "key": "sourceCompleteness",
         "direction": "MAXIMISE",
         "what": "count of profiles across both sides at MEDIUM_HIGH confidence",
         "why": "prefer the better-sourced pair when the preceding terms tie."
       }
     ],
-    "coverageRepair": {
-      "when": "the per-era preference pass leaves a REQUIRED_METRIC_COVERAGE metric unclaimed by all sixteen sides",
-      "how": "for each uncovered metric, every era and every valid pair in that era that would cover it is enumerated with the rank it holds in its own era's preference ordering. The substitution with the smallest rank loss is applied, tie-broken by chronological era order then by the pair's tie hash. Repeat until covered or no pair can cover it.",
-      "why": "the constraint is on the selection as a whole, so it cannot be enforced by a per-era greedy pass. Minimising rank loss keeps the deviation from the preference order as small as the constraint allows, and the enumeration is total so the repair is reorder-stable like the rest.",
-      "ifImpossible": "SELECTION_CANNOT_COVER_REPAIRED_MECHANISM — a hard failure, not a waiver. It would mean the pool cannot observe the repair, which is a pool defect to fix before sealing."
-    },
     "tieBreak": {
       "rule": "sha256 of `${eraStyleId}|${keyA}|${keyB}` with the two keys sorted, compared as a hex string, lowest wins",
       "why": "a total order that depends only on identity, so it is stable under any input permutation and cannot be steered by a result."
@@ -90,7 +70,7 @@
     "candidate2SimulationsPermitted": 0,
     "frozenBeforeSelection": true,
     "noSelectionArtifactAtFreezeTime": true,
-    "selectionPolicyHash": "727e048eda74597138932b974c41a752bc7042c6e59144b5febfb0c034122d07"
+    "selectionPolicyHash": "f95654b8e864ce0877bd1920682902eed83289c2be4930661999591d0b401435"
   },
-  "outputHash": "3be74030ee8025a5c3365b668efd40705a9b2bc323dd50beeb8bd69700db4f6e"
+  "outputHash": "ca33aa69024a73868e39346633b880d2d1825fbc2e1b96e6e8e135d04bb02dc7"
 }
