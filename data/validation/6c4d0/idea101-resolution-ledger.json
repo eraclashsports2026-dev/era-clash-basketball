@@ -3,8 +3,8 @@
   "schemaVersion": "1.0.0",
   "measurementGovernanceVersion": "1.0.0",
   "generationCommand": "ledger applyClosures",
-  "generatedAt": "2026-08-27T23:05:44.481Z",
-  "gitCommit": "731a0192e135e77e79c9d9c81048c2f13a4df56f",
+  "generatedAt": "2026-08-27T23:30:53.862Z",
+  "gitCommit": "98e2313381c0dda7ed52edcde730144c4acc46c8",
   "branch": "phase-6c4d0-v6-invalidity-and-profile-repair",
   "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
   "registryVersion": "2.0.0",
@@ -325,12 +325,13 @@
         "severity": "MEDIUM",
         "rootCause": null,
         "files": [],
-        "resolutionStatus": "OPEN",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
         "implementedFix": null,
         "verification": null,
         "regressionTests": [],
         "remainingRisk": null,
-        "externalDependency": null
+        "externalDependency": null,
+        "resolutionEvidence": "stale literal pins converted to live lineage assertions (generation-3 succession, registry-read versions); vitest 1963/1963; tests/v6c4d0-preview-candidate.test.js adds 17 pinned assertions"
       },
       {
         "issueId": "i22",
@@ -338,12 +339,13 @@
         "severity": "HIGH",
         "rootCause": null,
         "files": [],
-        "resolutionStatus": "OPEN",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
         "implementedFix": null,
         "verification": null,
         "regressionTests": [],
         "remainingRisk": null,
-        "externalDependency": null
+        "externalDependency": null,
+        "resolutionEvidence": "every preview result embeds the LOCKED Candidate 3 identity (candidate block + possession fingerprint pc1.3.0/al2.1.0); replay-stable over 40 soak probes; previewCandidateIdentity() reported in /api/health"
       },
       {
         "issueId": "i23",
@@ -351,12 +353,13 @@
         "severity": "HIGH",
         "rootCause": null,
         "files": [],
-        "resolutionStatus": "OPEN",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
         "implementedFix": null,
         "verification": null,
         "regressionTests": [],
         "remainingRisk": null,
-        "externalDependency": null
+        "externalDependency": null,
+        "resolutionEvidence": "six preview-* namespaces (result/probability/narrative/competition/daily/challenge); pv_ result-id prefix end-to-end; preview records persist only under preview-result:*; preview:security 9/9"
       },
       {
         "issueId": "i24",
@@ -364,22 +367,18 @@
         "severity": "HIGH",
         "rootCause": null,
         "files": [],
-        "resolutionStatus": "OPEN",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
         "implementedFix": null,
         "verification": null,
         "regressionTests": [],
         "remainingRisk": null,
-        "externalDependency": null
+        "externalDependency": null,
+        "resolutionEvidence": "PREVIEW_SIM_ENGINE_ENABLED defaults false (emergency-off returns every new request to production); guard + try/catch route any preview failure to computeResultV3 (engine 3.2.0) per request with fallback_invoked telemetry; playwright 19/19 with flag off"
       }
     ],
     "itemCount": 24,
-    "unresolvedTechnicalFailures": 4,
-    "unresolvedIds": [
-      "i21",
-      "i22",
-      "i23",
-      "i24"
-    ]
+    "unresolvedTechnicalFailures": 0,
+    "unresolvedIds": []
   },
-  "outputHash": "86d5b17db761a0eeb593c9edea788f99afa257a69616e40b63be3c3e5e28a68b"
+  "outputHash": "7c7ca3cc9927f61f4cb7f912ea1e196825c607b366b959285b9cf5a97cf61e05"
 }
