@@ -127,6 +127,10 @@ export const playPaired = ({ subjectFive, subjectCoach, oppFive, oppCoach, era, 
 if (import.meta.url === `file://${process.argv[1]}`) {
   const arg = (f, d) => { const a = process.argv.find((x) => x.startsWith(`--${f}=`)); return a ? Number(a.split("=")[1]) : d; };
   const scale = arg("scale", 1);
+  // Output directory is a flag defaulting to DIR, so every earlier invocation
+  // resolves byte-identically. Phase 6C4C2 re-derives these numbers under
+  // Candidate 2 and must not overwrite Candidate 1's frozen derivation.
+  const outDir = (process.argv.find((x) => x.startsWith("--dir=")) ?? `--dir=${DIR}`).split("=")[1];
   const def = defaultRuntimeParameterSet();
   const plan = planFor(SYNTHETIC_DEVELOPMENT_V2, { forceAllSurfaces: true });
   const holdoutIds = new Set(SYNTHETIC_STRESS_HOLDOUT_V2.map((f) => f.id));
@@ -261,6 +265,6 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     r.mirror.share, r.zoneAsymmetric.shellSideWinRate, r.vsCoherentLowerControl.controlWinRate,
     r.vsRoleMatchedUpgrade.strongerSideWinRate]))).digest("hex");
   writeArtifact("synthetic-v2-margin-evidence", payload, {
-    generationCommand: "npm run syn:margin-evidence", dir: DIR, extra: { parameterSetHash: def.parameterSetHash } });
+    generationCommand: "npm run syn:margin-evidence", dir: outDir, extra: { parameterSetHash: def.parameterSetHash } });
   console.log(`\nevidenceHash ${payload.evidenceHash.slice(0, 16)}...`);
 }

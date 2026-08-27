@@ -37,9 +37,15 @@ export const DOMAIN_FLOORS = Object.freeze({
   roleMatchedUpgradeWinRate: 0.02,
 });
 
-export const derive = () => {
-  const ev = readArtifact("synthetic-v2-margin-evidence", DIR).data;
-  const ladderArt = readArtifact("synthetic-v2-talent-gap-ladder", DIR);
+/**
+ * `dir` defaults to DIR so every earlier call resolves byte-identically. Phase
+ * 6C4C2 re-derives the same thresholds from evidence measured under Candidate 2,
+ * using this exact function so the derivation rule cannot differ between the two
+ * candidates — only the evidence does.
+ */
+export const derive = (dir = DIR) => {
+  const ev = readArtifact("synthetic-v2-margin-evidence", dir).data;
+  const ladderArt = readArtifact("synthetic-v2-talent-gap-ladder", dir);
   const ladder = ladderArt.data;
   const g = HOLDOUT.syntheticGuardrails;
 
