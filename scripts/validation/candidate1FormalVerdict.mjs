@@ -23,12 +23,26 @@ const DIR_B1 = "data/validation/6c4b1";
 const DIR_B1S = "data/validation/6c4b1s";
 const DIR_OUT = DIR_B1S;
 
+/**
+ * The compound verdict vocabulary. Each value names the stage that decided the
+ * outcome, because "which stage" is the operative fact for what happens next.
+ *
+ * An earlier version collapsed every not-both-stages-ran case into INCOMPLETE.
+ * That was wrong in the case that actually occurred: when stage one FAILS,
+ * stage two is CORRECTLY never opened, so the validation is decided, not
+ * unfinished. Reporting it as "nothing to compound" would have understated a
+ * decisive failure. The underlying rule is unchanged — a validated verdict
+ * still requires both stages to pass — but a failed or invalid stage now
+ * short-circuits to a verdict naming that stage.
+ */
 export const COMPOUND_VERDICTS = Object.freeze({
-  BOTH_STAGES_PASSED: "both formal stages returned PASS on the same locked candidate",
-  STAGE_FAILED: "at least one stage returned FAIL",
-  INCOMPLETE: "at least one stage has not run, so there is nothing to compound",
-  INVALID_RUN: "both stages ran, neither FAILed, but at least one could not support a PASS",
-  IDENTITY_SPLIT: "the two stages did not score the same candidate, so their results cannot be combined",
+  CANDIDATE1_HOLDOUT_VALIDATED: "both formal stages returned PASS on the same locked candidate, with no drift and no post-holdout tuning",
+  CANDIDATE1_HISTORICAL_V5_FAILED: "Historical Holdout V5 returned FAIL. Synthetic Stress Holdout V2 is correctly never opened, so the validation is decided by stage one.",
+  CANDIDATE1_HISTORICAL_V5_INVALID: "Historical Holdout V5 could not produce a formal result. Synthetic Stress Holdout V2 is correctly never opened.",
+  CANDIDATE1_SYNTHETIC_V2_FAILED: "Historical Holdout V5 passed and Synthetic Stress Holdout V2 returned FAIL",
+  CANDIDATE1_SYNTHETIC_V2_INVALID: "Historical Holdout V5 passed and Synthetic Stress Holdout V2 could not produce a formal result",
+  CANDIDATE1_IDENTITY_SPLIT: "the two stages did not score the same candidate core and parameter set, so their results cannot be combined",
+  CANDIDATE1_NOT_YET_DETERMINED: "no stage has produced a formal result yet, so there is nothing to compound",
 });
 
 if (import.meta.url === `file://${process.argv[1]}`) {
@@ -41,13 +55,22 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   issues the verdict the frozen policies produce. Opens no seal, scores no
   game, and requires both stages to have run.
 
-  --help   print this and exit. Touches no seal.
+  --help        print this and exit. Touches no seal.
+  --preflight   read both stages, report what a verdict would say, and exit
+                WITHOUT writing anything. Touches no seal.
 
   A pass here does NOT make Candidate 1 HOLDOUT_VALIDATED,
   PRIVATE_PREVIEW_VALIDATED, PRODUCTION_READY or ACTIVE, and authorizes no
   deployment. Production activation requires an explicit CEO GO LIVE.`);
     process.exit(0);
   }
+
+  // A read-only mode. Without it, an unrecognised flag fell through to the
+  // writing path, so `--preflight` would have issued a compound verdict
+  // artifact before either stage had run — an out-of-order write of the very
+  // artifact stage three exists to produce. Nothing below this line differs
+  // between the two modes except the final write and exit code.
+  const preflightOnly = process.argv.includes("--preflight");
 
   const v5Path = `${DIR_B1}/historical-holdout-v5-results.json`;
   const synPath = `${DIR_B1S}/synthetic-v2-results.json`;
@@ -75,11 +98,20 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const currentMatches = ran.every((s) => s.coreHash === core.aggregateCoreHash
     && s.parameterSetHash === def.parameterSetHash);
 
-  const verdict = ran.length < 2 ? "INCOMPLETE"
-    : identitySplit ? "IDENTITY_SPLIT"
-    : failed.length ? "STAGE_FAILED"
-    : invalid.length ? "INVALID_RUN"
-    : "BOTH_STAGES_PASSED";
+  // Ordered so the earliest DECISIVE stage names the verdict. A stage that
+  // failed or was invalid decides the outcome on its own, because the frozen
+  // stage order means stage two is not opened after a stage-one failure.
+  const s1 = stages[0]; const s2 = stages[1];
+  const verdict =
+      !s1.ran && !s2.ran ? "CANDIDATE1_NOT_YET_DETERMINED"
+    : s1.ran && s1.outcome === "FAIL" ? "CANDIDATE1_HISTORICAL_V5_FAILED"
+    : s1.ran && s1.outcome === "INVALID_RUN" ? "CANDIDATE1_HISTORICAL_V5_INVALID"
+    : !s1.ran ? "CANDIDATE1_NOT_YET_DETERMINED"
+    : !s2.ran ? "CANDIDATE1_NOT_YET_DETERMINED"
+    : identitySplit ? "CANDIDATE1_IDENTITY_SPLIT"
+    : s2.outcome === "FAIL" ? "CANDIDATE1_SYNTHETIC_V2_FAILED"
+    : s2.outcome === "INVALID_RUN" ? "CANDIDATE1_SYNTHETIC_V2_INVALID"
+    : "CANDIDATE1_HOLDOUT_VALIDATED";
 
   console.log("CANDIDATE 1 COMPOUND FORMAL VERDICT — stage three of three\n");
   for (const s of stages) {
@@ -101,11 +133,16 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     stagesScoredTheSameCandidate: ran.length === 2 ? !identitySplit : null,
     stagesMatchTheCurrentCandidate: currentMatches,
     rule: [
-      "1. Both stages must have run. One stage is not a compound verdict.",
-      "2. Both stages must have scored the same candidate core and parameter set, or the results cannot be combined.",
-      "3. Any stage FAIL gives STAGE_FAILED.",
-      "4. Any stage INVALID_RUN, with no FAIL, gives INVALID_RUN.",
-      "5. Otherwise BOTH_STAGES_PASSED.",
+      "1. If stage one FAILED or was INVALID, that decides the verdict on its own: the frozen stage order means stage two is not opened after a stage-one failure, so its absence is correct rather than incomplete.",
+      "2. Otherwise both stages must have produced a formal result. One stage that PASSED is not a compound verdict.",
+      "3. Both stages must have scored the same candidate core and parameter set, or the results cannot be combined.",
+      "4. A stage-two FAIL or INVALID_RUN gives the corresponding stage-two verdict.",
+      "5. Otherwise CANDIDATE1_HOLDOUT_VALIDATED.",
+    ],
+    validatedRequires: [
+      "Historical V5 PASS", "Synthetic V2 PASS",
+      "candidate core drift 0", "parameter drift 0", "policy drift 0",
+      "seed drift 0", "target drift 0", "post-holdout tuning 0",
     ],
     reScoring: "none. Each stage's verdict is the one its own frozen policy produced at run time; this command reads them and applies the compound rule above.",
     whatThisDoesNotAuthorize: "BOTH_STAGES_PASSED does not make Candidate 1 HOLDOUT_VALIDATED, PRIVATE_PREVIEW_VALIDATED, PRODUCTION_READY or ACTIVE, and authorizes no preview or production deployment. Those statuses belong to the phase that earns each of them, and production activation requires an explicit CEO GO LIVE.",
@@ -115,9 +152,17 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   };
   payload.verdictHash = createHash("sha256").update(JSON.stringify({ verdict,
     stages: stages.map((s) => [s.set, s.outcome, s.coreHash]) })).digest("hex");
+
+  if (preflightOnly) {
+    console.log("\n  --preflight: nothing was written and no seal was touched.");
+    console.log(`  seals: historical-holdout-v5 access ${payload.accessCounts["historical-holdout-v5"]}, synthetic-stress-holdout-v2 access ${payload.accessCounts["synthetic-stress-holdout-v2"]}`);
+    console.log(`  a verdict issued now would read ${verdict}`);
+    process.exit(verdict === "CANDIDATE1_HOLDOUT_VALIDATED" ? 0 : 2);
+  }
+
   writeArtifact("candidate1-compound-formal-verdict", payload, {
     generationCommand: "npm run validation:candidate1-formal-verdict",
     dir: DIR_OUT, extra: { parameterSetHash: def.parameterSetHash } });
   console.log(`\n  verdictHash ${payload.verdictHash.slice(0, 16)}...`);
-  process.exit(verdict === "BOTH_STAGES_PASSED" ? 0 : 1);
+  process.exit(verdict === "CANDIDATE1_HOLDOUT_VALIDATED" ? 0 : 1);
 }

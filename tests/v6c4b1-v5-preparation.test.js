@@ -664,12 +664,28 @@ describe("6C4B1 WS12 — runner dry run", () => {
 describe("6C4B1 WS13 — the V5 seal", () => {
   const s = R("historical-holdout-v5-seal").data;
 
-  it("is SEALED_UNREAD at access count zero", () => {
+  // Phase 6C4B2R legitimately opened Historical V5. This assertion always
+  // meant "THIS phase opened nothing", which stays true; the literal
+  // access-count zero stopped being true when a later phase opened the set.
+  // It becomes an attributability claim: the seal record for this phase says
+  // zero, and any opening is attributable to a later phase with an operator,
+  // a reason and a commit.
+  it("was sealed SEALED_UNREAD at access count zero when this phase sealed it", () => {
     expect(s.state).toBe("SEALED_UNREAD");
     expect(s.accessCount).toBe(0);
-    expect(setAccessCount("historical-holdout-v5")).toBe(0);
     expect(s.accessLogExists).toBe(false);
-    expect(existsSync("data/calibration/historical-holdout-v5-access-log.jsonl")).toBe(false);
+    // at most one opening, ever, and if it happened it is attributable
+    const now = setAccessCount("historical-holdout-v5");
+    expect(now, "a sealed set is opened at most once").toBeLessThanOrEqual(1);
+    if (now === 1) {
+      const res = "data/validation/6c4b1/historical-holdout-v5-results.json";
+      expect(existsSync(res), "an opened set must leave a results artifact").toBe(true);
+      const d = JSON.parse(readFileSync(res, "utf8")).data;
+      expect(d.accessCountBefore).toBe(0);
+      expect(d.accessCountAfter).toBe(1);
+      expect(d.accessEvent.actor).toBeTruthy();
+      expect(d.accessEvent.openedAtCommit).toBeTruthy();
+    }
   });
 
   it("is a registered set, so it is sealed rather than merely unmentioned", async () => {
