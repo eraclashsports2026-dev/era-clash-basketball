@@ -1,0 +1,72 @@
+{
+  "artifact": "candidate1-internal-validation",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run c1:internal-validation",
+  "generatedAt": "2026-08-27T01:45:22.049Z",
+  "gitCommit": "348bdfa9009b79e2a1e7599ff2e927dda0c9b072",
+  "branch": "phase-6c4a-candidate1-trait-fidelity",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "candidateId": "Candidate 1",
+    "coreHash": "390a8fec6d2da894a36590b30bf0c244eab9479474af2a3459d4306b32f68aa7",
+    "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+    "calibrationObjective": {
+      "tuningMae": 0.04441,
+      "validationMae": 0.04405,
+      "candidate0": {
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703
+      },
+      "tuningFixtures": 12,
+      "validationFixtures": 11
+    },
+    "statisticalTails": {
+      "games": 2000,
+      "invariantViolations": 0,
+      "scoreMin": 58,
+      "scoreP01": 77,
+      "scoreP50": 116,
+      "scoreP99": 159,
+      "scoreMax": 178,
+      "meanCombined": 232.16,
+      "meanPossessions": 105.59,
+      "impossibleScores": 0
+    },
+    "replay": {
+      "exact": true,
+      "gamesPerSecond": 566.57
+    },
+    "syntheticDevelopmentV2": {
+      "fixtures": 14,
+      "games": 280,
+      "invariantViolations": 0
+    },
+    "hierarchy": {
+      "pairedGames": 400,
+      "strongWinRate": 0.835
+    },
+    "overfittingChecks": {
+      "heldInImprovements": "candidate1-offense-repair.json / candidate1-defense-repair.json — held-in elite teams improve identically to V4 teams",
+      "noUniversalShifts": "non-elite population mean diffs +0.020 offence / +0.001 defence",
+      "eraSpreadsIntact": "movement spread 0.231 (candidate1-movement-repair.json); era oreb trend intact (candidate1-remaining-repairs.json)",
+      "hierarchyIntact": "strong beats weak 0.835 over 400 paired games"
+    },
+    "gates": {
+      "calibrationObjectiveNotRegressed": true,
+      "zeroInvariantViolations": true,
+      "zeroImpossibleScores": true,
+      "replayExact": true,
+      "performanceAcceptable": true,
+      "syntheticDevelopmentClean": true,
+      "syntheticStressStillSealed": true,
+      "rosterHierarchyIntact": true
+    },
+    "failedGates": [],
+    "pass": true
+  },
+  "outputHash": "00286b086d72c808ebce4e7fdb8d54a20470177f6039258e20baf33fe5cde6a8"
+}

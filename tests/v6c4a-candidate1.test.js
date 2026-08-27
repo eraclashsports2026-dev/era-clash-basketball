@@ -381,3 +381,41 @@ describe("6C4A WS7 — remaining repairs", () => {
     }
   });
 });
+
+describe("6C4A WS8/WS9 — Candidate 1 manifests and internal validation", () => {
+  it("declares every changed core file with its root cause, and nothing undeclared", () => {
+    const m = R("candidate1-change-manifest").data;
+    const declared = new Set(m.changes.map((c) => c.file));
+    expect(m.changedCoreFiles.every((f) => declared.has(f))).toBe(true);
+    for (const c of m.changes) expect(c.rootCauses.length, c.file).toBeGreaterThan(0);
+    for (const v of Object.values(m.prohibitions)) expect(v).toContain("none");
+  });
+
+  it("keeps every parameter at its registry default (mechanics changed, not values)", () => {
+    const p = R("candidate1-parameter-set").data;
+    expect(p.allAtRegistryDefaults).toBe(true);
+    expect(p.parameterChangesFromParent).toBe(0);
+    expect(p.parameterSetHash).toBe(R("candidate0-preservation").data.candidate0.parameterSetHash);
+  });
+
+  it("records the full 53-file closure under builder v2", () => {
+    const c = R("candidate1-core-manifest").data;
+    expect(c.fileCount).toBe(53);
+    expect(c.closureBuilderVersion).toBe("2.0.0");
+    expect(c.files.map((f) => f.path)).toContain("src/v3/actions/offensivePlan.js");
+  });
+
+  it("passes internal, side-symmetry, probability and competition validation", () => {
+    expect(R("candidate1-internal-validation").data.pass).toBe(true);
+    const s = R("candidate1-side-symmetry").data;
+    expect(s.pass).toBe(true);
+    expect(s.totalGames).toBeGreaterThanOrEqual(50000);
+    expect(s.bhSignificantCells).toBe(0);
+    const p = R("candidate1-probability-validation").data;
+    expect(p.pass).toBe(true);
+    expect(Math.abs(p.materialRegression.logLossDelta)).toBeLessThan(p.materialRegression.bound);
+    const c = R("candidate1-competition-validation").data;
+    expect(c.pass).toBe(true);
+    expect(c.totalInvariantViolations).toBe(0);
+  });
+});

@@ -1,0 +1,159 @@
+{
+  "artifact": "candidate1-probability-validation",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run probability:validate (fresh in-process cache, Candidate 1 core)",
+  "generatedAt": "2026-08-27T01:46:38.130Z",
+  "gitCommit": "348bdfa9009b79e2a1e7599ff2e927dda0c9b072",
+  "branch": "phase-6c4a-candidate1-trait-fidelity",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "candidateId": "Candidate 1",
+    "coreHash": "390a8fec6d2da894a36590b30bf0c244eab9479474af2a3459d4306b32f68aa7",
+    "tier": "STANDARD",
+    "validationGamesPerCell": 256,
+    "cells": 30,
+    "scores": {
+      "n": 30,
+      "validationGames": 7680,
+      "outcomeScale": {
+        "note": "Scored against individual binary game outcomes — the scale of the Phase 6C2B analytical baseline (0.2507), and the only scale on which that comparison is valid.",
+        "monteCarloBrier": 0.2231,
+        "constantBaselineBrier": 0.25,
+        "irreducibleFloorBrier": 0.2209,
+        "skillScoreVsConstant": 0.1078,
+        "fractionOfAchievableSkill": 0.9263,
+        "analyticalFractionOfAchievableSkill": -0.0241,
+        "monteCarloLogLoss": 0.6358,
+        "constantBaselineLogLoss": 0.6931
+      },
+      "rateScale": {
+        "note": "Scored against each cell's empirical rate. A calibration statistic. MUST NOT be compared to the 0.2507 outcome-scale baseline.",
+        "monteCarloBrier": 0.0021,
+        "constantBaselineBrier": 0.0291,
+        "meanAbsoluteError": 0.0384
+      },
+      "sharpness": 0.1858,
+      "expectedCalibrationError": 0.0254,
+      "maximumCalibrationError": 0.0625,
+      "upsetRate": 0.1,
+      "favoriteWinRate": 0.9259,
+      "sideBias": {
+        "maxAbsolutePerCell": 0.0625,
+        "maxAbsolutePerCellScale": "HALF_OF_PAIRED_EFFECT",
+        "maxAbsolutePairedEffect": 0.125,
+        "meanAcrossCells": -0.0023,
+        "standardError": 0.005,
+        "tStatistic": -0.4672,
+        "systematic": false,
+        "perCellStandardErrorNote": "Not reported as a single-proportion SE any more. The estimator now returns pairedStandardError per cell, computed from the observed discordance of the paired orientations, which is the uncertainty this statistic actually has.",
+        "gatedBy": "probability-side-bias-policy-v2 / probability-side-bias-validation-v2.json",
+        "gatedHere": false
+      },
+      "reliabilityBins": [
+        {
+          "lo": 0,
+          "hi": 0.1,
+          "cells": 1,
+          "games": 256,
+          "meanPredicted": 0.0781,
+          "meanEmpirical": 0.0625,
+          "gap": -0.0156
+        },
+        {
+          "lo": 0.2,
+          "hi": 0.3,
+          "cells": 4,
+          "games": 1024,
+          "meanPredicted": 0.2588,
+          "meanEmpirical": 0.2754,
+          "gap": 0.0167
+        },
+        {
+          "lo": 0.3,
+          "hi": 0.4,
+          "cells": 2,
+          "games": 512,
+          "meanPredicted": 0.3164,
+          "meanEmpirical": 0.3789,
+          "gap": 0.0625
+        },
+        {
+          "lo": 0.4,
+          "hi": 0.5,
+          "cells": 6,
+          "games": 1536,
+          "meanPredicted": 0.4688,
+          "meanEmpirical": 0.444,
+          "gap": -0.0247
+        },
+        {
+          "lo": 0.5,
+          "hi": 0.6,
+          "cells": 6,
+          "games": 1536,
+          "meanPredicted": 0.5404,
+          "meanEmpirical": 0.5417,
+          "gap": 0.0013
+        },
+        {
+          "lo": 0.6,
+          "hi": 0.7,
+          "cells": 4,
+          "games": 1024,
+          "meanPredicted": 0.6621,
+          "meanEmpirical": 0.6152,
+          "gap": -0.0469
+        },
+        {
+          "lo": 0.7,
+          "hi": 0.8,
+          "cells": 7,
+          "games": 1792,
+          "meanPredicted": 0.745,
+          "meanEmpirical": 0.7148,
+          "gap": -0.0302
+        }
+      ]
+    },
+    "gate": {
+      "beatsAnalyticalOnOutcomeScale": true,
+      "beatsConstantOnOutcomeScale": true,
+      "withinIrreducibleFloorPlusTolerance": true,
+      "capturesMostAchievableSkill": true,
+      "calibrationWithinTolerance": true,
+      "sideBiasNotSystematic": true,
+      "sideBiasGateDelegatedToPolicyV2": true,
+      "sharpnessReported": true
+    },
+    "regressionVsCandidate0": {
+      "logLoss": {
+        "c1": 0.6358,
+        "c0": 0.6306
+      },
+      "fractionOfAchievableSkill": {
+        "c1": 0.9263,
+        "c0": 0.9458
+      },
+      "ece": {
+        "c1": 0.0254,
+        "c0": 0.0145
+      },
+      "maxPerCellSideBias": {
+        "c1": 0.0625,
+        "c0": 0.0781
+      }
+    },
+    "materialRegression": {
+      "logLossDelta": 0.0052,
+      "bound": 0.02,
+      "withinBound": true,
+      "reading": "every C0 gate passes for C1; log loss +0.0052 on independent validation seeds; max per-cell side bias improved 0.0781 -> 0.0625"
+    },
+    "pass": true
+  },
+  "outputHash": "5f008f6fb2268e1ead4015ecb35c368798568aa365597caf9f30917142b7fc6f"
+}

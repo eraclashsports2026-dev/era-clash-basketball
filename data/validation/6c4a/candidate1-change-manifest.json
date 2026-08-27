@@ -1,0 +1,114 @@
+{
+  "artifact": "candidate1-change-manifest",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run c1:manifests",
+  "generatedAt": "2026-08-27T01:33:59.614Z",
+  "gitCommit": "348bdfa9009b79e2a1e7599ff2e927dda0c9b072",
+  "branch": "phase-6c4a-candidate1-trait-fidelity",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "candidateId": "Candidate 1",
+    "parentCandidateId": "Candidate 0",
+    "parentCommit": "4bc1cb878771ee5c7316e3a1e90e84290c135077",
+    "changedCoreFiles": [
+      "src/v3/actions/families.js",
+      "src/v3/actions/offensivePlan.js",
+      "src/v3/calibration/calibrationPlayerAdapter.js",
+      "src/v3/defense/plan.js",
+      "src/v3/defense/scheme.js",
+      "src/v3/possession/actions.js",
+      "src/v3/possession/game.js",
+      "src/v3/teamIntelligence.js"
+    ],
+    "changes": [
+      {
+        "file": "src/v3/actions/families.js",
+        "rootCauses": [
+          "ELIGIBILITY_STARVATION (v4f-09)"
+        ],
+        "change": "movement/isolation canSelect gates become low floors with continuous weight tapers; HANDOFF reads null height as UNKNOWN with a positional fallback; MOVEMENT_FAMILY_ACTIONS/isMovementFamilyAction exported as the single definition of the movement family"
+      },
+      {
+        "file": "src/v3/calibration/calibrationPlayerAdapter.js",
+        "rootCauses": [
+          "ELIGIBILITY_STARVATION (v4f-09)",
+          "INPUT_QUALITY_COMPRESSION (v4f-02, v4f-08)",
+          "DEFENSIVE_PROXY_INVERSION (v4f-03/04/06/07)"
+        ],
+        "change": "offBallMovement reads perimeter craft + efficient finishing + role, not a three-point grade; scoring volume reads points per game alongside FGA; efficiency reads TS% or a labelled FG%/FT% estimate centred on the store-population median; interior diet from the two-point split or documented three volume; post threat falls back to recorded total boards; documented defensive bands become position-scoped floors in every era"
+      },
+      {
+        "file": "src/v3/defense/plan.js",
+        "rootCauses": [
+          "COACH_DEPLOYMENT_SATURATION (zone step)"
+        ],
+        "change": "the zone shell is built whenever a legal shell exists and the coach zones at all, instead of only above the 5/10 step"
+      },
+      {
+        "file": "src/v3/defense/scheme.js",
+        "rootCauses": [
+          "COACH_DEPLOYMENT_SATURATION (zone step)"
+        ],
+        "change": "manShellType records what the defence plays when not in its zone, so the per-possession ledger label can be truthful"
+      },
+      {
+        "file": "src/v3/possession/game.js",
+        "rootCauses": [
+          "COACH_DEPLOYMENT_SATURATION (zone step)"
+        ],
+        "change": "zone use is a per-possession draw, continuous in the coach zone scale (p = (zoneUsage/10)^1.35 * 0.8); the standing offensive plan is built against man; zone possessions replace the plan mix"
+      },
+      {
+        "file": "src/v3/possession/actions.js",
+        "rootCauses": [
+          "COACH_DEPLOYMENT_SATURATION (zone step)"
+        ],
+        "change": "schemeId is per-possession truth: ZONE:<shell> on zone possessions, the man fallback label otherwise"
+      },
+      {
+        "file": "src/v3/actions/offensivePlan.js",
+        "rootCauses": [
+          "COACH_DEPLOYMENT_SATURATION (zone step)"
+        ],
+        "change": "a standing zone-attack plan is built only when the defence zones a material share of possessions"
+      },
+      {
+        "file": "src/v3/teamIntelligence.js",
+        "rootCauses": [
+          "OFFENSIVE_GLASS_CHANNEL_MISWIRED (v4f-05)"
+        ],
+        "change": "offensiveGlass carries offensive-board evidence (postThreat) alongside board-craft, instead of defensive rebounding and position alone"
+      }
+    ],
+    "dataChanges": [
+      {
+        "store": "data/calibration/calibration-players-v3.json",
+        "change": "Sam Jones shooting backfill (2 profiles, null fields only) + defensive-accolade stamps",
+        "artifacts": [
+          "calibration-shooting-backfill",
+          "defensive-accolades"
+        ]
+      },
+      {
+        "store": "data/validation/6c3r/calibration-players-v4.json",
+        "change": "defensive-accolade stamps (same-season award pages)",
+        "artifacts": [
+          "defensive-accolades"
+        ]
+      }
+    ],
+    "prohibitions": {
+      "entitySpecificCode": "none — every change is a generic mechanic or a documented data floor",
+      "flatBonuses": "none",
+      "forcedActionCadence": "none",
+      "guaranteedEfficiency": "none",
+      "eraLegalityOverrides": "none"
+    },
+    "basis": "candidate1-root-cause-analysis.json — no engine change exists without a root-caused failure it repairs"
+  },
+  "outputHash": "de0a562299567c2f7e802ba655c7afae6f87c1945e9ed381335a189b6bed8fb1"
+}

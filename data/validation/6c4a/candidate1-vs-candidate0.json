@@ -1,0 +1,261 @@
+{
+  "artifact": "candidate1-vs-candidate0",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run c1:manifests",
+  "generatedAt": "2026-08-27T01:33:59.667Z",
+  "gitCommit": "348bdfa9009b79e2a1e7599ff2e927dda0c9b072",
+  "branch": "phase-6c4a-candidate1-trait-fidelity",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "parent": {
+      "candidateId": "Candidate 0",
+      "coreHash": "58c5fb6974e694c29f87934ab107ff47ce32963a9c0695e36f941c2a70ae6683",
+      "files": 52,
+      "closureBuilderVersion": "1.0.0",
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "possessionCalibrationVersion": "1.0.0",
+      "commit": "4bc1cb878771ee5c7316e3a1e90e84290c135077"
+    },
+    "candidate": {
+      "candidateId": "Candidate 1",
+      "coreHash": "390a8fec6d2da894a36590b30bf0c244eab9479474af2a3459d4306b32f68aa7",
+      "files": 53,
+      "closureBuilderVersion": "2.0.0",
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309"
+    },
+    "identicalFiles": 45,
+    "changedFiles": [
+      "src/v3/actions/families.js",
+      "src/v3/calibration/calibrationPlayerAdapter.js",
+      "src/v3/defense/plan.js",
+      "src/v3/defense/scheme.js",
+      "src/v3/possession/actions.js",
+      "src/v3/possession/game.js",
+      "src/v3/teamIntelligence.js"
+    ],
+    "newToManifest": [
+      "src/v3/actions/offensivePlan.js"
+    ],
+    "parameterDelta": 0,
+    "behaviourDelta": "recorded in behaviour-snapshot-candidate0 vs behaviour-snapshot-candidate1-draft (29/30 possession-engine games differ; production 3.2.0 byte-identical)",
+    "fileDiff": [
+      {
+        "path": "src/attributes.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/engine.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/players.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/rating.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/actions/families.js",
+        "status": "CHANGED"
+      },
+      {
+        "path": "src/v3/actions/offensivePlan.js",
+        "status": "NEW_TO_MANIFEST(closure v2)"
+      },
+      {
+        "path": "src/v3/actions/opportunityAllocation.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/actions/pickAndRoll.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/calibration/calibrationPlayerAdapter.js",
+        "status": "CHANGED"
+      },
+      {
+        "path": "src/v3/calibration/calibrationPlayerSchema.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/calibration/monteCarloProbability.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/calibration/parameters.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/calibration/runtimeParameters.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/calibration/seedDomains.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/coachIntelligence.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/coaches.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/data/cardAliases.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/data/cardStatBasis.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/data/coachPhases.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/data/coaches.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/data/eras.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/data/intelligence.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/data/leagueNorms.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/data/persons.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/data/physical.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/data/preRecordingDefense.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/data/shooting.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/defense/coverage.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/defense/liveState.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/defense/matrix.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/defense/mismatch.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/defense/optimizer.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/defense/paint.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/defense/plan.js",
+        "status": "CHANGED"
+      },
+      {
+        "path": "src/v3/defense/profiles.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/defense/scheme.js",
+        "status": "CHANGED"
+      },
+      {
+        "path": "src/v3/defense/zone.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/eraStyleIntelligence.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/eraStyles.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/fingerprint.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/intelligence.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/playerProfile.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/possession/actions.js",
+        "status": "CHANGED"
+      },
+      {
+        "path": "src/v3/possession/boxScore.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/possession/context.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/possession/game.js",
+        "status": "CHANGED"
+      },
+      {
+        "path": "src/v3/possession/index.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/possession/invariants.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/possession/rng.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/possession/testContext.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/seed.js",
+        "status": "IDENTICAL"
+      },
+      {
+        "path": "src/v3/teamIntelligence.js",
+        "status": "CHANGED"
+      },
+      {
+        "path": "src/versions.js",
+        "status": "IDENTICAL"
+      }
+    ]
+  },
+  "outputHash": "d6619f0fd8b99bf98a034b60168c3f133d07102e54260a1d2c4cb808be8c69b9"
+}

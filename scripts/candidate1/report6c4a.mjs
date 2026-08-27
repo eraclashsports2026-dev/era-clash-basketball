@@ -373,5 +373,52 @@ ${Object.entries(d.eraOrebRates).map(([e, v]) => `| ${e} | ${v} |`).join("\n")}
 ${d.marginOnlyDispositions.map((m) => `| \`${m.failureId}\` | \`${m.traitId}\` | ${m.teamSeason} | ${fmt(m.difference)} | **${m.engineChanged}** | \`${m.underProspectivePolicy}\` |`).join("\n")}`);
   }
 
+  if (has("candidate1-internal-validation")) {
+    const A = R("candidate1-internal-validation"); const d = A.data;
+    const S = has("candidate1-side-symmetry") ? R("candidate1-side-symmetry").data : null;
+    const P = has("candidate1-probability-validation") ? R("candidate1-probability-validation").data : null;
+    const C = has("candidate1-competition-validation") ? R("candidate1-competition-validation").data : null;
+    const M = has("candidate1-vs-candidate0") ? R("candidate1-vs-candidate0").data : null;
+    write("candidate1-internal-validation.md", `${prov(A)}# Candidate 1 — internal validation
+
+**${d.pass ? "PASS" : `FAIL (${d.failedGates.join(", ")})`}** at core \`${d.coreHash.slice(0, 16)}...\`
+
+| gate | result |
+| --- | --- |
+${Object.entries(d.gates).map(([k, v]) => `| ${k} | **${v ? "PASS" : "FAIL"}** |`).join("\n")}
+
+- calibration objective: tuning MAE ${d.calibrationObjective.tuningMae} (C0 ${d.calibrationObjective.candidate0.tuningMae}) · validation ${d.calibrationObjective.validationMae} (C0 ${d.calibrationObjective.candidate0.validationMae})
+- statistical tails: ${d.statisticalTails.games} games, ${d.statisticalTails.invariantViolations} violations, ${d.statisticalTails.impossibleScores} impossible scores, p50 ${d.statisticalTails.scoreP50}
+- replay exact: ${d.replay.exact} · ${d.replay.gamesPerSecond} games/sec
+- synthetic development v2: ${d.syntheticDevelopmentV2.games} games, ${d.syntheticDevelopmentV2.invariantViolations} violations · stress set sealed
+- hierarchy: strong beats weak ${d.hierarchy.strongWinRate} over ${d.hierarchy.pairedGames} paired games
+${S ? `
+## Side symmetry — ${S.pass ? "PASS" : "FAIL"}
+
+${S.totalGames} paired games across ${S.cells} cells: gold advantage ${S.goldAdvantagePp}pp
+(CI ${S.ci95Pp.lower}pp .. ${S.ci95Pp.upper}pp), systematic t=${S.systematic.tStatistic},
+${S.cellsBeyondPracticalEffect} cells beyond ±${S.policy.perCellPracticalEffectPp}pp, ${S.bhSignificantCells} BH-significant, ${S.invariantViolations} violations.` : ""}
+${P ? `
+## Probability — ${P.pass ? "PASS" : "FAIL"}
+
+Log loss ${P.regressionVsCandidate0.logLoss.c1} (C0 ${P.regressionVsCandidate0.logLoss.c0}, Δ ${P.materialRegression.logLossDelta}, bound ${P.materialRegression.bound});
+achievable skill ${P.regressionVsCandidate0.fractionOfAchievableSkill.c1} (C0 ${P.regressionVsCandidate0.fractionOfAchievableSkill.c0});
+ECE ${P.regressionVsCandidate0.ece.c1} (C0 ${P.regressionVsCandidate0.ece.c0});
+max per-cell side bias ${P.regressionVsCandidate0.maxPerCellSideBias.c1} (C0 ${P.regressionVsCandidate0.maxPerCellSideBias.c0}). Every gate passes.` : ""}
+${C ? `
+## Competition modes — ${C.pass ? "PASS" : "FAIL"}
+
+| mode | games | violations | detail |
+| --- | ---: | ---: | --- |
+${C.modes.map((m) => `| ${m.mode} | ${m.games} | ${m.invariantViolations} | ${m.series ? `${m.series} series, mean length ${m.meanLength}` : m.seasons ? `${m.seasons} seasons${m.meanWins ? `, mean wins ${m.meanWins}` : ""}${m.meanGoldWins ? `, mean gold wins ${m.meanGoldWins}` : ""}` : m.brackets ? `${m.brackets} brackets` : ""} |`).join("\n")}` : ""}
+${M ? `
+## Candidate 1 vs Candidate 0
+
+Parent \`${M.parent.coreHash.slice(0, 16)}...\` (${M.parent.files} files, builder ${M.parent.closureBuilderVersion}) →
+\`${M.candidate.coreHash.slice(0, 16)}...\` (${M.candidate.files} files, builder ${M.candidate.closureBuilderVersion}).
+${M.changedFiles.length} changed: ${M.changedFiles.map((f) => `\`${f}\``).join(", ")}.
+Parameter delta: ${M.parameterDelta}. ${M.behaviourDelta}.` : ""}`);
+  }
+
   console.log(written.length ? written.join("\n") : "no 6c4a artifacts yet");
 }
