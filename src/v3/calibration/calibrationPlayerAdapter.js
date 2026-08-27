@@ -153,14 +153,27 @@ export const buildCalibrationPlayerProfile = (season) => {
     ballSecurity: b.turnovers != null ? r1(clamp(10 - (scale(b.turnovers, ANCHORS.turnovers, 0) ?? 5), 0, 10)) : 5,
   };
 
+  // Documented defensive evidence is a FLOOR in EVERY era, not only where
+  // steals were unrecorded. Steals and blocks measure gambling, not
+  // containment, so a same-season All-Defensive selection (per-season award
+  // page, never recall) outranks a low steal rate — the
+  // DEFENSIVE_PROXY_INVERSION that made the 1978-79 Sonics and 1989-90
+  // Pistons rate below the era median (v4f-03/04/06/07). Floors are
+  // position-scoped: a selection certifies the defence the player actually
+  // played, not every channel.
+  const pos = season.primaryPosition;
+  const perimFloor = ["PG", "SG", "SF"].includes(pos) ? floor : null;
+  const interiorFloor = ["PF", "C"].includes(pos) ? floor : null;
+  const floored = (fl, measured) => (fl != null ? Math.max(fl, measured) : measured);
+
   const defense = {
-    perimeterContainment: r1(clamp(floor ?? ((b.steals != null ? scale(b.steals, ANCHORS.steals, 1) : 5) * 0.7
+    perimeterContainment: r1(clamp(floored(perimFloor, (b.steals != null ? scale(b.steals, ANCHORS.steals, 1) : 5) * 0.7
       + (["PG", "SG"].includes(season.primaryPosition) ? 2 : 0.5)), 0, 10)),
-    wingContainment: r1(clamp(floor ?? ((b.steals != null ? scale(b.steals, ANCHORS.steals, 1) : 5) * 0.6
+    wingContainment: r1(clamp(floored(perimFloor, (b.steals != null ? scale(b.steals, ANCHORS.steals, 1) : 5) * 0.6
       + (["SG", "SF"].includes(season.primaryPosition) ? 2 : 1)), 0, 10)),
-    interiorDeterrence: r1(clamp(floor ?? ((b.blocks != null ? scale(b.blocks, ANCHORS.blocks, 1) : 5) * 0.7
+    interiorDeterrence: r1(clamp(floored(interiorFloor, (b.blocks != null ? scale(b.blocks, ANCHORS.blocks, 1) : 5) * 0.7
       + (["PF", "C"].includes(season.primaryPosition) ? 2 : 0.5)), 0, 10)),
-    rimDeterrence: r1(clamp(floor ?? (b.blocks != null ? scale(b.blocks, ANCHORS.blocks, 1) : 4.5), 0, 10)),
+    rimDeterrence: r1(clamp(floored(interiorFloor, b.blocks != null ? scale(b.blocks, ANCHORS.blocks, 1) : 4.5), 0, 10)),
     eventCreation: r1(clamp(
       b.steals != null || b.blocks != null
         ? ((scale(b.steals, ANCHORS.steals, 0) ?? 0) + (scale(b.blocks, ANCHORS.blocks, 0) ?? 0)) / 2

@@ -309,3 +309,44 @@ describe("6C4A WS5 — offensive-identity repair", () => {
     }
   });
 });
+
+describe("6C4A WS6 — defensive-identity repair", () => {
+  const df = R("candidate1-defense-repair").data;
+
+  it("passes every defensive acceptance gate", () => {
+    expect(df.failedGates).toEqual([]);
+  });
+
+  it("materially reduces both V4 defensive deficits beyond the practical margin", () => {
+    for (const c of df.v4EliteDefense) {
+      expect(c.diff.diff, c.fixtureId).toBeLessThan(df.priorV4Deficits[c.fixtureId] - 0.02);
+    }
+  });
+
+  it("keeps the defensive population stable and the share proxy inside the frozen bound", () => {
+    expect(Math.abs(df.nonElitePopulationMeanDiff)).toBeLessThan(0.03);
+    expect(df.meanCompositeShareMae).toBeLessThanOrEqual(df.shareProxyProtection.bound);
+  });
+
+  it("stamps accolades from same-season award pages only, with recorded provenance", () => {
+    const b = R("defensive-accolades").data;
+    expect(b.profilesStamped).toBeGreaterThan(40);
+    for (const s of b.stamped) {
+      expect(["ELITE", "STRONG"]).toContain(s.band);
+      expect(s.accolades.length).toBeGreaterThan(0);
+    }
+    // spot-check historically known same-season selections
+    const find = (n, season) => b.stamped.find((x) => x.name === n && x.season === season);
+    expect(find("Dennis Johnson", "1978-79").accolades).toContain("ALL_DEFENSIVE_FIRST_TEAM");
+    expect(find("Joe Dumars", "1989-90").accolades).toContain("ALL_DEFENSIVE_FIRST_TEAM");
+    expect(find("Walt Frazier", "1972-73").accolades).toContain("ALL_DEFENSIVE_FIRST_TEAM");
+    // and a NON-selection stays unstamped: Aguirre never made an All-Defensive team
+    expect(b.stamped.find((x) => x.name === "Mark Aguirre")).toBeUndefined();
+  });
+
+  it("records the residual with intervention-backed attribution, never a patch", () => {
+    expect(df.decomposition.disposition).toBe("MECHANISM_REPAIRED_EVIDENCE_AND_REFERENCE_LIMITED");
+    expect(df.decomposition.residualCauses.length).toBe(2);
+    expect(df.decomposition.v5Action).toContain("re-certify");
+  });
+});

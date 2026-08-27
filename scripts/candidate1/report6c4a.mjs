@@ -299,5 +299,44 @@ career statistics for them, and the nulls stand rather than being estimated arou
 ${B.results.map((r) => `| ${r.name} | ${r.season} | ${r.outcome} | ${r.filled.map((f) => `${f.field}=${f.value}`).join(", ") || "—"} |`).join("\n")}` : ""}`);
   }
 
+  if (has("candidate1-defense-repair")) {
+    const A = R("candidate1-defense-repair"); const d = A.data;
+    const B = has("defensive-accolades") ? R("defensive-accolades").data : null;
+    write("candidate1-defense-repair.md", `${prov(A)}# Candidate 1 — defensive-identity repair
+
+**Acceptance gate: ${d.pass ? "PASS" : `FAIL (${d.failedGates.join(", ")})`}** — ${d.pairsPerCell * 2} games per cell.
+
+DEFENSIVE_PROXY_INVERSION repair: documented same-season defensive accolades
+(per-season award pages, never recall) become position-scoped FLOORS on the
+containment channels in every era. Steals and blocks measure gambling, not
+containment.
+
+| gate | result |
+| --- | --- |
+${Object.entries(d.gates).map(([k, v]) => `| ${k} | **${v ? "PASS" : "FAIL"}** |`).join("\n")}
+
+## Cells (reference ppp vs the team, against the reference self-baseline)
+
+| fixture | class | ref-vs-team | ref self | diff | prior V4 diff |
+| --- | --- | ---: | ---: | ---: | ---: |
+${[...d.v4EliteDefense.map((c) => [c, "V4 elite D"]), ...d.heldInEliteDefense.map((c) => [c, "held-in elite D"]), ...d.nonEliteTeams.map((c) => [c, "non-elite"])].map(([c, k]) => `| ${c.fixtureId} | ${k} | ${c.refPppVsTeam.mean} | ${c.refSelfPpp} | ${c.diff.diff} | ${d.priorV4Deficits[c.fixtureId] ?? "—"} |`).join("\n")}
+
+Non-elite population mean diff **${d.nonElitePopulationMeanDiff}**; share proxy ${d.meanCompositeShareMae} (bound ${d.shareProxyProtection.bound}).
+
+## Residual decomposition — \`${d.decomposition.disposition}\`
+
+${d.decomposition.mechanismCapacity}.
+
+Accolade coverage: ${Object.entries(d.decomposition.accoladeCoverage).map(([k, v]) => `${k}: ${v.flooredPlayers}/5`).join(" · ")}.
+
+${d.decomposition.residualCauses.map((r) => `- ${r}`).join("\n")}
+
+V5 action: ${d.decomposition.v5Action}.
+${B ? `
+## Accolade extraction
+
+${B.profilesStamped} profiles stamped from ${B.allDefensiveSeasonsParsed} All-Defensive seasons and ${B.dpoySeasonsParsed} DPOY seasons. ${B.discipline}.` : ""}`);
+  }
+
   console.log(written.length ? written.join("\n") : "no 6c4a artifacts yet");
 }
