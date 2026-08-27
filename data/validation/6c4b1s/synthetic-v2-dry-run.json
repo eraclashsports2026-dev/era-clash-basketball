@@ -1,0 +1,315 @@
+{
+  "artifact": "synthetic-v2-dry-run",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run syn:dryrun",
+  "generatedAt": "2026-08-27T12:58:54.067Z",
+  "gitCommit": "5c10e4657873c800eb7a38a4b1892ad855a52918",
+  "branch": "phase-6c4b1s-synthetic-v2-package",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "syntheticDryRunVersion": "1.0.0",
+    "pairsPerSurface": 64,
+    "mockMembers": 11,
+    "gamesPlayed": 5219,
+    "exactPathProven": {
+      "preflight": "scripts/validation/synthetic-stress-holdout-v2.mjs preflightChecks()",
+      "identity": "the same buildIdentity()",
+      "evaluator": "the same buildEvaluator(), pointed at the mock set and the dry-run seed stream",
+      "runner": "runSealedSetOnce from scripts/validation/runner.mjs",
+      "whatDiffers": "the seal (disposable), the fixtures (non-holdout mock set) and the volumes (low, because the rehearsal proves the path rather than the statistics)"
+    },
+    "checkCount": 52,
+    "checks": [
+      {
+        "name": "preflightFunctionIsTheRunnersOwn",
+        "pass": true,
+        "detail": "21 checks returned by the runner's exported preflightChecks(), not a copy maintained here"
+      },
+      {
+        "name": "stageOrderRefusesBeforeHistoricalV5",
+        "pass": true,
+        "detail": "Historical V5 has not run, so both stage-order checks correctly refuse: \"no Historical V5 results artifact at data/validation/6c4b1/historical-holdout-v5-results.j...\""
+      },
+      {
+        "name": "everyPackageHashVerifies",
+        "pass": true,
+        "detail": "17/17 package identity checks pass: all of them"
+      },
+      {
+        "name": "preflightIsNonAccessing",
+        "pass": true,
+        "detail": "synthetic access 0, historical V5 access 0 — both unchanged by running the preflight"
+      },
+      {
+        "name": "ceilingGatePassesFailsAndAbstains",
+        "pass": true,
+        "detail": "0.30 -> PASS, 0.65 -> FAIL, 0.598 (inside the 0.01 margin of 0.60) -> INDETERMINATE"
+      },
+      {
+        "name": "floorGatePassesFailsAndAbstains",
+        "pass": true,
+        "detail": "16 -> PASS, 11 -> FAIL, 13.5 (inside the 0.83 margin of 13) -> INDETERMINATE"
+      },
+      {
+        "name": "bandGateHandlesBothEdgesAndAbstains",
+        "pass": true,
+        "detail": "0.50 -> PASS, 0.30 -> FAIL low, 0.70 -> FAIL high, 0.36 (inside the margin of the 0.35 edge) -> INDETERMINATE"
+      },
+      {
+        "name": "countGateHasNoMargin",
+        "pass": true,
+        "detail": "0 -> PASS, 1 -> FAIL, margin 0: a count has no sampling noise, so one violation is one failure"
+      },
+      {
+        "name": "nullNeverBecomesZero",
+        "pass": true,
+        "detail": "an unmeasured observation stays null and yields NOT_MEASURED — it is never coerced to 0, and 0 would have read as a catastrophic failure on a floor gate"
+      },
+      {
+        "name": "catastrophicFailureDemotesEveryOtherCell",
+        "pass": true,
+        "detail": "an invariant failure demoted 2 passing cells to INDETERMINATE, so a contradicted game grants no pass credit"
+      },
+      {
+        "name": "catastrophicRuleLeavesNotApplicableAlone",
+        "pass": true,
+        "detail": "a NOT_APPLICABLE cell is not demoted — there was nothing to measure, so there is nothing to discredit"
+      },
+      {
+        "name": "catastrophicFailureStillFailsTheFixture",
+        "pass": true,
+        "detail": "the fixture verdict is FAIL, not INVALID_RUN: an invariant violation is the candidate's failure, not the apparatus's"
+      },
+      {
+        "name": "allIndeterminateFixtureCannotPass",
+        "pass": true,
+        "detail": "a fixture with no decided cell is INVALID_RUN, never a pass by absence of failure"
+      },
+      {
+        "name": "notMeasuredMakesTheFixtureInvalid",
+        "pass": true,
+        "detail": "a missing measurement is an apparatus fault and invalidates the fixture rather than failing the candidate"
+      },
+      {
+        "name": "everySurfaceSlotGivesADistinctSeed",
+        "pass": true,
+        "detail": "the eight surface slots produce eight different seeds at the same fixture and pair index"
+      },
+      {
+        "name": "addressingIsPure",
+        "pass": true,
+        "detail": "the same address returns the same seed, so a resumed run re-derives exactly what it had"
+      },
+      {
+        "name": "dryRunStreamIsDisjointFromTheFormalStream",
+        "pass": true,
+        "detail": "the rehearsal draws from its own stream, so it cannot consume a seed the formal run will use"
+      },
+      {
+        "name": "refusesWhileSealed",
+        "pass": true,
+        "detail": "without the unlock flag the runner refused with MOCK_SEALED"
+      },
+      {
+        "name": "refusesWithoutAReason",
+        "pass": true,
+        "detail": "an unlock without a stated reason refused with NO_REASON"
+      },
+      {
+        "name": "refusesResumeWithNoRunState",
+        "pass": true,
+        "detail": "--resume with no prior state refused with NOTHING_TO_RESUME"
+      },
+      {
+        "name": "crashLeavesResumableState",
+        "pass": true,
+        "detail": "crashed on member 3; run state is RUNNING with 3 of 11 members written"
+      },
+      {
+        "name": "accessEventConsumedByTheCrash",
+        "pass": true,
+        "detail": "access count 1 — the set was seen, so the event is spent whether or not the process finished"
+      },
+      {
+        "name": "incrementalWriteAfterEveryMember",
+        "pass": true,
+        "detail": "3 results on disk before the crash, so a crash loses at most one member's work"
+      },
+      {
+        "name": "refusesResumeOnIdentityMismatch",
+        "pass": true,
+        "detail": "a resume under a different core hash refused with IDENTITY_MISMATCH — a resume must continue the same candidate"
+      },
+      {
+        "name": "resumeCompletesUnderTheSameAccessEvent",
+        "pass": true,
+        "detail": "run COMPLETE with access count still 1 and the same access event — the resume did not open the set again"
+      },
+      {
+        "name": "resumeEvaluatedEveryRemainingMember",
+        "pass": true,
+        "detail": "11 of 11 members evaluated across the crash and the resume"
+      },
+      {
+        "name": "completedRunHasARunHash",
+        "pass": true,
+        "detail": "runHash fbf224df1e40ba9c..."
+      },
+      {
+        "name": "refusesResumeOnACompletedRun",
+        "pass": true,
+        "detail": "resuming a COMPLETE run refused with ALREADY_COMPLETE"
+      },
+      {
+        "name": "refusesASecondIndependentRun",
+        "pass": true,
+        "detail": "a fresh run against an already-opened set refused with SECOND_RUN_REFUSED — a second run would not be independent evidence"
+      },
+      {
+        "name": "everyMemberHasEveryCell",
+        "pass": true,
+        "detail": "all 11 members carry all 8 guardrail cells"
+      },
+      {
+        "name": "everyCellOutcomeIsFromTheClosedVocabulary",
+        "pass": true,
+        "detail": "every cell outcome is one of PASS/FAIL/INDETERMINATE/NOT_APPLICABLE/NOT_MEASURED"
+      },
+      {
+        "name": "zoneLegalMembersProduceAShellObservation",
+        "pass": true,
+        "detail": "8 zone-legal members all produced a shell win rate"
+      },
+      {
+        "name": "zoneIllegalMembersAreNotApplicableNotZero",
+        "pass": true,
+        "detail": "3 zone-illegal members are NOT_APPLICABLE with a null observation, and each carries the structural zero-zone outcome"
+      },
+      {
+        "name": "zoneIllegalMembersRealizedZeroZone",
+        "pass": true,
+        "detail": "no zone possession was realized in any zone-illegal era, checked structurally rather than assumed"
+      },
+      {
+        "name": "theAblationTwinRanAndRealizedNoZone",
+        "pass": true,
+        "detail": "the diagnostic twin ran with zone resolution disabled and realized zero zone possessions, so it isolates the coach confound"
+      },
+      {
+        "name": "theShellCellReportsItsConfoundDiagnostic",
+        "pass": true,
+        "detail": "every shell cell carries the twin's coach-only win rate and an attribution flag, so a breach can be judged rather than just recorded"
+      },
+      {
+        "name": "bothControlSurfacesWereExercised",
+        "pass": true,
+        "detail": "the construction surface produced observations on 10 members and the upgrade surface on 11"
+      },
+      {
+        "name": "everyMemberEitherObservesOrDocumentsWhyNot",
+        "pass": true,
+        "detail": "1 member(s) could not pose the construction claim and each carries a stated reason rather than a silent gap"
+      },
+      {
+        "name": "theUnreachablePreconditionBranchWasExercised",
+        "pass": true,
+        "detail": "mock-role-overlap hit CONTROL_PRECONDITION_UNREACHABLE and became NOT_APPLICABLE with a null observation, so an unposable claim contributes neither pass credit nor failure"
+      },
+      {
+        "name": "replayWasExactOnEveryMember",
+        "pass": true,
+        "detail": "zero replay mismatches across 44 designated seeds"
+      },
+      {
+        "name": "competitionModesRan",
+        "pass": true,
+        "detail": "series play ran on mock-coach-toolkit and season play on mock-season"
+      },
+      {
+        "name": "noStructuralOrDeterminismCellFailed",
+        "pass": true,
+        "detail": "no cell failed at all"
+      },
+      {
+        "name": "everyMemberIsStructurallyClean",
+        "pass": true,
+        "detail": "5,219 games, zero invariant violations, zero impossible scores, zero ties"
+      },
+      {
+        "name": "aggregationProducesAVerdictFromTheClosedVocabulary",
+        "pass": true,
+        "detail": "set verdict SYNTHETIC_HOLDOUT_V2_PASS (fixture verdicts: mock-role-overlap=PASS, mock-no-spacing=PASS, mock-duplicate-role=PASS, mock-mismatch-chain=PASS, mock-zone-legal=PASS, mock-zone-illegal=PASS, mock-era-edge=PASS, mock-coach-toolkit=PASS, mock-usage=PASS, mock-tails=PASS, mock-season=PASS)"
+      },
+      {
+        "name": "oneFixtureFailureFailsTheSet",
+        "pass": true,
+        "detail": "a single FAILed fixture takes the set to SYNTHETIC_HOLDOUT_V2_FAIL — zero fixture failures are tolerated"
+      },
+      {
+        "name": "oneInvalidFixturePreventsAPass",
+        "pass": true,
+        "detail": "an INVALID_RUN fixture takes the set to SYNTHETIC_HOLDOUT_V2_INVALID_RUN rather than a pass"
+      },
+      {
+        "name": "anUndecidedRunCannotPass",
+        "pass": true,
+        "detail": "with every cell INDETERMINATE the set is INVALID_RUN with 8 guardrails short of their minimum decided count — a run cannot pass by being unmeasurable"
+      },
+      {
+        "name": "syntheticV2NeverOpened",
+        "pass": true,
+        "detail": "synthetic-stress-holdout-v2 access count 0 before, 0 after"
+      },
+      {
+        "name": "historicalV5NeverOpened",
+        "pass": true,
+        "detail": "historical-holdout-v5 access count 0 before, 0 after"
+      },
+      {
+        "name": "noSealedFixtureWasEvaluated",
+        "pass": true,
+        "detail": "the 11 evaluated members are all mock ids: mock-role-overlap, mock-no-spacing, mock-duplicate-role, mock-mismatch-chain, mock-zone-legal, mock-zone-illegal, mock-era-edge, mock-coach-toolkit, mock-usage, mock-tails, mock-season"
+      },
+      {
+        "name": "noSealedLineupWasPlayed",
+        "pass": true,
+        "detail": "no member's five matches a sealed five as an unordered set of people"
+      },
+      {
+        "name": "theDisposableSealIsNotARealSeal",
+        "pass": true,
+        "detail": "the rehearsal's seal is \"synthetic-v2-mock\" over a disposable log at .cache/validation/syn-dryrun-mock.jsonl, not a registered sealed set"
+      }
+    ],
+    "setVerdictOnMockSet": "SYNTHETIC_HOLDOUT_V2_PASS",
+    "fixtureVerdictsOnMockSet": {
+      "mock-role-overlap": "PASS",
+      "mock-no-spacing": "PASS",
+      "mock-duplicate-role": "PASS",
+      "mock-mismatch-chain": "PASS",
+      "mock-zone-legal": "PASS",
+      "mock-zone-illegal": "PASS",
+      "mock-era-edge": "PASS",
+      "mock-coach-toolkit": "PASS",
+      "mock-usage": "PASS",
+      "mock-tails": "PASS",
+      "mock-season": "PASS"
+    },
+    "isolation": {
+      "syntheticAccessBefore": 0,
+      "syntheticAccessAfter": 0,
+      "historicalV5AccessBefore": 0,
+      "historicalV5AccessAfter": 0,
+      "sealedFixturesEvaluated": 0,
+      "sealedLineupsPlayed": 0
+    },
+    "pass": true,
+    "failedChecks": [],
+    "dryRunHash": "743493073f76f4c8599a36247fb2056ed0961c7b1351be90818ac16d5f6c4205"
+  },
+  "outputHash": "ccc0d660bca8bf20f978e4e04ee2dfbb68442f9ae8813e360d347b5b733c8994"
+}

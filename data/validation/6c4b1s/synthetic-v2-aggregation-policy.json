@@ -1,0 +1,244 @@
+{
+  "artifact": "synthetic-v2-aggregation-policy",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run syn:verdict-policy",
+  "generatedAt": "2026-08-27T12:31:09.270Z",
+  "gitCommit": "46fd4f99b29972c0baed17cd566b11eef7db2232",
+  "branch": "phase-6c4b1s-synthetic-v2-package",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "syntheticAggregationPolicyVersion": "1.0.0",
+    "frozenBeforeAnyResult": true,
+    "setVerdicts": {
+      "SYNTHETIC_HOLDOUT_V2_PASS": "no fixture FAILed, no fixture was INVALID_RUN, and every required guardrail was decided PASS on at least its minimum number of applicable fixtures",
+      "SYNTHETIC_HOLDOUT_V2_FAIL": "at least one fixture FAILed",
+      "SYNTHETIC_HOLDOUT_V2_INVALID_RUN": "no fixture FAILed but the run cannot support a PASS — a fixture was INVALID_RUN, or a required guardrail was never decided on enough fixtures"
+    },
+    "rule": [
+      "1. Compute every guardrail-fixture cell from the frozen thresholds and the frozen practical margins. A cell is PASS or FAIL only if the observation clears the threshold by at least the practical margin; inside the margin it is INDETERMINATE.",
+      "2. Apply the catastrophic rule: a failed structural or determinism guardrail makes its fixture FAIL and every non-structural cell on that fixture INDETERMINATE.",
+      "3. A fixture's verdict is FAIL if any of its cells is FAIL; INVALID_RUN if any required cell is NOT_MEASURED; otherwise PASS provided at least one cell is PASS.",
+      "4. The set verdict is SYNTHETIC_HOLDOUT_V2_FAIL if any fixture is FAIL.",
+      "5. Otherwise the set verdict is SYNTHETIC_HOLDOUT_V2_INVALID_RUN if any fixture is INVALID_RUN, or if any adjudicable guardrail was decided PASS on fewer than its minDecidedFixturesForSetPass applicable fixtures.",
+      "6. Otherwise the set verdict is SYNTHETIC_HOLDOUT_V2_PASS."
+    ],
+    "fixtureFailureTolerance": {
+      "perGuardrailAllowedFailures": 0,
+      "justification": "A failure budget — 'k of 16 fixtures may breach' — would weaken a frozen numeric threshold, which this phase may not do. The protection against a noise-driven failure is the practical margin, not a tolerance for real breaches: an observation within the margin of the threshold is INDETERMINATE, never FAIL. So the strict reading costs nothing in robustness and invents no allowance the frozen policy does not contain."
+    },
+    "guardrails": [
+      {
+        "guardrailId": "requireZeroInvariantFailures",
+        "formalClass": "STRUCTURAL_INVARIANT",
+        "catastrophic": true,
+        "mappedFixtures": 16,
+        "applicableFixtures": 16,
+        "applicableFixtureIds": [
+          "ss2-all-bigs",
+          "ss2-all-guards",
+          "ss2-no-spacing-1960s",
+          "ss2-no-spacing-modern",
+          "ss2-mismatch-chain",
+          "ss2-zone-edge-legal",
+          "ss2-zone-edge-illegal",
+          "ss2-era-edge-old-in-modern",
+          "ss2-era-edge-modern-in-old",
+          "ss2-coach-toolkit-edge",
+          "ss2-usage-concentration",
+          "ss2-statistical-tails",
+          "ss2-series-variance",
+          "ss2-win82-variance",
+          "ss2-duplicate-role",
+          "ss2-extreme-strength-gap"
+        ],
+        "minDecidedFixturesForSetPass": 11,
+        "notApplicableFixtureIds": [],
+        "notApplicableTreatment": "NOT_APPLICABLE — no pass credit, no failure contribution, never recorded as zero"
+      },
+      {
+        "guardrailId": "requireZeroImpossibleResults",
+        "formalClass": "STRUCTURAL_INVARIANT",
+        "catastrophic": true,
+        "mappedFixtures": 16,
+        "applicableFixtures": 16,
+        "applicableFixtureIds": [
+          "ss2-all-bigs",
+          "ss2-all-guards",
+          "ss2-no-spacing-1960s",
+          "ss2-no-spacing-modern",
+          "ss2-mismatch-chain",
+          "ss2-zone-edge-legal",
+          "ss2-zone-edge-illegal",
+          "ss2-era-edge-old-in-modern",
+          "ss2-era-edge-modern-in-old",
+          "ss2-coach-toolkit-edge",
+          "ss2-usage-concentration",
+          "ss2-statistical-tails",
+          "ss2-series-variance",
+          "ss2-win82-variance",
+          "ss2-duplicate-role",
+          "ss2-extreme-strength-gap"
+        ],
+        "minDecidedFixturesForSetPass": 11,
+        "notApplicableFixtureIds": [],
+        "notApplicableTreatment": "NOT_APPLICABLE — no pass credit, no failure contribution, never recorded as zero"
+      },
+      {
+        "guardrailId": "forbidUniversalActionDominance",
+        "formalClass": "AGGREGATE_REQUIRED",
+        "catastrophic": false,
+        "mappedFixtures": 16,
+        "applicableFixtures": 16,
+        "applicableFixtureIds": [
+          "ss2-all-bigs",
+          "ss2-all-guards",
+          "ss2-no-spacing-1960s",
+          "ss2-no-spacing-modern",
+          "ss2-mismatch-chain",
+          "ss2-zone-edge-legal",
+          "ss2-zone-edge-illegal",
+          "ss2-era-edge-old-in-modern",
+          "ss2-era-edge-modern-in-old",
+          "ss2-coach-toolkit-edge",
+          "ss2-usage-concentration",
+          "ss2-statistical-tails",
+          "ss2-series-variance",
+          "ss2-win82-variance",
+          "ss2-duplicate-role",
+          "ss2-extreme-strength-gap"
+        ],
+        "minDecidedFixturesForSetPass": 11,
+        "notApplicableFixtureIds": [],
+        "notApplicableTreatment": "NOT_APPLICABLE — no pass credit, no failure contribution, never recorded as zero"
+      },
+      {
+        "guardrailId": "forbidUniversalShellDominance",
+        "formalClass": "DIRECTIONAL_GUARDRAIL",
+        "catastrophic": false,
+        "mappedFixtures": 16,
+        "applicableFixtures": 9,
+        "applicableFixtureIds": [
+          "ss2-all-bigs",
+          "ss2-all-guards",
+          "ss2-no-spacing-modern",
+          "ss2-mismatch-chain",
+          "ss2-zone-edge-legal",
+          "ss2-era-edge-old-in-modern",
+          "ss2-win82-variance",
+          "ss2-duplicate-role",
+          "ss2-extreme-strength-gap"
+        ],
+        "minDecidedFixturesForSetPass": 6,
+        "notApplicableFixtureIds": [
+          "ss2-no-spacing-1960s",
+          "ss2-zone-edge-illegal",
+          "ss2-era-edge-modern-in-old",
+          "ss2-coach-toolkit-edge",
+          "ss2-usage-concentration",
+          "ss2-statistical-tails",
+          "ss2-series-variance"
+        ],
+        "notApplicableTreatment": "NOT_APPLICABLE — no pass credit, no failure contribution, never recorded as zero"
+      },
+      {
+        "guardrailId": "requireSameSeedReplay",
+        "formalClass": "HARD_CATASTROPHIC",
+        "catastrophic": true,
+        "mappedFixtures": 16,
+        "applicableFixtures": 16,
+        "applicableFixtureIds": [
+          "ss2-all-bigs",
+          "ss2-all-guards",
+          "ss2-no-spacing-1960s",
+          "ss2-no-spacing-modern",
+          "ss2-mismatch-chain",
+          "ss2-zone-edge-legal",
+          "ss2-zone-edge-illegal",
+          "ss2-era-edge-old-in-modern",
+          "ss2-era-edge-modern-in-old",
+          "ss2-coach-toolkit-edge",
+          "ss2-usage-concentration",
+          "ss2-statistical-tails",
+          "ss2-series-variance",
+          "ss2-win82-variance",
+          "ss2-duplicate-role",
+          "ss2-extreme-strength-gap"
+        ],
+        "minDecidedFixturesForSetPass": 11,
+        "notApplicableFixtureIds": [],
+        "notApplicableTreatment": "NOT_APPLICABLE — no pass credit, no failure contribution, never recorded as zero"
+      },
+      {
+        "guardrailId": "requireNewSeedVariance",
+        "formalClass": "TAIL_GUARDRAIL",
+        "catastrophic": false,
+        "mappedFixtures": 16,
+        "applicableFixtures": 16,
+        "applicableFixtureIds": [
+          "ss2-all-bigs",
+          "ss2-all-guards",
+          "ss2-no-spacing-1960s",
+          "ss2-no-spacing-modern",
+          "ss2-mismatch-chain",
+          "ss2-zone-edge-legal",
+          "ss2-zone-edge-illegal",
+          "ss2-era-edge-old-in-modern",
+          "ss2-era-edge-modern-in-old",
+          "ss2-coach-toolkit-edge",
+          "ss2-usage-concentration",
+          "ss2-statistical-tails",
+          "ss2-series-variance",
+          "ss2-win82-variance",
+          "ss2-duplicate-role",
+          "ss2-extreme-strength-gap"
+        ],
+        "minDecidedFixturesForSetPass": 11,
+        "notApplicableFixtureIds": [],
+        "notApplicableTreatment": "NOT_APPLICABLE — no pass credit, no failure contribution, never recorded as zero"
+      },
+      {
+        "guardrailId": "requireConstructionCanBeatHigherOvr",
+        "formalClass": "PER_FIXTURE_REQUIRED",
+        "catastrophic": false,
+        "mappedFixtures": 5,
+        "applicableFixtures": 5,
+        "applicableFixtureIds": [
+          "ss2-all-bigs",
+          "ss2-all-guards",
+          "ss2-no-spacing-1960s",
+          "ss2-no-spacing-modern",
+          "ss2-duplicate-role"
+        ],
+        "minDecidedFixturesForSetPass": 4,
+        "notApplicableFixtureIds": [],
+        "notApplicableTreatment": "NOT_APPLICABLE — no pass credit, no failure contribution, never recorded as zero"
+      },
+      {
+        "guardrailId": "requireExtremeTalentRemainsMeaningful",
+        "formalClass": "PER_FIXTURE_REQUIRED",
+        "catastrophic": false,
+        "mappedFixtures": 1,
+        "applicableFixtures": 1,
+        "applicableFixtureIds": [
+          "ss2-extreme-strength-gap"
+        ],
+        "minDecidedFixturesForSetPass": 1,
+        "notApplicableFixtureIds": [],
+        "notApplicableTreatment": "NOT_APPLICABLE — no pass credit, no failure contribution, never recorded as zero"
+      }
+    ],
+    "indeterminateProtection": "a run cannot pass by being unmeasurable: every adjudicable guardrail must be decided PASS on at least two thirds of its applicable fixtures, rounded up, and never fewer than one.",
+    "inputs": {
+      "surfacePlanHash": "e9c3913f708628206d1c6c68b1909e96f19a8cc1f005a4a57955ac6c530649df",
+      "samplePlanHash": "8cea75204e632cea2e49c9903c7cf45d36b3a0f371975f6df3dd93f2086383f6"
+    },
+    "pass": true,
+    "failedGates": [],
+    "aggregationHash": "14b3f4481b1ad870a9a5c42f362dfe616c921875fb0d68ce8ce13934b04399cc"
+  },
+  "outputHash": "d65321cae9ee46ac02a14ea04bfcfc1e2dc65a61c7b8e31fb0b7c44714e2eca0"
+}

@@ -127,18 +127,45 @@ describe("6C4B2 — the second-stage blocker", () => {
     expect(HOLDOUT.minGamesPerHoldoutFixture).toBeGreaterThan(0);
   });
 
-  it("proves the prepared synthetic command cannot resolve", () => {
-    const pkg = JSON.parse(readFileSync("package.json", "utf8"));
-    expect(pkg.scripts["validation:synthetic-v2"], "the B2 package named a script that does not exist").toBeUndefined();
-    expect(Object.keys(pkg.scripts).filter((k) => /synthetic/i.test(k))).toEqual([]);
+  // These two assertions originally checked the live filesystem: no
+  // validation:synthetic-v2 script, no runner module. That was a point-in-time
+  // absence recorded as a permanent invariant, and Phase 6C4B1S built both. The
+  // blocker's RECORD of that absence is the durable fact, so these now assert
+  // the record plus its traceable resolution — which is a stronger claim than
+  // the original, because a silent fix would fail them.
+  it("records that the prepared synthetic command could not resolve at its commit", () => {
     expect(b.missing.preparedCommandResolvable).toContain("validation:synthetic-v2");
+    expect(b.missing.preparedCommandResolvable).toContain("cannot execute");
+    expect(b.recordedAtCommit, "the blocker states the commit its findings describe").toBeTruthy();
   });
 
-  it("has no synthetic runner anywhere in the repository", () => {
-    for (const p of ["scripts/validation/synthetic-stress-holdout-v2.mjs", "scripts/validation/synthetic-v2.mjs",
-      "scripts/v6/synthetic-v2.mjs"]) {
-      expect(existsSync(p), `${p} must not exist yet`).toBe(false);
-    }
+  it("records that no synthetic runner existed at its commit", () => {
+    expect(b.missing.runner).toContain("NO synthetic-V2 runner module exists");
+    expect(b.missing.runner).toMatch(/no npm script matches/);
+  });
+
+  it("was closed by a later preparation phase rather than silently", () => {
+    const REG = "data/validation/6c4b1s/synthetic-v2-formal-readiness-register.json";
+    expect(existsSync(REG),
+      "if the blocker is resolved, a register must say so; if it is not, this file should not exist").toBe(true);
+    const reg = JSON.parse(readFileSync(REG, "utf8")).data;
+    // the register must reconcile against THIS blocker, not a paraphrase of it
+    expect(reg.authoritativeSource.blockerId).toBe(b.blockerId);
+    expect(reg.authoritativeSource.recordedAtCommit).toBe(b.recordedAtCommit);
+    expect([...reg.authoritativeSource.missingKeys].sort()).toEqual([...Object.keys(b.missing)].sort());
+    expect(reg.reconciliation.unclaimed).toEqual([]);
+    expect(reg.reconciliation.invented).toEqual([]);
+    // and the runner and command the blocker said were absent must now exist
+    const pkg = JSON.parse(readFileSync("package.json", "utf8"));
+    expect(pkg.scripts["validation:synthetic-v2"]).toBeTruthy();
+    expect(existsSync("scripts/validation/synthetic-stress-holdout-v2.mjs")).toBe(true);
+  });
+
+  it("still leaves both sets unopened, which is what the blocker was protecting", () => {
+    expect(b.holdoutsOpenedInThisPhase.historicalV5).toBe(0);
+    expect(b.holdoutsOpenedInThisPhase.syntheticV2).toBe(0);
+    expect(setAccessCount("historical-holdout-v5")).toBe(0);
+    expect(setAccessCount("synthetic-stress-holdout-v2")).toBe(0);
   });
 
   it("explains why V5 was not opened and why nothing was authored here", () => {
