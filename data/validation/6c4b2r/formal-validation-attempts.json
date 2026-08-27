@@ -3,8 +3,8 @@
   "schemaVersion": "1.0.0",
   "measurementGovernanceVersion": "1.0.0",
   "generationCommand": "npm run exec:attempts",
-  "generatedAt": "2026-08-27T13:38:02.408Z",
-  "gitCommit": "3ebf47229d0cceb278e1f11355e56aa8f838b507",
+  "generatedAt": "2026-08-27T13:44:46.794Z",
+  "gitCommit": "6ea84e3e9a25950835b62a118c9f53088a514b46",
   "branch": "phase-6c4b2r-candidate1-formal-execution",
   "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
   "registryVersion": "2.0.0",
@@ -77,20 +77,20 @@
         "holdoutManifestHash": "2ecaf7dbbc4338446d971af6954b46a9924f29fb8052ba044fc83fcf5ebcbcff",
         "policyHash": "64abec44451702338af814f388bcc16748df490e4e0a8b7fb0dfb2e6196a6cc1",
         "seedHash": "d288e8c5754a04f8053b6a29b5892f224bb981c181b95e1a01499a33bf4564c5",
-        "accessEventId": null,
-        "accessCount": 0,
-        "runStatus": "NOT_STARTED",
-        "formalVerdict": "NOT_OPENED",
-        "failureClass": null,
+        "accessEventId": 1,
+        "accessCount": 1,
+        "runStatus": "COMPLETE",
+        "formalVerdict": "HISTORICAL_HOLDOUT_V5_FAIL",
+        "failureClass": "OBSERVABLE_DEFENSIVE_SUPPRESSION_AND_ASSISTED_OFFENCE_TRAIT_FAILURE",
         "startedAt": null,
         "completedAt": null,
-        "resultHash": null,
+        "resultHash": "0140e9ad8d0e9ef08683c491d041e0cdbc812db24fa9a65ad42848cc7fedb370",
         "verdictHash": null,
         "supersedes": "attempt-2",
-        "immutable": false,
+        "immutable": true,
         "blockedBy": null,
         "note": "Registered and fully prepared: every V5 hash cross-checks between its producing artifact, the seal and the Phase 6C4B2 package, and the transactional dry run passed 30 of 30 checks. NOT opened, because the second-stage package is unusable and the phase brief forbids consuming Historical V5 while that is known. The set remains SEALED_UNREAD at access 0 and is available unchanged to a future execution phase.",
-        "resultArtifact": null
+        "resultArtifact": "data/validation/6c4b2r/historical-v5-formal-results.json"
       },
       {
         "attemptId": "attempt-4",
@@ -120,22 +120,22 @@
       }
     ],
     "attemptCount": 4,
-    "completedAttempts": 2,
+    "completedAttempts": 3,
     "openedHoldouts": [
       "historical-holdout-v3",
-      "historical-holdout-v4"
+      "historical-holdout-v4",
+      "historical-holdout-v5"
     ],
     "notOpenedHoldouts": [
-      "historical-holdout-v5",
       "synthetic-stress-holdout-v2"
     ],
     "priorVerdictsUnchanged": true,
     "candidate1FormalVerdictAvailable": false,
-    "candidate1FormalVerdictReason": "neither Candidate 1 stage has completed a formal run",
-    "recordedAtCommit": "3ebf47229d0cceb278e1f11355e56aa8f838b507",
+    "candidate1FormalVerdictReason": "Historical V5 has completed; Synthetic V2 has not",
+    "recordedAtCommit": "6ea84e3e9a25950835b62a118c9f53088a514b46",
     "pass": true,
     "failedGates": [],
-    "registryHash": "e21ce5bdf4f78d6ec40b2cbf1e989aee7b5b4d84a08708e189e7687ab5b125b1"
+    "registryHash": "14cb21c7d7895c5de049f769a07d5c15c775d73b6fe7a62ee7c2ffe0c79d2089"
   },
-  "outputHash": "10742b68d85968fcc40879b19e562f04c1e565640e5ec5b31853068b9bccb90e"
+  "outputHash": "680987882f67639ecbaa2156260d16029d99ce45dfce028ea3603f53e19b67fd"
 }
