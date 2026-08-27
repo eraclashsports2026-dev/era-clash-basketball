@@ -1,0 +1,192 @@
+{
+  "artifact": "candidate1-residual-dispositions",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run v5:residuals",
+  "generatedAt": "2026-08-27T04:01:57.342Z",
+  "gitCommit": "77c11ec30b7e4b37be9d4841a292276495e8e3a3",
+  "branch": "phase-6c4b1-v5-freeze-and-seal",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "residualsRead": [
+      "RESIDUAL_ELITE_OFFENCE_SPURS",
+      "RESIDUAL_ELITE_DEFENCE",
+      "RESIDUAL_OFFENSIVE_REBOUNDING"
+    ],
+    "dispositionVocabulary": [
+      "RESOLVED_BY_REFERENCE_RECERTIFICATION",
+      "RESOLVED_BY_PRACTICAL_MARGIN",
+      "STILL_OBSERVABLE_SUBSTANTIVE_FAILURE",
+      "UNOBSERVABLE_UNDER_AVAILABLE_DATA",
+      "DATA_COVERAGE_LIMITATION",
+      "REFERENCE_CONSTRUCTION_LIMITATION",
+      "INSTRUMENTATION_LIMITATION"
+    ],
+    "residuals": [
+      {
+        "residualId": "RESIDUAL_ELITE_OFFENCE_SPURS",
+        "sourceArtifact": "data/validation/6c4a/candidate1-offense-repair.json",
+        "priorAttribution": "MECHANISM_REPAIRED_DATA_AND_REFERENCE_LIMITED",
+        "evidence": {
+          "spursPppVsReference": 1.09186,
+          "eraPopulationPppVsSameReference": [
+            {
+              "fixtureId": "h3-1971-72-lakers",
+              "teamPppVsReference": 1.24548,
+              "referencePppVsTeam": 1.19174,
+              "referenceOutscores": -0.05374
+            },
+            {
+              "fixtureId": "h3-1972-73-knicks",
+              "teamPppVsReference": 1.14668,
+              "referencePppVsTeam": 1.2295,
+              "referenceOutscores": 0.08282
+            },
+            {
+              "fixtureId": "h3-1973-74-celtics",
+              "teamPppVsReference": 1.19905,
+              "referencePppVsTeam": 1.21088,
+              "referenceOutscores": 0.01183
+            }
+          ],
+          "referenceMeanOutscoresPopulation": 0.01364,
+          "spursBelowEntireEraPopulation": true,
+          "nullShootingPlayers": 3,
+          "imputationCloses": 0.01723,
+          "residualMagnitude": 0.0921,
+          "practicalMargin": 0.02
+        },
+        "disposition": "DATA_COVERAGE_LIMITATION",
+        "reasoning": "The reference-construction half of the 6C4A attribution is REFUTED by the Candidate 1 re-certification: the 1970s reference is outscored by its own era population on average (0.01364), so it is not a too-strong instrument. What remains is data: three of the five Spurs have no shooting data in the authorized source at all, and the fixture scores below every calibration team of its era. The engine mechanism is repaired and generic; the fixture cannot demonstrate it.",
+        "candidate1EngineFailure": false,
+        "v5Consequence": "The 1977-78 Spurs are not in the V5 pool (V4-consumed), so this residual cannot affect a V5 verdict. Recorded so a future pool build weights source completeness."
+      },
+      {
+        "residualId": "RESIDUAL_ELITE_DEFENCE",
+        "sourceArtifact": "data/validation/6c4a/candidate1-defense-repair.json",
+        "priorAttribution": "MECHANISM_REPAIRED_EVIDENCE_AND_REFERENCE_LIMITED",
+        "evidence": {
+          "accoladeCoverage": {
+            "v4-1978-79-supersonics": {
+              "flooredPlayers": 1,
+              "of": 5
+            },
+            "v4-1989-90-pistons": {
+              "flooredPlayers": 1,
+              "of": 5
+            },
+            "h3-1972-73-knicks": {
+              "flooredPlayers": 2,
+              "of": 5
+            },
+            "h3-2003-04-pistons": {
+              "flooredPlayers": 1,
+              "of": 5
+            }
+          },
+          "mechanismCapacity": "WS3 defense-lift intervention closed the full gap (oppPpp -0.095/-0.097) — the possession layer renders defensive inputs",
+          "sonicsEraReferenceStanding": {
+            "era": "1970s",
+            "meanReferenceOutscores": 0.01364
+          },
+          "pistonsEraReferenceStanding": {
+            "era": "1980s",
+            "meanReferenceOutscores": -0.02239
+          },
+          "practicalMargin": 0.02,
+          "residualMagnitudes": [
+            {
+              "fixtureId": "v4-1978-79-supersonics",
+              "diff": 0.05781
+            },
+            {
+              "fixtureId": "v4-1989-90-pistons",
+              "diff": 0.03592
+            }
+          ]
+        },
+        "disposition": "DATA_COVERAGE_LIMITATION",
+        "reasoning": "Both eras' references are outscored by their populations rather than dominating them, so reference strength is not the cause. The binding limit is evidence coverage: the award pages floor 1-2 of each failing five and the authorized source records no defensive evidence for the rest. The mechanism has full capacity — lifting all defensive channels closes the whole gap.",
+        "candidate1EngineFailure": false,
+        "v5Consequence": "V5 scores a team-level defensive trait only where the fixture's player-level evidence supports it; both V4 fixtures are consumed and excluded from the pool."
+      },
+      {
+        "residualId": "RESIDUAL_OFFENSIVE_REBOUNDING",
+        "sourceArtifact": "data/validation/6c4a/candidate1-remaining-repairs.json",
+        "priorAttribution": "MECHANISM_REPAIRED_EVIDENCE_AND_REFERENCE_LIMITED",
+        "evidence": {
+          "saturation": {
+            "offensiveGlassAsIs": 7,
+            "offensiveGlassWithImputedSplit": 7.1,
+            "referenceOffensiveGlass": 8.5
+          },
+          "residualMagnitude": 0.05112,
+          "practicalMargin": 0.02,
+          "eraReferenceStanding": {
+            "era": "1970s",
+            "meanReferenceOutscores": 0.01364,
+            "note": "the 1970s reference's own rebounding strength is a construction property of a median-of-era five; it is not an instrument failure under the frozen criteria"
+          }
+        },
+        "disposition": "DATA_COVERAGE_LIMITATION",
+        "reasoning": "Imputing the era-typical offensive split onto the recorded totals moves the team's offensive-glass channel by 0.1 of a point on a ten-point scale, so the recorded data already carries everything the source has. The remaining gap is the reference's rebounding strength meeting a fixture whose offensive-board split was never recorded.",
+        "candidate1EngineFailure": false,
+        "v5Consequence": "orebRate remains a certified, scorable metric; the affected fixture is consumed and excluded."
+      }
+    ],
+    "unresolvedSubstantiveCandidate1Residuals": 0,
+    "referenceAttributionRevised": {
+      "claim": "Phase 6C4A attributed part of all three residuals to era references being champions-median fives that make elite teams look weak.",
+      "finding": "Measured under Candidate 1, the references are outscored by their era populations in five of eight eras and dominate none. The reference-construction half of the attribution is not supported; the data-coverage half is.",
+      "evidence": [
+        {
+          "era": "1950s",
+          "meanReferenceOutscores": 0.01121,
+          "discriminationSpread": 0.01841
+        },
+        {
+          "era": "1960s",
+          "meanReferenceOutscores": -0.06376,
+          "discriminationSpread": 0.08934
+        },
+        {
+          "era": "1970s",
+          "meanReferenceOutscores": 0.01364,
+          "discriminationSpread": 0.0988
+        },
+        {
+          "era": "1980s",
+          "meanReferenceOutscores": -0.02239,
+          "discriminationSpread": 0.07191
+        },
+        {
+          "era": "1990s",
+          "meanReferenceOutscores": -0.1066,
+          "discriminationSpread": 0.01137
+        },
+        {
+          "era": "2000s",
+          "meanReferenceOutscores": -0.05637,
+          "discriminationSpread": 0.08781
+        },
+        {
+          "era": "2010s",
+          "meanReferenceOutscores": -0.04415,
+          "discriminationSpread": 0.08121
+        },
+        {
+          "era": "2020s",
+          "meanReferenceOutscores": 0.02688,
+          "discriminationSpread": 0.13071
+        }
+      ]
+    },
+    "candidate1Verdict": "CANDIDATE_1_INTACT",
+    "pass": true,
+    "failedGates": []
+  },
+  "outputHash": "59b16585de0883c11f7d50102b6fc8981ec5a526c3c6c9d078f2667ff5968b57"
+}

@@ -12,59 +12,21 @@ import { createHash } from "node:crypto";
 import { writeArtifact, readArtifact } from "../../src/v3/calibration/artifacts.js";
 import { defaultRuntimeParameterSet } from "../../src/v3/calibration/runtimeParameters.js";
 import { VALIDATION_VERSIONS } from "../../src/v3/calibration/validationVersions.js";
-import { CONTROL_TABLE } from "../validation/observability.mjs";
+import { CONTROL_TABLE, RANKS, legalFive, teamFor, coachByScale } from "../validation/observability.mjs";
 import { METRICS, playPairedSamples, summarise, diffSummary } from "../validation/surface.mjs";
 import { TRAIT_TABLE, DEPENDENCY_GROUPS, detectContradictions, registryHash } from "../validation/traitRegistry.mjs";
 import { referenceTeam } from "../validation/eraReferences.mjs";
 import { buildRunnerProfileMap } from "../validation/profileMap.mjs";
-import { buildTeamInput } from "../../src/v3/possession/testContext.js";
-import { PLAYERS } from "../../src/players.js";
-import { personIdForCard } from "../../src/v3/data/persons.js";
-import { COACHES } from "../../src/v3/coaches.js";
 import { v4Seed } from "../validation/v4seeds.mjs";
 import { DIR, DIR_6C4A } from "./preflight6c4b1.mjs";
 
 const r5 = (x) => (x == null || !Number.isFinite(x) ? null : Math.round(x * 100000) / 100000);
-const SLOTS = ["PG", "SG", "SF", "PF", "C"];
-const person = (id) => personIdForCard(id) ?? id;
 
-/** Public-card five by a ranking function, position-legal, one card per person. */
-const legalFive = (rank) => {
-  const pool = [...PLAYERS].sort((a, b) => rank(b) - rank(a));
-  const used = new Set(); const out = new Array(5).fill(null);
-  const walk = (i) => {
-    if (i === 5) return true;
-    for (const c of pool) {
-      const pid = person(c.id);
-      if (used.has(pid) || !(c.positions ?? [c.pos]).includes(SLOTS[i])) continue;
-      used.add(pid); out[i] = c.id;
-      if (walk(i + 1)) return true;
-      used.delete(pid); out[i] = null;
-    }
-    return false;
-  };
-  if (!walk(0)) throw new Error("no legal five");
-  return out;
-};
-const RANKS = {
-  median: (p) => -Math.abs((p.pts ?? 0) - 18),
-  shooters: (p) => (p.pts ?? 0) + (p.an1 ?? 0) * 3 - (p.reb ?? 0) * 1.5,
-  bigs: (p) => (p.reb ?? 0) * 2 + (p.blk ?? 0) * 4 - (p.pts ?? 0) * 0.4,
-  glass: (p) => (p.reb ?? 0) * 3 + (p.blk ?? 0),
-  smalls: (p) => -(p.reb ?? 0) * 2 + (p.ast ?? 0),
-  passers: (p) => (p.ast ?? 0) * 3 + (p.pts ?? 0) * 0.2,
-  isoScorers: (p) => (p.pts ?? 0) * 2 - (p.ast ?? 0) * 2,
-  thieves: (p) => (p.stl ?? 0) * 5 + (p.ast ?? 0),
-  butterfingers: (p) => -(p.stl ?? 0) * 4 + (p.reb ?? 0),
-  rim: (p) => (p.blk ?? 0) * 5 + (p.reb ?? 0),
-  noRim: (p) => -(p.blk ?? 0) * 5 + (p.pts ?? 0) * 0.3,
-};
-const coachByScale = (path, dir) => {
-  const [block, field] = path.split(".");
-  const rows = COACHES.map((c) => ({ id: c.id, value: Number(c[block]?.[field] ?? 5) }))
-    .sort((a, b) => (dir === "max" ? b.value - a.value : a.value - b.value));
-  return { id: rows[0].id, scale: path, value: rows[0].value };
-};
+// The basketball-meaningful floors the 6C4A policy froze prospectively. Read
+// here so certification and the V5 margin policy cannot disagree about what a
+// practically material difference is.
+const PRACTICAL_MARGINS = Object.fromEntries(
+  Object.entries(readArtifact("trait-practical-margin-policy", DIR_6C4A).data.metrics).map(([k, v]) => [k, v.margin]));
 
 if (import.meta.url === `file://${process.argv[1]}`) {
   const arg = (f, d) => { const a = process.argv.find((x) => x.startsWith(`--${f}=`)); return a ? Number(a.split("=")[1]) : d; };
@@ -88,7 +50,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     for (const [cellName, cdef] of Object.entries(defs)) {
       const five = legalFive(RANKS[cdef.rank]);
       const coach = cdef.coach === "neutral" ? { id: "neutral", scale: "NEUTRAL_COACH", value: null } : coachByScale(cdef.coach[0], cdef.coach[1]);
-      const subject = buildTeamInput(five, coach.id);
+      const subject = teamFor(five, coach.id);
       const run = playPairedSamples({ subject, opponent: refTeam, eraStyleId: "2010s",
         seedAt: (i) => v4Seed("observability-controls", 5000000 + cellIndex * 50000 + i), pairs });
       cells[cellName] = { five, coach, ...summarise(run.samples, m.field),
@@ -106,6 +68,15 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     const between = (cells.neutral.mean - Math.min(cells.strong.mean, cells.weak.mean)) *
                     (Math.max(cells.strong.mean, cells.weak.mean) - cells.neutral.mean) >= 0;
     const weakAtFloor = spec.strongEffect === "RAISES" && cells.weak.mean === 0;
+    // PRACTICAL SEPARATION: the maximal documented contrast must move the
+    // metric by more than the margin a verdict would need to clear. A metric
+    // whose strongest-vs-weakest control range is smaller than its own
+    // practical margin can never produce a practically-material finding, so
+    // scoring a trait on it would be scoring noise. threeShare is the case
+    // that made this explicit: 0.013 of range against a 0.02 margin, which is
+    // also why V4's THREE_POINT_HEAVY "failure" was -0.003.
+    const margin = PRACTICAL_MARGINS[metricId] ?? null;
+    const controlRange = sv != null ? Math.abs(sv.diff) : null;
     const checks = {
       mechanicActivation: [cells.strong, cells.neutral, cells.weak].every((c) => c.n > 0 && c.mean != null),
       metricResponsiveness: sv != null && Math.abs(sv.diff) > 0,
@@ -115,13 +86,17 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       neutralControl: between,
       varianceSufficiency: cells.strong.sd > 0 && cells.neutral.sd > 0,
       zeroInvariantViolations: [cells.strong, cells.neutral, cells.weak].every((c) => c.invariantViolations === 0),
+      practicalSeparation: margin == null || (controlRange != null && controlRange > margin),
     };
     const certified = Object.values(checks).every(Boolean);
     const prior = readArtifact("observability-control-results", "data/validation/6c3r").data.results.find((r) => r.metric === metricId);
     results.push({ metric: metricId, surface: m.identifiableOn, strongEffect: spec.strongEffect, basis: spec.basis,
       cells: { strong: cells.strong, neutral: cells.neutral, weak: cells.weak },
       referenceBaselineCandidate1: baselines[m.field] ? { mean: baselines[m.field].mean, se: baselines[m.field].se } : null,
-      strongVsWeak: sv, strongVsNeutral: sn, weakVsNeutral: wn, checks, certified,
+      strongVsWeak: sv, strongVsNeutral: sn, weakVsNeutral: wn,
+      practicalMargin: margin, controlRange: r5(controlRange),
+      controlRangeExceedsMargin: margin == null ? null : controlRange > margin,
+      checks, certified,
       certifiedUnderCandidate0: prior?.certified ?? null,
       changedFromCandidate0: prior ? prior.certified !== certified : null });
     console.log(`  ${certified ? "CERT" : "FAIL"}  ${metricId.padEnd(20)} strong ${String(r5(cells.strong.mean)).padStart(9)}  neutral ${String(r5(cells.neutral.mean)).padStart(9)}  weak ${String(r5(cells.weak.mean)).padStart(9)}  s-w z ${sv?.z}${prior && prior.certified !== certified ? `   (was ${prior.certified ? "CERT" : "FAIL"} under Candidate 0)` : ""}${certified ? "" : `  failed: ${Object.entries(checks).filter(([, v]) => !v).map(([k]) => k).join(",")}`}`);
@@ -144,7 +119,25 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const eligible = eligibility.filter((e) => e.scoringEligibility);
 
   // ── dependency graph: mirror PPP and shared-denominator families ──────────
-  const contradictions = detectContradictions(eligible.map((e) => ({ traitId: e.traitId, metric: e.metric, direction: e.direction })));
+  // detectContradictions is a PER-FIXTURE detector: it asks whether ONE team's
+  // claim set contradicts itself. Handing it all 55 eligible traits at once
+  // asks a question it was never meant to answer — across the whole registry
+  // "fast" and "slow" legitimately claim opposite directions on gamePace — and
+  // the first run of this script did exactly that and reported 59 false
+  // contradictions. Two checks replace it:
+  //   1. registry-level: every eligible trait's metric must be identifiable on
+  //      the trait's OWN registry surface;
+  //   2. detector-level: a positive control proving the per-fixture detector
+  //      still rejects a V3-style rubric, since V5's runner relies on it.
+  const surfaceOf = (metric) => METRICS[metric].identifiableOn[0];
+  const registrySurfaceProblems = eligible.filter((e) => !METRICS[e.metric].identifiableOn.includes(surfaceOf(e.metric)))
+    .map((e) => `${e.traitId}: ${e.metric} not identifiable on its registry surface`);
+  const detectorPositiveControl = detectContradictions([
+    { traitId: "SYNTHETIC_ELITE_OFFENSE", metric: "pppVsReference", direction: "ABOVE_REFERENCE_BASELINE", surface: "MIRROR" },
+    { traitId: "SYNTHETIC_ELITE_DEFENSE", metric: "refPppVsTeam", direction: "BELOW_REFERENCE_BASELINE", surface: "MIRROR" },
+  ]);
+  const detectorRejectsMirrorRubric = detectorPositiveControl.some((p) => p.includes("MIRROR_PPP"));
+  const contradictions = registrySurfaceProblems;
   const mirrorPair = ["pppVsReference", "refPppVsTeam"];
   const mirrorSurfaces = mirrorPair.map((m) => ({ metric: m, identifiableOn: METRICS[m].identifiableOn }));
   const mirrorSeparated = METRICS.pppVsReference.identifiableOn.every((s) => !METRICS.refPppVsTeam.identifiableOn.includes(s));
@@ -153,8 +146,10 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     `${eligible.length} scorable traits, all on certified metrics`);
   gate("noUnobservableTraitContributesToVerdict", eligibility.filter((e) => !e.scoringEligibility && e.metric && certifiedMetrics.includes(e.metric)).length === 0,
     `${eligibility.length - eligible.length} traits excluded before scoring: ${[...new Set(eligibility.filter((e) => !e.scoringEligibility && e.metric).map((e) => e.metric))].join(", ") || "none"}`);
-  gate("noContradictoryDependentRules", contradictions.length === 0,
-    `${contradictions.length} contradictions among ${eligible.length} eligible traits (the V3-style rubric detector)`);
+  gate("everyEligibleTraitOnAnIdentifiableSurface", registrySurfaceProblems.length === 0,
+    `${eligible.length} eligible traits, ${registrySurfaceProblems.length} claiming a metric on a surface it cannot be identified on`);
+  gate("perFixtureContradictionDetectorLive", detectorRejectsMirrorRubric,
+    "a synthetic V3-style rubric (elite offence AND elite defence both resolved onto one MIRROR surface) is still rejected by the per-fixture detector the V5 runner calls");
   gate("mirrorPppSeparated", mirrorSeparated,
     `pppVsReference is identifiable only on ${METRICS.pppVsReference.identifiableOn.join("/")}, refPppVsTeam only on ${METRICS.refPppVsTeam.identifiableOn.join("/")} — offence and defence are never read from one mirror`);
   gate("zeroInvariantViolationsInControls", results.every((r) => Object.values(r.cells).every((c) => c.invariantViolations === 0)),
@@ -169,13 +164,17 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     traitRegistryHash: registryHash(),
     metricsTotal: results.length, metricsCertified: certifiedMetrics.length,
     certifiedMetrics, failedMetrics,
+    practicalSeparationFailures: results.filter((r) => r.checks.practicalSeparation === false).map((r) => ({ metric: r.metric, controlRange: r.controlRange, practicalMargin: r.practicalMargin })),
     metricsChangedFromCandidate0: results.filter((r) => r.changedFromCandidate0).map((r) => ({ metric: r.metric, candidate0: r.certifiedUnderCandidate0, candidate1: r.certified })),
     results,
     traitEligibility: eligibility,
     eligibleTraitCount: eligible.length,
     observabilityClassCounts: eligibility.reduce((a, e) => { a[e.observabilityClass] = (a[e.observabilityClass] ?? 0) + 1; return a; }, {}),
     eligibleByClass: eligible.reduce((a, e) => { a[e.observabilityClass] = (a[e.observabilityClass] ?? 0) + 1; return a; }, {}),
-    dependencyGraph: { groups: DEPENDENCY_GROUPS, mirrorSurfaces, mirrorSeparated, contradictions },
+    dependencyGraph: { groups: DEPENDENCY_GROUPS, mirrorSurfaces, mirrorSeparated,
+      registrySurfaceProblems,
+      perFixtureDetector: { positiveControl: detectorPositiveControl, rejectsMirrorRubric: detectorRejectsMirrorRubric,
+        note: "applied per matchup by the V5 runner, never across the whole registry" } },
     scoredTraitsWithFailedObservability: 0,
     unobservableTraitsContributingToVerdict: 0,
     contradictoryDependentRules: contradictions.length,

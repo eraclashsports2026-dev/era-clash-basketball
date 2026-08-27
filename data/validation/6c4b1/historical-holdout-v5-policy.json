@@ -1,0 +1,126 @@
+{
+  "artifact": "historical-holdout-v5-policy",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run v5:policy",
+  "generatedAt": "2026-08-27T04:03:38.123Z",
+  "gitCommit": "77c11ec30b7e4b37be9d4841a292276495e8e3a3",
+  "branch": "phase-6c4b1-v5-freeze-and-seal",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "historicalHoldoutAcceptancePolicyVersion": "3.0.0",
+    "holdoutSet": "historical-holdout-v5",
+    "frozenBeforeAnyV5Output": true,
+    "frozenBeforeSelection": true,
+    "basedOnly": [
+      "non-holdout development controls",
+      "Candidate 1 era-reference certification",
+      "Candidate 1 strong/neutral/weak trait controls",
+      "measured paired-seed variance"
+    ],
+    "protocol": {
+      "surfacesPerMatchup": [
+        "TEAM_A_VS_TEAM_B",
+        "TEAM_A_VS_ERA_REFERENCE",
+        "TEAM_B_VS_ERA_REFERENCE"
+      ],
+      "sideBalanced": true,
+      "pairsPerSurface": 2048,
+      "gamesPerSurface": 4096,
+      "gamesPerMatchup": 12288,
+      "matchups": 8,
+      "totalGames": 98304,
+      "seedStream": "historical-holdout-v5",
+      "note": "Offence is read only from a team's own side of team-vs-reference games and defence only from the reference's output in those games. Nothing offence/defence is ever read from a mirror — the defect that consumed V3."
+    },
+    "numericGates": {
+      "compositeShareMae": {
+        "measuredOn": "each team's five-share distribution in its TEAM_VS_ERA_REFERENCE games, against the Tier C season-share proxy",
+        "internalBaselineMean": 0.0431,
+        "maxHoldoutToInternalRatio": 1.5,
+        "catastrophicThreshold": 0.13038,
+        "maxCatastrophicTeams": 0,
+        "ratioNote": "Carried forward unchanged from the V4 policy. It was not weakened because V4 passed it, and it is not tightened because V4 failed elsewhere."
+      },
+      "shareComponents": [
+        "playerScoringShares",
+        "playerReboundShares",
+        "playerAssistShares",
+        "playerStealShares",
+        "playerBlockShares"
+      ],
+      "unavailableMetrics": "A null target (pre-1974 steals and blocks, or any unrecorded field) contributes no error, no pass credit and no failure. It is never zero-filled."
+    },
+    "traitGates": {
+      "scoredTraits": "Only traits certified in historical-observability-certification-candidate1.json, on their registry surface, against the CANDIDATE 1 era-reference self-baselines.",
+      "perTrait": {
+        "hardFail": "direction opposite to the claim AND the 95% interval excludes zero AND |difference| > margin[metric]",
+        "directionalSoftFail": "direction opposite to the claim AND (interval includes zero OR |difference| <= margin[metric]) — reported, never verdict-driving",
+        "pass": "direction matches the claim",
+        "reportingStates": [
+          "PASS",
+          "STATISTICALLY_DIFFERENT_PRACTICALLY_EQUIVALENT",
+          "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED",
+          "INCONCLUSIVE",
+          "NOT_OBSERVABLE",
+          "NOT_APPLICABLE"
+        ],
+        "dualGate": "Both gates must fire. Statistical significance alone is not a failure at 4,096 games, and a large difference inside noise is not evidence."
+      },
+      "practicalMarginPolicyHash": "f92f05a662eb5c2820b2011761c65a454132ee0badd8ce1b70c1edf76bac704b",
+      "confidenceHandling": {
+        "HIGH": "a hard fail on a high-confidence identity is a verdict failure on its own",
+        "MEDIUM": "hard fails count toward the aggregate gates; V4's identities were all MEDIUM",
+        "LOW": "reported, never verdict-driving"
+      },
+      "aggregate": {
+        "minTraitPassRate": 0.75,
+        "maxHardFails": 0,
+        "perFixtureRule": "no matchup may fail a majority of its scored traits",
+        "perEraRule": "no era style may fail every scored trait of its matchup"
+      },
+      "reporting": [
+        "PASS",
+        "STATISTICALLY_DIFFERENT_PRACTICALLY_EQUIVALENT",
+        "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED",
+        "INCONCLUSIVE",
+        "NOT_OBSERVABLE",
+        "NOT_APPLICABLE"
+      ]
+    },
+    "structuralGates": {
+      "zeroInvariantFailures": true,
+      "zeroFinalTies": true,
+      "replayExactPerSurface": true,
+      "zeroImpossibleScores": true,
+      "zeroPreThreeEraThreePointAttempts": true,
+      "candidateIdentityStated": "every result must state candidateId, core hash, parameter-set hash and calibration version",
+      "coreHashMustEqual": "de57e1a96e1fd1450d1aea9c5463b0138a56d77bbf58c748ba042e6f78f5c94d",
+      "parameterSetHashMustEqual": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "calibrationVersionMustEqual": "1.1.0"
+    },
+    "outcomes": {
+      "pass": "HISTORICAL_HOLDOUT_V5_PASS",
+      "fail": "HISTORICAL_HOLDOUT_V5_FAIL",
+      "invalid": "HISTORICAL_HOLDOUT_V5_INVALID_RUN"
+    },
+    "failureSemantics": "FAIL preserves every artifact, forbids tuning against V5, keeps Synthetic V2 sealed, and ends formal validation for Candidate 1. INVALID_RUN resumes under the SAME access event only.",
+    "immutability": "After this artifact is committed no threshold, margin, trait, confidence rule, reference or target may change. Any change before V5 access requires a new policy version, a new policy hash and a new readiness package; any change after V5 access invalidates V5.",
+    "hashes": {
+      "candidateCoreHash": "de57e1a96e1fd1450d1aea9c5463b0138a56d77bbf58c748ba042e6f78f5c94d",
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "possessionCalibrationVersion": "1.1.0",
+      "eraReferenceCertificationHash": "2fc186682dc0b5c6ac2c0ba0b561f8f0da4439424eb3bc4cc09fa81ef79c66df",
+      "observabilityCertificationHash": "d64bfeb1b4101f2367ff0198b0c23d41c1f4fd30e1fa311d1da75bcebbbed668",
+      "practicalMarginPolicyHash": "f92f05a662eb5c2820b2011761c65a454132ee0badd8ce1b70c1edf76bac704b",
+      "priorV4PolicyHash": "6b607348f42ba4a4dc7c155c05944a80c87ccf04c92761993dc32370f8f9ec12"
+    },
+    "policyHash": "4024bf45d029c8e6b934e4096d573c90b3a5a29dfffb8303be0b673976e549d3",
+    "frozen": true,
+    "pass": true
+  },
+  "outputHash": "6ca22960a7f2fa6066d8d182d38274db02613d73b0643d127fae1c9199096b4a"
+}

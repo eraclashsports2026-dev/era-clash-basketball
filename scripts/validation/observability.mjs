@@ -30,7 +30,7 @@ const person = (id) => personIdForCard(id) ?? id;
 const r5 = (x) => (x == null || !Number.isFinite(x) ? null : Math.round(x * 100000) / 100000);
 
 /** Person-aware, position-legal five maximising a documented card rank. */
-const legalFive = (rank) => {
+export const legalFive = (rank) => {
   const pool = [...PLAYERS].sort((a, b) => rank(b) - rank(a) || a.id.localeCompare(b.id));
   const used = new Set(); const out = new Array(5).fill(null);
   const walk = (i) => {
@@ -48,7 +48,7 @@ const legalFive = (rank) => {
   return out;
 };
 
-const teamFor = (ids, coachId) => {
+export const teamFor = (ids, coachId) => {
   const cards = ids.map((id) => PLAYERS.find((c) => c.id === id));
   const intel = cards.map((c) => buildIntelligence(c, {}));
   return { playerCards: cards, playerIntelligence: intel,
@@ -56,14 +56,16 @@ const teamFor = (ids, coachId) => {
     coachId, positionAssignments: SLOTS };
 };
 
-const coachByScale = (path, pick) => {
+export const coachByScale = (path, pick) => {
   const val = (c) => path.split(".").reduce((o, k) => o?.[k], c) ?? 0;
   const sorted = [...COACHES].sort((a, b) => (pick === "max" ? val(b) - val(a) : val(a) - val(b)) || a.id.localeCompare(b.id));
   return { id: sorted[0].id, scale: path, value: val(sorted[0]) };
 };
 
 // Documented card ranks. pts/reb/ast/stl/blk are the public decade-card stats.
-const RANKS = {
+// Exported so a later candidate re-certifies the SAME cells: a second copy of
+// these definitions could drift and make two certifications incomparable.
+export const RANKS = {
   scorers: (p) => (p.pts ?? 0) * 2 + (p.ast ?? 0),
   nonScorers: (p) => -((p.pts ?? 0) * 2 + (p.ast ?? 0)),
   defenders: (p) => (p.stl ?? 0) * 2 + (p.blk ?? 0) * 2 + (p.dpoy ?? 0) * 3 + (p.ad1 ?? 0),

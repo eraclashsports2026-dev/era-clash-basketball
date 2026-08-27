@@ -1,0 +1,3098 @@
+{
+  "artifact": "historical-observability-certification-candidate1",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run v5:observability",
+  "generatedAt": "2026-08-27T04:01:12.099Z",
+  "gitCommit": "77c11ec30b7e4b37be9d4841a292276495e8e3a3",
+  "branch": "phase-6c4b1-v5-freeze-and-seal",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "historicalObservabilityCertificationVersion": "2.0.0",
+    "certifiedUnder": {
+      "candidateId": "Candidate 1",
+      "possessionCalibrationVersion": "1.1.0",
+      "coreHash": "de57e1a96e1fd1450d1aea9c5463b0138a56d77bbf58c748ba042e6f78f5c94d"
+    },
+    "pairsPerCell": 1000,
+    "gamesPerCell": 2000,
+    "referenceCertificationHash": "2fc186682dc0b5c6ac2c0ba0b561f8f0da4439424eb3bc4cc09fa81ef79c66df",
+    "traitRegistryHash": "c034937be7e40bd18932fe53151e0b8a877dc47095004653e1bb11aa5c73a0cf",
+    "metricsTotal": 16,
+    "metricsCertified": 12,
+    "certifiedMetrics": [
+      "gamePace",
+      "pppVsReference",
+      "refPppVsTeam",
+      "transitionShare",
+      "pnrShare",
+      "postUpShare",
+      "movementShare",
+      "interiorShotShare",
+      "orebRate",
+      "orebRateAgainst",
+      "assistedRate",
+      "defensiveZoneShare"
+    ],
+    "failedMetrics": [
+      "isolationShare",
+      "threeShare",
+      "stealRateForced",
+      "rimShareAgainst"
+    ],
+    "practicalSeparationFailures": [
+      {
+        "metric": "threeShare",
+        "controlRange": 0.00873,
+        "practicalMargin": 0.02
+      },
+      {
+        "metric": "stealRateForced",
+        "controlRange": 0.00326,
+        "practicalMargin": 0.01
+      },
+      {
+        "metric": "rimShareAgainst",
+        "controlRange": 0.0018,
+        "practicalMargin": 0.02
+      }
+    ],
+    "metricsChangedFromCandidate0": [
+      {
+        "metric": "threeShare",
+        "candidate0": true,
+        "candidate1": false
+      },
+      {
+        "metric": "defensiveZoneShare",
+        "candidate0": false,
+        "candidate1": true
+      }
+    ],
+    "results": [
+      {
+        "metric": "gamePace",
+        "surface": [
+          "VS_ERA_REFERENCE"
+        ],
+        "strongEffect": "RAISES",
+        "basis": "Coach tempo scale, median roster: pace is a system property here.",
+        "cells": {
+          "strong": {
+            "five": [
+              "edgecombe-20s",
+              "artest-2ks",
+              "dave-d-60s",
+              "nance-90s",
+              "bill-60s"
+            ],
+            "coach": {
+              "id": "doug-moe",
+              "scale": "offense.tempo",
+              "value": 10
+            },
+            "n": 2000,
+            "mean": 99.4825,
+            "sd": 2.1083,
+            "se": 0.04714,
+            "ci95": {
+              "lower": 99.3901,
+              "upper": 99.5749
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          },
+          "neutral": {
+            "five": [
+              "edgecombe-20s",
+              "artest-2ks",
+              "dave-d-60s",
+              "nance-90s",
+              "bill-60s"
+            ],
+            "coach": {
+              "id": "neutral",
+              "scale": "NEUTRAL_COACH",
+              "value": null
+            },
+            "n": 2000,
+            "mean": 96.0355,
+            "sd": 2.08792,
+            "se": 0.04669,
+            "ci95": {
+              "lower": 95.94399,
+              "upper": 96.12701
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          },
+          "weak": {
+            "five": [
+              "edgecombe-20s",
+              "artest-2ks",
+              "dave-d-60s",
+              "nance-90s",
+              "bill-60s"
+            ],
+            "coach": {
+              "id": "mike-fratello",
+              "scale": "offense.tempo",
+              "value": 1
+            },
+            "n": 2000,
+            "mean": 93.392,
+            "sd": 2.06094,
+            "se": 0.04608,
+            "ci95": {
+              "lower": 93.30168,
+              "upper": 93.48232
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          }
+        },
+        "referenceBaselineCandidate1": {
+          "mean": 96.1326,
+          "se": 0.03216
+        },
+        "strongVsWeak": {
+          "diff": 6.0905,
+          "se": 0.06592,
+          "z": 92.39123,
+          "ci95": {
+            "lower": 5.9613,
+            "upper": 6.2197
+          },
+          "significant": true
+        },
+        "strongVsNeutral": {
+          "diff": 3.447,
+          "se": 0.06635,
+          "z": 51.95287,
+          "ci95": {
+            "lower": 3.31696,
+            "upper": 3.57704
+          },
+          "significant": true
+        },
+        "weakVsNeutral": {
+          "diff": -2.6435,
+          "se": 0.0656,
+          "z": -40.29743,
+          "ci95": {
+            "lower": -2.77208,
+            "upper": -2.51492
+          },
+          "significant": true
+        },
+        "practicalMargin": 1,
+        "controlRange": 6.0905,
+        "controlRangeExceedsMargin": true,
+        "checks": {
+          "mechanicActivation": true,
+          "metricResponsiveness": true,
+          "directionalDiscrimination": true,
+          "strongControl": true,
+          "weakControl": true,
+          "neutralControl": true,
+          "varianceSufficiency": true,
+          "zeroInvariantViolations": true,
+          "practicalSeparation": true
+        },
+        "certified": true,
+        "certifiedUnderCandidate0": true,
+        "changedFromCandidate0": false
+      },
+      {
+        "metric": "pppVsReference",
+        "surface": [
+          "VS_ERA_REFERENCE"
+        ],
+        "strongEffect": "RAISES",
+        "basis": "Card scoring rank under the neutral coach: offence quality is a roster property here.",
+        "cells": {
+          "strong": {
+            "five": [
+              "luka-20s",
+              "oscar-60s",
+              "elgin-60s",
+              "giannis-20s",
+              "wilt-60s"
+            ],
+            "coach": {
+              "id": "neutral",
+              "scale": "NEUTRAL_COACH",
+              "value": null
+            },
+            "n": 2000,
+            "mean": 1.29942,
+            "sd": 0.11582,
+            "se": 0.00259,
+            "ci95": {
+              "lower": 1.29435,
+              "upper": 1.3045
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          },
+          "neutral": {
+            "five": [
+              "edgecombe-20s",
+              "artest-2ks",
+              "dave-d-60s",
+              "nance-90s",
+              "bill-60s"
+            ],
+            "coach": {
+              "id": "neutral",
+              "scale": "NEUTRAL_COACH",
+              "value": null
+            },
+            "n": 2000,
+            "mean": 1.08721,
+            "sd": 0.11486,
+            "se": 0.00257,
+            "ci95": {
+              "lower": 1.08217,
+              "upper": 1.09224
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          },
+          "weak": {
+            "five": [
+              "clayton-20s",
+              "bowen-2ks",
+              "rodman-90s",
+              "ben-00s",
+              "eaton-80s"
+            ],
+            "coach": {
+              "id": "neutral",
+              "scale": "NEUTRAL_COACH",
+              "value": null
+            },
+            "n": 2000,
+            "mean": 0.99808,
+            "sd": 0.11554,
+            "se": 0.00258,
+            "ci95": {
+              "lower": 0.99301,
+              "upper": 1.00314
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          }
+        },
+        "referenceBaselineCandidate1": {
+          "mean": 1.18505,
+          "se": 0.00166
+        },
+        "strongVsWeak": {
+          "diff": 0.30134,
+          "se": 0.00366,
+          "z": 82.42907,
+          "ci95": {
+            "lower": 0.29417,
+            "upper": 0.30851
+          },
+          "significant": true
+        },
+        "strongVsNeutral": {
+          "diff": 0.21221,
+          "se": 0.00365,
+          "z": 58.16047,
+          "ci95": {
+            "lower": 0.20506,
+            "upper": 0.21936
+          },
+          "significant": true
+        },
+        "weakVsNeutral": {
+          "diff": -0.08913,
+          "se": 0.00364,
+          "z": -24.47546,
+          "ci95": {
+            "lower": -0.09627,
+            "upper": -0.08199
+          },
+          "significant": true
+        },
+        "practicalMargin": 0.02,
+        "controlRange": 0.30134,
+        "controlRangeExceedsMargin": true,
+        "checks": {
+          "mechanicActivation": true,
+          "metricResponsiveness": true,
+          "directionalDiscrimination": true,
+          "strongControl": true,
+          "weakControl": true,
+          "neutralControl": true,
+          "varianceSufficiency": true,
+          "zeroInvariantViolations": true,
+          "practicalSeparation": true
+        },
+        "certified": true,
+        "certifiedUnderCandidate0": true,
+        "changedFromCandidate0": false
+      },
+      {
+        "metric": "refPppVsTeam",
+        "surface": [
+          "REFERENCE_VS_TEAM"
+        ],
+        "strongEffect": "LOWERS",
+        "basis": "Card defensive rank (steals, blocks, DPOY, all-defense) under the neutral coach.",
+        "cells": {
+          "strong": {
+            "five": [
+              "gary-90s",
+              "jordan-80s",
+              "kawhi-10s",
+              "ben-00s",
+              "hak-90s"
+            ],
+            "coach": {
+              "id": "neutral",
+              "scale": "NEUTRAL_COACH",
+              "value": null
+            },
+            "n": 2000,
+            "mean": 1.07136,
+            "sd": 0.12024,
+            "se": 0.00269,
+            "ci95": {
+              "lower": 1.06609,
+              "upper": 1.07663
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          },
+          "neutral": {
+            "five": [
+              "edgecombe-20s",
+              "artest-2ks",
+              "dave-d-60s",
+              "nance-90s",
+              "bill-60s"
+            ],
+            "coach": {
+              "id": "neutral",
+              "scale": "NEUTRAL_COACH",
+              "value": null
+            },
+            "n": 2000,
+            "mean": 1.11889,
+            "sd": 0.11738,
+            "se": 0.00262,
+            "ci95": {
+              "lower": 1.11375,
+              "upper": 1.12404
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          },
+          "weak": {
+            "five": [
+              "oscar-60s",
+              "barry-60s",
+              "elgin-60s",
+              "bob-60s",
+              "wilt-60s"
+            ],
+            "coach": {
+              "id": "neutral",
+              "scale": "NEUTRAL_COACH",
+              "value": null
+            },
+            "n": 2000,
+            "mean": 1.13281,
+            "sd": 0.11517,
+            "se": 0.00258,
+            "ci95": {
+              "lower": 1.12776,
+              "upper": 1.13786
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          }
+        },
+        "referenceBaselineCandidate1": {
+          "mean": 1.18505,
+          "se": 0.00166
+        },
+        "strongVsWeak": {
+          "diff": -0.06145,
+          "se": 0.00373,
+          "z": -16.48662,
+          "ci95": {
+            "lower": -0.06876,
+            "upper": -0.05414
+          },
+          "significant": true
+        },
+        "strongVsNeutral": {
+          "diff": -0.04753,
+          "se": 0.00376,
+          "z": -12.65758,
+          "ci95": {
+            "lower": -0.05489,
+            "upper": -0.04017
+          },
+          "significant": true
+        },
+        "weakVsNeutral": {
+          "diff": 0.01392,
+          "se": 0.00368,
+          "z": 3.78563,
+          "ci95": {
+            "lower": 0.00671,
+            "upper": 0.02113
+          },
+          "significant": true
+        },
+        "practicalMargin": 0.02,
+        "controlRange": 0.06145,
+        "controlRangeExceedsMargin": true,
+        "checks": {
+          "mechanicActivation": true,
+          "metricResponsiveness": true,
+          "directionalDiscrimination": true,
+          "strongControl": true,
+          "weakControl": true,
+          "neutralControl": true,
+          "varianceSufficiency": true,
+          "zeroInvariantViolations": true,
+          "practicalSeparation": true
+        },
+        "certified": true,
+        "certifiedUnderCandidate0": true,
+        "changedFromCandidate0": false
+      },
+      {
+        "metric": "transitionShare",
+        "surface": [
+          "VS_ERA_REFERENCE",
+          "MIRROR"
+        ],
+        "strongEffect": "RAISES",
+        "basis": "Coach transition scale.",
+        "cells": {
+          "strong": {
+            "five": [
+              "edgecombe-20s",
+              "artest-2ks",
+              "dave-d-60s",
+              "nance-90s",
+              "bill-60s"
+            ],
+            "coach": {
+              "id": "doug-moe",
+              "scale": "offense.transition",
+              "value": 10
+            },
+            "n": 2000,
+            "mean": 0.19714,
+            "sd": 0.03796,
+            "se": 0.00085,
+            "ci95": {
+              "lower": 0.19548,
+              "upper": 0.1988
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          },
+          "neutral": {
+            "five": [
+              "edgecombe-20s",
+              "artest-2ks",
+              "dave-d-60s",
+              "nance-90s",
+              "bill-60s"
+            ],
+            "coach": {
+              "id": "neutral",
+              "scale": "NEUTRAL_COACH",
+              "value": null
+            },
+            "n": 2000,
+            "mean": 0.14756,
+            "sd": 0.03444,
+            "se": 0.00077,
+            "ci95": {
+              "lower": 0.14605,
+              "upper": 0.14907
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          },
+          "weak": {
+            "five": [
+              "edgecombe-20s",
+              "artest-2ks",
+              "dave-d-60s",
+              "nance-90s",
+              "bill-60s"
+            ],
+            "coach": {
+              "id": "mike-fratello",
+              "scale": "offense.transition",
+              "value": 2
+            },
+            "n": 2000,
+            "mean": 0.11711,
+            "sd": 0.03079,
+            "se": 0.00069,
+            "ci95": {
+              "lower": 0.11576,
+              "upper": 0.11846
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          }
+        },
+        "referenceBaselineCandidate1": {
+          "mean": 0.13298,
+          "se": 0.00046
+        },
+        "strongVsWeak": {
+          "diff": 0.08003,
+          "se": 0.00109,
+          "z": 73.09971,
+          "ci95": {
+            "lower": 0.07788,
+            "upper": 0.08218
+          },
+          "significant": true
+        },
+        "strongVsNeutral": {
+          "diff": 0.04958,
+          "se": 0.00115,
+          "z": 43.22924,
+          "ci95": {
+            "lower": 0.04733,
+            "upper": 0.05183
+          },
+          "significant": true
+        },
+        "weakVsNeutral": {
+          "diff": -0.03045,
+          "se": 0.00103,
+          "z": -29.45089,
+          "ci95": {
+            "lower": -0.03248,
+            "upper": -0.02842
+          },
+          "significant": true
+        },
+        "practicalMargin": 0.03,
+        "controlRange": 0.08003,
+        "controlRangeExceedsMargin": true,
+        "checks": {
+          "mechanicActivation": true,
+          "metricResponsiveness": true,
+          "directionalDiscrimination": true,
+          "strongControl": true,
+          "weakControl": true,
+          "neutralControl": true,
+          "varianceSufficiency": true,
+          "zeroInvariantViolations": true,
+          "practicalSeparation": true
+        },
+        "certified": true,
+        "certifiedUnderCandidate0": true,
+        "changedFromCandidate0": false
+      },
+      {
+        "metric": "pnrShare",
+        "surface": [
+          "VS_ERA_REFERENCE",
+          "MIRROR"
+        ],
+        "strongEffect": "RAISES",
+        "basis": "Coach pick-and-roll scale.",
+        "cells": {
+          "strong": {
+            "five": [
+              "edgecombe-20s",
+              "artest-2ks",
+              "dave-d-60s",
+              "nance-90s",
+              "bill-60s"
+            ],
+            "coach": {
+              "id": "jerry-sloan",
+              "scale": "offense.pnr",
+              "value": 10
+            },
+            "n": 2000,
+            "mean": 0.17639,
+            "sd": 0.03352,
+            "se": 0.00075,
+            "ci95": {
+              "lower": 0.17492,
+              "upper": 0.17786
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          },
+          "neutral": {
+            "five": [
+              "edgecombe-20s",
+              "artest-2ks",
+              "dave-d-60s",
+              "nance-90s",
+              "bill-60s"
+            ],
+            "coach": {
+              "id": "neutral",
+              "scale": "NEUTRAL_COACH",
+              "value": null
+            },
+            "n": 2000,
+            "mean": 0.13796,
+            "sd": 0.03364,
+            "se": 0.00075,
+            "ci95": {
+              "lower": 0.13648,
+              "upper": 0.13943
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          },
+          "weak": {
+            "five": [
+              "edgecombe-20s",
+              "artest-2ks",
+              "dave-d-60s",
+              "nance-90s",
+              "bill-60s"
+            ],
+            "coach": {
+              "id": "phil-jackson",
+              "scale": "offense.pnr",
+              "value": 2
+            },
+            "n": 2000,
+            "mean": 0.07826,
+            "sd": 0.02523,
+            "se": 0.00056,
+            "ci95": {
+              "lower": 0.07716,
+              "upper": 0.07937
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          }
+        },
+        "referenceBaselineCandidate1": {
+          "mean": 0.14429,
+          "se": 0.00044
+        },
+        "strongVsWeak": {
+          "diff": 0.09813,
+          "se": 0.00094,
+          "z": 104.8395,
+          "ci95": {
+            "lower": 0.0963,
+            "upper": 0.09996
+          },
+          "significant": true
+        },
+        "strongVsNeutral": {
+          "diff": 0.03843,
+          "se": 0.00106,
+          "z": 36.23215,
+          "ci95": {
+            "lower": 0.03635,
+            "upper": 0.04051
+          },
+          "significant": true
+        },
+        "weakVsNeutral": {
+          "diff": -0.0597,
+          "se": 0.00094,
+          "z": -63.78191,
+          "ci95": {
+            "lower": -0.06153,
+            "upper": -0.05787
+          },
+          "significant": true
+        },
+        "practicalMargin": 0.03,
+        "controlRange": 0.09813,
+        "controlRangeExceedsMargin": true,
+        "checks": {
+          "mechanicActivation": true,
+          "metricResponsiveness": true,
+          "directionalDiscrimination": true,
+          "strongControl": true,
+          "weakControl": true,
+          "neutralControl": true,
+          "varianceSufficiency": true,
+          "zeroInvariantViolations": true,
+          "practicalSeparation": true
+        },
+        "certified": true,
+        "certifiedUnderCandidate0": true,
+        "changedFromCandidate0": false
+      },
+      {
+        "metric": "postUpShare",
+        "surface": [
+          "VS_ERA_REFERENCE",
+          "MIRROR"
+        ],
+        "strongEffect": "RAISES",
+        "basis": "Coach post scale plus interior/perimeter rosters.",
+        "cells": {
+          "strong": {
+            "five": [
+              "lebron-10s",
+              "barry-60s",
+              "elgin-60s",
+              "nate-60s",
+              "wilt-60s"
+            ],
+            "coach": {
+              "id": "john-kundla",
+              "scale": "offense.post",
+              "value": 10
+            },
+            "n": 2000,
+            "mean": 0.25565,
+            "sd": 0.04088,
+            "se": 0.00091,
+            "ci95": {
+              "lower": 0.25386,
+              "upper": 0.25744
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          },
+          "neutral": {
+            "five": [
+              "edgecombe-20s",
+              "artest-2ks",
+              "dave-d-60s",
+              "nance-90s",
+              "bill-60s"
+            ],
+            "coach": {
+              "id": "neutral",
+              "scale": "NEUTRAL_COACH",
+              "value": null
+            },
+            "n": 2000,
+            "mean": 0.23559,
+            "sd": 0.04114,
+            "se": 0.00092,
+            "ci95": {
+              "lower": 0.23378,
+              "upper": 0.23739
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          },
+          "weak": {
+            "five": [
+              "brunson-20s",
+              "shai-20s",
+              "booker-20s",
+              "melo-10s",
+              "paolo-20s"
+            ],
+            "coach": {
+              "id": "mike-dantoni",
+              "scale": "offense.post",
+              "value": 1
+            },
+            "n": 2000,
+            "mean": 0,
+            "sd": 0,
+            "se": 0,
+            "ci95": {
+              "lower": 0,
+              "upper": 0
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          }
+        },
+        "referenceBaselineCandidate1": {
+          "mean": 0.25152,
+          "se": 0.00059
+        },
+        "strongVsWeak": {
+          "diff": 0.25565,
+          "se": 0.00091,
+          "z": 280.93407,
+          "ci95": {
+            "lower": 0.25387,
+            "upper": 0.25743
+          },
+          "significant": true
+        },
+        "strongVsNeutral": {
+          "diff": 0.02006,
+          "se": 0.00129,
+          "z": 15.50202,
+          "ci95": {
+            "lower": 0.01752,
+            "upper": 0.0226
+          },
+          "significant": true
+        },
+        "weakVsNeutral": {
+          "diff": -0.23559,
+          "se": 0.00092,
+          "z": -256.07609,
+          "ci95": {
+            "lower": -0.23739,
+            "upper": -0.23379
+          },
+          "significant": true
+        },
+        "practicalMargin": 0.03,
+        "controlRange": 0.25565,
+        "controlRangeExceedsMargin": true,
+        "checks": {
+          "mechanicActivation": true,
+          "metricResponsiveness": true,
+          "directionalDiscrimination": true,
+          "strongControl": true,
+          "weakControl": true,
+          "neutralControl": true,
+          "varianceSufficiency": true,
+          "zeroInvariantViolations": true,
+          "practicalSeparation": true
+        },
+        "certified": true,
+        "certifiedUnderCandidate0": true,
+        "changedFromCandidate0": false
+      },
+      {
+        "metric": "isolationShare",
+        "surface": [
+          "VS_ERA_REFERENCE",
+          "MIRROR"
+        ],
+        "strongEffect": "RAISES",
+        "basis": "Coach isolation scale plus iso-scorer/passer rosters.",
+        "cells": {
+          "strong": {
+            "five": [
+              "pete-70s",
+              "barry-60s",
+              "elgin-60s",
+              "bob-mc-70s",
+              "wilt-60s"
+            ],
+            "coach": {
+              "id": "don-nelson",
+              "scale": "offense.iso",
+              "value": 7
+            },
+            "n": 2000,
+            "mean": 0.15684,
+            "sd": 0.0403,
+            "se": 0.0009,
+            "ci95": {
+              "lower": 0.15508,
+              "upper": 0.15861
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          },
+          "neutral": {
+            "five": [
+              "edgecombe-20s",
+              "artest-2ks",
+              "dave-d-60s",
+              "nance-90s",
+              "bill-60s"
+            ],
+            "coach": {
+              "id": "neutral",
+              "scale": "NEUTRAL_COACH",
+              "value": null
+            },
+            "n": 2000,
+            "mean": 0.00862,
+            "sd": 0.00893,
+            "se": 0.0002,
+            "ci95": {
+              "lower": 0.00823,
+              "upper": 0.00902
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          },
+          "weak": {
+            "five": [
+              "magic-80s",
+              "oscar-60s",
+              "luka-20s",
+              "jokic-20s",
+              "giannis-20s"
+            ],
+            "coach": {
+              "id": "doug-moe",
+              "scale": "offense.iso",
+              "value": 2
+            },
+            "n": 2000,
+            "mean": 0.09044,
+            "sd": 0.0258,
+            "se": 0.00058,
+            "ci95": {
+              "lower": 0.08931,
+              "upper": 0.09157
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          }
+        },
+        "referenceBaselineCandidate1": {
+          "mean": 0.1067,
+          "se": 0.00044
+        },
+        "strongVsWeak": {
+          "diff": 0.0664,
+          "se": 0.00107,
+          "z": 62.01546,
+          "ci95": {
+            "lower": 0.0643,
+            "upper": 0.0685
+          },
+          "significant": true
+        },
+        "strongVsNeutral": {
+          "diff": 0.14822,
+          "se": 0.00092,
+          "z": 160.76716,
+          "ci95": {
+            "lower": 0.14641,
+            "upper": 0.15003
+          },
+          "significant": true
+        },
+        "weakVsNeutral": {
+          "diff": 0.08182,
+          "se": 0.00061,
+          "z": 133.36279,
+          "ci95": {
+            "lower": 0.08062,
+            "upper": 0.08302
+          },
+          "significant": true
+        },
+        "practicalMargin": 0.03,
+        "controlRange": 0.0664,
+        "controlRangeExceedsMargin": true,
+        "checks": {
+          "mechanicActivation": true,
+          "metricResponsiveness": true,
+          "directionalDiscrimination": true,
+          "strongControl": true,
+          "weakControl": false,
+          "neutralControl": false,
+          "varianceSufficiency": true,
+          "zeroInvariantViolations": true,
+          "practicalSeparation": true
+        },
+        "certified": false,
+        "certifiedUnderCandidate0": false,
+        "changedFromCandidate0": false
+      },
+      {
+        "metric": "movementShare",
+        "surface": [
+          "VS_ERA_REFERENCE",
+          "MIRROR"
+        ],
+        "strongEffect": "RAISES",
+        "basis": "Coach motion scale.",
+        "cells": {
+          "strong": {
+            "five": [
+              "edgecombe-20s",
+              "artest-2ks",
+              "dave-d-60s",
+              "nance-90s",
+              "bill-60s"
+            ],
+            "coach": {
+              "id": "doug-moe",
+              "scale": "offense.motion",
+              "value": 10
+            },
+            "n": 2000,
+            "mean": 0.34422,
+            "sd": 0.04381,
+            "se": 0.00098,
+            "ci95": {
+              "lower": 0.3423,
+              "upper": 0.34614
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          },
+          "neutral": {
+            "five": [
+              "edgecombe-20s",
+              "artest-2ks",
+              "dave-d-60s",
+              "nance-90s",
+              "bill-60s"
+            ],
+            "coach": {
+              "id": "neutral",
+              "scale": "NEUTRAL_COACH",
+              "value": null
+            },
+            "n": 2000,
+            "mean": 0.26977,
+            "sd": 0.04131,
+            "se": 0.00092,
+            "ci95": {
+              "lower": 0.26796,
+              "upper": 0.27158
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          },
+          "weak": {
+            "five": [
+              "edgecombe-20s",
+              "artest-2ks",
+              "dave-d-60s",
+              "nance-90s",
+              "bill-60s"
+            ],
+            "coach": {
+              "id": "rudy-tomjanovich",
+              "scale": "offense.motion",
+              "value": 3
+            },
+            "n": 2000,
+            "mean": 0.25755,
+            "sd": 0.04159,
+            "se": 0.00093,
+            "ci95": {
+              "lower": 0.25572,
+              "upper": 0.25937
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          }
+        },
+        "referenceBaselineCandidate1": {
+          "mean": 0.18516,
+          "se": 0.00054
+        },
+        "strongVsWeak": {
+          "diff": 0.08667,
+          "se": 0.00135,
+          "z": 64.15074,
+          "ci95": {
+            "lower": 0.08402,
+            "upper": 0.08932
+          },
+          "significant": true
+        },
+        "strongVsNeutral": {
+          "diff": 0.07445,
+          "se": 0.00134,
+          "z": 55.38723,
+          "ci95": {
+            "lower": 0.07182,
+            "upper": 0.07708
+          },
+          "significant": true
+        },
+        "weakVsNeutral": {
+          "diff": -0.01222,
+          "se": 0.00131,
+          "z": -9.34132,
+          "ci95": {
+            "lower": -0.01478,
+            "upper": -0.00966
+          },
+          "significant": true
+        },
+        "practicalMargin": 0.03,
+        "controlRange": 0.08667,
+        "controlRangeExceedsMargin": true,
+        "checks": {
+          "mechanicActivation": true,
+          "metricResponsiveness": true,
+          "directionalDiscrimination": true,
+          "strongControl": true,
+          "weakControl": true,
+          "neutralControl": true,
+          "varianceSufficiency": true,
+          "zeroInvariantViolations": true,
+          "practicalSeparation": true
+        },
+        "certified": true,
+        "certifiedUnderCandidate0": true,
+        "changedFromCandidate0": false
+      },
+      {
+        "metric": "threeShare",
+        "surface": [
+          "VS_ERA_REFERENCE",
+          "MIRROR"
+        ],
+        "strongEffect": "RAISES",
+        "basis": "Coach three-emphasis scale plus shooter/interior rosters.",
+        "cells": {
+          "strong": {
+            "five": [
+              "brunson-20s",
+              "shai-20s",
+              "booker-20s",
+              "melo-10s",
+              "paolo-20s"
+            ],
+            "coach": {
+              "id": "mike-dantoni",
+              "scale": "offense.threeEmphasis",
+              "value": 10
+            },
+            "n": 2000,
+            "mean": 0.26593,
+            "sd": 0.04783,
+            "se": 0.00107,
+            "ci95": {
+              "lower": 0.26383,
+              "upper": 0.26802
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          },
+          "neutral": {
+            "five": [
+              "edgecombe-20s",
+              "artest-2ks",
+              "dave-d-60s",
+              "nance-90s",
+              "bill-60s"
+            ],
+            "coach": {
+              "id": "neutral",
+              "scale": "NEUTRAL_COACH",
+              "value": null
+            },
+            "n": 2000,
+            "mean": 0.25332,
+            "sd": 0.04587,
+            "se": 0.00103,
+            "ci95": {
+              "lower": 0.25131,
+              "upper": 0.25533
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          },
+          "weak": {
+            "five": [
+              "lebron-10s",
+              "barry-60s",
+              "elgin-60s",
+              "nate-60s",
+              "wilt-60s"
+            ],
+            "coach": {
+              "id": "john-kundla",
+              "scale": "offense.threeEmphasis",
+              "value": 0
+            },
+            "n": 2000,
+            "mean": 0.2572,
+            "sd": 0.04388,
+            "se": 0.00098,
+            "ci95": {
+              "lower": 0.25527,
+              "upper": 0.25912
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          }
+        },
+        "referenceBaselineCandidate1": {
+          "mean": 0.27941,
+          "se": 0.00068
+        },
+        "strongVsWeak": {
+          "diff": 0.00873,
+          "se": 0.00145,
+          "z": 6.01668,
+          "ci95": {
+            "lower": 0.00589,
+            "upper": 0.01157
+          },
+          "significant": true
+        },
+        "strongVsNeutral": {
+          "diff": 0.01261,
+          "se": 0.00149,
+          "z": 8.49048,
+          "ci95": {
+            "lower": 0.0097,
+            "upper": 0.01552
+          },
+          "significant": true
+        },
+        "weakVsNeutral": {
+          "diff": 0.00388,
+          "se": 0.00142,
+          "z": 2.72908,
+          "ci95": {
+            "lower": 0.00109,
+            "upper": 0.00667
+          },
+          "significant": true
+        },
+        "practicalMargin": 0.02,
+        "controlRange": 0.00873,
+        "controlRangeExceedsMargin": false,
+        "checks": {
+          "mechanicActivation": true,
+          "metricResponsiveness": true,
+          "directionalDiscrimination": true,
+          "strongControl": true,
+          "weakControl": false,
+          "neutralControl": false,
+          "varianceSufficiency": true,
+          "zeroInvariantViolations": true,
+          "practicalSeparation": false
+        },
+        "certified": false,
+        "certifiedUnderCandidate0": true,
+        "changedFromCandidate0": true
+      },
+      {
+        "metric": "interiorShotShare",
+        "surface": [
+          "VS_ERA_REFERENCE",
+          "MIRROR"
+        ],
+        "strongEffect": "RAISES",
+        "basis": "Interior roster and post coach against shooter roster and three-emphasis coach.",
+        "cells": {
+          "strong": {
+            "five": [
+              "lebron-10s",
+              "barry-60s",
+              "elgin-60s",
+              "nate-60s",
+              "wilt-60s"
+            ],
+            "coach": {
+              "id": "john-kundla",
+              "scale": "offense.post",
+              "value": 10
+            },
+            "n": 2000,
+            "mean": 0.53035,
+            "sd": 0.05198,
+            "se": 0.00116,
+            "ci95": {
+              "lower": 0.52807,
+              "upper": 0.53263
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          },
+          "neutral": {
+            "five": [
+              "edgecombe-20s",
+              "artest-2ks",
+              "dave-d-60s",
+              "nance-90s",
+              "bill-60s"
+            ],
+            "coach": {
+              "id": "neutral",
+              "scale": "NEUTRAL_COACH",
+              "value": null
+            },
+            "n": 2000,
+            "mean": 0.52698,
+            "sd": 0.05261,
+            "se": 0.00118,
+            "ci95": {
+              "lower": 0.52468,
+              "upper": 0.52929
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          },
+          "weak": {
+            "five": [
+              "brunson-20s",
+              "shai-20s",
+              "booker-20s",
+              "melo-10s",
+              "paolo-20s"
+            ],
+            "coach": {
+              "id": "mike-dantoni",
+              "scale": "offense.threeEmphasis",
+              "value": 10
+            },
+            "n": 2000,
+            "mean": 0.50678,
+            "sd": 0.05126,
+            "se": 0.00115,
+            "ci95": {
+              "lower": 0.50453,
+              "upper": 0.50903
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          }
+        },
+        "referenceBaselineCandidate1": {
+          "mean": 0.5028,
+          "se": 0.00076
+        },
+        "strongVsWeak": {
+          "diff": 0.02357,
+          "se": 0.00163,
+          "z": 14.42974,
+          "ci95": {
+            "lower": 0.02037,
+            "upper": 0.02677
+          },
+          "significant": true
+        },
+        "strongVsNeutral": {
+          "diff": 0.00337,
+          "se": 0.00165,
+          "z": 2.03663,
+          "ci95": {
+            "lower": 0.00013,
+            "upper": 0.00661
+          },
+          "significant": true
+        },
+        "weakVsNeutral": {
+          "diff": -0.0202,
+          "se": 0.00165,
+          "z": -12.25955,
+          "ci95": {
+            "lower": -0.02343,
+            "upper": -0.01697
+          },
+          "significant": true
+        },
+        "practicalMargin": 0.02,
+        "controlRange": 0.02357,
+        "controlRangeExceedsMargin": true,
+        "checks": {
+          "mechanicActivation": true,
+          "metricResponsiveness": true,
+          "directionalDiscrimination": true,
+          "strongControl": true,
+          "weakControl": true,
+          "neutralControl": true,
+          "varianceSufficiency": true,
+          "zeroInvariantViolations": true,
+          "practicalSeparation": true
+        },
+        "certified": true,
+        "certifiedUnderCandidate0": true,
+        "changedFromCandidate0": false
+      },
+      {
+        "metric": "orebRate",
+        "surface": [
+          "VS_ERA_REFERENCE"
+        ],
+        "strongEffect": "RAISES",
+        "basis": "Card rebounding rank under the neutral coach.",
+        "cells": {
+          "strong": {
+            "five": [
+              "oscar-60s",
+              "barry-60s",
+              "elgin-60s",
+              "nate-60s",
+              "wilt-60s"
+            ],
+            "coach": {
+              "id": "neutral",
+              "scale": "NEUTRAL_COACH",
+              "value": null
+            },
+            "n": 2000,
+            "mean": 0.37111,
+            "sd": 0.07134,
+            "se": 0.0016,
+            "ci95": {
+              "lower": 0.36798,
+              "upper": 0.37424
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          },
+          "neutral": {
+            "five": [
+              "edgecombe-20s",
+              "artest-2ks",
+              "dave-d-60s",
+              "nance-90s",
+              "bill-60s"
+            ],
+            "coach": {
+              "id": "neutral",
+              "scale": "NEUTRAL_COACH",
+              "value": null
+            },
+            "n": 2000,
+            "mean": 0.26007,
+            "sd": 0.06385,
+            "se": 0.00143,
+            "ci95": {
+              "lower": 0.25727,
+              "upper": 0.26287
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          },
+          "weak": {
+            "five": [
+              "stock-90s",
+              "don-b-70s",
+              "magic-80s",
+              "lebron-20s",
+              "draymond-20s"
+            ],
+            "coach": {
+              "id": "neutral",
+              "scale": "NEUTRAL_COACH",
+              "value": null
+            },
+            "n": 2000,
+            "mean": 0.24522,
+            "sd": 0.06401,
+            "se": 0.00143,
+            "ci95": {
+              "lower": 0.24241,
+              "upper": 0.24803
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          }
+        },
+        "referenceBaselineCandidate1": {
+          "mean": 0.24131,
+          "se": 0.00089
+        },
+        "strongVsWeak": {
+          "diff": 0.12589,
+          "se": 0.00215,
+          "z": 58.66528,
+          "ci95": {
+            "lower": 0.12168,
+            "upper": 0.1301
+          },
+          "significant": true
+        },
+        "strongVsNeutral": {
+          "diff": 0.11104,
+          "se": 0.00215,
+          "z": 51.74511,
+          "ci95": {
+            "lower": 0.10683,
+            "upper": 0.11525
+          },
+          "significant": true
+        },
+        "weakVsNeutral": {
+          "diff": -0.01485,
+          "se": 0.00202,
+          "z": -7.34303,
+          "ci95": {
+            "lower": -0.01881,
+            "upper": -0.01089
+          },
+          "significant": true
+        },
+        "practicalMargin": 0.02,
+        "controlRange": 0.12589,
+        "controlRangeExceedsMargin": true,
+        "checks": {
+          "mechanicActivation": true,
+          "metricResponsiveness": true,
+          "directionalDiscrimination": true,
+          "strongControl": true,
+          "weakControl": true,
+          "neutralControl": true,
+          "varianceSufficiency": true,
+          "zeroInvariantViolations": true,
+          "practicalSeparation": true
+        },
+        "certified": true,
+        "certifiedUnderCandidate0": true,
+        "changedFromCandidate0": false
+      },
+      {
+        "metric": "orebRateAgainst",
+        "surface": [
+          "REFERENCE_VS_TEAM"
+        ],
+        "strongEffect": "LOWERS",
+        "basis": "Defensive-glass roster and coach priority suppress the reference's second chances.",
+        "cells": {
+          "strong": {
+            "five": [
+              "oscar-60s",
+              "barry-60s",
+              "elgin-60s",
+              "nate-60s",
+              "wilt-60s"
+            ],
+            "coach": {
+              "id": "bill-sharman",
+              "scale": "defense.defRebPriority",
+              "value": 9
+            },
+            "n": 2000,
+            "mean": 0.11376,
+            "sd": 0.0485,
+            "se": 0.00108,
+            "ci95": {
+              "lower": 0.11164,
+              "upper": 0.11589
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          },
+          "neutral": {
+            "five": [
+              "edgecombe-20s",
+              "artest-2ks",
+              "dave-d-60s",
+              "nance-90s",
+              "bill-60s"
+            ],
+            "coach": {
+              "id": "neutral",
+              "scale": "NEUTRAL_COACH",
+              "value": null
+            },
+            "n": 2000,
+            "mean": 0.20448,
+            "sd": 0.05875,
+            "se": 0.00131,
+            "ci95": {
+              "lower": 0.20191,
+              "upper": 0.20706
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          },
+          "weak": {
+            "five": [
+              "stock-90s",
+              "don-b-70s",
+              "magic-80s",
+              "lebron-20s",
+              "draymond-20s"
+            ],
+            "coach": {
+              "id": "don-nelson",
+              "scale": "defense.defRebPriority",
+              "value": 2
+            },
+            "n": 2000,
+            "mean": 0.22425,
+            "sd": 0.0619,
+            "se": 0.00138,
+            "ci95": {
+              "lower": 0.22154,
+              "upper": 0.22697
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          }
+        },
+        "referenceBaselineCandidate1": {
+          "mean": 0.24131,
+          "se": 0.00089
+        },
+        "strongVsWeak": {
+          "diff": -0.11049,
+          "se": 0.00175,
+          "z": -63.05176,
+          "ci95": {
+            "lower": -0.11392,
+            "upper": -0.10706
+          },
+          "significant": true
+        },
+        "strongVsNeutral": {
+          "diff": -0.09072,
+          "se": 0.0017,
+          "z": -53.43409,
+          "ci95": {
+            "lower": -0.09405,
+            "upper": -0.08739
+          },
+          "significant": true
+        },
+        "weakVsNeutral": {
+          "diff": 0.01977,
+          "se": 0.0019,
+          "z": 10.39016,
+          "ci95": {
+            "lower": 0.01604,
+            "upper": 0.0235
+          },
+          "significant": true
+        },
+        "practicalMargin": 0.02,
+        "controlRange": 0.11049,
+        "controlRangeExceedsMargin": true,
+        "checks": {
+          "mechanicActivation": true,
+          "metricResponsiveness": true,
+          "directionalDiscrimination": true,
+          "strongControl": true,
+          "weakControl": true,
+          "neutralControl": true,
+          "varianceSufficiency": true,
+          "zeroInvariantViolations": true,
+          "practicalSeparation": true
+        },
+        "certified": true,
+        "certifiedUnderCandidate0": true,
+        "changedFromCandidate0": false
+      },
+      {
+        "metric": "assistedRate",
+        "surface": [
+          "VS_ERA_REFERENCE",
+          "MIRROR"
+        ],
+        "strongEffect": "RAISES",
+        "basis": "Passing roster and ball-movement coach.",
+        "cells": {
+          "strong": {
+            "five": [
+              "magic-80s",
+              "oscar-60s",
+              "luka-20s",
+              "jokic-20s",
+              "giannis-20s"
+            ],
+            "coach": {
+              "id": "doug-moe",
+              "scale": "offense.ballMovement",
+              "value": 10
+            },
+            "n": 2000,
+            "mean": 0.5988,
+            "sd": 0.06873,
+            "se": 0.00154,
+            "ci95": {
+              "lower": 0.59579,
+              "upper": 0.60181
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          },
+          "neutral": {
+            "five": [
+              "edgecombe-20s",
+              "artest-2ks",
+              "dave-d-60s",
+              "nance-90s",
+              "bill-60s"
+            ],
+            "coach": {
+              "id": "neutral",
+              "scale": "NEUTRAL_COACH",
+              "value": null
+            },
+            "n": 2000,
+            "mean": 0.49882,
+            "sd": 0.08,
+            "se": 0.00179,
+            "ci95": {
+              "lower": 0.49531,
+              "upper": 0.50232
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          },
+          "weak": {
+            "five": [
+              "pete-70s",
+              "barry-60s",
+              "elgin-60s",
+              "bob-mc-70s",
+              "wilt-60s"
+            ],
+            "coach": {
+              "id": "chuck-daly",
+              "scale": "offense.ballMovement",
+              "value": 5
+            },
+            "n": 2000,
+            "mean": 0.42501,
+            "sd": 0.0741,
+            "se": 0.00166,
+            "ci95": {
+              "lower": 0.42177,
+              "upper": 0.42826
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          }
+        },
+        "referenceBaselineCandidate1": {
+          "mean": 0.4538,
+          "se": 0.00106
+        },
+        "strongVsWeak": {
+          "diff": 0.17379,
+          "se": 0.00226,
+          "z": 76.75111,
+          "ci95": {
+            "lower": 0.16935,
+            "upper": 0.17823
+          },
+          "significant": true
+        },
+        "strongVsNeutral": {
+          "diff": 0.09998,
+          "se": 0.00236,
+          "z": 42.34123,
+          "ci95": {
+            "lower": 0.09535,
+            "upper": 0.10461
+          },
+          "significant": true
+        },
+        "weakVsNeutral": {
+          "diff": -0.07381,
+          "se": 0.00244,
+          "z": -30.23451,
+          "ci95": {
+            "lower": -0.07859,
+            "upper": -0.06903
+          },
+          "significant": true
+        },
+        "practicalMargin": 0.02,
+        "controlRange": 0.17379,
+        "controlRangeExceedsMargin": true,
+        "checks": {
+          "mechanicActivation": true,
+          "metricResponsiveness": true,
+          "directionalDiscrimination": true,
+          "strongControl": true,
+          "weakControl": true,
+          "neutralControl": true,
+          "varianceSufficiency": true,
+          "zeroInvariantViolations": true,
+          "practicalSeparation": true
+        },
+        "certified": true,
+        "certifiedUnderCandidate0": true,
+        "changedFromCandidate0": false
+      },
+      {
+        "metric": "stealRateForced",
+        "surface": [
+          "REFERENCE_VS_TEAM"
+        ],
+        "strongEffect": "RAISES",
+        "basis": "Steal-heavy roster and pressure coach.",
+        "cells": {
+          "strong": {
+            "five": [
+              "cp3-00s",
+              "don-b-70s",
+              "magic-80s",
+              "pippen-90s",
+              "jokic-20s"
+            ],
+            "coach": {
+              "id": "george-karl",
+              "scale": "defense.pressure",
+              "value": 9
+            },
+            "n": 2000,
+            "mean": 0.05611,
+            "sd": 0.02198,
+            "se": 0.00049,
+            "ci95": {
+              "lower": 0.05515,
+              "upper": 0.05707
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          },
+          "neutral": {
+            "five": [
+              "edgecombe-20s",
+              "artest-2ks",
+              "dave-d-60s",
+              "nance-90s",
+              "bill-60s"
+            ],
+            "coach": {
+              "id": "neutral",
+              "scale": "NEUTRAL_COACH",
+              "value": null
+            },
+            "n": 2000,
+            "mean": 0.0561,
+            "sd": 0.02237,
+            "se": 0.0005,
+            "ci95": {
+              "lower": 0.05512,
+              "upper": 0.05708
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          },
+          "weak": {
+            "five": [
+              "oscar-60s",
+              "barry-60s",
+              "elgin-60s",
+              "nate-60s",
+              "wilt-60s"
+            ],
+            "coach": {
+              "id": "gregg-popovich",
+              "scale": "defense.pressure",
+              "value": 3
+            },
+            "n": 2000,
+            "mean": 0.05285,
+            "sd": 0.02199,
+            "se": 0.00049,
+            "ci95": {
+              "lower": 0.05188,
+              "upper": 0.05381
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          }
+        },
+        "referenceBaselineCandidate1": {
+          "mean": 0.04347,
+          "se": 0.00028
+        },
+        "strongVsWeak": {
+          "diff": 0.00326,
+          "se": 0.00069,
+          "z": 4.70442,
+          "ci95": {
+            "lower": 0.0019,
+            "upper": 0.00462
+          },
+          "significant": true
+        },
+        "strongVsNeutral": {
+          "diff": 0.00001,
+          "se": 0.0007,
+          "z": 0.01428,
+          "ci95": {
+            "lower": -0.00136,
+            "upper": 0.00138
+          },
+          "significant": false
+        },
+        "weakVsNeutral": {
+          "diff": -0.00325,
+          "se": 0.0007,
+          "z": -4.64238,
+          "ci95": {
+            "lower": -0.00462,
+            "upper": -0.00188
+          },
+          "significant": true
+        },
+        "practicalMargin": 0.01,
+        "controlRange": 0.00326,
+        "controlRangeExceedsMargin": false,
+        "checks": {
+          "mechanicActivation": true,
+          "metricResponsiveness": true,
+          "directionalDiscrimination": true,
+          "strongControl": false,
+          "weakControl": true,
+          "neutralControl": true,
+          "varianceSufficiency": true,
+          "zeroInvariantViolations": true,
+          "practicalSeparation": false
+        },
+        "certified": false,
+        "certifiedUnderCandidate0": false,
+        "changedFromCandidate0": false
+      },
+      {
+        "metric": "rimShareAgainst",
+        "surface": [
+          "REFERENCE_VS_TEAM"
+        ],
+        "strongEffect": "LOWERS",
+        "basis": "Rim-protecting roster and rim-priority coach push the reference off the rim.",
+        "cells": {
+          "strong": {
+            "five": [
+              "lebron-10s",
+              "durant-10s",
+              "julius-70s",
+              "wemby-20s",
+              "kareem-70s"
+            ],
+            "coach": {
+              "id": "gregg-popovich",
+              "scale": "defense.rimPriority",
+              "value": 9
+            },
+            "n": 2000,
+            "mean": 0.48885,
+            "sd": 0.05407,
+            "se": 0.00121,
+            "ci95": {
+              "lower": 0.48648,
+              "upper": 0.49122
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          },
+          "neutral": {
+            "five": [
+              "edgecombe-20s",
+              "artest-2ks",
+              "dave-d-60s",
+              "nance-90s",
+              "bill-60s"
+            ],
+            "coach": {
+              "id": "neutral",
+              "scale": "NEUTRAL_COACH",
+              "value": null
+            },
+            "n": 2000,
+            "mean": 0.49173,
+            "sd": 0.05038,
+            "se": 0.00113,
+            "ci95": {
+              "lower": 0.48952,
+              "upper": 0.49394
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          },
+          "weak": {
+            "five": [
+              "oscar-60s",
+              "tyrese-20s",
+              "magic-80s",
+              "jokic-20s",
+              "bill-60s"
+            ],
+            "coach": {
+              "id": "don-nelson",
+              "scale": "defense.rimPriority",
+              "value": 2
+            },
+            "n": 2000,
+            "mean": 0.48705,
+            "sd": 0.05386,
+            "se": 0.0012,
+            "ci95": {
+              "lower": 0.48469,
+              "upper": 0.48941
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          }
+        },
+        "referenceBaselineCandidate1": {
+          "mean": 0.5028,
+          "se": 0.00076
+        },
+        "strongVsWeak": {
+          "diff": 0.0018,
+          "se": 0.0017,
+          "z": 1.05625,
+          "ci95": {
+            "lower": -0.00154,
+            "upper": 0.00514
+          },
+          "significant": false
+        },
+        "strongVsNeutral": {
+          "diff": -0.00288,
+          "se": 0.00166,
+          "z": -1.73955,
+          "ci95": {
+            "lower": -0.00612,
+            "upper": 0.00036
+          },
+          "significant": false
+        },
+        "weakVsNeutral": {
+          "diff": -0.00468,
+          "se": 0.00165,
+          "z": -2.83929,
+          "ci95": {
+            "lower": -0.00791,
+            "upper": -0.00145
+          },
+          "significant": true
+        },
+        "practicalMargin": 0.02,
+        "controlRange": 0.0018,
+        "controlRangeExceedsMargin": false,
+        "checks": {
+          "mechanicActivation": true,
+          "metricResponsiveness": true,
+          "directionalDiscrimination": false,
+          "strongControl": false,
+          "weakControl": false,
+          "neutralControl": false,
+          "varianceSufficiency": true,
+          "zeroInvariantViolations": true,
+          "practicalSeparation": false
+        },
+        "certified": false,
+        "certifiedUnderCandidate0": false,
+        "changedFromCandidate0": false
+      },
+      {
+        "metric": "defensiveZoneShare",
+        "surface": [
+          "REFERENCE_VS_TEAM",
+          "MIRROR"
+        ],
+        "strongEffect": "RAISES",
+        "basis": "Coach zone scale; 2010s era, where zones are legal.",
+        "cells": {
+          "strong": {
+            "five": [
+              "edgecombe-20s",
+              "artest-2ks",
+              "dave-d-60s",
+              "nance-90s",
+              "bill-60s"
+            ],
+            "coach": {
+              "id": "erik-spoelstra",
+              "scale": "defense.zone",
+              "value": 9
+            },
+            "n": 2000,
+            "mean": 0.59177,
+            "sd": 0.04725,
+            "se": 0.00106,
+            "ci95": {
+              "lower": 0.58969,
+              "upper": 0.59384
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          },
+          "neutral": {
+            "five": [
+              "edgecombe-20s",
+              "artest-2ks",
+              "dave-d-60s",
+              "nance-90s",
+              "bill-60s"
+            ],
+            "coach": {
+              "id": "neutral",
+              "scale": "NEUTRAL_COACH",
+              "value": null
+            },
+            "n": 2000,
+            "mean": 0.15843,
+            "sd": 0.03501,
+            "se": 0.00078,
+            "ci95": {
+              "lower": 0.15689,
+              "upper": 0.15996
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          },
+          "weak": {
+            "five": [
+              "edgecombe-20s",
+              "artest-2ks",
+              "dave-d-60s",
+              "nance-90s",
+              "bill-60s"
+            ],
+            "coach": {
+              "id": "billy-cunningham",
+              "scale": "defense.zone",
+              "value": 1
+            },
+            "n": 2000,
+            "mean": 0.03545,
+            "sd": 0.01771,
+            "se": 0.0004,
+            "ci95": {
+              "lower": 0.03467,
+              "upper": 0.03623
+            },
+            "invariantViolations": 0,
+            "ties": 0,
+            "games": 2000
+          }
+        },
+        "referenceBaselineCandidate1": {
+          "mean": 0,
+          "se": 0
+        },
+        "strongVsWeak": {
+          "diff": 0.55632,
+          "se": 0.00113,
+          "z": 491.03203,
+          "ci95": {
+            "lower": 0.5541,
+            "upper": 0.55854
+          },
+          "significant": true
+        },
+        "strongVsNeutral": {
+          "diff": 0.43334,
+          "se": 0.00132,
+          "z": 329.27203,
+          "ci95": {
+            "lower": 0.43076,
+            "upper": 0.43592
+          },
+          "significant": true
+        },
+        "weakVsNeutral": {
+          "diff": -0.12298,
+          "se": 0.00088,
+          "z": -140.29455,
+          "ci95": {
+            "lower": -0.1247,
+            "upper": -0.12126
+          },
+          "significant": true
+        },
+        "practicalMargin": 0.05,
+        "controlRange": 0.55632,
+        "controlRangeExceedsMargin": true,
+        "checks": {
+          "mechanicActivation": true,
+          "metricResponsiveness": true,
+          "directionalDiscrimination": true,
+          "strongControl": true,
+          "weakControl": true,
+          "neutralControl": true,
+          "varianceSufficiency": true,
+          "zeroInvariantViolations": true,
+          "practicalSeparation": true
+        },
+        "certified": true,
+        "certifiedUnderCandidate0": false,
+        "changedFromCandidate0": true
+      }
+    ],
+    "traitEligibility": [
+      {
+        "traitId": "very fast",
+        "observabilityClass": "DIRECTLY_OBSERVABLE",
+        "family": "PACE",
+        "metric": "gamePace",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "fast",
+        "observabilityClass": "DIRECTLY_OBSERVABLE",
+        "family": "PACE",
+        "metric": "gamePace",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "moderate",
+        "observabilityClass": "DIRECTLY_OBSERVABLE",
+        "family": "PACE",
+        "metric": null,
+        "direction": null,
+        "scoringEligibility": false,
+        "eligibilityNote": "NOT_APPLICABLE_NO_DIRECTIONAL_CLAIM"
+      },
+      {
+        "traitId": "slow",
+        "observabilityClass": "DIRECTLY_OBSERVABLE",
+        "family": "PACE",
+        "metric": "gamePace",
+        "direction": "BELOW_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "very slow",
+        "observabilityClass": "DIRECTLY_OBSERVABLE",
+        "family": "PACE",
+        "metric": "gamePace",
+        "direction": "BELOW_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "ELITE_OFFENSE",
+        "observabilityClass": "PROXY_OBSERVABLE",
+        "family": "OFFENSE_QUALITY",
+        "metric": "pppVsReference",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "ELITE_DEFENSE",
+        "observabilityClass": "PROXY_OBSERVABLE",
+        "family": "DEFENSE_QUALITY",
+        "metric": "refPppVsTeam",
+        "direction": "BELOW_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "PACE_EXTREME",
+        "observabilityClass": "DIRECTLY_OBSERVABLE",
+        "family": "PACE",
+        "metric": "gamePace",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "SLOW_HALF_COURT",
+        "observabilityClass": "DIRECTLY_OBSERVABLE",
+        "family": "PACE",
+        "metric": "gamePace",
+        "direction": "BELOW_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "THREE_POINT_HEAVY",
+        "observabilityClass": "DIRECTLY_OBSERVABLE",
+        "family": "SHOT_PROFILE",
+        "metric": "threeShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": false,
+        "eligibilityNote": "METRIC_UNCERTIFIED:threeShare"
+      },
+      {
+        "traitId": "LOW_THREE_POINT",
+        "observabilityClass": "DIRECTLY_OBSERVABLE",
+        "family": "SHOT_PROFILE",
+        "metric": "threeShare",
+        "direction": "BELOW_REFERENCE_BASELINE",
+        "scoringEligibility": false,
+        "eligibilityNote": "METRIC_UNCERTIFIED:threeShare"
+      },
+      {
+        "traitId": "POST_HEAVY",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "ACTION_IDENTITY",
+        "metric": "postUpShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "ISOLATION_HEAVY",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "ACTION_IDENTITY",
+        "metric": "isolationShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": false,
+        "eligibilityNote": "METRIC_UNCERTIFIED:isolationShare"
+      },
+      {
+        "traitId": "PICK_AND_ROLL",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "ACTION_IDENTITY",
+        "metric": "pnrShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "MOTION",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "ACTION_IDENTITY",
+        "metric": "movementShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "TRANSITION",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "ACTION_IDENTITY",
+        "metric": "transitionShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "SMALL_BALL",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "SHOT_PROFILE",
+        "metric": "interiorShotShare",
+        "direction": "BELOW_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "SIZE_HEAVY",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "ROSTER_BALANCE",
+        "metric": "interiorShotShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "STRONG_OFFENSIVE_REBOUNDING",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "REBOUNDING",
+        "metric": "orebRate",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "WEAK_OFFENSIVE_REBOUNDING",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "REBOUNDING",
+        "metric": "orebRate",
+        "direction": "BELOW_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "PASSING_HUB",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "PLAYMAKING",
+        "metric": "assistedRate",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "ZONE_CAPABLE",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "ZONE_IDENTITY",
+        "metric": "defensiveZoneShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "BALANCED_CHAMPION",
+        "observabilityClass": "UNOBSERVABLE_ON_THIS_SURFACE",
+        "family": "ERA_EXPRESSION",
+        "metric": null,
+        "direction": null,
+        "scoringEligibility": false,
+        "eligibilityNote": "NOT_APPLICABLE_NO_DIRECTIONAL_CLAIM"
+      },
+      {
+        "traitId": "NON_CHAMPION",
+        "observabilityClass": "UNOBSERVABLE_ON_THIS_SURFACE",
+        "family": "ERA_EXPRESSION",
+        "metric": null,
+        "direction": null,
+        "scoringEligibility": false,
+        "eligibilityNote": "NOT_APPLICABLE_NO_DIRECTIONAL_CLAIM"
+      },
+      {
+        "traitId": "Showtime transition and early offence",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "ACTION_IDENTITY",
+        "metric": "transitionShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "fast break and early offence",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "ACTION_IDENTITY",
+        "metric": "transitionShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "fast break from defensive rebounding",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "ACTION_IDENTITY",
+        "metric": "transitionShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "fast break, balanced scoring",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "ACTION_IDENTITY",
+        "metric": "transitionShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "fast break, depth scoring",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "ACTION_IDENTITY",
+        "metric": "transitionShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "fast break, early offence",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "ACTION_IDENTITY",
+        "metric": "transitionShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "running game, off-ball movement",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "ACTION_IDENTITY",
+        "metric": "transitionShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "transition and post scoring",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "ACTION_IDENTITY",
+        "metric": "transitionShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "the canonical pick-and-roll",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "ACTION_IDENTITY",
+        "metric": "pnrShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "pick-and-roll around a lead guard",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "ACTION_IDENTITY",
+        "metric": "pnrShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "seven seconds or less: pick-and-roll and spacing",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "ACTION_IDENTITY",
+        "metric": "pnrShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "post and pick-and-roll, disciplined",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "ACTION_IDENTITY",
+        "metric": "postUpShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "post entry to a dominant centre",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "ACTION_IDENTITY",
+        "metric": "postUpShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "post-centred, interior scoring",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "ACTION_IDENTITY",
+        "metric": "postUpShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "post-up and isolation, low volume",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "ACTION_IDENTITY",
+        "metric": "postUpShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "post-up and pick-and-roll around an MVP centre",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "ACTION_IDENTITY",
+        "metric": "postUpShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "post-up centre with perimeter spacing",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "ACTION_IDENTITY",
+        "metric": "postUpShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "triangle around a dominant post centre",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "ACTION_IDENTITY",
+        "metric": "postUpShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "triangle: post reads, cuts, spacing",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "ACTION_IDENTITY",
+        "metric": "postUpShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "isolation and post-up in the half court",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "ACTION_IDENTITY",
+        "metric": "isolationShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": false,
+        "eligibilityNote": "METRIC_UNCERTIFIED:isolationShare"
+      },
+      {
+        "traitId": "motion and cutting",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "ACTION_IDENTITY",
+        "metric": "movementShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "motion, ball movement, high-post passing",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "ACTION_IDENTITY",
+        "metric": "movementShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "movement shooting and handoffs",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "ACTION_IDENTITY",
+        "metric": "movementShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "movement shooting off screens",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "ACTION_IDENTITY",
+        "metric": "movementShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "movement shooting, off-ball screens, handoffs",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "ACTION_IDENTITY",
+        "metric": "movementShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "spacing around a point-forward, cutting",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "ACTION_IDENTITY",
+        "metric": "movementShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "half-court motion and passing",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "ACTION_IDENTITY",
+        "metric": "movementShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "ball movement, drive and kick, corner threes",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "PLAYMAKING",
+        "metric": "assistedRate",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "half-court execution, elite passing front line",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "PLAYMAKING",
+        "metric": "assistedRate",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "passing-hub centre, cutting and movement",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "PLAYMAKING",
+        "metric": "assistedRate",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "size-driven drives and offensive rebounding",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "REBOUNDING",
+        "metric": "orebRate",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "elite physical man",
+        "observabilityClass": "PROXY_OBSERVABLE",
+        "family": "DEFENSE_QUALITY",
+        "metric": "refPppVsTeam",
+        "direction": "BELOW_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "elite scheme-driven man",
+        "observabilityClass": "PROXY_OBSERVABLE",
+        "family": "DEFENSE_QUALITY",
+        "metric": "refPppVsTeam",
+        "direction": "BELOW_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "elite team man defence",
+        "observabilityClass": "PROXY_OBSERVABLE",
+        "family": "DEFENSE_QUALITY",
+        "metric": "refPppVsTeam",
+        "direction": "BELOW_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "elite team man",
+        "observabilityClass": "PROXY_OBSERVABLE",
+        "family": "DEFENSE_QUALITY",
+        "metric": "refPppVsTeam",
+        "direction": "BELOW_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "elite man with rim protection",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "RIM_PROTECTION",
+        "metric": "rimShareAgainst",
+        "direction": "BELOW_REFERENCE_BASELINE",
+        "scoringEligibility": false,
+        "eligibilityNote": "METRIC_UNCERTIFIED:rimShareAgainst"
+      },
+      {
+        "traitId": "rim-anchored man",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "RIM_PROTECTION",
+        "metric": "rimShareAgainst",
+        "direction": "BELOW_REFERENCE_BASELINE",
+        "scoringEligibility": false,
+        "eligibilityNote": "METRIC_UNCERTIFIED:rimShareAgainst"
+      },
+      {
+        "traitId": "rim-protected man",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "RIM_PROTECTION",
+        "metric": "rimShareAgainst",
+        "direction": "BELOW_REFERENCE_BASELINE",
+        "scoringEligibility": false,
+        "eligibilityNote": "METRIC_UNCERTIFIED:rimShareAgainst"
+      },
+      {
+        "traitId": "drop coverage with a rim anchor",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "RIM_PROTECTION",
+        "metric": "rimShareAgainst",
+        "direction": "BELOW_REFERENCE_BASELINE",
+        "scoringEligibility": false,
+        "eligibilityNote": "METRIC_UNCERTIFIED:rimShareAgainst"
+      },
+      {
+        "traitId": "switching with a rim anchor",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "RIM_PROTECTION",
+        "metric": "rimShareAgainst",
+        "direction": "BELOW_REFERENCE_BASELINE",
+        "scoringEligibility": false,
+        "eligibilityNote": "METRIC_UNCERTIFIED:rimShareAgainst"
+      },
+      {
+        "traitId": "size-heavy man",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "RIM_PROTECTION",
+        "metric": "rimShareAgainst",
+        "direction": "BELOW_REFERENCE_BASELINE",
+        "scoringEligibility": false,
+        "eligibilityNote": "METRIC_UNCERTIFIED:rimShareAgainst"
+      },
+      {
+        "traitId": "pressure man",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "PRESSURE_DEFENSE",
+        "metric": "stealRateForced",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": false,
+        "eligibilityNote": "METRIC_UNCERTIFIED:stealRateForced"
+      },
+      {
+        "traitId": "pressure man with help",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "PRESSURE_DEFENSE",
+        "metric": "stealRateForced",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": false,
+        "eligibilityNote": "METRIC_UNCERTIFIED:stealRateForced"
+      },
+      {
+        "traitId": "switching pressure man",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "PRESSURE_DEFENSE",
+        "metric": "stealRateForced",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": false,
+        "eligibilityNote": "METRIC_UNCERTIFIED:stealRateForced"
+      },
+      {
+        "traitId": "switching, aggressive man",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "PRESSURE_DEFENSE",
+        "metric": "stealRateForced",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": false,
+        "eligibilityNote": "METRIC_UNCERTIFIED:stealRateForced"
+      },
+      {
+        "traitId": "physical, trapping man",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "PRESSURE_DEFENSE",
+        "metric": "stealRateForced",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": false,
+        "eligibilityNote": "METRIC_UNCERTIFIED:stealRateForced"
+      },
+      {
+        "traitId": "aggressive switching and trapping",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "PRESSURE_DEFENSE",
+        "metric": "stealRateForced",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": false,
+        "eligibilityNote": "METRIC_UNCERTIFIED:stealRateForced"
+      },
+      {
+        "traitId": "gambling man defence",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "PRESSURE_DEFENSE",
+        "metric": "stealRateForced",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": false,
+        "eligibilityNote": "METRIC_UNCERTIFIED:stealRateForced"
+      },
+      {
+        "traitId": "man with a dominant rebounder",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "REBOUNDING",
+        "metric": "orebRateAgainst",
+        "direction": "BELOW_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "zone-capable, long switching",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "ZONE_IDENTITY",
+        "metric": "defensiveZoneShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "zone-capable, scheme-heavy",
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "family": "ZONE_IDENTITY",
+        "metric": "defensiveZoneShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "scoringEligibility": true,
+        "eligibilityNote": "CERTIFIED_UNDER_CANDIDATE_1"
+      },
+      {
+        "traitId": "disciplined man",
+        "observabilityClass": "UNOBSERVABLE_ON_THIS_SURFACE",
+        "family": "DEFENSE_QUALITY",
+        "metric": null,
+        "direction": null,
+        "scoringEligibility": false,
+        "eligibilityNote": "NOT_APPLICABLE_NO_DIRECTIONAL_CLAIM"
+      },
+      {
+        "traitId": "disciplined team man",
+        "observabilityClass": "UNOBSERVABLE_ON_THIS_SURFACE",
+        "family": "DEFENSE_QUALITY",
+        "metric": null,
+        "direction": null,
+        "scoringEligibility": false,
+        "eligibilityNote": "NOT_APPLICABLE_NO_DIRECTIONAL_CLAIM"
+      },
+      {
+        "traitId": "help-heavy man",
+        "observabilityClass": "UNOBSERVABLE_ON_THIS_SURFACE",
+        "family": "DEFENSE_QUALITY",
+        "metric": null,
+        "direction": null,
+        "scoringEligibility": false,
+        "eligibilityNote": "NOT_APPLICABLE_NO_DIRECTIONAL_CLAIM"
+      },
+      {
+        "traitId": "man with help",
+        "observabilityClass": "UNOBSERVABLE_ON_THIS_SURFACE",
+        "family": "DEFENSE_QUALITY",
+        "metric": null,
+        "direction": null,
+        "scoringEligibility": false,
+        "eligibilityNote": "NOT_APPLICABLE_NO_DIRECTIONAL_CLAIM"
+      },
+      {
+        "traitId": "physical man",
+        "observabilityClass": "UNOBSERVABLE_ON_THIS_SURFACE",
+        "family": "DEFENSE_QUALITY",
+        "metric": null,
+        "direction": null,
+        "scoringEligibility": false,
+        "eligibilityNote": "NOT_APPLICABLE_NO_DIRECTIONAL_CLAIM"
+      },
+      {
+        "traitId": "switching small-ball",
+        "observabilityClass": "UNOBSERVABLE_ON_THIS_SURFACE",
+        "family": "DEFENSE_QUALITY",
+        "metric": null,
+        "direction": null,
+        "scoringEligibility": false,
+        "eligibilityNote": "NOT_APPLICABLE_NO_DIRECTIONAL_CLAIM"
+      }
+    ],
+    "eligibleTraitCount": 55,
+    "observabilityClassCounts": {
+      "DIRECTLY_OBSERVABLE": 9,
+      "PROXY_OBSERVABLE": 6,
+      "STRUCTURALLY_OBSERVABLE": 58,
+      "UNOBSERVABLE_ON_THIS_SURFACE": 8
+    },
+    "eligibleByClass": {
+      "DIRECTLY_OBSERVABLE": 6,
+      "PROXY_OBSERVABLE": 6,
+      "STRUCTURALLY_OBSERVABLE": 43
+    },
+    "dependencyGraph": {
+      "groups": [
+        {
+          "id": "MIRROR_PPP",
+          "members": [
+            "pppVsReference",
+            "refPppVsTeam"
+          ],
+          "kind": "ALGEBRAIC_IDENTITY_ON_MIRROR",
+          "restriction": "On a MIRROR surface, points-per-possession and opponent points-per-possession are the same quantity up to seeded noise (measured max separation in V3: 0.00348). Offence and defence claims must therefore be scored on VS_ERA_REFERENCE and REFERENCE_VS_TEAM respectively — different games, independent counterparties."
+        },
+        {
+          "id": "ACTION_SHARES",
+          "members": [
+            "transitionShare",
+            "pnrShare",
+            "postUpShare",
+            "isolationShare",
+            "movementShare"
+          ],
+          "kind": "COMPOSITIONAL_SHARED_DENOMINATOR",
+          "restriction": "Shares of one possession total. A fixture may claim ABOVE on at most three of these simultaneously; more is compositionally self-defeating."
+        },
+        {
+          "id": "SHOT_MIX",
+          "members": [
+            "threeShare",
+            "interiorShotShare",
+            "rimShareAgainst"
+          ],
+          "kind": "NEAR_COMPLEMENTARY",
+          "restriction": "Three-point and interior shares trade off against each other (midrange takes the remainder). A fixture may not claim ABOVE on both threeShare and interiorShotShare."
+        },
+        {
+          "id": "PACE_JOINT",
+          "members": [
+            "gamePace"
+          ],
+          "kind": "JOINTLY_DETERMINED_GAME_QUANTITY",
+          "restriction": "Both teams in a game share its pace. Pace is attributed to the subject only against the frozen reference, compared with the reference's self-baseline; A-vs-B pace attributes to neither side."
+        },
+        {
+          "id": "REBOUND_RATE",
+          "members": [
+            "orebRate",
+            "orebRateAgainst"
+          ],
+          "kind": "OPPONENT_CONTESTED",
+          "restriction": "Rebound rates are contests, so each needs the frozen reference on the other side of the contest."
+        },
+        {
+          "id": "CONCENTRATION",
+          "members": [
+            "topScoringShare"
+          ],
+          "kind": "ENTROPY_LINKED",
+          "restriction": "Top-share and share entropy are functions of the same distribution; only topScoringShare exists in the catalogue, and no eligible trait claims it."
+        }
+      ],
+      "mirrorSurfaces": [
+        {
+          "metric": "pppVsReference",
+          "identifiableOn": [
+            "VS_ERA_REFERENCE"
+          ]
+        },
+        {
+          "metric": "refPppVsTeam",
+          "identifiableOn": [
+            "REFERENCE_VS_TEAM"
+          ]
+        }
+      ],
+      "mirrorSeparated": true,
+      "registrySurfaceProblems": [],
+      "perFixtureDetector": {
+        "positiveControl": [
+          "SYNTHETIC_ELITE_OFFENSE: metric pppVsReference is not identifiable on MIRROR (allowed: VS_ERA_REFERENCE)",
+          "SYNTHETIC_ELITE_DEFENSE: metric refPppVsTeam is not identifiable on MIRROR (allowed: REFERENCE_VS_TEAM)",
+          "MIRROR_PPP group scored on a MIRROR surface: SYNTHETIC_ELITE_OFFENSE, SYNTHETIC_ELITE_DEFENSE — the exact V3 defect"
+        ],
+        "rejectsMirrorRubric": true,
+        "note": "applied per matchup by the V5 runner, never across the whole registry"
+      }
+    },
+    "scoredTraitsWithFailedObservability": 0,
+    "unobservableTraitsContributingToVerdict": 0,
+    "contradictoryDependentRules": 0,
+    "pass": true,
+    "failedGates": [],
+    "certificationHash": "20b982b5abd3062f7eb25afcab878ee4b6212fdcea24b018d01e917f1f22e702"
+  },
+  "outputHash": "d64bfeb1b4101f2367ff0198b0c23d41c1f4fd30e1fa311d1da75bcebbbed668"
+}
