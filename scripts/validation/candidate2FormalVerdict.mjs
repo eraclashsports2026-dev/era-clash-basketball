@@ -131,9 +131,21 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     console.log(`\nPREFLIGHT ONLY — nothing was written.`);
     process.exit(verdict === "CANDIDATE2_HOLDOUT_VALIDATED" ? 0 : 2);
   }
-  if (ran.length < 2) {
-    console.error(`\nREFUSED: --issue requires both stages to have produced a formal result. ${ran.length}/2 have.`);
-    console.error("  A compound verdict written before its stages ran is the out-of-order write this mode exists to prevent.");
+  // The guard's purpose is to prevent an out-of-order write BEFORE the sequence
+  // has produced a decisive result. Requiring both stages was too strong: a
+  // stage-one FAIL or INVALID means stage two will never run, so the sequence is
+  // finished and the compound verdict is exactly the artifact that records it.
+  // Under the original condition the correct verdict was unissuable.
+  //
+  // compoundVerdict() is NOT changed — for every input it returns what it
+  // returned before. Only this write precondition changes, and it now permits
+  // exactly the states in which the sequence has terminated.
+  const TERMINAL_WITHOUT_STAGE_TWO = ["CANDIDATE2_HISTORICAL_V6_FAILED", "CANDIDATE2_HISTORICAL_V6_INVALID"];
+  const sequenceTerminated = ran.length === 2 || TERMINAL_WITHOUT_STAGE_TWO.includes(verdict);
+  if (!sequenceTerminated) {
+    console.error(`\nREFUSED: --issue requires the two-stage sequence to have terminated. ${ran.length}/2 stages have run and the verdict is ${verdict}.`);
+    console.error("  A compound verdict written before the sequence terminates is the out-of-order write this mode exists to prevent.");
+    console.error(`  Writing is permitted when both stages have run, or when stage one decisively ends the sequence (${TERMINAL_WITHOUT_STAGE_TWO.join(" or ")}).`);
     process.exit(2);
   }
 
@@ -146,6 +158,16 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       possessionCalibrationVersion: versionOf("possessionCalibrationVersion"),
       lockStatus: lock.candidateLockStatus },
     stages, identitySplit, stagesMatchLoadedCandidate: currentMatches,
+    sequenceTerminated: true,
+    stageTwoOpened: s2.ran,
+    stageTwoNotOpenedBecause: s2.ran ? null
+      : `Historical Holdout V6 returned ${s1.verdict ?? "no result"}. The frozen stage order forbids opening the synthetic set without a passing stage one, so it remains sealed at access ${setAccessCount("synthetic-stress-holdout-v2")}.`,
+    writeGuardCorrection: {
+      what: "the --issue guard originally required BOTH stages to have produced a formal result.",
+      why: "a stage-one FAIL or INVALID means stage two will never run, so under that condition the correct compound verdict was unissuable.",
+      nowRequires: "the sequence to have terminated: both stages ran, or stage one decisively ended it.",
+      stateMachineUnchanged: "compoundVerdict() is byte-identical in behaviour. For every input it returns what it returned before; only this write precondition changed.",
+    },
     decisionRule: [
       "1. No stage has run -> CANDIDATE2_NOT_YET_DETERMINED.",
       "2. Stage two ran without a PASSING stage one -> CANDIDATE2_STAGE_ORDER_VIOLATED. The synthetic result is not evidence, whatever it says.",

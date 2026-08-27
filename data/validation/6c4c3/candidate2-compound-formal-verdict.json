@@ -1,0 +1,104 @@
+{
+  "artifact": "candidate2-compound-formal-verdict",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run exec:c3-compound",
+  "generatedAt": "2026-08-27T21:07:13.674Z",
+  "gitCommit": "d2343b12fc3bc7a5c3e6f49a624dd79872294e9c",
+  "branch": "phase-6c4c3-candidate2-formal-execution",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "candidate2CompoundFormalVerdictVersion": "1.0.0",
+    "verdict": "CANDIDATE2_HISTORICAL_V6_FAILED",
+    "verdictMeaning": "Historical Holdout V6 returned FAIL. Synthetic Stress Holdout V2 is correctly never opened, so the validation is decided by stage one.",
+    "vocabulary": {
+      "CANDIDATE2_HOLDOUT_VALIDATED": "both formal stages returned PASS on the same locked candidate, with no drift and no post-holdout tuning",
+      "CANDIDATE2_HISTORICAL_V6_FAILED": "Historical Holdout V6 returned FAIL. Synthetic Stress Holdout V2 is correctly never opened, so the validation is decided by stage one.",
+      "CANDIDATE2_HISTORICAL_V6_INVALID": "Historical Holdout V6 could not produce a formal result. Synthetic Stress Holdout V2 is correctly never opened.",
+      "CANDIDATE2_SYNTHETIC_V2_FAILED": "Historical Holdout V6 passed and Synthetic Stress Holdout V2 returned FAIL",
+      "CANDIDATE2_SYNTHETIC_V2_INVALID": "Historical Holdout V6 passed and Synthetic Stress Holdout V2 could not produce a formal result",
+      "CANDIDATE2_IDENTITY_SPLIT": "the two stages did not score the same candidate core and parameter set, so their results cannot be combined",
+      "CANDIDATE2_STAGE_ORDER_VIOLATED": "Synthetic Stress Holdout V2 was opened without a passing Historical Holdout V6. The synthetic result is not usable as evidence and the compound verdict cannot be issued.",
+      "CANDIDATE2_NOT_YET_DETERMINED": "no stage has produced a formal result yet, so there is nothing to compound"
+    },
+    "candidate": {
+      "candidateId": "Candidate 2",
+      "coreHash": "3733b648f050a4f50f9dc3cb6ecf62fce419dd282f24c910b91e7b077d63711d",
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "possessionCalibrationVersion": "1.2.0",
+      "lockStatus": "LOCKED"
+    },
+    "stages": [
+      {
+        "stage": 1,
+        "set": "historical-holdout-v6",
+        "ran": true,
+        "outcome": "FAIL",
+        "verdict": "HISTORICAL_HOLDOUT_V6_FAIL",
+        "accessCount": 1,
+        "coreHash": "3733b648f050a4f50f9dc3cb6ecf62fce419dd282f24c910b91e7b077d63711d",
+        "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+        "runHash": "83461d3181ae384eb31872c3fb11977c683692ba5b172c3cbaecfb51456a3f02",
+        "missingBecause": null
+      },
+      {
+        "stage": 2,
+        "set": "synthetic-stress-holdout-v2",
+        "ran": false,
+        "outcome": null,
+        "verdict": null,
+        "accessCount": 0,
+        "coreHash": null,
+        "parameterSetHash": null,
+        "runHash": null,
+        "missingBecause": "no results artifact at data/validation/6c4c2/synthetic-v2-candidate2-results.json — stage two has not run"
+      }
+    ],
+    "identitySplit": false,
+    "stagesMatchLoadedCandidate": true,
+    "sequenceTerminated": true,
+    "stageTwoOpened": false,
+    "stageTwoNotOpenedBecause": "Historical Holdout V6 returned HISTORICAL_HOLDOUT_V6_FAIL. The frozen stage order forbids opening the synthetic set without a passing stage one, so it remains sealed at access 0.",
+    "writeGuardCorrection": {
+      "what": "the --issue guard originally required BOTH stages to have produced a formal result.",
+      "why": "a stage-one FAIL or INVALID means stage two will never run, so under that condition the correct compound verdict was unissuable.",
+      "nowRequires": "the sequence to have terminated: both stages ran, or stage one decisively ended it.",
+      "stateMachineUnchanged": "compoundVerdict() is byte-identical in behaviour. For every input it returns what it returned before; only this write precondition changed."
+    },
+    "decisionRule": [
+      "1. No stage has run -> CANDIDATE2_NOT_YET_DETERMINED.",
+      "2. Stage two ran without a PASSING stage one -> CANDIDATE2_STAGE_ORDER_VIOLATED. The synthetic result is not evidence, whatever it says.",
+      "3. Stage one FAILED or was INVALID -> the verdict names stage one. Stage two is correctly never opened.",
+      "4. Either stage has not run -> CANDIDATE2_NOT_YET_DETERMINED.",
+      "5. The two stages scored different cores or parameter sets -> CANDIDATE2_IDENTITY_SPLIT.",
+      "6. Stage two FAILED or was INVALID -> the verdict names stage two.",
+      "7. Otherwise CANDIDATE2_HOLDOUT_VALIDATED."
+    ],
+    "notClaimed": [
+      "HOLDOUT_VALIDATED as a repository status",
+      "PRIVATE_PREVIEW_VALIDATED",
+      "PRODUCTION_READY",
+      "ACTIVE",
+      "any deployment authorization"
+    ],
+    "productionActivation": "requires an explicit CEO GO LIVE. This artifact authorizes nothing.",
+    "verdictHash": "f36db9047ee830ce1539b9171bbc2c6ddb61289a594ecee8ef1c7ee457cc7943",
+    "projectedFrom": "data/validation/6c4c2/candidate2-compound-formal-verdict.json",
+    "projectionNote": "the frozen command writes to the directory it was frozen with. Every field here is copied from that artifact; the verdict was re-derived from the same state machine and the same stage inputs and agreed.",
+    "agreementChecks": {
+      "performed": 5,
+      "disagreements": 0
+    },
+    "gamesSimulated": 0,
+    "sealsOpened": 0,
+    "accessCountsUnchangedByThisStage": {
+      "historical-holdout-v6": 1,
+      "synthetic-stress-holdout-v2": 0
+    },
+    "recordedAtCommit": "d2343b12fc3bc7a5c3e6f49a624dd79872294e9c"
+  },
+  "outputHash": "8deef9c65c90cee74ac067ba3efb7007c149de1e4b9c44a7632234f465b8d9eb"
+}

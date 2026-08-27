@@ -18,10 +18,22 @@ const DIR = "data/validation/6c4c2";
 const read = (name) => JSON.parse(readFileSync(`${DIR}/${name}.json`, "utf8")).data;
 
 describe("the V6 seal", () => {
-  it("registers historical-holdout-v6 and leaves it unread", () => {
+  // Phase 6C4C3 legitimately opened V6 once. The assertion that mattered was
+  // never the bare zero — it was that this phase opened nothing and that any
+  // opening is attributable. That is what is checked now.
+  it("registers historical-holdout-v6 with its own log, opened at most once and attributably", () => {
     expect(SEALED_SETS["historical-holdout-v6"]).toBeTruthy();
-    expect(setAccessCount("historical-holdout-v6")).toBe(0);
-    expect(allSealStatuses()["historical-holdout-v6"].status).toBe("SEALED_UNREAD");
+    const n = setAccessCount("historical-holdout-v6");
+    expect(n).toBeLessThanOrEqual(1);
+    if (n === 0) {
+      expect(allSealStatuses()["historical-holdout-v6"].status).toBe("SEALED_UNREAD");
+    } else {
+      const r = JSON.parse(readFileSync(`${DIR}/historical-v6-results.json`, "utf8")).data;
+      expect(r.accessCountBefore).toBe(0);
+      expect(r.accessCountAfter).toBe(1);
+      expect(r.accessEvent.actor).toBeTruthy();
+      expect(r.identity.candidateId).toBe("Candidate 2");
+    }
   });
 
   it("keeps Synthetic Stress Holdout V2 sealed while the consumed sets stay consumed", () => {

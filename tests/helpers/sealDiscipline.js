@@ -5,6 +5,7 @@ import { allSealStatuses, setAccessCount } from "../../src/v3/calibration/holdou
 const RESULTS = "data/validation/6c3/historical-holdout-results.json";
 const RESULTS_V4 = "data/validation/6c3r/historical-holdout-v4-results.json";
 const RESULTS_V5 = "data/validation/6c4b1/historical-holdout-v5-results.json";
+const RESULTS_V6 = "data/validation/6c4c2/historical-v6-results.json";
 
 /**
  * The seal invariant that replaced six separate "every accessCount is 0"
@@ -77,8 +78,31 @@ export const assertSealDiscipline = () => {
       .toContain(d.verdict);
   }
 
+  // Phase 6C4C3 opened Historical V6 once, on Candidate 2. Same rules as V5,
+  // because the reason V5 needed them applies at least as strongly here: three
+  // candidates now share a parameter-set hash lineage and only the core hash
+  // separates them.
+  const v6 = setAccessCount("historical-holdout-v6");
+  expect(v6, "a sealed set is opened at most once").toBeLessThanOrEqual(1);
+  if (v6 === 1) {
+    expect(existsSync(RESULTS_V6), "an opened V6 must leave a results artifact").toBe(true);
+    const d = JSON.parse(readFileSync(RESULTS_V6, "utf8")).data;
+    expect(d.set).toBe("historical-holdout-v6");
+    expect(d.accessCountBefore).toBe(0);
+    expect(d.accessCountAfter).toBe(1);
+    expect(d.accessEvent.actor).toBeTruthy();
+    expect(String(d.accessEvent.reason).length).toBeGreaterThan(20);
+    expect(d.accessEvent.openedAtCommit).toBeTruthy();
+    expect(d.identity?.candidateId, "an opened set must name the candidate it scored").toBeTruthy();
+    expect(d.identity?.coreHash, "and the core hash that identifies it").toMatch(/^[0-9a-f]{64}$/);
+    expect(["HISTORICAL_HOLDOUT_V6_PASS", "HISTORICAL_HOLDOUT_V6_FAIL", "HISTORICAL_HOLDOUT_V6_INVALID_RUN"])
+      .toContain(d.verdict);
+    expect(d.runStatus, "an opened set must reach a terminal run state").toBe("COMPLETE");
+  }
+
   // Everything else stays sealed, including the synthetic stress holdout.
-  const OPENED = ["historical-holdout-v3", "historical-holdout-v4", "historical-holdout-v5"];
+  const OPENED = ["historical-holdout-v3", "historical-holdout-v4", "historical-holdout-v5",
+    "historical-holdout-v6"];
   for (const [id, v] of Object.entries(all)) {
     if (OPENED.includes(id)) continue;
     expect(v.accessCount, `${id} has been accessed and should not have been`).toBe(0);
@@ -88,10 +112,16 @@ export const assertSealDiscipline = () => {
   // "none has passed" — which is what the frozen stage order actually requires.
   const v5Verdict = v5 === 1 && existsSync(RESULTS_V5)
     ? JSON.parse(readFileSync(RESULTS_V5, "utf8")).data.verdict : null;
-  const aHistoricalHoldoutPassed = v5Verdict === "HISTORICAL_HOLDOUT_V5_PASS";
+  const v6Verdict = v6 === 1 && existsSync(RESULTS_V6)
+    ? JSON.parse(readFileSync(RESULTS_V6, "utf8")).data.verdict : null;
+  // The condition is "no historical holdout has PASSED", not "none has run".
+  // Both V5 and V6 have now run and both failed, so the synthetic set must still
+  // be at zero — which is the frozen stage order, stated as the code checks it.
+  const aHistoricalHoldoutPassed = v5Verdict === "HISTORICAL_HOLDOUT_V5_PASS"
+    || v6Verdict === "HISTORICAL_HOLDOUT_V6_PASS";
   if (!aHistoricalHoldoutPassed) {
     expect(setAccessCount("synthetic-stress-holdout-v2"),
-      `the synthetic stress holdout must remain sealed: no historical holdout has passed (V5 verdict ${v5Verdict ?? "not run"})`).toBe(0);
+      `the synthetic stress holdout must remain sealed: no historical holdout has passed (V5 ${v5Verdict ?? "not run"}, V6 ${v6Verdict ?? "not run"})`).toBe(0);
   } else {
     expect(setAccessCount("synthetic-stress-holdout-v2"),
       "a sealed set is opened at most once").toBeLessThanOrEqual(1);
@@ -99,6 +129,7 @@ export const assertSealDiscipline = () => {
 
   return { historicalHoldoutAccessCount: hist, historicalHoldoutV4AccessCount: v4,
     historicalHoldoutV5AccessCount: v5, historicalHoldoutV5Verdict: v5Verdict,
+    historicalHoldoutV6AccessCount: v6, historicalHoldoutV6Verdict: v6Verdict,
     syntheticStressSealed: setAccessCount("synthetic-stress-holdout-v2") === 0,
     allOthersSealed: true };
 };
