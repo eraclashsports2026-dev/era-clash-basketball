@@ -42,7 +42,15 @@ export const CORE_ENTRY_POINTS = Object.freeze([
   "src/v3/fingerprint.js",                   // result identity
 ]);
 
-const IMPORT_RE = /(?:^|\n)\s*(?:import|export)[^;\n]*?from\s*["']([^"']+)["']/g;
+// v2: multi-line import statements are real imports. v1's [^;\n]*? could not
+// cross a newline, so `import {\n  a, b,\n} from "./x.js"` was INVISIBLE to the
+// closure — src/v3/actions/offensivePlan.js ran in every game while sitting
+// outside every core manifest (found in Phase 6C4A). Lazy [\s\S]*? stops at the
+// first from-clause after each import/export keyword; a from-less export that
+// over-matches can only capture a path that another statement in the same file
+// also imports, so membership is unaffected.
+const CLOSURE_BUILDER_VERSION = "2.0.0";
+const IMPORT_RE = /(?:^|\n)\s*(?:import|export)\b[\s\S]*?from\s*["']([^"']+)["']/g;
 const DYNAMIC_RE = /import\(\s*["']([^"']+)["']\s*\)/g;
 
 /** Transitive closure of relative imports, resolved on disk. */
@@ -89,6 +97,7 @@ export const buildCoreManifest = () => {
     files, missing: [...missingEntry, ...unresolved], unresolvedImports: unresolved,
     fileCount: files.length, aggregateCoreHash: aggregate,
     discovery: "transitive import closure of the engine entry points, resolved on disk",
+    closureBuilderVersion: CLOSURE_BUILDER_VERSION,
   };
 };
 

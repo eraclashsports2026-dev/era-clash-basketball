@@ -79,7 +79,10 @@ describe("estimateWinProbability", () => {
 
   it("returns probabilities that sum to one with matching win counts", () => {
     const r = est();
-    expect(r.goldWinProbability + r.blueWinProbability).toBeCloseTo(1, 6);
+    // Each probability is independently rounded to 4 decimals from its own
+    // win count, so the pair can each round upward: the exact invariant is
+    // |sum - 1| <= 1e-4, not float-equality of the rounded halves.
+    expect(Math.abs(r.goldWinProbability + r.blueWinProbability - 1)).toBeLessThanOrEqual(1.0000001e-4);
     expect(r.goldWins + r.blueWins).toBe(r.sampleCount);
     expect(r.goldWins / r.sampleCount).toBeCloseTo(r.goldWinProbability, 4);
   });

@@ -1,4 +1,5 @@
 import { describe, it, expect } from "vitest";
+import { assertCoreHashLineage } from "./helpers/candidateLineage.js";
 import { readFileSync, existsSync } from "node:fs";
 import { verifyArtifact, ARTIFACT_DIR_6C3, ARTIFACT_DIR_C6 } from "../src/v3/calibration/artifacts.js";
 import { SCOPE_POLICY, scopePolicyHash, classifyTeamField, AVAILABILITY_MAP, NOT_APPLICABLE_TEAM_METRICS } from "../src/v3/calibration/holdoutScopePolicy.js";
@@ -70,9 +71,9 @@ describe("candidate core manifest", () => {
     expect(d.missing).toEqual([]);
   });
 
-  it("the closure still hashes to the value recorded before the holdout opened", () => {
+  it("the closure hashes to the recorded value, or to an attributable successor of it", () => {
     const d = V("candidate-core-manifest").data;
-    expect(buildCoreManifest().aggregateCoreHash).toBe(d.aggregateCoreHash);
+    assertCoreHashLineage(d.aggregateCoreHash, buildCoreManifest().aggregateCoreHash, "V3 candidate core");
   });
 
   it("includes the files that actually decide a result", () => {
@@ -258,10 +259,12 @@ describe("formal verdict", () => {
     expect(d.candidateImmutability.parameterChangesAfterHoldout).toBe(0);
     expect(d.candidateImmutability.policyChangesAfterHoldout).toBe(0);
     expect(d.candidateImmutability.postHoldoutTuning).toBe("NONE");
-    // and live, not just as recorded
+    // and live, not just as recorded: parameters still at defaults, and the
+    // core either byte-identical to the holdout-time hash or an attributable
+    // successor candidate of it (silent drift still fails).
     const def = defaultRuntimeParameterSet();
     for (const p of activeParameters()) expect(def.values[p.id]).toBe(p.defaultValue);
-    expect(buildCoreManifest().aggregateCoreHash).toBe(d.candidateImmutability.coreHashAtHoldout);
+    assertCoreHashLineage(d.candidateImmutability.coreHashAtHoldout, buildCoreManifest().aggregateCoreHash, "V3 holdout core");
   });
 
   it("records the diagnosis without substituting it for the verdict", () => {

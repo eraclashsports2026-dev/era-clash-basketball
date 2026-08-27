@@ -21,7 +21,11 @@ import { REGISTRY } from "../../src/versions.js";
 // silently invalidate them. Phase 6C2C2 deliberately changed engine behaviour
 // (seeded opening possession), so the live baseline moves to its own
 // phase-scoped path, exactly as the structural baselines did across 6C2A.
-const OUT = new URL("../../tests/fixtures/calibration-framework/post-6c2c2-symmetry/engine-baseline.json", import.meta.url);
+// Phase 6C4A: Candidate 1 deliberately changed engine behaviour (movement
+// eligibility, adapter movement inputs, per-possession zone use), so the live
+// baseline moves to a candidate-scoped path — the post-6c2c2 record stays
+// frozen as Candidate 0's, exactly as the 6C2A originals did.
+const OUT = new URL("../../tests/fixtures/calibration-framework/candidate1/engine-baseline.json", import.meta.url);
 
 // Deliberately spans teams, coaches, eras, man and zone defence, and the
 // flag-off Phase 6B1 path.
@@ -38,7 +42,9 @@ export const BASELINE_CASES = [
   // possession moved it again; 36 was chosen because it reaches DOUBLE
   // overtime, which also exercises the repeat loop and the second overtime's
   // independent jump ball.
-  { id: "dantoni-pace-2020s", goldIds: ["luka-20s", "harden-10s", "jordan-90s", "lebron-10s", "jokic-20s"], blueIds: ["magic-80s", "klay-10s", "pippen-90s", "duncan-00s", "hak-90s"], eraStyleId: "2020s", coachGoldId: "mike-dantoni", coachBlueId: "tom-thibodeau", simulationSeed: 36 },
+  // Candidate 1 moved the OT seed a fourth time (36 -> 1005, double overtime),
+  // found by search per the rule above.
+  { id: "dantoni-pace-2020s", goldIds: ["luka-20s", "harden-10s", "jordan-90s", "lebron-10s", "jokic-20s"], blueIds: ["magic-80s", "klay-10s", "pippen-90s", "duncan-00s", "hak-90s"], eraStyleId: "2020s", coachGoldId: "mike-dantoni", coachBlueId: "tom-thibodeau", simulationSeed: 1005 },
   { id: "flag-off-6b1-path", goldIds: ["magic-80s", "jordan-90s", "pippen-90s", "duncan-00s", "hak-90s"], blueIds: ["curry-10s", "klay-10s", "bird-80s", "dirk-00s", "rob-90s"], eraStyleId: "1990s", coachGoldId: "pat-riley", coachBlueId: "phil-jackson", simulationSeed: 777, expandedActions: false, zoneResolution: false, offensiveAdjustments: false, opportunityAllocation: false },
 ];
 
@@ -81,7 +87,7 @@ export const captureCase = (c) => {
 };
 
 export const captureBaseline = () => ({
-  capturedFor: "phase-6c1-calibration-framework",
+  capturedFor: "phase-6c4a-candidate1",
   purpose: "Regression fixture. Detects accidental engine change during framework work. NOT a claim of historical correctness.",
   moduleVersions: Object.fromEntries(Object.entries(REGISTRY).map(([k, v]) => [k, v.value])),
   cases: BASELINE_CASES.map(captureCase),

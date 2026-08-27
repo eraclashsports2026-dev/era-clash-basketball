@@ -142,14 +142,19 @@ const playPossession = ({ ctx, off, def, offBox, defBox, state, rng, ledger, per
   if (defState) recoverAssignments(defState, state.possessionIndex);
 
   // A zone possession resolves against AREAS, so the zone shell replaces the
-  // man assignment as the thing the offence is attacking.
-  const zoneShell = ctx.zoneResolutionEnabled ? (defPlan?.zoneShell ?? null) : null;
+  // man assignment as the thing the offence is attacking. USE of the shell is
+  // per-possession and continuous in the coach's zone preference: real zone
+  // usage is a share of possessions, not a per-game on/off switch.
+  const builtShell = ctx.zoneResolutionEnabled ? (defPlan?.zoneShell ?? null) : null;
+  const zoneP = builtShell ? Math.min(0.8, Math.pow((defPlan.scheme?.zoneUsage ?? 0) / 10, 1.35) * 0.8) : 0;
+  const zoneShell = builtShell && rng.chance(zoneP) ? builtShell : null;
   const offPlan = state.offensePlan?.[off.side] ?? null;
   const { type, mix } = selectAction({
     offense: off, defense: def, eff: ctx.eff, state, rng, inTransition,
     defPlan, zoneShell, expanded: ctx.expandedActionsEnabled,
-    // A coach adjustment moves the MIX; the possession then resolves normally.
-    overrideMix: offPlan?.currentActionMix ?? null,
+    // A coach adjustment moves the MAN mix; a zone possession attacks the
+    // zone instead, so the override applies only when the defence is in man.
+    overrideMix: zoneShell ? null : offPlan?.currentActionMix ?? null,
     params: ctx.parameterSet,
   });
   const shot = resolveAction({ type }, {
@@ -433,11 +438,15 @@ export const simulatePossessionGame = (input) => {
     offensePlan: ctx.offensiveAdjustmentsEnabled && ctx.expandedActionsEnabled ? {
       gold: buildOffensivePlan({
         offense: ctx.gold, defense: ctx.blue, defPlan: ctx.defensivePlans?.blue ?? null, eff: ctx.eff,
-        baselineMix: expandedActionMix({ offense: ctx.gold, defense: ctx.blue, eff: ctx.eff, state: {}, defPlan: ctx.defensivePlans?.blue ?? null, zoneShell: ctx.zoneResolutionEnabled ? ctx.defensivePlans?.blue?.zoneShell ?? null : null, params: ctx.parameterSet }),
+        // The standing plan is the MAN-offence plan. Zone possessions replace
+        // it per possession in playPossession — a plan built against a zone
+        // shell that is only up for a fraction of possessions would misplan
+        // the man majority.
+        baselineMix: expandedActionMix({ offense: ctx.gold, defense: ctx.blue, eff: ctx.eff, state: {}, defPlan: ctx.defensivePlans?.blue ?? null, zoneShell: null, params: ctx.parameterSet }),
       }),
       blue: buildOffensivePlan({
         offense: ctx.blue, defense: ctx.gold, defPlan: ctx.defensivePlans?.gold ?? null, eff: ctx.eff,
-        baselineMix: expandedActionMix({ offense: ctx.blue, defense: ctx.gold, eff: ctx.eff, state: {}, defPlan: ctx.defensivePlans?.gold ?? null, zoneShell: ctx.zoneResolutionEnabled ? ctx.defensivePlans?.gold?.zoneShell ?? null : null, params: ctx.parameterSet }),
+        baselineMix: expandedActionMix({ offense: ctx.blue, defense: ctx.gold, eff: ctx.eff, state: {}, defPlan: ctx.defensivePlans?.gold ?? null, zoneShell: null, params: ctx.parameterSet }),
       }),
     } : null,
   };

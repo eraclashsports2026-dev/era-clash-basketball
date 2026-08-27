@@ -204,5 +204,54 @@ ${c.factorial.map((f) => `| ${f.label} | ${Object.entries(f).filter(([k]) => !["
 `).join("\n")}`);
   }
 
+  if (has("candidate1-movement-repair")) {
+    const A = R("candidate1-movement-repair"); const d = A.data;
+    const M = has("candidate1-draft-manifest") ? R("candidate1-draft-manifest").data : null;
+    write("candidate1-movement-repair.md", `${prov(A)}# Candidate 1 — movement & coach-saturation repair
+
+**Acceptance gate: ${d.pass ? "PASS" : `FAIL (${d.failedGates.join(", ")})`}** — ${d.pairsPerCell * 2} games per cell.
+
+Movement family: ${d.movementFamily.map((x) => `\`${x}\``).join(", ")} via \`${d.helper}\`.
+
+| gate | result |
+| --- | --- |
+${Object.entries(d.gates).map(([k, v]) => `| ${k} | **${v ? "PASS" : "FAIL"}** |`).join("\n")}
+
+## Coach differentiation (fixed roster: 1991-92 Bulls five)
+
+| coach | movementShare | ppp |
+| --- | ---: | ---: |
+${d.coachDifferentiation.cells.map((c) => `| ${c.label} | ${c.movementShare.mean} | ${c.ppp.mean} |`).join("\n")}
+
+## No efficiency guarantee
+
+${d.noEfficiencyGuarantee.reading}: share +${d.noEfficiencyGuarantee.shareDiff.diff}, ppp ${d.noEfficiencyGuarantee.pppDiff.diff}.
+
+## Era movement spread (no flattening)
+
+| era | reference movementShare |
+| --- | ---: |
+${Object.entries(d.eraSpread.perEra).map(([e, v]) => `| ${e} | ${v} |`).join("\n")}
+
+spread: **${fmt(d.eraSpread.spread)}**
+
+## Zone continuity
+
+${d.zoneContinuity.reading}.
+
+| defensive coach | zone share |
+| --- | ---: |
+${d.zoneContinuity.cells.map((c) => `| ${c.coachId} | ${c.defensiveZoneShare.mean} |`).join("\n")}
+${M ? `
+## Candidate 1 draft
+
+\`${M.candidateId}\` (${M.candidateSelectionStatus}/${M.candidateLockStatus}/${M.validationAttemptStatus}), parent \`${M.parentCandidateId}\`
+core \`${M.parentCoreHash.slice(0, 16)}...\` → \`${M.coreHash.slice(0, 16)}...\` under closure builder ${M.closureBuilderVersion}.
+
+Changed core files: ${M.changedCoreFiles.map((f) => `\`${f}\``).join(", ")}.
+
+Closure correction: ${M.closureCorrection.defect} — ${M.closureCorrection.consequence}.` : ""}`);
+  }
+
   console.log(written.length ? written.join("\n") : "no 6c4a artifacts yet");
 }

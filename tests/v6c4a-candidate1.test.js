@@ -220,3 +220,53 @@ describe("6C4A WS3 — root-cause analysis", () => {
     expect(dead).toEqual(expect.arrayContaining(["offBallValue", "rimPressure", "postPlay", "turnoverRisk", "switchability"]));
   });
 });
+
+describe("6C4A WS4 — movement & coach-saturation repair", () => {
+  const mv = R("candidate1-movement-repair").data;
+
+  it("passes every acceptance gate the brief requires", () => {
+    expect(mv.failedGates).toEqual([]);
+    for (const g of ["nonzeroReachabilityEverywhere", "coachDifferentiation", "rosterSensitivity",
+      "noEfficiencyGuarantee", "noEraFlattening", "isolationReachableAtNeutral", "zoneContinuity"]) {
+      expect(mv.gates[g], g).toBe(true);
+    }
+  });
+
+  it("exposes the movement family through one shared helper", async () => {
+    const { isMovementFamilyAction, MOVEMENT_FAMILY_ACTIONS } = await import("../src/v3/actions/families.js");
+    expect(MOVEMENT_FAMILY_ACTIONS).toEqual(["OFF_BALL_SCREEN", "CUT", "HANDOFF"]);
+    expect(MOVEMENT_FAMILY_ACTIONS.every(isMovementFamilyAction)).toBe(true);
+    expect(isMovementFamilyAction("POST_UP")).toBe(false);
+    expect(Object.isFrozen(MOVEMENT_FAMILY_ACTIONS)).toBe(true);
+  });
+
+  it("repairs by mix, never by efficiency: max motion on weak movers buys no ppp", () => {
+    expect(mv.noEfficiencyGuarantee.shareDiff.diff).toBeGreaterThan(0.01);
+    expect(mv.noEfficiencyGuarantee.pppDiff.diff).toBeLessThan(0.02);
+  });
+
+  it("keeps zone use continuous in the coach scale — no 0/1 step", () => {
+    const z = mv.zoneContinuity.cells.map((c) => c.defensiveZoneShare.mean);
+    expect(z[0]).toBeGreaterThan(z[1]);
+    expect(z[1]).toBeGreaterThan(z[2]);
+    expect(z[2]).toBeGreaterThan(z[3]);
+    for (const v of z) { expect(v).toBeGreaterThan(0); expect(v).toBeLessThan(1); }
+  });
+
+  it("records Candidate 1 as a DRAFT successor, never a mutation of Candidate 0", () => {
+    const m = R("candidate1-draft-manifest").data;
+    expect(m.candidateId).toBe("Candidate 1");
+    expect(m.parentCandidateId).toBe("Candidate 0");
+    expect(m.candidateSelectionStatus).toBe("DRAFT");
+    expect(m.candidateLockStatus).toBe("UNLOCKED");
+    expect(m.validationAttemptStatus).toBe("NOT_RUN");
+    expect(m.coreHash).not.toBe(m.parentCoreHash);
+    expect(m.changedCoreFiles.length).toBeGreaterThan(0);
+  });
+
+  it("keeps the production 3.2.0 engine byte-identical", () => {
+    const a = JSON.parse(readFileSync(`${DIR}/behaviour-snapshot-candidate0.json`, "utf8"));
+    const b = JSON.parse(readFileSync(`${DIR}/behaviour-snapshot-candidate1-draft.json`, "utf8"));
+    expect(b.production.productionEngineSha256).toBe(a.production.productionEngineSha256);
+  });
+});

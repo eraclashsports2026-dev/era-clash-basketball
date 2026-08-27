@@ -64,6 +64,15 @@ export const PNR_FREQUENCY_FLOOR = 0.06;
  * rest simply because it has more fields, and the remainder falls to
  * GENERIC_HALF_COURT, which stays a truthful fallback.
  */
+
+// The per-possession scheme label. A possession defended in the zone shell is
+// a ZONE possession whatever family the offence answered with; a man
+// possession by a sometimes-zoning coach is labelled by the MAN fallback, not
+// by the plan headline ("ZONE_MIXED" here made zone share read 100%).
+const schemeIdFor = (defPlan, zoneShell) => (zoneShell
+  ? `ZONE:${zoneShell.shellType}`
+  : defPlan ? `${defPlan.scheme.manShellType ?? defPlan.scheme.shellType}:${defPlan.scheme.ballScreenCoverage}` : null);
+
 export const expandedActionMix = ({ offense, defense, eff, state, defPlan, zoneShell, inTransition = false, params = null }) => {
   if (inTransition) return { TRANSITION: 1 };
   // Against a zone, the offence attacks the zone rather than running man
@@ -291,7 +300,7 @@ export const matchupModifiers = ({ defState, plan, shooter, defender, shotCatego
 // profile, spacing, rim pressure, the defensive profile, era and game state —
 // but it claims no tactical specificity, and its `tacticalSpecificity` field
 // says so explicitly so no downstream narrator can dress it up.
-const resolveGenericHalfCourt = ({ offense, defense, eff, state, rng, defState, defPlan, alloc }) => {
+const resolveGenericHalfCourt = ({ offense, defense, eff, state, rng, defState, defPlan, zoneShell = null, alloc }) => {
   const shooter = pickShooter(offense, rng, { state, alloc, family: "GENERIC_HALF_COURT" });
   const defender = pickDefender(defense, shooter, defState);
   const mod = matchupModifiers({ defState, plan: defPlan, shooter, defender });
@@ -317,7 +326,7 @@ const resolveGenericHalfCourt = ({ offense, defense, eff, state, rng, defState, 
     assignmentState: assignmentStateFor(defState, shooter),
     mismatchType: mod.worstMismatch?.type ?? null,
     mismatchSeverity: mod.worstMismatch?.severity ?? null,
-    schemeId: defPlan ? `${defPlan.scheme.shellType}:${defPlan.scheme.ballScreenCoverage}` : null,
+    schemeId: schemeIdFor(defPlan, zoneShell),
     matchupMod: mod,
     helpCommitment,
     passerCandidate: pickPasser(offense, shooter, rng),
@@ -336,7 +345,7 @@ const resolveGenericHalfCourt = ({ offense, defense, eff, state, rng, defState, 
 // Created by a live-ball turnover, a defensive rebound, or pace — never
 // spontaneously, and never worth automatic points. It can also be pulled out
 // into half-court, which is what usually happens when the defence gets back.
-const resolveTransition = ({ offense, defense, eff, state, rng, defState, defPlan, alloc }) => {
+const resolveTransition = ({ offense, defense, eff, state, rng, defState, defPlan, zoneShell = null, alloc }) => {
   const shooter = pickShooter(offense, rng, { state, preferCreator: 0.15, alloc, family: "TRANSITION" });
   // ── Transition cross-matching (PART 19) ──────────────────────────────────
   // In transition a defender takes the NEAREST credible threat, which is a
@@ -374,7 +383,7 @@ const resolveTransition = ({ offense, defense, eff, state, rng, defState, defPla
 
   // The defence recovers often enough that transition is not free points.
   if (rng.chance(clamp(0.42 - advantage * 0.028, 0.14, 0.5))) {
-    const pulled = resolveGenericHalfCourt({ offense, defense, eff, state, rng, defState, defPlan });
+    const pulled = resolveGenericHalfCourt({ offense, defense, eff, state, rng, defState, defPlan, zoneShell });
     return { ...pulled, actionType: "TRANSITION", actionLabel: "Transition, pulled out into half-court", pulledOut: true };
   }
 
@@ -389,7 +398,7 @@ const resolveTransition = ({ offense, defense, eff, state, rng, defState, defPla
     forcedSwitch: crossMatched ? "TRANSITION" : null,
     mismatchType: mod.worstMismatch?.type ?? null,
     mismatchSeverity: mod.worstMismatch?.severity ?? null,
-    schemeId: defPlan ? `${defPlan.scheme.shellType}:${defPlan.scheme.ballScreenCoverage}` : null,
+    schemeId: schemeIdFor(defPlan, zoneShell),
     matchupMod: mod,
     passerCandidate: pickPasser(offense, shooter, rng),
     assistLikelihood: clamp(0.34 + offense.offense.passing * 0.03, 0.2, 0.78),
@@ -410,7 +419,7 @@ const resolveTransition = ({ offense, defense, eff, state, rng, defState, defPla
 // possession-event terms. There is no "+5 for PnR" anywhere: the coverage the
 // defence plays decides which consequence dominates, and the same action
 // produces a different possession against a drop than against a blitz.
-const resolvePickAndRoll = ({ offense, defense, eff, state, rng, eraStyleId, defState, defPlan, alloc }) => {
+const resolvePickAndRoll = ({ offense, defense, eff, state, rng, eraStyleId, defState, defPlan, zoneShell = null, alloc }) => {
   const handler = alloc
     ? selectForOpportunity({ players: offense.players, family: "PICK_AND_ROLL", dimension: "creation",
         targets: alloc.targets.creation, ledger: alloc.ledger, rng, state, params: alloc.params }).player
@@ -501,7 +510,7 @@ const resolvePickAndRoll = ({ offense, defense, eff, state, rng, eraStyleId, def
     forcedSwitch: switchOutcome ? "SCREEN" : null,
     mismatchType: mod.worstMismatch?.type ?? null,
     mismatchSeverity: mod.worstMismatch?.severity ?? null,
-    schemeId: defPlan ? `${defPlan.scheme.shellType}:${defPlan.scheme.ballScreenCoverage}` : null,
+    schemeId: schemeIdFor(defPlan, zoneShell),
     matchupMod: mod,
     passerCandidate: route.passer ?? pickPasser(offense, shooter, rng),
     // A pass that created the shot is an assist opportunity; the handler
@@ -522,7 +531,7 @@ const resolvePickAndRoll = ({ offense, defense, eff, state, rng, eraStyleId, def
 // Each returns the SAME shot-context shape the possession loop already
 // consumes, so conservation and the box score are untouched. No family authors
 // a score, a winner or a player line.
-const familyBase = ({ shooter, defender, defState, defPlan, shotCategory = null }) => {
+const familyBase = ({ shooter, defender, defState, defPlan, zoneShell = null, shotCategory = null }) => {
   const mod = matchupModifiers({ defState, plan: defPlan, shooter, defender, shotCategory });
   return { mod, shooter, defender };
 };
@@ -537,7 +546,7 @@ const resolveFamily = (family, { offense, defense, eff, state, rng, defState, de
   // ── POST_UP ──────────────────────────────────────────────────────────────
   if (family === "POST_UP") {
     const { poster, defender, entryPasser, helper, mismatch } = prep;
-    const base = familyBase({ shooter: poster, defender, defState, defPlan, shotCategory: "PAINT_OR_POST" });
+    const base = familyBase({ shooter: poster, defender, defState, defPlan, zoneShell, shotCategory: "PAINT_OR_POST" });
     // The defence answers. A double team is available only where the scheme
     // and the era permit it, and it CONCEDES the kickout.
     const canDouble = defPlan && defPlan.scheme.doubleTeamAggression >= 3 && !defPlan.scheme.legality.illegalDefenseRestrictions;
@@ -548,7 +557,7 @@ const resolveFamily = (family, { offense, defense, eff, state, rng, defState, de
       const receiver = rng.weighted(offense.players.filter((p) => p.index !== poster.index),
         (p) => 0.2 + perimeterSelectionWeight(p.profile?.shooting?.perimeterSkill));
       const rDef = pick(defense, receiver);
-      const rBase = familyBase({ shooter: receiver, defender: rDef, defState, defPlan });
+      const rBase = familyBase({ shooter: receiver, defender: rDef, defState, defPlan, zoneShell });
       return {
         actionType: "POST_UP", actionVariant: "KICKOUT", actionLabel: "Post-up, kicked out of the double",
         tacticalSpecificity: "MODELLED",
@@ -558,7 +567,7 @@ const resolveFamily = (family, { offense, defense, eff, state, rng, defState, de
         assignmentState: assignmentStateFor(defState, receiver),
         targetedMismatch: mismatch?.type ?? null, mismatchType: mismatch?.type ?? null,
         mismatchSeverity: mismatch?.severity ?? null,
-        schemeId: defPlan ? `${defPlan.scheme.shellType}:${defPlan.scheme.ballScreenCoverage}` : null,
+        schemeId: schemeIdFor(defPlan, zoneShell),
         passerCandidate: poster, assistLikelihood: clamp(0.55 + poster.passing * 0.035, 0.35, 0.88),
         shotQuality: r2(clamp(5.4 + poster.passing * 0.2 - rBase.mod.shotQuality * -1 + rBase.mod.shotQuality, 1, 9.6)),
         rimBias: -0.3, matchupMod: rBase.mod,
@@ -580,7 +589,7 @@ const resolveFamily = (family, { offense, defense, eff, state, rng, defState, de
       assignmentState: assignmentStateFor(defState, poster),
       targetedMismatch: mismatch?.type ?? null, mismatchType: mismatch?.type ?? null,
       mismatchSeverity: mismatch?.severity ?? null,
-      schemeId: defPlan ? `${defPlan.scheme.shellType}:${defPlan.scheme.ballScreenCoverage}` : null,
+      schemeId: schemeIdFor(defPlan, zoneShell),
       passerCandidate: entryPasser, assistLikelihood: clamp(0.3 + (entryPasser?.passing ?? 5) * 0.03, 0.2, 0.6),
       // A mismatch RAISES quality; it never guarantees a basket, and a double
       // takes some of it straight back.
@@ -597,7 +606,7 @@ const resolveFamily = (family, { offense, defense, eff, state, rng, defState, de
   // ── ISOLATION ────────────────────────────────────────────────────────────
   if (family === "ISOLATION") {
     const { creator, defender, helper, mismatch } = prep;
-    const base = familyBase({ shooter: creator, defender, defState, defPlan });
+    const base = familyBase({ shooter: creator, defender, defState, defPlan, zoneShell });
     const sev = mismatch ? ({ SEVERE: 1.4, MAJOR: 0.95, MODERATE: 0.5, MINOR: 0.2 })[mismatch.severity] ?? 0 : 0;
     // A size mismatch on the perimeter converts to a post attack — the same
     // detected advantage, attacked from where the creator actually is.
@@ -612,7 +621,7 @@ const resolveFamily = (family, { offense, defense, eff, state, rng, defState, de
       assignmentState: assignmentStateFor(defState, creator),
       targetedMismatch: mismatch?.type ?? null, mismatchType: mismatch?.type ?? null,
       mismatchSeverity: mismatch?.severity ?? null,
-      schemeId: defPlan ? `${defPlan.scheme.shellType}:${defPlan.scheme.ballScreenCoverage}` : null,
+      schemeId: schemeIdFor(defPlan, zoneShell),
       // Isolation is by definition unassisted.
       passerCandidate: null, assistLikelihood: 0.02,
       shotQuality: r2(clamp(4.3 + creator.selfCreation * 0.26 + sev
@@ -630,7 +639,7 @@ const resolveFamily = (family, { offense, defense, eff, state, rng, defState, de
   // ── OFF_BALL_SCREEN ──────────────────────────────────────────────────────
   if (family === "OFF_BALL_SCREEN") {
     const { shooter, screener, chaser, screenerDefender, mismatch } = prep;
-    const base = familyBase({ shooter, defender: chaser, defState, defPlan, shotCategory: "THREE_POINT" });
+    const base = familyBase({ shooter, defender: chaser, defState, defPlan, zoneShell, shotCategory: "THREE_POINT" });
     const nav = chaser.profile?.defense?.perimeterContainment ?? 5;
     // Did the chaser get through? This is where chase burden becomes real.
     const navigated = rng.chance(clamp(0.3 + nav * 0.045 - (shooter.profile?.offense?.offBallMovement ?? 5) * 0.028, 0.1, 0.8));
@@ -647,7 +656,7 @@ const resolveFamily = (family, { offense, defense, eff, state, rng, defState, de
       assignmentState: assignmentStateFor(defState, shooter),
       targetedMismatch: mismatch?.type ?? null, mismatchType: mismatch?.type ?? null,
       mismatchSeverity: mismatch?.severity ?? null,
-      schemeId: defPlan ? `${defPlan.scheme.shellType}:${defPlan.scheme.ballScreenCoverage}` : null,
+      schemeId: schemeIdFor(defPlan, zoneShell),
       passerCandidate: rng.weighted(offense.players.filter((p) => p.index !== shooter.index), (p) => 0.3 + p.passing * 0.6),
       assistLikelihood: navigated ? 0.28 : clamp(0.62 + offense.offense.passing * 0.025, 0.4, 0.9),
       shotQuality: r2(clamp((navigated ? 3.6 : 6.1) + (shooter.profile?.offense?.offBallMovement ?? 5) * 0.16
@@ -664,7 +673,7 @@ const resolveFamily = (family, { offense, defense, eff, state, rng, defState, de
   // ── HANDOFF ──────────────────────────────────────────────────────────────
   if (family === "HANDOFF") {
     const { hub, receiver, hubDefender, receiverDefender } = prep;
-    const base = familyBase({ shooter: receiver, defender: receiverDefender, defState, defPlan });
+    const base = familyBase({ shooter: receiver, defender: receiverDefender, defState, defPlan, zoneShell });
     const slipped = rng.chance(clamp(0.12 + hub.rimThreat * 0.02, 0.08, 0.35));
     return {
       actionType: "HANDOFF", actionVariant: slipped ? "SLIP" : "PULL_UP",
@@ -678,7 +687,7 @@ const resolveFamily = (family, { offense, defense, eff, state, rng, defState, de
       assignmentState: assignmentStateFor(defState, slipped ? hub : receiver),
       targetedMismatch: null, mismatchType: base.mod.worstMismatch?.type ?? null,
       mismatchSeverity: base.mod.worstMismatch?.severity ?? null,
-      schemeId: defPlan ? `${defPlan.scheme.shellType}:${defPlan.scheme.ballScreenCoverage}` : null,
+      schemeId: schemeIdFor(defPlan, zoneShell),
       passerCandidate: slipped ? receiver : hub,
       assistLikelihood: clamp(0.5 + hub.passing * 0.03, 0.3, 0.85),
       shotQuality: r2(clamp(5.2 + hub.passing * 0.14 + receiver.selfCreation * 0.12 + (slipped ? 1.1 : 0) + base.mod.shotQuality, 0.5, 9.6)),
@@ -693,7 +702,7 @@ const resolveFamily = (family, { offense, defense, eff, state, rng, defState, de
   // ── SPOT_UP ──────────────────────────────────────────────────────────────
   if (family === "SPOT_UP") {
     const { shooter, passer, closeoutDefender } = prep;
-    const base = familyBase({ shooter, defender: closeoutDefender, defState, defPlan, shotCategory: "THREE_POINT" });
+    const base = familyBase({ shooter, defender: closeoutDefender, defState, defPlan, zoneShell, shotCategory: "THREE_POINT" });
     const drives = rng.chance(clamp(0.12 + shooter.rimThreat * 0.022, 0.08, 0.35));
     return {
       actionType: "SPOT_UP", actionVariant: drives ? "CLOSEOUT_DRIVE" : "CATCH_AND_SHOOT",
@@ -705,7 +714,7 @@ const resolveFamily = (family, { offense, defense, eff, state, rng, defState, de
       assignmentState: assignmentStateFor(defState, shooter),
       targetedMismatch: null, mismatchType: base.mod.worstMismatch?.type ?? null,
       mismatchSeverity: base.mod.worstMismatch?.severity ?? null,
-      schemeId: defPlan ? `${defPlan.scheme.shellType}:${defPlan.scheme.ballScreenCoverage}` : null,
+      schemeId: schemeIdFor(defPlan, zoneShell),
       passerCandidate: passer,
       assistLikelihood: drives ? 0.12 : clamp(0.72 + offense.offense.passing * 0.02, 0.5, 0.92),
       shotQuality: r2(clamp(5.6 + offense.offense.spacing * 0.14 + (drives ? -0.4 : 0.5) + base.mod.shotQuality, 0.5, 9.6)),
@@ -720,7 +729,7 @@ const resolveFamily = (family, { offense, defense, eff, state, rng, defState, de
   // ── CUT ──────────────────────────────────────────────────────────────────
   if (family === "CUT") {
     const { cutter, passer, denier } = prep;
-    const base = familyBase({ shooter: cutter, defender: denier, defState, defPlan, shotCategory: "RIM" });
+    const base = familyBase({ shooter: cutter, defender: denier, defState, defPlan, zoneShell, shotCategory: "RIM" });
     const denied = rng.chance(clamp(0.32 + (denier.profile?.defense?.schemeVersatility ?? 5) * 0.03, 0.15, 0.65));
     return {
       actionType: "CUT", actionVariant: denied ? "DENIED" : "OPEN_CUT",
@@ -732,7 +741,7 @@ const resolveFamily = (family, { offense, defense, eff, state, rng, defState, de
       assignmentState: assignmentStateFor(defState, cutter),
       targetedMismatch: null, mismatchType: base.mod.worstMismatch?.type ?? null,
       mismatchSeverity: base.mod.worstMismatch?.severity ?? null,
-      schemeId: defPlan ? `${defPlan.scheme.shellType}:${defPlan.scheme.ballScreenCoverage}` : null,
+      schemeId: schemeIdFor(defPlan, zoneShell),
       passerCandidate: passer,
       assistLikelihood: denied ? 0.2 : clamp(0.78 + offense.offense.passing * 0.015, 0.55, 0.94),
       shotQuality: r2(clamp((denied ? 3.4 : 6.8) + cutter.rimThreat * 0.14 + base.mod.shotQuality, 0.5, 9.6)),

@@ -43,7 +43,9 @@ describe("prior failing cell", () => {
   it("verifies the scale relationship live, not just from the artifact", () => {
     const e = estimateWinProbability({ teamA: T(dev("sd2-balanced-lower-ovr")), teamB: T(dev("sd2-movement-shooters")),
       eraStyleId: "2010s", sampleTier: "STANDARD", buildInput: buildPossessionInput, cache: false });
-    expect(e.sideBias.pairedEffect).toBeCloseTo(2 * e.sideBias.difference, 6);
+    // pairedEffect and difference are rounded to 4 decimals separately, so
+    // 2x(rounded half) can differ from the rounded whole by up to 1e-4.
+    expect(Math.abs(e.sideBias.pairedEffect - 2 * e.sideBias.difference)).toBeLessThanOrEqual(1.0000001e-4);
     expect(e.sideBias.differenceScale).toBe("HALF_OF_PAIRED_EFFECT");
   });
 });

@@ -99,7 +99,11 @@ export const buildDefensivePlan = ({ defendingTeam, offensiveTeam, era, eff, zon
   const zoneSelection = zoneEnabled
     ? selectZoneShell({ legality: legal, toolkit: scheme.toolkit, ceiling: scheme.personnelCeiling, threats: offProfiles.threats, defenders: defProfiles.defenders })
     : { shell: null, available: [], rejected: [{ shell: "ALL", reason: "FLAG_DISABLED", detail: "zone resolution is behind ZONE_RESOLUTION_ENABLED" }] };
-  const useZone = Boolean(zoneSelection.shell) && scheme.zoneUsage >= 5;
+  // Build the shell whenever a legal shell exists and the coach zones AT ALL.
+  // Whether a given possession is defended in it is a continuous per-possession
+  // decision in the game loop — the old "zoneUsage >= 5" per-game step meant a
+  // max-zone coach zoned 100% of possessions and a 4/10 coach zoned none.
+  const useZone = Boolean(zoneSelection.shell) && scheme.zoneUsage > 0;
   const zoneShell = useZone
     ? buildZoneShell({ shellKey: zoneSelection.shell, defenders: defProfiles.defenders, threats: offProfiles.threats, toolkit: scheme.toolkit, legality: legal, ceiling: scheme.personnelCeiling })
     : null;

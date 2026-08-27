@@ -137,6 +137,12 @@ export const buildSchemePlan = ({ coach, defenders, opponentThreats, era, eff })
     shellType: zoneUsage >= 5 ? "ZONE_MIXED"
       : legal.illegalDefenseRestrictions ? "MAN_ILLEGAL_DEFENSE"
       : legal.zoneLegal ? "MODERN_MAN_HELP" : "MAN_RESTRICTED_HELP",
+    // What the defence plays when it is NOT in its zone this possession. Zone
+    // use became per-possession in Phase 6C4A, so the per-possession ledger
+    // label needs the man fallback — "ZONE_MIXED" on a man possession was how
+    // the zone share read 100% for any coach above the old threshold.
+    manShellType: legal.illegalDefenseRestrictions ? "MAN_ILLEGAL_DEFENSE"
+      : legal.zoneLegal ? "MODERN_MAN_HELP" : "MAN_RESTRICTED_HELP",
     environments: legal.environments,
     // Ball-screen coverage is a preference here; the actual per-possession
     // choice is made against the specific handler and screener (see coverage.js).

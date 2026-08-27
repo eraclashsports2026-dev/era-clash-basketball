@@ -108,7 +108,17 @@ export const buildCalibrationPlayerProfile = (season) => {
     postThreat: r1(clamp((scale(b.offensiveRebounds, ANCHORS.offensiveRebounds, 0) ?? 3) * 0.5
       + (["C", "PF"].includes(season.primaryPosition) ? 4 : 1), 0, 10)),
     passingVision: r1(scale(b.assists, ANCHORS.assists, 1) ?? 4),
-    offBallMovement: r1(clamp(perim * 0.5 + (isStarter ? 2 : 1.5), 0, 10)),
+    // Off-ball movement is NOT three-point shooting. Deriving it from
+    // perimeterSkill alone graded Michael Jordan LIMITED off the ball and
+    // starved the movement family to exactly zero (V4 failure v4f-09).
+    // Era-neutral evidence: perimeter craft is one signal; efficient
+    // finishing (cutters and screen-runners score at high TS%) and a
+    // guard/wing role are the others. Documented proxy, labelled as one.
+    offBallMovement: r1(clamp(
+      1.5 + perim * 0.3
+      + (["PG", "SG", "SF"].includes(season.primaryPosition) ? 1.0 : 0)
+      + clamp(((rate.trueShootingPct ?? 0.5) - 0.5) * 18, -1.5, 1.8)
+      + (isStarter ? 0.5 : 0.2), 0, 10)),
     shotSelection: r1(clamp((rate.trueShootingPct != null ? (rate.trueShootingPct - 0.45) * 40 + 5 : 5), 0, 10)),
     // Turnovers are unrecorded before 1973-74, so ball security falls back to a
     // neutral value rather than to a flattering one.
