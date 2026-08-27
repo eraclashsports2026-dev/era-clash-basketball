@@ -41,13 +41,22 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   issues the verdict the frozen policies produce. Opens no seal, scores no
   game, and requires both stages to have run.
 
-  --help   print this and exit. Touches no seal.
+  --help        print this and exit. Touches no seal.
+  --preflight   read both stages, report what a verdict would say, and exit
+                WITHOUT writing anything. Touches no seal.
 
   A pass here does NOT make Candidate 1 HOLDOUT_VALIDATED,
   PRIVATE_PREVIEW_VALIDATED, PRODUCTION_READY or ACTIVE, and authorizes no
   deployment. Production activation requires an explicit CEO GO LIVE.`);
     process.exit(0);
   }
+
+  // A read-only mode. Without it, an unrecognised flag fell through to the
+  // writing path, so `--preflight` would have issued a compound verdict
+  // artifact before either stage had run — an out-of-order write of the very
+  // artifact stage three exists to produce. Nothing below this line differs
+  // between the two modes except the final write and exit code.
+  const preflightOnly = process.argv.includes("--preflight");
 
   const v5Path = `${DIR_B1}/historical-holdout-v5-results.json`;
   const synPath = `${DIR_B1S}/synthetic-v2-results.json`;
@@ -115,6 +124,14 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   };
   payload.verdictHash = createHash("sha256").update(JSON.stringify({ verdict,
     stages: stages.map((s) => [s.set, s.outcome, s.coreHash]) })).digest("hex");
+
+  if (preflightOnly) {
+    console.log("\n  --preflight: nothing was written and no seal was touched.");
+    console.log(`  seals: historical-holdout-v5 access ${payload.accessCounts["historical-holdout-v5"]}, synthetic-stress-holdout-v2 access ${payload.accessCounts["synthetic-stress-holdout-v2"]}`);
+    console.log(`  a verdict issued now would read ${verdict}`);
+    process.exit(verdict === "BOTH_STAGES_PASSED" ? 0 : 2);
+  }
+
   writeArtifact("candidate1-compound-formal-verdict", payload, {
     generationCommand: "npm run validation:candidate1-formal-verdict",
     dir: DIR_OUT, extra: { parameterSetHash: def.parameterSetHash } });

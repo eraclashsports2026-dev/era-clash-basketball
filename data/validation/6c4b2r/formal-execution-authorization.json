@@ -1,0 +1,79 @@
+{
+  "artifact": "formal-execution-authorization",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run exec:authorize",
+  "generatedAt": "2026-08-27T13:36:38.128Z",
+  "gitCommit": "3ebf47229d0cceb278e1f11355e56aa8f838b507",
+  "branch": "phase-6c4b2r-candidate1-formal-execution",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "formalExecutionAuthorizationVersion": "1.0.0",
+    "operator": "joseph.johnson@indagare.com",
+    "reason": "Phase 6C4B2R — formal two-stage Candidate 1 holdout execution under the frozen compound package v2",
+    "authorizationTimestamp": "2026-08-27T09:40:00Z",
+    "candidateId": "Candidate 1",
+    "candidateCommit": "c370182bb805cd068427283ce2b45a7eda725d1c",
+    "candidateCoreHash": "de57e1a96e1fd1450d1aea9c5463b0138a56d77bbf58c748ba042e6f78f5c94d",
+    "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+    "calibrationVersion": "1.1.0",
+    "lockRevision": 2,
+    "compoundPackageHash": "fed02b5c407b5b3888187e1194141fa6380b3a3d189522fdfbd7401f3ad1f5ea",
+    "compoundPackageVersion": "2.0.0",
+    "historicalV5StageHashes": {
+      "policyHash": "64abec44451702338af814f388bcc16748df490e4e0a8b7fb0dfb2e6196a6cc1",
+      "manifestHash": "2ecaf7dbbc4338446d971af6954b46a9924f29fb8052ba044fc83fcf5ebcbcff",
+      "seedSetHash": "d288e8c5754a04f8053b6a29b5892f224bb981c181b95e1a01499a33bf4564c5",
+      "sealHash": "14b17792344cce81321f3cb2d944ada64cbe6a9a30bac5209962cdf94fb01ec2",
+      "practicalMarginPolicyHash": "f92f05a662eb5c2820b2011761c65a454132ee0badd8ce1b70c1edf76bac704b",
+      "dryRunArtifactHash": "6a9693b82703b7ec07ad8b9626e88eadf35c8daeded09e1ed8364d67e1be5722"
+    },
+    "syntheticV2StageHashes": {
+      "policyHash": "f93847b4b35ca064572f2b7c97c451ee9f3109f34ea49f3742c5a677ea495946",
+      "membershipHash": "71267875cbf69a9ffa2bd420a2f4bb87437ecb78d6ca2029e7b6826759dbcd19",
+      "manifestFileSha256": "e17dca60bebfd2170d41b9b64b918538bf941825a0e6125962a67a69c5cae2b6",
+      "seedSetHash": "cece58c06bcdb2cc09829d11c34f0c56a23ada26b4e511ca0d03583fd273b2c1",
+      "practicalMarginPolicyHash": "d285af9ca18d10a8387dbe32828378d35d61e40e4376f0cb2eca4e401f509511",
+      "guardrailRegistryHash": "e308e6544cb6f4b49ccb31fa98536cc12e0eac431d47cda961e845b8e55a3097",
+      "surfacePlanHash": "9aaf2efaf09d47de8dae6d156ccdce966374fa37c73145c041af7265e2c7f122",
+      "samplePlanHash": "97236ee97d740b0d185333a10af2f9be0f4bcb90139b7ae65ed68be179451980",
+      "aggregationPolicyHash": "d65321cae9ee46ac02a14ea04bfcfc1e2dc65a61c7b8e31fb0b7c44714e2eca0",
+      "verdictSchemaHash": "c702785be80b5372e51ed572a29b4c953ac9b2178dcec71f4306fa56323bac01",
+      "mockManifestHash": "5acbe433bbf6a954c46ac1eb57101ca5bd8cbb7a7a2fdba2669c42ac4044661c",
+      "dryRunArtifactHash": "ccc0d660bca8bf20f978e4e04ee2dfbb68442f9ae8813e360d347b5b733c8994",
+      "commandCertificationHash": "b49e9723c75766663c14b0e8c09e9d3e6f966ccc60d72a4a508f12e1a00d40df",
+      "acceptancePolicyHash": "a3583d6ada42d61ff9ee40322d999154250613ba94a2cd6f073e2196315919b0"
+    },
+    "preflightHash": "323df9f90299ad49d5ec88d7894c01274d3a3a3a9b5e2ae5c7f8ffc864bf346a",
+    "permits": [
+      "open historical-holdout-v5 exactly once, with one access event, under this candidate identity",
+      "open synthetic-stress-holdout-v2 exactly once, and only after historical-holdout-v5 returns PASS on this same candidate core and parameter set",
+      "generate the compound Candidate 1 formal verdict from completed formal artifacts"
+    ],
+    "doesNotPermit": [
+      "any change to Candidate 1 source, core, parameters, data, coaches, eras, versions, fingerprint semantics, cache semantics, seed logic or behaviour",
+      "any change to either holdout's membership, policy, margins, sample plan, seeds, runner semantics, verdict schema or seal",
+      "any change to the compound package's stage ordering, required-pass relationship, hashes or verdict semantics",
+      "any tuning after either holdout opens",
+      "a second independent run of either set",
+      "any preview or production deployment, any production flag change, or any merge into main"
+    ],
+    "executionOrder": [
+      "1. this authorization and the preflight are committed and pushed",
+      "2. historical-holdout-v5 opens once",
+      "3. historical-holdout-v5 receives an immutable verdict",
+      "4. if that verdict is not PASS, stop; synthetic-stress-holdout-v2 stays sealed",
+      "5. synthetic-stress-holdout-v2 opens once",
+      "6. synthetic-stress-holdout-v2 receives an immutable verdict",
+      "7. the compound verdict is issued from the two completed artifacts"
+    ],
+    "irreversibility": "each set can be opened once. An access event, once written, is not deleted or reset, and a runner crash does not restore unread status: the set has been seen whether or not the process finished. An interruption is resumed under the same access event or the run is classified INVALID_RUN.",
+    "recordedAtCommit": "3ebf47229d0cceb278e1f11355e56aa8f838b507",
+    "branch": "phase-6c4b2r-candidate1-formal-execution",
+    "authorizationHash": "30174f6a0d37ae57599ba80b6b3d08bf970e04a6523a8a81c826ea2b50fd7446"
+  },
+  "outputHash": "d4ad623f322d4e7c07f418b2f43cdb3bc028050fd34e6ff3fbdbceb323e7c805"
+}
