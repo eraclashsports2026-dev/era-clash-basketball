@@ -1,0 +1,103 @@
+{
+  "artifact": "historical-holdout-v5-seal",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run v5:seal",
+  "generatedAt": "2026-08-27T04:42:30.728Z",
+  "gitCommit": "f35a90a61791bb49044ff983487a654d445f0768",
+  "branch": "phase-6c4b1-v5-freeze-and-seal",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "historicalV5SealVersion": "1.0.0",
+    "set": "historical-holdout-v5",
+    "setVersion": "5.0.0",
+    "state": "SEALED_UNREAD",
+    "accessCount": 0,
+    "accessLogPath": "data/calibration/historical-holdout-v5-access-log.jsonl",
+    "accessLogExists": false,
+    "sealedAtCommit": "f35a90a61791bb49044ff983487a654d445f0768",
+    "candidate": {
+      "candidateId": "Candidate 1",
+      "lockRevision": 2,
+      "coreHash": "de57e1a96e1fd1450d1aea9c5463b0138a56d77bbf58c748ba042e6f78f5c94d",
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "possessionCalibrationVersion": "1.1.0",
+      "candidateCommit": "c370182bb805cd068427283ce2b45a7eda725d1c"
+    },
+    "boundHashes": {
+      "manifestHash": "2ecaf7dbbc4338446d971af6954b46a9924f29fb8052ba044fc83fcf5ebcbcff",
+      "selectionHash": "6023ccf55b6ae034898787fe2833c1349ca85bae47c10994cd061fda29ba1842",
+      "selectionPolicyHash": "8d45387574cd8ebdc0630d1a9b80e975efbf8524e2de639423cd0d584d407fe6",
+      "acceptancePolicyHash": "64abec44451702338af814f388bcc16748df490e4e0a8b7fb0dfb2e6196a6cc1",
+      "practicalMarginPolicyHash": "f92f05a662eb5c2820b2011761c65a454132ee0badd8ce1b70c1edf76bac704b",
+      "seedHash": "d288e8c5754a04f8053b6a29b5892f224bb981c181b95e1a01499a33bf4564c5",
+      "eraReferenceCertificationHash": "e8482201d390fe076ef508821e1c010cc0685cf1d183d4a2d46dfb5c1a690e4f",
+      "observabilityCertificationHash": "b6976ba81c26aca61f58653010c7ed02708f6fd12693e44b876176ee1bd98c7a",
+      "candidatePoolHash": "97ea154bb04d5845603c17558bbc381cbb80cca5d915df90afc794b3b84ced31",
+      "dryRunHash": "6a9693b82703b7ec07ad8b9626e88eadf35c8daeded09e1ed8364d67e1be5722",
+      "traitRegistryHash": "c034937be7e40bd18932fe53151e0b8a877dc47095004653e1bb11aa5c73a0cf"
+    },
+    "authorizedRunner": {
+      "module": "scripts/validation/historical-holdout-v5.mjs",
+      "command": "npm run validation:historical-v5 -- --unlock-holdout --unlock-historical-holdout-v5 --operator=\"...\" --reason=\"...\"",
+      "version": "3.0.0",
+      "note": "No other command may resolve this set. The runner verifies every bound hash above before touching the seal, and refuses to start if any has moved."
+    },
+    "failureBehaviour": {
+      "onHashMismatch": "REFUSED before the seal is touched; access count stays 0",
+      "onCrashAfterUnlock": "the access event is consumed; the run resumes under the SAME event with --resume, and a fresh run is refused",
+      "onSecondRun": "refused with SECOND_RUN_REFUSED; the first result stands as the only independent evidence",
+      "onFail": "every artifact is preserved, tuning against V5 is forbidden, Synthetic V2 stays sealed, and formal validation for Candidate 1 ends"
+    },
+    "protocol": {
+      "matchups": 8,
+      "teams": 16,
+      "gamesPerSurface": 4096,
+      "totalGames": 98304
+    },
+    "sealedAt": "recorded by the artifact writer's own timestamp",
+    "sealIntegrity": {
+      "v5IdsChecked": 24,
+      "outputArtifactsSearched": 17,
+      "leaksFound": 0,
+      "carriedTeamsDefinedInPriorPool": 13,
+      "note": "A carried pool team appears in the V4 pool's corpus, player store and target store by definition. Simulation OUTPUT is what a seal must exclude, and the search covers every results, run, verdict, dry-run, box, ledger, probability and access-log artifact in the tree."
+    },
+    "otherSeals": {
+      "legacy-holdout-v1": {
+        "status": "SEALED_UNREAD",
+        "accessCount": 0
+      },
+      "historical-holdout-v2": {
+        "status": "SEALED_UNREAD",
+        "accessCount": 0
+      },
+      "synthetic-stress-v1": {
+        "status": "PREVIOUSLY_INSPECTED_ARCHIVE",
+        "accessCount": 0
+      },
+      "historical-holdout-v3": {
+        "status": "UNSEALED",
+        "accessCount": 1
+      },
+      "synthetic-stress-holdout-v2": {
+        "status": "SEALED_UNREAD",
+        "accessCount": 0
+      },
+      "historical-holdout-v4": {
+        "status": "UNSEALED",
+        "accessCount": 1
+      },
+      "historical-holdout-v5": {
+        "status": "SEALED_UNREAD",
+        "accessCount": 0
+      }
+    },
+    "pass": true,
+    "sealHash": "14b17792344cce81321f3cb2d944ada64cbe6a9a30bac5209962cdf94fb01ec2"
+  },
+  "outputHash": "e662580b47f06df9a7b244154c110bbf5039674cceebd07ac8c7c2221fcc3033"
+}

@@ -1,7 +1,12 @@
 import { existsSync, readFileSync } from "node:fs";
 import { expect } from "vitest";
 
+// Newest first. A lock RE-CERTIFICATION supersedes the lock it names: same
+// candidate, same behaviour, a new core hash because a core file changed for
+// identity reasons only. It must still carry a parent, so the chain back to
+// Candidate 0 is unbroken.
 const MANIFESTS = [
+  "data/validation/6c4b1/candidate1-lock-recertification.json",
   "data/validation/6c4a/candidate1-lock.json",
   "data/validation/6c4a/candidate1-draft-manifest.json",
 ];
@@ -22,9 +27,31 @@ const MANIFESTS = [
  */
 export const successorManifest = () => {
   for (const p of MANIFESTS) {
-    if (existsSync(p)) return JSON.parse(readFileSync(p, "utf8")).data;
+    if (!existsSync(p)) continue;
+    const d = JSON.parse(readFileSync(p, "utf8")).data;
+    // A re-certification must state the hash it supersedes AND prove the
+    // supersession was behaviour-neutral. One that does not is drift wearing a
+    // re-certification's name, and it must not be honoured.
+    if (d.lockRevision > 1) {
+      if (!d.supersedesCoreHash || d.behaviourIdentical !== true) continue;
+      return { ...d, parentCoreHash: d.parentCoreHash, engineBehaviourChanged: true,
+        changedCoreFiles: d.changedCoreFiles, changeBasis: d.revisionReason.includes("IDENTITY") ? "identity root-cause: candidate1-identity-repair.json" : d.revisionReason };
+    }
+    return d;
   }
   return null;
+};
+
+/** Every core hash this candidate has been certified at, newest first. */
+export const certifiedCoreHashes = () => {
+  const out = [];
+  for (const p of MANIFESTS) {
+    if (!existsSync(p)) continue;
+    const d = JSON.parse(readFileSync(p, "utf8")).data;
+    if (d.coreHash) out.push(d.coreHash);
+    if (d.supersedesCoreHash) out.push(d.supersedesCoreHash);
+  }
+  return [...new Set(out)];
 };
 
 /** The calibration version a PRE-SUCCESSION artifact should have recorded:

@@ -60,6 +60,12 @@ const sha = (p) => createHash("sha256").update(readFileSync(p)).digest("hex");
  */
 export const APPROVED_CORRECTIONS = Object.freeze([
   {
+    path: "src/v3/calibration/holdoutSeal.js",
+    reason: "Phase 6C4B1 registers historical-holdout-v5 in SEALED_SETS with its own access log. A sealed set that is not in the registry cannot be sealed at all - requireSetUnlock throws 'unknown sealed set' - so the registration IS the seal. Every pre-existing entry and its log path is byte-unchanged, no access count moves, and the new set is created at zero. The alternative, leaving V5 unregistered, would mean an unsealed holdout that any command could read.",
+    approvedIn: "phase-6c4b1-workstream-13",
+    changesClassification: false,
+  },
+  {
     path: "data/calibration/calibration-players-v3.json",
     reason: "Phase 6C4A shooting backfill: two Sam Jones season profiles carried null FG%/FT% because their membership route was a team-season page whose statistics table has no shooting columns. The values were read from the player's own career table (Wikipedia, 'Sam Jones (basketball, born 1933)', team-verified season rows) through the existing authorized pipeline, filling ONLY null fields; every recorded value is byte-unchanged, and no volume field was invented. Root-caused consequence being repaired: null shooting collapsed shotSelection to the population default, so data completeness itself acted as team quality (v4f-02 decomposition, candidate1-offense-repair.json). Five other null-shooting profiles stay null: their articles carry no career table, and the limitation is recorded rather than estimated around. The same phase's workstream 6 stamps per-season defensive accolades (All-Defensive Team and DPOY selections, read from the season-by-season award pages) onto matching profiles' defensiveEvidence: same-season selections only, never recall, and no recorded statistic is touched (defensive-accolades.json records all 58 stamps).",
     approvedIn: "phase-6c4a-workstream-5-and-6",

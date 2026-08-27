@@ -1,0 +1,981 @@
+{
+  "artifact": "historical-v5-selection",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run v5:select",
+  "generatedAt": "2026-08-27T04:37:07.150Z",
+  "gitCommit": "174d2af7dc240e597f28a6349bfe2065ea7ea4b8",
+  "branch": "phase-6c4b1-v5-freeze-and-seal",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "historicalV5SelectionVersion": "1.1.0",
+    "selectionPolicyHash": "8d45387574cd8ebdc0630d1a9b80e975efbf8524e2de639423cd0d584d407fe6",
+    "poolHash": "97ea154bb04d5845603c17558bbc381cbb80cca5d915df90afc794b3b84ced31",
+    "poolArtifactHash": "981196343463fb0d00aabd961df0d4d8c3c6c1ae2e8dcf4a65bdd5fdc12b9639",
+    "candidate1OutputsConsulted": 0,
+    "matchups": [
+      {
+        "matchupId": "v5m-1950s",
+        "era": "1950s",
+        "pairId": "v5p-1950s-2",
+        "pairType": "SAME_ERA_CONTRAST_PAIR",
+        "teamA": "v4-1957-58-celtics",
+        "teamB": "v5-1950-51-lakers",
+        "teamAName": "Boston Celtics 1957-58",
+        "teamBName": "Minneapolis Lakers 1950-51",
+        "coachA": "red-auerbach",
+        "coachB": "john-kundla",
+        "crossFranchise": true,
+        "observableTraits": {
+          "teamA": [
+            "TRANSITION",
+            "ELITE_DEFENSE",
+            "very fast",
+            "fast break from defensive rebounding"
+          ],
+          "teamB": [
+            "POST_HEAVY",
+            "SIZE_HEAVY",
+            "STRONG_OFFENSIVE_REBOUNDING",
+            "slow"
+          ],
+          "union": [
+            "TRANSITION",
+            "ELITE_DEFENSE",
+            "very fast",
+            "fast break from defensive rebounding",
+            "POST_HEAVY",
+            "SIZE_HEAVY",
+            "STRONG_OFFENSIVE_REBOUNDING",
+            "slow"
+          ]
+        },
+        "diversityDimensions": [
+          "ELITE_DEFENCE",
+          "FAST_PACE",
+          "SLOW_PACE",
+          "INTERIOR_OFFENCE",
+          "TRANSITION_OFFENCE",
+          "OFFENSIVE_REBOUNDING"
+        ],
+        "newDimensionsContributed": [
+          "ELITE_DEFENCE",
+          "FAST_PACE",
+          "SLOW_PACE",
+          "INTERIOR_OFFENCE",
+          "TRANSITION_OFFENCE",
+          "OFFENSIVE_REBOUNDING"
+        ],
+        "score": {
+          "total": 75.5,
+          "base": 45.5,
+          "components": {
+            "observableTraitUnion": 8,
+            "bothObservable": true,
+            "targetCoverage": 1.5,
+            "confidence": 4,
+            "crossFranchise": true,
+            "pairTypeRank": 2,
+            "diversityCredit": 6
+          }
+        },
+        "tieBreaker": "8f7327343f358360",
+        "wonBecause": "highest total in 1950s among 3 usable pairs; added ELITE_DEFENCE, FAST_PACE, SLOW_PACE, INTERIOR_OFFENCE, TRANSITION_OFFENCE, OFFENSIVE_REBOUNDING"
+      },
+      {
+        "matchupId": "v5m-1960s",
+        "era": "1960s",
+        "pairId": "v5p-1960s-1",
+        "pairType": "SAME_ERA_CONTRAST_PAIR",
+        "teamA": "v4-1966-67-warriors",
+        "teamB": "v5-1960-61-celtics",
+        "teamAName": "San Francisco Warriors 1966-67",
+        "teamBName": "Boston Celtics 1960-61",
+        "coachA": "bill-sharman",
+        "coachB": "red-auerbach",
+        "crossFranchise": true,
+        "observableTraits": {
+          "teamA": [
+            "TRANSITION",
+            "PACE_EXTREME",
+            "STRONG_OFFENSIVE_REBOUNDING",
+            "very fast",
+            "fast break, early offence"
+          ],
+          "teamB": [
+            "TRANSITION",
+            "ELITE_DEFENSE",
+            "very fast",
+            "fast break and early offence",
+            "elite team man defence"
+          ],
+          "union": [
+            "TRANSITION",
+            "PACE_EXTREME",
+            "STRONG_OFFENSIVE_REBOUNDING",
+            "very fast",
+            "fast break, early offence",
+            "ELITE_DEFENSE",
+            "fast break and early offence",
+            "elite team man defence"
+          ]
+        },
+        "diversityDimensions": [
+          "ELITE_DEFENCE",
+          "FAST_PACE",
+          "TRANSITION_OFFENCE",
+          "OFFENSIVE_REBOUNDING"
+        ],
+        "newDimensionsContributed": [],
+        "score": {
+          "total": 45.5,
+          "base": 45.5,
+          "components": {
+            "observableTraitUnion": 8,
+            "bothObservable": true,
+            "targetCoverage": 1.5,
+            "confidence": 4,
+            "crossFranchise": true,
+            "pairTypeRank": 2,
+            "diversityCredit": 0
+          }
+        },
+        "tieBreaker": "2a613fdcc9c88d22",
+        "wonBecause": "highest total in 1960s among 3 usable pairs; added no new diversity dimension"
+      },
+      {
+        "matchupId": "v5m-1970s",
+        "era": "1970s",
+        "pairId": "v5p-1970s-1",
+        "pairType": "SAME_ERA_CONTRAST_PAIR",
+        "teamA": "v4-1972-73-lakers",
+        "teamB": "v4-1975-76-celtics",
+        "teamAName": "Los Angeles Lakers 1972-73",
+        "teamBName": "Boston Celtics 1975-76",
+        "coachA": "bill-sharman",
+        "coachB": "tom-heinsohn",
+        "crossFranchise": true,
+        "observableTraits": {
+          "teamA": [
+            "TRANSITION",
+            "ELITE_DEFENSE",
+            "fast",
+            "fast break from defensive rebounding",
+            "elite team man"
+          ],
+          "teamB": [
+            "TRANSITION",
+            "STRONG_OFFENSIVE_REBOUNDING",
+            "fast",
+            "fast break, balanced scoring"
+          ],
+          "union": [
+            "TRANSITION",
+            "ELITE_DEFENSE",
+            "fast",
+            "fast break from defensive rebounding",
+            "elite team man",
+            "STRONG_OFFENSIVE_REBOUNDING",
+            "fast break, balanced scoring"
+          ]
+        },
+        "diversityDimensions": [
+          "ELITE_DEFENCE",
+          "FAST_PACE",
+          "TRANSITION_OFFENCE",
+          "OFFENSIVE_REBOUNDING"
+        ],
+        "newDimensionsContributed": [],
+        "score": {
+          "total": 43,
+          "base": 43,
+          "components": {
+            "observableTraitUnion": 7,
+            "bothObservable": true,
+            "targetCoverage": 4,
+            "confidence": 3,
+            "crossFranchise": true,
+            "pairTypeRank": 2,
+            "diversityCredit": 0
+          }
+        },
+        "tieBreaker": "e8667237613f566d",
+        "wonBecause": "highest total in 1970s among 6 usable pairs; added no new diversity dimension"
+      },
+      {
+        "matchupId": "v5m-1980s",
+        "era": "1980s",
+        "pairId": "v5p-1980s-1",
+        "pairType": "SAME_ERA_CONTRAST_PAIR",
+        "teamA": "v4-1984-85-lakers",
+        "teamB": "v4-1983-84-celtics",
+        "teamAName": "Los Angeles Lakers 1984-85",
+        "teamBName": "Boston Celtics 1983-84",
+        "coachA": "pat-riley",
+        "coachB": "kc-jones",
+        "crossFranchise": true,
+        "observableTraits": {
+          "teamA": [
+            "TRANSITION",
+            "PACE_EXTREME",
+            "ELITE_OFFENSE",
+            "PASSING_HUB",
+            "very fast",
+            "Showtime transition and early offence"
+          ],
+          "teamB": [
+            "ELITE_DEFENSE",
+            "STRONG_OFFENSIVE_REBOUNDING",
+            "POST_HEAVY",
+            "half-court execution, elite passing front line",
+            "elite team man defence"
+          ],
+          "union": [
+            "TRANSITION",
+            "PACE_EXTREME",
+            "ELITE_OFFENSE",
+            "PASSING_HUB",
+            "very fast",
+            "Showtime transition and early offence",
+            "ELITE_DEFENSE",
+            "STRONG_OFFENSIVE_REBOUNDING",
+            "POST_HEAVY",
+            "half-court execution, elite passing front line",
+            "elite team man defence"
+          ]
+        },
+        "diversityDimensions": [
+          "ELITE_OFFENCE",
+          "ELITE_DEFENCE",
+          "FAST_PACE",
+          "INTERIOR_OFFENCE",
+          "TRANSITION_OFFENCE",
+          "BALL_MOVEMENT",
+          "OFFENSIVE_REBOUNDING"
+        ],
+        "newDimensionsContributed": [
+          "ELITE_OFFENCE",
+          "BALL_MOVEMENT"
+        ],
+        "score": {
+          "total": 68,
+          "base": 58,
+          "components": {
+            "observableTraitUnion": 11,
+            "bothObservable": true,
+            "targetCoverage": 5,
+            "confidence": 4,
+            "crossFranchise": true,
+            "pairTypeRank": 2,
+            "diversityCredit": 2
+          }
+        },
+        "tieBreaker": "587563f1260d3a4a",
+        "wonBecause": "highest total in 1980s among 6 usable pairs; added ELITE_OFFENCE, BALL_MOVEMENT"
+      },
+      {
+        "matchupId": "v5m-1990s",
+        "era": "1990s",
+        "pairId": "v5p-1990s-1",
+        "pairType": "SAME_ERA_CONTRAST_PAIR",
+        "teamA": "v4-1992-93-bulls",
+        "teamB": "v4-1995-96-supersonics",
+        "teamAName": "Chicago Bulls 1992-93",
+        "teamBName": "Seattle SuperSonics 1995-96",
+        "coachA": "phil-jackson",
+        "coachB": "george-karl",
+        "crossFranchise": true,
+        "observableTraits": {
+          "teamA": [
+            "ELITE_OFFENSE",
+            "MOTION",
+            "triangle: post reads, cuts, spacing"
+          ],
+          "teamB": [
+            "ELITE_DEFENSE",
+            "TRANSITION",
+            "fast",
+            "transition and post scoring"
+          ],
+          "union": [
+            "ELITE_OFFENSE",
+            "MOTION",
+            "triangle: post reads, cuts, spacing",
+            "ELITE_DEFENSE",
+            "TRANSITION",
+            "fast",
+            "transition and post scoring"
+          ]
+        },
+        "diversityDimensions": [
+          "ELITE_OFFENCE",
+          "ELITE_DEFENCE",
+          "FAST_PACE",
+          "MOVEMENT_OFFENCE",
+          "TRANSITION_OFFENCE"
+        ],
+        "newDimensionsContributed": [
+          "MOVEMENT_OFFENCE"
+        ],
+        "score": {
+          "total": 51,
+          "base": 46,
+          "components": {
+            "observableTraitUnion": 7,
+            "bothObservable": true,
+            "targetCoverage": 5,
+            "confidence": 4,
+            "crossFranchise": true,
+            "pairTypeRank": 2,
+            "diversityCredit": 1
+          }
+        },
+        "tieBreaker": "5e8c89a12c99b9e5",
+        "wonBecause": "highest total in 1990s among 6 usable pairs; added MOVEMENT_OFFENCE"
+      },
+      {
+        "matchupId": "v5m-2000s",
+        "era": "2000s",
+        "pairId": "v5p-2000s-1",
+        "pairType": "SAME_ERA_CONTRAST_PAIR",
+        "teamA": "v4-2004-05-suns",
+        "teamB": "v4-2002-03-mavericks",
+        "teamAName": "Phoenix Suns 2004-05",
+        "teamBName": "Dallas Mavericks 2002-03",
+        "coachA": "mike-dantoni",
+        "coachB": "don-nelson",
+        "crossFranchise": true,
+        "observableTraits": {
+          "teamA": [
+            "ELITE_OFFENSE",
+            "PACE_EXTREME",
+            "PICK_AND_ROLL",
+            "very fast",
+            "seven seconds or less: pick-and-roll and spacing"
+          ],
+          "teamB": [
+            "ELITE_OFFENSE",
+            "ZONE_CAPABLE",
+            "fast",
+            "ball movement, drive and kick, corner threes",
+            "zone-capable, scheme-heavy"
+          ],
+          "union": [
+            "ELITE_OFFENSE",
+            "PACE_EXTREME",
+            "PICK_AND_ROLL",
+            "very fast",
+            "seven seconds or less: pick-and-roll and spacing",
+            "ZONE_CAPABLE",
+            "fast",
+            "ball movement, drive and kick, corner threes",
+            "zone-capable, scheme-heavy"
+          ]
+        },
+        "diversityDimensions": [
+          "ELITE_OFFENCE",
+          "FAST_PACE",
+          "PICK_AND_ROLL",
+          "ZONE_SCHEME"
+        ],
+        "newDimensionsContributed": [
+          "PICK_AND_ROLL",
+          "ZONE_SCHEME"
+        ],
+        "score": {
+          "total": 62,
+          "base": 52,
+          "components": {
+            "observableTraitUnion": 9,
+            "bothObservable": true,
+            "targetCoverage": 5,
+            "confidence": 4,
+            "crossFranchise": true,
+            "pairTypeRank": 2,
+            "diversityCredit": 2
+          }
+        },
+        "tieBreaker": "a5e571256cddc6e4",
+        "wonBecause": "highest total in 2000s among 6 usable pairs; added PICK_AND_ROLL, ZONE_SCHEME"
+      },
+      {
+        "matchupId": "v5m-2010s",
+        "era": "2010s",
+        "pairId": "v5p-2010s-4",
+        "pairType": "SAME_ERA_CONTRAST_PAIR",
+        "teamA": "v4-2013-14-clippers",
+        "teamB": "v5-2015-16-spurs",
+        "teamAName": "Los Angeles Clippers 2013-14",
+        "teamBName": "San Antonio Spurs 2015-16",
+        "coachA": "doc-rivers",
+        "coachB": "gregg-popovich",
+        "crossFranchise": true,
+        "observableTraits": {
+          "teamA": [
+            "ELITE_OFFENSE",
+            "PICK_AND_ROLL",
+            "TRANSITION",
+            "fast",
+            "pick-and-roll around a lead guard"
+          ],
+          "teamB": [
+            "PASSING_HUB",
+            "ELITE_DEFENSE",
+            "POST_HEAVY",
+            "slow",
+            "elite team man defence"
+          ],
+          "union": [
+            "ELITE_OFFENSE",
+            "PICK_AND_ROLL",
+            "TRANSITION",
+            "fast",
+            "pick-and-roll around a lead guard",
+            "PASSING_HUB",
+            "ELITE_DEFENSE",
+            "POST_HEAVY",
+            "slow",
+            "elite team man defence"
+          ]
+        },
+        "diversityDimensions": [
+          "ELITE_OFFENCE",
+          "ELITE_DEFENCE",
+          "FAST_PACE",
+          "SLOW_PACE",
+          "INTERIOR_OFFENCE",
+          "TRANSITION_OFFENCE",
+          "BALL_MOVEMENT",
+          "PICK_AND_ROLL"
+        ],
+        "newDimensionsContributed": [],
+        "score": {
+          "total": 52.5,
+          "base": 52.5,
+          "components": {
+            "observableTraitUnion": 10,
+            "bothObservable": true,
+            "targetCoverage": 2.5,
+            "confidence": 4,
+            "crossFranchise": true,
+            "pairTypeRank": 2,
+            "diversityCredit": 0
+          }
+        },
+        "tieBreaker": "55032b9c705296a4",
+        "wonBecause": "highest total in 2010s among 6 usable pairs; added no new diversity dimension"
+      },
+      {
+        "matchupId": "v5m-2020s",
+        "era": "2020s",
+        "pairId": "v5p-2020s-1",
+        "pairType": "SAME_ERA_CONTRAST_PAIR",
+        "teamA": "v4-2020-21-knicks",
+        "teamB": "v4-2020-21-76ers",
+        "teamAName": "New York Knicks 2020-21",
+        "teamBName": "Philadelphia 76ers 2020-21",
+        "coachA": "tom-thibodeau",
+        "coachB": "doc-rivers",
+        "crossFranchise": true,
+        "observableTraits": {
+          "teamA": [
+            "ELITE_DEFENSE",
+            "SLOW_HALF_COURT",
+            "very slow",
+            "elite team man defence"
+          ],
+          "teamB": [
+            "ELITE_DEFENSE",
+            "POST_HEAVY",
+            "SIZE_HEAVY",
+            "slow",
+            "post-up and pick-and-roll around an MVP centre"
+          ],
+          "union": [
+            "ELITE_DEFENSE",
+            "SLOW_HALF_COURT",
+            "very slow",
+            "elite team man defence",
+            "POST_HEAVY",
+            "SIZE_HEAVY",
+            "slow",
+            "post-up and pick-and-roll around an MVP centre"
+          ]
+        },
+        "diversityDimensions": [
+          "ELITE_DEFENCE",
+          "SLOW_PACE",
+          "INTERIOR_OFFENCE"
+        ],
+        "newDimensionsContributed": [],
+        "score": {
+          "total": 49,
+          "base": 49,
+          "components": {
+            "observableTraitUnion": 8,
+            "bothObservable": true,
+            "targetCoverage": 5,
+            "confidence": 4,
+            "crossFranchise": true,
+            "pairTypeRank": 2,
+            "diversityCredit": 0
+          }
+        },
+        "tieBreaker": "300b8460cf64d701",
+        "wonBecause": "highest total in 2020s among 6 usable pairs; added no new diversity dimension"
+      }
+    ],
+    "selectedTeams": [
+      "v4-1957-58-celtics",
+      "v5-1950-51-lakers",
+      "v4-1966-67-warriors",
+      "v5-1960-61-celtics",
+      "v4-1972-73-lakers",
+      "v4-1975-76-celtics",
+      "v4-1984-85-lakers",
+      "v4-1983-84-celtics",
+      "v4-1992-93-bulls",
+      "v4-1995-96-supersonics",
+      "v4-2004-05-suns",
+      "v4-2002-03-mavericks",
+      "v4-2013-14-clippers",
+      "v5-2015-16-spurs",
+      "v4-2020-21-knicks",
+      "v4-2020-21-76ers"
+    ],
+    "distinctTeams": 16,
+    "eraStylesRepresented": [
+      "1950s",
+      "1960s",
+      "1970s",
+      "1980s",
+      "1990s",
+      "2000s",
+      "2010s",
+      "2020s"
+    ],
+    "pairTypes": {
+      "SAME_ERA_CONTRAST_PAIR": 8
+    },
+    "diversityDimensionsCovered": [
+      "ELITE_DEFENCE",
+      "FAST_PACE",
+      "SLOW_PACE",
+      "INTERIOR_OFFENCE",
+      "TRANSITION_OFFENCE",
+      "OFFENSIVE_REBOUNDING",
+      "ELITE_OFFENCE",
+      "BALL_MOVEMENT",
+      "MOVEMENT_OFFENCE",
+      "PICK_AND_ROLL",
+      "ZONE_SCHEME"
+    ],
+    "diversityDimensionsAvailable": [
+      "ELITE_OFFENCE",
+      "ELITE_DEFENCE",
+      "FAST_PACE",
+      "SLOW_PACE",
+      "INTERIOR_OFFENCE",
+      "MOVEMENT_OFFENCE",
+      "TRANSITION_OFFENCE",
+      "BALL_MOVEMENT",
+      "PICK_AND_ROLL",
+      "OFFENSIVE_REBOUNDING",
+      "ZONE_SCHEME"
+    ],
+    "rejectedAlternatives": [
+      {
+        "era": "1950s",
+        "pairId": "v5p-1950s-1",
+        "teams": [
+          "v4-1957-58-celtics",
+          "v4-1955-56-lakers"
+        ],
+        "total": 64,
+        "usable": true,
+        "reason": "LOWER_SCORE (64 < 75.5)"
+      },
+      {
+        "era": "1950s",
+        "pairId": "v5p-1950s-3",
+        "teams": [
+          "v4-1955-56-lakers",
+          "v5-1950-51-lakers"
+        ],
+        "total": 46.5,
+        "usable": true,
+        "reason": "LOWER_SCORE (46.5 < 75.5)"
+      },
+      {
+        "era": "1960s",
+        "pairId": "v5p-1960s-2",
+        "teams": [
+          "v4-1966-67-warriors",
+          "v5-1968-69-76ers"
+        ],
+        "total": 39.5,
+        "usable": true,
+        "reason": "LOWER_SCORE (39.5 < 45.5)"
+      },
+      {
+        "era": "1960s",
+        "pairId": "v5p-1960s-3",
+        "teams": [
+          "v5-1960-61-celtics",
+          "v5-1968-69-76ers"
+        ],
+        "total": 38,
+        "usable": true,
+        "reason": "LOWER_SCORE (38 < 45.5)"
+      },
+      {
+        "era": "1970s",
+        "pairId": "v5p-1970s-3",
+        "teams": [
+          "v4-1972-73-lakers",
+          "v5-1976-77-celtics"
+        ],
+        "total": 42.5,
+        "usable": true,
+        "reason": "LOWER_SCORE (42.5 < 43)"
+      },
+      {
+        "era": "1970s",
+        "pairId": "v5p-1970s-2",
+        "teams": [
+          "v4-1972-73-lakers",
+          "v5-1974-75-blazers"
+        ],
+        "total": 40.5,
+        "usable": true,
+        "reason": "LOWER_SCORE (40.5 < 43)"
+      },
+      {
+        "era": "1970s",
+        "pairId": "v5p-1970s-6",
+        "teams": [
+          "v5-1974-75-blazers",
+          "v5-1976-77-celtics"
+        ],
+        "total": 40,
+        "usable": true,
+        "reason": "LOWER_SCORE (40 < 43)"
+      },
+      {
+        "era": "1970s",
+        "pairId": "v5p-1970s-4",
+        "teams": [
+          "v4-1975-76-celtics",
+          "v5-1974-75-blazers"
+        ],
+        "total": 37.5,
+        "usable": true,
+        "reason": "LOWER_SCORE (37.5 < 43)"
+      },
+      {
+        "era": "1970s",
+        "pairId": "v5p-1970s-5",
+        "teams": [
+          "v4-1975-76-celtics",
+          "v5-1976-77-celtics"
+        ],
+        "total": 37.5,
+        "usable": true,
+        "reason": "LOWER_SCORE (37.5 < 43)"
+      },
+      {
+        "era": "1980s",
+        "pairId": "v5p-1980s-3",
+        "teams": [
+          "v4-1984-85-lakers",
+          "v5-1987-88-pistons"
+        ],
+        "total": 59.5,
+        "usable": true,
+        "reason": "LOWER_SCORE (59.5 < 68)"
+      },
+      {
+        "era": "1980s",
+        "pairId": "v5p-1980s-4",
+        "teams": [
+          "v4-1983-84-celtics",
+          "v5-1981-82-lakers"
+        ],
+        "total": 57.5,
+        "usable": true,
+        "reason": "LOWER_SCORE (57.5 < 68)"
+      },
+      {
+        "era": "1980s",
+        "pairId": "v5p-1980s-6",
+        "teams": [
+          "v5-1981-82-lakers",
+          "v5-1987-88-pistons"
+        ],
+        "total": 49,
+        "usable": true,
+        "reason": "LOWER_SCORE (49 < 68)"
+      },
+      {
+        "era": "1980s",
+        "pairId": "v5p-1980s-2",
+        "teams": [
+          "v4-1984-85-lakers",
+          "v5-1981-82-lakers"
+        ],
+        "total": 48.5,
+        "usable": true,
+        "reason": "LOWER_SCORE (48.5 < 68)"
+      },
+      {
+        "era": "1980s",
+        "pairId": "v5p-1980s-5",
+        "teams": [
+          "v4-1983-84-celtics",
+          "v5-1987-88-pistons"
+        ],
+        "total": 43.5,
+        "usable": true,
+        "reason": "LOWER_SCORE (43.5 < 68)"
+      },
+      {
+        "era": "1990s",
+        "pairId": "v5p-1990s-3",
+        "teams": [
+          "v4-1992-93-bulls",
+          "v5-1996-97-heat"
+        ],
+        "total": 45.5,
+        "usable": true,
+        "reason": "LOWER_SCORE (45.5 < 51)"
+      },
+      {
+        "era": "1990s",
+        "pairId": "v5p-1990s-2",
+        "teams": [
+          "v4-1992-93-bulls",
+          "v5-1993-94-rockets"
+        ],
+        "total": 42.5,
+        "usable": true,
+        "reason": "LOWER_SCORE (42.5 < 51)"
+      },
+      {
+        "era": "1990s",
+        "pairId": "v5p-1990s-5",
+        "teams": [
+          "v4-1995-96-supersonics",
+          "v5-1996-97-heat"
+        ],
+        "total": 40.5,
+        "usable": true,
+        "reason": "LOWER_SCORE (40.5 < 51)"
+      },
+      {
+        "era": "1990s",
+        "pairId": "v5p-1990s-4",
+        "teams": [
+          "v4-1995-96-supersonics",
+          "v5-1993-94-rockets"
+        ],
+        "total": 37.5,
+        "usable": true,
+        "reason": "LOWER_SCORE (37.5 < 51)"
+      },
+      {
+        "era": "1990s",
+        "pairId": "v5p-1990s-6",
+        "teams": [
+          "v5-1993-94-rockets",
+          "v5-1996-97-heat"
+        ],
+        "total": 32,
+        "usable": true,
+        "reason": "LOWER_SCORE (32 < 51)"
+      },
+      {
+        "era": "2000s",
+        "pairId": "v5p-2000s-3",
+        "teams": [
+          "v4-2004-05-suns",
+          "v5-2008-09-lakers"
+        ],
+        "total": 51.5,
+        "usable": true,
+        "reason": "LOWER_SCORE (51.5 < 62)"
+      },
+      {
+        "era": "2000s",
+        "pairId": "v5p-2000s-5",
+        "teams": [
+          "v4-2002-03-mavericks",
+          "v5-2008-09-lakers"
+        ],
+        "total": 51.5,
+        "usable": true,
+        "reason": "LOWER_SCORE (51.5 < 62)"
+      },
+      {
+        "era": "2000s",
+        "pairId": "v5p-2000s-2",
+        "teams": [
+          "v4-2004-05-suns",
+          "v5-2007-08-celtics"
+        ],
+        "total": 51.5,
+        "usable": true,
+        "reason": "LOWER_SCORE (51.5 < 62)"
+      },
+      {
+        "era": "2000s",
+        "pairId": "v5p-2000s-4",
+        "teams": [
+          "v4-2002-03-mavericks",
+          "v5-2007-08-celtics"
+        ],
+        "total": 51.5,
+        "usable": true,
+        "reason": "LOWER_SCORE (51.5 < 62)"
+      },
+      {
+        "era": "2000s",
+        "pairId": "v5p-2000s-6",
+        "teams": [
+          "v5-2007-08-celtics",
+          "v5-2008-09-lakers"
+        ],
+        "total": 38,
+        "usable": true,
+        "reason": "LOWER_SCORE (38 < 62)"
+      },
+      {
+        "era": "2010s",
+        "pairId": "v5p-2010s-1",
+        "teams": [
+          "v4-2010-11-heat",
+          "v4-2013-14-clippers"
+        ],
+        "total": 52,
+        "usable": true,
+        "reason": "LOWER_SCORE (52 < 52.5)"
+      },
+      {
+        "era": "2010s",
+        "pairId": "v5p-2010s-2",
+        "teams": [
+          "v4-2010-11-heat",
+          "v5-2015-16-spurs"
+        ],
+        "total": 43.5,
+        "usable": true,
+        "reason": "LOWER_SCORE (43.5 < 52.5)"
+      },
+      {
+        "era": "2010s",
+        "pairId": "v5p-2010s-5",
+        "teams": [
+          "v4-2013-14-clippers",
+          "v5-2018-19-raptors"
+        ],
+        "total": 40.5,
+        "usable": true,
+        "reason": "LOWER_SCORE (40.5 < 52.5)"
+      },
+      {
+        "era": "2010s",
+        "pairId": "v5p-2010s-6",
+        "teams": [
+          "v5-2015-16-spurs",
+          "v5-2018-19-raptors"
+        ],
+        "total": 35,
+        "usable": true,
+        "reason": "LOWER_SCORE (35 < 52.5)"
+      },
+      {
+        "era": "2010s",
+        "pairId": "v5p-2010s-3",
+        "teams": [
+          "v4-2010-11-heat",
+          "v5-2018-19-raptors"
+        ],
+        "total": 34.5,
+        "usable": true,
+        "reason": "LOWER_SCORE (34.5 < 52.5)"
+      },
+      {
+        "era": "2020s",
+        "pairId": "v5p-2020s-4",
+        "teams": [
+          "v4-2020-21-76ers",
+          "v5-2023-24-knicks"
+        ],
+        "total": 40.5,
+        "usable": true,
+        "reason": "LOWER_SCORE (40.5 < 49)"
+      },
+      {
+        "era": "2020s",
+        "pairId": "v5p-2020s-3",
+        "teams": [
+          "v4-2020-21-knicks",
+          "v5-2023-24-76ers"
+        ],
+        "total": 37.5,
+        "usable": true,
+        "reason": "LOWER_SCORE (37.5 < 49)"
+      },
+      {
+        "era": "2020s",
+        "pairId": "v5p-2020s-2",
+        "teams": [
+          "v4-2020-21-knicks",
+          "v5-2023-24-knicks"
+        ],
+        "total": 35.5,
+        "usable": true,
+        "reason": "LOWER_SCORE (35.5 < 49)"
+      },
+      {
+        "era": "2020s",
+        "pairId": "v5p-2020s-5",
+        "teams": [
+          "v4-2020-21-76ers",
+          "v5-2023-24-76ers"
+        ],
+        "total": 32.5,
+        "usable": true,
+        "reason": "LOWER_SCORE (32.5 < 49)"
+      },
+      {
+        "era": "2020s",
+        "pairId": "v5p-2020s-6",
+        "teams": [
+          "v5-2023-24-knicks",
+          "v5-2023-24-76ers"
+        ],
+        "total": 29,
+        "usable": true,
+        "reason": "LOWER_SCORE (29 < 49)"
+      }
+    ],
+    "determinism": {
+      "repeatIdentical": true,
+      "reversedIdentical": true,
+      "rotatedIdentical": true
+    },
+    "supersededSelection": {
+      "version": "1.0.0",
+      "selectionHash": "6023ccf55b6ae034898787fe2833c1349ca85bae47c10994cd061fda29ba1842",
+      "reproducedIdentically": true,
+      "whyInvalidated": "the acceptance policy was re-frozen after the era-reference certification was re-issued to key its self-baselines by metric id; a policy may not be re-frozen while a selection stands, so the selection was invalidated, the version bumped, and the selector re-run"
+    },
+    "pass": true,
+    "failedGates": [],
+    "selectionHash": "6023ccf55b6ae034898787fe2833c1349ca85bae47c10994cd061fda29ba1842"
+  },
+  "outputHash": "fc60d2da2a7fdd183405d1de4fb961b754c50d0377c33f79689f5620ba4d4c8e"
+}

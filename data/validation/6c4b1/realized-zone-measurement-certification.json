@@ -1,0 +1,104 @@
+{
+  "artifact": "realized-zone-measurement-certification",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run v5:zone",
+  "generatedAt": "2026-08-27T03:38:50.487Z",
+  "gitCommit": "09f8a55b32276459b6b706fc2e291efee8f30981",
+  "branch": "phase-6c4b1-v5-freeze-and-seal",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "realizedZoneMeasurementVersion": "2.0.0",
+    "states": {
+      "TOOLKIT": "isZoneToolkitAvailable(context) — the coach's documented record supports zone at all. A capability.",
+      "PERMITTED": "isZonePlanPermitted(plan) — a legal shell was BUILT for this game (era legality + personnel ceiling). Still not use.",
+      "SELECTED": "isZoneShellSelected(possession) — THIS possession was defended in that shell. This, and only this, is realized zone.",
+      "ATTACKED": "isZoneAttackExecuted(possession) — the offence answered by attacking the zone by area. A subset of SELECTED."
+    },
+    "priorDefect": {
+      "v1": "The per-possession ledger label was the per-GAME scheme headline (ZONE_MIXED), so every possession of any coach above the zone threshold counted as zone and every possession below it counted as none.",
+      "symptom": "Phase 6C3R measured defensiveZoneShare as 1.0 for a max-zone coach and 0.0 for others, and recorded the metric as an uncertifiable step function.",
+      "repairedIn": "Phase 6C4A (engine: per-possession zone selection and a truthful per-possession schemeId) and Phase 6C4B1 (this instrument, which reads possession state rather than a plan label)."
+    },
+    "gamesPerCell": 300,
+    "cells": {
+      "zoneCapableEraLegal": {
+        "label": "zone-capable coach, zone-legal era",
+        "coachId": "nick-nurse",
+        "era": "2010s",
+        "games": 300,
+        "possessions": 32152,
+        "toolkitAvailableGames": 300,
+        "planPermittedGames": 300,
+        "shellSelectedPossessions": 19002,
+        "zoneAttackPossessions": 12282,
+        "manPossessions": 13150,
+        "manPossessionsWithNamedDefender": 13150,
+        "realizedZoneShare": 0.59101
+      },
+      "moderateZoneEraLegal": {
+        "label": "moderate-zone coach, zone-legal era",
+        "coachId": "rick-carlisle",
+        "era": "2010s",
+        "games": 300,
+        "possessions": 32074,
+        "toolkitAvailableGames": 300,
+        "planPermittedGames": 300,
+        "shellSelectedPossessions": 15812,
+        "zoneAttackPossessions": 10182,
+        "manPossessions": 16262,
+        "manPossessionsWithNamedDefender": 16262,
+        "realizedZoneShare": 0.49298
+      },
+      "neutralEraLegal": {
+        "label": "neutral coach, zone-legal era",
+        "coachId": "neutral",
+        "era": "2010s",
+        "games": 300,
+        "possessions": 31307,
+        "toolkitAvailableGames": 300,
+        "planPermittedGames": 300,
+        "shellSelectedPossessions": 4961,
+        "zoneAttackPossessions": 3200,
+        "manPossessions": 26346,
+        "manPossessionsWithNamedDefender": 26346,
+        "realizedZoneShare": 0.15846
+      },
+      "nonZoneEraLegal": {
+        "label": "non-zone coach, zone-legal era",
+        "coachId": "jerry-sloan",
+        "era": "2010s",
+        "games": 300,
+        "possessions": 30875,
+        "toolkitAvailableGames": 300,
+        "planPermittedGames": 300,
+        "shellSelectedPossessions": 1109,
+        "zoneAttackPossessions": 693,
+        "manPossessions": 29766,
+        "manPossessionsWithNamedDefender": 29766,
+        "realizedZoneShare": 0.03592
+      },
+      "zoneCapableEraIllegal": {
+        "label": "zone-capable coach, ZONE-ILLEGAL era",
+        "coachId": "nick-nurse",
+        "era": "1990s",
+        "games": 300,
+        "possessions": 32544,
+        "toolkitAvailableGames": 300,
+        "planPermittedGames": 0,
+        "shellSelectedPossessions": 0,
+        "zoneAttackPossessions": 0,
+        "manPossessions": 32544,
+        "manPossessionsWithNamedDefender": 32544,
+        "realizedZoneShare": 0
+      }
+    },
+    "candidateBehaviourUnchanged": "This module reads the ledger. It imports no engine module that decides anything, and the Candidate 1 core hash is unchanged by it — verified by the core-graph certification in the same phase.",
+    "pass": true,
+    "failedGates": []
+  },
+  "outputHash": "65054fff1d0fcc7840c7775f8a52852ec21a7057cca74725fad832feb55f7634"
+}
