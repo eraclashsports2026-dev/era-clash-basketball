@@ -1771,13 +1771,13 @@
       "basicStats": {
         "pointsPerGame": 19.7,
         "fieldGoalAttempts": null,
-        "fieldGoalPct": null,
+        "fieldGoalPct": 0.476,
         "twoPointAttempts": null,
         "twoPointPct": null,
         "threePointAttempts": null,
         "threePointPct": null,
         "freeThrowAttempts": null,
-        "freeThrowPct": null,
+        "freeThrowPct": 0.793,
         "offensiveRebounds": null,
         "defensiveRebounds": null,
         "rebounds": 5.211,
@@ -1825,7 +1825,20 @@
         "verificationStatus": "TEAM_SEASON_STATISTICS",
         "membershipRoute": "TEAM_SEASON_STATISTICS",
         "sourceTeamLabel": "Boston Celtics",
-        "derivation": "Per-season row from the player's own career table; percentages normalised; unrecorded statistics preserved as null."
+        "derivation": "Per-season row from the player's own career table; percentages normalised; unrecorded statistics preserved as null.",
+        "shootingBackfill": {
+          "sourceUrl": "https://en.wikipedia.org/wiki/Sam_Jones_(basketball%2C_born_1933)?oldid=1335765327",
+          "revisionId": 1335765327,
+          "contentHash": "2828135f0fc9ff080f72bfb4a2789c8a",
+          "retrievedAt": "2026-08-26",
+          "route": "PLAYER_CAREER_TABLE_SUPPLEMENT",
+          "teamVerified": "Boston",
+          "fieldsFilled": [
+            "fieldGoalPct",
+            "freeThrowPct"
+          ],
+          "note": "Null shooting percentages filled from the player's own career table; recorded values never overwritten."
+        }
       },
       "confidence": "MEDIUM_HIGH",
       "publicEligibility": false,
@@ -2186,13 +2199,13 @@
       "basicStats": {
         "pointsPerGame": null,
         "fieldGoalAttempts": null,
-        "fieldGoalPct": null,
+        "fieldGoalPct": 0.452,
         "twoPointAttempts": null,
         "twoPointPct": null,
         "threePointAttempts": null,
         "threePointPct": null,
         "freeThrowAttempts": null,
-        "freeThrowPct": null,
+        "freeThrowPct": 0.82,
         "offensiveRebounds": null,
         "defensiveRebounds": null,
         "rebounds": null,
@@ -2240,7 +2253,20 @@
         "verificationStatus": "TEAM_SEASON_ROSTER_ONLY",
         "membershipRoute": "TEAM_SEASON_ROSTER_ONLY",
         "sourceTeamLabel": "Boston Celtics",
-        "derivation": "Per-season row from the player's own career table; percentages normalised; unrecorded statistics preserved as null."
+        "derivation": "Per-season row from the player's own career table; percentages normalised; unrecorded statistics preserved as null.",
+        "shootingBackfill": {
+          "sourceUrl": "https://en.wikipedia.org/wiki/Sam_Jones_(basketball%2C_born_1933)?oldid=1335765327",
+          "revisionId": 1335765327,
+          "contentHash": "2828135f0fc9ff080f72bfb4a2789c8a",
+          "retrievedAt": "2026-08-26",
+          "route": "PLAYER_CAREER_TABLE_SUPPLEMENT",
+          "teamVerified": "Boston",
+          "fieldsFilled": [
+            "fieldGoalPct",
+            "freeThrowPct"
+          ],
+          "note": "Null shooting percentages filled from the player's own career table; recorded values never overwritten."
+        }
       },
       "confidence": "LOW",
       "publicEligibility": false,
@@ -12957,5 +12983,6 @@
       "calibrationPlayerDataVersion": "1.0.0"
     }
   ],
-  "unresolved": []
+  "unresolved": [],
+  "shootingBackfillVersion": "1.0.0"
 }

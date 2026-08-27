@@ -60,6 +60,12 @@ const sha = (p) => createHash("sha256").update(readFileSync(p)).digest("hex");
  */
 export const APPROVED_CORRECTIONS = Object.freeze([
   {
+    path: "data/calibration/calibration-players-v3.json",
+    reason: "Phase 6C4A shooting backfill: two Sam Jones season profiles carried null FG%/FT% because their membership route was a team-season page whose statistics table has no shooting columns. The values were read from the player's own career table (Wikipedia, 'Sam Jones (basketball, born 1933)', team-verified season rows) through the existing authorized pipeline, filling ONLY null fields; every recorded value is byte-unchanged, and no volume field was invented. Root-caused consequence being repaired: null shooting collapsed shotSelection to the population default, so data completeness itself acted as team quality (v4f-02 decomposition, candidate1-offense-repair.json). Five other null-shooting profiles stay null: their articles carry no career table, and the limitation is recorded rather than estimated around.",
+    approvedIn: "phase-6c4a-workstream-5",
+    changesClassification: false,
+  },
+  {
     path: "data/calibration/source-registry.json",
     reason: "The prohibited-source entry asserted that the publisher's terms contain an AI/model-use clause. That was written from the policy's own wording rather than from the source's terms. A Phase 6C2C2 review found that NBA.com and Kaggle — both excluded — contain no AI clause at all; their exclusions rest on commercial-use and comprehensive-database clauses. Asserting a clause that may not exist would not survive legal review, so the entry now records the standing instruction and explicitly declines to characterise the contractual grounds.",
     approvedIn: "phase-6c2c2-workstream-3",

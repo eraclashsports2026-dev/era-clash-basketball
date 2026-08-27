@@ -253,5 +253,51 @@ Changed core files: ${M.changedCoreFiles.map((f) => `\`${f}\``).join(", ")}.
 Closure correction: ${M.closureCorrection.defect} — ${M.closureCorrection.consequence}.` : ""}`);
   }
 
+  if (has("candidate1-offense-repair")) {
+    const A = R("candidate1-offense-repair"); const d = A.data;
+    const B = has("calibration-shooting-backfill") ? R("calibration-shooting-backfill").data : null;
+    write("candidate1-offense-repair.md", `${prov(A)}# Candidate 1 — offensive-identity repair
+
+**Acceptance gate: ${d.pass ? "PASS" : `FAIL (${d.failedGates.join(", ")})`}** — ${d.pairsPerCell * 2} games per cell.
+
+Adapter INPUT_QUALITY_COMPRESSION repair: volume reads points per game alongside
+FGA; efficiency reads TS% or a labelled FG%/FT% estimate centred on the store
+population median; the interior diet comes from the two-point split or the
+documented three-point volume; post threat falls back to recorded total boards.
+
+**Share-proxy protection (frozen before measurement):** bound ${d.shareProxyProtection.bound}
+(baseline ${d.shareProxyProtection.baselineMeanComposite} × ${d.shareProxyProtection.maxRegressionFactor}); measured mean composite **${d.meanCompositeShareMae}**.
+
+| gate | result |
+| --- | --- |
+${Object.entries(d.gates).map(([k, v]) => `| ${k} | **${v ? "PASS" : "FAIL"}** |`).join("\n")}
+
+## Cells (subject ppp vs live reference self-baseline)
+
+| fixture | class | ppp | ref self | diff | share MAE |
+| --- | --- | ---: | ---: | ---: | ---: |
+${[...d.v4EliteOffense.map((c) => [c, "V4 elite"]), ...d.heldInEliteOffense.map((c) => [c, "held-in elite"]), ...d.medianTeams.map((c) => [c, "non-elite"])].map(([c, k]) => `| ${c.fixtureId} | ${k} | ${c.ppp.mean} | ${c.refSelfPpp} | ${c.diff.diff} | ${c.compositeShareMae} |`).join("\n")}
+
+Non-elite population mean diff: **${d.nonElitePopulationMeanDiff}** (no universal scoring shift).
+
+## v4f-02 (Spurs) decomposition — \`${d.spursDecomposition.disposition}\`
+
+As-is diff ${d.spursDecomposition.asIsDiff}. Imputing the store era-median FG%
+(${d.spursDecomposition.storeEraMedianFgPct}) to the ${d.spursDecomposition.nullShootingPlayers} null-shooting Spurs closes only
+**${d.spursDecomposition.imputationCloses}** — the remainder is the reference: ${d.spursDecomposition.referenceFive}.
+
+V5 action: ${d.spursDecomposition.v5Action}.
+${B ? `
+## Shooting backfill
+
+${B.profilesBackfilled} profiles filled from player career tables (team-verified, null fields only);
+${B.sourceLacksCareerTable} recorded \`SOURCE_LACKS_CAREER_TABLE\` — the authorized source carries no
+career statistics for them, and the nulls stand rather than being estimated around.
+
+| player | season | outcome | filled |
+| --- | --- | --- | --- |
+${B.results.map((r) => `| ${r.name} | ${r.season} | ${r.outcome} | ${r.filled.map((f) => `${f.field}=${f.value}`).join(", ") || "—"} |`).join("\n")}` : ""}`);
+  }
+
   console.log(written.length ? written.join("\n") : "no 6c4a artifacts yet");
 }

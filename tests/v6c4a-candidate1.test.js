@@ -270,3 +270,42 @@ describe("6C4A WS4 — movement & coach-saturation repair", () => {
     expect(b.production.productionEngineSha256).toBe(a.production.productionEngineSha256);
   });
 });
+
+describe("6C4A WS5 — offensive-identity repair", () => {
+  const of = R("candidate1-offense-repair").data;
+
+  it("passes every offensive acceptance gate", () => {
+    expect(of.failedGates).toEqual([]);
+    expect(of.gates.bullsEliteOffenceRepaired).toBe(true);
+    expect(of.gates.heldInEliteOffencesAboveReference).toBe(true);
+    expect(of.gates.noUniversalScoringShift).toBe(true);
+  });
+
+  it("froze the share-proxy bound before measurement, and stayed inside it", () => {
+    expect(of.shareProxyProtection.bound).toBeCloseTo(of.shareProxyProtection.baselineMeanComposite * of.shareProxyProtection.maxRegressionFactor, 5);
+    expect(of.meanCompositeShareMae).toBeLessThanOrEqual(of.shareProxyProtection.bound);
+  });
+
+  it("repairs generalise beyond the V4 diagnostics (no overfit to V4 teams)", () => {
+    for (const c of of.heldInEliteOffense) expect(c.diff.diff, c.fixtureId).toBeGreaterThan(0);
+    expect(Math.abs(of.nonElitePopulationMeanDiff)).toBeLessThan(0.03);
+  });
+
+  it("attributes the residual Spurs deficit with intervention evidence, never a patch", () => {
+    const s = of.spursDecomposition;
+    expect(s.disposition).toBe("MECHANISM_REPAIRED_DATA_AND_REFERENCE_LIMITED");
+    expect(s.imputationCloses).toBeGreaterThan(0);
+    expect(s.imputationCloses).toBeLessThan(Math.abs(s.asIsDiff));
+    expect(s.v5Action).toContain("reference re-certification");
+  });
+
+  it("backfilled only null shooting fields, from team-verified career tables", () => {
+    const b = R("calibration-shooting-backfill").data;
+    expect(b.profilesBackfilled).toBe(2);
+    expect(b.sourceLacksCareerTable).toBe(5);
+    for (const r of b.results.filter((x) => x.outcome === "FILLED")) {
+      expect(r.teamVerified).toMatch(/Boston/);
+      for (const f of r.filled) expect(["fieldGoalPct", "freeThrowPct", "threePointPct"]).toContain(f.field);
+    }
+  });
+});
