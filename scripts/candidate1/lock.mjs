@@ -12,7 +12,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
-import { writeArtifact, readArtifact, ARTIFACT_DIR_C6 } from "../../src/v3/calibration/artifacts.js";
+import { writeArtifact, readArtifact, artifactExists, ARTIFACT_DIR_C6 } from "../../src/v3/calibration/artifacts.js";
 import { defaultRuntimeParameterSet, activeParameters } from "../../src/v3/calibration/runtimeParameters.js";
 import { setAccessCount } from "../../src/v3/calibration/holdoutSeal.js";
 import { buildCoreManifest } from "../validation/preflight.mjs";
@@ -147,7 +147,11 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     engineVersions: { productionEngineVersion: "3.2.0" },
     postLockMutationPolicy: "No core, parameter, policy or seed change after this manifest. Any quantitative change requires a new candidate with a new possessionCalibrationVersion, exactly as this one required.",
     notClaimed: ["HOLDOUT_VALIDATED", "PRIVATE_PREVIEW_VALIDATED", "PRODUCTION_READY", "ACTIVE"],
-    lockedAtCommit: git("rev-parse", "HEAD"),
+    // The commit the lock was ESTABLISHED at, preserved across re-verification.
+    // Re-running the gates must be free: if this took the current HEAD every
+    // time, a verification run would rewrite the lock identity and every hash
+    // recorded against it (the phase summary among them).
+    lockedAtCommit: (artifactExists("candidate1-lock", DIR) ? R("candidate1-lock").data.lockedAtCommit : null) ?? git("rev-parse", "HEAD"),
   };
   payload.manifestHash = createHash("sha256").update(JSON.stringify(payload)).digest("hex");
   writeArtifact("candidate1-lock", payload, { generationCommand: "npm run c1:lock -- --stamp", dir: DIR,

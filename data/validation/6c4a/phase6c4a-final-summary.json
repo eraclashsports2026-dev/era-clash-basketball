@@ -1,0 +1,176 @@
+{
+  "artifact": "phase6c4a-final-summary",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run c1:summary",
+  "generatedAt": "2026-08-27T02:20:59.223Z",
+  "gitCommit": "b5bb0c7e6c1da706d35f074659eef4cf57f57719",
+  "branch": "phase-6c4a-candidate1-trait-fidelity",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "phase": "6C4A",
+    "title": "Candidate 1 trait-fidelity repair, coach action-mix correction, practical-margin policy and internal lock",
+    "outcome": "CANDIDATE_1_LOCKED_FOR_V5",
+    "artifactsWritten": 27,
+    "artifactsInvalid": 0,
+    "v4Failures": {
+      "hardFailures": 12,
+      "substantive": 8,
+      "practicalMarginOnly": 4,
+      "byCategory": {
+        "PRACTICAL_MARGIN_ONLY": 4,
+        "OFFENSIVE_IDENTITY_FAILURE": 3,
+        "DEFENSIVE_IDENTITY_FAILURE": 4,
+        "COACH_DEPLOYMENT_SATURATION": 1
+      },
+      "rootCaused": 8,
+      "unresolved": 0,
+      "rootCauseClasses": [
+        "ELIGIBILITY_STARVATION",
+        "INPUT_QUALITY_COMPRESSION",
+        "DEFENSIVE_PROXY_INVERSION",
+        "OFFENSIVE_GLASS_CHANNEL_MISWIRED"
+      ],
+      "engineChangesForMarginArtifacts": 0
+    },
+    "engineChanges": {
+      "coreFilesChanged": 8,
+      "files": [
+        "src/v3/actions/families.js",
+        "src/v3/actions/offensivePlan.js",
+        "src/v3/calibration/calibrationPlayerAdapter.js",
+        "src/v3/defense/plan.js",
+        "src/v3/defense/scheme.js",
+        "src/v3/possession/actions.js",
+        "src/v3/possession/game.js",
+        "src/v3/teamIntelligence.js"
+      ],
+      "parameterChanges": 0,
+      "dataStoresTouched": [
+        "data/calibration/calibration-players-v3.json",
+        "data/validation/6c3r/calibration-players-v4.json"
+      ],
+      "prohibitionsRespected": {
+        "entitySpecificCode": "none — every change is a generic mechanic or a documented data floor",
+        "flatBonuses": "none",
+        "forcedActionCadence": "none",
+        "guaranteedEfficiency": "none",
+        "eraLegalityOverrides": "none"
+      }
+    },
+    "candidate": {
+      "candidateId": "Candidate 1",
+      "parentCandidateId": "Candidate 0",
+      "selectionStatus": "SELECTED",
+      "lockStatus": "LOCKED",
+      "calibrationStatus": "DEVELOPMENT_LOCKED_SCOPED",
+      "validationAttemptStatus": "NOT_RUN",
+      "possessionCalibrationVersion": "1.1.0",
+      "coreHash": "295ba3d1ba74fe5cecaccb33e8b69ab4f38520a964e00ba39fe6f3bf3fe260bb",
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "manifestHash": "1645926bf1e57e73d26214d3f1969ce5b88720d16e4c1da061de9c4dc300e2ed"
+    },
+    "candidate0": {
+      "status": "UNMUTATED — SELECTED / LOCKED at 1.0.0",
+      "coreHash": "58c5fb6974e694c29f87934ab107ff47ce32963a9c0695e36f941c2a70ae6683",
+      "replaysFromCommit": "4bc1cb878771ee5c7316e3a1e90e84290c135077"
+    },
+    "validation": {
+      "internal": true,
+      "sideSymmetryGames": 240000,
+      "sideSymmetry": true,
+      "probability": true,
+      "probabilityLogLossDelta": 0.0052,
+      "competitionGames": 6944,
+      "competition": true,
+      "shareProxyBound": 0.049565,
+      "shareProxyMeasuredOffence": 0.03123,
+      "shareProxyMeasuredDefence": 0.02909
+    },
+    "v5Pool": {
+      "teams": 30,
+      "eligible": 30,
+      "newTeamSeasons": 15,
+      "erasWithAtLeastTwoEligiblePairs": 8,
+      "poolHash": "4287ef8c68ed1e09d7aa36b2493b971519dee74ed0c69f7a7715ec05c913295b"
+    },
+    "v5Readiness": {
+      "allReady": true,
+      "mayOpen": false,
+      "blockingItems": 6
+    },
+    "holdoutState": {
+      "historicalHoldoutV3": {
+        "accessCount": 1,
+        "verdict": "HISTORICAL_HOLDOUT_FAIL"
+      },
+      "historicalHoldoutV4": {
+        "accessCount": 1,
+        "verdict": "HISTORICAL_V4_FAILED",
+        "status": "FAILED_HOLDOUT_DIAGNOSTIC_SET"
+      },
+      "syntheticStressHoldoutV2": {
+        "accessCount": 0,
+        "status": "SEALED"
+      },
+      "historicalHoldoutV5": {
+        "status": "NOT_CREATED — pool only"
+      }
+    },
+    "productionUntouched": {
+      "engineVersion": "3.2.0",
+      "appVersion": "2.7.2"
+    },
+    "statusClaimed": "DEVELOPMENT_LOCKED_SCOPED",
+    "statusNotClaimed": [
+      "HOLDOUT_VALIDATED",
+      "PRIVATE_PREVIEW_VALIDATED",
+      "PRODUCTION_READY",
+      "ACTIVE"
+    ],
+    "limitations": [
+      {
+        "id": "RESIDUAL_ELITE_OFFENCE_SPURS",
+        "detail": "The 1977-78 Spurs still render below their era reference (-0.092). Intervention shows only 0.017 of that is the three null-shooting profiles; the rest is the reference being a champions-median five. MECHANISM_REPAIRED_DATA_AND_REFERENCE_LIMITED."
+      },
+      {
+        "id": "RESIDUAL_ELITE_DEFENCE",
+        "detail": "Sonics +0.058 and Pistons +0.036 remain above their reference self-baselines after materially improving from +0.086 and +0.058. Award pages floor only 1-2 of each five; the source records no defensive evidence for the rest. MECHANISM_REPAIRED_EVIDENCE_AND_REFERENCE_LIMITED."
+      },
+      {
+        "id": "RESIDUAL_OFFENSIVE_REBOUNDING",
+        "detail": "Sonics orebRate -0.051 (from -0.069). The recorded totals already carry all the board evidence the source has (imputing the era split moves the channel 7.0 -> 7.1); the 1970s reference rebounds at 8.5/8.5 behind Wilt Chamberlain."
+      },
+      {
+        "id": "ERA_REFERENCES_NOT_RE_CERTIFIED",
+        "detail": "All three residuals above trace partly to reference construction. Era references and trait observability were certified under Candidate 0 and MUST be re-certified under Candidate 1 before any V5 trait scoring. Both are blocking items in historical-v5-readiness.json."
+      },
+      {
+        "id": "FIVE_PROFILES_WITHOUT_SHOOTING_DATA",
+        "detail": "Five calibration profiles keep null shooting percentages: their articles carry no career table, so the authorized source has nothing to read. Recorded, never estimated around."
+      },
+      {
+        "id": "V4_DIAGNOSTICS_ARE_CONSUMED",
+        "detail": "Historical V4 is a FAILED_HOLDOUT_DIAGNOSTIC_SET. Candidate 1 was developed against it, so V4 can never again be evidence of generalisation for this candidate — that is what V5 is for."
+      },
+      {
+        "id": "OBSERVABILITY_METRICS_STILL_UNCERTIFIED",
+        "detail": "Of the four metrics that failed observability certification under Candidate 0, Candidate 1 repaired movementShare and defensiveZoneShare by construction; isolationShare and stealRateForced/rimShareAgainst remain unproven until re-certification."
+      }
+    ],
+    "scopeRespected": {
+      "syntheticV2NotOpened": true,
+      "v5NotSelected": true,
+      "v5NotSealed": true,
+      "v5NotSimulated": true,
+      "noPreview": true,
+      "noProduction": true,
+      "mainNotMerged": true,
+      "broadParameterSearchNotReopened": true
+    }
+  },
+  "outputHash": "5e9a63a9837429d03aae6b3d477301ea15ec283044b868599c81c938328eba14"
+}

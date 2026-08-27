@@ -549,3 +549,49 @@ describe("6C4A WS11/WS12 — Historical Holdout V5 pool and readiness", () => {
     expect(r.statusClaimed).toBe("DEVELOPMENT_LOCKED_SCOPED");
   });
 });
+
+describe("6C4A phase discipline", () => {
+  const sum = R("phase6c4a-final-summary").data;
+
+  it("wrote every required artifact, all verifying", () => {
+    expect(sum.artifactsWritten).toBeGreaterThanOrEqual(26);
+    expect(sum.artifactsInvalid).toBe(0);
+  });
+
+  it("reconciles the failure accounting end to end", () => {
+    expect(sum.v4Failures.hardFailures).toBe(12);
+    expect(sum.v4Failures.substantive + sum.v4Failures.practicalMarginOnly).toBe(12);
+    expect(sum.v4Failures.rootCaused).toBe(sum.v4Failures.substantive);
+    expect(sum.v4Failures.unresolved).toBe(0);
+    expect(sum.v4Failures.engineChangesForMarginArtifacts).toBe(0);
+  });
+
+  it("respected every scope commitment and claimed nothing beyond a scoped lock", () => {
+    for (const [k, v] of Object.entries(sum.scopeRespected)) expect(v, k).toBe(true);
+    expect(sum.statusClaimed).toBe("DEVELOPMENT_LOCKED_SCOPED");
+    expect(sum.holdoutState.syntheticStressHoldoutV2.accessCount).toBe(0);
+    expect(sum.holdoutState.historicalHoldoutV5.status).toContain("NOT_CREATED");
+    expect(sum.productionUntouched.engineVersion).toBe("3.2.0");
+  });
+
+  it("records the limitations rather than implying completeness", () => {
+    expect(sum.limitations.length).toBeGreaterThanOrEqual(6);
+    for (const l of sum.limitations) expect(l.detail.length).toBeGreaterThan(80);
+    const ids = sum.limitations.map((l) => l.id);
+    expect(ids).toContain("ERA_REFERENCES_NOT_RE_CERTIFIED");
+    expect(ids).toContain("V4_DIAGNOSTICS_ARE_CONSUMED");
+  });
+
+  it("renders every phase document from an artifact", () => {
+    for (const doc of ["historical-v4-failure-register", "candidate0-preservation",
+      "validation-instrumentation-repairs", "trait-practical-margin-policy",
+      "candidate1-root-cause-analysis", "candidate1-movement-repair", "candidate1-offense-repair",
+      "candidate1-defense-repair", "candidate1-remaining-repairs", "candidate1-internal-validation",
+      "candidate1-lock", "candidate-succession", "historical-v5-candidate-pool",
+      "historical-v5-readiness", "phase-6c4a-limitations", "phase-6c4a-summary"]) {
+      const body = readFileSync(`docs/simulation-v3/${doc}.md`, "utf8");
+      expect(body.startsWith("<!-- RENDERED FROM ARTIFACT"), `${doc} must be rendered`).toBe(true);
+      expect(body).toContain("outputHash:");
+    }
+  });
+});

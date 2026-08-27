@@ -6,7 +6,7 @@
 // facts it must never disturb are intact: Candidate 0's lock and hashes, the
 // V3 and V4 FAIL verdicts, the synthetic-V2 seal, and a behaviour snapshot of
 // Candidate 0 taken before any engine edit exists.
-import { readFileSync } from "node:fs";
+import { readFileSync, existsSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { writeArtifact, readArtifact, ARTIFACT_DIR_6C3, ARTIFACT_DIR_C6 } from "../../src/v3/calibration/artifacts.js";
@@ -21,6 +21,18 @@ const sha = (p) => createHash("sha256").update(readFileSync(p)).digest("hex");
 const git = (...a) => { try { return execFileSync("git", a, { encoding: "utf8" }).trim(); } catch { return null; } };
 
 if (import.meta.url === `file://${process.argv[1]}`) {
+  // This preflight records a MOMENT: the state before any Candidate 1 engine
+  // edit existed. Re-running it after the fact would overwrite that record
+  // with post-change values and report a false failure — which is exactly
+  // what happened once, and is why the guard exists. Verification of the
+  // recorded facts belongs to the test suite and the lock, not to a re-run.
+  if (existsSync(`${DIR}/candidate1-draft-manifest.json`) || existsSync(`${DIR}/candidate1-lock.json`)) {
+    const p = readArtifact("phase6c4a-preflight", DIR).data;
+    console.log("PHASE 6C4A PREFLIGHT — already recorded; refusing to overwrite a historical record.");
+    console.log(`  recorded at the pre-change core: candidate1DevelopmentMayBegin ${p.candidate1DevelopmentMayBegin}`);
+    console.log("  a Candidate 1 manifest exists, so the live core is no longer the pre-change core by design.");
+    process.exit(p.candidate1DevelopmentMayBegin ? 0 : 2);
+  }
   const fail = [];
   const gate = (name, pass, detail) => { if (!pass) fail.push(name); console.log(`  ${pass ? "OK  " : "FAIL"}  ${name}\n        ${detail}`); return pass; };
 

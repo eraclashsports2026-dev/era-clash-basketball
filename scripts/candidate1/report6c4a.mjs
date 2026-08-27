@@ -519,5 +519,129 @@ ${o.why}`).join("\n\n")}
 Claimed: \`${d.statusClaimed}\`. Not claimed: ${d.statusNotClaimed.map((x) => `\`${x}\``).join(", ")}.`);
   }
 
+  if (has("candidate1-change-manifest")) {
+    const A = R("candidate1-change-manifest"); const d = A.data;
+    const V = has("candidate1-vs-candidate0") ? R("candidate1-vs-candidate0").data : null;
+    write("candidate-succession.md", `${prov(A)}# Candidate succession — Candidate 0 → Candidate 1
+
+Candidate 1 is a **separate candidate**, not an edit to Candidate 0. The parent
+stays SELECTED / LOCKED at \`possessionCalibrationVersion\` 1.0.0, its manifest is
+never rewritten, and it replays exactly from commit \`${d.parentCommit}\`.
+
+## Engine changes
+
+Every changed core file, with the root-caused failure it repairs. A core file
+that changes without appearing here fails the manifest build.
+
+${d.changes.map((c) => `### \`${c.file}\`
+
+Root causes: ${c.rootCauses.map((r) => `\`${r}\``).join(", ")}
+
+${c.change}`).join("\n\n")}
+
+## Data changes
+
+${d.dataChanges.map((x) => `- \`${x.store}\` — ${x.change} (artifacts: ${x.artifacts.map((a) => `\`${a}\``).join(", ")})`).join("\n")}
+
+## Prohibitions
+
+The brief forbids five classes of "repair". Each is recorded as absent:
+
+| prohibition | state |
+| --- | --- |
+${Object.entries(d.prohibitions).map(([k, v]) => `| ${k} | ${v} |`).join("\n")}
+
+${d.basis}
+${V ? `
+## Diff against the parent
+
+| | Candidate 0 | Candidate 1 |
+| --- | --- | --- |
+| core hash | \`${V.parent.coreHash.slice(0, 16)}...\` | \`${V.candidate.coreHash.slice(0, 16)}...\` |
+| core files | ${V.parent.files} (builder ${V.parent.closureBuilderVersion}) | ${V.candidate.files} (builder ${V.candidate.closureBuilderVersion}) |
+| parameterSetHash | \`${V.parent.parameterSetHash.slice(0, 16)}...\` | \`${V.candidate.parameterSetHash.slice(0, 16)}...\` |
+| calibration version | 1.0.0 | 1.1.0 |
+
+${V.identicalFiles} of ${V.candidate.files} core files are byte-identical. Parameter delta: ${V.parameterDelta}.` : ""}`);
+  }
+
+  if (has("phase6c4a-final-summary")) {
+    const A = R("phase6c4a-final-summary"); const d = A.data;
+    write("phase-6c4a-limitations.md", `${prov(A)}# Phase 6C4A — limitations
+
+What Candidate 1 does NOT establish. Every item is a measured residual or an
+unverified assumption, not a hedge.
+
+${d.limitations.map((l) => `### \`${l.id}\`
+
+${l.detail}`).join("\n\n")}
+
+## Status discipline
+
+Claimed: \`${d.statusClaimed}\`. Explicitly **not** claimed: ${d.statusNotClaimed.map((x) => `\`${x}\``).join(", ")}.
+
+| scope commitment | respected |
+| --- | --- |
+${Object.entries(d.scopeRespected).map(([k, v]) => `| ${k} | **${v}** |`).join("\n")}
+
+Holdout state: V3 access ${d.holdoutState.historicalHoldoutV3.accessCount} (\`${d.holdoutState.historicalHoldoutV3.verdict}\`),
+V4 access ${d.holdoutState.historicalHoldoutV4.accessCount} (\`${d.holdoutState.historicalHoldoutV4.verdict}\` → \`${d.holdoutState.historicalHoldoutV4.status}\`),
+synthetic stress access ${d.holdoutState.syntheticStressHoldoutV2.accessCount} (\`${d.holdoutState.syntheticStressHoldoutV2.status}\`),
+V5 ${d.holdoutState.historicalHoldoutV5.status}.`);
+
+    write("phase-6c4a-summary.md", `${prov(A)}# Phase 6C4A — summary
+
+**Outcome: \`${d.outcome}\`** · ${d.artifactsWritten} artifacts, ${d.artifactsInvalid} invalid.
+
+## What Historical V4 exposed, and what happened to it
+
+| | count |
+| --- | ---: |
+| hard failures in the V4 verdict | ${d.v4Failures.hardFailures} |
+| substantive (engine change required) | ${d.v4Failures.substantive} |
+| practical-margin-only (engine change prohibited) | ${d.v4Failures.practicalMarginOnly} |
+| root-caused before any engine change | ${d.v4Failures.rootCaused} |
+| unresolved | ${d.v4Failures.unresolved} |
+| engine changes made for margin artifacts | ${d.v4Failures.engineChangesForMarginArtifacts} |
+
+Root-cause classes: ${d.v4Failures.rootCauseClasses.map((c) => `\`${c}\``).join(", ")}.
+
+## The candidate
+
+| fact | value |
+| --- | --- |
+| candidate | \`${d.candidate.candidateId}\` (parent \`${d.candidate.parentCandidateId}\`) |
+| status | ${d.candidate.selectionStatus} / ${d.candidate.lockStatus} / ${d.candidate.calibrationStatus} |
+| validation attempt | ${d.candidate.validationAttemptStatus} |
+| possessionCalibrationVersion | ${d.candidate.possessionCalibrationVersion} |
+| core hash | \`${d.candidate.coreHash}\` |
+| parameterSetHash | \`${d.candidate.parameterSetHash}\` |
+| lock manifest hash | \`${d.candidate.manifestHash}\` |
+| core files changed | ${d.engineChanges.coreFilesChanged} |
+| parameter changes | ${d.engineChanges.parameterChanges} |
+
+Candidate 0: ${d.candidate0.status}, replays from \`${d.candidate0.replaysFromCommit}\`.
+
+## Validation
+
+| battery | result |
+| --- | --- |
+| internal | ${d.validation.internal ? "PASS" : "FAIL"} |
+| side symmetry (${d.validation.sideSymmetryGames} paired games) | ${d.validation.sideSymmetry ? "PASS" : "FAIL"} |
+| probability (log-loss Δ ${d.validation.probabilityLogLossDelta}) | ${d.validation.probability ? "PASS" : "FAIL"} |
+| competition modes (${d.validation.competitionGames} games) | ${d.validation.competition ? "PASS" : "FAIL"} |
+
+Share-proxy protection: bound ${d.validation.shareProxyBound}, measured ${d.validation.shareProxyMeasuredOffence} (offence cells) and ${d.validation.shareProxyMeasuredDefence} (defence cells).
+
+## V5
+
+Pool: ${d.v5Pool.eligible} eligible team-seasons (${d.v5Pool.newTeamSeasons} newly sourced), ≥2 eligible pairs in ${d.v5Pool.erasWithAtLeastTwoEligiblePairs}/8 eras.
+Readiness: all ready ${d.v5Readiness.allReady}, **may open ${d.v5Readiness.mayOpen}** — ${d.v5Readiness.blockingItems} blocking items remain, none in this phase's scope.
+
+Production untouched: engine ${d.productionUntouched.engineVersion}, app ${d.productionUntouched.appVersion}.
+
+See [phase-6c4a-limitations.md](phase-6c4a-limitations.md) for what this phase does not establish.`);
+  }
+
   console.log(written.length ? written.join("\n") : "no 6c4a artifacts yet");
 }
