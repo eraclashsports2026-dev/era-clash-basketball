@@ -1,0 +1,87 @@
+{
+  "artifact": "candidate1-compound-formal-verdict",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run validation:candidate1-formal-verdict",
+  "generatedAt": "2026-08-27T13:46:34.687Z",
+  "gitCommit": "a71aa68bdb718c33ee1ba33ee328a7295dcdfcc8",
+  "branch": "phase-6c4b2r-candidate1-formal-execution",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "candidate1FormalVerdictVersion": "1.0.0",
+    "compoundVerdict": "CANDIDATE1_HISTORICAL_V5_FAILED",
+    "meaning": "Historical Holdout V5 returned FAIL. Synthetic Stress Holdout V2 is correctly never opened, so the validation is decided by stage one.",
+    "verdictVocabulary": {
+      "CANDIDATE1_HOLDOUT_VALIDATED": "both formal stages returned PASS on the same locked candidate, with no drift and no post-holdout tuning",
+      "CANDIDATE1_HISTORICAL_V5_FAILED": "Historical Holdout V5 returned FAIL. Synthetic Stress Holdout V2 is correctly never opened, so the validation is decided by stage one.",
+      "CANDIDATE1_HISTORICAL_V5_INVALID": "Historical Holdout V5 could not produce a formal result. Synthetic Stress Holdout V2 is correctly never opened.",
+      "CANDIDATE1_SYNTHETIC_V2_FAILED": "Historical Holdout V5 passed and Synthetic Stress Holdout V2 returned FAIL",
+      "CANDIDATE1_SYNTHETIC_V2_INVALID": "Historical Holdout V5 passed and Synthetic Stress Holdout V2 could not produce a formal result",
+      "CANDIDATE1_IDENTITY_SPLIT": "the two stages did not score the same candidate core and parameter set, so their results cannot be combined",
+      "CANDIDATE1_NOT_YET_DETERMINED": "no stage has produced a formal result yet, so there is nothing to compound"
+    },
+    "stages": [
+      {
+        "stage": 1,
+        "set": "historical-holdout-v5",
+        "ran": true,
+        "outcome": "FAIL",
+        "verdict": "HISTORICAL_HOLDOUT_V5_FAIL",
+        "accessCount": 1,
+        "coreHash": "de57e1a96e1fd1450d1aea9c5463b0138a56d77bbf58c748ba042e6f78f5c94d",
+        "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+        "missingBecause": null
+      },
+      {
+        "stage": 2,
+        "set": "synthetic-stress-holdout-v2",
+        "ran": false,
+        "outcome": null,
+        "verdict": null,
+        "accessCount": 0,
+        "coreHash": null,
+        "parameterSetHash": null,
+        "missingBecause": "no results artifact at data/validation/6c4b1s/synthetic-v2-results.json — stage two has not run"
+      }
+    ],
+    "stagesRequired": 2,
+    "stagesRan": 1,
+    "candidateIdentityNow": {
+      "coreHash": "de57e1a96e1fd1450d1aea9c5463b0138a56d77bbf58c748ba042e6f78f5c94d",
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "calibrationVersion": "1.1.0",
+      "zeroParameterDrift": true
+    },
+    "stagesScoredTheSameCandidate": null,
+    "stagesMatchTheCurrentCandidate": true,
+    "rule": [
+      "1. If stage one FAILED or was INVALID, that decides the verdict on its own: the frozen stage order means stage two is not opened after a stage-one failure, so its absence is correct rather than incomplete.",
+      "2. Otherwise both stages must have produced a formal result. One stage that PASSED is not a compound verdict.",
+      "3. Both stages must have scored the same candidate core and parameter set, or the results cannot be combined.",
+      "4. A stage-two FAIL or INVALID_RUN gives the corresponding stage-two verdict.",
+      "5. Otherwise CANDIDATE1_HOLDOUT_VALIDATED."
+    ],
+    "validatedRequires": [
+      "Historical V5 PASS",
+      "Synthetic V2 PASS",
+      "candidate core drift 0",
+      "parameter drift 0",
+      "policy drift 0",
+      "seed drift 0",
+      "target drift 0",
+      "post-holdout tuning 0"
+    ],
+    "reScoring": "none. Each stage's verdict is the one its own frozen policy produced at run time; this command reads them and applies the compound rule above.",
+    "whatThisDoesNotAuthorize": "BOTH_STAGES_PASSED does not make Candidate 1 HOLDOUT_VALIDATED, PRIVATE_PREVIEW_VALIDATED, PRODUCTION_READY or ACTIVE, and authorizes no preview or production deployment. Those statuses belong to the phase that earns each of them, and production activation requires an explicit CEO GO LIVE.",
+    "sealsOpenedByThisCommand": 0,
+    "accessCounts": {
+      "historical-holdout-v5": 1,
+      "synthetic-stress-holdout-v2": 0
+    },
+    "verdictHash": "1ac695b23c9dd11d3b4bb3cc5cc500d82ebbf0c14c9c30ffd2cfb55742e3addc"
+  },
+  "outputHash": "758e5aa310b9e6bff1b3deb62750191d1f090edf4d1409327a75dcf7fa6445bb"
+}
