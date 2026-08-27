@@ -1,0 +1,156 @@
+{
+  "artifact": "candidate2-identity-separation",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run c2:build",
+  "generatedAt": "2026-08-27T14:47:59.738Z",
+  "gitCommit": "60943bdd575922fa00b038d2004b0393b3ab7865",
+  "branch": "phase-6c4c1-candidate2-trait-repair",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "candidate2IdentitySeparationVersion": "1.0.0",
+    "authoritativeIdentity": "coreHash",
+    "candidate2": {
+      "coreHash": "3733b648f050a4f50f9dc3cb6ecf62fce419dd282f24c910b91e7b077d63711d",
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "calibrationVersion": "1.2.0",
+      "possessionEngineVersion": "1.2.0",
+      "defensiveMatchupVersion": "1.2.0"
+    },
+    "candidate1": {
+      "coreHash": "de57e1a96e1fd1450d1aea9c5463b0138a56d77bbf58c748ba042e6f78f5c94d",
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "calibrationVersion": "1.1.0"
+    },
+    "candidate0": {
+      "coreHash": "58c5fb6974e694c29f87934ab107ff47ce32963a9c0695e36f941c2a70ae6683",
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "calibrationVersion": "1.0.0"
+    },
+    "collisions": {
+      "coreHashVsCandidate1": false,
+      "coreHashVsCandidate0": false,
+      "calibrationVersionVsCandidate1": false,
+      "calibrationVersionVsCandidate0": false,
+      "resultCacheTagVsCandidate1": false,
+      "probabilityCacheTagVsCandidate1": false,
+      "competitionManifestVsCandidate1": false
+    },
+    "parameterSetHashIntentionallyShared": {
+      "shared": true,
+      "why": "all three candidates run the registry defaults. A parameter hash therefore cannot separate them, which is exactly the collision Phase 6C4B1 found and repaired by making the core hash authoritative and adding the calibration version to the result fingerprint."
+    },
+    "replayProbes": [
+      {
+        "probeId": "probe-1",
+        "era": "2010s",
+        "coach": "tom-thibodeau",
+        "finalScore": {
+          "gold": 118,
+          "blue": 90
+        },
+        "fingerprint": {
+          "engineVersion": "3.2.0",
+          "possessionEngineVersion": "1.2.0",
+          "possessionCalibrationVersion": "1.2.0",
+          "actionLibraryVersion": "2.0.0",
+          "defensiveMatchupVersion": "1.2.0",
+          "zoneResolutionVersion": "1.0.0",
+          "coachAdjustmentVersion": "1.0.0",
+          "opportunityAllocationVersion": "1.0.0",
+          "playerDataVersion": "2026-08-24",
+          "playerIntelligenceVersion": "1.0.0",
+          "teamIntelligenceVersion": "1.0.0",
+          "coachDataVersion": "1.1.0",
+          "coachIntelligenceVersion": "1.0.0",
+          "eraDataVersion": "1.0.0",
+          "eraStyleVersion": "1.0.0",
+          "calibrationVersion": "backtest-1",
+          "runtimeParameterBindingVersion": "1.0.0",
+          "calibrationParameterRegistryVersion": "2.0.0",
+          "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+          "parameterSetStatus": "UNCALIBRATED_DEFAULTS",
+          "matchupFingerprint": "3e308bd8a6bdc09d",
+          "simulationSeed": 428478085
+        },
+        "fingerprintHash": "a0eb8af1a15dedce4d047d275ffc1500c37d2dee7fbac91f6db5c9c990856c4b",
+        "resultHash": "adc033fa3c45c0b5dec7eb736044fddcbd94b59633b84465b45567cc28e7e07d"
+      },
+      {
+        "probeId": "probe-2",
+        "era": "2020s",
+        "coach": "steve-kerr",
+        "finalScore": {
+          "gold": 107,
+          "blue": 123
+        },
+        "fingerprint": {
+          "engineVersion": "3.2.0",
+          "possessionEngineVersion": "1.2.0",
+          "possessionCalibrationVersion": "1.2.0",
+          "actionLibraryVersion": "2.0.0",
+          "defensiveMatchupVersion": "1.2.0",
+          "zoneResolutionVersion": "1.0.0",
+          "coachAdjustmentVersion": "1.0.0",
+          "opportunityAllocationVersion": "1.0.0",
+          "playerDataVersion": "2026-08-24",
+          "playerIntelligenceVersion": "1.0.0",
+          "teamIntelligenceVersion": "1.0.0",
+          "coachDataVersion": "1.1.0",
+          "coachIntelligenceVersion": "1.0.0",
+          "eraDataVersion": "1.0.0",
+          "eraStyleVersion": "1.0.0",
+          "calibrationVersion": "backtest-1",
+          "runtimeParameterBindingVersion": "1.0.0",
+          "calibrationParameterRegistryVersion": "2.0.0",
+          "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+          "parameterSetStatus": "UNCALIBRATED_DEFAULTS",
+          "matchupFingerprint": "bae404402c60500d",
+          "simulationSeed": 428478085
+        },
+        "fingerprintHash": "054e048c130462a74ce27b1c562fc578081f67ed2af673bf5d2118d6d443ab2f",
+        "resultHash": "fba6882da9d1d0e1a23ddcba03d9d627b7d2fc3377c639dcf5820cd3a550f453"
+      },
+      {
+        "probeId": "probe-3",
+        "era": "1960s",
+        "coach": "neutral",
+        "finalScore": {
+          "gold": 134,
+          "blue": 133
+        },
+        "fingerprint": {
+          "engineVersion": "3.2.0",
+          "possessionEngineVersion": "1.2.0",
+          "possessionCalibrationVersion": "1.2.0",
+          "actionLibraryVersion": "2.0.0",
+          "defensiveMatchupVersion": "1.2.0",
+          "coachAdjustmentVersion": "1.0.0",
+          "opportunityAllocationVersion": "1.0.0",
+          "playerDataVersion": "2026-08-24",
+          "playerIntelligenceVersion": "1.0.0",
+          "teamIntelligenceVersion": "1.0.0",
+          "coachDataVersion": "1.1.0",
+          "coachIntelligenceVersion": "1.0.0",
+          "eraDataVersion": "1.0.0",
+          "eraStyleVersion": "1.0.0",
+          "calibrationVersion": "backtest-1",
+          "runtimeParameterBindingVersion": "1.0.0",
+          "calibrationParameterRegistryVersion": "2.0.0",
+          "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+          "parameterSetStatus": "UNCALIBRATED_DEFAULTS",
+          "matchupFingerprint": "db2cd0afe3286580",
+          "simulationSeed": 428478085
+        },
+        "fingerprintHash": "c9684ad144ee9dca81227fd0dcf75f7d69deb12ef51cdced5bebcf9a6f58e896",
+        "resultHash": "9d7d8ff490ccf980f97dc846193102dca366cf4a4bf2ec539e88653941f4cfed"
+      }
+    ],
+    "replayIdentityDistinct": "each probe's fingerprint carries possessionCalibrationVersion 1.2.0 and possessionEngineVersion 1.2.0, so a Candidate 2 result can never be mistaken for or served from a Candidate 1 cache entry.",
+    "collisionCount": 0
+  },
+  "outputHash": "c11a7b9244ff6038ae03064d8827a935d286edcaecf826fdd4015732b67fb0c6"
+}

@@ -1,0 +1,641 @@
+{
+  "artifact": "assist-attribution-audit",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run c2:diagnose",
+  "generatedAt": "2026-08-27T14:40:49.191Z",
+  "gitCommit": "60943bdd575922fa00b038d2004b0393b3ab7865",
+  "branch": "phase-6c4c1-candidate2-trait-repair",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "assistAttributionAuditVersion": "1.0.0",
+    "separatedStages": {
+      "creation": "passCreatedOpportunityRate and eligibleAssistOpportunityRate, read from the ledger's secondary field",
+      "crediting": "assistCreditRate, the share of makes-after-a-pass that were awarded an assist",
+      "endToEnd": "assistedFGMRate and assistedRate"
+    },
+    "invariants": {
+      "astLeFgm": true,
+      "assistRequiresAPassCreatedOpportunity": true,
+      "assistRequiresATeammateMake": true,
+      "assistCreditedOnTheMakeNotAfterwards": "game.js credits the assist inside the made-field-goal branch. No post-hoc allocation exists and none is added.",
+      "deterministic": true
+    },
+    "perFamily": [
+      {
+        "coachId": "jerry-sloan",
+        "ballMovement": 7,
+        "families": [
+          {
+            "family": "PICK_AND_ROLL",
+            "frequency": 0.24539,
+            "passCreatedShare": 1,
+            "makeRate": 0.34265,
+            "assistCreditRate": 0.61538,
+            "assistedShareOfMakes": 0.61538,
+            "turnoverRate": 0.09756
+          },
+          {
+            "family": "OFF_BALL_SCREEN",
+            "frequency": 0.15808,
+            "passCreatedShare": 0.90872,
+            "makeRate": 0.39754,
+            "assistCreditRate": 0.70056,
+            "assistedShareOfMakes": 0.64319,
+            "turnoverRate": 0.08807
+          },
+          {
+            "family": "TRANSITION",
+            "frequency": 0.12045,
+            "passCreatedShare": 1,
+            "makeRate": 0.34128,
+            "assistCreditRate": 0.51922,
+            "assistedShareOfMakes": 0.51922,
+            "turnoverRate": 0.11233
+          },
+          {
+            "family": "SPOT_UP",
+            "frequency": 0.11895,
+            "passCreatedShare": 1,
+            "makeRate": 0.38221,
+            "assistCreditRate": 0.78135,
+            "assistedShareOfMakes": 0.78135,
+            "turnoverRate": 0.07443
+          },
+          {
+            "family": "GENERIC_HALF_COURT",
+            "frequency": 0.0979,
+            "passCreatedShare": 1,
+            "makeRate": 0.32937,
+            "assistCreditRate": 0.4749,
+            "assistedShareOfMakes": 0.4749,
+            "turnoverRate": 0.11304
+          },
+          {
+            "family": "CUT",
+            "frequency": 0.09612,
+            "passCreatedShare": 1,
+            "makeRate": 0.37624,
+            "assistCreditRate": 0.62262,
+            "assistedShareOfMakes": 0.62262,
+            "turnoverRate": 0.09715
+          },
+          {
+            "family": "ZONE_ATTACK",
+            "frequency": 0.08886,
+            "passCreatedShare": 1,
+            "makeRate": 0.3752,
+            "assistCreditRate": 0.82852,
+            "assistedShareOfMakes": 0.82852,
+            "turnoverRate": 0.10165
+          },
+          {
+            "family": "ISOLATION",
+            "frequency": 0.05963,
+            "passCreatedShare": 0,
+            "makeRate": 0.35637,
+            "assistCreditRate": null,
+            "assistedShareOfMakes": 0,
+            "turnoverRate": 0.0989
+          },
+          {
+            "family": "POST_UP",
+            "frequency": 0.01463,
+            "passCreatedShare": 1,
+            "makeRate": 0.37413,
+            "assistCreditRate": 0.59429,
+            "assistedShareOfMakes": 0.59429,
+            "turnoverRate": 0.093
+          }
+        ]
+      },
+      {
+        "coachId": "neutral",
+        "ballMovement": 5,
+        "families": [
+          {
+            "family": "OFF_BALL_SCREEN",
+            "frequency": 0.18265,
+            "passCreatedShare": 0.90815,
+            "makeRate": 0.39478,
+            "assistCreditRate": 0.6126,
+            "assistedShareOfMakes": 0.56625,
+            "turnoverRate": 0.09108
+          },
+          {
+            "family": "PICK_AND_ROLL",
+            "frequency": 0.16836,
+            "passCreatedShare": 1,
+            "makeRate": 0.34687,
+            "assistCreditRate": 0.52964,
+            "assistedShareOfMakes": 0.52964,
+            "turnoverRate": 0.09592
+          },
+          {
+            "family": "SPOT_UP",
+            "frequency": 0.135,
+            "passCreatedShare": 1,
+            "makeRate": 0.38408,
+            "assistCreditRate": 0.6698,
+            "assistedShareOfMakes": 0.6698,
+            "turnoverRate": 0.07722
+          },
+          {
+            "family": "TRANSITION",
+            "frequency": 0.13051,
+            "passCreatedShare": 1,
+            "makeRate": 0.35268,
+            "assistCreditRate": 0.44806,
+            "assistedShareOfMakes": 0.44806,
+            "turnoverRate": 0.11507
+          },
+          {
+            "family": "CUT",
+            "frequency": 0.09597,
+            "passCreatedShare": 1,
+            "makeRate": 0.37374,
+            "assistCreditRate": 0.53513,
+            "assistedShareOfMakes": 0.53513,
+            "turnoverRate": 0.10127
+          },
+          {
+            "family": "ISOLATION",
+            "frequency": 0.09404,
+            "passCreatedShare": 0,
+            "makeRate": 0.34385,
+            "assistCreditRate": null,
+            "assistedShareOfMakes": 0,
+            "turnoverRate": 0.09959
+          },
+          {
+            "family": "GENERIC_HALF_COURT",
+            "frequency": 0.09174,
+            "passCreatedShare": 1,
+            "makeRate": 0.32586,
+            "assistCreditRate": 0.41675,
+            "assistedShareOfMakes": 0.41675,
+            "turnoverRate": 0.11253
+          },
+          {
+            "family": "ZONE_ATTACK",
+            "frequency": 0.08687,
+            "passCreatedShare": 1,
+            "makeRate": 0.37737,
+            "assistCreditRate": 0.72294,
+            "assistedShareOfMakes": 0.72294,
+            "turnoverRate": 0.10492
+          },
+          {
+            "family": "POST_UP",
+            "frequency": 0.01486,
+            "passCreatedShare": 1,
+            "makeRate": 0.36292,
+            "assistCreditRate": 0.47598,
+            "assistedShareOfMakes": 0.47598,
+            "turnoverRate": 0.09562
+          }
+        ]
+      },
+      {
+        "coachId": "mike-dantoni",
+        "ballMovement": 6,
+        "families": [
+          {
+            "family": "PICK_AND_ROLL",
+            "frequency": 0.22935,
+            "passCreatedShare": 1,
+            "makeRate": 0.34557,
+            "assistCreditRate": 0.53699,
+            "assistedShareOfMakes": 0.53699,
+            "turnoverRate": 0.09748
+          },
+          {
+            "family": "TRANSITION",
+            "frequency": 0.16851,
+            "passCreatedShare": 1,
+            "makeRate": 0.36031,
+            "assistCreditRate": 0.44224,
+            "assistedShareOfMakes": 0.44224,
+            "turnoverRate": 0.11592
+          },
+          {
+            "family": "OFF_BALL_SCREEN",
+            "frequency": 0.14004,
+            "passCreatedShare": 0.90446,
+            "makeRate": 0.39685,
+            "assistCreditRate": 0.6006,
+            "assistedShareOfMakes": 0.54974,
+            "turnoverRate": 0.09217
+          },
+          {
+            "family": "SPOT_UP",
+            "frequency": 0.10486,
+            "passCreatedShare": 1,
+            "makeRate": 0.38656,
+            "assistCreditRate": 0.64926,
+            "assistedShareOfMakes": 0.64926,
+            "turnoverRate": 0.07945
+          },
+          {
+            "family": "ISOLATION",
+            "frequency": 0.09239,
+            "passCreatedShare": 0,
+            "makeRate": 0.35886,
+            "assistCreditRate": null,
+            "assistedShareOfMakes": 0,
+            "turnoverRate": 0.09396
+          },
+          {
+            "family": "GENERIC_HALF_COURT",
+            "frequency": 0.0904,
+            "passCreatedShare": 1,
+            "makeRate": 0.33156,
+            "assistCreditRate": 0.4032,
+            "assistedShareOfMakes": 0.4032,
+            "turnoverRate": 0.11633
+          },
+          {
+            "family": "ZONE_ATTACK",
+            "frequency": 0.08475,
+            "passCreatedShare": 1,
+            "makeRate": 0.36679,
+            "assistCreditRate": 0.71166,
+            "assistedShareOfMakes": 0.71166,
+            "turnoverRate": 0.1019
+          },
+          {
+            "family": "CUT",
+            "frequency": 0.07713,
+            "passCreatedShare": 1,
+            "makeRate": 0.37783,
+            "assistCreditRate": 0.5375,
+            "assistedShareOfMakes": 0.5375,
+            "turnoverRate": 0.1011
+          },
+          {
+            "family": "POST_UP",
+            "frequency": 0.01257,
+            "passCreatedShare": 1,
+            "makeRate": 0.35433,
+            "assistCreditRate": 0.4547,
+            "assistedShareOfMakes": 0.4547,
+            "turnoverRate": 0.08843
+          }
+        ]
+      },
+      {
+        "coachId": "rick-adelman",
+        "ballMovement": 9,
+        "families": [
+          {
+            "family": "OFF_BALL_SCREEN",
+            "frequency": 0.1755,
+            "passCreatedShare": 0.90521,
+            "makeRate": 0.39042,
+            "assistCreditRate": 0.74217,
+            "assistedShareOfMakes": 0.68136,
+            "turnoverRate": 0.08977
+          },
+          {
+            "family": "PICK_AND_ROLL",
+            "frequency": 0.16617,
+            "passCreatedShare": 1,
+            "makeRate": 0.34453,
+            "assistCreditRate": 0.64252,
+            "assistedShareOfMakes": 0.64252,
+            "turnoverRate": 0.09221
+          },
+          {
+            "family": "TRANSITION",
+            "frequency": 0.15432,
+            "passCreatedShare": 1,
+            "makeRate": 0.35052,
+            "assistCreditRate": 0.57924,
+            "assistedShareOfMakes": 0.57924,
+            "turnoverRate": 0.1156
+          },
+          {
+            "family": "SPOT_UP",
+            "frequency": 0.12794,
+            "passCreatedShare": 1,
+            "makeRate": 0.38513,
+            "assistCreditRate": 0.79185,
+            "assistedShareOfMakes": 0.79185,
+            "turnoverRate": 0.07696
+          },
+          {
+            "family": "CUT",
+            "frequency": 0.12029,
+            "passCreatedShare": 1,
+            "makeRate": 0.38123,
+            "assistCreditRate": 0.62513,
+            "assistedShareOfMakes": 0.62513,
+            "turnoverRate": 0.10401
+          },
+          {
+            "family": "ZONE_ATTACK",
+            "frequency": 0.08644,
+            "passCreatedShare": 1,
+            "makeRate": 0.37393,
+            "assistCreditRate": 0.88076,
+            "assistedShareOfMakes": 0.88076,
+            "turnoverRate": 0.10463
+          },
+          {
+            "family": "GENERIC_HALF_COURT",
+            "frequency": 0.08356,
+            "passCreatedShare": 1,
+            "makeRate": 0.3353,
+            "assistCreditRate": 0.50551,
+            "assistedShareOfMakes": 0.50551,
+            "turnoverRate": 0.11349
+          },
+          {
+            "family": "ISOLATION",
+            "frequency": 0.07041,
+            "passCreatedShare": 0,
+            "makeRate": 0.36218,
+            "assistCreditRate": null,
+            "assistedShareOfMakes": 0,
+            "turnoverRate": 0.09422
+          },
+          {
+            "family": "POST_UP",
+            "frequency": 0.01536,
+            "passCreatedShare": 1,
+            "makeRate": 0.38462,
+            "assistCreditRate": 0.63399,
+            "assistedShareOfMakes": 0.63399,
+            "turnoverRate": 0.08999
+          }
+        ]
+      },
+      {
+        "coachId": "gregg-popovich",
+        "ballMovement": 9,
+        "families": [
+          {
+            "family": "PICK_AND_ROLL",
+            "frequency": 0.1873,
+            "passCreatedShare": 1,
+            "makeRate": 0.34032,
+            "assistCreditRate": 0.65046,
+            "assistedShareOfMakes": 0.65046,
+            "turnoverRate": 0.09131
+          },
+          {
+            "family": "OFF_BALL_SCREEN",
+            "frequency": 0.1742,
+            "passCreatedShare": 0.90892,
+            "makeRate": 0.39232,
+            "assistCreditRate": 0.75507,
+            "assistedShareOfMakes": 0.6953,
+            "turnoverRate": 0.08719
+          },
+          {
+            "family": "TRANSITION",
+            "frequency": 0.12759,
+            "passCreatedShare": 1,
+            "makeRate": 0.34271,
+            "assistCreditRate": 0.56756,
+            "assistedShareOfMakes": 0.56756,
+            "turnoverRate": 0.11361
+          },
+          {
+            "family": "SPOT_UP",
+            "frequency": 0.1239,
+            "passCreatedShare": 1,
+            "makeRate": 0.38565,
+            "assistCreditRate": 0.79831,
+            "assistedShareOfMakes": 0.79831,
+            "turnoverRate": 0.07766
+          },
+          {
+            "family": "CUT",
+            "frequency": 0.11625,
+            "passCreatedShare": 1,
+            "makeRate": 0.37032,
+            "assistCreditRate": 0.63363,
+            "assistedShareOfMakes": 0.63363,
+            "turnoverRate": 0.09141
+          },
+          {
+            "family": "GENERIC_HALF_COURT",
+            "frequency": 0.09989,
+            "passCreatedShare": 1,
+            "makeRate": 0.3312,
+            "assistCreditRate": 0.51435,
+            "assistedShareOfMakes": 0.51435,
+            "turnoverRate": 0.11495
+          },
+          {
+            "family": "ZONE_ATTACK",
+            "frequency": 0.0886,
+            "passCreatedShare": 1,
+            "makeRate": 0.37791,
+            "assistCreditRate": 0.887,
+            "assistedShareOfMakes": 0.887,
+            "turnoverRate": 0.10412
+          },
+          {
+            "family": "ISOLATION",
+            "frequency": 0.06732,
+            "passCreatedShare": 0,
+            "makeRate": 0.36117,
+            "assistCreditRate": null,
+            "assistedShareOfMakes": 0,
+            "turnoverRate": 0.0931
+          },
+          {
+            "family": "POST_UP",
+            "frequency": 0.01494,
+            "passCreatedShare": 1,
+            "makeRate": 0.35696,
+            "assistCreditRate": 0.64818,
+            "assistedShareOfMakes": 0.64818,
+            "turnoverRate": 0.08859
+          }
+        ]
+      },
+      {
+        "coachId": "steve-kerr",
+        "ballMovement": 10,
+        "families": [
+          {
+            "family": "OFF_BALL_SCREEN",
+            "frequency": 0.18523,
+            "passCreatedShare": 0.90745,
+            "makeRate": 0.39603,
+            "assistCreditRate": 0.76406,
+            "assistedShareOfMakes": 0.70321,
+            "turnoverRate": 0.08795
+          },
+          {
+            "family": "TRANSITION",
+            "frequency": 0.15338,
+            "passCreatedShare": 1,
+            "makeRate": 0.36154,
+            "assistCreditRate": 0.58228,
+            "assistedShareOfMakes": 0.58228,
+            "turnoverRate": 0.11328
+          },
+          {
+            "family": "PICK_AND_ROLL",
+            "frequency": 0.14186,
+            "passCreatedShare": 1,
+            "makeRate": 0.34694,
+            "assistCreditRate": 0.65401,
+            "assistedShareOfMakes": 0.65401,
+            "turnoverRate": 0.09294
+          },
+          {
+            "family": "SPOT_UP",
+            "frequency": 0.13447,
+            "passCreatedShare": 1,
+            "makeRate": 0.38008,
+            "assistCreditRate": 0.78204,
+            "assistedShareOfMakes": 0.78204,
+            "turnoverRate": 0.07924
+          },
+          {
+            "family": "CUT",
+            "frequency": 0.12975,
+            "passCreatedShare": 1,
+            "makeRate": 0.38535,
+            "assistCreditRate": 0.62838,
+            "assistedShareOfMakes": 0.62838,
+            "turnoverRate": 0.1006
+          },
+          {
+            "family": "ZONE_ATTACK",
+            "frequency": 0.08817,
+            "passCreatedShare": 1,
+            "makeRate": 0.36533,
+            "assistCreditRate": 0.91289,
+            "assistedShareOfMakes": 0.91289,
+            "turnoverRate": 0.10951
+          },
+          {
+            "family": "GENERIC_HALF_COURT",
+            "frequency": 0.08267,
+            "passCreatedShare": 1,
+            "makeRate": 0.3302,
+            "assistCreditRate": 0.53365,
+            "assistedShareOfMakes": 0.53365,
+            "turnoverRate": 0.11707
+          },
+          {
+            "family": "ISOLATION",
+            "frequency": 0.0719,
+            "passCreatedShare": 0,
+            "makeRate": 0.36042,
+            "assistCreditRate": null,
+            "assistedShareOfMakes": 0,
+            "turnoverRate": 0.09708
+          },
+          {
+            "family": "POST_UP",
+            "frequency": 0.01257,
+            "passCreatedShare": 1,
+            "makeRate": 0.36881,
+            "assistCreditRate": 0.64345,
+            "assistedShareOfMakes": 0.64345,
+            "turnoverRate": 0.09725
+          }
+        ]
+      },
+      {
+        "coachId": "doug-moe",
+        "ballMovement": 10,
+        "families": [
+          {
+            "family": "OFF_BALL_SCREEN",
+            "frequency": 0.18194,
+            "passCreatedShare": 0.90422,
+            "makeRate": 0.3967,
+            "assistCreditRate": 0.77198,
+            "assistedShareOfMakes": 0.70519,
+            "turnoverRate": 0.09441
+          },
+          {
+            "family": "TRANSITION",
+            "frequency": 0.17024,
+            "passCreatedShare": 1,
+            "makeRate": 0.35881,
+            "assistCreditRate": 0.59097,
+            "assistedShareOfMakes": 0.59097,
+            "turnoverRate": 0.11098
+          },
+          {
+            "family": "CUT",
+            "frequency": 0.13406,
+            "passCreatedShare": 1,
+            "makeRate": 0.38278,
+            "assistCreditRate": 0.63716,
+            "assistedShareOfMakes": 0.63716,
+            "turnoverRate": 0.09832
+          },
+          {
+            "family": "SPOT_UP",
+            "frequency": 0.13259,
+            "passCreatedShare": 1,
+            "makeRate": 0.37808,
+            "assistCreditRate": 0.79285,
+            "assistedShareOfMakes": 0.79285,
+            "turnoverRate": 0.07666
+          },
+          {
+            "family": "PICK_AND_ROLL",
+            "frequency": 0.10957,
+            "passCreatedShare": 1,
+            "makeRate": 0.34029,
+            "assistCreditRate": 0.6524,
+            "assistedShareOfMakes": 0.6524,
+            "turnoverRate": 0.09658
+          },
+          {
+            "family": "GENERIC_HALF_COURT",
+            "frequency": 0.10373,
+            "passCreatedShare": 1,
+            "makeRate": 0.33643,
+            "assistCreditRate": 0.54702,
+            "assistedShareOfMakes": 0.54702,
+            "turnoverRate": 0.11791
+          },
+          {
+            "family": "ZONE_ATTACK",
+            "frequency": 0.08446,
+            "passCreatedShare": 1,
+            "makeRate": 0.37983,
+            "assistCreditRate": 0.93749,
+            "assistedShareOfMakes": 0.93749,
+            "turnoverRate": 0.10218
+          },
+          {
+            "family": "ISOLATION",
+            "frequency": 0.07029,
+            "passCreatedShare": 0,
+            "makeRate": 0.35592,
+            "assistCreditRate": null,
+            "assistedShareOfMakes": 0,
+            "turnoverRate": 0.10365
+          },
+          {
+            "family": "POST_UP",
+            "frequency": 0.01311,
+            "passCreatedShare": 1,
+            "makeRate": 0.38818,
+            "assistCreditRate": 0.67015,
+            "assistedShareOfMakes": 0.67015,
+            "turnoverRate": 0.08749
+          }
+        ]
+      }
+    ],
+    "finding": "attribution itself is sound. Every credited assist has a pass-created opportunity and a teammate make, AST <= FGM holds on every cell, and nothing is allocated after the box score. The defect is that the likelihood of crediting does not vary with the offensive identity that is supposed to drive it."
+  },
+  "outputHash": "8a9eb9fc4318d3bf982d96ef3b9361ef0ece3c2679246083c1dff2dd40b2da14"
+}

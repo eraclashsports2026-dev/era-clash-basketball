@@ -115,6 +115,13 @@ export const personnelCeiling = (defenders) => {
  * personnel ceiling) — so a scheme is never something the coach did not do,
  * the era did not allow, or the roster cannot execute.
  */
+/**
+ * How much of a coach's scheme intent transfers past what the personnel can
+ * execute on its own. `neutralIntent` is the generic coach's value in
+ * src/v3/coaches.js, which makes a generic coach a fixed point.
+ */
+export const SCHEME_TRANSFER = Object.freeze({ neutralIntent: 5, rate: 0.5 });
+
 export const buildSchemePlan = ({ coach, defenders, opponentThreats, era, eff }) => {
   const tk = coachToolkit(coach);
   const legal = eraLegality(era);
@@ -127,12 +134,66 @@ export const buildSchemePlan = ({ coach, defenders, opponentThreats, era, eff })
 
   const constrain = (intent, eraCap, personnelCap) => r1(clamp(Math.min(intent, eraCap, personnelCap), 0, 10));
 
+  /**
+   * A SCHEME dimension is not capped by raw personnel the way a physical
+   * ceiling is. Scheme is precisely what a coach uses to get team defence out
+   * of limited individual defenders, so truncating intent to personnel
+   * capability makes the whole dimension inexpressible.
+   *
+   * Historical V5 measured the consequence. helpCeiling sits near 3.0 for every
+   * calibration team while coach help intent runs 5 to 9, so the ceiling bound
+   * on all eight defences and collapsed the dimension to a 3.0-4.5 band. Worse,
+   * because the neutral coach's intent is 5 and truncation lands near 3.0, six
+   * of the eight defences had ABOVE-neutral intent realized BELOW the neutral
+   * default — the engine scored a documented elite defensive coach as less
+   * helping than a generic one. helpCommitment is helpAggression / 10, so
+   * Tom Thibodeau's help-9 defence conceded 0.00035 MORE points per possession
+   * than neutral, and coach help intent correlated with opponent scoring at
+   * Spearman +0.29: the wrong sign.
+   *
+   * The truncated value stays the base. A coach's intent RELATIVE TO THE
+   * NEUTRAL DEFAULT then transfers partially on top of it. Centring on the
+   * neutral default makes a generic coach an exact fixed point, so this
+   * differentiates coaching identity without shifting the league mean in either
+   * direction — a flat defensive bonus would move every team, and this moves
+   * only coaches who deviate from generic intent, in the direction they
+   * deviate. The era cap is still absolute: a scheme the rules forbid stays
+   * forbidden — and where it binds every coach to the same value, as the
+   * illegal-defence eras do for pre-rotated help, no coach differentiation is
+   * expressible and none is invented.
+   */
+  const transferScheme = (intent, eraCap, personnelCap) => {
+    const base = Math.min(intent, eraCap, personnelCap);
+    // The differential comes from the coach's OWN intent, not from the
+    // era-capped value. Taking it from the capped value made every coach in a
+    // restricted era collapse to one number, which erases identity a second
+    // time for a different reason. The era cap is then applied to the result,
+    // so a rule the era forbids stays forbidden and no coach exceeds it.
+    const differential = (intent - SCHEME_TRANSFER.neutralIntent) * SCHEME_TRANSFER.rate;
+    return r1(clamp(Math.min(base + differential, eraCap), 0, 10));
+  };
+
   const zoneUsage = constrain(tk.zonePreference, legal.maxZoneUsage, 10);
-  const switchingFrequency = constrain(tk.switching, 10, ceiling.switchCeiling);
-  const helpAggression = constrain(tk.helpAggression, legal.maxHelpAggression, ceiling.helpCeiling);
-  const pressureLevel = constrain(tk.pressure, legal.maxPressure, ceiling.pressureCeiling);
+  // Switching, help and pressure are SCHEME. Zone usage above is not: it is a
+  // binary legality question, so it keeps the hard constraint.
+  const switchingFrequency = transferScheme(tk.switching, 10, ceiling.switchCeiling);
+  const helpAggression = transferScheme(tk.helpAggression, legal.maxHelpAggression, ceiling.helpCeiling);
+  const pressureLevel = transferScheme(tk.pressure, legal.maxPressure, ceiling.pressureCeiling);
+
+  // How much of each scheme dimension is the COACH rather than the personnel:
+  // the realized value minus what this same personnel would realize under a
+  // generic coach in this same era. Zero for a neutral coach on any roster and
+  // in any era, which is what lets a consumer use it without shifting the
+  // league mean. Carried on the plan so the possession engine can read the
+  // coaching contribution without rebuilding a second plan per shot.
+  const neutralHelp = transferScheme(SCHEME_TRANSFER.neutralIntent, legal.maxHelpAggression, ceiling.helpCeiling);
+  const neutralPressure = transferScheme(SCHEME_TRANSFER.neutralIntent, legal.maxPressure, ceiling.pressureCeiling);
+  const neutralSwitching = transferScheme(SCHEME_TRANSFER.neutralIntent, 10, ceiling.switchCeiling);
 
   return {
+    helpDifferential: r1(helpAggression - neutralHelp),
+    pressureDifferential: r1(pressureLevel - neutralPressure),
+    switchingDifferential: r1(switchingFrequency - neutralSwitching),
     // Shell type is chosen from what is LEGAL, then from what the coach prefers.
     shellType: zoneUsage >= 5 ? "ZONE_MIXED"
       : legal.illegalDefenseRestrictions ? "MAN_ILLEGAL_DEFENSE"
