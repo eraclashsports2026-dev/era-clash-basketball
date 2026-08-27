@@ -1,0 +1,107 @@
+{
+  "artifact": "phase6c4b2-validation-package",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run v5:readiness",
+  "generatedAt": "2026-08-27T04:46:20.656Z",
+  "gitCommit": "3db4e7b8202a3658b20b51c0b5ac1df204182e1d",
+  "branch": "phase-6c4b1-v5-freeze-and-seal",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "phase6C4B2ValidationPackageVersion": "1.0.0",
+    "candidate": {
+      "candidateId": "Candidate 1",
+      "lockRevision": 2,
+      "coreHash": "de57e1a96e1fd1450d1aea9c5463b0138a56d77bbf58c748ba042e6f78f5c94d",
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "possessionCalibrationVersion": "1.1.0",
+      "calibrationStatus": "DEVELOPMENT_LOCKED_SCOPED",
+      "validationAttemptStatus": "NOT_RUN"
+    },
+    "candidateCommit": "c370182bb805cd068427283ce2b45a7eda725d1c",
+    "holdout": {
+      "set": "historical-holdout-v5",
+      "setVersion": "5.0.0",
+      "state": "SEALED_UNREAD",
+      "accessCount": 0,
+      "manifestHash": "2ecaf7dbbc4338446d971af6954b46a9924f29fb8052ba044fc83fcf5ebcbcff",
+      "selectionHash": "6023ccf55b6ae034898787fe2833c1349ca85bae47c10994cd061fda29ba1842",
+      "acceptancePolicyHash": "64abec44451702338af814f388bcc16748df490e4e0a8b7fb0dfb2e6196a6cc1",
+      "practicalMarginPolicyHash": "f92f05a662eb5c2820b2011761c65a454132ee0badd8ce1b70c1edf76bac704b",
+      "seedHash": "d288e8c5754a04f8053b6a29b5892f224bb981c181b95e1a01499a33bf4564c5",
+      "sealHash": "14b17792344cce81321f3cb2d944ada64cbe6a9a30bac5209962cdf94fb01ec2",
+      "eraReferenceCertificationHash": "e8482201d390fe076ef508821e1c010cc0685cf1d183d4a2d46dfb5c1a690e4f",
+      "observabilityCertificationHash": "b6976ba81c26aca61f58653010c7ed02708f6fd12693e44b876176ee1bd98c7a"
+    },
+    "runner": {
+      "version": "3.0.0",
+      "module": "scripts/validation/historical-holdout-v5.mjs",
+      "command": "npm run validation:historical-v5 -- --unlock-holdout --unlock-historical-holdout-v5 --operator=\"...\" --reason=\"...\""
+    },
+    "expectedRuntime": {
+      "totalGames": 98304,
+      "estimateNote": "at the ~560 games/sec measured in Phase 6C4A's internal validation, 98304 games is roughly 3 minutes of simulation, plus scoring"
+    },
+    "accessEventProcedure": [
+      "1. Verify the repository is clean and the branch tip matches its remote.",
+      "2. Run the command below with a real --operator and a --reason of substance; both are required and recorded.",
+      "3. The runner verifies every bound hash BEFORE touching the seal and refuses if any moved. A refusal leaves the access count at 0.",
+      "4. On success the access count becomes 1, permanently. There is no second run."
+    ],
+    "resumePolicy": "A crash after the unlock has already consumed the access event. Re-run with --resume to continue under the SAME event; a fresh run is refused with SECOND_RUN_REFUSED. An identity change on resume is refused with IDENTITY_MISMATCH.",
+    "commands": {
+      "historicalV5": "npm run validation:historical-v5 -- --unlock-holdout --unlock-historical-holdout-v5 --operator=\"<name>\" --reason=\"<why>\"",
+      "syntheticV2": "npm run validation:synthetic-v2 -- --unlock-holdout --unlock-synthetic-stress-holdout-v2 --operator=\"<name>\" --reason=\"<why>\"",
+      "formalVerdict": "npm run validation:candidate1-formal-verdict"
+    },
+    "commandsExecutedInThisPhase": {
+      "historicalV5": 0,
+      "syntheticV2": 0,
+      "formalVerdict": 0
+    },
+    "formalVerdictRules": {
+      "pass": "HISTORICAL_HOLDOUT_V5_PASS",
+      "fail": "HISTORICAL_HOLDOUT_V5_FAIL",
+      "invalid": "HISTORICAL_HOLDOUT_V5_INVALID_RUN",
+      "traitRule": "direction opposite to the claim AND the 95% interval excludes zero AND |difference| > margin[metric]",
+      "aggregate": {
+        "minTraitPassRate": 0.75,
+        "maxHardFails": 0,
+        "perFixtureRule": "no matchup may fail a majority of its scored traits",
+        "perEraRule": "no era style may fail every scored trait of its matchup"
+      },
+      "structural": {
+        "zeroInvariantFailures": true,
+        "zeroFinalTies": true,
+        "replayExactPerSurface": true,
+        "zeroImpossibleScores": true,
+        "zeroPreThreeEraThreePointAttempts": true,
+        "candidateIdentityStated": "every result must state candidateId, core hash, parameter-set hash and calibration version",
+        "coreHashMustEqual": "de57e1a96e1fd1450d1aea9c5463b0138a56d77bbf58c748ba042e6f78f5c94d",
+        "parameterSetHashMustEqual": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+        "calibrationVersionMustEqual": "1.1.0"
+      },
+      "onFail": "FAIL preserves every artifact, forbids tuning against V5, keeps Synthetic V2 sealed, and ends formal validation for Candidate 1. INVALID_RUN resumes under the SAME access event only.",
+      "syntheticGate": "Synthetic Stress Holdout V2 may be opened only AFTER Historical V5 passes. A historical failure keeps it sealed."
+    },
+    "previewPrerequisites": [
+      "Historical V5 PASS",
+      "Synthetic Stress Holdout V2 PASS",
+      "an explicit preview authorisation",
+      "production flags still false",
+      "no main merge"
+    ],
+    "productionIsolationRequirements": [
+      "engineVersion stays 3.2.0",
+      "appVersion stays 2.7.2",
+      "every possession-engine flag stays false",
+      "no production namespace is written",
+      "production activation requires an explicit CEO GO LIVE and is out of scope for 6C4B2"
+    ],
+    "packageHash": "0bcdd736744389f48a279b7c92ceabc2b68b515bd58400a43d7ee8af7f0ee616"
+  },
+  "outputHash": "2176af03de2de231b94725f694ce80a185928ff3713e0eec048efdd537dafa25"
+}

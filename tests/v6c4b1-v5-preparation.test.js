@@ -710,3 +710,107 @@ describe("6C4B1 WS13 — the V5 seal", () => {
     expect(s.otherSeals["historical-holdout-v4"].accessCount).toBe(1);
   });
 });
+
+describe("6C4B1 WS14 — final readiness and the B2 package", () => {
+  const r = R("historical-v5-readiness-final").data;
+  const pkg = R("phase6c4b2-validation-package").data;
+  const audit = R("historical-v5-blocker-audit").data;
+
+  it("resolves every registered blocker through its artifact", () => {
+    const reg = R("historical-v5-blocker-register").data;
+    expect(audit.totalBlockers).toBe(reg.sourceBlockerCount);
+    expect(audit.resolvedBlockers).toBe(audit.totalBlockers);
+    expect(audit.unresolvedBlockers).toBe(0);
+    expect(audit.pass).toBe(true);
+    for (const b of audit.blockers) {
+      expect(b.currentStatus, b.blockerId).toBe("RESOLVED");
+      expect(b.resolvedByArtifactHash, b.blockerId).toMatch(/^[0-9a-f]{64}$/);
+    }
+    // the phase-start register is a historical record and is NOT rewritten
+    expect(reg.blockers.every((b) => b.currentStatus === "OPEN")).toBe(true);
+  });
+
+  it("declares every readiness fact ready and V5 openable in 6C4B2", () => {
+    for (const [k, v] of Object.entries(r)) if (typeof v === "boolean" && k !== "mayOpenInPhase6C4B2") expect(v, k).toBe(true);
+    expect(r.mayOpenInPhase6C4B2).toBe(true);
+    expect(r.gatesFailed).toEqual([]);
+  });
+
+  it("reports the true holdout state", () => {
+    expect(r.holdoutState.historicalHoldoutV5).toMatchObject({ state: "SEALED_UNREAD", accessCount: 0, verdict: "NOT_RUN" });
+    expect(r.holdoutState.syntheticStressHoldoutV2).toMatchObject({ state: "SEALED_UNREAD", accessCount: 0 });
+    expect(r.holdoutState.historicalHoldoutV3).toMatchObject({ state: "CONSUMED", accessCount: 1, verdict: "FAIL" });
+    expect(r.holdoutState.historicalHoldoutV4).toMatchObject({ state: "CONSUMED", accessCount: 1, verdict: "FAIL" });
+  });
+
+  it("records limitations rather than implying completeness", () => {
+    expect(r.limitations.length).toBeGreaterThanOrEqual(5);
+    for (const l of r.limitations) expect(l.detail.length).toBeGreaterThan(80);
+    const ids = r.limitations.map((l) => l.id);
+    expect(ids).toContain("PAIR_TYPES_ALL_SAME_ERA_CONTRAST");
+    expect(ids).toContain("FOUR_METRICS_UNCERTIFIED");
+    expect(ids).toContain("MODULE_VERSIONS_STALE");
+  });
+
+  it("prepares the B2 package without executing a single holdout command", () => {
+    expect(pkg.commandsExecutedInThisPhase.historicalV5).toBe(0);
+    expect(pkg.commandsExecutedInThisPhase.syntheticV2).toBe(0);
+    expect(pkg.commandsExecutedInThisPhase.formalVerdict).toBe(0);
+    expect(pkg.holdout.state).toBe("SEALED_UNREAD");
+    expect(pkg.holdout.accessCount).toBe(0);
+    expect(pkg.packageHash).toMatch(/^[0-9a-f]{64}$/);
+    expect(pkg.formalVerdictRules.syntheticGate).toContain("only AFTER");
+    expect(pkg.productionIsolationRequirements.join(" ")).toContain("3.2.0");
+  });
+});
+
+describe("6C4B1 phase discipline", () => {
+  const sum = R("phase6c4b1-final-summary").data;
+
+  it("wrote every artifact and every one verifies", () => {
+    expect(sum.artifactsWritten).toBeGreaterThanOrEqual(20);
+    expect(sum.artifactsInvalid).toBe(0);
+  });
+
+  it("reaches the sealed-and-ready outcome", () => {
+    expect(sum.outcome).toBe("HISTORICAL_V5_SEALED_READY_FOR_ONE_TIME_FORMAL_VALIDATION");
+    expect(sum.mayOpenInPhase6C4B2).toBe(true);
+    expect(sum.nextPhase).toContain("6C4B2");
+  });
+
+  it("respected every scope commitment", () => {
+    for (const [k, v] of Object.entries(sum.scopeRespected)) expect(v, k).toBe(true);
+    expect(sum.productionIsolation.engineVersion).toBe("3.2.0");
+    expect(sum.productionIsolation.appVersion).toBe("2.7.2");
+    expect(sum.productionIsolation.main).toBe("9cd95ff");
+    expect(sum.productionIsolation.branch).not.toBe("main");
+  });
+
+  it("reconciles blocker accounting end to end", () => {
+    expect(sum.blockers.source).toBe(sum.blockers.registered);
+    expect(sum.blockers.resolved).toBe(sum.blockers.source);
+    expect(sum.blockers.unresolved).toBe(0);
+  });
+
+  it("renders every phase document from an artifact", () => {
+    for (const doc of ["candidate1-core-certification", "candidate1-identity-separation",
+      "realized-zone-measurement-certification", "era-reference-certification-candidate1",
+      "historical-observability-certification-candidate1", "historical-v5-practical-margin-policy",
+      "historical-v5-candidate-pool-v2", "historical-v5-selection", "historical-v5-manifest",
+      "historical-v5-seeds", "historical-v5-runner-dry-run", "historical-v5-seal",
+      "historical-v5-readiness-final", "phase-6c4b2-validation-package", "phase-6c4b1-limitations"]) {
+      const body = readFileSync(`docs/simulation-v3/${doc}.md`, "utf8");
+      expect(body.startsWith("<!-- RENDERED FROM ARTIFACT"), `${doc} must be rendered`).toBe(true);
+      expect(body, doc).toContain("outputHash:");
+    }
+  });
+
+  it("keeps the V5 runner unreachable from any normal command", () => {
+    const pkgJson = JSON.parse(readFileSync("package.json", "utf8"));
+    const v5Scripts = Object.entries(pkgJson.scripts).filter(([, cmd]) => cmd.includes("historical-holdout-v5.mjs"));
+    expect(v5Scripts).toHaveLength(1);
+    expect(v5Scripts[0][0]).toBe("validation:historical-v5");
+    // the runner needs BOTH unlock flags; neither is in the script itself
+    expect(v5Scripts[0][1]).not.toContain("--unlock");
+  });
+});
