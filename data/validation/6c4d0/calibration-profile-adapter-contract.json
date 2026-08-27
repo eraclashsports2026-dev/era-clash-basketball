@@ -1,0 +1,168 @@
+{
+  "artifact": "calibration-profile-adapter-contract",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run d0:certify-data-plane",
+  "generatedAt": "2026-08-27T22:28:05.859Z",
+  "gitCommit": "1f9ac6ee3d79cc54997236e94c47dc13db0b9e83",
+  "branch": "phase-6c4d0-v6-invalidity-and-profile-repair",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "calibrationProfileAdapterContractVersion": "1.0.0",
+    "adapter": "src/v3/calibration/calibrationPlayerAdapter.js (frozen Candidate 2 core file — the contract is enforced in the validation layer before a record reaches it)",
+    "fields": [
+      {
+        "fieldId": "calibrationPlayerId",
+        "domain": "identity",
+        "required": true,
+        "nullable": false,
+        "type": "string"
+      },
+      {
+        "fieldId": "calibrationPersonId",
+        "domain": "identity",
+        "required": true,
+        "nullable": false,
+        "type": "string"
+      },
+      {
+        "fieldId": "publicPersonId",
+        "domain": "identity",
+        "required": true,
+        "nullable": true,
+        "type": "string",
+        "confidenceEffect": "linkage enables person-prior inheritance"
+      },
+      {
+        "fieldId": "name",
+        "domain": "identity",
+        "required": true,
+        "nullable": false,
+        "type": "string"
+      },
+      {
+        "fieldId": "seasonStartYear",
+        "domain": "seasonStartYear",
+        "required": true,
+        "nullable": false,
+        "type": "integer",
+        "prohibition": "NaN here produces decade 'NaNs' downstream — the exact V6 defect"
+      },
+      {
+        "fieldId": "eraStyleId",
+        "domain": "identity",
+        "required": true,
+        "nullable": false,
+        "type": "string"
+      },
+      {
+        "fieldId": "primaryPosition",
+        "domain": "positions",
+        "required": true,
+        "nullable": false,
+        "type": "enum:PG|SG|SF|PF|C"
+      },
+      {
+        "fieldId": "secondaryPositions",
+        "domain": "positions",
+        "required": true,
+        "nullable": false,
+        "type": "string[]",
+        "defaultPolicy": "empty array is valid data (no secondary positions), not missing data"
+      },
+      {
+        "fieldId": "lineupRole",
+        "domain": "usage",
+        "required": true,
+        "nullable": false,
+        "type": "enum:STARTER|ROTATION|RESERVE|MARGINAL"
+      },
+      {
+        "fieldId": "basicStats",
+        "domain": "perGameStats",
+        "required": true,
+        "nullable": false,
+        "type": "object",
+        "fallbackPolicy": "individual stats may be null (unrecorded in era); the OBJECT itself must exist"
+      },
+      {
+        "fieldId": "rateStats",
+        "domain": "rateStats",
+        "required": true,
+        "nullable": true,
+        "type": "object"
+      },
+      {
+        "fieldId": "shootingProfile",
+        "domain": "shootingProfile",
+        "required": true,
+        "nullable": true,
+        "type": "object",
+        "prohibition": "an ABSENT object silently pinned spacingGravity to one fallback value across all sixteen V6 sides. Absent ⇒ refuse; explicitly null fields inside ⇒ allowed with confidence effect"
+      },
+      {
+        "fieldId": "offensiveRoles",
+        "domain": "offensiveRoles",
+        "required": true,
+        "nullable": false,
+        "type": "string[]",
+        "defaultPolicy": "empty array must carry roleResolution INSUFFICIENT_EVIDENCE via enrichment detail, never appear as silently-normal evidence"
+      },
+      {
+        "fieldId": "defensiveEvidence",
+        "domain": "defensiveEvidence",
+        "required": true,
+        "nullable": true,
+        "type": "object",
+        "fallbackPolicy": "null means no documented evidence; measured steals/blocks remain the evidence. Never becomes zero defense."
+      },
+      {
+        "fieldId": "physicalProfile",
+        "domain": "physical",
+        "required": true,
+        "nullable": true,
+        "type": "object"
+      },
+      {
+        "fieldId": "accolades",
+        "domain": "awards",
+        "required": false,
+        "nullable": true,
+        "type": "string[]",
+        "defaultPolicy": "optional list; absent on every store record by design"
+      },
+      {
+        "fieldId": "provenance",
+        "domain": "provenance",
+        "required": true,
+        "nullable": false,
+        "type": "object"
+      },
+      {
+        "fieldId": "confidence",
+        "domain": "confidence",
+        "required": true,
+        "nullable": false,
+        "type": "string"
+      }
+    ],
+    "requiredFieldCount": 17,
+    "prohibitions": [
+      "NaN season",
+      "NaN decade",
+      "\"NaNs\" labels",
+      "numeric strings",
+      "missing object as data",
+      "hidden shooting average without provenance",
+      "missing defense as zero",
+      "silent empty roles",
+      "null→zero",
+      "unprovenanced fallback"
+    ],
+    "enforcement": "scripts/validation/adapterContract.mjs validateCalibrationRecord / validateBuiltProfile"
+  },
+  "outputHash": "453a802304ad421ea157403ec0231771d3686df8efb46af6f0cc251147879122"
+}

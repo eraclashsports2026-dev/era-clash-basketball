@@ -2,9 +2,9 @@
   "artifact": "idea101-resolution-ledger",
   "schemaVersion": "1.0.0",
   "measurementGovernanceVersion": "1.0.0",
-  "generationCommand": "npm run d0:ledger",
-  "generatedAt": "2026-08-27T22:21:28.995Z",
-  "gitCommit": "6674a1502c3af2957ccc7dd3d5072eb87fa038b2",
+  "generationCommand": "ledger applyClosures",
+  "generatedAt": "2026-08-27T22:28:05.987Z",
+  "gitCommit": "1f9ac6ee3d79cc54997236e94c47dc13db0b9e83",
   "branch": "phase-6c4d0-v6-invalidity-and-profile-repair",
   "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
   "registryVersion": "2.0.0",
@@ -31,11 +31,14 @@
         "issueId": "i02",
         "description": "hard-coded calibration store imports in the runner profile map",
         "severity": "CRITICAL",
-        "rootCause": null,
-        "files": [],
-        "resolutionStatus": "OPEN",
-        "implementedFix": null,
-        "verification": null,
+        "rootCause": "buildRunnerProfileMap hard-coded v3+v4 imports",
+        "files": [
+          "scripts/validation/storeRegistry.mjs",
+          "scripts/validation/profileMap.mjs"
+        ],
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "implementedFix": "versioned store registry; profileMap loads through it and no longer knows store names",
+        "verification": "registry audit: 5 stores, 560 profiles, order-independent, 0 unregistered",
         "regressionTests": [],
         "remainingRisk": null,
         "externalDependency": null
@@ -44,11 +47,13 @@
         "issueId": "i03",
         "description": "v5/v6 stores omitted from the runner map — every V6 player fell back",
         "severity": "CRITICAL",
-        "rootCause": null,
-        "files": [],
-        "resolutionStatus": "OPEN",
-        "implementedFix": null,
-        "verification": null,
+        "rootCause": "v5/v6 stores missing from the map",
+        "files": [
+          "data/calibration/calibration-profile-store-registry.json"
+        ],
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "implementedFix": "all four base stores plus enrichment registered",
+        "verification": "80/80 V6 players resolve FULL_RECORD; resolution audit pass",
         "regressionTests": [],
         "remainingRisk": null,
         "externalDependency": null
@@ -57,11 +62,13 @@
         "issueId": "i04",
         "description": "manifest fallback used instead of full records when full records exist",
         "severity": "CRITICAL",
-        "rootCause": null,
-        "files": [],
-        "resolutionStatus": "OPEN",
-        "implementedFix": null,
-        "verification": null,
+        "rootCause": "runner substituted 13-field manifest rows",
+        "files": [
+          "scripts/validation/adapterContract.mjs"
+        ],
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "implementedFix": "validateCalibrationRecord refuses incomplete records; manifest-row negative path refused in dry run",
+        "verification": "manifestRowRefused negative path INCOMPLETE_RECORD",
         "regressionTests": [],
         "remainingRisk": null,
         "externalDependency": null
@@ -70,11 +77,13 @@
         "issueId": "i05",
         "description": "profile adapter contract undefined; 12 of 18 inputs silently absent",
         "severity": "CRITICAL",
-        "rootCause": null,
-        "files": [],
-        "resolutionStatus": "OPEN",
-        "implementedFix": null,
-        "verification": null,
+        "rootCause": "no adapter contract existed",
+        "files": [
+          "scripts/validation/adapterContract.mjs"
+        ],
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "implementedFix": "18-field typed contract with prohibitions, enforced pre-adapter",
+        "verification": "contract holds on all 560 records",
         "regressionTests": [],
         "remainingRisk": null,
         "externalDependency": null
@@ -83,11 +92,13 @@
         "issueId": "i06",
         "description": "NaN decade values on every V6 subject side",
         "severity": "HIGH",
-        "rootCause": null,
-        "files": [],
-        "resolutionStatus": "OPEN",
-        "implementedFix": null,
-        "verification": null,
+        "rootCause": "NaN seasonStartYear on manifest rows -> NaN decade",
+        "files": [
+          "scripts/validation/adapterContract.mjs"
+        ],
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "implementedFix": "NaN season refused at validation; output validator refuses NaN decade",
+        "verification": "0 NaN decades across 560 built profiles",
         "regressionTests": [],
         "remainingRisk": null,
         "externalDependency": null
@@ -96,11 +107,13 @@
         "issueId": "i07",
         "description": "uniform hidden spacingGravity fallback (4.30) across all sixteen sides",
         "severity": "HIGH",
-        "rootCause": null,
-        "files": [],
-        "resolutionStatus": "OPEN",
-        "implementedFix": null,
-        "verification": null,
+        "rootCause": "absent shootingProfile object -> silent uniform spacing fallback",
+        "files": [
+          "scripts/validation/adapterContract.mjs"
+        ],
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "implementedFix": "absent shootingProfile OBJECT refused; explicit null fields allowed with recorded fallback",
+        "verification": "missingShootingProfileObjectRefused negative path; fallback audit has 0 hidden averages",
         "regressionTests": [],
         "remainingRisk": null,
         "externalDependency": null
@@ -109,11 +122,13 @@
         "issueId": "i08",
         "description": "subject/reference profile-path asymmetry",
         "severity": "CRITICAL",
-        "rootCause": null,
-        "files": [],
-        "resolutionStatus": "OPEN",
-        "implementedFix": null,
-        "verification": null,
+        "rootCause": "subjects resolved via manifest rows, references via full store records",
+        "files": [
+          "scripts/validation/profileMap.mjs"
+        ],
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "implementedFix": "one registry, one resolver, one contract for both",
+        "verification": "parity artifact: 0 unexplained asymmetry, full resolution both sides",
         "regressionTests": [],
         "remainingRisk": null,
         "externalDependency": null
@@ -122,11 +137,14 @@
         "issueId": "i09",
         "description": "offensiveRoles empty across all 560 active calibration records",
         "severity": "HIGH",
-        "rootCause": null,
-        "files": [],
-        "resolutionStatus": "OPEN",
-        "implementedFix": null,
-        "verification": null,
+        "rootCause": "offensiveRoles never populated by any store builder",
+        "files": [
+          "scripts/d0/backfill.mjs",
+          "data/calibration/calibration-enrichment-v1.json"
+        ],
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "implementedFix": "enrichment backfill: 377 role sets with provenance, 183 explicit INSUFFICIENT_EVIDENCE",
+        "verification": "role coverage artifact; 0 silent empty roles",
         "regressionTests": [],
         "remainingRisk": null,
         "externalDependency": null
@@ -135,11 +153,13 @@
         "issueId": "i10",
         "description": "defensive evidence missing on most post-1974 records (e.g. a DPOY season rating near average)",
         "severity": "HIGH",
-        "rootCause": null,
-        "files": [],
-        "resolutionStatus": "OPEN",
-        "implementedFix": null,
-        "verification": null,
+        "rootCause": "post-1974 records carried no documented defensive evidence",
+        "files": [
+          "scripts/d0/backfill.mjs"
+        ],
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "implementedFix": "person-prior bands from public-card award counts, decade-matched",
+        "verification": "37 bands added; DPOY-season Garnett floors at 8.5 interior",
         "regressionTests": [],
         "remainingRisk": null,
         "externalDependency": null
@@ -148,11 +168,14 @@
         "issueId": "i11",
         "description": "runner preflight unable to detect an incomplete profile map before access",
         "severity": "CRITICAL",
-        "rootCause": null,
-        "files": [],
-        "resolutionStatus": "OPEN",
-        "implementedFix": null,
-        "verification": null,
+        "rootCause": "no preflight could detect an incomplete profile map",
+        "files": [
+          "scripts/validation/profileMap.mjs",
+          "scripts/d0/certifyDataPlane.mjs"
+        ],
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "implementedFix": "19-check preflight module + mock dry run with negative paths",
+        "verification": "all negative paths refuse; access deltas 0",
         "regressionTests": [],
         "remainingRisk": null,
         "externalDependency": null
@@ -161,11 +184,13 @@
         "issueId": "i12",
         "description": "diagnostic cluster recorder read observed/reference — fields absent from the trait schema",
         "severity": "MEDIUM",
-        "rootCause": null,
-        "files": [],
-        "resolutionStatus": "OPEN",
-        "implementedFix": null,
-        "verification": null,
+        "rootCause": "cluster recorder read fields absent from the trait schema",
+        "files": [
+          "scripts/candidate3/clusterSchema.mjs"
+        ],
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "implementedFix": "readTraitField throws on unknown fields; validateHardFailCluster refuses null means",
+        "verification": "unit-verified at module creation; regression tests added this phase",
         "regressionTests": [],
         "remainingRisk": null,
         "externalDependency": null
@@ -328,20 +353,9 @@
       }
     ],
     "itemCount": 24,
-    "unresolvedTechnicalFailures": 24,
+    "unresolvedTechnicalFailures": 13,
     "unresolvedIds": [
       "i01",
-      "i02",
-      "i03",
-      "i04",
-      "i05",
-      "i06",
-      "i07",
-      "i08",
-      "i09",
-      "i10",
-      "i11",
-      "i12",
       "i13",
       "i14",
       "i15",
@@ -356,5 +370,5 @@
       "i24"
     ]
   },
-  "outputHash": "a4ac72367ff15e3b79ae0a6facd4891a8bf22c575e3cb24b0f528e46eeadf6c2"
+  "outputHash": "5063435b227ef1b5d9e1691a193c434c74e872d182eee9bce84fc90fad2cb255"
 }

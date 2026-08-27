@@ -1,0 +1,60 @@
+{
+  "artifact": "historical-runner-profile-dry-run",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run d0:certify-data-plane",
+  "generatedAt": "2026-08-27T22:28:05.970Z",
+  "gitCommit": "1f9ac6ee3d79cc54997236e94c47dc13db0b9e83",
+  "branch": "phase-6c4d0-v6-invalidity-and-profile-repair",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "historicalValidationDataPlaneVersion": "1.0.0",
+    "positive": {
+      "mockFixtures": 2,
+      "resolved": 50,
+      "required": 50,
+      "builtProfilesValid": true
+    },
+    "negative": [
+      {
+        "name": "missingRegisteredStore",
+        "refused": true,
+        "code": "REGISTRY_MISSING",
+        "matches": true
+      },
+      {
+        "name": "unresolvedProfileRefused",
+        "refused": true,
+        "code": "UNRESOLVED",
+        "matches": true
+      },
+      {
+        "name": "nanSeasonRefused",
+        "refused": true,
+        "code": "NAN_OR_NON_NUMERIC",
+        "matches": true
+      },
+      {
+        "name": "manifestRowRefused",
+        "refused": true,
+        "code": "INCOMPLETE_RECORD",
+        "matches": true
+      },
+      {
+        "name": "missingShootingProfileObjectRefused",
+        "refused": true,
+        "code": "INCOMPLETE_RECORD",
+        "matches": true
+      }
+    ],
+    "realHoldoutAccessDelta": {
+      "historical-holdout-v6": 0,
+      "synthetic-stress-holdout-v2": 0
+    },
+    "pass": true
+  },
+  "outputHash": "d19e31f79f7af5d1f455a58583b9125da3700cfa76bf8458c7a1c80fe88406d1"
+}
