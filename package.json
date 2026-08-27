@@ -20,6 +20,8 @@
     "c1:preflight": "node scripts/candidate1/preflight6c4a.mjs",
     "c1:report": "node scripts/candidate1/report6c4a.mjs",
     "syn:summary": "node scripts/synthetic/finalSummary.mjs",
+    "v6:players": "node scripts/v6/buildPlayersV6.mjs",
+    "v6:eligibility": "node scripts/v6/eligibility.mjs",
     "v6:reconcile": "node scripts/v6/reconcile.mjs",
     "c2:summary": "node scripts/candidate2/summary.mjs",
     "c2:v6pool": "node scripts/candidate2/v6pool.mjs",
@@ -210,7 +212,8 @@
     "research:refresh-player": "node scripts/research/players.mjs --force",
     "research:verify-players": "node scripts/research/players.mjs --verify",
     "simulation:replay": "node scripts/simulation-replay.mjs",
-    "test": "vitest run"
+    "test": "vitest run",
+    "v6:selection": "node scripts/v6/selection.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",
