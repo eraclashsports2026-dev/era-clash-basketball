@@ -159,5 +159,50 @@ ${Object.entries(d.metrics).map(([m, v]) => `| \`${m}\` | ${v.margin} | ${v.unit
 Noise basis: ${d.noiseBasis}.`);
   }
 
+  if (has("candidate1-root-cause-analysis")) {
+    const A = R("candidate1-root-cause-analysis"); const d = A.data;
+    write("candidate1-root-cause-analysis.md", `${prov(A)}# Candidate 1 — root-cause analysis of the V4 substantive failures
+
+No engine change before root-cause evidence exists. This document is that
+evidence: ${d.rootCaused}/${d.substantiveFailures} substantive failures walked through the complete mechanic
+chain, with factorial intervention cells (${d.gamesPerCell} games each, diagnostic seed
+master \`${d.seedMaster}\`). Interventions are \`DIAGNOSTIC_ONLY\` profile clones —
+never data, never a repair.
+
+## Root-cause classes
+
+| class | failures |
+| --- | --- |
+${Object.entries(d.rootCauseClasses).map(([k, v]) => `| \`${k}\` | ${v.join(", ")} |`).join("\n")}
+
+## Dead team-intelligence channels (shared structural evidence)
+
+Channels whose value is (near-)constant across every V4 fixture AND every era
+reference — carrying no identity at all for calibration-built teams:
+
+| channel | distinct values | dead |
+| --- | --- | --- |
+${Object.entries(d.deadTeamIntelligenceChannels).map(([k, v]) => `| \`${k}\` | ${v.distinctValues.slice(0, 6).join(", ")} | **${v.dead}** |`).join("\n")}
+
+## Per-failure conclusions
+
+${Object.values(d.conclusions).map((c) => `### ${c.failureId} — ${c.teamSeason} · \`${c.traitId}\` · \`${c.metricId}\`
+
+**Root cause:** ${c.rootCause}
+
+| chain stage | finding |
+| --- | --- |
+${Object.entries(c.chain).map(([k, v]) => `| ${k} | ${typeof v === "string" ? v.replace(/\|/g, "\\|") : "see artifact"} |`).join("\n")}
+
+**Factorial cells:**
+
+| cell | ${Object.keys(c.factorial[0]).filter((k) => !["label", "games", "invariantViolations"].includes(k)).join(" | ")} |
+| --- | ${Object.keys(c.factorial[0]).filter((k) => !["label", "games", "invariantViolations"].includes(k)).map(() => "---:").join(" | ")} |
+${c.factorial.map((f) => `| ${f.label} | ${Object.entries(f).filter(([k]) => !["label", "games", "invariantViolations"].includes(k)).map(([, v]) => v?.mean ?? "—").join(" | ")} |`).join("\n")}
+
+**Repair direction:** ${c.repairDirection}
+`).join("\n")}`);
+  }
+
   console.log(written.length ? written.join("\n") : "no 6c4a artifacts yet");
 }

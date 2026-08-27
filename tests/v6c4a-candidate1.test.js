@@ -171,3 +171,52 @@ describe("6C4A WS2 — prospective practical-margin policy", () => {
       expect(Math.abs(d)).toBeGreaterThan(0.02);
   });
 });
+
+describe("6C4A WS3 — root-cause analysis", () => {
+  const rc = R("candidate1-root-cause-analysis").data;
+
+  it("root-causes all 8 substantive failures before any engine change", () => {
+    expect(rc.rootCaused).toBe(8);
+    expect(rc.unresolved).toBe(0);
+    const classed = Object.values(rc.rootCauseClasses).flat();
+    expect(classed.sort()).toEqual(["v4f-02", "v4f-03", "v4f-04", "v4f-05", "v4f-06", "v4f-07", "v4f-08", "v4f-09"]);
+  });
+
+  it("walks the complete mechanic chain for every failure", () => {
+    for (const c of Object.values(rc.conclusions)) {
+      expect(Object.keys(c.chain).length, c.failureId).toBeGreaterThanOrEqual(5);
+      expect(c.rootCause, c.failureId).toBeTruthy();
+      expect(c.repairDirection, c.failureId).toBeTruthy();
+      expect(c.factorial.length, c.failureId).toBeGreaterThanOrEqual(2);
+      for (const cell of c.factorial) expect(cell.games, `${c.failureId} ${cell.label}`).toBeGreaterThanOrEqual(2000);
+    }
+  });
+
+  it("proves eligibility starvation: movement is zero under BOTH coaches, alive under input lift", () => {
+    const m = rc.conclusions["v4f-09"].factorial;
+    expect(m[0].movementShare.mean).toBe(0); // jackson / as-is
+    expect(m[1].movementShare.mean).toBe(0); // neutral / as-is
+    expect(m[2].movementShare.mean).toBeGreaterThan(0.1); // jackson / lift
+    // the coach lever is ALIVE once the family is reachable
+    expect(rc.conclusions["v4f-09"].evidence.coachEffectWhenReachable.significant).toBe(true);
+    expect(m[2].movementShare.mean).toBeGreaterThan(m[3].movementShare.mean);
+  });
+
+  it("proves quality mechanisms respond to inputs (offense up, defense down)", () => {
+    expect(rc.conclusions["v4f-02"].evidence.pppRespondsToInputs.diff).toBeGreaterThan(0.01);
+    expect(rc.conclusions["v4f-08"].evidence.pppRespondsToInputs.diff).toBeGreaterThan(0.01);
+    expect(rc.conclusions["v4f-04"].evidence.oppPppRespondsToInputs.diff).toBeLessThan(-0.05);
+    expect(rc.conclusions["v4f-07"].evidence.oppPppRespondsToInputs.diff).toBeLessThan(-0.05);
+  });
+
+  it("records the falsified OREB hypothesis alongside the confirmed miswired channel", () => {
+    const e = rc.conclusions["v4f-05"].evidence;
+    expect(Math.abs(e.orebInputInterventionFalsified.diff)).toBeLessThan(0.01);
+    expect(e.miswiredChannelResponds.diff).toBeGreaterThan(0.04);
+  });
+
+  it("identifies the dead team-intelligence channels", () => {
+    const dead = Object.entries(rc.deadTeamIntelligenceChannels).filter(([, v]) => v.dead).map(([k]) => k);
+    expect(dead).toEqual(expect.arrayContaining(["offBallValue", "rimPressure", "postPlay", "turnoverRisk", "switchability"]));
+  });
+});

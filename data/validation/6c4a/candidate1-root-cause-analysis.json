@@ -1,0 +1,1063 @@
+{
+  "artifact": "candidate1-root-cause-analysis",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run c1:root-cause",
+  "generatedAt": "2026-08-27T00:11:24.803Z",
+  "gitCommit": "4bc1cb878771ee5c7316e3a1e90e84290c135077",
+  "branch": "phase-6c4a-candidate1-trait-fidelity",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "pairsPerCell": 1000,
+    "gamesPerCell": 2000,
+    "seedMaster": "0x6c4a02",
+    "generationCommand": "npm run c1:root-cause",
+    "substantiveFailures": 8,
+    "rootCaused": 8,
+    "unresolved": 0,
+    "deadTeamIntelligenceChannels": {
+      "offBallValue": {
+        "distinctValues": [
+          7.3
+        ],
+        "dead": true
+      },
+      "rimPressure": {
+        "distinctValues": [
+          1.2
+        ],
+        "dead": true
+      },
+      "postPlay": {
+        "distinctValues": [
+          5.5
+        ],
+        "dead": true
+      },
+      "turnoverRisk": {
+        "distinctValues": [
+          6.5,
+          5
+        ],
+        "dead": true
+      },
+      "switchability": {
+        "distinctValues": [
+          3
+        ],
+        "dead": true
+      }
+    },
+    "rootCauseClasses": {
+      "ELIGIBILITY_STARVATION": [
+        "v4f-09"
+      ],
+      "INPUT_QUALITY_COMPRESSION": [
+        "v4f-02",
+        "v4f-08"
+      ],
+      "DEFENSIVE_PROXY_INVERSION": [
+        "v4f-03",
+        "v4f-04",
+        "v4f-06",
+        "v4f-07"
+      ],
+      "OFFENSIVE_GLASS_CHANNEL_MISWIRED": [
+        "v4f-05"
+      ]
+    },
+    "traces": {
+      "v4-1991-92-bulls": {
+        "families": {
+          "POST_UP": {
+            "eligible": true,
+            "rawWeight": 0.276,
+            "cap": 0.3,
+            "gate": "max postThreat >= 5 AND defPlan"
+          },
+          "ISOLATION": {
+            "eligible": false,
+            "rawWeight": 0,
+            "cap": 0.28,
+            "gate": "max selfCreation >= 6"
+          },
+          "SPOT_UP": {
+            "eligible": true,
+            "rawWeight": 0.075,
+            "cap": 0.26,
+            "gate": "always-ish"
+          },
+          "CUT": {
+            "eligible": false,
+            "rawWeight": 0,
+            "cap": 0.2,
+            "gate": "max offBallMovement >= 5"
+          },
+          "OFF_BALL_SCREEN": {
+            "eligible": false,
+            "rawWeight": 0,
+            "cap": 0.26,
+            "gate": "max offBallMovement >= 5.5"
+          },
+          "HANDOFF": {
+            "eligible": false,
+            "rawWeight": 0,
+            "cap": 0.22,
+            "gate": "some passing >= 6 AND heightIn >= 78"
+          }
+        },
+        "normalizedMix": {
+          "PICK_AND_ROLL": 0.11,
+          "POST_UP": 0.28,
+          "ISOLATION": 0,
+          "SPOT_UP": 0.08,
+          "CUT": 0,
+          "OFF_BALL_SCREEN": 0,
+          "HANDOFF": 0,
+          "GENERIC_HALF_COURT": 0.53,
+          "TRANSITION": 0
+        },
+        "gateInputs": {
+          "offBallMovement": [
+            3.5,
+            3.5,
+            3.5,
+            3.5,
+            2.8
+          ],
+          "passing": [
+            3.8,
+            6.5,
+            7.3,
+            3.4,
+            2.3
+          ],
+          "heightIn": [
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "postThreat": [
+            2.5,
+            2.5,
+            2.5,
+            5.5,
+            5.5
+          ],
+          "selfCreation": [
+            4.5,
+            5.6,
+            5.9,
+            4.4,
+            3.9
+          ]
+        },
+        "movementReachable": false
+      },
+      "v4-1977-78-spurs": {
+        "families": {
+          "POST_UP": {
+            "eligible": true,
+            "rawWeight": 0.157,
+            "cap": 0.3,
+            "gate": "max postThreat >= 5 AND defPlan"
+          },
+          "ISOLATION": {
+            "eligible": false,
+            "rawWeight": 0,
+            "cap": 0.28,
+            "gate": "max selfCreation >= 6"
+          },
+          "SPOT_UP": {
+            "eligible": false,
+            "rawWeight": 0,
+            "cap": 0.26,
+            "gate": "always-ish"
+          },
+          "CUT": {
+            "eligible": true,
+            "rawWeight": 0.172,
+            "cap": 0.2,
+            "gate": "max offBallMovement >= 5"
+          },
+          "OFF_BALL_SCREEN": {
+            "eligible": true,
+            "rawWeight": 0.19,
+            "cap": 0.26,
+            "gate": "max offBallMovement >= 5.5"
+          },
+          "HANDOFF": {
+            "eligible": false,
+            "rawWeight": 0,
+            "cap": 0.22,
+            "gate": "some passing >= 6 AND heightIn >= 78"
+          }
+        },
+        "normalizedMix": {
+          "PICK_AND_ROLL": 0.14,
+          "POST_UP": 0.16,
+          "ISOLATION": 0,
+          "SPOT_UP": 0,
+          "CUT": 0.17,
+          "OFF_BALL_SCREEN": 0.19,
+          "HANDOFF": 0,
+          "GENERIC_HALF_COURT": 0.34,
+          "TRANSITION": 0
+        },
+        "gateInputs": {
+          "offBallMovement": [
+            4.5,
+            4.5,
+            5.8,
+            4.5,
+            4.5
+          ],
+          "passing": [
+            5.9,
+            4.3,
+            4,
+            2.5,
+            3.4
+          ],
+          "heightIn": [
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "postThreat": [
+            2.5,
+            2.5,
+            2.5,
+            5.5,
+            5.5
+          ],
+          "selfCreation": [
+            5.3,
+            4.7,
+            4.6,
+            4,
+            4.4
+          ]
+        },
+        "movementReachable": true
+      },
+      "v4-1978-79-supersonics": {
+        "families": {
+          "POST_UP": {
+            "eligible": true,
+            "rawWeight": 0.216,
+            "cap": 0.3,
+            "gate": "max postThreat >= 5 AND defPlan"
+          },
+          "ISOLATION": {
+            "eligible": false,
+            "rawWeight": 0,
+            "cap": 0.28,
+            "gate": "max selfCreation >= 6"
+          },
+          "SPOT_UP": {
+            "eligible": false,
+            "rawWeight": 0,
+            "cap": 0.26,
+            "gate": "always-ish"
+          },
+          "CUT": {
+            "eligible": false,
+            "rawWeight": 0,
+            "cap": 0.2,
+            "gate": "max offBallMovement >= 5"
+          },
+          "OFF_BALL_SCREEN": {
+            "eligible": false,
+            "rawWeight": 0,
+            "cap": 0.26,
+            "gate": "max offBallMovement >= 5.5"
+          },
+          "HANDOFF": {
+            "eligible": false,
+            "rawWeight": 0,
+            "cap": 0.22,
+            "gate": "some passing >= 6 AND heightIn >= 78"
+          }
+        },
+        "normalizedMix": {
+          "PICK_AND_ROLL": 0.21,
+          "POST_UP": 0.22,
+          "ISOLATION": 0,
+          "SPOT_UP": 0,
+          "CUT": 0,
+          "OFF_BALL_SCREEN": 0,
+          "HANDOFF": 0,
+          "GENERIC_HALF_COURT": 0.57,
+          "TRANSITION": 0
+        },
+        "gateInputs": {
+          "offBallMovement": [
+            4.5,
+            4.5,
+            4.5,
+            3.5,
+            4.5
+          ],
+          "passing": [
+            4.6,
+            4.2,
+            5,
+            2.3,
+            3.9
+          ],
+          "heightIn": [
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "postThreat": [
+            2.5,
+            2.5,
+            2.5,
+            5.5,
+            5.5
+          ],
+          "selfCreation": [
+            4.8,
+            4.7,
+            5,
+            3.9,
+            4.6
+          ]
+        },
+        "movementReachable": false
+      },
+      "v4-1989-90-pistons": {
+        "families": {
+          "POST_UP": {
+            "eligible": true,
+            "rawWeight": 0.21,
+            "cap": 0.3,
+            "gate": "max postThreat >= 5 AND defPlan"
+          },
+          "ISOLATION": {
+            "eligible": true,
+            "rawWeight": 0.156,
+            "cap": 0.28,
+            "gate": "max selfCreation >= 6"
+          },
+          "SPOT_UP": {
+            "eligible": true,
+            "rawWeight": 0.089,
+            "cap": 0.26,
+            "gate": "always-ish"
+          },
+          "CUT": {
+            "eligible": true,
+            "rawWeight": 0.119,
+            "cap": 0.2,
+            "gate": "max offBallMovement >= 5"
+          },
+          "OFF_BALL_SCREEN": {
+            "eligible": true,
+            "rawWeight": 0.14,
+            "cap": 0.26,
+            "gate": "max offBallMovement >= 5.5"
+          },
+          "HANDOFF": {
+            "eligible": false,
+            "rawWeight": 0,
+            "cap": 0.22,
+            "gate": "some passing >= 6 AND heightIn >= 78"
+          }
+        },
+        "normalizedMix": {
+          "PICK_AND_ROLL": 0.21,
+          "POST_UP": 0.2,
+          "ISOLATION": 0.15,
+          "SPOT_UP": 0.09,
+          "CUT": 0.11,
+          "OFF_BALL_SCREEN": 0.13,
+          "HANDOFF": 0,
+          "GENERIC_HALF_COURT": 0.1,
+          "TRANSITION": 0
+        },
+        "gateInputs": {
+          "offBallMovement": [
+            3.5,
+            6.5,
+            4.5,
+            3.5,
+            5.8
+          ],
+          "passing": [
+            9.5,
+            5.4,
+            2.7,
+            1.7,
+            2.9
+          ],
+          "heightIn": [
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "postThreat": [
+            2.5,
+            2.5,
+            2.5,
+            5.5,
+            5.5
+          ],
+          "selfCreation": [
+            6.8,
+            5.2,
+            4.1,
+            3.7,
+            4.2
+          ]
+        },
+        "movementReachable": true
+      }
+    },
+    "conclusions": {
+      "v4f-09": {
+        "failureId": "v4f-09",
+        "teamSeason": "Chicago Bulls 1991-92",
+        "traitId": "MOTION",
+        "metricId": "movementShare",
+        "chain": {
+          "sourceInputs": "shootingProfile.perimeterSkill (a THREE-POINT skill grade) is the only movement signal; Bulls five grade LIMITED/NONE; physicalProfile.heightIn is null for every calibration profile (SOURCE_BLOCKED)",
+          "playerIntelligence": "offBallMovement = perim*0.5 + starterBonus caps at 3.5 for a LIMITED starter; Bulls values [3.5,3.5,3.5,3.5,2.8]",
+          "teamIntelligence": "no compensating channel; cutting/screening read the same dead inputs",
+          "coachDeployment": "phil-jackson motion preference feeds family WEIGHT terms only; a weight cannot rescue an ineligible family",
+          "rawWeights": {
+            "POST_UP": {
+              "eligible": true,
+              "rawWeight": 0.276,
+              "cap": 0.3,
+              "gate": "max postThreat >= 5 AND defPlan"
+            },
+            "ISOLATION": {
+              "eligible": false,
+              "rawWeight": 0,
+              "cap": 0.28,
+              "gate": "max selfCreation >= 6"
+            },
+            "SPOT_UP": {
+              "eligible": true,
+              "rawWeight": 0.075,
+              "cap": 0.26,
+              "gate": "always-ish"
+            },
+            "CUT": {
+              "eligible": false,
+              "rawWeight": 0,
+              "cap": 0.2,
+              "gate": "max offBallMovement >= 5"
+            },
+            "OFF_BALL_SCREEN": {
+              "eligible": false,
+              "rawWeight": 0,
+              "cap": 0.26,
+              "gate": "max offBallMovement >= 5.5"
+            },
+            "HANDOFF": {
+              "eligible": false,
+              "rawWeight": 0,
+              "cap": 0.22,
+              "gate": "some passing >= 6 AND heightIn >= 78"
+            }
+          },
+          "normalizedWeights": {
+            "PICK_AND_ROLL": 0.11,
+            "POST_UP": 0.28,
+            "ISOLATION": 0,
+            "SPOT_UP": 0.08,
+            "CUT": 0,
+            "OFF_BALL_SCREEN": 0,
+            "HANDOFF": 0,
+            "GENERIC_HALF_COURT": 0.53,
+            "TRANSITION": 0
+          },
+          "reachability": "OFF_BALL_SCREEN gate (>=5.5): false. CUT gate (>=5): false. HANDOFF gate (heightIn>=78): false for ALL calibration profiles because heightIn is null. movementReachable=false",
+          "conditionalOutcomes": "never reached — eligibility is upstream of selection",
+          "gameMetric": "movementShare exactly 0 across 4096 formal games (z -840)"
+        },
+        "factorial": [
+          {
+            "label": "jackson/as-is",
+            "games": 2000,
+            "invariantViolations": 0,
+            "movementShare": {
+              "n": 2000,
+              "mean": 0,
+              "sd": 0,
+              "se": 0,
+              "ci95": {
+                "lower": 0,
+                "upper": 0
+              }
+            },
+            "ppp": {
+              "n": 2000,
+              "mean": 1.08284,
+              "sd": 0.10787,
+              "se": 0.00241,
+              "ci95": {
+                "lower": 1.07811,
+                "upper": 1.08757
+              }
+            }
+          },
+          {
+            "label": "neutral/as-is",
+            "games": 2000,
+            "invariantViolations": 0,
+            "movementShare": {
+              "n": 2000,
+              "mean": 0,
+              "sd": 0,
+              "se": 0,
+              "ci95": {
+                "lower": 0,
+                "upper": 0
+              }
+            },
+            "ppp": {
+              "n": 2000,
+              "mean": 1.07649,
+              "sd": 0.10476,
+              "se": 0.00234,
+              "ci95": {
+                "lower": 1.0719,
+                "upper": 1.08108
+              }
+            }
+          },
+          {
+            "label": "jackson/movement-lift(DIAGNOSTIC_ONLY)",
+            "games": 2000,
+            "invariantViolations": 0,
+            "movementShare": {
+              "n": 2000,
+              "mean": 0.32829,
+              "sd": 0.04674,
+              "se": 0.00105,
+              "ci95": {
+                "lower": 0.32625,
+                "upper": 0.33034
+              }
+            },
+            "ppp": {
+              "n": 2000,
+              "mean": 1.12128,
+              "sd": 0.10729,
+              "se": 0.0024,
+              "ci95": {
+                "lower": 1.11658,
+                "upper": 1.12598
+              }
+            }
+          },
+          {
+            "label": "neutral/movement-lift(DIAGNOSTIC_ONLY)",
+            "games": 2000,
+            "invariantViolations": 0,
+            "movementShare": {
+              "n": 2000,
+              "mean": 0.2447,
+              "sd": 0.03955,
+              "se": 0.00088,
+              "ci95": {
+                "lower": 0.24297,
+                "upper": 0.24644
+              }
+            },
+            "ppp": {
+              "n": 2000,
+              "mean": 1.10241,
+              "sd": 0.10414,
+              "se": 0.00233,
+              "ci95": {
+                "lower": 1.09784,
+                "upper": 1.10697
+              }
+            }
+          }
+        ],
+        "rootCause": "ELIGIBILITY_STARVATION: binary canSelect gates read a three-point proxy (offBallMovement) and a null-defaulted height; whole movement family unreachable for the fixture regardless of coach. The coach lever is alive but downstream of a dead gate.",
+        "evidence": {
+          "coachEffectWhenReachable": {
+            "diff": 0.08359,
+            "se": 0.00137,
+            "z": 61.0146,
+            "ci95": {
+              "lower": 0.0809,
+              "upper": 0.08628
+            },
+            "significant": true
+          },
+          "interventionRestoresFamily": {
+            "diff": 0.32829,
+            "se": 0.00105,
+            "z": 312.65714,
+            "ci95": {
+              "lower": 0.32623,
+              "upper": 0.33035
+            },
+            "significant": true
+          }
+        },
+        "repairDirection": "make movement-family eligibility read era-honest inputs (movement evidence beyond three-point skill; height null != height 0) and keep coach/roster weights continuous; NEVER a flat bonus or a forced share"
+      },
+      "v4f-08": {
+        "failureId": "v4f-08",
+        "teamSeason": "Chicago Bulls 1991-92",
+        "traitId": "ELITE_OFFENSE",
+        "metricId": "pppVsReference",
+        "chain": {
+          "sourceInputs": "box-score season stats; perimeterSkill LIMITED for Jordan/Pippen (three-point grade standing in for all perimeter craft)",
+          "playerIntelligence": "spacingGravity/offBallMovement/shotSelection compressed by three-point-era proxies; selfCreation anchored to raw FGA",
+          "teamIntelligence": "cutting 3.4 vs reference 5.2; screening 3.6 vs 4.2; dead channels offBallValue/rimPressure/postPlay identical to reference by construction",
+          "coachDeployment": "intact",
+          "reachability": "movement family unreachable (see v4f-09) removes efficient possession types from an offence documented as motion-based",
+          "gameMetric": "ppp 0.065 BELOW the era-median reference despite ELITE_OFFENSE documentation"
+        },
+        "factorial": [
+          {
+            "label": "as-is",
+            "games": 2000,
+            "invariantViolations": 0,
+            "ppp": {
+              "n": 2000,
+              "mean": 1.08009,
+              "sd": 0.10978,
+              "se": 0.00245,
+              "ci95": {
+                "lower": 1.07528,
+                "upper": 1.08491
+              }
+            }
+          },
+          {
+            "label": "offense-lift(DIAGNOSTIC_ONLY)",
+            "games": 2000,
+            "invariantViolations": 0,
+            "ppp": {
+              "n": 2000,
+              "mean": 1.10775,
+              "sd": 0.10836,
+              "se": 0.00242,
+              "ci95": {
+                "lower": 1.103,
+                "upper": 1.1125
+              }
+            }
+          }
+        ],
+        "rootCause": "INPUT_QUALITY_COMPRESSION + ELIGIBILITY_STARVATION: offensive-quality inputs regress elite teams to the era median (dead channels + three-point proxies), and the unreachable movement family removes the efficient actions the identity implies.",
+        "evidence": {
+          "pppRespondsToInputs": {
+            "diff": 0.02766,
+            "se": 0.00344,
+            "z": 8.03212,
+            "ci95": {
+              "lower": 0.02091,
+              "upper": 0.03441
+            },
+            "significant": true
+          }
+        },
+        "repairDirection": "repair adapter quality channels (per-possession efficiency signals, not raw-volume anchors; revive dead channels) so documented elite offences carry elite inputs; no universal scoring shift"
+      },
+      "v4f-02": {
+        "failureId": "v4f-02",
+        "teamSeason": "San Antonio Spurs 1977-78",
+        "traitId": "ELITE_OFFENSE",
+        "metricId": "pppVsReference",
+        "chain": {
+          "sourceInputs": "George Gervin's scoring title season enters as fga/points per game only",
+          "playerIntelligence": "shotCreation 5.0 vs reference 5.2 — the league's premier scorer is INVISIBLE after linear scale() to fixed anchors and five-man averaging",
+          "teamIntelligence": "offense deltas ~0 against the era median; dead channels identical",
+          "coachDeployment": "intact (doug-moe run-and-gun renders pace, not efficiency)",
+          "gameMetric": "ppp 0.048 below reference"
+        },
+        "factorial": [
+          {
+            "label": "as-is",
+            "games": 2000,
+            "invariantViolations": 0,
+            "ppp": {
+              "n": 2000,
+              "mean": 0.91743,
+              "sd": 0.09019,
+              "se": 0.00202,
+              "ci95": {
+                "lower": 0.91347,
+                "upper": 0.92138
+              }
+            }
+          },
+          {
+            "label": "offense-lift(DIAGNOSTIC_ONLY)",
+            "games": 2000,
+            "invariantViolations": 0,
+            "ppp": {
+              "n": 2000,
+              "mean": 0.94077,
+              "sd": 0.09207,
+              "se": 0.00206,
+              "ci95": {
+                "lower": 0.93673,
+                "upper": 0.9448
+              }
+            }
+          }
+        ],
+        "rootCause": "INPUT_QUALITY_COMPRESSION: linear anchor scaling plus five-man averaging pulls elite offensive quality to the era median, so the possession layer is asked to render an elite offence from median inputs.",
+        "evidence": {
+          "pppRespondsToInputs": {
+            "diff": 0.02334,
+            "se": 0.00289,
+            "z": 8.08974,
+            "ci95": {
+              "lower": 0.01769,
+              "upper": 0.02899
+            },
+            "significant": true
+          }
+        },
+        "repairDirection": "same as v4f-08"
+      },
+      "v4f-03": {
+        "failureId": "v4f-03",
+        "teamSeason": "Seattle SuperSonics 1978-79",
+        "traitId": "elite team man defence",
+        "metricId": "refPppVsTeam",
+        "chain": {
+          "sourceInputs": "steals and blocks are the ONLY defensive statistics in the store; no defensiveEvidence, no accolades, no documented roles for recorded-era seasons",
+          "playerIntelligence": "containment channels = scaled steals + position bump; disciplined elite man defenders (low-steal by scheme) rate BELOW the era median",
+          "teamIntelligence": "rimProtection -2.1, defensiveRebounding -2.3, wingContainment -0.7 vs the era reference — an elite defence rated worse than the median five",
+          "coachDeployment": "defensive coach scales are alive but multiply median-or-worse inputs",
+          "gameMetric": "reference scores MORE against the elite defence than against the median five"
+        },
+        "factorial": [
+          {
+            "label": "as-is",
+            "games": 2000,
+            "invariantViolations": 0,
+            "oppPpp": {
+              "n": 2000,
+              "mean": 1.04976,
+              "sd": 0.09655,
+              "se": 0.00216,
+              "ci95": {
+                "lower": 1.04553,
+                "upper": 1.054
+              }
+            }
+          },
+          {
+            "label": "defense-lift(DIAGNOSTIC_ONLY)",
+            "games": 2000,
+            "invariantViolations": 0,
+            "oppPpp": {
+              "n": 2000,
+              "mean": 0.95458,
+              "sd": 0.09918,
+              "se": 0.00222,
+              "ci95": {
+                "lower": 0.95024,
+                "upper": 0.95893
+              }
+            }
+          }
+        ],
+        "rootCause": "DEFENSIVE_PROXY_INVERSION: steal/block anchors measure gambling, not containment; the pre-recording defensive-evidence band mechanism is bypassed the moment steals exist, so documented elite man defence has no input channel at all in recorded eras.",
+        "evidence": {
+          "oppPppRespondsToInputs": {
+            "diff": -0.09518,
+            "se": 0.0031,
+            "z": -30.72882,
+            "ci95": {
+              "lower": -0.10125,
+              "upper": -0.08911
+            },
+            "significant": true
+          }
+        },
+        "repairDirection": "extend the documented defensive-evidence band to ALL eras as a floor alongside recorded events (never replacing them); no universal defence shift"
+      },
+      "v4f-04": {
+        "failureId": "v4f-04",
+        "teamSeason": "Seattle SuperSonics 1978-79",
+        "traitId": "ELITE_DEFENSE",
+        "metricId": "refPppVsTeam",
+        "chain": {
+          "sourceInputs": "steals and blocks are the ONLY defensive statistics in the store; no defensiveEvidence, no accolades, no documented roles for recorded-era seasons",
+          "playerIntelligence": "containment channels = scaled steals + position bump; disciplined elite man defenders (low-steal by scheme) rate BELOW the era median",
+          "teamIntelligence": "rimProtection -2.1, defensiveRebounding -2.3, wingContainment -0.7 vs the era reference — an elite defence rated worse than the median five",
+          "coachDeployment": "defensive coach scales are alive but multiply median-or-worse inputs",
+          "gameMetric": "reference scores MORE against the elite defence than against the median five"
+        },
+        "factorial": [
+          {
+            "label": "as-is",
+            "games": 2000,
+            "invariantViolations": 0,
+            "oppPpp": {
+              "n": 2000,
+              "mean": 1.04976,
+              "sd": 0.09655,
+              "se": 0.00216,
+              "ci95": {
+                "lower": 1.04553,
+                "upper": 1.054
+              }
+            }
+          },
+          {
+            "label": "defense-lift(DIAGNOSTIC_ONLY)",
+            "games": 2000,
+            "invariantViolations": 0,
+            "oppPpp": {
+              "n": 2000,
+              "mean": 0.95458,
+              "sd": 0.09918,
+              "se": 0.00222,
+              "ci95": {
+                "lower": 0.95024,
+                "upper": 0.95893
+              }
+            }
+          }
+        ],
+        "rootCause": "DEFENSIVE_PROXY_INVERSION: steal/block anchors measure gambling, not containment; the pre-recording defensive-evidence band mechanism is bypassed the moment steals exist, so documented elite man defence has no input channel at all in recorded eras.",
+        "evidence": {
+          "oppPppRespondsToInputs": {
+            "diff": -0.09518,
+            "se": 0.0031,
+            "z": -30.72882,
+            "ci95": {
+              "lower": -0.10125,
+              "upper": -0.08911
+            },
+            "significant": true
+          }
+        },
+        "repairDirection": "extend the documented defensive-evidence band to ALL eras as a floor alongside recorded events (never replacing them); no universal defence shift"
+      },
+      "v4f-06": {
+        "failureId": "v4f-06",
+        "teamSeason": "Detroit Pistons 1989-90",
+        "traitId": "elite physical man",
+        "metricId": "refPppVsTeam",
+        "chain": {
+          "sourceInputs": "steals and blocks are the ONLY defensive statistics in the store; no defensiveEvidence, no accolades, no documented roles for recorded-era seasons",
+          "playerIntelligence": "containment channels = scaled steals + position bump; disciplined elite man defenders (low-steal by scheme) rate BELOW the era median",
+          "teamIntelligence": "every defensive channel 0.6-1.6 BELOW the era reference for the Bad Boys",
+          "coachDeployment": "defensive coach scales are alive but multiply median-or-worse inputs",
+          "gameMetric": "reference scores MORE against the elite defence than against the median five"
+        },
+        "factorial": [
+          {
+            "label": "as-is",
+            "games": 2000,
+            "invariantViolations": 0,
+            "oppPpp": {
+              "n": 2000,
+              "mean": 1.15381,
+              "sd": 0.09905,
+              "se": 0.00221,
+              "ci95": {
+                "lower": 1.14946,
+                "upper": 1.15815
+              }
+            }
+          },
+          {
+            "label": "defense-lift(DIAGNOSTIC_ONLY)",
+            "games": 2000,
+            "invariantViolations": 0,
+            "oppPpp": {
+              "n": 2000,
+              "mean": 1.05654,
+              "sd": 0.10406,
+              "se": 0.00233,
+              "ci95": {
+                "lower": 1.05198,
+                "upper": 1.0611
+              }
+            }
+          }
+        ],
+        "rootCause": "DEFENSIVE_PROXY_INVERSION: steal/block anchors measure gambling, not containment; the pre-recording defensive-evidence band mechanism is bypassed the moment steals exist, so documented elite man defence has no input channel at all in recorded eras.",
+        "evidence": {
+          "oppPppRespondsToInputs": {
+            "diff": -0.09727,
+            "se": 0.00321,
+            "z": -30.2891,
+            "ci95": {
+              "lower": -0.10356,
+              "upper": -0.09098
+            },
+            "significant": true
+          }
+        },
+        "repairDirection": "extend the documented defensive-evidence band to ALL eras as a floor alongside recorded events (never replacing them); no universal defence shift"
+      },
+      "v4f-07": {
+        "failureId": "v4f-07",
+        "teamSeason": "Detroit Pistons 1989-90",
+        "traitId": "ELITE_DEFENSE",
+        "metricId": "refPppVsTeam",
+        "chain": {
+          "sourceInputs": "steals and blocks are the ONLY defensive statistics in the store; no defensiveEvidence, no accolades, no documented roles for recorded-era seasons",
+          "playerIntelligence": "containment channels = scaled steals + position bump; disciplined elite man defenders (low-steal by scheme) rate BELOW the era median",
+          "teamIntelligence": "every defensive channel 0.6-1.6 BELOW the era reference for the Bad Boys",
+          "coachDeployment": "defensive coach scales are alive but multiply median-or-worse inputs",
+          "gameMetric": "reference scores MORE against the elite defence than against the median five"
+        },
+        "factorial": [
+          {
+            "label": "as-is",
+            "games": 2000,
+            "invariantViolations": 0,
+            "oppPpp": {
+              "n": 2000,
+              "mean": 1.15381,
+              "sd": 0.09905,
+              "se": 0.00221,
+              "ci95": {
+                "lower": 1.14946,
+                "upper": 1.15815
+              }
+            }
+          },
+          {
+            "label": "defense-lift(DIAGNOSTIC_ONLY)",
+            "games": 2000,
+            "invariantViolations": 0,
+            "oppPpp": {
+              "n": 2000,
+              "mean": 1.05654,
+              "sd": 0.10406,
+              "se": 0.00233,
+              "ci95": {
+                "lower": 1.05198,
+                "upper": 1.0611
+              }
+            }
+          }
+        ],
+        "rootCause": "DEFENSIVE_PROXY_INVERSION: steal/block anchors measure gambling, not containment; the pre-recording defensive-evidence band mechanism is bypassed the moment steals exist, so documented elite man defence has no input channel at all in recorded eras.",
+        "evidence": {
+          "oppPppRespondsToInputs": {
+            "diff": -0.09727,
+            "se": 0.00321,
+            "z": -30.2891,
+            "ci95": {
+              "lower": -0.10356,
+              "upper": -0.09098
+            },
+            "significant": true
+          }
+        },
+        "repairDirection": "extend the documented defensive-evidence band to ALL eras as a floor alongside recorded events (never replacing them); no universal defence shift"
+      },
+      "v4f-05": {
+        "failureId": "v4f-05",
+        "teamSeason": "Seattle SuperSonics 1978-79",
+        "traitId": "STRONG_OFFENSIVE_REBOUNDING",
+        "metricId": "orebRate",
+        "chain": {
+          "sourceInputs": "PLAYER_CAREER_TABLE route records total rebounds only; basicStats.offensiveRebounds null (correctly preserved). But this is NOT where the identity dies:",
+          "playerIntelligence": "an oreb-input intervention moved orebRate by only +0.0015 — player offensive-rebound evidence has NO path into the crash probability; postThreat only selects who is credited the board",
+          "teamIntelligence": "rebounding.offensiveGlass = mean(top2(defense.defensiveRebounding*0.6 + PF/C bump)) — offensive glass is a scaled DEFENSIVE-rebounding proxy; Sonics 6.2 vs 1970s reference 8.5 on that channel",
+          "conditionalOutcomes": "orebP reads (offGlass - defGlass)*0.022; the mechanism is alive — lifting the miswired channel moves orebRate — but the wire never carries offensive-rebounding evidence",
+          "gameMetric": "orebRate 0.069 below reference"
+        },
+        "factorial": [
+          {
+            "label": "as-is (offensiveRebounds null)",
+            "games": 2000,
+            "invariantViolations": 0,
+            "orebRate": {
+              "n": 2000,
+              "mean": 0.25241,
+              "sd": 0.0588,
+              "se": 0.00131,
+              "ci95": {
+                "lower": 0.24984,
+                "upper": 0.25499
+              }
+            }
+          },
+          {
+            "label": "oreb-input(DIAGNOSTIC_ONLY)",
+            "games": 2000,
+            "invariantViolations": 0,
+            "orebRate": {
+              "n": 2000,
+              "mean": 0.25393,
+              "sd": 0.062,
+              "se": 0.00139,
+              "ci95": {
+                "lower": 0.25121,
+                "upper": 0.25664
+              }
+            }
+          },
+          {
+            "label": "defreb-lift(DIAGNOSTIC_ONLY)",
+            "games": 2000,
+            "invariantViolations": 0,
+            "orebRate": {
+              "n": 2000,
+              "mean": 0.31808,
+              "sd": 0.06255,
+              "se": 0.0014,
+              "ci95": {
+                "lower": 0.31534,
+                "upper": 0.32082
+              }
+            }
+          }
+        ],
+        "rootCause": "OFFENSIVE_GLASS_CHANNEL_MISWIRED: the team offensive-glass channel is derived from defensive rebounding and position alone; recorded or derivable offensive-rebounding evidence cannot reach the MISS_OREB probability. The initial null-input hypothesis was FALSIFIED by intervention (cell 2).",
+        "evidence": {
+          "orebInputInterventionFalsified": {
+            "diff": 0.00152,
+            "se": 0.00191,
+            "z": 0.7958,
+            "ci95": {
+              "lower": -0.00222,
+              "upper": 0.00526
+            },
+            "significant": false
+          },
+          "miswiredChannelResponds": {
+            "diff": 0.06567,
+            "se": 0.00192,
+            "z": 34.25101,
+            "ci95": {
+              "lower": 0.06191,
+              "upper": 0.06943
+            },
+            "significant": true
+          }
+        },
+        "repairDirection": "wire offensiveGlass to offensive-rebounding evidence (recorded oreb where it exists, a documented derivation from totals + position where unrecorded); nulls stay null in the store"
+      }
+    }
+  },
+  "outputHash": "9047c043108c88b99f146b74fe2b85dcc971c525fc5c06352d19376410c320b5"
+}
