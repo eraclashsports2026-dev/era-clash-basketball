@@ -1,0 +1,155 @@
+{
+  "artifact": "phase6c4b1s-final-summary",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run syn:summary",
+  "generatedAt": "2026-08-27T13:13:20.062Z",
+  "gitCommit": "5fa93cecb407f11c7bbfe5b82edf374185056a1e",
+  "branch": "phase-6c4b1s-synthetic-v2-package",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "phase": "6C4B1S",
+    "phaseType": "PREPARATION_ONLY",
+    "title": "Synthetic Stress Holdout V2 formal policy, seeds, runner and execution-package certification",
+    "outcome": "INCOMPLETE",
+    "whatWasBuilt": [
+      "a machine-readable registry of all 11 frozen guardrail keys, 8 adjudicable and 3 threshold parameters, mapped to fixtures, metrics and surfaces",
+      "five measurement surfaces, each chosen because the guardrail it decides is decidable there",
+      "practical margins derived by a stated rule from 14 non-holdout development fixtures plus a 14-cell role-matched upgrade ladder",
+      "a per-fixture verdict schema and a frozen aggregation rule over sixteen fixtures",
+      "a sample plan of 79,444 games, frozen before any synthetic observation",
+      "a dedicated seed domain, 37,432 addressed seeds, zero overlap across 51 comparisons against 25 prior populations",
+      "a transactional runner on the same runSealedSetOnce path V4 and V5 use, with stage-order enforcement before the seal is touched",
+      "a non-holdout mock stress set and a 52-check dry run of the exact runner",
+      "three registered npm commands, certified non-accessing by execution rather than by inspection",
+      "a compound package binding 20 hashes across both stages"
+    ],
+    "whatMeasurementFoundThatReasoningHadMissed": [
+      {
+        "finding": "the rating basis was wrong",
+        "detail": "the guardrails speak of OVR, which is src/rating.js — the position-weighted rating the product computes and displays. An earlier draft used a summed-stat proxy invented for this phase. A calibration ladder exposed it: a five the proxy rated 1.75x higher lost about 60% of games in all three eras, because the proxy tracked accolade counts while the engine responds to position-weighted production and balance.",
+        "consequence": "every surface, control and threshold moved to teamRating and slotRating"
+      },
+      {
+        "finding": "the talent surface could not isolate talent",
+        "detail": "targeting a rating level lets the search return a differently CONSTRUCTED five, and construction is the other axis under test. The strong side is now built by upgrading the fixture slot by slot, preserving position and functional role.",
+        "consequence": "13 of 14 development upgrades win; the one exception has the smallest upgrade in the set and falls below the 1.25x precondition"
+      },
+      {
+        "finding": "a mirror cannot decide the shell guardrail",
+        "detail": "with one coach on both sides both defences draw zone with equal probability, so the zoning side is noise. Measured on four development fixtures the win rate came back 0.499, 0.521, 0.523 and 0.505 — pinned to 0.5, where the frozen band can neither fail nor pass.",
+        "consequence": "the guardrail moved to an asymmetric coach-pair surface with a zone-ablation twin to separate the coach confound from the shell"
+      },
+      {
+        "finding": "coherence has to be a hard constraint of the control search, not a tie-break",
+        "detail": "interior scoring is the scarce requirement — 16 of 292 non-holdout cards reach postThreat 5.5 — and a rating-targeted beam prunes those cards away before coherence is evaluated. The first version returned 0 of 5 coherent controls.",
+        "consequence": "the search anchors on the scarce requirements first and keeps only fully coherent fives"
+      },
+      {
+        "finding": "a control can land on the wrong side of the rating it is meant to be below",
+        "detail": "sd2-extreme-small is rated below what a coherent five can cost, so an unconstrained search returned a control at ratio 1.143 with a 0.777 win rate that would have read as construction beating talent when it was the better team winning.",
+        "consequence": "the builder refuses and reports CONTROL_PRECONDITION_UNREACHABLE; the guardrail becomes NOT_APPLICABLE on that fixture"
+      },
+      {
+        "finding": "the compound package silently dropped four hashes",
+        "detail": "the two stages share four hash key names, so a flat merge bound stage two's values under stage one's names and left stage one unbound. The package hash covered 16 entries where it should have covered 20 — the same class of silent binding gap the blocker was raising.",
+        "consequence": "entries are namespaced by stage, with gates on the count and on each stage-one value"
+      },
+      {
+        "finding": "a dry run at 16 games per surface fails on noise",
+        "detail": "six of eleven mock members FAILed win-rate bands with zero failures on the count-based structural gates; a win rate carries a standard error near 0.125 there. At 128 games per surface every member passes.",
+        "consequence": "the default volume moved to 64 pairs and the check now names which gates failed and why"
+      }
+    ],
+    "judgementCallsRecordedRatherThanHidden": [
+      {
+        "call": "eleven guardrail keys registered, not ten",
+        "why": "the frozen object holds eleven: eight boolean requirements and three numeric thresholds. Both the brief and the blocker's own note say ten. Merging the thresholds into their parents would reach ten but would silently reinterpret the frozen object, so all eleven are registered, the numerics are classified THRESHOLD_PARAMETER, and the discrepancy is recorded."
+      },
+      {
+        "call": "the construction floor is weak, and says so",
+        "why": "on non-holdout fixtures a coherent control at 80% of the fixture's teamRating won between 0.08789 and 0.92578, a spread driven by which construction it faced. Any floor high enough to be demanding would fail legitimate constructions. The substantive claim moved to a set-level existential bar at 0.35, because the frozen key says construction CAN beat higher OVR."
+      },
+      {
+        "call": "the talent floor was clamped to 0.5",
+        "why": "the derivation rule produced 0.47624, which would have said a substantially upgraded five is allowed to lose. Both the raw value and the clamp are recorded."
+      },
+      {
+        "call": "zero fixture failures tolerated on every guardrail",
+        "why": "a failure budget would weaken a frozen numeric threshold, which this phase may not do. Noise is handled by the practical margin instead: an observation inside the margin is INDETERMINATE, never a failure."
+      },
+      {
+        "call": "the distinct-scoreline ratio never adjudicates",
+        "why": "it read about 0.486 at 102 games and 0.356 to 0.399 at 2,048 on the same fixtures, so one frozen floor cannot serve two volumes. The combined-score standard deviation adjudicates instead."
+      },
+      {
+        "call": "the shell guardrail maps to all sixteen fixtures, not the two labelled ZONE_EDGE_CASE",
+        "why": "a purpose label says what a fixture was designed to stress; a guardrail applies wherever its claim is decidable, and 'universally' cannot be judged from one fixture. Era legality narrows it to nine."
+      },
+      {
+        "call": "three development fixtures excluded from the mock set",
+        "why": "each shares four of five people with a sealed five, putting it one substitution away. Running those at volume would produce a close proxy for a sealed result."
+      }
+    ],
+    "whatWasNotDone": {
+      "holdoutsOpened": 0,
+      "historicalV5AccessCount": 0,
+      "syntheticV2AccessCount": 0,
+      "sealedFixturesSimulated": 0,
+      "candidate1FilesChanged": 0,
+      "frozenThresholdsChanged": 0,
+      "membershipChanged": false,
+      "historicalV5PackageChanged": false,
+      "previewDeployments": 0,
+      "productionDeployments": 0,
+      "mergedToMain": false
+    },
+    "statusesNotClaimed": {
+      "notClaimed": [
+        "HOLDOUT_VALIDATED",
+        "PRIVATE_PREVIEW_VALIDATED",
+        "PRODUCTION_READY",
+        "ACTIVE"
+      ],
+      "why": "a complete execution package is not a validated candidate. Each of those statuses belongs to the phase that earns it, and production activation requires an explicit CEO GO LIVE."
+    },
+    "stillNotTrue": [
+      {
+        "item": "Historical Holdout V5 has not been run",
+        "consequence": "stage two cannot be cleared to run: its preflight refuses with SYNTHETIC_ACCESS_REFUSED, which is the intended behaviour, not a defect"
+      },
+      {
+        "item": "Synthetic Stress Holdout V2 has not been run",
+        "consequence": "no synthetic stress result exists"
+      },
+      {
+        "item": "no compound formal verdict exists",
+        "consequence": "Candidate 1 carries no formal holdout verdict from either stage"
+      }
+    ],
+    "nextPhase": {
+      "shape": "an execution phase, in this order",
+      "steps": [
+        "npm run validation:historical-v5 -- --unlock-holdout --unlock-historical-holdout-v5 --operator=\"...\" --reason=\"...\"",
+        "if and only if stage one returns PASS: npm run validation:synthetic-v2 with its own unlock flags",
+        "npm run validation:candidate1-formal-verdict"
+      ],
+      "preconditionAlreadyEnforced": "stage two's runner refuses with SYNTHETIC_ACCESS_REFUSED unless stage one returned PASS on the same candidate core and parameter set, so the order cannot be got wrong by accident"
+    },
+    "hashes": {
+      "formalPolicyHash": "f93847b4b35ca064572f2b7c97c451ee9f3109f34ea49f3742c5a677ea495946",
+      "compoundPackageHash": "fed02b5c407b5b3888187e1194141fa6380b3a3d189522fdfbd7401f3ad1f5ea",
+      "readinessRegisterHash": "6b78a9df2492ea79861674cd6502a46b653c67c9317f2a4a927f4a1fd87a566f",
+      "dryRunHash": "743493073f76f4c8599a36247fb2056ed0961c7b1351be90818ac16d5f6c4205",
+      "commandCertificationHash": "b49e9723c75766663c14b0e8c09e9d3e6f966ccc60d72a4a508f12e1a00d40df"
+    },
+    "recordedAtCommit": "5fa93cecb407f11c7bbfe5b82edf374185056a1e",
+    "branch": "phase-6c4b1s-synthetic-v2-package",
+    "pass": false,
+    "summaryHash": "e0f35394bfbf377bdd06de3d43d16738aafa8907c8310692b68529cb5a934887"
+  },
+  "outputHash": "e47e4ca623e492c7b66dcf140c0145313ae58cb53d98b500b062ba9de8def8b7"
+}
