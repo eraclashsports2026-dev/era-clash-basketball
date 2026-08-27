@@ -1,0 +1,1827 @@
+{
+  "artifact": "synthetic-v2-surface-plan",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run syn:surfaces",
+  "generatedAt": "2026-08-27T12:20:30.987Z",
+  "gitCommit": "3231adc58fbfe6b71e4c13fac13acf396a447b91",
+  "branch": "phase-6c4b1s-synthetic-v2-package",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "syntheticSurfacePlanVersion": "1.0.0",
+    "surfaces": {
+      "MIRROR": {
+        "id": "MIRROR",
+        "definition": "the fixture five against ITSELF under its own coach, side-balanced across paired seeds. Construction is the only variable, so an action-mix, variance or structural result cannot be an artifact of the opponent.",
+        "decides": [
+          "requireZeroInvariantFailures",
+          "requireZeroImpossibleResults",
+          "forbidUniversalActionDominance",
+          "requireSameSeedReplay",
+          "requireNewSeedVariance"
+        ],
+        "cannotDecide": [
+          "forbidUniversalShellDominance — both sides draw zone with equal probability, so the zone side is noise and the win rate is pinned to 0.5",
+          "requireConstructionCanBeatHigherOvr and requireExtremeTalentRemainsMeaningful — both need two DIFFERENT constructions"
+        ],
+        "usesFixtureCoach": true
+      },
+      "ZONE_ASYMMETRIC": {
+        "id": "ZONE_ASYMMETRIC",
+        "definition": "the fixture five on BOTH sides, personnel therefore exactly controlled, with the frozen zone-heavy coach on one side and the frozen matched man coach on the other, side-balanced. A zone side exists by design rather than by chance, so a shell win rate is defined.",
+        "decides": [
+          "forbidUniversalShellDominance"
+        ],
+        "requiresZoneLegalEra": true,
+        "usesFixtureCoach": false,
+        "confound": "changing the coach changes every other scheme dimension too, not only the shell. The residual distance is minimised by the pair-selection rule and measured by the twin below.",
+        "twin": "ZONE_ASYMMETRIC_ILLEGAL_ERA_CONTROL"
+      },
+      "ZONE_ASYMMETRIC_ILLEGAL_ERA_CONTROL": {
+        "id": "ZONE_ASYMMETRIC_ILLEGAL_ERA_CONTROL",
+        "definition": "the identical construction in a zone-ILLEGAL era, where the engine cannot realize a zone possession at all. Any win-rate deviation from 0.5 here is the coach confound with the shell removed, so the shell's own contribution is the difference between the two surfaces.",
+        "decides": [],
+        "diagnosticFor": "forbidUniversalShellDominance",
+        "usesFixtureCoach": false
+      },
+      "VS_COHERENT_LOWER_CONTROL": {
+        "id": "VS_COHERENT_LOWER_CONTROL",
+        "definition": "the fixture five against a coherent five built to a summed card rating strictly BELOW the fixture's, under the neutral coach on both sides so coaching cannot explain the result. The only decidable surface for a construction-beats-talent claim, because it needs two different constructions and a known rating direction.",
+        "decides": [
+          "requireConstructionCanBeatHigherOvr"
+        ],
+        "usesFixtureCoach": false,
+        "controlBuiltPerFixture": true
+      },
+      "VS_TALENT_GAP_CONTROL": {
+        "id": "VS_TALENT_GAP_CONTROL",
+        "definition": "the fixture five against a coherent five separated from it by a large summed-rating gap, under the neutral coach on both sides. The gap runs in whichever direction the non-holdout pool can supply: if a five rated at or above fixture x 1.75 exists the fixture is the WEAK side and the control must clearly win; otherwise the control is built at or below fixture / 1.75 and the fixture is the STRONG side and must clearly win. The guardrail is symmetric — it asks that a large talent gap still decides games, not which side holds the talent — so either direction decides it.",
+        "decides": [
+          "requireExtremeTalentRemainsMeaningful"
+        ],
+        "usesFixtureCoach": false,
+        "controlBuiltPerFixture": true,
+        "poolConstraint": "the sealed set holds many of the strongest cards in the pool. Once every person appearing in any sealed fixture is excluded, the best available control five sums to 294.41, which is below the two highest-rated fixtures. The direction rule exists so that constraint cannot silently disable the guardrail."
+      }
+    },
+    "controlTargets": {
+      "lowerControlFactor": 0.8,
+      "eliteControlFactor": 1.75
+    },
+    "shellCoachPair": {
+      "zoneCoachId": "erik-spoelstra",
+      "manCoachId": "steve-kerr",
+      "zonePreferenceHigh": 9,
+      "zonePreferenceLow": 3,
+      "zonePreferenceGap": 6,
+      "otherDimensionDistance": 5.09902,
+      "residualConfound": {
+        "manPreference": {
+          "zoneCoach": 7,
+          "manCoach": 8,
+          "difference": 1
+        },
+        "switching": {
+          "zoneCoach": 7,
+          "manCoach": 9,
+          "difference": 2
+        },
+        "dropCoverage": {
+          "zoneCoach": 4,
+          "manCoach": 3,
+          "difference": 1
+        },
+        "pressure": {
+          "zoneCoach": 7,
+          "manCoach": 5,
+          "difference": 2
+        },
+        "helpAggression": {
+          "zoneCoach": 7,
+          "manCoach": 7,
+          "difference": 0
+        },
+        "rimPriority": {
+          "zoneCoach": 6,
+          "manCoach": 5,
+          "difference": 1
+        },
+        "reboundPriority": {
+          "zoneCoach": 6,
+          "manCoach": 4,
+          "difference": 2
+        },
+        "adaptability": {
+          "zoneCoach": 9,
+          "manCoach": 8,
+          "difference": 1
+        },
+        "tacticalAdjustment": {
+          "zoneCoach": 9,
+          "manCoach": 8,
+          "difference": 1
+        },
+        "roleDiscipline": {
+          "zoneCoach": 9,
+          "manCoach": 6,
+          "difference": 3
+        }
+      },
+      "selectionRule": "among all coach pairs with a zonePreference gap of at least 6, the pair minimising Euclidean distance across the other ten toolkit dimensions; ties broken by larger zone gap then by coach id",
+      "candidatePairsConsidered": 49
+    },
+    "zoneLegalityByEra": {
+      "1950s": false,
+      "1960s": false,
+      "1970s": false,
+      "1980s": false,
+      "1990s": false,
+      "2000s": true,
+      "2010s": true,
+      "2020s": true
+    },
+    "coherenceDefinition": {
+      "basis": "the intelligence profile, not card accolades",
+      "checks": {
+        "hasALeadCreator": "at least one player with selfCreation >= 6.5",
+        "creationNotCollided": "no more than three such players",
+        "hasSpacing": "at least two players with spacingGravity >= 6",
+        "hasRimProtection": "at least one player with rimDeterrence >= 5.5",
+        "hasInteriorScoring": "at least one player with postThreat >= 5.5",
+        "hasAPasser": "at least one player with passingVision >= 6"
+      }
+    },
+    "holdoutFixturePlan": [
+      {
+        "fixtureId": "ss2-all-bigs",
+        "purpose": "EXPLOIT_ROLE_OVERLAP",
+        "era": "2000s",
+        "fixtureCoach": "gregg-popovich",
+        "fixtureSummedRating": 193.08,
+        "fixtureCoherence": {
+          "checks": {
+            "hasALeadCreator": true,
+            "creationNotCollided": true,
+            "hasSpacing": false,
+            "hasRimProtection": true,
+            "hasInteriorScoring": true,
+            "hasAPasser": true
+          },
+          "satisfied": 5,
+          "total": 6,
+          "coherent": false,
+          "counts": {
+            "creators": 2,
+            "spacers": 1,
+            "rimProtectors": 2,
+            "posts": 1,
+            "passers": 2
+          }
+        },
+        "zoneLegalEra": true,
+        "surfaces": {
+          "MIRROR": {
+            "applicable": true,
+            "coachBothSides": "gregg-popovich"
+          },
+          "ZONE_ASYMMETRIC": {
+            "applicable": true,
+            "zoneCoachId": "erik-spoelstra",
+            "manCoachId": "steve-kerr"
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "applicable": true,
+            "control": {
+              "five": [
+                "beal-20s",
+                "lenny-60s",
+                "rip-00s",
+                "nance-80s",
+                "boogie-2010s"
+              ],
+              "summedRating": 154.46,
+              "targetRating": 154.464,
+              "ratingError": -0.004,
+              "coherence": {
+                "checks": {
+                  "hasALeadCreator": true,
+                  "creationNotCollided": true,
+                  "hasSpacing": true,
+                  "hasRimProtection": true,
+                  "hasInteriorScoring": true,
+                  "hasAPasser": true
+                },
+                "satisfied": 6,
+                "total": 6,
+                "coherent": true,
+                "counts": {
+                  "creators": 1,
+                  "spacers": 2,
+                  "rimProtectors": 1,
+                  "posts": 1,
+                  "passers": 1
+                }
+              },
+              "anchors": {
+                "post": "boogie-2010s",
+                "rim": "nance-80s"
+              },
+              "coherentCandidatesFound": 1420,
+              "rule": "anchor on the scarce coherence requirements (an interior scorer and a rim protector), fill the remaining slots by rating-targeted beam search one card per person, keep only fully coherent fives, then take the one closest to the target rating; all ordering deterministic by key then card id"
+            },
+            "precondition": "control summed rating 154.46 < fixture 193.08",
+            "preconditionMet": true,
+            "coherencePrecondition": "the control must satisfy every coherence check, otherwise the surface is not testing coherent-versus-warped construction",
+            "coherencePreconditionMet": true
+          },
+          "VS_TALENT_GAP_CONTROL": {
+            "applicable": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        }
+      },
+      {
+        "fixtureId": "ss2-all-guards",
+        "purpose": "EXPLOIT_ROLE_OVERLAP",
+        "era": "2010s",
+        "fixtureCoach": "mike-dantoni",
+        "fixtureSummedRating": 226.86,
+        "fixtureCoherence": {
+          "checks": {
+            "hasALeadCreator": true,
+            "creationNotCollided": false,
+            "hasSpacing": true,
+            "hasRimProtection": true,
+            "hasInteriorScoring": true,
+            "hasAPasser": true
+          },
+          "satisfied": 5,
+          "total": 6,
+          "coherent": false,
+          "counts": {
+            "creators": 4,
+            "spacers": 3,
+            "rimProtectors": 1,
+            "posts": 1,
+            "passers": 5
+          }
+        },
+        "zoneLegalEra": true,
+        "surfaces": {
+          "MIRROR": {
+            "applicable": true,
+            "coachBothSides": "mike-dantoni"
+          },
+          "ZONE_ASYMMETRIC": {
+            "applicable": true,
+            "zoneCoachId": "erik-spoelstra",
+            "manCoachId": "steve-kerr"
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "applicable": true,
+            "control": {
+              "five": [
+                "arenas-00s",
+                "kawhi-20s",
+                "vince-00s",
+                "boogie-2010s",
+                "yao-00s"
+              ],
+              "summedRating": 181.49,
+              "targetRating": 181.488,
+              "ratingError": 0.002,
+              "coherence": {
+                "checks": {
+                  "hasALeadCreator": true,
+                  "creationNotCollided": true,
+                  "hasSpacing": true,
+                  "hasRimProtection": true,
+                  "hasInteriorScoring": true,
+                  "hasAPasser": true
+                },
+                "satisfied": 6,
+                "total": 6,
+                "coherent": true,
+                "counts": {
+                  "creators": 2,
+                  "spacers": 2,
+                  "rimProtectors": 1,
+                  "posts": 2,
+                  "passers": 1
+                }
+              },
+              "anchors": {
+                "post": "boogie-2010s",
+                "rim": "yao-00s"
+              },
+              "coherentCandidatesFound": 4509,
+              "rule": "anchor on the scarce coherence requirements (an interior scorer and a rim protector), fill the remaining slots by rating-targeted beam search one card per person, keep only fully coherent fives, then take the one closest to the target rating; all ordering deterministic by key then card id"
+            },
+            "precondition": "control summed rating 181.49 < fixture 226.86",
+            "preconditionMet": true,
+            "coherencePrecondition": "the control must satisfy every coherence check, otherwise the surface is not testing coherent-versus-warped construction",
+            "coherencePreconditionMet": true
+          },
+          "VS_TALENT_GAP_CONTROL": {
+            "applicable": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        }
+      },
+      {
+        "fixtureId": "ss2-no-spacing-1960s",
+        "purpose": "IMPOSSIBLE_SPACING",
+        "era": "1960s",
+        "fixtureCoach": "red-auerbach",
+        "fixtureSummedRating": 184.38,
+        "fixtureCoherence": {
+          "checks": {
+            "hasALeadCreator": false,
+            "creationNotCollided": true,
+            "hasSpacing": false,
+            "hasRimProtection": true,
+            "hasInteriorScoring": true,
+            "hasAPasser": true
+          },
+          "satisfied": 4,
+          "total": 6,
+          "coherent": false,
+          "counts": {
+            "creators": 0,
+            "spacers": 0,
+            "rimProtectors": 1,
+            "posts": 1,
+            "passers": 1
+          }
+        },
+        "zoneLegalEra": false,
+        "surfaces": {
+          "MIRROR": {
+            "applicable": true,
+            "coachBothSides": "red-auerbach"
+          },
+          "ZONE_ASYMMETRIC": {
+            "applicable": false,
+            "reason": "zone is illegal in 1960s, so no zone possession can be realized and no shell win rate exists",
+            "structuralExpectationInstead": "realized zone possessions must be exactly 0"
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "applicable": true,
+            "control": {
+              "five": [
+                "billups-00s",
+                "glen-90s",
+                "middleton-20s",
+                "boogie-2010s",
+                "chet-20s"
+              ],
+              "summedRating": 147.5,
+              "targetRating": 147.504,
+              "ratingError": -0.004,
+              "coherence": {
+                "checks": {
+                  "hasALeadCreator": true,
+                  "creationNotCollided": true,
+                  "hasSpacing": true,
+                  "hasRimProtection": true,
+                  "hasInteriorScoring": true,
+                  "hasAPasser": true
+                },
+                "satisfied": 6,
+                "total": 6,
+                "coherent": true,
+                "counts": {
+                  "creators": 1,
+                  "spacers": 2,
+                  "rimProtectors": 1,
+                  "posts": 1,
+                  "passers": 1
+                }
+              },
+              "anchors": {
+                "post": "boogie-2010s",
+                "rim": "chet-20s"
+              },
+              "coherentCandidatesFound": 781,
+              "rule": "anchor on the scarce coherence requirements (an interior scorer and a rim protector), fill the remaining slots by rating-targeted beam search one card per person, keep only fully coherent fives, then take the one closest to the target rating; all ordering deterministic by key then card id"
+            },
+            "precondition": "control summed rating 147.5 < fixture 184.38",
+            "preconditionMet": true,
+            "coherencePrecondition": "the control must satisfy every coherence check, otherwise the surface is not testing coherent-versus-warped construction",
+            "coherencePreconditionMet": true
+          },
+          "VS_TALENT_GAP_CONTROL": {
+            "applicable": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        }
+      },
+      {
+        "fixtureId": "ss2-no-spacing-modern",
+        "purpose": "IMPOSSIBLE_SPACING",
+        "era": "2020s",
+        "fixtureCoach": "tom-thibodeau",
+        "fixtureSummedRating": 147.74,
+        "fixtureCoherence": {
+          "checks": {
+            "hasALeadCreator": true,
+            "creationNotCollided": true,
+            "hasSpacing": false,
+            "hasRimProtection": true,
+            "hasInteriorScoring": true,
+            "hasAPasser": true
+          },
+          "satisfied": 5,
+          "total": 6,
+          "coherent": false,
+          "counts": {
+            "creators": 1,
+            "spacers": 0,
+            "rimProtectors": 1,
+            "posts": 1,
+            "passers": 4
+          }
+        },
+        "zoneLegalEra": true,
+        "surfaces": {
+          "MIRROR": {
+            "applicable": true,
+            "coachBothSides": "tom-thibodeau"
+          },
+          "ZONE_ASYMMETRIC": {
+            "applicable": true,
+            "zoneCoachId": "erik-spoelstra",
+            "manCoachId": "steve-kerr"
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "applicable": true,
+            "control": {
+              "five": [
+                "doc-80s",
+                "petrovic-90s",
+                "tom-s-60s",
+                "boogie-2010s",
+                "eaton-80s"
+              ],
+              "summedRating": 120.48,
+              "targetRating": 118.192,
+              "ratingError": 2.288,
+              "coherence": {
+                "checks": {
+                  "hasALeadCreator": true,
+                  "creationNotCollided": true,
+                  "hasSpacing": true,
+                  "hasRimProtection": true,
+                  "hasInteriorScoring": true,
+                  "hasAPasser": true
+                },
+                "satisfied": 6,
+                "total": 6,
+                "coherent": true,
+                "counts": {
+                  "creators": 1,
+                  "spacers": 2,
+                  "rimProtectors": 1,
+                  "posts": 1,
+                  "passers": 1
+                }
+              },
+              "anchors": {
+                "post": "boogie-2010s",
+                "rim": "eaton-80s"
+              },
+              "coherentCandidatesFound": 13,
+              "rule": "anchor on the scarce coherence requirements (an interior scorer and a rim protector), fill the remaining slots by rating-targeted beam search one card per person, keep only fully coherent fives, then take the one closest to the target rating; all ordering deterministic by key then card id"
+            },
+            "precondition": "control summed rating 120.48 < fixture 147.74",
+            "preconditionMet": true,
+            "coherencePrecondition": "the control must satisfy every coherence check, otherwise the surface is not testing coherent-versus-warped construction",
+            "coherencePreconditionMet": true
+          },
+          "VS_TALENT_GAP_CONTROL": {
+            "applicable": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        }
+      },
+      {
+        "fixtureId": "ss2-mismatch-chain",
+        "purpose": "DEFENSIVE_MISMATCH_CHAIN",
+        "era": "2010s",
+        "fixtureCoach": "erik-spoelstra",
+        "fixtureSummedRating": 239.11,
+        "fixtureCoherence": {
+          "checks": {
+            "hasALeadCreator": true,
+            "creationNotCollided": true,
+            "hasSpacing": true,
+            "hasRimProtection": false,
+            "hasInteriorScoring": false,
+            "hasAPasser": true
+          },
+          "satisfied": 4,
+          "total": 6,
+          "coherent": false,
+          "counts": {
+            "creators": 3,
+            "spacers": 3,
+            "rimProtectors": 0,
+            "posts": 0,
+            "passers": 2
+          }
+        },
+        "zoneLegalEra": true,
+        "surfaces": {
+          "MIRROR": {
+            "applicable": true,
+            "coachBothSides": "erik-spoelstra"
+          },
+          "ZONE_ASYMMETRIC": {
+            "applicable": true,
+            "zoneCoachId": "erik-spoelstra",
+            "manCoachId": "steve-kerr"
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "applicable": false,
+            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+          },
+          "VS_TALENT_GAP_CONTROL": {
+            "applicable": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        }
+      },
+      {
+        "fixtureId": "ss2-zone-edge-legal",
+        "purpose": "ZONE_EDGE_CASE",
+        "era": "2020s",
+        "fixtureCoach": "erik-spoelstra",
+        "fixtureSummedRating": 247.76,
+        "fixtureCoherence": {
+          "checks": {
+            "hasALeadCreator": true,
+            "creationNotCollided": false,
+            "hasSpacing": true,
+            "hasRimProtection": true,
+            "hasInteriorScoring": true,
+            "hasAPasser": true
+          },
+          "satisfied": 5,
+          "total": 6,
+          "coherent": false,
+          "counts": {
+            "creators": 4,
+            "spacers": 2,
+            "rimProtectors": 3,
+            "posts": 2,
+            "passers": 3
+          }
+        },
+        "zoneLegalEra": true,
+        "surfaces": {
+          "MIRROR": {
+            "applicable": true,
+            "coachBothSides": "erik-spoelstra"
+          },
+          "ZONE_ASYMMETRIC": {
+            "applicable": true,
+            "zoneCoachId": "erik-spoelstra",
+            "manCoachId": "steve-kerr"
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "applicable": false,
+            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+          },
+          "VS_TALENT_GAP_CONTROL": {
+            "applicable": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        }
+      },
+      {
+        "fixtureId": "ss2-zone-edge-illegal",
+        "purpose": "ZONE_EDGE_CASE",
+        "era": "1970s",
+        "fixtureCoach": "tom-heinsohn",
+        "fixtureSummedRating": 220.13,
+        "fixtureCoherence": {
+          "checks": {
+            "hasALeadCreator": true,
+            "creationNotCollided": false,
+            "hasSpacing": false,
+            "hasRimProtection": false,
+            "hasInteriorScoring": true,
+            "hasAPasser": true
+          },
+          "satisfied": 3,
+          "total": 6,
+          "coherent": false,
+          "counts": {
+            "creators": 4,
+            "spacers": 1,
+            "rimProtectors": 0,
+            "posts": 1,
+            "passers": 2
+          }
+        },
+        "zoneLegalEra": false,
+        "surfaces": {
+          "MIRROR": {
+            "applicable": true,
+            "coachBothSides": "tom-heinsohn"
+          },
+          "ZONE_ASYMMETRIC": {
+            "applicable": false,
+            "reason": "zone is illegal in 1970s, so no zone possession can be realized and no shell win rate exists",
+            "structuralExpectationInstead": "realized zone possessions must be exactly 0"
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "applicable": false,
+            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+          },
+          "VS_TALENT_GAP_CONTROL": {
+            "applicable": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        }
+      },
+      {
+        "fixtureId": "ss2-era-edge-old-in-modern",
+        "purpose": "ERA_EDGE_CASE",
+        "era": "2020s",
+        "fixtureCoach": "red-auerbach",
+        "fixtureSummedRating": 221.98,
+        "fixtureCoherence": {
+          "checks": {
+            "hasALeadCreator": true,
+            "creationNotCollided": false,
+            "hasSpacing": false,
+            "hasRimProtection": false,
+            "hasInteriorScoring": false,
+            "hasAPasser": true
+          },
+          "satisfied": 2,
+          "total": 6,
+          "coherent": false,
+          "counts": {
+            "creators": 4,
+            "spacers": 1,
+            "rimProtectors": 0,
+            "posts": 0,
+            "passers": 1
+          }
+        },
+        "zoneLegalEra": true,
+        "surfaces": {
+          "MIRROR": {
+            "applicable": true,
+            "coachBothSides": "red-auerbach"
+          },
+          "ZONE_ASYMMETRIC": {
+            "applicable": true,
+            "zoneCoachId": "erik-spoelstra",
+            "manCoachId": "steve-kerr"
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "applicable": false,
+            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+          },
+          "VS_TALENT_GAP_CONTROL": {
+            "applicable": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        }
+      },
+      {
+        "fixtureId": "ss2-era-edge-modern-in-old",
+        "purpose": "ERA_EDGE_CASE",
+        "era": "1950s",
+        "fixtureCoach": "john-kundla",
+        "fixtureSummedRating": 273.08,
+        "fixtureCoherence": {
+          "checks": {
+            "hasALeadCreator": true,
+            "creationNotCollided": false,
+            "hasSpacing": true,
+            "hasRimProtection": false,
+            "hasInteriorScoring": false,
+            "hasAPasser": true
+          },
+          "satisfied": 3,
+          "total": 6,
+          "coherent": false,
+          "counts": {
+            "creators": 5,
+            "spacers": 5,
+            "rimProtectors": 0,
+            "posts": 0,
+            "passers": 3
+          }
+        },
+        "zoneLegalEra": false,
+        "surfaces": {
+          "MIRROR": {
+            "applicable": true,
+            "coachBothSides": "john-kundla"
+          },
+          "ZONE_ASYMMETRIC": {
+            "applicable": false,
+            "reason": "zone is illegal in 1950s, so no zone possession can be realized and no shell win rate exists",
+            "structuralExpectationInstead": "realized zone possessions must be exactly 0"
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "applicable": false,
+            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+          },
+          "VS_TALENT_GAP_CONTROL": {
+            "applicable": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        }
+      },
+      {
+        "fixtureId": "ss2-coach-toolkit-edge",
+        "purpose": "COACH_TOOLKIT_EDGE",
+        "era": "1960s",
+        "fixtureCoach": "mike-dantoni",
+        "fixtureSummedRating": 322.91,
+        "fixtureCoherence": {
+          "checks": {
+            "hasALeadCreator": true,
+            "creationNotCollided": false,
+            "hasSpacing": true,
+            "hasRimProtection": true,
+            "hasInteriorScoring": true,
+            "hasAPasser": true
+          },
+          "satisfied": 5,
+          "total": 6,
+          "coherent": false,
+          "counts": {
+            "creators": 5,
+            "spacers": 3,
+            "rimProtectors": 1,
+            "posts": 1,
+            "passers": 1
+          }
+        },
+        "zoneLegalEra": false,
+        "surfaces": {
+          "MIRROR": {
+            "applicable": true,
+            "coachBothSides": "mike-dantoni"
+          },
+          "ZONE_ASYMMETRIC": {
+            "applicable": false,
+            "reason": "zone is illegal in 1960s, so no zone possession can be realized and no shell win rate exists",
+            "structuralExpectationInstead": "realized zone possessions must be exactly 0"
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "applicable": false,
+            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+          },
+          "VS_TALENT_GAP_CONTROL": {
+            "applicable": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        }
+      },
+      {
+        "fixtureId": "ss2-usage-concentration",
+        "purpose": "USAGE_CONCENTRATION",
+        "era": "1960s",
+        "fixtureCoach": "red-auerbach",
+        "fixtureSummedRating": 298.2,
+        "fixtureCoherence": {
+          "checks": {
+            "hasALeadCreator": true,
+            "creationNotCollided": false,
+            "hasSpacing": true,
+            "hasRimProtection": true,
+            "hasInteriorScoring": true,
+            "hasAPasser": true
+          },
+          "satisfied": 5,
+          "total": 6,
+          "coherent": false,
+          "counts": {
+            "creators": 5,
+            "spacers": 3,
+            "rimProtectors": 1,
+            "posts": 1,
+            "passers": 1
+          }
+        },
+        "zoneLegalEra": false,
+        "surfaces": {
+          "MIRROR": {
+            "applicable": true,
+            "coachBothSides": "red-auerbach"
+          },
+          "ZONE_ASYMMETRIC": {
+            "applicable": false,
+            "reason": "zone is illegal in 1960s, so no zone possession can be realized and no shell win rate exists",
+            "structuralExpectationInstead": "realized zone possessions must be exactly 0"
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "applicable": false,
+            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+          },
+          "VS_TALENT_GAP_CONTROL": {
+            "applicable": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        }
+      },
+      {
+        "fixtureId": "ss2-statistical-tails",
+        "purpose": "STATISTICAL_TAILS",
+        "era": "1970s",
+        "fixtureCoach": "lenny-wilkens",
+        "fixtureSummedRating": 279.76,
+        "fixtureCoherence": {
+          "checks": {
+            "hasALeadCreator": true,
+            "creationNotCollided": false,
+            "hasSpacing": false,
+            "hasRimProtection": true,
+            "hasInteriorScoring": true,
+            "hasAPasser": true
+          },
+          "satisfied": 4,
+          "total": 6,
+          "coherent": false,
+          "counts": {
+            "creators": 5,
+            "spacers": 1,
+            "rimProtectors": 2,
+            "posts": 2,
+            "passers": 1
+          }
+        },
+        "zoneLegalEra": false,
+        "surfaces": {
+          "MIRROR": {
+            "applicable": true,
+            "coachBothSides": "lenny-wilkens"
+          },
+          "ZONE_ASYMMETRIC": {
+            "applicable": false,
+            "reason": "zone is illegal in 1970s, so no zone possession can be realized and no shell win rate exists",
+            "structuralExpectationInstead": "realized zone possessions must be exactly 0"
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "applicable": false,
+            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+          },
+          "VS_TALENT_GAP_CONTROL": {
+            "applicable": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        }
+      },
+      {
+        "fixtureId": "ss2-series-variance",
+        "purpose": "SERIES_VARIANCE",
+        "era": "1990s",
+        "fixtureCoach": "phil-jackson",
+        "fixtureSummedRating": 270.35,
+        "fixtureCoherence": {
+          "checks": {
+            "hasALeadCreator": true,
+            "creationNotCollided": true,
+            "hasSpacing": false,
+            "hasRimProtection": true,
+            "hasInteriorScoring": true,
+            "hasAPasser": true
+          },
+          "satisfied": 5,
+          "total": 6,
+          "coherent": false,
+          "counts": {
+            "creators": 3,
+            "spacers": 0,
+            "rimProtectors": 1,
+            "posts": 1,
+            "passers": 2
+          }
+        },
+        "zoneLegalEra": false,
+        "surfaces": {
+          "MIRROR": {
+            "applicable": true,
+            "coachBothSides": "phil-jackson"
+          },
+          "ZONE_ASYMMETRIC": {
+            "applicable": false,
+            "reason": "zone is illegal in 1990s, so no zone possession can be realized and no shell win rate exists",
+            "structuralExpectationInstead": "realized zone possessions must be exactly 0"
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "applicable": false,
+            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+          },
+          "VS_TALENT_GAP_CONTROL": {
+            "applicable": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        }
+      },
+      {
+        "fixtureId": "ss2-win82-variance",
+        "purpose": "WIN82_VARIANCE",
+        "era": "2000s",
+        "fixtureCoach": "larry-brown",
+        "fixtureSummedRating": 210.38,
+        "fixtureCoherence": {
+          "checks": {
+            "hasALeadCreator": true,
+            "creationNotCollided": false,
+            "hasSpacing": true,
+            "hasRimProtection": true,
+            "hasInteriorScoring": true,
+            "hasAPasser": true
+          },
+          "satisfied": 5,
+          "total": 6,
+          "coherent": false,
+          "counts": {
+            "creators": 4,
+            "spacers": 2,
+            "rimProtectors": 2,
+            "posts": 2,
+            "passers": 2
+          }
+        },
+        "zoneLegalEra": true,
+        "surfaces": {
+          "MIRROR": {
+            "applicable": true,
+            "coachBothSides": "larry-brown"
+          },
+          "ZONE_ASYMMETRIC": {
+            "applicable": true,
+            "zoneCoachId": "erik-spoelstra",
+            "manCoachId": "steve-kerr"
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "applicable": false,
+            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+          },
+          "VS_TALENT_GAP_CONTROL": {
+            "applicable": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        }
+      },
+      {
+        "fixtureId": "ss2-duplicate-role",
+        "purpose": "DUPLICATE_ROLE_OVERLOAD",
+        "era": "2010s",
+        "fixtureCoach": "steve-kerr",
+        "fixtureSummedRating": 208.86,
+        "fixtureCoherence": {
+          "checks": {
+            "hasALeadCreator": true,
+            "creationNotCollided": false,
+            "hasSpacing": true,
+            "hasRimProtection": false,
+            "hasInteriorScoring": true,
+            "hasAPasser": true
+          },
+          "satisfied": 4,
+          "total": 6,
+          "coherent": false,
+          "counts": {
+            "creators": 4,
+            "spacers": 5,
+            "rimProtectors": 0,
+            "posts": 1,
+            "passers": 2
+          }
+        },
+        "zoneLegalEra": true,
+        "surfaces": {
+          "MIRROR": {
+            "applicable": true,
+            "coachBothSides": "steve-kerr"
+          },
+          "ZONE_ASYMMETRIC": {
+            "applicable": true,
+            "zoneCoachId": "erik-spoelstra",
+            "manCoachId": "steve-kerr"
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "applicable": true,
+            "control": {
+              "five": [
+                "dame-10s",
+                "wade-10s",
+                "jbrown-20s",
+                "franz-20s",
+                "yao-00s"
+              ],
+              "summedRating": 167.09,
+              "targetRating": 167.088,
+              "ratingError": 0.002,
+              "coherence": {
+                "checks": {
+                  "hasALeadCreator": true,
+                  "creationNotCollided": true,
+                  "hasSpacing": true,
+                  "hasRimProtection": true,
+                  "hasInteriorScoring": true,
+                  "hasAPasser": true
+                },
+                "satisfied": 6,
+                "total": 6,
+                "coherent": true,
+                "counts": {
+                  "creators": 3,
+                  "spacers": 3,
+                  "rimProtectors": 1,
+                  "posts": 1,
+                  "passers": 2
+                }
+              },
+              "anchors": {
+                "post": "yao-00s",
+                "rim": "yao-00s"
+              },
+              "coherentCandidatesFound": 4273,
+              "rule": "anchor on the scarce coherence requirements (an interior scorer and a rim protector), fill the remaining slots by rating-targeted beam search one card per person, keep only fully coherent fives, then take the one closest to the target rating; all ordering deterministic by key then card id"
+            },
+            "precondition": "control summed rating 167.09 < fixture 208.86",
+            "preconditionMet": true,
+            "coherencePrecondition": "the control must satisfy every coherence check, otherwise the surface is not testing coherent-versus-warped construction",
+            "coherencePreconditionMet": true
+          },
+          "VS_TALENT_GAP_CONTROL": {
+            "applicable": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        }
+      },
+      {
+        "fixtureId": "ss2-extreme-strength-gap",
+        "purpose": "EXTREME_STRENGTH_GAP",
+        "era": "2010s",
+        "fixtureCoach": "tom-thibodeau",
+        "fixtureSummedRating": 132.17,
+        "fixtureCoherence": {
+          "checks": {
+            "hasALeadCreator": false,
+            "creationNotCollided": true,
+            "hasSpacing": true,
+            "hasRimProtection": true,
+            "hasInteriorScoring": false,
+            "hasAPasser": true
+          },
+          "satisfied": 4,
+          "total": 6,
+          "coherent": false,
+          "counts": {
+            "creators": 0,
+            "spacers": 2,
+            "rimProtectors": 3,
+            "posts": 0,
+            "passers": 2
+          }
+        },
+        "zoneLegalEra": true,
+        "surfaces": {
+          "MIRROR": {
+            "applicable": true,
+            "coachBothSides": "tom-thibodeau"
+          },
+          "ZONE_ASYMMETRIC": {
+            "applicable": true,
+            "zoneCoachId": "erik-spoelstra",
+            "manCoachId": "steve-kerr"
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "applicable": false,
+            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+          },
+          "VS_TALENT_GAP_CONTROL": {
+            "applicable": true,
+            "control": {
+              "five": [
+                "russ-10s",
+                "tyrese-20s",
+                "bird-80s",
+                "bob-l-70s",
+                "nate-60s"
+              ],
+              "summedRating": 231.29,
+              "targetRating": 231.2975,
+              "ratingError": -0.0075,
+              "coherence": {
+                "checks": {
+                  "hasALeadCreator": true,
+                  "creationNotCollided": true,
+                  "hasSpacing": true,
+                  "hasRimProtection": true,
+                  "hasInteriorScoring": true,
+                  "hasAPasser": true
+                },
+                "satisfied": 6,
+                "total": 6,
+                "coherent": true,
+                "counts": {
+                  "creators": 3,
+                  "spacers": 2,
+                  "rimProtectors": 1,
+                  "posts": 1,
+                  "passers": 3
+                }
+              },
+              "anchors": {
+                "post": "bob-l-70s",
+                "rim": "bob-l-70s"
+              },
+              "coherentCandidatesFound": 149,
+              "rule": "anchor on the scarce coherence requirements (an interior scorer and a rim protector), fill the remaining slots by rating-targeted beam search one card per person, keep only fully coherent fives, then take the one closest to the target rating; all ordering deterministic by key then card id",
+              "direction": "CONTROL_IS_STRONG_SIDE",
+              "strongSide": "CONTROL",
+              "requiredRatio": 1.75,
+              "achievedRatio": 1.74994
+            },
+            "direction": "CONTROL_IS_STRONG_SIDE",
+            "strongSide": "CONTROL",
+            "precondition": "control 231.29 >= fixture 132.17 x 1.75",
+            "preconditionMet": true
+          }
+        }
+      }
+    ],
+    "developmentFixturePlan": [
+      {
+        "fixtureId": "sd2-balanced-lower-ovr",
+        "purpose": "BALANCED_CONSTRUCTION",
+        "era": "2010s",
+        "fixtureCoach": "gregg-popovich",
+        "fixtureSummedRating": 183.64,
+        "fixtureCoherence": {
+          "checks": {
+            "hasALeadCreator": true,
+            "creationNotCollided": false,
+            "hasSpacing": true,
+            "hasRimProtection": true,
+            "hasInteriorScoring": true,
+            "hasAPasser": true
+          },
+          "satisfied": 5,
+          "total": 6,
+          "coherent": false,
+          "counts": {
+            "creators": 4,
+            "spacers": 2,
+            "rimProtectors": 1,
+            "posts": 2,
+            "passers": 3
+          }
+        },
+        "zoneLegalEra": true,
+        "surfaces": {
+          "MIRROR": {
+            "applicable": true,
+            "coachBothSides": "gregg-popovich"
+          },
+          "ZONE_ASYMMETRIC": {
+            "applicable": true,
+            "zoneCoachId": "erik-spoelstra",
+            "manCoachId": "steve-kerr"
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "applicable": false,
+            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+          },
+          "VS_TALENT_GAP_CONTROL": {
+            "applicable": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        }
+      },
+      {
+        "fixtureId": "sd2-creator-stack",
+        "purpose": "SUPERSTAR_STACK",
+        "era": "2010s",
+        "fixtureCoach": "mike-dantoni",
+        "fixtureSummedRating": 272.17,
+        "fixtureCoherence": {
+          "checks": {
+            "hasALeadCreator": true,
+            "creationNotCollided": false,
+            "hasSpacing": true,
+            "hasRimProtection": true,
+            "hasInteriorScoring": false,
+            "hasAPasser": true
+          },
+          "satisfied": 4,
+          "total": 6,
+          "coherent": false,
+          "counts": {
+            "creators": 5,
+            "spacers": 3,
+            "rimProtectors": 1,
+            "posts": 0,
+            "passers": 4
+          }
+        },
+        "zoneLegalEra": true,
+        "surfaces": {
+          "MIRROR": {
+            "applicable": true,
+            "coachBothSides": "mike-dantoni"
+          },
+          "ZONE_ASYMMETRIC": {
+            "applicable": true,
+            "zoneCoachId": "erik-spoelstra",
+            "manCoachId": "steve-kerr"
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "applicable": false,
+            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+          },
+          "VS_TALENT_GAP_CONTROL": {
+            "applicable": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        }
+      },
+      {
+        "fixtureId": "sd2-elite-shooting",
+        "purpose": "ELITE_SHOOTING",
+        "era": "2010s",
+        "fixtureCoach": "steve-kerr",
+        "fixtureSummedRating": 209.47,
+        "fixtureCoherence": {
+          "checks": {
+            "hasALeadCreator": true,
+            "creationNotCollided": true,
+            "hasSpacing": true,
+            "hasRimProtection": false,
+            "hasInteriorScoring": true,
+            "hasAPasser": true
+          },
+          "satisfied": 5,
+          "total": 6,
+          "coherent": false,
+          "counts": {
+            "creators": 3,
+            "spacers": 5,
+            "rimProtectors": 0,
+            "posts": 1,
+            "passers": 1
+          }
+        },
+        "zoneLegalEra": true,
+        "surfaces": {
+          "MIRROR": {
+            "applicable": true,
+            "coachBothSides": "steve-kerr"
+          },
+          "ZONE_ASYMMETRIC": {
+            "applicable": true,
+            "zoneCoachId": "erik-spoelstra",
+            "manCoachId": "steve-kerr"
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "applicable": false,
+            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+          },
+          "VS_TALENT_GAP_CONTROL": {
+            "applicable": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        }
+      },
+      {
+        "fixtureId": "sd2-weak-shooting",
+        "purpose": "WEAK_SHOOTING",
+        "era": "2010s",
+        "fixtureCoach": "tom-thibodeau",
+        "fixtureSummedRating": 174.03,
+        "fixtureCoherence": {
+          "checks": {
+            "hasALeadCreator": true,
+            "creationNotCollided": true,
+            "hasSpacing": false,
+            "hasRimProtection": true,
+            "hasInteriorScoring": false,
+            "hasAPasser": true
+          },
+          "satisfied": 4,
+          "total": 6,
+          "coherent": false,
+          "counts": {
+            "creators": 1,
+            "spacers": 0,
+            "rimProtectors": 2,
+            "posts": 0,
+            "passers": 2
+          }
+        },
+        "zoneLegalEra": true,
+        "surfaces": {
+          "MIRROR": {
+            "applicable": true,
+            "coachBothSides": "tom-thibodeau"
+          },
+          "ZONE_ASYMMETRIC": {
+            "applicable": true,
+            "zoneCoachId": "erik-spoelstra",
+            "manCoachId": "steve-kerr"
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "applicable": false,
+            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+          },
+          "VS_TALENT_GAP_CONTROL": {
+            "applicable": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        }
+      },
+      {
+        "fixtureId": "sd2-extreme-size",
+        "purpose": "EXTREME_SIZE",
+        "era": "1960s",
+        "fixtureCoach": "red-auerbach",
+        "fixtureSummedRating": 306.02,
+        "fixtureCoherence": {
+          "checks": {
+            "hasALeadCreator": true,
+            "creationNotCollided": false,
+            "hasSpacing": true,
+            "hasRimProtection": true,
+            "hasInteriorScoring": true,
+            "hasAPasser": true
+          },
+          "satisfied": 5,
+          "total": 6,
+          "coherent": false,
+          "counts": {
+            "creators": 4,
+            "spacers": 3,
+            "rimProtectors": 1,
+            "posts": 1,
+            "passers": 1
+          }
+        },
+        "zoneLegalEra": false,
+        "surfaces": {
+          "MIRROR": {
+            "applicable": true,
+            "coachBothSides": "red-auerbach"
+          },
+          "ZONE_ASYMMETRIC": {
+            "applicable": false,
+            "reason": "zone is illegal in 1960s, so no zone possession can be realized and no shell win rate exists",
+            "structuralExpectationInstead": "realized zone possessions must be exactly 0"
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "applicable": false,
+            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+          },
+          "VS_TALENT_GAP_CONTROL": {
+            "applicable": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        }
+      },
+      {
+        "fixtureId": "sd2-extreme-small",
+        "purpose": "EXTREME_SMALL_BALL",
+        "era": "2020s",
+        "fixtureCoach": "steve-kerr",
+        "fixtureSummedRating": 93.28,
+        "fixtureCoherence": {
+          "checks": {
+            "hasALeadCreator": false,
+            "creationNotCollided": true,
+            "hasSpacing": true,
+            "hasRimProtection": false,
+            "hasInteriorScoring": false,
+            "hasAPasser": false
+          },
+          "satisfied": 2,
+          "total": 6,
+          "coherent": false,
+          "counts": {
+            "creators": 0,
+            "spacers": 3,
+            "rimProtectors": 0,
+            "posts": 0,
+            "passers": 0
+          }
+        },
+        "zoneLegalEra": true,
+        "surfaces": {
+          "MIRROR": {
+            "applicable": true,
+            "coachBothSides": "steve-kerr"
+          },
+          "ZONE_ASYMMETRIC": {
+            "applicable": true,
+            "zoneCoachId": "erik-spoelstra",
+            "manCoachId": "steve-kerr"
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "applicable": false,
+            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+          },
+          "VS_TALENT_GAP_CONTROL": {
+            "applicable": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        }
+      },
+      {
+        "fixtureId": "sd2-passing-hub",
+        "purpose": "PASSING_HUB",
+        "era": "2020s",
+        "fixtureCoach": "nick-nurse",
+        "fixtureSummedRating": 223.45,
+        "fixtureCoherence": {
+          "checks": {
+            "hasALeadCreator": true,
+            "creationNotCollided": false,
+            "hasSpacing": true,
+            "hasRimProtection": false,
+            "hasInteriorScoring": true,
+            "hasAPasser": true
+          },
+          "satisfied": 4,
+          "total": 6,
+          "coherent": false,
+          "counts": {
+            "creators": 4,
+            "spacers": 4,
+            "rimProtectors": 0,
+            "posts": 1,
+            "passers": 5
+          }
+        },
+        "zoneLegalEra": true,
+        "surfaces": {
+          "MIRROR": {
+            "applicable": true,
+            "coachBothSides": "nick-nurse"
+          },
+          "ZONE_ASYMMETRIC": {
+            "applicable": true,
+            "zoneCoachId": "erik-spoelstra",
+            "manCoachId": "steve-kerr"
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "applicable": false,
+            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+          },
+          "VS_TALENT_GAP_CONTROL": {
+            "applicable": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        }
+      },
+      {
+        "fixtureId": "sd2-no-rim-protection",
+        "purpose": "NO_RIM_PROTECTION",
+        "era": "2010s",
+        "fixtureCoach": "mike-dantoni",
+        "fixtureSummedRating": 209.65,
+        "fixtureCoherence": {
+          "checks": {
+            "hasALeadCreator": true,
+            "creationNotCollided": false,
+            "hasSpacing": true,
+            "hasRimProtection": false,
+            "hasInteriorScoring": true,
+            "hasAPasser": true
+          },
+          "satisfied": 4,
+          "total": 6,
+          "coherent": false,
+          "counts": {
+            "creators": 4,
+            "spacers": 4,
+            "rimProtectors": 0,
+            "posts": 1,
+            "passers": 2
+          }
+        },
+        "zoneLegalEra": true,
+        "surfaces": {
+          "MIRROR": {
+            "applicable": true,
+            "coachBothSides": "mike-dantoni"
+          },
+          "ZONE_ASYMMETRIC": {
+            "applicable": true,
+            "zoneCoachId": "erik-spoelstra",
+            "manCoachId": "steve-kerr"
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "applicable": false,
+            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+          },
+          "VS_TALENT_GAP_CONTROL": {
+            "applicable": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        }
+      },
+      {
+        "fixtureId": "sd2-movement-shooters",
+        "purpose": "MOVEMENT_SHOOTERS",
+        "era": "2010s",
+        "fixtureCoach": "steve-kerr",
+        "fixtureSummedRating": 222.07,
+        "fixtureCoherence": {
+          "checks": {
+            "hasALeadCreator": true,
+            "creationNotCollided": false,
+            "hasSpacing": true,
+            "hasRimProtection": false,
+            "hasInteriorScoring": true,
+            "hasAPasser": true
+          },
+          "satisfied": 4,
+          "total": 6,
+          "coherent": false,
+          "counts": {
+            "creators": 5,
+            "spacers": 5,
+            "rimProtectors": 0,
+            "posts": 1,
+            "passers": 2
+          }
+        },
+        "zoneLegalEra": true,
+        "surfaces": {
+          "MIRROR": {
+            "applicable": true,
+            "coachBothSides": "steve-kerr"
+          },
+          "ZONE_ASYMMETRIC": {
+            "applicable": true,
+            "zoneCoachId": "erik-spoelstra",
+            "manCoachId": "steve-kerr"
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "applicable": false,
+            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+          },
+          "VS_TALENT_GAP_CONTROL": {
+            "applicable": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        }
+      },
+      {
+        "fixtureId": "sd2-post-mismatch",
+        "purpose": "POST_MISMATCH",
+        "era": "1970s",
+        "fixtureCoach": "lenny-wilkens",
+        "fixtureSummedRating": 244.08,
+        "fixtureCoherence": {
+          "checks": {
+            "hasALeadCreator": true,
+            "creationNotCollided": true,
+            "hasSpacing": false,
+            "hasRimProtection": true,
+            "hasInteriorScoring": true,
+            "hasAPasser": true
+          },
+          "satisfied": 5,
+          "total": 6,
+          "coherent": false,
+          "counts": {
+            "creators": 3,
+            "spacers": 1,
+            "rimProtectors": 2,
+            "posts": 1,
+            "passers": 1
+          }
+        },
+        "zoneLegalEra": false,
+        "surfaces": {
+          "MIRROR": {
+            "applicable": true,
+            "coachBothSides": "lenny-wilkens"
+          },
+          "ZONE_ASYMMETRIC": {
+            "applicable": false,
+            "reason": "zone is illegal in 1970s, so no zone possession can be realized and no shell win rate exists",
+            "structuralExpectationInstead": "realized zone possessions must be exactly 0"
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "applicable": false,
+            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+          },
+          "VS_TALENT_GAP_CONTROL": {
+            "applicable": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        }
+      },
+      {
+        "fixtureId": "sd2-zone-attack",
+        "purpose": "ZONE_ATTACK",
+        "era": "2010s",
+        "fixtureCoach": "erik-spoelstra",
+        "fixtureSummedRating": 284.75,
+        "fixtureCoherence": {
+          "checks": {
+            "hasALeadCreator": true,
+            "creationNotCollided": false,
+            "hasSpacing": true,
+            "hasRimProtection": true,
+            "hasInteriorScoring": false,
+            "hasAPasser": true
+          },
+          "satisfied": 4,
+          "total": 6,
+          "coherent": false,
+          "counts": {
+            "creators": 5,
+            "spacers": 4,
+            "rimProtectors": 1,
+            "posts": 0,
+            "passers": 4
+          }
+        },
+        "zoneLegalEra": true,
+        "surfaces": {
+          "MIRROR": {
+            "applicable": true,
+            "coachBothSides": "erik-spoelstra"
+          },
+          "ZONE_ASYMMETRIC": {
+            "applicable": true,
+            "zoneCoachId": "erik-spoelstra",
+            "manCoachId": "steve-kerr"
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "applicable": false,
+            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+          },
+          "VS_TALENT_GAP_CONTROL": {
+            "applicable": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        }
+      },
+      {
+        "fixtureId": "sd2-weak-defender-hiding",
+        "purpose": "WEAK_DEFENDER_HIDING",
+        "era": "2010s",
+        "fixtureCoach": "mike-dantoni",
+        "fixtureSummedRating": 228.75,
+        "fixtureCoherence": {
+          "checks": {
+            "hasALeadCreator": true,
+            "creationNotCollided": false,
+            "hasSpacing": true,
+            "hasRimProtection": true,
+            "hasInteriorScoring": true,
+            "hasAPasser": true
+          },
+          "satisfied": 5,
+          "total": 6,
+          "coherent": false,
+          "counts": {
+            "creators": 4,
+            "spacers": 3,
+            "rimProtectors": 1,
+            "posts": 1,
+            "passers": 1
+          }
+        },
+        "zoneLegalEra": true,
+        "surfaces": {
+          "MIRROR": {
+            "applicable": true,
+            "coachBothSides": "mike-dantoni"
+          },
+          "ZONE_ASYMMETRIC": {
+            "applicable": true,
+            "zoneCoachId": "erik-spoelstra",
+            "manCoachId": "steve-kerr"
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "applicable": false,
+            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+          },
+          "VS_TALENT_GAP_CONTROL": {
+            "applicable": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        }
+      },
+      {
+        "fixtureId": "sd2-action-family-stress",
+        "purpose": "ACTION_FAMILY_STRESS",
+        "era": "1990s",
+        "fixtureCoach": "jerry-sloan",
+        "fixtureSummedRating": 257.12,
+        "fixtureCoherence": {
+          "checks": {
+            "hasALeadCreator": true,
+            "creationNotCollided": false,
+            "hasSpacing": false,
+            "hasRimProtection": false,
+            "hasInteriorScoring": false,
+            "hasAPasser": true
+          },
+          "satisfied": 2,
+          "total": 6,
+          "coherent": false,
+          "counts": {
+            "creators": 5,
+            "spacers": 0,
+            "rimProtectors": 0,
+            "posts": 0,
+            "passers": 4
+          }
+        },
+        "zoneLegalEra": false,
+        "surfaces": {
+          "MIRROR": {
+            "applicable": true,
+            "coachBothSides": "jerry-sloan"
+          },
+          "ZONE_ASYMMETRIC": {
+            "applicable": false,
+            "reason": "zone is illegal in 1990s, so no zone possession can be realized and no shell win rate exists",
+            "structuralExpectationInstead": "realized zone possessions must be exactly 0"
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "applicable": false,
+            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+          },
+          "VS_TALENT_GAP_CONTROL": {
+            "applicable": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        }
+      },
+      {
+        "fixtureId": "sd2-cross-era",
+        "purpose": "CROSS_ERA_TRANSLATION",
+        "era": "1960s",
+        "fixtureCoach": "phil-jackson",
+        "fixtureSummedRating": 368.18,
+        "fixtureCoherence": {
+          "checks": {
+            "hasALeadCreator": true,
+            "creationNotCollided": false,
+            "hasSpacing": true,
+            "hasRimProtection": true,
+            "hasInteriorScoring": true,
+            "hasAPasser": true
+          },
+          "satisfied": 5,
+          "total": 6,
+          "coherent": false,
+          "counts": {
+            "creators": 5,
+            "spacers": 3,
+            "rimProtectors": 1,
+            "posts": 1,
+            "passers": 3
+          }
+        },
+        "zoneLegalEra": false,
+        "surfaces": {
+          "MIRROR": {
+            "applicable": true,
+            "coachBothSides": "phil-jackson"
+          },
+          "ZONE_ASYMMETRIC": {
+            "applicable": false,
+            "reason": "zone is illegal in 1960s, so no zone possession can be realized and no shell win rate exists",
+            "structuralExpectationInstead": "realized zone possessions must be exactly 0"
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "applicable": false,
+            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+          },
+          "VS_TALENT_GAP_CONTROL": {
+            "applicable": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        }
+      }
+    ],
+    "zoneDecidableFixtureCount": 9,
+    "pass": true,
+    "failedGates": [],
+    "surfacePlanHash": "e9c3913f708628206d1c6c68b1909e96f19a8cc1f005a4a57955ac6c530649df"
+  },
+  "outputHash": "e06443198733fd4fa3f58ca1b852b890a062e41778f315cf2277000b6e1f7e7d"
+}

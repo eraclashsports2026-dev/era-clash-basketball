@@ -1,0 +1,833 @@
+{
+  "artifact": "synthetic-v2-guardrail-registry",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run syn:guardrails",
+  "generatedAt": "2026-08-27T12:07:22.550Z",
+  "gitCommit": "3231adc58fbfe6b71e4c13fac13acf396a447b91",
+  "branch": "phase-6c4b1s-synthetic-v2-package",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "syntheticStressGuardrailRegistryVersion": "1.0.0",
+    "source": {
+      "location": "HOLDOUT.syntheticGuardrails in src/v3/calibration/acceptancePolicy.js",
+      "acceptancePolicyHash": "a3583d6ada42d61ff9ee40322d999154250613ba94a2cd6f073e2196315919b0",
+      "frozenKeyCount": 11
+    },
+    "membership": {
+      "fixtureCount": 16,
+      "membershipHash": "71267875cbf69a9ffa2bd420a2f4bb87437ecb78d6ca2029e7b6826759dbcd19",
+      "changed": false
+    },
+    "surfaces": {
+      "MIRROR": "the fixture five against ITSELF, same coach both sides, side-balanced. The construction is the only variable, so an action-mix or shell result cannot be an artifact of the opponent.",
+      "VS_BALANCED_CONTROL": "the fixture five against a frozen non-holdout balanced control five under the neutral coach. This is the only surface on which a construction-versus-talent claim is decidable, because it needs two DIFFERENT constructions."
+    },
+    "guardrailClasses": [
+      "STRUCTURAL_INVARIANT",
+      "HARD_CATASTROPHIC",
+      "PER_FIXTURE_REQUIRED",
+      "AGGREGATE_REQUIRED",
+      "DIRECTIONAL_GUARDRAIL",
+      "TAIL_GUARDRAIL",
+      "COMPETITION_MODE_GUARDRAIL",
+      "THRESHOLD_PARAMETER"
+    ],
+    "guardrailCount": 11,
+    "adjudicableGuardrailCount": 8,
+    "thresholdParameterCount": 3,
+    "countReconciliation": {
+      "frozenKeys": 11,
+      "registered": 11,
+      "booleanRequirements": 8,
+      "numericThresholds": 3,
+      "priorProseSaid": 10,
+      "discrepancy": "Phase prose has referred to 'ten conceptual guardrails'. The frozen object holds eleven keys: eight boolean requirements plus three numeric thresholds parameterising two of them. Both prior artifacts (the 6C4B2 preflight and blocker) recorded eleven. All eleven are registered here; the thresholds are classified as THRESHOLD_PARAMETER rather than merged into their parents, so nothing is reinterpreted and the count reconciles with the frozen source rather than with the prose."
+    },
+    "fixtureCoverage": {
+      "ss2-all-bigs": {
+        "purpose": "EXPLOIT_ROLE_OVERLAP",
+        "era": "2000s",
+        "coach": "gregg-popovich",
+        "guardrails": [
+          "requireZeroInvariantFailures",
+          "requireZeroImpossibleResults",
+          "forbidUniversalActionDominance",
+          "requireSameSeedReplay",
+          "requireNewSeedVariance",
+          "requireConstructionCanBeatHigherOvr"
+        ]
+      },
+      "ss2-all-guards": {
+        "purpose": "EXPLOIT_ROLE_OVERLAP",
+        "era": "2010s",
+        "coach": "mike-dantoni",
+        "guardrails": [
+          "requireZeroInvariantFailures",
+          "requireZeroImpossibleResults",
+          "forbidUniversalActionDominance",
+          "requireSameSeedReplay",
+          "requireNewSeedVariance",
+          "requireConstructionCanBeatHigherOvr"
+        ]
+      },
+      "ss2-no-spacing-1960s": {
+        "purpose": "IMPOSSIBLE_SPACING",
+        "era": "1960s",
+        "coach": "red-auerbach",
+        "guardrails": [
+          "requireZeroInvariantFailures",
+          "requireZeroImpossibleResults",
+          "forbidUniversalActionDominance",
+          "requireSameSeedReplay",
+          "requireNewSeedVariance",
+          "requireConstructionCanBeatHigherOvr"
+        ]
+      },
+      "ss2-no-spacing-modern": {
+        "purpose": "IMPOSSIBLE_SPACING",
+        "era": "2020s",
+        "coach": "tom-thibodeau",
+        "guardrails": [
+          "requireZeroInvariantFailures",
+          "requireZeroImpossibleResults",
+          "forbidUniversalActionDominance",
+          "requireSameSeedReplay",
+          "requireNewSeedVariance",
+          "requireConstructionCanBeatHigherOvr"
+        ]
+      },
+      "ss2-mismatch-chain": {
+        "purpose": "DEFENSIVE_MISMATCH_CHAIN",
+        "era": "2010s",
+        "coach": "erik-spoelstra",
+        "guardrails": [
+          "requireZeroInvariantFailures",
+          "requireZeroImpossibleResults",
+          "forbidUniversalActionDominance",
+          "requireSameSeedReplay",
+          "requireNewSeedVariance"
+        ]
+      },
+      "ss2-zone-edge-legal": {
+        "purpose": "ZONE_EDGE_CASE",
+        "era": "2020s",
+        "coach": "erik-spoelstra",
+        "guardrails": [
+          "requireZeroInvariantFailures",
+          "requireZeroImpossibleResults",
+          "forbidUniversalActionDominance",
+          "forbidUniversalShellDominance",
+          "requireSameSeedReplay",
+          "requireNewSeedVariance"
+        ]
+      },
+      "ss2-zone-edge-illegal": {
+        "purpose": "ZONE_EDGE_CASE",
+        "era": "1970s",
+        "coach": "tom-heinsohn",
+        "guardrails": [
+          "requireZeroInvariantFailures",
+          "requireZeroImpossibleResults",
+          "forbidUniversalActionDominance",
+          "forbidUniversalShellDominance",
+          "requireSameSeedReplay",
+          "requireNewSeedVariance"
+        ]
+      },
+      "ss2-era-edge-old-in-modern": {
+        "purpose": "ERA_EDGE_CASE",
+        "era": "2020s",
+        "coach": "red-auerbach",
+        "guardrails": [
+          "requireZeroInvariantFailures",
+          "requireZeroImpossibleResults",
+          "forbidUniversalActionDominance",
+          "requireSameSeedReplay",
+          "requireNewSeedVariance"
+        ]
+      },
+      "ss2-era-edge-modern-in-old": {
+        "purpose": "ERA_EDGE_CASE",
+        "era": "1950s",
+        "coach": "john-kundla",
+        "guardrails": [
+          "requireZeroInvariantFailures",
+          "requireZeroImpossibleResults",
+          "forbidUniversalActionDominance",
+          "requireSameSeedReplay",
+          "requireNewSeedVariance"
+        ]
+      },
+      "ss2-coach-toolkit-edge": {
+        "purpose": "COACH_TOOLKIT_EDGE",
+        "era": "1960s",
+        "coach": "mike-dantoni",
+        "guardrails": [
+          "requireZeroInvariantFailures",
+          "requireZeroImpossibleResults",
+          "forbidUniversalActionDominance",
+          "requireSameSeedReplay",
+          "requireNewSeedVariance"
+        ]
+      },
+      "ss2-usage-concentration": {
+        "purpose": "USAGE_CONCENTRATION",
+        "era": "1960s",
+        "coach": "red-auerbach",
+        "guardrails": [
+          "requireZeroInvariantFailures",
+          "requireZeroImpossibleResults",
+          "forbidUniversalActionDominance",
+          "requireSameSeedReplay",
+          "requireNewSeedVariance"
+        ]
+      },
+      "ss2-statistical-tails": {
+        "purpose": "STATISTICAL_TAILS",
+        "era": "1970s",
+        "coach": "lenny-wilkens",
+        "guardrails": [
+          "requireZeroInvariantFailures",
+          "requireZeroImpossibleResults",
+          "forbidUniversalActionDominance",
+          "requireSameSeedReplay",
+          "requireNewSeedVariance"
+        ]
+      },
+      "ss2-series-variance": {
+        "purpose": "SERIES_VARIANCE",
+        "era": "1990s",
+        "coach": "phil-jackson",
+        "guardrails": [
+          "requireZeroInvariantFailures",
+          "requireZeroImpossibleResults",
+          "forbidUniversalActionDominance",
+          "requireSameSeedReplay",
+          "requireNewSeedVariance"
+        ]
+      },
+      "ss2-win82-variance": {
+        "purpose": "WIN82_VARIANCE",
+        "era": "2000s",
+        "coach": "larry-brown",
+        "guardrails": [
+          "requireZeroInvariantFailures",
+          "requireZeroImpossibleResults",
+          "forbidUniversalActionDominance",
+          "requireSameSeedReplay",
+          "requireNewSeedVariance"
+        ]
+      },
+      "ss2-duplicate-role": {
+        "purpose": "DUPLICATE_ROLE_OVERLOAD",
+        "era": "2010s",
+        "coach": "steve-kerr",
+        "guardrails": [
+          "requireZeroInvariantFailures",
+          "requireZeroImpossibleResults",
+          "forbidUniversalActionDominance",
+          "requireSameSeedReplay",
+          "requireNewSeedVariance",
+          "requireConstructionCanBeatHigherOvr"
+        ]
+      },
+      "ss2-extreme-strength-gap": {
+        "purpose": "EXTREME_STRENGTH_GAP",
+        "era": "2010s",
+        "coach": "tom-thibodeau",
+        "guardrails": [
+          "requireZeroInvariantFailures",
+          "requireZeroImpossibleResults",
+          "forbidUniversalActionDominance",
+          "requireSameSeedReplay",
+          "requireNewSeedVariance",
+          "requireExtremeTalentRemainsMeaningful"
+        ]
+      }
+    },
+    "unmappedFixtures": [],
+    "unmappedGuardrails": [],
+    "guardrails": [
+      {
+        "guardrailId": "requireZeroInvariantFailures",
+        "originalDefinition": {
+          "key": "requireZeroInvariantFailures",
+          "value": true,
+          "source": "HOLDOUT.syntheticGuardrails",
+          "acceptancePolicyHash": "a3583d6ada42d61ff9ee40322d999154250613ba94a2cd6f073e2196315919b0"
+        },
+        "displayName": "Zero statistical-invariant failures",
+        "stressCategory": "STRUCTURAL",
+        "formalClass": "STRUCTURAL_INVARIANT",
+        "fixtureIds": [
+          "ss2-all-bigs",
+          "ss2-all-guards",
+          "ss2-no-spacing-1960s",
+          "ss2-no-spacing-modern",
+          "ss2-mismatch-chain",
+          "ss2-zone-edge-legal",
+          "ss2-zone-edge-illegal",
+          "ss2-era-edge-old-in-modern",
+          "ss2-era-edge-modern-in-old",
+          "ss2-coach-toolkit-edge",
+          "ss2-usage-concentration",
+          "ss2-statistical-tails",
+          "ss2-series-variance",
+          "ss2-win82-variance",
+          "ss2-duplicate-role",
+          "ss2-extreme-strength-gap"
+        ],
+        "surfaces": [
+          "MIRROR",
+          "VS_BALANCED_CONTROL"
+        ],
+        "mechanicUnderTest": "the possession engine's own conservation checks — points reconcile with made shots, possessions reconcile with the ledger, no box-score line contradicts the game",
+        "primaryMetrics": [
+          "invariantViolationCount"
+        ],
+        "secondaryMetrics": [],
+        "structuralChecks": [
+          "engine invariant checker on every game"
+        ],
+        "expectedBehavior": "exactly zero violations across every game of every fixture",
+        "candidateFailureMeaning": "the engine produced a game that cannot be true. Nothing else measured in the run can be trusted.",
+        "adjudication": {
+          "rule": "invariantViolationCount === 0",
+          "scope": "PER_GAME",
+          "catastrophic": true
+        },
+        "measurementSurface": [
+          {
+            "surface": "MIRROR",
+            "definition": "the fixture five against ITSELF, same coach both sides, side-balanced. The construction is the only variable, so an action-mix or shell result cannot be an artifact of the opponent."
+          },
+          {
+            "surface": "VS_BALANCED_CONTROL",
+            "definition": "the fixture five against a frozen non-holdout balanced control five under the neutral coach. This is the only surface on which a construction-versus-talent claim is decidable, because it needs two DIFFERENT constructions."
+          }
+        ],
+        "sourceArtifact": "src/v3/calibration/acceptancePolicy.js (frozen, covered by the pre-calibration artifact freeze)"
+      },
+      {
+        "guardrailId": "requireZeroImpossibleResults",
+        "originalDefinition": {
+          "key": "requireZeroImpossibleResults",
+          "value": true,
+          "source": "HOLDOUT.syntheticGuardrails",
+          "acceptancePolicyHash": "a3583d6ada42d61ff9ee40322d999154250613ba94a2cd6f073e2196315919b0"
+        },
+        "displayName": "Zero impossible results",
+        "stressCategory": "STRUCTURAL",
+        "formalClass": "STRUCTURAL_INVARIANT",
+        "fixtureIds": [
+          "ss2-all-bigs",
+          "ss2-all-guards",
+          "ss2-no-spacing-1960s",
+          "ss2-no-spacing-modern",
+          "ss2-mismatch-chain",
+          "ss2-zone-edge-legal",
+          "ss2-zone-edge-illegal",
+          "ss2-era-edge-old-in-modern",
+          "ss2-era-edge-modern-in-old",
+          "ss2-coach-toolkit-edge",
+          "ss2-usage-concentration",
+          "ss2-statistical-tails",
+          "ss2-series-variance",
+          "ss2-win82-variance",
+          "ss2-duplicate-role",
+          "ss2-extreme-strength-gap"
+        ],
+        "surfaces": [
+          "MIRROR",
+          "VS_BALANCED_CONTROL"
+        ],
+        "mechanicUnderTest": "the outer plausibility envelope: a basketball score, a finite number, a decided game",
+        "primaryMetrics": [
+          "impossibleScoreCount",
+          "nonFiniteStatCount",
+          "negativeStatCount",
+          "finalTieCount"
+        ],
+        "secondaryMetrics": [],
+        "structuralChecks": [
+          "score within [20, 220]",
+          "no NaN or Infinity in any box-score field",
+          "no negative statistic",
+          "no final tie"
+        ],
+        "expectedBehavior": "zero of each, in every game",
+        "candidateFailureMeaning": "the engine emitted a result outside basketball's physical envelope.",
+        "adjudication": {
+          "rule": "impossibleScoreCount + nonFiniteStatCount + negativeStatCount + finalTieCount === 0",
+          "scope": "PER_GAME",
+          "catastrophic": true
+        },
+        "measurementSurface": [
+          {
+            "surface": "MIRROR",
+            "definition": "the fixture five against ITSELF, same coach both sides, side-balanced. The construction is the only variable, so an action-mix or shell result cannot be an artifact of the opponent."
+          },
+          {
+            "surface": "VS_BALANCED_CONTROL",
+            "definition": "the fixture five against a frozen non-holdout balanced control five under the neutral coach. This is the only surface on which a construction-versus-talent claim is decidable, because it needs two DIFFERENT constructions."
+          }
+        ],
+        "sourceArtifact": "src/v3/calibration/acceptancePolicy.js (frozen, covered by the pre-calibration artifact freeze)"
+      },
+      {
+        "guardrailId": "forbidUniversalActionDominance",
+        "originalDefinition": {
+          "key": "forbidUniversalActionDominance",
+          "value": true,
+          "source": "HOLDOUT.syntheticGuardrails",
+          "acceptancePolicyHash": "a3583d6ada42d61ff9ee40322d999154250613ba94a2cd6f073e2196315919b0"
+        },
+        "displayName": "No action family universally dominates",
+        "stressCategory": "ACTION_MIX",
+        "formalClass": "AGGREGATE_REQUIRED",
+        "fixtureIds": [
+          "ss2-all-bigs",
+          "ss2-all-guards",
+          "ss2-no-spacing-1960s",
+          "ss2-no-spacing-modern",
+          "ss2-mismatch-chain",
+          "ss2-zone-edge-legal",
+          "ss2-zone-edge-illegal",
+          "ss2-era-edge-old-in-modern",
+          "ss2-era-edge-modern-in-old",
+          "ss2-coach-toolkit-edge",
+          "ss2-usage-concentration",
+          "ss2-statistical-tails",
+          "ss2-series-variance",
+          "ss2-win82-variance",
+          "ss2-duplicate-role",
+          "ss2-extreme-strength-gap"
+        ],
+        "surfaces": [
+          "MIRROR"
+        ],
+        "mechanicUnderTest": "the offensive action-mix layer: even a deliberately warped roster must not collapse into one action",
+        "primaryMetrics": [
+          "maxActionFamilyShare"
+        ],
+        "secondaryMetrics": [
+          "actionFamilyShareDistribution"
+        ],
+        "structuralChecks": [],
+        "expectedBehavior": "on every fixture, the largest single action-family share of possessions stays at or below the frozen threshold",
+        "candidateFailureMeaning": "one action swallowed the offence, so the action layer is not really choosing.",
+        "adjudication": {
+          "rule": "maxActionFamilyShare <= maxSingleActionFamilyShare",
+          "scope": "PER_FIXTURE_THEN_AGGREGATE",
+          "thresholdKey": "maxSingleActionFamilyShare",
+          "catastrophic": false,
+          "note": "Evaluated per fixture and then aggregated: a single fixture above the threshold is a fixture failure; the aggregate rule decides whether the set fails."
+        },
+        "measurementSurface": [
+          {
+            "surface": "MIRROR",
+            "definition": "the fixture five against ITSELF, same coach both sides, side-balanced. The construction is the only variable, so an action-mix or shell result cannot be an artifact of the opponent."
+          }
+        ],
+        "sourceArtifact": "src/v3/calibration/acceptancePolicy.js (frozen, covered by the pre-calibration artifact freeze)"
+      },
+      {
+        "guardrailId": "forbidUniversalShellDominance",
+        "originalDefinition": {
+          "key": "forbidUniversalShellDominance",
+          "value": true,
+          "source": "HOLDOUT.syntheticGuardrails",
+          "acceptancePolicyHash": "a3583d6ada42d61ff9ee40322d999154250613ba94a2cd6f073e2196315919b0"
+        },
+        "displayName": "No zone shell universally dominates",
+        "stressCategory": "ZONE_SCHEME",
+        "formalClass": "DIRECTIONAL_GUARDRAIL",
+        "fixtureIds": [
+          "ss2-zone-edge-legal",
+          "ss2-zone-edge-illegal"
+        ],
+        "surfaces": [
+          "MIRROR"
+        ],
+        "mechanicUnderTest": "zone resolution: a shell must be a trade-off, not a free win or a free loss",
+        "primaryMetrics": [
+          "shellSideWinRate"
+        ],
+        "secondaryMetrics": [
+          "realizedZoneShare",
+          "zoneAttackShare"
+        ],
+        "structuralChecks": [
+          "a shell counted only when possession state actually selected it (realized zone, not toolkit availability)"
+        ],
+        "expectedBehavior": "on a mirror where one side zones, that side's win rate stays inside the frozen band",
+        "candidateFailureMeaning": "the zone is either an automatic advantage or an automatic handicap, so scheme choice is decorative.",
+        "adjudication": {
+          "rule": "minSingleShellWinRate <= shellSideWinRate <= maxSingleShellWinRate",
+          "scope": "PER_FIXTURE",
+          "thresholdKeys": [
+            "maxSingleShellWinRate",
+            "minSingleShellWinRate"
+          ],
+          "catastrophic": false,
+          "unavailable": "A zone fixture in a zone-illegal era realizes no zone possessions. The guardrail is then NOT_APPLICABLE for that fixture — never a pass and never a failure."
+        },
+        "measurementSurface": [
+          {
+            "surface": "MIRROR",
+            "definition": "the fixture five against ITSELF, same coach both sides, side-balanced. The construction is the only variable, so an action-mix or shell result cannot be an artifact of the opponent."
+          }
+        ],
+        "sourceArtifact": "src/v3/calibration/acceptancePolicy.js (frozen, covered by the pre-calibration artifact freeze)"
+      },
+      {
+        "guardrailId": "maxSingleActionFamilyShare",
+        "originalDefinition": {
+          "key": "maxSingleActionFamilyShare",
+          "value": 0.6,
+          "source": "HOLDOUT.syntheticGuardrails",
+          "acceptancePolicyHash": "a3583d6ada42d61ff9ee40322d999154250613ba94a2cd6f073e2196315919b0"
+        },
+        "displayName": "Action-family share ceiling",
+        "stressCategory": "ACTION_MIX",
+        "formalClass": "THRESHOLD_PARAMETER",
+        "parameterOf": "forbidUniversalActionDominance",
+        "fixtureIds": [
+          "ss2-all-bigs",
+          "ss2-all-guards",
+          "ss2-no-spacing-1960s",
+          "ss2-no-spacing-modern",
+          "ss2-mismatch-chain",
+          "ss2-zone-edge-legal",
+          "ss2-zone-edge-illegal",
+          "ss2-era-edge-old-in-modern",
+          "ss2-era-edge-modern-in-old",
+          "ss2-coach-toolkit-edge",
+          "ss2-usage-concentration",
+          "ss2-statistical-tails",
+          "ss2-series-variance",
+          "ss2-win82-variance",
+          "ss2-duplicate-role",
+          "ss2-extreme-strength-gap"
+        ],
+        "surfaces": [
+          "MIRROR"
+        ],
+        "mechanicUnderTest": "n/a — this key is the numeric ceiling its parent guardrail compares against",
+        "primaryMetrics": [
+          "maxActionFamilyShare"
+        ],
+        "secondaryMetrics": [],
+        "structuralChecks": [],
+        "expectedBehavior": "carried forward from the frozen policy unchanged",
+        "candidateFailureMeaning": "n/a — a threshold cannot fail",
+        "adjudication": {
+          "rule": "n/a",
+          "scope": "PARAMETER",
+          "catastrophic": false
+        },
+        "measurementSurface": [
+          {
+            "surface": "MIRROR",
+            "definition": "the fixture five against ITSELF, same coach both sides, side-balanced. The construction is the only variable, so an action-mix or shell result cannot be an artifact of the opponent."
+          }
+        ],
+        "sourceArtifact": "src/v3/calibration/acceptancePolicy.js (frozen, covered by the pre-calibration artifact freeze)"
+      },
+      {
+        "guardrailId": "maxSingleShellWinRate",
+        "originalDefinition": {
+          "key": "maxSingleShellWinRate",
+          "value": 0.65,
+          "source": "HOLDOUT.syntheticGuardrails",
+          "acceptancePolicyHash": "a3583d6ada42d61ff9ee40322d999154250613ba94a2cd6f073e2196315919b0"
+        },
+        "displayName": "Shell win-rate ceiling",
+        "stressCategory": "ZONE_SCHEME",
+        "formalClass": "THRESHOLD_PARAMETER",
+        "parameterOf": "forbidUniversalShellDominance",
+        "fixtureIds": [
+          "ss2-zone-edge-legal",
+          "ss2-zone-edge-illegal"
+        ],
+        "surfaces": [
+          "MIRROR"
+        ],
+        "mechanicUnderTest": "n/a",
+        "primaryMetrics": [
+          "shellSideWinRate"
+        ],
+        "secondaryMetrics": [],
+        "structuralChecks": [],
+        "expectedBehavior": "carried forward unchanged",
+        "candidateFailureMeaning": "n/a",
+        "adjudication": {
+          "rule": "n/a",
+          "scope": "PARAMETER",
+          "catastrophic": false
+        },
+        "measurementSurface": [
+          {
+            "surface": "MIRROR",
+            "definition": "the fixture five against ITSELF, same coach both sides, side-balanced. The construction is the only variable, so an action-mix or shell result cannot be an artifact of the opponent."
+          }
+        ],
+        "sourceArtifact": "src/v3/calibration/acceptancePolicy.js (frozen, covered by the pre-calibration artifact freeze)"
+      },
+      {
+        "guardrailId": "minSingleShellWinRate",
+        "originalDefinition": {
+          "key": "minSingleShellWinRate",
+          "value": 0.35,
+          "source": "HOLDOUT.syntheticGuardrails",
+          "acceptancePolicyHash": "a3583d6ada42d61ff9ee40322d999154250613ba94a2cd6f073e2196315919b0"
+        },
+        "displayName": "Shell win-rate floor",
+        "stressCategory": "ZONE_SCHEME",
+        "formalClass": "THRESHOLD_PARAMETER",
+        "parameterOf": "forbidUniversalShellDominance",
+        "fixtureIds": [
+          "ss2-zone-edge-legal",
+          "ss2-zone-edge-illegal"
+        ],
+        "surfaces": [
+          "MIRROR"
+        ],
+        "mechanicUnderTest": "n/a",
+        "primaryMetrics": [
+          "shellSideWinRate"
+        ],
+        "secondaryMetrics": [],
+        "structuralChecks": [],
+        "expectedBehavior": "carried forward unchanged",
+        "candidateFailureMeaning": "n/a",
+        "adjudication": {
+          "rule": "n/a",
+          "scope": "PARAMETER",
+          "catastrophic": false
+        },
+        "measurementSurface": [
+          {
+            "surface": "MIRROR",
+            "definition": "the fixture five against ITSELF, same coach both sides, side-balanced. The construction is the only variable, so an action-mix or shell result cannot be an artifact of the opponent."
+          }
+        ],
+        "sourceArtifact": "src/v3/calibration/acceptancePolicy.js (frozen, covered by the pre-calibration artifact freeze)"
+      },
+      {
+        "guardrailId": "requireSameSeedReplay",
+        "originalDefinition": {
+          "key": "requireSameSeedReplay",
+          "value": true,
+          "source": "HOLDOUT.syntheticGuardrails",
+          "acceptancePolicyHash": "a3583d6ada42d61ff9ee40322d999154250613ba94a2cd6f073e2196315919b0"
+        },
+        "displayName": "Same seed replays exactly",
+        "stressCategory": "DETERMINISM",
+        "formalClass": "HARD_CATASTROPHIC",
+        "fixtureIds": [
+          "ss2-all-bigs",
+          "ss2-all-guards",
+          "ss2-no-spacing-1960s",
+          "ss2-no-spacing-modern",
+          "ss2-mismatch-chain",
+          "ss2-zone-edge-legal",
+          "ss2-zone-edge-illegal",
+          "ss2-era-edge-old-in-modern",
+          "ss2-era-edge-modern-in-old",
+          "ss2-coach-toolkit-edge",
+          "ss2-usage-concentration",
+          "ss2-statistical-tails",
+          "ss2-series-variance",
+          "ss2-win82-variance",
+          "ss2-duplicate-role",
+          "ss2-extreme-strength-gap"
+        ],
+        "surfaces": [
+          "MIRROR",
+          "VS_BALANCED_CONTROL"
+        ],
+        "mechanicUnderTest": "determinism: one seed, one game, forever",
+        "primaryMetrics": [
+          "replayMismatchCount"
+        ],
+        "secondaryMetrics": [],
+        "structuralChecks": [
+          "designated replay seeds re-run and compared byte-for-byte on score, box score and ledger"
+        ],
+        "expectedBehavior": "every replay seed reproduces its game exactly",
+        "candidateFailureMeaning": "results are not reproducible, so no other measurement in the run means anything.",
+        "adjudication": {
+          "rule": "replayMismatchCount === 0",
+          "scope": "PER_FIXTURE",
+          "catastrophic": true
+        },
+        "measurementSurface": [
+          {
+            "surface": "MIRROR",
+            "definition": "the fixture five against ITSELF, same coach both sides, side-balanced. The construction is the only variable, so an action-mix or shell result cannot be an artifact of the opponent."
+          },
+          {
+            "surface": "VS_BALANCED_CONTROL",
+            "definition": "the fixture five against a frozen non-holdout balanced control five under the neutral coach. This is the only surface on which a construction-versus-talent claim is decidable, because it needs two DIFFERENT constructions."
+          }
+        ],
+        "sourceArtifact": "src/v3/calibration/acceptancePolicy.js (frozen, covered by the pre-calibration artifact freeze)"
+      },
+      {
+        "guardrailId": "requireNewSeedVariance",
+        "originalDefinition": {
+          "key": "requireNewSeedVariance",
+          "value": true,
+          "source": "HOLDOUT.syntheticGuardrails",
+          "acceptancePolicyHash": "a3583d6ada42d61ff9ee40322d999154250613ba94a2cd6f073e2196315919b0"
+        },
+        "displayName": "New seeds produce new games",
+        "stressCategory": "DETERMINISM",
+        "formalClass": "TAIL_GUARDRAIL",
+        "fixtureIds": [
+          "ss2-all-bigs",
+          "ss2-all-guards",
+          "ss2-no-spacing-1960s",
+          "ss2-no-spacing-modern",
+          "ss2-mismatch-chain",
+          "ss2-zone-edge-legal",
+          "ss2-zone-edge-illegal",
+          "ss2-era-edge-old-in-modern",
+          "ss2-era-edge-modern-in-old",
+          "ss2-coach-toolkit-edge",
+          "ss2-usage-concentration",
+          "ss2-statistical-tails",
+          "ss2-series-variance",
+          "ss2-win82-variance",
+          "ss2-duplicate-role",
+          "ss2-extreme-strength-gap"
+        ],
+        "surfaces": [
+          "MIRROR"
+        ],
+        "mechanicUnderTest": "stochasticity: the same matchup on different seeds must vary like basketball, not repeat like a fixture list",
+        "primaryMetrics": [
+          "distinctScorelineRatio",
+          "combinedScoreSd"
+        ],
+        "secondaryMetrics": [
+          "marginSd"
+        ],
+        "structuralChecks": [],
+        "expectedBehavior": "scorelines vary across seeds, with a standard deviation above the frozen floor and a high ratio of distinct scorelines",
+        "candidateFailureMeaning": "the engine is effectively deterministic across seeds, so variance-based validation elsewhere is meaningless.",
+        "adjudication": {
+          "rule": "combinedScoreSd >= floor AND distinctScorelineRatio >= floor",
+          "scope": "PER_FIXTURE",
+          "catastrophic": false
+        },
+        "measurementSurface": [
+          {
+            "surface": "MIRROR",
+            "definition": "the fixture five against ITSELF, same coach both sides, side-balanced. The construction is the only variable, so an action-mix or shell result cannot be an artifact of the opponent."
+          }
+        ],
+        "sourceArtifact": "src/v3/calibration/acceptancePolicy.js (frozen, covered by the pre-calibration artifact freeze)"
+      },
+      {
+        "guardrailId": "requireConstructionCanBeatHigherOvr",
+        "originalDefinition": {
+          "key": "requireConstructionCanBeatHigherOvr",
+          "value": true,
+          "source": "HOLDOUT.syntheticGuardrails",
+          "acceptancePolicyHash": "a3583d6ada42d61ff9ee40322d999154250613ba94a2cd6f073e2196315919b0"
+        },
+        "displayName": "Better construction can beat higher talent",
+        "stressCategory": "CONSTRUCTION_VS_TALENT",
+        "formalClass": "PER_FIXTURE_REQUIRED",
+        "fixtureIds": [
+          "ss2-all-bigs",
+          "ss2-all-guards",
+          "ss2-no-spacing-1960s",
+          "ss2-no-spacing-modern",
+          "ss2-duplicate-role"
+        ],
+        "surfaces": [
+          "VS_BALANCED_CONTROL"
+        ],
+        "mechanicUnderTest": "whether role overlap and missing spacing actually cost a team, rather than being papered over by raw card quality",
+        "primaryMetrics": [
+          "balancedControlWinRate"
+        ],
+        "secondaryMetrics": [
+          "controlPointsPerPossession",
+          "fixturePointsPerPossession"
+        ],
+        "structuralChecks": [
+          "the control five's summed card rating must be LOWER than the fixture five's, verified before the run"
+        ],
+        "expectedBehavior": "the lower-rated but coherently built control five wins a meaningful share of games against the warped stack",
+        "candidateFailureMeaning": "construction does not matter: talent alone decides, and every roster-building decision in the product is cosmetic.",
+        "adjudication": {
+          "rule": "balancedControlWinRate >= constructionFloor",
+          "scope": "PER_FIXTURE",
+          "catastrophic": false,
+          "note": "A floor, never a requirement that the weaker roster WIN the matchup. The claim is that construction is capable of beating talent, not that it usually does."
+        },
+        "measurementSurface": [
+          {
+            "surface": "VS_BALANCED_CONTROL",
+            "definition": "the fixture five against a frozen non-holdout balanced control five under the neutral coach. This is the only surface on which a construction-versus-talent claim is decidable, because it needs two DIFFERENT constructions."
+          }
+        ],
+        "sourceArtifact": "src/v3/calibration/acceptancePolicy.js (frozen, covered by the pre-calibration artifact freeze)"
+      },
+      {
+        "guardrailId": "requireExtremeTalentRemainsMeaningful",
+        "originalDefinition": {
+          "key": "requireExtremeTalentRemainsMeaningful",
+          "value": true,
+          "source": "HOLDOUT.syntheticGuardrails",
+          "acceptancePolicyHash": "a3583d6ada42d61ff9ee40322d999154250613ba94a2cd6f073e2196315919b0"
+        },
+        "displayName": "Extreme talent still decides games",
+        "stressCategory": "CONSTRUCTION_VS_TALENT",
+        "formalClass": "PER_FIXTURE_REQUIRED",
+        "fixtureIds": [
+          "ss2-extreme-strength-gap"
+        ],
+        "surfaces": [
+          "VS_BALANCED_CONTROL"
+        ],
+        "mechanicUnderTest": "the other end of the same axis: a large talent gap must still show up in the win rate",
+        "primaryMetrics": [
+          "strongerSideWinRate"
+        ],
+        "secondaryMetrics": [
+          "meanMargin"
+        ],
+        "structuralChecks": [
+          "the fixture five's summed card rating must exceed the control five's by the frozen gap, verified before the run"
+        ],
+        "expectedBehavior": "the much stronger five wins clearly more often than a coin flip, without winning everything",
+        "candidateFailureMeaning": "talent has been flattened — the opposite failure to the guardrail above, and just as fatal to the product.",
+        "adjudication": {
+          "rule": "talentFloor <= strongerSideWinRate <= talentCeiling",
+          "scope": "PER_FIXTURE",
+          "catastrophic": false
+        },
+        "measurementSurface": [
+          {
+            "surface": "VS_BALANCED_CONTROL",
+            "definition": "the fixture five against a frozen non-holdout balanced control five under the neutral coach. This is the only surface on which a construction-versus-talent claim is decidable, because it needs two DIFFERENT constructions."
+          }
+        ],
+        "sourceArtifact": "src/v3/calibration/acceptancePolicy.js (frozen, covered by the pre-calibration artifact freeze)"
+      }
+    ],
+    "pass": true,
+    "failedGates": [],
+    "registryHash": "102a42124494b44d8f05b32bb46f802c543fc21e88d88744bb343646f93c8f92"
+  },
+  "outputHash": "e27d6365e52ea4301dccfade4edb875e583218adae1b997c6dbe2eee918d4ade"
+}
