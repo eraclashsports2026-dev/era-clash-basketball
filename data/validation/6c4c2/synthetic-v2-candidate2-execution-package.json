@@ -1,0 +1,129 @@
+{
+  "artifact": "synthetic-v2-candidate2-execution-package",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run v6:package",
+  "generatedAt": "2026-08-27T20:27:44.059Z",
+  "gitCommit": "d19de418a65e40e5c3f02cc0e952d31697bde533",
+  "branch": "phase-6c4c2-v6-freeze-and-seal",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "syntheticV2Candidate2ExecutionPackageVersion": "1.0.0",
+    "stage": 2,
+    "set": "synthetic-stress-holdout-v2",
+    "sealState": "SEALED_UNREAD",
+    "accessCount": 0,
+    "command": "npm run validation:synthetic-candidate2 -- --run",
+    "requiredFlags": [
+      "--unlock-holdout",
+      "--unlock-synthetic-stress-holdout-v2",
+      "--operator=<email>",
+      "--reason=<why>"
+    ],
+    "modesThatDoNotOpenTheSeal": [
+      "--help",
+      "--preflight"
+    ],
+    "preparedCommand": "npm run validation:synthetic-candidate2 -- --run --unlock-holdout --unlock-synthetic-stress-holdout-v2 --operator=\"<email>\" --reason=\"<why>\"",
+    "action": "REBIND",
+    "replacedWithV3": false,
+    "scope": {
+      "fixtures": 16,
+      "plannedGames": 79444
+    },
+    "dryRunPassed": true,
+    "outcomes": {
+      "pass": "SYNTHETIC_HOLDOUT_V2_PASS",
+      "fail": "SYNTHETIC_HOLDOUT_V2_FAIL",
+      "invalid": "SYNTHETIC_HOLDOUT_V2_INVALID_RUN",
+      "whatAPassDoesNotAuthorize": "A pass here is the second of two formal stages. It does not by itself make Candidate 1 HOLDOUT_VALIDATED, PRIVATE_PREVIEW_VALIDATED, PRODUCTION_READY or ACTIVE, and it authorizes no deployment. Those statuses belong to the phase that earns them, and production activation requires an explicit CEO GO LIVE."
+    },
+    "accessPrecondition": "historical-holdout-v6 must have been opened and returned PASS on this same core and parameter set",
+    "refusalCode": "SYNTHETIC_ACCESS_REFUSED",
+    "hashes": {
+      "candidateCoreHash": "3733b648f050a4f50f9dc3cb6ecf62fce419dd282f24c910b91e7b077d63711d",
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "possessionCalibrationVersion": "1.2.0",
+      "policyHash": "f93847b4b35ca064572f2b7c97c451ee9f3109f34ea49f3742c5a677ea495946",
+      "bindingHash": "9080a994fce64edbcf622426b7c0c45aff15b36193dab91f58c677dc23309993",
+      "acceptancePolicyHash": "a3583d6ada42d61ff9ee40322d999154250613ba94a2cd6f073e2196315919b0",
+      "guardrailRegistryHash": "e308e6544cb6f4b49ccb31fa98536cc12e0eac431d47cda961e845b8e55a3097",
+      "practicalMarginPolicyHash": "d285af9ca18d10a8387dbe32828378d35d61e40e4376f0cb2eca4e401f509511",
+      "surfacePlanHash": "9aaf2efaf09d47de8dae6d156ccdce966374fa37c73145c041af7265e2c7f122",
+      "samplePlanHash": "97236ee97d740b0d185333a10af2f9be0f4bcb90139b7ae65ed68be179451980",
+      "seedSetHash": "cece58c06bcdb2cc09829d11c34f0c56a23ada26b4e511ca0d03583fd273b2c1",
+      "aggregationPolicyHash": "d65321cae9ee46ac02a14ea04bfcfc1e2dc65a61c7b8e31fb0b7c44714e2eca0",
+      "verdictSchemaHash": "c702785be80b5372e51ed572a29b4c953ac9b2178dcec71f4306fa56323bac01",
+      "membershipHash": "71267875cbf69a9ffa2bd420a2f4bb87437ecb78d6ca2029e7b6826759dbcd19",
+      "dryRunArtifactHash": "ccc0d660bca8bf20f978e4e04ee2dfbb68442f9ae8813e360d347b5b733c8994",
+      "marginEvidenceHash": "4f44f3e747c5095c4c143cb500ee1a13a659f79a5e1260ebe303356b3261b096",
+      "talentGapLadderHash": "39d77022b26ecc0a5027ec6d95b9a85ae350c8a7d8919a7d7a57eee4483f52bc"
+    },
+    "bindingArtifact": "data/validation/6c4c2/synthetic-v2-candidate2-binding.json",
+    "thresholds": {
+      "maxSingleActionFamilyShare": 0.6,
+      "maxSingleShellWinRate": 0.65,
+      "minSingleShellWinRate": 0.35,
+      "minCombinedScoreSd": 13,
+      "constructionWinRateFloor": 0.02,
+      "constructionExistentialBar": 0.35,
+      "talentWinRateFloor": 0.5,
+      "distinctScorelineRatioFloorByGames": {
+        "2048": 0.34,
+        "note": "REPORTED, NEVER ADJUDICATED. Measured on the same fixtures the ratio read about 0.486 at 102 games and 0.356 to 0.399 at 2,048, so a single frozen floor is not comparable across the mirror and tail-extension volumes. Recorded per volume for diagnosis only."
+      }
+    },
+    "thresholdDerivation": {
+      "derivedUnder": "Candidate 2",
+      "developmentFixtures": 14,
+      "syntheticObservationsUsed": 0,
+      "rule": "the same derive() in scripts/synthetic/margins.mjs, called with the Candidate 2 evidence directory. The derivation rule is shared; only the evidence differs.",
+      "marginEvidenceHash": "4f44f3e747c5095c4c143cb500ee1a13a659f79a5e1260ebe303356b3261b096",
+      "talentGapLadderHash": "39d77022b26ecc0a5027ec6d95b9a85ae350c8a7d8919a7d7a57eee4483f52bc",
+      "candidate1MarginEvidenceHash": "b8188a7d6382e80205d25dcabaa268641b6c5be6fd388db281f9340779438795",
+      "candidate1TalentGapLadderHash": "cd5e391c652420443dcec8ec71a0d7c468dee95e4323fdda256dbb73f65a3926",
+      "basis": "SYNTHETIC_DEVELOPMENT_V2 only — 14 non-holdout fixtures, run through the exact formal surfaces at the frozen sample volumes with the exact metric functions. No Synthetic V2 fixture was simulated and no Synthetic V2 output was read."
+    },
+    "rebindItems": [
+      {
+        "requirement": "the compound package's stage-two hashes name Candidate 1's core and parameter-set hashes; a Candidate 2 run must bind Candidate 2's",
+        "addressed": true,
+        "how": "the binding below records Candidate 2's core and parameter-set hashes, and the command's preflight fails if either differs from the loaded candidate or matches Candidate 1's"
+      },
+      {
+        "requirement": "the synthetic formal policy records candidateCoreHash and lockRevision for Candidate 1",
+        "addressed": true,
+        "how": "this artifact supersedes the Candidate 1 formal policy's candidate block for a Candidate 2 run; the Candidate 1 policy is read for its candidate-independent parts and is not edited"
+      },
+      {
+        "requirement": "the derived thresholds (variance floor, construction floor and existential bar, talent floor) were calibrated from development evidence measured under Candidate 1 and should be re-derived under Candidate 2 before a formal run",
+        "addressed": true,
+        "how": "minCombinedScoreSd, constructionWinRateFloor, constructionExistentialBar and talentWinRateFloor are re-derived from development evidence measured under Candidate 2, through the same derive() the Candidate 1 policy used"
+      },
+      {
+        "requirement": "the runner's pre-access check requires a PASSING historical stage; Historical V5 failed, so the gate must name Historical V6",
+        "addressed": true,
+        "how": "scripts/validation/synthetic-candidate2.mjs enforces the stage-one gate on Historical Holdout V6 in code, before the seal is touched, and refuses with SYNTHETIC_ACCESS_REFUSED"
+      }
+    ],
+    "whyNotReplaced": "a replacement is required only if a metric or guardrail changed MEANING. None did. Candidate 2 changed the values these metrics take, which is what the holdout is for measuring.",
+    "stageOrder": {
+      "precondition": "historical-holdout-v6 must have been opened and returned PASS on this same core and parameter set",
+      "enforcedBy": "scripts/validation/synthetic-candidate2.mjs preflightChecks, in code, before the seal is touched",
+      "refusalCode": "SYNTHETIC_ACCESS_REFUSED",
+      "whyNotV5": "Historical V5 is consumed and returned FAIL. A gate naming V5 could never clear, and a gate requiring merely 'a historical stage' would have been satisfied by a failure."
+    },
+    "operatorSteps": [
+      "1. npm run validation:synthetic-candidate2 -- --preflight   (refuses until stage one has passed; opens nothing)",
+      "2. only after Historical V6 has returned PASS on this same core and parameter set, run the prepared command above",
+      "3. npm run validation:candidate2-formal-verdict -- --preflight, then --issue"
+    ],
+    "whatAPassDoesNotAuthorize": "A pass here is the second of two formal stages. It does not by itself make Candidate 1 HOLDOUT_VALIDATED, PRIVATE_PREVIEW_VALIDATED, PRODUCTION_READY or ACTIVE, and it authorizes no deployment. Those statuses belong to the phase that earns them, and production activation requires an explicit CEO GO LIVE.",
+    "pass": true,
+    "packageHash": "68105b1979dde9753e7c0561521cfb44a1dd2628df9defa2a6bfd8fcca728a6f"
+  },
+  "outputHash": "2acb8f72ac3701fcb25569895d8126dc5ed3c1349bf2b4d48434199ca682ed1a"
+}
