@@ -1,0 +1,136 @@
+{
+  "artifact": "candidate2-formal-status",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run exec:c3-status",
+  "generatedAt": "2026-08-27T21:04:50.709Z",
+  "gitCommit": "a7d1606c4e134e9d8307b873c335bdfb8c7df237",
+  "branch": "phase-6c4c3-candidate2-formal-execution",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "candidate2FormalStatusVersion": "1.0.0",
+    "candidateId": "Candidate 2",
+    "parentCandidateId": "Candidate 1",
+    "candidateSelectionStatus": "SELECTED",
+    "candidateLockStatus": "LOCKED",
+    "possessionCalibrationVersion": "1.2.0",
+    "calibrationVersionNote": "unchanged. A status change does not move a calibration version.",
+    "coreHash": "3733b648f050a4f50f9dc3cb6ecf62fce419dd282f24c910b91e7b077d63711d",
+    "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+    "formalState": "CANDIDATE2_HISTORICAL_V6_FAILED",
+    "formalStateMeaning": "Historical Holdout V6 returned FAIL. The synthetic set is correctly never opened.",
+    "stateVocabulary": {
+      "CANDIDATE2_FORMAL_VALIDATION_NOT_STARTED": "no formal stage has produced a result",
+      "CANDIDATE2_HISTORICAL_V6_FAILED": "Historical Holdout V6 returned FAIL. The synthetic set is correctly never opened.",
+      "CANDIDATE2_HISTORICAL_V6_INVALID": "Historical Holdout V6 could not produce a formal result. The synthetic set is correctly never opened.",
+      "CANDIDATE2_STAGE1_PASSED_STAGE2_PENDING": "Historical Holdout V6 passed; the synthetic set has not yet been opened",
+      "CANDIDATE2_SYNTHETIC_FAILED": "Historical Holdout V6 passed and the synthetic set returned FAIL",
+      "CANDIDATE2_SYNTHETIC_INVALID": "Historical Holdout V6 passed and the synthetic set could not produce a formal result",
+      "CANDIDATE2_FORMAL_VALIDATION_PASSED": "both formal stages returned PASS on the same locked candidate"
+    },
+    "calibrationStatus": "DEVELOPMENT_LOCKED_SCOPED",
+    "formalValidationStatus": "HISTORICAL_V6_FAILED",
+    "holdoutValidatedClaimed": false,
+    "holdoutValidatedRule": "calibrationStatus and formalValidationStatus become HOLDOUT_VALIDATED only under CANDIDATE2_FORMAL_VALIDATION_PASSED. Under every other state the calibration status is exactly what the lock recorded.",
+    "stages": [
+      {
+        "stage": 1,
+        "set": "historical-holdout-v6",
+        "accessCount": 1,
+        "formalVerdict": "HISTORICAL_HOLDOUT_V6_FAIL",
+        "outcome": "FAIL",
+        "failureClass": "OBSERVABLE_HISTORICAL_TRAIT_FIDELITY_FAILURE",
+        "verdictHash": "84fccef727067aeb614af2ac0a3e8c2f7500bcaadb5dc4e64a3d36d2ca667ac0"
+      },
+      {
+        "stage": 2,
+        "set": "synthetic-stress-holdout-v2",
+        "accessCount": 0,
+        "formalVerdict": "NOT_OPENED",
+        "outcome": null,
+        "failureClass": null,
+        "verdictHash": null,
+        "notOpenedBecause": "Historical Holdout V6 returned HISTORICAL_HOLDOUT_V6_FAIL. A synthetic stress pass says nothing about a candidate that failed the historical stage, and opening it would consume a one-shot resource for no evidence."
+      }
+    ],
+    "previewStatus": "NOT_PREPARED",
+    "previewNote": "a preview package may not be prepared unless both formal stages pass",
+    "productionStatus": "UNCHANGED",
+    "production": {
+      "mainCommit": "9cd95ff8797f8cdef252bbe67d63158c01b9f9bd",
+      "engineVersion": "3.2.0",
+      "flagsActivated": 0,
+      "deploymentsExecuted": 0
+    },
+    "postHoldoutTuning": 0,
+    "engineChanges": 0,
+    "dataChanges": 0,
+    "policyChanges": 0,
+    "targetChanges": 0,
+    "marginChanges": 0,
+    "seedChanges": 0,
+    "referenceChanges": 0,
+    "traitChanges": 0,
+    "runnerSemanticChanges": 0,
+    "nextRequirement": "Candidate 2 formal validation has failed. A Candidate 3 would require its own repair, its own lock and a NEW unseen historical holdout — V6 is consumed and may be used only as a failed-holdout diagnostic set. Synthetic Stress Holdout V2 remains sealed and unread and is still available to a future candidate.",
+    "sealStatuses": {
+      "legacy-holdout-v1": {
+        "accessCount": 0,
+        "status": "SEALED_UNREAD",
+        "integrity": "Never read. Any Phase 6C2 tuning result can be honestly validated against it.",
+        "set": "legacy-holdout-v1",
+        "note": "LEGACY_MIXED_HOLDOUT — preserved unchanged, not reused for formal historical validation."
+      },
+      "historical-holdout-v2": {
+        "set": "historical-holdout-v2",
+        "accessCount": 0,
+        "status": "SEALED_UNREAD",
+        "integrity": "Never read. A Phase 6C3 validation against it is genuinely independent.",
+        "note": "INSUFFICIENT_SAMPLE_ARCHIVE — genuinely unread, but three fixtures cannot validate generalisation. Superseded by v3 and archived rather than consumed."
+      },
+      "synthetic-stress-v1": {
+        "set": "synthetic-stress-v1",
+        "accessCount": 0,
+        "status": "PREVIOUSLY_INSPECTED_ARCHIVE",
+        "integrity": "Never read. A Phase 6C3 validation against it is genuinely independent.",
+        "note": "Its counter reads 0 because the seal was created after the simulations. Not a holdout."
+      },
+      "historical-holdout-v3": {
+        "set": "historical-holdout-v3",
+        "accessCount": 1,
+        "status": "UNSEALED",
+        "integrity": "Read 1 time(s). Check the access log before treating a result as independent."
+      },
+      "synthetic-stress-holdout-v2": {
+        "set": "synthetic-stress-holdout-v2",
+        "accessCount": 0,
+        "status": "SEALED_UNREAD",
+        "integrity": "Never read. A Phase 6C3 validation against it is genuinely independent."
+      },
+      "historical-holdout-v4": {
+        "set": "historical-holdout-v4",
+        "accessCount": 1,
+        "status": "UNSEALED",
+        "integrity": "Read 1 time(s). Check the access log before treating a result as independent."
+      },
+      "historical-holdout-v5": {
+        "set": "historical-holdout-v5",
+        "accessCount": 1,
+        "status": "UNSEALED",
+        "integrity": "Read 1 time(s). Check the access log before treating a result as independent."
+      },
+      "historical-holdout-v6": {
+        "set": "historical-holdout-v6",
+        "accessCount": 1,
+        "status": "UNSEALED",
+        "integrity": "Read 1 time(s). Check the access log before treating a result as independent."
+      }
+    },
+    "recordedAtCommit": "a7d1606c4e134e9d8307b873c335bdfb8c7df237",
+    "statusHash": "8f93b435f1acc63b6cb54106386c3cb08e9716ad925eeec403968eab0b65198f"
+  },
+  "outputHash": "abbc6f4e867b46a3105e1cb4ac62330c2546f4c7ffc1e116e8a2d8cd46b92fbf"
+}
