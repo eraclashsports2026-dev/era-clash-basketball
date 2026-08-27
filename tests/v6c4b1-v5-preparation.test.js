@@ -457,3 +457,256 @@ describe("6C4B1 WS6 — frozen V5 policy", () => {
     expect(p.hashes.priorV4PolicyHash).toBe(v4.policyHash);
   });
 });
+
+describe("6C4B1 WS7 — candidate pool v2", () => {
+  const p = R("historical-v5-candidate-pool-v2").data;
+
+  it("keeps at least 24 eligible teams and 2 pairs per era", () => {
+    expect(p.eligibleTeamCount).toBeGreaterThanOrEqual(24);
+    expect(p.erasWithAtLeastTwoEligiblePairs).toBe(8);
+    expect(p.meetsMinimum).toBe(true);
+    expect(p.pass).toBe(true);
+  });
+
+  it("is output-blind", () => {
+    expect(p.candidate1SimulationsUsed).toBe(0);
+    expect(p.selectionBasis).toContain("SOURCE_ONLY_OUTPUT_BLIND");
+    expect(p.selectionBasis).toContain("No Candidate 1 result");
+  });
+
+  it("was judged against the instruments this phase re-certified", () => {
+    expect(p.instrumentsRead.observabilityCertification).toBe(R("historical-observability-certification-candidate1").outputHash);
+    expect(p.instrumentsRead.eraReferenceCertification).toBe(R("era-reference-certification-candidate1").outputHash);
+    expect(p.instrumentsRead.certifiedEras).toHaveLength(8);
+  });
+
+  it("resolves person ids rather than assuming the field is present", () => {
+    for (const t of p.teams.filter((x) => x.eligible)) {
+      expect(t.fiveKey, t.fixtureId).not.toContain("undefined");
+      expect(t.fiveKey, t.fixtureId).not.toContain("UNRESOLVED");
+      expect(t.fiveKey.split("|"), t.fixtureId).toHaveLength(5);
+    }
+    expect(new Set(p.teams.filter((t) => t.eligible).map((t) => t.fiveKey)).size).toBe(p.eligibleTeamCount);
+  });
+
+  it("enforces every exclusion in code", () => {
+    for (const t of p.teams.filter((x) => x.eligible)) expect(t.exclusionConflicts, t.fixtureId).toEqual([]);
+    for (const k of ["historicalCalibrationV3", "historicalHoldoutV3", "historicalHoldoutV4Consumed",
+      "candidate1Development", "syntheticDevelopmentV2", "syntheticStressHoldoutV2"]) {
+      expect(p.exclusions[k], k).toBeGreaterThan(0);
+    }
+    expect(p.eraReferenceFivesBlocked).toBe(8);
+  });
+});
+
+describe("6C4B1 WS8/WS9 — selection", () => {
+  const pol = R("historical-v5-selection-policy").data;
+  const sel = R("historical-v5-selection").data;
+
+  it("froze the policy before the selection and forbids output inputs", () => {
+    expect(pol.frozen).toBe(true);
+    expect(pol.frozenBeforeSelection).toBe(true);
+    expect(pol.forbiddenInputs).toEqual(expect.arrayContaining(["Candidate 1 game results", "Candidate 1 win rates"]));
+    expect(sel.selectionPolicyHash).toBe(pol.policyHash);
+    expect(sel.candidate1OutputsConsulted).toBe(0);
+  });
+
+  it("selects eight matchups over sixteen distinct teams, one per era", () => {
+    expect(sel.matchups).toHaveLength(8);
+    expect(sel.distinctTeams).toBe(16);
+    expect(sel.selectedTeams).toHaveLength(16);
+    expect(new Set(sel.eraStylesRepresented).size).toBe(8);
+    expect(sel.pass).toBe(true);
+  });
+
+  it("is deterministic and input-reorder invariant", () => {
+    expect(sel.determinism.repeatIdentical).toBe(true);
+    expect(sel.determinism.reversedIdentical).toBe(true);
+    expect(sel.determinism.rotatedIdentical).toBe(true);
+  });
+
+  it("reproduced the invalidated selection exactly, and says why it was invalidated", () => {
+    expect(sel.supersededSelection).toBeTruthy();
+    expect(sel.supersededSelection.reproducedIdentically).toBe(true);
+    expect(sel.supersededSelection.whyInvalidated).toContain("policy");
+    expect(existsSync("data/validation/6c4b1/superseded/historical-v5-selection-v1.0.0-INVALIDATED.json")).toBe(true);
+    expect(sel.historicalV5SelectionVersion).not.toBe(sel.supersededSelection.version);
+  });
+
+  it("records every rejected alternative with a reason", () => {
+    expect(sel.rejectedAlternatives.length).toBeGreaterThan(20);
+    for (const r of sel.rejectedAlternatives) expect(r.reason, r.pairId).toBeTruthy();
+  });
+
+  it("covers the tactical diversity the pool permits", () => {
+    expect(sel.diversityDimensionsCovered.length).toBe(sel.diversityDimensionsAvailable.length);
+  });
+});
+
+describe("6C4B1 WS10 — manifest", () => {
+  const m = R("historical-holdout-v5-manifest").data;
+
+  it("freezes profiles, coaches, traits and targets with hashes", () => {
+    expect(m.playerProfileCount).toBe(80);
+    expect(m.coachCount).toBeGreaterThan(0);
+    expect(m.profileFreeze.allHashed).toBe(true);
+    expect(m.scoredTraitCount).toBeGreaterThan(0);
+    expect(m.pass).toBe(true);
+  });
+
+  it("binds Candidate 1's identity and every instrument hash", () => {
+    const rec = R("candidate1-lock-recertification").data;
+    expect(m.hashes.candidate1CoreHash).toBe(rec.coreHash);
+    expect(m.hashes.candidate1ParameterSetHash).toBe(defaultRuntimeParameterSet().parameterSetHash);
+    expect(m.hashes.candidate1CalibrationVersion).toBe("1.1.0");
+    expect(m.selectionHash).toBe(R("historical-v5-selection").data.selectionHash);
+  });
+
+  it("scores only certified traits and states why the rest are excluded", () => {
+    const eligible = new Set(R("historical-observability-certification-candidate1").data
+      .traitEligibility.filter((t) => t.scoringEligibility).map((t) => t.traitId));
+    for (const mm of m.matchups) for (const side of [mm.teamA, mm.teamB]) {
+      for (const t of side.scoredTraits) {
+        expect(eligible, t.traitId).toContain(t.traitId);
+        expect(t.metric && t.surface && t.practicalMargin != null, t.traitId).toBe(true);
+      }
+      for (const t of side.excludedTraits) expect(t.reason).toBeTruthy();
+    }
+    expect(m.excludedTraitCount).toBeGreaterThan(0);
+  });
+
+  it("never zero-fills an unavailable target", () => {
+    expect(m.targetFreeze.note).toContain("never zero-filled");
+    for (const mm of m.matchups) for (const side of [mm.teamA, mm.teamB]) {
+      for (const v of Object.values(side.targets.teamTargets)) {
+        if (!v.usable) expect(v.value).toBeNull();
+        else expect(typeof v.value).toBe("number");
+      }
+    }
+  });
+
+  it("carries the Candidate 1 reference self-baselines, keyed by metric id", () => {
+    for (const mm of m.matchups) {
+      expect(mm.eraReference.selfBaselines.pppVsReference).toBeTruthy();
+      expect(mm.eraReference.selfBaselines.refPppVsTeam).toBeTruthy();
+    }
+  });
+});
+
+describe("6C4B1 WS11 — seeds", () => {
+  const s = R("historical-holdout-v5-seeds").data;
+
+  it("proves zero overlap with every prior population at full volume", () => {
+    expect(s.disjointnessProof.totalOverlap).toBe(0);
+    expect(s.disjointnessProof.priorPopulationsChecked).toBeGreaterThanOrEqual(15);
+    expect(s.disjointnessProof.seedsPerStream).toBeGreaterThanOrEqual(s.volume.holdoutSeedCount);
+    for (const [k, v] of Object.entries(s.disjointnessProof.overlaps)) expect(v, k).toBe(0);
+  });
+
+  it("keeps the dry-run stream out of the holdout stream", () => {
+    expect(s.disjointnessProof.overlaps["historical-holdout-v5 x v5-dryrun"]).toBe(0);
+  });
+
+  it("froze its volume before any V5 run", () => {
+    expect(s.frozenBeforeRun).toBe(true);
+    expect(s.volume.gamesPerSurface).toBe(4096);
+    expect(s.volume.totalGames).toBe(s.volume.matchups * s.volume.surfacesPerMatchup * s.volume.gamesPerSurface);
+  });
+
+  it("derives seeds deterministically from a committed master", () => {
+    expect(s.masterCommitment).toMatch(/^[0-9a-f]{64}$/);
+    expect(s.surfaceAddressing).toContain("matchupIndex");
+  });
+});
+
+describe("6C4B1 WS12 — runner dry run", () => {
+  const d = R("historical-v5-runner-dry-run").data;
+
+  it("passes every check on the exact code path", () => {
+    expect(d.pass).toBe(true);
+    expect(d.failedChecks).toEqual([]);
+    expect(d.exactCodePath).toContain("runSealedSetOnce");
+    expect(d.runnerModule).toBe("scripts/validation/historical-holdout-v5.mjs");
+  });
+
+  it("used no V5 id in its mock set", () => {
+    expect(d.mockSet.containsV5Id).toBe(false);
+    expect(d.mockSet.source).toContain("DEVELOPMENT");
+  });
+
+  it("proved unlock-once, crash-resume and duplicate refusal", () => {
+    const by = Object.fromEntries(d.checks.map((c) => [c.name, c.pass]));
+    for (const k of ["unlockIncrementsExactlyOnce", "crashLeavesResumableState", "secondRunRefused",
+      "resumeCompletesUnderSameAccessEvent", "changedIdentityRefusedOnResume", "sealRefusesWithoutItsOwnFlag"]) {
+      expect(by[k], k).toBe(true);
+    }
+    for (const code of Object.values(d.identityMismatchOutcomes)) expect(code).toBe("IDENTITY_MISMATCH");
+  });
+
+  it("proved the scoring path end to end, dual gate included", () => {
+    expect(["PASS", "FAIL"]).toContain(d.realEvaluation.traitResult);
+    expect(typeof d.realEvaluation.traitDiff).toBe("number");
+    expect(d.realEvaluation.practicalMargin).toBeGreaterThan(0);
+    expect(d.realEvaluation.dualGate.hardFail).toBe(
+      d.realEvaluation.dualGate.statisticallyOpposite && d.realEvaluation.dualGate.beyondPracticalMargin);
+    expect(d.realEvaluation.compositeShareMae).toBeGreaterThan(0);
+    expect(d.realEvaluation.replayExact).toBe(true);
+  });
+
+  it("left the real seals at zero", () => {
+    expect(d.accessCounts.historicalHoldoutV5).toBe(0);
+    expect(d.accessCounts.syntheticStressHoldoutV2).toBe(0);
+    expect(d.accessCounts.historicalHoldoutV3).toBe(1);
+    expect(d.accessCounts.historicalHoldoutV4).toBe(1);
+  });
+});
+
+describe("6C4B1 WS13 — the V5 seal", () => {
+  const s = R("historical-holdout-v5-seal").data;
+
+  it("is SEALED_UNREAD at access count zero", () => {
+    expect(s.state).toBe("SEALED_UNREAD");
+    expect(s.accessCount).toBe(0);
+    expect(setAccessCount("historical-holdout-v5")).toBe(0);
+    expect(s.accessLogExists).toBe(false);
+    expect(existsSync("data/calibration/historical-holdout-v5-access-log.jsonl")).toBe(false);
+  });
+
+  it("is a registered set, so it is sealed rather than merely unmentioned", async () => {
+    const { SEALED_SETS, requireSetUnlock } = await import("../src/v3/calibration/holdoutSeal.js");
+    expect(SEALED_SETS["historical-holdout-v5"]).toBe("data/calibration/historical-holdout-v5-access-log.jsonl");
+    expect(() => requireSetUnlock("historical-holdout-v5", { argv: ["node", "x"], reason: "r", log: false }))
+      .toThrow(/sealed/);
+  });
+
+  it("binds every hash the authorized runner must match", () => {
+    const rec = R("candidate1-lock-recertification").data;
+    expect(s.candidate.coreHash).toBe(rec.coreHash);
+    expect(s.candidate.parameterSetHash).toBe(rec.parameterSetHash);
+    expect(s.candidate.possessionCalibrationVersion).toBe("1.1.0");
+    for (const [k, v] of Object.entries(s.boundHashes)) expect(v, k).toMatch(/^[0-9a-f]{64}$/);
+    expect(s.boundHashes.manifestHash).toBe(R("historical-holdout-v5-manifest").data.manifestHash);
+    expect(s.boundHashes.selectionHash).toBe(R("historical-v5-selection").data.selectionHash);
+    expect(s.boundHashes.seedHash).toBe(R("historical-holdout-v5-seeds").data.seedHash);
+    expect(s.sealHash).toMatch(/^[0-9a-f]{64}$/);
+  });
+
+  it("names exactly one authorized runner", () => {
+    expect(s.authorizedRunner.module).toBe("scripts/validation/historical-holdout-v5.mjs");
+    expect(s.authorizedRunner.command).toContain("--unlock-historical-holdout-v5");
+    expect(s.authorizedRunner.note).toContain("No other command");
+  });
+
+  it("verified no V5 fixture appears in any simulation output", () => {
+    expect(s.sealIntegrity.leaksFound).toBe(0);
+    expect(s.sealIntegrity.outputArtifactsSearched).toBeGreaterThan(10);
+    expect(s.sealIntegrity.carriedTeamsDefinedInPriorPool).toBeGreaterThan(0);
+    expect(s.sealIntegrity.note).toContain("definition");
+  });
+
+  it("leaves every other seal exactly as it was", () => {
+    expect(s.otherSeals["synthetic-stress-holdout-v2"]).toMatchObject({ status: "SEALED_UNREAD", accessCount: 0 });
+    expect(s.otherSeals["historical-holdout-v3"].accessCount).toBe(1);
+    expect(s.otherSeals["historical-holdout-v4"].accessCount).toBe(1);
+  });
+});
