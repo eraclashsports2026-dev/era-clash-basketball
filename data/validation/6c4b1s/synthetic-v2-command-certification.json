@@ -1,0 +1,155 @@
+{
+  "artifact": "synthetic-v2-command-certification",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run syn:commands",
+  "generatedAt": "2026-08-27T13:01:09.538Z",
+  "gitCommit": "d7c7594c32d0576513ba139304b05b22013b04ff",
+  "branch": "phase-6c4b1s-synthetic-v2-package",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "syntheticCommandCertificationVersion": "1.0.0",
+    "certificationMethod": "each non-accessing mode was executed in a child process and the per-set access logs were read immediately before and after. Nothing here is certified by inspecting source.",
+    "commands": [
+      {
+        "npmScript": "validation:historical-v5",
+        "module": "scripts/validation/historical-holdout-v5.mjs",
+        "set": "historical-holdout-v5",
+        "stage": 1,
+        "preparedCommand": "npm run validation:historical-v5 -- --unlock-holdout --unlock-historical-holdout-v5 --operator=\"<name>\" --reason=\"<why>\"",
+        "nonAccessingModes": [],
+        "registered": true,
+        "resolvesToModule": true,
+        "script": "node scripts/validation/historical-holdout-v5.mjs",
+        "modes": []
+      },
+      {
+        "npmScript": "validation:synthetic-v2",
+        "module": "scripts/validation/synthetic-stress-holdout-v2.mjs",
+        "set": "synthetic-stress-holdout-v2",
+        "stage": 2,
+        "preparedCommand": "npm run validation:synthetic-v2 -- --unlock-holdout --unlock-synthetic-stress-holdout-v2 --operator=\"<name>\" --reason=\"<why>\"",
+        "nonAccessingModes": [
+          "--help",
+          "--dry-run",
+          "--preflight"
+        ],
+        "registered": true,
+        "resolvesToModule": true,
+        "script": "node scripts/validation/synthetic-stress-holdout-v2.mjs",
+        "modes": [
+          {
+            "mode": "--help",
+            "exitCode": 0,
+            "accessCountsBefore": {
+              "historical-holdout-v5": 0,
+              "synthetic-stress-holdout-v2": 0
+            },
+            "accessCountsAfter": {
+              "historical-holdout-v5": 0,
+              "synthetic-stress-holdout-v2": 0
+            },
+            "accessUnchanged": true,
+            "producedOutput": true,
+            "outputFirstLine": "Synthetic Stress Holdout V2 — one-time formal stress run",
+            "note": null
+          },
+          {
+            "mode": "--dry-run",
+            "exitCode": 0,
+            "accessCountsBefore": {
+              "historical-holdout-v5": 0,
+              "synthetic-stress-holdout-v2": 0
+            },
+            "accessCountsAfter": {
+              "historical-holdout-v5": 0,
+              "synthetic-stress-holdout-v2": 0
+            },
+            "accessUnchanged": true,
+            "producedOutput": true,
+            "outputFirstLine": "This command does not rehearse itself. Run: npm run syn:dryrun",
+            "note": null
+          },
+          {
+            "mode": "--preflight",
+            "exitCode": 2,
+            "accessCountsBefore": {
+              "historical-holdout-v5": 0,
+              "synthetic-stress-holdout-v2": 0
+            },
+            "accessCountsAfter": {
+              "historical-holdout-v5": 0,
+              "synthetic-stress-holdout-v2": 0
+            },
+            "accessUnchanged": true,
+            "producedOutput": true,
+            "outputFirstLine": "SYNTHETIC V2 PREFLIGHT — no seal is touched by this mode",
+            "note": "exited 2, which is a refusal rather than a crash"
+          }
+        ]
+      },
+      {
+        "npmScript": "validation:candidate1-formal-verdict",
+        "module": "scripts/validation/candidate1FormalVerdict.mjs",
+        "set": null,
+        "stage": 3,
+        "preparedCommand": "npm run validation:candidate1-formal-verdict",
+        "nonAccessingModes": [
+          "--help"
+        ],
+        "registered": true,
+        "resolvesToModule": true,
+        "script": "node scripts/validation/candidate1FormalVerdict.mjs",
+        "modes": [
+          {
+            "mode": "--help",
+            "exitCode": 0,
+            "accessCountsBefore": {
+              "historical-holdout-v5": 0,
+              "synthetic-stress-holdout-v2": 0
+            },
+            "accessCountsAfter": {
+              "historical-holdout-v5": 0,
+              "synthetic-stress-holdout-v2": 0
+            },
+            "accessUnchanged": true,
+            "producedOutput": true,
+            "outputFirstLine": "Candidate 1 compound formal verdict — stage three of three",
+            "note": null
+          }
+        ]
+      }
+    ],
+    "accessCounts": {
+      "before": {
+        "historical-holdout-v5": 0,
+        "synthetic-stress-holdout-v2": 0
+      },
+      "after": {
+        "historical-holdout-v5": 0,
+        "synthetic-stress-holdout-v2": 0
+      },
+      "sealsWatched": [
+        "historical-holdout-v5",
+        "synthetic-stress-holdout-v2"
+      ]
+    },
+    "blockerResolved": {
+      "key": "preparedCommandResolvable",
+      "wasRecordedAs": "the B2 package prepares \"npm run validation:synthetic-v2 ...\" but package.json has no validation:synthetic-v2 script, so the prepared command cannot execute",
+      "nowResolvesTo": "node scripts/validation/synthetic-stress-holdout-v2.mjs"
+    },
+    "preparedCommands": {
+      "validation:historical-v5": "npm run validation:historical-v5 -- --unlock-holdout --unlock-historical-holdout-v5 --operator=\"<name>\" --reason=\"<why>\"",
+      "validation:synthetic-v2": "npm run validation:synthetic-v2 -- --unlock-holdout --unlock-synthetic-stress-holdout-v2 --operator=\"<name>\" --reason=\"<why>\"",
+      "validation:candidate1-formal-verdict": "npm run validation:candidate1-formal-verdict"
+    },
+    "pass": true,
+    "failedGates": [],
+    "certificationHash": "b49e9723c75766663c14b0e8c09e9d3e6f966ccc60d72a4a508f12e1a00d40df"
+  },
+  "outputHash": "449a2a319d636faf63062b05387302d9b2979c70c0a7a49d7c8c896040986f75"
+}
