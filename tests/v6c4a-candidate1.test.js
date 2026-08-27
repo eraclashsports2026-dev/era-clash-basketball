@@ -444,7 +444,7 @@ describe("6C4A WS10 — Candidate 1 lock", () => {
 
   it("stamps 1.1.0 and proves the stamp is the only change since validation", () => {
     expect(lock.possessionCalibrationVersion).toBe("1.1.0");
-    expect(versionOf("possessionCalibrationVersion")).toBe("1.2.0");
+    expect(versionOf("possessionCalibrationVersion")).toBe("1.3.0");
     expect(lock.coreHash).not.toBe(lock.validatedCoreHash);
     expect(lock.stampIsolation).toContain("src/versions.js");
   });

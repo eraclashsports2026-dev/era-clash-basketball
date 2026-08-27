@@ -59,7 +59,7 @@ describe("6C4B2 — nothing was opened", () => {
     expect(s.syntheticV2.formalVerdict).toBe("NOT_OPENED");
     for (const claim of s.claimsNotMade) expect(claim.length).toBeGreaterThan(10);
     expect(s.claimsNotMade.join(" ")).toContain("HOLDOUT_VALIDATED");
-    expect(versionOf("possessionCalibrationVersion")).toBe("1.2.0");
+    expect(versionOf("possessionCalibrationVersion")).toBe("1.3.0");
     expect(RB1("candidate1-lock-recertification").data.calibrationStatus).toBe("DEVELOPMENT_LOCKED_SCOPED");
     expect(RB1("candidate1-lock-recertification").data.validationAttemptStatus).toBe("NOT_RUN");
   });

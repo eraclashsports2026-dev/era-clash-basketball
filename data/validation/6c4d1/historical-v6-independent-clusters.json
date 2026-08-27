@@ -1,0 +1,288 @@
+{
+  "artifact": "historical-v6-independent-clusters",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run c3:preflight",
+  "generatedAt": "2026-08-27T21:42:53.665Z",
+  "gitCommit": "f60eee40216b7e873307f9ef9304ba2130c7637e",
+  "branch": "phase-6c4d1-candidate3-generalization-repair",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "historicalV6IndependentClusterVersion": "1.0.0",
+    "clusterKeyDefinition": "matchupId | side | metricId | measurementSurface | expectedDirection | subjectMean | referenceMean",
+    "clusterCount": 8,
+    "formalLabelCount": 12,
+    "clusters": [
+      {
+        "clusterId": "v6c-01",
+        "clusterKey": "v6m-1970s|teamB|orebRate|VS_ERA_REFERENCE|ABOVE_REFERENCE_BASELINE|0.31214|0.33772",
+        "matchupId": "v6m-1970s",
+        "eraStyleId": "1970s",
+        "side": "teamB",
+        "teamName": "Portland Trail Blazers",
+        "teamSeason": "1974-75",
+        "teamId": "POR",
+        "coachId": "lenny-wilkens",
+        "metricId": "orebRate",
+        "measurementSurface": "VS_ERA_REFERENCE",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "subjectMean": 0.31214,
+        "referenceMean": 0.33772,
+        "difference": -0.02558,
+        "practicalMargin": 0.02,
+        "zScore": -17.29919,
+        "ci95": {
+          "lower": -0.02848,
+          "upper": -0.02268
+        },
+        "formalTraitLabels": [
+          "STRONG_OFFENSIVE_REBOUNDING"
+        ],
+        "formalLabelCount": 1,
+        "failureIds": [
+          "v6f-01"
+        ],
+        "independentMeasurements": 1
+      },
+      {
+        "clusterId": "v6c-02",
+        "clusterKey": "v6m-1990s|teamA|movementShare|VS_ERA_REFERENCE|ABOVE_REFERENCE_BASELINE|0.15075|0.21226",
+        "matchupId": "v6m-1990s",
+        "eraStyleId": "1990s",
+        "side": "teamA",
+        "teamName": "Indiana Pacers",
+        "teamSeason": "1994-95",
+        "teamId": "IND",
+        "coachId": "larry-brown",
+        "metricId": "movementShare",
+        "measurementSurface": "VS_ERA_REFERENCE",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "subjectMean": 0.15075,
+        "referenceMean": 0.21226,
+        "difference": -0.06151,
+        "practicalMargin": 0.03,
+        "zScore": -80.53089,
+        "ci95": {
+          "lower": -0.06301,
+          "upper": -0.06001
+        },
+        "formalTraitLabels": [
+          "movement shooting off screens",
+          "MOTION"
+        ],
+        "formalLabelCount": 2,
+        "failureIds": [
+          "v6f-03",
+          "v6f-04"
+        ],
+        "independentMeasurements": 1
+      },
+      {
+        "clusterId": "v6c-03",
+        "clusterKey": "v6m-2000s|teamA|refPppVsTeam|REFERENCE_VS_TEAM|BELOW_REFERENCE_BASELINE|1.17134|1.14908",
+        "matchupId": "v6m-2000s",
+        "eraStyleId": "2000s",
+        "side": "teamA",
+        "teamName": "Boston Celtics",
+        "teamSeason": "2007-08",
+        "teamId": "BOS",
+        "coachId": "doc-rivers",
+        "metricId": "refPppVsTeam",
+        "measurementSurface": "REFERENCE_VS_TEAM",
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "subjectMean": 1.17134,
+        "referenceMean": 1.14908,
+        "difference": 0.02226,
+        "practicalMargin": 0.02,
+        "zScore": 8.87861,
+        "ci95": {
+          "lower": 0.01735,
+          "upper": 0.02717
+        },
+        "formalTraitLabels": [
+          "elite team man defence",
+          "ELITE_DEFENSE"
+        ],
+        "formalLabelCount": 2,
+        "failureIds": [
+          "v6f-05",
+          "v6f-06"
+        ],
+        "independentMeasurements": 1
+      },
+      {
+        "clusterId": "v6c-04",
+        "clusterKey": "v6m-2000s|teamA|assistedRate|VS_ERA_REFERENCE|ABOVE_REFERENCE_BASELINE|0.43829|0.47555",
+        "matchupId": "v6m-2000s",
+        "eraStyleId": "2000s",
+        "side": "teamA",
+        "teamName": "Boston Celtics",
+        "teamSeason": "2007-08",
+        "teamId": "BOS",
+        "coachId": "doc-rivers",
+        "metricId": "assistedRate",
+        "measurementSurface": "VS_ERA_REFERENCE",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "subjectMean": 0.43829,
+        "referenceMean": 0.47555,
+        "difference": -0.03726,
+        "practicalMargin": 0.02,
+        "zScore": -22.20968,
+        "ci95": {
+          "lower": -0.04055,
+          "upper": -0.03397
+        },
+        "formalTraitLabels": [
+          "PASSING_HUB"
+        ],
+        "formalLabelCount": 1,
+        "failureIds": [
+          "v6f-07"
+        ],
+        "independentMeasurements": 1
+      },
+      {
+        "clusterId": "v6c-05",
+        "clusterKey": "v6m-2000s|teamB|gamePace|VS_ERA_REFERENCE|BELOW_REFERENCE_BASELINE|92.15698|90.8002",
+        "matchupId": "v6m-2000s",
+        "eraStyleId": "2000s",
+        "side": "teamB",
+        "teamName": "Houston Rockets",
+        "teamSeason": "2007-08",
+        "teamId": "HOU",
+        "coachId": "rick-adelman",
+        "metricId": "gamePace",
+        "measurementSurface": "VS_ERA_REFERENCE",
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "subjectMean": 92.15698,
+        "referenceMean": 90.8002,
+        "difference": 1.35678,
+        "practicalMargin": 1,
+        "zScore": 30.80383,
+        "ci95": {
+          "lower": 1.27045,
+          "upper": 1.44311
+        },
+        "formalTraitLabels": [
+          "slow"
+        ],
+        "formalLabelCount": 1,
+        "failureIds": [
+          "v6f-08"
+        ],
+        "independentMeasurements": 1
+      },
+      {
+        "clusterId": "v6c-06",
+        "clusterKey": "v6m-2000s|teamB|movementShare|VS_ERA_REFERENCE|ABOVE_REFERENCE_BASELINE|0.12636|0.17439",
+        "matchupId": "v6m-2000s",
+        "eraStyleId": "2000s",
+        "side": "teamB",
+        "teamName": "Houston Rockets",
+        "teamSeason": "2007-08",
+        "teamId": "HOU",
+        "coachId": "rick-adelman",
+        "metricId": "movementShare",
+        "measurementSurface": "VS_ERA_REFERENCE",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "subjectMean": 0.12636,
+        "referenceMean": 0.17439,
+        "difference": -0.04803,
+        "practicalMargin": 0.03,
+        "zScore": -64.68724,
+        "ci95": {
+          "lower": -0.04949,
+          "upper": -0.04657
+        },
+        "formalTraitLabels": [
+          "motion and cutting",
+          "MOTION"
+        ],
+        "formalLabelCount": 2,
+        "failureIds": [
+          "v6f-09",
+          "v6f-10"
+        ],
+        "independentMeasurements": 1
+      },
+      {
+        "clusterId": "v6c-07",
+        "clusterKey": "v6m-2000s|teamB|postUpShare|VS_ERA_REFERENCE|ABOVE_REFERENCE_BASELINE|0.22432|0.2606",
+        "matchupId": "v6m-2000s",
+        "eraStyleId": "2000s",
+        "side": "teamB",
+        "teamName": "Houston Rockets",
+        "teamSeason": "2007-08",
+        "teamId": "HOU",
+        "coachId": "rick-adelman",
+        "metricId": "postUpShare",
+        "measurementSurface": "VS_ERA_REFERENCE",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "subjectMean": 0.22432,
+        "referenceMean": 0.2606,
+        "difference": -0.03628,
+        "practicalMargin": 0.03,
+        "zScore": -38.44593,
+        "ci95": {
+          "lower": -0.03813,
+          "upper": -0.03443
+        },
+        "formalTraitLabels": [
+          "POST_HEAVY"
+        ],
+        "formalLabelCount": 1,
+        "failureIds": [
+          "v6f-11"
+        ],
+        "independentMeasurements": 1
+      },
+      {
+        "clusterId": "v6c-08",
+        "clusterKey": "v6m-2020s|teamB|movementShare|VS_ERA_REFERENCE|ABOVE_REFERENCE_BASELINE|0.183|0.23644",
+        "matchupId": "v6m-2020s",
+        "eraStyleId": "2020s",
+        "side": "teamB",
+        "teamName": "San Antonio Spurs",
+        "teamSeason": "2020-21",
+        "teamId": "SAS",
+        "coachId": "gregg-popovich",
+        "metricId": "movementShare",
+        "measurementSurface": "VS_ERA_REFERENCE",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "subjectMean": 0.183,
+        "referenceMean": 0.23644,
+        "difference": -0.05344,
+        "practicalMargin": 0.03,
+        "zScore": -64.01033,
+        "ci95": {
+          "lower": -0.05508,
+          "upper": -0.0518
+        },
+        "formalTraitLabels": [
+          "half-court motion and passing",
+          "MOTION"
+        ],
+        "formalLabelCount": 2,
+        "failureIds": [
+          "v6f-14",
+          "v6f-15"
+        ],
+        "independentMeasurements": 1
+      }
+    ],
+    "byMetric": {
+      "orebRate": 1,
+      "movementShare": 3,
+      "refPppVsTeam": 1,
+      "assistedRate": 1,
+      "gamePace": 1,
+      "postUpShare": 1
+    },
+    "collapseNote": "a cluster holding more than one label is two trait names reporting ONE measurement. Every label is preserved; only the evidence count collapses.",
+    "pass": true
+  },
+  "outputHash": "2b20a46806d6ef976b30333e99a49853cf614cd1f36f6fbdf3e8ffedd5c46aa6"
+}

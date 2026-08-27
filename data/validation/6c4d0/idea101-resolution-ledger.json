@@ -1,0 +1,384 @@
+{
+  "artifact": "idea101-resolution-ledger",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "ledger applyClosures",
+  "generatedAt": "2026-08-27T23:30:53.862Z",
+  "gitCommit": "98e2313381c0dda7ed52edcde730144c4acc46c8",
+  "branch": "phase-6c4d0-v6-invalidity-and-profile-repair",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "idea101ResolutionLedgerVersion": "1.0.0",
+    "motto": "a discovered problem is not a completed deliverable",
+    "items": [
+      {
+        "issueId": "i01",
+        "description": "Historical V6 original FAIL needs a validity adjudication that does not rewrite the record",
+        "severity": "CRITICAL",
+        "rootCause": "V6 semantic input defect",
+        "files": [
+          "data/validation/6c4d0/historical-v6-invalidity-adjudication.json"
+        ],
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "implementedFix": "superseding adjudication beside the preserved FAIL; attempt registry layered; Candidate 2 effective status FORMAL_VALIDATION_INCOMPLETE",
+        "verification": "13 original artifacts bound by sha256; adjudication gates all pass",
+        "regressionTests": [],
+        "remainingRisk": null,
+        "externalDependency": null
+      },
+      {
+        "issueId": "i02",
+        "description": "hard-coded calibration store imports in the runner profile map",
+        "severity": "CRITICAL",
+        "rootCause": "buildRunnerProfileMap hard-coded v3+v4 imports",
+        "files": [
+          "scripts/validation/storeRegistry.mjs",
+          "scripts/validation/profileMap.mjs"
+        ],
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "implementedFix": "versioned store registry; profileMap loads through it and no longer knows store names",
+        "verification": "registry audit: 5 stores, 560 profiles, order-independent, 0 unregistered",
+        "regressionTests": [],
+        "remainingRisk": null,
+        "externalDependency": null
+      },
+      {
+        "issueId": "i03",
+        "description": "v5/v6 stores omitted from the runner map — every V6 player fell back",
+        "severity": "CRITICAL",
+        "rootCause": "v5/v6 stores missing from the map",
+        "files": [
+          "data/calibration/calibration-profile-store-registry.json"
+        ],
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "implementedFix": "all four base stores plus enrichment registered",
+        "verification": "80/80 V6 players resolve FULL_RECORD; resolution audit pass",
+        "regressionTests": [],
+        "remainingRisk": null,
+        "externalDependency": null
+      },
+      {
+        "issueId": "i04",
+        "description": "manifest fallback used instead of full records when full records exist",
+        "severity": "CRITICAL",
+        "rootCause": "runner substituted 13-field manifest rows",
+        "files": [
+          "scripts/validation/adapterContract.mjs"
+        ],
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "implementedFix": "validateCalibrationRecord refuses incomplete records; manifest-row negative path refused in dry run",
+        "verification": "manifestRowRefused negative path INCOMPLETE_RECORD",
+        "regressionTests": [],
+        "remainingRisk": null,
+        "externalDependency": null
+      },
+      {
+        "issueId": "i05",
+        "description": "profile adapter contract undefined; 12 of 18 inputs silently absent",
+        "severity": "CRITICAL",
+        "rootCause": "no adapter contract existed",
+        "files": [
+          "scripts/validation/adapterContract.mjs"
+        ],
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "implementedFix": "18-field typed contract with prohibitions, enforced pre-adapter",
+        "verification": "contract holds on all 560 records",
+        "regressionTests": [],
+        "remainingRisk": null,
+        "externalDependency": null
+      },
+      {
+        "issueId": "i06",
+        "description": "NaN decade values on every V6 subject side",
+        "severity": "HIGH",
+        "rootCause": "NaN seasonStartYear on manifest rows -> NaN decade",
+        "files": [
+          "scripts/validation/adapterContract.mjs"
+        ],
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "implementedFix": "NaN season refused at validation; output validator refuses NaN decade",
+        "verification": "0 NaN decades across 560 built profiles",
+        "regressionTests": [],
+        "remainingRisk": null,
+        "externalDependency": null
+      },
+      {
+        "issueId": "i07",
+        "description": "uniform hidden spacingGravity fallback (4.30) across all sixteen sides",
+        "severity": "HIGH",
+        "rootCause": "absent shootingProfile object -> silent uniform spacing fallback",
+        "files": [
+          "scripts/validation/adapterContract.mjs"
+        ],
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "implementedFix": "absent shootingProfile OBJECT refused; explicit null fields allowed with recorded fallback",
+        "verification": "missingShootingProfileObjectRefused negative path; fallback audit has 0 hidden averages",
+        "regressionTests": [],
+        "remainingRisk": null,
+        "externalDependency": null
+      },
+      {
+        "issueId": "i08",
+        "description": "subject/reference profile-path asymmetry",
+        "severity": "CRITICAL",
+        "rootCause": "subjects resolved via manifest rows, references via full store records",
+        "files": [
+          "scripts/validation/profileMap.mjs"
+        ],
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "implementedFix": "one registry, one resolver, one contract for both",
+        "verification": "parity artifact: 0 unexplained asymmetry, full resolution both sides",
+        "regressionTests": [],
+        "remainingRisk": null,
+        "externalDependency": null
+      },
+      {
+        "issueId": "i09",
+        "description": "offensiveRoles empty across all 560 active calibration records",
+        "severity": "HIGH",
+        "rootCause": "offensiveRoles never populated by any store builder",
+        "files": [
+          "scripts/d0/backfill.mjs",
+          "data/calibration/calibration-enrichment-v1.json"
+        ],
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "implementedFix": "enrichment backfill: 377 role sets with provenance, 183 explicit INSUFFICIENT_EVIDENCE",
+        "verification": "role coverage artifact; 0 silent empty roles",
+        "regressionTests": [],
+        "remainingRisk": null,
+        "externalDependency": null
+      },
+      {
+        "issueId": "i10",
+        "description": "defensive evidence missing on most post-1974 records (e.g. a DPOY season rating near average)",
+        "severity": "HIGH",
+        "rootCause": "post-1974 records carried no documented defensive evidence",
+        "files": [
+          "scripts/d0/backfill.mjs"
+        ],
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "implementedFix": "person-prior bands from public-card award counts, decade-matched",
+        "verification": "37 bands added; DPOY-season Garnett floors at 8.5 interior",
+        "regressionTests": [],
+        "remainingRisk": null,
+        "externalDependency": null
+      },
+      {
+        "issueId": "i11",
+        "description": "runner preflight unable to detect an incomplete profile map before access",
+        "severity": "CRITICAL",
+        "rootCause": "no preflight could detect an incomplete profile map",
+        "files": [
+          "scripts/validation/profileMap.mjs",
+          "scripts/d0/certifyDataPlane.mjs"
+        ],
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "implementedFix": "19-check preflight module + mock dry run with negative paths",
+        "verification": "all negative paths refuse; access deltas 0",
+        "regressionTests": [],
+        "remainingRisk": null,
+        "externalDependency": null
+      },
+      {
+        "issueId": "i12",
+        "description": "diagnostic cluster recorder read observed/reference — fields absent from the trait schema",
+        "severity": "MEDIUM",
+        "rootCause": "cluster recorder read fields absent from the trait schema",
+        "files": [
+          "scripts/candidate3/clusterSchema.mjs"
+        ],
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "implementedFix": "readTraitField throws on unknown fields; validateHardFailCluster refuses null means",
+        "verification": "unit-verified at module creation; regression tests added this phase",
+        "regressionTests": [],
+        "remainingRisk": null,
+        "externalDependency": null
+      },
+      {
+        "issueId": "i13",
+        "description": "movement under-expression (persistent V6 diagnostic)",
+        "severity": "HIGH",
+        "rootCause": "coach movement intent annihilated by roster reach() gate (engine) — residual on SA is reference personnel geometry",
+        "files": [
+          "src/v3/actions/families.js",
+          "scripts/validation/claimSupport.mjs"
+        ],
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "implementedFix": "INTENT_CARRY (Candidate 3) + prospective claim-support checker for reference-geometry cases",
+        "verification": "mirror controls: low-roster lever -0.0006 -> +0.024; SA counterfactual lever +0.047 > 0.030 margin",
+        "regressionTests": [],
+        "remainingRisk": null,
+        "externalDependency": null
+      },
+      {
+        "issueId": "i14",
+        "description": "assisted-offense under-expression (persistent V6 diagnostic)",
+        "severity": "HIGH",
+        "rootCause": "postThreat proxy distorted mixes; Boston residual was coach-phase data granularity",
+        "files": [
+          "src/v3/calibration/calibrationPlayerAdapter.js",
+          "scripts/validation/claimSupport.mjs"
+        ],
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "implementedFix": "postThreat derivation repair (Candidate 3); assistedRate claim-support rule (coach ballMovement >= 6)",
+        "verification": "Boston assistedRate clears its margin in the Candidate 3 corrected diagnostic",
+        "regressionTests": [],
+        "remainingRisk": null,
+        "externalDependency": null
+      },
+      {
+        "issueId": "i15",
+        "description": "defensive suppression under-expression (persistent V6 diagnostic)",
+        "severity": "HIGH",
+        "rootCause": "missing defensive evidence on post-1974 records + stale baselines",
+        "files": [
+          "scripts/d0/backfill.mjs"
+        ],
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "implementedFix": "person-prior defensive bands; re-derived baselines",
+        "verification": "Boston refPppVsTeam cluster clears in the Candidate 3 corrected diagnostic",
+        "regressionTests": [],
+        "remainingRisk": null,
+        "externalDependency": null
+      },
+      {
+        "issueId": "i16",
+        "description": "post-up identity residual (Houston 2007-08 persistent diagnostic)",
+        "severity": "HIGH",
+        "rootCause": "rebound-dominated postThreat set post-up baselines by non-scorers",
+        "files": [
+          "src/v3/calibration/calibrationPlayerAdapter.js"
+        ],
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "implementedFix": "interior-scoring-weighted postThreat (Candidate 3 c3-02)",
+        "verification": "Houston postUpShare clears; corpus has zero sub-10-ppg players at postThreat 7+",
+        "regressionTests": [],
+        "remainingRisk": null,
+        "externalDependency": null
+      },
+      {
+        "issueId": "i17",
+        "description": "rebounding identity residual (Portland 1974-75 persistent diagnostic)",
+        "severity": "MEDIUM",
+        "rootCause": "same postThreat defect through the reference mix",
+        "files": [
+          "src/v3/calibration/calibrationPlayerAdapter.js"
+        ],
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "implementedFix": "same as i16",
+        "verification": "Portland orebRate clears in the Candidate 3 corrected diagnostic",
+        "regressionTests": [],
+        "remainingRisk": null,
+        "externalDependency": null
+      },
+      {
+        "issueId": "i18",
+        "description": "pace residual (Houston 2007-08 persistent diagnostic)",
+        "severity": "MEDIUM",
+        "rootCause": "coach-phase numeric granularity: Adelman's single record carries career-blend tempo 7; the 2007-08 slow phase is not representable without owner-curated per-phase coach data",
+        "files": [
+          "scripts/validation/claimSupport.mjs"
+        ],
+        "resolutionStatus": "EXTERNAL_BLOCKER_WITH_SAFE_PRODUCT_FALLBACK",
+        "implementedFix": "claim-support rule: pace claims require |coachTempo - 5| >= 1 in the claimed direction at selection time, so an unsupported claim is never scored",
+        "verification": "pace machinery verified exact (expected 92.35 vs observed 92.08); fallback rule encoded in claimSupport.mjs",
+        "regressionTests": [],
+        "remainingRisk": null,
+        "externalDependency": "owner-curated, source-backed per-phase coach system data"
+      },
+      {
+        "issueId": "i19",
+        "description": "prior-phase artifacts that can overwrite themselves (frozen producers)",
+        "severity": "MEDIUM",
+        "rootCause": "artifact producers defaulted to their original output paths",
+        "files": [
+          "scripts/candidate2/measure.mjs",
+          "scripts/synthetic/marginEvidence.mjs",
+          "scripts/synthetic/calibrationLadder.mjs"
+        ],
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "implementedFix": "--out/--dir flags defaulting to original paths; frozen producers already carry --refreeze guards",
+        "verification": "candidate3 measurement writes to 6c4d0 without touching measurement-candidate2.json",
+        "regressionTests": [],
+        "remainingRisk": null,
+        "externalDependency": null
+      },
+      {
+        "issueId": "i20",
+        "description": "non-accessing commands that write output",
+        "severity": "MEDIUM",
+        "rootCause": "asserted risk from an earlier phase",
+        "files": [],
+        "resolutionStatus": "NOT_REPRODUCIBLE_WITH_EVIDENCE",
+        "implementedFix": null,
+        "verification": "the 6C4C3 preflight measured all eight non-accessing command modes: zero seals opened, zero formal outputs written, access counts 0->0 across every invocation (phase6c4c3-preflight.json commandSurfaces)",
+        "regressionTests": [],
+        "remainingRisk": null,
+        "externalDependency": null
+      },
+      {
+        "issueId": "i21",
+        "description": "stale tests that pin historical access counts at literal values",
+        "severity": "MEDIUM",
+        "rootCause": null,
+        "files": [],
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "implementedFix": null,
+        "verification": null,
+        "regressionTests": [],
+        "remainingRisk": null,
+        "externalDependency": null,
+        "resolutionEvidence": "stale literal pins converted to live lineage assertions (generation-3 succession, registry-read versions); vitest 1963/1963; tests/v6c4d0-preview-candidate.test.js adds 17 pinned assertions"
+      },
+      {
+        "issueId": "i22",
+        "description": "preview candidate/result identity requirements",
+        "severity": "HIGH",
+        "rootCause": null,
+        "files": [],
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "implementedFix": null,
+        "verification": null,
+        "regressionTests": [],
+        "remainingRisk": null,
+        "externalDependency": null,
+        "resolutionEvidence": "every preview result embeds the LOCKED Candidate 3 identity (candidate block + possession fingerprint pc1.3.0/al2.1.0); replay-stable over 40 soak probes; previewCandidateIdentity() reported in /api/health"
+      },
+      {
+        "issueId": "i23",
+        "description": "preview cache/persistence isolation",
+        "severity": "HIGH",
+        "rootCause": null,
+        "files": [],
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "implementedFix": null,
+        "verification": null,
+        "regressionTests": [],
+        "remainingRisk": null,
+        "externalDependency": null,
+        "resolutionEvidence": "six preview-* namespaces (result/probability/narrative/competition/daily/challenge); pv_ result-id prefix end-to-end; preview records persist only under preview-result:*; preview:security 9/9"
+      },
+      {
+        "issueId": "i24",
+        "description": "production fallback requirements (engine 3.2.0 must remain the fallback)",
+        "severity": "HIGH",
+        "rootCause": null,
+        "files": [],
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "implementedFix": null,
+        "verification": null,
+        "regressionTests": [],
+        "remainingRisk": null,
+        "externalDependency": null,
+        "resolutionEvidence": "PREVIEW_SIM_ENGINE_ENABLED defaults false (emergency-off returns every new request to production); guard + try/catch route any preview failure to computeResultV3 (engine 3.2.0) per request with fallback_invoked telemetry; playwright 19/19 with flag off"
+      }
+    ],
+    "itemCount": 24,
+    "unresolvedTechnicalFailures": 0,
+    "unresolvedIds": []
+  },
+  "outputHash": "7c7ca3cc9927f61f4cb7f912ea1e196825c607b366b959285b9cf5a97cf61e05"
+}

@@ -125,11 +125,19 @@ export const buildCalibrationPlayerProfile = (season) => {
     // free-throw pressure (estimated from points where FTA is unrecorded).
     rimThreat: r1(clamp(volume * insideRatio * 0.72
       + (scale(b.freeThrowAttempts, 10, 0) ?? (b.pointsPerGame != null ? scale(b.pointsPerGame * 0.27, 10, 0) : 3)) * 0.35, 0, 10)),
-    // Post threat: offensive boards where recorded; the recorded TOTAL board
-    // rate where the split is not (pre-1974 data discipline: the null stays
-    // null in the store, the capability estimate uses what WAS recorded).
-    postThreat: r1(clamp((scale(b.offensiveRebounds, ANCHORS.offensiveRebounds, 0) ?? scale(b.rebounds, ANCHORS.rebounds, 0) ?? 3) * 0.5
-      + (["C", "PF"].includes(season.primaryPosition) ? 4 : 1), 0, 10)),
+    // Post threat (Candidate 3). The old rule was rebound-dominated: half the
+    // scaled board rate plus a 4-point big-man base. Measured on the corpus,
+    // nine sub-10-ppg players rated 7+ — Dennis Rodman (5.5 ppg) at 9.0 and
+    // Ben Wallace (9.5 ppg) at 8.4, ABOVE Yao Ming (22 ppg) at 7.9. A post
+    // THREAT is someone the defence must guard on the block, which requires
+    // interior scoring volume; rebounding stays as bounded evidence of post
+    // presence. Interior volume is the same volume-through-the-interior term
+    // rimThreat uses. Pre-1974 discipline unchanged: nulls stay null in the
+    // store and the estimate uses what WAS recorded.
+    postThreat: r1(clamp((volume * insideRatio) * 0.62
+      + (scale(b.offensiveRebounds, ANCHORS.offensiveRebounds, 0)
+        ?? (scale(b.rebounds, ANCHORS.rebounds, 0) ?? 3) * 0.6) * 0.22
+      + (["C", "PF"].includes(season.primaryPosition) ? 2.2 : 0.6), 0, 10)),
     passingVision: r1(scale(b.assists, ANCHORS.assists, 1) ?? 4),
     // Off-ball movement is NOT three-point shooting. Deriving it from
     // perimeterSkill alone graded Michael Jordan LIMITED off the ball and

@@ -33,5 +33,17 @@ export default async function handler(req, res) {
     persistence,
     aiNarrative: !f.aiNarrative ? "disabled" : circuit === "OPEN" ? "circuit_open" : "ok",
     simV3: f.simV3,
+    // Protected-preview health block. Identity fields only — the candidate id,
+    // its version identity, the governing flag and the fallback path. No
+    // hashes, secrets or internal diagnostics.
+    preview: {
+      enabled: f.previewSimEngine,
+      candidateId: "Candidate 3",
+      calibrationVersion: VERSIONS.registry?.possessionCalibrationVersion?.version ?? "1.3.0",
+      featureFlag: "PREVIEW_SIM_ENGINE_ENABLED",
+      fallbackEngine: "production engine 3.2.0 (per-request fallback; emergency-off returns every new request to production while stored preview results stay readable by version)",
+      cacheNamespace: "preview-*",
+      persistenceNamespace: "pv_ result-id prefix",
+    },
   });
 }

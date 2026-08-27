@@ -51,6 +51,11 @@ export const flags = () => ({
   // is only measurable if allocation can be switched independently of the
   // families that consume it.
   opportunityAllocation: bool("OPPORTUNITY_ALLOCATION_ENABLED", false),
+  // Protected preview: the LOCKED preview candidate (Candidate 3, possession
+  // engine line) behind its own default-off flag. When false — the default in
+  // every environment — no code path differs from production behavior, and
+  // engine 3.2.0 remains the fallback for every request even when true.
+  previewSimEngine: bool("PREVIEW_SIM_ENGINE_ENABLED", false),
   leaderboard: bool("PUBLIC_LEADERBOARD_ENABLED", true),
   feedback: bool("FEEDBACK_ENABLED", true),
 });

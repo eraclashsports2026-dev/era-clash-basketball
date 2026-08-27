@@ -5,6 +5,7 @@ import { versionOf } from "../../src/versions.js";
 const C0_LOCK_PATH = "data/calibration/c6/baseline-candidate-lock.json";
 const C1_LOCK_PATH = "data/validation/6c4a/candidate1-lock.json";
 const C2_LOCK_PATH = "data/validation/6c4c1/candidate2-lock.json";
+const C3_LOCK_PATH = "data/validation/6c4d0/candidate3-lock.json";
 
 /**
  * The invariant that replaced seven separate `possessionCalibrationVersion is
@@ -29,10 +30,11 @@ export const assertCalibrationLockInvariant = () => {
   // the registry's backing manifest while Candidate 1's stays LOCKED at 1.1.0
   // as its parent, and Candidate 0's at 1.0.0 as the grandparent. The ACTIVE
   // lock is always the newest that exists.
+  const c3Exists = existsSync(C3_LOCK_PATH);
   const c2Exists = existsSync(C2_LOCK_PATH);
   const c1Exists = existsSync(C1_LOCK_PATH);
-  const isSuccession = c2Exists || c1Exists;
-  const LOCK_PATH = c2Exists ? C2_LOCK_PATH : c1Exists ? C1_LOCK_PATH : C0_LOCK_PATH;
+  const isSuccession = c3Exists || c2Exists || c1Exists;
+  const LOCK_PATH = c3Exists ? C3_LOCK_PATH : c2Exists ? C2_LOCK_PATH : c1Exists ? C1_LOCK_PATH : C0_LOCK_PATH;
   const lockExists = existsSync(LOCK_PATH);
   const lock = lockExists ? JSON.parse(readFileSync(LOCK_PATH, "utf8")).data : null;
 
@@ -48,7 +50,18 @@ export const assertCalibrationLockInvariant = () => {
     const c0 = JSON.parse(readFileSync(C0_LOCK_PATH, "utf8")).data;
     expect(c0.candidateLockStatus, "the grandparent lock is never mutated").toBe("LOCKED");
     expect(c0.possessionCalibrationVersion).toBe("1.0.0");
-    if (c2Exists) {
+    if (c3Exists) {
+      // generation 3: Candidate 2's lock is the parent and is never mutated,
+      // and the whole chain beneath it must still hold.
+      const c2 = JSON.parse(readFileSync(C2_LOCK_PATH, "utf8")).data;
+      expect(c2.candidateLockStatus, "the parent lock is never mutated").toBe("LOCKED");
+      expect(c2.possessionCalibrationVersion).toBe("1.2.0");
+      expect(lock.parentCoreHash, "the succession names its parent's current core").toBe(c2.coreHash);
+      expect(lock.coreHash, "a successor's core differs from its parent's").not.toBe(c2.coreHash);
+      const c1chk = JSON.parse(readFileSync(C1_LOCK_PATH, "utf8")).data;
+      expect(c1chk.candidateLockStatus).toBe("LOCKED");
+      expect(c1chk.possessionCalibrationVersion).toBe("1.1.0");
+    } else if (c2Exists) {
       const c1 = JSON.parse(readFileSync(C1_LOCK_PATH, "utf8")).data;
       expect(c1.candidateLockStatus, "the parent lock is never mutated").toBe("LOCKED");
       expect(c1.possessionCalibrationVersion).toBe("1.1.0");
@@ -89,5 +102,5 @@ export const assertCalibrationLockInvariant = () => {
 
   return { locked: true, version: v, status: lock.calibrationStatus,
     parameterChanges: lock.parameterChanges, lockPath: LOCK_PATH,
-    generation: c2Exists ? 2 : c1Exists ? 1 : 0 };
+    generation: c3Exists ? 3 : c2Exists ? 2 : c1Exists ? 1 : 0 };
 };

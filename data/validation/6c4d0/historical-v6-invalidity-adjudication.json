@@ -1,0 +1,179 @@
+{
+  "artifact": "historical-v6-invalidity-adjudication",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run d0:adjudicate",
+  "generatedAt": "2026-08-27T22:00:14.027Z",
+  "gitCommit": "de74b003378ee20ebbb15f5f33b76cc02b2d7647",
+  "branch": "phase-6c4d0-v6-invalidity-and-profile-repair",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "historicalV6InvalidityAdjudicationVersion": "1.0.0",
+    "set": "historical-holdout-v6",
+    "originalFormalVerdict": "HISTORICAL_HOLDOUT_V6_FAIL",
+    "originalVerdictPreserved": true,
+    "originalVerdictArtifact": "data/validation/6c4c3/historical-v6-formal-verdict.json",
+    "originalVerdictSha256": "e799691de27009a4da6f52361eba518021af052f703e39065b73a2bd720a8ea0",
+    "runValidity": "INVALID",
+    "effectiveFormalVerdict": "HISTORICAL_HOLDOUT_V6_INVALID_RUN",
+    "invalidityClass": "VALIDATION_PROFILE_RESOLUTION_FAILURE",
+    "candidateFailureEstablished": false,
+    "holdoutConsumed": true,
+    "accessCount": 1,
+    "replacementHoldoutRequired": true,
+    "permittedUseOfV6": "INVALID_HOLDOUT_DIAGNOSTIC_SET",
+    "forbiddenUseOfV6": [
+      "UNSEEN_HOLDOUT",
+      "FORMAL_GENERALIZATION_EVIDENCE",
+      "evidence that Candidate 2 failed historical trait fidelity"
+    ],
+    "reasoning": {
+      "what": "the V6 execution path did not supply Candidate 2 with the complete frozen player-season records the validation design intended to test. Every selected player resolved through a fallback record missing 12 of the 18 fields the calibration adapter consumes.",
+      "why": "buildRunnerProfileMap loads the v3 and v4 calibration stores only; every V6 player lives in the v5 or v6 store, so all of them missed the map and the runner substituted the manifest player row.",
+      "howItBiasedTheMeasurement": "the Era Style references resolved from complete records while the subject teams did not, so subject and reference were not evaluated through equivalent profile-resolution semantics. spacingGravity collapsed to one identical fallback value across all sixteen sides and every subject decade evaluated as NaN.",
+      "materiality": "the defect changed formal hard-fail labels and moved the aggregate trait pass rate across a frozen threshold, so it is material rather than cosmetic.",
+      "whyNotAPass": "a corrected-input remeasurement is neither formal nor unseen. V6 is consumed. The correct conclusion is that the run was semantically invalid and Candidate 2 still requires a valid unseen historical holdout."
+    },
+    "materiality": {
+      "intendedProfileMapSources": {
+        "value": [
+          "v3",
+          "v4"
+        ],
+        "source": "data/validation/6c4d1/historical-v6-input-support-audit.json"
+      },
+      "intendedNote": {
+        "value": "buildRunnerProfileMap loads the v3 and v4 stores only. Every Historical V6 player lives in the v5 or v6 store.",
+        "source": "data/validation/6c4d1/historical-v6-input-support-audit.json"
+      },
+      "v6SelectedPlayerCount": {
+        "value": 80,
+        "source": "counted from the audit"
+      },
+      "fullRecordResolutions": {
+        "value": 0,
+        "source": "counted from the audit"
+      },
+      "manifestFallbackResolutions": {
+        "value": 80,
+        "source": "counted from the audit"
+      },
+      "v6SidesFullyResolved": {
+        "value": "0/16",
+        "source": "data/validation/6c4d1/historical-v6-input-support-audit.json"
+      },
+      "eraReferencesFullyResolved": {
+        "value": "8/8",
+        "source": "data/validation/6c4d1/historical-v6-input-support-audit.json"
+      },
+      "requiredAdapterFieldCount": {
+        "value": 18,
+        "source": "data/validation/6c4d1/historical-v6-input-support-audit.json"
+      },
+      "missingFallbackFields": {
+        "value": [
+          "accolades",
+          "defensiveEvidence",
+          "eraStyleId",
+          "lineupRole",
+          "offensiveRoles",
+          "physicalProfile",
+          "provenance",
+          "publicPersonId",
+          "rateStats",
+          "seasonStartYear",
+          "secondaryPositions",
+          "shootingProfile"
+        ],
+        "source": "data/validation/6c4d1/historical-v6-input-support-audit.json"
+      },
+      "missingFallbackFieldCount": {
+        "value": 12,
+        "source": "data/validation/6c4d1/historical-v6-input-support-audit.json"
+      },
+      "nanDecadeSideCount": {
+        "value": 16,
+        "source": "data/validation/6c4d1/historical-v6-input-support-audit.json"
+      },
+      "distinctSpacingGravityAcrossSides": {
+        "value": [
+          4.3
+        ],
+        "source": "data/validation/6c4d1/historical-v6-input-support-audit.json"
+      },
+      "calibrationRecordsWithPopulatedOffensiveRoles": {
+        "value": 0,
+        "source": "data/validation/6c4d1/historical-v6-input-support-audit.json"
+      },
+      "calibrationRecordsTotal": {
+        "value": 560,
+        "source": "data/validation/6c4d1/historical-v6-input-support-audit.json"
+      },
+      "subjectReferenceAsymmetry": {
+        "value": "subjects 0/16 fully resolved, references 8/8 fully resolved",
+        "source": "data/validation/6c4d1/historical-v6-input-support-audit.json"
+      },
+      "formalHardFailLabels": {
+        "value": 12,
+        "source": "data/validation/6c4d1/historical-v6-remeasurement.json"
+      },
+      "correctedInputHardFailLabels": {
+        "value": 8,
+        "source": "data/validation/6c4d1/historical-v6-remeasurement.json"
+      },
+      "resolvedByCorrectedInputs": {
+        "value": 4,
+        "source": "data/validation/6c4d1/historical-v6-remeasurement.json"
+      },
+      "persistingAfterCorrection": {
+        "value": 8,
+        "source": "data/validation/6c4d1/historical-v6-remeasurement.json"
+      },
+      "formalTraitPassRate": {
+        "value": 0.67391,
+        "source": "data/validation/6c4d1/historical-v6-remeasurement.json"
+      },
+      "correctedInputTraitPassRate": {
+        "value": 0.76,
+        "source": "data/validation/6c4d1/historical-v6-remeasurement.json"
+      },
+      "frozenMinimumPassRate": {
+        "value": 0.75,
+        "source": "data/validation/6c4c2/historical-v6-verdict-policy.json"
+      },
+      "formalIndependentClusters": {
+        "value": 8,
+        "source": "data/validation/6c4d1/historical-v6-independent-clusters.json"
+      },
+      "formalFailingInstances": {
+        "value": 15,
+        "source": "data/validation/6c4d1/historical-v6-diagnostic-register.json"
+      }
+    },
+    "notClaimed": [
+      "HISTORICAL_HOLDOUT_V6_PASS",
+      "Candidate 2 passed Historical V6",
+      "a replacement V6 formal verdict",
+      "any formal generalization evidence for Candidate 2"
+    ],
+    "candidate2EffectiveStatus": {
+      "candidateId": "Candidate 2",
+      "candidateSelectionStatus": "SELECTED",
+      "candidateLockStatus": "LOCKED",
+      "possessionCalibrationVersion": "1.2.0",
+      "formalValidationStatus": "HISTORICAL_V6_INVALID",
+      "calibrationStatus": "FORMAL_VALIDATION_INCOMPLETE",
+      "coreHash": "3733b648f050a4f50f9dc3cb6ecf62fce419dd282f24c910b91e7b077d63711d",
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "engineChangedByThisAdjudication": false
+    },
+    "adjudicatedAtCommit": "de74b003378ee20ebbb15f5f33b76cc02b2d7647",
+    "pass": true,
+    "failedGates": [],
+    "adjudicationHash": "0ca4d5c0c85b51f7eaf1b7ff5c0f9a03421b42ef6822ad5f8746adcfb947081b"
+  },
+  "outputHash": "b0eda29fe2c936ad6adffe8c05b9fa23c3efbdacb9914837f11598263c65d84e"
+}

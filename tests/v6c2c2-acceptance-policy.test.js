@@ -79,7 +79,8 @@ describe("frozen acceptance policy", () => {
     const C0 = "data/calibration/c6/baseline-candidate-lock.json";
     const C1 = "data/validation/6c4a/candidate1-lock.json";
     const C2 = "data/validation/6c4c1/candidate2-lock.json";
-    const lockPath = existsSync(C2) ? C2 : existsSync(C1) ? C1 : C0;
+    const C3 = "data/validation/6c4d0/candidate3-lock.json";
+    const lockPath = existsSync(C3) ? C3 : existsSync(C2) ? C2 : existsSync(C1) ? C1 : C0;
     if (v == null) {
       for (const p of [C0, C1]) {
         expect(existsSync(p) && JSON.parse(readFileSync(p, "utf8")).data.candidateLockStatus === "LOCKED",
@@ -107,6 +108,12 @@ describe("frozen acceptance policy", () => {
       expect(parent.candidateLockStatus, "the parent lock is never mutated").toBe("LOCKED");
       expect(parent.possessionCalibrationVersion).toBe("1.0.0");
       expect(m.parentCoreHash).toBe(parent.coreHash ?? m.parentCoreHash);
+    }
+    if (lockPath === C3) {
+      const parent = JSON.parse(readFileSync(C2, "utf8")).data;
+      expect(parent.candidateLockStatus, "the parent lock is never mutated").toBe("LOCKED");
+      expect(parent.possessionCalibrationVersion).toBe("1.2.0");
+      expect(m.parentCoreHash).toBe(parent.coreHash);
     }
   });
 

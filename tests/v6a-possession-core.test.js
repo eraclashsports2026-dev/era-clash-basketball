@@ -826,7 +826,7 @@ describe("fingerprint and cache identity", () => {
     const k = cacheKeys.possessionResult({ matchupFingerprint: g.fingerprint.matchupFingerprint, simulationSeed: g.simulationSeed });
     expect(k).toContain(String(g.simulationSeed >>> 0));
     expect(k).toContain("pe1-2-0");
-    expect(k).toContain("al2-0-0");
+    expect(k).toContain("al2-1-0");
   });
 
   it("development runs use a development namespace", () => {
@@ -841,14 +841,32 @@ describe("production isolation", () => {
   const files = (dir) => readdirSync(new URL(dir, import.meta.url)).filter((f) => f.endsWith(".js") || f.endsWith(".jsx"));
 
   it("no production route imports the possession engine", () => {
+    // Phase 6C4D0R: exactly one module — the protected-preview adapter — may
+    // import the possession engine. Its access is asserted separately below:
+    // default-off flag, per-request production fallback, preview-only
+    // namespaces. Everything else in api/ keeps the original invariant.
+    const PREVIEW_ADAPTER = "previewEngine.js";
     for (const f of files("../api/")) {
       const src = readFileSync(new URL(`../api/${f}`, import.meta.url), "utf8");
       expect(src, `api/${f} must not import the possession engine`).not.toMatch(/v3\/possession/);
     }
     for (const f of files("../api/_lib/")) {
+      if (f === PREVIEW_ADAPTER) continue;
       const src = readFileSync(new URL(`../api/_lib/${f}`, import.meta.url), "utf8");
       expect(src, `api/_lib/${f} must not import the possession engine`).not.toMatch(/v3\/possession/);
     }
+  });
+
+  it("the preview adapter is the only possession gateway and is flag-guarded", () => {
+    const game = readFileSync(new URL("../api/game.js", import.meta.url), "utf8");
+    // game.js reaches possession only through the adapter, behind the
+    // default-off flag, inside a try/catch whose catch restores production.
+    expect(game).not.toMatch(/v3\/possession/);
+    expect(game).toMatch(/f\.previewSimEngine\s*&&/);
+    expect(game).toMatch(/computeResultPreview/);
+    expect(game).toMatch(/fallback_invoked/);
+    const flagsSrc = readFileSync(new URL("../api/_lib/flags.js", import.meta.url), "utf8");
+    expect(flagsSrc).toMatch(/bool\("PREVIEW_SIM_ENGINE_ENABLED", false\)/);
   });
 
   it("no UI file imports or exposes possession results", () => {

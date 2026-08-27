@@ -1,0 +1,49 @@
+{
+  "artifact": "historical-runner-profile-preflight",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run d0:certify-data-plane",
+  "generatedAt": "2026-08-27T22:28:05.953Z",
+  "gitCommit": "1f9ac6ee3d79cc54997236e94c47dc13db0b9e83",
+  "branch": "phase-6c4d0-v6-invalidity-and-profile-repair",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "historicalRunnerProfilePreflightVersion": "1.0.0",
+    "module": "scripts/validation/profileMap.mjs (preflightProfileResolution) + scripts/validation/adapterContract.mjs + scripts/validation/storeRegistry.mjs",
+    "checks": [
+      "storesRegistered",
+      "storeHashesMatch",
+      "playersResolveOnce",
+      "coachesResolveOnce",
+      "eraStylesResolve",
+      "referencesResolve",
+      "adapterContract",
+      "noNaN",
+      "noHiddenAverage",
+      "fullRecordsPreferred",
+      "fallbackRateWithinLimit",
+      "roleCoverageReported",
+      "defensiveEvidenceReported",
+      "subjectReferenceParity",
+      "typedTargetAccess",
+      "profileHashesMatchManifest",
+      "storeHashesMatchRegistry",
+      "dryRunUsesMocks",
+      "noPriorFormalOutput"
+    ],
+    "checkCount": 19,
+    "frozenLimits": {
+      "maxFallbackRate": 0,
+      "minRoleCoverageReporting": "always reported",
+      "nanTolerance": 0
+    },
+    "registryHash": "a7b5c1d973b4849dc8e48df05bb1591e43dff2a798d0d92b0498a4e5a9824aa7",
+    "enrichmentApplied": 560,
+    "reusableFor": "every future historical holdout (V7+) — the runner imports these modules; it does not restate the checks",
+    "pass": true
+  },
+  "outputHash": "29502da9ff3c7cfebb8558921ee50f7d667420ba36bdb51602a3c66fb0488fd2"
+}

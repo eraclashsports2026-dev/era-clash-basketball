@@ -1,0 +1,77 @@
+{
+  "artifact": "candidate3-lock",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run d0:c3-lock",
+  "generatedAt": "2026-08-27T23:14:53.378Z",
+  "gitCommit": "731a0192e135e77e79c9d9c81048c2f13a4df56f",
+  "branch": "phase-6c4d0-v6-invalidity-and-profile-repair",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "candidate3LockVersion": "1.0.0",
+    "candidateLockManifestVersion": "1.0.0",
+    "candidateId": "Candidate 3",
+    "parentCandidateId": "Candidate 2",
+    "parentCoreHash": "3733b648f050a4f50f9dc3cb6ecf62fce419dd282f24c910b91e7b077d63711d",
+    "parentLockManifest": "data/validation/6c4c1/candidate2-lock.json",
+    "grandparentCandidateId": "Candidate 1",
+    "grandparentCoreHash": "de57e1a96e1fd1450d1aea9c5463b0138a56d77bbf58c748ba042e6f78f5c94d",
+    "candidateSelectionStatus": "SELECTED",
+    "candidateLockStatus": "LOCKED",
+    "calibrationStatus": "PREVIEW_READY_LOCKED",
+    "validationAttemptStatus": "NOT_RUN",
+    "formalValidationStatus": "FORMAL_VALIDATION_INCOMPLETE",
+    "formalValidationNote": "Historical V6 was adjudicated INVALID, so no valid historical holdout has judged this lineage. A future valid unseen holdout is still required; this lock authorizes protected preview only.",
+    "lockRevision": 1,
+    "scope": "protected private preview behind PREVIEW_SIM_ENGINE_ENABLED (default false)",
+    "possessionCalibrationVersion": "1.3.0",
+    "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+    "parameterChanges": 0,
+    "candidateLockBlockers": [],
+    "allEngineeringGatesPass": true,
+    "coreHash": "6a423d4fedf45bef3889b9425651e815c95da4f6e573a2c51a3f0ef713360b69",
+    "validatedCoreHash": "6a423d4fedf45bef3889b9425651e815c95da4f6e573a2c51a3f0ef713360b69",
+    "engineBehaviourChanged": true,
+    "changeBasis": "two root-caused generic repairs: INTENT_CARRY (coach offensive intent annihilated by roster reach gates — root-cause evidence movement-intent-controls-candidate2) and the postThreat derivation (rebound-dominated threat — root-cause evidence corpus ordering audit). Both root-caused before implementation and verified on non-V6 controls.",
+    "coreFileCount": 53,
+    "closureBuilderVersion": "3.0.0",
+    "changedCoreFiles": [
+      "src/v3/actions/families.js",
+      "src/v3/calibration/calibrationPlayerAdapter.js",
+      "src/versions.js"
+    ],
+    "changeManifestHash": "9ab7c1a931dce8333ded313f409145b4a3ed5491a05e27e8bce763fecff73a7f",
+    "validationHashes": {
+      "internalMeasurement": "39302bd33605c06ac4b4f218534732e277139c5fd643bbc1d4d74281306c5d20",
+      "shareProtection": "fdede9ed14258503e471ca4423391e72c9d6ce3ad5d9389d8eb9aae3acf1d326",
+      "movementControls": "9dd197f373f005bc6a3c0371314ab40d791fb9ed432678ec6c0e87b44e7b2a84",
+      "correctedDiagnostic": "85bc58ec5e40d33674482ec5b2aee5de26d6dde320d38df1dd0c44a8c1e69a47",
+      "classifications": "2606fe45c1cb8e96437d404de22438e005f9381f71790b480bd1a90f44d0994e"
+    },
+    "formalHoldoutAccessCounts": {
+      "historicalHoldoutV3": 1,
+      "historicalHoldoutV4": 1,
+      "historicalHoldoutV5": 1,
+      "historicalHoldoutV6": 1,
+      "syntheticStressHoldoutV2": 0
+    },
+    "engineVersions": {
+      "productionEngineVersion": "3.2.0",
+      "possessionEngineVersion": "1.2.0",
+      "actionLibraryVersion": "2.1.0"
+    },
+    "postLockMutationPolicy": "no result-affecting change without a new candidate id and manifest",
+    "notClaimed": [
+      "HOLDOUT_VALIDATED",
+      "PRIVATE_PREVIEW_VALIDATED",
+      "PRODUCTION_READY",
+      "ACTIVE"
+    ],
+    "lockedAtCommit": "731a0192e135e77e79c9d9c81048c2f13a4df56f",
+    "manifestHash": "b15738573a778c5e7eb21fdccd1733f8236b035575acee0801d25b50f76163e4"
+  },
+  "outputHash": "3354461895cb5ab261a9315e66b0a2ea61a2043f1794685e8a44972b1436f8cd"
+}

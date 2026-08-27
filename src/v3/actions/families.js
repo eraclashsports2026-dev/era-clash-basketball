@@ -88,6 +88,25 @@ export const effectiveHeightIn = (p) =>
 // below an arbitrary threshold, and no coach preference could reach it.
 const reach = (best, floor, span) => clamp((best - floor) / span, 0, 1);
 
+// ── Coach-intent carry (Candidate 3) ─────────────────────────────────────────
+// Candidate 2 multiplied three families' ENTIRE weight — the coach term
+// included — by a roster-capability reach() gate. Measured on mirror controls
+// (same five both sides, only the subject coach varying), a motion-10 coach
+// with sub-threshold movers produced a movement-share delta of -0.0006 against
+// a neutral coach: intent annihilated. That contradicts the documented
+// frequency doctrine — coach tendency sets HOW OFTEN a family is attempted,
+// never how well it works — and execution quality is already priced at
+// resolution, where the selected player's real capability decides the shot.
+//
+// The carry mirrors defensive SCHEME_TRANSFER (c2-02, rate 0.5): coach intent
+// transfers at half strength when personnel cannot support the family at all,
+// scaling to full as support appears. ONLY the coach term escapes the gate;
+// roster terms, era terms and mismatch bonuses remain gated exactly as before,
+// and a neutral coach (every pref 5) remains the same fixed point on both
+// sides of a mirror, so side symmetry is unaffected by construction.
+export const INTENT_CARRY = Object.freeze({ floor: 0.5 });
+const intentCarry = (r) => INTENT_CARRY.floor + r * (1 - INTENT_CARRY.floor);
+
 export const ACTION_FAMILIES = [
   "POST_UP", "ISOLATION", "SPOT_UP", "CUT", "OFF_BALL_SCREEN", "HANDOFF",
   "PICK_AND_ROLL", "TRANSITION", "ZONE_ATTACK", "GENERIC_HALF_COURT",
@@ -185,7 +204,11 @@ export const ISOLATION = {
   weight: ({ offense, defPlan, eff, state, params }) => {
     const best = Math.max(...offense.players.map((p) => p.selfCreation));
     const coachIso = offense.isoPref ?? 5;
-    let w = ((coachIso / 10) * 0.15 * coachScaleOf(params) + (best / 10) * 0.1 * rosterScaleOf(params)) * reach(best, 4.5, 3);
+    // Candidate 3: the coach term carries past the roster gate at intentCarry;
+    // the roster term stays gated exactly as before.
+    const rIso = reach(best, 4.5, 3);
+    let w = (coachIso / 10) * 0.15 * coachScaleOf(params) * intentCarry(rIso)
+      + (best / 10) * 0.1 * rosterScaleOf(params) * rIso;
     const mism = speedMismatchFor({ offense, defPlan });
     if (mism) {
       const willingness = clamp(0.3 + (coachIso / 10) * 0.85, 0.3, 1.15);
@@ -239,10 +262,14 @@ export const OFF_BALL_SCREEN = {
   canSelect: ({ offense }) => offense.players.some((p) => (p.profile?.offense?.offBallMovement ?? 0) >= 3.5),
   weight: ({ offense, defPlan, eff, state, params }) => {
     const mover = Math.max(...offense.players.map((p) => p.profile?.offense?.offBallMovement ?? 0));
-    const w = ((offense.offBallPref ?? 5) / 10 * 0.15 * coachScaleOf(params) + (mover / 10) * 0.13 * rosterScaleOf(params)
-      + clamp((eff.perimeterShotValue - 3) * 0.012, -0.02, 0.05)) * reach(mover, 3.5, 3);
+    // Candidate 3: the coach term carries past the roster gate at intentCarry;
+    // roster, era and mismatch terms stay gated exactly as before.
+    const rOb = reach(mover, 3.5, 3);
+    const w = (offense.offBallPref ?? 5) / 10 * 0.15 * coachScaleOf(params) * intentCarry(rOb)
+      + ((mover / 10) * 0.13 * rosterScaleOf(params)
+        + clamp((eff.perimeterShotValue - 3) * 0.012, -0.02, 0.05)) * rOb;
     const chase = chaseMismatchFor({ offense, defPlan });
-    return clamp(w + (chase ? 0.07 * reach(mover, 3.5, 3) : 0), 0, FAMILY_CAPS.OFF_BALL_SCREEN);
+    return clamp(w + (chase ? 0.07 * rOb : 0), 0, FAMILY_CAPS.OFF_BALL_SCREEN);
   },
   prepare: ({ offense, defense, defPlan, defState, rng, pickDefender, state, alloc }) => {
     const chase = chaseMismatchFor({ offense, defPlan });
@@ -325,7 +352,11 @@ export const CUT = {
   canSelect: ({ offense }) => offense.players.some((p) => (p.profile?.offense?.offBallMovement ?? 0) >= 3),
   weight: ({ offense, params }) => {
     const mover = Math.max(...offense.players.map((p) => p.profile?.offense?.offBallMovement ?? 0));
-    return clamp((0.04 + (offense.cutPref ?? 5) / 10 * 0.1 * coachScaleOf(params) + offense.offense.passing * 0.008 * rosterScaleOf(params)) * reach(mover, 3, 3), 0, FAMILY_CAPS.CUT);
+    // Candidate 3: the coach term carries past the roster gate at intentCarry;
+    // the base and passing terms stay gated exactly as before.
+    const rCut = reach(mover, 3, 3);
+    return clamp((0.04 + offense.offense.passing * 0.008 * rosterScaleOf(params)) * rCut
+      + (offense.cutPref ?? 5) / 10 * 0.1 * coachScaleOf(params) * intentCarry(rCut), 0, FAMILY_CAPS.CUT);
   },
   prepare: ({ offense, defense, defState, rng, pickDefender, state, alloc }) => {
     const cutter = allocate({
