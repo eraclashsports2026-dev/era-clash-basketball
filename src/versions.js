@@ -68,7 +68,7 @@ export const VERSION_STATUS = {
   /** A formal holdout rejected this parameter set. It may never be retuned against that holdout. */
   HOLDOUT_FAILED: "HOLDOUT_FAILED",
 };
-const { ACTIVE, DEVELOPMENT, PLANNED, DEVELOPMENT_LOCKED_BASELINE } = VERSION_STATUS;
+const { ACTIVE, DEVELOPMENT, PLANNED, DEVELOPMENT_LOCKED_BASELINE, DEVELOPMENT_LOCKED_SCOPED } = VERSION_STATUS;
 
 // `affectsResult` is separate from `status` on purpose. Chemistry is ACTIVE —
 // it ships, it is displayed, it has a real version — and it changes NOTHING
@@ -319,8 +319,8 @@ export const REGISTRY = {
   // DEVELOPMENT_LOCKED_BASELINE, not ACTIVE: internal gates passed, both formal
   // holdouts remain sealed and unread, no private preview has run, and nothing
   // here authorises production.
-  possessionCalibrationVersion: entry("1.0.0", DEVELOPMENT_LOCKED_BASELINE,
-    "The approved development calibration of the possession engine: Candidate 0, all 53 active parameters at registry defaults, parameterSetHash 83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309. Locked in Phase 6C2C6 after the corrected probability side-bias gate passed. NOT holdout validated, NOT preview validated, NOT production ready.", false),
+  possessionCalibrationVersion: entry("1.1.0", DEVELOPMENT_LOCKED_SCOPED,
+    "Candidate 1: the trait-fidelity repair of Candidate 0 (parent 1.0.0, which stays LOCKED at its recorded hashes and replays from its preservation commit). Engine changes are exactly the root-caused V4 repairs: movement/isolation eligibility floors with continuous tapers, era-honest movement and offensive-quality adapter inputs, per-possession continuous zone use, position-scoped defensive-accolade floors, and the offensive-glass wire. All 53 active parameters remain at registry defaults. Locked in Phase 6C4A, scoped to Historical Holdout V5. NOT holdout validated, NOT preview validated, NOT production ready.", false),
 
   zoneResolutionVersion: entry("1.0.0", DEVELOPMENT,
     "Zone shells, area responsibilities, gap vulnerabilities and zone possession resolution. Its own domain because Phase 6B1 shipped ZONE_MIXED as a scheme LABEL that resolved through man code — a real zone path is a different system, not a bigger label. DEVELOPMENT, ZONE_RESOLUTION_ENABLED defaults to false."),

@@ -1,0 +1,83 @@
+{
+  "artifact": "candidate1-lock",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run c1:lock -- --stamp",
+  "generatedAt": "2026-08-27T01:53:47.354Z",
+  "gitCommit": "b2cda3be4ad290d4a902d537d8204449b914a4f6",
+  "branch": "phase-6c4a-candidate1-trait-fidelity",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "candidateLockManifestVersion": "1.0.0",
+    "candidateId": "Candidate 1",
+    "parentCandidateId": "Candidate 0",
+    "parentCoreHash": "58c5fb6974e694c29f87934ab107ff47ce32963a9c0695e36f941c2a70ae6683",
+    "parentLockManifest": "data/calibration/c6/baseline-candidate-lock.json",
+    "candidateSelectionStatus": "SELECTED",
+    "candidateLockStatus": "LOCKED",
+    "calibrationStatus": "DEVELOPMENT_LOCKED_SCOPED",
+    "validationAttemptStatus": "NOT_RUN",
+    "scope": "Historical Holdout V5 formal validation. Nothing here authorises synthetic-stress access, preview, or production.",
+    "possessionCalibrationVersion": "1.1.0",
+    "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+    "parameterChanges": 0,
+    "candidateLockBlockers": [],
+    "allEngineeringGatesPass": true,
+    "coreHash": "295ba3d1ba74fe5cecaccb33e8b69ab4f38520a964e00ba39fe6f3bf3fe260bb",
+    "validatedCoreHash": "390a8fec6d2da894a36590b30bf0c244eab9479474af2a3459d4306b32f68aa7",
+    "engineBehaviourChanged": true,
+    "changeBasis": "data/validation/6c4a/candidate1-root-cause-analysis.json — no engine change exists without a root-caused failure it repairs",
+    "stampIsolation": "the locked core differs from the validated core in exactly one file (src/versions.js): the stamped 1.1.0 entry and the DEVELOPMENT_LOCKED_SCOPED status-constant import it requires; behaviour is identical because the version string shapes fingerprints and cache keys, never outcomes",
+    "coreFileCount": 53,
+    "closureBuilderVersion": "2.0.0",
+    "changedCoreFiles": [
+      "src/v3/actions/families.js",
+      "src/v3/actions/offensivePlan.js",
+      "src/v3/calibration/calibrationPlayerAdapter.js",
+      "src/v3/defense/plan.js",
+      "src/v3/defense/scheme.js",
+      "src/v3/possession/actions.js",
+      "src/v3/possession/game.js",
+      "src/v3/teamIntelligence.js"
+    ],
+    "changeManifestHash": "de0a562299567c2f7e802ba655c7afae6f87c1945e9ed381335a189b6bed8fb1",
+    "coreManifestHash": "bc70ffcbb6aa8d3e5f3f3bcf0aa781d106b79cff658d84b0788da579aee1167e",
+    "parameterSetArtifactHash": "bcaf686985e576a2df048a66658d1d1e80b764fa87ce12f525ba1b26fb89f9e5",
+    "vsCandidate0Hash": "d6619f0fd8b99bf98a034b60168c3f133d07102e54260a1d2c4cb808be8c69b9",
+    "rootCauseAnalysisHash": "9047c043108c88b99f146b74fe2b85dcc971c525fc5c06352d19376410c320b5",
+    "validationHashes": {
+      "internal": "00286b086d72c808ebce4e7fdb8d54a20470177f6039258e20baf33fe5cde6a8",
+      "sideSymmetry": "672111c55ed5195ff24c7149fb509e17bc33aff556ec8e4fe657ad36ac25084c",
+      "probability": "5f008f6fb2268e1ead4015ecb35c368798568aa365597caf9f30917142b7fc6f",
+      "competition": "a9cca17c3d1a78974b1063d8462e6c95e0b8fdb37d4daca9014dc6b84bc48103"
+    },
+    "repairHashes": {
+      "movement": "f5fc09022f41ba4aa8dfebe9bc2bf7d65d9c344ec85c84530e518dbc52e20a48",
+      "offense": "320c22bc583701f862801eacf4195f7b18179c0fff5ab7b7aad9a9cdb6664e59",
+      "defense": "14fa4459d1da51b4356c1dfa98b7a157c75c459edb30dffb22ef467cb1e8d395",
+      "remaining": "71d9d638f6656ab115b15c8bdd9d4e2cc0d0b495a93b83826bd82d04d9d1d2ad"
+    },
+    "traitPracticalMarginPolicyHash": "c3ac322289c47fb258b1c7e375f83d170dbf5a320476e3e136a49c3e527647fc",
+    "formalHoldoutAccessCounts": {
+      "historicalHoldoutV3": 1,
+      "historicalHoldoutV4": 1,
+      "syntheticStressHoldoutV2": 0
+    },
+    "engineVersions": {
+      "productionEngineVersion": "3.2.0"
+    },
+    "postLockMutationPolicy": "No core, parameter, policy or seed change after this manifest. Any quantitative change requires a new candidate with a new possessionCalibrationVersion, exactly as this one required.",
+    "notClaimed": [
+      "HOLDOUT_VALIDATED",
+      "PRIVATE_PREVIEW_VALIDATED",
+      "PRODUCTION_READY",
+      "ACTIVE"
+    ],
+    "lockedAtCommit": "b2cda3be4ad290d4a902d537d8204449b914a4f6",
+    "manifestHash": "1645926bf1e57e73d26214d3f1969ce5b88720d16e4c1da061de9c4dc300e2ed"
+  },
+  "outputHash": "fbbfb2bb134613ed0212304423ccf0c28fa96ed38fa6c276e7009f21d2c304e5"
+}

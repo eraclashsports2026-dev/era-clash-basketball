@@ -92,37 +92,88 @@ export const buildCalibrationPlayerProfile = (season) => {
   })?.band;
   const floor = preBand ? BAND_FLOOR[preBand] : null;
 
-  // Usage appetite follows shot volume, which is recorded in every era.
-  const usage = scale(b.fieldGoalAttempts, ANCHORS.fga, 1) ?? 5;
+  // Scoring VOLUME. Points per game are recorded in every era; attempts often
+  // are not (the career-table source route carries ppg but null FGA). Reading
+  // volume from FGA alone rendered George Gervin's scoring-title season as
+  // usage 5 - the exact INPUT_QUALITY_COMPRESSION defect Historical V4
+  // exposed (v4f-02, v4f-08). Both signals are used when both exist.
+  const ptsScaled = scale(b.pointsPerGame, ANCHORS.points, 1);
+  const fgaScaled = scale(b.fieldGoalAttempts, ANCHORS.fga, 1);
+  const volume = ptsScaled != null && fgaScaled != null ? (ptsScaled + fgaScaled) / 2 : ptsScaled ?? fgaScaled ?? 5;
+  const usage = volume;
   const isStarter = season.lineupRole === "STARTER";
+  // Efficiency. TS% when recorded; otherwise estimated from the recorded FG%
+  // and FT% (documented estimate, labelled): FG% + a bounded free-throw lift.
+  const tsEst = rate.trueShootingPct
+    ?? (b.fieldGoalPct != null
+      ? clamp(b.fieldGoalPct + 0.04 + (b.freeThrowPct != null ? (b.freeThrowPct - 0.72) * 0.2 : 0), 0.3, 0.75)
+      : null);
+  // Interior share of the shot diet: measured when the two-point split exists,
+  // else implied by the documented three-point volume (a LOW/NONE volume means
+  // the diet was inside the arc - true by construction, not a guess).
+  const insideRatio = b.fieldGoalAttempts && b.twoPointAttempts != null
+    ? b.twoPointAttempts / b.fieldGoalAttempts
+    : (threeVol <= 1 ? 0.95 : 0.7);
 
   const offense = {
     usageAppetite: r1(usage),
     // Self-creation cannot be measured directly from a box score. Assists plus
-    // shot volume is a documented proxy, and it is labelled as one.
-    selfCreation: r1(clamp((scale(b.fieldGoalAttempts, ANCHORS.fga, 1) ?? 5) * 0.6 + (scale(b.assists, ANCHORS.assists, 1) ?? 4) * 0.4, 0, 10)),
+    // scoring volume is a documented proxy, and it is labelled as one.
+    selfCreation: r1(clamp(volume * 0.6 + (scale(b.assists, ANCHORS.assists, 1) ?? 4) * 0.4, 0, 10)),
     spacingGravity: r1(clamp(perim * 0.85 + (threeVol - 0.7) * 2, 0, 10)),
-    // Two-point volume without three-point volume implies interior scoring.
-    rimThreat: r1(clamp(((b.twoPointAttempts ?? b.fieldGoalAttempts ?? 0) / Math.max(1, b.fieldGoalAttempts ?? 1)) * 6
-      + (scale(b.freeThrowAttempts, 10, 0) ?? 3) * 0.4, 0, 10)),
-    postThreat: r1(clamp((scale(b.offensiveRebounds, ANCHORS.offensiveRebounds, 0) ?? 3) * 0.5
+    // Interior scoring: volume through the interior share of the diet, plus
+    // free-throw pressure (estimated from points where FTA is unrecorded).
+    rimThreat: r1(clamp(volume * insideRatio * 0.72
+      + (scale(b.freeThrowAttempts, 10, 0) ?? (b.pointsPerGame != null ? scale(b.pointsPerGame * 0.27, 10, 0) : 3)) * 0.35, 0, 10)),
+    // Post threat: offensive boards where recorded; the recorded TOTAL board
+    // rate where the split is not (pre-1974 data discipline: the null stays
+    // null in the store, the capability estimate uses what WAS recorded).
+    postThreat: r1(clamp((scale(b.offensiveRebounds, ANCHORS.offensiveRebounds, 0) ?? scale(b.rebounds, ANCHORS.rebounds, 0) ?? 3) * 0.5
       + (["C", "PF"].includes(season.primaryPosition) ? 4 : 1), 0, 10)),
     passingVision: r1(scale(b.assists, ANCHORS.assists, 1) ?? 4),
-    offBallMovement: r1(clamp(perim * 0.5 + (isStarter ? 2 : 1.5), 0, 10)),
-    shotSelection: r1(clamp((rate.trueShootingPct != null ? (rate.trueShootingPct - 0.45) * 40 + 5 : 5), 0, 10)),
+    // Off-ball movement is NOT three-point shooting. Deriving it from
+    // perimeterSkill alone graded Michael Jordan LIMITED off the ball and
+    // starved the movement family to exactly zero (V4 failure v4f-09).
+    // Era-neutral evidence: perimeter craft is one signal; efficient
+    // finishing (cutters and screen-runners score at high TS%) and a
+    // guard/wing role are the others. Documented proxy, labelled as one.
+    offBallMovement: r1(clamp(
+      1.5 + perim * 0.3
+      + (["PG", "SG", "SF"].includes(season.primaryPosition) ? 1.0 : 0)
+      + clamp(((tsEst ?? 0.5) - 0.5) * 18, -1.5, 1.8)
+      + (isStarter ? 0.5 : 0.2), 0, 10)),
+    // Centred on the measured store-population median (0.524 across the 323
+    // profiles with recorded shooting), so a player with UNRECORDED shooting
+    // (the 5 default) sits at the population's typical value rather than
+    // below it — otherwise data completeness itself becomes quality, which
+    // inflated every complete-data five and penalised sparse ones.
+    shotSelection: r1(clamp((tsEst != null ? (tsEst - 0.524) * 45 + 5 : 5), 0, 10)),
     // Turnovers are unrecorded before 1973-74, so ball security falls back to a
     // neutral value rather than to a flattering one.
     ballSecurity: b.turnovers != null ? r1(clamp(10 - (scale(b.turnovers, ANCHORS.turnovers, 0) ?? 5), 0, 10)) : 5,
   };
 
+  // Documented defensive evidence is a FLOOR in EVERY era, not only where
+  // steals were unrecorded. Steals and blocks measure gambling, not
+  // containment, so a same-season All-Defensive selection (per-season award
+  // page, never recall) outranks a low steal rate — the
+  // DEFENSIVE_PROXY_INVERSION that made the 1978-79 Sonics and 1989-90
+  // Pistons rate below the era median (v4f-03/04/06/07). Floors are
+  // position-scoped: a selection certifies the defence the player actually
+  // played, not every channel.
+  const pos = season.primaryPosition;
+  const perimFloor = ["PG", "SG", "SF"].includes(pos) ? floor : null;
+  const interiorFloor = ["PF", "C"].includes(pos) ? floor : null;
+  const floored = (fl, measured) => (fl != null ? Math.max(fl, measured) : measured);
+
   const defense = {
-    perimeterContainment: r1(clamp(floor ?? ((b.steals != null ? scale(b.steals, ANCHORS.steals, 1) : 5) * 0.7
+    perimeterContainment: r1(clamp(floored(perimFloor, (b.steals != null ? scale(b.steals, ANCHORS.steals, 1) : 5) * 0.7
       + (["PG", "SG"].includes(season.primaryPosition) ? 2 : 0.5)), 0, 10)),
-    wingContainment: r1(clamp(floor ?? ((b.steals != null ? scale(b.steals, ANCHORS.steals, 1) : 5) * 0.6
+    wingContainment: r1(clamp(floored(perimFloor, (b.steals != null ? scale(b.steals, ANCHORS.steals, 1) : 5) * 0.6
       + (["SG", "SF"].includes(season.primaryPosition) ? 2 : 1)), 0, 10)),
-    interiorDeterrence: r1(clamp(floor ?? ((b.blocks != null ? scale(b.blocks, ANCHORS.blocks, 1) : 5) * 0.7
+    interiorDeterrence: r1(clamp(floored(interiorFloor, (b.blocks != null ? scale(b.blocks, ANCHORS.blocks, 1) : 5) * 0.7
       + (["PF", "C"].includes(season.primaryPosition) ? 2 : 0.5)), 0, 10)),
-    rimDeterrence: r1(clamp(floor ?? (b.blocks != null ? scale(b.blocks, ANCHORS.blocks, 1) : 4.5), 0, 10)),
+    rimDeterrence: r1(clamp(floored(interiorFloor, b.blocks != null ? scale(b.blocks, ANCHORS.blocks, 1) : 4.5), 0, 10)),
     eventCreation: r1(clamp(
       b.steals != null || b.blocks != null
         ? ((scale(b.steals, ANCHORS.steals, 0) ?? 0) + (scale(b.blocks, ANCHORS.blocks, 0) ?? 0)) / 2

@@ -1,4 +1,5 @@
 import { describe, it, expect } from "vitest";
+import { assertCoreHashLineage, successorManifest } from "./helpers/candidateLineage.js";
 import { readFileSync, existsSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { verifyArtifact, ARTIFACT_DIR_6C3 } from "../src/v3/calibration/artifacts.js";
@@ -95,16 +96,21 @@ describe("validation-attempt status model", () => {
 });
 
 describe("candidate immutability through this phase", () => {
-  it("keeps the core hash byte-identical to both prior holdout records", () => {
+  it("keeps the core identical to both prior holdout records, or an attributable successor", () => {
     const live = buildCoreManifest().aggregateCoreHash;
-    expect(live).toBe(V3("candidate-core-manifest").data.aggregateCoreHash);
-    expect(live).toBe(V3("historical-holdout-results").data.identity.coreHash);
+    const recorded = V3("candidate-core-manifest").data.aggregateCoreHash;
+    expect(recorded).toBe(V3("historical-holdout-results").data.identity.coreHash);
+    assertCoreHashLineage(recorded, live, "V3/V4 candidate core");
   });
 
   it("keeps every parameter at its registry default", () => {
     const def = defaultRuntimeParameterSet();
     for (const p of activeParameters()) expect(def.values[p.id]).toBe(p.defaultValue);
-    expect(versionOf("possessionCalibrationVersion")).toBe("1.0.0");
+    // Parameters at defaults is the claim; the calibration VERSION advances
+    // with a locked successor candidate, and must never advance without one.
+    const v = versionOf("possessionCalibrationVersion");
+    if (v === "1.0.0") expect(successorManifest()).toBeNull();
+    else expect(successorManifest()?.possessionCalibrationVersion).toBe(v);
   });
 
   it("keeps the validation version registry OUTSIDE the candidate core", () => {
@@ -352,7 +358,10 @@ describe("replacement formal verdict", () => {
     expect(c.coreUnchanged).toBe(true);
     expect(c.parameterUnchanged).toBe(true);
     expect(c.postHoldoutTuning).toBe("NONE");
-    expect(buildCoreManifest().aggregateCoreHash).toBe(c.coreHashAtV4);
+    // The V4 verdict recorded the hash that RAN; the live core is either that
+    // hash or an attributable successor. "Tuning" means changing the candidate
+    // that was judged — a successor candidate is a new candidate, not tuning.
+    assertCoreHashLineage(c.coreHashAtV4, buildCoreManifest().aggregateCoreHash, "V4 verdict core");
     const def = defaultRuntimeParameterSet();
     for (const p of activeParameters()) expect(def.values[p.id]).toBe(p.defaultValue);
   });

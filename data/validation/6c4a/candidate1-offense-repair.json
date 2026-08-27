@@ -1,0 +1,316 @@
+{
+  "artifact": "candidate1-offense-repair",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run c1:offense-repair",
+  "generatedAt": "2026-08-27T01:05:46.553Z",
+  "gitCommit": "14eafe8e48009f0b87ba035475dab0c6f42c72c0",
+  "branch": "phase-6c4a-candidate1-trait-fidelity",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "pairsPerCell": 1000,
+    "shareProxyProtection": {
+      "baselineMeanComposite": 0.0431,
+      "maxRegressionFactor": 1.15,
+      "bound": 0.049565,
+      "frozenBefore": "any Candidate 1 share measurement"
+    },
+    "liveReferenceSelfBaselines": {
+      "1970s": {
+        "n": 1000,
+        "mean": 1.18396,
+        "sd": 0.09434,
+        "se": 0.00298,
+        "ci95": {
+          "lower": 1.17811,
+          "upper": 1.18981
+        }
+      },
+      "1990s": {
+        "n": 1000,
+        "mean": 1.22188,
+        "sd": 0.10692,
+        "se": 0.00338,
+        "ci95": {
+          "lower": 1.21526,
+          "upper": 1.22851
+        }
+      },
+      "1980s": {
+        "n": 1000,
+        "mean": 1.22892,
+        "sd": 0.09759,
+        "se": 0.00309,
+        "ci95": {
+          "lower": 1.22287,
+          "upper": 1.23497
+        }
+      },
+      "2010s": {
+        "n": 1000,
+        "mean": 1.18593,
+        "sd": 0.11641,
+        "se": 0.00368,
+        "ci95": {
+          "lower": 1.17871,
+          "upper": 1.19314
+        }
+      },
+      "2020s": {
+        "n": 1000,
+        "mean": 1.32004,
+        "sd": 0.12472,
+        "se": 0.00394,
+        "ci95": {
+          "lower": 1.31231,
+          "upper": 1.32777
+        }
+      }
+    },
+    "liveBaselineStatus": "INTERNAL_DIAGNOSTIC — era references are formally re-certified before any V5 selection",
+    "v4EliteOffense": [
+      {
+        "fixtureId": "v4-1977-78-spurs",
+        "eraStyleId": "1970s",
+        "ppp": {
+          "n": 2000,
+          "mean": 1.09186,
+          "sd": 0.09322,
+          "se": 0.00208,
+          "ci95": {
+            "lower": 1.08777,
+            "upper": 1.09594
+          }
+        },
+        "refSelfPpp": 1.18396,
+        "diff": {
+          "diff": -0.0921,
+          "se": 0.00363,
+          "z": -25.34316,
+          "ci95": {
+            "lower": -0.09922,
+            "upper": -0.08498
+          },
+          "significant": true
+        },
+        "compositeShareMae": 0.03969
+      },
+      {
+        "fixtureId": "v4-1991-92-bulls",
+        "eraStyleId": "1990s",
+        "ppp": {
+          "n": 2000,
+          "mean": 1.27632,
+          "sd": 0.10118,
+          "se": 0.00226,
+          "ci95": {
+            "lower": 1.27188,
+            "upper": 1.28075
+          }
+        },
+        "refSelfPpp": 1.22188,
+        "diff": {
+          "diff": 0.05444,
+          "se": 0.00407,
+          "z": 13.38922,
+          "ci95": {
+            "lower": 0.04647,
+            "upper": 0.06241
+          },
+          "significant": true
+        },
+        "compositeShareMae": 0.03081
+      }
+    ],
+    "heldInEliteOffense": [
+      {
+        "fixtureId": "h3-1986-87-lakers",
+        "eraStyleId": "1980s",
+        "ppp": {
+          "n": 2000,
+          "mean": 1.24792,
+          "sd": 0.09845,
+          "se": 0.0022,
+          "ci95": {
+            "lower": 1.2436,
+            "upper": 1.25223
+          }
+        },
+        "refSelfPpp": 1.22892,
+        "diff": {
+          "diff": 0.019,
+          "se": 0.00379,
+          "z": 5.00901,
+          "ci95": {
+            "lower": 0.01157,
+            "upper": 0.02643
+          },
+          "significant": true
+        },
+        "compositeShareMae": 0.02921
+      },
+      {
+        "fixtureId": "h3-2015-16-warriors",
+        "eraStyleId": "2010s",
+        "ppp": {
+          "n": 2000,
+          "mean": 1.29158,
+          "sd": 0.11385,
+          "se": 0.00255,
+          "ci95": {
+            "lower": 1.28659,
+            "upper": 1.29657
+          }
+        },
+        "refSelfPpp": 1.18593,
+        "diff": {
+          "diff": 0.10565,
+          "se": 0.00448,
+          "z": 23.59758,
+          "ci95": {
+            "lower": 0.09687,
+            "upper": 0.11443
+          },
+          "significant": true
+        },
+        "compositeShareMae": 0.03227
+      }
+    ],
+    "medianTeams": [
+      {
+        "fixtureId": "h3-1994-95-rockets",
+        "eraStyleId": "1990s",
+        "ppp": {
+          "n": 2000,
+          "mean": 1.30188,
+          "sd": 0.1017,
+          "se": 0.00227,
+          "ci95": {
+            "lower": 1.29742,
+            "upper": 1.30633
+          }
+        },
+        "refSelfPpp": 1.22188,
+        "diff": {
+          "diff": 0.08,
+          "se": 0.00407,
+          "z": 19.64867,
+          "ci95": {
+            "lower": 0.07202,
+            "upper": 0.08798
+          },
+          "significant": true
+        },
+        "compositeShareMae": 0.03703
+      },
+      {
+        "fixtureId": "h3-2022-23-heat",
+        "eraStyleId": "2020s",
+        "ppp": {
+          "n": 2000,
+          "mean": 1.25671,
+          "sd": 0.12549,
+          "se": 0.00281,
+          "ci95": {
+            "lower": 1.25121,
+            "upper": 1.26221
+          }
+        },
+        "refSelfPpp": 1.32004,
+        "diff": {
+          "diff": -0.06333,
+          "se": 0.00484,
+          "z": -13.08636,
+          "ci95": {
+            "lower": -0.07282,
+            "upper": -0.05384
+          },
+          "significant": true
+        },
+        "compositeShareMae": 0.02715
+      },
+      {
+        "fixtureId": "h3-1971-72-lakers",
+        "eraStyleId": "1970s",
+        "ppp": {
+          "n": 2000,
+          "mean": 1.24086,
+          "sd": 0.09212,
+          "se": 0.00206,
+          "ci95": {
+            "lower": 1.23682,
+            "upper": 1.2449
+          }
+        },
+        "refSelfPpp": 1.18396,
+        "diff": {
+          "diff": 0.0569,
+          "se": 0.00362,
+          "z": 15.70649,
+          "ci95": {
+            "lower": 0.0498,
+            "upper": 0.064
+          },
+          "significant": true
+        },
+        "compositeShareMae": 0.02402
+      },
+      {
+        "fixtureId": "h3-1973-74-celtics",
+        "eraStyleId": "1970s",
+        "ppp": {
+          "n": 2000,
+          "mean": 1.1907,
+          "sd": 0.09186,
+          "se": 0.00205,
+          "ci95": {
+            "lower": 1.18667,
+            "upper": 1.19473
+          }
+        },
+        "refSelfPpp": 1.18396,
+        "diff": {
+          "diff": 0.00674,
+          "se": 0.00362,
+          "z": 1.86341,
+          "ci95": {
+            "lower": -0.00035,
+            "upper": 0.01383
+          },
+          "significant": false
+        },
+        "compositeShareMae": 0.02968
+      }
+    ],
+    "spursDecomposition": {
+      "asIsDiff": -0.0921,
+      "eraMedianImputedPpp": 1.10909,
+      "imputationCloses": 0.01723,
+      "nullShootingPlayers": 3,
+      "storeEraMedianFgPct": 0.464,
+      "referenceFive": "Frazier / Monroe / McMillian / Hairston / Chamberlain — a champions-median, not an era median",
+      "disposition": "MECHANISM_REPAIRED_DATA_AND_REFERENCE_LIMITED",
+      "v5Action": "reference re-certification under Candidate 1 must account for champions-median construction before any elite-offence trait is scored against a reference self-baseline"
+    },
+    "nonElitePopulationMeanDiff": 0.02008,
+    "meanCompositeShareMae": 0.03123,
+    "priorV4Deficits": {
+      "v4-1977-78-spurs": -0.04752,
+      "v4-1991-92-bulls": -0.06465
+    },
+    "gates": {
+      "bullsEliteOffenceRepaired": true,
+      "spursMechanismRepairedAndResidualAttributed": true,
+      "heldInEliteOffencesAboveReference": true,
+      "noUniversalScoringShift": true,
+      "shareProxyProtected": true,
+      "bullsDeficitFullyReversed": true
+    },
+    "failedGates": [],
+    "pass": true
+  },
+  "outputHash": "320c22bc583701f862801eacf4195f7b18179c0fff5ab7b7aad9a9cdb6664e59"
+}

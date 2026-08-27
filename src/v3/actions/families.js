@@ -67,6 +67,27 @@ export const allocate = ({ family, dimension = "shotAttempt", offense, alloc, rn
 const coachScaleOf = (params) => (params ? params.get.coach.actionMixInfluence : 1);
 const rosterScaleOf = (params) => (params ? params.get.coach.rosterSensitivity : 1);
 
+// The movement family, as one named thing. Validation, coach adjustments and
+// the possession ledger all need "is this a movement action" to mean exactly
+// the same set, or a repair measured on one definition ships against another.
+export const MOVEMENT_FAMILY_ACTIONS = Object.freeze(["OFF_BALL_SCREEN", "CUT", "HANDOFF"]);
+export const isMovementFamilyAction = (action) => MOVEMENT_FAMILY_ACTIONS.includes(action);
+
+// Height when the source is blocked: null is UNKNOWN, not zero. Treating a
+// missing measurement as 0 inches made HANDOFF unreachable for every
+// calibration-built team (V4 failure v4f-09). The fallback is the era-neutral
+// positional typical height — an inference labelled as one, never stored.
+const POSITION_TYPICAL_HEIGHT = Object.freeze({ PG: 74, SG: 77, SF: 79, PF: 81, C: 83 });
+export const effectiveHeightIn = (p) =>
+  p.profile?.physical?.heightIn ?? POSITION_TYPICAL_HEIGHT[p.profile?.pos ?? p.pos] ?? 78;
+
+// Eligibility is a FLOOR ("possible at all"), and capability tapers the weight
+// continuously above it. The binary gates this replaces are the saturation
+// defect class Historical V4 exposed: an entire family sat at exactly zero for
+// a whole roster (movementShare 0, z -840) the moment the best player fell
+// below an arbitrary threshold, and no coach preference could reach it.
+const reach = (best, floor, span) => clamp((best - floor) / span, 0, 1);
+
 export const ACTION_FAMILIES = [
   "POST_UP", "ISOLATION", "SPOT_UP", "CUT", "OFF_BALL_SCREEN", "HANDOFF",
   "PICK_AND_ROLL", "TRANSITION", "ZONE_ATTACK", "GENERIC_HALF_COURT",
@@ -160,11 +181,11 @@ export const postMismatchFor = ({ offense, defPlan, defState = null }) => {
 // ── ISOLATION ───────────────────────────────────────────────────────────────
 export const ISOLATION = {
   key: "ISOLATION",
-  canSelect: ({ offense }) => offense.players.some((p) => p.selfCreation >= 6),
+  canSelect: ({ offense }) => offense.players.some((p) => p.selfCreation >= 4.5),
   weight: ({ offense, defPlan, eff, state, params }) => {
     const best = Math.max(...offense.players.map((p) => p.selfCreation));
     const coachIso = offense.isoPref ?? 5;
-    let w = (coachIso / 10) * 0.15 * coachScaleOf(params) + (best / 10) * 0.1 * rosterScaleOf(params);
+    let w = ((coachIso / 10) * 0.15 * coachScaleOf(params) + (best / 10) * 0.1 * rosterScaleOf(params)) * reach(best, 4.5, 3);
     const mism = speedMismatchFor({ offense, defPlan });
     if (mism) {
       const willingness = clamp(0.3 + (coachIso / 10) * 0.85, 0.3, 1.15);
@@ -215,13 +236,13 @@ export const speedMismatchFor = ({ offense, defPlan, defState = null }) => {
 // The family that makes movement-shooter chase burden materially real.
 export const OFF_BALL_SCREEN = {
   key: "OFF_BALL_SCREEN",
-  canSelect: ({ offense }) => offense.players.some((p) => (p.profile?.offense?.offBallMovement ?? 0) >= 5.5),
+  canSelect: ({ offense }) => offense.players.some((p) => (p.profile?.offense?.offBallMovement ?? 0) >= 3.5),
   weight: ({ offense, defPlan, eff, state, params }) => {
     const mover = Math.max(...offense.players.map((p) => p.profile?.offense?.offBallMovement ?? 0));
-    const w = (offense.offBallPref ?? 5) / 10 * 0.15 * coachScaleOf(params) + (mover / 10) * 0.13 * rosterScaleOf(params)
-      + clamp((eff.perimeterShotValue - 3) * 0.012, -0.02, 0.05);
+    const w = ((offense.offBallPref ?? 5) / 10 * 0.15 * coachScaleOf(params) + (mover / 10) * 0.13 * rosterScaleOf(params)
+      + clamp((eff.perimeterShotValue - 3) * 0.012, -0.02, 0.05)) * reach(mover, 3.5, 3);
     const chase = chaseMismatchFor({ offense, defPlan });
-    return clamp(w + (chase ? 0.07 : 0), 0, FAMILY_CAPS.OFF_BALL_SCREEN);
+    return clamp(w + (chase ? 0.07 * reach(mover, 3.5, 3) : 0), 0, FAMILY_CAPS.OFF_BALL_SCREEN);
   },
   prepare: ({ offense, defense, defPlan, defState, rng, pickDefender, state, alloc }) => {
     const chase = chaseMismatchFor({ offense, defPlan });
@@ -259,9 +280,9 @@ export const chaseMismatchFor = ({ offense, defPlan, defState = null }) => {
 // correction belong in the same phase.
 export const HANDOFF = {
   key: "HANDOFF",
-  canSelect: ({ offense }) => offense.players.some((p) => p.passing >= 6 && (p.profile?.physical?.heightIn ?? 0) >= 78),
+  canSelect: ({ offense }) => offense.players.some((p) => p.passing >= 6 && effectiveHeightIn(p) >= 78),
   weight: ({ offense, eff, params }) => {
-    const hub = Math.max(...offense.players.filter((p) => (p.profile?.physical?.heightIn ?? 0) >= 78).map((p) => p.passing), 0);
+    const hub = Math.max(...offense.players.filter((p) => effectiveHeightIn(p) >= 78).map((p) => p.passing), 0);
     return clamp((offense.handoffPref ?? 5) / 10 * 0.13 * coachScaleOf(params) + (hub / 10) * 0.12 * rosterScaleOf(params) + clamp((eff.perimeterShotValue - 3) * 0.01, -0.02, 0.04), 0, FAMILY_CAPS.HANDOFF);
   },
   prepare: ({ offense, defense, defState, rng, pickDefender, state, alloc }) => {
@@ -301,8 +322,11 @@ export const SPOT_UP = {
 
 export const CUT = {
   key: "CUT",
-  canSelect: ({ offense }) => offense.players.some((p) => (p.profile?.offense?.offBallMovement ?? 0) >= 5),
-  weight: ({ offense, params }) => clamp(0.04 + (offense.cutPref ?? 5) / 10 * 0.1 * coachScaleOf(params) + offense.offense.passing * 0.008 * rosterScaleOf(params), 0, FAMILY_CAPS.CUT),
+  canSelect: ({ offense }) => offense.players.some((p) => (p.profile?.offense?.offBallMovement ?? 0) >= 3),
+  weight: ({ offense, params }) => {
+    const mover = Math.max(...offense.players.map((p) => p.profile?.offense?.offBallMovement ?? 0));
+    return clamp((0.04 + (offense.cutPref ?? 5) / 10 * 0.1 * coachScaleOf(params) + offense.offense.passing * 0.008 * rosterScaleOf(params)) * reach(mover, 3, 3), 0, FAMILY_CAPS.CUT);
+  },
   prepare: ({ offense, defense, defState, rng, pickDefender, state, alloc }) => {
     const cutter = allocate({
       family: "CUT", offense, alloc, rng, state,

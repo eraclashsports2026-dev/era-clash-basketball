@@ -92,7 +92,11 @@ export const buildOffensivePlan = ({ offense, defense, defPlan, eff, baselineMix
     paceTarget: offense.tempo,
     spacingPriority: r1(offense.offense.spacing),
     crashGlassPriority: r1(offense.crashGlass),
-    zoneAttackPlan: defPlan?.zoneShell
+    // A standing zone-attack plan is worth a coach adjustment only when the
+    // defence zones a MATERIAL share of possessions. Occasional zones (the
+    // shell now exists for any coach with zoneUsage > 0) are handled by the
+    // per-possession zone-attack mix, not by re-planning the offence.
+    zoneAttackPlan: defPlan?.zoneShell && (defPlan.scheme?.zoneUsage ?? 0) >= 5
       ? { shellType: defPlan.zoneShell.shellType, primaryGaps: defPlan.zoneShell.pressurePoints }
       : null,
     adjustmentHistory: [],

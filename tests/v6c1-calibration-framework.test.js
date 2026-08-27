@@ -369,7 +369,11 @@ describe("calibration versioning and cache identity", () => {
     const key = cacheKeys.calibratedPossessionResult({ matchupFingerprint: "abc", simulationSeed: 1 });
     // Keys tag a version with dots replaced, so 1.0.0 appears as 1-0-0.
     expect(key).toContain(r.version.replace(/\./g, "-"));
-    expect(statusOf("possessionCalibrationVersion")).toBe(VERSION_STATUS.DEVELOPMENT_LOCKED_BASELINE);
+    // Under candidate succession the registry status is whichever DEVELOPMENT
+    // lock is active (BASELINE for Candidate 0, SCOPED for Candidate 1) — a
+    // production-facing status here would still be a lie, and still fails.
+    expect([VERSION_STATUS.DEVELOPMENT_LOCKED_BASELINE, VERSION_STATUS.DEVELOPMENT_LOCKED_SCOPED])
+      .toContain(statusOf("possessionCalibrationVersion"));
   });
 
   it("does not repurpose the production calibration domain", () => {

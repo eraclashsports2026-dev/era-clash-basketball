@@ -309,7 +309,14 @@ const reboundingProfile = (profiles) => {
   if (perimeterHelp === 0) concerns.push("no perimeter rebounding help");
   return {
     defensiveGlass: r1(clamp10(best * 0.45 + rest * 0.55)),
-    offensiveGlass: r1(clamp10(mean(topN(profiles.map((p) => p.defense.defensiveRebounding * 0.6 + (["PF", "C"].includes(p.pos) ? 1.8 : 0)), 2)))),
+    // Offensive glass carries OFFENSIVE-rebounding evidence. It was derived
+    // from defensive rebounding and position alone, so recorded offensive
+    // boards had no path into the crash probability at all — V4 failure
+    // v4f-05, falsified-then-confirmed by intervention (the oreb input moved
+    // nothing; lifting this channel moved orebRate +0.066). postThreat is the
+    // player channel that carries offensive-board evidence in both profile
+    // builders; board-craft (defensive rebounding) still matters, less.
+    offensiveGlass: r1(clamp10(mean(topN(profiles.map((p) => p.offense.postThreat * 0.45 + p.defense.defensiveRebounding * 0.3 + (["PF", "C"].includes(p.pos) ? 1.6 : 0)), 2)))),
     strongRebounders: strong, perimeterHelp, bestRebounder: r1(best), supportingCast: r1(rest),
     concerns,
   };

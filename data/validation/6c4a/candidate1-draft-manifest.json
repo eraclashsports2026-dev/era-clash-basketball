@@ -1,0 +1,49 @@
+{
+  "artifact": "candidate1-draft-manifest",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run c1:draft-manifest",
+  "generatedAt": "2026-08-27T01:23:59.830Z",
+  "gitCommit": "3753953485f31d8565470ddb6f40dd2bfcf9fd95",
+  "branch": "phase-6c4a-candidate1-trait-fidelity",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "candidateId": "Candidate 1",
+    "parentCandidateId": "Candidate 0",
+    "candidateSelectionStatus": "DRAFT",
+    "candidateLockStatus": "UNLOCKED",
+    "validationAttemptStatus": "NOT_RUN",
+    "engineBehaviourChanged": true,
+    "parentCoreHash": "58c5fb6974e694c29f87934ab107ff47ce32963a9c0695e36f941c2a70ae6683",
+    "parentParameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+    "parentCommit": "4bc1cb878771ee5c7316e3a1e90e84290c135077",
+    "coreHash": "390a8fec6d2da894a36590b30bf0c244eab9479474af2a3459d4306b32f68aa7",
+    "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+    "coreFileCount": 53,
+    "closureBuilderVersion": "2.0.0",
+    "parentClosureBuilderVersion": "1.0.0",
+    "closureCorrection": {
+      "defect": "closure builder v1 could not see multi-line import statements; src/v3/actions/offensivePlan.js ran in every game while sitting outside every core manifest",
+      "filesV1Missed": [
+        "src/v3/actions/offensivePlan.js"
+      ],
+      "consequence": "Candidate 0's recorded 52-file hash stands as the frozen fact it always was; Candidate 1 manifests are computed under builder v2 (53 files)"
+    },
+    "changedCoreFiles": [
+      "src/v3/actions/families.js",
+      "src/v3/actions/offensivePlan.js",
+      "src/v3/calibration/calibrationPlayerAdapter.js",
+      "src/v3/defense/plan.js",
+      "src/v3/defense/scheme.js",
+      "src/v3/possession/actions.js",
+      "src/v3/possession/game.js",
+      "src/v3/teamIntelligence.js"
+    ],
+    "changeBasis": "data/validation/6c4a/candidate1-root-cause-analysis.json — no engine change exists without a root-caused failure it repairs",
+    "note": "DRAFT: grows through WS4-WS7; finalised (with the full change list and possessionCalibrationVersion 1.1.0) at candidate lock."
+  },
+  "outputHash": "141684fc3c4977eca16eaa524f2bc5a77b5467b61d6c88deaf32260f12a1b227"
+}

@@ -361,8 +361,12 @@ describe("set versioning", () => {
   // this now asserts the thing that sentence actually meant.
   it("locks the possession calibration only once the gates pass", () => {
     const r = assertCalibrationLockInvariant();
-    if (!r.locked) expect(statusOf("possessionCalibrationVersion")).toBe(VERSION_STATUS.PLANNED);
-    else expect(statusOf("possessionCalibrationVersion")).toBe(VERSION_STATUS.DEVELOPMENT_LOCKED_BASELINE);
+    if (!r.locked) expect(statusOf("possessionCalibrationVersion")).toBe(VERSION_STATUS.DEVELOPMENT);
+    // Locked: the status must be an active DEVELOPMENT lock — BASELINE for
+    // Candidate 0, SCOPED for a successor candidate. Anything production-facing
+    // still fails, which is what this guard exists for.
+    else expect([VERSION_STATUS.DEVELOPMENT_LOCKED_BASELINE, VERSION_STATUS.DEVELOPMENT_LOCKED_SCOPED])
+      .toContain(statusOf("possessionCalibrationVersion"))
   });
 
   it("separates every holdout generation by version", () => {

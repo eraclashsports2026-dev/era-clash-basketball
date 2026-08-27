@@ -1,4 +1,5 @@
 import { describe, it, expect } from "vitest";
+import { assertCoreHashLineage, recordedCalibrationVersionExpectation, successorManifest } from "./helpers/candidateLineage.js";
 import { readFileSync, existsSync } from "node:fs";
 import { verifyArtifact, ARTIFACT_DIR_6C3, ARTIFACT_DIR_C6 } from "../src/v3/calibration/artifacts.js";
 import { SCOPE_POLICY, scopePolicyHash, classifyTeamField, AVAILABILITY_MAP, NOT_APPLICABLE_TEAM_METRICS } from "../src/v3/calibration/holdoutScopePolicy.js";
@@ -70,9 +71,9 @@ describe("candidate core manifest", () => {
     expect(d.missing).toEqual([]);
   });
 
-  it("the closure still hashes to the value recorded before the holdout opened", () => {
+  it("the closure hashes to the recorded value, or to an attributable successor of it", () => {
     const d = V("candidate-core-manifest").data;
-    expect(buildCoreManifest().aggregateCoreHash).toBe(d.aggregateCoreHash);
+    assertCoreHashLineage(d.aggregateCoreHash, buildCoreManifest().aggregateCoreHash, "V3 candidate core");
   });
 
   it("includes the files that actually decide a result", () => {
@@ -189,7 +190,10 @@ describe("historical holdout was opened exactly once", () => {
     const core = V("candidate-core-manifest").data;
     expect(d.identity.coreHash).toBe(core.aggregateCoreHash);
     expect(d.identity.parameterSetHash).toBe(defaultRuntimeParameterSet().parameterSetHash);
-    expect(d.identity.calibrationVersion).toBe(versionOf("possessionCalibrationVersion"));
+    // The identity the V3 run recorded is Candidate 0's, permanently. A
+    // successor candidate advances the registry without rewriting history.
+    expect(d.identity.calibrationVersion)
+      .toBe(recordedCalibrationVersionExpectation(versionOf("possessionCalibrationVersion")));
     expect(d.identity.holdoutManifestHash).toBe(manifestHash(HISTORICAL_HOLDOUT_V3_IDS, "historical-holdout-v3"));
     expect(d.identity.scopePolicyHash).toBe(scopePolicyHash());
   });
@@ -258,10 +262,12 @@ describe("formal verdict", () => {
     expect(d.candidateImmutability.parameterChangesAfterHoldout).toBe(0);
     expect(d.candidateImmutability.policyChangesAfterHoldout).toBe(0);
     expect(d.candidateImmutability.postHoldoutTuning).toBe("NONE");
-    // and live, not just as recorded
+    // and live, not just as recorded: parameters still at defaults, and the
+    // core either byte-identical to the holdout-time hash or an attributable
+    // successor candidate of it (silent drift still fails).
     const def = defaultRuntimeParameterSet();
     for (const p of activeParameters()) expect(def.values[p.id]).toBe(p.defaultValue);
-    expect(buildCoreManifest().aggregateCoreHash).toBe(d.candidateImmutability.coreHashAtHoldout);
+    assertCoreHashLineage(d.candidateImmutability.coreHashAtHoldout, buildCoreManifest().aggregateCoreHash, "V3 holdout core");
   });
 
   it("records the diagnosis without substituting it for the verdict", () => {
@@ -299,9 +305,21 @@ describe("formal verdict", () => {
 });
 
 describe("production isolation", () => {
-  it("keeps the production engine and the calibration version untouched", () => {
+  it("keeps the production engine untouched and the calibration version lock-backed", () => {
+    // PRODUCTION is the invariant: engineVersion 3.2.0, never moved by any
+    // calibration work. The calibration version is a DEVELOPMENT version and
+    // may legitimately advance with a new candidate — what may never happen is
+    // it advancing without a lock manifest behind it, which is what the
+    // lineage assertion checks (and the parameter set must still be the shared
+    // registry-default one, since no candidate in this lifecycle fits values).
     expect(versionOf("engineVersion")).toBe("3.2.0");
-    expect(versionOf("possessionCalibrationVersion")).toBe("1.0.0");
+    const v = versionOf("possessionCalibrationVersion");
+    if (v !== "1.0.0") {
+      const successor = successorManifest();
+      expect(successor?.possessionCalibrationVersion, `calibration version ${v} needs a lock manifest`).toBe(v);
+      expect(successor.candidateLockStatus).toBe("LOCKED");
+      expect(successor.engineVersions.productionEngineVersion).toBe("3.2.0");
+    }
     expect(C6("baseline-candidate-lock").data.parameterSetHash).toBe(defaultRuntimeParameterSet().parameterSetHash);
   });
 

@@ -1,0 +1,586 @@
+{
+  "artifact": "candidate1-movement-repair",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run c1:movement-repair",
+  "generatedAt": "2026-08-27T00:47:13.968Z",
+  "gitCommit": "ee9855ca4e5d820a7bbdeee57b085bb5ddc473b4",
+  "branch": "phase-6c4a-candidate1-trait-fidelity",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "movementFamily": [
+      "OFF_BALL_SCREEN",
+      "CUT",
+      "HANDOFF"
+    ],
+    "helper": "isMovementFamilyAction (src/v3/actions/families.js)",
+    "helperSelfTest": true,
+    "pairsPerCell": 1000,
+    "gates": {
+      "nonzeroReachabilityEverywhere": true,
+      "coachDifferentiation": true,
+      "rosterSensitivity": true,
+      "noEfficiencyGuarantee": true,
+      "noEraFlattening": true,
+      "isolationReachableAtNeutral": true,
+      "zoneContinuity": true
+    },
+    "failedGates": [],
+    "pass": true,
+    "reachability": {
+      "fixtures": [
+        {
+          "label": "v4-1991-92-bulls",
+          "games": 800,
+          "movementShare": {
+            "n": 800,
+            "mean": 0.22762,
+            "sd": 0.0389,
+            "se": 0.00138,
+            "ci95": {
+              "lower": 0.22493,
+              "upper": 0.23032
+            }
+          }
+        },
+        {
+          "label": "v4-1977-78-spurs",
+          "games": 800,
+          "movementShare": {
+            "n": 800,
+            "mean": 0.19114,
+            "sd": 0.03673,
+            "se": 0.0013,
+            "ci95": {
+              "lower": 0.1886,
+              "upper": 0.19369
+            }
+          }
+        },
+        {
+          "label": "v4-1978-79-supersonics",
+          "games": 800,
+          "movementShare": {
+            "n": 800,
+            "mean": 0.09202,
+            "sd": 0.02768,
+            "se": 0.00098,
+            "ci95": {
+              "lower": 0.0901,
+              "upper": 0.09394
+            }
+          }
+        },
+        {
+          "label": "v4-1989-90-pistons",
+          "games": 800,
+          "movementShare": {
+            "n": 800,
+            "mean": 0.17812,
+            "sd": 0.03476,
+            "se": 0.00123,
+            "ci95": {
+              "lower": 0.17571,
+              "upper": 0.18053
+            }
+          }
+        }
+      ],
+      "eraReferences": [
+        {
+          "era": "1950s",
+          "label": "reference-1950s",
+          "games": 800,
+          "movementShare": {
+            "n": 800,
+            "mean": 0.14133,
+            "sd": 0.02783,
+            "se": 0.00098,
+            "ci95": {
+              "lower": 0.1394,
+              "upper": 0.14326
+            }
+          },
+          "isolationShare": {
+            "n": 800,
+            "mean": 0.06698,
+            "sd": 0.02036,
+            "se": 0.00072,
+            "ci95": {
+              "lower": 0.06557,
+              "upper": 0.06839
+            }
+          }
+        },
+        {
+          "era": "1960s",
+          "label": "reference-1960s",
+          "games": 800,
+          "movementShare": {
+            "n": 800,
+            "mean": 0.04154,
+            "sd": 0.01604,
+            "se": 0.00057,
+            "ci95": {
+              "lower": 0.04043,
+              "upper": 0.04265
+            }
+          },
+          "isolationShare": {
+            "n": 800,
+            "mean": 0.03362,
+            "sd": 0.01545,
+            "se": 0.00055,
+            "ci95": {
+              "lower": 0.03255,
+              "upper": 0.03469
+            }
+          }
+        },
+        {
+          "era": "1970s",
+          "label": "reference-1970s",
+          "games": 800,
+          "movementShare": {
+            "n": 800,
+            "mean": 0.08349,
+            "sd": 0.02528,
+            "se": 0.00089,
+            "ci95": {
+              "lower": 0.08174,
+              "upper": 0.08524
+            }
+          },
+          "isolationShare": {
+            "n": 800,
+            "mean": 0.03467,
+            "sd": 0.01676,
+            "se": 0.00059,
+            "ci95": {
+              "lower": 0.03351,
+              "upper": 0.03583
+            }
+          }
+        },
+        {
+          "era": "1980s",
+          "label": "reference-1980s",
+          "games": 800,
+          "movementShare": {
+            "n": 800,
+            "mean": 0.1714,
+            "sd": 0.03363,
+            "se": 0.00119,
+            "ci95": {
+              "lower": 0.16907,
+              "upper": 0.17373
+            }
+          },
+          "isolationShare": {
+            "n": 800,
+            "mean": 0.06939,
+            "sd": 0.02309,
+            "se": 0.00082,
+            "ci95": {
+              "lower": 0.06779,
+              "upper": 0.07099
+            }
+          }
+        },
+        {
+          "era": "1990s",
+          "label": "reference-1990s",
+          "games": 800,
+          "movementShare": {
+            "n": 800,
+            "mean": 0.19139,
+            "sd": 0.03712,
+            "se": 0.00131,
+            "ci95": {
+              "lower": 0.18882,
+              "upper": 0.19396
+            }
+          },
+          "isolationShare": {
+            "n": 800,
+            "mean": 0.01728,
+            "sd": 0.01204,
+            "se": 0.00043,
+            "ci95": {
+              "lower": 0.01644,
+              "upper": 0.01811
+            }
+          }
+        },
+        {
+          "era": "2000s",
+          "label": "reference-2000s",
+          "games": 800,
+          "movementShare": {
+            "n": 800,
+            "mean": 0.20737,
+            "sd": 0.03939,
+            "se": 0.00139,
+            "ci95": {
+              "lower": 0.20464,
+              "upper": 0.2101
+            }
+          },
+          "isolationShare": {
+            "n": 800,
+            "mean": 0.04261,
+            "sd": 0.0205,
+            "se": 0.00072,
+            "ci95": {
+              "lower": 0.04119,
+              "upper": 0.04403
+            }
+          }
+        },
+        {
+          "era": "2010s",
+          "label": "reference-2010s",
+          "games": 800,
+          "movementShare": {
+            "n": 800,
+            "mean": 0.18754,
+            "sd": 0.03642,
+            "se": 0.00129,
+            "ci95": {
+              "lower": 0.18502,
+              "upper": 0.19007
+            }
+          },
+          "isolationShare": {
+            "n": 800,
+            "mean": 0.06033,
+            "sd": 0.02295,
+            "se": 0.00081,
+            "ci95": {
+              "lower": 0.05874,
+              "upper": 0.06192
+            }
+          }
+        },
+        {
+          "era": "2020s",
+          "label": "reference-2020s",
+          "games": 800,
+          "movementShare": {
+            "n": 800,
+            "mean": 0.27259,
+            "sd": 0.04429,
+            "se": 0.00157,
+            "ci95": {
+              "lower": 0.26953,
+              "upper": 0.27566
+            }
+          },
+          "isolationShare": {
+            "n": 800,
+            "mean": 0.08858,
+            "sd": 0.02835,
+            "se": 0.001,
+            "ci95": {
+              "lower": 0.08662,
+              "upper": 0.09054
+            }
+          }
+        }
+      ]
+    },
+    "coachDifferentiation": {
+      "cells": [
+        {
+          "label": "phil-jackson (motion 9)",
+          "games": 2000,
+          "movementShare": {
+            "n": 2000,
+            "mean": 0.22769,
+            "sd": 0.03929,
+            "se": 0.00088,
+            "ci95": {
+              "lower": 0.22597,
+              "upper": 0.22941
+            }
+          },
+          "ppp": {
+            "n": 2000,
+            "mean": 1.10916,
+            "sd": 0.1035,
+            "se": 0.00231,
+            "ci95": {
+              "lower": 1.10462,
+              "upper": 1.11369
+            }
+          }
+        },
+        {
+          "label": "neutral (motion 5)",
+          "games": 2000,
+          "movementShare": {
+            "n": 2000,
+            "mean": 0.18305,
+            "sd": 0.03604,
+            "se": 0.00081,
+            "ci95": {
+              "lower": 0.18147,
+              "upper": 0.18463
+            }
+          },
+          "ppp": {
+            "n": 2000,
+            "mean": 1.08982,
+            "sd": 0.10525,
+            "se": 0.00235,
+            "ci95": {
+              "lower": 1.08521,
+              "upper": 1.09443
+            }
+          }
+        },
+        {
+          "label": "mike-dantoni (movement toolkit min)",
+          "games": 2000,
+          "movementShare": {
+            "n": 2000,
+            "mean": 0.15681,
+            "sd": 0.03286,
+            "se": 0.00073,
+            "ci95": {
+              "lower": 0.15537,
+              "upper": 0.15825
+            }
+          },
+          "ppp": {
+            "n": 2000,
+            "mean": 1.04864,
+            "sd": 0.10322,
+            "se": 0.00231,
+            "ci95": {
+              "lower": 1.04412,
+              "upper": 1.05317
+            }
+          }
+        }
+      ],
+      "highVsNeutral": {
+        "diff": 0.04464,
+        "se": 0.0012,
+        "z": 37.32332,
+        "ci95": {
+          "lower": 0.0423,
+          "upper": 0.04698
+        },
+        "significant": true
+      },
+      "neutralVsLow": {
+        "diff": 0.02624,
+        "se": 0.00109,
+        "z": 24.06428,
+        "ci95": {
+          "lower": 0.0241,
+          "upper": 0.02838
+        },
+        "significant": true
+      }
+    },
+    "rosterSensitivity": {
+      "cells": [
+        {
+          "label": "bulls five (better movers)",
+          "games": 2000,
+          "movementShare": {
+            "n": 2000,
+            "mean": 0.18157,
+            "sd": 0.03655,
+            "se": 0.00082,
+            "ci95": {
+              "lower": 0.17997,
+              "upper": 0.18317
+            }
+          }
+        },
+        {
+          "label": "sonics five (weaker movers)",
+          "games": 2000,
+          "movementShare": {
+            "n": 2000,
+            "mean": 0.0864,
+            "sd": 0.02442,
+            "se": 0.00055,
+            "ci95": {
+              "lower": 0.08533,
+              "upper": 0.08747
+            }
+          }
+        }
+      ],
+      "diff": {
+        "diff": 0.09517,
+        "se": 0.00099,
+        "z": 96.38735,
+        "ci95": {
+          "lower": 0.09323,
+          "upper": 0.09711
+        },
+        "significant": true
+      }
+    },
+    "noEfficiencyGuarantee": {
+      "cells": [
+        {
+          "label": "sonics x neutral",
+          "games": 2000,
+          "movementShare": {
+            "n": 2000,
+            "mean": 0.08479,
+            "sd": 0.02585,
+            "se": 0.00058,
+            "ci95": {
+              "lower": 0.08365,
+              "upper": 0.08592
+            }
+          },
+          "ppp": {
+            "n": 2000,
+            "mean": 0.94282,
+            "sd": 0.09635,
+            "se": 0.00215,
+            "ci95": {
+              "lower": 0.93859,
+              "upper": 0.94704
+            }
+          }
+        },
+        {
+          "label": "sonics x doug-moe (motion 10)",
+          "games": 2000,
+          "movementShare": {
+            "n": 2000,
+            "mean": 0.12053,
+            "sd": 0.0291,
+            "se": 0.00065,
+            "ci95": {
+              "lower": 0.11926,
+              "upper": 0.12181
+            }
+          },
+          "ppp": {
+            "n": 2000,
+            "mean": 0.93586,
+            "sd": 0.09267,
+            "se": 0.00207,
+            "ci95": {
+              "lower": 0.9318,
+              "upper": 0.93992
+            }
+          }
+        }
+      ],
+      "shareDiff": {
+        "diff": 0.03574,
+        "se": 0.00087,
+        "z": 41.02629,
+        "ci95": {
+          "lower": 0.03403,
+          "upper": 0.03745
+        },
+        "significant": true
+      },
+      "pppDiff": {
+        "diff": -0.00696,
+        "se": 0.00298,
+        "z": -2.33203,
+        "ci95": {
+          "lower": -0.01281,
+          "upper": -0.00111
+        },
+        "significant": true
+      },
+      "reading": "forcing maximum motion preference onto a weak-mover roster raises the SHARE modestly and buys no material efficiency — the lever is the mix, never the outcome"
+    },
+    "eraSpread": {
+      "spread": 0.23105,
+      "perEra": {
+        "1950s": 0.14133,
+        "1960s": 0.04154,
+        "1970s": 0.08349,
+        "1980s": 0.1714,
+        "1990s": 0.19139,
+        "2000s": 0.20737,
+        "2010s": 0.18754,
+        "2020s": 0.27259
+      }
+    },
+    "zoneContinuity": {
+      "cells": [
+        {
+          "coachId": "erik-spoelstra",
+          "label": "defence coached by erik-spoelstra",
+          "games": 2000,
+          "defensiveZoneShare": {
+            "n": 2000,
+            "mean": 0.58958,
+            "sd": 0.0475,
+            "se": 0.00106,
+            "ci95": {
+              "lower": 0.5875,
+              "upper": 0.59166
+            }
+          }
+        },
+        {
+          "coachId": "rick-carlisle",
+          "label": "defence coached by rick-carlisle",
+          "games": 2000,
+          "defensiveZoneShare": {
+            "n": 2000,
+            "mean": 0.49651,
+            "sd": 0.04739,
+            "se": 0.00106,
+            "ci95": {
+              "lower": 0.49444,
+              "upper": 0.49859
+            }
+          }
+        },
+        {
+          "coachId": "neutral",
+          "label": "defence coached by neutral",
+          "games": 2000,
+          "defensiveZoneShare": {
+            "n": 2000,
+            "mean": 0.15726,
+            "sd": 0.03591,
+            "se": 0.0008,
+            "ci95": {
+              "lower": 0.15568,
+              "upper": 0.15883
+            }
+          }
+        },
+        {
+          "coachId": "jerry-sloan",
+          "label": "defence coached by jerry-sloan",
+          "games": 2000,
+          "defensiveZoneShare": {
+            "n": 2000,
+            "mean": 0.03551,
+            "sd": 0.01848,
+            "se": 0.00041,
+            "ci95": {
+              "lower": 0.0347,
+              "upper": 0.03632
+            }
+          }
+        }
+      ],
+      "reading": "zone share is graded in the coach zone scale; the per-game 0%-or-100% step is gone"
+    }
+  },
+  "outputHash": "f5fc09022f41ba4aa8dfebe9bc2bf7d65d9c344ec85c84530e518dbc52e20a48"
+}

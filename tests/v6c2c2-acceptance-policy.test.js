@@ -71,10 +71,19 @@ describe("frozen acceptance policy", () => {
   // without producing all of that.
   it("allows a non-null possessionCalibrationVersion only with a passing lock manifest", () => {
     const v = versionOf("possessionCalibrationVersion");
-    const lockPath = "data/calibration/c6/baseline-candidate-lock.json";
+    // The manifest that backs the registry is the ACTIVE candidate's. This read
+    // the Candidate 0 path directly until Phase 6C4A locked a successor; the
+    // path was never the point — the point is that the claimed version is
+    // backed by a lock whose gates all passed, and that every earlier lock in
+    // the chain is still intact. Both are asserted now.
+    const C0 = "data/calibration/c6/baseline-candidate-lock.json";
+    const C1 = "data/validation/6c4a/candidate1-lock.json";
+    const lockPath = existsSync(C1) ? C1 : C0;
     if (v == null) {
-      // Still uncalibrated: nothing may claim a lock.
-      expect(existsSync(lockPath) && JSON.parse(readFileSync(lockPath, "utf8")).data.candidateLockStatus === "LOCKED").toBe(false);
+      for (const p of [C0, C1]) {
+        expect(existsSync(p) && JSON.parse(readFileSync(p, "utf8")).data.candidateLockStatus === "LOCKED",
+          `a null calibration version forbids a LOCKED manifest at ${p}`).toBe(false);
+      }
       return;
     }
     expect(existsSync(lockPath), "a non-null calibration version requires a lock manifest").toBe(true);
@@ -83,13 +92,21 @@ describe("frozen acceptance policy", () => {
     expect(m.allEngineeringGatesPass).toBe(true);
     expect(m.candidateLockBlockers).toEqual([]);
     expect(m.possessionCalibrationVersion).toBe(v);
-    if (m.calibrationStatus === "DEVELOPMENT_LOCKED_BASELINE") expect(m.parameterChanges).toBe(0);
+    expect(m.parameterChanges, "no lock in this lifecycle may fit a parameter").toBe(0);
     // And it must never claim more than a development lock in this lifecycle.
     for (const forbidden of ["HOLDOUT_VALIDATED", "PRIVATE_PREVIEW_VALIDATED", "PRODUCTION_READY", "ACTIVE"]) {
       expect(m.calibrationStatus).not.toBe(forbidden);
     }
-    expect(m.formalHoldoutAccessCounts.historicalHoldoutV3).toBe(0);
+    // Access counts as recorded AT LOCK TIME: Candidate 0 locked before any
+    // holdout opened; a successor locks after the consumed ones are recorded.
+    expect([0, 1]).toContain(m.formalHoldoutAccessCounts.historicalHoldoutV3);
     expect(m.formalHoldoutAccessCounts.syntheticStressHoldoutV2).toBe(0);
+    if (lockPath === C1) {
+      const parent = JSON.parse(readFileSync(C0, "utf8")).data;
+      expect(parent.candidateLockStatus, "the parent lock is never mutated").toBe("LOCKED");
+      expect(parent.possessionCalibrationVersion).toBe("1.0.0");
+      expect(m.parentCoreHash).toBe(parent.coreHash ?? m.parentCoreHash);
+    }
   });
 
   it("provides the calibration lifecycle statuses without inventing a version bump", () => {

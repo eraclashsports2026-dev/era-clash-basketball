@@ -32,6 +32,11 @@ export const TEAM_ALIASES_V4 = Object.freeze({
   DAL: ["Dallas", "Dallas Mavericks"],
   SAC: ["Sacramento", "Sacramento Kings"],
   LAC: ["L.A. Clippers", "LA Clippers", "Los Angeles Clippers"],
+  // Phase 6C4A additions for the V5 candidate pool. Appended, never edited:
+  // every existing alias set is byte-unchanged, so no V4 profile can re-resolve
+  // differently than it did when the V4 store was built.
+  HOU: ["Houston", "Houston Rockets"],
+  TOR: ["Toronto", "Toronto Raptors"],
 });
 
 const F = (slot, name, article = name) => ({ slot, name, article, role: "STARTER" });
