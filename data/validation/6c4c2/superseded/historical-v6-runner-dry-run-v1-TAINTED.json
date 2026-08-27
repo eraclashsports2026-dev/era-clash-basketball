@@ -3,8 +3,8 @@
   "schemaVersion": "1.0.0",
   "measurementGovernanceVersion": "1.0.0",
   "generationCommand": "npm run v6:dryrun",
-  "generatedAt": "2026-08-27T20:13:02.000Z",
-  "gitCommit": "f2e7bcf93477e77648c9004d60d6088af1eb2a6f",
+  "generatedAt": "2026-08-27T20:07:46.403Z",
+  "gitCommit": "57c7ba61b2ad3b3f0f4372a7ea110433c61e0b77",
   "branch": "phase-6c4c2-v6-freeze-and-seal",
   "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
   "registryVersion": "2.0.0",
@@ -15,7 +15,7 @@
     "rehearsedCommand": "npm run validation:historical-v6",
     "importsTheRealRunner": true,
     "pairsPerSurface": 64,
-    "branchesExercised": 44,
+    "branchesExercised": 43,
     "branches": [
       {
         "name": "noModeRefused",
@@ -75,7 +75,7 @@
       {
         "name": "perFixtureRubricClean",
         "ok": true,
-        "detail": "46 scored traits across 16 sides, 0 contradictions"
+        "detail": "45 scored traits across 16 sides, 0 contradictions"
       },
       {
         "name": "everyScoredTraitCarriesAMargin",
@@ -130,7 +130,7 @@
       {
         "name": "resumeProducesARunHash",
         "ok": true,
-        "detail": "534c8e88cb846ca9..."
+        "detail": "23bf98555289db92..."
       },
       {
         "name": "resumingACompleteRunRefused",
@@ -193,19 +193,14 @@
         "detail": "one independent hard-fail cluster fails the cluster gate, so collapsing labels does not weaken the gate"
       },
       {
-        "name": "mockMatchupUsesNoV6TeamSeason",
-        "ok": true,
-        "detail": "h3-1951-52-lakers vs h3-1956-57-celtics — both calibration corpus fixtures, neither a V6 id"
-      },
-      {
         "name": "evaluatorRunsPrecheckAndDecisionTiers",
         "ok": true,
-        "detail": "precheck tier 2, decision tier 3, governing tier 3"
+        "detail": "precheck tier 2, decision tier 3, governing tier 4"
       },
       {
         "name": "progressiveEquivalenceRecorded",
         "ok": true,
-        "detail": "escalated false, 0 tier disagreement(s)"
+        "detail": "escalated true (governing tier 4), 2 tier disagreement(s)"
       },
       {
         "name": "escalationTierDrawsItsOwnSeeds",
@@ -272,25 +267,30 @@
       "clusterKeyExcludesLabel": true,
       "gateStillFires": true
     },
-    "mockMatchup": {
-      "matchupId": "mock-escalation",
-      "eraStyleId": "1950s",
-      "teamA": "h3-1951-52-lakers",
-      "teamB": "h3-1956-57-celtics",
-      "containsNoV6TeamSeason": true,
-      "why": "version 1 built this from the real first V6 matchup and simulated two selected team-seasons outside the formal run. See v6-dry-run-taint.json."
-    },
     "progressiveEquivalence": {
       "precheckTierRun": true,
       "decisionTierRun": true,
-      "escalationExercised": false,
+      "escalationExercised": true,
       "escalationSeedsDisjointFromDecision": true,
       "directionBlind": true,
       "sampleResult": {
-        "matchupId": "mock-escalation",
-        "governingTier": 3,
-        "escalated": false,
-        "disagreements": []
+        "matchupId": "v6m-1950s",
+        "governingTier": 4,
+        "escalated": true,
+        "disagreements": [
+          {
+            "side": "teamB",
+            "traitId": "post-centred, interior scoring",
+            "precheck": "INCONCLUSIVE",
+            "decision": "PASS"
+          },
+          {
+            "side": "teamB",
+            "traitId": "POST_HEAVY",
+            "precheck": "INCONCLUSIVE",
+            "decision": "PASS"
+          }
+        ]
       }
     },
     "scoringPathProof": {
@@ -310,7 +310,7 @@
     },
     "pass": true,
     "failedBranches": [],
-    "dryRunHash": "117f1b5e2b1b4b2d48e9ea0ca2a83295f399921822e90e02dfeb848edb1cdd4a"
+    "dryRunHash": "6096608193e68ba802dbc915c5feae75a5af2ab4691fa8231de23d317c9f5aaf"
   },
-  "outputHash": "1ad19d9cc8f5a3d356c55bc636698565a0b162a2a4cab3f696b97493456eef83"
+  "outputHash": "92e2449fbd7e53c015bbb218b86bd215ecedef3d82d06d71ea04daded0d6c78e"
 }

@@ -3,25 +3,25 @@
   "schemaVersion": "1.0.0",
   "measurementGovernanceVersion": "1.0.0",
   "generationCommand": "npm run v6:eligibility",
-  "generatedAt": "2026-08-27T20:12:45.276Z",
-  "gitCommit": "f2e7bcf93477e77648c9004d60d6088af1eb2a6f",
+  "generatedAt": "2026-08-27T19:57:18.701Z",
+  "gitCommit": "f8b7d7573e8e4e21742d6b36610433b458fbe5b4",
   "branch": "phase-6c4c2-v6-freeze-and-seal",
   "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
   "registryVersion": "2.0.0",
   "bindingVersion": "1.0.0",
   "sourceArtifactHashes": {},
   "data": {
-    "historicalV6PoolVersion": "4.0.0",
+    "historicalV6PoolVersion": "3.0.0",
     "supersedes": {
       "artifact": "data/validation/6c4c1/historical-v6-candidate-pool.json",
       "version": "1.0.0",
       "why": "Phase 6C4C1's pool added the calibration and Historical V3 exclusion lists as raw fixture ids while keying candidate rows as team-name-and-season, so neither exclusion could ever match.",
       "notOverwritten": true
     },
-    "eligibilityPolicyHash": "5a9f5a931b51ab4af68eb614fb3aec1a7ceae11a18064c2f315f734355d8411c",
+    "eligibilityPolicyHash": "b74c01b11abf5b1446fa14b2b13e2f0d226bde53893add5241d53f9ebad43439",
     "candidate2OutputUsed": false,
     "candidate2SimulationsUsedForEligibility": 0,
-    "universeSize": 112,
+    "universeSize": 110,
     "universeSources": [
       {
         "origin": "CALIBRATION_PLAYER_STORE_V3",
@@ -54,15 +54,53 @@
         "origin": "CALIBRATION_PLAYER_STORE_V6",
         "path": "data/validation/6c4c2/calibration-players-v6.json",
         "present": true,
-        "profiles": 155,
-        "teamSeasons": 31,
-        "coachChecks": 31,
-        "storeHash": "e671248d8c8a505bbc00a61bb43ab6fd4959a88a3c7e11e71014aba256e6e2f3"
+        "profiles": 145,
+        "teamSeasons": 29,
+        "coachChecks": 29,
+        "storeHash": "c14399a4da748f67af4407feb013a8c4e5ecb8b16310f133a208669179745fcf"
       }
     ],
     "eligibleCount": 33,
-    "excludedCount": 79,
+    "excludedCount": 77,
     "eligible": [
+      {
+        "key": "minneapolislakers|195556",
+        "fixtureId": "v4-1955-56-lakers",
+        "teamId": "MIN_LAKERS",
+        "teamName": "Minneapolis Lakers",
+        "season": "1955-56",
+        "era": "1950s",
+        "coachId": "john-kundla",
+        "people": [
+          "slater-martin",
+          "whitey-skoog",
+          "dick-garmaker",
+          "vern-mikkelsen",
+          "clyde-lovellette"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V4"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "post-centred, interior scoring",
+          "POST_HEAVY"
+        ],
+        "scoreableMetrics": [
+          "postUpShare"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 3,
+          "origin": "HISTORICAL_HOLDOUT_V3",
+          "against": "Minneapolis Lakers 1953-54"
+        },
+        "exclusionReasons": [],
+        "eligible": true,
+        "candidate2SimulationsUsed": 0
+      },
       {
         "key": "philadelphia76ers|196869",
         "fixtureId": "v5-1968-69-76ers",
@@ -491,6 +529,46 @@
           "shared": 1,
           "origin": "SYNTHETIC_DEVELOPMENT_V2",
           "against": "sd2-balanced-lower-ovr 2010s"
+        },
+        "exclusionReasons": [],
+        "eligible": true,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "bostonceltics|195051",
+        "fixtureId": "v6x-1950-51-celtics",
+        "teamId": "BOS",
+        "teamName": "Boston Celtics",
+        "season": "1950-51",
+        "era": "1950s",
+        "coachId": "red-auerbach",
+        "people": [
+          "bob-cousy",
+          "sonny-hertzberg",
+          "chuck-cooper",
+          "bob-donham",
+          "ed-macauley"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V6"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "fast",
+          "fast break, early offence",
+          "TRANSITION"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "transitionShare"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 1,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Boston Celtics 1958-59"
         },
         "exclusionReasons": [],
         "eligible": true,
@@ -1285,86 +1363,6 @@
           "shared": 1,
           "origin": "HISTORICAL_HOLDOUT_V3",
           "against": "Toronto Raptors 2022-23"
-        },
-        "exclusionReasons": [],
-        "eligible": true,
-        "candidate2SimulationsUsed": 0
-      },
-      {
-        "key": "bostonceltics|195152",
-        "fixtureId": "v6y-1951-52-celtics",
-        "teamId": "BOS",
-        "teamName": "Boston Celtics",
-        "season": "1951-52",
-        "era": "1950s",
-        "coachId": "red-auerbach",
-        "people": [
-          "bob-cousy",
-          "bill-sharman",
-          "bob-donham",
-          "bob-harris",
-          "ed-macauley"
-        ],
-        "origins": [
-          "CALIBRATION_PLAYER_STORE_V6"
-        ],
-        "documentedStarters": 5,
-        "scoreableTraits": [
-          "fast",
-          "fast break, early offence",
-          "TRANSITION",
-          "PASSING_HUB"
-        ],
-        "scoreableMetrics": [
-          "gamePace",
-          "transitionShare",
-          "assistedRate"
-        ],
-        "positionsCovered": 5,
-        "lowConfidenceProfiles": 0,
-        "profiledPlayers": 5,
-        "nearestSeenLineup": {
-          "shared": 2,
-          "origin": "HISTORICAL_CALIBRATION_V3",
-          "against": "Boston Celtics 1958-59"
-        },
-        "exclusionReasons": [],
-        "eligible": true,
-        "candidate2SimulationsUsed": 0
-      },
-      {
-        "key": "minneapolislakers|195657",
-        "fixtureId": "v6y-1956-57-lakers",
-        "teamId": "MIN_LAKERS",
-        "teamName": "Minneapolis Lakers",
-        "season": "1956-57",
-        "era": "1950s",
-        "coachId": "john-kundla",
-        "people": [
-          "bobby-leonard",
-          "dick-garmaker",
-          "ed-kalafat",
-          "vern-mikkelsen",
-          "clyde-lovellette"
-        ],
-        "origins": [
-          "CALIBRATION_PLAYER_STORE_V6"
-        ],
-        "documentedStarters": 5,
-        "scoreableTraits": [
-          "post-centred, interior scoring",
-          "POST_HEAVY"
-        ],
-        "scoreableMetrics": [
-          "postUpShare"
-        ],
-        "positionsCovered": 5,
-        "lowConfidenceProfiles": 0,
-        "profiledPlayers": 5,
-        "nearestSeenLineup": {
-          "shared": 1,
-          "origin": "HISTORICAL_HOLDOUT_V3",
-          "against": "Minneapolis Lakers 1953-54"
         },
         "exclusionReasons": [],
         "eligible": true,
@@ -4086,46 +4084,6 @@
         "candidate2SimulationsUsed": 0
       },
       {
-        "key": "minneapolislakers|195556",
-        "fixtureId": "v4-1955-56-lakers",
-        "teamId": "MIN_LAKERS",
-        "teamName": "Minneapolis Lakers",
-        "season": "1955-56",
-        "era": "1950s",
-        "coachId": "john-kundla",
-        "people": [
-          "slater-martin",
-          "whitey-skoog",
-          "dick-garmaker",
-          "vern-mikkelsen",
-          "clyde-lovellette"
-        ],
-        "origins": [
-          "CALIBRATION_PLAYER_STORE_V4"
-        ],
-        "documentedStarters": 5,
-        "scoreableTraits": [
-          "post-centred, interior scoring",
-          "POST_HEAVY"
-        ],
-        "scoreableMetrics": [
-          "postUpShare"
-        ],
-        "positionsCovered": 5,
-        "lowConfidenceProfiles": 0,
-        "profiledPlayers": 5,
-        "nearestSeenLineup": {
-          "shared": 3,
-          "origin": "HISTORICAL_HOLDOUT_V3",
-          "against": "Minneapolis Lakers 1953-54"
-        },
-        "exclusionReasons": [
-          "SIMULATED_DURING_V6_DRY_RUN"
-        ],
-        "eligible": false,
-        "candidate2SimulationsUsed": 0
-      },
-      {
         "key": "bostonceltics|196162",
         "fixtureId": "v4-1961-62-celtics",
         "teamId": "BOS",
@@ -4641,48 +4599,6 @@
         "candidate2SimulationsUsed": 0
       },
       {
-        "key": "bostonceltics|195051",
-        "fixtureId": "v6x-1950-51-celtics",
-        "teamId": "BOS",
-        "teamName": "Boston Celtics",
-        "season": "1950-51",
-        "era": "1950s",
-        "coachId": "red-auerbach",
-        "people": [
-          "bob-cousy",
-          "sonny-hertzberg",
-          "chuck-cooper",
-          "bob-donham",
-          "ed-macauley"
-        ],
-        "origins": [
-          "CALIBRATION_PLAYER_STORE_V6"
-        ],
-        "documentedStarters": 5,
-        "scoreableTraits": [
-          "fast",
-          "fast break, early offence",
-          "TRANSITION"
-        ],
-        "scoreableMetrics": [
-          "gamePace",
-          "transitionShare"
-        ],
-        "positionsCovered": 5,
-        "lowConfidenceProfiles": 0,
-        "profiledPlayers": 5,
-        "nearestSeenLineup": {
-          "shared": 1,
-          "origin": "HISTORICAL_CALIBRATION_V3",
-          "against": "Boston Celtics 1958-59"
-        },
-        "exclusionReasons": [
-          "SIMULATED_DURING_V6_DRY_RUN"
-        ],
-        "eligible": false,
-        "candidate2SimulationsUsed": 0
-      },
-      {
         "key": "seattlesupersonics|198283",
         "fixtureId": "v6x-1982-83-sonics",
         "teamId": "SEA",
@@ -4796,8 +4712,7 @@
       "HISTORICAL_HOLDOUT_V3": 8,
       "HISTORICAL_HOLDOUT_V5": 16,
       "HISTORICAL_HOLDOUT_V4": 16,
-      "FOUR_OF_FIVE_LINEUP_PROXY": 11,
-      "SIMULATED_DURING_V6_DRY_RUN": 2
+      "FOUR_OF_FIVE_LINEUP_PROXY": 11
     },
     "targets": {
       "targetTeams": 30,
@@ -4808,7 +4723,7 @@
     },
     "pass": true,
     "failedGates": [],
-    "poolHash": "8bc1046bf1cc4093a2dd06c58b09e798eb921fe093486e9446399c371c7f0402"
+    "poolHash": "b5c32824789e7ee269b3d16f5c23e9f184c7d3d8557293853512d8d36c95cb5c"
   },
-  "outputHash": "4fdb234f2411e02e81b10a5b65f582ce189ea78d6ced0d9831c126ed11eacd49"
+  "outputHash": "bcee8ad28d8776157620b34192adb44d74d23cae447b94c76679802cd875f7ac"
 }

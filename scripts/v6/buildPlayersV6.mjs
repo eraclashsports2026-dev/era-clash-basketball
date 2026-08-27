@@ -15,7 +15,7 @@
 import { createHash } from "node:crypto";
 import { writeFileSync, readFileSync, existsSync, mkdirSync } from "node:fs";
 import { buildPlayerV4, verifyCoach } from "../validation/buildPlayersV4.mjs";
-import { POOL_V6_SPEC, POOL_V6_EXPANSION, TEAM_ALIASES_V6,
+import { POOL_V6_SPEC, POOL_V6_EXPANSION, POOL_V6_WAVE3, TEAM_ALIASES_V6,
   V6_SPEC_RATIONALE } from "../../data/validation/corpus-v6-spec.mjs";
 
 /**
@@ -25,7 +25,7 @@ import { POOL_V6_SPEC, POOL_V6_EXPANSION, TEAM_ALIASES_V6,
  * kept and still ingested — its rows belong in the audit as excluded, with the
  * reason recorded, rather than deleted so the rule appears never to have fired.
  */
-export const V6_SPEC_ALL = Object.freeze([...POOL_V6_SPEC, ...POOL_V6_EXPANSION]);
+export const V6_SPEC_ALL = Object.freeze([...POOL_V6_SPEC, ...POOL_V6_EXPANSION, ...POOL_V6_WAVE3]);
 import { validateCalibrationPlayer, personSlug, CALIBRATION_PLAYER_SCHEMA_VERSION,
   CALIBRATION_PLAYER_DATA_VERSION } from "../../src/v3/calibration/calibrationPlayerSchema.js";
 

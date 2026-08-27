@@ -424,5 +424,40 @@ export const V6_SPEC_RATIONALE = Object.freeze({
     "post-centred (1952-53 Lakers)", "movement and passing (1974-75 Celtics)"],
 });
 
+/**
+ * Wave three. Two 1950s team-seasons, added because the version-1 runner dry run
+ * simulated Boston Celtics 1950-51 and Minneapolis Lakers 1955-56 outside the
+ * formal run (see v6-dry-run-taint.json). Excluding those two left the 1950s
+ * with two eligible teams and therefore one possible pair, below the frozen
+ * minimum of two.
+ *
+ * The 1950s is where the coach constraint binds hardest: the only coaches in
+ * src/v3/data/coaches.js for that decade are Red Auerbach and John Kundla, so
+ * every 1950s candidate must be a Celtics or a Minneapolis Lakers season. These
+ * are the two remaining unused ones whose fives share at most three people with
+ * any consumed lineup. Identity is written in registry vocabulary directly this
+ * time rather than in prose.
+ *
+ * 1957-58 Minneapolis was considered and rejected: George Mikan coached 39 games
+ * of that season, so the coach-season attribution is not clean.
+ */
+const POOL_V6_WAVE3_RAW = Object.freeze([
+  { fixtureId: "v6y-1951-52-celtics", eraStyleId: "1950s", teamId: "BOS", teamName: "Boston Celtics",
+    seasonStartYear: 1951, season: "1951-52", teamArticle: "1951–52 Boston Celtics season",
+    coachId: "red-auerbach", coachName: "Red Auerbach", fixtureType: "HISTORICAL_STARTER_PROXY",
+    identity: { pace: "fast", offense: "fast break, early offence", defense: "physical man",
+      tags: ["TRANSITION", "PASSING_HUB"] },
+    five: [F("PG", "Bob Cousy"), F("SG", "Bill Sharman"), F("SF", "Bob Donham"),
+      F("PF", "Bob Harris", "Bob Harris (basketball)"), F("C", "Ed Macauley")] },
+  { fixtureId: "v6y-1956-57-lakers", eraStyleId: "1950s", teamId: "MIN_LAKERS", teamName: "Minneapolis Lakers",
+    seasonStartYear: 1956, season: "1956-57", teamArticle: "1956–57 Minneapolis Lakers season",
+    coachId: "john-kundla", coachName: "John Kundla", fixtureType: "HISTORICAL_STARTER_PROXY",
+    identity: { pace: "moderate", offense: "post-centred, interior scoring", defense: "disciplined man",
+      tags: ["POST_HEAVY", "SIZE_HEAVY"] },
+    five: [F("PG", "Bobby Leonard"), F("SG", "Dick Garmaker"), F("SF", "Ed Kalafat"),
+      F("PF", "Vern Mikkelsen"), F("C", "Clyde Lovellette")] },
+]);
+
 export const POOL_V6_SPEC = projectIdentities(POOL_V6_SPEC_RAW);
+export const POOL_V6_WAVE3 = projectIdentities(POOL_V6_WAVE3_RAW);
 export const POOL_V6_EXPANSION = projectIdentities(POOL_V6_EXPANSION_RAW);

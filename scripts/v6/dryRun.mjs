@@ -226,7 +226,15 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   check("clusterGateFiresOnRealEvidence", gatesOnSynthetic.zeroIndependentHardFailClusters === false,
     "one independent hard-fail cluster fails the cluster gate, so collapsing labels does not weaken the gate");
 
-  // the escalation path, driven through the real evaluator on a mock matchup
+  // ── the escalation path, on a MOCK matchup ────────────────────────────────
+  //
+  // Version 1 of this script built its evaluator from pkg.m.matchups[0] — the
+  // REAL first V6 matchup — and played 384 games against it. Boston Celtics
+  // 1950-51 and Minneapolis Lakers 1955-56 were therefore simulated by
+  // Candidate 2 outside the formal run, and the V6 seal refused on exactly that
+  // ground. Both are now excluded from the pool, and the mock matchup below is
+  // assembled from two calibration corpus fixtures instead: same code path,
+  // same evaluator, no V6 team-season anywhere in it.
   const escTiers = [
     { tier: 0, gamesPerSurface: pairs * 2, role: "DRY_RUN_ONLY", mayProduceVerdict: false },
     { tier: 1, gamesPerSurface: pairs * 2, role: "SMOKE", mayProduceVerdict: false },
@@ -234,9 +242,41 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     { tier: 3, gamesPerSurface: pairs * 2, role: "DECISION", mayProduceVerdict: true },
     { tier: 4, gamesPerSurface: pairs * 4, role: "ESCALATION", mayProduceVerdict: true },
   ];
-  const mockPkg = { ...pkg, m: { ...pkg.m, matchups: [pkg.m.matchups[0]] } };
+  const calIds = historicalCalibrationV3Ids();
+  const mockEra = fx.eraStyleId;
+  const mockPair = calIds.map((id) => corpusV3.fixtures.find((f) => f.fixtureId === id))
+    .filter((f) => f && f.eraStyleId === mockEra).slice(0, 2);
+  const tgtRecords = JSON.parse(readFileSync("data/calibration/historical-targets-v3.json", "utf8")).records;
+  const eligibleTraitIds = new Set(pkg.obs.traitEligibility.filter((x) => x.scoringEligibility).map((x) => x.traitId));
+  const mockSide = (f) => {
+    const desc = [f.qualitativeIdentity?.pace, f.qualitativeIdentity?.offense,
+      f.qualitativeIdentity?.defense, ...(f.qualitativeIdentity?.tags ?? [])].filter(Boolean);
+    const rec = tgtRecords.find((r) => r.fixtureId === f.fixtureId) ?? null;
+    return {
+      fixtureId: f.fixtureId, key: `mock|${f.fixtureId}`, teamId: f.teamId, teamName: f.teamName,
+      season: f.season, eraStyleId: f.eraStyleId, coachId: f.coachId,
+      players: f.players.map((pl) => ({ calibrationPlayerId: pl.calibrationPlayerId,
+        assignedPosition: pl.assignedPosition })),
+      scoredTraits: desc.filter((d) => eligibleTraitIds.has(d)).map((traitId) => ({
+        traitId, metric: TRAIT_TABLE[traitId].claim.metric,
+        direction: TRAIT_TABLE[traitId].claim.direction,
+        surface: null, practicalMargin: pkg.margins.metrics[TRAIT_TABLE[traitId].claim.metric]?.margin ?? null })),
+      excludedTraits: desc.filter((d) => !eligibleTraitIds.has(d)).map((traitId) => ({ traitId, reason: "MOCK_FIXTURE" })),
+      targets: { unitTargets: rec?.unitTargets ?? {} },
+    };
+  };
+  const mockMatchup = { matchupId: "mock-escalation", eraStyleId: mockEra,
+    teamA: mockSide(mockPair[0]), teamB: mockSide(mockPair[1]),
+    scoreableMetrics: [], surfaces: pkg.verdict.protocol.surfacesPerMatchup,
+    eraReference: pkg.m.matchups.find((x) => x.eraStyleId === mockEra)?.eraReference
+      ?? pkg.m.matchups[0].eraReference };
+  check("mockMatchupUsesNoV6TeamSeason",
+    ![mockMatchup.teamA, mockMatchup.teamB].some((sd) => v6Ids.has(sd.fixtureId))
+    && mockMatchup.matchupId !== pkg.m.matchups[0].matchupId,
+    `${mockMatchup.teamA.fixtureId} vs ${mockMatchup.teamB.fixtureId} — both calibration corpus fixtures, neither a V6 id`);
+  const mockPkg = { ...pkg, m: { ...pkg.m, matchups: [mockMatchup] } };
   const evalOne = makeEvaluator({ pkg: mockPkg, profiles, tiers: escTiers });
-  const oneResult = evalOne(pkg.m.matchups[0].matchupId, 0);
+  const oneResult = evalOne(mockMatchup.matchupId, 0);
   check("evaluatorRunsPrecheckAndDecisionTiers",
     oneResult.tiers.precheck.tier === 2 && oneResult.tiers.decision.tier === 3,
     `precheck tier ${oneResult.tiers.precheck.tier}, decision tier ${oneResult.tiers.decision.tier}, governing tier ${oneResult.governingTier}`);
@@ -277,6 +317,10 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       "--run without unlock flags", "--resume outside --run", "--dry-run delegated"],
     clusterAggregation: { duplicateLabelsCollapse: true, differentMatchupsStaySeparate: true,
       clusterKeyExcludesLabel: true, gateStillFires: true },
+    mockMatchup: { matchupId: mockMatchup.matchupId, eraStyleId: mockEra,
+      teamA: mockMatchup.teamA.fixtureId, teamB: mockMatchup.teamB.fixtureId,
+      containsNoV6TeamSeason: true,
+      why: "version 1 built this from the real first V6 matchup and simulated two selected team-seasons outside the formal run. See v6-dry-run-taint.json." },
     progressiveEquivalence: { precheckTierRun: true, decisionTierRun: true,
       escalationExercised: oneResult.progressiveEquivalence.escalated,
       escalationSeedsDisjointFromDecision: true, directionBlind: true,

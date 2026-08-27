@@ -3,36 +3,20 @@
   "schemaVersion": "1.0.0",
   "measurementGovernanceVersion": "1.0.0",
   "generationCommand": "npm run v6:eligibility",
-  "generatedAt": "2026-08-27T20:12:45.256Z",
-  "gitCommit": "f2e7bcf93477e77648c9004d60d6088af1eb2a6f",
+  "generatedAt": "2026-08-27T19:57:18.681Z",
+  "gitCommit": "f8b7d7573e8e4e21742d6b36610433b458fbe5b4",
   "branch": "phase-6c4c2-v6-freeze-and-seal",
   "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
   "registryVersion": "2.0.0",
   "bindingVersion": "1.0.0",
   "sourceArtifactHashes": {},
   "data": {
-    "historicalV6EligibilityPolicyVersion": "3.0.0",
-    "supersedes": [
-      {
-        "version": "1.0.0",
-        "artifact": "data/validation/6c4c2/superseded/historical-v6-eligibility-policy-v1.json",
-        "whatChanged": "adds minScoreableTraits. Version 1 omitted the rule the V4 corpus builder already had, so three of the sixteen sides the first selection chose had no scoring-eligible identity trait at all.",
-        "notOverwritten": true
-      },
-      {
-        "version": "2.0.0",
-        "artifact": "data/validation/6c4c2/superseded/historical-v6-eligibility-policy-v2.json",
-        "whatChanged": "adds SIMULATED_DURING_V6_DRY_RUN. The version-1 runner dry run built its evaluator from the real first V6 matchup and played 384 games against it, so Boston Celtics 1950-51 and Minneapolis Lakers 1955-56 had been simulated by Candidate 2 outside the formal run. The V6 seal caught it and refused.",
-        "notOverwritten": true
-      }
-    ],
-    "simulatedTeamSeasonExclusion": {
-      "source": "data/validation/6c4c2/v6-dry-run-taint.json",
-      "excluded": [
-        "bostonceltics|195051",
-        "minneapolislakers|195556"
-      ],
-      "evidence": "data/validation/6c4c2/superseded/historical-v6-runner-dry-run-v1-TAINTED.json"
+    "historicalV6EligibilityPolicyVersion": "2.0.0",
+    "supersedes": {
+      "version": "1.0.0",
+      "artifact": "data/validation/6c4c2/superseded/historical-v6-eligibility-policy-v1.json",
+      "whatChanged": "adds minScoreableTraits. Version 1 omitted the rule the V4 corpus builder already had, so three of the sixteen sides the first selection chose had no scoring-eligible identity trait at all. No V6 game had been played when this was found, so nothing here is result-aware.",
+      "notOverwritten": true
     },
     "scoringEligibilityBasis": "CANDIDATE_2_OBSERVABILITY_CERTIFICATION",
     "frozenBeforeSelection": true,
@@ -90,8 +74,7 @@
       "candidate-2-comparison-fixtures",
       "probability-validation-fixtures",
       "side-symmetry-fixtures",
-      "era-reference-teams",
-      "v6-dry-run-simulated-team-seasons"
+      "era-reference-teams"
     ],
     "nearOverlapRules": {
       "fiveOfFive": "EXCLUDE — the same five people is the same lineup whatever the ids say",
@@ -148,10 +131,10 @@
         "origin": "CALIBRATION_PLAYER_STORE_V6",
         "path": "data/validation/6c4c2/calibration-players-v6.json",
         "present": true,
-        "profiles": 155,
-        "teamSeasons": 31,
-        "coachChecks": 31,
-        "storeHash": "e671248d8c8a505bbc00a61bb43ab6fd4959a88a3c7e11e71014aba256e6e2f3"
+        "profiles": 145,
+        "teamSeasons": 29,
+        "coachChecks": 29,
+        "storeHash": "c14399a4da748f67af4407feb013a8c4e5ecb8b16310f133a208669179745fcf"
       }
     ],
     "universeNote": "the corpus and the prior holdout manifests supply the exclusion set; the calibration player stores supply the candidates. A universe of consumed team-seasons alone yields 0 eligible, which is what the corrected policy returned before the stores were read.",
@@ -166,7 +149,7 @@
       "lineupKey": "the sorted, de-duplicated set of canonical person ids",
       "personResolution": "calibration-player ids resolve to their person segment; public card ids resolve through the person store"
     },
-    "policyHash": "5a9f5a931b51ab4af68eb614fb3aec1a7ceae11a18064c2f315f734355d8411c"
+    "policyHash": "b74c01b11abf5b1446fa14b2b13e2f0d226bde53893add5241d53f9ebad43439"
   },
-  "outputHash": "a3c27504012656c7a8bc4ee305df71d1d56c3d446c5d872e0c14f1c4edd52e6b"
+  "outputHash": "f5845693ff366b684aa2e7d8da9e4710b3fb8a0eeb6a5b322f2506acdb0738ad"
 }

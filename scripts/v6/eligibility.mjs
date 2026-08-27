@@ -21,7 +21,7 @@ import { HISTORICAL_HOLDOUT_V3_IDS, SYNTHETIC_DEVELOPMENT_V2, SYNTHETIC_STRESS_H
 import { personIdForCard } from "../../src/v3/data/persons.js";
 import { POOL_V4_SPEC } from "../../data/validation/corpus-v4-spec.mjs";
 import { NEW_V5_SPEC } from "../../data/validation/pool-v5-spec.mjs";
-import { POOL_V6_SPEC, POOL_V6_EXPANSION } from "../../data/validation/corpus-v6-spec.mjs";
+import { POOL_V6_SPEC, POOL_V6_EXPANSION, POOL_V6_WAVE3 } from "../../data/validation/corpus-v6-spec.mjs";
 import { TRAIT_TABLE } from "../validation/traitRegistry.mjs";
 import { DIR, C1D, B1, B1S, B2R, git, sha } from "./reconcile.mjs";
 
@@ -54,7 +54,8 @@ export const ELIGIBILITY = Object.freeze({
     "candidate-0-calibration-fixtures", "candidate-1-development-fixtures",
     "candidate-2-diagnostic-fixtures", "candidate-2-assisted-offense-controls",
     "candidate-2-defensive-controls", "candidate-2-comparison-fixtures",
-    "probability-validation-fixtures", "side-symmetry-fixtures", "era-reference-teams"],
+    "probability-validation-fixtures", "side-symmetry-fixtures", "era-reference-teams",
+    "v6-dry-run-simulated-team-seasons"],
   nearOverlapRules: {
     fiveOfFive: "EXCLUDE — the same five people is the same lineup whatever the ids say",
     fourOfFive: "EXCLUDE — one substitution away from a seen lineup is a proxy for it",
@@ -108,7 +109,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   // fixture specs carry team, season, era and coach identity; the stores carry
   // the profiles and the season-page coach verification made when built.
   const specByKey = new Map(), specByFixture = new Map();
-  for (const f of [...POOL_V4_SPEC, ...NEW_V5_SPEC, ...POOL_V6_SPEC, ...POOL_V6_EXPANSION]) {
+  for (const f of [...POOL_V4_SPEC, ...NEW_V5_SPEC, ...POOL_V6_SPEC, ...POOL_V6_EXPANSION, ...POOL_V6_WAVE3]) {
     specByKey.set(tsKey(f.teamName, f.season), f); specByFixture.set(f.fixtureId, f);
   }
   const coachVerified = new Map();
@@ -159,6 +160,13 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       profiles: (store.profiles ?? []).length, teamSeasons: keys.size,
       coachChecks: (store.coachChecks ?? []).length, storeHash: store.storeHash ?? null });
   }
+
+  // Team-seasons Candidate 2 has already simulated outside a formal run. Read
+  // from the recorded evidence rather than hand-listed, so the exclusion cannot
+  // drift from what actually happened.
+  const taintPath = `${DIR}/v6-dry-run-taint.json`;
+  const taint = existsSync(taintPath) ? JSON.parse(readFileSync(taintPath, "utf8")) : null;
+  const taintedKeys = new Set((taint?.taintedTeamSeasons ?? []).map((t) => t.key));
 
   // ── the exclusion sets, all normalised ──────────────────────────────────
   const calibIds = new Set(historicalCalibrationV3Ids());
@@ -241,6 +249,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     // coach named on that season's own page. Unverified is not a pass.
     if (t.fixtureId && specByFixture.has(t.fixtureId)
       && coachVerified.get(t.fixtureId)?.named !== true) reasons.push("COACH_NOT_VERIFIED_ON_SEASON_PAGE");
+    if (taintedKeys.has(t.key)) reasons.push("SIMULATED_DURING_V6_DRY_RUN");
     const sc = scoreableOf(t.key);
     if (sc.traits.length < ELIGIBILITY.requirements.minScoreableTraits) reasons.push("NO_SCOREABLE_IDENTITY_TRAIT");
 
@@ -307,16 +316,29 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   gate("everyEraRepresented", ERAS.every((e) => byEra[e] > 0), `${ERAS.filter((e) => byEra[e] > 0).length}/8 eras`);
   gate("everyEligibleTeamHasAScoreableTrait", eligible.every((x) => x.scoreableTraits.length >= 1),
     `${eligible.length} eligible teams, fewest scoreable traits on any one of them ${eligible.length ? Math.min(...eligible.map((x) => x.scoreableTraits.length)) : 0} · basis ${traitBasis}`);
+  gate("everyKnownSimulatedTeamSeasonExcluded",
+    [...taintedKeys].every((k) => !eligible.some((x) => x.key === k)),
+    taintedKeys.size
+      ? `${taintedKeys.size} team-season(s) simulated during the version-1 runner dry run are excluded: ${[...taintedKeys].join(", ")} — the V6 seal caught this and refused, and the seal's claim that Candidate 2 has never simulated a selected team-season is kept true rather than weakened`
+      : "no team-season has been simulated outside a formal run");
   gate("poolCoversBothRepairedMechanisms",
     eligible.some((x) => x.scoreableMetrics.includes("assistedRate"))
     && eligible.some((x) => x.scoreableMetrics.includes("refPppVsTeam")),
     `assistedRate claimed by ${eligible.filter((x) => x.scoreableMetrics.includes("assistedRate")).length} teams, refPppVsTeam by ${eligible.filter((x) => x.scoreableMetrics.includes("refPppVsTeam")).length} — the pool must be able to observe both mechanisms 6C4C1 repaired, or selection cannot cover them`);
 
   const policyPayload = {
-    historicalV6EligibilityPolicyVersion: "2.0.0",
-    supersedes: { version: "1.0.0", artifact: `${DIR}/superseded/historical-v6-eligibility-policy-v1.json`,
-      whatChanged: "adds minScoreableTraits. Version 1 omitted the rule the V4 corpus builder already had, so three of the sixteen sides the first selection chose had no scoring-eligible identity trait at all. No V6 game had been played when this was found, so nothing here is result-aware.",
-      notOverwritten: true },
+    historicalV6EligibilityPolicyVersion: "3.0.0",
+    supersedes: [
+      { version: "1.0.0", artifact: `${DIR}/superseded/historical-v6-eligibility-policy-v1.json`,
+        whatChanged: "adds minScoreableTraits. Version 1 omitted the rule the V4 corpus builder already had, so three of the sixteen sides the first selection chose had no scoring-eligible identity trait at all.",
+        notOverwritten: true },
+      { version: "2.0.0", artifact: `${DIR}/superseded/historical-v6-eligibility-policy-v2.json`,
+        whatChanged: "adds SIMULATED_DURING_V6_DRY_RUN. The version-1 runner dry run built its evaluator from the real first V6 matchup and played 384 games against it, so Boston Celtics 1950-51 and Minneapolis Lakers 1955-56 had been simulated by Candidate 2 outside the formal run. The V6 seal caught it and refused.",
+        notOverwritten: true },
+    ],
+    simulatedTeamSeasonExclusion: taint
+      ? { source: taintPath, excluded: [...taintedKeys], evidence: taint.evidence.artifact }
+      : { source: null, excluded: [] },
     scoringEligibilityBasis: traitBasis,
     frozenBeforeSelection: true,
     ...ELIGIBILITY,
@@ -348,7 +370,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     generationCommand: "npm run v6:eligibility", dir: DIR, extra: { parameterSetHash: def.parameterSetHash } });
 
   const poolPayload = {
-    historicalV6PoolVersion: "3.0.0",
+    historicalV6PoolVersion: "4.0.0",
     supersedes: { artifact: `${C1D}/historical-v6-candidate-pool.json`, version: "1.0.0",
       why: policyPayload.priorPhaseDefectCorrected.what, notOverwritten: true },
     eligibilityPolicyHash: policyPayload.policyHash,
