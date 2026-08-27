@@ -1,0 +1,85 @@
+{
+  "artifact": "corrected-v6-persistent-clusters-candidate3",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run d0:corrected-v6",
+  "generatedAt": "2026-08-27T22:53:36.126Z",
+  "gitCommit": "0caf815d0fb5127bde9e127c87d1fdc337875c63",
+  "branch": "phase-6c4d0-v6-invalidity-and-profile-repair",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "correctedV6DiagnosticVersion": "1.0.0",
+    "clusterCount": 2,
+    "clusters": [
+      {
+        "clusterId": "cv6-01",
+        "matchupId": "v6m-2000s",
+        "side": "teamB",
+        "eraStyleId": "2000s",
+        "teamName": "Houston Rockets",
+        "teamSeason": "2007-08",
+        "metricId": "gamePace",
+        "measurementSurface": "VS_ERA_REFERENCE",
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "subjectMean": 92.08789,
+        "referenceMean": 90.70215,
+        "difference": 1.38574,
+        "practicalMargin": 1,
+        "zScore": 0,
+        "formalTraitLabels": [
+          "slow"
+        ],
+        "formalLabelCount": 1
+      },
+      {
+        "clusterId": "cv6-02",
+        "matchupId": "v6m-2020s",
+        "side": "teamB",
+        "eraStyleId": "2020s",
+        "teamName": "San Antonio Spurs",
+        "teamSeason": "2020-21",
+        "metricId": "movementShare",
+        "measurementSurface": "VS_ERA_REFERENCE",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "subjectMean": 0.21262,
+        "referenceMean": 0.29283,
+        "difference": -0.08021,
+        "practicalMargin": 0.03,
+        "zScore": 0,
+        "formalTraitLabels": [
+          "half-court motion and passing",
+          "MOTION"
+        ],
+        "formalLabelCount": 2
+      }
+    ],
+    "schemaEnforced": "every cluster passed validateHardFailCluster — non-null means, schema-known fields only",
+    "pendingEngineProof": [
+      {
+        "metricId": "gamePace",
+        "teamName": "Houston Rockets",
+        "teamSeason": "2007-08",
+        "diff": 1.38574,
+        "margin": 1
+      },
+      {
+        "metricId": "movementShare",
+        "teamName": "San Antonio Spurs",
+        "teamSeason": "2020-21",
+        "diff": -0.08021,
+        "margin": 0.03
+      },
+      {
+        "metricId": "movementShare",
+        "teamName": "San Antonio Spurs",
+        "teamSeason": "2020-21",
+        "diff": -0.08021,
+        "margin": 0.03
+      }
+    ]
+  },
+  "outputHash": "be9d237c5153d94fedf3ff86aa1c48dc6c658456cfae90bca70d1e7db54d5d2d"
+}

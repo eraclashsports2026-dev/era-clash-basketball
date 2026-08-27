@@ -1,0 +1,38 @@
+{
+  "artifact": "sa-movement-counterfactual",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "node scripts/d0/saCounterfactual.mjs",
+  "generatedAt": "2026-08-27T22:57:32.193Z",
+  "gitCommit": "0caf815d0fb5127bde9e127c87d1fdc337875c63",
+  "branch": "phase-6c4d0-v6-invalidity-and-profile-repair",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "saMovementCounterfactualVersion": "1.0.0",
+    "cells": [
+      {
+        "coach": "gregg-popovich",
+        "movementShare": 0.21246
+      },
+      {
+        "coach": "neutral",
+        "movementShare": 0.1658
+      },
+      {
+        "coach": "rudy-tomjanovich",
+        "movementShare": 0.14779
+      }
+    ],
+    "referenceBaseline": 0.29501,
+    "coachLever": 0.04666,
+    "lowMotionLever": -0.01801,
+    "rosterGapAtNeutral": -0.12921,
+    "residualAtPopovich": -0.08255,
+    "margin": 0.03,
+    "verdict": "the coach lever exceeds the practical margin on this exact roster — intent transfer works; the residual deficit is the reference five out-personnelling the subject on the movement axis"
+  },
+  "outputHash": "9bc7683bdab59aebf286c9d333528fc49be2230144cfc32ac02d2ce21fe3a443"
+}

@@ -23,10 +23,11 @@ import { DIR, D1, C2D, C1D, sha, r5, r2 } from "./paths.mjs";
 if (import.meta.url === `file://${process.argv[1]}`) {
   const arg = (f, d) => { const a = process.argv.find((x) => x.startsWith(`--${f}=`)); return a ? Number(a.split("=")[1]) : d; };
   const pairs = arg("pairs", 1024);
+  const tagArg = process.argv.find((x) => x.startsWith("--tag=")); const tag = tagArg ? tagArg.split("=")[1] : "candidate2";
   const def = defaultRuntimeParameterSet();
   const core = await buildCoreManifestV3();
   const c2lock = readArtifact("candidate2-lock", C1D).data;
-  if (core.aggregateCoreHash !== c2lock.coreHash) { console.error("REFUSED: core drifted"); process.exit(2); }
+  if (tag === "candidate2" && core.aggregateCoreHash !== c2lock.coreHash) { console.error("REFUSED: core drifted"); process.exit(2); }
 
   // ── freeze the recertification/diagnostic policy BEFORE running ──────────
   if (!artifactExists("candidate2-corrected-profile-recertification-policy", DIR)) {
@@ -159,10 +160,10 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   }
   const after = { v6: setAccessCount("historical-holdout-v6"), syn: setAccessCount("synthetic-stress-holdout-v2") };
 
-  writeArtifact("corrected-v6-diagnostic-results", {
+  writeArtifact(tag === "candidate2" ? "corrected-v6-diagnostic-results" : `corrected-v6-diagnostic-results-${tag}`, {
     correctedV6DiagnosticVersion: "1.0.0",
     labels: ["CORRECTED_INPUT_DIAGNOSTIC", "NOT_FORMAL", "NOT_UNSEEN"],
-    candidate: { candidateId: "Candidate 2", coreHash: core.aggregateCoreHash, engineUnchanged: true },
+    candidate: { candidateId: tag === "candidate2" ? "Candidate 2" : "Candidate 3", coreHash: core.aggregateCoreHash, engineUnchanged: tag === "candidate2" },
     dataPlane: { registryHash: prov.registryHash, enrichmentApplied: prov.enrichmentApplied },
     gamesPerSurface: pairs * 2, referenceBaselines: "re-derived under the enriched data plane",
     rows, originalFailures: classified, classificationCounts: counts,
@@ -170,7 +171,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     formalVerdictUnchanged: "HISTORICAL_HOLDOUT_V6_FAIL stands; adjudicated INVALID; this artifact issues no formal verdict",
     accessDeltas: { v6: after.v6 - before.v6, synthetic: after.syn - before.syn },
   }, { generationCommand: "npm run d0:corrected-v6", dir: DIR, extra: { parameterSetHash: def.parameterSetHash } });
-  writeArtifact("corrected-v6-persistent-clusters", {
+  writeArtifact(tag === "candidate2" ? "corrected-v6-persistent-clusters" : `corrected-v6-persistent-clusters-${tag}`, {
     correctedV6DiagnosticVersion: "1.0.0", clusterCount: clusters.length, clusters,
     schemaEnforced: "every cluster passed validateHardFailCluster — non-null means, schema-known fields only",
     pendingEngineProof: persistent.map((p) => ({ metricId: p.metricId, teamName: p.teamName,
