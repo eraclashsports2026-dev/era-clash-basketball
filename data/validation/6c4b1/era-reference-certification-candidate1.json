@@ -3,8 +3,8 @@
   "schemaVersion": "1.0.0",
   "measurementGovernanceVersion": "1.0.0",
   "generationCommand": "npm run v5:references",
-  "generatedAt": "2026-08-27T03:48:29.106Z",
-  "gitCommit": "09f8a55b32276459b6b706fc2e291efee8f30981",
+  "generatedAt": "2026-08-27T04:30:02.713Z",
+  "gitCommit": "174d2af7dc240e597f28a6349bfe2065ea7ea4b8",
   "branch": "phase-6c4b1-v5-freeze-and-seal",
   "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
   "registryVersion": "2.0.0",
@@ -121,7 +121,7 @@
         ],
         "frozenReferenceHash": "7e6fceda630ac1e89a0d7d89630310b696696b96ef4430eff846caa789e70490",
         "candidate1SelfBaselines": {
-          "possessions": {
+          "gamePace": {
             "n": 5000,
             "mean": 120.039,
             "sd": 2.60208,
@@ -131,7 +131,7 @@
               "upper": 120.11113
             }
           },
-          "ppp": {
+          "pppVsReference": {
             "n": 5000,
             "mean": 1.11951,
             "sd": 0.08907,
@@ -141,7 +141,7 @@
               "upper": 1.12197
             }
           },
-          "oppPpp": {
+          "refPppVsTeam": {
             "n": 5000,
             "mean": 1.11951,
             "sd": 0.08907,
@@ -149,56 +149,6 @@
             "ci95": {
               "lower": 1.11704,
               "upper": 1.12197
-            }
-          },
-          "threeShare": {
-            "n": 5000,
-            "mean": 0,
-            "sd": 0,
-            "se": 0,
-            "ci95": {
-              "lower": 0,
-              "upper": 0
-            }
-          },
-          "interiorShotShare": {
-            "n": 5000,
-            "mean": 0.75151,
-            "sd": 0.04142,
-            "se": 0.00059,
-            "ci95": {
-              "lower": 0.75036,
-              "upper": 0.75266
-            }
-          },
-          "orebRate": {
-            "n": 5000,
-            "mean": 0.38566,
-            "sd": 0.06155,
-            "se": 0.00087,
-            "ci95": {
-              "lower": 0.38396,
-              "upper": 0.38737
-            }
-          },
-          "orebRateAgainst": {
-            "n": 5000,
-            "mean": 0.38566,
-            "sd": 0.06155,
-            "se": 0.00087,
-            "ci95": {
-              "lower": 0.38396,
-              "upper": 0.38737
-            }
-          },
-          "assistedRate": {
-            "n": 5000,
-            "mean": 0.41324,
-            "sd": 0.06873,
-            "se": 0.00097,
-            "ci95": {
-              "lower": 0.41133,
-              "upper": 0.41514
             }
           },
           "transitionShare": {
@@ -249,6 +199,56 @@
             "ci95": {
               "lower": 0.12729,
               "upper": 0.12883
+            }
+          },
+          "threeShare": {
+            "n": 5000,
+            "mean": 0,
+            "sd": 0,
+            "se": 0,
+            "ci95": {
+              "lower": 0,
+              "upper": 0
+            }
+          },
+          "interiorShotShare": {
+            "n": 5000,
+            "mean": 0.75151,
+            "sd": 0.04142,
+            "se": 0.00059,
+            "ci95": {
+              "lower": 0.75036,
+              "upper": 0.75266
+            }
+          },
+          "orebRate": {
+            "n": 5000,
+            "mean": 0.38566,
+            "sd": 0.06155,
+            "se": 0.00087,
+            "ci95": {
+              "lower": 0.38396,
+              "upper": 0.38737
+            }
+          },
+          "orebRateAgainst": {
+            "n": 5000,
+            "mean": 0.38566,
+            "sd": 0.06155,
+            "se": 0.00087,
+            "ci95": {
+              "lower": 0.38396,
+              "upper": 0.38737
+            }
+          },
+          "assistedRate": {
+            "n": 5000,
+            "mean": 0.41324,
+            "sd": 0.06873,
+            "se": 0.00097,
+            "ci95": {
+              "lower": 0.41133,
+              "upper": 0.41514
             }
           },
           "stealRateForced": {
@@ -330,19 +330,19 @@
         "dominatesEveryPopulationTeam": false,
         "outscoredByEveryPopulationTeam": false,
         "varianceSufficiency": {
-          "possessions": true,
-          "ppp": true,
-          "oppPpp": true,
-          "threeShare": null,
-          "interiorShotShare": true,
-          "orebRate": true,
-          "orebRateAgainst": true,
-          "assistedRate": true,
+          "gamePace": true,
+          "pppVsReference": true,
+          "refPppVsTeam": true,
           "transitionShare": true,
           "pnrShare": true,
           "postUpShare": true,
           "isolationShare": true,
           "movementShare": true,
+          "threeShare": null,
+          "interiorShotShare": true,
+          "orebRate": true,
+          "orebRateAgainst": true,
+          "assistedRate": true,
           "stealRateForced": true,
           "rimShareAgainst": true,
           "defensiveZoneShare": null,
@@ -577,7 +577,7 @@
         ],
         "frozenReferenceHash": "f9307f8c5e07133abc09174903ceed4dd1e9b9d4e3b275ada79b6760d61110ac",
         "candidate1SelfBaselines": {
-          "possessions": {
+          "gamePace": {
             "n": 5000,
             "mean": 121.9086,
             "sd": 2.5906,
@@ -587,7 +587,7 @@
               "upper": 121.98041
             }
           },
-          "ppp": {
+          "pppVsReference": {
             "n": 5000,
             "mean": 1.14736,
             "sd": 0.08787,
@@ -597,7 +597,7 @@
               "upper": 1.14979
             }
           },
-          "oppPpp": {
+          "refPppVsTeam": {
             "n": 5000,
             "mean": 1.14736,
             "sd": 0.08787,
@@ -605,56 +605,6 @@
             "ci95": {
               "lower": 1.14492,
               "upper": 1.14979
-            }
-          },
-          "threeShare": {
-            "n": 5000,
-            "mean": 0,
-            "sd": 0,
-            "se": 0,
-            "ci95": {
-              "lower": 0,
-              "upper": 0
-            }
-          },
-          "interiorShotShare": {
-            "n": 5000,
-            "mean": 0.7654,
-            "sd": 0.03905,
-            "se": 0.00055,
-            "ci95": {
-              "lower": 0.76431,
-              "upper": 0.76648
-            }
-          },
-          "orebRate": {
-            "n": 5000,
-            "mean": 0.39279,
-            "sd": 0.06309,
-            "se": 0.00089,
-            "ci95": {
-              "lower": 0.39105,
-              "upper": 0.39454
-            }
-          },
-          "orebRateAgainst": {
-            "n": 5000,
-            "mean": 0.39279,
-            "sd": 0.06309,
-            "se": 0.00089,
-            "ci95": {
-              "lower": 0.39105,
-              "upper": 0.39454
-            }
-          },
-          "assistedRate": {
-            "n": 5000,
-            "mean": 0.41477,
-            "sd": 0.06637,
-            "se": 0.00094,
-            "ci95": {
-              "lower": 0.41294,
-              "upper": 0.41661
             }
           },
           "transitionShare": {
@@ -705,6 +655,56 @@
             "ci95": {
               "lower": 0.06005,
               "upper": 0.06114
+            }
+          },
+          "threeShare": {
+            "n": 5000,
+            "mean": 0,
+            "sd": 0,
+            "se": 0,
+            "ci95": {
+              "lower": 0,
+              "upper": 0
+            }
+          },
+          "interiorShotShare": {
+            "n": 5000,
+            "mean": 0.7654,
+            "sd": 0.03905,
+            "se": 0.00055,
+            "ci95": {
+              "lower": 0.76431,
+              "upper": 0.76648
+            }
+          },
+          "orebRate": {
+            "n": 5000,
+            "mean": 0.39279,
+            "sd": 0.06309,
+            "se": 0.00089,
+            "ci95": {
+              "lower": 0.39105,
+              "upper": 0.39454
+            }
+          },
+          "orebRateAgainst": {
+            "n": 5000,
+            "mean": 0.39279,
+            "sd": 0.06309,
+            "se": 0.00089,
+            "ci95": {
+              "lower": 0.39105,
+              "upper": 0.39454
+            }
+          },
+          "assistedRate": {
+            "n": 5000,
+            "mean": 0.41477,
+            "sd": 0.06637,
+            "se": 0.00094,
+            "ci95": {
+              "lower": 0.41294,
+              "upper": 0.41661
             }
           },
           "stealRateForced": {
@@ -786,19 +786,19 @@
         "dominatesEveryPopulationTeam": false,
         "outscoredByEveryPopulationTeam": true,
         "varianceSufficiency": {
-          "possessions": true,
-          "ppp": true,
-          "oppPpp": true,
-          "threeShare": null,
-          "interiorShotShare": true,
-          "orebRate": true,
-          "orebRateAgainst": true,
-          "assistedRate": true,
+          "gamePace": true,
+          "pppVsReference": true,
+          "refPppVsTeam": true,
           "transitionShare": true,
           "pnrShare": true,
           "postUpShare": true,
           "isolationShare": true,
           "movementShare": true,
+          "threeShare": null,
+          "interiorShotShare": true,
+          "orebRate": true,
+          "orebRateAgainst": true,
+          "assistedRate": true,
           "stealRateForced": true,
           "rimShareAgainst": true,
           "defensiveZoneShare": null,
@@ -1033,7 +1033,7 @@
         ],
         "frozenReferenceHash": "20cb75dc847a5ff26dee8c2e7a0db89571a901b97268846c688e239afa947929",
         "candidate1SelfBaselines": {
-          "possessions": {
+          "gamePace": {
             "n": 5000,
             "mean": 106.8238,
             "sd": 2.62033,
@@ -1043,7 +1043,7 @@
               "upper": 106.89643
             }
           },
-          "ppp": {
+          "pppVsReference": {
             "n": 5000,
             "mean": 1.18619,
             "sd": 0.09575,
@@ -1053,7 +1053,7 @@
               "upper": 1.18885
             }
           },
-          "oppPpp": {
+          "refPppVsTeam": {
             "n": 5000,
             "mean": 1.18619,
             "sd": 0.09575,
@@ -1061,56 +1061,6 @@
             "ci95": {
               "lower": 1.18354,
               "upper": 1.18885
-            }
-          },
-          "threeShare": {
-            "n": 5000,
-            "mean": 0,
-            "sd": 0,
-            "se": 0,
-            "ci95": {
-              "lower": 0,
-              "upper": 0
-            }
-          },
-          "interiorShotShare": {
-            "n": 5000,
-            "mean": 0.75594,
-            "sd": 0.04308,
-            "se": 0.00061,
-            "ci95": {
-              "lower": 0.75474,
-              "upper": 0.75713
-            }
-          },
-          "orebRate": {
-            "n": 5000,
-            "mean": 0.33828,
-            "sd": 0.07068,
-            "se": 0.001,
-            "ci95": {
-              "lower": 0.33632,
-              "upper": 0.34023
-            }
-          },
-          "orebRateAgainst": {
-            "n": 5000,
-            "mean": 0.33828,
-            "sd": 0.07068,
-            "se": 0.001,
-            "ci95": {
-              "lower": 0.33632,
-              "upper": 0.34023
-            }
-          },
-          "assistedRate": {
-            "n": 5000,
-            "mean": 0.43539,
-            "sd": 0.06845,
-            "se": 0.00097,
-            "ci95": {
-              "lower": 0.43349,
-              "upper": 0.43729
             }
           },
           "transitionShare": {
@@ -1161,6 +1111,56 @@
             "ci95": {
               "lower": 0.15353,
               "upper": 0.15533
+            }
+          },
+          "threeShare": {
+            "n": 5000,
+            "mean": 0,
+            "sd": 0,
+            "se": 0,
+            "ci95": {
+              "lower": 0,
+              "upper": 0
+            }
+          },
+          "interiorShotShare": {
+            "n": 5000,
+            "mean": 0.75594,
+            "sd": 0.04308,
+            "se": 0.00061,
+            "ci95": {
+              "lower": 0.75474,
+              "upper": 0.75713
+            }
+          },
+          "orebRate": {
+            "n": 5000,
+            "mean": 0.33828,
+            "sd": 0.07068,
+            "se": 0.001,
+            "ci95": {
+              "lower": 0.33632,
+              "upper": 0.34023
+            }
+          },
+          "orebRateAgainst": {
+            "n": 5000,
+            "mean": 0.33828,
+            "sd": 0.07068,
+            "se": 0.001,
+            "ci95": {
+              "lower": 0.33632,
+              "upper": 0.34023
+            }
+          },
+          "assistedRate": {
+            "n": 5000,
+            "mean": 0.43539,
+            "sd": 0.06845,
+            "se": 0.00097,
+            "ci95": {
+              "lower": 0.43349,
+              "upper": 0.43729
             }
           },
           "stealRateForced": {
@@ -1242,19 +1242,19 @@
         "dominatesEveryPopulationTeam": false,
         "outscoredByEveryPopulationTeam": false,
         "varianceSufficiency": {
-          "possessions": true,
-          "ppp": true,
-          "oppPpp": true,
-          "threeShare": null,
-          "interiorShotShare": true,
-          "orebRate": true,
-          "orebRateAgainst": true,
-          "assistedRate": true,
+          "gamePace": true,
+          "pppVsReference": true,
+          "refPppVsTeam": true,
           "transitionShare": true,
           "pnrShare": true,
           "postUpShare": true,
           "isolationShare": true,
           "movementShare": true,
+          "threeShare": null,
+          "interiorShotShare": true,
+          "orebRate": true,
+          "orebRateAgainst": true,
+          "assistedRate": true,
           "stealRateForced": true,
           "rimShareAgainst": true,
           "defensiveZoneShare": null,
@@ -1489,7 +1489,7 @@
         ],
         "frozenReferenceHash": "01b27f5bf48682ad7212112cc89a4168af7cf0df56fcb1918f10240d6b2d4094",
         "candidate1SelfBaselines": {
-          "possessions": {
+          "gamePace": {
             "n": 5000,
             "mean": 101.1362,
             "sd": 2.36304,
@@ -1499,7 +1499,7 @@
               "upper": 101.2017
             }
           },
-          "ppp": {
+          "pppVsReference": {
             "n": 5000,
             "mean": 1.23831,
             "sd": 0.09925,
@@ -1509,7 +1509,7 @@
               "upper": 1.24106
             }
           },
-          "oppPpp": {
+          "refPppVsTeam": {
             "n": 5000,
             "mean": 1.23831,
             "sd": 0.09925,
@@ -1517,56 +1517,6 @@
             "ci95": {
               "lower": 1.23556,
               "upper": 1.24106
-            }
-          },
-          "threeShare": {
-            "n": 5000,
-            "mean": 0.05061,
-            "sd": 0.02273,
-            "se": 0.00032,
-            "ci95": {
-              "lower": 0.04998,
-              "upper": 0.05124
-            }
-          },
-          "interiorShotShare": {
-            "n": 5000,
-            "mean": 0.67626,
-            "sd": 0.04838,
-            "se": 0.00068,
-            "ci95": {
-              "lower": 0.67492,
-              "upper": 0.6776
-            }
-          },
-          "orebRate": {
-            "n": 5000,
-            "mean": 0.35361,
-            "sd": 0.07441,
-            "se": 0.00105,
-            "ci95": {
-              "lower": 0.35154,
-              "upper": 0.35567
-            }
-          },
-          "orebRateAgainst": {
-            "n": 5000,
-            "mean": 0.35361,
-            "sd": 0.07441,
-            "se": 0.00105,
-            "ci95": {
-              "lower": 0.35154,
-              "upper": 0.35567
-            }
-          },
-          "assistedRate": {
-            "n": 5000,
-            "mean": 0.4567,
-            "sd": 0.06994,
-            "se": 0.00099,
-            "ci95": {
-              "lower": 0.45476,
-              "upper": 0.45864
             }
           },
           "transitionShare": {
@@ -1617,6 +1567,56 @@
             "ci95": {
               "lower": 0.19152,
               "upper": 0.19353
+            }
+          },
+          "threeShare": {
+            "n": 5000,
+            "mean": 0.05061,
+            "sd": 0.02273,
+            "se": 0.00032,
+            "ci95": {
+              "lower": 0.04998,
+              "upper": 0.05124
+            }
+          },
+          "interiorShotShare": {
+            "n": 5000,
+            "mean": 0.67626,
+            "sd": 0.04838,
+            "se": 0.00068,
+            "ci95": {
+              "lower": 0.67492,
+              "upper": 0.6776
+            }
+          },
+          "orebRate": {
+            "n": 5000,
+            "mean": 0.35361,
+            "sd": 0.07441,
+            "se": 0.00105,
+            "ci95": {
+              "lower": 0.35154,
+              "upper": 0.35567
+            }
+          },
+          "orebRateAgainst": {
+            "n": 5000,
+            "mean": 0.35361,
+            "sd": 0.07441,
+            "se": 0.00105,
+            "ci95": {
+              "lower": 0.35154,
+              "upper": 0.35567
+            }
+          },
+          "assistedRate": {
+            "n": 5000,
+            "mean": 0.4567,
+            "sd": 0.06994,
+            "se": 0.00099,
+            "ci95": {
+              "lower": 0.45476,
+              "upper": 0.45864
             }
           },
           "stealRateForced": {
@@ -1698,19 +1698,19 @@
         "dominatesEveryPopulationTeam": false,
         "outscoredByEveryPopulationTeam": false,
         "varianceSufficiency": {
-          "possessions": true,
-          "ppp": true,
-          "oppPpp": true,
-          "threeShare": true,
-          "interiorShotShare": true,
-          "orebRate": true,
-          "orebRateAgainst": true,
-          "assistedRate": true,
+          "gamePace": true,
+          "pppVsReference": true,
+          "refPppVsTeam": true,
           "transitionShare": true,
           "pnrShare": true,
           "postUpShare": true,
           "isolationShare": true,
           "movementShare": true,
+          "threeShare": true,
+          "interiorShotShare": true,
+          "orebRate": true,
+          "orebRateAgainst": true,
+          "assistedRate": true,
           "stealRateForced": true,
           "rimShareAgainst": true,
           "defensiveZoneShare": null,
@@ -1945,7 +1945,7 @@
         ],
         "frozenReferenceHash": "a984a5c965e0d60cb6b8957f6e4d260efc2a500b1bf97e2aaa0aa62685ba5551",
         "candidate1SelfBaselines": {
-          "possessions": {
+          "gamePace": {
             "n": 5000,
             "mean": 97.0794,
             "sd": 2.17661,
@@ -1955,7 +1955,7 @@
               "upper": 97.13973
             }
           },
-          "ppp": {
+          "pppVsReference": {
             "n": 5000,
             "mean": 1.23962,
             "sd": 0.10524,
@@ -1965,7 +1965,7 @@
               "upper": 1.24254
             }
           },
-          "oppPpp": {
+          "refPppVsTeam": {
             "n": 5000,
             "mean": 1.23962,
             "sd": 0.10524,
@@ -1973,56 +1973,6 @@
             "ci95": {
               "lower": 1.23671,
               "upper": 1.24254
-            }
-          },
-          "threeShare": {
-            "n": 5000,
-            "mean": 0.10313,
-            "sd": 0.03152,
-            "se": 0.00045,
-            "ci95": {
-              "lower": 0.10225,
-              "upper": 0.104
-            }
-          },
-          "interiorShotShare": {
-            "n": 5000,
-            "mean": 0.60548,
-            "sd": 0.05096,
-            "se": 0.00072,
-            "ci95": {
-              "lower": 0.60407,
-              "upper": 0.6069
-            }
-          },
-          "orebRate": {
-            "n": 5000,
-            "mean": 0.35238,
-            "sd": 0.07325,
-            "se": 0.00104,
-            "ci95": {
-              "lower": 0.35035,
-              "upper": 0.35441
-            }
-          },
-          "orebRateAgainst": {
-            "n": 5000,
-            "mean": 0.35238,
-            "sd": 0.07325,
-            "se": 0.00104,
-            "ci95": {
-              "lower": 0.35035,
-              "upper": 0.35441
-            }
-          },
-          "assistedRate": {
-            "n": 5000,
-            "mean": 0.44436,
-            "sd": 0.07116,
-            "se": 0.00101,
-            "ci95": {
-              "lower": 0.44239,
-              "upper": 0.44633
             }
           },
           "transitionShare": {
@@ -2073,6 +2023,56 @@
             "ci95": {
               "lower": 0.21199,
               "upper": 0.2142
+            }
+          },
+          "threeShare": {
+            "n": 5000,
+            "mean": 0.10313,
+            "sd": 0.03152,
+            "se": 0.00045,
+            "ci95": {
+              "lower": 0.10225,
+              "upper": 0.104
+            }
+          },
+          "interiorShotShare": {
+            "n": 5000,
+            "mean": 0.60548,
+            "sd": 0.05096,
+            "se": 0.00072,
+            "ci95": {
+              "lower": 0.60407,
+              "upper": 0.6069
+            }
+          },
+          "orebRate": {
+            "n": 5000,
+            "mean": 0.35238,
+            "sd": 0.07325,
+            "se": 0.00104,
+            "ci95": {
+              "lower": 0.35035,
+              "upper": 0.35441
+            }
+          },
+          "orebRateAgainst": {
+            "n": 5000,
+            "mean": 0.35238,
+            "sd": 0.07325,
+            "se": 0.00104,
+            "ci95": {
+              "lower": 0.35035,
+              "upper": 0.35441
+            }
+          },
+          "assistedRate": {
+            "n": 5000,
+            "mean": 0.44436,
+            "sd": 0.07116,
+            "se": 0.00101,
+            "ci95": {
+              "lower": 0.44239,
+              "upper": 0.44633
             }
           },
           "stealRateForced": {
@@ -2154,19 +2154,19 @@
         "dominatesEveryPopulationTeam": false,
         "outscoredByEveryPopulationTeam": true,
         "varianceSufficiency": {
-          "possessions": true,
-          "ppp": true,
-          "oppPpp": true,
-          "threeShare": true,
-          "interiorShotShare": true,
-          "orebRate": true,
-          "orebRateAgainst": true,
-          "assistedRate": true,
+          "gamePace": true,
+          "pppVsReference": true,
+          "refPppVsTeam": true,
           "transitionShare": true,
           "pnrShare": true,
           "postUpShare": true,
           "isolationShare": true,
           "movementShare": true,
+          "threeShare": true,
+          "interiorShotShare": true,
+          "orebRate": true,
+          "orebRateAgainst": true,
+          "assistedRate": true,
           "stealRateForced": true,
           "rimShareAgainst": true,
           "defensiveZoneShare": null,
@@ -2401,7 +2401,7 @@
         ],
         "frozenReferenceHash": "828f8a3295b51f5abe49f528bf819d98d0c221dee24832de94775eb638671215",
         "candidate1SelfBaselines": {
-          "possessions": {
+          "gamePace": {
             "n": 5000,
             "mean": 90.737,
             "sd": 1.83578,
@@ -2411,7 +2411,7 @@
               "upper": 90.78789
             }
           },
-          "ppp": {
+          "pppVsReference": {
             "n": 5000,
             "mean": 1.15215,
             "sd": 0.11527,
@@ -2421,7 +2421,7 @@
               "upper": 1.15535
             }
           },
-          "oppPpp": {
+          "refPppVsTeam": {
             "n": 5000,
             "mean": 1.15215,
             "sd": 0.11527,
@@ -2429,56 +2429,6 @@
             "ci95": {
               "lower": 1.14896,
               "upper": 1.15535
-            }
-          },
-          "threeShare": {
-            "n": 5000,
-            "mean": 0.20434,
-            "sd": 0.04414,
-            "se": 0.00062,
-            "ci95": {
-              "lower": 0.20312,
-              "upper": 0.20557
-            }
-          },
-          "interiorShotShare": {
-            "n": 5000,
-            "mean": 0.55452,
-            "sd": 0.05388,
-            "se": 0.00076,
-            "ci95": {
-              "lower": 0.55302,
-              "upper": 0.55601
-            }
-          },
-          "orebRate": {
-            "n": 5000,
-            "mean": 0.28761,
-            "sd": 0.06828,
-            "se": 0.00097,
-            "ci95": {
-              "lower": 0.28572,
-              "upper": 0.28951
-            }
-          },
-          "orebRateAgainst": {
-            "n": 5000,
-            "mean": 0.28761,
-            "sd": 0.06828,
-            "se": 0.00097,
-            "ci95": {
-              "lower": 0.28572,
-              "upper": 0.28951
-            }
-          },
-          "assistedRate": {
-            "n": 5000,
-            "mean": 0.4763,
-            "sd": 0.07995,
-            "se": 0.00113,
-            "ci95": {
-              "lower": 0.47409,
-              "upper": 0.47852
             }
           },
           "transitionShare": {
@@ -2529,6 +2479,56 @@
             "ci95": {
               "lower": 0.17384,
               "upper": 0.17589
+            }
+          },
+          "threeShare": {
+            "n": 5000,
+            "mean": 0.20434,
+            "sd": 0.04414,
+            "se": 0.00062,
+            "ci95": {
+              "lower": 0.20312,
+              "upper": 0.20557
+            }
+          },
+          "interiorShotShare": {
+            "n": 5000,
+            "mean": 0.55452,
+            "sd": 0.05388,
+            "se": 0.00076,
+            "ci95": {
+              "lower": 0.55302,
+              "upper": 0.55601
+            }
+          },
+          "orebRate": {
+            "n": 5000,
+            "mean": 0.28761,
+            "sd": 0.06828,
+            "se": 0.00097,
+            "ci95": {
+              "lower": 0.28572,
+              "upper": 0.28951
+            }
+          },
+          "orebRateAgainst": {
+            "n": 5000,
+            "mean": 0.28761,
+            "sd": 0.06828,
+            "se": 0.00097,
+            "ci95": {
+              "lower": 0.28572,
+              "upper": 0.28951
+            }
+          },
+          "assistedRate": {
+            "n": 5000,
+            "mean": 0.4763,
+            "sd": 0.07995,
+            "se": 0.00113,
+            "ci95": {
+              "lower": 0.47409,
+              "upper": 0.47852
             }
           },
           "stealRateForced": {
@@ -2610,19 +2610,19 @@
         "dominatesEveryPopulationTeam": false,
         "outscoredByEveryPopulationTeam": true,
         "varianceSufficiency": {
-          "possessions": true,
-          "ppp": true,
-          "oppPpp": true,
-          "threeShare": true,
-          "interiorShotShare": true,
-          "orebRate": true,
-          "orebRateAgainst": true,
-          "assistedRate": true,
+          "gamePace": true,
+          "pppVsReference": true,
+          "refPppVsTeam": true,
           "transitionShare": true,
           "pnrShare": true,
           "postUpShare": true,
           "isolationShare": true,
           "movementShare": true,
+          "threeShare": true,
+          "interiorShotShare": true,
+          "orebRate": true,
+          "orebRateAgainst": true,
+          "assistedRate": true,
           "stealRateForced": true,
           "rimShareAgainst": true,
           "defensiveZoneShare": null,
@@ -2857,7 +2857,7 @@
         ],
         "frozenReferenceHash": "3abb8eaafa6460511f631f682f23bc639f5660e037886399d2b1a06557a06869",
         "candidate1SelfBaselines": {
-          "possessions": {
+          "gamePace": {
             "n": 5000,
             "mean": 96.1326,
             "sd": 2.27413,
@@ -2867,7 +2867,7 @@
               "upper": 96.19564
             }
           },
-          "ppp": {
+          "pppVsReference": {
             "n": 5000,
             "mean": 1.18505,
             "sd": 0.11707,
@@ -2877,7 +2877,7 @@
               "upper": 1.18829
             }
           },
-          "oppPpp": {
+          "refPppVsTeam": {
             "n": 5000,
             "mean": 1.18505,
             "sd": 0.11707,
@@ -2885,56 +2885,6 @@
             "ci95": {
               "lower": 1.1818,
               "upper": 1.18829
-            }
-          },
-          "threeShare": {
-            "n": 5000,
-            "mean": 0.27941,
-            "sd": 0.04798,
-            "se": 0.00068,
-            "ci95": {
-              "lower": 0.27809,
-              "upper": 0.28074
-            }
-          },
-          "interiorShotShare": {
-            "n": 5000,
-            "mean": 0.5028,
-            "sd": 0.05387,
-            "se": 0.00076,
-            "ci95": {
-              "lower": 0.50131,
-              "upper": 0.50429
-            }
-          },
-          "orebRate": {
-            "n": 5000,
-            "mean": 0.24131,
-            "sd": 0.06292,
-            "se": 0.00089,
-            "ci95": {
-              "lower": 0.23956,
-              "upper": 0.24305
-            }
-          },
-          "orebRateAgainst": {
-            "n": 5000,
-            "mean": 0.24131,
-            "sd": 0.06292,
-            "se": 0.00089,
-            "ci95": {
-              "lower": 0.23956,
-              "upper": 0.24305
-            }
-          },
-          "assistedRate": {
-            "n": 5000,
-            "mean": 0.4538,
-            "sd": 0.07521,
-            "se": 0.00106,
-            "ci95": {
-              "lower": 0.45172,
-              "upper": 0.45589
             }
           },
           "transitionShare": {
@@ -2985,6 +2935,56 @@
             "ci95": {
               "lower": 0.18409,
               "upper": 0.18623
+            }
+          },
+          "threeShare": {
+            "n": 5000,
+            "mean": 0.27941,
+            "sd": 0.04798,
+            "se": 0.00068,
+            "ci95": {
+              "lower": 0.27809,
+              "upper": 0.28074
+            }
+          },
+          "interiorShotShare": {
+            "n": 5000,
+            "mean": 0.5028,
+            "sd": 0.05387,
+            "se": 0.00076,
+            "ci95": {
+              "lower": 0.50131,
+              "upper": 0.50429
+            }
+          },
+          "orebRate": {
+            "n": 5000,
+            "mean": 0.24131,
+            "sd": 0.06292,
+            "se": 0.00089,
+            "ci95": {
+              "lower": 0.23956,
+              "upper": 0.24305
+            }
+          },
+          "orebRateAgainst": {
+            "n": 5000,
+            "mean": 0.24131,
+            "sd": 0.06292,
+            "se": 0.00089,
+            "ci95": {
+              "lower": 0.23956,
+              "upper": 0.24305
+            }
+          },
+          "assistedRate": {
+            "n": 5000,
+            "mean": 0.4538,
+            "sd": 0.07521,
+            "se": 0.00106,
+            "ci95": {
+              "lower": 0.45172,
+              "upper": 0.45589
             }
           },
           "stealRateForced": {
@@ -3066,19 +3066,19 @@
         "dominatesEveryPopulationTeam": false,
         "outscoredByEveryPopulationTeam": true,
         "varianceSufficiency": {
-          "possessions": true,
-          "ppp": true,
-          "oppPpp": true,
-          "threeShare": true,
-          "interiorShotShare": true,
-          "orebRate": true,
-          "orebRateAgainst": true,
-          "assistedRate": true,
+          "gamePace": true,
+          "pppVsReference": true,
+          "refPppVsTeam": true,
           "transitionShare": true,
           "pnrShare": true,
           "postUpShare": true,
           "isolationShare": true,
           "movementShare": true,
+          "threeShare": true,
+          "interiorShotShare": true,
+          "orebRate": true,
+          "orebRateAgainst": true,
+          "assistedRate": true,
           "stealRateForced": true,
           "rimShareAgainst": true,
           "defensiveZoneShare": null,
@@ -3313,7 +3313,7 @@
         ],
         "frozenReferenceHash": "a24983f52b5cf2b787609f84bb7a68be146e21d2bd5c951d2aeb9b29373dc217",
         "candidate1SelfBaselines": {
-          "possessions": {
+          "gamePace": {
             "n": 5000,
             "mean": 100.813,
             "sd": 2.29414,
@@ -3323,7 +3323,7 @@
               "upper": 100.87659
             }
           },
-          "ppp": {
+          "pppVsReference": {
             "n": 5000,
             "mean": 1.32206,
             "sd": 0.12138,
@@ -3333,7 +3333,7 @@
               "upper": 1.32543
             }
           },
-          "oppPpp": {
+          "refPppVsTeam": {
             "n": 5000,
             "mean": 1.32206,
             "sd": 0.12138,
@@ -3341,56 +3341,6 @@
             "ci95": {
               "lower": 1.3187,
               "upper": 1.32543
-            }
-          },
-          "threeShare": {
-            "n": 5000,
-            "mean": 0.4021,
-            "sd": 0.05048,
-            "se": 0.00071,
-            "ci95": {
-              "lower": 0.4007,
-              "upper": 0.4035
-            }
-          },
-          "interiorShotShare": {
-            "n": 5000,
-            "mean": 0.413,
-            "sd": 0.05061,
-            "se": 0.00072,
-            "ci95": {
-              "lower": 0.4116,
-              "upper": 0.41441
-            }
-          },
-          "orebRate": {
-            "n": 5000,
-            "mean": 0.25201,
-            "sd": 0.06442,
-            "se": 0.00091,
-            "ci95": {
-              "lower": 0.25022,
-              "upper": 0.25379
-            }
-          },
-          "orebRateAgainst": {
-            "n": 5000,
-            "mean": 0.25201,
-            "sd": 0.06442,
-            "se": 0.00091,
-            "ci95": {
-              "lower": 0.25022,
-              "upper": 0.25379
-            }
-          },
-          "assistedRate": {
-            "n": 5000,
-            "mean": 0.51419,
-            "sd": 0.0718,
-            "se": 0.00102,
-            "ci95": {
-              "lower": 0.5122,
-              "upper": 0.51618
             }
           },
           "transitionShare": {
@@ -3441,6 +3391,56 @@
             "ci95": {
               "lower": 0.2364,
               "upper": 0.23861
+            }
+          },
+          "threeShare": {
+            "n": 5000,
+            "mean": 0.4021,
+            "sd": 0.05048,
+            "se": 0.00071,
+            "ci95": {
+              "lower": 0.4007,
+              "upper": 0.4035
+            }
+          },
+          "interiorShotShare": {
+            "n": 5000,
+            "mean": 0.413,
+            "sd": 0.05061,
+            "se": 0.00072,
+            "ci95": {
+              "lower": 0.4116,
+              "upper": 0.41441
+            }
+          },
+          "orebRate": {
+            "n": 5000,
+            "mean": 0.25201,
+            "sd": 0.06442,
+            "se": 0.00091,
+            "ci95": {
+              "lower": 0.25022,
+              "upper": 0.25379
+            }
+          },
+          "orebRateAgainst": {
+            "n": 5000,
+            "mean": 0.25201,
+            "sd": 0.06442,
+            "se": 0.00091,
+            "ci95": {
+              "lower": 0.25022,
+              "upper": 0.25379
+            }
+          },
+          "assistedRate": {
+            "n": 5000,
+            "mean": 0.51419,
+            "sd": 0.0718,
+            "se": 0.00102,
+            "ci95": {
+              "lower": 0.5122,
+              "upper": 0.51618
             }
           },
           "stealRateForced": {
@@ -3522,19 +3522,19 @@
         "dominatesEveryPopulationTeam": false,
         "outscoredByEveryPopulationTeam": false,
         "varianceSufficiency": {
-          "possessions": true,
-          "ppp": true,
-          "oppPpp": true,
-          "threeShare": true,
-          "interiorShotShare": true,
-          "orebRate": true,
-          "orebRateAgainst": true,
-          "assistedRate": true,
+          "gamePace": true,
+          "pppVsReference": true,
+          "refPppVsTeam": true,
           "transitionShare": true,
           "pnrShare": true,
           "postUpShare": true,
           "isolationShare": true,
           "movementShare": true,
+          "threeShare": true,
+          "interiorShotShare": true,
+          "orebRate": true,
+          "orebRateAgainst": true,
+          "assistedRate": true,
           "stealRateForced": true,
           "rimShareAgainst": true,
           "defensiveZoneShare": null,
@@ -3725,7 +3725,7 @@
     "certified": true,
     "pass": true,
     "failedGates": [],
-    "certificationHash": "629308027825750a5a412f7315daf91843bb9f9c8416feffbc35d2f06e1f6812"
+    "certificationHash": "deda002645266c207f1e6690e6e336d8e553ec34b9ed777390cc7053b90f8d68"
   },
-  "outputHash": "2fc186682dc0b5c6ac2c0ba0b561f8f0da4439424eb3bc4cc09fa81ef79c66df"
+  "outputHash": "e8482201d390fe076ef508821e1c010cc0685cf1d183d4a2d46dfb5c1a690e4f"
 }

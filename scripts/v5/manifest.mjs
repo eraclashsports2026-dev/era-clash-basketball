@@ -7,7 +7,7 @@
 // reference may change without a new holdout version.
 import { readFileSync } from "node:fs";
 import { createHash } from "node:crypto";
-import { writeArtifact, readArtifact } from "../../src/v3/calibration/artifacts.js";
+import { writeArtifact, readArtifact, artifactExists } from "../../src/v3/calibration/artifacts.js";
 import { defaultRuntimeParameterSet } from "../../src/v3/calibration/runtimeParameters.js";
 import { VALIDATION_VERSIONS } from "../../src/v3/calibration/validationVersions.js";
 import { readTargetValue } from "../validation/targetAccess.mjs";
@@ -32,6 +32,11 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const recert = readArtifact("candidate1-lock-recertification", DIR);
   const fail = [];
   const gate = (name, pass, detail) => { if (!pass) fail.push(name); console.log(`  ${pass ? "PASS" : "FAIL"}  ${name}\n        ${detail}`); };
+  // Frozen artifacts refuse silent overwrite: a re-issue is a decision.
+  if (artifactExists("historical-holdout-v5-manifest", DIR) && !process.argv.includes("--refreeze")) {
+    console.log("historical-holdout-v5-manifest already exists — pass --refreeze to deliberately re-issue it.");
+    process.exit(0);
+  }
 
   const v4store = loadPlayersV4();
   const v5store = JSON.parse(readFileSync(PLAYERS_V5_PATH, "utf8"));

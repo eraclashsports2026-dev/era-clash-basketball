@@ -91,6 +91,11 @@ export const SEALED_SETS = Object.freeze({
   // because "was V3 read?" and "was V4 read?" are different questions and the
   // answer to the first is permanently yes.
   "historical-holdout-v4": "data/calibration/historical-holdout-v4-access-log.jsonl",
+  // Phase 6C4B1. V4 is CONSUMED (opened once, formal FAIL on observable trait
+  // fidelity) and its diagnostics developed Candidate 1, so Candidate 1 needs a
+  // set it has never been developed against. Its own log again: "was V4 read?"
+  // and "was V5 read?" are different questions, and only V5's answer is still no.
+  "historical-holdout-v5": "data/calibration/historical-holdout-v5-access-log.jsonl",
 });
 
 /**
@@ -150,4 +155,5 @@ export const allSealStatuses = () => ({
   "historical-holdout-v3": setSealStatus("historical-holdout-v3"),
   "synthetic-stress-holdout-v2": setSealStatus("synthetic-stress-holdout-v2"),
   "historical-holdout-v4": setSealStatus("historical-holdout-v4"),
+  "historical-holdout-v5": setSealStatus("historical-holdout-v5"),
 });

@@ -44,7 +44,7 @@ export const VALIDATION_VERSIONS = Object.freeze({
   historicalObservabilityCertificationVersion: "2.0.0",
   historicalTraitPracticalMarginPolicyVersion: "2.0.0",
   historicalV5CandidatePoolVersion: "2.0.0",
-  historicalV5SelectionVersion: "1.0.0",
+  historicalV5SelectionVersion: "1.1.0",
   historicalHoldoutV5SetVersion: "5.0.0",
   historicalHoldoutV5ManifestVersion: "5.0.0",
   historicalHoldoutV5AcceptancePolicyVersion: "3.0.0",

@@ -12,14 +12,14 @@
 // population, so "extreme" becomes a number instead of an adjective.
 import { readFileSync } from "node:fs";
 import { createHash } from "node:crypto";
-import { writeArtifact, readArtifact } from "../../src/v3/calibration/artifacts.js";
+import { writeArtifact, readArtifact, artifactExists } from "../../src/v3/calibration/artifacts.js";
 import { defaultRuntimeParameterSet } from "../../src/v3/calibration/runtimeParameters.js";
 import { VALIDATION_VERSIONS } from "../../src/v3/calibration/validationVersions.js";
 import { historicalCalibrationV3Ids, HISTORICAL_HOLDOUT_V3_IDS, SYNTHETIC_STRESS_HOLDOUT_V2 } from "../../data/calibration/sets-v3.mjs";
 import { loadReferences, referenceTeam } from "../validation/eraReferences.mjs";
 import { buildRunnerProfileMap } from "../validation/profileMap.mjs";
 import { teamFromFixture, playSurface } from "../validation/evalV4.mjs";
-import { summarise } from "../validation/surface.mjs";
+import { summarise, METRICS as METRIC_CATALOGUE } from "../validation/surface.mjs";
 import { v4Seed } from "../validation/v4seeds.mjs";
 import { countStates } from "./realizedZone.mjs";
 import { DIR, DIR_6C4A } from "./preflight6c4b1.mjs";
@@ -60,9 +60,15 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   // "possessions" is the SAMPLE field; "gamePace" is the metric-catalogue name
   // for it. Asking a sample for gamePace returns null, which the first run of
   // this script duly reported for all eight eras.
-  const METRICS = ["possessions", "ppp", "oppPpp", "threeShare", "interiorShotShare", "orebRate", "orebRateAgainst",
-    "assistedRate", "transitionShare", "pnrShare", "postUpShare", "isolationShare", "movementShare",
-    "stealRateForced", "rimShareAgainst", "defensiveZoneShare", "topScoringShare"];
+  // Self-baselines are keyed by METRIC ID and read through the metric
+  // catalogue's own field mapping. Two reasons, both learned the hard way:
+  // asking a sample for "gamePace" returns null because the sample field is
+  // "possessions" (the first run reported pace null for all eight eras), and
+  // scoreTrait — which the V5 runner calls — looks baselines up by metric id,
+  // so a baseline map keyed by sample field makes every trait NOT_APPLICABLE.
+  // The V5 dry run caught that second one before it could waste the one-time
+  // holdout access.
+  const METRIC_IDS = Object.keys(METRIC_CATALOGUE);
 
   console.log(`ERA REFERENCE RE-CERTIFICATION UNDER CANDIDATE 1 — ${pairs * 2} paired games per era\n`);
   const results = [];
@@ -72,7 +78,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     // ── self-baseline: the reference against itself, side-balanced ──────────
     const run = playSurface({ subject: ref, opponent: referenceTeam({ era, five: refDef.five }, profiles),
       eraStyleId: era, seedAt: (k) => v4Seed("era-reference-cert", 6400000 + i * 200000 + k), pairs });
-    const self = Object.fromEntries(METRICS.map((m) => [m, summarise(run.samples, m)]));
+    const self = Object.fromEntries(METRIC_IDS.map((id) => [id, summarise(run.samples, METRIC_CATALOGUE[id].field)]));
     const goldWins = run.samples.filter((s) => s.orientation === undefined ? s.win === 1 : s.win === 1).length;
     const n = run.samples.length;
     const goldRate = goldWins / n;
@@ -113,7 +119,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     const dominatesEveryTeam = population.every((p) => p.referenceOutscores > 0);
     const outscoredByEveryTeam = population.every((p) => p.referenceOutscores < 0);
 
-    const variance = Object.fromEntries(METRICS.map((m) => [m,
+    const variance = Object.fromEntries(METRIC_IDS.map((m) => [m,
       self[m]?.mean != null && self[m].sd != null && Math.abs(self[m].mean) > 0
         ? Math.abs(self[m].sd / self[m].mean) >= REFERENCE_POLICY.varianceSufficiency.minRelativeSd : null]));
 
@@ -137,11 +143,11 @@ if (import.meta.url === `file://${process.argv[1]}`) {
         coachIsNeutral: refDef.coach === "NEUTRAL_REFERENCE" },
       certifiedUnderCandidate1: ci.lower <= 0.5 && ci.upper >= 0.5 && run.invariantViolations === 0 && run.ties === 0
         && new Set(refDef.five.map((p) => p.person)).size === 5 && refDef.coach === "NEUTRAL_REFERENCE"
-        && self.ppp.sd > 0 && self.possessions.sd > 0,
+        && self.pppVsReference.sd > 0 && self.gamePace.sd > 0,
       replaced: false, replacementReason: null,
     };
     results.push(row);
-    console.log(`  ${era}  ppp ${self.ppp.mean} · pace ${self.possessions.mean} · gold ${r5(goldRate)} [${ci.lower}, ${ci.upper}] · zone ${realizedZone} · vs-population ${meanOutscores >= 0 ? "+" : ""}${meanOutscores} · spread ${discriminationSpread} · ${row.certifiedUnderCandidate1 ? "CERTIFIED" : "FAILED"}`);
+    console.log(`  ${era}  ppp ${self.pppVsReference.mean} · pace ${self.gamePace.mean} · gold ${r5(goldRate)} [${ci.lower}, ${ci.upper}] · zone ${realizedZone} · vs-population ${meanOutscores >= 0 ? "+" : ""}${meanOutscores} · spread ${discriminationSpread} · ${row.certifiedUnderCandidate1 ? "CERTIFIED" : "FAILED"}`);
   }
   console.log("");
 
@@ -156,7 +162,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     `no reference outscores its entire era population by a material margin — the "champions-median" worry, measured: ${results.map((r) => `${r.era} ${r.meanReferenceOutscores >= 0 ? "+" : ""}${r.meanReferenceOutscores}`).join(" · ")}`);
   gate("neutralityHeld", results.every((r) => r.neutrality.distinctPersons && r.neutrality.positionLegal && r.neutrality.coachIsNeutral),
     "every reference is five distinct persons in five legal slots under the neutral coach");
-  gate("varianceSufficient", results.every((r) => r.candidate1SelfBaselines.ppp.sd > 0 && r.candidate1SelfBaselines.possessions.sd > 0),
+  gate("varianceSufficient", results.every((r) => r.candidate1SelfBaselines.pppVsReference.sd > 0 && r.candidate1SelfBaselines.gamePace.sd > 0),
     `every reference varies across games on scoring and pace — a constant instrument measures nothing`);
   // instrument isolation: a reference five must not be a V5 pool five, a
   // sealed-set fixture, or a V3/V4 holdout team

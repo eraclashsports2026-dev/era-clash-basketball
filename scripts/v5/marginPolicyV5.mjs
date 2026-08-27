@@ -64,6 +64,11 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const prior = readArtifact("trait-practical-margin-policy", DIR_6C4A).data;
   const fail = [];
   const gate = (name, pass, detail) => { if (!pass) fail.push(name); console.log(`  ${pass ? "PASS" : "FAIL"}  ${name}\n        ${detail}`); };
+  // Frozen artifacts refuse silent overwrite: a re-issue is a decision.
+  if (artifactExists("historical-holdout-v5-policy", DIR) && !process.argv.includes("--refreeze")) {
+    console.log("historical-holdout-v5-policy already exists — pass --refreeze to deliberately re-issue it.");
+    process.exit(0);
+  }
 
   if (artifactExists("historical-v5-selection", DIR)) {
     throw new Error("REFUSED: a V5 selection already exists. The policy must be frozen BEFORE selection, not after.");

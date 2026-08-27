@@ -12,7 +12,7 @@
 // would be scored against must be certified). Both are read as artifacts.
 import { readFileSync } from "node:fs";
 import { createHash } from "node:crypto";
-import { writeArtifact, readArtifact } from "../../src/v3/calibration/artifacts.js";
+import { writeArtifact, readArtifact, artifactExists } from "../../src/v3/calibration/artifacts.js";
 import { defaultRuntimeParameterSet } from "../../src/v3/calibration/runtimeParameters.js";
 import { VALIDATION_VERSIONS } from "../../src/v3/calibration/validationVersions.js";
 import { HISTORICAL_HOLDOUT_V3_IDS, SYNTHETIC_STRESS_HOLDOUT_V2, SYNTHETIC_DEVELOPMENT_V2, historicalCalibrationV3Ids } from "../../data/calibration/sets-v3.mjs";
@@ -33,6 +33,11 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const certifiedEras = new Set(refs.data.references.filter((r) => r.certifiedUnderCandidate1).map((r) => r.era));
   const fail = [];
   const gate = (name, pass, detail) => { if (!pass) fail.push(name); console.log(`  ${pass ? "PASS" : "FAIL"}  ${name}\n        ${detail}`); };
+  // Frozen artifacts refuse silent overwrite: a re-issue is a decision.
+  if (artifactExists("historical-v5-candidate-pool-v2", DIR) && !process.argv.includes("--refreeze")) {
+    console.log("historical-v5-candidate-pool-v2 already exists — pass --refreeze to deliberately re-issue it.");
+    process.exit(0);
+  }
 
   // ── source stores ─────────────────────────────────────────────────────────
   const v4store = loadPlayersV4();

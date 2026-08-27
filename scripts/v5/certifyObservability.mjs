@@ -9,7 +9,7 @@
 // scored on V5 — a trait scored on an uncertified metric is a verdict resting
 // on a number nobody has shown responds to anything.
 import { createHash } from "node:crypto";
-import { writeArtifact, readArtifact } from "../../src/v3/calibration/artifacts.js";
+import { writeArtifact, readArtifact, artifactExists } from "../../src/v3/calibration/artifacts.js";
 import { defaultRuntimeParameterSet } from "../../src/v3/calibration/runtimeParameters.js";
 import { VALIDATION_VERSIONS } from "../../src/v3/calibration/validationVersions.js";
 import { CONTROL_TABLE, RANKS, legalFive, teamFor, coachByScale } from "../validation/observability.mjs";
@@ -39,6 +39,11 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const baselines = ref2010.candidate1SelfBaselines;
   const fail = [];
   const gate = (name, pass, detail) => { if (!pass) fail.push(name); console.log(`  ${pass ? "PASS" : "FAIL"}  ${name}\n        ${detail}`); };
+  // Frozen artifacts refuse silent overwrite: a re-issue is a decision.
+  if (artifactExists("historical-observability-certification-candidate1", DIR) && !process.argv.includes("--refreeze")) {
+    console.log("historical-observability-certification-candidate1 already exists — pass --refreeze to deliberately re-issue it.");
+    process.exit(0);
+  }
 
   console.log(`OBSERVABILITY RE-CERTIFICATION UNDER CANDIDATE 1 — ${Object.keys(CONTROL_TABLE).length} metrics x 3 cells x ${pairs * 2} games\n`);
   const results = [];
@@ -92,7 +97,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     const prior = readArtifact("observability-control-results", "data/validation/6c3r").data.results.find((r) => r.metric === metricId);
     results.push({ metric: metricId, surface: m.identifiableOn, strongEffect: spec.strongEffect, basis: spec.basis,
       cells: { strong: cells.strong, neutral: cells.neutral, weak: cells.weak },
-      referenceBaselineCandidate1: baselines[m.field] ? { mean: baselines[m.field].mean, se: baselines[m.field].se } : null,
+      referenceBaselineCandidate1: baselines[metricId] ? { mean: baselines[metricId].mean, se: baselines[metricId].se } : null,
       strongVsWeak: sv, strongVsNeutral: sn, weakVsNeutral: wn,
       practicalMargin: margin, controlRange: r5(controlRange),
       controlRangeExceedsMargin: margin == null ? null : controlRange > margin,

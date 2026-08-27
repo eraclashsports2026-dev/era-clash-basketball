@@ -6,6 +6,7 @@
 // deliberately imports no engine module, so it CANNOT consult a Candidate 1
 // result even by accident.
 import { createHash } from "node:crypto";
+import { existsSync, readFileSync } from "node:fs";
 import { writeArtifact, readArtifact, artifactExists } from "../../src/v3/calibration/artifacts.js";
 import { defaultRuntimeParameterSet } from "../../src/v3/calibration/runtimeParameters.js";
 import { PAIR_TYPE_PRIORITY, DIVERSITY_DIMENSIONS, SCORING, CONSTRAINTS } from "./selectionPolicy.mjs";
@@ -149,6 +150,20 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     diversityDimensionsAvailable: Object.keys(DIVERSITY_DIMENSIONS),
     rejectedAlternatives: out.rejected,
     determinism: { repeatIdentical: same(out, again), reversedIdentical: same(out, reversed), rotatedIdentical: same(out, rotated) },
+    // A selection was invalidated earlier in this phase (the acceptance policy
+    // had to be re-frozen after the era-reference certification was re-issued,
+    // and a policy may not be re-frozen while a selection stands). The pool was
+    // untouched, so re-selection under the bumped policy version should have
+    // reproduced the same eight matchups — recorded here as an observation
+    // rather than assumed.
+    supersededSelection: (() => {
+      const p = "data/validation/6c4b1/superseded/historical-v5-selection-v1.0.0-INVALIDATED.json";
+      if (!existsSync(p)) return null;
+      const prior = JSON.parse(readFileSync(p, "utf8")).data;
+      return { version: prior.historicalV5SelectionVersion, selectionHash: prior.selectionHash,
+        reproducedIdentically: prior.selectionHash === createHash("sha256").update(JSON.stringify(out.selected.map((s) => [s.matchupId, s.teamA, s.teamB]))).digest("hex"),
+        whyInvalidated: "the acceptance policy was re-frozen after the era-reference certification was re-issued to key its self-baselines by metric id; a policy may not be re-frozen while a selection stands, so the selection was invalidated, the version bumped, and the selector re-run" };
+    })(),
     pass: fail.length === 0, failedGates: fail,
   };
   payload.selectionHash = createHash("sha256").update(JSON.stringify(out.selected.map((s) => [s.matchupId, s.teamA, s.teamB]))).digest("hex");

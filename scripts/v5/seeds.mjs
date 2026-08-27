@@ -9,7 +9,7 @@
 // disjointness PROVEN empirically at the full generated volume against every
 // prior domain, block and stream — never assumed from construction.
 import { createHash } from "node:crypto";
-import { writeArtifact, readArtifact } from "../../src/v3/calibration/artifacts.js";
+import { writeArtifact, readArtifact, artifactExists } from "../../src/v3/calibration/artifacts.js";
 import { defaultRuntimeParameterSet } from "../../src/v3/calibration/runtimeParameters.js";
 import { VALIDATION_VERSIONS } from "../../src/v3/calibration/validationVersions.js";
 import { deriveSeed } from "../../src/v3/seed.js";
@@ -83,6 +83,11 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const manifest = readArtifact("historical-holdout-v5-manifest", DIR);
   const fail = [];
   const gate = (name, pass, detail) => { if (!pass) fail.push(name); console.log(`  ${pass ? "PASS" : "FAIL"}  ${name}\n        ${detail}`); };
+  // Frozen artifacts refuse silent overwrite: a re-issue is a decision.
+  if (artifactExists("historical-holdout-v5-seeds", DIR) && !process.argv.includes("--refreeze")) {
+    console.log("historical-holdout-v5-seeds already exists — pass --refreeze to deliberately re-issue it.");
+    process.exit(0);
+  }
 
   const pairsPerSurface = policy.protocol.pairsPerSurface;
   const surfaces = policy.protocol.surfacesPerMatchup.length;

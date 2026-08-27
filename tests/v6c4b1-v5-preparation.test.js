@@ -294,8 +294,11 @@ describe("6C4B1 WS4 — era references under Candidate 1", () => {
     expect(c.certifiedUnder.possessionCalibrationVersion).toBe("1.1.0");
     expect(c.gamesPerEra).toBeGreaterThanOrEqual(5000);
     for (const r of c.references) {
-      expect(r.candidate1SelfBaselines.ppp.n).toBeGreaterThanOrEqual(5000);
-      expect(r.candidate1SelfBaselines.possessions.mean, `${r.era} pace`).toBeGreaterThan(0);
+      // Baselines are keyed by METRIC ID, not sample field — the keying the
+      // V5 runner's scoreTrait looks up. The dry run caught the alternative.
+      expect(r.candidate1SelfBaselines.pppVsReference.n).toBeGreaterThanOrEqual(5000);
+      expect(r.candidate1SelfBaselines.gamePace.mean, `${r.era} pace`).toBeGreaterThan(0);
+      expect(r.candidate1SelfBaselines.ppp, 'sample-field keys must be gone').toBeUndefined();
     }
   });
 
