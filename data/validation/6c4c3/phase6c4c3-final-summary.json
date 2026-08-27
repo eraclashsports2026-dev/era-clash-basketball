@@ -1,0 +1,323 @@
+{
+  "artifact": "phase6c4c3-final-summary",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run exec:c3-summary",
+  "generatedAt": "2026-08-27T21:16:14.340Z",
+  "gitCommit": "d2343b12fc3bc7a5c3e6f49a624dd79872294e9c",
+  "branch": "phase-6c4c3-candidate2-formal-execution",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "phase6c4c3FinalSummaryVersion": "1.0.0",
+    "phase": "6C4C3",
+    "mode": "EXECUTION_ONLY",
+    "repository": {
+      "startBranch": "phase-6c4c2-v6-freeze-and-seal",
+      "startCommit": "775a245168ebac131c51c91c3f6cb125bb0af599",
+      "finalBranch": "phase-6c4c3-candidate2-formal-execution",
+      "finalCommit": "d2343b12fc3bc7a5c3e6f49a624dd79872294e9c",
+      "main": "9cd95ff8797f8cdef252bbe67d63158c01b9f9bd",
+      "originMain": "9cd95ff8797f8cdef252bbe67d63158c01b9f9bd",
+      "mainUnchanged": true
+    },
+    "candidate2": {
+      "candidateId": "Candidate 2",
+      "parentCandidateId": "Candidate 1",
+      "candidateSelectionStatus": "SELECTED",
+      "candidateLockStatus": "LOCKED",
+      "possessionCalibrationVersion": "1.2.0",
+      "coreHash": "3733b648f050a4f50f9dc3cb6ecf62fce419dd282f24c910b91e7b077d63711d",
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "coreHashUnchangedSincePreflight": true,
+      "parameterSetUnchangedSincePreflight": true,
+      "parameterDrift": 0,
+      "calibrationStatus": "DEVELOPMENT_LOCKED_SCOPED",
+      "formalValidationStatus": "HISTORICAL_V6_FAILED"
+    },
+    "stageOne": {
+      "set": "historical-holdout-v6",
+      "accessCountBefore": 0,
+      "accessCountAfter": 1,
+      "liveAccessCount": 1,
+      "accessEvents": 1,
+      "openedExactlyOnce": true,
+      "secondRunRefusedWith": "SECOND_RUN_REFUSED",
+      "runStatus": "COMPLETE",
+      "interruptions": 0,
+      "resumeCount": 0,
+      "matchups": 8,
+      "totalGames": 172032,
+      "escalatedMatchups": [
+        "v6m-1980s"
+      ],
+      "numeric": {
+        "teamSurfacesScored": 16,
+        "holdoutComposite": 0.0345,
+        "internalBaselineMean": 0.0431,
+        "ratio": 0.80054,
+        "ratioGate": 1.5,
+        "catastrophicThreshold": 0.13038,
+        "catastrophicTeams": []
+      },
+      "traits": {
+        "scored": 46,
+        "passed": 31,
+        "failed": 15,
+        "passRate": 0.67391,
+        "minPassRate": 0.75,
+        "hardFailLabelCount": 12,
+        "independentHardFailClusters": 8,
+        "maxIndependentHardFailClusters": 0
+      },
+      "gates": {
+        "everyMatchupExecuted": true,
+        "zeroInvariantFailures": true,
+        "zeroFinalTies": true,
+        "zeroImpossibleScores": true,
+        "zeroPreThreeEraThreePointAttempts": true,
+        "replayExactEverywhere": true,
+        "compositeRatioWithinPolicy": true,
+        "zeroCatastrophicTeams": true,
+        "traitPassRateMet": false,
+        "zeroIndependentHardFailClusters": false,
+        "noMatchupFailsMajorityOfTraits": false,
+        "noEraFailsEveryScoredTrait": false
+      },
+      "failedGates": [
+        "traitPassRateMet",
+        "zeroIndependentHardFailClusters",
+        "noMatchupFailsMajorityOfTraits",
+        "noEraFailsEveryScoredTrait"
+      ],
+      "formalVerdict": "HISTORICAL_HOLDOUT_V6_FAIL",
+      "failureClass": "OBSERVABLE_HISTORICAL_TRAIT_FIDELITY_FAILURE",
+      "authorizesStageTwo": false
+    },
+    "stageTwo": {
+      "set": "synthetic-stress-holdout-v2",
+      "opened": false,
+      "accessCount": 0,
+      "accessEvents": 0,
+      "formalOutputs": 0,
+      "formalVerdict": "NOT_OPENED",
+      "notOpenedBecause": "Historical Holdout V6 returned HISTORICAL_HOLDOUT_V6_FAIL. A synthetic stress pass says nothing about a candidate that failed the historical stage, and opening it would consume a one-shot resource for no evidence."
+    },
+    "compound": {
+      "verdict": "CANDIDATE2_HISTORICAL_V6_FAILED",
+      "verdictMeaning": "Historical Holdout V6 returned FAIL. Synthetic Stress Holdout V2 is correctly never opened, so the validation is decided by stage one.",
+      "gamesSimulated": 0,
+      "sealsOpened": 0
+    },
+    "formalStatus": {
+      "formalState": "CANDIDATE2_HISTORICAL_V6_FAILED",
+      "calibrationStatus": "DEVELOPMENT_LOCKED_SCOPED",
+      "formalValidationStatus": "HISTORICAL_V6_FAILED",
+      "holdoutValidatedClaimed": false,
+      "previewStatus": "NOT_PREPARED",
+      "productionStatus": "UNCHANGED"
+    },
+    "preview": {
+      "prepared": false,
+      "deploymentCommandsExecuted": 0,
+      "reason": "a preview package is reachable only from CANDIDATE2_FORMAL_VALIDATION_PASSED"
+    },
+    "immutability": {
+      "postHoldoutTuning": 0,
+      "engineChanges": 0,
+      "dataChanges": 0,
+      "policyChanges": 0,
+      "targetChanges": 0,
+      "marginChanges": 0,
+      "seedChanges": 0,
+      "referenceChanges": 0,
+      "traitChanges": 0,
+      "runnerSemanticChanges": 0,
+      "priorAttemptsChanged": 0,
+      "priorPhaseArtifactOverwrittenAndRestored": {
+        "artifact": "data/validation/6c4b1/candidate-core-graph-certification.json",
+        "what": "running npm run v5:certify-core during this phase's quality gates rewrote a Candidate-1-scoped record pinned to Candidate 1's locked core hash.",
+        "remedy": "restored from git to its committed state; no other prior-phase artifact was touched.",
+        "replacementVerification": "core-graph verification for this phase comes from the live core recomputation compared against the Candidate 2 lock, which the preflight performs and which passed."
+      }
+    },
+    "performance": {
+      "perMatchupSeconds": [
+        {
+          "index": 1,
+          "matchupId": "v6m-1950s",
+          "seconds": 34.6
+        },
+        {
+          "index": 2,
+          "matchupId": "v6m-1960s",
+          "seconds": 34.2
+        },
+        {
+          "index": 3,
+          "matchupId": "v6m-1970s",
+          "seconds": 31.7
+        },
+        {
+          "index": 4,
+          "matchupId": "v6m-1980s",
+          "seconds": 71.5
+        },
+        {
+          "index": 5,
+          "matchupId": "v6m-1990s",
+          "seconds": 28.5
+        },
+        {
+          "index": 6,
+          "matchupId": "v6m-2000s",
+          "seconds": 27.5
+        },
+        {
+          "index": 7,
+          "matchupId": "v6m-2010s",
+          "seconds": 28
+        },
+        {
+          "index": 8,
+          "matchupId": "v6m-2020s",
+          "seconds": 29.5
+        }
+      ],
+      "totalRunSeconds": 285.5,
+      "gamesPerSecond": 602.6,
+      "source": "data/validation/6c4c3/historical-v6-run-console.log — the frozen runner printed per-matchup wall-clock to stdout and did not store it, so this is parsed from the preserved console log rather than from a machine artifact",
+      "artifactSizes": [
+        {
+          "artifact": "historical-v6-fixture-results.json",
+          "bytes": 167360
+        },
+        {
+          "artifact": "historical-v6-formal-results.json",
+          "bytes": 28492
+        },
+        {
+          "artifact": "phase6c4c3-preflight.json",
+          "bytes": 25443
+        },
+        {
+          "artifact": "formal-validation-attempts.json",
+          "bytes": 11039
+        },
+        {
+          "artifact": "historical-v6-formal-run.json",
+          "bytes": 7001
+        },
+        {
+          "artifact": "candidate2-formal-status.json",
+          "bytes": 6801
+        },
+        {
+          "artifact": "candidate2-compound-formal-verdict.json",
+          "bytes": 5926
+        },
+        {
+          "artifact": "historical-v6-formal-verdict.json",
+          "bytes": 3940
+        },
+        {
+          "artifact": "historical-v6-access-event.json",
+          "bytes": 3103
+        },
+        {
+          "artifact": "candidate2-formal-execution-authorization.json",
+          "bytes": 3072
+        }
+      ],
+      "artifactBytesTotal": 262177
+    },
+    "quality": {
+      "note": "measured by the commands, recorded here",
+      "vitestTests": 1945,
+      "vitestFiles": 54,
+      "playwrightSpecs": 19,
+      "buildClean": true,
+      "replayExact": true,
+      "secretScanFindings": 0
+    },
+    "productionIsolation": {
+      "mainCommit": "9cd95ff8797f8cdef252bbe67d63158c01b9f9bd",
+      "engineVersion": "3.2.0",
+      "productionFlagsActivated": 0,
+      "previewDeployments": 0,
+      "productionDeployments": 0,
+      "productionNamespaceWrites": 0
+    },
+    "sealStatuses": {
+      "legacy-holdout-v1": {
+        "accessCount": 0,
+        "status": "SEALED_UNREAD",
+        "integrity": "Never read. Any Phase 6C2 tuning result can be honestly validated against it.",
+        "set": "legacy-holdout-v1",
+        "note": "LEGACY_MIXED_HOLDOUT — preserved unchanged, not reused for formal historical validation."
+      },
+      "historical-holdout-v2": {
+        "set": "historical-holdout-v2",
+        "accessCount": 0,
+        "status": "SEALED_UNREAD",
+        "integrity": "Never read. A Phase 6C3 validation against it is genuinely independent.",
+        "note": "INSUFFICIENT_SAMPLE_ARCHIVE — genuinely unread, but three fixtures cannot validate generalisation. Superseded by v3 and archived rather than consumed."
+      },
+      "synthetic-stress-v1": {
+        "set": "synthetic-stress-v1",
+        "accessCount": 0,
+        "status": "PREVIOUSLY_INSPECTED_ARCHIVE",
+        "integrity": "Never read. A Phase 6C3 validation against it is genuinely independent.",
+        "note": "Its counter reads 0 because the seal was created after the simulations. Not a holdout."
+      },
+      "historical-holdout-v3": {
+        "set": "historical-holdout-v3",
+        "accessCount": 1,
+        "status": "UNSEALED",
+        "integrity": "Read 1 time(s). Check the access log before treating a result as independent."
+      },
+      "synthetic-stress-holdout-v2": {
+        "set": "synthetic-stress-holdout-v2",
+        "accessCount": 0,
+        "status": "SEALED_UNREAD",
+        "integrity": "Never read. A Phase 6C3 validation against it is genuinely independent."
+      },
+      "historical-holdout-v4": {
+        "set": "historical-holdout-v4",
+        "accessCount": 1,
+        "status": "UNSEALED",
+        "integrity": "Read 1 time(s). Check the access log before treating a result as independent."
+      },
+      "historical-holdout-v5": {
+        "set": "historical-holdout-v5",
+        "accessCount": 1,
+        "status": "UNSEALED",
+        "integrity": "Read 1 time(s). Check the access log before treating a result as independent."
+      },
+      "historical-holdout-v6": {
+        "set": "historical-holdout-v6",
+        "accessCount": 1,
+        "status": "UNSEALED",
+        "integrity": "Read 1 time(s). Check the access log before treating a result as independent."
+      }
+    },
+    "attemptRegistry": {
+      "attemptCount": 6,
+      "registryHash": "ef969bb74a6336f046286c0fbb92fee381ff30f03a43cdd9a708361f1e9f156c",
+      "priorAttemptsUnchanged": true
+    },
+    "finalVerdict": "HISTORICAL V6 FAILED — CANDIDATE 2 FORMAL VALIDATION FAILED",
+    "nextPhase": "Candidate 2 formal validation has failed. A Candidate 3 would require its own repair, its own lock and a NEW unseen historical holdout — V6 is consumed and may be used only as a failed-holdout diagnostic set. Synthetic Stress Holdout V2 remains sealed and unread and is still available to a future candidate.",
+    "notClaimed": [
+      "HOLDOUT_VALIDATED",
+      "PRIVATE_PREVIEW_VALIDATED",
+      "PRODUCTION_READY",
+      "ACTIVE"
+    ],
+    "recordedAtCommit": "d2343b12fc3bc7a5c3e6f49a624dd79872294e9c",
+    "summaryHash": "414d9682ebadcdfcc3d5b7146fe98cbe30a3197caffdbb1e01458796800e82f4"
+  },
+  "outputHash": "a70ee700c9a742bccf144e2dac82f816e680e804daf2ba78a95deef983db9d9c"
+}
