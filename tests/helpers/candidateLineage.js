@@ -6,6 +6,7 @@ import { expect } from "vitest";
 // identity reasons only. It must still carry a parent, so the chain back to
 // Candidate 0 is unbroken.
 const MANIFESTS = [
+  "data/validation/6c4d0/candidate3-lock.json",
   "data/validation/6c4c1/candidate2-lock.json",
   "data/validation/6c4b1/candidate1-lock-recertification.json",
   "data/validation/6c4a/candidate1-lock.json",

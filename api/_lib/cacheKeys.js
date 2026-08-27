@@ -165,6 +165,28 @@ export const cacheKeys = {
   research: ({ subjectType, subjectId, contentHash }) =>
     `research:v1:${seg(subjectType, "subjectType")}:${seg(subjectId, "subjectId")}:${seg(contentHash, "contentHash")}`,
 
+  /**
+   * Protected-preview namespaces. Isolated from every production namespace by
+   * prefix, and content-addressed by the preview candidate's identity: a
+   * Candidate 3 preview entry can never collide with production or with a
+   * prior candidate, and disabling the preview flag leaves stored entries
+   * readable by version.
+   */
+  previewResult: ({ matchupFingerprint, simulationSeed }) =>
+    `preview-result:pc${vtag("possessionCalibrationVersion")}:al${vtag("actionLibraryVersion")}` +
+    `:pe${vtag("possessionEngineVersion")}:${seg(matchupFingerprint, "matchupFingerprint")}:s${seg(String(simulationSeed >>> 0), "simulationSeed")}`,
+  previewProbability: ({ matchupFingerprint, tier }) =>
+    `preview-probability:pc${vtag("possessionCalibrationVersion")}:al${vtag("actionLibraryVersion")}` +
+    `:${seg(tier, "tier")}:${seg(matchupFingerprint, "matchupFingerprint")}`,
+  previewNarrative: ({ resultId }) =>
+    `preview-narrative:pc${vtag("possessionCalibrationVersion")}:${seg(resultId, "resultId")}`,
+  previewCompetition: ({ competitionId }) =>
+    `preview-competition:pc${vtag("possessionCalibrationVersion")}:al${vtag("actionLibraryVersion")}:${seg(competitionId, "competitionId")}`,
+  previewDaily: ({ date, configHash }) =>
+    `preview-daily:pc${vtag("possessionCalibrationVersion")}:${seg(date, "date")}:${seg(configHash, "configHash")}`,
+  previewChallenge: ({ challengeId }) =>
+    `preview-challenge:pc${vtag("possessionCalibrationVersion")}:${seg(challengeId, "challengeId")}`,
+
   /** An OpenGraph/share image for one result render configuration. */
   shareImage: ({ resultId, renderVersion }) =>
     `share-image:r${seg(renderVersion, "renderVersion")}:${seg(resultId, "resultId")}`,

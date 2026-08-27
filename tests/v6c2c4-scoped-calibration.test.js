@@ -251,9 +251,10 @@ describe("scoped calibration outcome", () => {
     const r = assertCalibrationLockInvariant();
     if (r.locked) {
       // The point is that no parameter was ever fitted: any active development
-      // lock must carry zero parameter changes. Candidate 1's SCOPED lock
-      // changed mechanics, not values, so it satisfies the same claim.
-      expect(["DEVELOPMENT_LOCKED_BASELINE", "DEVELOPMENT_LOCKED_SCOPED"]).toContain(r.status);
+      // lock must carry zero parameter changes. Candidate 1's SCOPED lock and
+      // Candidate 3's PREVIEW_READY lock changed mechanics, not values, so
+      // both satisfy the same claim.
+      expect(["DEVELOPMENT_LOCKED_BASELINE", "DEVELOPMENT_LOCKED_SCOPED", "PREVIEW_READY_LOCKED"]).toContain(r.status);
       expect(r.parameterChanges).toBe(0);
     }
   });

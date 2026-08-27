@@ -14,7 +14,7 @@
 | Team Intelligence | `teamIntelligenceVersion` | **1.0.0** | DEVELOPMENT |
 | Coach Intelligence | `coachIntelligenceVersion` | **1.0.0** | DEVELOPMENT |
 | Era Style Intelligence | `eraStyleVersion` | **1.0.0** | DEVELOPMENT |
-| Action library (offensive families) | `actionLibraryVersion` | **2.0.0** | DEVELOPMENT (does **not** affect results) |
+| Action library (offensive families) | `actionLibraryVersion` | **2.1.0** | DEVELOPMENT (does **not** affect results) |
 | Daily configuration schema | `dailyConfigSchemaVersion` | **1.0.0** | ACTIVE (does **not** affect results) |
 | Player data | `playerDataVersion` | **2026-08-24** | ACTIVE |
 | Coach data | `coachDataVersion` | **1.1.0** | ACTIVE |
@@ -29,7 +29,7 @@
 | Historical fixture data | `historicalFixtureDataVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Holdout set | `holdoutSetVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Benchmark seed set | `benchmarkSeedSetVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
-| Possession calibration | `possessionCalibrationVersion` | **1.2.0** | DEVELOPMENT_LOCKED_SCOPED (does **not** affect results) |
+| Possession calibration | `possessionCalibrationVersion` | **1.3.0** | DEVELOPMENT_LOCKED_SCOPED (does **not** affect results) |
 | Historical target schema | `historicalTargetSchemaVersion` | **1.0.0** | DEVELOPMENT (does **not** affect results) |
 | Historical target data | `historicalTargetDataVersion` | **3.0.0** | DEVELOPMENT (does **not** affect results) |
 | Opportunity allocation | `opportunityAllocationVersion` | **1.0.0** | DEVELOPMENT |

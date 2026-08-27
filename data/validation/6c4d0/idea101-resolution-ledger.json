@@ -3,8 +3,8 @@
   "schemaVersion": "1.0.0",
   "measurementGovernanceVersion": "1.0.0",
   "generationCommand": "ledger applyClosures",
-  "generatedAt": "2026-08-27T22:28:05.987Z",
-  "gitCommit": "1f9ac6ee3d79cc54997236e94c47dc13db0b9e83",
+  "generatedAt": "2026-08-27T23:05:44.481Z",
+  "gitCommit": "731a0192e135e77e79c9d9c81048c2f13a4df56f",
   "branch": "phase-6c4d0-v6-invalidity-and-profile-repair",
   "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
   "registryVersion": "2.0.0",
@@ -18,11 +18,13 @@
         "issueId": "i01",
         "description": "Historical V6 original FAIL needs a validity adjudication that does not rewrite the record",
         "severity": "CRITICAL",
-        "rootCause": null,
-        "files": [],
-        "resolutionStatus": "OPEN",
-        "implementedFix": null,
-        "verification": null,
+        "rootCause": "V6 semantic input defect",
+        "files": [
+          "data/validation/6c4d0/historical-v6-invalidity-adjudication.json"
+        ],
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "implementedFix": "superseding adjudication beside the preserved FAIL; attempt registry layered; Candidate 2 effective status FORMAL_VALIDATION_INCOMPLETE",
+        "verification": "13 original artifacts bound by sha256; adjudication gates all pass",
         "regressionTests": [],
         "remainingRisk": null,
         "externalDependency": null
@@ -199,11 +201,14 @@
         "issueId": "i13",
         "description": "movement under-expression (persistent V6 diagnostic)",
         "severity": "HIGH",
-        "rootCause": null,
-        "files": [],
-        "resolutionStatus": "OPEN",
-        "implementedFix": null,
-        "verification": null,
+        "rootCause": "coach movement intent annihilated by roster reach() gate (engine) — residual on SA is reference personnel geometry",
+        "files": [
+          "src/v3/actions/families.js",
+          "scripts/validation/claimSupport.mjs"
+        ],
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "implementedFix": "INTENT_CARRY (Candidate 3) + prospective claim-support checker for reference-geometry cases",
+        "verification": "mirror controls: low-roster lever -0.0006 -> +0.024; SA counterfactual lever +0.047 > 0.030 margin",
         "regressionTests": [],
         "remainingRisk": null,
         "externalDependency": null
@@ -212,11 +217,14 @@
         "issueId": "i14",
         "description": "assisted-offense under-expression (persistent V6 diagnostic)",
         "severity": "HIGH",
-        "rootCause": null,
-        "files": [],
-        "resolutionStatus": "OPEN",
-        "implementedFix": null,
-        "verification": null,
+        "rootCause": "postThreat proxy distorted mixes; Boston residual was coach-phase data granularity",
+        "files": [
+          "src/v3/calibration/calibrationPlayerAdapter.js",
+          "scripts/validation/claimSupport.mjs"
+        ],
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "implementedFix": "postThreat derivation repair (Candidate 3); assistedRate claim-support rule (coach ballMovement >= 6)",
+        "verification": "Boston assistedRate clears its margin in the Candidate 3 corrected diagnostic",
         "regressionTests": [],
         "remainingRisk": null,
         "externalDependency": null
@@ -225,11 +233,13 @@
         "issueId": "i15",
         "description": "defensive suppression under-expression (persistent V6 diagnostic)",
         "severity": "HIGH",
-        "rootCause": null,
-        "files": [],
-        "resolutionStatus": "OPEN",
-        "implementedFix": null,
-        "verification": null,
+        "rootCause": "missing defensive evidence on post-1974 records + stale baselines",
+        "files": [
+          "scripts/d0/backfill.mjs"
+        ],
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "implementedFix": "person-prior defensive bands; re-derived baselines",
+        "verification": "Boston refPppVsTeam cluster clears in the Candidate 3 corrected diagnostic",
         "regressionTests": [],
         "remainingRisk": null,
         "externalDependency": null
@@ -238,11 +248,13 @@
         "issueId": "i16",
         "description": "post-up identity residual (Houston 2007-08 persistent diagnostic)",
         "severity": "HIGH",
-        "rootCause": null,
-        "files": [],
-        "resolutionStatus": "OPEN",
-        "implementedFix": null,
-        "verification": null,
+        "rootCause": "rebound-dominated postThreat set post-up baselines by non-scorers",
+        "files": [
+          "src/v3/calibration/calibrationPlayerAdapter.js"
+        ],
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "implementedFix": "interior-scoring-weighted postThreat (Candidate 3 c3-02)",
+        "verification": "Houston postUpShare clears; corpus has zero sub-10-ppg players at postThreat 7+",
         "regressionTests": [],
         "remainingRisk": null,
         "externalDependency": null
@@ -251,11 +263,13 @@
         "issueId": "i17",
         "description": "rebounding identity residual (Portland 1974-75 persistent diagnostic)",
         "severity": "MEDIUM",
-        "rootCause": null,
-        "files": [],
-        "resolutionStatus": "OPEN",
-        "implementedFix": null,
-        "verification": null,
+        "rootCause": "same postThreat defect through the reference mix",
+        "files": [
+          "src/v3/calibration/calibrationPlayerAdapter.js"
+        ],
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "implementedFix": "same as i16",
+        "verification": "Portland orebRate clears in the Candidate 3 corrected diagnostic",
         "regressionTests": [],
         "remainingRisk": null,
         "externalDependency": null
@@ -264,24 +278,30 @@
         "issueId": "i18",
         "description": "pace residual (Houston 2007-08 persistent diagnostic)",
         "severity": "MEDIUM",
-        "rootCause": null,
-        "files": [],
-        "resolutionStatus": "OPEN",
-        "implementedFix": null,
-        "verification": null,
+        "rootCause": "coach-phase numeric granularity: Adelman's single record carries career-blend tempo 7; the 2007-08 slow phase is not representable without owner-curated per-phase coach data",
+        "files": [
+          "scripts/validation/claimSupport.mjs"
+        ],
+        "resolutionStatus": "EXTERNAL_BLOCKER_WITH_SAFE_PRODUCT_FALLBACK",
+        "implementedFix": "claim-support rule: pace claims require |coachTempo - 5| >= 1 in the claimed direction at selection time, so an unsupported claim is never scored",
+        "verification": "pace machinery verified exact (expected 92.35 vs observed 92.08); fallback rule encoded in claimSupport.mjs",
         "regressionTests": [],
         "remainingRisk": null,
-        "externalDependency": null
+        "externalDependency": "owner-curated, source-backed per-phase coach system data"
       },
       {
         "issueId": "i19",
         "description": "prior-phase artifacts that can overwrite themselves (frozen producers)",
         "severity": "MEDIUM",
-        "rootCause": null,
-        "files": [],
-        "resolutionStatus": "OPEN",
-        "implementedFix": null,
-        "verification": null,
+        "rootCause": "artifact producers defaulted to their original output paths",
+        "files": [
+          "scripts/candidate2/measure.mjs",
+          "scripts/synthetic/marginEvidence.mjs",
+          "scripts/synthetic/calibrationLadder.mjs"
+        ],
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "implementedFix": "--out/--dir flags defaulting to original paths; frozen producers already carry --refreeze guards",
+        "verification": "candidate3 measurement writes to 6c4d0 without touching measurement-candidate2.json",
         "regressionTests": [],
         "remainingRisk": null,
         "externalDependency": null
@@ -290,11 +310,11 @@
         "issueId": "i20",
         "description": "non-accessing commands that write output",
         "severity": "MEDIUM",
-        "rootCause": null,
+        "rootCause": "asserted risk from an earlier phase",
         "files": [],
-        "resolutionStatus": "OPEN",
+        "resolutionStatus": "NOT_REPRODUCIBLE_WITH_EVIDENCE",
         "implementedFix": null,
-        "verification": null,
+        "verification": "the 6C4C3 preflight measured all eight non-accessing command modes: zero seals opened, zero formal outputs written, access counts 0->0 across every invocation (phase6c4c3-preflight.json commandSurfaces)",
         "regressionTests": [],
         "remainingRisk": null,
         "externalDependency": null
@@ -353,22 +373,13 @@
       }
     ],
     "itemCount": 24,
-    "unresolvedTechnicalFailures": 13,
+    "unresolvedTechnicalFailures": 4,
     "unresolvedIds": [
-      "i01",
-      "i13",
-      "i14",
-      "i15",
-      "i16",
-      "i17",
-      "i18",
-      "i19",
-      "i20",
       "i21",
       "i22",
       "i23",
       "i24"
     ]
   },
-  "outputHash": "5063435b227ef1b5d9e1691a193c434c74e872d182eee9bce84fc90fad2cb255"
+  "outputHash": "86d5b17db761a0eeb593c9edea788f99afa257a69616e40b63be3c3e5e28a68b"
 }

@@ -169,7 +169,7 @@ describe("6C4C1 — Candidate 2 identity", () => {
   });
 
   it("stamps 1.2.0 and carries it in every result fingerprint", () => {
-    expect(versionOf("possessionCalibrationVersion")).toBe("1.2.0");
+    expect(versionOf("possessionCalibrationVersion")).toBe("1.3.0");
     expect(R("candidate2-lock").possessionCalibrationVersion).toBe("1.2.0");
   });
 });

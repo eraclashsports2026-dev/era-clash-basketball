@@ -1,0 +1,68 @@
+{
+  "artifact": "candidate3-change-manifest",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run d0:c3-identity",
+  "generatedAt": "2026-08-27T23:00:05.601Z",
+  "gitCommit": "731a0192e135e77e79c9d9c81048c2f13a4df56f",
+  "branch": "phase-6c4d0-v6-invalidity-and-profile-repair",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "candidate3ChangeManifestVersion": "1.0.0",
+    "candidateId": "Candidate 3",
+    "parentCandidateId": "Candidate 2",
+    "changes": [
+      {
+        "changeId": "c3-01",
+        "module": "src/v3/actions/families.js",
+        "failureClustersAddressed": [
+          "SA movementShare (mechanism)",
+          "modest-roster coach intent generally"
+        ],
+        "beforeBehavior": "ISOLATION, OFF_BALL_SCREEN and CUT multiplied their entire weight — coach term included — by a roster-capability reach() gate; a motion-10 coach with sub-threshold movers expressed a -0.0006 movement delta vs neutral",
+        "afterBehavior": "the coach term carries past the gate at INTENT_CARRY (floor 0.5, scaling to 1.0 with roster support); roster, era and mismatch terms stay gated exactly as before",
+        "rootCause": "frequency doctrine violated: coach tendency sets how often a family is attempted, execution quality is priced at resolution",
+        "mechanicalRationale": "mirror of Candidate 2's defensive SCHEME_TRANSFER (rate 0.5); neutral coach remains an exact mirror fixed point",
+        "entityHardcodeCheck": "no team, player, coach or fixture id appears; verified by review and by the strong-roster cells being byte-identical",
+        "flatBonusCheck": "no universal term: saturated-gate rosters are an exact no-op and low-motion coaches remain below neutral",
+        "parameterChange": "none — frozen constant INTENT_CARRY, not a registry parameter (same convention as ASSIST_IDENTITY and SCHEME_TRANSFER)",
+        "dataChange": "none",
+        "versionChange": "actionLibraryVersion 2.0.0 -> 2.1.0",
+        "tests": [
+          "movement-intent-controls-candidate2/3 artifacts",
+          "vitest families suite"
+        ],
+        "regressionRisk": "action-mix normalization shifts for unsaturated rosters only"
+      },
+      {
+        "changeId": "c3-02",
+        "module": "src/v3/calibration/calibrationPlayerAdapter.js",
+        "failureClustersAddressed": [
+          "Houston postUpShare",
+          "Portland orebRate (via reference mix)",
+          "Boston assistedRate (via mix)"
+        ],
+        "beforeBehavior": "postThreat = scaled rebounds x 0.5 + big-man base 4: nine sub-10-ppg players rated 7+, Rodman (5.5 ppg) 9.0, Ben Wallace 8.4 > Yao 7.9",
+        "afterBehavior": "postThreat = interior scoring volume x 0.62 + bounded rebound evidence x 0.22 + position base 2.2/0.6",
+        "rootCause": "a THREAT derivation dominated by a non-scoring statistic set post-up baselines by players who cannot score on the block",
+        "mechanicalRationale": "interior volume is the same volume-through-the-interior term rimThreat already uses; documented anchors, no fitted coefficients",
+        "entityHardcodeCheck": "position-scoped constants only",
+        "flatBonusCheck": "re-ranks by evidence; corpus-wide zero sub-10-ppg players at 7+",
+        "parameterChange": "none",
+        "dataChange": "none (derivation, not data)",
+        "versionChange": "possessionCalibrationVersion 1.2.0 -> 1.3.0 (covers both changes)",
+        "tests": [
+          "corpus ordering assertions in vitest",
+          "corrected diagnostic"
+        ],
+        "regressionRisk": "post-up frequency and Post Hub role coverage shift for rebound-heavy non-scorers"
+      }
+    ],
+    "changeCount": 2,
+    "changeManifestHash": "9ab7c1a931dce8333ded313f409145b4a3ed5491a05e27e8bce763fecff73a7f"
+  },
+  "outputHash": "c77f354b239fb0a871fa3ac9ad07778730811567e178c62c497021f3fbc9e19a"
+}

@@ -32,7 +32,7 @@ describe("6C4B1 WS0 — Candidate 1 integrity", () => {
     const lock = R4("candidate1-lock").data;
     expect(lock.candidateLockStatus).toBe("LOCKED");
     expect(lock.validationAttemptStatus).toBe("NOT_RUN");
-    expect(versionOf("possessionCalibrationVersion")).toBe("1.2.0");
+    expect(versionOf("possessionCalibrationVersion")).toBe("1.3.0");
   });
 
   it("keeps every parameter at the locked value", () => {

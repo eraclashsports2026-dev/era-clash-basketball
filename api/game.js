@@ -14,6 +14,8 @@ import { flags, limits } from "./_lib/flags.js";
 import { tooLarge, MODES, validateTeamIds, validSimId, validChallengeId, cleanName } from "./_lib/validate.js";
 import { computeResult, dailyScore, newSeed } from "./_lib/game-core.js";
 import { computeResultV3 } from "./_lib/game-core-v3.js";
+import { computeResultPreview, PREVIEW_NAMESPACES, PREVIEW_RESULT_ID_PREFIX } from "./_lib/previewEngine.js";
+import { previewEvent } from "./_lib/previewTelemetry.js";
 import { validCoachId, validEraId } from "./_lib/validate.js";
 import { validDifficulty } from "../src/v3/difficulty.js";
 import { findDuplicatePerson } from "../src/v3/persons.js";
@@ -147,7 +149,7 @@ export default async function handler(req, res) {
       if (!claimed) {
         const idem = await getJSON(`idem:${simulationId}`);
         if (idem?.resultId) {
-          const prior = await getJSON(`result:${idem.resultId}`);
+          const prior = await getJSON(`${String(idem.resultId).startsWith("pv_") ? "preview-result" : "result"}:${idem.resultId}`);
           if (prior) return res.status(200).json({ requestId, resultId: idem.resultId, result: publicResult(prior), records: idem.records || null, replayed: true });
         }
         return sendError(res, "IDEMPOTENCY_CONFLICT", requestId);
@@ -181,7 +183,28 @@ export default async function handler(req, res) {
     // V3 possession engine (flag-gated; preview-only by default). Coach and
     // Era Style ids are validated and loaded canonically server-side — the
     // browser cannot author coach attributes or era modifiers.
-    const computed = f.simV3
+    // ── Protected preview (default off) ─────────────────────────────────
+    // When PREVIEW_SIM_ENGINE_ENABLED is true, single games run on the LOCKED
+    // preview candidate. ANY preview failure — including out-of-scope modes —
+    // falls back to the production engine for that request, so the preview can
+    // never take a user request down. With the flag false (the default) this
+    // block is skipped entirely and the code below is byte-identical to
+    // pre-preview behavior.
+    let previewComputed = null;
+    if (f.previewSimEngine && f.simV3 && mode === "single" && blue && !dailyCfg) {
+      try {
+        previewEvent("simulation_started", { mode });
+        previewComputed = computeResultPreview(mode, gold, blue, {
+          coachGoldId: validCoachId(b.coachGoldId) || "neutral",
+          coachBlueId: validCoachId(b.coachBlueId) || "neutral",
+          eraStyleId: validEraId(b.eraStyleId) || undefined,
+        }, seed);
+      } catch (e) {
+        previewComputed = null;
+        previewEvent("fallback_invoked", { mode, reason: String(e.code ?? e.message).slice(0, 80) });
+      }
+    }
+    const computed = previewComputed ?? (f.simV3
       ? computeResultV3(mode, gold, blue, {
           // In a coach/era Daily the era is the OFFICIAL one and Blue takes the
           // neutral staff, so the puzzle is identical for everyone and the only
@@ -196,8 +219,10 @@ export default async function handler(req, res) {
           // version-blind one. One derivation, one owner.
           dailySeedPolicy: dailyCfg ? "caller-derived" : undefined,
         }, seed)
-      : computeResult(mode, gold, blue, seed);
-    const resultId = newId(10);
+      : computeResult(mode, gold, blue, seed));
+    // Preview results are namespaced end-to-end: a pv_ id, stored only under
+    // preview-result:*. Production namespaces never hold a preview record.
+    const resultId = (previewComputed ? PREVIEW_RESULT_ID_PREFIX : "") + newId(10);
     const record = {
       v: 1,
       id: resultId,
@@ -224,7 +249,8 @@ export default async function handler(req, res) {
     const records = { persisted: false, daily: null, challenge: null };
     const kvDown = chaos === "kv-down" || !hasStore();
     if (!kvDown) {
-      await setJSON(`result:${resultId}`, record, RESULT_TTL); // written once, never rewritten
+      const resultKey = previewComputed ? `${PREVIEW_NAMESPACES.result}:${resultId}` : `result:${resultId}`;
+      await setJSON(resultKey, record, RESULT_TTL); // written once, never rewritten
       records.persisted = true;
 
       if (mode === "daily") {
