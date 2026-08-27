@@ -22,7 +22,6 @@ const REQUIRED_ARTIFACTS = [
   "synthetic-v2-sample-plan", "synthetic-v2-seeds", "synthetic-v2-verdict-schema",
   "synthetic-v2-aggregation-policy", "synthetic-v2-mock-manifest", "synthetic-v2-dry-run",
   "synthetic-v2-command-certification", "compound-formal-validation-package-v2",
-  "phase6c4b1s-synthetic-v2-preparation",
 ];
 const REQUIRED_DOCS = [
   "synthetic-v2-formal-execution-readiness", "synthetic-v2-guardrail-registry",
