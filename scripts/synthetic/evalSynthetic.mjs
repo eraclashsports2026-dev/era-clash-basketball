@@ -14,6 +14,9 @@ const mean = (xs) => xs.reduce((a, b) => a + b, 0) / xs.length;
 const sdOf = (xs) => { if (xs.length < 2) return null; const m = mean(xs);
   return Math.sqrt(xs.reduce((a, b) => a + (b - m) ** 2, 0) / (xs.length - 1)); };
 
+export const CATASTROPHIC_GUARDRAILS = Object.freeze([
+  "requireZeroInvariantFailures", "requireZeroImpossibleResults", "requireSameSeedReplay"]);
+
 export const CELL = Object.freeze({ PASS: "PASS", FAIL: "FAIL", INDETERMINATE: "INDETERMINATE",
   NOT_APPLICABLE: "NOT_APPLICABLE", NOT_MEASURED: "NOT_MEASURED" });
 export const FIXTURE = Object.freeze({ PASS: "PASS", FAIL: "FAIL", INVALID_RUN: "INVALID_RUN" });
@@ -53,6 +56,39 @@ export const zeroCountCell = ({ observed, what }) => {
     ? { outcome: CELL.PASS, observed: 0, threshold: 0, practicalMargin: 0, marginSatisfied: true, se: null }
     : { outcome: CELL.FAIL, observed, threshold: 0, practicalMargin: 0, marginSatisfied: true, se: null,
         reason: `${observed} ${what} — a count, so there is no sampling noise to absorb and no margin applies` };
+};
+
+/**
+ * A failed structural or determinism guardrail means the fixture's games are
+ * self-contradictory, so every other observation on that fixture was measured
+ * on games the engine itself denies. Those cells are demoted to INDETERMINATE
+ * rather than left as passes: a broken game must not grant pass credit to
+ * whatever was measured alongside it. Exported so the dry run can drive it
+ * directly instead of waiting for a real invariant violation to occur.
+ */
+export const applyCatastrophicRule = (cellsIn) => {
+  const cells = { ...cellsIn };
+  const catastrophicFailed = CATASTROPHIC_GUARDRAILS.filter((k) => cells[k]?.outcome === CELL.FAIL);
+  if (catastrophicFailed.length) {
+    for (const [k, c] of Object.entries(cells)) {
+      if (CATASTROPHIC_GUARDRAILS.includes(k)) continue;
+      if (c.outcome === CELL.PASS || c.outcome === CELL.FAIL) {
+        cells[k] = { ...c, outcome: CELL.INDETERMINATE, marginSatisfied: false,
+          demotedByCatastrophicRule: true,
+          reason: `measured on games the engine itself contradicts (${catastrophicFailed.join(", ")} failed on this fixture), so this observation carries no credit in either direction` };
+      }
+    }
+  }
+  return { cells, catastrophicFailed };
+};
+
+/** The fixture verdict, from its cells alone. */
+export const fixtureVerdictFrom = (cells) => {
+  const outcomes = Object.values(cells).map((c) => c.outcome);
+  return outcomes.includes(CELL.NOT_MEASURED) ? FIXTURE.INVALID_RUN
+    : outcomes.includes(CELL.FAIL) ? FIXTURE.FAIL
+    : outcomes.includes(CELL.PASS) ? FIXTURE.PASS
+    : FIXTURE.INVALID_RUN;
 };
 
 // ── measurement ─────────────────────────────────────────────────────────────
@@ -347,24 +383,9 @@ export const evaluateFixture = ({ fixture, fixtureIndex, surfacePlan, samplePlan
         practicalMargin: margins.roleMatchedUpgradeWinRate, marginSatisfied: null, surface: "n/a",
         reason: surf.VS_ROLE_MATCHED_UPGRADE.reason };
 
-  // ── the catastrophic rule ────────────────────────────────────────────────
-  const CATASTROPHIC = ["requireZeroInvariantFailures", "requireZeroImpossibleResults", "requireSameSeedReplay"];
-  const catastrophicFailed = CATASTROPHIC.filter((k) => cells[k].outcome === CELL.FAIL);
-  if (catastrophicFailed.length) {
-    for (const [k, c] of Object.entries(cells)) {
-      if (CATASTROPHIC.includes(k)) continue;
-      if (c.outcome === CELL.PASS || c.outcome === CELL.FAIL) {
-        cells[k] = { ...c, outcome: CELL.INDETERMINATE, marginSatisfied: false,
-          reason: `measured on games the engine itself contradicts (${catastrophicFailed.join(", ")} failed on this fixture), so this observation carries no credit in either direction` };
-      }
-    }
-  }
-
-  const outcomes = Object.values(cells).map((c) => c.outcome);
-  const verdict = outcomes.includes(CELL.NOT_MEASURED) ? FIXTURE.INVALID_RUN
-    : outcomes.includes(CELL.FAIL) ? FIXTURE.FAIL
-    : outcomes.includes(CELL.PASS) ? FIXTURE.PASS
-    : FIXTURE.INVALID_RUN;
+  const { cells: finalCells, catastrophicFailed } = applyCatastrophicRule(cells);
+  Object.assign(cells, finalCells);
+  const verdict = fixtureVerdictFrom(cells);
 
   return { fixtureId: fixture.id, purpose: fixture.purpose, era: fixture.era, coach: fixture.coach,
     verdict, cells, measured, surfacesRun, totalGames, structuralTotals: totals,
