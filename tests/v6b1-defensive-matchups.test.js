@@ -1,5 +1,6 @@
 // ── Phase 6B1: defensive assignments, schemes and mismatch logic ─────────────
 import { describe, it, expect } from "vitest";
+import COACH_DATA from "../src/v3/data/coaches.js";
 import { readFileSync, readdirSync } from "node:fs";
 import {
   buildDefensivePlan, buildDefensivePlans, buildMatchupProfiles, buildMatchupMatrix,
@@ -95,7 +96,7 @@ describe("versioning and isolation", () => {
 
   it("the development cache key includes the defensive module version", () => {
     const k = cacheKeys.possessionResult({ matchupFingerprint: "abc", simulationSeed: 1 });
-    expect(k).toContain("dm1-1-0");
+    expect(k).toContain("dm1-2-0");
     expect(k, "Phase 6B2 modules join the identity").toContain("zr1-0-0");
     expect(k).toContain("ca1-0-0");
     expect(k.startsWith("dev-possession:")).toBe(true);
@@ -525,11 +526,30 @@ describe("schemes and era legality", () => {
     expect(nPlan.scheme.zoneUsage).toBeGreaterThan(jPlan.scheme.zoneUsage);
   });
 
-  it("personnel can cap a scheme the coach and era both allow", () => {
-    // A lineup of non-switchable bigs cannot switch, whatever the coach wants.
+  it("personnel limits a scheme the coach and era both allow, without erasing the coach", () => {
+    // This assertion used to require the realized value to sit at or below the
+    // personnel ceiling — a hard truncation. Candidate 2 changed that
+    // deliberately: Historical V5 showed the truncation collapsed the whole
+    // dimension (helpCeiling near 3.0 against coach intent 5 to 9 on all eight
+    // defences) and, because the neutral coach's intent is 5, put six
+    // documented elite defensive coaches BELOW a generic one. Scheme is what a
+    // coach uses to get team defence out of limited defenders, so personnel now
+    // limits how efficiently intent converts rather than whether it may be
+    // attempted.
+    //
+    // What the test protects is unchanged and still checked: personnel must
+    // still MATTER, the constraint must still be recorded, and the realized
+    // value must still sit strictly below the coach's own intent.
     const plan = planFor(SIZE, SPLASH, "2010s", "steve-kerr");
     const ceiling = personnelCeiling(plan.defenders);
-    expect(plan.scheme.switchingFrequency).toBeLessThanOrEqual(ceiling.switchCeiling + 0.01);
+    const tk = coachToolkit(COACH_DATA.coaches.find((c) => c.id === "steve-kerr"));
+    // limited: the roster cannot deliver what the coach wants
+    expect(plan.scheme.switchingFrequency).toBeLessThan(tk.switching);
+    // but not erased: a coach above the neutral default still beats the raw
+    // personnel ceiling, which is what makes scheme expressible at all
+    if (tk.switching > 5) {
+      expect(plan.scheme.switchingFrequency).toBeGreaterThan(ceiling.switchCeiling - 0.01);
+    }
     const capped = plan.scheme.constraints.filter((c) => c.limitedBy === "PERSONNEL");
     expect(capped.length).toBeGreaterThan(0);
   });

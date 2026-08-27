@@ -78,7 +78,8 @@ describe("frozen acceptance policy", () => {
     // the chain is still intact. Both are asserted now.
     const C0 = "data/calibration/c6/baseline-candidate-lock.json";
     const C1 = "data/validation/6c4a/candidate1-lock.json";
-    const lockPath = existsSync(C1) ? C1 : C0;
+    const C2 = "data/validation/6c4c1/candidate2-lock.json";
+    const lockPath = existsSync(C2) ? C2 : existsSync(C1) ? C1 : C0;
     if (v == null) {
       for (const p of [C0, C1]) {
         expect(existsSync(p) && JSON.parse(readFileSync(p, "utf8")).data.candidateLockStatus === "LOCKED",

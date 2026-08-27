@@ -139,15 +139,26 @@ describe("paired side orientation", () => {
   });
 
   it("keeps the mirror's raw side bias small enough to be sampling noise", () => {
-    // One 256-game cell at a fixed seed can legitimately land 3+ standard
-    // errors out (Candidate 1's behaviour change re-drew this cell to 0.10,
-    // while 2,000 independent seeds measured the mirror gold rate at exactly
-    // 0.5000). The noise claim is therefore tested at the DEEP tier, where
-    // 2 standard errors is 0.044 — a tighter RELATIVE bound than the old
-    // 0.08-at-256, so a structural bias is caught sooner, not later.
-    const r = estimateWinProbability({ teamA: A, teamB: MIRROR, eraStyleId: "2010s", sampleTier: "DEEP", buildInput: buildPossessionInput });
+    // The bound has needed re-examination at every candidate change, and the
+    // reason is that its power was mis-derived rather than that the engine
+    // moved. sideBias.difference is firstAsGold minus firstAsBlue, each
+    // estimated on HALF the tier's games. At the DEEP tier that is 256 games
+    // per orientation, so one standard error of the DIFFERENCE is
+    // sqrt(0.25/256 + 0.25/256) = 0.044 — the 0.05 bound was about 1.1 sigma,
+    // which fails roughly a quarter of the time on a true mirror whatever the
+    // engine does. Candidate 1 drew 0.10 here; Candidate 2 drew 0.0547.
+    //
+    // The bound stays at 0.05 and the tier moves to INTERNAL_VALIDATION, where
+    // 4,096 games give a difference standard error of 0.0156 and 0.05 is a
+    // genuine 3.2 sigma. A structural side bias fails; a noisy draw does not.
+    // Phase 6C4C1 also measured this at 8,000 games per cell across eight
+    // era/coach mirrors: see candidate2-side-symmetry.json.
+    const r = estimateWinProbability({ teamA: A, teamB: MIRROR, eraStyleId: "2010s", sampleTier: "INTERNAL_VALIDATION", buildInput: buildPossessionInput });
+    const perOrientation = 4096 / 2;
+    const se = Math.sqrt(0.25 / perOrientation + 0.25 / perOrientation);
+    expect(se, "the tier must give the 0.05 bound at least three sigma of power").toBeLessThan(0.05 / 3);
     expect(Math.abs(r.sideBias.difference)).toBeLessThan(0.05);
-  });
+  }, 240000);
 
   it("splits each estimate evenly between the two orientations", () => {
     const r = est();

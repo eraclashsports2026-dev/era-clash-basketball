@@ -825,7 +825,7 @@ describe("fingerprint and cache identity", () => {
     const g = play({ simulationSeed: 100 }, FAST);
     const k = cacheKeys.possessionResult({ matchupFingerprint: g.fingerprint.matchupFingerprint, simulationSeed: g.simulationSeed });
     expect(k).toContain(String(g.simulationSeed >>> 0));
-    expect(k).toContain("pe1-1-0");
+    expect(k).toContain("pe1-2-0");
     expect(k).toContain("al2-0-0");
   });
 
