@@ -1,0 +1,447 @@
+{
+  "artifact": "historical-v6-practical-margins",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run v6:policy",
+  "generatedAt": "2026-08-27T19:49:58.424Z",
+  "gitCommit": "aee084fedf989e333394d67e6d35477e62b797e3",
+  "branch": "phase-6c4c2-v6-freeze-and-seal",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "historicalV6PracticalMarginPolicyVersion": "1.0.0",
+    "supersedes": {
+      "artifact": "trait-practical-margin-policy-v5",
+      "policyHash": "f92f05a662eb5c2820b2011761c65a454132ee0badd8ce1b70c1edf76bac704b",
+      "whatChanged": "Noise re-estimated from CANDIDATE 2 control cells. The basketball-meaningful floors are unchanged — a floor moves only with a stated reason, and none had one. The V5 policy is preserved, not edited.",
+      "notOverwritten": true
+    },
+    "appliesFrom": "Historical Holdout V6 and every later formal validation",
+    "neverAppliesTo": "Historical Holdout V3, V4 and V5 — consumed sets whose verdicts stand as issued",
+    "rule": {
+      "hardFail": "direction opposite to the claim AND the 95% interval excludes zero AND |difference| > margin[metric]",
+      "directionalSoftFail": "direction opposite to the claim AND (interval includes zero OR |difference| <= margin[metric]) — reported, never verdict-driving",
+      "pass": "direction matches the claim",
+      "indeterminate": "statistically different but inside the practical margin — never a FAIL, and at the decision tier it triggers escalation rather than a verdict",
+      "reportingStates": [
+        "PASS",
+        "STATISTICALLY_DIFFERENT_PRACTICALLY_EQUIVALENT",
+        "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED",
+        "INCONCLUSIVE",
+        "NOT_OBSERVABLE",
+        "NOT_APPLICABLE"
+      ],
+      "dualGate": "Both gates must fire. Statistical significance alone is not a failure at 4,096 games, and a large difference inside noise is not evidence."
+    },
+    "metrics": {
+      "gamePace": {
+        "margin": 1,
+        "practicalFloor": 1,
+        "unit": "possessions per game",
+        "traitFamily": "PACE",
+        "practicalRationale": "one possession per game is the smallest pace gap discussed as real",
+        "confidenceMethod": "95% Wald interval on the difference of two independent per-game sample means",
+        "sourceControls": "Candidate 2 neutral control cell (2000 games) from historical-v6-observability-certification.json",
+        "noiseEstimate": {
+          "neutralCellSd": 2.27093,
+          "standardErrorAtProtocolN": 0.035483,
+          "noiseComponent": 0.283866,
+          "multiple": 8
+        },
+        "sampleRequirement": {
+          "gamesPerSurface": 4096,
+          "sideBalanced": true
+        },
+        "binding": "PRACTICAL_FLOOR",
+        "metricCertifiedUnderCandidate2": true,
+        "metricCertifiedUnderCandidate1": true,
+        "scoreableOnV6": true,
+        "changedFromV5Policy": false,
+        "v5PolicyMargin": 1
+      },
+      "pppVsReference": {
+        "margin": 0.02,
+        "practicalFloor": 0.02,
+        "unit": "points per possession",
+        "traitFamily": "OFFENSIVE_QUALITY",
+        "practicalRationale": "2 points per 100 possessions separates adjacent offensive tiers",
+        "confidenceMethod": "95% Wald interval on the difference of two independent per-game sample means",
+        "sourceControls": "Candidate 2 neutral control cell (2000 games) from historical-v6-observability-certification.json",
+        "noiseEstimate": {
+          "neutralCellSd": 0.11446,
+          "standardErrorAtProtocolN": 0.001788,
+          "noiseComponent": 0.014308,
+          "multiple": 8
+        },
+        "sampleRequirement": {
+          "gamesPerSurface": 4096,
+          "sideBalanced": true
+        },
+        "binding": "PRACTICAL_FLOOR",
+        "metricCertifiedUnderCandidate2": true,
+        "metricCertifiedUnderCandidate1": true,
+        "scoreableOnV6": true,
+        "changedFromV5Policy": false,
+        "v5PolicyMargin": 0.02
+      },
+      "refPppVsTeam": {
+        "margin": 0.02,
+        "practicalFloor": 0.02,
+        "unit": "points per possession allowed",
+        "traitFamily": "DEFENSIVE_QUALITY",
+        "practicalRationale": "2 points per 100 possessions separates adjacent defensive tiers",
+        "confidenceMethod": "95% Wald interval on the difference of two independent per-game sample means",
+        "sourceControls": "Candidate 2 neutral control cell (2000 games) from historical-v6-observability-certification.json",
+        "noiseEstimate": {
+          "neutralCellSd": 0.11604,
+          "standardErrorAtProtocolN": 0.001813,
+          "noiseComponent": 0.014505,
+          "multiple": 8
+        },
+        "sampleRequirement": {
+          "gamesPerSurface": 4096,
+          "sideBalanced": true
+        },
+        "binding": "PRACTICAL_FLOOR",
+        "metricCertifiedUnderCandidate2": true,
+        "metricCertifiedUnderCandidate1": true,
+        "scoreableOnV6": true,
+        "changedFromV5Policy": false,
+        "v5PolicyMargin": 0.02
+      },
+      "threeShare": {
+        "margin": 0.02,
+        "practicalFloor": 0.02,
+        "unit": "share of attempts",
+        "traitFamily": "SHOT_PROFILE",
+        "practicalRationale": "2% of a shot diet; below this two profiles are the same profile",
+        "confidenceMethod": "95% Wald interval on the difference of two independent per-game sample means",
+        "sourceControls": "Candidate 2 neutral control cell (2000 games) from historical-v6-observability-certification.json",
+        "noiseEstimate": {
+          "neutralCellSd": 0.04499,
+          "standardErrorAtProtocolN": 0.000703,
+          "noiseComponent": 0.005624,
+          "multiple": 8
+        },
+        "sampleRequirement": {
+          "gamesPerSurface": 4096,
+          "sideBalanced": true
+        },
+        "binding": "PRACTICAL_FLOOR",
+        "metricCertifiedUnderCandidate2": false,
+        "metricCertifiedUnderCandidate1": false,
+        "scoreableOnV6": false,
+        "changedFromV5Policy": false,
+        "v5PolicyMargin": 0.02
+      },
+      "interiorShotShare": {
+        "margin": 0.02,
+        "practicalFloor": 0.02,
+        "unit": "share of attempts",
+        "traitFamily": "SHOT_PROFILE",
+        "practicalRationale": "2% of the shot diet, the same floor threeShare uses: interior and perimeter share one denominator, so a difference too small to matter in one is too small to matter in the other",
+        "confidenceMethod": "95% Wald interval on the difference of two independent per-game sample means",
+        "sourceControls": "Candidate 2 neutral control cell (2000 games) from historical-v6-observability-certification.json",
+        "noiseEstimate": {
+          "neutralCellSd": 0.05299,
+          "standardErrorAtProtocolN": 0.000828,
+          "noiseComponent": 0.006624,
+          "multiple": 8
+        },
+        "sampleRequirement": {
+          "gamesPerSurface": 4096,
+          "sideBalanced": true
+        },
+        "binding": "PRACTICAL_FLOOR",
+        "metricCertifiedUnderCandidate2": false,
+        "metricCertifiedUnderCandidate1": true,
+        "scoreableOnV6": false,
+        "changedFromV5Policy": false,
+        "v5PolicyMargin": 0.02
+      },
+      "orebRate": {
+        "margin": 0.02,
+        "practicalFloor": 0.02,
+        "unit": "offensive rebound rate",
+        "traitFamily": "REBOUNDING",
+        "practicalRationale": "2% of available offensive boards separates crash tiers",
+        "confidenceMethod": "95% Wald interval on the difference of two independent per-game sample means",
+        "sourceControls": "Candidate 2 neutral control cell (2000 games) from historical-v6-observability-certification.json",
+        "noiseEstimate": {
+          "neutralCellSd": 0.06253,
+          "standardErrorAtProtocolN": 0.000977,
+          "noiseComponent": 0.007816,
+          "multiple": 8
+        },
+        "sampleRequirement": {
+          "gamesPerSurface": 4096,
+          "sideBalanced": true
+        },
+        "binding": "PRACTICAL_FLOOR",
+        "metricCertifiedUnderCandidate2": true,
+        "metricCertifiedUnderCandidate1": true,
+        "scoreableOnV6": true,
+        "changedFromV5Policy": false,
+        "v5PolicyMargin": 0.02
+      },
+      "orebRateAgainst": {
+        "margin": 0.02,
+        "practicalFloor": 0.02,
+        "unit": "offensive rebound rate allowed",
+        "traitFamily": "REBOUNDING",
+        "practicalRationale": "the same 2% of available offensive boards as orebRate, measured from the other side: allowing 2% more second chances is the same size of basketball difference as taking them",
+        "confidenceMethod": "95% Wald interval on the difference of two independent per-game sample means",
+        "sourceControls": "Candidate 2 neutral control cell (2000 games) from historical-v6-observability-certification.json",
+        "noiseEstimate": {
+          "neutralCellSd": 0.05835,
+          "standardErrorAtProtocolN": 0.000912,
+          "noiseComponent": 0.007294,
+          "multiple": 8
+        },
+        "sampleRequirement": {
+          "gamesPerSurface": 4096,
+          "sideBalanced": true
+        },
+        "binding": "PRACTICAL_FLOOR",
+        "metricCertifiedUnderCandidate2": true,
+        "metricCertifiedUnderCandidate1": true,
+        "scoreableOnV6": true,
+        "changedFromV5Policy": false,
+        "v5PolicyMargin": 0.02
+      },
+      "assistedRate": {
+        "margin": 0.02,
+        "practicalFloor": 0.02,
+        "unit": "share of made baskets assisted",
+        "traitFamily": "BALL_MOVEMENT",
+        "practicalRationale": "2% of makes; below this ball-movement identities are indistinguishable",
+        "confidenceMethod": "95% Wald interval on the difference of two independent per-game sample means",
+        "sourceControls": "Candidate 2 neutral control cell (2000 games) from historical-v6-observability-certification.json",
+        "noiseEstimate": {
+          "neutralCellSd": 0.081,
+          "standardErrorAtProtocolN": 0.001266,
+          "noiseComponent": 0.010125,
+          "multiple": 8
+        },
+        "sampleRequirement": {
+          "gamesPerSurface": 4096,
+          "sideBalanced": true
+        },
+        "binding": "PRACTICAL_FLOOR",
+        "metricCertifiedUnderCandidate2": true,
+        "metricCertifiedUnderCandidate1": true,
+        "scoreableOnV6": true,
+        "changedFromV5Policy": false,
+        "v5PolicyMargin": 0.02
+      },
+      "transitionShare": {
+        "margin": 0.03,
+        "practicalFloor": 0.03,
+        "unit": "share of possessions",
+        "traitFamily": "ACTION_MIX",
+        "practicalRationale": "action-mix shares are noisier constructs; 3% is the smallest identity-bearing gap",
+        "confidenceMethod": "95% Wald interval on the difference of two independent per-game sample means",
+        "sourceControls": "Candidate 2 neutral control cell (2000 games) from historical-v6-observability-certification.json",
+        "noiseEstimate": {
+          "neutralCellSd": 0.03343,
+          "standardErrorAtProtocolN": 0.000522,
+          "noiseComponent": 0.004179,
+          "multiple": 8
+        },
+        "sampleRequirement": {
+          "gamesPerSurface": 4096,
+          "sideBalanced": true
+        },
+        "binding": "PRACTICAL_FLOOR",
+        "metricCertifiedUnderCandidate2": true,
+        "metricCertifiedUnderCandidate1": true,
+        "scoreableOnV6": true,
+        "changedFromV5Policy": false,
+        "v5PolicyMargin": 0.03
+      },
+      "pnrShare": {
+        "margin": 0.03,
+        "practicalFloor": 0.03,
+        "unit": "share of possessions",
+        "traitFamily": "ACTION_MIX",
+        "practicalRationale": "3% of possessions, roughly three plays a game: below that two pick-and-roll identities are not distinguishable by watching",
+        "confidenceMethod": "95% Wald interval on the difference of two independent per-game sample means",
+        "sourceControls": "Candidate 2 neutral control cell (2000 games) from historical-v6-observability-certification.json",
+        "noiseEstimate": {
+          "neutralCellSd": 0.03332,
+          "standardErrorAtProtocolN": 0.000521,
+          "noiseComponent": 0.004165,
+          "multiple": 8
+        },
+        "sampleRequirement": {
+          "gamesPerSurface": 4096,
+          "sideBalanced": true
+        },
+        "binding": "PRACTICAL_FLOOR",
+        "metricCertifiedUnderCandidate2": true,
+        "metricCertifiedUnderCandidate1": true,
+        "scoreableOnV6": true,
+        "changedFromV5Policy": false,
+        "v5PolicyMargin": 0.03
+      },
+      "postUpShare": {
+        "margin": 0.03,
+        "practicalFloor": 0.03,
+        "unit": "share of possessions",
+        "traitFamily": "ACTION_MIX",
+        "practicalRationale": "3% of possessions, roughly three post entries a game: the smallest gap that separates a post-centred offence from one that posts occasionally",
+        "confidenceMethod": "95% Wald interval on the difference of two independent per-game sample means",
+        "sourceControls": "Candidate 2 neutral control cell (2000 games) from historical-v6-observability-certification.json",
+        "noiseEstimate": {
+          "neutralCellSd": 0.0424,
+          "standardErrorAtProtocolN": 0.000663,
+          "noiseComponent": 0.0053,
+          "multiple": 8
+        },
+        "sampleRequirement": {
+          "gamesPerSurface": 4096,
+          "sideBalanced": true
+        },
+        "binding": "PRACTICAL_FLOOR",
+        "metricCertifiedUnderCandidate2": true,
+        "metricCertifiedUnderCandidate1": true,
+        "scoreableOnV6": true,
+        "changedFromV5Policy": false,
+        "v5PolicyMargin": 0.03
+      },
+      "isolationShare": {
+        "margin": 0.03,
+        "practicalFloor": 0.03,
+        "unit": "share of possessions",
+        "traitFamily": "ACTION_MIX",
+        "practicalRationale": "3% of possessions, roughly three isolations a game: below that a team is not meaningfully more isolation-heavy than another",
+        "confidenceMethod": "95% Wald interval on the difference of two independent per-game sample means",
+        "sourceControls": "Candidate 2 neutral control cell (2000 games) from historical-v6-observability-certification.json",
+        "noiseEstimate": {
+          "neutralCellSd": 0.00868,
+          "standardErrorAtProtocolN": 0.000136,
+          "noiseComponent": 0.001085,
+          "multiple": 8
+        },
+        "sampleRequirement": {
+          "gamesPerSurface": 4096,
+          "sideBalanced": true
+        },
+        "binding": "PRACTICAL_FLOOR",
+        "metricCertifiedUnderCandidate2": false,
+        "metricCertifiedUnderCandidate1": false,
+        "scoreableOnV6": false,
+        "changedFromV5Policy": false,
+        "v5PolicyMargin": 0.03
+      },
+      "movementShare": {
+        "margin": 0.03,
+        "practicalFloor": 0.03,
+        "unit": "share of possessions",
+        "traitFamily": "ACTION_MIX",
+        "practicalRationale": "3% of possessions across the off-ball screen, cut and handoff family: the smallest share difference that reads as a motion identity rather than a few extra actions",
+        "confidenceMethod": "95% Wald interval on the difference of two independent per-game sample means",
+        "sourceControls": "Candidate 2 neutral control cell (2000 games) from historical-v6-observability-certification.json",
+        "noiseEstimate": {
+          "neutralCellSd": 0.04252,
+          "standardErrorAtProtocolN": 0.000664,
+          "noiseComponent": 0.005315,
+          "multiple": 8
+        },
+        "sampleRequirement": {
+          "gamesPerSurface": 4096,
+          "sideBalanced": true
+        },
+        "binding": "PRACTICAL_FLOOR",
+        "metricCertifiedUnderCandidate2": true,
+        "metricCertifiedUnderCandidate1": true,
+        "scoreableOnV6": true,
+        "changedFromV5Policy": false,
+        "v5PolicyMargin": 0.03
+      },
+      "stealRateForced": {
+        "margin": 0.01,
+        "practicalFloor": 0.01,
+        "unit": "steals per opponent possession",
+        "traitFamily": "DEFENSIVE_EVENTS",
+        "practicalRationale": "1 steal per 100 possessions",
+        "confidenceMethod": "95% Wald interval on the difference of two independent per-game sample means",
+        "sourceControls": "Candidate 2 neutral control cell (2000 games) from historical-v6-observability-certification.json",
+        "noiseEstimate": {
+          "neutralCellSd": 0.022,
+          "standardErrorAtProtocolN": 0.000344,
+          "noiseComponent": 0.00275,
+          "multiple": 8
+        },
+        "sampleRequirement": {
+          "gamesPerSurface": 4096,
+          "sideBalanced": true
+        },
+        "binding": "PRACTICAL_FLOOR",
+        "metricCertifiedUnderCandidate2": false,
+        "metricCertifiedUnderCandidate1": false,
+        "scoreableOnV6": false,
+        "changedFromV5Policy": false,
+        "v5PolicyMargin": 0.01
+      },
+      "rimShareAgainst": {
+        "margin": 0.02,
+        "practicalFloor": 0.02,
+        "unit": "share of opponent attempts at rim",
+        "traitFamily": "DEFENSIVE_PROFILE",
+        "practicalRationale": "2% of the opponent's shot diet, the shot-profile floor applied to what a defence concedes: pushing 2% of attempts off the rim is the smallest rim-protection difference that shows up in a shot chart",
+        "confidenceMethod": "95% Wald interval on the difference of two independent per-game sample means",
+        "sourceControls": "Candidate 2 neutral control cell (2000 games) from historical-v6-observability-certification.json",
+        "noiseEstimate": {
+          "neutralCellSd": 0.0532,
+          "standardErrorAtProtocolN": 0.000831,
+          "noiseComponent": 0.00665,
+          "multiple": 8
+        },
+        "sampleRequirement": {
+          "gamesPerSurface": 4096,
+          "sideBalanced": true
+        },
+        "binding": "PRACTICAL_FLOOR",
+        "metricCertifiedUnderCandidate2": false,
+        "metricCertifiedUnderCandidate1": false,
+        "scoreableOnV6": false,
+        "changedFromV5Policy": false,
+        "v5PolicyMargin": 0.02
+      },
+      "defensiveZoneShare": {
+        "margin": 0.05,
+        "practicalFloor": 0.05,
+        "unit": "share of defensive possessions",
+        "traitFamily": "SCHEME",
+        "practicalRationale": "zone usage below 5% is not a scheme identity",
+        "confidenceMethod": "95% Wald interval on the difference of two independent per-game sample means",
+        "sourceControls": "Candidate 2 neutral control cell (2000 games) from historical-v6-observability-certification.json",
+        "noiseEstimate": {
+          "neutralCellSd": 0.0352,
+          "standardErrorAtProtocolN": 0.00055,
+          "noiseComponent": 0.0044,
+          "multiple": 8
+        },
+        "sampleRequirement": {
+          "gamesPerSurface": 4096,
+          "sideBalanced": true
+        },
+        "binding": "PRACTICAL_FLOOR",
+        "metricCertifiedUnderCandidate2": true,
+        "metricCertifiedUnderCandidate1": true,
+        "scoreableOnV6": true,
+        "changedFromV5Policy": false,
+        "v5PolicyMargin": 0.05
+      }
+    },
+    "noiseBasis": "Candidate 2 neutral control cells, data/validation/6c4c2/historical-v6-observability-certification.json",
+    "frozenBeforeSeal": true,
+    "frozenBeforeAnyV6Output": true,
+    "policyHash": "099d513ab855520c68f1c55991a156f9c56b3a6df123f06a708529f27b6413ae",
+    "frozen": true
+  },
+  "outputHash": "9bc98784cabd2f753d19acbf1f355669dfcd7b6121f63b43a2d350e6df9c97d3"
+}
