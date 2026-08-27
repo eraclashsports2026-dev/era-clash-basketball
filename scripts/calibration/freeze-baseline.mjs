@@ -42,9 +42,9 @@ export const BASELINE_CASES = [
   // possession moved it again; 36 was chosen because it reaches DOUBLE
   // overtime, which also exercises the repeat loop and the second overtime's
   // independent jump ball.
-  // Candidate 1 moved the OT seed a fourth time (36 -> 1005, double overtime),
+  // Candidate 1 moved the OT seed a fourth time (36 -> 1016, double overtime, re-searched after the full WS4-WS7 repair set),
   // found by search per the rule above.
-  { id: "dantoni-pace-2020s", goldIds: ["luka-20s", "harden-10s", "jordan-90s", "lebron-10s", "jokic-20s"], blueIds: ["magic-80s", "klay-10s", "pippen-90s", "duncan-00s", "hak-90s"], eraStyleId: "2020s", coachGoldId: "mike-dantoni", coachBlueId: "tom-thibodeau", simulationSeed: 1005 },
+  { id: "dantoni-pace-2020s", goldIds: ["luka-20s", "harden-10s", "jordan-90s", "lebron-10s", "jokic-20s"], blueIds: ["magic-80s", "klay-10s", "pippen-90s", "duncan-00s", "hak-90s"], eraStyleId: "2020s", coachGoldId: "mike-dantoni", coachBlueId: "tom-thibodeau", simulationSeed: 1016 },
   { id: "flag-off-6b1-path", goldIds: ["magic-80s", "jordan-90s", "pippen-90s", "duncan-00s", "hak-90s"], blueIds: ["curry-10s", "klay-10s", "bird-80s", "dirk-00s", "rob-90s"], eraStyleId: "1990s", coachGoldId: "pat-riley", coachBlueId: "phil-jackson", simulationSeed: 777, expandedActions: false, zoneResolution: false, offensiveAdjustments: false, opportunityAllocation: false },
 ];
 

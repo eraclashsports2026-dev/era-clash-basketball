@@ -106,11 +106,11 @@ export const PARITY_FIXTURES = (() => {
   // parity corpus without it would miss exactly the regression most likely to
   // occur. A test asserts both remain overtime games.
   // Candidate 1 (Phase 6C4A) changed engine behaviour, so the OT seeds moved
-  // again (13 -> 19, 252 -> 75), found by search exactly as before. The STORED
+  // again (13 -> 99, 252 -> 1920 after the full WS4-WS7 repair set), found by search exactly as before. The STORED
   // pre-wiring baseline keeps Candidate 0's cases untouched; live coverage
   // uses these.
-  add({ id: "overtime-single", era: "2020s", gold: SHOOTERS, blue: BIGS, seed: 19 });
-  add({ id: "overtime-double", era: "2020s", gold: SHOOTERS, blue: BIGS, seed: 75 });
+  add({ id: "overtime-single", era: "2020s", gold: SHOOTERS, blue: BIGS, seed: 99 });
+  add({ id: "overtime-double", era: "2020s", gold: SHOOTERS, blue: BIGS, seed: 1920 });
   // Synthetic development fixtures, which development is permitted to inspect.
   for (const [i, s] of SYNTHETIC_DEVELOPMENT_V2.slice(0, 6).entries()) {
     add({ id: `synthdev-${s.id}`, era: s.era, gold: s.five, blue: SYNTHETIC_DEVELOPMENT_V2[(i + 1) % 6].five,

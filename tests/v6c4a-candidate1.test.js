@@ -350,3 +350,34 @@ describe("6C4A WS6 — defensive-identity repair", () => {
     expect(df.decomposition.v5Action).toContain("re-certify");
   });
 });
+
+describe("6C4A WS7 — remaining repairs", () => {
+  const rr = R("candidate1-remaining-repairs").data;
+
+  it("leaves zero unresolved substantive failures", () => {
+    expect(rr.unresolvedSubstantiveFailures).toBe(0);
+    expect(rr.failedGates).toEqual([]);
+  });
+
+  it("reduces the OREB deficit through the intended wire and proves evidence saturation", () => {
+    expect(rr.orebRepair.diff.diff).toBeGreaterThan(rr.orebRepair.priorV4Diff);
+    const sd = rr.orebRepair.saturationDiagnostic;
+    expect(Math.abs(sd.offensiveGlassWithImputedSplit - sd.offensiveGlassAsIs)).toBeLessThan(0.5);
+  });
+
+  it("keeps era offensive-rebound rates inside the plausibility band, trending down by era", () => {
+    for (const [era, v] of Object.entries(rr.eraOrebRates)) {
+      expect(v, era).toBeGreaterThan(0.12);
+      expect(v, era).toBeLessThan(0.46);
+    }
+    expect(rr.eraOrebRates["2010s"]).toBeLessThan(rr.eraOrebRates["1960s"]);
+  });
+
+  it("changes no engine mechanic for any practical-margin-only failure", () => {
+    expect(rr.marginOnlyDispositions).toHaveLength(4);
+    for (const m of rr.marginOnlyDispositions) {
+      expect(m.engineChanged).toBe(false);
+      expect(m.underProspectivePolicy).toBe("DIRECTIONAL_SOFT_FAIL");
+    }
+  });
+});

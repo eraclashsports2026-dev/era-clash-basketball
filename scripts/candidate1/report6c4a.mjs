@@ -338,5 +338,40 @@ ${B ? `
 ${B.profilesStamped} profiles stamped from ${B.allDefensiveSeasonsParsed} All-Defensive seasons and ${B.dpoySeasonsParsed} DPOY seasons. ${B.discipline}.` : ""}`);
   }
 
+  if (has("candidate1-remaining-repairs")) {
+    const A = R("candidate1-remaining-repairs"); const d = A.data;
+    write("candidate1-remaining-repairs.md", `${prov(A)}# Candidate 1 — remaining repairs
+
+**Acceptance gate: ${d.pass ? "PASS" : `FAIL (${d.failedGates.join(", ")})`}**. Unresolved substantive failures: **${d.unresolvedSubstantiveFailures}**.
+
+## v4f-05 — offensive-glass wire (\`${d.orebRepair.disposition}\`)
+
+${d.orebRepair.mechanism}.
+
+| measure | value |
+| --- | ---: |
+| Sonics orebRate | ${d.orebRepair.teamOreb.mean} |
+| reference self orebRate | ${d.orebRepair.refSelfOreb.mean} |
+| diff | ${d.orebRepair.diff.diff} |
+| prior V4 diff | ${d.orebRepair.priorV4Diff} |
+| offensiveGlass as-is | ${d.orebRepair.saturationDiagnostic.offensiveGlassAsIs} |
+| offensiveGlass with imputed oreb split | ${d.orebRepair.saturationDiagnostic.offensiveGlassWithImputedSplit} |
+| reference offensiveGlass | ${d.orebRepair.saturationDiagnostic.referenceOffensiveGlass} |
+
+V5 action: ${d.orebRepair.v5Action}.
+
+## Era offensive-rebound rates (plausibility band)
+
+| era | orebRate |
+| --- | ---: |
+${Object.entries(d.eraOrebRates).map(([e, v]) => `| ${e} | ${v} |`).join("\n")}
+
+## Practical-margin-only failures — dispositions
+
+| id | trait | team-season | diff | engine changed | under prospective policy |
+| --- | --- | --- | ---: | --- | --- |
+${d.marginOnlyDispositions.map((m) => `| \`${m.failureId}\` | \`${m.traitId}\` | ${m.teamSeason} | ${fmt(m.difference)} | **${m.engineChanged}** | \`${m.underProspectivePolicy}\` |`).join("\n")}`);
+  }
+
   console.log(written.length ? written.join("\n") : "no 6c4a artifacts yet");
 }

@@ -262,7 +262,7 @@ describe("default parity", () => {
   it("the live corpus still covers overtime and real zone play", () => {
     // captureBaseline() itself asserts OT and zone coverage on the LIVE
     // engine, with seeds re-searched for the live candidate when behaviour
-    // deliberately changed (13 -> 19, 252 -> 75 for Candidate 1).
+    // deliberately changed (re-searched for Candidate 1).
     expect(captureBaseline().fixtureCount).toBeGreaterThan(20);
   }, 240000);
 

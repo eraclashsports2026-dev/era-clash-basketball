@@ -58,8 +58,8 @@ zone share is graded in the coach zone scale; the per-game 0%-or-100% step is go
 ## Candidate 1 draft
 
 `Candidate 1` (DRAFT/UNLOCKED/NOT_RUN), parent `Candidate 0`
-core `58c5fb6974e694c2...` → `2df66d288dcfd81f...` under closure builder 2.0.0.
+core `58c5fb6974e694c2...` → `390a8fec6d2da894...` under closure builder 2.0.0.
 
-Changed core files: `src/v3/actions/families.js`, `src/v3/actions/offensivePlan.js`, `src/v3/calibration/calibrationPlayerAdapter.js`, `src/v3/defense/plan.js`, `src/v3/defense/scheme.js`, `src/v3/possession/actions.js`, `src/v3/possession/game.js`.
+Changed core files: `src/v3/actions/families.js`, `src/v3/actions/offensivePlan.js`, `src/v3/calibration/calibrationPlayerAdapter.js`, `src/v3/defense/plan.js`, `src/v3/defense/scheme.js`, `src/v3/possession/actions.js`, `src/v3/possession/game.js`, `src/v3/teamIntelligence.js`.
 
 Closure correction: closure builder v1 could not see multi-line import statements; src/v3/actions/offensivePlan.js ran in every game while sitting outside every core manifest — Candidate 0's recorded 52-file hash stands as the frozen fact it always was; Candidate 1 manifests are computed under builder v2 (53 files).
