@@ -1,0 +1,2301 @@
+{
+  "artifact": "historical-v5-candidate-pool",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run c1:pool-v5",
+  "generatedAt": "2026-08-27T02:11:43.073Z",
+  "gitCommit": "1bbef5a00c465e8b19a31ce2832c6f60cada15b2",
+  "branch": "phase-6c4a-candidate1-trait-fidelity",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "historicalV5CandidatePoolVersion": "1.0.0",
+    "selectionBasis": "SOURCE_ONLY_OUTPUT_BLIND — team-season identity, documented five, documented coach, documented style. No Candidate 0 or Candidate 1 output consulted; no pool fixture simulated.",
+    "teamCount": 30,
+    "eligibleTeamCount": 30,
+    "newTeamSeasons": 15,
+    "carriedFromV4Pool": 15,
+    "eligibleByEra": {
+      "1950s": 3,
+      "1960s": 3,
+      "1970s": 4,
+      "1980s": 4,
+      "1990s": 4,
+      "2000s": 4,
+      "2010s": 4,
+      "2020s": 4
+    },
+    "eligiblePairsByEra": {
+      "1950s": 3,
+      "1960s": 3,
+      "1970s": 6,
+      "1980s": 6,
+      "1990s": 6,
+      "2000s": 6,
+      "2010s": 6,
+      "2020s": 6
+    },
+    "crossFranchisePairsByEra": {
+      "1950s": 2,
+      "1960s": 3,
+      "1970s": 5,
+      "1980s": 5,
+      "1990s": 6,
+      "2000s": 6,
+      "2010s": 6,
+      "2020s": 4
+    },
+    "erasWithAtLeastTwoEligiblePairs": 8,
+    "erasWithAtLeastThreeEligiblePairs": 8,
+    "meetsMinimum": true,
+    "exclusions": {
+      "historicalCorpusV3": 32,
+      "historicalHoldoutV3": 8,
+      "consumedByV4": [
+        "v4-1954-55-lakers",
+        "v4-1954-55-celtics",
+        "v4-1969-70-76ers",
+        "v4-1969-70-supersonics",
+        "v4-1977-78-spurs",
+        "v4-1978-79-supersonics",
+        "v4-1989-90-pistons",
+        "v4-1989-90-blazers",
+        "v4-1998-99-spurs",
+        "v4-1991-92-bulls",
+        "v4-2001-02-kings",
+        "v4-2001-02-lakers",
+        "v4-2017-18-rockets",
+        "v4-2017-18-warriors",
+        "v4-2021-22-heat",
+        "v4-2021-22-76ers"
+      ],
+      "usedInCandidate1Development": [
+        "v4-1991-92-bulls",
+        "v4-1977-78-spurs",
+        "v4-1978-79-supersonics",
+        "v4-1989-90-pistons",
+        "v4-2021-22-heat",
+        "v4-1969-70-supersonics"
+      ],
+      "priorFivesBlocked": 46
+    },
+    "playerStore": {
+      "path": "data/validation/6c4a/calibration-players-v5.json",
+      "profiles": 75,
+      "unresolved": 0,
+      "storeHash": "0ec0c03355515fb6a4cbddf248b29e40fd23f4c9b13a012487c5efbc17e4539b"
+    },
+    "teams": [
+      {
+        "fixtureId": "v4-1957-58-celtics",
+        "teamId": "BOS",
+        "teamName": "Boston Celtics",
+        "season": "1957-58",
+        "eraStyleId": "1950s",
+        "coachId": "red-auerbach",
+        "coachVerification": "SEASON_PAGE_NAMES_COACH",
+        "players": [
+          {
+            "calibrationPlayerId": "cal:BOS:1957:bob-cousy",
+            "name": "Bob Cousy",
+            "assignedPosition": "PG",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:BOS:1957:bill-sharman",
+            "name": "Bill Sharman",
+            "assignedPosition": "SG",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:BOS:1957:frank-ramsey",
+            "name": "Frank Ramsey",
+            "assignedPosition": "SF",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:BOS:1957:tom-heinsohn",
+            "name": "Tom Heinsohn",
+            "assignedPosition": "PF",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:BOS:1957:bill-russell",
+            "name": "Bill Russell",
+            "assignedPosition": "C",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          }
+        ],
+        "fixtureType": "HISTORICAL_STARTER_PROXY",
+        "qualitativeIdentity": {
+          "pace": "very fast",
+          "offense": "fast break from defensive rebounding",
+          "defense": "rim-anchored man",
+          "tags": [
+            "TRANSITION",
+            "ELITE_DEFENSE"
+          ]
+        },
+        "resolvedPlayers": 5,
+        "startersWithoutScoring": 0,
+        "playerDataConfidence": "MEDIUM_HIGH",
+        "source": "CARRIED_FROM_V4_POOL",
+        "fiveKey": "cal-person:bill-russell|cal-person:bill-sharman|cal-person:bob-cousy|cal-person:frank-ramsey|cal-person:tom-heinsohn",
+        "eligible": true,
+        "ineligibleReasons": []
+      },
+      {
+        "fixtureId": "v4-1955-56-lakers",
+        "teamId": "MIN_LAKERS",
+        "teamName": "Minneapolis Lakers",
+        "season": "1955-56",
+        "eraStyleId": "1950s",
+        "coachId": "john-kundla",
+        "coachVerification": "SEASON_PAGE_NAMES_COACH",
+        "players": [
+          {
+            "calibrationPlayerId": "cal:MIN_LAKERS:1955:slater-martin",
+            "name": "Slater Martin",
+            "assignedPosition": "PG",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:MIN_LAKERS:1955:whitey-skoog",
+            "name": "Whitey Skoog",
+            "assignedPosition": "SG",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:MIN_LAKERS:1955:dick-garmaker",
+            "name": "Dick Garmaker",
+            "assignedPosition": "SF",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:MIN_LAKERS:1955:vern-mikkelsen",
+            "name": "Vern Mikkelsen",
+            "assignedPosition": "PF",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:MIN_LAKERS:1955:clyde-lovellette",
+            "name": "Clyde Lovellette",
+            "assignedPosition": "C",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          }
+        ],
+        "fixtureType": "SOURCE_BACKED_PRINCIPAL_FIVE",
+        "qualitativeIdentity": {
+          "pace": "moderate",
+          "offense": "post-centred, interior scoring",
+          "defense": "physical man",
+          "tags": [
+            "POST_HEAVY",
+            "SIZE_HEAVY"
+          ]
+        },
+        "resolvedPlayers": 5,
+        "startersWithoutScoring": 0,
+        "playerDataConfidence": "MEDIUM_HIGH",
+        "source": "CARRIED_FROM_V4_POOL",
+        "fiveKey": "cal-person:clyde-lovellette|cal-person:dick-garmaker|cal-person:slater-martin|cal-person:vern-mikkelsen|cal-person:whitey-skoog",
+        "eligible": true,
+        "ineligibleReasons": []
+      },
+      {
+        "fixtureId": "v4-1966-67-warriors",
+        "teamId": "SFW",
+        "teamName": "San Francisco Warriors",
+        "season": "1966-67",
+        "eraStyleId": "1960s",
+        "coachId": "bill-sharman",
+        "coachVerification": "SEASON_PAGE_NAMES_COACH",
+        "players": [
+          {
+            "calibrationPlayerId": "cal:SFW:1966:jim-king",
+            "name": "Jim King",
+            "assignedPosition": "PG",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:SFW:1966:paul-neumann",
+            "name": "Paul Neumann",
+            "assignedPosition": "SG",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:SFW:1966:rick-barry",
+            "name": "Rick Barry",
+            "assignedPosition": "SF",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:SFW:1966:fred-hetzel",
+            "name": "Fred Hetzel",
+            "assignedPosition": "PF",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:SFW:1966:nate-thurmond",
+            "name": "Nate Thurmond",
+            "assignedPosition": "C",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          }
+        ],
+        "fixtureType": "SOURCE_BACKED_PRINCIPAL_FIVE",
+        "qualitativeIdentity": {
+          "pace": "very fast",
+          "offense": "fast break, early offence",
+          "defense": "rim-anchored man",
+          "tags": [
+            "TRANSITION",
+            "PACE_EXTREME",
+            "STRONG_OFFENSIVE_REBOUNDING"
+          ]
+        },
+        "resolvedPlayers": 5,
+        "startersWithoutScoring": 0,
+        "playerDataConfidence": "MEDIUM_HIGH",
+        "source": "CARRIED_FROM_V4_POOL",
+        "fiveKey": "cal-person:fred-hetzel|cal-person:jim-king|cal-person:nate-thurmond|cal-person:paul-neumann|cal-person:rick-barry",
+        "eligible": true,
+        "ineligibleReasons": []
+      },
+      {
+        "fixtureId": "v4-1972-73-lakers",
+        "teamId": "LAL",
+        "teamName": "Los Angeles Lakers",
+        "season": "1972-73",
+        "eraStyleId": "1970s",
+        "coachId": "bill-sharman",
+        "coachVerification": "SEASON_PAGE_NAMES_COACH",
+        "players": [
+          {
+            "calibrationPlayerId": "cal:LAL:1972:jerry-west",
+            "name": "Jerry West",
+            "assignedPosition": "PG",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:LAL:1972:gail-goodrich",
+            "name": "Gail Goodrich",
+            "assignedPosition": "SG",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:LAL:1972:jim-mcmillian",
+            "name": "Jim McMillian",
+            "assignedPosition": "SF",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:LAL:1972:bill-bridges",
+            "name": "Bill Bridges",
+            "assignedPosition": "PF",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:LAL:1972:wilt-chamberlain",
+            "name": "Wilt Chamberlain",
+            "assignedPosition": "C",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE_TEAM_FROM_ROSTER",
+            "confidence": "MEDIUM"
+          }
+        ],
+        "fixtureType": "HISTORICAL_STARTER_PROXY",
+        "qualitativeIdentity": {
+          "pace": "fast",
+          "offense": "fast break from defensive rebounding",
+          "defense": "elite team man",
+          "tags": [
+            "TRANSITION",
+            "ELITE_DEFENSE"
+          ]
+        },
+        "resolvedPlayers": 5,
+        "startersWithoutScoring": 0,
+        "playerDataConfidence": "MEDIUM",
+        "source": "CARRIED_FROM_V4_POOL",
+        "fiveKey": "cal-person:bill-bridges|cal-person:gail-goodrich|cal-person:jerry-west|cal-person:jim-mcmillian|cal-person:wilt-chamberlain",
+        "eligible": true,
+        "ineligibleReasons": []
+      },
+      {
+        "fixtureId": "v4-1975-76-celtics",
+        "teamId": "BOS",
+        "teamName": "Boston Celtics",
+        "season": "1975-76",
+        "eraStyleId": "1970s",
+        "coachId": "tom-heinsohn",
+        "coachVerification": "SEASON_PAGE_NAMES_COACH",
+        "players": [
+          {
+            "calibrationPlayerId": "cal:BOS:1975:jo-jo-white",
+            "name": "Jo Jo White",
+            "assignedPosition": "PG",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:BOS:1975:charlie-scott",
+            "name": "Charlie Scott",
+            "assignedPosition": "SG",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:BOS:1975:john-havlicek",
+            "name": "John Havlicek",
+            "assignedPosition": "SF",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:BOS:1975:paul-silas",
+            "name": "Paul Silas",
+            "assignedPosition": "PF",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:BOS:1975:dave-cowens",
+            "name": "Dave Cowens",
+            "assignedPosition": "C",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          }
+        ],
+        "fixtureType": "HISTORICAL_STARTER_PROXY",
+        "qualitativeIdentity": {
+          "pace": "fast",
+          "offense": "fast break, balanced scoring",
+          "defense": "physical man",
+          "tags": [
+            "TRANSITION",
+            "STRONG_OFFENSIVE_REBOUNDING"
+          ]
+        },
+        "resolvedPlayers": 5,
+        "startersWithoutScoring": 0,
+        "playerDataConfidence": "MEDIUM_HIGH",
+        "source": "CARRIED_FROM_V4_POOL",
+        "fiveKey": "cal-person:charlie-scott|cal-person:dave-cowens|cal-person:jo-jo-white|cal-person:john-havlicek|cal-person:paul-silas",
+        "eligible": true,
+        "ineligibleReasons": []
+      },
+      {
+        "fixtureId": "v4-1984-85-lakers",
+        "teamId": "LAL",
+        "teamName": "Los Angeles Lakers",
+        "season": "1984-85",
+        "eraStyleId": "1980s",
+        "coachId": "pat-riley",
+        "coachVerification": "SEASON_PAGE_NAMES_COACH",
+        "players": [
+          {
+            "calibrationPlayerId": "cal:LAL:1984:magic-johnson",
+            "name": "Magic Johnson",
+            "assignedPosition": "PG",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:LAL:1984:byron-scott",
+            "name": "Byron Scott",
+            "assignedPosition": "SG",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:LAL:1984:james-worthy",
+            "name": "James Worthy",
+            "assignedPosition": "SF",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:LAL:1984:kurt-rambis",
+            "name": "Kurt Rambis",
+            "assignedPosition": "PF",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:LAL:1984:kareem-abdul-jabbar",
+            "name": "Kareem Abdul-Jabbar",
+            "assignedPosition": "C",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          }
+        ],
+        "fixtureType": "HISTORICAL_STARTER_PROXY",
+        "qualitativeIdentity": {
+          "pace": "very fast",
+          "offense": "Showtime transition and early offence",
+          "defense": "man with help",
+          "tags": [
+            "TRANSITION",
+            "PACE_EXTREME",
+            "ELITE_OFFENSE",
+            "PASSING_HUB"
+          ]
+        },
+        "resolvedPlayers": 5,
+        "startersWithoutScoring": 0,
+        "playerDataConfidence": "MEDIUM_HIGH",
+        "source": "CARRIED_FROM_V4_POOL",
+        "fiveKey": "cal-person:byron-scott|cal-person:james-worthy|cal-person:kareem-abdul-jabbar|cal-person:kurt-rambis|cal-person:magic-johnson",
+        "eligible": true,
+        "ineligibleReasons": []
+      },
+      {
+        "fixtureId": "v4-1983-84-celtics",
+        "teamId": "BOS",
+        "teamName": "Boston Celtics",
+        "season": "1983-84",
+        "eraStyleId": "1980s",
+        "coachId": "kc-jones",
+        "coachVerification": "SEASON_PAGE_NAMES_COACH",
+        "players": [
+          {
+            "calibrationPlayerId": "cal:BOS:1983:dennis-johnson",
+            "name": "Dennis Johnson",
+            "assignedPosition": "PG",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:BOS:1983:gerald-henderson",
+            "name": "Gerald Henderson",
+            "assignedPosition": "SG",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:BOS:1983:larry-bird",
+            "name": "Larry Bird",
+            "assignedPosition": "SF",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:BOS:1983:cedric-maxwell",
+            "name": "Cedric Maxwell",
+            "assignedPosition": "PF",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:BOS:1983:robert-parish",
+            "name": "Robert Parish",
+            "assignedPosition": "C",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          }
+        ],
+        "fixtureType": "HISTORICAL_STARTER_PROXY",
+        "qualitativeIdentity": {
+          "pace": "moderate",
+          "offense": "half-court execution, elite passing front line",
+          "defense": "elite team man defence",
+          "tags": [
+            "ELITE_DEFENSE",
+            "STRONG_OFFENSIVE_REBOUNDING",
+            "POST_HEAVY"
+          ]
+        },
+        "resolvedPlayers": 5,
+        "startersWithoutScoring": 0,
+        "playerDataConfidence": "MEDIUM_HIGH",
+        "source": "CARRIED_FROM_V4_POOL",
+        "fiveKey": "cal-person:cedric-maxwell|cal-person:dennis-johnson|cal-person:gerald-henderson|cal-person:larry-bird|cal-person:robert-parish",
+        "eligible": true,
+        "ineligibleReasons": []
+      },
+      {
+        "fixtureId": "v4-1992-93-bulls",
+        "teamId": "CHI",
+        "teamName": "Chicago Bulls",
+        "season": "1992-93",
+        "eraStyleId": "1990s",
+        "coachId": "phil-jackson",
+        "coachVerification": "SEASON_PAGE_NAMES_COACH",
+        "players": [
+          {
+            "calibrationPlayerId": "cal:CHI:1992:b-j-armstrong",
+            "name": "B. J. Armstrong",
+            "assignedPosition": "PG",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:CHI:1992:michael-jordan",
+            "name": "Michael Jordan",
+            "assignedPosition": "SG",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:CHI:1992:scottie-pippen",
+            "name": "Scottie Pippen",
+            "assignedPosition": "SF",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:CHI:1992:horace-grant",
+            "name": "Horace Grant",
+            "assignedPosition": "PF",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:CHI:1992:bill-cartwright",
+            "name": "Bill Cartwright",
+            "assignedPosition": "C",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          }
+        ],
+        "fixtureType": "HISTORICAL_STARTER_PROXY",
+        "qualitativeIdentity": {
+          "pace": "moderate",
+          "offense": "triangle: post reads, cuts, spacing",
+          "defense": "pressure man with help",
+          "tags": [
+            "ELITE_OFFENSE",
+            "MOTION"
+          ]
+        },
+        "resolvedPlayers": 5,
+        "startersWithoutScoring": 0,
+        "playerDataConfidence": "MEDIUM_HIGH",
+        "source": "CARRIED_FROM_V4_POOL",
+        "fiveKey": "cal-person:b-j-armstrong|cal-person:bill-cartwright|cal-person:horace-grant|cal-person:michael-jordan|cal-person:scottie-pippen",
+        "eligible": true,
+        "ineligibleReasons": []
+      },
+      {
+        "fixtureId": "v4-1995-96-supersonics",
+        "teamId": "SEA",
+        "teamName": "Seattle SuperSonics",
+        "season": "1995-96",
+        "eraStyleId": "1990s",
+        "coachId": "george-karl",
+        "coachVerification": "SEASON_PAGE_NAMES_COACH",
+        "players": [
+          {
+            "calibrationPlayerId": "cal:SEA:1995:gary-payton",
+            "name": "Gary Payton",
+            "assignedPosition": "PG",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:SEA:1995:hersey-hawkins",
+            "name": "Hersey Hawkins",
+            "assignedPosition": "SG",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:SEA:1995:detlef-schrempf",
+            "name": "Detlef Schrempf",
+            "assignedPosition": "SF",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:SEA:1995:shawn-kemp",
+            "name": "Shawn Kemp",
+            "assignedPosition": "PF",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:SEA:1995:ervin-johnson",
+            "name": "Ervin Johnson",
+            "assignedPosition": "C",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          }
+        ],
+        "fixtureType": "HISTORICAL_STARTER_PROXY",
+        "qualitativeIdentity": {
+          "pace": "fast",
+          "offense": "transition and post scoring",
+          "defense": "aggressive switching and trapping",
+          "tags": [
+            "ELITE_DEFENSE",
+            "TRANSITION"
+          ]
+        },
+        "resolvedPlayers": 5,
+        "startersWithoutScoring": 0,
+        "playerDataConfidence": "MEDIUM_HIGH",
+        "source": "CARRIED_FROM_V4_POOL",
+        "fiveKey": "cal-person:detlef-schrempf|cal-person:ervin-johnson|cal-person:gary-payton|cal-person:hersey-hawkins|cal-person:shawn-kemp",
+        "eligible": true,
+        "ineligibleReasons": []
+      },
+      {
+        "fixtureId": "v4-2004-05-suns",
+        "teamId": "PHX",
+        "teamName": "Phoenix Suns",
+        "season": "2004-05",
+        "eraStyleId": "2000s",
+        "coachId": "mike-dantoni",
+        "coachVerification": "SEASON_PAGE_NAMES_COACH",
+        "players": [
+          {
+            "calibrationPlayerId": "cal:PHX:2004:steve-nash",
+            "name": "Steve Nash",
+            "assignedPosition": "PG",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:PHX:2004:joe-johnson",
+            "name": "Joe Johnson",
+            "assignedPosition": "SG",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:PHX:2004:quentin-richardson",
+            "name": "Quentin Richardson",
+            "assignedPosition": "SF",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:PHX:2004:shawn-marion",
+            "name": "Shawn Marion",
+            "assignedPosition": "PF",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:PHX:2004:amar-e-stoudemire",
+            "name": "Amar'e Stoudemire",
+            "assignedPosition": "C",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          }
+        ],
+        "fixtureType": "HISTORICAL_STARTER_PROXY",
+        "qualitativeIdentity": {
+          "pace": "very fast",
+          "offense": "seven seconds or less: pick-and-roll and spacing",
+          "defense": "gambling man defence",
+          "tags": [
+            "ELITE_OFFENSE",
+            "PACE_EXTREME",
+            "PICK_AND_ROLL",
+            "THREE_POINT_HEAVY"
+          ]
+        },
+        "resolvedPlayers": 5,
+        "startersWithoutScoring": 0,
+        "playerDataConfidence": "MEDIUM_HIGH",
+        "source": "CARRIED_FROM_V4_POOL",
+        "fiveKey": "cal-person:amar-e-stoudemire|cal-person:joe-johnson|cal-person:quentin-richardson|cal-person:shawn-marion|cal-person:steve-nash",
+        "eligible": true,
+        "ineligibleReasons": []
+      },
+      {
+        "fixtureId": "v4-2002-03-mavericks",
+        "teamId": "DAL",
+        "teamName": "Dallas Mavericks",
+        "season": "2002-03",
+        "eraStyleId": "2000s",
+        "coachId": "don-nelson",
+        "coachVerification": "SEASON_PAGE_NAMES_COACH",
+        "players": [
+          {
+            "calibrationPlayerId": "cal:DAL:2002:steve-nash",
+            "name": "Steve Nash",
+            "assignedPosition": "PG",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:DAL:2002:michael-finley",
+            "name": "Michael Finley",
+            "assignedPosition": "SG",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:DAL:2002:adrian-griffin",
+            "name": "Adrian Griffin",
+            "assignedPosition": "SF",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:DAL:2002:dirk-nowitzki",
+            "name": "Dirk Nowitzki",
+            "assignedPosition": "PF",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:DAL:2002:shawn-bradley",
+            "name": "Shawn Bradley",
+            "assignedPosition": "C",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          }
+        ],
+        "fixtureType": "SOURCE_BACKED_PRINCIPAL_FIVE",
+        "qualitativeIdentity": {
+          "pace": "fast",
+          "offense": "ball movement, drive and kick, corner threes",
+          "defense": "zone-capable, scheme-heavy",
+          "tags": [
+            "ELITE_OFFENSE",
+            "THREE_POINT_HEAVY",
+            "ZONE_CAPABLE"
+          ]
+        },
+        "resolvedPlayers": 5,
+        "startersWithoutScoring": 0,
+        "playerDataConfidence": "MEDIUM_HIGH",
+        "source": "CARRIED_FROM_V4_POOL",
+        "fiveKey": "cal-person:adrian-griffin|cal-person:dirk-nowitzki|cal-person:michael-finley|cal-person:shawn-bradley|cal-person:steve-nash",
+        "eligible": true,
+        "ineligibleReasons": []
+      },
+      {
+        "fixtureId": "v4-2010-11-heat",
+        "teamId": "MIA",
+        "teamName": "Miami Heat",
+        "season": "2010-11",
+        "eraStyleId": "2010s",
+        "coachId": "erik-spoelstra",
+        "coachVerification": "SEASON_PAGE_NAMES_COACH",
+        "players": [
+          {
+            "calibrationPlayerId": "cal:MIA:2010:mario-chalmers",
+            "name": "Mario Chalmers",
+            "assignedPosition": "PG",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:MIA:2010:dwyane-wade",
+            "name": "Dwyane Wade",
+            "assignedPosition": "SG",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:MIA:2010:lebron-james",
+            "name": "LeBron James",
+            "assignedPosition": "SF",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:MIA:2010:chris-bosh",
+            "name": "Chris Bosh",
+            "assignedPosition": "PF",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:MIA:2010:zydrunas-ilgauskas",
+            "name": "Zydrunas Ilgauskas",
+            "assignedPosition": "C",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          }
+        ],
+        "fixtureType": "SOURCE_BACKED_PRINCIPAL_FIVE",
+        "qualitativeIdentity": {
+          "pace": "slow",
+          "offense": "isolation and post-up in the half court",
+          "defense": "elite scheme-driven man",
+          "tags": [
+            "ELITE_DEFENSE",
+            "ISOLATION_HEAVY",
+            "SLOW_HALF_COURT"
+          ]
+        },
+        "resolvedPlayers": 5,
+        "startersWithoutScoring": 0,
+        "playerDataConfidence": "MEDIUM_HIGH",
+        "source": "CARRIED_FROM_V4_POOL",
+        "fiveKey": "cal-person:chris-bosh|cal-person:dwyane-wade|cal-person:lebron-james|cal-person:mario-chalmers|cal-person:zydrunas-ilgauskas",
+        "eligible": true,
+        "ineligibleReasons": []
+      },
+      {
+        "fixtureId": "v4-2013-14-clippers",
+        "teamId": "LAC",
+        "teamName": "Los Angeles Clippers",
+        "season": "2013-14",
+        "eraStyleId": "2010s",
+        "coachId": "doc-rivers",
+        "coachVerification": "SEASON_PAGE_NAMES_COACH",
+        "players": [
+          {
+            "calibrationPlayerId": "cal:LAC:2013:chris-paul",
+            "name": "Chris Paul",
+            "assignedPosition": "PG",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:LAC:2013:j-j-redick",
+            "name": "J. J. Redick",
+            "assignedPosition": "SG",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:LAC:2013:matt-barnes",
+            "name": "Matt Barnes",
+            "assignedPosition": "SF",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:LAC:2013:blake-griffin",
+            "name": "Blake Griffin",
+            "assignedPosition": "PF",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:LAC:2013:deandre-jordan",
+            "name": "DeAndre Jordan",
+            "assignedPosition": "C",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          }
+        ],
+        "fixtureType": "HISTORICAL_STARTER_PROXY",
+        "qualitativeIdentity": {
+          "pace": "fast",
+          "offense": "pick-and-roll around a lead guard",
+          "defense": "man with help",
+          "tags": [
+            "ELITE_OFFENSE",
+            "PICK_AND_ROLL",
+            "TRANSITION"
+          ]
+        },
+        "resolvedPlayers": 5,
+        "startersWithoutScoring": 0,
+        "playerDataConfidence": "MEDIUM_HIGH",
+        "source": "CARRIED_FROM_V4_POOL",
+        "fiveKey": "cal-person:blake-griffin|cal-person:chris-paul|cal-person:deandre-jordan|cal-person:j-j-redick|cal-person:matt-barnes",
+        "eligible": true,
+        "ineligibleReasons": []
+      },
+      {
+        "fixtureId": "v4-2020-21-knicks",
+        "teamId": "NYK",
+        "teamName": "New York Knicks",
+        "season": "2020-21",
+        "eraStyleId": "2020s",
+        "coachId": "tom-thibodeau",
+        "coachVerification": "SEASON_PAGE_NAMES_COACH",
+        "players": [
+          {
+            "calibrationPlayerId": "cal:NYK:2020:elfrid-payton",
+            "name": "Elfrid Payton",
+            "assignedPosition": "PG",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:NYK:2020:reggie-bullock",
+            "name": "Reggie Bullock",
+            "assignedPosition": "SG",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:NYK:2020:rj-barrett",
+            "name": "RJ Barrett",
+            "assignedPosition": "SF",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:NYK:2020:julius-randle",
+            "name": "Julius Randle",
+            "assignedPosition": "PF",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:NYK:2020:nerlens-noel",
+            "name": "Nerlens Noel",
+            "assignedPosition": "C",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          }
+        ],
+        "fixtureType": "SOURCE_BACKED_PRINCIPAL_FIVE",
+        "qualitativeIdentity": {
+          "pace": "very slow",
+          "offense": "isolation and post-up in the half court",
+          "defense": "elite team man defence",
+          "tags": [
+            "ELITE_DEFENSE",
+            "SLOW_HALF_COURT",
+            "LOW_THREE_POINT",
+            "ISOLATION_HEAVY"
+          ]
+        },
+        "resolvedPlayers": 5,
+        "startersWithoutScoring": 0,
+        "playerDataConfidence": "MEDIUM_HIGH",
+        "source": "CARRIED_FROM_V4_POOL",
+        "fiveKey": "cal-person:elfrid-payton|cal-person:julius-randle|cal-person:nerlens-noel|cal-person:reggie-bullock|cal-person:rj-barrett",
+        "eligible": true,
+        "ineligibleReasons": []
+      },
+      {
+        "fixtureId": "v4-2020-21-76ers",
+        "teamId": "PHI",
+        "teamName": "Philadelphia 76ers",
+        "season": "2020-21",
+        "eraStyleId": "2020s",
+        "coachId": "doc-rivers",
+        "coachVerification": "SEASON_PAGE_NAMES_COACH",
+        "players": [
+          {
+            "calibrationPlayerId": "cal:PHI:2020:ben-simmons",
+            "name": "Ben Simmons",
+            "assignedPosition": "PG",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:PHI:2020:seth-curry",
+            "name": "Seth Curry",
+            "assignedPosition": "SG",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:PHI:2020:danny-green",
+            "name": "Danny Green",
+            "assignedPosition": "SF",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:PHI:2020:tobias-harris",
+            "name": "Tobias Harris",
+            "assignedPosition": "PF",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          },
+          {
+            "calibrationPlayerId": "cal:PHI:2020:joel-embiid",
+            "name": "Joel Embiid",
+            "assignedPosition": "C",
+            "historicalRole": "STARTER",
+            "membershipSource": "PLAYER_CAREER_TABLE",
+            "confidence": "MEDIUM_HIGH"
+          }
+        ],
+        "fixtureType": "HISTORICAL_STARTER_PROXY",
+        "qualitativeIdentity": {
+          "pace": "slow",
+          "offense": "post-up and pick-and-roll around an MVP centre",
+          "defense": "drop coverage with a rim anchor",
+          "tags": [
+            "ELITE_DEFENSE",
+            "POST_HEAVY",
+            "SIZE_HEAVY"
+          ]
+        },
+        "resolvedPlayers": 5,
+        "startersWithoutScoring": 0,
+        "playerDataConfidence": "MEDIUM_HIGH",
+        "source": "CARRIED_FROM_V4_POOL",
+        "fiveKey": "cal-person:ben-simmons|cal-person:danny-green|cal-person:joel-embiid|cal-person:seth-curry|cal-person:tobias-harris",
+        "eligible": true,
+        "ineligibleReasons": []
+      },
+      {
+        "fixtureId": "v5-1950-51-lakers",
+        "teamId": "MIN_LAKERS",
+        "teamName": "Minneapolis Lakers",
+        "season": "1950-51",
+        "seasonStartYear": 1950,
+        "eraStyleId": "1950s",
+        "coachId": "john-kundla",
+        "coachName": "John Kundla",
+        "coachVerification": "SEASON_PAGE_NAMES_COACH",
+        "fixtureType": "SOURCE_BACKED_PRINCIPAL_FIVE",
+        "qualitativeIdentity": {
+          "pace": "slow",
+          "offense": "post-centred through the pivot",
+          "defense": "physical man",
+          "tags": [
+            "POST_HEAVY",
+            "SIZE_HEAVY",
+            "STRONG_OFFENSIVE_REBOUNDING"
+          ]
+        },
+        "teamArticle": "1950–51 Minneapolis Lakers season",
+        "players": [
+          {
+            "calibrationPlayerId": "cal:MIN_LAKERS:1950:slater-martin",
+            "calibrationPersonId": "cal-person:slater-martin",
+            "name": "Slater Martin",
+            "assignedPosition": "PG"
+          },
+          {
+            "calibrationPlayerId": "cal:MIN_LAKERS:1950:arnie-ferrin",
+            "calibrationPersonId": "cal-person:arnie-ferrin",
+            "name": "Arnie Ferrin",
+            "assignedPosition": "SG"
+          },
+          {
+            "calibrationPlayerId": "cal:MIN_LAKERS:1950:jim-pollard",
+            "calibrationPersonId": "cal-person:jim-pollard",
+            "name": "Jim Pollard",
+            "assignedPosition": "SF"
+          },
+          {
+            "calibrationPlayerId": "cal:MIN_LAKERS:1950:vern-mikkelsen",
+            "calibrationPersonId": "cal-person:vern-mikkelsen",
+            "name": "Vern Mikkelsen",
+            "assignedPosition": "PF"
+          },
+          {
+            "calibrationPlayerId": "cal:MIN_LAKERS:1950:george-mikan",
+            "calibrationPersonId": "cal-person:george-mikan",
+            "name": "George Mikan",
+            "assignedPosition": "C"
+          }
+        ],
+        "resolvedPlayers": 5,
+        "startersWithoutScoring": 0,
+        "playerDataConfidence": "MEDIUM_HIGH",
+        "source": "NEW_IN_V5",
+        "fiveKey": "cal-person:arnie-ferrin|cal-person:george-mikan|cal-person:jim-pollard|cal-person:slater-martin|cal-person:vern-mikkelsen",
+        "eligible": true,
+        "ineligibleReasons": []
+      },
+      {
+        "fixtureId": "v5-1960-61-celtics",
+        "teamId": "BOS",
+        "teamName": "Boston Celtics",
+        "season": "1960-61",
+        "seasonStartYear": 1960,
+        "eraStyleId": "1960s",
+        "coachId": "red-auerbach",
+        "coachName": "Red Auerbach",
+        "coachVerification": "SEASON_PAGE_NAMES_COACH",
+        "fixtureType": "SOURCE_BACKED_PRINCIPAL_FIVE",
+        "qualitativeIdentity": {
+          "pace": "very fast",
+          "offense": "fast break and early offence",
+          "defense": "elite team man defence",
+          "tags": [
+            "TRANSITION",
+            "ELITE_DEFENSE"
+          ]
+        },
+        "teamArticle": "1960–61 Boston Celtics season",
+        "players": [
+          {
+            "calibrationPlayerId": "cal:BOS:1960:bob-cousy",
+            "calibrationPersonId": "cal-person:bob-cousy",
+            "name": "Bob Cousy",
+            "assignedPosition": "PG"
+          },
+          {
+            "calibrationPlayerId": "cal:BOS:1960:bill-sharman",
+            "calibrationPersonId": "cal-person:bill-sharman",
+            "name": "Bill Sharman",
+            "assignedPosition": "SG"
+          },
+          {
+            "calibrationPlayerId": "cal:BOS:1960:tom-sanders",
+            "calibrationPersonId": "cal-person:tom-sanders",
+            "name": "Tom Sanders",
+            "assignedPosition": "SF"
+          },
+          {
+            "calibrationPlayerId": "cal:BOS:1960:tom-heinsohn",
+            "calibrationPersonId": "cal-person:tom-heinsohn",
+            "name": "Tom Heinsohn",
+            "assignedPosition": "PF"
+          },
+          {
+            "calibrationPlayerId": "cal:BOS:1960:bill-russell",
+            "calibrationPersonId": "cal-person:bill-russell",
+            "name": "Bill Russell",
+            "assignedPosition": "C"
+          }
+        ],
+        "resolvedPlayers": 5,
+        "startersWithoutScoring": 0,
+        "playerDataConfidence": "MEDIUM_HIGH",
+        "source": "NEW_IN_V5",
+        "fiveKey": "cal-person:bill-russell|cal-person:bill-sharman|cal-person:bob-cousy|cal-person:tom-heinsohn|cal-person:tom-sanders",
+        "eligible": true,
+        "ineligibleReasons": []
+      },
+      {
+        "fixtureId": "v5-1968-69-76ers",
+        "teamId": "PHI",
+        "teamName": "Philadelphia 76ers",
+        "season": "1968-69",
+        "seasonStartYear": 1968,
+        "eraStyleId": "1960s",
+        "coachId": "jack-ramsay",
+        "coachName": "Jack Ramsay",
+        "coachVerification": "SEASON_PAGE_NAMES_COACH",
+        "fixtureType": "SOURCE_BACKED_PRINCIPAL_FIVE",
+        "qualitativeIdentity": {
+          "pace": "fast",
+          "offense": "perimeter creation and early offence",
+          "defense": "pressure man",
+          "tags": [
+            "TRANSITION"
+          ]
+        },
+        "teamArticle": "1968–69 Philadelphia 76ers season",
+        "players": [
+          {
+            "calibrationPlayerId": "cal:PHI:1968:wali-jones",
+            "calibrationPersonId": "cal-person:wali-jones",
+            "name": "Wali Jones",
+            "assignedPosition": "PG"
+          },
+          {
+            "calibrationPlayerId": "cal:PHI:1968:hal-greer",
+            "calibrationPersonId": "cal-person:hal-greer",
+            "name": "Hal Greer",
+            "assignedPosition": "SG"
+          },
+          {
+            "calibrationPlayerId": "cal:PHI:1968:chet-walker",
+            "calibrationPersonId": "cal-person:chet-walker",
+            "name": "Chet Walker",
+            "assignedPosition": "SF"
+          },
+          {
+            "calibrationPlayerId": "cal:PHI:1968:billy-cunningham",
+            "calibrationPersonId": "cal-person:billy-cunningham",
+            "name": "Billy Cunningham",
+            "assignedPosition": "PF"
+          },
+          {
+            "calibrationPlayerId": "cal:PHI:1968:darrall-imhoff",
+            "calibrationPersonId": "cal-person:darrall-imhoff",
+            "name": "Darrall Imhoff",
+            "assignedPosition": "C"
+          }
+        ],
+        "resolvedPlayers": 5,
+        "startersWithoutScoring": 0,
+        "playerDataConfidence": "MEDIUM_HIGH",
+        "source": "NEW_IN_V5",
+        "fiveKey": "cal-person:billy-cunningham|cal-person:chet-walker|cal-person:darrall-imhoff|cal-person:hal-greer|cal-person:wali-jones",
+        "eligible": true,
+        "ineligibleReasons": []
+      },
+      {
+        "fixtureId": "v5-1974-75-blazers",
+        "teamId": "POR",
+        "teamName": "Portland Trail Blazers",
+        "season": "1974-75",
+        "seasonStartYear": 1974,
+        "eraStyleId": "1970s",
+        "coachId": "lenny-wilkens",
+        "coachName": "Lenny Wilkens",
+        "coachVerification": "SEASON_PAGE_NAMES_COACH",
+        "fixtureType": "SOURCE_BACKED_PRINCIPAL_FIVE",
+        "qualitativeIdentity": {
+          "pace": "moderate",
+          "offense": "interior passing through the centre",
+          "defense": "man with a shot-blocking centre",
+          "tags": [
+            "POST_HEAVY",
+            "STRONG_OFFENSIVE_REBOUNDING"
+          ]
+        },
+        "teamArticle": "1974–75 Portland Trail Blazers season",
+        "players": [
+          {
+            "calibrationPlayerId": "cal:POR:1974:geoff-petrie",
+            "calibrationPersonId": "cal-person:geoff-petrie",
+            "name": "Geoff Petrie",
+            "assignedPosition": "PG"
+          },
+          {
+            "calibrationPlayerId": "cal:POR:1974:larry-steele",
+            "calibrationPersonId": "cal-person:larry-steele",
+            "name": "Larry Steele",
+            "assignedPosition": "SG"
+          },
+          {
+            "calibrationPlayerId": "cal:POR:1974:sidney-wicks",
+            "calibrationPersonId": "cal-person:sidney-wicks",
+            "name": "Sidney Wicks",
+            "assignedPosition": "SF"
+          },
+          {
+            "calibrationPlayerId": "cal:POR:1974:lloyd-neal",
+            "calibrationPersonId": "cal-person:lloyd-neal",
+            "name": "Lloyd Neal",
+            "assignedPosition": "PF"
+          },
+          {
+            "calibrationPlayerId": "cal:POR:1974:bill-walton",
+            "calibrationPersonId": "cal-person:bill-walton",
+            "name": "Bill Walton",
+            "assignedPosition": "C"
+          }
+        ],
+        "resolvedPlayers": 5,
+        "startersWithoutScoring": 0,
+        "playerDataConfidence": "MEDIUM_HIGH",
+        "source": "NEW_IN_V5",
+        "fiveKey": "cal-person:bill-walton|cal-person:geoff-petrie|cal-person:larry-steele|cal-person:lloyd-neal|cal-person:sidney-wicks",
+        "eligible": true,
+        "ineligibleReasons": []
+      },
+      {
+        "fixtureId": "v5-1976-77-celtics",
+        "teamId": "BOS",
+        "teamName": "Boston Celtics",
+        "season": "1976-77",
+        "seasonStartYear": 1976,
+        "eraStyleId": "1970s",
+        "coachId": "tom-heinsohn",
+        "coachName": "Tom Heinsohn",
+        "coachVerification": "SEASON_PAGE_NAMES_COACH",
+        "fixtureType": "SOURCE_BACKED_PRINCIPAL_FIVE",
+        "qualitativeIdentity": {
+          "pace": "fast",
+          "offense": "motion and ball movement",
+          "defense": "team man defence",
+          "tags": [
+            "TRANSITION",
+            "PASSING_HUB"
+          ]
+        },
+        "teamArticle": "1976–77 Boston Celtics season",
+        "players": [
+          {
+            "calibrationPlayerId": "cal:BOS:1976:jo-jo-white",
+            "calibrationPersonId": "cal-person:jo-jo-white",
+            "name": "Jo Jo White",
+            "assignedPosition": "PG"
+          },
+          {
+            "calibrationPlayerId": "cal:BOS:1976:charlie-scott",
+            "calibrationPersonId": "cal-person:charlie-scott",
+            "name": "Charlie Scott",
+            "assignedPosition": "SG"
+          },
+          {
+            "calibrationPlayerId": "cal:BOS:1976:john-havlicek",
+            "calibrationPersonId": "cal-person:john-havlicek",
+            "name": "John Havlicek",
+            "assignedPosition": "SF"
+          },
+          {
+            "calibrationPlayerId": "cal:BOS:1976:curtis-rowe",
+            "calibrationPersonId": "cal-person:curtis-rowe",
+            "name": "Curtis Rowe",
+            "assignedPosition": "PF"
+          },
+          {
+            "calibrationPlayerId": "cal:BOS:1976:dave-cowens",
+            "calibrationPersonId": "cal-person:dave-cowens",
+            "name": "Dave Cowens",
+            "assignedPosition": "C"
+          }
+        ],
+        "resolvedPlayers": 5,
+        "startersWithoutScoring": 0,
+        "playerDataConfidence": "MEDIUM_HIGH",
+        "source": "NEW_IN_V5",
+        "fiveKey": "cal-person:charlie-scott|cal-person:curtis-rowe|cal-person:dave-cowens|cal-person:jo-jo-white|cal-person:john-havlicek",
+        "eligible": true,
+        "ineligibleReasons": []
+      },
+      {
+        "fixtureId": "v5-1981-82-lakers",
+        "teamId": "LAL",
+        "teamName": "Los Angeles Lakers",
+        "season": "1981-82",
+        "seasonStartYear": 1981,
+        "eraStyleId": "1980s",
+        "coachId": "pat-riley",
+        "coachName": "Pat Riley",
+        "coachVerification": "SEASON_PAGE_NAMES_COACH",
+        "fixtureType": "SOURCE_BACKED_PRINCIPAL_FIVE",
+        "qualitativeIdentity": {
+          "pace": "very fast",
+          "offense": "fast break led by the point guard",
+          "defense": "man with a dominant rebounder",
+          "tags": [
+            "TRANSITION",
+            "PACE_EXTREME",
+            "PASSING_HUB"
+          ]
+        },
+        "teamArticle": "1981–82 Los Angeles Lakers season",
+        "players": [
+          {
+            "calibrationPlayerId": "cal:LAL:1981:magic-johnson",
+            "calibrationPersonId": "cal-person:magic-johnson",
+            "name": "Magic Johnson",
+            "assignedPosition": "PG"
+          },
+          {
+            "calibrationPlayerId": "cal:LAL:1981:norm-nixon",
+            "calibrationPersonId": "cal-person:norm-nixon",
+            "name": "Norm Nixon",
+            "assignedPosition": "SG"
+          },
+          {
+            "calibrationPlayerId": "cal:LAL:1981:jamaal-wilkes",
+            "calibrationPersonId": "cal-person:jamaal-wilkes",
+            "name": "Jamaal Wilkes",
+            "assignedPosition": "SF"
+          },
+          {
+            "calibrationPlayerId": "cal:LAL:1981:kurt-rambis",
+            "calibrationPersonId": "cal-person:kurt-rambis",
+            "name": "Kurt Rambis",
+            "assignedPosition": "PF"
+          },
+          {
+            "calibrationPlayerId": "cal:LAL:1981:kareem-abdul-jabbar",
+            "calibrationPersonId": "cal-person:kareem-abdul-jabbar",
+            "name": "Kareem Abdul-Jabbar",
+            "assignedPosition": "C"
+          }
+        ],
+        "resolvedPlayers": 5,
+        "startersWithoutScoring": 0,
+        "playerDataConfidence": "MEDIUM_HIGH",
+        "source": "NEW_IN_V5",
+        "fiveKey": "cal-person:jamaal-wilkes|cal-person:kareem-abdul-jabbar|cal-person:kurt-rambis|cal-person:magic-johnson|cal-person:norm-nixon",
+        "eligible": true,
+        "ineligibleReasons": []
+      },
+      {
+        "fixtureId": "v5-1987-88-pistons",
+        "teamId": "DET",
+        "teamName": "Detroit Pistons",
+        "season": "1987-88",
+        "seasonStartYear": 1987,
+        "eraStyleId": "1980s",
+        "coachId": "chuck-daly",
+        "coachName": "Chuck Daly",
+        "coachVerification": "SEASON_PAGE_NAMES_COACH",
+        "fixtureType": "SOURCE_BACKED_PRINCIPAL_FIVE",
+        "qualitativeIdentity": {
+          "pace": "slow",
+          "offense": "half-court isolation and post scoring",
+          "defense": "elite physical man",
+          "tags": [
+            "ISOLATION_HEAVY",
+            "ELITE_DEFENSE"
+          ]
+        },
+        "teamArticle": "1987–88 Detroit Pistons season",
+        "players": [
+          {
+            "calibrationPlayerId": "cal:DET:1987:isiah-thomas",
+            "calibrationPersonId": "cal-person:isiah-thomas",
+            "name": "Isiah Thomas",
+            "assignedPosition": "PG"
+          },
+          {
+            "calibrationPlayerId": "cal:DET:1987:joe-dumars",
+            "calibrationPersonId": "cal-person:joe-dumars",
+            "name": "Joe Dumars",
+            "assignedPosition": "SG"
+          },
+          {
+            "calibrationPlayerId": "cal:DET:1987:adrian-dantley",
+            "calibrationPersonId": "cal-person:adrian-dantley",
+            "name": "Adrian Dantley",
+            "assignedPosition": "SF"
+          },
+          {
+            "calibrationPlayerId": "cal:DET:1987:rick-mahorn",
+            "calibrationPersonId": "cal-person:rick-mahorn",
+            "name": "Rick Mahorn",
+            "assignedPosition": "PF"
+          },
+          {
+            "calibrationPlayerId": "cal:DET:1987:bill-laimbeer",
+            "calibrationPersonId": "cal-person:bill-laimbeer",
+            "name": "Bill Laimbeer",
+            "assignedPosition": "C"
+          }
+        ],
+        "resolvedPlayers": 5,
+        "startersWithoutScoring": 0,
+        "playerDataConfidence": "MEDIUM_HIGH",
+        "source": "NEW_IN_V5",
+        "fiveKey": "cal-person:adrian-dantley|cal-person:bill-laimbeer|cal-person:isiah-thomas|cal-person:joe-dumars|cal-person:rick-mahorn",
+        "eligible": true,
+        "ineligibleReasons": []
+      },
+      {
+        "fixtureId": "v5-1993-94-rockets",
+        "teamId": "HOU",
+        "teamName": "Houston Rockets",
+        "season": "1993-94",
+        "seasonStartYear": 1993,
+        "eraStyleId": "1990s",
+        "coachId": "rudy-tomjanovich",
+        "coachName": "Rudy Tomjanovich",
+        "coachVerification": "SEASON_PAGE_NAMES_COACH",
+        "fixtureType": "SOURCE_BACKED_PRINCIPAL_FIVE",
+        "qualitativeIdentity": {
+          "pace": "moderate",
+          "offense": "post-centred with perimeter spacing",
+          "defense": "elite man with rim protection",
+          "tags": [
+            "POST_HEAVY",
+            "ELITE_DEFENSE"
+          ]
+        },
+        "teamArticle": "1993–94 Houston Rockets season",
+        "players": [
+          {
+            "calibrationPlayerId": "cal:HOU:1993:kenny-smith",
+            "calibrationPersonId": "cal-person:kenny-smith",
+            "name": "Kenny Smith",
+            "assignedPosition": "PG"
+          },
+          {
+            "calibrationPlayerId": "cal:HOU:1993:vernon-maxwell",
+            "calibrationPersonId": "cal-person:vernon-maxwell",
+            "name": "Vernon Maxwell",
+            "assignedPosition": "SG"
+          },
+          {
+            "calibrationPlayerId": "cal:HOU:1993:robert-horry",
+            "calibrationPersonId": "cal-person:robert-horry",
+            "name": "Robert Horry",
+            "assignedPosition": "SF"
+          },
+          {
+            "calibrationPlayerId": "cal:HOU:1993:otis-thorpe",
+            "calibrationPersonId": "cal-person:otis-thorpe",
+            "name": "Otis Thorpe",
+            "assignedPosition": "PF"
+          },
+          {
+            "calibrationPlayerId": "cal:HOU:1993:hakeem-olajuwon",
+            "calibrationPersonId": "cal-person:hakeem-olajuwon",
+            "name": "Hakeem Olajuwon",
+            "assignedPosition": "C"
+          }
+        ],
+        "resolvedPlayers": 5,
+        "startersWithoutScoring": 0,
+        "playerDataConfidence": "MEDIUM_HIGH",
+        "source": "NEW_IN_V5",
+        "fiveKey": "cal-person:hakeem-olajuwon|cal-person:kenny-smith|cal-person:otis-thorpe|cal-person:robert-horry|cal-person:vernon-maxwell",
+        "eligible": true,
+        "ineligibleReasons": []
+      },
+      {
+        "fixtureId": "v5-1996-97-heat",
+        "teamId": "MIA",
+        "teamName": "Miami Heat",
+        "season": "1996-97",
+        "seasonStartYear": 1996,
+        "eraStyleId": "1990s",
+        "coachId": "pat-riley",
+        "coachName": "Pat Riley",
+        "coachVerification": "SEASON_PAGE_NAMES_COACH",
+        "fixtureType": "SOURCE_BACKED_PRINCIPAL_FIVE",
+        "qualitativeIdentity": {
+          "pace": "slow",
+          "offense": "pick-and-roll and post scoring",
+          "defense": "elite physical man",
+          "tags": [
+            "PNR_HEAVY",
+            "ELITE_DEFENSE"
+          ]
+        },
+        "teamArticle": "1996–97 Miami Heat season",
+        "players": [
+          {
+            "calibrationPlayerId": "cal:MIA:1996:tim-hardaway",
+            "calibrationPersonId": "cal-person:tim-hardaway",
+            "name": "Tim Hardaway",
+            "assignedPosition": "PG"
+          },
+          {
+            "calibrationPlayerId": "cal:MIA:1996:voshon-lenard",
+            "calibrationPersonId": "cal-person:voshon-lenard",
+            "name": "Voshon Lenard",
+            "assignedPosition": "SG"
+          },
+          {
+            "calibrationPlayerId": "cal:MIA:1996:jamal-mashburn",
+            "calibrationPersonId": "cal-person:jamal-mashburn",
+            "name": "Jamal Mashburn",
+            "assignedPosition": "SF"
+          },
+          {
+            "calibrationPlayerId": "cal:MIA:1996:p-j-brown",
+            "calibrationPersonId": "cal-person:p-j-brown",
+            "name": "P. J. Brown",
+            "assignedPosition": "PF"
+          },
+          {
+            "calibrationPlayerId": "cal:MIA:1996:alonzo-mourning",
+            "calibrationPersonId": "cal-person:alonzo-mourning",
+            "name": "Alonzo Mourning",
+            "assignedPosition": "C"
+          }
+        ],
+        "resolvedPlayers": 5,
+        "startersWithoutScoring": 0,
+        "playerDataConfidence": "MEDIUM_HIGH",
+        "source": "NEW_IN_V5",
+        "fiveKey": "cal-person:alonzo-mourning|cal-person:jamal-mashburn|cal-person:p-j-brown|cal-person:tim-hardaway|cal-person:voshon-lenard",
+        "eligible": true,
+        "ineligibleReasons": []
+      },
+      {
+        "fixtureId": "v5-2007-08-celtics",
+        "teamId": "BOS",
+        "teamName": "Boston Celtics",
+        "season": "2007-08",
+        "seasonStartYear": 2007,
+        "eraStyleId": "2000s",
+        "coachId": "doc-rivers",
+        "coachName": "Doc Rivers",
+        "coachVerification": "SEASON_PAGE_NAMES_COACH",
+        "fixtureType": "SOURCE_BACKED_PRINCIPAL_FIVE",
+        "qualitativeIdentity": {
+          "pace": "moderate",
+          "offense": "balanced three-creator half-court offence",
+          "defense": "elite team man defence",
+          "tags": [
+            "ELITE_DEFENSE",
+            "PASSING_HUB"
+          ]
+        },
+        "teamArticle": "2007–08 Boston Celtics season",
+        "players": [
+          {
+            "calibrationPlayerId": "cal:BOS:2007:rajon-rondo",
+            "calibrationPersonId": "cal-person:rajon-rondo",
+            "name": "Rajon Rondo",
+            "assignedPosition": "PG"
+          },
+          {
+            "calibrationPlayerId": "cal:BOS:2007:ray-allen",
+            "calibrationPersonId": "cal-person:ray-allen",
+            "name": "Ray Allen",
+            "assignedPosition": "SG"
+          },
+          {
+            "calibrationPlayerId": "cal:BOS:2007:paul-pierce",
+            "calibrationPersonId": "cal-person:paul-pierce",
+            "name": "Paul Pierce",
+            "assignedPosition": "SF"
+          },
+          {
+            "calibrationPlayerId": "cal:BOS:2007:kevin-garnett",
+            "calibrationPersonId": "cal-person:kevin-garnett",
+            "name": "Kevin Garnett",
+            "assignedPosition": "PF"
+          },
+          {
+            "calibrationPlayerId": "cal:BOS:2007:kendrick-perkins",
+            "calibrationPersonId": "cal-person:kendrick-perkins",
+            "name": "Kendrick Perkins",
+            "assignedPosition": "C"
+          }
+        ],
+        "resolvedPlayers": 5,
+        "startersWithoutScoring": 0,
+        "playerDataConfidence": "MEDIUM_HIGH",
+        "source": "NEW_IN_V5",
+        "fiveKey": "cal-person:kendrick-perkins|cal-person:kevin-garnett|cal-person:paul-pierce|cal-person:rajon-rondo|cal-person:ray-allen",
+        "eligible": true,
+        "ineligibleReasons": []
+      },
+      {
+        "fixtureId": "v5-2008-09-lakers",
+        "teamId": "LAL",
+        "teamName": "Los Angeles Lakers",
+        "season": "2008-09",
+        "seasonStartYear": 2008,
+        "eraStyleId": "2000s",
+        "coachId": "phil-jackson",
+        "coachName": "Phil Jackson",
+        "coachVerification": "SEASON_PAGE_NAMES_COACH",
+        "fixtureType": "SOURCE_BACKED_PRINCIPAL_FIVE",
+        "qualitativeIdentity": {
+          "pace": "moderate",
+          "offense": "triangle: post entries and off-ball movement",
+          "defense": "man with length",
+          "tags": [
+            "POST_HEAVY",
+            "MOTION",
+            "SIZE_HEAVY"
+          ]
+        },
+        "teamArticle": "2008–09 Los Angeles Lakers season",
+        "players": [
+          {
+            "calibrationPlayerId": "cal:LAL:2008:derek-fisher",
+            "calibrationPersonId": "cal-person:derek-fisher",
+            "name": "Derek Fisher",
+            "assignedPosition": "PG"
+          },
+          {
+            "calibrationPlayerId": "cal:LAL:2008:kobe-bryant",
+            "calibrationPersonId": "cal-person:kobe-bryant",
+            "name": "Kobe Bryant",
+            "assignedPosition": "SG"
+          },
+          {
+            "calibrationPlayerId": "cal:LAL:2008:trevor-ariza",
+            "calibrationPersonId": "cal-person:trevor-ariza",
+            "name": "Trevor Ariza",
+            "assignedPosition": "SF"
+          },
+          {
+            "calibrationPlayerId": "cal:LAL:2008:pau-gasol",
+            "calibrationPersonId": "cal-person:pau-gasol",
+            "name": "Pau Gasol",
+            "assignedPosition": "PF"
+          },
+          {
+            "calibrationPlayerId": "cal:LAL:2008:andrew-bynum",
+            "calibrationPersonId": "cal-person:andrew-bynum",
+            "name": "Andrew Bynum",
+            "assignedPosition": "C"
+          }
+        ],
+        "resolvedPlayers": 5,
+        "startersWithoutScoring": 0,
+        "playerDataConfidence": "MEDIUM_HIGH",
+        "source": "NEW_IN_V5",
+        "fiveKey": "cal-person:andrew-bynum|cal-person:derek-fisher|cal-person:kobe-bryant|cal-person:pau-gasol|cal-person:trevor-ariza",
+        "eligible": true,
+        "ineligibleReasons": []
+      },
+      {
+        "fixtureId": "v5-2015-16-spurs",
+        "teamId": "SAS",
+        "teamName": "San Antonio Spurs",
+        "season": "2015-16",
+        "seasonStartYear": 2015,
+        "eraStyleId": "2010s",
+        "coachId": "gregg-popovich",
+        "coachName": "Gregg Popovich",
+        "coachVerification": "SEASON_PAGE_NAMES_COACH",
+        "fixtureType": "SOURCE_BACKED_PRINCIPAL_FIVE",
+        "qualitativeIdentity": {
+          "pace": "slow",
+          "offense": "ball movement into post and mid-range",
+          "defense": "elite team man defence",
+          "tags": [
+            "PASSING_HUB",
+            "ELITE_DEFENSE",
+            "POST_HEAVY"
+          ]
+        },
+        "teamArticle": "2015–16 San Antonio Spurs season",
+        "players": [
+          {
+            "calibrationPlayerId": "cal:SAS:2015:tony-parker",
+            "calibrationPersonId": "cal-person:tony-parker",
+            "name": "Tony Parker",
+            "assignedPosition": "PG"
+          },
+          {
+            "calibrationPlayerId": "cal:SAS:2015:danny-green",
+            "calibrationPersonId": "cal-person:danny-green",
+            "name": "Danny Green",
+            "assignedPosition": "SG"
+          },
+          {
+            "calibrationPlayerId": "cal:SAS:2015:kawhi-leonard",
+            "calibrationPersonId": "cal-person:kawhi-leonard",
+            "name": "Kawhi Leonard",
+            "assignedPosition": "SF"
+          },
+          {
+            "calibrationPlayerId": "cal:SAS:2015:lamarcus-aldridge",
+            "calibrationPersonId": "cal-person:lamarcus-aldridge",
+            "name": "LaMarcus Aldridge",
+            "assignedPosition": "PF"
+          },
+          {
+            "calibrationPlayerId": "cal:SAS:2015:tim-duncan",
+            "calibrationPersonId": "cal-person:tim-duncan",
+            "name": "Tim Duncan",
+            "assignedPosition": "C"
+          }
+        ],
+        "resolvedPlayers": 5,
+        "startersWithoutScoring": 0,
+        "playerDataConfidence": "MEDIUM_HIGH",
+        "source": "NEW_IN_V5",
+        "fiveKey": "cal-person:danny-green|cal-person:kawhi-leonard|cal-person:lamarcus-aldridge|cal-person:tim-duncan|cal-person:tony-parker",
+        "eligible": true,
+        "ineligibleReasons": []
+      },
+      {
+        "fixtureId": "v5-2018-19-raptors",
+        "teamId": "TOR",
+        "teamName": "Toronto Raptors",
+        "season": "2018-19",
+        "seasonStartYear": 2018,
+        "eraStyleId": "2010s",
+        "coachId": "nick-nurse",
+        "coachName": "Nick Nurse",
+        "coachVerification": "SEASON_PAGE_NAMES_COACH",
+        "fixtureType": "SOURCE_BACKED_PRINCIPAL_FIVE",
+        "qualitativeIdentity": {
+          "pace": "moderate",
+          "offense": "isolation creation with three-point spacing",
+          "defense": "switching man with zone looks",
+          "tags": [
+            "ISOLATION_HEAVY",
+            "THREE_POINT_HEAVY",
+            "ELITE_DEFENSE"
+          ]
+        },
+        "teamArticle": "2018–19 Toronto Raptors season",
+        "players": [
+          {
+            "calibrationPlayerId": "cal:TOR:2018:kyle-lowry",
+            "calibrationPersonId": "cal-person:kyle-lowry",
+            "name": "Kyle Lowry",
+            "assignedPosition": "PG"
+          },
+          {
+            "calibrationPlayerId": "cal:TOR:2018:danny-green",
+            "calibrationPersonId": "cal-person:danny-green",
+            "name": "Danny Green",
+            "assignedPosition": "SG"
+          },
+          {
+            "calibrationPlayerId": "cal:TOR:2018:kawhi-leonard",
+            "calibrationPersonId": "cal-person:kawhi-leonard",
+            "name": "Kawhi Leonard",
+            "assignedPosition": "SF"
+          },
+          {
+            "calibrationPlayerId": "cal:TOR:2018:pascal-siakam",
+            "calibrationPersonId": "cal-person:pascal-siakam",
+            "name": "Pascal Siakam",
+            "assignedPosition": "PF"
+          },
+          {
+            "calibrationPlayerId": "cal:TOR:2018:marc-gasol",
+            "calibrationPersonId": "cal-person:marc-gasol",
+            "name": "Marc Gasol",
+            "assignedPosition": "C"
+          }
+        ],
+        "resolvedPlayers": 5,
+        "startersWithoutScoring": 0,
+        "playerDataConfidence": "MEDIUM_HIGH",
+        "source": "NEW_IN_V5",
+        "fiveKey": "cal-person:danny-green|cal-person:kawhi-leonard|cal-person:kyle-lowry|cal-person:marc-gasol|cal-person:pascal-siakam",
+        "eligible": true,
+        "ineligibleReasons": []
+      },
+      {
+        "fixtureId": "v5-2023-24-knicks",
+        "teamId": "NYK",
+        "teamName": "New York Knicks",
+        "season": "2023-24",
+        "seasonStartYear": 2023,
+        "eraStyleId": "2020s",
+        "coachId": "tom-thibodeau",
+        "coachName": "Tom Thibodeau",
+        "coachVerification": "SEASON_PAGE_NAMES_COACH",
+        "fixtureType": "SOURCE_BACKED_PRINCIPAL_FIVE",
+        "qualitativeIdentity": {
+          "pace": "slow",
+          "offense": "pick-and-roll with heavy offensive rebounding",
+          "defense": "physical man",
+          "tags": [
+            "PNR_HEAVY",
+            "STRONG_OFFENSIVE_REBOUNDING"
+          ]
+        },
+        "teamArticle": "2023–24 New York Knicks season",
+        "players": [
+          {
+            "calibrationPlayerId": "cal:NYK:2023:jalen-brunson",
+            "calibrationPersonId": "cal-person:jalen-brunson",
+            "name": "Jalen Brunson",
+            "assignedPosition": "PG"
+          },
+          {
+            "calibrationPlayerId": "cal:NYK:2023:donte-divincenzo",
+            "calibrationPersonId": "cal-person:donte-divincenzo",
+            "name": "Donte DiVincenzo",
+            "assignedPosition": "SG"
+          },
+          {
+            "calibrationPlayerId": "cal:NYK:2023:josh-hart",
+            "calibrationPersonId": "cal-person:josh-hart",
+            "name": "Josh Hart",
+            "assignedPosition": "SF"
+          },
+          {
+            "calibrationPlayerId": "cal:NYK:2023:og-anunoby",
+            "calibrationPersonId": "cal-person:og-anunoby",
+            "name": "OG Anunoby",
+            "assignedPosition": "PF"
+          },
+          {
+            "calibrationPlayerId": "cal:NYK:2023:isaiah-hartenstein",
+            "calibrationPersonId": "cal-person:isaiah-hartenstein",
+            "name": "Isaiah Hartenstein",
+            "assignedPosition": "C"
+          }
+        ],
+        "resolvedPlayers": 5,
+        "startersWithoutScoring": 0,
+        "playerDataConfidence": "MEDIUM_HIGH",
+        "source": "NEW_IN_V5",
+        "fiveKey": "cal-person:donte-divincenzo|cal-person:isaiah-hartenstein|cal-person:jalen-brunson|cal-person:josh-hart|cal-person:og-anunoby",
+        "eligible": true,
+        "ineligibleReasons": []
+      },
+      {
+        "fixtureId": "v5-2023-24-76ers",
+        "teamId": "PHI",
+        "teamName": "Philadelphia 76ers",
+        "season": "2023-24",
+        "seasonStartYear": 2023,
+        "eraStyleId": "2020s",
+        "coachId": "nick-nurse",
+        "coachName": "Nick Nurse",
+        "coachVerification": "SEASON_PAGE_NAMES_COACH",
+        "fixtureType": "SOURCE_BACKED_PRINCIPAL_FIVE",
+        "qualitativeIdentity": {
+          "pace": "moderate",
+          "offense": "post hub with three-point spacing",
+          "defense": "drop-coverage man behind a rim protector",
+          "tags": [
+            "POST_HEAVY",
+            "THREE_POINT_HEAVY"
+          ]
+        },
+        "teamArticle": "2023–24 Philadelphia 76ers season",
+        "players": [
+          {
+            "calibrationPlayerId": "cal:PHI:2023:tyrese-maxey",
+            "calibrationPersonId": "cal-person:tyrese-maxey",
+            "name": "Tyrese Maxey",
+            "assignedPosition": "PG"
+          },
+          {
+            "calibrationPlayerId": "cal:PHI:2023:kelly-oubre-jr",
+            "calibrationPersonId": "cal-person:kelly-oubre-jr",
+            "name": "Kelly Oubre Jr.",
+            "assignedPosition": "SG"
+          },
+          {
+            "calibrationPlayerId": "cal:PHI:2023:tobias-harris",
+            "calibrationPersonId": "cal-person:tobias-harris",
+            "name": "Tobias Harris",
+            "assignedPosition": "SF"
+          },
+          {
+            "calibrationPlayerId": "cal:PHI:2023:nicolas-batum",
+            "calibrationPersonId": "cal-person:nicolas-batum",
+            "name": "Nicolas Batum",
+            "assignedPosition": "PF"
+          },
+          {
+            "calibrationPlayerId": "cal:PHI:2023:joel-embiid",
+            "calibrationPersonId": "cal-person:joel-embiid",
+            "name": "Joel Embiid",
+            "assignedPosition": "C"
+          }
+        ],
+        "resolvedPlayers": 5,
+        "startersWithoutScoring": 0,
+        "playerDataConfidence": "MEDIUM_HIGH",
+        "source": "NEW_IN_V5",
+        "fiveKey": "cal-person:joel-embiid|cal-person:kelly-oubre-jr|cal-person:nicolas-batum|cal-person:tobias-harris|cal-person:tyrese-maxey",
+        "eligible": true,
+        "ineligibleReasons": []
+      }
+    ],
+    "pairs": [
+      {
+        "era": "1950s",
+        "teamA": "v4-1957-58-celtics",
+        "teamB": "v4-1955-56-lakers",
+        "crossFranchise": true
+      },
+      {
+        "era": "1950s",
+        "teamA": "v4-1957-58-celtics",
+        "teamB": "v5-1950-51-lakers",
+        "crossFranchise": true
+      },
+      {
+        "era": "1950s",
+        "teamA": "v4-1955-56-lakers",
+        "teamB": "v5-1950-51-lakers",
+        "crossFranchise": false
+      },
+      {
+        "era": "1960s",
+        "teamA": "v4-1966-67-warriors",
+        "teamB": "v5-1960-61-celtics",
+        "crossFranchise": true
+      },
+      {
+        "era": "1960s",
+        "teamA": "v4-1966-67-warriors",
+        "teamB": "v5-1968-69-76ers",
+        "crossFranchise": true
+      },
+      {
+        "era": "1960s",
+        "teamA": "v5-1960-61-celtics",
+        "teamB": "v5-1968-69-76ers",
+        "crossFranchise": true
+      },
+      {
+        "era": "1970s",
+        "teamA": "v4-1972-73-lakers",
+        "teamB": "v4-1975-76-celtics",
+        "crossFranchise": true
+      },
+      {
+        "era": "1970s",
+        "teamA": "v4-1972-73-lakers",
+        "teamB": "v5-1974-75-blazers",
+        "crossFranchise": true
+      },
+      {
+        "era": "1970s",
+        "teamA": "v4-1972-73-lakers",
+        "teamB": "v5-1976-77-celtics",
+        "crossFranchise": true
+      },
+      {
+        "era": "1970s",
+        "teamA": "v4-1975-76-celtics",
+        "teamB": "v5-1974-75-blazers",
+        "crossFranchise": true
+      },
+      {
+        "era": "1970s",
+        "teamA": "v4-1975-76-celtics",
+        "teamB": "v5-1976-77-celtics",
+        "crossFranchise": false
+      },
+      {
+        "era": "1970s",
+        "teamA": "v5-1974-75-blazers",
+        "teamB": "v5-1976-77-celtics",
+        "crossFranchise": true
+      },
+      {
+        "era": "1980s",
+        "teamA": "v4-1984-85-lakers",
+        "teamB": "v4-1983-84-celtics",
+        "crossFranchise": true
+      },
+      {
+        "era": "1980s",
+        "teamA": "v4-1984-85-lakers",
+        "teamB": "v5-1981-82-lakers",
+        "crossFranchise": false
+      },
+      {
+        "era": "1980s",
+        "teamA": "v4-1984-85-lakers",
+        "teamB": "v5-1987-88-pistons",
+        "crossFranchise": true
+      },
+      {
+        "era": "1980s",
+        "teamA": "v4-1983-84-celtics",
+        "teamB": "v5-1981-82-lakers",
+        "crossFranchise": true
+      },
+      {
+        "era": "1980s",
+        "teamA": "v4-1983-84-celtics",
+        "teamB": "v5-1987-88-pistons",
+        "crossFranchise": true
+      },
+      {
+        "era": "1980s",
+        "teamA": "v5-1981-82-lakers",
+        "teamB": "v5-1987-88-pistons",
+        "crossFranchise": true
+      },
+      {
+        "era": "1990s",
+        "teamA": "v4-1992-93-bulls",
+        "teamB": "v4-1995-96-supersonics",
+        "crossFranchise": true
+      },
+      {
+        "era": "1990s",
+        "teamA": "v4-1992-93-bulls",
+        "teamB": "v5-1993-94-rockets",
+        "crossFranchise": true
+      },
+      {
+        "era": "1990s",
+        "teamA": "v4-1992-93-bulls",
+        "teamB": "v5-1996-97-heat",
+        "crossFranchise": true
+      },
+      {
+        "era": "1990s",
+        "teamA": "v4-1995-96-supersonics",
+        "teamB": "v5-1993-94-rockets",
+        "crossFranchise": true
+      },
+      {
+        "era": "1990s",
+        "teamA": "v4-1995-96-supersonics",
+        "teamB": "v5-1996-97-heat",
+        "crossFranchise": true
+      },
+      {
+        "era": "1990s",
+        "teamA": "v5-1993-94-rockets",
+        "teamB": "v5-1996-97-heat",
+        "crossFranchise": true
+      },
+      {
+        "era": "2000s",
+        "teamA": "v4-2004-05-suns",
+        "teamB": "v4-2002-03-mavericks",
+        "crossFranchise": true
+      },
+      {
+        "era": "2000s",
+        "teamA": "v4-2004-05-suns",
+        "teamB": "v5-2007-08-celtics",
+        "crossFranchise": true
+      },
+      {
+        "era": "2000s",
+        "teamA": "v4-2004-05-suns",
+        "teamB": "v5-2008-09-lakers",
+        "crossFranchise": true
+      },
+      {
+        "era": "2000s",
+        "teamA": "v4-2002-03-mavericks",
+        "teamB": "v5-2007-08-celtics",
+        "crossFranchise": true
+      },
+      {
+        "era": "2000s",
+        "teamA": "v4-2002-03-mavericks",
+        "teamB": "v5-2008-09-lakers",
+        "crossFranchise": true
+      },
+      {
+        "era": "2000s",
+        "teamA": "v5-2007-08-celtics",
+        "teamB": "v5-2008-09-lakers",
+        "crossFranchise": true
+      },
+      {
+        "era": "2010s",
+        "teamA": "v4-2010-11-heat",
+        "teamB": "v4-2013-14-clippers",
+        "crossFranchise": true
+      },
+      {
+        "era": "2010s",
+        "teamA": "v4-2010-11-heat",
+        "teamB": "v5-2015-16-spurs",
+        "crossFranchise": true
+      },
+      {
+        "era": "2010s",
+        "teamA": "v4-2010-11-heat",
+        "teamB": "v5-2018-19-raptors",
+        "crossFranchise": true
+      },
+      {
+        "era": "2010s",
+        "teamA": "v4-2013-14-clippers",
+        "teamB": "v5-2015-16-spurs",
+        "crossFranchise": true
+      },
+      {
+        "era": "2010s",
+        "teamA": "v4-2013-14-clippers",
+        "teamB": "v5-2018-19-raptors",
+        "crossFranchise": true
+      },
+      {
+        "era": "2010s",
+        "teamA": "v5-2015-16-spurs",
+        "teamB": "v5-2018-19-raptors",
+        "crossFranchise": true
+      },
+      {
+        "era": "2020s",
+        "teamA": "v4-2020-21-knicks",
+        "teamB": "v4-2020-21-76ers",
+        "crossFranchise": true
+      },
+      {
+        "era": "2020s",
+        "teamA": "v4-2020-21-knicks",
+        "teamB": "v5-2023-24-knicks",
+        "crossFranchise": false
+      },
+      {
+        "era": "2020s",
+        "teamA": "v4-2020-21-knicks",
+        "teamB": "v5-2023-24-76ers",
+        "crossFranchise": true
+      },
+      {
+        "era": "2020s",
+        "teamA": "v4-2020-21-76ers",
+        "teamB": "v5-2023-24-knicks",
+        "crossFranchise": true
+      },
+      {
+        "era": "2020s",
+        "teamA": "v4-2020-21-76ers",
+        "teamB": "v5-2023-24-76ers",
+        "crossFranchise": false
+      },
+      {
+        "era": "2020s",
+        "teamA": "v5-2023-24-knicks",
+        "teamB": "v5-2023-24-76ers",
+        "crossFranchise": true
+      }
+    ],
+    "notSelected": "V5 matchup selection is explicitly NOT part of Phase 6C4A. This artifact is the POOL only.",
+    "poolHash": "4287ef8c68ed1e09d7aa36b2493b971519dee74ed0c69f7a7715ec05c913295b"
+  },
+  "outputHash": "7fad0f2f6b84b335311f995406f441f8c2c7b542e67760247c9dc38c23d023ae"
+}

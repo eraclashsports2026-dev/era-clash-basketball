@@ -453,5 +453,71 @@ Scope: ${d.scope}
 **Post-lock mutation policy.** ${d.postLockMutationPolicy}`);
   }
 
+  if (has("historical-v5-candidate-pool")) {
+    const A = R("historical-v5-candidate-pool"); const d = A.data;
+    write("historical-v5-candidate-pool.md", `${prov(A)}# Historical Holdout V5 — candidate pool
+
+**${d.eligibleTeamCount} eligible team-seasons** (${d.newTeamSeasons} newly sourced, ${d.carriedFromV4Pool} carried from the
+unconsumed V4 pool). Minimum met: **${d.meetsMinimum}**. poolHash \`${d.poolHash}\`
+
+${d.selectionBasis}
+
+${d.notSelected}
+
+| era | eligible teams | eligible pairs | cross-franchise pairs |
+| --- | ---: | ---: | ---: |
+${Object.keys(d.eligiblePairsByEra).map((e) => `| ${e} | ${d.eligibleByEra[e]} | ${d.eligiblePairsByEra[e]} | ${d.crossFranchisePairsByEra[e]} |`).join("\n")}
+
+Eras with ≥2 eligible pairs: **${d.erasWithAtLeastTwoEligiblePairs}/8** · with ≥3: **${d.erasWithAtLeastThreeEligiblePairs}/8**
+
+## Exclusions (enforced in code, not by trust)
+
+- historical corpus v3 fixtures: ${d.exclusions.historicalCorpusV3}
+- historical holdout v3 ids: ${d.exclusions.historicalHoldoutV3}
+- consumed by Historical Holdout V4: ${d.exclusions.consumedByV4.length}
+- used in Candidate 1 development: ${d.exclusions.usedInCandidate1Development.length} (${d.exclusions.usedInCandidate1Development.join(", ")})
+- prior fives blocked at person level: ${d.exclusions.priorFivesBlocked}
+
+A carried-forward V4 pool team is NOT a prior fixture: it was never simulated.
+Only v3 fixtures and V4-consumed fixtures contribute blocked fives.
+
+## Pool
+
+| fixture | era | team-season | coach | source | eligible |
+| --- | --- | --- | --- | --- | --- |
+${d.teams.map((t) => `| \`${t.fixtureId}\` | ${t.eraStyleId} | ${t.teamName} ${t.season} | \`${t.coachId}\` | ${t.source === "NEW_IN_V5" ? "new" : "carried" } | ${t.eligible ? "yes" : `no — ${t.ineligibleReasons.join(", ")}`} |`).join("\n")}
+
+Player store: ${d.playerStore.profiles} season profiles, ${d.playerStore.unresolved} unresolved
+(\`${d.playerStore.path}\`, storeHash \`${d.playerStore.storeHash.slice(0, 16)}...\`).`);
+  }
+
+  if (has("historical-v5-readiness")) {
+    const A = R("historical-v5-readiness"); const d = A.data;
+    write("historical-v5-readiness.md", `${prov(A)}# Historical Holdout V5 — readiness
+
+**All readiness facts verified: ${d.allReady}. V5 may open: ${d.v5MayOpen}.**
+
+${d.v5MayOpenReason}
+
+Candidate: \`${d.candidate.candidateId}\` · ${d.candidate.possessionCalibrationVersion} · ${d.candidate.calibrationStatus}
+core \`${d.candidate.coreHash.slice(0, 16)}...\` · parameters \`${d.candidate.parameterSetHash.slice(0, 16)}...\`
+
+| readiness fact | state |
+| --- | --- |
+${Object.entries(d.ready).map(([k, v]) => `| ${k} | **${v ? "READY" : "NOT READY"}** |`).join("\n")}
+
+## Outstanding before V5 may be opened
+
+Every item below is BLOCKING and none is in Phase 6C4A's scope.
+
+${d.outstandingBeforeV5.map((o) => `### \`${o.item}\`
+
+${o.why}`).join("\n\n")}
+
+## Status
+
+Claimed: \`${d.statusClaimed}\`. Not claimed: ${d.statusNotClaimed.map((x) => `\`${x}\``).join(", ")}.`);
+  }
+
   console.log(written.length ? written.join("\n") : "no 6c4a artifacts yet");
 }

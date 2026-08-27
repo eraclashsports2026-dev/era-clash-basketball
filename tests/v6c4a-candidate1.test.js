@@ -473,3 +473,79 @@ describe("6C4A WS10 — Candidate 1 lock", () => {
     expect(versionOf("engineVersion")).toBe("3.2.0");
   });
 });
+
+describe("6C4A WS11/WS12 — Historical Holdout V5 pool and readiness", () => {
+  const pool = R("historical-v5-candidate-pool").data;
+
+  it("provides at least 24 eligible unseen team-seasons", () => {
+    expect(pool.eligibleTeamCount).toBeGreaterThanOrEqual(24);
+    expect(pool.meetsMinimum).toBe(true);
+    expect(pool.newTeamSeasons).toBeGreaterThanOrEqual(12);
+  });
+
+  it("provides at least two eligible pairs in every era, and three in most", () => {
+    expect(pool.erasWithAtLeastTwoEligiblePairs).toBe(8);
+    for (const [era, n] of Object.entries(pool.eligiblePairsByEra)) expect(n, era).toBeGreaterThanOrEqual(2);
+    expect(pool.erasWithAtLeastThreeEligiblePairs).toBeGreaterThanOrEqual(6);
+  });
+
+  it("excludes every seen fixture: v3 corpus, V4-consumed, and Candidate 1 development", () => {
+    const v3 = JSON.parse(readFileSync("data/calibration/historical-corpus-v3.json", "utf8"));
+    const v3Seasons = new Set(v3.fixtures.map((f) => `${f.teamId}|${f.season}`));
+    const consumed = new Set(pool.exclusions.consumedByV4);
+    const development = new Set(pool.exclusions.usedInCandidate1Development);
+    for (const t of pool.teams.filter((x) => x.eligible)) {
+      expect(v3Seasons.has(`${t.teamId}|${t.season}`), `${t.fixtureId} reuses a v3 team-season`).toBe(false);
+      expect(consumed.has(t.fixtureId), `${t.fixtureId} was consumed by V4`).toBe(false);
+      expect(development.has(t.fixtureId), `${t.fixtureId} was used in Candidate 1 development`).toBe(false);
+    }
+    expect(development.size).toBe(6);
+  });
+
+  it("blocks duplicate fives at person level, within the pool and against prior fixtures", () => {
+    const keys = pool.teams.filter((t) => t.eligible).map((t) => t.fiveKey);
+    expect(new Set(keys).size).toBe(keys.length);
+    // the two rejected 1950s drafts are recorded as ineligible-by-duplication
+    // in the pool spec's own comment; here we assert the mechanism is live
+    expect(pool.exclusions.priorFivesBlocked).toBeGreaterThan(20);
+  });
+
+  it("is source-only and output-blind, with a verified coach on every eligible team", () => {
+    expect(pool.selectionBasis).toContain("SOURCE_ONLY_OUTPUT_BLIND");
+    expect(pool.selectionBasis).toContain("no pool fixture simulated");
+    for (const t of pool.teams.filter((x) => x.eligible)) {
+      expect(t.coachVerification, t.fixtureId).toBe("SEASON_PAGE_NAMES_COACH");
+      expect(t.resolvedPlayers, t.fixtureId).toBe(5);
+      expect(t.startersWithoutScoring, t.fixtureId).toBe(0);
+    }
+  });
+
+  it("resolved every new player from source with era-appropriate nulls preserved", () => {
+    const store = JSON.parse(readFileSync("data/validation/6c4a/calibration-players-v5.json", "utf8"));
+    expect(store.unresolvedCount).toBe(0);
+    expect(store.profileCount).toBeGreaterThanOrEqual(70);
+    for (const p of store.profiles) {
+      expect(p.provenance.publisher).toContain("Wikipedia");
+      if (p.seasonStartYear < 1973) {
+        expect(p.basicStats.steals, `${p.name} steals`).toBeNull();
+        expect(p.basicStats.blocks, `${p.name} blocks`).toBeNull();
+      }
+    }
+  });
+
+  it("declares V5 not open, with every blocking item named", () => {
+    const r = R("historical-v5-readiness").data;
+    expect(r.allReady).toBe(true);
+    expect(r.v5MayOpen).toBe(false);
+    expect(r.outstandingBeforeV5.length).toBeGreaterThanOrEqual(6);
+    for (const o of r.outstandingBeforeV5) {
+      expect(o.blocking).toBe(true);
+      expect(o.why.length).toBeGreaterThan(60);
+    }
+    const items = r.outstandingBeforeV5.map((o) => o.item);
+    expect(items).toContain("RE_CERTIFY_ERA_REFERENCES");
+    expect(items).toContain("SELECT_V5_MATCHUPS");
+    expect(items).toContain("REGISTER_V5_SEAL");
+    expect(r.statusClaimed).toBe("DEVELOPMENT_LOCKED_SCOPED");
+  });
+});
