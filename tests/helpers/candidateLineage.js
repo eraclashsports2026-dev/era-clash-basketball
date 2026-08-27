@@ -27,6 +27,11 @@ export const successorManifest = () => {
   return null;
 };
 
+/** The calibration version a PRE-SUCCESSION artifact should have recorded:
+ *  the parent's (1.0.0) when a successor manifest exists, else the live one. */
+export const recordedCalibrationVersionExpectation = (liveVersion) =>
+  (successorManifest() ? "1.0.0" : liveVersion);
+
 /** Assert the live core hash is the recorded one OR an attributable successor of it. */
 export const assertCoreHashLineage = (recordedHash, liveHash, label = "core hash") => {
   if (liveHash === recordedHash) return "IDENTICAL";

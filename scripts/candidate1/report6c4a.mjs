@@ -420,5 +420,38 @@ ${M.changedFiles.length} changed: ${M.changedFiles.map((f) => `\`${f}\``).join("
 Parameter delta: ${M.parameterDelta}. ${M.behaviourDelta}.` : ""}`);
   }
 
+  if (has("candidate1-lock")) {
+    const A = R("candidate1-lock"); const d = A.data;
+    write("candidate1-lock.md", `${prov(A)}# Candidate 1 — lock manifest
+
+**\`${d.candidateId}\` · ${d.candidateSelectionStatus} / ${d.candidateLockStatus} / ${d.calibrationStatus} · validation attempt ${d.validationAttemptStatus}**
+
+Scope: ${d.scope}
+
+| fact | value |
+| --- | --- |
+| possessionCalibrationVersion | \`${d.possessionCalibrationVersion}\` |
+| parent candidate | \`${d.parentCandidateId}\` (\`${d.parentLockManifest}\`) |
+| parent core hash | \`${d.parentCoreHash}\` |
+| core hash | \`${d.coreHash}\` |
+| validated core hash | \`${d.validatedCoreHash}\` |
+| parameter set hash | \`${d.parameterSetHash}\` (parameter changes: ${d.parameterChanges}) |
+| core files | ${d.coreFileCount} (closure builder ${d.closureBuilderVersion}) |
+| lock blockers | ${d.candidateLockBlockers.length} |
+| all engineering gates pass | **${d.allEngineeringGatesPass}** |
+| manifest hash | \`${d.manifestHash}\` |
+| locked at commit | \`${d.lockedAtCommit}\` |
+
+**Stamp isolation.** ${d.stampIsolation}
+
+**Changed core files.** ${d.changedCoreFiles.map((f) => `\`${f}\``).join(", ")}
+
+**Formal holdout access counts at lock time.** V3 ${d.formalHoldoutAccessCounts.historicalHoldoutV3} · V4 ${d.formalHoldoutAccessCounts.historicalHoldoutV4} · synthetic stress ${d.formalHoldoutAccessCounts.syntheticStressHoldoutV2}.
+
+**Not claimed.** ${d.notClaimed.map((x) => `\`${x}\``).join(", ")}.
+
+**Post-lock mutation policy.** ${d.postLockMutationPolicy}`);
+  }
+
   console.log(written.length ? written.join("\n") : "no 6c4a artifacts yet");
 }

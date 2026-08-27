@@ -6,6 +6,7 @@ import { describe, it, expect } from "vitest";
 import { readFileSync, existsSync } from "node:fs";
 import { assertSealDiscipline } from "./helpers/sealDiscipline.js";
 import { readArtifact, ARTIFACT_DIR_C6 } from "../src/v3/calibration/artifacts.js";
+import { versionOf } from "../src/versions.js";
 import { setAccessCount } from "../src/v3/calibration/holdoutSeal.js";
 
 const DIR = "data/validation/6c4a";
@@ -417,5 +418,58 @@ describe("6C4A WS8/WS9 — Candidate 1 manifests and internal validation", () =>
     const c = R("candidate1-competition-validation").data;
     expect(c.pass).toBe(true);
     expect(c.totalInvariantViolations).toBe(0);
+  });
+});
+
+describe("6C4A WS10 — Candidate 1 lock", () => {
+  const lock = R("candidate1-lock").data;
+
+  it("locks with every gate passing and zero blockers", () => {
+    expect(lock.candidateLockStatus).toBe("LOCKED");
+    expect(lock.candidateSelectionStatus).toBe("SELECTED");
+    expect(lock.allEngineeringGatesPass).toBe(true);
+    expect(lock.candidateLockBlockers).toEqual([]);
+    expect(lock.parameterChanges).toBe(0);
+  });
+
+  it("carries the scoped development status and claims nothing beyond it", () => {
+    expect(lock.calibrationStatus).toBe("DEVELOPMENT_LOCKED_SCOPED");
+    expect(lock.validationAttemptStatus).toBe("NOT_RUN");
+    expect(lock.scope).toContain("Historical Holdout V5");
+    for (const f of ["HOLDOUT_VALIDATED", "PRIVATE_PREVIEW_VALIDATED", "PRODUCTION_READY", "ACTIVE"]) {
+      expect(lock.calibrationStatus).not.toBe(f);
+      expect(lock.notClaimed).toContain(f);
+    }
+  });
+
+  it("stamps 1.1.0 and proves the stamp is the only change since validation", () => {
+    expect(lock.possessionCalibrationVersion).toBe("1.1.0");
+    expect(versionOf("possessionCalibrationVersion")).toBe("1.1.0");
+    expect(lock.coreHash).not.toBe(lock.validatedCoreHash);
+    expect(lock.stampIsolation).toContain("src/versions.js");
+  });
+
+  it("names its parent and never mutates it", () => {
+    expect(lock.parentCandidateId).toBe("Candidate 0");
+    expect(lock.parentCoreHash).toBe(R("candidate0-preservation").data.candidate0.coreHash);
+    const parent = readArtifact("baseline-candidate-lock", ARTIFACT_DIR_C6).data;
+    expect(parent.candidateLockStatus).toBe("LOCKED");
+    expect(parent.possessionCalibrationVersion).toBe("1.0.0");
+    expect(lock.parameterSetHash).toBe(parent.parameterSetHash);
+  });
+
+  it("records every phase artifact hash it depends on", () => {
+    for (const h of [lock.changeManifestHash, lock.coreManifestHash, lock.parameterSetArtifactHash,
+      lock.vsCandidate0Hash, lock.rootCauseAnalysisHash, lock.traitPracticalMarginPolicyHash,
+      ...Object.values(lock.validationHashes), ...Object.values(lock.repairHashes)]) {
+      expect(h).toMatch(/^[0-9a-f]{64}$/);
+    }
+    expect(lock.manifestHash).toMatch(/^[0-9a-f]{64}$/);
+  });
+
+  it("records the true holdout state and leaves production alone", () => {
+    expect(lock.formalHoldoutAccessCounts).toEqual({ historicalHoldoutV3: 1, historicalHoldoutV4: 1, syntheticStressHoldoutV2: 0 });
+    expect(lock.engineVersions.productionEngineVersion).toBe("3.2.0");
+    expect(versionOf("engineVersion")).toBe("3.2.0");
   });
 });

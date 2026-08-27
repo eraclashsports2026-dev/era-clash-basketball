@@ -404,8 +404,12 @@ describe("corpus v3 versioning", () => {
 
   it("locks the possession calibration only with a passing manifest", () => {
     const r = assertCalibrationLockInvariant();
-    expect(statusOf("possessionCalibrationVersion"))
-      .toBe(r.locked ? VERSION_STATUS.DEVELOPMENT_LOCKED_BASELINE : VERSION_STATUS.PLANNED);
+    // A locked calibration carries an active DEVELOPMENT lock status —
+    // BASELINE for Candidate 0, SCOPED for a successor candidate.
+    expect(r.locked
+      ? [VERSION_STATUS.DEVELOPMENT_LOCKED_BASELINE, VERSION_STATUS.DEVELOPMENT_LOCKED_SCOPED]
+      : [VERSION_STATUS.DEVELOPMENT])
+      .toContain(statusOf("possessionCalibrationVersion"));
   });
 
   it("advances the corpus and target domains to their third generation", () => {

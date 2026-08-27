@@ -1,4 +1,5 @@
 import { describe, it, expect } from "vitest";
+import { recordedCalibrationVersionExpectation } from "./helpers/candidateLineage.js";
 import { readFileSync, existsSync } from "node:fs";
 import { evaluateStatus, STATUS_INVARIANTS, SELECTION_STATES, LOCK_STATES } from "../scripts/calibration/c6-status.mjs";
 import { versionOf } from "../src/versions.js";
@@ -129,7 +130,12 @@ describe("repository truth at phase start", () => {
 
   it("the registry and the reconciliation artifact agree on the calibration version", () => {
     const d = C6("candidate-status-reconciliation").data;
-    expect(d.truthfulCurrentState.possessionCalibrationVersion).toBe(versionOf("possessionCalibrationVersion"));
+    // The artifact records what was live when Phase 6C2C6 wrote it. Once a
+    // successor candidate is locked the registry moves on, so the artifact is
+    // checked against the version of ITS candidate (the parent, 1.0.0) rather
+    // than against a later registry value — a drifting artifact still fails.
+    expect(d.truthfulCurrentState.possessionCalibrationVersion)
+      .toBe(recordedCalibrationVersionExpectation(versionOf("possessionCalibrationVersion")));
   });
 
   it("both formal holdouts report an access count of zero", () => {
@@ -195,7 +201,12 @@ describe("baseline candidate lock", () => {
 
   it("agrees with the registry on the calibration version", () => {
     const d = C6("baseline-candidate-lock").data;
-    expect(d.possessionCalibrationVersion).toBe(versionOf("possessionCalibrationVersion"));
+    // Candidate 0's manifest states 1.0.0 permanently. While it is the ACTIVE
+    // lock that is also the registry value; once a successor is locked the
+    // registry advances and this manifest must NOT follow it — a mutated
+    // parent manifest is the failure this now catches.
+    expect(d.possessionCalibrationVersion)
+      .toBe(recordedCalibrationVersionExpectation(versionOf("possessionCalibrationVersion")));
     expect(d.possessionCalibrationVersion).toBe("1.0.0");
   });
 
