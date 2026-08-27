@@ -1,0 +1,4729 @@
+{
+  "artifact": "historical-v6-expanded-pool",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run v6:eligibility",
+  "generatedAt": "2026-08-27T19:57:18.701Z",
+  "gitCommit": "f8b7d7573e8e4e21742d6b36610433b458fbe5b4",
+  "branch": "phase-6c4c2-v6-freeze-and-seal",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "historicalV6PoolVersion": "3.0.0",
+    "supersedes": {
+      "artifact": "data/validation/6c4c1/historical-v6-candidate-pool.json",
+      "version": "1.0.0",
+      "why": "Phase 6C4C1's pool added the calibration and Historical V3 exclusion lists as raw fixture ids while keying candidate rows as team-name-and-season, so neither exclusion could ever match.",
+      "notOverwritten": true
+    },
+    "eligibilityPolicyHash": "b74c01b11abf5b1446fa14b2b13e2f0d226bde53893add5241d53f9ebad43439",
+    "candidate2OutputUsed": false,
+    "candidate2SimulationsUsedForEligibility": 0,
+    "universeSize": 110,
+    "universeSources": [
+      {
+        "origin": "CALIBRATION_PLAYER_STORE_V3",
+        "path": "data/calibration/calibration-players-v3.json",
+        "present": true,
+        "profiles": 160,
+        "teamSeasons": 32,
+        "coachChecks": 0,
+        "storeHash": null
+      },
+      {
+        "origin": "CALIBRATION_PLAYER_STORE_V4",
+        "path": "data/validation/6c3r/calibration-players-v4.json",
+        "present": true,
+        "profiles": 170,
+        "teamSeasons": 34,
+        "coachChecks": 34,
+        "storeHash": "c648d679cb211d3bc0294a87ddc9341846f4bae631cae3e002db4d5e758b790a"
+      },
+      {
+        "origin": "CALIBRATION_PLAYER_STORE_V5",
+        "path": "data/validation/6c4a/calibration-players-v5.json",
+        "present": true,
+        "profiles": 75,
+        "teamSeasons": 15,
+        "coachChecks": 15,
+        "storeHash": "0ec0c03355515fb6a4cbddf248b29e40fd23f4c9b13a012487c5efbc17e4539b"
+      },
+      {
+        "origin": "CALIBRATION_PLAYER_STORE_V6",
+        "path": "data/validation/6c4c2/calibration-players-v6.json",
+        "present": true,
+        "profiles": 145,
+        "teamSeasons": 29,
+        "coachChecks": 29,
+        "storeHash": "c14399a4da748f67af4407feb013a8c4e5ecb8b16310f133a208669179745fcf"
+      }
+    ],
+    "eligibleCount": 33,
+    "excludedCount": 77,
+    "eligible": [
+      {
+        "key": "minneapolislakers|195556",
+        "fixtureId": "v4-1955-56-lakers",
+        "teamId": "MIN_LAKERS",
+        "teamName": "Minneapolis Lakers",
+        "season": "1955-56",
+        "era": "1950s",
+        "coachId": "john-kundla",
+        "people": [
+          "slater-martin",
+          "whitey-skoog",
+          "dick-garmaker",
+          "vern-mikkelsen",
+          "clyde-lovellette"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V4"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "post-centred, interior scoring",
+          "POST_HEAVY"
+        ],
+        "scoreableMetrics": [
+          "postUpShare"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 3,
+          "origin": "HISTORICAL_HOLDOUT_V3",
+          "against": "Minneapolis Lakers 1953-54"
+        },
+        "exclusionReasons": [],
+        "eligible": true,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "philadelphia76ers|196869",
+        "fixtureId": "v5-1968-69-76ers",
+        "teamId": "PHI",
+        "teamName": "Philadelphia 76ers",
+        "season": "1968-69",
+        "era": "1960s",
+        "coachId": "jack-ramsay",
+        "people": [
+          "wali-jones",
+          "hal-greer",
+          "chet-walker",
+          "billy-cunningham",
+          "darrall-imhoff"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V5"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "fast",
+          "TRANSITION"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "transitionShare"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 1,
+          "origin": "SYNTHETIC_STRESS_HOLDOUT_V2",
+          "against": "ss2-no-spacing-1960s 1960s"
+        },
+        "exclusionReasons": [],
+        "eligible": true,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "portlandtrailblazers|197475",
+        "fixtureId": "v5-1974-75-blazers",
+        "teamId": "POR",
+        "teamName": "Portland Trail Blazers",
+        "season": "1974-75",
+        "era": "1970s",
+        "coachId": "lenny-wilkens",
+        "people": [
+          "geoff-petrie",
+          "larry-steele",
+          "sidney-wicks",
+          "lloyd-neal",
+          "bill-walton"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V5"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "POST_HEAVY",
+          "STRONG_OFFENSIVE_REBOUNDING"
+        ],
+        "scoreableMetrics": [
+          "postUpShare",
+          "orebRate"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 1,
+          "origin": "HISTORICAL_HOLDOUT_V3",
+          "against": "Portland Trail Blazers 1976-77"
+        },
+        "exclusionReasons": [],
+        "eligible": true,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "losangeleslakers|198182",
+        "fixtureId": "v5-1981-82-lakers",
+        "teamId": "LAL",
+        "teamName": "Los Angeles Lakers",
+        "season": "1981-82",
+        "era": "1980s",
+        "coachId": "pat-riley",
+        "people": [
+          "magic-johnson",
+          "norm-nixon",
+          "jamaal-wilkes",
+          "kurt-rambis",
+          "kareem-abdul-jabbar"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V5"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "very fast",
+          "man with a dominant rebounder",
+          "TRANSITION",
+          "PACE_EXTREME",
+          "PASSING_HUB"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "orebRateAgainst",
+          "transitionShare",
+          "assistedRate"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 3,
+          "origin": "HISTORICAL_HOLDOUT_V5",
+          "against": "Los Angeles Lakers 1984-85"
+        },
+        "exclusionReasons": [],
+        "eligible": true,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "miamiheat|199697",
+        "fixtureId": "v5-1996-97-heat",
+        "teamId": "MIA",
+        "teamName": "Miami Heat",
+        "season": "1996-97",
+        "era": "1990s",
+        "coachId": "pat-riley",
+        "people": [
+          "tim-hardaway",
+          "voshon-lenard",
+          "jamal-mashburn",
+          "p-j-brown",
+          "alonzo-mourning"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V5"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "slow",
+          "elite physical man",
+          "ELITE_DEFENSE"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "refPppVsTeam"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 0,
+          "origin": null,
+          "against": null
+        },
+        "exclusionReasons": [],
+        "eligible": true,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "bostonceltics|200708",
+        "fixtureId": "v5-2007-08-celtics",
+        "teamId": "BOS",
+        "teamName": "Boston Celtics",
+        "season": "2007-08",
+        "era": "2000s",
+        "coachId": "doc-rivers",
+        "people": [
+          "rajon-rondo",
+          "ray-allen",
+          "paul-pierce",
+          "kevin-garnett",
+          "kendrick-perkins"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V5"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "elite team man defence",
+          "ELITE_DEFENSE",
+          "PASSING_HUB"
+        ],
+        "scoreableMetrics": [
+          "refPppVsTeam",
+          "assistedRate"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 0,
+          "origin": null,
+          "against": null
+        },
+        "exclusionReasons": [],
+        "eligible": true,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "losangeleslakers|200809",
+        "fixtureId": "v5-2008-09-lakers",
+        "teamId": "LAL",
+        "teamName": "Los Angeles Lakers",
+        "season": "2008-09",
+        "era": "2000s",
+        "coachId": "phil-jackson",
+        "people": [
+          "derek-fisher",
+          "kobe-bryant",
+          "trevor-ariza",
+          "pau-gasol",
+          "andrew-bynum"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V5"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "POST_HEAVY",
+          "MOTION"
+        ],
+        "scoreableMetrics": [
+          "postUpShare",
+          "movementShare"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 2,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Los Angeles Lakers 2000-01"
+        },
+        "exclusionReasons": [],
+        "eligible": true,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "torontoraptors|201819",
+        "fixtureId": "v5-2018-19-raptors",
+        "teamId": "TOR",
+        "teamName": "Toronto Raptors",
+        "season": "2018-19",
+        "era": "2010s",
+        "coachId": "nick-nurse",
+        "people": [
+          "kyle-lowry",
+          "danny-green",
+          "kawhi-leonard",
+          "pascal-siakam",
+          "marc-gasol"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V5"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "ELITE_DEFENSE"
+        ],
+        "scoreableMetrics": [
+          "refPppVsTeam"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 2,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "San Antonio Spurs 2013-14"
+        },
+        "exclusionReasons": [],
+        "eligible": true,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "newyorkknicks|202324",
+        "fixtureId": "v5-2023-24-knicks",
+        "teamId": "NYK",
+        "teamName": "New York Knicks",
+        "season": "2023-24",
+        "era": "2020s",
+        "coachId": "tom-thibodeau",
+        "people": [
+          "jalen-brunson",
+          "donte-divincenzo",
+          "josh-hart",
+          "og-anunoby",
+          "isaiah-hartenstein"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V5"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "slow",
+          "STRONG_OFFENSIVE_REBOUNDING"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "orebRate"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 1,
+          "origin": "HISTORICAL_HOLDOUT_V3",
+          "against": "Toronto Raptors 2022-23"
+        },
+        "exclusionReasons": [],
+        "eligible": true,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "philadelphia76ers|202324",
+        "fixtureId": "v5-2023-24-76ers",
+        "teamId": "PHI",
+        "teamName": "Philadelphia 76ers",
+        "season": "2023-24",
+        "era": "2020s",
+        "coachId": "nick-nurse",
+        "people": [
+          "tyrese-maxey",
+          "kelly-oubre-jr",
+          "tobias-harris",
+          "nicolas-batum",
+          "joel-embiid"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V5"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "POST_HEAVY"
+        ],
+        "scoreableMetrics": [
+          "postUpShare"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 3,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Philadelphia 76ers 2022-23"
+        },
+        "exclusionReasons": [],
+        "eligible": true,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "denvernuggets|198485",
+        "fixtureId": "v6-1984-85-nuggets",
+        "teamId": "DEN",
+        "teamName": "Denver Nuggets",
+        "season": "1984-85",
+        "era": "1980s",
+        "coachId": "doug-moe",
+        "people": [
+          "fat-lever",
+          "t-r-dunn",
+          "alex-english",
+          "calvin-natt",
+          "danny-schayes"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V6"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "very fast",
+          "motion, ball movement, high-post passing",
+          "PACE_EXTREME",
+          "MOTION"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "movementShare"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 0,
+          "origin": null,
+          "against": null
+        },
+        "exclusionReasons": [],
+        "eligible": true,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "orlandomagic|200809",
+        "fixtureId": "v6-2008-09-magic",
+        "teamId": "ORL",
+        "teamName": "Orlando Magic",
+        "season": "2008-09",
+        "era": "2000s",
+        "coachId": "stan-van-gundy",
+        "people": [
+          "rafer-alston",
+          "courtney-lee",
+          "hedo-turkoglu",
+          "rashard-lewis",
+          "dwight-howard"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V6"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "post-up centre with perimeter spacing",
+          "POST_HEAVY"
+        ],
+        "scoreableMetrics": [
+          "postUpShare"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 1,
+          "origin": "SYNTHETIC_DEVELOPMENT_V2",
+          "against": "sd2-balanced-lower-ovr 2010s"
+        },
+        "exclusionReasons": [],
+        "eligible": true,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "bostonceltics|195051",
+        "fixtureId": "v6x-1950-51-celtics",
+        "teamId": "BOS",
+        "teamName": "Boston Celtics",
+        "season": "1950-51",
+        "era": "1950s",
+        "coachId": "red-auerbach",
+        "people": [
+          "bob-cousy",
+          "sonny-hertzberg",
+          "chuck-cooper",
+          "bob-donham",
+          "ed-macauley"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V6"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "fast",
+          "fast break, early offence",
+          "TRANSITION"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "transitionShare"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 1,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Boston Celtics 1958-59"
+        },
+        "exclusionReasons": [],
+        "eligible": true,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "bostonceltics|195354",
+        "fixtureId": "v6x-1953-54-celtics",
+        "teamId": "BOS",
+        "teamName": "Boston Celtics",
+        "season": "1953-54",
+        "era": "1950s",
+        "coachId": "red-auerbach",
+        "people": [
+          "bob-cousy",
+          "bill-sharman",
+          "bob-brannum",
+          "bob-harris",
+          "ed-macauley"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V6"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "fast",
+          "fast break, early offence",
+          "TRANSITION"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "transitionShare"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 2,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Boston Celtics 1958-59"
+        },
+        "exclusionReasons": [],
+        "eligible": true,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "minneapolislakers|195859",
+        "fixtureId": "v6x-1958-59-lakers",
+        "teamId": "MIN_LAKERS",
+        "teamName": "Minneapolis Lakers",
+        "season": "1958-59",
+        "era": "1950s",
+        "coachId": "john-kundla",
+        "people": [
+          "hot-rod-hundley",
+          "dick-garmaker",
+          "elgin-baylor",
+          "vern-mikkelsen",
+          "larry-foust"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V6"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "POST_HEAVY"
+        ],
+        "scoreableMetrics": [
+          "postUpShare"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 1,
+          "origin": "HISTORICAL_HOLDOUT_V3",
+          "against": "Minneapolis Lakers 1953-54"
+        },
+        "exclusionReasons": [],
+        "eligible": true,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "newyorkknicks|196768",
+        "fixtureId": "v6x-1967-68-knicks",
+        "teamId": "NYK",
+        "teamName": "New York Knicks",
+        "season": "1967-68",
+        "era": "1960s",
+        "coachId": "red-holzman",
+        "people": [
+          "walt-frazier",
+          "dick-barnett",
+          "cazzie-russell",
+          "willis-reed",
+          "walt-bellamy"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V6"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "motion, ball movement, high-post passing",
+          "PASSING_HUB"
+        ],
+        "scoreableMetrics": [
+          "movementShare",
+          "assistedRate"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 3,
+          "origin": "HISTORICAL_HOLDOUT_V3",
+          "against": "New York Knicks 1968-69"
+        },
+        "exclusionReasons": [],
+        "eligible": true,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "bostonceltics|196970",
+        "fixtureId": "v6x-1969-70-celtics",
+        "teamId": "BOS",
+        "teamName": "Boston Celtics",
+        "season": "1969-70",
+        "era": "1960s",
+        "coachId": "tom-heinsohn",
+        "people": [
+          "jo-jo-white",
+          "john-havlicek",
+          "don-nelson",
+          "tom-sanders",
+          "henry-finkel"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V6"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "very fast",
+          "fast break, early offence",
+          "TRANSITION"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "transitionShare"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 2,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Boston Celtics 1964-65"
+        },
+        "exclusionReasons": [],
+        "eligible": true,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "washingtonbullets|197475",
+        "fixtureId": "v6x-1974-75-bullets",
+        "teamId": "WSB",
+        "teamName": "Washington Bullets",
+        "season": "1974-75",
+        "era": "1970s",
+        "coachId": "kc-jones",
+        "people": [
+          "kevin-porter",
+          "phil-chenier",
+          "mike-riordan",
+          "elvin-hayes",
+          "wes-unseld"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V6"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "post entry to a dominant centre",
+          "POST_HEAVY"
+        ],
+        "scoreableMetrics": [
+          "postUpShare"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 2,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 1,
+          "origin": "SYNTHETIC_DEVELOPMENT_V2",
+          "against": "sd2-post-mismatch 1970s"
+        },
+        "exclusionReasons": [],
+        "eligible": true,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "sanantoniospurs|197677",
+        "fixtureId": "v6x-1976-77-spurs",
+        "teamId": "SAS",
+        "teamName": "San Antonio Spurs",
+        "season": "1976-77",
+        "era": "1970s",
+        "coachId": "doug-moe",
+        "people": [
+          "james-silas",
+          "george-gervin",
+          "larry-kenon",
+          "mark-olberding",
+          "billy-paultz"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V6"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "very fast",
+          "fast break and early offence",
+          "TRANSITION"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "transitionShare"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 0,
+          "origin": null,
+          "against": null
+        },
+        "exclusionReasons": [],
+        "eligible": true,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "philadelphia76ers|197778",
+        "fixtureId": "v6x-1977-78-sixers",
+        "teamId": "PHI",
+        "teamName": "Philadelphia 76ers",
+        "season": "1977-78",
+        "era": "1970s",
+        "coachId": "billy-cunningham",
+        "people": [
+          "henry-bibby",
+          "doug-collins",
+          "julius-erving",
+          "george-mcginnis",
+          "caldwell-jones"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V6"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "fast",
+          "TRANSITION"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "transitionShare"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 1,
+          "origin": "HISTORICAL_HOLDOUT_V3",
+          "against": "Philadelphia 76ers 1982-83"
+        },
+        "exclusionReasons": [],
+        "eligible": true,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "milwaukeebucks|198081",
+        "fixtureId": "v6x-1980-81-bucks",
+        "teamId": "MIL",
+        "teamName": "Milwaukee Bucks",
+        "season": "1980-81",
+        "era": "1980s",
+        "coachId": "don-nelson",
+        "people": [
+          "quinn-buckner",
+          "brian-winters",
+          "marques-johnson",
+          "mickey-johnson",
+          "bob-lanier"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V6"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "fast",
+          "motion and cutting",
+          "PASSING_HUB"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "movementShare",
+          "assistedRate"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 0,
+          "origin": null,
+          "against": null
+        },
+        "exclusionReasons": [],
+        "eligible": true,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "newyorkknicks|198384",
+        "fixtureId": "v6x-1983-84-knicks",
+        "teamId": "NYK",
+        "teamName": "New York Knicks",
+        "season": "1983-84",
+        "era": "1980s",
+        "coachId": "hubie-brown",
+        "people": [
+          "rory-sparrow",
+          "ray-williams",
+          "bernard-king",
+          "truck-robinson",
+          "bill-cartwright"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V6"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "slow",
+          "SLOW_HALF_COURT"
+        ],
+        "scoreableMetrics": [
+          "gamePace"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 1,
+          "origin": "HISTORICAL_HOLDOUT_V5",
+          "against": "Chicago Bulls 1992-93"
+        },
+        "exclusionReasons": [],
+        "eligible": true,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "portlandtrailblazers|199192",
+        "fixtureId": "v6x-1991-92-blazers",
+        "teamId": "POR",
+        "teamName": "Portland Trail Blazers",
+        "season": "1991-92",
+        "era": "1990s",
+        "coachId": "rick-adelman",
+        "people": [
+          "terry-porter",
+          "clyde-drexler",
+          "jerome-kersey",
+          "buck-williams",
+          "kevin-duckworth"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V6"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "fast",
+          "fast break and early offence",
+          "TRANSITION",
+          "STRONG_OFFENSIVE_REBOUNDING"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "transitionShare",
+          "orebRate"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 1,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Houston Rockets 1994-95"
+        },
+        "exclusionReasons": [],
+        "eligible": true,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "clevelandcavaliers|199293",
+        "fixtureId": "v6x-1992-93-cavaliers",
+        "teamId": "CLE",
+        "teamName": "Cleveland Cavaliers",
+        "season": "1992-93",
+        "era": "1990s",
+        "coachId": "lenny-wilkens",
+        "people": [
+          "mark-price",
+          "craig-ehlo",
+          "larry-nance",
+          "hot-rod-williams",
+          "brad-daugherty"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V6"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "half-court execution, elite passing front line",
+          "SLOW_HALF_COURT"
+        ],
+        "scoreableMetrics": [
+          "assistedRate",
+          "gamePace"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 0,
+          "origin": null,
+          "against": null
+        },
+        "exclusionReasons": [],
+        "eligible": true,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "indianapacers|199495",
+        "fixtureId": "v6x-1994-95-pacers",
+        "teamId": "IND",
+        "teamName": "Indiana Pacers",
+        "season": "1994-95",
+        "era": "1990s",
+        "coachId": "larry-brown",
+        "people": [
+          "mark-jackson",
+          "reggie-miller",
+          "derrick-mckey",
+          "dale-davis",
+          "rik-smits"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V6"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "slow",
+          "movement shooting off screens",
+          "MOTION",
+          "SLOW_HALF_COURT"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "movementShare"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 0,
+          "origin": null,
+          "against": null
+        },
+        "exclusionReasons": [],
+        "eligible": true,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "utahjazz|200708",
+        "fixtureId": "v6x-2007-08-jazz",
+        "teamId": "UTA",
+        "teamName": "Utah Jazz",
+        "season": "2007-08",
+        "era": "2000s",
+        "coachId": "jerry-sloan",
+        "people": [
+          "deron-williams",
+          "ronnie-brewer",
+          "andrei-kirilenko",
+          "carlos-boozer",
+          "mehmet-okur"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V6"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "the canonical pick-and-roll",
+          "PICK_AND_ROLL",
+          "PASSING_HUB"
+        ],
+        "scoreableMetrics": [
+          "pnrShare",
+          "assistedRate"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 1,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Chicago Bulls 2010-11"
+        },
+        "exclusionReasons": [],
+        "eligible": true,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "houstonrockets|200708",
+        "fixtureId": "v6x-2007-08-rockets",
+        "teamId": "HOU",
+        "teamName": "Houston Rockets",
+        "season": "2007-08",
+        "era": "2000s",
+        "coachId": "rick-adelman",
+        "people": [
+          "rafer-alston",
+          "tracy-mcgrady",
+          "shane-battier",
+          "luis-scola",
+          "yao-ming"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V6"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "slow",
+          "motion and cutting",
+          "MOTION",
+          "POST_HEAVY"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "movementShare",
+          "postUpShare"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 1,
+          "origin": "HISTORICAL_HOLDOUT_V3",
+          "against": "Miami Heat 2012-13"
+        },
+        "exclusionReasons": [],
+        "eligible": true,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "dallasmavericks|201011",
+        "fixtureId": "v6x-2010-11-mavericks",
+        "teamId": "DAL",
+        "teamName": "Dallas Mavericks",
+        "season": "2010-11",
+        "era": "2010s",
+        "coachId": "rick-carlisle",
+        "people": [
+          "jason-kidd",
+          "deshawn-stevenson",
+          "shawn-marion",
+          "dirk-nowitzki",
+          "tyson-chandler"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V6"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "slow",
+          "zone-capable, scheme-heavy",
+          "ZONE_CAPABLE"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "defensiveZoneShare"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 1,
+          "origin": "HISTORICAL_HOLDOUT_V3",
+          "against": "Phoenix Suns 2006-07"
+        },
+        "exclusionReasons": [],
+        "eligible": true,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "minnesotatimberwolves|201213",
+        "fixtureId": "v6x-2012-13-timberwolves",
+        "teamId": "MIN_TWOLVES",
+        "teamName": "Minnesota Timberwolves",
+        "season": "2012-13",
+        "era": "2010s",
+        "coachId": "rick-adelman",
+        "people": [
+          "ricky-rubio",
+          "alexey-shved",
+          "andrei-kirilenko",
+          "kevin-love",
+          "nikola-pekovic"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V6"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "motion and cutting",
+          "MOTION",
+          "PASSING_HUB"
+        ],
+        "scoreableMetrics": [
+          "movementShare",
+          "assistedRate"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 1,
+          "origin": "SYNTHETIC_DEVELOPMENT_V2",
+          "against": "sd2-weak-shooting 2010s"
+        },
+        "exclusionReasons": [],
+        "eligible": true,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "denvernuggets|201213",
+        "fixtureId": "v6x-2012-13-nuggets",
+        "teamId": "DEN",
+        "teamName": "Denver Nuggets",
+        "season": "2012-13",
+        "era": "2010s",
+        "coachId": "george-karl",
+        "people": [
+          "ty-lawson",
+          "andre-iguodala",
+          "danilo-gallinari",
+          "kenneth-faried",
+          "kosta-koufos"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V6"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "very fast",
+          "fast break and early offence",
+          "TRANSITION"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "transitionShare"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 0,
+          "origin": null,
+          "against": null
+        },
+        "exclusionReasons": [],
+        "eligible": true,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "sanantoniospurs|202021",
+        "fixtureId": "v6x-2020-21-spurs",
+        "teamId": "SAS",
+        "teamName": "San Antonio Spurs",
+        "season": "2020-21",
+        "era": "2020s",
+        "coachId": "gregg-popovich",
+        "people": [
+          "dejounte-murray",
+          "derrick-white",
+          "keldon-johnson",
+          "rudy-gay",
+          "jakob-poltl"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V6"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "half-court motion and passing",
+          "MOTION"
+        ],
+        "scoreableMetrics": [
+          "movementShare"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 0,
+          "origin": null,
+          "against": null
+        },
+        "exclusionReasons": [],
+        "eligible": true,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "dallasmavericks|202021",
+        "fixtureId": "v6x-2020-21-mavericks",
+        "teamId": "DAL",
+        "teamName": "Dallas Mavericks",
+        "season": "2020-21",
+        "era": "2020s",
+        "coachId": "rick-carlisle",
+        "people": [
+          "luka-doncic",
+          "tim-hardaway-jr",
+          "dorian-finney-smith",
+          "kristaps-porzingis",
+          "maxi-kleber"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V6"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "pick-and-roll around a lead guard",
+          "PICK_AND_ROLL"
+        ],
+        "scoreableMetrics": [
+          "pnrShare"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 1,
+          "origin": "SYNTHETIC_DEVELOPMENT_V2",
+          "against": "sd2-passing-hub 2020s"
+        },
+        "exclusionReasons": [],
+        "eligible": true,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "indianapacers|202324",
+        "fixtureId": "v6x-2023-24-pacers",
+        "teamId": "IND",
+        "teamName": "Indiana Pacers",
+        "season": "2023-24",
+        "era": "2020s",
+        "coachId": "rick-carlisle",
+        "people": [
+          "tyrese-haliburton",
+          "andrew-nembhard",
+          "aaron-nesmith",
+          "pascal-siakam",
+          "myles-turner"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V6"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "very fast",
+          "fast break and early offence",
+          "TRANSITION",
+          "PASSING_HUB"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "transitionShare",
+          "assistedRate"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 1,
+          "origin": "HISTORICAL_HOLDOUT_V3",
+          "against": "Toronto Raptors 2022-23"
+        },
+        "exclusionReasons": [],
+        "eligible": true,
+        "candidate2SimulationsUsed": 0
+      }
+    ],
+    "excluded": [
+      {
+        "key": "bostonceltics|195657",
+        "fixtureId": "h3-1956-57-celtics",
+        "teamId": "BOS",
+        "teamName": "Boston Celtics",
+        "season": "1956-57",
+        "era": "1950s",
+        "coachId": "red-auerbach",
+        "people": [
+          "bob-cousy",
+          "bill-sharman",
+          "jim-loscutoff",
+          "tom-heinsohn",
+          "bill-russell"
+        ],
+        "origins": [
+          "historical-corpus-v3",
+          "CALIBRATION_PLAYER_STORE_V3"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [],
+        "scoreableMetrics": [],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Boston Celtics 1958-59"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_CALIBRATION_V3",
+          "NO_SCOREABLE_IDENTITY_TRAIT",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "minneapolislakers|195354",
+        "fixtureId": "h3-1953-54-lakers",
+        "teamId": "MIN_LAKERS",
+        "teamName": "Minneapolis Lakers",
+        "season": "1953-54",
+        "era": "1950s",
+        "coachId": "john-kundla",
+        "people": [
+          "slater-martin",
+          "whitey-skoog",
+          "jim-pollard",
+          "vern-mikkelsen",
+          "george-mikan"
+        ],
+        "origins": [
+          "historical-corpus-v3",
+          "CALIBRATION_PLAYER_STORE_V3"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [],
+        "scoreableMetrics": [],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_HOLDOUT_V3",
+          "against": "Minneapolis Lakers 1953-54"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_HOLDOUT_V3",
+          "NO_SCOREABLE_IDENTITY_TRAIT",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "bostonceltics|195859",
+        "fixtureId": "h3-1958-59-celtics",
+        "teamId": "BOS",
+        "teamName": "Boston Celtics",
+        "season": "1958-59",
+        "era": "1950s",
+        "coachId": "red-auerbach",
+        "people": [
+          "bob-cousy",
+          "bill-sharman",
+          "tom-heinsohn",
+          "jim-loscutoff",
+          "bill-russell"
+        ],
+        "origins": [
+          "historical-corpus-v3",
+          "CALIBRATION_PLAYER_STORE_V3"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [],
+        "scoreableMetrics": [],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Boston Celtics 1958-59"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_CALIBRATION_V3",
+          "NO_SCOREABLE_IDENTITY_TRAIT",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "minneapolislakers|195152",
+        "fixtureId": "h3-1951-52-lakers",
+        "teamId": "MIN_LAKERS",
+        "teamName": "Minneapolis Lakers",
+        "season": "1951-52",
+        "era": "1950s",
+        "coachId": "john-kundla",
+        "people": [
+          "slater-martin",
+          "pep-saul",
+          "jim-pollard",
+          "vern-mikkelsen",
+          "george-mikan"
+        ],
+        "origins": [
+          "historical-corpus-v3",
+          "CALIBRATION_PLAYER_STORE_V3"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [],
+        "scoreableMetrics": [],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Minneapolis Lakers 1951-52"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_CALIBRATION_V3",
+          "NO_SCOREABLE_IDENTITY_TRAIT",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "bostonceltics|196263",
+        "fixtureId": "h3-1962-63-celtics",
+        "teamId": "BOS",
+        "teamName": "Boston Celtics",
+        "season": "1962-63",
+        "era": "1960s",
+        "coachId": "red-auerbach",
+        "people": [
+          "bob-cousy",
+          "sam-jones",
+          "tom-heinsohn",
+          "tom-sanders",
+          "bill-russell"
+        ],
+        "origins": [
+          "historical-corpus-v3",
+          "CALIBRATION_PLAYER_STORE_V3"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [],
+        "scoreableMetrics": [],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Boston Celtics 1962-63"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_CALIBRATION_V3",
+          "NO_SCOREABLE_IDENTITY_TRAIT",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "bostonceltics|196465",
+        "fixtureId": "h3-1964-65-celtics",
+        "teamId": "BOS",
+        "teamName": "Boston Celtics",
+        "season": "1964-65",
+        "era": "1960s",
+        "coachId": "red-auerbach",
+        "people": [
+          "k-c-jones",
+          "sam-jones",
+          "john-havlicek",
+          "tom-sanders",
+          "bill-russell"
+        ],
+        "origins": [
+          "historical-corpus-v3",
+          "CALIBRATION_PLAYER_STORE_V3"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [],
+        "scoreableMetrics": [],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 1,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Boston Celtics 1964-65"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_CALIBRATION_V3",
+          "NO_SCOREABLE_IDENTITY_TRAIT",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "newyorkknicks|196970",
+        "fixtureId": "h3-1969-70-knicks",
+        "teamId": "NYK",
+        "teamName": "New York Knicks",
+        "season": "1969-70",
+        "era": "1960s",
+        "coachId": "red-holzman",
+        "people": [
+          "walt-frazier",
+          "dick-barnett",
+          "bill-bradley",
+          "dave-debusschere",
+          "willis-reed"
+        ],
+        "origins": [
+          "historical-corpus-v3",
+          "CALIBRATION_PLAYER_STORE_V3"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [],
+        "scoreableMetrics": [],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_HOLDOUT_V3",
+          "against": "New York Knicks 1968-69"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_CALIBRATION_V3",
+          "NO_SCOREABLE_IDENTITY_TRAIT",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "newyorkknicks|196869",
+        "fixtureId": "h3-1968-69-knicks",
+        "teamId": "NYK",
+        "teamName": "New York Knicks",
+        "season": "1968-69",
+        "era": "1960s",
+        "coachId": "red-holzman",
+        "people": [
+          "walt-frazier",
+          "dick-barnett",
+          "bill-bradley",
+          "dave-debusschere",
+          "willis-reed"
+        ],
+        "origins": [
+          "historical-corpus-v3",
+          "CALIBRATION_PLAYER_STORE_V3"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [],
+        "scoreableMetrics": [],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_HOLDOUT_V3",
+          "against": "New York Knicks 1968-69"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_HOLDOUT_V3",
+          "NO_SCOREABLE_IDENTITY_TRAIT",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "losangeleslakers|197172",
+        "fixtureId": "h3-1971-72-lakers",
+        "teamId": "LAL",
+        "teamName": "Los Angeles Lakers",
+        "season": "1971-72",
+        "era": "1970s",
+        "coachId": "bill-sharman",
+        "people": [
+          "jerry-west",
+          "gail-goodrich",
+          "jim-mcmillian",
+          "happy-hairston",
+          "wilt-chamberlain"
+        ],
+        "origins": [
+          "historical-corpus-v3",
+          "CALIBRATION_PLAYER_STORE_V3"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [],
+        "scoreableMetrics": [],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Los Angeles Lakers 1971-72"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_CALIBRATION_V3",
+          "NO_SCOREABLE_IDENTITY_TRAIT",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "newyorkknicks|197273",
+        "fixtureId": "h3-1972-73-knicks",
+        "teamId": "NYK",
+        "teamName": "New York Knicks",
+        "season": "1972-73",
+        "era": "1970s",
+        "coachId": "red-holzman",
+        "people": [
+          "walt-frazier",
+          "earl-monroe",
+          "bill-bradley",
+          "dave-debusschere",
+          "willis-reed"
+        ],
+        "origins": [
+          "historical-corpus-v3",
+          "CALIBRATION_PLAYER_STORE_V3"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [],
+        "scoreableMetrics": [],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "New York Knicks 1972-73"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_CALIBRATION_V3",
+          "NO_SCOREABLE_IDENTITY_TRAIT",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "portlandtrailblazers|197677",
+        "fixtureId": "h3-1976-77-blazers",
+        "teamId": "POR",
+        "teamName": "Portland Trail Blazers",
+        "season": "1976-77",
+        "era": "1970s",
+        "coachId": "jack-ramsay",
+        "people": [
+          "lionel-hollins",
+          "dave-twardzik",
+          "bob-gross",
+          "maurice-lucas",
+          "bill-walton"
+        ],
+        "origins": [
+          "historical-corpus-v3",
+          "CALIBRATION_PLAYER_STORE_V3"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [],
+        "scoreableMetrics": [],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 2,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_HOLDOUT_V3",
+          "against": "Portland Trail Blazers 1976-77"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_HOLDOUT_V3",
+          "NO_SCOREABLE_IDENTITY_TRAIT",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "bostonceltics|197374",
+        "fixtureId": "h3-1973-74-celtics",
+        "teamId": "BOS",
+        "teamName": "Boston Celtics",
+        "season": "1973-74",
+        "era": "1970s",
+        "coachId": "tom-heinsohn",
+        "people": [
+          "jo-jo-white",
+          "don-chaney",
+          "john-havlicek",
+          "paul-silas",
+          "dave-cowens"
+        ],
+        "origins": [
+          "historical-corpus-v3",
+          "CALIBRATION_PLAYER_STORE_V3"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [],
+        "scoreableMetrics": [],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Boston Celtics 1973-74"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_CALIBRATION_V3",
+          "NO_SCOREABLE_IDENTITY_TRAIT",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "bostonceltics|198586",
+        "fixtureId": "h3-1985-86-celtics",
+        "teamId": "BOS",
+        "teamName": "Boston Celtics",
+        "season": "1985-86",
+        "era": "1980s",
+        "coachId": "kc-jones",
+        "people": [
+          "dennis-johnson",
+          "danny-ainge",
+          "larry-bird",
+          "kevin-mchale",
+          "robert-parish"
+        ],
+        "origins": [
+          "historical-corpus-v3",
+          "CALIBRATION_PLAYER_STORE_V3"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [],
+        "scoreableMetrics": [],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Boston Celtics 1985-86"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_CALIBRATION_V3",
+          "NO_SCOREABLE_IDENTITY_TRAIT",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "losangeleslakers|198687",
+        "fixtureId": "h3-1986-87-lakers",
+        "teamId": "LAL",
+        "teamName": "Los Angeles Lakers",
+        "season": "1986-87",
+        "era": "1980s",
+        "coachId": "pat-riley",
+        "people": [
+          "magic-johnson",
+          "byron-scott",
+          "james-worthy",
+          "a-c-green",
+          "kareem-abdul-jabbar"
+        ],
+        "origins": [
+          "historical-corpus-v3",
+          "CALIBRATION_PLAYER_STORE_V3"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [],
+        "scoreableMetrics": [],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Los Angeles Lakers 1986-87"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_CALIBRATION_V3",
+          "NO_SCOREABLE_IDENTITY_TRAIT",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "philadelphia76ers|198283",
+        "fixtureId": "h3-1982-83-sixers",
+        "teamId": "PHI",
+        "teamName": "Philadelphia 76ers",
+        "season": "1982-83",
+        "era": "1980s",
+        "coachId": "billy-cunningham",
+        "people": [
+          "maurice-cheeks",
+          "andrew-toney",
+          "julius-erving",
+          "marc-iavaroni",
+          "moses-malone"
+        ],
+        "origins": [
+          "historical-corpus-v3",
+          "CALIBRATION_PLAYER_STORE_V3"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [],
+        "scoreableMetrics": [],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_HOLDOUT_V3",
+          "against": "Philadelphia 76ers 1982-83"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_HOLDOUT_V3",
+          "NO_SCOREABLE_IDENTITY_TRAIT",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "detroitpistons|198889",
+        "fixtureId": "h3-1988-89-pistons",
+        "teamId": "DET",
+        "teamName": "Detroit Pistons",
+        "season": "1988-89",
+        "era": "1980s",
+        "coachId": "chuck-daly",
+        "people": [
+          "isiah-thomas",
+          "joe-dumars",
+          "mark-aguirre",
+          "rick-mahorn",
+          "bill-laimbeer"
+        ],
+        "origins": [
+          "historical-corpus-v3",
+          "CALIBRATION_PLAYER_STORE_V3"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [],
+        "scoreableMetrics": [],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Detroit Pistons 1988-89"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_CALIBRATION_V3",
+          "NO_SCOREABLE_IDENTITY_TRAIT",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "chicagobulls|199596",
+        "fixtureId": "h3-1995-96-bulls",
+        "teamId": "CHI",
+        "teamName": "Chicago Bulls",
+        "season": "1995-96",
+        "era": "1990s",
+        "coachId": "phil-jackson",
+        "people": [
+          "ron-harper",
+          "michael-jordan",
+          "scottie-pippen",
+          "dennis-rodman",
+          "luc-longley"
+        ],
+        "origins": [
+          "historical-corpus-v3",
+          "CALIBRATION_PLAYER_STORE_V3"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [],
+        "scoreableMetrics": [],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Chicago Bulls 1995-96"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_CALIBRATION_V3",
+          "NO_SCOREABLE_IDENTITY_TRAIT",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "newyorkknicks|199394",
+        "fixtureId": "h3-1993-94-knicks",
+        "teamId": "NYK",
+        "teamName": "New York Knicks",
+        "season": "1993-94",
+        "era": "1990s",
+        "coachId": "pat-riley",
+        "people": [
+          "derek-harper",
+          "john-starks",
+          "charles-smith",
+          "charles-oakley",
+          "patrick-ewing"
+        ],
+        "origins": [
+          "historical-corpus-v3",
+          "CALIBRATION_PLAYER_STORE_V3"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [],
+        "scoreableMetrics": [],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_HOLDOUT_V3",
+          "against": "New York Knicks 1993-94"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_HOLDOUT_V3",
+          "NO_SCOREABLE_IDENTITY_TRAIT",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "utahjazz|199697",
+        "fixtureId": "h3-1996-97-jazz",
+        "teamId": "UTA",
+        "teamName": "Utah Jazz",
+        "season": "1996-97",
+        "era": "1990s",
+        "coachId": "jerry-sloan",
+        "people": [
+          "john-stockton",
+          "jeff-hornacek",
+          "bryon-russell",
+          "karl-malone",
+          "greg-ostertag"
+        ],
+        "origins": [
+          "historical-corpus-v3",
+          "CALIBRATION_PLAYER_STORE_V3"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [],
+        "scoreableMetrics": [],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Utah Jazz 1996-97"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_CALIBRATION_V3",
+          "NO_SCOREABLE_IDENTITY_TRAIT",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "houstonrockets|199495",
+        "fixtureId": "h3-1994-95-rockets",
+        "teamId": "HOU",
+        "teamName": "Houston Rockets",
+        "season": "1994-95",
+        "era": "1990s",
+        "coachId": "rudy-tomjanovich",
+        "people": [
+          "kenny-smith",
+          "clyde-drexler",
+          "robert-horry",
+          "otis-thorpe",
+          "hakeem-olajuwon"
+        ],
+        "origins": [
+          "historical-corpus-v3",
+          "CALIBRATION_PLAYER_STORE_V3"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [],
+        "scoreableMetrics": [],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Houston Rockets 1994-95"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_CALIBRATION_V3",
+          "NO_SCOREABLE_IDENTITY_TRAIT",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "losangeleslakers|200001",
+        "fixtureId": "h3-2000-01-lakers",
+        "teamId": "LAL",
+        "teamName": "Los Angeles Lakers",
+        "season": "2000-01",
+        "era": "2000s",
+        "coachId": "phil-jackson",
+        "people": [
+          "derek-fisher",
+          "kobe-bryant",
+          "rick-fox",
+          "horace-grant",
+          "shaquille-o-neal"
+        ],
+        "origins": [
+          "historical-corpus-v3",
+          "CALIBRATION_PLAYER_STORE_V3"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [],
+        "scoreableMetrics": [],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Los Angeles Lakers 2000-01"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_CALIBRATION_V3",
+          "NO_SCOREABLE_IDENTITY_TRAIT",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "detroitpistons|200304",
+        "fixtureId": "h3-2003-04-pistons",
+        "teamId": "DET",
+        "teamName": "Detroit Pistons",
+        "season": "2003-04",
+        "era": "2000s",
+        "coachId": "larry-brown",
+        "people": [
+          "chauncey-billups",
+          "richard-hamilton",
+          "tayshaun-prince",
+          "rasheed-wallace",
+          "ben-wallace"
+        ],
+        "origins": [
+          "historical-corpus-v3",
+          "CALIBRATION_PLAYER_STORE_V3"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [],
+        "scoreableMetrics": [],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Detroit Pistons 2003-04"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_CALIBRATION_V3",
+          "NO_SCOREABLE_IDENTITY_TRAIT",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "sanantoniospurs|200405",
+        "fixtureId": "h3-2004-05-spurs",
+        "teamId": "SAS",
+        "teamName": "San Antonio Spurs",
+        "season": "2004-05",
+        "era": "2000s",
+        "coachId": "gregg-popovich",
+        "people": [
+          "tony-parker",
+          "manu-ginobili",
+          "bruce-bowen",
+          "tim-duncan",
+          "rasho-nesterovic"
+        ],
+        "origins": [
+          "historical-corpus-v3",
+          "CALIBRATION_PLAYER_STORE_V3"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [],
+        "scoreableMetrics": [],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "San Antonio Spurs 2004-05"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_CALIBRATION_V3",
+          "NO_SCOREABLE_IDENTITY_TRAIT",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "phoenixsuns|200607",
+        "fixtureId": "h3-2006-07-suns",
+        "teamId": "PHX",
+        "teamName": "Phoenix Suns",
+        "season": "2006-07",
+        "era": "2000s",
+        "coachId": "mike-dantoni",
+        "people": [
+          "steve-nash",
+          "raja-bell",
+          "shawn-marion",
+          "boris-diaw",
+          "amar-e-stoudemire"
+        ],
+        "origins": [
+          "historical-corpus-v3",
+          "CALIBRATION_PLAYER_STORE_V3"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [],
+        "scoreableMetrics": [],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_HOLDOUT_V3",
+          "against": "Phoenix Suns 2006-07"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_HOLDOUT_V3",
+          "NO_SCOREABLE_IDENTITY_TRAIT",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "goldenstatewarriors|201516",
+        "fixtureId": "h3-2015-16-warriors",
+        "teamId": "GSW",
+        "teamName": "Golden State Warriors",
+        "season": "2015-16",
+        "era": "2010s",
+        "coachId": "steve-kerr",
+        "people": [
+          "stephen-curry",
+          "klay-thompson",
+          "harrison-barnes",
+          "draymond-green",
+          "andrew-bogut"
+        ],
+        "origins": [
+          "historical-corpus-v3",
+          "CALIBRATION_PLAYER_STORE_V3"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [],
+        "scoreableMetrics": [],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Golden State Warriors 2015-16"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_CALIBRATION_V3",
+          "NO_SCOREABLE_IDENTITY_TRAIT",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "miamiheat|201213",
+        "fixtureId": "h3-2012-13-heat",
+        "teamId": "MIA",
+        "teamName": "Miami Heat",
+        "season": "2012-13",
+        "era": "2010s",
+        "coachId": "erik-spoelstra",
+        "people": [
+          "mario-chalmers",
+          "dwyane-wade",
+          "lebron-james",
+          "shane-battier",
+          "chris-bosh"
+        ],
+        "origins": [
+          "historical-corpus-v3",
+          "CALIBRATION_PLAYER_STORE_V3"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [],
+        "scoreableMetrics": [],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_HOLDOUT_V3",
+          "against": "Miami Heat 2012-13"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_HOLDOUT_V3",
+          "NO_SCOREABLE_IDENTITY_TRAIT",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "sanantoniospurs|201314",
+        "fixtureId": "h3-2013-14-spurs",
+        "teamId": "SAS",
+        "teamName": "San Antonio Spurs",
+        "season": "2013-14",
+        "era": "2010s",
+        "coachId": "gregg-popovich",
+        "people": [
+          "tony-parker",
+          "danny-green",
+          "kawhi-leonard",
+          "tim-duncan",
+          "tiago-splitter"
+        ],
+        "origins": [
+          "historical-corpus-v3",
+          "CALIBRATION_PLAYER_STORE_V3"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [],
+        "scoreableMetrics": [],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "San Antonio Spurs 2013-14"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_CALIBRATION_V3",
+          "NO_SCOREABLE_IDENTITY_TRAIT",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "chicagobulls|201011",
+        "fixtureId": "h3-2010-11-bulls",
+        "teamId": "CHI",
+        "teamName": "Chicago Bulls",
+        "season": "2010-11",
+        "era": "2010s",
+        "coachId": "tom-thibodeau",
+        "people": [
+          "derrick-rose",
+          "keith-bogans",
+          "luol-deng",
+          "carlos-boozer",
+          "joakim-noah"
+        ],
+        "origins": [
+          "historical-corpus-v3",
+          "CALIBRATION_PLAYER_STORE_V3"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [],
+        "scoreableMetrics": [],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Chicago Bulls 2010-11"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_CALIBRATION_V3",
+          "NO_SCOREABLE_IDENTITY_TRAIT",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "goldenstatewarriors|202122",
+        "fixtureId": "h3-2021-22-warriors",
+        "teamId": "GSW",
+        "teamName": "Golden State Warriors",
+        "season": "2021-22",
+        "era": "2020s",
+        "coachId": "steve-kerr",
+        "people": [
+          "stephen-curry",
+          "klay-thompson",
+          "andrew-wiggins",
+          "draymond-green",
+          "kevon-looney"
+        ],
+        "origins": [
+          "historical-corpus-v3",
+          "CALIBRATION_PLAYER_STORE_V3"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [],
+        "scoreableMetrics": [],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Golden State Warriors 2021-22"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_CALIBRATION_V3",
+          "NO_SCOREABLE_IDENTITY_TRAIT",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "miamiheat|202223",
+        "fixtureId": "h3-2022-23-heat",
+        "teamId": "MIA",
+        "teamName": "Miami Heat",
+        "season": "2022-23",
+        "era": "2020s",
+        "coachId": "erik-spoelstra",
+        "people": [
+          "kyle-lowry",
+          "max-strus",
+          "jimmy-butler",
+          "caleb-martin",
+          "bam-adebayo"
+        ],
+        "origins": [
+          "historical-corpus-v3",
+          "CALIBRATION_PLAYER_STORE_V3"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [],
+        "scoreableMetrics": [],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Miami Heat 2022-23"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_CALIBRATION_V3",
+          "NO_SCOREABLE_IDENTITY_TRAIT",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "torontoraptors|202223",
+        "fixtureId": "h3-2022-23-raptors",
+        "teamId": "TOR",
+        "teamName": "Toronto Raptors",
+        "season": "2022-23",
+        "era": "2020s",
+        "coachId": "nick-nurse",
+        "people": [
+          "fred-vanvleet",
+          "gary-trent-jr",
+          "og-anunoby",
+          "scottie-barnes",
+          "pascal-siakam"
+        ],
+        "origins": [
+          "historical-corpus-v3",
+          "CALIBRATION_PLAYER_STORE_V3"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [],
+        "scoreableMetrics": [],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_HOLDOUT_V3",
+          "against": "Toronto Raptors 2022-23"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_HOLDOUT_V3",
+          "NO_SCOREABLE_IDENTITY_TRAIT",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "philadelphia76ers|202223",
+        "fixtureId": "h3-2022-23-sixers",
+        "teamId": "PHI",
+        "teamName": "Philadelphia 76ers",
+        "season": "2022-23",
+        "era": "2020s",
+        "coachId": "doc-rivers",
+        "people": [
+          "james-harden",
+          "tyrese-maxey",
+          "tobias-harris",
+          "p-j-tucker",
+          "joel-embiid"
+        ],
+        "origins": [
+          "historical-corpus-v3",
+          "CALIBRATION_PLAYER_STORE_V3"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [],
+        "scoreableMetrics": [],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Philadelphia 76ers 2022-23"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_CALIBRATION_V3",
+          "NO_SCOREABLE_IDENTITY_TRAIT",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "bostonceltics|195758",
+        "fixtureId": "v4-1957-58-celtics",
+        "teamId": "BOS",
+        "teamName": "Boston Celtics",
+        "season": "1957-58",
+        "era": "1950s",
+        "coachId": "red-auerbach",
+        "people": [
+          "bob-cousy",
+          "bill-sharman",
+          "frank-ramsey",
+          "tom-heinsohn",
+          "bill-russell"
+        ],
+        "origins": [
+          "historical-holdout-v5",
+          "CALIBRATION_PLAYER_STORE_V4"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "very fast",
+          "fast break from defensive rebounding",
+          "TRANSITION",
+          "ELITE_DEFENSE"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "transitionShare",
+          "refPppVsTeam"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_HOLDOUT_V5",
+          "against": "Boston Celtics 1957-58"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_HOLDOUT_V5",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "minneapolislakers|195051",
+        "fixtureId": "v5-1950-51-lakers",
+        "teamId": "MIN_LAKERS",
+        "teamName": "Minneapolis Lakers",
+        "season": "1950-51",
+        "era": "1950s",
+        "coachId": "john-kundla",
+        "people": [
+          "slater-martin",
+          "arnie-ferrin",
+          "jim-pollard",
+          "vern-mikkelsen",
+          "george-mikan"
+        ],
+        "origins": [
+          "historical-holdout-v5",
+          "CALIBRATION_PLAYER_STORE_V5"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "slow",
+          "POST_HEAVY",
+          "STRONG_OFFENSIVE_REBOUNDING"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "postUpShare",
+          "orebRate"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_HOLDOUT_V5",
+          "against": "Minneapolis Lakers 1950-51"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_HOLDOUT_V5",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "sanfranciscowarriors|196667",
+        "fixtureId": "v4-1966-67-warriors",
+        "teamId": "SFW",
+        "teamName": "San Francisco Warriors",
+        "season": "1966-67",
+        "era": "1960s",
+        "coachId": "bill-sharman",
+        "people": [
+          "jim-king",
+          "paul-neumann",
+          "rick-barry",
+          "fred-hetzel",
+          "nate-thurmond"
+        ],
+        "origins": [
+          "historical-holdout-v5",
+          "CALIBRATION_PLAYER_STORE_V4"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "very fast",
+          "fast break, early offence",
+          "TRANSITION",
+          "PACE_EXTREME",
+          "STRONG_OFFENSIVE_REBOUNDING"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "transitionShare",
+          "orebRate"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_HOLDOUT_V5",
+          "against": "San Francisco Warriors 1966-67"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_HOLDOUT_V5",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "bostonceltics|196061",
+        "fixtureId": "v5-1960-61-celtics",
+        "teamId": "BOS",
+        "teamName": "Boston Celtics",
+        "season": "1960-61",
+        "era": "1960s",
+        "coachId": "red-auerbach",
+        "people": [
+          "bob-cousy",
+          "bill-sharman",
+          "tom-sanders",
+          "tom-heinsohn",
+          "bill-russell"
+        ],
+        "origins": [
+          "historical-holdout-v5",
+          "CALIBRATION_PLAYER_STORE_V5"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "very fast",
+          "fast break and early offence",
+          "elite team man defence",
+          "TRANSITION",
+          "ELITE_DEFENSE"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "transitionShare",
+          "refPppVsTeam"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_HOLDOUT_V5",
+          "against": "Boston Celtics 1960-61"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_HOLDOUT_V5",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "losangeleslakers|197273",
+        "fixtureId": "v4-1972-73-lakers",
+        "teamId": "LAL",
+        "teamName": "Los Angeles Lakers",
+        "season": "1972-73",
+        "era": "1970s",
+        "coachId": "bill-sharman",
+        "people": [
+          "jerry-west",
+          "gail-goodrich",
+          "jim-mcmillian",
+          "bill-bridges",
+          "wilt-chamberlain"
+        ],
+        "origins": [
+          "historical-holdout-v5",
+          "CALIBRATION_PLAYER_STORE_V4"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "fast",
+          "fast break from defensive rebounding",
+          "elite team man",
+          "TRANSITION",
+          "ELITE_DEFENSE"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "transitionShare",
+          "refPppVsTeam"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_HOLDOUT_V5",
+          "against": "Los Angeles Lakers 1972-73"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_HOLDOUT_V5",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "bostonceltics|197576",
+        "fixtureId": "v4-1975-76-celtics",
+        "teamId": "BOS",
+        "teamName": "Boston Celtics",
+        "season": "1975-76",
+        "era": "1970s",
+        "coachId": "tom-heinsohn",
+        "people": [
+          "jo-jo-white",
+          "charlie-scott",
+          "john-havlicek",
+          "paul-silas",
+          "dave-cowens"
+        ],
+        "origins": [
+          "historical-holdout-v5",
+          "CALIBRATION_PLAYER_STORE_V4"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "fast",
+          "fast break, balanced scoring",
+          "TRANSITION",
+          "STRONG_OFFENSIVE_REBOUNDING"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "transitionShare",
+          "orebRate"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_HOLDOUT_V5",
+          "against": "Boston Celtics 1975-76"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_HOLDOUT_V5",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "losangeleslakers|198485",
+        "fixtureId": "v4-1984-85-lakers",
+        "teamId": "LAL",
+        "teamName": "Los Angeles Lakers",
+        "season": "1984-85",
+        "era": "1980s",
+        "coachId": "pat-riley",
+        "people": [
+          "magic-johnson",
+          "byron-scott",
+          "james-worthy",
+          "kurt-rambis",
+          "kareem-abdul-jabbar"
+        ],
+        "origins": [
+          "historical-holdout-v5",
+          "CALIBRATION_PLAYER_STORE_V4"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "very fast",
+          "Showtime transition and early offence",
+          "TRANSITION",
+          "PACE_EXTREME",
+          "ELITE_OFFENSE",
+          "PASSING_HUB"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "transitionShare",
+          "pppVsReference",
+          "assistedRate"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_HOLDOUT_V5",
+          "against": "Los Angeles Lakers 1984-85"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_HOLDOUT_V5",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "bostonceltics|198384",
+        "fixtureId": "v4-1983-84-celtics",
+        "teamId": "BOS",
+        "teamName": "Boston Celtics",
+        "season": "1983-84",
+        "era": "1980s",
+        "coachId": "kc-jones",
+        "people": [
+          "dennis-johnson",
+          "gerald-henderson",
+          "larry-bird",
+          "cedric-maxwell",
+          "robert-parish"
+        ],
+        "origins": [
+          "historical-holdout-v5",
+          "CALIBRATION_PLAYER_STORE_V4"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "half-court execution, elite passing front line",
+          "elite team man defence",
+          "ELITE_DEFENSE",
+          "STRONG_OFFENSIVE_REBOUNDING",
+          "POST_HEAVY"
+        ],
+        "scoreableMetrics": [
+          "assistedRate",
+          "refPppVsTeam",
+          "orebRate",
+          "postUpShare"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_HOLDOUT_V5",
+          "against": "Boston Celtics 1983-84"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_HOLDOUT_V5",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "chicagobulls|199293",
+        "fixtureId": "v4-1992-93-bulls",
+        "teamId": "CHI",
+        "teamName": "Chicago Bulls",
+        "season": "1992-93",
+        "era": "1990s",
+        "coachId": "phil-jackson",
+        "people": [
+          "b-j-armstrong",
+          "michael-jordan",
+          "scottie-pippen",
+          "horace-grant",
+          "bill-cartwright"
+        ],
+        "origins": [
+          "historical-holdout-v5",
+          "CALIBRATION_PLAYER_STORE_V4"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "triangle: post reads, cuts, spacing",
+          "ELITE_OFFENSE",
+          "MOTION"
+        ],
+        "scoreableMetrics": [
+          "postUpShare",
+          "pppVsReference",
+          "movementShare"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_HOLDOUT_V5",
+          "against": "Chicago Bulls 1992-93"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_HOLDOUT_V5",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "seattlesupersonics|199596",
+        "fixtureId": "v4-1995-96-supersonics",
+        "teamId": "SEA",
+        "teamName": "Seattle SuperSonics",
+        "season": "1995-96",
+        "era": "1990s",
+        "coachId": "george-karl",
+        "people": [
+          "gary-payton",
+          "hersey-hawkins",
+          "detlef-schrempf",
+          "shawn-kemp",
+          "ervin-johnson"
+        ],
+        "origins": [
+          "historical-holdout-v5",
+          "CALIBRATION_PLAYER_STORE_V4"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "fast",
+          "transition and post scoring",
+          "ELITE_DEFENSE",
+          "TRANSITION"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "transitionShare",
+          "refPppVsTeam"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_HOLDOUT_V5",
+          "against": "Seattle SuperSonics 1995-96"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_HOLDOUT_V5",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "phoenixsuns|200405",
+        "fixtureId": "v4-2004-05-suns",
+        "teamId": "PHX",
+        "teamName": "Phoenix Suns",
+        "season": "2004-05",
+        "era": "2000s",
+        "coachId": "mike-dantoni",
+        "people": [
+          "steve-nash",
+          "joe-johnson",
+          "quentin-richardson",
+          "shawn-marion",
+          "amar-e-stoudemire"
+        ],
+        "origins": [
+          "historical-holdout-v5",
+          "CALIBRATION_PLAYER_STORE_V4"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "very fast",
+          "seven seconds or less: pick-and-roll and spacing",
+          "ELITE_OFFENSE",
+          "PACE_EXTREME",
+          "PICK_AND_ROLL"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "pnrShare",
+          "pppVsReference"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_HOLDOUT_V5",
+          "against": "Phoenix Suns 2004-05"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_HOLDOUT_V5",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "dallasmavericks|200203",
+        "fixtureId": "v4-2002-03-mavericks",
+        "teamId": "DAL",
+        "teamName": "Dallas Mavericks",
+        "season": "2002-03",
+        "era": "2000s",
+        "coachId": "don-nelson",
+        "people": [
+          "steve-nash",
+          "michael-finley",
+          "adrian-griffin",
+          "dirk-nowitzki",
+          "shawn-bradley"
+        ],
+        "origins": [
+          "historical-holdout-v5",
+          "CALIBRATION_PLAYER_STORE_V4"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "fast",
+          "ball movement, drive and kick, corner threes",
+          "zone-capable, scheme-heavy",
+          "ELITE_OFFENSE",
+          "ZONE_CAPABLE"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "assistedRate",
+          "defensiveZoneShare",
+          "pppVsReference"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_HOLDOUT_V5",
+          "against": "Dallas Mavericks 2002-03"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_HOLDOUT_V5",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "losangelesclippers|201314",
+        "fixtureId": "v4-2013-14-clippers",
+        "teamId": "LAC",
+        "teamName": "Los Angeles Clippers",
+        "season": "2013-14",
+        "era": "2010s",
+        "coachId": "doc-rivers",
+        "people": [
+          "chris-paul",
+          "j-j-redick",
+          "matt-barnes",
+          "blake-griffin",
+          "deandre-jordan"
+        ],
+        "origins": [
+          "historical-holdout-v5",
+          "CALIBRATION_PLAYER_STORE_V4"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "fast",
+          "pick-and-roll around a lead guard",
+          "ELITE_OFFENSE",
+          "PICK_AND_ROLL",
+          "TRANSITION"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "pnrShare",
+          "pppVsReference",
+          "transitionShare"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_HOLDOUT_V5",
+          "against": "Los Angeles Clippers 2013-14"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_HOLDOUT_V5",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "sanantoniospurs|201516",
+        "fixtureId": "v5-2015-16-spurs",
+        "teamId": "SAS",
+        "teamName": "San Antonio Spurs",
+        "season": "2015-16",
+        "era": "2010s",
+        "coachId": "gregg-popovich",
+        "people": [
+          "tony-parker",
+          "danny-green",
+          "kawhi-leonard",
+          "lamarcus-aldridge",
+          "tim-duncan"
+        ],
+        "origins": [
+          "historical-holdout-v5",
+          "CALIBRATION_PLAYER_STORE_V5"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "slow",
+          "elite team man defence",
+          "PASSING_HUB",
+          "ELITE_DEFENSE",
+          "POST_HEAVY"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "refPppVsTeam",
+          "assistedRate",
+          "postUpShare"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_HOLDOUT_V5",
+          "against": "San Antonio Spurs 2015-16"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_HOLDOUT_V5",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "newyorkknicks|202021",
+        "fixtureId": "v4-2020-21-knicks",
+        "teamId": "NYK",
+        "teamName": "New York Knicks",
+        "season": "2020-21",
+        "era": "2020s",
+        "coachId": "tom-thibodeau",
+        "people": [
+          "elfrid-payton",
+          "reggie-bullock",
+          "rj-barrett",
+          "julius-randle",
+          "nerlens-noel"
+        ],
+        "origins": [
+          "historical-holdout-v5",
+          "CALIBRATION_PLAYER_STORE_V4"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "very slow",
+          "elite team man defence",
+          "ELITE_DEFENSE",
+          "SLOW_HALF_COURT"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "refPppVsTeam"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_HOLDOUT_V5",
+          "against": "New York Knicks 2020-21"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_HOLDOUT_V5",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "philadelphia76ers|202021",
+        "fixtureId": "v4-2020-21-76ers",
+        "teamId": "PHI",
+        "teamName": "Philadelphia 76ers",
+        "season": "2020-21",
+        "era": "2020s",
+        "coachId": "doc-rivers",
+        "people": [
+          "ben-simmons",
+          "seth-curry",
+          "danny-green",
+          "tobias-harris",
+          "joel-embiid"
+        ],
+        "origins": [
+          "historical-holdout-v5",
+          "CALIBRATION_PLAYER_STORE_V4"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "slow",
+          "post-up and pick-and-roll around an MVP centre",
+          "ELITE_DEFENSE",
+          "POST_HEAVY"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "postUpShare",
+          "refPppVsTeam"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_HOLDOUT_V5",
+          "against": "Philadelphia 76ers 2020-21"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_HOLDOUT_V5",
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "minneapolislakers|195455",
+        "fixtureId": "v4-1954-55-lakers",
+        "teamId": "MIN_LAKERS",
+        "teamName": "Minneapolis Lakers",
+        "season": "1954-55",
+        "era": "1950s",
+        "coachId": "john-kundla",
+        "people": [
+          "undefined",
+          "slater-martin",
+          "whitey-skoog",
+          "jim-pollard",
+          "vern-mikkelsen",
+          "clyde-lovellette"
+        ],
+        "origins": [
+          "historical-holdout-v4",
+          "CALIBRATION_PLAYER_STORE_V4"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "slow",
+          "post-centred, interior scoring",
+          "POST_HEAVY",
+          "STRONG_OFFENSIVE_REBOUNDING"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "postUpShare",
+          "orebRate"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 6,
+        "nearestSeenLineup": {
+          "shared": 4,
+          "origin": "HISTORICAL_HOLDOUT_V3",
+          "against": "Minneapolis Lakers 1953-54"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_HOLDOUT_V4",
+          "FOUR_OF_FIVE_LINEUP_PROXY"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "bostonceltics|195455",
+        "fixtureId": "v4-1954-55-celtics",
+        "teamId": "BOS",
+        "teamName": "Boston Celtics",
+        "season": "1954-55",
+        "era": "1950s",
+        "coachId": "red-auerbach",
+        "people": [
+          "undefined",
+          "bob-cousy",
+          "bill-sharman",
+          "frank-ramsey",
+          "jack-nichols",
+          "ed-macauley"
+        ],
+        "origins": [
+          "historical-holdout-v4",
+          "CALIBRATION_PLAYER_STORE_V4"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "very fast",
+          "fast break, early offence",
+          "TRANSITION",
+          "PACE_EXTREME",
+          "WEAK_OFFENSIVE_REBOUNDING"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "transitionShare",
+          "orebRate"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 6,
+        "nearestSeenLineup": {
+          "shared": 3,
+          "origin": "HISTORICAL_HOLDOUT_V5",
+          "against": "Boston Celtics 1957-58"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_HOLDOUT_V4"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "philadelphia76ers|196970",
+        "fixtureId": "v4-1969-70-76ers",
+        "teamId": "PHI",
+        "teamName": "Philadelphia 76ers",
+        "season": "1969-70",
+        "era": "1960s",
+        "coachId": "jack-ramsay",
+        "people": [
+          "undefined",
+          "archie-clark",
+          "hal-greer",
+          "billy-cunningham",
+          "jim-washington",
+          "darrall-imhoff"
+        ],
+        "origins": [
+          "historical-holdout-v4",
+          "CALIBRATION_PLAYER_STORE_V4"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "fast",
+          "fast break and early offence",
+          "TRANSITION"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "transitionShare"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 6,
+        "nearestSeenLineup": {
+          "shared": 1,
+          "origin": "HISTORICAL_HOLDOUT_V4",
+          "against": "Philadelphia 76ers 2021-22"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_HOLDOUT_V4"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "seattlesupersonics|196970",
+        "fixtureId": "v4-1969-70-supersonics",
+        "teamId": "SEA",
+        "teamName": "Seattle SuperSonics",
+        "season": "1969-70",
+        "era": "1960s",
+        "coachId": "lenny-wilkens",
+        "people": [
+          "undefined",
+          "lenny-wilkens",
+          "dick-snyder",
+          "tom-meschery",
+          "john-tresvant",
+          "bob-rule"
+        ],
+        "origins": [
+          "historical-holdout-v4",
+          "CALIBRATION_PLAYER_STORE_V4"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "fast",
+          "pick-and-roll around a lead guard",
+          "PICK_AND_ROLL",
+          "PASSING_HUB"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "pnrShare",
+          "assistedRate"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 6,
+        "nearestSeenLineup": {
+          "shared": 1,
+          "origin": "HISTORICAL_HOLDOUT_V4",
+          "against": "Philadelphia 76ers 2021-22"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_HOLDOUT_V4"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "sanantoniospurs|197778",
+        "fixtureId": "v4-1977-78-spurs",
+        "teamId": "SAS",
+        "teamName": "San Antonio Spurs",
+        "season": "1977-78",
+        "era": "1970s",
+        "coachId": "doug-moe",
+        "people": [
+          "undefined",
+          "mike-gale",
+          "george-gervin",
+          "larry-kenon",
+          "mark-olberding",
+          "billy-paultz"
+        ],
+        "origins": [
+          "historical-holdout-v4",
+          "CALIBRATION_PLAYER_STORE_V4"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "very fast",
+          "running game, off-ball movement",
+          "TRANSITION",
+          "PACE_EXTREME",
+          "ELITE_OFFENSE"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "transitionShare",
+          "pppVsReference"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 6,
+        "nearestSeenLineup": {
+          "shared": 1,
+          "origin": "HISTORICAL_HOLDOUT_V4",
+          "against": "Philadelphia 76ers 2021-22"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_HOLDOUT_V4"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "seattlesupersonics|197879",
+        "fixtureId": "v4-1978-79-supersonics",
+        "teamId": "SEA",
+        "teamName": "Seattle SuperSonics",
+        "season": "1978-79",
+        "era": "1970s",
+        "coachId": "lenny-wilkens",
+        "people": [
+          "undefined",
+          "gus-williams",
+          "dennis-johnson",
+          "john-johnson",
+          "lonnie-shelton",
+          "jack-sikma"
+        ],
+        "origins": [
+          "historical-holdout-v4",
+          "CALIBRATION_PLAYER_STORE_V4"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "half-court motion and passing",
+          "elite team man defence",
+          "ELITE_DEFENSE",
+          "STRONG_OFFENSIVE_REBOUNDING"
+        ],
+        "scoreableMetrics": [
+          "movementShare",
+          "refPppVsTeam",
+          "orebRate"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 6,
+        "nearestSeenLineup": {
+          "shared": 1,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Boston Celtics 1985-86"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_HOLDOUT_V4"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "detroitpistons|198990",
+        "fixtureId": "v4-1989-90-pistons",
+        "teamId": "DET",
+        "teamName": "Detroit Pistons",
+        "season": "1989-90",
+        "era": "1980s",
+        "coachId": "chuck-daly",
+        "people": [
+          "undefined",
+          "isiah-thomas",
+          "joe-dumars",
+          "mark-aguirre",
+          "james-edwards",
+          "bill-laimbeer"
+        ],
+        "origins": [
+          "historical-holdout-v4",
+          "CALIBRATION_PLAYER_STORE_V4"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "slow",
+          "elite physical man",
+          "ELITE_DEFENSE",
+          "SLOW_HALF_COURT"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "refPppVsTeam"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 6,
+        "nearestSeenLineup": {
+          "shared": 4,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Detroit Pistons 1988-89"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_HOLDOUT_V4",
+          "FOUR_OF_FIVE_LINEUP_PROXY"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "portlandtrailblazers|198990",
+        "fixtureId": "v4-1989-90-blazers",
+        "teamId": "POR",
+        "teamName": "Portland Trail Blazers",
+        "season": "1989-90",
+        "era": "1980s",
+        "coachId": "rick-adelman",
+        "people": [
+          "undefined",
+          "terry-porter",
+          "clyde-drexler",
+          "jerome-kersey",
+          "buck-williams",
+          "kevin-duckworth"
+        ],
+        "origins": [
+          "historical-holdout-v4",
+          "CALIBRATION_PLAYER_STORE_V4"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "fast",
+          "fast break, balanced scoring",
+          "TRANSITION",
+          "STRONG_OFFENSIVE_REBOUNDING"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "transitionShare",
+          "orebRate"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 6,
+        "nearestSeenLineup": {
+          "shared": 1,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Houston Rockets 1994-95"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_HOLDOUT_V4"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "sanantoniospurs|199899",
+        "fixtureId": "v4-1998-99-spurs",
+        "teamId": "SAS",
+        "teamName": "San Antonio Spurs",
+        "season": "1998-99",
+        "era": "1990s",
+        "coachId": "gregg-popovich",
+        "people": [
+          "undefined",
+          "avery-johnson",
+          "mario-elie",
+          "sean-elliott",
+          "tim-duncan",
+          "david-robinson"
+        ],
+        "origins": [
+          "historical-holdout-v4",
+          "CALIBRATION_PLAYER_STORE_V4"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "very slow",
+          "post entry to a dominant centre",
+          "ELITE_DEFENSE",
+          "SLOW_HALF_COURT",
+          "POST_HEAVY"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "postUpShare",
+          "refPppVsTeam"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 6,
+        "nearestSeenLineup": {
+          "shared": 1,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "San Antonio Spurs 2004-05"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_HOLDOUT_V4"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "chicagobulls|199192",
+        "fixtureId": "v4-1991-92-bulls",
+        "teamId": "CHI",
+        "teamName": "Chicago Bulls",
+        "season": "1991-92",
+        "era": "1990s",
+        "coachId": "phil-jackson",
+        "people": [
+          "undefined",
+          "john-paxson",
+          "michael-jordan",
+          "scottie-pippen",
+          "horace-grant",
+          "bill-cartwright"
+        ],
+        "origins": [
+          "historical-holdout-v4",
+          "CALIBRATION_PLAYER_STORE_V4"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "triangle: post reads, cuts, spacing",
+          "ELITE_OFFENSE",
+          "ELITE_DEFENSE",
+          "MOTION"
+        ],
+        "scoreableMetrics": [
+          "postUpShare",
+          "pppVsReference",
+          "refPppVsTeam",
+          "movementShare"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 6,
+        "nearestSeenLineup": {
+          "shared": 4,
+          "origin": "HISTORICAL_HOLDOUT_V5",
+          "against": "Chicago Bulls 1992-93"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_HOLDOUT_V4",
+          "FOUR_OF_FIVE_LINEUP_PROXY"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "sacramentokings|200102",
+        "fixtureId": "v4-2001-02-kings",
+        "teamId": "SAC",
+        "teamName": "Sacramento Kings",
+        "season": "2001-02",
+        "era": "2000s",
+        "coachId": "rick-adelman",
+        "people": [
+          "undefined",
+          "mike-bibby",
+          "doug-christie",
+          "peja-stojakovic",
+          "chris-webber",
+          "vlade-divac"
+        ],
+        "origins": [
+          "historical-holdout-v4",
+          "CALIBRATION_PLAYER_STORE_V4"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "fast",
+          "motion, ball movement, high-post passing",
+          "ELITE_OFFENSE",
+          "MOTION",
+          "PASSING_HUB"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "movementShare",
+          "pppVsReference",
+          "assistedRate"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 6,
+        "nearestSeenLineup": {
+          "shared": 1,
+          "origin": "HISTORICAL_HOLDOUT_V4",
+          "against": "Philadelphia 76ers 2021-22"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_HOLDOUT_V4"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "losangeleslakers|200102",
+        "fixtureId": "v4-2001-02-lakers",
+        "teamId": "LAL",
+        "teamName": "Los Angeles Lakers",
+        "season": "2001-02",
+        "era": "2000s",
+        "coachId": "phil-jackson",
+        "people": [
+          "undefined",
+          "derek-fisher",
+          "kobe-bryant",
+          "rick-fox",
+          "samaki-walker",
+          "shaquille-o-neal"
+        ],
+        "origins": [
+          "historical-holdout-v4",
+          "CALIBRATION_PLAYER_STORE_V4"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "slow",
+          "triangle around a dominant post centre",
+          "man with a dominant rebounder",
+          "POST_HEAVY",
+          "SLOW_HALF_COURT",
+          "ELITE_OFFENSE"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "postUpShare",
+          "orebRateAgainst",
+          "pppVsReference"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 6,
+        "nearestSeenLineup": {
+          "shared": 4,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Los Angeles Lakers 2000-01"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_HOLDOUT_V4",
+          "FOUR_OF_FIVE_LINEUP_PROXY"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "houstonrockets|201718",
+        "fixtureId": "v4-2017-18-rockets",
+        "teamId": "HOU",
+        "teamName": "Houston Rockets",
+        "season": "2017-18",
+        "era": "2010s",
+        "coachId": "mike-dantoni",
+        "people": [
+          "undefined",
+          "chris-paul",
+          "james-harden",
+          "trevor-ariza",
+          "ryan-anderson",
+          "clint-capela"
+        ],
+        "origins": [
+          "historical-holdout-v4",
+          "CALIBRATION_PLAYER_STORE_V4"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "ELITE_OFFENSE"
+        ],
+        "scoreableMetrics": [
+          "pppVsReference"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 6,
+        "nearestSeenLineup": {
+          "shared": 2,
+          "origin": "SYNTHETIC_STRESS_HOLDOUT_V2",
+          "against": "ss2-all-guards 2010s"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_HOLDOUT_V4"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "goldenstatewarriors|201718",
+        "fixtureId": "v4-2017-18-warriors",
+        "teamId": "GSW",
+        "teamName": "Golden State Warriors",
+        "season": "2017-18",
+        "era": "2010s",
+        "coachId": "steve-kerr",
+        "people": [
+          "undefined",
+          "stephen-curry",
+          "klay-thompson",
+          "kevin-durant",
+          "draymond-green",
+          "zaza-pachulia"
+        ],
+        "origins": [
+          "historical-holdout-v4",
+          "CALIBRATION_PLAYER_STORE_V4"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "fast",
+          "movement shooting, off-ball screens, handoffs",
+          "ELITE_OFFENSE",
+          "MOTION",
+          "PASSING_HUB"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "movementShare",
+          "pppVsReference",
+          "assistedRate"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 6,
+        "nearestSeenLineup": {
+          "shared": 3,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Golden State Warriors 2015-16"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_HOLDOUT_V4"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "miamiheat|202122",
+        "fixtureId": "v4-2021-22-heat",
+        "teamId": "MIA",
+        "teamName": "Miami Heat",
+        "season": "2021-22",
+        "era": "2020s",
+        "coachId": "erik-spoelstra",
+        "people": [
+          "undefined",
+          "kyle-lowry",
+          "duncan-robinson",
+          "jimmy-butler",
+          "p-j-tucker",
+          "bam-adebayo"
+        ],
+        "origins": [
+          "historical-holdout-v4",
+          "CALIBRATION_PLAYER_STORE_V4"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "slow",
+          "movement shooting and handoffs",
+          "zone-capable, scheme-heavy",
+          "ELITE_DEFENSE",
+          "SLOW_HALF_COURT",
+          "ZONE_CAPABLE",
+          "MOTION"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "movementShare",
+          "defensiveZoneShare",
+          "refPppVsTeam"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 6,
+        "nearestSeenLineup": {
+          "shared": 3,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Miami Heat 2022-23"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_HOLDOUT_V4"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "philadelphia76ers|202122",
+        "fixtureId": "v4-2021-22-76ers",
+        "teamId": "PHI",
+        "teamName": "Philadelphia 76ers",
+        "season": "2021-22",
+        "era": "2020s",
+        "coachId": "doc-rivers",
+        "people": [
+          "undefined",
+          "tyrese-maxey",
+          "seth-curry",
+          "danny-green",
+          "tobias-harris",
+          "joel-embiid"
+        ],
+        "origins": [
+          "historical-holdout-v4",
+          "CALIBRATION_PLAYER_STORE_V4"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "slow",
+          "post-up and pick-and-roll around an MVP centre",
+          "POST_HEAVY",
+          "SLOW_HALF_COURT",
+          "PICK_AND_ROLL"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "postUpShare",
+          "pnrShare"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 6,
+        "nearestSeenLineup": {
+          "shared": 4,
+          "origin": "HISTORICAL_HOLDOUT_V5",
+          "against": "Philadelphia 76ers 2020-21"
+        },
+        "exclusionReasons": [
+          "HISTORICAL_HOLDOUT_V4",
+          "FOUR_OF_FIVE_LINEUP_PROXY"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "bostonceltics|196162",
+        "fixtureId": "v4-1961-62-celtics",
+        "teamId": "BOS",
+        "teamName": "Boston Celtics",
+        "season": "1961-62",
+        "era": "1960s",
+        "coachId": "red-auerbach",
+        "people": [
+          "bob-cousy",
+          "sam-jones",
+          "tom-heinsohn",
+          "tom-sanders",
+          "bill-russell"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V4"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "very fast",
+          "fast break from defensive rebounding",
+          "TRANSITION",
+          "ELITE_DEFENSE",
+          "PACE_EXTREME"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "transitionShare",
+          "refPppVsTeam"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Boston Celtics 1962-63"
+        },
+        "exclusionReasons": [
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "utahjazz|199899",
+        "fixtureId": "v4-1998-99-jazz",
+        "teamId": "UTA",
+        "teamName": "Utah Jazz",
+        "season": "1998-99",
+        "era": "1990s",
+        "coachId": "jerry-sloan",
+        "people": [
+          "john-stockton",
+          "jeff-hornacek",
+          "bryon-russell",
+          "karl-malone",
+          "greg-ostertag"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V4"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "slow",
+          "the canonical pick-and-roll",
+          "PICK_AND_ROLL",
+          "SLOW_HALF_COURT"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "pnrShare"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Utah Jazz 1996-97"
+        },
+        "exclusionReasons": [
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "miamiheat|201011",
+        "fixtureId": "v4-2010-11-heat",
+        "teamId": "MIA",
+        "teamName": "Miami Heat",
+        "season": "2010-11",
+        "era": "2010s",
+        "coachId": "erik-spoelstra",
+        "people": [
+          "mario-chalmers",
+          "dwyane-wade",
+          "lebron-james",
+          "chris-bosh",
+          "zydrunas-ilgauskas"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V4"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "slow",
+          "elite scheme-driven man",
+          "ELITE_DEFENSE",
+          "SLOW_HALF_COURT"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "refPppVsTeam"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 4,
+          "origin": "HISTORICAL_HOLDOUT_V3",
+          "against": "Miami Heat 2012-13"
+        },
+        "exclusionReasons": [
+          "FOUR_OF_FIVE_LINEUP_PROXY"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "goldenstatewarriors|202223",
+        "fixtureId": "v4-2022-23-warriors",
+        "teamId": "GSW",
+        "teamName": "Golden State Warriors",
+        "season": "2022-23",
+        "era": "2020s",
+        "coachId": "steve-kerr",
+        "people": [
+          "stephen-curry",
+          "klay-thompson",
+          "andrew-wiggins",
+          "draymond-green",
+          "kevon-looney"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V4"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "very fast",
+          "movement shooting, off-ball screens, handoffs",
+          "MOTION",
+          "PACE_EXTREME",
+          "PASSING_HUB"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "movementShare",
+          "assistedRate"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Golden State Warriors 2021-22"
+        },
+        "exclusionReasons": [
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "bostonceltics|197677",
+        "fixtureId": "v5-1976-77-celtics",
+        "teamId": "BOS",
+        "teamName": "Boston Celtics",
+        "season": "1976-77",
+        "era": "1970s",
+        "coachId": "tom-heinsohn",
+        "people": [
+          "jo-jo-white",
+          "charlie-scott",
+          "john-havlicek",
+          "curtis-rowe",
+          "dave-cowens"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V5"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "fast",
+          "TRANSITION",
+          "PASSING_HUB"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "transitionShare",
+          "assistedRate"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 4,
+          "origin": "HISTORICAL_HOLDOUT_V5",
+          "against": "Boston Celtics 1975-76"
+        },
+        "exclusionReasons": [
+          "FOUR_OF_FIVE_LINEUP_PROXY"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "detroitpistons|198788",
+        "fixtureId": "v5-1987-88-pistons",
+        "teamId": "DET",
+        "teamName": "Detroit Pistons",
+        "season": "1987-88",
+        "era": "1980s",
+        "coachId": "chuck-daly",
+        "people": [
+          "isiah-thomas",
+          "joe-dumars",
+          "adrian-dantley",
+          "rick-mahorn",
+          "bill-laimbeer"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V5"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "slow",
+          "elite physical man",
+          "ELITE_DEFENSE"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "refPppVsTeam"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 4,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Detroit Pistons 1988-89"
+        },
+        "exclusionReasons": [
+          "FOUR_OF_FIVE_LINEUP_PROXY"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "houstonrockets|199394",
+        "fixtureId": "v5-1993-94-rockets",
+        "teamId": "HOU",
+        "teamName": "Houston Rockets",
+        "season": "1993-94",
+        "era": "1990s",
+        "coachId": "rudy-tomjanovich",
+        "people": [
+          "kenny-smith",
+          "vernon-maxwell",
+          "robert-horry",
+          "otis-thorpe",
+          "hakeem-olajuwon"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V5"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "POST_HEAVY",
+          "ELITE_DEFENSE"
+        ],
+        "scoreableMetrics": [
+          "postUpShare",
+          "refPppVsTeam"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 4,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Houston Rockets 1994-95"
+        },
+        "exclusionReasons": [
+          "FOUR_OF_FIVE_LINEUP_PROXY"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "minneapolislakers|195253",
+        "fixtureId": "v6-1952-53-lakers",
+        "teamId": "MIN_LAKERS",
+        "teamName": "Minneapolis Lakers",
+        "season": "1952-53",
+        "era": "1950s",
+        "coachId": "john-kundla",
+        "people": [
+          "slater-martin",
+          "whitey-skoog",
+          "jim-pollard",
+          "vern-mikkelsen",
+          "george-mikan"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V6"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "slow",
+          "post-centred, interior scoring",
+          "POST_HEAVY"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "postUpShare"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_HOLDOUT_V3",
+          "against": "Minneapolis Lakers 1953-54"
+        },
+        "exclusionReasons": [
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "bostonceltics|195960",
+        "fixtureId": "v6-1959-60-celtics",
+        "teamId": "BOS",
+        "teamName": "Boston Celtics",
+        "season": "1959-60",
+        "era": "1950s",
+        "coachId": "red-auerbach",
+        "people": [
+          "bob-cousy",
+          "bill-sharman",
+          "tom-heinsohn",
+          "jim-loscutoff",
+          "bill-russell"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V6"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "very fast",
+          "fast break, early offence",
+          "TRANSITION"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "transitionShare"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Boston Celtics 1958-59"
+        },
+        "exclusionReasons": [
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "bostonceltics|196566",
+        "fixtureId": "v6-1965-66-celtics",
+        "teamId": "BOS",
+        "teamName": "Boston Celtics",
+        "season": "1965-66",
+        "era": "1960s",
+        "coachId": "red-auerbach",
+        "people": [
+          "k-c-jones",
+          "sam-jones",
+          "john-havlicek",
+          "satch-sanders",
+          "bill-russell"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V6"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "fast",
+          "fast break and early offence",
+          "TRANSITION"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "transitionShare"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 1,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 4,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Boston Celtics 1964-65"
+        },
+        "exclusionReasons": [
+          "FOUR_OF_FIVE_LINEUP_PROXY"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "bostonceltics|197475",
+        "fixtureId": "v6-1974-75-celtics",
+        "teamId": "BOS",
+        "teamName": "Boston Celtics",
+        "season": "1974-75",
+        "era": "1970s",
+        "coachId": "tom-heinsohn",
+        "people": [
+          "jo-jo-white",
+          "don-chaney",
+          "john-havlicek",
+          "paul-silas",
+          "dave-cowens"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V6"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "fast",
+          "half-court motion and passing",
+          "MOTION",
+          "PASSING_HUB"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "movementShare",
+          "assistedRate"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 5,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Boston Celtics 1973-74"
+        },
+        "exclusionReasons": [
+          "FIVE_OF_FIVE_LINEUP_OVERLAP"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "chicagobulls|201112",
+        "fixtureId": "v6-2011-12-bulls",
+        "teamId": "CHI",
+        "teamName": "Chicago Bulls",
+        "season": "2011-12",
+        "era": "2010s",
+        "coachId": "tom-thibodeau",
+        "people": [
+          "derrick-rose",
+          "richard-hamilton",
+          "luol-deng",
+          "carlos-boozer",
+          "joakim-noah"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V6"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [
+          "slow",
+          "the canonical pick-and-roll",
+          "PICK_AND_ROLL",
+          "SLOW_HALF_COURT"
+        ],
+        "scoreableMetrics": [
+          "gamePace",
+          "pnrShare"
+        ],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 4,
+          "origin": "HISTORICAL_CALIBRATION_V3",
+          "against": "Chicago Bulls 2010-11"
+        },
+        "exclusionReasons": [
+          "FOUR_OF_FIVE_LINEUP_PROXY"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      },
+      {
+        "key": "seattlesupersonics|198283",
+        "fixtureId": "v6x-1982-83-sonics",
+        "teamId": "SEA",
+        "teamName": "Seattle SuperSonics",
+        "season": "1982-83",
+        "era": "1980s",
+        "coachId": "lenny-wilkens",
+        "people": [
+          "gus-williams",
+          "fred-brown",
+          "david-thompson",
+          "lonnie-shelton",
+          "jack-sikma"
+        ],
+        "origins": [
+          "CALIBRATION_PLAYER_STORE_V6"
+        ],
+        "documentedStarters": 5,
+        "scoreableTraits": [],
+        "scoreableMetrics": [],
+        "positionsCovered": 5,
+        "lowConfidenceProfiles": 0,
+        "profiledPlayers": 5,
+        "nearestSeenLineup": {
+          "shared": 0,
+          "origin": null,
+          "against": null
+        },
+        "exclusionReasons": [
+          "NO_SCOREABLE_IDENTITY_TRAIT"
+        ],
+        "eligible": false,
+        "candidate2SimulationsUsed": 0
+      }
+    ],
+    "byEra": {
+      "1950s": 4,
+      "1960s": 3,
+      "1970s": 4,
+      "1980s": 4,
+      "1990s": 4,
+      "2000s": 5,
+      "2010s": 4,
+      "2020s": 5
+    },
+    "pairsByEra": {
+      "1950s": 6,
+      "1960s": 3,
+      "1970s": 6,
+      "1980s": 6,
+      "1990s": 6,
+      "2000s": 10,
+      "2010s": 6,
+      "2020s": 10
+    },
+    "coverage": {
+      "eras": 8,
+      "franchises": 19,
+      "coaches": 23,
+      "franchiseList": [
+        "BOS",
+        "CLE",
+        "DAL",
+        "DEN",
+        "HOU",
+        "IND",
+        "LAL",
+        "MIA",
+        "MIL",
+        "MIN_LAKERS",
+        "MIN_TWOLVES",
+        "NYK",
+        "ORL",
+        "PHI",
+        "POR",
+        "SAS",
+        "TOR",
+        "UTA",
+        "WSB"
+      ],
+      "coachList": [
+        "billy-cunningham",
+        "doc-rivers",
+        "don-nelson",
+        "doug-moe",
+        "george-karl",
+        "gregg-popovich",
+        "hubie-brown",
+        "jack-ramsay",
+        "jerry-sloan",
+        "john-kundla",
+        "kc-jones",
+        "larry-brown",
+        "lenny-wilkens",
+        "nick-nurse",
+        "pat-riley",
+        "phil-jackson",
+        "red-auerbach",
+        "red-holzman",
+        "rick-adelman",
+        "rick-carlisle",
+        "stan-van-gundy",
+        "tom-heinsohn",
+        "tom-thibodeau"
+      ]
+    },
+    "exclusionReasonCounts": {
+      "HISTORICAL_CALIBRATION_V3": 24,
+      "NO_SCOREABLE_IDENTITY_TRAIT": 33,
+      "FIVE_OF_FIVE_LINEUP_OVERLAP": 54,
+      "HISTORICAL_HOLDOUT_V3": 8,
+      "HISTORICAL_HOLDOUT_V5": 16,
+      "HISTORICAL_HOLDOUT_V4": 16,
+      "FOUR_OF_FIVE_LINEUP_PROXY": 11
+    },
+    "targets": {
+      "targetTeams": 30,
+      "minimumTeams": 24,
+      "targetPairsPerEra": 3,
+      "minimumPairsPerEra": 2,
+      "pairsDefinition": "C(n,2) distinct unordered pairs among the n eligible teams of an era"
+    },
+    "pass": true,
+    "failedGates": [],
+    "poolHash": "b5c32824789e7ee269b3d16f5c23e9f184c7d3d8557293853512d8d36c95cb5c"
+  },
+  "outputHash": "bcee8ad28d8776157620b34192adb44d74d23cae447b94c76679802cd875f7ac"
+}

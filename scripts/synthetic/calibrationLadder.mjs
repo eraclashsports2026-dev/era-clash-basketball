@@ -34,6 +34,10 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const arg = (f, d) => { const a = process.argv.find((x) => x.startsWith(`--${f}=`)); return a ? Number(a.split("=")[1]) : d; };
   const scale = arg("scale", 1);
   const pairs = Math.max(8, Math.round(VOLUMES.VS_ROLE_MATCHED_UPGRADE * scale));
+  // Output directory is a flag defaulting to DIR, so every earlier invocation
+  // resolves byte-identically. Phase 6C4C2 re-derives these numbers under
+  // Candidate 2 and must not overwrite Candidate 1's frozen derivation.
+  const outDir = (process.argv.find((x) => x.startsWith("--dir=")) ?? `--dir=${DIR}`).split("=")[1];
   const def = defaultRuntimeParameterSet();
   const holdoutPersons = new Set(SYNTHETIC_STRESS_HOLDOUT_V2.flatMap((f) => f.five.map(person)));
   const factor = CONTROL_TARGETS.upgradeFactor;
@@ -82,6 +86,6 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   };
   payload.ladderHash = createHash("sha256").update(JSON.stringify(rows.map((r) => [r.devFixtureId, r.achievedRatio, r.strongerSideWinRate]))).digest("hex");
   writeArtifact("synthetic-v2-talent-gap-ladder", payload, {
-    generationCommand: "npm run syn:ladder", dir: DIR, extra: { parameterSetHash: def.parameterSetHash } });
+    generationCommand: "npm run syn:ladder", dir: outDir, extra: { parameterSetHash: def.parameterSetHash } });
   console.log(`\nladderHash ${payload.ladderHash.slice(0, 16)}...`);
 }

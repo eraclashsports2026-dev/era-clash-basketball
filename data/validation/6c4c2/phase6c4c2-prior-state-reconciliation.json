@@ -1,0 +1,292 @@
+{
+  "artifact": "phase6c4c2-prior-state-reconciliation",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run v6:reconcile",
+  "generatedAt": "2026-08-27T19:01:45.897Z",
+  "gitCommit": "a6d2c30718fa3b7fc26a49ec62b5712f538463b0",
+  "branch": "phase-6c4c2-v6-freeze-and-seal",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "phase": "6C4C2",
+    "phaseType": "HOLDOUT_PREPARATION_SELECTION_FREEZE_AND_SEAL",
+    "priorPhase": "6C4C1",
+    "priorPhaseVerdict": {
+      "value": "CANDIDATE 2 LOCKED — READY FOR HISTORICAL V6 PREPARATION",
+      "source": "data/validation/6c4c1/phase6c4c1-final-summary.json"
+    },
+    "recoveryModeRequired": false,
+    "recoveryModeReason": "not required: Candidate 2 locked in Phase 6C4C1",
+    "discovered": {
+      "candidate2Exists": {
+        "value": true,
+        "source": "data/validation/6c4c1/candidate2-lock.json"
+      },
+      "candidate2SelectionStatus": {
+        "value": "SELECTED",
+        "source": "data/validation/6c4c1/candidate2-lock.json"
+      },
+      "candidate2LockStatus": {
+        "value": "LOCKED",
+        "source": "data/validation/6c4c1/candidate2-lock.json"
+      },
+      "candidate2CalibrationStatus": {
+        "value": "DEVELOPMENT_LOCKED_SCOPED",
+        "source": "data/validation/6c4c1/candidate2-lock.json"
+      },
+      "candidate2FormalValidationStatus": {
+        "value": "NOT_RUN",
+        "source": "data/validation/6c4c1/candidate2-lock.json"
+      },
+      "candidate2CalibrationVersion": {
+        "value": "1.2.0",
+        "source": "data/validation/6c4c1/candidate2-lock.json",
+        "liveDerivation": "1.2.0",
+        "agrees": true
+      },
+      "candidate2CoreHash": {
+        "value": "3733b648f050a4f50f9dc3cb6ecf62fce419dd282f24c910b91e7b077d63711d",
+        "source": "data/validation/6c4c1/candidate2-lock.json",
+        "liveDerivation": "3733b648f050a4f50f9dc3cb6ecf62fce419dd282f24c910b91e7b077d63711d",
+        "agrees": true
+      },
+      "candidate2ParameterHash": {
+        "value": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+        "source": "data/validation/6c4c1/candidate2-lock.json",
+        "liveDerivation": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+        "agrees": true
+      },
+      "candidate2ParentId": {
+        "value": "Candidate 1",
+        "source": "data/validation/6c4c1/candidate2-lock.json"
+      },
+      "candidate2IdentityCollisions": {
+        "value": 0,
+        "source": "data/validation/6c4c1/candidate2-identity-separation.json"
+      },
+      "candidate2GateCount": {
+        "value": 28,
+        "source": "data/validation/6c4c1/candidate2-vs-candidate1.json"
+      },
+      "candidate2GatePassCount": {
+        "value": 28,
+        "source": "data/validation/6c4c1/candidate2-vs-candidate1.json"
+      },
+      "candidate2UnresolvedDiagnostics": {
+        "value": 0,
+        "source": "data/validation/6c4c1/remaining-v5-diagnostic-results.json"
+      },
+      "assistedOffenseRepairStatus": {
+        "value": "ACCEPTED",
+        "source": "data/validation/6c4c1/assisted-offense-repair-results.json"
+      },
+      "defensiveSuppressionRepairStatus": {
+        "value": "ACCEPTED",
+        "source": "data/validation/6c4c1/defensive-suppression-repair-results.json"
+      },
+      "historicalV5DiagnosticsResolved": {
+        "value": 16,
+        "source": "data/validation/6c4c1/remaining-v5-diagnostic-results.json",
+        "of": 16,
+        "counts": {
+          "PRACTICAL_MARGIN_ONLY": 13,
+          "ASSISTED_OFFENSE_REPAIR_ACCEPTED": 1,
+          "DEFENSIVE_SUPPRESSION_REPAIR_ACCEPTED": 2
+        }
+      },
+      "sideSymmetryStatus": {
+        "value": "PASS",
+        "source": "data/validation/6c4c1/candidate2-side-symmetry.json",
+        "cellsContainingHalf": "7/8",
+        "gamesPerCell": 8000
+      },
+      "probabilityStatus": {
+        "value": "NOT_SEPARATELY_ARTIFACTED_IN_6C4C1",
+        "source": "data/validation/6c4c1/candidate2-vs-candidate1.json",
+        "finding": "Phase 6C4C1 produced no candidate2-probability-validation.json. Its probability guardrail was carried inside the acceptance criteria and the regression policy rather than emitted as its own artifact. Recorded as a gap and closed in this phase, because the compound package must bind a probability hash."
+      },
+      "competitionStatus": {
+        "value": "PASS",
+        "source": "data/validation/6c4c1/candidate2-competition-validation.json",
+        "meanSeriesLength": 5.51,
+        "meanSeasonWins": 42.4
+      },
+      "replayStatus": {
+        "value": "EXACT",
+        "source": "data/validation/6c4c1/candidate2-internal-validation.json",
+        "mismatches": 0
+      },
+      "invariantStatus": {
+        "value": "CLEAN",
+        "source": "data/validation/6c4c1/candidate2-internal-validation.json",
+        "totals": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "negativeStats": 0,
+          "nonFiniteStats": 0,
+          "astGtFgm": 0
+        }
+      },
+      "historicalV6PoolStatus": {
+        "value": "READY",
+        "source": "data/validation/6c4c1/historical-v6-candidate-pool.json",
+        "eligibleCount": 65,
+        "pairsByEra": {
+          "1950s": 3,
+          "1960s": 4,
+          "1970s": 4,
+          "1980s": 4,
+          "1990s": 4,
+          "2000s": 4,
+          "2010s": 4,
+          "2020s": 4
+        },
+        "candidate2SimulationsUsed": 0
+      },
+      "syntheticV2CompatibilityDisposition": {
+        "value": "POLICY_COMPATIBLE_REBIND_REQUIRED",
+        "source": "data/validation/6c4c1/synthetic-v2-candidate2-compatibility.json",
+        "accessCount": 0,
+        "reason": "membership, metric definitions, guardrail meanings, competition definitions, result and replay schemas and the runner interface are all preserved. What must change is the identity binding and the development-derived thresholds — a rebind, not a replacement. A replacement V3 would be required only if a metric or guardrail had changed meaning, and none did."
+      }
+    },
+    "priorArtifactPaths": {
+      "c2lock": "data/validation/6c4c1/candidate2-lock.json",
+      "c2core": "data/validation/6c4c1/candidate2-core-manifest.json",
+      "c2param": "data/validation/6c4c1/candidate2-parameter-set.json",
+      "c2ident": "data/validation/6c4c1/candidate2-identity-separation.json",
+      "c2chg": "data/validation/6c4c1/candidate2-change-manifest.json",
+      "c2cmp": "data/validation/6c4c1/candidate2-vs-candidate1.json",
+      "c2sum": "data/validation/6c4c1/phase6c4c1-final-summary.json",
+      "c2iv": "data/validation/6c4c1/candidate2-internal-validation.json",
+      "c2sym": "data/validation/6c4c1/candidate2-side-symmetry.json",
+      "c2comp": "data/validation/6c4c1/candidate2-competition-validation.json",
+      "c2rem": "data/validation/6c4c1/remaining-v5-diagnostic-results.json",
+      "c2ao": "data/validation/6c4c1/assisted-offense-repair-results.json",
+      "c2ds": "data/validation/6c4c1/defensive-suppression-repair-results.json",
+      "c2pool": "data/validation/6c4c1/historical-v6-candidate-pool.json",
+      "c2rdy": "data/validation/6c4c1/historical-v6-readiness.json",
+      "c2syn": "data/validation/6c4c1/synthetic-v2-candidate2-compatibility.json",
+      "c1pres": "data/validation/6c4c1/candidate1-preservation.json",
+      "c0pres": "data/validation/6c4c1/candidate0-preservation.json",
+      "c1recert": "data/validation/6c4b1/candidate1-lock-recertification.json",
+      "c0lock": "data/calibration/c6/baseline-candidate-lock.json",
+      "v5res": "data/validation/6c4b2r/historical-v5-formal-results.json",
+      "v5verd": "data/validation/6c4b2r/historical-v5-formal-verdict.json",
+      "attempts": "data/validation/6c4b2r/formal-validation-attempts.json"
+    },
+    "priorArtifactHashes": {
+      "c2lock": "2cfc0d01e11a610c3404cf0562ccbb7c2c49d35b571758928e0058abc7c2b592",
+      "c2core": "27c1a8e7e83723318b2dddcba67b4fda55ba1130f6550b1b83a5895157e79b27",
+      "c2param": "0a15cb55e6ac9ca145f2e19acdf116150c08ee46ab72ee21ec29a38003a435c8",
+      "c2ident": "7eeab0efff0d0b3b28ec82e5a1e365a6d6be6a67bba27fedaf2f0f890a5f2bcb",
+      "c2chg": "d4a359950ffceec1b5acfe3c138f808610f58627c640f1ef225e3b6ccc0e50cb",
+      "c2cmp": "a4ef12a535e5f752b6bed13410d018d162e0156b4ad00afb932a04863ccb3b04",
+      "c2sum": "5dec8a2a01735ba8fabddd89a8c983255b0120034ff5746f3e1bcea5acc64f6d",
+      "c2iv": "e7e0addce06da21212c87a9216df669ddf70f30f65cd6f64c94f0dde5d8d5d9a",
+      "c2sym": "63591015fd4859a933720e51f53a5f22298acb3ecc61a25b35141deb9407325d",
+      "c2comp": "16eb5ba6c350820f82b0e70775720e4f697426de8e7908ea19147cff3e696bf7",
+      "c2rem": "56cdee762fd4e8ce7aab8d8a503f07a1b27b770d32a88f877c41a1a4907fcc0e",
+      "c2ao": "b51bd2060d7064d542f9408e1dfa3f0a0be12ea2e7e48ab56cf44278b52a4ed7",
+      "c2ds": "72df5be77e5d0a08e16cf346c3d11f06a3399175729052f251b3cfd1bb7ec82d",
+      "c2pool": "6adf737eab294b610b203b9c8bcc0c1f67e2ebf25ed5c73c904972d87829f74b",
+      "c2rdy": "c3344056f41aec8cf99312f0b9d288276b920a24e9f3497e80ff532318c5c433",
+      "c2syn": "377421b1e8b51a99ed2a6bcb0246225cc08578ae52718de3689b0a0b6ea4d6e0",
+      "c1pres": "689856c3ac039c07b8e6ff86fdd0fc9b7d27eeeeaea7e627bfd54da6a5ceb0cb",
+      "c0pres": "be5f3dafbf6fd73c783be7b313ac0c8041cbd4f0bbf76b982594fe3ca5ac7115",
+      "c1recert": "55df5d5103d08dc1d67b5579c9c0687e290229c7bd6654e74616338fe1d9db35",
+      "c0lock": "94e695648196b9efd3e7a6bbe24a559ec8e22c884852e75029fdbd5e0011a954",
+      "v5res": "6a966e509462a15a08d71ca2bc85b346def7fcbc11b9c447a93ea101c35fc81b",
+      "v5verd": "e5043edaf3e5fe764f3c03a26e4ee678cbad9b851db2a2e3fdc1314b00663dfa",
+      "attempts": "b1a7d68c2936c30afadd4d6284d1c9261a57b582eba5bcea862f5cb924f0596f"
+    },
+    "liveDerivations": {
+      "coreHash": "3733b648f050a4f50f9dc3cb6ecf62fce419dd282f24c910b91e7b077d63711d",
+      "coreFileCount": 53,
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "parameterDrift": 0,
+      "calibrationVersion": "1.2.0"
+    },
+    "candidate2ResultIdentity": {
+      "candidateId": "Candidate 2",
+      "possessionCalibrationVersion": "1.2.0",
+      "candidateCoreHash": "3733b648f050a4f50f9dc3cb6ecf62fce419dd282f24c910b91e7b077d63711d",
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "playerDataVersion": "2026-08-24",
+      "playerIntelligenceVersion": "1.0.0",
+      "teamIntelligenceVersion": "1.0.0",
+      "coachDataVersion": "1.1.0",
+      "coachIntelligenceVersion": "1.0.0",
+      "eraDataVersion": "1.0.0",
+      "eraStyleVersion": "1.0.0",
+      "actionLibraryVersion": "2.0.0",
+      "defensiveMatchupVersion": "1.2.0",
+      "zoneResolutionVersion": "1.0.0",
+      "coachAdjustmentVersion": "1.0.0"
+    },
+    "resultIdentityFields": [
+      "candidateId",
+      "possessionCalibrationVersion",
+      "candidateCoreHash",
+      "parameterSetHash",
+      "playerDataVersion",
+      "playerIntelligenceVersion",
+      "teamIntelligenceVersion",
+      "coachDataVersion",
+      "coachIntelligenceVersion",
+      "eraDataVersion",
+      "eraStyleVersion",
+      "actionLibraryVersion",
+      "defensiveMatchupVersion",
+      "zoneResolutionVersion",
+      "coachAdjustmentVersion",
+      "simulationSeed",
+      "matchupFingerprint"
+    ],
+    "seals": {
+      "historical-holdout-v2": {
+        "accessCount": 0,
+        "accessLogExists": false
+      },
+      "synthetic-stress-v1": {
+        "accessCount": 0,
+        "accessLogExists": false
+      },
+      "historical-holdout-v3": {
+        "accessCount": 1,
+        "accessLogExists": true
+      },
+      "synthetic-stress-holdout-v2": {
+        "accessCount": 0,
+        "accessLogExists": false
+      },
+      "historical-holdout-v4": {
+        "accessCount": 1,
+        "accessLogExists": true
+      },
+      "historical-holdout-v5": {
+        "accessCount": 1,
+        "accessLogExists": true
+      }
+    },
+    "quality": {
+      "note": "gates run on this branch before any change; counts recorded in the final summary"
+    },
+    "gapsFoundInThePriorPhase": [
+      {
+        "gap": "no candidate2-probability-validation.json",
+        "detail": "Phase 6C4C1 produced no candidate2-probability-validation.json. Its probability guardrail was carried inside the acceptance criteria and the regression policy rather than emitted as its own artifact. Recorded as a gap and closed in this phase, because the compound package must bind a probability hash.",
+        "closedInThisPhase": true
+      }
+    ],
+    "recordedAtCommit": "a6d2c30718fa3b7fc26a49ec62b5712f538463b0",
+    "branch": "phase-6c4c2-v6-freeze-and-seal",
+    "pass": true,
+    "failedGates": [],
+    "reconciliationHash": "9ab20740d8cebdd0663993b1ca03d9e39a0eb68af1e9c8d15fed943542835f44"
+  },
+  "outputHash": "a938e1727f5a7fe07c1212d90673fc2b55d94747255089c0a9680f3e68caefef"
+}

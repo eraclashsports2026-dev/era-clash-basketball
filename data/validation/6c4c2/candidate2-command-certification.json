@@ -1,0 +1,467 @@
+{
+  "artifact": "candidate2-command-certification",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run v6:certify",
+  "generatedAt": "2026-08-27T20:28:56.350Z",
+  "gitCommit": "d19de418a65e40e5c3f02cc0e952d31697bde533",
+  "branch": "phase-6c4c2-v6-freeze-and-seal",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "candidate2CommandCertificationVersion": "1.0.0",
+    "commands": [
+      {
+        "command": "validation:historical-v6",
+        "module": "scripts/validation/historical-holdout-v6.mjs",
+        "invocations": 9
+      },
+      {
+        "command": "validation:synthetic-candidate2",
+        "module": "scripts/validation/synthetic-candidate2.mjs",
+        "invocations": 5
+      },
+      {
+        "command": "validation:candidate2-formal-verdict",
+        "module": "scripts/validation/candidate2FormalVerdict.mjs",
+        "invocations": 5
+      }
+    ],
+    "invocations": [
+      {
+        "command": "validation:historical-v6",
+        "args": [
+          "--help"
+        ],
+        "exitCode": 0,
+        "expectedExitCode": 0,
+        "exitCodeAsExpected": true,
+        "outputMatchedExpectation": true,
+        "expectedPattern": "/MODES \\(exactly one required\\)/",
+        "accessCountsBefore": {
+          "historical-holdout-v6": 0,
+          "synthetic-stress-holdout-v2": 0
+        },
+        "accessCountsAfter": {
+          "historical-holdout-v6": 0,
+          "synthetic-stress-holdout-v2": 0
+        },
+        "setsOpened": [],
+        "sealUntouched": true,
+        "ok": true
+      },
+      {
+        "command": "validation:historical-v6",
+        "args": [],
+        "exitCode": 2,
+        "expectedExitCode": 2,
+        "exitCodeAsExpected": true,
+        "outputMatchedExpectation": true,
+        "expectedPattern": "/a mode is required/",
+        "accessCountsBefore": {
+          "historical-holdout-v6": 0,
+          "synthetic-stress-holdout-v2": 0
+        },
+        "accessCountsAfter": {
+          "historical-holdout-v6": 0,
+          "synthetic-stress-holdout-v2": 0
+        },
+        "setsOpened": [],
+        "sealUntouched": true,
+        "ok": true
+      },
+      {
+        "command": "validation:historical-v6",
+        "args": [
+          "--preflight"
+        ],
+        "exitCode": 0,
+        "expectedExitCode": 0,
+        "exitCodeAsExpected": true,
+        "outputMatchedExpectation": true,
+        "expectedPattern": "/PREFLIGHT: READY/",
+        "accessCountsBefore": {
+          "historical-holdout-v6": 0,
+          "synthetic-stress-holdout-v2": 0
+        },
+        "accessCountsAfter": {
+          "historical-holdout-v6": 0,
+          "synthetic-stress-holdout-v2": 0
+        },
+        "setsOpened": [],
+        "sealUntouched": true,
+        "ok": true
+      },
+      {
+        "command": "validation:historical-v6",
+        "args": [
+          "--run",
+          "--unlok-historical-holdout-v6"
+        ],
+        "exitCode": 2,
+        "expectedExitCode": 2,
+        "exitCodeAsExpected": true,
+        "outputMatchedExpectation": true,
+        "expectedPattern": "/unrecognised flag/",
+        "accessCountsBefore": {
+          "historical-holdout-v6": 0,
+          "synthetic-stress-holdout-v2": 0
+        },
+        "accessCountsAfter": {
+          "historical-holdout-v6": 0,
+          "synthetic-stress-holdout-v2": 0
+        },
+        "setsOpened": [],
+        "sealUntouched": true,
+        "ok": true
+      },
+      {
+        "command": "validation:historical-v6",
+        "args": [
+          "--preflight",
+          "--run"
+        ],
+        "exitCode": 2,
+        "expectedExitCode": 2,
+        "exitCodeAsExpected": true,
+        "outputMatchedExpectation": true,
+        "expectedPattern": "/exactly one mode/",
+        "accessCountsBefore": {
+          "historical-holdout-v6": 0,
+          "synthetic-stress-holdout-v2": 0
+        },
+        "accessCountsAfter": {
+          "historical-holdout-v6": 0,
+          "synthetic-stress-holdout-v2": 0
+        },
+        "setsOpened": [],
+        "sealUntouched": true,
+        "ok": true
+      },
+      {
+        "command": "validation:historical-v6",
+        "args": [
+          "--run"
+        ],
+        "exitCode": 2,
+        "expectedExitCode": 2,
+        "exitCodeAsExpected": true,
+        "outputMatchedExpectation": true,
+        "expectedPattern": "/--operator and --reason are required/",
+        "accessCountsBefore": {
+          "historical-holdout-v6": 0,
+          "synthetic-stress-holdout-v2": 0
+        },
+        "accessCountsAfter": {
+          "historical-holdout-v6": 0,
+          "synthetic-stress-holdout-v2": 0
+        },
+        "setsOpened": [],
+        "sealUntouched": true,
+        "ok": true
+      },
+      {
+        "command": "validation:historical-v6",
+        "args": [
+          "--run",
+          "--operator=cert",
+          "--reason=command surface certification: unlock flags absent"
+        ],
+        "exitCode": 2,
+        "expectedExitCode": 2,
+        "exitCodeAsExpected": true,
+        "outputMatchedExpectation": true,
+        "expectedPattern": "/.*/",
+        "accessCountsBefore": {
+          "historical-holdout-v6": 0,
+          "synthetic-stress-holdout-v2": 0
+        },
+        "accessCountsAfter": {
+          "historical-holdout-v6": 0,
+          "synthetic-stress-holdout-v2": 0
+        },
+        "setsOpened": [],
+        "sealUntouched": true,
+        "ok": true
+      },
+      {
+        "command": "validation:historical-v6",
+        "args": [
+          "--preflight",
+          "--resume"
+        ],
+        "exitCode": 2,
+        "expectedExitCode": 2,
+        "exitCodeAsExpected": true,
+        "outputMatchedExpectation": true,
+        "expectedPattern": "/--resume applies to --run only/",
+        "accessCountsBefore": {
+          "historical-holdout-v6": 0,
+          "synthetic-stress-holdout-v2": 0
+        },
+        "accessCountsAfter": {
+          "historical-holdout-v6": 0,
+          "synthetic-stress-holdout-v2": 0
+        },
+        "setsOpened": [],
+        "sealUntouched": true,
+        "ok": true
+      },
+      {
+        "command": "validation:historical-v6",
+        "args": [
+          "--dry-run"
+        ],
+        "exitCode": 2,
+        "expectedExitCode": 2,
+        "exitCodeAsExpected": true,
+        "outputMatchedExpectation": true,
+        "expectedPattern": "/npm run v6:dryrun/",
+        "accessCountsBefore": {
+          "historical-holdout-v6": 0,
+          "synthetic-stress-holdout-v2": 0
+        },
+        "accessCountsAfter": {
+          "historical-holdout-v6": 0,
+          "synthetic-stress-holdout-v2": 0
+        },
+        "setsOpened": [],
+        "sealUntouched": true,
+        "ok": true
+      },
+      {
+        "command": "validation:synthetic-candidate2",
+        "args": [
+          "--help"
+        ],
+        "exitCode": 0,
+        "expectedExitCode": 0,
+        "exitCodeAsExpected": true,
+        "outputMatchedExpectation": true,
+        "expectedPattern": "/STAGE ORDER/",
+        "accessCountsBefore": {
+          "historical-holdout-v6": 0,
+          "synthetic-stress-holdout-v2": 0
+        },
+        "accessCountsAfter": {
+          "historical-holdout-v6": 0,
+          "synthetic-stress-holdout-v2": 0
+        },
+        "setsOpened": [],
+        "sealUntouched": true,
+        "ok": true
+      },
+      {
+        "command": "validation:synthetic-candidate2",
+        "args": [],
+        "exitCode": 2,
+        "expectedExitCode": 2,
+        "exitCodeAsExpected": true,
+        "outputMatchedExpectation": true,
+        "expectedPattern": "/a mode is required/",
+        "accessCountsBefore": {
+          "historical-holdout-v6": 0,
+          "synthetic-stress-holdout-v2": 0
+        },
+        "accessCountsAfter": {
+          "historical-holdout-v6": 0,
+          "synthetic-stress-holdout-v2": 0
+        },
+        "setsOpened": [],
+        "sealUntouched": true,
+        "ok": true
+      },
+      {
+        "command": "validation:synthetic-candidate2",
+        "args": [
+          "--preflight"
+        ],
+        "exitCode": 2,
+        "expectedExitCode": 2,
+        "exitCodeAsExpected": true,
+        "outputMatchedExpectation": true,
+        "expectedPattern": "/SYNTHETIC_ACCESS_REFUSED/",
+        "accessCountsBefore": {
+          "historical-holdout-v6": 0,
+          "synthetic-stress-holdout-v2": 0
+        },
+        "accessCountsAfter": {
+          "historical-holdout-v6": 0,
+          "synthetic-stress-holdout-v2": 0
+        },
+        "setsOpened": [],
+        "sealUntouched": true,
+        "ok": true
+      },
+      {
+        "command": "validation:synthetic-candidate2",
+        "args": [
+          "--run",
+          "--operator=cert",
+          "--reason=command surface certification: stage one has not run"
+        ],
+        "exitCode": 2,
+        "expectedExitCode": 2,
+        "exitCodeAsExpected": true,
+        "outputMatchedExpectation": true,
+        "expectedPattern": "/SYNTHETIC_ACCESS_REFUSED/",
+        "accessCountsBefore": {
+          "historical-holdout-v6": 0,
+          "synthetic-stress-holdout-v2": 0
+        },
+        "accessCountsAfter": {
+          "historical-holdout-v6": 0,
+          "synthetic-stress-holdout-v2": 0
+        },
+        "setsOpened": [],
+        "sealUntouched": true,
+        "ok": true
+      },
+      {
+        "command": "validation:synthetic-candidate2",
+        "args": [
+          "--run",
+          "--unlok-holdout"
+        ],
+        "exitCode": 2,
+        "expectedExitCode": 2,
+        "exitCodeAsExpected": true,
+        "outputMatchedExpectation": true,
+        "expectedPattern": "/unrecognised flag/",
+        "accessCountsBefore": {
+          "historical-holdout-v6": 0,
+          "synthetic-stress-holdout-v2": 0
+        },
+        "accessCountsAfter": {
+          "historical-holdout-v6": 0,
+          "synthetic-stress-holdout-v2": 0
+        },
+        "setsOpened": [],
+        "sealUntouched": true,
+        "ok": true
+      },
+      {
+        "command": "validation:candidate2-formal-verdict",
+        "args": [
+          "--help"
+        ],
+        "exitCode": 0,
+        "expectedExitCode": 0,
+        "exitCodeAsExpected": true,
+        "outputMatchedExpectation": true,
+        "expectedPattern": "/stage three of three/",
+        "accessCountsBefore": {
+          "historical-holdout-v6": 0,
+          "synthetic-stress-holdout-v2": 0
+        },
+        "accessCountsAfter": {
+          "historical-holdout-v6": 0,
+          "synthetic-stress-holdout-v2": 0
+        },
+        "setsOpened": [],
+        "sealUntouched": true,
+        "ok": true
+      },
+      {
+        "command": "validation:candidate2-formal-verdict",
+        "args": [],
+        "exitCode": 2,
+        "expectedExitCode": 2,
+        "exitCodeAsExpected": true,
+        "outputMatchedExpectation": true,
+        "expectedPattern": "/a mode is required/",
+        "accessCountsBefore": {
+          "historical-holdout-v6": 0,
+          "synthetic-stress-holdout-v2": 0
+        },
+        "accessCountsAfter": {
+          "historical-holdout-v6": 0,
+          "synthetic-stress-holdout-v2": 0
+        },
+        "setsOpened": [],
+        "sealUntouched": true,
+        "ok": true
+      },
+      {
+        "command": "validation:candidate2-formal-verdict",
+        "args": [
+          "--preflight"
+        ],
+        "exitCode": 2,
+        "expectedExitCode": 2,
+        "exitCodeAsExpected": true,
+        "outputMatchedExpectation": true,
+        "expectedPattern": "/CANDIDATE2_NOT_YET_DETERMINED/",
+        "accessCountsBefore": {
+          "historical-holdout-v6": 0,
+          "synthetic-stress-holdout-v2": 0
+        },
+        "accessCountsAfter": {
+          "historical-holdout-v6": 0,
+          "synthetic-stress-holdout-v2": 0
+        },
+        "setsOpened": [],
+        "sealUntouched": true,
+        "ok": true
+      },
+      {
+        "command": "validation:candidate2-formal-verdict",
+        "args": [
+          "--issue"
+        ],
+        "exitCode": 2,
+        "expectedExitCode": 2,
+        "exitCodeAsExpected": true,
+        "outputMatchedExpectation": true,
+        "expectedPattern": "/requires both stages to have produced a formal result/",
+        "accessCountsBefore": {
+          "historical-holdout-v6": 0,
+          "synthetic-stress-holdout-v2": 0
+        },
+        "accessCountsAfter": {
+          "historical-holdout-v6": 0,
+          "synthetic-stress-holdout-v2": 0
+        },
+        "setsOpened": [],
+        "sealUntouched": true,
+        "ok": true
+      },
+      {
+        "command": "validation:candidate2-formal-verdict",
+        "args": [
+          "--bogus"
+        ],
+        "exitCode": 2,
+        "expectedExitCode": 2,
+        "exitCodeAsExpected": true,
+        "outputMatchedExpectation": true,
+        "expectedPattern": "/unrecognised flag/",
+        "accessCountsBefore": {
+          "historical-holdout-v6": 0,
+          "synthetic-stress-holdout-v2": 0
+        },
+        "accessCountsAfter": {
+          "historical-holdout-v6": 0,
+          "synthetic-stress-holdout-v2": 0
+        },
+        "setsOpened": [],
+        "sealUntouched": true,
+        "ok": true
+      }
+    ],
+    "accessCountsBefore": {
+      "historical-holdout-v6": 0,
+      "synthetic-stress-holdout-v2": 0
+    },
+    "accessCountsAfter": {
+      "historical-holdout-v6": 0,
+      "synthetic-stress-holdout-v2": 0
+    },
+    "method": "each command was actually invoked and both access logs were read before and after. A command that says it opens nothing is certified by the counter, not by its own comment.",
+    "destructiveModesCertifiedBy": "invoking --run without its unlock flags, so the refusal path is exercised for real and the counters prove the seal was never reached",
+    "pass": true
+  },
+  "outputHash": "4e11dc89779e24ee2e29a76c5267a1afac4a52db93c62df7cd7fd1a90780bea4"
+}

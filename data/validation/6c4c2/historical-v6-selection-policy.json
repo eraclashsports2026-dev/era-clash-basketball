@@ -1,0 +1,96 @@
+{
+  "artifact": "historical-v6-selection-policy",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run v6:selection",
+  "generatedAt": "2026-08-27T20:12:45.422Z",
+  "gitCommit": "f2e7bcf93477e77648c9004d60d6088af1eb2a6f",
+  "branch": "phase-6c4c2-v6-freeze-and-seal",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "historicalV6SelectionPolicyVersion": "2.0.0",
+    "supersedes": {
+      "version": "1.0.0",
+      "artifact": "superseded/historical-v6-selection-policy-v1.json",
+      "whatChanged": "adds a scoreable-trait constraint per side and whole-selection coverage of both repaired mechanisms, plus a metric-breadth preference. Version 1's selection covered neither repaired mechanism and included three sides with no scoreable trait. Found before any V6 game was played, so nothing here is result-aware.",
+      "notOverwritten": true
+    },
+    "shape": {
+      "matchups": 8,
+      "oneMatchupPerEraStyle": true,
+      "distinctTeamSeasons": 16,
+      "bothSidesSameEraStyle": true,
+      "whySameEra": "an Era Style matchup tests that era's construction against itself. Cross-era pairing would confound the era rules with the roster comparison, and Historical V5 was built the same way."
+    },
+    "hardConstraints": [
+      "both sides drawn from the frozen eligible pool",
+      "both sides in the same Era Style as the matchup",
+      "the two sides are different franchises",
+      "the two sides have different coaches",
+      "no team-season appears in more than one matchup",
+      "every Era Style receives exactly one matchup",
+      "every selected side has at least one scoring-eligible identity trait",
+      "the sixteen selected sides together claim every metric in REQUIRED_METRIC_COVERAGE"
+    ],
+    "preferenceOrder": [
+      {
+        "key": "tacticalDistance",
+        "direction": "MAXIMISE",
+        "what": "count of differing identity descriptors — pace, offense, defense, and symmetric difference of style tags",
+        "why": "a matchup between two teams that play the same way cannot separate offensive from defensive attribution. This is the mirror-fixture problem that cost Historical V5 a one-time holdout."
+      },
+      {
+        "key": "freshness",
+        "direction": "MAXIMISE",
+        "what": "10 minus the summed shared-person count of both sides against their nearest seen lineup",
+        "why": "prefer the two team-seasons furthest from anything any prior set has seen."
+      },
+      {
+        "key": "coachDistinctnessAcrossSelection",
+        "direction": "MAXIMISE",
+        "what": "1 if neither coach already appears in an earlier-era selection, else 0",
+        "why": "spreads coach identity across the set instead of concentrating it."
+      },
+      {
+        "key": "newMetricCoverage",
+        "direction": "MAXIMISE",
+        "what": "count of certified metrics this pair claims that no earlier-era selection already claims",
+        "why": "spreads the scored metrics across the set instead of testing pace eight times. Eras are processed in fixed chronological order, so this term is deterministic."
+      },
+      {
+        "key": "sourceCompleteness",
+        "direction": "MAXIMISE",
+        "what": "count of profiles across both sides at MEDIUM_HIGH confidence",
+        "why": "prefer the better-sourced pair when the preceding terms tie."
+      }
+    ],
+    "coverageRepair": {
+      "when": "the per-era preference pass leaves a REQUIRED_METRIC_COVERAGE metric unclaimed by all sixteen sides",
+      "how": "for each uncovered metric, every era and every valid pair in that era that would cover it is enumerated with the rank it holds in its own era's preference ordering. The substitution with the smallest rank loss is applied, tie-broken by chronological era order then by the pair's tie hash. Repeat until covered or no pair can cover it.",
+      "why": "the constraint is on the selection as a whole, so it cannot be enforced by a per-era greedy pass. Minimising rank loss keeps the deviation from the preference order as small as the constraint allows, and the enumeration is total so the repair is reorder-stable like the rest.",
+      "ifImpossible": "SELECTION_CANNOT_COVER_REPAIRED_MECHANISM — a hard failure, not a waiver. It would mean the pool cannot observe the repair, which is a pool defect to fix before sealing."
+    },
+    "tieBreak": {
+      "rule": "sha256 of `${eraStyleId}|${keyA}|${keyB}` with the two keys sorted, compared as a hex string, lowest wins",
+      "why": "a total order that depends only on identity, so it is stable under any input permutation and cannot be steered by a result."
+    },
+    "eraOrder": "eras are selected in fixed chronological order so that coachDistinctnessAcrossSelection is deterministic rather than order-dependent",
+    "forbidden": [
+      "any Candidate 2 output",
+      "any simulation",
+      "expected margin",
+      "expected win rate",
+      "similarity to a Historical V5 failing matchup",
+      "operator choice at selection time",
+      "randomness of any kind"
+    ],
+    "candidate2SimulationsPermitted": 0,
+    "frozenBeforeSelection": true,
+    "noSelectionArtifactAtFreezeTime": true,
+    "selectionPolicyHash": "727e048eda74597138932b974c41a752bc7042c6e59144b5febfb0c034122d07"
+  },
+  "outputHash": "9b10eb3550bdb981c5a01c987cca5055ea1bafbb37dc7dd7b265f45258208451"
+}

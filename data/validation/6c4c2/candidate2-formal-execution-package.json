@@ -1,0 +1,305 @@
+{
+  "artifact": "candidate2-formal-execution-package",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run v6:package",
+  "generatedAt": "2026-08-27T20:27:44.079Z",
+  "gitCommit": "d19de418a65e40e5c3f02cc0e952d31697bde533",
+  "branch": "phase-6c4c2-v6-freeze-and-seal",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "candidate2FormalExecutionPackageVersion": "1.0.0",
+    "candidate": {
+      "candidateId": "Candidate 2",
+      "coreHash": "3733b648f050a4f50f9dc3cb6ecf62fce419dd282f24c910b91e7b077d63711d",
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "possessionCalibrationVersion": "1.2.0",
+      "lockStatus": "LOCKED",
+      "lockedAtCommit": "136b6446a8a65c7b9b551eed120cf0d4aa5078fd"
+    },
+    "stages": [
+      {
+        "stage": 1,
+        "set": "historical-holdout-v6",
+        "sealState": "SEALED_UNREAD",
+        "accessCount": 0,
+        "command": "npm run validation:historical-v6 -- --run",
+        "requiredFlags": [
+          "--unlock-holdout",
+          "--unlock-historical-holdout-v6",
+          "--operator=<email>",
+          "--reason=<why>"
+        ],
+        "modesThatDoNotOpenTheSeal": [
+          "--help",
+          "--preflight",
+          "--dry-run"
+        ],
+        "preparedCommand": "npm run validation:historical-v6 -- --run --unlock-holdout --unlock-historical-holdout-v6 --operator=\"<email>\" --reason=\"<why>\"",
+        "scope": {
+          "matchups": 8,
+          "teams": 16,
+          "players": 80,
+          "coaches": 15,
+          "scoredTraits": 46,
+          "excludedTraits": 36,
+          "scoredMetrics": [
+            "assistedRate",
+            "gamePace",
+            "movementShare",
+            "orebRate",
+            "orebRateAgainst",
+            "postUpShare",
+            "refPppVsTeam",
+            "transitionShare"
+          ],
+          "decisionTierGames": 98304
+        },
+        "dryRunPassed": true,
+        "outcomes": {
+          "pass": "HISTORICAL_HOLDOUT_V6_PASS",
+          "fail": "HISTORICAL_HOLDOUT_V6_FAIL",
+          "invalid": "HISTORICAL_HOLDOUT_V6_INVALID_RUN"
+        },
+        "hashes": {
+          "candidateCoreHash": "3733b648f050a4f50f9dc3cb6ecf62fce419dd282f24c910b91e7b077d63711d",
+          "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+          "possessionCalibrationVersion": "1.2.0",
+          "policyHash": "d433cddcd3af4294dc8468481b8b85702a7768e16878a1003c6567ddb22c5ae4",
+          "manifestHash": "5a728d98f644d4ae8f7b2d406615fa9125bf7aca77269f536f2a078b92e83d02",
+          "selectionHash": "7dc4802db43ed50475d8a3b3fd2ec6aaf4b9531ee35166165c529156d3c9c9be",
+          "targetsHash": "5d004698caa676407a279142517dc939503b7044ee2a46fbffc0edcefc2cd3f6",
+          "traitPolicyHash": "8da01e96ee6f68c7585c1ddcc8e901eb7ba6d922a1137a74ba9161851534599e",
+          "practicalMarginPolicyHash": "099d513ab855520c68f1c55991a156f9c56b3a6df123f06a708529f27b6413ae",
+          "samplePlanHash": "1ed77e62b545c9d72117355ec290a760b748225fee8df55bd71913a628bd3672",
+          "seedSetHash": "7f0b3ce38d104865d1c8b692e1472835dc315fc84be68862c2e50c3c407b8a09",
+          "observabilityCertificationHash": "5e9a4070f4f9a747992561c19586b491971b2479f2161a5cef5bb5b8474c9349",
+          "eraReferenceCertificationHash": "4713a12f2d2e1447f1f21b03ef3a7219e69136e6eec160cebe0ed5df3486b37f",
+          "dryRunArtifactHash": "117f1b5e2b1b4b2d48e9ea0ca2a83295f399921822e90e02dfeb848edb1cdd4a",
+          "sealHash": "1f5d03dda500f1d7ac68f059f9b4d9ee313e7cc705dd619aa3b669f1e0e56ba7"
+        }
+      },
+      {
+        "stage": 2,
+        "set": "synthetic-stress-holdout-v2",
+        "sealState": "SEALED_UNREAD",
+        "accessCount": 0,
+        "command": "npm run validation:synthetic-candidate2 -- --run",
+        "requiredFlags": [
+          "--unlock-holdout",
+          "--unlock-synthetic-stress-holdout-v2",
+          "--operator=<email>",
+          "--reason=<why>"
+        ],
+        "modesThatDoNotOpenTheSeal": [
+          "--help",
+          "--preflight"
+        ],
+        "preparedCommand": "npm run validation:synthetic-candidate2 -- --run --unlock-holdout --unlock-synthetic-stress-holdout-v2 --operator=\"<email>\" --reason=\"<why>\"",
+        "action": "REBIND",
+        "replacedWithV3": false,
+        "scope": {
+          "fixtures": 16,
+          "plannedGames": 79444
+        },
+        "dryRunPassed": true,
+        "outcomes": {
+          "pass": "SYNTHETIC_HOLDOUT_V2_PASS",
+          "fail": "SYNTHETIC_HOLDOUT_V2_FAIL",
+          "invalid": "SYNTHETIC_HOLDOUT_V2_INVALID_RUN",
+          "whatAPassDoesNotAuthorize": "A pass here is the second of two formal stages. It does not by itself make Candidate 1 HOLDOUT_VALIDATED, PRIVATE_PREVIEW_VALIDATED, PRODUCTION_READY or ACTIVE, and it authorizes no deployment. Those statuses belong to the phase that earns them, and production activation requires an explicit CEO GO LIVE."
+        },
+        "accessPrecondition": "historical-holdout-v6 must have been opened and returned PASS on this same core and parameter set",
+        "refusalCode": "SYNTHETIC_ACCESS_REFUSED",
+        "hashes": {
+          "candidateCoreHash": "3733b648f050a4f50f9dc3cb6ecf62fce419dd282f24c910b91e7b077d63711d",
+          "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+          "possessionCalibrationVersion": "1.2.0",
+          "policyHash": "f93847b4b35ca064572f2b7c97c451ee9f3109f34ea49f3742c5a677ea495946",
+          "bindingHash": "9080a994fce64edbcf622426b7c0c45aff15b36193dab91f58c677dc23309993",
+          "acceptancePolicyHash": "a3583d6ada42d61ff9ee40322d999154250613ba94a2cd6f073e2196315919b0",
+          "guardrailRegistryHash": "e308e6544cb6f4b49ccb31fa98536cc12e0eac431d47cda961e845b8e55a3097",
+          "practicalMarginPolicyHash": "d285af9ca18d10a8387dbe32828378d35d61e40e4376f0cb2eca4e401f509511",
+          "surfacePlanHash": "9aaf2efaf09d47de8dae6d156ccdce966374fa37c73145c041af7265e2c7f122",
+          "samplePlanHash": "97236ee97d740b0d185333a10af2f9be0f4bcb90139b7ae65ed68be179451980",
+          "seedSetHash": "cece58c06bcdb2cc09829d11c34f0c56a23ada26b4e511ca0d03583fd273b2c1",
+          "aggregationPolicyHash": "d65321cae9ee46ac02a14ea04bfcfc1e2dc65a61c7b8e31fb0b7c44714e2eca0",
+          "verdictSchemaHash": "c702785be80b5372e51ed572a29b4c953ac9b2178dcec71f4306fa56323bac01",
+          "membershipHash": "71267875cbf69a9ffa2bd420a2f4bb87437ecb78d6ca2029e7b6826759dbcd19",
+          "dryRunArtifactHash": "ccc0d660bca8bf20f978e4e04ee2dfbb68442f9ae8813e360d347b5b733c8994",
+          "marginEvidenceHash": "4f44f3e747c5095c4c143cb500ee1a13a659f79a5e1260ebe303356b3261b096",
+          "talentGapLadderHash": "39d77022b26ecc0a5027ec6d95b9a85ae350c8a7d8919a7d7a57eee4483f52bc"
+        }
+      }
+    ],
+    "stageOrder": {
+      "order": [
+        "historical-holdout-v6",
+        "synthetic-stress-holdout-v2"
+      ],
+      "why": "a synthetic stress pass says nothing about a candidate that failed the historical stage, and opening the synthetic set after a historical failure would consume a one-shot resource for no evidence",
+      "enforcedBy": "scripts/validation/synthetic-candidate2.mjs preflightChecks, in code, before the seal is touched",
+      "refusalCode": "SYNTHETIC_ACCESS_REFUSED",
+      "whyNotV5": "Historical V5 is consumed and returned FAIL. A gate naming V5 could never clear, and a gate requiring merely 'a historical stage' would have been satisfied by a failure."
+    },
+    "stageThree": {
+      "command": "npm run validation:candidate2-formal-verdict -- --issue",
+      "readOnlyMode": "npm run validation:candidate2-formal-verdict -- --preflight",
+      "vocabulary": {
+        "CANDIDATE2_HOLDOUT_VALIDATED": "both formal stages returned PASS on the same locked candidate, with no drift and no post-holdout tuning",
+        "CANDIDATE2_HISTORICAL_V6_FAILED": "Historical Holdout V6 returned FAIL. Synthetic Stress Holdout V2 is correctly never opened, so the validation is decided by stage one.",
+        "CANDIDATE2_HISTORICAL_V6_INVALID": "Historical Holdout V6 could not produce a formal result. Synthetic Stress Holdout V2 is correctly never opened.",
+        "CANDIDATE2_SYNTHETIC_V2_FAILED": "Historical Holdout V6 passed and Synthetic Stress Holdout V2 returned FAIL",
+        "CANDIDATE2_SYNTHETIC_V2_INVALID": "Historical Holdout V6 passed and Synthetic Stress Holdout V2 could not produce a formal result",
+        "CANDIDATE2_IDENTITY_SPLIT": "the two stages did not score the same candidate core and parameter set, so their results cannot be combined",
+        "CANDIDATE2_STAGE_ORDER_VIOLATED": "Synthetic Stress Holdout V2 was opened without a passing Historical Holdout V6. The synthetic result is not usable as evidence and the compound verdict cannot be issued.",
+        "CANDIDATE2_NOT_YET_DETERMINED": "no stage has produced a formal result yet, so there is nothing to compound"
+      },
+      "writeRequiresBothStages": true
+    },
+    "hashes": {
+      "candidate.coreHash": "3733b648f050a4f50f9dc3cb6ecf62fce419dd282f24c910b91e7b077d63711d",
+      "candidate.parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "candidate.possessionCalibrationVersion": "1.2.0",
+      "candidate.lockStatus": "LOCKED",
+      "candidate.changeManifestHash": "3262101ed6e7ddf364f843307c2760e2ca060b86ced4f97e3a48d81ed4865b97",
+      "candidate.coreManifestHash": "345ef63aa0b5a0f6bf1a2fc33f405cd0eb05e043e9eda539979a88d6f7357ff9",
+      "historicalV6.candidateCoreHash": "3733b648f050a4f50f9dc3cb6ecf62fce419dd282f24c910b91e7b077d63711d",
+      "historicalV6.parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "historicalV6.possessionCalibrationVersion": "1.2.0",
+      "historicalV6.policyHash": "d433cddcd3af4294dc8468481b8b85702a7768e16878a1003c6567ddb22c5ae4",
+      "historicalV6.manifestHash": "5a728d98f644d4ae8f7b2d406615fa9125bf7aca77269f536f2a078b92e83d02",
+      "historicalV6.selectionHash": "7dc4802db43ed50475d8a3b3fd2ec6aaf4b9531ee35166165c529156d3c9c9be",
+      "historicalV6.targetsHash": "5d004698caa676407a279142517dc939503b7044ee2a46fbffc0edcefc2cd3f6",
+      "historicalV6.traitPolicyHash": "8da01e96ee6f68c7585c1ddcc8e901eb7ba6d922a1137a74ba9161851534599e",
+      "historicalV6.practicalMarginPolicyHash": "099d513ab855520c68f1c55991a156f9c56b3a6df123f06a708529f27b6413ae",
+      "historicalV6.samplePlanHash": "1ed77e62b545c9d72117355ec290a760b748225fee8df55bd71913a628bd3672",
+      "historicalV6.seedSetHash": "7f0b3ce38d104865d1c8b692e1472835dc315fc84be68862c2e50c3c407b8a09",
+      "historicalV6.observabilityCertificationHash": "5e9a4070f4f9a747992561c19586b491971b2479f2161a5cef5bb5b8474c9349",
+      "historicalV6.eraReferenceCertificationHash": "4713a12f2d2e1447f1f21b03ef3a7219e69136e6eec160cebe0ed5df3486b37f",
+      "historicalV6.dryRunArtifactHash": "117f1b5e2b1b4b2d48e9ea0ca2a83295f399921822e90e02dfeb848edb1cdd4a",
+      "historicalV6.sealHash": "1f5d03dda500f1d7ac68f059f9b4d9ee313e7cc705dd619aa3b669f1e0e56ba7",
+      "synthetic.candidateCoreHash": "3733b648f050a4f50f9dc3cb6ecf62fce419dd282f24c910b91e7b077d63711d",
+      "synthetic.parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "synthetic.possessionCalibrationVersion": "1.2.0",
+      "synthetic.policyHash": "f93847b4b35ca064572f2b7c97c451ee9f3109f34ea49f3742c5a677ea495946",
+      "synthetic.bindingHash": "9080a994fce64edbcf622426b7c0c45aff15b36193dab91f58c677dc23309993",
+      "synthetic.acceptancePolicyHash": "a3583d6ada42d61ff9ee40322d999154250613ba94a2cd6f073e2196315919b0",
+      "synthetic.guardrailRegistryHash": "e308e6544cb6f4b49ccb31fa98536cc12e0eac431d47cda961e845b8e55a3097",
+      "synthetic.practicalMarginPolicyHash": "d285af9ca18d10a8387dbe32828378d35d61e40e4376f0cb2eca4e401f509511",
+      "synthetic.surfacePlanHash": "9aaf2efaf09d47de8dae6d156ccdce966374fa37c73145c041af7265e2c7f122",
+      "synthetic.samplePlanHash": "97236ee97d740b0d185333a10af2f9be0f4bcb90139b7ae65ed68be179451980",
+      "synthetic.seedSetHash": "cece58c06bcdb2cc09829d11c34f0c56a23ada26b4e511ca0d03583fd273b2c1",
+      "synthetic.aggregationPolicyHash": "d65321cae9ee46ac02a14ea04bfcfc1e2dc65a61c7b8e31fb0b7c44714e2eca0",
+      "synthetic.verdictSchemaHash": "c702785be80b5372e51ed572a29b4c953ac9b2178dcec71f4306fa56323bac01",
+      "synthetic.membershipHash": "71267875cbf69a9ffa2bd420a2f4bb87437ecb78d6ca2029e7b6826759dbcd19",
+      "synthetic.dryRunArtifactHash": "ccc0d660bca8bf20f978e4e04ee2dfbb68442f9ae8813e360d347b5b733c8994",
+      "synthetic.marginEvidenceHash": "4f44f3e747c5095c4c143cb500ee1a13a659f79a5e1260ebe303356b3261b096",
+      "synthetic.talentGapLadderHash": "39d77022b26ecc0a5027ec6d95b9a85ae350c8a7d8919a7d7a57eee4483f52bc",
+      "compound.verdictVocabularyHash": "4f185ee35a8fe64eff13500b4de7b6e48bc3179122cb34358f22bc6ca53cc9c0",
+      "compound.stageOrder": "historical-holdout-v6 then synthetic-stress-holdout-v2"
+    },
+    "hashNamespacing": {
+      "namespaces": [
+        "candidate.*",
+        "historicalV6.*",
+        "synthetic.*",
+        "compound.*"
+      ],
+      "collidingKeyNames": [
+        "candidateCoreHash",
+        "parameterSetHash",
+        "possessionCalibrationVersion",
+        "policyHash",
+        "practicalMarginPolicyHash",
+        "samplePlanHash",
+        "seedSetHash",
+        "dryRunArtifactHash"
+      ],
+      "why": "policyHash, parameterSetHash, candidateCoreHash, possessionCalibrationVersion, practicalMarginPolicyHash, samplePlanHash and seedSetHash exist on both stages. Phase 6C4B1S's first compound package merged the two maps flat: stage two's values were bound under stage one's names and stage one's four were left unbound, silently. Every entry is namespaced and a gate proves the merged count equals the sum of the parts.",
+      "boundEntries": 40
+    },
+    "operatorSteps": [
+      "1. npm run validation:historical-v6 -- --preflight            (read-only; opens nothing)",
+      "2. npm run validation:historical-v6 -- --run --unlock-holdout --unlock-historical-holdout-v6 --operator=\"<email>\" --reason=\"<why>\"",
+      "3. npm run validation:synthetic-candidate2 -- --preflight     (refuses unless step 2 returned PASS)",
+      "4. npm run validation:synthetic-candidate2 -- --run --unlock-holdout --unlock-synthetic-stress-holdout-v2 --operator=\"<email>\" --reason=\"<why>\"",
+      "5. npm run validation:candidate2-formal-verdict -- --preflight",
+      "6. npm run validation:candidate2-formal-verdict -- --issue"
+    ],
+    "executionForbiddenInThisPhase": {
+      "why": "Phase 6C4C2 is preparation. Both stages are prepared, sealed and rehearsed; neither is executed.",
+      "historicalV6ResultsExists": false,
+      "syntheticResultsExists": false
+    },
+    "sealStatuses": {
+      "legacy-holdout-v1": {
+        "accessCount": 0,
+        "status": "SEALED_UNREAD",
+        "integrity": "Never read. Any Phase 6C2 tuning result can be honestly validated against it.",
+        "set": "legacy-holdout-v1",
+        "note": "LEGACY_MIXED_HOLDOUT — preserved unchanged, not reused for formal historical validation."
+      },
+      "historical-holdout-v2": {
+        "set": "historical-holdout-v2",
+        "accessCount": 0,
+        "status": "SEALED_UNREAD",
+        "integrity": "Never read. A Phase 6C3 validation against it is genuinely independent.",
+        "note": "INSUFFICIENT_SAMPLE_ARCHIVE — genuinely unread, but three fixtures cannot validate generalisation. Superseded by v3 and archived rather than consumed."
+      },
+      "synthetic-stress-v1": {
+        "set": "synthetic-stress-v1",
+        "accessCount": 0,
+        "status": "PREVIOUSLY_INSPECTED_ARCHIVE",
+        "integrity": "Never read. A Phase 6C3 validation against it is genuinely independent.",
+        "note": "Its counter reads 0 because the seal was created after the simulations. Not a holdout."
+      },
+      "historical-holdout-v3": {
+        "set": "historical-holdout-v3",
+        "accessCount": 1,
+        "status": "UNSEALED",
+        "integrity": "Read 1 time(s). Check the access log before treating a result as independent."
+      },
+      "synthetic-stress-holdout-v2": {
+        "set": "synthetic-stress-holdout-v2",
+        "accessCount": 0,
+        "status": "SEALED_UNREAD",
+        "integrity": "Never read. A Phase 6C3 validation against it is genuinely independent."
+      },
+      "historical-holdout-v4": {
+        "set": "historical-holdout-v4",
+        "accessCount": 1,
+        "status": "UNSEALED",
+        "integrity": "Read 1 time(s). Check the access log before treating a result as independent."
+      },
+      "historical-holdout-v5": {
+        "set": "historical-holdout-v5",
+        "accessCount": 1,
+        "status": "UNSEALED",
+        "integrity": "Read 1 time(s). Check the access log before treating a result as independent."
+      },
+      "historical-holdout-v6": {
+        "set": "historical-holdout-v6",
+        "accessCount": 0,
+        "status": "SEALED_UNREAD",
+        "integrity": "Never read. A Phase 6C3 validation against it is genuinely independent."
+      }
+    },
+    "notClaimed": [
+      "HOLDOUT_VALIDATED",
+      "PRIVATE_PREVIEW_VALIDATED",
+      "PRODUCTION_READY",
+      "ACTIVE",
+      "any deployment authorization",
+      "any preview build or deployment"
+    ],
+    "productionActivation": "requires an explicit CEO GO LIVE. This package authorizes no deployment of any kind.",
+    "pass": true,
+    "failedGates": [],
+    "packageHash": "d72a6914dfd5cf7b788fca719241af210b303d35c08dd6b67c0de3a5ec12632f"
+  },
+  "outputHash": "d20d556c5d8283857a98f69347edae452c66f487744d6925e35b39303456a07f"
+}

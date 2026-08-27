@@ -1,0 +1,2407 @@
+{
+  "artifact": "synthetic-v2-margin-evidence",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run syn:margin-evidence",
+  "generatedAt": "2026-08-27T20:23:16.956Z",
+  "gitCommit": "bf7efb6defdb51712ea5cb8b44b96546fde5b3dc",
+  "branch": "phase-6c4c2-v6-freeze-and-seal",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "basis": "SYNTHETIC_DEVELOPMENT_V2 only — 14 non-holdout fixtures, run through the exact formal surfaces at the frozen sample volumes with the exact metric functions. No Synthetic V2 fixture was simulated and no Synthetic V2 output was read.",
+    "scale": 1,
+    "volumes": {
+      "MIRROR": 1024,
+      "MIRROR_TAIL_EXTENSION": 4096,
+      "ZONE_ASYMMETRIC": 1024,
+      "ZONE_ABLATION_TWIN": 256,
+      "VS_COHERENT_LOWER_CONTROL": 1024,
+      "VS_ROLE_MATCHED_UPGRADE": 1024
+    },
+    "standardErrorMethod": {
+      "shares": "clustered on the GAME, not the possession: the dominant family is fixed at the pooled level, its share is measured per game, and the standard error is the spread across games over the square root of the game count. Possessions inside a game share a seed and a matchup, so treating them as independent would understate the error by roughly an order of magnitude.",
+      "winRates": "binomial on decided games, sqrt(p(1-p)/n)",
+      "combinedScoreSd": "analytic standard error of a standard deviation, sigma / sqrt(2(n-1))",
+      "distinctScorelineRatio": "deterministic bootstrap, 200 resamples seeded at 0x5eed, because the ratio has no closed form and is strongly sample-size dependent"
+    },
+    "controlsExcludeHoldoutPersons": true,
+    "surfaceApplicability": "forceAllSurfaces: every control surface is built for every development fixture, so each surface is observed on 14 non-holdout constructions rather than on the handful the registry mapping would select. The holdout plan always follows the registry mapping.",
+    "holdoutPersonCount": 57,
+    "fixtures": [
+      {
+        "devFixtureId": "sd2-balanced-lower-ovr",
+        "purpose": "BALANCED_CONSTRUCTION",
+        "era": "2010s",
+        "coach": "gregg-popovich",
+        "fixtureTeamRating": 1054,
+        "zoneLegalEra": true,
+        "mirror": {
+          "share": 0.17003,
+          "se": 0.00097,
+          "family": "POST_UP",
+          "games": 2048,
+          "pooledShare": 0.17009,
+          "distribution": {
+            "POST_UP": 0.17009,
+            "TRANSITION": 0.13824,
+            "PICK_AND_ROLL": 0.13448,
+            "OFF_BALL_SCREEN": 0.10952,
+            "GENERIC_HALF_COURT": 0.09225,
+            "HANDOFF": 0.08929,
+            "CUT": 0.08665,
+            "SPOT_UP": 0.06489,
+            "ISOLATION": 0.05959,
+            "ZONE_ATTACK": 0.05499
+          },
+          "variance": {
+            "combinedScoreSd": 16.22438,
+            "combinedScoreSdSe": 0.25357,
+            "marginSd": 9.30534,
+            "distinctScorelineRatio": 0.37549,
+            "distinctScorelineRatioSe": 0.00365,
+            "games": 2048
+          },
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "zone": {
+            "realizedZonePossessions": 40230,
+            "totalPossessions": 444434,
+            "realizedZoneShare": 0.09052,
+            "zoneAttackShare": 0.60602
+          },
+          "replaySeedsChecked": 64,
+          "replayMismatchCount": 0
+        },
+        "zoneAsymmetric": {
+          "shellSideWinRate": 0.50098,
+          "se": 0.01105,
+          "decided": 2048,
+          "zone": {
+            "realizedZonePossessions": 172398,
+            "totalPossessions": 458808,
+            "realizedZoneShare": 0.37575,
+            "zoneAttackShare": 0.5953
+          },
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2048,
+          "twin": {
+            "coachOnlyWinRate": 0.50195,
+            "se": 0.0221,
+            "decided": 512,
+            "zone": {
+              "realizedZonePossessions": 0,
+              "totalPossessions": 112661,
+              "realizedZoneShare": 0,
+              "zoneAttackShare": null
+            },
+            "games": 512
+          },
+          "shellAttribution": -0.00097
+        },
+        "vsCoherentLowerControl": {
+          "controlWinRate": 0.29492,
+          "se": 0.01008,
+          "decided": 2048,
+          "controlTeamRating": 843,
+          "ratingRatio": 0.79981,
+          "controlCoherent": true,
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2048
+        },
+        "vsRoleMatchedUpgrade": {
+          "strongerSideWinRate": 0.77832,
+          "se": 0.00918,
+          "decided": 2048,
+          "ratingBefore": 1054,
+          "ratingAfter": 1437,
+          "achievedRatio": 1.36338,
+          "slotsUpgraded": 4,
+          "primaryRoleMatches": 1,
+          "noSlotGotWorse": true,
+          "slots": [
+            {
+              "slot": "PG",
+              "from": "cp3-10s",
+              "to": "magic-80s",
+              "fromRating": 227.89,
+              "toRating": 379.92,
+              "role": "Primary Creator",
+              "roleMatch": "SECONDARY",
+              "reachedTarget": false
+            },
+            {
+              "slot": "SG",
+              "from": "kawhi-10s",
+              "to": "kawhi-10s",
+              "fromRating": 284.54,
+              "toRating": 284.54,
+              "role": "Wing Stopper",
+              "roleMatch": "UNCHANGED",
+              "reachedTarget": false,
+              "reason": "the pool has no card legal at SG carrying the role \"Wing Stopper\" with a higher slot rating"
+            },
+            {
+              "slot": "SF",
+              "from": "butler-10s",
+              "to": "rodman-90s",
+              "fromRating": 123.15,
+              "toRating": 218.16,
+              "role": "Point-of-Attack Stopper",
+              "roleMatch": "SECONDARY",
+              "reachedTarget": true
+            },
+            {
+              "slot": "PF",
+              "from": "jokic-10s",
+              "to": "schayes-50s",
+              "fromRating": 105.74,
+              "toRating": 187.355,
+              "role": "Primary Creator",
+              "roleMatch": "PRIMARY",
+              "reachedTarget": true
+            },
+            {
+              "slot": "C",
+              "from": "dwight-10s",
+              "to": "kg-00s",
+              "fromRating": 252.97,
+              "toRating": 285.25,
+              "role": "Glass Cleaner",
+              "roleMatch": "SECONDARY",
+              "reachedTarget": false
+            }
+          ],
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2048
+        }
+      },
+      {
+        "devFixtureId": "sd2-creator-stack",
+        "purpose": "SUPERSTAR_STACK",
+        "era": "2010s",
+        "coach": "mike-dantoni",
+        "fixtureTeamRating": 1396,
+        "zoneLegalEra": true,
+        "mirror": {
+          "share": 0.18758,
+          "se": 0.00085,
+          "family": "TRANSITION",
+          "games": 2048,
+          "pooledShare": 0.1874,
+          "distribution": {
+            "TRANSITION": 0.1874,
+            "PICK_AND_ROLL": 0.18062,
+            "ISOLATION": 0.1134,
+            "SPOT_UP": 0.09323,
+            "ZONE_ATTACK": 0.09319,
+            "HANDOFF": 0.07875,
+            "GENERIC_HALF_COURT": 0.0769,
+            "OFF_BALL_SCREEN": 0.07287,
+            "CUT": 0.06577,
+            "POST_UP": 0.03786
+          },
+          "variance": {
+            "combinedScoreSd": 17.48428,
+            "combinedScoreSdSe": 0.27326,
+            "marginSd": 9.70025,
+            "distinctScorelineRatio": 0.38477,
+            "distinctScorelineRatioSe": 0.00376,
+            "games": 2048
+          },
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "zone": {
+            "realizedZonePossessions": 72144,
+            "totalPossessions": 462388,
+            "realizedZoneShare": 0.15602,
+            "zoneAttackShare": 0.60005
+          },
+          "replaySeedsChecked": 64,
+          "replayMismatchCount": 0
+        },
+        "zoneAsymmetric": {
+          "shellSideWinRate": 0.51953,
+          "se": 0.01104,
+          "decided": 2048,
+          "zone": {
+            "realizedZonePossessions": 168397,
+            "totalPossessions": 447696,
+            "realizedZoneShare": 0.37614,
+            "zoneAttackShare": 0.61881
+          },
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2048,
+          "twin": {
+            "coachOnlyWinRate": 0.49414,
+            "se": 0.0221,
+            "decided": 512,
+            "zone": {
+              "realizedZonePossessions": 0,
+              "totalPossessions": 109727,
+              "realizedZoneShare": 0,
+              "zoneAttackShare": null
+            },
+            "games": 512
+          },
+          "shellAttribution": 0.02539
+        },
+        "vsCoherentLowerControl": {
+          "controlWinRate": 0.49268,
+          "se": 0.01105,
+          "decided": 2048,
+          "controlTeamRating": 1117,
+          "ratingRatio": 0.80014,
+          "controlCoherent": true,
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2048
+        },
+        "vsRoleMatchedUpgrade": {
+          "strongerSideWinRate": 0.81592,
+          "se": 0.00856,
+          "decided": 2048,
+          "ratingBefore": 1396,
+          "ratingAfter": 1875,
+          "achievedRatio": 1.34312,
+          "slotsUpgraded": 4,
+          "primaryRoleMatches": 0,
+          "noSlotGotWorse": true,
+          "slots": [
+            {
+              "slot": "PG",
+              "from": "harden-10s",
+              "to": "magic-80s",
+              "fromRating": 200.19,
+              "toRating": 379.92,
+              "role": "Primary Creator",
+              "roleMatch": "SECONDARY",
+              "reachedTarget": true
+            },
+            {
+              "slot": "SG",
+              "from": "russ-10s",
+              "to": "kawhi-10s",
+              "fromRating": 188.69,
+              "toRating": 284.54,
+              "role": "Primary Creator",
+              "roleMatch": "SECONDARY",
+              "reachedTarget": false
+            },
+            {
+              "slot": "SF",
+              "from": "lebron-10s",
+              "to": "lebron-10s",
+              "fromRating": 422.82,
+              "toRating": 422.82,
+              "role": "Primary Creator",
+              "roleMatch": "UNCHANGED",
+              "reachedTarget": false,
+              "reason": "the pool has no card legal at SF carrying the role \"Primary Creator\" with a higher slot rating"
+            },
+            {
+              "slot": "PF",
+              "from": "durant-10s",
+              "to": "bird-80s",
+              "fromRating": 247.405,
+              "toRating": 363.21,
+              "role": "Primary Creator",
+              "roleMatch": "SECONDARY",
+              "reachedTarget": false
+            },
+            {
+              "slot": "C",
+              "from": "giannis-10s",
+              "to": "kg-00s",
+              "fromRating": 233.1,
+              "toRating": 285.25,
+              "role": "Glass Cleaner",
+              "roleMatch": "SECONDARY",
+              "reachedTarget": false
+            }
+          ],
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2048
+        }
+      },
+      {
+        "devFixtureId": "sd2-elite-shooting",
+        "purpose": "ELITE_SHOOTING",
+        "era": "2010s",
+        "coach": "steve-kerr",
+        "fixtureTeamRating": 871,
+        "zoneLegalEra": true,
+        "mirror": {
+          "share": 0.18036,
+          "se": 0.001,
+          "family": "OFF_BALL_SCREEN",
+          "games": 2048,
+          "pooledShare": 0.18039,
+          "distribution": {
+            "OFF_BALL_SCREEN": 0.18039,
+            "TRANSITION": 0.15797,
+            "PICK_AND_ROLL": 0.15059,
+            "SPOT_UP": 0.1222,
+            "ISOLATION": 0.12122,
+            "CUT": 0.09688,
+            "POST_UP": 0.08741,
+            "GENERIC_HALF_COURT": 0.08334
+          },
+          "variance": {
+            "combinedScoreSd": 16.94421,
+            "combinedScoreSdSe": 0.26482,
+            "marginSd": 9.26752,
+            "distinctScorelineRatio": 0.37891,
+            "distinctScorelineRatioSe": 0.00379,
+            "games": 2048
+          },
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "zone": {
+            "realizedZonePossessions": 0,
+            "totalPossessions": 457564,
+            "realizedZoneShare": 0,
+            "zoneAttackShare": null
+          },
+          "replaySeedsChecked": 64,
+          "replayMismatchCount": 0
+        },
+        "zoneAsymmetric": {
+          "shellSideWinRate": 0.51074,
+          "se": 0.01105,
+          "decided": 2048,
+          "zone": {
+            "realizedZonePossessions": 0,
+            "totalPossessions": 445329,
+            "realizedZoneShare": 0,
+            "zoneAttackShare": null
+          },
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2048,
+          "twin": {
+            "coachOnlyWinRate": 0.5,
+            "se": 0.0221,
+            "decided": 512,
+            "zone": {
+              "realizedZonePossessions": 0,
+              "totalPossessions": 111185,
+              "realizedZoneShare": 0,
+              "zoneAttackShare": null
+            },
+            "games": 512
+          },
+          "shellAttribution": 0.01074
+        },
+        "vsCoherentLowerControl": {
+          "controlWinRate": 0.2417,
+          "se": 0.00946,
+          "decided": 2048,
+          "controlTeamRating": 697,
+          "ratingRatio": 0.80023,
+          "controlCoherent": true,
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2048
+        },
+        "vsRoleMatchedUpgrade": {
+          "strongerSideWinRate": 0.81152,
+          "se": 0.00864,
+          "decided": 2048,
+          "ratingBefore": 871,
+          "ratingAfter": 1424,
+          "achievedRatio": 1.6349,
+          "slotsUpgraded": 4,
+          "primaryRoleMatches": 1,
+          "noSlotGotWorse": true,
+          "slots": [
+            {
+              "slot": "PG",
+              "from": "harden-10s",
+              "to": "magic-80s",
+              "fromRating": 200.19,
+              "toRating": 379.92,
+              "role": "Primary Creator",
+              "roleMatch": "SECONDARY",
+              "reachedTarget": true
+            },
+            {
+              "slot": "SG",
+              "from": "durant-10s",
+              "to": "kawhi-10s",
+              "fromRating": 247.95,
+              "toRating": 284.54,
+              "role": "Primary Creator",
+              "roleMatch": "SECONDARY",
+              "reachedTarget": false
+            },
+            {
+              "slot": "SF",
+              "from": "klay-10s",
+              "to": "bird-80s",
+              "fromRating": 124.41,
+              "toRating": 364.23,
+              "role": "Movement Shooter",
+              "roleMatch": "PRIMARY",
+              "reachedTarget": true
+            },
+            {
+              "slot": "PF",
+              "from": "dirk-10s",
+              "to": "dirk-10s",
+              "fromRating": 165.56,
+              "toRating": 165.56,
+              "role": "Movement Shooter",
+              "roleMatch": "UNCHANGED",
+              "reachedTarget": false,
+              "reason": "the pool has no card legal at PF carrying the role \"Movement Shooter\" with a higher slot rating"
+            },
+            {
+              "slot": "C",
+              "from": "boogie-2010s",
+              "to": "jjj-20s",
+              "fromRating": 99.61,
+              "toRating": 124.64,
+              "role": "Spot-Up Spacer",
+              "roleMatch": "SECONDARY",
+              "reachedTarget": false
+            }
+          ],
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2048
+        }
+      },
+      {
+        "devFixtureId": "sd2-weak-shooting",
+        "purpose": "WEAK_SHOOTING",
+        "era": "2010s",
+        "coach": "tom-thibodeau",
+        "fixtureTeamRating": 669,
+        "zoneLegalEra": true,
+        "mirror": {
+          "share": 0.13867,
+          "se": 0.00085,
+          "family": "POST_UP",
+          "games": 2048,
+          "pooledShare": 0.13878,
+          "distribution": {
+            "POST_UP": 0.13878,
+            "TRANSITION": 0.13763,
+            "PICK_AND_ROLL": 0.13529,
+            "HANDOFF": 0.12155,
+            "OFF_BALL_SCREEN": 0.09295,
+            "GENERIC_HALF_COURT": 0.09068,
+            "CUT": 0.08731,
+            "ISOLATION": 0.08291,
+            "SPOT_UP": 0.05953,
+            "ZONE_ATTACK": 0.05337
+          },
+          "variance": {
+            "combinedScoreSd": 15.6555,
+            "combinedScoreSdSe": 0.24468,
+            "marginSd": 9.08955,
+            "distinctScorelineRatio": 0.36768,
+            "distinctScorelineRatioSe": 0.00386,
+            "games": 2048
+          },
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "zone": {
+            "realizedZonePossessions": 39902,
+            "totalPossessions": 436882,
+            "realizedZoneShare": 0.09133,
+            "zoneAttackShare": 0.58298
+          },
+          "replaySeedsChecked": 64,
+          "replayMismatchCount": 0
+        },
+        "zoneAsymmetric": {
+          "shellSideWinRate": 0.52002,
+          "se": 0.01104,
+          "decided": 2048,
+          "zone": {
+            "realizedZonePossessions": 171561,
+            "totalPossessions": 456081,
+            "realizedZoneShare": 0.37616,
+            "zoneAttackShare": 0.55239
+          },
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2048,
+          "twin": {
+            "coachOnlyWinRate": 0.52148,
+            "se": 0.02208,
+            "decided": 512,
+            "zone": {
+              "realizedZonePossessions": 0,
+              "totalPossessions": 111982,
+              "realizedZoneShare": 0,
+              "zoneAttackShare": null
+            },
+            "games": 512
+          },
+          "shellAttribution": -0.00146
+        },
+        "vsCoherentLowerControl": {
+          "controlWinRate": 0.38135,
+          "se": 0.01073,
+          "decided": 2048,
+          "controlTeamRating": 535,
+          "ratingRatio": 0.7997,
+          "controlCoherent": true,
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2048
+        },
+        "vsRoleMatchedUpgrade": {
+          "strongerSideWinRate": 0.88379,
+          "se": 0.00708,
+          "decided": 2048,
+          "ratingBefore": 669,
+          "ratingAfter": 1335,
+          "achievedRatio": 1.99552,
+          "slotsUpgraded": 5,
+          "primaryRoleMatches": 3,
+          "noSlotGotWorse": true,
+          "slots": [
+            {
+              "slot": "PG",
+              "from": "russ-10s",
+              "to": "magic-80s",
+              "fromRating": 188.65,
+              "toRating": 379.92,
+              "role": "Primary Creator",
+              "roleMatch": "SECONDARY",
+              "reachedTarget": true
+            },
+            {
+              "slot": "SG",
+              "from": "demar-2010s",
+              "to": "ai-00s",
+              "fromRating": 96.25,
+              "toRating": 197.95,
+              "role": "Primary Creator",
+              "roleMatch": "PRIMARY",
+              "reachedTarget": true
+            },
+            {
+              "slot": "SF",
+              "from": "draymond-10s",
+              "to": "kawhi-10s",
+              "fromRating": 172.27,
+              "toRating": 285.41,
+              "role": "Help Defender",
+              "roleMatch": "SECONDARY",
+              "reachedTarget": false
+            },
+            {
+              "slot": "PF",
+              "from": "love-10s",
+              "to": "moses-80s",
+              "fromRating": 103.84,
+              "toRating": 218.7,
+              "role": "Glass Cleaner",
+              "roleMatch": "PRIMARY",
+              "reachedTarget": true
+            },
+            {
+              "slot": "C",
+              "from": "drummond-2010s",
+              "to": "elvin-70s",
+              "fromRating": 82.27,
+              "toRating": 153.96,
+              "role": "Glass Cleaner",
+              "roleMatch": "PRIMARY",
+              "reachedTarget": true
+            }
+          ],
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2048
+        }
+      },
+      {
+        "devFixtureId": "sd2-extreme-size",
+        "purpose": "EXTREME_SIZE",
+        "era": "1960s",
+        "coach": "red-auerbach",
+        "fixtureTeamRating": 1040,
+        "zoneLegalEra": false,
+        "mirror": {
+          "share": 0.16988,
+          "se": 0.00069,
+          "family": "TRANSITION",
+          "games": 2048,
+          "pooledShare": 0.16967,
+          "distribution": {
+            "TRANSITION": 0.16967,
+            "PICK_AND_ROLL": 0.16631,
+            "GENERIC_HALF_COURT": 0.16605,
+            "ISOLATION": 0.14049,
+            "POST_UP": 0.13085,
+            "CUT": 0.09046,
+            "OFF_BALL_SCREEN": 0.06831,
+            "SPOT_UP": 0.06787
+          },
+          "variance": {
+            "combinedScoreSd": 17.13835,
+            "combinedScoreSdSe": 0.26785,
+            "marginSd": 9.37655,
+            "distinctScorelineRatio": 0.3833,
+            "distinctScorelineRatioSe": 0.0039,
+            "games": 2048
+          },
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "zone": {
+            "realizedZonePossessions": 0,
+            "totalPossessions": 607740,
+            "realizedZoneShare": 0,
+            "zoneAttackShare": null
+          },
+          "replaySeedsChecked": 64,
+          "replayMismatchCount": 0
+        },
+        "zoneAsymmetric": {
+          "applicable": false,
+          "reason": "zone illegal in 1960s",
+          "zeroZoneConfirmed": true
+        },
+        "vsCoherentLowerControl": {
+          "controlWinRate": 0.08789,
+          "se": 0.00626,
+          "decided": 2048,
+          "controlTeamRating": 832,
+          "ratingRatio": 0.8,
+          "controlCoherent": true,
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2048
+        },
+        "vsRoleMatchedUpgrade": {
+          "strongerSideWinRate": 0.71973,
+          "se": 0.00992,
+          "decided": 2048,
+          "ratingBefore": 1040,
+          "ratingAfter": 1523,
+          "achievedRatio": 1.46442,
+          "slotsUpgraded": 3,
+          "primaryRoleMatches": 1,
+          "noSlotGotWorse": true,
+          "slots": [
+            {
+              "slot": "PG",
+              "from": "oscar-60s",
+              "to": "magic-80s",
+              "fromRating": 251.1,
+              "toRating": 379.92,
+              "role": "Primary Creator",
+              "roleMatch": "SECONDARY",
+              "reachedTarget": false
+            },
+            {
+              "slot": "SG",
+              "from": "barry-60s",
+              "to": "kawhi-10s",
+              "fromRating": 126.01,
+              "toRating": 284.54,
+              "role": "Slasher",
+              "roleMatch": "SECONDARY",
+              "reachedTarget": true
+            },
+            {
+              "slot": "SF",
+              "from": "elgin-60s",
+              "to": "elgin-60s",
+              "fromRating": 208.94,
+              "toRating": 208.94,
+              "role": "Slasher",
+              "roleMatch": "UNCHANGED",
+              "reachedTarget": false,
+              "reason": "the pool has no card legal at SF carrying the role \"Slasher\" with a higher slot rating"
+            },
+            {
+              "slot": "PF",
+              "from": "nate-60s",
+              "to": "moses-80s",
+              "fromRating": 109.57,
+              "toRating": 218.7,
+              "role": "Glass Cleaner",
+              "roleMatch": "PRIMARY",
+              "reachedTarget": true
+            },
+            {
+              "slot": "C",
+              "from": "wilt-60s",
+              "to": "wilt-60s",
+              "fromRating": 344.86,
+              "toRating": 344.86,
+              "role": "Glass Cleaner",
+              "roleMatch": "UNCHANGED",
+              "reachedTarget": false,
+              "reason": "the pool has no card legal at C carrying the role \"Glass Cleaner\" with a higher slot rating"
+            }
+          ],
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2048
+        }
+      },
+      {
+        "devFixtureId": "sd2-extreme-small",
+        "purpose": "EXTREME_SMALL_BALL",
+        "era": "2020s",
+        "coach": "steve-kerr",
+        "fixtureTeamRating": 267,
+        "zoneLegalEra": true,
+        "mirror": {
+          "share": 0.21439,
+          "se": 0.00082,
+          "family": "OFF_BALL_SCREEN",
+          "games": 2048,
+          "pooledShare": 0.21441,
+          "distribution": {
+            "OFF_BALL_SCREEN": 0.21441,
+            "GENERIC_HALF_COURT": 0.20319,
+            "TRANSITION": 0.17472,
+            "SPOT_UP": 0.14934,
+            "CUT": 0.13195,
+            "PICK_AND_ROLL": 0.12639
+          },
+          "variance": {
+            "combinedScoreSd": 17.88065,
+            "combinedScoreSdSe": 0.27945,
+            "marginSd": 10.345,
+            "distinctScorelineRatio": 0.39648,
+            "distinctScorelineRatioSe": 0.0038,
+            "games": 2048
+          },
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "zone": {
+            "realizedZonePossessions": 0,
+            "totalPossessions": 485066,
+            "realizedZoneShare": 0,
+            "zoneAttackShare": null
+          },
+          "replaySeedsChecked": 64,
+          "replayMismatchCount": 0
+        },
+        "zoneAsymmetric": {
+          "shellSideWinRate": 0.50537,
+          "se": 0.01105,
+          "decided": 2048,
+          "zone": {
+            "realizedZonePossessions": 0,
+            "totalPossessions": 474308,
+            "realizedZoneShare": 0,
+            "zoneAttackShare": null
+          },
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2048,
+          "twin": {
+            "coachOnlyWinRate": 0.49414,
+            "se": 0.0221,
+            "decided": 512,
+            "zone": {
+              "realizedZonePossessions": 0,
+              "totalPossessions": 118449,
+              "realizedZoneShare": 0,
+              "zoneAttackShare": null
+            },
+            "games": 512
+          },
+          "shellAttribution": 0.01123
+        },
+        "vsCoherentLowerControl": {
+          "applicable": false
+        },
+        "vsRoleMatchedUpgrade": {
+          "strongerSideWinRate": 0.61475,
+          "se": 0.01075,
+          "decided": 2048,
+          "ratingBefore": 267,
+          "ratingAfter": 523,
+          "achievedRatio": 1.9588,
+          "slotsUpgraded": 5,
+          "primaryRoleMatches": 5,
+          "noSlotGotWorse": true,
+          "slots": [
+            {
+              "slot": "PG",
+              "from": "clayton-20s",
+              "to": "toney-80s",
+              "fromRating": 43.48,
+              "toRating": 76.43,
+              "role": "Movement Shooter",
+              "roleMatch": "PRIMARY",
+              "reachedTarget": true
+            },
+            {
+              "slot": "SG",
+              "from": "trejohnson-20s",
+              "to": "maxey-20s",
+              "fromRating": 50.55,
+              "toRating": 89.4,
+              "role": "Movement Shooter",
+              "roleMatch": "PRIMARY",
+              "reachedTarget": true
+            },
+            {
+              "slot": "SF",
+              "from": "klay-20s",
+              "to": "wade-10s",
+              "fromRating": 85.54,
+              "toRating": 162.2,
+              "role": "Movement Shooter",
+              "roleMatch": "PRIMARY",
+              "reachedTarget": true
+            },
+            {
+              "slot": "PF",
+              "from": "acebailey-20s",
+              "to": "butler-20s",
+              "fromRating": 58.06,
+              "toRating": 114.125,
+              "role": "Movement Shooter",
+              "roleMatch": "PRIMARY",
+              "reachedTarget": true
+            },
+            {
+              "slot": "C",
+              "from": "cmb-20s",
+              "to": "jack-80s",
+              "fromRating": 46.94,
+              "toRating": 86.48,
+              "role": "Low-Usage Finisher",
+              "roleMatch": "PRIMARY",
+              "reachedTarget": true
+            }
+          ],
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2048
+        }
+      },
+      {
+        "devFixtureId": "sd2-passing-hub",
+        "purpose": "PASSING_HUB",
+        "era": "2020s",
+        "coach": "nick-nurse",
+        "fixtureTeamRating": 808,
+        "zoneLegalEra": true,
+        "mirror": {
+          "share": 0.17548,
+          "se": 0.00117,
+          "family": "PICK_AND_ROLL",
+          "games": 2048,
+          "pooledShare": 0.17558,
+          "distribution": {
+            "PICK_AND_ROLL": 0.17558,
+            "TRANSITION": 0.15956,
+            "ISOLATION": 0.14152,
+            "POST_UP": 0.12312,
+            "HANDOFF": 0.09878,
+            "GENERIC_HALF_COURT": 0.08378,
+            "OFF_BALL_SCREEN": 0.07699,
+            "SPOT_UP": 0.07469,
+            "CUT": 0.06599
+          },
+          "variance": {
+            "combinedScoreSd": 17.5453,
+            "combinedScoreSdSe": 0.27421,
+            "marginSd": 9.96665,
+            "distinctScorelineRatio": 0.38867,
+            "distinctScorelineRatioSe": 0.00381,
+            "games": 2048
+          },
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "zone": {
+            "realizedZonePossessions": 0,
+            "totalPossessions": 474530,
+            "realizedZoneShare": 0,
+            "zoneAttackShare": null
+          },
+          "replaySeedsChecked": 64,
+          "replayMismatchCount": 0
+        },
+        "zoneAsymmetric": {
+          "shellSideWinRate": 0.521,
+          "se": 0.01104,
+          "decided": 2048,
+          "zone": {
+            "realizedZonePossessions": 0,
+            "totalPossessions": 474941,
+            "realizedZoneShare": 0,
+            "zoneAttackShare": null
+          },
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2048,
+          "twin": {
+            "coachOnlyWinRate": 0.48828,
+            "se": 0.02209,
+            "decided": 512,
+            "zone": {
+              "realizedZonePossessions": 0,
+              "totalPossessions": 118582,
+              "realizedZoneShare": 0,
+              "zoneAttackShare": null
+            },
+            "games": 512
+          },
+          "shellAttribution": 0.03272
+        },
+        "vsCoherentLowerControl": {
+          "controlWinRate": 0.41699,
+          "se": 0.0109,
+          "decided": 2048,
+          "controlTeamRating": 646,
+          "ratingRatio": 0.7995,
+          "controlCoherent": true,
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2048
+        },
+        "vsRoleMatchedUpgrade": {
+          "strongerSideWinRate": 0.81934,
+          "se": 0.0085,
+          "decided": 2048,
+          "ratingBefore": 808,
+          "ratingAfter": 1313,
+          "achievedRatio": 1.625,
+          "slotsUpgraded": 4,
+          "primaryRoleMatches": 2,
+          "noSlotGotWorse": true,
+          "slots": [
+            {
+              "slot": "PG",
+              "from": "tyrese-20s",
+              "to": "stock-90s",
+              "fromRating": 106.56,
+              "toRating": 203.08,
+              "role": "Floor General",
+              "roleMatch": "PRIMARY",
+              "reachedTarget": true
+            },
+            {
+              "slot": "SG",
+              "from": "cade-20s",
+              "to": "wade-10s",
+              "fromRating": 84.64,
+              "toRating": 161.81,
+              "role": "Movement Shooter",
+              "roleMatch": "PRIMARY",
+              "reachedTarget": true
+            },
+            {
+              "slot": "SF",
+              "from": "luka-20s",
+              "to": "bird-80s",
+              "fromRating": 184.81,
+              "toRating": 364.23,
+              "role": "Primary Creator",
+              "roleMatch": "SECONDARY",
+              "reachedTarget": true
+            },
+            {
+              "slot": "PF",
+              "from": "jokic-20s",
+              "to": "jokic-20s",
+              "fromRating": 287.955,
+              "toRating": 287.955,
+              "role": "Post Hub",
+              "roleMatch": "UNCHANGED",
+              "reachedTarget": false,
+              "reason": "the pool has no card legal at PF carrying the role \"Post Hub\" with a higher slot rating"
+            },
+            {
+              "slot": "C",
+              "from": "draymond-20s",
+              "to": "rodman-90s",
+              "fromRating": 112.85,
+              "toRating": 221.99,
+              "role": "Low-Usage Finisher",
+              "roleMatch": "SECONDARY",
+              "reachedTarget": true
+            }
+          ],
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2048
+        }
+      },
+      {
+        "devFixtureId": "sd2-no-rim-protection",
+        "purpose": "NO_RIM_PROTECTION",
+        "era": "2010s",
+        "coach": "mike-dantoni",
+        "fixtureTeamRating": 1074,
+        "zoneLegalEra": true,
+        "mirror": {
+          "share": 0.19419,
+          "se": 0.00089,
+          "family": "PICK_AND_ROLL",
+          "games": 2048,
+          "pooledShare": 0.1942,
+          "distribution": {
+            "PICK_AND_ROLL": 0.1942,
+            "TRANSITION": 0.17961,
+            "ISOLATION": 0.14094,
+            "OFF_BALL_SCREEN": 0.11116,
+            "HANDOFF": 0.08767,
+            "SPOT_UP": 0.0869,
+            "GENERIC_HALF_COURT": 0.0815,
+            "POST_UP": 0.06276,
+            "CUT": 0.05527
+          },
+          "variance": {
+            "combinedScoreSd": 16.87294,
+            "combinedScoreSdSe": 0.2637,
+            "marginSd": 9.98388,
+            "distinctScorelineRatio": 0.37598,
+            "distinctScorelineRatioSe": 0.00337,
+            "games": 2048
+          },
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "zone": {
+            "realizedZonePossessions": 0,
+            "totalPossessions": 465440,
+            "realizedZoneShare": 0,
+            "zoneAttackShare": null
+          },
+          "replaySeedsChecked": 64,
+          "replayMismatchCount": 0
+        },
+        "zoneAsymmetric": {
+          "shellSideWinRate": 0.50439,
+          "se": 0.01105,
+          "decided": 2048,
+          "zone": {
+            "realizedZonePossessions": 0,
+            "totalPossessions": 445315,
+            "realizedZoneShare": 0,
+            "zoneAttackShare": null
+          },
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2048,
+          "twin": {
+            "coachOnlyWinRate": 0.5332,
+            "se": 0.02205,
+            "decided": 512,
+            "zone": {
+              "realizedZonePossessions": 0,
+              "totalPossessions": 111420,
+              "realizedZoneShare": 0,
+              "zoneAttackShare": null
+            },
+            "games": 512
+          },
+          "shellAttribution": -0.02881
+        },
+        "vsCoherentLowerControl": {
+          "controlWinRate": 0.39404,
+          "se": 0.0108,
+          "decided": 2048,
+          "controlTeamRating": 859,
+          "ratingRatio": 0.79981,
+          "controlCoherent": true,
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2048
+        },
+        "vsRoleMatchedUpgrade": {
+          "strongerSideWinRate": 0.44482,
+          "se": 0.01098,
+          "decided": 2048,
+          "ratingBefore": 1074,
+          "ratingAfter": 1281,
+          "achievedRatio": 1.19274,
+          "slotsUpgraded": 2,
+          "primaryRoleMatches": 2,
+          "noSlotGotWorse": true,
+          "slots": [
+            {
+              "slot": "PG",
+              "from": "curry-10s",
+              "to": "curry-10s",
+              "fromRating": 265.95,
+              "toRating": 265.95,
+              "role": "Movement Shooter",
+              "roleMatch": "UNCHANGED",
+              "reachedTarget": false,
+              "reason": "the pool has no card legal at PG carrying the role \"Movement Shooter\" with a higher slot rating"
+            },
+            {
+              "slot": "SG",
+              "from": "kobe-10s",
+              "to": "kobe-10s",
+              "fromRating": 249.3,
+              "toRating": 249.3,
+              "role": "Primary Creator",
+              "roleMatch": "UNCHANGED",
+              "reachedTarget": false,
+              "reason": "the pool has no card legal at SG carrying the role \"Primary Creator\" with a higher slot rating"
+            },
+            {
+              "slot": "SF",
+              "from": "kawhi-10s",
+              "to": "kawhi-10s",
+              "fromRating": 285.41,
+              "toRating": 285.41,
+              "role": "Wing Stopper",
+              "roleMatch": "UNCHANGED",
+              "reachedTarget": false,
+              "reason": "the pool has no card legal at SF carrying the role \"Wing Stopper\" with a higher slot rating"
+            },
+            {
+              "slot": "PF",
+              "from": "melo-10s",
+              "to": "schayes-50s",
+              "fromRating": 88.26,
+              "toRating": 187.355,
+              "role": "Primary Creator",
+              "roleMatch": "PRIMARY",
+              "reachedTarget": true
+            },
+            {
+              "slot": "C",
+              "from": "jokic-10s",
+              "to": "barkley-90s",
+              "fromRating": 105.84,
+              "toRating": 220.19,
+              "role": "Primary Creator",
+              "roleMatch": "PRIMARY",
+              "reachedTarget": true
+            }
+          ],
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2048
+        }
+      },
+      {
+        "devFixtureId": "sd2-movement-shooters",
+        "purpose": "MOVEMENT_SHOOTERS",
+        "era": "2010s",
+        "coach": "steve-kerr",
+        "fixtureTeamRating": 1156,
+        "zoneLegalEra": true,
+        "mirror": {
+          "share": 0.15996,
+          "se": 0.00078,
+          "family": "TRANSITION",
+          "games": 2048,
+          "pooledShare": 0.15976,
+          "distribution": {
+            "TRANSITION": 0.15976,
+            "OFF_BALL_SCREEN": 0.1374,
+            "PICK_AND_ROLL": 0.13507,
+            "ISOLATION": 0.10676,
+            "SPOT_UP": 0.10473,
+            "HANDOFF": 0.09748,
+            "POST_UP": 0.08789,
+            "CUT": 0.08752,
+            "GENERIC_HALF_COURT": 0.08337
+          },
+          "variance": {
+            "combinedScoreSd": 16.89664,
+            "combinedScoreSdSe": 0.26407,
+            "marginSd": 9.5933,
+            "distinctScorelineRatio": 0.37988,
+            "distinctScorelineRatioSe": 0.00361,
+            "games": 2048
+          },
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "zone": {
+            "realizedZonePossessions": 0,
+            "totalPossessions": 453174,
+            "realizedZoneShare": 0,
+            "zoneAttackShare": null
+          },
+          "replaySeedsChecked": 64,
+          "replayMismatchCount": 0
+        },
+        "zoneAsymmetric": {
+          "shellSideWinRate": 0.52881,
+          "se": 0.01103,
+          "decided": 2048,
+          "zone": {
+            "realizedZonePossessions": 0,
+            "totalPossessions": 442207,
+            "realizedZoneShare": 0,
+            "zoneAttackShare": null
+          },
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2048,
+          "twin": {
+            "coachOnlyWinRate": 0.52148,
+            "se": 0.02208,
+            "decided": 512,
+            "zone": {
+              "realizedZonePossessions": 0,
+              "totalPossessions": 110721,
+              "realizedZoneShare": 0,
+              "zoneAttackShare": null
+            },
+            "games": 512
+          },
+          "shellAttribution": 0.00733
+        },
+        "vsCoherentLowerControl": {
+          "controlWinRate": 0.44336,
+          "se": 0.01098,
+          "decided": 2048,
+          "controlTeamRating": 925,
+          "ratingRatio": 0.80017,
+          "controlCoherent": true,
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2048
+        },
+        "vsRoleMatchedUpgrade": {
+          "strongerSideWinRate": 0.53809,
+          "se": 0.01102,
+          "decided": 2048,
+          "ratingBefore": 1156,
+          "ratingAfter": 1458,
+          "achievedRatio": 1.26125,
+          "slotsUpgraded": 2,
+          "primaryRoleMatches": 2,
+          "noSlotGotWorse": true,
+          "slots": [
+            {
+              "slot": "PG",
+              "from": "curry-10s",
+              "to": "curry-10s",
+              "fromRating": 265.95,
+              "toRating": 265.95,
+              "role": "Movement Shooter",
+              "roleMatch": "UNCHANGED",
+              "reachedTarget": false,
+              "reason": "the pool has no card legal at PG carrying the role \"Movement Shooter\" with a higher slot rating"
+            },
+            {
+              "slot": "SG",
+              "from": "durant-10s",
+              "to": "durant-10s",
+              "fromRating": 247.95,
+              "toRating": 247.95,
+              "role": "Primary Creator",
+              "roleMatch": "UNCHANGED",
+              "reachedTarget": false,
+              "reason": "the pool has no card legal at SG carrying the role \"Primary Creator\" with a higher slot rating"
+            },
+            {
+              "slot": "SF",
+              "from": "kawhi-10s",
+              "to": "kawhi-10s",
+              "fromRating": 285.41,
+              "toRating": 285.41,
+              "role": "Wing Stopper",
+              "roleMatch": "UNCHANGED",
+              "reachedTarget": false,
+              "reason": "the pool has no card legal at SF carrying the role \"Wing Stopper\" with a higher slot rating"
+            },
+            {
+              "slot": "PF",
+              "from": "dirk-10s",
+              "to": "bird-80s",
+              "fromRating": 165.56,
+              "toRating": 363.21,
+              "role": "Movement Shooter",
+              "roleMatch": "PRIMARY",
+              "reachedTarget": true
+            },
+            {
+              "slot": "C",
+              "from": "jokic-10s",
+              "to": "schayes-50s",
+              "fromRating": 105.84,
+              "toRating": 187.34,
+              "role": "Primary Creator",
+              "roleMatch": "PRIMARY",
+              "reachedTarget": true
+            }
+          ],
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2048
+        }
+      },
+      {
+        "devFixtureId": "sd2-post-mismatch",
+        "purpose": "POST_MISMATCH",
+        "era": "1970s",
+        "coach": "lenny-wilkens",
+        "fixtureTeamRating": 907,
+        "zoneLegalEra": false,
+        "mirror": {
+          "share": 0.20911,
+          "se": 0.00078,
+          "family": "PICK_AND_ROLL",
+          "games": 2048,
+          "pooledShare": 0.20911,
+          "distribution": {
+            "PICK_AND_ROLL": 0.20911,
+            "POST_UP": 0.14986,
+            "TRANSITION": 0.13672,
+            "CUT": 0.12286,
+            "ISOLATION": 0.11623,
+            "GENERIC_HALF_COURT": 0.10004,
+            "OFF_BALL_SCREEN": 0.09642,
+            "SPOT_UP": 0.06876
+          },
+          "variance": {
+            "combinedScoreSd": 15.56576,
+            "combinedScoreSdSe": 0.24327,
+            "marginSd": 8.74476,
+            "distinctScorelineRatio": 0.35791,
+            "distinctScorelineRatioSe": 0.00339,
+            "games": 2048
+          },
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "zone": {
+            "realizedZonePossessions": 0,
+            "totalPossessions": 504126,
+            "realizedZoneShare": 0,
+            "zoneAttackShare": null
+          },
+          "replaySeedsChecked": 64,
+          "replayMismatchCount": 0
+        },
+        "zoneAsymmetric": {
+          "applicable": false,
+          "reason": "zone illegal in 1970s",
+          "zeroZoneConfirmed": true
+        },
+        "vsCoherentLowerControl": {
+          "controlWinRate": 0.13232,
+          "se": 0.00749,
+          "decided": 2048,
+          "controlTeamRating": 725,
+          "ratingRatio": 0.79934,
+          "controlCoherent": true,
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2048
+        },
+        "vsRoleMatchedUpgrade": {
+          "strongerSideWinRate": 0.80469,
+          "se": 0.00876,
+          "decided": 2048,
+          "ratingBefore": 907,
+          "ratingAfter": 1514,
+          "achievedRatio": 1.66924,
+          "slotsUpgraded": 5,
+          "primaryRoleMatches": 1,
+          "noSlotGotWorse": true,
+          "slots": [
+            {
+              "slot": "PG",
+              "from": "pete-70s",
+              "to": "gary-90s",
+              "fromRating": 120.55,
+              "toRating": 242.76,
+              "role": "Primary Creator",
+              "roleMatch": "SECONDARY",
+              "reachedTarget": true
+            },
+            {
+              "slot": "SG",
+              "from": "rick-70s",
+              "to": "kawhi-10s",
+              "fromRating": 176.23,
+              "toRating": 284.54,
+              "role": "Primary Creator",
+              "roleMatch": "SECONDARY",
+              "reachedTarget": false
+            },
+            {
+              "slot": "SF",
+              "from": "julius-70s",
+              "to": "magic-80s",
+              "fromRating": 273.82,
+              "toRating": 377.63,
+              "role": "Slasher",
+              "roleMatch": "SECONDARY",
+              "reachedTarget": false
+            },
+            {
+              "slot": "PF",
+              "from": "elvin-70s",
+              "to": "rob-90s",
+              "fromRating": 153.635,
+              "toRating": 277.95,
+              "role": "Glass Cleaner",
+              "roleMatch": "SECONDARY",
+              "reachedTarget": true
+            },
+            {
+              "slot": "C",
+              "from": "artis-70s",
+              "to": "moses-80s",
+              "fromRating": 115.16,
+              "toRating": 218.61,
+              "role": "Glass Cleaner",
+              "roleMatch": "PRIMARY",
+              "reachedTarget": true
+            }
+          ],
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2048
+        }
+      },
+      {
+        "devFixtureId": "sd2-zone-attack",
+        "purpose": "ZONE_ATTACK",
+        "era": "2010s",
+        "coach": "erik-spoelstra",
+        "fixtureTeamRating": 1481,
+        "zoneLegalEra": true,
+        "mirror": {
+          "share": 0.37335,
+          "se": 0.001,
+          "family": "ZONE_ATTACK",
+          "games": 2048,
+          "pooledShare": 0.37368,
+          "distribution": {
+            "ZONE_ATTACK": 0.37368,
+            "GENERIC_HALF_COURT": 0.1539,
+            "TRANSITION": 0.14708,
+            "SPOT_UP": 0.06329,
+            "POST_UP": 0.05741,
+            "PICK_AND_ROLL": 0.05215,
+            "CUT": 0.04698,
+            "ISOLATION": 0.04049,
+            "OFF_BALL_SCREEN": 0.03562,
+            "HANDOFF": 0.0294
+          },
+          "variance": {
+            "combinedScoreSd": 15.89746,
+            "combinedScoreSdSe": 0.24846,
+            "marginSd": 8.88342,
+            "distinctScorelineRatio": 0.37109,
+            "distinctScorelineRatioSe": 0.0037,
+            "games": 2048
+          },
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "zone": {
+            "realizedZonePossessions": 261896,
+            "totalPossessions": 442926,
+            "realizedZoneShare": 0.59129,
+            "zoneAttackShare": 0.63344
+          },
+          "replaySeedsChecked": 64,
+          "replayMismatchCount": 0
+        },
+        "zoneAsymmetric": {
+          "shellSideWinRate": 0.50879,
+          "se": 0.01105,
+          "decided": 2048,
+          "zone": {
+            "realizedZonePossessions": 169449,
+            "totalPossessions": 448338,
+            "realizedZoneShare": 0.37795,
+            "zoneAttackShare": 0.62085
+          },
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2048,
+          "twin": {
+            "coachOnlyWinRate": 0.51367,
+            "se": 0.02209,
+            "decided": 512,
+            "zone": {
+              "realizedZonePossessions": 0,
+              "totalPossessions": 109786,
+              "realizedZoneShare": 0,
+              "zoneAttackShare": null
+            },
+            "games": 512
+          },
+          "shellAttribution": -0.00488
+        },
+        "vsCoherentLowerControl": {
+          "controlWinRate": 0.72021,
+          "se": 0.00992,
+          "decided": 2048,
+          "controlTeamRating": 1181,
+          "ratingRatio": 0.79743,
+          "controlCoherent": true,
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2048
+        },
+        "vsRoleMatchedUpgrade": {
+          "strongerSideWinRate": 0.8335,
+          "se": 0.00823,
+          "decided": 2048,
+          "ratingBefore": 1481,
+          "ratingAfter": 1875,
+          "achievedRatio": 1.26604,
+          "slotsUpgraded": 4,
+          "primaryRoleMatches": 0,
+          "noSlotGotWorse": true,
+          "slots": [
+            {
+              "slot": "PG",
+              "from": "harden-10s",
+              "to": "magic-80s",
+              "fromRating": 200.19,
+              "toRating": 379.92,
+              "role": "Primary Creator",
+              "roleMatch": "SECONDARY",
+              "reachedTarget": true
+            },
+            {
+              "slot": "SG",
+              "from": "curry-10s",
+              "to": "kawhi-10s",
+              "fromRating": 267.47,
+              "toRating": 284.54,
+              "role": "Movement Shooter",
+              "roleMatch": "SECONDARY",
+              "reachedTarget": false
+            },
+            {
+              "slot": "SF",
+              "from": "lebron-10s",
+              "to": "lebron-10s",
+              "fromRating": 422.82,
+              "toRating": 422.82,
+              "role": "Primary Creator",
+              "roleMatch": "UNCHANGED",
+              "reachedTarget": false,
+              "reason": "the pool has no card legal at SF carrying the role \"Primary Creator\" with a higher slot rating"
+            },
+            {
+              "slot": "PF",
+              "from": "durant-10s",
+              "to": "bird-80s",
+              "fromRating": 247.405,
+              "toRating": 363.21,
+              "role": "Primary Creator",
+              "roleMatch": "SECONDARY",
+              "reachedTarget": false
+            },
+            {
+              "slot": "C",
+              "from": "giannis-10s",
+              "to": "kg-00s",
+              "fromRating": 233.1,
+              "toRating": 285.25,
+              "role": "Glass Cleaner",
+              "roleMatch": "SECONDARY",
+              "reachedTarget": false
+            }
+          ],
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2048
+        }
+      },
+      {
+        "devFixtureId": "sd2-weak-defender-hiding",
+        "purpose": "WEAK_DEFENDER_HIDING",
+        "era": "2010s",
+        "coach": "mike-dantoni",
+        "fixtureTeamRating": 959,
+        "zoneLegalEra": true,
+        "mirror": {
+          "share": 0.22091,
+          "se": 0.00088,
+          "family": "PICK_AND_ROLL",
+          "games": 2048,
+          "pooledShare": 0.22097,
+          "distribution": {
+            "PICK_AND_ROLL": 0.22097,
+            "TRANSITION": 0.17981,
+            "ISOLATION": 0.15899,
+            "SPOT_UP": 0.10083,
+            "POST_UP": 0.09963,
+            "OFF_BALL_SCREEN": 0.09439,
+            "GENERIC_HALF_COURT": 0.08292,
+            "CUT": 0.06245
+          },
+          "variance": {
+            "combinedScoreSd": 16.66586,
+            "combinedScoreSdSe": 0.26047,
+            "marginSd": 9.55756,
+            "distinctScorelineRatio": 0.37891,
+            "distinctScorelineRatioSe": 0.00337,
+            "games": 2048
+          },
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "zone": {
+            "realizedZonePossessions": 0,
+            "totalPossessions": 469276,
+            "realizedZoneShare": 0,
+            "zoneAttackShare": null
+          },
+          "replaySeedsChecked": 64,
+          "replayMismatchCount": 0
+        },
+        "zoneAsymmetric": {
+          "shellSideWinRate": 0.53418,
+          "se": 0.01102,
+          "decided": 2048,
+          "zone": {
+            "realizedZonePossessions": 0,
+            "totalPossessions": 450260,
+            "realizedZoneShare": 0,
+            "zoneAttackShare": null
+          },
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2048,
+          "twin": {
+            "coachOnlyWinRate": 0.5625,
+            "se": 0.02192,
+            "decided": 512,
+            "zone": {
+              "realizedZonePossessions": 0,
+              "totalPossessions": 112676,
+              "realizedZoneShare": 0,
+              "zoneAttackShare": null
+            },
+            "games": 512
+          },
+          "shellAttribution": -0.02832
+        },
+        "vsCoherentLowerControl": {
+          "controlWinRate": 0.3667,
+          "se": 0.01065,
+          "decided": 2048,
+          "controlTeamRating": 767,
+          "ratingRatio": 0.79979,
+          "controlCoherent": true,
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2048
+        },
+        "vsRoleMatchedUpgrade": {
+          "strongerSideWinRate": 0.83887,
+          "se": 0.00812,
+          "decided": 2048,
+          "ratingBefore": 959,
+          "ratingAfter": 1614,
+          "achievedRatio": 1.683,
+          "slotsUpgraded": 5,
+          "primaryRoleMatches": 1,
+          "noSlotGotWorse": true,
+          "slots": [
+            {
+              "slot": "PG",
+              "from": "harden-10s",
+              "to": "magic-80s",
+              "fromRating": 200.19,
+              "toRating": 379.92,
+              "role": "Primary Creator",
+              "roleMatch": "SECONDARY",
+              "reachedTarget": true
+            },
+            {
+              "slot": "SG",
+              "from": "durant-10s",
+              "to": "kawhi-10s",
+              "fromRating": 247.95,
+              "toRating": 284.54,
+              "role": "Primary Creator",
+              "roleMatch": "SECONDARY",
+              "reachedTarget": false
+            },
+            {
+              "slot": "SF",
+              "from": "kobe-10s",
+              "to": "bird-80s",
+              "fromRating": 249.84,
+              "toRating": 364.23,
+              "role": "Primary Creator",
+              "roleMatch": "SECONDARY",
+              "reachedTarget": false
+            },
+            {
+              "slot": "PF",
+              "from": "melo-10s",
+              "to": "schayes-50s",
+              "fromRating": 88.26,
+              "toRating": 187.355,
+              "role": "Primary Creator",
+              "roleMatch": "PRIMARY",
+              "reachedTarget": true
+            },
+            {
+              "slot": "C",
+              "from": "embiid-10s",
+              "to": "rob-90s",
+              "fromRating": 135.51,
+              "toRating": 278.14,
+              "role": "Rim Protector",
+              "roleMatch": "SECONDARY",
+              "reachedTarget": true
+            }
+          ],
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2048
+        }
+      },
+      {
+        "devFixtureId": "sd2-action-family-stress",
+        "purpose": "ACTION_FAMILY_STRESS",
+        "era": "1990s",
+        "coach": "jerry-sloan",
+        "fixtureTeamRating": 1444,
+        "zoneLegalEra": false,
+        "mirror": {
+          "share": 0.23635,
+          "se": 0.00084,
+          "family": "PICK_AND_ROLL",
+          "games": 2048,
+          "pooledShare": 0.23636,
+          "distribution": {
+            "PICK_AND_ROLL": 0.23636,
+            "POST_UP": 0.12675,
+            "TRANSITION": 0.11917,
+            "OFF_BALL_SCREEN": 0.11262,
+            "GENERIC_HALF_COURT": 0.09657,
+            "HANDOFF": 0.08812,
+            "CUT": 0.08596,
+            "ISOLATION": 0.08012,
+            "SPOT_UP": 0.05435
+          },
+          "variance": {
+            "combinedScoreSd": 15.10443,
+            "combinedScoreSdSe": 0.23606,
+            "marginSd": 8.11169,
+            "distinctScorelineRatio": 0.35547,
+            "distinctScorelineRatioSe": 0.00355,
+            "games": 2048
+          },
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "zone": {
+            "realizedZonePossessions": 0,
+            "totalPossessions": 461434,
+            "realizedZoneShare": 0,
+            "zoneAttackShare": null
+          },
+          "replaySeedsChecked": 64,
+          "replayMismatchCount": 0
+        },
+        "zoneAsymmetric": {
+          "applicable": false,
+          "reason": "zone illegal in 1990s",
+          "zeroZoneConfirmed": true
+        },
+        "vsCoherentLowerControl": {
+          "controlWinRate": 0.92627,
+          "se": 0.00577,
+          "decided": 2048,
+          "controlTeamRating": 1156,
+          "ratingRatio": 0.80055,
+          "controlCoherent": true,
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2048
+        },
+        "vsRoleMatchedUpgrade": {
+          "strongerSideWinRate": 0.93945,
+          "se": 0.00527,
+          "decided": 2048,
+          "ratingBefore": 1444,
+          "ratingAfter": 1897,
+          "achievedRatio": 1.31371,
+          "slotsUpgraded": 4,
+          "primaryRoleMatches": 1,
+          "noSlotGotWorse": true,
+          "slots": [
+            {
+              "slot": "PG",
+              "from": "isiah-90s",
+              "to": "magic-80s",
+              "fromRating": 125.58,
+              "toRating": 379.92,
+              "role": "Primary Creator",
+              "roleMatch": "SECONDARY",
+              "reachedTarget": true
+            },
+            {
+              "slot": "SG",
+              "from": "gary-90s",
+              "to": "kawhi-10s",
+              "fromRating": 242.29,
+              "toRating": 284.54,
+              "role": "Point-of-Attack Stopper",
+              "roleMatch": "SECONDARY",
+              "reachedTarget": false
+            },
+            {
+              "slot": "SF",
+              "from": "jordan-90s",
+              "to": "jordan-90s",
+              "fromRating": 586.08,
+              "toRating": 586.08,
+              "role": "Primary Creator",
+              "roleMatch": "UNCHANGED",
+              "reachedTarget": false,
+              "reason": "the pool has no card legal at SF carrying the role \"Primary Creator\" with a higher slot rating"
+            },
+            {
+              "slot": "PF",
+              "from": "grant-90s",
+              "to": "barkley-90s",
+              "fromRating": 123.545,
+              "toRating": 220.46,
+              "role": "Primary Creator",
+              "roleMatch": "PRIMARY",
+              "reachedTarget": true
+            },
+            {
+              "slot": "C",
+              "from": "malone-90s",
+              "to": "kg-00s",
+              "fromRating": 259.35,
+              "toRating": 285.25,
+              "role": "Glass Cleaner",
+              "roleMatch": "SECONDARY",
+              "reachedTarget": false
+            }
+          ],
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2048
+        }
+      },
+      {
+        "devFixtureId": "sd2-cross-era",
+        "purpose": "CROSS_ERA_TRANSLATION",
+        "era": "1960s",
+        "coach": "phil-jackson",
+        "fixtureTeamRating": 1901,
+        "zoneLegalEra": false,
+        "mirror": {
+          "share": 0.17262,
+          "se": 0.00086,
+          "family": "ISOLATION",
+          "games": 2048,
+          "pooledShare": 0.17258,
+          "distribution": {
+            "ISOLATION": 0.17258,
+            "TRANSITION": 0.13609,
+            "HANDOFF": 0.12178,
+            "POST_UP": 0.12025,
+            "OFF_BALL_SCREEN": 0.11254,
+            "CUT": 0.10536,
+            "GENERIC_HALF_COURT": 0.08606,
+            "PICK_AND_ROLL": 0.08021,
+            "SPOT_UP": 0.06512
+          },
+          "variance": {
+            "combinedScoreSd": 15.76959,
+            "combinedScoreSdSe": 0.24646,
+            "marginSd": 9.13857,
+            "distinctScorelineRatio": 0.36377,
+            "distinctScorelineRatioSe": 0.00346,
+            "games": 2048
+          },
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "zone": {
+            "realizedZonePossessions": 0,
+            "totalPossessions": 568010,
+            "realizedZoneShare": 0,
+            "zoneAttackShare": null
+          },
+          "replaySeedsChecked": 64,
+          "replayMismatchCount": 0
+        },
+        "zoneAsymmetric": {
+          "applicable": false,
+          "reason": "zone illegal in 1960s",
+          "zeroZoneConfirmed": true
+        },
+        "vsCoherentLowerControl": {
+          "controlWinRate": 0.50244,
+          "se": 0.01105,
+          "decided": 2048,
+          "controlTeamRating": 1521,
+          "ratingRatio": 0.80011,
+          "controlCoherent": true,
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2048
+        },
+        "vsRoleMatchedUpgrade": {
+          "strongerSideWinRate": 0.5249,
+          "se": 0.01103,
+          "decided": 2048,
+          "ratingBefore": 1901,
+          "ratingAfter": 2178,
+          "achievedRatio": 1.14571,
+          "slotsUpgraded": 2,
+          "primaryRoleMatches": 0,
+          "noSlotGotWorse": true,
+          "slots": [
+            {
+              "slot": "PG",
+              "from": "oscar-60s",
+              "to": "magic-80s",
+              "fromRating": 251.1,
+              "toRating": 379.92,
+              "role": "Primary Creator",
+              "roleMatch": "SECONDARY",
+              "reachedTarget": false
+            },
+            {
+              "slot": "SG",
+              "from": "jordan-90s",
+              "to": "jordan-90s",
+              "fromRating": 585.43,
+              "toRating": 585.43,
+              "role": "Primary Creator",
+              "roleMatch": "UNCHANGED",
+              "reachedTarget": false,
+              "reason": "the pool has no card legal at SG carrying the role \"Primary Creator\" with a higher slot rating"
+            },
+            {
+              "slot": "SF",
+              "from": "elgin-60s",
+              "to": "kawhi-10s",
+              "fromRating": 208.94,
+              "toRating": 285.41,
+              "role": "Slasher",
+              "roleMatch": "SECONDARY",
+              "reachedTarget": false
+            },
+            {
+              "slot": "PF",
+              "from": "lebron-10s",
+              "to": "lebron-10s",
+              "fromRating": 420.61,
+              "toRating": 420.61,
+              "role": "Primary Creator",
+              "roleMatch": "UNCHANGED",
+              "reachedTarget": false,
+              "reason": "the pool has no card legal at PF carrying the role \"Primary Creator\" with a higher slot rating"
+            },
+            {
+              "slot": "C",
+              "from": "wilt-60s",
+              "to": "wilt-60s",
+              "fromRating": 344.86,
+              "toRating": 344.86,
+              "role": "Glass Cleaner",
+              "roleMatch": "UNCHANGED",
+              "reachedTarget": false,
+              "reason": "the pool has no card legal at C carrying the role \"Glass Cleaner\" with a higher slot rating"
+            }
+          ],
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2048
+        }
+      }
+    ],
+    "summary": {
+      "maxActionFamilyShare": {
+        "n": 14,
+        "min": 0.13867,
+        "max": 0.37335,
+        "mean": 0.20021,
+        "sd": 0.05629
+      },
+      "maxActionFamilyShareSe": {
+        "n": 14,
+        "min": 0.00069,
+        "max": 0.00117,
+        "mean": 0.00088,
+        "sd": 0.00012
+      },
+      "combinedScoreSd": {
+        "n": 14,
+        "min": 15.10443,
+        "max": 17.88065,
+        "mean": 16.5461,
+        "sd": 0.84911
+      },
+      "combinedScoreSdSe": {
+        "n": 14,
+        "min": 0.23606,
+        "max": 0.27945,
+        "mean": 0.2586,
+        "sd": 0.01327
+      },
+      "distinctScorelineRatio": {
+        "n": 14,
+        "min": 0.35547,
+        "max": 0.39648,
+        "mean": 0.37559,
+        "sd": 0.01154
+      },
+      "distinctScorelineRatioSe": {
+        "n": 14,
+        "min": 0.00337,
+        "max": 0.0039,
+        "mean": 0.00364,
+        "sd": 0.00019
+      },
+      "shellSideWinRate": {
+        "n": 10,
+        "min": 0.50098,
+        "max": 0.53418,
+        "mean": 0.51538,
+        "sd": 0.01104
+      },
+      "shellSideWinRateSe": {
+        "n": 10,
+        "min": 0.01102,
+        "max": 0.01105,
+        "mean": 0.01104,
+        "sd": 0.00001
+      },
+      "coachOnlyWinRate": {
+        "n": 10,
+        "min": 0.48828,
+        "max": 0.5625,
+        "mean": 0.51308,
+        "sd": 0.02265
+      },
+      "shellAttribution": {
+        "n": 10,
+        "min": -0.02881,
+        "max": 0.03272,
+        "mean": 0.0023,
+        "sd": 0.02005
+      },
+      "coherentLowerControlWinRate": {
+        "n": 13,
+        "min": 0.08789,
+        "max": 0.92627,
+        "mean": 0.41545,
+        "sd": 0.22441
+      },
+      "coherentLowerControlWinRateSe": {
+        "n": 13,
+        "min": 0.00577,
+        "max": 0.01105,
+        "mean": 0.00963,
+        "sd": 0.00188
+      },
+      "strongerSideWinRate": {
+        "n": 14,
+        "min": 0.44482,
+        "max": 0.93945,
+        "mean": 0.74055,
+        "sd": 0.14989
+      },
+      "strongerSideWinRateSe": {
+        "n": 14,
+        "min": 0.00527,
+        "max": 0.01103,
+        "mean": 0.009,
+        "sd": 0.00166
+      },
+      "upgradeRatio": {
+        "n": 14,
+        "min": 1.14571,
+        "max": 1.99552,
+        "mean": 1.49406,
+        "sd": 0.27209
+      },
+      "replayMismatchTotal": 0,
+      "structuralTotals": {
+        "invariantViolationCount": 0,
+        "impossibleScoreCount": 0,
+        "nonFiniteStatCount": 0,
+        "negativeStatCount": 0,
+        "finalTieCount": 0
+      },
+      "zoneLegalFixtures": 10,
+      "zeroZoneConfirmedOnIllegalEras": true
+    },
+    "seedStreams": {
+      "mirror": 7097109,
+      "zone": 7097111,
+      "twin": 7097112,
+      "lower": 7097113,
+      "gap": 7097114
+    },
+    "evidenceHash": "4f44f3e747c5095c4c143cb500ee1a13a659f79a5e1260ebe303356b3261b096"
+  },
+  "outputHash": "6251a471203be8009938487eb73ce8411a069833410d297d6b63ffb208d058ca"
+}

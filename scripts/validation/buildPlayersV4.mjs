@@ -25,9 +25,21 @@ import { VALIDATION_VERSIONS } from "../../src/v3/calibration/validationVersions
 export const PLAYERS_V4_PATH = "data/validation/6c3r/calibration-players-v4.json";
 const norm = (s) => String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, " ").trim();
 
-export const teamMatchesV4 = (teamId, sourceTeam) => {
+/**
+ * The alias table is a parameter so a later pool can add franchises without
+ * touching V4's own resolution. It defaults to TEAM_ALIASES_V4, so every V4 and
+ * V5 call resolves byte-identically to before.
+ *
+ * This mattered: the first V6 ingestion passed TEAM_ALIASES_V6 to its spec but
+ * the matcher read TEAM_ALIASES_V4 directly, so DEN and ORL matched no alias at
+ * all. No career row could match, every Denver 1984-85 profile fell through to
+ * the roster path, and all five came out LOW with null stats — while Alex
+ * English's career table holds a complete 1984-85 Denver row. Nulls, not zeros,
+ * so nothing was fabricated; but the profiles were needlessly blind.
+ */
+export const teamMatchesV4 = (teamId, sourceTeam, aliasTable = TEAM_ALIASES_V4) => {
   if (!sourceTeam) return false;
-  const aliases = TEAM_ALIASES_V4[teamId] ?? [];
+  const aliases = aliasTable[teamId] ?? [];
   const s = norm(String(sourceTeam).replace(/\s*\((NBA|ABA)\)\s*/gi, " "));
   return aliases.some((a) => norm(a) === s);
 };
@@ -50,11 +62,11 @@ const shootingProfileFrom = (row, seasonStartYear) => {
     basis: tp != null ? "MEASURED_THREE_POINT_PCT" : row.ftPct != null ? "FREE_THROW_PROXY" : "SOURCE_BLOCKED" };
 };
 
-const resolveSeason = async ({ spec, player, refresh }) => {
+const resolveSeason = async ({ spec, player, refresh, aliasTable = TEAM_ALIASES_V4 }) => {
   const art = await fetchArticle(player.article, { refresh });
   const found = playerSeason(art.html, spec.seasonStartYear);
   if (found) {
-    const row = found.rows.find((r) => teamMatchesV4(spec.teamId, r.team));
+    const row = found.rows.find((r) => teamMatchesV4(spec.teamId, r.team, aliasTable));
     if (row) return { row, article: art, route: "PLAYER_CAREER_TABLE", confidence: "MEDIUM_HIGH" };
   }
   if (!spec.teamArticle) return { unresolved: `no ${spec.season} row for ${spec.teamName} and no team article` };
@@ -100,8 +112,8 @@ export const verifyCoach = async (spec, { refresh = false } = {}) => {
     sourceUrl: art.sourceUrl, revisionId: art.revisionId };
 };
 
-export const buildPlayerV4 = async ({ spec, player, refresh = false }) => {
-  const resolved = await resolveSeason({ spec, player, refresh });
+export const buildPlayerV4 = async ({ spec, player, refresh = false, aliasTable = TEAM_ALIASES_V4 }) => {
+  const resolved = await resolveSeason({ spec, player, refresh, aliasTable });
   if (resolved.unresolved) return { unresolved: { name: player.name, fixtureId: spec.fixtureId, reason: resolved.unresolved } };
   const { row, article: art, route } = resolved;
   const year = spec.seasonStartYear;

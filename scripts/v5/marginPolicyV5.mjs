@@ -19,7 +19,8 @@ import { DIR, DIR_6C4A } from "./preflight6c4b1.mjs";
 // Basketball-meaningful floors, carried forward from the 6C4A policy (which was
 // itself frozen prospectively and never applied retroactively). A floor changes
 // only with a version bump and a stated reason; none changed here.
-const PRACTICAL_FLOORS = {
+/** Exported so a later phase reads the same floors instead of restating them. */
+export const PRACTICAL_FLOORS = {
   gamePace: { floor: 1.0, unit: "possessions per game", family: "PACE",
     basis: "one possession per game is the smallest pace gap discussed as real" },
   pppVsReference: { floor: 0.02, unit: "points per possession", family: "OFFENSIVE_QUALITY",

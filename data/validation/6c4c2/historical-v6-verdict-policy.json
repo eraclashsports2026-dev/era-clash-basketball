@@ -1,0 +1,150 @@
+{
+  "artifact": "historical-v6-verdict-policy",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run v6:policy",
+  "generatedAt": "2026-08-27T20:12:58.310Z",
+  "gitCommit": "f2e7bcf93477e77648c9004d60d6088af1eb2a6f",
+  "branch": "phase-6c4c2-v6-freeze-and-seal",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "historicalV6VerdictPolicyVersion": "1.0.0",
+    "holdoutSet": "historical-holdout-v6",
+    "frozenBeforeSeal": true,
+    "frozenBeforeSelection": false,
+    "frozenBeforeSelectionNote": "selection was frozen and executed first under its own policy; this artifact governs how a result is aggregated, and no V6 result exists.",
+    "basedOnly": [
+      "carried-forward practical floors",
+      "Candidate 2 strong/neutral/weak control cells",
+      "Candidate 2 era-reference certification",
+      "the frozen V6 target coverage"
+    ],
+    "protocol": {
+      "surfacesPerMatchup": [
+        "TEAM_A_VS_TEAM_B",
+        "TEAM_A_VS_ERA_REFERENCE",
+        "TEAM_B_VS_ERA_REFERENCE"
+      ],
+      "sideBalanced": true,
+      "gamesPerSurface": 4096,
+      "gamesPerMatchup": 12288,
+      "matchups": 8,
+      "totalGamesAtDecisionTier": 98304,
+      "seedDomain": "HISTORICAL_V6_FORMAL",
+      "note": "Offence is read only from a team's own side of team-vs-reference games and defence only from the reference's output in those games. Nothing offence/defence is ever read from a mirror — the defect that consumed V3 and the reason a mirror matchup was excluded at selection."
+    },
+    "aggregation": {
+      "unit": "INDEPENDENT_MEASUREMENT_CLUSTER",
+      "whyNotLabelCount": "V5 aggregated on trait LABELS and reported 3 hard fails. Two of those labels were one observation — identical fixture, side, metric, surface, direction, observed and reference value — so the real independent evidence was 2 clusters, not 3. A label count double-counts whenever two trait names claim the same measurement, which inflates the apparent weight of evidence and would let a naming decision change a verdict.",
+      "clusterKey": "matchupId | side | metricId | surface | expectedDirection | observedValue | referenceValue",
+      "collapseRule": "two formal trait labels are one independent measurement when they share fixture, side, metric, surface, expected direction, observed value and reference value. Every formal label is preserved; only the evidence count collapses.",
+      "labelsPreserved": "every formal trait label is preserved in the register and in the result. Only the evidence COUNT collapses; nothing is deleted or hidden.",
+      "priorEvidence": {
+        "artifact": "historical-v5-independent-evidence-clusters",
+        "formalHardFailLabels": 3,
+        "independentEvidenceClusters": 2
+      }
+    },
+    "numericGates": {
+      "compositeShareMae": {
+        "measuredOn": "each team's five-share distribution in its TEAM_VS_ERA_REFERENCE games, against the Tier C season-share proxy",
+        "internalBaselineMean": 0.0431,
+        "maxHoldoutToInternalRatio": 1.5,
+        "catastrophicThreshold": 0.13038,
+        "maxCatastrophicTeams": 0,
+        "ratioNote": "Carried forward unchanged from the V5 policy, which carried it unchanged from V4. It is not weakened because V5 failed and not tightened because Candidate 2 was repaired."
+      },
+      "shareComponents": [
+        "playerScoringShares",
+        "playerReboundShares",
+        "playerAssistShares",
+        "playerStealShares",
+        "playerBlockShares"
+      ],
+      "unavailableMetrics": "A null target contributes no error, no pass credit and no failure. It is never zero-filled.",
+      "scoreableTeamMetrics": [
+        "games",
+        "wins",
+        "losses"
+      ]
+    },
+    "traitGates": {
+      "scoredTraits": "Only traits certified in historical-v6-observability-certification.json, on their registry surface, against the CANDIDATE 2 era-reference self-baselines.",
+      "perTrait": {
+        "hardFail": "direction opposite to the claim AND the 95% interval excludes zero AND |difference| > margin[metric]",
+        "directionalSoftFail": "direction opposite to the claim AND (interval includes zero OR |difference| <= margin[metric]) — reported, never verdict-driving",
+        "pass": "direction matches the claim",
+        "indeterminate": "statistically different but inside the practical margin — never a FAIL, and at the decision tier it triggers escalation rather than a verdict",
+        "reportingStates": [
+          "PASS",
+          "STATISTICALLY_DIFFERENT_PRACTICALLY_EQUIVALENT",
+          "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED",
+          "INCONCLUSIVE",
+          "NOT_OBSERVABLE",
+          "NOT_APPLICABLE"
+        ],
+        "dualGate": "Both gates must fire. Statistical significance alone is not a failure at 4,096 games, and a large difference inside noise is not evidence."
+      },
+      "practicalMarginPolicyHash": "099d513ab855520c68f1c55991a156f9c56b3a6df123f06a708529f27b6413ae",
+      "confidenceHandling": {
+        "HIGH": "a hard-fail cluster on a high-confidence identity is a verdict failure on its own",
+        "MEDIUM": "hard-fail clusters count toward the aggregate gates",
+        "LOW": "reported, never verdict-driving"
+      },
+      "aggregate": {
+        "minTraitPassRate": 0.75,
+        "maxIndependentHardFailClusters": 0,
+        "maxHardFailLabelsNote": "not a gate. Labels are counted and reported; only clusters are aggregated.",
+        "perFixtureRule": "no matchup may fail a majority of its scored traits",
+        "perEraRule": "no era style may fail every scored trait of its matchup",
+        "clusterIndependenceRule": "two hard fails sharing a cluster key are one cluster. Two hard fails on the same metric and side but different matchups are two clusters — different teams are different evidence."
+      },
+      "reporting": [
+        "PASS",
+        "STATISTICALLY_DIFFERENT_PRACTICALLY_EQUIVALENT",
+        "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED",
+        "INCONCLUSIVE",
+        "NOT_OBSERVABLE",
+        "NOT_APPLICABLE"
+      ]
+    },
+    "structuralGates": {
+      "zeroInvariantFailures": true,
+      "zeroFinalTies": true,
+      "replayExactPerSurface": true,
+      "zeroImpossibleScores": true,
+      "zeroPreThreeEraThreePointAttempts": true,
+      "candidateIdentityStated": "every result must state candidateId, core hash, parameter-set hash and calibration version",
+      "coreHashMustEqual": "3733b648f050a4f50f9dc3cb6ecf62fce419dd282f24c910b91e7b077d63711d",
+      "parameterSetHashMustEqual": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "calibrationVersionMustEqual": "1.2.0"
+    },
+    "outcomes": {
+      "pass": "HISTORICAL_HOLDOUT_V6_PASS",
+      "fail": "HISTORICAL_HOLDOUT_V6_FAIL",
+      "invalid": "HISTORICAL_HOLDOUT_V6_INVALID_RUN"
+    },
+    "failureSemantics": "FAIL preserves every artifact, forbids tuning against V6, keeps Synthetic Stress Holdout V2 sealed at access 0, and ends formal validation for Candidate 2. INVALID_RUN resumes under the SAME access event only.",
+    "immutability": "After this artifact is committed no threshold, margin, trait, confidence rule, reference, target or aggregation unit may change. Any change before V6 access requires a new policy version, a new policy hash and a new readiness package; any change after V6 access invalidates V6.",
+    "hashes": {
+      "candidate2CoreHash": "3733b648f050a4f50f9dc3cb6ecf62fce419dd282f24c910b91e7b077d63711d",
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "possessionCalibrationVersion": "1.2.0",
+      "eraReferenceCertificationHash": "4713a12f2d2e1447f1f21b03ef3a7219e69136e6eec160cebe0ed5df3486b37f",
+      "observabilityCertificationHash": "5e9a4070f4f9a747992561c19586b491971b2479f2161a5cef5bb5b8474c9349",
+      "practicalMarginPolicyHash": "099d513ab855520c68f1c55991a156f9c56b3a6df123f06a708529f27b6413ae",
+      "samplePlanHash": "1ed77e62b545c9d72117355ec290a760b748225fee8df55bd71913a628bd3672",
+      "selectionHash": "7dc4802db43ed50475d8a3b3fd2ec6aaf4b9531ee35166165c529156d3c9c9be",
+      "targetsHash": "5d004698caa676407a279142517dc939503b7044ee2a46fbffc0edcefc2cd3f6",
+      "priorV5PolicyHash": "64abec44451702338af814f388bcc16748df490e4e0a8b7fb0dfb2e6196a6cc1"
+    },
+    "policyHash": "d433cddcd3af4294dc8468481b8b85702a7768e16878a1003c6567ddb22c5ae4",
+    "pass": true,
+    "failedGates": [],
+    "frozen": true
+  },
+  "outputHash": "5c2c151dda99fdc615109e8933d7228a1026ce334869d2f3f00840102c9c00c9"
+}
