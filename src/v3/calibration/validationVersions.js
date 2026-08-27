@@ -33,6 +33,25 @@ export const VALIDATION_VERSIONS = Object.freeze({
   // Phase 6C4A: the prospective practical-margin rule (applies from V5 onward;
   // V3/V4 verdicts stand as issued under the rules they froze).
   traitPracticalMarginPolicyVersion: "1.0.0",
+  // ── Phase 6C4B1: Historical Holdout V5 preparation ────────────────────────
+  // All validation-only. src/versions.js is inside the Candidate 1 core, so a
+  // validation version bump must never live there.
+  historicalV5BlockerRegisterVersion: "1.0.0",
+  candidateCoreGraphVersion: "3.0.0",           // v1 regex, v2 multi-line regex, v3 parser-backed
+  candidateIdentitySeparationVersion: "1.0.0",
+  realizedZoneMeasurementVersion: "2.0.0",      // v1 read the per-game scheme label; v2 reads possession state
+  eraReferenceCertificationVersion: "2.0.0",
+  historicalObservabilityCertificationVersion: "2.0.0",
+  historicalTraitPracticalMarginPolicyVersion: "2.0.0",
+  historicalV5CandidatePoolVersion: "2.0.0",
+  historicalV5SelectionVersion: "1.0.0",
+  historicalHoldoutV5SetVersion: "5.0.0",
+  historicalHoldoutV5ManifestVersion: "5.0.0",
+  historicalHoldoutV5AcceptancePolicyVersion: "3.0.0",
+  historicalHoldoutV5SeedSetVersion: "3.0.0",
+  historicalHoldoutV5RunnerVersion: "3.0.0",
+  historicalV5SealVersion: "1.0.0",
+  phase6C4B2ValidationPackageVersion: "1.0.0",
 });
 
 export const validationVersionOf = (k) => {

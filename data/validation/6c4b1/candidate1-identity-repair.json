@@ -1,0 +1,94 @@
+{
+  "artifact": "candidate1-identity-repair",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run v5:identity-repair",
+  "generatedAt": "2026-08-27T03:28:36.885Z",
+  "gitCommit": "c370182bb805cd068427283ce2b45a7eda725d1c",
+  "branch": "phase-6c4b1-v5-freeze-and-seal",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "candidateIdentitySeparationVersion": "1.0.0",
+    "defect": {
+      "title": "Candidate 0 and Candidate 1 produced identical development result fingerprints",
+      "discovered": "Phase 6C4B1 WS2, while building the identity-separation evidence the phase requires",
+      "mechanism": "Candidate 1 kept every parameter at its registry default (so parameterSetHash equals Candidate 0's) and every engine module version unchanged, and resultVersions() in src/v3/possession/index.js never stated possessionCalibrationVersion. Every field of the development result fingerprint was therefore equal between the two candidates.",
+      "evidence": [
+        {
+          "case": "case-A",
+          "candidate0Fingerprint": "5cc31c6f2bb508c07ea5abe31df5af2bfc52ac065ead44c4abede451c88e1598",
+          "candidate1Fingerprint": "6e014606bd80a96fd2da112bde9bb1cf3a75cb752178d15b2cc37204d39a6dba",
+          "collided": false,
+          "candidate0Score": {
+            "gold": 112,
+            "blue": 118
+          },
+          "candidate1Score": {
+            "gold": 100,
+            "blue": 125
+          },
+          "behaviourDiffered": true
+        },
+        {
+          "case": "case-B",
+          "candidate0Fingerprint": "019a59e7ee6eaf85a81de8660acaeaba53c14b1d2c67fae115e100e2ce96a767",
+          "candidate1Fingerprint": "019a59e7ee6eaf85a81de8660acaeaba53c14b1d2c67fae115e100e2ce96a767",
+          "collided": true,
+          "candidate0Score": {
+            "gold": 150,
+            "blue": 140
+          },
+          "candidate1Score": {
+            "gold": 160,
+            "blue": 150
+          },
+          "behaviourDiffered": true
+        },
+        {
+          "case": "case-C",
+          "candidate0Fingerprint": "32022edd32d77b364e25f61b8a9ef9df17af2db2b246d7d791af01399700cdce",
+          "candidate1Fingerprint": "32022edd32d77b364e25f61b8a9ef9df17af2db2b246d7d791af01399700cdce",
+          "collided": true,
+          "candidate0Score": {
+            "gold": 128,
+            "blue": 83
+          },
+          "candidate1Score": {
+            "gold": 139,
+            "blue": 130
+          },
+          "behaviourDiffered": true
+        }
+      ],
+      "collisionsObserved": 2,
+      "probeCases": 3,
+      "severity": "A development result cache keyed on this fingerprint would return a Candidate 0 game for a Candidate 1 request."
+    },
+    "repair": {
+      "changedCoreFiles": [
+        "src/v3/possession/index.js"
+      ],
+      "change": "resultVersions() now states possessionCalibrationVersion (the candidate discriminator, 1.0.0 vs 1.1.0).",
+      "productionUntouched": "src/v3/fingerprint.js and the affectsResult registry flag are unchanged: the production engine never reads a possession calibration, so stamping a development version onto production records would claim a provenance production does not have and would invalidate every stored production game.",
+      "moduleVersionsUntouched": "No engine module version was bumped. Candidate 1's module versions are immutable under this phase's rules; their staleness is recorded as a limitation and a Candidate 2 lock-procedure recommendation, not repaired here."
+    },
+    "behaviourProof": {
+      "cases": 441,
+      "behaviourHashBefore": "c9dca9a889cdb17a6decdd98a069098266d087788c8f812d419a72da53bcf84b",
+      "behaviourHashAfter": "c9dca9a889cdb17a6decdd98a069098266d087788c8f812d419a72da53bcf84b",
+      "changedCases": [],
+      "coverage": "the pre-wiring parity corpus, the 6C1 baseline cases, a 400-game era x coach sweep, a best-of-7, an 82-game season, and a probability estimate — scores, box scores, ledgers, rng draws and invariants, with every version field deliberately excluded"
+    },
+    "behaviourIdentical": true,
+    "changedCoreFiles": [
+      "src/v3/possession/index.js"
+    ],
+    "supersedesCoreHash": "295ba3d1ba74fe5cecaccb33e8b69ab4f38520a964e00ba39fe6f3bf3fe260bb",
+    "lockCommit": "1bbef5a00c465e8b19a31ce2832c6f60cada15b2",
+    "pass": true
+  },
+  "outputHash": "6d0982f328d75c2d832d1191169bf96d2be8a457c9edf38b0697d5f81b4cbdeb"
+}

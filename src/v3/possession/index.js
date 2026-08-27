@@ -30,6 +30,19 @@ export const POSSESSION_ENGINE_STATUS = "DEVELOPMENT";
 export const resultVersions = ({ defensiveMatchups = true } = {}) => ({
   engineVersion: versionOf("engineVersion"),
   possessionEngineVersion: versionOf("possessionEngineVersion"),
+  // ── The CANDIDATE identity (Phase 6C4B1) ─────────────────────────────────
+  // Candidate 1 changed engine semantics while leaving every parameter at its
+  // registry default, so its parameterSetHash equals Candidate 0's and — with
+  // module versions unchanged — Candidate 0 and Candidate 1 produced BYTE-
+  // IDENTICAL result fingerprints for different games. Measured: two of three
+  // probe matchups collided outright. The calibration version is the stable
+  // name of "which candidate's algorithms", and it is the field that separates
+  // them, so a development possession result must state it. Production's
+  // fingerprint (src/v3/fingerprint.js) deliberately does NOT gain this field:
+  // the production engine never reads a possession calibration, and stamping a
+  // development version onto production records would be a false provenance
+  // claim and would invalidate every stored production game.
+  possessionCalibrationVersion: versionOf("possessionCalibrationVersion") ?? "UNCALIBRATED",
   actionLibraryVersion: versionOf("actionLibraryVersion"),
   defensiveMatchupVersion: versionOf("defensiveMatchupVersion"),
   zoneResolutionVersion: versionOf("zoneResolutionVersion"),
