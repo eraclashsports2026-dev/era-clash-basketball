@@ -1,0 +1,127 @@
+{
+  "artifact": "historical-v5-selection-policy",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run v5:selection-policy",
+  "generatedAt": "2026-08-27T04:11:06.315Z",
+  "gitCommit": "d8858822044b4bf7f198defa3ffb1a4f80bebdc4",
+  "branch": "phase-6c4b1-v5-freeze-and-seal",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "historicalV5SelectionVersion": "1.0.0",
+    "frozenBeforeSelection": true,
+    "poolArtifact": "historical-v5-candidate-pool-v2",
+    "poolHash": "97ea154bb04d5845603c17558bbc381cbb80cca5d915df90afc794b3b84ced31",
+    "poolArtifactHash": "9d661c1ab0ff2e24f062b6048516530b12e706ddfdf4519b3937dbd6b927dd94",
+    "permittedInputs": [
+      "eligibility",
+      "source completeness",
+      "coach completeness",
+      "observable-trait coverage",
+      "target coverage",
+      "player-data confidence",
+      "tactical diversity",
+      "franchise diversity",
+      "pair type",
+      "stable hash tie-breaker"
+    ],
+    "forbiddenInputs": [
+      "Candidate 1 game results",
+      "Candidate 1 probabilities",
+      "Candidate 1 trait scores",
+      "Candidate 1 points per possession",
+      "Candidate 1 opportunity errors",
+      "Candidate 1 win rates"
+    ],
+    "pairTypePriority": [
+      "ACTUAL_FINALS_OPPONENTS",
+      "ACTUAL_PLAYOFF_OPPONENTS",
+      "ACTUAL_REGULAR_SEASON_OPPONENTS",
+      "SAME_ERA_CONTRAST_PAIR",
+      "SAME_FRANCHISE_CONTRAST_PAIR"
+    ],
+    "diversityDimensions": {
+      "ELITE_OFFENCE": [
+        "ELITE_OFFENSE"
+      ],
+      "ELITE_DEFENCE": [
+        "ELITE_DEFENSE",
+        "elite team man defence",
+        "elite physical man",
+        "elite team man",
+        "elite scheme-driven man"
+      ],
+      "FAST_PACE": [
+        "very fast",
+        "fast",
+        "PACE_EXTREME",
+        "TRANSITION"
+      ],
+      "SLOW_PACE": [
+        "slow",
+        "very slow",
+        "SLOW_HALF_COURT"
+      ],
+      "INTERIOR_OFFENCE": [
+        "POST_HEAVY",
+        "SIZE_HEAVY"
+      ],
+      "MOVEMENT_OFFENCE": [
+        "MOTION"
+      ],
+      "TRANSITION_OFFENCE": [
+        "TRANSITION"
+      ],
+      "BALL_MOVEMENT": [
+        "PASSING_HUB"
+      ],
+      "PICK_AND_ROLL": [
+        "PICK_AND_ROLL"
+      ],
+      "OFFENSIVE_REBOUNDING": [
+        "STRONG_OFFENSIVE_REBOUNDING"
+      ],
+      "ZONE_SCHEME": [
+        "ZONE_CAPABLE"
+      ]
+    },
+    "scoring": {
+      "observableTraitUnion": 3,
+      "bothTeamsObservable": 4,
+      "targetCoverage": 1,
+      "sourceConfidence": 2,
+      "crossFranchise": 2,
+      "pairTypeRank": 3,
+      "diversityCredit": 5,
+      "tieBreaker": "sha256(pairId + poolHash), lexicographic — stable under input reorder"
+    },
+    "constraints": {
+      "matchups": 8,
+      "distinctTeams": 16,
+      "oneMatchupPerEraStyle": true,
+      "noTeamTwice": true,
+      "noFiveTwice": true,
+      "everyMatchupNeedsAnObservableTraitOnBothSides": true,
+      "candidateOutputsAllowed": 0
+    },
+    "algorithm": [
+      "1. Read the eligible pairs from the pool artifact. Sort them by pairId so the input order cannot matter.",
+      "2. Score every pair on the frozen terms above. Diversity credit is evaluated against the dimensions the partial selection still lacks, so it depends on the order eras are filled — step 3 fixes that order.",
+      "3. Fill era styles in a FROZEN order (chronological), one matchup each. Chronological is chosen because it is a property of the data, not of any result.",
+      "4. Within an era, take the highest-scoring pair whose teams are unused. Break ties on sha256(pairId + poolHash), lexicographically smallest.",
+      "5. Record every rejected alternative with its score and the reason the winner beat it.",
+      "6. Refuse to emit a selection that violates any constraint, rather than repairing it by hand."
+    ],
+    "determinism": {
+      "inputReorderInvariant": "pairs are sorted by pairId before scoring",
+      "repeatedExecutionInvariant": "no randomness; the tie-breaker is a content hash",
+      "manualSubstitutionForbidden": "a selected pair may not be replaced after the output is seen; a defect is fixed in the pool or the policy, with a version bump, and the selector re-run"
+    },
+    "policyHash": "e9ba5a11f3eb163df095d3f3a164c25748f5f9846f36c16e9bdd109f32fc9df7",
+    "frozen": true
+  },
+  "outputHash": "5ca6a4f8304bfa679a912eb7e3899d961f291d9c03b5fae621496fe8308e4c02"
+}
