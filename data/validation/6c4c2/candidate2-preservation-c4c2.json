@@ -1,0 +1,84 @@
+{
+  "artifact": "candidate2-preservation-c4c2",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run v6:reconcile",
+  "generatedAt": "2026-08-27T19:01:45.949Z",
+  "gitCommit": "a6d2c30718fa3b7fc26a49ec62b5712f538463b0",
+  "branch": "phase-6c4c2-v6-freeze-and-seal",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "candidateId": "Candidate 2",
+    "parentCandidateId": "Candidate 1",
+    "candidateCommit": {
+      "value": "136b6446a8a65c7b9b551eed120cf0d4aa5078fd",
+      "source": "data/validation/6c4c1/candidate2-lock.json"
+    },
+    "coreHash": {
+      "value": "3733b648f050a4f50f9dc3cb6ecf62fce419dd282f24c910b91e7b077d63711d",
+      "source": "data/validation/6c4c1/candidate2-lock.json",
+      "liveDerivation": "3733b648f050a4f50f9dc3cb6ecf62fce419dd282f24c910b91e7b077d63711d",
+      "drift": 0
+    },
+    "parameterHash": {
+      "value": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "source": "data/validation/6c4c1/candidate2-lock.json",
+      "liveDerivation": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "drift": 0
+    },
+    "calibrationVersion": {
+      "value": "1.2.0",
+      "source": "data/validation/6c4c1/candidate2-lock.json",
+      "liveDerivation": "1.2.0",
+      "drift": 0
+    },
+    "resultFingerprintVersion": {
+      "value": "1.2.0",
+      "source": "data/validation/6c4c1/candidate2-lock.json"
+    },
+    "cacheIdentity": "calibratedPossessionResult tagged pc1-2-0",
+    "probabilityIdentity": "probability cache tagged pc1-2-0",
+    "competitionIdentity": "competition manifest at possessionEngineVersion 1.2.0",
+    "replayIdentity": "core hash 3733b648 with calibration 1.2.0",
+    "selectionStatus": {
+      "value": "SELECTED",
+      "source": "data/validation/6c4c1/candidate2-lock.json"
+    },
+    "lockStatus": {
+      "value": "LOCKED",
+      "source": "data/validation/6c4c1/candidate2-lock.json"
+    },
+    "formalValidationStatus": {
+      "value": "NOT_RUN",
+      "source": "data/validation/6c4c1/candidate2-lock.json"
+    },
+    "calibrationStatus": {
+      "value": "DEVELOPMENT_LOCKED_SCOPED",
+      "source": "data/validation/6c4c1/candidate2-lock.json"
+    },
+    "identityCollisions": {
+      "value": 0,
+      "source": "data/validation/6c4c1/candidate2-identity-separation.json"
+    },
+    "parameterChanges": {
+      "value": 0,
+      "source": "data/validation/6c4c1/candidate2-parameter-set.json"
+    },
+    "changedCoreFiles": {
+      "value": [
+        "src/v3/possession/game.js",
+        "src/v3/defense/scheme.js"
+      ],
+      "source": "data/validation/6c4c1/candidate2-change-manifest.json"
+    },
+    "drift": 0,
+    "alteredInThisPhase": false,
+    "lockArtifactSha256": "2cfc0d01e11a610c3404cf0562ccbb7c2c49d35b571758928e0058abc7c2b592",
+    "mustRemainImmutableUntil": "Historical Holdout V6 has been selected, sealed and run. A change after this point invalidates the lock and requires a Candidate 3.",
+    "role": "the candidate this phase prepares a two-stage formal validation for"
+  },
+  "outputHash": "9a4178173e2a176700043932f8841f1b53e923400cbfccd8a0c39c43a08502dd"
+}
