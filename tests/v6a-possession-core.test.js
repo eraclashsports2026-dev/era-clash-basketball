@@ -256,7 +256,10 @@ describe("game structure and overtime", () => {
       expect(checkGame(g)).toHaveLength(0);
     }
     expect(MAX_OVERTIMES).toBeGreaterThanOrEqual(4);
-  });
+    // 1200 full games is a deliberate brute-force search for a rare state, and
+    // it lands within a few hundred ms of the 5s default under full-suite load.
+    // An explicit budget keeps it honest instead of trimming the sample.
+  }, 30_000);
 
   it("the overtime guard resolves through basketball, never a coin flip", () => {
     const src = readFileSync(new URL("../src/v3/possession/game.js", import.meta.url), "utf8");

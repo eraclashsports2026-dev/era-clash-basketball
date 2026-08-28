@@ -4,6 +4,7 @@
 // model output + deterministic engine data) — nothing invented for aesthetics.
 // Never a dead end: contextual CTAs lead back into another game or a share.
 import { useState } from "react";
+import { ChemistryDial, KeyMoments, PeriodScores } from "./PostgamePanels.jsx";
 import { T, card } from "../theme.js";
 import { chemistryScore, chemistryLabel } from "../chemistryView.js";
 import { Feedback } from "./Feedback.jsx";
@@ -187,7 +188,7 @@ function BoxTable({ label, stats, color, mvpName }) {
 }
 
 // ── Strengths / weaknesses quadrants ───────────────────────────────────────────
-function AnalysisQuad({ sim }) {
+function AnalysisQuad({ sim, center }) {
   const Q = ({ title, items, color, sign }) => !items?.length ? null : (
     <div style={{ flex: "1 1 220px", padding: 12, borderRadius: 10, background: T.bgCardHover, border: `1px solid ${T.border}` }}>
       <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: 1.5, color, marginBottom: 6 }}>{title}</div>
@@ -199,9 +200,10 @@ function AnalysisQuad({ sim }) {
     </div>
   );
   return (
-    <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 12 }}>
+    <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 12, alignItems: "stretch" }}>
       <Q title="TEAM GOLD STRENGTHS" items={sim.teamAStrengths} color={T.green} sign="+" />
       <Q title="TEAM GOLD WEAKNESSES" items={sim.teamAWeaknesses} color={T.red} sign="−" />
+      {center}
       <Q title="TEAM BLUE STRENGTHS" items={sim.teamBStrengths} color={T.green} sign="+" />
       <Q title="TEAM BLUE WEAKNESSES" items={sim.teamBWeaknesses} color={T.red} sign="−" />
     </div>
@@ -319,6 +321,8 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
       <SectionTabs section={section} onSection={setSection} />
       <div role="tabpanel" style={{ padding: "12px 16px 16px", borderTop: `1px solid ${T.border}` }}>
         {section === "final" && <>
+        <div className="pg-final-grid">
+          <div style={{ display: "grid", gap: 12, alignContent: "start", minWidth: 0 }}>
         {/* B. MVP feature card with a real explanation (narrative or deterministic fallback) */}
         {sim.mvp && (
           <div style={{ display: "flex", alignItems: "center", gap: 16, padding: 16, borderRadius: 12, background: "linear-gradient(120deg, #2b230a 0%, #1a1610 100%)", border: `1px solid ${T.gold}`, flexWrap: "wrap" }}>
@@ -345,48 +349,10 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
         )}
 
         {/* V3 context chips stay on Final */}
-        </>}
-
-        {section === "story" && <>
-        {/* C. Game summary (deterministic recap instantly; enhanced recap replaces it) */}
-        {sim.summary && (
-          <div style={{ marginTop: 14 }}>
-            <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 2, color: won ? T.green : T.red }}>
-              WHY YOU {won ? "WON" : "LOST"}
-            </div>
-            <p style={{ fontSize: 13.5, lineHeight: 1.65, margin: "6px 0 0" }}>{sim.summary}</p>
+            <KeyMoments moments={sim.v3?.keyMoments} />
+            <PeriodScores periods={sim.v3?.periodScores} />
           </div>
-        )}
-        {narrativeStatus === "pending" && (
-          <div aria-live="polite" style={{ marginTop: 10, fontSize: 12, color: T.textDim, display: "flex", alignItems: "center", gap: 8 }}>
-            <span className="sim-spinner" style={{ width: 14, height: 14, borderWidth: 2 }} aria-hidden="true" />
-            Preparing enhanced game analysis…
-          </div>
-        )}
-        {narrativeStatus === "failed" && (
-          <div style={{ marginTop: 10, padding: "8px 12px", borderRadius: 8, background: T.bgCardHover, border: `1px solid ${T.border}`, fontSize: 12, color: T.textDim, display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
-            <span>Enhanced game analysis is temporarily unavailable. {persisted ? "Your result is saved." : "Your result is shown from the game engine."}</span>
-            {onRetryNarrative && (
-              <button onClick={onRetryNarrative} style={{ padding: "5px 12px", fontSize: 11.5, fontWeight: 800, borderRadius: 7, border: `1px solid ${T.goldBorder}`, background: "transparent", color: T.gold, cursor: "pointer" }}>
-                Try Enhanced Recap Again
-              </button>
-            )}
-          </div>
-        )}
-
-        {/* D. Turning point — 2-3 sentences from the computed result */}
-        {turning?.text && (
-          <div style={{ marginTop: 14, padding: 12, borderLeft: `3px solid ${T.orange}`, background: T.bgCardHover, borderRadius: "0 9px 9px 0" }}>
-            <div style={{ fontSize: 10, letterSpacing: 2, color: T.orange, fontWeight: 800 }}>
-              ⚡ TURNING POINT{turning.game ? ` — ${turning.game}` : ""}{turning.quarter ? ` · ${turning.quarter}` : ""}
-            </div>
-            <p style={{ fontSize: 13, margin: "6px 0 0", lineHeight: 1.6 }}>{turning.text}</p>
-          </div>
-        )}
-
-        </>}
-
-        {section === "final" && <>
+          <div style={{ display: "grid", gap: 12, alignContent: "start", minWidth: 0 }}>
         {/* V3: possession context + expectation honesty */}
         {sim.v3 && (
           <div style={{ marginTop: 12, padding: "10px 14px", borderRadius: 10, background: T.bgCardHover, border: `1px solid ${T.border}`, fontSize: 12, color: T.textDim, display: "flex", gap: 14, flexWrap: "wrap" }}>
@@ -407,6 +373,21 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
 
         {/* E. Team-level matchup breakdown */}
         <BreakdownBars sim={sim} />
+          </div>
+        </div>
+        {/* H/I. Strengths & weaknesses, with the chemistry dial between them */}
+        <AnalysisQuad sim={sim} center={
+          (team || opp) ? (
+            <div style={{ flex: "0 1 200px", display: "flex", gap: 14, justifyContent: "center", alignItems: "center",
+              padding: 12, borderRadius: 10, background: T.bgCardHover, border: `1px solid ${T.border}` }}>
+              {team && <ChemistryDial team={team} side="gold" label="GOLD CHEMISTRY" size={92} />}
+              {opp && <ChemistryDial team={opp} side="blue" label="BLUE CHEMISTRY" size={92} />}
+            </div>
+          ) : null
+        } />
+
+        {/* K. Feedback (preview: the structured Wave 1 form) */}
+        {feedbackCtx && <Feedback ctx={feedbackCtx} />}
         </>}
 
         {section === "box" && <>
@@ -449,7 +430,44 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
             ))}
           </div>
         )}
+        </>}
 
+        {section === "story" && <>
+        {/* C. Game summary (deterministic recap instantly; enhanced recap replaces it) */}
+        {sim.summary && (
+          <div style={{ marginTop: 14 }}>
+            <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 2, color: won ? T.green : T.red }}>
+              WHY YOU {won ? "WON" : "LOST"}
+            </div>
+            <p style={{ fontSize: 13.5, lineHeight: 1.65, margin: "6px 0 0" }}>{sim.summary}</p>
+          </div>
+        )}
+        {narrativeStatus === "pending" && (
+          <div aria-live="polite" style={{ marginTop: 10, fontSize: 12, color: T.textDim, display: "flex", alignItems: "center", gap: 8 }}>
+            <span className="sim-spinner" style={{ width: 14, height: 14, borderWidth: 2 }} aria-hidden="true" />
+            Preparing enhanced game analysis…
+          </div>
+        )}
+        {narrativeStatus === "failed" && (
+          <div style={{ marginTop: 10, padding: "8px 12px", borderRadius: 8, background: T.bgCardHover, border: `1px solid ${T.border}`, fontSize: 12, color: T.textDim, display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+            <span>Enhanced game analysis is temporarily unavailable. {persisted ? "Your result is saved." : "Your result is shown from the game engine."}</span>
+            {onRetryNarrative && (
+              <button onClick={onRetryNarrative} style={{ padding: "5px 12px", fontSize: 11.5, fontWeight: 800, borderRadius: 7, border: `1px solid ${T.goldBorder}`, background: "transparent", color: T.gold, cursor: "pointer" }}>
+                Try Enhanced Recap Again
+              </button>
+            )}
+          </div>
+        )}
+
+        {/* D. Turning point — 2-3 sentences from the computed result */}
+        {turning?.text && (
+          <div style={{ marginTop: 14, padding: 12, borderLeft: `3px solid ${T.orange}`, background: T.bgCardHover, borderRadius: "0 9px 9px 0" }}>
+            <div style={{ fontSize: 10, letterSpacing: 2, color: T.orange, fontWeight: 800 }}>
+              ⚡ TURNING POINT{turning.game ? ` — ${turning.game}` : ""}{turning.quarter ? ` · ${turning.quarter}` : ""}
+            </div>
+            <p style={{ fontSize: 13, margin: "6px 0 0", lineHeight: 1.6 }}>{turning.text}</p>
+          </div>
+        )}
         </>}
 
         {section === "coaching" && <>
@@ -509,22 +527,6 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
 
         {/* Pre-game engine edges */}
         <EdgeBars edges={sim.edges} />
-        </>}
-
-        {section === "final" && <>
-        {/* H/I. Strengths & weaknesses quadrants */}
-        <AnalysisQuad sim={sim} />
-
-        {/* J. Chemistry dials */}
-        {(team || opp) && (
-          <div style={{ ...card, padding: 16, marginTop: 12, display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
-            <ChemDial label="GOLD CHEMISTRY" team={team} color={T.gold} />
-            <ChemDial label="BLUE CHEMISTRY" team={opp} color={T.blue} />
-          </div>
-        )}
-
-        {/* K. Feedback (preview: the structured Wave 1 form) */}
-        {feedbackCtx && <Feedback ctx={feedbackCtx} />}
         </>}
 
         {/* L. Actions — never a dead end, visible from every section */}

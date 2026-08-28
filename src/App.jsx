@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { PLAYERS, POSITIONS, findCard } from "./players.js";
 import { getWave1Scenario } from "./wave1Scenarios.js";
 import { displayOVR, analyzeBalance, teamRating } from "./rating.js";
-import { T, card } from "./theme.js";
+import { T, card, R, S, FONT } from "./theme.js";
 import { genPlayer, genRoster, genOpponent } from "./draft.js";
 import { utcDateKey, dailySeed, dailyRoll1, applyDailyRoll, dailyOpponent } from "./dailyChallenge.js";
 import { runGame, requestNarrative } from "./gameClient.js";
@@ -27,11 +27,33 @@ import ManualPicker from "./components/ManualPicker.jsx";
 import CoachSelect from "./components/CoachSelect.jsx";
 import PlayerImage from "./components/PlayerImage.jsx";
 import StageWizard from "./components/StageWizard.jsx";
+import RosterGrid from "./components/RosterGrid.jsx";
+import { DailyClashCard, BallIqCard, MatchupGrid, FeatureStrip } from "./components/PlayPanels.jsx";
 import { EraStage, VsRow } from "./components/StageViews.jsx";
 import { DIFFICULTIES, DEFAULT_DIFFICULTY } from "./v3/difficulty.js";
 import { TeamShell, EmptySlot, FilledSlot, LineupList } from "./components/TeamSlots.jsx";
-import { teamFit } from "./chemistryView.js";
+import { teamFit, chemistryScore, chemistryLabel } from "./chemistryView.js";
+import { v3meta } from "./v3meta.js";
 import { shortBuild, watchForNewBuild } from "./buildStamp.js";
+
+// The qualitative pre-sim preview, in the concept's icon grid. One fetch of the
+// server's edges; placeholder until both fives exist. No numbers, no winner.
+function EdgePreview({ gold, blue, coachGoldId, coachBlueId, eraStyleId }) {
+  const ready = gold?.filter(Boolean).length === 5 && blue?.filter(Boolean).length === 5;
+  const [data, setData] = useState(null);
+  const goldIds = (gold ?? []).filter(Boolean).map((p) => p.id);
+  const blueIds = (blue ?? []).filter(Boolean).map((p) => p.id);
+  useEffect(() => {
+    let alive = true;
+    setData(null);
+    if (!ready) return;
+    v3meta({ goldIds, blueIds, coachGoldId, coachBlueId, eraStyleId })
+      .then((j) => { if (alive && j) setData(j); });
+    return () => { alive = false; };
+  }, [ready, JSON.stringify(goldIds), JSON.stringify(blueIds), coachGoldId, coachBlueId, eraStyleId]); // eslint-disable-line
+  if (!ready) return <MatchupGrid placeholder />;
+  return <MatchupGrid edges={data?.edges} keyClash={data?.keyClash} loading={!data} />;
+}
 
 // Five-portrait roster summary used above the coach panels (stage 2).
 function PlayerImageMini({ p, side }) {
@@ -70,6 +92,7 @@ const GAME_MODES = [
   ["Win82", "WIN 82", "Survive the season."],
   ["Tournament", "TOURNAMENT", "Four rounds to a title."],
 ];
+const MODE_ICON = { Single: "🏀", Best7: "🏆", Win82: "🗓️", Tournament: "🏟️" };
 const MODE_TO_ANALYTICS = { Win82: "82", Single: "single", Best7: "best7", Tournament: "tournament", Daily: "daily", Challenge: "challenge" };
 
 // ── App ──────────────────────────────────────────────────────────────────────
@@ -80,7 +103,7 @@ export default function App() {
   const [playStage, setPlayStage] = useState("ROSTERS"); // ROSTERS | COACHES | ERA | READY (v3 wizard)
   const [eraLocked, setEraLocked] = useState(false);      // the era step is a confirmation, not a default
   const [difficulty, setDifficulty] = useState(DEFAULT_DIFFICULTY); // opponent pool for Win82/Tournament
-  const [buildMethod, setBuildMethod] = useState("rolls"); // rolls (Chaos Draft) | manual
+  const [buildMethod, setBuildMethod] = useState("manual"); // manual (concept default) | rolls (Chaos Draft)
   const [yz, setYz] = useState(null);
   const [ballIQ, setBallIQ] = useState(false);
   const [team, setTeam] = useState(null);              // completed gold five
@@ -768,24 +791,39 @@ export default function App() {
           {activeScenario.instruction}
         </div>
       )}
-      {/* Compact hero */}
+      {/* Hero row — Daily card · title + mode · Ball IQ card */}
       {!team && !result && (
-        <div style={{ textAlign: "center", padding: "18px 12px 6px" }}>
-          <div style={{ fontSize: 11, letterSpacing: 5, color: T.gold, fontWeight: 800 }}>BUILD YOUR FIVE</div>
-          <h1 style={{ margin: "4px 0 2px", fontSize: 30, fontWeight: 900, letterSpacing: 1, fontFamily: "Georgia, 'Times New Roman', serif" }}>
-            CLASH ACROSS ERAS
-          </h1>
-          <div style={{ fontSize: 13, color: T.textDim }}>Draft legends. Build chemistry. Run the sim.</div>
+        <div className="hero-row">
+          {!isDaily && !isChallenge
+            ? <DailyClashCard done={dailyDone} onPlay={() => handleNav("Daily")} />
+            : <div />}
+          <div style={{ textAlign: "center", padding: "10px 6px 0" }}>
+            <div style={{ fontSize: 11, letterSpacing: 5, color: T.gold, fontWeight: 800 }}>BUILD YOUR FIVE</div>
+            <h1 style={{ margin: "4px 0 2px", fontSize: 32, fontWeight: 900, letterSpacing: 1, fontFamily: FONT.display }}>
+              CLASH ACROSS ERAS
+            </h1>
+            <div style={{ fontSize: 13, color: T.textDim }}>Draft legends. Build chemistry. Run the sim.</div>
+          </div>
+          {!isDaily && !isChallenge
+            ? <BallIqCard on={ballIQ} onChange={setBallIQ} />
+            : <div />}
         </div>
       )}
 
-      {/* Current mode — selected from the Play menu in the header */}
+      {/* Mode tabs (the Play menu in the header selects the same modes) */}
       {!isChallenge && !isDaily && !result && (
-        <div style={{ display: "flex", gap: 8, justifyContent: "center", alignItems: "center", padding: "10px 0 2px", fontSize: 12 }}>
-          <span style={{ padding: "6px 14px", borderRadius: 16, border: `1px solid ${T.goldBorder}`, background: T.goldSoft, color: T.gold, fontWeight: 900, letterSpacing: 1 }}>
-            {GAME_MODES.find(([id]) => id === gameMode)?.[1]}
-          </span>
-          <span style={{ color: T.textDim }}>{GAME_MODES.find(([id]) => id === gameMode)?.[2]} · change modes in the <b style={{ color: T.text }}>Play</b> menu</span>
+        <div role="tablist" aria-label="Game mode" style={{ display: "flex", gap: 8, justifyContent: "center", flexWrap: "wrap", padding: "12px 0 2px" }}>
+          {GAME_MODES.map(([id, label, sub]) => (
+            <button key={id} role="tab" aria-selected={gameMode === id} aria-label={`${label} — ${sub}`}
+              onClick={() => { if (gameMode !== id) { resetPlay(); setGameMode(id); } }} style={{
+                display: "flex", alignItems: "center", gap: 8, padding: "10px 18px", borderRadius: R.md, cursor: "pointer", minHeight: 46,
+                border: `1px solid ${gameMode === id ? T.gold : T.border}`,
+                background: gameMode === id ? T.goldSoft : "rgba(0,0,0,0.3)",
+                color: gameMode === id ? T.gold : T.textDim, fontWeight: 900, fontSize: 12.5, letterSpacing: 1,
+              }}>
+              <span aria-hidden="true">{MODE_ICON[id]}</span>{label}
+            </button>
+          ))}
         </div>
       )}
 
@@ -839,7 +877,9 @@ export default function App() {
           {(!v3Steps || playStage === "ROSTERS") && (
           <div style={{ display: "flex", gap: 14, alignItems: "flex-start", flexWrap: "wrap" }}>
             {/* TEAM GOLD */}
-            <TeamShell team="gold" title="TEAM GOLD" count={goldCount}>
+            <TeamShell team="gold" title="TEAM GOLD" count={goldCount}
+              chemistry={chemistryScore(team ?? (buildMethod === "manual" ? manual : null))}
+              chemistryLabel={team ? chemistryLabel(chemistryScore(team)) : null}>
               {isChallenge && !team && !yz && buildMethod === "rolls" && (
                 <div style={{ textAlign: "center", margin: "0 0 10px", fontSize: 13, fontWeight: 900, letterSpacing: 2 }}>BUILD YOUR TEAM ↓</div>
               )}
@@ -869,12 +909,8 @@ export default function App() {
                     </div>
                   )}
                   {buildMethod === "manual" && !isDaily ? (
-                    <div style={{ display: "grid", gap: 8 }}>
-                      {POSITIONS.map((pos, i) => manual[i]
-                        ? <FilledSlot key={pos} p={manual[i]} pos={pos} team="gold" hideStats={ballIQ} flash={flashSlot === i}
-                            onSwap={() => setPicker({ slot: i, target: "gold-manual" })} />
-                        : <EmptySlot key={pos} pos={pos} team="gold" onAdd={() => setPicker({ slot: i, target: "gold-manual" })} />)}
-                    </div>
+                    <RosterGrid five={manual} team="gold" hideStats={ballIQ} flashSlot={flashSlot}
+                      onSlot={(i) => setPicker({ slot: i, target: "gold-manual" })} />
                   ) : (
                     <RollBuilder yz={yz} ballIQ={ballIQ} isDaily={isDaily}
                       onStart={() => startBuild(isDaily)} onKeep={toggleKeep} onRespin={setRespin} onRoll={doRoll} />
@@ -884,13 +920,8 @@ export default function App() {
               )}
               {team && (
                 <>
-                  <div style={{ display: "grid", gap: 8 }}>
-                    {POSITIONS.map((pos, i) => (
-                      <FilledSlot key={pos} p={team[i]} pos={pos} team="gold" hideStats={false}
-                        fit={teamFit(team, i)} flash={flashSlot === i}
-                        onSwap={!loading && !isDaily ? () => setPicker({ slot: i, target: "gold-swap" }) : null} />
-                    ))}
-                  </div>
+                  <RosterGrid five={team} team="gold" flashSlot={flashSlot} fitFor={(i) => teamFit(team, i)}
+                    onSlot={!loading && !isDaily ? (i) => setPicker({ slot: i, target: "gold-swap" }) : null} />
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 10, fontSize: 12, color: T.textDim }}>
                     <span style={{ display: "flex", gap: 6 }}>
                       {!isDaily && (
@@ -912,7 +943,7 @@ export default function App() {
             </TeamShell>
 
             {/* CENTER: VS + steps + era + preview + CTA */}
-            <div style={{ flex: "0 1 340px", minWidth: 260, display: "flex", flexDirection: "column", gap: 12, alignSelf: "stretch", justifyContent: "center", margin: "0 auto" }}>
+            <div style={{ flex: "0 1 310px", minWidth: 250, display: "flex", flexDirection: "column", gap: 12, alignSelf: "stretch", justifyContent: "center", margin: "0 auto" }}>
               <VsDivider active={!!team && !!opponent} />
               {/* Daily coach + era step. Appears once the seeded roster is
                   locked, because hiring a coach for a lineup you have not
@@ -931,18 +962,21 @@ export default function App() {
                   Hire one of today's three coaches to unlock the sim.
                 </div>
               )}
+
+              {v3Steps
+                ? <EdgePreview gold={team} blue={blueBuildable ? opponent : null} coachGoldId={coachGold?.id} coachBlueId={coachBlue?.id} eraStyleId={eraStyle} />
+                : <MatchupPreview gold={team} blue={blueBuildable ? opponent : null} v3={null} />}
+              {team && blueBuildable && !opponent && (
+                <div style={{ textAlign: "center", fontSize: 12, color: T.textDim, padding: "0 10px" }}>
+                  Build <b style={{ color: T.blue }}>Team Blue</b> — Manual or Random — to continue.
+                </div>
+              )}
               {v3Steps && rosterDone && (
                 <button onClick={() => setPlayStage("COACHES")} style={{
                   width: "100%", padding: "14px 18px", fontSize: 14, fontWeight: 900, letterSpacing: 0.5,
                   border: "none", borderRadius: 12, cursor: "pointer", minHeight: 50,
                   background: T.gold, color: "#111", boxShadow: "0 4px 22px rgba(253,185,39,0.2)",
                 }}>Continue to Coaches →</button>
-              )}
-              <MatchupPreview gold={team} blue={blueBuildable ? opponent : null} v3={v3Steps ? { enabled: true, coachGoldId: coachGold?.id, coachBlueId: coachBlue?.id, eraStyleId: eraStyle } : null} />
-              {team && blueBuildable && !opponent && (
-                <div style={{ textAlign: "center", fontSize: 12, color: T.textDim, padding: "0 10px" }}>
-                  Build <b style={{ color: T.blue }}>Team Blue</b> — Manual or Random — to unlock the sim.
-                </div>
               )}
               {!v3Steps && team && (activeMode !== "Single" && activeMode !== "Best7" && activeMode !== "Daily" && activeMode !== "Challenge" ? true : !!opponent) && coachesReady && dailyChoiceReady && !result && !loading && (
                 <div className="sticky-sim">
@@ -962,7 +996,9 @@ export default function App() {
             </div>
 
             {/* TEAM BLUE */}
-            <TeamShell team="blue" title={isChallenge ? `TEAM BLUE — ${challenge.challengerName || "RIVAL"}` : "TEAM BLUE"} count={opponent ? 5 : null}>
+            <TeamShell team="blue" title={isChallenge ? `TEAM BLUE — ${challenge.challengerName || "RIVAL"}` : "TEAM BLUE"} count={opponent ? 5 : null}
+              chemistry={chemistryScore(opponent ?? (blueBuildable ? blueManual : null))}
+              chemistryLabel={opponent ? chemistryLabel(chemistryScore(opponent)) : null}>
               {isChallenge && (
                 <div style={{ marginBottom: 10, fontSize: 12.5, color: T.text }}>
                   <b style={{ color: T.blue }}>🎯 YOU'VE BEEN CHALLENGED.</b> {challenge.challengerName || "A rival"} thinks this five beats anything you build{challenge.record ? ` — they went ${challenge.record} with it` : ""}.
@@ -994,12 +1030,8 @@ export default function App() {
               )}
               {opponent ? (
                 <>
-                  <div style={{ display: "grid", gap: 8 }}>
-                    {POSITIONS.map((pos, i) => (
-                      <FilledSlot key={pos} p={opponent[i]} pos={pos} team="blue" fit={teamFit(opponent, i)}
-                        onSwap={!isChallenge && !isDaily && !loading ? () => setPicker({ slot: i, target: "blue-swap" }) : null} />
-                    ))}
-                  </div>
+                  <RosterGrid five={opponent} team="blue" fitFor={(i) => teamFit(opponent, i)}
+                    onSlot={!isChallenge && !isDaily && !loading ? (i) => setPicker({ slot: i, target: "blue-swap" }) : null} />
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 10, fontSize: 12, color: T.textDim }}>
                     {!isChallenge && !isDaily ? (
                       <span style={{ display: "flex", gap: 6 }}>
@@ -1019,19 +1051,9 @@ export default function App() {
                   </div>
                   <ChemistryMeter team={opponent} side="blue" compact />
                 </>
-              ) : blueBuildable && blueManual.some(Boolean) ? (
-                <div style={{ display: "grid", gap: 8 }}>
-                  {POSITIONS.map((pos, i) => blueManual[i]
-                    ? <FilledSlot key={pos} p={blueManual[i]} pos={pos} team="blue" flash={flashSlot === i}
-                        onSwap={() => setPicker({ slot: i, target: "blue-manual" })} />
-                    : <EmptySlot key={pos} pos={pos} team="blue" onAdd={() => setPicker({ slot: i, target: "blue-manual" })} />)}
-                </div>
               ) : blueBuildable ? (
-                <div style={{ display: "grid", gap: 8 }}>
-                  {POSITIONS.map((pos, i) => (
-                    <EmptySlot key={pos} pos={pos} team="blue" onAdd={() => setPicker({ slot: i, target: "blue-manual" })} />
-                  ))}
-                </div>
+                <RosterGrid five={blueManual} team="blue" flashSlot={flashSlot}
+                  onSlot={(i) => setPicker({ slot: i, target: "blue-manual" })} />
               ) : (
                 <div>
                   <LineupList team={[]} side="blue" />
@@ -1059,7 +1081,7 @@ export default function App() {
               </div>
               <div style={{ flex: "0 1 320px", minWidth: 260, display: "flex", flexDirection: "column", gap: 12, alignSelf: "stretch", justifyContent: "center", margin: "0 auto" }}>
                 <VsDivider active />
-                <MatchupPreview gold={team} blue={blueBuildable ? opponent : null} v3={{ enabled: true, coachGoldId: coachGold?.id, coachBlueId: coachBlue?.id, eraStyleId: eraStyle }} />
+                <EdgePreview gold={team} blue={blueBuildable ? opponent : null} coachGoldId={coachGold?.id} coachBlueId={coachBlue?.id} eraStyleId={eraStyle} />
                 <button onClick={() => setPlayStage("ERA")} disabled={!coachesReady} style={{
                   width: "100%", padding: "14px 18px", fontSize: 14, fontWeight: 900, letterSpacing: 0.5,
                   border: "none", borderRadius: 12, cursor: coachesReady ? "pointer" : "default", minHeight: 50,
@@ -1123,7 +1145,7 @@ export default function App() {
                 <button onClick={() => setPlayStage("ROSTERS")} style={{ marginLeft: 6, background: "none", border: `1px solid ${T.border}`, color: T.textDim, borderRadius: 7, padding: "3px 10px", cursor: "pointer", fontSize: 11 }}>Edit rosters</button>
               </div>
               <div style={{ maxWidth: 420, margin: "0 auto", display: "flex", flexDirection: "column", gap: 12 }}>
-                <MatchupPreview gold={team} blue={blueBuildable ? opponent : null} v3={{ enabled: true, coachGoldId: coachGold?.id, coachBlueId: coachBlue?.id, eraStyleId: eraStyle }} />
+                <EdgePreview gold={team} blue={blueBuildable ? opponent : null} coachGoldId={coachGold?.id} coachBlueId={coachBlue?.id} eraStyleId={eraStyle} />
                 <div className="sticky-sim">
                   <button onClick={runTheSim} style={{
                     width: "100%", padding: "16px 20px", fontSize: 15, fontWeight: 900, letterSpacing: 1,
@@ -1141,20 +1163,8 @@ export default function App() {
             </div>
           )}
 
-          {/* Ball IQ + Daily side controls */}
-          {!team && !result && (
-            <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap", marginTop: 16 }}>
-              <label style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 12.5, color: T.textDim, cursor: "pointer", padding: "10px 14px", borderRadius: 10, border: `1px solid ${T.border}`, background: "rgba(0,0,0,0.25)" }}>
-                <input type="checkbox" checked={ballIQ} onChange={(e) => setBallIQ(e.target.checked)} />
-                <span>🧠 <b style={{ color: T.text }}>BALL IQ MODE</b> — stats hidden during draft. Test your basketball IQ.</span>
-              </label>
-              {!isDaily && (
-                <button onClick={() => handleNav("Daily")} style={{ padding: "10px 14px", borderRadius: 10, border: `1px solid ${T.goldBorder}`, background: "rgba(253,185,39,0.07)", color: T.gold, cursor: "pointer", fontSize: 12.5, fontWeight: 800 }}>
-                  🏆 DAILY CLASH — {dailyDone ? "done ✓" : "today's challenge is live →"}
-                </button>
-              )}
-            </div>
-          )}
+          {/* Feature strip — real product facts, shown on the empty builder */}
+          {!team && !result && <FeatureStrip />}
 
         </>
       )}

@@ -24,6 +24,8 @@ import { resolveCoach, resolveEra, V3_VERSIONS } from "../../src/v3/engine.js";
 import { expectedWinPct, matchupPreviewV3, classifyOutcome, edgeBand } from "../../src/v3/analysis.js";
 import { versionOf } from "../../src/versions.js";
 import { previewEvent } from "./previewTelemetry.js";
+import { deriveKeyMoments } from "./previewKeyMoments.js";
+import { PLAYERS } from "../../src/players.js";
 
 /** Result-id prefix for preview results — production ids never carry it. */
 export const PREVIEW_RESULT_ID_PREFIX = "pv_";
@@ -46,6 +48,8 @@ export const previewCandidateIdentity = () => ({
   possessionEngineVersion: versionOf("possessionEngineVersion"),
   fallbackEngine: `production engineVersion ${versionOf("engineVersion")}`,
 });
+
+const CARD_BY_ID = new Map(PLAYERS.map((p) => [p.id, p]));
 
 const boxLine = (p) => ({ id: p.cardId ?? p.id, name: p.name, pos: p.position, pts: p.pts ?? 0,
   fgm: p.fgm ?? 0, fga: p.fga ?? 0, tpm: p.tpm ?? 0, tpa: p.tpa ?? 0, ftm: p.ftm ?? 0, fta: p.fta ?? 0,
@@ -87,11 +91,15 @@ export const computeResultPreview = (mode, gold, blue, opts, seed) => {
   const coachB = resolveCoach(opts.coachBlueId ?? "neutral");
   const era = resolveEra(opts.eraStyleId);
   const t0 = Date.now();
+  // includeLedger is a RECORDING flag: it changes what the engine reports, not
+  // what it simulates (same seed → same fingerprint, asserted in tests). The
+  // ledger is used to derive key moments and is then discarded — the stored
+  // record stays small and carries only the moments.
   const g = runPossessionGame(buildPossessionInput({
     goldIds: gold.map((p) => p.id), blueIds: blue.map((p) => p.id),
     coachGoldId: coachG.id, coachBlueId: coachB.id,
     eraStyleId: era.id, simulationSeed: seed >>> 0,
-  }), { includeLedger: false, assertInvariants: false });
+  }), { includeLedger: true, assertInvariants: false });
   if (g.internalError) {
     const err = new Error(`possession engine reported an internal error: ${String(g.internalError).slice(0, 120)}`);
     err.code = "PREVIEW_ENGINE_ERROR";
@@ -149,6 +157,10 @@ export const computeResultPreview = (mode, gold, blue, opts, seed) => {
       expectedBand: edgeBand(exp),
       outcomeClass: classifyOutcome(g.winner === "Gold" ? exp : 1 - exp),
       fingerprint: g.fingerprint,
+      // 4 = REGULATION periods, so period 5 is labeled OT (g.periods is the
+      // total played, which would mislabel overtime as "Q5").
+      keyMoments: deriveKeyMoments(g.possessionLedger, CARD_BY_ID, 4),
+      periodScores: g.periodScores ?? null,
       fullBox: { gold: goldLines, blue: blueLines },
       teamTotals: { gold: g.gold.totals, blue: g.blue.totals },
       preview: pre,

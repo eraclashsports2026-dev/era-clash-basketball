@@ -74,11 +74,16 @@ test("J1+J2: manual Gold, Blue stays empty until user chooses, random Blue, sim 
   await expect(page.getByRole("button", { name: /RUN THE SIM/ })).toHaveCount(0);
   await expect(page.getByRole("tab", { name: /Random Team/ })).toBeVisible();
   await randomBlue(page);
-  // card containment: every filled Gold card stays inside the Gold panel
-  const panel = await page.getByRole("region", { name: "TEAM GOLD" }).boundingBox();
-  for (const name of ["Magic Johnson", "Larry Bird"]) {
-    const card = await page.getByText(name).first().boundingBox();
-    expect(card.x + card.width, `${name} overflows`).toBeLessThanOrEqual(panel.x + panel.width + 1);
+  // card containment: every Gold roster card stays inside the Gold panel
+  const goldPanel = page.getByRole("region", { name: "TEAM GOLD" });
+  const panel = await goldPanel.boundingBox();
+  const cards = goldPanel.getByRole("listitem");
+  const n = await cards.count();
+  expect(n, "gold roster renders five cards").toBe(5);
+  for (let i = 0; i < n; i++) {
+    const card = await cards.nth(i).boundingBox();
+    expect(card.x + card.width, `card ${i} overflows the panel`).toBeLessThanOrEqual(panel.x + panel.width + 1);
+    expect(card.x, `card ${i} starts left of the panel`).toBeGreaterThanOrEqual(panel.x - 1);
   }
   await pickCoachesIfV3(page);
   await expect(page.getByRole("button", { name: /RUN THE SIM/ })).toBeVisible();
@@ -95,11 +100,11 @@ test("J1b: Random Gold + Random Blue plays a full game", async ({ page }) => {
   await pickCoachesIfV3(page);
   await page.getByRole("button", { name: /RUN THE SIM/ }).click();
   await expectCorePostgame(page);
-  // New Game returns to an empty builder: Gold back on Chaos Draft, Blue empty
+  // New Game returns to an empty builder: both panels back to empty roster
+  // cards (Manual Draft is the default view), Chaos Draft still one click away
   await page.getByRole("button", { name: /New Game/ }).click();
   await expect(page.getByRole("tab", { name: /Chaos Draft/ })).toBeVisible();
-  await expect(page.getByRole("button", { name: /Start Drafting/ })).toBeVisible();
-  await expect(page.getByText("Add Point Guard")).toHaveCount(1); // Blue panel empty again
+  await expect(page.getByRole("button", { name: "Add Point Guard" })).toHaveCount(2);
 });
 
 test("J3: rapid double-click creates exactly one core result", async ({ page }) => {
@@ -209,10 +214,10 @@ test("J10: per-team reset buttons free any lineup state without touching the oth
   await page.goto("/");
   // Gold: manual partial → Reset clears it
   await page.getByRole("tab", { name: /Manual Draft/ }).first().click();
-  await page.getByRole("button", { name: "Add Point Guard", exact: false }).first().click();
+  await page.getByRole("button", { name: "Add Point Guard" }).first().click();
   await page.getByRole("dialog").getByRole("button").nth(2).click();
   await page.getByRole("button", { name: "Reset Team Gold" }).click();
-  await expect(page.getByRole("button", { name: "Add Point Guard", exact: false }).first()).toBeVisible();
+  await expect(page.getByRole("button", { name: "Add Point Guard" }).first()).toBeVisible();
   // Gold: random complete → Reset Team returns to build methods, Blue untouched
   await page.getByRole("button", { name: /Random Team/ }).first().click();
   await page.getByRole("tab", { name: /Random Team/ }).click(); // blue random
@@ -226,7 +231,7 @@ test("J10: per-team reset buttons free any lineup state without touching the oth
   // Blue: Reset clears the built five
   await page.getByRole("button", { name: "Reset Team Blue" }).click();
   await expect(page.getByRole("tab", { name: /Random Team/ })).toBeVisible(); // blue methods return
-  await expect(page.getByText("Add Point Guard")).toHaveCount(2); // gold (manual mode) + blue both empty
+  await expect(page.getByRole("button", { name: "Add Point Guard" })).toHaveCount(2); // both panels empty
 });
 
 test("J10b: one-click Re-roll refreshes a random five on BOTH sides and invalidates stale coach picks", async ({ page }) => {
