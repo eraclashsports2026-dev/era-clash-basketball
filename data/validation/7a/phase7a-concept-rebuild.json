@@ -1,0 +1,44 @@
+{
+  "artifact": "phase7a-concept-rebuild",
+  "generatedBy": "phase 7A pass 2",
+  "data": {
+    "pass": 2,
+    "screensRebuilt": [
+      "rosters (empty + full)",
+      "coaches",
+      "ready",
+      "postgame Final"
+    ],
+    "newComponents": [
+      "RosterGrid.jsx",
+      "PlayPanels.jsx (DailyClashCard, BallIqCard, MatchupGrid, FeatureStrip)",
+      "PostgamePanels.jsx (ChemistryDial, KeyMoments, PeriodScores)",
+      "previewKeyMoments.js (API layer)"
+    ],
+    "keyMoments": {
+      "source": "possession ledger via includeLedger",
+      "derivations": [
+        "longest run of consecutive scoring possessions",
+        "last lead change",
+        "highest-value made shot of the final period",
+        "most-punished severe mismatch"
+      ],
+      "labeling": "period only (Q1-Q4/OT) \u2014 no fabricated game clock",
+      "ledgerFlagSafety": "recording-only: identical finalScore, fingerprint and rngSteps across 5 seeds with the flag on vs off",
+      "storage": "ledger discarded; only moments + periodScores persist (record ~8KB)"
+    },
+    "defectsFoundAndFixed": [
+      "fitColor(fit, T) called with one argument \u2192 roster grid crashed (T undefined)",
+      "mode tabs' title attribute replaced their accessible names",
+      "overtime key moments labeled Q5 instead of OT (g.periods is total, not regulation)",
+      "1200-game overtime search test flaked at the 5s default timeout",
+      "postgame Final columns were unbalanced (BY PERIOD moved to the right column)"
+    ],
+    "gates": {
+      "vitest": "2019/2019",
+      "playwrightJourneys": "25/25",
+      "phase7aUiSpec": "6/6",
+      "build": "clean"
+    }
+  }
+}

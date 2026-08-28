@@ -1,12 +1,9 @@
 # Phase 7A — design-reference map
 
-**Inspectable reference:** the canonical concept sheet (ERAclashUI5 board: panels
-A–E) attached to the phase brief. The five auxiliary files named by the brief
-(`ERACLashbasketballUImk3.png`, `ERAClashUI7.png`, `EraCLashUI6.png`,
-`ERACLASHUI2.png`, `ERACLASHUI.png`) do not exist on this machine; their
-screens (coach detail, loading, staged Postgame, Postgame density, empty
-rosters) were built from the canonical sheet plus the brief's written
-specifications for each. Recorded as an intentional limitation.
+**References used.** Pass 1 worked from the canonical composite board
+(panels A–E). Pass 2 added three detailed screens supplied later — the coach
+stage, the empty-roster screen, and the full postgame — plus two further
+composite boards. Those three drove the visual rebuild recorded below.
 
 | Screen state | Primary reference | Implementation | Intentional differences / omissions |
 |---|---|---|---|
@@ -20,3 +17,33 @@ specifications for each. Recorded as an intentional limitation.
 | Ready to run | Panel E | READY block | Edit-stage controls added (back navigation requirement) |
 | Simulation loading | brief (UI7/UI6 spec) | `SimulationLoading.jsx` | Phase checklist bound to REAL request lifecycle; no fake percentages; tip is UI copy |
 | Final / Postgame | brief (UI7/UI6/UI2 spec) | `Postgame.jsx` tabs | Sample scores/MVPs never copied; every value from the stored result; key moments limited to the real turning point + engine adjustments (no invented timeline) |
+
+
+## Pass 2 — rebuild against the detailed screens
+
+| Concept element | Built as | Data behind it |
+|---|---|---|
+| Five-across roster cards with position headers, portrait, name split, OVR | `RosterGrid.jsx` (5→3→2→1 columns) | real cards, `displayOVR`, per-slot fit |
+| Chemistry in the panel header | `TeamShell` chemistry props | real `chemistryScore` / label |
+| Daily Clash card with countdown | `PlayPanels.DailyClashCard` | real time to the next UTC rollover |
+| Ball IQ toggle switch | `PlayPanels.BallIqCard` | existing Ball IQ feature |
+| Mode tabs on the play screen | App mode tablist (+ header Play menu) | real `GAME_MODES` |
+| Matchup preview as an icon grid | `PlayPanels.MatchupGrid` | server qualitative edges + key clash |
+| Feature strip | `PlayPanels.FeatureStrip` | counted card library; "POSSESSION SIMULATION", not "AI GAME SIMULATION" |
+| Coach rows with portrait, tags, FIT badge, selection dot | `CoachSelect` restyle | real recommendation angles, systemTags, fit labels |
+| Postgame two-column Final | `pg-final-grid` | MVP + moments beside possession context + breakdown + by-period |
+| KEY MOMENTS with period labels | `PostgamePanels.KeyMoments` + `api/_lib/previewKeyMoments.js` | derived from the real possession ledger |
+| BY PERIOD table | `PostgamePanels.PeriodScores` | engine `periodScores` (sums to the final score, asserted) |
+| Circular CHEMISTRY SCORE dial | `PostgamePanels.ChemistryDial` | real chemistry score, with a text alternative |
+
+### Deliberately not built
+
+| Concept element | Why |
+|---|---|
+| `63%` loading progress | The engine reports no completion fraction. The loading screen shows real lifecycle phases; the only progress bar is the genuine Win-82/Tournament game count. |
+| "AI GAME SIMULATION" in the feature strip | AI writes recaps; it does not decide games. Replaced with "POSSESSION SIMULATION". |
+| Player and coach photographs | No approved likeness assets exist (`approved.json` is empty). Cards and coach rows use branded fallbacks sized for real art to drop in. |
+| Key moments with a `5:12` game clock | The engine records periods and possessions, not a wall clock. Moments are labeled Q1–Q4/OT — asserted by test. |
+| "VIEW FULL PLAY BY PLAY" | The full ledger is derived then discarded; no play-by-play view exists to link to. |
+| Team logos beside the MVP | No approved team-logo assets. |
+| Tournament bracket preview panel | Bracket data exists only after a tournament runs; a pre-run bracket would be invented. |

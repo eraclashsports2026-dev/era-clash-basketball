@@ -350,7 +350,6 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
 
         {/* V3 context chips stay on Final */}
             <KeyMoments moments={sim.v3?.keyMoments} />
-            <PeriodScores periods={sim.v3?.periodScores} />
           </div>
           <div style={{ display: "grid", gap: 12, alignContent: "start", minWidth: 0 }}>
         {/* V3: possession context + expectation honesty */}
@@ -373,6 +372,7 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
 
         {/* E. Team-level matchup breakdown */}
         <BreakdownBars sim={sim} />
+            <PeriodScores periods={sim.v3?.periodScores} />
           </div>
         </div>
         {/* H/I. Strengths & weaknesses, with the chemistry dial between them */}
