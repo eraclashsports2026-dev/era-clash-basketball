@@ -26,7 +26,7 @@ h1{font-size:18px;margin:0 0 8px}p{font-size:13px;color:#9aa3b5;margin:0 0 20px}
 input{width:100%;box-sizing:border-box;padding:10px;border-radius:8px;border:1px solid #2b3350;background:#0b0d12;color:#e8e8ea;font-size:14px;margin-bottom:12px}
 button{width:100%;padding:10px;border-radius:8px;border:0;background:#c9a227;color:#141824;font-weight:700;font-size:14px;cursor:pointer}</style></head>
 <body><form class="card" method="POST" action="/api/preview-access">
-<h1>Private preview</h1><p>This is an invite-only test environment. Enter your access key to continue.</p>
+<h1>Private preview</h1><!--DENIED--><p>This is an invite-only test environment. Enter your access key to continue.</p>
 <input name="key" type="password" autocomplete="off" placeholder="access key" required>
 <button type="submit">Enter</button></form></body></html>`;
 
@@ -73,6 +73,34 @@ export default async function middleware(req) {
       "cache-control": "no-store" } });
   }
 
+  // ── One-tap access link: /?pv=<key> ────────────────────────────────────────
+  // A tester (or the owner) opens their personal link, the key is exchanged for
+  // a signed session, and we redirect IMMEDIATELY to the same URL with `pv`
+  // stripped — so the key leaves the address bar and never reaches the app,
+  // while any other params (notably ?scenario=w1-sN) survive. The key is still
+  // visible in the link itself: send links privately, and treat a screenshot
+  // of one as an exposed key.
+  const linkKey = url.searchParams.get("pv");
+  if (linkKey) {
+    const via = await verifyPreviewKey(linkKey);
+    const clean = new URL(url);
+    clean.searchParams.delete("pv");
+    if (!via.ok) {
+      metric("access_denied_key");
+      clean.searchParams.set("pv_denied", "1");   // the gate page explains itself
+      return new Response(null, { status: 303, headers: { location: clean.pathname + clean.search, "cache-control": "no-store" } });
+    }
+    const linkSession = await signSession(via);
+    if (linkSession) {
+      metric("sessions_started");
+      metric(`sessions_${via.testerId}`);
+      return new Response(null, { status: 303, headers: {
+        location: clean.pathname + clean.search || "/",
+        "set-cookie": `${COOKIE_NAME}=${encodeURIComponent(linkSession)}; Path=/; Max-Age=${SESSION_TTL_SECONDS}; HttpOnly; Secure; SameSite=Lax`,
+        "cache-control": "no-store" } });
+    }
+  }
+
   // Signed session first; the raw-key header stays for operator tooling
   // (presented per request, never stored).
   const session = await verifySession(readCookie(req.headers.get("cookie"), COOKIE_NAME));
@@ -85,7 +113,10 @@ export default async function middleware(req) {
     return new Response(JSON.stringify({ error: "preview_access_required" }), {
       status: 401, headers: { "content-type": "application/json", "cache-control": "no-store" } });
   }
-  return new Response(GATE_PAGE, { status: 401,
+  const denied = url.searchParams.get("pv_denied")
+    ? `<p style="color:#e0a0a8">That access link is not valid — it may have been revoked. Ask for a new one, or enter your key below.</p>`
+    : "";
+  return new Response(GATE_PAGE.replace("<!--DENIED-->", denied), { status: 401,
     headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store", "x-robots-tag": "noindex" } });
 }
 
