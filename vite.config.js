@@ -35,6 +35,18 @@ const swVersionPlugin = () => ({
     }
     writeFileSync(swPath, src.replace(SW_PLACEHOLDER, id));
     this.info(`service worker cache identity: ${id}`);
+
+    // The same identity goes into the HTML so the app can name its own build
+    // and detect that a newer one is live (see src/buildStamp.js).
+    const htmlPath = join(process.cwd(), "dist", "index.html");
+    if (existsSync(htmlPath)) {
+      const html = readFileSync(htmlPath, "utf8");
+      if (!html.includes(SW_PLACEHOLDER)) {
+        this.warn(`dist/index.html is missing ${SW_PLACEHOLDER} — the build stamp was NOT applied`);
+      } else {
+        writeFileSync(htmlPath, html.replaceAll(SW_PLACEHOLDER, id));
+      }
+    }
   },
 });
 

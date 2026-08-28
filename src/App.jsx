@@ -31,6 +31,7 @@ import { EraStage, VsRow } from "./components/StageViews.jsx";
 import { DIFFICULTIES, DEFAULT_DIFFICULTY } from "./v3/difficulty.js";
 import { TeamShell, EmptySlot, FilledSlot, LineupList } from "./components/TeamSlots.jsx";
 import { teamFit } from "./chemistryView.js";
+import { shortBuild, watchForNewBuild } from "./buildStamp.js";
 
 // Five-portrait roster summary used above the coach panels (stage 2).
 function PlayerImageMini({ p, side }) {
@@ -99,6 +100,7 @@ export default function App() {
   const [narrative, setNarrative] = useState({ status: "none" }); // enhanced recap state
   const [v3, setV3] = useState({ enabled: false, eras: [], coaches: [] }); // V3 engine meta (flag-gated)
   const [activeScenario, setActiveScenario] = useState(null); // Wave 1 guided scenario (?scenario=w1-sN)
+  const [newBuild, setNewBuild] = useState(false); // a newer deploy is live — offer a reload
   const [coachGold, setCoachGold] = useState(null);
   const [coachBlue, setCoachBlue] = useState(null);
   const [eraStyle, setEraStyle] = useState("2020s");
@@ -191,6 +193,11 @@ export default function App() {
     setActiveScenario(sc);
     track("preview_scenario_loaded", { scenario_id: sc.id });
   }, [v3.coaches]); // eslint-disable-line
+
+  // A tester can sit on a long-open tab for hours. Notice when a newer build is
+  // deployed and offer one tap to pick it up, instead of leaving them to judge
+  // an old interface.
+  useEffect(() => watchForNewBuild(() => setNewBuild(true)), []);
 
   const addBadge = (k) => setBadges((b) => (b.includes(k) ? b : [...b, k]));
   const recordWinStreak = () => setStreaks((s) => {
@@ -1205,6 +1212,15 @@ export default function App() {
         modes={GAME_MODES} gameMode={gameMode}
         onMode={(id) => { if (nav !== "Play") handleNav("Play"); else resetPlay(); setGameMode(id); }} />
 
+      {newBuild && (
+        <div role="status" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, flexWrap: "wrap",
+          padding: "10px 16px", background: "rgba(253,185,39,0.12)", borderBottom: `1px solid ${T.goldBorder}`, fontSize: 12.5, color: T.text }}>
+          <span>A newer version of EraClash is live — you're viewing build <b>{shortBuild()}</b>.</span>
+          <button onClick={() => window.location.reload()} style={{
+            padding: "7px 16px", fontSize: 12, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 40,
+            border: "none", background: T.gold, color: "#111" }}>Reload to update</button>
+        </div>
+      )}
       {err && <div role="alert" style={{ background: "#3a1520", color: "#ff8a9a", padding: 12, textAlign: "center", fontSize: 13 }}>{err}</div>}
 
       <main style={{ maxWidth: 1280, margin: "0 auto", padding: "8px 16px 60px" }}>
@@ -1257,6 +1273,8 @@ export default function App() {
         <button onClick={() => handleNav("Credits")} style={{ background: "none", border: "none", color: T.textDim, cursor: "pointer", fontSize: 10.5, textDecoration: "underline", padding: 0 }}>
           Image credits
         </button>
+        {" · "}
+        <span title="Which build you are running — quote this if you report something">build {shortBuild()}</span>
       </footer>
     </div>
   );
