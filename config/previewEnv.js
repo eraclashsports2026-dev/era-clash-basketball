@@ -15,7 +15,7 @@ export const PREVIEW_ENV = Object.freeze({
   // Candidate 3 activation in the deployed preview. Starts false: the first
   // deployed verification pass must prove the environment itself (access
   // gate, persistence, fallback engine) before the candidate turns on.
-  previewSimEngine: true,
+  previewSimEngine: false,
   // The deployed preview requires an access key (see config/previewAccess.js).
   requireAccess: true,
 });
