@@ -46,7 +46,8 @@ describe("preview access control", () => {
   it("the gate is declared on and scoped to preview deployments", () => {
     expect(PREVIEW_ENV.requireAccess).toBe(true);
     const mw = readFileSync("middleware.js", "utf8");
-    expect(mw).toMatch(/VERCEL_ENV !== "preview"[\s\S]*return;/);
+    expect(mw).toMatch(/VERCEL_ENV !== "preview"[\s\S]*return NEXT\(\);/);
+    expect(mw).toMatch(/x-middleware-next/);
     expect(mw).toMatch(/preview_access_required/);
     expect(mw).toMatch(/noindex/);
   });

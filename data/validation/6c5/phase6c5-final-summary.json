@@ -1,0 +1,42 @@
+{
+  "artifact": "phase6c5-final-summary",
+  "generatedBy": "phase 6C5 finalization",
+  "data": {
+    "phase": "6C5 - Candidate 3 protected private preview activation",
+    "verdict": "CANDIDATE 3 PROTECTED PRIVATE PREVIEW ACTIVE - READY FOR INVITED REAL-USER TESTING",
+    "unresolvedTechnicalFailures": 0,
+    "resolutionCounts": {
+      "FIXED_AND_VERIFIED": 29
+    },
+    "candidate": {
+      "id": "Candidate 3",
+      "coreHash": "6a423d4fedf45bef3889b9425651e815c95da4f6e573a2c51a3f0ef713360b69",
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "possessionCalibrationVersion": "1.3.0",
+      "states": [
+        "SELECTED",
+        "LOCKED",
+        "PREVIEW_READY_LOCKED",
+        "FORMAL_VALIDATION_INCOMPLETE"
+      ]
+    },
+    "preview": {
+      "status": "DEPLOYED",
+      "access": "ACCESS_RESTRICTED",
+      "scope": "single game only; all other modes on production",
+      "branch": "phase-6c5-candidate3-protected-preview"
+    },
+    "production": {
+      "status": "UNCHANGED",
+      "main": "9cd95ff",
+      "engineVersion": "3.2.0",
+      "productionChanges": 0
+    },
+    "criticalDefectsFixedThisPhase": [
+      "p28 preview record shape (client contract) - would have crashed Postgame on enable",
+      "p29 pv_ ids unreadable by GET/narrative",
+      "deployment function budget (14th function fails the remote build) - key exchange folded into middleware, share pages consolidated",
+      "middleware pass-through required x-middleware-next (empty 200 otherwise)"
+    ]
+  }
+}

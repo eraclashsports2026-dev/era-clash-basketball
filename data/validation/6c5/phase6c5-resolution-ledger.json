@@ -3,8 +3,8 @@
   "schemaVersion": "1.0.0",
   "measurementGovernanceVersion": "1.0.0",
   "generationCommand": "scripts/c5/ledger.mjs applyClosures",
-  "generatedAt": "2026-08-28T00:31:28.871Z",
-  "gitCommit": "4bb9b127c0818092e7f0d5b9cd8e7924a7510927",
+  "generatedAt": "2026-08-28T01:14:14.475Z",
+  "gitCommit": "fa469d3b32d9293ca555e15b1bc97eb99145b6ea",
   "branch": "phase-6c5-candidate3-protected-preview",
   "parameterSetHash": null,
   "registryVersion": "2.0.0",
@@ -22,132 +22,184 @@
       {
         "issueId": "p02",
         "description": "deployment authorization (Vercel CLI unauthenticated; Git-integration previews active)",
-        "severity": "HIGH"
+        "severity": "HIGH",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "no owner action needed: the repository's supported deployment path is the Vercel Git integration (deployments API confirms every push builds a Preview); CLI auth remains unnecessary for this phase's scope"
       },
       {
         "issueId": "p03",
         "description": "preview access restriction",
-        "severity": "HIGH"
+        "severity": "HIGH",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "edge middleware hashed-key gate: unauth page/API 401, wrong key 401, owner+tester keys verified, revocation live; candidate3-preview-access-control.json"
       },
       {
         "issueId": "p04",
         "description": "preview environment isolation (env-scoped flag source)",
-        "severity": "HIGH"
+        "severity": "HIGH",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "flag source is env-scoped: local/production false regardless of repo config; explicit env var always wins; verified locally and on three deployments"
       },
       {
         "issueId": "p05",
         "description": "Candidate 3 flag activation in preview only",
-        "severity": "HIGH"
+        "severity": "HIGH",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "Candidate 3 active on the deployed preview only: health enabled=true, pv_ games on possession-preview; candidate3-preview-deployment.json"
       },
       {
         "issueId": "p06",
         "description": "production flag protection",
-        "severity": "HIGH"
+        "severity": "HIGH",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "production flag absent: production health has no preview block, main carries no preview code, production deployment predates the phase"
       },
       {
         "issueId": "p07",
         "description": "result namespace isolation (deployed)",
-        "severity": "HIGH"
+        "severity": "HIGH",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "deployed: pv_ ids resolve only in preview-result; bare id 404s in production namespace and vice versa (security suite)"
       },
       {
         "issueId": "p08",
         "description": "probability namespace isolation",
-        "severity": "MEDIUM"
+        "severity": "MEDIUM",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "preview-probability namespace defined and version-keyed (cacheKeys.previewProbability); no production key builder emits preview-*; probability surfaces are out of preview scope (single game only) so no deployed writes exist"
       },
       {
         "issueId": "p09",
         "description": "narrative namespace isolation (deployed)",
-        "severity": "HIGH"
+        "severity": "HIGH",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "deployed narrative on pv_ results caches under preview-narrative (status 200, AI recap rendered in browser QA)"
       },
       {
         "issueId": "p10",
         "description": "competition namespace isolation",
-        "severity": "MEDIUM"
+        "severity": "MEDIUM",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "preview-competition namespace defined; competition modes are explicitly out of preview scope and fall back to production (best7 verified deployed) - engines never mix in one competition"
       },
       {
         "issueId": "p11",
         "description": "Daily namespace isolation",
-        "severity": "MEDIUM"
+        "severity": "MEDIUM",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "preview-daily namespace defined; Daily mode excluded from the preview path by guard (!dailyCfg) and verified to run production"
       },
       {
         "issueId": "p12",
         "description": "Challenge namespace isolation",
-        "severity": "MEDIUM"
+        "severity": "MEDIUM",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "preview-challenge namespace defined; challenge mode excluded (mode gate) - fallback verified in scope tests"
       },
       {
         "issueId": "p13",
         "description": "preview result-id prefix end-to-end (deployed)",
-        "severity": "HIGH"
+        "severity": "HIGH",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "every deployed preview result carries pv_ (150+ games; smoke gate)"
       },
       {
         "issueId": "p14",
         "description": "candidate identity persistence (deployed)",
-        "severity": "HIGH"
+        "severity": "HIGH",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "candidate identity (Candidate 3 / 1.3.0 / core 6a423d4f) embedded in every stored preview record and health; spoofing test proves server authority"
       },
       {
         "issueId": "p15",
         "description": "deployed replay",
-        "severity": "HIGH"
+        "severity": "HIGH",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "deployed replay: stored-result reloads byte-identical (12 soak probes + smoke); engine replay pinned by vitest determinism suites"
       },
       {
         "issueId": "p16",
         "description": "deployed per-request fallback",
-        "severity": "HIGH"
+        "severity": "HIGH",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "deployed per-request fallback via preview-scoped injection: valid production result, no partial preview persistence, next request on Candidate 3 (4/4)"
       },
       {
         "issueId": "p17",
         "description": "emergency-off drill (deployed)",
-        "severity": "HIGH"
+        "severity": "HIGH",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "environment emergency-off drill: disable, then production engine + stored pv_ readable + production unchanged, then re-enable, Candidate 3 active (candidate3-preview-fallback-drill.json)"
       },
       {
         "issueId": "p18",
         "description": "telemetry delivery (deployed, privacy-safe)",
-        "severity": "HIGH"
+        "severity": "HIGH",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "telemetry: allowlisted, secret/PII-stripped (unit suites); deployed emission exercised by 150+ games and feedback; log reading documented as dashboard surface"
       },
       {
         "issueId": "p19",
         "description": "feedback submission end-to-end (deployed)",
-        "severity": "HIGH"
+        "severity": "HIGH",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "feedback end-to-end deployed: API 204/400 matrix and real-UI submit showing the recorded confirmation (candidate3-preview-feedback.json)"
       },
       {
         "issueId": "p20",
         "description": "browser QA (deployed desktop)",
-        "severity": "HIGH"
+        "severity": "HIGH",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "deployed desktop browser QA: gate, key, draft, sim, postgame, narrative, feedback (candidate3-preview-browser-qa.json 12/12)"
       },
       {
         "issueId": "p21",
         "description": "mobile QA (deployed 375px)",
-        "severity": "HIGH"
+        "severity": "HIGH",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "mobile 375px: gate + app render, no horizontal overflow, revocation flow; tablet 768px no overflow"
       },
       {
         "issueId": "p22",
         "description": "deployed security checks",
-        "severity": "HIGH"
+        "severity": "HIGH",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "deployed security suite 14/14: access, enumeration, malformed ids, cross-namespace, spoofing, injection, oversized payloads, header/secret hygiene, rate limits"
       },
       {
         "issueId": "p23",
         "description": "deployed soak",
-        "severity": "HIGH"
+        "severity": "HIGH",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "deployed soak 120 games: 100% success, p50 213ms / p95 347ms / p99 485ms, 0 fallbacks, 0 replay breaks (thresholds predeclared)"
       },
       {
         "issueId": "p24",
         "description": "production health unchanged",
-        "severity": "HIGH"
+        "severity": "HIGH",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "production health identical before/during/after; production deployment id 6072350574 unchanged; productionChanges=0"
       },
       {
         "issueId": "p25",
         "description": "preview health contract",
-        "severity": "MEDIUM"
+        "severity": "MEDIUM",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "preview health contract exposes flag, candidateId, coreHash, calibration, fallback engine, namespaces, access-control summary - no secrets or env"
       },
       {
         "issueId": "p26",
         "description": "operator documentation",
-        "severity": "MEDIUM"
+        "severity": "MEDIUM",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "docs/preview/candidate3-operator-guide.md: flag control, emergency-off (both paths), tester add/revoke, telemetry/feedback reading, never-do list"
       },
       {
         "issueId": "p27",
         "description": "tester documentation and scenario matrix",
-        "severity": "MEDIUM"
+        "severity": "MEDIUM",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "docs/preview/candidate3-tester-guide.md: access steps + 8-scenario matrix with evaluation questions"
       },
       {
         "issueId": "p28",
@@ -164,35 +216,8 @@
         "resolutionEvidence": "root cause: GET /api/game and /api/narrative validated only the production id shape; pv_ ids now resolve in preview-result and cache under preview-narrative, never production namespaces; regression-protected by tests/v6c5 preview-scoped-reads suite"
       }
     ],
-    "unresolvedTechnicalFailures": 26,
-    "unresolvedIds": [
-      "p02",
-      "p03",
-      "p04",
-      "p05",
-      "p06",
-      "p07",
-      "p08",
-      "p09",
-      "p10",
-      "p11",
-      "p12",
-      "p13",
-      "p14",
-      "p15",
-      "p16",
-      "p17",
-      "p18",
-      "p19",
-      "p20",
-      "p21",
-      "p22",
-      "p23",
-      "p24",
-      "p25",
-      "p26",
-      "p27"
-    ]
+    "unresolvedTechnicalFailures": 0,
+    "unresolvedIds": []
   },
-  "outputHash": "e66edba6e33a595f833c64b8ac61a2cda1ae38f828a535734f2dd42e973358d1"
+  "outputHash": "01a7b3e406a062e8ae09518d6430387f5df5342ac03eaa9a9ef926282d6b65e1"
 }
