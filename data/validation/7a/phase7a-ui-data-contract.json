@@ -1,0 +1,206 @@
+{
+  "artifact": "phase7a-ui-data-contract",
+  "generatedBy": "phase 7A",
+  "data": {
+    "fields": [
+      {
+        "fieldId": "mode.cards",
+        "screen": "Play dropdown",
+        "source": "GAME_MODES (product constant)",
+        "available": true,
+        "realTimeOrStored": "static",
+        "fallback": "n/a",
+        "mustHideWhenUnavailable": false
+      },
+      {
+        "fieldId": "roster.player.name/decade/pos",
+        "screen": "Rosters",
+        "source": "PLAYERS cards",
+        "available": true,
+        "realTimeOrStored": "static",
+        "fallback": "n/a",
+        "mustHideWhenUnavailable": false
+      },
+      {
+        "fieldId": "roster.player.ovr",
+        "screen": "Rosters",
+        "source": "displayOVR (existing draft guide)",
+        "available": true,
+        "realTimeOrStored": "static",
+        "fallback": "n/a",
+        "mustHideWhenUnavailable": false
+      },
+      {
+        "fieldId": "roster.chemistry",
+        "screen": "Rosters",
+        "source": "ChemistryMeter (existing user-facing draft guide + tooltip 'guide, not guarantee')",
+        "available": true,
+        "realTimeOrStored": "static",
+        "fallback": "n/a",
+        "mustHideWhenUnavailable": false
+      },
+      {
+        "fieldId": "roster.chemistry.strengths",
+        "screen": "Rosters",
+        "source": "analyzeBalance real strengths/concerns",
+        "available": true,
+        "realTimeOrStored": "static",
+        "fallback": "n/a",
+        "mustHideWhenUnavailable": false
+      },
+      {
+        "fieldId": "matchup.edges.qualitative",
+        "screen": "Rosters/Coaches/Ready",
+        "source": "POST /api/v3meta edges (matchupPreviewV3 categories \u2192 gold/even/blue at the model's own |edge|<=4 bound; \u2605 at >=10)",
+        "available": true,
+        "realTimeOrStored": "real-time",
+        "fallback": "'Reading the matchup\u2026' then rows; hidden if request fails",
+        "mustHideWhenUnavailable": false
+      },
+      {
+        "fieldId": "matchup.keyClash",
+        "screen": "Rosters/Coaches/Ready",
+        "source": "POST /api/v3meta keyClash",
+        "available": true,
+        "realTimeOrStored": "real-time",
+        "fallback": "hidden when absent",
+        "mustHideWhenUnavailable": false
+      },
+      {
+        "fieldId": "coach.card",
+        "screen": "Coaches",
+        "source": "publicCoach (name/span/champ/systemTags/bestWith/concern) + recommendCoaches angles/fit labels",
+        "available": true,
+        "realTimeOrStored": "real-time",
+        "fallback": "n/a",
+        "mustHideWhenUnavailable": false
+      },
+      {
+        "fieldId": "coach.fitLabels",
+        "screen": "Coaches",
+        "source": "teamFit/eraFit qualitative labels from recommendCoaches thresholds",
+        "available": true,
+        "realTimeOrStored": "real-time",
+        "fallback": "omitted when not returned",
+        "mustHideWhenUnavailable": false
+      },
+      {
+        "fieldId": "era.rules",
+        "screen": "Era",
+        "source": "publicEra styleSummary + threePoint (real rule data)",
+        "available": true,
+        "realTimeOrStored": "static",
+        "fallback": "n/a",
+        "mustHideWhenUnavailable": false
+      },
+      {
+        "fieldId": "era.matchupImpact",
+        "screen": "Era",
+        "source": "eraInteraction(era, teamDNA(roster)) per side",
+        "available": true,
+        "realTimeOrStored": "real-time",
+        "fallback": "'Reading\u2026' placeholder; generated-opponent note for scheduled modes",
+        "mustHideWhenUnavailable": false
+      },
+      {
+        "fieldId": "loading.phases",
+        "screen": "Loading",
+        "source": "gameClient onStage lifecycle strings (never fake percentages)",
+        "available": true,
+        "realTimeOrStored": "real-time",
+        "fallback": "spinner only",
+        "mustHideWhenUnavailable": false
+      },
+      {
+        "fieldId": "final.score/winner/seriesResult",
+        "screen": "Postgame Final",
+        "source": "result.core",
+        "available": true,
+        "realTimeOrStored": "stored",
+        "fallback": "n/a",
+        "mustHideWhenUnavailable": false
+      },
+      {
+        "fieldId": "final.mvp+line+reason",
+        "screen": "Postgame Final",
+        "source": "result.core.mvp/mvpLine + mvpFallback/narrative",
+        "available": true,
+        "realTimeOrStored": "stored",
+        "fallback": "deterministic fallback text",
+        "mustHideWhenUnavailable": false
+      },
+      {
+        "fieldId": "final.possessions/preGameRead/shotQuality",
+        "screen": "Postgame Final",
+        "source": "result.v3 (expectedGoldWinPct bands, expectedPoints where present)",
+        "available": true,
+        "realTimeOrStored": "stored",
+        "fallback": "chip hidden per field",
+        "mustHideWhenUnavailable": false
+      },
+      {
+        "fieldId": "box.full+possession",
+        "screen": "Postgame Box",
+        "source": "result teamAStats/teamBStats + v3.fullBox (totals reconcile \u2014 pinned by vitest)",
+        "available": true,
+        "realTimeOrStored": "stored",
+        "fallback": "possession box hidden when absent",
+        "mustHideWhenUnavailable": false
+      },
+      {
+        "fieldId": "story.why/turningPoint",
+        "screen": "Postgame Story",
+        "source": "fallbackSummary/narrative + core.turningPoint",
+        "available": true,
+        "realTimeOrStored": "stored",
+        "fallback": "deterministic recap; turning point hidden when null",
+        "mustHideWhenUnavailable": false
+      },
+      {
+        "fieldId": "story.aiNarrative",
+        "screen": "Postgame Story",
+        "source": "/api/narrative (labeled, retry state, never blocks result)",
+        "available": true,
+        "realTimeOrStored": "real-time",
+        "fallback": "'temporarily unavailable' + retry",
+        "mustHideWhenUnavailable": false
+      },
+      {
+        "fieldId": "coaching.usage/assignments/adjustments",
+        "screen": "Postgame Coaching",
+        "source": "result.v3.usage/assignments/adjustments (real engine decisions)",
+        "available": true,
+        "realTimeOrStored": "stored",
+        "fallback": "whole panels hidden when absent",
+        "mustHideWhenUnavailable": false
+      },
+      {
+        "fieldId": "coaching.preGameEdges",
+        "screen": "Postgame Coaching",
+        "source": "result.core.edges (post-result numeric edges, pre-existing user-facing)",
+        "available": true,
+        "realTimeOrStored": "stored",
+        "fallback": "hidden when empty",
+        "mustHideWhenUnavailable": false
+      },
+      {
+        "fieldId": "feedback.form",
+        "screen": "Postgame Final",
+        "source": "pv_ resultId gate; schema v2 fields; scenarioId from launcher",
+        "available": true,
+        "realTimeOrStored": "real-time",
+        "fallback": "absent on non-preview results",
+        "mustHideWhenUnavailable": false
+      },
+      {
+        "fieldId": "unsupported.concepts",
+        "screen": "(omitted)",
+        "source": "reference elements with no data support: precise loading percentages, expected-points pregame, tournament team logos, account systems beyond Save Career, invented key-moment timestamps \u2014 all omitted rather than faked",
+        "available": false,
+        "realTimeOrStored": "n/a",
+        "fallback": "omitted",
+        "mustHideWhenUnavailable": false
+      }
+    ]
+  }
+}

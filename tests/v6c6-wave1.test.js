@@ -17,6 +17,9 @@ afterEach(() => { process.env.PREVIEW_SESSION_SECRET = "vitest-session-secret"; 
 // as a regression tripwire: they must never verify again. (Hashes would hide
 // the point — these strings are already burned.)
 const EXPOSED_V1_KEYS = ["c3db0203453b5ff57285ec6bc0d08453", "5866914beb2a928b06d1840fcf3fc581"];
+// v2 keys for testers 01/02 later reached assistant tool output during deployed
+// QA and were rotated to keyVersion 3. Same rule: dead forever.
+const EXPOSED_V2_KEYS = ["09257f826a21d8b4553a5ca8250920c1", "85c20e2623498f400ba56db9facbd025"];
 
 describe("Wave 1 credentials", () => {
   it("carries exactly one owner and five wave1 testers, all v2, hashes only", () => {
@@ -31,14 +34,14 @@ describe("Wave 1 credentials", () => {
       ["wave1-tester-01", "wave1-tester-02", "wave1-tester-03", "wave1-tester-04", "wave1-tester-05"]);
     for (const k of PREVIEW_ACCESS.keys) {
       expect(k.sha256).toMatch(/^[a-f0-9]{64}$/);
-      expect(k.keyVersion).toBe(2);
+      expect(k.keyVersion, `${k.testerId} keyVersion`).toBeGreaterThanOrEqual(2);
       expect(JSON.stringify(k)).not.toMatch(/@/);
     }
     expect(new Set(PREVIEW_ACCESS.keys.map((k) => k.sha256)).size).toBe(PREVIEW_ACCESS.keys.length);
   });
 
-  it("REVOKED: the exposed v1 keys never verify again", async () => {
-    for (const k of EXPOSED_V1_KEYS) expect((await verifyPreviewKey(k)).ok, k.slice(-4)).toBe(false);
+  it("REVOKED: every exposed key ever printed never verifies again", async () => {
+    for (const k of [...EXPOSED_V1_KEYS, ...EXPOSED_V2_KEYS]) expect((await verifyPreviewKey(k)).ok, k.slice(-4)).toBe(false);
   });
 
   it("key-leak regression: no raw key from the local secret file exists in tracked content", () => {
@@ -57,7 +60,9 @@ describe("Wave 1 credentials", () => {
 });
 
 describe("signed preview sessions", () => {
-  const entry = { testerId: "wave1-tester-01", role: "tester", keyVersion: 2 };
+  // derived from the live allowlist: a rotated keyVersion must not break this
+  const live = PREVIEW_ACCESS.keys.find((k) => k.testerId === "wave1-tester-01");
+  const entry = { testerId: live.testerId, role: live.role, keyVersion: live.keyVersion };
 
   it("issues and verifies a finite session carrying no key material", async () => {
     const tok = await signSession(entry);
@@ -84,9 +89,9 @@ describe("signed preview sessions", () => {
   it("revocation and key rotation kill already-issued sessions", async () => {
     const ghost = await signSession({ testerId: "wave1-tester-99", role: "tester", keyVersion: 2 });
     expect((await verifySession(ghost)).reason).toBe("revoked");     // not in allowlist
-    const stale = await signSession({ testerId: "wave1-tester-01", role: "tester", keyVersion: 1 });
+    const stale = await signSession({ testerId: entry.testerId, role: "tester", keyVersion: entry.keyVersion - 1 });
     expect((await verifySession(stale)).reason).toBe("revoked");     // rotated keyVersion
-    const escal = await signSession({ testerId: "wave1-tester-01", role: "owner", keyVersion: 2 });
+    const escal = await signSession({ testerId: entry.testerId, role: "owner", keyVersion: entry.keyVersion });
     expect((await verifySession(escal)).reason).toBe("revoked");     // role must match the entry
   });
 
@@ -181,5 +186,38 @@ describe("middleware session gate", () => {
     expect(mw).toMatch(/HttpOnly; Secure; SameSite=Lax/);
     expect(mw).not.toMatch(/COOKIE_NAME\}=\$\{encodeURIComponent\(String\(key\)\)/);
     expect(mw).toMatch(/verifySession\(readCookie/);
+  });
+});
+
+describe("one-tap access links (?pv=)", () => {
+  const mw = readFileSync("middleware.js", "utf8");
+
+  it("exchanges the link key for a session and strips it from the URL", () => {
+    expect(mw).toMatch(/url\.searchParams\.get\("pv"\)/);
+    expect(mw).toMatch(/clean\.searchParams\.delete\("pv"\)/);
+    // 303 to the CLEAN url with the session cookie — the key never reaches the app
+    expect(mw).toMatch(/status: 303[\s\S]{0,200}clean\.pathname \+ clean\.search/);
+    expect(mw).toMatch(/HttpOnly; Secure; SameSite=Lax/);
+  });
+
+  it("keeps other params (so a scenario link can carry access)", () => {
+    // only `pv` is deleted from the redirect target
+    const deletes = mw.match(/clean\.searchParams\.delete\("[^"]+"\)/g) ?? [];
+    expect(deletes).toEqual(['clean.searchParams.delete("pv")']);
+  });
+
+  it("an invalid link key lands on the gate with an explanation, not a blank denial", () => {
+    expect(mw).toMatch(/pv_denied/);
+    expect(mw).toMatch(/That access link is not valid/);
+    expect(mw).toMatch(/access_denied_key/);
+  });
+
+  it("the link builder never prints a key", () => {
+    const src = readFileSync("scripts/preview/link.mjs", "utf8");
+    expect(src).toMatch(/pbcopy|open /);
+    // every console line prints ids/fingerprints, never `link` or `.key`
+    for (const line of src.split("\n").filter((l) => l.includes("console.log"))) {
+      expect(line, line.trim()).not.toMatch(/\$\{link\}|\bhit\.key\b/);
+    }
   });
 });

@@ -100,3 +100,27 @@ button { font-family: inherit; }
 @media (min-width: 900px) {
   .sticky-sim { position: static; }
 }
+
+/* Phase 7A — screen-reader-only utility + wizard/panel helpers */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* Phase 7A — roster card grid: five across, reflowing to two then one */
+.roster-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+@media (max-width: 1100px) { .roster-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 620px)  { .roster-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 380px)  { .roster-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* Phase 7A — matchup edge grid (2×3 on desktop) and the feature strip */
+.edge-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 14px; }
+@media (max-width: 420px) { .edge-grid { grid-template-columns: minmax(0, 1fr); } }
+.feature-strip { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 1100px) { .feature-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px)  { .feature-strip { grid-template-columns: minmax(0, 1fr); } }
+
+/* Phase 7A — hero row: side cards flank the title, stacking on narrow screens */
+.hero-row { display: grid; grid-template-columns: minmax(200px, 240px) 1fr minmax(200px, 240px); gap: 16px; align-items: start; padding: 14px 0 2px; }
+@media (max-width: 1000px) { .hero-row { grid-template-columns: 1fr; } .hero-row > *:first-child, .hero-row > *:last-child { max-width: 420px; margin: 0 auto; width: 100%; } }
+
+/* Phase 7A — postgame Final: MVP/moments column beside summary/breakdown column */
+.pg-final-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+@media (max-width: 900px) { .pg-final-grid { grid-template-columns: minmax(0, 1fr); } }

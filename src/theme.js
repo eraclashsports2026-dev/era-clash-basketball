@@ -54,3 +54,26 @@ export const btnSecondary = {
   padding: "11px 14px", fontSize: 13, fontWeight: 700, borderRadius: 9,
   border: `1px solid ${T.border}`, background: "transparent", color: T.text, cursor: "pointer",
 };
+
+// ── Phase 7A design-system extensions ─────────────────────────────────────────
+// Layout, motion and typography tokens for the rebuilt Play flow. Values are
+// derived from the canonical UI concept (ERAclashUI5) mapped onto the existing
+// palette above — components consume tokens, never magic numbers.
+export const S = { xs: 4, sm: 8, md: 12, lg: 16, xl: 24, xxl: 36 };            // spacing
+export const R = { sm: 8, md: 10, lg: 14, xl: 18, pill: 999 };                 // radii
+export const Z = { header: 40, dropdown: 50, modal: 60, toast: 70 };           // layers
+export const DUR = { fast: 120, base: 200, slow: 400, reveal: 700 };           // ms
+export const BP = { mobile: 640, tablet: 900, desktop: 1200 };                 // px
+export const FONT = {
+  display: "Georgia, 'Times New Roman', serif",                                // brand / scores / section titles
+  ui: `"Segoe UI", system-ui, -apple-system, sans-serif`,                      // controls / body / stats
+};
+export const focusRing = `0 0 0 2px ${T.bg}, 0 0 0 4px ${T.gold}`;
+/** Reference stage chip (numbered wizard step). */
+export const stageChip = (state /* done | active | todo */) => ({
+  display: "flex", alignItems: "center", gap: 8, padding: "9px 16px", borderRadius: R.md,
+  border: `1px solid ${state === "active" ? T.gold : state === "done" ? "rgba(46,204,113,0.5)" : T.border}`,
+  background: state === "active" ? T.goldSoft : "rgba(0,0,0,0.3)",
+  color: state === "active" ? T.gold : state === "done" ? T.green : T.textMuted,
+  cursor: state === "done" ? "pointer" : "default", minHeight: 44,
+});

@@ -6,10 +6,13 @@ whether results *feel like real basketball*.
 
 ## Getting in
 
-1. Open the preview: **https://era-clash-basketball-git-wave1-era-clash.vercel.app**
-2. Enter the **access key from your invite** at the "Private preview" screen.
-   Your key is yours alone — don't share it or post it anywhere.
-3. You stay signed in for a week; if you're asked again, just re-enter the key.
+1. **Tap the personal link in your invite.** It signs you straight in — no key
+   to type. The link is yours alone: don't forward it, post it, or screenshot it.
+2. You stay signed in for a week. If you're asked for a key later, your invite
+   also lists it — or just tap your link again.
+3. Trouble? The preview address is
+   **https://era-clash-basketball-git-wave1-era-clash.vercel.app** and the
+   "Private preview" screen accepts your key directly.
 
 **Confidentiality:** this preview is private. Please don't share screenshots,
 links or results outside the test group, and don't put personal or sensitive
