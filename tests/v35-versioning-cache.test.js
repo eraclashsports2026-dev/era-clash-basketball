@@ -543,7 +543,7 @@ describe("cache security & public caching", () => {
   });
 
   it("a missing public result is NOT publicly cached", () => {
-    const src = readFileSync(new URL("../api/result-page.js", import.meta.url), "utf8");
+    const src = readFileSync(new URL("../api/share-page.js", import.meta.url), "utf8");
     // strip comments first — the explanation of WHY sits between the branch and
     // the header, so a raw character window reads only prose
     const code = src.split("\n").filter((l) => !l.trim().startsWith("//")).join("\n");

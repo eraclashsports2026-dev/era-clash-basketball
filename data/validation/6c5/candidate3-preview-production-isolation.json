@@ -1,0 +1,30 @@
+{
+  "artifact": "candidate3-preview-production-isolation",
+  "generatedBy": "phase 6C5 deployed verification",
+  "data": {
+    "productionChanges": 0,
+    "checks": {
+      "mainCommit": {
+        "expected": "9cd95ff8797f8cdef252bbe67d63158c01b9f9bd",
+        "local": "match",
+        "origin": "match"
+      },
+      "productionDeployment": {
+        "id": 6072350574,
+        "ref": "9cd95ff\u2026",
+        "createdAt": "2026-08-24T22:08:18Z",
+        "note": "predates the phase; no production deployment occurred during 6C5"
+      },
+      "productionHealth": {
+        "status": "ok",
+        "build": "2.7.2",
+        "engineLine": "3.2.0 production",
+        "previewBlock": "absent (main carries no preview code)"
+      },
+      "productionAccess": "public 200 \u2014 no gate, no middleware on main",
+      "productionFlags": "PREVIEW_SIM_ENGINE_ENABLED absent; repo preview config not present on main",
+      "namespaceWritesFromPreview": 0,
+      "namespaceEvidence": "preview records live only under preview-result:* with pv_ ids (deployed cross-namespace probe 404s both directions); feedback under preview-feedback:*; narrative under preview-narrative:*"
+    }
+  }
+}

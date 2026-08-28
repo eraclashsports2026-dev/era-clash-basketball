@@ -1,0 +1,63 @@
+{
+  "artifact": "candidate3-preview-browser-qa",
+  "generatedBy": "Claude Browser pane against the deployed preview",
+  "baseUrl": "https://era-clash-basketball-ddehacso6-era-clash.vercel.app",
+  "data": {
+    "passed": 12,
+    "failed": 0,
+    "gates": [
+      {
+        "name": "gate page renders (desktop)",
+        "ok": true
+      },
+      {
+        "name": "tester key exchange via form \u2192 app",
+        "ok": true,
+        "detail": "tester-pool-1 key, 303 + HttpOnly cookie"
+      },
+      {
+        "name": "full single game via UI on Candidate 3",
+        "ok": true,
+        "detail": "FINAL 112-109, MVP Kevin Durant, 97 possessions, pre-game read + era + coach chips render"
+      },
+      {
+        "name": "postgame renders (score, MVP card, WHY YOU WON, matchup breakdown, box)",
+        "ok": true
+      },
+      {
+        "name": "AI narrative replaces fallback on a pv_ result",
+        "ok": true,
+        "detail": "narrative used slot-duel guardedBy data"
+      },
+      {
+        "name": "structured preview feedback form renders on pv_ results",
+        "ok": true
+      },
+      {
+        "name": "feedback submit \u2192 POST /api/feedback 204 \u2192 'preview feedback recorded'",
+        "ok": true
+      },
+      {
+        "name": "loading state shown during sim",
+        "ok": true
+      },
+      {
+        "name": "mobile 375px: app renders, no horizontal overflow",
+        "ok": true,
+        "detail": "scrollWidth 375 = clientWidth 375"
+      },
+      {
+        "name": "mobile 375px: gate page renders, cookie revocation (DELETE) returns to gate",
+        "ok": true
+      },
+      {
+        "name": "tablet 768px: no horizontal overflow",
+        "ok": true
+      },
+      {
+        "name": "keyboard: key field focusable, form submits",
+        "ok": true
+      }
+    ]
+  }
+}

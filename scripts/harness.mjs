@@ -28,8 +28,7 @@ const routes = {
   "/api/events": (await import("../api/events.js")).default,
   "/api/feedback": (await import("../api/feedback.js")).default,
   "/api/result": (await import("../api/result.js")).default,
-  "/api/result-page": (await import("../api/result-page.js")).default,
-  "/api/challenge-page": (await import("../api/challenge-page.js")).default,
+  "/api/share-page": (await import("../api/share-page.js")).default,
   "/api/simulate": (await import("../api/simulate.js")).default,
   "/api/v3meta": (await import("../api/v3meta.js")).default,
 };
@@ -61,8 +60,8 @@ createServer(async (req, res) => {
 
   // vercel.json rewrites
   let m;
-  if ((m = path.match(/^\/result\/([a-z0-9]+)$/))) { path = "/api/result-page"; url.searchParams.set("id", m[1]); }
-  if ((m = path.match(/^\/challenge\/([a-z0-9]+)$/))) { path = "/api/challenge-page"; url.searchParams.set("id", m[1]); }
+  if ((m = path.match(/^\/result\/([a-z0-9]+)$/))) { path = "/api/share-page"; url.searchParams.set("kind", "result"); url.searchParams.set("id", m[1]); }
+  if ((m = path.match(/^\/challenge\/([a-z0-9]+)$/))) { path = "/api/share-page"; url.searchParams.set("kind", "challenge"); url.searchParams.set("id", m[1]); }
 
   const handler = routes[path];
   if (handler) {

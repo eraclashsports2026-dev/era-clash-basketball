@@ -1,0 +1,48 @@
+{
+  "artifact": "candidate3-preview-fallback-drill",
+  "generatedBy": "phase 6C5 deployed verification",
+  "data": {
+    "requestLevel": {
+      "injection": "x-chaos: preview-fail (honored ONLY on preview deployments)",
+      "observed": "injected failure \u2192 same request answered by production engine 3.2.0 (engine v3-possession, production result id, no preview flag), stored in the production namespace only; next request returned to Candidate 3",
+      "artifact": "candidate3-preview-fallback-drill-request.json (4/4)"
+    },
+    "environmentLevel": [
+      {
+        "step": 1,
+        "action": "config/previewEnv.js previewSimEngine=false, push",
+        "deployment": "era-clash-basketball-8qkttu4h7"
+      },
+      {
+        "step": 2,
+        "check": "health preview.enabled=false",
+        "result": "PASS"
+      },
+      {
+        "step": 3,
+        "check": "new request \u2192 production engine (id iaa5na4vph, engine v3-possession, no preview flag)",
+        "result": "PASS"
+      },
+      {
+        "step": 4,
+        "check": "stored Candidate 3 result pv_455n1jiiro still readable with full candidate identity",
+        "result": "PASS"
+      },
+      {
+        "step": 5,
+        "check": "production health unchanged (build 2.7.2, no preview block)",
+        "result": "PASS"
+      },
+      {
+        "step": 6,
+        "action": "previewSimEngine=true, push",
+        "deployment": "era-clash-basketball-7nnec6tzd"
+      },
+      {
+        "step": 7,
+        "check": "health preview.enabled=true; new game pv_tcucjflmsz on possession-preview",
+        "result": "PASS"
+      }
+    ]
+  }
+}

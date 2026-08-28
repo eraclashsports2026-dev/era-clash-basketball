@@ -1,0 +1,19 @@
+{
+  "artifact": "candidate3-preview-access-control",
+  "generatedBy": "phase 6C5 deployed verification",
+  "data": {
+    "method": "edge-middleware hashed-key allowlist (config/previewAccess.js), preview deployments only",
+    "keyDelivery": "out of band; repository holds sha256 hashes only (public repo safe)",
+    "cookie": "pv_access, HttpOnly, Secure, SameSite=Lax, 30d; header x-preview-key for tooling",
+    "verified": {
+      "unauthenticatedPage": "401 gate page, no app internals, noindex",
+      "unauthenticatedApi": "401 preview_access_required",
+      "wrongKey": "401 (header and exchange)",
+      "ownerKey": "200 via header + cookie exchange (303)",
+      "testerKey": "full browser journey: gate \u2192 app \u2192 game \u2192 feedback",
+      "revocation": "DELETE /api/preview-access 204 \u2192 next load gated (verified live)",
+      "productionUnaffected": "production has no middleware (builds from main); / returns 200 public"
+    },
+    "onboarding": "node scripts/preview/accessKey.mjs new <label> \u2192 commit hash line; revoke by deleting the line"
+  }
+}

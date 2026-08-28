@@ -3,8 +3,8 @@
     "api/narrative.js": { "maxDuration": 60 }
   },
   "rewrites": [
-    { "source": "/result/:id", "destination": "/api/result-page?id=:id" },
-    { "source": "/challenge/:id", "destination": "/api/challenge-page?id=:id" }
+    { "source": "/result/:id", "destination": "/api/share-page?kind=result&id=:id" },
+    { "source": "/challenge/:id", "destination": "/api/share-page?kind=challenge&id=:id" }
   ],
   "headers": [
     {
