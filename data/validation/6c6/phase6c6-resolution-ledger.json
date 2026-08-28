@@ -5,186 +5,222 @@
       {
         "issueId": "w01",
         "description": "prior preview keys exposed in phase 6C5 conversation output",
-        "severity": "CRITICAL"
+        "severity": "CRITICAL",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "both v1 keys treated as burned: removed from the allowlist, pinned dead-forever by a regression tripwire test, and never reproduced in any 6C6 artifact or report"
       },
       {
         "issueId": "w02",
         "description": "old key revocation (deployed proof)",
-        "severity": "HIGH"
+        "severity": "HIGH",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "deployed proof at the stable URL: both v1 keys 401 on header auth AND key exchange (candidate3-wave1-access-control.json 19/19)"
       },
       {
         "issueId": "w03",
         "description": "new owner key",
-        "severity": "HIGH"
+        "severity": "HIGH",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "new owner key active (fingerprint …b52e); raw key only in the local secret file"
       },
       {
         "issueId": "w04",
         "description": "five unique tester keys",
-        "severity": "HIGH"
+        "severity": "HIGH",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "five unique tester keys, distinct hashes, opaque ids wave1-tester-01..05; all verified live per role"
       },
       {
         "issueId": "w05",
         "description": "raw-key storage (gitignored, 0600, never committed/logged)",
-        "severity": "CRITICAL"
+        "severity": "CRITICAL",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": ".preview-secrets/wave1-access-keys.json (0600, dir 0700, gitignored); git grep leak scan 0 in tracked content; vitest key-leak regression test added"
       },
       {
         "issueId": "w06",
         "description": "cookie/session security (raw key stored in browser cookie)",
-        "severity": "CRITICAL"
+        "severity": "CRITICAL",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "raw-key cookie REPLACED by HMAC-signed pv_session (payload: testerId/role/keyVersion/sid/iat/exp only; 7d TTL; HttpOnly/Secure/SameSite=Lax); signing secret derives from the deployment's existing store credential; fails closed without one"
       },
       {
         "issueId": "w07",
         "description": "tester identity attribution (pseudonymous, server-authoritative)",
-        "severity": "HIGH"
+        "severity": "HIGH",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "pseudonymous tester identity server-authoritative end-to-end: middleware verifies, feedback + telemetry read the session, client-sent identity fields ignored (unit + deployed 204 with session)"
       },
       {
         "issueId": "w08",
         "description": "individual revocation without collateral",
-        "severity": "HIGH"
+        "severity": "HIGH",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "LIVE drill: tester-05 disabled → its key AND its pre-issued session 401 at the stable URL while testers 01-04 and owner stayed 200; re-enabled after"
       },
       {
         "issueId": "w09",
         "description": "session expiration + reauthentication",
-        "severity": "HIGH"
+        "severity": "HIGH",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "expiration unit-verified (signed with past exp → expired; wrong-secret/tampered → bad-signature); deployed tampered-session 401; re-auth = re-enter key (verified in browser)"
       },
       {
         "issueId": "w10",
         "description": "stable preview address",
-        "severity": "HIGH"
+        "severity": "HIGH",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "stable URL https://era-clash-basketball-git-wave1-era-clash.vercel.app — Vercel branch alias of the short-named wave1 branch tracking the phase head"
       },
       {
         "issueId": "w11",
         "description": "stable alias redeploy proof",
-        "severity": "HIGH"
+        "severity": "HIGH",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "three redeploys served from the SAME URL with head-specific behavior (marker → revocation → restore); the one corrupted commit was rejected by the alias branch and never reached testers"
       },
       {
         "issueId": "w12",
         "description": "scenario launcher",
-        "severity": "HIGH"
+        "severity": "HIGH",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "?scenario=w1-sN query-state loader (existing pattern, client-side only, zero new serverless functions); verified in deployed browser: banner, instruction, exact rosters/coaches/era preloaded, full game played"
       },
       {
         "issueId": "w13",
         "description": "scenario validity (cards, coaches, positions, dup-person, no preset winner)",
-        "severity": "HIGH"
+        "severity": "HIGH",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "8 scenarios validated by unit suite: real cards, legal positions, no duplicate person, real coaches, one era each, no preselected winner, no engine scores"
       },
       {
         "issueId": "w14",
         "description": "feedback attribution (testerId + resultId, key never stored)",
-        "severity": "HIGH"
+        "severity": "HIGH",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "feedback binds testerId (session) + resultId (must exist in preview-result) + candidateId (lock constants); raw key never present in any record field"
       },
       {
         "issueId": "w15",
         "description": "feedback deduplication + resubmission behavior",
-        "severity": "MEDIUM"
+        "severity": "MEDIUM",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "one primary record per tester/result; resubmission replaces it with revision+1 (deployed 204 on resubmit; fixture-verified dedup in the report)"
       },
       {
         "issueId": "w16",
         "description": "feedback privacy (no key/cookie/PII in records)",
-        "severity": "HIGH"
+        "severity": "HIGH",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "validator whitelists fields; telemetry filter strips key/cookie/authorization/password/email/session keys; no IP stored beyond transient rate-limit keys"
       },
       {
         "issueId": "w17",
         "description": "feedback report command",
-        "severity": "MEDIUM"
+        "severity": "MEDIUM",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "npm run preview:wave1-feedback-report — medians/distributions/categories/negatives/participation; fixture-verified + explicit EMPTY-DATA mode"
       },
       {
         "issueId": "w18",
         "description": "product metrics report command",
-        "severity": "MEDIUM"
+        "severity": "MEDIUM",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "npm run preview:wave1-product-metrics — sessions/games/completion/fallback/latency buckets/feedback rates from preview-metrics counters; EMPTY-DATA mode verified"
       },
       {
         "issueId": "w19",
         "description": "access audit command",
-        "severity": "MEDIUM"
+        "severity": "MEDIUM",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "npm run preview:wave1-access-audit — active/revoked ids, key versions, failed attempts, sessions per tester, raw-key leak scan (0)"
       },
       {
         "issueId": "w20",
         "description": "existing feedback review (P0-P4 classification)",
-        "severity": "HIGH"
+        "severity": "HIGH",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "all stored feedback = owner/dev QA probes (ratings 4-5, NONE); P0-P2 = 0; the one phase-discovered P1 (truncated access config commit) root-caused, contained by the alias branch rejection, fixed, regression-protected (candidate3-wave1-existing-feedback-resolution.json)"
       },
       {
         "issueId": "w21",
         "description": "desktop QA (deployed)",
-        "severity": "HIGH"
+        "severity": "HIGH",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "deployed desktop browser QA: gate → session → scenario launch → full Candidate 3 game → postgame → feedback with scenarioId captured in the POST body (8/8)"
       },
       {
         "issueId": "w22",
         "description": "mobile QA (deployed)",
-        "severity": "HIGH"
+        "severity": "HIGH",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "mobile 375px: scenario banner + preloaded teams render, no horizontal overflow"
       },
       {
         "issueId": "w23",
         "description": "access gate QA (deployed, rotated credentials)",
-        "severity": "HIGH"
+        "severity": "HIGH",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "rotated-access deployed suite 19/19 (old keys dead, six new identities, signed cookies, tampered/absent refused)"
       },
       {
         "issueId": "w24",
         "description": "preview namespace isolation (unchanged surfaces)",
-        "severity": "HIGH"
+        "severity": "HIGH",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "unchanged surfaces re-verified: pv_ ids, preview-result reads, preview-feedback/preview-metrics writes only; 6C5 cross-namespace guarantees intact (no result-path code changed)"
       },
       {
         "issueId": "w25",
         "description": "production isolation",
-        "severity": "HIGH"
+        "severity": "HIGH",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "productionChanges = 0: main 9cd95ff, production deployment id 6072350574 pre-phase, health byte-identical, no gate, no preview block (candidate3-wave1-production-isolation.json)"
       },
       {
         "issueId": "w26",
         "description": "per-request fallback (unchanged path, re-verified)",
-        "severity": "HIGH"
+        "severity": "HIGH",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "fallback path unchanged and re-exercised: out-of-scope mode refusal verified in preview:smoke/soak local suites; deployed unexpected-fallback rate 0/60"
       },
       {
         "issueId": "w27",
         "description": "emergency-off availability (documented, unchanged)",
-        "severity": "MEDIUM"
+        "severity": "MEDIUM",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "emergency-off unchanged (config flip or env var), documented in the Wave 1 operator guide"
       },
       {
         "issueId": "w28",
         "description": "tester guide",
-        "severity": "MEDIUM"
+        "severity": "MEDIUM",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "docs/preview/wave1-tester-guide.md — stable URL, key usage, confidentiality, 8 scenarios + 2 free-form + 1 rematch, feedback guidance, failure path"
       },
       {
         "issueId": "w29",
         "description": "operator guide",
-        "severity": "MEDIUM"
+        "severity": "MEDIUM",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "docs/preview/wave1-operator-guide.md — secret-file path, distribute/revoke/rotate, emergency-off, reports, isolation checks, stop/restart the wave"
       },
       {
         "issueId": "w30",
         "description": "Wave 1 invite package + launch record",
-        "severity": "HIGH"
+        "severity": "HIGH",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "candidate3-wave1-launch.json: READY_FOR_OWNER_DISTRIBUTION with policy/schema/access hashes; invite template with <YOUR_UNIQUE_ACCESS_KEY> placeholder"
+      },
+      {
+        "issueId": "w31",
+        "description": "preview:smoke/soak local suites read the pre-6C5 record shape (r.finalScore) — every probe threw and was counted as failure",
+        "severity": "MEDIUM",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "root cause: stale consumer of the record contract after the 6C5 production-shaping rewrite (alternative — engine regression — excluded by direct probes passing); fixed to r.core.finalScore; smoke 5/5 and soak 5/5 green; the suite itself is the regression protection and now runs against the real shape"
       }
     ],
-    "unresolvedTechnicalFailures": 30,
-    "unresolvedIds": [
-      "w01",
-      "w02",
-      "w03",
-      "w04",
-      "w05",
-      "w06",
-      "w07",
-      "w08",
-      "w09",
-      "w10",
-      "w11",
-      "w12",
-      "w13",
-      "w14",
-      "w15",
-      "w16",
-      "w17",
-      "w18",
-      "w19",
-      "w20",
-      "w21",
-      "w22",
-      "w23",
-      "w24",
-      "w25",
-      "w26",
-      "w27",
-      "w28",
-      "w29",
-      "w30"
-    ]
+    "unresolvedTechnicalFailures": 0,
+    "unresolvedIds": []
   }
 }

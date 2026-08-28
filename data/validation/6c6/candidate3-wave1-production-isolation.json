@@ -1,0 +1,26 @@
+{
+  "artifact": "candidate3-wave1-production-isolation",
+  "generatedBy": "phase 6C6 verification",
+  "data": {
+    "productionChanges": 0,
+    "productionNamespaceWritesFromWave1": 0,
+    "checks": {
+      "mainCommit": "9cd95ff local = origin (unchanged)",
+      "productionDeployment": {
+        "id": 6072350574,
+        "note": "same pre-phase deployment id before and after Wave 1 work"
+      },
+      "productionHealth": {
+        "status": "ok",
+        "build": "2.7.2",
+        "coreEngine": "ok",
+        "persistence": "ok",
+        "aiNarrative": "ok",
+        "simV3": true
+      },
+      "previewBlockAbsent": true,
+      "productionGateAbsent": "/ returns 200 public \u2014 no middleware on main",
+      "namespaceEvidence": "wave writes touch only preview-result/preview-feedback/preview-metrics keys; pv_ ids unreadable via production namespace (6C5 security suite re-run basis unchanged; feedback route requires preview-result existence)"
+    }
+  }
+}
