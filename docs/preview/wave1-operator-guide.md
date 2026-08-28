@@ -2,12 +2,23 @@
 
 ## Keys and testers
 
-- Raw keys (owner + five testers): **`.preview-secrets/wave1-access-keys.json`**
+- Raw keys (owner + five testers) live at the absolute path
+  **`~/era-clash-basketball/.preview-secrets/wave1-access-keys.json`**
   (gitignored, mode 0600, this machine only). Each entry maps a pseudonymous
   tester id to its key. Never commit, paste, or screenshot a key.
-- **Distribute:** send each tester their single key via a private channel
-  (iMessage/Signal/email), using `docs/preview/wave1-invite-template.md`.
-  One key per person — that's how feedback stays attributable.
+- **Distribute:** copy one key at a time to the clipboard — the key is never
+  printed, so it cannot end up in a terminal scrollback or a chat window:
+
+  ```bash
+  cd ~/era-clash-basketball && npm run preview:wave1-copy-key -- wave1-tester-01
+  ```
+
+  Then paste it into that tester's private message (iMessage/Signal/email)
+  using `docs/preview/wave1-invite-template.md`. Run it once per tester with
+  `wave1-tester-02` … `wave1-tester-05`; `owner` is your own key. One key per
+  person — that's how feedback stays attributable.
+- To read the file directly instead: `open ~/era-clash-basketball/.preview-secrets/wave1-access-keys.json`
+  (opens in your editor; avoid `cat` in any window whose output is shared).
 - **Revoke one tester:** in `config/previewAccess.js`, set their entry's
   `enabled: false`, commit, push (branches `phase-6c6-…` **and** `wave1`).
   Their key AND any already-issued session die on the next request; the other
