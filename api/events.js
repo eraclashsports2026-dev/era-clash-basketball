@@ -29,7 +29,7 @@ const ALLOWED = new Set([
   "result_created", "shared_link_opened",
   "pwa_install_prompt_shown", "pwa_installed",
   "frontend_error", "simulation_error",
-  "feedback_submitted", "account_claimed",
+  "feedback_submitted", "account_claimed", "preview_scenario_loaded",
 ]);
 
 const MAX_BATCH = 50;

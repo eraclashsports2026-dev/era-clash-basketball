@@ -15,6 +15,7 @@ import { tooLarge, MODES, validateTeamIds, validSimId, validChallengeId, cleanNa
 import { computeResult, dailyScore, newSeed } from "./_lib/game-core.js";
 import { computeResultV3 } from "./_lib/game-core-v3.js";
 import { computeResultPreview, PREVIEW_NAMESPACES, PREVIEW_RESULT_ID_PREFIX } from "./_lib/previewEngine.js";
+import { previewIdentity } from "./_lib/previewAccessCheck.js";
 import { previewEvent } from "./_lib/previewTelemetry.js";
 import { validCoachId, validEraId } from "./_lib/validate.js";
 import { validDifficulty } from "../src/v3/difficulty.js";
@@ -199,10 +200,14 @@ export default async function handler(req, res) {
     // pre-preview behavior.
     let previewComputed = null;
     if (f.previewSimEngine && f.simV3 && mode === "single" && blue && !dailyCfg) {
+      if (hasStore()) await pipeline([["HINCRBY", "preview-metrics:counters", "games_started", 1]]).catch(() => {});
       const pvT0 = Date.now();
+      const who = await previewIdentity(req.headers).catch(() => ({ ok: false }));
+      const testerId = who.ok ? who.testerId : "unattributed";
+      const sid = who.ok && who.sid ? who.sid : undefined;
       try {
         previewEvent("simulation_started", { mode });
-        previewEvent("preview_game_started", { mode });
+        previewEvent("preview_game_started", { mode, waveId: "candidate3-wave1", testerId, sid });
         if (chaos === "preview-fail") {
           const err = new Error("preview chaos injection");
           err.code = "PREVIEW_CHAOS";
@@ -213,14 +218,16 @@ export default async function handler(req, res) {
           coachBlueId: validCoachId(b.coachBlueId) || "neutral",
           eraStyleId: validEraId(b.eraStyleId) || undefined,
         }, seed);
-        previewEvent("preview_game_completed", { mode,
+        previewEvent("preview_game_completed", { mode, waveId: "candidate3-wave1", testerId, sid,
           candidateId: previewComputed.candidate.candidateId,
           calibrationVersion: previewComputed.candidate.possessionCalibrationVersion,
           simulationLatency: Date.now() - pvT0, fallbackUsed: false });
       } catch (e) {
         previewComputed = null;
         previewEvent("fallback_invoked", { mode, reason: String(e.code ?? e.message).slice(0, 80) });
-        previewEvent("preview_fallback_invoked", { mode, reason: String(e.code ?? e.message).slice(0, 80), fallbackUsed: true });
+        previewEvent("preview_fallback_invoked", { mode, waveId: "candidate3-wave1", testerId, sid,
+          reason: String(e.code ?? e.message).slice(0, 80), fallbackUsed: true });
+        if (hasStore()) await pipeline([["HINCRBY", "preview-metrics:counters", "fallback_invoked", 1]]).catch(() => {});
       }
     }
     const computed = previewComputed ?? (f.simV3
@@ -270,6 +277,19 @@ export default async function handler(req, res) {
     if (!kvDown) {
       const resultKey = previewComputed ? `${PREVIEW_NAMESPACES.result}:${resultId}` : `result:${resultId}`;
       await setJSON(resultKey, record, RESULT_TTL); // written once, never rewritten
+      if (previewComputed) {
+        // Wave metrics: cheap counters under the preview-metrics namespace so
+        // operator reports work without log access. No identity beyond the
+        // pseudonymous tester id; latency in coarse buckets.
+        const ms = Date.now() - started;
+        const bucket = ms < 250 ? "lt250" : ms < 500 ? "lt500" : ms < 1000 ? "lt1000" : ms < 2000 ? "lt2000" : "gte2000";
+        await pipeline([
+          ["HINCRBY", "preview-metrics:counters", "games_completed", 1],
+          ["HINCRBY", "preview-metrics:counters", "latency_ms_sum", ms],
+          ["HINCRBY", "preview-metrics:counters", `latency_${bucket}`, 1],
+          ["HINCRBY", "preview-metrics:games-by-tester", (await previewIdentity(req.headers).catch(() => ({})))?.testerId ?? "unattributed", 1],
+        ]).catch(() => {});
+      }
       records.persisted = true;
 
       if (mode === "daily") {

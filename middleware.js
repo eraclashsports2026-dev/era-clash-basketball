@@ -3,8 +3,19 @@
 // branches that carry this file — production builds from main, which does not.
 // Unauthorized requests get a minimal access page (HTML) or a JSON 401 (API)
 // that reveals nothing about the application.
-import { verifyPreviewKey, readCookie, COOKIE_NAME } from "./api/_lib/previewAccessCheck.js";
+import { verifyPreviewKey, verifySession, signSession, readCookie, COOKIE_NAME, SESSION_TTL_SECONDS } from "./api/_lib/previewAccessCheck.js";
 import { PREVIEW_ENV } from "./config/previewEnv.js";
+
+// Best-effort wave metrics (sessions, failed attempts) straight to the KV REST
+// API — the middleware cannot host the full store client, and a metrics miss
+// must never block a request.
+const metric = (field, by = 1) => {
+  const url = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
+  if (!url || !token) return;
+  fetch(`${url}/hincrby/preview-metrics:counters/${field}/${by}`, {
+    method: "POST", headers: { authorization: `Bearer ${token}` } }).catch(() => {});
+};
 
 const GATE_PAGE = `<!doctype html><html><head><meta charset="utf-8">
 <meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -28,8 +39,8 @@ export default async function middleware(req) {
   const url = new URL(req.url);
 
   // Key exchange lives IN the middleware (the deployment's function budget is
-  // full at 13): POST verifies the submitted key and sets the gate cookie,
-  // DELETE clears it. No serverless function involved.
+  // full at 13): POST verifies the submitted key and issues a SIGNED SESSION
+  // cookie — the raw key is never stored in the browser. DELETE clears it.
   if (url.pathname === "/api/preview-access") {
     if (req.method === "DELETE") {
       return new Response(null, { status: 204, headers: {
@@ -43,18 +54,33 @@ export default async function middleware(req) {
         ? String(JSON.parse(text || "{}").key ?? "")
         : String(new URLSearchParams(text).get("key") ?? "");
     } catch { key = ""; }
-    if (!(await verifyPreviewKey(key)).ok) {
+    const who = await verifyPreviewKey(key);
+    if (!who.ok) {
+      metric("access_denied_key");
       return new Response(JSON.stringify({ error: "preview_access_denied" }), {
         status: 401, headers: { "content-type": "application/json", "cache-control": "no-store" } });
     }
+    metric("sessions_started");
+    metric(`sessions_${who.testerId}`);
+    const session = await signSession(who);
+    if (!session) {
+      return new Response(JSON.stringify({ error: "preview_session_unavailable" }), {
+        status: 503, headers: { "content-type": "application/json", "cache-control": "no-store" } });
+    }
     return new Response(null, { status: 303, headers: {
       location: "/",
-      "set-cookie": `${COOKIE_NAME}=${encodeURIComponent(key)}; Path=/; Max-Age=${60 * 60 * 24 * 30}; HttpOnly; Secure; SameSite=Lax`,
+      "set-cookie": `${COOKIE_NAME}=${encodeURIComponent(session)}; Path=/; Max-Age=${SESSION_TTL_SECONDS}; HttpOnly; Secure; SameSite=Lax`,
       "cache-control": "no-store" } });
   }
 
-  const key = req.headers.get("x-preview-key") || readCookie(req.headers.get("cookie"), COOKIE_NAME);
-  if (key && (await verifyPreviewKey(key)).ok) return NEXT();
+  // Signed session first; the raw-key header stays for operator tooling
+  // (presented per request, never stored).
+  const session = await verifySession(readCookie(req.headers.get("cookie"), COOKIE_NAME));
+  if (session.ok) return NEXT();
+  const headerKey = req.headers.get("x-preview-key");
+  if (headerKey && (await verifyPreviewKey(headerKey)).ok) return NEXT();
+  if (session.reason === "expired" || session.reason === "revoked") metric(`access_denied_${session.reason}`);
+  else if (headerKey || session.reason !== "missing") metric("access_denied_key");
   if (url.pathname.startsWith("/api/")) {
     return new Response(JSON.stringify({ error: "preview_access_required" }), {
       status: 401, headers: { "content-type": "application/json", "cache-control": "no-store" } });

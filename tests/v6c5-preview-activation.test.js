@@ -4,7 +4,7 @@
 // telemetry vocabulary.
 import { describe, it, expect, afterEach } from "vitest";
 import { readFileSync } from "node:fs";
-import { verifyPreviewKey, presentedKey, readCookie, COOKIE_NAME } from "../api/_lib/previewAccessCheck.js";
+import { verifyPreviewKey, previewIdentity, readCookie, COOKIE_NAME } from "../api/_lib/previewAccessCheck.js";
 import { PREVIEW_ACCESS } from "../config/previewAccess.js";
 import { PREVIEW_ENV } from "../config/previewEnv.js";
 import { flags } from "../api/_lib/flags.js";
@@ -24,7 +24,8 @@ describe("preview access control", () => {
   it("stores only sha256 hashes, never keys", () => {
     for (const k of PREVIEW_ACCESS.keys) {
       expect(k.sha256).toMatch(/^[a-f0-9]{64}$/);
-      expect(Object.keys(k).sort()).toEqual(["label", "sha256"]);
+      // v2 entry shape (phase 6C6): pseudonymous id + role + rotation metadata
+      expect(Object.keys(k).sort()).toEqual(["enabled", "keyVersion", "role", "sha256", "testerId"]);
     }
     const src = readFileSync("config/previewAccess.js", "utf8");
     expect(src).not.toMatch(/@/); // no email addresses in source
@@ -36,11 +37,11 @@ describe("preview access control", () => {
     }
   });
 
-  it("reads the key from header or cookie, header first", () => {
-    expect(presentedKey({ "x-preview-key": "h", cookie: `${COOKIE_NAME}=c` })).toBe("h");
-    expect(presentedKey({ cookie: `a=1; ${COOKIE_NAME}=c; b=2` })).toBe("c");
-    expect(presentedKey({})).toBeNull();
-    expect(readCookie("evil=pv_access%3Dx", COOKIE_NAME)).toBeNull();
+  it("resolves identity from the session cookie or the raw-key header", async () => {
+    expect(readCookie(`a=1; ${COOKIE_NAME}=c; b=2`, COOKIE_NAME)).toBe("c");
+    expect(readCookie("evil=pv_session%3Dx", COOKIE_NAME)).toBeNull();
+    expect((await previewIdentity({})).ok).toBe(false);
+    expect((await previewIdentity({ "x-preview-key": "not-a-key" })).ok).toBe(false);
   });
 
   it("the gate is declared on and scoped to preview deployments", () => {
@@ -134,7 +135,7 @@ describe("structured preview feedback", () => {
   });
 
   it("never stores an unknown category", () => {
-    expect(validatePreviewFeedback({ ...good, issueCategory: "made_up" }).issueCategory).toBe("none");
+    expect(validatePreviewFeedback({ ...good, issueCategory: "made_up" }).issueCategory).toBe("NONE");
   });
 });
 

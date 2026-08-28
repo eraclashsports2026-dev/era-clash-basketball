@@ -29,6 +29,22 @@ const send = (body) => {
 // a yes/no, an optional category and comment — the candidate-evaluation shape
 // the preview phase collects. Internal ratings and engine identities are never
 // shown or asked about.
+// Wave 1 issue categories (schema v2) with tester-facing labels.
+const PREVIEW_CATEGORIES = [
+  ["NONE", "No issue"],
+  ["CRASH_OR_ERROR", "Crash or error"],
+  ["IMPOSSIBLE_RESULT", "Impossible result"],
+  ["BASKETBALL_CREDIBILITY", "Didn't feel like basketball"],
+  ["TEAM_IDENTITY", "Team didn't feel right"],
+  ["COACH_IDENTITY", "Coach didn't matter"],
+  ["ERA_STYLE", "Era didn't matter"],
+  ["POSTGAME_EXPLANATION", "Postgame didn't explain it"],
+  ["UI_FRICTION", "Clunky to use"],
+  ["MOBILE", "Mobile problem"],
+  ["PERFORMANCE", "Slow"],
+  ["OTHER", "Other"],
+];
+
 const PREVIEW_QUESTIONS = [
   ["resultBelievability", "The result felt believable"],
   ["teamIdentityFeltAccurate", "Each team felt like itself"],
@@ -40,7 +56,7 @@ const PREVIEW_QUESTIONS = [
 function PreviewFeedback({ ctx }) {
   const [ratings, setRatings] = useState({});
   const [share, setShare] = useState(null);
-  const [category, setCategory] = useState("none");
+  const [category, setCategory] = useState("NONE");
   const [comment, setComment] = useState("");
   const [done, setDone] = useState(false);
   const ready = PREVIEW_QUESTIONS.every(([k]) => ratings[k]) && share !== null;
@@ -50,7 +66,8 @@ function PreviewFeedback({ ctx }) {
     fetch("/api/feedback", {
       method: "POST", headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        kind: "preview", resultId: ctx.resultId, uid: getUid(),
+        kind: "preview", resultId: ctx.resultId,
+        scenarioId: ctx.scenarioId || undefined, gameMode: ctx.mode,
         ...ratings, wouldRematchOrShare: share === true,
         issueCategory: category, optionalComment: comment || undefined,
       }),
@@ -83,7 +100,7 @@ function PreviewFeedback({ ctx }) {
         </span>
       </div>
       <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 4 }}>
-        {[["none", "No issue"], ...CATEGORIES].map(([k, label]) => (
+        {PREVIEW_CATEGORIES.map(([k, label]) => (
           <button key={k} onClick={() => setCategory(k)} style={pill(category === k)}>{label}</button>
         ))}
       </div>

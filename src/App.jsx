@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { PLAYERS, POSITIONS, findCard } from "./players.js";
+import { getWave1Scenario } from "./wave1Scenarios.js";
 import { displayOVR, analyzeBalance, teamRating } from "./rating.js";
 import { T, card } from "./theme.js";
 import { genPlayer, genRoster, genOpponent } from "./draft.js";
@@ -85,6 +86,7 @@ export default function App() {
   const [flashSlot, setFlashSlot] = useState(null);
   const [narrative, setNarrative] = useState({ status: "none" }); // enhanced recap state
   const [v3, setV3] = useState({ enabled: false, eras: [], coaches: [] }); // V3 engine meta (flag-gated)
+  const [activeScenario, setActiveScenario] = useState(null); // Wave 1 guided scenario (?scenario=w1-sN)
   const [coachGold, setCoachGold] = useState(null);
   const [coachBlue, setCoachBlue] = useState(null);
   const [eraStyle, setEraStyle] = useState("2020s");
@@ -156,6 +158,26 @@ export default function App() {
       }
     }
   }, []);
+
+  // Wave 1 guided-scenario launcher (?scenario=w1-sN). Preview-cohort feature:
+  // it rides the existing query-state pattern and only PRELOADS a legal setup —
+  // teams, coaches, one Era Style — exactly as if the tester built it by hand.
+  // Coaches come from the server's own v3meta cards, so this waits for them.
+  useEffect(() => {
+    const id = new URLSearchParams(window.location.search).get("scenario");
+    if (!id || !v3.coaches.length || activeScenario) return;
+    const sc = getWave1Scenario(id);
+    if (!sc) return;
+    const five = (ids) => ids.map((pid) => PLAYERS.find((p) => p.id === pid)).filter(Boolean);
+    const gold = five(sc.gold), blue = five(sc.blue);
+    const cg = v3.coaches.find((c) => c.id === sc.coachGold);
+    const cb = v3.coaches.find((c) => c.id === sc.coachBlue);
+    if (gold.length !== 5 || blue.length !== 5 || !cg || !cb) return;
+    setBuildMethod("manual"); setTeam(gold); setOpponent(blue);
+    setCoachGold(cg); setCoachBlue(cb); setEraStyle(sc.era);
+    setActiveScenario(sc);
+    track("preview_scenario_loaded", { scenario_id: sc.id });
+  }, [v3.coaches]); // eslint-disable-line
 
   const addBadge = (k) => setBadges((b) => (b.includes(k) ? b : [...b, k]));
   const recordWinStreak = () => setStreaks((s) => {
@@ -691,6 +713,7 @@ export default function App() {
   const feedbackCtx = result?.sim ? {
     simulation_id: result.sim.simulation_id,
     resultId: result.resultId || null,
+    scenarioId: activeScenario?.id || null,
     mode: result.tag || result.type,
     my_team: (team || []).map((p) => p.id),
     opp_team: result.opp ? result.opp.map((p) => p.id) : undefined,
@@ -699,6 +722,15 @@ export default function App() {
   // ── Views ──────────────────────────────────────────────────────────────────
   const playView = (
     <div>
+      {activeScenario && (
+        <div style={{ margin: "0 auto 14px", maxWidth: 680, padding: "10px 14px", borderRadius: 10,
+          background: T.bgCardHover, border: `1px solid ${T.gold}`, fontSize: 12.5, color: T.textDim }}>
+          <div style={{ fontWeight: 800, color: T.gold, marginBottom: 3 }}>
+            GUIDED SCENARIO {activeScenario.id.replace("w1-s", "")} — {activeScenario.title}
+          </div>
+          {activeScenario.instruction}
+        </div>
+      )}
       {/* Compact hero */}
       {!team && !result && (
         <div style={{ textAlign: "center", padding: "18px 12px 6px" }}>
