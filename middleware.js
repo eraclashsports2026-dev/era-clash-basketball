@@ -35,6 +35,8 @@ export default async function middleware(req) {
 }
 
 export const config = {
+  // Node runtime (the edge runtime is deprecated for middleware).
+  runtime: "nodejs",
   // Gate the app shell, API and share pages. Static assets are inert without
   // the gated HTML and stay cache-friendly.
   matcher: ["/", "/index.html", "/api/:path*", "/result/:path*", "/challenge/:path*"],
