@@ -19,8 +19,12 @@ button{width:100%;padding:10px;border-radius:8px;border:0;background:#c9a227;col
 <input name="key" type="password" autocomplete="off" placeholder="access key" required>
 <button type="submit">Enter</button></form></body></html>`;
 
+// Vercel routing middleware continues to the route ONLY via the
+// x-middleware-next header — a bare `return` would answer with an empty 200.
+const NEXT = () => new Response(null, { headers: { "x-middleware-next": "1" } });
+
 export default async function middleware(req) {
-  if (process.env.VERCEL_ENV !== "preview" || !PREVIEW_ENV.requireAccess) return;
+  if (process.env.VERCEL_ENV !== "preview" || !PREVIEW_ENV.requireAccess) return NEXT();
   const url = new URL(req.url);
 
   // Key exchange lives IN the middleware (the deployment's function budget is
@@ -50,7 +54,7 @@ export default async function middleware(req) {
   }
 
   const key = req.headers.get("x-preview-key") || readCookie(req.headers.get("cookie"), COOKIE_NAME);
-  if (key && (await verifyPreviewKey(key)).ok) return;
+  if (key && (await verifyPreviewKey(key)).ok) return NEXT();
   if (url.pathname.startsWith("/api/")) {
     return new Response(JSON.stringify({ error: "preview_access_required" }), {
       status: 401, headers: { "content-type": "application/json", "cache-control": "no-store" } });
