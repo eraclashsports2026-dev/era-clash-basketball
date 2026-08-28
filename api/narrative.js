@@ -62,7 +62,11 @@ export default async function handler(req, res) {
 
   try {
     let result = null;
-    let resultId = validResultId(req.body?.resultId);
+    // Preview results narrate too: a pv_ id reads the preview-result store and
+    // caches under the preview-narrative namespace — never the production one.
+    const rawId = String(req.body?.resultId ?? "");
+    const isPreviewId = /^pv_[a-z0-9]{6,16}$/.test(rawId);
+    let resultId = isPreviewId ? rawId : validResultId(req.body?.resultId);
     // Narrative identity: the immutable result PLUS the exact configuration
     // that would produce the text. A prompt, schema, provider or model change
     // is a different artefact and must miss rather than serve stale writing.
@@ -74,13 +78,13 @@ export default async function handler(req, res) {
     let narrativeId = null, narrKey = null, lockKey = null;
     const bindIdentity = (id) => {
       narrativeId = { resultId: id, provider: PROVIDER, model: MODEL };
-      narrKey = cacheKeys.narrative(narrativeId);
+      narrKey = isPreviewId ? cacheKeys.previewNarrative({ resultId: id }) : cacheKeys.narrative(narrativeId);
       lockKey = cacheKeys.narrativeLock(narrativeId);
     };
     let holdsLock = false;
 
     if (resultId && hasStore()) {
-      result = await getJSON(`result:${resultId}`);
+      result = await getJSON(`${isPreviewId ? "preview-result" : "result"}:${resultId}`);
       if (!result) return sendError(res, "NOT_FOUND", requestId);
       // Shared identity only from OUR OWN stored record — never from the
       // request body, which the browser controls. A client that could name

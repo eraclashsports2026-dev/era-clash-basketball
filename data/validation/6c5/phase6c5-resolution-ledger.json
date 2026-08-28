@@ -1,0 +1,198 @@
+{
+  "artifact": "phase6c5-resolution-ledger",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "scripts/c5/ledger.mjs applyClosures",
+  "generatedAt": "2026-08-28T00:31:28.871Z",
+  "gitCommit": "4bb9b127c0818092e7f0d5b9cd8e7924a7510927",
+  "branch": "phase-6c5-candidate3-protected-preview",
+  "parameterSetHash": null,
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "items": [
+      {
+        "issueId": "p01",
+        "description": "preview package verification",
+        "severity": "HIGH",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "phase6c5-preflight.json: 16/16 gates — lock states, parent chain, live calibration/parameter/core hashes, flag default, namespaces, pv_ prefix, allowlist, replay identity, postgame contract, seals, preview suites"
+      },
+      {
+        "issueId": "p02",
+        "description": "deployment authorization (Vercel CLI unauthenticated; Git-integration previews active)",
+        "severity": "HIGH"
+      },
+      {
+        "issueId": "p03",
+        "description": "preview access restriction",
+        "severity": "HIGH"
+      },
+      {
+        "issueId": "p04",
+        "description": "preview environment isolation (env-scoped flag source)",
+        "severity": "HIGH"
+      },
+      {
+        "issueId": "p05",
+        "description": "Candidate 3 flag activation in preview only",
+        "severity": "HIGH"
+      },
+      {
+        "issueId": "p06",
+        "description": "production flag protection",
+        "severity": "HIGH"
+      },
+      {
+        "issueId": "p07",
+        "description": "result namespace isolation (deployed)",
+        "severity": "HIGH"
+      },
+      {
+        "issueId": "p08",
+        "description": "probability namespace isolation",
+        "severity": "MEDIUM"
+      },
+      {
+        "issueId": "p09",
+        "description": "narrative namespace isolation (deployed)",
+        "severity": "HIGH"
+      },
+      {
+        "issueId": "p10",
+        "description": "competition namespace isolation",
+        "severity": "MEDIUM"
+      },
+      {
+        "issueId": "p11",
+        "description": "Daily namespace isolation",
+        "severity": "MEDIUM"
+      },
+      {
+        "issueId": "p12",
+        "description": "Challenge namespace isolation",
+        "severity": "MEDIUM"
+      },
+      {
+        "issueId": "p13",
+        "description": "preview result-id prefix end-to-end (deployed)",
+        "severity": "HIGH"
+      },
+      {
+        "issueId": "p14",
+        "description": "candidate identity persistence (deployed)",
+        "severity": "HIGH"
+      },
+      {
+        "issueId": "p15",
+        "description": "deployed replay",
+        "severity": "HIGH"
+      },
+      {
+        "issueId": "p16",
+        "description": "deployed per-request fallback",
+        "severity": "HIGH"
+      },
+      {
+        "issueId": "p17",
+        "description": "emergency-off drill (deployed)",
+        "severity": "HIGH"
+      },
+      {
+        "issueId": "p18",
+        "description": "telemetry delivery (deployed, privacy-safe)",
+        "severity": "HIGH"
+      },
+      {
+        "issueId": "p19",
+        "description": "feedback submission end-to-end (deployed)",
+        "severity": "HIGH"
+      },
+      {
+        "issueId": "p20",
+        "description": "browser QA (deployed desktop)",
+        "severity": "HIGH"
+      },
+      {
+        "issueId": "p21",
+        "description": "mobile QA (deployed 375px)",
+        "severity": "HIGH"
+      },
+      {
+        "issueId": "p22",
+        "description": "deployed security checks",
+        "severity": "HIGH"
+      },
+      {
+        "issueId": "p23",
+        "description": "deployed soak",
+        "severity": "HIGH"
+      },
+      {
+        "issueId": "p24",
+        "description": "production health unchanged",
+        "severity": "HIGH"
+      },
+      {
+        "issueId": "p25",
+        "description": "preview health contract",
+        "severity": "MEDIUM"
+      },
+      {
+        "issueId": "p26",
+        "description": "operator documentation",
+        "severity": "MEDIUM"
+      },
+      {
+        "issueId": "p27",
+        "description": "tester documentation and scenario matrix",
+        "severity": "MEDIUM"
+      },
+      {
+        "issueId": "p28",
+        "description": "preview record shape mismatch: computeResultPreview did not fulfil the client postgame contract (record.core.*) — deployed preview would crash Postgame on flag enable",
+        "severity": "CRITICAL",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "root cause: previewEngine returned an engine-native shape while the client renders record.core.*; rewritten to fulfil the production postgame contract from possession output only (compatCore-equivalent, winning-side composite MVP, engine-agnostic pregame edges); regression-protected by tests/v6c5 production-shaped-record suite; vitest 1981/1981"
+      },
+      {
+        "issueId": "p29",
+        "description": "pv_ result ids unreadable: GET /api/game and /api/narrative rejected the preview id shape and read only production namespaces",
+        "severity": "CRITICAL",
+        "resolutionStatus": "FIXED_AND_VERIFIED",
+        "resolutionEvidence": "root cause: GET /api/game and /api/narrative validated only the production id shape; pv_ ids now resolve in preview-result and cache under preview-narrative, never production namespaces; regression-protected by tests/v6c5 preview-scoped-reads suite"
+      }
+    ],
+    "unresolvedTechnicalFailures": 26,
+    "unresolvedIds": [
+      "p02",
+      "p03",
+      "p04",
+      "p05",
+      "p06",
+      "p07",
+      "p08",
+      "p09",
+      "p10",
+      "p11",
+      "p12",
+      "p13",
+      "p14",
+      "p15",
+      "p16",
+      "p17",
+      "p18",
+      "p19",
+      "p20",
+      "p21",
+      "p22",
+      "p23",
+      "p24",
+      "p25",
+      "p26",
+      "p27"
+    ]
+  },
+  "outputHash": "e66edba6e33a595f833c64b8ac61a2cda1ae38f828a535734f2dd42e973358d1"
+}

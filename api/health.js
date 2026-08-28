@@ -7,6 +7,7 @@ import { flags } from "./_lib/flags.js";
 import { VERSIONS } from "../src/versions.js";
 import { computeResult, newSeed } from "./_lib/game-core.js";
 import { PLAYERS } from "../src/players.js";
+import { PREVIEW_CANDIDATE_CORE_HASH } from "./_lib/previewEngine.js";
 
 export default async function handler(req, res) {
   let coreEngine = "ok";
@@ -39,11 +40,13 @@ export default async function handler(req, res) {
     preview: {
       enabled: f.previewSimEngine,
       candidateId: "Candidate 3",
+      candidateCoreHash: PREVIEW_CANDIDATE_CORE_HASH,
       calibrationVersion: VERSIONS.registry?.possessionCalibrationVersion?.version ?? "1.3.0",
       featureFlag: "PREVIEW_SIM_ENGINE_ENABLED",
       fallbackEngine: "production engine 3.2.0 (per-request fallback; emergency-off returns every new request to production while stored preview results stay readable by version)",
       cacheNamespace: "preview-*",
       persistenceNamespace: "pv_ result-id prefix",
+      accessControl: process.env.VERCEL_ENV === "preview" ? "hashed-key allowlist (config/previewAccess.js)" : "n/a (not a preview deployment)",
     },
   });
 }

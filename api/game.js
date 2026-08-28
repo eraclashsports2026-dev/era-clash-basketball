@@ -29,9 +29,15 @@ import { officialDailyConfig } from "./_lib/dailyOfficial.js";
 const RESULT_TTL = 60 * 60 * 24 * 180;
 const IDEM_TTL = 60 * 60 * 24;
 
-const chaosHeader = (req) =>
-  process.env.ENABLE_CHAOS_TESTS === "true" && process.env.NODE_ENV !== "production"
-    ? String(req.headers["x-chaos"] || "") : "";
+const chaosHeader = (req) => {
+  const v = String(req.headers["x-chaos"] || "");
+  if (process.env.ENABLE_CHAOS_TESTS === "true" && process.env.NODE_ENV !== "production") return v;
+  // A deployed Preview permits ONLY the preview-scoped failure injection so
+  // the fallback drill can run against the real deployment. Production never
+  // honors any chaos value.
+  if (process.env.VERCEL_ENV === "preview" && v === "preview-fail") return v;
+  return "";
+};
 
 // Public, sanitized view of a stored result (never expose the owner session).
 const publicResult = (r) => { const { session, ...rest } = r; return rest; };
@@ -43,8 +49,9 @@ export default async function handler(req, res) {
 
   if (req.method === "GET") {
     const id = String(req.query?.id || "");
-    if (!/^[a-z0-9]{6,16}$/.test(id)) return sendError(res, "VALIDATION_FAILURE", requestId);
-    const r = hasStore() ? await getJSON(`result:${id}`) : null;
+    const isPreviewId = /^pv_[a-z0-9]{6,16}$/.test(id);
+    if (!isPreviewId && !/^[a-z0-9]{6,16}$/.test(id)) return sendError(res, "VALIDATION_FAILURE", requestId);
+    const r = hasStore() ? await getJSON(`${isPreviewId ? "preview-result" : "result"}:${id}`) : null;
     if (!r) return sendError(res, "NOT_FOUND", requestId);
     res.setHeader("Cache-Control", "public, max-age=300");
     return res.status(200).json(publicResult(r));
@@ -192,16 +199,28 @@ export default async function handler(req, res) {
     // pre-preview behavior.
     let previewComputed = null;
     if (f.previewSimEngine && f.simV3 && mode === "single" && blue && !dailyCfg) {
+      const pvT0 = Date.now();
       try {
         previewEvent("simulation_started", { mode });
+        previewEvent("preview_game_started", { mode });
+        if (chaos === "preview-fail") {
+          const err = new Error("preview chaos injection");
+          err.code = "PREVIEW_CHAOS";
+          throw err;
+        }
         previewComputed = computeResultPreview(mode, gold, blue, {
           coachGoldId: validCoachId(b.coachGoldId) || "neutral",
           coachBlueId: validCoachId(b.coachBlueId) || "neutral",
           eraStyleId: validEraId(b.eraStyleId) || undefined,
         }, seed);
+        previewEvent("preview_game_completed", { mode,
+          candidateId: previewComputed.candidate.candidateId,
+          calibrationVersion: previewComputed.candidate.possessionCalibrationVersion,
+          simulationLatency: Date.now() - pvT0, fallbackUsed: false });
       } catch (e) {
         previewComputed = null;
         previewEvent("fallback_invoked", { mode, reason: String(e.code ?? e.message).slice(0, 80) });
+        previewEvent("preview_fallback_invoked", { mode, reason: String(e.code ?? e.message).slice(0, 80), fallbackUsed: true });
       }
     }
     const computed = previewComputed ?? (f.simV3

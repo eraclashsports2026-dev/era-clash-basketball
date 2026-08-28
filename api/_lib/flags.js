@@ -19,6 +19,8 @@ const bool = (name, dflt) => {
   return !["false", "0", "off", "no"].includes(String(v).toLowerCase());
 };
 
+import { PREVIEW_ENV } from "../../config/previewEnv.js";
+
 export const flags = () => ({
   maintenance: bool("MAINTENANCE_MODE", false),
   // V3 possession engine: default OFF. Auto-enabled on Vercel PREVIEW
@@ -55,7 +57,12 @@ export const flags = () => ({
   // engine line) behind its own default-off flag. When false — the default in
   // every environment — no code path differs from production behavior, and
   // engine 3.2.0 remains the fallback for every request even when true.
-  previewSimEngine: bool("PREVIEW_SIM_ENGINE_ENABLED", false),
+  // An explicit PREVIEW_SIM_ENGINE_ENABLED always wins; otherwise Vercel
+  // Preview deployments read the repository preview config (production and
+  // local runs ignore it — the default stays false).
+  previewSimEngine: process.env.PREVIEW_SIM_ENGINE_ENABLED != null && process.env.PREVIEW_SIM_ENGINE_ENABLED !== ""
+    ? bool("PREVIEW_SIM_ENGINE_ENABLED", false)
+    : (process.env.VERCEL_ENV === "preview" && PREVIEW_ENV.previewSimEngine === true),
   leaderboard: bool("PUBLIC_LEADERBOARD_ENABLED", true),
   feedback: bool("FEEDBACK_ENABLED", true),
 });

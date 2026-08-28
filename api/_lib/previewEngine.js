@@ -6,6 +6,13 @@
 // failure inside this path falls back to production for THAT request and emits
 // fallback_invoked — a preview defect can never take the product down.
 //
+// The record this module returns is PRODUCTION-SHAPED (core.teamAStats etc.,
+// the same postgame contract computeResultV3 fulfils) so the deployed client
+// renders a preview game with zero client changes. Every derived field below
+// comes from the possession engine's own output or from the engine-agnostic
+// pregame analysis module — never from the production simulation engine, so
+// one result never mixes engines.
+//
 // Every preview result carries the candidate identity (the possession
 // fingerprint already embeds possessionCalibrationVersion and
 // actionLibraryVersion), is cached only under preview-* namespaces, and is
@@ -13,6 +20,8 @@
 // preview record.
 import { runPossessionGame } from "../../src/v3/possession/index.js";
 import { buildPossessionInput } from "../../src/v3/possession/testContext.js";
+import { resolveCoach, resolveEra, V3_VERSIONS } from "../../src/v3/engine.js";
+import { expectedWinPct, matchupPreviewV3, classifyOutcome, edgeBand } from "../../src/v3/analysis.js";
 import { versionOf } from "../../src/versions.js";
 import { previewEvent } from "./previewTelemetry.js";
 
@@ -24,17 +33,44 @@ export const PREVIEW_NAMESPACES = Object.freeze({
   competition: "preview-competition", daily: "preview-daily", challenge: "preview-challenge",
 });
 
+// The locked Candidate 3 core identity. The literal is bound to
+// data/validation/6c4d0/candidate3-lock.json by test; it is lock output, not
+// configuration — a new candidate means a new lock and a new literal.
+export const PREVIEW_CANDIDATE_CORE_HASH = "6a423d4fedf45bef3889b9425651e815c95da4f6e573a2c51a3f0ef713360b69";
+
 export const previewCandidateIdentity = () => ({
   candidateId: "Candidate 3",
+  coreHash: PREVIEW_CANDIDATE_CORE_HASH,
   possessionCalibrationVersion: versionOf("possessionCalibrationVersion"),
   actionLibraryVersion: versionOf("actionLibraryVersion"),
   possessionEngineVersion: versionOf("possessionEngineVersion"),
   fallbackEngine: `production engineVersion ${versionOf("engineVersion")}`,
 });
 
-const boxLine = (p) => ({ name: p.name, id: p.cardId ?? p.id, pts: p.pts ?? 0, fgm: p.fgm ?? 0, fga: p.fga ?? 0,
-  tpm: p.tpm ?? 0, tpa: p.tpa ?? 0, ftm: p.ftm ?? 0, fta: p.fta ?? 0, oreb: p.oreb ?? 0, dreb: p.dreb ?? 0,
-  ast: p.ast ?? 0, stl: p.stl ?? 0, blk: p.blk ?? 0, to: p.to ?? p.tov ?? 0, pf: p.pf ?? 0 });
+const boxLine = (p) => ({ id: p.cardId ?? p.id, name: p.name, pos: p.position, pts: p.pts ?? 0,
+  fgm: p.fgm ?? 0, fga: p.fga ?? 0, tpm: p.tpm ?? 0, tpa: p.tpa ?? 0, ftm: p.ftm ?? 0, fta: p.fta ?? 0,
+  oreb: p.oreb ?? 0, dreb: p.dreb ?? 0, ast: p.ast ?? 0, stl: p.stl ?? 0, blk: p.blk ?? 0,
+  to: p.to ?? p.tov ?? 0, pf: p.pf ?? 0 });
+const compatRow = (l) => ({ name: l.name, pts: l.pts, reb: l.oreb + l.dreb, ast: l.ast, stl: l.stl, blk: l.blk });
+
+// Preview MVP: the same deterministic composite production uses for a series
+// MVP (points + 0.7 assists + 0.5 rebounds), applied to the winning side.
+const mvpOf = (lines) => [...lines].sort((a, b) =>
+  (b.pts + b.ast * 0.7 + (b.oreb + b.dreb) * 0.5) - (a.pts + a.ast * 0.7 + (a.oreb + a.dreb) * 0.5))[0];
+
+const previewSummary = (g, mvp, exp) => {
+  const lead = g.winner === "Gold" ? "Team Gold" : "Team Blue";
+  const read = exp >= 0.55 ? "the pre-game read favored Gold" : exp <= 0.45 ? "the pre-game read favored Blue" : "the pre-game read was even";
+  const margin = Math.abs(g.finalScore.gold - g.finalScore.blue);
+  const kind = margin >= 15 ? "pulled away for a comfortable win" : margin >= 6 ? "controlled the closing stretch" : "survived a game that stayed close to the end";
+  return `${lead} ${kind}, ${g.finalScore.gold}-${g.finalScore.blue}${g.overtimes ? ` in ${g.overtimes} overtime${g.overtimes > 1 ? "s" : ""}` : ""}. ${mvp.name} led the winners with ${mvp.pts} points, and ${read}.`;
+};
+
+const mvpText = (mvp, possessions) => {
+  const eff = mvp.fga ? ` on ${mvp.fgm}-of-${mvp.fga} shooting` : "";
+  const extra = mvp.ast >= 5 ? ` and ${mvp.ast} assists` : (mvp.oreb + mvp.dreb) >= 9 ? ` and ${mvp.oreb + mvp.dreb} rebounds` : "";
+  return `${mvp.name} earned it with ${mvp.pts} points${eff}${extra}. In a ${possessions}-possession game, nobody converted their share of the offense into more value.`;
+};
 
 /**
  * Single-game preview compute. Throws on anything unexpected; the caller's
@@ -47,27 +83,76 @@ export const computeResultPreview = (mode, gold, blue, opts, seed) => {
     err.code = "PREVIEW_SCOPE";
     throw err;
   }
+  const coachG = resolveCoach(opts.coachGoldId ?? "neutral");
+  const coachB = resolveCoach(opts.coachBlueId ?? "neutral");
+  const era = resolveEra(opts.eraStyleId);
   const t0 = Date.now();
   const g = runPossessionGame(buildPossessionInput({
     goldIds: gold.map((p) => p.id), blueIds: blue.map((p) => p.id),
-    coachGoldId: opts.coachGoldId ?? "neutral", coachBlueId: opts.coachBlueId ?? "neutral",
-    eraStyleId: opts.eraStyleId ?? "2010s", simulationSeed: seed >>> 0,
+    coachGoldId: coachG.id, coachBlueId: coachB.id,
+    eraStyleId: era.id, simulationSeed: seed >>> 0,
   }), { includeLedger: false, assertInvariants: false });
+  if (g.internalError) {
+    const err = new Error(`possession engine reported an internal error: ${String(g.internalError).slice(0, 120)}`);
+    err.code = "PREVIEW_ENGINE_ERROR";
+    throw err;
+  }
+
+  // Engine-agnostic pregame analysis — shared with production, not a sim result.
+  const pre = matchupPreviewV3(gold, blue, coachG, coachB, era);
+  const exp = expectedWinPct(gold, blue, coachG, coachB, era, seed >>> 0);
+
+  const goldLines = g.gold.players.map(boxLine);
+  const blueLines = g.blue.players.map(boxLine);
+  const winLines = g.winner === "Gold" ? goldLines : blueLines;
+  const mvp = mvpOf(winLines);
+  const minutes = 48 + (g.overtimes ?? 0) * 5;
+  const possessions = Math.round((g.realized?.realizedPace ?? 95) * minutes / 48);
   const identity = previewCandidateIdentity();
+
   previewEvent("simulation_completed", { mode, latencyMs: Date.now() - t0,
     invariantViolations: (g.invariantViolations ?? []).length });
+
   return {
-    engine: "possession-preview",
+    versions: { v2: undefined, ...V3_VERSIONS },
+    seed: seed >>> 0,
+    eraId: era.id,
+    coachIds: { gold: coachG.id, blue: coachB.id },
+    mode,
+    // Preview identity — travels with the stored record and the API response.
     preview: true,
     candidate: identity,
     fingerprint: g.fingerprint,
-    seed: seed >>> 0,
-    eraId: opts.eraStyleId ?? "2010s",
-    coachIds: { gold: opts.coachGoldId ?? "neutral", blue: opts.coachBlueId ?? "neutral" },
-    finalScore: g.finalScore,
-    winner: g.finalScore.gold > g.finalScore.blue ? "gold" : "blue",
-    gold: { totals: g.gold.totals, players: g.gold.players.map(boxLine) },
-    blue: { totals: g.blue.totals, players: g.blue.players.map(boxLine) },
+    core: {
+      engine: "possession-preview",
+      winner: g.winner,
+      finalScore: g.finalScore,
+      seriesResult: `${g.finalScore.gold}-${g.finalScore.blue}`,
+      teamAStats: goldLines.map(compatRow),
+      teamBStats: blueLines.map(compatRow),
+      mvp: mvp.name,
+      mvpLine: compatRow(mvp),
+      edges: pre.categories.map((c) => ({ category: c.category, edge: c.edge })),
+      keyEdge: [...pre.categories].sort((a, b) => Math.abs(b.edge) - Math.abs(a.edge))[0],
+      slotDuels: goldLines.map((gl, i) => ({
+        pos: gl.pos, gold: { ...compatRow(gl), guardedBy: blueLines[i]?.name ?? null },
+        blue: { ...compatRow(blueLines[i]), guardedBy: gl.name },
+      })),
+      turningPoint: null,
+    },
+    fallbackSummary: previewSummary(g, mvp, exp),
+    mvpFallback: mvpText(mvp, possessions),
+    v3: {
+      possessions,
+      overtimes: g.overtimes ?? 0,
+      expectedGoldWinPct: Math.round(exp * 100),
+      expectedBand: edgeBand(exp),
+      outcomeClass: classifyOutcome(g.winner === "Gold" ? exp : 1 - exp),
+      fingerprint: g.fingerprint,
+      fullBox: { gold: goldLines, blue: blueLines },
+      teamTotals: { gold: g.gold.totals, blue: g.blue.totals },
+      preview: pre,
+    },
     periodScores: g.periodScores ?? null,
   };
 };

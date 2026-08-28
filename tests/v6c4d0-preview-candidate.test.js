@@ -121,7 +121,8 @@ describe("preview engine behaviour", () => {
     expect(r.fingerprint).toBeTruthy();
     expect(r.candidate.possessionCalibrationVersion).toBe("1.3.0");
     expect(r.candidate.actionLibraryVersion).toBe("2.1.0");
-    expect(r.finalScore.gold).not.toBe(r.finalScore.blue);
+    expect(r.core.finalScore.gold).not.toBe(r.core.finalScore.blue);
+    expect(r.core.winner === "Gold" || r.core.winner === "Blue").toBe(true);
   });
 
   it("is deterministic under replay", () => {

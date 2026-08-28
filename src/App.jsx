@@ -690,6 +690,7 @@ export default function App() {
   const goldCount = team ? 5 : buildMethod === "manual" ? manual.filter(Boolean).length : (yz ? yz.roster.filter((_, i) => yz.keep[i]).length : 0);
   const feedbackCtx = result?.sim ? {
     simulation_id: result.sim.simulation_id,
+    resultId: result.resultId || null,
     mode: result.tag || result.type,
     my_team: (team || []).map((p) => p.id),
     opp_team: result.opp ? result.opp.map((p) => p.id) : undefined,
