@@ -21,9 +21,12 @@ const EXPOSED_V1_KEYS = ["c3db0203453b5ff57285ec6bc0d08453", "5866914beb2a928b06
 describe("Wave 1 credentials", () => {
   it("carries exactly one owner and five wave1 testers, all v2, hashes only", () => {
     expect(PREVIEW_ACCESS.accessConfigVersion).toBe(2);
-    const owners = PREVIEW_ACCESS.keys.filter((k) => k.role === "owner" && k.enabled !== false);
-    const testers = PREVIEW_ACCESS.keys.filter((k) => k.role === "tester" && k.enabled !== false);
+    // Schema, not operational state: revoking a tester flips `enabled` and is
+    // a legitimate live operation — the ENTRIES and ids are what is pinned.
+    const owners = PREVIEW_ACCESS.keys.filter((k) => k.role === "owner");
+    const testers = PREVIEW_ACCESS.keys.filter((k) => k.role === "tester");
     expect(owners).toHaveLength(1);
+    expect(owners[0].enabled).toBe(true);
     expect(testers.map((t) => t.testerId).sort()).toEqual(
       ["wave1-tester-01", "wave1-tester-02", "wave1-tester-03", "wave1-tester-04", "wave1-tester-05"]);
     for (const k of PREVIEW_ACCESS.keys) {
