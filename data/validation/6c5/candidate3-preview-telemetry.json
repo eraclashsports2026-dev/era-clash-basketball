@@ -1,0 +1,27 @@
+{
+  "artifact": "candidate3-preview-telemetry",
+  "generatedBy": "phase 6C5 deployed verification",
+  "data": {
+    "pipeline": "function stdout JSON lines, scope=preview \u2192 Vercel log view",
+    "allowlistedEvents": [
+      "preview_session_started",
+      "preview_game_started",
+      "preview_game_completed",
+      "preview_game_failed",
+      "preview_fallback_invoked",
+      "preview_replay_verified",
+      "preview_feedback_submitted",
+      "preview_result_shared",
+      "preview_rematch_started",
+      "preview_mode_selected",
+      "simulation_started",
+      "simulation_completed",
+      "fallback_invoked"
+    ],
+    "privacy": "token/secret/authorization/cookie/password/email/session keys stripped structurally; only number/string/boolean values pass; unknown events dropped",
+    "verified": {
+      "unit": "tests/v6c5 + tests/v6c4d0 telemetry suites (secret stripping, allowlist)",
+      "deployed": "emission code paths exercised by 150+ deployed games, feedback 204s and the session-start exchange; log READING requires the Vercel dashboard (owner surface) \u2014 documented in the operator guide"
+    }
+  }
+}

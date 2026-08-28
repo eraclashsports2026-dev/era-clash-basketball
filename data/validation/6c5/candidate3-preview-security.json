@@ -1,0 +1,81 @@
+{
+  "artifact": "candidate3-preview-security",
+  "generatedBy": "node scripts/c5/deployedQa.mjs security",
+  "baseUrl": "https://era-clash-basketball-ddehacso6-era-clash.vercel.app",
+  "data": {
+    "passed": 14,
+    "failed": 0,
+    "gates": [
+      {
+        "name": "unauthenticated API blocked",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "unauthenticated page gated, internals hidden",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "wrong key blocked (authenticated-but-unauthorized)",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "wrong key exchange denied",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "pv_ id enumeration yields 404s",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "malformed ids rejected 400",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "preview record unreachable through the production namespace",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "candidate identity is server-authoritative",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "feedback injection rejected",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "oversized payload rejected",
+        "ok": true,
+        "detail": "status 413"
+      },
+      {
+        "name": "no secret material in health",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "no env exposure in health",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "security headers present",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "simulation rate limit configured",
+        "ok": true,
+        "detail": "20/min/IP + 10/min/session enforced server-side (verified during soak pacing)"
+      }
+    ]
+  }
+}
