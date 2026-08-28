@@ -77,7 +77,7 @@ function PreviewFeedback({ ctx }) {
 
   if (done) return <div style={{ marginTop: 14, fontSize: 12, color: T.textDim, textAlign: "center" }}>🙏 Thanks — preview feedback recorded.</div>;
   const pill = (active) => ({ padding: "5px 9px", fontSize: 11.5, borderRadius: 14, cursor: "pointer",
-    border: `1px solid ${active ? T.gold : T.border}`, background: active ? "#2b230a" : "transparent",
+    border: `1px solid ${active ? T.gold : T.border}`, background: active ? T.goldSoft : T.bgCard,
     color: active ? T.gold : T.textDim });
   return (
     <div style={{ marginTop: 14, padding: 12, borderRadius: 9, background: T.bgCardHover, border: `1px solid ${T.border}` }}>
@@ -107,7 +107,7 @@ function PreviewFeedback({ ctx }) {
       <textarea value={comment} onChange={(e) => setComment(e.target.value.slice(0, 500))}
         placeholder="Optional: anything that felt off or great…" rows={2}
         style={{ width: "100%", marginTop: 8, padding: 8, fontSize: 12, background: T.bg, color: T.text, border: `1px solid ${T.border}`, borderRadius: 7, resize: "none", boxSizing: "border-box", fontFamily: "inherit" }} />
-      <button onClick={submit} disabled={!ready} style={{ marginTop: 6, padding: "8px 16px", fontSize: 12, fontWeight: 800, border: "none", borderRadius: 7, background: ready ? T.gold : T.border, color: "#111", cursor: ready ? "pointer" : "default" }}>
+      <button onClick={submit} disabled={!ready} style={{ marginTop: 6, padding: "8px 16px", fontSize: 12, fontWeight: 800, border: "none", borderRadius: 7, background: ready ? T.gold : T.border, color: "#fffdf8", cursor: ready ? "pointer" : "default" }}>
         Send preview feedback
       </button>
     </div>
@@ -151,7 +151,7 @@ function BelievabilityFeedback({ ctx }) {
             <button key={k} onClick={() => setCategory(k)} style={{
               padding: "6px 10px", fontSize: 11.5, borderRadius: 16, cursor: "pointer",
               border: `1px solid ${category === k ? T.gold : T.border}`,
-              background: category === k ? "#2b230a" : "transparent",
+              background: category === k ? T.goldSoft : T.bgCard,
               color: category === k ? T.gold : T.textDim,
             }}>{label}</button>
           ))}
@@ -159,7 +159,7 @@ function BelievabilityFeedback({ ctx }) {
         <textarea value={comment} onChange={(e) => setComment(e.target.value.slice(0, 280))}
           placeholder="Optional: tell us more…" rows={2}
           style={{ width: "100%", marginTop: 8, padding: 8, fontSize: 12, background: T.bg, color: T.text, border: `1px solid ${T.border}`, borderRadius: 7, resize: "none", boxSizing: "border-box", fontFamily: "inherit" }} />
-        <button onClick={submitWhy} style={{ marginTop: 6, padding: "8px 16px", fontSize: 12, fontWeight: 800, border: "none", borderRadius: 7, background: T.gold, color: "#111", cursor: "pointer" }}>
+        <button onClick={submitWhy} style={{ marginTop: 6, padding: "8px 16px", fontSize: 12, fontWeight: 800, border: "none", borderRadius: 7, background: T.gold, color: "#fffdf8", cursor: "pointer" }}>
           Send feedback
         </button>
       </div>

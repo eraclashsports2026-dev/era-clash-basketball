@@ -1,79 +1,101 @@
-// ── EraClash design tokens ─────────────────────────────────────────────────────
-// Two connected environments share these tokens:
-//   • gameplay/arena (near-black, gold + blue, broadcast feel) — this file's T
-//   • brand/editorial (warm cream) — reserved for marketing/legal surfaces
-// Components must use tokens, not scattered hardcoded colors.
+// ── EraClash design tokens — hybrid warm-ivory / navy ─────────────────────────
+// Phase 7B. The product reads as a warm editorial sports page with a cinematic
+// navy arena core, replacing the near-black interface that made long reading
+// hard. Two surface families:
+//
+//   LIGHT (default page): warm ivory page, off-white cards, deep-navy ink.
+//     Roster panels, coach lists, era details, analysis, box score, feedback.
+//   ARENA (deliberate darkness): navy court centre, header, simulation
+//     loading, final-score hero, modal scrim.
+//
+// Every component consumes tokens, never raw colors, so the surface family is
+// chosen by token — not by each component inventing its own palette.
 export const T = {
-  // background.*
-  bg: "#0b0e17",              // arena base
-  bgCard: "#141a2a",          // card
-  bgCardHover: "#1a2136",     // cardElevated
-  bgPanel: "rgba(13,17,28,0.82)", // team panel over arena
-  border: "#232c45",          // border.subtle
-  // text.*
-  text: "#e8eaf2",
-  textDim: "#8a93ad",
-  textMuted: "#5b647d",
-  cream: "#f3ead8",
-  // gold.* (Team Gold / brand accent)
-  gold: "#fdb927",
-  goldSoft: "rgba(253,185,39,0.14)",
-  goldBorder: "rgba(253,185,39,0.45)",
-  glowGold: "0 0 34px rgba(253,185,39,0.12)",
-  // blue.* (Team Blue)
-  blue: "#6ea8fe",
-  blueSoft: "rgba(110,168,254,0.13)",
-  blueBorder: "rgba(110,168,254,0.45)",
-  glowBlue: "0 0 34px rgba(110,168,254,0.12)",
-  // status
-  green: "#2ecc71",
-  red: "#e74c3c",
-  orange: "#f39c12",
-  // shadow
-  shadowCard: "0 6px 24px rgba(0,0,0,0.35)",
+  // ── page + surfaces (light) ────────────────────────────────────────────
+  bg: "#f2efe8",              // warm ivory page
+  bgCard: "#fffdf8",          // primary card (off-white)
+  bgCardHover: "#f6f2ea",     // raised/secondary card
+  bgMuted: "#e9edf3",         // pale neutral gray-blue
+  bgPanel: "#fffdf8",         // team panel over the page
+  border: "#d9dee7",
+  borderStrong: "#bec7d4",
+
+  // ── ink ────────────────────────────────────────────────────────────────
+  text: "#121a2a",            // deep navy
+  textDim: "#5a6577",         // medium slate — AA on ivory and on white
+  textMuted: "#79839a",
+  cream: "#f8f2e5",
+
+  // ── arena (deliberate dark surfaces) ───────────────────────────────────
+  arena: "#0c1627",           // navy
+  arenaSoft: "#17233a",
+  arenaBorder: "#243350",
+  onArena: "#f1f4fa",         // text on navy
+  onArenaDim: "#a9b6cc",      // AA on navy
+
+  // ── team identity ──────────────────────────────────────────────────────
+  gold: "#b8860f",            // muted premium gold — AA as text on light
+  goldOnDark: "#e9b949",      // gold for navy surfaces
+  goldSoft: "#fdf3d8",
+  goldBorder: "#e0b955",
+  glowGold: "0 6px 22px rgba(184,134,15,0.12)",
+  blue: "#2f6fc8",
+  blueOnDark: "#7ab0f5",
+  blueSoft: "#e8f1ff",
+  blueBorder: "#8fb6e8",
+  glowBlue: "0 6px 22px rgba(47,111,200,0.12)",
+
+  // ── status ─────────────────────────────────────────────────────────────
+  green: "#1c7a4a",
+  red: "#b5322b",
+  orange: "#a4640a",
+
+  shadowCard: "0 2px 10px rgba(18,26,42,0.07)",
+  shadowRaised: "0 8px 26px rgba(18,26,42,0.12)",
 };
 
 export const card = { backgroundColor: T.bgCard, border: `1px solid ${T.border}`, borderRadius: "12px" };
 
-// Team-flavored panel styling (Gold = warm, Blue = cool). Restrained: border +
-// faint glow + accent typography, never flooded color.
+// Team-flavored panel styling. On the light shell this is a white card with a
+// team-colored top edge and a soft shadow — restrained, never flooded color.
 export const teamPanel = (team) => ({
   background: T.bgPanel,
-  border: `1px solid ${team === "blue" ? T.blueBorder : T.goldBorder}`,
+  border: `1px solid ${T.border}`,
+  borderTop: `3px solid ${team === "blue" ? T.blue : T.gold}`,
   borderRadius: 14,
-  boxShadow: team === "blue" ? T.glowBlue : T.glowGold,
-  backdropFilter: "blur(2px)",
+  boxShadow: T.shadowCard,
 });
 export const teamAccent = (team) => (team === "blue" ? T.blue : T.gold);
+/** Team accent for text sitting on a navy/arena surface. */
+export const teamAccentOnArena = (team) => (team === "blue" ? T.blueOnDark : T.goldOnDark);
 
 export const btnPrimary = {
-  width: "100%", padding: 15, fontSize: 14, fontWeight: 800, border: "none",
-  borderRadius: 10, background: T.gold, color: "#111", cursor: "pointer",
+  width: "100%", padding: 15, fontSize: 15, fontWeight: 800, border: "none",
+  borderRadius: 10, background: T.gold, color: "#fffdf8", cursor: "pointer",
 };
 export const btnSecondary = {
-  padding: "11px 14px", fontSize: 13, fontWeight: 700, borderRadius: 9,
-  border: `1px solid ${T.border}`, background: "transparent", color: T.text, cursor: "pointer",
+  padding: "11px 14px", fontSize: 14, fontWeight: 700, borderRadius: 9,
+  border: `1px solid ${T.borderStrong}`, background: T.bgCard, color: T.text, cursor: "pointer",
 };
 
-// ── Phase 7A design-system extensions ─────────────────────────────────────────
-// Layout, motion and typography tokens for the rebuilt Play flow. Values are
-// derived from the canonical UI concept (ERAclashUI5) mapped onto the existing
-// palette above — components consume tokens, never magic numbers.
-export const S = { xs: 4, sm: 8, md: 12, lg: 16, xl: 24, xxl: 36 };            // spacing
-export const R = { sm: 8, md: 10, lg: 14, xl: 18, pill: 999 };                 // radii
-export const Z = { header: 40, dropdown: 50, modal: 60, toast: 70 };           // layers
-export const DUR = { fast: 120, base: 200, slow: 400, reveal: 700 };           // ms
-export const BP = { mobile: 640, tablet: 900, desktop: 1200 };                 // px
+// ── Layout / motion / type tokens ────────────────────────────────────────────
+export const S = { xs: 4, sm: 8, md: 12, lg: 16, xl: 24, xxl: 36 };
+export const R = { sm: 8, md: 10, lg: 14, xl: 18, pill: 999 };
+export const Z = { header: 40, dropdown: 50, modal: 60, toast: 70 };
+export const DUR = { fast: 120, base: 200, slow: 400, reveal: 700 };
+export const BP = { mobile: 640, tablet: 900, desktop: 1200 };
 export const FONT = {
-  display: "Georgia, 'Times New Roman', serif",                                // brand / scores / section titles
-  ui: `"Segoe UI", system-ui, -apple-system, sans-serif`,                      // controls / body / stats
+  display: "Georgia, 'Times New Roman', serif",
+  ui: `"Segoe UI", system-ui, -apple-system, sans-serif`,
 };
-export const focusRing = `0 0 0 2px ${T.bg}, 0 0 0 4px ${T.gold}`;
-/** Reference stage chip (numbered wizard step). */
+export const focusRing = `0 0 0 2px ${T.bgCard}, 0 0 0 4px ${T.gold}`;
+
+/** Numbered wizard step chip. */
 export const stageChip = (state /* done | active | todo */) => ({
   display: "flex", alignItems: "center", gap: 8, padding: "9px 16px", borderRadius: R.md,
-  border: `1px solid ${state === "active" ? T.gold : state === "done" ? "rgba(46,204,113,0.5)" : T.border}`,
-  background: state === "active" ? T.goldSoft : "rgba(0,0,0,0.3)",
+  border: `1px solid ${state === "active" ? T.goldBorder : state === "done" ? "rgba(28,122,74,0.35)" : T.border}`,
+  background: state === "active" ? T.goldSoft : T.bgCard,
   color: state === "active" ? T.gold : state === "done" ? T.green : T.textMuted,
   cursor: state === "done" ? "pointer" : "default", minHeight: 44,
+  boxShadow: state === "active" ? T.shadowCard : "none",
 });

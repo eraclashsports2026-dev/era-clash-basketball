@@ -54,7 +54,7 @@ function KeyClashPreview({ gold, blue, v3 }) {
   const CORE = ["Talent", "Construction", "Creation", "Spacing", "Defense", "Rebounding"];
   const rows = (data?.edges ?? []).filter((e) => CORE.includes(e.category));
   return (
-    <div className="rise" style={{ padding: "14px 16px", borderRadius: 12, background: "rgba(0,0,0,0.45)", border: `1px solid ${T.border}`, maxWidth: 380, margin: "0 auto", width: "100%" }}>
+    <div className="rise" style={{ padding: "14px 16px", borderRadius: 12, background: T.bgMuted, border: `1px solid ${T.border}`, maxWidth: 380, margin: "0 auto", width: "100%" }}>
       <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: 2, color: T.gold, textAlign: "center" }}>MATCHUP PREVIEW</div>
       {!data && <div style={{ fontSize: 12, color: T.textDim, marginTop: 8, textAlign: "center" }}>Reading the matchup…</div>}
       {rows.length > 0 && (
@@ -84,7 +84,7 @@ export default function MatchupPreview({ gold, blue, v3 }) {
   const ready = gold?.filter(Boolean).length === 5 && blue?.filter(Boolean).length === 5;
   if (!ready) {
     return (
-      <div style={{ padding: "14px 16px", borderRadius: 12, background: "rgba(0,0,0,0.35)", border: `1px solid ${T.border}`, textAlign: "center", maxWidth: 340, margin: "0 auto" }}>
+      <div style={{ padding: "14px 16px", borderRadius: 12, background: T.bgCardHover, border: `1px solid ${T.border}`, textAlign: "center", maxWidth: 340, margin: "0 auto" }}>
         <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: 2, color: T.gold }}>MATCHUP PREVIEW</div>
         <div style={{ fontSize: 12, color: T.textDim, marginTop: 6, lineHeight: 1.5 }}>
           Complete both teams to see what this matchup comes down to.
@@ -97,7 +97,7 @@ export default function MatchupPreview({ gold, blue, v3 }) {
   const p = winProbability(gold, blue);
   const pg = Math.round(p * 100);
   return (
-    <div className="rise" style={{ padding: "14px 16px", borderRadius: 12, background: "rgba(0,0,0,0.45)", border: `1px solid ${T.border}`, maxWidth: 360, margin: "0 auto", width: "100%" }}>
+    <div className="rise" style={{ padding: "14px 16px", borderRadius: 12, background: T.bgMuted, border: `1px solid ${T.border}`, maxWidth: 360, margin: "0 auto", width: "100%" }}>
       <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: 2, color: T.gold, textAlign: "center", marginBottom: 10 }}>MATCHUP PREVIEW</div>
       {edges.map((e) => {
         const goldSide = e.edge >= 0;

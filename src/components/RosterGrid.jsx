@@ -65,7 +65,7 @@ function EmptyCard({ pos, team, accent, onAdd }) {
     </>
   );
   const style = {
-    padding: "14px 8px", borderRadius: R.md, background: "rgba(0,0,0,0.22)",
+    padding: "14px 8px", borderRadius: R.md, background: T.bgCardHover,
     border: `1px dashed ${T.border}`, minWidth: 0, boxSizing: "border-box", width: "100%",
     textAlign: "center", color: T.text, minHeight: 132,
   };

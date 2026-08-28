@@ -36,8 +36,8 @@ const VARIANTS = {
 };
 
 const TEAM_TINT = {
-  gold: "linear-gradient(180deg, rgba(253,185,39,0.10), rgba(11,14,23,0.55))",
-  blue: "linear-gradient(180deg, rgba(110,168,254,0.10), rgba(11,14,23,0.55))",
+  gold: "linear-gradient(180deg, T.goldSoft, rgba(11,14,23,0.55))",
+  blue: "linear-gradient(180deg, T.blueSoft, rgba(11,14,23,0.55))",
 };
 
 // Branded silhouette: initials on an era-colored jersey shape. Intentional,
@@ -49,7 +49,7 @@ function Silhouette({ p, v, team }) {
     <div role="img" aria-label={`${p.name} EraClash player silhouette`} style={{
       width: v.w, height: v.h, borderRadius: v.radius, flexShrink: 0, position: "relative",
       background: `linear-gradient(180deg, ${era}33 0%, #0b0e17 90%)`,
-      border: `1px solid ${team === "blue" ? "rgba(110,168,254,0.35)" : "rgba(253,185,39,0.3)"}`,
+      border: `1px solid ${team === "blue" ? T.blueBorder : T.goldBorder}`,
       display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden",
     }}>
       <svg viewBox="0 0 64 80" width="100%" height="100%" style={{ position: "absolute", inset: 0, opacity: 0.5 }} aria-hidden="true">
@@ -72,7 +72,7 @@ export default function PlayerImage({ player, variant = "thumbnail", team = "gol
   if (!img || failed) return <Silhouette p={player} v={v} team={team} />;
 
   return (
-    <div style={{ width: v.w, height: v.h, borderRadius: v.radius, flexShrink: 0, position: "relative", overflow: "hidden", background: "#0b0e17", border: `1px solid ${team === "blue" ? "rgba(110,168,254,0.35)" : "rgba(253,185,39,0.3)"}` }}>
+    <div style={{ width: v.w, height: v.h, borderRadius: v.radius, flexShrink: 0, position: "relative", overflow: "hidden", background: T.bgMuted, border: `1px solid ${team === "blue" ? T.blueBorder : T.goldBorder}` }}>
       <img
         src={img.local_asset_path}
         alt={`${player.name}, ${player.decade} player image`}

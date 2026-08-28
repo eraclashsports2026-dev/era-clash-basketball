@@ -5,67 +5,45 @@
 // simulation truthfully — AI writes recaps, it does not decide games.
 import { useEffect, useState } from "react";
 import { T, S, R, FONT } from "../theme.js";
-import { PLAYERS } from "../players.js";
 
-// ── Daily Clash card ────────────────────────────────────────────────────────
-const msToNextUtcMidnight = () => {
-  const now = new Date();
-  const next = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, 0, 0, 0, 0);
-  return Math.max(0, next - now.getTime());
-};
-const hhmmss = (ms) => {
-  const s = Math.floor(ms / 1000);
-  return [Math.floor(s / 3600), Math.floor((s % 3600) / 60), s % 60]
-    .map((n) => String(n).padStart(2, "0")).join(":");
-};
-
-export function DailyClashCard({ done, onPlay }) {
-  const [left, setLeft] = useState(msToNextUtcMidnight);
-  useEffect(() => {
-    const t = setInterval(() => setLeft(msToNextUtcMidnight()), 1000);
-    return () => clearInterval(t);
-  }, []);
+// ── Ball IQ toggle (a draft setting, not a hero card) ───────────────────────
+export function BallIqToggle({ on, onChange }) {
   return (
-    <aside style={{ padding: S.md, borderRadius: R.lg, background: "rgba(13,17,28,0.78)", border: `1px solid ${T.goldBorder}`, minWidth: 210 }}>
-      <div style={{ fontSize: 11, fontWeight: 900, letterSpacing: 1.5, color: T.gold }}>🏆 DAILY CLASH</div>
-      <div style={{ fontSize: 12, color: T.textDim, margin: "4px 0 10px" }}>
-        {done ? "Today's attempt is done" : "Today's challenge is live"}
-      </div>
-      <button onClick={onPlay} style={{
-        width: "100%", padding: "10px 14px", fontSize: 12.5, fontWeight: 800, borderRadius: R.sm, cursor: "pointer",
-        minHeight: 44, border: "none", background: done ? "transparent" : T.gold, color: done ? T.gold : "#111",
-        boxShadow: done ? `inset 0 0 0 1px ${T.goldBorder}` : "none",
-      }}>{done ? "See today's board →" : "Play Today's Challenge →"}</button>
-      <div style={{ fontSize: 10.5, color: T.textMuted, marginTop: 8 }}>
-        🕐 Next challenge in <b style={{ color: T.textDim, fontVariantNumeric: "tabular-nums" }}>{hhmmss(left)}</b>
-      </div>
-    </aside>
+    <label style={{ display: "inline-flex", alignItems: "center", gap: 8, cursor: "pointer", fontSize: 12, color: T.textDim }}>
+      <input type="checkbox" checked={on} onChange={(e) => onChange(e.target.checked)}
+        style={{ position: "absolute", opacity: 0, width: 1, height: 1 }} />
+      <span aria-hidden="true" style={{
+        width: 34, height: 20, borderRadius: 999, padding: 2, boxSizing: "border-box",
+        background: on ? T.gold : T.bgMuted, border: `1px solid ${on ? T.goldBorder : T.border}`,
+        display: "inline-flex", justifyContent: on ? "flex-end" : "flex-start", transition: "background .2s",
+      }}>
+        <span style={{ width: 14, height: 14, borderRadius: "50%", background: on ? "#fffdf8" : T.textMuted, display: "block" }} />
+      </span>
+      <span>Ball IQ<span className="sr-only"> mode — hide stats while drafting</span></span>
+    </label>
   );
 }
 
-// ── Ball IQ card ────────────────────────────────────────────────────────────
-export function BallIqCard({ on, onChange }) {
+// ── The arena centre: the navy court between the two team panels ────────────
+export function ArenaCentre({ children, compact }) {
   return (
-    <aside style={{ padding: S.md, borderRadius: R.lg, background: "rgba(13,17,28,0.78)", border: `1px solid ${T.border}`, minWidth: 210 }}>
-      <label style={{ display: "block", cursor: "pointer" }}>
-        <span style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 11, fontWeight: 900, letterSpacing: 1.5, color: T.text }}>
-          <span aria-hidden="true">🙈</span> BALL IQ MODE
+    <div className="ec-arena-inset" style={{ padding: compact ? "18px 14px" : "26px 18px", textAlign: "center" }}>
+      <div aria-hidden="true" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2, marginBottom: children ? 14 : 0 }}>
+        <span style={{
+          width: 62, height: 62, borderRadius: 999, display: "inline-flex", alignItems: "center", justifyContent: "center",
+          border: `2px solid ${T.goldOnDark}55`, fontFamily: FONT.display, fontWeight: 900, fontStyle: "italic", fontSize: 22,
+        }}>
+          <span style={{ color: T.goldOnDark }}>E</span><span style={{ color: T.blueOnDark }}>C</span>
         </span>
-        <span style={{ display: "block", fontSize: 12, color: T.textDim, margin: "4px 0 10px" }}>Stats hidden during draft</span>
-        <span style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <input type="checkbox" checked={on} onChange={(e) => onChange(e.target.checked)}
-            style={{ position: "absolute", opacity: 0, width: 1, height: 1 }} />
-          <span aria-hidden="true" style={{
-            width: 42, height: 24, borderRadius: 999, padding: 3, boxSizing: "border-box",
-            background: on ? T.gold : "rgba(255,255,255,0.12)", border: `1px solid ${on ? T.gold : T.border}`,
-            display: "inline-flex", justifyContent: on ? "flex-end" : "flex-start", transition: "background .2s",
-          }}>
-            <span style={{ width: 16, height: 16, borderRadius: "50%", background: on ? "#111" : T.textDim, display: "block" }} />
-          </span>
-          <span style={{ fontSize: 11, color: T.textDim }}>Test your basketball IQ</span>
-        </span>
-      </label>
-    </aside>
+        <span style={{ fontSize: 8.5, letterSpacing: 3, color: T.onArenaDim, fontWeight: 700 }}>ERACLASH</span>
+        <span style={{
+          fontSize: 34, fontWeight: 900, fontStyle: "italic", fontFamily: FONT.display, letterSpacing: -1, marginTop: 4,
+          background: `linear-gradient(120deg, ${T.goldOnDark} 28%, #ffffff 50%, ${T.blueOnDark} 72%)`,
+          WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent",
+        }}>VS</span>
+      </div>
+      {children}
+    </div>
   );
 }
 
@@ -76,17 +54,24 @@ const EDGE_ICON = {
 };
 const CORE = ["Talent", "Construction", "Creation", "Spacing", "Defense", "Rebounding"];
 
-export function MatchupGrid({ edges, keyClash, loading, placeholder }) {
+export function MatchupGrid({ edges, keyClash, loading, placeholder, onArena }) {
+  // On the navy court the same content uses arena ink and brighter team accents.
+  const ink = onArena ? T.onArena : T.text;
+  const inkDim = onArena ? T.onArenaDim : T.textDim;
+  const goldC = onArena ? T.goldOnDark : T.gold;
+  const blueC = onArena ? T.blueOnDark : T.blue;
+  const surface = onArena ? "rgba(255,255,255,0.04)" : T.bgMuted;
+  const line = onArena ? T.arenaBorder : T.border;
   if (placeholder) {
     return (
-      <div style={{ padding: S.lg, borderRadius: R.lg, background: "rgba(0,0,0,0.42)", border: `1px solid ${T.border}`, textAlign: "center" }}>
-        <div style={{ fontSize: 10.5, fontWeight: 900, letterSpacing: 2, color: T.gold }}>MATCHUP PREVIEW</div>
-        <div style={{ fontSize: 12, color: T.textDim, margin: "8px 0 12px", lineHeight: 1.5 }}>
+      <div style={{ padding: S.lg, borderRadius: R.lg, background: surface, border: `1px solid ${line}`, textAlign: "center" }}>
+        <div style={{ fontSize: 10.5, fontWeight: 900, letterSpacing: 2, color: goldC }}>MATCHUP PREVIEW</div>
+        <div style={{ fontSize: 13, color: inkDim, margin: "8px 0 12px", lineHeight: 1.5 }}>
           Complete both teams to see what this matchup comes down to.
         </div>
         <div style={{ display: "flex", justifyContent: "center", gap: 14, flexWrap: "wrap" }}>
           {CORE.map((c) => (
-            <span key={c} style={{ fontSize: 9.5, color: T.textMuted, textAlign: "center", width: 54 }}>
+            <span key={c} style={{ fontSize: 10, color: inkDim, textAlign: "center", width: 54 }}>
               <span aria-hidden="true" style={{ display: "block", fontSize: 16, opacity: 0.5 }}>{EDGE_ICON[c]}</span>{c}
             </span>
           ))}
@@ -96,18 +81,18 @@ export function MatchupGrid({ edges, keyClash, loading, placeholder }) {
   }
   const rows = (edges ?? []).filter((e) => CORE.includes(e.category));
   return (
-    <div className="rise" style={{ padding: S.lg, borderRadius: R.lg, background: "rgba(0,0,0,0.42)", border: `1px solid ${T.border}` }}>
-      <div style={{ fontSize: 10.5, fontWeight: 900, letterSpacing: 2, color: T.gold, textAlign: "center", marginBottom: 10 }}>MATCHUP PREVIEW</div>
-      {loading && <div style={{ fontSize: 12, color: T.textDim, textAlign: "center" }}>Reading the matchup…</div>}
+    <div className="rise" style={{ padding: S.lg, borderRadius: R.lg, background: surface, border: `1px solid ${line}` }}>
+      <div style={{ fontSize: 10.5, fontWeight: 900, letterSpacing: 2, color: goldC, textAlign: "center", marginBottom: 10 }}>MATCHUP PREVIEW</div>
+      {loading && <div style={{ fontSize: 13, color: inkDim, textAlign: "center" }}>Reading the matchup…</div>}
       {rows.length > 0 && (
         <div className="edge-grid">
           {rows.map((e) => (
             <div key={e.category} style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
               <span aria-hidden="true" style={{ fontSize: 14, flexShrink: 0 }}>{EDGE_ICON[e.category] ?? "•"}</span>
               <span style={{ minWidth: 0 }}>
-                <span style={{ display: "block", fontSize: 10.5, color: T.textDim, whiteSpace: "nowrap" }}>{e.category}</span>
+                <span style={{ display: "block", fontSize: 11, color: inkDim, whiteSpace: "nowrap" }}>{e.category}</span>
                 <span style={{ display: "block", fontSize: 11.5, fontWeight: 800, whiteSpace: "nowrap",
-                  color: e.lead === "gold" ? T.gold : e.lead === "blue" ? T.blue : T.textMuted }}>
+                  color: e.lead === "gold" ? goldC : e.lead === "blue" ? blueC : inkDim }}>
                   {e.lead === "even" ? "Even" : e.lead === "gold" ? "Gold Edge" : "Blue Edge"}{e.strong ? " ★" : ""}
                 </span>
               </span>
@@ -116,38 +101,12 @@ export function MatchupGrid({ edges, keyClash, loading, placeholder }) {
         </div>
       )}
       {keyClash && (
-        <div style={{ marginTop: 10, paddingTop: 10, borderTop: `1px solid ${T.border}` }}>
-          <div style={{ fontSize: 9.5, fontWeight: 900, letterSpacing: 2, color: T.textDim }}>KEY CLASH</div>
-          <div style={{ fontSize: 12, color: T.text, marginTop: 4, lineHeight: 1.55 }}>{keyClash}</div>
+        <div style={{ marginTop: 10, paddingTop: 10, borderTop: `1px solid ${line}` }}>
+          <div style={{ fontSize: 9.5, fontWeight: 900, letterSpacing: 2, color: inkDim }}>KEY CLASH</div>
+          <div style={{ fontSize: 13, color: ink, marginTop: 4, lineHeight: 1.55 }}>{keyClash}</div>
         </div>
       )}
-      <div style={{ fontSize: 10, color: T.textMuted, textAlign: "center", marginTop: 8 }}>Run the sim to find out.</div>
-    </div>
-  );
-}
-
-// ── Feature strip ───────────────────────────────────────────────────────────
-// Real claims only: the legend count is counted, and the simulation line does
-// not pretend AI decides outcomes.
-export function FeatureStrip() {
-  const items = [
-    ["👥", `${PLAYERS.length}+ LEGENDS`, "From every era of NBA history"],
-    ["⭐", "SMART RATING SYSTEM", "Position weightings, archetypes and era adjusted"],
-    ["🧪", "TEAM CHEMISTRY", "Build synergy. Unlock bonuses. Avoid weaknesses."],
-    ["🏀", "POSSESSION SIMULATION", "Era-aware matchups. Box scores. MVPs. Game stories."],
-    ["🔗", "SHARE & CHALLENGE", "Challenge friends. Share results. Climb the leaderboard."],
-  ];
-  return (
-    <div className="feature-strip" style={{ marginTop: S.xl, padding: S.lg, borderRadius: R.lg, background: "rgba(0,0,0,0.3)", border: `1px solid ${T.border}` }}>
-      {items.map(([icon, title, sub]) => (
-        <div key={title} style={{ display: "flex", gap: 10, minWidth: 0 }}>
-          <span aria-hidden="true" style={{ fontSize: 18, flexShrink: 0 }}>{icon}</span>
-          <span style={{ minWidth: 0 }}>
-            <span style={{ display: "block", fontSize: 10.5, fontWeight: 900, letterSpacing: 1, color: T.gold }}>{title}</span>
-            <span style={{ display: "block", fontSize: 10.5, color: T.textDim, lineHeight: 1.4 }}>{sub}</span>
-          </span>
-        </div>
-      ))}
+      <div style={{ fontSize: 10.5, color: inkDim, textAlign: "center", marginTop: 8 }}>Run the sim to find out.</div>
     </div>
   );
 }

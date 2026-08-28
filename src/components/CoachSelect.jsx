@@ -14,7 +14,7 @@ function CoachAvatar({ name, accent, size = 42 }) {
   return (
     <span aria-hidden="true" style={{
       width: size, height: size, flexShrink: 0, borderRadius: 10,
-      background: "linear-gradient(160deg, rgba(255,255,255,0.09), rgba(0,0,0,0.4))",
+      background: "linear-gradient(160deg, rgba(255,255,255,0.09), T.bgMuted)",
       border: `1px solid ${accent}55`, display: "inline-flex", alignItems: "center", justifyContent: "center",
       fontSize: size * 0.34, fontWeight: 900, letterSpacing: 0.5, color: accent, fontStyle: "italic",
     }}>{initials}</span>
@@ -41,7 +41,7 @@ export default function CoachSelect({ side, teamIds, eraStyleId, selected, onSel
 
   if (selected) {
     return (
-      <div style={{ marginTop: 12, padding: "12px 14px", borderRadius: 12, background: "rgba(0,0,0,0.3)", border: `1px solid ${accent}` }}>
+      <div style={{ marginTop: 12, padding: "12px 14px", borderRadius: 12, background: T.bgCardHover, border: `1px solid ${accent}` }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           <CoachAvatar name={selected.name} accent={accent} />
           <span style={{ minWidth: 0, flex: 1 }}>
@@ -54,7 +54,7 @@ export default function CoachSelect({ side, teamIds, eraStyleId, selected, onSel
             </span>
           </span>
           <span aria-hidden="true" style={{
-            width: 22, height: 22, flexShrink: 0, borderRadius: "50%", background: accent, color: "#111",
+            width: 22, height: 22, flexShrink: 0, borderRadius: "50%", background: accent, color: "#fffdf8",
             display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 900,
           }}>✓</span>
         </div>
@@ -92,7 +92,7 @@ export default function CoachSelect({ side, teamIds, eraStyleId, selected, onSel
                   </span>
                 </span>
                 <span style={{ flexShrink: 0, textAlign: "right" }}>
-                  <span style={{ display: "block", fontSize: 9.5, fontWeight: 800, color: c.teamFit === "EXCELLENT" ? T.green : c.teamFit === "GOOD" ? "#9acd6a" : T.textDim }}>
+                  <span style={{ display: "block", fontSize: 9.5, fontWeight: 800, color: c.teamFit === "EXCELLENT" ? T.green : c.teamFit === "GOOD" ? T.green : T.textDim }}>
                     FIT: {c.teamFit}{c.eraFit ? ` · ERA ${c.eraFit}` : ""}
                   </span>
                   <span aria-hidden="true" style={{
@@ -113,7 +113,7 @@ export default function CoachSelect({ side, teamIds, eraStyleId, selected, onSel
       )}
 
       {showAll && (
-        <div role="dialog" aria-label="All coaches" onClick={() => setShowAll(false)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.8)", zIndex: 110, display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }}>
+        <div role="dialog" aria-label="All coaches" onClick={() => setShowAll(false)} style={{ position: "fixed", inset: 0, background: "rgba(12,22,39,0.55)", zIndex: 110, display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }}>
           <div onClick={(e) => e.stopPropagation()} style={{ ...card, width: "100%", maxWidth: 620, maxHeight: "85vh", overflowY: "auto", padding: 16 }}>
             <div style={{ display: "flex", alignItems: "center", marginBottom: 10 }}>
               <h2 style={{ margin: 0, fontSize: 16, fontWeight: 900, fontStyle: "italic" }}>ALL 25 COACHES</h2>

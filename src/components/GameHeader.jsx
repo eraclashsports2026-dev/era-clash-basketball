@@ -71,17 +71,17 @@ export default function GameHeader({ nav, onNav, dailyStreak, modes = [], gameMo
   return (
     <header style={{
       display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap",
-      padding: "12px 20px", borderBottom: `1px solid ${T.border}`,
-      background: "rgba(6,8,16,0.78)", backdropFilter: "blur(6px)",
+      padding: "12px 20px",
+      background: T.arena, borderBottom: `1px solid ${T.arenaBorder}`,
       position: "sticky", top: 0, zIndex: Z.header,
     }}>
       <button onClick={() => onNav("Play")} aria-label="EraClash Basketball home" style={{
         background: "none", border: "none", cursor: "pointer", padding: 0,
-        fontSize: 19, fontWeight: 900, fontStyle: "italic", letterSpacing: -0.5, color: T.text,
+        fontSize: 19, fontWeight: 900, fontStyle: "italic", letterSpacing: -0.5, color: T.onArena,
         fontFamily: FONT.display,
       }}>
-        ERA<span style={{ color: T.gold }}>CLASH</span>
-        <span style={{ fontFamily: FONT.ui, fontStyle: "normal", fontSize: 10, fontWeight: 700, letterSpacing: 3, color: T.textDim, marginLeft: 8 }}>BASKETBALL</span>
+        ERA<span style={{ color: T.goldOnDark }}>CLASH</span>
+        <span style={{ fontFamily: FONT.ui, fontStyle: "normal", fontSize: 10, fontWeight: 700, letterSpacing: 3, color: T.onArenaDim, marginLeft: 8 }}>BASKETBALL</span>
       </button>
 
       <nav aria-label="Main" style={{ display: "flex", gap: 4, flexWrap: "wrap", marginLeft: 4, alignItems: "center" }}>
@@ -90,34 +90,34 @@ export default function GameHeader({ nav, onNav, dailyStreak, modes = [], gameMo
           <button onClick={() => { if (nav !== "Play") onNav("Play"); setOpen((o) => !o); }}
             aria-haspopup="menu" aria-expanded={open} aria-current={nav === "Play" ? "page" : undefined} style={{
               padding: "8px 14px", fontSize: 13, fontWeight: 800, borderRadius: R.sm, cursor: "pointer", minHeight: 40,
-              border: `1px solid ${nav === "Play" ? T.goldBorder : T.border}`,
-              background: nav === "Play" ? T.goldSoft : "transparent",
-              color: nav === "Play" ? T.gold : T.textDim,
+              border: `1px solid ${nav === "Play" ? T.goldOnDark : T.arenaBorder}`,
+              background: nav === "Play" ? "rgba(233,185,73,0.16)" : "transparent",
+              color: nav === "Play" ? T.goldOnDark : T.onArenaDim,
             }}>Play <span aria-hidden="true" style={{ fontSize: 10 }}>▾</span></button>
           {open && (
             <div role="menu" aria-label="Game modes" style={{
               position: "absolute", top: "calc(100% + 8px)", left: 0, zIndex: Z.dropdown,
               width: 300, padding: S.sm, borderRadius: R.lg,
-              background: "rgba(10,13,22,0.98)", border: `1px solid ${T.border}`, boxShadow: T.shadowCard }}>
+              background: T.arenaSoft, border: `1px solid ${T.arenaBorder}`, boxShadow: T.shadowRaised }}>
               {modes.map(([id, label, sub]) => (
                 <button key={id} role="menuitemradio" aria-checked={gameMode === id}
                   onClick={() => { onMode(id); setOpen(false); }} style={{
                     display: "flex", alignItems: "center", gap: 12, width: "100%", textAlign: "left",
                     padding: "12px 14px", marginBottom: 4, borderRadius: R.md, cursor: "pointer", minHeight: 56,
-                    border: `1px solid ${gameMode === id ? T.goldBorder : T.border}`,
-                    background: gameMode === id ? T.goldSoft : "rgba(0,0,0,0.25)", color: T.text,
+                    border: `1px solid ${gameMode === id ? T.goldOnDark : T.arenaBorder}`,
+                    background: gameMode === id ? "rgba(233,185,73,0.14)" : "rgba(255,255,255,0.03)", color: T.onArena,
                   }}>
                   <span aria-hidden="true" style={{ fontSize: 20 }}>{MODE_ICONS[id]}</span>
                   <span>
-                    <span style={{ display: "block", fontWeight: 900, fontSize: 13, letterSpacing: 0.5, color: gameMode === id ? T.gold : T.text }}>{label}</span>
-                    <span style={{ display: "block", fontSize: 11, color: T.textDim }}>{sub}</span>
+                    <span style={{ display: "block", fontWeight: 900, fontSize: 13, letterSpacing: 0.5, color: gameMode === id ? T.goldOnDark : T.onArena }}>{label}</span>
+                    <span style={{ display: "block", fontSize: 11.5, color: T.onArenaDim }}>{sub}</span>
                   </span>
                 </button>
               ))}
               <button role="menuitem" onClick={() => { setHowModes(true); setOpen(false); }} style={{
                 display: "flex", alignItems: "center", gap: 12, width: "100%", textAlign: "left",
                 padding: "10px 14px", borderRadius: R.md, cursor: "pointer", minHeight: 48,
-                border: `1px solid ${T.border}`, background: "transparent", color: T.textDim }}>
+                border: `1px solid ${T.arenaBorder}`, background: "transparent", color: T.onArenaDim }}>
                 <span aria-hidden="true" style={{ fontSize: 16 }}>ℹ️</span>
                 <span>
                   <span style={{ display: "block", fontWeight: 800, fontSize: 12.5 }}>How Modes Work</span>
@@ -131,8 +131,8 @@ export default function GameHeader({ nav, onNav, dailyStreak, modes = [], gameMo
           <button key={id} onClick={() => onNav(id)} aria-current={nav === id ? "page" : undefined} style={{
             padding: "8px 12px", fontSize: 13, fontWeight: 700, borderRadius: R.sm, cursor: "pointer",
             border: "none", background: "transparent",
-            color: nav === id ? T.gold : T.textDim,
-            boxShadow: nav === id ? `inset 0 -2px 0 ${T.gold}` : "none",
+            color: nav === id ? T.goldOnDark : T.onArenaDim,
+            boxShadow: nav === id ? `inset 0 -2px 0 ${T.goldOnDark}` : "none",
             minHeight: 40,
           }}>{label}</button>
         ))}
@@ -140,17 +140,26 @@ export default function GameHeader({ nav, onNav, dailyStreak, modes = [], gameMo
 
       <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 12 }}>
         {dailyStreak > 0 && (
-          <span style={{ fontSize: 12, fontWeight: 800, color: T.gold, letterSpacing: 1 }}>
+          <span style={{ fontSize: 12, fontWeight: 800, color: T.goldOnDark, letterSpacing: 1 }}>
             🔥 {dailyStreak} DAY STREAK
           </span>
         )}
-        <button onClick={() => onNav("Profile")} style={{
-          padding: "8px 16px", fontSize: 12.5, fontWeight: 800, borderRadius: 9, cursor: "pointer",
-          border: `1px solid ${name ? T.border : T.gold}`,
-          background: name ? "transparent" : T.gold,
-          color: name ? T.text : "#111", minHeight: 40,
-        }}>
-          {name ? `👤 ${name}` : "💾 Save Career"}
+        <button onClick={() => onNav("Profile")}
+          aria-label={name ? `Career saved as ${name} — open My EraClash` : "Career is on this device only — save it to keep it"}
+          style={{
+            display: "flex", alignItems: "center", gap: 8, textAlign: "left",
+            padding: "7px 14px", fontSize: 12.5, fontWeight: 800, borderRadius: 9, cursor: "pointer",
+            border: `1px solid ${name ? T.arenaBorder : T.goldOnDark}`,
+            background: name ? "transparent" : T.goldOnDark,
+            color: name ? T.onArena : "#0c1627", minHeight: 40,
+          }}>
+          <span aria-hidden="true">{name ? "👤" : "💾"}</span>
+          <span>
+            <span style={{ display: "block", lineHeight: 1.15 }}>{name || "Save Career"}</span>
+            <span style={{ display: "block", fontSize: 9.5, fontWeight: 600, letterSpacing: 0.5, opacity: 0.85 }}>
+              {name ? "Career saved" : "On this device only"}
+            </span>
+          </span>
         </button>
       </div>
       {howModes && <HowModesModal modes={modes} onClose={() => setHowModes(false)} />}

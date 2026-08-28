@@ -3,33 +3,6 @@
 // ledger (see api/_lib/previewKeyMoments.js) and are labeled by PERIOD, not by
 // an invented game clock — the engine records possessions, not a wall clock.
 import { T, S, R, FONT, teamAccent } from "../theme.js";
-import { chemistryScore, chemistryLabel } from "../chemistryView.js";
-
-// ── Circular chemistry dial (concept: CHEMISTRY SCORE) ──────────────────────
-export function ChemistryDial({ team, label = "CHEMISTRY SCORE", side = "gold", size = 104 }) {
-  const score = chemistryScore(team);
-  if (score == null) return null;
-  const accent = teamAccent(side);
-  const r = (size - 12) / 2;
-  const circ = 2 * Math.PI * r;
-  const dash = (score / 100) * circ;
-  return (
-    <div style={{ textAlign: "center" }}>
-      <div style={{ fontSize: 10, fontWeight: 900, letterSpacing: 1.5, color: T.textDim, marginBottom: 6 }}>{label}</div>
-      <svg width={size} height={size} role="img" aria-label={`${label} ${score} of 100, ${chemistryLabel(score)}`}>
-        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={T.border} strokeWidth="7" />
-        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={accent} strokeWidth="7" strokeLinecap="round"
-          strokeDasharray={`${dash} ${circ - dash}`} transform={`rotate(-90 ${size / 2} ${size / 2})`} />
-        <text x="50%" y="48%" textAnchor="middle" dominantBaseline="middle"
-          style={{ fontFamily: FONT.display, fontSize: size * 0.28, fontWeight: 900, fontStyle: "italic", fill: accent }}>{score}</text>
-        <text x="50%" y="68%" textAnchor="middle" dominantBaseline="middle"
-          style={{ fontSize: 9, fontWeight: 800, letterSpacing: 1, fill: score >= 75 ? T.green : score >= 60 ? T.orange : T.red }}>
-          {chemistryLabel(score)}
-        </text>
-      </svg>
-    </div>
-  );
-}
 
 // ── Key moments (real, ledger-derived) ──────────────────────────────────────
 const KIND_ICON = { RUN: "🔥", LEAD_CHANGE: "🔀", SHOT: "🎯", MISMATCH: "🎛️" };
@@ -51,8 +24,31 @@ export function KeyMoments({ moments }) {
           </li>
         ))}
       </ol>
-      <div style={{ fontSize: 9.5, color: T.textMuted, marginTop: 8 }}>
-        Drawn from the simulated possessions. The engine records periods and possessions, not a game clock.
+      <div style={{ fontSize: 11, color: T.textMuted, marginTop: 8, lineHeight: 1.45 }}>
+        Discrete events from the simulated possessions. The engine records periods and possessions, not a game clock.
+      </div>
+    </div>
+  );
+}
+
+// ── Matchup patterns (game-long behaviour, never mixed with moments) ────────
+const PATTERN_ICON = { MISMATCH: "🎛️", MOVEMENT: "🔄", GLASS: "🪟", TARGET: "🎯" };
+
+export function MatchupPatterns({ patterns }) {
+  if (!patterns?.length) return null;
+  return (
+    <div style={{ ...cardish(), padding: S.lg }}>
+      <div style={{ fontSize: 10.5, fontWeight: 900, letterSpacing: 2, color: T.textDim, marginBottom: 8 }}>MATCHUP PATTERNS</div>
+      <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "grid", gap: 8 }}>
+        {patterns.map((m, i) => (
+          <li key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start", fontSize: 13, lineHeight: 1.5 }}>
+            <span aria-hidden="true" style={{ flexShrink: 0 }}>{PATTERN_ICON[m.kind] ?? "•"}</span>
+            <span style={{ color: T.text, minWidth: 0 }}>{m.text}</span>
+          </li>
+        ))}
+      </ul>
+      <div style={{ fontSize: 11, color: T.textMuted, marginTop: 8, lineHeight: 1.45 }}>
+        Repeated behaviour counted across the whole game — not single plays.
       </div>
     </div>
   );

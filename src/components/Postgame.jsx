@@ -4,7 +4,7 @@
 // model output + deterministic engine data) — nothing invented for aesthetics.
 // Never a dead end: contextual CTAs lead back into another game or a share.
 import { useState } from "react";
-import { ChemistryDial, KeyMoments, PeriodScores } from "./PostgamePanels.jsx";
+import { KeyMoments, MatchupPatterns, PeriodScores } from "./PostgamePanels.jsx";
 import { T, card } from "../theme.js";
 import { chemistryScore, chemistryLabel } from "../chemistryView.js";
 import { Feedback } from "./Feedback.jsx";
@@ -45,7 +45,7 @@ function ScoreboardHero({ sim, won, mode, seriesLabel, team, opp }) {
   return (
     <div style={{
       padding: "22px 14px 18px", textAlign: "center",
-      background: `linear-gradient(180deg, ${won ? "rgba(253,185,39,0.10)" : "rgba(110,168,254,0.10)"} 0%, rgba(20,26,42,0) 85%)`,
+      background: `linear-gradient(180deg, ${won ? T.goldSoft : T.blueSoft} 0%, rgba(20,26,42,0) 85%)`,
     }}>
       <div style={{ fontSize: 10.5, letterSpacing: 4, color: T.textDim, fontWeight: 800 }}>
         {mode === "daily" ? "DAILY CLASH · " : mode === "challenge" ? "GRUDGE MATCH · " : ""}FINAL{seriesLabel ? ` — ${seriesLabel}` : ""}
@@ -81,7 +81,7 @@ function ScoreboardHero({ sim, won, mode, seriesLabel, team, opp }) {
       <div className="rise-3" style={{ marginTop: 10 }}>
         <span style={{
           display: "inline-block", padding: "7px 20px", borderRadius: 20, fontSize: 14, fontWeight: 900, letterSpacing: 2,
-          color: won ? "#111" : "#0a1428", background: won ? T.gold : T.blue,
+          color: "#fffdf8", background: won ? T.gold : T.blue,
         }}>{winnerLabel}</span>
         {isSeries && <div style={{ fontSize: 12, color: T.textDim, marginTop: 6 }}>Best of 7 — {won ? "Gold" : "Blue"} wins series {sim.seriesResult}</div>}
       </div>
@@ -174,7 +174,7 @@ function BoxTable({ label, stats, color, mvpName }) {
           {stats.map((s, i) => {
             const isMvp = mvpName && s.name && mvpName.toLowerCase().includes(s.name.split(" ").slice(-1)[0].toLowerCase());
             return (
-              <tr key={i} style={{ borderTop: `1px solid ${T.border}`, textAlign: "right", background: isMvp ? "rgba(253,185,39,0.07)" : "transparent" }}>
+              <tr key={i} style={{ borderTop: `1px solid ${T.border}`, textAlign: "right", background: isMvp ? T.goldSoft : "transparent" }}>
                 <td style={{ textAlign: "left", padding: "5px 4px", fontWeight: 600 }}>{isMvp ? "⭐ " : ""}{s.name}</td>
                 <td style={{ padding: "5px 4px", fontWeight: 800, color }}>{s.pts}</td><td style={{ padding: "5px 4px" }}>{s.reb}</td>
                 <td style={{ padding: "5px 4px" }}>{s.ast}</td><td style={{ padding: "5px 4px" }}>{s.stl}</td><td style={{ padding: "5px 4px" }}>{s.blk}</td>
@@ -233,9 +233,15 @@ function ChemDial({ label, team, color }) {
 }
 
 // ── Contextual CTAs ────────────────────────────────────────────────────────────
-function CTAs({ mode, won, onRematch, onBest7, onChallenge, onSwap, onShare, onLeaderboard }) {
+function CTAs({ mode, won, onRematch, onBest7, onChallenge, onSwap, onShare, onLeaderboard, previewCandidate }) {
+  // CANDIDATE CONTINUITY: a preview result was simulated by Candidate 3, whose
+  // preview scope is a single game. Offering "Best of 7" here would silently
+  // run the series on the production engine — a different simulation than the
+  // one just played. The action is withdrawn and explained instead of faked.
+  const seriesBlocked = Boolean(previewCandidate);
+  if (seriesBlocked) onBest7 = null;
   const P = ({ onClick, children }) => (
-    <button onClick={onClick} style={{ width: "100%", padding: 15, fontSize: 14, fontWeight: 900, border: "none", borderRadius: 10, background: T.gold, color: "#111", cursor: "pointer", letterSpacing: 0.5, minHeight: 48 }}>{children}</button>
+    <button onClick={onClick} style={{ width: "100%", padding: 15, fontSize: 14, fontWeight: 900, border: "none", borderRadius: 10, background: T.gold, color: "#fffdf8", cursor: "pointer", letterSpacing: 0.5, minHeight: 48 }}>{children}</button>
   );
   const S = ({ onClick, children }) => (
     <button onClick={onClick} style={{ flex: "1 1 30%", padding: 12, fontSize: 12.5, fontWeight: 700, borderRadius: 9, border: `1px solid ${T.border}`, background: "transparent", color: T.text, cursor: "pointer", minHeight: 44 }}>{children}</button>
@@ -264,19 +270,93 @@ function CTAs({ mode, won, onRematch, onBest7, onChallenge, onSwap, onShare, onL
     ];
   } else {
     primary = onBest7
-      ? <P onClick={onBest7}>🏆 RUN BEST OF 7 {won ? "— PROVE IT WASN'T LUCK" : "— GET REVENGE"}</P>
-      : <P onClick={onShare}>📤 SHARE RESULT</P>;
+      ? <P onClick={onBest7}>🏆 Run Best of 7</P>
+      : <P onClick={onRematch}>🔁 Rematch</P>;
     secondaries = [
-      onRematch && <S key="rm" onClick={onRematch}>🔁 Rematch</S>,
+      onBest7 && onRematch && <S key="rm" onClick={onRematch}>🔁 Rematch</S>,
       onSwap && <S key="sw" onClick={onSwap}>♻️ Swap One Player</S>,
       <S key="ch" onClick={onChallenge}>⚔️ Challenge a Friend</S>,
-      onBest7 && <S key="sh" onClick={onShare}>📤 Share</S>,
+      <S key="sh" onClick={onShare}>📤 Share</S>,
     ];
   }
   return (
     <div style={{ marginTop: 14 }}>
       {primary}
       <div style={{ display: "flex", gap: 8, marginTop: 8, flexWrap: "wrap" }}>{secondaries.filter(Boolean)}</div>
+      {seriesBlocked && (
+        <div style={{ marginTop: 10, fontSize: 12.5, color: T.textDim, lineHeight: 1.5 }}>
+          Best of 7 is unavailable in this preview: series play would run on the production engine, and a
+          series is not mixed across two different simulations. Rematch replays this matchup on the same engine.
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── ONE authoritative box score ──────────────────────────────────────────────
+// Phase 7B: the product previously rendered two tables of the same game (a
+// five-column summary and the possession box). One is authoritative. Personal
+// fouls are omitted: the simulation records them, but with no foul-out,
+// substitution or rotation consequence surfaced, a PF column reads as a
+// feature the game does not have.
+const BOX_COLUMNS = [
+  ["PTS", (l) => l.pts], ["FG", (l) => `${l.fgm}-${l.fga}`], ["3PT", (l) => `${l.tpm}-${l.tpa}`],
+  ["FT", (l) => `${l.ftm}-${l.fta}`], ["OREB", (l) => l.oreb], ["DREB", (l) => l.dreb],
+  ["REB", (l) => l.oreb + l.dreb], ["AST", (l) => l.ast], ["STL", (l) => l.stl],
+  ["BLK", (l) => l.blk], ["TO", (l) => l.to],
+];
+
+function BoxTeam({ label, lines, color, mvpName }) {
+  const total = (fn) => lines.reduce((s, l) => s + (Number(fn(l)) || 0), 0);
+  return (
+    <div style={{ marginTop: 12, overflowX: "auto" }}>
+      <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1.5, color, marginBottom: 4 }}>{label}</div>
+      <table style={{ width: "100%", fontSize: 13, borderCollapse: "collapse", minWidth: 620 }}>
+        <thead><tr style={{ color: T.textDim, textAlign: "right" }}>
+          <th style={{ textAlign: "left", padding: "4px 6px", fontSize: 11 }}>PLAYER</th>
+          {BOX_COLUMNS.map(([h]) => <th key={h} style={{ padding: "4px 6px", fontSize: 11 }}>{h}</th>)}
+        </tr></thead>
+        <tbody>
+          {lines.map((l) => (
+            <tr key={l.id ?? l.name} style={{ borderTop: `1px solid ${T.border}`, textAlign: "right" }}>
+              <td style={{ textAlign: "left", padding: "6px", fontWeight: 600, whiteSpace: "nowrap" }}>
+                {l.name === mvpName ? "★ " : ""}{l.name}
+              </td>
+              {BOX_COLUMNS.map(([h, fn]) => (
+                <td key={h} style={{ padding: "6px", fontWeight: h === "PTS" ? 800 : 400, color: h === "PTS" ? color : T.text }}>{fn(l)}</td>
+              ))}
+            </tr>
+          ))}
+          <tr style={{ borderTop: `2px solid ${T.borderStrong}`, textAlign: "right", fontWeight: 800 }}>
+            <td style={{ textAlign: "left", padding: "6px", fontSize: 11, letterSpacing: 1, color: T.textDim }}>TOTAL</td>
+            {BOX_COLUMNS.map(([h, fn]) => (
+              <td key={h} style={{ padding: "6px", color: h === "PTS" ? color : T.text }}>
+                {h === "FG" || h === "3PT" || h === "FT"
+                  ? `${lines.reduce((s, l) => s + fn(l).split("-").map(Number)[0], 0)}-${lines.reduce((s, l) => s + fn(l).split("-").map(Number)[1], 0)}`
+                  : total(fn)}
+              </td>
+            ))}
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function AuthoritativeBox({ sim }) {
+  const box = sim.v3?.fullBox;
+  if (!box) {
+    return (
+      <div style={{ ...card, padding: 16, marginTop: 12, fontSize: 13, color: T.textDim }}>
+        A full box score is not available for this result.
+      </div>
+    );
+  }
+  return (
+    <div style={{ ...card, padding: 16, marginTop: 12 }}>
+      <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 2, color: T.textDim }}>BOX SCORE</div>
+      <BoxTeam label="TEAM GOLD" lines={box.gold} color={T.gold} mvpName={sim.mvp} />
+      <BoxTeam label="TEAM BLUE" lines={box.blue} color={T.blue} mvpName={sim.mvp} />
     </div>
   );
 }
@@ -298,7 +378,7 @@ function SectionTabs({ section, onSection }) {
           padding: "10px 16px", fontSize: 12.5, fontWeight: 800, letterSpacing: 0.5, borderRadius: "10px 10px 0 0",
           cursor: "pointer", minHeight: 44, whiteSpace: "nowrap",
           border: `1px solid ${section === id ? T.goldBorder : T.border}`, borderBottom: "none",
-          background: section === id ? "rgba(253,185,39,0.1)" : "rgba(0,0,0,0.25)",
+          background: section === id ? T.goldSoft : T.bgCardHover,
           color: section === id ? T.gold : T.textDim,
         }}>{label}</button>
       ))}
@@ -325,7 +405,7 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
           <div style={{ display: "grid", gap: 12, alignContent: "start", minWidth: 0 }}>
         {/* B. MVP feature card with a real explanation (narrative or deterministic fallback) */}
         {sim.mvp && (
-          <div style={{ display: "flex", alignItems: "center", gap: 16, padding: 16, borderRadius: 12, background: "linear-gradient(120deg, #2b230a 0%, #1a1610 100%)", border: `1px solid ${T.gold}`, flexWrap: "wrap" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 16, padding: 16, borderRadius: 12, background: `linear-gradient(120deg, ${T.goldSoft} 0%, ${T.bgCard} 100%)`, border: `1px solid ${T.goldBorder}`, flexWrap: "wrap" }}>
             {mvpP && <PlayerImage player={mvpP} variant="mvp" team={mvpOnGold ? "gold" : "blue"} />}
             <div style={{ minWidth: 200, flex: 1 }}>
               <div style={{ fontSize: 10, letterSpacing: 3, color: T.gold, fontWeight: 800 }}>
@@ -350,6 +430,7 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
 
         {/* V3 context chips stay on Final */}
             <KeyMoments moments={sim.v3?.keyMoments} />
+            <MatchupPatterns patterns={sim.v3?.matchupPatterns} />
           </div>
           <div style={{ display: "grid", gap: 12, alignContent: "start", minWidth: 0 }}>
         {/* V3: possession context + expectation honesty */}
@@ -376,60 +457,14 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
           </div>
         </div>
         {/* H/I. Strengths & weaknesses, with the chemistry dial between them */}
-        <AnalysisQuad sim={sim} center={
-          (team || opp) ? (
-            <div style={{ flex: "0 1 200px", display: "flex", gap: 14, justifyContent: "center", alignItems: "center",
-              padding: 12, borderRadius: 10, background: T.bgCardHover, border: `1px solid ${T.border}` }}>
-              {team && <ChemistryDial team={team} side="gold" label="GOLD CHEMISTRY" size={92} />}
-              {opp && <ChemistryDial team={opp} side="blue" label="BLUE CHEMISTRY" size={92} />}
-            </div>
-          ) : null
-        } />
+        <AnalysisQuad sim={sim} />
 
         {/* K. Feedback (preview: the structured Wave 1 form) */}
         {feedbackCtx && <Feedback ctx={feedbackCtx} />}
         </>}
 
         {section === "box" && <>
-        {/* F. FULL BOX SCORE — both teams */}
-        <div style={{ ...card, padding: 16, marginTop: 12 }}>
-          <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 2, color: T.textDim }}>FULL BOX SCORE</div>
-          <BoxTable label="TEAM GOLD" stats={sim.teamAStats} color={T.gold} mvpName={sim.mvp} />
-          <BoxTable label="TEAM BLUE" stats={sim.teamBStats} color={T.blue} mvpName={sim.mvp} />
-        </div>
-
-        {/* V3: extended possession box score */}
-        {sim.v3?.fullBox && (
-          <div style={{ ...card, padding: 16, marginTop: 12 }}>
-            <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 2, color: T.textDim }}>POSSESSION BOX SCORE</div>
-            {[["TEAM GOLD", sim.v3.fullBox.gold, T.gold], ["TEAM BLUE", sim.v3.fullBox.blue, T.blue]].map(([label, lines, color]) => (
-              <div key={label} style={{ marginTop: 10, overflowX: "auto" }}>
-                <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1.5, color, marginBottom: 4 }}>{label}</div>
-                <table style={{ width: "100%", fontSize: 11, borderCollapse: "collapse", minWidth: 560 }}>
-                  <thead><tr style={{ color: T.textDim, textAlign: "right" }}>
-                    <th style={{ textAlign: "left", padding: "3px 4px" }}>PLAYER</th>
-                    {["PTS", "FG", "3PT", "FT", "OREB", "DREB", "AST", "STL", "BLK", "TO", "PF"].map((h) => <th key={h} style={{ padding: "3px 4px" }}>{h}</th>)}
-                  </tr></thead>
-                  <tbody>
-                    {lines.map((l) => (
-                      <tr key={l.id} style={{ borderTop: `1px solid ${T.border}`, textAlign: "right" }}>
-                        <td style={{ textAlign: "left", padding: "4px", fontWeight: 600, whiteSpace: "nowrap" }}>{l.name}</td>
-                        <td style={{ padding: "4px", fontWeight: 800, color }}>{l.pts}</td>
-                        <td style={{ padding: "4px" }}>{l.fgm}-{l.fga}</td>
-                        <td style={{ padding: "4px" }}>{l.tpm}-{l.tpa}</td>
-                        <td style={{ padding: "4px" }}>{l.ftm}-{l.fta}</td>
-                        <td style={{ padding: "4px" }}>{l.oreb}</td><td style={{ padding: "4px" }}>{l.dreb}</td>
-                        <td style={{ padding: "4px" }}>{l.ast}</td><td style={{ padding: "4px" }}>{l.stl}</td>
-                        <td style={{ padding: "4px" }}>{l.blk}</td><td style={{ padding: "4px" }}>{l.to}</td>
-                        <td style={{ padding: "4px" }}>{l.pf ?? 0}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            ))}
-          </div>
-        )}
+        <AuthoritativeBox sim={sim} />
         </>}
 
         {section === "story" && <>
@@ -530,7 +565,7 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
         </>}
 
         {/* L. Actions — never a dead end, visible from every section */}
-        <CTAs mode={mode} won={won}
+        <CTAs mode={mode} won={won} previewCandidate={sim.previewCandidate}
           onRematch={onRematch} onBest7={onBest7} onChallenge={onChallenge}
           onSwap={onSwap} onShare={onShare} onLeaderboard={onLeaderboard} />
       </div>

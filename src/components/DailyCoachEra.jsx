@@ -79,7 +79,7 @@ export default function DailyCoachEra({ config, selectedCoachId, onSelectCoach, 
                   style={{
                     textAlign: "left", width: "100%", padding: "11px 12px", borderRadius: 10,
                     minHeight: 44, cursor: disabled ? "default" : "pointer",
-                    background: on ? "#2b230a" : T.bgCardHover,
+                    background: on ? T.goldSoft : T.bgCardHover,
                     border: `2px solid ${on ? T.gold : T.border}`,
                     color: T.text, font: "inherit", opacity: disabled && !on ? 0.55 : 1,
                   }}

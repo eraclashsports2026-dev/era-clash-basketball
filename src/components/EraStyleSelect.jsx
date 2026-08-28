@@ -29,14 +29,14 @@ export default function EraStyleSelect({ eras, selected, onSelect, teamIds, side
           <button key={e.id} onClick={() => onSelect(e.id)} aria-pressed={selected === e.id} style={{
             padding: "8px 12px", fontSize: 13, fontWeight: 900, fontStyle: "italic", borderRadius: 9, cursor: "pointer", minHeight: 40, minWidth: 52,
             border: `1px solid ${selected === e.id ? accent : T.border}`,
-            background: selected === e.id ? (side === "gold" ? "rgba(253,185,39,0.14)" : "rgba(110,168,254,0.14)") : "rgba(0,0,0,0.25)",
+            background: selected === e.id ? (side === "gold" ? T.goldSoft : T.blueSoft) : T.bgCardHover,
             color: selected === e.id ? accent : T.textDim,
           }}>{e.label}</button>
         ))}
       </div>
 
       {era && (
-        <div style={{ marginTop: 10, padding: "10px 14px", borderRadius: 10, background: "rgba(0,0,0,0.3)", border: `1px solid ${T.border}` }}>
+        <div style={{ marginTop: 10, padding: "10px 14px", borderRadius: 10, background: T.bgCardHover, border: `1px solid ${T.border}` }}>
           <div style={{ fontSize: 12.5, fontWeight: 900 }}>{era.id} <span style={{ color: T.textDim, fontWeight: 400, fontSize: 11 }}>(anchor {era.anchorSeason})</span></div>
           <div style={{ display: "grid", gap: 2, marginTop: 4 }}>
             {era.styleSummary.map((s, i) => (

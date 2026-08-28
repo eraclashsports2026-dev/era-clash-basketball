@@ -27,7 +27,7 @@ export default function ManualPicker({ slotPos, excludeIds = [], onPick, onClose
 
   return (
     <div role="dialog" aria-label={`Choose ${slotPos}`} onClick={onClose} style={{
-      position: "fixed", inset: 0, background: "rgba(0,0,0,0.78)", zIndex: 100,
+      position: "fixed", inset: 0, background: "rgba(12,22,39,0.55)", zIndex: 100,
       display: "flex", alignItems: "center", justifyContent: "center", padding: 16,
     }}>
       <div onClick={(e) => e.stopPropagation()} style={{ ...card, width: "100%", maxWidth: 560, maxHeight: "85vh", display: "flex", flexDirection: "column", padding: 0, overflow: "hidden" }}>

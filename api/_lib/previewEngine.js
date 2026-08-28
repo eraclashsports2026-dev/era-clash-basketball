@@ -24,7 +24,7 @@ import { resolveCoach, resolveEra, V3_VERSIONS } from "../../src/v3/engine.js";
 import { expectedWinPct, matchupPreviewV3, classifyOutcome, edgeBand } from "../../src/v3/analysis.js";
 import { versionOf } from "../../src/versions.js";
 import { previewEvent } from "./previewTelemetry.js";
-import { deriveKeyMoments } from "./previewKeyMoments.js";
+import { deriveKeyMoments, derivePatterns } from "./previewKeyMoments.js";
 import { PLAYERS } from "../../src/players.js";
 
 /** Result-id prefix for preview results — production ids never carry it. */
@@ -160,6 +160,7 @@ export const computeResultPreview = (mode, gold, blue, opts, seed) => {
       // 4 = REGULATION periods, so period 5 is labeled OT (g.periods is the
       // total played, which would mislabel overtime as "Q5").
       keyMoments: deriveKeyMoments(g.possessionLedger, CARD_BY_ID, 4),
+      matchupPatterns: derivePatterns(g.possessionLedger, CARD_BY_ID),
       periodScores: g.periodScores ?? null,
       fullBox: { gold: goldLines, blue: blueLines },
       teamTotals: { gold: g.gold.totals, blue: g.blue.totals },

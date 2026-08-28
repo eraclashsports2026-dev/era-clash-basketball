@@ -13,7 +13,7 @@ export function TeamSummaryCard({ side, title, team, coach }) {
   const accent = teamAccent(side);
   return (
     <div style={{ flex: "1 1 240px", minWidth: 220, padding: S.md, borderRadius: R.lg,
-      background: "rgba(13,17,28,0.8)", border: `1px solid ${side === "blue" ? T.blueBorder : T.goldBorder}` }}>
+      background: T.bgCard, border: `1px solid ${side === "blue" ? T.blueBorder : T.goldBorder}` }}>
       <div style={{ fontSize: 12, fontWeight: 900, fontStyle: "italic", letterSpacing: 1, color: accent, fontFamily: FONT.display }}>{title}</div>
       <div style={{ display: "flex", gap: 6, margin: "8px 0 6px", flexWrap: "wrap" }}>
         {(team || []).map((p) => p && <PlayerImage key={p.id} player={p} variant="thumbnail" team={side} />)}
@@ -61,14 +61,14 @@ export function EraStage({ eras, selected, onSelect, gold, blue }) {
           <button key={e.id} role="radio" aria-checked={selected === e.id} onClick={() => onSelect(e.id)} style={{
             padding: "9px 14px", fontSize: 13, fontWeight: 900, fontStyle: "italic", borderRadius: R.sm, cursor: "pointer", minHeight: 44, minWidth: 54,
             border: `1px solid ${selected === e.id ? T.gold : T.border}`,
-            background: selected === e.id ? T.goldSoft : "rgba(0,0,0,0.25)",
+            background: selected === e.id ? T.goldSoft : T.bgCardHover,
             color: selected === e.id ? T.gold : T.textDim,
           }}>{e.label}</button>
         ))}
       </div>
       {era && (
         <div style={{ display: "flex", gap: S.md, flexWrap: "wrap", alignItems: "stretch" }}>
-          <div style={{ flex: "1 1 300px", padding: S.lg, borderRadius: R.lg, background: "rgba(0,0,0,0.35)", border: `1px solid ${T.goldBorder}` }}>
+          <div style={{ flex: "1 1 300px", padding: S.lg, borderRadius: R.lg, background: T.bgCardHover, border: `1px solid ${T.goldBorder}` }}>
             <div style={{ fontSize: 13, fontWeight: 900, fontFamily: FONT.display }}>{era.id} ERA STYLE <span style={{ color: T.textDim, fontWeight: 400, fontSize: 11, fontFamily: FONT.ui }}>anchor {era.anchorSeason}</span></div>
             <div style={{ display: "grid", gap: 6, marginTop: 10 }}>
               {era.styleSummary.map((s, i) => (
@@ -77,7 +77,7 @@ export function EraStage({ eras, selected, onSelect, gold, blue }) {
               <div style={{ fontSize: 12, color: T.textDim, display: "flex", gap: 8 }}><span aria-hidden="true">🎯</span>{era.threePoint ? "The three-point shot exists in this environment." : "No three-point line — every deep shot is worth two."}</div>
             </div>
           </div>
-          <div style={{ flex: "1 1 300px", padding: S.lg, borderRadius: R.lg, background: "rgba(0,0,0,0.35)", border: `1px solid ${T.border}` }}>
+          <div style={{ flex: "1 1 300px", padding: S.lg, borderRadius: R.lg, background: T.bgCardHover, border: `1px solid ${T.border}` }}>
             <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: 2, color: T.textDim }}>HOW THIS AFFECTS THIS MATCHUP</div>
             <div style={{ marginTop: 8 }}>
               <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1, color: T.gold }}>TEAM GOLD</div>

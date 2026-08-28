@@ -36,7 +36,7 @@ export default function SimulationLoading({ stage, progress, goldLabel = "TEAM G
   return (
     <div className="rise" role="status" aria-live="polite" style={{
       marginTop: 14, padding: "34px 22px", borderRadius: R.xl, textAlign: "center",
-      background: "radial-gradient(ellipse at 20% 0%, rgba(253,185,39,0.07), transparent 45%), radial-gradient(ellipse at 80% 0%, rgba(110,168,254,0.07), transparent 45%), linear-gradient(180deg, rgba(6,8,16,0.92), rgba(13,17,28,0.88))",
+      background: "radial-gradient(ellipse at 20% 0%, T.goldSoft, transparent 45%), radial-gradient(ellipse at 80% 0%, T.blueSoft, transparent 45%), linear-gradient(180deg, rgba(6,8,16,0.92), rgba(13,17,28,0.88))",
       border: `1px solid ${T.border}`, boxShadow: T.shadowCard,
     }}>
       <div style={{ fontSize: 10, letterSpacing: 4, color: T.textDim, fontWeight: 800 }}>
@@ -52,7 +52,7 @@ export default function SimulationLoading({ stage, progress, goldLabel = "TEAM G
           width: 54, height: 54, borderRadius: 999, display: "flex", alignItems: "center", justifyContent: "center",
           border: `2px solid ${T.goldBorder}`, boxShadow: `${T.glowGold}, ${T.glowBlue}`,
           fontFamily: FONT.display, fontWeight: 900, fontStyle: "italic", fontSize: 18,
-          background: "rgba(0,0,0,0.4)",
+          background: T.bgMuted,
         }}>
           <span style={{ color: T.gold }}>E</span><span style={{ color: T.blue }}>C</span>
         </div>
