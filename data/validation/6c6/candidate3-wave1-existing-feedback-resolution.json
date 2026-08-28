@@ -1,0 +1,28 @@
+{
+  "artifact": "candidate3-wave1-existing-feedback-resolution",
+  "generatedBy": "phase 6C6 verification",
+  "data": {
+    "reviewed": "all pre-Wave-1 feedback = owner/development QA probes (6C5 browser QA + 6C6 scenario QA); no human tester feedback exists yet and none was invented",
+    "records": "ratings 4-5, issueCategory NONE, comments are QA markers ('deployed QA probe', 'wave1 deployed QA w1-sN', 'revised opinion')",
+    "classification": {
+      "P0": 0,
+      "P1": 0,
+      "P2": 0,
+      "P3": 0,
+      "P4": 0,
+      "note": "no defect reports exist in stored feedback; nothing to reproduce"
+    },
+    "phaseDiscoveredDefects": [
+      {
+        "id": "truncated-access-config commit d22b2f1",
+        "class": "P1 (operational: would have broken the preview gate build)",
+        "rootCause": "a shell-inline python edit wrote a None-derived string and truncated config/previewAccess.js before its guard ran; the commit chained through despite the script error",
+        "containment": "the stable wave1 alias never received it \u2014 its push was rejected (non-fast-forward), production untouched",
+        "fix": "file restored from ddf02f9 and re-edited atomically; commit 'REVOCATION DRILL (repaired)'",
+        "verification": "vitest credential suite green; deployed drill passed at the stable URL",
+        "regressionProtection": "tests import config/previewAccess.js directly \u2014 an empty or malformed file fails the suite before any push",
+        "resolution": "FIXED_AND_VERIFIED"
+      }
+    ]
+  }
+}

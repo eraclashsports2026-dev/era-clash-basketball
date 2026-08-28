@@ -1,0 +1,82 @@
+// ── Wave 1 guided scenarios (candidate3-wave1) ────────────────────────────────
+// Product-QA setups launched via ?scenario=<id> (the app's existing
+// query-state pattern, same family as ?ch= and ?r=). Each scenario states the
+// TRADEOFF the tester should look for, never an expected winner, and carries
+// no engine scores. Only public card ids, real coaches and one shared Era
+// Style per scenario. Deterministic setup; the GAME itself keeps server-random
+// variance like every single game.
+export const WAVE1_ID = "candidate3-wave1";
+export const WAVE1_SCENARIO_SCHEMA_VERSION = 1;
+
+export const WAVE1_SCENARIOS = Object.freeze([
+  {
+    id: "w1-s1", title: "Balanced construction vs superstar stack",
+    gold: ["magic-80s", "jordan-90s", "pippen-90s", "duncan-00s", "hak-90s"],
+    blue: ["curry-10s", "jordan-90s", "lebron-10s", "durant-10s", "shaq-90s"],
+    coachGold: "pat-riley", coachBlue: "pat-riley", era: "2010s",
+    instruction: "Play this once, then read the box score. Whose offense looked organized, and who fought over the same shots?",
+    tradeoff: "A balanced five gives up peak talent for fit; a stack gives up spacing, defense and ball-sharing for stars.",
+  },
+  {
+    id: "w1-s2", title: "Same rosters, contrasting coaches",
+    gold: ["magic-80s", "jordan-90s", "pippen-90s", "duncan-00s", "hak-90s"],
+    blue: ["magic-80s", "jordan-90s", "pippen-90s", "duncan-00s", "hak-90s"],
+    coachGold: "pat-riley", coachBlue: "steve-kerr", era: "1990s",
+    instruction: "Identical teams. Watch pace, assisted play and where each side's shots came from.",
+    tradeoff: "A grinding defensive coach trades possessions for control; a motion coach trades control for movement and threes.",
+  },
+  {
+    id: "w1-s3", title: "Same matchup, contrasting Era Style",
+    gold: ["magic-80s", "jordan-90s", "bird-80s", "kg-00s", "shaq-90s"],
+    blue: ["curry-10s", "klay-10s", "lebron-10s", "draymond-10s", "jokic-20s"],
+    coachGold: "phil-jackson", coachBlue: "phil-jackson", era: "1960s",
+    instruction: "Play this in the 1960s era, then rematch the same matchup after switching the Era Style to 2010s. What changed?",
+    tradeoff: "An old-era environment rewards interior size and pace; a modern one rewards spacing and shooting range.",
+  },
+  {
+    id: "w1-s4", title: "Movement offense",
+    gold: ["curry-10s", "klay-10s", "bird-80s", "dirk-00s", "rob-90s"],
+    blue: ["magic-80s", "jordan-90s", "pippen-90s", "duncan-00s", "hak-90s"],
+    coachGold: "steve-kerr", coachBlue: "lenny-wilkens", era: "2010s",
+    instruction: "Watch Gold's shot mix and assist count. Did off-ball movement and passing feel visible in the result?",
+    tradeoff: "A movement offense earns quality looks without a dominant handler, but depends on screens and timing instead of isolation bailouts.",
+  },
+  {
+    id: "w1-s5", title: "Elite defensive construction",
+    gold: ["gary-90s", "jordan-90s", "pippen-90s", "duncan-00s", "rob-90s"],
+    blue: ["curry-10s", "jordan-90s", "lebron-10s", "durant-10s", "shaq-90s"],
+    coachGold: "gregg-popovich", coachBlue: "don-nelson", era: "1990s",
+    instruction: "Focus on Blue's shooting percentages, turnovers and free throws. Did the defense shape the game believably?",
+    tradeoff: "An all-defense five concedes shot creation; a firepower five concedes stops. Something has to give.",
+  },
+  {
+    id: "w1-s6", title: "Size versus small ball",
+    gold: ["magic-80s", "jordan-90s", "bird-80s", "kg-00s", "shaq-90s"],
+    blue: ["curry-10s", "klay-10s", "lebron-10s", "draymond-10s", "jokic-20s"],
+    coachGold: "chuck-daly", coachBlue: "mike-dantoni", era: "2000s",
+    instruction: "Compare rebounds and points in the paint against threes and pace. Did each build get what it paid for?",
+    tradeoff: "Size wins the glass and the paint; small ball wins tempo and the arc. Neither should get both.",
+  },
+  {
+    id: "w1-s7", title: "Spacing versus interior defense",
+    gold: ["curry-10s", "klay-10s", "bird-80s", "dirk-00s", "jokic-20s"],
+    blue: ["gary-90s", "jordan-90s", "pippen-90s", "duncan-00s", "rob-90s"],
+    coachGold: "mike-dantoni", coachBlue: "gregg-popovich", era: "2010s",
+    instruction: "Blue's rim protectors want to live in the paint. Did Gold's shooting pull them out of it?",
+    tradeoff: "Five-out spacing drags shot-blockers away from the rim, but bets the game on jump shooting against elite closeouts.",
+  },
+  {
+    id: "w1-s8", title: "Post mismatch and counter-adjustment",
+    gold: ["magic-80s", "klay-10s", "lebron-10s", "duncan-00s", "shaq-90s"],
+    blue: ["curry-10s", "klay-10s", "bird-80s", "dirk-00s", "draymond-10s"],
+    coachGold: "phil-jackson", coachBlue: "steve-kerr", era: "2000s",
+    instruction: "Gold has a giant post advantage. Watch whether the offense finds it — and what the smaller defense gives up to slow it.",
+    tradeoff: "Feeding a mismatch is efficient until the defense collapses on it; the counter is open shooters, not more post-ups.",
+  },
+]);
+
+export const getWave1Scenario = (id) => WAVE1_SCENARIOS.find((s) => s.id === id) ?? null;
+export const WAVE1_PLAN = Object.freeze({
+  perTester: { guided: 8, freeForm: 2, rematch: 1 },
+  testers: 5, plannedGames: 55,
+});

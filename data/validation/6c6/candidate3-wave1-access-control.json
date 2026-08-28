@@ -1,0 +1,108 @@
+{
+  "artifact": "candidate3-wave1-access-control",
+  "generatedBy": "node scripts/wave1/deployedAccessCheck.mjs",
+  "baseUrl": "https://era-clash-basketball-git-wave1-era-clash.vercel.app",
+  "data": {
+    "passed": 19,
+    "failed": 0,
+    "gates": [
+      {
+        "name": "old v1-owner key unauthorized",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "old v1-owner key exchange denied",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "old v1-tester key unauthorized",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "old v1-tester key exchange denied",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "owner (…b52e) exchange → signed session, no raw key in cookie",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "owner session admits",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "wave1-tester-01 (…0628) exchange → signed session, no raw key in cookie",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "wave1-tester-01 session admits",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "wave1-tester-02 (…d68b) exchange → signed session, no raw key in cookie",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "wave1-tester-02 session admits",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "wave1-tester-03 (…364d) exchange → signed session, no raw key in cookie",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "wave1-tester-03 session admits",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "wave1-tester-04 (…cb2d) exchange → signed session, no raw key in cookie",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "wave1-tester-04 session admits",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "wave1-tester-05 (…7775) exchange → signed session, no raw key in cookie",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "wave1-tester-05 session admits",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "tampered session refused",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "no credentials refused",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "Candidate 3 active at the stable address",
+        "ok": true,
+        "detail": ""
+      }
+    ],
+    "sessionModel": "HMAC-signed pv_session (v2), 7d expiry, HttpOnly/Secure/Lax; revocation and rotation kill issued sessions on next request; raw key never stored in the browser",
+    "unitCoverage": "expiry, tampering, wrong-secret, revocation, role-escalation, fail-closed — tests/v6c6-wave1.test.js"
+  }
+}

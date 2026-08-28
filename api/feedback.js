@@ -2,7 +2,9 @@
 // "Did this result feel believable?" — stored per simulation so we can later
 // find players/lineups/rating versions with high disbelief rates. Anonymous
 // (uid) — no login required. Without a store: accepted and dropped (204).
-import { hasStore, pipeline, setNX, rateLimit, clientIp, dayKey } from "./_lib/store.js";
+import { hasStore, pipeline, setNX, rateLimit, clientIp, dayKey, getJSON, setJSON } from "./_lib/store.js";
+import { previewIdentity } from "./_lib/previewAccessCheck.js";
+import { previewCandidateIdentity } from "./_lib/previewEngine.js";
 import { sameOrigin } from "./_lib/session.js";
 import { flags } from "./_lib/flags.js";
 import { cleanText } from "./_lib/validate.js";
@@ -13,12 +15,19 @@ const CATEGORIES = new Set([
   "box_score_wrong", "player_data_wrong", "other",
 ]);
 
-// ── Structured preview feedback (Candidate 3 protected preview) ──────────────
-// Same route, same rate limits, same anonymity — a separate, stricter shape
-// stored ONLY under the preview-feedback namespace. Pure validator, exported
-// for tests. Returns the clean record or null.
+// ── Structured preview feedback (Wave 1, schema v2) ──────────────────────────
+// Same route, same rate limits — a separate, stricter shape stored ONLY under
+// the preview-feedback namespace. Tester and candidate identity are SERVER
+// authoritative (session cookie / lock constants); client-sent values for
+// those fields are ignored. Pure validator, exported for tests.
+export const FEEDBACK_SCHEMA_VERSION = 2;
+export const WAVE_ID = "candidate3-wave1";
+export const PREVIEW_ISSUE_CATEGORIES = new Set(["NONE", "CRASH_OR_ERROR", "IMPOSSIBLE_RESULT",
+  "BASKETBALL_CREDIBILITY", "TEAM_IDENTITY", "COACH_IDENTITY", "ERA_STYLE",
+  "POSTGAME_EXPLANATION", "UI_FRICTION", "MOBILE", "PERFORMANCE", "OTHER"]);
 const RATING_FIELDS = ["resultBelievability", "teamIdentityFeltAccurate", "coachDifferenceFeltMeaningful",
   "eraStyleFeltMeaningful", "postgameExplanationHelpful"];
+const SCENARIO_SHAPE = /^w1-s[1-8]$/;
 export const validatePreviewFeedback = (b) => {
   if (!b || typeof b !== "object") return null;
   if (typeof b.resultId !== "string" || !/^pv_[a-z0-9]{6,16}$/.test(b.resultId)) return null;
@@ -30,7 +39,10 @@ export const validatePreviewFeedback = (b) => {
   }
   if (typeof b.wouldRematchOrShare !== "boolean") return null;
   rec.wouldRematchOrShare = b.wouldRematchOrShare;
-  rec.issueCategory = b.issueCategory === "none" || CATEGORIES.has(b.issueCategory) ? b.issueCategory : "none";
+  rec.scenarioId = SCENARIO_SHAPE.test(b.scenarioId) ? b.scenarioId : "FREE_FORM";
+  rec.gameMode = typeof b.gameMode === "string" && b.gameMode.length <= 16 ? b.gameMode : "single";
+  const cat = String(b.issueCategory ?? "NONE").toUpperCase();
+  rec.issueCategory = PREVIEW_ISSUE_CATEGORIES.has(cat) ? cat : "NONE";
   if (b.optionalComment != null) {
     if (typeof b.optionalComment !== "string" || b.optionalComment.length > 500) return null;
     rec.optionalComment = cleanText(b.optionalComment, 500);
@@ -48,18 +60,41 @@ export default async function handler(req, res) {
   if (b.kind === "preview") {
     const rec = validatePreviewFeedback(b);
     if (!rec) return res.status(400).json({ error: "Invalid feedback." });
+    // Tester identity is the SESSION's, never the payload's.
+    const who = await previewIdentity(req.headers);
+    if (!who.ok) return res.status(401).json({ error: "preview_access_required" });
     if (!hasStore()) return res.status(204).end();
     if (!(await rateLimit(`pvfb:${clientIp(req)}`, 10, 60))) return res.status(204).end();
-    const uid = typeof b.uid === "string" ? b.uid.slice(0, 64) : "anon";
-    const first = await setNX(`preview-feedback:seen:${rec.resultId}:${uid}`, 1, 60 * 60 * 24 * 30);
-    if (!first) return res.status(204).end();
+    // The result must exist in the PREVIEW namespace (known + preview-only).
+    const stored = await getJSON(`preview-result:${rec.resultId}`);
+    if (!stored) return res.status(404).json({ error: "unknown_preview_result" });
+    const identity = previewCandidateIdentity();
+    const primaryKey = `preview-feedback:primary:${rec.resultId}:${who.testerId}`;
+    const prior = await getJSON(primaryKey);
+    const record = {
+      feedbackSchemaVersion: FEEDBACK_SCHEMA_VERSION,
+      waveId: WAVE_ID,
+      testerId: who.testerId,
+      sid: who.sid,
+      ...rec,
+      candidateId: identity.candidateId,
+      calibrationVersion: identity.possessionCalibrationVersion,
+      revision: (prior?.revision ?? 0) + 1,   // resubmission REPLACES the primary record
+      createdAt: prior?.createdAt ?? Date.now(),
+      updatedAt: Date.now(),
+    };
+    await setJSON(primaryKey, record, 60 * 60 * 24 * 120);
     await pipeline([
-      ["LPUSH", "preview-feedback:log", JSON.stringify({ ...rec, uid, ts: Date.now() })],
+      ["LPUSH", "preview-feedback:log", JSON.stringify(record)],
       ["LTRIM", "preview-feedback:log", 0, 9999],
-      ["HINCRBY", "preview-feedback:categories", rec.issueCategory, 1],
+      ["HINCRBY", "preview-feedback:categories", record.issueCategory, prior ? 0 : 1],
+      ["SADD", "preview-feedback:results", rec.resultId],
+      ["HINCRBY", "preview-metrics:counters", prior ? "feedback_resubmitted" : "feedback_submitted", 1],
+      ["HINCRBY", "preview-metrics:scenario-feedback", record.scenarioId, prior ? 0 : 1],
+      ["HINCRBY", "preview-metrics:counters", record.wouldRematchOrShare ? "would_rematch_yes" : "would_rematch_no", 1],
     ]);
-    previewEvent("preview_feedback_submitted", { resultId: rec.resultId,
-      feedbackCategory: rec.issueCategory, feedbackRating: rec.resultBelievability });
+    previewEvent("preview_feedback_submitted", { resultId: rec.resultId, testerId: who.testerId,
+      scenarioId: record.scenarioId, feedbackCategory: record.issueCategory, feedbackRating: record.resultBelievability });
     return res.status(204).end();
   }
 

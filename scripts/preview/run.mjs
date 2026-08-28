@@ -58,7 +58,7 @@ if (mode === "smoke" || mode === "soak") {
     try {
       const r = computeResultPreview("single", team(a), team(b), opts, 1000 + i);
       lat.push(Date.now() - s0);
-      if (r.finalScore.gold < 50 || r.finalScore.gold > 220 || r.finalScore.blue < 50 || r.finalScore.blue > 220) scoreAnomalies++;
+      if (r.core.finalScore.gold < 50 || r.core.finalScore.gold > 220 || r.core.finalScore.blue < 50 || r.core.finalScore.blue > 220) scoreAnomalies++;
       if (i % 10 === 0) {
         const again = computeResultPreview("single", team(a), team(b), opts, 1000 + i);
         if (JSON.stringify(again) !== JSON.stringify(r)) replayBreaks++;
