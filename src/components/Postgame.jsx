@@ -3,6 +3,7 @@
 // shifts to postgame. Every number comes from the structured result (validated
 // model output + deterministic engine data) — nothing invented for aesthetics.
 // Never a dead end: contextual CTAs lead back into another game or a share.
+import { useState } from "react";
 import { T, card } from "../theme.js";
 import { chemistryScore, chemistryLabel } from "../chemistryView.js";
 import { Feedback } from "./Feedback.jsx";
@@ -278,8 +279,34 @@ function CTAs({ mode, won, onRematch, onBest7, onChallenge, onSwap, onShare, onL
   );
 }
 
+// ── Postgame section tabs ───────────────────────────────────────────────────
+const SECTIONS = [
+  ["final", "Final"],
+  ["box", "Box Score"],
+  ["story", "Game Story"],
+  ["coaching", "Coaching & Strategy"],
+];
+
+function SectionTabs({ section, onSection }) {
+  return (
+    <div role="tablist" aria-label="Postgame sections" style={{
+      display: "flex", gap: 6, padding: "12px 16px 0", overflowX: "auto", WebkitOverflowScrolling: "touch" }}>
+      {SECTIONS.map(([id, label]) => (
+        <button key={id} role="tab" aria-selected={section === id} onClick={() => onSection(id)} style={{
+          padding: "10px 16px", fontSize: 12.5, fontWeight: 800, letterSpacing: 0.5, borderRadius: "10px 10px 0 0",
+          cursor: "pointer", minHeight: 44, whiteSpace: "nowrap",
+          border: `1px solid ${section === id ? T.goldBorder : T.border}`, borderBottom: "none",
+          background: section === id ? "rgba(253,185,39,0.1)" : "rgba(0,0,0,0.25)",
+          color: section === id ? T.gold : T.textDim,
+        }}>{label}</button>
+      ))}
+    </div>
+  );
+}
+
 // ── The Postgame ───────────────────────────────────────────────────────────────
 export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedbackCtx, narrativeStatus, onRetryNarrative, persisted, onRematch, onBest7, onChallenge, onSwap, onShare, onLeaderboard }) {
+  const [section, setSection] = useState("final");
   const row = mvpRow(sim);
   const mvpP = mvpPlayer(sim, team, opp);
   const mvpOnGold = (team || []).some((p) => p && p === mvpP);
@@ -289,7 +316,9 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
     <div className="rise" style={{ ...card, marginTop: 14, overflow: "hidden", borderColor: won ? T.goldBorder : T.blueBorder, boxShadow: won ? T.glowGold : T.glowBlue }}>
       <ScoreboardHero sim={sim} won={won} mode={mode} seriesLabel={seriesLabel} team={team} opp={opp} />
 
-      <div style={{ padding: "0 16px 16px" }}>
+      <SectionTabs section={section} onSection={setSection} />
+      <div role="tabpanel" style={{ padding: "12px 16px 16px", borderTop: `1px solid ${T.border}` }}>
+        {section === "final" && <>
         {/* B. MVP feature card with a real explanation (narrative or deterministic fallback) */}
         {sim.mvp && (
           <div style={{ display: "flex", alignItems: "center", gap: 16, padding: 16, borderRadius: 12, background: "linear-gradient(120deg, #2b230a 0%, #1a1610 100%)", border: `1px solid ${T.gold}`, flexWrap: "wrap" }}>
@@ -315,6 +344,10 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
           </div>
         )}
 
+        {/* V3 context chips stay on Final */}
+        </>}
+
+        {section === "story" && <>
         {/* C. Game summary (deterministic recap instantly; enhanced recap replaces it) */}
         {sim.summary && (
           <div style={{ marginTop: 14 }}>
@@ -351,6 +384,9 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
           </div>
         )}
 
+        </>}
+
+        {section === "final" && <>
         {/* V3: possession context + expectation honesty */}
         {sim.v3 && (
           <div style={{ marginTop: 12, padding: "10px 14px", borderRadius: 10, background: T.bgCardHover, border: `1px solid ${T.border}`, fontSize: 12, color: T.textDim, display: "flex", gap: 14, flexWrap: "wrap" }}>
@@ -369,10 +405,12 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
           </div>
         )}
 
-        {/* E. Team-level matchup breakdown (default visible) */}
+        {/* E. Team-level matchup breakdown */}
         <BreakdownBars sim={sim} />
+        </>}
 
-        {/* F. FULL BOX SCORE — both teams, visible by default, no accordion */}
+        {section === "box" && <>
+        {/* F. FULL BOX SCORE — both teams */}
         <div style={{ ...card, padding: 16, marginTop: 12 }}>
           <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 2, color: T.textDim }}>FULL BOX SCORE</div>
           <BoxTable label="TEAM GOLD" stats={sim.teamAStats} color={T.gold} mvpName={sim.mvp} />
@@ -412,6 +450,16 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
           </div>
         )}
 
+        </>}
+
+        {section === "coaching" && <>
+        {/* Which coaches ran the game */}
+        {sim.coachNames?.gold && (
+          <div style={{ marginTop: 2, padding: "10px 14px", borderRadius: 10, background: T.bgCardHover, border: `1px solid ${T.border}`, fontSize: 12.5 }}>
+            🧠 <b style={{ color: T.gold }}>{sim.coachNames.gold}</b>{sim.coachNames.blue ? <> vs <b style={{ color: T.blue }}>{sim.coachNames.blue}</b></> : null}
+            {sim.eraId && <span style={{ color: T.textDim }}> · {sim.eraLabel || sim.eraId} Era Style</span>}
+          </div>
+        )}
         {/* V3: usage roles + defensive assignments — the basketball under the hood */}
         {sim.v3?.usage && (
           <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 12 }}>
@@ -461,7 +509,9 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
 
         {/* Pre-game engine edges */}
         <EdgeBars edges={sim.edges} />
+        </>}
 
+        {section === "final" && <>
         {/* H/I. Strengths & weaknesses quadrants */}
         <AnalysisQuad sim={sim} />
 
@@ -473,10 +523,11 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
           </div>
         )}
 
-        {/* K. Believability feedback */}
+        {/* K. Feedback (preview: the structured Wave 1 form) */}
         {feedbackCtx && <Feedback ctx={feedbackCtx} />}
+        </>}
 
-        {/* L. Actions — never a dead end */}
+        {/* L. Actions — never a dead end, visible from every section */}
         <CTAs mode={mode} won={won}
           onRematch={onRematch} onBest7={onBest7} onChallenge={onChallenge}
           onSwap={onSwap} onShare={onShare} onLeaderboard={onLeaderboard} />

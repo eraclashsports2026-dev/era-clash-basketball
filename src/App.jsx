@@ -1158,7 +1158,9 @@ export default function App() {
   const simulatingView = (
     <div style={{ maxWidth: 720, margin: "8vh auto 0" }}>
       <SimulationLoading stage={simStage} progress={progress}
-        goldLabel="TEAM GOLD" blueLabel={isChallenge ? (challenge?.challengerName || "TEAM BLUE").toUpperCase() : "TEAM BLUE"} />
+        goldLabel="TEAM GOLD" blueLabel={isChallenge ? (challenge?.challengerName || "TEAM BLUE").toUpperCase() : "TEAM BLUE"}
+        coachGold={coachGold?.name} coachBlue={blueBuildable ? coachBlue?.name : null}
+        eraLabel={v3.eras?.find((e) => e.id === eraStyle)?.label || null} />
     </div>
   );
 
