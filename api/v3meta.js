@@ -45,16 +45,26 @@ export default async function handler(req, res) {
   // strategic tension only — never edge counts, never an expected winner. The
   // point of the preview is "I want to see how this plays out."
   const blue = req.body?.blueIds ? validateTeamIds(req.body.blueIds) : null;
-  let keyClash = null;
+  let keyClash = null, edges = null;
   if (blue) {
     const cG = resolveCoach(validCoachId(req.body?.coachGoldId) || "neutral");
     const cB = resolveCoach(validCoachId(req.body?.coachBlueId) || "neutral");
-    keyClash = matchupPreviewV3(team, blue, cG, cB, era).keyClash;
+    const preview = matchupPreviewV3(team, blue, cG, cB, era);
+    keyClash = preview.keyClash;
+    // QUALITATIVE pre-sim edges only — no numbers, no counts, no probability.
+    // "Even" uses the model's own nearly-even bound (|edge| <= 4 on the ±20
+    // scale, the same bound keyClash reasons with); "strong" = half the cap.
+    edges = preview.categories.map((c) => ({
+      category: c.category,
+      lead: Math.abs(c.edge) <= 4 ? "even" : c.edge > 0 ? "gold" : "blue",
+      strong: Math.abs(c.edge) >= 10,
+    }));
   }
 
   return res.status(200).json({
     recommended: recommendCoaches(team, era, 3),
     eraNote: era ? eraInteraction(era, teamDNA(team)) : null,
     keyClash,
+    edges,
   });
 }

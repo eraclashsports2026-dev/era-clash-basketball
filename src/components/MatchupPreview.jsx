@@ -38,25 +38,43 @@ const CATEGORY_SHORT = {
   "Star Power": "Star Power",
 };
 
-// V3 pre-sim preview (Addendum 26): strategic tension only. No edge counts, no
-// expected winner, no probability — those would answer the question the SIM is
-// supposed to answer. The KEY CLASH is fetched from the server's V3 analysis.
+// V3 pre-sim preview: QUALITATIVE edges only (Gold Edge / Even / Blue Edge —
+// the server maps the analysis model onto its own nearly-even bound; no
+// numbers, no counts, no probability, no winner) plus the KEY CLASH line.
 function KeyClashPreview({ gold, blue, v3 }) {
-  const [clash, setClash] = useState(null);
+  const [data, setData] = useState(null);
   const goldIds = gold.map((p) => p.id), blueIds = blue.map((p) => p.id);
   useEffect(() => {
     let alive = true;
-    setClash(null);
+    setData(null);
     v3meta({ goldIds, blueIds, coachGoldId: v3.coachGoldId, coachBlueId: v3.coachBlueId, eraStyleId: v3.eraStyleId })
-      .then((j) => { if (alive && j?.keyClash) setClash(j.keyClash); });
+      .then((j) => { if (alive && j) setData(j); });
     return () => { alive = false; };
   }, [JSON.stringify(goldIds), JSON.stringify(blueIds), v3.coachGoldId, v3.coachBlueId, v3.eraStyleId]); // eslint-disable-line
+  const CORE = ["Talent", "Construction", "Creation", "Spacing", "Defense", "Rebounding"];
+  const rows = (data?.edges ?? []).filter((e) => CORE.includes(e.category));
   return (
-    <div className="rise" style={{ padding: "14px 16px", borderRadius: 12, background: "rgba(0,0,0,0.45)", border: `1px solid ${T.border}`, maxWidth: 360, margin: "0 auto", width: "100%" }}>
-      <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: 2, color: T.gold, textAlign: "center" }}>KEY CLASH</div>
-      <div style={{ fontSize: 12.5, color: T.text, marginTop: 8, lineHeight: 1.6 }}>
-        {clash || "Reading the matchup…"}
-      </div>
+    <div className="rise" style={{ padding: "14px 16px", borderRadius: 12, background: "rgba(0,0,0,0.45)", border: `1px solid ${T.border}`, maxWidth: 380, margin: "0 auto", width: "100%" }}>
+      <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: 2, color: T.gold, textAlign: "center" }}>MATCHUP PREVIEW</div>
+      {!data && <div style={{ fontSize: 12, color: T.textDim, marginTop: 8, textAlign: "center" }}>Reading the matchup…</div>}
+      {rows.length > 0 && (
+        <div style={{ marginTop: 10 }}>
+          {rows.map((e) => (
+            <div key={e.category} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "4px 2px", fontSize: 12, borderBottom: `1px solid rgba(35,44,69,0.5)` }}>
+              <span style={{ color: T.textDim }}>{"★ "}{e.category}</span>
+              <span style={{ fontWeight: 800, color: e.lead === "gold" ? T.gold : e.lead === "blue" ? T.blue : T.textMuted }}>
+                {e.lead === "even" ? "Even" : e.lead === "gold" ? "Gold Edge" : "Blue Edge"}{e.strong ? " ★" : ""}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
+      {data?.keyClash && (
+        <div style={{ marginTop: 10 }}>
+          <div style={{ fontSize: 9.5, fontWeight: 800, letterSpacing: 2, color: T.textDim }}>KEY CLASH</div>
+          <div style={{ fontSize: 12, color: T.text, marginTop: 4, lineHeight: 1.55 }}>{data.keyClash}</div>
+        </div>
+      )}
       <div style={{ fontSize: 10.5, color: T.textDim, marginTop: 8, textAlign: "center" }}>Run the sim to find out.</div>
     </div>
   );

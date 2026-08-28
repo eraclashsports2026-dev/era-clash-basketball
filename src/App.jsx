@@ -25,11 +25,21 @@ import MatchupPreview, { VsDivider } from "./components/MatchupPreview.jsx";
 import SimulationLoading from "./components/SimulationLoading.jsx";
 import ManualPicker from "./components/ManualPicker.jsx";
 import CoachSelect from "./components/CoachSelect.jsx";
-import EraStyleSelect from "./components/EraStyleSelect.jsx";
-import StrategyTabs from "./components/StrategyTabs.jsx";
+import PlayerImage from "./components/PlayerImage.jsx";
+import StageWizard from "./components/StageWizard.jsx";
+import { EraStage, VsRow } from "./components/StageViews.jsx";
 import { DIFFICULTIES, DEFAULT_DIFFICULTY } from "./v3/difficulty.js";
 import { TeamShell, EmptySlot, FilledSlot, LineupList } from "./components/TeamSlots.jsx";
 import { teamFit } from "./chemistryView.js";
+
+// Five-portrait roster summary used above the coach panels (stage 2).
+function PlayerImageMini({ p, side }) {
+  return (
+    <span title={p.name} style={{ display: "inline-flex" }}>
+      <PlayerImage player={p} variant="thumbnail" team={side} />
+    </span>
+  );
+}
 
 // ── Badges ───────────────────────────────────────────────────────────────────
 const BADGES = {
@@ -66,6 +76,8 @@ export default function App() {
   const [nav, setNav] = useState("Play");             // Play | Daily | Challenges | Board | Profile | Credits
   const [view, setView] = useState("builder");        // builder | simulating | postgame
   const [gameMode, setGameMode] = useState("Single"); // Single | Best7 | Win82 | Tournament
+  const [playStage, setPlayStage] = useState("ROSTERS"); // ROSTERS | COACHES | ERA | READY (v3 wizard)
+  const [eraLocked, setEraLocked] = useState(false);      // the era step is a confirmation, not a default
   const [difficulty, setDifficulty] = useState(DEFAULT_DIFFICULTY); // opponent pool for Win82/Tournament
   const [buildMethod, setBuildMethod] = useState("rolls"); // rolls (Chaos Draft) | manual
   const [yz, setYz] = useState(null);
@@ -175,6 +187,7 @@ export default function App() {
     if (gold.length !== 5 || blue.length !== 5 || !cg || !cb) return;
     setBuildMethod("manual"); setTeam(gold); setOpponent(blue);
     setCoachGold(cg); setCoachBlue(cb); setEraStyle(sc.era);
+    setEraLocked(true); setPlayStage("READY");
     setActiveScenario(sc);
     track("preview_scenario_loaded", { scenario_id: sc.id });
   }, [v3.coaches]); // eslint-disable-line
@@ -202,6 +215,22 @@ export default function App() {
   // keeps the rival's five as-is.
   const v3Steps = v3.enabled && !isChallenge && !isDaily;
   const coachesReady = !v3Steps || (blueBuildable ? (!!coachGold && !!coachBlue) : !!coachGold);
+  // ── Wizard stage gating (v3 modes) ────────────────────────────────────────
+  const rosterDone = !!team && (!blueBuildable || !!opponent);
+  const stageDone = { ROSTERS: rosterDone, COACHES: rosterDone && coachesReady, ERA: eraLocked };
+  const jumpStage = (id) => {
+    if (id === "ROSTERS") setPlayStage("ROSTERS");
+    else if (id === "COACHES" && rosterDone) setPlayStage("COACHES");
+    else if (id === "ERA" && rosterDone && coachesReady) setPlayStage("ERA");
+    else if (id === "READY" && rosterDone && coachesReady && eraLocked) setPlayStage("READY");
+  };
+  // A stage can never outrun its prerequisites (reset, roster edits, coach clears).
+  useEffect(() => {
+    if (!v3Steps) return;
+    if (!rosterDone && playStage !== "ROSTERS") setPlayStage("ROSTERS");
+    else if ((playStage === "ERA" || playStage === "READY") && !coachesReady) setPlayStage("COACHES");
+    else if (playStage === "READY" && !eraLocked) setPlayStage("ERA");
+  }, [v3Steps, rosterDone, coachesReady, eraLocked, playStage]);
   // The Daily has its own coach step: three server-chosen options, one pick.
   // The sim stays locked until the roster AND the coach are both settled —
   // an unhired coach is an incomplete submission, not a default.
@@ -379,6 +408,7 @@ export default function App() {
     setYz(null); setTeam(null); setResult(null); setErr(""); setProgress(null);
     setManual([null, null, null, null, null]); setBlueManual([null, null, null, null, null]);
     setOpponent(null); setPicker(null); setView("builder");
+    setPlayStage("ROSTERS"); setEraLocked(false);
   };
   const handleNav = (id) => { resetPlay(); setSharedResult(null); setNav(id); };
 
@@ -653,7 +683,7 @@ export default function App() {
   };
   const doBest7FromResult = () => { setResult(null); runBest7(lastOppRef.current, "from_result"); };
   // Swap One: back to the builder with BOTH squads preserved (spec #12/#13).
-  const startSwap = () => { track("swap_one_started", {}); setResult(null); setView("builder"); };
+  const startSwap = () => { track("swap_one_started", {}); setResult(null); setView("builder"); setPlayStage("READY"); };
   const retryNarrative = () => { if (result?.record) fetchNarrative(result.resultId, result.record, result.persisted); };
 
   // ── Share ──────────────────────────────────────────────────────────────────
@@ -742,24 +772,13 @@ export default function App() {
         </div>
       )}
 
-      {/* Mode selector + side controls */}
-      {!isChallenge && !result && (
-        <div style={{ display: "flex", gap: 10, justifyContent: "center", alignItems: "stretch", flexWrap: "wrap", padding: "14px 0" }}>
-          {!isDaily && (
-            <div role="tablist" aria-label="Game mode" style={{ display: "flex", gap: 6, flexWrap: "wrap", justifyContent: "center" }}>
-              {GAME_MODES.map(([id, label, sub]) => (
-                <button key={id} role="tab" aria-selected={gameMode === id} onClick={() => { resetPlay(); setGameMode(id); }} style={{
-                  padding: "9px 16px", borderRadius: 10, cursor: "pointer", textAlign: "center", minHeight: 48,
-                  border: `1px solid ${gameMode === id ? T.gold : T.border}`,
-                  background: gameMode === id ? "rgba(253,185,39,0.12)" : "rgba(0,0,0,0.25)",
-                  color: gameMode === id ? T.gold : T.textDim,
-                }}>
-                  <div style={{ fontSize: 12.5, fontWeight: 900, letterSpacing: 1 }}>{label}</div>
-                  <div style={{ fontSize: 10, opacity: 0.8 }}>{sub}</div>
-                </button>
-              ))}
-            </div>
-          )}
+      {/* Current mode — selected from the Play menu in the header */}
+      {!isChallenge && !isDaily && !result && (
+        <div style={{ display: "flex", gap: 8, justifyContent: "center", alignItems: "center", padding: "10px 0 2px", fontSize: 12 }}>
+          <span style={{ padding: "6px 14px", borderRadius: 16, border: `1px solid ${T.goldBorder}`, background: T.goldSoft, color: T.gold, fontWeight: 900, letterSpacing: 1 }}>
+            {GAME_MODES.find(([id]) => id === gameMode)?.[1]}
+          </span>
+          <span style={{ color: T.textDim }}>{GAME_MODES.find(([id]) => id === gameMode)?.[2]} · change modes in the <b style={{ color: T.text }}>Play</b> menu</span>
         </div>
       )}
 
@@ -794,6 +813,10 @@ export default function App() {
         </div>
       )}
 
+      {v3Steps && !result && (
+        <StageWizard stage={playStage} done={stageDone} onJump={jumpStage} />
+      )}
+
       {isDaily && dailyDone && !team && !result ? (
         <div>
           <div style={{ ...card, padding: 30, textAlign: "center", maxWidth: 520, margin: "0 auto" }}>
@@ -805,7 +828,8 @@ export default function App() {
         </div>
       ) : (
         <>
-          {/* THE MATCHUP */}
+          {/* THE MATCHUP — stage 1 (and the whole layout for Daily/Challenge) */}
+          {(!v3Steps || playStage === "ROSTERS") && (
           <div style={{ display: "flex", gap: 14, alignItems: "flex-start", flexWrap: "wrap" }}>
             {/* TEAM GOLD */}
             <TeamShell team="gold" title="TEAM GOLD" count={goldCount}>
@@ -876,39 +900,12 @@ export default function App() {
                     <span>RATING <b style={{ color: T.gold }}>{teamRating(team)}</b></span>
                   </div>
                   <ChemistryMeter team={team} side="gold" />
-                  {v3Steps && (
-                    <StrategyTabs side="gold"
-                      coachName={coachGold ? coachGold.name.split(" ").slice(-1)[0] : null}
-                      eraLabel={v3.eras?.find((e) => e.id === eraStyle)?.label || null}
-                      coachContent={
-                        <CoachSelect side="gold" teamIds={team.map((p) => p.id)} eraStyleId={eraStyle}
-                          selected={coachGold} onSelect={setCoachGold} allCoaches={v3.coaches} />
-                      }
-                      eraContent={
-                        <EraStyleSelect side="gold" eras={v3.eras} selected={eraStyle} onSelect={setEraStyle}
-                          teamIds={team.map((p) => p.id)} />
-                      } />
-                  )}
                 </>
               )}
             </TeamShell>
 
             {/* CENTER: VS + steps + era + preview + CTA */}
             <div style={{ flex: "0 1 340px", minWidth: 260, display: "flex", flexDirection: "column", gap: 12, alignSelf: "stretch", justifyContent: "center", margin: "0 auto" }}>
-              {v3Steps && (
-                <div aria-label="Matchup progress" style={{ display: "flex", gap: 6, justifyContent: "center", fontSize: 10, fontWeight: 800, letterSpacing: 1 }}>
-                  {[["1 TEAM", !!team && (!blueBuildable || !!opponent)], ["2 COACH", coachesReady && !!team], ["3 ERA STYLE", coachesReady && !!team && !!eraStyle]].map(([label, done], i, arr) => {
-                    const current = !done && (i === 0 || arr[i - 1][1]);
-                    return (
-                      <span key={label} style={{
-                        padding: "5px 10px", borderRadius: 14,
-                        border: `1px solid ${done ? T.green : current ? T.gold : T.border}`,
-                        color: done ? T.green : current ? T.gold : T.textMuted,
-                      }}>{done ? "✓ " : ""}{label}</span>
-                    );
-                  })}
-                </div>
-              )}
               <VsDivider active={!!team && !!opponent} />
               {/* Daily coach + era step. Appears once the seeded roster is
                   locked, because hiring a coach for a lineup you have not
@@ -927,10 +924,12 @@ export default function App() {
                   Hire one of today's three coaches to unlock the sim.
                 </div>
               )}
-              {v3Steps && !!team && (!blueBuildable || !!opponent) && !coachesReady && (
-                <div style={{ textAlign: "center", fontSize: 12, color: T.textDim }}>
-                  Pick a <b style={{ color: !coachGold ? T.gold : T.blue }}>coach</b> for {!coachGold ? "Team Gold" : "Team Blue"} — the 🧠 COACH tab under its roster. The 🕰️ ERA STYLE tab sets the game's shared era.
-                </div>
+              {v3Steps && rosterDone && (
+                <button onClick={() => setPlayStage("COACHES")} style={{
+                  width: "100%", padding: "14px 18px", fontSize: 14, fontWeight: 900, letterSpacing: 0.5,
+                  border: "none", borderRadius: 12, cursor: "pointer", minHeight: 50,
+                  background: T.gold, color: "#111", boxShadow: "0 4px 22px rgba(253,185,39,0.2)",
+                }}>Continue to Coaches →</button>
               )}
               <MatchupPreview gold={team} blue={blueBuildable ? opponent : null} v3={v3Steps ? { enabled: true, coachGoldId: coachGold?.id, coachBlueId: coachBlue?.id, eraStyleId: eraStyle } : null} />
               {team && blueBuildable && !opponent && (
@@ -938,7 +937,7 @@ export default function App() {
                   Build <b style={{ color: T.blue }}>Team Blue</b> — Manual or Random — to unlock the sim.
                 </div>
               )}
-              {team && (activeMode !== "Single" && activeMode !== "Best7" && activeMode !== "Daily" && activeMode !== "Challenge" ? true : !!opponent) && coachesReady && dailyChoiceReady && !result && !loading && (
+              {!v3Steps && team && (activeMode !== "Single" && activeMode !== "Best7" && activeMode !== "Daily" && activeMode !== "Challenge" ? true : !!opponent) && coachesReady && dailyChoiceReady && !result && !loading && (
                 <div className="sticky-sim">
                   <button onClick={runTheSim} disabled={isDaily && dailyDone} style={{
                     width: "100%", padding: "16px 20px", fontSize: 15, fontWeight: 900, letterSpacing: 1,
@@ -1012,19 +1011,6 @@ export default function App() {
                     <span>RATING <b style={{ color: T.blue }}>{teamRating(opponent)}</b></span>
                   </div>
                   <ChemistryMeter team={opponent} side="blue" compact />
-                  {v3Steps && (
-                    <StrategyTabs side="blue"
-                      coachName={coachBlue ? coachBlue.name.split(" ").slice(-1)[0] : null}
-                      eraLabel={v3.eras?.find((e) => e.id === eraStyle)?.label || null}
-                      coachContent={
-                        <CoachSelect side="blue" teamIds={opponent.map((p) => p.id)} eraStyleId={eraStyle}
-                          selected={coachBlue} onSelect={setCoachBlue} allCoaches={v3.coaches} />
-                      }
-                      eraContent={
-                        <EraStyleSelect side="blue" eras={v3.eras} selected={eraStyle} onSelect={setEraStyle}
-                          teamIds={opponent.map((p) => p.id)} />
-                      } />
-                  )}
                 </>
               ) : blueBuildable && blueManual.some(Boolean) ? (
                 <div style={{ display: "grid", gap: 8 }}>
@@ -1050,6 +1036,103 @@ export default function App() {
               )}
             </TeamShell>
           </div>
+          )}
+
+          {/* ── STAGE 2: COACHES ─────────────────────────────────────────── */}
+          {v3Steps && playStage === "COACHES" && !result && (
+            <div style={{ display: "flex", gap: 14, alignItems: "flex-start", flexWrap: "wrap", marginTop: 8 }}>
+              <div style={{ flex: "1 1 340px", minWidth: 300 }}>
+                <TeamShell team="gold" title="TEAM GOLD" count={5}>
+                  <div style={{ display: "flex", gap: 6, marginBottom: 10, flexWrap: "wrap" }}>
+                    {(team || []).map((p) => <PlayerImageMini key={p.id} p={p} side="gold" />)}
+                  </div>
+                  <CoachSelect side="gold" teamIds={(team || []).map((p) => p.id)} eraStyleId={eraStyle}
+                    selected={coachGold} onSelect={setCoachGold} allCoaches={v3.coaches} />
+                </TeamShell>
+              </div>
+              <div style={{ flex: "0 1 320px", minWidth: 260, display: "flex", flexDirection: "column", gap: 12, alignSelf: "stretch", justifyContent: "center", margin: "0 auto" }}>
+                <VsDivider active />
+                <MatchupPreview gold={team} blue={blueBuildable ? opponent : null} v3={{ enabled: true, coachGoldId: coachGold?.id, coachBlueId: coachBlue?.id, eraStyleId: eraStyle }} />
+                <button onClick={() => setPlayStage("ERA")} disabled={!coachesReady} style={{
+                  width: "100%", padding: "14px 18px", fontSize: 14, fontWeight: 900, letterSpacing: 0.5,
+                  border: "none", borderRadius: 12, cursor: coachesReady ? "pointer" : "default", minHeight: 50,
+                  background: coachesReady ? T.gold : T.border, color: coachesReady ? "#111" : T.textMuted,
+                }}>Continue to Era Style →</button>
+                {!coachesReady && (
+                  <div style={{ textAlign: "center", fontSize: 12, color: T.textDim }}>
+                    {blueBuildable && !coachGold && !coachBlue ? "Hire a coach for each team to continue."
+                      : !coachGold ? "Team Gold still needs a coach." : "Team Blue still needs a coach."}
+                  </div>
+                )}
+              </div>
+              {blueBuildable ? (
+                <div style={{ flex: "1 1 340px", minWidth: 300 }}>
+                  <TeamShell team="blue" title="TEAM BLUE" count={5}>
+                    <div style={{ display: "flex", gap: 6, marginBottom: 10, flexWrap: "wrap" }}>
+                      {(opponent || []).map((p) => <PlayerImageMini key={p.id} p={p} side="blue" />)}
+                    </div>
+                    <CoachSelect side="blue" teamIds={(opponent || []).map((p) => p.id)} eraStyleId={eraStyle}
+                      selected={coachBlue} onSelect={setCoachBlue} allCoaches={v3.coaches} />
+                  </TeamShell>
+                </div>
+              ) : (
+                <div style={{ flex: "1 1 340px", minWidth: 300 }}>
+                  <TeamShell team="blue" title="THE FIELD" count={null}>
+                    <div style={{ fontSize: 12, color: T.textDim, lineHeight: 1.6 }}>
+                      {gameMode === "Win82" ? "82 rival squads are generated with their own staffs — your coach carries the season." : "Each playoff rival arrives with its own staff — your coach carries the run."}
+                    </div>
+                  </TeamShell>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* ── STAGE 3: ERA STYLE ───────────────────────────────────────── */}
+          {v3Steps && playStage === "ERA" && !result && (
+            <div style={{ marginTop: 8 }}>
+              <VsRow gold={team} blue={blueBuildable ? opponent : null} coachGold={coachGold} coachBlue={blueBuildable ? coachBlue : null}
+                blueTitle={blueBuildable ? "TEAM BLUE" : "THE FIELD"} />
+              <EraStage eras={v3.eras} selected={eraStyle} onSelect={setEraStyle}
+                gold={team || []} blue={blueBuildable ? (opponent || []) : []} />
+              <div style={{ maxWidth: 420, margin: "16px auto 0" }}>
+                <button onClick={() => { setEraLocked(true); setPlayStage("READY"); }} style={{
+                  width: "100%", padding: "15px 18px", fontSize: 14, fontWeight: 900, letterSpacing: 0.5,
+                  border: "none", borderRadius: 12, cursor: "pointer", minHeight: 52,
+                  background: T.gold, color: "#111", boxShadow: "0 4px 22px rgba(253,185,39,0.2)",
+                }}>Lock Era Style and Continue →</button>
+              </div>
+            </div>
+          )}
+
+          {/* ── READY TO RUN ─────────────────────────────────────────────── */}
+          {v3Steps && playStage === "READY" && !result && !loading && (
+            <div style={{ marginTop: 8, maxWidth: 760, marginLeft: "auto", marginRight: "auto" }}>
+              <VsRow gold={team} blue={blueBuildable ? opponent : null} coachGold={coachGold} coachBlue={blueBuildable ? coachBlue : null}
+                blueTitle={blueBuildable ? "TEAM BLUE" : "THE FIELD"} />
+              <div style={{ textAlign: "center", fontSize: 11.5, color: T.textDim, margin: "2px 0 10px" }}>
+                Era Style: <b style={{ color: T.text }}>{v3.eras?.find((e) => e.id === eraStyle)?.label || eraStyle}</b>
+                <button onClick={() => setPlayStage("ERA")} style={{ marginLeft: 10, background: "none", border: `1px solid ${T.border}`, color: T.textDim, borderRadius: 7, padding: "3px 10px", cursor: "pointer", fontSize: 11 }}>Edit era</button>
+                <button onClick={() => setPlayStage("COACHES")} style={{ marginLeft: 6, background: "none", border: `1px solid ${T.border}`, color: T.textDim, borderRadius: 7, padding: "3px 10px", cursor: "pointer", fontSize: 11 }}>Edit coaches</button>
+                <button onClick={() => setPlayStage("ROSTERS")} style={{ marginLeft: 6, background: "none", border: `1px solid ${T.border}`, color: T.textDim, borderRadius: 7, padding: "3px 10px", cursor: "pointer", fontSize: 11 }}>Edit rosters</button>
+              </div>
+              <div style={{ maxWidth: 420, margin: "0 auto", display: "flex", flexDirection: "column", gap: 12 }}>
+                <MatchupPreview gold={team} blue={blueBuildable ? opponent : null} v3={{ enabled: true, coachGoldId: coachGold?.id, coachBlueId: coachBlue?.id, eraStyleId: eraStyle }} />
+                <div className="sticky-sim">
+                  <button onClick={runTheSim} style={{
+                    width: "100%", padding: "16px 20px", fontSize: 15, fontWeight: 900, letterSpacing: 1,
+                    border: "none", borderRadius: 12, cursor: "pointer", minHeight: 54,
+                    background: `linear-gradient(120deg, ${T.gold} 0%, #ffd76a 60%, ${T.gold} 100%)`,
+                    color: "#111", boxShadow: "0 6px 30px rgba(253,185,39,0.25)",
+                  }}>
+                    ⚡ RUN THE SIM
+                  </button>
+                  <div style={{ textAlign: "center", fontSize: 11, color: T.textDim, marginTop: 6 }}>
+                    {GAME_MODES.find(([id]) => id === activeMode)?.[2] || ""}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Ball IQ + Daily side controls */}
           {!team && !result && (
@@ -1116,7 +1199,9 @@ export default function App() {
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
     <div className={`arena ${winnerClass}`} style={{ color: T.text }}>
-      <GameHeader nav={nav} onNav={handleNav} dailyStreak={dailyStreak} />
+      <GameHeader nav={nav} onNav={handleNav} dailyStreak={dailyStreak}
+        modes={GAME_MODES} gameMode={gameMode}
+        onMode={(id) => { if (nav !== "Play") handleNav("Play"); else resetPlay(); setGameMode(id); }} />
 
       {err && <div role="alert" style={{ background: "#3a1520", color: "#ff8a9a", padding: 12, textAlign: "center", fontSize: 13 }}>{err}</div>}
 
