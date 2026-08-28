@@ -22,8 +22,33 @@ button{width:100%;padding:10px;border-radius:8px;border:0;background:#c9a227;col
 export default async function middleware(req) {
   if (process.env.VERCEL_ENV !== "preview" || !PREVIEW_ENV.requireAccess) return;
   const url = new URL(req.url);
-  // The access endpoint itself must be reachable to grant access.
-  if (url.pathname === "/api/preview-access") return;
+
+  // Key exchange lives IN the middleware (the deployment's function budget is
+  // full at 13): POST verifies the submitted key and sets the gate cookie,
+  // DELETE clears it. No serverless function involved.
+  if (url.pathname === "/api/preview-access") {
+    if (req.method === "DELETE") {
+      return new Response(null, { status: 204, headers: {
+        "set-cookie": `${COOKIE_NAME}=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax` } });
+    }
+    if (req.method !== "POST") return new Response(JSON.stringify({ error: "Method not allowed" }), { status: 405, headers: { "content-type": "application/json" } });
+    let key = "";
+    try {
+      const text = await req.text();
+      key = (req.headers.get("content-type") || "").includes("json")
+        ? String(JSON.parse(text || "{}").key ?? "")
+        : String(new URLSearchParams(text).get("key") ?? "");
+    } catch { key = ""; }
+    if (!(await verifyPreviewKey(key)).ok) {
+      return new Response(JSON.stringify({ error: "preview_access_denied" }), {
+        status: 401, headers: { "content-type": "application/json", "cache-control": "no-store" } });
+    }
+    return new Response(null, { status: 303, headers: {
+      location: "/",
+      "set-cookie": `${COOKIE_NAME}=${encodeURIComponent(key)}; Path=/; Max-Age=${60 * 60 * 24 * 30}; HttpOnly; Secure; SameSite=Lax`,
+      "cache-control": "no-store" } });
+  }
+
   const key = req.headers.get("x-preview-key") || readCookie(req.headers.get("cookie"), COOKIE_NAME);
   if (key && (await verifyPreviewKey(key)).ok) return;
   if (url.pathname.startsWith("/api/")) {
