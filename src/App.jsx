@@ -28,6 +28,10 @@ import CoachPick from "./components/CoachPick.jsx";
 import PlayerImage from "./components/PlayerImage.jsx";
 import StageWizard from "./components/StageWizard.jsx";
 import ChaosClash from "./components/chaos/ChaosClash.jsx";
+import ArenaHeader from "./components/arena/ArenaHeader.jsx";
+import ArenaCommandCenter from "./components/arena/ArenaCommandCenter.jsx";
+import { MembershipPage, FantasyPage, ModeInfoPage, HowModesModal as ArenaHowModes } from "./components/arena/InfoPages.jsx";
+import { PLAY_MODES, findMode, defaultMode, MODE_STATUS } from "./navigation.js";
 import AccountGate from "./components/chaos/AccountGate.jsx";
 import { currentTier, hasAccount } from "./account.js";
 import { simulateChaos } from "./chaos/client.js";
@@ -129,6 +133,13 @@ export default function App() {
   const [gate, setGate] = useState(null);                 // an entitlement gate to render
   const [chaosChallengeId, setChaosChallengeId] = useState(null);
   const [chaosNonce, setChaosNonce] = useState(0);   // remounts ChaosClash for a fresh run
+  const [chaosRun, setChaosRun] = useState(null);    // the live run, shared with the Result Dock
+  const [fullReport, setFullReport] = useState(false);
+  const [howModes, setHowModes] = useState(false);
+  // Client route for the destinations Phase 8C added. Real paths, so links are
+  // shareable and the back button behaves; the SPA rewrites and the preview
+  // middleware matcher both cover them.
+  const [route, setRoute] = useState(() => (typeof window === "undefined" ? "/" : window.location.pathname));
   const [eraLocked, setEraLocked] = useState(false);      // the era step is a confirmation, not a default
   const [difficulty, setDifficulty] = useState(DEFAULT_DIFFICULTY); // opponent pool for Win82/Tournament
   const [buildMethod, setBuildMethod] = useState("manual"); // manual (concept default) | rolls (Chaos Draft)
@@ -240,6 +251,57 @@ export default function App() {
       setNav("Play"); setGameMode("Chaos");
       track("chaos_challenge_opened", {});
     }
+  }, []);
+
+  // Back/forward through the Phase 8C destinations.
+  useEffect(() => {
+    const onPop = () => setRoute(window.location.pathname);
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
+
+  const navigate = useCallback((to) => {
+    if (typeof to !== "string") return;
+    if (to.startsWith("nav:")) { setNav(to.slice(4)); return; }
+    const url = new URL(to, window.location.origin);
+    window.history.pushState({}, "", url);
+    setRoute(url.pathname);
+    window.scrollTo(0, 0);
+  }, []);
+
+  // ONE handler for every mode entry point — the Play menu and the mode shelf
+  // both route through it, so a mode can never behave differently in the two.
+  const handleModeAction = useCallback((action) => {
+    switch (action.intent) {
+      case "OPEN_MODE": {
+        const m = action.mode;
+        if (m.nav) { setNav(m.nav); return; }
+        setNav("Play");
+        if (m.appMode && m.appMode !== gameMode) {
+          setGameMode(m.appMode);
+          setResult(null); setView("builder");
+        }
+        return;
+      }
+      case "CREATE_ACCOUNT":
+        setGate({ kind: "ACCOUNT", message: action.message });
+        setNav("Play");
+        return;
+      case "MEMBERSHIP":
+      case "MODE_INFO":
+        navigate(action.href);
+        return;
+      case "EXPLAIN_PREVIEW":
+        setErr(action.message);
+        return;
+      default:
+        return;
+    }
+  }, [gameMode, navigate]);
+
+  const goHome = useCallback(() => {
+    if (window.location.pathname !== "/") { window.history.pushState({}, "", "/"); setRoute("/"); }
+    setNav("Play");
   }, []);
 
   // Wave 1 guided-scenario launcher (?scenario=w1-sN). Preview-cohort feature:
@@ -1382,12 +1444,24 @@ export default function App() {
     </div>
   );
 
+  // The dark arena treatment applies to the Play workspace and the Phase 8C
+  // destinations; every other view keeps the hybrid theme.
+  const arenaMode = route !== "/" || (isChaos && !sharedResult && !gate);
+
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
-    <div className={`arena ${winnerClass}`} style={{ color: T.text }}>
-      <GameHeader nav={nav} onNav={handleNav} dailyStreak={dailyStreak}
-        modes={chaosAvailable ? GAME_MODES : GAME_MODES.filter(([id]) => id !== "Chaos")} gameMode={gameMode}
-        onMode={(id) => { if (nav !== "Play") handleNav("Play"); else resetPlay(); setGameMode(id); }} />
+    <div className={`arena ${winnerClass}${arenaMode ? " ec-arena-shell ec-arena-page" : ""}`} style={{ color: arenaMode ? undefined : T.text }}>
+      <ArenaHeader
+        nav={nav}
+        onNav={(n) => { if (route !== "/") { window.history.pushState({}, "", "/"); setRoute("/"); } handleNav(n); }}
+        tier={tier}
+        activeModeId={nav === "Play" ? (PLAY_MODES.find((m) => m.appMode === gameMode)?.id || null) : null}
+        onModeAction={(a) => { if (route !== "/") { window.history.pushState({}, "", "/"); setRoute("/"); } handleModeAction(a); }}
+        onNavigate={navigate}
+        onCreateAccount={() => { setNav("Play"); setGate({ kind: "ACCOUNT", message: "Create a free account to unlock every mode." }); }}
+        onHowModes={() => setHowModes(true)}
+        onAccountChanged={() => setTier(currentTier())}
+        previewCandidateActive={!!result?.sim?.previewCandidate} />
 
       {newBuild && (
         <div role="status" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, flexWrap: "wrap",
@@ -1400,6 +1474,37 @@ export default function App() {
       )}
       {err && <div role="alert" style={{ background: "#3a1520", color: "#ff8a9a", padding: 12, textAlign: "center", fontSize: 13 }}>{err}</div>}
 
+      {route.startsWith("/membership") ? (
+        <main>
+          <MembershipPage query={new URLSearchParams(window.location.search)} onBack={goHome}
+            onCreateAccount={() => { goHome(); setGate({ kind: "ACCOUNT", message: "Create a free account to unlock every mode." }); }} />
+        </main>
+      ) : route.startsWith("/fantasy/") ? (
+        <main>
+          <FantasyPage id={route.split("/")[2] === "live" ? "eraclash-live" : "eraclash-fantasy"} onBack={goHome} />
+        </main>
+      ) : route.startsWith("/modes/") ? (
+        <main>
+          <ModeInfoPage id={route.split("/")[2]} onBack={goHome} />
+        </main>
+      ) : isChaos && !sharedResult && !gate ? (
+        <main className="ec-arena-court">
+          <ArenaCommandCenter
+            tier={tier} challengeId={chaosChallengeId}
+            chaosRun={chaosRun} onRunChange={setChaosRun}
+            onReady={(r) => setChaosReady(r)} onGated={(g) => setGate(g)}
+            phase={view === "simulating" ? "simulating" : (view === "postgame" && result) ? "complete" : "draft"}
+            result={result} simStage={simStage} busy={loading} error={err}
+            onRunClash={runChaosClash}
+            onViewFullReport={() => setFullReport(true)}
+            onRunItBack={() => { setFullReport(false); doRematch("chaos"); }}
+            onNewChaosClash={newChaosClash}
+            onNewClash={() => { setFullReport(false); newChaosClash(); }}
+            activeModeId="chaos"
+            onModeAction={handleModeAction}
+            previewCandidateActive={!!result?.sim?.previewCandidate} />
+        </main>
+      ) : (
       <main style={{ maxWidth: 1280, margin: "0 auto", padding: "8px 16px 60px" }}>
         {sharedResult ? (
           <div style={{ maxWidth: 620, margin: "16px auto 0" }}>
@@ -1433,6 +1538,26 @@ export default function App() {
           playView
         )}
       </main>
+      )}
+
+      {howModes && <ArenaHowModes tier={tier} onClose={() => setHowModes(false)} />}
+
+      {/* The full report expands over the SAME page, so closing it returns the
+          user to their arena, teams, coaches, era and result. */}
+      {fullReport && result && (
+        <div className="ec-report-overlay ec-arena-shell" role="dialog" aria-modal="true" aria-label="Full postgame report">
+          <div className="ec-report-inner">
+            <button onClick={() => setFullReport(false)} style={{
+              minHeight: 44, padding: "0 16px", borderRadius: 10, cursor: "pointer", marginBottom: 12,
+              border: "1px solid var(--ec-a-border)", background: "var(--ec-a-panel-raised)",
+              color: "var(--ec-a-text)", fontWeight: 800, fontSize: 13,
+            }}>← Back to the arena</button>
+            <div style={{ background: T.bg, borderRadius: 14, padding: "4px 0 16px" }}>
+              {postgameView}
+            </div>
+          </div>
+        </div>
+      )}
 
       {picker && (
         <ManualPicker slotPos={POSITIONS[picker.slot]}

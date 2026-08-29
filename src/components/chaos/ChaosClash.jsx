@@ -79,7 +79,7 @@ function TeamBoard({ title, side, roster, heldSlots, keptSlots = [], onToggle, i
   );
 }
 
-export default function ChaosClash({ tier = "GUEST", onReady, onGated, challengeId }) {
+export default function ChaosClash({ tier = "GUEST", onReady, onGated, challengeId, onRunChange, hideEraBanner = false, hideReadyBlock = false }) {
   const [run, setRun] = useState(null);
   const [holds, setHolds] = useState([]);
   const [coachHolds, setCoachHolds] = useState([]);
@@ -99,7 +99,10 @@ export default function ChaosClash({ tier = "GUEST", onReady, onGated, challenge
     setHolds(chaos?.gold?.heldSlots || []);
     setCoachHolds(chaos?.coachDraft?.heldRoles || []);
     if (chaos?.chaosRunId) store.set(chaos.chaosRunId);
-  }, []);
+    // The Arena Command Center's Result Dock reads the same run this component
+    // renders, so there is one source of truth for both surfaces.
+    onRunChange?.(chaos);
+  }, [onRunChange]);
 
   // Resume an active run rather than silently starting a new one. This is what
   // stops repeated navigation from farming fresh opening rolls.
@@ -157,6 +160,7 @@ export default function ChaosClash({ tier = "GUEST", onReady, onGated, challenge
     store.clear();
     setRun(null); setHolds([]); setCoachHolds([]); setPickedCoach(null);
     setConfirmAbandon(false); setChallenge(null); setBusy(false);
+    onRunChange?.(null);
   };
 
   const makeChallenge = async () => {
@@ -173,7 +177,7 @@ export default function ChaosClash({ tier = "GUEST", onReady, onGated, challenge
           <div style={{ fontWeight: 900, fontSize: 14, color: T.onArena, letterSpacing: 1 }}>THREE ROLLS AVAILABLE</div>
           <Label>DRAFT PRESSURE —</Label>
         </div>
-        <div style={{ marginBottom: 12 }}><EraContextBanner era={null} /></div>
+        {!hideEraBanner && <div style={{ marginBottom: 12 }}><EraContextBanner era={null} /></div>}
         <div className="chaos-boards">
           <TeamBoard title="TEAM GOLD" side="gold" roster={null} heldSlots={[]} />
           <TeamBoard title="TEAM BLUE · LEGEND" side="blue" roster={null} heldSlots={[]} />
@@ -211,8 +215,9 @@ export default function ChaosClash({ tier = "GUEST", onReady, onGated, challenge
         </div>
       </div>
 
-      {/* The era never leaves the screen once it is revealed. */}
-      <div style={{ marginBottom: 12 }}><EraContextBanner era={run.eraContext} /></div>
+      {/* The era never leaves the screen once it is revealed. The shell may own
+          this banner, in which case it is not repeated here. */}
+      {!hideEraBanner && <div style={{ marginBottom: 12 }}><EraContextBanner era={run.eraContext} /></div>}
 
       <div className="sr-only" aria-live="polite">{stage}</div>
 
@@ -289,7 +294,7 @@ export default function ChaosClash({ tier = "GUEST", onReady, onGated, challenge
         </div>
       )}
 
-      {isReady && (
+      {isReady && !hideReadyBlock && (
         <div style={{ marginTop: 14 }}>
           <div style={{ fontSize: 12.5, color: T.onArena, textAlign: "center" }}>
             Rosters and coaches are locked. Run the Clash to play it out.
