@@ -59,13 +59,17 @@ const run = async () => {
   const fourth = await post({ chaosAction: "holds", chaosRunId: runId, holdSlots: [] });
   ok("a client cannot add a fourth roll", fourth.status === 400);
 
-  // A client cannot take a coach that was not offered. The probe id must be one
-  // that is genuinely absent from the three — using a fixed name risks picking a
-  // coach who WAS offered, which succeeds and then makes the legitimate hire
-  // below refuse as an invalid transition.
+  // Drive the coach draft to its selection step before probing coach actions.
+  await post({ chaosAction: "coachHolds", chaosRunId: runId, holdRoles: [] });
+  await post({ chaosAction: "coachHolds", chaosRunId: runId, holdRoles: [] });
   const view = await post({ chaosAction: "view", chaosRunId: runId });
-  const offered = (view.body?.chaos?.coachOffers || []).map((o) => o.coachId);
+  ok("a client cannot roll coaches a fourth time",
+    (await post({ chaosAction: "coachHolds", chaosRunId: runId, holdRoles: [] })).status === 400);
+  ok("a client cannot forge a coach hold role",
+    (await post({ chaosAction: "coachHolds", chaosRunId: runId, holdRoles: ["NOT_A_ROLE"] })).status === 400);
+  const offered = (view.body?.chaos?.coachDraft?.offers || []).map((o) => o.coachId);
   ok("exactly three coaches are offered", offered.length === 3, offered.join(","));
+  ok("the CPU's coach holds were committed", !!view.body?.chaos?.coachDraft?.cpuHoldCommit);
   ok("the three offers are unique", new Set(offered).size === offered.length);
   const notOffered = ["phil-jackson", "gregg-popovich", "pat-riley", "red-auerbach", "erik-spoelstra"]
     .find((id) => !offered.includes(id)) || "definitely-not-a-coach";
