@@ -46,7 +46,7 @@ export default function Profile({ career, badges, BADGES, saved, daily, onLoadTe
           {claimed && <span style={{ fontSize: 11, color: T.green, fontWeight: 700 }}>☁️ Career saved</span>}
         </div>
         {!claimed && (
-          <div style={{ marginTop: 12, padding: 12, borderRadius: 9, background: "#2b230a", border: `1px solid ${T.gold}` }}>
+          <div style={{ marginTop: 12, padding: 12, borderRadius: 9, background: T.goldSoft, border: `1px solid ${T.goldBorder}` }}>
             <div style={{ fontSize: 13, fontWeight: 800, color: T.gold }}>💾 Save your EraClash career</div>
             <div style={{ fontSize: 12, color: T.textDim, margin: "4px 0 8px" }}>
               Pick a name to keep your records, streaks and badges — everything you've already earned comes with you.
@@ -55,7 +55,7 @@ export default function Profile({ career, badges, BADGES, saved, daily, onLoadTe
               <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Your baller name" maxLength={24}
                 aria-label="Display name"
                 style={{ flex: 1, padding: 10, fontSize: 13, background: T.bg, color: T.text, border: `1px solid ${T.border}`, borderRadius: 8, minWidth: 0 }} />
-              <button onClick={claim} style={{ padding: "10px 18px", fontSize: 13, fontWeight: 800, border: "none", borderRadius: 8, background: T.gold, color: "#111", cursor: "pointer" }}>
+              <button onClick={claim} style={{ padding: "10px 18px", fontSize: 13, fontWeight: 800, border: "none", borderRadius: 8, background: T.gold, color: "#fffdf8", cursor: "pointer" }}>
                 Save
               </button>
             </div>

@@ -30,7 +30,7 @@ export default function StageWizard({ stage, done, onJump }) {
                 display: "inline-flex", alignItems: "center", justifyContent: "center",
                 width: 20, height: 20, borderRadius: 999, fontSize: 11, fontWeight: 900,
                 background: isActive ? T.gold : isDone ? "rgba(46,204,113,0.15)" : "rgba(255,255,255,0.06)",
-                color: isActive ? "#111" : "inherit",
+                color: isActive ? "#fffdf8" : "inherit",
               }}>{isDone && !isActive ? "✓" : n}</span>
               <span style={{ textAlign: "left" }}>
                 <span style={{ display: "block", fontSize: 12, fontWeight: 900, letterSpacing: 1.5, fontFamily: FONT.ui }}>{label}</span>

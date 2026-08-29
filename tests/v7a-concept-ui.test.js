@@ -63,16 +63,11 @@ describe("key moments come from the ledger, not from invention", () => {
 });
 
 describe("concept components use real product data", () => {
-  it("the feature strip counts the real card library and states the engine truthfully", () => {
+  it("the legacy marketing strip is gone from the builder (7B)", () => {
     const src = readFileSync("src/components/PlayPanels.jsx", "utf8");
-    expect(src).toMatch(/\$\{PLAYERS\.length\}\+ LEGENDS/);
-    expect(src).not.toMatch(/AI GAME SIMULATION/);
-    expect(src).toMatch(/POSSESSION SIMULATION/);
-  });
-
-  it("the Daily countdown is computed from the real UTC rollover", () => {
-    const src = readFileSync("src/components/PlayPanels.jsx", "utf8");
-    expect(src).toMatch(/Date\.UTC\([\s\S]*getUTCDate\(\) \+ 1/);
+    expect(src).not.toMatch(/FeatureStrip|Unlock bonuses|AI GAME SIMULATION/);
+    const app = readFileSync("src/App.jsx", "utf8");
+    expect(app).not.toMatch(/FeatureStrip/);
   });
 
   it("roster cards render approved imagery only (no invented likeness)", () => {
@@ -82,15 +77,16 @@ describe("concept components use real product data", () => {
   });
 
   it("coach rows use a monogram because no approved coach art exists", () => {
-    const src = readFileSync("src/components/CoachSelect.jsx", "utf8");
+    const src = readFileSync("src/components/CoachModal.jsx", "utf8");
     expect(src).toMatch(/CoachAvatar/);
     expect(src).not.toMatch(/https?:\/\//);
   });
 
-  it("the chemistry dial renders the real chemistry score with a text alternative", () => {
-    const src = readFileSync("src/components/PostgamePanels.jsx", "utf8");
-    expect(src).toMatch(/chemistryScore\(team\)/);
-    expect(src).toMatch(/aria-label=\{`\$\{label\} \$\{score\} of 100/);
+  it("the postgame no longer headlines a chemistry number (7B)", () => {
+    const panels = readFileSync("src/components/PostgamePanels.jsx", "utf8");
+    expect(panels).not.toMatch(/ChemistryDial|CHEMISTRY SCORE/);
+    const pg = readFileSync("src/components/Postgame.jsx", "utf8");
+    expect(pg).not.toMatch(/GOLD CHEMISTRY|BLUE CHEMISTRY/);
   });
 
   it("the loading screen shows no invented percentage — only real game progress", () => {

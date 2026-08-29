@@ -20,25 +20,25 @@ import DailyPanel from "./components/DailyPanel.jsx";
 import DailyCoachEra from "./components/DailyCoachEra.jsx";
 import Profile from "./components/Profile.jsx";
 import Credits from "./components/Credits.jsx";
-import ChemistryMeter from "./components/ChemistryMeter.jsx";
+import RosterBalance from "./components/RosterBalance.jsx";
 import MatchupPreview, { VsDivider } from "./components/MatchupPreview.jsx";
 import SimulationLoading from "./components/SimulationLoading.jsx";
 import ManualPicker from "./components/ManualPicker.jsx";
-import CoachSelect from "./components/CoachSelect.jsx";
+import CoachPick from "./components/CoachPick.jsx";
 import PlayerImage from "./components/PlayerImage.jsx";
 import StageWizard from "./components/StageWizard.jsx";
 import RosterGrid from "./components/RosterGrid.jsx";
-import { DailyClashCard, BallIqCard, MatchupGrid, FeatureStrip } from "./components/PlayPanels.jsx";
+import { MatchupGrid, ArenaCentre, BallIqToggle } from "./components/PlayPanels.jsx";
 import { EraStage, VsRow } from "./components/StageViews.jsx";
 import { DIFFICULTIES, DEFAULT_DIFFICULTY } from "./v3/difficulty.js";
 import { TeamShell, EmptySlot, FilledSlot, LineupList } from "./components/TeamSlots.jsx";
-import { teamFit, chemistryScore, chemistryLabel } from "./chemistryView.js";
+import { teamFit } from "./chemistryView.js";
 import { v3meta } from "./v3meta.js";
 import { shortBuild, watchForNewBuild } from "./buildStamp.js";
 
 // The qualitative pre-sim preview, in the concept's icon grid. One fetch of the
 // server's edges; placeholder until both fives exist. No numbers, no winner.
-function EdgePreview({ gold, blue, coachGoldId, coachBlueId, eraStyleId }) {
+function EdgePreview({ gold, blue, coachGoldId, coachBlueId, eraStyleId, onArena }) {
   const ready = gold?.filter(Boolean).length === 5 && blue?.filter(Boolean).length === 5;
   const [data, setData] = useState(null);
   const goldIds = (gold ?? []).filter(Boolean).map((p) => p.id);
@@ -51,8 +51,23 @@ function EdgePreview({ gold, blue, coachGoldId, coachBlueId, eraStyleId }) {
       .then((j) => { if (alive && j) setData(j); });
     return () => { alive = false; };
   }, [ready, JSON.stringify(goldIds), JSON.stringify(blueIds), coachGoldId, coachBlueId, eraStyleId]); // eslint-disable-line
-  if (!ready) return <MatchupGrid placeholder />;
-  return <MatchupGrid edges={data?.edges} keyClash={data?.keyClash} loading={!data} />;
+  if (!ready) return <MatchupGrid placeholder onArena={onArena} />;
+  return <MatchupGrid edges={data?.edges} keyClash={data?.keyClash} loading={!data} onArena={onArena} />;
+}
+
+// One side of the tipoff composition: the five, the coach, on the arena band.
+function ReadySide({ side, team, coach, fallbackLabel }) {
+  const accent = side === "blue" ? T.blueOnDark : T.goldOnDark;
+  return (
+    <div style={{ textAlign: "center", minWidth: 0 }}>
+      <div style={{ fontSize: 11.5, fontWeight: 900, letterSpacing: 2, color: accent }}>TEAM {side === "blue" ? "BLUE" : "GOLD"}</div>
+      <div style={{ display: "flex", gap: 6, justifyContent: "center", flexWrap: "wrap", margin: "8px 0 6px" }}>
+        {team ? team.map((p) => <PlayerImage key={p.id} player={p} variant="card" team={side} />)
+              : <span style={{ fontSize: 13, color: T.onArenaDim }}>{fallbackLabel}</span>}
+      </div>
+      {coach && <div style={{ fontSize: 12.5, color: T.onArenaDim }}>Coach <b style={{ color: T.onArena }}>{coach.name}</b></div>}
+    </div>
+  );
 }
 
 // Five-portrait roster summary used above the coach panels (stage 2).
@@ -478,6 +493,11 @@ export default function App() {
     mvpReason: n?.mvpReason || record.mvpFallback || null, // never blank: deterministic 2-3 sentence fallback
     turningPoint: n?.turningPoint || record.core?.turningPoint || null,
     v3: record.v3 || null,
+    // Candidate identity travels with the view model: a Candidate 3 result may
+    // not lead into a series that would run on a different engine.
+    previewCandidate: record.preview === true ? (record.candidate ?? null) : null,
+    // The pregame read exactly as it was stored before the game was simulated.
+    pregame: record.pregame ?? null,
     eraId: record.eraId || null,
     coachIds: record.coachIds || null,
     // Names for display only, resolved from what the SERVER reported it used
@@ -791,70 +811,47 @@ export default function App() {
           {activeScenario.instruction}
         </div>
       )}
-      {/* Hero row — Daily card · title + mode · Ball IQ card */}
+      {/* Compact hero — the roster panels own this viewport */}
       {!team && !result && (
-        <div className="hero-row">
-          {!isDaily && !isChallenge
-            ? <DailyClashCard done={dailyDone} onPlay={() => handleNav("Daily")} />
-            : <div />}
-          <div style={{ textAlign: "center", padding: "10px 6px 0" }}>
-            <div style={{ fontSize: 11, letterSpacing: 5, color: T.gold, fontWeight: 800 }}>BUILD YOUR FIVE</div>
-            <h1 style={{ margin: "4px 0 2px", fontSize: 32, fontWeight: 900, letterSpacing: 1, fontFamily: FONT.display }}>
-              CLASH ACROSS ERAS
-            </h1>
-            <div style={{ fontSize: 13, color: T.textDim }}>Draft legends. Build chemistry. Run the sim.</div>
-          </div>
-          {!isDaily && !isChallenge
-            ? <BallIqCard on={ballIQ} onChange={setBallIQ} />
-            : <div />}
+        <div style={{ textAlign: "center", padding: "16px 6px 2px" }}>
+          <div style={{ fontSize: 11, letterSpacing: 5, color: T.gold, fontWeight: 800 }}>BUILD YOUR FIVE</div>
+          <h1 style={{ margin: "4px 0 2px", fontSize: 34, fontWeight: 900, letterSpacing: 0.5, fontFamily: FONT.display, color: T.text }}>
+            CLASH ACROSS ERAS
+          </h1>
+          <div style={{ fontSize: 14, color: T.textDim }}>Draft legends. Pick coaches. Run the sim.</div>
         </div>
       )}
 
-      {/* Mode tabs (the Play menu in the header selects the same modes) */}
+      {/* Selected mode — chosen from the Play menu in the header */}
       {!isChallenge && !isDaily && !result && (
-        <div role="tablist" aria-label="Game mode" style={{ display: "flex", gap: 8, justifyContent: "center", flexWrap: "wrap", padding: "12px 0 2px" }}>
-          {GAME_MODES.map(([id, label, sub]) => (
-            <button key={id} role="tab" aria-selected={gameMode === id} aria-label={`${label} — ${sub}`}
-              onClick={() => { if (gameMode !== id) { resetPlay(); setGameMode(id); } }} style={{
-                display: "flex", alignItems: "center", gap: 8, padding: "10px 18px", borderRadius: R.md, cursor: "pointer", minHeight: 46,
-                border: `1px solid ${gameMode === id ? T.gold : T.border}`,
-                background: gameMode === id ? T.goldSoft : "rgba(0,0,0,0.3)",
-                color: gameMode === id ? T.gold : T.textDim, fontWeight: 900, fontSize: 12.5, letterSpacing: 1,
-              }}>
-              <span aria-hidden="true">{MODE_ICON[id]}</span>{label}
-            </button>
-          ))}
+        <div style={{ display: "flex", justifyContent: "center", padding: "10px 0 2px" }}>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "7px 16px", borderRadius: R.pill,
+            border: `1px solid ${T.goldBorder}`, background: T.goldSoft, color: T.gold, fontWeight: 800, fontSize: 13 }}>
+            <span aria-hidden="true">{MODE_ICON[gameMode]}</span>
+            {GAME_MODES.find(([id]) => id === gameMode)?.[1]}
+          </span>
         </div>
       )}
 
       {/* Opponent difficulty — only Win 82 and Tournament generate a schedule.
           This changes WHO you face, never how a game is simulated. */}
       {!isChallenge && !isDaily && !result && (gameMode === "Win82" || gameMode === "Tournament") && (
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, paddingBottom: 12 }}>
-          <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: 2, color: T.textDim }}>OPPONENT DIFFICULTY</div>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, padding: "10px 0 4px" }}>
+          <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: 2, color: T.textDim }}>OPPONENT DIFFICULTY</div>
           <div role="tablist" aria-label="Opponent difficulty" style={{ display: "flex", gap: 6, flexWrap: "wrap", justifyContent: "center" }}>
             {Object.values(DIFFICULTIES).map((d) => (
               <button key={d.id} role="tab" aria-selected={difficulty === d.id} aria-label={`Difficulty ${d.label}`}
                 onClick={() => setDifficulty(d.id)} style={{
-                  padding: "7px 14px", borderRadius: 9, cursor: "pointer", minHeight: 40, fontSize: 12, fontWeight: 800,
-                  border: `1px solid ${difficulty === d.id ? T.gold : T.border}`,
-                  background: difficulty === d.id ? "rgba(253,185,39,0.12)" : "rgba(0,0,0,0.25)",
+                  padding: "8px 15px", borderRadius: R.sm, cursor: "pointer", minHeight: 42, fontSize: 13, fontWeight: 800,
+                  border: `1px solid ${difficulty === d.id ? T.goldBorder : T.border}`,
+                  background: difficulty === d.id ? T.goldSoft : T.bgCard,
                   color: difficulty === d.id ? T.gold : T.textDim,
                 }}>{d.label}</button>
             ))}
           </div>
-          <div style={{ fontSize: 11, color: T.textDim, textAlign: "center", maxWidth: 420 }}>
+          <div style={{ fontSize: 12.5, color: T.textDim, textAlign: "center", maxWidth: 460, lineHeight: 1.5 }}>
             {DIFFICULTIES[difficulty].blurb} <span style={{ color: T.textMuted }}>Games are simulated identically at every setting — only who you face changes.</span>
           </div>
-        </div>
-      )}
-
-      {/* Daily banner in Daily view */}
-      {isDaily && !result && (
-        <div style={{ textAlign: "center", marginBottom: 10 }}>
-          <span style={{ display: "inline-block", padding: "8px 18px", borderRadius: 20, background: "rgba(253,185,39,0.1)", border: `1px solid ${T.goldBorder}`, fontSize: 12.5, color: T.gold, fontWeight: 800 }}>
-            🏆 DAILY CLASH — seeded rolls, same for everyone today. One official attempt.
-          </span>
         </div>
       )}
 
@@ -877,9 +874,7 @@ export default function App() {
           {(!v3Steps || playStage === "ROSTERS") && (
           <div style={{ display: "flex", gap: 14, alignItems: "flex-start", flexWrap: "wrap" }}>
             {/* TEAM GOLD */}
-            <TeamShell team="gold" title="TEAM GOLD" count={goldCount}
-              chemistry={chemistryScore(team ?? (buildMethod === "manual" ? manual : null))}
-              chemistryLabel={team ? chemistryLabel(chemistryScore(team)) : null}>
+            <TeamShell team="gold" title="TEAM GOLD" count={goldCount}>
               {isChallenge && !team && !yz && buildMethod === "rolls" && (
                 <div style={{ textAlign: "center", margin: "0 0 10px", fontSize: 13, fontWeight: 900, letterSpacing: 2 }}>BUILD YOUR TEAM ↓</div>
               )}
@@ -888,17 +883,17 @@ export default function App() {
                   {/* Build method (Daily stays seeded rolls — that IS the daily) */}
                   {!isDaily && (
                     <div role="tablist" aria-label="Build method" style={{ display: "flex", gap: 6, marginBottom: 12, flexWrap: "wrap" }}>
-                      {[["rolls", "🎲 Chaos Draft"], ["manual", "✍️ Manual Draft"]].map(([id, label]) => (
+                      {[["manual", "✍️ Manual Draft"], ["rolls", "🎲 Chaos Draft"]].map(([id, label]) => (
                         <button key={id} role="tab" aria-selected={buildMethod === id} onClick={() => { setBuildMethod(id); setYz(null); setManual([null, null, null, null, null]); }} style={{
                           flex: 1, padding: "8px 10px", fontSize: 12, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 40,
                           border: `1px solid ${buildMethod === id ? T.goldBorder : T.border}`,
-                          background: buildMethod === id ? "rgba(253,185,39,0.1)" : "transparent",
+                          background: buildMethod === id ? T.goldSoft : "transparent",
                           color: buildMethod === id ? T.gold : T.textDim,
                         }}>{label}</button>
                       ))}
                       <button onClick={randomGold} style={{
                         flex: 1, padding: "8px 10px", fontSize: 12, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 40,
-                        border: `1px solid ${T.goldBorder}`, background: "rgba(253,185,39,0.08)", color: T.gold,
+                        border: `1px solid ${T.goldBorder}`, background: T.goldSoft, color: T.gold,
                       }}>🔀 Random Team</button>
                       <button onClick={resetGold} disabled={!yz && !manual.some(Boolean)} aria-label="Reset Team Gold" style={{
                         flex: "0 0 auto", padding: "8px 12px", fontSize: 12, fontWeight: 800, borderRadius: 8, minHeight: 40,
@@ -908,6 +903,11 @@ export default function App() {
                       }}>↻ Reset</button>
                     </div>
                   )}
+                  {!isDaily && (
+                    <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 10 }}>
+                      <BallIqToggle on={ballIQ} onChange={setBallIQ} />
+                    </div>
+                  )}
                   {buildMethod === "manual" && !isDaily ? (
                     <RosterGrid five={manual} team="gold" hideStats={ballIQ} flashSlot={flashSlot}
                       onSlot={(i) => setPicker({ slot: i, target: "gold-manual" })} />
@@ -915,7 +915,7 @@ export default function App() {
                     <RollBuilder yz={yz} ballIQ={ballIQ} isDaily={isDaily}
                       onStart={() => startBuild(isDaily)} onKeep={toggleKeep} onRespin={setRespin} onRoll={doRoll} />
                   )}
-                  <ChemistryMeter team={buildMethod === "manual" ? manual : (yz ? yz.roster.map((p, i) => (yz.keep[i] ? p : null)) : [])} side="gold" compact={!!yz} />
+                  <RosterBalance team={buildMethod === "manual" ? manual : (yz ? yz.roster.map((p, i) => (yz.keep[i] ? p : null)) : [])} side="gold" compact />
                 </>
               )}
               {team && (
@@ -927,7 +927,7 @@ export default function App() {
                       {!isDaily && (
                         <button onClick={randomGold} aria-label="Re-roll Team Gold" style={{
                           padding: "6px 11px", fontSize: 11.5, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 34,
-                          border: `1px solid ${T.goldBorder}`, background: "rgba(253,185,39,0.08)", color: T.gold,
+                          border: `1px solid ${T.goldBorder}`, background: T.goldSoft, color: T.gold,
                         }}>🔀 Re-roll</button>
                       )}
                       <button onClick={resetGold} aria-label="Reset Team Gold" style={{
@@ -935,16 +935,16 @@ export default function App() {
                         border: `1px solid ${T.border}`, background: "transparent", color: T.textDim,
                       }}>↻ Reset</button>
                     </span>
-                    <span>RATING <b style={{ color: T.gold }}>{teamRating(team)}</b></span>
+                    <span />
                   </div>
-                  <ChemistryMeter team={team} side="gold" />
+                  <RosterBalance team={team} side="gold" />
                 </>
               )}
             </TeamShell>
 
             {/* CENTER: VS + steps + era + preview + CTA */}
             <div style={{ flex: "0 1 310px", minWidth: 250, display: "flex", flexDirection: "column", gap: 12, alignSelf: "stretch", justifyContent: "center", margin: "0 auto" }}>
-              <VsDivider active={!!team && !!opponent} />
+              
               {/* Daily coach + era step. Appears once the seeded roster is
                   locked, because hiring a coach for a lineup you have not
                   finished drafting is a decision with no information. */}
@@ -963,9 +963,11 @@ export default function App() {
                 </div>
               )}
 
-              {v3Steps
-                ? <EdgePreview gold={team} blue={blueBuildable ? opponent : null} coachGoldId={coachGold?.id} coachBlueId={coachBlue?.id} eraStyleId={eraStyle} />
-                : <MatchupPreview gold={team} blue={blueBuildable ? opponent : null} v3={null} />}
+              <ArenaCentre>
+                {v3Steps
+                  ? <EdgePreview gold={team} blue={blueBuildable ? opponent : null} coachGoldId={coachGold?.id} coachBlueId={coachBlue?.id} eraStyleId={eraStyle} onArena />
+                  : <MatchupPreview gold={team} blue={blueBuildable ? opponent : null} v3={null} />}
+              </ArenaCentre>
               {team && blueBuildable && !opponent && (
                 <div style={{ textAlign: "center", fontSize: 12, color: T.textDim, padding: "0 10px" }}>
                   Build <b style={{ color: T.blue }}>Team Blue</b> — Manual or Random — to continue.
@@ -975,7 +977,7 @@ export default function App() {
                 <button onClick={() => setPlayStage("COACHES")} style={{
                   width: "100%", padding: "14px 18px", fontSize: 14, fontWeight: 900, letterSpacing: 0.5,
                   border: "none", borderRadius: 12, cursor: "pointer", minHeight: 50,
-                  background: T.gold, color: "#111", boxShadow: "0 4px 22px rgba(253,185,39,0.2)",
+                  background: T.gold, color: "#fffdf8", boxShadow: T.glowGold,
                 }}>Continue to Coaches →</button>
               )}
               {!v3Steps && team && (activeMode !== "Single" && activeMode !== "Best7" && activeMode !== "Daily" && activeMode !== "Challenge" ? true : !!opponent) && coachesReady && dailyChoiceReady && !result && !loading && (
@@ -984,7 +986,7 @@ export default function App() {
                     width: "100%", padding: "16px 20px", fontSize: 15, fontWeight: 900, letterSpacing: 1,
                     border: "none", borderRadius: 12, cursor: "pointer", minHeight: 54,
                     background: `linear-gradient(120deg, ${T.gold} 0%, #ffd76a 60%, ${T.gold} 100%)`,
-                    color: "#111", boxShadow: "0 6px 30px rgba(253,185,39,0.25)",
+                    color: "#fffdf8", boxShadow: T.shadowRaised,
                   }}>
                     ⚡ RUN THE SIM
                   </button>
@@ -996,9 +998,7 @@ export default function App() {
             </div>
 
             {/* TEAM BLUE */}
-            <TeamShell team="blue" title={isChallenge ? `TEAM BLUE — ${challenge.challengerName || "RIVAL"}` : "TEAM BLUE"} count={opponent ? 5 : null}
-              chemistry={chemistryScore(opponent ?? (blueBuildable ? blueManual : null))}
-              chemistryLabel={opponent ? chemistryLabel(chemistryScore(opponent)) : null}>
+            <TeamShell team="blue" title={isChallenge ? `TEAM BLUE — ${challenge.challengerName || "RIVAL"}` : "TEAM BLUE"} count={opponent ? 5 : null}>
               {isChallenge && (
                 <div style={{ marginBottom: 10, fontSize: 12.5, color: T.text }}>
                   <b style={{ color: T.blue }}>🎯 YOU'VE BEEN CHALLENGED.</b> {challenge.challengerName || "A rival"} thinks this five beats anything you build{challenge.record ? ` — they went ${challenge.record} with it` : ""}.
@@ -1018,7 +1018,7 @@ export default function App() {
                   }}>✍️ Manual Draft</button>
                   <button role="tab" onClick={randomBlue} style={{
                     flex: 1, padding: "8px 10px", fontSize: 12, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 40,
-                    border: `1px solid ${T.blueBorder}`, background: "rgba(110,168,254,0.08)", color: T.blue,
+                    border: `1px solid ${T.blueBorder}`, background: T.blueSoft, color: T.blue,
                   }}>🔀 Random Team</button>
                   <button onClick={resetBlue} disabled={!blueManual.some(Boolean)} aria-label="Reset Team Blue" style={{
                     flex: "0 0 auto", padding: "8px 12px", fontSize: 12, fontWeight: 800, borderRadius: 8, minHeight: 40,
@@ -1026,6 +1026,11 @@ export default function App() {
                     color: !blueManual.some(Boolean) ? T.textMuted : T.textDim,
                     cursor: !blueManual.some(Boolean) ? "default" : "pointer",
                   }}>↻ Reset</button>
+                </div>
+              )}
+              {!isChallenge && blueBuildable && !opponent && (
+                <div style={{ fontSize: 12, color: T.textMuted, marginBottom: 10, lineHeight: 1.45 }}>
+                  Chaos Draft is a drafting game for your own five — build the opposition by hand or at random.
                 </div>
               )}
               {opponent ? (
@@ -1037,7 +1042,7 @@ export default function App() {
                       <span style={{ display: "flex", gap: 6 }}>
                         <button onClick={randomBlue} aria-label="Re-roll Team Blue" style={{
                           padding: "6px 11px", fontSize: 11.5, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 34,
-                          border: `1px solid ${T.blueBorder}`, background: "rgba(110,168,254,0.08)", color: T.blue,
+                          border: `1px solid ${T.blueBorder}`, background: T.blueSoft, color: T.blue,
                         }}>🔀 Re-roll</button>
                         <button onClick={resetBlue} aria-label="Reset Team Blue" style={{
                           padding: "6px 11px", fontSize: 11.5, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 34,
@@ -1047,9 +1052,9 @@ export default function App() {
                     ) : isDaily ? (
                       <span style={{ fontSize: 11, color: T.textDim }}>🔒 Today's official opponent — same for everyone</span>
                     ) : <span />}
-                    <span>RATING <b style={{ color: T.blue }}>{teamRating(opponent)}</b></span>
+                    <span />
                   </div>
-                  <ChemistryMeter team={opponent} side="blue" compact />
+                  <RosterBalance team={opponent} side="blue" compact />
                 </>
               ) : blueBuildable ? (
                 <RosterGrid five={blueManual} team="blue" flashSlot={flashSlot}
@@ -1075,7 +1080,9 @@ export default function App() {
                   <div style={{ display: "flex", gap: 6, marginBottom: 10, flexWrap: "wrap" }}>
                     {(team || []).map((p) => <PlayerImageMini key={p.id} p={p} side="gold" />)}
                   </div>
-                  <CoachSelect side="gold" teamIds={(team || []).map((p) => p.id)} eraStyleId={eraStyle}
+                  <CoachPick side="gold" teamIds={(team || []).map((p) => p.id)}
+                    eraStyleId={eraLocked ? eraStyle : undefined}
+                    eraLabel={v3.eras?.find((e) => e.id === eraStyle)?.label}
                     selected={coachGold} onSelect={setCoachGold} allCoaches={v3.coaches} />
                 </TeamShell>
               </div>
@@ -1085,7 +1092,7 @@ export default function App() {
                 <button onClick={() => setPlayStage("ERA")} disabled={!coachesReady} style={{
                   width: "100%", padding: "14px 18px", fontSize: 14, fontWeight: 900, letterSpacing: 0.5,
                   border: "none", borderRadius: 12, cursor: coachesReady ? "pointer" : "default", minHeight: 50,
-                  background: coachesReady ? T.gold : T.border, color: coachesReady ? "#111" : T.textMuted,
+                  background: coachesReady ? T.gold : T.border, color: coachesReady ? "#fffdf8" : T.textMuted,
                 }}>Continue to Era Style →</button>
                 {!coachesReady && (
                   <div style={{ textAlign: "center", fontSize: 12, color: T.textDim }}>
@@ -1100,7 +1107,9 @@ export default function App() {
                     <div style={{ display: "flex", gap: 6, marginBottom: 10, flexWrap: "wrap" }}>
                       {(opponent || []).map((p) => <PlayerImageMini key={p.id} p={p} side="blue" />)}
                     </div>
-                    <CoachSelect side="blue" teamIds={(opponent || []).map((p) => p.id)} eraStyleId={eraStyle}
+                    <CoachPick side="blue" teamIds={(opponent || []).map((p) => p.id)}
+                      eraStyleId={eraLocked ? eraStyle : undefined}
+                      eraLabel={v3.eras?.find((e) => e.id === eraStyle)?.label}
                       selected={coachBlue} onSelect={setCoachBlue} allCoaches={v3.coaches} />
                   </TeamShell>
                 </div>
@@ -1127,44 +1136,61 @@ export default function App() {
                 <button onClick={() => { setEraLocked(true); setPlayStage("READY"); }} style={{
                   width: "100%", padding: "15px 18px", fontSize: 14, fontWeight: 900, letterSpacing: 0.5,
                   border: "none", borderRadius: 12, cursor: "pointer", minHeight: 52,
-                  background: T.gold, color: "#111", boxShadow: "0 4px 22px rgba(253,185,39,0.2)",
+                  background: T.gold, color: "#fffdf8", boxShadow: T.glowGold,
                 }}>Lock Era Style and Continue →</button>
               </div>
             </div>
           )}
 
-          {/* ── READY TO RUN ─────────────────────────────────────────────── */}
+          {/* ── READY TO RUN — the tipoff moment ─────────────────────────── */}
           {v3Steps && playStage === "READY" && !result && !loading && (
-            <div style={{ marginTop: 8, maxWidth: 760, marginLeft: "auto", marginRight: "auto" }}>
-              <VsRow gold={team} blue={blueBuildable ? opponent : null} coachGold={coachGold} coachBlue={blueBuildable ? coachBlue : null}
-                blueTitle={blueBuildable ? "TEAM BLUE" : "THE FIELD"} />
-              <div style={{ textAlign: "center", fontSize: 11.5, color: T.textDim, margin: "2px 0 10px" }}>
-                Era Style: <b style={{ color: T.text }}>{v3.eras?.find((e) => e.id === eraStyle)?.label || eraStyle}</b>
-                <button onClick={() => setPlayStage("ERA")} style={{ marginLeft: 10, background: "none", border: `1px solid ${T.border}`, color: T.textDim, borderRadius: 7, padding: "3px 10px", cursor: "pointer", fontSize: 11 }}>Edit era</button>
-                <button onClick={() => setPlayStage("COACHES")} style={{ marginLeft: 6, background: "none", border: `1px solid ${T.border}`, color: T.textDim, borderRadius: 7, padding: "3px 10px", cursor: "pointer", fontSize: 11 }}>Edit coaches</button>
-                <button onClick={() => setPlayStage("ROSTERS")} style={{ marginLeft: 6, background: "none", border: `1px solid ${T.border}`, color: T.textDim, borderRadius: 7, padding: "3px 10px", cursor: "pointer", fontSize: 11 }}>Edit rosters</button>
+            <div style={{ marginTop: 8, maxWidth: 900, marginLeft: "auto", marginRight: "auto" }}>
+              <div className="ec-arena-inset" style={{ padding: "22px 18px" }}>
+                <div style={{ fontSize: 10.5, letterSpacing: 4, color: T.onArenaDim, fontWeight: 800, textAlign: "center" }}>READY TO RUN</div>
+                <div className="ready-row">
+                  <ReadySide side="gold" team={team} coach={coachGold} />
+                  <div style={{ textAlign: "center" }}>
+                    <div aria-hidden="true" style={{
+                      fontSize: 40, fontWeight: 900, fontStyle: "italic", fontFamily: FONT.display, letterSpacing: -1,
+                      background: `linear-gradient(120deg, ${T.goldOnDark} 28%, #ffffff 50%, ${T.blueOnDark} 72%)`,
+                      WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent",
+                    }}>VS</div>
+                    <div style={{ fontSize: 12.5, color: T.onArenaDim, marginTop: 2 }}>
+                      {v3.eras?.find((e) => e.id === eraStyle)?.label || eraStyle} Era Style
+                    </div>
+                  </div>
+                  <ReadySide side="blue" team={blueBuildable ? opponent : null} coach={blueBuildable ? coachBlue : null}
+                    fallbackLabel={gameMode === "Win82" ? "82 generated rivals" : "Four playoff rivals"} />
+                </div>
               </div>
-              <div style={{ maxWidth: 420, margin: "0 auto", display: "flex", flexDirection: "column", gap: 12 }}>
+
+              <div style={{ display: "flex", gap: 8, justifyContent: "center", flexWrap: "wrap", margin: "12px 0" }}>
+                {[["Edit rosters", "ROSTERS"], ["Edit coaches", "COACHES"], ["Edit era", "ERA"]].map(([label, stage]) => (
+                  <button key={stage} onClick={() => setPlayStage(stage)} style={{
+                    background: T.bgCard, border: `1px solid ${T.border}`, color: T.textDim, borderRadius: R.sm,
+                    padding: "8px 14px", cursor: "pointer", fontSize: 12.5, fontWeight: 700, minHeight: 42,
+                  }}>{label}</button>
+                ))}
+              </div>
+
+              <div style={{ maxWidth: 460, margin: "0 auto", display: "flex", flexDirection: "column", gap: 12 }}>
                 <EdgePreview gold={team} blue={blueBuildable ? opponent : null} coachGoldId={coachGold?.id} coachBlueId={coachBlue?.id} eraStyleId={eraStyle} />
                 <div className="sticky-sim">
                   <button onClick={runTheSim} style={{
-                    width: "100%", padding: "16px 20px", fontSize: 15, fontWeight: 900, letterSpacing: 1,
-                    border: "none", borderRadius: 12, cursor: "pointer", minHeight: 54,
-                    background: `linear-gradient(120deg, ${T.gold} 0%, #ffd76a 60%, ${T.gold} 100%)`,
-                    color: "#111", boxShadow: "0 6px 30px rgba(253,185,39,0.25)",
+                    width: "100%", padding: "17px 20px", fontSize: 16, fontWeight: 900, letterSpacing: 1,
+                    border: "none", borderRadius: 12, cursor: "pointer", minHeight: 58,
+                    background: `linear-gradient(120deg, ${T.gold} 0%, #d9a83a 60%, ${T.gold} 100%)`,
+                    color: "#fffdf8", boxShadow: T.shadowRaised,
                   }}>
                     ⚡ RUN THE SIM
                   </button>
-                  <div style={{ textAlign: "center", fontSize: 11, color: T.textDim, marginTop: 6 }}>
+                  <div style={{ textAlign: "center", fontSize: 12, color: T.textDim, marginTop: 6 }}>
                     {GAME_MODES.find(([id]) => id === activeMode)?.[2] || ""}
                   </div>
                 </div>
               </div>
             </div>
           )}
-
-          {/* Feature strip — real product facts, shown on the empty builder */}
-          {!team && !result && <FeatureStrip />}
 
         </>
       )}
@@ -1208,7 +1234,7 @@ export default function App() {
           Build a five, run a game, then hit <b style={{ color: T.gold }}>Challenge a Friend</b> on the postgame.
           Anyone who opens your link plays against your exact lineup — wins, losses and rematches are tracked as a rivalry.
         </p>
-        <button onClick={() => handleNav("Play")} style={{ padding: "13px 30px", fontSize: 14, fontWeight: 900, border: "none", borderRadius: 10, background: T.gold, color: "#111", cursor: "pointer", minHeight: 48 }}>
+        <button onClick={() => handleNav("Play")} style={{ padding: "13px 30px", fontSize: 14, fontWeight: 900, border: "none", borderRadius: 10, background: T.gold, color: "#fffdf8", cursor: "pointer", minHeight: 48 }}>
           BUILD A TEAM →
         </button>
       </div>
@@ -1224,11 +1250,11 @@ export default function App() {
 
       {newBuild && (
         <div role="status" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, flexWrap: "wrap",
-          padding: "10px 16px", background: "rgba(253,185,39,0.12)", borderBottom: `1px solid ${T.goldBorder}`, fontSize: 12.5, color: T.text }}>
+          padding: "10px 16px", background: T.goldSoft, borderBottom: `1px solid ${T.goldBorder}`, fontSize: 12.5, color: T.text }}>
           <span>A newer version of EraClash is live — you're viewing build <b>{shortBuild()}</b>.</span>
           <button onClick={() => window.location.reload()} style={{
             padding: "7px 16px", fontSize: 12, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 40,
-            border: "none", background: T.gold, color: "#111" }}>Reload to update</button>
+            border: "none", background: T.gold, color: "#fffdf8" }}>Reload to update</button>
         </div>
       )}
       {err && <div role="alert" style={{ background: "#3a1520", color: "#ff8a9a", padding: 12, textAlign: "center", fontSize: 13 }}>{err}</div>}
@@ -1298,7 +1324,7 @@ function RollBuilder({ yz, ballIQ, isDaily, onStart, onKeep, onRespin, onRoll })
         <p style={{ color: T.textDim, fontSize: 13, margin: "0 0 14px", lineHeight: 1.6 }}>
           Three rolls, Yahtzee rules. Keep who you love, re-spin the rest by <b>era</b> or <b>player</b>.
         </p>
-        <button onClick={onStart} style={{ padding: "13px 30px", fontSize: 14, fontWeight: 900, border: "none", borderRadius: 10, background: T.gold, color: "#111", cursor: "pointer", minHeight: 48 }}>
+        <button onClick={onStart} style={{ padding: "13px 30px", fontSize: 14, fontWeight: 900, border: "none", borderRadius: 10, background: T.gold, color: "#fffdf8", cursor: "pointer", minHeight: 48 }}>
           {isDaily ? "Start Today's Challenge" : "🎲 Start Drafting"}
         </button>
       </div>
@@ -1325,7 +1351,7 @@ function RollBuilder({ yz, ballIQ, isDaily, onStart, onKeep, onRespin, onRoll })
                   <button key={t} onClick={() => onRespin(i, t)} style={{
                     flex: 1, padding: 6, fontSize: 11, fontWeight: 700, borderRadius: 7, cursor: "pointer", minHeight: 34,
                     border: `1px solid ${yz.respin[i] === t ? T.gold : T.border}`,
-                    background: yz.respin[i] === t ? "rgba(253,185,39,0.1)" : "transparent", color: yz.respin[i] === t ? T.gold : T.textDim,
+                    background: yz.respin[i] === t ? T.goldSoft : "transparent", color: yz.respin[i] === t ? T.gold : T.textDim,
                   }}>{label}</button>
                 ))}
               </div>
@@ -1333,7 +1359,7 @@ function RollBuilder({ yz, ballIQ, isDaily, onStart, onKeep, onRespin, onRoll })
           </div>
         ))}
       </div>
-      <button onClick={onRoll} disabled={yz.done} style={{ width: "100%", padding: 13, fontSize: 13.5, fontWeight: 900, border: "none", borderRadius: 10, background: yz.done ? T.border : T.gold, color: yz.done ? T.textDim : "#111", cursor: yz.done ? "default" : "pointer", minHeight: 48 }}>
+      <button onClick={onRoll} disabled={yz.done} style={{ width: "100%", padding: 13, fontSize: 13.5, fontWeight: 900, border: "none", borderRadius: 10, background: yz.done ? T.border : T.gold, color: yz.done ? T.textDim : "#fffdf8", cursor: yz.done ? "default" : "pointer", minHeight: 48 }}>
         {yz.done ? "✓ Squad locked" : yz.roll === 3 ? "🎯 Finalize Squad" : `Roll ${yz.roll + 1} →`}
       </button>
     </div>
@@ -1398,7 +1424,7 @@ function ResultView({ result, team, feedbackCtx, narrative, onRetryNarrative, on
           ))}
         </div>
         <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
-          <button onClick={onShare} style={{ flex: 1, padding: 13, fontSize: 13, fontWeight: 800, border: "none", borderRadius: 9, background: T.gold, color: "#111", cursor: "pointer" }}>📤 Share the Run</button>
+          <button onClick={onShare} style={{ flex: 1, padding: 13, fontSize: 13, fontWeight: 800, border: "none", borderRadius: 9, background: T.gold, color: "#fffdf8", cursor: "pointer" }}>📤 Share the Run</button>
         </div>
       </div>
     );
@@ -1424,13 +1450,13 @@ function SharedResultView({ snap, onPlay }) {
         ))}
       </div>
       {snap.mvp && (
-        <div style={{ padding: 10, borderRadius: 9, background: "#2b230a", border: `1px solid ${T.gold}`, textAlign: "center", marginBottom: 10 }}>
+        <div style={{ padding: 10, borderRadius: 9, background: T.goldSoft, border: `1px solid ${T.goldBorder}`, textAlign: "center", marginBottom: 10 }}>
           <span style={{ fontSize: 10, letterSpacing: 2, color: T.gold, fontWeight: 800 }}>⭐ MVP </span>
           <b>{snap.mvp}</b>{snap.mvpLine && <span style={{ color: T.textDim, fontSize: 12 }}> — {snap.mvpLine}</span>}
         </div>
       )}
       {snap.insight && <p style={{ fontSize: 13, color: T.textDim, textAlign: "center", margin: "0 0 14px" }}>"{snap.insight}"</p>}
-      <button onClick={onPlay} style={{ width: "100%", padding: 15, fontSize: 14, fontWeight: 900, border: "none", borderRadius: 10, background: T.gold, color: "#111", cursor: "pointer", minHeight: 48 }}>
+      <button onClick={onPlay} style={{ width: "100%", padding: 15, fontSize: 14, fontWeight: 900, border: "none", borderRadius: 10, background: T.gold, color: "#fffdf8", cursor: "pointer", minHeight: 48 }}>
         ⚔️ CAN YOUR TEAM BEAT THIS LINEUP? PLAY THE CHALLENGE
       </button>
     </div>
@@ -1483,14 +1509,14 @@ const Stat = ({ label, v, hot }) => (
 function ShareModal({ share, onClose }) {
   const [copied, setCopied] = useState(false);
   return (
-    <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,.78)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 100, padding: 16 }} onClick={onClose}>
+    <div style={{ position: "fixed", inset: 0, background: "rgba(12,22,39,0.55)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 100, padding: 16 }} onClick={onClose}>
       <div style={{ ...card, padding: 22, maxWidth: 480, width: "100%" }} onClick={(e) => e.stopPropagation()} role="dialog" aria-label="Share challenge">
         <h2 style={{ margin: "0 0 6px", fontSize: 17 }}>📤 Challenge a Friend</h2>
         <p style={{ margin: "0 0 12px", fontSize: 12, color: T.textDim }}>Anyone who opens this link sees your result and plays <b>against your exact five</b>.</p>
         <textarea readOnly value={share.text} aria-label="Share text" style={{ width: "100%", height: 170, padding: 12, fontSize: 12, background: T.bg, color: T.text, border: `1px solid ${T.border}`, borderRadius: 8, resize: "none", fontFamily: "monospace", boxSizing: "border-box" }} />
         <div style={{ display: "flex", gap: 10, marginTop: 12 }}>
           <button onClick={() => { navigator.clipboard.writeText(share.text); setCopied(true); setTimeout(() => setCopied(false), 1500); }}
-            style={{ flex: 1, padding: 12, fontWeight: 800, fontSize: 13, border: "none", borderRadius: 9, background: T.gold, color: "#111", cursor: "pointer" }}>
+            style={{ flex: 1, padding: 12, fontWeight: 800, fontSize: 13, border: "none", borderRadius: 9, background: T.gold, color: "#fffdf8", cursor: "pointer" }}>
             {copied ? "✓ Copied!" : "📋 Copy Challenge"}
           </button>
           <button onClick={onClose} style={{ flex: 1, padding: 12, fontWeight: 800, fontSize: 13, borderRadius: 9, background: "transparent", color: T.text, border: `1px solid ${T.border}`, cursor: "pointer" }}>Close</button>

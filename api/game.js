@@ -15,6 +15,7 @@ import { tooLarge, MODES, validateTeamIds, validSimId, validChallengeId, cleanNa
 import { computeResult, dailyScore, newSeed } from "./_lib/game-core.js";
 import { computeResultV3 } from "./_lib/game-core-v3.js";
 import { computeResultPreview, PREVIEW_NAMESPACES, PREVIEW_RESULT_ID_PREFIX } from "./_lib/previewEngine.js";
+import { buildPregameRead } from "./_lib/pregameRead.js";
 import { previewIdentity } from "./_lib/previewAccessCheck.js";
 import { previewEvent } from "./_lib/previewTelemetry.js";
 import { validCoachId, validEraId } from "./_lib/validate.js";
@@ -248,6 +249,22 @@ export default async function handler(req, res) {
       : computeResult(mode, gold, blue, seed));
     // Preview results are namespaced end-to-end: a pv_ id, stored only under
     // preview-result:*. Production namespaces never hold a preview record.
+    // The pregame read is stored WITH the result, computed from the same
+    // inputs the builder displayed. The postgame renders this object rather
+    // than recomputing a read from the finished game.
+    let pregameSnapshot = null;
+    if (f.simV3 && blue) {
+      try {
+        const { resolveCoach, resolveEra } = await import("../src/v3/engine.js");
+        pregameSnapshot = {
+          ...buildPregameRead(gold, blue,
+            resolveCoach(dailyCfg ? b.coachGoldId : (validCoachId(b.coachGoldId) || "neutral")),
+            resolveCoach(dailyCfg ? "neutral" : (validCoachId(b.coachBlueId) || "neutral")),
+            resolveEra(dailyCfg ? dailyCfg.officialEraStyleId : (validEraId(b.eraStyleId) || undefined))),
+          generatedAt: Date.now(),
+        };
+      } catch { pregameSnapshot = null; }
+    }
     const resultId = (previewComputed ? PREVIEW_RESULT_ID_PREFIX : "") + newId(10);
     const record = {
       v: 1,
@@ -257,6 +274,7 @@ export default async function handler(req, res) {
       goldIds: gold.map((p) => p.id),
       blueIds: blue ? blue.map((p) => p.id) : computed.blueIds || null,
       ...computed,
+      pregame: pregameSnapshot,
       challengeId: challenge ? challenge.id : null,
       dailyDate: mode === "daily" ? today : null,
       // Narrative identity for a coach/era Daily is the GAME, not the player.

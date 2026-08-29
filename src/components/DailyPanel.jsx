@@ -93,7 +93,7 @@ export default function DailyPanel({ daily, career }) {
           </div>
           <div style={{ display: "grid", gap: 4 }}>
             {board.board.slice(0, 10).map((row, i) => (
-              <div key={i} style={{ display: "flex", justifyContent: "space-between", padding: "5px 8px", background: i === 0 ? "#2b230a" : T.bgCardHover, borderRadius: 6, fontSize: 12 }}>
+              <div key={i} style={{ display: "flex", justifyContent: "space-between", padding: "5px 8px", background: i === 0 ? T.goldSoft : T.bgCardHover, borderRadius: 6, fontSize: 12 }}>
                 <span><b style={{ color: i === 0 ? T.gold : T.text }}>#{i + 1}</b> <span style={{ marginLeft: 6 }}>{row.name}</span></span>
                 <b>{row.score}</b>
               </div>

@@ -7,6 +7,9 @@ export const CODES = {
   MODEL_RATE_LIMITED: [429, "Enhanced analysis is busy — try again shortly."],
   MODEL_INVALID_OUTPUT: [502, "Enhanced analysis returned an invalid response."],
   MODEL_UNAVAILABLE: [503, "Enhanced analysis is temporarily unavailable."],
+  // The model produced text that contradicted the authoritative result; the
+  // deterministic recap stands instead.
+  MODEL_CONTRADICTED_RESULT: [503, "Enhanced analysis did not match the result, so the game engine's own recap is shown."],
   KV_UNAVAILABLE: [503, "Cloud saving is temporarily unavailable."],
   VALIDATION_FAILURE: [400, "That request isn't valid."],
   RATE_LIMITED: [429, "Too many requests — slow down a little."],

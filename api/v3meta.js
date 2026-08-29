@@ -4,6 +4,7 @@
 // Engine attributes never leave the server in raw form beyond what the cards
 // need; there is no coach OVR to expose. Flag-gated with the engine.
 import { sendError, newRequestId } from "./_lib/errors.js";
+import { buildPregameRead } from "./_lib/pregameRead.js";
 import { flags } from "./_lib/flags.js";
 import { tooLarge, validateTeamIds, validEraId, validCoachId } from "./_lib/validate.js";
 import { COACHES } from "../src/v3/coaches.js";
@@ -45,20 +46,15 @@ export default async function handler(req, res) {
   // strategic tension only — never edge counts, never an expected winner. The
   // point of the preview is "I want to see how this plays out."
   const blue = req.body?.blueIds ? validateTeamIds(req.body.blueIds) : null;
-  let keyClash = null, edges = null;
+  let keyClash = null, edges = null, pregame = null;
   if (blue) {
     const cG = resolveCoach(validCoachId(req.body?.coachGoldId) || "neutral");
     const cB = resolveCoach(validCoachId(req.body?.coachBlueId) || "neutral");
-    const preview = matchupPreviewV3(team, blue, cG, cB, era);
-    keyClash = preview.keyClash;
-    // QUALITATIVE pre-sim edges only — no numbers, no counts, no probability.
-    // "Even" uses the model's own nearly-even bound (|edge| <= 4 on the ±20
-    // scale, the same bound keyClash reasons with); "strong" = half the cap.
-    edges = preview.categories.map((c) => ({
-      category: c.category,
-      lead: Math.abs(c.edge) <= 4 ? "even" : c.edge > 0 ? "gold" : "blue",
-      strong: Math.abs(c.edge) >= 10,
-    }));
+    // ONE implementation of the pregame read, shared with /api/game so the
+    // builder and the postgame can never disagree (see api/_lib/pregameRead.js).
+    pregame = buildPregameRead(team, blue, cG, cB, era);
+    keyClash = pregame.keyClash;
+    edges = pregame.qualitativeEdges;
   }
 
   return res.status(200).json({
@@ -66,5 +62,6 @@ export default async function handler(req, res) {
     eraNote: era ? eraInteraction(era, teamDNA(team)) : null,
     keyClash,
     edges,
+    pregame,
   });
 }

@@ -4,8 +4,9 @@
 // model output + deterministic engine data) — nothing invented for aesthetics.
 // Never a dead end: contextual CTAs lead back into another game or a share.
 import { useState } from "react";
-import { ChemistryDial, KeyMoments, PeriodScores } from "./PostgamePanels.jsx";
-import { T, card } from "../theme.js";
+import { KeyMoments, MatchupPatterns, PeriodScores } from "./PostgamePanels.jsx";
+import CoachingStrategy from "./CoachingStrategy.jsx";
+import { FONT, T, card } from "../theme.js";
 import { chemistryScore, chemistryLabel } from "../chemistryView.js";
 import { Feedback } from "./Feedback.jsx";
 import PlayerImage from "./PlayerImage.jsx";
@@ -43,37 +44,36 @@ function ScoreboardHero({ sim, won, mode, seriesLabel, team, opp }) {
   const isSeries = /^\d-\d$/.test(String(sim.seriesResult || ""));
   const winnerLabel = won ? "TEAM GOLD WINS" : "TEAM BLUE WINS";
   return (
-    <div style={{
-      padding: "22px 14px 18px", textAlign: "center",
-      background: `linear-gradient(180deg, ${won ? "rgba(253,185,39,0.10)" : "rgba(110,168,254,0.10)"} 0%, rgba(20,26,42,0) 85%)`,
-    }}>
-      <div style={{ fontSize: 10.5, letterSpacing: 4, color: T.textDim, fontWeight: 800 }}>
+    // The score reveal is the cinematic moment: a navy arena inset inside the
+    // warm page, so the final number carries weight.
+    <div className="ec-arena-inset" style={{ padding: "26px 14px 22px", textAlign: "center", borderRadius: 0 }}>
+      <div style={{ fontSize: 10.5, letterSpacing: 4, color: T.onArenaDim, fontWeight: 800 }}>
         {mode === "daily" ? "DAILY CLASH · " : mode === "challenge" ? "GRUDGE MATCH · " : ""}FINAL{seriesLabel ? ` — ${seriesLabel}` : ""}
       </div>
 
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16, marginTop: 12, flexWrap: "wrap" }}>
         <div className="rise" style={{ flex: "1 1 150px", maxWidth: 300 }}>
-          <div style={{ fontSize: 11, letterSpacing: 2, fontWeight: 900, color: T.gold, marginBottom: 6 }}>TEAM GOLD</div>
+          <div style={{ fontSize: 11, letterSpacing: 2, fontWeight: 900, color: T.goldOnDark, marginBottom: 6 }}>TEAM GOLD</div>
           <LineupStrip team={team} side="gold" />
           {scores && !isSeries && (
-            <div style={{ fontSize: 52, fontWeight: 900, fontStyle: "italic", lineHeight: 1.1, color: won ? T.text : T.textDim }}>{scores.gold}</div>
+            <div style={{ fontSize: 54, fontWeight: 900, fontStyle: "italic", lineHeight: 1.1, fontFamily: FONT.display, color: won ? T.onArena : T.onArenaDim }}>{scores.gold}</div>
           )}
         </div>
 
         <div className="rise-2" style={{ flexShrink: 0 }}>
           <div aria-hidden="true" style={{
             fontSize: 34, fontWeight: 900, fontStyle: "italic", letterSpacing: -1,
-            background: `linear-gradient(120deg, ${T.gold} 30%, #e8eaf2 50%, ${T.blue} 70%)`,
+            background: `linear-gradient(120deg, ${T.goldOnDark} 30%, #ffffff 50%, ${T.blueOnDark} 70%)`,
             WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent",
           }}>VS</div>
-          {isSeries && <div style={{ fontSize: 40, fontWeight: 900, fontStyle: "italic", color: won ? T.gold : T.blue }}>{sim.seriesResult}</div>}
+          {isSeries && <div style={{ fontSize: 40, fontWeight: 900, fontStyle: "italic", color: won ? T.goldOnDark : T.blueOnDark }}>{sim.seriesResult}</div>}
         </div>
 
         <div className="rise" style={{ flex: "1 1 150px", maxWidth: 300 }}>
-          <div style={{ fontSize: 11, letterSpacing: 2, fontWeight: 900, color: T.blue, marginBottom: 6 }}>TEAM BLUE</div>
+          <div style={{ fontSize: 11, letterSpacing: 2, fontWeight: 900, color: T.blueOnDark, marginBottom: 6 }}>TEAM BLUE</div>
           <LineupStrip team={opp} side="blue" />
           {scores && !isSeries && (
-            <div style={{ fontSize: 52, fontWeight: 900, fontStyle: "italic", lineHeight: 1.1, color: won ? T.textDim : T.text }}>{scores.blue}</div>
+            <div style={{ fontSize: 54, fontWeight: 900, fontStyle: "italic", lineHeight: 1.1, fontFamily: FONT.display, color: won ? T.onArenaDim : T.onArena }}>{scores.blue}</div>
           )}
         </div>
       </div>
@@ -81,9 +81,9 @@ function ScoreboardHero({ sim, won, mode, seriesLabel, team, opp }) {
       <div className="rise-3" style={{ marginTop: 10 }}>
         <span style={{
           display: "inline-block", padding: "7px 20px", borderRadius: 20, fontSize: 14, fontWeight: 900, letterSpacing: 2,
-          color: won ? "#111" : "#0a1428", background: won ? T.gold : T.blue,
+          color: "#0c1627", background: won ? T.goldOnDark : T.blueOnDark,
         }}>{winnerLabel}</span>
-        {isSeries && <div style={{ fontSize: 12, color: T.textDim, marginTop: 6 }}>Best of 7 — {won ? "Gold" : "Blue"} wins series {sim.seriesResult}</div>}
+        {isSeries && <div style={{ fontSize: 12.5, color: T.onArenaDim, marginTop: 6 }}>Best of 7 — {won ? "Gold" : "Blue"} wins series {sim.seriesResult}</div>}
       </div>
     </div>
   );
@@ -129,33 +129,41 @@ function BreakdownBars({ sim }) {
 }
 
 // ── Engine matchup edges ───────────────────────────────────────────────────────
-function EdgeBars({ edges }) {
-  const shown = (edges || []).filter((e) => e.edge !== 0).slice(0, 4);
-  if (!shown.length) return null;
+// ── The stored pregame read ─────────────────────────────────────────────────
+// Phase 7B: this used to render the model's RAW numeric edges ("Gold +4"),
+// which both leaked hidden internals and contradicted the qualitative read the
+// Ready screen had shown minutes earlier. It now renders the snapshot stored
+// with the result — the same object, the same words.
+function StoredPregameRead({ pregame }) {
+  if (!pregame?.qualitativeEdges?.length) {
+    return (
+      <div style={{ ...card, padding: 16, marginTop: 12 }}>
+        <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 2, color: T.textDim }}>PRE-GAME READ</div>
+        <div style={{ fontSize: 13.5, color: T.textDim, marginTop: 6, lineHeight: 1.5 }}>
+          This result was recorded before pregame reads were stored, so the original read is unavailable.
+        </div>
+      </div>
+    );
+  }
   return (
     <div style={{ ...card, padding: 16, marginTop: 12 }}>
-      <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 2, color: T.textDim, marginBottom: 10 }}>PRE-GAME EDGES</div>
-      {shown.map((e) => {
-        const yours = e.edge > 0;
-        const half = Math.min(45, Math.abs(e.edge) * 2.25); // % from center, capped
-        return (
-          <div key={e.category} style={{ marginBottom: 9 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, marginBottom: 3 }}>
-              <span style={{ fontWeight: 700 }}>{e.category}</span>
-              <span style={{ fontWeight: 900, color: yours ? T.gold : T.blue }}>{yours ? "Gold" : "Blue"} +{Math.abs(e.edge)}</span>
-            </div>
-            <div style={{ height: 6, background: T.border, borderRadius: 3, position: "relative", overflow: "hidden" }}>
-              {/* bar grows from the center toward the leading team's side */}
-              <div style={{ position: "absolute", top: 0, bottom: 0, left: yours ? `${50 - half}%` : "50%", width: `${half}%`, background: yours ? T.gold : T.blue, borderRadius: 3 }} />
-              <div style={{ position: "absolute", left: "50%", top: 0, bottom: 0, width: 1, background: "rgba(232,234,242,0.25)" }} />
-            </div>
+      <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 8 }}>
+        <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: 2, color: T.textDim }}>PRE-GAME READ</span>
+        <span style={{ marginLeft: "auto", fontSize: 12, color: T.textDim }}>stored before the sim</span>
+      </div>
+      <div style={{ display: "grid", gap: 4 }}>
+        {pregame.qualitativeEdges.map((e) => (
+          <div key={e.category} style={{ display: "flex", justifyContent: "space-between", fontSize: 13.5, padding: "3px 0", borderBottom: `1px solid ${T.border}` }}>
+            <span style={{ color: T.textDim }}>{e.category}</span>
+            <span style={{ fontWeight: 800, color: e.lead === "gold" ? T.gold : e.lead === "blue" ? T.blue : T.textMuted }}>{e.label}</span>
           </div>
-        );
-      })}
-      <div style={{ fontSize: 10, color: T.textMuted, marginTop: 4 }}>Computed from player data, ratings & chemistry before tipoff.</div>
+        ))}
+      </div>
+      {pregame.keyClash && <p style={{ fontSize: 13.5, color: T.text, marginTop: 10, marginBottom: 0, lineHeight: 1.6 }}>{pregame.keyClash}</p>}
     </div>
   );
 }
+
 
 function BoxTable({ label, stats, color, mvpName }) {
   if (!Array.isArray(stats) || !stats.length) return null;
@@ -174,7 +182,7 @@ function BoxTable({ label, stats, color, mvpName }) {
           {stats.map((s, i) => {
             const isMvp = mvpName && s.name && mvpName.toLowerCase().includes(s.name.split(" ").slice(-1)[0].toLowerCase());
             return (
-              <tr key={i} style={{ borderTop: `1px solid ${T.border}`, textAlign: "right", background: isMvp ? "rgba(253,185,39,0.07)" : "transparent" }}>
+              <tr key={i} style={{ borderTop: `1px solid ${T.border}`, textAlign: "right", background: isMvp ? T.goldSoft : "transparent" }}>
                 <td style={{ textAlign: "left", padding: "5px 4px", fontWeight: 600 }}>{isMvp ? "⭐ " : ""}{s.name}</td>
                 <td style={{ padding: "5px 4px", fontWeight: 800, color }}>{s.pts}</td><td style={{ padding: "5px 4px" }}>{s.reb}</td>
                 <td style={{ padding: "5px 4px" }}>{s.ast}</td><td style={{ padding: "5px 4px" }}>{s.stl}</td><td style={{ padding: "5px 4px" }}>{s.blk}</td>
@@ -233,9 +241,15 @@ function ChemDial({ label, team, color }) {
 }
 
 // ── Contextual CTAs ────────────────────────────────────────────────────────────
-function CTAs({ mode, won, onRematch, onBest7, onChallenge, onSwap, onShare, onLeaderboard }) {
+function CTAs({ mode, won, onRematch, onBest7, onChallenge, onSwap, onShare, onLeaderboard, previewCandidate }) {
+  // CANDIDATE CONTINUITY: a preview result was simulated by Candidate 3, whose
+  // preview scope is a single game. Offering "Best of 7" here would silently
+  // run the series on the production engine — a different simulation than the
+  // one just played. The action is withdrawn and explained instead of faked.
+  const seriesBlocked = Boolean(previewCandidate);
+  if (seriesBlocked) onBest7 = null;
   const P = ({ onClick, children }) => (
-    <button onClick={onClick} style={{ width: "100%", padding: 15, fontSize: 14, fontWeight: 900, border: "none", borderRadius: 10, background: T.gold, color: "#111", cursor: "pointer", letterSpacing: 0.5, minHeight: 48 }}>{children}</button>
+    <button onClick={onClick} style={{ width: "100%", padding: 15, fontSize: 14, fontWeight: 900, border: "none", borderRadius: 10, background: T.gold, color: "#fffdf8", cursor: "pointer", letterSpacing: 0.5, minHeight: 48 }}>{children}</button>
   );
   const S = ({ onClick, children }) => (
     <button onClick={onClick} style={{ flex: "1 1 30%", padding: 12, fontSize: 12.5, fontWeight: 700, borderRadius: 9, border: `1px solid ${T.border}`, background: "transparent", color: T.text, cursor: "pointer", minHeight: 44 }}>{children}</button>
@@ -264,19 +278,93 @@ function CTAs({ mode, won, onRematch, onBest7, onChallenge, onSwap, onShare, onL
     ];
   } else {
     primary = onBest7
-      ? <P onClick={onBest7}>🏆 RUN BEST OF 7 {won ? "— PROVE IT WASN'T LUCK" : "— GET REVENGE"}</P>
-      : <P onClick={onShare}>📤 SHARE RESULT</P>;
+      ? <P onClick={onBest7}>🏆 Run Best of 7</P>
+      : <P onClick={onRematch}>🔁 Rematch</P>;
     secondaries = [
-      onRematch && <S key="rm" onClick={onRematch}>🔁 Rematch</S>,
+      onBest7 && onRematch && <S key="rm" onClick={onRematch}>🔁 Rematch</S>,
       onSwap && <S key="sw" onClick={onSwap}>♻️ Swap One Player</S>,
       <S key="ch" onClick={onChallenge}>⚔️ Challenge a Friend</S>,
-      onBest7 && <S key="sh" onClick={onShare}>📤 Share</S>,
+      <S key="sh" onClick={onShare}>📤 Share</S>,
     ];
   }
   return (
     <div style={{ marginTop: 14 }}>
       {primary}
       <div style={{ display: "flex", gap: 8, marginTop: 8, flexWrap: "wrap" }}>{secondaries.filter(Boolean)}</div>
+      {seriesBlocked && (
+        <div style={{ marginTop: 10, fontSize: 12.5, color: T.textDim, lineHeight: 1.5 }}>
+          Best of 7 is unavailable in this preview: series play would run on the production engine, and a
+          series is not mixed across two different simulations. Rematch replays this matchup on the same engine.
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── ONE authoritative box score ──────────────────────────────────────────────
+// Phase 7B: the product previously rendered two tables of the same game (a
+// five-column summary and the possession box). One is authoritative. Personal
+// fouls are omitted: the simulation records them, but with no foul-out,
+// substitution or rotation consequence surfaced, a PF column reads as a
+// feature the game does not have.
+const BOX_COLUMNS = [
+  ["PTS", (l) => l.pts], ["FG", (l) => `${l.fgm}-${l.fga}`], ["3PT", (l) => `${l.tpm}-${l.tpa}`],
+  ["FT", (l) => `${l.ftm}-${l.fta}`], ["OREB", (l) => l.oreb], ["DREB", (l) => l.dreb],
+  ["REB", (l) => l.oreb + l.dreb], ["AST", (l) => l.ast], ["STL", (l) => l.stl],
+  ["BLK", (l) => l.blk], ["TO", (l) => l.to],
+];
+
+function BoxTeam({ label, lines, color, mvpName }) {
+  const total = (fn) => lines.reduce((s, l) => s + (Number(fn(l)) || 0), 0);
+  return (
+    <div style={{ marginTop: 12, overflowX: "auto" }}>
+      <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1.5, color, marginBottom: 4 }}>{label}</div>
+      <table style={{ width: "100%", fontSize: 13, borderCollapse: "collapse", minWidth: 620 }}>
+        <thead><tr style={{ color: T.textDim, textAlign: "right" }}>
+          <th style={{ textAlign: "left", padding: "4px 6px", fontSize: 11 }}>PLAYER</th>
+          {BOX_COLUMNS.map(([h]) => <th key={h} style={{ padding: "4px 6px", fontSize: 11 }}>{h}</th>)}
+        </tr></thead>
+        <tbody>
+          {lines.map((l) => (
+            <tr key={l.id ?? l.name} style={{ borderTop: `1px solid ${T.border}`, textAlign: "right" }}>
+              <td style={{ textAlign: "left", padding: "6px", fontWeight: 600, whiteSpace: "nowrap" }}>
+                {l.name === mvpName ? "★ " : ""}{l.name}
+              </td>
+              {BOX_COLUMNS.map(([h, fn]) => (
+                <td key={h} style={{ padding: "6px", fontWeight: h === "PTS" ? 800 : 400, color: h === "PTS" ? color : T.text }}>{fn(l)}</td>
+              ))}
+            </tr>
+          ))}
+          <tr style={{ borderTop: `2px solid ${T.borderStrong}`, textAlign: "right", fontWeight: 800 }}>
+            <td style={{ textAlign: "left", padding: "6px", fontSize: 11, letterSpacing: 1, color: T.textDim }}>TOTAL</td>
+            {BOX_COLUMNS.map(([h, fn]) => (
+              <td key={h} style={{ padding: "6px", color: h === "PTS" ? color : T.text }}>
+                {h === "FG" || h === "3PT" || h === "FT"
+                  ? `${lines.reduce((s, l) => s + fn(l).split("-").map(Number)[0], 0)}-${lines.reduce((s, l) => s + fn(l).split("-").map(Number)[1], 0)}`
+                  : total(fn)}
+              </td>
+            ))}
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function AuthoritativeBox({ sim }) {
+  const box = sim.v3?.fullBox;
+  if (!box) {
+    return (
+      <div style={{ ...card, padding: 16, marginTop: 12, fontSize: 13, color: T.textDim }}>
+        A full box score is not available for this result.
+      </div>
+    );
+  }
+  return (
+    <div style={{ ...card, padding: 16, marginTop: 12 }}>
+      <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 2, color: T.textDim }}>BOX SCORE</div>
+      <BoxTeam label="TEAM GOLD" lines={box.gold} color={T.gold} mvpName={sim.mvp} />
+      <BoxTeam label="TEAM BLUE" lines={box.blue} color={T.blue} mvpName={sim.mvp} />
     </div>
   );
 }
@@ -298,7 +386,7 @@ function SectionTabs({ section, onSection }) {
           padding: "10px 16px", fontSize: 12.5, fontWeight: 800, letterSpacing: 0.5, borderRadius: "10px 10px 0 0",
           cursor: "pointer", minHeight: 44, whiteSpace: "nowrap",
           border: `1px solid ${section === id ? T.goldBorder : T.border}`, borderBottom: "none",
-          background: section === id ? "rgba(253,185,39,0.1)" : "rgba(0,0,0,0.25)",
+          background: section === id ? T.goldSoft : T.bgCardHover,
           color: section === id ? T.gold : T.textDim,
         }}>{label}</button>
       ))}
@@ -325,7 +413,7 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
           <div style={{ display: "grid", gap: 12, alignContent: "start", minWidth: 0 }}>
         {/* B. MVP feature card with a real explanation (narrative or deterministic fallback) */}
         {sim.mvp && (
-          <div style={{ display: "flex", alignItems: "center", gap: 16, padding: 16, borderRadius: 12, background: "linear-gradient(120deg, #2b230a 0%, #1a1610 100%)", border: `1px solid ${T.gold}`, flexWrap: "wrap" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 16, padding: 16, borderRadius: 12, background: `linear-gradient(120deg, ${T.goldSoft} 0%, ${T.bgCard} 100%)`, border: `1px solid ${T.goldBorder}`, flexWrap: "wrap" }}>
             {mvpP && <PlayerImage player={mvpP} variant="mvp" team={mvpOnGold ? "gold" : "blue"} />}
             <div style={{ minWidth: 200, flex: 1 }}>
               <div style={{ fontSize: 10, letterSpacing: 3, color: T.gold, fontWeight: 800 }}>
@@ -350,6 +438,7 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
 
         {/* V3 context chips stay on Final */}
             <KeyMoments moments={sim.v3?.keyMoments} />
+            <MatchupPatterns patterns={sim.v3?.matchupPatterns} />
           </div>
           <div style={{ display: "grid", gap: 12, alignContent: "start", minWidth: 0 }}>
         {/* V3: possession context + expectation honesty */}
@@ -376,60 +465,14 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
           </div>
         </div>
         {/* H/I. Strengths & weaknesses, with the chemistry dial between them */}
-        <AnalysisQuad sim={sim} center={
-          (team || opp) ? (
-            <div style={{ flex: "0 1 200px", display: "flex", gap: 14, justifyContent: "center", alignItems: "center",
-              padding: 12, borderRadius: 10, background: T.bgCardHover, border: `1px solid ${T.border}` }}>
-              {team && <ChemistryDial team={team} side="gold" label="GOLD CHEMISTRY" size={92} />}
-              {opp && <ChemistryDial team={opp} side="blue" label="BLUE CHEMISTRY" size={92} />}
-            </div>
-          ) : null
-        } />
+        <AnalysisQuad sim={sim} />
 
         {/* K. Feedback (preview: the structured Wave 1 form) */}
         {feedbackCtx && <Feedback ctx={feedbackCtx} />}
         </>}
 
         {section === "box" && <>
-        {/* F. FULL BOX SCORE — both teams */}
-        <div style={{ ...card, padding: 16, marginTop: 12 }}>
-          <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 2, color: T.textDim }}>FULL BOX SCORE</div>
-          <BoxTable label="TEAM GOLD" stats={sim.teamAStats} color={T.gold} mvpName={sim.mvp} />
-          <BoxTable label="TEAM BLUE" stats={sim.teamBStats} color={T.blue} mvpName={sim.mvp} />
-        </div>
-
-        {/* V3: extended possession box score */}
-        {sim.v3?.fullBox && (
-          <div style={{ ...card, padding: 16, marginTop: 12 }}>
-            <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 2, color: T.textDim }}>POSSESSION BOX SCORE</div>
-            {[["TEAM GOLD", sim.v3.fullBox.gold, T.gold], ["TEAM BLUE", sim.v3.fullBox.blue, T.blue]].map(([label, lines, color]) => (
-              <div key={label} style={{ marginTop: 10, overflowX: "auto" }}>
-                <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1.5, color, marginBottom: 4 }}>{label}</div>
-                <table style={{ width: "100%", fontSize: 11, borderCollapse: "collapse", minWidth: 560 }}>
-                  <thead><tr style={{ color: T.textDim, textAlign: "right" }}>
-                    <th style={{ textAlign: "left", padding: "3px 4px" }}>PLAYER</th>
-                    {["PTS", "FG", "3PT", "FT", "OREB", "DREB", "AST", "STL", "BLK", "TO", "PF"].map((h) => <th key={h} style={{ padding: "3px 4px" }}>{h}</th>)}
-                  </tr></thead>
-                  <tbody>
-                    {lines.map((l) => (
-                      <tr key={l.id} style={{ borderTop: `1px solid ${T.border}`, textAlign: "right" }}>
-                        <td style={{ textAlign: "left", padding: "4px", fontWeight: 600, whiteSpace: "nowrap" }}>{l.name}</td>
-                        <td style={{ padding: "4px", fontWeight: 800, color }}>{l.pts}</td>
-                        <td style={{ padding: "4px" }}>{l.fgm}-{l.fga}</td>
-                        <td style={{ padding: "4px" }}>{l.tpm}-{l.tpa}</td>
-                        <td style={{ padding: "4px" }}>{l.ftm}-{l.fta}</td>
-                        <td style={{ padding: "4px" }}>{l.oreb}</td><td style={{ padding: "4px" }}>{l.dreb}</td>
-                        <td style={{ padding: "4px" }}>{l.ast}</td><td style={{ padding: "4px" }}>{l.stl}</td>
-                        <td style={{ padding: "4px" }}>{l.blk}</td><td style={{ padding: "4px" }}>{l.to}</td>
-                        <td style={{ padding: "4px" }}>{l.pf ?? 0}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            ))}
-          </div>
-        )}
+        <AuthoritativeBox sim={sim} />
         </>}
 
         {section === "story" && <>
@@ -471,66 +514,13 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
         </>}
 
         {section === "coaching" && <>
-        {/* Which coaches ran the game */}
-        {sim.coachNames?.gold && (
-          <div style={{ marginTop: 2, padding: "10px 14px", borderRadius: 10, background: T.bgCardHover, border: `1px solid ${T.border}`, fontSize: 12.5 }}>
-            🧠 <b style={{ color: T.gold }}>{sim.coachNames.gold}</b>{sim.coachNames.blue ? <> vs <b style={{ color: T.blue }}>{sim.coachNames.blue}</b></> : null}
-            {sim.eraId && <span style={{ color: T.textDim }}> · {sim.eraLabel || sim.eraId} Era Style</span>}
-          </div>
-        )}
-        {/* V3: usage roles + defensive assignments — the basketball under the hood */}
-        {sim.v3?.usage && (
-          <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 12 }}>
-            <div style={{ flex: "1 1 260px", padding: 12, borderRadius: 10, background: T.bgCardHover, border: `1px solid ${T.border}` }}>
-              <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: 1.5, color: T.textDim, marginBottom: 6 }}>OFFENSIVE ROLES (USAGE)</div>
-              {[["gold", T.gold], ["blue", T.blue]].map(([side, color]) => (
-                <div key={side} style={{ marginBottom: 6 }}>
-                  {sim.v3.usage[side].map((u) => (
-                    <div key={u.id} style={{ display: "flex", justifyContent: "space-between", fontSize: 11, padding: "2px 0" }}>
-                      <span style={{ color: T.text }}>{u.id.split("-")[0]}</span>
-                      <span style={{ color: T.textDim }}>{u.role}</span>
-                      <span style={{ fontWeight: 800, color }}>{Math.round(u.share * 100)}%</span>
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
-            <div style={{ flex: "1 1 260px", padding: 12, borderRadius: 10, background: T.bgCardHover, border: `1px solid ${T.border}` }}>
-              <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: 1.5, color: T.textDim, marginBottom: 6 }}>DEFENSIVE ASSIGNMENTS</div>
-              {sim.v3.assignments.onGold.map((a, i) => (
-                <div key={i} style={{ fontSize: 11, padding: "2px 0", color: T.textDim }}>
-                  <b style={{ color: T.blue }}>{a.defender.split(" ").slice(-1)[0]}</b> guarded <b style={{ color: T.gold }}>{a.scorer.split(" ").slice(-1)[0]}</b>
-                </div>
-              ))}
-              <div style={{ height: 6 }} />
-              {sim.v3.assignments.onBlue.map((a, i) => (
-                <div key={i} style={{ fontSize: 11, padding: "2px 0", color: T.textDim }}>
-                  <b style={{ color: T.gold }}>{a.defender.split(" ").slice(-1)[0]}</b> guarded <b style={{ color: T.blue }}>{a.scorer.split(" ").slice(-1)[0]}</b>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* V3: in-game coaching adjustments actually made by the engine */}
-        {sim.v3 && ((sim.v3.adjustments?.gold?.length || 0) + (sim.v3.adjustments?.blue?.length || 0) > 0) && (
-          <div style={{ marginTop: 12, padding: 12, borderRadius: 10, background: T.bgCardHover, border: `1px solid ${T.border}` }}>
-            <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: 1.5, color: T.textDim, marginBottom: 6 }}>IN-GAME ADJUSTMENTS</div>
-            {(sim.v3.adjustments.gold || []).map((a, i) => (
-              <div key={`g${i}`} style={{ fontSize: 11.5, padding: "2px 0", color: T.textDim }}><b style={{ color: T.gold }}>Gold:</b> {a}</div>
-            ))}
-            {(sim.v3.adjustments.blue || []).map((a, i) => (
-              <div key={`b${i}`} style={{ fontSize: 11.5, padding: "2px 0", color: T.textDim }}><b style={{ color: T.blue }}>Blue:</b> {a}</div>
-            ))}
-          </div>
-        )}
-
-        {/* Pre-game engine edges */}
-        <EdgeBars edges={sim.edges} />
+        <CoachingStrategy coaching={sim.v3?.coaching} eraLabel={sim.eraLabel || sim.eraId} />
+        {/* The stored pregame read as a compact supporting panel, never the centre */}
+        <StoredPregameRead pregame={sim.pregame} />
         </>}
 
         {/* L. Actions — never a dead end, visible from every section */}
-        <CTAs mode={mode} won={won}
+        <CTAs mode={mode} won={won} previewCandidate={sim.previewCandidate}
           onRematch={onRematch} onBest7={onBest7} onChallenge={onChallenge}
           onSwap={onSwap} onShare={onShare} onLeaderboard={onLeaderboard} />
       </div>
