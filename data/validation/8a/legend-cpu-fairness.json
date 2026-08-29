@@ -1,0 +1,16 @@
+{
+  "artifact": "legend-cpu-fairness",
+  "phase": "8A",
+  "sameProbabilityModel": true,
+  "sameRollCount": true,
+  "sameBurnRules": true,
+  "sameEra": true,
+  "simulationBonus": "none",
+  "outcomeBonus": "none",
+  "futureCardKnowledge": "none",
+  "noPeekingProofs": {
+    "structural": "cpuHoldDecision() runs assertVisibleState(), which throws on any forbidden field. The run's seed is not a field on the visible state at all.",
+    "behavioural": "The lookahead samples the model on a policy-only RNG stream seeded from VISIBLE STATE ONLY, deliberately excluding the draw seed. Changing the run seed changes every actual future card while leaving the decision bit-identical."
+  },
+  "determinism": "Identical visible state always yields an identical decision, so a replay reproduces the CPU exactly."
+}

@@ -1,0 +1,32 @@
+{
+  "artifact": "key-moment-salience-model",
+  "phase": "8A",
+  "salienceFloor": 6,
+  "select": "3-5, one per category, highest salience first, then read in chronological order",
+  "factors": [
+    "magnitude of the swing",
+    "score leverage at the time",
+    "which period it happened in",
+    "player impact",
+    "rarity"
+  ],
+  "candidateTypes": [
+    "unanswered team run",
+    "period domination",
+    "quarter takeover by a player",
+    "defensive stand",
+    "go-ahead score",
+    "back-and-forth game",
+    "closing stretch",
+    "unusual individual performance"
+  ],
+  "periodWeights": {
+    "Q1": 0.35,
+    "Q2": 0.55,
+    "Q3": 0.8,
+    "Q4": 1.25,
+    "OT": 1.6
+  },
+  "defectFixed": "The previous selector emitted 'the last lead change' unconditionally, which surfaced an 8-7 first-quarter swing as a headline moment while a 32-16 fourth quarter went unmentioned. It also emitted a game-long mismatch that duplicated Matchup Patterns word for word.",
+  "padding": "a list is never padded below the floor — three real moments beat five with filler"
+}

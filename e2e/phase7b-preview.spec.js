@@ -5,7 +5,15 @@
 import { test, expect } from "@playwright/test";
 
 const buildMatchup = async (page) => {
+  // Chaos Clash is the default Play experience as of Phase 8A. These tests
+  // describe the MANUAL builder, which now lives behind Dream Matchup, so they
+  // sign in and switch to it instead of asserting against the Chaos board.
+  await page.addInitScript(() => {
+    try { localStorage.setItem("ec_account", "1"); localStorage.setItem("ec_name", "E2E"); } catch (e) {}
+  });
   await page.goto("/");
+  const toDream = page.getByRole("button", { name: "BUILD A DREAM MATCHUP" });
+  if (await toDream.count()) await toDream.click();
   await page.getByRole("button", { name: /Random Team/ }).first().click();
   await page.getByRole("tab", { name: /Random Team/ }).click();
   await page.getByRole("button", { name: /Continue to Coaches/ }).click();
@@ -36,7 +44,7 @@ test("P1: Ready and Postgame show the SAME pregame read", async ({ page }) => {
   expect(before.length, "the ready screen shows category reads").toBeGreaterThan(0);
   await runSim(page);
   await page.getByRole("tab", { name: "Coaching & Strategy" }).click();
-  await expect(page.getByText("PRE-GAME READ")).toBeVisible();
+  await expect(page.getByText("BEFORE TIPOFF")).toBeVisible();
   const after = readRow(await page.locator("body").innerText());
   expect(after, "the stored read is reused verbatim").toEqual(before);
 });
@@ -57,12 +65,18 @@ test("P3: Coaching & Strategy shows real recorded coaching", async ({ page }) =>
   await buildMatchup(page);
   await runSim(page);
   await page.getByRole("tab", { name: "Coaching & Strategy" }).click();
-  await expect(page.getByText("OPENING PLAN").first()).toBeVisible();
+  // Phase 8A / Workstream 21 renamed OPENING PLAN to OFFENSIVE PLAN and
+  // replaced the anonymous "the staff" with the coach's own name, so this
+  // asserts the stronger contract rather than the superseded wording.
+  await expect(page.getByText("OFFENSIVE PLAN").first()).toBeVisible();
   await expect(page.getByText("DEFENSIVE SCHEME").first()).toBeVisible();
   await expect(page.getByText("IN-GAME ADJUSTMENTS").first()).toBeVisible();
   const body = await page.locator("body").innerText();
-  // adjustments are either listed with their trigger, or explicitly absent
-  expect(body).toMatch(/so the staff |No in-game adjustment was recorded/);
+  // Adjustments are attributed to a NAMED coach, or explicitly absent.
+  expect(body).toMatch(/so Coach [A-Z][A-Za-z'\- ]+ |No in-game adjustment was recorded/);
+  // No internal enum and no fabricated clock reaches the screen.
+  expect(body).not.toMatch(/switch_heavy|drop_heavy|MAN_ILLEGAL_DEFENSE/);
+  expect(body).not.toMatch(/\bPoss\. \d+/);
 });
 
 test("P4: key moments and matchup patterns are separate sections", async ({ page }) => {

@@ -490,10 +490,15 @@ export default function App() {
   const handleNav = (id) => { resetPlay(); setSharedResult(null); setNav(id); };
 
   // ── Game bookkeeping ───────────────────────────────────────────────────────
-  const bookkeepGame = (won, mode, score, mvp, vs, opp) => {
+  // `mine` is passed explicitly by callers whose roster is not yet in state.
+  // Chaos Clash builds its five from the server response and calls this in the
+  // same handler as setTeam(), where the state update has not committed — so
+  // reading `team` here threw on every Chaos win (teamRating(null).reduce).
+  const bookkeepGame = (won, mode, score, mvp, vs, opp, mine = team) => {
     if (won) {
       recordWinStreak();
-      if (opp && teamRating(opp) > teamRating(team)) addBadge("giant_slayer");
+      const ours = mine || team;
+      if (opp?.length === 5 && ours?.length === 5 && teamRating(opp) > teamRating(ours)) addBadge("giant_slayer");
     } else recordLossStreak();
     setCareer((c) => recordGame(c, { won, mode, score, mvp, vs }));
   };
@@ -800,7 +805,7 @@ export default function App() {
       const gold = five(record.goldIds), opp = five(record.blueIds);
       setTeam(gold); setOpponent(opp); lastOppRef.current = opp;
       const w = record.core.winner === "Gold";
-      bookkeepGame(w, "single", record.core.seriesResult, record.core.mvp, "", opp);
+      bookkeepGame(w, "single", record.core.seriesResult, record.core.mvp, "", opp, gold);
       setResult({ type: "single", sim: viewSim(record), w, tag: "chaos", opp, resultId, record, persisted: !!records?.persisted });
       fetchNarrative(resultId, record, !!records?.persisted);
       track("chaos_clash_completed", { era_style: record.eraId || null });

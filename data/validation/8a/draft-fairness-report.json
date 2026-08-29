@@ -1,0 +1,126 @@
+{
+  "artifact": "draft-fairness-report",
+  "phase": "8A",
+  "calibrationRuns": 1000000,
+  "checks": 23,
+  "passed": 23,
+  "failed": 0,
+  "frozenTargetsRevision": 1,
+  "results": [
+    {
+      "name": "per-card probability is non-increasing in Draft Value on every slot",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "every card in the pool retains a non-zero probability",
+      "pass": true,
+      "detail": "381/381 drawn in 1,000,000 runs"
+    },
+    {
+      "name": "Roll 3 offers fewer APEX cards than Roll 1",
+      "pass": true,
+      "detail": "1.12% → 0.62%"
+    },
+    {
+      "name": "Roll 3 offers fewer ELITE cards than Roll 1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "holding one top-tier card lowers the next top-tier rate",
+      "pass": true,
+      "detail": "5.44% → 4.43%"
+    },
+    {
+      "name": "holding two or more lowers it further, and never to zero",
+      "pass": true,
+      "detail": "3.49%"
+    },
+    {
+      "name": "the user and the CPU receive statistically equivalent cards",
+      "pass": true,
+      "detail": "gold 8.232% vs blue 8.235%"
+    },
+    {
+      "name": "final roster with three or more top-decile players stays rare (2-5%)",
+      "pass": true,
+      "detail": "2.91%"
+    },
+    {
+      "name": "Perfect Storm and Elite Build are distinct percentile bands",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "skilled holds beat random holds",
+      "pass": true,
+      "detail": "+0.0945"
+    },
+    {
+      "name": "the final roll frequently improves something",
+      "pass": true,
+      "detail": "71.0%"
+    },
+    {
+      "name": "the final roll sometimes costs something",
+      "pass": true,
+      "detail": "52.8%"
+    },
+    {
+      "name": "no duplicate person occurred in any run",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no burned person ever returned",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "hopeless matchups stay under 5% with both sides on the shipped policy",
+      "pass": true,
+      "detail": "4.33% over 900 matchups"
+    },
+    {
+      "name": "Legend outperforms a random-hold policy",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Legend outperforms an OVR-only policy",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Legend outperforms a construction-only policy",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Legend's no-peeking guard refuses forbidden state",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Legend's decision is invariant to the future it cannot see",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "every tier draws an identical roster from the same seed",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no odds function can even see an entitlement",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "entitlement gates modes, and Chaos Clash is open to guests",
+      "pass": true,
+      "detail": ""
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "artifact": "chaos-draft-contract",
+  "phase": "8A",
+  "chaosDraftVersion": "1.0.0",
+  "totalRolls": 3,
+  "phases": [
+    "ROLL_1_REVEALED",
+    "ROLL_1_HOLDS_LOCKED",
+    "ROLL_2_REVEALED",
+    "ERA_REVEALED",
+    "FINAL_HOLDS_LOCKED",
+    "ROLL_3_REVEALED",
+    "ROSTERS_LOCKED",
+    "COACH_OFFERS_REVEALED",
+    "COACHES_LOCKED",
+    "READY",
+    "SIMULATED"
+  ],
+  "versions": {
+    "chaosDraftVersion": "1.0.0",
+    "draftValueVersion": "1.0.0",
+    "draftProbabilityVersion": "1.0.0",
+    "legendCpuVersion": "1.0.0",
+    "coachOfferVersion": "1.0.0",
+    "eraTranslationVersion": "1.0.0",
+    "chaosRunVersion": "1.0.0"
+  },
+  "runTtlSeconds": 21600,
+  "serverAuthoritative": true,
+  "clientMaySubmit": [
+    "which slots to hold",
+    "which of three OFFERED coaches to take",
+    "a request to start or to publish a challenge"
+  ],
+  "clientMayNeverSubmit": [
+    "player ids",
+    "the CPU's holds",
+    "the era",
+    "coach offers",
+    "the CPU's coach",
+    "the draft seed",
+    "draft versions"
+  ],
+  "transport": {
+    "route": "/api/game",
+    "reason": "The deployment is at its 13-function budget (12 API routes + middleware). A dedicated route would fail the build, so chaos actions ride the existing game route under a `chaosAction` discriminator.",
+    "actions": [
+      "start",
+      "view",
+      "holds",
+      "coach",
+      "challenge",
+      "simulate"
+    ]
+  },
+  "invalidTransition": "refused without mutating the run",
+  "namespaces": [
+    "chaos-run",
+    "chaos-chal",
+    "chaos-guest"
+  ]
+}
