@@ -1,0 +1,116 @@
+{
+  "artifact": "phase8a-final-summary",
+  "phase": "8A",
+  "verdict": "CHAOS CLASH CORE LOOP COMPLETE — CANDIDATE 3 PREVIEW READY FOR OWNER TESTING",
+  "repository": {
+    "startingBranch": "phase-7b-ui-truth-fidelity-hybrid-theme @ e00ac83",
+    "finalBranch": "phase-8a-chaos-clash-core-loop",
+    "draftPr": "https://github.com/eraclashsports2026-dev/era-clash-basketball/pull/31",
+    "branchPreview": "https://era-clash-basketball-54n5qqexe-era-clash.vercel.app",
+    "stablePreview": "https://era-clash-basketball-git-wave1-era-clash.vercel.app (still serving Phase 7B — promotion awaiting owner authorization)",
+    "main": "9cd95ff — unchanged",
+    "production": "deployment 6072350574 — unchanged, build 2.7.2, no preview block"
+  },
+  "draftProbability": {
+    "calibrationRuns": 1000000,
+    "rostersMeasured": 2000000,
+    "openingRoster": {
+      "atLeastOne": 0.3744075,
+      "atLeastTwo": 0.0644065,
+      "atLeastThree": 0.005641
+    },
+    "finalRoster": {
+      "atLeastOne": 0.543188,
+      "atLeastTwo": 0.1687575,
+      "atLeastThree": 0.0291235
+    },
+    "tierByRoll": {
+      "roll1": {
+        "APEX": 0.0112329,
+        "ELITE": 0.0602639,
+        "STAR": 0.1643585,
+        "SPECIALIST": 0.7641447
+      },
+      "roll2": {
+        "APEX": 0.008387937524555534,
+        "ELITE": 0.051797536545175944,
+        "STAR": 0.1679113650644342,
+        "SPECIALIST": 0.7719031608658343
+      },
+      "roll3": {
+        "APEX": 0.006212452567996588,
+        "ELITE": 0.04460087690188912,
+        "STAR": 0.1705893790083494,
+        "SPECIALIST": 0.7785972915217649
+      }
+    },
+    "draftPressure": {
+      "zeroTopTierHeld": 0.054368034949389764,
+      "oneTopTierHeld": 0.04432765737240011,
+      "twoPlusTopTierHeld": 0.03488506500011559
+    },
+    "parity": {
+      "goldTopDecileRate": 0.08232224628195063,
+      "blueTopDecileRate": 0.08234578661275448
+    },
+    "wholePool": {
+      "cardsInPool": 381,
+      "cardsEverDrawn": 381,
+      "minimumProbabilityPositive": true
+    },
+    "violations": {
+      "duplicatePerson": 0,
+      "burnedPersonReturned": 0
+    },
+    "hopelessMismatchRateUnderShippedPolicy": 0.043333333333333335
+  },
+  "legendCpu": {
+    "outperforms": {
+      "vsRandom": 0.09631296922018029,
+      "vsOvrOnly": 0.011017551366588663,
+      "vsConstructionOnly": 0.0931802889752491
+    },
+    "noPeeking": {
+      "structural": "REFUSED",
+      "structuralNote": "cpuHoldDecision refuses any state carrying a forbidden field.",
+      "behaviouralChecks": 300,
+      "behaviouralStable": 300,
+      "behaviouralNote": "Identical visible state yields an identical decision; the decision never reads the draw stream."
+    },
+    "luckParity": {
+      "note": "Top-tier cards RECEIVED per slot. Legend must win by deciding better, not by drawing better.",
+      "legendGoldTopTierRate": 0.124,
+      "legendBlueTopTierRate": 0.11266666666666666,
+      "matchups": 900
+    }
+  },
+  "gates": {
+    "vitest": "2131/2131 across 65 files",
+    "playwright": "27/27 across three projects",
+    "build": "clean",
+    "chaosFairness": "23/23",
+    "chaosSecurityDeployed": "19/19",
+    "chaosFlowDeployed": "55/55",
+    "chaosReplay": "9/9",
+    "postgameStoryQa": "30/30 games",
+    "previewPreflight": "6/6",
+    "previewSecurity": "9/9",
+    "previewSmoke": "5/5",
+    "wave1AccessAudit": "6 active · 0 raw-key leaks",
+    "wave1DeployedAccessCheck": "19/19",
+    "wave1DeployedScenarioQa": "21/21"
+  },
+  "resolutionLedger": {
+    "FIXED_AND_VERIFIED": 36,
+    "NOT_REPRODUCIBLE_WITH_EVIDENCE": 0,
+    "EXTERNAL_BLOCKER_WITH_SAFE_PRODUCT_FALLBACK": 0,
+    "UNRESOLVED_TECHNICAL_FAILURES": 0
+  },
+  "preservation": {
+    "candidate3CoreDrift": 0,
+    "productionChanges": 0,
+    "keysRotated": 0,
+    "mergedIntoMain": false
+  },
+  "unresolvedTechnicalFailures": 0
+}
