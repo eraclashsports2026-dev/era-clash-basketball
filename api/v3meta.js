@@ -33,6 +33,9 @@ export default async function handler(req, res) {
       note: ERA_NOTE,
       eras: ERA_STYLES.map(publicEra),
       coaches: COACHES.map(publicCoach),
+      // Mode availability, so the client never lands on a Play screen whose
+      // server feature is switched off.
+      modes: { chaosClash: !!flags().chaosClash },
     });
   }
 

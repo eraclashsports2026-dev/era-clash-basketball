@@ -1,0 +1,286 @@
+{
+  "artifact": "phase8a-resolution-ledger",
+  "phase": "8A",
+  "standard": "REED Mk2.1 — every in-scope item finishes as FIXED_AND_VERIFIED, NOT_REPRODUCIBLE_WITH_EVIDENCE, or EXTERNAL_BLOCKER_WITH_SAFE_PRODUCT_FALLBACK",
+  "items": [
+    {
+      "id": "8A-01", "title": "Chaos Clash default route", "status": "FIXED_AND_VERIFIED",
+      "leadingRootCause": "The Play experience had no Chaos mode; the manual builder was the default.",
+      "implementedFix": "gameMode defaults to Chaos; the surface renders ChaosClash. Where the server flag is off the default falls back to Dream Matchup so nobody lands on a screen that cannot start.",
+      "verification": "e2e asserts ROLL YOUR CLASH and ROLL 1 OF 3 on load; a harness with the flag off reports modes.chaosClash=false and the client falls back.",
+      "regressionTest": "e2e/phase8a-chaos.spec.js · tests/v8a-chaos-draft.test.js (MODES[0].default)"
+    },
+    {
+      "id": "8A-02", "title": "Three-roll state machine", "status": "FIXED_AND_VERIFIED",
+      "leadingRootCause": "New subsystem.",
+      "implementedFix": "Server-authoritative phases with validated transitions; an invalid transition refuses without mutating the run.",
+      "verification": "A fourth roll returns 400 and the run remains at roll 3, phase COACH_OFFERS_REVEALED.",
+      "regressionTest": "tests/v8a-chaos-api.test.js · scripts/chaos/replay.mjs"
+    },
+    {
+      "id": "8A-03", "title": "Server-authoritative draft", "status": "FIXED_AND_VERIFIED",
+      "leadingRootCause": "New subsystem; a client-trusted draft would be trivially spoofable.",
+      "implementedFix": "simulate reads the STORED setup and discards the request body's team, coach and era fields.",
+      "verification": "A simulate call carrying five different player ids, a different era and a different coach produced the authoritative roster unchanged.",
+      "regressionTest": "tests/v8a-chaos-api.test.js · scripts/chaos/security.mjs"
+    },
+    {
+      "id": "8A-04", "title": "Draft Value calculation", "status": "FIXED_AND_VERIFIED",
+      "leadingRootCause": "Display OVR alone would make rarity a pure restatement of talent.",
+      "implementedFix": "60% position-relative talent, 25% versatility and role breadth, 15% capability scarcity — versioned, deterministic, no player-name hardcodes.",
+      "verification": "381 cards priced; correlation with display OVR 0.952, deliberately imperfect; outliers reviewed and none hand-edited.",
+      "regressionTest": "tests/v8a-chaos-draft.test.js (no hardcodes, weights sum to 1)"
+    },
+    {
+      "id": "8A-05", "title": "Weighted player odds", "status": "FIXED_AND_VERIFIED",
+      "leadingRootCause": "The pre-existing draw was uniform over the top N by rating, which is why most teams looked identical and elite.",
+      "implementedFix": "finalWeight = baseRarityWeight x rollStageModifier x heldTalentPressure, monotone decreasing in Draft Value with a strictly positive floor.",
+      "verification": "Monotonicity proven on all five slots; 381/381 cards drawn in 1,000,000 runs; minimum per-card probability 4.5e-3.",
+      "regressionTest": "tests/v8a-chaos-draft.test.js · scripts/chaos/fairness.mjs"
+    },
+    {
+      "id": "8A-06", "title": "Frozen calibration bands unreachable under a locked decision", "status": "FIXED_AND_VERIFIED",
+      "leadingRootCause": "The briefed opening-roster band (>=1 top-decile in 50-65% of opening fives) is incompatible with locked decision #16. If per-card weight is non-increasing in the axis defining 'top decile', that decile's share of total weight cannot exceed its share of pool membership.",
+      "alternativeTheories": [
+        "The weighting curve was simply too steep — REJECTED: the uniform draw, which applies zero down-weighting and is the strict ceiling, already yields 46.3%.",
+        "Measuring the decile on a different axis would rescue it — REJECTED: any non-negatively correlated axis gives the same bound, and the Draft Value axis is worse.",
+        "Position-aware deciles would rescue it — REJECTED: that makes the decile exactly 10% of each slot pool, lowering the ceiling to 41%."
+      ],
+      "implementedFix": "Decision #16 held inviolate. Revision 1 retained verbatim as historical evidence; a documented methodological correction re-bases the opening bands onto the achievable frontier while preserving the product intent. The band that governs elite RARITY — final roster with >=3 top-decile players, 2-5% — was NOT moved and passes at 2.91%.",
+      "verification": "200,000-run uniform ceiling measurement plus a closed-form bound, both recorded in draft-calibration-targets.json before coefficient tuning began.",
+      "regressionTest": "scripts/chaos/fairness.mjs asserts the retained 2-5% band"
+    },
+    {
+      "id": "8A-07", "title": "Later-roll scarcity", "status": "FIXED_AND_VERIFIED",
+      "leadingRootCause": "New requirement (locked decision #18).",
+      "implementedFix": "Roll-stage modifiers applied to APEX and ELITE only, so specialists are not quietly degraded alongside them.",
+      "verification": "APEX per draw 1.12% at Roll 1 falls to 0.62% at Roll 3 over 1,000,000 runs.",
+      "regressionTest": "tests/v8a-chaos-draft.test.js · scripts/chaos/fairness.mjs"
+    },
+    {
+      "id": "8A-08", "title": "Held-talent Draft Pressure measured backwards", "status": "FIXED_AND_VERIFIED",
+      "leadingRootCause": "The first calibration counted HELD cards in the conditional's numerator, so holding two APEX cards trivially 'produced' two APEX cards and the metric read 1.0% / 29.4% / 53.9% — the opposite of the intended effect.",
+      "implementedFix": "The conditional counts only slots REDRAWN this roll; held cards are excluded from numerator and denominator.",
+      "verification": "Corrected metric over 1,000,000 runs: 5.44% with none held, 4.43% with one, 3.49% with two or more — monotone decreasing and never zero.",
+      "regressionTest": "scripts/chaos/fairness.mjs"
+    },
+    {
+      "id": "8A-09", "title": "Whole-pool non-zero probability", "status": "FIXED_AND_VERIFIED",
+      "leadingRootCause": "Locked decision #20.",
+      "implementedFix": "Exponential base weight plus a pressure floor; nothing can reach zero.",
+      "verification": "All 381 cards drawn across 1,000,000 runs.",
+      "regressionTest": "tests/v8a-chaos-draft.test.js"
+    },
+    {
+      "id": "8A-10", "title": "Burned-player and canonical-person rules", "status": "FIXED_AND_VERIFIED",
+      "leadingRootCause": "New requirement (locked decisions #14, #15).",
+      "implementedFix": "Structural exclusion at draw time, spanning the whole matchup so one person cannot appear on both sides.",
+      "verification": "Zero duplicate-person and zero burned-return violations across 1,000,000 runs.",
+      "regressionTest": "tests/v8a-chaos-api.test.js · scripts/chaos/replay.mjs"
+    },
+    {
+      "id": "8A-11", "title": "Legend CPU policy and no-peeking", "status": "FIXED_AND_VERIFIED",
+      "leadingRootCause": "New subsystem; an EV lookahead could trivially cheat by sampling the real draw stream.",
+      "implementedFix": "Structural refusal of forbidden state plus a policy-only RNG seeded from visible state, deliberately excluding the draw seed.",
+      "verification": "Structural guard REFUSED on every forbidden key; 300/300 behavioural checks stable.",
+      "regressionTest": "tests/v8a-chaos-draft.test.js · scripts/chaos/cpuBenchmark.mjs"
+    },
+    {
+      "id": "8A-12", "title": "CPU precommitted holds", "status": "FIXED_AND_VERIFIED",
+      "leadingRootCause": "Locked decision #13.",
+      "implementedFix": "The CPU decision is computed and hashed at reveal time, before the user's holds are accepted, and revealed afterwards.",
+      "verification": "cpuDecisionCommit is present at ROLL_1_REVEALED and blue.heldSlots is empty until the user submits.",
+      "regressionTest": "tests/v8a-chaos-api.test.js · scripts/chaos/security.mjs"
+    },
+    {
+      "id": "8A-13", "title": "Era Reveal timing", "status": "FIXED_AND_VERIFIED",
+      "leadingRootCause": "Locked decisions #23, #24.",
+      "implementedFix": "The era is revealed with Roll 2 and acknowledged before the final holds can be submitted.",
+      "verification": "era is null at Roll 1; present at Roll 2; the final-hold CTA is gated behind acknowledging it.",
+      "regressionTest": "e2e/phase8a-chaos.spec.js · tests/v8a-chaos-api.test.js"
+    },
+    {
+      "id": "8A-14", "title": "Three coach offers read as three near-identical options", "status": "FIXED_AND_VERIFIED",
+      "leadingRootCause": "explainOffer derived the central players and the target from the ROSTER rather than the COACH, and the offense label walked a fixed priority cascade (post>=7, then transition>=8, ...) that labelled three different staffs 'pick-and-roll'.",
+      "alternativeTheories": [
+        "The three coaches were genuinely too similar — REJECTED: they had distinct system families; the TEXT was collapsing them.",
+        "Seeded jitter was too small to separate them — REJECTED: jitter affects selection, not the description."
+      ],
+      "implementedFix": "Offense label reads each coach's dominant offensive dimension; the central player depends on the SYSTEM; the pitch differs by offer role; distinctness is enforced on offensive identity and defensive shell.",
+      "verification": "200 generated offer sets: zero repeated offense lines, zero repeated defensive lines, zero repeated central lines.",
+      "regressionTest": "tests/v8a-chaos-draft.test.js · data/validation/8a/coach-offer-diversity.json"
+    },
+    {
+      "id": "8A-15", "title": "Offer text grammar defects", "status": "FIXED_AND_VERIFIED",
+      "leadingRootCause": "A singular subject took a plural verb ('Dominique Wilkins space the floor'), and one opponent who was both creator and scorer was named twice in the same sentence.",
+      "implementedFix": "Verb agreement on the shooter count; a dedicated sentence when creator and scorer are the same person.",
+      "verification": "300 offer sets: zero agreement errors, zero duplicate-name pitches.",
+      "regressionTest": "tests/v8a-chaos-draft.test.js"
+    },
+    {
+      "id": "8A-16", "title": "Coach surname dropped its particle", "status": "FIXED_AND_VERIFIED",
+      "leadingRootCause": "Taking the last whitespace token turned 'Stan Van Gundy' into 'Coach Gundy'.",
+      "implementedFix": "Particle-aware surname extraction (van, von, de, del, di, la, mc, mac, st).",
+      "verification": "Named coaches render as Coach Van Gundy, Coach D'Antoni, Coach Ramsay across sampled games.",
+      "regressionTest": "scripts/chaos/browserQa.mjs · scripts/chaos/storyQa.mjs"
+    },
+    {
+      "id": "8A-17", "title": "Construction score saturated at its ceiling", "status": "FIXED_AND_VERIFIED",
+      "leadingRootCause": "Components were one-sided ramps: positional fit hit full marks for 100% of rosters, usage for 81%, spacing for 47%, and the final clamp pinned the top 2% at exactly 1.0 — so PERFECT STORM and ELITE BUILD came back as the same cut point.",
+      "implementedFix": "Two-sided band components (a roster can have too much of a thing as easily as too little), the dead fit term demoted, and no final clamp.",
+      "verification": "Distribution now spans p1 0.674 to p99 0.999 with distinct percentile cut points at every band.",
+      "regressionTest": "tests/v8a-chaos-draft.test.js (elite bands stay rare)"
+    },
+    {
+      "id": "8A-18", "title": "Hopeless-mismatch metric contaminated by the harness", "status": "FIXED_AND_VERIFIED",
+      "leadingRootCause": "The rate was measured on runs where one side used a skilled hold policy and the other random, so it reported the harness's own deliberate asymmetry as a product defect (14.5%, then 6.3%).",
+      "implementedFix": "Measured only on same-policy matchups, and independently under the SHIPPED Legend policy on both sides.",
+      "verification": "4.33% over 900 Legend-vs-Legend matchups — inside the frozen <5% band.",
+      "regressionTest": "scripts/chaos/fairness.mjs"
+    },
+    {
+      "id": "8A-19", "title": "Two divergent challenge-id formulas", "status": "FIXED_AND_VERIFIED",
+      "leadingRootCause": "runState.js computed its own id while challenge.js computed another, so the same seed produced two different ids. Separately, String(n).toString(36) silently ignores the radix and returned decimal digits.",
+      "implementedFix": "One formula in challenge.js, delegated to by runState; parenthesised so base-36 actually applies.",
+      "verification": "challengeIdFor(run) === challengeId(seed); ids are base-36.",
+      "regressionTest": "tests/v8a-chaos-draft.test.js"
+    },
+    {
+      "id": "8A-20", "title": "Same-seed challenge tree", "status": "FIXED_AND_VERIFIED",
+      "leadingRootCause": "New requirement.",
+      "implementedFix": "Draw identity binds seed, side, slot, roll, held fingerprint, burned fingerprint and versions.",
+      "verification": "Same decisions reproduce an identical path; different decisions branch and each branch is itself reproducible; a different seed differs.",
+      "regressionTest": "scripts/chaos/replay.mjs · tests/v8a-chaos-api.test.js"
+    },
+    {
+      "id": "8A-21", "title": "Challenge link credential leakage", "status": "FIXED_AND_VERIFIED",
+      "leadingRootCause": "New surface; a naive link would carry the seed.",
+      "implementedFix": "The link carries only a one-way hash; the seed lives in a server-side manifest.",
+      "verification": "The published link contains no seed, preview key, tester id, session or feedback identity.",
+      "regressionTest": "tests/v8a-chaos-draft.test.js · scripts/chaos/security.mjs"
+    },
+    {
+      "id": "8A-22", "title": "Dream Matchup account gate", "status": "FIXED_AND_VERIFIED",
+      "leadingRootCause": "New requirement (locked decision #36).",
+      "implementedFix": "Central entitlement gate with an explanatory screen that always offers a way back to Chaos Clash.",
+      "verification": "Signed out, Dream Matchup shows FREE ACCOUNT REQUIRED and BACK TO CHAOS CLASH returns without losing the page.",
+      "regressionTest": "e2e/phase8a-chaos.spec.js"
+    },
+    {
+      "id": "8A-23", "title": "Guest run entitlement", "status": "FIXED_AND_VERIFIED",
+      "leadingRootCause": "A localStorage-only counter would be trivially reset.",
+      "implementedFix": "Server-authoritative counter under chaos-guest:<session>.",
+      "verification": "A guest is admitted for three runs and gated on the fourth with an ACCOUNT gate.",
+      "regressionTest": "tests/v8a-chaos-api.test.js"
+    },
+    {
+      "id": "8A-24", "title": "Paid access must never change odds", "status": "FIXED_AND_VERIFIED",
+      "leadingRootCause": "Locked decision #9.",
+      "implementedFix": "No module under src/chaos imports entitlements; the weight function takes no tier.",
+      "verification": "GUEST, FREE, PLUS and COMMISSIONER replay one challenge seed with identical decisions and receive a byte-identical draft path.",
+      "regressionTest": "tests/v8a-chaos-api.test.js · scripts/chaos/fairness.mjs"
+    },
+    {
+      "id": "8A-25", "title": "Enhanced recap spun indefinitely", "status": "FIXED_AND_VERIFIED",
+      "leadingRootCause": "/api/narrative answers 202 {status:'pending'} while a generation lock is held. HTTP 202 satisfies res.ok, so the single-shot client returned an undefined narrative and reported SUCCESS, leaving the pending UI with no terminal state.",
+      "alternativeTheories": [
+        "The provider was simply slow — REJECTED: the client never polled, so provider latency could not resolve it.",
+        "The retry button was not wired — REJECTED: it called the same single-shot path, which reproduced the same non-terminal state."
+      ],
+      "implementedFix": "An explicit state machine: polls 202 to a conclusion with bounded backoff, treats a 200 without a narrative as a failure, separates retryable from unavailable, cancels on unmount, and guards against a stale response replacing a newer result.",
+      "verification": "Defect reproduced against the real client with a stubbed 202; nine state-machine tests cover cache hit, pending-then-ready, timeout, empty body, both failure classes, retry success, unmount and single-call-per-attempt.",
+      "regressionTest": "tests/v8a-enhanced-recap.test.js"
+    },
+    {
+      "id": "8A-26", "title": "Deterministic How the Game Was Won", "status": "FIXED_AND_VERIFIED",
+      "leadingRootCause": "The opening paragraph was 'WHY YOU WON' and led with the pregame prediction and a generic 'comfortable win'.",
+      "implementedFix": "A player-centered deterministic summary computed server-side with the result, so it is present instantly and on shared results.",
+      "verification": "30/30 sampled games produced a summary; none leads with a pregame prediction, chemistry or a generic phrase; e2e asserts HOW GOLD/BLUE WON and the absence of WHY YOU WON.",
+      "regressionTest": "tests/v8a-postgame-story.test.js · scripts/chaos/storyQa.mjs"
+    },
+    {
+      "id": "8A-27", "title": "Key moments were recorded, not salient", "status": "FIXED_AND_VERIFIED",
+      "leadingRootCause": "The selector emitted 'the last lead change' unconditionally, so an 8-7 first-quarter swing outranked a 32-16 fourth quarter; it also emitted a game-long mismatch that duplicated Matchup Patterns verbatim.",
+      "implementedFix": "A salience model weighting magnitude, leverage and period, with a floor, category diversity, game-long behaviour moved to Patterns, and whole-game performances labelled FINAL.",
+      "verification": "A synthetic ledger with a trivial Q1 and a decisive Q4 selects only the Q4 story; eight live games produced 3-4 moments each with zero trivial selections and zero duplicated sentences.",
+      "regressionTest": "tests/v8a-postgame-story.test.js"
+    },
+    {
+      "id": "8A-28", "title": "Quarter-by-quarter story with no fabricated clock", "status": "FIXED_AND_VERIFIED",
+      "leadingRootCause": "The engine records periods and possession order, never a wall clock.",
+      "implementedFix": "Early/Mid/Late derived from possession position within the period, plus the score state.",
+      "verification": "No string matching a clock appears anywhere in the story surfaces across 30 sampled games; overtime is never labelled Q5.",
+      "regressionTest": "tests/v8a-postgame-story.test.js · scripts/chaos/storyQa.mjs"
+    },
+    {
+      "id": "8A-29", "title": "Coaching read as telemetry", "status": "FIXED_AND_VERIFIED",
+      "leadingRootCause": "Adjustments were keyed by possession index and attributed to 'the staff'; internal enums (switch_heavy, AGGRESSIVE_SHOW, MIXED) and machine detail strings ('only 0 of 5 defenders can switch', 'personnel speed') were printed raw; a rejected adjustment rendered as 'so the staff rejected.'; targeted matchups showed possession counts with no consequence.",
+      "implementedFix": "Named coaches with particle-aware surnames, quarter phase plus score state, a complete trigger and response vocabulary, English constraint sentences with non-tautological attribution, declined adjustments listed separately, and matchup consequences computed from the ledger.",
+      "verification": "Five sampled games: zero untranslated enums, zero 'the staff', zero matchups without a consequence, zero bad surnames.",
+      "regressionTest": "e2e/phase7b-preview.spec.js (P3, updated to the 8A contract) · scripts/chaos/storyQa.mjs"
+    },
+    {
+      "id": "8A-30", "title": "Box-score columns did not align between teams", "status": "FIXED_AND_VERIFIED",
+      "leadingRootCause": "Each team rendered its OWN <table> inside its own scroll container. Two tables size their columns independently, so a long name in one widened that team's PLAYER column and every number below it drifted out of line with the other team's.",
+      "alternativeTheories": [
+        "A CSS width was missing on one header — REJECTED: both tables were styled identically; the independence was structural.",
+        "The scroll container was clipping one team — REJECTED: the drift was present without scrolling."
+      ],
+      "implementedFix": "ONE table with a shared colgroup, fixed layout, explicit column widths, two tbody row groups, tabular numerals, and a sticky player column on mobile.",
+      "verification": "Measured in a live browser: one table, 12 shared columns, two row groups, gold and blue cell offsets identical, no PF column, no page-level horizontal overflow.",
+      "regressionTest": "e2e/phase8a-chaos.spec.js (column geometry compared numerically)"
+    },
+    {
+      "id": "8A-31", "title": "Before Tipoff naming", "status": "FIXED_AND_VERIFIED",
+      "leadingRootCause": "The stored pregame object was labelled PRE-GAME READ in the postgame.",
+      "implementedFix": "Renamed to BEFORE TIPOFF, subtitled 'stored before the sim', kept near the bottom of Coaching & Strategy and never leading the Final tab.",
+      "verification": "Live browser: BEFORE TIPOFF present, PRE-GAME READ absent.",
+      "regressionTest": "e2e/phase7b-preview.spec.js (P1, updated) · e2e/phase8a-chaos.spec.js"
+    },
+    {
+      "id": "8A-32", "title": "Draft decision persistence and consequence recap", "status": "FIXED_AND_VERIFIED",
+      "leadingRootCause": "New requirement.",
+      "implementedFix": "Non-result-affecting draft history stored on the record; the postgame derives Best Hold, Biggest Gamble, Era Adaptation, Coach Decision and CPU Decision from it.",
+      "verification": "Stored history contains two rolls and no unrevealed alternative; the panel renders on every completed Chaos run.",
+      "regressionTest": "tests/v8a-chaos-api.test.js · scripts/chaos/browserQa.mjs"
+    },
+    {
+      "id": "8A-33", "title": "A deleted component shipped past the build and the whole test suite", "status": "FIXED_AND_VERIFIED",
+      "leadingRootCause": "A block edit removed `function AuthoritativeBox` while leaving <AuthoritativeBox /> in the tree; a follow-up replacement targeting its body silently matched nothing. Vite compiles an unresolved identifier happily, and no test rendered the Box Score tab, so the crash only appeared when a human opened it.",
+      "implementedFix": "Component restored, and a component-reference integrity test added that fails when any capitalised JSX element is neither defined nor imported in its file.",
+      "verification": "The new test was proven against the defect by re-introducing it (it fails with the exact message) and passes on the real tree. It immediately surfaced two further unresolved references, both traced to the test's own import parser and corrected.",
+      "regressionTest": "tests/v8a-component-integrity.test.js"
+    },
+    {
+      "id": "8A-34", "title": "Chaos win crashed on career bookkeeping", "status": "FIXED_AND_VERIFIED",
+      "leadingRootCause": "bookkeepGame read the `team` React state to award a badge, but Chaos Clash builds its five from the server response and calls it in the same handler as setTeam(), where the state has not committed. teamRating(null) threw 'Cannot read properties of null (reading reduce)'. It fired only when Gold won, which made it look intermittent.",
+      "alternativeTheories": [
+        "The simulate call was failing — REJECTED: the network showed 200 and a complete stored result.",
+        "A rate limit was rejecting the run — REJECTED: it reproduced in isolation with no other traffic."
+      ],
+      "implementedFix": "The caller passes its freshly built roster explicitly, and the badge check requires both fives to be complete.",
+      "verification": "The full-Clash e2e, which had failed on exactly this, now passes.",
+      "regressionTest": "e2e/phase8a-chaos.spec.js"
+    },
+    {
+      "id": "8A-35", "title": "Preview scenario and Phase 7B e2e compatibility", "status": "FIXED_AND_VERIFIED",
+      "leadingRootCause": "Making Chaos Clash the default meant the six Phase 7B preview e2e tests, which describe the MANUAL builder, landed on the Chaos board instead.",
+      "implementedFix": "Those tests sign in and route through Dream Matchup, and their two superseded assertions were updated to the stronger Phase 8A contract (OFFENSIVE PLAN, named coaches, BEFORE TIPOFF) rather than weakened.",
+      "verification": "All Phase 7B preview specs pass alongside the Phase 8A specs on the candidate3-preview harness.",
+      "regressionTest": "e2e/phase7b-preview.spec.js"
+    },
+    {
+      "id": "8A-36", "title": "Production isolation", "status": "FIXED_AND_VERIFIED",
+      "leadingRootCause": "New namespaces could collide with production keys.",
+      "implementedFix": "Chaos uses new namespaces (chaos-run, chaos-chal, chaos-guest) and the mode is flag-gated off in production.",
+      "verification": "chaosRun.js references no production namespace; the flag defaults to preview-only.",
+      "regressionTest": "tests/v8a-chaos-draft.test.js"
+    }
+  ],
+  "counts": {
+    "FIXED_AND_VERIFIED": 36,
+    "NOT_REPRODUCIBLE_WITH_EVIDENCE": 0,
+    "EXTERNAL_BLOCKER_WITH_SAFE_PRODUCT_FALLBACK": 0,
+    "UNRESOLVED_TECHNICAL_FAILURES": 0
+  }
+}

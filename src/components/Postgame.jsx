@@ -138,7 +138,7 @@ function StoredPregameRead({ pregame }) {
   if (!pregame?.qualitativeEdges?.length) {
     return (
       <div style={{ ...card, padding: 16, marginTop: 12 }}>
-        <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 2, color: T.textDim }}>PRE-GAME READ</div>
+        <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 2, color: T.textDim }}>BEFORE TIPOFF</div>
         <div style={{ fontSize: 13.5, color: T.textDim, marginTop: 6, lineHeight: 1.5 }}>
           This result was recorded before pregame reads were stored, so the original read is unavailable.
         </div>
@@ -148,7 +148,7 @@ function StoredPregameRead({ pregame }) {
   return (
     <div style={{ ...card, padding: 16, marginTop: 12 }}>
       <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 8 }}>
-        <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: 2, color: T.textDim }}>PRE-GAME READ</span>
+        <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: 2, color: T.textDim }}>BEFORE TIPOFF</span>
         <span style={{ marginLeft: "auto", fontSize: 12, color: T.textDim }}>stored before the sim</span>
       </div>
       <div style={{ display: "grid", gap: 4 }}>
@@ -314,40 +314,60 @@ const BOX_COLUMNS = [
   ["BLK", (l) => l.blk], ["TO", (l) => l.to],
 ];
 
-function BoxTeam({ label, lines, color, mvpName }) {
+/**
+ * ONE table for both teams.
+ *
+ * The previous version rendered a separate <table> per team, each inside its own
+ * scroll container. Two tables size their columns independently, so a long name
+ * in one widened that team's PLAYER column and every number below it drifted
+ * out of line with the other team's. A shared <colgroup> on a single table is
+ * what actually guarantees the columns agree.
+ */
+const sumPair = (lines, fn) => {
+  let a = 0, b = 0;
+  for (const l of lines) { const [x, y] = String(fn(l)).split("-").map(Number); a += x || 0; b += y || 0; }
+  return `${a}-${b}`;
+};
+const PAIR_COLS = new Set(["FG", "3PT", "FT"]);
+
+function TeamRows({ label, lines, color, mvpName }) {
   const total = (fn) => lines.reduce((s, l) => s + (Number(fn(l)) || 0), 0);
   return (
-    <div style={{ marginTop: 12, overflowX: "auto" }}>
-      <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1.5, color, marginBottom: 4 }}>{label}</div>
-      <table style={{ width: "100%", fontSize: 13, borderCollapse: "collapse", minWidth: 620 }}>
-        <thead><tr style={{ color: T.textDim, textAlign: "right" }}>
-          <th style={{ textAlign: "left", padding: "4px 6px", fontSize: 11 }}>PLAYER</th>
-          {BOX_COLUMNS.map(([h]) => <th key={h} style={{ padding: "4px 6px", fontSize: 11 }}>{h}</th>)}
-        </tr></thead>
-        <tbody>
-          {lines.map((l) => (
-            <tr key={l.id ?? l.name} style={{ borderTop: `1px solid ${T.border}`, textAlign: "right" }}>
-              <td style={{ textAlign: "left", padding: "6px", fontWeight: 600, whiteSpace: "nowrap" }}>
-                {l.name === mvpName ? "★ " : ""}{l.name}
-              </td>
-              {BOX_COLUMNS.map(([h, fn]) => (
-                <td key={h} style={{ padding: "6px", fontWeight: h === "PTS" ? 800 : 400, color: h === "PTS" ? color : T.text }}>{fn(l)}</td>
-              ))}
-            </tr>
-          ))}
-          <tr style={{ borderTop: `2px solid ${T.borderStrong}`, textAlign: "right", fontWeight: 800 }}>
-            <td style={{ textAlign: "left", padding: "6px", fontSize: 11, letterSpacing: 1, color: T.textDim }}>TOTAL</td>
+    <tbody>
+      <tr>
+        <th colSpan={BOX_COLUMNS.length + 1} scope="colgroup" style={{
+          textAlign: "left", padding: "12px 6px 4px", fontSize: 11, fontWeight: 800,
+          letterSpacing: 1.5, color, background: T.bgCard,
+        }}>{label}</th>
+      </tr>
+      {lines.map((l) => {
+        const isMvp = l.name === mvpName;
+        return (
+          <tr key={l.id ?? l.name} style={{
+            borderTop: `1px solid ${T.border}`, textAlign: "right",
+            background: isMvp ? T.bgCardHover : "transparent",
+          }}>
+            <td className="box-player" style={{
+              textAlign: "left", padding: "6px", fontWeight: isMvp ? 800 : 600,
+              background: isMvp ? T.bgCardHover : T.bgCard,
+            }}>
+              {isMvp ? "★ " : ""}{l.name}
+            </td>
             {BOX_COLUMNS.map(([h, fn]) => (
-              <td key={h} style={{ padding: "6px", color: h === "PTS" ? color : T.text }}>
-                {h === "FG" || h === "3PT" || h === "FT"
-                  ? `${lines.reduce((s, l) => s + fn(l).split("-").map(Number)[0], 0)}-${lines.reduce((s, l) => s + fn(l).split("-").map(Number)[1], 0)}`
-                  : total(fn)}
-              </td>
+              <td key={h} style={{ padding: "6px", fontWeight: h === "PTS" ? 800 : 400, color: h === "PTS" ? color : T.text }}>{fn(l)}</td>
             ))}
           </tr>
-        </tbody>
-      </table>
-    </div>
+        );
+      })}
+      <tr style={{ borderTop: `2px solid ${T.borderStrong}`, textAlign: "right", fontWeight: 800 }}>
+        <td className="box-player" style={{ textAlign: "left", padding: "6px", fontSize: 11, letterSpacing: 1, color: T.textDim, background: T.bgCard }}>TOTAL</td>
+        {BOX_COLUMNS.map(([h, fn]) => (
+          <td key={h} style={{ padding: "6px", color: h === "PTS" ? color : T.text }}>
+            {PAIR_COLS.has(h) ? sumPair(lines, fn) : total(fn)}
+          </td>
+        ))}
+      </tr>
+    </tbody>
   );
 }
 
@@ -363,8 +383,26 @@ function AuthoritativeBox({ sim }) {
   return (
     <div style={{ ...card, padding: 16, marginTop: 12 }}>
       <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 2, color: T.textDim }}>BOX SCORE</div>
-      <BoxTeam label="TEAM GOLD" lines={box.gold} color={T.gold} mvpName={sim.mvp} />
-      <BoxTeam label="TEAM BLUE" lines={box.blue} color={T.blue} mvpName={sim.mvp} />
+      {/* ONE table for both teams, sharing one colgroup. Two separate tables
+          size their columns independently, which is what let a long name in one
+          team push its numbers out of line with the other. The scroll container
+          wraps the table so horizontal scrolling never reaches the page. */}
+      <div className="box-scroll">
+        <table className="box-table">
+          <colgroup>
+            <col className="box-col-player" />
+            {BOX_COLUMNS.map(([h]) => <col key={h} className="box-col-stat" />)}
+          </colgroup>
+          <thead>
+            <tr style={{ color: T.textDim, textAlign: "right" }}>
+              <th className="box-player" scope="col" style={{ textAlign: "left", padding: "4px 6px", fontSize: 11, background: T.bgCard }}>PLAYER</th>
+              {BOX_COLUMNS.map(([h]) => <th key={h} scope="col" style={{ padding: "4px 6px", fontSize: 11 }}>{h}</th>)}
+            </tr>
+          </thead>
+          <TeamRows label="TEAM GOLD" lines={box.gold} color={T.gold} mvpName={sim.mvp} />
+          <TeamRows label="TEAM BLUE" lines={box.blue} color={T.blue} mvpName={sim.mvp} />
+        </table>
+      </div>
     </div>
   );
 }
@@ -445,7 +483,7 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
         {sim.v3 && (
           <div style={{ marginTop: 12, padding: "10px 14px", borderRadius: 10, background: T.bgCardHover, border: `1px solid ${T.border}`, fontSize: 12, color: T.textDim, display: "flex", gap: 14, flexWrap: "wrap" }}>
             <span>🏀 <b style={{ color: T.text }}>{sim.v3.possessions}</b> possessions{sim.v3.overtimes > 0 ? ` · ${sim.v3.overtimes} OT` : ""}</span>
-            <span>📈 pre-game read: <b style={{ color: sim.v3.expectedGoldWinPct >= 50 ? T.gold : T.blue }}>{sim.v3.expectedGoldWinPct >= 55 ? "Gold" : sim.v3.expectedGoldWinPct <= 45 ? "Blue" : "even"}{sim.v3.expectedBand ? ` · ${sim.v3.expectedBand}` : ""}</b></span>
+            <span>📈 before tipoff: <b style={{ color: sim.v3.expectedGoldWinPct >= 50 ? T.gold : T.blue }}>{sim.v3.expectedGoldWinPct >= 55 ? "Gold" : sim.v3.expectedGoldWinPct <= 45 ? "Blue" : "even"}{sim.v3.expectedBand ? ` · ${sim.v3.expectedBand}` : ""}</b></span>
             {sim.v3.outcomeClass && sim.v3.outcomeClass.includes("UPSET") && (
               <span>⚡ <b style={{ color: T.gold }}>{sim.v3.outcomeClass.replace(/_/g, " ")}</b></span>
             )}
@@ -477,12 +515,40 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
 
         {section === "story" && <>
         {/* C. Game summary (deterministic recap instantly; enhanced recap replaces it) */}
-        {sim.summary && (
+        {/* The opening account is DETERMINISTIC and player-centered. It never
+            leads with the pregame prediction, a generic "comfortable win", or
+            any internal rating, and it does not wait on a provider. */}
+        {(sim.story?.body || sim.summary) && (
           <div style={{ marginTop: 14 }}>
             <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 2, color: won ? T.green : T.red }}>
-              WHY YOU {won ? "WON" : "LOST"}
+              {(sim.story?.headline || `How ${won ? "You" : "They"} Won`).toUpperCase()}
             </div>
-            <p style={{ fontSize: 13.5, lineHeight: 1.65, margin: "6px 0 0" }}>{sim.summary}</p>
+            <p style={{ fontSize: 13.5, lineHeight: 1.65, margin: "6px 0 0" }}>{sim.story?.body || sim.summary}</p>
+          </div>
+        )}
+
+        {/* WS18 — quarter by quarter, from real period scores and possession
+            position. No fabricated clock appears anywhere. */}
+        {sim.v3?.quarterFlow?.length > 0 && (
+          <div style={{ marginTop: 16 }}>
+            <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 2, color: T.textDim }}>QUARTER BY QUARTER</div>
+            <div style={{ display: "grid", gap: 8, marginTop: 7 }}>
+              {sim.v3.quarterFlow.map((q) => (
+                <div key={q.period} style={{ padding: "9px 11px", borderRadius: 9, background: T.bgCardHover, border: `1px solid ${T.border}` }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", gap: 10, flexWrap: "wrap" }}>
+                    <span style={{ fontWeight: 900, fontSize: 12.5 }}>{q.period}</span>
+                    <span style={{ fontSize: 12.5, color: T.textDim, fontVariantNumeric: "tabular-nums" }}>
+                      {q.gold}-{q.blue} · {q.state}
+                    </span>
+                  </div>
+                  <div style={{ fontSize: 12.5, color: T.text, lineHeight: 1.55, marginTop: 3 }}>
+                    {q.leadingScorer ? `${q.leadingScorer.name} led the period with ${q.leadingScorer.pts}.` : ""}
+                    {q.run ? ` ${q.run.side === "gold" ? "Gold" : "Blue"} put together a ${q.run.points}-point run.` : ""}
+                    {q.reboundEdge ? ` ${q.reboundEdge === "gold" ? "Gold" : "Blue"} controlled the offensive glass.` : ""}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         )}
         {narrativeStatus === "pending" && (
@@ -493,12 +559,19 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
         )}
         {narrativeStatus === "failed" && (
           <div style={{ marginTop: 10, padding: "8px 12px", borderRadius: 8, background: T.bgCardHover, border: `1px solid ${T.border}`, fontSize: 12, color: T.textDim, display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
-            <span>Enhanced game analysis is temporarily unavailable. {persisted ? "Your result is saved." : "Your result is shown from the game engine."}</span>
+            <span>Enhanced analysis couldn't be completed. {persisted ? "Your result is saved." : "Your result is shown from the game engine."} The full story above comes from the game itself.</span>
             {onRetryNarrative && (
               <button onClick={onRetryNarrative} style={{ padding: "5px 12px", fontSize: 11.5, fontWeight: 800, borderRadius: 7, border: `1px solid ${T.goldBorder}`, background: "transparent", color: T.gold, cursor: "pointer" }}>
                 Try Enhanced Recap Again
               </button>
             )}
+          </div>
+        )}
+        {/* A terminal state that retrying cannot fix. Offering a retry button
+            here would be a lie, so it is not offered. */}
+        {narrativeStatus === "unavailable" && (
+          <div style={{ marginTop: 10, padding: "8px 12px", borderRadius: 8, background: T.bgCardHover, border: `1px solid ${T.border}`, fontSize: 12, color: T.textDim }}>
+            Enhanced analysis is switched off right now. Everything above is the game's own record of what happened.
           </div>
         )}
 
@@ -515,6 +588,22 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
 
         {section === "coaching" && <>
         <CoachingStrategy coaching={sim.v3?.coaching} eraLabel={sim.eraLabel || sim.eraId} />
+        {/* WS23 — what the draft decisions actually did. Every line is backed by
+            a real before/after roster evaluation; the unchosen branch was never
+            simulated, so no counterfactual outcome is ever claimed. */}
+        {sim.draftConsequences?.length > 0 && (
+          <div style={{ marginTop: 14 }}>
+            <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 2, color: T.textDim }}>HOW YOUR DRAFT SHAPED THE GAME</div>
+            <div className="draft-consequences">
+              {sim.draftConsequences.map((c) => (
+                <div key={c.card} style={{ padding: "10px 12px", borderRadius: 9, background: T.bgCard, border: `1px solid ${T.border}` }}>
+                  <div style={{ fontSize: 10, fontWeight: 900, letterSpacing: 1.2, color: T.gold }}>{c.card}</div>
+                  <div style={{ fontSize: 12.5, color: T.text, lineHeight: 1.55, marginTop: 4 }}>{c.text}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
         {/* The stored pregame read as a compact supporting panel, never the centre */}
         <StoredPregameRead pregame={sim.pregame} />
         </>}

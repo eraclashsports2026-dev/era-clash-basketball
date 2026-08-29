@@ -30,6 +30,10 @@ export const flags = () => ({
   // Kill switch: set SIM_ENGINE_V3_ENABLED=false in Vercel env and redeploy —
   // the V2 engine remains in the codebase as the instant fallback path.
   simV3: bool("SIM_ENGINE_V3_ENABLED", true),
+  // Chaos Clash. Its own flag so the new default Play mode can be switched off
+  // without touching Dream Matchup, the Daily, or the preview candidate. ON by
+  // default on preview deployments, OFF in production until it is promoted.
+  chaosClash: bool("CHAOS_CLASH_ENABLED", process.env.VERCEL_ENV === "preview"),
   aiNarrative: bool("AI_NARRATIVE_ENABLED", true),
   challenges: bool("CHALLENGES_ENABLED", true),
   daily: bool("DAILY_ENABLED", true),
@@ -75,6 +79,8 @@ const num = (name, dflt) => {
 };
 
 export const limits = () => ({
+  chaosPerMinSession: num("CHAOS_PER_MIN_SESSION", 40),
+  chaosPerMinIp: num("CHAOS_PER_MIN_IP", 90),
   // per-session / per-IP fixed windows
   simPerMinSession: num("RL_SIM_PER_MIN_SESSION", 10),
   simPerMinIp: num("RL_SIM_PER_MIN_IP", 20),

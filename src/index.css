@@ -166,3 +166,71 @@ button { font-family: inherit; }
   .coach-row { grid-template-columns: auto minmax(0, 1fr); }
   .coach-row-meta { grid-column: 2; flex-direction: row; align-items: center; flex-wrap: wrap; gap: 8px; }
 }
+
+/* ── Chaos Clash ─────────────────────────────────────────────────────────────
+   Two boards side by side on a wide screen. On a phone the user's own five
+   takes the primary interaction space and the CPU five sits below it, still in
+   context but never competing for the tap targets. */
+.chaos-boards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: start;
+}
+.chaos-roster {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+.chaos-offers {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+@media (max-width: 1100px) {
+  .chaos-roster { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 900px) {
+  .chaos-boards { grid-template-columns: 1fr; gap: 20px; }
+  .chaos-offers { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .chaos-roster { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+/* The roll reveal is a fade, never a near-miss animation: nothing about the
+   motion suggests an outcome that did not happen. */
+.chaos-card { animation: ec-chaos-in 180ms ease-out both; }
+@keyframes ec-chaos-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .chaos-card { animation: none; }
+}
+
+/* Draft consequence cards */
+.draft-consequences {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 8px;
+  margin-top: 7px;
+}
+
+/* ── Box score ───────────────────────────────────────────────────────────────
+   ONE table, one colgroup, two row groups. Fixed layout plus explicit column
+   widths is what makes Team Gold and Team Blue line up: with auto layout a long
+   name in one group silently re-sizes the columns for that group alone. */
+.box-scroll { overflow-x: auto; margin-top: 8px; }
+.box-table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+.box-col-player { width: 30%; min-width: 150px; }
+.box-col-stat { width: 6.36%; }
+.box-table td, .box-table th { overflow: hidden; text-overflow: ellipsis; }
+.box-table .box-player { white-space: nowrap; }
+@media (max-width: 720px) {
+  /* The name column stays put while the numbers scroll under it. */
+  .box-table .box-player { position: sticky; left: 0; z-index: 1; }
+}

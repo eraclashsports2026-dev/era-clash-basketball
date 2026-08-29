@@ -1,0 +1,52 @@
+{
+  "artifact": "phase8a-data-contract",
+  "phase": "8A",
+  "currentFlowAudited": {
+    "playRoute": "src/App.jsx — nav Play, gameMode drives the surface",
+    "modeSelection": "GAME_MODES + header Play dropdown",
+    "rosterBuilder": "RosterGrid / ManualPicker / TeamSlots (now Dream Matchup)",
+    "priorRandomisation": "src/draft.js genPlayer — UNIFORM over the top N by slotRating, which is why most rosters looked identically elite",
+    "cpuRosterConstruction": "none existed; opponents were generated, never decided",
+    "cpuDecisions": "none existed",
+    "modeGating": "ad hoc per mode; no central entitlement",
+    "guestState": "anonymous uid in localStorage; no account concept",
+    "resultPersistence": "/api/game stores an immutable record under result: or preview-result:",
+    "postgameViewModel": "viewSim(record) in App.jsx",
+    "narrativeRequest": "requestNarrative — single fetch, no polling (the source of the spinner defect)"
+  },
+  "fieldsSupportingStorytelling": [
+    "core.mvpLine",
+    "core.teamAStats/teamBStats",
+    "v3.fullBox",
+    "v3.teamTotals",
+    "v3.periodScores",
+    "v3.keyMoments",
+    "v3.matchupPatterns",
+    "v3.coaching",
+    "possessionLedger (recording-only, discarded after derivation)"
+  ],
+  "ledgerFieldsUsed": [
+    "i",
+    "period",
+    "offense",
+    "points",
+    "outcome",
+    "primary",
+    "assist",
+    "primaryDefenderId",
+    "mismatchType",
+    "mismatchSeverity",
+    "action"
+  ],
+  "chaosHost": {
+    "route": "/api/game",
+    "reason": "function budget is full at 13",
+    "newFunctionsAdded": 0
+  },
+  "newNamespaces": [
+    "chaos-run",
+    "chaos-chal",
+    "chaos-guest"
+  ],
+  "productionNamespacesTouched": []
+}

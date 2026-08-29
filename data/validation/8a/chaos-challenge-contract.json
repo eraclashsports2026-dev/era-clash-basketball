@@ -1,0 +1,32 @@
+{
+  "artifact": "chaos-challenge-contract",
+  "phase": "8A",
+  "manifestVersion": "1.0.0",
+  "reproduces": [
+    "Roll 1 for both teams",
+    "the probability model",
+    "burn rules",
+    "the era reveal",
+    "coach-offer rules",
+    "the CPU policy",
+    "draft versions"
+  ],
+  "branching": "nextDrawIdentity = seed + side + slot + roll + heldRosterFingerprint + burnedPersonFingerprint + draftVersions. Same decisions reproduce; different decisions branch deterministically.",
+  "publicFields": [
+    "challengeId"
+  ],
+  "forbiddenInLink": [
+    "seedId",
+    "seed",
+    "serverSeed",
+    "pv",
+    "previewKey",
+    "testerId",
+    "session",
+    "pv_session",
+    "feedbackId",
+    "futureDraws",
+    "branches"
+  ],
+  "seedLocation": "the server-side manifest only — the id is a one-way hash and the link carries nothing else"
+}

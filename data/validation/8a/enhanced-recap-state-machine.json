@@ -1,0 +1,35 @@
+{
+  "artifact": "enhanced-recap-state-machine",
+  "phase": "8A",
+  "states": [
+    "IDLE",
+    "REQUESTING",
+    "PENDING",
+    "READY",
+    "FAILED_RETRYABLE",
+    "FAILED_UNAVAILABLE"
+  ],
+  "pollDelaysMs": [
+    1200,
+    1800,
+    2200,
+    2600,
+    2600,
+    2600
+  ],
+  "maxPolls": 6,
+  "totalPollBudgetMs": 13000,
+  "defect": {
+    "symptom": "the enhanced-analysis retry spun indefinitely",
+    "rootCause": "/api/narrative answers 202 {status:'pending'} while a generation lock is held. HTTP 202 satisfies res.ok, so the single-shot client returned `(await res.json()).narrative` — undefined — and reported SUCCESS, leaving the pending UI with no terminal state to move to.",
+    "reproduced": "yes, against the real client with a stubbed 202",
+    "fix": "an explicit state machine that polls 202 to a conclusion, bounds itself, classifies retryable vs unavailable, and cancels on unmount"
+  },
+  "guarantees": [
+    "every path reaches a terminal state",
+    "polling is finite",
+    "one provider call per attempt",
+    "a stale response cannot replace a newer result",
+    "the deterministic story is always visible"
+  ]
+}
