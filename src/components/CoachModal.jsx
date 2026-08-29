@@ -130,8 +130,8 @@ export default function CoachModal({ side, coaches, recommended, selectedId, era
               const on = focused?.id === c.id;
               return (
                 <li key={c.id}>
-                  <button role="option" aria-selected={on} onClick={() => setFocusId(c.id)} style={{
-                    display: "flex", gap: 10, alignItems: "center", width: "100%", textAlign: "left",
+                  <button role="option" aria-selected={on} onClick={() => setFocusId(c.id)} className="coach-row" style={{
+                    width: "100%", textAlign: "left",
                     padding: "10px 12px", borderRadius: R.md, cursor: "pointer", minHeight: 62,
                     border: `1px solid ${on ? accent : T.border}`,
                     background: on ? (side === "blue" ? T.blueSoft : T.goldSoft) : T.bgCard, color: T.text,
@@ -146,10 +146,10 @@ export default function CoachModal({ side, coaches, recommended, selectedId, era
                         {(c.systemTags ?? []).slice(0, 2).join(" • ")}
                       </span>
                     </span>
-                    <span style={{ flexShrink: 0, textAlign: "right" }}>
-                      {r && <span style={{ display: "block", fontSize: 9.5, fontWeight: 900, letterSpacing: 0.5, color: accent }}>RECOMMENDED</span>}
-                      {r?.teamFit && <span style={{ display: "block", fontSize: 11, fontWeight: 800, color: FIT_COLOR(r.teamFit) }}>Fit: {r.teamFit}</span>}
-                      {selectedId === c.id && <span style={{ display: "block", fontSize: 11, fontWeight: 800, color: accent }}>✓ current</span>}
+                    <span className="coach-row-meta">
+                      {r && <span style={{ fontSize: 9.5, fontWeight: 900, letterSpacing: 0.5, color: accent, whiteSpace: "nowrap" }}>RECOMMENDED</span>}
+                      {r?.teamFit && <span style={{ fontSize: 11, fontWeight: 800, color: FIT_COLOR(r.teamFit), whiteSpace: "nowrap" }}>Fit: {r.teamFit}</span>}
+                      {selectedId === c.id && <span style={{ fontSize: 11, fontWeight: 800, color: accent, whiteSpace: "nowrap" }}>✓ current</span>}
                     </span>
                   </button>
                 </li>

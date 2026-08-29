@@ -1,0 +1,29 @@
+{
+  "artifact": "phase7b-pregame-snapshot-contract",
+  "generatedBy": "phase 7B",
+  "data": {
+    "module": "api/_lib/pregameRead.js",
+    "version": 1,
+    "fields": [
+      "pregameSnapshotVersion",
+      "qualitativeEdges[{category,lead,strong,label}]",
+      "keyClash",
+      "overallRead",
+      "confidence",
+      "sourceVersions",
+      "generatedAt"
+    ],
+    "labels": [
+      "Even",
+      "Gold Edge",
+      "Blue Edge",
+      "Strong Gold Edge",
+      "Strong Blue Edge"
+    ],
+    "thresholds": "|edge| <= 4 \u2192 Even (the model's own nearly-even bound); >= 10 \u2192 Strong. Numbers never leave the module.",
+    "servedBy": "/api/v3meta (builder)",
+    "storedBy": "/api/game onto record.pregame",
+    "consumedBy": "Postgame StoredPregameRead \u2014 never recomputed",
+    "legacyResults": "results without a snapshot show an explicit unavailable message"
+  }
+}
