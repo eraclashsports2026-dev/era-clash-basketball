@@ -258,7 +258,14 @@
     "preview:wave1-access-audit": "node scripts/wave1/report.mjs access",
     "preview:wave1-copy-key": "node scripts/preview/copyKey.mjs",
     "preview:wave1-link": "node scripts/preview/link.mjs",
-    "preview:open": "node scripts/preview/link.mjs owner --open"
+    "preview:open": "node scripts/preview/link.mjs owner --open",
+    "chaos:calibrate": "node --max-old-space-size=4096 scripts/chaos/calibrate.mjs",
+    "chaos:cpu-benchmark": "node scripts/chaos/cpuBenchmark.mjs",
+    "chaos:fairness": "node scripts/chaos/fairness.mjs",
+    "chaos:replay": "node scripts/chaos/replay.mjs",
+    "chaos:security": "node scripts/chaos/security.mjs",
+    "chaos:browser-qa": "node scripts/chaos/browserQa.mjs",
+    "postgame:story-qa": "node scripts/chaos/storyQa.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",

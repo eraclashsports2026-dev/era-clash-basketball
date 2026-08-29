@@ -1,0 +1,29 @@
+{
+  "artifact": "draft-value-model",
+  "phase": "8A",
+  "version": "1.0.0",
+  "weights": {
+    "positionTalent": 0.6,
+    "versatility": 0.25,
+    "scarcity": 0.15
+  },
+  "tierBounds": {
+    "APEX": 0.98,
+    "ELITE": 0.9,
+    "STAR": 0.7
+  },
+  "separationFromSimulation": "Nothing in src/chaos/** is imported by src/v3/**. Draft Value decides how OFTEN a card is offered, never how it performs. A regression test asserts the import boundary.",
+  "components": {
+    "positionTalent": "Best position-relative percentile of slotRating among cards eligible at that position.",
+    "versatility": "Positional flexibility, two-way breadth, and off-ball scalability (value that survives a usage cut).",
+    "scarcity": "Whether the card supplies a capability the pool rarely has, measured from the pool rather than hardcoded."
+  },
+  "noPlayerHardcodes": true,
+  "tierCounts": {
+    "SPECIALIST": 271,
+    "STAR": 79,
+    "ELITE": 27,
+    "APEX": 4
+  },
+  "cards": 381
+}
