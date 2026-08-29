@@ -29,7 +29,7 @@ import { utcDateKey, verifyDailyLineup, dailyOpponent } from "../src/dailyChalle
 import { dailySimulationSeed, validateDailySelection, validateDailyVersions } from "../src/v3/dailyCoachEra.js";
 import { officialDailyConfig } from "./_lib/dailyOfficial.js";
 import {
-  createRun, loadRun, saveRun, ownsRun, applyHolds, applyCoach, publishChallenge,
+  createRun, loadRun, saveRun, ownsRun, applyHolds, applyCoachHolds, applyCoach, applyAbandon, publishChallenge,
   view as chaosView, simulationSetup, draftHistory, validRunId, validChaosChallengeId,
   guestRunsUsed, consumeGuestRun, guestLimitReached,
 } from "./_lib/chaosRun.js";
@@ -133,6 +133,9 @@ export default async function handler(req, res) {
       // Draft state cannot cross users.
       if (!ownsRun(run, session)) return sendError(res, "FORBIDDEN", requestId);
       if (run.expiresAt && Date.now() > run.expiresAt) return sendError(res, "NOT_FOUND", requestId);
+      // An abandoned run is gone: it can never be advanced or resumed, which is
+      // what stops repeated navigation from farming fresh opening rolls.
+      if (run.status === "ABANDONED" && chaosAction !== "view") return sendError(res, "NOT_FOUND", requestId);
 
       if (chaosAction === "view") {
         return res.status(200).json({ requestId, chaos: chaosView(run, { includeCpuHolds: run.currentRoll > 1 }) });
@@ -143,6 +146,19 @@ export default async function handler(req, res) {
         const r = await applyHolds(run, b.holdSlots);
         if (!r.ok) return sendError(res, "VALIDATION_FAILURE", requestId, { reason: r.code, phase: r.phase });
         return res.status(200).json({ requestId, chaos: chaosView(run, { includeCpuHolds: true }) });
+      }
+      if (chaosAction === "coachHolds") {
+        if (!Array.isArray(b.holdRoles)) return sendError(res, "VALIDATION_FAILURE", requestId);
+        if (b.holdRoles.length > 3) return sendError(res, "VALIDATION_FAILURE", requestId);
+        const r = await applyCoachHolds(run, b.holdRoles);
+        if (!r.ok) return sendError(res, "VALIDATION_FAILURE", requestId, { reason: r.code, phase: r.phase });
+        return res.status(200).json({ requestId, chaos: chaosView(run, { includeCpuHolds: true }) });
+      }
+      if (chaosAction === "abandon") {
+        const r = await applyAbandon(run);
+        if (!r.ok) return sendError(res, "VALIDATION_FAILURE", requestId, { reason: r.code });
+        logReq({ requestId, route: "game", mode: "chaos", action: "abandon", status: 200 });
+        return res.status(200).json({ requestId, abandoned: true });
       }
       if (chaosAction === "coach") {
         const r = await applyCoach(run, String(b.coachId || ""));

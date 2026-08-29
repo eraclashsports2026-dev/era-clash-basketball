@@ -1,137 +1,80 @@
 // ── Chaos Clash — the default Play experience ────────────────────────────────
-// Three rolls, hold/reroll decisions, an Era Reveal that lands before the final
-// holds, then three coach offers. The CPU is always Legend; there is no
-// difficulty control anywhere in this flow.
+// Phase 8B corrects the draft's shape. The page opens EMPTY: the first roster
+// only exists once the user presses ROLL 1, so the roll counter matches what
+// the user actually did. Hold controls stay live in every decision round, and
+// cards kept through a roll start the next round already selected.
 import { useState, useEffect, useCallback, useRef } from "react";
 import { T, R } from "../../theme.js";
 import ChaosCard from "./ChaosCard.jsx";
-import { startChaos, submitChaosHolds, chooseChaosCoach, publishChaosChallenge } from "../../chaos/client.js";
+import EraContextBanner from "./EraContextBanner.jsx";
+import CoachOfferCard from "./CoachOfferCard.jsx";
+import {
+  startChaos, viewChaos, submitChaosHolds, submitChaosCoachHolds,
+  chooseChaosCoach, publishChaosChallenge, abandonChaos,
+} from "../../chaos/client.js";
 
 const SLOTS = ["PG", "SG", "SF", "PF", "C"];
-
+const RUN_KEY = "ec_chaos_run";
 const PRESSURE_COLOR = { LOW: T.onArenaDim, RISING: T.goldOnDark, HIGH: T.orange || T.goldOnDark };
+
+const store = {
+  get: () => { try { return localStorage.getItem(RUN_KEY); } catch { return null; } },
+  set: (v) => { try { localStorage.setItem(RUN_KEY, v); } catch { /* private mode */ } },
+  clear: () => { try { localStorage.removeItem(RUN_KEY); } catch { /* private mode */ } },
+};
 
 const Label = ({ children, tone = T.onArenaDim }) => (
   <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: 2, color: tone }}>{children}</div>
 );
 
-function TeamColumn({ title, side, roster, heldSlots, keptSlots = [], onToggle, interactive, busy, analysis }) {
-  const accent = side === "gold" ? T.goldOnDark : T.blueOnDark;
-  return (
-    <div style={{ minWidth: 0 }}>
-      <div style={{ textAlign: "center", marginBottom: 8 }}>
-        <Label tone={accent}>{title}</Label>
-      </div>
-      <div className="chaos-roster">
-        {roster.map((c, i) => (
-          <ChaosCard key={c?.id || SLOTS[i]} card={c} side={side}
-            held={heldSlots.includes(c?.slot)} interactive={interactive}
-            kept={keptSlots.includes(c?.slot)}
-            disabled={busy} onToggle={() => onToggle?.(c.slot)} />
-        ))}
-      </div>
-      {analysis && <RosterRead analysis={analysis} />}
-    </div>
-  );
-}
-
+/** One roster-summary schema for both sides — every row always present. */
 function RosterRead({ analysis }) {
   if (!analysis) return null;
   const row = (k, v) => (
-    <div style={{ display: "flex", justifyContent: "space-between", gap: 10, fontSize: 12, padding: "3px 0" }}>
+    <div key={k} className="chaos-read-row">
       <span style={{ color: T.onArenaDim }}>{k}</span>
       <span style={{ color: T.onArena, fontWeight: 700, textAlign: "right" }}>{v}</span>
     </div>
   );
   return (
-    <div style={{ marginTop: 10, padding: "9px 11px", borderRadius: R.sm, border: `1px solid ${T.arenaBorder}`, background: "rgba(255,255,255,0.03)" }}>
+    <div style={{ marginTop: 10, padding: "9px 11px", borderRadius: R.sm, border: `1px solid ${T.arenaBorder}`, background: "rgba(255,255,255,0.03)", minHeight: 148 }}>
       {row("Talent", analysis.talentTier)}
       {row("Construction", analysis.constructionTier)}
-      {analysis.bestStrength && row("Best strength", analysis.bestStrength.label)}
-      {analysis.biggestRisk && row("Biggest risk", analysis.biggestRisk.label)}
-      {analysis.opponentMatchup && row("Opponent matchup", analysis.opponentMatchup)}
+      {row("Best strength", analysis.bestStrength?.label)}
+      {row("Biggest risk", analysis.biggestRisk?.label)}
+      {row("Opponent matchup", analysis.opponentMatchup)}
       <div style={{ fontSize: 11.5, color: T.onArenaDim, marginTop: 5, lineHeight: 1.45 }}>{analysis.constructionBlurb}</div>
     </div>
   );
 }
 
-function EraReveal({ era, onContinue }) {
+function EmptySlot({ slot }) {
   return (
-    <div role="region" aria-label="Era reveal" style={{
-      marginTop: 14, padding: "16px 18px", borderRadius: R.md,
-      border: `1px solid ${T.goldOnDark}`, background: "rgba(233,185,73,0.08)",
-    }}>
-      <Label tone={T.goldOnDark}>ERA REVEAL</Label>
-      <div style={{ fontSize: 26, fontWeight: 900, color: T.onArena, margin: "4px 0 10px" }}>{era.eraId}</div>
-      <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "grid", gap: 5 }}>
-        {[era.threePoint, era.defensiveLegality, era.physicality, era.pace, era.rebounding].map((f) => (
-          <li key={f} style={{ fontSize: 12.5, color: T.onArenaDim, lineHeight: 1.5 }}>· {f}</li>
-        ))}
-      </ul>
-      {!!era.goldImplications?.length && (
-        <div style={{ marginTop: 12 }}>
-          <Label>WHAT THIS MEANS FOR TEAM GOLD</Label>
-          {era.goldImplications.map((t) => (
-            <div key={t} style={{ fontSize: 12.5, color: T.onArena, lineHeight: 1.55, marginTop: 4 }}>{t}</div>
-          ))}
-        </div>
-      )}
-      {(era.goldSwing?.gains?.length || era.goldSwing?.loses?.length) ? (
-        <div style={{ marginTop: 10, fontSize: 12.5, color: T.onArenaDim, lineHeight: 1.55 }}>
-          {era.goldSwing.gains.length ? <div><strong style={{ color: T.onArena }}>Gains opportunity:</strong> {era.goldSwing.gains.join(", ")}</div> : null}
-          {era.goldSwing.loses.length ? <div><strong style={{ color: T.onArena }}>Loses opportunity:</strong> {era.goldSwing.loses.join(", ")}</div> : null}
-        </div>
-      ) : null}
-      <div style={{ fontSize: 12, color: T.onArenaDim, marginTop: 10, lineHeight: 1.5 }}>
-        Your final roll is the last chance to adapt to this environment.
-      </div>
-      <button onClick={onContinue} style={{
-        marginTop: 12, minHeight: 46, width: "100%", borderRadius: R.sm, cursor: "pointer",
-        fontWeight: 900, fontSize: 13.5, letterSpacing: 1,
-        border: `1px solid ${T.goldOnDark}`, background: T.goldOnDark, color: T.arena,
-      }}>MAKE MY FINAL HOLDS</button>
+    <div className="chaos-empty-slot" aria-label={`Empty ${slot} slot`}>
+      <div style={{ fontSize: 11, fontWeight: 900, letterSpacing: 1.5, color: T.onArenaDim }}>{slot}</div>
+      <div style={{ fontSize: 10.5, color: T.onArenaDim, opacity: 0.7 }}>empty</div>
     </div>
   );
 }
 
-function CoachOffers({ offers, onPick, busy }) {
-  const [sel, setSel] = useState(null);
+function TeamBoard({ title, side, roster, heldSlots, keptSlots = [], onToggle, interactive, busy, analysis, locked }) {
+  const accent = side === "gold" ? T.goldOnDark : T.blueOnDark;
   return (
-    <div style={{ marginTop: 12 }}>
-      <Label tone={T.goldOnDark}>CHOOSE YOUR COACH</Label>
-      <div style={{ fontSize: 12, color: T.onArenaDim, margin: "4px 0 10px" }}>
-        Three staffs will take this roster. Each wants a different game.
+    <div style={{ minWidth: 0 }}>
+      <div style={{ textAlign: "center", marginBottom: 8 }}><Label tone={accent}>{title}</Label></div>
+      <div className="chaos-roster">
+        {SLOTS.map((slot, i) => {
+          const c = roster?.[i];
+          if (!c) return <EmptySlot key={slot} slot={slot} />;
+          return (
+            <ChaosCard key={c.id} card={c} side={side}
+              held={heldSlots.includes(c.slot)} kept={keptSlots.includes(c.slot)}
+              interactive={interactive} locked={locked} disabled={busy}
+              onToggle={() => onToggle?.(c.slot)} />
+          );
+        })}
       </div>
-      <div className="chaos-offers">
-        {offers.map((o) => (
-          <button key={o.coachId} onClick={() => setSel(o.coachId)} aria-pressed={sel === o.coachId}
-            style={{
-              textAlign: "left", borderRadius: R.md, padding: 13, cursor: "pointer",
-              border: `1px solid ${sel === o.coachId ? T.goldOnDark : T.arenaBorder}`,
-              background: sel === o.coachId ? "rgba(233,185,73,0.10)" : "rgba(255,255,255,0.04)",
-              display: "flex", flexDirection: "column", gap: 6,
-            }}>
-            <Label tone={T.goldOnDark}>{o.roleLabel.toUpperCase()}</Label>
-            <div style={{ fontWeight: 900, fontSize: 15.5, color: T.onArena }}>{o.name}</div>
-            <div style={{ fontSize: 11.5, color: T.onArenaDim }}>{o.roleBlurb}</div>
-            <div style={{ height: 1, background: T.arenaBorder, margin: "3px 0" }} />
-            {[o.offense, o.central, o.targets, o.defense, o.era].filter(Boolean).map((line) => (
-              <div key={line} style={{ fontSize: 12, color: T.onArena, lineHeight: 1.5 }}>{line}</div>
-            ))}
-            <div style={{ fontSize: 11.5, color: T.onArenaDim, lineHeight: 1.5, fontStyle: "italic" }}>
-              Tradeoff: {o.sacrifice}
-            </div>
-          </button>
-        ))}
-      </div>
-      <button disabled={!sel || busy} onClick={() => onPick(sel)} style={{
-        marginTop: 12, minHeight: 50, width: "100%", borderRadius: R.sm,
-        cursor: sel && !busy ? "pointer" : "default",
-        fontWeight: 900, fontSize: 14, letterSpacing: 1,
-        border: `1px solid ${sel ? T.goldOnDark : T.arenaBorder}`,
-        background: sel ? T.goldOnDark : "transparent",
-        color: sel ? T.arena : T.onArenaDim, opacity: busy ? 0.6 : 1,
-      }}>{busy ? "LOCKING…" : "HIRE THIS COACH"}</button>
+      {analysis && <RosterRead analysis={analysis} />}
     </div>
   );
 }
@@ -139,107 +82,158 @@ function CoachOffers({ offers, onPick, busy }) {
 export default function ChaosClash({ tier = "GUEST", onReady, onGated, challengeId }) {
   const [run, setRun] = useState(null);
   const [holds, setHolds] = useState([]);
+  const [coachHolds, setCoachHolds] = useState([]);
+  const [pickedCoach, setPickedCoach] = useState(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(null);
-  const [eraAcked, setEraAcked] = useState(false);
   const [challenge, setChallenge] = useState(null);
-  const started = useRef(false);
+  const [confirmAbandon, setConfirmAbandon] = useState(false);
+  const resumed = useRef(false);
 
-  const begin = useCallback(async () => {
+  /** Adopt a server view, seeding the pending hold sets from what is held. */
+  const adopt = useCallback((chaos) => {
+    setRun(chaos);
+    // Cards kept through the previous roll start the next round SELECTED, so a
+    // user who wants to keep them does not have to re-hold them (and cannot
+    // lose them by forgetting).
+    setHolds(chaos?.gold?.heldSlots || []);
+    setCoachHolds(chaos?.coachDraft?.heldRoles || []);
+    if (chaos?.chaosRunId) store.set(chaos.chaosRunId);
+  }, []);
+
+  // Resume an active run rather than silently starting a new one. This is what
+  // stops repeated navigation from farming fresh opening rolls.
+  useEffect(() => {
+    if (resumed.current) return;
+    resumed.current = true;
+    if (challengeId) return;
+    const id = store.get();
+    if (!id) return;
+    viewChaos(id, tier)
+      .then((r) => { if (r?.chaos && r.chaos.status !== "ABANDONED") adopt(r.chaos); else store.clear(); })
+      .catch(() => store.clear());
+  }, [tier, challengeId, adopt]);
+
+  const roll1 = async () => {
     setBusy(true); setError(null);
     try {
       const r = await startChaos({ tier, challengeId });
       if (r.gated) { onGated?.(r.gate); setBusy(false); return; }
-      setRun(r.chaos); setHolds([]); setEraAcked(false); setChallenge(null);
+      adopt(r.chaos); setChallenge(null);
     } catch (e) { setError(e.message || "Could not start a Chaos Clash."); }
-    setBusy(false);
-  }, [tier, challengeId, onGated]);
-
-  useEffect(() => { if (!started.current) { started.current = true; begin(); } }, [begin]);
-
-  const toggle = (slot) => setHolds((h) => (h.includes(slot) ? h.filter((s) => s !== slot) : [...h, slot]));
-
-  const lockHolds = async () => {
-    setBusy(true); setError(null);
-    try {
-      const r = await submitChaosHolds(run.chaosRunId, holds, tier);
-      setRun(r.chaos); setHolds([]); setEraAcked(false);
-    } catch (e) { setError(e.message || "Could not lock those holds."); }
     setBusy(false);
   };
 
-  const pickCoach = async (coachId) => {
+  const toggle = (slot) => setHolds((h) => (h.includes(slot) ? h.filter((s) => s !== slot) : [...h, slot]));
+  const toggleCoach = (role) => setCoachHolds((h) => (h.includes(role) ? h.filter((r) => r !== role) : [...h, role]));
+
+  const lockHolds = async () => {
+    setBusy(true); setError(null);
+    try { adopt((await submitChaosHolds(run.chaosRunId, holds, tier)).chaos); }
+    catch (e) { setError(e.message || "Could not lock those holds."); }
+    setBusy(false);
+  };
+
+  const rollCoaches = async () => {
+    setBusy(true); setError(null);
+    try { adopt((await submitChaosCoachHolds(run.chaosRunId, coachHolds, tier)).chaos); }
+    catch (e) { setError(e.message || "Could not roll the coaches."); }
+    setBusy(false);
+  };
+
+  const hireCoach = async () => {
+    if (!pickedCoach) return;
     setBusy(true); setError(null);
     try {
-      const r = await chooseChaosCoach(run.chaosRunId, coachId, tier);
-      setRun(r.chaos);
-      onReady?.(r.chaos);
+      const r = await chooseChaosCoach(run.chaosRunId, pickedCoach, tier);
+      adopt(r.chaos); onReady?.(r.chaos);
     } catch (e) { setError(e.message || "Could not hire that coach."); }
     setBusy(false);
   };
 
-  const makeChallenge = async () => {
-    try {
-      const r = await publishChaosChallenge(run.chaosRunId, tier);
-      setChallenge(r.challengeId);
-    } catch { /* a failed share must never break the run */ }
+  const abandon = async () => {
+    setBusy(true);
+    try { await abandonChaos(run.chaosRunId, tier); } catch { /* the local reset still stands */ }
+    store.clear();
+    setRun(null); setHolds([]); setCoachHolds([]); setPickedCoach(null);
+    setConfirmAbandon(false); setChallenge(null); setBusy(false);
   };
 
-  if (error && !run) {
+  const makeChallenge = async () => {
+    try { setChallenge((await publishChaosChallenge(run.chaosRunId, tier)).challengeId); }
+    catch { /* a failed share must never break the run */ }
+  };
+
+  // ── EMPTY: nothing is drawn until the user asks for it ─────────────────────
+  if (!run) {
     return (
-      <div style={{ textAlign: "center", padding: 26 }}>
-        <div style={{ color: T.text, fontWeight: 700 }}>{error}</div>
-        <button onClick={begin} style={{ marginTop: 12, minHeight: 44, padding: "0 20px", borderRadius: R.sm, cursor: "pointer", fontWeight: 800, border: `1px solid ${T.goldBorder}`, background: T.goldSoft, color: T.gold }}>Try again</button>
+      <div className="ec-arena-inset" style={{ borderRadius: R.lg, padding: "16px 16px 20px" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8, marginBottom: 12 }}>
+          <Label tone={T.goldOnDark}>CHAOS CLASH</Label>
+          <div style={{ fontWeight: 900, fontSize: 14, color: T.onArena, letterSpacing: 1 }}>THREE ROLLS AVAILABLE</div>
+          <Label>DRAFT PRESSURE —</Label>
+        </div>
+        <div style={{ marginBottom: 12 }}><EraContextBanner era={null} /></div>
+        <div className="chaos-boards">
+          <TeamBoard title="TEAM GOLD" side="gold" roster={null} heldSlots={[]} />
+          <TeamBoard title="TEAM BLUE · LEGEND" side="blue" roster={null} heldSlots={[]} />
+        </div>
+        <button onClick={roll1} disabled={busy} style={{
+          marginTop: 14, minHeight: 54, width: "100%", borderRadius: R.sm, cursor: busy ? "default" : "pointer",
+          fontWeight: 900, fontSize: 15, letterSpacing: 1.2,
+          border: `1px solid ${T.goldOnDark}`, background: T.goldOnDark, color: T.arena, opacity: busy ? 0.6 : 1,
+        }}>{busy ? "ROLLING…" : "ROLL 1"}</button>
+        {error && <div role="alert" style={{ marginTop: 10, fontSize: 12.5, color: T.onArena, textAlign: "center" }}>{error}</div>}
       </div>
     );
   }
-  if (!run) return <div style={{ textAlign: "center", padding: 30, color: T.textDim }}>Rolling your Clash…</div>;
 
-  const showEra = run.era && !eraAcked && run.phase === "ERA_REVEALED";
-  const inCoachStage = run.phase === "COACH_OFFERS_REVEALED";
+  const inCoachDraft = !!run.coachDraft && !run.coachDraft.selecting && run.phase !== "READY" && run.phase !== "SIMULATED";
+  const inCoachSelect = !!run.coachDraft?.selecting;
   const isReady = run.phase === "READY" || run.phase === "SIMULATED";
-  const rollCta = run.roll === 1 ? "LOCK HOLDS & ROLL AGAIN" : "FINAL ROLL";
+  const drafting = run.roll <= 2 && !run.rostersLocked;
+  const rollCta = run.roll === 1 ? "LOCK HOLDS & ROLL 2" : "LOCK HOLDS & FINAL ROLL";
+
+  const stage = drafting ? `ROLL ${run.roll} OF ${run.totalRolls}`
+    : inCoachDraft ? `COACH ROLL ${run.coachDraft.roll} OF ${run.coachDraft.totalRolls}`
+      : inCoachSelect ? "CHOOSE YOUR COACH" : "ROSTERS LOCKED";
 
   return (
     <div className="ec-arena-inset" style={{ borderRadius: R.lg, padding: "16px 16px 20px" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8, marginBottom: 12 }}>
         <Label tone={T.goldOnDark}>CHAOS CLASH</Label>
-        <div style={{ fontWeight: 900, fontSize: 14, color: T.onArena, letterSpacing: 1 }}>
-          {isReady || inCoachStage ? "ROSTERS LOCKED" : `ROLL ${run.roll} OF ${run.totalRolls}`}
-        </div>
-        <div title={run.draftPressure.tooltip} style={{ display: "flex", alignItems: "center", gap: 6 }}>
+        <div style={{ fontWeight: 900, fontSize: 14, color: T.onArena, letterSpacing: 1 }}>{stage}</div>
+        <div title={run.draftPressure?.tooltip} style={{ display: "flex", alignItems: "center", gap: 6 }}>
           <Label>DRAFT PRESSURE</Label>
-          <span style={{ fontWeight: 900, fontSize: 12.5, color: PRESSURE_COLOR[run.draftPressure.level] }}>
-            {run.draftPressure.level}
+          <span style={{ fontWeight: 900, fontSize: 12.5, color: PRESSURE_COLOR[run.draftPressure?.level] }}>
+            {run.draftPressure?.level}
           </span>
         </div>
       </div>
-      <div className="sr-only" aria-live="polite">
-        {isReady ? "Rosters and coaches locked." : `Roll ${run.roll} of ${run.totalRolls}. Draft pressure ${run.draftPressure.level}.`}
-      </div>
+
+      {/* The era never leaves the screen once it is revealed. */}
+      <div style={{ marginBottom: 12 }}><EraContextBanner era={run.eraContext} /></div>
+
+      <div className="sr-only" aria-live="polite">{stage}</div>
 
       <div className="chaos-boards">
-        <TeamColumn title="TEAM GOLD" side="gold" roster={run.gold.roster}
-          heldSlots={isReady || inCoachStage ? run.gold.heldSlots : holds}
+        <TeamBoard title="TEAM GOLD" side="gold" roster={run.gold.roster}
+          heldSlots={drafting ? holds : run.gold.heldSlots}
           keptSlots={run.roll > 1 ? run.gold.heldSlots : []}
-          onToggle={toggle} interactive={!inCoachStage && !isReady}
-          busy={busy || showEra}
-          analysis={run.gold.analysis} />
-        <TeamColumn title="TEAM BLUE · LEGEND" side="blue" roster={run.blue.roster}
+          onToggle={toggle} interactive={drafting} locked={!drafting}
+          busy={busy} analysis={run.gold.analysis} />
+        <TeamBoard title="TEAM BLUE · LEGEND" side="blue" roster={run.blue.roster}
           heldSlots={run.blue.heldSlots} keptSlots={run.roll > 1 ? run.blue.heldSlots : []}
-          interactive={false} busy={busy}
-          analysis={run.blue.analysis} />
+          interactive={false} locked={!drafting} busy={busy} analysis={run.blue.analysis} />
       </div>
 
-      {run.roll > 1 && !inCoachStage && !isReady && (
+      {run.roll > 1 && drafting && (
         <div style={{ fontSize: 11.5, color: T.onArenaDim, marginTop: 8, textAlign: "center" }}>
           Team Blue's holds were locked before yours were submitted.
         </div>
       )}
 
-      {showEra && <EraReveal era={run.era} onContinue={() => setEraAcked(true)} />}
-
-      {!showEra && !inCoachStage && !isReady && (
+      {drafting && (
         <>
           <button onClick={lockHolds} disabled={busy} style={{
             marginTop: 14, minHeight: 52, width: "100%", borderRadius: R.sm, cursor: busy ? "default" : "pointer",
@@ -247,13 +241,53 @@ export default function ChaosClash({ tier = "GUEST", onReady, onGated, challenge
             border: `1px solid ${T.goldOnDark}`, background: T.goldOnDark, color: T.arena, opacity: busy ? 0.6 : 1,
           }}>{busy ? "ROLLING…" : rollCta}</button>
           <div style={{ fontSize: 11.5, color: T.onArenaDim, marginTop: 7, textAlign: "center", lineHeight: 1.5 }}>
-            {holds.length ? `Holding ${holds.length}. ` : "Holding nobody. "}
+            {holds.length ? `Holding ${holds.length} of 5. ` : "Holding nobody. "}
             Anyone you release is out of this Clash for good.
           </div>
         </>
       )}
 
-      {inCoachStage && <CoachOffers offers={run.coachOffers} onPick={pickCoach} busy={busy} />}
+      {(inCoachDraft || inCoachSelect) && (
+        <div style={{ marginTop: 14 }}>
+          <Label tone={T.goldOnDark}>{inCoachSelect ? "CHOOSE YOUR COACH" : "COACH DRAFT"}</Label>
+          <div style={{ fontSize: 12, color: T.onArenaDim, margin: "4px 0 10px" }}>
+            {inCoachSelect
+              ? "Three staffs are on the table. Take one."
+              : "Hold the staffs you want to keep, then roll the rest. A released coach is out of this Clash."}
+          </div>
+          <div className="chaos-offers">
+            {run.coachDraft.offers.map((o) => (
+              <CoachOfferCard key={o.role} offer={o}
+                mode={inCoachSelect ? "select" : "hold"}
+                held={coachHolds.includes(o.role)} onToggle={() => toggleCoach(o.role)}
+                selected={pickedCoach === o.coachId} onSelect={() => setPickedCoach(o.coachId)}
+                disabled={busy} />
+            ))}
+          </div>
+          {inCoachDraft ? (
+            <>
+              <button onClick={rollCoaches} disabled={busy} style={{
+                marginTop: 12, minHeight: 50, width: "100%", borderRadius: R.sm, cursor: busy ? "default" : "pointer",
+                fontWeight: 900, fontSize: 14, letterSpacing: 1,
+                border: `1px solid ${T.goldOnDark}`, background: T.goldOnDark, color: T.arena, opacity: busy ? 0.6 : 1,
+              }}>{busy ? "ROLLING…" : run.coachDraft.roll === 2 ? "LOCK HOLDS & FINAL COACH ROLL" : "LOCK HOLDS & ROLL COACHES"}</button>
+              <div style={{ fontSize: 11.5, color: T.onArenaDim, marginTop: 7, textAlign: "center" }}>
+                {coachHolds.length ? `Holding ${coachHolds.length} of 3.` : "Holding nobody."}{" "}
+                Team Blue is drafting its own staff under the same rules.
+              </div>
+            </>
+          ) : (
+            <button onClick={hireCoach} disabled={!pickedCoach || busy} style={{
+              marginTop: 12, minHeight: 50, width: "100%", borderRadius: R.sm,
+              cursor: pickedCoach && !busy ? "pointer" : "default",
+              fontWeight: 900, fontSize: 14, letterSpacing: 1,
+              border: `1px solid ${pickedCoach ? T.goldOnDark : T.arenaBorder}`,
+              background: pickedCoach ? T.goldOnDark : "transparent",
+              color: pickedCoach ? T.arena : T.onArenaDim, opacity: busy ? 0.6 : 1,
+            }}>{busy ? "HIRING…" : "HIRE THIS COACH"}</button>
+          )}
+        </div>
+      )}
 
       {isReady && (
         <div style={{ marginTop: 14 }}>
@@ -267,12 +301,29 @@ export default function ChaosClash({ tier = "GUEST", onReady, onGated, challenge
           }}>CHALLENGE THIS CHAOS</button>
           {challenge && (
             <div style={{ fontSize: 11.5, color: T.onArenaDim, marginTop: 7, textAlign: "center", wordBreak: "break-all" }}>
-              Share this link — same opening rolls, same rules, their own decisions:{" "}
+              Same opening rolls, same rules, their own decisions:{" "}
               <span style={{ color: T.goldOnDark }}>{`${window.location.origin}/?chaos=${challenge}`}</span>
             </div>
           )}
         </div>
       )}
+
+      {/* An explicit way out, so nobody is trapped in a draft. */}
+      <div style={{ marginTop: 16, textAlign: "center" }}>
+        {confirmAbandon ? (
+          <div style={{ display: "inline-flex", gap: 8, alignItems: "center", flexWrap: "wrap", justifyContent: "center" }}>
+            <span style={{ fontSize: 12, color: T.onArenaDim }}>Abandon this draft? It cannot be resumed.</span>
+            <button onClick={abandon} style={{ minHeight: 40, padding: "0 14px", borderRadius: R.sm, cursor: "pointer", fontWeight: 800, fontSize: 12, border: `1px solid ${T.arenaBorder}`, background: "transparent", color: T.onArena }}>Yes, abandon</button>
+            <button onClick={() => setConfirmAbandon(false)} style={{ minHeight: 40, padding: "0 14px", borderRadius: R.sm, cursor: "pointer", fontWeight: 800, fontSize: 12, border: "none", background: "transparent", color: T.onArenaDim }}>Keep drafting</button>
+          </div>
+        ) : (
+          <button onClick={() => setConfirmAbandon(true)} style={{
+            minHeight: 40, padding: "0 14px", borderRadius: R.sm, cursor: "pointer",
+            fontWeight: 700, fontSize: 11.5, border: "none", background: "transparent",
+            color: T.onArenaDim, textDecoration: "underline",
+          }}>Abandon this draft</button>
+        )}
+      </div>
 
       {error && <div role="alert" style={{ marginTop: 10, fontSize: 12.5, color: T.onArena, textAlign: "center" }}>{error}</div>}
     </div>

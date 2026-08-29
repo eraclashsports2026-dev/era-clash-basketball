@@ -809,6 +809,8 @@ export default function App() {
       setResult({ type: "single", sim: viewSim(record), w, tag: "chaos", opp, resultId, record, persisted: !!records?.persisted });
       fetchNarrative(resultId, record, !!records?.persisted);
       track("chaos_clash_completed", { era_style: record.eraId || null });
+      // The run is spent; a return to Chaos Clash starts from an empty board.
+      try { localStorage.removeItem("ec_chaos_run"); } catch { /* private mode */ }
       await holdSimScreen(simT0);
       setView("postgame");
     } catch (e) {

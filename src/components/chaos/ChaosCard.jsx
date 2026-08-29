@@ -28,7 +28,7 @@ const TIER_STYLE = {
   SPECIALIST: { bg: "rgba(255,255,255,0.06)", fg: T.onArenaDim, bd: T.arenaBorder },
 };
 
-export default function ChaosCard({ card, side, held, onToggle, disabled, interactive = true, kept = false }) {
+export default function ChaosCard({ card, side, held, onToggle, disabled, interactive = true, kept = false, locked = false }) {
   if (!card) return <div style={{ minHeight: 150, borderRadius: R.md, border: `1px dashed ${T.arenaBorder}` }} />;
   const p = byId.get(card.id);
   const ts = TIER_STYLE[card.tier] || TIER_STYLE.SPECIALIST;
@@ -84,6 +84,14 @@ export default function ChaosCard({ card, side, held, onToggle, disabled, intera
           }}>
           {held ? "HELD" : "HOLD"}
         </button>
+      ) : locked ? (
+        // After the final roll there is no fourth roll, so the card is not
+        // "held" — it is simply on the team.
+        <div aria-label={`${card.name} is on the final roster`} style={{
+          minHeight: 30, display: "flex", alignItems: "center", justifyContent: "center",
+          borderRadius: R.sm, fontWeight: 800, fontSize: 10, letterSpacing: 0.8,
+          border: `1px solid ${T.arenaBorder}`, background: "transparent", color: T.onArenaDim,
+        }}>FINAL ROSTER</div>
       ) : (
         <div aria-label={held ? `${card.name} held by the CPU` : `${card.name} not held`} style={{
           minHeight: 30, display: "flex", alignItems: "center", justifyContent: "center",

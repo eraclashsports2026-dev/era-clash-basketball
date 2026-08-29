@@ -234,3 +234,25 @@ button { font-family: inherit; }
   /* The name column stays put while the numbers scroll under it. */
   .box-table .box-player { position: sticky; left: 0; z-index: 1; }
 }
+
+/* Empty draft slot — the board exists before any card does. */
+.chaos-empty-slot {
+  min-height: 150px;
+  border-radius: 12px;
+  border: 1px dashed var(--ec-arena-border, #243350);
+  background: rgba(255, 255, 255, 0.02);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+/* Roster-summary rows: one shared schema, so both teams line up. */
+.chaos-read-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  font-size: 12px;
+  padding: 3px 0;
+  align-items: baseline;
+}

@@ -8,7 +8,7 @@
 // existing production namespace is touched by this feature.
 import { PLAYERS, POSITIONS } from "../../src/players.js";
 import { getJSON, setJSON, newId, cmd } from "./store.js";
-import { startRun, submitHolds, selectCoach, publicView, RUN_TTL_SECONDS } from "../../src/chaos/runState.js";
+import { startRun, submitHolds, submitCoachHolds, selectCoach, abandonRun, publicView, RUN_TTL_SECONDS } from "../../src/chaos/runState.js";
 import { buildManifest, challengeId } from "../../src/chaos/challenge.js";
 import { GUEST_CHAOS_RUNS } from "../../src/entitlements.js";
 
@@ -71,6 +71,20 @@ export const applyHolds = async (run, holdSlots) => {
   return { ok: true, run };
 };
 
+export const applyCoachHolds = async (run, holdRoles) => {
+  const r = submitCoachHolds(run, { holdRoles, hydrate });
+  if (!r.ok) return r;
+  await saveRun(run);
+  return { ok: true, run };
+};
+
+export const applyAbandon = async (run) => {
+  const r = abandonRun(run);
+  if (!r.ok) return r;
+  await saveRun(run);
+  return { ok: true, run };
+};
+
 export const applyCoach = async (run, coachId) => {
   const r = selectCoach(run, { coachId });
   if (!r.ok) return r;
@@ -128,6 +142,10 @@ export const draftHistory = (run) => ({
   burnedPersonIds: run.burnedPersonIds,
   revealedEraStyleId: run.revealedEraStyleId,
   coachOffers: run.coachOffers,
+  coachRolls: (run.coachHistory || []).map((h) => ({
+    roll: h.roll, gold: h.gold, blue: h.blue, goldHeld: h.goldHeld, blueHeld: h.blueHeld,
+  })),
+  burnedCoachIds: run.burnedCoachIds || [],
   selectedCoaches: run.selectedCoaches,
   cpuDecisionCommit: run.cpuDecisionCommit,
   cpuCoachCommit: run.cpuCoachCommit || null,
