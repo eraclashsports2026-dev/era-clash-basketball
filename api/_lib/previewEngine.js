@@ -25,6 +25,7 @@ import { expectedWinPct, matchupPreviewV3, classifyOutcome, edgeBand } from "../
 import { versionOf } from "../../src/versions.js";
 import { previewEvent } from "./previewTelemetry.js";
 import { deriveKeyMoments, derivePatterns } from "./previewKeyMoments.js";
+import { deriveSalientMoments, deriveQuarterFlow } from "./postgameStory.js";
 import { deriveCoaching } from "./previewCoaching.js";
 import { PLAYERS } from "../../src/players.js";
 
@@ -82,6 +83,15 @@ const mvpText = (mvp, possessions) => {
  * fallback handles it. Modes beyond "single" intentionally stay on the
  * production path in this integration — the preview scope is the core sim.
  */
+/** The night's leading scorer, for the "unusual performance" moment. */
+const topScorerOf = (g, goldLines, blueLines) => {
+  const all = [
+    ...(goldLines || []).map((l) => ({ ...l, side: "gold" })),
+    ...(blueLines || []).map((l) => ({ ...l, side: "blue" })),
+  ];
+  return all.sort((a, b) => (b.pts || 0) - (a.pts || 0))[0] || null;
+};
+
 export const computeResultPreview = (mode, gold, blue, opts, seed) => {
   if (mode !== "single" || !blue) {
     const err = new Error(`preview engine scope is single-game; mode ${mode} stays on production`);
@@ -160,10 +170,16 @@ export const computeResultPreview = (mode, gold, blue, opts, seed) => {
       fingerprint: g.fingerprint,
       // 4 = REGULATION periods, so period 5 is labeled OT (g.periods is the
       // total played, which would mislabel overtime as "Q5").
-      keyMoments: deriveKeyMoments(g.possessionLedger, CARD_BY_ID, 4),
+      // Salience-scored moments. The previous selector always emitted "the last
+      // lead change", which surfaced trivial first-quarter swings as headline
+      // moments; the scored model weights leverage, magnitude and period.
+      keyMoments: deriveSalientMoments(g.possessionLedger, CARD_BY_ID, 4, {
+        topScorer: topScorerOf(g, goldLines, blueLines),
+      }),
+      quarterFlow: deriveQuarterFlow(g.possessionLedger, CARD_BY_ID, 4),
       matchupPatterns: derivePatterns(g.possessionLedger, CARD_BY_ID),
       coaching: deriveCoaching(g, CARD_BY_ID, { gold: coachG.name, blue: coachB.name },
-        { gold: gold.map((p) => p.id), blue: blue.map((p) => p.id) }),
+        { gold: gold.map((p) => p.id), blue: blue.map((p) => p.id) }, g.possessionLedger),
       periodScores: g.periodScores ?? null,
       fullBox: { gold: goldLines, blue: blueLines },
       teamTotals: { gold: g.gold.totals, blue: g.blue.totals },

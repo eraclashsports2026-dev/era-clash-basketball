@@ -39,6 +39,7 @@ import { DIFFICULTIES, DEFAULT_DIFFICULTY } from "./v3/difficulty.js";
 import { TeamShell, EmptySlot, FilledSlot, LineupList } from "./components/TeamSlots.jsx";
 import { teamFit } from "./chemistryView.js";
 import { v3meta } from "./v3meta.js";
+import { runNarrative, toViewStatus } from "./narrativeMachine.js";
 import { shortBuild, watchForNewBuild } from "./buildStamp.js";
 
 // The qualitative pre-sim preview, in the concept's icon grid. One fetch of the
@@ -524,6 +525,8 @@ export default function App() {
     mvpReason: n?.mvpReason || record.mvpFallback || null, // never blank: deterministic 2-3 sentence fallback
     turningPoint: n?.turningPoint || record.core?.turningPoint || null,
     v3: record.v3 || null,
+    story: record.story || null,
+    draftConsequences: record.draftConsequences || null,
     // Candidate identity travels with the view model: a Candidate 3 result may
     // not lead into a series that would run on a different engine.
     previewCandidate: record.preview === true ? (record.candidate ?? null) : null,
@@ -541,20 +544,39 @@ export default function App() {
     eraLabel: dailyCfg?.era?.label && dailyCfg.era.id === record.eraId ? dailyCfg.era.label : null,
   });
 
+  // The recap runs through an explicit state machine (src/narrativeMachine.js).
+  // A 202 is POLLED to a conclusion rather than reported as success, polling is
+  // finite, and the request is cancelled when the result changes or the view
+  // unmounts — so a stale response can never overwrite a newer game.
+  const narrativeAbort = useRef(null);
   const fetchNarrative = (resultId, record, persisted) => {
     if (!record?.core) { setNarrative({ status: "none" }); return; }
+    narrativeAbort.current?.abort();
+    const ctrl = new AbortController();
+    narrativeAbort.current = ctrl;
     setNarrative({ status: "pending" });
-    requestNarrative({ resultId, result: record, persisted })
-      .then((data) => {
-        setNarrative({ status: "complete", data });
+    runNarrative({
+      resultId, result: record, persisted, signal: ctrl.signal,
+      onState: ({ state }) => {
+        if (ctrl.signal.aborted) return;
+        const view = toViewStatus(state);
+        if (view === "pending") setNarrative({ status: "pending" });
+      },
+    }).then((out) => {
+      if (ctrl.signal.aborted || out.state === "ABORTED") return;
+      if (out.state === "READY") {
+        setNarrative({ status: "complete", data: out.data });
         setResult((r) => {
-          if (!r || r.resultId !== resultId) return r;
-          const sim = viewSim(record, data);
+          if (!r || r.resultId !== resultId) return r;   // a newer game is on screen
+          const sim = viewSim(record, out.data);
           return r.type === "82" ? { ...r, lastSim: sim } : { ...r, sim };
         });
-      })
-      .catch((e) => setNarrative({ status: "failed", code: e.code }));
+      } else {
+        setNarrative({ status: toViewStatus(out.state), code: out.code });
+      }
+    });
   };
+  useEffect(() => () => narrativeAbort.current?.abort(), []);
 
   // ── Daily coach step handlers ──────────────────────────────────────────────
   const onDailyOptionsViewed = useCallback(() => {

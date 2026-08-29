@@ -204,3 +204,33 @@ button { font-family: inherit; }
 @media (prefers-reduced-motion: reduce) {
   .chaos-card { animation: none; }
 }
+
+/* Draft consequence cards */
+.draft-consequences {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 8px;
+  margin-top: 7px;
+}
+
+/* ── Box score ───────────────────────────────────────────────────────────────
+   ONE table, one colgroup, two row groups. Fixed layout plus explicit column
+   widths is what makes Team Gold and Team Blue line up: with auto layout a long
+   name in one group silently re-sizes the columns for that group alone. */
+.box-scroll { overflow-x: auto; margin-top: 8px; }
+.box-table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+.box-col-player { width: 30%; min-width: 150px; }
+.box-col-stat { width: 6.36%; }
+.box-table td, .box-table th { overflow: hidden; text-overflow: ellipsis; }
+.box-table .box-player { white-space: nowrap; }
+@media (max-width: 720px) {
+  /* The name column stays put while the numbers scroll under it. */
+  .box-table .box-player { position: sticky; left: 0; z-index: 1; }
+}

@@ -16,6 +16,7 @@ import { computeResult, dailyScore, newSeed } from "./_lib/game-core.js";
 import { computeResultV3 } from "./_lib/game-core-v3.js";
 import { computeResultPreview, PREVIEW_NAMESPACES, PREVIEW_RESULT_ID_PREFIX } from "./_lib/previewEngine.js";
 import { buildPregameRead } from "./_lib/pregameRead.js";
+import { buildDeterministicSummary, deriveDraftConsequences } from "./_lib/postgameStory.js";
 import { previewIdentity } from "./_lib/previewAccessCheck.js";
 import { previewEvent } from "./_lib/previewTelemetry.js";
 import { validCoachId, validEraId } from "./_lib/validate.js";
@@ -364,6 +365,19 @@ export default async function handler(req, res) {
         };
       } catch { pregameSnapshot = null; }
     }
+    // The opening story is DETERMINISTIC and computed here, so it is on the
+    // result the moment the game exists — no provider, no spinner, and it is
+    // present on a shared result too.
+    let story = null;
+    try {
+      story = buildDeterministicSummary({
+        record: computed,
+        quarterFlow: computed.v3?.quarterFlow || [],
+        moments: computed.v3?.keyMoments || [],
+        patterns: computed.v3?.matchupPatterns || [],
+      });
+    } catch { story = null; }
+
     const resultId = (previewComputed ? PREVIEW_RESULT_ID_PREFIX : "") + newId(10);
     const record = {
       v: 1,
@@ -374,9 +388,16 @@ export default async function handler(req, res) {
       blueIds: blue ? blue.map((p) => p.id) : computed.blueIds || null,
       ...computed,
       pregame: pregameSnapshot,
+      story,
       // Non-result-affecting setup history. Records only what was REVEALED —
       // no unchosen branch and no unrevealed future card is ever written.
       chaosDraft: req._chaosRun ? draftHistory(req._chaosRun) : null,
+      draftConsequences: req._chaosRun
+        ? deriveDraftConsequences({
+            chaosDraft: draftHistory(req._chaosRun), record: computed,
+            cards: new Map([...gold, ...(blue || [])].map((p) => [p.id, p])),
+          })
+        : null,
       challengeId: challenge ? challenge.id : null,
       dailyDate: mode === "daily" ? today : null,
       // Narrative identity for a coach/era Daily is the GAME, not the player.
