@@ -117,7 +117,7 @@ test("R4: keyboard-only completion, including the coach modal", async ({ page })
   await expect(page.getByText(/TEAM (GOLD|BLUE) WINS/)).toBeVisible({ timeout: 20000 });
   await page.getByRole("tab", { name: "Game Story" }).focus();
   await page.keyboard.press("Enter");
-  await expect(page.getByText(/WHY YOU (WON|LOST)/)).toBeVisible();
+  await expect(page.getByText(/HOW (GOLD|BLUE) WON/)).toBeVisible();
 });
 
 test("R5: reduced motion completes the flow", async ({ page }) => {

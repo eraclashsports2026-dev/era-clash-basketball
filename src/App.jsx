@@ -353,6 +353,13 @@ export default function App() {
   // keeps its fairness model (neutral coaches, derived seed) and Challenge
   // keeps the rival's five as-is.
   const v3Steps = v3.enabled && !isChallenge && !isDaily && !isChaos;
+  // Dream Matchup asks for an account only while Chaos Clash is available as
+  // the free default. Where Chaos is switched off (production today) Dream
+  // Matchup IS the Play experience, and gating it would leave a signed-out
+  // visitor on a wall with nothing they can open at all.
+  const dreamMatchupGated = chaosAvailable
+    && gameMode === "Single" && nav === "Play" && !result
+    && !can(tier, CAPABILITIES.DREAM_MATCHUP);
   const coachesReady = !v3Steps || (blueBuildable ? (!!coachGold && !!coachBlue) : !!coachGold);
   // ── Wizard stage gating (v3 modes) ────────────────────────────────────────
   const rosterDone = !!team && (!blueBuildable || !!opponent);
@@ -1056,7 +1063,7 @@ export default function App() {
           </div>
         </div>
         )
-      ) : gameMode === "Single" && nav === "Play" && !result && !can(tier, CAPABILITIES.DREAM_MATCHUP) ? (
+      ) : dreamMatchupGated ? (
         <AccountGate
           title="Dream Matchup"
           blurb="Build both teams by hand, pick from the full coach library and choose the era yourself. A free account keeps your matchups and history."

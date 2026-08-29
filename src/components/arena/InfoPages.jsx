@@ -2,6 +2,7 @@
 // Every claim here is true of the product as it stands. There is no checkout,
 // no price, no trial, no billing state and no fantasy contest, because none of
 // those exist yet.
+import { useEffect, useRef } from "react";
 import { MATRIX, CAPABILITIES, TIERS } from "../../entitlements.js";
 import { FANTASY_DESTINATIONS, FANTASY_STATUS_LABEL, findMode, PLAY_MODES } from "../../navigation.js";
 import { currentTier } from "../../account.js";
@@ -138,12 +139,21 @@ export function ModeInfoPage({ id, onBack }) {
 }
 
 export function HowModesModal({ tier, onClose }) {
+  const ref = useRef(null);
+  useEffect(() => {
+    // Focus lands in the dialog and Escape closes it — without this the modal
+    // trapped keyboard users, which the production-flags e2e caught.
+    ref.current?.focus();
+    const onKey = (e) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
   return (
     <div role="dialog" aria-modal="true" aria-label="How modes work" onClick={onClose} style={{
       position: "fixed", inset: 0, zIndex: 90, background: "rgba(3,7,13,0.9)",
       display: "flex", alignItems: "center", justifyContent: "center", padding: 16,
     }}>
-      <div onClick={(e) => e.stopPropagation()} className="ec-panel ec-panel-raised" style={{
+      <div ref={ref} tabIndex={-1} onClick={(e) => e.stopPropagation()} className="ec-panel ec-panel-raised" style={{
         maxWidth: 620, width: "100%", maxHeight: "82vh", overflowY: "auto", padding: 20,
       }}>
         <div style={{ display: "flex", alignItems: "center", marginBottom: 10 }}>

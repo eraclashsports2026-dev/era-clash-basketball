@@ -75,8 +75,11 @@ test("P3: Coaching & Strategy shows real recorded coaching", async ({ page }) =>
   }
   await page.getByRole("tab", { name: "In-Game Adjustments" }).click();
   const body = await page.locator("body").innerText();
-  // Adjustments are attributed to a NAMED coach, or explicitly absent.
-  expect(body).toMatch(/so Coach [A-Z][A-Za-z'\- ]+ |No in-game adjustment was recorded/);
+  // Adjustments are attributed to a NAMED coach — either the single form
+  // ("…, so Coach X did Y.") or the grouped form ("Coach X did Y twice
+  // between Q1 and Q3 as …") — or they are explicitly absent.
+  expect(body).toMatch(/(so )?Coach [A-Z][A-Za-z'\- ]+ .*(so Coach|times|twice)|so Coach [A-Z]|No in-game adjustment was recorded/);
+  expect(body).not.toMatch(/so the staff/);
   // No internal enum and no fabricated clock reaches the screen.
   expect(body).not.toMatch(/switch_heavy|drop_heavy|MAN_ILLEGAL_DEFENSE/);
   expect(body).not.toMatch(/\bPoss\. \d+/);

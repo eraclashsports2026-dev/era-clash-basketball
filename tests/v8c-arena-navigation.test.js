@@ -199,3 +199,26 @@ describe("the account header shows real state", () => {
     expect(c).toMatch(/saved on this device/i);
   });
 });
+
+describe("a chaos-disabled deployment is never a dead end", () => {
+  it("gates Dream Matchup only while Chaos Clash is available", () => {
+    // Phase 8A put Dream Matchup behind an account gate. On a deployment where
+    // Chaos Clash is switched off — production today — Dream Matchup IS the
+    // Play experience, so gating it left a signed-out visitor facing a wall
+    // with nothing they could open. The gate is now conditional on Chaos being
+    // available as the free default.
+    const app = readFileSync("src/App.jsx", "utf8");
+    expect(app).toMatch(/const dreamMatchupGated = chaosAvailable/);
+    expect(app).toMatch(/\) : dreamMatchupGated \? \(/);
+    // The derivation must precede its use, or the render throws on a temporal
+    // dead zone that the bundler does not catch.
+    expect(app.indexOf("const dreamMatchupGated")).toBeLessThan(app.indexOf(") : dreamMatchupGated ? ("));
+  });
+
+  it("still offers a guest something playable in every configuration", () => {
+    // Chaos on: Chaos Clash is open to guests.
+    expect(resolveModeStatus(findMode("chaos"), "GUEST")).toBe(MODE_STATUS.AVAILABLE);
+    // Chaos off: the Daily is open to guests too.
+    expect(resolveModeStatus(findMode("daily"), "GUEST")).toBe(MODE_STATUS.AVAILABLE);
+  });
+});
