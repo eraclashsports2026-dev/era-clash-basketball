@@ -5,7 +5,8 @@
 // Never a dead end: contextual CTAs lead back into another game or a share.
 import { useState } from "react";
 import { KeyMoments, MatchupPatterns, PeriodScores } from "./PostgamePanels.jsx";
-import { T, card } from "../theme.js";
+import CoachingStrategy from "./CoachingStrategy.jsx";
+import { FONT, T, card } from "../theme.js";
 import { chemistryScore, chemistryLabel } from "../chemistryView.js";
 import { Feedback } from "./Feedback.jsx";
 import PlayerImage from "./PlayerImage.jsx";
@@ -43,37 +44,36 @@ function ScoreboardHero({ sim, won, mode, seriesLabel, team, opp }) {
   const isSeries = /^\d-\d$/.test(String(sim.seriesResult || ""));
   const winnerLabel = won ? "TEAM GOLD WINS" : "TEAM BLUE WINS";
   return (
-    <div style={{
-      padding: "22px 14px 18px", textAlign: "center",
-      background: `linear-gradient(180deg, ${won ? T.goldSoft : T.blueSoft} 0%, rgba(20,26,42,0) 85%)`,
-    }}>
-      <div style={{ fontSize: 10.5, letterSpacing: 4, color: T.textDim, fontWeight: 800 }}>
+    // The score reveal is the cinematic moment: a navy arena inset inside the
+    // warm page, so the final number carries weight.
+    <div className="ec-arena-inset" style={{ padding: "26px 14px 22px", textAlign: "center", borderRadius: 0 }}>
+      <div style={{ fontSize: 10.5, letterSpacing: 4, color: T.onArenaDim, fontWeight: 800 }}>
         {mode === "daily" ? "DAILY CLASH · " : mode === "challenge" ? "GRUDGE MATCH · " : ""}FINAL{seriesLabel ? ` — ${seriesLabel}` : ""}
       </div>
 
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16, marginTop: 12, flexWrap: "wrap" }}>
         <div className="rise" style={{ flex: "1 1 150px", maxWidth: 300 }}>
-          <div style={{ fontSize: 11, letterSpacing: 2, fontWeight: 900, color: T.gold, marginBottom: 6 }}>TEAM GOLD</div>
+          <div style={{ fontSize: 11, letterSpacing: 2, fontWeight: 900, color: T.goldOnDark, marginBottom: 6 }}>TEAM GOLD</div>
           <LineupStrip team={team} side="gold" />
           {scores && !isSeries && (
-            <div style={{ fontSize: 52, fontWeight: 900, fontStyle: "italic", lineHeight: 1.1, color: won ? T.text : T.textDim }}>{scores.gold}</div>
+            <div style={{ fontSize: 54, fontWeight: 900, fontStyle: "italic", lineHeight: 1.1, fontFamily: FONT.display, color: won ? T.onArena : T.onArenaDim }}>{scores.gold}</div>
           )}
         </div>
 
         <div className="rise-2" style={{ flexShrink: 0 }}>
           <div aria-hidden="true" style={{
             fontSize: 34, fontWeight: 900, fontStyle: "italic", letterSpacing: -1,
-            background: `linear-gradient(120deg, ${T.gold} 30%, #e8eaf2 50%, ${T.blue} 70%)`,
+            background: `linear-gradient(120deg, ${T.goldOnDark} 30%, #ffffff 50%, ${T.blueOnDark} 70%)`,
             WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent",
           }}>VS</div>
-          {isSeries && <div style={{ fontSize: 40, fontWeight: 900, fontStyle: "italic", color: won ? T.gold : T.blue }}>{sim.seriesResult}</div>}
+          {isSeries && <div style={{ fontSize: 40, fontWeight: 900, fontStyle: "italic", color: won ? T.goldOnDark : T.blueOnDark }}>{sim.seriesResult}</div>}
         </div>
 
         <div className="rise" style={{ flex: "1 1 150px", maxWidth: 300 }}>
-          <div style={{ fontSize: 11, letterSpacing: 2, fontWeight: 900, color: T.blue, marginBottom: 6 }}>TEAM BLUE</div>
+          <div style={{ fontSize: 11, letterSpacing: 2, fontWeight: 900, color: T.blueOnDark, marginBottom: 6 }}>TEAM BLUE</div>
           <LineupStrip team={opp} side="blue" />
           {scores && !isSeries && (
-            <div style={{ fontSize: 52, fontWeight: 900, fontStyle: "italic", lineHeight: 1.1, color: won ? T.textDim : T.text }}>{scores.blue}</div>
+            <div style={{ fontSize: 54, fontWeight: 900, fontStyle: "italic", lineHeight: 1.1, fontFamily: FONT.display, color: won ? T.onArenaDim : T.onArena }}>{scores.blue}</div>
           )}
         </div>
       </div>
@@ -81,9 +81,9 @@ function ScoreboardHero({ sim, won, mode, seriesLabel, team, opp }) {
       <div className="rise-3" style={{ marginTop: 10 }}>
         <span style={{
           display: "inline-block", padding: "7px 20px", borderRadius: 20, fontSize: 14, fontWeight: 900, letterSpacing: 2,
-          color: "#fffdf8", background: won ? T.gold : T.blue,
+          color: "#0c1627", background: won ? T.goldOnDark : T.blueOnDark,
         }}>{winnerLabel}</span>
-        {isSeries && <div style={{ fontSize: 12, color: T.textDim, marginTop: 6 }}>Best of 7 — {won ? "Gold" : "Blue"} wins series {sim.seriesResult}</div>}
+        {isSeries && <div style={{ fontSize: 12.5, color: T.onArenaDim, marginTop: 6 }}>Best of 7 — {won ? "Gold" : "Blue"} wins series {sim.seriesResult}</div>}
       </div>
     </div>
   );
@@ -514,61 +514,8 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
         </>}
 
         {section === "coaching" && <>
-        {/* Which coaches ran the game */}
-        {sim.coachNames?.gold && (
-          <div style={{ marginTop: 2, padding: "10px 14px", borderRadius: 10, background: T.bgCardHover, border: `1px solid ${T.border}`, fontSize: 12.5 }}>
-            🧠 <b style={{ color: T.gold }}>{sim.coachNames.gold}</b>{sim.coachNames.blue ? <> vs <b style={{ color: T.blue }}>{sim.coachNames.blue}</b></> : null}
-            {sim.eraId && <span style={{ color: T.textDim }}> · {sim.eraLabel || sim.eraId} Era Style</span>}
-          </div>
-        )}
-        {/* V3: usage roles + defensive assignments — the basketball under the hood */}
-        {sim.v3?.usage && (
-          <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 12 }}>
-            <div style={{ flex: "1 1 260px", padding: 12, borderRadius: 10, background: T.bgCardHover, border: `1px solid ${T.border}` }}>
-              <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: 1.5, color: T.textDim, marginBottom: 6 }}>OFFENSIVE ROLES (USAGE)</div>
-              {[["gold", T.gold], ["blue", T.blue]].map(([side, color]) => (
-                <div key={side} style={{ marginBottom: 6 }}>
-                  {sim.v3.usage[side].map((u) => (
-                    <div key={u.id} style={{ display: "flex", justifyContent: "space-between", fontSize: 11, padding: "2px 0" }}>
-                      <span style={{ color: T.text }}>{u.id.split("-")[0]}</span>
-                      <span style={{ color: T.textDim }}>{u.role}</span>
-                      <span style={{ fontWeight: 800, color }}>{Math.round(u.share * 100)}%</span>
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
-            <div style={{ flex: "1 1 260px", padding: 12, borderRadius: 10, background: T.bgCardHover, border: `1px solid ${T.border}` }}>
-              <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: 1.5, color: T.textDim, marginBottom: 6 }}>DEFENSIVE ASSIGNMENTS</div>
-              {sim.v3.assignments.onGold.map((a, i) => (
-                <div key={i} style={{ fontSize: 11, padding: "2px 0", color: T.textDim }}>
-                  <b style={{ color: T.blue }}>{a.defender.split(" ").slice(-1)[0]}</b> guarded <b style={{ color: T.gold }}>{a.scorer.split(" ").slice(-1)[0]}</b>
-                </div>
-              ))}
-              <div style={{ height: 6 }} />
-              {sim.v3.assignments.onBlue.map((a, i) => (
-                <div key={i} style={{ fontSize: 11, padding: "2px 0", color: T.textDim }}>
-                  <b style={{ color: T.gold }}>{a.defender.split(" ").slice(-1)[0]}</b> guarded <b style={{ color: T.blue }}>{a.scorer.split(" ").slice(-1)[0]}</b>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* V3: in-game coaching adjustments actually made by the engine */}
-        {sim.v3 && ((sim.v3.adjustments?.gold?.length || 0) + (sim.v3.adjustments?.blue?.length || 0) > 0) && (
-          <div style={{ marginTop: 12, padding: 12, borderRadius: 10, background: T.bgCardHover, border: `1px solid ${T.border}` }}>
-            <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: 1.5, color: T.textDim, marginBottom: 6 }}>IN-GAME ADJUSTMENTS</div>
-            {(sim.v3.adjustments.gold || []).map((a, i) => (
-              <div key={`g${i}`} style={{ fontSize: 11.5, padding: "2px 0", color: T.textDim }}><b style={{ color: T.gold }}>Gold:</b> {a}</div>
-            ))}
-            {(sim.v3.adjustments.blue || []).map((a, i) => (
-              <div key={`b${i}`} style={{ fontSize: 11.5, padding: "2px 0", color: T.textDim }}><b style={{ color: T.blue }}>Blue:</b> {a}</div>
-            ))}
-          </div>
-        )}
-
-        {/* The stored pregame read, reused verbatim */}
+        <CoachingStrategy coaching={sim.v3?.coaching} eraLabel={sim.eraLabel || sim.eraId} />
+        {/* The stored pregame read as a compact supporting panel, never the centre */}
         <StoredPregameRead pregame={sim.pregame} />
         </>}
 

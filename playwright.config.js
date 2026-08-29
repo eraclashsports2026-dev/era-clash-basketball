@@ -21,12 +21,20 @@ export default defineConfig({
   projects: [
     {
       name: "production-flags-off",
-      testIgnore: /daily-coach-era\.spec\.js/,
+      testIgnore: /(daily-coach-era|phase7b-preview)\.spec\.js/,
     },
     {
       name: "daily-coach-era-preview",
       testMatch: /daily-coach-era\.spec\.js/,
       use: { baseURL: "http://localhost:4174" },
+    },
+    {
+      // Candidate 3 surfaces (coaching detail, key moments, matchup patterns,
+      // series continuity) exist only on the preview engine, which is what the
+      // Wave 1 testers actually use — so they get their own harness.
+      name: "candidate3-preview",
+      testMatch: /phase7b-preview\.spec\.js/,
+      use: { baseURL: "http://localhost:4175" },
     },
   ],
   webServer: [
@@ -42,6 +50,13 @@ export default defineConfig({
       reuseExistingServer: true,
       timeout: 30_000,
       env: { DAILY_COACH_ERA_ENABLED: "true" },
+    },
+    {
+      command: "node scripts/harness.mjs 4175",
+      url: "http://localhost:4175/api/health",
+      reuseExistingServer: true,
+      timeout: 30_000,
+      env: { PREVIEW_SIM_ENGINE_ENABLED: "true", VERCEL_ENV: "preview" },
     },
   ],
 });

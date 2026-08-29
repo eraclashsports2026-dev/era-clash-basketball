@@ -309,8 +309,10 @@ test("J11 (V3): Team → Coach → Era Style → Ready → Run with possession p
   await page.getByRole("tab", { name: "Box Score" }).click();
   await expect(page.getByText("BOX SCORE", { exact: true })).toBeVisible();
   await page.getByRole("tab", { name: "Coaching & Strategy" }).click();
-  await expect(page.getByText("OFFENSIVE ROLES (USAGE)")).toBeVisible();
-  await expect(page.getByText("DEFENSIVE ASSIGNMENTS")).toBeVisible();
+  // On the production engine no game-plan history is recorded, so the tab says
+  // so rather than inventing coaching detail (Candidate 3 coverage lives in
+  // e2e/phase7b-preview.spec.js).
+  await expect(page.getByText(/does not record game-plan and adjustment history/)).toBeVisible();
   // era with no 3PT line: replay in the 60s and assert zero threes
   const res = await page.request.post("/api/game", {
     data: { mode: "single", simulationId: "e2e-v3-60s-" + Date.now(),

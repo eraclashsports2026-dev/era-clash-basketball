@@ -55,6 +55,21 @@ function EdgePreview({ gold, blue, coachGoldId, coachBlueId, eraStyleId, onArena
   return <MatchupGrid edges={data?.edges} keyClash={data?.keyClash} loading={!data} onArena={onArena} />;
 }
 
+// One side of the tipoff composition: the five, the coach, on the arena band.
+function ReadySide({ side, team, coach, fallbackLabel }) {
+  const accent = side === "blue" ? T.blueOnDark : T.goldOnDark;
+  return (
+    <div style={{ textAlign: "center", minWidth: 0 }}>
+      <div style={{ fontSize: 11.5, fontWeight: 900, letterSpacing: 2, color: accent }}>TEAM {side === "blue" ? "BLUE" : "GOLD"}</div>
+      <div style={{ display: "flex", gap: 6, justifyContent: "center", flexWrap: "wrap", margin: "8px 0 6px" }}>
+        {team ? team.map((p) => <PlayerImage key={p.id} player={p} variant="card" team={side} />)
+              : <span style={{ fontSize: 13, color: T.onArenaDim }}>{fallbackLabel}</span>}
+      </div>
+      {coach && <div style={{ fontSize: 12.5, color: T.onArenaDim }}>Coach <b style={{ color: T.onArena }}>{coach.name}</b></div>}
+    </div>
+  );
+}
+
 // Five-portrait roster summary used above the coach panels (stage 2).
 function PlayerImageMini({ p, side }) {
   return (
@@ -1127,29 +1142,49 @@ export default function App() {
             </div>
           )}
 
-          {/* ── READY TO RUN ─────────────────────────────────────────────── */}
+          {/* ── READY TO RUN — the tipoff moment ─────────────────────────── */}
           {v3Steps && playStage === "READY" && !result && !loading && (
-            <div style={{ marginTop: 8, maxWidth: 760, marginLeft: "auto", marginRight: "auto" }}>
-              <VsRow gold={team} blue={blueBuildable ? opponent : null} coachGold={coachGold} coachBlue={blueBuildable ? coachBlue : null}
-                blueTitle={blueBuildable ? "TEAM BLUE" : "THE FIELD"} />
-              <div style={{ textAlign: "center", fontSize: 11.5, color: T.textDim, margin: "2px 0 10px" }}>
-                Era Style: <b style={{ color: T.text }}>{v3.eras?.find((e) => e.id === eraStyle)?.label || eraStyle}</b>
-                <button onClick={() => setPlayStage("ERA")} style={{ marginLeft: 10, background: "none", border: `1px solid ${T.border}`, color: T.textDim, borderRadius: 7, padding: "3px 10px", cursor: "pointer", fontSize: 11 }}>Edit era</button>
-                <button onClick={() => setPlayStage("COACHES")} style={{ marginLeft: 6, background: "none", border: `1px solid ${T.border}`, color: T.textDim, borderRadius: 7, padding: "3px 10px", cursor: "pointer", fontSize: 11 }}>Edit coaches</button>
-                <button onClick={() => setPlayStage("ROSTERS")} style={{ marginLeft: 6, background: "none", border: `1px solid ${T.border}`, color: T.textDim, borderRadius: 7, padding: "3px 10px", cursor: "pointer", fontSize: 11 }}>Edit rosters</button>
+            <div style={{ marginTop: 8, maxWidth: 900, marginLeft: "auto", marginRight: "auto" }}>
+              <div className="ec-arena-inset" style={{ padding: "22px 18px" }}>
+                <div style={{ fontSize: 10.5, letterSpacing: 4, color: T.onArenaDim, fontWeight: 800, textAlign: "center" }}>READY TO RUN</div>
+                <div className="ready-row">
+                  <ReadySide side="gold" team={team} coach={coachGold} />
+                  <div style={{ textAlign: "center" }}>
+                    <div aria-hidden="true" style={{
+                      fontSize: 40, fontWeight: 900, fontStyle: "italic", fontFamily: FONT.display, letterSpacing: -1,
+                      background: `linear-gradient(120deg, ${T.goldOnDark} 28%, #ffffff 50%, ${T.blueOnDark} 72%)`,
+                      WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent",
+                    }}>VS</div>
+                    <div style={{ fontSize: 12.5, color: T.onArenaDim, marginTop: 2 }}>
+                      {v3.eras?.find((e) => e.id === eraStyle)?.label || eraStyle} Era Style
+                    </div>
+                  </div>
+                  <ReadySide side="blue" team={blueBuildable ? opponent : null} coach={blueBuildable ? coachBlue : null}
+                    fallbackLabel={gameMode === "Win82" ? "82 generated rivals" : "Four playoff rivals"} />
+                </div>
               </div>
-              <div style={{ maxWidth: 420, margin: "0 auto", display: "flex", flexDirection: "column", gap: 12 }}>
+
+              <div style={{ display: "flex", gap: 8, justifyContent: "center", flexWrap: "wrap", margin: "12px 0" }}>
+                {[["Edit rosters", "ROSTERS"], ["Edit coaches", "COACHES"], ["Edit era", "ERA"]].map(([label, stage]) => (
+                  <button key={stage} onClick={() => setPlayStage(stage)} style={{
+                    background: T.bgCard, border: `1px solid ${T.border}`, color: T.textDim, borderRadius: R.sm,
+                    padding: "8px 14px", cursor: "pointer", fontSize: 12.5, fontWeight: 700, minHeight: 42,
+                  }}>{label}</button>
+                ))}
+              </div>
+
+              <div style={{ maxWidth: 460, margin: "0 auto", display: "flex", flexDirection: "column", gap: 12 }}>
                 <EdgePreview gold={team} blue={blueBuildable ? opponent : null} coachGoldId={coachGold?.id} coachBlueId={coachBlue?.id} eraStyleId={eraStyle} />
                 <div className="sticky-sim">
                   <button onClick={runTheSim} style={{
-                    width: "100%", padding: "16px 20px", fontSize: 15, fontWeight: 900, letterSpacing: 1,
-                    border: "none", borderRadius: 12, cursor: "pointer", minHeight: 54,
-                    background: `linear-gradient(120deg, ${T.gold} 0%, #ffd76a 60%, ${T.gold} 100%)`,
+                    width: "100%", padding: "17px 20px", fontSize: 16, fontWeight: 900, letterSpacing: 1,
+                    border: "none", borderRadius: 12, cursor: "pointer", minHeight: 58,
+                    background: `linear-gradient(120deg, ${T.gold} 0%, #d9a83a 60%, ${T.gold} 100%)`,
                     color: "#fffdf8", boxShadow: T.shadowRaised,
                   }}>
                     ⚡ RUN THE SIM
                   </button>
-                  <div style={{ textAlign: "center", fontSize: 11, color: T.textDim, marginTop: 6 }}>
+                  <div style={{ textAlign: "center", fontSize: 12, color: T.textDim, marginTop: 6 }}>
                     {GAME_MODES.find(([id]) => id === activeMode)?.[2] || ""}
                   </div>
                 </div>

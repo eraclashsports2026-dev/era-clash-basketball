@@ -150,3 +150,11 @@ button { font-family: inherit; }
   .coach-modal-body > div { border-left: none !important; border-top: 1px solid var(--ec-border); }
   .coach-modal { max-height: 94vh !important; }
 }
+
+/* Phase 7B — coaching columns */
+.coaching-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+@media (max-width: 900px) { .coaching-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* Phase 7B — ready-to-run tipoff composition */
+.ready-row { display: grid; grid-template-columns: 1fr auto 1fr; gap: 18px; align-items: center; margin-top: 14px; }
+@media (max-width: 820px) { .ready-row { grid-template-columns: minmax(0, 1fr); gap: 10px; } }

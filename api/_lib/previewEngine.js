@@ -25,6 +25,7 @@ import { expectedWinPct, matchupPreviewV3, classifyOutcome, edgeBand } from "../
 import { versionOf } from "../../src/versions.js";
 import { previewEvent } from "./previewTelemetry.js";
 import { deriveKeyMoments, derivePatterns } from "./previewKeyMoments.js";
+import { deriveCoaching } from "./previewCoaching.js";
 import { PLAYERS } from "../../src/players.js";
 
 /** Result-id prefix for preview results — production ids never carry it. */
@@ -161,6 +162,8 @@ export const computeResultPreview = (mode, gold, blue, opts, seed) => {
       // total played, which would mislabel overtime as "Q5").
       keyMoments: deriveKeyMoments(g.possessionLedger, CARD_BY_ID, 4),
       matchupPatterns: derivePatterns(g.possessionLedger, CARD_BY_ID),
+      coaching: deriveCoaching(g, CARD_BY_ID, { gold: coachG.name, blue: coachB.name },
+        { gold: gold.map((p) => p.id), blue: blue.map((p) => p.id) }),
       periodScores: g.periodScores ?? null,
       fullBox: { gold: goldLines, blue: blueLines },
       teamTotals: { gold: g.gold.totals, blue: g.blue.totals },

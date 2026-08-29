@@ -6,6 +6,7 @@
 import { PLAYERS } from "../../src/players.js";
 import { hasStore, cmd, dayKey } from "./store.js";
 import { limits } from "./flags.js";
+import { buildEvidencePacket, validateNarrativeClaims } from "./narrativeEvidence.js";
 
 // Exported so the narrative cache identity can name the exact model that
 // produced a narrative. Swapping models MUST produce a cache miss — text
@@ -81,8 +82,13 @@ There are no chemistry bonuses in this engine — explain the result through pos
 
 const buildPrompt = (result) => {
   const core = result.core;
+  const packet = buildEvidencePacket(result);
+  const dupRule = packet.duplicatePeople.length
+    ? `\nSAME PERSON ON BOTH TEAMS: ${packet.duplicatePeople.join(", ")}. Every mention of these players MUST be written as "Gold's <name>" or "Blue's <name>" — never the bare name.`
+    : "";
+  const evidenceRule = `\nEVIDENCE RULE: state only what the box score and the recorded events support. Do NOT claim fatigue, lost confidence, intimidation, or that a defender held someone below an unobserved average — the simulation records none of those. Margin is ${packet.derived.margin} points (${packet.derived.marginBand}); do not describe it as anything else.${dupRule}`;
   const line = (row) => `${row.name}: ${row.pts}pts ${row.reb}reb ${row.ast}ast ${row.stl}stl ${row.blk}blk`;
-  return `You are an expert NBA broadcast analyst. A simulated ${result.mode === "best7" ? "best-of-7 series" : "game"} between Team Gold and Team Blue has ALREADY been decided by the game engine. Your job is to explain and dramatize the FIXED result below. You must not contradict any number or the winner.
+  return `${evidenceRule}\n\nYou are an expert NBA broadcast analyst. A simulated ${result.mode === "best7" ? "best-of-7 series" : "game"} between Team Gold and Team Blue has ALREADY been decided by the game engine. Your job is to explain and dramatize the FIXED result below. You must not contradict any number or the winner.
 
 FINAL (authoritative, do not alter): winner=Team ${core.winner}, result=${core.seriesResult}
 Team Gold lineup: ${result.goldIds.map(nameOf).join(", ")}
@@ -170,6 +176,15 @@ export const generateNarrative = async (result, apiKey, chaos) => {
       try { parsed = JSON.parse(text.slice(s, e + 1)); } catch { /* invalid */ }
       const narrative = validateNarrative(parsed);
       if (!narrative) { lastCode = "MODEL_INVALID_OUTPUT"; await recordFailure(); continue; }
+      // CLAIM VALIDATION: a recap that contradicts the authoritative result is
+      // rejected, not surfaced with a caveat. The deterministic summary is
+      // always available, so refusing costs the reader nothing.
+      const claims = validateNarrativeClaims(narrative, buildEvidencePacket(result));
+      if (!claims.ok) {
+        lastCode = "MODEL_CONTRADICTED_RESULT";
+        await recordFailure();
+        continue;
+      }
       const usage = {
         model: MODEL_NAME,
         input_tokens: data.usage?.input_tokens || 0,

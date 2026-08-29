@@ -50,18 +50,18 @@ export default function SimulationLoading({ stage, progress, goldLabel = "TEAM G
         </div>
         <div aria-hidden="true" style={{
           width: 54, height: 54, borderRadius: 999, display: "flex", alignItems: "center", justifyContent: "center",
-          border: `2px solid ${T.goldBorder}`, boxShadow: `${T.glowGold}, ${T.glowBlue}`,
+          border: `2px solid ${T.goldOnDark}66`,
           fontFamily: FONT.display, fontWeight: 900, fontStyle: "italic", fontSize: 18,
           background: T.bgMuted,
         }}>
-          <span style={{ color: T.gold }}>E</span><span style={{ color: T.blue }}>C</span>
+          <span style={{ color: T.goldOnDark }}>E</span><span style={{ color: T.blueOnDark }}>C</span>
         </div>
         <div>
-          <div style={{ fontSize: 17, fontWeight: 900, fontStyle: "italic", color: T.blue, letterSpacing: 1, fontFamily: FONT.display }}>{blueLabel}</div>
-          {coachBlue && <div style={{ fontSize: 10.5, color: T.textDim, marginTop: 2 }}>Coach {coachBlue}</div>}
+          <div style={{ fontSize: 17, fontWeight: 900, fontStyle: "italic", color: T.blueOnDark, letterSpacing: 1, fontFamily: FONT.display }}>{blueLabel}</div>
+          {coachBlue && <div style={{ fontSize: 11.5, color: T.onArenaDim, marginTop: 2 }}>Coach {coachBlue}</div>}
         </div>
       </div>
-      {eraLabel && <div style={{ fontSize: 11, color: T.textDim, marginBottom: 6 }}>🕰️ {eraLabel} Era Style</div>}
+      {eraLabel && <div style={{ fontSize: 12, color: T.onArenaDim, marginBottom: 6 }}>🕰️ {eraLabel} Era Style</div>}
 
       <div style={{ display: "flex", justifyContent: "center", margin: "10px 0 16px" }}>
         <div className="sim-spinner" aria-hidden="true" />
@@ -73,7 +73,7 @@ export default function SimulationLoading({ stage, progress, goldLabel = "TEAM G
           <li key={id} aria-current={i === active ? "step" : undefined} style={{
             display: "flex", alignItems: "center", gap: 10, padding: "5px 0",
             fontSize: 12.5, fontWeight: i === active ? 800 : 500,
-            color: i < active ? T.green : i === active ? T.text : T.textMuted,
+            color: i < active ? "#7fd6a4" : i === active ? T.onArena : T.onArenaDim,
           }}>
             <span aria-hidden="true" style={{ width: 16, textAlign: "center" }}>{i < active ? "✓" : i === active ? "▸" : "·"}</span>
             {label}{i === active && stage && !/^(Preparing|Building|Simulating|Finalizing)/.test(stage) ? ` — ${stage}` : ""}
@@ -83,17 +83,17 @@ export default function SimulationLoading({ stage, progress, goldLabel = "TEAM G
 
       {progress && (
         <div style={{ maxWidth: 420, margin: "14px auto 0" }}>
-          <div style={{ height: 7, background: T.border, borderRadius: 4, overflow: "hidden" }}>
-            <div style={{ height: "100%", width: `${(progress.done / progress.total) * 100}%`, background: `linear-gradient(90deg, ${T.gold}, #ffd76a)`, transition: "width .3s" }} />
+          <div style={{ height: 7, background: "rgba(255,255,255,0.12)", borderRadius: 4, overflow: "hidden" }}>
+            <div style={{ height: "100%", width: `${(progress.done / progress.total) * 100}%`, background: `linear-gradient(90deg, ${T.goldOnDark}, #ffd76a)`, transition: "width .3s" }} />
           </div>
-          <div style={{ fontSize: 12, color: T.gold, marginTop: 8, fontWeight: 800 }}>
+          <div style={{ fontSize: 12.5, color: T.goldOnDark, marginTop: 8, fontWeight: 800 }}>
             {progress.label ? `${progress.label} — ` : ""}{progress.unit || "game"} {progress.done}/{progress.total} · {progress.wins} wins so far
           </div>
         </div>
       )}
 
-      <div style={{ marginTop: 18, fontSize: 11.5, color: T.textDim, maxWidth: 420, marginLeft: "auto", marginRight: "auto", lineHeight: 1.55 }}>
-        <span style={{ color: T.gold, fontWeight: 800 }}>TIP · </span>{tip}
+      <div style={{ marginTop: 18, fontSize: 12.5, color: T.onArenaDim, maxWidth: 440, marginLeft: "auto", marginRight: "auto", lineHeight: 1.55 }}>
+        <span style={{ color: T.goldOnDark, fontWeight: 800 }}>TIP · </span>{tip}
       </div>
     </div>
   );
