@@ -635,6 +635,8 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
 
         {section === "coaching" && <>
         <CoachingStrategy coaching={sim.v3?.coaching} eraLabel={sim.eraLabel || sim.eraId} eraImpact={sim.eraImpact} />
+        {/* The stored pregame read, near the bottom and never leading. */}
+        <StoredPregameRead pregame={sim.pregame} />
         {/* The draft-shaped postgame section was removed in Phase 8B at the
             owner's direction. The underlying draft history is still stored on
             the result for replay, same-seed challenges and analytics. */}
