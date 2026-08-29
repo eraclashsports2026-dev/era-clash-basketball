@@ -27,6 +27,12 @@ import { utcDateKey, verifyDailyLineup, dailyOpponent } from "../src/dailyChalle
 // must read the stored record via officialDailyConfig().
 import { dailySimulationSeed, validateDailySelection, validateDailyVersions } from "../src/v3/dailyCoachEra.js";
 import { officialDailyConfig } from "./_lib/dailyOfficial.js";
+import {
+  createRun, loadRun, saveRun, ownsRun, applyHolds, applyCoach, publishChallenge,
+  view as chaosView, simulationSetup, draftHistory, validRunId, validChaosChallengeId,
+  guestRunsUsed, consumeGuestRun, guestLimitReached,
+} from "./_lib/chaosRun.js";
+import { can, CAPABILITIES, gateReason, GUEST_CHAOS_RUNS } from "../src/entitlements.js";
 
 const RESULT_TTL = 60 * 60 * 24 * 180;
 const IDEM_TTL = 60 * 60 * 24;
@@ -70,6 +76,99 @@ export default async function handler(req, res) {
 
   try {
     const b = req.body || {};
+
+    // ── Chaos Clash actions ─────────────────────────────────────────────────
+    // These ride /api/game because the deployment sits at its 13-function
+    // budget (12 API routes + middleware); a dedicated route would fail the
+    // build. Every action is server-authoritative: the client submits which
+    // slots to HOLD and which of three OFFERED coaches to take, and nothing
+    // else. Player ids, the era, the CPU's holds, the CPU's coach and the seed
+    // are never read from the request body.
+    const chaosAction = typeof b.chaosAction === "string" ? b.chaosAction : null;
+    if (chaosAction) {
+      if (!f.chaosClash) return sendError(res, "FEATURE_DISABLED", requestId);
+      if (!hasStore()) return sendError(res, "SERVICE_UNAVAILABLE", requestId);
+      const ip = clientIp(req);
+      const okRate = await Promise.all([
+        rateLimit(`chaos:s:${session.slice(0, 16)}`, L.chaosPerMinSession ?? 40, 60),
+        rateLimit(`chaos:ip:${ip}`, L.chaosPerMinIp ?? 90, 60),
+      ]);
+      if (okRate.some((a) => !a)) return sendError(res, "RATE_LIMITED", requestId, { retryAfter: 20 });
+
+      // Entitlement is read from the session's tier. It gates ACCESS to a mode.
+      // It never reaches the draft: no odds function takes a tier.
+      const tier = String(b.tier || "GUEST");
+      if (!can(tier, CAPABILITIES.CHAOS_CLASH)) {
+        // A gate is a product state, not an error: sendError deliberately drops
+        // extra fields, so the reason is returned explicitly for the UI to show.
+        return res.status(403).json({ requestId, gated: true, gate: gateReason(tier, CAPABILITIES.CHAOS_CLASH) });
+      }
+
+      if (chaosAction === "start") {
+        if (!can(tier, CAPABILITIES.CHAOS_UNLIMITED)) {
+          // Guest run budget is server-side; a cleared localStorage does not
+          // mint more runs.
+          const used = await guestRunsUsed(session);
+          if (guestLimitReached(used)) {
+            return res.status(403).json({
+              requestId, gated: true, guestRunsUsed: used, guestRunsAllowed: GUEST_CHAOS_RUNS,
+              gate: { kind: "ACCOUNT", message: "Create a free account to keep playing Chaos Clash." },
+            });
+          }
+        }
+        const chalId = b.challengeId ? validChaosChallengeId(b.challengeId) : null;
+        if (b.challengeId && !chalId) return sendError(res, "VALIDATION_FAILURE", requestId);
+        const created = await createRun({ session, challengeId: chalId });
+        if (!created.ok) return sendError(res, created.code || "NOT_FOUND", requestId);
+        if (!can(tier, CAPABILITIES.CHAOS_UNLIMITED)) await consumeGuestRun(session);
+        logReq({ requestId, route: "game", mode: "chaos", action: "start", status: 200 });
+        return res.status(200).json({ requestId, chaos: chaosView(created.run) });
+      }
+
+      const runId = validRunId(b.chaosRunId);
+      if (!runId) return sendError(res, "VALIDATION_FAILURE", requestId);
+      const run = await loadRun(runId);
+      if (!run) return sendError(res, "NOT_FOUND", requestId);
+      // Draft state cannot cross users.
+      if (!ownsRun(run, session)) return sendError(res, "FORBIDDEN", requestId);
+      if (run.expiresAt && Date.now() > run.expiresAt) return sendError(res, "NOT_FOUND", requestId);
+
+      if (chaosAction === "view") {
+        return res.status(200).json({ requestId, chaos: chaosView(run, { includeCpuHolds: run.currentRoll > 1 }) });
+      }
+      if (chaosAction === "holds") {
+        if (!Array.isArray(b.holdSlots)) return sendError(res, "VALIDATION_FAILURE", requestId);
+        if (b.holdSlots.length > 5) return sendError(res, "VALIDATION_FAILURE", requestId);
+        const r = await applyHolds(run, b.holdSlots);
+        if (!r.ok) return sendError(res, "VALIDATION_FAILURE", requestId, { reason: r.code, phase: r.phase });
+        return res.status(200).json({ requestId, chaos: chaosView(run, { includeCpuHolds: true }) });
+      }
+      if (chaosAction === "coach") {
+        const r = await applyCoach(run, String(b.coachId || ""));
+        if (!r.ok) return sendError(res, "VALIDATION_FAILURE", requestId, { reason: r.code });
+        return res.status(200).json({ requestId, chaos: chaosView(run, { includeCpuHolds: true }) });
+      }
+      if (chaosAction === "challenge") {
+        const manifest = await publishChallenge(run);
+        return res.status(200).json({ requestId, challengeId: manifest.challengeId });
+      }
+      if (chaosAction !== "simulate") return sendError(res, "VALIDATION_FAILURE", requestId);
+      if (run.currentPhase !== "READY") {
+        return sendError(res, "VALIDATION_FAILURE", requestId, { reason: "INVALID_TRANSITION", phase: run.currentPhase });
+      }
+      // Fall through to the normal simulation path with the STORED setup. The
+      // request body's own team/coach/era fields are discarded here, which is
+      // what makes the draft unspoofable.
+      const setup = simulationSetup(run);
+      b.mode = "single";
+      b.goldIds = setup.goldIds;
+      b.blueIds = setup.blueIds;
+      b.coachGoldId = setup.coachGoldId;
+      b.coachBlueId = setup.coachBlueId;
+      b.eraStyleId = setup.eraStyleId;
+      req._chaosRun = run;
+    }
+
     const mode = MODES.has(b.mode) ? b.mode : null;
     const simulationId = validSimId(b.simulationId);
     if (!mode || !simulationId) return sendError(res, "VALIDATION_FAILURE", requestId);
@@ -275,6 +374,9 @@ export default async function handler(req, res) {
       blueIds: blue ? blue.map((p) => p.id) : computed.blueIds || null,
       ...computed,
       pregame: pregameSnapshot,
+      // Non-result-affecting setup history. Records only what was REVEALED —
+      // no unchosen branch and no unrevealed future card is ever written.
+      chaosDraft: req._chaosRun ? draftHistory(req._chaosRun) : null,
       challengeId: challenge ? challenge.id : null,
       dailyDate: mode === "daily" ? today : null,
       // Narrative identity for a coach/era Daily is the GAME, not the player.
@@ -288,6 +390,13 @@ export default async function handler(req, res) {
       narrative_status: "not_requested",
       created_at: Date.now(),
     };
+
+    if (req._chaosRun) {
+      req._chaosRun.currentPhase = "SIMULATED";
+      req._chaosRun.status = "SIMULATED";
+      req._chaosRun.resultId = resultId;
+      await saveRun(req._chaosRun).catch(() => {});
+    }
 
     // ── Persist immutably + apply record updates from OUR result ────────────
     const records = { persisted: false, daily: null, challenge: null };

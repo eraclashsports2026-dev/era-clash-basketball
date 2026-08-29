@@ -17,6 +17,7 @@ import { CHAOS_ERA_IDS, eraRevealFacts, eraImplications, playerEraSwing, ERA_TRA
 import { cpuHoldDecision, cpuHoldCommitment, LEGEND_CPU_VERSION } from "./legendCpu.js";
 import { generateOffers, explainOffer, cpuCoachChoice, COACH_OFFER_VERSION } from "./coachOffers.js";
 import { hashString, mulberry32, deriveSeed } from "../v3/seed.js";
+import { challengeId } from "./challenge.js";
 
 export const CHAOS_RUN_VERSION = "1.0.0";
 export const RUN_TTL_SECONDS = 60 * 60 * 6;
@@ -250,7 +251,11 @@ const cardView = (card, slot, held) =>
     tier: tierOf(card, slot), held: !!held,
   } : null;
 
-/** An opaque challenge id — never the raw seed. */
-export const challengeIdFor = (run) => String(hashString(`chal|${run.seedId}|${CHAOS_RUN_VERSION}`) >>> 0).padStart(10, "0");
+/**
+ * An opaque challenge id — never the raw seed. Delegates to challenge.js so
+ * there is exactly ONE formula: an earlier version computed its own and
+ * produced a different id for the same seed.
+ */
+export const challengeIdFor = (run) => challengeId(run.seedId);
 
 export { USER_SIDE, CPU_SIDE };

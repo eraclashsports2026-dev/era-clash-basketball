@@ -14,7 +14,9 @@ import { DRAFT_VERSIONS } from "./runState.js";
 export const CHALLENGE_MANIFEST_VERSION = "1.0.0";
 
 export const challengeId = (seedId) =>
-  String(hashString(`chal|${seedId}|${CHALLENGE_MANIFEST_VERSION}`) >>> 0).toString(36).padStart(7, "0");
+  // Base-36 of the unsigned hash. Note the parenthesis placement: String(n)
+  // .toString(36) silently ignores the radix and returns decimal digits.
+  ((hashString(`chal|${seedId}|${CHALLENGE_MANIFEST_VERSION}`) >>> 0).toString(36)).padStart(7, "0");
 
 /** The manifest stored server-side. The seed lives HERE, never in the link. */
 export const buildManifest = ({ seedId, createdAt, originRunId }) => ({
