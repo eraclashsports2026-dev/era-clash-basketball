@@ -531,7 +531,11 @@ export default function App() {
     turningPoint: n?.turningPoint || record.core?.turningPoint || null,
     v3: record.v3 || null,
     story: record.story || null,
-    draftConsequences: record.draftConsequences || null,
+    expandedAnalysis: record.expandedAnalysis || null,
+    eraImpact: record.eraImpact || null,
+    // Draft history stays on the record for replay and challenges; Phase 8B
+    // removed its postgame section at the owner's direction.
+    draftConsequences: null,
     // Candidate identity travels with the view model: a Candidate 3 result may
     // not lead into a series that would run on a different engine.
     previewCandidate: record.preview === true ? (record.candidate ?? null) : null,

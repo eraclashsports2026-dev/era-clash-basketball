@@ -16,7 +16,7 @@ import { computeResult, dailyScore, newSeed } from "./_lib/game-core.js";
 import { computeResultV3 } from "./_lib/game-core-v3.js";
 import { computeResultPreview, PREVIEW_NAMESPACES, PREVIEW_RESULT_ID_PREFIX } from "./_lib/previewEngine.js";
 import { buildPregameRead } from "./_lib/pregameRead.js";
-import { buildDeterministicSummary, deriveDraftConsequences } from "./_lib/postgameStory.js";
+import { buildDeterministicSummary, deriveDraftConsequences, buildExpandedAnalysis, eraImpactLine } from "./_lib/postgameStory.js";
 import { previewIdentity } from "./_lib/previewAccessCheck.js";
 import { previewEvent } from "./_lib/previewTelemetry.js";
 import { validCoachId, validEraId } from "./_lib/validate.js";
@@ -394,6 +394,21 @@ export default async function handler(req, res) {
       });
     } catch { story = null; }
 
+    // The long-form analysis, computed from the record. This is what the
+    // Enhanced Analysis panel shows whenever the external provider cannot
+    // deliver a validated recap, so the feature is never an empty panel.
+    let expandedAnalysis = null;
+    try {
+      expandedAnalysis = buildExpandedAnalysis({
+        record: computed,
+        quarterFlow: computed.v3?.quarterFlow || [],
+        moments: computed.v3?.keyMoments || [],
+        patterns: computed.v3?.matchupPatterns || [],
+        coaching: computed.v3?.coaching || null,
+        eraId: computed.eraId || null,
+      });
+    } catch { expandedAnalysis = null; }
+
     const resultId = (previewComputed ? PREVIEW_RESULT_ID_PREFIX : "") + newId(10);
     const record = {
       v: 1,
@@ -405,6 +420,8 @@ export default async function handler(req, res) {
       ...computed,
       pregame: pregameSnapshot,
       story,
+      expandedAnalysis,
+      eraImpact: computed.eraId ? eraImpactLine(computed.eraId) : null,
       // Non-result-affecting setup history. Records only what was REVEALED —
       // no unchosen branch and no unrevealed future card is ever written.
       chaosDraft: req._chaosRun ? draftHistory(req._chaosRun) : null,

@@ -220,16 +220,30 @@ button { font-family: inherit; }
 .box-scroll { overflow-x: auto; margin-top: 8px; }
 .box-table {
   width: 100%;
-  min-width: 640px;
+  /* Wide enough that every column can hold its widest real value. The made-
+     attempted totals (40-79, 21-28) are the widest, and percentage widths on a
+     fixed layout were narrow enough to break them across two lines. */
+  min-width: 760px;
   border-collapse: collapse;
   table-layout: fixed;
   font-size: 13px;
   font-variant-numeric: tabular-nums;
 }
-.box-col-player { width: 30%; min-width: 150px; }
-.box-col-stat { width: 6.36%; }
-.box-table td, .box-table th { overflow: hidden; text-overflow: ellipsis; }
-.box-table .box-player { white-space: nowrap; }
+.box-col-player { width: 190px; }
+/* Made-attempted pairs need the most room; single counters need the least. */
+.box-col-pair { width: 62px; }
+.box-col-stat { width: 48px; }
+/* A stat cell must never wrap: "40-79" is one value, not two lines. */
+.box-table td, .box-table th {
+  white-space: nowrap;
+  word-break: normal;
+  overflow-wrap: normal;
+}
+.box-table .box-player {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 @media (max-width: 720px) {
   /* The name column stays put while the numbers scroll under it. */
   .box-table .box-player { position: sticky; left: 0; z-index: 1; }
@@ -255,4 +269,14 @@ button { font-family: inherit; }
   font-size: 12px;
   padding: 3px 0;
   align-items: baseline;
+}
+
+/* Coaching sub-section selector */
+.coaching-sections {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+@media (max-width: 560px) {
+  .coaching-sections button { flex: 1 1 auto; }
 }
