@@ -37,7 +37,9 @@ export default function RosterBalance({ team, side = "gold", compact }) {
         <div style={{ marginTop: 8 }}>
           <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: 1, color: T.green }}>STRENGTHS</div>
           {strengths.slice(0, compact ? 3 : 5).map((s, i) => (
-            <div key={i} style={{ fontSize: 13, color: T.text, lineHeight: 1.5 }}>• {s}</div>
+            <div key={i} style={{ fontSize: 13, color: T.text, lineHeight: 1.5 }}>
+              • {s.label}{s.detail ? <span style={{ color: T.textDim }}> — {s.detail}</span> : null}
+            </div>
           ))}
         </div>
       )}
@@ -45,7 +47,9 @@ export default function RosterBalance({ team, side = "gold", compact }) {
         <div style={{ marginTop: 8 }}>
           <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: 1, color: T.orange }}>TRADEOFFS</div>
           {concerns.slice(0, compact ? 2 : 4).map((s, i) => (
-            <div key={i} style={{ fontSize: 13, color: T.text, lineHeight: 1.5 }}>• {s}</div>
+            <div key={i} style={{ fontSize: 13, color: T.text, lineHeight: 1.5 }}>
+              • {s.label}{s.detail ? <span style={{ color: T.textDim }}> — {s.detail}</span> : null}
+            </div>
           ))}
         </div>
       )}

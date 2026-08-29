@@ -77,7 +77,7 @@ describe("concept components use real product data", () => {
   });
 
   it("coach rows use a monogram because no approved coach art exists", () => {
-    const src = readFileSync("src/components/CoachSelect.jsx", "utf8");
+    const src = readFileSync("src/components/CoachModal.jsx", "utf8");
     expect(src).toMatch(/CoachAvatar/);
     expect(src).not.toMatch(/https?:\/\//);
   });

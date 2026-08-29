@@ -36,8 +36,12 @@ function FilledCard({ p, pos, team, accent, fit, hideStats, flash, onSwap }) {
         {hideStats ? "—" : ovr}
       </div>
       <div style={{ fontSize: 9.5, color: DECADE_COLORS[p.decade] ?? T.textMuted, fontWeight: 700, textAlign: "center" }}>{p.decade}</div>
-      {fit && !hideStats && (
-        <div style={{ fontSize: 8.5, fontWeight: 800, letterSpacing: 0.5, color: fitColor(fit, T), textAlign: "center", marginTop: 3 }}>FIT {fit}</div>
+      {/* A fit label reading EXCELLENT on nearly every card carries no
+          information. Only a genuine role problem is surfaced. */}
+      {fit && !hideStats && (fit === "POOR" || fit === "NEUTRAL") && (
+        <div style={{ fontSize: 9.5, fontWeight: 800, letterSpacing: 0.3, color: fitColor(fit, T), textAlign: "center", marginTop: 3 }}>
+          {fit === "POOR" ? "OFF-ROLE" : "NEUTRAL FIT"}
+        </div>
       )}
     </>
   );

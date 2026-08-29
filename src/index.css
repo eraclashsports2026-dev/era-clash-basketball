@@ -142,3 +142,11 @@ button { font-family: inherit; }
 /* Phase 7A — postgame Final: MVP/moments column beside summary/breakdown column */
 .pg-final-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
 @media (max-width: 900px) { .pg-final-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* Phase 7B — coach modal: two panes on desktop, one stacked pane on phones */
+.coach-modal-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); min-height: 0; flex: 1; overflow: hidden; }
+@media (max-width: 820px) {
+  .coach-modal-body { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) minmax(0, 1fr); }
+  .coach-modal-body > div { border-left: none !important; border-top: 1px solid var(--ec-border); }
+  .coach-modal { max-height: 94vh !important; }
+}

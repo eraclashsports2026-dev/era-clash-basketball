@@ -129,33 +129,41 @@ function BreakdownBars({ sim }) {
 }
 
 // ── Engine matchup edges ───────────────────────────────────────────────────────
-function EdgeBars({ edges }) {
-  const shown = (edges || []).filter((e) => e.edge !== 0).slice(0, 4);
-  if (!shown.length) return null;
+// ── The stored pregame read ─────────────────────────────────────────────────
+// Phase 7B: this used to render the model's RAW numeric edges ("Gold +4"),
+// which both leaked hidden internals and contradicted the qualitative read the
+// Ready screen had shown minutes earlier. It now renders the snapshot stored
+// with the result — the same object, the same words.
+function StoredPregameRead({ pregame }) {
+  if (!pregame?.qualitativeEdges?.length) {
+    return (
+      <div style={{ ...card, padding: 16, marginTop: 12 }}>
+        <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 2, color: T.textDim }}>PRE-GAME READ</div>
+        <div style={{ fontSize: 13.5, color: T.textDim, marginTop: 6, lineHeight: 1.5 }}>
+          This result was recorded before pregame reads were stored, so the original read is unavailable.
+        </div>
+      </div>
+    );
+  }
   return (
     <div style={{ ...card, padding: 16, marginTop: 12 }}>
-      <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 2, color: T.textDim, marginBottom: 10 }}>PRE-GAME EDGES</div>
-      {shown.map((e) => {
-        const yours = e.edge > 0;
-        const half = Math.min(45, Math.abs(e.edge) * 2.25); // % from center, capped
-        return (
-          <div key={e.category} style={{ marginBottom: 9 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, marginBottom: 3 }}>
-              <span style={{ fontWeight: 700 }}>{e.category}</span>
-              <span style={{ fontWeight: 900, color: yours ? T.gold : T.blue }}>{yours ? "Gold" : "Blue"} +{Math.abs(e.edge)}</span>
-            </div>
-            <div style={{ height: 6, background: T.border, borderRadius: 3, position: "relative", overflow: "hidden" }}>
-              {/* bar grows from the center toward the leading team's side */}
-              <div style={{ position: "absolute", top: 0, bottom: 0, left: yours ? `${50 - half}%` : "50%", width: `${half}%`, background: yours ? T.gold : T.blue, borderRadius: 3 }} />
-              <div style={{ position: "absolute", left: "50%", top: 0, bottom: 0, width: 1, background: "rgba(232,234,242,0.25)" }} />
-            </div>
+      <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 8 }}>
+        <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: 2, color: T.textDim }}>PRE-GAME READ</span>
+        <span style={{ marginLeft: "auto", fontSize: 12, color: T.textDim }}>stored before the sim</span>
+      </div>
+      <div style={{ display: "grid", gap: 4 }}>
+        {pregame.qualitativeEdges.map((e) => (
+          <div key={e.category} style={{ display: "flex", justifyContent: "space-between", fontSize: 13.5, padding: "3px 0", borderBottom: `1px solid ${T.border}` }}>
+            <span style={{ color: T.textDim }}>{e.category}</span>
+            <span style={{ fontWeight: 800, color: e.lead === "gold" ? T.gold : e.lead === "blue" ? T.blue : T.textMuted }}>{e.label}</span>
           </div>
-        );
-      })}
-      <div style={{ fontSize: 10, color: T.textMuted, marginTop: 4 }}>Computed from player data, ratings & chemistry before tipoff.</div>
+        ))}
+      </div>
+      {pregame.keyClash && <p style={{ fontSize: 13.5, color: T.text, marginTop: 10, marginBottom: 0, lineHeight: 1.6 }}>{pregame.keyClash}</p>}
     </div>
   );
 }
+
 
 function BoxTable({ label, stats, color, mvpName }) {
   if (!Array.isArray(stats) || !stats.length) return null;
@@ -560,8 +568,8 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
           </div>
         )}
 
-        {/* Pre-game engine edges */}
-        <EdgeBars edges={sim.edges} />
+        {/* The stored pregame read, reused verbatim */}
+        <StoredPregameRead pregame={sim.pregame} />
         </>}
 
         {/* L. Actions — never a dead end, visible from every section */}

@@ -24,7 +24,7 @@ import RosterBalance from "./components/RosterBalance.jsx";
 import MatchupPreview, { VsDivider } from "./components/MatchupPreview.jsx";
 import SimulationLoading from "./components/SimulationLoading.jsx";
 import ManualPicker from "./components/ManualPicker.jsx";
-import CoachSelect from "./components/CoachSelect.jsx";
+import CoachPick from "./components/CoachPick.jsx";
 import PlayerImage from "./components/PlayerImage.jsx";
 import StageWizard from "./components/StageWizard.jsx";
 import RosterGrid from "./components/RosterGrid.jsx";
@@ -481,6 +481,8 @@ export default function App() {
     // Candidate identity travels with the view model: a Candidate 3 result may
     // not lead into a series that would run on a different engine.
     previewCandidate: record.preview === true ? (record.candidate ?? null) : null,
+    // The pregame read exactly as it was stored before the game was simulated.
+    pregame: record.pregame ?? null,
     eraId: record.eraId || null,
     coachIds: record.coachIds || null,
     // Names for display only, resolved from what the SERVER reported it used
@@ -816,6 +818,28 @@ export default function App() {
         </div>
       )}
 
+      {/* Opponent difficulty — only Win 82 and Tournament generate a schedule.
+          This changes WHO you face, never how a game is simulated. */}
+      {!isChallenge && !isDaily && !result && (gameMode === "Win82" || gameMode === "Tournament") && (
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, padding: "10px 0 4px" }}>
+          <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: 2, color: T.textDim }}>OPPONENT DIFFICULTY</div>
+          <div role="tablist" aria-label="Opponent difficulty" style={{ display: "flex", gap: 6, flexWrap: "wrap", justifyContent: "center" }}>
+            {Object.values(DIFFICULTIES).map((d) => (
+              <button key={d.id} role="tab" aria-selected={difficulty === d.id} aria-label={`Difficulty ${d.label}`}
+                onClick={() => setDifficulty(d.id)} style={{
+                  padding: "8px 15px", borderRadius: R.sm, cursor: "pointer", minHeight: 42, fontSize: 13, fontWeight: 800,
+                  border: `1px solid ${difficulty === d.id ? T.goldBorder : T.border}`,
+                  background: difficulty === d.id ? T.goldSoft : T.bgCard,
+                  color: difficulty === d.id ? T.gold : T.textDim,
+                }}>{d.label}</button>
+            ))}
+          </div>
+          <div style={{ fontSize: 12.5, color: T.textDim, textAlign: "center", maxWidth: 460, lineHeight: 1.5 }}>
+            {DIFFICULTIES[difficulty].blurb} <span style={{ color: T.textMuted }}>Games are simulated identically at every setting — only who you face changes.</span>
+          </div>
+        </div>
+      )}
+
       {v3Steps && !result && (
         <StageWizard stage={playStage} done={stageDone} onJump={jumpStage} />
       )}
@@ -1041,7 +1065,9 @@ export default function App() {
                   <div style={{ display: "flex", gap: 6, marginBottom: 10, flexWrap: "wrap" }}>
                     {(team || []).map((p) => <PlayerImageMini key={p.id} p={p} side="gold" />)}
                   </div>
-                  <CoachSelect side="gold" teamIds={(team || []).map((p) => p.id)} eraStyleId={eraStyle}
+                  <CoachPick side="gold" teamIds={(team || []).map((p) => p.id)}
+                    eraStyleId={eraLocked ? eraStyle : undefined}
+                    eraLabel={v3.eras?.find((e) => e.id === eraStyle)?.label}
                     selected={coachGold} onSelect={setCoachGold} allCoaches={v3.coaches} />
                 </TeamShell>
               </div>
@@ -1066,7 +1092,9 @@ export default function App() {
                     <div style={{ display: "flex", gap: 6, marginBottom: 10, flexWrap: "wrap" }}>
                       {(opponent || []).map((p) => <PlayerImageMini key={p.id} p={p} side="blue" />)}
                     </div>
-                    <CoachSelect side="blue" teamIds={(opponent || []).map((p) => p.id)} eraStyleId={eraStyle}
+                    <CoachPick side="blue" teamIds={(opponent || []).map((p) => p.id)}
+                      eraStyleId={eraLocked ? eraStyle : undefined}
+                      eraLabel={v3.eras?.find((e) => e.id === eraStyle)?.label}
                       selected={coachBlue} onSelect={setCoachBlue} allCoaches={v3.coaches} />
                   </TeamShell>
                 </div>

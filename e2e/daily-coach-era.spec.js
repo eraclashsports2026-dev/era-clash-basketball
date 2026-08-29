@@ -75,7 +75,7 @@ test("D4: hiring a coach plays the Daily and the result reports the coach and er
 
   await expect(page.getByText(/TEAM (GOLD|BLUE) WINS/)).toBeVisible({ timeout: 30_000 });
   await page.getByRole("tab", { name: "Box Score" }).click();
-  await expect(page.getByText(/FULL BOX SCORE/)).toBeVisible();
+  await expect(page.getByText("BOX SCORE", { exact: true })).toBeVisible();
   await page.getByRole("tab", { name: "Final" }).click();
   // The one decision the player owned belongs in the result metadata.
   await expect(page.getByText(new RegExp(`Coach:\\s*${pick.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`))).toBeVisible();

@@ -14,14 +14,19 @@ const randomBoth = async (page) => {
   await page.getByRole("button", { name: /Random Team/ }).first().click();
   await page.getByRole("tab", { name: /Random Team/ }).click();
 };
+const pickCoach = async (page) => {
+  await page.getByRole("button", { name: "Choose Coach" }).first().click();
+  const dialog = page.getByRole("dialog", { name: /Select coach/i });
+  await dialog.waitFor({ state: "visible", timeout: 8000 });
+  await dialog.getByRole("button", { name: /^Select / }).click();
+  await dialog.waitFor({ state: "detached", timeout: 8000 }).catch(() => {});
+};
 const throughWizard = async (page) => {
   await page.getByRole("button", { name: /Continue to Coaches/ }).click();
-  for (let i = 0; i < 2; i++) {
-    const b = page.getByRole("button", { name: /RANDOM COACH/ }).first();
-    try { await b.waitFor({ state: "visible", timeout: 5000 }); } catch { break; }
-    await b.click(); await page.waitForTimeout(250);
-  }
-  await page.getByRole("button", { name: /Continue to Era Style/ }).click();
+  const next = page.getByRole("button", { name: /Continue to Era Style/ });
+  await next.waitFor({ state: "visible", timeout: 8000 });
+  for (let i = 0; i < 3 && (await next.isDisabled()); i++) await pickCoach(page);
+  await next.click();
   await page.getByRole("button", { name: /Lock Era Style/ }).click();
 };
 
@@ -38,14 +43,16 @@ test("U1: full wizard + postgame at desktop 1440 — screenshots and zero overfl
   await shot(page, "1440-play-dropdown");
   await page.keyboard.press("Escape");
   await page.getByRole("button", { name: /Continue to Coaches/ }).click();
-  await expect(page.getByText("SELECT YOUR COACH").first()).toBeVisible({ timeout: 8000 });
+  await expect(page.getByRole("button", { name: "Choose Coach" }).first()).toBeVisible({ timeout: 8000 });
   await shot(page, "1440-coaches"); await noHorizontalOverflow(page, "coaches");
-  for (let i = 0; i < 2; i++) {
-    const b = page.getByRole("button", { name: /RANDOM COACH/ }).first();
-    try { await b.waitFor({ state: "visible", timeout: 5000 }); } catch { break; }
-    await b.click(); await page.waitForTimeout(250);
-  }
-  await page.getByRole("button", { name: /Continue to Era Style/ }).click();
+  // the modal itself is a captured state
+  await page.getByRole("button", { name: "Choose Coach" }).first().click();
+  await page.getByRole("dialog", { name: /Select coach/i }).waitFor({ state: "visible", timeout: 8000 });
+  await shot(page, "1440-coach-modal"); await noHorizontalOverflow(page, "coach-modal");
+  await page.getByRole("dialog", { name: /Select coach/i }).getByRole("button", { name: /^Select / }).click();
+  const next1 = page.getByRole("button", { name: /Continue to Era Style/ });
+  for (let i = 0; i < 3 && (await next1.isDisabled()); i++) await pickCoach(page);
+  await next1.click();
   await expect(page.getByText("CHOOSE ERA STYLE")).toBeVisible();
   await shot(page, "1440-era"); await noHorizontalOverflow(page, "era");
   await page.getByRole("button", { name: /Lock Era Style/ }).click();
@@ -110,8 +117,16 @@ test("U4: keyboard-only completion of the wizard", async ({ page }) => {
   await page.getByRole("tab", { name: /Random Team/ }).focus();
   await page.keyboard.press("Enter");
   await press(/Continue to Coaches/);
-  await press(/RANDOM COACH/); await page.waitForTimeout(250);
-  await press(/RANDOM COACH/);
+  const nextK = page.getByRole("button", { name: /Continue to Era Style/ });
+  await nextK.waitFor({ state: "visible", timeout: 8000 });
+  for (let i = 0; i < 3 && (await nextK.isDisabled()); i++) {
+    await press("Choose Coach");
+    const dialog = page.getByRole("dialog", { name: /Select coach/i });
+    await dialog.waitFor({ state: "visible", timeout: 8000 });
+    const sel = dialog.getByRole("button", { name: /^Select / });
+    await sel.focus(); await page.keyboard.press("Enter");
+    await dialog.waitFor({ state: "detached", timeout: 8000 }).catch(() => {});
+  }
   await press(/Continue to Era Style/);
   await press(/Lock Era Style/);
   await press(/RUN THE SIM/);

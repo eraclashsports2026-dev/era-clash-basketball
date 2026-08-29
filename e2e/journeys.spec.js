@@ -23,17 +23,25 @@ const randomGold = (page) => page.getByRole("button", { name: /Random Team/ }).f
 // Continue to Era Style → Lock Era Style → READY (RUN THE SIM appears).
 async function pickCoachesIfV3(page) {
   const cont = page.getByRole("button", { name: /Continue to Coaches/ });
-  try { await cont.waitFor({ state: "visible", timeout: 4000 }); } catch { return; } // v3 off → direct CTA flow
+  try { await cont.waitFor({ state: "visible", timeout: 6000 }); } catch { return; } // v3 off → direct CTA flow
   await cont.click();
-  for (let i = 0; i < 2; i++) {
-    const btn = page.getByRole("button", { name: /RANDOM COACH/ }).first();
-    try { await btn.waitFor({ state: "visible", timeout: 5000 }); } catch { break; }
-    await btn.click();
-    await page.waitForTimeout(250);
+  const next = page.getByRole("button", { name: /Continue to Era Style/ });
+  await next.waitFor({ state: "visible", timeout: 8000 });
+  // Keep opening the coach modal while the stage is still gated. Modes without
+  // a user-built Blue five need one coach; Single/Best-of-7 need two.
+  for (let i = 0; i < 3 && (await next.isDisabled()); i++) {
+    const open = page.getByRole("button", { name: "Choose Coach" }).first();
+    await open.waitFor({ state: "visible", timeout: 8000 });
+    await open.click();
+    const dialog = page.getByRole("dialog", { name: /Select coach/i });
+    await dialog.waitFor({ state: "visible", timeout: 8000 });
+    await dialog.getByRole("button", { name: /^Select / }).click();
+    await dialog.waitFor({ state: "detached", timeout: 8000 }).catch(() => {});
   }
-  await page.getByRole("button", { name: /Continue to Era Style/ }).click();
+  await next.click();
   await page.getByRole("button", { name: /Lock Era Style/ }).click();
 }
+
 
 async function expectCorePostgame(page) {
   // FINAL section (default tab)
@@ -48,7 +56,7 @@ async function expectCorePostgame(page) {
     `MVP section too thin: ${mvpSection.slice(0, 200)}`).toBeGreaterThanOrEqual(2);
   // BOX SCORE section
   await page.getByRole("tab", { name: "Box Score" }).click();
-  await expect(page.getByText("FULL BOX SCORE")).toBeVisible();
+  await expect(page.getByText("BOX SCORE", { exact: true })).toBeVisible();
   await expect(page.getByText("TEAM GOLD", { exact: true }).last()).toBeVisible();
   // GAME STORY section
   await page.getByRole("tab", { name: "Game Story" }).click();
@@ -266,17 +274,23 @@ test("J11 (V3): Team → Coach → Era Style → Ready → Run with possession p
   expect(rosterBody).not.toMatch(/\d+% (chance|win)/i);
   // STAGE 2 — COACHES
   await page.getByRole("button", { name: /Continue to Coaches/ }).click();
-  await expect(page.getByText("SELECT YOUR COACH").first()).toBeVisible({ timeout: 8000 });
-  await expect(page.getByText("THREE DIFFERENT WAYS TO COACH THIS ROSTER").first()).toBeVisible();
-  await expect(page.getByText("BEST ROLE BALANCE").first()).toBeVisible();
-  await expect(page.getByText("BEST DEFENSIVE IDENTITY").first()).toBeVisible();
+  await expect(page.getByRole("button", { name: "Choose Coach" }).first()).toBeVisible({ timeout: 8000 });
   const coachBody = await page.locator("body").innerText();
   expect(coachBody).not.toMatch(/coach ovr/i);
   // gated until both coaches picked
   await expect(page.getByRole("button", { name: /Continue to Era Style/ })).toBeDisabled();
-  await page.getByRole("button", { name: /RANDOM COACH/ }).first().click();
-  await page.waitForTimeout(300);
-  await page.getByRole("button", { name: /RANDOM COACH/ }).first().click();
+  // the modal carries search, filters, sort and a detail pane
+  await page.getByRole("button", { name: "Choose Coach" }).first().click();
+  const modal = page.getByRole("dialog", { name: /Select coach/i });
+  await expect(modal.getByRole("textbox", { name: /Search coaches/i })).toBeVisible();
+  await expect(modal.getByRole("combobox", { name: /Filter by system/i })).toBeVisible();
+  await expect(modal.getByRole("combobox", { name: /Sort coaches/i })).toBeVisible();
+  await expect(modal.getByText("SYSTEM IDENTITY")).toBeVisible();
+  // era compatibility cannot exist before an era is chosen
+  await expect(modal.getByText(/Era compatibility appears once you pick the Era Style/)).toBeVisible();
+  await modal.getByRole("button", { name: /^Select / }).click();
+  await page.getByRole("button", { name: "Choose Coach" }).first().click();
+  await page.getByRole("dialog", { name: /Select coach/i }).getByRole("button", { name: /^Select / }).click();
   await page.getByRole("button", { name: /Continue to Era Style/ }).click();
   // STAGE 3 — ERA STYLE (one shared era, real rules + per-roster translations)
   await expect(page.getByText("CHOOSE ERA STYLE")).toBeVisible();
@@ -293,7 +307,7 @@ test("J11 (V3): Team → Coach → Era Style → Ready → Run with possession p
   await expect(page.getByText(/pre-game read/)).toBeVisible(); // bands, not decimals
   await expect(page.getByText(/shot quality \(expected pts\)/)).toBeVisible();
   await page.getByRole("tab", { name: "Box Score" }).click();
-  await expect(page.getByText("POSSESSION BOX SCORE")).toBeVisible();
+  await expect(page.getByText("BOX SCORE", { exact: true })).toBeVisible();
   await page.getByRole("tab", { name: "Coaching & Strategy" }).click();
   await expect(page.getByText("OFFENSIVE ROLES (USAGE)")).toBeVisible();
   await expect(page.getByText("DEFENSIVE ASSIGNMENTS")).toBeVisible();
