@@ -27,6 +27,11 @@ import ManualPicker from "./components/ManualPicker.jsx";
 import CoachPick from "./components/CoachPick.jsx";
 import PlayerImage from "./components/PlayerImage.jsx";
 import StageWizard from "./components/StageWizard.jsx";
+import ChaosClash from "./components/chaos/ChaosClash.jsx";
+import AccountGate from "./components/chaos/AccountGate.jsx";
+import { currentTier, hasAccount } from "./account.js";
+import { simulateChaos } from "./chaos/client.js";
+import { can, CAPABILITIES } from "./entitlements.js";
 import RosterGrid from "./components/RosterGrid.jsx";
 import { MatchupGrid, ArenaCentre, BallIqToggle } from "./components/PlayPanels.jsx";
 import { EraStage, VsRow } from "./components/StageViews.jsx";
@@ -102,20 +107,27 @@ const noteGameStarted = () => {
 };
 
 const GAME_MODES = [
-  ["Single", "SINGLE GAME", "One game. One winner."],
+  ["Chaos", "CHAOS CLASH", "Three rolls. Hold your legends. Adapt to the era."],
+  ["Single", "DREAM MATCHUP", "Build both teams exactly how you want."],
   ["Best7", "BEST OF 7", "Settle the debate."],
   ["Win82", "WIN 82", "Survive the season."],
   ["Tournament", "TOURNAMENT", "Four rounds to a title."],
 ];
-const MODE_ICON = { Single: "🏀", Best7: "🏆", Win82: "🗓️", Tournament: "🏟️" };
+const MODE_ICON = { Chaos: "🎲", Single: "🏀", Best7: "🏆", Win82: "🗓️", Tournament: "🏟️" };
 const MODE_TO_ANALYTICS = { Win82: "82", Single: "single", Best7: "best7", Tournament: "tournament", Daily: "daily", Challenge: "challenge" };
 
 // ── App ──────────────────────────────────────────────────────────────────────
 export default function App() {
   const [nav, setNav] = useState("Play");             // Play | Daily | Challenges | Board | Profile | Credits
   const [view, setView] = useState("builder");        // builder | simulating | postgame
-  const [gameMode, setGameMode] = useState("Single"); // Single | Best7 | Win82 | Tournament
+  const [gameMode, setGameMode] = useState("Chaos");  // Chaos | Single (Dream Matchup) | Best7 | Win82 | Tournament
+  const [chaosAvailable, setChaosAvailable] = useState(true); // until the server says otherwise
   const [playStage, setPlayStage] = useState("ROSTERS"); // ROSTERS | COACHES | ERA | READY (v3 wizard)
+  const [chaosReady, setChaosReady] = useState(null);     // a Chaos run at phase READY
+  const [tier, setTier] = useState(() => currentTier());  // GUEST | FREE (central entitlement input)
+  const [gate, setGate] = useState(null);                 // an entitlement gate to render
+  const [chaosChallengeId, setChaosChallengeId] = useState(null);
+  const [chaosNonce, setChaosNonce] = useState(0);   // remounts ChaosClash for a fresh run
   const [eraLocked, setEraLocked] = useState(false);      // the era step is a confirmation, not a default
   const [difficulty, setDifficulty] = useState(DEFAULT_DIFFICULTY); // opponent pool for Win82/Tournament
   const [buildMethod, setBuildMethod] = useState("manual"); // manual (concept default) | rolls (Chaos Draft)
@@ -171,7 +183,14 @@ export default function App() {
     fetch("/api/health").then((r) => (r.ok ? r.json() : null)).then((h) => {
       if (!h?.simV3) return;
       fetch("/api/v3meta").then((r) => (r.ok ? r.json() : null)).then((m) => {
-        if (m) setV3({ enabled: true, eras: m.eras, coaches: m.coaches });
+        if (!m) return;
+        setV3({ enabled: true, eras: m.eras, coaches: m.coaches });
+        // Chaos Clash is the default Play mode, but only where the server has
+        // it switched on. Where it is off (production today) the default falls
+        // back to Dream Matchup rather than a Play screen that cannot start.
+        const on = m.modes?.chaosClash !== false;
+        setChaosAvailable(on);
+        if (!on) setGameMode((g) => (g === "Chaos" ? "Single" : g));
       }).catch(() => {});
     }).catch(() => {});
   }, []);
@@ -211,6 +230,17 @@ export default function App() {
     }
   }, []);
 
+  // Chaos challenge deep link: /?chaos=<opaque id> reproduces the same opening
+  // rolls and rules. It carries no seed, no credential and no tester identity.
+  useEffect(() => {
+    const id = new URLSearchParams(window.location.search).get("chaos");
+    if (id && /^[a-z0-9]{4,14}$/.test(id)) {
+      setChaosChallengeId(id);
+      setNav("Play"); setGameMode("Chaos");
+      track("chaos_challenge_opened", {});
+    }
+  }, []);
+
   // Wave 1 guided-scenario launcher (?scenario=w1-sN). Preview-cohort feature:
   // it rides the existing query-state pattern and only PRELOADS a legal setup —
   // teams, coaches, one Era Style — exactly as if the tester built it by hand.
@@ -247,6 +277,7 @@ export default function App() {
   const recordLossStreak = () => setStreaks((s) => ({ ...s, current: 0 }));
 
   const isDaily = nav === "Daily";
+  const isChaos = nav === "Play" && gameMode === "Chaos";
   const isChallenge = nav === "Challenges" && !!challenge;
   const activeMode = isDaily ? "Daily" : isChallenge ? "Challenge" : gameMode;
   // modes where the user builds Team Blue (Win82/Tournament opponents are
@@ -258,7 +289,7 @@ export default function App() {
   // V3 steps (TEAM → COACH → ERA STYLE) appear for standard modes only; Daily
   // keeps its fairness model (neutral coaches, derived seed) and Challenge
   // keeps the rival's five as-is.
-  const v3Steps = v3.enabled && !isChallenge && !isDaily;
+  const v3Steps = v3.enabled && !isChallenge && !isDaily && !isChaos;
   const coachesReady = !v3Steps || (blueBuildable ? (!!coachGold && !!coachBlue) : !!coachGold);
   // ── Wizard stage gating (v3 modes) ────────────────────────────────────────
   const rosterDone = !!team && (!blueBuildable || !!opponent);
@@ -733,6 +764,39 @@ export default function App() {
   };
   const doBest7FromResult = () => { setResult(null); runBest7(lastOppRef.current, "from_result"); };
   // Swap One: back to the builder with BOTH squads preserved (spec #12/#13).
+  // ── Run the Clash ─────────────────────────────────────────────────────────
+  // The setup is entirely server-side: this call sends a run id and nothing
+  // else. The team, the coaches and the era all come from the stored run.
+  const runChaosClash = async () => {
+    if (!chaosReady || loading) return;
+    setLoading(true); setErr(""); setSimStage(""); setNarrative({ status: "none" }); setView("simulating");
+    const simT0 = Date.now();
+    try {
+      const simulationId = (() => { try { return crypto.randomUUID().replace(/-/g, "").slice(0, 20); } catch { return `chaos${Date.now()}`.slice(0, 20); } })();
+      const { resultId, result: record, records } = await simulateChaos(chaosReady.chaosRunId, simulationId, tier);
+      const five = (ids) => (ids || []).map((id) => PLAYERS.find((p) => p.id === id)).filter(Boolean);
+      const gold = five(record.goldIds), opp = five(record.blueIds);
+      setTeam(gold); setOpponent(opp); lastOppRef.current = opp;
+      const w = record.core.winner === "Gold";
+      bookkeepGame(w, "single", record.core.seriesResult, record.core.mvp, "", opp);
+      setResult({ type: "single", sim: viewSim(record), w, tag: "chaos", opp, resultId, record, persisted: !!records?.persisted });
+      fetchNarrative(resultId, record, !!records?.persisted);
+      track("chaos_clash_completed", { era_style: record.eraId || null });
+      await holdSimScreen(simT0);
+      setView("postgame");
+    } catch (e) {
+      setErr(e.message || "We couldn't run that Clash. Nothing was recorded.");
+      setView("builder");
+    }
+    setLoading(false);
+  };
+
+  const newChaosClash = () => {
+    setChaosReady(null); setChaosChallengeId(null); setResult(null);
+    setTeam(null); setOpponent(null); setView("builder");
+    setChaosNonce((n) => n + 1);
+  };
+
   const startSwap = () => { track("swap_one_started", {}); setResult(null); setView("builder"); setPlayStage("READY"); };
   const retryNarrative = () => { if (result?.record) fetchNarrative(result.resultId, result.record, result.persisted); };
 
@@ -811,8 +875,9 @@ export default function App() {
           {activeScenario.instruction}
         </div>
       )}
-      {/* Compact hero — the roster panels own this viewport */}
-      {!team && !result && (
+      {/* Compact hero — the roster panels own this viewport. Chaos Clash brings
+          its own hero, so this one stands down rather than stacking two. */}
+      {!team && !result && !isChaos && (
         <div style={{ textAlign: "center", padding: "16px 6px 2px" }}>
           <div style={{ fontSize: 11, letterSpacing: 5, color: T.gold, fontWeight: 800 }}>BUILD YOUR FIVE</div>
           <h1 style={{ margin: "4px 0 2px", fontSize: 34, fontWeight: 900, letterSpacing: 0.5, fontFamily: FONT.display, color: T.text }}>
@@ -823,7 +888,7 @@ export default function App() {
       )}
 
       {/* Selected mode — chosen from the Play menu in the header */}
-      {!isChallenge && !isDaily && !result && (
+      {!isChallenge && !isDaily && !result && !isChaos && (
         <div style={{ display: "flex", justifyContent: "center", padding: "10px 0 2px" }}>
           <span style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "7px 16px", borderRadius: R.pill,
             border: `1px solid ${T.goldBorder}`, background: T.goldSoft, color: T.gold, fontWeight: 800, fontSize: 13 }}>
@@ -859,7 +924,50 @@ export default function App() {
         <StageWizard stage={playStage} done={stageDone} onJump={jumpStage} />
       )}
 
-      {isDaily && dailyDone && !team && !result ? (
+      {/* ── CHAOS CLASH — the default Play experience ────────────────────── */}
+      {isChaos && !result ? (
+        gate ? (
+          <AccountGate
+            title="Keep playing Chaos Clash"
+            blurb={gate.message}
+            onCreated={() => { setGate(null); setTier(currentTier()); setChaosNonce((n) => n + 1); }}
+            onBack={() => { setGate(null); }} />
+        ) : (
+        <div>
+          <div style={{ textAlign: "center", marginBottom: 14 }}>
+            <h1 style={{ margin: 0, fontSize: 30, fontWeight: 900, letterSpacing: -0.5 }}>ROLL YOUR CLASH</h1>
+            <div style={{ fontSize: 14, color: T.textDim, marginTop: 5, lineHeight: 1.55 }}>
+              Three rolls. Hold your legends. Adapt to the era.
+            </div>
+          </div>
+          <ChaosClash key={`${chaosNonce}:${chaosChallengeId || "new"}`}
+            tier={tier} challengeId={chaosChallengeId}
+            onReady={(r) => setChaosReady(r)}
+            onGated={(g) => setGate(g)} />
+          {chaosReady && (
+            <button onClick={runChaosClash} disabled={loading} style={{
+              marginTop: 14, minHeight: 58, width: "100%", borderRadius: R.md,
+              cursor: loading ? "default" : "pointer", fontWeight: 900, fontSize: 16, letterSpacing: 1.2,
+              border: `1px solid ${T.goldBorder}`, background: T.gold, color: "#fff", opacity: loading ? 0.6 : 1,
+            }}>{loading ? "RUNNING…" : "RUN THE CLASH"}</button>
+          )}
+          {err && <div role="alert" style={{ marginTop: 10, textAlign: "center", color: T.red, fontSize: 13 }}>{err}</div>}
+          <div style={{ textAlign: "center", marginTop: 16 }}>
+            <button onClick={() => { setGameMode("Single"); setChaosReady(null); }} style={{
+              minHeight: 44, padding: "0 18px", borderRadius: R.pill, cursor: "pointer",
+              fontWeight: 800, fontSize: 13, letterSpacing: 0.6,
+              border: `1px solid ${T.border}`, background: "transparent", color: T.textDim,
+            }}>BUILD A DREAM MATCHUP</button>
+          </div>
+        </div>
+        )
+      ) : gameMode === "Single" && nav === "Play" && !result && !can(tier, CAPABILITIES.DREAM_MATCHUP) ? (
+        <AccountGate
+          title="Dream Matchup"
+          blurb="Build both teams by hand, pick from the full coach library and choose the era yourself. A free account keeps your matchups and history."
+          onCreated={() => setTier(currentTier())}
+          onBack={() => setGameMode("Chaos")} />
+      ) : isDaily && dailyDone && !team && !result ? (
         <div>
           <div style={{ ...card, padding: 30, textAlign: "center", maxWidth: 520, margin: "0 auto" }}>
             <div style={{ fontSize: 36 }}>✅</div>
@@ -1245,7 +1353,7 @@ export default function App() {
   return (
     <div className={`arena ${winnerClass}`} style={{ color: T.text }}>
       <GameHeader nav={nav} onNav={handleNav} dailyStreak={dailyStreak}
-        modes={GAME_MODES} gameMode={gameMode}
+        modes={chaosAvailable ? GAME_MODES : GAME_MODES.filter(([id]) => id !== "Chaos")} gameMode={gameMode}
         onMode={(id) => { if (nav !== "Play") handleNav("Play"); else resetPlay(); setGameMode(id); }} />
 
       {newBuild && (

@@ -121,16 +121,47 @@ export const eraAdapterScore = (coach, roster, eraId) => {
   return clamp01(s);
 };
 
-/** A coarse system family, so three offers are never three of the same idea. */
-export const systemFamily = (coach) => {
-  const o = coach.offense || {}, d = coach.defense || {};
-  if ((o.post ?? 0) >= 7) return "POST";
-  if ((o.transition ?? 0) >= 8 || (o.tempo ?? 0) >= 8) return "PACE";
-  if ((o.threeEmphasis ?? 0) >= 7) return "SPACING";
-  if ((o.motion ?? 0) >= 7 || (o.ballMovement ?? 0) >= 8) return "MOVEMENT";
-  if ((o.iso ?? 0) >= 7 || (o.starFreedom ?? 0) >= 8) return "STAR";
-  if ((d.zone ?? 0) >= 6 || (d.pressure ?? 0) >= 8) return "DEFENSE";
-  return "BALANCED";
+/**
+ * The coach's OFFENSIVE IDENTITY: whichever dimension stands furthest above
+ * that coach's own average. An earlier version walked a fixed priority cascade
+ * (post >= 7, then transition >= 8, ...) and labelled three genuinely different
+ * staffs "pick-and-roll offense" because each happened to clear the same early
+ * threshold. Reading the argmax instead makes the label describe the coach.
+ */
+const OFFENSE_AXES = [
+  { key: "POST", dim: "post", label: "post-up", verb: "works through the post" },
+  { key: "PACE", dim: "transition", label: "transition", verb: "runs at every opportunity" },
+  { key: "SPACING", dim: "threeEmphasis", label: "perimeter-spacing", verb: "plays through the arc" },
+  { key: "MOVEMENT", dim: "motion", label: "motion", verb: "keeps the ball and bodies moving" },
+  { key: "PNR", dim: "pnr", label: "pick-and-roll", verb: "lives in ball screens" },
+  { key: "STAR", dim: "iso", label: "isolation", verb: "clears out for its best scorer" },
+];
+
+export const offenseIdentity = (coach) => {
+  const o = coach.offense || {};
+  const vals = OFFENSE_AXES.map((a) => o[a.dim] ?? 5);
+  const mean = vals.reduce((x, y) => x + y, 0) / vals.length;
+  let best = OFFENSE_AXES[0], bestLift = -Infinity;
+  OFFENSE_AXES.forEach((a, i) => {
+    // Lift above the coach's own mean, tie-broken by raw level.
+    const lift = (vals[i] - mean) * 10 + vals[i];
+    if (lift > bestLift) { bestLift = lift; best = a; }
+  });
+  return best;
+};
+
+/** Family = the offensive identity, so diversity is enforced on what is READ. */
+export const systemFamily = (coach) => offenseIdentity(coach).key;
+
+/** The defensive identity, so two offers never describe the same shell. */
+export const defenseIdentity = (coach) => {
+  const d = coach.defense || {};
+  if ((d.zone ?? 1) >= 6) return { key: "ZONE", label: "zone principles" };
+  if ((d.switching ?? 5) >= 7) return { key: "SWITCH", label: "switching ball screens" };
+  if ((d.pressure ?? 5) >= 8) return { key: "PRESSURE", label: "pressuring the ball full court" };
+  if ((d.drop ?? 5) >= 7) return { key: "DROP", label: "dropping the big in coverage" };
+  if ((d.helpAggression ?? 5) >= 7) return { key: "HELP", label: "loading up help early" };
+  return { key: "CONTAIN", label: "containing without gambling" };
 };
 
 const SCORERS = {
@@ -145,7 +176,7 @@ const SCORERS = {
  */
 export const generateOffers = ({ roster, opponentRoster, eraId, seedId, side }) => {
   const rng = mulberry32(deriveSeed(hashString(`offers|${seedId}|${side}|${eraId}|${COACH_OFFER_VERSION}`), 0));
-  const taken = new Set(), families = new Set();
+  const taken = new Set(), families = new Set(), shells = new Set();
   const offers = [];
   for (const role of OFFER_ROLES) {
     const ranked = COACHES
@@ -157,15 +188,19 @@ export const generateOffers = ({ roster, opponentRoster, eraId, seedId, side }) 
         // but different seeds do not always offer an identical trio.
         s: SCORERS[role](c, roster, opponentRoster, eraId) + rng() * 0.012,
         fam: systemFamily(c),
+        shell: defenseIdentity(c).key,
       }))
       .sort((a, b) => b.s - a.s);
-    // Prefer the best candidate whose system family is not already offered; if
-    // one coach dominates several categories, the next MEANINGFULLY DISTINCT
-    // coach takes the role rather than three near-identical options.
-    const distinct = ranked.find((r) => !families.has(r.fam));
-    const chosen = distinct || ranked[0];
+    // Distinctness is enforced on what the user actually READS: a different
+    // offensive identity first, and failing that a different defensive shell.
+    // Without this, one coach who scores well in several categories yields
+    // three offers that describe the same game in the same words.
+    const chosen = ranked.find((r) => !families.has(r.fam) && !shells.has(r.shell))
+      || ranked.find((r) => !families.has(r.fam))
+      || ranked.find((r) => !shells.has(r.shell))
+      || ranked[0];
     if (!chosen) continue;
-    taken.add(chosen.c.id); families.add(chosen.fam);
+    taken.add(chosen.c.id); families.add(chosen.fam); shells.add(chosen.shell);
     offers.push({ role, coachId: chosen.c.id, name: chosen.c.name, family: chosen.fam });
   }
   return offers;
@@ -182,31 +217,103 @@ export const explainOffer = ({ offer, roster, opponentRoster, eraId }) => {
   const slots = POSITIONS;
   const era = getEra(eraId);
   const o = coach.offense || {}, d = coach.defense || {};
-  const byAst = [...t].sort((a, b) => b.ast - a.ast);
-  const byPts = [...t].sort((a, b) => b.pts - a.pts);
-  const bigs = t.filter((p, i) => ["PF", "C"].includes(slots[i])).sort((a, b) => b.pts - a.pts);
+  const ident = offenseIdentity(coach);
+  const def = defenseIdentity(coach);
   const oppSup = opponentRoster ? rosterSupply(opponentRoster) : null;
   const oppFive = opponentRoster ? five(opponentRoster) : [];
 
-  const primary = (o.post ?? 0) >= 7 ? "post-up" : (o.pnr ?? 0) >= 7 ? "pick-and-roll"
-    : (o.motion ?? 0) >= 7 ? "motion and off-ball movement" : (o.transition ?? 0) >= 8 ? "transition"
-    : (o.iso ?? 0) >= 7 ? "isolation" : "balanced half-court";
+  const bigs = t.filter((p, i) => ["PF", "C"].includes(slots[i]));
+  const guards = t.filter((p, i) => ["PG", "SG"].includes(slots[i]));
+  const wings = t.filter((p, i) => ["SG", "SF"].includes(slots[i]));
+  const top = (arr, k) => [...arr].sort((a, b) => b[k] - a[k])[0] || null;
+  const passer = top(t, "ast"), scorer = top(t, "pts");
 
-  // The opponent player this structure is aimed at.
-  const target = oppFive.length
-    ? (oppSup?.primaryCreators ?? 0) >= 0.6
-      ? [...oppFive].sort((a, b) => b.ast - a.ast)[0]
-      : [...oppFive].sort((a, b) => b.pts - a.pts)[0]
-    : null;
+  // WHO becomes central depends on the SYSTEM, not just on who is best. Three
+  // coaches handed the same five should elevate different players, which is
+  // the entire reason the choice is interesting.
+  const central = (() => {
+    switch (ident.key) {
+      case "POST": {
+        const hub = top(bigs, "pts") || scorer;
+        return hub ? `${hub.name} works from the block; the other four space and cut off him.` : "";
+      }
+      case "PACE": {
+        const push = top(t, "stl") || passer;
+        const finish = top(wings, "pts") || scorer;
+        return push && finish ? `${push.name} pushes off every miss, with ${finish.name} running the lane.` : "";
+      }
+      case "SPACING": {
+        const eng = passer, shooters = wings.filter((p) => p !== eng).slice(0, 2);
+        if (!eng) return "";
+        // Agreement: one shooter "spaces", two "space".
+        const who = shooters.map((p) => p.name).join(" and ");
+        const verb = shooters.length === 1 ? "spaces" : "space";
+        return who
+          ? `${eng.name} creates the advantage; ${who} ${verb} the floor behind it.`
+          : `${eng.name} creates the advantage and the rest of the five spaces the floor behind it.`;
+      }
+      case "MOVEMENT": {
+        const hub = top(t, "ast");
+        return hub ? `Nobody stands still — ${hub.name} is the connector rather than the ball-stopper.` : "";
+      }
+      case "PNR": {
+        const handler = passer, roller = top(bigs, "reb");
+        return handler && roller ? `${handler.name} handles, ${roller.name} rolls; everything starts from that two-man game.` : "";
+      }
+      default: {
+        return scorer ? `${scorer.name} gets the ball and the other four get out of the way.` : "";
+      }
+    }
+  })();
+
+  // WHAT the offer is FOR differs by role: the maximizer sells the fit, the
+  // counter names the opponent problem, the adapter names the era lever.
+  const pitch = (() => {
+    if (offer.role === "OPPONENT_COUNTER") {
+      if (!oppFive.length) return "";
+      const oppCreator = [...oppFive].sort((a, b) => b.ast - a.ast)[0];
+      const oppScorer = [...oppFive].sort((a, b) => b.pts - a.pts)[0];
+      const weakGlass = (oppSup?.defenders ?? 1) < 0.45;
+      if (weakGlass) return `Attacks the other side's softest point: they do not defend well enough to survive ${(top(t, "pts") || {}).name || "this attack"} getting downhill.`;
+      // When one player is both their creator and their scorer, name them once.
+      if (oppCreator && oppScorer && oppCreator.name === oppScorer.name) {
+        return `Built around one job: make ${oppCreator.name} give the ball up, and live with whoever is left.`;
+      }
+      return `Built to take ${oppCreator?.name || "their creator"} out of it and make ${oppScorer?.name || "their scorer"} finish over a set defense.`;
+    }
+    if (offer.role === "ERA_ADAPTER") {
+      if (!era) return "";
+      return !era.rules.threePoint
+        ? "Every shot pays two here, and this staff already builds its offense inside the arc."
+        : era.environment.tpaPerGame >= 20
+          ? "This staff wants the volume and spacing this environment rewards."
+          : "This staff's structure travels into this rule set without needing to be rebuilt.";
+    }
+    const supply = rosterSupply(roster);
+    const strongest = supply ? Object.entries(supply).sort((a, b) => b[1] - a[1])[0]?.[0] : null;
+    const HUMAN = {
+      traditionalCenters: "a genuine interior anchor", passingBigs: "a big who can pass",
+      shootingBigs: "a big who can score facing up", primaryCreators: "a lead creator",
+      multipleCreators: "more than one player who can make a play", switchableWings: "switchable wings",
+      shooters: "perimeter scoring", defenders: "real defenders", transitionAthletes: "players who run",
+    };
+    return `This roster's best asset is ${HUMAN[strongest] || "its balance"}, and this staff is built to use it.`;
+  })();
 
   const sacrifice = (() => {
-    if ((o.tempo ?? 5) >= 8) return "Playing this fast concedes some shot quality and offensive-rebounding position.";
-    if ((d.pressure ?? 5) >= 8) return "Pressuring this high leaves the back line exposed when the first line is beaten.";
-    if ((o.post ?? 5) >= 7) return "Feeding the post slows the offense and invites help to load up inside.";
-    if ((d.switching ?? 5) >= 8) return "Switching everything accepts mismatches rather than fighting through screens.";
-    if ((o.starFreedom ?? 5) >= 8) return "Star freedom concentrates usage — the supporting four can go cold watching.";
-    return "This structure is balanced, which means it wins few possessions outright.";
+    switch (ident.key) {
+      case "PACE": return "Playing this fast concedes shot quality and offensive-rebounding position.";
+      case "POST": return "Feeding the post slows the game and invites help to load up inside.";
+      case "SPACING": return "If the shots do not fall, there is no second way to score.";
+      case "MOVEMENT": return "Constant movement asks a lot of the legs and can get sloppy late.";
+      case "STAR": return "Concentrating usage leaves the supporting four watching.";
+      default: return "Ball-screen heavy offense lets a disciplined defense load to one side.";
+    }
   })();
+
+  const defLine = `${(d.man ?? 5) >= (d.zone ?? 1) ? "Man-to-man" : "Zone-based"} defense`
+    + (era && !era.rules.zoneLegal ? " under the era's illegal-defense rules" : "")
+    + `, ${def.label}.`;
 
   const eraLine = !era ? "" : !era.rules.threePoint
     ? ((o.threeEmphasis ?? 5) >= 6
@@ -217,11 +324,6 @@ export const explainOffer = ({ offer, roster, opponentRoster, eraId }) => {
         : "This system generates its offense inside a league that is shooting from deep.")
       : "This environment sits between the extremes, and the system translates without major friction.";
 
-  const defLine = `${(d.man ?? 5) >= (d.zone ?? 1) ? "Man-to-man" : "Zone-based"} defense`
-    + (era && !era.rules.zoneLegal ? " under the era's illegal-defense rules" : "")
-    + `, ${(d.switching ?? 5) >= 7 ? "switching ball screens" : (d.drop ?? 5) >= 7 ? "dropping the big in coverage" : "playing ball screens at the level"}`
-    + `, with ${(d.helpAggression ?? 5) >= 7 ? "aggressive help" : "help kept close to home"}.`;
-
   return {
     role: offer.role,
     roleLabel: ROLE_LABEL[offer.role],
@@ -229,13 +331,11 @@ export const explainOffer = ({ offer, roster, opponentRoster, eraId }) => {
     coachId: coach.id,
     name: coach.name,
     span: coach.span,
-    family: offer.family,
+    family: ident.key,
     systemTags: (coach.systemTags || []).slice(0, 3),
-    offense: `Runs a ${primary} offense.`,
-    central: byAst[0] && byPts[0]
-      ? `${byAst[0].name} initiates; ${byPts[0].name} is the primary scoring option${bigs[0] && bigs[0] !== byPts[0] ? `, with ${bigs[0].name} working inside` : ""}.`
-      : "",
-    targets: target ? `Aims at ${target.name}, the opponent's most important piece.` : "",
+    offense: `Runs a ${ident.label} offense — ${ident.verb}.`,
+    central,
+    targets: pitch,
     defense: defLine,
     era: eraLine,
     sacrifice,
