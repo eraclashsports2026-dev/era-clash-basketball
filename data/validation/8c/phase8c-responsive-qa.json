@@ -1,0 +1,35 @@
+{
+  "artifact": "phase8c-responsive-qa",
+  "phase": "8C",
+  "viewports": [
+    "1600x900",
+    "1440x900",
+    "1280x800",
+    "1180x820",
+    "1024x768",
+    "768x1024",
+    "430x932",
+    "390x844",
+    "375x812"
+  ],
+  "desktop": {
+    "twoColumn": ">=1180px",
+    "dockSticky": true,
+    "rostersSideBySide": true,
+    "coachOffersInARow": true
+  },
+  "tabletAndBelow": {
+    "dockStacksBeneathTheStage": true
+  },
+  "mobile": {
+    "singleColumn": true,
+    "userRosterFirst": true,
+    "stickyStageContext": true,
+    "eraBannerVisible": true,
+    "resultBecomesStackedPanel": true,
+    "fullPostgameUsesTheExistingMobileTabs": true,
+    "holdTargets": "44px measured",
+    "pageOverflow": "0 at 375/390/430/768"
+  },
+  "evidence": "e2e/phase8c-arena.spec.js mobile spec + live browser measurement"
+}
