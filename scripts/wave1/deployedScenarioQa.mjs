@@ -2,7 +2,8 @@
 // the stable preview as a TESTER (signed session), with schema-v2 feedback.
 import { readFileSync, writeFileSync } from "node:fs";
 import { WAVE1_SCENARIOS } from "../../src/wave1Scenarios.js";
-const BASE = "https://era-clash-basketball-git-wave1-era-clash.vercel.app";
+// Defaults to the stable Wave 1 alias; pass a URL to QA a branch preview first.
+const BASE = process.argv[2] || process.env.PREVIEW_BASE_URL || "https://era-clash-basketball-git-wave1-era-clash.vercel.app";
 const { keys } = JSON.parse(readFileSync(".preview-secrets/wave1-access-keys.json", "utf8"));
 const tester = keys.find((k) => k.testerId === "wave1-tester-01");
 let pass = 0, fail = 0; const gates = []; const played = [];
