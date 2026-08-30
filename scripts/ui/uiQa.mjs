@@ -131,6 +131,8 @@ if (MODE === "arena") {
     new Set(panels.map((p) => p.toFixed(3))).size === panels.length);
   const shell = read("src/components/arena/ArenaCommandCenter.jsx");
   ok("the arena keeps the matchup visible after the result", /THE MATCHUP YOU BUILT/.test(shell));
+  ok("the finished result leads the stacked page on mobile",
+    /ec-cc-dock--front/.test(shell) && /\.ec-cc-dock--front \{ order: -1; \}/.test(css));
   ok("the roll strip is driven by server state, not inferred",
     /run \? run\.roll/.test(read("src/components/arena/RollStrip.jsx")));
 }

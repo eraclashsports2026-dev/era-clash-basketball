@@ -361,6 +361,9 @@ button { font-family: inherit; }
 @media (max-width: 1179px) {
   .ec-cc { grid-template-columns: minmax(0, 1fr); }
   .ec-cc-dock { position: static; max-height: none; overflow: visible; }
+  /* When the game is running or finished, the RESULT leads the stacked page —
+     the score must never sit below the roster summary and the mode shelf. */
+  .ec-cc-dock--front { order: -1; }
 }
 
 /* Panels: three distinct elevations so structure reads without glow. */

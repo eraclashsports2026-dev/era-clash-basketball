@@ -197,3 +197,44 @@ test("mobile stacks the dock and never overflows", async ({ page }) => {
     expect(r.overflow, `page overflows at ${w}px`).toBe(false);
   }
 });
+
+test("Run it back replays the SAME matchup and actually completes", async ({ page }) => {
+  test.slow();
+  await withAccount(page);
+  await page.goto("/");
+  await page.getByRole("button", { name: "ROLL 1", exact: true }).click();
+  await expect(page.getByText(/ROLL 1 OF 3/).first()).toBeVisible({ timeout: 20_000 });
+  await page.getByRole("button", { name: /LOCK HOLDS & ROLL 2/ }).click();
+  await page.getByRole("button", { name: /LOCK HOLDS & FINAL ROLL/ }).click();
+  await page.getByRole("button", { name: /LOCK HOLDS & ROLL COACHES/ }).click();
+  await page.getByRole("button", { name: /LOCK HOLDS & FINAL COACH ROLL/ }).click();
+  await expect(page.getByText("CHOOSE YOUR COACH").first()).toBeVisible({ timeout: 20_000 });
+  await page.getByRole("button", { name: "SELECT" }).first().click();
+  await page.getByRole("button", { name: "HIRE THIS COACH" }).click();
+  await page.getByRole("button", { name: "RUN THE CLASH" }).click();
+  await expect(page.getByText("FINAL SCORE")).toBeVisible({ timeout: 45_000 });
+
+  // Capture the rematch request: it must be mode "single" (the server has no
+  // "chaos" mode — sending it was rejected outright) and must carry the SAME
+  // coaches and era from the finished record, not neutral/default ones.
+  const reqPromise = page.waitForRequest((r) => r.url().includes("/api/game") && r.method() === "POST", { timeout: 20_000 });
+  await page.getByRole("button", { name: "Run it back" }).click();
+  const req = await reqPromise;
+  const body = req.postDataJSON();
+  expect(body.mode).toBe("single");
+  expect(body.coachGoldId, "the rematch must keep the hired coach, not fall to neutral").toBeTruthy();
+  expect(body.coachBlueId).toBeTruthy();
+  expect(body.eraStyleId, "the rematch must keep the revealed era").toMatch(/^\d{4}s$/);
+  await expect(page.getByText("FINAL SCORE")).toBeVisible({ timeout: 45_000 });
+});
+
+test("a Wave 1 scenario link lands a GUEST in the preloaded builder", async ({ page }) => {
+  await asGuest(page);
+  await page.goto("/?scenario=w1-s1");
+  // The arena must not render on top, and the account gate must not block a
+  // guided preview scenario.
+  await expect(page.getByText(/GUIDED SCENARIO 1/)).toBeVisible({ timeout: 20_000 });
+  await expect(page.getByText("THREE ROLLS AVAILABLE")).toHaveCount(0);
+  await expect(page.getByText("FREE ACCOUNT REQUIRED")).toHaveCount(0);
+  await expect(page.getByRole("button", { name: /RUN THE SIM/ })).toBeVisible();
+});

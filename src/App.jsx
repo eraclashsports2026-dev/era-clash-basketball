@@ -5,7 +5,7 @@ import { displayOVR, analyzeBalance, teamRating } from "./rating.js";
 import { T, card, R, S, FONT } from "./theme.js";
 import { genPlayer, genRoster, genOpponent } from "./draft.js";
 import { utcDateKey, dailySeed, dailyRoll1, applyDailyRoll, dailyOpponent } from "./dailyChallenge.js";
-import { runGame, requestNarrative } from "./gameClient.js";
+import { runGame } from "./gameClient.js";
 import { track, trackSessionStart } from "./analytics.js";
 import { installErrorMonitoring } from "./errors.js";
 import {
@@ -14,7 +14,6 @@ import {
 } from "./career.js";
 import { createChallenge, loadChallengeFromUrl } from "./challengeClient.js";
 import { publishResult, shareText } from "./share.js";
-import GameHeader from "./components/GameHeader.jsx";
 import Postgame from "./components/Postgame.jsx";
 import DailyPanel from "./components/DailyPanel.jsx";
 import DailyCoachEra from "./components/DailyCoachEra.jsx";
@@ -321,6 +320,9 @@ export default function App() {
     setBuildMethod("manual"); setTeam(gold); setOpponent(blue);
     setCoachGold(cg); setCoachBlue(cb); setEraStyle(sc.era);
     setEraLocked(true); setPlayStage("READY");
+    // Chaos Clash is the default Play mode, so a scenario link must switch to
+    // the manual builder or the arena renders on top of the preloaded setup.
+    setGameMode("Single");
     setActiveScenario(sc);
     track("preview_scenario_loaded", { scenario_id: sc.id });
   }, [v3.coaches]); // eslint-disable-line
@@ -357,7 +359,9 @@ export default function App() {
   // the free default. Where Chaos is switched off (production today) Dream
   // Matchup IS the Play experience, and gating it would leave a signed-out
   // visitor on a wall with nothing they can open at all.
-  const dreamMatchupGated = chaosAvailable
+  // A guided preview scenario is an authorized preview-only entry into the
+  // manual builder — it is never account-gated (Wave 1 testers may be guests).
+  const dreamMatchupGated = chaosAvailable && !activeScenario
     && gameMode === "Single" && nav === "Play" && !result
     && !can(tier, CAPABILITIES.DREAM_MATCHUP);
   const coachesReady = !v3Steps || (blueBuildable ? (!!coachGold && !!coachBlue) : !!coachGold);
@@ -701,13 +705,16 @@ export default function App() {
     if (remaining > 0) await new Promise((r) => setTimeout(r, remaining));
   };
 
-  const runSingle = async (oppOverride, tag) => {
+  const runSingle = async (oppOverride, tag, setupOverride = null) => {
     if (loading) return;
     const simT0 = Date.now();
     setView("simulating");
     setLoading(true); setErr(""); setSimStage(""); setNarrative({ status: "none" });
     noteGameStarted();
-    const mode = tag || "single";
+    // "chaos" is a CLIENT tag (it keeps the arena postgame and its CTAs), not a
+    // server mode — a chaos rematch is an ordinary single game replaying the
+    // same five, coaches and era. Sending mode:"chaos" was rejected outright.
+    const mode = tag === "chaos" ? "single" : (tag || "single");
     try {
       const opp = oppOverride || opponent || genOpponent();
       lastOppRef.current = opp;
@@ -725,9 +732,15 @@ export default function App() {
         // Daily: submit ONLY the coach id. The era, the opponent staff, the
         // seed and every data version are the server's to decide — sending
         // them from here is what would make the leaderboard meaningless.
-        coachGoldId: tag === "daily" ? (dailyCoach?.coachId || undefined) : (v3Steps ? coachGold?.id : undefined),
-        coachBlueId: tag === "daily" ? undefined : (v3Steps ? coachBlue?.id : undefined),
-        eraStyleId: tag === "daily" ? undefined : (v3Steps ? eraStyle : undefined),
+        coachGoldId: tag === "daily" ? (dailyCoach?.coachId || undefined)
+          : setupOverride ? setupOverride.coachGoldId
+            : (v3Steps ? coachGold?.id : undefined),
+        coachBlueId: tag === "daily" ? undefined
+          : setupOverride ? setupOverride.coachBlueId
+            : (v3Steps ? coachBlue?.id : undefined),
+        eraStyleId: tag === "daily" ? undefined
+          : setupOverride ? setupOverride.eraStyleId
+            : (v3Steps ? eraStyle : undefined),
         onStage: setSimStage,
       });
       const w = record.core.winner === "Gold";
@@ -859,8 +872,16 @@ export default function App() {
   // ── Replay actions ─────────────────────────────────────────────────────────
   const doRematch = (tag) => {
     track(tag === "challenge" ? "challenge_rematch_started" : "rematch_started", {});
+    // A chaos rematch replays the SAME matchup: the coaches and era live on the
+    // finished result's record, because the chaos flow never touches the
+    // builder's coach/era state. Without this override the rematch silently ran
+    // with neutral coaches in the default era.
+    const rec = result?.record;
+    const setup = tag === "chaos" && rec ? {
+      coachGoldId: rec.coachIds?.gold, coachBlueId: rec.coachIds?.blue, eraStyleId: rec.eraId,
+    } : null;
     setResult(null);
-    runSingle(tag === "challenge" ? challenge?.team : lastOppRef.current, tag);
+    runSingle(tag === "challenge" ? challenge?.team : lastOppRef.current, tag, setup);
   };
   const doBest7FromResult = () => { setResult(null); runBest7(lastOppRef.current, "from_result"); };
   // Swap One: back to the builder with BOTH squads preserved (spec #12/#13).

@@ -93,7 +93,7 @@ export default function ArenaCommandCenter({
         </div>
 
         {/* ── Matchup / Result Dock ────────────────────────────────────────── */}
-        <aside className="ec-cc-dock" aria-label="Matchup and result">
+        <aside className={`ec-cc-dock${complete || simulating ? " ec-cc-dock--front" : ""}`} aria-label="Matchup and result">
           <MatchupResultDock
             phase={phase} run={chaosRun} result={result} simStage={simStage}
             onViewFullReport={onViewFullReport} onRunItBack={onRunItBack} onNewClash={onNewClash}
