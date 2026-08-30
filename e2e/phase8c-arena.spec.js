@@ -5,7 +5,10 @@ const withAccount = async (page) => {
   await page.addInitScript(() => {
     try {
       localStorage.setItem("ec_account", "1"); localStorage.setItem("ec_name", "E2E");
-      localStorage.removeItem("ec_chaos_run");
+      // Each test starts from a clean board — EXCEPT when a test is deliberately
+      // exercising resume-after-reload, which it marks in sessionStorage
+      // (sessionStorage survives a reload in the same tab, so the marker holds).
+      if (!sessionStorage.getItem("e2e_keep_run")) localStorage.removeItem("ec_chaos_run");
     } catch (e) {}
   });
 };
@@ -127,6 +130,8 @@ test("the result appears in the dock and the full report opens over the same pag
   await expect(page.getByText("MATCHUP OUTLOOK")).toBeVisible();
   await page.getByRole("button", { name: "SELECT" }).first().click();
   await page.getByRole("button", { name: "HIRE THIS COACH" }).click();
+  // Challenge must be reachable at READY (an 8C regression made it vanish).
+  await expect(page.getByRole("button", { name: "CHALLENGE THIS CHAOS" })).toBeVisible();
   await page.getByRole("button", { name: "RUN THE CLASH" }).click();
 
   // Final state in the dock, with all four tabs.
@@ -147,6 +152,35 @@ test("the result appears in the dock and the full report opens over the same pag
   await expect(dialog).toHaveCount(0);
   await expect(page.getByText("THE MATCHUP YOU BUILT")).toBeVisible();
   await expect(page.getByText("FINAL SCORE")).toBeVisible();
+
+  // The dock offers a post-game challenge and shows the share link.
+  await page.getByRole("button", { name: "Challenge this Chaos" }).click();
+  await expect(page.getByText(/\?chaos=[a-z0-9]+/)).toBeVisible();
+});
+
+test("a run resumed at READY after a reload still runs", async ({ page }) => {
+  test.slow();
+  await withAccount(page);
+  await page.goto("/");
+  await page.getByRole("button", { name: "ROLL 1", exact: true }).click();
+  await expect(page.getByText(/ROLL 1 OF 3/).first()).toBeVisible({ timeout: 20_000 });
+  await page.getByRole("button", { name: /LOCK HOLDS & ROLL 2/ }).click();
+  await expect(page.getByText(/ROLL 2 OF 3/).first()).toBeVisible({ timeout: 20_000 });
+  await page.getByRole("button", { name: /LOCK HOLDS & FINAL ROLL/ }).click();
+  await page.getByRole("button", { name: /LOCK HOLDS & ROLL COACHES/ }).click();
+  await page.getByRole("button", { name: /LOCK HOLDS & FINAL COACH ROLL/ }).click();
+  await expect(page.getByText("CHOOSE YOUR COACH").first()).toBeVisible({ timeout: 20_000 });
+  await page.getByRole("button", { name: "SELECT" }).first().click();
+  await page.getByRole("button", { name: "HIRE THIS COACH" }).click();
+  await expect(page.getByRole("button", { name: "RUN THE CLASH" })).toBeVisible();
+
+  // The regression: after a reload the resumed run's RUN button did nothing,
+  // because the click handler waited on in-session state a reload never sets.
+  await page.evaluate(() => sessionStorage.setItem("e2e_keep_run", "1"));
+  await page.reload();
+  await expect(page.getByRole("button", { name: "RUN THE CLASH" })).toBeVisible({ timeout: 20_000 });
+  await page.getByRole("button", { name: "RUN THE CLASH" }).click();
+  await expect(page.getByText("FINAL SCORE")).toBeVisible({ timeout: 45_000 });
 });
 
 test("mobile stacks the dock and never overflows", async ({ page }) => {

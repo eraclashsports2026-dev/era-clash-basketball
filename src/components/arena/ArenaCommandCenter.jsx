@@ -45,7 +45,7 @@ function LockedSummary({ run }) {
 
 export default function ArenaCommandCenter({
   tier, challengeId, chaosRun, onRunChange, onReady, onGated,
-  phase, result, simStage, onRunClash, onViewFullReport, onRunItBack, onNewClash,
+  phase, result, simStage, onRunClash, onViewFullReport, onRunItBack, onNewClash, onChallenge,
   activeModeId, onModeAction, previewCandidateActive, busy, error,
 }) {
   const complete = phase === "complete";
@@ -75,10 +75,13 @@ export default function ArenaCommandCenter({
                   {error && <div role="alert" style={{ color: "var(--ec-a-red, #f87171)", fontSize: 13, textAlign: "center" }}>{error}</div>}
                 </>
               )}
+              {/* The ready block inside ChaosClash stays: it carries CHALLENGE
+                  THIS CHAOS and the share link. Only the era banner is owned by
+                  the shell. */}
               <ChaosClash
                 tier={tier} challengeId={challengeId}
                 onRunChange={onRunChange} onReady={onReady} onGated={onGated}
-                hideEraBanner hideReadyBlock={chaosRun?.phase === "READY"}
+                hideEraBanner
               />
             </>
           )}
@@ -94,7 +97,7 @@ export default function ArenaCommandCenter({
           <MatchupResultDock
             phase={phase} run={chaosRun} result={result} simStage={simStage}
             onViewFullReport={onViewFullReport} onRunItBack={onRunItBack} onNewClash={onNewClash}
-            busy={busy} />
+            onChallenge={onChallenge} busy={busy} />
         </aside>
       </div>
     </div>

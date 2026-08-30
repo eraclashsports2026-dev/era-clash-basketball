@@ -34,7 +34,7 @@ import { MembershipPage, FantasyPage, ModeInfoPage, HowModesModal as ArenaHowMod
 import { PLAY_MODES, findMode, defaultMode, MODE_STATUS } from "./navigation.js";
 import AccountGate from "./components/chaos/AccountGate.jsx";
 import { currentTier, hasAccount } from "./account.js";
-import { simulateChaos } from "./chaos/client.js";
+import { simulateChaos, publishChaosChallenge } from "./chaos/client.js";
 import { can, CAPABILITIES } from "./entitlements.js";
 import RosterGrid from "./components/RosterGrid.jsx";
 import { MatchupGrid, ArenaCentre, BallIqToggle } from "./components/PlayPanels.jsx";
@@ -868,12 +868,16 @@ export default function App() {
   // The setup is entirely server-side: this call sends a run id and nothing
   // else. The team, the coaches and the era all come from the stored run.
   const runChaosClash = async () => {
-    if (!chaosReady || loading) return;
+    // Read the SHARED run state rather than the in-session onReady snapshot:
+    // after a reload the run resumes at READY without onReady ever firing, and
+    // the old guard left the button dead.
+    const activeRun = chaosRun || chaosReady;
+    if (!activeRun || activeRun.phase !== "READY" || loading) return;
     setLoading(true); setErr(""); setSimStage(""); setNarrative({ status: "none" }); setView("simulating");
     const simT0 = Date.now();
     try {
       const simulationId = (() => { try { return crypto.randomUUID().replace(/-/g, "").slice(0, 20); } catch { return `chaos${Date.now()}`.slice(0, 20); } })();
-      const { resultId, result: record, records } = await simulateChaos(chaosReady.chaosRunId, simulationId, tier);
+      const { resultId, result: record, records } = await simulateChaos(activeRun.chaosRunId, simulationId, tier);
       const five = (ids) => (ids || []).map((id) => PLAYERS.find((p) => p.id === id)).filter(Boolean);
       const gold = five(record.goldIds), opp = five(record.blueIds);
       setTeam(gold); setOpponent(opp); lastOppRef.current = opp;
@@ -1507,6 +1511,11 @@ export default function App() {
             onRunItBack={() => { setFullReport(false); doRematch("chaos"); }}
             onNewChaosClash={newChaosClash}
             onNewClash={() => { setFullReport(false); newChaosClash(); }}
+            onChallenge={chaosRun ? async () => {
+              const r = await publishChaosChallenge(chaosRun.chaosRunId, tier);
+              track("chaos_challenge_created", { from: "result_dock" });
+              return r.challengeId;
+            } : null}
             activeModeId="chaos"
             onModeAction={handleModeAction}
             previewCandidateActive={!!result?.sim?.previewCandidate} />

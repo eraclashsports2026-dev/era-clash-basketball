@@ -46,7 +46,7 @@ DEFAULT_CANDIDATE_LIMIT = 30
 MAX_DOWNLOAD_BYTES = 30 * 1024 * 1024
 MIN_IMAGE_EDGE = 420
 MAX_PROCESSED_EDGE = 2048
-REQUEST_TIMEOUT = 30
+REQUEST_TIMEOUT = 25
 
 PILOT_NAMES = {
     "George Mikan", "Bill Russell", "Wilt Chamberlain", "Kareem Abdul-Jabbar",
@@ -79,97 +79,6 @@ MODEL_URLS = {
 }
 
 _thread_local = threading.local()
-
-# Process-wide pacing prevents concurrent workers from overrunning Wikimedia
-# and Brave. Collection is serialized below for deterministic face matching.
-_RATE_LOCK = threading.Lock()
-_NEXT_REQUEST_AT: dict[str, float] = {
-    "wikimedia": 0.0,
-    "brave": 0.0,
-    "download": 0.0,
-}
-WIKIMEDIA_MIN_INTERVAL = float(os.getenv("ERACLASH_WIKIMEDIA_DELAY_SECONDS", "1.35"))
-BRAVE_MIN_INTERVAL = float(os.getenv("ERACLASH_BRAVE_DELAY_SECONDS", "1.20"))
-DOWNLOAD_MIN_INTERVAL = float(os.getenv("ERACLASH_DOWNLOAD_DELAY_SECONDS", "0.20"))
-MAX_API_RETRIES = int(os.getenv("ERACLASH_API_RETRIES", "7"))
-
-
-def wait_for_request_slot(provider: str, interval: float) -> None:
-    with _RATE_LOCK:
-        now = time.monotonic()
-        ready_at = _NEXT_REQUEST_AT.get(provider, 0.0)
-        wait = max(0.0, ready_at - now)
-        _NEXT_REQUEST_AT[provider] = max(now, ready_at) + max(0.0, interval)
-    if wait > 0:
-        time.sleep(wait)
-
-
-def retry_delay(response: requests.Response | None, attempt: int) -> float:
-    if response is not None:
-        value = response.headers.get("Retry-After", "").strip()
-        try:
-            seconds = float(value)
-            if seconds > 0:
-                return min(120.0, seconds)
-        except ValueError:
-            pass
-    return min(90.0, 2.5 * (2 ** attempt))
-
-
-def request_with_retry(
-    method: str,
-    url: str,
-    *,
-    provider: str,
-    interval: float,
-    **kwargs: Any,
-) -> requests.Response:
-    retryable = {429, 500, 502, 503, 504}
-    last_error: Exception | None = None
-
-    for attempt in range(MAX_API_RETRIES):
-        wait_for_request_slot(provider, interval)
-        response: requests.Response | None = None
-        try:
-            response = session().request(method, url, **kwargs)
-            if response.status_code in retryable:
-                delay = retry_delay(response, attempt)
-                print(
-                    f"[{provider}] HTTP {response.status_code}; retrying in "
-                    f"{delay:.1f}s ({attempt + 1}/{MAX_API_RETRIES})",
-                    file=sys.stderr,
-                )
-                response.close()
-                time.sleep(delay)
-                continue
-
-            if response.status_code >= 400:
-                try:
-                    body = response.text[:1500].strip()
-                except Exception:
-                    body = ""
-                raise ApiError(
-                    f"{provider} HTTP {response.status_code} for {response.url}"
-                    + (f"\nResponse: {body}" if body else "")
-                )
-            return response
-        except (requests.RequestException, ApiError) as exc:
-            last_error = exc
-            if isinstance(exc, ApiError):
-                raise
-            if attempt + 1 >= MAX_API_RETRIES:
-                break
-            delay = retry_delay(response, attempt)
-            print(
-                f"[{provider}] request failed: {exc}; retrying in "
-                f"{delay:.1f}s ({attempt + 1}/{MAX_API_RETRIES})",
-                file=sys.stderr,
-            )
-            time.sleep(delay)
-
-    raise ApiError(
-        f"{provider} request failed after {MAX_API_RETRIES} attempts: {last_error}"
-    )
 
 
 def session() -> requests.Session:
@@ -385,14 +294,8 @@ def wikidata_entity(name: str) -> dict[str, Any] | None:
         "limit": 8,
         "type": "item",
     }
-    response = request_with_retry(
-        "GET",
-        "https://www.wikidata.org/w/api.php",
-        provider="wikimedia",
-        interval=WIKIMEDIA_MIN_INTERVAL,
-        params=params,
-        timeout=REQUEST_TIMEOUT,
-    )
+    response = session().get("https://www.wikidata.org/w/api.php", params=params, timeout=REQUEST_TIMEOUT)
+    response.raise_for_status()
     results = response.json().get("search", [])
     exact = []
     for row in results:
@@ -412,13 +315,8 @@ def wikidata_entity(name: str) -> dict[str, Any] | None:
 
 def wikidata_claims(qid: str) -> dict[str, Any]:
     url = f"https://www.wikidata.org/wiki/Special:EntityData/{quote(qid)}.json"
-    response = request_with_retry(
-        "GET",
-        url,
-        provider="wikimedia",
-        interval=WIKIMEDIA_MIN_INTERVAL,
-        timeout=REQUEST_TIMEOUT,
-    )
+    response = session().get(url, timeout=REQUEST_TIMEOUT)
+    response.raise_for_status()
     return response.json()["entities"][qid].get("claims", {})
 
 
@@ -437,14 +335,8 @@ def commons_file_info(filename: str) -> Candidate | None:
         "iiprop": "url|size|mime|extmetadata",
         "titles": f"File:{filename}",
     }
-    response = request_with_retry(
-        "GET",
-        "https://commons.wikimedia.org/w/api.php",
-        provider="wikimedia",
-        interval=WIKIMEDIA_MIN_INTERVAL,
-        params=params,
-        timeout=REQUEST_TIMEOUT,
-    )
+    response = session().get("https://commons.wikimedia.org/w/api.php", params=params, timeout=REQUEST_TIMEOUT)
+    response.raise_for_status()
     pages = response.json().get("query", {}).get("pages", {})
     for page in pages.values():
         info = (page.get("imageinfo") or [{}])[0]
@@ -484,14 +376,8 @@ def commons_search(name: str, limit: int = 40) -> list[Candidate]:
             "prop": "imageinfo",
             "iiprop": "url|size|mime|extmetadata",
         }
-        response = request_with_retry(
-            "GET",
-            "https://commons.wikimedia.org/w/api.php",
-            provider="wikimedia",
-            interval=WIKIMEDIA_MIN_INTERVAL,
-            params=params,
-            timeout=REQUEST_TIMEOUT,
-        )
+        response = session().get("https://commons.wikimedia.org/w/api.php", params=params, timeout=REQUEST_TIMEOUT)
+        response.raise_for_status()
         pages = response.json().get("query", {}).get("pages", {})
         for page in pages.values():
             info = (page.get("imageinfo") or [{}])[0]
@@ -517,36 +403,28 @@ def commons_search(name: str, limit: int = 40) -> list[Candidate]:
     return output
 
 
-def brave_search(query: str, api_key: str, count: int = 20, era_hint: str = "") -> list[Candidate]:
+def brave_search(query: str, api_key: str, count: int = 50, era_hint: str = "") -> list[Candidate]:
     headers = {
         "Accept": "application/json",
         "X-Subscription-Token": api_key,
     }
-    params = {
-        "q": query,
-        "count": min(max(1, count), 20),
-        "safesearch": "strict",
-    }
-    response = request_with_retry(
-        "GET",
+    params = {"q": query, "count": min(count, 200), "safesearch": "strict", "search_lang": "en", "country": "US"}
+    response = session().get(
         "https://api.search.brave.com/res/v1/images/search",
-        provider="brave",
-        interval=BRAVE_MIN_INTERVAL,
         headers=headers,
         params=params,
         timeout=REQUEST_TIMEOUT,
     )
+    if response.status_code == 429:
+        raise ApiError("Brave rate limit reached. Wait and resume the collection.")
+    response.raise_for_status()
     rows = response.json().get("results", [])
     output = []
     for row in rows:
         props = row.get("properties") or {}
         thumb = row.get("thumbnail") or {}
         image_url = props.get("url") or row.get("url") or ""
-        source_value = row.get("source") or row.get("page_url") or row.get("source_page_url") or ""
-        if isinstance(source_value, dict):
-            source_page = str(source_value.get("url") or source_value.get("page_url") or "")
-        else:
-            source_page = str(source_value)
+        source_page = row.get("source") or row.get("page_url") or row.get("source_page_url") or ""
         thumbnail_url = thumb.get("src") if isinstance(thumb, dict) else str(thumb or "")
         if not image_url:
             continue
@@ -554,7 +432,7 @@ def brave_search(query: str, api_key: str, count: int = 20, era_hint: str = "") 
             provider="brave",
             query=query,
             title=str(row.get("title") or row.get("description") or ""),
-            image_url=str(image_url),
+            image_url=image_url,
             source_page_url=source_page,
             thumbnail_url=thumbnail_url,
             width=int(props.get("width") or row.get("width") or 0),
@@ -584,15 +462,8 @@ def download_image(candidate: Candidate, out_path: Path) -> tuple[Image.Image | 
     last_error = ""
     for url in urls:
         try:
-            with request_with_retry(
-                "GET",
-                url,
-                provider="download",
-                interval=DOWNLOAD_MIN_INTERVAL,
-                timeout=REQUEST_TIMEOUT,
-                stream=True,
-                allow_redirects=True,
-            ) as response:
+            with session().get(url, timeout=REQUEST_TIMEOUT, stream=True, allow_redirects=True) as response:
+                response.raise_for_status()
                 content_type = response.headers.get("content-type", "").lower()
                 if "image" not in content_type and not re.search(r"\.(jpe?g|png|webp)(\?|$)", url, re.I):
                     raise ValueError(f"not an image content type: {content_type}")
@@ -741,19 +612,13 @@ def collect_person(
     manifest_path = person_root / "manifest.json"
     if resume and not force and manifest_path.exists():
         prior = json.loads(manifest_path.read_text(encoding="utf-8"))
-        selected_count = len(prior.get("selectedIdentity", []))
-        downloaded_count = len(prior.get("candidates", []))
-        if (
-            prior.get("status") == "AUTO_SELECTED"
-            and selected_count >= target
-            and downloaded_count >= target
-        ):
+        if prior.get("status") in {"AUTO_SELECTED", "NEEDS_REVIEW"}:
             return prior.get("summary", {
                 "personId": person.person_id,
                 "displayName": person.display_name,
                 "target": target,
-                "selected": selected_count,
-                "downloaded": downloaded_count,
+                "selected": len(prior.get("selectedIdentity", [])),
+                "downloaded": len(prior.get("candidates", [])),
                 "status": prior.get("status"),
             })
     if force and person_root.exists():
@@ -806,6 +671,7 @@ def collect_person(
             era = next((d for d in person.decades if d in query), "")
             try:
                 discovered.extend(brave_search(query, brave_key, count=50, era_hint=era))
+                time.sleep(0.06)
             except Exception as exc:
                 print(f"[{person.person_id}] Brave search {query!r}: {exc}", file=sys.stderr)
 
@@ -962,14 +828,7 @@ def main() -> int:
 
     face_engine = FaceEngine(repo / ".cache" / "reference-collector" / "models", enabled=not args.skip_face_match)
     summaries: list[dict[str, Any]] = []
-    worker_count = 1
-    if args.workers != 1:
-        print(
-            f"NOTICE: Requested {args.workers} workers; using 1 shared-rate-limited "
-            "worker for reliable Wikimedia/Brave collection.",
-            file=sys.stderr,
-        )
-    with ThreadPoolExecutor(max_workers=worker_count) as pool:
+    with ThreadPoolExecutor(max_workers=max(1, args.workers)) as pool:
         futures = {
             pool.submit(
                 collect_person,

@@ -1,48 +1,55 @@
 {
   "artifact": "phase8c-navigation-registry",
   "phase": "8C",
-  "topNav": [
+  "mode": "navigation",
+  "checks": 9,
+  "passed": 9,
+  "failed": 0,
+  "results": [
     {
-      "id": "play",
-      "label": "Play",
-      "kind": "menu"
+      "name": "one registry supplies every play mode",
+      "pass": true,
+      "detail": ""
     },
     {
-      "id": "fantasy",
-      "label": "Fantasy",
-      "kind": "menu"
+      "name": "Chaos Clash is the default mode",
+      "pass": true,
+      "detail": ""
     },
     {
-      "id": "daily",
-      "label": "Daily",
-      "kind": "nav",
-      "nav": "Daily"
+      "name": "the top nav carries Play and Fantasy as menus",
+      "pass": true,
+      "detail": ""
     },
     {
-      "id": "challenges",
-      "label": "Challenges",
-      "kind": "nav",
-      "nav": "Challenges"
+      "name": "every mode has a tagline and a description",
+      "pass": true,
+      "detail": ""
     },
     {
-      "id": "board",
-      "label": "Leaderboard",
-      "kind": "nav",
-      "nav": "Board"
+      "name": "every mode id is unique",
+      "pass": true,
+      "detail": ""
     },
     {
-      "id": "profile",
-      "label": "My EraClash",
-      "kind": "nav",
-      "nav": "Profile"
+      "name": "the mode shelf reads the shared registry",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the header reads the shared registry",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no component hard-codes its own mode list",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "every status has a distinct label or is deliberately unlabelled",
+      "pass": true,
+      "detail": ""
     }
-  ],
-  "logoBehaviour": "returns to the Play landing without resetting or rerolling an active Chaos run; abandonment stays an explicit confirmed action",
-  "menus": {
-    "accessible": true,
-    "keyboardOpenable": true,
-    "escapeCloses": true,
-    "focusReturnsToTrigger": true,
-    "role": "menu with menuitem children"
-  }
+  ]
 }

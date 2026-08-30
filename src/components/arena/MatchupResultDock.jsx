@@ -63,6 +63,11 @@ export default function MatchupResultDock({
   phase, run, result, simStage, onViewFullReport, onRunItBack, onNewClash, onChallenge, busy,
 }) {
   const [tab, setTab] = useState("story");
+  const [challengeId, setChallengeId] = useState(null);
+  const makeChallenge = async () => {
+    if (!onChallenge) return;
+    try { setChallengeId(await onChallenge()); } catch { /* a failed share never breaks the result */ }
+  };
   const sim = result?.sim;
 
   // ── E · FINAL RESULT ──────────────────────────────────────────────────────
@@ -189,7 +194,15 @@ export default function MatchupResultDock({
           <button onClick={onRunItBack} style={secondaryCta}>Run it back</button>
           <button onClick={onNewClash} style={secondaryCta}>New Chaos Clash</button>
         </div>
-        {onChallenge && <button onClick={onChallenge} style={secondaryCta}>Challenge this Chaos</button>}
+        {onChallenge && !challengeId && (
+          <button onClick={makeChallenge} style={secondaryCta}>Challenge this Chaos</button>
+        )}
+        {challengeId && (
+          <div style={{ ...muted, textAlign: "center", lineHeight: 1.5, wordBreak: "break-all" }}>
+            Same opening rolls, their own decisions:{" "}
+            <span style={{ color: "var(--ec-a-gold, #f2b51d)" }}>{`${window.location.origin}/?chaos=${challengeId}`}</span>
+          </div>
+        )}
       </div>
     );
   }
