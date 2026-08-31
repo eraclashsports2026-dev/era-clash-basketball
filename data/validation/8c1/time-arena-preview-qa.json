@@ -2,8 +2,8 @@
   "artifact": "time-arena-preview-qa",
   "phase": "8C.1 — pixel-fidelity reconstruction",
   "deployment": {
-    "baseUrl": "https://era-clash-basketball-d0dtehdck-era-clash.vercel.app",
-    "commit": "8befb802ee3a53e4cd3569ee2d7da926b1c9573e",
+    "baseUrl": "https://era-clash-basketball-git-wave1-era-clash.vercel.app",
+    "commit": "25f4069d2ebe6854406fbec10c2571c8988ca68f",
     "environment": "vercel preview, access-gated"
   },
   "method": "Playwright over the network against the deployed branch preview, authenticated with a signed session obtained by POSTing an access key. The dev fixture is compiled out of a preview build, so every measurement below comes from a real draft played through the UI.",
@@ -142,7 +142,7 @@
     {
       "slot": "PG",
       "team": "blue",
-      "kept": true,
+      "kept": false,
       "cardH": 322,
       "overflowPx": 0,
       "footInset": 1
@@ -158,7 +158,7 @@
     {
       "slot": "SF",
       "team": "blue",
-      "kept": false,
+      "kept": true,
       "cardH": 322,
       "overflowPx": 0,
       "footInset": 1
@@ -182,17 +182,16 @@
   ],
   "eraDealt": {
     "observed": [
-      "1950s",
+      "2010s",
       "1990s",
-      "1980s",
-      "1980s",
+      "1990s",
       "1960s",
-      "1980s"
+      "1990s",
+      "2010s"
     ],
     "distinct": [
-      "1950s",
+      "2010s",
       "1990s",
-      "1980s",
       "1960s"
     ]
   },
@@ -203,11 +202,11 @@
       "count": 8,
       "measured": 8,
       "worst": 5.8,
-      "sample": "Oscar Robertson controlled the game with 45 points, 15 rebou"
+      "sample": "Nikola Jokic controlled the game with 55 points, 23 rebounds"
     },
     "coaching": {
-      "blocks": 43,
-      "measured": 43,
+      "blocks": 45,
+      "measured": 45,
       "worst": 5.16,
       "failing": [],
       "failingCount": 0,
@@ -268,26 +267,26 @@
     {
       "section": "Game Story",
       "bad": [],
-      "docHeight": 1732,
-      "railBottomBeyondViewport": 637
+      "docHeight": 1647,
+      "railBottomBeyondViewport": 551
     },
     {
       "section": "Box Score",
       "bad": [],
-      "docHeight": 1618,
-      "railBottomBeyondViewport": 523
+      "docHeight": 1636,
+      "railBottomBeyondViewport": 541
     },
     {
       "section": "Coaching",
       "bad": [],
-      "docHeight": 1519,
-      "railBottomBeyondViewport": 424
+      "docHeight": 1517,
+      "railBottomBeyondViewport": 422
     },
     {
       "section": "Analysis",
       "bad": [],
-      "docHeight": 1661,
-      "railBottomBeyondViewport": 566
+      "docHeight": 1625,
+      "railBottomBeyondViewport": 530
     }
   ],
   "isolation": {
@@ -411,7 +410,7 @@
     {
       "name": "the era is revealed with Roll 2, in the rail",
       "ok": true,
-      "detail": "1950s"
+      "detail": "2010s"
     },
     {
       "name": "the era box appears once, in the rail",
@@ -476,7 +475,7 @@
     {
       "name": "an open dock section grows the page instead of hiding behind a scrollbar",
       "ok": true,
-      "detail": "Game Story 1732px · Box Score 1618px · Coaching 1519px · Analysis 1661px"
+      "detail": "Game Story 1647px · Box Score 1636px · Coaching 1517px · Analysis 1625px"
     },
     {
       "name": "a finished game offers a new Clash on the board itself",
@@ -506,7 +505,7 @@
     {
       "name": "the stage column ends where its content ends, with no empty run below it",
       "ok": true,
-      "detail": "0px unused · stage 825px, rail 1087px"
+      "detail": "0px unused · stage 825px, rail 1104px"
     },
     {
       "name": "box score lists named players",
@@ -526,7 +525,7 @@
     {
       "name": "the coaching report renders, readable, on the deployed build",
       "ok": true,
-      "detail": "43 blocks, 43 measurable, worst 5.16:1"
+      "detail": "45 blocks, 45 measurable, worst 5.16:1"
     },
     {
       "name": "preview feedback is accepted",
@@ -541,7 +540,7 @@
     {
       "name": "six fresh drafts do not all land on one era",
       "ok": true,
-      "detail": "1950s, 1990s, 1980s, 1980s, 1960s, 1980s"
+      "detail": "2010s, 1990s, 1990s, 1960s, 1990s, 2010s"
     },
     {
       "name": "no draft defaults to the 1950s",
