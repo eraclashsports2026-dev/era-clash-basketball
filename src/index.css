@@ -776,8 +776,26 @@ button { font-family: inherit; }
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
   text-wrap: balance;
 }
-.ec-pc-meta { display: flex; align-items: baseline; justify-content: space-between; gap: 4px; }
-.ec-pc-decade { font-size: 11px; font-weight: 700; letter-spacing: 0.6px; color: var(--ec-a-text-muted); }
+/* One line, always. The card's height is fixed and its footer is the last grid
+   row, so anything that wraps here pushes the button out through the bottom. */
+.ec-pc-meta {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 4px;
+  min-width: 0; white-space: nowrap;
+}
+.ec-pc-decade {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.6px; color: var(--ec-a-text-muted);
+  min-width: 0; overflow: hidden; text-overflow: ellipsis;
+}
+/* The counterpart to the position chip, on the other shoulder. */
+.ec-pc-kept {
+  position: absolute; top: 5px; right: 5px; z-index: 2;
+  font-family: var(--ec-display);
+  font-size: 9px; font-weight: 800; letter-spacing: 1px;
+  padding: 2px 5px; border-radius: 5px;
+  color: var(--pc-accent);
+  border: 1px solid var(--pc-line);
+  background: rgba(3, 7, 13, 0.72);
+}
 .ec-pc-ovr {
   font-family: var(--ec-display);
   font-size: 17px; font-weight: 700; line-height: 1;

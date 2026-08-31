@@ -66,18 +66,21 @@ export default function PlayerCard({
 
   return (
     <div className="ec-pc" data-team={team} data-slot={card.slot} data-held={held ? "true" : "false"}
-      aria-label={`${card.name}, ${teamLabel} ${card.slot}, ${card.decade}${held ? ", held" : ""}`}>
+      aria-label={`${card.name}, ${teamLabel} ${card.slot}, ${card.decade}${kept ? ", kept from the last roll" : ""}${held ? ", held" : ""}`}>
       <div className="ec-pc-portrait">
         <span className="ec-pc-slot">{card.slot}</span>
+        {/* KEPT rides on the portrait, opposite the position chip. In the meta
+            row it wrapped "2010s · KEPT" onto a second line, and in a card of
+            fixed height a second line pushes the footer out through the bottom
+            — which is why held cards' buttons sat lower than the rest. */}
+        {kept && <span className="ec-pc-kept" aria-hidden="true">KEPT</span>}
         <Portrait card={card} player={player} />
       </div>
 
       <div className="ec-pc-name" title={card.name}>{card.name}</div>
 
       <div className="ec-pc-meta">
-        <span className="ec-pc-decade">
-          {card.decade}{kept && <span style={{ color: "var(--pc-accent)" }}> · KEPT</span>}
-        </span>
+        <span className="ec-pc-decade">{card.decade}</span>
         <span className="ec-pc-ovr" title={`Draft guide rating${card.tier ? ` · ${TIER_TITLE[card.tier] || card.tier}` : ""}`}>
           {player ? displayOVR(player, card.slot) : "—"}<span>OVR</span>
         </span>

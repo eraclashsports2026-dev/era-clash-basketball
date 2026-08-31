@@ -206,6 +206,31 @@ const run = async () => {
   gate("the era box appears once, in the rail", (await page.locator(".ec-intel-era-id").count()) === 1);
   await page.screenshot({ path: `${SHOTS}/state-03-roll2-era.png` });
 
+  // Roll 2 is the first board that carries KEPT markers, and a marker that wraps
+  // a line inside a card of FIXED height pushes that card's button out through
+  // the bottom — so held cards' buttons sat lower than the rest. Checked here
+  // rather than at Roll 1, because at Roll 1 no card is marked KEPT and the
+  // defect is invisible.
+  const footers = await page.evaluate(() => [...document.querySelectorAll(".ec-ta-roster .ec-pc")].map((c) => {
+    const card = c.getBoundingClientRect();
+    const foot = c.querySelector(".ec-pc-action, .ec-pc-static")?.getBoundingClientRect();
+    return {
+      slot: c.dataset.slot, team: c.dataset.team, kept: !!c.querySelector(".ec-pc-kept"),
+      cardH: Math.round(card.height),
+      overflowPx: foot ? Math.round(Math.max(0, foot.bottom - card.bottom)) : 0,
+      // Distance from the card's own bottom edge, which is stable whether or not
+      // the card is lifted by being held.
+      footInset: foot ? Math.round(card.bottom - foot.bottom) : null,
+    };
+  }));
+  const keptCount = footers.filter((f) => f.kept).length;
+  gate("every player card button sits inside its own card",
+    footers.every((f) => f.overflowPx === 0),
+    `${keptCount} card(s) marked KEPT · worst overflow ${Math.max(...footers.map((f) => f.overflowPx))}px`);
+  gate("every player card button sits at the same place on its card",
+    new Set(footers.map((f) => f.footInset)).size === 1 && new Set(footers.map((f) => f.cardH)).size === 1,
+    `insets ${[...new Set(footers.map((f) => f.footInset))].join("/")} · heights ${[...new Set(footers.map((f) => f.cardH))].join("/")}`);
+
   await page.getByRole("button", { name: /FINAL ROLL/ }).click();
   await page.locator(".ec-coach-card").nth(2).waitFor({ timeout: 45_000 });
   gate("coach offers arrive in the same sequence, not a second draft", (await page.locator(".ec-coach-card").count()) >= 3);
@@ -501,6 +526,7 @@ const run = async () => {
       note: "Raw keys are never printed or stored here. A tester is identified by id and by the first 12 hex of the sha256 already committed in config.",
     },
     canonicalGeometryOnDeployedBuild: geo,
+    playerCardFootersAtRoll2: footers,
     eraDealt: { observed: eras, distinct },
     report: { boxScoreRows: names.length, worstNameContrast: worst, story, coaching },
     feedback: {
