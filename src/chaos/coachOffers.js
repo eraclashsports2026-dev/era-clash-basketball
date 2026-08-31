@@ -11,7 +11,7 @@
 import { POSITIONS } from "../players.js";
 import { COACHES } from "../v3/coaches.js";
 import { getEra } from "../v3/eraStyles.js";
-import { rosterShape } from "./eraTranslation.js";
+import { rosterShape, CHAOS_ERA_IDS } from "./eraTranslation.js";
 import { hashString, mulberry32, deriveSeed } from "../v3/seed.js";
 
 export const COACH_OFFER_VERSION = "1.0.0";
@@ -164,10 +164,35 @@ export const defenseIdentity = (coach) => {
   return { key: "CONTAIN", label: "containing without gambling" };
 };
 
+/**
+ * The ERA ADAPTER slot before the era is revealed.
+ *
+ * Under the synchronized sequence, coach offers are on the table from Roll 1 —
+ * one roll before anybody knows the environment. Tuning this slot to an era
+ * nobody has seen is impossible, so it is scored on how well the coach TRAVELS
+ * instead: mean era fit across every era, less the spread between their best
+ * and worst. A system that peaks in one environment and collapses in another is
+ * not an adapter, however high it peaks. After the reveal, the slot is scored
+ * against the real era like everything else.
+ */
+export const ERA_AGNOSTIC_SPREAD_PENALTY = 0.35;
+
+export const eraAgnosticAdaptabilityScore = (coach, roster) => {
+  const scores = CHAOS_ERA_IDS.map((id) => eraAdapterScore(coach, roster, id));
+  if (!scores.length) return 0;
+  const mean = scores.reduce((a, b) => a + b, 0) / scores.length;
+  const spread = Math.max(...scores) - Math.min(...scores);
+  return mean - spread * ERA_AGNOSTIC_SPREAD_PENALTY;
+};
+
+/** Era fit for any caller: the real era when known, adaptability when not. */
+export const eraFitScore = (coach, roster, eraId) =>
+  (getEra(eraId) ? eraAdapterScore(coach, roster, eraId) : eraAgnosticAdaptabilityScore(coach, roster));
+
 const SCORERS = {
   ROSTER_MAXIMIZER: (c, mine, opp, era) => rosterMaximizerScore(c, mine),
   OPPONENT_COUNTER: (c, mine, opp, era) => opponentCounterScore(c, mine, opp),
-  ERA_ADAPTER: (c, mine, opp, era) => eraAdapterScore(c, mine, era),
+  ERA_ADAPTER: (c, mine, opp, era) => eraFitScore(c, mine, era),
 };
 
 /**
@@ -389,7 +414,7 @@ export const cpuCoachChoice = ({ offers, roster, opponentRoster, eraId }) => {
     const score =
       rosterMaximizerScore(c, roster) * 0.40 +
       opponentCounterScore(c, roster, opponentRoster) * 0.30 +
-      eraAdapterScore(c, roster, eraId) * 0.30;
+      eraFitScore(c, roster, eraId) * 0.30;
     if (score > bestScore) { bestScore = score; best = offer; }
   }
   return { coachId: best?.coachId || offers[0]?.coachId, role: best?.role || offers[0]?.role, policy: "LEGEND" };

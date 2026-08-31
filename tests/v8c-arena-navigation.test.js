@@ -9,7 +9,7 @@ import {
 import { TIERS, FEATURE_FLAGS, CAPABILITIES } from "../src/entitlements.js";
 import { drawFive } from "../src/chaos/draftOdds.js";
 import { POSITIONS } from "../src/players.js";
-import { startRun, submitHolds, publicView } from "../src/chaos/runState.js";
+import { startRun, submitHolds, submitRollDecisions, publicView } from "../src/chaos/runState.js";
 import { hydrate } from "../api/_lib/chaosRun.js";
 
 const src = (f) => readFileSync(f, "utf8").replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "");
@@ -158,12 +158,13 @@ describe("the arena preserves Phase 8B draft behaviour", () => {
   it("still opens empty, rolls three times and locks", () => {
     const r = startRun({ runId: "z".repeat(10), seedId: "arena-1", createdAt: 0 });
     expect(r.currentRoll).toBe(1);
-    submitHolds(r, { holdSlots: ["PG"], hydrate });
+    const hold = (slots) => submitRollDecisions(r, { holdSlots: slots, holdRoles: [], hydrate });
+    hold(["PG"]);
     expect(r.currentRoll).toBe(2);
     expect(r.revealedEraStyleId).toBeTruthy();
-    submitHolds(r, { holdSlots: ["PG"], hydrate });
+    hold(["PG"]);
     expect(publicView(r, { hydrate }).rostersLocked).toBe(true);
-    expect(submitHolds(r, { holdSlots: [], hydrate }).ok).toBe(false);
+    expect(hold([]).ok).toBe(false);
   });
 
   it("keeps the roll strip driven by server state", () => {

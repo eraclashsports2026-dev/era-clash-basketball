@@ -19,12 +19,18 @@ export const challengeId = (seedId) =>
   ((hashString(`chal|${seedId}|${CHALLENGE_MANIFEST_VERSION}`) >>> 0).toString(36)).padStart(7, "0");
 
 /** The manifest stored server-side. The seed lives HERE, never in the link. */
-export const buildManifest = ({ seedId, createdAt, originRunId }) => ({
+export const buildManifest = ({ seedId, createdAt, originRunId, sequence = 1, eraStyleId = null }) => ({
   challengeManifestVersion: CHALLENGE_MANIFEST_VERSION,
   challengeId: challengeId(seedId),
   seedId,
   originRunId,
   versions: DRAFT_VERSIONS,
+  // The draft sequence this link was minted under, so it is replayed as its
+  // sender played it rather than reinterpreted by a later mechanic.
+  chaosSequenceVersion: sequence === 2 ? "2.0.0" : "1.0.0",
+  // Present ONLY when the origin run chose a custom era; a rolled era is
+  // re-derived from the seed on both sides.
+  eraStyleId: eraStyleId || null,
   createdAt,
 });
 

@@ -8,9 +8,13 @@
 // existing production namespace is touched by this feature.
 import { PLAYERS, POSITIONS } from "../../src/players.js";
 import { getJSON, setJSON, newId, cmd } from "./store.js";
-import { startRun, submitHolds, submitCoachHolds, selectCoach, abandonRun, publicView, RUN_TTL_SECONDS } from "../../src/chaos/runState.js";
+import {
+  startRun, submitHolds, submitCoachHolds, submitRollDecisions, chooseEra, selectCoach,
+  abandonRun, publicView, sequenceOf, CURRENT_SEQUENCE, RUN_TTL_SECONDS,
+} from "../../src/chaos/runState.js";
 import { buildManifest, challengeId } from "../../src/chaos/challenge.js";
 import { GUEST_CHAOS_RUNS } from "../../src/entitlements.js";
+import { CHAOS_ERA_IDS } from "../../src/chaos/eraTranslation.js";
 
 export const CHAOS_NAMESPACES = Object.freeze(["chaos-run", "chaos-chal", "chaos-guest"]);
 const RUN_KEY = (id) => `chaos-run:${id}`;
@@ -21,6 +25,10 @@ const byId = new Map(PLAYERS.map((p) => [p.id, p]));
 /** Resolve stored card ids back into canonical cards. Ids are server-written. */
 export const hydrate = (arr) =>
   Object.fromEntries(POSITIONS.map((s, i) => [s, byId.get(arr?.[i]) || null]));
+
+/** Major version of the sequence a challenge was minted under. */
+export const sequenceFromManifest = (m) =>
+  (parseInt(String(m?.chaosSequenceVersion || "1"), 10) === 2 ? 2 : 1);
 
 export const validRunId = (v) => (/^[a-z0-9]{8,20}$/.test(String(v || "")) ? String(v) : null);
 export const validChaosChallengeId = (v) => (/^[a-z0-9]{4,14}$/.test(String(v || "")) ? String(v) : null);
@@ -47,9 +55,9 @@ export const guestLimitReached = (used) => used >= GUEST_CHAOS_RUNS;
  * stored seed; different decisions still branch deterministically from there.
  */
 export const createRun = async ({ session, challengeId: chalId, now = Date.now() }) => {
-  let seedId = null, originChallenge = null;
+  let seedId = null, originChallenge = null, manifest = null;
   if (chalId) {
-    const manifest = await getJSON(CHAL_KEY(chalId));
+    manifest = await getJSON(CHAL_KEY(chalId));
     if (!manifest) return { ok: false, code: "NOT_FOUND" };
     seedId = manifest.seedId;
     originChallenge = chalId;
@@ -57,7 +65,21 @@ export const createRun = async ({ session, challengeId: chalId, now = Date.now()
     seedId = newId(14);
   }
   const runId = newId(12);
-  const run = startRun({ runId, seedId, createdAt: now });
+  // A challenge is replayed under the sequence it was MINTED under. A link
+  // shared before the synchronized draft existed still plays the flow its
+  // sender played; nothing is reinterpreted underneath it. Manifests written
+  // before this phase carry no sequence, which reads as 1.
+  // The manifest stores a semver STRING, so read its major version. Number()
+  // on "2.0.0" is NaN, which silently dropped every challenge back to the old
+  // flow — caught by the challenge-branching test.
+  const sequence = manifest ? sequenceFromManifest(manifest) : CURRENT_SEQUENCE;
+  const run = startRun({
+    runId, seedId, createdAt: now, sequence,
+    // Same-seed means same environment: a custom era travels with the link, and
+    // a challenge run can never have its era changed by either player.
+    pinnedEraStyleId: manifest?.eraStyleId || null,
+    competitiveEraLock: !!chalId,
+  });
   run.session = session;
   run.originChallenge = originChallenge;
   await saveRun(run);
@@ -66,6 +88,22 @@ export const createRun = async ({ session, challengeId: chalId, now = Date.now()
 
 export const applyHolds = async (run, holdSlots) => {
   const r = submitHolds(run, { holdSlots, hydrate });
+  if (!r.ok) return r;
+  await saveRun(run);
+  return { ok: true, run };
+};
+
+/** One submit for the synchronized sequence: player holds AND coach holds. */
+export const applyRollDecisions = async (run, { holdSlots, holdRoles }) => {
+  const r = submitRollDecisions(run, { holdSlots, holdRoles, hydrate });
+  if (!r.ok) return r;
+  await saveRun(run);
+  return { ok: true, run };
+};
+
+/** An entitled user setting the era after the reveal, before the final roll. */
+export const applyEraChoice = async (run, eraStyleId) => {
+  const r = chooseEra(run, { eraStyleId });
   if (!r.ok) return r;
   await saveRun(run);
   return { ok: true, run };
@@ -94,12 +132,36 @@ export const applyCoach = async (run, coachId) => {
 
 /** Publish a challenge for this run's seed. The link never carries the seed. */
 export const publishChallenge = async (run, now = Date.now()) => {
-  const manifest = buildManifest({ seedId: run.seedId, createdAt: now, originRunId: run.chaosRunId });
+  const manifest = buildManifest({
+    seedId: run.seedId, createdAt: now, originRunId: run.chaosRunId,
+    sequence: sequenceOf(run),
+    // Only a CHOSEN era travels with the link. A rolled era is re-derived from
+    // the seed, so the link stays a seed pointer rather than a result.
+    eraStyleId: run.eraCustom ? run.revealedEraStyleId : null,
+  });
   await setJSON(CHAL_KEY(manifest.challengeId), manifest, 60 * 60 * 24 * 60);
   return manifest;
 };
 
 export const view = (run, opts = {}) => publicView(run, { hydrate, ...opts });
+
+/**
+ * Whether this run's era may be set, and if not, why. Entitlement is decided by
+ * the caller (only the request knows the tier); everything else is a property of
+ * the run. Order matters: a competitive lock is reported BEFORE entitlement, so
+ * a paying user is never told to pay for something no tier can do.
+ */
+export const eraChangeState = (run, { entitled = false, gate = null } = {}) => {
+  if (sequenceOf(run) !== 2) return { allowed: false, reason: "NOT_SUPPORTED" };
+  if (run.competitiveEraLock) {
+    return { allowed: false, reason: "COMPETITIVE_LOCK",
+      message: "Same-seed challenges keep the era they were dealt, for everyone." };
+  }
+  if (!entitled) return { allowed: false, reason: "NOT_ENTITLED", gate };
+  if (!run.revealedEraStyleId) return { allowed: false, reason: "NOT_REVEALED" };
+  if (run.currentPhase !== "ROLL_2_REVEALED") return { allowed: false, reason: "WINDOW_CLOSED" };
+  return { allowed: true, reason: null, eras: [...CHAOS_ERA_IDS] };
+};
 
 /**
  * The authoritative simulation setup, read from the STORED run. The client
