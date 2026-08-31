@@ -186,7 +186,11 @@ export default function ChaosStage({
             : null;
 
   // ── After the game: the matchup stays, the controls collapse ──────────────
+  // The board keeps the five and the staff DECISION — which of the three you
+  // hired, and therefore what you passed up. Nothing else on the page says
+  // that, and without it the stage left a tall empty column beside a full rail.
   if (phase === "simulating" || phase === "complete") {
+    const hiredId = run?.selectedCoaches?.gold;
     return (
       <section className="ec-ta-stage" aria-label="The matchup you built">
         <Atmosphere />
@@ -203,6 +207,23 @@ export default function ChaosStage({
           <div className="ec-ta-roster-divider" aria-hidden="true" />
           <Bench team="blue" roster={run?.blue?.roster} heldSlots={[]} locked />
         </div>
+
+        {offers.length > 0 && (
+          <div className="ec-ta-coach">
+            <div className="ec-ta-coach-head">
+              <div className="ec-ta-coach-title">YOUR STAFF DECISION</div>
+              <div className="ec-ta-coach-sub">
+                {hiredId ? "One of these three coached the whole game. The other two are what you passed up."
+                  : "Three staffs made the final cut."}
+              </div>
+            </div>
+            <div className="ec-cc-offers">
+              {offers.map((o) => (
+                <CoachCard key={o.role} offer={o} mode="final" selected={o.coachId === hiredId} disabled />
+              ))}
+            </div>
+          </div>
+        )}
       </section>
     );
   }

@@ -2,8 +2,8 @@
   "artifact": "time-arena-preview-qa",
   "phase": "8C.1 — pixel-fidelity reconstruction",
   "deployment": {
-    "baseUrl": "https://era-clash-basketball-8mtyehfek-era-clash.vercel.app",
-    "commit": "3519d5b1f339244efabad97e75598bf9c89ac354",
+    "baseUrl": "https://era-clash-basketball-4qdk40vbh-era-clash.vercel.app",
+    "commit": "27b532cb3223fb81ba3b383b932a68d24849635d",
     "environment": "vercel preview, access-gated"
   },
   "method": "Playwright over the network against the deployed branch preview, authenticated with a signed session obtained by POSTing an access key. The dev fixture is compiled out of a preview build, so every measurement below comes from a real draft played through the UI.",
@@ -100,18 +100,18 @@
   },
   "eraDealt": {
     "observed": [
-      "2000s",
       "2010s",
-      "2020s",
+      "1960s",
       "2000s",
-      "1950s",
+      "1960s",
+      "2020s",
       "1990s"
     ],
     "distinct": [
-      "2000s",
       "2010s",
+      "1960s",
+      "2000s",
       "2020s",
-      "1950s",
       "1990s"
     ]
   },
@@ -121,7 +121,7 @@
     "story": {
       "count": 8,
       "worst": 5.8,
-      "sample": "Nikola Jokic controlled the game with 47 points, 15 rebounds"
+      "sample": "Kareem Abdul-Jabbar controlled the game with 37 points, 18 r"
     }
   },
   "feedback": {
@@ -283,7 +283,7 @@
     {
       "name": "the era is revealed with Roll 2, in the rail",
       "ok": true,
-      "detail": "2000s"
+      "detail": "2010s"
     },
     {
       "name": "the era box appears once, in the rail",
@@ -343,7 +343,7 @@
     {
       "name": "six fresh drafts do not all land on one era",
       "ok": true,
-      "detail": "2000s, 2010s, 2020s, 2000s, 1950s, 1990s"
+      "detail": "2010s, 1960s, 2000s, 1960s, 2020s, 1990s"
     },
     {
       "name": "no draft defaults to the 1950s",
