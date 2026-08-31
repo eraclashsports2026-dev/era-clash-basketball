@@ -12,8 +12,11 @@ const buildMatchup = async (page) => {
     try { localStorage.setItem("ec_account", "1"); localStorage.setItem("ec_name", "E2E"); } catch (e) {}
   });
   await page.goto("/");
-  const toDream = page.getByRole("button", { name: "BUILD A DREAM MATCHUP" });
-  if (await toDream.count()) await toDream.click();
+  // Phase 8C: modes are chosen from the registry-driven shelf rather than a
+  // one-off button on the Chaos hero.
+  const shelfDream = page.getByRole("button", { name: /Dream Matchup/ }).first();
+  await shelfDream.waitFor({ state: "visible", timeout: 15000 });
+  await shelfDream.click();
   await page.getByRole("button", { name: /Random Team/ }).first().click();
   await page.getByRole("tab", { name: /Random Team/ }).click();
   await page.getByRole("button", { name: /Continue to Coaches/ }).click();
@@ -72,8 +75,11 @@ test("P3: Coaching & Strategy shows real recorded coaching", async ({ page }) =>
   }
   await page.getByRole("tab", { name: "In-Game Adjustments" }).click();
   const body = await page.locator("body").innerText();
-  // Adjustments are attributed to a NAMED coach, or explicitly absent.
-  expect(body).toMatch(/so Coach [A-Z][A-Za-z'\- ]+ |No in-game adjustment was recorded/);
+  // Adjustments are attributed to a NAMED coach — either the single form
+  // ("…, so Coach X did Y.") or the grouped form ("Coach X did Y twice
+  // between Q1 and Q3 as …") — or they are explicitly absent.
+  expect(body).toMatch(/(so )?Coach [A-Z][A-Za-z'\- ]+ .*(so Coach|times|twice)|so Coach [A-Z]|No in-game adjustment was recorded/);
+  expect(body).not.toMatch(/so the staff/);
   // No internal enum and no fabricated clock reaches the screen.
   expect(body).not.toMatch(/switch_heavy|drop_heavy|MAN_ILLEGAL_DEFENSE/);
   expect(body).not.toMatch(/\bPoss\. \d+/);

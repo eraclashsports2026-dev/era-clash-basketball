@@ -22,7 +22,7 @@ const EXPOSED_V1_KEYS = ["c3db0203453b5ff57285ec6bc0d08453", "5866914beb2a928b06
 const EXPOSED_V2_KEYS = ["09257f826a21d8b4553a5ca8250920c1", "85c20e2623498f400ba56db9facbd025"];
 
 describe("Wave 1 credentials", () => {
-  it("carries exactly one owner and five wave1 testers, all v2, hashes only", () => {
+  it("carries exactly one owner and seven wave1 testers, all v2+, hashes only", () => {
     expect(PREVIEW_ACCESS.accessConfigVersion).toBe(2);
     // Schema, not operational state: revoking a tester flips `enabled` and is
     // a legitimate live operation — the ENTRIES and ids are what is pinned.
@@ -30,8 +30,11 @@ describe("Wave 1 credentials", () => {
     const testers = PREVIEW_ACCESS.keys.filter((k) => k.role === "tester");
     expect(owners).toHaveLength(1);
     expect(owners[0].enabled).toBe(true);
+    // 06 and 07 were added at the owner's request for two additional invitees
+    // (no existing key was rotated or altered).
     expect(testers.map((t) => t.testerId).sort()).toEqual(
-      ["wave1-tester-01", "wave1-tester-02", "wave1-tester-03", "wave1-tester-04", "wave1-tester-05"]);
+      ["wave1-tester-01", "wave1-tester-02", "wave1-tester-03", "wave1-tester-04",
+       "wave1-tester-05", "wave1-tester-06", "wave1-tester-07"]);
     for (const k of PREVIEW_ACCESS.keys) {
       expect(k.sha256).toMatch(/^[a-f0-9]{64}$/);
       expect(k.keyVersion, `${k.testerId} keyVersion`).toBeGreaterThanOrEqual(2);

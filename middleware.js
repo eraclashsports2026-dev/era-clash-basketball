@@ -125,5 +125,11 @@ export const config = {
   runtime: "nodejs",
   // Gate the app shell, API and share pages. Static assets are inert without
   // the gated HTML and stay cache-friendly.
-  matcher: ["/", "/index.html", "/api/:path*", "/result/:path*", "/challenge/:path*"],
+  // Phase 8C adds client-rendered destinations. They MUST be gated too — a
+  // path served by the SPA fallback but missing from this matcher would hand
+  // the whole app shell to an unauthenticated visitor.
+  matcher: [
+    "/", "/index.html", "/api/:path*", "/result/:path*", "/challenge/:path*",
+    "/membership", "/fantasy/:path*", "/modes/:path*",
+  ],
 };

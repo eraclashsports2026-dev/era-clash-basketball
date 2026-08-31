@@ -21,6 +21,12 @@ export const roleTags = (p, slot) => {
   return tags.slice(0, 2);
 };
 
+const chip = {
+  fontSize: 9, padding: "2px 6px", borderRadius: R.pill, maxWidth: "100%",
+  whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
+  display: "flex", alignItems: "center",
+};
+
 const TIER_STYLE = {
   APEX: { bg: "rgba(233,185,73,0.20)", fg: T.goldOnDark, bd: T.goldOnDark },
   ELITE: { bg: "rgba(233,185,73,0.12)", fg: T.goldOnDark, bd: "rgba(233,185,73,0.5)" },
@@ -34,7 +40,7 @@ export default function ChaosCard({ card, side, held, onToggle, disabled, intera
   const ts = TIER_STYLE[card.tier] || TIER_STYLE.SPECIALIST;
   const accent = side === "gold" ? T.goldOnDark : T.blueOnDark;
   return (
-    <div className="chaos-card" data-held={held ? "true" : "false"} style={{
+    <div className="chaos-card" data-slot={card.slot} data-held={held ? "true" : "false"} style={{
       borderRadius: R.md, padding: 9, display: "flex", flexDirection: "column", gap: 7,
       border: `1px solid ${held ? accent : T.arenaBorder}`,
       background: held ? "rgba(233,185,73,0.10)" : "rgba(255,255,255,0.04)",
@@ -51,19 +57,28 @@ export default function ChaosCard({ card, side, held, onToggle, disabled, intera
         }}>{p ? displayOVR(p, card.slot) : "\u2014"}</div>
       </div>
       <div>
-        <div style={{ fontWeight: 800, fontSize: 12.5, color: T.onArena, lineHeight: 1.25, wordBreak: "break-word" }}>
+        {/* Exactly two lines, whether the name is "Sam Jones" or "Giannis
+            Antetokounmpo". The HOLD control below carries the full name for
+            screen readers and as its accessible label. */}
+        <div title={card.name} style={{
+          fontWeight: 800, fontSize: 12.5, color: T.onArena, lineHeight: 1.25, wordBreak: "break-word",
+          height: 32, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical",
+        }}>
           {card.name}
         </div>
-        <div style={{ fontSize: 10.5, color: T.onArenaDim, marginTop: 2 }}>
+        <div style={{ fontSize: 10.5, color: T.onArenaDim, marginTop: 2, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
           {card.slot} · {card.decade}
           {kept && <span style={{ color: accent, fontWeight: 800 }}> · KEPT</span>}
         </div>
       </div>
-      <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
-        <span style={{ fontSize: 9, fontWeight: 800, letterSpacing: 0.5, padding: "2px 6px", borderRadius: R.pill,
+      {/* Three fixed rows — the tier and up to two role tags — so a player with
+          one tag is exactly as tall as a player with two. Wrapping chips made
+          cards 1, 2 or 3 lines tall at random. */}
+      <div style={{ display: "grid", gridTemplateRows: "repeat(3, 18px)", gap: 3, alignContent: "start", justifyItems: "start" }}>
+        <span style={{ ...chip, letterSpacing: 0.5, fontWeight: 800,
           background: ts.bg, color: ts.fg, border: `1px solid ${ts.bd}` }}>{card.tier}</span>
         {roleTags(p, card.slot).map((t) => (
-          <span key={t} style={{ fontSize: 9, fontWeight: 700, padding: "2px 6px", borderRadius: R.pill,
+          <span key={t} title={t} style={{ ...chip, fontWeight: 700,
             background: "rgba(255,255,255,0.05)", color: T.onArenaDim, border: `1px solid ${T.arenaBorder}` }}>{t}</span>
         ))}
       </div>
@@ -88,13 +103,13 @@ export default function ChaosCard({ card, side, held, onToggle, disabled, intera
         // After the final roll there is no fourth roll, so the card is not
         // "held" — it is simply on the team.
         <div aria-label={`${card.name} is on the final roster`} style={{
-          minHeight: 30, display: "flex", alignItems: "center", justifyContent: "center",
+          minHeight: 44, display: "flex", alignItems: "center", justifyContent: "center",
           borderRadius: R.sm, fontWeight: 800, fontSize: 10, letterSpacing: 0.8,
           border: `1px solid ${T.arenaBorder}`, background: "transparent", color: T.onArenaDim,
         }}>FINAL ROSTER</div>
       ) : (
         <div aria-label={held ? `${card.name} held by the CPU` : `${card.name} not held`} style={{
-          minHeight: 30, display: "flex", alignItems: "center", justifyContent: "center",
+          minHeight: 44, display: "flex", alignItems: "center", justifyContent: "center",
           borderRadius: R.sm, fontWeight: 800, fontSize: 11, letterSpacing: 0.5,
           border: `1px solid ${held ? accent : "transparent"}`,
           background: held ? "rgba(122,176,245,0.14)" : "transparent",

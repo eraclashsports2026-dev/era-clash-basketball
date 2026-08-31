@@ -60,14 +60,14 @@ async function expectCorePostgame(page) {
   await expect(page.getByText("TEAM GOLD", { exact: true }).last()).toBeVisible();
   // GAME STORY section
   await page.getByRole("tab", { name: "Game Story" }).click();
-  await expect(page.getByText(/WHY YOU (WON|LOST)/)).toBeVisible();
+  await expect(page.getByText(/HOW (GOLD|BLUE) WON/)).toBeVisible();
   await expect(page.getByText("TURNING POINT", { exact: false })).toBeVisible();
   const storyText = await page.locator("body").innerText();
   const tpSection = storyText.slice(storyText.indexOf("TURNING POINT"));
   expect(tpSection.split(/(?<=[.!?])\s+/).filter((s) => s.trim().length > 20).length,
     `Turning point too thin: ${tpSection.slice(0, 200)}`).toBeGreaterThanOrEqual(2);
   // AI blocked in harness → fallback state + retry, page fully functional
-  await expect(page.getByText("Enhanced game analysis is temporarily unavailable", { exact: false })).toBeVisible({ timeout: 10000 });
+  await expect(page.getByText("Enhanced analysis couldn't be completed", { exact: false })).toBeVisible({ timeout: 10000 });
   await expect(page.getByRole("button", { name: /Try Enhanced Recap Again/ })).toBeVisible();
   // back to FINAL so callers see the default state
   await page.getByRole("tab", { name: "Final" }).click();
@@ -304,7 +304,7 @@ test("J11 (V3): Team → Coach → Era Style → Ready → Run with possession p
   await expect(page.getByText(/TEAM (GOLD|BLUE) WINS/)).toBeVisible({ timeout: 15000 });
   // V3 postgame: possessions + expectation on Final; box/roles in their sections
   await expect(page.getByText(/🏀 \d+ possessions/)).toBeVisible();
-  await expect(page.getByText(/pre-game read/)).toBeVisible(); // bands, not decimals
+  await expect(page.getByText(/before tipoff/)).toBeVisible(); // bands, not decimals (renamed in 8B)
   await expect(page.getByText(/shot quality \(expected pts\)/)).toBeVisible();
   await page.getByRole("tab", { name: "Box Score" }).click();
   await expect(page.getByText("BOX SCORE", { exact: true })).toBeVisible();
@@ -326,9 +326,12 @@ test("J11 (V3): Team → Coach → Era Style → Ready → Run with possession p
 });
 
 test("J12: Tournament runs a real bracket and opponent difficulty is selectable", async ({ page }) => {
+  // Phase 8C: the Play menu resolves entitlements, so Tournament needs a free
+  // account before it opens (a guest is sent to the account gate instead).
+  await page.addInitScript(() => { try { localStorage.setItem("ec_account", "1"); localStorage.setItem("ec_name", "E2E"); } catch (e) {} });
   await page.goto("/");
   await page.getByRole("button", { name: "Play", exact: false }).first().click();
-  await page.getByRole("menuitemradio", { name: /TOURNAMENT/ }).click();
+  await page.getByRole("menuitem", { name: /Tournament/ }).click();
   // difficulty only exists for the modes that generate a schedule
   await expect(page.getByText("OPPONENT DIFFICULTY")).toBeVisible();
   for (const level of ["Rookie", "Pro", "All-Star", "Legend"]) {
@@ -345,12 +348,13 @@ test("J12: Tournament runs a real bracket and opponent difficulty is selectable"
 });
 
 test("J13: difficulty is absent for modes without a generated schedule", async ({ page }) => {
+  await page.addInitScript(() => { try { localStorage.setItem("ec_account", "1"); localStorage.setItem("ec_name", "E2E"); } catch (e) {} });
   await page.goto("/");
   await expect(page.getByText("OPPONENT DIFFICULTY")).toHaveCount(0); // Single
   await page.getByRole("button", { name: "Play", exact: false }).first().click();
-  await page.getByRole("menuitemradio", { name: /BEST OF 7/ }).click();
+  await page.getByRole("menuitem", { name: /Best of 7/ }).click();
   await expect(page.getByText("OPPONENT DIFFICULTY")).toHaveCount(0);
   await page.getByRole("button", { name: "Play", exact: false }).first().click();
-  await page.getByRole("menuitemradio", { name: /WIN 82/ }).click();
+  await page.getByRole("menuitem", { name: /Win 82/ }).click();
   await expect(page.getByText("OPPONENT DIFFICULTY")).toBeVisible();
 });

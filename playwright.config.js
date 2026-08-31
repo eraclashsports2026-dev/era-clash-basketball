@@ -21,7 +21,7 @@ export default defineConfig({
   projects: [
     {
       name: "production-flags-off",
-      testIgnore: /(daily-coach-era|phase7b-preview|phase8a-chaos)\.spec\.js/,
+      testIgnore: /(daily-coach-era|phase7b-preview|phase8a-chaos|phase8c-arena)\.spec\.js/,
     },
     {
       name: "daily-coach-era-preview",
@@ -33,7 +33,7 @@ export default defineConfig({
       // series continuity) exist only on the preview engine, which is what the
       // Wave 1 testers actually use — so they get their own harness.
       name: "candidate3-preview",
-      testMatch: /(phase7b-preview|phase8a-chaos)\.spec\.js/,
+      testMatch: /(phase7b-preview|phase8a-chaos|phase8c-arena)\.spec\.js/,
       use: { baseURL: "http://localhost:4175" },
     },
   ],

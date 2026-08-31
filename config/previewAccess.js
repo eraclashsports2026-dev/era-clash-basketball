@@ -26,5 +26,7 @@ export const PREVIEW_ACCESS = Object.freeze({
     { testerId: "wave1-tester-03", role: "tester", sha256: "d344c1b3d9f3bf6c42b21cf816e61d0bea82dc145910a99d933524078e0a364d", enabled: true, keyVersion: 2 },
     { testerId: "wave1-tester-04", role: "tester", sha256: "56cc3895d6594abc38e3cd2ec38a1279d506cbd9c4db8012ac4304d97200cb2d", enabled: true, keyVersion: 2 },
     { testerId: "wave1-tester-05", role: "tester", sha256: "a018c836d98e19a22636c5c0967acdea8d1dfcdab1ace2d72ea80fe8c29a7775", enabled: true, keyVersion: 2 },
+    { testerId: "wave1-tester-06", role: "tester", sha256: "944c419294177f724838cbc0d3b9810d62a1ab072a7afaf14662d3a006cb4fd0", enabled: true, keyVersion: 2 },
+    { testerId: "wave1-tester-07", role: "tester", sha256: "015542cebecc3032e040dcde6e3a5676f3ca04d4b4b4ffc6c8ab30f8aaf9d77e", enabled: true, keyVersion: 2 },
   ]),
 });

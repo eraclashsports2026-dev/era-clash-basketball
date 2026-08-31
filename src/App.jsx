@@ -5,7 +5,7 @@ import { displayOVR, analyzeBalance, teamRating } from "./rating.js";
 import { T, card, R, S, FONT } from "./theme.js";
 import { genPlayer, genRoster, genOpponent } from "./draft.js";
 import { utcDateKey, dailySeed, dailyRoll1, applyDailyRoll, dailyOpponent } from "./dailyChallenge.js";
-import { runGame, requestNarrative } from "./gameClient.js";
+import { runGame } from "./gameClient.js";
 import { track, trackSessionStart } from "./analytics.js";
 import { installErrorMonitoring } from "./errors.js";
 import {
@@ -14,7 +14,6 @@ import {
 } from "./career.js";
 import { createChallenge, loadChallengeFromUrl } from "./challengeClient.js";
 import { publishResult, shareText } from "./share.js";
-import GameHeader from "./components/GameHeader.jsx";
 import Postgame from "./components/Postgame.jsx";
 import DailyPanel from "./components/DailyPanel.jsx";
 import DailyCoachEra from "./components/DailyCoachEra.jsx";
@@ -28,9 +27,13 @@ import CoachPick from "./components/CoachPick.jsx";
 import PlayerImage from "./components/PlayerImage.jsx";
 import StageWizard from "./components/StageWizard.jsx";
 import ChaosClash from "./components/chaos/ChaosClash.jsx";
+import ArenaHeader from "./components/arena/ArenaHeader.jsx";
+import ArenaCommandCenter from "./components/arena/ArenaCommandCenter.jsx";
+import { MembershipPage, FantasyPage, ModeInfoPage, HowModesModal as ArenaHowModes } from "./components/arena/InfoPages.jsx";
+import { PLAY_MODES, findMode, defaultMode, MODE_STATUS } from "./navigation.js";
 import AccountGate from "./components/chaos/AccountGate.jsx";
 import { currentTier, hasAccount } from "./account.js";
-import { simulateChaos } from "./chaos/client.js";
+import { simulateChaos, publishChaosChallenge } from "./chaos/client.js";
 import { can, CAPABILITIES } from "./entitlements.js";
 import RosterGrid from "./components/RosterGrid.jsx";
 import { MatchupGrid, ArenaCentre, BallIqToggle } from "./components/PlayPanels.jsx";
@@ -129,6 +132,13 @@ export default function App() {
   const [gate, setGate] = useState(null);                 // an entitlement gate to render
   const [chaosChallengeId, setChaosChallengeId] = useState(null);
   const [chaosNonce, setChaosNonce] = useState(0);   // remounts ChaosClash for a fresh run
+  const [chaosRun, setChaosRun] = useState(null);    // the live run, shared with the Result Dock
+  const [fullReport, setFullReport] = useState(false);
+  const [howModes, setHowModes] = useState(false);
+  // Client route for the destinations Phase 8C added. Real paths, so links are
+  // shareable and the back button behaves; the SPA rewrites and the preview
+  // middleware matcher both cover them.
+  const [route, setRoute] = useState(() => (typeof window === "undefined" ? "/" : window.location.pathname));
   const [eraLocked, setEraLocked] = useState(false);      // the era step is a confirmation, not a default
   const [difficulty, setDifficulty] = useState(DEFAULT_DIFFICULTY); // opponent pool for Win82/Tournament
   const [buildMethod, setBuildMethod] = useState("manual"); // manual (concept default) | rolls (Chaos Draft)
@@ -242,6 +252,57 @@ export default function App() {
     }
   }, []);
 
+  // Back/forward through the Phase 8C destinations.
+  useEffect(() => {
+    const onPop = () => setRoute(window.location.pathname);
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
+
+  const navigate = useCallback((to) => {
+    if (typeof to !== "string") return;
+    if (to.startsWith("nav:")) { setNav(to.slice(4)); return; }
+    const url = new URL(to, window.location.origin);
+    window.history.pushState({}, "", url);
+    setRoute(url.pathname);
+    window.scrollTo(0, 0);
+  }, []);
+
+  // ONE handler for every mode entry point — the Play menu and the mode shelf
+  // both route through it, so a mode can never behave differently in the two.
+  const handleModeAction = useCallback((action) => {
+    switch (action.intent) {
+      case "OPEN_MODE": {
+        const m = action.mode;
+        if (m.nav) { setNav(m.nav); return; }
+        setNav("Play");
+        if (m.appMode && m.appMode !== gameMode) {
+          setGameMode(m.appMode);
+          setResult(null); setView("builder");
+        }
+        return;
+      }
+      case "CREATE_ACCOUNT":
+        setGate({ kind: "ACCOUNT", message: action.message });
+        setNav("Play");
+        return;
+      case "MEMBERSHIP":
+      case "MODE_INFO":
+        navigate(action.href);
+        return;
+      case "EXPLAIN_PREVIEW":
+        setErr(action.message);
+        return;
+      default:
+        return;
+    }
+  }, [gameMode, navigate]);
+
+  const goHome = useCallback(() => {
+    if (window.location.pathname !== "/") { window.history.pushState({}, "", "/"); setRoute("/"); }
+    setNav("Play");
+  }, []);
+
   // Wave 1 guided-scenario launcher (?scenario=w1-sN). Preview-cohort feature:
   // it rides the existing query-state pattern and only PRELOADS a legal setup —
   // teams, coaches, one Era Style — exactly as if the tester built it by hand.
@@ -259,6 +320,9 @@ export default function App() {
     setBuildMethod("manual"); setTeam(gold); setOpponent(blue);
     setCoachGold(cg); setCoachBlue(cb); setEraStyle(sc.era);
     setEraLocked(true); setPlayStage("READY");
+    // Chaos Clash is the default Play mode, so a scenario link must switch to
+    // the manual builder or the arena renders on top of the preloaded setup.
+    setGameMode("Single");
     setActiveScenario(sc);
     track("preview_scenario_loaded", { scenario_id: sc.id });
   }, [v3.coaches]); // eslint-disable-line
@@ -291,6 +355,15 @@ export default function App() {
   // keeps its fairness model (neutral coaches, derived seed) and Challenge
   // keeps the rival's five as-is.
   const v3Steps = v3.enabled && !isChallenge && !isDaily && !isChaos;
+  // Dream Matchup asks for an account only while Chaos Clash is available as
+  // the free default. Where Chaos is switched off (production today) Dream
+  // Matchup IS the Play experience, and gating it would leave a signed-out
+  // visitor on a wall with nothing they can open at all.
+  // A guided preview scenario is an authorized preview-only entry into the
+  // manual builder — it is never account-gated (Wave 1 testers may be guests).
+  const dreamMatchupGated = chaosAvailable && !activeScenario
+    && gameMode === "Single" && nav === "Play" && !result
+    && !can(tier, CAPABILITIES.DREAM_MATCHUP);
   const coachesReady = !v3Steps || (blueBuildable ? (!!coachGold && !!coachBlue) : !!coachGold);
   // ── Wizard stage gating (v3 modes) ────────────────────────────────────────
   const rosterDone = !!team && (!blueBuildable || !!opponent);
@@ -632,13 +705,16 @@ export default function App() {
     if (remaining > 0) await new Promise((r) => setTimeout(r, remaining));
   };
 
-  const runSingle = async (oppOverride, tag) => {
+  const runSingle = async (oppOverride, tag, setupOverride = null) => {
     if (loading) return;
     const simT0 = Date.now();
     setView("simulating");
     setLoading(true); setErr(""); setSimStage(""); setNarrative({ status: "none" });
     noteGameStarted();
-    const mode = tag || "single";
+    // "chaos" is a CLIENT tag (it keeps the arena postgame and its CTAs), not a
+    // server mode — a chaos rematch is an ordinary single game replaying the
+    // same five, coaches and era. Sending mode:"chaos" was rejected outright.
+    const mode = tag === "chaos" ? "single" : (tag || "single");
     try {
       const opp = oppOverride || opponent || genOpponent();
       lastOppRef.current = opp;
@@ -656,9 +732,15 @@ export default function App() {
         // Daily: submit ONLY the coach id. The era, the opponent staff, the
         // seed and every data version are the server's to decide — sending
         // them from here is what would make the leaderboard meaningless.
-        coachGoldId: tag === "daily" ? (dailyCoach?.coachId || undefined) : (v3Steps ? coachGold?.id : undefined),
-        coachBlueId: tag === "daily" ? undefined : (v3Steps ? coachBlue?.id : undefined),
-        eraStyleId: tag === "daily" ? undefined : (v3Steps ? eraStyle : undefined),
+        coachGoldId: tag === "daily" ? (dailyCoach?.coachId || undefined)
+          : setupOverride ? setupOverride.coachGoldId
+            : (v3Steps ? coachGold?.id : undefined),
+        coachBlueId: tag === "daily" ? undefined
+          : setupOverride ? setupOverride.coachBlueId
+            : (v3Steps ? coachBlue?.id : undefined),
+        eraStyleId: tag === "daily" ? undefined
+          : setupOverride ? setupOverride.eraStyleId
+            : (v3Steps ? eraStyle : undefined),
         onStage: setSimStage,
       });
       const w = record.core.winner === "Gold";
@@ -790,8 +872,16 @@ export default function App() {
   // ── Replay actions ─────────────────────────────────────────────────────────
   const doRematch = (tag) => {
     track(tag === "challenge" ? "challenge_rematch_started" : "rematch_started", {});
+    // A chaos rematch replays the SAME matchup: the coaches and era live on the
+    // finished result's record, because the chaos flow never touches the
+    // builder's coach/era state. Without this override the rematch silently ran
+    // with neutral coaches in the default era.
+    const rec = result?.record;
+    const setup = tag === "chaos" && rec ? {
+      coachGoldId: rec.coachIds?.gold, coachBlueId: rec.coachIds?.blue, eraStyleId: rec.eraId,
+    } : null;
     setResult(null);
-    runSingle(tag === "challenge" ? challenge?.team : lastOppRef.current, tag);
+    runSingle(tag === "challenge" ? challenge?.team : lastOppRef.current, tag, setup);
   };
   const doBest7FromResult = () => { setResult(null); runBest7(lastOppRef.current, "from_result"); };
   // Swap One: back to the builder with BOTH squads preserved (spec #12/#13).
@@ -799,12 +889,16 @@ export default function App() {
   // The setup is entirely server-side: this call sends a run id and nothing
   // else. The team, the coaches and the era all come from the stored run.
   const runChaosClash = async () => {
-    if (!chaosReady || loading) return;
+    // Read the SHARED run state rather than the in-session onReady snapshot:
+    // after a reload the run resumes at READY without onReady ever firing, and
+    // the old guard left the button dead.
+    const activeRun = chaosRun || chaosReady;
+    if (!activeRun || activeRun.phase !== "READY" || loading) return;
     setLoading(true); setErr(""); setSimStage(""); setNarrative({ status: "none" }); setView("simulating");
     const simT0 = Date.now();
     try {
       const simulationId = (() => { try { return crypto.randomUUID().replace(/-/g, "").slice(0, 20); } catch { return `chaos${Date.now()}`.slice(0, 20); } })();
-      const { resultId, result: record, records } = await simulateChaos(chaosReady.chaosRunId, simulationId, tier);
+      const { resultId, result: record, records } = await simulateChaos(activeRun.chaosRunId, simulationId, tier);
       const five = (ids) => (ids || []).map((id) => PLAYERS.find((p) => p.id === id)).filter(Boolean);
       const gold = five(record.goldIds), opp = five(record.blueIds);
       setTeam(gold); setOpponent(opp); lastOppRef.current = opp;
@@ -815,6 +909,7 @@ export default function App() {
       track("chaos_clash_completed", { era_style: record.eraId || null });
       // The run is spent; a return to Chaos Clash starts from an empty board.
       try { localStorage.removeItem("ec_chaos_run"); } catch { /* private mode */ }
+      setChaosReady(null);
       await holdSimScreen(simT0);
       setView("postgame");
     } catch (e) {
@@ -826,6 +921,11 @@ export default function App() {
 
   const newChaosClash = () => {
     setChaosReady(null); setChaosChallengeId(null); setResult(null);
+    // The shared run drives the era banner, the roll strip and the Run button.
+    // Leaving it set carried the finished game's era and a live Run button on
+    // to the empty board of the next one.
+    setChaosRun(null);
+    try { localStorage.removeItem("ec_chaos_run"); } catch { /* private mode */ }
     setTeam(null); setOpponent(null); setView("builder");
     setChaosNonce((n) => n + 1);
   };
@@ -982,7 +1082,7 @@ export default function App() {
               marginTop: 14, minHeight: 58, width: "100%", borderRadius: R.md,
               cursor: loading ? "default" : "pointer", fontWeight: 900, fontSize: 16, letterSpacing: 1.2,
               border: `1px solid ${T.goldBorder}`, background: T.gold, color: "#fff", opacity: loading ? 0.6 : 1,
-            }}>{loading ? "RUNNING…" : "RUN THE CLASH"}</button>
+            }}>{loading ? "RUNNING…" : "RUN SIM"}</button>
           )}
           {err && <div role="alert" style={{ marginTop: 10, textAlign: "center", color: T.red, fontSize: 13 }}>{err}</div>}
           <div style={{ textAlign: "center", marginTop: 16 }}>
@@ -994,7 +1094,7 @@ export default function App() {
           </div>
         </div>
         )
-      ) : gameMode === "Single" && nav === "Play" && !result && !can(tier, CAPABILITIES.DREAM_MATCHUP) ? (
+      ) : dreamMatchupGated ? (
         <AccountGate
           title="Dream Matchup"
           blurb="Build both teams by hand, pick from the full coach library and choose the era yourself. A free account keeps your matchups and history."
@@ -1382,12 +1482,24 @@ export default function App() {
     </div>
   );
 
+  // The dark arena treatment applies to the Play workspace and the Phase 8C
+  // destinations; every other view keeps the hybrid theme.
+  const arenaMode = route !== "/" || (isChaos && !sharedResult && !gate);
+
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
-    <div className={`arena ${winnerClass}`} style={{ color: T.text }}>
-      <GameHeader nav={nav} onNav={handleNav} dailyStreak={dailyStreak}
-        modes={chaosAvailable ? GAME_MODES : GAME_MODES.filter(([id]) => id !== "Chaos")} gameMode={gameMode}
-        onMode={(id) => { if (nav !== "Play") handleNav("Play"); else resetPlay(); setGameMode(id); }} />
+    <div className={`arena ${winnerClass}${arenaMode ? " ec-arena-shell ec-arena-page" : ""}`} style={{ color: arenaMode ? undefined : T.text }}>
+      <ArenaHeader
+        nav={nav}
+        onNav={(n) => { if (route !== "/") { window.history.pushState({}, "", "/"); setRoute("/"); } handleNav(n); }}
+        tier={tier}
+        activeModeId={nav === "Play" ? (PLAY_MODES.find((m) => m.appMode === gameMode)?.id || null) : null}
+        onModeAction={(a) => { if (route !== "/") { window.history.pushState({}, "", "/"); setRoute("/"); } handleModeAction(a); }}
+        onNavigate={navigate}
+        onCreateAccount={() => { setNav("Play"); setGate({ kind: "ACCOUNT", message: "Create a free account to unlock every mode." }); }}
+        onHowModes={() => setHowModes(true)}
+        onAccountChanged={() => setTier(currentTier())}
+        previewCandidateActive={!!result?.sim?.previewCandidate} />
 
       {newBuild && (
         <div role="status" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, flexWrap: "wrap",
@@ -1400,6 +1512,42 @@ export default function App() {
       )}
       {err && <div role="alert" style={{ background: "#3a1520", color: "#ff8a9a", padding: 12, textAlign: "center", fontSize: 13 }}>{err}</div>}
 
+      {route.startsWith("/membership") ? (
+        <main>
+          <MembershipPage query={new URLSearchParams(window.location.search)} onBack={goHome}
+            onCreateAccount={() => { goHome(); setGate({ kind: "ACCOUNT", message: "Create a free account to unlock every mode." }); }} />
+        </main>
+      ) : route.startsWith("/fantasy/") ? (
+        <main>
+          <FantasyPage id={route.split("/")[2] === "live" ? "eraclash-live" : "eraclash-fantasy"} onBack={goHome} />
+        </main>
+      ) : route.startsWith("/modes/") ? (
+        <main>
+          <ModeInfoPage id={route.split("/")[2]} onBack={goHome} />
+        </main>
+      ) : isChaos && !sharedResult && !gate ? (
+        <main className="ec-arena-court">
+          <ArenaCommandCenter
+            tier={tier} challengeId={chaosChallengeId}
+            chaosRun={chaosRun} onRunChange={setChaosRun}
+            onReady={(r) => setChaosReady(r)} onGated={(g) => setGate(g)}
+            phase={view === "simulating" ? "simulating" : (view === "postgame" && result) ? "complete" : "draft"}
+            result={result} simStage={simStage} busy={loading} error={err}
+            onRunClash={runChaosClash}
+            onViewFullReport={() => setFullReport(true)}
+            onRunItBack={() => { setFullReport(false); doRematch("chaos"); }}
+            onNewChaosClash={newChaosClash}
+            onNewClash={() => { setFullReport(false); newChaosClash(); }}
+            onChallenge={chaosRun ? async () => {
+              const r = await publishChaosChallenge(chaosRun.chaosRunId, tier);
+              track("chaos_challenge_created", { from: "result_dock" });
+              return r.challengeId;
+            } : null}
+            activeModeId="chaos"
+            onModeAction={handleModeAction}
+            previewCandidateActive={!!result?.sim?.previewCandidate} />
+        </main>
+      ) : (
       <main style={{ maxWidth: 1280, margin: "0 auto", padding: "8px 16px 60px" }}>
         {sharedResult ? (
           <div style={{ maxWidth: 620, margin: "16px auto 0" }}>
@@ -1433,6 +1581,30 @@ export default function App() {
           playView
         )}
       </main>
+      )}
+
+      {howModes && <ArenaHowModes tier={tier} onClose={() => setHowModes(false)} />}
+
+      {/* The full report expands over the SAME page, so closing it returns the
+          user to their arena, teams, coaches, era and result. */}
+      {fullReport && result && (
+        <div className="ec-report-overlay ec-arena-shell" role="dialog" aria-modal="true" aria-label="Full postgame report">
+          <div className="ec-report-inner">
+            <button onClick={() => setFullReport(false)} style={{
+              minHeight: 44, padding: "0 16px", borderRadius: 10, cursor: "pointer", marginBottom: 12,
+              border: "1px solid var(--ec-a-border)", background: "var(--ec-a-panel-raised)",
+              color: "var(--ec-a-text)", fontWeight: 800, fontSize: 13,
+            }}>← Back to the arena</button>
+            {/* The arena shell paints text near-white for a dark surface. The
+                report is a LIGHT surface, so it re-declares the text colour;
+                without this, anything that inherits (player names, the story
+                body) rendered white on cream and read as missing. */}
+            <div style={{ background: T.bg, color: T.text, borderRadius: 14, padding: "4px 0 16px" }}>
+              {postgameView}
+            </div>
+          </div>
+        </div>
+      )}
 
       {picker && (
         <ManualPicker slotPos={POSITIONS[picker.slot]}

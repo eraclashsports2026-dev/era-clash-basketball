@@ -349,7 +349,7 @@ function TeamRows({ label, lines, color, mvpName }) {
           }}>
             <td className="box-player" style={{
               textAlign: "left", padding: "6px", fontWeight: isMvp ? 800 : 600,
-              background: isMvp ? T.bgCardHover : T.bgCard,
+              color: T.text, background: isMvp ? T.bgCardHover : T.bgCard,
             }}>
               {isMvp ? "★ " : ""}{l.name}
             </td>
@@ -531,7 +531,7 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
             <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 2, color: won ? T.green : T.red }}>
               {(sim.story?.headline || `How ${won ? "You" : "They"} Won`).toUpperCase()}
             </div>
-            <p style={{ fontSize: 13.5, lineHeight: 1.65, margin: "6px 0 0" }}>{sim.story?.body || sim.summary}</p>
+            <p style={{ fontSize: 13.5, lineHeight: 1.65, margin: "6px 0 0", color: T.text }}>{sim.story?.body || sim.summary}</p>
           </div>
         )}
 

@@ -41,9 +41,10 @@ const lockHolds = async (page) => {
 test("Chaos Clash is the default Play experience and opens with an empty board", async ({ page }) => {
   await withAccount(page);
   await page.goto("/");
-  await expect(page.getByRole("heading", { name: "ROLL YOUR CLASH" })).toBeVisible();
-  await expect(page.getByText("Three rolls. Hold your legends. Adapt to the era.")).toBeVisible();
-  await expect(page.getByRole("button", { name: "BUILD A DREAM MATCHUP" })).toBeVisible();
+  // Phase 8C: the Arena Command Center is the canonical Play layout.
+  await expect(page.locator(".ec-cc")).toBeVisible();
+  await expect(page.getByRole("complementary", { name: "Matchup and result" })).toBeVisible();
+  await expect(page.getByText("EXPLORE MORE MODES")).toBeVisible();
   // Nothing is drawn until the user asks for it.
   await expect(page.getByText("THREE ROLLS AVAILABLE").first()).toBeVisible();
   await expect(page.getByText("ERA HIDDEN")).toBeVisible();
@@ -109,7 +110,7 @@ test("three rolls, holds, era reveal before the final holds, then coach offers",
 
   await expect(page.getByText(/ROLL 2 OF 3/).first()).toBeVisible();
   // The era is revealed WITH Roll 2 and stays on screen from here on.
-  await expect(page.getByRole("region", { name: /era style/ })).toBeVisible();
+  await expect(page.getByRole("region", { name: /era style/ }).first()).toBeVisible();
   await expect(page.getByText("Team Blue's holds were locked before yours were submitted.")).toBeVisible();
 
   await lockHolds(page);
@@ -120,7 +121,7 @@ test("three rolls, holds, era reveal before the final holds, then coach offers",
   for (const role of ["ROSTER MAXIMIZER", "OPPONENT COUNTER", "ERA ADAPTER"]) {
     await expect(page.getByText(role, { exact: true })).toBeVisible();
   }
-  await expect(page.getByRole("region", { name: /era style/ })).toBeVisible();
+  await expect(page.getByRole("region", { name: /era style/ }).first()).toBeVisible();
 });
 
 test("a full Clash reaches a postgame with a player-centered story and an aligned box score", async ({ page }) => {
@@ -131,21 +132,24 @@ test("a full Clash reaches a postgame with a player-centered story and an aligne
   await lockHolds(page);
   await lockHolds(page);
   await coachDraft(page);
-  await expect(page.getByRole("button", { name: "RUN THE CLASH" })).toBeVisible({ timeout: 20_000 });
-  await page.getByRole("button", { name: "RUN THE CLASH" }).click();
+  await expect(page.getByRole("button", { name: "RUN SIM" })).toBeVisible({ timeout: 20_000 });
+  await page.getByRole("button", { name: "RUN SIM" }).click();
 
-  await expect(page.getByRole("tab", { name: "Box Score" })).toBeVisible({ timeout: 40_000 });
+  // Phase 8C: the result lands in the dock; the full report opens over the page.
+  await expect(page.getByText("FINAL SCORE")).toBeVisible({ timeout: 40_000 });
+  await page.getByRole("button", { name: /VIEW FULL POSTGAME REPORT/ }).click();
+  await expect(page.getByRole("dialog", { name: "Full postgame report" })).toBeVisible();
 
   // Game Story: a deterministic, player-centered opening and quarter flow.
-  await page.getByRole("tab", { name: "Game Story" }).click();
-  await expect(page.getByText(/HOW (GOLD|BLUE) WON/)).toBeVisible();
-  await expect(page.getByText("QUARTER BY QUARTER")).toBeVisible();
+  await page.getByRole("tab", { name: "Game Story" }).last().click();
+  await expect(page.getByText(/HOW (GOLD|BLUE) WON/).last()).toBeVisible();
+  await expect(page.getByText("QUARTER BY QUARTER").last()).toBeVisible();
   await expect(page.getByText(/WHY YOU (WON|LOST)/)).toHaveCount(0);
   // Enhanced analysis is never an empty panel.
-  await expect(page.getByText("EXPANDED GAME ANALYSIS")).toBeVisible();
+  await expect(page.getByText("EXPANDED GAME ANALYSIS").last()).toBeVisible();
 
   // Box score: ONE table, two row groups, columns that actually agree.
-  await page.getByRole("tab", { name: "Box Score" }).click();
+  await page.getByRole("tab", { name: "Box Score" }).last().click();
   const geometry = await page.evaluate(() => {
     const t = document.querySelector("table.box-table");
     const bodies = [...t.querySelectorAll("tbody")];
@@ -167,7 +171,7 @@ test("a full Clash reaches a postgame with a player-centered story and an aligne
   expect(geometry.pageOverflow).toBe(false);
 
   // Coaching: a scouting report, named coaches, no enums, no fabricated clock.
-  await page.getByRole("tab", { name: "Coaching & Strategy" }).click();
+  await page.getByRole("tab", { name: "Coaching & Strategy" }).last().click();
   // Three sub-sections, not two very long parallel columns.
   for (const sec of ["Offensive Scheme", "Defensive Scheme", "In-Game Adjustments"]) {
     await expect(page.getByRole("tab", { name: sec })).toBeVisible();
@@ -191,9 +195,10 @@ test("box-score stat values never wrap", async ({ page }) => {
   await lockHolds(page);
   await lockHolds(page);
   await coachDraft(page);
-  await page.getByRole("button", { name: "RUN THE CLASH" }).click();
-  await expect(page.getByRole("tab", { name: "Box Score" })).toBeVisible({ timeout: 40_000 });
-  await page.getByRole("tab", { name: "Box Score" }).click();
+  await page.getByRole("button", { name: "RUN SIM" }).click();
+  await expect(page.getByText("FINAL SCORE")).toBeVisible({ timeout: 40_000 });
+  await page.getByRole("button", { name: /VIEW FULL POSTGAME REPORT/ }).click();
+  await page.getByRole("tab", { name: "Box Score" }).last().click();
   const wrapped = await page.evaluate(() => {
     const cells = [...document.querySelectorAll("table.box-table tbody td")];
     const line = Math.min(...cells.map((c) => c.getBoundingClientRect().height));
@@ -202,12 +207,12 @@ test("box-score stat values never wrap", async ({ page }) => {
   expect(wrapped, "a stat value wrapped onto a second line").toEqual([]);
 });
 
-test("Dream Matchup is gated behind a free account and can be reached from Chaos", async ({ page }) => {
+test("Dream Matchup is gated behind a free account and can be reached from the shelf", async ({ page }) => {
   await page.goto("/");   // deliberately signed out
   await expect(page.getByText("THREE ROLLS AVAILABLE").first()).toBeVisible({ timeout: 20_000 });
-  await page.getByRole("button", { name: "BUILD A DREAM MATCHUP" }).click();
+  await page.getByRole("button", { name: /Dream Matchup/ }).first().click();
   await expect(page.getByText("FREE ACCOUNT REQUIRED")).toBeVisible();
-  await expect(page.getByRole("button", { name: "CREATE FREE ACCOUNT" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "CREATE FREE ACCOUNT" }).first()).toBeVisible();
   // A signed-out user is never stranded.
   await page.getByRole("button", { name: "BACK TO CHAOS CLASH" }).click();
   await expect(page.getByText("THREE ROLLS AVAILABLE").first()).toBeVisible();

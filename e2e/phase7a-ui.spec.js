@@ -38,8 +38,8 @@ test("U1: full wizard + postgame at desktop 1440 — screenshots and zero overfl
   await shot(page, "1440-rosters-complete"); await noHorizontalOverflow(page, "rosters-complete");
   // Play dropdown renders real modes
   await page.getByRole("button", { name: "Play", exact: false }).first().click();
-  await expect(page.getByRole("menuitemradio", { name: /SINGLE GAME/ })).toBeVisible();
-  await expect(page.getByRole("menuitem", { name: /How Modes Work/ })).toBeVisible();
+  await expect(page.getByRole("menuitem", { name: /Dream Matchup/ })).toBeVisible();
+  await expect(page.getByRole("menuitem", { name: /How modes work/i })).toBeVisible();
   await shot(page, "1440-play-dropdown");
   await page.keyboard.press("Escape");
   await page.getByRole("button", { name: /Continue to Coaches/ }).click();
@@ -134,7 +134,7 @@ test("U4: keyboard-only completion of the wizard", async ({ page }) => {
   // postgame tabs by keyboard
   await page.getByRole("tab", { name: "Game Story" }).focus();
   await page.keyboard.press("Enter");
-  await expect(page.getByText(/WHY YOU (WON|LOST)/)).toBeVisible();
+  await expect(page.getByText(/HOW (GOLD|BLUE) WON/)).toBeVisible();
 });
 
 test("U5: reduced motion renders every stage without animation dependence", async ({ page }) => {
@@ -149,7 +149,7 @@ test("U5: reduced motion renders every stage without animation dependence", asyn
 test("U6: How Modes Work modal — focus, escape, truthful engine language", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Play", exact: false }).first().click();
-  await page.getByRole("menuitem", { name: /How Modes Work/ }).click();
+  await page.getByRole("menuitem", { name: /How modes work/i }).click();
   const dialog = page.getByRole("dialog", { name: /How modes work/i });
   await expect(dialog).toBeVisible();
   const text = await dialog.innerText();
