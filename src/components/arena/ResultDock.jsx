@@ -1,14 +1,13 @@
-// ── Matchup / Result Dock ────────────────────────────────────────────────────
+// ── The Result Dock ──────────────────────────────────────────────────────────
 // One persistent right-hand surface that changes state without ever navigating
 // the user away from the matchup they built:
 //
-//   A pre-draft · B active draft · C outlook · D simulating · E final result
+//   A no result yet · B the PREVIOUS clash · C simulating · D this clash
 //
 // Every value comes from real state — the live chaos run, or the STORED result
-// that the full Postgame also reads. Nothing here is sample data.
-import { useState } from "react";
-import { T } from "../../theme.js";
-import EraContextBanner from "../chaos/EraContextBanner.jsx";
+// that the full Postgame reads. Nothing here is sample data, and a previous
+// result is always labelled as one: it must never read as the draft on screen.
+import { useState, useEffect } from "react";
 
 const TABS = [
   ["story", "Game Story"],
@@ -74,10 +73,58 @@ function CompactBox({ sim }) {
   );
 }
 
-export default function MatchupResultDock({
-  phase, run, result, simStage, onViewFullReport, onRunItBack, onNewClash, onChallenge, busy,
+/**
+ * The MVP's line, from the stat object the engine records. Counters that were
+ * zero are left out rather than printed as "0 BLK".
+ */
+export const statLine = (line) => {
+  if (!line || typeof line !== "object") return null;
+  const parts = [["PTS", line.pts], ["REB", line.reb], ["AST", line.ast], ["STL", line.stl], ["BLK", line.blk]]
+    .filter(([, v]) => Number(v) > 0)
+    .map(([k, v]) => `${v} ${k}`);
+  return parts.length ? parts.join(" · ") : null;
+};
+
+/** "3 minutes ago" — coarse on purpose, and never a fabricated precision. */
+export const agoLabel = (at, now = Date.now()) => {
+  if (!at) return null;
+  const secs = Math.max(0, Math.floor((now - at) / 1000));
+  if (secs < 45) return "JUST NOW";
+  const mins = Math.round(secs / 60);
+  if (mins < 60) return `${mins} MINUTE${mins === 1 ? "" : "S"} AGO`;
+  const hours = Math.round(mins / 60);
+  if (hours < 24) return `${hours} HOUR${hours === 1 ? "" : "S"} AGO`;
+  return "EARLIER TODAY";
+};
+
+const DockShell = ({ children, label }) => (
+  <div style={{ display: "grid", gap: 12 }}>
+    <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
+      <span aria-hidden="true" style={{ fontSize: 12 }}>🏆</span>
+      <div style={{ fontSize: 10.5, fontWeight: 900, letterSpacing: 2, color: "var(--ec-a-text)" }}>RESULT DOCK</div>
+      {label && (
+        <span style={{ marginLeft: "auto", fontSize: 9.5, fontWeight: 900, letterSpacing: 1, color: "var(--ec-a-text-muted)" }}>
+          {label}
+        </span>
+      )}
+    </div>
+    {children}
+  </div>
+);
+
+export default function ResultDock({
+  phase, run, result, priorResult, priorAt, simStage,
+  onViewFullReport, onRunItBack, onNewClash, onChallenge, busy,
 }) {
   const [tab, setTab] = useState("story");
+  const [, tick] = useState(0);
+  // The "minutes ago" label would otherwise freeze at whatever it said when the
+  // dock last re-rendered.
+  useEffect(() => {
+    if (!priorAt || phase === "complete") return undefined;
+    const t = setInterval(() => tick((n) => n + 1), 30_000);
+    return () => clearInterval(t);
+  }, [priorAt, phase]);
   const [challengeId, setChallengeId] = useState(null);
   const makeChallenge = async () => {
     if (!onChallenge) return;
@@ -85,15 +132,22 @@ export default function MatchupResultDock({
   };
   const sim = result?.sim;
 
-  // ── E · FINAL RESULT ──────────────────────────────────────────────────────
-  if (phase === "complete" && sim) {
-    const won = result.w;
+  // ── One clash, rendered the same way whether it is THIS one or the last one.
+  const renderClash = (res, { previous = false } = {}) => {
+    const sim = res.sim;
+    const won = res.w;
     const gold = sim.finalScore?.gold ?? 0, blue = sim.finalScore?.blue ?? 0;
     const winner = gold > blue ? "Gold" : "Blue";
     return (
-      <div style={{ display: "grid", gap: 12 }}>
+      <DockShell label={previous ? agoLabel(priorAt) : "THIS CLASH"}>
+        {previous && (
+          <div style={{
+            fontSize: 9.5, fontWeight: 900, letterSpacing: 1.4, color: "var(--ec-a-text-muted)",
+            border: "1px dashed var(--ec-a-border)", borderRadius: 8, padding: "6px 8px", textAlign: "center",
+          }}>LAST CLASH · NOT THE DRAFT ON SCREEN</div>
+        )}
         <Panel style={{ textAlign: "center", borderColor: won ? "var(--ec-a-gold-line)" : "var(--ec-a-blue-line)" }}>
-          <Head tone={won ? "var(--ec-a-gold, #f2b51d)" : "var(--ec-a-blue, #3b9bff)"}>FINAL SCORE</Head>
+          <Head tone={won ? "var(--ec-a-gold, #f2b51d)" : "var(--ec-a-blue, #3b9bff)"}>{previous ? "LAST CLASH" : "FINAL SCORE"}</Head>
           <div style={{ fontWeight: 900, fontSize: 15, letterSpacing: 1, margin: "3px 0 8px", color: "var(--ec-a-text, #f5f7fb)" }}>
             {won ? "YOU WON" : `TEAM ${winner.toUpperCase()} WINS`}
           </div>
@@ -108,6 +162,22 @@ export default function MatchupResultDock({
               <div style={{ fontFamily: "Georgia, serif", fontSize: 38, fontWeight: 900, lineHeight: 1, color: "var(--ec-a-text, #f5f7fb)" }}>{blue}</div>
             </div>
           </div>
+          {(sim.mvp || sim.v3?.eraStyleId || res.record?.eraId) && (
+            <div style={{ marginTop: 10, paddingTop: 9, borderTop: "1px solid var(--ec-a-border)", display: "grid", gap: 3 }}>
+              {sim.mvp && (
+                <>
+                  <div style={{ fontSize: 9.5, fontWeight: 900, letterSpacing: 1.4, color: "var(--ec-a-text-muted)" }}>MVP</div>
+                  <div style={{ fontSize: 13.5, fontWeight: 800, color: "var(--ec-a-text)" }}>{sim.mvp}</div>
+                  {statLine(sim.mvpLine) && <div style={muted}>{statLine(sim.mvpLine)}</div>}
+                </>
+              )}
+              {(res.record?.eraId || sim.v3?.eraStyleId) && (
+                <div style={{ ...muted, marginTop: sim.mvp ? 4 : 0 }}>
+                  {res.record?.eraId || sim.v3?.eraStyleId} era{res.record?.eraCustom ? " · custom" : ""}
+                </div>
+              )}
+            </div>
+          )}
         </Panel>
 
         <div role="tablist" aria-label="Result sections" style={{ display: "grid", gridTemplateColumns: "repeat(4, minmax(0,1fr))", gap: 4 }}>
@@ -204,34 +274,45 @@ export default function MatchupResultDock({
           )}
         </Panel>
 
-        <button onClick={onViewFullReport} style={primaryCta}>VIEW FULL POSTGAME REPORT →</button>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
-          <button onClick={onRunItBack} style={secondaryCta}>Run it back</button>
-          <button onClick={onNewClash} style={secondaryCta}>New Chaos Clash</button>
-        </div>
-        {/* Two very different buttons. Without this line, a rematch's repeated
-            era reads as an era that never changes. */}
-        <div style={{ ...muted, textAlign: "center", lineHeight: 1.5 }}>
-          Run it back replays this same five, staff and era. A new Clash rolls fresh players and reveals a new era.
-        </div>
-        {onChallenge && !challengeId && (
-          <button onClick={makeChallenge} style={secondaryCta}>Challenge this Chaos</button>
+        <button onClick={() => onViewFullReport?.(previous ? res : null)} style={primaryCta}>
+          VIEW FULL REPORT →
+        </button>
+        {previous ? (
+          <button onClick={onRunItBack} style={secondaryCta}>Run that matchup back</button>
+        ) : (
+          <>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
+              <button onClick={onRunItBack} style={secondaryCta}>Run it back</button>
+              <button onClick={onNewClash} style={secondaryCta}>New Chaos Clash</button>
+            </div>
+            {/* Two very different buttons. Without this line, a rematch's
+                repeated era reads as an era that never changes. */}
+            <div style={{ ...muted, textAlign: "center", lineHeight: 1.5 }}>
+              Run it back replays this same five, staff and era. A new Clash rolls fresh players and reveals a new era.
+            </div>
+            {onChallenge && !challengeId && (
+              <button onClick={makeChallenge} style={secondaryCta}>Challenge this Chaos</button>
+            )}
+            {challengeId && (
+              <div style={{ ...muted, textAlign: "center", lineHeight: 1.5, wordBreak: "break-all" }}>
+                Same opening rolls, their own decisions:{" "}
+                <span style={{ color: "var(--ec-a-gold, #f2b51d)" }}>{`${window.location.origin}/?chaos=${challengeId}`}</span>
+              </div>
+            )}
+          </>
         )}
-        {challengeId && (
-          <div style={{ ...muted, textAlign: "center", lineHeight: 1.5, wordBreak: "break-all" }}>
-            Same opening rolls, their own decisions:{" "}
-            <span style={{ color: "var(--ec-a-gold, #f2b51d)" }}>{`${window.location.origin}/?chaos=${challengeId}`}</span>
-          </div>
-        )}
-      </div>
+      </DockShell>
     );
-  }
+  };
 
-  // ── D · SIMULATING ────────────────────────────────────────────────────────
+  // ── D · THIS clash, just finished ─────────────────────────────────────────
+  if (phase === "complete" && sim) return renderClash(result);
+
+  // ── C · SIMULATING ────────────────────────────────────────────────────────
   if (phase === "simulating") {
     const idx = Math.max(0, SIM_PHASES.findIndex((p) => p.toLowerCase().startsWith(String(simStage || "").toLowerCase().slice(0, 6))));
     return (
-      <div style={{ display: "grid", gap: 12 }}>
+      <DockShell label="IN PROGRESS">
         <Panel>
           <Head tone="var(--ec-a-gold, #f2b51d)">SIMULATING THE CLASH</Head>
           <div aria-live="polite" style={{ display: "grid", gap: 6, marginTop: 8 }}>
@@ -246,69 +327,30 @@ export default function MatchupResultDock({
             ))}
           </div>
         </Panel>
-        {run?.eraContext && <EraContextBanner era={run.eraContext} compact />}
         <Panel><div style={muted}>Your five and the Legend CPU's five are locked. The possession engine is playing it out.</div></Panel>
-      </div>
+      </DockShell>
     );
   }
 
-  // ── C · ROSTERS AND COACHES LOCKED — MATCHUP OUTLOOK ──────────────────────
-  if (run && (run.phase === "READY" || run.coachDraft?.selecting)) {
-    const g = run.gold?.analysis, b = run.blue?.analysis;
-    return (
-      <div style={{ display: "grid", gap: 12 }}>
-        <Panel>
-          <Head tone="var(--ec-a-gold, #f2b51d)">MATCHUP OUTLOOK</Head>
-          <div style={{ marginTop: 6 }}>
-            <Row k="Your best advantage" v={g?.bestStrength?.label ?? "—"} />
-            <Row k="Your greatest risk" v={g?.biggestRisk?.label ?? "—"} />
-            <Row k="Matchup to watch" v={b?.bestStrength?.label ?? "—"} />
-            <Row k="Talent" v={`${g?.talentTier ?? "—"} vs ${b?.talentTier ?? "—"}`} />
-            <Row k="Construction" v={`${g?.constructionTier ?? "—"} vs ${b?.constructionTier ?? "—"}`} />
-            <Row k="Opponent matchup" v={g?.opponentMatchup ?? "—"} />
-          </div>
-          <div style={{ ...muted, marginTop: 6, lineHeight: 1.5 }}>
-            A read, not a prediction. The game decides it.
-          </div>
-        </Panel>
-        {run.eraContext && <EraContextBanner era={run.eraContext} compact />}
-      </div>
-    );
-  }
+  // ── B · THE PREVIOUS clash, while a new draft is on the board ─────────────
+  // Labelled twice over, because the one thing this must never do is read as
+  // the result of the draft the user is currently looking at.
+  if (priorResult?.sim) return renderClash(priorResult, { previous: true });
 
-  // ── B · ACTIVE DRAFT ──────────────────────────────────────────────────────
-  if (run) {
-    const g = run.gold?.analysis, b = run.blue?.analysis;
-    return (
-      <div style={{ display: "grid", gap: 12 }}>
-        <Panel>
-          <Head tone="var(--ec-a-gold, #f2b51d)">YOUR CLASH SO FAR</Head>
-          <div style={{ marginTop: 6 }}>
-            <Row k="Best strength" v={g?.bestStrength?.label ?? "—"} />
-            <Row k="Biggest risk" v={g?.biggestRisk?.label ?? "—"} />
-            <Row k="Construction" v={g?.constructionTier ?? "—"} />
-            <Row k="CPU strength" v={b?.bestStrength?.label ?? "—"} />
-            <Row k="Draft pressure" v={run.draftPressure?.level ?? "—"}
-              tone={run.draftPressure?.level === "HIGH" ? "var(--ec-a-gold, #f2b51d)" : undefined} />
-          </div>
-        </Panel>
-        <EraContextBanner era={run.eraContext} compact />
-      </div>
-    );
-  }
-
-  // ── A · PRE-DRAFT ─────────────────────────────────────────────────────────
+  // ── A · NOTHING YET ───────────────────────────────────────────────────────
   return (
-    <div style={{ display: "grid", gap: 12 }}>
+    <DockShell>
       <Panel style={{ textAlign: "center" }}>
-        <Head tone="var(--ec-a-gold, #f2b51d)">BUILD YOUR CLASH</Head>
-        <div style={{ ...body, marginTop: 6 }}>Roll your first five to begin.</div>
+        <Head tone="var(--ec-a-gold, #f2b51d)">YOUR RESULT WILL APPEAR HERE</Head>
+        <div style={{ ...body, marginTop: 6 }}>
+          {run ? "Finish the draft and run the sim." : "Roll your first five to begin."}
+        </div>
         <div style={{ ...muted, marginTop: 8, lineHeight: 1.5 }}>
-          Three rolls. Hold the legends you want, release the rest, and adapt when the era is revealed.
+          The final score, the story, the box score, the coaching and the analysis all land right here —
+          without leaving the arena you built.
         </div>
       </Panel>
-      <EraContextBanner era={null} />
-    </div>
+    </DockShell>
   );
 }
 

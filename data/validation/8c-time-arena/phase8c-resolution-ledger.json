@@ -1,0 +1,31 @@
+{
+  "artifact": "phase8c-resolution-ledger",
+  "phase": "8C — Time Arena",
+  "FIXED_AND_VERIFIED": [
+    "Players and coach offers move through one synchronized three-roll sequence",
+    "Gold PF and Gold C take Gold styling — the team container owns the theme",
+    "Draft Pressure is stated exactly once, in Live Intel",
+    "The era is random per run, revealed with Roll 2 and locked for non-members",
+    "Membership-gated era customisation routes centrally with no checkout",
+    "The Result Dock stays on the page and labels a previous result as previous",
+    "A superseded action can no longer advance a synchronized run (extra coach rolls)",
+    "Number(\"2.0.0\") returned NaN, dropping every challenge to the old flow",
+    "The MVP stat line was an object rendered as a React child, which crashed the dock",
+    "The stage kept its own copy of the run, so a new Clash showed the finished one",
+    "Team Blue's cards were shorter than Team Gold's (44px control vs 32px status)"
+  ],
+  "NOT_REPRODUCIBLE_WITH_EVIDENCE": [],
+  "EXTERNAL_BLOCKER_WITH_SAFE_PRODUCT_FALLBACK": [
+    {
+      "item": "Player and coach portraits",
+      "evidence": "src/images/approved.json contains 0 product-approved images",
+      "fallback": "Branded silhouettes for players and monograms for coaches, in a portrait slot sized for approved art — no likeness is created, fetched or generated in this phase"
+    },
+    {
+      "item": "PLUS-tier era selector in-product",
+      "evidence": "src/account.js can only return GUEST or FREE — the preview mints no paid accounts",
+      "fallback": "The server path is proven by unit tests and HTTP probes; the UI path is proven by an e2e test that substitutes the SERVER's entitlement answer, never a client-granted one"
+    }
+  ],
+  "UNRESOLVED_TECHNICAL_FAILURES": []
+}

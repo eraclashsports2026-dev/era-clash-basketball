@@ -29,7 +29,8 @@ import { utcDateKey, verifyDailyLineup, dailyOpponent } from "../src/dailyChalle
 import { dailySimulationSeed, validateDailySelection, validateDailyVersions } from "../src/v3/dailyCoachEra.js";
 import { officialDailyConfig } from "./_lib/dailyOfficial.js";
 import {
-  createRun, loadRun, saveRun, ownsRun, applyHolds, applyCoachHolds, applyCoach, applyAbandon, publishChallenge,
+  createRun, loadRun, saveRun, ownsRun, applyHolds, applyCoachHolds, applyRollDecisions, applyEraChoice,
+  applyCoach, applyAbandon, publishChallenge, eraChangeState,
   view as chaosView, simulationSetup, draftHistory, validRunId, validChaosChallengeId,
   guestRunsUsed, consumeGuestRun, guestLimitReached,
 } from "./_lib/chaosRun.js";
@@ -104,6 +105,12 @@ export default async function handler(req, res) {
         // extra fields, so the reason is returned explicitly for the UI to show.
         return res.status(403).json({ requestId, gated: true, gate: gateReason(tier, CAPABILITIES.CHAOS_CLASH) });
       }
+      // Era control is entitlement + run state. Computed once, attached to every
+      // view, so the client never has to infer it.
+      const eraCtl = (r) => eraChangeState(r, {
+        entitled: can(tier, CAPABILITIES.CHAOS_CUSTOM_ERA),
+        gate: gateReason(tier, CAPABILITIES.CHAOS_CUSTOM_ERA),
+      });
 
       if (chaosAction === "start") {
         if (!can(tier, CAPABILITIES.CHAOS_UNLIMITED)) {
@@ -123,7 +130,7 @@ export default async function handler(req, res) {
         if (!created.ok) return sendError(res, created.code || "NOT_FOUND", requestId);
         if (!can(tier, CAPABILITIES.CHAOS_UNLIMITED)) await consumeGuestRun(session);
         logReq({ requestId, route: "game", mode: "chaos", action: "start", status: 200 });
-        return res.status(200).json({ requestId, chaos: chaosView(created.run) });
+        return res.status(200).json({ requestId, chaos: chaosView(created.run, { eraChange: eraCtl(created.run) }) });
       }
 
       const runId = validRunId(b.chaosRunId);
@@ -138,21 +145,42 @@ export default async function handler(req, res) {
       if (run.status === "ABANDONED" && chaosAction !== "view") return sendError(res, "NOT_FOUND", requestId);
 
       if (chaosAction === "view") {
-        return res.status(200).json({ requestId, chaos: chaosView(run, { includeCpuHolds: run.currentRoll > 1 }) });
+        return res.status(200).json({ requestId, chaos: chaosView(run, { includeCpuHolds: run.currentRoll > 1, eraChange: eraCtl(run) }) });
       }
       if (chaosAction === "holds") {
         if (!Array.isArray(b.holdSlots)) return sendError(res, "VALIDATION_FAILURE", requestId);
         if (b.holdSlots.length > 5) return sendError(res, "VALIDATION_FAILURE", requestId);
         const r = await applyHolds(run, b.holdSlots);
         if (!r.ok) return sendError(res, "VALIDATION_FAILURE", requestId, { reason: r.code, phase: r.phase });
-        return res.status(200).json({ requestId, chaos: chaosView(run, { includeCpuHolds: true }) });
+        return res.status(200).json({ requestId, chaos: chaosView(run, { includeCpuHolds: true, eraChange: eraCtl(run) }) });
+      }
+      // ── The synchronized sequence: ONE decision covers players and coaches ──
+      if (chaosAction === "decide") {
+        if (!Array.isArray(b.holdSlots) || !Array.isArray(b.holdRoles)) return sendError(res, "VALIDATION_FAILURE", requestId);
+        if (b.holdSlots.length > 5 || b.holdRoles.length > 3) return sendError(res, "VALIDATION_FAILURE", requestId);
+        const r = await applyRollDecisions(run, { holdSlots: b.holdSlots, holdRoles: b.holdRoles });
+        if (!r.ok) return sendError(res, "VALIDATION_FAILURE", requestId, { reason: r.code, phase: r.phase });
+        return res.status(200).json({ requestId, chaos: chaosView(run, { includeCpuHolds: true, eraChange: eraCtl(run) }) });
+      }
+      if (chaosAction === "era") {
+        // The server decides whether this run's era may be set at all. A
+        // competitive run refuses for every tier; an unentitled account is told
+        // where membership lives, not given the change.
+        const ctl = eraCtl(run);
+        if (!ctl.allowed) {
+          return res.status(403).json({ requestId, gated: true, eraChange: ctl, gate: ctl.gate || null });
+        }
+        const r = await applyEraChoice(run, String(b.eraStyleId || ""));
+        if (!r.ok) return sendError(res, "VALIDATION_FAILURE", requestId, { reason: r.code, phase: r.phase });
+        logReq({ requestId, route: "game", mode: "chaos", action: "era", status: 200 });
+        return res.status(200).json({ requestId, chaos: chaosView(run, { includeCpuHolds: true, eraChange: eraCtl(run) }) });
       }
       if (chaosAction === "coachHolds") {
         if (!Array.isArray(b.holdRoles)) return sendError(res, "VALIDATION_FAILURE", requestId);
         if (b.holdRoles.length > 3) return sendError(res, "VALIDATION_FAILURE", requestId);
         const r = await applyCoachHolds(run, b.holdRoles);
         if (!r.ok) return sendError(res, "VALIDATION_FAILURE", requestId, { reason: r.code, phase: r.phase });
-        return res.status(200).json({ requestId, chaos: chaosView(run, { includeCpuHolds: true }) });
+        return res.status(200).json({ requestId, chaos: chaosView(run, { includeCpuHolds: true, eraChange: eraCtl(run) }) });
       }
       if (chaosAction === "abandon") {
         const r = await applyAbandon(run);
@@ -163,7 +191,7 @@ export default async function handler(req, res) {
       if (chaosAction === "coach") {
         const r = await applyCoach(run, String(b.coachId || ""));
         if (!r.ok) return sendError(res, "VALIDATION_FAILURE", requestId, { reason: r.code });
-        return res.status(200).json({ requestId, chaos: chaosView(run, { includeCpuHolds: true }) });
+        return res.status(200).json({ requestId, chaos: chaosView(run, { includeCpuHolds: true, eraChange: eraCtl(run) }) });
       }
       if (chaosAction === "challenge") {
         const manifest = await publishChallenge(run);

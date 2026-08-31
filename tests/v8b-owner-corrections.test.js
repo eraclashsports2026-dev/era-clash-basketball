@@ -2,7 +2,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { POSITIONS, PLAYERS } from "../src/players.js";
-import { startRun, submitHolds, submitCoachHolds, selectCoach, abandonRun, publicView, PHASES, TOTAL_COACH_ROLLS } from "../src/chaos/runState.js";
+import { startRun, submitHolds, submitCoachHolds, submitRollDecisions, selectCoach, abandonRun, publicView, PHASES, TOTAL_COACH_ROLLS } from "../src/chaos/runState.js";
 import { generateOffers, explainOffer } from "../src/chaos/coachOffers.js";
 import { drawFive } from "../src/chaos/draftOdds.js";
 import { computeResultPreview } from "../api/_lib/previewEngine.js";
@@ -21,11 +21,17 @@ const game = (seed = "t1", eraStyleId = "1990s") => {
   return computeResultPreview("single", gold, blue, { coachGoldId: "phil-jackson", coachBlueId: "pat-riley", eraStyleId }, 4242);
 };
 
+// These are Phase 8B's approved corrections, so they are asserted against the
+// flow people actually play: the synchronized sequence. `hold` submits the
+// player half of a roll decision and keeps no coaches, which is the same
+// player-side behaviour 8B specified.
+const hold = (run, holdSlots) => submitRollDecisions(run, { holdSlots, holdRoles: [], hydrate });
+
 describe("player draft state", () => {
   it("keeps a card that was held, and replaces one that was released", () => {
     const r = startRun({ runId: "a".repeat(10), seedId: "hold-1", createdAt: 0 });
     const before = [...r.goldRoster];
-    submitHolds(r, { holdSlots: ["PG", "C"], hydrate });
+    hold(r, ["PG", "C"]);
     expect(r.goldRoster[0]).toBe(before[0]);
     expect(r.goldRoster[4]).toBe(before[4]);
     expect(r.goldRoster[1]).not.toBe(before[1]);
@@ -33,7 +39,7 @@ describe("player draft state", () => {
 
   it("reports kept cards as still held so the next round starts selected", () => {
     const r = startRun({ runId: "b".repeat(10), seedId: "hold-2", createdAt: 0 });
-    submitHolds(r, { holdSlots: ["SG", "SF"], hydrate });
+    hold(r, ["SG", "SF"]);
     const v = publicView(r, { hydrate });
     expect(v.gold.heldSlots).toEqual(expect.arrayContaining(["SG", "SF"]));
   });
@@ -41,29 +47,29 @@ describe("player draft state", () => {
   it("accepts every hold cardinality from none to all five", () => {
     for (const n of [0, 1, 2, 3, 4, 5]) {
       const r = startRun({ runId: "c".repeat(10), seedId: `n${n}`, createdAt: 0 });
-      expect(submitHolds(r, { holdSlots: POSITIONS.slice(0, n), hydrate }).ok).toBe(true);
+      expect(hold(r, POSITIONS.slice(0, n)).ok).toBe(true);
       expect(r.currentRoll).toBe(2);
     }
   });
 
   it("refuses a malformed hold list without mutating the run", () => {
     const r = startRun({ runId: "d".repeat(10), seedId: "bad", createdAt: 0 });
-    expect(submitHolds(r, { holdSlots: ["PG", "PG"], hydrate }).code).toBe("DUPLICATE_SLOT");
-    expect(submitHolds(r, { holdSlots: ["QQ"], hydrate }).code).toBe("UNKNOWN_SLOT");
-    expect(submitHolds(r, { holdSlots: null, hydrate }).code).toBe("VALIDATION_FAILURE");
+    expect(hold(r, ["PG", "PG"]).code).toBe("DUPLICATE_SLOT");
+    expect(hold(r, ["QQ"]).code).toBe("UNKNOWN_SLOT");
+    expect(hold(r, null).code).toBe("VALIDATION_FAILURE");
     expect(r.currentRoll).toBe(1);
   });
 
   it("locks after exactly three rolls and reveals the era with Roll 2", () => {
     const r = startRun({ runId: "e".repeat(10), seedId: "rolls", createdAt: 0 });
     expect(r.revealedEraStyleId).toBeNull();
-    submitHolds(r, { holdSlots: [], hydrate });
+    hold(r, []);
     expect(r.currentRoll).toBe(2);
     expect(r.revealedEraStyleId).toBeTruthy();
-    submitHolds(r, { holdSlots: [], hydrate });
+    hold(r, []);
     expect(r.currentRoll).toBe(3);
     expect(publicView(r, { hydrate }).rostersLocked).toBe(true);
-    expect(submitHolds(r, { holdSlots: [], hydrate }).ok).toBe(false);
+    expect(hold(r, []).ok).toBe(false);
   });
 
   it("can be abandoned, and an abandoned run never advances again", () => {
@@ -88,9 +94,15 @@ describe("roster summaries use one schema", () => {
   });
 });
 
-describe("coach draft", () => {
+// The Phase 8B coach draft — three coach rolls of their own, after the rosters
+// lock. It is the LEGACY flow now: only a run minted under sequence 1 walks it,
+// which is exactly what a challenge link shared before the synchronized draft
+// existed does. The same corrections under the current flow (multi-hold on both
+// boards, burns, no fourth roll, coach identity preserved) are held by
+// tests/chaos-synchronized-draft.test.js.
+describe("coach draft (sequence 1, as shared links still play it)", () => {
   const toDraft = (seed) => {
-    const r = startRun({ runId: "h".repeat(10), seedId: seed, createdAt: 0 });
+    const r = startRun({ runId: "h".repeat(10), seedId: seed, createdAt: 0, sequence: 1 });
     submitHolds(r, { holdSlots: [], hydrate });
     submitHolds(r, { holdSlots: [], hydrate });
     return r;
@@ -147,13 +159,15 @@ describe("era stays visible", () => {
   it("hides the era before Roll 2 and carries it on every view after", () => {
     const r = startRun({ runId: "i".repeat(10), seedId: "era-1", createdAt: 0 });
     expect(publicView(r, { hydrate }).eraContext).toBeNull();
-    submitHolds(r, { holdSlots: [], hydrate });
+    hold(r, []);
     const v = publicView(r, { hydrate });
     expect(v.eraContext.headline).toMatch(/ERA$/);
     expect(v.eraContext.highlights.filter(Boolean).length).toBeGreaterThan(0);
-    submitHolds(r, { holdSlots: [], hydrate });
+    hold(r, []);
+    // Rolls are done: the era is still on screen through hiring and READY.
     expect(publicView(r, { hydrate }).eraContext).toBeTruthy();
-    submitCoachHolds(r, { holdRoles: [], hydrate });
+    const offered = r.coachOffers.gold[0].coachId;
+    expect(selectCoach(r, { coachId: offered }).ok).toBe(true);
     expect(publicView(r, { hydrate }).eraContext).toBeTruthy();
   });
 

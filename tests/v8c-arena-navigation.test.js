@@ -9,7 +9,7 @@ import {
 import { TIERS, FEATURE_FLAGS, CAPABILITIES } from "../src/entitlements.js";
 import { drawFive } from "../src/chaos/draftOdds.js";
 import { POSITIONS } from "../src/players.js";
-import { startRun, submitHolds, publicView } from "../src/chaos/runState.js";
+import { startRun, submitHolds, submitRollDecisions, publicView } from "../src/chaos/runState.js";
 import { hydrate } from "../api/_lib/chaosRun.js";
 
 const src = (f) => readFileSync(f, "utf8").replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "");
@@ -132,14 +132,18 @@ describe("fantasy is a truthful first-class pillar", () => {
 });
 
 describe("the result dock reads real state", () => {
-  const dock = readFileSync("src/components/arena/MatchupResultDock.jsx", "utf8");
+  const dock = readFileSync("src/components/arena/ResultDock.jsx", "utf8");
 
-  it("implements all five states and four tabs", () => {
-    for (const s of ["BUILD YOUR CLASH", "YOUR CLASH SO FAR", "MATCHUP OUTLOOK", "SIMULATING THE CLASH", "FINAL SCORE"]) {
+  it("implements every state it owns and the four tabs", () => {
+    // The draft-time reads moved to Live Intel in the Time Arena; the dock is a
+    // result surface, and one of its states is the PREVIOUS result.
+    for (const s of ["YOUR RESULT WILL APPEAR HERE", "SIMULATING THE CLASH", "FINAL SCORE", "LAST CLASH"]) {
       expect(dock).toContain(s);
     }
     for (const t of ["Game Story", "Box Score", "Coaching", "Analysis"]) expect(dock).toContain(t);
-    expect(dock).toMatch(/VIEW FULL POSTGAME REPORT/);
+    expect(dock).toMatch(/VIEW FULL REPORT/);
+    // A previous result can never read as the draft on screen.
+    expect(dock).toContain("LAST CLASH · NOT THE DRAFT ON SCREEN");
   });
 
   it("shows no win probability and no invented progress figure", () => {
@@ -158,16 +162,17 @@ describe("the arena preserves Phase 8B draft behaviour", () => {
   it("still opens empty, rolls three times and locks", () => {
     const r = startRun({ runId: "z".repeat(10), seedId: "arena-1", createdAt: 0 });
     expect(r.currentRoll).toBe(1);
-    submitHolds(r, { holdSlots: ["PG"], hydrate });
+    const hold = (slots) => submitRollDecisions(r, { holdSlots: slots, holdRoles: [], hydrate });
+    hold(["PG"]);
     expect(r.currentRoll).toBe(2);
     expect(r.revealedEraStyleId).toBeTruthy();
-    submitHolds(r, { holdSlots: ["PG"], hydrate });
+    hold(["PG"]);
     expect(publicView(r, { hydrate }).rostersLocked).toBe(true);
-    expect(submitHolds(r, { holdSlots: [], hydrate }).ok).toBe(false);
+    expect(hold([]).ok).toBe(false);
   });
 
   it("keeps the roll strip driven by server state", () => {
-    expect(src("src/components/arena/RollStrip.jsx")).toMatch(/run \? run\.roll/);
+    expect(src("src/components/arena/RollStepper.jsx")).toMatch(/run \? run\.roll/);
   });
 });
 

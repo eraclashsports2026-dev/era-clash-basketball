@@ -4,7 +4,7 @@
 // Same seed + different decisions → a different but reproducible branch.
 import fs from "node:fs";
 import { POSITIONS, PLAYERS } from "../../src/players.js";
-import { startRun, submitHolds, revealEra } from "../../src/chaos/runState.js";
+import { startRun, revealEra, submitRollDecisions } from "../../src/chaos/runState.js";
 
 const byId = new Map(PLAYERS.map((p) => [p.id, p]));
 const hydrate = (arr) => Object.fromEntries(POSITIONS.map((s, i) => [s, byId.get(arr[i]) || null]));
@@ -16,7 +16,7 @@ const walk = (seedId, decisions) => {
   const run = startRun({ runId: "r".repeat(10), seedId, createdAt: 0 });
   const path = [run.goldRoster.join(","), run.blueRoster.join(",")];
   for (const d of decisions) {
-    submitHolds(run, { holdSlots: d, hydrate });
+    submitRollDecisions(run, { holdSlots: d, holdRoles: [], hydrate });
     path.push(run.goldRoster.join(","), run.blueRoster.join(","), run.burnedPersonIds.slice().sort().join(","));
   }
   path.push(run.revealedEraStyleId, (run.coachOffers?.gold || []).map((o) => o.coachId).join(","));
@@ -41,16 +41,16 @@ ok("different seeds can produce different eras",
 
 // Exactly three rolls.
 const run = startRun({ runId: "x".repeat(10), seedId: "roll-count", createdAt: 0 });
-submitHolds(run, { holdSlots: [], hydrate });
-submitHolds(run, { holdSlots: [], hydrate });
-const fourth = submitHolds(run, { holdSlots: [], hydrate });
+submitRollDecisions(run, { holdSlots: [], holdRoles: [], hydrate });
+submitRollDecisions(run, { holdSlots: [], holdRoles: [], hydrate });
+const fourth = submitRollDecisions(run, { holdSlots: [], holdRoles: [], hydrate });
 ok("a fourth roll is refused", fourth.ok === false && run.currentRoll === 3);
 
 // Burned people never return, across the whole run.
 const r2 = startRun({ runId: "y".repeat(10), seedId: "burn-check", createdAt: 0 });
 const seen1 = new Set([...r2.goldRoster, ...r2.blueRoster]);
-submitHolds(r2, { holdSlots: [], hydrate });
-submitHolds(r2, { holdSlots: [], hydrate });
+submitRollDecisions(r2, { holdSlots: [], holdRoles: [], hydrate });
+submitRollDecisions(r2, { holdSlots: [], holdRoles: [], hydrate });
 const burned = new Set(r2.burnedPersonIds);
 const returned = [...r2.goldRoster, ...r2.blueRoster].filter((id) => burned.has(id));
 ok("no burned person returned", returned.length === 0, returned.join(","));

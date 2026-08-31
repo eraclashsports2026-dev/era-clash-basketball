@@ -32,17 +32,34 @@ const run = async () => {
       && r.body.chaos.gold.roster.filter(Boolean).length === 5
       && r.body.chaos.blue.roster.filter(Boolean).length === 5);
     const id = r.body.chaos.chaosRunId;
+    const opening = r.body.chaos;
 
-    r = await post({ chaosAction: "holds", chaosRunId: id, holdSlots: ["PG", "C"] });
+    r = await post({ chaosAction: "decide", chaosRunId: id, holdSlots: ["PG", "C"], holdRoles: [] });
     ok(`run ${i + 1} reaches Roll 2 with the era revealed`, r.body?.chaos?.roll === 2 && !!r.body?.chaos?.era?.eraId, r.body?.chaos?.era?.eraId);
     ok(`run ${i + 1} reveals the CPU's holds only after the user's`, Array.isArray(r.body?.chaos?.blue?.heldSlots));
     ok(`run ${i + 1} shows a Draft Pressure level`, ["LOW", "RISING", "HIGH"].includes(r.body?.chaos?.draftPressure?.level), r.body?.chaos?.draftPressure?.level);
 
-    r = await post({ chaosAction: "holds", chaosRunId: id, holdSlots: ["PG"] });
+    // The coach board is on the table from the FIRST roll now, and it is scored
+    // against the era from the second one on.
+    ok(`run ${i + 1} had coach offers from Roll 1`, opening.coachDraft?.offers?.length === 3);
+    ok(`run ${i + 1} carries the same roll number on both boards`,
+      r.body?.chaos?.coachDraft?.roll === r.body?.chaos?.roll, `${r.body?.chaos?.coachDraft?.roll} vs ${r.body?.chaos?.roll}`);
+
+    const midOffers = r.body?.chaos?.coachDraft?.offers || [];
+    const keepRoleEarly = midOffers[0]?.role, keptEarlyId = midOffers[0]?.coachId;
+    const droppedEarly = midOffers.slice(1).map((o) => o.coachId);
+
+    r = await post({ chaosAction: "decide", chaosRunId: id, holdSlots: ["PG"], holdRoles: keepRoleEarly ? [keepRoleEarly] : [] });
     ok(`run ${i + 1} locks the roster after three rolls`, r.body?.chaos?.rostersLocked === true);
-    ok(`run ${i + 1} opens the coach draft at Roll 1 of 3`,
-      r.body?.chaos?.coachDraft?.roll === 1 && r.body?.chaos?.coachDraft?.totalRolls === 3);
+    ok(`run ${i + 1} locks the final three offers for hiring`,
+      r.body?.chaos?.coachDraft?.selecting === true && r.body?.chaos?.coachDraft?.offers?.length === 3);
     ok(`run ${i + 1} keeps the era visible after the roster locks`, !!r.body?.chaos?.eraContext);
+    ok(`run ${i + 1} keeps a held staff through the final roll`,
+      (r.body?.chaos?.coachDraft?.offers || []).find((o) => o.role === keepRoleEarly)?.coachId === keptEarlyId);
+    ok(`run ${i + 1} burns a released staff`,
+      (r.body?.chaos?.coachDraft?.offers || []).every((o) => !droppedEarly.includes(o.coachId)));
+    ok(`run ${i + 1} offers no fourth roll`,
+      (await post({ chaosAction: "decide", chaosRunId: id, holdSlots: [], holdRoles: [] })).status === 400);
 
     const first = r.body.chaos.coachDraft.offers;
     ok(`run ${i + 1} offers three unique coaches`, first.length === 3 && new Set(first.map((o) => o.coachId)).size === 3,
@@ -50,18 +67,10 @@ const run = async () => {
     ok(`run ${i + 1} offers three DISTINCT systems`, new Set(first.map((o) => o.offense)).size === 3);
     ok(`run ${i + 1} explains every offer`, first.every((o) => o.offense && o.defense && o.sacrifice));
 
-    // Hold one staff across the coach rolls and confirm it survives.
-    const keepRole = first[0].role, keptId = first[0].coachId;
-    const droppedIds = first.slice(1).map((o) => o.coachId);
-    r = await post({ chaosAction: "coachHolds", chaosRunId: id, holdRoles: [keepRole] });
-    const second = r.body?.chaos?.coachDraft?.offers || [];
-    ok(`run ${i + 1} keeps a held coach across the roll`, second.find((o) => o.role === keepRole)?.coachId === keptId);
-    ok(`run ${i + 1} burns a released coach`, second.every((o) => !droppedIds.includes(o.coachId)));
 
-    r = await post({ chaosAction: "coachHolds", chaosRunId: id, holdRoles: [] });
-    const finalOffers = r.body?.chaos?.coachDraft?.offers || [];
-    ok(`run ${i + 1} locks the coach offers for selection`, r.body?.chaos?.coachDraft?.selecting === true);
-    ok(`run ${i + 1} refuses a fourth coach roll`,
+
+    const finalOffers = first;
+    ok(`run ${i + 1} refuses the superseded coach-roll action`,
       (await post({ chaosAction: "coachHolds", chaosRunId: id, holdRoles: [] })).status === 400);
 
     r = await post({ chaosAction: "coach", chaosRunId: id, coachId: finalOffers[0].coachId });

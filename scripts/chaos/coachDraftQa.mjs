@@ -2,7 +2,7 @@
 // ── Coach Draft QA and fairness ──────────────────────────────────────────────
 import fs from "node:fs";
 import { POSITIONS, PLAYERS } from "../../src/players.js";
-import { startRun, submitHolds, submitCoachHolds, selectCoach, publicView } from "../../src/chaos/runState.js";
+import { startRun, selectCoach, publicView, submitRollDecisions } from "../../src/chaos/runState.js";
 import { generateOffers, explainOffer, OFFER_ROLES } from "../../src/chaos/coachOffers.js";
 import { drawFive } from "../../src/chaos/draftOdds.js";
 import { CHAOS_ERA_IDS } from "../../src/chaos/eraTranslation.js";
@@ -12,13 +12,14 @@ const hydrate = (arr) => Object.fromEntries(POSITIONS.map((s, i) => [s, byId.get
 const checks = [];
 const ok = (n, p, d = "") => { checks.push({ name: n, pass: p, detail: d }); console.log(`${p ? "PASS" : "FAIL"}  ${n}${d ? ` — ${d}` : ""}`); };
 
-/** Drive a run to the coach draft. */
-const toCoachDraft = (seedId) => {
-  const r = startRun({ runId: "c".repeat(10), seedId, createdAt: 0 });
-  submitHolds(r, { holdSlots: ["PG"], hydrate });
-  submitHolds(r, { holdSlots: ["PG"], hydrate });
-  return r;
-};
+/**
+ * The coach board is on the table from Roll 1 now — players and coaches share
+ * one three-roll sequence — so a run IS a coach draft the moment it starts.
+ */
+const toCoachDraft = (seedId) => startRun({ runId: "c".repeat(10), seedId, createdAt: 0 });
+
+/** One roll decision, keeping the named coach roles and no players. */
+const rollKeeping = (r, holdRoles) => submitRollDecisions(r, { holdSlots: [], holdRoles, hydrate });
 
 {
   const r = toCoachDraft("cd-qa-1");
@@ -27,22 +28,22 @@ const toCoachDraft = (seedId) => {
   ok("three offers in three strategic roles", v.coachDraft.offers.length === 3
     && new Set(v.coachDraft.offers.map((o) => o.role)).size === 3);
   ok("the CPU's coach holds are committed before the user's", !!v.coachDraft.cpuHoldCommit);
-  ok("the era stays visible through the coach draft", !!v.eraContext);
+  ok("no era is shown before it is revealed", v.eraContext === null);
   ok("each offer explains itself", v.coachDraft.offers.every((o) => o.offense && o.defense && o.sacrifice));
 
   const first = v.coachDraft.offers;
   const keep = first[0].role, keptId = first[0].coachId;
   const dropped = first.slice(1).map((o) => o.coachId);
-  submitCoachHolds(r, { holdRoles: [keep], hydrate });
+  rollKeeping(r, [keep]);
   const v2 = publicView(r, { hydrate, includeCpuHolds: true });
   ok("a held coach is kept across the roll", v2.coachDraft.offers.find((o) => o.role === keep)?.coachId === keptId);
   ok("released coaches are burned for the run", v2.coachDraft.offers.every((o) => !dropped.includes(o.coachId)));
   ok("the held role is reported back as held", v2.coachDraft.heldRoles.includes(keep));
 
-  submitCoachHolds(r, { holdRoles: [], hydrate });
+  rollKeeping(r, []);
   const v3 = publicView(r, { hydrate });
-  ok("after three coach rolls the offers lock for selection", v3.coachDraft.selecting === true);
-  ok("a fourth coach roll is refused", submitCoachHolds(r, { holdRoles: [], hydrate }).ok === false);
+  ok("after three rolls the offers lock for selection", v3.coachDraft.selecting === true);
+  ok("a fourth roll is refused", rollKeeping(r, []).ok === false);
   ok("a coach that was not offered is refused", selectCoach(r, { coachId: "not-a-coach" }).ok === false);
   ok("one of the three can be hired", selectCoach(r, { coachId: v3.coachDraft.offers[1].coachId }).ok === true);
 }
@@ -52,11 +53,11 @@ const toCoachDraft = (seedId) => {
   const a = toCoachDraft("branch-1"), b = toCoachDraft("branch-1");
   const ids = (r) => publicView(r, { hydrate }).coachDraft.offers.map((o) => o.coachId).join(",");
   ok("the same seed offers the same three coaches", ids(a) === ids(b));
-  submitCoachHolds(a, { holdRoles: ["ROSTER_MAXIMIZER"], hydrate });
-  submitCoachHolds(b, { holdRoles: ["ERA_ADAPTER"], hydrate });
+  rollKeeping(a, ["ROSTER_MAXIMIZER"]);
+  rollKeeping(b, ["ERA_ADAPTER"]);
   ok("different coach holds branch to a different offer set", ids(a) !== ids(b));
   const c = toCoachDraft("branch-1");
-  submitCoachHolds(c, { holdRoles: ["ROSTER_MAXIMIZER"], hydrate });
+  rollKeeping(c, ["ROSTER_MAXIMIZER"]);
   ok("each branch is itself reproducible", ids(a) === ids(c));
   ok("a different seed offers a different set", ids(a) !== ids(toCoachDraft("branch-2")));
 }

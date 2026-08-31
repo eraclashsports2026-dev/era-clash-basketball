@@ -138,6 +138,91 @@ export function ModeInfoPage({ id, onBack }) {
   );
 }
 
+/**
+ * The arena's own guide: how the Clash works, how to think about it, and what
+ * its words mean. Every line describes behaviour that exists in the build — no
+ * roadmap copy, no invented systems.
+ */
+const GUIDE = {
+  play: {
+    title: "How to play",
+    blocks: [
+      ["Three rolls, one board", "Roll 1 deals you five players and three coaching staffs, and deals the Legend CPU its own. You keep what you want and release the rest — players and staffs in the same decision."],
+      ["The era arrives with Roll 2", "Every Clash is played in a randomly drawn era, revealed with your second roll. You still have a decision left after you see it, which is the point."],
+      ["Roll 3 commits", "The third roll is the last one. Your roster and your final three offers lock, and you hire exactly one staff."],
+      ["Anyone you release is gone", "A released player or staff is out of that Clash for good — for you and for the CPU. That is what makes keeping something a real decision."],
+      ["The result lands beside you", "Run the sim and the final score, story, box score, coaching and analysis appear in the Result Dock without taking you away from the five you built."],
+    ],
+  },
+  strategy: {
+    title: "Strategy",
+    blocks: [
+      ["Pressure is the cost of greed", "Holding rare talent makes another elite pull less likely — but every player stays possible. Nothing is ever removed from the pool by holding."],
+      ["The era decides what your five is worth", "Some eras have no three-point line, so a long shot pays two. Some allow hand-checking on the perimeter. Some forbid zones. The same five is not equally good in all of them."],
+      ["Three staffs, three different jobs", "The Roster Maximizer plays to what you already have. The Opponent Counter attacks what Blue does badly. The Era Adapter fits the environment — and before the reveal, it favours a coach whose system survives any era."],
+      ["The CPU is playing the same game", "Legend holds under the same rules, from the same odds, and its decision for each roll is committed before yours is submitted. It cannot see a draw you have not seen."],
+      ["A challenge is a fair rematch", "Challenging shares the opening rolls and the rules, never the outcome. Two people who decide differently branch, and each branch is reproducible."],
+    ],
+  },
+  glossary: {
+    title: "Glossary",
+    blocks: [
+      ["OVR", "The draft guide rating for a player in the slot they are being drafted into. It is a guide to the draft, not the simulation's opinion of the game."],
+      ["Tier", "APEX, ELITE, STAR or SPECIALIST — how rare a card is at that position. Tiers drive Draft Pressure."],
+      ["Draft Pressure", "LOW, RISING or HIGH: how much of your board is already rare talent. Higher pressure means the next elite pull is less likely, never impossible."],
+      ["Era Style", "The rules and pace of a decade — what is legal, what a shot is worth, how physical the perimeter may be. Both teams play in the same era."],
+      ["Hold, release, burn", "Holding keeps a card through the next roll. Releasing sends it back — and burns it, so it cannot return in that Clash."],
+      ["Legend CPU", "The opponent. It drafts, holds and hires with the same rules and the same odds you do."],
+      ["Result Dock", "The right-hand surface that carries your result: story, box score, coaching and analysis, with the full report one tap away."],
+    ],
+  },
+};
+
+export function ArenaGuide({ section = "play", onSection, onClose }) {
+  const ref = useRef(null);
+  useEffect(() => {
+    ref.current?.focus();
+    const onKey = (e) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+  const active = GUIDE[section] ? section : "play";
+  return (
+    <div role="dialog" aria-modal="true" aria-label="Arena guide" onClick={onClose} style={{
+      position: "fixed", inset: 0, zIndex: 90, background: "rgba(3,7,13,0.9)",
+      display: "flex", alignItems: "center", justifyContent: "center", padding: 16,
+    }}>
+      <div ref={ref} tabIndex={-1} onClick={(e) => e.stopPropagation()} className="ec-panel ec-panel-raised" style={{
+        maxWidth: 640, width: "100%", maxHeight: "84vh", overflowY: "auto", padding: 20,
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
+          <h2 style={{ margin: 0, fontSize: 19, color: "var(--ec-a-text, #f5f7fb)" }}>{GUIDE[active].title}</h2>
+          <button onClick={onClose} aria-label="Close" style={{
+            marginLeft: "auto", minHeight: 44, padding: "0 12px", borderRadius: 9, cursor: "pointer",
+            border: "1px solid var(--ec-a-border)", background: "transparent", color: "var(--ec-a-text-secondary)",
+          }}>✕</button>
+        </div>
+        <div role="tablist" aria-label="Guide sections" style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0,1fr))", gap: 5, marginBottom: 12 }}>
+          {Object.entries(GUIDE).map(([id, g]) => (
+            <button key={id} role="tab" aria-selected={active === id} onClick={() => onSection?.(id)} style={{
+              minHeight: 44, borderRadius: 9, cursor: "pointer", fontSize: 12, fontWeight: 800,
+              border: `1px solid ${active === id ? "var(--ec-a-gold-line)" : "var(--ec-a-border)"}`,
+              background: active === id ? "var(--ec-a-gold-soft)" : "transparent",
+              color: active === id ? "var(--ec-a-gold)" : "var(--ec-a-text-secondary)",
+            }}>{g.title}</button>
+          ))}
+        </div>
+        {GUIDE[active].blocks.map(([heading, text]) => (
+          <div key={heading} style={{ padding: "11px 0", borderTop: "1px solid var(--ec-a-border)" }}>
+            <div style={{ fontWeight: 900, fontSize: 14, color: "var(--ec-a-text, #f5f7fb)" }}>{heading}</div>
+            <div style={{ fontSize: 13, color: "var(--ec-a-text-secondary, #c3cddd)", lineHeight: 1.6, marginTop: 3 }}>{text}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export function HowModesModal({ tier, onClose }) {
   const ref = useRef(null);
   useEffect(() => {

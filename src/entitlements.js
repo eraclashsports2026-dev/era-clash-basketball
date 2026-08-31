@@ -28,6 +28,10 @@ export const CAPABILITIES = Object.freeze({
   TOURNAMENT_CREATE: "TOURNAMENT_CREATE",
   ERA_GAUNTLET: "ERA_GAUNTLET",
   ADVANCED_RECAP: "ADVANCED_RECAP",
+  // Setting the era in UNRANKED solo Chaos after it has been revealed. It buys
+  // a sandbox, never an edge: competitive same-seed runs refuse it for every
+  // tier, and no tier changes player odds, coach-offer odds or CPU strength.
+  CHAOS_CUSTOM_ERA: "CHAOS_CUSTOM_ERA",
 });
 
 const C = CAPABILITIES;
@@ -38,8 +42,8 @@ export const GUEST_CHAOS_RUNS = 3;
 export const MATRIX = Object.freeze({
   GUEST: [C.CHAOS_CLASH, C.DAILY],
   FREE: [C.CHAOS_CLASH, C.CHAOS_UNLIMITED, C.DREAM_MATCHUP, C.DAILY, C.CHALLENGES, C.SAVED_HISTORY, C.BEST_OF_7_TRIAL, C.WIN_82_PREVIEW, C.TOURNAMENT_JOIN],
-  PLUS: [C.CHAOS_CLASH, C.CHAOS_UNLIMITED, C.DREAM_MATCHUP, C.DAILY, C.CHALLENGES, C.SAVED_HISTORY, C.BEST_OF_7_TRIAL, C.BEST_OF_7, C.WIN_82_PREVIEW, C.WIN_82, C.TOURNAMENT_JOIN, C.ERA_GAUNTLET, C.ADVANCED_RECAP],
-  COMMISSIONER: [C.CHAOS_CLASH, C.CHAOS_UNLIMITED, C.DREAM_MATCHUP, C.DAILY, C.CHALLENGES, C.SAVED_HISTORY, C.BEST_OF_7_TRIAL, C.BEST_OF_7, C.WIN_82_PREVIEW, C.WIN_82, C.TOURNAMENT_JOIN, C.TOURNAMENT_CREATE, C.ERA_GAUNTLET, C.ADVANCED_RECAP],
+  PLUS: [C.CHAOS_CLASH, C.CHAOS_UNLIMITED, C.DREAM_MATCHUP, C.DAILY, C.CHALLENGES, C.SAVED_HISTORY, C.BEST_OF_7_TRIAL, C.BEST_OF_7, C.WIN_82_PREVIEW, C.WIN_82, C.TOURNAMENT_JOIN, C.ERA_GAUNTLET, C.ADVANCED_RECAP, C.CHAOS_CUSTOM_ERA],
+  COMMISSIONER: [C.CHAOS_CLASH, C.CHAOS_UNLIMITED, C.DREAM_MATCHUP, C.DAILY, C.CHALLENGES, C.SAVED_HISTORY, C.BEST_OF_7_TRIAL, C.BEST_OF_7, C.WIN_82_PREVIEW, C.WIN_82, C.TOURNAMENT_JOIN, C.TOURNAMENT_CREATE, C.ERA_GAUNTLET, C.ADVANCED_RECAP, C.CHAOS_CUSTOM_ERA],
 });
 
 /** Feature flags for modes that are specified but not built. */
@@ -69,6 +73,7 @@ export const gateReason = (tier, capability) => {
   if (can(tier, capability)) return null;
   if (capability === C.ERA_GAUNTLET) return { kind: "PLANNED", message: "Era Gauntlet is in development." };
   if (capability === C.DREAM_MATCHUP) return { kind: "ACCOUNT", message: "Dream Matchup needs a free account." };
+  if (capability === C.CHAOS_CUSTOM_ERA) return { kind: "MEMBERSHIP", message: "Choosing your era is a membership feature. Every era still plays by the same rules for everyone." };
   if (MATRIX.FREE.includes(capability) && normalizeTier(tier) === "GUEST") {
     return { kind: "ACCOUNT", message: "This mode needs a free account." };
   }

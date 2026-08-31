@@ -26,14 +26,13 @@ import ManualPicker from "./components/ManualPicker.jsx";
 import CoachPick from "./components/CoachPick.jsx";
 import PlayerImage from "./components/PlayerImage.jsx";
 import StageWizard from "./components/StageWizard.jsx";
-import ChaosClash from "./components/chaos/ChaosClash.jsx";
 import ArenaHeader from "./components/arena/ArenaHeader.jsx";
-import ArenaCommandCenter from "./components/arena/ArenaCommandCenter.jsx";
-import { MembershipPage, FantasyPage, ModeInfoPage, HowModesModal as ArenaHowModes } from "./components/arena/InfoPages.jsx";
+import TimeArena from "./components/arena/TimeArena.jsx";
+import { MembershipPage, FantasyPage, ModeInfoPage, HowModesModal as ArenaHowModes, ArenaGuide } from "./components/arena/InfoPages.jsx";
 import { PLAY_MODES, findMode, defaultMode, MODE_STATUS } from "./navigation.js";
 import AccountGate from "./components/chaos/AccountGate.jsx";
 import { currentTier, hasAccount } from "./account.js";
-import { simulateChaos, publishChaosChallenge } from "./chaos/client.js";
+import { simulateChaos, publishChaosChallenge, chooseChaosEra } from "./chaos/client.js";
 import { can, CAPABILITIES } from "./entitlements.js";
 import RosterGrid from "./components/RosterGrid.jsx";
 import { MatchupGrid, ArenaCentre, BallIqToggle } from "./components/PlayPanels.jsx";
@@ -134,6 +133,12 @@ export default function App() {
   const [chaosNonce, setChaosNonce] = useState(0);   // remounts ChaosClash for a fresh run
   const [chaosRun, setChaosRun] = useState(null);    // the live run, shared with the Result Dock
   const [fullReport, setFullReport] = useState(false);
+  // The clash before this one, kept whole so its report still opens. It is only
+  // ever shown under a LAST CLASH label, never as the draft on screen.
+  const [prior, setPrior] = useState(null);
+  const [reportBundle, setReportBundle] = useState(null);
+  const [guide, setGuide] = useState(null);
+  const resultAtRef = useRef(0);
   const [howModes, setHowModes] = useState(false);
   // Client route for the destinations Phase 8C added. Real paths, so links are
   // shareable and the back button behaves; the SPA rewrites and the preview
@@ -919,7 +924,15 @@ export default function App() {
     setLoading(false);
   };
 
+  // The moment a result exists, so the dock can age it honestly rather than
+  // guessing when the game happened.
+  useEffect(() => { if (result?.sim) resultAtRef.current = Date.now(); }, [result]);
+
   const newChaosClash = () => {
+    // The finished clash is kept whole so the dock can show it as the PREVIOUS
+    // one — with its own five, so its report still opens correctly.
+    if (result?.sim) setPrior({ result, team, narrative, at: resultAtRef.current || Date.now() });
+    setReportBundle(null);
     setChaosReady(null); setChaosChallengeId(null); setResult(null);
     // The shared run drives the era banner, the roll strip and the Run button.
     // Leaving it set carried the finished game's era and a live Run button on
@@ -928,6 +941,20 @@ export default function App() {
     try { localStorage.removeItem("ec_chaos_run"); } catch { /* private mode */ }
     setTeam(null); setOpponent(null); setView("builder");
     setChaosNonce((n) => n + 1);
+  };
+
+  /** An entitled account setting this run's era. The server is the authority. */
+  const changeChaosEra = async (eraStyleId) => {
+    const runId = chaosRun?.chaosRunId;
+    if (!runId) return;
+    setErr("");
+    try {
+      const r = await chooseChaosEra(runId, eraStyleId, tier);
+      if (r?.chaos) { setChaosRun(r.chaos); track("chaos_era_chosen", { era_style: eraStyleId }); }
+      else if (r?.gated) setGate(r.gate || { kind: "MEMBERSHIP", message: "Choosing your era is a membership feature." });
+    } catch (e) {
+      setErr(e.message || "That era could not be set for this run.");
+    }
   };
 
   const startSwap = () => { track("swap_one_started", {}); setResult(null); setView("builder"); setPlayStage("READY"); };
@@ -1057,43 +1084,15 @@ export default function App() {
         <StageWizard stage={playStage} done={stageDone} onJump={jumpStage} />
       )}
 
-      {/* ── CHAOS CLASH — the default Play experience ────────────────────── */}
+      {/* ── Chaos Clash lives in the Time Arena. The only reason it reaches
+             this view is a gate: the arena hands off when a guest has to make
+             an account to keep playing. ─────────────────────────────────── */}
       {isChaos && !result ? (
-        gate ? (
-          <AccountGate
-            title="Keep playing Chaos Clash"
-            blurb={gate.message}
-            onCreated={() => { setGate(null); setTier(currentTier()); setChaosNonce((n) => n + 1); }}
-            onBack={() => { setGate(null); }} />
-        ) : (
-        <div>
-          <div style={{ textAlign: "center", marginBottom: 14 }}>
-            <h1 style={{ margin: 0, fontSize: 30, fontWeight: 900, letterSpacing: -0.5 }}>ROLL YOUR CLASH</h1>
-            <div style={{ fontSize: 14, color: T.textDim, marginTop: 5, lineHeight: 1.55 }}>
-              Three rolls. Hold your legends. Adapt to the era.
-            </div>
-          </div>
-          <ChaosClash key={`${chaosNonce}:${chaosChallengeId || "new"}`}
-            tier={tier} challengeId={chaosChallengeId}
-            onReady={(r) => setChaosReady(r)}
-            onGated={(g) => setGate(g)} />
-          {chaosReady && (
-            <button onClick={runChaosClash} disabled={loading} style={{
-              marginTop: 14, minHeight: 58, width: "100%", borderRadius: R.md,
-              cursor: loading ? "default" : "pointer", fontWeight: 900, fontSize: 16, letterSpacing: 1.2,
-              border: `1px solid ${T.goldBorder}`, background: T.gold, color: "#fff", opacity: loading ? 0.6 : 1,
-            }}>{loading ? "RUNNING…" : "RUN SIM"}</button>
-          )}
-          {err && <div role="alert" style={{ marginTop: 10, textAlign: "center", color: T.red, fontSize: 13 }}>{err}</div>}
-          <div style={{ textAlign: "center", marginTop: 16 }}>
-            <button onClick={() => { setGameMode("Single"); setChaosReady(null); }} style={{
-              minHeight: 44, padding: "0 18px", borderRadius: R.pill, cursor: "pointer",
-              fontWeight: 800, fontSize: 13, letterSpacing: 0.6,
-              border: `1px solid ${T.border}`, background: "transparent", color: T.textDim,
-            }}>BUILD A DREAM MATCHUP</button>
-          </div>
-        </div>
-        )
+        <AccountGate
+          title="Keep playing Chaos Clash"
+          blurb={gate?.message || "Create a free account to keep playing Chaos Clash."}
+          onCreated={() => { setGate(null); setTier(currentTier()); setChaosNonce((n) => n + 1); }}
+          onBack={() => { setGate(null); }} />
       ) : dreamMatchupGated ? (
         <AccountGate
           title="Dream Matchup"
@@ -1449,22 +1448,32 @@ export default function App() {
   );
 
   // ── Dedicated Postgame view (no builder above it) ───────────────────────────
-  const postgameView = result && (
+  /**
+   * One report renderer. The Result Dock can ask for the CURRENT result or for
+   * the previous one, and a previous clash keeps its own five and its own
+   * recap — so the bundle travels together rather than being reassembled from
+   * whatever the live draft happens to hold.
+   */
+  const renderReport = ({ result: res, team: tm, narrative: nar, live = false }) => res && (
     <div style={{ maxWidth: 900, margin: "0 auto" }}>
-      <ResultView result={result} team={team} feedbackCtx={feedbackCtx}
-        narrative={narrative} onRetryNarrative={retryNarrative}
-        onRematch={() => doRematch(result?.tag)}
-        onBest7={result.type !== "best7" ? doBest7FromResult : null}
-        onChallenge={doShare} onSwap={startSwap} onShare={doShare}
+      <ResultView result={res} team={tm} feedbackCtx={feedbackCtx}
+        narrative={nar || { status: "none" }} onRetryNarrative={live ? retryNarrative : null}
+        onRematch={() => doRematch(res?.tag)}
+        onBest7={live && res.type !== "best7" ? doBest7FromResult : null}
+        onChallenge={doShare} onSwap={live ? startSwap : null} onShare={doShare}
         onLeaderboard={() => handleNav("Daily")} />
-      {result.tag === "daily" && <DailyPanel daily={daily} career={career} />}
-      <div style={{ display: "flex", gap: 10, maxWidth: 700, margin: "12px auto 0" }}>
-        <button onClick={() => setSaved((s) => [...s, { id: Date.now(), name: `Squad ${s.length + 1}`, ids: team.map((p) => p.id), rating: teamRating(team) }])}
-          style={{ flex: 1, padding: 12, fontSize: 13, fontWeight: 800, borderRadius: 9, background: T.bgCardHover, color: T.text, cursor: "pointer", border: `1px solid ${T.border}` }}>💾 Save Squad</button>
-        <button onClick={resetPlay} style={{ flex: 1, padding: 12, fontSize: 13, fontWeight: 800, borderRadius: 9, background: T.bgCardHover, color: T.text, cursor: "pointer", border: `1px solid ${T.border}` }}>🎲 New Game</button>
-      </div>
+      {res.tag === "daily" && <DailyPanel daily={daily} career={career} />}
+      {live && (
+        <div style={{ display: "flex", gap: 10, maxWidth: 700, margin: "12px auto 0" }}>
+          <button onClick={() => setSaved((s) => [...s, { id: Date.now(), name: `Squad ${s.length + 1}`, ids: tm.map((p) => p.id), rating: teamRating(tm) }])}
+            style={{ flex: 1, padding: 12, fontSize: 13, fontWeight: 800, borderRadius: 9, background: T.bgCardHover, color: T.text, cursor: "pointer", border: `1px solid ${T.border}` }}>💾 Save Squad</button>
+          <button onClick={resetPlay} style={{ flex: 1, padding: 12, fontSize: 13, fontWeight: 800, borderRadius: 9, background: T.bgCardHover, color: T.text, cursor: "pointer", border: `1px solid ${T.border}` }}>🎲 New Game</button>
+        </div>
+      )}
     </div>
   );
+
+  const postgameView = renderReport({ result, team, narrative, live: true });
 
   const challengesHub = (
     <div style={{ maxWidth: 620, margin: "0 auto" }}>
@@ -1527,22 +1536,31 @@ export default function App() {
         </main>
       ) : isChaos && !sharedResult && !gate ? (
         <main className="ec-arena-court">
-          <ArenaCommandCenter
+          <TimeArena
             tier={tier} challengeId={chaosChallengeId}
             chaosRun={chaosRun} onRunChange={setChaosRun}
             onReady={(r) => setChaosReady(r)} onGated={(g) => setGate(g)}
             phase={view === "simulating" ? "simulating" : (view === "postgame" && result) ? "complete" : "draft"}
-            result={result} simStage={simStage} busy={loading} error={err}
+            result={result} priorResult={prior?.result} priorAt={prior?.at}
+            simStage={simStage} busy={loading} error={err}
             onRunClash={runChaosClash}
-            onViewFullReport={() => setFullReport(true)}
+            onViewFullReport={(previous) => {
+              // The dock hands back the stored result it is showing, so the
+              // report always belongs to the score above the button.
+              setReportBundle(previous && prior ? { ...prior, live: false } : null);
+              setFullReport(true);
+            }}
             onRunItBack={() => { setFullReport(false); doRematch("chaos"); }}
-            onNewChaosClash={newChaosClash}
             onNewClash={() => { setFullReport(false); newChaosClash(); }}
             onChallenge={chaosRun ? async () => {
               const r = await publishChaosChallenge(chaosRun.chaosRunId, tier);
               track("chaos_challenge_created", { from: "result_dock" });
               return r.challengeId;
             } : null}
+            onEraChange={changeChaosEra}
+            onGuide={(section) => setGuide(section || "play")}
+            onSettings={() => handleNav("Profile")}
+            onMembership={navigate}
             activeModeId="chaos"
             onModeAction={handleModeAction}
             previewCandidateActive={!!result?.sim?.previewCandidate} />
@@ -1584,10 +1602,11 @@ export default function App() {
       )}
 
       {howModes && <ArenaHowModes tier={tier} onClose={() => setHowModes(false)} />}
+      {guide && <ArenaGuide section={guide} onSection={setGuide} onClose={() => setGuide(null)} />}
 
       {/* The full report expands over the SAME page, so closing it returns the
           user to their arena, teams, coaches, era and result. */}
-      {fullReport && result && (
+      {fullReport && (result || reportBundle?.result) && (
         <div className="ec-report-overlay ec-arena-shell" role="dialog" aria-modal="true" aria-label="Full postgame report">
           <div className="ec-report-inner">
             <button onClick={() => setFullReport(false)} style={{
@@ -1600,7 +1619,7 @@ export default function App() {
                 without this, anything that inherits (player names, the story
                 body) rendered white on cream and read as missing. */}
             <div style={{ background: T.bg, color: T.text, borderRadius: 14, padding: "4px 0 16px" }}>
-              {postgameView}
+              {reportBundle ? renderReport(reportBundle) : postgameView}
             </div>
           </div>
         </div>

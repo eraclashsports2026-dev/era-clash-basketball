@@ -5,6 +5,8 @@ import { describe, it, expect, beforeEach, beforeAll } from "vitest";
 import { _memReset } from "../api/_lib/store.js";
 import gameHandler from "../api/game.js";
 import { POSITIONS } from "../src/players.js";
+import { setJSON } from "../api/_lib/store.js";
+import { buildManifest } from "../src/chaos/challenge.js";
 
 const SESSION_A = "a".repeat(48);
 const SESSION_B = "b".repeat(48);
@@ -27,6 +29,19 @@ const call = async (body, session = SESSION_A) => {
   return res;
 };
 
+// One roll decision under the CURRENT (synchronized) sequence: player holds and
+// coach holds travel together.
+const roll = (chaosRunId, holdSlots = [], holdRoles = [], session = SESSION_A) =>
+  call({ chaosAction: "decide", chaosRunId, holdSlots, holdRoles }, session);
+
+// A challenge minted before the synchronized sequence existed. Seeded straight
+// into the store so the legacy path can be driven end to end.
+const seedLegacyChallenge = async (seedId = "legacyseed0001") => {
+  const m = buildManifest({ seedId, createdAt: Date.now(), originRunId: "legacyrun001", sequence: 1 });
+  await setJSON(`chaos-chal:${m.challengeId}`, m, 3600);
+  return m.challengeId;
+};
+
 beforeAll(() => {
   process.env.ECLASH_TEST_MEMORY_STORE = "1";
   process.env.CHAOS_CLASH_ENABLED = "true";
@@ -34,17 +49,15 @@ beforeAll(() => {
 beforeEach(() => _memReset());
 
 /**
- * Drive a run to READY: three player rolls, then the three-roll coach draft,
- * then one coach hired.
+ * Drive a run to READY under the synchronized sequence: three rolls that deal
+ * players AND coach offers together, then one coach hired from the final three.
  */
 const toReady = async (session = SESSION_A) => {
   const start = await call({ chaosAction: "start" }, session);
   const runId = start.body.chaos.chaosRunId;
-  await call({ chaosAction: "holds", chaosRunId: runId, holdSlots: ["PG"] }, session);
-  await call({ chaosAction: "holds", chaosRunId: runId, holdSlots: ["PG", "C"] }, session);
-  await call({ chaosAction: "coachHolds", chaosRunId: runId, holdRoles: [] }, session);
-  const c3 = await call({ chaosAction: "coachHolds", chaosRunId: runId, holdRoles: [] }, session);
-  const coachId = c3.body.chaos.coachDraft.offers[0].coachId;
+  await roll(runId, ["PG"], [], session);
+  const r3 = await roll(runId, ["PG", "C"], [], session);
+  const coachId = r3.body.chaos.coachDraft.offers[0].coachId;
   const ready = await call({ chaosAction: "coach", chaosRunId: runId, coachId }, session);
   return { runId, view: ready.body.chaos };
 };
@@ -72,7 +85,7 @@ describe("Chaos Clash — server-authoritative draft", () => {
     const start = await call({ chaosAction: "start" });
     expect(start.body.chaos.era).toBeNull();
     const runId = start.body.chaos.chaosRunId;
-    const r = await call({ chaosAction: "holds", chaosRunId: runId, holdSlots: ["PG"] });
+    const r = await roll(runId, ["PG"]);
     expect(r.body.chaos.roll).toBe(2);
     expect(r.body.chaos.phase).toBe("ROLL_2_REVEALED");
     expect(r.body.chaos.era?.eraId).toBeTruthy();
@@ -80,14 +93,12 @@ describe("Chaos Clash — server-authoritative draft", () => {
     expect(r.body.chaos.eraContext?.headline).toMatch(/ERA$/);
   });
 
-  it("opens a three-roll coach draft once rosters lock", async () => {
+  it("puts three distinct coach offers on the table with the first five", async () => {
     const { view } = await toReady();
     expect(view.selectedCoaches).toBeTruthy();
     const start = await call({ chaosAction: "start" });
-    const runId = start.body.chaos.chaosRunId;
-    await call({ chaosAction: "holds", chaosRunId: runId, holdSlots: [] });
-    const r2 = await call({ chaosAction: "holds", chaosRunId: runId, holdSlots: [] });
-    const draft = r2.body.chaos.coachDraft;
+    const draft = start.body.chaos.coachDraft;
+    expect(draft.synchronized).toBe(true);
     expect(draft.roll).toBe(1);
     expect(draft.totalRolls).toBe(3);
     expect(draft.offers).toHaveLength(3);
@@ -95,51 +106,53 @@ describe("Chaos Clash — server-authoritative draft", () => {
     expect(new Set(draft.offers.map((o) => o.role)).size).toBe(3);
     // Three genuinely different systems, not three names.
     expect(new Set(draft.offers.map((o) => o.offense)).size).toBe(3);
+    // And no era yet: the offers arrive one roll before the environment does.
+    expect(start.body.chaos.eraState.revealed).toBe(false);
   });
 
-  it("holds and burns coaches across the coach rolls, and refuses a fourth", async () => {
+  it("holds and burns coaches across the same three rolls, and refuses a fourth", async () => {
     const start = await call({ chaosAction: "start" });
     const runId = start.body.chaos.chaosRunId;
-    await call({ chaosAction: "holds", chaosRunId: runId, holdSlots: [] });
-    const r2 = await call({ chaosAction: "holds", chaosRunId: runId, holdSlots: [] });
-    const first = r2.body.chaos.coachDraft.offers;
+    const first = start.body.chaos.coachDraft.offers;
     const keptRole = first[0].role, keptId = first[0].coachId;
     const dropped = first.slice(1).map((o) => o.coachId);
 
-    const c2 = await call({ chaosAction: "coachHolds", chaosRunId: runId, holdRoles: [keptRole] });
-    const second = c2.body.chaos.coachDraft.offers;
-    expect(c2.body.chaos.coachDraft.roll).toBe(2);
+    const r2 = await roll(runId, [], [keptRole]);
+    const second = r2.body.chaos.coachDraft.offers;
+    expect(r2.body.chaos.coachDraft.roll).toBe(2);
     expect(second.find((o) => o.role === keptRole).coachId).toBe(keptId);
     // A released coach is burned for the run.
     for (const o of second) expect(dropped).not.toContain(o.coachId);
 
-    const c3 = await call({ chaosAction: "coachHolds", chaosRunId: runId, holdRoles: [] });
-    expect(c3.body.chaos.coachDraft.selecting).toBe(true);
-    const fourth = await call({ chaosAction: "coachHolds", chaosRunId: runId, holdRoles: [] });
+    const r3 = await roll(runId, [], []);
+    expect(r3.body.chaos.coachDraft.selecting).toBe(true);
+    expect(r3.body.chaos.phase).toBe("ROLL_3_REVEALED");
+    const fourth = await roll(runId, [], []);
     expect(fourth.statusCode).toBe(400);
+    // The old player-only and coach-only actions cannot advance this run at all.
+    expect((await call({ chaosAction: "holds", chaosRunId: runId, holdSlots: [] })).statusCode).toBe(400);
+    expect((await call({ chaosAction: "coachHolds", chaosRunId: runId, holdRoles: [] })).statusCode).toBe(400);
   });
 
   it("runs exactly three rolls and refuses a fourth", async () => {
     const start = await call({ chaosAction: "start" });
     const runId = start.body.chaos.chaosRunId;
-    await call({ chaosAction: "holds", chaosRunId: runId, holdSlots: [] });
-    const r2 = await call({ chaosAction: "holds", chaosRunId: runId, holdSlots: [] });
+    await roll(runId, []);
+    const r2 = await roll(runId, []);
     expect(r2.body.chaos.roll).toBe(3);
-    const r3 = await call({ chaosAction: "holds", chaosRunId: runId, holdSlots: [] });
+    const r3 = await roll(runId, []);
     expect(r3.statusCode).toBe(400);
     // The run is left untouched by the refused transition.
     const after = await call({ chaosAction: "view", chaosRunId: runId });
     expect(after.body.chaos.roll).toBe(3);
-    expect(after.body.chaos.phase).toBe("COACH_ROLL_1");
+    expect(after.body.chaos.phase).toBe("ROLL_3_REVEALED");
   });
 
   it("refuses a coach that was not offered", async () => {
     const start = await call({ chaosAction: "start" });
     const runId = start.body.chaos.chaosRunId;
-    await call({ chaosAction: "holds", chaosRunId: runId, holdSlots: [] });
-    await call({ chaosAction: "holds", chaosRunId: runId, holdSlots: [] });
-    await call({ chaosAction: "coachHolds", chaosRunId: runId, holdRoles: [] });
-    const c3 = await call({ chaosAction: "coachHolds", chaosRunId: runId, holdRoles: [] });
+    await roll(runId, []);
+    const c3 = await roll(runId, []);
     const offered = c3.body.chaos.coachDraft.offers.map((o) => o.coachId);
     const notOffered = ["phil-jackson", "gregg-popovich", "pat-riley", "red-auerbach"].find((id) => !offered.includes(id));
     const bad = await call({ chaosAction: "coach", chaosRunId: runId, coachId: notOffered });
@@ -149,7 +162,7 @@ describe("Chaos Clash — server-authoritative draft", () => {
   it("keeps one user's draft state away from another session", async () => {
     const start = await call({ chaosAction: "start" }, SESSION_A);
     const runId = start.body.chaos.chaosRunId;
-    const stolen = await call({ chaosAction: "holds", chaosRunId: runId, holdSlots: ["PG"] }, SESSION_B);
+    const stolen = await roll(runId, ["PG"], [], SESSION_B);
     expect(stolen.statusCode).toBe(403);
   });
 
@@ -193,7 +206,7 @@ describe("Chaos Clash — server-authoritative draft", () => {
     const goldR1 = start.body.chaos.gold.roster.map((c) => c.id);
     // The user rerolls everything. The CPU decides its own holds independently,
     // so blue cards may legitimately persist — only BURNED cards must not.
-    const r1 = await call({ chaosAction: "holds", chaosRunId: runId, holdSlots: [] });
+    const r1 = await roll(runId, []);
     const goldAfter = r1.body.chaos.gold.roster.map((c) => c.id);
     for (const id of goldAfter) expect(goldR1).not.toContain(id);
     const cpuHeld = r1.body.chaos.blue.heldSlots;
@@ -220,8 +233,8 @@ describe("Chaos Clash — server-authoritative draft", () => {
     expect(idsOf(a.body.chaos)).toBe(idsOf(b.body.chaos));
 
     // Same seed, DIFFERENT decisions → a different but reproducible branch.
-    const ra = await call({ chaosAction: "holds", chaosRunId: a.body.chaos.chaosRunId, holdSlots: ["PG"] }, SESSION_B);
-    const rb = await call({ chaosAction: "holds", chaosRunId: b.body.chaos.chaosRunId, holdSlots: ["SG"] }, SESSION_B);
+    const ra = await roll(a.body.chaos.chaosRunId, ["PG"], [], SESSION_B);
+    const rb = await roll(b.body.chaos.chaosRunId, ["SG"], [], SESSION_B);
     expect(idsOf(ra.body.chaos)).not.toBe(idsOf(rb.body.chaos));
   });
 
@@ -272,8 +285,8 @@ describe("Chaos Clash — entitlements never touch the draft", () => {
       const start = await call({ chaosAction: "start", tier: tiers[i], challengeId }, s);
       expect(start.statusCode).toBe(200);
       const runId = start.body.chaos.chaosRunId;
-      const r1 = await call({ chaosAction: "holds", chaosRunId: runId, holdSlots: ["PG", "C"] }, s);
-      const r2 = await call({ chaosAction: "holds", chaosRunId: runId, holdSlots: ["PG"] }, s);
+      const r1 = await roll(runId, ["PG", "C"], [], s);
+      const r2 = await roll(runId, ["PG"], [], s);
       paths.push(JSON.stringify({
         roll1: start.body.chaos.gold.roster.map((c) => c.id),
         roll2: r1.body.chaos.gold.roster.map((c) => c.id),

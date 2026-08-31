@@ -45,28 +45,41 @@ const run = async () => {
   ok("the era is hidden until after Roll 2", r.body.chaos.era === null);
 
   // A client cannot substitute player ids.
+  // The old player-only and coach-only actions must not touch a synchronized
+  // run at all: accepting one would re-deal a board that was already dealt.
+  ok("the superseded player-hold action cannot advance a synchronized run",
+    (await post({ chaosAction: "holds", chaosRunId: runId, holdSlots: ["PG"] })).status === 400);
+  ok("the superseded coach-hold action cannot advance a synchronized run",
+    (await post({ chaosAction: "coachHolds", chaosRunId: runId, holdRoles: [] })).status === 400);
+
   const spoof = await post({
-    chaosAction: "holds", chaosRunId: runId, holdSlots: ["PG"],
+    chaosAction: "decide", chaosRunId: runId, holdSlots: ["PG"], holdRoles: [],
     goldIds: ["jordan-90s", "lebron-10s", "magic-80s", "bird-80s", "kareem-70s"],
-    goldRoster: ["jordan-90s"], eraStyleId: "2020s",
+    goldRoster: ["jordan-90s"], eraStyleId: "2020s", coachGoldId: "phil-jackson",
   });
   const afterIds = spoof.body?.chaos?.gold?.roster?.map((c) => c.id) || [];
   ok("a client cannot substitute player ids", !afterIds.includes("jordan-90s") || roll1.includes("jordan-90s"));
-  ok("a client cannot set the era", !!spoof.body?.chaos?.era?.eraId);
+  // The era a run plays is the seed's era, whatever the request body claims.
+  ok("a client cannot set the era in a roll decision",
+    spoof.body?.chaos?.era?.eraId === spoof.body?.chaos?.eraState?.eraStyleId
+    && spoof.body?.chaos?.eraState?.custom === false);
+  ok("a FREE account cannot use the era action",
+    (await post({ chaosAction: "era", chaosRunId: runId, eraStyleId: "2020s", tier: "FREE" })).status === 403);
+  const forgedEra = await post({ chaosAction: "era", chaosRunId: runId, eraStyleId: "1830s", tier: "PLUS" });
+  ok("an entitled account cannot set an era that does not exist", forgedEra.status === 400);
 
   // A client cannot skip a roll or add a fourth.
-  await post({ chaosAction: "holds", chaosRunId: runId, holdSlots: [] });
-  const fourth = await post({ chaosAction: "holds", chaosRunId: runId, holdSlots: [] });
+  const third = await post({ chaosAction: "decide", chaosRunId: runId, holdSlots: [], holdRoles: [] });
+  ok("the third roll locks the roster and the offers",
+    third.body?.chaos?.phase === "ROLL_3_REVEALED" && third.body?.chaos?.coachDraft?.selecting === true);
+  const fourth = await post({ chaosAction: "decide", chaosRunId: runId, holdSlots: [], holdRoles: [] });
   ok("a client cannot add a fourth roll", fourth.status === 400);
+  ok("the era window is closed once the rolls are done",
+    (await post({ chaosAction: "era", chaosRunId: runId, eraStyleId: "2020s", tier: "PLUS" })).status === 403);
 
-  // Drive the coach draft to its selection step before probing coach actions.
-  await post({ chaosAction: "coachHolds", chaosRunId: runId, holdRoles: [] });
-  await post({ chaosAction: "coachHolds", chaosRunId: runId, holdRoles: [] });
   const view = await post({ chaosAction: "view", chaosRunId: runId });
-  ok("a client cannot roll coaches a fourth time",
-    (await post({ chaosAction: "coachHolds", chaosRunId: runId, holdRoles: [] })).status === 400);
   ok("a client cannot forge a coach hold role",
-    (await post({ chaosAction: "coachHolds", chaosRunId: runId, holdRoles: ["NOT_A_ROLE"] })).status === 400);
+    (await post({ chaosAction: "decide", chaosRunId: runId, holdSlots: [], holdRoles: ["NOT_A_ROLE"] })).status === 400);
   const offered = (view.body?.chaos?.coachDraft?.offers || []).map((o) => o.coachId);
   ok("exactly three coaches are offered", offered.length === 3, offered.join(","));
   ok("the CPU's coach holds were committed", !!view.body?.chaos?.coachDraft?.cpuHoldCommit);
@@ -81,7 +94,7 @@ const run = async () => {
   const otherRes = await fetch(`${BASE}/api/game`, {
     method: "POST",
     headers: { "Content-Type": "application/json", Origin: BASE, Cookie: `ec_session=${"f".repeat(48)}`, ...(KEY ? { "x-preview-key": KEY } : {}) },
-    body: JSON.stringify({ chaosAction: "holds", chaosRunId: runId, holdSlots: ["PG"] }),
+    body: JSON.stringify({ chaosAction: "decide", chaosRunId: runId, holdSlots: ["PG"], holdRoles: [] }),
   });
   ok("draft state cannot cross users", otherRes.status === 403 || otherRes.status === 404);
 

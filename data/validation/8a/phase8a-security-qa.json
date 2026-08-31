@@ -1,9 +1,9 @@
 {
   "artifact": "phase8a-security-qa",
   "phase": "8A",
-  "target": "https://era-clash-basketball-git-wave1-era-clash.vercel.app",
-  "checks": 22,
-  "passed": 22,
+  "target": "http://localhost:4176",
+  "checks": 27,
+  "passed": 27,
   "failed": 0,
   "results": [
     {
@@ -42,12 +42,37 @@
       "detail": ""
     },
     {
+      "name": "the superseded player-hold action cannot advance a synchronized run",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the superseded coach-hold action cannot advance a synchronized run",
+      "pass": true,
+      "detail": ""
+    },
+    {
       "name": "a client cannot substitute player ids",
       "pass": true,
       "detail": ""
     },
     {
-      "name": "a client cannot set the era",
+      "name": "a client cannot set the era in a roll decision",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a FREE account cannot use the era action",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "an entitled account cannot set an era that does not exist",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the third roll locks the roster and the offers",
       "pass": true,
       "detail": ""
     },
@@ -57,7 +82,7 @@
       "detail": ""
     },
     {
-      "name": "a client cannot roll coaches a fourth time",
+      "name": "the era window is closed once the rolls are done",
       "pass": true,
       "detail": ""
     },
@@ -69,7 +94,7 @@
     {
       "name": "exactly three coaches are offered",
       "pass": true,
-      "detail": "lenny-wilkens,john-kundla,george-karl"
+      "detail": "mike-fratello,red-holzman,billy-cunningham"
     },
     {
       "name": "the CPU's coach holds were committed",
@@ -104,7 +129,7 @@
     {
       "name": "a challenge id leaks no seed or credential",
       "pass": true,
-      "detail": "0yaae5r"
+      "detail": "136aga8"
     },
     {
       "name": "a coach can be hired from the offered three",
