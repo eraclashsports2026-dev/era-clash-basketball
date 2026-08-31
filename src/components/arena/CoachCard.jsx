@@ -33,7 +33,7 @@ export default function CoachCard({
 
       <div className="ec-coach-body">
         <div className="ec-coach-name">{offer.name}</div>
-        <div className="ec-coach-span">{offer.span}</div>
+        <div className="ec-coach-span" title={offer.span}>{offer.span}</div>
         <div className="ec-coach-blurb">{open ? offer.roleBlurb : offer.offense}</div>
         {open && detail.length > 0 && (
           <div style={{ display: "grid", gap: 3, marginTop: 2 }}>

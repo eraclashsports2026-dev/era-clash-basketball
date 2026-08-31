@@ -2,8 +2,8 @@
   "artifact": "time-arena-preview-qa",
   "phase": "8C.1 — pixel-fidelity reconstruction",
   "deployment": {
-    "baseUrl": "https://era-clash-basketball-cqtbokuu1-era-clash.vercel.app",
-    "commit": "21b53e10b17907f60d09463a28c07caae48a0195",
+    "baseUrl": "https://era-clash-basketball-qq1cohewb-era-clash.vercel.app",
+    "commit": "40dc50374d08878eb03b640186874bd73576ad8d",
     "environment": "vercel preview, access-gated"
   },
   "method": "Playwright over the network against the deployed branch preview, authenticated with a signed session obtained by POSTing an access key. The dev fixture is compiled out of a preview build, so every measurement below comes from a real draft played through the UI.",
@@ -86,8 +86,8 @@
       "h": 52
     },
     "utility": 58,
-    "docHeight": 1057,
-    "arenaComposition": 1000,
+    "docHeight": 1062,
+    "arenaComposition": 1004,
     "siteFooter": 57,
     "overflowX": 0,
     "dockInFold": true,
@@ -150,7 +150,7 @@
     {
       "slot": "SG",
       "team": "blue",
-      "kept": true,
+      "kept": false,
       "cardH": 322,
       "overflowPx": 0,
       "footInset": 1
@@ -182,27 +182,29 @@
   ],
   "eraDealt": {
     "observed": [
-      "1990s",
-      "1960s",
-      "1990s",
-      "1960s",
+      "1950s",
+      "1980s",
       "2000s",
-      "1960s"
+      "1990s",
+      "2000s",
+      "2020s"
     ],
     "distinct": [
+      "1950s",
+      "1980s",
+      "2000s",
       "1990s",
-      "1960s",
-      "2000s"
+      "2020s"
     ]
   },
   "report": {
     "boxScoreRows": 13,
     "worstNameContrast": 5.8,
     "story": {
-      "count": 8,
-      "measured": 8,
+      "count": 7,
+      "measured": 7,
       "worst": 5.8,
-      "sample": "Kobe Bryant controlled the game with 36 points, 8 assists. G"
+      "sample": "Paolo Banchero controlled the game with 44 points, 14 reboun"
     },
     "coaching": {
       "blocks": 45,
@@ -267,26 +269,26 @@
     {
       "section": "Game Story",
       "bad": [],
-      "docHeight": 1689,
-      "railBottomBeyondViewport": 594
+      "docHeight": 1632,
+      "railBottomBeyondViewport": 537
     },
     {
       "section": "Box Score",
       "bad": [],
-      "docHeight": 1636,
-      "railBottomBeyondViewport": 541
+      "docHeight": 1618,
+      "railBottomBeyondViewport": 523
     },
     {
       "section": "Coaching",
       "bad": [],
-      "docHeight": 1520,
+      "docHeight": 1519,
       "railBottomBeyondViewport": 424
     },
     {
       "section": "Analysis",
       "bad": [],
-      "docHeight": 1643,
-      "railBottomBeyondViewport": 548
+      "docHeight": 1590,
+      "railBottomBeyondViewport": 494
     }
   ],
   "isolation": {
@@ -380,7 +382,7 @@
     {
       "name": "the arena composition fits the canonical viewport",
       "ok": true,
-      "detail": "arena 1000px ceiling 1040 · document 1057px including a 57px site footer the fixture route does not render"
+      "detail": "arena 1004px ceiling 1040 · document 1062px including a 57px site footer the fixture route does not render"
     },
     {
       "name": "no horizontal overflow",
@@ -410,7 +412,7 @@
     {
       "name": "the era is revealed with Roll 2, in the rail",
       "ok": true,
-      "detail": "1990s"
+      "detail": "1950s"
     },
     {
       "name": "the era box appears once, in the rail",
@@ -420,7 +422,7 @@
     {
       "name": "every player card button sits inside its own card",
       "ok": true,
-      "detail": "4 card(s) marked KEPT · worst overflow 0px"
+      "detail": "3 card(s) marked KEPT · worst overflow 0px"
     },
     {
       "name": "every player card button sits at the same place on its card",
@@ -441,6 +443,11 @@
       "name": "the coach cards are one height with their footers on one line",
       "ok": true,
       "detail": "heights 237"
+    },
+    {
+      "name": "a closed coach card is the canonical height on real copy",
+      "ok": false,
+      "detail": "237px against 232±4"
     },
     {
       "name": "the result appears on the same page",
@@ -470,7 +477,7 @@
     {
       "name": "an open dock section grows the page instead of hiding behind a scrollbar",
       "ok": true,
-      "detail": "Game Story 1689px · Box Score 1636px · Coaching 1520px · Analysis 1643px"
+      "detail": "Game Story 1632px · Box Score 1618px · Coaching 1519px · Analysis 1590px"
     },
     {
       "name": "the finished board keeps the staff decision, still inside its cards",
@@ -480,7 +487,7 @@
     {
       "name": "the stage column ends where its content ends, with no empty run below it",
       "ok": true,
-      "detail": "0px unused · stage 773px, rail 1104px"
+      "detail": "0px unused · stage 773px, rail 1087px"
     },
     {
       "name": "box score lists named players",
@@ -495,7 +502,7 @@
     {
       "name": "the game story has readable body prose",
       "ok": true,
-      "detail": "8 passages, 8 measurable, worst 5.8:1"
+      "detail": "7 passages, 7 measurable, worst 5.8:1"
     },
     {
       "name": "the coaching report renders, readable, on the deployed build",
@@ -515,7 +522,7 @@
     {
       "name": "six fresh drafts do not all land on one era",
       "ok": true,
-      "detail": "1990s, 1960s, 1990s, 1960s, 2000s, 1960s"
+      "detail": "1950s, 1980s, 2000s, 1990s, 2000s, 2020s"
     },
     {
       "name": "no draft defaults to the 1950s",
@@ -549,5 +556,5 @@
     }
   ],
   "passed": 50,
-  "failed": 0
+  "failed": 1
 }

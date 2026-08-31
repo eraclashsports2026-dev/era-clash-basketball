@@ -1004,12 +1004,15 @@ button { font-family: inherit; }
   color: var(--ec-a-text);
   display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden;
 }
-/* A span is a date range. Two lines is the whole idea; a parenthetical career
-   history belongs in the scouting detail, not on the card face. */
+/* A span is a date range: ONE line on the face. At two lines the body track's
+   min-content grew past its 101px and the whole card went to 237 against a
+   canonical 232 — three cards agreeing with each other and all five out. The
+   full span is the first line of the scouting detail, so nothing is lost. */
 .ec-coach-span {
   font-size: 10.5px; font-weight: 700; color: var(--ec-a-text-muted);
-  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
+.ec-coach-card[data-open="true"] .ec-coach-span { white-space: normal; overflow: visible; }
 /* Three lines on the face. The card grows only when a player OPENS the scouting
    detail; a long offensive summary must not quietly cost the closed card its
    canonical 232px. */
