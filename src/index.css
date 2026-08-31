@@ -271,6 +271,14 @@ button { font-family: inherit; }
   .box-table .box-player { position: sticky; left: 0; z-index: 1; }
 }
 
+/* The score is the loudest number in the rail, in the condensed display face
+   the reference uses for it. */
+.ec-dock-score {
+  font-family: var(--ec-display);
+  font-size: 40px; font-weight: 700; line-height: 0.95;
+  color: var(--ec-a-text); font-variant-numeric: tabular-nums;
+}
+
 /* The dock's box score keeps every counting stat; the numbers scroll inside the
    dock on a narrow column instead of squeezing a made-attempted pair. */
 .ec-dock-box { overflow-x: auto; }
@@ -521,51 +529,124 @@ button { font-family: inherit; }
    so no light band shows beneath the workspace. */
 .ec-arena-page { background: var(--ec-a-bg, #03070d); min-height: 100vh; }
 .ec-arena-page footer, .ec-arena-page .ec-footer { color: var(--ec-a-text-muted, #93a0b5); }
-
 /* ═══════════════════════════════════════════════════════════════════════════
-   THE TIME ARENA — Phase 8C canonical Play surface
-   One persistent workspace: the draft on the left, Live Intel and the Result
-   Dock on the right. Every colour is a token so contrast is measurable, and
-   every column is explicitly clamped — an implicit `auto` grid track grows to
-   its content's max-content width on a narrow screen, which is how a board can
-   end up several screens wide inside a clipped container.
+   THE TIME ARENA — Phase 8C.1 canonical geometry
+   Rebuilt to the measured contract in
+   data/validation/8c1/time-arena-visual-contract.json. The horizontal budget is
+   closed arithmetic, not an estimate: at the canonical 1536px viewport the ten
+   player cards, their gaps and the centre divider add up to the roster width
+   exactly, which is what puts both teams on ONE row instead of stacking Blue
+   under Gold.
+
+       1536 − 36 (page padding) − 364 (rail) − 14 (gap)      = 1122 main arena
+       1122 − 28 (stage padding)                             = 1094 roster
+       10 × 104 + 8 × 5 (intra-side gaps) + 14 (centre)      = 1094
    ═══════════════════════════════════════════════════════════════════════════ */
+.ec-arena-shell {
+  /* Geometry — every literal dimension in the arena comes from here. */
+  --arena-header-h: 64px;
+  --arena-rail-w: 364px;
+  --arena-gap: 14px;
+  --arena-page-pad-x: 18px;
+  --arena-page-pad-y: 14px;
+  --arena-stage-pad: 14px;
+
+  --player-card-w: 104px;
+  --player-card-h: 322px;
+  --player-card-gap: 5px;
+  --player-portrait-h: 212px;
+  --player-footer-h: 44px;
+  --roster-divider-w: 4px;
+
+  --coach-card-w: 248px;
+  --coach-card-h: 232px;
+  --coach-card-gap: 14px;
+
+  --cta-w: 352px;
+  --cta-h: 52px;
+  --utility-h: 58px;
+
+  --ec-radius-card: 10px;
+  --ec-radius-panel: 14px;
+
+  /* Condensed display type for names, ratings and roll labels. No remote font
+     is loaded; this is a system stack, and a bundled licensed face would be an
+     asset decision rather than a code one. */
+  --ec-display: "Arial Narrow", "Helvetica Neue Condensed", "Roboto Condensed",
+                "Liberation Sans Narrow", system-ui, sans-serif;
+}
+
 .ec-ta {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(340px, 390px);
-  gap: 18px;
+  grid-template-columns: minmax(0, 1fr) var(--arena-rail-w);
+  gap: var(--arena-gap);
   align-items: start;
-  max-width: 1600px;
-  margin: 0 auto;
-  padding: 14px 18px 20px;
+  padding: var(--arena-page-pad-y) var(--arena-page-pad-x) var(--arena-page-pad-y);
+  /* No max-width clamp: the canonical viewport must resolve to the contract's
+     1122px main arena, and a centred 1600px cap would silently change it. */
 }
-.ec-ta-main { min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+.ec-ta-main { min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
 .ec-ta-rail {
   min-width: 0;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 14px;
+  gap: 12px;
   position: sticky;
   top: 10px;
-  max-height: calc(100vh - 20px);
+  /* The rail's own height was what pushed the document past the ceiling: a
+     100vh box that starts BELOW the header is taller than the space it has. */
+  max-height: calc(100vh - var(--arena-header-h) - 2 * var(--arena-page-pad-y));
   overflow-y: auto;
   overscroll-behavior: contain;
+  scrollbar-width: thin;
 }
 
-/* ── The stage: title, roll stepper, both benches ───────────────────────────*/
-.ec-ta-stage { position: relative; }
+/* ── The stage: one panel, as the reference shows ──────────────────────────*/
+.ec-ta-stage {
+  position: relative;
+  isolation: isolate;
+  padding: var(--arena-stage-pad);
+  border-radius: var(--ec-radius-panel);
+  border: 1px solid var(--ec-a-border);
+  background: transparent;
+  overflow: hidden;
+}
+/* Atmosphere lives behind the stage's content, never over it. */
+.ec-ta-stage > * { position: relative; z-index: 1; }
+
 .ec-ta-stage-head {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: start;
   gap: 12px;
-  align-items: center;
+  margin-bottom: 10px;
 }
-.ec-ta-stepper { display: flex; align-items: flex-start; gap: 6px; }
-.ec-ta-step { display: grid; justify-items: center; gap: 4px; min-width: 74px; }
+.ec-ta-team-label { display: grid; gap: 1px; }
+.ec-ta-team-label--blue { justify-items: end; text-align: right; }
+.ec-ta-team-name {
+  font-family: var(--ec-display);
+  font-size: 17px; font-weight: 700; letter-spacing: 1.6px; line-height: 1.1;
+}
+.ec-ta-team-sub { font-size: 10px; font-weight: 800; letter-spacing: 1.4px; color: var(--ec-a-text-muted); }
+
+.ec-ta-title { display: grid; justify-items: center; gap: 3px; }
+.ec-ta-title-main {
+  font-family: var(--ec-display);
+  font-size: 21px; font-weight: 700; letter-spacing: 3px; line-height: 1;
+  color: var(--ec-a-gold);
+}
+.ec-ta-title-sub {
+  font-size: 11.5px; font-weight: 800; letter-spacing: 2px; color: var(--ec-a-text-secondary);
+}
+
+/* ── Roll progression ─────────────────────────────────────────────────────*/
+.ec-ta-stepper { display: flex; align-items: flex-start; gap: 0; }
+.ec-ta-step { display: grid; justify-items: center; gap: 3px; min-width: 68px; }
 .ec-ta-step-dot {
-  width: 26px; height: 26px; border-radius: 999px;
+  width: 24px; height: 24px; border-radius: 999px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 12px; font-weight: 900;
+  font-family: var(--ec-display);
+  font-size: 12.5px; font-weight: 700;
   border: 1px solid var(--ec-a-border-strong);
   color: var(--ec-a-text-muted);
   background: var(--ec-a-panel);
@@ -576,142 +657,515 @@ button { font-family: inherit; }
 .ec-ta-step[data-state="ACTIVE"] .ec-ta-step-dot {
   border-color: var(--ec-a-gold); color: var(--ec-a-gold);
   background: var(--ec-a-gold-soft);
-  box-shadow: 0 0 0 3px rgba(242, 181, 29, 0.16);
+  box-shadow: 0 0 0 3px rgba(242, 181, 29, 0.14);
 }
-.ec-ta-step-rule { height: 1px; flex: 1 1 auto; background: var(--ec-a-border); margin-top: 13px; min-width: 14px; }
+.ec-ta-step-label {
+  font-size: 10px; font-weight: 900; letter-spacing: 1px;
+  color: var(--ec-a-text-secondary);
+}
+.ec-ta-step[data-state="ACTIVE"] .ec-ta-step-label,
+.ec-ta-step[data-state="COMPLETE"] .ec-ta-step-label { color: var(--ec-a-text-secondary); }
+.ec-ta-step-rule { height: 1px; width: 22px; background: var(--ec-a-border); margin-top: 12px; }
 
-/* Two benches side by side once there is genuinely room for ten readable
-   cards; stacked rows below that, which keeps both fives on screen rather than
-   shrinking a name to initials. */
-.ec-ta-boards { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; }
-.ec-ta-team { min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
-.ec-ta-five { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
-@media (max-width: 1439px) {
-  .ec-ta-boards { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+/* ── One roster row: five Gold, a divider, five Blue ──────────────────────*/
+/* The team group keeps its identity but not its box: with display: contents the
+   five cards become items of the roster grid itself, which is what allows one
+   row of ten. Restore a box for it and the teams stack again. */
+.ec-ta-team { display: contents; }
+.ec-ta-roster {
+  display: grid;
+  grid-template-columns:
+    repeat(5, minmax(0, 1fr))
+    var(--roster-divider-w)
+    repeat(5, minmax(0, 1fr));
+  gap: var(--player-card-gap);
+  /* The cap is the canonical width: ten cards at their token width, eight
+     intra-side gaps, the divider and its two gaps. Below that the fr tracks
+     shrink together, so ten cards stay on one row and none is ever clipped. */
+  max-width: calc(10 * var(--player-card-w) + 10 * var(--player-card-gap) + var(--roster-divider-w));
+  margin-inline: auto;
+  width: 100%;
 }
-@media (max-width: 1179px) {
-  .ec-ta { grid-template-columns: minmax(0, 1fr); padding: 12px 12px 18px; }
-  .ec-ta-rail { position: static; max-height: none; overflow: visible; }
-  .ec-ta-stage-head { grid-template-columns: minmax(0, 1fr); justify-items: center; text-align: center; }
-}
-@media (max-width: 720px) {
-  .ec-ta-five { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
-}
-@media (max-width: 430px) {
-  .ec-ta-five { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.ec-ta-roster-divider {
+  align-self: stretch;
+  justify-self: center;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(157, 178, 209, 0.22) 12%,
+    rgba(157, 178, 209, 0.22) 88%,
+    transparent
+  );
 }
 
-/* ── Player card ───────────────────────────────────────────────────────────*/
+/* ── Player card ───────────────────────────────────────────────────────────
+   Narrow, tall and portrait-dominant: a trading card, not an information tile.
+   The portrait zone is a fixed 212px of the card's 322px (66%), so an approved
+   portrait is a straight asset swap that moves nothing. */
 .ec-pc {
   --pc-accent: var(--ec-a-gold);
   --pc-line: var(--ec-a-gold-line);
   --pc-soft: var(--ec-a-gold-soft);
+  --pc-deep: #8b5b08;
   min-width: 0;
+  height: var(--player-card-h);
   display: grid;
-  grid-template-rows: auto auto auto 1fr auto;
-  gap: 6px;
-  padding: 7px;
-  border-radius: 12px;
+  grid-template-rows: var(--player-portrait-h) auto auto 1fr;
+  gap: 4px;
+  padding: 6px;
+  border-radius: var(--ec-radius-card);
   border: 1px solid var(--ec-a-border);
-  background: linear-gradient(180deg, var(--pc-soft) 0%, var(--ec-a-panel) 42%);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--pc-accent) 26%, transparent) 0%, transparent 42%),
+    linear-gradient(180deg, var(--ec-a-panel-raised) 0%, var(--ec-a-panel) 100%);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 6px 14px rgba(0, 0, 0, 0.35);
+  transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
 }
-/* The team owns the theme. Position never touches it — a PF or a C on Team
-   Gold is as gold as the point guard. */
-.ec-ta-team[data-team="blue"] .ec-pc {
+/* The TEAM owns the theme. A position never touches it. */
+.ec-ta-team[data-team="blue"] .ec-pc,
+.ec-pc[data-team="blue"] {
   --pc-accent: var(--ec-a-blue);
   --pc-line: var(--ec-a-blue-line);
   --pc-soft: var(--ec-a-blue-soft);
+  --pc-deep: #0e4f91;
 }
-.ec-pc[data-held="true"] { border-color: var(--pc-line); box-shadow: 0 0 0 1px var(--pc-line) inset; }
+/* Held cards lift, which is a second, non-colour signal. */
+.ec-pc[data-held="true"] {
+  border-color: var(--pc-line);
+  transform: translateY(-3px);
+  box-shadow: 0 0 0 1px var(--pc-line) inset, 0 10px 20px rgba(0, 0, 0, 0.45);
+}
+
+.ec-pc-portrait {
+  position: relative;
+  height: var(--player-portrait-h);
+  border-radius: 8px;
+  overflow: hidden;
+  background:
+    radial-gradient(140% 70% at 50% 100%, color-mix(in srgb, var(--pc-accent) 22%, transparent), transparent 68%),
+    radial-gradient(120% 80% at 50% 4%, rgba(255, 255, 255, 0.09), transparent 58%),
+    linear-gradient(180deg, #0e1a2b 0%, #050a12 100%);
+  border: 1px solid var(--pc-line);
+  box-shadow: 0 -18px 26px -18px color-mix(in srgb, var(--pc-accent) 45%, transparent) inset;
+}
+.ec-pc-portrait img,
+.ec-pc-portrait svg { width: 100%; height: 100%; display: block; object-fit: cover; object-position: top center; }
 .ec-pc-slot {
-  justify-self: start;
-  font-size: 9.5px; font-weight: 900; letter-spacing: 1px;
-  padding: 2px 6px; border-radius: 6px;
+  position: absolute; top: 5px; left: 5px; z-index: 2;
+  font-family: var(--ec-display);
+  font-size: 10.5px; font-weight: 700; letter-spacing: 1.2px;
+  padding: 2px 6px; border-radius: 5px;
   color: var(--pc-accent);
   border: 1px solid var(--pc-line);
-  background: var(--pc-soft);
+  background: rgba(3, 7, 13, 0.72);
 }
-.ec-pc-portrait { display: flex; justify-content: center; }
 .ec-pc-name {
-  font-size: 11.5px; font-weight: 900; letter-spacing: 0.3px; line-height: 1.2;
+  font-family: var(--ec-display);
+  font-size: 12.5px; font-weight: 700; letter-spacing: 0.4px; line-height: 1.1;
+  text-transform: uppercase;
   color: var(--ec-a-text);
   height: 28px; overflow: hidden;
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  text-wrap: balance;
 }
-.ec-pc-meta { display: flex; align-items: baseline; justify-content: space-between; gap: 6px; }
-.ec-pc-decade { font-size: 9.5px; color: var(--ec-a-text-muted); }
-.ec-pc-ovr { font-size: 15px; font-weight: 900; color: var(--pc-accent); font-variant-numeric: tabular-nums; }
-.ec-pc-ovr span { font-size: 8.5px; font-weight: 800; color: var(--ec-a-text-muted); margin-left: 2px; }
-.ec-pc-action {
-  min-height: 44px; width: 100%; border-radius: 8px;
-  font-size: 10.5px; font-weight: 900; letter-spacing: 0.8px;
+.ec-pc-meta { display: flex; align-items: baseline; justify-content: space-between; gap: 4px; }
+.ec-pc-decade { font-size: 11px; font-weight: 700; letter-spacing: 0.6px; color: var(--ec-a-text-muted); }
+.ec-pc-ovr {
+  font-family: var(--ec-display);
+  font-size: 17px; font-weight: 700; line-height: 1;
+  color: var(--pc-accent); font-variant-numeric: tabular-nums;
+}
+.ec-pc-ovr span { font-size: 9px; font-weight: 800; color: var(--ec-a-text-muted); margin-left: 2px; letter-spacing: 0.4px; }
+
+.ec-pc-action,
+.ec-pc-static {
+  align-self: end;
+  height: var(--player-footer-h);
+  width: 100%;
+  border-radius: 8px;
   display: flex; align-items: center; justify-content: center; gap: 4px;
-  border: 1px solid var(--ec-a-border);
-  background: transparent;
+  font-family: var(--ec-display);
+  font-size: 12px; font-weight: 700; letter-spacing: 1.2px;
+}
+.ec-pc-action {
+  border: 1px solid var(--ec-a-border-strong);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01));
   color: var(--ec-a-text-secondary);
   cursor: pointer;
 }
-.ec-pc-action[data-on="true"] { border-color: var(--pc-line); background: var(--pc-soft); color: var(--pc-accent); }
-.ec-pc-action[disabled] { cursor: default; }
-/* The same height as the HOLD control, so Team Blue's cards are exactly as tall
-   as Team Gold's. A 44px button against a 32px status pill made every card on
-   one bench taller than its opposite number. */
+.ec-pc-action[data-on="true"] {
+  border-color: var(--pc-line);
+  background: linear-gradient(180deg, var(--pc-accent), var(--pc-deep));
+  color: #0a0f18;
+}
+.ec-pc-action[disabled] { cursor: default; opacity: 0.6; }
 .ec-pc-static {
-  min-height: 44px; border-radius: 8px;
-  display: flex; align-items: center; justify-content: center; gap: 4px;
-  font-size: 9.5px; font-weight: 900; letter-spacing: 0.8px;
   border: 1px dashed var(--ec-a-border);
   color: var(--ec-a-text-muted);
+  font-size: 9.5px; letter-spacing: 1px;
 }
-.ec-pc-empty {
-  min-height: 214px; border-radius: 12px;
-  border: 1px dashed var(--ec-a-border);
-  background: rgba(255, 255, 255, 0.015);
-  display: grid; place-items: center; align-content: center; gap: 4px;
+.ec-pc-static[data-on="true"] {
+  border-style: solid; border-color: var(--pc-line); color: var(--pc-accent);
+  background: var(--pc-soft);
 }
 
-/* ── Coach Chaos: a third identity that is not a third team ────────────────*/
-.ec-cc-offers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-@media (max-width: 900px) { .ec-cc-offers { grid-template-columns: minmax(0, 1fr); } }
-.ec-coach-card {
+/* The portrait fallback. The silhouette is a MASK, so the fill is the card's
+   team gradient with a rim light along the top-left — which a flat SVG file
+   could not do, and which is why the figure is masked rather than embedded. */
+.ec-pc-figure {
+  position: absolute;
+  inset: 0;
+  background:
+    /* rim light from the upper left, the way the arena lights the floor */
+    radial-gradient(90% 70% at 26% 4%, color-mix(in srgb, var(--pc-accent) 92%, white 8%), transparent 62%),
+    /* the body itself, in team colour falling into the dark */
+    linear-gradient(180deg,
+      color-mix(in srgb, var(--pc-accent) 62%, #0b1220) 0%,
+      color-mix(in srgb, var(--pc-accent) 30%, #070d16) 46%,
+      #060c15 96%);
+  -webkit-mask-image: url("./ui/time-arena/assets/player-silhouette.svg");
+  mask-image: url("./ui/time-arena/assets/player-silhouette.svg");
+  -webkit-mask-size: 118% auto;
+  mask-size: 118% auto;
+  -webkit-mask-position: top center;
+  mask-position: top center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+.ec-pc-figure-initials {
+  position: absolute;
+  left: 0; right: 0; bottom: 8px;
+  text-align: center;
+  font-family: var(--ec-display);
+  font-size: 20px; font-weight: 700; font-style: italic; letter-spacing: 1px;
+  color: rgba(245, 247, 251, 0.72);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8);
+}
+.ec-coach-figure {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(90% 70% at 26% 4%, rgba(196, 150, 245, 0.95), transparent 62%),
+    linear-gradient(180deg, rgba(168, 100, 232, 0.72) 0%, rgba(120, 66, 176, 0.34) 48%, #060c15 96%);
+  -webkit-mask-image: url("./ui/time-arena/assets/coach-silhouette.svg");
+  mask-image: url("./ui/time-arena/assets/coach-silhouette.svg");
+  -webkit-mask-size: 116% auto;
+  mask-size: 116% auto;
+  -webkit-mask-position: top center;
+  mask-position: top center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+.ec-coach-portrait { position: relative; }
+.ec-coach-figure-initials {
+  position: absolute; left: 0; right: 0; bottom: 5px; text-align: center;
+  font-family: var(--ec-display);
+  font-size: 14px; font-weight: 700; font-style: italic;
+  color: rgba(245, 247, 251, 0.75);
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.8);
+}
+
+/* ── Empty card back ──────────────────────────────────────────────────────
+   The SAME geometry as a populated card, so Roll 1 reveals cards instead of
+   reflowing the board. */
+.ec-pc-empty {
   min-width: 0;
-  display: grid; grid-template-rows: auto auto auto 1fr auto; gap: 8px;
-  padding: 12px; border-radius: 12px;
-  border: 1px solid var(--ec-a-coach-line);
-  background: linear-gradient(180deg, var(--ec-a-coach-soft) 0%, var(--ec-a-panel) 55%);
+  height: var(--player-card-h);
+  border-radius: var(--ec-radius-card);
+  border: 1px solid var(--ec-a-border);
+  background:
+    linear-gradient(180deg, var(--pc-soft, rgba(242,181,29,0.06)) 0%, transparent 30%),
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.014) 0 6px, transparent 6px 12px),
+    linear-gradient(180deg, var(--ec-a-panel) 0%, #060c15 100%);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  padding: 8px 6px;
+  justify-items: center;
+  gap: 6px;
 }
-.ec-coach-card[data-on="true"] { box-shadow: 0 0 0 1px var(--ec-a-coach) inset; border-color: var(--ec-a-coach); }
-.ec-coach-monogram {
-  width: 46px; height: 46px; border-radius: 10px; flex-shrink: 0;
-  display: grid; place-items: center;
-  font-weight: 900; font-style: italic; font-size: 15px; letter-spacing: 0.5px;
+.ec-ta-team[data-team="gold"] .ec-pc-empty, .ec-pc-empty[data-team="gold"] { --pc-soft: rgba(242, 181, 29, 0.07); --pc-accent: var(--ec-a-gold); --pc-line: var(--ec-a-gold-line); }
+.ec-ta-team[data-team="blue"] .ec-pc-empty, .ec-pc-empty[data-team="blue"] { --pc-soft: rgba(59, 155, 255, 0.07); --pc-accent: var(--ec-a-blue); --pc-line: var(--ec-a-blue-line); }
+.ec-pc-empty-slot {
+  justify-self: start;
+  font-family: var(--ec-display);
+  font-size: 10.5px; font-weight: 700; letter-spacing: 1.2px;
+  padding: 2px 6px; border-radius: 5px;
+  color: var(--pc-accent);
+  border: 1px solid var(--pc-line);
+  background: rgba(3, 7, 13, 0.6);
+}
+.ec-pc-empty-mark {
+  align-self: center;
+  font-family: var(--ec-display);
+  font-size: 22px; font-weight: 700; font-style: italic; letter-spacing: 1px;
+  color: var(--pc-line);
+  border: 1px solid var(--pc-line);
+  border-radius: 999px;
+  width: 46px; height: 46px;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0.85;
+}
+.ec-pc-empty-hint {
+  font-size: 10px; font-weight: 800; letter-spacing: 1px; line-height: 1.35;
+  color: var(--ec-a-text-muted); text-align: center;
+}
+
+/* ── Coach Chaos ───────────────────────────────────────────────────────────
+   Directly beneath the roster, inside the same stage, so it is part of the
+   first composition rather than something to scroll for. */
+.ec-ta-coach { margin-top: 14px; }
+.ec-ta-coach-head { display: grid; justify-items: center; gap: 2px; margin-bottom: 9px; }
+.ec-ta-coach-title {
+  font-family: var(--ec-display);
+  font-size: 16px; font-weight: 700; letter-spacing: 2.6px;
+  color: var(--ec-a-coach);
+}
+.ec-ta-coach-sub { font-size: 11px; font-weight: 700; letter-spacing: 0.6px; color: var(--ec-a-text-muted); }
+.ec-cc-offers {
+  display: grid;
+  grid-template-columns: repeat(3, var(--coach-card-w));
+  gap: var(--coach-card-gap);
+  justify-content: center;
+}
+.ec-coach-card {
+  width: var(--coach-card-w);
+  height: var(--coach-card-h);
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  grid-template-rows: auto 1fr auto;
+  gap: 8px 10px;
+  padding: 10px;
+  border-radius: var(--ec-radius-card);
+  border: 1px solid var(--ec-a-coach-line);
+  background:
+    linear-gradient(180deg, var(--ec-a-coach-soft) 0%, transparent 42%),
+    linear-gradient(180deg, var(--ec-a-panel-raised) 0%, var(--ec-a-panel) 100%);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+}
+.ec-coach-card[data-on="true"] {
+  border-color: var(--ec-a-coach);
+  box-shadow: 0 0 0 1px var(--ec-a-coach) inset, 0 10px 20px rgba(0, 0, 0, 0.45);
+}
+.ec-coach-role {
+  grid-column: 1 / -1;
+  font-size: 10.5px; font-weight: 900; letter-spacing: 1.4px;
+  color: var(--ec-a-coach);
+}
+/* Full-height portrait zone, exactly as the player cards do it, so approved
+   coach art is also a straight swap. */
+.ec-coach-portrait {
+  grid-row: 2;
+  width: 76px; height: 96px;
+  border-radius: 8px; overflow: hidden;
+  border: 1px solid var(--ec-a-coach-line);
+  background: linear-gradient(180deg, rgba(168, 100, 232, 0.22), #060c15 92%);
+}
+.ec-coach-portrait svg, .ec-coach-portrait img { width: 100%; height: 100%; display: block; }
+.ec-coach-body { grid-row: 2; min-width: 0; display: grid; align-content: start; gap: 4px; }
+.ec-coach-name {
+  font-family: var(--ec-display);
+  font-size: 15px; font-weight: 700; letter-spacing: 0.4px; line-height: 1.1;
   color: var(--ec-a-text);
-  border: 1px solid var(--ec-a-coach-line);
-  background: linear-gradient(180deg, rgba(168, 100, 232, 0.28), rgba(11, 14, 23, 0.6));
 }
+.ec-coach-span { font-size: 10.5px; font-weight: 700; color: var(--ec-a-text-muted); }
+.ec-coach-blurb { font-size: 11.5px; line-height: 1.4; color: var(--ec-a-text-secondary); }
+.ec-coach-foot { grid-column: 1 / -1; grid-row: 3; display: grid; gap: 5px; }
+.ec-coach-detail-toggle {
+  justify-self: start; min-height: 28px; padding: 0;
+  background: transparent; border: none; cursor: pointer;
+  color: var(--ec-a-text-muted); font-size: 10.5px; font-weight: 700; text-decoration: underline;
+}
+.ec-coach-action {
+  height: 44px; width: 100%; border-radius: 8px; cursor: pointer;
+  font-family: var(--ec-display);
+  font-size: 12px; font-weight: 700; letter-spacing: 1.2px;
+  display: flex; align-items: center; justify-content: center; gap: 4px;
+  border: 1px solid var(--ec-a-border-strong);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01));
+  color: var(--ec-a-text-secondary);
+}
+.ec-coach-action[data-on="true"] {
+  border-color: var(--ec-a-coach);
+  background: linear-gradient(180deg, var(--ec-a-coach), var(--ec-a-coach-deep));
+  color: #0a0f18;
+}
+.ec-coach-static {
+  height: 30px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9.5px; font-weight: 900; letter-spacing: 1px;
+  border: 1px dashed var(--ec-a-border); color: var(--ec-a-text-muted);
+}
+
+/* ── The one primary action ────────────────────────────────────────────────*/
+.ec-ta-cta-wrap { margin-top: 14px; display: grid; justify-items: center; gap: 5px; }
+.ec-ta-cta {
+  width: var(--cta-w);
+  height: var(--cta-h);
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: var(--ec-display);
+  font-size: 17px; font-weight: 700; letter-spacing: 2.4px;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  border: 1px solid var(--ec-a-gold-line);
+  background: linear-gradient(180deg, #ffd257 0%, var(--ec-a-gold) 46%, #c98f0c 100%);
+  color: #14100a;
+  box-shadow: 0 8px 18px rgba(242, 181, 29, 0.18), 0 1px 0 rgba(255, 255, 255, 0.35) inset;
+}
+.ec-ta-cta[disabled] {
+  cursor: default;
+  background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+  border-color: var(--ec-a-border);
+  color: var(--ec-a-text-muted);
+  box-shadow: none;
+}
+.ec-ta-cta-sub { font-size: 12px; font-weight: 700; letter-spacing: 0.4px; color: var(--ec-a-text-muted); }
 
 /* ── Utility bar ───────────────────────────────────────────────────────────*/
 .ec-ta-utility {
+  height: var(--utility-h);
   display: flex; align-items: center; justify-content: space-between;
-  flex-wrap: wrap; gap: 10px;
-  padding: 10px 14px; border-radius: 12px;
+  gap: 10px;
+  padding: 0 14px;
+  border-radius: var(--ec-radius-panel);
   border: 1px solid var(--ec-a-border);
   background: var(--ec-a-panel);
 }
-.ec-ta-utility-links { display: flex; align-items: center; flex-wrap: wrap; gap: 4px; }
+.ec-ta-utility-links { display: flex; align-items: center; gap: 2px; }
 .ec-ta-utility button {
-  min-height: 44px; padding: 0 12px; border-radius: 8px;
+  min-height: 44px; padding: 0 10px; border-radius: 8px;
   background: transparent; border: none; cursor: pointer;
-  color: var(--ec-a-text-secondary); font-size: 11.5px; font-weight: 800; letter-spacing: 0.6px;
+  color: var(--ec-a-text-secondary); font-size: 11px; font-weight: 800; letter-spacing: 0.8px;
 }
 .ec-ta-utility button:hover { color: var(--ec-a-text); background: var(--ec-a-panel-soft); }
 
-/* ── Live Intel ────────────────────────────────────────────────────────────*/
-.ec-intel-row { display: grid; gap: 2px; padding: 7px 0; border-top: 1px solid var(--ec-a-border); }
-.ec-intel-row:first-of-type { border-top: none; }
-.ec-intel-label { font-size: 9.5px; font-weight: 900; letter-spacing: 1.4px; }
-.ec-intel-values { display: grid; gap: 1px; }
-.ec-intel-value { font-size: 12.5px; color: var(--ec-a-text); line-height: 1.45; }
+/* ── Right rail: TWO surfaces, not a column of dashboard cards ─────────────*/
+.ec-intel {
+  border-radius: var(--ec-radius-panel);
+  border: 1px solid var(--ec-a-border);
+  background: var(--ec-a-panel);
+  padding: 11px 13px;
+}
+.ec-intel-head { display: flex; align-items: center; gap: 7px; margin-bottom: 6px; }
+.ec-intel-heading { font-size: 10.5px; font-weight: 900; letter-spacing: 2px; color: var(--ec-a-text); }
+.ec-intel-row { display: grid; gap: 0; padding: 5px 0; border-top: 1px solid var(--ec-a-border); }
+.ec-intel-row:first-of-type { border-top: none; padding-top: 2px; }
+.ec-intel-label { font-size: 10.5px; font-weight: 900; letter-spacing: 1.4px; }
+.ec-intel-values { display: grid; gap: 0; }
+.ec-intel-value { font-size: 13px; color: var(--ec-a-text); line-height: 1.35; }
+.ec-intel-value--sub { font-size: 11.5px; color: var(--ec-a-text-secondary); line-height: 1.3; }
+.ec-intel-note { font-size: 11px; color: var(--ec-a-text-muted); line-height: 1.4; }
+/* Era Impact is a SECTION of the intel panel, divided rather than detached. */
+.ec-intel-era { margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--ec-a-border-strong); }
+.ec-intel-era-id {
+  font-family: var(--ec-display);
+  font-size: 26px; font-weight: 700; line-height: 1; color: var(--ec-a-gold);
+}
+
+/* ── Arena atmosphere ──────────────────────────────────────────────────────
+   Nine locally authored layers: no photograph, no downloaded imagery, no
+   raster background. The court and crowd are SVG files in
+   src/ui/time-arena/assets/, referenced by url() from this stylesheet; the
+   lighting, haze, grain and vignette are CSS. The cards stay dominant — every
+   layer here is under 0.5 opacity. */
+.ec-ta-atmos {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: var(--ec-radius-panel);
+  overflow: hidden;
+  background: linear-gradient(180deg, #050b14 0%, #030811 100%);
+}
+.ec-ta-atmos::before {
+  /* Hardwood in perspective, plus the court lines, anchored to the floor. */
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 70%;
+  background:
+    /* The floor fades in rather than starting at full strength: at 0.9 flat it
+       read as an orange band behind the coach section instead of a court
+       receding under the lights. */
+    linear-gradient(180deg, rgba(3, 7, 13, 0.92) 0%, rgba(3, 7, 13, 0.35) 26%, transparent 62%),
+    url("./ui/time-arena/assets/arena-court.svg") bottom center / 100% 100% no-repeat,
+    linear-gradient(180deg, transparent, rgba(96, 57, 18, 0.16));
+  opacity: 0.72;
+}
+.ec-ta-atmos::after {
+  /* Two spotlights, a centre haze and a vignette, in one composited layer. */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(820px 340px at 14% -8%, rgba(242, 181, 29, 0.26), transparent 64%),
+    radial-gradient(820px 340px at 86% -8%, rgba(59, 155, 255, 0.26), transparent 64%),
+    radial-gradient(620px 260px at 50% 30%, rgba(190, 210, 240, 0.08), transparent 72%),
+    radial-gradient(130% 105% at 50% 46%, transparent 44%, rgba(2, 6, 12, 0.7) 100%);
+}
+.ec-ta-crowd {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 30%;
+  background: url("./ui/time-arena/assets/crowd-silhouette.svg") top center / 620px 100% repeat-x;
+  opacity: 0.4;
+}
+.ec-ta-grain {
+  position: absolute;
+  inset: 0;
+  background: url("./ui/time-arena/assets/arena-grain.svg");
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+}
+
+/* ── Container-aware responsive behaviour ─────────────────────────────────
+   The roster composition follows the ARENA's own width, not a viewport guess:
+   ten cards need about 1080px of arena, so the rail narrows first and only then
+   do the teams take separate rows. The central game board is never the first
+   thing sacrificed to keep an oversized rail open. */
+@media (max-width: 1439px) {
+  /* Adapt the rail before touching the board: the arena is the game. */
+  .ec-arena-shell { --arena-rail-w: 320px; --player-card-gap: 4px; }
+}
+@media (max-width: 1279px) {
+  .ec-arena-shell { --arena-rail-w: 300px; --player-card-gap: 4px; --coach-card-w: 214px; }
+}
+@media (max-width: 1179px) {
+  /* Tablet: the rail moves below the arena rather than squeezing it, and each
+     team takes its own row of five. */
+  .ec-ta { grid-template-columns: minmax(0, 1fr); padding: 12px 12px 16px; }
+  .ec-ta-rail { position: static; max-height: none; overflow: visible; }
+  .ec-arena-shell { --player-card-w: 132px; --player-card-gap: 8px; --player-card-h: 316px; }
+  .ec-ta-roster {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    max-width: calc(5 * var(--player-card-w) + 4 * var(--player-card-gap));
+  }
+  .ec-ta-roster-divider { display: none; }
+  .ec-ta-roster--blue { margin-top: 12px; }
+  .ec-ta-stage-head { grid-template-columns: minmax(0, 1fr); justify-items: center; }
+  .ec-ta-team-label--blue { justify-items: center; text-align: center; }
+}
+@media (max-width: 900px) {
+  .ec-cc-offers { grid-template-columns: minmax(0, 1fr); }
+  .ec-coach-card { width: 100%; height: auto; min-height: var(--coach-card-h); }
+  .ec-coach-detail-toggle { height: 44px; min-height: 44px; }
+}
+@media (max-width: 767px) {
+  /* Mobile: full-width cards for the user's five, a compact opponent strip,
+     and controls that stay at the touch-target floor. */
+  .ec-arena-shell {
+    --player-card-h: 300px;
+    --player-card-gap: 8px;
+    --cta-w: 100%;
+    --utility-h: auto;
+  }
+  .ec-ta-roster { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: none; }
+  .ec-ta-utility { height: auto; padding: 8px 10px; flex-wrap: wrap; }
+  .ec-ta-cta { font-size: 15px; letter-spacing: 1.6px; }
+}
+@media (max-width: 430px) {
+  .ec-arena-shell { --player-card-h: 286px; --player-portrait-h: 176px; }
+}
 
 /* Once a game has been played the result leads the stacked page: a finished
    score below the whole board is a result nobody scrolls to. */
@@ -722,4 +1176,5 @@ button { font-family: inherit; }
 /* Reduced motion: nothing in the arena carries meaning through movement. */
 @media (prefers-reduced-motion: reduce) {
   .ec-pc, .ec-coach-card { transition: none; }
+  .ec-pc[data-held="true"] { transform: none; }
 }

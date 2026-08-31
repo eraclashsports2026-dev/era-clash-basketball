@@ -1,0 +1,44 @@
+{
+  "artifact": "time-arena-visual-summary",
+  "phase": "8C.1 — pixel-fidelity reconstruction",
+  "methodology": {
+    "capture": "Playwright, deviceScaleFactor 1, canonical viewport 1536x1024, the real components via the dev-only fixture",
+    "overlay": "reference and implementation composited in a page at 50% opacity, then screenshotted",
+    "heatmap": "mix-blend-mode: difference with a brightness boost, then screenshotted",
+    "maskedFromJudgement": [
+      "player portrait pixels (no approved art exists yet)",
+      "coach portrait pixels (same)",
+      "dynamic player and coach names",
+      "dynamic score, MVP and result text"
+    ],
+    "graded": [
+      "background",
+      "panels",
+      "card frames",
+      "card positions",
+      "borders",
+      "header",
+      "right rail",
+      "CTA",
+      "coach section",
+      "spacing"
+    ],
+    "declaredBefore": "any overlay was generated"
+  },
+  "reference": null,
+  "screens": "data/validation/8c1/screens/",
+  "notes": [
+    "captured data/validation/8c1/screens/implementation.png at 1536x1024",
+    "  1536x1024: 1 roster row(s), card 104px, overflow 0px, min tap 38px",
+    "  1440x900: 1 roster row(s), card 94px, overflow 0px, min tap 38px",
+    "  1280x800: 1 roster row(s), card 84px, overflow 0px, min tap 38px",
+    "  1024x768: 2 roster row(s), card 132px, overflow 0px, min tap 38px",
+    "  768x1024: 2 roster row(s), card 132px, overflow 0px, min tap 44px",
+    "  430x932: 5 roster row(s), card 184px, overflow 0px, min tap 44px",
+    "  390x844: 5 roster row(s), card 164px, overflow 0px, min tap 44px",
+    "  375x812: 5 roster row(s), card 157px, overflow 0px, min tap 44px",
+    "SKIPPED overlay and heatmap: docs/ui/references/time-arena-canonical.png is not on disk.",
+    "  The reference arrives as conversation content, not as a file, so it cannot be hashed or diffed.",
+    "  Save it to that path and re-run; no comparison is invented in the meantime."
+  ]
+}

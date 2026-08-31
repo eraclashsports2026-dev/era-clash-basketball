@@ -28,6 +28,7 @@ import PlayerImage from "./components/PlayerImage.jsx";
 import StageWizard from "./components/StageWizard.jsx";
 import ArenaHeader from "./components/arena/ArenaHeader.jsx";
 import TimeArena from "./components/arena/TimeArena.jsx";
+import ReferenceFixture from "./ui/time-arena/ReferenceFixture.jsx";
 import { MembershipPage, FantasyPage, ModeInfoPage, HowModesModal as ArenaHowModes, ArenaGuide } from "./components/arena/InfoPages.jsx";
 import { PLAY_MODES, findMode, defaultMode, MODE_STATUS } from "./navigation.js";
 import AccountGate from "./components/chaos/AccountGate.jsx";
@@ -120,6 +121,13 @@ const MODE_ICON = { Chaos: "🎲", Single: "🏀", Best7: "🏆", Win82: "🗓�
 const MODE_TO_ANALYTICS = { Win82: "82", Single: "single", Best7: "best7", Tournament: "tournament", Daily: "daily", Challenge: "challenge" };
 
 // ── App ──────────────────────────────────────────────────────────────────────
+// Development-only: the canonical visual-reference state, for geometry
+// measurement and screenshot comparison. VITE_EC_DEV_FIXTURES is set only by
+// `npm run build:visual-qa` (and the dev server), so a production build
+// statically eliminates both this route and the fixture module.
+const DEV_FIXTURES = import.meta.env.DEV || import.meta.env.VITE_EC_DEV_FIXTURES === "1";
+const FIXTURE_ROUTE = "/dev/time-arena-reference";
+
 export default function App() {
   const [nav, setNav] = useState("Play");             // Play | Daily | Challenges | Board | Profile | Credits
   const [view, setView] = useState("builder");        // builder | simulating | postgame
@@ -127,6 +135,9 @@ export default function App() {
   const [chaosAvailable, setChaosAvailable] = useState(true); // until the server says otherwise
   const [playStage, setPlayStage] = useState("ROSTERS"); // ROSTERS | COACHES | ERA | READY (v3 wizard)
   const [chaosReady, setChaosReady] = useState(null);     // a Chaos run at phase READY
+  if (DEV_FIXTURES && typeof window !== "undefined" && window.location.pathname === FIXTURE_ROUTE) {
+    return <ReferenceFixture />;
+  }
   const [tier, setTier] = useState(() => currentTier());  // GUEST | FREE (central entitlement input)
   const [gate, setGate] = useState(null);                 // an entitlement gate to render
   const [chaosChallengeId, setChaosChallengeId] = useState(null);
@@ -1560,10 +1571,7 @@ export default function App() {
             onEraChange={changeChaosEra}
             onGuide={(section) => setGuide(section || "play")}
             onSettings={() => handleNav("Profile")}
-            onMembership={navigate}
-            activeModeId="chaos"
-            onModeAction={handleModeAction}
-            previewCandidateActive={!!result?.sim?.previewCandidate} />
+            onMembership={navigate} />
         </main>
       ) : (
       <main style={{ maxWidth: 1280, margin: "0 auto", padding: "8px 16px 60px" }}>

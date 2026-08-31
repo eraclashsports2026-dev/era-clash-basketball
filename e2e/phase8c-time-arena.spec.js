@@ -38,7 +38,7 @@ const toReadyFromRoll1 = async (page) => {
   await expect(page.getByText(/ROLL 2 OF 3/).first()).toBeVisible({ timeout: 20_000 });
   await roll(page, /FINAL ROLL/);
   await expect(page.getByText("CHOOSE YOUR STAFF").first()).toBeVisible({ timeout: 20_000 });
-  await page.getByRole("button", { name: "SELECT COACH" }).first().click();
+  await page.getByRole("button", { name: /^Select / }).first().click();
   await page.getByRole("button", { name: /HIRE THIS STAFF/ }).click();
   await expect(page.getByRole("button", { name: /RUN SIM/ })).toBeVisible({ timeout: 20_000 });
 };
@@ -147,14 +147,17 @@ test("players and coaches move through ONE three-roll sequence", async ({ page }
   }
   const keptCoach = (await page.locator(".ec-coach-card").first().innerText()).split("\n")[1];
   await page.locator(".ec-coach-card").first().getByRole("button", { name: /^Hold/ }).click();
-  await expect(page.getByText(/Holding 1 of 3 staffs/)).toBeVisible();
-  await expect(page.getByText(/Holding 2 of 5 players/)).toBeVisible();
+  // The counts share the CTA's single sub-line now — the reference carries one
+  // line there, and three stacked lines were part of the density overrun.
+  await expect(page.locator(".ec-ta-cta-wrap")).toContainText(/holding 2\/5/);
+  await expect(page.locator(".ec-ta-cta-wrap")).toContainText(/1\/3 staffs/);
 
   await roll(page, /LOCK & ROLL 2/);
   await expect(page.getByText(/ROLL 2 OF 3/).first()).toBeVisible({ timeout: 20_000 });
 
   // The era arrives with Roll 2, and what was held survived on both boards.
-  await expect(page.locator(".ec-ta-stage").getByText(/^\d{4}s ERA/)).toBeVisible();
+  await expect(page.locator(".ec-intel-era-id")).toHaveText(/^\d{4}s$/);
+  await expect(page.locator(".ec-ta-utility").getByText(/^ERA: \d{4}s/)).toBeVisible();
   for (const slot of ["PG", "C"]) {
     await expect(gold.locator(`.ec-pc[data-slot="${slot}"]`)).toContainText("KEPT");
   }
@@ -168,10 +171,10 @@ test("players and coaches move through ONE three-roll sequence", async ({ page }
   await expect(page.getByRole("button", { name: /^Hold/ })).toHaveCount(0);
   await expect(page.getByRole("button", { name: /FINAL ROLL/ })).toHaveCount(0);
   await expect(page.locator(".ec-pc-static").first()).toContainText("FINAL ROSTER");
-  await expect(page.getByRole("button", { name: "SELECT COACH" })).toHaveCount(3);
+  await expect(page.getByRole("button", { name: /^Select / })).toHaveCount(3);
 
   // The hire is one of the three; the other two stay visible as what they were.
-  await page.getByRole("button", { name: "SELECT COACH" }).first().click();
+  await page.getByRole("button", { name: /^Select / }).first().click();
   await page.getByRole("button", { name: /HIRE THIS STAFF/ }).click();
   await expect(page.getByRole("button", { name: /RUN SIM/ })).toBeVisible({ timeout: 20_000 });
   await expect(page.getByText("YOUR STAFF")).toHaveCount(1);
@@ -296,7 +299,8 @@ test("the result lands in the dock, the report opens over the page, and a new cl
   await expect(page.locator(".ec-pc-empty")).toHaveCount(10);
   await expect(page.getByRole("button", { name: /RUN SIM/ })).toHaveCount(0);
   await expect(page.getByRole("button", { name: /^ROLL 1/ })).toBeVisible();
-  await expect(page.locator(".ec-ta-stage").getByText(/^\d{4}s ERA/)).toHaveCount(0);
+  await expect(page.locator(".ec-intel-era-id")).toHaveCount(0);
+  await expect(page.locator(".ec-ta-utility").getByText(/HIDDEN UNTIL ROLL 2/)).toBeVisible();
 });
 
 test("a run resumed after a reload still runs", async ({ page }) => {

@@ -24,14 +24,10 @@ export default function RollStepper({ run }) {
         return (
           <div key={s.n} style={{ display: "flex", alignItems: "flex-start" }}>
             {i > 0 && <div className="ec-ta-step-rule" aria-hidden="true" />}
-            <div className="ec-ta-step" data-state={state} role="listitem"
-              title={s.sub}
+            <div className="ec-ta-step" data-state={state} role="listitem" title={s.sub}
               aria-label={`Roll ${s.n}, ${s.label.toLowerCase()} — ${state.toLowerCase()}`}>
               <div className="ec-ta-step-dot">{state === "COMPLETE" ? "✓" : s.n}</div>
-              <div style={{
-                fontSize: 8.5, fontWeight: 900, letterSpacing: 1,
-                color: state === "UP NEXT" ? "var(--ec-a-text-muted)" : "var(--ec-a-text-secondary)",
-              }}>{s.label}</div>
+              <div className="ec-ta-step-label">{s.label}</div>
             </div>
           </div>
         );

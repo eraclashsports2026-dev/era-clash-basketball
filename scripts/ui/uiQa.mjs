@@ -26,11 +26,16 @@ if (MODE === "navigation") {
   ok("every mode has a tagline and a description", PLAY_MODES.every((m) => m.tagline && m.description));
   ok("every mode id is unique", new Set(PLAY_MODES.map((m) => m.id)).size === PLAY_MODES.length);
   // The shelf and the dropdown must not define modes separately.
-  ok("the mode shelf reads the shared registry", /from "\.\.\/\.\.\/navigation\.js"/.test(read("src/components/arena/ModeShelf.jsx")));
   ok("the header reads the shared registry", /from "\.\.\/\.\.\/navigation\.js"/.test(read("src/components/arena/ArenaHeader.jsx")));
   ok("no component hard-codes its own mode list",
-    !/const\s+(MODES|GAME_MODES)\s*=\s*\[/.test(src("src/components/arena/ModeShelf.jsx"))
-    && !/const\s+(MODES|GAME_MODES)\s*=\s*\[/.test(src("src/components/arena/ArenaHeader.jsx")));
+    /from "\.\.\/\.\.\/navigation\.js"/.test(read("src/components/arena/ArenaHeader.jsx"))
+    && !/const\s+(MODES|GAME_MODES)\s*=\s*\[/.test(src("src/components/arena/ArenaHeader.jsx"))
+    && !/const\s+(MODES|GAME_MODES)\s*=\s*\[/.test(src("src/components/arena/NavMenu.jsx")));
+  // The active Play surface carries no permanent rack of other modes: discovery
+  // belongs to the menus, and the arena to the Clash in front of you.
+  ok("the Play surface has no mode shelf",
+    !fs.existsSync("src/components/arena/ModeShelf.jsx")
+    && !/ModeShelf|EXPLORE MORE MODES/.test(read("src/components/arena/TimeArena.jsx")));
   ok("every status has a distinct label or is deliberately unlabelled",
     Object.keys(MODE_STATUS).every((s) => s in STATUS_LABEL));
 }
@@ -126,7 +131,11 @@ if (MODE === "arena") {
 
   // ── Layout ────────────────────────────────────────────────────────────────
   ok("the Time Arena is a two-column workspace",
-    /\.ec-ta \{[^}]*grid-template-columns: minmax\(0, 1fr\) minmax\(340px, 390px\)/.test(css));
+    /\.ec-ta \{[^}]*grid-template-columns: minmax\(0, 1fr\) var\(--arena-rail-w\)/.test(css));
+  ok("the rail's width is a token inside the contract's range", (() => {
+    const w = Number((css.match(/--arena-rail-w:\s*(\d+)px/) || [])[1]);
+    return w >= 340 && w <= 390;
+  })(), (css.match(/--arena-rail-w:\s*(\d+)px/) || [])[1]);
   ok("the right rail is sticky on desktop", /\.ec-ta-rail \{[^}]*position: sticky/.test(css));
   ok("the rail scrolls internally rather than trapping the page",
     /\.ec-ta-rail \{[^}]*overscroll-behavior: contain/.test(css));
@@ -135,9 +144,13 @@ if (MODE === "arena") {
   ok("neither column can outgrow the screen",
     /\.ec-ta-main \{[^}]*grid-template-columns: minmax\(0, 1fr\)/.test(css)
     && /\.ec-ta-rail \{[^}]*grid-template-columns: minmax\(0, 1fr\)/.test(css));
-  ok("both benches sit side by side only where ten cards stay readable",
-    /\.ec-ta-boards \{[^}]*grid-template-columns: minmax\(0, 1fr\) minmax\(0, 1fr\)/.test(css)
-    && /@media \(max-width: 1439px\)[\s\S]{0,200}\.ec-ta-boards \{ grid-template-columns: minmax\(0, 1fr\)/.test(css));
+  // One roster grid of eleven tracks — five, a divider, five — capped at the
+  // canonical width so ten cards share a row and none is ever clipped.
+  ok("ten cards share one roster grid",
+    /\.ec-ta-roster \{[\s\S]{0,400}repeat\(5, minmax\(0, 1fr\)\)[\s\S]{0,120}var\(--roster-divider-w\)[\s\S]{0,120}repeat\(5, minmax\(0, 1fr\)\)/.test(css)
+    && /max-width: calc\(10 \* var\(--player-card-w\)/.test(css));
+  ok("the teams take separate rows only below the desktop breakpoint",
+    /@media \(max-width: 1179px\)[\s\S]{0,900}\.ec-ta-roster \{[\s\S]{0,120}repeat\(5, minmax\(0, 1fr\)\)/.test(css));
   ok("the finished result leads the stacked page",
     /ec-ta-rail--front/.test(shell) && /\.ec-ta-rail--front \{ order: -1; \}/.test(css));
   ok("the arena keeps the matchup visible after the result", /THE MATCHUP YOU BUILT/.test(stage));
@@ -188,7 +201,7 @@ if (MODE === "cards") {
   // The defect this contract exists for: Gold's PF and C came out blue because
   // the card decided its own colour from the position.
   ok("the team container owns the theme",
-    /\.ec-ta-team\[data-team="blue"\] \.ec-pc \{[\s\S]{0,200}--pc-accent: var\(--ec-a-blue\)/.test(css));
+    /\.ec-ta-team\[data-team="blue"\] \.ec-pc,[\s\S]{0,80}--pc-accent: var\(--ec-a-blue\)/.test(css));
   ok("the card reads its accent from a variable, never from a position",
     /var\(--pc-accent\)/.test(card) && !/(slot|pos)\s*===\s*"(PF|C|PG|SG|SF)"/.test(card));
   ok("no position appears in a colour decision",
@@ -198,11 +211,18 @@ if (MODE === "cards") {
   ok("hold state is announced to assistive tech", /aria-pressed=\{held\}/.test(card));
   ok("the team is in the card's accessible name", /teamLabel/.test(card) && /Team Blue/.test(card));
   ok("the HOLD control meets the touch-target floor",
-    /\.ec-pc-action \{[^}]*min-height: 44px/.test(css) && /\.ec-pc-static \{[^}]*min-height: 44px/.test(css));
-  ok("the name area is a fixed two lines, so cards cannot differ in height",
-    /-webkit-line-clamp: 2/.test(css) && /\.ec-pc-name \{[^}]*height: 28px/.test(css));
-  ok("no likeness is created here — the approved registry or a silhouette",
-    /PlayerImage/.test(card) && !/(generate|midjourney|stable-diffusion|scrape)/i.test(card));
+    /--player-footer-h:\s*44px/.test(css)
+    && /\.ec-pc-action,\s*\n\.ec-pc-static \{[\s\S]{0,200}height: var\(--player-footer-h\)/.test(css));
+  ok("the name area is a fixed two lines, and never collapses to initials",
+    /-webkit-line-clamp: 2/.test(css) && /\.ec-pc-name \{[\s\S]{0,260}height: 28px/.test(css)
+    && !/initials/i.test(card.split("ec-pc-name")[1] || ""));
+  ok("no likeness is created here — the approved registry or a masked silhouette",
+    /resolvePortrait/.test(card) && /PORTRAIT_STATUS\.APPROVED/.test(card)
+    && /ec-pc-figure/.test(card)
+    && !/(midjourney|stable-diffusion|scrape|download)/i.test(card));
+  ok("the empty card back is the populated card's geometry",
+    /\.ec-pc-empty \{[\s\S]{0,200}height: var\(--player-card-h\)/.test(css)
+    && /ROLL TO/.test(card));
 }
 
 if (MODE === "sync") {
@@ -296,9 +316,10 @@ if (MODE === "coach") {
   ok("the card face stays short and the depth is one tap away",
     /Scouting detail/.test(cc) && /aria-expanded=\{open\}/.test(cc));
   ok("purple is the coach identity and never a team's",
-    /--ec-a-coach/.test(cc) && !/--ec-a-gold\)/.test(cc.split("SELECT COACH")[0] || ""));
-  ok("no coach likeness is created — a monogram until approved art exists",
-    /MONOGRAM/.test(cc) && !/(img src|generate|scrape)/i.test(cc));
+    /\.ec-coach-card \{[\s\S]{0,400}--ec-a-coach/.test(read("src/index.css"))
+    && !/--ec-a-gold|--ec-a-blue/.test(cc));
+  ok("no coach likeness is created — initials over a masked figure until approved art exists",
+    /initialsOf/.test(cc) && /ec-coach-figure/.test(cc) && !/(img src|generate|scrape|download)/i.test(cc));
   ok("the pre-reveal slot is scored on adaptability, not on an unknown era",
     /eraAgnosticAdaptabilityScore/.test(offers) && /eraFitScore/.test(offers));
   ok("both sides read the offers with the same function",

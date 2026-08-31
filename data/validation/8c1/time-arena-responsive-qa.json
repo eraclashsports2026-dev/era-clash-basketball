@@ -1,0 +1,96 @@
+{
+  "artifact": "time-arena-responsive-qa",
+  "phase": "8C.1 — pixel-fidelity reconstruction",
+  "target": "http://localhost:4176/dev/time-arena-reference",
+  "results": [
+    {
+      "viewport": "1536x1024",
+      "columns": 2,
+      "rosterRows": 1,
+      "cardWidth": 104,
+      "railSticky": "sticky",
+      "horizontalOverflow": 0,
+      "taps": 38,
+      "unreachable": 0
+    },
+    {
+      "viewport": "1440x900",
+      "columns": 2,
+      "rosterRows": 1,
+      "cardWidth": 94,
+      "railSticky": "sticky",
+      "horizontalOverflow": 0,
+      "taps": 38,
+      "unreachable": 0
+    },
+    {
+      "viewport": "1280x800",
+      "columns": 2,
+      "rosterRows": 1,
+      "cardWidth": 84,
+      "railSticky": "sticky",
+      "horizontalOverflow": 0,
+      "taps": 38,
+      "unreachable": 0
+    },
+    {
+      "viewport": "1024x768",
+      "columns": 1,
+      "rosterRows": 2,
+      "cardWidth": 132,
+      "railSticky": "static",
+      "horizontalOverflow": 0,
+      "taps": 38,
+      "unreachable": 0
+    },
+    {
+      "viewport": "768x1024",
+      "columns": 1,
+      "rosterRows": 2,
+      "cardWidth": 132,
+      "railSticky": "static",
+      "horizontalOverflow": 0,
+      "taps": 44,
+      "unreachable": 0
+    },
+    {
+      "viewport": "430x932",
+      "columns": 1,
+      "rosterRows": 5,
+      "cardWidth": 184,
+      "railSticky": "static",
+      "horizontalOverflow": 0,
+      "taps": 44,
+      "unreachable": 0
+    },
+    {
+      "viewport": "390x844",
+      "columns": 1,
+      "rosterRows": 5,
+      "cardWidth": 164,
+      "railSticky": "static",
+      "horizontalOverflow": 0,
+      "taps": 44,
+      "unreachable": 0
+    },
+    {
+      "viewport": "375x812",
+      "columns": 1,
+      "rosterRows": 5,
+      "cardWidth": 157,
+      "railSticky": "static",
+      "horizontalOverflow": 0,
+      "taps": 44,
+      "unreachable": 0
+    }
+  ],
+  "expectations": {
+    "tenCardRowWhenArenaAtLeastPx": 1080,
+    "mediumDesktop": "1180–1439: adapt the rail before stacking the teams",
+    "tablet": "768–1179: gold row then blue row",
+    "mobile": "<768: gold primary, blue compact, full-width cards, result sheet"
+  },
+  "allWithoutUnreachableOverflow": true,
+  "tenCardRowAtCanonical": true,
+  "minTouchTargetAcrossViewports": 38
+}

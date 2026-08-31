@@ -25,8 +25,11 @@ describe("one authoritative registry", () => {
   });
 
   it("is the only place modes are defined", () => {
-    for (const f of ["src/components/arena/ModeShelf.jsx", "src/components/arena/ArenaHeader.jsx"]) {
-      expect(src(f)).toMatch(/from "\.\.\/\.\.\/navigation\.js"/);
+    // The header reads the registry and hands items to a generic menu, so the
+    // menu itself has no business importing it — only no business DEFINING a
+    // mode list.
+    expect(src("src/components/arena/ArenaHeader.jsx")).toMatch(/from "\.\.\/\.\.\/navigation\.js"/);
+    for (const f of ["src/components/arena/ArenaHeader.jsx", "src/components/arena/NavMenu.jsx"]) {
       expect(src(f), `${f} must not define its own mode list`).not.toMatch(/const\s+(MODES|GAME_MODES|PLAY_MODES)\s*=\s*\[/);
     }
   });

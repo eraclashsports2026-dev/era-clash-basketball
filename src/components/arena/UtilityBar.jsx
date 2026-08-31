@@ -10,7 +10,7 @@ const LINKS = [
   ["GLOSSARY", "glossary", "🔤"],
 ];
 
-export default function UtilityBar({ eraState, onGuide, onSettings, onMembership, compact = false }) {
+export default function UtilityBar({ eraState, onGuide, onSettings, onMembership, onAbandon, canAbandon = false, compact = false }) {
   const era = eraState?.eraStyleId;
   const locked = !eraState?.change?.allowed;
   const reason = eraState?.change?.reason;
@@ -32,6 +32,11 @@ export default function UtilityBar({ eraState, onGuide, onSettings, onMembership
             <button onClick={onSettings}>
               <span aria-hidden="true" style={{ marginRight: 5 }}>⚙</span>SETTINGS
             </button>
+            {canAbandon && (
+              <button onClick={onAbandon} title="Leave this draft without playing it">
+                <span aria-hidden="true" style={{ marginRight: 5 }}>✕</span>ABANDON DRAFT
+              </button>
+            )}
           </>
         )}
       </div>

@@ -33,7 +33,7 @@ const rollOne = async (page) => {
  */
 const hireStaff = async (page) => {
   await expect(page.getByText("CHOOSE YOUR STAFF").first()).toBeVisible({ timeout: 20_000 });
-  await page.getByRole("button", { name: "SELECT COACH" }).first().click();
+  await page.getByRole("button", { name: /^Select / }).first().click();
   await page.getByRole("button", { name: /HIRE THIS STAFF/ }).click();
 };
 
@@ -48,7 +48,9 @@ test("Chaos Clash is the default Play experience and opens with an empty board",
   // Phase 8C: the Time Arena is the canonical Play layout.
   await expect(page.locator(".ec-ta")).toBeVisible();
   await expect(page.getByRole("complementary", { name: "Live intel and result" })).toBeVisible();
-  await expect(page.getByText("EXPLORE MORE MODES")).toBeVisible();
+  // No permanent mode shelf on the Play surface: the arena is for the Clash in
+  // front of you, and the Play menu carries every mode.
+  await expect(page.getByText("EXPLORE MORE MODES")).toHaveCount(0);
   // Nothing is drawn until the user asks for it.
   await expect(page.getByText("THREE ROLLS AVAILABLE").first()).toBeVisible();
   await expect(page.getByText("ERA HIDDEN").first()).toBeVisible();
@@ -113,10 +115,12 @@ test("three rolls, holds, era reveal before the final holds, then coach offers",
   await lockHolds(page);
 
   await expect(page.getByText(/ROLL 2 OF 3/).first()).toBeVisible();
-  // The era is revealed WITH Roll 2 and stays on screen from here on — once in
-  // the stage, once in the rail's Era Impact panel, and never twice in either.
-  await expect(page.locator(".ec-ta-stage").getByText(/^\d{4}s ERA/)).toBeVisible();
+  // The era is revealed WITH Roll 2 and stays on screen from here on: the rail's
+  // Era Impact panel names it and the utility bar repeats it. It is stated once
+  // in each place and never twice in either.
   await expect(page.locator(".ec-ta-rail").getByText("CURRENT ERA")).toBeVisible();
+  await expect(page.locator(".ec-intel-era-id")).toHaveText(/^\d{4}s$/);
+  await expect(page.locator(".ec-ta-utility").getByText(/^ERA: \d{4}s/)).toBeVisible();
   await expect(page.getByText("Team Blue's decisions were locked before yours were submitted.")).toBeVisible();
 
   await lockHolds(page);
@@ -213,10 +217,12 @@ test("box-score stat values never wrap", async ({ page }) => {
   expect(wrapped, "a stat value wrapped onto a second line").toEqual([]);
 });
 
-test("Dream Matchup is gated behind a free account and can be reached from the shelf", async ({ page }) => {
+test("Dream Matchup is gated behind a free account and can be reached from the Play menu", async ({ page }) => {
   await page.goto("/");   // deliberately signed out
   await expect(page.getByText("THREE ROLLS AVAILABLE").first()).toBeVisible({ timeout: 20_000 });
-  await page.getByRole("button", { name: /Dream Matchup/ }).first().click();
+  // The shelf is gone; the Play menu is where a mode is chosen.
+  await page.getByRole("button", { name: /^Play/ }).click();
+  await page.getByRole("menuitem", { name: /Dream Matchup/ }).click();
   await expect(page.getByText("FREE ACCOUNT REQUIRED")).toBeVisible();
   await expect(page.getByRole("button", { name: "CREATE FREE ACCOUNT" }).first()).toBeVisible();
   // A signed-out user is never stranded.

@@ -2,8 +2,8 @@
   "artifact": "player-card-theme-contract",
   "phase": "8C — Time Arena",
   "mode": "cards",
-  "checks": 9,
-  "passed": 9,
+  "checks": 10,
+  "passed": 10,
   "failed": 0,
   "results": [
     {
@@ -42,12 +42,17 @@
       "detail": ""
     },
     {
-      "name": "the name area is a fixed two lines, so cards cannot differ in height",
+      "name": "the name area is a fixed two lines, and never collapses to initials",
       "pass": true,
       "detail": ""
     },
     {
-      "name": "no likeness is created here — the approved registry or a silhouette",
+      "name": "no likeness is created here — the approved registry or a masked silhouette",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the empty card back is the populated card's geometry",
       "pass": true,
       "detail": ""
     }

@@ -1,15 +1,18 @@
 // ── One drafted player in the Time Arena ─────────────────────────────────────
-// The card takes its colour from the TEAM CONTAINER it sits in (see
-// .ec-ta-team[data-team] in index.css), never from its position. A previous
-// build tinted the card per position and Team Gold's power forward and centre
-// came out blue.
+// A trading card: narrow, tall, and portrait-dominant. The portrait zone is a
+// fixed 212px of the card's 322px, so an approved portrait is a straight asset
+// swap — nothing about the layout depends on whether art exists yet.
 //
-// Team identity is never colour alone: the card carries its team in its
-// accessible name, and every state carries a word (and a lock glyph) as well as
-// a tint.
-import PlayerImage from "../PlayerImage.jsx";
+// The card takes its colour from the TEAM, never from the position: the theme
+// arrives through --pc-accent, set by the team container (and by data-team as a
+// belt-and-braces fallback). An earlier build decided the tint per position and
+// Team Gold's power forward and centre came out blue.
+//
+// No state is signalled by colour alone. Held cards carry a lock glyph, the word
+// LOCKED, and a vertical lift.
 import { PLAYERS } from "../../players.js";
 import { displayOVR } from "../../rating.js";
+import { resolvePortrait, initialsOf, PORTRAIT_STATUS } from "../../ui/time-arena/portraits.js";
 
 const byId = new Map(PLAYERS.map((p) => [p.id, p]));
 
@@ -20,13 +23,36 @@ const TIER_TITLE = {
   SPECIALIST: "Specialist — a defined role",
 };
 
-/** The empty bench slot. The board exists before any card does. */
-export function EmptyCard({ slot, team }) {
+/**
+ * The card back. Same width and height as a populated card, so Roll 1 REVEALS
+ * cards rather than reflowing the board.
+ */
+export function EmptyCard({ slot, team = "gold" }) {
   return (
-    <div className="ec-pc-empty" data-slot={slot} aria-label={`Empty ${slot} slot, Team ${team}`}>
-      <div style={{ fontSize: 11, fontWeight: 900, letterSpacing: 1.4, color: "var(--ec-a-text-muted)" }}>{slot}</div>
-      <div style={{ fontSize: 10, color: "var(--ec-a-text-muted)", opacity: 0.75 }}>empty</div>
+    <div className="ec-pc-empty" data-slot={slot} data-team={team}
+      aria-label={`Empty ${slot} slot, Team ${team === "blue" ? "Blue" : "Gold"}`}>
+      <div className="ec-pc-empty-slot">{slot}</div>
+      <div className="ec-pc-empty-mark" aria-hidden="true">EC</div>
+      <div className="ec-pc-empty-hint">ROLL TO<br />REVEAL</div>
     </div>
+  );
+}
+
+/** The portrait zone: an approved image when one exists, the masked figure otherwise. */
+function Portrait({ card, player }) {
+  const art = resolvePortrait(card.id, card.decade);
+  if (art.portraitStatus === PORTRAIT_STATUS.APPROVED && art.src) {
+    return (
+      <img src={art.src} alt={`${card.name}, ${card.decade}`} loading="lazy" decoding="async"
+        style={{ objectPosition: art.objectPosition, transform: art.scale !== 1 ? `scale(${art.scale})` : undefined }} />
+    );
+  }
+  return (
+    <>
+      <div className="ec-pc-figure" aria-hidden="true" />
+      <div className="ec-pc-figure-initials" aria-hidden="true">{initialsOf(card.name)}</div>
+      <span className="sr-only">{`${card.name} — EraClash silhouette, no portrait approved yet`}</span>
+    </>
   );
 }
 
@@ -35,24 +61,25 @@ export default function PlayerCard({
   locked = false, disabled = false, onToggle,
 }) {
   if (!card) return <EmptyCard slot="—" team={team} />;
-  const p = byId.get(card.id);
+  const player = byId.get(card.id);
   const teamLabel = team === "blue" ? "Team Blue" : "Team Gold";
 
   return (
-    <div className="ec-pc" data-slot={card.slot} data-held={held ? "true" : "false"}
+    <div className="ec-pc" data-team={team} data-slot={card.slot} data-held={held ? "true" : "false"}
       aria-label={`${card.name}, ${teamLabel} ${card.slot}, ${card.decade}${held ? ", held" : ""}`}>
-      <div className="ec-pc-slot">{card.slot}</div>
       <div className="ec-pc-portrait">
-        {p ? <PlayerImage player={p} variant="arena" team={team} /> : null}
+        <span className="ec-pc-slot">{card.slot}</span>
+        <Portrait card={card} player={player} />
       </div>
+
       <div className="ec-pc-name" title={card.name}>{card.name}</div>
+
       <div className="ec-pc-meta">
         <span className="ec-pc-decade">
-          {card.decade}
-          {kept && <span style={{ color: "var(--pc-accent)", fontWeight: 800 }}> · KEPT</span>}
+          {card.decade}{kept && <span style={{ color: "var(--pc-accent)" }}> · KEPT</span>}
         </span>
         <span className="ec-pc-ovr" title={`Draft guide rating${card.tier ? ` · ${TIER_TITLE[card.tier] || card.tier}` : ""}`}>
-          {p ? displayOVR(p, card.slot) : "—"}<span>OVR</span>
+          {player ? displayOVR(player, card.slot) : "—"}<span>OVR</span>
         </span>
       </div>
 
@@ -69,8 +96,7 @@ export default function PlayerCard({
           FINAL ROSTER
         </div>
       ) : (
-        <div className="ec-pc-static" data-held={held ? "true" : "false"}
-          style={held ? { borderStyle: "solid", borderColor: "var(--pc-line)", color: "var(--pc-accent)" } : undefined}
+        <div className="ec-pc-static" data-on={held ? "true" : "false"}
           aria-label={held ? `${card.name} held by the Legend CPU` : `${card.name} not held by the Legend CPU`}>
           <span aria-hidden="true">{held ? "🔒" : ""}</span>{held ? "HELD" : "—"}
         </div>
