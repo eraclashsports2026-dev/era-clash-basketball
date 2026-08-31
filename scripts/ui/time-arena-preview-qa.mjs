@@ -296,13 +296,25 @@ const run = async () => {
   gate("the finished board keeps the staff decision, still inside its cards",
     resultFit.length === 3 && resultFit.every((c) => c.footOverflowPx === 0) && new Set(resultFit.map((c) => c.height)).size === 1,
     `${resultFit.length} cards, worst overflow ${Math.max(0, ...resultFit.map((c) => c.footOverflowPx))}px`);
+  // The original defect was EMPTY SPACE INSIDE THE STAGE COLUMN — the board
+  // collapsed after a sim and left ~480px of nothing beside a full rail. Measure
+  // that directly: the column must end where its own content ends. Comparing the
+  // two columns' lengths is the wrong test — once the rail was freed to scroll
+  // with the page it became legitimately longer than the stage, and a gate on
+  // parity would have demanded padding out a column for no reader's benefit.
   const tail = await page.evaluate(() => {
-    const b = (s) => document.querySelector(s)?.getBoundingClientRect();
-    const main = b(".ec-ta-main"), rail = b(".ec-ta-rail");
-    return { gapPx: main && rail ? Math.round(Math.abs(main.bottom - rail.bottom)) : null };
+    const main = document.querySelector(".ec-ta-main");
+    const kids = [...main.children].map((e) => e.getBoundingClientRect().bottom);
+    const r = main.getBoundingClientRect();
+    return {
+      unusedStageColumnPx: kids.length ? Math.round(r.bottom - Math.max(...kids)) : null,
+      stageColumnPx: Math.round(r.height),
+      railPx: Math.round(document.querySelector(".ec-ta-rail").getBoundingClientRect().height),
+    };
   });
-  gate("the two columns end together after a result, with no tall empty stage",
-    tail.gapPx !== null && tail.gapPx <= 220, `${tail.gapPx}px difference`);
+  gate("the stage column ends where its content ends, with no empty run below it",
+    tail.unusedStageColumnPx !== null && tail.unusedStageColumnPx <= 24,
+    `${tail.unusedStageColumnPx}px unused · stage ${tail.stageColumnPx}px, rail ${tail.railPx}px`);
   await dock.getByRole("tab", { name: "Box Score" }).click();
 
   // ══ C. The full report: names and prose must be READABLE ═══════════════════

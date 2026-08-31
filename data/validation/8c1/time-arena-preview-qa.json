@@ -2,8 +2,8 @@
   "artifact": "time-arena-preview-qa",
   "phase": "8C.1 — pixel-fidelity reconstruction",
   "deployment": {
-    "baseUrl": "https://era-clash-basketball-a9zyxrb2p-era-clash.vercel.app",
-    "commit": "31e092d7abadbe108d3b7f0dd9ada6c534421da3",
+    "baseUrl": "https://era-clash-basketball-jb4mo48h4-era-clash.vercel.app",
+    "commit": "21bffc72b2d6aab8f4d44fb29dc055c3e6a7fc69",
     "environment": "vercel preview, access-gated"
   },
   "method": "Playwright over the network against the deployed branch preview, authenticated with a signed session obtained by POSTing an access key. The dev fixture is compiled out of a preview build, so every measurement below comes from a real draft played through the UI.",
@@ -86,8 +86,8 @@
       "h": 52
     },
     "utility": 58,
-    "docHeight": 1057,
-    "arenaComposition": 1000,
+    "docHeight": 1062,
+    "arenaComposition": 1004,
     "siteFooter": 57,
     "overflowX": 0,
     "dockInFold": true,
@@ -100,14 +100,17 @@
   },
   "eraDealt": {
     "observed": [
+      "1960s",
+      "2000s",
+      "2010s",
       "1950s",
       "1990s",
-      "1990s",
-      "1990s",
-      "1990s",
-      "1950s"
+      "2000s"
     ],
     "distinct": [
+      "1960s",
+      "2000s",
+      "2010s",
       "1950s",
       "1990s"
     ]
@@ -116,14 +119,14 @@
     "boxScoreRows": 13,
     "worstNameContrast": 5.8,
     "story": {
-      "count": 7,
-      "measured": 7,
+      "count": 8,
+      "measured": 8,
       "worst": 5.8,
-      "sample": "Kobe Bryant controlled the game with 41 points, 11 rebounds."
+      "sample": "Anthony Edwards controlled the game with 38 points, 16 rebou"
     },
     "coaching": {
-      "blocks": 43,
-      "measured": 43,
+      "blocks": 41,
+      "measured": 41,
       "worst": 5.16,
       "failing": [],
       "failingCount": 0,
@@ -178,6 +181,32 @@
       "overflowX": 0,
       "minTap": 44,
       "unreachable": 0
+    }
+  ],
+  "scrollOwnership": [
+    {
+      "section": "Game Story",
+      "bad": [],
+      "docHeight": 1672,
+      "railBottomBeyondViewport": 577
+    },
+    {
+      "section": "Box Score",
+      "bad": [],
+      "docHeight": 1618,
+      "railBottomBeyondViewport": 523
+    },
+    {
+      "section": "Coaching",
+      "bad": [],
+      "docHeight": 1502,
+      "railBottomBeyondViewport": 407
+    },
+    {
+      "section": "Analysis",
+      "bad": [],
+      "docHeight": 1607,
+      "railBottomBeyondViewport": 512
     }
   ],
   "isolation": {
@@ -271,7 +300,7 @@
     {
       "name": "the arena composition fits the canonical viewport",
       "ok": true,
-      "detail": "arena 1000px ceiling 1040 · document 1057px including a 57px site footer the fixture route does not render"
+      "detail": "arena 1004px ceiling 1040 · document 1062px including a 57px site footer the fixture route does not render"
     },
     {
       "name": "no horizontal overflow",
@@ -301,7 +330,7 @@
     {
       "name": "the era is revealed with Roll 2, in the rail",
       "ok": true,
-      "detail": "1950s"
+      "detail": "1960s"
     },
     {
       "name": "the era box appears once, in the rail",
@@ -344,14 +373,24 @@
       "detail": "10 rows"
     },
     {
+      "name": "no arena surface traps the scroll — the page is the only vertical scroller",
+      "ok": true,
+      "detail": "checked with all four dock sections open"
+    },
+    {
+      "name": "an open dock section grows the page instead of hiding behind a scrollbar",
+      "ok": true,
+      "detail": "Game Story 1672px · Box Score 1618px · Coaching 1502px · Analysis 1607px"
+    },
+    {
       "name": "the finished board keeps the staff decision, still inside its cards",
       "ok": true,
       "detail": "3 cards, worst overflow 0px"
     },
     {
-      "name": "the two columns end together after a result, with no tall empty stage",
+      "name": "the stage column ends where its content ends, with no empty run below it",
       "ok": true,
-      "detail": "159px difference"
+      "detail": "0px unused · stage 773px, rail 1087px"
     },
     {
       "name": "box score lists named players",
@@ -366,12 +405,12 @@
     {
       "name": "the game story has readable body prose",
       "ok": true,
-      "detail": "7 passages, 7 measurable, worst 5.8:1"
+      "detail": "8 passages, 8 measurable, worst 5.8:1"
     },
     {
       "name": "the coaching report renders, readable, on the deployed build",
       "ok": true,
-      "detail": "43 blocks, 43 measurable, worst 5.16:1"
+      "detail": "41 blocks, 41 measurable, worst 5.16:1"
     },
     {
       "name": "preview feedback is accepted",
@@ -386,7 +425,7 @@
     {
       "name": "six fresh drafts do not all land on one era",
       "ok": true,
-      "detail": "1950s, 1990s, 1990s, 1990s, 1990s, 1950s"
+      "detail": "1960s, 2000s, 2010s, 1950s, 1990s, 2000s"
     },
     {
       "name": "no draft defaults to the 1950s",
@@ -419,6 +458,6 @@
       "detail": "HTTP 404"
     }
   ],
-  "passed": 46,
+  "passed": 48,
   "failed": 0
 }
