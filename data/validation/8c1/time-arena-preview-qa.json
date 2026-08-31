@@ -2,8 +2,8 @@
   "artifact": "time-arena-preview-qa",
   "phase": "8C.1 — pixel-fidelity reconstruction",
   "deployment": {
-    "baseUrl": "https://era-clash-basketball-77akjfxde-era-clash.vercel.app",
-    "commit": "58fb8df9e575620ba031333b9d84b585290af2bd",
+    "baseUrl": "https://era-clash-basketball-d0dtehdck-era-clash.vercel.app",
+    "commit": "8befb802ee3a53e4cd3569ee2d7da926b1c9573e",
     "environment": "vercel preview, access-gated"
   },
   "method": "Playwright over the network against the deployed branch preview, authenticated with a signed session obtained by POSTing an access key. The dev fixture is compiled out of a preview build, so every measurement below comes from a real draft played through the UI.",
@@ -142,7 +142,7 @@
     {
       "slot": "PG",
       "team": "blue",
-      "kept": false,
+      "kept": true,
       "cardH": 322,
       "overflowPx": 0,
       "footInset": 1
@@ -150,7 +150,7 @@
     {
       "slot": "SG",
       "team": "blue",
-      "kept": false,
+      "kept": true,
       "cardH": 322,
       "overflowPx": 0,
       "footInset": 1
@@ -158,7 +158,7 @@
     {
       "slot": "SF",
       "team": "blue",
-      "kept": true,
+      "kept": false,
       "cardH": 322,
       "overflowPx": 0,
       "footInset": 1
@@ -166,7 +166,7 @@
     {
       "slot": "PF",
       "team": "blue",
-      "kept": true,
+      "kept": false,
       "cardH": 322,
       "overflowPx": 0,
       "footInset": 1
@@ -174,7 +174,7 @@
     {
       "slot": "C",
       "team": "blue",
-      "kept": true,
+      "kept": false,
       "cardH": 322,
       "overflowPx": 0,
       "footInset": 1
@@ -182,17 +182,17 @@
   ],
   "eraDealt": {
     "observed": [
-      "2020s",
-      "1980s",
       "1950s",
-      "1960s",
+      "1990s",
       "1980s",
-      "2020s"
+      "1980s",
+      "1960s",
+      "1980s"
     ],
     "distinct": [
-      "2020s",
-      "1980s",
       "1950s",
+      "1990s",
+      "1980s",
       "1960s"
     ]
   },
@@ -203,7 +203,7 @@
       "count": 8,
       "measured": 8,
       "worst": 5.8,
-      "sample": "Nate Archibald controlled the game with 55 points, 7 assists"
+      "sample": "Oscar Robertson controlled the game with 45 points, 15 rebou"
     },
     "coaching": {
       "blocks": 43,
@@ -268,26 +268,26 @@
     {
       "section": "Game Story",
       "bad": [],
-      "docHeight": 1672,
-      "railBottomBeyondViewport": 576
+      "docHeight": 1732,
+      "railBottomBeyondViewport": 637
     },
     {
       "section": "Box Score",
       "bad": [],
-      "docHeight": 1636,
-      "railBottomBeyondViewport": 541
+      "docHeight": 1618,
+      "railBottomBeyondViewport": 523
     },
     {
       "section": "Coaching",
       "bad": [],
-      "docHeight": 1482,
-      "railBottomBeyondViewport": 387
+      "docHeight": 1519,
+      "railBottomBeyondViewport": 424
     },
     {
       "section": "Analysis",
       "bad": [],
-      "docHeight": 1625,
-      "railBottomBeyondViewport": 530
+      "docHeight": 1661,
+      "railBottomBeyondViewport": 566
     }
   ],
   "isolation": {
@@ -411,7 +411,7 @@
     {
       "name": "the era is revealed with Roll 2, in the rail",
       "ok": true,
-      "detail": "2020s"
+      "detail": "1950s"
     },
     {
       "name": "the era box appears once, in the rail",
@@ -421,7 +421,7 @@
     {
       "name": "every player card button sits inside its own card",
       "ok": true,
-      "detail": "5 card(s) marked KEPT · worst overflow 0px"
+      "detail": "4 card(s) marked KEPT · worst overflow 0px"
     },
     {
       "name": "every player card button sits at the same place on its card",
@@ -476,7 +476,7 @@
     {
       "name": "an open dock section grows the page instead of hiding behind a scrollbar",
       "ok": true,
-      "detail": "Game Story 1672px · Box Score 1636px · Coaching 1482px · Analysis 1625px"
+      "detail": "Game Story 1732px · Box Score 1618px · Coaching 1519px · Analysis 1661px"
     },
     {
       "name": "a finished game offers a new Clash on the board itself",
@@ -506,7 +506,7 @@
     {
       "name": "the stage column ends where its content ends, with no empty run below it",
       "ok": true,
-      "detail": "0px unused · stage 825px, rail 1104px"
+      "detail": "0px unused · stage 825px, rail 1087px"
     },
     {
       "name": "box score lists named players",
@@ -541,7 +541,7 @@
     {
       "name": "six fresh drafts do not all land on one era",
       "ok": true,
-      "detail": "2020s, 1980s, 1950s, 1960s, 1980s, 2020s"
+      "detail": "1950s, 1990s, 1980s, 1980s, 1960s, 1980s"
     },
     {
       "name": "no draft defaults to the 1950s",
