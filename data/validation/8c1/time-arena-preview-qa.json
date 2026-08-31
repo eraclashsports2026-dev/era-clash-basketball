@@ -2,8 +2,8 @@
   "artifact": "time-arena-preview-qa",
   "phase": "8C.1 — pixel-fidelity reconstruction",
   "deployment": {
-    "baseUrl": "https://era-clash-basketball-fnebez2lw-era-clash.vercel.app",
-    "commit": "21d84db8190d5393fa498f8261cfc7be3829c1b5",
+    "baseUrl": "https://era-clash-basketball-bntu0etsy-era-clash.vercel.app",
+    "commit": "73bb2056716777248b6b5c4c165710e9abffdfb4",
     "environment": "vercel preview, access-gated"
   },
   "method": "Playwright over the network against the deployed branch preview, authenticated with a signed session obtained by POSTing an access key. The dev fixture is compiled out of a preview build, so every measurement below comes from a real draft played through the UI.",
@@ -100,29 +100,32 @@
   },
   "eraDealt": {
     "observed": [
-      "2020s",
-      "1970s",
-      "2000s",
-      "1960s",
       "2010s",
-      "1950s"
+      "2010s",
+      "1990s",
+      "1970s",
+      "2010s",
+      "2020s"
     ],
     "distinct": [
-      "2020s",
-      "1970s",
-      "2000s",
-      "1960s",
       "2010s",
-      "1950s"
+      "1990s",
+      "1970s",
+      "2020s"
     ]
   },
   "report": {
     "boxScoreRows": 13,
     "worstNameContrast": 5.8,
     "story": {
-      "count": 8,
+      "count": 7,
       "worst": 5.8,
-      "sample": "Russell Westbrook controlled the game with 31 points, 17 reb"
+      "sample": "Stephen Curry controlled the game with 45 points, 9 assists."
+    },
+    "coaching": {
+      "blocks": 43,
+      "worst": 1.8,
+      "names": true
     }
   },
   "feedback": {
@@ -296,7 +299,7 @@
     {
       "name": "the era is revealed with Roll 2, in the rail",
       "ok": true,
-      "detail": "2020s"
+      "detail": "2010s"
     },
     {
       "name": "the era box appears once, in the rail",
@@ -361,7 +364,12 @@
     {
       "name": "the game story has readable body prose",
       "ok": true,
-      "detail": "8 passages, worst 5.8:1"
+      "detail": "7 passages, worst 5.8:1"
+    },
+    {
+      "name": "the coaching report renders, readable, on the deployed build",
+      "ok": false,
+      "detail": "43 blocks, worst 1.8:1"
     },
     {
       "name": "preview feedback is accepted",
@@ -376,7 +384,7 @@
     {
       "name": "six fresh drafts do not all land on one era",
       "ok": true,
-      "detail": "2020s, 1970s, 2000s, 1960s, 2010s, 1950s"
+      "detail": "2010s, 2010s, 1990s, 1970s, 2010s, 2020s"
     },
     {
       "name": "no draft defaults to the 1950s",
@@ -410,5 +418,5 @@
     }
   ],
   "passed": 45,
-  "failed": 0
+  "failed": 1
 }

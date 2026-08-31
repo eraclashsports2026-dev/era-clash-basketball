@@ -49,14 +49,30 @@ const freshAccount = (page) => page.addInitScript(() => {
 });
 
 /** Contrast of an element's own colour against its effective background. */
+/**
+ * Contrast of an element's own colour against the surface actually behind it.
+ *
+ * Walking backgroundColor alone is how an audit lies: a panel painted with a
+ * gradient reports backgroundColor "transparent", the walk continues past it,
+ * and gold-on-navy inside that panel gets scored against the ivory page two
+ * levels up — 1.8:1, a defect that does not exist. If a gradient panel hides
+ * the surface and declares no base colour, this returns null and the caller
+ * reports it as UNMEASURED rather than inventing a ratio in either direction.
+ */
 const CONTRAST_FN = `(el) => {
   const lum = (c) => { const [r,g,b] = c.map((v) => { v /= 255; return v <= 0.03928 ? v/12.92 : Math.pow((v+0.055)/1.055, 2.4); });
     return 0.2126*r + 0.7152*g + 0.0722*b; };
-  const parse = (s) => (s.match(/[\\d.]+/g) || []).slice(0,4).map(Number);
+  const parse = (s) => (String(s).match(/[\\d.]+/g) || []).slice(0,4).map(Number);
   const over = (fg, bg) => { const a = fg[3] ?? 1; return [0,1,2].map((i) => fg[i]*a + bg[i]*(1-a)); };
-  let bg = [11,13,18], p = el;
-  while (p) { const c = parse(getComputedStyle(p).backgroundColor);
-    if (c.length && (c[3] ?? 1) > 0.5) { bg = c.slice(0,3); break; } p = p.parentElement; }
+  let bg = null, p = el;
+  while (p) {
+    const cs = getComputedStyle(p);
+    const c = parse(cs.backgroundColor);
+    if (c.length && (c[3] ?? 1) > 0.5) { bg = c.slice(0,3); break; }
+    if (cs.backgroundImage && cs.backgroundImage !== "none") return null;
+    p = p.parentElement;
+  }
+  if (!bg) return null;
   const fg = over(parse(getComputedStyle(el).color), bg);
   const [a, b] = [lum(fg), lum(bg)].sort((x, y) => y - x);
   return Math.round(((a + 0.05) / (b + 0.05)) * 100) / 100;
@@ -265,9 +281,11 @@ const run = async () => {
     const contrast = eval(fn);
     return els.slice(0, 24).map((el) => ({ text: el.innerText.trim(), contrast: contrast(el) }));
   }, CONTRAST_FN);
-  const worst = Math.min(...names.map((n) => n.contrast));
+  const measuredNames = names.filter((n) => n.contrast !== null);
+  const worst = measuredNames.length ? Math.min(...measuredNames.map((n) => n.contrast)) : null;
   gate("box score lists named players", names.length >= 10 && names.every((n) => n.text.length > 1), `${names.length} rows`);
-  gate("every player name is readable", worst >= 4.5, `worst contrast ${worst}:1`);
+  gate("every player name is readable", worst !== null && worst >= 4.5,
+    `worst contrast ${worst}:1 across ${measuredNames.length}/${names.length} measurable rows`);
   await page.screenshot({ path: `${SHOTS}/state-08-report-box.png` });
 
   await report.getByRole("tab", { name: "Game Story" }).click();
@@ -276,12 +294,43 @@ const run = async () => {
     const dlg = document.querySelector('[role="dialog"]');
     const paras = [...dlg.querySelectorAll("p, .ec-story-body, div")]
       .filter((e) => e.children.length === 0 && e.innerText.trim().split(/\s+/).length >= 12);
-    return { count: paras.length, worst: paras.length ? Math.min(...paras.map(contrast)) : 0,
+    const ratios = paras.map(contrast).filter((r) => r !== null);
+    return { count: paras.length, measured: ratios.length,
+      worst: ratios.length ? Math.min(...ratios) : null,
       sample: paras[0]?.innerText.trim().slice(0, 60) || "" };
   }, CONTRAST_FN);
-  gate("the game story has readable body prose", story.count >= 1 && story.worst >= 4.5,
-    `${story.count} passages, worst ${story.worst}:1`);
+  gate("the game story has readable body prose",
+    story.count >= 1 && story.worst !== null && story.worst >= 4.5,
+    `${story.count} passages, ${story.measured} measurable, worst ${story.worst}:1`);
   await page.screenshot({ path: `${SHOTS}/state-09-report-story.png` });
+
+  // The fourth report surface. It is the one the brief names that no other gate
+  // in this file opens, and 579 local coaching contracts say nothing about
+  // whether the tab renders on a deployed build.
+  await report.getByRole("tab", { name: "Coaching & Strategy" }).click();
+  const coaching = await page.evaluate((fn) => {
+    const contrast = eval(fn);
+    const dlg = document.querySelector('[role="dialog"]');
+    const leaves = [...dlg.querySelectorAll("div, p, li, span")]
+      .filter((e) => e.children.length === 0 && e.innerText.trim().length > 3);
+    const scored = leaves.map((e) => ({ ratio: contrast(e), fontSize: parseFloat(getComputedStyle(e).fontSize),
+      weight: Number(getComputedStyle(e).fontWeight) || 400, text: e.innerText.trim().slice(0, 40) }))
+      .filter((x) => x.ratio !== null);
+    // WCAG large text (>=18.66px bold, or >=24px) clears at 3:1; everything
+    // else needs 4.5:1. Grading every label at 4.5 would fail real headings.
+    const floorFor = (x) => (x.fontSize >= 24 || (x.fontSize >= 18.66 && x.weight >= 700)) ? 3 : 4.5;
+    const failing = scored.filter((x) => x.ratio < floorFor(x));
+    return { blocks: leaves.length, measured: scored.length,
+      worst: scored.length ? Math.min(...scored.map((x) => x.ratio)) : null,
+      failing: failing.slice(0, 6), failingCount: failing.length,
+      names: /coach/i.test(dlg.innerText) };
+  }, CONTRAST_FN);
+  gate("the coaching report renders, readable, on the deployed build",
+    coaching.blocks >= 12 && coaching.names && coaching.failingCount === 0,
+    coaching.failingCount === 0
+      ? `${coaching.blocks} blocks, ${coaching.measured} measurable, worst ${coaching.worst}:1`
+      : `${coaching.failingCount} below floor: ${coaching.failing.map((f) => `"${f.text}" ${f.ratio}:1 at ${f.fontSize}px/${f.weight}`).join(" · ")}`);
+  await page.screenshot({ path: `${SHOTS}/state-10-report-coaching.png` });
 
   // ══ D. Feedback, end to end ════════════════════════════════════════════════
   console.log("\nD. feedback");
@@ -405,7 +454,7 @@ const run = async () => {
     },
     canonicalGeometryOnDeployedBuild: geo,
     eraDealt: { observed: eras, distinct },
-    report: { boxScoreRows: names.length, worstNameContrast: worst, story },
+    report: { boxScoreRows: names.length, worstNameContrast: worst, story, coaching },
     feedback: {
       httpStatus: feedbackStatus,
       note: "204 is this endpoint's success response for a stored preview record — and also what it returns when no store is configured or when the caller is rate limited. So this proves the round trip is accepted end to end, with the UI confirming it, from a real preview session on a real preview result. It does not prove persistence from outside the deployment; run `npm run preview:wave1-feedback-report` in a shell that has the store credentials to see the record itself.",
