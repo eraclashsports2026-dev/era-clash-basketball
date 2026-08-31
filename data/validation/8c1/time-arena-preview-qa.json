@@ -2,8 +2,8 @@
   "artifact": "time-arena-preview-qa",
   "phase": "8C.1 — pixel-fidelity reconstruction",
   "deployment": {
-    "baseUrl": "https://era-clash-basketball-bjop4szjs-era-clash.vercel.app",
-    "commit": "1e8b1a1f1c6dbef35fe04d527e0680f4820f3ff3",
+    "baseUrl": "https://era-clash-basketball-fnebez2lw-era-clash.vercel.app",
+    "commit": "21d84db8190d5393fa498f8261cfc7be3829c1b5",
     "environment": "vercel preview, access-gated"
   },
   "method": "Playwright over the network against the deployed branch preview, authenticated with a signed session obtained by POSTing an access key. The dev fixture is compiled out of a preview build, so every measurement below comes from a real draft played through the UI.",
@@ -100,18 +100,20 @@
   },
   "eraDealt": {
     "observed": [
-      "2010s",
       "2020s",
+      "1970s",
       "2000s",
-      "1990s",
-      "1990s",
-      "1990s"
+      "1960s",
+      "2010s",
+      "1950s"
     ],
     "distinct": [
-      "2010s",
       "2020s",
+      "1970s",
       "2000s",
-      "1990s"
+      "1960s",
+      "2010s",
+      "1950s"
     ]
   },
   "report": {
@@ -120,7 +122,7 @@
     "story": {
       "count": 8,
       "worst": 5.8,
-      "sample": "Bernard King controlled the game with 59 points, 8 assists. "
+      "sample": "Russell Westbrook controlled the game with 31 points, 17 reb"
     }
   },
   "feedback": {
@@ -294,7 +296,7 @@
     {
       "name": "the era is revealed with Roll 2, in the rail",
       "ok": true,
-      "detail": "2010s"
+      "detail": "2020s"
     },
     {
       "name": "the era box appears once, in the rail",
@@ -374,7 +376,7 @@
     {
       "name": "six fresh drafts do not all land on one era",
       "ok": true,
-      "detail": "2010s, 2020s, 2000s, 1990s, 1990s, 1990s"
+      "detail": "2020s, 1970s, 2000s, 1960s, 2010s, 1950s"
     },
     {
       "name": "no draft defaults to the 1950s",
