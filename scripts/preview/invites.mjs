@@ -5,9 +5,12 @@
 // the keys are NEVER printed to the terminal — only the path is.
 import { readFileSync, writeFileSync, chmodSync } from "node:fs";
 
-const BASE = (process.argv[2] || process.env.PREVIEW_BASE_URL || "").replace(/\/$/, "");
+// The stable Wave 1 alias is the address testers keep. A per-commit deployment
+// URL can still be passed explicitly when a build needs to be pinned.
+const ALIAS = "https://era-clash-basketball-git-wave1-era-clash.vercel.app";
+const BASE = (process.argv[2] || process.env.PREVIEW_BASE_URL || ALIAS).replace(/\/$/, "");
 if (!/^https:\/\/[^\s]+$/.test(BASE)) {
-  console.error("usage: npm run preview:wave1-invites -- <https://deployment-url>");
+  console.error("usage: npm run preview:wave1-invites -- [https://deployment-url]");
   process.exit(2);
 }
 const SECRETS = new URL("../../.preview-secrets/wave1-access-keys.json", import.meta.url);
