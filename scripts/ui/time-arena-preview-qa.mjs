@@ -341,8 +341,15 @@ const run = async () => {
         while (p && p !== document.body) { if (["auto", "scroll", "hidden"].includes(getComputedStyle(p).overflowX)) return false; p = p.parentElement; }
         return true;
       }).length;
+      const hd = document.querySelector(".ec-arena-shell > header");
+      const hr = hd?.getBoundingClientRect();
       return {
         rosterRows: rows.length,
+        // A sticky header that wraps its nav onto three lines was 217px tall on
+        // a phone — a quarter of the viewport, on every screen, permanently.
+        headerPx: Math.round(hr?.height || 0),
+        headerPctOfViewport: hr ? Math.round((hr.height / window.innerHeight) * 100) : null,
+        headerSticky: hd ? getComputedStyle(hd).position === "sticky" : false,
         overflowX: document.documentElement.scrollWidth - document.documentElement.clientWidth,
         minTap: Math.min(...[...document.querySelectorAll(".ec-pc-action, .ec-coach-action, .ec-ta-cta")]
           .map((b) => Math.round(b.getBoundingClientRect().height)).concat([999])),
@@ -351,11 +358,14 @@ const run = async () => {
     });
     await p.screenshot({ path: `${SHOTS}/responsive-${w}x${h}.png`, fullPage: false });
     responsive.push({ viewport: `${w}x${h}`, touch, ...m });
-    console.log(`  ${w}x${h}: ${m.rosterRows} row(s), overflow ${m.overflowX}px, min tap ${m.minTap}px`);
+    console.log(`  ${w}x${h}: ${m.rosterRows} row(s), header ${m.headerPx}px (${m.headerPctOfViewport}%), overflow ${m.overflowX}px, min tap ${m.minTap}px`);
     await c.close();
   }
   gate("nothing is clipped or unreachable on any width",
     responsive.every((r) => r.overflowX === 0 && r.unreachable === 0));
+  gate("the sticky header never takes more than a fifth of any viewport",
+    responsive.every((r) => r.headerPctOfViewport !== null && r.headerPctOfViewport <= 20),
+    responsive.map((r) => `${r.viewport} ${r.headerPx}px/${r.headerPctOfViewport}%`).join(" · "));
   gate("every hold and roll control is a 44px target on touch widths",
     responsive.filter((r) => r.touch).every((r) => r.minTap >= 44),
     `min ${Math.min(...responsive.filter((r) => r.touch).map((r) => r.minTap))}px`);

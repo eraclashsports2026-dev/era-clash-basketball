@@ -6,6 +6,7 @@
 import { useEffect, useRef, useState } from "react";
 import { hasAccount, getAccount, currentTier, signOut } from "../../account.js";
 import { membershipHref } from "../../navigation.js";
+import { useCompact, ACCOUNT_COMPACT_MAX } from "../../ui/useCompact.js";
 
 const TIER_LABEL = { GUEST: "Guest", FREE: "Free account", PLUS: "EraClash+", COMMISSIONER: "Commissioner" };
 
@@ -15,6 +16,9 @@ export default function AccountControl({ onCreateAccount, onNavigate, onChanged 
   const triggerRef = useRef(null);
   const account = hasAccount() ? getAccount() : null;
   const tier = currentTier();
+  // On a phone the chip is the avatar. The name and tier are one tap away in
+  // the menu, and the accessible name still carries both.
+  const compact = useCompact(ACCOUNT_COMPACT_MAX);
 
   useEffect(() => {
     if (!open) return;
@@ -36,7 +40,7 @@ export default function AccountControl({ onCreateAccount, onNavigate, onChanged 
         border: "1px solid var(--ec-a-gold-line, rgba(242,181,29,0.45))",
         background: "var(--ec-a-gold-soft, rgba(242,181,29,0.14))",
         color: "var(--ec-a-gold, #f2b51d)",
-      }}>Create free account</button>
+      }}>{compact ? "Create account" : "Create free account"}</button>
     );
   }
 
@@ -44,8 +48,8 @@ export default function AccountControl({ onCreateAccount, onNavigate, onChanged 
   return (
     <div style={{ position: "relative" }}>
       <button ref={triggerRef} onClick={() => setOpen((o) => !o)} aria-haspopup="true" aria-expanded={open}
-        aria-label={`Account menu for ${account.name}`} style={{
-          minHeight: 44, padding: "0 10px 0 6px", borderRadius: 10, cursor: "pointer",
+        aria-label={`Account menu for ${account.name}, ${TIER_LABEL[tier]}`} style={{
+          minHeight: 44, minWidth: 44, padding: compact ? "0 6px" : "0 10px 0 6px", borderRadius: 10, cursor: "pointer",
           border: "1px solid var(--ec-a-border, rgba(157,178,209,0.20))",
           background: "var(--ec-a-panel-raised, #0d1a2b)",
           display: "inline-flex", alignItems: "center", gap: 9,
@@ -55,10 +59,12 @@ export default function AccountControl({ onCreateAccount, onNavigate, onChanged 
           background: "var(--ec-a-gold-soft, rgba(242,181,29,0.14))",
           color: "var(--ec-a-gold, #f2b51d)", fontWeight: 900, fontSize: 12,
         }}>{initials}</span>
-        <span style={{ textAlign: "left", lineHeight: 1.2 }}>
-          <span style={{ display: "block", fontWeight: 800, fontSize: 12.5, color: "var(--ec-a-text, #f5f7fb)" }}>{account.name}</span>
-          <span style={{ display: "block", fontSize: 10.5, color: "var(--ec-a-text-muted, #93a0b5)" }}>{TIER_LABEL[tier]}</span>
-        </span>
+        {!compact && (
+          <span style={{ textAlign: "left", lineHeight: 1.2 }}>
+            <span style={{ display: "block", fontWeight: 800, fontSize: 12.5, color: "var(--ec-a-text, #f5f7fb)" }}>{account.name}</span>
+            <span style={{ display: "block", fontSize: 10.5, color: "var(--ec-a-text-muted, #93a0b5)" }}>{TIER_LABEL[tier]}</span>
+          </span>
+        )}
       </button>
       {open && (
         <div ref={ref} role="menu" className="ec-menu-panel" style={{ left: "auto", right: 0, minWidth: 260 }}>

@@ -2,8 +2,8 @@
   "artifact": "time-arena-preview-qa",
   "phase": "8C.1 — pixel-fidelity reconstruction",
   "deployment": {
-    "baseUrl": "https://era-clash-basketball-d4s9f6bmv-era-clash.vercel.app",
-    "commit": "33e3ecb465bace93ff2fe186006fa67ebd25d33b",
+    "baseUrl": "https://era-clash-basketball-tcwpl37wv-era-clash.vercel.app",
+    "commit": "4c07edc90967830ee11d912d926ae59fc3ab03fa",
     "environment": "vercel preview, access-gated"
   },
   "method": "Playwright over the network against the deployed branch preview, authenticated with a signed session obtained by POSTing an access key. The dev fixture is compiled out of a preview build, so every measurement below comes from a real draft played through the UI.",
@@ -100,18 +100,18 @@
   },
   "eraDealt": {
     "observed": [
-      "2020s",
-      "2020s",
-      "1980s",
+      "1950s",
       "1990s",
-      "2000s",
-      "1990s"
+      "2020s",
+      "1960s",
+      "2020s",
+      "2020s"
     ],
     "distinct": [
-      "2020s",
-      "1980s",
+      "1950s",
       "1990s",
-      "2000s"
+      "2020s",
+      "1960s"
     ]
   },
   "report": {
@@ -120,7 +120,7 @@
     "story": {
       "count": 8,
       "worst": 5.8,
-      "sample": "Dirk Nowitzki controlled the game with 39 points, 11 rebound"
+      "sample": "Kevin Durant controlled the game with 35 points, 28 rebounds"
     }
   },
   "feedback": {
@@ -282,7 +282,7 @@
     {
       "name": "the era is revealed with Roll 2, in the rail",
       "ok": true,
-      "detail": "2020s"
+      "detail": "1950s"
     },
     {
       "name": "the era box appears once, in the rail",
@@ -293,6 +293,16 @@
       "name": "coach offers arrive in the same sequence, not a second draft",
       "ok": true,
       "detail": ""
+    },
+    {
+      "name": "every coach footer sits inside its own card",
+      "ok": true,
+      "detail": "worst overflow 0px"
+    },
+    {
+      "name": "the coach cards are one height with their footers on one line",
+      "ok": true,
+      "detail": "heights 232"
     },
     {
       "name": "the result appears on the same page",
@@ -313,6 +323,16 @@
       "name": "the dock box score lists both teams in full",
       "ok": true,
       "detail": "10 rows"
+    },
+    {
+      "name": "the finished board keeps the staff decision, still inside its cards",
+      "ok": true,
+      "detail": "3 cards, worst overflow 0px"
+    },
+    {
+      "name": "the two columns end together after a result, with no tall empty stage",
+      "ok": true,
+      "detail": "159px difference"
     },
     {
       "name": "box score lists named players",
@@ -342,7 +362,7 @@
     {
       "name": "six fresh drafts do not all land on one era",
       "ok": true,
-      "detail": "2020s, 2020s, 1980s, 1990s, 2000s, 1990s"
+      "detail": "1950s, 1990s, 2020s, 1960s, 2020s, 2020s"
     },
     {
       "name": "no draft defaults to the 1950s",
@@ -370,6 +390,6 @@
       "detail": "HTTP 404"
     }
   ],
-  "passed": 40,
+  "passed": 44,
   "failed": 0
 }

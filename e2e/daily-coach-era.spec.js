@@ -8,8 +8,20 @@
 // official attempt until they have.
 import { test, expect } from "@playwright/test";
 
+/**
+ * Reach a top-level destination at ANY width. Below 900px the header folds
+ * Daily, Challenges, Leaderboard and My EraClash into one "More" menu rather
+ * than wrapping onto three lines, so a phone-width test has to open the menu.
+ */
+const gotoNav = async (page, label) => {
+  const direct = page.getByRole("button", { name: label, exact: true });
+  if (await direct.count() && await direct.first().isVisible()) return direct.first().click();
+  await page.getByRole("button", { name: "More", exact: true }).click();
+  await page.getByRole("menuitem", { name: new RegExp(`^${label}`) }).click();
+};
+
 const draftDailyRoster = async (page) => {
-  await page.getByRole("button", { name: "Daily", exact: true }).click();
+  await gotoNav(page, "Daily");
   await page.getByRole("button", { name: /Start Today's Challenge/ }).click();
   await page.getByRole("button", { name: /Roll 2/ }).click();
   await page.getByRole("button", { name: /Roll 3/ }).click();
