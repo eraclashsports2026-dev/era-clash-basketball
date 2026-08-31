@@ -287,6 +287,34 @@ button { font-family: inherit; }
   justify-content: center;
   gap: 4px;
 }
+/* A card's role tags. On a phone a card is about 100px wide, where the pill's
+   padding and border cost more than the words inside it — so the pill is
+   dropped and the tag keeps its text rather than being cut to "Secondary pas…".
+   The row height is unchanged, so cards stay identical in height. */
+.chaos-tag {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 999px;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--ec-a-text-muted, #a9b6cc);
+  border: 1px solid var(--ec-arena-border, #243350);
+}
+@media (max-width: 560px) {
+  .chaos-tag {
+    padding: 2px 0;
+    font-size: 8px;
+    background: transparent;
+    border-color: transparent;
+  }
+}
+
 /* Roster-summary rows: one shared schema, so both teams line up. */
 .chaos-read-row {
   display: grid;

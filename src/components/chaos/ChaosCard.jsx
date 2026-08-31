@@ -78,8 +78,7 @@ export default function ChaosCard({ card, side, held, onToggle, disabled, intera
         <span style={{ ...chip, letterSpacing: 0.5, fontWeight: 800,
           background: ts.bg, color: ts.fg, border: `1px solid ${ts.bd}` }}>{card.tier}</span>
         {roleTags(p, card.slot).map((t) => (
-          <span key={t} title={t} style={{ ...chip, fontWeight: 700,
-            background: "rgba(255,255,255,0.05)", color: T.onArenaDim, border: `1px solid ${T.arenaBorder}` }}>{t}</span>
+          <span key={t} title={t} className="chaos-tag">{t}</span>
         ))}
       </div>
       <div style={{ marginTop: "auto" }}>
