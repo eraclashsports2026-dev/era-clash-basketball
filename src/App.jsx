@@ -909,6 +909,7 @@ export default function App() {
       track("chaos_clash_completed", { era_style: record.eraId || null });
       // The run is spent; a return to Chaos Clash starts from an empty board.
       try { localStorage.removeItem("ec_chaos_run"); } catch { /* private mode */ }
+      setChaosReady(null);
       await holdSimScreen(simT0);
       setView("postgame");
     } catch (e) {
@@ -920,6 +921,11 @@ export default function App() {
 
   const newChaosClash = () => {
     setChaosReady(null); setChaosChallengeId(null); setResult(null);
+    // The shared run drives the era banner, the roll strip and the Run button.
+    // Leaving it set carried the finished game's era and a live Run button on
+    // to the empty board of the next one.
+    setChaosRun(null);
+    try { localStorage.removeItem("ec_chaos_run"); } catch { /* private mode */ }
     setTeam(null); setOpponent(null); setView("builder");
     setChaosNonce((n) => n + 1);
   };
@@ -1076,7 +1082,7 @@ export default function App() {
               marginTop: 14, minHeight: 58, width: "100%", borderRadius: R.md,
               cursor: loading ? "default" : "pointer", fontWeight: 900, fontSize: 16, letterSpacing: 1.2,
               border: `1px solid ${T.goldBorder}`, background: T.gold, color: "#fff", opacity: loading ? 0.6 : 1,
-            }}>{loading ? "RUNNING…" : "RUN THE CLASH"}</button>
+            }}>{loading ? "RUNNING…" : "RUN SIM"}</button>
           )}
           {err && <div role="alert" style={{ marginTop: 10, textAlign: "center", color: T.red, fontSize: 13 }}>{err}</div>}
           <div style={{ textAlign: "center", marginTop: 16 }}>
@@ -1589,7 +1595,11 @@ export default function App() {
               border: "1px solid var(--ec-a-border)", background: "var(--ec-a-panel-raised)",
               color: "var(--ec-a-text)", fontWeight: 800, fontSize: 13,
             }}>← Back to the arena</button>
-            <div style={{ background: T.bg, borderRadius: 14, padding: "4px 0 16px" }}>
+            {/* The arena shell paints text near-white for a dark surface. The
+                report is a LIGHT surface, so it re-declares the text colour;
+                without this, anything that inherits (player names, the story
+                body) rendered white on cream and read as missing. */}
+            <div style={{ background: T.bg, color: T.text, borderRadius: 14, padding: "4px 0 16px" }}>
               {postgameView}
             </div>
           </div>

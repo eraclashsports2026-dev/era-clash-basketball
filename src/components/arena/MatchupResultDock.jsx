@@ -33,28 +33,43 @@ const Row = ({ k, v, tone }) => (
 /** D — real progress phases, never a fabricated percentage. */
 const SIM_PHASES = ["Preparing matchup", "Building game plans", "Simulating possessions", "Finalizing result", "Preparing postgame"];
 
+// Every counting stat the result records. Only the made-attempted splits (3PT,
+// FT) and the offensive/defensive rebound breakdown are left to the full
+// report, which has the width to show them without a scroll.
+const BOX_COLS = "minmax(62px, 1fr) 26px 44px 26px 26px 26px 26px 26px";
+const BOX_HEADS = ["PTS", "FG", "REB", "AST", "STL", "BLK", "TO"];
+const boxValues = (l) => [l.pts, `${l.fgm}-${l.fga}`, l.oreb + l.dreb, l.ast, l.stl, l.blk, l.to];
+
 function CompactBox({ sim }) {
   const box = sim?.v3?.fullBox;
   if (!box) return <div style={muted}>A full box score is not available for this result.</div>;
   const line = (l, accent) => (
-    <div key={l.name} style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) 34px 52px 34px", gap: 6, fontSize: 12, padding: "3px 0", fontVariantNumeric: "tabular-nums" }}>
+    <div key={l.name} style={{ display: "grid", gridTemplateColumns: BOX_COLS, gap: 5, fontSize: 11.5, padding: "3px 0", fontVariantNumeric: "tabular-nums" }}>
       <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color: "var(--ec-a-text, #f5f7fb)" }}>{l.name}</span>
-      <span style={{ textAlign: "right", fontWeight: 800, color: accent }}>{l.pts}</span>
-      <span style={{ textAlign: "right", color: "var(--ec-a-text-muted, #93a0b5)", whiteSpace: "nowrap" }}>{l.fgm}-{l.fga}</span>
-      <span style={{ textAlign: "right", color: "var(--ec-a-text-muted, #93a0b5)" }}>{l.oreb + l.dreb}</span>
+      {boxValues(l).map((v, i) => (
+        <span key={BOX_HEADS[i]} style={{
+          textAlign: "right", whiteSpace: "nowrap", fontWeight: i === 0 ? 800 : 400,
+          color: i === 0 ? accent : "var(--ec-a-text-muted, #93a0b5)",
+        }}>{v}</span>
+      ))}
     </div>
   );
   return (
-    <div>
-      <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) 34px 52px 34px", gap: 6, fontSize: 9.5, fontWeight: 900, letterSpacing: 0.6, color: "var(--ec-a-text-muted, #93a0b5)", paddingBottom: 4 }}>
-        <span>PLAYER</span><span style={{ textAlign: "right" }}>PTS</span><span style={{ textAlign: "right" }}>FG</span><span style={{ textAlign: "right" }}>REB</span>
+    <div className="ec-dock-box">
+      {/* The numbers scroll inside the dock rather than compressing a stat
+          column until "12-30" breaks across two lines. */}
+      <div style={{ minWidth: 292 }}>
+        <div style={{ display: "grid", gridTemplateColumns: BOX_COLS, gap: 5, fontSize: 9.5, fontWeight: 900, letterSpacing: 0.4, color: "var(--ec-a-text-muted, #93a0b5)", paddingBottom: 4 }}>
+          <span>PLAYER</span>
+          {BOX_HEADS.map((h) => <span key={h} style={{ textAlign: "right" }}>{h}</span>)}
+        </div>
+        <Head tone="var(--ec-a-gold, #f2b51d)">TEAM GOLD</Head>
+        {box.gold.map((l) => line(l, "var(--ec-a-gold, #f2b51d)"))}
+        <div style={{ height: 8 }} />
+        <Head tone="var(--ec-a-blue, #3b9bff)">TEAM BLUE</Head>
+        {box.blue.map((l) => line(l, "var(--ec-a-blue, #3b9bff)"))}
+        <div style={{ ...muted, marginTop: 8 }}>Three-point, free-throw and rebound splits are in the complete report.</div>
       </div>
-      <Head tone="var(--ec-a-gold, #f2b51d)">TEAM GOLD</Head>
-      {box.gold.map((l) => line(l, "var(--ec-a-gold, #f2b51d)"))}
-      <div style={{ height: 8 }} />
-      <Head tone="var(--ec-a-blue, #3b9bff)">TEAM BLUE</Head>
-      {box.blue.map((l) => line(l, "var(--ec-a-blue, #3b9bff)"))}
-      <div style={{ ...muted, marginTop: 8 }}>Full shooting, steals, blocks and turnovers are in the complete report.</div>
     </div>
   );
 }
@@ -193,6 +208,11 @@ export default function MatchupResultDock({
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
           <button onClick={onRunItBack} style={secondaryCta}>Run it back</button>
           <button onClick={onNewClash} style={secondaryCta}>New Chaos Clash</button>
+        </div>
+        {/* Two very different buttons. Without this line, a rematch's repeated
+            era reads as an era that never changes. */}
+        <div style={{ ...muted, textAlign: "center", lineHeight: 1.5 }}>
+          Run it back replays this same five, staff and era. A new Clash rolls fresh players and reveals a new era.
         </div>
         {onChallenge && !challengeId && (
           <button onClick={makeChallenge} style={secondaryCta}>Challenge this Chaos</button>

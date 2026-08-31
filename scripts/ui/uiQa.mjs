@@ -105,6 +105,10 @@ if (MODE === "dock") {
   ok("the dock reads the stored result, never sample data",
     !/const\s+SAMPLE|mockResult|FAKE_/.test(dock));
   ok("the dock announces its simulation state politely", /aria-live="polite"/.test(dock));
+  // PTS/FG/REB alone read as a broken box score, not a compact one.
+  ok("the dock's box score carries every counting stat",
+    ["PTS", "FG", "REB", "AST", "STL", "BLK", "TO"].every((h) => new RegExp(`"${h}"`).test(dock))
+    && /l\.ast/.test(dock) && /l\.stl/.test(dock) && /l\.blk/.test(dock) && /l\.to/.test(dock));
 }
 
 if (MODE === "arena") {
@@ -135,6 +139,42 @@ if (MODE === "arena") {
     /ec-cc-dock--front/.test(shell) && /\.ec-cc-dock--front \{ order: -1; \}/.test(css));
   ok("the roll strip is driven by server state, not inferred",
     /run \? run\.roll/.test(read("src/components/arena/RollStrip.jsx")));
+
+  // The workspace reads in the order the user works: rolls, the five, then the
+  // button that plays it.
+  const shellSrc = src("src/components/arena/ArenaCommandCenter.jsx");
+  const at = (re) => shellSrc.search(re);
+  ok("the workspace runs rolls then the board then the run bar",
+    at(/<RollStrip/) > -1 && at(/<ChaosClash/) > at(/<RollStrip/) && at(/RUN SIM/) > at(/<ChaosClash/));
+  ok("the era is stated once, by the dock alone", !/EraContextBanner/.test(shellSrc));
+  ok("the primary CTA is named RUN SIM everywhere",
+    /RUN SIM/.test(shellSrc) && !/RUN THE CLASH/.test(shellSrc) && !/RUN THE CLASH/.test(read("src/App.jsx")));
+
+  // Board shape: two guards over wing / centre / forward, centred, with the
+  // roster order the engine indexes by left alone.
+  const clash = src("src/components/chaos/ChaosClash.jsx");
+  ok("the roster order the engine indexes by is unchanged",
+    /const SLOTS = \["PG", "SG", "SF", "PF", "C"\];/.test(clash));
+  ok("the board lays two guards over three",
+    /const BOARD_ROWS = \[\["PG", "SG"\], \["SF", "C", "PF"\]\];/.test(clash));
+  ok("the two-card row is centred at the same card width",
+    /\.chaos-roster-row--two \{[^}]*justify-content: center/.test(css)
+    && /\.chaos-roster-row--two \{[^}]*calc\(\(100% - 16px\) \/ 3\)/.test(css));
+  ok("neither board can grow wider than the other",
+    /\.chaos-boards \{[^}]*grid-template-columns: minmax\(0, 1fr\) minmax\(0, 1fr\)/.test(css)
+    && /\.chaos-boards \{[^}]*align-items: stretch/.test(css));
+  ok("both roster summaries share one height", /\.chaos-read \{ flex: 1 1 auto; \}/.test(css));
+
+  // The full report is a light surface hosted inside the dark shell.
+  const app = src("src/App.jsx");
+  ok("the full report declares its own text colour on the light surface",
+    /background: T\.bg, color: T\.text/.test(app));
+  ok("a new Clash cannot inherit the finished run",
+    /const newChaosClash[\s\S]{0,400}setChaosRun\(null\)/.test(app));
+  ok("neither workspace column can outgrow the screen",
+    /\.ec-cc > div, \.ec-cc-dock > div \{ grid-template-columns: minmax\(0, 1fr\); \}/.test(css));
+  ok("an empty board clears the run the shell is holding",
+    /if \(!id\) \{ onRunChange\?\.\(null\); return; \}/.test(clash));
 }
 
 const passed = checks.filter((c) => c.pass).length;

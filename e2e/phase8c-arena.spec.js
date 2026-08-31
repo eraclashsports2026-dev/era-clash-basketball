@@ -132,7 +132,7 @@ test("the result appears in the dock and the full report opens over the same pag
   await page.getByRole("button", { name: "HIRE THIS COACH" }).click();
   // Challenge must be reachable at READY (an 8C regression made it vanish).
   await expect(page.getByRole("button", { name: "CHALLENGE THIS CHAOS" })).toBeVisible();
-  await page.getByRole("button", { name: "RUN THE CLASH" }).click();
+  await page.getByRole("button", { name: "RUN SIM" }).click();
 
   // Final state in the dock, with all four tabs.
   await expect(page.getByText("FINAL SCORE")).toBeVisible({ timeout: 45_000 });
@@ -172,14 +172,14 @@ test("a run resumed at READY after a reload still runs", async ({ page }) => {
   await expect(page.getByText("CHOOSE YOUR COACH").first()).toBeVisible({ timeout: 20_000 });
   await page.getByRole("button", { name: "SELECT" }).first().click();
   await page.getByRole("button", { name: "HIRE THIS COACH" }).click();
-  await expect(page.getByRole("button", { name: "RUN THE CLASH" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "RUN SIM" })).toBeVisible();
 
   // The regression: after a reload the resumed run's RUN button did nothing,
   // because the click handler waited on in-session state a reload never sets.
   await page.evaluate(() => sessionStorage.setItem("e2e_keep_run", "1"));
   await page.reload();
-  await expect(page.getByRole("button", { name: "RUN THE CLASH" })).toBeVisible({ timeout: 20_000 });
-  await page.getByRole("button", { name: "RUN THE CLASH" }).click();
+  await expect(page.getByRole("button", { name: "RUN SIM" })).toBeVisible({ timeout: 20_000 });
+  await page.getByRole("button", { name: "RUN SIM" }).click();
   await expect(page.getByText("FINAL SCORE")).toBeVisible({ timeout: 45_000 });
 });
 
@@ -211,7 +211,7 @@ test("Run it back replays the SAME matchup and actually completes", async ({ pag
   await expect(page.getByText("CHOOSE YOUR COACH").first()).toBeVisible({ timeout: 20_000 });
   await page.getByRole("button", { name: "SELECT" }).first().click();
   await page.getByRole("button", { name: "HIRE THIS COACH" }).click();
-  await page.getByRole("button", { name: "RUN THE CLASH" }).click();
+  await page.getByRole("button", { name: "RUN SIM" }).click();
   await expect(page.getByText("FINAL SCORE")).toBeVisible({ timeout: 45_000 });
 
   // Capture the rematch request: it must be mode "single" (the server has no
@@ -237,4 +237,108 @@ test("a Wave 1 scenario link lands a GUEST in the preloaded builder", async ({ p
   await expect(page.getByText("THREE ROLLS AVAILABLE")).toHaveCount(0);
   await expect(page.getByText("FREE ACCOUNT REQUIRED")).toHaveCount(0);
   await expect(page.getByRole("button", { name: /RUN THE SIM/ })).toBeVisible();
+});
+
+// ── Owner test round: board shape, full counting line, readable report, and a
+// clean board for the next game ───────────────────────────────────────────────
+
+test("the draft board is two guards over three, centred, and the era is printed once", async ({ page }) => {
+  await withAccount(page);
+  await page.goto("/");
+  await page.getByRole("button", { name: "ROLL 1", exact: true }).click();
+  await expect(page.getByText(/ROLL 1 OF 3/).first()).toBeVisible({ timeout: 20_000 });
+
+  const board = await page.evaluate(() => {
+    const b = document.querySelector(".chaos-board");
+    const rows = [...b.querySelectorAll(".chaos-roster-row")];
+    const slotOf = (el) => el.dataset.slot || null;
+    const rect = (el) => el.getBoundingClientRect();
+    const roster = rect(b.querySelector(".chaos-roster"));
+    const top = [...rows[0].children];
+    return {
+      rows: rows.map((r) => [...r.children].map(slotOf)),
+      widths: rows.flatMap((r) => [...r.children].map((c) => Math.round(rect(c).width))),
+      leftGap: Math.round(rect(top[0]).left - roster.left),
+      rightGap: Math.round(roster.right - rect(top[top.length - 1]).right),
+    };
+  });
+  expect(board.rows).toEqual([["PG", "SG"], ["SF", "C", "PF"]]);
+  // One card width across both rows: the top row is centred, never stretched.
+  expect(Math.max(...board.widths) - Math.min(...board.widths)).toBeLessThanOrEqual(2);
+  expect(Math.abs(board.leftGap - board.rightGap)).toBeLessThanOrEqual(2);
+  expect(board.leftGap).toBeGreaterThan(10);
+
+  // Era arrives with Roll 2 and is stated ONCE — the shell used to repeat the
+  // dock's banner, so one era read as two.
+  await page.getByRole("button", { name: /LOCK HOLDS & ROLL 2/ }).click();
+  await expect(page.getByText(/ROLL 2 OF 3/).first()).toBeVisible({ timeout: 20_000 });
+  await expect(page.getByRole("region", { name: /era style$/ })).toHaveCount(1);
+});
+
+test("the result carries the whole counting line, reads in the full report, and leaves a clean board", async ({ page }) => {
+  test.slow();
+  await withAccount(page);
+  await page.goto("/");
+  await page.getByRole("button", { name: "ROLL 1", exact: true }).click();
+  await expect(page.getByText(/ROLL 1 OF 3/).first()).toBeVisible({ timeout: 20_000 });
+  await page.getByRole("button", { name: /LOCK HOLDS & ROLL 2/ }).click();
+  await expect(page.getByText(/ROLL 2 OF 3/).first()).toBeVisible({ timeout: 20_000 });
+  await page.getByRole("button", { name: /LOCK HOLDS & FINAL ROLL/ }).click();
+  await page.getByRole("button", { name: /LOCK HOLDS & ROLL COACHES/ }).click();
+  await page.getByRole("button", { name: /LOCK HOLDS & FINAL COACH ROLL/ }).click();
+  await expect(page.getByText("CHOOSE YOUR COACH").first()).toBeVisible({ timeout: 20_000 });
+  await page.getByRole("button", { name: "SELECT" }).first().click();
+  await page.getByRole("button", { name: "HIRE THIS COACH" }).click();
+  await page.getByRole("button", { name: "RUN SIM" }).click();
+  await expect(page.getByText("FINAL SCORE")).toBeVisible({ timeout: 45_000 });
+
+  // 1 · The dock's box score is the full counting line, not PTS/FG/REB alone.
+  const dock = page.getByRole("complementary", { name: "Matchup and result" });
+  await dock.getByRole("tab", { name: "Box Score" }).click();
+  for (const h of ["PTS", "FG", "REB", "AST", "STL", "BLK", "TO"]) {
+    await expect(dock.getByText(h, { exact: true }).first()).toBeVisible();
+  }
+
+  // 2 · The full report is a LIGHT surface inside the dark arena shell. Every
+  // name and the story body must be dark ink on it, not inherited white.
+  await page.getByRole("button", { name: /VIEW FULL POSTGAME REPORT/ }).click();
+  const report = page.getByRole("dialog", { name: "Full postgame report" });
+  await expect(report).toBeVisible();
+  await report.getByRole("tab", { name: "Box Score" }).click();
+  const ink = () => page.evaluate(() => {
+    const lum = (c) => {
+      const [r, g, b] = String(c).match(/[\d.]+/g).map(Number);
+      return (r * 0.299 + g * 0.587 + b * 0.114) / 255;
+    };
+    const cells = [...document.querySelectorAll(".ec-report-overlay td.box-player")]
+      .filter((c) => c.textContent.trim() && c.textContent.trim() !== "TOTAL");
+    const paras = [...document.querySelectorAll(".ec-report-overlay p")]
+      .filter((p) => p.textContent.trim().length > 20);
+    const read = (el) => ({
+      text: el.textContent.trim().slice(0, 40),
+      ink: lum(getComputedStyle(el).color),
+      paper: lum(getComputedStyle(el.closest("[style*='background']") || el).backgroundColor),
+    });
+    return { names: cells.slice(0, 4).map(read), paras: paras.slice(0, 2).map(read) };
+  });
+  const box = await ink();
+  expect(box.names.length).toBeGreaterThan(0);
+  for (const n of box.names) {
+    expect(n.ink, `name "${n.text}" must be dark ink`).toBeLessThan(0.4);
+    expect(n.paper - n.ink, `name "${n.text}" must contrast with its cell`).toBeGreaterThan(0.35);
+  }
+  await report.getByRole("tab", { name: "Game Story" }).click();
+  const story = await ink();
+  expect(story.paras.length).toBeGreaterThan(0);
+  for (const p of story.paras) expect(p.ink, `story text "${p.text}"`).toBeLessThan(0.5);
+
+  // 3 · A new Clash starts genuinely empty: no era, no completed rolls and no
+  // Run button carried over from the game just played.
+  await page.getByRole("button", { name: /Back to the arena/ }).click();
+  await page.getByRole("button", { name: "New Chaos Clash" }).click();
+  await expect(page.getByText("BUILD YOUR CLASH")).toBeVisible();
+  await expect(page.getByRole("region", { name: /era style$/ })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "RUN SIM" })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "ROLL 1", exact: true })).toBeVisible();
+  expect(await page.locator(".ec-rollstrip").innerText()).not.toContain("COMPLETE");
 });

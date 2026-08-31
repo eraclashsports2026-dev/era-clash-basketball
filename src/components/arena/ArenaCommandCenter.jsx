@@ -4,7 +4,6 @@
 // the user away from the teams, coaches and era they just built.
 import { useState } from "react";
 import ChaosClash from "../chaos/ChaosClash.jsx";
-import EraContextBanner from "../chaos/EraContextBanner.jsx";
 import MatchupResultDock from "./MatchupResultDock.jsx";
 import ModeShelf from "./ModeShelf.jsx";
 import RollStrip from "./RollStrip.jsx";
@@ -55,15 +54,20 @@ export default function ArenaCommandCenter({
       <div className="ec-cc">
         {/* ── Main arena workspace ─────────────────────────────────────────── */}
         <div style={{ minWidth: 0, display: "grid", gap: 14 }}>
-          {chaosRun?.eraContext && (
-            <EraContextBanner era={chaosRun.eraContext} />
-          )}
-
+          {/* The page reads in the order the user works: the rolls, the five
+              they are drafting, then the button that plays it. The era belongs
+              to the dock alone — the shell used to print the same banner above
+              the board, so one era read as two. */}
           {!complete && !simulating && (
             <>
               <RollStrip run={chaosRun} />
-              {/* The shell owns the primary CTA at READY so it sits ABOVE the
-                  secondary actions rather than below them. */}
+              {/* The ready block inside ChaosClash stays: it carries CHALLENGE
+                  THIS CHAOS and the share link. */}
+              <ChaosClash
+                tier={tier} challengeId={challengeId}
+                onRunChange={onRunChange} onReady={onReady} onGated={onGated}
+                hideEraBanner
+              />
               {chaosRun?.phase === "READY" && (
                 <>
                   <button onClick={onRunClash} disabled={busy} style={{
@@ -71,18 +75,10 @@ export default function ArenaCommandCenter({
                     fontWeight: 900, fontSize: 16, letterSpacing: 1.2,
                     border: "1px solid var(--ec-a-gold-line)", background: "var(--ec-a-gold, #f2b51d)",
                     color: "#0a0f18", opacity: busy ? 0.6 : 1,
-                  }}>{busy ? "RUNNING…" : "RUN THE CLASH"}</button>
+                  }}>{busy ? "RUNNING…" : "RUN SIM"}</button>
                   {error && <div role="alert" style={{ color: "var(--ec-a-red, #f87171)", fontSize: 13, textAlign: "center" }}>{error}</div>}
                 </>
               )}
-              {/* The ready block inside ChaosClash stays: it carries CHALLENGE
-                  THIS CHAOS and the share link. Only the era banner is owned by
-                  the shell. */}
-              <ChaosClash
-                tier={tier} challengeId={challengeId}
-                onRunChange={onRunChange} onReady={onReady} onGated={onGated}
-                hideEraBanner
-              />
             </>
           )}
 

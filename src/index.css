@@ -173,32 +173,51 @@ button { font-family: inherit; }
    context but never competing for the tap targets. */
 .chaos-boards {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  /* minmax(0, 1fr) — NOT 1fr. A bare 1fr floors each column at its content's
+     min width, so one long name made that side's column wider than the other
+     and the two roster summaries stopped lining up. */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 16px;
-  align-items: start;
+  align-items: stretch;
 }
+/* Both boards are the same height, so Gold's summary panel and Blue's start and
+   end on the same lines even when one five draws taller cards. */
+.chaos-board {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.chaos-read { flex: 1 1 auto; }
+/* Two guards on the top row, wing / centre / forward on the bottom. The top row
+   is centred at the SAME card width as the bottom one rather than stretched
+   across the board. */
 .chaos-roster {
   display: grid;
-  /* A card must be wide enough for a real name. Five fixed columns inside a
-     half-width arena squeezed names to ~65px and broke them mid-word, so the
-     row wraps instead of shrinking below a readable width. */
-  grid-template-columns: repeat(auto-fit, minmax(104px, 1fr));
   gap: 8px;
+}
+.chaos-roster-row {
+  display: grid;
+  gap: 8px;
+}
+.chaos-roster-row--three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.chaos-roster-row--two {
+  grid-template-columns: repeat(2, minmax(0, calc((100% - 16px) / 3)));
+  justify-content: center;
 }
 .chaos-offers {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
 }
-@media (max-width: 1100px) {
-  .chaos-roster { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-}
 @media (max-width: 900px) {
-  .chaos-boards { grid-template-columns: 1fr; gap: 20px; }
+  .chaos-boards { grid-template-columns: minmax(0, 1fr); gap: 20px; }
   .chaos-offers { grid-template-columns: 1fr; }
 }
 @media (max-width: 560px) {
-  .chaos-roster { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* A stacked board has the whole viewport, so the shape holds; only the gutter
+     tightens. The two-card row's centring maths follows the gap. */
+  .chaos-roster, .chaos-roster-row { gap: 6px; }
+  .chaos-roster-row--two { grid-template-columns: repeat(2, minmax(0, calc((100% - 12px) / 3))); }
 }
 /* The roll reveal is a fade, never a near-miss animation: nothing about the
    motion suggests an outcome that did not happen. */
@@ -251,6 +270,10 @@ button { font-family: inherit; }
   /* The name column stays put while the numbers scroll under it. */
   .box-table .box-player { position: sticky; left: 0; z-index: 1; }
 }
+
+/* The dock's box score keeps every counting stat; the numbers scroll inside the
+   dock on a narrow column instead of squeezing a made-attempted pair. */
+.ec-dock-box { overflow-x: auto; }
 
 /* Empty draft slot — the board exists before any card does. */
 .chaos-empty-slot {
@@ -445,6 +468,14 @@ button { font-family: inherit; }
   max-width: 1180px;
   margin: 0 auto;
 }
+
+/* A workspace column may never be wider than the workspace. Both columns are
+   implicit single-track grids, and an implicit `auto` track grows to its
+   content's MAX-content width on a narrow screen — which pushed the draft board
+   about four phone-screens wide inside a clipped container, so the right-hand
+   cards simply could not be reached. An explicit minmax(0, 1fr) track is what
+   holds the column to the space it actually has. */
+.ec-cc > div, .ec-cc-dock > div { grid-template-columns: minmax(0, 1fr); }
 
 /* Reduced motion: the arena is atmosphere, never information. */
 @media (prefers-reduced-motion: reduce) {

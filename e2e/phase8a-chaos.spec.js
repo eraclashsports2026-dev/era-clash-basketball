@@ -132,8 +132,8 @@ test("a full Clash reaches a postgame with a player-centered story and an aligne
   await lockHolds(page);
   await lockHolds(page);
   await coachDraft(page);
-  await expect(page.getByRole("button", { name: "RUN THE CLASH" })).toBeVisible({ timeout: 20_000 });
-  await page.getByRole("button", { name: "RUN THE CLASH" }).click();
+  await expect(page.getByRole("button", { name: "RUN SIM" })).toBeVisible({ timeout: 20_000 });
+  await page.getByRole("button", { name: "RUN SIM" }).click();
 
   // Phase 8C: the result lands in the dock; the full report opens over the page.
   await expect(page.getByText("FINAL SCORE")).toBeVisible({ timeout: 40_000 });
@@ -195,7 +195,7 @@ test("box-score stat values never wrap", async ({ page }) => {
   await lockHolds(page);
   await lockHolds(page);
   await coachDraft(page);
-  await page.getByRole("button", { name: "RUN THE CLASH" }).click();
+  await page.getByRole("button", { name: "RUN SIM" }).click();
   await expect(page.getByText("FINAL SCORE")).toBeVisible({ timeout: 40_000 });
   await page.getByRole("button", { name: /VIEW FULL POSTGAME REPORT/ }).click();
   await page.getByRole("tab", { name: "Box Score" }).last().click();

@@ -14,6 +14,10 @@ import {
 } from "../../chaos/client.js";
 
 const SLOTS = ["PG", "SG", "SF", "PF", "C"];
+// SLOTS is the ROSTER order the engine indexes by and never changes. The board
+// is laid out like a floor instead: both guards on the top row, then wing,
+// centre and power forward across the bottom, centred under them.
+const BOARD_ROWS = [["PG", "SG"], ["SF", "C", "PF"]];
 const RUN_KEY = "ec_chaos_run";
 const PRESSURE_COLOR = { LOW: T.onArenaDim, RISING: T.goldOnDark, HIGH: T.orange || T.goldOnDark };
 
@@ -37,7 +41,7 @@ function RosterRead({ analysis }) {
     </div>
   );
   return (
-    <div style={{ marginTop: 10, padding: "9px 11px", borderRadius: R.sm, border: `1px solid ${T.arenaBorder}`, background: "rgba(255,255,255,0.03)", minHeight: 148 }}>
+    <div className="chaos-read" style={{ marginTop: 10, padding: "9px 11px", borderRadius: R.sm, border: `1px solid ${T.arenaBorder}`, background: "rgba(255,255,255,0.03)" }}>
       {row("Talent", analysis.talentTier)}
       {row("Construction", analysis.constructionTier)}
       {row("Best strength", analysis.bestStrength?.label)}
@@ -50,7 +54,7 @@ function RosterRead({ analysis }) {
 
 function EmptySlot({ slot }) {
   return (
-    <div className="chaos-empty-slot" aria-label={`Empty ${slot} slot`}>
+    <div className="chaos-empty-slot" data-slot={slot} aria-label={`Empty ${slot} slot`}>
       <div style={{ fontSize: 11, fontWeight: 900, letterSpacing: 1.5, color: T.onArenaDim }}>{slot}</div>
       <div style={{ fontSize: 10.5, color: T.onArenaDim, opacity: 0.7 }}>empty</div>
     </div>
@@ -60,19 +64,23 @@ function EmptySlot({ slot }) {
 function TeamBoard({ title, side, roster, heldSlots, keptSlots = [], onToggle, interactive, busy, analysis, locked }) {
   const accent = side === "gold" ? T.goldOnDark : T.blueOnDark;
   return (
-    <div style={{ minWidth: 0 }}>
+    <div className="chaos-board">
       <div style={{ textAlign: "center", marginBottom: 8 }}><Label tone={accent}>{title}</Label></div>
       <div className="chaos-roster">
-        {SLOTS.map((slot, i) => {
-          const c = roster?.[i];
-          if (!c) return <EmptySlot key={slot} slot={slot} />;
-          return (
-            <ChaosCard key={c.id} card={c} side={side}
-              held={heldSlots.includes(c.slot)} kept={keptSlots.includes(c.slot)}
-              interactive={interactive} locked={locked} disabled={busy}
-              onToggle={() => onToggle?.(c.slot)} />
-          );
-        })}
+        {BOARD_ROWS.map((row) => (
+          <div key={row.join("-")} className={`chaos-roster-row chaos-roster-row--${row.length === 2 ? "two" : "three"}`}>
+            {row.map((slot) => {
+              const c = roster?.[SLOTS.indexOf(slot)];
+              if (!c) return <EmptySlot key={slot} slot={slot} />;
+              return (
+                <ChaosCard key={c.id} card={c} side={side}
+                  held={heldSlots.includes(c.slot)} kept={keptSlots.includes(c.slot)}
+                  interactive={interactive} locked={locked} disabled={busy}
+                  onToggle={() => onToggle?.(c.slot)} />
+              );
+            })}
+          </div>
+        ))}
       </div>
       {analysis && <RosterRead analysis={analysis} />}
     </div>
@@ -110,12 +118,16 @@ export default function ChaosClash({ tier = "GUEST", onReady, onGated, challenge
     if (resumed.current) return;
     resumed.current = true;
     if (challengeId) return;
+    // Nothing to resume means the board is EMPTY, so the shell around it must
+    // drop any run it is still holding. Otherwise the previous game's era,
+    // roll strip and Run button survive on top of a blank board.
+    const forget = () => { store.clear(); onRunChange?.(null); };
     const id = store.get();
-    if (!id) return;
+    if (!id) { onRunChange?.(null); return; }
     viewChaos(id, tier)
-      .then((r) => { if (r?.chaos && r.chaos.status !== "ABANDONED") adopt(r.chaos); else store.clear(); })
-      .catch(() => store.clear());
-  }, [tier, challengeId, adopt]);
+      .then((r) => { if (r?.chaos && r.chaos.status !== "ABANDONED") adopt(r.chaos); else forget(); })
+      .catch(forget);
+  }, [tier, challengeId, adopt, onRunChange]);
 
   const roll1 = async () => {
     setBusy(true); setError(null);
@@ -297,7 +309,7 @@ export default function ChaosClash({ tier = "GUEST", onReady, onGated, challenge
       {isReady && !hideReadyBlock && (
         <div style={{ marginTop: 14 }}>
           <div style={{ fontSize: 12.5, color: T.onArena, textAlign: "center" }}>
-            Rosters and coaches are locked. Run the Clash to play it out.
+            Rosters and coaches are locked. Run the sim to play it out.
           </div>
           <button onClick={makeChallenge} style={{
             marginTop: 10, minHeight: 44, width: "100%", borderRadius: R.sm, cursor: "pointer",
