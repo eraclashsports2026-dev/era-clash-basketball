@@ -2,8 +2,8 @@
   "artifact": "time-arena-preview-qa",
   "phase": "8C.1 — pixel-fidelity reconstruction",
   "deployment": {
-    "baseUrl": "https://era-clash-basketball-tcwpl37wv-era-clash.vercel.app",
-    "commit": "4c07edc90967830ee11d912d926ae59fc3ab03fa",
+    "baseUrl": "https://era-clash-basketball-bjop4szjs-era-clash.vercel.app",
+    "commit": "1e8b1a1f1c6dbef35fe04d527e0680f4820f3ff3",
     "environment": "vercel preview, access-gated"
   },
   "method": "Playwright over the network against the deployed branch preview, authenticated with a signed session obtained by POSTing an access key. The dev fixture is compiled out of a preview build, so every measurement below comes from a real draft played through the UI.",
@@ -100,18 +100,18 @@
   },
   "eraDealt": {
     "observed": [
-      "1950s",
+      "2010s",
+      "2020s",
+      "2000s",
       "1990s",
-      "2020s",
-      "1960s",
-      "2020s",
-      "2020s"
+      "1990s",
+      "1990s"
     ],
     "distinct": [
-      "1950s",
-      "1990s",
+      "2010s",
       "2020s",
-      "1960s"
+      "2000s",
+      "1990s"
     ]
   },
   "report": {
@@ -120,7 +120,7 @@
     "story": {
       "count": 8,
       "worst": 5.8,
-      "sample": "Kevin Durant controlled the game with 35 points, 28 rebounds"
+      "sample": "Bernard King controlled the game with 59 points, 8 assists. "
     }
   },
   "feedback": {
@@ -132,6 +132,9 @@
       "viewport": "1280x800",
       "touch": false,
       "rosterRows": 1,
+      "headerPx": 65,
+      "headerPctOfViewport": 8,
+      "headerSticky": true,
       "overflowX": 0,
       "minTap": 44,
       "unreachable": 0
@@ -140,6 +143,9 @@
       "viewport": "768x1024",
       "touch": true,
       "rosterRows": 2,
+      "headerPx": 65,
+      "headerPctOfViewport": 6,
+      "headerSticky": true,
       "overflowX": 0,
       "minTap": 44,
       "unreachable": 0
@@ -148,6 +154,9 @@
       "viewport": "430x932",
       "touch": true,
       "rosterRows": 5,
+      "headerPx": 119,
+      "headerPctOfViewport": 13,
+      "headerSticky": true,
       "overflowX": 0,
       "minTap": 44,
       "unreachable": 0
@@ -156,6 +165,9 @@
       "viewport": "390x844",
       "touch": true,
       "rosterRows": 5,
+      "headerPx": 115,
+      "headerPctOfViewport": 14,
+      "headerSticky": true,
       "overflowX": 0,
       "minTap": 44,
       "unreachable": 0
@@ -282,7 +294,7 @@
     {
       "name": "the era is revealed with Roll 2, in the rail",
       "ok": true,
-      "detail": "1950s"
+      "detail": "2010s"
     },
     {
       "name": "the era box appears once, in the rail",
@@ -362,7 +374,7 @@
     {
       "name": "six fresh drafts do not all land on one era",
       "ok": true,
-      "detail": "1950s, 1990s, 2020s, 1960s, 2020s, 2020s"
+      "detail": "2010s, 2020s, 2000s, 1990s, 1990s, 1990s"
     },
     {
       "name": "no draft defaults to the 1950s",
@@ -373,6 +385,11 @@
       "name": "nothing is clipped or unreachable on any width",
       "ok": true,
       "detail": ""
+    },
+    {
+      "name": "the sticky header never takes more than a fifth of any viewport",
+      "ok": true,
+      "detail": "1280x800 65px/8% · 768x1024 65px/6% · 430x932 119px/13% · 390x844 115px/14%"
     },
     {
       "name": "every hold and roll control is a 44px target on touch widths",
@@ -390,6 +407,6 @@
       "detail": "HTTP 404"
     }
   ],
-  "passed": 44,
+  "passed": 45,
   "failed": 0
 }
