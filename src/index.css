@@ -962,13 +962,28 @@ button { font-family: inherit; }
   background: linear-gradient(180deg, rgba(168, 100, 232, 0.22), #060c15 92%);
 }
 .ec-coach-portrait svg, .ec-coach-portrait img { width: 100%; height: 100%; display: block; }
-.ec-coach-body { grid-row: 2; min-width: 0; display: grid; align-content: start; gap: 4px; }
+/* The card is FIXED geometry, so the BODY is what gives. Without min-height 0 a
+   grid row cannot shrink below its content, and one long coaching span — Nick
+   Nurse's, with three stints and a W-L note — pushed the footer clean out
+   through the bottom border while the two cards beside it stayed put. The body
+   scrolls instead, so detail the player opened is still reachable. */
+.ec-coach-body {
+  grid-row: 2; min-width: 0; min-height: 0;
+  display: grid; align-content: start; gap: 4px;
+  overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin;
+}
 .ec-coach-name {
   font-family: var(--ec-display);
   font-size: 15px; font-weight: 700; letter-spacing: 0.4px; line-height: 1.1;
   color: var(--ec-a-text);
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden;
 }
-.ec-coach-span { font-size: 10.5px; font-weight: 700; color: var(--ec-a-text-muted); }
+/* A span is a date range. Two lines is the whole idea; a parenthetical career
+   history belongs in the scouting detail, not on the card face. */
+.ec-coach-span {
+  font-size: 10.5px; font-weight: 700; color: var(--ec-a-text-muted);
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden;
+}
 .ec-coach-blurb { font-size: 11.5px; line-height: 1.4; color: var(--ec-a-text-secondary); }
 .ec-coach-foot { grid-column: 1 / -1; grid-row: 3; display: grid; gap: 5px; }
 .ec-coach-detail-toggle {

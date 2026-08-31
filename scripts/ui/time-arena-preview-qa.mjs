@@ -193,6 +193,24 @@ const run = async () => {
   await page.getByRole("button", { name: /FINAL ROLL/ }).click();
   await page.locator(".ec-coach-card").nth(2).waitFor({ timeout: 45_000 });
   gate("coach offers arrive in the same sequence, not a second draft", (await page.locator(".ec-coach-card").count()) >= 3);
+  // A card of fixed height with a long coaching span pushed its footer out
+  // through the bottom border once. Every footer must sit INSIDE its card, and
+  // the three cards must be one height, with real coach copy — not fixture copy.
+  const coachFit = async () => page.evaluate(() => [...document.querySelectorAll(".ec-coach-card")].map((c) => {
+    const card = c.getBoundingClientRect(), foot = c.querySelector(".ec-coach-foot")?.getBoundingClientRect();
+    return {
+      height: Math.round(card.height),
+      footOverflowPx: foot ? Math.round(Math.max(0, foot.bottom - card.bottom)) : 0,
+      footTop: Math.round(foot?.top ?? 0),
+    };
+  }));
+  const staffFit = await coachFit();
+  gate("every coach footer sits inside its own card",
+    staffFit.every((c) => c.footOverflowPx === 0),
+    `worst overflow ${Math.max(...staffFit.map((c) => c.footOverflowPx))}px`);
+  gate("the coach cards are one height with their footers on one line",
+    new Set(staffFit.map((c) => c.height)).size === 1 && Math.max(...staffFit.map((c) => c.footTop)) - Math.min(...staffFit.map((c) => c.footTop)) <= 1,
+    `heights ${[...new Set(staffFit.map((c) => c.height))].join("/")}`);
   await page.screenshot({ path: `${SHOTS}/state-04-staff.png` });
   await page.getByRole("button", { name: /^Select / }).first().click();
   await page.getByRole("button", { name: /HIRE THIS STAFF/ }).click();
@@ -222,6 +240,17 @@ const run = async () => {
     [...el.querySelectorAll(":scope > div > div")].filter((d) => /tabular-nums/.test(d.style.fontVariantNumeric)).length);
   gate("the dock box score lists both teams in full", dockRows >= 10, `${dockRows} rows`);
   await page.screenshot({ path: `${SHOTS}/state-06b-dock-box.png` });
+  const resultFit = await coachFit();
+  gate("the finished board keeps the staff decision, still inside its cards",
+    resultFit.length === 3 && resultFit.every((c) => c.footOverflowPx === 0) && new Set(resultFit.map((c) => c.height)).size === 1,
+    `${resultFit.length} cards, worst overflow ${Math.max(0, ...resultFit.map((c) => c.footOverflowPx))}px`);
+  const tail = await page.evaluate(() => {
+    const b = (s) => document.querySelector(s)?.getBoundingClientRect();
+    const main = b(".ec-ta-main"), rail = b(".ec-ta-rail");
+    return { gapPx: main && rail ? Math.round(Math.abs(main.bottom - rail.bottom)) : null };
+  });
+  gate("the two columns end together after a result, with no tall empty stage",
+    tail.gapPx !== null && tail.gapPx <= 220, `${tail.gapPx}px difference`);
   await dock.getByRole("tab", { name: "Box Score" }).click();
 
   // ══ C. The full report: names and prose must be READABLE ═══════════════════
