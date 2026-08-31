@@ -220,9 +220,14 @@ const performance = async (page) => {
 
   await page.goto(`${BASE}/dev/time-arena-reference`, { waitUntil: "domcontentloaded" });
   await page.waitForSelector(".ec-ta-roster .ec-pc");
-  const timing = await page.evaluate(() => {
+  // Wait for the paint entry rather than sampling and hoping: on a warm run the
+  // evaluate can land before the entry is recorded, and a null that coerces to 0
+  // is a performance gate that passes because it measured NOTHING.
+  const timing = await page.evaluate(async () => {
+    const paintEntry = () => performance.getEntriesByType("paint").find((p) => p.name === "first-contentful-paint");
+    for (let i = 0; i < 40 && !paintEntry(); i++) await new Promise((r) => setTimeout(r, 50));
     const nav = performance.getEntriesByType("navigation")[0] || {};
-    const paint = performance.getEntriesByType("paint").find((p) => p.name === "first-contentful-paint");
+    const paint = paintEntry();
     return {
       firstContentfulPaintMs: paint ? Math.round(paint.startTime) : null,
       domContentLoadedMs: Math.round(nav.domContentLoadedEventEnd || 0),
@@ -245,8 +250,12 @@ const performance = async (page) => {
   const svgTotal = svgs.reduce((n, s) => n + s.bytes, 0);
   const failures = [];
   if (svgTotal > 24 * 1024) failures.push(`arena SVG kit is ${Math.round(svgTotal / 1024)}KB`);
-  if ((timing.firstContentfulPaintMs ?? 0) > 2500) failures.push(`first paint ${timing.firstContentfulPaintMs}ms`);
-  if ((interaction.holdToggleMs ?? 0) > 120) failures.push(`hold toggle ${interaction.holdToggleMs}ms`);
+  // A missing number is a failure to MEASURE, not a pass. Both of these used to
+  // read `?? 0`, so an unrecorded paint or an unclickable hold scored perfectly.
+  if (timing.firstContentfulPaintMs == null) failures.push("first paint was not measured");
+  else if (timing.firstContentfulPaintMs > 2500) failures.push(`first paint ${timing.firstContentfulPaintMs}ms`);
+  if (interaction.holdToggleMs == null) failures.push("hold toggle was not measured");
+  else if (interaction.holdToggleMs > 120) failures.push(`hold toggle ${interaction.holdToggleMs}ms`);
 
   writeFileSync(`${OUT}/time-arena-performance-qa.json`, JSON.stringify({
     artifact: "time-arena-performance-qa", phase: "8C.1 — pixel-fidelity reconstruction",
