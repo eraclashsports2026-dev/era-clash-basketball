@@ -2,8 +2,8 @@
   "artifact": "time-arena-preview-qa",
   "phase": "8C.1 — pixel-fidelity reconstruction",
   "deployment": {
-    "baseUrl": "https://era-clash-basketball-bntu0etsy-era-clash.vercel.app",
-    "commit": "73bb2056716777248b6b5c4c165710e9abffdfb4",
+    "baseUrl": "https://era-clash-basketball-mbong9cbx-era-clash.vercel.app",
+    "commit": "f8b6c0af89541ec51b5ed880ad2280f41dcf6f3e",
     "environment": "vercel preview, access-gated"
   },
   "method": "Playwright over the network against the deployed branch preview, authenticated with a signed session obtained by POSTing an access key. The dev fixture is compiled out of a preview build, so every measurement below comes from a real draft played through the UI.",
@@ -100,31 +100,72 @@
   },
   "eraDealt": {
     "observed": [
-      "2010s",
-      "2010s",
-      "1990s",
       "1970s",
-      "2010s",
-      "2020s"
+      "1950s",
+      "1950s",
+      "1970s",
+      "1960s",
+      "2000s"
     ],
     "distinct": [
-      "2010s",
-      "1990s",
       "1970s",
-      "2020s"
+      "1950s",
+      "1960s",
+      "2000s"
     ]
   },
   "report": {
     "boxScoreRows": 13,
     "worstNameContrast": 5.8,
     "story": {
-      "count": 7,
+      "count": 8,
+      "measured": 8,
       "worst": 5.8,
-      "sample": "Stephen Curry controlled the game with 45 points, 9 assists."
+      "sample": "Joel Embiid controlled the game with 33 points, 23 rebounds."
     },
     "coaching": {
-      "blocks": 43,
-      "worst": 1.8,
+      "blocks": 41,
+      "measured": 41,
+      "worst": 3.2,
+      "failing": [
+        {
+          "ratio": 3.2,
+          "fontSize": 12,
+          "weight": 900,
+          "text": "TEAM GOLD"
+        },
+        {
+          "ratio": 3.74,
+          "fontSize": 11.5,
+          "weight": 400,
+          "text": "What Blue ran at this defense."
+        },
+        {
+          "ratio": 3.74,
+          "fontSize": 11.5,
+          "weight": 400,
+          "text": "What Gold ran at this defense."
+        },
+        {
+          "ratio": 3.2,
+          "fontSize": 13.5,
+          "weight": 800,
+          "text": "Gold Edge"
+        },
+        {
+          "ratio": 3.74,
+          "fontSize": 13.5,
+          "weight": 800,
+          "text": "Even"
+        },
+        {
+          "ratio": 3.74,
+          "fontSize": 13.5,
+          "weight": 800,
+          "text": "Even"
+        }
+      ],
+      "failingCount": 8,
       "names": true
     }
   },
@@ -299,7 +340,7 @@
     {
       "name": "the era is revealed with Roll 2, in the rail",
       "ok": true,
-      "detail": "2010s"
+      "detail": "1970s"
     },
     {
       "name": "the era box appears once, in the rail",
@@ -359,17 +400,17 @@
     {
       "name": "every player name is readable",
       "ok": true,
-      "detail": "worst contrast 5.8:1"
+      "detail": "worst contrast 5.8:1 across 13/13 measurable rows"
     },
     {
       "name": "the game story has readable body prose",
       "ok": true,
-      "detail": "7 passages, worst 5.8:1"
+      "detail": "8 passages, 8 measurable, worst 5.8:1"
     },
     {
       "name": "the coaching report renders, readable, on the deployed build",
       "ok": false,
-      "detail": "43 blocks, worst 1.8:1"
+      "detail": "8 below floor: \"TEAM GOLD\" 3.2:1 at 12px/900 · \"What Blue ran at this defense.\" 3.74:1 at 11.5px/400 · \"What Gold ran at this defense.\" 3.74:1 at 11.5px/400 · \"Gold Edge\" 3.2:1 at 13.5px/800 · \"Even\" 3.74:1 at 13.5px/800 · \"Even\" 3.74:1 at 13.5px/800"
     },
     {
       "name": "preview feedback is accepted",
@@ -384,7 +425,7 @@
     {
       "name": "six fresh drafts do not all land on one era",
       "ok": true,
-      "detail": "2010s, 2010s, 1990s, 1970s, 2010s, 2020s"
+      "detail": "1970s, 1950s, 1950s, 1970s, 1960s, 2000s"
     },
     {
       "name": "no draft defaults to the 1950s",
