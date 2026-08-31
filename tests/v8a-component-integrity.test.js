@@ -9,9 +9,12 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
 
+// Every component directory, including the arena — where the canonical Play
+// surface lives. The arena was NOT covered here until Phase 8C, which is
+// exactly where this class of crash would have hurt most.
+const DIRS = ["src/components", "src/components/chaos", "src/components/arena"];
 const files = () => [
-  ...readdirSync("src/components").filter((f) => f.endsWith(".jsx")).map((f) => `src/components/${f}`),
-  ...readdirSync("src/components/chaos").filter((f) => f.endsWith(".jsx")).map((f) => `src/components/chaos/${f}`),
+  ...DIRS.flatMap((d) => readdirSync(d).filter((f) => f.endsWith(".jsx")).map((f) => `${d}/${f}`)),
   "src/App.jsx",
 ];
 

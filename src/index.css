@@ -360,6 +360,13 @@ button { font-family: inherit; }
   --ec-a-blue-soft: rgba(59, 155, 255, 0.14);
   --ec-a-blue-line: rgba(59, 155, 255, 0.45);
 
+  /* Coach Chaos is a third identity, deliberately not a third team: it never
+     appears on a player card or a score. */
+  --ec-a-coach: #a864e8;
+  --ec-a-coach-soft: rgba(168, 100, 232, 0.14);
+  --ec-a-coach-line: rgba(168, 100, 232, 0.45);
+  --ec-a-coach-deep: #4c2579;
+
   --ec-a-border: rgba(157, 178, 209, 0.20);
   --ec-a-border-strong: rgba(157, 178, 209, 0.38);
   --ec-a-green: #4ade80;
@@ -514,3 +521,205 @@ button { font-family: inherit; }
    so no light band shows beneath the workspace. */
 .ec-arena-page { background: var(--ec-a-bg, #03070d); min-height: 100vh; }
 .ec-arena-page footer, .ec-arena-page .ec-footer { color: var(--ec-a-text-muted, #93a0b5); }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   THE TIME ARENA — Phase 8C canonical Play surface
+   One persistent workspace: the draft on the left, Live Intel and the Result
+   Dock on the right. Every colour is a token so contrast is measurable, and
+   every column is explicitly clamped — an implicit `auto` grid track grows to
+   its content's max-content width on a narrow screen, which is how a board can
+   end up several screens wide inside a clipped container.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.ec-ta {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(340px, 390px);
+  gap: 18px;
+  align-items: start;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 14px 18px 20px;
+}
+.ec-ta-main { min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+.ec-ta-rail {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px;
+  position: sticky;
+  top: 10px;
+  max-height: calc(100vh - 20px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* ── The stage: title, roll stepper, both benches ───────────────────────────*/
+.ec-ta-stage { position: relative; }
+.ec-ta-stage-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+}
+.ec-ta-stepper { display: flex; align-items: flex-start; gap: 6px; }
+.ec-ta-step { display: grid; justify-items: center; gap: 4px; min-width: 74px; }
+.ec-ta-step-dot {
+  width: 26px; height: 26px; border-radius: 999px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 900;
+  border: 1px solid var(--ec-a-border-strong);
+  color: var(--ec-a-text-muted);
+  background: var(--ec-a-panel);
+}
+.ec-ta-step[data-state="COMPLETE"] .ec-ta-step-dot {
+  border-color: var(--ec-a-gold-line); background: var(--ec-a-gold); color: #0a0f18;
+}
+.ec-ta-step[data-state="ACTIVE"] .ec-ta-step-dot {
+  border-color: var(--ec-a-gold); color: var(--ec-a-gold);
+  background: var(--ec-a-gold-soft);
+  box-shadow: 0 0 0 3px rgba(242, 181, 29, 0.16);
+}
+.ec-ta-step-rule { height: 1px; flex: 1 1 auto; background: var(--ec-a-border); margin-top: 13px; min-width: 14px; }
+
+/* Two benches side by side once there is genuinely room for ten readable
+   cards; stacked rows below that, which keeps both fives on screen rather than
+   shrinking a name to initials. */
+.ec-ta-boards { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; }
+.ec-ta-team { min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
+.ec-ta-five { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+@media (max-width: 1439px) {
+  .ec-ta-boards { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+}
+@media (max-width: 1179px) {
+  .ec-ta { grid-template-columns: minmax(0, 1fr); padding: 12px 12px 18px; }
+  .ec-ta-rail { position: static; max-height: none; overflow: visible; }
+  .ec-ta-stage-head { grid-template-columns: minmax(0, 1fr); justify-items: center; text-align: center; }
+}
+@media (max-width: 720px) {
+  .ec-ta-five { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+}
+@media (max-width: 430px) {
+  .ec-ta-five { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* ── Player card ───────────────────────────────────────────────────────────*/
+.ec-pc {
+  --pc-accent: var(--ec-a-gold);
+  --pc-line: var(--ec-a-gold-line);
+  --pc-soft: var(--ec-a-gold-soft);
+  min-width: 0;
+  display: grid;
+  grid-template-rows: auto auto auto 1fr auto;
+  gap: 6px;
+  padding: 7px;
+  border-radius: 12px;
+  border: 1px solid var(--ec-a-border);
+  background: linear-gradient(180deg, var(--pc-soft) 0%, var(--ec-a-panel) 42%);
+}
+/* The team owns the theme. Position never touches it — a PF or a C on Team
+   Gold is as gold as the point guard. */
+.ec-ta-team[data-team="blue"] .ec-pc {
+  --pc-accent: var(--ec-a-blue);
+  --pc-line: var(--ec-a-blue-line);
+  --pc-soft: var(--ec-a-blue-soft);
+}
+.ec-pc[data-held="true"] { border-color: var(--pc-line); box-shadow: 0 0 0 1px var(--pc-line) inset; }
+.ec-pc-slot {
+  justify-self: start;
+  font-size: 9.5px; font-weight: 900; letter-spacing: 1px;
+  padding: 2px 6px; border-radius: 6px;
+  color: var(--pc-accent);
+  border: 1px solid var(--pc-line);
+  background: var(--pc-soft);
+}
+.ec-pc-portrait { display: flex; justify-content: center; }
+.ec-pc-name {
+  font-size: 11.5px; font-weight: 900; letter-spacing: 0.3px; line-height: 1.2;
+  color: var(--ec-a-text);
+  height: 28px; overflow: hidden;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+}
+.ec-pc-meta { display: flex; align-items: baseline; justify-content: space-between; gap: 6px; }
+.ec-pc-decade { font-size: 9.5px; color: var(--ec-a-text-muted); }
+.ec-pc-ovr { font-size: 15px; font-weight: 900; color: var(--pc-accent); font-variant-numeric: tabular-nums; }
+.ec-pc-ovr span { font-size: 8.5px; font-weight: 800; color: var(--ec-a-text-muted); margin-left: 2px; }
+.ec-pc-action {
+  min-height: 44px; width: 100%; border-radius: 8px;
+  font-size: 10.5px; font-weight: 900; letter-spacing: 0.8px;
+  display: flex; align-items: center; justify-content: center; gap: 4px;
+  border: 1px solid var(--ec-a-border);
+  background: transparent;
+  color: var(--ec-a-text-secondary);
+  cursor: pointer;
+}
+.ec-pc-action[data-on="true"] { border-color: var(--pc-line); background: var(--pc-soft); color: var(--pc-accent); }
+.ec-pc-action[disabled] { cursor: default; }
+/* The same height as the HOLD control, so Team Blue's cards are exactly as tall
+   as Team Gold's. A 44px button against a 32px status pill made every card on
+   one bench taller than its opposite number. */
+.ec-pc-static {
+  min-height: 44px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center; gap: 4px;
+  font-size: 9.5px; font-weight: 900; letter-spacing: 0.8px;
+  border: 1px dashed var(--ec-a-border);
+  color: var(--ec-a-text-muted);
+}
+.ec-pc-empty {
+  min-height: 214px; border-radius: 12px;
+  border: 1px dashed var(--ec-a-border);
+  background: rgba(255, 255, 255, 0.015);
+  display: grid; place-items: center; align-content: center; gap: 4px;
+}
+
+/* ── Coach Chaos: a third identity that is not a third team ────────────────*/
+.ec-cc-offers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 900px) { .ec-cc-offers { grid-template-columns: minmax(0, 1fr); } }
+.ec-coach-card {
+  min-width: 0;
+  display: grid; grid-template-rows: auto auto auto 1fr auto; gap: 8px;
+  padding: 12px; border-radius: 12px;
+  border: 1px solid var(--ec-a-coach-line);
+  background: linear-gradient(180deg, var(--ec-a-coach-soft) 0%, var(--ec-a-panel) 55%);
+}
+.ec-coach-card[data-on="true"] { box-shadow: 0 0 0 1px var(--ec-a-coach) inset; border-color: var(--ec-a-coach); }
+.ec-coach-monogram {
+  width: 46px; height: 46px; border-radius: 10px; flex-shrink: 0;
+  display: grid; place-items: center;
+  font-weight: 900; font-style: italic; font-size: 15px; letter-spacing: 0.5px;
+  color: var(--ec-a-text);
+  border: 1px solid var(--ec-a-coach-line);
+  background: linear-gradient(180deg, rgba(168, 100, 232, 0.28), rgba(11, 14, 23, 0.6));
+}
+
+/* ── Utility bar ───────────────────────────────────────────────────────────*/
+.ec-ta-utility {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 10px;
+  padding: 10px 14px; border-radius: 12px;
+  border: 1px solid var(--ec-a-border);
+  background: var(--ec-a-panel);
+}
+.ec-ta-utility-links { display: flex; align-items: center; flex-wrap: wrap; gap: 4px; }
+.ec-ta-utility button {
+  min-height: 44px; padding: 0 12px; border-radius: 8px;
+  background: transparent; border: none; cursor: pointer;
+  color: var(--ec-a-text-secondary); font-size: 11.5px; font-weight: 800; letter-spacing: 0.6px;
+}
+.ec-ta-utility button:hover { color: var(--ec-a-text); background: var(--ec-a-panel-soft); }
+
+/* ── Live Intel ────────────────────────────────────────────────────────────*/
+.ec-intel-row { display: grid; gap: 2px; padding: 7px 0; border-top: 1px solid var(--ec-a-border); }
+.ec-intel-row:first-of-type { border-top: none; }
+.ec-intel-label { font-size: 9.5px; font-weight: 900; letter-spacing: 1.4px; }
+.ec-intel-values { display: grid; gap: 1px; }
+.ec-intel-value { font-size: 12.5px; color: var(--ec-a-text); line-height: 1.45; }
+
+/* Once a game has been played the result leads the stacked page: a finished
+   score below the whole board is a result nobody scrolls to. */
+@media (max-width: 1179px) {
+  .ec-ta-rail--front { order: -1; }
+}
+
+/* Reduced motion: nothing in the arena carries meaning through movement. */
+@media (prefers-reduced-motion: reduce) {
+  .ec-pc, .ec-coach-card { transition: none; }
+}

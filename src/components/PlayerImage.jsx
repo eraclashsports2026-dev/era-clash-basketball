@@ -27,6 +27,9 @@ export const resolvePlayerImage = (playerId) => {
 
 // Sizes per variant: fixed containers so images never cause layout shift.
 const VARIANTS = {
+  // The Time Arena card fills its own width, so this variant is fluid: the
+  // container is what decides how wide a bench card is at a given breakpoint.
+  arena: { w: "100%", h: 104, radius: 10, fs: 24 },
   thumbnail: { w: 40, h: 40, radius: 8, fs: 13 },
   card: { w: 56, h: 56, radius: 10, fs: 16 },
   roster: { w: 64, h: 80, radius: 10, fs: 18 },

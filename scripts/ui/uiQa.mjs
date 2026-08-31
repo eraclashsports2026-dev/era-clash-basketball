@@ -89,12 +89,20 @@ if (MODE === "membership") {
 }
 
 if (MODE === "dock") {
-  const dock = read("src/components/arena/MatchupResultDock.jsx");
-  ok("the dock renders all five states", ["BUILD YOUR CLASH", "YOUR CLASH SO FAR", "MATCHUP OUTLOOK", "SIMULATING THE CLASH", "FINAL SCORE"]
-    .every((s) => dock.includes(s)));
+  const dock = read("src/components/arena/ResultDock.jsx");
+  ok("the dock renders every state it owns",
+    ["YOUR RESULT WILL APPEAR HERE", "SIMULATING THE CLASH", "FINAL SCORE", "LAST CLASH"].every((s) => dock.includes(s)));
+  // A previous result that could be mistaken for the live draft is the one
+  // thing this surface must never do.
+  ok("a previous result is labelled as one, twice over",
+    /LAST CLASH · NOT THE DRAFT ON SCREEN/.test(dock) && /previous \? agoLabel/.test(dock));
+  ok("the dock ages a previous result coarsely, with no fake precision",
+    /JUST NOW/.test(dock) && /MINUTE/.test(dock) && !/\bseconds ago\b/.test(dock));
+  ok("the MVP's stat line is formatted, never rendered as an object",
+    /statLine\(sim\.mvpLine\)/.test(dock) && /const statLine =/.test(dock));
   ok("the dock offers the four result tabs",
     ["Game Story", "Box Score", "Coaching", "Analysis"].every((t) => dock.includes(t)));
-  ok("the dock offers the full report", /VIEW FULL POSTGAME REPORT/.test(dock));
+  ok("the dock offers the full report", /VIEW FULL REPORT/.test(dock));
   ok("the dock shows no win probability", !/winPct|win probability|expectedGoldWinPct/i.test(dock));
   // A percentage bound to progress wording would be a fabricated precision.
   // Bare CSS percentages (widths) are not that, so the check is scoped.
@@ -113,13 +121,30 @@ if (MODE === "dock") {
 
 if (MODE === "arena") {
   const css = read("src/index.css");
-  ok("the command centre is a two-column grid", /\.ec-cc\s*\{[^}]*grid-template-columns/.test(css));
-  ok("the dock is sticky on desktop", /\.ec-cc-dock\s*\{[^}]*position:\s*sticky/.test(css));
-  ok("the dock stacks below the desktop breakpoint", /@media \(max-width: 1179px\)[\s\S]*?\.ec-cc \{ grid-template-columns: minmax\(0, 1fr\); \}/.test(css));
-  ok("the dock scrolls internally rather than trapping the page", /\.ec-cc-dock\s*\{[^}]*overscroll-behavior: contain/.test(css));
+  const shell = read("src/components/arena/TimeArena.jsx");
+  const stage = read("src/components/arena/ChaosStage.jsx");
+
+  // ── Layout ────────────────────────────────────────────────────────────────
+  ok("the Time Arena is a two-column workspace",
+    /\.ec-ta \{[^}]*grid-template-columns: minmax\(0, 1fr\) minmax\(340px, 390px\)/.test(css));
+  ok("the right rail is sticky on desktop", /\.ec-ta-rail \{[^}]*position: sticky/.test(css));
+  ok("the rail scrolls internally rather than trapping the page",
+    /\.ec-ta-rail \{[^}]*overscroll-behavior: contain/.test(css));
+  ok("the workspace stacks below the desktop breakpoint",
+    /@media \(max-width: 1179px\)[\s\S]{0,400}\.ec-ta \{ grid-template-columns: minmax\(0, 1fr\)/.test(css));
+  ok("neither column can outgrow the screen",
+    /\.ec-ta-main \{[^}]*grid-template-columns: minmax\(0, 1fr\)/.test(css)
+    && /\.ec-ta-rail \{[^}]*grid-template-columns: minmax\(0, 1fr\)/.test(css));
+  ok("both benches sit side by side only where ten cards stay readable",
+    /\.ec-ta-boards \{[^}]*grid-template-columns: minmax\(0, 1fr\) minmax\(0, 1fr\)/.test(css)
+    && /@media \(max-width: 1439px\)[\s\S]{0,200}\.ec-ta-boards \{ grid-template-columns: minmax\(0, 1fr\)/.test(css));
+  ok("the finished result leads the stacked page",
+    /ec-ta-rail--front/.test(shell) && /\.ec-ta-rail--front \{ order: -1; \}/.test(css));
+  ok("the arena keeps the matchup visible after the result", /THE MATCHUP YOU BUILT/.test(stage));
   ok("arena atmosphere is CSS, not a downloaded image", !/\.ec-arena-court[\s\S]{0,300}url\(/.test(css));
   ok("reduced motion is respected", /prefers-reduced-motion/.test(css));
-  // Contrast: body text must be clearly lighter than every panel it sits on.
+
+  // ── Depth and contrast: every surface is measurably distinct ──────────────
   const tok = (n) => (css.match(new RegExp(`--ec-a-${n}:\\s*([^;]+);`)) || [])[1]?.trim();
   const lum = (hex) => {
     const h = hex.replace("#", "");
@@ -133,57 +158,169 @@ if (MODE === "arena") {
   ok("every panel is far darker than the body text", panels.every((p) => textL - p > 0.8));
   ok("panels are distinguishable from one another",
     new Set(panels.map((p) => p.toFixed(3))).size === panels.length);
-  const shell = read("src/components/arena/ArenaCommandCenter.jsx");
-  ok("the arena keeps the matchup visible after the result", /THE MATCHUP YOU BUILT/.test(shell));
-  ok("the finished result leads the stacked page on mobile",
-    /ec-cc-dock--front/.test(shell) && /\.ec-cc-dock--front \{ order: -1; \}/.test(css));
-  ok("the roll strip is driven by server state, not inferred",
-    /run \? run\.roll/.test(read("src/components/arena/RollStrip.jsx")));
+  ok("the coach identity is its own colour, not a team's",
+    !!tok("coach") && tok("coach") !== tok("gold") && tok("coach") !== tok("blue"));
 
-  // The workspace reads in the order the user works: rolls, the five, then the
-  // button that plays it.
-  const shellSrc = src("src/components/arena/ArenaCommandCenter.jsx");
-  const at = (re) => shellSrc.search(re);
-  ok("the workspace runs rolls then the board then the run bar",
-    at(/<RollStrip/) > -1 && at(/<ChaosClash/) > at(/<RollStrip/) && at(/RUN SIM/) > at(/<ChaosClash/));
-  ok("the era is stated once, by the dock alone", !/EraContextBanner/.test(shellSrc));
-  ok("the primary CTA is named RUN SIM everywhere",
-    /RUN SIM/.test(shellSrc) && !/RUN THE CLASH/.test(shellSrc) && !/RUN THE CLASH/.test(read("src/App.jsx")));
+  // ── The single primary action, and one era ────────────────────────────────
+  ok("the roll progression is driven by server state, not inferred",
+    /run \? run\.roll/.test(read("src/components/arena/RollStepper.jsx")));
+  ok("the stage names the three rolls",
+    ["FOUNDATION", "ADAPT", "COMMIT"].every((w) => read("src/components/arena/RollStepper.jsx").includes(w)));
+  ok("one CTA carries whatever the run is waiting on",
+    ["ROLL 1", "LOCK & ROLL 2", "FINAL ROLL", "HIRE THIS STAFF", "RUN SIM"].every((l) => stage.includes(l)));
+  ok("the era panel belongs to the rail alone",
+    !/EraContextBanner/.test(stage) && /ERA IMPACT/.test(read("src/components/arena/LiveIntel.jsx")));
+  ok("the utility bar states the era and never competes with the CTA",
+    /ERA: /.test(read("src/components/arena/UtilityBar.jsx")));
 
-  // Board shape: two guards over wing / centre / forward, centred, with the
-  // roster order the engine indexes by left alone.
-  const clash = src("src/components/chaos/ChaosClash.jsx");
-  ok("the roster order the engine indexes by is unchanged",
-    /const SLOTS = \["PG", "SG", "SF", "PF", "C"\];/.test(clash));
-  ok("the board lays two guards over three",
-    /const BOARD_ROWS = \[\["PG", "SG"\], \["SF", "C", "PF"\]\];/.test(clash));
-  ok("the two-card row is centred at the same card width",
-    /\.chaos-roster-row--two \{[^}]*justify-content: center/.test(css)
-    && /\.chaos-roster-row--two \{[^}]*calc\(\(100% - 16px\) \/ 3\)/.test(css));
-  ok("neither board can grow wider than the other",
-    /\.chaos-boards \{[^}]*grid-template-columns: minmax\(0, 1fr\) minmax\(0, 1fr\)/.test(css)
-    && /\.chaos-boards \{[^}]*align-items: stretch/.test(css));
-  ok("both roster summaries share one height", /\.chaos-read \{ flex: 1 1 auto; \}/.test(css));
+  // ── The superseded surfaces are gone, not merely unused ──────────────────
+  for (const dead of [
+    "src/components/arena/ArenaCommandCenter.jsx",
+    "src/components/arena/RollStrip.jsx",
+    "src/components/chaos/ChaosClash.jsx",
+    "src/components/chaos/ChaosCard.jsx",
+  ]) ok(`${dead.split("/").pop()} no longer exists`, !fs.existsSync(dead));
+}
 
-  // The full report is a light surface hosted inside the dark shell.
-  const app = src("src/App.jsx");
-  ok("the full report declares its own text colour on the light surface",
-    /background: T\.bg, color: T\.text/.test(app));
-  ok("a new Clash cannot inherit the finished run",
-    /const newChaosClash[\s\S]{0,400}setChaosRun\(null\)/.test(app));
-  ok("neither workspace column can outgrow the screen",
-    /\.ec-cc > div, \.ec-cc-dock > div \{ grid-template-columns: minmax\(0, 1fr\); \}/.test(css));
-  ok("an empty board clears the run the shell is holding",
-    /if \(!id\) \{ onRunChange\?\.\(null\); return; \}/.test(clash));
+if (MODE === "cards") {
+  const card = read("src/components/arena/PlayerCard.jsx");
+  const css = read("src/index.css");
+  // The defect this contract exists for: Gold's PF and C came out blue because
+  // the card decided its own colour from the position.
+  ok("the team container owns the theme",
+    /\.ec-ta-team\[data-team="blue"\] \.ec-pc \{[\s\S]{0,200}--pc-accent: var\(--ec-a-blue\)/.test(css));
+  ok("the card reads its accent from a variable, never from a position",
+    /var\(--pc-accent\)/.test(card) && !/(slot|pos)\s*===\s*"(PF|C|PG|SG|SF)"/.test(card));
+  ok("no position appears in a colour decision",
+    !/(PF|C)\s*\?\s*[^:]{0,40}(blue|gold)/i.test(card));
+  ok("every state carries a word, not only a tint",
+    ["LOCKED", "HOLD", "FINAL ROSTER", "HELD"].every((w) => card.includes(w)));
+  ok("hold state is announced to assistive tech", /aria-pressed=\{held\}/.test(card));
+  ok("the team is in the card's accessible name", /teamLabel/.test(card) && /Team Blue/.test(card));
+  ok("the HOLD control meets the touch-target floor",
+    /\.ec-pc-action \{[^}]*min-height: 44px/.test(css) && /\.ec-pc-static \{[^}]*min-height: 44px/.test(css));
+  ok("the name area is a fixed two lines, so cards cannot differ in height",
+    /-webkit-line-clamp: 2/.test(css) && /\.ec-pc-name \{[^}]*height: 28px/.test(css));
+  ok("no likeness is created here — the approved registry or a silhouette",
+    /PlayerImage/.test(card) && !/(generate|midjourney|stable-diffusion|scrape)/i.test(card));
+}
+
+if (MODE === "sync") {
+  const rs = src("src/chaos/runState.js");
+  const api = src("api/game.js");
+  ok("the synchronized sequence has its own version key",
+    /CHAOS_SEQUENCE_VERSION = "2\.0\.0"/.test(rs) && /CURRENT_SEQUENCE = 2/.test(rs));
+  ok("the draw keys are untouched, so no seed is re-dealt",
+    /CHAOS_DRAFT_VERSION = "1\.0\.0"/.test(src("src/chaos/draftOdds.js"))
+    && /DRAFT_PROBABILITY_VERSION = "1\.0\.0"/.test(src("src/chaos/draftOdds.js")));
+  ok("the era hash is frozen, so a seed keeps its era",
+    /ERA_REVEAL_KEY = "2\.0\.0"/.test(rs) && /era\|\$\{seedId\}\|\$\{ERA_REVEAL_KEY\}/.test(rs));
+  ok("one submit carries players and coaches",
+    /submitRollDecisions/.test(rs) && /holdSlots[\s\S]{0,80}holdRoles/.test(rs));
+  ok("each flow refuses the other's actions",
+    (rs.match(/WRONG_SEQUENCE/g) || []).length >= 3);
+  ok("the client can submit decisions and nothing else",
+    /chaosAction: "decide"/.test(src("src/chaos/client.js"))
+    && !/goldIds|coachId:[^)]*offer/.test(src("src/chaos/client.js").split("submitChaosDecisions")[1] || ""));
+  ok("a challenge replays the sequence it was minted under",
+    /sequenceFromManifest/.test(src("api/_lib/chaosRun.js")));
+  ok("there is no fourth roll", /nextRoll >= 3/.test(rs) && /"ROLL_3_REVEALED"/.test(rs));
+  ok("the CPU commits both decisions before the user submits",
+    /commitCpuHolds\(run, \{ gold: nextGold, blue: nextBlue \}\)/.test(rs)
+    && /commitCpuCoachHolds\(run, \{ gold: nextGold, blue: nextBlue \}\)/.test(rs));
+  ok("no draft module can even see an entitlement",
+    ["src/chaos/runState.js", "src/chaos/draftOdds.js", "src/chaos/coachOffers.js", "src/chaos/legendCpu.js"]
+      .every((f) => !/from\s+["'][^"']*entitlements/.test(src(f))
+        && !/\b(GUEST|FREE|PLUS|COMMISSIONER|MATRIX|CAPABILITIES)\b/.test(src(f))));
+  ok("the API validates both halves before mutating",
+    /chaosAction === "decide"/.test(api) && /holdSlots\.length > 5 \|\| b\.holdRoles\.length > 3/.test(api));
+}
+
+if (MODE === "intel") {
+  const intel = read("src/components/arena/LiveIntel.jsx");
+  const stage = read("src/components/arena/ChaosStage.jsx");
+  const dock = read("src/components/arena/ResultDock.jsx");
+  ok("Live Intel carries the five reads in order",
+    ["YOUR IDENTITY", "BIGGEST RISK", "BLUE'S STRENGTH", "DRAFT PRESSURE", "ERA IMPACT"]
+      .every((s) => intel.includes(s)));
+  // Draft Pressure was printed twice once, which read as two different numbers.
+  ok("Draft Pressure appears exactly once, in Live Intel",
+    (intel.match(/DRAFT PRESSURE/g) || []).length === 1
+    && !/DRAFT PRESSURE/.test(stage) && !/DRAFT PRESSURE/.test(dock));
+  ok("no raw coefficient is exposed",
+    !/rarityK|0\.60|coefficient/.test(intel));
+  ok("an incomplete board says so rather than inventing a read",
+    /Roll your first five to reveal your team identity/.test(intel));
+  ok("the read never claims a winner",
+    /not a prediction/.test(intel) && !/(will win|favoured to win|win probability)/i.test(intel));
+}
+
+if (MODE === "era") {
+  const intel = read("src/components/arena/LiveIntel.jsx");
+  const rs = src("src/chaos/runState.js");
+  const glue = src("api/_lib/chaosRun.js");
+  const ent = src("src/entitlements.js");
+  ok("the era is drawn from the seed alone", /export const revealEra/.test(rs) && /never personalised/i.test(read("src/chaos/runState.js")));
+  ok("the era is revealed with Roll 2", /if \(nextRoll === 2\) applyEraReveal\(run\)/.test(rs));
+  ok("choosing an era is a capability, held by PLUS and COMMISSIONER",
+    /CHAOS_CUSTOM_ERA/.test(ent) && /PLUS:[^\]]*CHAOS_CUSTOM_ERA/.test(ent) && !/FREE:[^\]]*CHAOS_CUSTOM_ERA/.test(ent));
+  ok("a competitive run refuses every tier", /ERA_LOCKED_FOR_MODE/.test(rs) && /competitiveEraLock/.test(glue));
+  ok("the competitive refusal is reported before membership",
+    glue.indexOf("COMPETITIVE_LOCK") < glue.indexOf("NOT_ENTITLED"));
+  ok("the window is after the reveal and before the final roll",
+    /run\.currentPhase !== "ROLL_2_REVEALED"/.test(rs) && /WINDOW_CLOSED/.test(glue));
+  ok("a chosen era is marked custom wherever it appears",
+    /eraCustom/.test(rs) && /CUSTOM ERA/.test(intel));
+  ok("membership routes centrally, with no checkout",
+    /membershipHref\(\{ feature: "custom-era"/.test(intel)
+    && !/(price|\$\d|checkout|card number)/i.test(intel));
+  // "tier" in the draft modules means card RARITY (APEX/ELITE/STAR), which is
+  // not an account tier — so this asserts the account concept is absent.
+  ok("no account tier reaches a draw or an offer",
+    ["src/chaos/draftOdds.js", "src/chaos/coachOffers.js"].every((f) =>
+      !/from\s+["'][^"']*entitlements/.test(src(f))
+      && !/\b(GUEST|FREE|PLUS|COMMISSIONER)\b/.test(src(f))));
+}
+
+if (MODE === "coach") {
+  const cc = read("src/components/arena/CoachCard.jsx");
+  const stage = read("src/components/arena/ChaosStage.jsx");
+  const offers = src("src/chaos/coachOffers.js");
+  ok("Coach Chaos states its purpose", /COACH CHAOS/.test(stage) && /legendary coaches/i.test(stage));
+  ok("the three roles are the three slots",
+    ["ROSTER MAXIMIZER", "OPPONENT COUNTER", "ERA ADAPTER"].every((r) => stage.includes(r)));
+  ok("a staff is held and released like a player",
+    /aria-pressed=\{held\}/.test(cc) && /LOCKED/.test(cc) && /HOLD/.test(cc));
+  ok("after the final roll the control becomes a hire",
+    /SELECT COACH/.test(cc) && /NOT HIRED/.test(cc) && /YOUR STAFF/.test(cc));
+  ok("the card face stays short and the depth is one tap away",
+    /Scouting detail/.test(cc) && /aria-expanded=\{open\}/.test(cc));
+  ok("purple is the coach identity and never a team's",
+    /--ec-a-coach/.test(cc) && !/--ec-a-gold\)/.test(cc.split("SELECT COACH")[0] || ""));
+  ok("no coach likeness is created — a monogram until approved art exists",
+    /MONOGRAM/.test(cc) && !/(img src|generate|scrape)/i.test(cc));
+  ok("the pre-reveal slot is scored on adaptability, not on an unknown era",
+    /eraAgnosticAdaptabilityScore/.test(offers) && /eraFitScore/.test(offers));
+  ok("both sides read the offers with the same function",
+    (offers.match(/eraFitScore/g) || []).length >= 3);
 }
 
 const passed = checks.filter((c) => c.pass).length;
-fs.mkdirSync("data/validation/8c", { recursive: true });
-const file = { navigation: "phase8c-navigation-registry.json", fantasy: "phase8c-fantasy-registry.json",
-  membership: "phase8c-membership-routing.json", dock: "phase8c-result-dock-contract.json",
-  arena: "phase8c-arena-layout-contract.json" }[MODE];
-fs.writeFileSync(`data/validation/8c/${file}`, JSON.stringify({
-  artifact: file.replace(/\.json$/, ""), phase: "8C", mode: MODE,
+fs.mkdirSync("data/validation/8c-time-arena", { recursive: true });
+const file = {
+  navigation: "navigation-registry.json",
+  fantasy: "fantasy-navigation-contract.json",
+  membership: "membership-routing-contract.json",
+  dock: "result-dock-contract.json",
+  arena: "time-arena-layout-contract.json",
+  cards: "player-card-theme-contract.json",
+  sync: "synchronized-chaos-contract.json",
+  intel: "live-intel-contract.json",
+  era: "era-membership-contract.json",
+  coach: "coach-chaos-contract-v2.json",
+}[MODE] || `${MODE}-qa.json`;
+fs.writeFileSync(`data/validation/8c-time-arena/${file}`, JSON.stringify({
+  artifact: file.replace(/\.json$/, ""), phase: "8C — Time Arena", mode: MODE,
   checks: checks.length, passed, failed: checks.length - passed, results: checks,
 }, null, 2) + "\n");
 console.log(`\n${MODE}: ${passed}/${checks.length} checks passed`);

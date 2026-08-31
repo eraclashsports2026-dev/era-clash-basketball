@@ -132,14 +132,18 @@ describe("fantasy is a truthful first-class pillar", () => {
 });
 
 describe("the result dock reads real state", () => {
-  const dock = readFileSync("src/components/arena/MatchupResultDock.jsx", "utf8");
+  const dock = readFileSync("src/components/arena/ResultDock.jsx", "utf8");
 
-  it("implements all five states and four tabs", () => {
-    for (const s of ["BUILD YOUR CLASH", "YOUR CLASH SO FAR", "MATCHUP OUTLOOK", "SIMULATING THE CLASH", "FINAL SCORE"]) {
+  it("implements every state it owns and the four tabs", () => {
+    // The draft-time reads moved to Live Intel in the Time Arena; the dock is a
+    // result surface, and one of its states is the PREVIOUS result.
+    for (const s of ["YOUR RESULT WILL APPEAR HERE", "SIMULATING THE CLASH", "FINAL SCORE", "LAST CLASH"]) {
       expect(dock).toContain(s);
     }
     for (const t of ["Game Story", "Box Score", "Coaching", "Analysis"]) expect(dock).toContain(t);
-    expect(dock).toMatch(/VIEW FULL POSTGAME REPORT/);
+    expect(dock).toMatch(/VIEW FULL REPORT/);
+    // A previous result can never read as the draft on screen.
+    expect(dock).toContain("LAST CLASH · NOT THE DRAFT ON SCREEN");
   });
 
   it("shows no win probability and no invented progress figure", () => {
@@ -168,7 +172,7 @@ describe("the arena preserves Phase 8B draft behaviour", () => {
   });
 
   it("keeps the roll strip driven by server state", () => {
-    expect(src("src/components/arena/RollStrip.jsx")).toMatch(/run \? run\.roll/);
+    expect(src("src/components/arena/RollStepper.jsx")).toMatch(/run \? run\.roll/);
   });
 });
 
