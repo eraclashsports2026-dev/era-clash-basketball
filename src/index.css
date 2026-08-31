@@ -1010,7 +1010,15 @@ button { font-family: inherit; }
   font-size: 10.5px; font-weight: 700; color: var(--ec-a-text-muted);
   display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden;
 }
-.ec-coach-blurb { font-size: 11.5px; line-height: 1.4; color: var(--ec-a-text-secondary); }
+/* Three lines on the face. The card grows only when a player OPENS the scouting
+   detail; a long offensive summary must not quietly cost the closed card its
+   canonical 232px. */
+.ec-coach-blurb {
+  font-size: 11.5px; line-height: 1.4; color: var(--ec-a-text-secondary);
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden;
+}
+/* Opened, the detail is read in full and the row grows with it. */
+.ec-coach-card[data-open="true"] .ec-coach-blurb { -webkit-line-clamp: unset; }
 .ec-coach-foot { grid-column: 1 / -1; grid-row: 3; display: grid; gap: 5px; }
 .ec-coach-detail-toggle {
   justify-self: start; min-height: 28px; padding: 0;

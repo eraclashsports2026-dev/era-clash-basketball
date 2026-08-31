@@ -252,6 +252,12 @@ const run = async () => {
   gate("the coach cards are one height with their footers on one line",
     new Set(staffFit.map((c) => c.height)).size === 1 && Math.max(...staffFit.map((c) => c.footTop)) - Math.min(...staffFit.map((c) => c.footTop)) <= 1,
     `heights ${[...new Set(staffFit.map((c) => c.height))].join("/")}`);
+  // Self-consistency is not enough: three cards can agree with each other and
+  // still all drift off the canonical height once real copy replaces fixture
+  // copy. Grade the closed card against the frozen contract, on real content.
+  gate("a closed coach card is the canonical height on real copy",
+    staffFit.every((c) => near(c.height, t.coachCard.height, t.coachCard.heightTolerance)),
+    `${staffFit[0]?.height}px against ${t.coachCard.height}±${t.coachCard.heightTolerance}`);
   await page.screenshot({ path: `${SHOTS}/state-04-staff.png` });
   await page.getByRole("button", { name: /^Select / }).first().click();
   await page.getByRole("button", { name: /HIRE THIS STAFF/ }).click();

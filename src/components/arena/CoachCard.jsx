@@ -20,6 +20,7 @@ export default function CoachCard({
 
   return (
     <div className="ec-coach-card" data-on={on ? "true" : "false"} data-role={offer.role}
+      data-open={open ? "true" : "false"}
       aria-label={`${offer.roleLabel || offer.role} offer: ${offer.name}${on ? (mode === "select" ? ", selected" : ", held") : ""}`}>
       <div className="ec-coach-role">{(offer.roleLabel || offer.role).toUpperCase()}</div>
 
