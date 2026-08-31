@@ -13,6 +13,9 @@
 // There is no mode shelf here: a permanent rack of other modes under every
 // draft competes with the game being played, and the Play and Fantasy menus
 // already carry every mode.
+//
+// Starting over is a STAGE control, next to the board it throws away — not a
+// link in the utility bar and not only a link inside the result.
 import { useEffect, useState } from "react";
 import ChaosStage from "./ChaosStage.jsx";
 import LiveIntel from "./LiveIntel.jsx";
@@ -34,14 +37,11 @@ const useCompact = (max = 560) => {
 export default function TimeArena({
   tier, challengeId, chaosRun, onRunChange, onReady, onGated,
   phase, result, priorResult, priorAt, simStage,
-  onRunClash, onViewFullReport, onRunItBack, onNewClash, onChallenge, onEraChange,
+  onRunClash, onViewFullReport, onRunItBack, onNewClash, onChallenge, onEraChange, onReset,
   onGuide, onSettings, onMembership,
   busy, error, resume = true,
 }) {
   const compact = useCompact();
-  // Leaving a draft is a utility, not part of the composition, so the control
-  // lives in the utility bar and the stage owns the confirmation.
-  const [abandonNonce, setAbandonNonce] = useState(0);
   const finished = phase === "complete" || phase === "simulating";
 
   return (
@@ -51,11 +51,9 @@ export default function TimeArena({
           run={chaosRun} tier={tier} challengeId={challengeId} resume={resume}
           onRunChange={onRunChange} onReady={onReady} onGated={onGated}
           onRunClash={onRunClash} phase={phase} busy={busy} error={error}
-          abandonNonce={abandonNonce} />
+          onReset={onReset} />
 
         <UtilityBar eraState={chaosRun?.eraState} compact={compact}
-          canAbandon={!!chaosRun && phase === "draft"}
-          onAbandon={() => setAbandonNonce((n) => n + 1)}
           onGuide={onGuide} onSettings={onSettings} />
 
       </div>

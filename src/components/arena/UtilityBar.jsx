@@ -5,7 +5,9 @@
 //
 // The era here is STATUS ONLY. Live Intel owns the explanation and the one
 // membership route, because a second copy of both, 500 pixels away in the same
-// viewport, reads as two different offers.
+// viewport, reads as two different offers. Abandoning a draft left for the same
+// reason: RESET on the stage is the one way to start over, and it sits next to
+// the board it discards.
 
 const LINKS = [
   ["HOW TO PLAY", "play", "📖"],
@@ -13,7 +15,7 @@ const LINKS = [
   ["GLOSSARY", "glossary", "🔤"],
 ];
 
-export default function UtilityBar({ eraState, onGuide, onSettings, onAbandon, canAbandon = false, compact = false }) {
+export default function UtilityBar({ eraState, onGuide, onSettings, compact = false }) {
   const era = eraState?.eraStyleId;
   const locked = !eraState?.change?.allowed;
 
@@ -34,11 +36,6 @@ export default function UtilityBar({ eraState, onGuide, onSettings, onAbandon, c
             <button onClick={onSettings}>
               <span aria-hidden="true" style={{ marginRight: 5 }}>⚙</span>SETTINGS
             </button>
-            {canAbandon && (
-              <button onClick={onAbandon} title="Leave this draft without playing it">
-                <span aria-hidden="true" style={{ marginRight: 5 }}>✕</span>ABANDON DRAFT
-              </button>
-            )}
           </>
         )}
       </div>

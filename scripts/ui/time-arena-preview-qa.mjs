@@ -323,6 +323,35 @@ const run = async () => {
   gate("an open dock section grows the page instead of hiding behind a scrollbar",
     scrollTraps.every((t) => t.docHeight > 1024),
     scrollTraps.map((t) => `${t.section} ${t.docHeight}px`).join(" · "));
+  // ── Starting over, from the board ─────────────────────────────────────────
+  // The only route to a new Clash used to be a link inside the result.
+  const newOnBoard = page.locator(".ec-ta-stage .ec-ta-stage-actions")
+    .getByRole("button", { name: /Start a new Clash/ });
+  gate("a finished game offers a new Clash on the board itself", await newOnBoard.count() === 1);
+  await newOnBoard.click();
+  const resetDialog = page.getByRole("dialog", { name: /Start a new Clash/ });
+  await resetDialog.waitFor({ timeout: 15_000 });
+  const dialogBits = await page.evaluate(() => {
+    const d = document.querySelector('[role="dialog"][aria-modal="true"]');
+    const btns = [...d.querySelectorAll("button")];
+    return {
+      modal: d.getAttribute("aria-modal") === "true",
+      says: /stays in the Result Dock/.test(d.innerText),
+      buttons: btns.map((b) => b.innerText.trim()),
+      taps: Math.min(...btns.map((b) => Math.round(b.getBoundingClientRect().height))),
+      focusedIsSafe: /^No/i.test(document.activeElement?.getAttribute("aria-label") || ""),
+    };
+  });
+  gate("the reset dialog asks before it fires, and says what it will do",
+    dialogBits.modal && dialogBits.says && dialogBits.buttons.includes("YES") && dialogBits.buttons.includes("NO"),
+    dialogBits.buttons.join("/"));
+  gate("the safe answer holds focus and both answers are 44px",
+    dialogBits.focusedIsSafe && dialogBits.taps >= 44, `min ${dialogBits.taps}px`);
+  await resetDialog.getByRole("button", { name: /^No/ }).click();
+  gate("No closes the dialog and leaves the result where it was",
+    (await page.getByRole("dialog", { name: /Start a new Clash/ }).count()) === 0
+    && (await dock.locator(".ec-dock-score").count()) === 2);
+
   const resultFit = await coachFit();
   gate("the finished board keeps the staff decision, still inside its cards",
     resultFit.length === 3 && resultFit.every((c) => c.footOverflowPx === 0) && new Set(resultFit.map((c) => c.height)).size === 1,

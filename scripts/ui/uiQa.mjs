@@ -320,6 +320,18 @@ if (MODE === "coach") {
     /aria-pressed=\{held\}/.test(cc) && /LOCKED/.test(cc) && /HOLD/.test(cc));
   ok("after the final roll the control becomes a hire",
     /SELECT COACH/.test(cc) && /NOT HIRED/.test(cc) && /YOUR STAFF/.test(cc));
+  // Starting over: one route, on the board, confirmed before it fires.
+  ok("starting over is a stage control, not a link in the utility bar",
+    /ec-ta-stage-actions/.test(stage) && /setConfirmReset\(true\)/.test(stage)
+    && !/ABANDON DRAFT/.test(read("src/components/arena/UtilityBar.jsx")));
+  ok("a reset asks before it fires, and the safe answer is the default",
+    (() => {
+      const d = read("src/components/arena/ResetDialog.jsx");
+      return /role="dialog"/.test(d) && /aria-modal/.test(d)
+        && /noRef\.current\?\.focus\(\)/.test(d) && /Escape/.test(d);
+    })());
+  ok("a finished game can be left from the board, not only from the result",
+    /NEW CLASH/.test(stage) && /state="complete"/.test(stage));
   ok("the card face stays short and the depth is one tap away",
     /Scouting detail/.test(cc) && /aria-expanded=\{open\}/.test(cc));
   // Anchored to the RULE, not to a character budget: a comment added inside the

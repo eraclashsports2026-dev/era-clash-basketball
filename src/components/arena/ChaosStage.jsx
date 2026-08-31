@@ -15,6 +15,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import PlayerCard, { EmptyCard } from "./PlayerCard.jsx";
 import CoachCard from "./CoachCard.jsx";
+import ResetDialog from "./ResetDialog.jsx";
 import RollStepper from "./RollStepper.jsx";
 import {
   startChaos, viewChaos, submitChaosDecisions, chooseChaosCoach,
@@ -76,8 +77,8 @@ function Bench({ team, roster, heldSlots, keptSlots = [], interactive, locked, b
  * cards and staffs are currently ticked — is local.
  */
 export default function ChaosStage({
-  run, tier = "GUEST", challengeId, onRunChange, onReady, onGated, onRunClash,
-  abandonNonce = 0, phase, busy = false, error = null,
+  run, tier = "GUEST", challengeId, onRunChange, onReady, onGated, onRunClash, onReset,
+  phase, busy = false, error = null,
   // The visual fixture supplies its own run and must not have it cleared by the
   // resume pass, which exists to stop a stale run surviving on an empty board.
   resume = true,
@@ -88,11 +89,9 @@ export default function ChaosStage({
   const [working, setWorking] = useState(false);
   const [err, setErr] = useState(null);
   const [challenge, setChallenge] = useState(null);
-  const [confirmAbandon, setConfirmAbandon] = useState(false);
+  const [confirmReset, setConfirmReset] = useState(false);
+  const [resetting, setResetting] = useState(false);
   const resumed = useRef(false);
-  // The utility bar owns the control, the stage owns the confirmation: the bar
-  // bumps a nonce rather than reaching into this component's state.
-  useEffect(() => { if (abandonNonce > 0) setConfirmAbandon(true); }, [abandonNonce]);
 
   const adopt = useCallback((chaos) => {
     // Cards and staffs kept through a roll come back already selected, so
@@ -153,12 +152,22 @@ export default function ChaosStage({
     const r = await act(() => chooseChaosCoach(run.chaosRunId, picked, tier), "Could not hire that staff.");
     if (r?.chaos) { adopt(r.chaos); onReady?.(r.chaos); }
   };
-  const abandon = async () => {
-    try { await abandonChaos(run.chaosRunId, tier); } catch { /* the local reset still stands */ }
+  /**
+   * Start over. A draft still in progress is abandoned server-side first so the
+   * run does not linger; a finished game has nothing to abandon. Either way the
+   * local board is cleared and the shell deals a fresh Clash — and a finished
+   * game is kept by the shell as the previous clash, so its report still opens.
+   */
+  const reset = async () => {
+    setResetting(true);
+    if (run?.chaosRunId && phase !== "complete") {
+      try { await abandonChaos(run.chaosRunId, tier); } catch { /* the local reset still stands */ }
+    }
     store.clear();
     setHolds([]); setCoachHolds([]); setPicked(null);
-    setConfirmAbandon(false); setChallenge(null);
-    onRunChange?.(null);
+    setChallenge(null); setConfirmReset(false); setResetting(false);
+    if (onReset) onReset();
+    else onRunChange?.(null);
   };
   const makeChallenge = async () => {
     try { setChallenge((await publishChaosChallenge(run.chaosRunId, tier)).challengeId); }
@@ -224,6 +233,17 @@ export default function ChaosStage({
             </div>
           </div>
         )}
+
+        {/* The way out of a finished game, ON THE BOARD. Without this the only
+            route to a new Clash was a link inside the result, which is not
+            where someone looking at their own five expects to find it. */}
+        <div className="ec-ta-stage-actions">
+          <button onClick={() => setConfirmReset(true)} style={quiet}
+            aria-label="Start a new Clash">NEW CLASH</button>
+        </div>
+
+        <ResetDialog open={confirmReset} state="complete" busy={resetting}
+          onConfirm={reset} onCancel={() => setConfirmReset(false)} />
       </section>
     );
   }
@@ -294,9 +314,23 @@ export default function ChaosStage({
       {/* ── One primary action ───────────────────────────────────────────── */}
       {cta && (
         <div className="ec-ta-cta-wrap">
-          <button className="ec-ta-cta" onClick={cta.onClick} disabled={spinning || !cta.on}>
-            {cta.label}{cta.on && !spinning ? " 🎲" : ""}
-          </button>
+          {/* Three columns so the CTA stays exactly centred no matter what sits
+              beside it, and the secondary actions cost the composition nothing
+              vertically — there is 360px of empty stage on either side of a
+              352px button, and no room at all below it. */}
+          <div className="ec-ta-cta-row">
+            <span aria-hidden="true" />
+            <button className="ec-ta-cta" onClick={cta.onClick} disabled={spinning || !cta.on}>
+              {cta.label}{cta.on && !spinning ? " 🎲" : ""}
+            </button>
+            {run ? (
+              <div className="ec-ta-stage-actions">
+                {ready && <button onClick={makeChallenge} style={quiet}>CHALLENGE THIS CHAOS</button>}
+                <button onClick={() => setConfirmReset(true)} style={quiet}
+                  aria-label="Reset this Clash and deal a new one">RESET</button>
+              </div>
+            ) : <span aria-hidden="true" />}
+          </div>
           <div className="ec-ta-cta-sub">
             {cta.sub}
             {drafting && (
@@ -318,16 +352,11 @@ export default function ChaosStage({
         </div>
       )}
 
-      {run && (ready || confirmAbandon) && (
-        <div style={{ marginTop: 6, display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
-          {ready && <button onClick={makeChallenge} style={quiet}>CHALLENGE THIS CHAOS</button>}
-          {confirmAbandon && (
-            <span style={{ display: "inline-flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
-              <span style={{ fontSize: 11.5, color: "var(--ec-a-text-muted)" }}>Abandon this draft? It cannot be resumed.</span>
-              <button onClick={abandon} style={quiet}>Yes, abandon</button>
-              <button onClick={() => setConfirmAbandon(false)} style={{ ...quiet, border: "none" }}>Keep drafting</button>
-            </span>
-          )}
+      {/* A board with a run but no primary action still needs its way out. */}
+      {run && !cta && (
+        <div className="ec-ta-stage-actions">
+          <button onClick={() => setConfirmReset(true)} style={quiet}
+            aria-label="Reset this Clash and deal a new one">RESET</button>
         </div>
       )}
 
@@ -337,12 +366,15 @@ export default function ChaosStage({
           <span style={{ color: "var(--ec-a-gold)" }}>{`${window.location.origin}/?chaos=${challenge}`}</span>
         </div>
       )}
+
+      <ResetDialog open={confirmReset} state="draft" busy={resetting}
+        onConfirm={reset} onCancel={() => setConfirmReset(false)} />
     </section>
   );
 }
 
 const quiet = {
-  minHeight: 36, padding: "0 12px", borderRadius: 8, cursor: "pointer",
+  minHeight: 44, padding: "0 14px", borderRadius: 8, cursor: "pointer",
   fontWeight: 800, fontSize: 11, letterSpacing: 0.6,
   border: "1px solid var(--ec-a-border)", background: "transparent", color: "var(--ec-a-text-muted)",
 };

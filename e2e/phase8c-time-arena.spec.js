@@ -256,6 +256,72 @@ test("an entitled run offers the era selector the server allows", async ({ page 
   await expect(rail.getByText(/same rules for everyone/)).toBeVisible();
 });
 
+test("starting over is on the BOARD, and it asks first", async ({ page }) => {
+  test.slow();
+  await withAccount(page);
+  await page.goto("/");
+  await toReady(page);
+
+  const stage = page.locator(".ec-ta-stage");
+  const actions = stage.locator(".ec-ta-stage-actions");
+  await expect(actions.getByRole("button", { name: /CHALLENGE THIS CHAOS/ })).toBeVisible();
+  const resetBtn = actions.getByRole("button", { name: /Reset this Clash/ });
+  await expect(resetBtn).toBeVisible();
+  // A reset is a real touch target, like every other control on the board.
+  expect((await resetBtn.boundingBox()).height).toBeGreaterThanOrEqual(44);
+
+  // NO leaves the board exactly as it was.
+  await resetBtn.click();
+  const dialog = page.getByRole("dialog", { name: /Reset this Clash/ });
+  await expect(dialog).toBeVisible();
+  await expect(dialog.getByText(/cannot be undone/)).toBeVisible();
+  await dialog.getByRole("button", { name: /No, keep drafting/ }).click();
+  await expect(dialog).toHaveCount(0);
+  await expect(page.locator(".ec-ta-roster .ec-pc")).toHaveCount(10);
+  await expect(page.getByRole("button", { name: /RUN SIM/ })).toBeVisible();
+
+  // Escape is also No: the safe answer, and it is what has focus.
+  await resetBtn.click();
+  await expect(page.getByRole("dialog", { name: /Reset this Clash/ })).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("dialog", { name: /Reset this Clash/ })).toHaveCount(0);
+  await expect(page.locator(".ec-ta-roster .ec-pc")).toHaveCount(10);
+
+  // YES deals a fresh board: ten backs and Roll 1 again.
+  await resetBtn.click();
+  await page.getByRole("dialog", { name: /Reset this Clash/ })
+    .getByRole("button", { name: /Yes, reset this Clash/ }).click();
+  await expect(page.locator(".ec-pc-empty")).toHaveCount(10, { timeout: 20_000 });
+  await expect(page.getByRole("button", { name: /^ROLL 1/ })).toBeVisible();
+  await expect(page.getByText("THREE ROLLS AVAILABLE").first()).toBeVisible();
+});
+
+test("a finished game offers a new clash on the board, not only in the result", async ({ page }) => {
+  test.slow();
+  await withAccount(page);
+  await page.goto("/");
+  await toReady(page);
+  await page.getByRole("button", { name: /RUN SIM/ }).click();
+  await expect(page.locator(".ec-ta-rail").getByText("FINAL SCORE", { exact: true }).first())
+    .toBeVisible({ timeout: 45_000 });
+
+  const onBoard = page.locator(".ec-ta-stage .ec-ta-stage-actions")
+    .getByRole("button", { name: /Start a new Clash/ });
+  await expect(onBoard).toBeVisible();
+  await onBoard.click();
+  const dialog = page.getByRole("dialog", { name: /Start a new Clash/ });
+  await expect(dialog.getByText(/stays in the Result Dock/)).toBeVisible();
+  await dialog.getByRole("button", { name: /No, stay on this result/ }).click();
+  await expect(page.locator(".ec-ta-rail").getByText("FINAL SCORE", { exact: true }).first()).toBeVisible();
+
+  await onBoard.click();
+  await page.getByRole("dialog", { name: /Start a new Clash/ })
+    .getByRole("button", { name: /Yes, start a new Clash/ }).click();
+  await expect(page.locator(".ec-pc-empty")).toHaveCount(10, { timeout: 20_000 });
+  // The game just played is not lost — it is the dock's PREVIOUS clash.
+  await expect(page.locator(".ec-ta-rail").getByText(/LAST CLASH/).first()).toBeVisible();
+});
+
 test("the result lands in the dock, the report opens over the page, and a new clash keeps the last one", async ({ page }) => {
   test.slow();
   await withAccount(page);

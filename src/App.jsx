@@ -1563,6 +1563,7 @@ export default function App() {
             }}
             onRunItBack={() => { setFullReport(false); doRematch("chaos"); }}
             onNewClash={() => { setFullReport(false); newChaosClash(); }}
+            onReset={() => { setFullReport(false); newChaosClash(); }}
             onChallenge={chaosRun ? async () => {
               const r = await publishChaosChallenge(chaosRun.chaosRunId, tier);
               track("chaos_challenge_created", { from: "result_dock" });

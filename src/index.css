@@ -1049,8 +1049,23 @@ button { font-family: inherit; }
   border: 1px dashed var(--ec-a-border); color: var(--ec-a-text-muted);
 }
 
+/* Secondary actions under the primary one: challenge, and the way to start
+   over. Quieter than the CTA and never competing with it. */
+.ec-ta-stage-actions {
+  margin-top: 8px;
+  display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+}
+
 /* ── The one primary action ────────────────────────────────────────────────*/
 .ec-ta-cta-wrap { margin-top: 14px; display: grid; justify-items: center; gap: 5px; }
+/* 1fr auto 1fr keeps the CTA on the stage's centre line whatever sits beside
+   it: the two flanking columns are always equal, so the button does not drift. */
+.ec-ta-cta-row {
+  width: 100%;
+  display: grid; grid-template-columns: 1fr auto 1fr;
+  align-items: center; gap: 12px;
+}
+.ec-ta-cta-row .ec-ta-stage-actions { margin-top: 0; justify-content: flex-start; }
 .ec-ta-cta {
   width: var(--cta-w);
   height: var(--cta-h);
@@ -1213,6 +1228,9 @@ button { font-family: inherit; }
   .ec-ta-roster { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: none; }
   .ec-ta-utility { height: auto; padding: 8px 10px; flex-wrap: wrap; }
   .ec-ta-cta { font-size: 15px; letter-spacing: 1.6px; }
+  .ec-ta-cta-row { grid-template-columns: minmax(0, 1fr); }
+  .ec-ta-cta-row > span[aria-hidden] { display: none; }
+  .ec-ta-cta-row .ec-ta-stage-actions { justify-content: center; }
 }
 @media (max-width: 430px) {
   .ec-arena-shell { --player-card-h: 286px; --player-portrait-h: 176px; }
