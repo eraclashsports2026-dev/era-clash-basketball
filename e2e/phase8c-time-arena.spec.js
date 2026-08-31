@@ -59,16 +59,24 @@ test("the Time Arena is one workspace with a persistent rail", async ({ page }) 
   const layout = await page.evaluate(() => {
     const ta = document.querySelector(".ec-ta");
     const r = document.querySelector(".ec-ta-rail");
+    // The PAGE is the only vertical scroller in the arena. A pane with its own
+    // max-height and overflow-y hid up to 504px of the result behind an inner
+    // scrollbar and stopped the page scrolling under the pointer.
+    const verticalScrollers = [...document.querySelectorAll(".ec-ta, .ec-ta *")]
+      .filter((e) => ["auto", "scroll"].includes(getComputedStyle(e).overflowY))
+      .map((e) => String(e.className).trim().split(/\s+/)[0]);
     return {
       columns: getComputedStyle(ta).gridTemplateColumns.split(" ").length,
-      sticky: getComputedStyle(r).position,
-      contained: getComputedStyle(r).overscrollBehaviorY,
+      railPosition: getComputedStyle(r).position,
+      railOverflowY: getComputedStyle(r).overflowY,
+      verticalScrollers,
       overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
     };
   });
   expect(layout.columns).toBe(2);
-  expect(layout.sticky).toBe("sticky");
-  expect(layout.contained).toBe("contain");
+  expect(layout.railPosition).toBe("static");
+  expect(layout.railOverflowY).toBe("visible");
+  expect(layout.verticalScrollers, "the page is the arena's only vertical scroller").toEqual([]);
   expect(layout.overflow).toBe(0);
 
   // Nothing is claimed before anything has happened.
@@ -402,7 +410,7 @@ test("mobile stacks, leads with the result, and never overflows", async ({ page 
   artifact("phase8c-responsive-qa.json", {
     artifact: "phase8c-responsive-qa", phase: "8C — Time Arena",
     viewport: "375x812", draft, cards, finished,
-    note: "Desktop geometry (two columns, sticky rail, ten cards) is asserted by the workspace and board tests.",
+    note: "Desktop geometry (two columns, a rail that scrolls with the page, ten cards) is asserted by the workspace and board tests.",
   });
 });
 

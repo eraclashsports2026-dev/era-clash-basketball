@@ -256,6 +256,42 @@ const run = async () => {
     [...el.querySelectorAll(":scope > div > div")].filter((d) => /tabular-nums/.test(d.style.fontVariantNumeric)).length);
   gate("the dock box score lists both teams in full", dockRows >= 10, `${dockRows} rows`);
   await page.screenshot({ path: `${SHOTS}/state-06b-dock-box.png` });
+
+  // ── The page is the ONLY vertical scroller in the arena ───────────────────
+  // The rail used to be a sticky pane with its own max-height and overflow-y,
+  // and the dock panel a 320px scroller inside it. Up to 504px of the result sat
+  // behind an inner scrollbar, and the page stopped scrolling whenever the
+  // pointer was over the rail. Checked with EVERY dock section open, because
+  // that is when the rail is tallest.
+  const scrollTraps = [];
+  for (const tabName of ["Game Story", "Box Score", "Coaching", "Analysis"]) {
+    await dock.getByRole("tab", { name: tabName }).click();
+    await page.waitForTimeout(250);
+    const t = await page.evaluate(() => {
+      const bad = [];
+      document.querySelectorAll(".ec-ta, .ec-ta *").forEach((e) => {
+        const cs = getComputedStyle(e);
+        if (!["auto", "scroll"].includes(cs.overflowY)) return;
+        // A wide stat table may scroll SIDEWAYS; it must not scroll vertically.
+        if (e.scrollHeight > e.clientHeight + 1 || cs.overflowY === "scroll") {
+          bad.push(`${String(e.className).trim().split(/\s+/)[0]} clips ${e.scrollHeight - e.clientHeight}px`);
+        }
+      });
+      const rail = document.querySelector(".ec-ta-rail").getBoundingClientRect();
+      return { bad, docHeight: document.documentElement.scrollHeight,
+        railBottomBeyondViewport: Math.round(rail.bottom - window.innerHeight) };
+    });
+    scrollTraps.push({ section: tabName, ...t });
+    await dock.getByRole("tab", { name: tabName }).click();
+  }
+  const trapped = scrollTraps.filter((t) => t.bad.length);
+  gate("no arena surface traps the scroll — the page is the only vertical scroller",
+    trapped.length === 0,
+    trapped.length ? trapped.map((t) => `${t.section}: ${t.bad.join(", ")}`).join(" · ")
+      : `checked with all four dock sections open`);
+  gate("an open dock section grows the page instead of hiding behind a scrollbar",
+    scrollTraps.every((t) => t.docHeight > 1024),
+    scrollTraps.map((t) => `${t.section} ${t.docHeight}px`).join(" · "));
   const resultFit = await coachFit();
   gate("the finished board keeps the staff decision, still inside its cards",
     resultFit.length === 3 && resultFit.every((c) => c.footOverflowPx === 0) && new Set(resultFit.map((c) => c.height)).size === 1,
@@ -460,6 +496,7 @@ const run = async () => {
       note: "204 is this endpoint's success response for a stored preview record — and also what it returns when no store is configured or when the caller is rate limited. So this proves the round trip is accepted end to end, with the UI confirming it, from a real preview session on a real preview result. It does not prove persistence from outside the deployment; run `npm run preview:wave1-feedback-report` in a shell that has the store credentials to see the record itself.",
     },
     responsive,
+    scrollOwnership: scrollTraps,
     isolation: { bundlesScanned: scanned, fixtureHits, devRouteStatus: devRoute.status(), fixtureRendered },
     screens: `${SHOTS}/`,
     gates, passed: gates.length - failed, failed,

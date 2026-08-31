@@ -191,8 +191,11 @@ export default function ResultDock({
           ))}
         </div>
 
+        {/* No maxHeight and no overflow: an open section grows the page and the
+            page scrolls, rather than hiding the back half of the story behind a
+            scrollbar inside a scrollbar. */}
         {tab && (
-        <Panel id="ec-dock-panel" role="tabpanel" style={{ maxHeight: 320, overflowY: "auto" }}>
+        <Panel id="ec-dock-panel" role="tabpanel">
           {tab === "story" && (
             <div style={{ display: "grid", gap: 10 }}>
               <div>

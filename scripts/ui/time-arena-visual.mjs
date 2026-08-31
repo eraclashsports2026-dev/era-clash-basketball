@@ -89,7 +89,7 @@ const run = async () => {
         columns: getComputedStyle(document.querySelector(".ec-ta")).gridTemplateColumns.split(" ").length,
         rosterRows: tops.size,
         cardWidth: Math.round(cards[0]?.getBoundingClientRect().width || 0),
-        railSticky: getComputedStyle(rail).position,
+        railPosition: getComputedStyle(rail).position,
         horizontalOverflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
         taps: Math.min(...[...document.querySelectorAll(".ec-pc-action, .ec-coach-action")]
           .map((b) => Math.round(b.getBoundingClientRect().height)).concat([999])),

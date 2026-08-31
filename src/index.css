@@ -285,7 +285,11 @@ button { font-family: inherit; }
 
 /* The dock's box score keeps every counting stat; the numbers scroll inside the
    dock on a narrow column instead of squeezing a made-attempted pair. */
-.ec-dock-box { overflow-x: auto; }
+/* A stat table is wider than the rail, so it scrolls SIDEWAYS inside the dock
+   rather than making the page scroll sideways. overflow-y must be stated: a box
+   with one axis set and the other `visible` computes that other axis to `auto`,
+   which quietly makes this a vertical scroller too. */
+.ec-dock-box { overflow-x: auto; overflow-y: hidden; }
 
 /* Empty draft slot — the board exists before any card does. */
 .chaos-empty-slot {
@@ -590,19 +594,18 @@ button { font-family: inherit; }
      1122px main arena, and a centred 1600px cap would silently change it. */
 }
 .ec-ta-main { min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+/* The rail is a COLUMN OF THE PAGE, not a pane with its own scrollbar.
+   It used to be sticky with its own max-height and overflow-y, which meant the
+   page scroll stopped working the moment the pointer was over it and up to
+   504px of the result — the story, the box score, the analysis — sat behind an
+   inner scrollbar that looked like an invisible barrier. One scroller: the page.
+   align-self: start keeps it from being stretched to the stage's height. */
 .ec-ta-rail {
   min-width: 0;
+  align-self: start;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 12px;
-  position: sticky;
-  top: 10px;
-  /* The rail's own height was what pushed the document past the ceiling: a
-     100vh box that starts BELOW the header is taller than the space it has. */
-  max-height: calc(100vh - var(--arena-header-h) - 2 * var(--arena-page-pad-y));
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  scrollbar-width: thin;
 }
 
 /* ── The stage: one panel, as the reference shows ──────────────────────────*/
@@ -934,7 +937,11 @@ button { font-family: inherit; }
 }
 .ec-coach-card {
   width: var(--coach-card-w);
-  height: var(--coach-card-h);
+  /* min-height, not height: an opened scouting detail grows the card, and
+     because the three cards are items of ONE grid row they grow together and
+     stay equal. A fixed height needed an inner scrollbar to keep the footer in,
+     and that is a second invisible barrier. Closed, this is exactly 232px. */
+  min-height: var(--coach-card-h);
   display: grid;
   grid-template-columns: 76px minmax(0, 1fr);
   grid-template-rows: auto 1fr auto;
@@ -966,15 +973,12 @@ button { font-family: inherit; }
   background: linear-gradient(180deg, rgba(168, 100, 232, 0.22), #060c15 92%);
 }
 .ec-coach-portrait svg, .ec-coach-portrait img { width: 100%; height: 100%; display: block; }
-/* The card is FIXED geometry, so the BODY is what gives. Without min-height 0 a
-   grid row cannot shrink below its content, and one long coaching span — Nick
-   Nurse's, with three stints and a W-L note — pushed the footer clean out
-   through the bottom border while the two cards beside it stayed put. The body
-   scrolls instead, so detail the player opened is still reachable. */
+/* min-height: 0 is what lets the body row shrink at all — without it a grid row
+   cannot go below its content, and one long coaching span pushed the footer
+   clean out through the bottom border while the cards beside it stayed put. */
 .ec-coach-body {
   grid-row: 2; min-width: 0; min-height: 0;
   display: grid; align-content: start; gap: 4px;
-  overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin;
 }
 .ec-coach-name {
   font-family: var(--ec-display);
@@ -1153,7 +1157,6 @@ button { font-family: inherit; }
   /* Tablet: the rail moves below the arena rather than squeezing it, and each
      team takes its own row of five. */
   .ec-ta { grid-template-columns: minmax(0, 1fr); padding: 12px 12px 16px; }
-  .ec-ta-rail { position: static; max-height: none; overflow: visible; }
   .ec-arena-shell { --player-card-w: 132px; --player-card-gap: 8px; --player-card-h: 316px; }
   .ec-ta-roster {
     grid-template-columns: repeat(5, minmax(0, 1fr));

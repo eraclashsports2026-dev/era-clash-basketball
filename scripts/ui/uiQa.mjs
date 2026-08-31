@@ -136,9 +136,16 @@ if (MODE === "arena") {
     const w = Number((css.match(/--arena-rail-w:\s*(\d+)px/) || [])[1]);
     return w >= 340 && w <= 390;
   })(), (css.match(/--arena-rail-w:\s*(\d+)px/) || [])[1]);
-  ok("the right rail is sticky on desktop", /\.ec-ta-rail \{[^}]*position: sticky/.test(css));
-  ok("the rail scrolls internally rather than trapping the page",
-    /\.ec-ta-rail \{[^}]*overscroll-behavior: contain/.test(css));
+  // These two used to assert the opposite: a sticky rail that "scrolls
+  // internally rather than trapping the page". Internal scrolling IS the trap —
+  // it hid up to 504px of the result behind an inner scrollbar and stopped the
+  // page scrolling whenever the pointer was over the rail.
+  ok("the rail is a column of the page, not a pane with its own scrollbar",
+    !/\.ec-ta-rail \{[^}]*(position: sticky|max-height|overflow-y)/.test(css));
+  ok("no arena surface is a vertical scroll container",
+    !/\.(ec-ta-rail|ec-coach-body|ec-intel|ec-ta-stage|ec-ta-main) \{[^}]*overflow-y:\s*(auto|scroll)/.test(css));
+  ok("a wide stat table scrolls sideways only, with the other axis stated",
+    /\.ec-dock-box \{[^}]*overflow-x: auto;\s*overflow-y: hidden/.test(css));
   ok("the workspace stacks below the desktop breakpoint",
     /@media \(max-width: 1179px\)[\s\S]{0,400}\.ec-ta \{ grid-template-columns: minmax\(0, 1fr\)/.test(css));
   ok("neither column can outgrow the screen",
@@ -315,8 +322,11 @@ if (MODE === "coach") {
     /SELECT COACH/.test(cc) && /NOT HIRED/.test(cc) && /YOUR STAFF/.test(cc));
   ok("the card face stays short and the depth is one tap away",
     /Scouting detail/.test(cc) && /aria-expanded=\{open\}/.test(cc));
+  // Anchored to the RULE, not to a character budget: a comment added inside the
+  // block pushed the token past a 400-character window and failed a contract
+  // whose subject had not changed.
   ok("purple is the coach identity and never a team's",
-    /\.ec-coach-card \{[\s\S]{0,400}--ec-a-coach/.test(read("src/index.css"))
+    /\.ec-coach-card \{[^}]*--ec-a-coach/.test(read("src/index.css"))
     && !/--ec-a-gold|--ec-a-blue/.test(cc));
   ok("no coach likeness is created — initials over a masked figure until approved art exists",
     /initialsOf/.test(cc) && /ec-coach-figure/.test(cc) && !/(img src|generate|scrape|download)/i.test(cc));
