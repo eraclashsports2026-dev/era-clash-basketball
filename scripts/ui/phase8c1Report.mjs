@@ -38,6 +38,7 @@ const perf = read("time-arena-performance-qa.json");
 const visual = read("time-arena-visual-summary.json");
 const states = read("time-arena-state-screens.json");
 const referenceManifest = read("reference-manifest.json");
+const preview = read("time-arena-preview-qa.json");
 
 write("time-arena-production-isolation.json", {
   artifact: "time-arena-production-isolation", phase: "8C.1 — pixel-fidelity reconstruction",
@@ -93,6 +94,8 @@ const ledgerItems = {
     "all hold controls are 44px, on a mouse or a finger",
     "micro-label type scale raised from 8.5–9.5px to 10–11px at AA contrast",
     "the rail states plainly that it is a read, not a prediction (restored after a density trim removed it)",
+    "on the DEPLOYED preview, through the access gate: all eight Wave 1 keys open a session, a real draft measures to the canonical geometry, the era is dealt (six fresh drafts returned several different eras), the dock opens a box score carrying PTS FG REB AST STL BLK TO, report names and story prose clear 5.8:1, feedback is accepted, and the dev fixture is absent from every deployed bundle",
+    "the deployed page also renders the 57px site footer that the fixture route does not, so the deployed height gate grades the arena composition (header + court = 1000px) — the same quantity the fixture's document height reports",
   ],
   NOT_REPRODUCIBLE_WITH_EVIDENCE: [
     "one chaos-flow check failed once against the local harness and did not reproduce on two clean re-runs (91/91 both times) — a cold-start artifact, not a defect",
@@ -118,6 +121,7 @@ else if (geometry.failed > 0) unresolved.push(`geometry: ${geometry.failed} fail
 if (a11y && !a11y.passed) unresolved.push(`accessibility: ${a11y.failures.join("; ")}`);
 if (perf && !perf.passed) unresolved.push(`performance: ${perf.failures.join("; ")}`);
 if (responsive && !responsive.allWithoutUnreachableOverflow) unresolved.push("responsive: content is clipped or overflows");
+if (preview && preview.failed > 0) unresolved.push(`deployed preview: ${preview.failed} gate(s) failed`);
 if (logicDiff !== "") unresolved.push("game logic changed in a visual phase");
 if (apiDiff !== "") unresolved.push("api changed in a visual phase");
 
@@ -140,6 +144,13 @@ const summary = {
   accessibility: a11y ? { passed: a11y.passed, failures: a11y.failures } : null,
   performance: perf ? { passed: perf.passed, svgKitKb: perf.arenaAssetKit.totalKb, fcpMs: perf.timing.firstContentfulPaintMs } : null,
   visual: { screens: screens.length, states: states?.captured?.length ?? 0, overlayGenerated: !!referenceManifest, methodologyDeclared: !!visual?.methodology },
+  deployedPreview: preview ? {
+    baseUrl: preview.deployment?.baseUrl, commit: preview.deployment?.commit,
+    gates: preview.gates?.length ?? 0, passed: preview.passed, failed: preview.failed,
+    accessControl: preview.accessControl?.keys?.length ?? 0,
+    erasObserved: preview.eraDealt?.distinct ?? null,
+    fixtureInBundles: preview.isolation?.fixtureHits,
+  } : null,
   preservation: {
     gameLogicChanges: logicDiff === "" ? 0 : "NON-ZERO",
     apiChanges: apiDiff === "" ? 0 : "NON-ZERO",
@@ -155,7 +166,7 @@ const summary = {
 };
 write("phase8c1-final-summary.json", summary);
 
-console.log(`\ngeometry ${geometry?.passed}/${geometry?.checks} · a11y ${a11y?.passed ? "pass" : "FAIL"} · perf ${perf?.passed ? "pass" : "FAIL"} · screens ${screens.length}`);
+console.log(`\ndeployed ${preview ? `${preview.passed}/${preview.gates?.length}` : "not run"} · geometry ${geometry?.passed}/${geometry?.checks} · a11y ${a11y?.passed ? "pass" : "FAIL"} · perf ${perf?.passed ? "pass" : "FAIL"} · screens ${screens.length}`);
 console.log(`gameLogicChanges=${summary.preservation.gameLogicChanges} apiChanges=${summary.preservation.apiChanges} candidate3CoreDrift=${summary.preservation.candidate3CoreDrift}`);
 console.log(`unresolved technical failures: ${unresolved.length}`);
 console.log(summary.verdict);

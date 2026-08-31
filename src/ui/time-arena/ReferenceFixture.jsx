@@ -101,7 +101,7 @@ export default function ReferenceFixture() {
   const [chaosRun, setChaosRun] = useState(run);
 
   return (
-    <div className="arena ec-arena-shell ec-arena-page">
+    <div className="arena ec-arena-shell ec-arena-page" data-fixture="time-arena-reference">
       <ArenaHeader
         nav="Play" onNav={() => {}} tier="FREE" activeModeId="chaos"
         onModeAction={() => {}} onNavigate={() => {}} onCreateAccount={() => {}}
