@@ -56,7 +56,7 @@ export default function TimeArena({
         <UtilityBar eraState={chaosRun?.eraState} compact={compact}
           canAbandon={!!chaosRun && phase === "draft"}
           onAbandon={() => setAbandonNonce((n) => n + 1)}
-          onGuide={onGuide} onSettings={onSettings} onMembership={onMembership} />
+          onGuide={onGuide} onSettings={onSettings} />
 
       </div>
 

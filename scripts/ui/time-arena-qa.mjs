@@ -7,6 +7,12 @@
 // The states are captured by driving a REAL draft, not the fixture: the fixture
 // exists to freeze ONE state for geometry work, and a flow that only ever gets
 // screenshotted in one state is a flow nobody has looked at.
+//
+// A real draft needs the real API, and `vite preview` serves static files only —
+// so pass a DEPLOYED preview host to capture the state series, and this script
+// opens an access session for it the same way a tester's link does:
+//
+//   node scripts/ui/time-arena-qa.mjs states https://<preview-host>
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, statSync, existsSync } from "node:fs";
 import { chromium } from "@playwright/test";
 
@@ -15,6 +21,17 @@ const BASE = (process.argv[3] || "http://localhost:4176").replace(/\/$/, "");
 const OUT = "data/validation/8c1";
 const SHOTS = `${OUT}/screens`;
 const VW = 1536, VH = 1024;
+
+/** An access session for a deployed, gated preview. Keys never reach a URL. */
+const openSession = async (context) => {
+  if (!BASE.startsWith("https://")) return null;
+  const f = ".preview-secrets/wave1-access-keys.json";
+  if (!existsSync(f)) throw new Error(`${BASE} is gated and ${f} is not on disk`);
+  const k = JSON.parse(readFileSync(f, "utf8")).keys.find((x) => x.role === "owner");
+  const r = await context.request.post(`${BASE}/api/preview-access`, { form: { key: k.key }, maxRedirects: 0 });
+  if (r.status() !== 303) throw new Error(`preview access refused: HTTP ${r.status()}`);
+  return k.testerId;
+};
 
 const withAccount = (page) => page.addInitScript(() => {
   try { localStorage.setItem("ec_account", "1"); localStorage.setItem("ec_name", "QA"); localStorage.removeItem("ec_chaos_run"); } catch (e) {}
@@ -35,20 +52,27 @@ const states = async (page) => {
     console.log(`  captured state-${name}.png`);
   };
 
-  await page.goto(`${BASE}/`, { waitUntil: "networkidle" });
-  await page.waitForSelector(".ec-ta-roster");
+  await page.goto(`${BASE}/`, { waitUntil: "domcontentloaded" });
+  await page.waitForSelector(".ec-ta-roster", { timeout: 45_000 });
   await shot("1-empty");
 
+  // Every wait below is on something a PLAYER can see. The roll number is also
+  // announced in a screen-reader live region, and waiting on that invisible
+  // copy waits forever.
   await click(page, /^ROLL 1/);
+  await page.locator(".ec-ta-roster .ec-pc").nth(9).waitFor({ timeout: 45_000 });
   await shot("2-roll-1");
-  await click(page, /LOCK & ROLL 2/);
+  await click(page, /LOCK & ROLL 2/, 45_000);
+  await page.locator(".ec-intel-era-id").waitFor({ timeout: 45_000 });
   await shot("3-roll-2-era-revealed");
-  await click(page, /FINAL ROLL/);
+  await click(page, /FINAL ROLL/, 45_000);
+  await page.locator(".ec-coach-card").nth(2).waitFor({ timeout: 45_000 });
   await shot("4-final-roll-locked");
 
   await page.getByRole("button", { name: /^Select / }).first().click();
   await shot("5-coach-selected");
-  await click(page, /HIRE THIS STAFF/);
+  await click(page, /HIRE THIS STAFF/, 45_000);
+  await page.getByRole("button", { name: /RUN SIM/ }).waitFor({ timeout: 45_000 });
   await shot("6-ready");
 
   // Simulating is transient: capture it without waiting for the result.
@@ -67,7 +91,7 @@ const states = async (page) => {
 };
 
 const accessibility = async (page) => {
-  await page.goto(`${BASE}/dev/time-arena-reference`, { waitUntil: "networkidle" });
+  await page.goto(`${BASE}/dev/time-arena-reference`, { waitUntil: "domcontentloaded" });
   await page.waitForSelector(".ec-ta-roster .ec-pc");
   const a = await page.evaluate(() => {
     const lum = (c) => {
@@ -194,7 +218,7 @@ const performance = async (page) => {
   const svgDir = "src/ui/time-arena/assets";
   const svgs = readdirSync(svgDir).map((f) => ({ file: f, bytes: statSync(`${svgDir}/${f}`).size }));
 
-  await page.goto(`${BASE}/dev/time-arena-reference`, { waitUntil: "networkidle" });
+  await page.goto(`${BASE}/dev/time-arena-reference`, { waitUntil: "domcontentloaded" });
   await page.waitForSelector(".ec-ta-roster .ec-pc");
   const timing = await page.evaluate(() => {
     const nav = performance.getEntriesByType("navigation")[0] || {};
@@ -240,14 +264,22 @@ const performance = async (page) => {
 const run = async () => {
   mkdirSync(SHOTS, { recursive: true });
   const browser = await chromium.launch();
-  const page = await browser.newPage({ viewport: { width: VW, height: VH }, deviceScaleFactor: 1 });
+  const context = await browser.newContext({ viewport: { width: VW, height: VH }, deviceScaleFactor: 1 });
+  const tester = await openSession(context);
+  if (tester) console.log(`  access session opened for ${tester} on ${BASE}`);
+  const page = await context.newPage();
   await withAccount(page);
   let out = {};
   if (MODE === "states") {
     out = await states(page);
     writeFileSync(`${OUT}/time-arena-state-screens.json`, JSON.stringify({
       artifact: "time-arena-state-screens", phase: "8C.1 — pixel-fidelity reconstruction",
-      viewport: `${VW}x${VH}`, capturedFrom: "a real draft, not the fixture", ...out,
+      viewport: `${VW}x${VH}`, capturedFrom: "a real draft, not the fixture",
+      target: BASE,
+      note: BASE.startsWith("https://")
+        ? "Captured against the deployed, access-gated preview: a real draft needs the real API, which a static local preview does not serve."
+        : "Captured against a local server. A real draft needs a live API; `vite preview` serves static files only.",
+      ...out,
     }, null, 2) + "\n");
   } else if (MODE === "accessibility") out = await accessibility(page);
   else if (MODE === "performance") out = await performance(page);

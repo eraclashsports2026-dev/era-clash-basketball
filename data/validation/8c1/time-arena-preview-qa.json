@@ -1,0 +1,376 @@
+{
+  "artifact": "time-arena-preview-qa",
+  "phase": "8C.1 — pixel-fidelity reconstruction",
+  "deployment": {
+    "baseUrl": "https://era-clash-basketball-8mtyehfek-era-clash.vercel.app",
+    "commit": "3519d5b1f339244efabad97e75598bf9c89ac354",
+    "environment": "vercel preview, access-gated"
+  },
+  "method": "Playwright over the network against the deployed branch preview, authenticated with a signed session obtained by POSTing an access key. The dev fixture is compiled out of a preview build, so every measurement below comes from a real draft played through the UI.",
+  "accessControl": {
+    "unauthenticatedRootRefused": true,
+    "unauthenticatedApiRefused": true,
+    "wrongKeyDenied": true,
+    "keys": [
+      {
+        "testerId": "owner",
+        "role": "owner",
+        "sha256Prefix": "6d3f1c7811d9",
+        "accepted": true,
+        "status": 303
+      },
+      {
+        "testerId": "wave1-tester-01",
+        "role": "tester",
+        "sha256Prefix": "d17a2b5f486b",
+        "accepted": true,
+        "status": 303
+      },
+      {
+        "testerId": "wave1-tester-02",
+        "role": "tester",
+        "sha256Prefix": "e20e4070dd4f",
+        "accepted": true,
+        "status": 303
+      },
+      {
+        "testerId": "wave1-tester-03",
+        "role": "tester",
+        "sha256Prefix": "d344c1b3d9f3",
+        "accepted": true,
+        "status": 303
+      },
+      {
+        "testerId": "wave1-tester-04",
+        "role": "tester",
+        "sha256Prefix": "56cc3895d659",
+        "accepted": true,
+        "status": 303
+      },
+      {
+        "testerId": "wave1-tester-05",
+        "role": "tester",
+        "sha256Prefix": "a018c836d98e",
+        "accepted": true,
+        "status": 303
+      },
+      {
+        "testerId": "wave1-tester-06",
+        "role": "tester",
+        "sha256Prefix": "944c41929417",
+        "accepted": true,
+        "status": 303
+      },
+      {
+        "testerId": "wave1-tester-07",
+        "role": "tester",
+        "sha256Prefix": "015542cebecc",
+        "accepted": true,
+        "status": 303
+      }
+    ],
+    "note": "Raw keys are never printed or stored here. A tester is identified by id and by the first 12 hex of the sha256 already committed in config."
+  },
+  "canonicalGeometryOnDeployedBuild": {
+    "cards": 10,
+    "rosterRows": 1,
+    "cardW": 104,
+    "cardH": 322,
+    "portraitPct": 65.8,
+    "cardGap": 5,
+    "rail": 364,
+    "main": 1122,
+    "header": 65,
+    "cta": {
+      "w": 352,
+      "h": 52
+    },
+    "utility": 58,
+    "docHeight": 1057,
+    "arenaComposition": 1000,
+    "siteFooter": 57,
+    "overflowX": 0,
+    "dockInFold": true,
+    "atmosphere": {
+      "court": true,
+      "lighting": 4,
+      "crowd": true,
+      "grain": true
+    }
+  },
+  "eraDealt": {
+    "observed": [
+      "2000s",
+      "2010s",
+      "2020s",
+      "2000s",
+      "1950s",
+      "1990s"
+    ],
+    "distinct": [
+      "2000s",
+      "2010s",
+      "2020s",
+      "1950s",
+      "1990s"
+    ]
+  },
+  "report": {
+    "boxScoreRows": 13,
+    "worstNameContrast": 5.8,
+    "story": {
+      "count": 8,
+      "worst": 5.8,
+      "sample": "Nikola Jokic controlled the game with 47 points, 15 rebounds"
+    }
+  },
+  "feedback": {
+    "httpStatus": 204,
+    "note": "204 is this endpoint's success response for a stored preview record — and also what it returns when no store is configured or when the caller is rate limited. So this proves the round trip is accepted end to end, with the UI confirming it, from a real preview session on a real preview result. It does not prove persistence from outside the deployment; run `npm run preview:wave1-feedback-report` in a shell that has the store credentials to see the record itself."
+  },
+  "responsive": [
+    {
+      "viewport": "1280x800",
+      "touch": false,
+      "rosterRows": 1,
+      "overflowX": 0,
+      "minTap": 44,
+      "unreachable": 0
+    },
+    {
+      "viewport": "768x1024",
+      "touch": true,
+      "rosterRows": 2,
+      "overflowX": 0,
+      "minTap": 44,
+      "unreachable": 0
+    },
+    {
+      "viewport": "430x932",
+      "touch": true,
+      "rosterRows": 5,
+      "overflowX": 0,
+      "minTap": 44,
+      "unreachable": 0
+    },
+    {
+      "viewport": "390x844",
+      "touch": true,
+      "rosterRows": 5,
+      "overflowX": 0,
+      "minTap": 44,
+      "unreachable": 0
+    }
+  ],
+  "isolation": {
+    "bundlesScanned": 1,
+    "fixtureHits": 0,
+    "devRouteStatus": 404,
+    "fixtureRendered": false
+  },
+  "screens": "data/validation/8c1/preview-screens/",
+  "gates": [
+    {
+      "name": "unauthenticated / is refused with the access page",
+      "ok": true,
+      "detail": "HTTP 401"
+    },
+    {
+      "name": "the access page leaks no application",
+      "ok": true,
+      "detail": "1360 bytes"
+    },
+    {
+      "name": "the access page is unindexable",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "unauthenticated API is 401 JSON",
+      "ok": true,
+      "detail": "HTTP 401"
+    },
+    {
+      "name": "a wrong key is denied and sets no session",
+      "ok": true,
+      "detail": "HTTP 401"
+    },
+    {
+      "name": "all 8 Wave 1 keys are accepted and yield an HttpOnly Secure session",
+      "ok": true,
+      "detail": "owner, wave1-tester-01, wave1-tester-02, wave1-tester-03, wave1-tester-04, wave1-tester-05, wave1-tester-06, wave1-tester-07"
+    },
+    {
+      "name": "the Time Arena is the landing surface",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "an empty board shows ten card backs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "ten player cards on one row",
+      "ok": true,
+      "detail": "10 cards, 1 row(s)"
+    },
+    {
+      "name": "player card is the canonical size",
+      "ok": true,
+      "detail": "104x322"
+    },
+    {
+      "name": "portrait zone is about two thirds of the card",
+      "ok": true,
+      "detail": "65.8%"
+    },
+    {
+      "name": "right rail is the canonical width",
+      "ok": true,
+      "detail": "364px"
+    },
+    {
+      "name": "main arena is the canonical width",
+      "ok": true,
+      "detail": "1122px"
+    },
+    {
+      "name": "header is the canonical height",
+      "ok": true,
+      "detail": "65px"
+    },
+    {
+      "name": "primary CTA is the canonical size",
+      "ok": true,
+      "detail": "352x52"
+    },
+    {
+      "name": "utility bar is the canonical height",
+      "ok": true,
+      "detail": "58px"
+    },
+    {
+      "name": "the arena composition fits the canonical viewport",
+      "ok": true,
+      "detail": "arena 1000px ceiling 1040 · document 1057px including a 57px site footer the fixture route does not render"
+    },
+    {
+      "name": "no horizontal overflow",
+      "ok": true,
+      "detail": "0px"
+    },
+    {
+      "name": "the result dock is inside the first viewport",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the arena atmosphere renders: court, spotlights, crowd, grain",
+      "ok": true,
+      "detail": "court true · 4 radial layers · crowd true · grain true"
+    },
+    {
+      "name": "holds register on the board",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the era is hidden before Roll 2",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the era is revealed with Roll 2, in the rail",
+      "ok": true,
+      "detail": "2000s"
+    },
+    {
+      "name": "the era box appears once, in the rail",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "coach offers arrive in the same sequence, not a second draft",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the result appears on the same page",
+      "ok": true,
+      "detail": "/"
+    },
+    {
+      "name": "the dock leads with the score and no section forced open",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the dock box score carries every stat column",
+      "ok": true,
+      "detail": "PTS FG REB AST STL BLK TO"
+    },
+    {
+      "name": "the dock box score lists both teams in full",
+      "ok": true,
+      "detail": "10 rows"
+    },
+    {
+      "name": "box score lists named players",
+      "ok": true,
+      "detail": "13 rows"
+    },
+    {
+      "name": "every player name is readable",
+      "ok": true,
+      "detail": "worst contrast 5.8:1"
+    },
+    {
+      "name": "the game story has readable body prose",
+      "ok": true,
+      "detail": "8 passages, worst 5.8:1"
+    },
+    {
+      "name": "preview feedback is accepted",
+      "ok": true,
+      "detail": "HTTP 204"
+    },
+    {
+      "name": "the tester is told it was recorded",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "six fresh drafts do not all land on one era",
+      "ok": true,
+      "detail": "2000s, 2010s, 2020s, 2000s, 1950s, 1990s"
+    },
+    {
+      "name": "no draft defaults to the 1950s",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "nothing is clipped or unreachable on any width",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "every hold and roll control is a 44px target on touch widths",
+      "ok": true,
+      "detail": "min 44px"
+    },
+    {
+      "name": "the dev fixture is absent from every deployed bundle",
+      "ok": true,
+      "detail": "1 bundle(s) scanned"
+    },
+    {
+      "name": "the fixture route renders no fixture on a deployed build",
+      "ok": true,
+      "detail": "HTTP 404"
+    }
+  ],
+  "passed": 40,
+  "failed": 0
+}
