@@ -139,6 +139,12 @@ const run = async () => {
 
   within("final-roll CTA width", g.cta?.w ?? -1, T.finalRollCta.width, T.finalRollCta.widthTolerance);
   within("final-roll CTA height", g.cta?.h ?? -1, T.finalRollCta.height, T.finalRollCta.heightTolerance);
+  // Secondary controls sit BESIDE the primary one, in a 1fr auto 1fr row. The
+  // flanking columns are equal by construction, so the button cannot drift off
+  // the stage's centre line — checked, because "by construction" is a claim.
+  ok("the primary action stays on the stage's centre line",
+    g.cta && g.roster && Math.abs((g.cta.x + g.cta.w / 2) - (g.roster.x + g.roster.w / 2)) <= T.horizontalAlignmentTolerance,
+    `${Math.round(Math.abs((g.cta?.x + g.cta?.w / 2) - (g.roster?.x + g.roster?.w / 2)))}px off`);
   within("utility-bar height", g.utility?.h ?? -1, T.utilityFooter.height, T.utilityFooter.tolerance);
 
   // First-viewport density: everything in the primary composition, no scroll.

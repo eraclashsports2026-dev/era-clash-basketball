@@ -2,8 +2,8 @@
   "artifact": "time-arena-preview-qa",
   "phase": "8C.1 — pixel-fidelity reconstruction",
   "deployment": {
-    "baseUrl": "https://era-clash-basketball-4h334crsw-era-clash.vercel.app",
-    "commit": "d69bddbb17099aa0762aee7cb4eeac63083cb1e9",
+    "baseUrl": "https://era-clash-basketball-77akjfxde-era-clash.vercel.app",
+    "commit": "58fb8df9e575620ba031333b9d84b585290af2bd",
     "environment": "vercel preview, access-gated"
   },
   "method": "Playwright over the network against the deployed branch preview, authenticated with a signed session obtained by POSTing an access key. The dev fixture is compiled out of a preview build, so every measurement below comes from a real draft played through the UI.",
@@ -150,7 +150,7 @@
     {
       "slot": "SG",
       "team": "blue",
-      "kept": true,
+      "kept": false,
       "cardH": 322,
       "overflowPx": 0,
       "footInset": 1
@@ -166,7 +166,7 @@
     {
       "slot": "PF",
       "team": "blue",
-      "kept": false,
+      "kept": true,
       "cardH": 322,
       "overflowPx": 0,
       "footInset": 1
@@ -182,18 +182,17 @@
   ],
   "eraDealt": {
     "observed": [
-      "2010s",
-      "1970s",
-      "2010s",
       "2020s",
       "1980s",
-      "1960s"
+      "1950s",
+      "1960s",
+      "1980s",
+      "2020s"
     ],
     "distinct": [
-      "2010s",
-      "1970s",
       "2020s",
       "1980s",
+      "1950s",
       "1960s"
     ]
   },
@@ -204,11 +203,11 @@
       "count": 8,
       "measured": 8,
       "worst": 5.8,
-      "sample": "Kyrie Irving controlled the game with 38 points. Blue attack"
+      "sample": "Nate Archibald controlled the game with 55 points, 7 assists"
     },
     "coaching": {
-      "blocks": 45,
-      "measured": 45,
+      "blocks": 43,
+      "measured": 43,
       "worst": 5.16,
       "failing": [],
       "failingCount": 0,
@@ -269,8 +268,8 @@
     {
       "section": "Game Story",
       "bad": [],
-      "docHeight": 1692,
-      "railBottomBeyondViewport": 596
+      "docHeight": 1672,
+      "railBottomBeyondViewport": 576
     },
     {
       "section": "Box Score",
@@ -281,14 +280,14 @@
     {
       "section": "Coaching",
       "bad": [],
-      "docHeight": 1520,
-      "railBottomBeyondViewport": 424
+      "docHeight": 1482,
+      "railBottomBeyondViewport": 387
     },
     {
       "section": "Analysis",
       "bad": [],
-      "docHeight": 1607,
-      "railBottomBeyondViewport": 512
+      "docHeight": 1625,
+      "railBottomBeyondViewport": 530
     }
   ],
   "isolation": {
@@ -412,7 +411,7 @@
     {
       "name": "the era is revealed with Roll 2, in the rail",
       "ok": true,
-      "detail": "2010s"
+      "detail": "2020s"
     },
     {
       "name": "the era box appears once, in the rail",
@@ -477,7 +476,27 @@
     {
       "name": "an open dock section grows the page instead of hiding behind a scrollbar",
       "ok": true,
-      "detail": "Game Story 1692px · Box Score 1636px · Coaching 1520px · Analysis 1607px"
+      "detail": "Game Story 1672px · Box Score 1636px · Coaching 1482px · Analysis 1625px"
+    },
+    {
+      "name": "a finished game offers a new Clash on the board itself",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the reset dialog asks before it fires, and says what it will do",
+      "ok": true,
+      "detail": "YES/NO"
+    },
+    {
+      "name": "the safe answer holds focus and both answers are 44px",
+      "ok": true,
+      "detail": "min 44px"
+    },
+    {
+      "name": "No closes the dialog and leaves the result where it was",
+      "ok": true,
+      "detail": ""
     },
     {
       "name": "the finished board keeps the staff decision, still inside its cards",
@@ -487,7 +506,7 @@
     {
       "name": "the stage column ends where its content ends, with no empty run below it",
       "ok": true,
-      "detail": "0px unused · stage 773px, rail 1104px"
+      "detail": "0px unused · stage 825px, rail 1104px"
     },
     {
       "name": "box score lists named players",
@@ -507,7 +526,7 @@
     {
       "name": "the coaching report renders, readable, on the deployed build",
       "ok": true,
-      "detail": "45 blocks, 45 measurable, worst 5.16:1"
+      "detail": "43 blocks, 43 measurable, worst 5.16:1"
     },
     {
       "name": "preview feedback is accepted",
@@ -522,7 +541,7 @@
     {
       "name": "six fresh drafts do not all land on one era",
       "ok": true,
-      "detail": "2010s, 1970s, 2010s, 2020s, 1980s, 1960s"
+      "detail": "2020s, 1980s, 1950s, 1960s, 1980s, 2020s"
     },
     {
       "name": "no draft defaults to the 1950s",
@@ -555,6 +574,6 @@
       "detail": "HTTP 404"
     }
   ],
-  "passed": 51,
+  "passed": 55,
   "failed": 0
 }
