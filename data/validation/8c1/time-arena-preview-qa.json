@@ -2,8 +2,8 @@
   "artifact": "time-arena-preview-qa",
   "phase": "8C.1 — pixel-fidelity reconstruction",
   "deployment": {
-    "baseUrl": "https://era-clash-basketball-git-wave1-era-clash.vercel.app",
-    "commit": "25f4069d2ebe6854406fbec10c2571c8988ca68f",
+    "baseUrl": "https://era-clash-basketball-bfmr5kpxo-era-clash.vercel.app",
+    "commit": "a704c689e9ac0b74f8aed06fd027df9a8147c93d",
     "environment": "vercel preview, access-gated"
   },
   "method": "Playwright over the network against the deployed branch preview, authenticated with a signed session obtained by POSTing an access key. The dev fixture is compiled out of a preview build, so every measurement below comes from a real draft played through the UI.",
@@ -166,7 +166,7 @@
     {
       "slot": "PF",
       "team": "blue",
-      "kept": false,
+      "kept": true,
       "cardH": 322,
       "overflowPx": 0,
       "footInset": 1
@@ -174,7 +174,7 @@
     {
       "slot": "C",
       "team": "blue",
-      "kept": false,
+      "kept": true,
       "cardH": 322,
       "overflowPx": 0,
       "footInset": 1
@@ -182,17 +182,19 @@
   ],
   "eraDealt": {
     "observed": [
-      "2010s",
-      "1990s",
-      "1990s",
+      "2020s",
+      "1980s",
+      "1950s",
       "1960s",
-      "1990s",
-      "2010s"
+      "1950s",
+      "2000s"
     ],
     "distinct": [
-      "2010s",
-      "1990s",
-      "1960s"
+      "2020s",
+      "1980s",
+      "1950s",
+      "1960s",
+      "2000s"
     ]
   },
   "report": {
@@ -202,11 +204,11 @@
       "count": 8,
       "measured": 8,
       "worst": 5.8,
-      "sample": "Nikola Jokic controlled the game with 55 points, 23 rebounds"
+      "sample": "Bill Russell controlled the game with 39 points, 32 rebounds"
     },
     "coaching": {
-      "blocks": 45,
-      "measured": 45,
+      "blocks": 43,
+      "measured": 43,
       "worst": 5.16,
       "failing": [],
       "failingCount": 0,
@@ -243,7 +245,7 @@
     {
       "viewport": "430x932",
       "touch": true,
-      "rosterRows": 5,
+      "rosterRows": 6,
       "headerPx": 119,
       "headerPctOfViewport": 13,
       "headerSticky": true,
@@ -254,7 +256,7 @@
     {
       "viewport": "390x844",
       "touch": true,
-      "rosterRows": 5,
+      "rosterRows": 6,
       "headerPx": 115,
       "headerPctOfViewport": 14,
       "headerSticky": true,
@@ -267,8 +269,8 @@
     {
       "section": "Game Story",
       "bad": [],
-      "docHeight": 1647,
-      "railBottomBeyondViewport": 551
+      "docHeight": 1692,
+      "railBottomBeyondViewport": 596
     },
     {
       "section": "Box Score",
@@ -279,14 +281,14 @@
     {
       "section": "Coaching",
       "bad": [],
-      "docHeight": 1517,
-      "railBottomBeyondViewport": 422
+      "docHeight": 1520,
+      "railBottomBeyondViewport": 424
     },
     {
       "section": "Analysis",
       "bad": [],
-      "docHeight": 1625,
-      "railBottomBeyondViewport": 530
+      "docHeight": 1643,
+      "railBottomBeyondViewport": 548
     }
   ],
   "isolation": {
@@ -410,7 +412,7 @@
     {
       "name": "the era is revealed with Roll 2, in the rail",
       "ok": true,
-      "detail": "2010s"
+      "detail": "2020s"
     },
     {
       "name": "the era box appears once, in the rail",
@@ -420,7 +422,7 @@
     {
       "name": "every player card button sits inside its own card",
       "ok": true,
-      "detail": "4 card(s) marked KEPT · worst overflow 0px"
+      "detail": "6 card(s) marked KEPT · worst overflow 0px"
     },
     {
       "name": "every player card button sits at the same place on its card",
@@ -475,7 +477,7 @@
     {
       "name": "an open dock section grows the page instead of hiding behind a scrollbar",
       "ok": true,
-      "detail": "Game Story 1647px · Box Score 1636px · Coaching 1517px · Analysis 1625px"
+      "detail": "Game Story 1692px · Box Score 1636px · Coaching 1520px · Analysis 1643px"
     },
     {
       "name": "a finished game offers a new Clash on the board itself",
@@ -525,7 +527,7 @@
     {
       "name": "the coaching report renders, readable, on the deployed build",
       "ok": true,
-      "detail": "45 blocks, 45 measurable, worst 5.16:1"
+      "detail": "43 blocks, 43 measurable, worst 5.16:1"
     },
     {
       "name": "preview feedback is accepted",
@@ -540,7 +542,7 @@
     {
       "name": "six fresh drafts do not all land on one era",
       "ok": true,
-      "detail": "2010s, 1990s, 1990s, 1960s, 1990s, 2010s"
+      "detail": "2020s, 1980s, 1950s, 1960s, 1950s, 2000s"
     },
     {
       "name": "no draft defaults to the 1950s",
