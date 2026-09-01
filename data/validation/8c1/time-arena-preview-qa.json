@@ -2,9 +2,30 @@
   "artifact": "time-arena-preview-qa",
   "phase": "8C.1 — pixel-fidelity reconstruction",
   "deployment": {
-    "baseUrl": "https://era-clash-basketball-rjuj6tgy0-era-clash.vercel.app",
-    "commit": "aa1414b85bd80750606e4c6d910fdd0ef60c492d",
+    "baseUrl": "https://era-clash-basketball-git-phase-8c1-time-arena-76aea9-era-clash.vercel.app",
+    "commit": "509a14a33abc8840abbe4b35309923e5ef03c392",
     "environment": "vercel preview, access-gated"
+  },
+  "candidateUnderTest": {
+    "deployed": {
+      "enabled": true,
+      "candidateId": "Candidate 4",
+      "candidateCoreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+      "calibrationVersion": "1.4.0",
+      "featureFlag": "PREVIEW_SIM_ENGINE_ENABLED",
+      "fallbackEngine": "production engine 3.2.0 (per-request fallback; emergency-off returns every new request to production while stored preview results stay readable by version)",
+      "cacheNamespace": "preview-*",
+      "persistenceNamespace": "pv_ result-id prefix",
+      "accessControl": "hashed-key allowlist (config/previewAccess.js)"
+    },
+    "local": {
+      "candidateId": "Candidate 4",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+      "possessionCalibrationVersion": "1.4.0",
+      "actionLibraryVersion": "2.1.0",
+      "possessionEngineVersion": "1.2.0",
+      "fallbackEngine": "production engineVersion 3.2.0"
+    }
   },
   "method": "Playwright over the network against the deployed branch preview, authenticated with a signed session obtained by POSTing an access key. The dev fixture is compiled out of a preview build, so every measurement below comes from a real draft played through the UI.",
   "accessControl": {
@@ -142,7 +163,7 @@
     {
       "slot": "PG",
       "team": "blue",
-      "kept": false,
+      "kept": true,
       "cardH": 322,
       "overflowPx": 0,
       "footInset": 1
@@ -166,7 +187,7 @@
     {
       "slot": "PF",
       "team": "blue",
-      "kept": false,
+      "kept": true,
       "cardH": 322,
       "overflowPx": 0,
       "footInset": 1
@@ -182,33 +203,33 @@
   ],
   "eraDealt": {
     "observed": [
+      "1990s",
+      "2000s",
       "2010s",
       "1960s",
-      "1970s",
-      "1980s",
-      "1970s",
-      "2000s"
+      "2000s",
+      "2020s"
     ],
     "distinct": [
+      "1990s",
+      "2000s",
       "2010s",
       "1960s",
-      "1970s",
-      "1980s",
-      "2000s"
+      "2020s"
     ]
   },
   "report": {
     "boxScoreRows": 13,
     "worstNameContrast": 5.8,
     "story": {
-      "count": 8,
-      "measured": 8,
+      "count": 7,
+      "measured": 7,
       "worst": 5.8,
-      "sample": "Kawhi Leonard controlled the game with 43 points, 15 rebound"
+      "sample": "Stephen Curry controlled the game with 37 points, 8 assists."
     },
     "coaching": {
-      "blocks": 41,
-      "measured": 41,
+      "blocks": 43,
+      "measured": 43,
       "worst": 5.16,
       "failing": [],
       "failingCount": 0,
@@ -269,8 +290,8 @@
     {
       "section": "Game Story",
       "bad": [],
-      "docHeight": 1672,
-      "railBottomBeyondViewport": 576
+      "docHeight": 1689,
+      "railBottomBeyondViewport": 594
     },
     {
       "section": "Box Score",
@@ -281,14 +302,14 @@
     {
       "section": "Coaching",
       "bad": [],
-      "docHeight": 1520,
-      "railBottomBeyondViewport": 424
+      "docHeight": 1537,
+      "railBottomBeyondViewport": 442
     },
     {
       "section": "Analysis",
       "bad": [],
-      "docHeight": 1661,
-      "railBottomBeyondViewport": 565
+      "docHeight": 1625,
+      "railBottomBeyondViewport": 530
     }
   ],
   "isolation": {
@@ -412,7 +433,7 @@
     {
       "name": "the era is revealed with Roll 2, in the rail",
       "ok": true,
-      "detail": "2010s"
+      "detail": "1990s"
     },
     {
       "name": "the era box appears once, in the rail",
@@ -422,7 +443,7 @@
     {
       "name": "every player card button sits inside its own card",
       "ok": true,
-      "detail": "4 card(s) marked KEPT · worst overflow 0px"
+      "detail": "6 card(s) marked KEPT · worst overflow 0px"
     },
     {
       "name": "every player card button sits at the same place on its card",
@@ -477,7 +498,7 @@
     {
       "name": "an open dock section grows the page instead of hiding behind a scrollbar",
       "ok": true,
-      "detail": "Game Story 1672px · Box Score 1636px · Coaching 1520px · Analysis 1661px"
+      "detail": "Game Story 1689px · Box Score 1636px · Coaching 1537px · Analysis 1625px"
     },
     {
       "name": "a finished game offers a new Clash on the board itself",
@@ -522,12 +543,12 @@
     {
       "name": "the game story has readable body prose",
       "ok": true,
-      "detail": "8 passages, 8 measurable, worst 5.8:1"
+      "detail": "7 passages, 7 measurable, worst 5.8:1"
     },
     {
       "name": "the coaching report renders, readable, on the deployed build",
       "ok": true,
-      "detail": "41 blocks, 41 measurable, worst 5.16:1"
+      "detail": "43 blocks, 43 measurable, worst 5.16:1"
     },
     {
       "name": "preview feedback is accepted",
@@ -542,7 +563,7 @@
     {
       "name": "six fresh drafts do not all land on one era",
       "ok": true,
-      "detail": "2010s, 1960s, 1970s, 1980s, 1970s, 2000s"
+      "detail": "1990s, 2000s, 2010s, 1960s, 2000s, 2020s"
     },
     {
       "name": "no draft defaults to the 1950s",
@@ -573,8 +594,23 @@
       "name": "the fixture route renders no fixture on a deployed build",
       "ok": true,
       "detail": "HTTP 404"
+    },
+    {
+      "name": "the deployed build reports a candidate identity",
+      "ok": true,
+      "detail": "Candidate 4"
+    },
+    {
+      "name": "the deployed core hash is this checkout's candidate",
+      "ok": true,
+      "detail": "deployed 55bb26a20e7d vs local 55bb26a20e7d"
+    },
+    {
+      "name": "the deployed candidate id and calibration version agree with this checkout",
+      "ok": true,
+      "detail": "deployed Candidate 4 / 1.4.0 vs local Candidate 4 / 1.4.0"
     }
   ],
-  "passed": 55,
+  "passed": 58,
   "failed": 0
 }
