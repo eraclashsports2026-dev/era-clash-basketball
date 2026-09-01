@@ -247,6 +247,20 @@ const performance = async (page) => {
     return { holdToggleMs: holdMs, dockTabMs: tabMs };
   });
 
+  const rules = await page.evaluate(() => {
+    const raster = [...document.querySelectorAll(".ec-ta, .ec-ta *")].some((e) => {
+      const bg = getComputedStyle(e).backgroundImage;
+      return /url\(/.test(bg) && !/^url\(["']?data:image\/svg/.test(bg.trim()) && !/\.svg/.test(bg);
+    });
+    const portraits = [...document.querySelectorAll(".ec-pc-portrait img")];
+    return {
+      noRasterBackground: !raster,
+      noBackgroundVideo: document.querySelectorAll(".ec-ta video").length === 0,
+      portraitsLazyLoaded: portraits.length === 0 || portraits.every((i) => i.loading === "lazy"),
+      portraitImagesFound: portraits.length,
+    };
+  });
+
   const svgTotal = svgs.reduce((n, s) => n + s.bytes, 0);
   const failures = [];
   if (svgTotal > 24 * 1024) failures.push(`arena SVG kit is ${Math.round(svgTotal / 1024)}KB`);
@@ -255,6 +269,7 @@ const performance = async (page) => {
   if (timing.firstContentfulPaintMs == null) failures.push("first paint was not measured");
   else if (timing.firstContentfulPaintMs > 2500) failures.push(`first paint ${timing.firstContentfulPaintMs}ms`);
   if (interaction.holdToggleMs == null) failures.push("hold toggle was not measured");
+  for (const [k, v] of Object.entries(rules)) if (v === false) failures.push(`rule violated: ${k}`);
   else if (interaction.holdToggleMs > 120) failures.push(`hold toggle ${interaction.holdToggleMs}ms`);
 
   writeFileSync(`${OUT}/time-arena-performance-qa.json`, JSON.stringify({
@@ -262,7 +277,9 @@ const performance = async (page) => {
     bundle: { files: bundle.slice(0, 6), totalKb: Math.round(bundle.reduce((n, b) => n + b.bytes, 0) / 1024) },
     arenaAssetKit: { files: svgs, totalKb: +(svgTotal / 1024).toFixed(1) },
     timing, interaction,
-    rules: { noRasterBackground: true, noBackgroundVideo: true, portraitsLazyLoaded: true },
+    // These three were hard-coded true and measured by nothing. An unmeasured
+    // claim in an evidence file is worse than no claim, so they are measured now.
+    rules,
     failures, passed: failures.length === 0,
   }, null, 2) + "\n");
   console.log(`performance: SVG kit ${(svgTotal / 1024).toFixed(1)}KB · bundle ${Math.round(bundle.reduce((n, b) => n + b.bytes, 0) / 1024)}KB · FCP ${timing.firstContentfulPaintMs}ms · hold ${interaction.holdToggleMs}ms`);

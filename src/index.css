@@ -1225,7 +1225,18 @@ button { font-family: inherit; }
     --cta-w: 100%;
     --utility-h: auto;
   }
-  .ec-ta-roster { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: none; }
+  /* Two columns and ten cards in ONE grid put Gold's centre beside Blue's point
+     guard on the third row, with the divider hidden and no boundary between the
+     teams. Each side gets its own grid on a phone, stacked, so a row never
+     mixes them. `display: contents` is what made them one flow; this undoes it
+     at this width only. */
+  .ec-ta-roster { grid-template-columns: minmax(0, 1fr); max-width: none; }
+  .ec-ta-team {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--player-card-gap);
+  }
+  .ec-ta-team[data-team="blue"] { margin-top: 14px; }
   .ec-ta-utility { height: auto; padding: 8px 10px; flex-wrap: wrap; }
   .ec-ta-cta { font-size: 15px; letter-spacing: 1.6px; }
   .ec-ta-cta-row { grid-template-columns: minmax(0, 1fr); }

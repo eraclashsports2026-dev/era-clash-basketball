@@ -92,6 +92,10 @@ export default function ChaosStage({
   const [confirmReset, setConfirmReset] = useState(false);
   const [resetting, setResetting] = useState(false);
   const resumed = useRef(false);
+  // The stage holds its own copy of the share link. `reset()` clears it, but a
+  // New Clash started from the dock does not go through `reset()`, so without
+  // this the fresh empty board still carried the finished clash's link.
+  useEffect(() => { setChallenge(null); }, [run?.chaosRunId]);
 
   const adopt = useCallback((chaos) => {
     // Cards and staffs kept through a roll come back already selected, so

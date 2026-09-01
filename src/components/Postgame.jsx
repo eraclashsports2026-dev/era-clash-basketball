@@ -255,41 +255,52 @@ function CTAs({ mode, won, onRematch, onBest7, onChallenge, onSwap, onShare, onL
     <button onClick={onClick} style={{ flex: "1 1 30%", padding: 12, fontSize: 12.5, fontWeight: 700, borderRadius: 9, border: `1px solid ${T.border}`, background: "transparent", color: T.text, cursor: "pointer", minHeight: 44 }}>{children}</button>
   );
 
+  // A button is rendered only when it HAS a handler. The secondaries already
+  // followed this rule; the primary did not, so a report opened for a PREVIOUS
+  // clash — where the live result and five have been cleared — rendered a gold
+  // "Rematch" that could do nothing, or threw reading a null five.
   let primary, secondaries;
   if (mode === "challenge") {
-    primary = <P onClick={onRematch}>🔁 REMATCH — RUN IT BACK</P>;
+    primary = onRematch && <P onClick={onRematch}>🔁 REMATCH — RUN IT BACK</P>;
     secondaries = [
       onBest7 && <S key="b7" onClick={onBest7}>Best of 7</S>,
-      <S key="sh" onClick={onShare}>📤 Share Result</S>,
-      <S key="ch" onClick={onChallenge}>⚔️ Challenge Someone Else</S>,
+      onShare && <S key="sh" onClick={onShare}>📤 Share Result</S>,
+      onChallenge && <S key="ch" onClick={onChallenge}>⚔️ Challenge Someone Else</S>,
     ];
   } else if (mode === "daily") {
-    primary = <P onClick={onShare}>📤 SHARE TODAY'S RESULT</P>;
+    primary = onShare && <P onClick={onShare}>📤 SHARE TODAY'S RESULT</P>;
     secondaries = [
       onLeaderboard && <S key="lb" onClick={onLeaderboard}>📊 Daily Leaderboard</S>,
-      <S key="ch" onClick={onChallenge}>⚔️ Challenge a Friend</S>,
+      onChallenge && <S key="ch" onClick={onChallenge}>⚔️ Challenge a Friend</S>,
     ];
   } else if (mode === "best7") {
-    primary = <P onClick={onChallenge}>⚔️ CHALLENGE A FRIEND WITH THIS TEAM</P>;
+    primary = onChallenge && <P onClick={onChallenge}>⚔️ CHALLENGE A FRIEND WITH THIS TEAM</P>;
     secondaries = [
       onRematch && <S key="rm" onClick={onRematch}>🔁 New Series</S>,
       onSwap && <S key="sw" onClick={onSwap}>♻️ Swap One Player</S>,
-      <S key="sh" onClick={onShare}>📤 Share</S>,
+      onShare && <S key="sh" onClick={onShare}>📤 Share</S>,
     ];
   } else {
     primary = onBest7
       ? <P onClick={onBest7}>🏆 Run Best of 7</P>
-      : <P onClick={onRematch}>🔁 Rematch</P>;
+      : onRematch && <P onClick={onRematch}>🔁 Rematch</P>;
     secondaries = [
       onBest7 && onRematch && <S key="rm" onClick={onRematch}>🔁 Rematch</S>,
       onSwap && <S key="sw" onClick={onSwap}>♻️ Swap One Player</S>,
-      <S key="ch" onClick={onChallenge}>⚔️ Challenge a Friend</S>,
-      <S key="sh" onClick={onShare}>📤 Share</S>,
+      onChallenge && <S key="ch" onClick={onChallenge}>⚔️ Challenge a Friend</S>,
+      onShare && <S key="sh" onClick={onShare}>📤 Share</S>,
     ];
   }
+  const anyAction = Boolean(primary) || secondaries.some(Boolean);
   return (
     <div style={{ marginTop: 14 }}>
       {primary}
+      {!anyAction && (
+        <div style={{ fontSize: 12.5, color: T.textDim, lineHeight: 1.5, textAlign: "center" }}>
+          This is your last clash, kept so its report still opens. Run it back, start a new
+          Clash or share it from the Result Dock.
+        </div>
+      )}
       <div style={{ display: "flex", gap: 8, marginTop: 8, flexWrap: "wrap" }}>{secondaries.filter(Boolean)}</div>
       {seriesBlocked && (
         <div style={{ marginTop: 10, fontSize: 12.5, color: T.textDim, lineHeight: 1.5 }}>

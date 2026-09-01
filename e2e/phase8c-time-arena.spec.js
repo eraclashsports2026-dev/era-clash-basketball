@@ -455,6 +455,10 @@ test("mobile stacks, leads with the result, and never overflows", async ({ page 
   });
   expect(cards.unreachable).toBe(0);
   expect(Math.min(...cards.taps)).toBeGreaterThanOrEqual(44);
+  // These two were measured and then never asserted, so the name-clipping
+  // regression this test exists to catch would have passed in silence.
+  expect(cards.clippedTags, "a player name must not be clipped on a phone").toBe(0);
+  expect(cards.cardWidth, "a phone card must stay a readable width").toBeGreaterThanOrEqual(120);
 
   await toReadyFromRoll1(page);
   await page.getByRole("button", { name: /RUN SIM/ }).click();
@@ -513,7 +517,10 @@ test("the guide opens, moves between sections, and closes on Escape", async ({ p
 
   artifact("phase8c-accessibility-qa.json", {
     artifact: "phase8c-accessibility-qa", phase: "8C — Time Arena",
-    escapeClosesGuide: true, playFantasyMenusKeyboardOperable: true, ...a11y,
+    // playFantasyMenusKeyboardOperable lived here but is proven by a DIFFERENT
+    // test, whose failure would not stop this artifact being written. Only what
+    // the assertions above actually establish belongs in this file.
+    escapeClosesGuide: true, ...a11y,
   });
 });
 

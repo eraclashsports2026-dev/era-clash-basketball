@@ -129,6 +129,11 @@ export default function ResultDock({
     return () => clearInterval(t);
   }, [priorAt, phase]);
   const [challengeId, setChallengeId] = useState(null);
+  // A share link belongs to ONE clash. Nothing remounts this dock between
+  // clashes, so without this the next clash printed the previous clash's link
+  // under "Same opening rolls" and suppressed its own Challenge button for the
+  // rest of the session.
+  useEffect(() => { setChallengeId(null); }, [run?.chaosRunId, result?.resultId]);
   const makeChallenge = async () => {
     if (!onChallenge) return;
     try { setChallengeId(await onChallenge()); } catch { /* a failed share never breaks the result */ }

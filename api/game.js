@@ -375,14 +375,26 @@ export default async function handler(req, res) {
         if (hasStore()) await pipeline([["HINCRBY", "preview-metrics:counters", "fallback_invoked", 1]]).catch(() => {});
       }
     }
+    // A Daily with the coach/era feature OFF still scores onto the shared board,
+    // so its inputs must not come from the caller.
+    const dailyLocked = mode === "daily" && !dailyCfg;
     const computed = previewComputed ?? (f.simV3
       ? computeResultV3(mode, gold, blue, {
           // In a coach/era Daily the era is the OFFICIAL one and Blue takes the
           // neutral staff, so the puzzle is identical for everyone and the only
           // variable is the player's own coach choice.
-          coachGoldId: dailyCfg ? b.coachGoldId : (validCoachId(b.coachGoldId) || "neutral"),
-          coachBlueId: dailyCfg ? "neutral" : (validCoachId(b.coachBlueId) || "neutral"),
-          eraStyleId: dailyCfg ? dailyCfg.officialEraStyleId : (validEraId(b.eraStyleId) || undefined),
+          // Single, Best of 7, Challenge and Chaos are the player's OWN game:
+          // their coach, the opponent's coach and the era are theirs to choose.
+          //
+          // The Daily is not — it is one shared puzzle and its scores go on a
+          // public board. With the coach/era Daily enabled the official era and
+          // a neutral opponent staff come from the config and only the player's
+          // own coach varies; with it DISABLED everything is neutral. Honouring
+          // the caller's values there would hand them the seed inputs, so they
+          // could search offline for a maximal score and bank it.
+          coachGoldId: dailyCfg ? b.coachGoldId : dailyLocked ? "neutral" : (validCoachId(b.coachGoldId) || "neutral"),
+          coachBlueId: dailyCfg || dailyLocked ? "neutral" : (validCoachId(b.coachBlueId) || "neutral"),
+          eraStyleId: dailyCfg ? dailyCfg.officialEraStyleId : dailyLocked ? undefined : (validEraId(b.eraStyleId) || undefined),
           difficulty: validDifficulty(b.difficulty),
           dailyDate: mode === "daily" ? today : undefined,
           // The coach/era Daily derives its own seed above, including the
@@ -402,9 +414,9 @@ export default async function handler(req, res) {
         const { resolveCoach, resolveEra } = await import("../src/v3/engine.js");
         pregameSnapshot = {
           ...buildPregameRead(gold, blue,
-            resolveCoach(dailyCfg ? b.coachGoldId : (validCoachId(b.coachGoldId) || "neutral")),
-            resolveCoach(dailyCfg ? "neutral" : (validCoachId(b.coachBlueId) || "neutral")),
-            resolveEra(dailyCfg ? dailyCfg.officialEraStyleId : (validEraId(b.eraStyleId) || undefined))),
+            resolveCoach(dailyCfg ? b.coachGoldId : dailyLocked ? "neutral" : (validCoachId(b.coachGoldId) || "neutral")),
+            resolveCoach(dailyCfg || dailyLocked ? "neutral" : (validCoachId(b.coachBlueId) || "neutral")),
+            resolveEra(dailyCfg ? dailyCfg.officialEraStyleId : dailyLocked ? undefined : (validEraId(b.eraStyleId) || undefined))),
           generatedAt: Date.now(),
         };
       } catch { pregameSnapshot = null; }
@@ -485,7 +497,11 @@ export default async function handler(req, res) {
     const kvDown = chaos === "kv-down" || !hasStore();
     if (!kvDown) {
       const resultKey = previewComputed ? `${PREVIEW_NAMESPACES.result}:${resultId}` : `result:${resultId}`;
-      await setJSON(resultKey, record, RESULT_TTL); // written once, never rewritten
+      // cmd() swallows every store failure and resolves null, so an UNCHECKED
+      // write reports a success it did not achieve — and the client then asks
+      // /api/narrative for a resultId that was never stored. The graceful path
+      // for persisted:false already exists; it just was never reached.
+      const wrote = await setJSON(resultKey, record, RESULT_TTL); // written once, never rewritten
       if (previewComputed) {
         // Wave metrics: cheap counters under the preview-metrics namespace so
         // operator reports work without log access. No identity beyond the
@@ -499,7 +515,7 @@ export default async function handler(req, res) {
           ["HINCRBY", "preview-metrics:games-by-tester", (await previewIdentity(req.headers).catch(() => ({})))?.testerId ?? "unattributed", 1],
         ]).catch(() => {});
       }
-      records.persisted = true;
+      records.persisted = wrote === "OK";
 
       if (mode === "daily") {
         // atomic claim AFTER a stored, valid result — a failed request never burns it

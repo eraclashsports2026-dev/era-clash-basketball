@@ -31,6 +31,7 @@ const gate = (name, ok, detail = "") => {
   gates.push({ name, ok: !!ok, detail });
   if (!ok) failed++;
   console.log(`  ${ok ? "PASS " : "FAIL "} ${name}${detail ? ` … ${detail}` : ""}`);
+  return !!ok;   // so the evidence file can DERIVE its claims instead of asserting them
 };
 const near = (actual, target, tol) => Math.abs(actual - target) <= tol;
 
@@ -87,13 +88,13 @@ const run = async () => {
   const anon = await pwRequest.newContext({ baseURL: BASE });
   const root = await anon.get("/");
   const rootBody = await root.text();
-  gate("unauthenticated / is refused with the access page", root.status() === 401 && /Private preview/.test(rootBody), `HTTP ${root.status()}`);
+  const rootRefused = gate("unauthenticated / is refused with the access page", root.status() === 401 && /Private preview/.test(rootBody), `HTTP ${root.status()}`);
   gate("the access page leaks no application", !/ec-ta|era-clash|EraClash|<div id="root"/.test(rootBody), `${rootBody.length} bytes`);
   gate("the access page is unindexable", (root.headers()["x-robots-tag"] || "").includes("noindex"));
   const apiAnon = await anon.get("/api/health");
-  gate("unauthenticated API is 401 JSON", apiAnon.status() === 401 && (await apiAnon.json()).error === "preview_access_required", `HTTP ${apiAnon.status()}`);
+  const apiRefused = gate("unauthenticated API is 401 JSON", apiAnon.status() === 401 && (await apiAnon.json()).error === "preview_access_required", `HTTP ${apiAnon.status()}`);
   const bad = await anon.post("/api/preview-access", { form: { key: "not-a-real-key-000000" }, maxRedirects: 0 });
-  gate("a wrong key is denied and sets no session", bad.status() === 401 && !/pv_session=[^;]/.test(bad.headers()["set-cookie"] || ""), `HTTP ${bad.status()}`);
+  const wrongKeyDenied = gate("a wrong key is denied and sets no session", bad.status() === 401 && !/pv_session=[^;]/.test(bad.headers()["set-cookie"] || ""), `HTTP ${bad.status()}`);
   await anon.dispose();
 
   // Every issued key still opens the door. One request each, no browser.
@@ -554,9 +555,13 @@ const run = async () => {
     deployment: { baseUrl: BASE, commit: process.env.PHASE8C1_COMMIT || null, environment: "vercel preview, access-gated" },
     method: "Playwright over the network against the deployed branch preview, authenticated with a signed session obtained by POSTing an access key. The dev fixture is compiled out of a preview build, so every measurement below comes from a real draft played through the UI.",
     accessControl: {
-      unauthenticatedRootRefused: true,
-      unauthenticatedApiRefused: true,
-      wrongKeyDenied: true,
+      // Measured, not asserted. These were hard-coded `true` beside a genuinely
+      // derived keyLedger, so a run where the gate regressed would still have
+      // recorded the gate as holding — an evidence file that lies is worse than
+      // no evidence file.
+      unauthenticatedRootRefused: rootRefused,
+      unauthenticatedApiRefused: apiRefused,
+      wrongKeyDenied,
       keys: keyLedger,
       note: "Raw keys are never printed or stored here. A tester is identified by id and by the first 12 hex of the sha256 already committed in config.",
     },
