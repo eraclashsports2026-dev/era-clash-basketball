@@ -3,6 +3,7 @@
 // is still sealed, no preview package exists, no validated status is claimed,
 // and Candidate 1 is byte-identical to the record taken before the seal opened.
 import { describe, it, expect } from "vitest";
+import { activeLockVersion } from "./helpers/candidateLineage.js";
 import { existsSync, readFileSync } from "node:fs";
 import { readArtifact, artifactExists } from "../src/v3/calibration/artifacts.js";
 import { setAccessCount, SEALED_SETS } from "../src/v3/calibration/holdoutSeal.js";
@@ -197,7 +198,10 @@ describe("6C4B2R — Candidate 1 was not changed or unlocked", () => {
     expect(st().candidateSelectionStatus).toBe("SELECTED");
     expect(st().candidateLockStatus).toBe("LOCKED");
     expect(st().possessionCalibrationVersion).toBe("1.1.0");
-    expect(versionOf("possessionCalibrationVersion")).toBe("1.3.0");
+    // The registry tracks the ACTIVE candidate, not this one — this phase executed V5 against Candidate 1.
+    // A literal here had to be edited at every generation; the active lock
+    // says the same thing and keeps saying it.
+    expect(versionOf("possessionCalibrationVersion")).toBe(activeLockVersion());
   });
 
   it("did not bump the calibration version for a status transition", () => {

@@ -45,9 +45,12 @@ export const BASELINE_CASES = [
   // Candidate 1 moved the OT seed a fourth time (36 -> 1016, double overtime, re-searched after the full WS4-WS7 repair set),
   // found by search per the rule above. Candidate 2 moved it a fifth time
   // (1016 -> 11) after the assist-crediting and defensive-scheme repairs
-  // shifted the scoreline out of overtime again. 11 reaches TRIPLE overtime,
-  // which exercises the repeat loop and each overtime's independent jump ball.
-  { id: "dantoni-pace-2020s", goldIds: ["luka-20s", "harden-10s", "jordan-90s", "lebron-10s", "jokic-20s"], blueIds: ["magic-80s", "klay-10s", "pippen-90s", "duncan-00s", "hak-90s"], eraStyleId: "2020s", coachGoldId: "mike-dantoni", coachBlueId: "tom-thibodeau", simulationSeed: 11 },
+  // shifted the scoreline out of overtime again. Candidate 4 moved it a sixth
+  // time (11 -> 1931): its four repairs shifted the scoreline out of overtime
+  // and left the freeze with no overtime case at all, which the coverage test
+  // catches. 1931 reaches DOUBLE overtime, keeping the repeat loop and each
+  // overtime's independent jump ball under the freeze as before.
+  { id: "dantoni-pace-2020s", goldIds: ["luka-20s", "harden-10s", "jordan-90s", "lebron-10s", "jokic-20s"], blueIds: ["magic-80s", "klay-10s", "pippen-90s", "duncan-00s", "hak-90s"], eraStyleId: "2020s", coachGoldId: "mike-dantoni", coachBlueId: "tom-thibodeau", simulationSeed: 1931 },
   { id: "flag-off-6b1-path", goldIds: ["magic-80s", "jordan-90s", "pippen-90s", "duncan-00s", "hak-90s"], blueIds: ["curry-10s", "klay-10s", "bird-80s", "dirk-00s", "rob-90s"], eraStyleId: "1990s", coachGoldId: "pat-riley", coachBlueId: "phil-jackson", simulationSeed: 777, expandedActions: false, zoneResolution: false, offensiveAdjustments: false, opportunityAllocation: false },
 ];
 

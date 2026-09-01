@@ -3,6 +3,7 @@
 // happened: both holdouts are still sealed at zero, and no formal result
 // artifact exists to be mistaken for a verdict.
 import { describe, it, expect } from "vitest";
+import { activeLockVersion } from "./helpers/candidateLineage.js";
 import { existsSync, readFileSync } from "node:fs";
 import { readArtifact, artifactExists, ARTIFACT_DIR_C6 } from "../src/v3/calibration/artifacts.js";
 import { setAccessCount, SEALED_SETS } from "../src/v3/calibration/holdoutSeal.js";
@@ -59,7 +60,10 @@ describe("6C4B2 — nothing was opened", () => {
     expect(s.syntheticV2.formalVerdict).toBe("NOT_OPENED");
     for (const claim of s.claimsNotMade) expect(claim.length).toBeGreaterThan(10);
     expect(s.claimsNotMade.join(" ")).toContain("HOLDOUT_VALIDATED");
-    expect(versionOf("possessionCalibrationVersion")).toBe("1.3.0");
+    // The registry tracks the ACTIVE candidate, not this one — this phase opened nothing.
+    // A literal here had to be edited at every generation; the active lock
+    // says the same thing and keeps saying it.
+    expect(versionOf("possessionCalibrationVersion")).toBe(activeLockVersion());
     expect(RB1("candidate1-lock-recertification").data.calibrationStatus).toBe("DEVELOPMENT_LOCKED_SCOPED");
     expect(RB1("candidate1-lock-recertification").data.validationAttemptStatus).toBe("NOT_RUN");
   });

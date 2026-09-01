@@ -37,13 +37,14 @@ export const PREVIEW_NAMESPACES = Object.freeze({
   competition: "preview-competition", daily: "preview-daily", challenge: "preview-challenge",
 });
 
-// The locked Candidate 3 core identity. The literal is bound to
-// data/validation/6c4d0/candidate3-lock.json by test; it is lock output, not
+// The locked Candidate 4 core identity. The literal is bound to
+// data/validation/8d/candidate4-lock.json by test; it is lock output, not
 // configuration — a new candidate means a new lock and a new literal.
-export const PREVIEW_CANDIDATE_CORE_HASH = "6a423d4fedf45bef3889b9425651e815c95da4f6e573a2c51a3f0ef713360b69";
+// Candidate 3 was 6a423d4fedf45bef3889b9425651e815c95da4f6e573a2c51a3f0ef713360b69.
+export const PREVIEW_CANDIDATE_CORE_HASH = "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff";
 
 export const previewCandidateIdentity = () => ({
-  candidateId: "Candidate 3",
+  candidateId: "Candidate 4",
   coreHash: PREVIEW_CANDIDATE_CORE_HASH,
   possessionCalibrationVersion: versionOf("possessionCalibrationVersion"),
   actionLibraryVersion: versionOf("actionLibraryVersion"),

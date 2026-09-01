@@ -3,6 +3,7 @@
 // preview records, structured preview feedback, and the deployed-preview
 // telemetry vocabulary.
 import { describe, it, expect, afterEach } from "vitest";
+import { activeLockManifest } from "./helpers/candidateLineage.js";
 import { readFileSync } from "node:fs";
 import { verifyPreviewKey, previewIdentity, readCookie, COOKIE_NAME } from "../api/_lib/previewAccessCheck.js";
 import { PREVIEW_ACCESS } from "../config/previewAccess.js";
@@ -13,7 +14,12 @@ import { validatePreviewFeedback } from "../api/feedback.js";
 import { ALLOWED_PREVIEW_EVENTS, previewEvent } from "../api/_lib/previewTelemetry.js";
 import { PLAYERS } from "../src/players.js";
 
-const LOCK = JSON.parse(readFileSync("data/validation/6c4d0/candidate3-lock.json", "utf8")).data;
+// The ACTIVE lock, whichever candidate that is. This file is about the LIVE
+// preview activation, so binding it to one candidate's path meant editing it at
+// every generation — and the claim it makes (the embedded hash IS the locked
+// hash) is about whatever is currently locked.
+const LOCK = activeLockManifest();
+const C3_LOCK = JSON.parse(readFileSync("data/validation/6c4d0/candidate3-lock.json", "utf8")).data;
 const team = (ids) => ids.map((id) => ({ id, ...PLAYERS.find((p) => p.id === id) }));
 const A = team(["magic-80s", "jordan-90s", "pippen-90s", "duncan-00s", "hak-90s"]);
 const B = team(["curry-10s", "klay-10s", "lebron-10s", "kg-00s", "shaq-90s"]);
@@ -94,7 +100,7 @@ describe("production-shaped preview record", () => {
   it("carries the preview identity and stays deterministic", () => {
     expect(r.preview).toBe(true);
     expect(r.candidate.coreHash).toBe(PREVIEW_CANDIDATE_CORE_HASH);
-    expect(r.candidate.possessionCalibrationVersion).toBe("1.3.0");
+    expect(r.candidate.possessionCalibrationVersion).toBe(LOCK.possessionCalibrationVersion);
     const again = computeResultPreview("single", A, B, { coachGoldId: "pat-riley", coachBlueId: "phil-jackson", eraStyleId: "1990s" }, 777);
     expect(JSON.stringify(again)).toBe(JSON.stringify(r));
   });
@@ -102,6 +108,8 @@ describe("production-shaped preview record", () => {
   it("the embedded core hash IS the locked core hash", () => {
     expect(PREVIEW_CANDIDATE_CORE_HASH).toBe(LOCK.coreHash);
     expect(previewCandidateIdentity().coreHash).toBe(LOCK.coreHash);
+    // and it is NOT a superseded candidate's, which is the drift this guards
+    expect(PREVIEW_CANDIDATE_CORE_HASH).not.toBe(C3_LOCK.parentCoreHash);
   });
 
   it("MVP comes from the winning side", () => {

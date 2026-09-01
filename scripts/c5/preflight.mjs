@@ -9,8 +9,10 @@ const gate = (name, ok, detail = "") => {
 };
 delete process.env.PREVIEW_SIM_ENGINE_ENABLED; delete process.env.VERCEL_ENV;
 
-const lock = JSON.parse(readFileSync("data/validation/6c4d0/candidate3-lock.json", "utf8")).data;
-const c2 = JSON.parse(readFileSync("data/validation/6c4c1/candidate2-lock.json", "utf8")).data;
+// The ACTIVE candidate lock, and its parent. Phase 8D minted Candidate 4 from
+// Candidate 3 under Candidate 3's own postLockMutationPolicy.
+const lock = JSON.parse(readFileSync("data/validation/8d/candidate4-lock.json", "utf8")).data;
+const c2 = JSON.parse(readFileSync("data/validation/6c4d0/candidate3-lock.json", "utf8")).data;
 const { versionOf } = await import("../../src/versions.js");
 const { defaultRuntimeParameterSet } = await import("../../src/v3/calibration/runtimeParameters.js");
 const { flags } = await import("../../api/_lib/flags.js");
@@ -18,11 +20,11 @@ const { PREVIEW_NAMESPACES, PREVIEW_RESULT_ID_PREFIX, PREVIEW_CANDIDATE_CORE_HAS
 const { PREVIEW_ACCESS } = await import("../../config/previewAccess.js");
 const { PLAYERS } = await import("../../src/players.js");
 
-// Candidate 3 lock, live
+// Candidate 4 lock, live
 gate("candidate lock states", lock.candidateSelectionStatus === "SELECTED" && lock.candidateLockStatus === "LOCKED"
   && lock.calibrationStatus === "PREVIEW_READY_LOCKED" && lock.formalValidationStatus === "FORMAL_VALIDATION_INCOMPLETE");
-gate("parent is Candidate 2, chain intact", lock.parentCandidateId === "Candidate 2" && lock.parentCoreHash === c2.coreHash && c2.candidateLockStatus === "LOCKED");
-gate("calibration version live = locked", versionOf("possessionCalibrationVersion") === lock.possessionCalibrationVersion && lock.possessionCalibrationVersion === "1.3.0");
+gate("parent is Candidate 3, chain intact", lock.parentCandidateId === "Candidate 3" && lock.parentCoreHash === c2.coreHash && c2.candidateLockStatus === "LOCKED");
+gate("calibration version live = locked", versionOf("possessionCalibrationVersion") === lock.possessionCalibrationVersion && lock.possessionCalibrationVersion === "1.4.0");
 gate("parameter hash live = locked", defaultRuntimeParameterSet().parameterSetHash === lock.parameterSetHash,
   lock.parameterSetHash.slice(0, 16));
 gate("embedded core hash = locked core hash", PREVIEW_CANDIDATE_CORE_HASH === lock.coreHash, lock.coreHash.slice(0, 16));

@@ -31,7 +31,13 @@ if (mode === "preflight") {
   gate("six preview namespaces, all preview-prefixed",
     Object.values(PREVIEW_NAMESPACES).length === 6 && Object.values(PREVIEW_NAMESPACES).every((n) => n.startsWith("preview-")));
   const id = previewCandidateIdentity();
-  gate("identity is the locked identity", id.possessionCalibrationVersion === "1.3.0" && id.actionLibraryVersion === "2.1.0",
+  // Read from the ACTIVE lock rather than a literal, so the gate cannot pass a
+  // stale version after a candidate is minted — and cannot need editing either.
+  const { readFileSync: rf } = await import("node:fs");
+  const activeLock = JSON.parse(rf("data/validation/8d/candidate4-lock.json", "utf8")).data;
+  gate("identity is the locked identity",
+    id.possessionCalibrationVersion === activeLock.possessionCalibrationVersion
+    && id.coreHash === activeLock.coreHash && id.actionLibraryVersion === "2.1.0",
     `pc ${id.possessionCalibrationVersion} · al ${id.actionLibraryVersion} · fallback ${id.fallbackEngine}`);
   const { buildRunnerProfileMap } = await import("../validation/profileMap.mjs");
   const pm = await buildRunnerProfileMap();
