@@ -12,11 +12,10 @@ const buildMatchup = async (page) => {
     try { localStorage.setItem("ec_account", "1"); localStorage.setItem("ec_name", "E2E"); } catch (e) {}
   });
   await page.goto("/");
-  // Phase 8C: modes are chosen from the registry-driven shelf rather than a
-  // one-off button on the Chaos hero.
-  const shelfDream = page.getByRole("button", { name: /Dream Matchup/ }).first();
-  await shelfDream.waitFor({ state: "visible", timeout: 15000 });
-  await shelfDream.click();
+  // Phase 8C.1: the permanent mode shelf left the Play surface, so a mode is
+  // chosen from the registry-driven Play menu.
+  await page.getByRole("button", { name: /^Play/ }).click();
+  await page.getByRole("menuitem", { name: /Dream Matchup/ }).click();
   await page.getByRole("button", { name: /Random Team/ }).first().click();
   await page.getByRole("tab", { name: /Random Team/ }).click();
   await page.getByRole("button", { name: /Continue to Coaches/ }).click();

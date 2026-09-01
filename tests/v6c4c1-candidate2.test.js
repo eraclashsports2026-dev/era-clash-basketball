@@ -8,7 +8,7 @@ import { setAccessCount, SEALED_SETS } from "../src/v3/calibration/holdoutSeal.j
 import { defaultRuntimeParameterSet, activeParameters } from "../src/v3/calibration/runtimeParameters.js";
 import { versionOf } from "../src/versions.js";
 import { assertSealDiscipline } from "./helpers/sealDiscipline.js";
-import { successionChain, assertCoreHashLineage } from "./helpers/candidateLineage.js";
+import { successionChain, assertCoreHashLineage, activeLockVersion} from "./helpers/candidateLineage.js";
 import { SCHEME_TRANSFER, buildSchemePlan, coachToolkit } from "../src/v3/defense/scheme.js";
 import COACH_DATA from "../src/v3/data/coaches.js";
 
@@ -169,7 +169,10 @@ describe("6C4C1 — Candidate 2 identity", () => {
   });
 
   it("stamps 1.2.0 and carries it in every result fingerprint", () => {
-    expect(versionOf("possessionCalibrationVersion")).toBe("1.3.0");
+    // The registry tracks the ACTIVE candidate, not this one — this phase locked Candidate 2.
+    // A literal here had to be edited at every generation; the active lock
+    // says the same thing and keeps saying it.
+    expect(versionOf("possessionCalibrationVersion")).toBe(activeLockVersion());
     expect(R("candidate2-lock").possessionCalibrationVersion).toBe("1.2.0");
   });
 });

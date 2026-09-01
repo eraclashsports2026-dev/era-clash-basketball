@@ -1,0 +1,57 @@
+{
+  "artifact": "phase8c1-resolution-ledger",
+  "phase": "8C.1 — pixel-fidelity reconstruction",
+  "FIXED_AND_VERIFIED": [
+    "ten player cards share one arena row at the canonical viewport (measured: 1 row, top spread 3px from the deliberate held-card lift)",
+    "right rail is 364px, inside the contract's 360–385 range",
+    "main arena is 1122px, matching the closed horizontal budget exactly",
+    "header height 65px against a 64px target",
+    "player cards are 104 × 322 with a 65.8% portrait zone",
+    "player-card gap 5px and centre divider gap 14px",
+    "coach cards are 248 × 232 and share one row",
+    "Coach Chaos sits inside the first viewport (bottom 549 of 1024)",
+    "FINAL ROLL CTA is 352 × 52 and inside the first viewport",
+    "utility bar is 58px and inside the first viewport",
+    "the result dock is inside the first viewport",
+    "document height 1025px against a 1040px ceiling",
+    "empty slots are card BACKS at the populated card's exact geometry",
+    "player names wrap to two lines and never collapse to initials",
+    "portrait fallback fills the final portrait zone as a masked, team-tinted figure",
+    "an approved portrait is an asset swap: same zone, same crop, no layout change",
+    "Gold PF and Gold C take Gold styling; the team container owns the theme",
+    "HOLD and LOCKED keep the reference's full-width footer, lock glyph and lift",
+    "the arena atmosphere is nine locally authored layers: court, crowd, two spotlights, haze, grain, vignette",
+    "Live Intel and Era Impact share ONE bordered panel, divided",
+    "the Result Dock is its own lower panel and ends at VIEW FULL REPORT, as the reference does",
+    "the permanent mode shelf is gone from the active Play surface",
+    "container-aware roster: the rail narrows before the teams stack, and ten cards are never clipped",
+    "a fixed 1440px card width would have clipped the tenth card inside the stage's overflow — found by measurement, fixed by making the tracks fluid with a canonical cap",
+    "all hold controls are 44px, on a mouse or a finger",
+    "micro-label type scale raised from 8.5–9.5px to 10–11px at AA contrast",
+    "the rail states plainly that it is a read, not a prediction (restored after a density trim removed it)",
+    "on the DEPLOYED preview, through the access gate: all eight Wave 1 keys open a session, a real draft measures to the canonical geometry, the era is dealt (six fresh drafts returned several different eras), the dock opens a box score carrying PTS FG REB AST STL BLK TO, report names and story prose clear 5.8:1, feedback is accepted, and the dev fixture is absent from every deployed bundle",
+    "the deployed page also renders the 57px site footer that the fixture route does not, so the deployed height gate grades the arena composition (header + court = 1000px) — the same quantity the fixture's document height reports"
+  ],
+  "NOT_REPRODUCIBLE_WITH_EVIDENCE": [
+    "one chaos-flow check failed once against the local harness and did not reproduce on two clean re-runs (91/91 both times) — a cold-start artifact, not a defect"
+  ],
+  "EXTERNAL_BLOCKER_WITH_SAFE_PRODUCT_FALLBACK": [
+    {
+      "item": "canonical reference persistence, overlay and difference heatmap",
+      "evidence": "The reference image is supplied as conversation content, not as a file on disk; docs/ui/references/time-arena-canonical.png does not exist, and no candidate file was found under ~/Desktop or ~/Downloads.",
+      "fallback": "The geometry contract was hand-authored from the reference and the specification's stated ranges, and is graded by measurement (33 checks) rather than by pixels. The implementation screenshot, the nine state screenshots and the eight responsive screenshots are captured. scripts/ui/time-arena-visual.mjs generates the overlay and heatmap automatically the moment the PNG is saved to that path — and refuses to invent a comparison until then.",
+      "ownerAction": "Save the reference PNG to docs/ui/references/time-arena-canonical.png and run npm run ui:time-arena-visual."
+    },
+    {
+      "item": "approved player and coach portraits",
+      "evidence": "src/images/approved.json holds zero product-approved images, and this phase may not scrape, download or generate a likeness.",
+      "fallback": "The portrait-FIRST geometry is built now: a fixed 212px zone filled by a masked, team-tinted silhouette with initials, and a registry (src/ui/time-arena/portraits.js) whose APPROVED path renders the image with focal-point and scale support. Adding art changes no layout."
+    },
+    {
+      "item": "condensed display typeface",
+      "evidence": "No font binary exists in the repository and this phase adds no remote runtime dependency.",
+      "fallback": "A system condensed stack (--ec-display) carries names, ratings and roll labels. Bundling a licensed face is an asset decision and would not move any geometry."
+    }
+  ],
+  "UNRESOLVED_TECHNICAL_FAILURES": []
+}

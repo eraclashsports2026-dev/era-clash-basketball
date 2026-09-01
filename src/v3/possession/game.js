@@ -78,13 +78,22 @@ const chooseShotCategory = (shooter, shot, env, rng, threeWeightScale = 1, param
   w.PAINT_OR_POST *= 1 + Math.max(0, bias) * 0.5;
   w.THREE_POINT *= 1 + Math.max(0, -bias) * sl.perimeterBiasMultiplier;
   w.MIDRANGE *= 1 + Math.max(0, -bias) * 0.6;
-  // The era's documented three-point volume scales the ATTEMPT weight. Position
-  // in this sequence is irrelevant — these are all multiplications on the same
-  // weight — so this ordering is for readability only.
-  w.THREE_POINT *= threeWeightScale;
   // A pre-three-point era removes the SHOT, not the SKILL: the weight goes to
   // the long two the player would actually have taken (PART 17).
-  if (!env.threePointLegal) { w.MIDRANGE += w.THREE_POINT; w.THREE_POINT = 0; }
+  //
+  // ORDER MATTERS HERE, and a comment used to say it did not. anchorThreeScale
+  // returns 0 whenever the era has no line, so scaling first zeroed the weight
+  // and the transfer below then added exactly nothing — the documented
+  // behaviour never happened once, in three of eight eras. The perimeter weight
+  // was instead renormalised away across the other categories, which is the
+  // opposite of "the skill becomes a long two".
+  if (!env.threePointLegal) {
+    w.MIDRANGE += w.THREE_POINT;
+    w.THREE_POINT = 0;
+  } else {
+    // The era's documented three-point volume scales the ATTEMPT weight.
+    w.THREE_POINT *= threeWeightScale;
+  }
   return rng.weighted(Object.keys(w), (k) => w[k]);
 };
 

@@ -38,7 +38,7 @@ const toReadyFromRoll1 = async (page) => {
   await expect(page.getByText(/ROLL 2 OF 3/).first()).toBeVisible({ timeout: 20_000 });
   await roll(page, /FINAL ROLL/);
   await expect(page.getByText("CHOOSE YOUR STAFF").first()).toBeVisible({ timeout: 20_000 });
-  await page.getByRole("button", { name: "SELECT COACH" }).first().click();
+  await page.getByRole("button", { name: /^Select / }).first().click();
   await page.getByRole("button", { name: /HIRE THIS STAFF/ }).click();
   await expect(page.getByRole("button", { name: /RUN SIM/ })).toBeVisible({ timeout: 20_000 });
 };
@@ -59,16 +59,24 @@ test("the Time Arena is one workspace with a persistent rail", async ({ page }) 
   const layout = await page.evaluate(() => {
     const ta = document.querySelector(".ec-ta");
     const r = document.querySelector(".ec-ta-rail");
+    // The PAGE is the only vertical scroller in the arena. A pane with its own
+    // max-height and overflow-y hid up to 504px of the result behind an inner
+    // scrollbar and stopped the page scrolling under the pointer.
+    const verticalScrollers = [...document.querySelectorAll(".ec-ta, .ec-ta *")]
+      .filter((e) => ["auto", "scroll"].includes(getComputedStyle(e).overflowY))
+      .map((e) => String(e.className).trim().split(/\s+/)[0]);
     return {
       columns: getComputedStyle(ta).gridTemplateColumns.split(" ").length,
-      sticky: getComputedStyle(r).position,
-      contained: getComputedStyle(r).overscrollBehaviorY,
+      railPosition: getComputedStyle(r).position,
+      railOverflowY: getComputedStyle(r).overflowY,
+      verticalScrollers,
       overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
     };
   });
   expect(layout.columns).toBe(2);
-  expect(layout.sticky).toBe("sticky");
-  expect(layout.contained).toBe("contain");
+  expect(layout.railPosition).toBe("static");
+  expect(layout.railOverflowY).toBe("visible");
+  expect(layout.verticalScrollers, "the page is the arena's only vertical scroller").toEqual([]);
   expect(layout.overflow).toBe(0);
 
   // Nothing is claimed before anything has happened.
@@ -147,14 +155,17 @@ test("players and coaches move through ONE three-roll sequence", async ({ page }
   }
   const keptCoach = (await page.locator(".ec-coach-card").first().innerText()).split("\n")[1];
   await page.locator(".ec-coach-card").first().getByRole("button", { name: /^Hold/ }).click();
-  await expect(page.getByText(/Holding 1 of 3 staffs/)).toBeVisible();
-  await expect(page.getByText(/Holding 2 of 5 players/)).toBeVisible();
+  // The counts share the CTA's single sub-line now — the reference carries one
+  // line there, and three stacked lines were part of the density overrun.
+  await expect(page.locator(".ec-ta-cta-wrap")).toContainText(/holding 2\/5/);
+  await expect(page.locator(".ec-ta-cta-wrap")).toContainText(/1\/3 staffs/);
 
   await roll(page, /LOCK & ROLL 2/);
   await expect(page.getByText(/ROLL 2 OF 3/).first()).toBeVisible({ timeout: 20_000 });
 
   // The era arrives with Roll 2, and what was held survived on both boards.
-  await expect(page.locator(".ec-ta-stage").getByText(/^\d{4}s ERA/)).toBeVisible();
+  await expect(page.locator(".ec-intel-era-id")).toHaveText(/^\d{4}s$/);
+  await expect(page.locator(".ec-ta-utility").getByText(/^ERA: \d{4}s/)).toBeVisible();
   for (const slot of ["PG", "C"]) {
     await expect(gold.locator(`.ec-pc[data-slot="${slot}"]`)).toContainText("KEPT");
   }
@@ -168,10 +179,10 @@ test("players and coaches move through ONE three-roll sequence", async ({ page }
   await expect(page.getByRole("button", { name: /^Hold/ })).toHaveCount(0);
   await expect(page.getByRole("button", { name: /FINAL ROLL/ })).toHaveCount(0);
   await expect(page.locator(".ec-pc-static").first()).toContainText("FINAL ROSTER");
-  await expect(page.getByRole("button", { name: "SELECT COACH" })).toHaveCount(3);
+  await expect(page.getByRole("button", { name: /^Select / })).toHaveCount(3);
 
   // The hire is one of the three; the other two stay visible as what they were.
-  await page.getByRole("button", { name: "SELECT COACH" }).first().click();
+  await page.getByRole("button", { name: /^Select / }).first().click();
   await page.getByRole("button", { name: /HIRE THIS STAFF/ }).click();
   await expect(page.getByRole("button", { name: /RUN SIM/ })).toBeVisible({ timeout: 20_000 });
   await expect(page.getByText("YOUR STAFF")).toHaveCount(1);
@@ -245,6 +256,72 @@ test("an entitled run offers the era selector the server allows", async ({ page 
   await expect(rail.getByText(/same rules for everyone/)).toBeVisible();
 });
 
+test("starting over is on the BOARD, and it asks first", async ({ page }) => {
+  test.slow();
+  await withAccount(page);
+  await page.goto("/");
+  await toReady(page);
+
+  const stage = page.locator(".ec-ta-stage");
+  const actions = stage.locator(".ec-ta-stage-actions");
+  await expect(actions.getByRole("button", { name: /CHALLENGE THIS CHAOS/ })).toBeVisible();
+  const resetBtn = actions.getByRole("button", { name: /Reset this Clash/ });
+  await expect(resetBtn).toBeVisible();
+  // A reset is a real touch target, like every other control on the board.
+  expect((await resetBtn.boundingBox()).height).toBeGreaterThanOrEqual(44);
+
+  // NO leaves the board exactly as it was.
+  await resetBtn.click();
+  const dialog = page.getByRole("dialog", { name: /Reset this Clash/ });
+  await expect(dialog).toBeVisible();
+  await expect(dialog.getByText(/cannot be undone/)).toBeVisible();
+  await dialog.getByRole("button", { name: /No, keep drafting/ }).click();
+  await expect(dialog).toHaveCount(0);
+  await expect(page.locator(".ec-ta-roster .ec-pc")).toHaveCount(10);
+  await expect(page.getByRole("button", { name: /RUN SIM/ })).toBeVisible();
+
+  // Escape is also No: the safe answer, and it is what has focus.
+  await resetBtn.click();
+  await expect(page.getByRole("dialog", { name: /Reset this Clash/ })).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("dialog", { name: /Reset this Clash/ })).toHaveCount(0);
+  await expect(page.locator(".ec-ta-roster .ec-pc")).toHaveCount(10);
+
+  // YES deals a fresh board: ten backs and Roll 1 again.
+  await resetBtn.click();
+  await page.getByRole("dialog", { name: /Reset this Clash/ })
+    .getByRole("button", { name: /Yes, reset this Clash/ }).click();
+  await expect(page.locator(".ec-pc-empty")).toHaveCount(10, { timeout: 20_000 });
+  await expect(page.getByRole("button", { name: /^ROLL 1/ })).toBeVisible();
+  await expect(page.getByText("THREE ROLLS AVAILABLE").first()).toBeVisible();
+});
+
+test("a finished game offers a new clash on the board, not only in the result", async ({ page }) => {
+  test.slow();
+  await withAccount(page);
+  await page.goto("/");
+  await toReady(page);
+  await page.getByRole("button", { name: /RUN SIM/ }).click();
+  await expect(page.locator(".ec-ta-rail").getByText("FINAL SCORE", { exact: true }).first())
+    .toBeVisible({ timeout: 45_000 });
+
+  const onBoard = page.locator(".ec-ta-stage .ec-ta-stage-actions")
+    .getByRole("button", { name: /Start a new Clash/ });
+  await expect(onBoard).toBeVisible();
+  await onBoard.click();
+  const dialog = page.getByRole("dialog", { name: /Start a new Clash/ });
+  await expect(dialog.getByText(/stays in the Result Dock/)).toBeVisible();
+  await dialog.getByRole("button", { name: /No, stay on this result/ }).click();
+  await expect(page.locator(".ec-ta-rail").getByText("FINAL SCORE", { exact: true }).first()).toBeVisible();
+
+  await onBoard.click();
+  await page.getByRole("dialog", { name: /Start a new Clash/ })
+    .getByRole("button", { name: /Yes, start a new Clash/ }).click();
+  await expect(page.locator(".ec-pc-empty")).toHaveCount(10, { timeout: 20_000 });
+  // The game just played is not lost — it is the dock's PREVIOUS clash.
+  await expect(page.locator(".ec-ta-rail").getByText(/LAST CLASH/).first()).toBeVisible();
+});
+
 test("the result lands in the dock, the report opens over the page, and a new clash keeps the last one", async ({ page }) => {
   test.slow();
   await withAccount(page);
@@ -296,7 +373,8 @@ test("the result lands in the dock, the report opens over the page, and a new cl
   await expect(page.locator(".ec-pc-empty")).toHaveCount(10);
   await expect(page.getByRole("button", { name: /RUN SIM/ })).toHaveCount(0);
   await expect(page.getByRole("button", { name: /^ROLL 1/ })).toBeVisible();
-  await expect(page.locator(".ec-ta-stage").getByText(/^\d{4}s ERA/)).toHaveCount(0);
+  await expect(page.locator(".ec-intel-era-id")).toHaveCount(0);
+  await expect(page.locator(".ec-ta-utility").getByText(/HIDDEN UNTIL ROLL 2/)).toBeVisible();
 });
 
 test("a run resumed after a reload still runs", async ({ page }) => {
@@ -377,6 +455,10 @@ test("mobile stacks, leads with the result, and never overflows", async ({ page 
   });
   expect(cards.unreachable).toBe(0);
   expect(Math.min(...cards.taps)).toBeGreaterThanOrEqual(44);
+  // These two were measured and then never asserted, so the name-clipping
+  // regression this test exists to catch would have passed in silence.
+  expect(cards.clippedTags, "a player name must not be clipped on a phone").toBe(0);
+  expect(cards.cardWidth, "a phone card must stay a readable width").toBeGreaterThanOrEqual(120);
 
   await toReadyFromRoll1(page);
   await page.getByRole("button", { name: /RUN SIM/ }).click();
@@ -398,7 +480,7 @@ test("mobile stacks, leads with the result, and never overflows", async ({ page 
   artifact("phase8c-responsive-qa.json", {
     artifact: "phase8c-responsive-qa", phase: "8C — Time Arena",
     viewport: "375x812", draft, cards, finished,
-    note: "Desktop geometry (two columns, sticky rail, ten cards) is asserted by the workspace and board tests.",
+    note: "Desktop geometry (two columns, a rail that scrolls with the page, ten cards) is asserted by the workspace and board tests.",
   });
 });
 
@@ -435,7 +517,10 @@ test("the guide opens, moves between sections, and closes on Escape", async ({ p
 
   artifact("phase8c-accessibility-qa.json", {
     artifact: "phase8c-accessibility-qa", phase: "8C — Time Arena",
-    escapeClosesGuide: true, playFantasyMenusKeyboardOperable: true, ...a11y,
+    // playFantasyMenusKeyboardOperable lived here but is proven by a DIFFERENT
+    // test, whose failure would not stop this artifact being written. Only what
+    // the assertions above actually establish belongs in this file.
+    escapeClosesGuide: true, ...a11y,
   });
 });
 
@@ -463,11 +548,25 @@ test("Play and Fantasy menus are keyboard accessible and registry driven", async
   await expect(fantasyMenu).toHaveCount(0);
 });
 
-test("a subscription-gated mode routes to one membership destination with no checkout", async ({ page }) => {
+test("a guest choosing a trial mode is offered the account that opens it, not a subscription", async ({ page }) => {
+  // Win 82 and Best of 7 open on a FREE account through a trial capability, so
+  // sending a signed-out visitor to a membership page told them to buy
+  // something they did not need. This used to assert the membership URL.
   await asGuest(page);
   await page.goto("/");
   await page.getByRole("button", { name: /^Play/ }).click();
   await page.getByRole("menuitem", { name: /Win 82/ }).click();
+  await expect(page).not.toHaveURL(/\/membership/);
+  const body = await page.locator("body").innerText();
+  expect(body).toMatch(/free account/i);
+  expect(body).not.toMatch(/\$\d|card number|checkout|start free trial/i);
+});
+
+test("the membership destination itself shows no checkout", async ({ page }) => {
+  // Reached by the surviving membership route — the custom-era capability, not
+  // a mode. No play mode gates any tier behind a subscription any more.
+  await asGuest(page);
+  await page.goto("/membership?feature=custom-era&required=PLUS&from=%2Fplay");
   await expect(page).toHaveURL(/\/membership\?/);
   const body = await page.locator("body").innerText();
   expect(body).not.toMatch(/\$\d|card number|checkout|start free trial/i);

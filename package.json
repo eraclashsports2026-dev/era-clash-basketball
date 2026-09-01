@@ -190,6 +190,7 @@
     "daily:emergency-revision": "node scripts/daily-emergency-revision.mjs",
     "defense:explain": "node scripts/defense-explain.mjs",
     "dev": "vite",
+    "pree2e": "vite build",
     "e2e": "playwright test",
     "harness": "node scripts/harness.mjs",
     "images:approve": "node image-pipeline/approve.mjs",
@@ -283,7 +284,17 @@
     "ui:live-intel-qa": "node scripts/ui/uiQa.mjs intel",
     "ui:era-membership-qa": "node scripts/ui/uiQa.mjs era",
     "ui:coach-chaos-qa": "node scripts/ui/uiQa.mjs coach",
-    "phase8c:report": "node scripts/ui/phase8cReport.mjs"
+    "phase8c:report": "node scripts/ui/phase8cReport.mjs",
+    "build:visual-qa": "VITE_EC_DEV_FIXTURES=1 vite build",
+    "ui:time-arena-geometry": "node scripts/ui/measure-time-arena.mjs",
+    "ui:time-arena-visual": "node scripts/ui/time-arena-visual.mjs",
+    "ui:time-arena-states": "node scripts/ui/time-arena-qa.mjs states",
+    "ui:time-arena-accessibility": "node scripts/ui/time-arena-qa.mjs accessibility",
+    "ui:time-arena-performance": "node scripts/ui/time-arena-qa.mjs performance",
+    "ui:time-arena-responsive": "node scripts/ui/time-arena-visual.mjs",
+    "phase8c1:report": "node scripts/ui/phase8c1Report.mjs",
+    "ui:time-arena-preview-qa": "node scripts/ui/time-arena-preview-qa.mjs",
+    "d0:c4-lock": "node scripts/d0/lockCandidate4.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",

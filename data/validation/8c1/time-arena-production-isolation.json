@@ -1,0 +1,33 @@
+{
+  "artifact": "time-arena-production-isolation",
+  "phase": "8C.1 — pixel-fidelity reconstruction",
+  "measuredAgainst": {
+    "startCommit": "5cc3f34",
+    "guardedPaths": [
+      "src/chaos",
+      "src/v3",
+      "src/engine.js",
+      "src/rating.js",
+      "src/draft.js",
+      "src/dailyChallenge.js",
+      "src/entitlements.js",
+      "data/calibration"
+    ]
+  },
+  "gameLogicDiff": "none",
+  "gameLogicChanges": 0,
+  "apiDiff": "none",
+  "apiChanges": 0,
+  "candidate3CoreDrift": 0,
+  "serverlessFunctions": {
+    "total": 13,
+    "budget": 13,
+    "within": true
+  },
+  "productionBranch": {
+    "main": "9cd95ff8797f8cdef252bbe67d63158c01b9f9bd",
+    "touchedByThisPhase": false
+  },
+  "stableWave1Alias": "25f4069d2ebe6854406fbec10c2571c8988ca68f",
+  "note": "This phase may change only geometry, composition, CSS, presentation, fixtures and tests. A non-empty gameLogicDiff or apiDiff is a scope breach, not a detail."
+}

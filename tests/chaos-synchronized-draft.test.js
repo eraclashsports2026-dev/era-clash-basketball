@@ -15,7 +15,8 @@ import {
   startRun, submitRollDecisions, submitHolds, submitCoachHolds, chooseEra, selectCoach, publicView,
   revealEra, sequenceOf, CURRENT_SEQUENCE, CHAOS_SEQUENCE_VERSION,
 } from "../src/chaos/runState.js";
-import { challengeId, buildManifest } from "../src/chaos/challenge.js";
+import { challengeId, buildManifest, FORBIDDEN_CHALLENGE_FIELDS } from "../src/chaos/challenge.js";
+import { hashString } from "../src/v3/seed.js";
 import { hydrate, eraChangeState } from "../api/_lib/chaosRun.js";
 import { OFFER_ROLES, eraAgnosticAdaptabilityScore, eraFitScore } from "../src/chaos/coachOffers.js";
 import { CHAOS_ERA_IDS } from "../src/chaos/eraTranslation.js";
@@ -28,6 +29,75 @@ const decide = (run, holdSlots = [], holdRoles = []) => submitRollDecisions(run,
 const view = (run, opts = {}) => publicView(run, { hydrate, ...opts });
 
 // ── 3. Nothing that already exists moved ────────────────────────────────────
+// ── The CPU's commitments must be BINDING, not decorative ───────────────────
+// Every other input to these hashes is published in the same response and the
+// message spaces are tiny — 32 hold subsets, 3 coach ids — so without a secret
+// in the pre-image the committed value is recoverable by trying them all. That
+// attack was reproduced against the unsalted construction before this guard.
+describe("committed CPU decisions cannot be inverted before the user commits", () => {
+  const SUBSETS = (() => {
+    const out = [];
+    for (let m = 0; m < 32; m++) out.push(POSITIONS.filter((_, i) => m & (1 << i)));
+    return out;
+  })();
+
+  it("brute-forcing all 32 hold subsets over the published inputs finds nothing", () => {
+    const run = start();
+    const v = view(run);
+    const salt = `${v.chaosRunId}|${run.currentRoll}`;
+    const ver = v.versions.legendCpuVersion;
+    const hits = SUBSETS.filter((sub) =>
+      String(hashString(`${salt}|${[...sub].sort().join(",")}|${ver}`) >>> 0) === v.cpuDecisionCommit);
+    expect(hits).toEqual([]);
+    // and the value it protects is genuinely non-trivial
+    expect(run._cpuHold.length).toBeGreaterThan(0);
+  });
+
+  it("the secret is absent from every pre-simulation view", () => {
+    const run = start();
+    expect(run._commitSecret).toBeTruthy();
+    for (const phase of ["ROLL_1_REVEALED", "ROLL_2_REVEALED", "ROLL_3_REVEALED", "READY"]) {
+      run.currentPhase = phase;
+      const v = view(run, { includeCpuHolds: true });
+      expect(v.commitSecret, phase).toBeNull();
+      expect(JSON.stringify(v).includes(run._commitSecret), phase).toBe(false);
+    }
+  });
+
+  it("once the game is played the commitment is verifiable", () => {
+    const run = start();
+    const committed = view(run).cpuDecisionCommit;
+    const salt = `${run.chaosRunId}|${run.currentRoll}`;
+    run.currentPhase = "SIMULATED";
+    const done = view(run, { includeCpuHolds: true });
+    expect(done.commitSecret).toBe(run._commitSecret);
+    const recomputed = String(hashString(
+      `${salt}|${[...run._cpuHold].sort().join(",")}|${done.versions.legendCpuVersion}|${done.commitSecret}`) >>> 0);
+    expect(recomputed).toBe(committed);
+  });
+
+  it("the secret never rides a challenge link", () => {
+    const run = start();
+    const m = buildManifest({ seedId: run.seedId, createdAt: run.createdAt, originRunId: run.chaosRunId, sequence: 2 });
+    expect(FORBIDDEN_CHALLENGE_FIELDS).toContain("commitSecret");
+    expect(JSON.stringify(m).includes(run._commitSecret)).toBe(false);
+  });
+
+  it("a run stored before the secret existed re-derives it and stays verifiable", () => {
+    const run = start();
+    const expected = run._commitSecret;
+    delete run._commitSecret;                 // a run stored before this existed
+    decide(run, [], []);                      // the next commitment re-derives it
+    expect(run._commitSecret).toBe(expected); // same stored state -> same secret
+    const salt = `${run.chaosRunId}|${run.currentRoll}`;
+    run.currentPhase = "SIMULATED";
+    const done = view(run, { includeCpuHolds: true });
+    const recomputed = String(hashString(
+      `${salt}|${[...run._cpuHold].sort().join(",")}|${done.versions.legendCpuVersion}|${done.commitSecret}`) >>> 0);
+    expect(recomputed).toBe(run.cpuDecisionCommit);
+  });
+});
+
 describe("frozen derivations", () => {
   // Captured from the deployed build before the synchronized sequence existed.
   // A challenge link carries a seed: if these move, a link somebody already

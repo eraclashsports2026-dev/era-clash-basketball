@@ -51,7 +51,7 @@ export const PLAY_MODES = Object.freeze([
     tagline: "Settle it over a series.",
     description: "The same setup as a single game, played as a seven-game series.",
     capability: C.BEST_OF_7, trialCapability: C.BEST_OF_7_TRIAL, appMode: "Best7",
-    previewNote: "Series play runs on the production engine, so it is unavailable while a Candidate 3 preview result is on screen.",
+    previewNote: "Series play runs on the production engine, so it is unavailable while a preview-engine result is on screen.",
   },
   {
     id: "win82", label: "Win 82", icon: "🗓️", implemented: true,
@@ -106,10 +106,12 @@ export const FANTASY_STATUS_LABEL = Object.freeze({
 export const TOP_NAV = Object.freeze([
   { id: "play", label: "Play", kind: "menu" },
   { id: "fantasy", label: "Fantasy", kind: "menu" },
-  { id: "daily", label: "Daily", kind: "nav", nav: "Daily" },
-  { id: "challenges", label: "Challenges", kind: "nav", nav: "Challenges" },
-  { id: "board", label: "Leaderboard", kind: "nav", nav: "Board" },
-  { id: "profile", label: "My EraClash", kind: "nav", nav: "Profile" },
+  // icon and tagline are for the narrow-screen "More" menu, which folds these
+  // four into one item rather than wrapping the header onto three lines.
+  { id: "daily", label: "Daily", kind: "nav", nav: "Daily", icon: "📅", tagline: "Today's challenge, the same for everyone." },
+  { id: "challenges", label: "Challenges", kind: "nav", nav: "Challenges", icon: "⚔", tagline: "Matchups someone sent you, and ones you send." },
+  { id: "board", label: "Leaderboard", kind: "nav", nav: "Board", icon: "🏆", tagline: "Where today's results stand." },
+  { id: "profile", label: "My EraClash", kind: "nav", nav: "Profile", icon: "👤", tagline: "Your account, your record, your settings." },
 ]);
 
 /**

@@ -2,7 +2,7 @@
 
 ## Keys and testers
 
-- Raw keys (owner + five testers) live at the absolute path
+- Raw keys (owner + seven testers) live at the absolute path
   **`~/era-clash-basketball/.preview-secrets/wave1-access-keys.json`**
   (gitignored, mode 0600, this machine only). Each entry maps a pseudonymous
   tester id to its key. Never commit, paste, or screenshot a key.
@@ -24,7 +24,7 @@
 
   Then paste it into that tester's private message (iMessage/Signal/email)
   using `docs/preview/wave1-invite-template.md`. Run it once per tester with
-  `wave1-tester-02` … `wave1-tester-05`; `owner` is your own key. One key per
+  `wave1-tester-01` … `wave1-tester-07`; `owner` is your own key. One key per
   person — that's how feedback stays attributable.
 - To read the file directly instead: `open ~/era-clash-basketball/.preview-secrets/wave1-access-keys.json`
   (opens in your editor; avoid `cat` in any window whose output is shared).

@@ -3,6 +3,7 @@
 // Candidate 0's identity, both FAIL verdicts, the synthetic seal, and the
 // machine-generated V4 failure register the repairs are driven by.
 import { describe, it, expect } from "vitest";
+import { activeLockVersion } from "./helpers/candidateLineage.js";
 import { readFileSync, existsSync } from "node:fs";
 import { assertSealDiscipline } from "./helpers/sealDiscipline.js";
 import { readArtifact, ARTIFACT_DIR_C6 } from "../src/v3/calibration/artifacts.js";
@@ -444,7 +445,10 @@ describe("6C4A WS10 — Candidate 1 lock", () => {
 
   it("stamps 1.1.0 and proves the stamp is the only change since validation", () => {
     expect(lock.possessionCalibrationVersion).toBe("1.1.0");
-    expect(versionOf("possessionCalibrationVersion")).toBe("1.3.0");
+    // The registry tracks the ACTIVE candidate, not this one — this phase locked Candidate 1.
+    // A literal here had to be edited at every generation; the active lock
+    // says the same thing and keeps saying it.
+    expect(versionOf("possessionCalibrationVersion")).toBe(activeLockVersion());
     expect(lock.coreHash).not.toBe(lock.validatedCoreHash);
     expect(lock.stampIsolation).toContain("src/versions.js");
   });

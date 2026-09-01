@@ -145,7 +145,8 @@ export const selectAction = ({ offense, defense, eff, state, rng, inTransition, 
     const mix = inTransition
       ? expandedActionMix({ offense, defense, eff, state, defPlan, zoneShell, inTransition, params })
       : (overrideMix ?? expandedActionMix({ offense, defense, eff, state, defPlan, zoneShell, inTransition, params }));
-    const keys = Object.keys(mix).filter((k) => mix[k] > 0);
+    const resolvable = (k) => k !== "ZONE_ATTACK" || !!zoneShell;
+    const keys = Object.keys(mix).filter((k) => mix[k] > 0 && resolvable(k));
     const urgency = state?.lateGameUrgency ?? 0;
     const type = rng.weighted(keys, (k) => {
       // Late and trailing, a team hunts a creator: isolation and pick-and-roll
@@ -346,6 +347,28 @@ const resolveGenericHalfCourt = ({ offense, defense, eff, state, rng, defState, 
 // spontaneously, and never worth automatic points. It can also be pulled out
 // into half-court, which is what usually happens when the defence gets back.
 const resolveTransition = ({ offense, defense, eff, state, rng, defState, defPlan, zoneShell = null, alloc }) => {
+  // ── Decide WHETHER this is still a break before drawing anyone ────────────
+  // The pull-out roll depends only on team-level quantities, never on who ends
+  // up shooting, so it can be settled first — and it must be. Drawing a
+  // transition shooter and THEN pulling out consumes an allocator attempt for a
+  // player who never shoots: the ledger records two attempts for one shot, and
+  // the saturation logic then suppresses exactly the high-usage players who get
+  // drawn most often in transition. Measured: it inverted the usage hierarchy
+  // outright, the top-usage player finishing below the bottom-usage one.
+  //
+  // One possession, one shooter draw, one ledger record.
+  const advantage = clamp(
+    offense.transitionPref * 0.3 + eff.transitionFrequency * 0.22 + defense.transitionVulnerability * 0.32
+    - defense.defense.pointOfAttack * 0.14, 0, 10,
+  );
+  if (rng.chance(clamp(0.42 - advantage * 0.028, 0.14, 0.5))) {
+    // The defence got back. This is a half-court possession that began as a
+    // break, and it selects its shooter the way every half-court possession
+    // does — through the allocator, which it previously bypassed.
+    const pulled = resolveGenericHalfCourt({ offense, defense, eff, state, rng, defState, defPlan, zoneShell, alloc });
+    return { ...pulled, actionType: "TRANSITION", actionLabel: "Transition, pulled out into half-court", pulledOut: true };
+  }
+
   const shooter = pickShooter(offense, rng, { state, preferCreator: 0.15, alloc, family: "TRANSITION" });
   // ── Transition cross-matching (PART 19) ──────────────────────────────────
   // In transition a defender takes the NEAREST credible threat, which is a
@@ -376,16 +399,6 @@ const resolveTransition = ({ offense, defense, eff, state, rng, defState, defPla
     }
   }
   const mod = matchupModifiers({ defState, plan: defPlan, shooter, defender });
-  const advantage = clamp(
-    offense.transitionPref * 0.3 + eff.transitionFrequency * 0.22 + defense.transitionVulnerability * 0.32
-    - defense.defense.pointOfAttack * 0.14, 0, 10,
-  );
-
-  // The defence recovers often enough that transition is not free points.
-  if (rng.chance(clamp(0.42 - advantage * 0.028, 0.14, 0.5))) {
-    const pulled = resolveGenericHalfCourt({ offense, defense, eff, state, rng, defState, defPlan, zoneShell });
-    return { ...pulled, actionType: "TRANSITION", actionLabel: "Transition, pulled out into half-court", pulledOut: true };
-  }
 
   return {
     actionType: "TRANSITION",
@@ -557,7 +570,7 @@ const resolveFamily = (family, { offense, defense, eff, state, rng, defState, de
       const receiver = rng.weighted(offense.players.filter((p) => p.index !== poster.index),
         (p) => 0.2 + perimeterSelectionWeight(p.profile?.shooting?.perimeterSkill));
       const rDef = pick(defense, receiver);
-      const rBase = familyBase({ shooter: receiver, defender: rDef, defState, defPlan, zoneShell });
+      const rBase = familyBase({ shooter: receiver, defender: rDef, defState, defPlan, zoneShell, alloc });
       return {
         actionType: "POST_UP", actionVariant: "KICKOUT", actionLabel: "Post-up, kicked out of the double",
         tacticalSpecificity: "MODELLED",
@@ -569,7 +582,7 @@ const resolveFamily = (family, { offense, defense, eff, state, rng, defState, de
         mismatchSeverity: mismatch?.severity ?? null,
         schemeId: schemeIdFor(defPlan, zoneShell),
         passerCandidate: poster, assistLikelihood: clamp(0.55 + poster.passing * 0.035, 0.35, 0.88),
-        shotQuality: r2(clamp(5.4 + poster.passing * 0.2 - rBase.mod.shotQuality * -1 + rBase.mod.shotQuality, 1, 9.6)),
+        shotQuality: r2(clamp(5.4 + poster.passing * 0.2 + rBase.mod.shotQuality, 1, 9.6)),
         rimBias: -0.3, matchupMod: rBase.mod,
         turnoverRisk: r2(clamp(2.6 + eff.turnoverPressure * 0.1 + rBase.mod.turnoverRisk, 0.5, 9)),
         foulPressure: r2(clamp(2.8 + rBase.mod.foulPressure, 0.5, 9)),
@@ -606,7 +619,7 @@ const resolveFamily = (family, { offense, defense, eff, state, rng, defState, de
   // ── ISOLATION ────────────────────────────────────────────────────────────
   if (family === "ISOLATION") {
     const { creator, defender, helper, mismatch } = prep;
-    const base = familyBase({ shooter: creator, defender, defState, defPlan, zoneShell });
+    const base = familyBase({ shooter: creator, defender, defState, defPlan, zoneShell, alloc });
     const sev = mismatch ? ({ SEVERE: 1.4, MAJOR: 0.95, MODERATE: 0.5, MINOR: 0.2 })[mismatch.severity] ?? 0 : 0;
     // A size mismatch on the perimeter converts to a post attack — the same
     // detected advantage, attacked from where the creator actually is.
@@ -673,7 +686,7 @@ const resolveFamily = (family, { offense, defense, eff, state, rng, defState, de
   // ── HANDOFF ──────────────────────────────────────────────────────────────
   if (family === "HANDOFF") {
     const { hub, receiver, hubDefender, receiverDefender } = prep;
-    const base = familyBase({ shooter: receiver, defender: receiverDefender, defState, defPlan, zoneShell });
+    const base = familyBase({ shooter: receiver, defender: receiverDefender, defState, defPlan, zoneShell, alloc });
     const slipped = rng.chance(clamp(0.12 + hub.rimThreat * 0.02, 0.08, 0.35));
     return {
       actionType: "HANDOFF", actionVariant: slipped ? "SLIP" : "PULL_UP",

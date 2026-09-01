@@ -16,8 +16,8 @@ const TABS = [
   ["analysis", "Analysis"],
 ];
 
-const Panel = ({ children, style }) => (
-  <div className="ec-panel ec-panel-raised" style={{ padding: 14, ...style }}>{children}</div>
+const Panel = ({ children, style, ...rest }) => (
+  <div className="ec-panel ec-panel-raised" style={{ padding: 14, ...style }} {...rest}>{children}</div>
 );
 const Head = ({ children, tone }) => (
   <div style={{ fontSize: 10, fontWeight: 900, letterSpacing: 2, color: tone || "var(--ec-a-text-muted, #93a0b5)" }}>{children}</div>
@@ -116,7 +116,10 @@ export default function ResultDock({
   phase, run, result, priorResult, priorAt, simStage,
   onViewFullReport, onRunItBack, onNewClash, onChallenge, busy,
 }) {
-  const [tab, setTab] = useState("story");
+  // No section is open until one is asked for — the canonical reference shows
+  // the summary and four tab controls, and an open panel is what pushed the
+  // dock past the first viewport.
+  const [tab, setTab] = useState(null);
   const [, tick] = useState(0);
   // The "minutes ago" label would otherwise freeze at whatever it said when the
   // dock last re-rendered.
@@ -126,6 +129,11 @@ export default function ResultDock({
     return () => clearInterval(t);
   }, [priorAt, phase]);
   const [challengeId, setChallengeId] = useState(null);
+  // A share link belongs to ONE clash. Nothing remounts this dock between
+  // clashes, so without this the next clash printed the previous clash's link
+  // under "Same opening rolls" and suppressed its own Challenge button for the
+  // rest of the session.
+  useEffect(() => { setChallengeId(null); }, [run?.chaosRunId, result?.resultId]);
   const makeChallenge = async () => {
     if (!onChallenge) return;
     try { setChallengeId(await onChallenge()); } catch { /* a failed share never breaks the result */ }
@@ -140,30 +148,26 @@ export default function ResultDock({
     const winner = gold > blue ? "Gold" : "Blue";
     return (
       <DockShell label={previous ? agoLabel(priorAt) : "THIS CLASH"}>
-        {previous && (
-          <div style={{
-            fontSize: 9.5, fontWeight: 900, letterSpacing: 1.4, color: "var(--ec-a-text-muted)",
-            border: "1px dashed var(--ec-a-border)", borderRadius: 8, padding: "6px 8px", textAlign: "center",
-          }}>LAST CLASH · NOT THE DRAFT ON SCREEN</div>
-        )}
-        <Panel style={{ textAlign: "center", borderColor: won ? "var(--ec-a-gold-line)" : "var(--ec-a-blue-line)" }}>
-          <Head tone={won ? "var(--ec-a-gold, #f2b51d)" : "var(--ec-a-blue, #3b9bff)"}>{previous ? "LAST CLASH" : "FINAL SCORE"}</Head>
-          <div style={{ fontWeight: 900, fontSize: 15, letterSpacing: 1, margin: "3px 0 8px", color: "var(--ec-a-text, #f5f7fb)" }}>
+        <Panel style={{ textAlign: "center", padding: "11px 12px", borderColor: won ? "var(--ec-a-gold-line)" : "var(--ec-a-blue-line)" }}>
+          <Head tone={won ? "var(--ec-a-gold, #f2b51d)" : "var(--ec-a-blue, #3b9bff)"}>
+            {previous ? "LAST CLASH · NOT THE DRAFT ON SCREEN" : "FINAL SCORE"}
+          </Head>
+          <div style={{ fontWeight: 900, fontSize: 14.5, letterSpacing: 1, margin: "2px 0 6px", color: "var(--ec-a-text, #f5f7fb)" }}>
             {won ? "YOU WON" : `TEAM ${winner.toUpperCase()} WINS`}
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr auto 1fr", alignItems: "center", gap: 8 }}>
             <div>
               <div style={{ fontSize: 10, fontWeight: 900, letterSpacing: 1.4, color: "var(--ec-a-gold, #f2b51d)" }}>GOLD</div>
-              <div style={{ fontFamily: "Georgia, serif", fontSize: 38, fontWeight: 900, lineHeight: 1, color: "var(--ec-a-text, #f5f7fb)" }}>{gold}</div>
+              <div className="ec-dock-score">{gold}</div>
             </div>
             <div style={{ fontSize: 10, letterSpacing: 1.6, color: "var(--ec-a-text-muted, #93a0b5)", fontWeight: 900 }}>FINAL</div>
             <div>
               <div style={{ fontSize: 10, fontWeight: 900, letterSpacing: 1.4, color: "var(--ec-a-blue, #3b9bff)" }}>BLUE</div>
-              <div style={{ fontFamily: "Georgia, serif", fontSize: 38, fontWeight: 900, lineHeight: 1, color: "var(--ec-a-text, #f5f7fb)" }}>{blue}</div>
+              <div className="ec-dock-score">{blue}</div>
             </div>
           </div>
           {(sim.mvp || sim.v3?.eraStyleId || res.record?.eraId) && (
-            <div style={{ marginTop: 10, paddingTop: 9, borderTop: "1px solid var(--ec-a-border)", display: "grid", gap: 3 }}>
+            <div style={{ marginTop: 7, paddingTop: 7, borderTop: "1px solid var(--ec-a-border)", display: "grid", gap: 2 }}>
               {sim.mvp && (
                 <>
                   <div style={{ fontSize: 9.5, fontWeight: 900, letterSpacing: 1.4, color: "var(--ec-a-text-muted)" }}>MVP</div>
@@ -182,7 +186,8 @@ export default function ResultDock({
 
         <div role="tablist" aria-label="Result sections" style={{ display: "grid", gridTemplateColumns: "repeat(4, minmax(0,1fr))", gap: 4 }}>
           {TABS.map(([id, label]) => (
-            <button key={id} role="tab" aria-selected={tab === id} onClick={() => setTab(id)} style={{
+            <button key={id} role="tab" aria-selected={tab === id} aria-controls="ec-dock-panel"
+              onClick={() => setTab((t) => (t === id ? null : id))} style={{
               minHeight: 40, borderRadius: 9, cursor: "pointer", fontSize: 11.5, fontWeight: 800,
               border: `1px solid ${tab === id ? "var(--ec-a-gold-line)" : "var(--ec-a-border)"}`,
               background: tab === id ? "var(--ec-a-gold-soft)" : "transparent",
@@ -191,7 +196,11 @@ export default function ResultDock({
           ))}
         </div>
 
-        <Panel>
+        {/* No maxHeight and no overflow: an open section grows the page and the
+            page scrolls, rather than hiding the back half of the story behind a
+            scrollbar inside a scrollbar. */}
+        {tab && (
+        <Panel id="ec-dock-panel" role="tabpanel">
           {tab === "story" && (
             <div style={{ display: "grid", gap: 10 }}>
               <div>
@@ -273,13 +282,12 @@ export default function ResultDock({
             </div>
           )}
         </Panel>
+        )}
 
         <button onClick={() => onViewFullReport?.(previous ? res : null)} style={primaryCta}>
           VIEW FULL REPORT →
         </button>
-        {previous ? (
-          <button onClick={onRunItBack} style={secondaryCta}>Run that matchup back</button>
-        ) : (
+        {previous ? null : (
           <>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
               <button onClick={onRunItBack} style={secondaryCta}>Run it back</button>

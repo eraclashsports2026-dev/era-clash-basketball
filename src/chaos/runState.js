@@ -110,6 +110,27 @@ const analysis = (roster, opponent) => {
  * origin run chose a custom era: both sides of a same-seed challenge must play
  * the same environment.
  */
+/**
+ * The per-run commitment secret. Derived from the seedId, which is server-side
+ * for the whole run — a challenge link carries only an opaque challengeId — so
+ * it is unguessable without that value, and it needs no new stored field that
+ * existing runs would lack.
+ *
+ * FOUR hash words, not one. A single 32-bit word is only ~31 bits: an attacker
+ * who has the published commitment can brute-force the secret and the 32 hold
+ * subsets together in about 7e10 FNV-1a evaluations, which is hours on ordinary
+ * hardware and a run lives six. Four independently salted words put the search
+ * out of reach while keeping the derivation pure and reproducible from stored
+ * state. (The words are cheap; the entropy ceiling is the 14-character crypto
+ * seedId behind them, ~72 bits.)
+ */
+const commitSecret = (runId, seedId, createdAt) => {
+  const base = `commit|${runId}|${seedId}|${createdAt}|${LEGEND_CPU_VERSION}`;
+  return [0, 1, 2, 3]
+    .map((i) => (hashString(`${base}|w${i}`) >>> 0).toString(36).padStart(7, "0"))
+    .join("");
+};
+
 export const startRun = ({ runId, seedId, createdAt, sequence = CURRENT_SEQUENCE, pinnedEraStyleId = null, competitiveEraLock = false }) => {
   const gold = drawFive({ seedId, side: USER_SIDE, roll: 1 });
   const blue = drawFive({ seedId, side: CPU_SIDE, roll: 1, opponentNames: names(gold) });
@@ -125,6 +146,12 @@ export const startRun = ({ runId, seedId, createdAt, sequence = CURRENT_SEQUENCE
     revealedPersonIds: [...ids(gold), ...ids(blue)].filter(Boolean),
     burnedPersonIds: [],
     cpuDecisionCommit: null,
+    // Server-only until the game is played. Every other input to a commitment
+    // hash is published in the same response and the message spaces are tiny
+    // (32 hold subsets, 8 coach-hold subsets, 3 coach ids), so without this the
+    // committed value is recoverable by brute force before the user decides.
+    // Published at SIMULATED so the commitments stay verifiable afterwards.
+    _commitSecret: commitSecret(runId, seedId, createdAt),
     coachOffers: null, selectedCoaches: {},
     history: [],
     createdAt, expiresAt: createdAt + RUN_TTL_SECONDS * 1000,
@@ -175,9 +202,18 @@ export const commitCpuHolds = (run, rosters) => {
     revealedEraId: run.revealedEraStyleId,
   });
   run._cpuHold = decision.hold;              // server-only
-  run.cpuDecisionCommit = cpuHoldCommitment(decision, `${run.chaosRunId}|${run.currentRoll}`);
+  run.cpuDecisionCommit = cpuHoldCommitment(decision, `${run.chaosRunId}|${run.currentRoll}`, secretOf(run));
   return decision;
 };
+
+/**
+ * A run created before the secret existed carries none. Re-deriving it from the
+ * same stored material keeps those runs working and keeps the value identical
+ * across a save/load cycle, so a commitment made on one request still verifies
+ * on the next.
+ */
+const secretOf = (run) => run._commitSecret
+  || (run._commitSecret = commitSecret(run.chaosRunId, run.seedId, run.createdAt));
 
 const heldMap = (roster, slots) => {
   const out = {};
@@ -292,7 +328,7 @@ const commitCpuCoachHolds = (run, rosters) => {
   if (ranked[0]) hold.push(ranked[0].o.role);
   if (ranked[1] && ranked[1].s > ranked[0].s * 0.94) hold.push(ranked[1].o.role);
   run._cpuCoachHold = hold;
-  run.cpuCoachHoldCommit = String(hashString(`${run.chaosRunId}|coachhold|${run.coachRoll}|${[...hold].sort().join(",")}`) >>> 0);
+  run.cpuCoachHoldCommit = String(hashString(`${run.chaosRunId}|coachhold|${run.coachRoll}|${[...hold].sort().join(",")}|${secretOf(run)}`) >>> 0);
   return hold;
 };
 
@@ -350,7 +386,7 @@ export const submitCoachHolds = (run, { holdRoles, hydrate }) => {
     // The CPU's final coach is committed before the user's choice is revealed.
     const pick = cpuCoachChoice({ offers: run.coachOffers.blue, roster: blue, opponentRoster: gold, eraId: run.revealedEraStyleId });
     run._cpuCoach = pick.coachId;
-    run.cpuCoachCommit = String(hashString(`${run.chaosRunId}|coach|${pick.coachId}`) >>> 0);
+    run.cpuCoachCommit = String(hashString(`${run.chaosRunId}|coach|${pick.coachId}|${secretOf(run)}`) >>> 0);
   } else {
     run.currentPhase = `COACH_ROLL_${run.coachRoll}`;
     commitCpuCoachHolds(run, { gold, blue });
@@ -458,7 +494,7 @@ export const submitRollDecisions = (run, { holdSlots, holdRoles, hydrate }) => {
       eraId: run.revealedEraStyleId,
     });
     run._cpuCoach = pick.coachId;
-    run.cpuCoachCommit = String(hashString(`${run.chaosRunId}|coach|${pick.coachId}`) >>> 0);
+    run.cpuCoachCommit = String(hashString(`${run.chaosRunId}|coach|${pick.coachId}|${secretOf(run)}`) >>> 0);
   } else {
     run.currentPhase = "ROLL_2_REVEALED";
     // Both CPU decisions for the next roll are committed BEFORE the user's are
@@ -593,6 +629,11 @@ export const publicView = (run, { hydrate, includeCpuHolds = false, eraChange = 
       : null,
     selectedCoaches: run.currentPhase === "READY" || run.currentPhase === "SIMULATED" ? run.selectedCoaches : null,
     cpuCoachCommit: run.cpuCoachCommit || null,
+    // A commitment nobody can check is decoration. Once the game is played,
+    // every committed value is already public, so the secret is published and
+    // the player (or anyone auditing) can recompute all four hashes and see
+    // that the CPU did commit before they did. Before SIMULATED it is null.
+    commitSecret: run.currentPhase === "SIMULATED" ? secretOf(run) : null,
     rostersLocked: !["ROLL_1_REVEALED", "ROLL_2_REVEALED"].includes(run.currentPhase),
     expiresAt: run.expiresAt,
   };

@@ -18,6 +18,15 @@ process.env.SIM_ENGINE_V3_ENABLED ||= "true"; // V3 engine on in the test harnes
 const PORT = Number(process.argv[2]) || 4173;
 const DIST = new URL("../dist", import.meta.url).pathname;
 
+// Fail fast on a missing build. The readiness probe Playwright waits on is
+// /api/health — a live handler import — so it answers even when dist/ is absent,
+// and every navigation would then fall through to a 404-turned-index and grade
+// nothing at all. A silent pass on an empty build is worse than no run.
+if (!existsSync(join(DIST, "index.html"))) {
+  console.error(`harness: ${DIST}/index.html is missing — run \`npm run build\` first.`);
+  process.exit(1);
+}
+
 const routes = {
   "/api/game": (await import("../api/game.js")).default,
   "/api/narrative": (await import("../api/narrative.js")).default,

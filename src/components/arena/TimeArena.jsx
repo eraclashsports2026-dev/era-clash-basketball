@@ -9,12 +9,18 @@
 // On a phone the columns stack, and once a game has been played the result
 // leads the page — a finished score buried under the board is a result nobody
 // finds.
+//
+// There is no mode shelf here: a permanent rack of other modes under every
+// draft competes with the game being played, and the Play and Fantasy menus
+// already carry every mode.
+//
+// Starting over is a STAGE control, next to the board it throws away — not a
+// link in the utility bar and not only a link inside the result.
 import { useEffect, useState } from "react";
 import ChaosStage from "./ChaosStage.jsx";
 import LiveIntel from "./LiveIntel.jsx";
 import ResultDock from "./ResultDock.jsx";
 import UtilityBar from "./UtilityBar.jsx";
-import ModeShelf from "./ModeShelf.jsx";
 
 const useCompact = (max = 560) => {
   const [compact, setCompact] = useState(false);
@@ -31,9 +37,9 @@ const useCompact = (max = 560) => {
 export default function TimeArena({
   tier, challengeId, chaosRun, onRunChange, onReady, onGated,
   phase, result, priorResult, priorAt, simStage,
-  onRunClash, onViewFullReport, onRunItBack, onNewClash, onChallenge, onEraChange,
+  onRunClash, onViewFullReport, onRunItBack, onNewClash, onChallenge, onEraChange, onReset,
   onGuide, onSettings, onMembership,
-  activeModeId, onModeAction, previewCandidateActive, busy, error,
+  busy, error, resume = true,
 }) {
   const compact = useCompact();
   const finished = phase === "complete" || phase === "simulating";
@@ -42,15 +48,14 @@ export default function TimeArena({
     <div className="ec-ta">
       <div className="ec-ta-main">
         <ChaosStage
-          run={chaosRun} tier={tier} challengeId={challengeId}
+          run={chaosRun} tier={tier} challengeId={challengeId} resume={resume}
           onRunChange={onRunChange} onReady={onReady} onGated={onGated}
-          onRunClash={onRunClash} phase={phase} busy={busy} error={error} />
+          onRunClash={onRunClash} phase={phase} busy={busy} error={error}
+          onReset={onReset} />
 
         <UtilityBar eraState={chaosRun?.eraState} compact={compact}
-          onGuide={onGuide} onSettings={onSettings} onMembership={onMembership} />
+          onGuide={onGuide} onSettings={onSettings} />
 
-        <ModeShelf tier={tier} activeModeId={activeModeId} onModeAction={onModeAction}
-          previewCandidateActive={previewCandidateActive} />
       </div>
 
       <aside className={`ec-ta-rail${finished ? " ec-ta-rail--front" : ""}`} aria-label="Live intel and result">

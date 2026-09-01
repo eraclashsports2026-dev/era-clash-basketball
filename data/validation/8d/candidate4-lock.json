@@ -1,0 +1,76 @@
+{
+  "artifact": "candidate4-lock",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run d0:c4-lock",
+  "generatedAt": "2026-09-01T04:15:29.383Z",
+  "gitCommit": "b09e557cc01353529619b1cf1118d23fa1349260",
+  "branch": "phase-8c1-time-arena-pixel-fidelity",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {
+    "data/validation/6c4d0/candidate3-lock.json": "93186e026e4177316944e9bcf0adb30b5ecd7ffa605ea12a0df9b14145f4a49a"
+  },
+  "data": {
+    "candidate4LockVersion": "1.0.0",
+    "candidateLockManifestVersion": "1.0.0",
+    "candidateId": "Candidate 4",
+    "parentCandidateId": "Candidate 3",
+    "parentCoreHash": "6a423d4fedf45bef3889b9425651e815c95da4f6e573a2c51a3f0ef713360b69",
+    "parentLockManifest": "data/validation/6c4d0/candidate3-lock.json",
+    "grandparentCandidateId": "Candidate 2",
+    "grandparentCoreHash": "3733b648f050a4f50f9dc3cb6ecf62fce419dd282f24c910b91e7b077d63711d",
+    "candidateSelectionStatus": "SELECTED",
+    "candidateLockStatus": "LOCKED",
+    "calibrationStatus": "PREVIEW_READY_LOCKED",
+    "validationAttemptStatus": "NOT_RUN",
+    "formalValidationStatus": "FORMAL_VALIDATION_INCOMPLETE",
+    "formalValidationNote": "Candidate 4 inherits Candidate 3's formal standing unchanged: zero valid formal historical judgments. No holdout was opened for it. The repairs below were found by a code audit, not by a holdout, and are not evidence of generalisation.",
+    "lockRevision": 1,
+    "scope": "protected private preview behind PREVIEW_SIM_ENGINE_ENABLED (default false)",
+    "possessionCalibrationVersion": "1.4.0",
+    "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+    "parameterChanges": 0,
+    "candidateLockBlockers": [],
+    "allEngineeringGatesPass": true,
+    "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+    "validatedCoreHash": null,
+    "engineBehaviourChanged": true,
+    "changeBasis": "four defects root-caused by the whole-project audit of 2026-08-31, each traced to a specific line before any change and each measured in isolation on a fixed 720-game probe. (1) game.js chooseShotCategory: the era three-point scale is 0 in a pre-line era, and it was applied BEFORE the transfer to MIDRANGE, so the documented 'the shot goes, the skill does not' transfer moved exactly zero weight in three of eight eras. (2) actions.js selectAction: ZONE_ATTACK could be drawn on a man possession, where resolveAction has no route for it and it fell through to the generic resolver; the ATTACK_ZONE_* coach adjustments bump exactly that family into exactly that mix. (3) actions.js resolveTransition: a pulled-out break resolved through resolveGenericHalfCourt without the allocator. The first fix passed alloc through and INVERTED the usage hierarchy, because the transition draw had already recorded an attempt for a player who never shot; the possession now decides whether it is still a break before drawing anyone, so one possession makes one draw and one ledger record. (4) actions.js POST_UP kickout: `- x * -1 + x` applied the receiver's matchup shot-quality modifier twice, one-sidedly, since the upper clamp ate the upside.",
+    "coreFileCount": 53,
+    "closureBuilderVersion": "3.0.0",
+    "changedCoreFiles": [
+      "src/v3/possession/game.js",
+      "src/v3/possession/actions.js"
+    ],
+    "changeManifestHash": null,
+    "validationHashes": {
+      "internalMeasurement": "39302bd33605c06ac4b4f218534732e277139c5fd643bbc1d4d74281306c5d20",
+      "shareProtection": "fdede9ed14258503e471ca4423391e72c9d6ce3ad5d9389d8eb9aae3acf1d326",
+      "movementControls": "9dd197f373f005bc6a3c0371314ab40d791fb9ed432678ec6c0e87b44e7b2a84",
+      "correctedDiagnostic": "85bc58ec5e40d33674482ec5b2aee5de26d6dde320d38df1dd0c44a8c1e69a47",
+      "classifications": "2606fe45c1cb8e96437d404de22438e005f9381f71790b480bd1a90f44d0994e"
+    },
+    "formalHoldoutAccessCounts": {
+      "historicalHoldoutV3": 1,
+      "historicalHoldoutV4": 1,
+      "historicalHoldoutV5": 1,
+      "historicalHoldoutV6": 1,
+      "syntheticStressHoldoutV2": 0
+    },
+    "engineVersions": {
+      "productionEngineVersion": "3.2.0",
+      "possessionEngineVersion": "1.2.0",
+      "actionLibraryVersion": "2.1.0"
+    },
+    "postLockMutationPolicy": "no result-affecting change without a new candidate id and manifest",
+    "notClaimed": [
+      "NOT historically validated — no holdout was opened for Candidate 4.",
+      "NOT a claim that the repaired behaviour is more accurate; it is a claim that the code now does what it documents, which is a different and smaller claim.",
+      "NOT a parameter change: all registered parameters remain at their registry defaults."
+    ],
+    "lockedAtCommit": "b09e557cc01353529619b1cf1118d23fa1349260"
+  },
+  "outputHash": "cf3cc9704bf26cea715b4db248d320873cc373a25b3cedfbd7cbf562ba94aa41"
+}

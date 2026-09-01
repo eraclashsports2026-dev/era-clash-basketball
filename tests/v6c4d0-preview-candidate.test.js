@@ -13,7 +13,7 @@ import { cacheKeys } from "../api/_lib/cacheKeys.js";
 import { computeResultPreview, PREVIEW_NAMESPACES, previewCandidateIdentity, PREVIEW_RESULT_ID_PREFIX } from "../api/_lib/previewEngine.js";
 import { previewEvent, ALLOWED_PREVIEW_EVENTS } from "../api/_lib/previewTelemetry.js";
 import { assertCalibrationLockInvariant } from "./helpers/calibrationLockInvariant.js";
-import { successionChain } from "./helpers/candidateLineage.js";
+import { successionChain, activeLockVersion } from "./helpers/candidateLineage.js";
 import { PLAYERS } from "../src/players.js";
 
 const LOCK = JSON.parse(readFileSync("data/validation/6c4d0/candidate3-lock.json", "utf8")).data;
@@ -37,23 +37,30 @@ describe("Candidate 3 lock", () => {
   });
 
   it("is generation 3 of an unbroken succession", () => {
+    // Candidate 3 is still generation 3 of the chain; the ACTIVE lock has since
+    // moved past it. This test is about THIS phase's link, so it locates its own
+    // hop rather than assuming it is the newest one.
     const inv = assertCalibrationLockInvariant();
-    expect(inv.generation).toBe(3);
-    expect(inv.version).toBe("1.3.0");
+    expect(inv.generation).toBeGreaterThanOrEqual(3);
     expect(inv.parameterChanges).toBe(0);
+    expect(LOCK.possessionCalibrationVersion).toBe("1.3.0");
     expect(LOCK.parentCoreHash).toBe(C2_LOCK.coreHash);
     expect(LOCK.coreHash).not.toBe(C2_LOCK.coreHash);
     const chain = successionChain();
-    expect(chain[0].to).toBe(LOCK.coreHash);
-    expect(chain[0].from).toBe(C2_LOCK.coreHash);
+    const ours = chain.find((h) => h.to === LOCK.coreHash);
+    expect(ours, "Candidate 3's hop must still be on the chain").toBeTruthy();
+    expect(ours.from).toBe(C2_LOCK.coreHash);
   });
 
-  it("stamps 1.3.0 / 2.1.0 as the live registry identity", () => {
-    expect(versionOf("possessionCalibrationVersion")).toBe("1.3.0");
+  it("records 1.3.0 / 2.1.0 as the identity it was locked with", () => {
+    // The live registry tracks the ACTIVE candidate, which is a descendant of
+    // this one. What this phase can still claim is what ITS lock recorded, plus
+    // the domains its successor did not move.
+    expect(LOCK.possessionCalibrationVersion).toBe("1.3.0");
+    expect(versionOf("possessionCalibrationVersion")).toBe(activeLockVersion());
     expect(versionOf("actionLibraryVersion")).toBe("2.1.0");
     expect(versionOf("possessionEngineVersion")).toBe("1.2.0");
     expect(versionOf("engineVersion")).toBe("3.2.0");
-    expect(LOCK.possessionCalibrationVersion).toBe("1.3.0");
   });
 
   it("names its engine repairs and their basis", () => {
@@ -97,7 +104,7 @@ describe("preview namespaces are isolated", () => {
   it("preview cache keys never collide with production keys and carry candidate identity", () => {
     const prev = cacheKeys.previewResult({ matchupFingerprint: "abc", simulationSeed: 42 });
     expect(prev.startsWith("preview-")).toBe(true);
-    expect(prev).toContain("pc1-3-0");
+    expect(prev).toContain(`pc${activeLockVersion().replace(/\./g, "-")}`);
     expect(prev).toContain("al2-1-0");
     // No production key builder emits into a preview namespace.
     for (const [name, build] of Object.entries(cacheKeys)) {
@@ -119,7 +126,7 @@ describe("preview engine behaviour", () => {
     const r = computeResultPreview("single", TEAM_A, TEAM_B, { coachGoldId: "neutral", coachBlueId: "neutral" }, 12345);
     expect(r.preview).toBe(true);
     expect(r.fingerprint).toBeTruthy();
-    expect(r.candidate.possessionCalibrationVersion).toBe("1.3.0");
+    expect(r.candidate.possessionCalibrationVersion).toBe(activeLockVersion());
     expect(r.candidate.actionLibraryVersion).toBe("2.1.0");
     expect(r.core.finalScore.gold).not.toBe(r.core.finalScore.blue);
     expect(r.core.winner === "Gold" || r.core.winner === "Blue").toBe(true);
@@ -140,9 +147,11 @@ describe("preview engine behaviour", () => {
   });
 
   it("reports the locked candidate identity", () => {
+    // The identity the ENGINE reports is the active candidate's, whichever that
+    // is — bound to the lock rather than to a number written here.
     const id = previewCandidateIdentity();
-    expect(id.candidateId).toMatch(/3/);
-    expect(id.possessionCalibrationVersion).toBe("1.3.0");
+    expect(id.candidateId).toMatch(/^Candidate \d+$/);
+    expect(id.possessionCalibrationVersion).toBe(activeLockVersion());
     expect(id.actionLibraryVersion).toBe("2.1.0");
   });
 });

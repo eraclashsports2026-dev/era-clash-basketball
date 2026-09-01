@@ -3,7 +3,7 @@
 // no price, no trial, no billing state and no fantasy contest, because none of
 // those exist yet.
 import { useEffect, useRef } from "react";
-import { MATRIX, CAPABILITIES, TIERS } from "../../entitlements.js";
+import { MATRIX, CAPABILITIES, TIERS, can } from "../../entitlements.js";
 import { FANTASY_DESTINATIONS, FANTASY_STATUS_LABEL, findMode, PLAY_MODES } from "../../navigation.js";
 import { currentTier } from "../../account.js";
 
@@ -76,9 +76,18 @@ export function MembershipPage({ query, onBack, onCreateAccount }) {
               {t}{t === tier ? " · current" : ""}
             </div>
             <ul style={{ margin: "8px 0 0", padding: 0, listStyle: "none", display: "grid", gap: 4 }}>
-              {MATRIX[t].map((c) => (
-                <li key={c} style={{ fontSize: 12.5, color: "var(--ec-a-text-secondary, #c3cddd)", lineHeight: 1.5 }}>· {CAP_LABEL[c] || c}</li>
-              ))}
+              {/* A capability can sit in a tier's matrix and still be denied to
+                  everyone by its feature flag — Era Gauntlet is. Listing it as a
+                  plain benefit advertised something no membership can deliver,
+                  so the same can() the product enforces decides the label. */}
+              {MATRIX[t].map((c) => {
+                const live = can(t, c);
+                return (
+                  <li key={c} style={{ fontSize: 12.5, color: live ? "var(--ec-a-text-secondary, #c3cddd)" : "var(--ec-a-text-muted, #93a0b5)", lineHeight: 1.5 }}>
+                    · {CAP_LABEL[c] || c}{live ? "" : " — in development"}
+                  </li>
+                );
+              })}
             </ul>
           </Card>
         ))}

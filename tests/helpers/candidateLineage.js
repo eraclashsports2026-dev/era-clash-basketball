@@ -6,6 +6,7 @@ import { expect } from "vitest";
 // identity reasons only. It must still carry a parent, so the chain back to
 // Candidate 0 is unbroken.
 const MANIFESTS = [
+  "data/validation/8d/candidate4-lock.json",
   "data/validation/6c4d0/candidate3-lock.json",
   "data/validation/6c4c1/candidate2-lock.json",
   "data/validation/6c4b1/candidate1-lock-recertification.json",
@@ -42,6 +43,30 @@ export const successorManifest = () => {
     return d;
   }
   return null;
+};
+
+/**
+ * The calibration version of the ACTIVE (newest) candidate lock.
+ *
+ * Five phase tests used to pin the live registry to a literal — "1.2.0", then
+ * "1.1.0", then "1.3.0" — and every new candidate meant editing all five. The
+ * literal was never the point: each of those tests is about ITS OWN candidate's
+ * lock, and the live-registry line existed to say "and the registry has moved on
+ * to the current one". Reading the active lock says exactly that, holds for
+ * every future generation, and still fails if the registry and the lock disagree
+ * — which is the drift those assertions were guarding against.
+ */
+/** The ACTIVE (newest) candidate lock manifest, whichever candidate that is. */
+export const activeLockManifest = () => {
+  const m = successorManifest();
+  if (!m) throw new Error("activeLockManifest: no candidate lock manifest on disk");
+  return m;
+};
+
+export const activeLockVersion = () => {
+  const m = successorManifest();
+  if (!m) throw new Error("activeLockVersion: no candidate lock manifest on disk");
+  return m.possessionCalibrationVersion;
 };
 
 /** Every core hash this candidate has been certified at, newest first. */

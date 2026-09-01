@@ -2,14 +2,19 @@
   "artifact": "time-arena-layout-contract",
   "phase": "8C — Time Arena",
   "mode": "arena",
-  "checks": 24,
-  "passed": 24,
+  "checks": 26,
+  "passed": 26,
   "failed": 0,
   "results": [
     {
       "name": "the Time Arena is a two-column workspace",
       "pass": true,
       "detail": ""
+    },
+    {
+      "name": "the rail's width is a token inside the contract's range",
+      "pass": true,
+      "detail": "364"
     },
     {
       "name": "the right rail is sticky on desktop",
@@ -32,7 +37,12 @@
       "detail": ""
     },
     {
-      "name": "both benches sit side by side only where ten cards stay readable",
+      "name": "ten cards share one roster grid",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the teams take separate rows only below the desktop breakpoint",
       "pass": true,
       "detail": ""
     },

@@ -2,6 +2,7 @@
 // Grows through the phase. Every assertion reads an artifact or the live
 // engine; none restates a number the report also prints.
 import { describe, it, expect } from "vitest";
+import { activeLockVersion } from "./helpers/candidateLineage.js";
 import { readFileSync, existsSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { readArtifact, ARTIFACT_DIR_C6 } from "../src/v3/calibration/artifacts.js";
@@ -32,7 +33,10 @@ describe("6C4B1 WS0 — Candidate 1 integrity", () => {
     const lock = R4("candidate1-lock").data;
     expect(lock.candidateLockStatus).toBe("LOCKED");
     expect(lock.validationAttemptStatus).toBe("NOT_RUN");
-    expect(versionOf("possessionCalibrationVersion")).toBe("1.3.0");
+    // The registry tracks the ACTIVE candidate, not this one — this phase prepared V5 for Candidate 1.
+    // A literal here had to be edited at every generation; the active lock
+    // says the same thing and keeps saying it.
+    expect(versionOf("possessionCalibrationVersion")).toBe(activeLockVersion());
   });
 
   it("keeps every parameter at the locked value", () => {

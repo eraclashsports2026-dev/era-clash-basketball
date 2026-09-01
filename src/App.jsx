@@ -28,6 +28,7 @@ import PlayerImage from "./components/PlayerImage.jsx";
 import StageWizard from "./components/StageWizard.jsx";
 import ArenaHeader from "./components/arena/ArenaHeader.jsx";
 import TimeArena from "./components/arena/TimeArena.jsx";
+import ReferenceFixture from "./ui/time-arena/ReferenceFixture.jsx";
 import { MembershipPage, FantasyPage, ModeInfoPage, HowModesModal as ArenaHowModes, ArenaGuide } from "./components/arena/InfoPages.jsx";
 import { PLAY_MODES, findMode, defaultMode, MODE_STATUS } from "./navigation.js";
 import AccountGate from "./components/chaos/AccountGate.jsx";
@@ -120,6 +121,13 @@ const MODE_ICON = { Chaos: "🎲", Single: "🏀", Best7: "🏆", Win82: "🗓�
 const MODE_TO_ANALYTICS = { Win82: "82", Single: "single", Best7: "best7", Tournament: "tournament", Daily: "daily", Challenge: "challenge" };
 
 // ── App ──────────────────────────────────────────────────────────────────────
+// Development-only: the canonical visual-reference state, for geometry
+// measurement and screenshot comparison. VITE_EC_DEV_FIXTURES is set only by
+// `npm run build:visual-qa` (and the dev server), so a production build
+// statically eliminates both this route and the fixture module.
+const DEV_FIXTURES = import.meta.env.DEV || import.meta.env.VITE_EC_DEV_FIXTURES === "1";
+const FIXTURE_ROUTE = "/dev/time-arena-reference";
+
 export default function App() {
   const [nav, setNav] = useState("Play");             // Play | Daily | Challenges | Board | Profile | Credits
   const [view, setView] = useState("builder");        // builder | simulating | postgame
@@ -127,10 +135,17 @@ export default function App() {
   const [chaosAvailable, setChaosAvailable] = useState(true); // until the server says otherwise
   const [playStage, setPlayStage] = useState("ROSTERS"); // ROSTERS | COACHES | ERA | READY (v3 wizard)
   const [chaosReady, setChaosReady] = useState(null);     // a Chaos run at phase READY
+  if (DEV_FIXTURES && typeof window !== "undefined" && window.location.pathname === FIXTURE_ROUTE) {
+    return <ReferenceFixture />;
+  }
   const [tier, setTier] = useState(() => currentTier());  // GUEST | FREE (central entitlement input)
   const [gate, setGate] = useState(null);                 // an entitlement gate to render
   const [chaosChallengeId, setChaosChallengeId] = useState(null);
-  const [chaosNonce, setChaosNonce] = useState(0);   // remounts ChaosClash for a fresh run
+  // Bumped on a new clash and on account creation to force a re-render. It is
+  // deliberately NOT a remount key: remounting the arena would also discard
+  // hold ticks a guest had made before creating an account. The arena clears
+  // its own per-clash state from the run id instead.
+  const [chaosNonce, setChaosNonce] = useState(0);
   const [chaosRun, setChaosRun] = useState(null);    // the live run, shared with the Result Dock
   const [fullReport, setFullReport] = useState(false);
   // The clash before this one, kept whole so its report still opens. It is only
@@ -186,11 +201,17 @@ export default function App() {
   const [daily, setDaily] = useState(() => ls("ec_daily", {}));
   const [career, setCareer] = useState(() => loadCareer());
 
-  useEffect(() => localStorage.setItem("ec_saved", JSON.stringify(saved)), [saved]);
-  useEffect(() => localStorage.setItem("ec_streaks", JSON.stringify(streaks)), [streaks]);
-  useEffect(() => localStorage.setItem("ec_badges", JSON.stringify(badges)), [badges]);
-  useEffect(() => localStorage.setItem("ec_board", JSON.stringify(board)), [board]);
-  useEffect(() => localStorage.setItem("ec_daily", JSON.stringify(daily)), [daily]);
+  // Persisting progress must never be able to take the app down. Reads have
+  // always been guarded (`ls` above) and so are the two removals; these five
+  // writes were not, so a browser with storage blocked — private mode, a
+  // strict content setting, an exhausted quota — threw inside the commit phase
+  // and the whole app fell to the ErrorBoundary on first render.
+  const save = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* storage blocked or full */ } };
+  useEffect(() => save("ec_saved", saved), [saved]);
+  useEffect(() => save("ec_streaks", streaks), [streaks]);
+  useEffect(() => save("ec_badges", badges), [badges]);
+  useEffect(() => save("ec_board", board), [board]);
+  useEffect(() => save("ec_daily", daily), [daily]);
   useEffect(() => {
     syncCareer(career, { badges, savedTeams: saved.map((t) => ({ name: t.name, ids: t.ids, rating: t.rating })), daily });
   }, [career, badges, saved, daily]);
@@ -284,6 +305,11 @@ export default function App() {
         if (m.appMode && m.appMode !== gameMode) {
           setGameMode(m.appMode);
           setResult(null); setView("builder");
+        } else if (m.appMode && result) {
+          // Re-entering the mode you are ALREADY in: clear a finished game, but
+          // never a draft in progress. Without this, a Daily result stayed on
+          // screen and was rendered by whichever mode you opened next.
+          setResult(null); setView("builder");
         }
         return;
       }
@@ -301,7 +327,7 @@ export default function App() {
       default:
         return;
     }
-  }, [gameMode, navigate]);
+  }, [gameMode, navigate, result]);
 
   const goHome = useCallback(() => {
     if (window.location.pathname !== "/") { window.history.pushState({}, "", "/"); setRoute("/"); }
@@ -397,9 +423,14 @@ export default function App() {
   // Team Blue is USER-controlled: it stays empty until the user picks Manual or
   // Random. The only exception is Challenge mode, where the rival five is the
   // stored challenge lineup (that IS the game). No hidden auto-lock-in.
+  // `opponent` belongs in the deps: "New Game" in a challenge postgame calls
+  // resetPlay, which nulls the opponent, and without it here the rival five was
+  // never re-asserted — leaving a challenge builder with an empty Team Blue and
+  // no RUN THE SIM, recoverable only by a reload. The Daily's sibling effect
+  // already guards exactly this.
   useEffect(() => {
-    if (isChallenge) setOpponent(challenge.team);
-  }, [isChallenge, challenge]); // eslint-disable-line
+    if (isChallenge && !opponent) setOpponent(challenge.team);
+  }, [isChallenge, challenge, opponent]); // eslint-disable-line
 
   // ── Draft: Chaos (yahtzee rolls) ───────────────────────────────────────────
   // Daily uses the shared authoritative generator (UTC seed from the server;
@@ -1458,9 +1489,14 @@ export default function App() {
     <div style={{ maxWidth: 900, margin: "0 auto" }}>
       <ResultView result={res} team={tm} feedbackCtx={feedbackCtx}
         narrative={nar || { status: "none" }} onRetryNarrative={live ? retryNarrative : null}
-        onRematch={() => doRematch(res?.tag)}
+        // doRematch and doShare read the LIVE result and five. A previous
+        // clash's report is a record, not a control surface — newChaosClash has
+        // already nulled both — so its actions are withdrawn rather than left
+        // to fail. The dock owns Run it back, New Clash and Challenge.
+        onRematch={live ? () => doRematch(res?.tag) : null}
         onBest7={live && res.type !== "best7" ? doBest7FromResult : null}
-        onChallenge={doShare} onSwap={live ? startSwap : null} onShare={doShare}
+        onChallenge={live ? doShare : null} onSwap={live ? startSwap : null}
+        onShare={live ? doShare : null}
         onLeaderboard={() => handleNav("Daily")} />
       {res.tag === "daily" && <DailyPanel daily={daily} career={career} />}
       {live && (
@@ -1552,6 +1588,7 @@ export default function App() {
             }}
             onRunItBack={() => { setFullReport(false); doRematch("chaos"); }}
             onNewClash={() => { setFullReport(false); newChaosClash(); }}
+            onReset={() => { setFullReport(false); newChaosClash(); }}
             onChallenge={chaosRun ? async () => {
               const r = await publishChaosChallenge(chaosRun.chaosRunId, tier);
               track("chaos_challenge_created", { from: "result_dock" });
@@ -1560,10 +1597,7 @@ export default function App() {
             onEraChange={changeChaosEra}
             onGuide={(section) => setGuide(section || "play")}
             onSettings={() => handleNav("Profile")}
-            onMembership={navigate}
-            activeModeId="chaos"
-            onModeAction={handleModeAction}
-            previewCandidateActive={!!result?.sim?.previewCandidate} />
+            onMembership={navigate} />
         </main>
       ) : (
       <main style={{ maxWidth: 1280, margin: "0 auto", padding: "8px 16px 60px" }}>

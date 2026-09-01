@@ -38,9 +38,12 @@ const VARIANTS = {
   share: { w: 80, h: 100, radius: 12, fs: 22 },
 };
 
+// These were plain strings containing the literal text `T.goldSoft`, not
+// template literals — an invalid colour, so the browser discarded the whole
+// declaration and the silhouettes rendered with no team tint at all.
 const TEAM_TINT = {
-  gold: "linear-gradient(180deg, T.goldSoft, rgba(11,14,23,0.55))",
-  blue: "linear-gradient(180deg, T.blueSoft, rgba(11,14,23,0.55))",
+  gold: `linear-gradient(180deg, ${T.goldSoft}, rgba(11,14,23,0.55))`,
+  blue: `linear-gradient(180deg, ${T.blueSoft}, rgba(11,14,23,0.55))`,
 };
 
 // Branded silhouette: initials on an era-colored jersey shape. Intentional,

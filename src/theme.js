@@ -23,7 +23,7 @@ export const T = {
   // ── ink ────────────────────────────────────────────────────────────────
   text: "#121a2a",            // deep navy
   textDim: "#5a6577",         // medium slate — AA on ivory and on white
-  textMuted: "#79839a",
+  textMuted: "#636c83",   // 5.2:1 on the card, 4.6:1 on the page — was 3.7:1
   cream: "#f8f2e5",
 
   // ── arena (deliberate dark surfaces) ───────────────────────────────────
@@ -34,12 +34,12 @@ export const T = {
   onArenaDim: "#a9b6cc",      // AA on navy
 
   // ── team identity ──────────────────────────────────────────────────────
-  gold: "#b8860f",            // muted premium gold — AA as text on light
+  gold: "#8b660b",            // muted premium gold — 5.2:1 on the card, 4.6:1 on the page
   goldOnDark: "#e9b949",      // gold for navy surfaces
   goldSoft: "#fdf3d8",
   goldBorder: "#e0b955",
   glowGold: "0 6px 22px rgba(184,134,15,0.12)",
-  blue: "#2f6fc8",
+  blue: "#2d6bc2",            // nudged: 2f6fc8 was 4.3:1 on the ivory page
   blueOnDark: "#7ab0f5",
   blueSoft: "#e8f1ff",
   blueBorder: "#8fb6e8",

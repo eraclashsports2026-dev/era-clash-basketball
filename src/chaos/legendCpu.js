@@ -171,9 +171,24 @@ export const cpuHoldDecision = (state) => {
   };
 };
 
-/** A commitment to the CPU's decision, published BEFORE the user's holds. */
-export const cpuHoldCommitment = (decision, salt) =>
-  String(hashString(`${salt}|${[...decision.hold].sort().join(",")}|${LEGEND_CPU_VERSION}`) >>> 0);
+/**
+ * A commitment to the CPU's decision, published BEFORE the user's holds.
+ *
+ * The `secret` is REQUIRED and is what makes this binding rather than
+ * decorative. Every other input — run id, roll, version — is published in the
+ * same response, and a hold decision is one of only 32 subsets, so without a
+ * secret in the pre-image the committed value can be inverted by trying all 32
+ * and matching the hash. Reproduced directly: the brute force recovers the
+ * exact hidden hold on the first roll of a fresh run.
+ *
+ * The secret is server-only until the run is SIMULATED, at which point it is
+ * published so a player can verify every commitment after the fact — which is
+ * the property a commitment scheme is supposed to have.
+ */
+export const cpuHoldCommitment = (decision, salt, secret) => {
+  if (!secret) throw new Error("cpuHoldCommitment: a run secret is required — an unsalted commitment over 32 subsets is invertible");
+  return String(hashString(`${salt}|${[...decision.hold].sort().join(",")}|${LEGEND_CPU_VERSION}|${secret}`) >>> 0);
+};
 
 // ── Benchmark policies (evaluation only — never shipped as opponents) ────────
 export const POLICIES = {

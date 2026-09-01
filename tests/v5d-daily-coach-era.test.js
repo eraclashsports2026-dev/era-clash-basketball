@@ -70,6 +70,42 @@ const withFlag = (fn) => async () => {
   try { return await fn(); } finally { delete process.env.DAILY_COACH_ERA_ENABLED; }
 };
 
+// ── The Daily is a shared puzzle, flag ON or OFF ────────────────────────────
+// Every other test in this file wraps itself in withFlag, so the DEFAULT path —
+// the one the deployment actually runs — had no tamper coverage at all. With
+// the flag off the handler used to take the caller's own coach, the OPPONENT's
+// coach and the era, and those three values feed the seed: a caller could
+// search offline for the highest-scoring combination and bank it on the shared
+// board. They are ignored now, not rejected, which is how the rest of the
+// daily surface treats a foreign input.
+describe("the Daily never takes its setup from the caller", () => {
+  const TAMPER = { coachGoldId: "phil-jackson", coachBlueId: "neutral-nobody", eraStyleId: "1960s" };
+
+  it("ignores a caller-supplied coach, opponent coach and era with the feature OFF", async () => {
+    const honest = await playDaily({}, "a".repeat(48));
+    const tampered = await playDaily(TAMPER, "b".repeat(48));
+    expect(honest.statusCode).toBe(200);
+    expect(tampered.statusCode).toBe(200);
+    // Same five, same day, same neutral setup -> the same game.
+    expect(scoreline(tampered)).toBe(scoreline(honest));
+  });
+
+  it("the era the caller sent has no effect on the game that is scored", async () => {
+    // Two sessions, same day, same five: one honest, one asking for a
+    // three-point-free 1960s. A game that honoured it would score differently.
+    const honest = await playDaily({}, "e".repeat(48));
+    const era1960s = await playDaily({ eraStyleId: "1960s" }, "f".repeat(48));
+    const era2020s = await playDaily({ eraStyleId: "2020s" }, "g".repeat(48));
+    expect(scoreline(era1960s)).toBe(scoreline(honest));
+    expect(scoreline(era2020s)).toBe(scoreline(honest));
+  });
+
+  // With the feature ON the same values are REJECTED rather than ignored,
+  // because the config declares an official era and a coach shortlist. That
+  // path is covered by "the server rejects a tampered era through the real
+  // endpoint" below; this block exists for the default, flag-off path.
+});
+
 describe("daily configuration", () => {
   it("the same UTC date returns the same configuration", () => {
     expect(JSON.stringify(dailyConfig("20260825"))).toBe(JSON.stringify(dailyConfig("20260825")));

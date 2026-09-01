@@ -78,15 +78,19 @@ async function renderChallengePage(req, res) {
   const ch = ok ? await getJSON(`ch:${id}`) : null;
 
   res.setHeader("Content-Type", "text/html; charset=utf-8");
-  res.setHeader("Cache-Control", "public, max-age=120");
 
   if (!ch) {
+    // A miss must NOT be cached for two minutes: a challenge that is still
+    // being written, or a store blip, would pin "nothing here" for everyone who
+    // follows the link — including the recipient it was sent to.
+    res.setHeader("Cache-Control", "no-store");
     return res.status(200).send(`<!doctype html><html><head>
 <meta charset="utf-8"><title>EraClash Basketball</title>
 <meta http-equiv="refresh" content="0;url=/"></head>
 <body><a href="/">EraClash Basketball</a></body></html>`);
   }
 
+  res.setHeader("Cache-Control", "public, max-age=120");
   const who = ch.challenger?.name || "A rival";
   const names = (ch.challenger?.teamIds || [])
     .map((pid) => PLAYERS.find((p) => p.id === pid)?.name.split(" ").slice(-1)[0]).filter(Boolean);

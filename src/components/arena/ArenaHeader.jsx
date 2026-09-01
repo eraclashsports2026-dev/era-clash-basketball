@@ -8,6 +8,7 @@ import {
   resolveModeAction, STATUS_LABEL, MODE_STATUS,
 } from "../../navigation.js";
 import { FONT } from "../../theme.js";
+import { useCompact, NAV_COMPACT_MAX } from "../../ui/useCompact.js";
 
 const statusTone = (status) => {
   switch (status) {
@@ -44,6 +45,11 @@ export default function ArenaHeader({
   nav, onNav, tier, activeModeId, onModeAction, onNavigate, onCreateAccount,
   onHowModes, onAccountChanged, previewCandidateActive,
 }) {
+  // Six top-level items cannot share a line on a phone. Wrapping them made the
+  // sticky header 217px tall — a quarter of the viewport, permanently, on every
+  // screen of the game. Below the breakpoint they fold into one menu instead.
+  const compactNav = useCompact(NAV_COMPACT_MAX);
+  const plainNav = TOP_NAV.filter((t) => t.kind === "nav");
   return (
     <header style={{
       position: "sticky", top: 0, zIndex: 50,
@@ -101,7 +107,20 @@ export default function ArenaHeader({
             )}
           </NavMenu>
 
-          {TOP_NAV.filter((t) => t.kind === "nav").map((t) => (
+          {compactNav ? (
+            <NavMenu label="More" active={plainNav.some((t) => t.nav === nav)}>
+              {(close) => (
+                <>
+                  <div style={menuHeading}>THE REST OF ERACLASH</div>
+                  {plainNav.map((t) => (
+                    <MenuRow key={t.id} icon={t.icon || "→"} title={t.label} subtitle={t.tagline || ""}
+                      badge={t.nav === nav ? "Here" : undefined} badgeTone={statusTone(MODE_STATUS.AVAILABLE)}
+                      onClick={() => { close(); onNav(t.nav); }} />
+                  ))}
+                </>
+              )}
+            </NavMenu>
+          ) : plainNav.map((t) => (
             <button key={t.id} onClick={() => onNav(t.nav)} aria-current={nav === t.nav ? "page" : undefined} style={{
               minHeight: 44, padding: "0 12px", borderRadius: 10, cursor: "pointer",
               fontWeight: 700, fontSize: 13.5, border: "1px solid transparent", background: "transparent",
