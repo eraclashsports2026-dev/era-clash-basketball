@@ -548,11 +548,25 @@ test("Play and Fantasy menus are keyboard accessible and registry driven", async
   await expect(fantasyMenu).toHaveCount(0);
 });
 
-test("a subscription-gated mode routes to one membership destination with no checkout", async ({ page }) => {
+test("a guest choosing a trial mode is offered the account that opens it, not a subscription", async ({ page }) => {
+  // Win 82 and Best of 7 open on a FREE account through a trial capability, so
+  // sending a signed-out visitor to a membership page told them to buy
+  // something they did not need. This used to assert the membership URL.
   await asGuest(page);
   await page.goto("/");
   await page.getByRole("button", { name: /^Play/ }).click();
   await page.getByRole("menuitem", { name: /Win 82/ }).click();
+  await expect(page).not.toHaveURL(/\/membership/);
+  const body = await page.locator("body").innerText();
+  expect(body).toMatch(/free account/i);
+  expect(body).not.toMatch(/\$\d|card number|checkout|start free trial/i);
+});
+
+test("the membership destination itself shows no checkout", async ({ page }) => {
+  // Reached by the surviving membership route — the custom-era capability, not
+  // a mode. No play mode gates any tier behind a subscription any more.
+  await asGuest(page);
+  await page.goto("/membership?feature=custom-era&required=PLUS&from=%2Fplay");
   await expect(page).toHaveURL(/\/membership\?/);
   const body = await page.locator("body").innerText();
   expect(body).not.toMatch(/\$\d|card number|checkout|start free trial/i);

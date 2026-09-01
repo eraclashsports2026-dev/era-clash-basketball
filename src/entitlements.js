@@ -77,6 +77,16 @@ export const gateReason = (tier, capability) => {
   if (MATRIX.FREE.includes(capability) && normalizeTier(tier) === "GUEST") {
     return { kind: "ACCOUNT", message: "This mode needs a free account." };
   }
+  // A mode can be reachable on a FREE account through a TRIAL capability rather
+  // than the full one — Best of 7 and Win 82 both are. resolveModeAction honours
+  // that; this did not, so a signed-out visitor was told those modes needed
+  // EraClash+ and routed to a page that cannot sell anything, when a free
+  // account would have opened them.
+  const viaTrial = MODES.find((m) => m.capability === capability && m.trialCapability
+    && MATRIX.FREE.includes(m.trialCapability));
+  if (viaTrial && normalizeTier(tier) === "GUEST") {
+    return { kind: "ACCOUNT", message: `${viaTrial.label} opens with a free account.` };
+  }
   return { kind: "MEMBERSHIP", message: "Membership feature — not active during private preview" };
 };
 

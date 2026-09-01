@@ -19,6 +19,10 @@ import { buildPregameRead } from "./_lib/pregameRead.js";
 import { buildDeterministicSummary, deriveDraftConsequences, buildExpandedAnalysis, eraImpactLine } from "./_lib/postgameStory.js";
 import { previewIdentity } from "./_lib/previewAccessCheck.js";
 import { previewEvent } from "./_lib/previewTelemetry.js";
+
+// A played run stays claimed longer than the run lives (6h), so a retry that
+// arrives after the run has expired still cannot replay it.
+const CHAOS_PLAYED_TTL = 60 * 60 * 24;
 import { validCoachId, validEraId } from "./_lib/validate.js";
 import { validDifficulty } from "../src/v3/difficulty.js";
 import { findDuplicatePerson } from "../src/v3/persons.js";
@@ -200,6 +204,21 @@ export default async function handler(req, res) {
       if (chaosAction !== "simulate") return sendError(res, "VALIDATION_FAILURE", requestId);
       if (run.currentPhase !== "READY") {
         return sendError(res, "VALIDATION_FAILURE", requestId, { reason: "INVALID_TRANSITION", phase: run.currentPhase });
+      }
+      // The phase check above is a read; the write that retires the run happens
+      // after the simulation. Two requests arriving together both read READY and
+      // both play the draft, so one locked roster yields two results and only
+      // the last one is remembered. simulationId idempotency does not cover it:
+      // the client mints a fresh one per click.
+      //
+      // Claim the RUN, not the request. A second caller is told the draft has
+      // already been played rather than quietly playing it again. The claim
+      // outlives the run itself so a late retry cannot resurrect it.
+      if (hasStore()) {
+        const claimed = await setNX(`chaos:played:${run.chaosRunId}`, { requestId, at: Date.now() }, CHAOS_PLAYED_TTL);
+        if (!claimed) {
+          return sendError(res, "VALIDATION_FAILURE", requestId, { reason: "ALREADY_SIMULATED", phase: run.currentPhase });
+        }
       }
       // Fall through to the normal simulation path with the STORED setup. The
       // request body's own team/coach/era fields are discarded here, which is

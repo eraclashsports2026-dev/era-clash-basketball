@@ -52,13 +52,30 @@ describe("entitlement routing", () => {
     expect(a.intent).toBe("CREATE_ACCOUNT");
   });
 
-  it("sends a locked paid mode to ONE membership destination with context", () => {
-    const a = resolveModeAction(findMode("win82"), "GUEST", { from: "/play" });
-    expect(a.intent).toBe("MEMBERSHIP");
-    expect(a.href).toContain("/membership?");
-    expect(a.href).toContain("feature=win82");
-    expect(a.href).toContain("required=plus");
-    expect(a.href).toContain("from=");
+  it("routes a membership feature to ONE destination with context", () => {
+    // NOT via a mode. Every play mode is now reachable on GUEST or FREE — Best
+    // of 7 and Win 82 through their trial capabilities — so no mode card sends
+    // anyone to the membership page. The surviving membership route is a
+    // CAPABILITY, custom era, which Live Intel offers when the server says the
+    // account is not entitled. Asserting the href through a mode would have
+    // required a mode nobody is actually gated on.
+    const href = membershipHref({ feature: "custom-era", required: "PLUS", from: "/play" });
+    expect(href).toContain("/membership?");
+    expect(href).toContain("feature=custom-era");
+    expect(href).toContain("required=PLUS");
+    expect(href).toContain("from=");
+  });
+
+  it("offers a guest the free account that would actually open a trial mode", () => {
+    // Both of these are reachable on FREE through a trial capability, so
+    // routing a guest to a membership page that cannot sell anything told them
+    // to buy something they did not need.
+    for (const id of ["win82", "bo7"]) {
+      const a = resolveModeAction(findMode(id), "GUEST", { from: "/play" });
+      expect(a.status, id).toBe(MODE_STATUS.ACCOUNT_REQUIRED);
+      expect(a.intent, id).toBe("CREATE_ACCOUNT");
+      expect(a.href ?? "", id).not.toContain("membership");
+    }
   });
 
   it("never routes a coming-soon mode to checkout", () => {
@@ -75,19 +92,34 @@ describe("entitlement routing", () => {
     expect(a.message).toBeTruthy();
   });
 
-  it("gives every status a distinct behaviour", () => {
-    const intents = new Set();
+  it("gives every REACHABLE status a distinct behaviour", () => {
     for (const s of Object.keys(MODE_STATUS)) expect(s in STATUS_LABEL).toBe(true);
-    for (const [mode, tier, ctx] of [
-      [findMode("chaos"), "GUEST", {}], [findMode("dream"), "GUEST", {}],
-      [findMode("win82"), "GUEST", {}], [findMode("gauntlet"), "PLUS", {}],
-      [findMode("bo7"), "PLUS", { previewCandidateActive: true }],
-    ]) intents.add(resolveModeAction(mode, tier, ctx).intent);
-    // Five statuses, five genuinely different behaviours: open the mode, ask
-    // for an account, route to membership, show the mode's own page, or
-    // explain a preview limitation.
-    expect(intents.size).toBe(5);
-    expect([...intents].sort()).toEqual(["CREATE_ACCOUNT", "EXPLAIN_PREVIEW", "MEMBERSHIP", "MODE_INFO", "OPEN_MODE"]);
+    // Enumerated rather than hand-listed, so this cannot drift into asserting a
+    // behaviour no user can reach.
+    const reached = new Map();
+    for (const m of PLAY_MODES) for (const tier of TIERS) {
+      for (const ctx of [{}, { previewCandidateActive: true }]) {
+        const a = resolveModeAction(m, tier, ctx);
+        if (!reached.has(a.status)) reached.set(a.status, a.intent);
+      }
+    }
+    expect([...reached.keys()].sort()).toEqual(
+      ["ACCOUNT_REQUIRED", "AVAILABLE", "COMING_SOON", "DISABLED_FOR_PREVIEW"]);
+    expect([...new Set(reached.values())].sort()).toEqual(
+      ["CREATE_ACCOUNT", "EXPLAIN_PREVIEW", "MODE_INFO", "OPEN_MODE"]);
+  });
+
+  it("no play mode gates any tier behind a subscription", () => {
+    // A consequence worth pinning rather than discovering later: Best of 7 and
+    // Win 82 open on a FREE account through their trial capabilities, and every
+    // other mode is available, coming soon, or preview-disabled. SUBSCRIPTION_
+    // REQUIRED and COMMISSIONER_REQUIRED are defined and labelled but no mode
+    // and tier combination produces either. If a paid mode is ever added this
+    // test fails, which is the moment to revisit the membership routing.
+    const statuses = PLAY_MODES.flatMap((m) => TIERS.flatMap((t) =>
+      [{}, { previewCandidateActive: true }].map((ctx) => resolveModeAction(m, t, ctx).status)));
+    expect(statuses).not.toContain(MODE_STATUS.SUBSCRIPTION_REQUIRED);
+    expect(statuses).not.toContain(MODE_STATUS.COMMISSIONER_REQUIRED);
   });
 });
 
