@@ -46,6 +46,10 @@ export const publicChallenge = (manifest) => ({ challengeId: manifest.challengeI
 export const FORBIDDEN_CHALLENGE_FIELDS = Object.freeze([
   "seedId", "seed", "serverSeed", "pv", "previewKey", "testerId", "session",
   "pv_session", "feedbackId", "futureDraws", "branches",
+  // The commitment secret makes the CPU's pre-committed decisions binding. On a
+  // challenge link the recipient has not played yet, so leaking it would let
+  // them invert the commitments the same way an unsalted hash did.
+  "commitSecret", "_commitSecret",
 ]);
 
 export const challengeUrl = (origin, manifest) =>
