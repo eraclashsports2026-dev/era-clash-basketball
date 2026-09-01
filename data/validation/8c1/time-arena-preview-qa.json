@@ -2,8 +2,8 @@
   "artifact": "time-arena-preview-qa",
   "phase": "8C.1 — pixel-fidelity reconstruction",
   "deployment": {
-    "baseUrl": "https://era-clash-basketball-bfmr5kpxo-era-clash.vercel.app",
-    "commit": "a704c689e9ac0b74f8aed06fd027df9a8147c93d",
+    "baseUrl": "https://era-clash-basketball-git-wave1-era-clash.vercel.app",
+    "commit": "4dc59e7b2175b82cea8d5ab5c336b75b550c7f59",
     "environment": "vercel preview, access-gated"
   },
   "method": "Playwright over the network against the deployed branch preview, authenticated with a signed session obtained by POSTing an access key. The dev fixture is compiled out of a preview build, so every measurement below comes from a real draft played through the UI.",
@@ -142,7 +142,7 @@
     {
       "slot": "PG",
       "team": "blue",
-      "kept": false,
+      "kept": true,
       "cardH": 322,
       "overflowPx": 0,
       "footInset": 1
@@ -150,7 +150,7 @@
     {
       "slot": "SG",
       "team": "blue",
-      "kept": true,
+      "kept": false,
       "cardH": 322,
       "overflowPx": 0,
       "footInset": 1
@@ -158,7 +158,7 @@
     {
       "slot": "SF",
       "team": "blue",
-      "kept": true,
+      "kept": false,
       "cardH": 322,
       "overflowPx": 0,
       "footInset": 1
@@ -182,19 +182,18 @@
   ],
   "eraDealt": {
     "observed": [
-      "2020s",
+      "1990s",
+      "1990s",
+      "2000s",
+      "1970s",
       "1980s",
-      "1950s",
-      "1960s",
-      "1950s",
       "2000s"
     ],
     "distinct": [
-      "2020s",
-      "1980s",
-      "1950s",
-      "1960s",
-      "2000s"
+      "1990s",
+      "2000s",
+      "1970s",
+      "1980s"
     ]
   },
   "report": {
@@ -204,7 +203,7 @@
       "count": 8,
       "measured": 8,
       "worst": 5.8,
-      "sample": "Bill Russell controlled the game with 39 points, 32 rebounds"
+      "sample": "Luka Doncic controlled the game with 41 points, 14 rebounds,"
     },
     "coaching": {
       "blocks": 43,
@@ -269,8 +268,8 @@
     {
       "section": "Game Story",
       "bad": [],
-      "docHeight": 1692,
-      "railBottomBeyondViewport": 596
+      "docHeight": 1709,
+      "railBottomBeyondViewport": 614
     },
     {
       "section": "Box Score",
@@ -281,14 +280,14 @@
     {
       "section": "Coaching",
       "bad": [],
-      "docHeight": 1520,
-      "railBottomBeyondViewport": 424
+      "docHeight": 1537,
+      "railBottomBeyondViewport": 442
     },
     {
       "section": "Analysis",
       "bad": [],
-      "docHeight": 1643,
-      "railBottomBeyondViewport": 548
+      "docHeight": 1661,
+      "railBottomBeyondViewport": 565
     }
   ],
   "isolation": {
@@ -412,7 +411,7 @@
     {
       "name": "the era is revealed with Roll 2, in the rail",
       "ok": true,
-      "detail": "2020s"
+      "detail": "1990s"
     },
     {
       "name": "the era box appears once, in the rail",
@@ -422,7 +421,7 @@
     {
       "name": "every player card button sits inside its own card",
       "ok": true,
-      "detail": "6 card(s) marked KEPT · worst overflow 0px"
+      "detail": "5 card(s) marked KEPT · worst overflow 0px"
     },
     {
       "name": "every player card button sits at the same place on its card",
@@ -477,7 +476,7 @@
     {
       "name": "an open dock section grows the page instead of hiding behind a scrollbar",
       "ok": true,
-      "detail": "Game Story 1692px · Box Score 1636px · Coaching 1520px · Analysis 1643px"
+      "detail": "Game Story 1709px · Box Score 1636px · Coaching 1537px · Analysis 1661px"
     },
     {
       "name": "a finished game offers a new Clash on the board itself",
@@ -542,7 +541,7 @@
     {
       "name": "six fresh drafts do not all land on one era",
       "ok": true,
-      "detail": "2020s, 1980s, 1950s, 1960s, 1950s, 2000s"
+      "detail": "1990s, 1990s, 2000s, 1970s, 1980s, 2000s"
     },
     {
       "name": "no draft defaults to the 1950s",
