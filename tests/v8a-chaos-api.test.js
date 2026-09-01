@@ -33,13 +33,18 @@ beforeAll(() => {
 });
 beforeEach(() => _memReset());
 
-/** Drive a run to READY and return { runId, view }. */
+/**
+ * Drive a run to READY: three player rolls, then the three-roll coach draft,
+ * then one coach hired.
+ */
 const toReady = async (session = SESSION_A) => {
   const start = await call({ chaosAction: "start" }, session);
   const runId = start.body.chaos.chaosRunId;
   await call({ chaosAction: "holds", chaosRunId: runId, holdSlots: ["PG"] }, session);
-  const r2 = await call({ chaosAction: "holds", chaosRunId: runId, holdSlots: ["PG", "C"] }, session);
-  const coachId = r2.body.chaos.coachOffers[0].coachId;
+  await call({ chaosAction: "holds", chaosRunId: runId, holdSlots: ["PG", "C"] }, session);
+  await call({ chaosAction: "coachHolds", chaosRunId: runId, holdRoles: [] }, session);
+  const c3 = await call({ chaosAction: "coachHolds", chaosRunId: runId, holdRoles: [] }, session);
+  const coachId = c3.body.chaos.coachDraft.offers[0].coachId;
   const ready = await call({ chaosAction: "coach", chaosRunId: runId, coachId }, session);
   return { runId, view: ready.body.chaos };
 };
@@ -69,21 +74,49 @@ describe("Chaos Clash — server-authoritative draft", () => {
     const runId = start.body.chaos.chaosRunId;
     const r = await call({ chaosAction: "holds", chaosRunId: runId, holdSlots: ["PG"] });
     expect(r.body.chaos.roll).toBe(2);
-    expect(r.body.chaos.phase).toBe("ERA_REVEALED");
+    expect(r.body.chaos.phase).toBe("ROLL_2_REVEALED");
     expect(r.body.chaos.era?.eraId).toBeTruthy();
+    // The era stays on screen from here on.
+    expect(r.body.chaos.eraContext?.headline).toMatch(/ERA$/);
   });
 
-  it("offers exactly three unique coaches after rosters lock", async () => {
+  it("opens a three-roll coach draft once rosters lock", async () => {
     const { view } = await toReady();
     expect(view.selectedCoaches).toBeTruthy();
     const start = await call({ chaosAction: "start" });
     const runId = start.body.chaos.chaosRunId;
     await call({ chaosAction: "holds", chaosRunId: runId, holdSlots: [] });
     const r2 = await call({ chaosAction: "holds", chaosRunId: runId, holdSlots: [] });
-    const offers = r2.body.chaos.coachOffers;
-    expect(offers).toHaveLength(3);
-    expect(new Set(offers.map((o) => o.coachId)).size).toBe(3);
-    expect(new Set(offers.map((o) => o.role)).size).toBe(3);
+    const draft = r2.body.chaos.coachDraft;
+    expect(draft.roll).toBe(1);
+    expect(draft.totalRolls).toBe(3);
+    expect(draft.offers).toHaveLength(3);
+    expect(new Set(draft.offers.map((o) => o.coachId)).size).toBe(3);
+    expect(new Set(draft.offers.map((o) => o.role)).size).toBe(3);
+    // Three genuinely different systems, not three names.
+    expect(new Set(draft.offers.map((o) => o.offense)).size).toBe(3);
+  });
+
+  it("holds and burns coaches across the coach rolls, and refuses a fourth", async () => {
+    const start = await call({ chaosAction: "start" });
+    const runId = start.body.chaos.chaosRunId;
+    await call({ chaosAction: "holds", chaosRunId: runId, holdSlots: [] });
+    const r2 = await call({ chaosAction: "holds", chaosRunId: runId, holdSlots: [] });
+    const first = r2.body.chaos.coachDraft.offers;
+    const keptRole = first[0].role, keptId = first[0].coachId;
+    const dropped = first.slice(1).map((o) => o.coachId);
+
+    const c2 = await call({ chaosAction: "coachHolds", chaosRunId: runId, holdRoles: [keptRole] });
+    const second = c2.body.chaos.coachDraft.offers;
+    expect(c2.body.chaos.coachDraft.roll).toBe(2);
+    expect(second.find((o) => o.role === keptRole).coachId).toBe(keptId);
+    // A released coach is burned for the run.
+    for (const o of second) expect(dropped).not.toContain(o.coachId);
+
+    const c3 = await call({ chaosAction: "coachHolds", chaosRunId: runId, holdRoles: [] });
+    expect(c3.body.chaos.coachDraft.selecting).toBe(true);
+    const fourth = await call({ chaosAction: "coachHolds", chaosRunId: runId, holdRoles: [] });
+    expect(fourth.statusCode).toBe(400);
   });
 
   it("runs exactly three rolls and refuses a fourth", async () => {
@@ -97,7 +130,7 @@ describe("Chaos Clash — server-authoritative draft", () => {
     // The run is left untouched by the refused transition.
     const after = await call({ chaosAction: "view", chaosRunId: runId });
     expect(after.body.chaos.roll).toBe(3);
-    expect(after.body.chaos.phase).toBe("COACH_OFFERS_REVEALED");
+    expect(after.body.chaos.phase).toBe("COACH_ROLL_1");
   });
 
   it("refuses a coach that was not offered", async () => {
@@ -105,7 +138,11 @@ describe("Chaos Clash — server-authoritative draft", () => {
     const runId = start.body.chaos.chaosRunId;
     await call({ chaosAction: "holds", chaosRunId: runId, holdSlots: [] });
     await call({ chaosAction: "holds", chaosRunId: runId, holdSlots: [] });
-    const bad = await call({ chaosAction: "coach", chaosRunId: runId, coachId: "phil-jackson" });
+    await call({ chaosAction: "coachHolds", chaosRunId: runId, holdRoles: [] });
+    const c3 = await call({ chaosAction: "coachHolds", chaosRunId: runId, holdRoles: [] });
+    const offered = c3.body.chaos.coachDraft.offers.map((o) => o.coachId);
+    const notOffered = ["phil-jackson", "gregg-popovich", "pat-riley", "red-auerbach"].find((id) => !offered.includes(id));
+    const bad = await call({ chaosAction: "coach", chaosRunId: runId, coachId: notOffered });
     expect(bad.statusCode).toBe(400);
   });
 
@@ -136,6 +173,7 @@ describe("Chaos Clash — server-authoritative draft", () => {
     const res = await call({ chaosAction: "simulate", chaosRunId: runId, simulationId: "t".repeat(20) });
     const h = res.body.result.chaosDraft;
     expect(h.rolls).toHaveLength(2);
+    expect(h.coachRolls).toHaveLength(2);
     expect(h.challengeId).toMatch(/^[a-z0-9]+$/);
     // The seed is never written to a public record.
     expect(JSON.stringify(h)).not.toContain("seedId");

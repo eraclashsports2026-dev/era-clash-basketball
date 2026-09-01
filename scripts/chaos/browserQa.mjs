@@ -39,13 +39,32 @@ const run = async () => {
     ok(`run ${i + 1} shows a Draft Pressure level`, ["LOW", "RISING", "HIGH"].includes(r.body?.chaos?.draftPressure?.level), r.body?.chaos?.draftPressure?.level);
 
     r = await post({ chaosAction: "holds", chaosRunId: id, holdSlots: ["PG"] });
-    const offers = r.body?.chaos?.coachOffers || [];
-    ok(`run ${i + 1} offers three unique coaches`, offers.length === 3 && new Set(offers.map((o) => o.coachId)).size === 3,
-      offers.map((o) => o.name).join(", "));
-    ok(`run ${i + 1} offers three DISTINCT systems`, new Set(offers.map((o) => o.offense)).size === 3);
-    ok(`run ${i + 1} explains every offer`, offers.every((o) => o.offense && o.defense && o.sacrifice));
+    ok(`run ${i + 1} locks the roster after three rolls`, r.body?.chaos?.rostersLocked === true);
+    ok(`run ${i + 1} opens the coach draft at Roll 1 of 3`,
+      r.body?.chaos?.coachDraft?.roll === 1 && r.body?.chaos?.coachDraft?.totalRolls === 3);
+    ok(`run ${i + 1} keeps the era visible after the roster locks`, !!r.body?.chaos?.eraContext);
 
-    r = await post({ chaosAction: "coach", chaosRunId: id, coachId: offers[0].coachId });
+    const first = r.body.chaos.coachDraft.offers;
+    ok(`run ${i + 1} offers three unique coaches`, first.length === 3 && new Set(first.map((o) => o.coachId)).size === 3,
+      first.map((o) => o.name).join(", "));
+    ok(`run ${i + 1} offers three DISTINCT systems`, new Set(first.map((o) => o.offense)).size === 3);
+    ok(`run ${i + 1} explains every offer`, first.every((o) => o.offense && o.defense && o.sacrifice));
+
+    // Hold one staff across the coach rolls and confirm it survives.
+    const keepRole = first[0].role, keptId = first[0].coachId;
+    const droppedIds = first.slice(1).map((o) => o.coachId);
+    r = await post({ chaosAction: "coachHolds", chaosRunId: id, holdRoles: [keepRole] });
+    const second = r.body?.chaos?.coachDraft?.offers || [];
+    ok(`run ${i + 1} keeps a held coach across the roll`, second.find((o) => o.role === keepRole)?.coachId === keptId);
+    ok(`run ${i + 1} burns a released coach`, second.every((o) => !droppedIds.includes(o.coachId)));
+
+    r = await post({ chaosAction: "coachHolds", chaosRunId: id, holdRoles: [] });
+    const finalOffers = r.body?.chaos?.coachDraft?.offers || [];
+    ok(`run ${i + 1} locks the coach offers for selection`, r.body?.chaos?.coachDraft?.selecting === true);
+    ok(`run ${i + 1} refuses a fourth coach roll`,
+      (await post({ chaosAction: "coachHolds", chaosRunId: id, holdRoles: [] })).status === 400);
+
+    r = await post({ chaosAction: "coach", chaosRunId: id, coachId: finalOffers[0].coachId });
     ok(`run ${i + 1} reaches READY`, r.body?.chaos?.phase === "READY");
 
     const simulationId = Array.from({ length: 20 }, () => "abcdefghijklmnopqrstuvwxyz0123456789"[Math.floor(Math.random() * 36)]).join("");
@@ -59,7 +78,18 @@ const run = async () => {
     ok(`run ${i + 1} has a deterministic opening story`, !!rec.story?.body && /^How /.test(rec.story.headline || ""), rec.story?.headline);
     ok(`run ${i + 1} has salient key moments`, (rec.v3?.keyMoments || []).length >= 1);
     ok(`run ${i + 1} has a quarter-by-quarter flow`, (rec.v3?.quarterFlow || []).length >= 4);
-    ok(`run ${i + 1} has draft consequences`, (rec.draftConsequences || []).length >= 1);
+    ok(`run ${i + 1} has an expanded analysis available`, (rec.expandedAnalysis?.sections || []).length >= 4);
+    ok(`run ${i + 1} states a factual era impact`, !!rec.eraImpact && String(rec.eraImpact).includes(rec.eraId));
+    ok(`run ${i + 1} carries two or three events in most quarters`,
+      (rec.v3?.quarterFlow || []).filter((q) => (q.events || []).length >= 2).length >= 3);
+    ok(`run ${i + 1} groups repeated coaching adjustments`, (() => {
+      for (const side of ["gold", "blue"]) {
+        const adj = rec.v3?.coaching?.[side]?.adjustments || [];
+        const keys = adj.map((a) => `${a.trigger}|${a.response}`);
+        if (new Set(keys).size !== keys.length) return false;
+      }
+      return true;
+    })());
     ok(`run ${i + 1} fabricates no game clock`, !/\b\d{1,2}:\d{2}\b/.test(JSON.stringify({ k: rec.v3?.keyMoments, q: rec.v3?.quarterFlow, c: rec.v3?.coaching })));
     ok(`run ${i + 1} prints no raw enum in coaching`, !/so the staff|_heavy|switch_/.test(JSON.stringify(rec.v3?.coaching || {})));
     ok(`run ${i + 1} leaks no seed on the stored result`, !JSON.stringify(rec).includes("seedId"));

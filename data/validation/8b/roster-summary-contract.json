@@ -1,0 +1,20 @@
+{
+  "artifact": "roster-summary-contract",
+  "phase": "8B",
+  "fields": [
+    "Talent",
+    "Construction",
+    "Best strength",
+    "Biggest risk",
+    "Opponent matchup",
+    "Summary"
+  ],
+  "rule": "Every field is always present for BOTH teams. A row is never removed when it has no value.",
+  "neutralValues": {
+    "bestStrength": "No standout strength",
+    "biggestRisk": "No critical weakness identified",
+    "opponentMatchup": "No clear edge"
+  },
+  "paddingPolicy": "No invented weakness is added merely to fill a row.",
+  "defectCorrected": "Team Blue could render four rows where Team Gold rendered five, because the renderer dropped a row whose value was null."
+}

@@ -16,7 +16,7 @@ import { computeResult, dailyScore, newSeed } from "./_lib/game-core.js";
 import { computeResultV3 } from "./_lib/game-core-v3.js";
 import { computeResultPreview, PREVIEW_NAMESPACES, PREVIEW_RESULT_ID_PREFIX } from "./_lib/previewEngine.js";
 import { buildPregameRead } from "./_lib/pregameRead.js";
-import { buildDeterministicSummary, deriveDraftConsequences } from "./_lib/postgameStory.js";
+import { buildDeterministicSummary, deriveDraftConsequences, buildExpandedAnalysis, eraImpactLine } from "./_lib/postgameStory.js";
 import { previewIdentity } from "./_lib/previewAccessCheck.js";
 import { previewEvent } from "./_lib/previewTelemetry.js";
 import { validCoachId, validEraId } from "./_lib/validate.js";
@@ -29,7 +29,7 @@ import { utcDateKey, verifyDailyLineup, dailyOpponent } from "../src/dailyChalle
 import { dailySimulationSeed, validateDailySelection, validateDailyVersions } from "../src/v3/dailyCoachEra.js";
 import { officialDailyConfig } from "./_lib/dailyOfficial.js";
 import {
-  createRun, loadRun, saveRun, ownsRun, applyHolds, applyCoach, publishChallenge,
+  createRun, loadRun, saveRun, ownsRun, applyHolds, applyCoachHolds, applyCoach, applyAbandon, publishChallenge,
   view as chaosView, simulationSetup, draftHistory, validRunId, validChaosChallengeId,
   guestRunsUsed, consumeGuestRun, guestLimitReached,
 } from "./_lib/chaosRun.js";
@@ -133,6 +133,9 @@ export default async function handler(req, res) {
       // Draft state cannot cross users.
       if (!ownsRun(run, session)) return sendError(res, "FORBIDDEN", requestId);
       if (run.expiresAt && Date.now() > run.expiresAt) return sendError(res, "NOT_FOUND", requestId);
+      // An abandoned run is gone: it can never be advanced or resumed, which is
+      // what stops repeated navigation from farming fresh opening rolls.
+      if (run.status === "ABANDONED" && chaosAction !== "view") return sendError(res, "NOT_FOUND", requestId);
 
       if (chaosAction === "view") {
         return res.status(200).json({ requestId, chaos: chaosView(run, { includeCpuHolds: run.currentRoll > 1 }) });
@@ -143,6 +146,19 @@ export default async function handler(req, res) {
         const r = await applyHolds(run, b.holdSlots);
         if (!r.ok) return sendError(res, "VALIDATION_FAILURE", requestId, { reason: r.code, phase: r.phase });
         return res.status(200).json({ requestId, chaos: chaosView(run, { includeCpuHolds: true }) });
+      }
+      if (chaosAction === "coachHolds") {
+        if (!Array.isArray(b.holdRoles)) return sendError(res, "VALIDATION_FAILURE", requestId);
+        if (b.holdRoles.length > 3) return sendError(res, "VALIDATION_FAILURE", requestId);
+        const r = await applyCoachHolds(run, b.holdRoles);
+        if (!r.ok) return sendError(res, "VALIDATION_FAILURE", requestId, { reason: r.code, phase: r.phase });
+        return res.status(200).json({ requestId, chaos: chaosView(run, { includeCpuHolds: true }) });
+      }
+      if (chaosAction === "abandon") {
+        const r = await applyAbandon(run);
+        if (!r.ok) return sendError(res, "VALIDATION_FAILURE", requestId, { reason: r.code });
+        logReq({ requestId, route: "game", mode: "chaos", action: "abandon", status: 200 });
+        return res.status(200).json({ requestId, abandoned: true });
       }
       if (chaosAction === "coach") {
         const r = await applyCoach(run, String(b.coachId || ""));
@@ -378,6 +394,21 @@ export default async function handler(req, res) {
       });
     } catch { story = null; }
 
+    // The long-form analysis, computed from the record. This is what the
+    // Enhanced Analysis panel shows whenever the external provider cannot
+    // deliver a validated recap, so the feature is never an empty panel.
+    let expandedAnalysis = null;
+    try {
+      expandedAnalysis = buildExpandedAnalysis({
+        record: computed,
+        quarterFlow: computed.v3?.quarterFlow || [],
+        moments: computed.v3?.keyMoments || [],
+        patterns: computed.v3?.matchupPatterns || [],
+        coaching: computed.v3?.coaching || null,
+        eraId: computed.eraId || null,
+      });
+    } catch { expandedAnalysis = null; }
+
     const resultId = (previewComputed ? PREVIEW_RESULT_ID_PREFIX : "") + newId(10);
     const record = {
       v: 1,
@@ -389,6 +420,8 @@ export default async function handler(req, res) {
       ...computed,
       pregame: pregameSnapshot,
       story,
+      expandedAnalysis,
+      eraImpact: computed.eraId ? eraImpactLine(computed.eraId) : null,
       // Non-result-affecting setup history. Records only what was REVEALED —
       // no unchosen branch and no unrevealed future card is ever written.
       chaosDraft: req._chaosRun ? draftHistory(req._chaosRun) : null,

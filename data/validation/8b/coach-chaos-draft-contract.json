@@ -1,0 +1,35 @@
+{
+  "artifact": "coach-chaos-draft-contract",
+  "phase": "8B",
+  "version": "1.0.0",
+  "totalRolls": 3,
+  "roles": [
+    {
+      "role": "ROSTER_MAXIMIZER",
+      "label": "Roster Maximizer",
+      "blurb": "Best deploys what this roster already does well."
+    },
+    {
+      "role": "OPPONENT_COUNTER",
+      "label": "Opponent Counter",
+      "blurb": "Built to attack the other side's biggest problem."
+    },
+    {
+      "role": "ERA_ADAPTER",
+      "label": "Era Adapter",
+      "blurb": "Best translates this roster into tonight's rules."
+    }
+  ],
+  "shape": "Three offer slots, three rolls, hold or release any offer between rolls, one coach hired after the final roll.",
+  "burnRule": "A released coach is burned for the run and cannot return.",
+  "sampling": "Weighted by category fit rather than argmax, so better fit raises probability without guaranteeing selection. Measured over 600 offer sets: zero repeated offensive identities, zero duplicate coaches, all 30 coaches reachable.",
+  "cpu": {
+    "policy": "LEGEND",
+    "sameRules": true,
+    "holdsCommittedFirst": true,
+    "coachCommittedBeforeUserChoiceRevealed": true,
+    "mayNotSimulate": "the policy has no access to a simulation function"
+  },
+  "determinism": "Same seed and same decisions reproduce the same offers; different decisions branch deterministically and each branch is reproducible.",
+  "fairness": "No account tier, payment, prior result or identity reaches the offer function."
+}

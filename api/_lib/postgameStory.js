@@ -275,43 +275,170 @@ export const deriveSalientMoments = (ledger, cards, regulation = 4, opts = {}) =
 };
 
 // ── QUARTER-BY-QUARTER FLOW ──────────────────────────────────────────────────
+// Each period carries two or three MEANINGFUL events when the ledger supports
+// them. A single "X led the quarter with N" line is not a story, and padding
+// with ordinary shots would be worse than saying less.
+const phaseLabel = (e, bounds) => phaseOf(e, bounds);
+
 export const deriveQuarterFlow = (ledger, cards, regulation = 4) => {
   if (!Array.isArray(ledger) || !ledger.length) return [];
   const bounds = periodBoundsOf(ledger);
   const track = runningScore(ledger);
   const periods = [...new Set(ledger.map((e) => e.period))].sort((a, b) => a - b);
   const out = [];
+
   for (const p of periods) {
     const rows = track.filter((r) => r.e.period === p);
     if (!rows.length) continue;
     const first = rows[0], last = rows[rows.length - 1];
-    const gold = last.gold - (first.gold - (scored(first.e) && first.e.offense === "gold" ? first.e.points : 0));
-    const blue = last.blue - (first.blue - (scored(first.e) && first.e.offense === "blue" ? first.e.points : 0));
-    // Leading scorer of the period.
-    const per = new Map();
-    for (const r of rows) {
-      if (!scored(r.e) || !r.e.primary) continue;
-      per.set(r.e.primary, (per.get(r.e.primary) || 0) + r.e.points);
+    const gold = rows.reduce((a, r) => a + (scored(r.e) && r.e.offense === "gold" ? r.e.points : 0), 0);
+    const blue = rows.reduce((a, r) => a + (scored(r.e) && r.e.offense === "blue" ? r.e.points : 0), 0);
+    const leaderOf = (row) => (row.gold === row.blue ? "Tied" : `${SIDE(row.gold > row.blue ? "gold" : "blue")} leading`);
+    const stateAt = (row) => `${leaderOf(row)} ${Math.max(row.gold, row.blue)}-${Math.min(row.gold, row.blue)}`;
+
+    const events = [];
+
+    // 1. The period's biggest unanswered run, with who scored in it.
+    {
+      let cur = null, best = null;
+      for (const r of rows) {
+        if (!scored(r.e)) continue;
+        if (cur && cur.side === r.e.offense) { cur.points += r.e.points; cur.rows.push(r); }
+        else cur = { side: r.e.offense, points: r.e.points, rows: [r] };
+        if (!best || cur.points > best.points) best = { ...cur, rows: [...cur.rows] };
+      }
+      if (best && best.points >= 5) {
+        const byName = new Map();
+        for (const r of best.rows) if (r.e.primary) byName.set(r.e.primary, (byName.get(r.e.primary) || 0) + r.e.points);
+        const top = [...byName.entries()].sort((a, b) => b[1] - a[1])[0];
+        const at = best.rows[best.rows.length - 1];
+        // Name the player only when they actually carried the run; otherwise the
+        // run is the story and a 4-of-12 contributor is a distraction.
+        const carried = top && top[1] / best.points >= 0.4;
+        events.push({
+          kind: "RUN", at: at.e.i,
+          when: `${phaseLabel(at.e, bounds)} ${PERIOD(p, regulation)}`,
+          state: stateAt(at),
+          text: carried
+            ? `${NAME(top[0], cards)} scored ${top[1]} of a ${best.points}-point ${SIDE(best.side)} run.`
+            : `${SIDE(best.side)} put together a ${best.points}-point run.`,
+        });
+      }
     }
-    const top = [...per.entries()].sort((a, b) => b[1] - a[1])[0];
-    // Biggest unanswered run inside the period.
-    let bestRun = null, cur = null;
-    for (const r of rows) {
-      if (!scored(r.e)) continue;
-      if (cur && cur.side === r.e.offense) cur.points += r.e.points;
-      else cur = { side: r.e.offense, points: r.e.points };
-      if (!bestRun || cur.points > bestRun.points) bestRun = { ...cur };
+
+    // 2. The period's leading scorer, when the total is worth naming.
+    {
+      const per = new Map();
+      for (const r of rows) if (scored(r.e) && r.e.primary) per.set(r.e.primary, (per.get(r.e.primary) || 0) + r.e.points);
+      const top = [...per.entries()].sort((a, b) => b[1] - a[1])[0];
+      if (top && top[1] >= 6 && !events.some((ev) => ev.text.startsWith(NAME(top[0], cards)))) {
+        const side = rows.find((r) => r.e.primary === top[0])?.e.offense;
+        events.push({
+          kind: "SCORER", at: last.e.i + 1,
+          when: PERIOD(p, regulation),
+          state: stateAt(last),
+          text: `${NAME(top[0], cards)} led ${SIDE(side)} with ${top[1]} in the period.`,
+        });
+      }
     }
-    const oreb = { gold: 0, blue: 0 };
-    for (const r of rows) if (r.e.outcome === "MISS_OREB") oreb[r.e.offense] += 1;
+
+    // 3. A defensive stretch: consecutive empty possessions forced.
+    {
+      let cur = null, best = null;
+      for (const r of rows) {
+        if (scored(r.e)) { cur = null; continue; }
+        if (cur && cur.side === r.e.offense) cur.n += 1;
+        else cur = { side: r.e.offense, n: 1, at: r };
+        cur.at = r;
+        if (!best || cur.n > best.n) best = { ...cur };
+      }
+      if (best && best.n >= 3) {
+        const stopper = best.side === "gold" ? "blue" : "gold";
+        events.push({
+          kind: "STOP", at: best.at.e.i,
+          when: `${phaseLabel(best.at.e, bounds)} ${PERIOD(p, regulation)}`,
+          state: stateAt(best.at),
+          text: `${SIDE(stopper)} forced ${best.n} straight empty possessions.`,
+        });
+      }
+    }
+
+    // 4. Second chances, when one side genuinely owned the glass.
+    {
+      const oreb = { gold: 0, blue: 0 };
+      for (const r of rows) if (r.e.outcome === "MISS_OREB") oreb[r.e.offense] += 1;
+      const diff = Math.abs(oreb.gold - oreb.blue);
+      if (diff >= 4) {
+        const side = oreb.gold > oreb.blue ? "gold" : "blue";
+        events.push({
+          kind: "GLASS", at: last.e.i + 1, when: PERIOD(p, regulation), state: stateAt(last),
+          text: `${SIDE(side)} kept ${oreb[side]} possessions alive on the offensive glass.`,
+        });
+      }
+    }
+
+    // 4b. A mismatch the period was built on.
+    {
+      const tally = new Map();
+      for (const r of rows) {
+        const e = r.e;
+        if (!scored(e) || e.mismatchSeverity !== "SEVERE" || !e.primary) continue;
+        const t = tally.get(e.primary) || { n: 0, pts: 0, side: e.offense };
+        t.n += 1; t.pts += e.points; tally.set(e.primary, t);
+      }
+      const top = [...tally.entries()].sort((a, b) => b[1].pts - a[1].pts)[0];
+      if (top && top[1].n >= 3) {
+        events.push({
+          kind: "MISMATCH", at: last.e.i + 1, when: PERIOD(p, regulation), state: stateAt(last),
+          text: `${SIDE(top[1].side)} went at a mismatch with ${NAME(top[0], cards)} ${top[1].n} times for ${top[1].pts} in the period.`,
+        });
+      }
+    }
+
+    // 4c. Ball movement that actually produced points.
+    {
+      const MOVEMENT = new Set(["OFF_BALL_SCREEN", "CUT", "HANDOFF"]);
+      for (const side of ["gold", "blue"]) {
+        const hits = rows.filter((r) => r.e.offense === side && MOVEMENT.has(r.e.action) && scored(r.e) && r.e.assist);
+        if (hits.length >= 4) {
+          const pts = hits.reduce((a, r) => a + r.e.points, 0);
+          events.push({
+            kind: "MOVEMENT", at: last.e.i + 1, when: PERIOD(p, regulation), state: stateAt(last),
+            text: `${SIDE(side)} scored ${pts} off ${hits.length} assisted cuts and screens.`,
+          });
+        }
+      }
+    }
+
+    // 5. A lead that changed hands repeatedly.
+    {
+      let lead = Math.sign(first.gold - first.blue), changes = 0;
+      for (const r of rows) {
+        const now = Math.sign(r.gold - r.blue);
+        if (now !== 0 && now !== lead) { if (lead !== 0) changes++; lead = now; }
+      }
+      if (changes >= 4) {
+        events.push({
+          kind: "SWING", at: last.e.i + 1, when: PERIOD(p, regulation), state: stateAt(last),
+          text: `The lead changed hands ${changes} times inside the period.`,
+        });
+      }
+    }
+
     out.push({
       period: PERIOD(p, regulation),
       gold, blue,
       scoreAfter: `${last.gold}-${last.blue}`,
       state: last.gold === last.blue ? "Tied" : `${SIDE(last.gold > last.blue ? "gold" : "blue")} leading ${Math.max(last.gold, last.blue)}-${Math.min(last.gold, last.blue)}`,
-      leadingScorer: top ? { name: NAME(top[0], cards), pts: top[1] } : null,
-      run: bestRun && bestRun.points >= 6 ? { side: bestRun.side, points: bestRun.points } : null,
-      reboundEdge: Math.abs(oreb.gold - oreb.blue) >= 4 ? (oreb.gold > oreb.blue ? "gold" : "blue") : null,
+      // Two or three events, read in the order they happened and never padded
+      // with ordinary shots.
+      events: [...events].sort((a, b) => (a.at ?? 0) - (b.at ?? 0)).slice(0, 3),
+      leadingScorer: (() => {
+        const per = new Map();
+        for (const r of rows) if (scored(r.e) && r.e.primary) per.set(r.e.primary, (per.get(r.e.primary) || 0) + r.e.points);
+        const top = [...per.entries()].sort((a, b) => b[1] - a[1])[0];
+        return top ? { name: NAME(top[0], cards), pts: top[1] } : null;
+      })(),
     });
   }
   return out;
@@ -428,4 +555,113 @@ export const deriveDraftConsequences = ({ chaosDraft, record, cards }) => {
   if (cpu) out.push({ card: "CPU DECISION", text: `Legend took ${cpu.name} from its own three offers.` });
 
   return out.length ? out : null;
+};
+
+
+// ── DETERMINISTIC EXPANDED ANALYSIS ──────────────────────────────────────────
+// The long-form read, built entirely from the record. When an external
+// narrative provider is unavailable this IS the enhanced analysis, so the
+// feature is never an empty panel — and it is labelled honestly as
+// DETERMINISTIC_EXPANDED rather than pretending to be AI-assisted.
+export const buildExpandedAnalysis = ({ record, quarterFlow, moments, patterns, coaching, eraId }) => {
+  const core = record?.core;
+  if (!core) return null;
+  const winner = core.winner === "Gold" ? "gold" : "blue";
+  const wName = SIDE(winner), lName = SIDE(winner === "gold" ? "blue" : "gold");
+  const gs = core.finalScore?.gold ?? 0, bs = core.finalScore?.blue ?? 0;
+  const win = Math.max(gs, bs), lose = Math.min(gs, bs), margin = win - lose;
+  const box = record?.v3?.fullBox;
+  const totals = record?.v3?.teamTotals;
+  const sections = [];
+
+  // 1. The result and the shape of it.
+  {
+    const shape = margin >= 20 ? "never seriously threatened"
+      : margin >= 10 ? "pulled clear late" : "had to hold on";
+    sections.push({
+      heading: "The result",
+      body: `${wName} won ${win}-${lose} and ${shape}. `
+        + (quarterFlow?.length
+          ? `The quarters went ${quarterFlow.map((q) => `${q.gold}-${q.blue}`).join(", ")}.`
+          : ""),
+    });
+  }
+
+  // 2. Who decided it.
+  {
+    const all = [...(box?.gold ?? []).map((l) => ({ ...l, side: "gold" })), ...(box?.blue ?? []).map((l) => ({ ...l, side: "blue" }))];
+    const top = [...all].sort((a, b) => b.pts - a.pts).slice(0, 3);
+    const lines = top.map((l) => {
+      const bits = [`${l.pts} points`];
+      if (l.oreb + l.dreb >= 10) bits.push(`${l.oreb + l.dreb} rebounds`);
+      if (l.ast >= 6) bits.push(`${l.ast} assists`);
+      return `${l.name} (${SIDE(l.side)}) had ${bits.join(", ")} on ${l.fgm}-${l.fga} shooting`;
+    });
+    if (lines.length) sections.push({ heading: "Who decided it", body: `${lines.join(". ")}.` });
+  }
+
+  // 3. How the winner generated offense.
+  {
+    const mine = (patterns || []).filter((p) => p.side === winner);
+    const body = mine.length
+      ? mine.map((p) => p.text).join(" ")
+      : `${wName} produced its points without one dominant repeated pattern.`;
+    sections.push({ heading: `How ${wName} scored`, body });
+  }
+
+  // 4. The turning points.
+  if (moments?.length) {
+    sections.push({
+      heading: "Where it turned",
+      body: moments.map((m) => `${m.period === "FINAL" ? "" : `${m.period}: `}${m.text}`).join(" "),
+    });
+  }
+
+  // 5. What the staffs did about it.
+  {
+    const bits = [];
+    for (const side of ["gold", "blue"]) {
+      const c = coaching?.[side];
+      if (!c) continue;
+      const applied = (c.adjustments || []).length;
+      bits.push(`${c.coach || SIDE(side)} ${applied ? `made ${applied} recorded ${applied === 1 ? "adjustment" : "adjustments"}` : "made no recorded adjustment"}`
+        + (c.defense?.shell ? `, opening in ${String(c.defense.shell).toLowerCase()}` : "") + ".");
+    }
+    if (bits.length) sections.push({ heading: "The benches", body: bits.join(" ") });
+  }
+
+  // 6. The rules environment, stated as fact.
+  if (eraId) {
+    sections.push({ heading: "The era", body: eraImpactLine(eraId) });
+  }
+
+  // 7. The numbers that carried it.
+  if (totals?.gold && totals?.blue) {
+    const t = (k) => `${totals.gold[k] ?? 0}-${totals.blue[k] ?? 0}`;
+    sections.push({
+      heading: "The margins",
+      body: `Rebounds ${t("reb")}, assists ${t("ast")}, turnovers ${t("to")} (Gold-Blue).`,
+    });
+  }
+
+  return {
+    analysisSource: "DETERMINISTIC_EXPANDED",
+    headline: `How ${wName} beat ${lName}`,
+    sections,
+  };
+};
+
+/** A factual sentence about what the era's rules meant, never a cause claim. */
+export const eraImpactLine = (eraId) => {
+  const facts = {
+    "1950s": "No three-point line and a 24-second clock: every field goal counted two, and the game lived inside the arc.",
+    "1960s": "No three-point line, zones illegal: post scoring and offensive rebounding carried more weight than perimeter volume.",
+    "1970s": "No three-point line. Every perimeter make counted for two, while post scoring and offensive rebounding carried greater strategic value.",
+    "1980s": "The three-point line existed but was lightly used, and hand-checking was legal on the perimeter.",
+    "1990s": "Hand-checking was legal and zones were illegal, which rewarded physical man defense and one-on-one scoring.",
+    "2000s": "Zone defense was legal and hand-checking was restricted, favouring half-court creation over pace-and-space.",
+    "2010s": "A high-volume three-point environment with legal zones and no hand-checking.",
+    "2020s": "The most perimeter-heavy environment in the game's history, with spacing at a premium.",
+  };
+  return `${eraId} impact: ${facts[eraId] || "The era's rules shaped what each offense could attempt."}`;
 };

@@ -57,12 +57,41 @@ export const buildEvidencePacket = (result) => {
       blue: { pts: total(blue, "pts"), reb: total(blue, "oreb") + total(blue, "dreb"), ast: total(blue, "ast"), to: total(blue, "to") },
     } : null,
   };
+  // Every N-N pair the record actually contains. The validator previously
+  // allowed ONLY the final score, so a recap that cited a real quarter score
+  // ("a 34-20 second quarter") or a real shooting line ("13-23") was rejected
+  // as a fabrication — which is why every generated narrative failed.
+  const scorePairs = new Set();
+  const addPair = (a, b) => {
+    if (a == null || b == null) return;
+    scorePairs.add(`${a}-${b}`); scorePairs.add(`${b}-${a}`);
+  };
+  if (core.finalScore) addPair(core.finalScore.gold, core.finalScore.blue);
+  let cg = 0, cb = 0;
+  for (const p of v3?.periodScores ?? []) {
+    addPair(p.gold, p.blue);              // the period itself
+    cg += p.gold; cb += p.blue;
+    addPair(cg, cb);                      // the score after that period
+  }
+  for (const l of [...gold, ...blue]) {
+    addPair(l.fgm, l.fga); addPair(l.tpm, l.tpa); addPair(l.ftm, l.fta);
+    addPair(l.oreb, l.dreb);
+  }
+  // Team shooting totals appear in recaps just as often as individual ones.
+  for (const side of [gold, blue]) {
+    if (!side.length) continue;
+    addPair(total(side, "fgm"), total(side, "fga"));
+    addPair(total(side, "tpm"), total(side, "tpa"));
+    addPair(total(side, "ftm"), total(side, "fta"));
+  }
+
   // People appearing on BOTH sides — every mention must name the side.
   const names = (l) => new Set(l.map((x) => x.name));
   const duplicates = [...names(gold)].filter((n) => names(blue).has(n));
   return {
-    narrativeEvidenceVersion: 1,
+    narrativeEvidenceVersion: 2,
     observed, derived,
+    scorePairs: [...scorePairs],
     inferredForbidden: ["fatigue", "confidence", "intimidation", "momentum as a cause", "unobserved counterfactuals"],
     duplicatePeople: duplicates,
   };
@@ -89,15 +118,24 @@ export const validateNarrativeClaims = (narrative, packet) => {
     v.push(`names Team ${loser} as the winner`);
   }
 
-  // 2. Any score written as N-N must be a score the game actually produced.
-  const real = new Set();
+  // 2. Any score written as N-N must be one the game actually produced —
+  //    including period scores, running scores and made-attempted lines, all of
+  //    which are real facts a good recap naturally cites.
+  const real = new Set(packet.scorePairs ?? []);
   if (observed.finalScore) {
     real.add(`${observed.finalScore.gold}-${observed.finalScore.blue}`);
     real.add(`${observed.finalScore.blue}-${observed.finalScore.gold}`);
   }
   if (observed.seriesResult) real.add(norm(observed.seriesResult).replace(/\s/g, ""));
-  for (const m of text.match(/\b\d{2,3}\s?-\s?\d{2,3}\b/g) ?? []) {
-    if (!real.has(m.replace(/\s/g, ""))) v.push(`states a score (${m}) the game did not produce`);
+  // Single-digit sides are matched too: an invented "12-4 run" was previously
+  // invisible to this rule because it required two digits on both sides.
+  for (const m of text.match(/\b\d{1,3}\s?-\s?\d{1,3}\b/g) ?? []) {
+    const pair = m.replace(/\s/g, "");
+    // A run (one side unanswered) is derived, not stated by the record, so it is
+    // only rejected when it claims to be a SCORE the record contradicts.
+    if (real.has(pair)) continue;
+    if (/\brun\b/i.test(text.slice(Math.max(0, text.indexOf(m) - 40), text.indexOf(m) + m.length + 40))) continue;
+    v.push(`states a score (${m}) the game did not produce`);
   }
 
   // 3. Margin language must match the real margin.

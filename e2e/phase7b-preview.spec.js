@@ -65,12 +65,12 @@ test("P3: Coaching & Strategy shows real recorded coaching", async ({ page }) =>
   await buildMatchup(page);
   await runSim(page);
   await page.getByRole("tab", { name: "Coaching & Strategy" }).click();
-  // Phase 8A / Workstream 21 renamed OPENING PLAN to OFFENSIVE PLAN and
-  // replaced the anonymous "the staff" with the coach's own name, so this
-  // asserts the stronger contract rather than the superseded wording.
-  await expect(page.getByText("OFFENSIVE PLAN").first()).toBeVisible();
-  await expect(page.getByText("DEFENSIVE SCHEME").first()).toBeVisible();
-  await expect(page.getByText("IN-GAME ADJUSTMENTS").first()).toBeVisible();
+  // Phase 8B reorganised this tab into three sub-sections, so the three
+  // headings are reachable one at a time rather than all at once.
+  for (const sec of ["Offensive Scheme", "Defensive Scheme", "In-Game Adjustments"]) {
+    await expect(page.getByRole("tab", { name: sec })).toBeVisible();
+  }
+  await page.getByRole("tab", { name: "In-Game Adjustments" }).click();
   const body = await page.locator("body").innerText();
   // Adjustments are attributed to a NAMED coach, or explicitly absent.
   expect(body).toMatch(/so Coach [A-Z][A-Za-z'\- ]+ |No in-game adjustment was recorded/);

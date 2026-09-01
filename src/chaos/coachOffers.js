@@ -174,34 +174,70 @@ const SCORERS = {
  * Generate exactly three unique, strategically distinct offers.
  * Selection is deterministic from the run seed and the locked rosters.
  */
-export const generateOffers = ({ roster, opponentRoster, eraId, seedId, side }) => {
-  const rng = mulberry32(deriveSeed(hashString(`offers|${seedId}|${side}|${eraId}|${COACH_OFFER_VERSION}`), 0));
-  const taken = new Set(), families = new Set(), shells = new Set();
+/**
+ * Weighted coach sampling for one offer slot.
+ *
+ * Phase 8B: the previous version took the ARGMAX for each role, so the same
+ * roster always drew the same three coaches and the "draft" had no draft in it.
+ * Fit now raises probability without guaranteeing selection, which is what
+ * makes holding and rerolling a real decision.
+ */
+const COACH_TEMPERATURE = 0.16;
+
+const sampleCoach = (rng, role, { roster, opponentRoster, eraId, exclude, familiesTaken, shellsTaken }) => {
+  const pool = COACHES.filter((c) => !exclude.has(c.id));
+  if (!pool.length) return null;
+  // Distinctness is enforced on the OFFENSIVE IDENTITY first: two offers that
+  // both read "Runs a transition offense" are not two choices. Only if no
+  // eligible coach brings a fresh identity does the filter relax, so a run that
+  // has burned most families can still fill the slot.
+  const fresh = pool.filter((c) => !familiesTaken.has(systemFamily(c)));
+  const candidates = fresh.length ? fresh : pool;
+  const rows = candidates.map((c) => {
+    const fit = SCORERS[role](c, roster, opponentRoster, eraId);
+    const novelty = shellsTaken.has(defenseIdentity(c).key) ? 0.6 : 1;
+    return { c, w: Math.exp(fit / COACH_TEMPERATURE) * novelty };
+  });
+  const total = rows.reduce((a, r) => a + r.w, 0);
+  if (!(total > 0)) return rows[0].c;
+  let t = rng() * total;
+  for (const r of rows) { t -= r.w; if (t <= 0) return r.c; }
+  return rows[rows.length - 1].c;
+};
+
+/**
+ * Generate the three offers for one coach roll.
+ *
+ * `held` names the roles whose current offer the side is keeping; `burned`
+ * holds every coach already discarded this run, who may not return.
+ */
+export const generateOffers = ({
+  roster, opponentRoster, eraId, seedId, side,
+  roll = 1, held = [], current = [], burnedCoachIds = [],
+}) => {
+  const rng = mulberry32(deriveSeed(hashString(
+    `offers|${seedId}|${side}|${eraId}|${roll}|${[...held].sort().join(",")}|${[...burnedCoachIds].sort().join(",")}|${COACH_OFFER_VERSION}`
+  ), 0));
+  const byRole = new Map((current || []).map((o) => [o.role, o]));
+  const exclude = new Set(burnedCoachIds || []);
+  const familiesTaken = new Set(), shellsTaken = new Set();
+  // Held offers keep their coach and reserve their family/shell first.
+  for (const role of OFFER_ROLES) {
+    if (held.includes(role) && byRole.has(role)) {
+      const kept = byRole.get(role);
+      exclude.add(kept.coachId);
+      const c = COACHES.find((x) => x.id === kept.coachId);
+      if (c) { familiesTaken.add(systemFamily(c)); shellsTaken.add(defenseIdentity(c).key); }
+    }
+  }
   const offers = [];
   for (const role of OFFER_ROLES) {
-    const ranked = COACHES
-      .filter((c) => !taken.has(c.id))
-      .map((c) => ({
-        c,
-        // A hair of seeded jitter breaks ties without changing the ordering of
-        // meaningfully different candidates, so two runs with the same rosters
-        // but different seeds do not always offer an identical trio.
-        s: SCORERS[role](c, roster, opponentRoster, eraId) + rng() * 0.012,
-        fam: systemFamily(c),
-        shell: defenseIdentity(c).key,
-      }))
-      .sort((a, b) => b.s - a.s);
-    // Distinctness is enforced on what the user actually READS: a different
-    // offensive identity first, and failing that a different defensive shell.
-    // Without this, one coach who scores well in several categories yields
-    // three offers that describe the same game in the same words.
-    const chosen = ranked.find((r) => !families.has(r.fam) && !shells.has(r.shell))
-      || ranked.find((r) => !families.has(r.fam))
-      || ranked.find((r) => !shells.has(r.shell))
-      || ranked[0];
-    if (!chosen) continue;
-    taken.add(chosen.c.id); families.add(chosen.fam); shells.add(chosen.shell);
-    offers.push({ role, coachId: chosen.c.id, name: chosen.c.name, family: chosen.fam });
+    if (held.includes(role) && byRole.has(role)) { offers.push({ ...byRole.get(role), held: true }); continue; }
+    const c = sampleCoach(rng, role, { roster, opponentRoster, eraId, exclude, familiesTaken, shellsTaken });
+    if (!c) continue;
+    exclude.add(c.id);
+    familiesTaken.add(systemFamily(c)); shellsTaken.add(defenseIdentity(c).key);
+    offers.push({ role, coachId: c.id, name: c.name, family: systemFamily(c), held: false });
   }
   return offers;
 };

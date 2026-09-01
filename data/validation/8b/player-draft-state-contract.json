@@ -1,0 +1,52 @@
+{
+  "artifact": "player-draft-state-contract",
+  "phase": "8B",
+  "chaosRunVersion": "2.0.0",
+  "phases": [
+    "ROLL_1_REVEALED",
+    "ROLL_2_REVEALED",
+    "ROLL_3_REVEALED",
+    "ROSTERS_LOCKED",
+    "COACH_ROLL_1",
+    "COACH_ROLL_2",
+    "COACH_ROLL_3",
+    "COACH_SELECTION",
+    "READY",
+    "SIMULATED",
+    "ABANDONED"
+  ],
+  "initialState": {
+    "rosters": "EMPTY — five empty Gold slots and five empty Blue slots",
+    "rollCounter": "THREE ROLLS AVAILABLE",
+    "era": "HIDDEN",
+    "draftPressure": "not active",
+    "action": "ROLL 1"
+  },
+  "rollSemantics": {
+    "roll1": "the first visible roster",
+    "roll2": "the second, revealed with the era",
+    "roll3": "the third, which locks the roster",
+    "fourthRoll": "does not exist and is refused"
+  },
+  "holdSemantics": {
+    "independence": "every card has its own toggle; holding one never disables another",
+    "cardinality": "zero through five",
+    "persistence": "a card kept through a roll starts the next round already selected",
+    "release": "a previously held card can be released, which burns it on the next roll",
+    "afterFinalRoll": "no hold control is rendered; cards read FINAL ROSTER"
+  },
+  "serverValidation": [
+    "slots must exist",
+    "no duplicate slots",
+    "the list must be an array",
+    "a malformed list is refused without mutating the run",
+    "the client may never submit player ids",
+    "a roll cannot be skipped or repeated"
+  ],
+  "defectsCorrected": [
+    "the board auto-generated a roster before the user rolled, making the counter read one high",
+    "after submitting Roll 1 holds the whole board was disabled by an era-acknowledgement gate whose button sat below the fold, so hold clicks did nothing",
+    "cards kept through a roll came back unselected and were silently burned if not re-held",
+    "the final roster still showed HELD and kept its hold controls"
+  ]
+}

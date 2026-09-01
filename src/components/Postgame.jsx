@@ -391,7 +391,9 @@ function AuthoritativeBox({ sim }) {
         <table className="box-table">
           <colgroup>
             <col className="box-col-player" />
-            {BOX_COLUMNS.map(([h]) => <col key={h} className="box-col-stat" />)}
+            {BOX_COLUMNS.map(([h]) => (
+              <col key={h} className={PAIR_COLS.has(h) ? "box-col-pair" : "box-col-stat"} />
+            ))}
           </colgroup>
           <thead>
             <tr style={{ color: T.textDim, textAlign: "right" }}>
@@ -475,6 +477,12 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
         )}
 
         {/* V3 context chips stay on Final */}
+            {sim.eraImpact && (
+              <div style={{ ...card, padding: 14, marginTop: 12 }}>
+                <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 2, color: T.textDim }}>ERA IMPACT</div>
+                <div style={{ fontSize: 13, color: T.text, lineHeight: 1.6, marginTop: 5 }}>{sim.eraImpact}</div>
+              </div>
+            )}
             <KeyMoments moments={sim.v3?.keyMoments} />
             <MatchupPatterns patterns={sim.v3?.matchupPatterns} />
           </div>
@@ -527,30 +535,69 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
           </div>
         )}
 
-        {/* WS18 — quarter by quarter, from real period scores and possession
-            position. No fabricated clock appears anywhere. */}
+        {/* Quarter by quarter, from real period scores and possession position.
+            Each period carries the meaningful events the ledger supports; no
+            game clock is fabricated because the engine records none. */}
         {sim.v3?.quarterFlow?.length > 0 && (
           <div style={{ marginTop: 16 }}>
             <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 2, color: T.textDim }}>QUARTER BY QUARTER</div>
             <div style={{ display: "grid", gap: 8, marginTop: 7 }}>
               {sim.v3.quarterFlow.map((q) => (
-                <div key={q.period} style={{ padding: "9px 11px", borderRadius: 9, background: T.bgCardHover, border: `1px solid ${T.border}` }}>
+                <div key={q.period} style={{ padding: "10px 12px", borderRadius: 9, background: T.bgCardHover, border: `1px solid ${T.border}` }}>
                   <div style={{ display: "flex", justifyContent: "space-between", gap: 10, flexWrap: "wrap" }}>
                     <span style={{ fontWeight: 900, fontSize: 12.5 }}>{q.period}</span>
                     <span style={{ fontSize: 12.5, color: T.textDim, fontVariantNumeric: "tabular-nums" }}>
                       {q.gold}-{q.blue} · {q.state}
                     </span>
                   </div>
-                  <div style={{ fontSize: 12.5, color: T.text, lineHeight: 1.55, marginTop: 3 }}>
-                    {q.leadingScorer ? `${q.leadingScorer.name} led the period with ${q.leadingScorer.pts}.` : ""}
-                    {q.run ? ` ${q.run.side === "gold" ? "Gold" : "Blue"} put together a ${q.run.points}-point run.` : ""}
-                    {q.reboundEdge ? ` ${q.reboundEdge === "gold" ? "Gold" : "Blue"} controlled the offensive glass.` : ""}
-                  </div>
+                  {q.events?.length ? (
+                    <ul style={{ margin: "6px 0 0", padding: 0, listStyle: "none", display: "grid", gap: 6 }}>
+                      {q.events.map((e, i) => {
+                        const head = [e.when, e.state].filter(Boolean).join(" — ").toUpperCase();
+                        // Only label the moment when it differs from the line
+                        // above; repeating one header verbatim reads as noise.
+                        const prev = i > 0 ? [q.events[i - 1].when, q.events[i - 1].state].filter(Boolean).join(" — ").toUpperCase() : null;
+                        return (
+                          <li key={i} style={{ fontSize: 12.5, color: T.text, lineHeight: 1.55 }}>
+                            {head !== prev && (
+                              <span style={{ fontSize: 10, fontWeight: 900, letterSpacing: 0.8, color: T.textDim, display: "block" }}>{head}</span>
+                            )}
+                            {e.text}
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  ) : (
+                    <div style={{ fontSize: 12.5, color: T.textDim, marginTop: 4 }}>
+                      {q.leadingScorer ? `${q.leadingScorer.name} led the period with ${q.leadingScorer.pts}.` : "An even period with no decisive stretch."}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
           </div>
         )}
+
+        {/* Enhanced analysis. When the external provider cannot deliver a
+            validated recap this shows the deterministic expanded analysis
+            instead of an empty panel, and says which one it is. */}
+        {sim.expandedAnalysis && narrativeStatus !== "complete" && (
+          <div style={{ marginTop: 16 }}>
+            <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 2, color: T.textDim }}>EXPANDED GAME ANALYSIS</div>
+            <div style={{ display: "grid", gap: 10, marginTop: 7 }}>
+              {sim.expandedAnalysis.sections.map((sec) => (
+                <div key={sec.heading}>
+                  <div style={{ fontSize: 12, fontWeight: 800, color: T.text }}>{sec.heading}</div>
+                  <div style={{ fontSize: 13, color: T.textDim, lineHeight: 1.6, marginTop: 2 }}>{sec.body}</div>
+                </div>
+              ))}
+            </div>
+            <div style={{ fontSize: 11, color: T.textMuted, marginTop: 8 }}>
+              Built from this game's own record — not AI-assisted.
+            </div>
+          </div>
+        )}
+
         {narrativeStatus === "pending" && (
           <div aria-live="polite" style={{ marginTop: 10, fontSize: 12, color: T.textDim, display: "flex", alignItems: "center", gap: 8 }}>
             <span className="sim-spinner" style={{ width: 14, height: 14, borderWidth: 2 }} aria-hidden="true" />
@@ -587,25 +634,12 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
         </>}
 
         {section === "coaching" && <>
-        <CoachingStrategy coaching={sim.v3?.coaching} eraLabel={sim.eraLabel || sim.eraId} />
-        {/* WS23 — what the draft decisions actually did. Every line is backed by
-            a real before/after roster evaluation; the unchosen branch was never
-            simulated, so no counterfactual outcome is ever claimed. */}
-        {sim.draftConsequences?.length > 0 && (
-          <div style={{ marginTop: 14 }}>
-            <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 2, color: T.textDim }}>HOW YOUR DRAFT SHAPED THE GAME</div>
-            <div className="draft-consequences">
-              {sim.draftConsequences.map((c) => (
-                <div key={c.card} style={{ padding: "10px 12px", borderRadius: 9, background: T.bgCard, border: `1px solid ${T.border}` }}>
-                  <div style={{ fontSize: 10, fontWeight: 900, letterSpacing: 1.2, color: T.gold }}>{c.card}</div>
-                  <div style={{ fontSize: 12.5, color: T.text, lineHeight: 1.55, marginTop: 4 }}>{c.text}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-        {/* The stored pregame read as a compact supporting panel, never the centre */}
+        <CoachingStrategy coaching={sim.v3?.coaching} eraLabel={sim.eraLabel || sim.eraId} eraImpact={sim.eraImpact} />
+        {/* The stored pregame read, near the bottom and never leading. */}
         <StoredPregameRead pregame={sim.pregame} />
+        {/* The draft-shaped postgame section was removed in Phase 8B at the
+            owner's direction. The underlying draft history is still stored on
+            the result for replay, same-seed challenges and analytics. */}
         </>}
 
         {/* L. Actions — never a dead end, visible from every section */}

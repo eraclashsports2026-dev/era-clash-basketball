@@ -177,6 +177,35 @@ const surname = (full) => {
 
 const paceWord = (p) => (p >= 7.5 ? "fast" : p >= 6 ? "up-tempo" : p >= 4.5 ? "measured" : "deliberate");
 
+/**
+ * Collapse recurring adjustments. A coach who re-hid the same defender three
+ * times made ONE decision that he kept applying, and that is how it should read.
+ */
+const groupAdjustments = (list, coachRef) => {
+  const groups = new Map();
+  for (const a of list) {
+    const key = `${a.trigger}|${a.response}`;
+    const g = groups.get(key);
+    if (g) { g.count += 1; g.last = a; g.periods.push(a.period); }
+    else groups.set(key, { first: a, last: a, count: 1, periods: [a.period] });
+  }
+  const out = [];
+  for (const g of groups.values()) {
+    if (g.count === 1) { out.push({ ...g.first, count: 1 }); continue; }
+    const uniq = [...new Set(g.periods.filter(Boolean))];
+    const span = uniq.length > 1 ? ` between ${uniq[0]} and ${uniq[uniq.length - 1]}` : ` in ${uniq[0] || "the game"}`;
+    const times = g.count === 2 ? "twice" : `${g.count} times`;
+    out.push({
+      ...g.first,
+      count: g.count,
+      when: g.first.when, scoreState: g.first.scoreState,
+      text: `${coachRef} ${g.first.response} ${times}${span} as ${g.first.trigger}.`,
+    });
+  }
+  // Most consequential first: repeated decisions, then the earliest.
+  return out.sort((a, b) => (b.count - a.count) || (a.possession ?? 0) - (b.possession ?? 0));
+};
+
 const matchupPoints = (ledger, offId, defId) => {
   if (!Array.isArray(ledger)) return null;
   let pts = 0, seen = false;
@@ -210,7 +239,11 @@ const sideCoaching = (off, def, coachName, cards, qualify, possIndex, side, ledg
   };
   // An adjustment the staff CONSIDERED and rejected is not something that
   // happened. Presenting it as one produced lines like "so the staff rejected."
-  const applied = raw.filter((a) => a.response && a.response !== "REJECTED" && !a.rejected).map(shape);
+  const appliedRaw = raw.filter((a) => a.response && a.response !== "REJECTED" && !a.rejected).map(shape);
+  // Group a repeated trigger+response into ONE line. The owner test showed the
+  // same sentence four times in a row for one coach, which reads as a debug
+  // transcript rather than a scouting report.
+  const applied = groupAdjustments(appliedRaw, coachRef);
   const declined = raw.filter((a) => a.response === "REJECTED" || a.rejected).map((a) => {
     const at = possIndex.get(a.at);
     return {
