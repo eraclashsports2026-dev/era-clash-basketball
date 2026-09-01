@@ -7,7 +7,7 @@ import { flags } from "./_lib/flags.js";
 import { VERSIONS } from "../src/versions.js";
 import { computeResult, newSeed } from "./_lib/game-core.js";
 import { PLAYERS } from "../src/players.js";
-import { PREVIEW_CANDIDATE_CORE_HASH } from "./_lib/previewEngine.js";
+import { previewCandidateIdentity } from "./_lib/previewEngine.js";
 
 export default async function handler(req, res) {
   let coreEngine = "ok";
@@ -27,6 +27,7 @@ export default async function handler(req, res) {
   const f = flags();
   const circuit = await circuitState();
   res.setHeader("Cache-Control", "no-store");
+  const identity = previewCandidateIdentity();
   return res.status(200).json({
     status: f.maintenance ? "maintenance" : coreEngine === "ok" ? "ok" : "degraded",
     build: VERSIONS.app,
@@ -39,9 +40,16 @@ export default async function handler(req, res) {
     // hashes, secrets or internal diagnostics.
     preview: {
       enabled: f.previewSimEngine,
-      candidateId: "Candidate 3",
-      candidateCoreHash: PREVIEW_CANDIDATE_CORE_HASH,
-      calibrationVersion: VERSIONS.registry?.possessionCalibrationVersion?.version ?? "1.3.0",
+      // Read from previewCandidateIdentity(), the one place that resolves the
+      // active candidate. These were a literal "Candidate 3" and a lookup at
+      // VERSIONS.registry.* — a path that does not exist on that object, so the
+      // `?? "1.3.0"` fallback fired on every request and the endpoint reported a
+      // hardcoded version regardless of the registry. It sat beside a core hash
+      // that DID track the candidate, so after Candidate 4 was locked this block
+      // reported Candidate 3 / 1.3.0 next to Candidate 4's hash.
+      candidateId: identity.candidateId,
+      candidateCoreHash: identity.coreHash,
+      calibrationVersion: identity.possessionCalibrationVersion,
       featureFlag: "PREVIEW_SIM_ENGINE_ENABLED",
       fallbackEngine: "production engine 3.2.0 (per-request fallback; emergency-off returns every new request to production while stored preview results stay readable by version)",
       cacheNamespace: "preview-*",

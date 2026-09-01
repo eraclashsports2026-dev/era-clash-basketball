@@ -8,7 +8,7 @@
 // builder, /api/game stores the exact object on the result, and the Postgame
 // reads the stored snapshot instead of recomputing anything.
 import { matchupPreviewV3 } from "../../src/v3/analysis.js";
-import { VERSIONS } from "../../src/versions.js";
+import { versionOf } from "../../src/versions.js";
 
 export const PREGAME_SNAPSHOT_VERSION = 1;
 
@@ -48,8 +48,11 @@ export const buildPregameRead = (gold, blue, coachG, coachB, era) => {
     // "confidence" is about how separated the read is, never a win probability.
     confidence: decided.length >= 4 ? "clear" : decided.length >= 2 ? "mixed" : "close",
     sourceVersions: {
-      possessionCalibrationVersion: VERSIONS.registry?.possessionCalibrationVersion?.version ?? null,
-      teamIntelligenceVersion: VERSIONS.registry?.teamIntelligenceVersion?.version ?? null,
+      // versionOf(), not VERSIONS.registry.* — that path does not exist on the
+      // VERSIONS object, so both of these resolved to the `?? null` fallback and
+      // the snapshot reported no source versions at all.
+      possessionCalibrationVersion: versionOf("possessionCalibrationVersion"),
+      teamIntelligenceVersion: versionOf("teamIntelligenceVersion"),
     },
   };
 };

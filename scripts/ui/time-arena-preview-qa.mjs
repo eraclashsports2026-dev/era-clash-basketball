@@ -12,6 +12,7 @@
 //
 //   node scripts/ui/time-arena-preview-qa.mjs https://<preview-host>
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
+import { previewCandidateIdentity } from "../../api/_lib/previewEngine.js";
 import { chromium, request as pwRequest } from "@playwright/test";
 
 const BASE = (process.argv[2] || "").replace(/\/$/, "");
@@ -547,12 +548,42 @@ const run = async () => {
   gate("the fixture route renders no fixture on a deployed build", !fixtureRendered, `HTTP ${devRoute.status()}`);
   await devPage.close();
 
+  // ── Deployed candidate identity ───────────────────────────────────────────
+  // The evidence used to say which URL was graded but not which engine that URL
+  // was running. On 2026-09-01 /api/health was found reporting "Candidate 3" and
+  // "1.3.0" beside Candidate 4's core hash — a literal id and a lookup at a
+  // VERSIONS path that does not exist, so the fallback answered every request.
+  // A 55/55 evidence file recorded none of it. These gates compare what the
+  // deployment reports against what this checkout would report, so a build that
+  // is not the candidate under test can no longer pass a QA run silently.
+  let deployedIdentity = null;
+  try {
+    const hres = await ctx.request.get(`${BASE}/api/health`);
+    const body = hres.ok() ? await hres.json() : null;
+    deployedIdentity = body?.preview ?? null;
+    const local = previewCandidateIdentity();
+    gate("the deployed build reports a candidate identity", !!deployedIdentity?.candidateId,
+      deployedIdentity?.candidateId || `HTTP ${hres.status()}`);
+    gate("the deployed core hash is this checkout's candidate",
+      deployedIdentity?.candidateCoreHash === local.coreHash,
+      `deployed ${String(deployedIdentity?.candidateCoreHash).slice(0, 12)} vs local ${local.coreHash.slice(0, 12)}`);
+    gate("the deployed candidate id and calibration version agree with this checkout",
+      deployedIdentity?.candidateId === local.candidateId
+        && deployedIdentity?.calibrationVersion === local.possessionCalibrationVersion,
+      `deployed ${deployedIdentity?.candidateId} / ${deployedIdentity?.calibrationVersion} vs local ${local.candidateId} / ${local.possessionCalibrationVersion}`);
+  } catch (err) {
+    gate("the deployed build reports a candidate identity", false, String(err.message || err));
+  }
+
   await browser.close();
 
   // ── Evidence ──────────────────────────────────────────────────────────────
   writeFileSync(`${OUT}/time-arena-preview-qa.json`, JSON.stringify({
     artifact: "time-arena-preview-qa", phase: "8C.1 — pixel-fidelity reconstruction",
     deployment: { baseUrl: BASE, commit: process.env.PHASE8C1_COMMIT || null, environment: "vercel preview, access-gated" },
+    // Which engine the graded deployment was actually running, read from
+    // /api/health rather than assumed, next to what this checkout resolves.
+    candidateUnderTest: { deployed: deployedIdentity, local: previewCandidateIdentity() },
     method: "Playwright over the network against the deployed branch preview, authenticated with a signed session obtained by POSTing an access key. The dev fixture is compiled out of a preview build, so every measurement below comes from a real draft played through the UI.",
     accessControl: {
       // Measured, not asserted. These were hard-coded `true` beside a genuinely

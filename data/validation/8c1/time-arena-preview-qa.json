@@ -2,8 +2,8 @@
   "artifact": "time-arena-preview-qa",
   "phase": "8C.1 — pixel-fidelity reconstruction",
   "deployment": {
-    "baseUrl": "https://era-clash-basketball-n7agc7l8a-era-clash.vercel.app",
-    "commit": "b84e0ee36f856430ef46ce178f667970ce9e250c",
+    "baseUrl": "https://era-clash-basketball-rjuj6tgy0-era-clash.vercel.app",
+    "commit": "aa1414b85bd80750606e4c6d910fdd0ef60c492d",
     "environment": "vercel preview, access-gated"
   },
   "method": "Playwright over the network against the deployed branch preview, authenticated with a signed session obtained by POSTing an access key. The dev fixture is compiled out of a preview build, so every measurement below comes from a real draft played through the UI.",
@@ -158,7 +158,7 @@
     {
       "slot": "SF",
       "team": "blue",
-      "kept": false,
+      "kept": true,
       "cardH": 322,
       "overflowPx": 0,
       "footInset": 1
@@ -174,7 +174,7 @@
     {
       "slot": "C",
       "team": "blue",
-      "kept": true,
+      "kept": false,
       "cardH": 322,
       "overflowPx": 0,
       "footInset": 1
@@ -182,18 +182,19 @@
   ],
   "eraDealt": {
     "observed": [
+      "2010s",
+      "1960s",
+      "1970s",
       "1980s",
-      "2000s",
-      "1980s",
-      "2000s",
-      "1990s",
-      "1970s"
+      "1970s",
+      "2000s"
     ],
     "distinct": [
+      "2010s",
+      "1960s",
+      "1970s",
       "1980s",
-      "2000s",
-      "1990s",
-      "1970s"
+      "2000s"
     ]
   },
   "report": {
@@ -203,11 +204,11 @@
       "count": 8,
       "measured": 8,
       "worst": 5.8,
-      "sample": "Bob Pettit controlled the game with 34 points, 19 rebounds, "
+      "sample": "Kawhi Leonard controlled the game with 43 points, 15 rebound"
     },
     "coaching": {
-      "blocks": 45,
-      "measured": 45,
+      "blocks": 41,
+      "measured": 41,
       "worst": 5.16,
       "failing": [],
       "failingCount": 0,
@@ -268,8 +269,8 @@
     {
       "section": "Game Story",
       "bad": [],
-      "docHeight": 1647,
-      "railBottomBeyondViewport": 551
+      "docHeight": 1672,
+      "railBottomBeyondViewport": 576
     },
     {
       "section": "Box Score",
@@ -280,14 +281,14 @@
     {
       "section": "Coaching",
       "bad": [],
-      "docHeight": 1537,
-      "railBottomBeyondViewport": 442
+      "docHeight": 1520,
+      "railBottomBeyondViewport": 424
     },
     {
       "section": "Analysis",
       "bad": [],
-      "docHeight": 1643,
-      "railBottomBeyondViewport": 548
+      "docHeight": 1661,
+      "railBottomBeyondViewport": 565
     }
   ],
   "isolation": {
@@ -411,7 +412,7 @@
     {
       "name": "the era is revealed with Roll 2, in the rail",
       "ok": true,
-      "detail": "1980s"
+      "detail": "2010s"
     },
     {
       "name": "the era box appears once, in the rail",
@@ -476,7 +477,7 @@
     {
       "name": "an open dock section grows the page instead of hiding behind a scrollbar",
       "ok": true,
-      "detail": "Game Story 1647px · Box Score 1636px · Coaching 1537px · Analysis 1643px"
+      "detail": "Game Story 1672px · Box Score 1636px · Coaching 1520px · Analysis 1661px"
     },
     {
       "name": "a finished game offers a new Clash on the board itself",
@@ -526,7 +527,7 @@
     {
       "name": "the coaching report renders, readable, on the deployed build",
       "ok": true,
-      "detail": "45 blocks, 45 measurable, worst 5.16:1"
+      "detail": "41 blocks, 41 measurable, worst 5.16:1"
     },
     {
       "name": "preview feedback is accepted",
@@ -541,7 +542,7 @@
     {
       "name": "six fresh drafts do not all land on one era",
       "ok": true,
-      "detail": "1980s, 2000s, 1980s, 2000s, 1990s, 1970s"
+      "detail": "2010s, 1960s, 1970s, 1980s, 1970s, 2000s"
     },
     {
       "name": "no draft defaults to the 1950s",

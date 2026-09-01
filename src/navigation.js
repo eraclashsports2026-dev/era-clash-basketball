@@ -51,7 +51,7 @@ export const PLAY_MODES = Object.freeze([
     tagline: "Settle it over a series.",
     description: "The same setup as a single game, played as a seven-game series.",
     capability: C.BEST_OF_7, trialCapability: C.BEST_OF_7_TRIAL, appMode: "Best7",
-    previewNote: "Series play runs on the production engine, so it is unavailable while a Candidate 3 preview result is on screen.",
+    previewNote: "Series play runs on the production engine, so it is unavailable while a preview-engine result is on screen.",
   },
   {
     id: "win82", label: "Win 82", icon: "🗓️", implemented: true,
