@@ -68,8 +68,13 @@ if (MODE === "membership") {
     const h = membershipHref({ feature: "win82", required: "plus", from: "/play" });
     return h.startsWith("/membership?") && h.includes("feature=win82") && h.includes("required=plus") && h.includes("from=");
   })());
+  // Win 82 opens on a FREE account through its trial capability, so a guest is
+  // asked for the free account that actually opens it — never sent to a
+  // membership page that cannot sell anything. This check used to assert the
+  // opposite and had been failing against the contract the vitest suite pins.
   const guestWin82 = resolveModeAction(findMode("win82"), "GUEST", { from: "/play" });
-  ok("a guest is sent to membership for a Plus mode", guestWin82.intent === "MEMBERSHIP", guestWin82.href);
+  ok("a guest is asked for the free account that opens a trial mode, never sent to membership",
+    guestWin82.intent === "CREATE_ACCOUNT" && !(guestWin82.href || "").includes("membership"), guestWin82.status);
   const guestDream = resolveModeAction(findMode("dream"), "GUEST");
   ok("an account-gated mode asks for an account, not money", guestDream.intent === "CREATE_ACCOUNT");
   const gauntlet = resolveModeAction(findMode("gauntlet"), "PLUS");
@@ -209,8 +214,12 @@ if (MODE === "cards") {
   // the card decided its own colour from the position.
   ok("the team container owns the theme",
     /\.ec-ta-team\[data-team="blue"\] \.ec-pc,[\s\S]{0,80}--pc-accent: var\(--ec-a-blue\)/.test(css));
+  // The accent variable is consumed in CSS (.ec-pc rules) since 8C.1 moved every
+  // dimension and colour out of the component; the component's job is to set
+  // data-team and never to decide a colour from the position.
   ok("the card reads its accent from a variable, never from a position",
-    /var\(--pc-accent\)/.test(card) && !/(slot|pos)\s*===\s*"(PF|C|PG|SG|SF)"/.test(card));
+    (/var\(--pc-accent\)/.test(card) || /\.ec-pc[^{]*\{[^}]*var\(--pc-accent\)/.test(css))
+    && /data-team=\{team\}/.test(card) && !/(slot|pos)\s*===\s*"(PF|C|PG|SG|SF)"/.test(card));
   ok("no position appears in a colour decision",
     !/(PF|C)\s*\?\s*[^:]{0,40}(blue|gold)/i.test(card));
   ok("every state carries a word, not only a tint",

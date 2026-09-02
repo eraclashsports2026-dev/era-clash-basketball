@@ -30,6 +30,16 @@ const ALLOWED = new Set([
   "pwa_install_prompt_shown", "pwa_installed",
   "frontend_error", "simulation_error",
   "feedback_submitted", "account_claimed", "preview_scenario_loaded",
+  // Phase 9A activation (Play Lobby, active-run continuation, Dream Matchup
+  // placement). Mirrored by ACTIVATION_EVENTS in src/activation.js; a contract
+  // test pins the two lists together. Properties are ids, statuses, counts and
+  // millisecond timings — never an email, key, cookie, token, IP or free text.
+  "play_lobby_viewed", "play_mode_selected",
+  "active_run_continue_clicked", "active_run_abandon_started", "active_run_abandoned", "active_run_expired_shown",
+  "account_gate_shown", "membership_gate_shown",
+  "dream_player_selected", "eligible_position_choice_shown",
+  "dream_player_placed", "dream_player_auto_placed", "dream_player_swap_completed", "dream_player_placement_undone",
+  "time_to_first_roll_recorded",
 ]);
 
 const MAX_BATCH = 50;

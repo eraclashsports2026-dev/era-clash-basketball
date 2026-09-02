@@ -1,0 +1,153 @@
+{
+  "artifact": "activation-telemetry-qa",
+  "phase": "9A — Play Lobby, activation clarity, multi-position placement",
+  "mode": "telemetry",
+  "generatedAt": "2026-09-02T22:01:44.925Z",
+  "baseUrl": null,
+  "checks": 9,
+  "passed": 9,
+  "failed": 0,
+  "results": [
+    {
+      "name": "every activation event is allowlisted by the server",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "every activation event is tracked in the client",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the server's 9A block and the client's list are the same set",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the specification's events are all present",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the analytics wrapper is the only transport",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no email, raw key, cookie, session token, IP or free text in an event property",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "first-roll timing is milliseconds and a coarse bucket",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the server still drops anything not allowlisted",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no new serverless function was added for telemetry",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "events": [
+    {
+      "event": "play_lobby_viewed",
+      "allowlisted": true,
+      "tracked": true
+    },
+    {
+      "event": "play_mode_selected",
+      "allowlisted": true,
+      "tracked": true
+    },
+    {
+      "event": "active_run_continue_clicked",
+      "allowlisted": true,
+      "tracked": true
+    },
+    {
+      "event": "active_run_abandon_started",
+      "allowlisted": true,
+      "tracked": true
+    },
+    {
+      "event": "active_run_abandoned",
+      "allowlisted": true,
+      "tracked": true
+    },
+    {
+      "event": "active_run_expired_shown",
+      "allowlisted": true,
+      "tracked": true
+    },
+    {
+      "event": "account_gate_shown",
+      "allowlisted": true,
+      "tracked": true
+    },
+    {
+      "event": "membership_gate_shown",
+      "allowlisted": true,
+      "tracked": true
+    },
+    {
+      "event": "dream_player_selected",
+      "allowlisted": true,
+      "tracked": true
+    },
+    {
+      "event": "eligible_position_choice_shown",
+      "allowlisted": true,
+      "tracked": true
+    },
+    {
+      "event": "dream_player_placed",
+      "allowlisted": true,
+      "tracked": true
+    },
+    {
+      "event": "dream_player_auto_placed",
+      "allowlisted": true,
+      "tracked": true
+    },
+    {
+      "event": "dream_player_swap_completed",
+      "allowlisted": true,
+      "tracked": true
+    },
+    {
+      "event": "dream_player_placement_undone",
+      "allowlisted": true,
+      "tracked": true
+    },
+    {
+      "event": "time_to_first_roll_recorded",
+      "allowlisted": true,
+      "tracked": true
+    }
+  ],
+  "forbiddenProperties": [
+    "email",
+    "raw access key",
+    "cookie",
+    "session token",
+    "full IP",
+    "raw search text",
+    "unbounded user text"
+  ],
+  "measures": [
+    "Lobby → Chaos selection (play_mode_selected mode_id=chaos)",
+    "Lobby → first roll time (time_to_first_roll_recorded ms/bucket, from=lobby)",
+    "Mode-card selection distribution (play_mode_selected)",
+    "Continue-run usage (active_run_continue_clicked / active_run_abandoned)",
+    "Account-gate exposure (account_gate_shown)",
+    "Eligible-position completion (eligible_position_choice_shown → dream_player_placed)",
+    "Placement undo rate (dream_player_placement_undone / dream_player_placed)"
+  ],
+  "note": "No conclusions are drawn here: the events exist and are wired; tester data decides what they mean."
+}

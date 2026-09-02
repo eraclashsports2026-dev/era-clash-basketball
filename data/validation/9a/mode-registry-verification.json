@@ -1,0 +1,235 @@
+{
+  "artifact": "mode-registry-verification",
+  "phase": "9A — Play Lobby, activation clarity, multi-position placement",
+  "mode": "registry",
+  "generatedAt": "2026-09-02T22:01:44.406Z",
+  "baseUrl": null,
+  "checks": 18,
+  "passed": 18,
+  "failed": 0,
+  "results": [
+    {
+      "name": "registry version carries the route model",
+      "pass": true,
+      "detail": "1.1.0"
+    },
+    {
+      "name": "seven modes, each with id, label, route, category, one sentence, status inputs",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "mode ids are unique",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "mode routes are unique and not the lobby",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Chaos Clash, Dream Matchup, Daily Clash are primary, in order",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Best of 7, Win 82, Tournament, Era Gauntlet are secondary, in order",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Chaos Clash alone is recommended and supports continuation",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "every status has a label decision and an action word",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "statuses reachable in this build are the truthful five",
+      "pass": true,
+      "detail": "ACCOUNT_REQUIRED,AVAILABLE,COMING_SOON,DISABLED_FOR_PREVIEW,UNAVAILABLE_HERE"
+    },
+    {
+      "name": "no mode is behind a subscription for any tier",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Coming soon never routes to checkout",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a locked (account) mode routes to its own address, where the gate is",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "requiresAccount is derived from the entitlement matrix",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the trial pairing in entitlements agrees with the registry",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "entitlements no longer defines a mode list",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the header, the lobby and the App read the registry and define no mode list",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Fantasy is a top-level pillar, not a play mode",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "every mode route resolves back to its mode",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "registry": [
+    {
+      "id": "chaos",
+      "label": "Chaos Clash",
+      "route": "/play/chaos",
+      "category": "PRIMARY",
+      "recommended": true,
+      "continuationSupport": true,
+      "implemented": true,
+      "requiresAccount": false,
+      "shortDescription": "Three rolls. Hold your legends. Adapt to the era.",
+      "implementationNote": "Built. A server-authoritative three-roll draft on /api/game; a guest has three runs, a free account has unlimited.",
+      "statusByTier": {
+        "GUEST": "AVAILABLE",
+        "FREE": "AVAILABLE",
+        "PLUS": "AVAILABLE",
+        "COMMISSIONER": "AVAILABLE"
+      }
+    },
+    {
+      "id": "dream",
+      "label": "Dream Matchup",
+      "route": "/play/dream",
+      "category": "PRIMARY",
+      "recommended": false,
+      "continuationSupport": false,
+      "implemented": true,
+      "requiresAccount": true,
+      "shortDescription": "Build any historical matchup.",
+      "implementationNote": "Built. The manual builder with multi-position placement; a free account is asked for while Chaos Clash is the free default.",
+      "statusByTier": {
+        "GUEST": "ACCOUNT_REQUIRED",
+        "FREE": "AVAILABLE",
+        "PLUS": "AVAILABLE",
+        "COMMISSIONER": "AVAILABLE"
+      }
+    },
+    {
+      "id": "daily",
+      "label": "Daily Clash",
+      "route": "/play/daily",
+      "category": "PRIMARY",
+      "recommended": false,
+      "continuationSupport": false,
+      "implemented": true,
+      "requiresAccount": false,
+      "shortDescription": "One shared challenge for everyone.",
+      "implementationNote": "Built. Server-seeded; one official attempt per day.",
+      "statusByTier": {
+        "GUEST": "AVAILABLE",
+        "FREE": "AVAILABLE",
+        "PLUS": "AVAILABLE",
+        "COMMISSIONER": "AVAILABLE"
+      }
+    },
+    {
+      "id": "bo7",
+      "label": "Best of 7",
+      "route": "/play/best-of-7",
+      "category": "SECONDARY",
+      "recommended": false,
+      "continuationSupport": false,
+      "implemented": true,
+      "requiresAccount": true,
+      "shortDescription": "Settle it over a series.",
+      "implementationNote": "Built. Opens on a free account through its trial capability; runs on the production engine.",
+      "statusByTier": {
+        "GUEST": "ACCOUNT_REQUIRED",
+        "FREE": "AVAILABLE",
+        "PLUS": "AVAILABLE",
+        "COMMISSIONER": "AVAILABLE"
+      }
+    },
+    {
+      "id": "win82",
+      "label": "Win 82",
+      "route": "/play/win-82",
+      "category": "SECONDARY",
+      "recommended": false,
+      "continuationSupport": false,
+      "implemented": true,
+      "requiresAccount": true,
+      "shortDescription": "Survive a full season.",
+      "implementationNote": "Built as a preview on a free account through its trial capability.",
+      "statusByTier": {
+        "GUEST": "ACCOUNT_REQUIRED",
+        "FREE": "AVAILABLE",
+        "PLUS": "AVAILABLE",
+        "COMMISSIONER": "AVAILABLE"
+      }
+    },
+    {
+      "id": "tournament",
+      "label": "Tournament",
+      "route": "/play/tournament",
+      "category": "SECONDARY",
+      "recommended": false,
+      "continuationSupport": false,
+      "implemented": true,
+      "requiresAccount": true,
+      "shortDescription": "Four rounds to a title.",
+      "implementationNote": "Built. Joining needs a free account; creating a private bracket is a commissioner capability.",
+      "statusByTier": {
+        "GUEST": "ACCOUNT_REQUIRED",
+        "FREE": "AVAILABLE",
+        "PLUS": "AVAILABLE",
+        "COMMISSIONER": "AVAILABLE"
+      }
+    },
+    {
+      "id": "gauntlet",
+      "label": "Era Gauntlet",
+      "route": "/play/era-gauntlet",
+      "category": "SECONDARY",
+      "recommended": false,
+      "continuationSupport": false,
+      "implemented": false,
+      "requiresAccount": true,
+      "shortDescription": "Conquer the eras.",
+      "implementationNote": "Not built. Specified; flagged off; its card opens the information page and never a checkout.",
+      "statusByTier": {
+        "GUEST": "COMING_SOON",
+        "FREE": "COMING_SOON",
+        "PLUS": "COMING_SOON",
+        "COMMISSIONER": "COMING_SOON"
+      }
+    }
+  ],
+  "statusMapping": {
+    "note": "The specification names PLUS_REQUIRED and PREVIEW_DISABLED; the repository's registry predates it with SUBSCRIPTION_REQUIRED and DISABLED_FOR_PREVIEW, which the tests and e2e already pin. The names are kept; the meaning is the same. UNAVAILABLE_HERE is new: the server has a mode switched off in this deployment.",
+    "PLUS_REQUIRED": "SUBSCRIPTION_REQUIRED",
+    "PREVIEW_DISABLED": "DISABLED_FOR_PREVIEW"
+  }
+}

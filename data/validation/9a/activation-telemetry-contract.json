@@ -1,0 +1,42 @@
+{
+  "artifact": "activation-telemetry-contract",
+  "phase": "9A",
+  "status": "FROZEN",
+  "transport": "src/analytics.js → POST /api/events (existing route; allowlisted; no new function)",
+  "events": [
+    "play_lobby_viewed",
+    "play_mode_selected",
+    "active_run_continue_clicked",
+    "active_run_abandon_started",
+    "active_run_abandoned",
+    "active_run_expired_shown",
+    "account_gate_shown",
+    "membership_gate_shown",
+    "dream_player_selected",
+    "eligible_position_choice_shown",
+    "dream_player_placed",
+    "dream_player_auto_placed",
+    "dream_player_swap_completed",
+    "dream_player_placement_undone",
+    "time_to_first_roll_recorded"
+  ],
+  "forbidden": [
+    "email",
+    "raw access key",
+    "cookie",
+    "session token",
+    "full IP",
+    "raw search text",
+    "unbounded user text"
+  ],
+  "measures": [
+    "Lobby → Chaos selection",
+    "Lobby → first roll time",
+    "mode-card selection distribution",
+    "continue-run usage",
+    "account-gate exposure",
+    "eligible-position completion",
+    "placement undo rate"
+  ],
+  "interpretation": "None before tester data exists."
+}
