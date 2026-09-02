@@ -52,7 +52,7 @@ const toReady = async (page) => {
 
 test("the Time Arena is one workspace with a persistent rail", async ({ page }) => {
   await withAccount(page);
-  await page.goto("/");
+  await page.goto("/play/chaos");
   await expect(page.locator(".ec-ta")).toBeVisible();
   await expect(page.getByRole("complementary", { name: "Live intel and result" })).toBeVisible();
 
@@ -91,7 +91,7 @@ test("ten cards, five a side, and the TEAM owns the colour", async ({ page }) =>
   // The reference layout puts both benches side by side, which needs the width
   // where ten cards stay readable.
   await page.setViewportSize({ width: 1536, height: 900 });
-  await page.goto("/");
+  await page.goto("/play/chaos");
   await page.getByRole("button", { name: /^ROLL 1/ }).click();
   await expect(page.getByText(/ROLL 1 OF 3/).first()).toBeVisible({ timeout: 20_000 });
 
@@ -140,7 +140,7 @@ test("ten cards, five a side, and the TEAM owns the colour", async ({ page }) =>
 test("players and coaches move through ONE three-roll sequence", async ({ page }) => {
   test.slow();
   await withAccount(page);
-  await page.goto("/");
+  await page.goto("/play/chaos");
   await page.getByRole("button", { name: /^ROLL 1/ }).click();
   await expect(page.getByText(/ROLL 1 OF 3/).first()).toBeVisible({ timeout: 20_000 });
 
@@ -196,7 +196,7 @@ test("players and coaches move through ONE three-roll sequence", async ({ page }
 
 test("Draft Pressure is stated once, in the rail", async ({ page }) => {
   await withAccount(page);
-  await page.goto("/");
+  await page.goto("/play/chaos");
   await page.getByRole("button", { name: /^ROLL 1/ }).click();
   await expect(page.getByText(/ROLL 1 OF 3/).first()).toBeVisible({ timeout: 20_000 });
 
@@ -211,7 +211,7 @@ test("Draft Pressure is stated once, in the rail", async ({ page }) => {
 
 test("the era is locked for a free account and routes to membership", async ({ page }) => {
   await withAccount(page);
-  await page.goto("/");
+  await page.goto("/play/chaos");
   await page.getByRole("button", { name: /^ROLL 1/ }).click();
   await expect(page.getByText(/ROLL 1 OF 3/).first()).toBeVisible({ timeout: 20_000 });
   await roll(page, /LOCK & ROLL 2/);
@@ -243,7 +243,7 @@ test("an entitled run offers the era selector the server allows", async ({ page 
     }
     await route.fulfill({ response: res, json });
   });
-  await page.goto("/");
+  await page.goto("/play/chaos");
   await page.getByRole("button", { name: /^ROLL 1/ }).click();
   await expect(page.getByText(/ROLL 1 OF 3/).first()).toBeVisible({ timeout: 20_000 });
   await roll(page, /LOCK & ROLL 2/);
@@ -259,7 +259,7 @@ test("an entitled run offers the era selector the server allows", async ({ page 
 test("starting over is on the BOARD, and it asks first", async ({ page }) => {
   test.slow();
   await withAccount(page);
-  await page.goto("/");
+  await page.goto("/play/chaos");
   await toReady(page);
 
   const stage = page.locator(".ec-ta-stage");
@@ -299,7 +299,7 @@ test("starting over is on the BOARD, and it asks first", async ({ page }) => {
 test("a finished game offers a new clash on the board, not only in the result", async ({ page }) => {
   test.slow();
   await withAccount(page);
-  await page.goto("/");
+  await page.goto("/play/chaos");
   await toReady(page);
   await page.getByRole("button", { name: /RUN SIM/ }).click();
   await expect(page.locator(".ec-ta-rail").getByText("FINAL SCORE", { exact: true }).first())
@@ -325,7 +325,7 @@ test("a finished game offers a new clash on the board, not only in the result", 
 test("the result lands in the dock, the report opens over the page, and a new clash keeps the last one", async ({ page }) => {
   test.slow();
   await withAccount(page);
-  await page.goto("/");
+  await page.goto("/play/chaos");
   await toReady(page);
   await page.getByRole("button", { name: /RUN SIM/ }).click();
 
@@ -380,7 +380,7 @@ test("the result lands in the dock, the report opens over the page, and a new cl
 test("a run resumed after a reload still runs", async ({ page }) => {
   test.slow();
   await withAccount(page);
-  await page.goto("/");
+  await page.goto("/play/chaos");
   await toReady(page);
   await page.evaluate(() => sessionStorage.setItem("e2e_keep_run", "1"));
   await page.reload();
@@ -392,7 +392,7 @@ test("a run resumed after a reload still runs", async ({ page }) => {
 test("Run it back replays the SAME matchup and actually completes", async ({ page }) => {
   test.slow();
   await withAccount(page);
-  await page.goto("/");
+  await page.goto("/play/chaos");
   await toReady(page);
   await page.getByRole("button", { name: /RUN SIM/ }).click();
   await expect(page.getByText("FINAL SCORE", { exact: true }).first()).toBeVisible({ timeout: 45_000 });
@@ -421,7 +421,7 @@ test("mobile stacks, leads with the result, and never overflows", async ({ page 
   test.slow();
   await withAccount(page);
   await page.setViewportSize({ width: 375, height: 812 });
-  await page.goto("/");
+  await page.goto("/play/chaos");
 
   const draft = await page.evaluate(() => ({
     columns: getComputedStyle(document.querySelector(".ec-ta")).gridTemplateColumns.split(" ").length,
@@ -493,7 +493,7 @@ test("a Wave 1 scenario link lands a GUEST in the preloaded builder", async ({ p
 
 test("the guide opens, moves between sections, and closes on Escape", async ({ page }) => {
   await withAccount(page);
-  await page.goto("/");
+  await page.goto("/play/chaos");
   await page.getByRole("button", { name: /HOW TO PLAY/ }).click();
   const dialog = page.getByRole("dialog", { name: "Arena guide" });
   await expect(dialog).toBeVisible();
@@ -526,7 +526,7 @@ test("the guide opens, moves between sections, and closes on Escape", async ({ p
 
 test("Play and Fantasy menus are keyboard accessible and registry driven", async ({ page }) => {
   await withAccount(page);
-  await page.goto("/");
+  await page.goto("/play/chaos");
 
   const play = page.getByRole("button", { name: /^Play/ });
   await play.click();
@@ -553,7 +553,7 @@ test("a guest choosing a trial mode is offered the account that opens it, not a 
   // sending a signed-out visitor to a membership page told them to buy
   // something they did not need. This used to assert the membership URL.
   await asGuest(page);
-  await page.goto("/");
+  await page.goto("/play/chaos");
   await page.getByRole("button", { name: /^Play/ }).click();
   await page.getByRole("menuitem", { name: /Win 82/ }).click();
   await expect(page).not.toHaveURL(/\/membership/);
@@ -575,7 +575,7 @@ test("the membership destination itself shows no checkout", async ({ page }) => 
 
 test("a coming-soon mode explains itself instead of asking for money", async ({ page }) => {
   await withAccount(page);
-  await page.goto("/");
+  await page.goto("/play/chaos");
   await page.getByRole("button", { name: /^Play/ }).click();
   await page.getByRole("menuitem", { name: /Era Gauntlet/ }).click();
   await expect(page).toHaveURL(/\/modes\/era-gauntlet/);

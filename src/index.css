@@ -1258,3 +1258,228 @@ button { font-family: inherit; }
   .ec-pc, .ec-coach-card { transition: none; }
   .ec-pc[data-held="true"] { transform: none; }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PHASE 9A — THE PLAY LOBBY
+   The visual entrance. Same tokens as the arena (this renders inside
+   .ec-arena-shell), one decision per card, and a single primary action per
+   card. Fits one desktop viewport; reflows to two columns on a tablet and one
+   on a phone. Every control is at least 44px tall.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.ec-lobby {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 14px 18px 28px;
+  display: grid;
+  gap: 14px;
+}
+.ec-lobby-hero { display: grid; justify-items: center; gap: 4px; text-align: center; padding-top: 2px; }
+.ec-lobby-logo { width: min(340px, 78vw); height: auto; display: block; }
+.ec-lobby-line {
+  margin: 0; max-width: 620px;
+  font-size: 14.5px; line-height: 1.55; color: var(--ec-a-text-secondary);
+}
+.ec-lobby-kicker {
+  margin: 0 0 8px; font-size: 10.5px; font-weight: 900; letter-spacing: 2px;
+  color: var(--ec-a-text-muted);
+}
+
+.ec-lobby-primary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+.ec-lobby-secondary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+/* One card: glyph and badges, a name, one sentence, one action. */
+.ec-mode-card {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  gap: 8px;
+  padding: 18px;
+  border-radius: 16px;
+  border: 1px solid var(--ec-a-border);
+  background: linear-gradient(180deg, var(--ec-a-panel-raised), var(--ec-a-panel));
+  min-width: 0;
+}
+.ec-mode-card--primary { min-height: 212px; }
+.ec-mode-card--secondary { padding: 12px 14px; gap: 6px; min-height: 138px; }
+.ec-mode-card--recommended {
+  border-color: var(--ec-a-gold-line);
+  box-shadow: 0 0 0 1px rgba(242, 181, 29, 0.18), 0 18px 40px rgba(0, 0, 0, 0.35);
+}
+.ec-mode-card-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; min-height: 34px; }
+.ec-mode-glyph {
+  display: inline-grid; place-items: center;
+  width: 46px; height: 46px; border-radius: 12px;
+  color: var(--ec-a-gold);
+  background: var(--ec-a-gold-soft);
+  border: 1px solid var(--ec-a-gold-line);
+}
+.ec-mode-card--secondary .ec-mode-glyph {
+  width: 36px; height: 36px; border-radius: 10px;
+  color: var(--ec-a-text-secondary); background: var(--ec-a-panel-soft); border-color: var(--ec-a-border);
+}
+.ec-mode-flag, .ec-mode-badge {
+  font-size: 9.5px; font-weight: 900; letter-spacing: 1.2px;
+  padding: 4px 8px; border-radius: 999px; white-space: nowrap;
+}
+.ec-mode-flag { margin-left: auto; color: #14100a; background: var(--ec-a-gold); }
+.ec-mode-badge--gold { color: var(--ec-a-gold); background: var(--ec-a-gold-soft); border: 1px solid var(--ec-a-gold-line); }
+.ec-mode-badge--muted { color: var(--ec-a-text-muted); background: rgba(147, 160, 181, 0.12); border: 1px solid var(--ec-a-border); }
+.ec-mode-badge--available { color: var(--ec-a-green); background: rgba(74, 222, 128, 0.12); }
+.ec-mode-title {
+  margin: 0; font-family: var(--ec-display);
+  font-size: 22px; font-weight: 700; letter-spacing: 1.2px; line-height: 1.1;
+  color: var(--ec-a-text);
+}
+.ec-mode-card--secondary .ec-mode-title { font-size: 16px; letter-spacing: 1px; }
+.ec-mode-line { margin: 0; font-size: 13.5px; line-height: 1.5; color: var(--ec-a-text-secondary); }
+.ec-mode-card--secondary .ec-mode-line { font-size: 12.5px; }
+.ec-mode-action {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 48px; padding: 0 16px; border-radius: 11px;
+  font-family: var(--ec-display); font-size: 14px; font-weight: 700; letter-spacing: 1.8px;
+  text-decoration: none; cursor: pointer;
+  border: 1px solid var(--ec-a-border-strong);
+  background: var(--ec-a-panel-soft);
+  color: var(--ec-a-text);
+}
+.ec-mode-card--primary .ec-mode-action[data-intent="OPEN_MODE"] {
+  border-color: var(--ec-a-gold-line);
+  background: linear-gradient(180deg, #ffd257 0%, var(--ec-a-gold) 46%, #c98f0c 100%);
+  color: #14100a;
+  box-shadow: 0 8px 18px rgba(242, 181, 29, 0.18), 0 1px 0 rgba(255, 255, 255, 0.35) inset;
+}
+.ec-mode-card--secondary .ec-mode-action { min-height: 44px; font-size: 12.5px; letter-spacing: 1.4px; }
+.ec-mode-action:focus-visible { outline: 3px solid var(--ec-a-gold); outline-offset: 3px; }
+
+/* Continue card: above the grid, unmistakably about an EXISTING run. */
+.ec-continue {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 1px solid var(--ec-a-gold-line);
+  background: linear-gradient(90deg, rgba(242, 181, 29, 0.12), var(--ec-a-panel-raised) 60%);
+}
+.ec-continue--expired { border-color: var(--ec-a-border-strong); background: var(--ec-a-panel-raised); }
+.ec-continue-glyph {
+  display: grid; place-items: center; width: 46px; height: 46px; border-radius: 12px;
+  color: var(--ec-a-gold); background: var(--ec-a-gold-soft); border: 1px solid var(--ec-a-gold-line);
+}
+.ec-continue--expired .ec-continue-glyph { color: var(--ec-a-text-muted); background: transparent; border-color: var(--ec-a-border); }
+.ec-continue-body { min-width: 0; display: grid; gap: 3px; }
+.ec-continue-title {
+  margin: 0; font-family: var(--ec-display); font-size: 15px; font-weight: 700; letter-spacing: 1.6px;
+  color: var(--ec-a-gold);
+}
+.ec-continue--expired .ec-continue-title { color: var(--ec-a-text-secondary); }
+.ec-continue-line { margin: 0; font-size: 12.5px; color: var(--ec-a-text-secondary); line-height: 1.5; }
+.ec-continue-teams { margin: 0; display: flex; gap: 14px; flex-wrap: wrap; font-size: 11.5px; color: var(--ec-a-text-muted); }
+.ec-continue-team-name { font-weight: 900; letter-spacing: 1px; margin-right: 6px; }
+.ec-continue-team--gold .ec-continue-team-name { color: var(--ec-a-gold); }
+.ec-continue-team--blue .ec-continue-team-name { color: var(--ec-a-blue); }
+.ec-continue-actions { display: flex; gap: 8px; align-items: center; }
+.ec-continue-cta {
+  min-height: 48px; padding: 0 20px; border-radius: 11px; cursor: pointer;
+  font-family: var(--ec-display); font-size: 14px; font-weight: 700; letter-spacing: 1.8px;
+  border: 1px solid var(--ec-a-gold-line);
+  background: linear-gradient(180deg, #ffd257 0%, var(--ec-a-gold) 46%, #c98f0c 100%);
+  color: #14100a;
+}
+.ec-continue-quiet {
+  min-height: 44px; padding: 0 14px; border-radius: 9px; cursor: pointer;
+  font-weight: 800; font-size: 11px; letter-spacing: 0.8px;
+  border: 1px solid var(--ec-a-border); background: transparent; color: var(--ec-a-text-muted);
+}
+.ec-continue-cta[disabled], .ec-continue-quiet[disabled] { opacity: 0.6; cursor: default; }
+
+@media (max-width: 1024px) {
+  .ec-lobby-primary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ec-lobby-secondary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ec-continue { grid-template-columns: auto minmax(0, 1fr); }
+  .ec-continue-actions { grid-column: 1 / -1; justify-content: flex-start; }
+}
+@media (max-width: 640px) {
+  .ec-lobby { padding: 12px 12px 32px; gap: 14px; }
+  .ec-lobby-primary { grid-template-columns: minmax(0, 1fr); }
+  .ec-lobby-secondary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ec-mode-card--primary { min-height: 0; }
+  .ec-mode-card--secondary { min-height: 0; }
+  .ec-continue { grid-template-columns: minmax(0, 1fr); }
+  .ec-continue-glyph { display: none; }
+  .ec-continue-actions { display: grid; grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 380px) {
+  .ec-lobby-secondary-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ec-mode-card, .ec-mode-action, .ec-continue-cta { transition: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PHASE 9A — PROGRESSIVE DISCLOSURE IN THE TIME ARENA
+   Hierarchy, not redesign. The section that is not actionable right now is
+   visibly subdued; the one primary action stays where it was.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.ec-ta-coach[data-active="false"] { opacity: 0.58; }
+.ec-ta-coach[data-active="false"] .ec-ta-coach-title { color: var(--ec-a-text-muted); }
+.ec-ta-stage[data-focus="empty"] .ec-ta-coach .ec-coach-card { filter: saturate(0.4); }
+@media (prefers-reduced-motion: no-preference) {
+  .ec-ta-coach { transition: opacity 180ms ease; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PHASE 9A — MULTI-POSITION PLACEMENT (Dream Matchup builder, light theme)
+   A slot's state is a word and a border, never a colour alone.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.ec-place-bar {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  padding: 10px 12px; margin-bottom: 10px; border-radius: 10px;
+  border: 1px solid var(--gold); background: #fdf3d8; color: var(--ec-ink);
+  font-size: 12.5px; line-height: 1.5;
+}
+.ec-place-bar strong { color: var(--gold); }
+.ec-place-bar-cancel {
+  margin-left: auto; min-height: 40px; padding: 0 12px; border-radius: 8px; cursor: pointer;
+  border: 1px solid var(--ec-border); background: var(--ec-surface); color: var(--ec-ink); font-weight: 800; font-size: 12px;
+}
+.ec-slot-state {
+  display: block; margin-top: 6px; font-size: 9.5px; font-weight: 900; letter-spacing: 1.2px; text-align: center;
+}
+.roster-grid [data-place-state="ELIGIBLE"] > * { border: 2px solid var(--gold) !important; box-shadow: 0 0 0 3px rgba(139, 102, 11, 0.16); }
+.roster-grid [data-place-state="ELIGIBLE"] .ec-slot-state { color: var(--gold); }
+.roster-grid [data-place-state="OCCUPIED"] > * { border: 2px dashed var(--blue) !important; }
+.roster-grid [data-place-state="OCCUPIED"] .ec-slot-state { color: var(--blue); }
+.roster-grid [data-place-state="INELIGIBLE"] > * { opacity: 0.45; }
+.roster-grid [data-place-state="INELIGIBLE"] .ec-slot-state { color: var(--ec-ink); opacity: 0.7; }
+.roster-grid [data-place-state="SELECTED"] > * { border: 2px solid var(--gold) !important; }
+.ec-elig { font-size: 10px; font-weight: 800; letter-spacing: 0.8px; text-align: center; margin-top: 2px; }
+.ec-undo-toast {
+  position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 70;
+  display: flex; align-items: center; gap: 12px; max-width: min(92vw, 560px);
+  padding: 10px 14px; border-radius: 12px;
+  background: var(--ec-navy); color: #f1f4fa; border: 1px solid var(--ec-navy-soft);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35); font-size: 13px; line-height: 1.45;
+}
+.ec-undo-toast button {
+  min-height: 44px; padding: 0 14px; border-radius: 9px; cursor: pointer; flex-shrink: 0;
+  border: 1px solid var(--gold-on-dark); background: transparent; color: var(--gold-on-dark); font-weight: 900; letter-spacing: 1px; font-size: 12px;
+}
+
+/* Chaos cards: every eligible position, as a chip in the portrait zone so the
+   frozen card geometry is untouched. */
+.ec-pc-elig {
+  position: absolute; left: 6px; bottom: 6px; z-index: 2;
+  padding: 2px 6px; border-radius: 6px;
+  font-size: 9px; font-weight: 900; letter-spacing: 0.9px;
+  color: var(--ec-a-text); background: rgba(3, 7, 13, 0.62); border: 1px solid rgba(157, 178, 209, 0.28);
+}

@@ -249,10 +249,14 @@ describe("a chaos-disabled deployment is never a dead end", () => {
     // available as the free default.
     const app = readFileSync("src/App.jsx", "utf8");
     expect(app).toMatch(/const dreamMatchupGated = chaosAvailable/);
-    expect(app).toMatch(/\) : dreamMatchupGated \? \(/);
+    // Phase 9A moved the Chaos guest gate to the top-level switch, so the Dream
+    // gate now leads this branch: `{dreamMatchupGated ? (`.
+    expect(app).toMatch(/\{dreamMatchupGated \? \(/);
     // The derivation must precede its use, or the render throws on a temporal
     // dead zone that the bundler does not catch.
-    expect(app.indexOf("const dreamMatchupGated")).toBeLessThan(app.indexOf(") : dreamMatchupGated ? ("));
+    expect(app.indexOf("const dreamMatchupGated")).toBeLessThan(app.indexOf("{dreamMatchupGated ? ("));
+    // And the way back from the gate is the lobby, never a mode switch.
+    expect(app).toMatch(/onBack=\{\(\) => navigate\(PLAY_LOBBY_ROUTE\)\}/);
   });
 
   it("still offers a guest something playable in every configuration", () => {

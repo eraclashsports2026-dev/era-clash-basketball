@@ -44,7 +44,7 @@ const lockHolds = async (page) => {
 
 test("Chaos Clash is the default Play experience and opens with an empty board", async ({ page }) => {
   await withAccount(page);
-  await page.goto("/");
+  await page.goto("/play/chaos");
   // Phase 8C: the Time Arena is the canonical Play layout.
   await expect(page.locator(".ec-ta")).toBeVisible();
   await expect(page.getByRole("complementary", { name: "Live intel and result" })).toBeVisible();
@@ -62,7 +62,7 @@ test("Chaos Clash is the default Play experience and opens with an empty board",
 
 test("every hold control stays live in both decision rounds", async ({ page }) => {
   await withAccount(page);
-  await page.goto("/");
+  await page.goto("/play/chaos");
   await rollOne(page);
 
   // Roll 1: hold three cards independently; none may disable the others.
@@ -98,7 +98,7 @@ test("every hold control stays live in both decision rounds", async ({ page }) =
 
 test("three rolls, holds, era reveal before the final holds, then coach offers", async ({ page }) => {
   await withAccount(page);
-  await page.goto("/");
+  await page.goto("/play/chaos");
   await rollOne(page);
 
   // The era is not shown before Roll 2.
@@ -137,7 +137,7 @@ test("three rolls, holds, era reveal before the final holds, then coach offers",
 test("a full Clash reaches a postgame with a player-centered story and an aligned box score", async ({ page }) => {
   test.slow();
   await withAccount(page);
-  await page.goto("/");
+  await page.goto("/play/chaos");
   await rollOne(page);
   await lockHolds(page);
   await lockHolds(page);
@@ -200,7 +200,7 @@ test("a full Clash reaches a postgame with a player-centered story and an aligne
 test("box-score stat values never wrap", async ({ page }) => {
   test.slow();
   await withAccount(page);
-  await page.goto("/");
+  await page.goto("/play/chaos");
   await rollOne(page);
   await lockHolds(page);
   await lockHolds(page);
@@ -218,21 +218,23 @@ test("box-score stat values never wrap", async ({ page }) => {
 });
 
 test("Dream Matchup is gated behind a free account and can be reached from the Play menu", async ({ page }) => {
-  await page.goto("/");   // deliberately signed out
+  await page.goto("/play/chaos");   // deliberately signed out
   await expect(page.getByText("THREE ROLLS AVAILABLE").first()).toBeVisible({ timeout: 20_000 });
   // The shelf is gone; the Play menu is where a mode is chosen.
   await page.getByRole("button", { name: /^Play/ }).click();
   await page.getByRole("menuitem", { name: /Dream Matchup/ }).click();
+  await expect(page).toHaveURL(/\/play\/dream$/);
   await expect(page.getByText("FREE ACCOUNT REQUIRED")).toBeVisible();
   await expect(page.getByRole("button", { name: "CREATE FREE ACCOUNT" }).first()).toBeVisible();
-  // A signed-out user is never stranded.
-  await page.getByRole("button", { name: "BACK TO CHAOS CLASH" }).click();
-  await expect(page.getByText("THREE ROLLS AVAILABLE").first()).toBeVisible();
+  // A signed-out user is never stranded: the way back is the Play Lobby (9A).
+  await page.getByRole("button", { name: "BACK TO THE LOBBY" }).click();
+  await expect(page).toHaveURL(/\/play$/);
+  await expect(page.getByRole("heading", { name: "Chaos Clash" })).toBeVisible();
 });
 
 test("the Chaos flow is keyboard operable and the hold targets are large enough", async ({ page }) => {
   await withAccount(page);
-  await page.goto("/");
+  await page.goto("/play/chaos");
   await rollOne(page);
   const sizes = await page.evaluate(() =>
     [...document.querySelectorAll("button[aria-label]")]
@@ -254,7 +256,7 @@ test("mobile keeps both boards readable with no page-level horizontal overflow",
   await withAccount(page);
   for (const [w, h] of [[375, 812], [390, 844], [430, 932], [768, 1024]]) {
     await page.setViewportSize({ width: w, height: h });
-    await page.goto("/");
+    await page.goto("/play/chaos");
     await rollOne(page);
     await expect(page.getByText("TEAM GOLD", { exact: true })).toBeVisible();
     await expect(page.getByText("TEAM BLUE", { exact: true })).toBeVisible();

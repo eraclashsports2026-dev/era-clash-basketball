@@ -116,10 +116,11 @@ export default function ResultDock({
   phase, run, result, priorResult, priorAt, simStage,
   onViewFullReport, onRunItBack, onNewClash, onChallenge, busy,
 }) {
-  // No section is open until one is asked for — the canonical reference shows
-  // the summary and four tab controls, and an open panel is what pushed the
-  // dock past the first viewport.
-  const [tab, setTab] = useState(null);
+  // The Story leads the result (Phase 9A): it opens by default, and the other
+  // three sections are one tap away. The rail is a column of the page since
+  // 8C.1, so an open section grows the page rather than a nested scroller —
+  // which is what let the canonical reference keep every panel closed.
+  const [tab, setTab] = useState("story");
   const [, tick] = useState(0);
   // The "minutes ago" label would otherwise freeze at whatever it said when the
   // dock last re-rendered.

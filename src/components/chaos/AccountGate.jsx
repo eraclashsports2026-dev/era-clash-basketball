@@ -1,12 +1,12 @@
 // ── Free-account gate ────────────────────────────────────────────────────────
 // Shown when a mode needs an account. It explains the mode, offers to create a
-// free account, and always offers a way back to Chaos Clash so a signed-out
-// user is never stranded.
+// free account, and always offers a way back — to the Play Lobby since Phase
+// 9A — so a signed-out user is never stranded.
 import { useState } from "react";
 import { T, R } from "../../theme.js";
 import { createFreeAccount } from "../../account.js";
 
-export default function AccountGate({ title, blurb, onCreated, onBack }) {
+export default function AccountGate({ title, blurb, onCreated, onBack, backLabel = "BACK TO THE LOBBY" }) {
   const [name, setName] = useState("");
   return (
     <div style={{
@@ -32,7 +32,7 @@ export default function AccountGate({ title, blurb, onCreated, onBack }) {
       <button onClick={onBack} style={{
         width: "100%", minHeight: 44, marginTop: 8, borderRadius: R.sm, cursor: "pointer",
         fontWeight: 800, fontSize: 13, border: `1px solid ${T.border}`, background: "transparent", color: T.textDim,
-      }}>BACK TO CHAOS CLASH</button>
+      }}>{backLabel}</button>
       <div style={{ fontSize: 11.5, color: T.textMuted, marginTop: 10, lineHeight: 1.5 }}>
         No email, no payment. Your account lives on this device.
       </div>

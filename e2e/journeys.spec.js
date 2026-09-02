@@ -74,7 +74,7 @@ async function expectCorePostgame(page) {
 }
 
 test("J1+J2: manual Gold, Blue stays empty until user chooses, random Blue, sim transition, full core Postgame, rematch", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/play/dream");
   await expect(page.getByRole("heading", { name: "CLASH ACROSS ERAS" })).toBeVisible();
   await buildGoldManual(page);
   // REGRESSION: Gold completion must NOT auto-populate Blue
@@ -102,7 +102,7 @@ test("J1+J2: manual Gold, Blue stays empty until user chooses, random Blue, sim 
 });
 
 test("J1b: Random Gold + Random Blue plays a full game", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/play/dream");
   await randomGold(page);
   await randomBlue(page);
   await pickCoachesIfV3(page);
@@ -118,7 +118,7 @@ test("J1b: Random Gold + Random Blue plays a full game", async ({ page }) => {
 test("J3: rapid double-click creates exactly one core result", async ({ page }) => {
   let gamePosts = 0;
   page.on("request", (r) => { if (r.url().includes("/api/game") && r.method() === "POST") gamePosts++; });
-  await page.goto("/");
+  await page.goto("/play/dream");
   await randomGold(page);
   await randomBlue(page);
   await pickCoachesIfV3(page);
@@ -129,7 +129,7 @@ test("J3: rapid double-click creates exactly one core result", async ({ page }) 
 });
 
 test("J4: Daily consumes one attempt, persists, and survives reload", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/play/dream");
   await page.getByRole("button", { name: "Daily", exact: true }).click();
   await page.getByRole("button", { name: /Start Today's Challenge/ }).click();
   await page.getByRole("button", { name: /Roll 2/ }).click();
@@ -151,7 +151,7 @@ test("J4: Daily consumes one attempt, persists, and survives reload", async ({ p
 });
 
 test("J5+J7: core failure records nothing; fabricated scores are rejected server-side", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/play/dream");
   const fail = await page.request.post("/api/game", {
     headers: { "x-chaos": "engine-fail" },
     // unique per run: a fixed id hits the idempotency guard (409) on a warm harness
@@ -208,7 +208,7 @@ test("J8: one session cannot read or write another session's profile", async ({ 
 test("J9: XSS payloads render harmlessly as text", async ({ page }) => {
   let sawDialog = false;
   page.on("dialog", (d) => { sawDialog = true; d.dismiss(); });
-  await page.goto("/");
+  await page.goto("/play/dream");
   await page.getByRole("button", { name: "My EraClash" }).click();
   await page.getByLabel("Display name").fill('<script>alert(1)</script><img src=x onerror=alert(2)>');
   await page.getByRole("button", { name: "Save", exact: true }).click();
@@ -219,7 +219,7 @@ test("J9: XSS payloads render harmlessly as text", async ({ page }) => {
 });
 
 test("J10: per-team reset buttons free any lineup state without touching the other side", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/play/dream");
   // Gold: manual partial → Reset clears it
   await page.getByRole("tab", { name: /Manual Draft/ }).first().click();
   await page.getByRole("button", { name: "Add Point Guard" }).first().click();
@@ -243,7 +243,7 @@ test("J10: per-team reset buttons free any lineup state without touching the oth
 });
 
 test("J10b: one-click Re-roll refreshes a random five on BOTH sides and invalidates stale coach picks", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/play/dream");
   await page.getByRole("button", { name: /Random Team/ }).first().click();
   await page.getByRole("tab", { name: /Random Team/ }).click(); // blue random
   // both completed rosters expose a prominent Re-roll next to Reset
@@ -261,7 +261,7 @@ test("J10b: one-click Re-roll refreshes a random five on BOTH sides and invalida
 });
 
 test("J11 (V3): Team → Coach → Era Style → Ready → Run with possession postgame", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/play/dream");
   // STAGE 1 — ROSTERS (wizard chips render)
   await expect(page.getByRole("button", { name: /ROSTERS/ })).toBeVisible();
   await randomGold(page);
@@ -329,7 +329,7 @@ test("J12: Tournament runs a real bracket and opponent difficulty is selectable"
   // Phase 8C: the Play menu resolves entitlements, so Tournament needs a free
   // account before it opens (a guest is sent to the account gate instead).
   await page.addInitScript(() => { try { localStorage.setItem("ec_account", "1"); localStorage.setItem("ec_name", "E2E"); } catch (e) {} });
-  await page.goto("/");
+  await page.goto("/play/dream");
   await page.getByRole("button", { name: "Play", exact: false }).first().click();
   await page.getByRole("menuitem", { name: /Tournament/ }).click();
   // difficulty only exists for the modes that generate a schedule
@@ -349,7 +349,7 @@ test("J12: Tournament runs a real bracket and opponent difficulty is selectable"
 
 test("J13: difficulty is absent for modes without a generated schedule", async ({ page }) => {
   await page.addInitScript(() => { try { localStorage.setItem("ec_account", "1"); localStorage.setItem("ec_name", "E2E"); } catch (e) {} });
-  await page.goto("/");
+  await page.goto("/play/dream");
   await expect(page.getByText("OPPONENT DIFFICULTY")).toHaveCount(0); // Single
   await page.getByRole("button", { name: "Play", exact: false }).first().click();
   await page.getByRole("menuitem", { name: /Best of 7/ }).click();
