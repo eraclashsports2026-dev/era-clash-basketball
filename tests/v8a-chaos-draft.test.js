@@ -10,7 +10,8 @@ import { cpuHoldDecision, assertVisibleState, FORBIDDEN_STATE_KEYS, POLICIES, ro
 import { generateOffers, explainOffer, cpuCoachChoice, offenseIdentity, systemFamily } from "../src/chaos/coachOffers.js";
 import { startRun, submitHolds, selectCoach, publicView, revealEra, PHASES } from "../src/chaos/runState.js";
 import { challengeId, FORBIDDEN_CHALLENGE_FIELDS, challengeUrl, buildManifest } from "../src/chaos/challenge.js";
-import { can, CAPABILITIES, MATRIX, FEATURE_FLAGS, gateReason, MODES } from "../src/entitlements.js";
+import { can, CAPABILITIES, MATRIX, FEATURE_FLAGS, gateReason } from "../src/entitlements.js";
+import { PLAY_MODES, defaultMode } from "../src/navigation.js";
 import { eraTranslationScore, CHAOS_ERA_IDS } from "../src/chaos/eraTranslation.js";
 
 const byId = new Map(PLAYERS.map((p) => [p.id, p]));
@@ -283,12 +284,15 @@ describe("entitlements", () => {
     expect(FEATURE_FLAGS.eraGauntlet.implementationStatus).toBe("PLANNED");
     expect(FEATURE_FLAGS.eraGauntlet.eraGauntletVersion).toBeNull();
     expect(can("PLUS", CAPABILITIES.ERA_GAUNTLET)).toBe(false);
-    expect(MODES.map((m) => m.id)).not.toContain("eraGauntlet");
+    expect(PLAY_MODES.map((m) => m.id)).not.toContain("eraGauntlet");
   });
 
   it("makes Chaos Clash the default mode", () => {
-    expect(MODES[0].id).toBe("chaos");
-    expect(MODES[0].default).toBe(true);
+    // The mode list lives in the navigation registry alone (Phase 9A removed
+    // the duplicate in entitlements.js).
+    expect(PLAY_MODES[0].id).toBe("chaos");
+    expect(defaultMode().id).toBe("chaos");
+    expect(PLAY_MODES[0].isDefault).toBe(true);
   });
 
   it("shows no fake checkout anywhere", () => {

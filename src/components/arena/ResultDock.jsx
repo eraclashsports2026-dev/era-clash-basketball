@@ -7,7 +7,7 @@
 // Every value comes from real state — the live chaos run, or the STORED result
 // that the full Postgame reads. Nothing here is sample data, and a previous
 // result is always labelled as one: it must never read as the draft on screen.
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const TABS = [
   ["story", "Game Story"],
@@ -116,10 +116,18 @@ export default function ResultDock({
   phase, run, result, priorResult, priorAt, simStage,
   onViewFullReport, onRunItBack, onNewClash, onChallenge, busy,
 }) {
-  // No section is open until one is asked for — the canonical reference shows
-  // the summary and four tab controls, and an open panel is what pushed the
-  // dock past the first viewport.
+  // No section is open in the canonical reference state — the summary and four
+  // tab controls fit the first viewport, and the frozen 8C.1 geometry contract
+  // measures exactly that. The Story leads a game that has JUST finished
+  // (Phase 9A): when the dock moves from simulating to complete, the Story opens
+  // and the other three sections stay one tap away. A stored or reloaded result
+  // keeps the reference's closed tabs.
   const [tab, setTab] = useState(null);
+  const prevPhase = useRef(phase);
+  useEffect(() => {
+    if (prevPhase.current === "simulating" && phase === "complete") setTab("story");
+    prevPhase.current = phase;
+  }, [phase]);
   const [, tick] = useState(0);
   // The "minutes ago" label would otherwise freeze at whatever it said when the
   // dock last re-rendered.

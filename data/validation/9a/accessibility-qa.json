@@ -1,0 +1,155 @@
+{
+  "artifact": "accessibility-qa",
+  "phase": "9A — Play Lobby, activation clarity, multi-position placement",
+  "mode": "accessibility",
+  "generatedAt": "2026-09-02T22:17:44.157Z",
+  "baseUrl": "http://localhost:4176",
+  "checks": 18,
+  "passed": 18,
+  "failed": 0,
+  "results": [
+    {
+      "name": "the lobby is a labelled main landmark with an h1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "every mode card has a heading",
+      "pass": true,
+      "detail": "7"
+    },
+    {
+      "name": "the two tiers are labelled regions",
+      "pass": true,
+      "detail": "Game modes|More ways to play"
+    },
+    {
+      "name": "every card action is a real link or button with a full name",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the recommended card says so in its name and as a word",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "status badges are text",
+      "pass": true,
+      "detail": "Coming soon"
+    },
+    {
+      "name": "cards are described by their sentence",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "body copy clears WCAG AA on the panel",
+      "pass": true,
+      "detail": "11.62:1"
+    },
+    {
+      "name": "titles clear WCAG AA on the panel",
+      "pass": true,
+      "detail": "17.38:1"
+    },
+    {
+      "name": "the logo has alt text",
+      "pass": true,
+      "detail": "EraClash Basketball"
+    },
+    {
+      "name": "reduced motion is respected by the lobby",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Tab reaches a mode card's action",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "focus is visible",
+      "pass": true,
+      "detail": "solid"
+    },
+    {
+      "name": "Enter opens the mode's route",
+      "pass": true,
+      "detail": "http://localhost:4176/play/chaos"
+    },
+    {
+      "name": "a selection is announced with every eligible position and the count",
+      "pass": true,
+      "detail": "Kevin Durant selected. Eligible positions: small forward, power forward and shooting guard. Three legal positions available."
+    },
+    {
+      "name": "an ineligible slot explains itself to assistive tech",
+      "pass": true,
+      "detail": "Kevin Durant is not eligible at Point Guard."
+    },
+    {
+      "name": "a placement is announced with Undo",
+      "pass": true,
+      "detail": "Kevin Durant placed at power forward. Undo is available."
+    },
+    {
+      "name": "Undo is a reachable control",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "accessibility": {
+    "main": true,
+    "h1": "Play EraClash Basketball",
+    "headings": 7,
+    "sections": [
+      "Game modes",
+      "More ways to play"
+    ],
+    "actions": [
+      {
+        "tag": "A",
+        "name": "Play Chaos Clash, recommended",
+        "href": "/play/chaos"
+      },
+      {
+        "tag": "A",
+        "name": "Play Dream Matchup",
+        "href": "/play/dream"
+      },
+      {
+        "tag": "A",
+        "name": "Play Daily Clash",
+        "href": "/play/daily"
+      },
+      {
+        "tag": "A",
+        "name": "Play Best of 7",
+        "href": "/play/best-of-7"
+      },
+      {
+        "tag": "A",
+        "name": "Play Win 82",
+        "href": "/play/win-82"
+      },
+      {
+        "tag": "A",
+        "name": "Play Tournament",
+        "href": "/play/tournament"
+      },
+      {
+        "tag": "A",
+        "name": "Learn more Era Gauntlet — Coming soon",
+        "href": "/modes/era-gauntlet"
+      }
+    ],
+    "describedBy": true,
+    "lineContrast": 11.623986216820358,
+    "titleContrast": 17.377621838284384,
+    "badgeText": "Coming soon",
+    "recommendedWord": true,
+    "logoAlt": "EraClash Basketball",
+    "reducedMotionRule": true
+  }
+}

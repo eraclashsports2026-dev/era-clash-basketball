@@ -15,6 +15,13 @@ const COPY = {
     title: "Start a new Clash?",
     body: "A fresh Clash is dealt. This game stays in the Result Dock as your last clash, and its full report still opens.",
   },
+  // From the lobby's Continue card: the run is discarded and nothing new is
+  // dealt. A guest's run budget is spent when a run STARTS, so abandoning one
+  // never buys another opening roll.
+  abandon: {
+    title: "Abandon this Chaos Clash?",
+    body: "Your five, your holds and the staff offers are discarded. Nothing is recorded, and this cannot be undone. Your remaining Chaos runs are unchanged — a run counts when it starts, not when it ends.",
+  },
 };
 
 export default function ResetDialog({ open, state = "draft", busy = false, onConfirm, onCancel }) {
@@ -47,16 +54,16 @@ export default function ResetDialog({ open, state = "draft", busy = false, onCon
         </p>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
           <button onClick={onConfirm} disabled={busy}
-            aria-label={state === "complete" ? "Yes, start a new Clash" : "Yes, reset this Clash"}
+            aria-label={state === "complete" ? "Yes, start a new Clash" : state === "abandon" ? "Yes, abandon this Chaos Clash" : "Yes, reset this Clash"}
             style={{
               minHeight: 44, borderRadius: 9, cursor: busy ? "default" : "pointer",
               fontFamily: "var(--ec-display)", fontSize: 13, fontWeight: 700, letterSpacing: 1,
               border: "1px solid var(--ec-a-gold-line)",
               background: "linear-gradient(180deg, var(--ec-a-gold), #b07d09)",
               color: "#0a0f18", opacity: busy ? 0.6 : 1,
-            }}>{busy ? "RESETTING…" : "YES"}</button>
+            }}>{busy ? (state === "abandon" ? "ABANDONING…" : "RESETTING…") : "YES"}</button>
           <button ref={noRef} onClick={onCancel}
-            aria-label={state === "complete" ? "No, stay on this result" : "No, keep drafting"}
+            aria-label={state === "complete" ? "No, stay on this result" : state === "abandon" ? "No, keep this Chaos Clash" : "No, keep drafting"}
             style={{
               minHeight: 44, borderRadius: 9, cursor: "pointer",
               fontFamily: "var(--ec-display)", fontSize: 13, fontWeight: 700, letterSpacing: 1,

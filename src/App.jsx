@@ -30,7 +30,13 @@ import ArenaHeader from "./components/arena/ArenaHeader.jsx";
 import TimeArena from "./components/arena/TimeArena.jsx";
 import ReferenceFixture from "./ui/time-arena/ReferenceFixture.jsx";
 import { MembershipPage, FantasyPage, ModeInfoPage, HowModesModal as ArenaHowModes, ArenaGuide } from "./components/arena/InfoPages.jsx";
-import { PLAY_MODES, findMode, defaultMode, MODE_STATUS } from "./navigation.js";
+import {
+  PLAY_MODES, findMode, defaultMode, MODE_STATUS,
+  modeForRoute, isLobbyRoute, isPlayRoute, routeForAppMode, PLAY_LOBBY_ROUTE,
+} from "./navigation.js";
+import PlayLobby from "./components/lobby/PlayLobby.jsx";
+import { placementPlan, place as placePlayer, describeSelection, describePlacement, PLACEMENT_MODE } from "./lineupPlacement.js";
+import { markEntry } from "./activation.js";
 import AccountGate from "./components/chaos/AccountGate.jsx";
 import { currentTier, hasAccount } from "./account.js";
 import { simulateChaos, publishChaosChallenge, chooseChaosEra } from "./chaos/client.js";
@@ -110,14 +116,11 @@ const noteGameStarted = () => {
   if (gamesThisSession === 2) track("second_game_started", {});
 };
 
-const GAME_MODES = [
-  ["Chaos", "CHAOS CLASH", "Three rolls. Hold your legends. Adapt to the era."],
-  ["Single", "DREAM MATCHUP", "Build both teams exactly how you want."],
-  ["Best7", "BEST OF 7", "Settle the debate."],
-  ["Win82", "WIN 82", "Survive the season."],
-  ["Tournament", "TOURNAMENT", "Four rounds to a title."],
-];
-const MODE_ICON = { Chaos: "🎲", Single: "🏀", Best7: "🏆", Win82: "🗓️", Tournament: "🏟️" };
+// Mode presentation — label, icon, sentence — is read from the ONE navigation
+// registry by App-level mode name. A second list here once described the same
+// modes in different words from the menu.
+const modeMeta = (appMode) => PLAY_MODES.find((m) => m.appMode === appMode) || null;
+const modeBlurb = (appMode) => modeMeta(appMode)?.tagline || "";
 const MODE_TO_ANALYTICS = { Win82: "82", Single: "single", Best7: "best7", Tournament: "tournament", Daily: "daily", Challenge: "challenge" };
 
 // ── App ──────────────────────────────────────────────────────────────────────
@@ -127,6 +130,23 @@ const MODE_TO_ANALYTICS = { Win82: "82", Single: "single", Best7: "best7", Tourn
 // statically eliminates both this route and the fixture module.
 const DEV_FIXTURES = import.meta.env.DEV || import.meta.env.VITE_EC_DEV_FIXTURES === "1";
 const FIXTURE_ROUTE = "/dev/time-arena-reference";
+
+// The address on first paint. A game-opening link that lands on the entrance
+// (?chaos= a same-seed challenge, ?scenario= a guided preview setup) goes
+// straight to its surface, so the lobby never flashes in front of it and never
+// counts a view it did not get.
+const initialRoute = () => {
+  if (typeof window === "undefined") return "/";
+  const { pathname, search } = window.location;
+  const q = new URLSearchParams(search);
+  let p = pathname;
+  if (isLobbyRoute(p)) {
+    if (q.get("chaos")) p = "/play/chaos";
+    else if (q.get("scenario")) p = "/play/dream";
+  }
+  if (p !== pathname) { try { window.history.replaceState({}, "", p + search); } catch { /* ignore */ } }
+  return p;
+};
 
 export default function App() {
   const [nav, setNav] = useState("Play");             // Play | Daily | Challenges | Board | Profile | Credits
@@ -158,7 +178,7 @@ export default function App() {
   // Client route for the destinations Phase 8C added. Real paths, so links are
   // shareable and the back button behaves; the SPA rewrites and the preview
   // middleware matcher both cover them.
-  const [route, setRoute] = useState(() => (typeof window === "undefined" ? "/" : window.location.pathname));
+  const [route, setRoute] = useState(() => initialRoute());
   const [eraLocked, setEraLocked] = useState(false);      // the era step is a confirmation, not a default
   const [difficulty, setDifficulty] = useState(DEFAULT_DIFFICULTY); // opponent pool for Win82/Tournament
   const [buildMethod, setBuildMethod] = useState("manual"); // manual (concept default) | rolls (Chaos Draft)
@@ -227,12 +247,18 @@ export default function App() {
         // back to Dream Matchup rather than a Play screen that cannot start.
         const on = m.modes?.chaosClash !== false;
         setChaosAvailable(on);
-        if (!on) setGameMode((g) => (g === "Chaos" ? "Single" : g));
+        if (!on) {
+          setGameMode((g) => (g === "Chaos" ? "Single" : g));
+          // Keep the address truthful: a Chaos link on a deployment without
+          // Chaos lands on the manual builder.
+          if (window.location.pathname === "/play/chaos") replaceRoute(routeForAppMode("Single"));
+        }
       }).catch(() => {});
     }).catch(() => {});
   }, []);
 
   useEffect(() => {
+    markEntry();
     trackSessionStart();
     installErrorMonitoring();
     const onPrompt = () => track("pwa_install_prompt_shown", {});
@@ -278,6 +304,11 @@ export default function App() {
     }
   }, []);
 
+  useEffect(() => {
+    if (!route.startsWith("/membership")) return;
+    track("membership_gate_shown", { from: new URLSearchParams(window.location.search).get("from") || null, feature: new URLSearchParams(window.location.search).get("feature") || null });
+  }, [route]);
+
   // Back/forward through the Phase 8C destinations.
   useEffect(() => {
     const onPop = () => setRoute(window.location.pathname);
@@ -293,6 +324,29 @@ export default function App() {
     setRoute(url.pathname);
     window.scrollTo(0, 0);
   }, []);
+  const replaceRoute = useCallback((to) => {
+    const url = new URL(to, window.location.origin);
+    window.history.replaceState({}, "", url);
+    setRoute(url.pathname);
+  }, []);
+
+  // The address is an entry point: /play/<mode> selects that mode exactly as the
+  // Play menu would, so a typed link, a lobby card, Back and Forward all behave
+  // the same way. It never starts a game — the mode's own surface does that,
+  // on an explicit action.
+  useEffect(() => {
+    const m = modeForRoute(route);
+    if (!m) return;
+    if (m.nav) { if (nav !== m.nav) setNav(m.nav); return; }
+    if (nav !== "Play") setNav("Play");
+    if (m.appMode && m.appMode !== gameMode) { setGameMode(m.appMode); setResult(null); setView("builder"); }
+  }, [route]); // eslint-disable-line
+  // The address is the ONE source of truth for the mode. An earlier build also
+  // synced the address FROM gameMode; on first paint at /play/dream that effect
+  // ran with the stale default ("Chaos"), rewrote the address to /play/chaos,
+  // the route effect answered by setting Chaos, and the two ping-ponged once a
+  // frame — the builder remounted continuously and no control could be clicked.
+  // Every programmatic mode change now navigates explicitly instead.
 
   // ONE handler for every mode entry point — the Play menu and the mode shelf
   // both route through it, so a mode can never behave differently in the two.
@@ -300,6 +354,7 @@ export default function App() {
     switch (action.intent) {
       case "OPEN_MODE": {
         const m = action.mode;
+        if (m.route) navigate(m.route);
         if (m.nav) { setNav(m.nav); return; }
         setNav("Play");
         if (m.appMode && m.appMode !== gameMode) {
@@ -314,8 +369,11 @@ export default function App() {
         return;
       }
       case "CREATE_ACCOUNT":
-        setGate({ kind: "ACCOUNT", message: action.message });
+        // The gate is a whole surface, titled for the mode that asked for it,
+        // at that mode's own address — so the link on the lobby card is honest.
+        setGate({ kind: "ACCOUNT", message: action.message, modeId: action.mode?.id || null, modeLabel: action.mode?.label || null });
         setNav("Play");
+        if (action.mode?.route) navigate(action.mode.route);
         return;
       case "MEMBERSHIP":
       case "MODE_INFO":
@@ -396,6 +454,10 @@ export default function App() {
     && gameMode === "Single" && nav === "Play" && !result
     && !can(tier, CAPABILITIES.DREAM_MATCHUP);
   const coachesReady = !v3Steps || (blueBuildable ? (!!coachGold && !!coachBlue) : !!coachGold);
+  const accountGateShown = (!!gate && nav === "Play" && !result) || dreamMatchupGated;
+  useEffect(() => {
+    if (accountGateShown) track("account_gate_shown", { mode: gate?.modeId || (dreamMatchupGated ? "dream" : "chaos") });
+  }, [accountGateShown]); // eslint-disable-line
   // ── Wizard stage gating (v3 modes) ────────────────────────────────────────
   const rosterDone = !!team && (!blueBuildable || !!opponent);
   const stageDone = { ROSTERS: rosterDone, COACHES: rosterDone && coachesReady, ERA: eraLocked };
@@ -514,9 +576,96 @@ export default function App() {
     return { ...z, roll: z.roll + 1, roster, decisions, keep: [false, false, false, false, false], respin: [null, null, null, null, null] };
   });
 
+  // ── Placement (Phase 9A): a player first, then one of THEIR legal slots ────
+  // The rules live in src/lineupPlacement.js; this only holds the pending
+  // selection, applies a result, and keeps the previous five for Undo.
+  const [placing, setPlacing] = useState(null);   // { player, target, plan }
+  const [undo, setUndo] = useState(null);         // { five, target, completed, message }
+  const [announce, setAnnounce] = useState("");   // the aria-live sentence
+  const undoTimer = useRef(null);
+  const fiveFor = (target) => (target === "blue-manual" ? blueManual : manual);
+  const setFive = (target, next) => {
+    if (target === "blue-manual") {
+      if (next.every(Boolean)) { setOpponent(next); setBlueManual([null, null, null, null, null]); } else setBlueManual(next);
+    } else {
+      if (!manual.some(Boolean) && next.some(Boolean)) track("draft_started", { mode: MODE_TO_ANALYTICS[activeMode], method: "manual", ball_iq: ballIQ });
+      if (next.every(Boolean)) { finalizeTeam(next); setManual([null, null, null, null, null]); } else setManual(next);
+    }
+  };
+  const offerUndo = (target, before, completed, message) => {
+    setUndo({ five: before, target, completed, message });
+    clearTimeout(undoTimer.current);
+    undoTimer.current = setTimeout(() => setUndo(null), 9000);
+  };
+  const applyPlacement = (target, player, index, { auto = false } = {}) => {
+    const before = fiveFor(target);
+    const r = placePlayer(before, player, index);
+    if (!r.ok) { setErr(r.message); setAnnounce(r.message); return false; }
+    const completed = r.five.every(Boolean);
+    setFive(target, r.five);
+    const msg = describePlacement(r, { auto });
+    setAnnounce(msg);
+    offerUndo(target, before, completed, msg);
+    const side = target === "blue-manual" ? "blue" : "gold";
+    track(auto ? "dream_player_auto_placed" : "dream_player_placed",
+      { slot: POSITIONS[index], player_id: player.id, method: auto ? "auto" : "player-first", side });
+    if (r.displaced) track("dream_player_swap_completed", { slot: POSITIONS[index], relocated: r.relocatedTo != null, side });
+    setFlashSlot(index); setTimeout(() => setFlashSlot(null), 600);
+    setPlacing(null);
+    return true;
+  };
+  const beginPlacement = (player, target) => {
+    const plan = placementPlan(fiveFor(target), player);
+    track("dream_player_selected", { player_id: player.id, eligible: plan.eligible.join(","), legal: plan.legalCount, mode: plan.mode });
+    setAnnounce(describeSelection(plan));
+    if (plan.mode === PLACEMENT_MODE.DUPLICATE_PERSON) {
+      setErr(`${player.name} is already on this team — a lineup can't field two era-versions of the same player. (Different versions CAN face each other on opposite teams.)`);
+      return;
+    }
+    if (plan.mode === PLACEMENT_MODE.AUTO) { applyPlacement(target, player, plan.autoIndex, { auto: true }); return; }
+    track("eligible_position_choice_shown", { legal: plan.legalCount, open: plan.open.length, occupied: plan.occupied.length });
+    setPlacing({ player, target, plan });
+  };
+  const cancelPlacement = () => { setPlacing(null); setAnnounce("Placement cancelled."); };
+  const undoPlacement = () => {
+    if (!undo) return;
+    if (undo.target === "blue-manual") { setBlueManual(undo.five); if (undo.completed) setOpponent(null); }
+    else { setManual(undo.five); if (undo.completed) setTeam(null); }
+    track("dream_player_placement_undone", { side: undo.target === "blue-manual" ? "blue" : "gold" });
+    setAnnounce("Placement undone."); setUndo(null);
+  };
+  useEffect(() => {
+    if (!placing) return undefined;
+    const onKey = (e) => { if (e.key === "Escape") cancelPlacement(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [placing]); // eslint-disable-line
+  useEffect(() => () => clearTimeout(undoTimer.current), []);
+  const placementFor = (target) => (placing?.target === target
+    ? { plan: placing.plan, onPlace: (i) => applyPlacement(target, placing.player, i) } : null);
+  const placeBar = (target) => placing?.target === target && (
+    <div className="ec-place-bar" role="status">
+      <span>
+        Placing <strong>{placing.player.name}</strong> — eligible: {placing.plan.eligible.join(" · ")}.{" "}
+        {placing.plan.open.length ? "Choose a highlighted position." : "Every eligible position is taken — choose one to swap."}
+      </span>
+      <button className="ec-place-bar-cancel" onClick={cancelPlacement} aria-label="Cancel placement">Cancel</button>
+    </div>
+  );
+  const addPlayerButton = (target, side) => (
+    <button onClick={() => setPicker({ slot: null, target })}
+      aria-label={`Add a player to Team ${side === "blue" ? "Blue" : "Gold"} and choose their position after`} style={{
+        width: "100%", marginBottom: 10, padding: "10px 12px", fontSize: 12.5, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 44,
+        border: `1px solid ${side === "blue" ? T.blueBorder : T.goldBorder}`, background: side === "blue" ? T.blueSoft : T.goldSoft, color: side === "blue" ? T.blue : T.gold,
+      }}>＋ Add a player · pick the position after</button>
+  );
+
   // ── Draft: Manual + Random (both teams) ────────────────────────────────────
   const pickManual = (p) => {
     const { slot, target } = picker;
+    // Player-first (Phase 9A): the picker had no slot, so the placement flow
+    // decides where this player may legally go.
+    if (slot == null) { setPicker(null); beginPlacement(p, target); return; }
     // V3 duplicate-person rule: one team can't field two era-versions of the
     // same player (server enforces this too; across teams it's allowed)
     if (v3.enabled) {
@@ -539,12 +688,14 @@ export default function App() {
       const base = target === "blue-swap" && opponent ? opponent : blueManual;
       const next = base.map((x, i) => (i === slot ? p : x));
       track("player_selected", { slot: POSITIONS[slot], player_id: p.id, player_era: p.decade, method: "blue-manual" });
+      track("dream_player_placed", { slot: POSITIONS[slot], player_id: p.id, method: "slot-first", side: "blue" });
       if (next.every(Boolean)) { setOpponent(next); setBlueManual([null, null, null, null, null]); }
       else setBlueManual(next);
     } else {
       const next = manual.map((x, i) => (i === slot ? p : x));
       if (!manual.some(Boolean)) track("draft_started", { mode: MODE_TO_ANALYTICS[activeMode], method: "manual", ball_iq: ballIQ });
       track("player_selected", { slot: POSITIONS[slot], player_id: p.id, player_era: p.decade, ovr: displayOVR(p, POSITIONS[slot]), method: "manual" });
+      track("dream_player_placed", { slot: POSITIONS[slot], player_id: p.id, method: "slot-first", side: "gold" });
       setManual(next);
       if (next.every(Boolean)) { finalizeTeam(next); setManual([null, null, null, null, null]); }
     }
@@ -1057,6 +1208,13 @@ export default function App() {
   // ── Views ──────────────────────────────────────────────────────────────────
   const playView = (
     <div>
+      <div className="sr-only" role="status" aria-live="polite">{announce}</div>
+      {undo && (
+        <div className="ec-undo-toast" role="status">
+          <span>{undo.message}</span>
+          <button onClick={undoPlacement} aria-label="Undo the last placement">UNDO</button>
+        </div>
+      )}
       {activeScenario && (
         <div style={{ margin: "0 auto 14px", maxWidth: 680, padding: "10px 14px", borderRadius: 10,
           background: T.bgCardHover, border: `1px solid ${T.gold}`, fontSize: 12.5, color: T.textDim }}>
@@ -1083,8 +1241,8 @@ export default function App() {
         <div style={{ display: "flex", justifyContent: "center", padding: "10px 0 2px" }}>
           <span style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "7px 16px", borderRadius: R.pill,
             border: `1px solid ${T.goldBorder}`, background: T.goldSoft, color: T.gold, fontWeight: 800, fontSize: 13 }}>
-            <span aria-hidden="true">{MODE_ICON[gameMode]}</span>
-            {GAME_MODES.find(([id]) => id === gameMode)?.[1]}
+            <span aria-hidden="true">{modeMeta(gameMode)?.icon}</span>
+            {modeMeta(gameMode)?.label?.toUpperCase()}
           </span>
         </div>
       )}
@@ -1118,18 +1276,12 @@ export default function App() {
       {/* ── Chaos Clash lives in the Time Arena. The only reason it reaches
              this view is a gate: the arena hands off when a guest has to make
              an account to keep playing. ─────────────────────────────────── */}
-      {isChaos && !result ? (
-        <AccountGate
-          title="Keep playing Chaos Clash"
-          blurb={gate?.message || "Create a free account to keep playing Chaos Clash."}
-          onCreated={() => { setGate(null); setTier(currentTier()); setChaosNonce((n) => n + 1); }}
-          onBack={() => { setGate(null); }} />
-      ) : dreamMatchupGated ? (
+      {dreamMatchupGated ? (
         <AccountGate
           title="Dream Matchup"
           blurb="Build both teams by hand, pick from the full coach library and choose the era yourself. A free account keeps your matchups and history."
           onCreated={() => setTier(currentTier())}
-          onBack={() => setGameMode("Chaos")} />
+          onBack={() => navigate(PLAY_LOBBY_ROUTE)} />
       ) : isDaily && dailyDone && !team && !result ? (
         <div>
           <div style={{ ...card, padding: 30, textAlign: "center", maxWidth: 520, margin: "0 auto" }}>
@@ -1180,8 +1332,12 @@ export default function App() {
                     </div>
                   )}
                   {buildMethod === "manual" && !isDaily ? (
-                    <RosterGrid five={manual} team="gold" hideStats={ballIQ} flashSlot={flashSlot}
-                      onSlot={(i) => setPicker({ slot: i, target: "gold-manual" })} />
+                    <>
+                      {placing?.target === "gold-manual" ? placeBar("gold-manual") : addPlayerButton("gold-manual", "gold")}
+                      <RosterGrid five={manual} team="gold" hideStats={ballIQ} flashSlot={flashSlot}
+                        placement={placementFor("gold-manual")}
+                        onSlot={placing ? null : (i) => setPicker({ slot: i, target: "gold-manual" })} />
+                    </>
                   ) : (
                     <RollBuilder yz={yz} ballIQ={ballIQ} isDaily={isDaily}
                       onStart={() => startBuild(isDaily)} onKeep={toggleKeep} onRespin={setRespin} onRoll={doRoll} />
@@ -1262,7 +1418,7 @@ export default function App() {
                     ⚡ RUN THE SIM
                   </button>
                   <div style={{ textAlign: "center", fontSize: 11, color: T.textDim, marginTop: 6 }}>
-                    {GAME_MODES.find(([id]) => id === activeMode)?.[2] || (isChallenge ? "Beat their five." : isDaily ? "One official attempt." : "")}
+                    {modeBlurb(activeMode) || (isChallenge ? "Beat their five." : isDaily ? "One official attempt." : "")}
                   </div>
                 </div>
               )}
@@ -1283,7 +1439,7 @@ export default function App() {
               {/* Blue build methods — Team Blue is user-controlled, never auto-locked */}
               {!isChallenge && blueBuildable && !opponent && (
                 <div role="tablist" aria-label="Blue build method" style={{ display: "flex", gap: 6, marginBottom: 12 }}>
-                  <button role="tab" onClick={() => setPicker({ slot: blueManual.findIndex((x) => !x) === -1 ? 0 : blueManual.findIndex((x) => !x), target: "blue-manual" })} style={{
+                  <button role="tab" onClick={() => setPicker({ slot: null, target: "blue-manual" })} style={{
                     flex: 1, padding: "8px 10px", fontSize: 12, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 40,
                     border: `1px solid ${T.border}`, background: "transparent", color: T.textDim,
                   }}>✍️ Manual Draft</button>
@@ -1328,8 +1484,12 @@ export default function App() {
                   <RosterBalance team={opponent} side="blue" compact />
                 </>
               ) : blueBuildable ? (
-                <RosterGrid five={blueManual} team="blue" flashSlot={flashSlot}
-                  onSlot={(i) => setPicker({ slot: i, target: "blue-manual" })} />
+                <>
+                  {placeBar("blue-manual")}
+                  <RosterGrid five={blueManual} team="blue" flashSlot={flashSlot}
+                    placement={placementFor("blue-manual")}
+                    onSlot={placing ? null : (i) => setPicker({ slot: i, target: "blue-manual" })} />
+                </>
               ) : (
                 <div>
                   <LineupList team={[]} side="blue" />
@@ -1456,7 +1616,7 @@ export default function App() {
                     ⚡ RUN THE SIM
                   </button>
                   <div style={{ textAlign: "center", fontSize: 12, color: T.textDim, marginTop: 6 }}>
-                    {GAME_MODES.find(([id]) => id === activeMode)?.[2] || ""}
+                    {modeBlurb(activeMode)}
                   </div>
                 </div>
               </div>
@@ -1529,7 +1689,11 @@ export default function App() {
 
   // The dark arena treatment applies to the Play workspace and the Phase 8C
   // destinations; every other view keeps the hybrid theme.
-  const arenaMode = route !== "/" || (isChaos && !sharedResult && !gate);
+  // The lobby is the entrance at `/` and at /play, unless a shared result or a
+  // nav destination has taken the page.
+  const showLobby = isLobbyRoute(route) && nav === "Play" && !sharedResult;
+  const arenaMode = showLobby || (isChaos && !sharedResult && !gate)
+    || route.startsWith("/membership") || route.startsWith("/fantasy/") || route.startsWith("/modes/");
 
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
@@ -1538,8 +1702,8 @@ export default function App() {
         nav={nav}
         onNav={(n) => { if (route !== "/") { window.history.pushState({}, "", "/"); setRoute("/"); } handleNav(n); }}
         tier={tier}
-        activeModeId={nav === "Play" ? (PLAY_MODES.find((m) => m.appMode === gameMode)?.id || null) : null}
-        onModeAction={(a) => { if (route !== "/") { window.history.pushState({}, "", "/"); setRoute("/"); } handleModeAction(a); }}
+        activeModeId={nav === "Play" && !showLobby ? (PLAY_MODES.find((m) => m.appMode === gameMode)?.id || null) : null}
+        onModeAction={handleModeAction}
         onNavigate={navigate}
         onCreateAccount={() => { setNav("Play"); setGate({ kind: "ACCOUNT", message: "Create a free account to unlock every mode." }); }}
         onHowModes={() => setHowModes(true)}
@@ -1570,6 +1734,21 @@ export default function App() {
         <main>
           <ModeInfoPage id={route.split("/")[2]} onBack={goHome} />
         </main>
+      ) : showLobby ? (
+        <div className="ec-arena-court">
+          <PlayLobby tier={tier} chaosAvailable={chaosAvailable} previewCandidateActive={!!result?.sim?.previewCandidate}
+            entrance={route === "/"} onModeAction={handleModeAction}
+            onContinue={() => navigate("/play/chaos")}
+            onAbandoned={() => { setChaosRun(null); setChaosReady(null); setChaosChallengeId(null); }} />
+        </div>
+      ) : gate && nav === "Play" && !result ? (
+        <main style={{ maxWidth: 1280, margin: "0 auto", padding: "24px 16px 60px" }}>
+          <AccountGate
+            title={gate.modeLabel || "Keep playing Chaos Clash"}
+            blurb={gate.message || "Create a free account to keep playing Chaos Clash."}
+            onCreated={() => { setGate(null); setTier(currentTier()); setChaosNonce((n) => n + 1); }}
+            onBack={() => { setGate(null); navigate(PLAY_LOBBY_ROUTE); }} />
+        </main>
       ) : isChaos && !sharedResult && !gate ? (
         <main className="ec-arena-court">
           <TimeArena
@@ -1596,7 +1775,7 @@ export default function App() {
             } : null}
             onEraChange={changeChaosEra}
             onGuide={(section) => setGuide(section || "play")}
-            onSettings={() => handleNav("Profile")}
+            onSettings={() => { navigate("/"); handleNav("Profile"); }}
             onMembership={navigate} />
         </main>
       ) : (
@@ -1615,7 +1794,7 @@ export default function App() {
         ) : nav === "Profile" ? (
           <div style={{ maxWidth: 860, margin: "16px auto 0" }}>
             <Profile career={career} badges={badges} BADGES={BADGES} saved={saved} daily={daily}
-              onLoadTeam={(ids) => { const t = ids.map((id) => findCard(id)); if (!t.some((x) => !x)) { resetPlay(); setNav("Play"); setTeam(t); } }} />
+              onLoadTeam={(ids) => { const t = ids.map((id) => findCard(id)); if (!t.some((x) => !x)) { resetPlay(); setNav("Play"); navigate("/play/dream"); setTeam(t); } }} />
           </div>
         ) : nav === "Board" ? (
           <div style={{ maxWidth: 720, margin: "16px auto 0" }}>
@@ -1660,7 +1839,7 @@ export default function App() {
       )}
 
       {picker && (
-        <ManualPicker slotPos={POSITIONS[picker.slot]}
+        <ManualPicker slotPos={picker.slot == null ? null : POSITIONS[picker.slot]}
           excludeIds={(picker.target === "gold-swap" && team ? team
             : picker.target === "blue-swap" && opponent ? opponent
             : picker.target === "blue-manual" ? blueManual

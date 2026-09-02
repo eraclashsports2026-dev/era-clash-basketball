@@ -82,20 +82,20 @@ export const gateReason = (tier, capability) => {
   // that; this did not, so a signed-out visitor was told those modes needed
   // EraClash+ and routed to a page that cannot sell anything, when a free
   // account would have opened them.
-  const viaTrial = MODES.find((m) => m.capability === capability && m.trialCapability
-    && MATRIX.FREE.includes(m.trialCapability));
-  if (viaTrial && normalizeTier(tier) === "GUEST") {
+  const viaTrial = TRIAL_CAPABILITY[capability];
+  if (viaTrial && MATRIX.FREE.includes(viaTrial.trial) && normalizeTier(tier) === "GUEST") {
     return { kind: "ACCOUNT", message: `${viaTrial.label} opens with a free account.` };
   }
   return { kind: "MEMBERSHIP", message: "Membership feature — not active during private preview" };
 };
 
-/** The mode list the Play menu renders, in order. */
-export const MODES = Object.freeze([
-  { id: "chaos", label: "Chaos Clash", capability: C.CHAOS_CLASH, default: true, tagline: "Three rolls. Hold your legends. Adapt to the era." },
-  { id: "dream", label: "Dream Matchup", capability: C.DREAM_MATCHUP, tagline: "Build both teams exactly how you want." },
-  { id: "daily", label: "Daily Clash", capability: C.DAILY, tagline: "One shared matchup, once a day." },
-  { id: "bo7", label: "Best of 7", capability: C.BEST_OF_7, trialCapability: C.BEST_OF_7_TRIAL, tagline: "A seven-game series." },
-  { id: "win82", label: "Win 82", capability: C.WIN_82, trialCapability: C.WIN_82_PREVIEW, tagline: "A full season." },
-  { id: "tournament", label: "Tournament", capability: C.TOURNAMENT_JOIN, tagline: "Bracket play." },
-]);
+/**
+ * Modes reachable on a FREE account through a TRIAL capability. The mode list
+ * itself lives in ONE place — PLAY_MODES in src/navigation.js, which imports
+ * this module — so this holds only the capability pairing gateReason needs.
+ * A test pins the two together: every PLAY_MODES trialCapability appears here.
+ */
+export const TRIAL_CAPABILITY = Object.freeze({
+  [C.BEST_OF_7]: { trial: C.BEST_OF_7_TRIAL, label: "Best of 7" },
+  [C.WIN_82]: { trial: C.WIN_82_PREVIEW, label: "Win 82" },
+});

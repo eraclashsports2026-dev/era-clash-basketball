@@ -21,15 +21,20 @@ import {
   startChaos, viewChaos, submitChaosDecisions, chooseChaosCoach,
   publishChaosChallenge, abandonChaos,
 } from "../../chaos/client.js";
+import { recordFirstRoll } from "../../activation.js";
 
 const SLOTS = ["PG", "SG", "SF", "PF", "C"];
 const ROLE_SLOTS = ["ROSTER MAXIMIZER", "OPPONENT COUNTER", "ERA ADAPTER"];
 const RUN_KEY = "ec_chaos_run";
+// When this browser last touched the run — the lobby's Continue card reads it.
+// A browser-side record, never a server field, so it can be wrong only about
+// idle time and never about the run itself.
+const RUN_AT_KEY = "ec_chaos_run_at";
 
 const store = {
   get: () => { try { return localStorage.getItem(RUN_KEY); } catch { return null; } },
-  set: (v) => { try { localStorage.setItem(RUN_KEY, v); } catch { /* private mode */ } },
-  clear: () => { try { localStorage.removeItem(RUN_KEY); } catch { /* private mode */ } },
+  set: (v) => { try { localStorage.setItem(RUN_KEY, v); localStorage.setItem(RUN_AT_KEY, String(Date.now())); } catch { /* private mode */ } },
+  clear: () => { try { localStorage.removeItem(RUN_KEY); localStorage.removeItem(RUN_AT_KEY); } catch { /* private mode */ } },
 };
 
 /** The locally authored atmosphere: court and lighting in CSS, crowd and grain
@@ -140,6 +145,8 @@ export default function ChaosStage({
   };
 
   const deal = async () => {
+    // Activation clock: the first ROLL 1 of the session, measured from the lobby.
+    recordFirstRoll();
     const r = await act(() => startChaos({ tier, challengeId }), "Could not deal a Chaos Clash.");
     if (!r) return;
     if (r.gated) { onGated?.(r.gate); return; }
@@ -252,8 +259,14 @@ export default function ChaosStage({
     );
   }
 
+  // Progressive disclosure: one focus per state. The coach section is
+  // actionable only while offers are on the table (holds during the rolls, the
+  // hire after the third); at every other moment it is visibly subdued so it
+  // never competes with the roll button.
+  const focus = !run ? "empty" : drafting ? "hold" : selecting ? "hire" : ready ? "ready" : "other";
+  const coachActive = offers.length > 0 && (drafting || selecting);
   return (
-    <section className="ec-ta-stage" aria-label="Chaos Clash draft">
+    <section className="ec-ta-stage" aria-label="Chaos Clash draft" data-focus={focus}>
       <Atmosphere />
 
       <div className="ec-ta-stage-head">
@@ -283,7 +296,7 @@ export default function ChaosStage({
       </div>
 
       {/* ── Coach Chaos, inside the same stage and the same viewport ──────── */}
-      <div className="ec-ta-coach">
+      <div className="ec-ta-coach" data-active={coachActive ? "true" : "false"}>
         <div className="ec-ta-coach-head">
           <div className="ec-ta-coach-title">COACH CHAOS</div>
           <div className="ec-ta-coach-sub">

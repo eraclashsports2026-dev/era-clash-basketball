@@ -52,7 +52,7 @@ const states = async (page) => {
     console.log(`  captured state-${name}.png`);
   };
 
-  await page.goto(`${BASE}/`, { waitUntil: "domcontentloaded" });
+  await page.goto(`${BASE}/play/chaos`, { waitUntil: "domcontentloaded" });
   await page.waitForSelector(".ec-ta-roster", { timeout: 45_000 });
   await shot("1-empty");
 

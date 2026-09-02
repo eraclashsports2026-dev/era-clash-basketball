@@ -2,8 +2,8 @@
   "artifact": "time-arena-layout-contract",
   "phase": "8C — Time Arena",
   "mode": "arena",
-  "checks": 26,
-  "passed": 26,
+  "checks": 27,
+  "passed": 27,
   "failed": 0,
   "results": [
     {
@@ -17,12 +17,17 @@
       "detail": "364"
     },
     {
-      "name": "the right rail is sticky on desktop",
+      "name": "the rail is a column of the page, not a pane with its own scrollbar",
       "pass": true,
       "detail": ""
     },
     {
-      "name": "the rail scrolls internally rather than trapping the page",
+      "name": "no arena surface is a vertical scroll container",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a wide stat table scrolls sideways only, with the other axis stated",
       "pass": true,
       "detail": ""
     },

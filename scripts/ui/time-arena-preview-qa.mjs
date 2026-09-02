@@ -121,9 +121,9 @@ const run = async () => {
   if (auth.status() !== 303) { console.error("could not open a preview session"); process.exit(1); }
   const page = await ctx.newPage();
   await freshAccount(page);
-  await page.goto(`${BASE}/`, { waitUntil: "domcontentloaded" });
+  await page.goto(`${BASE}/play/chaos`, { waitUntil: "domcontentloaded" });
   await page.locator(".ec-ta").waitFor({ timeout: 45_000 });
-  gate("the Time Arena is the landing surface", await page.locator(".ec-ta").isVisible());
+  gate("the Time Arena is the Chaos Clash surface at /play/chaos", await page.locator(".ec-ta").isVisible());
   gate("an empty board shows ten card backs", (await page.locator(".ec-pc-empty").count()) === 10);
   await page.screenshot({ path: `${SHOTS}/state-01-empty.png` });
 
@@ -468,7 +468,7 @@ const run = async () => {
   const eras = [eraId];
   for (let i = 0; i < 5; i++) {
     await page.evaluate(() => { try { localStorage.removeItem("ec_chaos_run"); } catch (e) {} });
-    await page.goto(`${BASE}/`, { waitUntil: "domcontentloaded" });
+    await page.goto(`${BASE}/play/chaos`, { waitUntil: "domcontentloaded" });
     await page.getByRole("button", { name: /^ROLL 1/ }).click();
     await page.locator(".ec-ta-roster .ec-pc").nth(9).waitFor({ timeout: 45_000 });
     await page.getByRole("button", { name: /LOCK & ROLL 2/ }).click();
@@ -487,7 +487,7 @@ const run = async () => {
     await c.request.post(`${BASE}/api/preview-access`, { form: { key: owner.key }, maxRedirects: 0 });
     const p = await c.newPage();
     await freshAccount(p);
-    await p.goto(`${BASE}/`, { waitUntil: "domcontentloaded" });
+    await p.goto(`${BASE}/play/chaos`, { waitUntil: "domcontentloaded" });
     await p.getByRole("button", { name: /^ROLL 1/ }).click();
     await p.locator(".ec-ta-roster .ec-pc").nth(9).waitFor({ timeout: 45_000 });
     const m = await p.evaluate(() => {

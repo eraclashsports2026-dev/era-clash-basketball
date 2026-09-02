@@ -13,6 +13,7 @@
 import { PLAYERS } from "../../players.js";
 import { displayOVR } from "../../rating.js";
 import { resolvePortrait, initialsOf, PORTRAIT_STATUS } from "../../ui/time-arena/portraits.js";
+import { eligibleLabel } from "../../lineupPlacement.js";
 
 const byId = new Map(PLAYERS.map((p) => [p.id, p]));
 
@@ -75,6 +76,14 @@ export default function PlayerCard({
             — which is why held cards' buttons sat lower than the rest. */}
         {kept && <span className="ec-pc-kept" aria-hidden="true">KEPT</span>}
         <Portrait card={card} player={player} />
+        {/* Every position the card is eligible at, from card data alone. Chaos
+            keeps its authoritative slot logic; this is information, not a
+            control. Absolutely positioned so the frozen geometry is untouched. */}
+        {player && player.positions?.length > 1 && (
+          <span className="ec-pc-elig" title={`Eligible positions: ${eligibleLabel(player)}`}>
+            {eligibleLabel(player)}<span className="sr-only"> eligible positions</span>
+          </span>
+        )}
       </div>
 
       <div className="ec-pc-name" title={card.name}>{card.name}</div>

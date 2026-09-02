@@ -32,7 +32,7 @@ const throughWizard = async (page) => {
 
 test("U1: full wizard + postgame at desktop 1440 — screenshots and zero overflow", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto("/");
+  await page.goto("/play/dream");
   await shot(page, "1440-rosters-empty"); await noHorizontalOverflow(page, "rosters-empty");
   await randomBoth(page);
   await shot(page, "1440-rosters-complete"); await noHorizontalOverflow(page, "rosters-complete");
@@ -71,7 +71,7 @@ test("U1: full wizard + postgame at desktop 1440 — screenshots and zero overfl
 
 test("U2: full wizard + postgame at mobile 375 — zero page overflow, isolated table scroll", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
-  await page.goto("/");
+  await page.goto("/play/dream");
   await noHorizontalOverflow(page, "m-rosters-empty");
   await randomBoth(page);
   await shot(page, "375-rosters"); await noHorizontalOverflow(page, "m-rosters");
@@ -95,7 +95,7 @@ test("U2: full wizard + postgame at mobile 375 — zero page overflow, isolated 
 test("U3: remaining viewports hold the rosters and ready layouts", async ({ page }) => {
   for (const [w, h] of [[1600, 900], [1280, 800], [1024, 768], [768, 1024], [430, 932], [390, 844]]) {
     await page.setViewportSize({ width: w, height: h });
-    await page.goto("/");
+    await page.goto("/play/dream");
     await noHorizontalOverflow(page, `${w}x${h}-empty`);
     await randomBoth(page);
     await noHorizontalOverflow(page, `${w}x${h}-complete`);
@@ -105,7 +105,7 @@ test("U3: remaining viewports hold the rosters and ready layouts", async ({ page
 
 test("U4: keyboard-only completion of the wizard", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto("/");
+  await page.goto("/play/dream");
   // keyboard activation (Enter) on every stage control
   const press = async (name) => {
     const b = page.getByRole("button", { name }).first();
@@ -140,14 +140,14 @@ test("U4: keyboard-only completion of the wizard", async ({ page }) => {
 test("U5: reduced motion renders every stage without animation dependence", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto("/");
+  await page.goto("/play/dream");
   await randomBoth(page);
   await throughWizard(page);
   await expect(page.getByRole("button", { name: /RUN THE SIM/ })).toBeVisible();
 });
 
 test("U6: How Modes Work modal — focus, escape, truthful engine language", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/play/dream");
   await page.getByRole("button", { name: "Play", exact: false }).first().click();
   await page.getByRole("menuitem", { name: /How modes work/i }).click();
   const dialog = page.getByRole("dialog", { name: /How modes work/i });

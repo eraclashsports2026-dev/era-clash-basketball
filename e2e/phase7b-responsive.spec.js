@@ -32,7 +32,7 @@ const throughWizard = async (page) => {
 test("R1: every required viewport holds the builder without page overflow", async ({ page }) => {
   for (const [w, h] of [[1600, 900], [1440, 900], [1280, 800], [1024, 768], [768, 1024], [430, 932], [390, 844], [375, 812]]) {
     await page.setViewportSize({ width: w, height: h });
-    await page.goto("/");
+    await page.goto("/play/dream");
     await noOverflow(page, `${w}x${h} empty`);
     await randomBoth(page);
     await noOverflow(page, `${w}x${h} complete`);
@@ -42,7 +42,7 @@ test("R1: every required viewport holds the builder without page overflow", asyn
 
 test("R2: the coach modal is usable on a phone", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
-  await page.goto("/");
+  await page.goto("/play/dream");
   await randomBoth(page);
   await page.getByRole("button", { name: /Continue to Coaches/ }).click();
   await page.getByRole("button", { name: "Choose Coach" }).first().click();
@@ -68,7 +68,7 @@ test("R2: the coach modal is usable on a phone", async ({ page }) => {
 
 test("R3: postgame is readable and scroll-isolated on a phone", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
-  await page.goto("/");
+  await page.goto("/play/dream");
   await randomBoth(page);
   await throughWizard(page);
   await page.getByRole("button", { name: /RUN THE SIM/ }).click();
@@ -86,7 +86,7 @@ test("R3: postgame is readable and scroll-isolated on a phone", async ({ page })
 
 test("R4: keyboard-only completion, including the coach modal", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto("/");
+  await page.goto("/play/dream");
   const press = async (name) => {
     const b = page.getByRole("button", { name }).first();
     await b.waitFor({ state: "visible", timeout: 8000 });
@@ -123,7 +123,7 @@ test("R4: keyboard-only completion, including the coach modal", async ({ page })
 test("R5: reduced motion completes the flow", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto("/");
+  await page.goto("/play/dream");
   await randomBoth(page);
   await throughWizard(page);
   await expect(page.getByRole("button", { name: /RUN THE SIM/ })).toBeVisible();
@@ -131,7 +131,7 @@ test("R5: reduced motion completes the flow", async ({ page }) => {
 
 test("R6: the shell is warm-light with a navy header, not near-black", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto("/");
+  await page.goto("/play/dream");
   const lum = (rgb) => { const [r, g, b] = rgb.match(/\d+/g).map(Number); return (r * 0.299 + g * 0.587 + b * 0.114) / 255; };
   const body = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
   expect(lum(body), "the page is a light surface").toBeGreaterThan(0.8);
