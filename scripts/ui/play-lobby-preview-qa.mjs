@@ -12,6 +12,7 @@
 // by POSTing it to /api/preview-access, exactly as a tester's link does. No key
 // is printed, stored in an artifact, or placed in a URL.
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
+import { createHash } from "node:crypto";
 import { chromium, request as pwRequest } from "@playwright/test";
 import { previewCandidateIdentity } from "../../api/_lib/previewEngine.js";
 
@@ -34,8 +35,7 @@ const keys = () => {
   return JSON.parse(readFileSync(f, "utf8")).keys;
 };
 const owner = keys().find((k) => k.role === "owner");
-const sha = (s) => { const { createHash } = require_crypto(); return createHash("sha256").update(s).digest("hex").slice(0, 12); };
-function require_crypto() { return (0, eval)('require("node:crypto")'); }
+const sha = (s) => createHash("sha256").update(s).digest("hex").slice(0, 12);
 const freshAccount = (page) => page.addInitScript(() => {
   try { localStorage.setItem("ec_account", "1"); localStorage.setItem("ec_name", "QA"); localStorage.removeItem("ec_chaos_run"); localStorage.removeItem("ec_chaos_run_at"); } catch (e) {}
 });

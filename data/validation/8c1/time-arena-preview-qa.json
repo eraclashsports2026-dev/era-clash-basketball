@@ -2,8 +2,8 @@
   "artifact": "time-arena-preview-qa",
   "phase": "8C.1 — pixel-fidelity reconstruction",
   "deployment": {
-    "baseUrl": "https://era-clash-basketball-git-phase-8c1-time-arena-76aea9-era-clash.vercel.app",
-    "commit": "509a14a33abc8840abbe4b35309923e5ef03c392",
+    "baseUrl": "https://era-clash-basketball-git-phase-9a-play-lobby-a-0a236b-era-clash.vercel.app",
+    "commit": "b17a6a7e5024cbcba4df9e7c2b2b25a146ee1ac9",
     "environment": "vercel preview, access-gated"
   },
   "candidateUnderTest": {
@@ -163,7 +163,7 @@
     {
       "slot": "PG",
       "team": "blue",
-      "kept": true,
+      "kept": false,
       "cardH": 322,
       "overflowPx": 0,
       "footInset": 1
@@ -171,7 +171,7 @@
     {
       "slot": "SG",
       "team": "blue",
-      "kept": true,
+      "kept": false,
       "cardH": 322,
       "overflowPx": 0,
       "footInset": 1
@@ -187,7 +187,7 @@
     {
       "slot": "PF",
       "team": "blue",
-      "kept": true,
+      "kept": false,
       "cardH": 322,
       "overflowPx": 0,
       "footInset": 1
@@ -195,7 +195,7 @@
     {
       "slot": "C",
       "team": "blue",
-      "kept": false,
+      "kept": true,
       "cardH": 322,
       "overflowPx": 0,
       "footInset": 1
@@ -203,29 +203,27 @@
   ],
   "eraDealt": {
     "observed": [
+      "1980s",
       "1990s",
-      "2000s",
-      "2010s",
-      "1960s",
-      "2000s",
-      "2020s"
+      "1970s",
+      "1980s",
+      "1970s",
+      "1970s"
     ],
     "distinct": [
+      "1980s",
       "1990s",
-      "2000s",
-      "2010s",
-      "1960s",
-      "2020s"
+      "1970s"
     ]
   },
   "report": {
     "boxScoreRows": 13,
     "worstNameContrast": 5.8,
     "story": {
-      "count": 7,
-      "measured": 7,
+      "count": 8,
+      "measured": 8,
       "worst": 5.8,
-      "sample": "Stephen Curry controlled the game with 37 points, 8 assists."
+      "sample": "Wilt Chamberlain controlled the game with 33 points, 24 rebo"
     },
     "coaching": {
       "blocks": 43,
@@ -290,8 +288,8 @@
     {
       "section": "Game Story",
       "bad": [],
-      "docHeight": 1689,
-      "railBottomBeyondViewport": 594
+      "docHeight": 1647,
+      "railBottomBeyondViewport": 551
     },
     {
       "section": "Box Score",
@@ -302,8 +300,8 @@
     {
       "section": "Coaching",
       "bad": [],
-      "docHeight": 1537,
-      "railBottomBeyondViewport": 442
+      "docHeight": 1520,
+      "railBottomBeyondViewport": 424
     },
     {
       "section": "Analysis",
@@ -351,7 +349,7 @@
       "detail": "owner, wave1-tester-01, wave1-tester-02, wave1-tester-03, wave1-tester-04, wave1-tester-05, wave1-tester-06, wave1-tester-07"
     },
     {
-      "name": "the Time Arena is the landing surface",
+      "name": "the Time Arena is the Chaos Clash surface at /play/chaos",
       "ok": true,
       "detail": ""
     },
@@ -433,7 +431,7 @@
     {
       "name": "the era is revealed with Roll 2, in the rail",
       "ok": true,
-      "detail": "1990s"
+      "detail": "1980s"
     },
     {
       "name": "the era box appears once, in the rail",
@@ -443,7 +441,7 @@
     {
       "name": "every player card button sits inside its own card",
       "ok": true,
-      "detail": "6 card(s) marked KEPT · worst overflow 0px"
+      "detail": "4 card(s) marked KEPT · worst overflow 0px"
     },
     {
       "name": "every player card button sits at the same place on its card",
@@ -473,7 +471,7 @@
     {
       "name": "the result appears on the same page",
       "ok": true,
-      "detail": "/"
+      "detail": "/play/chaos"
     },
     {
       "name": "the dock leads with the score and no section forced open",
@@ -498,7 +496,7 @@
     {
       "name": "an open dock section grows the page instead of hiding behind a scrollbar",
       "ok": true,
-      "detail": "Game Story 1689px · Box Score 1636px · Coaching 1537px · Analysis 1625px"
+      "detail": "Game Story 1647px · Box Score 1636px · Coaching 1520px · Analysis 1625px"
     },
     {
       "name": "a finished game offers a new Clash on the board itself",
@@ -543,7 +541,7 @@
     {
       "name": "the game story has readable body prose",
       "ok": true,
-      "detail": "7 passages, 7 measurable, worst 5.8:1"
+      "detail": "8 passages, 8 measurable, worst 5.8:1"
     },
     {
       "name": "the coaching report renders, readable, on the deployed build",
@@ -563,7 +561,7 @@
     {
       "name": "six fresh drafts do not all land on one era",
       "ok": true,
-      "detail": "1990s, 2000s, 2010s, 1960s, 2000s, 2020s"
+      "detail": "1980s, 1990s, 1970s, 1980s, 1970s, 1970s"
     },
     {
       "name": "no draft defaults to the 1950s",

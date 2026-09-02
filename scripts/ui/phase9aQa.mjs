@@ -30,9 +30,6 @@ const checks = [];
 const ok = (n, p, d = "") => { checks.push({ name: n, pass: !!p, detail: String(d) }); console.log(`${p ? "PASS" : "FAIL"}  ${n}${d ? ` — ${d}` : ""}`); };
 const read = (f) => fs.readFileSync(f, "utf8");
 const src = (f) => read(f).replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "").replace(/\{\/\*[\s\S]*?\*\/\}/g, "");
-const git = (cmd) => { try { return (await_exec(cmd) || "").trim(); } catch { return null; } };
-const await_exec = (cmd) => { try { return (0, eval)('require("node:child_process")').execSync(cmd, { encoding: "utf8" }); } catch { return null; } };
-
 const extra = {};
 
 // ── Registry ─────────────────────────────────────────────────────────────────
@@ -157,7 +154,9 @@ if (MODE === "disclosure") {
   ok("the supporting line under the action is concise and stateful", /ec-ta-cta-sub/.test(stage) && /holding \$\{holds\.length\}\/5/.test(stage));
   ok("the era stays hidden until the server reveals it", /ERA HIDDEN/.test(intel) && /Revealed with Roll 2/.test(intel));
   ok("Live Intel keeps one strength, one risk and the pressure — no prediction", /YOUR IDENTITY/.test(intel) && /BIGGEST RISK/.test(intel) && /DRAFT PRESSURE/.test(intel) && /not a prediction/.test(intel));
-  ok("the result defaults to the Story, the other sections one tap away", /useState\("story"\)/.test(dock) && ["Game Story", "Box Score", "Coaching", "Analysis"].every((t) => dock.includes(t)));
+  ok("a finished game leads with the Story, the other sections one tap away; the reference state keeps its closed tabs",
+    /prevPhase\.current === "simulating" && phase === "complete"\) setTab\("story"\)/.test(dock) && /useState\(null\)/.test(dock)
+    && ["Game Story", "Box Score", "Coaching", "Analysis"].every((t) => dock.includes(t)));
   ok("a finished game compresses the board and keeps the matchup", /THE MATCHUP YOU BUILT/.test(stage) && /phase === "simulating" \|\| phase === "complete"/.test(stage));
   ok("the rail stays: Live Intel and the Result Dock are untouched surfaces", /<LiveIntel/.test(src("src/components/arena/TimeArena.jsx")) && /<ResultDock/.test(src("src/components/arena/TimeArena.jsx")));
   ok("no permanent rack of other modes in the arena", !fs.existsSync("src/components/arena/ModeShelf.jsx"));
