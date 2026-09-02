@@ -131,5 +131,8 @@ export const config = {
   matcher: [
     "/", "/index.html", "/api/:path*", "/result/:path*", "/challenge/:path*",
     "/membership", "/fantasy/:path*", "/modes/:path*",
+    // Phase 9A: the Play Lobby and every mode route. Same rule as above — a
+    // client-rendered path missing here hands the app shell to anyone.
+    "/play", "/play/:path*",
   ],
 };
