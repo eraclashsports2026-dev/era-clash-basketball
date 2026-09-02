@@ -102,7 +102,17 @@ if (MODE === "ledger") {
     "keyboard navigation": pass("accessibility-qa.json"),
     "activation telemetry": pass("activation-telemetry-qa.json"),
     "preview preservation": pass("preview-integration.json"),
-    "beta feedback preservation": existsSync("data/validation/6c6/candidate3-wave1-feedback-report.json") ? "FIXED_AND_VERIFIED (report readable)" : "UNRESOLVED_TECHNICAL_FAILURES",
+    // Honest about what was measured: the feedback path (api/feedback.js) and
+    // its store namespace are untouched by this phase (proven by diff), and the
+    // operator report runs. A LIVE read of tester records needs the store
+    // credentials, which this shell does not hold, so the report ran in its
+    // explicit EMPTY-DATA mode.
+    "beta feedback preservation": (() => {
+      const rep = json("data/validation/6c6/candidate3-wave1-feedback-report.json")?.data;
+      const untouched = !(sh(`git diff --name-only ${PARENT_COMMIT}...HEAD`) || "").split("\n").some((f) => /api\/feedback\.js|api\/_lib\/store\.js|previewTelemetry/.test(f));
+      if (!rep || !untouched) return "UNRESOLVED_TECHNICAL_FAILURES";
+      return `FIXED_AND_VERIFIED (feedback path and namespace untouched by diff; report runs — source: ${rep.source})`;
+    })(),
     "function-budget preservation": (q("production-isolation.json")?.serverlessFunctions?.increase === 0) ? "FIXED_AND_VERIFIED (13 of 13)" : "UNRESOLVED_TECHNICAL_FAILURES",
     "production isolation": (q("production-isolation.json")?.productionBranch?.unchanged && q("production-isolation.json")?.candidate?.coreDrift === 0) ? "FIXED_AND_VERIFIED (main unchanged, core drift 0)" : "UNRESOLVED_TECHNICAL_FAILURES",
   };

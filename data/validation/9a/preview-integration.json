@@ -1,0 +1,405 @@
+{
+  "artifact": "preview-integration",
+  "phase": "9A — Play Lobby, activation clarity, multi-position placement",
+  "deployment": {
+    "baseUrl": "https://era-clash-basketball-git-phase-9a-play-lobby-a-0a236b-era-clash.vercel.app",
+    "commit": "c2b453ad4a50a327fde00995a170bac010aa5f63",
+    "environment": "vercel preview, access-gated, branch alias"
+  },
+  "candidateUnderTest": {
+    "deployed": {
+      "enabled": true,
+      "candidateId": "Candidate 4",
+      "candidateCoreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+      "calibrationVersion": "1.4.0",
+      "featureFlag": "PREVIEW_SIM_ENGINE_ENABLED",
+      "fallbackEngine": "production engine 3.2.0 (per-request fallback; emergency-off returns every new request to production while stored preview results stay readable by version)",
+      "cacheNamespace": "preview-*",
+      "persistenceNamespace": "pv_ result-id prefix",
+      "accessControl": "hashed-key allowlist (config/previewAccess.js)"
+    },
+    "local": {
+      "candidateId": "Candidate 4",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+      "possessionCalibrationVersion": "1.4.0",
+      "actionLibraryVersion": "2.1.0",
+      "possessionEngineVersion": "1.2.0",
+      "fallbackEngine": "production engineVersion 3.2.0"
+    }
+  },
+  "accessControl": {
+    "unauthenticatedRoutesRefused": true,
+    "keys": [
+      {
+        "testerId": "owner",
+        "role": "owner",
+        "sha256Prefix": "6d3f1c7811d9",
+        "accepted": true,
+        "status": 303
+      },
+      {
+        "testerId": "wave1-tester-01",
+        "role": "tester",
+        "sha256Prefix": "d17a2b5f486b",
+        "accepted": true,
+        "status": 303
+      },
+      {
+        "testerId": "wave1-tester-02",
+        "role": "tester",
+        "sha256Prefix": "e20e4070dd4f",
+        "accepted": true,
+        "status": 303
+      },
+      {
+        "testerId": "wave1-tester-03",
+        "role": "tester",
+        "sha256Prefix": "d344c1b3d9f3",
+        "accepted": true,
+        "status": 303
+      },
+      {
+        "testerId": "wave1-tester-04",
+        "role": "tester",
+        "sha256Prefix": "56cc3895d659",
+        "accepted": true,
+        "status": 303
+      },
+      {
+        "testerId": "wave1-tester-05",
+        "role": "tester",
+        "sha256Prefix": "a018c836d98e",
+        "accepted": true,
+        "status": 303
+      },
+      {
+        "testerId": "wave1-tester-06",
+        "role": "tester",
+        "sha256Prefix": "944c41929417",
+        "accepted": true,
+        "status": 303
+      },
+      {
+        "testerId": "wave1-tester-07",
+        "role": "tester",
+        "sha256Prefix": "015542cebecc",
+        "accepted": true,
+        "status": 303
+      }
+    ]
+  },
+  "responsive": [
+    {
+      "viewport": "1280x800",
+      "overflow": 0,
+      "columns": 3,
+      "minTarget": 44,
+      "first": "chaos"
+    },
+    {
+      "viewport": "768x1024",
+      "overflow": 0,
+      "columns": 2,
+      "minTarget": 44,
+      "first": "chaos"
+    },
+    {
+      "viewport": "430x932",
+      "overflow": 0,
+      "columns": 1,
+      "minTarget": 44,
+      "first": "chaos"
+    },
+    {
+      "viewport": "390x844",
+      "overflow": 0,
+      "columns": 1,
+      "minTarget": 44,
+      "first": "chaos"
+    }
+  ],
+  "gates": [
+    {
+      "name": "unauthenticated / is refused",
+      "ok": true,
+      "detail": "HTTP 401"
+    },
+    {
+      "name": "the refusal page for / leaks no application",
+      "ok": true,
+      "detail": "1360 bytes"
+    },
+    {
+      "name": "unauthenticated /play is refused",
+      "ok": true,
+      "detail": "HTTP 401"
+    },
+    {
+      "name": "the refusal page for /play leaks no application",
+      "ok": true,
+      "detail": "1197 bytes"
+    },
+    {
+      "name": "unauthenticated /play/chaos is refused",
+      "ok": true,
+      "detail": "HTTP 401"
+    },
+    {
+      "name": "the refusal page for /play/chaos leaks no application",
+      "ok": true,
+      "detail": "1197 bytes"
+    },
+    {
+      "name": "unauthenticated /play/dream is refused",
+      "ok": true,
+      "detail": "HTTP 401"
+    },
+    {
+      "name": "the refusal page for /play/dream leaks no application",
+      "ok": true,
+      "detail": "1197 bytes"
+    },
+    {
+      "name": "unauthenticated /play/daily is refused",
+      "ok": true,
+      "detail": "HTTP 401"
+    },
+    {
+      "name": "the refusal page for /play/daily leaks no application",
+      "ok": true,
+      "detail": "1197 bytes"
+    },
+    {
+      "name": "unauthenticated /play/best-of-7 is refused",
+      "ok": true,
+      "detail": "HTTP 401"
+    },
+    {
+      "name": "the refusal page for /play/best-of-7 leaks no application",
+      "ok": true,
+      "detail": "1197 bytes"
+    },
+    {
+      "name": "a wrong key is denied",
+      "ok": true,
+      "detail": "HTTP 401"
+    },
+    {
+      "name": "every current secure key still opens a session",
+      "ok": true,
+      "detail": "owner, wave1-tester-01, wave1-tester-02, wave1-tester-03, wave1-tester-04, wave1-tester-05, wave1-tester-06, wave1-tester-07"
+    },
+    {
+      "name": "/play renders the Play Lobby",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the Mk1 logo is served",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "three primary cards: Chaos Clash, Dream Matchup, Daily Clash",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "four secondary cards with truthful statuses",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Chaos Clash is recommended",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "viewing the lobby made no game request",
+      "ok": true,
+      "detail": "none"
+    },
+    {
+      "name": "no run is remembered after viewing the lobby",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "no continuation card without a run",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "/ is the same entrance",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "still no game request from the entrance",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Chaos opens the Time Arena at /play/chaos",
+      "ok": true,
+      "detail": "https://era-clash-basketball-git-phase-9a-play-lobby-a-0a236b-era-clash.vercel.app/play/chaos"
+    },
+    {
+      "name": "opening the arena still dealt nothing",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "ROLL 1 is the first and only start",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the lobby offers Continue for the run",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the card hides the unrevealed era",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the logo preserved the run",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Continue resumes the exact five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "resuming started no new run",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "abandon asks first",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "No keeps the run",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Yes abandons it and the card is gone",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "abandon was sent to the server",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "a guest's Dream Matchup card says Free account",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the account gate opens at /play/dream",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the way back from the gate is the lobby",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Durant's eligible slots (SF · PF · SG) are highlighted; PG and C are not controls",
+      "ok": true,
+      "detail": "{\"PG\":\"INELIGIBLE\",\"SG\":\"ELIGIBLE\",\"SF\":\"ELIGIBLE\",\"PF\":\"ELIGIBLE\",\"C\":\"INELIGIBLE\"}"
+    },
+    {
+      "name": "manual placement lands",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "a one-position player is placed automatically",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Undo restores the five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "an occupied eligible slot is offered as a swap",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the swap is legal and explicit",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "one primary action at Roll 1",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the coach section is actionable during the roll",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "one primary action at READY",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the result lands in the dock",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the Story is the open section",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the board compressed: no primary action, the matchup stays",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the deployment runs this checkout's candidate",
+      "ok": true,
+      "detail": "Candidate 4 / 55bb26a20e7d"
+    },
+    {
+      "name": "1280x800: no overflow, Chaos first, 44px targets, 3 column(s)",
+      "ok": true,
+      "detail": "{\"overflow\":0,\"columns\":3,\"minTarget\":44,\"first\":\"chaos\"}"
+    },
+    {
+      "name": "768x1024: no overflow, Chaos first, 44px targets, 2 column(s)",
+      "ok": true,
+      "detail": "{\"overflow\":0,\"columns\":2,\"minTarget\":44,\"first\":\"chaos\"}"
+    },
+    {
+      "name": "430x932: no overflow, Chaos first, 44px targets, 1 column(s)",
+      "ok": true,
+      "detail": "{\"overflow\":0,\"columns\":1,\"minTarget\":44,\"first\":\"chaos\"}"
+    },
+    {
+      "name": "390x844: no overflow, Chaos first, 44px targets, 1 column(s)",
+      "ok": true,
+      "detail": "{\"overflow\":0,\"columns\":1,\"minTarget\":44,\"first\":\"chaos\"}"
+    }
+  ],
+  "passed": 56,
+  "failed": 0
+}

@@ -1,0 +1,74 @@
+{
+  "artifact": "phase9a-resolution-ledger",
+  "phase": "9A — Play Lobby, activation clarity, multi-position placement",
+  "items": {
+    "Play Lobby route": "FIXED_AND_VERIFIED (20/20)",
+    "mode registry": "FIXED_AND_VERIFIED (18/18)",
+    "primary-mode hierarchy": "FIXED_AND_VERIFIED (18/18)",
+    "secondary-mode hierarchy": "FIXED_AND_VERIFIED (18/18)",
+    "Chaos recommendation": "FIXED_AND_VERIFIED (18/18)",
+    "truthful mode statuses": "FIXED_AND_VERIFIED (18/18)",
+    "active-run continuation": "FIXED_AND_VERIFIED (15/15)",
+    "active-run abandonment": "FIXED_AND_VERIFIED (15/15)",
+    "logo behavior": "FIXED_AND_VERIFIED (20/20)",
+    "direct-link behavior": "FIXED_AND_VERIFIED (20/20)",
+    "challenge-link behavior": "FIXED_AND_VERIFIED (20/20)",
+    "one-primary-action hierarchy": "FIXED_AND_VERIFIED (15/15)",
+    "inactive-stage hierarchy": "FIXED_AND_VERIFIED (15/15)",
+    "result Story default": "FIXED_AND_VERIFIED (15/15)",
+    "Dream Matchup position display": "FIXED_AND_VERIFIED (20/20)",
+    "eligible-slot highlighting": "FIXED_AND_VERIFIED (20/20)",
+    "ineligible-slot disabling": "FIXED_AND_VERIFIED (20/20)",
+    "single-slot auto-placement": "FIXED_AND_VERIFIED (20/20)",
+    "multi-slot placement": "FIXED_AND_VERIFIED (20/20)",
+    "occupied-slot swap": "FIXED_AND_VERIFIED (20/20)",
+    "duplicate-person refusal": "FIXED_AND_VERIFIED (20/20)",
+    "undo": "FIXED_AND_VERIFIED (20/20)",
+    "mobile lobby": "FIXED_AND_VERIFIED (37/37)",
+    "mobile placement": "FIXED_AND_VERIFIED (37/37)",
+    "keyboard navigation": "FIXED_AND_VERIFIED (18/18)",
+    "activation telemetry": "FIXED_AND_VERIFIED (9/9)",
+    "preview preservation": "FIXED_AND_VERIFIED (56/56)",
+    "beta feedback preservation": "FIXED_AND_VERIFIED (feedback path and namespace untouched by diff; report runs — source: EMPTY_DATA (no store credentials in this shell))",
+    "function-budget preservation": "FIXED_AND_VERIFIED (13 of 13)",
+    "production isolation": "FIXED_AND_VERIFIED (main unchanged, core drift 0)"
+  },
+  "foundDuringPhase": [
+    {
+      "issue": "Route ping-pong: the mode→route sync effect ran on mount with the stale default mode and fought the route→mode effect; the builder at /play/dream remounted every frame",
+      "state": "FIXED_AND_VERIFIED",
+      "how": "the address is the single source of truth; the reverse sync was removed (src/App.jsx); e2e journeys pass"
+    },
+    {
+      "issue": "ui:membership-routing-qa asserted a guest is sent to membership for Win 82, contradicting the tested contract (a free account opens the trial)",
+      "state": "FIXED_AND_VERIFIED",
+      "how": "assertion corrected in scripts/ui/uiQa.mjs; 18/18"
+    },
+    {
+      "issue": "ui:player-card-theme-qa looked for var(--pc-accent) in the component after 8C.1 moved it to CSS",
+      "state": "FIXED_AND_VERIFIED",
+      "how": "assertion reads the CSS rule; 10/10"
+    },
+    {
+      "issue": "Lobby exceeded one 1280×800 viewport by 17px",
+      "state": "FIXED_AND_VERIFIED",
+      "how": "gaps, logo width and card minimums tightened; responsive QA 37/37"
+    },
+    {
+      "issue": "Duplicate mode definitions: entitlements.MODES and App.jsx GAME_MODES/MODE_ICON described the same modes in different words",
+      "state": "FIXED_AND_VERIFIED",
+      "how": "both removed; presentation read from PLAY_MODES; tests pin it"
+    },
+    {
+      "issue": "Chaos lineup-position optimisation",
+      "state": "EXTERNAL_BLOCKER_WITH_SAFE_PRODUCT_FALLBACK",
+      "how": "out of scope by decision (#21); recorded as a future fairness-tested enhancement; Chaos cards show eligible positions as information only"
+    }
+  ],
+  "totals": {
+    "FIXED_AND_VERIFIED": 35,
+    "NOT_REPRODUCIBLE_WITH_EVIDENCE": 0,
+    "EXTERNAL_BLOCKER_WITH_SAFE_PRODUCT_FALLBACK": 1,
+    "UNRESOLVED_TECHNICAL_FAILURES": 0
+  }
+}

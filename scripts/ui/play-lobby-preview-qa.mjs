@@ -121,7 +121,11 @@ const run = async () => {
   const resumed = await page.locator('.ec-ta-team[data-team="gold"] .ec-pc .ec-pc-name').allInnerTexts();
   gate("Continue resumes the exact five", JSON.stringify(resumed) === JSON.stringify(names));
   gate("resuming started no new run", posts.filter((a) => a === "start").length === 1 && posts.includes("view"));
-  await page.goto(`${BASE}/play`, { waitUntil: "domcontentloaded" });
+  // Back to the lobby the way a visitor goes — the logo. (A full page.goto here
+  // would re-run this driver's fresh-account init script, which clears any
+  // remembered run on every document load; that is the driver's hygiene, not
+  // the product's behaviour.)
+  await page.getByRole("button", { name: "EraClash Basketball home" }).click();
   await page.locator(".ec-continue").waitFor({ timeout: 30_000 });
   await page.getByRole("button", { name: /Abandon this Chaos Clash/ }).click();
   const dialog = page.getByRole("dialog", { name: /Abandon this Chaos Clash/ });
