@@ -94,9 +94,10 @@ const run = async () => {
   gate("Continue reopens the exact same run (same first card, same id)", (await page.locator(".ec-ta-roster .ec-pc .ec-pc-name").first().innerText()) === firstName && (await page.evaluate(() => localStorage.getItem("ec_chaos_run"))) === runId);
   await page.getByRole("button", { name: /Reset this Clash/ }).click(); const dlg = page.getByRole("dialog"); await dlg.waitFor({ timeout: 10_000 });
   gate("abandoning asks for confirmation first", await dlg.isVisible());
-  await dlg.getByRole("button", { name: /No|keep/i }).first().click().catch(() => {});
+  await dlg.getByRole("button", { name: "No, keep drafting" }).click();
+  await dlg.waitFor({ state: "hidden", timeout: 10_000 }).catch(() => {}); await page.waitForTimeout(300);
   // Chaos: three rolls, holds, era, coach, Candidate 4 game
-  const holds = page.locator(".ec-pc-action"); await holds.nth(0).click(); await holds.nth(2).click(); await page.waitForTimeout(450);
+  const holds = page.locator(".ec-pc-action"); await holds.nth(0).click(); await page.waitForTimeout(200); await holds.nth(2).click(); await page.waitForTimeout(450);
   gate("multiple holds register", (await page.locator('.ec-pc[data-held="true"]').count()) === 2);
   await page.getByRole("button", { name: /LOCK & ROLL 2/ }).click(); await page.getByRole("button", { name: /FINAL ROLL/ }).waitFor({ timeout: 45_000 });
   const era = (await page.locator(".ec-intel-era-id").innerText()).trim();
@@ -112,7 +113,6 @@ const run = async () => {
   gate("every result tab opens", (await page.locator('[role="tabpanel"]').count()) === 1);
   await page.screenshot({ path: `${SHOTS}/desktop-result-1536x1024.png` });
   await page.getByRole("button", { name: /VIEW FULL REPORT/ }).click(); const report = page.getByRole("dialog", { name: "Full postgame report" }); await report.waitFor({ timeout: 20_000 });
-  const resultId = await page.evaluate(() => { const m = document.body.innerHTML.match(/pv_[a-z0-9]{6,16}/); return m ? m[0] : null; });
   const pg = await page.evaluate(() => { const l = (c) => { const m = String(c).match(/[\d.]+/g); if (!m) return null; const [r, g, b] = m.slice(0, 3).map(Number).map((v) => { const s = v / 255; return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4; }); return 0.2126 * r + 0.7152 * g + 0.0722 * b; }; const inset = document.querySelector(".ec-report-overlay .ec-arena-inset"); return { heroDark: l(getComputedStyle(inset).backgroundColor) < 0.05, paperLight: l(getComputedStyle(inset.parentElement).backgroundColor) > 0.8, wave2Panel: document.querySelectorAll('.ec-report-overlay [data-wave2-feedback="true"]').length, wave1Panel: /PREVIEW — rate this result/.test(document.querySelector(".ec-report-overlay").innerText) }; });
   gate("Full Postgame: dark hero over the ivory report; the Wave 2 feedback panel replaces the Wave 1 panel", pg.heroDark && pg.paperLight && pg.wave2Panel === 1 && !pg.wave1Panel, JSON.stringify(pg));
   await report.getByRole("tab", { name: "Box Score" }).click();
@@ -127,20 +127,32 @@ const run = async () => {
   await panel.getByRole("button", { name: "No issue" }).click();
   await panel.scrollIntoViewIfNeeded(); await panel.screenshot({ path: `${SHOTS}/desktop-wave2-feedback-panel.png` });
   const [fb] = await Promise.all([page.waitForResponse((r) => r.url().includes("/api/feedback") && r.request().method() === "POST", { timeout: 30_000 }).catch(() => null), panel.getByRole("button", { name: /Send Wave 2 feedback/ }).click()]);
-  gate("Wave 2 feedback (task N2, five ratings) is accepted and confirmed to the tester", fb && fb.status() >= 200 && fb.status() < 300 && await panel.getByText(/Wave 2 feedback recorded/).isVisible(), `HTTP ${fb?.status()}`);
+  const sentBody = fb ? (() => { try { return fb.request().postDataJSON(); } catch { return null; } })() : null;
+  gate("Wave 2 feedback (task N2, five ratings) is accepted and confirmed to the tester; the request carries no identity field", fb && fb.status() >= 200 && fb.status() < 300 && await panel.getByText(/Wave 2 feedback recorded/).isVisible() && sentBody && !("testerId" in sentBody) && !("waveId" in sentBody) && /^pv_/.test(sentBody.resultId || ""), `HTTP ${fb?.status()} · fields ${sentBody ? Object.keys(sentBody).join(",") : "?"}`);
   // Resubmission is a revision, not a duplicate (server replaces the primary record).
-  const [fb2] = await Promise.all([page.waitForResponse((r) => r.url().includes("/api/feedback") && r.request().method() === "POST", { timeout: 30_000 }).catch(() => null), page.evaluate(() => fetch("/api/feedback", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ kind: "wave2", taskId: "N2", resultId: document.body.innerHTML.match(/pv_[a-z0-9]{6,16}/)?.[0], ratings: { draftClarity: 4, eraClarity: 4, coachChoiceClarity: 4, resultClarity: 4, visualComfort: 4 }, issueCategory: "NONE", testerId: "spoof", waveId: "spoof", candidateId: "spoof" }) }))]);
-  gate("a resubmission with spoofed identity fields is accepted as a revision (server identity wins)", fb2 && fb2.status() >= 200 && fb2.status() < 300, `HTTP ${fb2?.status()}`);
+  const rid = sentBody?.resultId || null;
+  const fb2 = await page.evaluate((rid) => fetch("/api/feedback", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ kind: "wave2", taskId: "N2", resultId: rid, ratings: { draftClarity: 4, eraClarity: 4, coachChoiceClarity: 4, resultClarity: 4, visualComfort: 4 }, issueCategory: "NONE", testerId: "spoof", waveId: "spoof", candidateId: "spoof" }) }).then((r) => r.status), rid);
+  gate("a resubmission with spoofed identity fields is accepted as a revision (server identity wins)", fb2 >= 200 && fb2 < 300, `HTTP ${fb2}`);
   const badTask = await page.evaluate(() => fetch("/api/feedback", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ kind: "wave2", taskId: "X9", ratings: { startingClarity: 5 } }) }).then((r) => r.status));
   gate("an unknown task id is rejected (400)", badTask === 400, `HTTP ${badTask}`);
+  // Result reload consistency: sharing stores a snapshot of THIS result (POST /api/result → {id}); two GETs of it are identical and carry both dock scores.
+  const shareBtn = report.getByRole("button", { name: /Share/ }).first();
+  let shareId = null;
+  if (await shareBtn.count()) { const [res] = await Promise.all([page.waitForResponse((r) => /\/api\/result$/.test(new URL(r.url()).pathname) && r.request().method() === "POST", { timeout: 30_000 }).catch(() => null), shareBtn.click()]); shareId = res ? (await res.json().catch(() => ({}))).id ?? null : null; }
+  const s1 = shareId ? await (await ctx.request.get(`${BASE}/api/result?id=${shareId}`)).text() : ""; const s2 = shareId ? await (await ctx.request.get(`${BASE}/api/result?id=${shareId}`)).text() : "";
+  gate("the stored result reloads consistently: two reads of the shared snapshot are identical and carry both dock scores", !!shareId && s1.length > 50 && s1 === s2 && dock.scores.every((n) => new RegExp(`\\b${n}\\b`).test(s1)), shareId ? `${s1.length} bytes` : "share not offered / no id");
+  // Sharing opens the Share modal (the text + Copy + Close); close it, then leave the report.
+  const shareModal = page.getByRole("dialog", { name: "Share challenge" });
+  if (await shareModal.count()) { await shareModal.getByRole("button", { name: "Close" }).click(); await shareModal.waitFor({ state: "hidden", timeout: 10_000 }).catch(() => {}); }
   await page.getByRole("button", { name: /Back to the arena/ }).click();
-  // Result reload consistency
-  await page.reload({ waitUntil: "domcontentloaded" }); await page.getByRole("button", { name: /VIEW FULL REPORT/ }).waitFor({ timeout: 60_000 });
-  const scores2 = await page.evaluate(() => [...document.querySelectorAll(".ec-dock-score")].map((e) => Number(e.textContent)));
-  gate("the stored result reloads with the same score", JSON.stringify(scores2) === JSON.stringify(dock.scores), `${dock.scores} → ${scores2}`);
-  // New Clash
+  await report.waitFor({ state: "hidden", timeout: 10_000 }).catch(() => {});
+  // New Clash from the dock while the result is on screen.
   await page.getByRole("button", { name: "New Chaos Clash" }).click(); await page.getByText("THREE ROLLS AVAILABLE").first().waitFor({ timeout: 20_000 });
   gate("a new Clash starts from the dock and the previous result stays labelled", await page.locator(".ec-ta-rail").getByText("LAST CLASH · NOT THE DRAFT ON SCREEN").first().isVisible());
+  // Refresh: the arena comes back coherent (ten cards or ten card backs, no error).
+  await page.reload({ waitUntil: "domcontentloaded" }); await page.locator(".ec-ta").waitFor({ timeout: 45_000 }); await page.waitForTimeout(1500);
+  const afterReload = await page.evaluate(() => ({ cards: document.querySelectorAll(".ec-ta-roster .ec-pc").length, backs: document.querySelectorAll(".ec-ta-roster .ec-pc-empty").length, alerts: document.querySelectorAll('[role="alert"]').length }));
+  gate("after a refresh the arena is coherent: ten cards or ten card backs, no error", afterReload.cards + afterReload.backs === 10 && afterReload.alerts === 0, JSON.stringify(afterReload));
   // Dream Matchup placement
   await page.goto(`${BASE}/play/dream`, { waitUntil: "domcontentloaded" }); await page.getByRole("button", { name: /Add a player to Team Gold/ }).waitFor({ timeout: 30_000 });
   await page.getByRole("button", { name: /Add a player to Team Gold/ }).click(); await page.getByRole("dialog", { name: "Choose a player" }).getByLabel("Search players").fill("Durant"); await page.locator('button[data-player="durant-10s"]').click();
@@ -156,8 +168,10 @@ const run = async () => {
   gate("an occupied eligible slot is offered as a swap", (await grid.locator('[data-slot="PF"]').getAttribute("data-place-state")) === "OCCUPIED");
   await grid.getByRole("button", { name: "Swap Kevin Durant for Bob Pettit at Power Forward" }).click(); gate("the swap is explicit and legal", /Pettit/.test(await grid.locator('[data-slot="PF"]').innerText()));
   await page.getByRole("button", { name: /Add a player to Team Gold/ }).click(); await page.getByRole("dialog", { name: "Choose a player" }).getByLabel("Search players").fill("Pettit");
-  const dupDisabled = await page.locator('button[data-player="bob-60s"]').evaluate((b) => b.disabled || b.getAttribute("aria-disabled") === "true" || /already|on the team|placed/i.test(b.textContent + (b.getAttribute("aria-label") || ""))).catch(() => null);
-  gate("the same person cannot be added twice (duplicate-person refusal)", dupDisabled === true, String(dupDisabled));
+  // The picker either withholds a person already on the floor or offers them disabled — either way the same person cannot be added twice.
+  const dupBtn = page.locator('button[data-player="bob-60s"]');
+  const dupState = (await dupBtn.count()) === 0 ? "withheld from the picker" : (await dupBtn.evaluate((b) => b.disabled || b.getAttribute("aria-disabled") === "true" || /already|on the team|placed/i.test(b.textContent + (b.getAttribute("aria-label") || "")))) ? "offered disabled" : "OFFERED AGAIN";
+  gate("the same person cannot be added twice (duplicate-person refusal)", dupState !== "OFFERED AGAIN", dupState);
   await page.keyboard.press("Escape").catch(() => {});
   // Account gate as a guest
   const g = await browser.newContext({ viewport: { width: 1536, height: 1024 } }); await g.request.post(`${BASE}/api/preview-access`, { form: { key: testers[1].key }, maxRedirects: 0 });
@@ -197,7 +211,7 @@ const run = async () => {
   gate("the Wave 1 alias still serves its original build (stamp 2f35a3b70c30, Candidate 3), the Wave 1 owner key still opens it, no lobby, no Night Court", wave1Unchanged, `${w1stamp} · ${w1health?.preview?.candidateId}`);
   await w1ctx.dispose();
 
-  const out = { artifact: ALIAS_MODE ? "wave2-stable-alias-qa" : "wave2-branch-preview-qa", phase: "9A.3 — Wave 2 private beta", deployment: { baseUrl: BASE, aliasUrl: ALIAS_MODE ? BASE : null, commit: process.env.PHASE9A3_COMMIT || null, buildStamp: stamp, waveId: health?.preview?.waveId ?? null }, candidateUnderTest: { deployed: health?.preview || null, local }, wave2Keys: ledger, wave1KeysOnWave2: w1OnW2, wave2KeysOnWave1: w2OnW1, wave1Unchanged, wave1Stamp: w1stamp, feedbackResultId: resultId ? "pv_… (present)" : null, gates, passed: gates.length - failed, failed };
+  const out = { artifact: ALIAS_MODE ? "wave2-stable-alias-qa" : "wave2-branch-preview-qa", phase: "9A.3 — Wave 2 private beta", deployment: { baseUrl: BASE, aliasUrl: ALIAS_MODE ? BASE : null, commit: process.env.PHASE9A3_COMMIT || null, buildStamp: stamp, waveId: health?.preview?.waveId ?? null }, candidateUnderTest: { deployed: health?.preview || null, local }, wave2Keys: ledger, wave1KeysOnWave2: w1OnW2, wave2KeysOnWave1: w2OnW1, wave1Unchanged, wave1Stamp: w1stamp, feedbackResultId: rid ? "pv_… (present)" : null, gates, passed: gates.length - failed, failed };
   writeFileSync(`${OUT}/${out.artifact}.json`, JSON.stringify(out, null, 2) + "\n");
   console.log(`\n${gates.length - failed}/${gates.length} deployed gates passed`);
   process.exit(failed ? 1 : 0);

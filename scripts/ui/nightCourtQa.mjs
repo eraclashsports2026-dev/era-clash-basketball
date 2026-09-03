@@ -31,6 +31,7 @@ const MODE = process.argv[2] || "production";
 const BASE = (process.argv[3] || "http://localhost:4176").replace(/\/$/, "");
 // Phase 9A.3 re-runs write elsewhere (NC_OUT) so the 9A.2 evidence stays byte-for-byte.
 const OUT = process.env.NC_OUT || "data/validation/9a2";
+const SRC9A2 = "data/validation/9a2"; // the 9A.2 records (selection, logo manifest) are read from their home even on a re-run
 const SCREENS = `${OUT}/screens`;
 const PHASE = "9A.2 — Night Court Editorial production theme";
 const P = PRODUCTION_THEME_ID;
@@ -83,7 +84,7 @@ if (MODE === "contracts") {
   const table = themeTokenTable(P);
   write("production-theme-contract.json", {
     artifact: "production-theme-contract", phase: PHASE, status: "FROZEN_FOR_OWNER_ACCEPTANCE", name: PRODUCTION_THEME_NAME, themeId: P, resolver: THEME_RESOLVER_VERSION, masterBrand: MASTER_BRAND_VERSION, semantic: SEMANTIC_VERSION,
-    selection: json(`${OUT}/basketball-theme-owner-selection.json`)?.selection || null,
+    selection: json(`${SRC9A2}/basketball-theme-owner-selection.json`)?.selection || null,
     layers: {
       1: { name: "Master EraClash brand", tokens: MASTER_BRAND, elements: ["EraClash Logo Mk1", "global header", "selected navigation", "Era Fracture", "focus language", "metallic typography", "product-family transitions", "platform account/navigation identity"] },
       2: { name: "EraClash Basketball environment — Night Court Editorial", tokens: NIGHT_COURT_V1.layer2 },
@@ -127,7 +128,7 @@ if (MODE === "contracts") {
 
 // ── production ───────────────────────────────────────────────────────────────
 if (MODE === "production") {
-  const sel = json(`${OUT}/basketball-theme-owner-selection.json`);
+  const sel = json(`${SRC9A2}/basketball-theme-owner-selection.json`);
   ok("the owner selection is recorded: hybrid Night Court Editorial + Fracture Core, owner authority, promotion NOT authorised", sel?.selection === "HYBRID_NIGHT_COURT_EDITORIAL_FRACTURE_CORE" && sel.baseTheme === "night-court" && sel.masterBrandSignature === "fracture-core" && sel.selectionAuthority === "OWNER" && sel.status === "SELECTED_FOR_IMPLEMENTATION" && sel.stableWave1PromotionAuthorized === false && sel.productionPromotionAuthorized === false);
   ok("src/main.jsx applies the production theme before first render", /applyTheme\(PRODUCTION_THEME_ID\)/.test(src("src/main.jsx")));
   ok("the production id is the fifth lab entry and the four candidates are unchanged in order", THEME_IDS.length === 5 && THEME_IDS[4] === P && CANDIDATE_THEME_IDS.join() === "fracture-core,night-court,modern-court,hardwood-luxe");
@@ -144,7 +145,7 @@ if (MODE === "production") {
   ok("Phase 9A.1 evidence is intact on disk", ["data/validation/9a1/theme-decision-scorecard.json", "data/validation/9a1/theme-comparison-index.html", "data/validation/9a1/screens/comparisons/desktop-roll2-contact-sheet.png", "docs/brand/basketball-theme-owner-scorecard.md"].every((f) => fs.existsSync(f)));
   ok("no public theme selector: header, account, profile, lobby, registry carry no theme control", ["src/components/arena/ArenaHeader.jsx", "src/components/arena/AccountControl.jsx", "src/components/Profile.jsx", "src/components/lobby/PlayLobby.jsx", "src/navigation.js"].every((f) => !/data-theme|applyTheme|Choose your Basketball theme|theme picker/i.test(src(f))));
   ok("the lab stays owner-only, unlinked and preview/dev-only", /ownerOnly/.test(read("middleware.js")) && /"\/dev\/:path\*"/.test(read("middleware.js")) && /__EC_THEME_LAB__/.test(read("vite.config.js")) && /VERCEL_ENV === "preview"/.test(read("vite.config.js")));
-  const manifest = json(`${OUT}/logo-mk1-manifest.json`);
+  const manifest = json(`${SRC9A2}/logo-mk1-manifest.json`);
   ok("Logo Mk1 is manifested (canonical archive + product copy, SHA-256, transparent background recorded) and used in the header and the lobby", manifest?.canonical?.sha256?.length === 64 && manifest.product.sha256.length === 64 && fs.existsSync(manifest.canonical.path) && fs.existsSync(manifest.product.path) && /TRANSPARENT/.test(manifest.background.verdict) && /eraclash-logo-mk1\.png/.test(src("src/components/arena/ArenaHeader.jsx")) && /eraclash-logo-mk1\.png/.test(src("src/components/lobby/PlayLobby.jsx")));
   ok("no AI-regenerated or redrawn logo: the header renders the PNG, not letterforms", !/ERA<span/.test(src("src/components/arena/ArenaHeader.jsx")) && /<img className="ec-brand-logo"/.test(read("src/components/arena/ArenaHeader.jsx")));
   const browser = await chromium.launch();
