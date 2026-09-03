@@ -1,0 +1,224 @@
+// ── Layer 2 — the Basketball environment: four controlled candidates ─────────
+// CONTROL  fracture-core   the master brand, extended — dark, metallic, sport-neutral
+// OPTION A night-court     dark arena, warm ivory for everything you read
+// OPTION B modern-court    light bone product with a dark graphite arena inside it
+// OPTION C hardwood-luxe   espresso arena, sandstone and cream reading surfaces
+//
+// Every theme supplies EVERY token. Values are hex (or rgba for soft/line
+// tints derived from a hex) so the colour-area audit can classify pixels by
+// family. Each theme also declares its 60–30–10 families and its semantic set;
+// the audit reads those declarations rather than guessing.
+//
+// Luminance is tuned per surface so text passes WCAG AA; meanings never move:
+// gold is Team Gold, blue is Team Blue, violet is Coach/Era, red is danger,
+// green is success, platinum/graphite is neutral structure.
+import { MASTER_BRAND } from "./masterBrandTokens.js";
+
+const hexToRgb = (hex) => {
+  const h = hex.replace("#", "");
+  const n = parseInt(h.length === 3 ? h.split("").map((c) => c + c).join("") : h, 16);
+  return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+};
+export const rgba = (hex, a) => { const [r, g, b] = hexToRgb(hex); return `rgba(${r}, ${g}, ${b}, ${a})`; };
+const soft = (hex) => rgba(hex, 0.14);
+const line = (hex) => rgba(hex, 0.45);
+
+/** Shared semantic + arena derivations so every theme is built the same way. */
+const arenaFamily = ({
+  bg, arena, panel, panelRaised, panelSoft, text, textSecondary, textMuted,
+  teamGold, teamBlue, coach, coachDeep, green, red, brandGold, accent, header, scrim,
+  ctaHi, ctaMid, ctaLo, ctaInk, ctaGlow, border, borderStrong, courtOpacity, texture, spotWarm, spotCool,
+}) => ({
+  "bg": bg, "arena": arena, "panel": panel, "panel-raised": panelRaised, "panel-soft": panelSoft,
+  "text": text, "text-secondary": textSecondary, "text-muted": textMuted,
+  "gold": teamGold, "gold-soft": soft(teamGold), "gold-line": line(teamGold),
+  "blue": teamBlue, "blue-soft": soft(teamBlue), "blue-line": line(teamBlue),
+  "coach": coach, "coach-soft": soft(coach), "coach-line": line(coach), "coach-deep": coachDeep,
+  "border": border, "border-strong": borderStrong, "green": green, "red": red,
+  "brand-gold": brandGold, "accent": accent, "accent-soft": soft(accent), "accent-line": line(accent),
+  "header": header, "scrim": scrim,
+  "cta-hi": ctaHi, "cta-mid": ctaMid, "cta-lo": ctaLo, "cta-ink": ctaInk, "cta-glow": ctaGlow,
+  "pc-deep-gold": "#8B5B08", "pc-deep-blue": "#0E4F91",
+  "court-opacity": String(courtOpacity), "texture": texture, "spot-warm": spotWarm, "spot-cool": spotCool,
+});
+
+const readingFamily = ({
+  bg, card, cardHover, muted, border, borderStrong, text, textDim, textMuted, cream,
+  arena, arenaSoft, arenaBorder, onArena, onArenaDim, gold, goldOnDark, goldSoft, goldBorder,
+  blue, blueOnDark, blueSoft, blueBorder, green, red, orange, onGold, insetHi, insetLo,
+}) => ({
+  "bg": bg, "bg-card": card, "bg-card-hover": cardHover, "bg-muted": muted, "bg-panel": card,
+  "border": border, "border-strong": borderStrong,
+  "text": text, "text-dim": textDim, "text-muted": textMuted, "cream": cream,
+  "arena": arena, "arena-soft": arenaSoft, "arena-border": arenaBorder, "on-arena": onArena, "on-arena-dim": onArenaDim,
+  "gold": gold, "gold-on-dark": goldOnDark, "gold-soft": goldSoft, "gold-border": goldBorder,
+  "blue": blue, "blue-on-dark": blueOnDark, "blue-soft": blueSoft, "blue-border": blueBorder,
+  "green": green, "red": red, "orange": orange, "on-gold": onGold,
+  "inset-hi": insetHi, "inset-lo": insetLo,
+});
+
+const rootAliases = (r) => ({
+  "ec-page": r.bg, "ec-surface": r["bg-card"], "ec-surface-muted": r["bg-muted"],
+  "ec-navy": r.arena, "ec-navy-soft": r["arena-soft"], "ec-ink": r.text, "ec-border": r.border,
+  "gold": r.gold, "gold-on-dark": r["gold-on-dark"], "blue": r.blue, "blue-on-dark": r["blue-on-dark"],
+});
+
+const lobbyFromArena = (a) => ({
+  "bg": a.bg, "panel": a.panel, "panel-raised": a["panel-raised"], "panel-soft": a["panel-soft"],
+  "text": a.text, "text-secondary": a["text-secondary"], "text-muted": a["text-muted"],
+  "border": a.border, "border-strong": a["border-strong"],
+  "page-text": a["text-secondary"], "page-muted": a["text-muted"], "glyph": a.gold,
+});
+
+// ── CONTROL — FRACTURE CORE ──────────────────────────────────────────────────
+const fractureCoreArena = arenaFamily({
+  bg: MASTER_BRAND.obsidian, arena: "#060A12", panel: "#10161F", panelRaised: MASTER_BRAND.graphite, panelSoft: "#1B2330",
+  text: MASTER_BRAND.platinum, textSecondary: MASTER_BRAND.platinumDeep, textMuted: "#98A2B3",
+  teamGold: "#E4AA31", teamBlue: "#2B82DE", coach: "#8E5BDD", coachDeep: "#4A2A85", green: "#35B875", red: "#E65353",
+  brandGold: MASTER_BRAND.fractureGold, accent: MASTER_BRAND.fractureCobalt,
+  header: rgba(MASTER_BRAND.obsidian, 0.94), scrim: rgba(MASTER_BRAND.obsidian, 0.9),
+  ctaHi: "#F3C452", ctaMid: MASTER_BRAND.fractureGold, ctaLo: "#B8841C", ctaInk: "#14100A", ctaGlow: "0 8px 18px rgba(225, 167, 44, 0.18)",
+  border: rgba(MASTER_BRAND.platinum, 0.16), borderStrong: rgba(MASTER_BRAND.platinum, 0.32),
+  courtOpacity: 1, texture: "none", spotWarm: rgba(MASTER_BRAND.fractureGold, 0.10), spotCool: rgba(MASTER_BRAND.fractureCobalt, 0.10),
+});
+const fractureCoreReading = readingFamily({
+  bg: MASTER_BRAND.obsidian, card: MASTER_BRAND.graphite, cardHover: "#1B2330", muted: "#1F2836",
+  border: "#2A3340", borderStrong: "#3A4657", text: MASTER_BRAND.platinum, textDim: "#B4BCC9", textMuted: "#98A2B3", cream: "#1B2330",
+  arena: "#060A12", arenaSoft: "#10161F", arenaBorder: "#2A3340", onArena: MASTER_BRAND.platinum, onArenaDim: "#B4BCC9",
+  gold: "#E4AA31", goldOnDark: "#E4AA31", goldSoft: soft("#E4AA31"), goldBorder: line("#E4AA31"),
+  blue: "#5EA3F0", blueOnDark: "#5EA3F0", blueSoft: soft("#2B82DE"), blueBorder: line("#2B82DE"),
+  green: "#35B875", red: "#F07070", orange: MASTER_BRAND.fractureGold, onGold: "#14100A", insetHi: "#0C121B", insetLo: MASTER_BRAND.obsidian,
+});
+
+// ── OPTION A — NIGHT COURT EDITORIAL ─────────────────────────────────────────
+const nightCourtArena = arenaFamily({
+  bg: "#070A0F", arena: "#0A0E15", panel: "#10151D", panelRaised: "#151B24", panelSoft: "#1B2230",
+  text: "#F1EDE4", textSecondary: "#CFC9BC", textMuted: "#9A9890",
+  teamGold: "#E8B13C", teamBlue: "#2F83E7", coach: "#7656D7", coachDeep: "#3E2A80", green: "#2FA96D", red: "#D95050",
+  brandGold: MASTER_BRAND.fractureGold, accent: "#7656D7",
+  header: rgba("#070A0F", 0.94), scrim: rgba("#070A0F", 0.9),
+  ctaHi: "#F5C553", ctaMid: "#E8B13C", ctaLo: "#B9841F", ctaInk: "#14100A", ctaGlow: "0 8px 18px rgba(232, 177, 60, 0.18)",
+  border: rgba("#F1EDE4", 0.15), borderStrong: rgba("#F1EDE4", 0.30),
+  courtOpacity: 0.9, texture: "none", spotWarm: rgba("#E8B13C", 0.09), spotCool: rgba("#7656D7", 0.10),
+});
+const nightCourtReading = readingFamily({
+  bg: "#F1EDE4", card: "#FBF8F1", cardHover: "#F4EFE5", muted: "#E6E9EE",
+  border: "#DAD5CA", borderStrong: "#C2BBAE", text: "#151B24", textDim: "#4F5766", textMuted: "#5F6672", cream: "#F6F1E7",
+  arena: "#0A0E15", arenaSoft: "#151B24", arenaBorder: "#2A3140", onArena: "#F1EDE4", onArenaDim: "#B9B4A8",
+  gold: "#8A6410", goldOnDark: "#E8B13C", goldSoft: "#FBF0D2", goldBorder: "#E4BC5B",
+  blue: "#2461B8", blueOnDark: "#7BB3F5", blueSoft: "#E6EFFC", blueBorder: "#92B7EA",
+  green: "#237A4F", red: "#B54040", orange: "#A4640A", onGold: "#FFFDF8", insetHi: "#141B27", insetLo: "#070A0F",
+});
+const nightCourtLobby = {
+  "bg": "#070A0F", "panel": "#F1EDE4", "panel-raised": "#FBF8F1", "panel-soft": "#E8E2D6",
+  "text": "#151B24", "text-secondary": "#3A4150", "text-muted": "#5F6672", "border": "#D9D2C4", "border-strong": "#C3BAA8",
+  // The page stays night obsidian; its own text is warm platinum.
+  "page-text": "#CFC9BC", "page-muted": "#9A9890", "glyph": "#8A6410",
+};
+
+// ── OPTION B — MODERN COURT LIGHT ────────────────────────────────────────────
+const modernCourtArena = arenaFamily({
+  bg: "#F3F0E9", arena: "#131923", panel: "#1A2130", panelRaised: "#202838", panelSoft: "#27303F",
+  text: "#F3F0E9", textSecondary: "#CDD2DC", textMuted: "#9AA3B2",
+  teamGold: "#D99B21", teamBlue: "#4A90E0", coach: "#8F6CDB", coachDeep: "#4A2F8C", green: "#269A68", red: "#CF4D4D",
+  brandGold: MASTER_BRAND.fractureGold, accent: "#20B8B2",
+  header: "#131923", scrim: rgba("#131923", 0.9),
+  ctaHi: "#F0B84A", ctaMid: "#D99B21", ctaLo: "#B27C12", ctaInk: "#14100A", ctaGlow: "0 8px 18px rgba(217, 155, 33, 0.16)",
+  border: rgba("#F3F0E9", 0.16), borderStrong: rgba("#F3F0E9", 0.32),
+  courtOpacity: 0.8, texture: "none", spotWarm: rgba("#D99B21", 0.09), spotCool: rgba("#20B8B2", 0.09),
+});
+const modernCourtReading = readingFamily({
+  bg: "#F3F0E9", card: "#FAF8F3", cardHover: "#F1EDE4", muted: "#E7EAEE",
+  border: "#DCD7CC", borderStrong: "#C6BFB1", text: "#131923", textDim: "#4C5464", textMuted: "#5F6776", cream: "#F6F3EC",
+  arena: "#131923", arenaSoft: "#202838", arenaBorder: "#2F3848", onArena: "#F3F0E9", onArenaDim: "#B7BFCC",
+  gold: "#8A6210", goldOnDark: "#E5AC33", goldSoft: "#FBF1D6", goldBorder: "#E2BA55",
+  blue: "#235FB5", blueOnDark: "#7FB2F2", blueSoft: "#E5EFFC", blueBorder: "#92B6EA",
+  green: "#1F7A50", red: "#B04343", orange: "#9E6410", onGold: "#FFFDF8", insetHi: "#1B2331", insetLo: "#0F141D",
+});
+const modernCourtLobby = {
+  "bg": "#F3F0E9", "panel": "#FAF8F3", "panel-raised": "#FFFFFF", "panel-soft": "#ECE8DF",
+  "text": "#131923", "text-secondary": "#3B4352", "text-muted": "#5F6776", "border": "#DCD7CC", "border-strong": "#C6BFB1",
+  "page-text": "#3B4352", "page-muted": "#5F6776", "glyph": "#8A6210",
+};
+
+// ── OPTION C — HARDWOOD LUXE ─────────────────────────────────────────────────
+const hardwoodArena = arenaFamily({
+  bg: "#100C0A", arena: "#150F0C", panel: "#1C1511", panelRaised: "#241B15", panelSoft: "#2C221A",
+  text: "#F0E5D2", textSecondary: "#D6C7AD", textMuted: "#A99479",
+  teamGold: "#E5B23E", teamBlue: "#4A93E0", coach: "#9B78D8", coachDeep: "#4B2F86", green: "#37A66E", red: "#DC5A54",
+  brandGold: MASTER_BRAND.fractureGold, accent: "#48A7F2",
+  header: rgba("#100C0A", 0.94), scrim: rgba("#100C0A", 0.9),
+  ctaHi: "#F4C558", ctaMid: "#E5B23E", ctaLo: "#B8861F", ctaInk: "#14100A", ctaGlow: "0 8px 18px rgba(229, 178, 62, 0.18)",
+  border: rgba("#C7A475", 0.22), borderStrong: rgba("#C7A475", 0.42),
+  courtOpacity: 1,
+  // A subtle grain: 1px sandstone lines every 9px at 4% — texture, not colour.
+  texture: "repeating-linear-gradient(90deg, rgba(199, 164, 117, 0.04) 0 1px, transparent 1px 9px)",
+  spotWarm: rgba("#C7A475", 0.10), spotCool: rgba("#48A7F2", 0.08),
+});
+const hardwoodReading = readingFamily({
+  bg: "#F0E5D2", card: "#F8F1E4", cardHover: "#EFE3CF", muted: "#E6DCC9",
+  border: "#D9C6A6", borderStrong: "#C7A475", text: "#1E1712", textDim: "#5C4E42", textMuted: "#6B5C4E", cream: "#F5ECDC",
+  arena: "#150F0C", arenaSoft: "#241B15", arenaBorder: "#3A2E24", onArena: "#F0E5D2", onArenaDim: "#C4B39A",
+  gold: "#85610D", goldOnDark: "#E5B23E", goldSoft: "#F6E7C2", goldBorder: "#DDB65A",
+  blue: "#1F5FA8", blueOnDark: "#7FB6F2", blueSoft: "#E4EEFA", blueBorder: "#8FB4E5",
+  green: "#23784C", red: "#AE3F3A", orange: "#9C6414", onGold: "#FFFDF8", insetHi: "#241B15", insetLo: "#100C0A",
+});
+
+/**
+ * The four candidates. `families` is the theme's own 60–30–10 declaration —
+ * the audit classifies pixels against these lists — and `semantic` is its
+ * tuned semantic set. `secondaryIsLight` says whether reading surfaces are
+ * light (they are in A, B and C).
+ */
+export const BASKETBALL_THEMES = Object.freeze({
+  "fracture-core": {
+    id: "fracture-core", label: "Fracture Core", role: "CONTROL",
+    character: ["master-brand extension", "premium", "dark", "metallic", "futuristic", "sport-neutral"],
+    families: {
+      dominant: { name: "Obsidian", colors: [MASTER_BRAND.obsidian, "#060A12", "#10161F"] },
+      secondary: { name: "Graphite + Platinum", colors: [MASTER_BRAND.graphite, "#1B2330", "#1F2836", "#2A3340", MASTER_BRAND.platinum, MASTER_BRAND.platinumDeep, "#B4BCC9", "#98A2B3"] },
+      accent: { name: "Fracture Gold + Fracture Cobalt", colors: [MASTER_BRAND.fractureGold, "#F3C452", "#B8841C", MASTER_BRAND.fractureCobalt], split: { gold: 0.06, cobalt: 0.04 } },
+    },
+    semantic: { teamGold: "#E4AA31", teamBlue: "#2B82DE", coachViolet: "#8E5BDD", success: "#35B875", danger: "#E65353" },
+    secondaryIsLight: false,
+    arena: fractureCoreArena, reading: fractureCoreReading, lobby: lobbyFromArena(fractureCoreArena),
+  },
+  "night-court": {
+    id: "night-court", label: "Night Court Editorial", role: "OPTION A",
+    character: ["premium night arena", "sports editorial", "modern broadcast", "high readability", "cinematic but restrained"],
+    families: {
+      dominant: { name: "Night Obsidian", colors: ["#070A0F", "#0A0E15", "#10151D"] },
+      secondary: { name: "Warm Court Ivory + Editorial Ink", colors: ["#F1EDE4", "#FBF8F1", "#F4EFE5", "#E8E2D6", "#151B24", "#1B2230", "#CFC9BC", "#9A9890"] },
+      accent: { name: "Royal Violet", colors: ["#7656D7"] },
+    },
+    semantic: { teamGold: "#E8B13C", teamBlue: "#2F83E7", coachViolet: "#7656D7", success: "#2FA96D", danger: "#D95050" },
+    secondaryIsLight: true,
+    arena: nightCourtArena, reading: nightCourtReading, lobby: nightCourtLobby,
+  },
+  "modern-court": {
+    id: "modern-court", label: "Modern Court Light", role: "OPTION B",
+    character: ["modern sports technology", "editorial clarity", "premium light platform", "dark arena inside a light product", "strong differentiation"],
+    families: {
+      dominant: { name: "Warm Bone", colors: ["#F3F0E9", "#FAF8F3", "#FFFFFF", "#F1EDE4", "#ECE8DF"] },
+      secondary: { name: "Midnight Graphite", colors: ["#131923", "#1A2130", "#202838", "#27303F", "#CDD2DC", "#9AA3B2"] },
+      accent: { name: "Electric Teal", colors: ["#20B8B2"] },
+    },
+    semantic: { teamGold: "#D99B21", teamBlue: "#2C78D0", coachViolet: "#8058D3", success: "#269A68", danger: "#CF4D4D" },
+    secondaryIsLight: false,
+    arena: modernCourtArena, reading: modernCourtReading, lobby: modernCourtLobby,
+  },
+  "hardwood-luxe": {
+    id: "hardwood-luxe", label: "Hardwood Luxe", role: "OPTION C",
+    character: ["luxury hardwood", "historic basketball", "modern scoreboard light", "warm and tactile", "distinct from navy sports products"],
+    families: {
+      dominant: { name: "Espresso Black", colors: ["#100C0A", "#150F0C", "#1C1511"] },
+      secondary: { name: "Court Sandstone + Warm Cream", colors: ["#C7A475", "#F0E5D2", "#F8F1E4", "#EFE3CF", "#E6DCC9", "#D6C7AD", "#A99479", "#241B15", "#2C221A"] },
+      accent: { name: "Ice Cobalt", colors: ["#48A7F2"] },
+    },
+    semantic: { teamGold: "#E5B23E", teamBlue: "#2C79CF", coachViolet: "#8B61CE", success: "#37A66E", danger: "#D2504A" },
+    secondaryIsLight: true,
+    arena: hardwoodArena, reading: hardwoodReading, lobby: lobbyFromArena(hardwoodArena),
+  },
+});
+
+export const themeRootAliases = (theme) => rootAliases(theme.reading);

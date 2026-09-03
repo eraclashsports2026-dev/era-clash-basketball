@@ -107,7 +107,7 @@ function PreviewFeedback({ ctx }) {
       <textarea value={comment} onChange={(e) => setComment(e.target.value.slice(0, 500))}
         placeholder="Optional: anything that felt off or great…" rows={2}
         style={{ width: "100%", marginTop: 8, padding: 8, fontSize: 12, background: T.bg, color: T.text, border: `1px solid ${T.border}`, borderRadius: 7, resize: "none", boxSizing: "border-box", fontFamily: "inherit" }} />
-      <button onClick={submit} disabled={!ready} style={{ marginTop: 6, padding: "8px 16px", fontSize: 12, fontWeight: 800, border: "none", borderRadius: 7, background: ready ? T.gold : T.border, color: "#fffdf8", cursor: ready ? "pointer" : "default" }}>
+      <button onClick={submit} disabled={!ready} style={{ marginTop: 6, padding: "8px 16px", fontSize: 12, fontWeight: 800, border: "none", borderRadius: 7, background: ready ? T.gold : T.border, color: T.onGold, cursor: ready ? "pointer" : "default" }}>
         Send preview feedback
       </button>
     </div>
@@ -159,7 +159,7 @@ function BelievabilityFeedback({ ctx }) {
         <textarea value={comment} onChange={(e) => setComment(e.target.value.slice(0, 280))}
           placeholder="Optional: tell us more…" rows={2}
           style={{ width: "100%", marginTop: 8, padding: 8, fontSize: 12, background: T.bg, color: T.text, border: `1px solid ${T.border}`, borderRadius: 7, resize: "none", boxSizing: "border-box", fontFamily: "inherit" }} />
-        <button onClick={submitWhy} style={{ marginTop: 6, padding: "8px 16px", fontSize: 12, fontWeight: 800, border: "none", borderRadius: 7, background: T.gold, color: "#fffdf8", cursor: "pointer" }}>
+        <button onClick={submitWhy} style={{ marginTop: 6, padding: "8px 16px", fontSize: 12, fontWeight: 800, border: "none", borderRadius: 7, background: T.gold, color: T.onGold, cursor: "pointer" }}>
           Send feedback
         </button>
       </div>

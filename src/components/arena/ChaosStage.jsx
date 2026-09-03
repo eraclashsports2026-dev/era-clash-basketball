@@ -215,12 +215,12 @@ export default function ChaosStage({
       <section className="ec-ta-stage" aria-label="The matchup you built">
         <Atmosphere />
         <div className="ec-ta-stage-head">
-          <TeamLabel team="gold" name="TEAM GOLD" sub="YOUR PICKS" />
+          <TeamLabel team="gold" name="TEAM GOLD" sub="YOUR FIVE" />
           <div className="ec-ta-title">
             <div className="ec-ta-title-main">THE MATCHUP YOU BUILT</div>
             <div className="ec-ta-title-sub">{run?.eraState?.eraStyleId ? `${run.eraState.eraStyleId} ERA` : ""}</div>
           </div>
-          <TeamLabel team="blue" name="TEAM BLUE" sub="LEGEND CPU" />
+          <TeamLabel team="blue" name="TEAM BLUE" sub="LEGEND RIVAL" />
         </div>
         <div className="ec-ta-roster">
           <Bench team="gold" roster={run?.gold?.roster} heldSlots={[]} locked />
@@ -270,13 +270,13 @@ export default function ChaosStage({
       <Atmosphere />
 
       <div className="ec-ta-stage-head">
-        <TeamLabel team="gold" name="TEAM GOLD" sub="YOUR PICKS" />
+        <TeamLabel team="gold" name="TEAM GOLD" sub="YOUR FIVE" />
         <div className="ec-ta-title">
           <div className="ec-ta-title-main">CHAOS CLASH</div>
           <div className="ec-ta-title-sub">{stageLabel}</div>
           <RollStepper run={run} />
         </div>
-        <TeamLabel team="blue" name="TEAM BLUE" sub="LEGEND CPU" />
+        <TeamLabel team="blue" name="TEAM BLUE" sub="LEGEND RIVAL" />
       </div>
 
       <div className="sr-only" aria-live="polite">

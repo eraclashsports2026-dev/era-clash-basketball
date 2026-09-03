@@ -109,7 +109,7 @@ export default function PlayerCard({
         </div>
       ) : (
         <div className="ec-pc-static" data-on={held ? "true" : "false"}
-          aria-label={held ? `${card.name} held by the Legend CPU` : `${card.name} not held by the Legend CPU`}>
+          aria-label={held ? `${card.name} held by the Legend Rival` : `${card.name} not held by the Legend Rival`}>
           <span aria-hidden="true">{held ? "🔒" : ""}</span>{held ? "HELD" : "—"}
         </div>
       )}

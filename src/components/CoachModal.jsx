@@ -226,7 +226,7 @@ export default function CoachModal({ side, coaches, recommended, selectedId, era
           <button onClick={() => focused && onSelect(focused)} disabled={!focused} style={{
             padding: "11px 22px", fontSize: 14, fontWeight: 900, borderRadius: R.sm, minHeight: 44,
             border: "none", cursor: focused ? "pointer" : "default",
-            background: focused ? accent : T.border, color: "#fffdf8", minWidth: 150,
+            background: focused ? accent : T.border, color: T.onGold, minWidth: 150,
           }}>{focused ? `Select ${focused.name.split(" ").slice(-1)[0]}` : "Select Coach"}</button>
         </div>
       </div>

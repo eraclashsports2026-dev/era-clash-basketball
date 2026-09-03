@@ -104,9 +104,17 @@ export default async function middleware(req) {
   // Signed session first; the raw-key header stays for operator tooling
   // (presented per request, never stored).
   const session = await verifySession(readCookie(req.headers.get("cookie"), COOKIE_NAME));
-  if (session.ok) return NEXT();
+  // Owner-only surfaces: /dev/* is the Basketball theme lab (Phase 9A.1), an
+  // owner decision surface. A tester with a valid session sees the same 404 an
+  // unknown path gets, so the lab is never discoverable from the product.
+  const ownerOnly = url.pathname.startsWith("/dev/");
+  const notFound = () => new Response("Not found", { status: 404, headers: { "cache-control": "no-store", "x-robots-tag": "noindex" } });
+  if (session.ok) return ownerOnly && session.role !== "owner" ? notFound() : NEXT();
   const headerKey = req.headers.get("x-preview-key");
-  if (headerKey && (await verifyPreviewKey(headerKey)).ok) return NEXT();
+  if (headerKey) {
+    const who = await verifyPreviewKey(headerKey);
+    if (who.ok) return ownerOnly && who.role !== "owner" ? notFound() : NEXT();
+  }
   if (session.reason === "expired" || session.reason === "revoked") metric(`access_denied_${session.reason}`);
   else if (headerKey || session.reason !== "missing") metric("access_denied_key");
   if (url.pathname.startsWith("/api/")) {
@@ -134,5 +142,7 @@ export const config = {
     // Phase 9A: the Play Lobby and every mode route. Same rule as above — a
     // client-rendered path missing here hands the app shell to anyone.
     "/play", "/play/:path*",
+    // Phase 9A.1: the owner-only theme lab.
+    "/dev/:path*",
   ],
 };

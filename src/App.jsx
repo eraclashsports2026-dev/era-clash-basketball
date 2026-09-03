@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, lazy, Suspense } from "react";
 import { PLAYERS, POSITIONS, findCard } from "./players.js";
 import { getWave1Scenario } from "./wave1Scenarios.js";
 import { displayOVR, analyzeBalance, teamRating } from "./rating.js";
@@ -130,6 +130,13 @@ const MODE_TO_ANALYTICS = { Win82: "82", Single: "single", Best7: "best7", Tourn
 // statically eliminates both this route and the fixture module.
 const DEV_FIXTURES = import.meta.env.DEV || import.meta.env.VITE_EC_DEV_FIXTURES === "1";
 const FIXTURE_ROUTE = "/dev/time-arena-reference";
+// Phase 9A.1 — the Basketball theme decision lab. __EC_THEME_LAB__ is a build
+// constant (vite.config.js): true on preview deployments and the dev server,
+// false in production, where this whole branch — and the lazily imported lab
+// chunk behind it — is compiled out. The route is owner-only at the edge.
+const THEME_LAB = typeof __EC_THEME_LAB__ !== "undefined" && __EC_THEME_LAB__ === true;
+const THEME_LAB_ROUTE = "/dev/basketball-theme-lab";
+const ThemeLab = THEME_LAB ? lazy(() => import("./ui/theme-lab/ThemeLab.jsx")) : null;
 
 // The address on first paint. A game-opening link that lands on the entrance
 // (?chaos= a same-seed challenge, ?scenario= a guided preview setup) goes
@@ -157,6 +164,9 @@ export default function App() {
   const [chaosReady, setChaosReady] = useState(null);     // a Chaos run at phase READY
   if (DEV_FIXTURES && typeof window !== "undefined" && window.location.pathname === FIXTURE_ROUTE) {
     return <ReferenceFixture />;
+  }
+  if (THEME_LAB && typeof window !== "undefined" && window.location.pathname === THEME_LAB_ROUTE) {
+    return <Suspense fallback={null}><ThemeLab /></Suspense>;
   }
   const [tier, setTier] = useState(() => currentTier());  // GUEST | FREE (central entitlement input)
   const [gate, setGate] = useState(null);                 // an entitlement gate to render
@@ -1404,7 +1414,7 @@ export default function App() {
                 <button onClick={() => setPlayStage("COACHES")} style={{
                   width: "100%", padding: "14px 18px", fontSize: 14, fontWeight: 900, letterSpacing: 0.5,
                   border: "none", borderRadius: 12, cursor: "pointer", minHeight: 50,
-                  background: T.gold, color: "#fffdf8", boxShadow: T.glowGold,
+                  background: T.gold, color: T.onGold, boxShadow: T.glowGold,
                 }}>Continue to Coaches →</button>
               )}
               {!v3Steps && team && (activeMode !== "Single" && activeMode !== "Best7" && activeMode !== "Daily" && activeMode !== "Challenge" ? true : !!opponent) && coachesReady && dailyChoiceReady && !result && !loading && (
@@ -1413,7 +1423,7 @@ export default function App() {
                     width: "100%", padding: "16px 20px", fontSize: 15, fontWeight: 900, letterSpacing: 1,
                     border: "none", borderRadius: 12, cursor: "pointer", minHeight: 54,
                     background: `linear-gradient(120deg, ${T.gold} 0%, #ffd76a 60%, ${T.gold} 100%)`,
-                    color: "#fffdf8", boxShadow: T.shadowRaised,
+                    color: T.onGold, boxShadow: T.shadowRaised,
                   }}>
                     ⚡ RUN THE SIM
                   </button>
@@ -1567,7 +1577,7 @@ export default function App() {
                 <button onClick={() => { setEraLocked(true); setPlayStage("READY"); }} style={{
                   width: "100%", padding: "15px 18px", fontSize: 14, fontWeight: 900, letterSpacing: 0.5,
                   border: "none", borderRadius: 12, cursor: "pointer", minHeight: 52,
-                  background: T.gold, color: "#fffdf8", boxShadow: T.glowGold,
+                  background: T.gold, color: T.onGold, boxShadow: T.glowGold,
                 }}>Lock Era Style and Continue →</button>
               </div>
             </div>
@@ -1611,7 +1621,7 @@ export default function App() {
                     width: "100%", padding: "17px 20px", fontSize: 16, fontWeight: 900, letterSpacing: 1,
                     border: "none", borderRadius: 12, cursor: "pointer", minHeight: 58,
                     background: `linear-gradient(120deg, ${T.gold} 0%, #d9a83a 60%, ${T.gold} 100%)`,
-                    color: "#fffdf8", boxShadow: T.shadowRaised,
+                    color: T.onGold, boxShadow: T.shadowRaised,
                   }}>
                     ⚡ RUN THE SIM
                   </button>
@@ -1680,7 +1690,7 @@ export default function App() {
           Build a five, run a game, then hit <b style={{ color: T.gold }}>Challenge a Friend</b> on the postgame.
           Anyone who opens your link plays against your exact lineup — wins, losses and rematches are tracked as a rivalry.
         </p>
-        <button onClick={() => handleNav("Play")} style={{ padding: "13px 30px", fontSize: 14, fontWeight: 900, border: "none", borderRadius: 10, background: T.gold, color: "#fffdf8", cursor: "pointer", minHeight: 48 }}>
+        <button onClick={() => handleNav("Play")} style={{ padding: "13px 30px", fontSize: 14, fontWeight: 900, border: "none", borderRadius: 10, background: T.gold, color: T.onGold, cursor: "pointer", minHeight: 48 }}>
           BUILD A TEAM →
         </button>
       </div>
@@ -1716,7 +1726,7 @@ export default function App() {
           <span>A newer version of EraClash is live — you're viewing build <b>{shortBuild()}</b>.</span>
           <button onClick={() => window.location.reload()} style={{
             padding: "7px 16px", fontSize: 12, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 40,
-            border: "none", background: T.gold, color: "#fffdf8" }}>Reload to update</button>
+            border: "none", background: T.gold, color: T.onGold }}>Reload to update</button>
         </div>
       )}
       {err && <div role="alert" style={{ background: "#3a1520", color: "#ff8a9a", padding: 12, textAlign: "center", fontSize: 13 }}>{err}</div>}
@@ -1735,7 +1745,7 @@ export default function App() {
           <ModeInfoPage id={route.split("/")[2]} onBack={goHome} />
         </main>
       ) : showLobby ? (
-        <div className="ec-arena-court">
+        <div className="ec-arena-court ec-lobby-court">
           <PlayLobby tier={tier} chaosAvailable={chaosAvailable} previewCandidateActive={!!result?.sim?.previewCandidate}
             entrance={route === "/"} onModeAction={handleModeAction}
             onContinue={() => navigate("/play/chaos")}
@@ -1869,7 +1879,7 @@ function RollBuilder({ yz, ballIQ, isDaily, onStart, onKeep, onRespin, onRoll })
         <p style={{ color: T.textDim, fontSize: 13, margin: "0 0 14px", lineHeight: 1.6 }}>
           Three rolls, Yahtzee rules. Keep who you love, re-spin the rest by <b>era</b> or <b>player</b>.
         </p>
-        <button onClick={onStart} style={{ padding: "13px 30px", fontSize: 14, fontWeight: 900, border: "none", borderRadius: 10, background: T.gold, color: "#fffdf8", cursor: "pointer", minHeight: 48 }}>
+        <button onClick={onStart} style={{ padding: "13px 30px", fontSize: 14, fontWeight: 900, border: "none", borderRadius: 10, background: T.gold, color: T.onGold, cursor: "pointer", minHeight: 48 }}>
           {isDaily ? "Start Today's Challenge" : "🎲 Start Drafting"}
         </button>
       </div>
@@ -1969,7 +1979,7 @@ function ResultView({ result, team, feedbackCtx, narrative, onRetryNarrative, on
           ))}
         </div>
         <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
-          <button onClick={onShare} style={{ flex: 1, padding: 13, fontSize: 13, fontWeight: 800, border: "none", borderRadius: 9, background: T.gold, color: "#fffdf8", cursor: "pointer" }}>📤 Share the Run</button>
+          <button onClick={onShare} style={{ flex: 1, padding: 13, fontSize: 13, fontWeight: 800, border: "none", borderRadius: 9, background: T.gold, color: T.onGold, cursor: "pointer" }}>📤 Share the Run</button>
         </div>
       </div>
     );
@@ -2001,7 +2011,7 @@ function SharedResultView({ snap, onPlay }) {
         </div>
       )}
       {snap.insight && <p style={{ fontSize: 13, color: T.textDim, textAlign: "center", margin: "0 0 14px" }}>"{snap.insight}"</p>}
-      <button onClick={onPlay} style={{ width: "100%", padding: 15, fontSize: 14, fontWeight: 900, border: "none", borderRadius: 10, background: T.gold, color: "#fffdf8", cursor: "pointer", minHeight: 48 }}>
+      <button onClick={onPlay} style={{ width: "100%", padding: 15, fontSize: 14, fontWeight: 900, border: "none", borderRadius: 10, background: T.gold, color: T.onGold, cursor: "pointer", minHeight: 48 }}>
         ⚔️ CAN YOUR TEAM BEAT THIS LINEUP? PLAY THE CHALLENGE
       </button>
     </div>
@@ -2061,7 +2071,7 @@ function ShareModal({ share, onClose }) {
         <textarea readOnly value={share.text} aria-label="Share text" style={{ width: "100%", height: 170, padding: 12, fontSize: 12, background: T.bg, color: T.text, border: `1px solid ${T.border}`, borderRadius: 8, resize: "none", fontFamily: "monospace", boxSizing: "border-box" }} />
         <div style={{ display: "flex", gap: 10, marginTop: 12 }}>
           <button onClick={() => { navigator.clipboard.writeText(share.text); setCopied(true); setTimeout(() => setCopied(false), 1500); }}
-            style={{ flex: 1, padding: 12, fontWeight: 800, fontSize: 13, border: "none", borderRadius: 9, background: T.gold, color: "#fffdf8", cursor: "pointer" }}>
+            style={{ flex: 1, padding: 12, fontWeight: 800, fontSize: 13, border: "none", borderRadius: 9, background: T.gold, color: T.onGold, cursor: "pointer" }}>
             {copied ? "✓ Copied!" : "📋 Copy Challenge"}
           </button>
           <button onClick={onClose} style={{ flex: 1, padding: 12, fontWeight: 800, fontSize: 13, borderRadius: 9, background: "transparent", color: T.text, border: `1px solid ${T.border}`, cursor: "pointer" }}>Close</button>

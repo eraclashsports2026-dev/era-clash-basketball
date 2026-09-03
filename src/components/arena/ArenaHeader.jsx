@@ -53,7 +53,7 @@ export default function ArenaHeader({
   return (
     <header style={{
       position: "sticky", top: 0, zIndex: 50,
-      background: "rgba(5, 11, 20, 0.94)",
+      background: "var(--ec-a-header, rgba(5, 11, 20, 0.94))",
       borderBottom: "1px solid var(--ec-a-border, rgba(157,178,209,0.20))",
       backdropFilter: "blur(8px)",
     }}>

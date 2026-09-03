@@ -77,10 +77,13 @@ function ModeCard({ mode, action, tier, primary, onAct }) {
 export default function PlayLobby({
   tier = "GUEST", chaosAvailable = true, previewCandidateActive = false, entrance = false,
   onModeAction, onContinue, onAbandoned,
+  // The Basketball theme lab renders the lobby as a fixture: no run lookup, no
+  // telemetry, nothing that reads or writes the visitor's real state.
+  lab = false,
 }) {
   const { primary, secondary } = lobbyModes();
   const ctx = { from: PLAY_LOBBY_ROUTE, previewCandidateActive, chaosAvailable };
-  const [active, setActive] = useState({ loading: !!store.get(RUN_KEY), run: null, expired: false });
+  const [active, setActive] = useState({ loading: !lab && !!store.get(RUN_KEY), run: null, expired: false });
   const [confirm, setConfirm] = useState(false);
   const [busy, setBusy] = useState(false);
   const viewed = useRef(false);
@@ -88,9 +91,10 @@ export default function PlayLobby({
   // A remembered run is READ, never advanced. Missing, abandoned or expired
   // runs are cleared so no false Continue card can ever be shown.
   useEffect(() => {
+    if (lab) return undefined;
     const id = store.get(RUN_KEY);
     if (!viewed.current) { viewed.current = true; markLobbyViewed({ hasActiveRun: !!id, route: entrance ? "/" : PLAY_LOBBY_ROUTE }); }
-    if (!id) return;
+    if (!id) return undefined;
     let alive = true;
     viewChaos(id, tier)
       .then((r) => {
@@ -112,7 +116,7 @@ export default function PlayLobby({
   }, [tier, entrance]);
 
   const act = (mode, action) => {
-    markModeSelected(mode, action, entrance ? "/" : PLAY_LOBBY_ROUTE);
+    if (!lab) markModeSelected(mode, action, entrance ? "/" : PLAY_LOBBY_ROUTE);
     onModeAction?.(action);
   };
 

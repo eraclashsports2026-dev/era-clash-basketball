@@ -50,6 +50,14 @@ const swVersionPlugin = () => ({
   },
 });
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [react(), swVersionPlugin()],
-});
+  define: {
+    // The Basketball theme lab (Phase 9A.1): an owner decision surface at
+    // /dev/basketball-theme-lab. Compiled INTO preview builds (VERCEL_ENV is
+    // "preview" on every Git-integration branch deploy) and into the dev
+    // server; compiled OUT of production, where the constant is false and the
+    // lazy import behind it is unreachable.
+    __EC_THEME_LAB__: JSON.stringify(process.env.VERCEL_ENV === "preview" || process.env.VITE_EC_THEME_LAB === "1" || mode === "development"),
+  },
+}));

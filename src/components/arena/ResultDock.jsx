@@ -343,7 +343,7 @@ export default function ResultDock({
             ))}
           </div>
         </Panel>
-        <Panel><div style={muted}>Your five and the Legend CPU's five are locked. The possession engine is playing it out.</div></Panel>
+        <Panel><div style={muted}>Your five and the Legend Rival's five are locked. The possession engine is playing it out.</div></Panel>
       </DockShell>
     );
   }

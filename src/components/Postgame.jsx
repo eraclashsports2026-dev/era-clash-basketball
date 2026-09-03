@@ -249,7 +249,7 @@ function CTAs({ mode, won, onRematch, onBest7, onChallenge, onSwap, onShare, onL
   const seriesBlocked = Boolean(previewCandidate);
   if (seriesBlocked) onBest7 = null;
   const P = ({ onClick, children }) => (
-    <button onClick={onClick} style={{ width: "100%", padding: 15, fontSize: 14, fontWeight: 900, border: "none", borderRadius: 10, background: T.gold, color: "#fffdf8", cursor: "pointer", letterSpacing: 0.5, minHeight: 48 }}>{children}</button>
+    <button onClick={onClick} style={{ width: "100%", padding: 15, fontSize: 14, fontWeight: 900, border: "none", borderRadius: 10, background: T.gold, color: T.onGold, cursor: "pointer", letterSpacing: 0.5, minHeight: 48 }}>{children}</button>
   );
   const S = ({ onClick, children }) => (
     <button onClick={onClick} style={{ flex: "1 1 30%", padding: 12, fontSize: 12.5, fontWeight: 700, borderRadius: 9, border: `1px solid ${T.border}`, background: "transparent", color: T.text, cursor: "pointer", minHeight: 44 }}>{children}</button>

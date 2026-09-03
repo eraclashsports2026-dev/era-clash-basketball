@@ -52,7 +52,7 @@ export default function CoachPick({ side, teamIds, eraStyleId, eraLabel, selecte
           </div>
           <button onClick={() => setOpen(true)} style={{
             width: "100%", padding: "12px 14px", fontSize: 14, fontWeight: 800, minHeight: 46,
-            borderRadius: R.sm, border: "none", background: accent, color: "#fffdf8", cursor: "pointer",
+            borderRadius: R.sm, border: "none", background: accent, color: T.onGold, cursor: "pointer",
           }}>Choose Coach</button>
         </div>
       )}
