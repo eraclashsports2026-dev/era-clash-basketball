@@ -8,6 +8,7 @@ import { VERSIONS } from "../src/versions.js";
 import { computeResult, newSeed } from "./_lib/game-core.js";
 import { PLAYERS } from "../src/players.js";
 import { previewCandidateIdentity } from "./_lib/previewEngine.js";
+import { PREVIEW_ACCESS } from "../config/previewAccess.js";
 
 export default async function handler(req, res) {
   let coreEngine = "ok";

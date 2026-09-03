@@ -125,6 +125,7 @@ const run = async () => {
   await panel.getByRole("button", { name: /^N2 ·/ }).click();
   const groups = panel.getByRole("group"); const n = await groups.count(); for (let i = 0; i < n; i++) await groups.nth(i).getByRole("button", { name: "5 of 5" }).click();
   await panel.getByRole("button", { name: "No issue" }).click();
+  await panel.scrollIntoViewIfNeeded(); await panel.screenshot({ path: `${SHOTS}/desktop-wave2-feedback-panel.png` });
   const [fb] = await Promise.all([page.waitForResponse((r) => r.url().includes("/api/feedback") && r.request().method() === "POST", { timeout: 30_000 }).catch(() => null), panel.getByRole("button", { name: /Send Wave 2 feedback/ }).click()]);
   gate("Wave 2 feedback (task N2, five ratings) is accepted and confirmed to the tester", fb && fb.status() >= 200 && fb.status() < 300 && await panel.getByText(/Wave 2 feedback recorded/).isVisible(), `HTTP ${fb?.status()}`);
   // Resubmission is a revision, not a duplicate (server replaces the primary record).
