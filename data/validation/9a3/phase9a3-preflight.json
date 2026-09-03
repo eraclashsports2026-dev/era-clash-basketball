@@ -1,0 +1,349 @@
+{
+  "artifact": "phase9a3-preflight",
+  "phase": "9A.3 — Night Court V1 owner acceptance · Wave 2 private-beta preparation",
+  "parent": {
+    "branch": "phase-9a2-night-court-production-theme",
+    "commit": "48c13a5a1ca30d0028719764efb534ebbf870e4d",
+    "draftPR": 38
+  },
+  "references": {
+    "main": "9cd95ff8797f8cdef252bbe67d63158c01b9f9bd",
+    "wave1": "4dc59e7b2175b82cea8d5ab5c336b75b550c7f59"
+  },
+  "functionBudget": {
+    "apiRoutes": 12,
+    "middleware": 1,
+    "total": 13,
+    "budget": 13
+  },
+  "gates": [
+    {
+      "gate": "vitest",
+      "result": "PASS",
+      "detail": "Duration  25.36s (transform 4.10s, setup 0ms, import 29.37s, tests 110.50s, environment 6ms)"
+    },
+    {
+      "gate": "build (production)",
+      "result": "PASS",
+      "detail": "[plugin eraclash-sw-version] service worker cache identity: eraclash-assets:2.7.2:a525b6eb2474"
+    },
+    {
+      "gate": "playwright",
+      "result": "PASS",
+      "detail": "74 passed (1.5m)"
+    },
+    {
+      "gate": "chaos:fairness",
+      "result": "PASS",
+      "detail": "23/23 fairness checks passed"
+    },
+    {
+      "gate": "chaos:replay",
+      "result": "PASS",
+      "detail": "9/9 replay checks passed"
+    },
+    {
+      "gate": "chaos:hold-qa",
+      "result": "PASS",
+      "detail": "27/27 hold checks passed"
+    },
+    {
+      "gate": "chaos:coach-draft-qa",
+      "result": "PASS",
+      "detail": "24/24 coach draft checks passed"
+    },
+    {
+      "gate": "postgame:quarter-story-qa",
+      "result": "PASS",
+      "detail": "quarter: 664/664 checks passed over 24 games"
+    },
+    {
+      "gate": "postgame:enhanced-analysis-qa",
+      "result": "PASS",
+      "detail": "enhanced: 168/168 checks passed over 24 games"
+    },
+    {
+      "gate": "postgame:coaching-report-qa",
+      "result": "PASS",
+      "detail": "coaching: 578/578 checks passed over 24 games"
+    },
+    {
+      "gate": "postgame:story-qa",
+      "result": "PASS",
+      "detail": "story contract holds on every game"
+    },
+    {
+      "gate": "ui:navigation-qa",
+      "result": "PASS",
+      "detail": "navigation: 9/9 checks passed"
+    },
+    {
+      "gate": "ui:fantasy-navigation-qa",
+      "result": "PASS",
+      "detail": "fantasy: 15/15 checks passed"
+    },
+    {
+      "gate": "ui:membership-routing-qa",
+      "result": "PASS",
+      "detail": "membership: 18/18 checks passed"
+    },
+    {
+      "gate": "ui:result-dock-qa",
+      "result": "PASS",
+      "detail": "dock: 12/12 checks passed"
+    },
+    {
+      "gate": "ui:player-card-theme-qa",
+      "result": "PASS",
+      "detail": "cards: 10/10 checks passed"
+    },
+    {
+      "gate": "ui:synchronized-chaos-qa",
+      "result": "PASS",
+      "detail": "sync: 11/11 checks passed"
+    },
+    {
+      "gate": "ui:live-intel-qa",
+      "result": "PASS",
+      "detail": "intel: 5/5 checks passed"
+    },
+    {
+      "gate": "ui:era-membership-qa",
+      "result": "PASS",
+      "detail": "era: 9/9 checks passed"
+    },
+    {
+      "gate": "ui:coach-chaos-qa",
+      "result": "PASS",
+      "detail": "coach: 12/12 checks passed"
+    },
+    {
+      "gate": "ui:time-arena-qa",
+      "result": "PASS",
+      "detail": "arena: 27/27 checks passed"
+    },
+    {
+      "gate": "ui:play-lobby-qa",
+      "result": "PASS",
+      "detail": "lobby: 20/20 checks passed → data/validation/9a/play-lobby-qa.json"
+    },
+    {
+      "gate": "ui:mode-registry-qa",
+      "result": "PASS",
+      "detail": "registry: 18/18 checks passed → data/validation/9a/mode-registry-verification.json"
+    },
+    {
+      "gate": "ui:active-run-qa",
+      "result": "PASS",
+      "detail": "active-run: 15/15 checks passed → data/validation/9a/active-run-continuation-qa.json"
+    },
+    {
+      "gate": "ui:progressive-disclosure-qa",
+      "result": "PASS",
+      "detail": "disclosure: 15/15 checks passed → data/validation/9a/progressive-disclosure-qa.json"
+    },
+    {
+      "gate": "ui:multi-position-qa",
+      "result": "PASS",
+      "detail": "multi-position: 20/20 checks passed → data/validation/9a/multi-position-qa.json"
+    },
+    {
+      "gate": "ui:activation-telemetry-qa",
+      "result": "PASS",
+      "detail": "telemetry: 9/9 checks passed → data/validation/9a/activation-telemetry-qa.json"
+    },
+    {
+      "gate": "ui:play-lobby-contracts",
+      "result": "PASS",
+      "detail": "wrote data/validation/9a/competitive-decisions.json"
+    },
+    {
+      "gate": "preview:preflight",
+      "result": "PASS",
+      "detail": "preview:preflight — 6 passed, 0 failed (0.0s)"
+    },
+    {
+      "gate": "preview:smoke",
+      "result": "PASS",
+      "detail": "preview:smoke — 5 passed, 0 failed (0.4s)"
+    },
+    {
+      "gate": "preview:security",
+      "result": "PASS",
+      "detail": "preview:security — 9 passed, 0 failed (0.0s)"
+    },
+    {
+      "gate": "preview:browser-qa",
+      "result": "PASS",
+      "detail": "preview:browser-qa — 1 passed, 0 failed (90.5s)"
+    },
+    {
+      "gate": "preview:wave1-access-audit",
+      "result": "PASS",
+      "detail": "→ data/validation/6c6/candidate3-wave1-access-audit.json"
+    },
+    {
+      "gate": "preview:wave1-feedback-report",
+      "result": "PASS",
+      "detail": "→ data/validation/6c6/candidate3-wave1-feedback-report.json"
+    },
+    {
+      "gate": "chaos:security",
+      "result": "PASS",
+      "detail": "27/27 security checks passed"
+    },
+    {
+      "gate": "chaos:browser-qa",
+      "result": "PASS",
+      "detail": "91/91 deployed chaos-flow checks passed"
+    },
+    {
+      "gate": "build (lab + fixtures)",
+      "result": "PASS",
+      "detail": "[plugin eraclash-sw-version] service worker cache identity: eraclash-assets:2.7.2:485fd3bd6848"
+    },
+    {
+      "gate": "ui:time-arena-geometry",
+      "result": "PASS",
+      "detail": "geometry: 34/34 checks passed"
+    },
+    {
+      "gate": "ui:time-arena-responsive",
+      "result": "PASS",
+      "detail": "visual QA written to data/validation/8c1/"
+    },
+    {
+      "gate": "ui:time-arena-accessibility",
+      "result": "PASS",
+      "detail": "accessibility: no failures"
+    },
+    {
+      "gate": "ui:time-arena-performance",
+      "result": "PASS",
+      "detail": "performance: SVG kit 6.2KB · bundle 806KB · FCP 188ms · hold 28ms"
+    },
+    {
+      "gate": "ui:play-lobby-responsive-qa",
+      "result": "PASS",
+      "detail": "responsive: 37/37 checks passed → data/validation/9a/responsive-qa.json"
+    },
+    {
+      "gate": "ui:play-lobby-accessibility-qa",
+      "result": "PASS",
+      "detail": "accessibility: 18/18 checks passed → data/validation/9a/accessibility-qa.json"
+    },
+    {
+      "gate": "ui:theme-lab (9A.1 candidates, rerun)",
+      "result": "PASS",
+      "detail": "lab: 25/25 checks passed"
+    },
+    {
+      "gate": "ui:theme-dom-invariant (9A.1 candidates, rerun)",
+      "result": "PASS",
+      "detail": "dom-invariant: 108/108 checks passed"
+    },
+    {
+      "gate": "ui:theme-color-balance (9A.1 candidates, rerun)",
+      "result": "PASS",
+      "detail": "color-balance: 4/4 checks passed"
+    },
+    {
+      "gate": "ui:theme-accessibility (9A.1 candidates, rerun)",
+      "result": "PASS",
+      "detail": "accessibility: 52/52 checks passed"
+    },
+    {
+      "gate": "ui:theme-portrait (9A.1 candidates, rerun)",
+      "result": "PASS",
+      "detail": "portrait: 8/8 checks passed"
+    },
+    {
+      "gate": "ui:theme-responsive (9A.1 candidates, rerun)",
+      "result": "PASS",
+      "detail": "responsive: 72/72 checks passed"
+    },
+    {
+      "gate": "ui:theme-performance (9A.1 candidates, rerun)",
+      "result": "PASS",
+      "detail": "performance: 5/5 checks passed"
+    },
+    {
+      "gate": "theme:css --check",
+      "result": "PASS",
+      "detail": ""
+    },
+    {
+      "gate": "theme:fixture --check",
+      "result": "PASS",
+      "detail": ""
+    },
+    {
+      "gate": "ui:night-court contracts",
+      "result": "PASS",
+      "detail": "contracts: 7/7 checks passed"
+    },
+    {
+      "gate": "ui:night-court production",
+      "result": "PASS",
+      "detail": "production: 34/34 checks passed"
+    },
+    {
+      "gate": "ui:night-court dom-invariant",
+      "result": "PASS",
+      "detail": "dom-invariant: 36/36 checks passed"
+    },
+    {
+      "gate": "ui:night-court fracture",
+      "result": "PASS",
+      "detail": "fracture: 14/14 checks passed"
+    },
+    {
+      "gate": "ui:night-court semantic",
+      "result": "PASS",
+      "detail": "semantic: 12/12 checks passed"
+    },
+    {
+      "gate": "ui:night-court portrait",
+      "result": "PASS",
+      "detail": "portrait: 19/19 checks passed"
+    },
+    {
+      "gate": "ui:night-court editorial",
+      "result": "PASS",
+      "detail": "editorial: 13/13 checks passed"
+    },
+    {
+      "gate": "ui:night-court color-context",
+      "result": "PASS",
+      "detail": "color-context: 5/5 checks passed"
+    },
+    {
+      "gate": "ui:night-court accessibility",
+      "result": "PASS",
+      "detail": "accessibility: 92/92 checks passed"
+    },
+    {
+      "gate": "ui:night-court responsive",
+      "result": "PASS",
+      "detail": "responsive: 106/106 checks passed"
+    },
+    {
+      "gate": "ui:night-court performance",
+      "result": "PASS",
+      "detail": "performance: 5/5 checks passed"
+    },
+    {
+      "gate": "ui:night-court competitive",
+      "result": "PASS",
+      "detail": "competitive: 2/2 checks passed"
+    },
+    {
+      "gate": "build (production)",
+      "result": "PASS",
+      "detail": "[plugin eraclash-sw-version] service worker cache identity: eraclash-assets:2.7.2:a525b6eb2474"
+    }
+  ],
+  "passed": 65,
+  "failed": 0,
+  "note": "Run on the Phase 9A.2 head BEFORE any Phase 9A.3 edit; the 9A.1 candidate gates wrote to a scratch folder so 9A.1 evidence stayed byte-for-byte; prior-phase evidence rewritten by the run was restored with git checkout."
+}
