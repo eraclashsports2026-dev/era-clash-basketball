@@ -1,21 +1,28 @@
 # EraClash master colour architecture
 
-**Status:** documented in Phase 9A.1. The master brand is fixed; the Basketball
-environment is one of four candidates awaiting the owner's selection.
+**Status:** documented in Phase 9A.1; the owner selected the Basketball
+environment in Phase 9A.2 — **Night Court V1** (`night-court-production-hybrid`,
+Night Court Editorial base + Fracture Core master-brand signature), now the
+product default and awaiting owner acceptance on the deployed branch preview.
+See `docs/brand/eraclash-basketball-night-court-v1.md`, `era-fracture-usage.md`,
+`semantic-color-usage.md` and `portrait-stage-treatment.md`. The four Phase 9A.1
+candidates remain in the owner-only lab, unchanged, for comparison.
 
 ## Three layers
 
 | Layer | Owner | Scope | Where it lives |
 |---|---|---|---|
 | 1 · Master EraClash brand | the platform | every EraClash product | `src/theme/masterBrandTokens.js` |
-| 2 · Sport environment | each sport | Basketball's surfaces, texture, secondary accent, lighting | `src/theme/basketballThemes.js` |
+| 2 · Sport environment | each sport | Basketball's surfaces, texture, secondary accent, lighting — production: Night Court V1 | `src/theme/basketballThemes.js` |
 | 3 · Semantic game colours | function | Team Gold, Team Blue, Coach/Era Violet, Success, Danger, Disabled, Neutral | `src/theme/semanticTokens.js` |
 
 One resolver (`src/theme/themeResolver.js`) turns the three layers into one
 generated stylesheet (`src/theme/basketball-themes.css`, written by
 `npm run theme:css`, pinned by a test). Everything applies under
-`html[data-theme="<id>"]`; without the attribute the product renders exactly as
-before.
+`html[data-theme="<id>"]`; `src/main.jsx` applies the production theme before the
+first render (Phase 9A.2). Four scopes per theme: reading + root aliases + lobby
+on `html[data-theme]`, arena on `.ec-arena-shell`, the editorial remap on
+`.ec-editorial-shell`, and the master-brand header on `.ec-brand-header`.
 
 ## Layer 1 — the master brand (from EraClash Logo Mk1)
 
