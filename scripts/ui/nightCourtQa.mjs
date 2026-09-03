@@ -29,7 +29,8 @@ import { UNIFORM_TESTS, SKIN_SWATCH } from "../../src/ui/theme-lab/uniformFixtur
 
 const MODE = process.argv[2] || "production";
 const BASE = (process.argv[3] || "http://localhost:4176").replace(/\/$/, "");
-const OUT = "data/validation/9a2";
+// Phase 9A.3 re-runs write elsewhere (NC_OUT) so the 9A.2 evidence stays byte-for-byte.
+const OUT = process.env.NC_OUT || "data/validation/9a2";
 const SCREENS = `${OUT}/screens`;
 const PHASE = "9A.2 — Night Court Editorial production theme";
 const P = PRODUCTION_THEME_ID;

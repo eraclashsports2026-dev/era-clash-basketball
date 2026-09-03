@@ -6,6 +6,10 @@ import { T } from "../theme.js";
 import { getUid } from "../identity.js";
 import { track } from "../analytics.js";
 import { VERSIONS } from "../versions.js";
+import Wave2Feedback from "./Wave2Feedback.jsx";
+import { PREVIEW_ACCESS } from "../../config/previewAccess.js";
+import { WAVE2 } from "../wave2.js";
+const IS_WAVE2 = PREVIEW_ACCESS.waveId === WAVE2.waveId;
 
 const CATEGORIES = [
   ["player_rating_wrong", "Player rating seems wrong"],
@@ -117,6 +121,9 @@ function PreviewFeedback({ ctx }) {
 // ctx: { simulation_id, resultId, mode, my_team (ids), opp_team (ids) }
 export function Feedback({ ctx }) {
   if (typeof ctx?.resultId === "string" && ctx.resultId.startsWith("pv_")) {
+    // Phase 9A.3: a Wave 2 deployment collects the task-aware Wave 2 form; the
+    // Wave 1 form stays for the frozen wave1 branch.
+    if (IS_WAVE2) return <Wave2Feedback resultId={ctx.resultId} defaultTask="N2" />;
     return <PreviewFeedback ctx={ctx} />;
   }
   return <BelievabilityFeedback ctx={ctx} />;

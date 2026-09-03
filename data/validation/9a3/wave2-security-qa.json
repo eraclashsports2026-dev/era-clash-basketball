@@ -1,0 +1,120 @@
+{
+  "artifact": "wave2-security-qa",
+  "phase": "9A.3 — Wave 2 private beta",
+  "method": "the live allowlist and session code, exercised in-process with a test signing secret; Wave 1 and Wave 2 raw keys read from the local 0600 files and never written anywhere",
+  "checks": 22,
+  "passed": 22,
+  "failed": 0,
+  "results": [
+    {
+      "name": "the allowlist is the Wave 2 pool: 1 owner + 3 first-time + 2 returning, config v3, wave id bound",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "correct Wave 2 keys admit with their cohort and wave",
+      "pass": true,
+      "detail": "6/6"
+    },
+    {
+      "name": "a wrong key refuses; a malformed key refuses",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "every Wave 1 key (8, owner included) refuses on Wave 2",
+      "pass": true,
+      "detail": "8/8"
+    },
+    {
+      "name": "Wave 2 keys are absent from the Wave 1 allowlist (source of the frozen wave1 branch)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a session is v3, names its wave, carries no key or hash, and verifies with cohort",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a Wave 1-format (v2) session refuses (wrong-version)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a session body rewritten to another wave fails the signature",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "an expired session refuses",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a tampered signature refuses",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a ghost tester refuses (revoked)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "key-version rotation kills the old session (revoked)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a tester cannot escalate to owner (revoked)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "revocation: every verification re-checks the entry's enabled flag, so setting enabled:false kills issued sessions (predicate pinned in source)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the HMAC secret is wave-bound",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "previewIdentity resolves cohort and wave from the session, else refuses",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Wave 2 feedback: client identity fields never validate; result-bound tasks require a preview result id",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Wave 2 data writes only wave2-* keys; Wave 1 namespaces are never written on this branch's wave2 paths",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "telemetry partition key is wave/cohort/tester/build and rejects a malformed build",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no cross-wave aggregate: api/game.js counters use the wave's namespace, never a hardcoded wave id",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the raw-key file is 0600 in a 0700 directory and gitignored; no raw key in tracked content",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no serverless function was added (12 routes + middleware = 13)",
+      "pass": true,
+      "detail": ""
+    }
+  ]
+}

@@ -51,6 +51,8 @@ export default async function handler(req, res) {
       candidateCoreHash: identity.coreHash,
       calibrationVersion: identity.possessionCalibrationVersion,
       featureFlag: "PREVIEW_SIM_ENGINE_ENABLED",
+      // Phase 9A.3: which private-beta wave this deployment admits (public id).
+      waveId: PREVIEW_ACCESS.waveId,
       fallbackEngine: "production engine 3.2.0 (per-request fallback; emergency-off returns every new request to production while stored preview results stay readable by version)",
       cacheNamespace: "preview-*",
       persistenceNamespace: "pv_ result-id prefix",

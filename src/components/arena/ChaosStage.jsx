@@ -23,6 +23,7 @@ import {
   publishChaosChallenge, abandonChaos,
 } from "../../chaos/client.js";
 import { recordFirstRoll } from "../../activation.js";
+import { track } from "../../analytics.js";
 
 const SLOTS = ["PG", "SG", "SF", "PF", "C"];
 const ROLE_SLOTS = ["ROSTER MAXIMIZER", "OPPONENT COUNTER", "ERA ADAPTER"];
@@ -152,17 +153,25 @@ export default function ChaosStage({
     if (!r) return;
     if (r.gated) { onGated?.(r.gate); return; }
     adopt(r.chaos); setChallenge(null);
+    track("chaos_roll_completed", { roll: 0, holds: 0, staff_holds: 0, next_phase: r.chaos?.phase || null });
   };
   const submitRoll = async () => {
+    const fromRoll = run.roll;
     const r = await act(
       () => submitChaosDecisions(run.chaosRunId, { holdSlots: holds, holdRoles: coachHolds }, tier),
       "Could not lock that decision.");
-    if (r?.chaos) adopt(r.chaos);
+    if (r?.chaos) {
+      adopt(r.chaos);
+      // Wave 2 activation study: which roll landed, how many holds it carried,
+      // and whether this roll revealed the era. Ids and counts only.
+      track("chaos_roll_completed", { roll: fromRoll, holds: holds.length, staff_holds: coachHolds.length, next_phase: r.chaos.phase || null });
+      if (r.chaos.eraState?.revealed && !run.eraState?.revealed) track("chaos_era_revealed", { era_style: r.chaos.eraState.eraStyleId || null, roll: r.chaos.roll || null });
+    }
   };
   const hire = async () => {
     if (!picked) return;
     const r = await act(() => chooseChaosCoach(run.chaosRunId, picked, tier), "Could not hire that staff.");
-    if (r?.chaos) { adopt(r.chaos); onReady?.(r.chaos); }
+    if (r?.chaos) { adopt(r.chaos); track("chaos_coach_selected", { coach_id: picked, role: offers.find((o) => o.coachId === picked)?.role || null }); onReady?.(r.chaos); }
   };
   /**
    * Start over. A draft still in progress is abandoned server-side first so the

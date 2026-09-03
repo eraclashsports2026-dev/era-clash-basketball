@@ -6,6 +6,10 @@ import { useEffect, useRef } from "react";
 import { MATRIX, CAPABILITIES, TIERS, can } from "../../entitlements.js";
 import { FANTASY_DESTINATIONS, FANTASY_STATUS_LABEL, findMode, PLAY_MODES } from "../../navigation.js";
 import { currentTier } from "../../account.js";
+import Wave2Feedback from "../Wave2Feedback.jsx";
+import { PREVIEW_ACCESS } from "../../../config/previewAccess.js";
+import { WAVE2 } from "../../wave2.js";
+const IS_WAVE2 = PREVIEW_ACCESS.waveId === WAVE2.waveId;
 
 const Wrap = ({ title, kicker, children, onBack }) => (
   <div style={{ maxWidth: 900, margin: "0 auto", padding: "24px 16px 48px" }}>
@@ -187,6 +191,11 @@ const GUIDE = {
   },
 };
 
+// Phase 9A.3: on a Wave 2 deployment the guide carries a fourth section, the
+// Wave 2 feedback panel, so the lobby, placement and comparison tasks can be
+// rated without a finished game on screen.
+const GUIDE_SECTIONS = () => (IS_WAVE2 ? { ...GUIDE, feedback: { title: "Wave 2 feedback", blocks: [] } } : GUIDE);
+
 export function ArenaGuide({ section = "play", onSection, onClose }) {
   const ref = useRef(null);
   useEffect(() => {
@@ -195,7 +204,8 @@ export function ArenaGuide({ section = "play", onSection, onClose }) {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
-  const active = GUIDE[section] ? section : "play";
+  const SECTIONS = GUIDE_SECTIONS();
+  const active = SECTIONS[section] ? section : "play";
   return (
     <div role="dialog" aria-modal="true" aria-label="Arena guide" onClick={onClose} style={{
       position: "fixed", inset: 0, zIndex: 90, background: "var(--ec-a-scrim, rgba(3,7,13,0.9))",
@@ -205,14 +215,14 @@ export function ArenaGuide({ section = "play", onSection, onClose }) {
         maxWidth: 640, width: "100%", maxHeight: "84vh", overflowY: "auto", padding: 20,
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
-          <h2 style={{ margin: 0, fontSize: 19, color: "var(--ec-a-text, #f5f7fb)" }}>{GUIDE[active].title}</h2>
+          <h2 style={{ margin: 0, fontSize: 19, color: "var(--ec-a-text, #f5f7fb)" }}>{SECTIONS[active].title}</h2>
           <button onClick={onClose} aria-label="Close" style={{
             marginLeft: "auto", minHeight: 44, padding: "0 12px", borderRadius: 9, cursor: "pointer",
             border: "1px solid var(--ec-a-border)", background: "transparent", color: "var(--ec-a-text-secondary)",
           }}>✕</button>
         </div>
-        <div role="tablist" aria-label="Guide sections" style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0,1fr))", gap: 5, marginBottom: 12 }}>
-          {Object.entries(GUIDE).map(([id, g]) => (
+        <div role="tablist" aria-label="Guide sections" style={{ display: "grid", gridTemplateColumns: `repeat(${Object.keys(SECTIONS).length}, minmax(0,1fr))`, gap: 5, marginBottom: 12 }}>
+          {Object.entries(SECTIONS).map(([id, g]) => (
             <button key={id} role="tab" aria-selected={active === id} onClick={() => onSection?.(id)} style={{
               minHeight: 44, borderRadius: 9, cursor: "pointer", fontSize: 12, fontWeight: 800,
               border: `1px solid ${active === id ? "var(--ec-a-gold-line)" : "var(--ec-a-border)"}`,
@@ -221,7 +231,12 @@ export function ArenaGuide({ section = "play", onSection, onClose }) {
             }}>{g.title}</button>
           ))}
         </div>
-        {GUIDE[active].blocks.map(([heading, text]) => (
+        {active === "feedback" && (
+          <div className="ec-editorial-shell" style={{ borderRadius: 12 }}>
+            <Wave2Feedback defaultTask="N1" />
+          </div>
+        )}
+        {SECTIONS[active].blocks.map(([heading, text]) => (
           <div key={heading} style={{ padding: "11px 0", borderTop: "1px solid var(--ec-a-border)" }}>
             <div style={{ fontWeight: 900, fontSize: 14, color: "var(--ec-a-text, #f5f7fb)" }}>{heading}</div>
             <div style={{ fontSize: 13, color: "var(--ec-a-text-secondary, #c3cddd)", lineHeight: 1.6, marginTop: 3 }}>{text}</div>

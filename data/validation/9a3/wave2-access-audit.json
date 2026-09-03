@@ -1,0 +1,97 @@
+{
+  "artifact": "wave2-access-audit",
+  "phase": "9A.3 — Wave 2 private beta",
+  "generatedAt": "2026-09-03T20:27:15.271Z",
+  "generatedBy": "node scripts/wave2/report.mjs access",
+  "waveId": "candidate4-night-court-wave2",
+  "secretScan": "clean",
+  "data": {
+    "source": "EMPTY_DATA (no store credentials in this shell — nothing is claimed absent)",
+    "waveIdInConfig": "candidate4-night-court-wave2",
+    "waveMatchesStudy": true,
+    "accessConfigVersion": 3,
+    "entries": [
+      {
+        "testerId": "wave2-owner",
+        "role": "owner",
+        "cohort": null,
+        "keyVersion": 1,
+        "enabled": true,
+        "sha256Prefix": "501285518b15"
+      },
+      {
+        "testerId": "wave2-new-01",
+        "role": "tester",
+        "cohort": "first-time",
+        "keyVersion": 1,
+        "enabled": true,
+        "sha256Prefix": "3c8e3ca3e595"
+      },
+      {
+        "testerId": "wave2-new-02",
+        "role": "tester",
+        "cohort": "first-time",
+        "keyVersion": 1,
+        "enabled": true,
+        "sha256Prefix": "c0203718f4e0"
+      },
+      {
+        "testerId": "wave2-new-03",
+        "role": "tester",
+        "cohort": "first-time",
+        "keyVersion": 1,
+        "enabled": true,
+        "sha256Prefix": "b17053990219"
+      },
+      {
+        "testerId": "wave2-returning-01",
+        "role": "tester",
+        "cohort": "returning",
+        "keyVersion": 1,
+        "enabled": true,
+        "sha256Prefix": "b492bfe8fecc"
+      },
+      {
+        "testerId": "wave2-returning-02",
+        "role": "tester",
+        "cohort": "returning",
+        "keyVersion": 1,
+        "enabled": true,
+        "sha256Prefix": "d95721ddf5e0"
+      }
+    ],
+    "counts": {
+      "owner": 1,
+      "firstTime": 3,
+      "returning": 2,
+      "enabled": 6
+    },
+    "wave1EntriesPresent": 0,
+    "sessionsStartedByTester": {
+      "wave2-owner": 0,
+      "wave2-new-01": 0,
+      "wave2-new-02": 0,
+      "wave2-new-03": 0,
+      "wave2-returning-01": 0,
+      "wave2-returning-02": 0
+    },
+    "failedAccessAttempts": {
+      "badKey": 0,
+      "expiredSession": 0,
+      "revokedSession": 0
+    },
+    "rawKeyLeakScan": {
+      "scanned": true,
+      "leaks": 0
+    },
+    "secretFile": {
+      "path": ".preview-secrets/wave2-access-keys.json",
+      "present": true,
+      "permissions": {
+        "dir": "700",
+        "file": "600"
+      },
+      "gitIgnored": true
+    }
+  }
+}

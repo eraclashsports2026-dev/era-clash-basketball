@@ -24,6 +24,10 @@ export const ACTIVATION_EVENTS = Object.freeze([
   "dream_player_swap_completed",
   "dream_player_placement_undone",
   "time_to_first_roll_recorded",
+  // Phase 9A.3 Wave 2 study additions (mirrored in api/events.js and src/wave2.js).
+  "time_to_mode_selection_recorded",
+  "chaos_roll_completed", "chaos_era_revealed", "chaos_coach_selected", "chaos_game_completed",
+  "result_tab_opened", "new_clash_started",
 ]);
 
 const ss = {
@@ -42,8 +46,17 @@ export const markLobbyViewed = ({ hasActiveRun = false, route = "/play" } = {}) 
   track("play_lobby_viewed", { has_active_run: !!hasActiveRun, route });
 };
 
-export const markModeSelected = (mode, action, from = "lobby") =>
+const MODE_CHOSEN = "ec_mode_chosen_recorded";
+export const markModeSelected = (mode, action, from = "lobby") => {
   track("play_mode_selected", { mode_id: mode?.id || null, status: action?.status || null, intent: action?.intent || null, from });
+  // Once per session: how long the lobby was open before the first mode choice.
+  if (!ss.get(MODE_CHOSEN)) {
+    ss.set(MODE_CHOSEN, "1");
+    const lobbyAt = Number(ss.get(LOBBY_AT)) || Number(ss.get(ENTRY_AT)) || Date.now();
+    const ms = Math.max(0, Date.now() - lobbyAt);
+    track("time_to_mode_selection_recorded", { ms, bucket: bucketMs(ms), mode_id: mode?.id || null });
+  }
+};
 
 export const bucketMs = (ms) => (ms < 10_000 ? "<10s" : ms < 30_000 ? "10-30s" : ms < 60_000 ? "30-60s" : ms < 180_000 ? "1-3m" : ">3m");
 

@@ -335,7 +335,16 @@
     "ui:night-court-competitive": "node scripts/ui/nightCourtQa.mjs competitive",
     "ui:night-court-deployed": "node scripts/ui/night-court-preview-qa.mjs",
     "phase9a2:summary": "node scripts/ui/phase9a2Summary.mjs summary",
-    "build:lab": "VITE_EC_THEME_LAB=1 VITE_EC_DEV_FIXTURES=1 vite build"
+    "build:lab": "VITE_EC_THEME_LAB=1 VITE_EC_DEV_FIXTURES=1 vite build",
+    "preview:wave2-feedback-report": "node scripts/wave2/report.mjs feedback",
+    "preview:wave2-product-metrics": "node scripts/wave2/report.mjs metrics",
+    "preview:wave2-access-audit": "node scripts/wave2/report.mjs access",
+    "preview:wave2-readiness": "node scripts/wave2/report.mjs readiness",
+    "preview:wave2-deployed-qa": "node scripts/wave2/deployedQa.mjs",
+    "preview:wave2-contracts": "node scripts/wave2/contracts.mjs",
+    "preview:wave2-invites": "node scripts/wave2/invites.mjs",
+    "phase9a3:summary": "node scripts/wave2/phase9a3Summary.mjs summary",
+    "preview:wave2-security-qa": "node scripts/wave2/securityQa.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",

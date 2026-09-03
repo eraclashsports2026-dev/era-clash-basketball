@@ -21,23 +21,22 @@ const EXPOSED_V1_KEYS = ["c3db0203453b5ff57285ec6bc0d08453", "5866914beb2a928b06
 // QA and were rotated to keyVersion 3. Same rule: dead forever.
 const EXPOSED_V2_KEYS = ["09257f826a21d8b4553a5ca8250920c1", "85c20e2623498f400ba56db9facbd025"];
 
-describe("Wave 1 credentials", () => {
-  it("carries exactly one owner and seven wave1 testers, all v2+, hashes only", () => {
-    expect(PREVIEW_ACCESS.accessConfigVersion).toBe(2);
-    // Schema, not operational state: revoking a tester flips `enabled` and is
-    // a legitimate live operation — the ENTRIES and ids are what is pinned.
+// Phase 9A.3: this branch carries the WAVE 2 allowlist. The Wave 1 entries live on
+// the frozen `wave1` branch (pinned by tests/v9a3-wave2.test.js against the
+// baseline artifact); what this suite pins is the architecture every wave shares.
+describe("preview credentials (wave-agnostic architecture)", () => {
+  it("carries exactly one owner and a pseudonymous tester pool, hashes only, no e-mail", () => {
+    expect(PREVIEW_ACCESS.accessConfigVersion).toBeGreaterThanOrEqual(2);
+    expect(PREVIEW_ACCESS.waveId).toMatch(/^candidate\d-.*wave\d$/);
     const owners = PREVIEW_ACCESS.keys.filter((k) => k.role === "owner");
     const testers = PREVIEW_ACCESS.keys.filter((k) => k.role === "tester");
     expect(owners).toHaveLength(1);
     expect(owners[0].enabled).toBe(true);
-    // 06 and 07 were added at the owner's request for two additional invitees
-    // (no existing key was rotated or altered).
-    expect(testers.map((t) => t.testerId).sort()).toEqual(
-      ["wave1-tester-01", "wave1-tester-02", "wave1-tester-03", "wave1-tester-04",
-       "wave1-tester-05", "wave1-tester-06", "wave1-tester-07"]);
+    expect(testers.length).toBeGreaterThanOrEqual(5);
+    for (const t of testers) expect(t.testerId).toMatch(/^wave\d-[a-z]+-\d\d$/);
     for (const k of PREVIEW_ACCESS.keys) {
       expect(k.sha256).toMatch(/^[a-f0-9]{64}$/);
-      expect(k.keyVersion, `${k.testerId} keyVersion`).toBeGreaterThanOrEqual(2);
+      expect(k.keyVersion, `${k.testerId} keyVersion`).toBeGreaterThanOrEqual(1);
       expect(JSON.stringify(k)).not.toMatch(/@/);
     }
     expect(new Set(PREVIEW_ACCESS.keys.map((k) => k.sha256)).size).toBe(PREVIEW_ACCESS.keys.length);
@@ -64,19 +63,21 @@ describe("Wave 1 credentials", () => {
 
 describe("signed preview sessions", () => {
   // derived from the live allowlist: a rotated keyVersion must not break this
-  const live = PREVIEW_ACCESS.keys.find((k) => k.testerId === "wave1-tester-01");
+  const live = PREVIEW_ACCESS.keys.find((k) => k.role === "tester");
   const entry = { testerId: live.testerId, role: live.role, keyVersion: live.keyVersion };
 
   it("issues and verifies a finite session carrying no key material", async () => {
     const tok = await signSession(entry);
-    expect(tok).toMatch(/^v2\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/);
+    expect(tok).toMatch(/^v3\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/);
     const payload = JSON.parse(Buffer.from(tok.split(".")[1], "base64url").toString());
-    expect(Object.keys(payload).sort()).toEqual(["exp", "iat", "keyVersion", "role", "sid", "testerId", "v"]);
+    // Phase 9A.3: the session names its wave and is signed with a wave-bound secret.
+    expect(Object.keys(payload).sort()).toEqual(["exp", "iat", "keyVersion", "role", "sid", "testerId", "v", "wave"]);
+    expect(payload.wave).toBe(PREVIEW_ACCESS.waveId);
     expect(JSON.stringify(payload)).not.toMatch(/[a-f0-9]{64}/); // no hash, no key
     expect(payload.exp - payload.iat).toBe(SESSION_TTL_SECONDS);
     const v = await verifySession(tok);
     expect(v.ok).toBe(true);
-    expect(v.testerId).toBe("wave1-tester-01");
+    expect(v.testerId).toBe(live.testerId);
   });
 
   it("rejects expiry, tampering, malformed tokens, and wrong-secret tokens", async () => {
@@ -84,13 +85,14 @@ describe("signed preview sessions", () => {
     expect((await verifySession(old)).reason).toBe("expired");
     const tok = await signSession(entry);
     expect((await verifySession(tok.slice(0, -3) + "xxx")).reason).toBe("bad-signature");
-    expect((await verifySession("v2.garbage")).reason).toBe("malformed");
+    expect((await verifySession("v3.garbage")).reason).toBe("malformed");
+    expect((await verifySession("v2.eyJ2IjoyfQ.AAAA")).reason).toBe("wrong-version"); // a Wave 1 session never verifies here
     process.env.PREVIEW_SESSION_SECRET = "a-different-secret";
     expect((await verifySession(tok)).reason).toBe("bad-signature");
   });
 
   it("revocation and key rotation kill already-issued sessions", async () => {
-    const ghost = await signSession({ testerId: "wave1-tester-99", role: "tester", keyVersion: 2 });
+    const ghost = await signSession({ testerId: "wave9-ghost-99", role: "tester", keyVersion: 1 });
     expect((await verifySession(ghost)).reason).toBe("revoked");     // not in allowlist
     const stale = await signSession({ testerId: entry.testerId, role: "tester", keyVersion: entry.keyVersion - 1 });
     expect((await verifySession(stale)).reason).toBe("revoked");     // rotated keyVersion
@@ -102,14 +104,14 @@ describe("signed preview sessions", () => {
     delete process.env.PREVIEW_SESSION_SECRET;
     delete process.env.UPSTASH_REDIS_REST_TOKEN; delete process.env.KV_REST_API_TOKEN;
     expect(await signSession(entry)).toBeNull();
-    const v = await verifySession("v2.eyJ2IjoyfQ.AAAA");
+    const v = await verifySession("v3.eyJ2IjozfQ.AAAA");
     expect(v.ok).toBe(false);
   });
 
   it("previewIdentity: session first, raw-key header for tooling, else refused", async () => {
     const tok = await signSession(entry);
     const s = await previewIdentity({ cookie: `${COOKIE_NAME}=${encodeURIComponent(tok)}` });
-    expect(s).toMatchObject({ ok: true, testerId: "wave1-tester-01" });
+    expect(s).toMatchObject({ ok: true, testerId: live.testerId });
     expect((await previewIdentity({})).ok).toBe(false);
   });
 });

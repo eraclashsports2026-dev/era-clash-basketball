@@ -1,32 +1,33 @@
-// ── Preview access allowlist (Wave 1, key version 2) ─────────────────────────
-// Version 1 keys (phase 6C5) were exposed in conversation output and are
-// REVOKED — every v1 hash is gone and v1 sessions fail the keyVersion check.
-// wave1-tester-01 and -02 were rotated to keyVersion 3 for the same reason
-// (their raw keys reached assistant tool output during deployed QA); their
-// v2 keys and any v2 session they issued are dead.
-// Only SHA-256 HASHES and opaque pseudonymous tester ids live here — the
-// repository is public, and a 128-bit random key is not recoverable from its
-// hash. Raw keys exist only in .preview-secrets/wave1-access-keys.json
-// (gitignored, 0600) and are delivered to people out of band.
+// ── Preview access allowlist — WAVE 2 (candidate4-night-court-wave2) ─────────
+// Phase 9A.3. This branch (and the `wave2` alias built from it) admits ONLY the
+// Wave 2 pool: one owner key and five pseudonymous tester keys in two cohorts.
+// Wave 1's allowlist lives on the frozen `wave1` branch and is untouched; no
+// Wave 1 key (owner included) is present here, so Wave 1 keys are refused on
+// Wave 2 and Wave 2 keys are refused on Wave 1. The two waves never share a
+// credential, a session, a feedback namespace or a metric.
 //
-// Add a tester:    node scripts/preview/accessKey.mjs new <tester-id>
-//                  → deliver the printed key out of band, commit the entry.
-// Revoke a tester: set enabled: false (or delete the entry), commit, push —
-//                  already-issued sessions die on their next request because
-//                  the middleware re-checks this entry every time.
-// Rotate all keys: bump keyVersion on new entries and remove the old ones —
-//                  sessions carry their keyVersion and stale ones fail.
+// Only SHA-256 HASHES and opaque pseudonymous ids live here — the repository is
+// public, and a 128-bit random key is not recoverable from its hash. Raw keys
+// exist only in .preview-secrets/wave2-access-keys.json (gitignored, 0600, in a
+// 0700 directory) and are delivered to people out of band by the owner.
+//
+// Revoke a tester: set enabled: false, commit, push wave2 — already-issued
+//                  sessions die on their next request (the middleware re-checks
+//                  this entry every time).
+// Rotate a key:    bump keyVersion with the new hash — the old key and every
+//                  session minted under it die the same way.
+// The signed session is bound to waveId (api/_lib/previewAccessCheck.js), so a
+// session from another wave can never verify here.
 export const PREVIEW_ACCESS = Object.freeze({
-  accessConfigVersion: 2,
-  waveId: "candidate3-wave1",
+  accessConfigVersion: 3,
+  waveId: "candidate4-night-court-wave2",
+  studyVersion: "wave2-activation-v1",
   keys: Object.freeze([
-    { testerId: "owner", role: "owner", sha256: "6d3f1c7811d9f068b99f990127bc85d6d5fb1b63016051114861310d2e7ab52e", enabled: true, keyVersion: 2 },
-    { testerId: "wave1-tester-01", role: "tester", sha256: "d17a2b5f486bdbab1c046b6927e7444f2e83662025cf350ee5de2d9f88eab946", enabled: true, keyVersion: 3 },
-    { testerId: "wave1-tester-02", role: "tester", sha256: "e20e4070dd4fa7777726dff71b2af22ed31a1417de14dbd9143a09901b91daaa", enabled: true, keyVersion: 3 },
-    { testerId: "wave1-tester-03", role: "tester", sha256: "d344c1b3d9f3bf6c42b21cf816e61d0bea82dc145910a99d933524078e0a364d", enabled: true, keyVersion: 2 },
-    { testerId: "wave1-tester-04", role: "tester", sha256: "56cc3895d6594abc38e3cd2ec38a1279d506cbd9c4db8012ac4304d97200cb2d", enabled: true, keyVersion: 2 },
-    { testerId: "wave1-tester-05", role: "tester", sha256: "a018c836d98e19a22636c5c0967acdea8d1dfcdab1ace2d72ea80fe8c29a7775", enabled: true, keyVersion: 2 },
-    { testerId: "wave1-tester-06", role: "tester", sha256: "944c419294177f724838cbc0d3b9810d62a1ab072a7afaf14662d3a006cb4fd0", enabled: true, keyVersion: 2 },
-    { testerId: "wave1-tester-07", role: "tester", sha256: "015542cebecc3032e040dcde6e3a5676f3ca04d4b4b4ffc6c8ab30f8aaf9d77e", enabled: true, keyVersion: 2 },
+    { testerId: "wave2-owner", role: "owner", cohort: null, sha256: "501285518b15f8fa69be01b04f1d9cf58fb0bbcca726c66361def3784bc490dc", enabled: true, keyVersion: 1, createdAt: "2026-09-03" },
+    { testerId: "wave2-new-01", role: "tester", cohort: "first-time", sha256: "3c8e3ca3e5954a6ac2f47e2b56daf4247a4b4159aef264d8dbfb3879ef08860f", enabled: true, keyVersion: 1, createdAt: "2026-09-03" },
+    { testerId: "wave2-new-02", role: "tester", cohort: "first-time", sha256: "c0203718f4e0eb96ac57dc51b04a6403ef541b02d0c102929de3186a16507bba", enabled: true, keyVersion: 1, createdAt: "2026-09-03" },
+    { testerId: "wave2-new-03", role: "tester", cohort: "first-time", sha256: "b17053990219106998bac7141095391d84236b6e9709099758b2994ba8f8aca5", enabled: true, keyVersion: 1, createdAt: "2026-09-03" },
+    { testerId: "wave2-returning-01", role: "tester", cohort: "returning", sha256: "b492bfe8fecc6e1d9e2ef5f26f1ef0bd8d0a314680fc68891d68ca2818b9abed", enabled: true, keyVersion: 1, createdAt: "2026-09-03" },
+    { testerId: "wave2-returning-02", role: "tester", cohort: "returning", sha256: "d95721ddf5e07a1c39be9102ca9b42df96163b76912eb3dca35325ee2a1acc4f", enabled: true, keyVersion: 1, createdAt: "2026-09-03" },
   ]),
 });
