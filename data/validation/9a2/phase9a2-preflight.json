@@ -1,0 +1,297 @@
+{
+  "artifact": "phase9a2-preflight",
+  "phase": "9A.2 — Night Court Editorial production theme",
+  "parent": {
+    "branch": "phase-9a1-basketball-theme-decision-lab",
+    "commit": "93c9abb0ba3eaf10f8c8e038ebe5b70504eeb144",
+    "draftPR": 37,
+    "grandparent": {
+      "branch": "phase-9a-play-lobby-activation-clarity",
+      "commit": "ab9f9fa7a7f2ca62f2e60859fdf10adf369256fe",
+      "draftPR": 36
+    }
+  },
+  "references": {
+    "main": "9cd95ff8797f8cdef252bbe67d63158c01b9f9bd",
+    "wave1": "4dc59e7"
+  },
+  "functionBudget": {
+    "apiRoutes": 12,
+    "middleware": 1,
+    "total": 13,
+    "budget": 13
+  },
+  "testers": {
+    "identities": 8,
+    "roles": {
+      "owner": 1,
+      "tester": 7
+    },
+    "note": "identities and roles only; raw keys stay in .preview-secrets/ and are never written to an artifact"
+  },
+  "gates": [
+    {
+      "gate": "vitest",
+      "result": "PASS",
+      "detail": "Duration  24.86s (transform 3.79s, setup 0ms, import 28.94s, tests 111.74s, environment 9ms)"
+    },
+    {
+      "gate": "build (production)",
+      "result": "PASS",
+      "detail": "[plugin eraclash-sw-version] service worker cache identity: eraclash-assets:2.7.2:52d58c28636d"
+    },
+    {
+      "gate": "playwright",
+      "result": "PASS",
+      "detail": "74 passed (1.5m)"
+    },
+    {
+      "gate": "chaos:fairness",
+      "result": "PASS",
+      "detail": "23/23 fairness checks passed"
+    },
+    {
+      "gate": "chaos:replay",
+      "result": "PASS",
+      "detail": "9/9 replay checks passed"
+    },
+    {
+      "gate": "chaos:hold-qa",
+      "result": "PASS",
+      "detail": "27/27 hold checks passed"
+    },
+    {
+      "gate": "chaos:coach-draft-qa",
+      "result": "PASS",
+      "detail": "24/24 coach draft checks passed"
+    },
+    {
+      "gate": "postgame:quarter-story-qa",
+      "result": "PASS",
+      "detail": "quarter: 664/664 checks passed over 24 games"
+    },
+    {
+      "gate": "postgame:enhanced-analysis-qa",
+      "result": "PASS",
+      "detail": "enhanced: 168/168 checks passed over 24 games"
+    },
+    {
+      "gate": "postgame:coaching-report-qa",
+      "result": "PASS",
+      "detail": "coaching: 578/578 checks passed over 24 games"
+    },
+    {
+      "gate": "postgame:story-qa",
+      "result": "PASS",
+      "detail": "story contract holds on every game"
+    },
+    {
+      "gate": "ui:navigation-qa",
+      "result": "PASS",
+      "detail": "navigation: 9/9 checks passed"
+    },
+    {
+      "gate": "ui:fantasy-navigation-qa",
+      "result": "PASS",
+      "detail": "fantasy: 15/15 checks passed"
+    },
+    {
+      "gate": "ui:membership-routing-qa",
+      "result": "PASS",
+      "detail": "membership: 18/18 checks passed"
+    },
+    {
+      "gate": "ui:result-dock-qa",
+      "result": "PASS",
+      "detail": "dock: 12/12 checks passed"
+    },
+    {
+      "gate": "ui:player-card-theme-qa",
+      "result": "PASS",
+      "detail": "cards: 10/10 checks passed"
+    },
+    {
+      "gate": "ui:synchronized-chaos-qa",
+      "result": "PASS",
+      "detail": "sync: 11/11 checks passed"
+    },
+    {
+      "gate": "ui:live-intel-qa",
+      "result": "PASS",
+      "detail": "intel: 5/5 checks passed"
+    },
+    {
+      "gate": "ui:era-membership-qa",
+      "result": "PASS",
+      "detail": "era: 9/9 checks passed"
+    },
+    {
+      "gate": "ui:coach-chaos-qa",
+      "result": "PASS",
+      "detail": "coach: 12/12 checks passed"
+    },
+    {
+      "gate": "ui:time-arena-qa",
+      "result": "PASS",
+      "detail": "arena: 27/27 checks passed"
+    },
+    {
+      "gate": "ui:play-lobby-qa",
+      "result": "PASS",
+      "detail": "lobby: 20/20 checks passed → data/validation/9a/play-lobby-qa.json"
+    },
+    {
+      "gate": "ui:mode-registry-qa",
+      "result": "PASS",
+      "detail": "registry: 18/18 checks passed → data/validation/9a/mode-registry-verification.json"
+    },
+    {
+      "gate": "ui:active-run-qa",
+      "result": "PASS",
+      "detail": "active-run: 15/15 checks passed → data/validation/9a/active-run-continuation-qa.json"
+    },
+    {
+      "gate": "ui:progressive-disclosure-qa",
+      "result": "PASS",
+      "detail": "disclosure: 15/15 checks passed → data/validation/9a/progressive-disclosure-qa.json"
+    },
+    {
+      "gate": "ui:multi-position-qa",
+      "result": "PASS",
+      "detail": "multi-position: 20/20 checks passed → data/validation/9a/multi-position-qa.json"
+    },
+    {
+      "gate": "ui:activation-telemetry-qa",
+      "result": "PASS",
+      "detail": "telemetry: 9/9 checks passed → data/validation/9a/activation-telemetry-qa.json"
+    },
+    {
+      "gate": "ui:play-lobby-contracts",
+      "result": "PASS",
+      "detail": ""
+    },
+    {
+      "gate": "preview:preflight",
+      "result": "PASS",
+      "detail": "preview:preflight — 6 passed, 0 failed (0.0s)"
+    },
+    {
+      "gate": "preview:smoke",
+      "result": "PASS",
+      "detail": "preview:smoke — 5 passed, 0 failed (0.3s)"
+    },
+    {
+      "gate": "preview:security",
+      "result": "PASS",
+      "detail": "preview:security — 9 passed, 0 failed (0.0s)"
+    },
+    {
+      "gate": "preview:browser-qa",
+      "result": "PASS",
+      "detail": "preview:browser-qa — 1 passed, 0 failed (91.2s)"
+    },
+    {
+      "gate": "preview:wave1-access-audit",
+      "result": "PASS",
+      "detail": "→ data/validation/6c6/candidate3-wave1-access-audit.json"
+    },
+    {
+      "gate": "preview:wave1-feedback-report",
+      "result": "PASS",
+      "detail": "→ data/validation/6c6/candidate3-wave1-feedback-report.json"
+    },
+    {
+      "gate": "chaos:security",
+      "result": "PASS",
+      "detail": "27/27 security checks passed (harness 4177, PREVIEW_SIM_ENGINE_ENABLED + VERCEL_ENV=preview)"
+    },
+    {
+      "gate": "chaos:browser-qa",
+      "result": "PASS",
+      "detail": "91/91 deployed chaos-flow checks passed (harness 4177, 3 runs)"
+    },
+    {
+      "gate": "build (visual-qa)",
+      "result": "PASS",
+      "detail": "[plugin eraclash-sw-version] service worker cache identity: eraclash-assets:2.7.2:f2f0d10ba7c0"
+    },
+    {
+      "gate": "ui:time-arena-geometry",
+      "result": "PASS",
+      "detail": "geometry: 34/34 checks passed"
+    },
+    {
+      "gate": "ui:time-arena-responsive",
+      "result": "PASS",
+      "detail": "visual QA written to data/validation/8c1/"
+    },
+    {
+      "gate": "ui:time-arena-accessibility",
+      "result": "PASS",
+      "detail": "accessibility: no failures"
+    },
+    {
+      "gate": "ui:time-arena-performance",
+      "result": "PASS",
+      "detail": "performance: SVG kit 6.2KB · bundle 742KB · FCP 184ms · hold 33ms"
+    },
+    {
+      "gate": "ui:play-lobby-responsive-qa",
+      "result": "PASS",
+      "detail": "responsive: 37/37 checks passed → data/validation/9a/responsive-qa.json"
+    },
+    {
+      "gate": "ui:play-lobby-accessibility-qa",
+      "result": "PASS",
+      "detail": "accessibility: 18/18 checks passed → data/validation/9a/accessibility-qa.json"
+    },
+    {
+      "gate": "build (theme-lab)",
+      "result": "PASS",
+      "detail": "[plugin eraclash-sw-version] service worker cache identity: eraclash-assets:2.7.2:8c77dc5a6a7c"
+    },
+    {
+      "gate": "ui:theme-lab-qa",
+      "result": "PASS",
+      "detail": "lab: 25/25 checks passed"
+    },
+    {
+      "gate": "ui:theme-dom-invariant",
+      "result": "PASS",
+      "detail": "dom-invariant: 108/108 checks passed"
+    },
+    {
+      "gate": "ui:theme-color-balance",
+      "result": "PASS",
+      "detail": "color-balance: 4/4 checks passed"
+    },
+    {
+      "gate": "ui:theme-accessibility",
+      "result": "PASS",
+      "detail": "accessibility: 52/52 checks passed"
+    },
+    {
+      "gate": "ui:theme-portrait-compatibility",
+      "result": "PASS",
+      "detail": "portrait: 8/8 checks passed"
+    },
+    {
+      "gate": "ui:theme-responsive",
+      "result": "PASS",
+      "detail": "responsive: 72/72 checks passed"
+    },
+    {
+      "gate": "ui:theme-performance",
+      "result": "PASS",
+      "detail": "performance: 5/5 checks passed"
+    },
+    {
+      "gate": "build (production)",
+      "result": "PASS",
+      "detail": "[plugin eraclash-sw-version] service worker cache identity: eraclash-assets:2.7.2:52d58c28636d"
+    }
+  ],
+  "passed": 52,
+  "failed": 0,
+  "note": "Run on the parent head BEFORE any Phase 9A.2 edit. chaos:security and chaos:browser-qa need a harness started with PREVIEW_SIM_ENGINE_ENABLED=true VERCEL_ENV=preview (the first attempt on a flag-off harness returned 503 and was re-run)."
+}

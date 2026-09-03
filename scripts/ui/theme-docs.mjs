@@ -4,7 +4,9 @@
 // docs/brand/basketball-theme-options.md   — the four candidates, with measured facts
 // docs/brand/basketball-theme-owner-scorecard.md — objective fields filled, owner fields blank
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
-import { THEME_IDS, getTheme } from "../../src/theme/themeResolver.js";
+import { CANDIDATE_THEME_IDS, PRODUCTION_THEME_ID, getTheme } from "../../src/theme/themeResolver.js";
+// Phase 9A.1 artifacts describe the FOUR candidates; the production hybrid has its own harness.
+const THEME_IDS = CANDIDATE_THEME_IDS;
 
 const OUT = "data/validation/9a1";
 const json = (f) => (existsSync(`${OUT}/${f}`) ? JSON.parse(readFileSync(`${OUT}/${f}`, "utf8")) : null);

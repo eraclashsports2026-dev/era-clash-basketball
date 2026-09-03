@@ -361,7 +361,9 @@ if (MODE === "responsive" || MODE === "accessibility") {
       const lum = (c) => { const m = String(c).match(/[\d.]+/g); if (!m) return null; const [r, g, b] = m.map(Number).map((v) => v / 255).map((v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4)); return 0.2126 * r + 0.7152 * g + 0.0722 * b; };
       const ratio = (fg, bg) => { const a = lum(fg), b = lum(bg); if (a == null || b == null) return null; return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05); };
       const shell = document.querySelector(".ec-arena-shell");
-      const panel = getComputedStyle(shell).getPropertyValue("--ec-a-panel").trim() || "#091321";
+      // Phase 9A.2: the lobby cards carry their own family (--ec-l-*); the text is
+      // measured against the card it actually sits on, else the arena panel.
+      const panel = getComputedStyle(shell).getPropertyValue("--ec-l-panel-raised").trim() || getComputedStyle(shell).getPropertyValue("--ec-a-panel").trim() || "#091321";
       const hex = (h) => { const n = parseInt(h.replace("#", ""), 16); return `rgb(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255})`; };
       const line = document.querySelector(".ec-mode-line");
       const title = document.querySelector(".ec-mode-title");

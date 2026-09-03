@@ -1,0 +1,129 @@
+{
+  "artifact": "era-fracture-contract",
+  "phase": "9A.2 — Night Court Editorial production theme",
+  "status": "IMPLEMENTED",
+  "definition": "A controlled DIAGONAL collision between Fracture Gold and Fracture Cobalt — one geometry, reused.",
+  "geometry": {
+    "angleDeg": 112,
+    "goldStop": 0.46,
+    "seamWidth": 0.02,
+    "approvedLocations": [
+      "logo-adjacent brand moment",
+      "main arena divide",
+      "roll transition",
+      "era reveal",
+      "selected player card",
+      "selected coach card",
+      "simulation transition",
+      "result dock state transition",
+      "share graphic",
+      "mode-card selected state"
+    ],
+    "unapprovedLocations": [
+      "every empty card",
+      "every panel corner",
+      "every row",
+      "every paragraph",
+      "decorative noise unrelated to state"
+    ]
+  },
+  "gradient": "linear-gradient(112deg, #E1A72C 0%, #E1A72C 44%, #F7E6B8 46%, #FFFFFF 47%, #9CC2F5 48%, #267CE8 50%, #267CE8 100%)",
+  "primitives": [
+    "EraFractureDivider",
+    "EraFractureActiveEdge",
+    "EraFractureTransition",
+    "EraFractureWatermark"
+  ],
+  "module": "src/components/brand/EraFracture.jsx",
+  "gating": "--ec-a-fracture-on (1 on the production theme, 0 on the four candidates) gates every sweep and edge; --ec-a-fracture is the divide (production) or the neutral 8C.1 line (candidates), so the four candidates render the same DOM unchanged",
+  "approvedPlacements": [
+    {
+      "n": 1,
+      "placement": "main arena divide (Team Gold | Team Blue)",
+      "hook": ".ec-ta-roster-divider { background: var(--ec-a-fracture) }",
+      "where": "ChaosStage roster",
+      "css": true
+    },
+    {
+      "n": 2,
+      "placement": "selected navigation",
+      "hook": ".ec-brand-header .ec-nav-item[aria-current=\"page\"]::after, [data-active=\"true\"]::after",
+      "where": "ArenaHeader / NavMenu",
+      "css": true
+    },
+    {
+      "n": 3,
+      "placement": "roll transition",
+      "hook": "<EraFractureTransition kind=\"roll\" token={run.roll}>",
+      "where": "ChaosStage draft stage",
+      "css": false
+    },
+    {
+      "n": 4,
+      "placement": "era reveal",
+      "hook": ".ec-intel-era[data-revealed=\"true\"]::before",
+      "where": "LiveIntel",
+      "css": true
+    },
+    {
+      "n": 5,
+      "placement": "selected player-card edge",
+      "hook": ".ec-pc[data-held=\"true\"]::before",
+      "where": "PlayerCard",
+      "css": true
+    },
+    {
+      "n": 6,
+      "placement": "selected coach-card edge",
+      "hook": ".ec-coach-card[data-on=\"true\"]::before",
+      "where": "CoachCard",
+      "css": true
+    },
+    {
+      "n": 7,
+      "placement": "simulation transition",
+      "hook": "<EraFractureTransition kind=\"sim\" hold>",
+      "where": "ChaosStage complete/simulating stage",
+      "css": false
+    },
+    {
+      "n": 8,
+      "placement": "Result Dock state transition",
+      "hook": "<EraFractureActiveEdge on={!previous}> on the final-score panel",
+      "where": "ResultDock",
+      "css": false
+    },
+    {
+      "n": 9,
+      "placement": "share / result graphic",
+      "hook": "T.fracture on the VS mark + <EraFractureWatermark> in the result hero",
+      "where": "Postgame ScoreboardHero",
+      "css": false
+    },
+    {
+      "n": 10,
+      "placement": "one restrained lobby brand moment",
+      "hook": "<EraFractureDivider className=\"ec-lobby-fracture\"> under the brand band",
+      "where": "PlayLobby",
+      "css": false
+    }
+  ],
+  "forbidden": [
+    "every empty card",
+    "every paragraph panel",
+    "every table row",
+    "every coach card simultaneously (only the selected/held one)",
+    "random panel corners",
+    "long-form reading backgrounds",
+    "a universal border"
+  ],
+  "oneGlowRule": {
+    "empty": "primary Roll CTA",
+    "hold": "held (selectable) cards",
+    "era reveal": "era panel (fracture edge)",
+    "hire": "selected Coach Chaos card",
+    "simulating": "central fracture transition",
+    "result": "final score panel (fracture edge)"
+  },
+  "accentTarget": "6–10% decorative accent on representative screens (measured by color-context)"
+}

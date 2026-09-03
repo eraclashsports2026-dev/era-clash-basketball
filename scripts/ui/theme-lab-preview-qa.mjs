@@ -9,7 +9,9 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { chromium, request as pwRequest } from "@playwright/test";
-import { THEME_IDS, getTheme } from "../../src/theme/themeResolver.js";
+import { CANDIDATE_THEME_IDS, PRODUCTION_THEME_ID, getTheme } from "../../src/theme/themeResolver.js";
+// Phase 9A.1 artifacts describe the FOUR candidates; the production hybrid has its own harness.
+const THEME_IDS = CANDIDATE_THEME_IDS;
 import { FIXTURE_IDS } from "../../src/ui/theme-lab/fixtureIds.js";
 import { previewCandidateIdentity } from "../../api/_lib/previewEngine.js";
 
@@ -82,7 +84,7 @@ const run = async () => {
   await page.goto(`${BASE}/play`, { waitUntil: "domcontentloaded" });
   await page.waitForSelector(".ec-lobby", { timeout: 45_000 });
   const pub = await page.evaluate(() => ({ dataTheme: document.documentElement.dataset.theme || null, labLinks: [...document.querySelectorAll("a[href]")].filter((x) => /theme-lab/.test(x.href)).length, picker: /choose your basketball theme|theme lab/i.test(document.body.innerText) }));
-  gate("no data-theme, no lab link, no picker on /play", pub.dataTheme === null && pub.labLinks === 0 && !pub.picker, JSON.stringify(pub));
+  gate("only the production theme, no lab link, no picker on /play", pub.dataTheme === PRODUCTION_THEME_ID && pub.labLinks === 0 && !pub.picker, JSON.stringify(pub));
   const bundles = await page.evaluate(() => [...document.scripts].map((s) => s.src).filter(Boolean));
   let labInMain = false;
   for (const src of bundles) { const body = await (await ctx.request.get(src)).text(); if (/basketball-theme-lab\?theme=|data-theme-lab-chrome/.test(body) && !/ThemeLab-/.test(src)) labInMain = true; }

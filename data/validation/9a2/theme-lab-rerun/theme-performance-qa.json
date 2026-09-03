@@ -1,0 +1,95 @@
+{
+  "artifact": "theme-performance-qa",
+  "phase": "9A.1 — Basketball theme decision lab",
+  "build": "theme-lab build (VITE_EC_THEME_LAB=1) — production compiles the lab out",
+  "themeCssBytes": 25614,
+  "labChunk": {
+    "file": "ThemeLab-zbksTz9i.js",
+    "bytes": 25501
+  },
+  "mainBundleBytes": [
+    719076
+  ],
+  "cssBundleBytes": [
+    80283
+  ],
+  "perTheme": {
+    "fracture-core": {
+      "fcpMs": 184,
+      "lcpMs": 184,
+      "cls": 0,
+      "themeSwitchMs": [
+        14.1,
+        31.5,
+        66.6,
+        49.8
+      ],
+      "transferredKb": 225
+    },
+    "night-court": {
+      "fcpMs": 188,
+      "lcpMs": 188,
+      "cls": 0,
+      "themeSwitchMs": [
+        24.2,
+        52.1,
+        49.2,
+        50.4
+      ],
+      "transferredKb": 225
+    },
+    "modern-court": {
+      "fcpMs": 184,
+      "lcpMs": 184,
+      "cls": 0,
+      "themeSwitchMs": [
+        16.9,
+        67.3,
+        49.9,
+        50
+      ],
+      "transferredKb": 225
+    },
+    "hardwood-luxe": {
+      "fcpMs": 188,
+      "lcpMs": 188,
+      "cls": 0,
+      "themeSwitchMs": [
+        13.8,
+        66.2,
+        49.9,
+        49.8
+      ],
+      "transferredKb": 225
+    }
+  },
+  "checks": 5,
+  "passed": 5,
+  "results": [
+    {
+      "name": "fracture-core: first paint 184ms, LCP 184ms, CLS 0, theme switch ≤ 66.6ms",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "night-court: first paint 188ms, LCP 188ms, CLS 0, theme switch ≤ 52.1ms",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "modern-court: first paint 184ms, LCP 184ms, CLS 0, theme switch ≤ 67.3ms",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "hardwood-luxe: first paint 188ms, LCP 188ms, CLS 0, theme switch ≤ 66.2ms",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no theme-specific raster, video or remote font was added",
+      "pass": true,
+      "detail": "eraclash-logo-mk1.png"
+    }
+  ]
+}

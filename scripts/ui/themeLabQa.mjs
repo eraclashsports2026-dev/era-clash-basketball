@@ -19,7 +19,10 @@
 import fs from "node:fs";
 import { chromium } from "@playwright/test";
 import { BASKETBALL_THEMES } from "../../src/theme/basketballThemes.js";
-import { THEME_IDS, ARENA_KEYS, LOBBY_KEYS, READING_KEYS, ROOT_ALIAS_KEYS } from "../../src/theme/themeTypes.js";
+import { CANDIDATE_THEME_IDS, PRODUCTION_THEME_ID, ARENA_KEYS, LOBBY_KEYS, READING_KEYS, ROOT_ALIAS_KEYS } from "../../src/theme/themeTypes.js";
+// This harness grades the FOUR Phase 9A.1 candidates (historical comparison).
+// The production hybrid has its own harness (scripts/ui/nightCourtQa.mjs).
+const THEME_IDS = CANDIDATE_THEME_IDS;
 import { themeTokenTable, validateTheme, getTheme, THEME_RESOLVER_VERSION } from "../../src/theme/themeResolver.js";
 import { MASTER_BRAND, MASTER_BRAND_ROLES, ERA_FRACTURE, FOCUS_RING, TYPE_ROLES, MASTER_BRAND_VERSION } from "../../src/theme/masterBrandTokens.js";
 import { SEMANTIC_ROLES, SEMANTIC_DEFAULTS, SEMANTIC_REGIONS, SEMANTIC_VERSION } from "../../src/theme/semanticTokens.js";
@@ -27,7 +30,8 @@ import { FIXTURE_IDS, FIXTURE_LABELS } from "../../src/ui/theme-lab/fixtureIds.j
 
 const MODE = process.argv[2] || "lab";
 const BASE = (process.argv[3] || "http://localhost:4176").replace(/\/$/, "");
-const OUT = "data/validation/9a1";
+// Phase 9A.2 re-runs write elsewhere (THEME_QA_OUT) so the 9A.1 evidence is preserved byte-for-byte.
+const OUT = process.env.THEME_QA_OUT || "data/validation/9a1";
 const SCREENS = `${OUT}/screens`;
 const PHASE = "9A.1 — Basketball theme decision lab";
 fs.mkdirSync(OUT, { recursive: true });
@@ -119,7 +123,8 @@ if (MODE === "lab") {
   const page = await ctx.newPage();
   await page.goto(`${BASE}/play`, { waitUntil: "networkidle" });
   const pub = await page.evaluate(() => ({ dataTheme: document.documentElement.dataset.theme || null, links: [...document.querySelectorAll("a[href]")].filter((a) => /theme-lab/.test(a.href)).length, text: /theme lab|choose your basketball theme/i.test(document.body.innerText) }));
-  ok("the public product carries no data-theme, no lab link and no theme picker", pub.dataTheme === null && pub.links === 0 && !pub.text, JSON.stringify(pub));
+  // Phase 9A.2: the public product carries the PRODUCTION theme (one identity), still no lab link and no picker.
+  ok("the public product carries only the production theme, no lab link and no theme picker", pub.dataTheme === PRODUCTION_THEME_ID && pub.links === 0 && !pub.text, JSON.stringify(pub));
   await browser.close();
   write("theme-lab-smoke.json", { artifact: "theme-lab-smoke", phase: PHASE, checks: checks.length, passed: checks.filter((c) => c.pass).length, results: checks });
 }
