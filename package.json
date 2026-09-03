@@ -305,7 +305,22 @@
     "ui:play-lobby-responsive-qa": "node scripts/ui/phase9aQa.mjs responsive",
     "ui:play-lobby-accessibility-qa": "node scripts/ui/phase9aQa.mjs accessibility",
     "ui:play-lobby-preview-qa": "node scripts/ui/play-lobby-preview-qa.mjs",
-    "phase9a:summary": "node scripts/ui/phase9aSummary.mjs summary"
+    "phase9a:summary": "node scripts/ui/phase9aSummary.mjs summary",
+    "build:theme-lab": "VITE_EC_THEME_LAB=1 vite build",
+    "theme:css": "node scripts/ui/build-theme-css.mjs",
+    "theme:fixture": "node scripts/ui/theme-lab-fixture.mjs",
+    "ui:theme-lab-qa": "node scripts/ui/themeLabQa.mjs lab",
+    "ui:theme-dom-invariant": "node scripts/ui/themeLabQa.mjs dom-invariant",
+    "ui:theme-color-balance": "node scripts/ui/themeLabQa.mjs color-balance",
+    "ui:theme-accessibility": "node scripts/ui/themeLabQa.mjs accessibility",
+    "ui:theme-portrait-compatibility": "node scripts/ui/themeLabQa.mjs portrait",
+    "ui:theme-responsive": "node scripts/ui/themeLabQa.mjs responsive",
+    "ui:theme-performance": "node scripts/ui/themeLabQa.mjs performance",
+    "ui:theme-contact-sheets": "node scripts/ui/themeLabQa.mjs contact-sheets",
+    "ui:theme-competitive": "node scripts/ui/themeLabQa.mjs competitive",
+    "ui:theme-scorecard": "node scripts/ui/themeLabQa.mjs scorecard",
+    "ui:theme-contracts": "node scripts/ui/themeLabQa.mjs contracts",
+    "ui:theme-lab-preview-qa": "node scripts/ui/theme-lab-preview-qa.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",
