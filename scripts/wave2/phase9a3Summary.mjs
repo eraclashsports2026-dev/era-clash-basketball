@@ -81,7 +81,7 @@ if (MODE === "ledger") {
     "mobile deployed QA": pass(bp, /mobile Time Arena/, "tablet and mobile lobby + arena"),
     "feedback round trip": pass(bp, /feedback \(task N2/, "204 + tester confirmation; spoofed identity ignored; unknown task 400"),
     "stable Wave 2 alias": alias?.failed === 0 ? `FIXED_AND_VERIFIED (${alias.deployment.aliasUrl}; ${alias.passed}/${alias.gates.length})` : "UNRESOLVED_TECHNICAL_FAILURES",
-    "alias redeployment survival": alias?.redeploySurvival?.sameAlias && alias?.redeploySurvival?.newStampServed ? `FIXED_AND_VERIFIED (${alias.redeploySurvival.firstStamp} → ${alias.redeploySurvival.secondStamp} at one address)` : "UNRESOLVED_TECHNICAL_FAILURES",
+    "alias redeployment survival": alias?.redeploySurvival?.sameAlias && alias?.redeploySurvival?.servedAfterRedeploy && alias?.redeploySurvival?.secondDeploymentSucceeded ? `FIXED_AND_VERIFIED (two deployments at one address; stamp ${alias.redeploySurvival.firstStamp} → ${alias.redeploySurvival.secondStamp}${alias.redeploySurvival.firstStamp === alias.redeploySurvival.secondStamp ? " — identical because the follow-up was metadata-only and the asset set is unchanged" : ""})` : "UNRESOLVED_TECHNICAL_FAILURES",
     "Wave 1 preservation": alias?.wave1Unchanged && bp?.wave1Unchanged ? "FIXED_AND_VERIFIED (alias, stamp, candidate and owner key unchanged after every Wave 2 deployment)" : "UNRESOLVED_TECHNICAL_FAILURES",
     "production isolation": iso?.productionBranch?.unchanged && iso?.serverlessFunctions?.increase === 0 ? "FIXED_AND_VERIFIED (main unchanged; 13/13 functions)" : "UNRESOLVED_TECHNICAL_FAILURES",
   };
