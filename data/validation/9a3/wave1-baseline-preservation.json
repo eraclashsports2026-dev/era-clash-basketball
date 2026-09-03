@@ -1,0 +1,135 @@
+{
+  "artifact": "wave1-baseline-preservation",
+  "phase": "9A.3 \u2014 Wave 2 preparation",
+  "recordedAt": "2026-09-03T20:10:11.389Z",
+  "status": "FROZEN_BASELINE \u2014 never migrated, renamed or merged with Wave 2",
+  "branch": "wave1",
+  "commit": "4dc59e7b2175b82cea8d5ab5c336b75b550c7f59",
+  "commitDate": "2026-08-31T21:05:01-04:00",
+  "buildStamp": "eraclash-assets:2.7.2:2f35a3b70c30",
+  "stableAlias": "https://era-clash-basketball-git-wave1-era-clash.vercel.app",
+  "lastKnownDeployment": "https://vercel.com/era-clash/era-clash-basketball/2iLLRBn8N47doQgGN27xKiG8eNFm (Vercel status for 4dc59e7)",
+  "accessConfiguration": {
+    "file": "config/previewAccess.js @ wave1",
+    "sha256": "23894c8bc977d234ccb8e41941c18c0aad0aec810b3f3afc74ead88b3bf36a24",
+    "waveId": "candidate3-wave1",
+    "accessConfigVersion": 2,
+    "entries": 8,
+    "credentialEntryHashes": [
+      {
+        "testerId": "owner",
+        "role": "owner",
+        "keyVersion": 2,
+        "enabled": true,
+        "sha256": "6d3f1c7811d9f068b99f990127bc85d6d5fb1b63016051114861310d2e7ab52e"
+      },
+      {
+        "testerId": "wave1-tester-01",
+        "role": "tester",
+        "keyVersion": 3,
+        "enabled": true,
+        "sha256": "d17a2b5f486bdbab1c046b6927e7444f2e83662025cf350ee5de2d9f88eab946"
+      },
+      {
+        "testerId": "wave1-tester-02",
+        "role": "tester",
+        "keyVersion": 3,
+        "enabled": true,
+        "sha256": "e20e4070dd4fa7777726dff71b2af22ed31a1417de14dbd9143a09901b91daaa"
+      },
+      {
+        "testerId": "wave1-tester-03",
+        "role": "tester",
+        "keyVersion": 2,
+        "enabled": true,
+        "sha256": "d344c1b3d9f3bf6c42b21cf816e61d0bea82dc145910a99d933524078e0a364d"
+      },
+      {
+        "testerId": "wave1-tester-04",
+        "role": "tester",
+        "keyVersion": 2,
+        "enabled": true,
+        "sha256": "56cc3895d6594abc38e3cd2ec38a1279d506cbd9c4db8012ac4304d97200cb2d"
+      },
+      {
+        "testerId": "wave1-tester-05",
+        "role": "tester",
+        "keyVersion": 2,
+        "enabled": true,
+        "sha256": "a018c836d98e19a22636c5c0967acdea8d1dfcdab1ace2d72ea80fe8c29a7775"
+      },
+      {
+        "testerId": "wave1-tester-06",
+        "role": "tester",
+        "keyVersion": 2,
+        "enabled": true,
+        "sha256": "944c419294177f724838cbc0d3b9810d62a1ab072a7afaf14662d3a006cb4fd0"
+      },
+      {
+        "testerId": "wave1-tester-07",
+        "role": "tester",
+        "keyVersion": 2,
+        "enabled": true,
+        "sha256": "015542cebecc3032e040dcde6e3a5676f3ca04d4b4b4ffc6c8ab30f8aaf9d77e"
+      }
+    ],
+    "note": "SHA-256 hashes of raw keys \u2014 the same public values the branch carries; raw keys stay in .preview-secrets/wave1-access-keys.json and are untouched"
+  },
+  "middlewareSha256": "b105588ac57509bda30de95948ddd3e4180472676c87ce833f25e4b3cbd63ffc",
+  "candidateIdentity": {
+    "candidateId": "Candidate 3",
+    "calibrationVersion": "1.3.0",
+    "coreHash": "6a423d4fedf45bef3889b9425651e815c95da4f6e573a2c51a3f0ef713360b69",
+    "measuredOn": "the live alias /api/health with an owner session"
+  },
+  "themeIdentity": "pre-9A hybrid warm-ivory / navy (Phase 7B tokens); no Play Lobby (hasLobby: false on the alias HTML); no data-theme",
+  "feedbackNamespace": {
+    "waveId": "candidate3-wave1",
+    "schemaVersion": 2,
+    "keys": [
+      "preview-feedback:primary:<resultId>:<testerId>",
+      "preview-feedback:log",
+      "preview-feedback:categories",
+      "preview-feedback:results"
+    ]
+  },
+  "metricsNamespace": [
+    "preview-metrics:counters",
+    "preview-metrics:scenario-feedback",
+    "an:counts:<day>",
+    "an:log:<day>",
+    "an:uniq:<day>:<event>"
+  ],
+  "resultNamespace": "preview-result:pv_<id>",
+  "sessionBehavior": {
+    "cookie": "pv_session",
+    "format": "v2.<payload>.<hmac>",
+    "payload": [
+      "v",
+      "testerId",
+      "role",
+      "keyVersion",
+      "sid",
+      "iat",
+      "exp"
+    ],
+    "ttlSeconds": 604800,
+    "secret": "HMAC over `pv-session-v2|<store token>`; revocation re-checks the allowlist on every request",
+    "crossWaveNote": "a Wave 2 session is signed with a wave-bound secret and payload (v3) and cannot verify on Wave 1; a Wave 1 session cannot verify on Wave 2"
+  },
+  "knownTesterCount": {
+    "owner": 1,
+    "testers": 7,
+    "total": 8
+  },
+  "liveDataReadable": false,
+  "liveDataNote": "no KV/store credentials in this shell \u2014 feedback and counters are reported in explicit EMPTY-DATA mode (npm run preview:wave1-feedback-report); Wave 1 human feedback may exist in the store and is not claimed absent",
+  "recheckAfterEveryWave2Deployment": [
+    "wave1 branch unchanged",
+    "wave1 alias unchanged",
+    "wave1 build stamp unchanged",
+    "wave1 keys retain prior behaviour (owner key opens a session on the alias)",
+    "wave1 feedback namespace untouched by Wave 2 code paths",
+    "wave1 sessions not invalidated (Wave 2 changes ship only on Wave 2 hosts)"
+  ]
+}

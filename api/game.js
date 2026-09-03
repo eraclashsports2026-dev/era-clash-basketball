@@ -17,6 +17,7 @@ import { computeResultV3 } from "./_lib/game-core-v3.js";
 import { computeResultPreview, PREVIEW_NAMESPACES, PREVIEW_RESULT_ID_PREFIX } from "./_lib/previewEngine.js";
 import { buildPregameRead } from "./_lib/pregameRead.js";
 import { buildDeterministicSummary, deriveDraftConsequences, buildExpandedAnalysis, eraImpactLine } from "./_lib/postgameStory.js";
+import { PREVIEW_ACCESS } from "../config/previewAccess.js";
 import { previewIdentity } from "./_lib/previewAccessCheck.js";
 import { previewEvent } from "./_lib/previewTelemetry.js";
 
@@ -364,14 +365,16 @@ export default async function handler(req, res) {
     // pre-preview behavior.
     let previewComputed = null;
     if (f.previewSimEngine && f.simV3 && mode === "single" && blue && !dailyCfg) {
-      if (hasStore()) await pipeline([["HINCRBY", "preview-metrics:counters", "games_started", 1]]).catch(() => {});
       const pvT0 = Date.now();
       const who = await previewIdentity(req.headers).catch(() => ({ ok: false }));
+      // Phase 9A.3: counters live in the WAVE's own namespace — never mixed.
+      const COUNTERS = PREVIEW_ACCESS.waveId === "candidate3-wave1" ? "preview-metrics:counters" : "wave2-metrics:counters";
+      if (hasStore()) await pipeline([["HINCRBY", COUNTERS, "games_started", 1]]).catch(() => {});
       const testerId = who.ok ? who.testerId : "unattributed";
       const sid = who.ok && who.sid ? who.sid : undefined;
       try {
         previewEvent("simulation_started", { mode });
-        previewEvent("preview_game_started", { mode, waveId: "candidate3-wave1", testerId, sid });
+        previewEvent("preview_game_started", { mode, waveId: PREVIEW_ACCESS.waveId, testerId, sid });
         if (chaos === "preview-fail") {
           const err = new Error("preview chaos injection");
           err.code = "PREVIEW_CHAOS";
@@ -382,16 +385,17 @@ export default async function handler(req, res) {
           coachBlueId: validCoachId(b.coachBlueId) || "neutral",
           eraStyleId: validEraId(b.eraStyleId) || undefined,
         }, seed);
-        previewEvent("preview_game_completed", { mode, waveId: "candidate3-wave1", testerId, sid,
+        previewEvent("preview_game_completed", { mode, waveId: PREVIEW_ACCESS.waveId, testerId, sid,
           candidateId: previewComputed.candidate.candidateId,
           calibrationVersion: previewComputed.candidate.possessionCalibrationVersion,
           simulationLatency: Date.now() - pvT0, fallbackUsed: false });
+        if (hasStore()) await pipeline([["HINCRBY", COUNTERS, "games_completed", 1]]).catch(() => {});
       } catch (e) {
         previewComputed = null;
         previewEvent("fallback_invoked", { mode, reason: String(e.code ?? e.message).slice(0, 80) });
-        previewEvent("preview_fallback_invoked", { mode, waveId: "candidate3-wave1", testerId, sid,
+        previewEvent("preview_fallback_invoked", { mode, waveId: PREVIEW_ACCESS.waveId, testerId, sid,
           reason: String(e.code ?? e.message).slice(0, 80), fallbackUsed: true });
-        if (hasStore()) await pipeline([["HINCRBY", "preview-metrics:counters", "fallback_invoked", 1]]).catch(() => {});
+        if (hasStore()) await pipeline([["HINCRBY", COUNTERS, "fallback_invoked", 1]]).catch(() => {});
       }
     }
     // A Daily with the coach/era feature OFF still scores onto the shared board,

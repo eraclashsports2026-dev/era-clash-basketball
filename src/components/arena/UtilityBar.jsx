@@ -9,10 +9,14 @@
 // reason: RESET on the stage is the one way to start over, and it sits next to
 // the board it discards.
 
+import { PREVIEW_ACCESS } from "../../../config/previewAccess.js";
+import { WAVE2 } from "../../wave2.js";
 const LINKS = [
   ["HOW TO PLAY", "play", "📖"],
   ["STRATEGY GUIDE", "strategy", "🛡"],
   ["GLOSSARY", "glossary", "🔤"],
+  // Phase 9A.3: on a Wave 2 deployment, the study's feedback panel lives one tap away.
+  ...(PREVIEW_ACCESS.waveId === WAVE2.waveId ? [["FEEDBACK", "feedback", "✎"]] : []),
 ];
 
 export default function UtilityBar({ eraState, onGuide, onSettings, compact = false }) {

@@ -9,6 +9,7 @@
 // result is always labelled as one: it must never read as the draft on screen.
 import { useState, useEffect, useRef } from "react";
 import { EraFractureActiveEdge } from "../brand/EraFracture.jsx";
+import { track } from "../../analytics.js";
 
 const TABS = [
   ["story", "Game Story"],
@@ -198,7 +199,7 @@ export default function ResultDock({
         <div role="tablist" aria-label="Result sections" style={{ display: "grid", gridTemplateColumns: "repeat(4, minmax(0,1fr))", gap: 4 }}>
           {TABS.map(([id, label]) => (
             <button key={id} role="tab" className="ec-dock-tab" aria-selected={tab === id} aria-controls="ec-dock-panel"
-              onClick={() => setTab((t) => (t === id ? null : id))} style={{
+              onClick={() => { setTab((t) => (t === id ? null : id)); if (tab !== id) track("result_tab_opened", { tab: id, previous: !!previous }); }} style={{
               minHeight: 40, borderRadius: 9, cursor: "pointer", fontSize: 11.5, fontWeight: 800,
               border: `1px solid ${tab === id ? "var(--ec-a-gold-line)" : "var(--ec-a-border)"}`,
               background: tab === id ? "var(--ec-a-gold-soft)" : "transparent",

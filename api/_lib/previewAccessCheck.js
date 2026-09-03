@@ -7,12 +7,17 @@
 //     request via the x-preview-key header for operator tooling). NEVER stored
 //     in the browser.
 //  2. Signed preview session (cookie pv_session) — HMAC-signed, finite expiry,
-//     carries only {testerId, role, keyVersion, sid, exp}. No key, no hash.
+//     carries only {wave, testerId, role, keyVersion, sid, exp}. No key, no hash.
 //     Revocation is immediate: every verification re-checks the allowlist
 //     entry's enabled flag and keyVersion.
+//  Phase 9A.3: sessions are WAVE-BOUND (v3). The HMAC secret mixes in the
+//  deployment's waveId and the payload names it, so a session minted on one
+//  wave's host never verifies on another's, even with a shared store token.
 import { PREVIEW_ACCESS } from "../../config/previewAccess.js";
 
 export const COOKIE_NAME = "pv_session";
+export const SESSION_VERSION = 3;
+export const WAVE_ID = PREVIEW_ACCESS.waveId;
 export const SESSION_TTL_SECONDS = 7 * 24 * 60 * 60; // finite: one week
 const KEY_SHAPE = /^[a-f0-9]{32}$/;
 const enc = new TextEncoder();
@@ -39,30 +44,30 @@ const secretMaterial = () =>
 const hmacKey = async () => {
   const m = secretMaterial();
   if (!m) return null;
-  return globalThis.crypto.subtle.importKey("raw", enc.encode(`pv-session-v2|${m}`),
+  return globalThis.crypto.subtle.importKey("raw", enc.encode(`pv-session-v${SESSION_VERSION}|${m}|${WAVE_ID}`),
     { name: "HMAC", hash: "SHA-256" }, false, ["sign", "verify"]);
 };
 
 const entryFor = (pred) => PREVIEW_ACCESS.keys.find(pred) ?? null;
 
-/** Raw key → {ok, testerId, role, keyVersion}. Disabled entries fail. */
+/** Raw key → {ok, testerId, role, cohort, keyVersion, waveId}. Disabled entries fail. */
 export const verifyPreviewKey = async (key) => {
   if (typeof key !== "string" || !KEY_SHAPE.test(key)) return { ok: false };
   const h = await sha256Hex(key);
   const e = entryFor((k) => k.sha256 === h && k.enabled !== false);
-  return e ? { ok: true, testerId: e.testerId, role: e.role, keyVersion: e.keyVersion } : { ok: false };
+  return e ? { ok: true, testerId: e.testerId, role: e.role, cohort: e.cohort ?? null, keyVersion: e.keyVersion, waveId: WAVE_ID } : { ok: false };
 };
 
 /** Issue a signed session for a verified key holder. */
 export const signSession = async ({ testerId, role, keyVersion }, nowMs = Date.now()) => {
   const k = await hmacKey();
   if (!k) return null;
-  const payload = { v: 2, testerId, role, keyVersion,
+  const payload = { v: SESSION_VERSION, wave: WAVE_ID, testerId, role, keyVersion,
     sid: b64u(globalThis.crypto.getRandomValues(new Uint8Array(9))),
     iat: Math.floor(nowMs / 1000), exp: Math.floor(nowMs / 1000) + SESSION_TTL_SECONDS };
   const body = b64u(enc.encode(JSON.stringify(payload)));
   const mac = b64u(await globalThis.crypto.subtle.sign("HMAC", k, enc.encode(body)));
-  return `v2.${body}.${mac}`;
+  return `v${SESSION_VERSION}.${body}.${mac}`;
 };
 
 /**
@@ -72,7 +77,8 @@ export const signSession = async ({ testerId, role, keyVersion }, nowMs = Date.n
  */
 export const verifySession = async (token, nowMs = Date.now()) => {
   if (typeof token !== "string") return { ok: false, reason: "missing" };
-  const m = token.match(/^v2\.([A-Za-z0-9_-]+)\.([A-Za-z0-9_-]+)$/);
+  if (/^v[0-2]\./.test(token)) return { ok: false, reason: "wrong-version" }; // a pre-9A.3 (Wave 1) session never verifies here
+  const m = token.match(/^v3\.([A-Za-z0-9_-]+)\.([A-Za-z0-9_-]+)$/);
   if (!m) return { ok: false, reason: "malformed" };
   const k = await hmacKey();
   if (!k) return { ok: false, reason: "no-secret" };
@@ -80,11 +86,12 @@ export const verifySession = async (token, nowMs = Date.now()) => {
   if (!valid) return { ok: false, reason: "bad-signature" };
   let p;
   try { p = JSON.parse(unb64u(m[1]).toString("utf8")); } catch { return { ok: false, reason: "bad-payload" }; }
-  if (p.v !== 2 || typeof p.exp !== "number") return { ok: false, reason: "bad-payload" };
+  if (p.v !== SESSION_VERSION || typeof p.exp !== "number") return { ok: false, reason: "bad-payload" };
+  if (p.wave !== WAVE_ID) return { ok: false, reason: "wrong-wave" };
   if (p.exp * 1000 <= nowMs) return { ok: false, reason: "expired" };
   const e = entryFor((x) => x.testerId === p.testerId && x.enabled !== false && x.keyVersion === p.keyVersion);
   if (!e || e.role !== p.role) return { ok: false, reason: "revoked" };
-  return { ok: true, testerId: p.testerId, role: p.role, sid: p.sid, exp: p.exp };
+  return { ok: true, testerId: p.testerId, role: p.role, cohort: e.cohort ?? null, waveId: WAVE_ID, sid: p.sid, exp: p.exp };
 };
 
 export const readCookie = (cookieHeader, name) => {
@@ -102,8 +109,8 @@ export const readCookie = (cookieHeader, name) => {
  */
 export const previewIdentity = async (headers) => {
   const s = await verifySession(readCookie(headers.cookie, COOKIE_NAME));
-  if (s.ok) return { ok: true, testerId: s.testerId, role: s.role, sid: s.sid };
+  if (s.ok) return { ok: true, testerId: s.testerId, role: s.role, cohort: s.cohort, waveId: WAVE_ID, sid: s.sid };
   const k = await verifyPreviewKey(headers["x-preview-key"]);
-  if (k.ok) return { ok: true, testerId: k.testerId, role: k.role, sid: null };
+  if (k.ok) return { ok: true, testerId: k.testerId, role: k.role, cohort: k.cohort, waveId: WAVE_ID, sid: null };
   return { ok: false };
 };

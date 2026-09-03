@@ -9,6 +9,9 @@
 // this endpoint is a silent 204 no-op.
 import { hasStore, pipeline, rateLimit, clientIp, dayKey } from "./_lib/store.js";
 import { sameOrigin } from "./_lib/session.js";
+import { previewIdentity } from "./_lib/previewAccessCheck.js";
+import { PREVIEW_ACCESS } from "../config/previewAccess.js";
+import { WAVE2, WAVE2_TELEMETRY_EVENTS, cohortOf } from "../src/wave2.js";
 
 const ALLOWED = new Set([
   "session_started", "returning_session",
@@ -40,7 +43,20 @@ const ALLOWED = new Set([
   "dream_player_selected", "eligible_position_choice_shown",
   "dream_player_placed", "dream_player_auto_placed", "dream_player_swap_completed", "dream_player_placement_undone",
   "time_to_first_roll_recorded",
+  // Phase 9A.3 Wave 2 activation study (src/wave2.js WAVE2_TELEMETRY_EVENTS;
+  // a test pins the two lists together). preview_fallback_invoked is emitted by
+  // the SERVER (api/game.js) and counted there; it is not a client event.
+  "time_to_mode_selection_recorded",
+  "chaos_roll_completed", "chaos_era_revealed", "chaos_coach_selected", "chaos_game_completed",
+  "result_tab_opened", "new_clash_started",
 ]);
+export const EVENTS_ALLOWLIST = ALLOWED;
+
+// Phase 9A.3: durable, PARTITIONED counters for the Wave 2 study. The partition
+// (wave, cohort, tester, build) comes from the signed session and the event's
+// build field — never from a client-supplied identity. No counter mixes waves.
+const BUILD_SHAPE = /^[a-z0-9]{6,12}$/;
+export const wave2PartitionKey = (waveId, cohort, testerId, build) => `wave2-metrics:${waveId}:${cohort ?? "unknown"}:${testerId}:${BUILD_SHAPE.test(String(build)) ? build : "unknown"}`;
 
 const MAX_BATCH = 50;
 const MAX_EVENT_BYTES = 2000;
@@ -57,6 +73,8 @@ export default async function handler(req, res) {
 
   const day = dayKey();
   const cmds = [];
+  const wave2 = PREVIEW_ACCESS.waveId === WAVE2.waveId ? await previewIdentity(req.headers).catch(() => ({ ok: false })) : { ok: false };
+  const study = new Set(WAVE2_TELEMETRY_EVENTS);
   for (const e of events) {
     if (!e || typeof e.event !== "string" || !ALLOWED.has(e.event)) continue;
     const clean = JSON.stringify(e);
@@ -64,6 +82,15 @@ export default async function handler(req, res) {
     cmds.push(["LPUSH", `an:log:${day}`, clean]);
     cmds.push(["HINCRBY", `an:counts:${day}`, e.event, 1]);
     if (e.uid) cmds.push(["PFADD", `an:uniq:${day}:${e.event}`, e.uid]);
+    if (wave2.ok && study.has(e.event)) {
+      const cohort = wave2.cohort ?? cohortOf(wave2.testerId);
+      cmds.push(["HINCRBY", wave2PartitionKey(WAVE2.waveId, cohort, wave2.testerId, e.build), e.event, 1]);
+      cmds.push(["HINCRBY", `wave2-metrics:events:${WAVE2.waveId}`, e.event, 1]);
+      if ((e.event === "time_to_mode_selection_recorded" || e.event === "time_to_first_roll_recorded") && Number.isFinite(e.ms) && e.ms >= 0 && e.ms < 3_600_000) {
+        cmds.push(["LPUSH", `wave2-metrics:timing:${WAVE2.waveId}:${e.event}`, Math.round(e.ms)]);
+        cmds.push(["LTRIM", `wave2-metrics:timing:${WAVE2.waveId}:${e.event}`, 0, 999]);
+      }
+    }
   }
   if (cmds.length) {
     cmds.push(["LTRIM", `an:log:${day}`, 0, 49999]);

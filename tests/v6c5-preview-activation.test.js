@@ -30,8 +30,9 @@ describe("preview access control", () => {
   it("stores only sha256 hashes, never keys", () => {
     for (const k of PREVIEW_ACCESS.keys) {
       expect(k.sha256).toMatch(/^[a-f0-9]{64}$/);
-      // v2 entry shape (phase 6C6): pseudonymous id + role + rotation metadata
-      expect(Object.keys(k).sort()).toEqual(["enabled", "keyVersion", "role", "sha256", "testerId"]);
+      // v2 entry shape (phase 6C6): pseudonymous id + role + rotation metadata;
+      // Phase 9A.3 adds the study cohort and a creation date — neither is a secret.
+      expect(Object.keys(k).sort()).toEqual(["cohort", "createdAt", "enabled", "keyVersion", "role", "sha256", "testerId"]);
     }
     const src = readFileSync("config/previewAccess.js", "utf8");
     expect(src).not.toMatch(/@/); // no email addresses in source

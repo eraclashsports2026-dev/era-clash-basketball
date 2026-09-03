@@ -1,0 +1,143 @@
+{
+  "artifact": "era-fracture-qa",
+  "phase": "9A.2 — Night Court Editorial production theme",
+  "theme": "night-court-production-hybrid",
+  "placements": [
+    {
+      "n": 1,
+      "placement": "main arena divide",
+      "pass": true,
+      "detail": "2px, linear-gradient(112deg, rgb(225, 167, 44…"
+    },
+    {
+      "n": 2,
+      "placement": "selected navigation",
+      "pass": true,
+      "detail": "underline 2px"
+    },
+    {
+      "n": 3,
+      "placement": "roll transition (at rest)",
+      "pass": true,
+      "detail": "{\"active\":\"false\",\"opacity\":0,\"pos\":\"absolute\"}"
+    },
+    {
+      "n": 4,
+      "placement": "era reveal",
+      "pass": true,
+      "detail": "2px edge on the revealed era"
+    },
+    {
+      "n": 5,
+      "placement": "selected player-card edge",
+      "pass": true,
+      "detail": "6 held cards carry it; unheld: none"
+    },
+    {
+      "n": 6,
+      "placement": "selected coach-card edge",
+      "pass": true,
+      "detail": "held staff carries it; others: none"
+    },
+    {
+      "n": 7,
+      "placement": "simulation transition (held while simulating)",
+      "pass": true,
+      "detail": "opacity 0.45 (reduced motion)"
+    },
+    {
+      "n": 8,
+      "placement": "Result Dock state transition",
+      "pass": true,
+      "detail": "final-score edge opacity 1"
+    },
+    {
+      "n": 9,
+      "placement": "share / result graphic",
+      "pass": true,
+      "detail": "VS mark + watermark at 0.05"
+    },
+    {
+      "n": 10,
+      "placement": "one lobby brand moment",
+      "pass": true,
+      "detail": "1 fracture in the lobby, 0 on cards"
+    }
+  ],
+  "oneGlow": "see theme-accessibility-qa glows and night-court-production-qa",
+  "checks": 14,
+  "passed": 14,
+  "failed": 0,
+  "results": [
+    {
+      "name": "approved 1: main arena divide",
+      "pass": true,
+      "detail": "2px, linear-gradient(112deg, rgb(225, 167, 44…"
+    },
+    {
+      "name": "approved 2: selected navigation",
+      "pass": true,
+      "detail": "underline 2px"
+    },
+    {
+      "name": "approved 3: roll transition (at rest)",
+      "pass": true,
+      "detail": "{\"active\":\"false\",\"opacity\":0,\"pos\":\"absolute\"}"
+    },
+    {
+      "name": "approved 4: era reveal",
+      "pass": true,
+      "detail": "2px edge on the revealed era"
+    },
+    {
+      "name": "approved 5: selected player-card edge",
+      "pass": true,
+      "detail": "6 held cards carry it; unheld: none"
+    },
+    {
+      "name": "approved 6: selected coach-card edge",
+      "pass": true,
+      "detail": "held staff carries it; others: none"
+    },
+    {
+      "name": "approved 7: simulation transition (held while simulating)",
+      "pass": true,
+      "detail": "opacity 0.45 (reduced motion)"
+    },
+    {
+      "name": "approved 8: Result Dock state transition",
+      "pass": true,
+      "detail": "final-score edge opacity 1"
+    },
+    {
+      "name": "approved 9: share / result graphic",
+      "pass": true,
+      "detail": "VS mark + watermark at 0.05"
+    },
+    {
+      "name": "approved 10: one lobby brand moment",
+      "pass": true,
+      "detail": "1 fracture in the lobby, 0 on cards"
+    },
+    {
+      "name": "forbidden: no fracture on empty cards, neutral panels, paragraphs or table rows",
+      "pass": true,
+      "detail": "empty 0 · panels 0 · paragraphs 0/0 · rows 0"
+    },
+    {
+      "name": "forbidden: not every coach card at once — only the held/selected one",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "on the control candidate the same elements exist and paint nothing (neutral divider, edges at opacity 0)",
+      "pass": true,
+      "detail": "2 primitives"
+    },
+    {
+      "name": "no uncontracted diagonal fracture gradient anywhere on the arena (random cracks absent)",
+      "pass": true,
+      "detail": "0 stray"
+    }
+  ]
+}
