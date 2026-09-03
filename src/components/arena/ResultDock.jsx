@@ -8,6 +8,7 @@
 // that the full Postgame reads. Nothing here is sample data, and a previous
 // result is always labelled as one: it must never read as the draft on screen.
 import { useState, useEffect, useRef } from "react";
+import { EraFractureActiveEdge } from "../brand/EraFracture.jsx";
 
 const TABS = [
   ["story", "Game Story"],
@@ -101,7 +102,7 @@ const DockShell = ({ children, label }) => (
   <div style={{ display: "grid", gap: 12 }}>
     <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
       <span aria-hidden="true" style={{ fontSize: 12 }}>🏆</span>
-      <div style={{ fontSize: 10.5, fontWeight: 900, letterSpacing: 2, color: "var(--ec-a-text)" }}>RESULT DOCK</div>
+      <h2 style={{ margin: 0, fontSize: 10.5, fontWeight: 900, letterSpacing: 2, color: "var(--ec-a-text)" }}>RESULT DOCK</h2>
       {label && (
         <span style={{ marginLeft: "auto", fontSize: 9.5, fontWeight: 900, letterSpacing: 1, color: "var(--ec-a-text-muted)" }}>
           {label}
@@ -156,7 +157,9 @@ export default function ResultDock({
     const winner = gold > blue ? "Gold" : "Blue";
     return (
       <DockShell label={previous ? agoLabel(priorAt) : "THIS CLASH"}>
-        <Panel style={{ textAlign: "center", padding: "11px 12px", borderColor: won ? "var(--ec-a-gold-line)" : "var(--ec-a-blue-line)" }}>
+        <Panel style={{ textAlign: "center", padding: "11px 12px", position: "relative", overflow: "hidden", borderColor: won ? "var(--ec-a-gold-line)" : "var(--ec-a-blue-line)" }}>
+          {/* Approved fracture placement 8: the dock's state transition to a result. */}
+          <EraFractureActiveEdge on={!previous} />
           <Head tone={won ? "var(--ec-a-gold, #f2b51d)" : "var(--ec-a-blue, #3b9bff)"}>
             {previous ? "LAST CLASH · NOT THE DRAFT ON SCREEN" : "FINAL SCORE"}
           </Head>
@@ -194,7 +197,7 @@ export default function ResultDock({
 
         <div role="tablist" aria-label="Result sections" style={{ display: "grid", gridTemplateColumns: "repeat(4, minmax(0,1fr))", gap: 4 }}>
           {TABS.map(([id, label]) => (
-            <button key={id} role="tab" aria-selected={tab === id} aria-controls="ec-dock-panel"
+            <button key={id} role="tab" className="ec-dock-tab" aria-selected={tab === id} aria-controls="ec-dock-panel"
               onClick={() => setTab((t) => (t === id ? null : id))} style={{
               minHeight: 40, borderRadius: 9, cursor: "pointer", fontSize: 11.5, fontWeight: 800,
               border: `1px solid ${tab === id ? "var(--ec-a-gold-line)" : "var(--ec-a-border)"}`,

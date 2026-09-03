@@ -16,7 +16,7 @@
 // hue. The semantic declarations follow the text-bearing values:
 // gold is Team Gold, blue is Team Blue, violet is Coach/Era, red is danger,
 // green is success, platinum/graphite is neutral structure.
-import { MASTER_BRAND } from "./masterBrandTokens.js";
+import { MASTER_BRAND, eraFractureGradient, ERA_FRACTURE_GLOW } from "./masterBrandTokens.js";
 
 const hexToRgb = (hex) => {
   const h = hex.replace("#", "");
@@ -32,6 +32,11 @@ const arenaFamily = ({
   bg, arena, panel, panelRaised, panelSoft, text, textSecondary, textMuted,
   teamGold, teamBlue, coach, coachDeep, green, red, brandGold, accent, header, scrim,
   ctaHi, ctaMid, ctaLo, ctaInk, ctaGlow, border, borderStrong, courtOpacity, texture, spotWarm, spotCool,
+  // Phase 9A.2. The four candidates keep the neutral divider they were compared
+  // with; the production theme paints the Era Fracture. The portrait stage is a
+  // product fix and is present in every theme.
+  fracture = NEUTRAL_DIVIDER, fractureGlow = "0 0 0 0 transparent", fractureOn = "0",
+  portraitField = "rgba(214, 222, 236, 0.30)", portraitWellHi = "#1E2A3B", portraitWellLo = "#0B1220",
 }) => ({
   "bg": bg, "arena": arena, "panel": panel, "panel-raised": panelRaised, "panel-soft": panelSoft,
   "text": text, "text-secondary": textSecondary, "text-muted": textMuted,
@@ -44,12 +49,17 @@ const arenaFamily = ({
   "cta-hi": ctaHi, "cta-mid": ctaMid, "cta-lo": ctaLo, "cta-ink": ctaInk, "cta-glow": ctaGlow,
   "pc-deep-gold": "#8B5B08", "pc-deep-blue": "#0E4F91",
   "court-opacity": String(courtOpacity), "texture": texture, "spot-warm": spotWarm, "spot-cool": spotCool,
+  "fracture": fracture, "fracture-glow": fractureGlow, "fracture-on": fractureOn,
+  "portrait-field": portraitField, "portrait-well-hi": portraitWellHi, "portrait-well-lo": portraitWellLo,
 });
+/** The 8C.1 roster divider, as the four candidates were measured with it. */
+const NEUTRAL_DIVIDER = "linear-gradient(to bottom, transparent, rgba(157, 178, 209, 0.22) 12%, rgba(157, 178, 209, 0.22) 88%, transparent)";
 
 const readingFamily = ({
   bg, card, cardHover, muted, border, borderStrong, text, textDim, textMuted, cream,
   arena, arenaSoft, arenaBorder, onArena, onArenaDim, gold, goldOnDark, goldSoft, goldBorder,
   blue, blueOnDark, blueSoft, blueBorder, green, red, orange, onGold, insetHi, insetLo,
+  fracture = `linear-gradient(120deg, ${goldOnDark} 30%, #ffffff 50%, ${blueOnDark} 70%)`,
 }) => ({
   "bg": bg, "bg-card": card, "bg-card-hover": cardHover, "bg-muted": muted, "bg-panel": card,
   "border": border, "border-strong": borderStrong,
@@ -58,7 +68,7 @@ const readingFamily = ({
   "gold": gold, "gold-on-dark": goldOnDark, "gold-soft": goldSoft, "gold-border": goldBorder,
   "blue": blue, "blue-on-dark": blueOnDark, "blue-soft": blueSoft, "blue-border": blueBorder,
   "green": green, "red": red, "orange": orange, "on-gold": onGold,
-  "inset-hi": insetHi, "inset-lo": insetLo,
+  "inset-hi": insetHi, "inset-lo": insetLo, "fracture": fracture,
 });
 
 const rootAliases = (r) => ({
@@ -72,6 +82,23 @@ const lobbyFromArena = (a) => ({
   "text": a.text, "text-secondary": a["text-secondary"], "text-muted": a["text-muted"],
   "border": a.border, "border-strong": a["border-strong"],
   "page-text": a["text-secondary"], "page-muted": a["text-muted"], "glyph": a.gold,
+  "hero-bg": "transparent", "hero-text": a["text-secondary"],
+  "glyph-cool": a.gold, "glyph-era": a.gold, "card-shadow": "0 0 0 1px rgba(242, 181, 29, 0.18), 0 18px 40px rgba(0, 0, 0, 0.35)",
+  "arc-opacity": "1",
+});
+
+/**
+ * Editorial remap (Phase 9A.2): the --ec-a-* names that membership, fantasy and
+ * mode-information pages read, given reading-surface values. Derived from each
+ * theme's reading family so no theme can forget it.
+ */
+const editorialFromReading = (r, semantic) => ({
+  "bg": r.bg, "arena": r.bg, "panel": r["bg-card"], "panel-raised": r["bg-card"], "panel-soft": r["bg-muted"],
+  "text": r.text, "text-secondary": r["text-dim"], "text-muted": r["text-muted"],
+  "gold": r.gold, "gold-soft": r["gold-soft"], "gold-line": r["gold-border"],
+  "blue": r.blue, "blue-soft": r["blue-soft"], "blue-line": r["blue-border"],
+  "coach": semantic.coachViolet, "coach-soft": soft(semantic.coachViolet), "coach-line": line(semantic.coachViolet),
+  "border": r.border, "border-strong": r["border-strong"], "green": r.green, "red": r.red, "scrim": rgba(r.arena, 0.86),
 });
 
 // ── CONTROL — FRACTURE CORE ──────────────────────────────────────────────────
@@ -121,6 +148,9 @@ const nightCourtLobby = {
   "text": "#151B24", "text-secondary": "#3A4150", "text-muted": "#5F6672", "border": "#D9D2C4", "border-strong": "#C3BAA8",
   // The page stays night obsidian; its own text is warm platinum.
   "page-text": "#CFC9BC", "page-muted": "#9A9890", "glyph": "#8A6410",
+  "hero-bg": "transparent", "hero-text": "#CFC9BC",
+  "glyph-cool": "#8A6410", "glyph-era": "#8A6410", "card-shadow": "0 0 0 1px rgba(242, 181, 29, 0.18), 0 18px 40px rgba(0, 0, 0, 0.35)",
+  "arc-opacity": "1",
 };
 
 // ── OPTION B — MODERN COURT LIGHT ────────────────────────────────────────────
@@ -146,6 +176,9 @@ const modernCourtLobby = {
   "bg": "#F3F0E9", "panel": "#FAF8F3", "panel-raised": "#FFFFFF", "panel-soft": "#ECE8DF",
   "text": "#131923", "text-secondary": "#3B4352", "text-muted": "#5F6776", "border": "#DCD7CC", "border-strong": "#C6BFB1",
   "page-text": "#3B4352", "page-muted": "#5F6776", "glyph": "#8A6210",
+  "hero-bg": "transparent", "hero-text": "#3B4352",
+  "glyph-cool": "#8A6210", "glyph-era": "#8A6210", "card-shadow": "0 0 0 1px rgba(242, 181, 29, 0.18), 0 18px 40px rgba(0, 0, 0, 0.35)",
+  "arc-opacity": "0",
 };
 
 // ── OPTION C — HARDWOOD LUXE ─────────────────────────────────────────────────
@@ -171,8 +204,63 @@ const hardwoodReading = readingFamily({
   green: "#23784C", red: "#AE3F3A", orange: "#9C6414", onGold: "#FFFDF8", insetHi: "#241B15", insetLo: "#100C0A",
 });
 
+
+// ── PRODUCTION — NIGHT COURT V1 (owner-selected hybrid, Phase 9A.2) ──────────
+// Night Court Editorial base + Fracture Core master-brand signature:
+//   Layer 1 (master brand)  Brand Obsidian header and brand band, metallic
+//                           Platinum typography, Fracture Gold + Fracture Cobalt
+//                           in ONE controlled diagonal Era Fracture.
+//   Layer 2 (Basketball)    Night Obsidian arena, Arena/Raised Graphite cards,
+//                           Warm Court Ivory reading surfaces, Editorial Ink.
+//   Layer 3 (semantic)      Team Gold, Team Blue, Coach/Era Violet, Success,
+//                           Warning, Danger — meanings fixed, luminance tuned.
+// Text-bearing semantic colours are lifted for AA on the night panels exactly as
+// the candidates were (Team Blue #2F83E7 → #4A92EA as text; Danger #D95050 →
+// #E06060 as text; Coach Violet #7656D7 → #A08AE6 as text). The specification
+// hex is the semantic BASE and is used for edges, lights and fills.
+export const NIGHT_COURT_V1 = Object.freeze({
+  layer2: { nightObsidian: "#070A0F", arenaGraphite: "#111823", raisedGraphite: "#172130", warmCourtIvory: "#F1EDE4", editorialInk: "#151B24", secondaryInk: "#505765", softIvoryDivider: "#D7D1C6" },
+  layer3: { teamGold: "#E8B13C", teamGoldDeep: "#8E6416", teamBlue: "#2F83E7", teamBlueDeep: "#174F94", coachViolet: "#7656D7", coachVioletDeep: "#432A88", success: "#2FA96D", warning: "#C58B23", danger: "#D95050" },
+  textLifted: { teamBlue: "#4A92EA", coachViolet: "#A08AE6", danger: "#E06060" },
+});
+const NC1 = NIGHT_COURT_V1.layer2, NC3 = NIGHT_COURT_V1.layer3, NCT = NIGHT_COURT_V1.textLifted;
+const productionArena = arenaFamily({
+  bg: NC1.nightObsidian, arena: "#0A0E15", panel: NC1.arenaGraphite, panelRaised: NC1.raisedGraphite, panelSoft: "#1D2838",
+  text: MASTER_BRAND.platinum, textSecondary: MASTER_BRAND.platinumDeep, textMuted: "#98A2B3",
+  teamGold: NC3.teamGold, teamBlue: NCT.teamBlue, coach: NCT.coachViolet, coachDeep: NC3.coachVioletDeep, green: NC3.success, red: NCT.danger,
+  brandGold: MASTER_BRAND.fractureGold, accent: MASTER_BRAND.fractureCobalt,
+  header: rgba(MASTER_BRAND.obsidian, 0.94), scrim: rgba(MASTER_BRAND.obsidian, 0.9),
+  ctaHi: "#F5C553", ctaMid: NC3.teamGold, ctaLo: "#B9841F", ctaInk: "#14100A", ctaGlow: "0 8px 18px rgba(232, 177, 60, 0.18)",
+  border: rgba(MASTER_BRAND.platinum, 0.15), borderStrong: rgba(MASTER_BRAND.platinum, 0.30),
+  courtOpacity: 0.9, texture: "none", spotWarm: rgba(NC3.teamGold, 0.09), spotCool: rgba(MASTER_BRAND.fractureCobalt, 0.10),
+  fracture: eraFractureGradient(), fractureGlow: ERA_FRACTURE_GLOW, fractureOn: "1",
+  portraitField: "rgba(214, 222, 236, 0.32)", portraitWellHi: "#1E2A3B", portraitWellLo: "#0B1220",
+});
+// Team Blue and Danger BASE hexes drive the card tints (never text).
+productionArena["blue-soft"] = soft(NC3.teamBlue); productionArena["blue-line"] = line(NC3.teamBlue);
+productionArena["pc-deep-gold"] = NC3.teamGoldDeep; productionArena["pc-deep-blue"] = NC3.teamBlueDeep;
+productionArena["coach-soft"] = rgba(NC3.coachViolet, 0.10); productionArena["coach-line"] = rgba(NC3.coachViolet, 0.38);
+const productionReading = readingFamily({
+  bg: NC1.warmCourtIvory, card: "#FBF8F1", cardHover: "#F4EFE5", muted: "#E9E6DF",
+  border: NC1.softIvoryDivider, borderStrong: "#C3BAA8", text: NC1.editorialInk, textDim: NC1.secondaryInk, textMuted: NC1.secondaryInk, cream: "#F6F1E7",
+  arena: "#0A0E15", arenaSoft: NC1.raisedGraphite, arenaBorder: "#2A3140", onArena: MASTER_BRAND.platinum, onArenaDim: "#B9B4A8",
+  gold: "#8A6410", goldOnDark: NC3.teamGold, goldSoft: "#FBF0D2", goldBorder: "#E4BC5B",
+  blue: "#2461B8", blueOnDark: "#7BB3F5", blueSoft: "#E6EFFC", blueBorder: "#92B7EA",
+  green: "#237A4F", red: "#B54040", orange: "#A4640A", onGold: "#FFFDF8", insetHi: "#141B27", insetLo: NC1.nightObsidian,
+  fracture: eraFractureGradient(),
+});
+const productionLobby = {
+  // Ivory canvas, off-white cards, ink type; the brand band above is obsidian.
+  "bg": NC1.warmCourtIvory, "panel": "#FBF8F1", "panel-raised": "#FFFFFF", "panel-soft": "#ECE6DA",
+  "text": NC1.editorialInk, "text-secondary": "#3A4150", "text-muted": NC1.secondaryInk, "border": NC1.softIvoryDivider, "border-strong": "#C3BAA8",
+  "page-text": "#3A4150", "page-muted": NC1.secondaryInk, "glyph": "#8A6410",
+  "hero-bg": MASTER_BRAND.obsidian, "hero-text": MASTER_BRAND.platinumDeep,
+  "glyph-cool": "#2461B8", "glyph-era": "#5B3FB8", "card-shadow": "0 0 0 1px rgba(225, 167, 44, 0.22), 0 14px 30px rgba(21, 27, 36, 0.14)",
+  "arc-opacity": "0",
+};
+
 /**
- * The four candidates. `families` is the theme's own 60–30–10 declaration —
+ * The four candidates and the production hybrid. `families` is the theme's own 60–30–10 declaration —
  * the audit classifies pixels against these lists — and `semantic` is its
  * tuned semantic set. `secondaryIsLight` says whether reading surfaces are
  * light (they are in A, B and C).
@@ -189,6 +277,7 @@ export const BASKETBALL_THEMES = Object.freeze({
     semantic: { teamGold: "#E4AA31", teamBlue: "#3F8FE6", coachViolet: "#A27BE6", success: "#35B875", danger: "#EE6A6A" },
     secondaryIsLight: false,
     arena: fractureCoreArena, reading: fractureCoreReading, lobby: lobbyFromArena(fractureCoreArena),
+    editorial: editorialFromReading(fractureCoreReading, { coachViolet: "#A27BE6" }),
   },
   "night-court": {
     id: "night-court", label: "Night Court Editorial", role: "OPTION A",
@@ -201,6 +290,7 @@ export const BASKETBALL_THEMES = Object.freeze({
     semantic: { teamGold: "#E8B13C", teamBlue: "#4A92EA", coachViolet: "#A08AE6", success: "#2FA96D", danger: "#E06060" },
     secondaryIsLight: true,
     arena: nightCourtArena, reading: nightCourtReading, lobby: nightCourtLobby,
+    editorial: editorialFromReading(nightCourtReading, { coachViolet: "#5B3FB8" }),
   },
   "modern-court": {
     id: "modern-court", label: "Modern Court Light", role: "OPTION B",
@@ -213,6 +303,7 @@ export const BASKETBALL_THEMES = Object.freeze({
     semantic: { teamGold: "#E0A52A", teamBlue: "#5296E3", coachViolet: "#A991E8", success: "#34A772", danger: "#EA6E6E" },
     secondaryIsLight: false,
     arena: modernCourtArena, reading: modernCourtReading, lobby: modernCourtLobby,
+    editorial: editorialFromReading(modernCourtReading, { coachViolet: "#5B3FB8" }),
   },
   "hardwood-luxe": {
     id: "hardwood-luxe", label: "Hardwood Luxe", role: "OPTION C",
@@ -225,6 +316,39 @@ export const BASKETBALL_THEMES = Object.freeze({
     semantic: { teamGold: "#E5B23E", teamBlue: "#2C79CF", coachViolet: "#8B61CE", success: "#37A66E", danger: "#D2504A" },
     secondaryIsLight: true,
     arena: hardwoodArena, reading: hardwoodReading, lobby: lobbyFromArena(hardwoodArena),
+    editorial: editorialFromReading(hardwoodReading, { coachViolet: "#5B3FB8" }),
+  },
+  "night-court-production-hybrid": {
+    id: "night-court-production-hybrid", label: "Night Court V1 (production)", role: "PRODUCTION",
+    character: ["premium night arena for play", "warm editorial surfaces for reading", "master-brand obsidian/platinum shell", "one controlled Era Fracture", "clearly EraClash"],
+    // Combined declaration (what the 9A.1 harness reads) …
+    families: {
+      dominant: { name: "Night Obsidian", colors: [NC1.nightObsidian, "#0A0E15", NC1.arenaGraphite, MASTER_BRAND.obsidian] },
+      secondary: { name: "Graphite + Platinum · Warm Court Ivory + Editorial Ink", colors: [NC1.raisedGraphite, "#1D2838", MASTER_BRAND.platinum, MASTER_BRAND.platinumDeep, "#98A2B3", NC1.warmCourtIvory, "#FBF8F1", "#FFFFFF", "#F4EFE5", "#ECE6DA", NC1.editorialInk, "#3A4150", NC1.secondaryInk, NC1.softIvoryDivider] },
+      accent: { name: "Fracture Gold + Fracture Cobalt", colors: [MASTER_BRAND.fractureGold, "#F5C553", "#B9841F", MASTER_BRAND.fractureCobalt, "#8A6410", "#2461B8"], split: { gold: 0.04, cobalt: 0.03 } },
+    },
+    // … and the CONTEXTUAL declaration the 9A.2 audit reads: the product has two
+    // intentionally different environments and each has its own 60–30–10.
+    contexts: {
+      arena: {
+        fixtures: ["empty", "roll2", "coach", "result"],
+        dominant: { name: "Night Obsidian / deep arena", colors: [NC1.nightObsidian, "#0A0E15", MASTER_BRAND.obsidian, "#050B14", "#030811"] },
+        secondary: { name: "Graphite / Platinum structure", colors: [NC1.arenaGraphite, NC1.raisedGraphite, "#1D2838", MASTER_BRAND.platinum, MASTER_BRAND.platinumDeep, "#98A2B3"] },
+        accent: { name: "Gold + Cobalt (+ Violet reported separately)", colors: [MASTER_BRAND.fractureGold, "#F5C553", "#B9841F", MASTER_BRAND.fractureCobalt] },
+        targets: { dominant: [55, 68], secondary: [22, 35], accent: [6, 10] },
+      },
+      editorial: {
+        fixtures: ["lobby", "postgame", "gate", "membership"],
+        dominant: { name: "Warm Court Ivory", colors: [NC1.warmCourtIvory, "#FBF8F1", "#FFFFFF", "#F4EFE5", "#ECE6DA", "#E9E6DF", "#F6F1E7"] },
+        secondary: { name: "Editorial Ink / Graphite", colors: [NC1.editorialInk, "#3A4150", NC1.secondaryInk, NC1.softIvoryDivider, "#C3BAA8", MASTER_BRAND.obsidian, "#0A0E15", NC1.nightObsidian, MASTER_BRAND.platinum, MASTER_BRAND.platinumDeep] },
+        accent: { name: "Gold / Cobalt / Violet accents", colors: [MASTER_BRAND.fractureGold, "#8A6410", "#E4BC5B", MASTER_BRAND.fractureCobalt, "#2461B8", "#92B7EA"] },
+        targets: { dominant: [55, 68], secondary: [22, 35], accent: [6, 10] },
+      },
+    },
+    semantic: { teamGold: NC3.teamGold, teamBlue: NC3.teamBlue, coachViolet: NC3.coachViolet, success: NC3.success, warning: NC3.warning, danger: NC3.danger },
+    secondaryIsLight: true,
+    arena: productionArena, reading: productionReading, lobby: productionLobby,
+    editorial: editorialFromReading(productionReading, { coachViolet: "#5B3FB8" }),
   },
 });
 

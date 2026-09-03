@@ -59,6 +59,10 @@ export const T = {
   // white-on-yellow.
   onGold: "var(--ec-t-on-gold, #fffdf8)",
 
+  // Phase 9A.2 — the one fracture a reading surface carries (the result hero's
+  // divide). The fallback is the pre-9A.2 gold → white → blue divide.
+  fracture: "var(--ec-t-fracture, linear-gradient(120deg, #e9b949 30%, #ffffff 50%, #7ab0f5 70%))",
+
   shadowCard: "0 2px 10px rgba(18,26,42,0.07)",
   shadowRaised: "0 8px 26px rgba(18,26,42,0.12)",
 };

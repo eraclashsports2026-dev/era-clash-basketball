@@ -7,7 +7,6 @@ import {
   PLAY_MODES, FANTASY_DESTINATIONS, FANTASY_STATUS_LABEL, TOP_NAV,
   resolveModeAction, STATUS_LABEL, MODE_STATUS,
 } from "../../navigation.js";
-import { FONT } from "../../theme.js";
 import { useCompact, NAV_COMPACT_MAX } from "../../ui/useCompact.js";
 
 const statusTone = (status) => {
@@ -51,7 +50,10 @@ export default function ArenaHeader({
   const compactNav = useCompact(NAV_COMPACT_MAX);
   const plainNav = TOP_NAV.filter((t) => t.kind === "nav");
   return (
-    <header style={{
+    // Phase 9A.2: the header is a MASTER-BRAND surface (.ec-brand-header) in
+    // every shell — Brand Obsidian, metallic Platinum, EraClash Logo Mk1 — so an
+    // editorial page never lightens it and every product keeps one identity.
+    <header className="ec-brand-header" style={{
       position: "sticky", top: 0, zIndex: 50,
       background: "var(--ec-a-header, rgba(5, 11, 20, 0.94))",
       borderBottom: "1px solid var(--ec-a-border, rgba(157,178,209,0.20))",
@@ -61,13 +63,16 @@ export default function ArenaHeader({
         maxWidth: 1560, margin: "0 auto", padding: "10px 16px",
         display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap",
       }}>
-        <button onClick={() => onNav("Play")} aria-label="EraClash Basketball home" style={{
+        <button className="ec-brand-home" onClick={() => onNav("Play")} aria-label="EraClash Basketball home" style={{
           background: "none", border: "none", cursor: "pointer", padding: "4px 8px 4px 0", textAlign: "left",
+          display: "inline-flex", alignItems: "center", gap: 10, minHeight: 44,
         }}>
-          <span style={{ fontFamily: FONT.display, fontWeight: 900, fontSize: 20, letterSpacing: -0.4, color: "var(--ec-a-text, #f5f7fb)" }}>
-            ERA<span style={{ color: "var(--ec-a-gold, #f2b51d)" }}>CLASH</span>
-          </span>
-          <span style={{ display: "block", fontSize: 8.5, letterSpacing: 3.4, color: "var(--ec-a-text-muted, #93a0b5)", fontWeight: 800 }}>BASKETBALL</span>
+          {/* The canonical mark, never redrawn: public/brand/eraclash-logo-mk1.png
+              (data/validation/9a2/logo-mk1-manifest.json). Sized by height so the
+              header keeps its 64px contract. */}
+          <img className="ec-brand-logo" src="/brand/eraclash-logo-mk1.png" alt="" width="760" height="304" decoding="async"
+            style={{ height: 34, width: "auto", display: "block" }} />
+          <span className="ec-brand-sport" style={{ fontSize: 8.5, letterSpacing: 3.4, color: "var(--ec-a-text-muted, #93a0b5)", fontWeight: 800, lineHeight: 1 }}>BASKETBALL</span>
         </button>
 
         <nav aria-label="Main" style={{ display: "flex", alignItems: "center", gap: 4, flexWrap: "wrap" }}>
@@ -121,8 +126,8 @@ export default function ArenaHeader({
               )}
             </NavMenu>
           ) : plainNav.map((t) => (
-            <button key={t.id} onClick={() => onNav(t.nav)} aria-current={nav === t.nav ? "page" : undefined} style={{
-              minHeight: 44, padding: "0 12px", borderRadius: 10, cursor: "pointer",
+            <button key={t.id} className="ec-nav-item" onClick={() => onNav(t.nav)} aria-current={nav === t.nav ? "page" : undefined} style={{
+              position: "relative", minHeight: 44, padding: "0 12px", borderRadius: 10, cursor: "pointer",
               fontWeight: 700, fontSize: 13.5, border: "1px solid transparent", background: "transparent",
               color: nav === t.nav ? "var(--ec-a-gold, #f2b51d)" : "var(--ec-a-text-secondary, #c3cddd)",
             }}>{t.label}</button>

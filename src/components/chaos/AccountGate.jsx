@@ -27,7 +27,7 @@ export default function AccountGate({ title, blurb, onCreated, onBack, backLabel
       <button onClick={() => onCreated?.(createFreeAccount(name || "Coach"))} style={{
         width: "100%", minHeight: 48, borderRadius: R.sm, cursor: "pointer",
         fontWeight: 900, fontSize: 14, letterSpacing: 0.8,
-        border: `1px solid ${T.goldBorder}`, background: T.gold, color: "#fff",
+        border: `1px solid ${T.goldBorder}`, background: T.gold, color: T.onGold,
       }}>CREATE FREE ACCOUNT</button>
       <button onClick={onBack} style={{
         width: "100%", minHeight: 44, marginTop: 8, borderRadius: R.sm, cursor: "pointer",

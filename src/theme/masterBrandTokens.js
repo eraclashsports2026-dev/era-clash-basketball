@@ -45,6 +45,18 @@ export const ERA_FRACTURE = Object.freeze({
   ]),
 });
 
+/**
+ * The Era Fracture as CSS: one diagonal gradient, gold to a 2% bright seam to
+ * cobalt, reused by every primitive (Phase 9A.2). Angle and stops come from
+ * ERA_FRACTURE so the divide is one geometry everywhere it appears.
+ */
+export const eraFractureGradient = (angleDeg = ERA_FRACTURE.angleDeg) => {
+  const g = Math.round(ERA_FRACTURE.goldStop * 100), seam = Math.round(ERA_FRACTURE.seamWidth * 100);
+  return `linear-gradient(${angleDeg}deg, ${MASTER_BRAND.fractureGold} 0%, ${MASTER_BRAND.fractureGold} ${g - 2}%, #F7E6B8 ${g}%, #FFFFFF ${g + seam / 2}%, #9CC2F5 ${g + seam}%, ${MASTER_BRAND.fractureCobalt} ${g + seam + 2}%, ${MASTER_BRAND.fractureCobalt} 100%)`;
+};
+/** The fracture's soft light: two low-alpha halos, never a border. */
+export const ERA_FRACTURE_GLOW = "0 0 14px rgba(225, 167, 44, 0.22), 0 0 14px rgba(38, 124, 232, 0.22)";
+
 /** Focus behaviour is brand-wide: visible, 3px, offset, never colour-only. */
 export const FOCUS_RING = Object.freeze({ widthPx: 3, offsetPx: 2, colorRole: "fractureGold on dark, fractureCobalt on light" });
 

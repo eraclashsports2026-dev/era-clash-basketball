@@ -29,12 +29,14 @@ export default function NavMenu({ label, active, children, onOpenChange }) {
     <div style={{ position: "relative" }}>
       <button
         ref={triggerRef}
+        className="ec-nav-item"
+        data-active={active || open ? "true" : "false"}
         onClick={() => setOpen((o) => !o)}
         aria-haspopup="true"
         aria-expanded={open}
         aria-controls={open ? id : undefined}
         style={{
-          minHeight: 44, padding: "0 14px", borderRadius: 10, cursor: "pointer",
+          position: "relative", minHeight: 44, padding: "0 14px", borderRadius: 10, cursor: "pointer",
           fontWeight: 800, fontSize: 13.5, letterSpacing: 0.4,
           border: `1px solid ${active || open ? "var(--ec-a-gold-line, rgba(242,181,29,0.45))" : "transparent"}`,
           background: active || open ? "var(--ec-a-gold-soft, rgba(242,181,29,0.14))" : "transparent",

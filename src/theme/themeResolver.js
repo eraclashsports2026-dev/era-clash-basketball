@@ -9,12 +9,14 @@
 //   html[data-theme="x"]                 → --ec-t-* (reading), root aliases, --ec-l-* (lobby)
 //   [data-theme="x"] .ec-arena-shell     → --ec-a-* (arena), which index.css declares on the shell
 import { BASKETBALL_THEMES, themeRootAliases } from "./basketballThemes.js";
-import { THEME_IDS, ARENA_KEYS, LOBBY_KEYS, READING_KEYS, ROOT_ALIAS_KEYS, CONTROL_THEME_ID } from "./themeTypes.js";
+import { THEME_IDS, CANDIDATE_THEME_IDS, PRODUCTION_THEME_ID, PRODUCTION_THEME_NAME, ARENA_KEYS, LOBBY_KEYS, READING_KEYS, ROOT_ALIAS_KEYS, EDITORIAL_KEYS, CONTROL_THEME_ID } from "./themeTypes.js";
 import { MASTER_BRAND_VERSION } from "./masterBrandTokens.js";
 import { SEMANTIC_VERSION } from "./semanticTokens.js";
 
-export const THEME_RESOLVER_VERSION = "1.0.0";
-export { THEME_IDS, CONTROL_THEME_ID };
+// 1.1.0 (Phase 9A.2): the production hybrid, the editorial shell remap, the
+// brand-header scope, and applyTheme's default.
+export const THEME_RESOLVER_VERSION = "1.1.0";
+export { THEME_IDS, CANDIDATE_THEME_IDS, PRODUCTION_THEME_ID, PRODUCTION_THEME_NAME, CONTROL_THEME_ID };
 
 export const getTheme = (id) => BASKETBALL_THEMES[id] || null;
 export const isThemeId = (id) => THEME_IDS.includes(String(id));
@@ -29,11 +31,17 @@ export const validateTheme = (theme) => {
   check(theme.arena, ARENA_KEYS, "arena");
   check(theme.lobby, LOBBY_KEYS, "lobby");
   check(theme.reading, READING_KEYS, "reading");
+  check(theme.editorial || {}, EDITORIAL_KEYS, "editorial");
   const aliases = themeRootAliases(theme);
   check(aliases, ROOT_ALIAS_KEYS, "root-alias");
   for (const k of ["teamGold", "teamBlue", "coachViolet", "success", "danger"]) if (!theme.semantic?.[k]) problems.push(`${theme.id}: missing semantic ${k}`);
   return problems;
 };
+
+/** The header's own tokens: arena values, always (the header never goes light). */
+const brandHeaderTokens = (t) => Object.fromEntries(
+  ["header", "text", "text-secondary", "text-muted", "gold", "gold-soft", "gold-line", "border", "border-strong", "panel-raised", "green", "fracture"]
+    .map((k) => [k, t.arena[k]]));
 
 const decl = (prefix, obj) => Object.entries(obj).map(([k, v]) => `  ${prefix}${k}: ${v};`).join("\n");
 
@@ -54,6 +62,18 @@ export const themeCssFor = (id) => {
     `html[data-theme="${id}"] .ec-arena-shell {`,
     decl("--ec-a-", t.arena),
     `}`,
+    // Phase 9A.2 — reading surfaces built from arena names (membership, fantasy,
+    // mode information, the account gate's page) get reading values here. Same
+    // element as .ec-arena-shell, declared later, so it wins by order.
+    `html[data-theme="${id}"] .ec-editorial-shell {`,
+    decl("--ec-a-", t.editorial),
+    `}`,
+    // The global header is a MASTER-BRAND surface in every shell: obsidian,
+    // platinum, gold. It re-declares the arena names it reads so an editorial
+    // page cannot lighten it.
+    `html[data-theme="${id}"] .ec-brand-header {`,
+    decl("--ec-a-", brandHeaderTokens(t)),
+    `}`,
   ].join("\n");
 };
 
@@ -66,10 +86,16 @@ export const themeCss = () => [
   "",
 ].join("\n");
 
-/** Apply a theme to the document (the lab and the screenshot harness only). */
+/**
+ * Apply a theme to the document. Phase 9A.2: the product applies the PRODUCTION
+ * theme at startup (src/main.jsx); the lab applies a candidate for comparison
+ * and restores the production theme on unmount. `null` restores the default
+ * product theme; `false` removes the attribute (the pre-9A.2 render).
+ */
 export const applyTheme = (id, root = typeof document !== "undefined" ? document.documentElement : null) => {
   if (!root) return false;
-  if (!id) { delete root.dataset.theme; return true; }
+  if (id === false) { delete root.dataset.theme; return true; }
+  if (id == null) { root.dataset.theme = PRODUCTION_THEME_ID; return true; }
   if (!isThemeId(id)) return false;
   root.dataset.theme = id;
   return true;
@@ -79,11 +105,12 @@ export const applyTheme = (id, root = typeof document !== "undefined" ? document
 export const themeTokenTable = (id) => {
   const t = getTheme(id);
   return {
-    id, label: t.label, role: t.role, character: t.character, families: t.families, semantic: t.semantic,
+    id, label: t.label, role: t.role, character: t.character, families: t.families, contexts: t.contexts || null, semantic: t.semantic,
     tokens: {
       arena: Object.fromEntries(Object.entries(t.arena).map(([k, v]) => [`--ec-a-${k}`, v])),
       lobby: Object.fromEntries(Object.entries(t.lobby).map(([k, v]) => [`--ec-l-${k}`, v])),
       reading: Object.fromEntries(Object.entries(t.reading).map(([k, v]) => [`--ec-t-${k}`, v])),
+      editorial: Object.fromEntries(Object.entries(t.editorial).map(([k, v]) => [`.ec-editorial-shell --ec-a-${k}`, v])),
       rootAliases: Object.fromEntries(Object.entries(themeRootAliases(t)).map(([k, v]) => [`--${k}`, v])),
     },
   };

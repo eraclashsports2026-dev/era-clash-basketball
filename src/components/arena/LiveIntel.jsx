@@ -41,7 +41,7 @@ export default function LiveIntel({ run, onEraChange, onMembership }) {
     <section className="ec-intel" aria-label="Live intel and era impact">
       <div className="ec-intel-head">
         <span aria-hidden="true" style={{ color: "var(--ec-a-green)", fontSize: 13 }}>⌁</span>
-        <div className="ec-intel-heading">LIVE INTEL</div>
+        <h2 className="ec-intel-heading">LIVE INTEL</h2>
       </div>
 
       {!run ? (
@@ -63,10 +63,10 @@ export default function LiveIntel({ run, onEraChange, onMembership }) {
       )}
 
       {/* ── Era Impact: a SECTION of this panel, not a card of its own ────── */}
-      <div className="ec-intel-era">
+      <div className="ec-intel-era" data-revealed={eraState?.revealed ? "true" : "false"}>
         <div className="ec-intel-head">
           <span aria-hidden="true" style={{ fontSize: 12 }}>🗓</span>
-          <div className="ec-intel-heading">ERA IMPACT</div>
+          <h3 className="ec-intel-heading">ERA IMPACT</h3>
         </div>
 
         {!eraState?.revealed ? (

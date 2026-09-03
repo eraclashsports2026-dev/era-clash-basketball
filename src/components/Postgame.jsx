@@ -10,6 +10,7 @@ import { FONT, T, card } from "../theme.js";
 import { chemistryScore, chemistryLabel } from "../chemistryView.js";
 import { Feedback } from "./Feedback.jsx";
 import PlayerImage from "./PlayerImage.jsx";
+import { EraFractureWatermark } from "./brand/EraFracture.jsx";
 
 const goldWon = (sim) => String(sim?.winner || "").toLowerCase().includes("gold");
 
@@ -47,6 +48,9 @@ function ScoreboardHero({ sim, won, mode, seriesLabel, team, opp }) {
     // The score reveal is the cinematic moment: a navy arena inset inside the
     // warm page, so the final number carries weight.
     <div className="ec-arena-inset" style={{ padding: "26px 14px 22px", textAlign: "center", borderRadius: 0 }}>
+      {/* Approved fracture placement 9: the result graphic carries the brand's divide, faintly. */}
+      <EraFractureWatermark />
+      <h1 className="sr-only">{`Postgame report — ${winnerLabel.toLowerCase()}`}</h1>
       <div style={{ fontSize: 10.5, letterSpacing: 4, color: T.onArenaDim, fontWeight: 800 }}>
         {mode === "daily" ? "DAILY CLASH · " : mode === "challenge" ? "GRUDGE MATCH · " : ""}FINAL{seriesLabel ? ` — ${seriesLabel}` : ""}
       </div>
@@ -61,11 +65,7 @@ function ScoreboardHero({ sim, won, mode, seriesLabel, team, opp }) {
         </div>
 
         <div className="rise-2" style={{ flexShrink: 0 }}>
-          <div aria-hidden="true" style={{
-            fontSize: 34, fontWeight: 900, fontStyle: "italic", letterSpacing: -1,
-            background: `linear-gradient(120deg, ${T.goldOnDark} 30%, #ffffff 50%, ${T.blueOnDark} 70%)`,
-            WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent",
-          }}>VS</div>
+          <div aria-hidden="true" className="ec-fracture-text" style={{ fontSize: 34, fontWeight: 900, fontStyle: "italic", letterSpacing: -1 }}>VS</div>
           {isSeries && <div style={{ fontSize: 40, fontWeight: 900, fontStyle: "italic", color: won ? T.goldOnDark : T.blueOnDark }}>{sim.seriesResult}</div>}
         </div>
 

@@ -1702,12 +1702,16 @@ export default function App() {
   // The lobby is the entrance at `/` and at /play, unless a shared result or a
   // nav destination has taken the page.
   const showLobby = isLobbyRoute(route) && nav === "Play" && !sharedResult;
-  const arenaMode = showLobby || (isChaos && !sharedResult && !gate)
-    || route.startsWith("/membership") || route.startsWith("/fantasy/") || route.startsWith("/modes/");
+  // Phase 9A.2: membership, fantasy and mode-information pages are READING
+  // surfaces. They keep the arena shell (their components read arena tokens) and
+  // add the editorial shell, which remaps those tokens to Warm Court Ivory and
+  // Editorial Ink under the production theme. The header stays obsidian.
+  const editorialMode = route.startsWith("/membership") || route.startsWith("/fantasy/") || route.startsWith("/modes/");
+  const arenaMode = showLobby || (isChaos && !sharedResult && !gate) || editorialMode;
 
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
-    <div className={`arena ${winnerClass}${arenaMode ? " ec-arena-shell ec-arena-page" : ""}`} style={{ color: arenaMode ? undefined : T.text }}>
+    <div className={`arena ${winnerClass}${arenaMode ? " ec-arena-shell ec-arena-page" : ""}${editorialMode ? " ec-editorial-shell" : ""}`} style={{ color: arenaMode ? undefined : T.text }}>
       <ArenaHeader
         nav={nav}
         onNav={(n) => { if (route !== "/") { window.history.pushState({}, "", "/"); setRoute("/"); } handleNav(n); }}

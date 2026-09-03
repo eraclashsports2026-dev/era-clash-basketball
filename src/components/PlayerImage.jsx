@@ -52,12 +52,14 @@ function Silhouette({ p, v, team }) {
   const era = DECADE_COLORS[p.decade] || T.gold;
   const initials = p.name.split(" ").map((w) => w[0]).slice(0, 2).join("");
   return (
-    <div role="img" aria-label={`${p.name} EraClash player silhouette`} style={{
+    <div role="img" className="ec-portrait-stage" data-team={team} aria-label={`${p.name} EraClash player silhouette`} style={{
       width: v.w, height: v.h, borderRadius: v.radius, flexShrink: 0, position: "relative",
       background: `linear-gradient(180deg, ${era}33 0%, #0b0e17 90%)`,
       border: `1px solid ${team === "blue" ? T.blueBorder : T.goldBorder}`,
       display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden",
     }}>
+      <div className="ec-portrait-field" aria-hidden="true" />
+      <div className="ec-portrait-rim" aria-hidden="true" />
       <svg viewBox="0 0 64 80" width="100%" height="100%" style={{ position: "absolute", inset: 0, opacity: 0.5 }} aria-hidden="true">
         <ellipse cx="32" cy="26" rx="12" ry="13" fill="#000" opacity="0.55" />
         <path d="M10 80 Q12 48 32 46 Q52 48 54 80 Z" fill="#000" opacity="0.55" />
@@ -78,7 +80,9 @@ export default function PlayerImage({ player, variant = "thumbnail", team = "gol
   if (!img || failed) return <Silhouette p={player} v={v} team={team} />;
 
   return (
-    <div style={{ width: v.w, height: v.h, borderRadius: v.radius, flexShrink: 0, position: "relative", overflow: "hidden", background: T.bgMuted, border: `1px solid ${team === "blue" ? T.blueBorder : T.goldBorder}` }}>
+    <div className="ec-portrait-stage" data-team={team} style={{ width: v.w, height: v.h, borderRadius: v.radius, flexShrink: 0, position: "relative", overflow: "hidden", background: T.bgMuted, border: `1px solid ${team === "blue" ? T.blueBorder : T.goldBorder}` }}>
+      <div className="ec-portrait-field" aria-hidden="true" />
+      <div className="ec-portrait-rim" aria-hidden="true" />
       <img
         src={img.local_asset_path}
         alt={`${player.name}, ${player.decade} player image`}

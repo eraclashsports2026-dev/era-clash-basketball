@@ -320,7 +320,22 @@
     "ui:theme-competitive": "node scripts/ui/themeLabQa.mjs competitive",
     "ui:theme-scorecard": "node scripts/ui/themeLabQa.mjs scorecard",
     "ui:theme-contracts": "node scripts/ui/themeLabQa.mjs contracts",
-    "ui:theme-lab-preview-qa": "node scripts/ui/theme-lab-preview-qa.mjs"
+    "ui:theme-lab-preview-qa": "node scripts/ui/theme-lab-preview-qa.mjs",
+    "ui:night-court-contracts": "node scripts/ui/nightCourtQa.mjs contracts",
+    "ui:night-court-production-qa": "node scripts/ui/nightCourtQa.mjs production",
+    "ui:night-court-dom-invariant": "node scripts/ui/nightCourtQa.mjs dom-invariant",
+    "ui:era-fracture-qa": "node scripts/ui/nightCourtQa.mjs fracture",
+    "ui:semantic-color-qa": "node scripts/ui/nightCourtQa.mjs semantic",
+    "ui:portrait-contrast-qa": "node scripts/ui/nightCourtQa.mjs portrait",
+    "ui:editorial-reading-qa": "node scripts/ui/nightCourtQa.mjs editorial",
+    "ui:night-court-color-context": "node scripts/ui/nightCourtQa.mjs color-context",
+    "ui:night-court-accessibility": "node scripts/ui/nightCourtQa.mjs accessibility",
+    "ui:night-court-responsive": "node scripts/ui/nightCourtQa.mjs responsive",
+    "ui:night-court-performance": "node scripts/ui/nightCourtQa.mjs performance",
+    "ui:night-court-competitive": "node scripts/ui/nightCourtQa.mjs competitive",
+    "ui:night-court-deployed": "node scripts/ui/night-court-preview-qa.mjs",
+    "phase9a2:summary": "node scripts/ui/phase9a2Summary.mjs summary",
+    "build:lab": "VITE_EC_THEME_LAB=1 VITE_EC_DEV_FIXTURES=1 vite build"
   },
   "dependencies": {
     "react": "^18.3.1",

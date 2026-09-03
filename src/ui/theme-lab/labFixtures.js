@@ -8,7 +8,7 @@ import { startRun, submitRollDecisions, selectCoach, publicView } from "../../ch
 import { PLAYERS, POSITIONS } from "../../players.js";
 import fixture from "./fixture-result.json";
 
-export { FIXTURE_IDS, FIXTURE_LABELS } from "./fixtureIds.js";
+export { FIXTURE_IDS, LAB_FIXTURE_IDS, PHASE_9A2_FIXTURE_IDS, FIXTURE_LABELS } from "./fixtureIds.js";
 
 const byId = new Map(PLAYERS.map((p) => [p.id, p]));
 const hydrate = (arr) => Object.fromEntries(POSITIONS.map((s, i) => [s, byId.get(arr?.[i]) || null]));

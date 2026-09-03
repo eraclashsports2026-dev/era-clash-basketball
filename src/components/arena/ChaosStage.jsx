@@ -17,6 +17,7 @@ import PlayerCard, { EmptyCard } from "./PlayerCard.jsx";
 import CoachCard from "./CoachCard.jsx";
 import ResetDialog from "./ResetDialog.jsx";
 import RollStepper from "./RollStepper.jsx";
+import { EraFractureTransition } from "../brand/EraFracture.jsx";
 import {
   startChaos, viewChaos, submitChaosDecisions, chooseChaosCoach,
   publishChaosChallenge, abandonChaos,
@@ -212,12 +213,14 @@ export default function ChaosStage({
   if (phase === "simulating" || phase === "complete") {
     const hiredId = run?.selectedCoaches?.gold;
     return (
-      <section className="ec-ta-stage" aria-label="The matchup you built">
+      <section className="ec-ta-stage" aria-label="The matchup you built" data-focus={phase === "simulating" ? "sim" : "other"}>
         <Atmosphere />
+        {/* Approved fracture placement 7: the central transition while the game is simulated. */}
+        <EraFractureTransition kind="sim" hold={phase === "simulating"} />
         <div className="ec-ta-stage-head">
           <TeamLabel team="gold" name="TEAM GOLD" sub="YOUR FIVE" />
           <div className="ec-ta-title">
-            <div className="ec-ta-title-main">THE MATCHUP YOU BUILT</div>
+            <h1 className="ec-ta-title-main">THE MATCHUP YOU BUILT</h1>
             <div className="ec-ta-title-sub">{run?.eraState?.eraStyleId ? `${run.eraState.eraStyleId} ERA` : ""}</div>
           </div>
           <TeamLabel team="blue" name="TEAM BLUE" sub="LEGEND RIVAL" />
@@ -231,7 +234,7 @@ export default function ChaosStage({
         {offers.length > 0 && (
           <div className="ec-ta-coach">
             <div className="ec-ta-coach-head">
-              <div className="ec-ta-coach-title">YOUR STAFF DECISION</div>
+              <h2 className="ec-ta-coach-title">YOUR STAFF DECISION</h2>
               <div className="ec-ta-coach-sub">
                 {hiredId ? "One of these three coached the whole game. The other two are what you passed up."
                   : "Three staffs made the final cut."}
@@ -268,11 +271,13 @@ export default function ChaosStage({
   return (
     <section className="ec-ta-stage" aria-label="Chaos Clash draft" data-focus={focus}>
       <Atmosphere />
+      {/* Approved fracture placement 3: one sweep when a roll lands. Fires on the roll number, never loops. */}
+      <EraFractureTransition kind="roll" token={run ? run.roll : null} />
 
       <div className="ec-ta-stage-head">
         <TeamLabel team="gold" name="TEAM GOLD" sub="YOUR FIVE" />
         <div className="ec-ta-title">
-          <div className="ec-ta-title-main">CHAOS CLASH</div>
+          <h1 className="ec-ta-title-main">CHAOS CLASH</h1>
           <div className="ec-ta-title-sub">{stageLabel}</div>
           <RollStepper run={run} />
         </div>
@@ -298,7 +303,7 @@ export default function ChaosStage({
       {/* ── Coach Chaos, inside the same stage and the same viewport ──────── */}
       <div className="ec-ta-coach" data-active={coachActive ? "true" : "false"}>
         <div className="ec-ta-coach-head">
-          <div className="ec-ta-coach-title">COACH CHAOS</div>
+          <h2 className="ec-ta-coach-title">COACH CHAOS</h2>
           <div className="ec-ta-coach-sub">
             {selecting ? "Three staffs made the final cut. Take one."
               : "Build your edge with legendary coaches"}

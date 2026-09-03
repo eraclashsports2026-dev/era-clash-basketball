@@ -19,6 +19,7 @@ import { markLobbyViewed, markModeSelected } from "../../activation.js";
 import ModeGlyph from "./ModeGlyph.jsx";
 import ContinueCard from "./ContinueCard.jsx";
 import ResetDialog from "../arena/ResetDialog.jsx";
+import { EraFractureDivider } from "../brand/EraFracture.jsx";
 
 export const RUN_KEY = "ec_chaos_run";
 export const RUN_AT_KEY = "ec_chaos_run_at";
@@ -135,6 +136,9 @@ export default function PlayLobby({
 
   return (
     <main className="ec-lobby" aria-labelledby="ec-lobby-title" data-entrance={entrance ? "true" : "false"}>
+      {/* Phase 9A.2: the brand band. The Mk1 mark is designed for a dark ground
+          (its platinum face vanishes on ivory), so the hero is an obsidian band
+          over the ivory canvas, closed by the lobby's ONE fracture moment. */}
       <header className="ec-lobby-hero">
         <img className="ec-lobby-logo" src="/brand/eraclash-logo-mk1.png" alt="EraClash Basketball" width="760" height="304" decoding="async" />
         <h1 id="ec-lobby-title" className="sr-only">Play EraClash Basketball</h1>
@@ -144,6 +148,8 @@ export default function PlayLobby({
             : "Choose how you want to play."}
         </p>
       </header>
+      <EraFractureDivider className="ec-lobby-fracture" />
+      <div className="ec-lobby-body">
 
       {(active.run || active.expired) && (
         <ContinueCard run={active.run} expired={active.expired} lastActivityAt={lastAt} busy={busy}
@@ -167,6 +173,7 @@ export default function PlayLobby({
         </div>
       </section>
 
+      </div>
       <ResetDialog open={confirm} state="abandon" busy={busy} onConfirm={abandon} onCancel={() => setConfirm(false)} />
     </main>
   );

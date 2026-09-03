@@ -14,6 +14,7 @@ import { PLAYERS } from "../../players.js";
 import { displayOVR } from "../../rating.js";
 import { resolvePortrait, initialsOf, PORTRAIT_STATUS } from "../../ui/time-arena/portraits.js";
 import { eligibleLabel } from "../../lineupPlacement.js";
+import PortraitStage from "../brand/PortraitStage.jsx";
 
 const byId = new Map(PLAYERS.map((p) => [p.id, p]));
 
@@ -39,27 +40,36 @@ export function EmptyCard({ slot, team = "gold" }) {
   );
 }
 
-/** The portrait zone: an approved image when one exists, the masked figure otherwise. */
-function Portrait({ card, player }) {
-  const art = resolvePortrait(card.id, card.decade);
+/**
+ * The portrait zone: an approved image when one exists, the masked figure
+ * otherwise — both on the shared portrait stage (Phase 9A.2), so a dark uniform
+ * separates from the card whatever the theme. `testArt` exists for the owner-only
+ * theme lab's uniform fixtures (synthetic, never a likeness); the product never
+ * passes it and resolves art from the approved registry alone.
+ */
+function Portrait({ card, player, team, testArt }) {
+  const art = testArt ? { portraitStatus: PORTRAIT_STATUS.APPROVED, src: testArt.src, objectPosition: "top center", scale: 1 } : resolvePortrait(card.id, card.decade);
   if (art.portraitStatus === PORTRAIT_STATUS.APPROVED && art.src) {
     return (
-      <img src={art.src} alt={`${card.name}, ${card.decade}`} loading="lazy" decoding="async"
-        style={{ objectPosition: art.objectPosition, transform: art.scale !== 1 ? `scale(${art.scale})` : undefined }} />
+      <PortraitStage team={team}>
+        <img src={art.src} alt={testArt ? testArt.alt : `${card.name}, ${card.decade}`} loading="lazy" decoding="async"
+          data-portrait-test={testArt ? testArt.id : undefined}
+          style={{ objectPosition: art.objectPosition, transform: art.scale !== 1 ? `scale(${art.scale})` : undefined, filter: testArt?.grayscale ? "grayscale(1)" : undefined }} />
+      </PortraitStage>
     );
   }
   return (
-    <>
+    <PortraitStage team={team}>
       <div className="ec-pc-figure" aria-hidden="true" />
       <div className="ec-pc-figure-initials" aria-hidden="true">{initialsOf(card.name)}</div>
       <span className="sr-only">{`${card.name} — EraClash silhouette, no portrait approved yet`}</span>
-    </>
+    </PortraitStage>
   );
 }
 
 export default function PlayerCard({
   card, team = "gold", interactive = false, held = false, kept = false,
-  locked = false, disabled = false, onToggle,
+  locked = false, disabled = false, onToggle, testArt = null,
 }) {
   if (!card) return <EmptyCard slot="—" team={team} />;
   const player = byId.get(card.id);
@@ -75,7 +85,7 @@ export default function PlayerCard({
             fixed height a second line pushes the footer out through the bottom
             — which is why held cards' buttons sat lower than the rest. */}
         {kept && <span className="ec-pc-kept" aria-hidden="true">KEPT</span>}
-        <Portrait card={card} player={player} />
+        <Portrait card={card} player={player} team={team} testArt={testArt} />
         {/* Every position the card is eligible at, from card data alone. Chaos
             keeps its authoritative slot logic; this is information, not a
             control. Absolutely positioned so the frozen geometry is untouched. */}

@@ -693,17 +693,16 @@ button { font-family: inherit; }
   margin-inline: auto;
   width: 100%;
 }
+/* Phase 9A.2: the main arena divide is the Era Fracture (approved placement 1)
+   under the production theme; the four candidates keep the neutral line they
+   were measured with. 2px inside a 4px track: the cards do not move. */
 .ec-ta-roster-divider {
   align-self: stretch;
   justify-self: center;
-  width: 1px;
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    rgba(157, 178, 209, 0.22) 12%,
-    rgba(157, 178, 209, 0.22) 88%,
-    transparent
-  );
+  width: 2px;
+  border-radius: 1px;
+  background: var(--ec-a-fracture, linear-gradient(to bottom, transparent, rgba(157, 178, 209, 0.22) 12%, rgba(157, 178, 209, 0.22) 88%, transparent));
+  box-shadow: var(--ec-a-fracture-glow, 0 0 0 0 transparent);
 }
 
 /* ── Player card ───────────────────────────────────────────────────────────
@@ -752,7 +751,7 @@ button { font-family: inherit; }
   background:
     radial-gradient(140% 70% at 50% 100%, color-mix(in srgb, var(--pc-accent) 22%, transparent), transparent 68%),
     radial-gradient(120% 80% at 50% 4%, rgba(255, 255, 255, 0.09), transparent 58%),
-    linear-gradient(180deg, #0e1a2b 0%, #050a12 100%);
+    linear-gradient(180deg, var(--ec-a-portrait-well-hi, #0e1a2b) 0%, var(--ec-a-portrait-well-lo, #050a12) 100%);
   border: 1px solid var(--pc-line);
   box-shadow: 0 -18px 26px -18px color-mix(in srgb, var(--pc-accent) 45%, transparent) inset;
 }
@@ -1268,14 +1267,22 @@ button { font-family: inherit; }
    card. Fits one desktop viewport; reflows to two columns on a tablet and one
    on a phone. Every control is at least 44px tall.
    ═══════════════════════════════════════════════════════════════════════════ */
-.ec-lobby {
+.ec-lobby { display: grid; gap: 0; }
+/* Phase 9A.2: the hero is the lobby's BRAND BAND (obsidian under the production
+   theme, the Mk1 mark on it); the mode grid below sits on the lobby canvas. */
+.ec-lobby-hero {
+  display: grid; justify-items: center; gap: 4px; text-align: center;
+  padding: 14px 18px 12px;
+  background: var(--ec-l-hero-bg, transparent);
+}
+.ec-lobby-body {
   max-width: 1180px;
   margin: 0 auto;
+  width: 100%;
   padding: 14px 18px 28px;
   display: grid;
   gap: 14px;
 }
-.ec-lobby-hero { display: grid; justify-items: center; gap: 4px; text-align: center; padding-top: 2px; }
 .ec-lobby-logo { width: min(340px, 78vw); height: auto; display: block; }
 .ec-lobby-line {
   margin: 0; max-width: 620px;
@@ -1313,7 +1320,7 @@ button { font-family: inherit; }
 .ec-mode-card--secondary { padding: 12px 14px; gap: 6px; min-height: 138px; }
 .ec-mode-card--recommended {
   border-color: var(--ec-a-gold-line);
-  box-shadow: 0 0 0 1px rgba(242, 181, 29, 0.18), 0 18px 40px rgba(0, 0, 0, 0.35);
+  box-shadow: var(--ec-l-card-shadow, 0 0 0 1px rgba(242, 181, 29, 0.18), 0 18px 40px rgba(0, 0, 0, 0.35));
 }
 .ec-mode-card-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; min-height: 34px; }
 .ec-mode-glyph {
@@ -1411,7 +1418,7 @@ button { font-family: inherit; }
   .ec-continue-actions { grid-column: 1 / -1; justify-content: flex-start; }
 }
 @media (max-width: 640px) {
-  .ec-lobby { padding: 12px 12px 32px; gap: 14px; }
+  .ec-lobby-body { padding: 12px 12px 32px; gap: 14px; }
   .ec-lobby-primary { grid-template-columns: minmax(0, 1fr); }
   .ec-lobby-secondary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .ec-mode-card--primary { min-height: 0; }
@@ -1432,9 +1439,12 @@ button { font-family: inherit; }
    arena (Night Court keeps the page dark with ivory cards; Modern Court is a
    light product). Default: the arena court. */
 .ec-lobby-court { background: var(--ec-l-bg, var(--ec-a-arena)); }
+.ec-lobby-court::after { opacity: var(--ec-l-arc-opacity, 1); }
+/* The page under the lobby is the lobby's canvas, not the arena's night floor. */
+.ec-arena-page:has(.ec-lobby-court) { background: var(--ec-l-bg, var(--ec-a-bg, #03070d)); }
 .ec-lobby-court .ec-mode-card { color: var(--ec-l-text, var(--ec-a-text)); }
 .ec-lobby-court .ec-mode-glyph { color: var(--ec-l-glyph, var(--ec-a-gold)); }
-.ec-lobby-court .ec-lobby-line { color: var(--ec-l-page-text, var(--ec-a-text-secondary)); }
+.ec-lobby-court .ec-lobby-line { color: var(--ec-l-hero-text, var(--ec-l-page-text, var(--ec-a-text-secondary))); }
 .ec-lobby-court .ec-lobby-kicker { color: var(--ec-l-page-muted, var(--ec-a-text-muted)); }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -1509,3 +1519,176 @@ button { font-family: inherit; }
 .ec-theme-lab-strip strong { letter-spacing: 2px; color: #fff; }
 .ec-theme-lab-strip a { color: #bbb; text-decoration: none; padding: 4px 8px; border-radius: 6px; border: 1px solid #333; min-height: 28px; display: inline-flex; align-items: center; }
 .ec-theme-lab-strip a[aria-current="page"] { color: #fff; border-color: #999; background: #222; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PHASE 9A.2 — NIGHT COURT V1: THE ERA FRACTURE, THE PORTRAIT STAGE, THE
+   MASTER-BRAND HEADER, THE EDITORIAL SHELL, THE ONE-GLOW RULE
+   Every rule here reads tokens. --ec-a-fracture is the diagonal gold→cobalt
+   divide under the production theme and a neutral line under the four historical
+   candidates; --ec-a-fracture-on is 1 or 0 and gates the sweeps and edges so the
+   lab's one-DOM contract holds with the same elements everywhere.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Era Fracture primitives ─────────────────────────────────────────────── */
+.ec-fracture { pointer-events: none; }
+.ec-fracture-divider {
+  height: 2px;
+  background: var(--ec-a-fracture, var(--ec-t-fracture, transparent));
+  box-shadow: var(--ec-a-fracture-glow, 0 0 0 0 transparent);
+}
+.ec-fracture-edge {
+  position: absolute; left: 0; right: 0; top: 0; height: 2px; z-index: 3;
+  background: var(--ec-a-fracture, var(--ec-t-fracture, transparent));
+  opacity: 0;
+  transition: opacity 240ms ease;
+}
+.ec-fracture-edge[data-on="true"] { opacity: var(--ec-a-fracture-on, 1); }
+.ec-fracture-transition {
+  position: absolute; inset: 0; z-index: 3;
+  border-radius: inherit;
+  opacity: 0;
+  background: linear-gradient(112deg, transparent 38%, rgba(225, 167, 44, 0.22) 46%, rgba(255, 255, 255, 0.34) 48%, rgba(38, 124, 232, 0.22) 50%, transparent 58%);
+  background-size: 260% 100%;
+  background-position: 100% 0;
+}
+/* The stage forces its children relative; the overlay must stay absolute. */
+.ec-ta-stage > .ec-fracture-transition { position: absolute; z-index: 3; }
+.ec-fracture-transition[data-active="true"] { animation: ec-fracture-sweep 900ms ease-out 1; }
+.ec-fracture-transition[data-hold="true"] {
+  animation: none;
+  opacity: calc(0.85 * var(--ec-a-fracture-on, 1));
+  background-position: 50% 0;
+}
+@keyframes ec-fracture-sweep {
+  0%   { opacity: 0; background-position: 100% 0; }
+  18%  { opacity: var(--ec-a-fracture-on, 1); }
+  100% { opacity: 0; background-position: 0% 0; }
+}
+.ec-fracture-watermark {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background: var(--ec-t-fracture, var(--ec-a-fracture, transparent));
+  opacity: 0.05;
+  mix-blend-mode: screen;
+}
+/* Selected edges (approved placements 5 and 6) and the era reveal (4). */
+.ec-pc, .ec-coach-card, .ec-intel-era, .ec-dock-tab { position: relative; }
+.ec-pc[data-held="true"]::before,
+.ec-coach-card[data-on="true"]::before,
+.ec-intel-era[data-revealed="true"]::before,
+.ec-dock-tab[aria-selected="true"]::after {
+  content: "";
+  position: absolute; left: 6px; right: 6px; top: 0; height: 2px; z-index: 3;
+  border-radius: 0 0 2px 2px;
+  background: var(--ec-a-fracture, transparent);
+  opacity: var(--ec-a-fracture-on, 0);
+  pointer-events: none;
+}
+.ec-intel-era[data-revealed="true"]::before { left: 0; right: 0; top: -1px; }
+.ec-dock-tab[aria-selected="true"]::after { top: auto; bottom: 3px; left: 10px; right: 10px; border-radius: 2px 2px 0 0; }
+/* Selected navigation (approved placement 2): a 2px fracture underline. */
+.ec-brand-header .ec-nav-item[aria-current="page"]::after,
+.ec-brand-header .ec-nav-item[data-active="true"]::after {
+  content: "";
+  position: absolute; left: 12px; right: 12px; bottom: 4px; height: 2px;
+  border-radius: 1px;
+  background: var(--ec-a-fracture, var(--ec-a-gold));
+  opacity: var(--ec-a-fracture-on, 0);
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ec-fracture-transition[data-active="true"] { animation: none; opacity: 0; }
+  .ec-fracture-transition[data-hold="true"] { opacity: calc(0.45 * var(--ec-a-fracture-on, 1)); }
+  .ec-fracture-edge { transition: none; }
+}
+
+/* ── The one-glow rule: one dominant glow per product state ───────────────── */
+/* empty / ready: the primary action keeps its glow (default). hold: the held
+   cards. hire: the selected staff. sim: the central fracture transition. */
+.ec-ta-stage[data-focus="hold"] .ec-ta-cta,
+.ec-ta-stage[data-focus="hire"] .ec-ta-cta { box-shadow: 0 1px 0 rgba(255, 255, 255, 0.35) inset; }
+.ec-ta-stage[data-focus="hold"] .ec-pc[data-held="true"] {
+  box-shadow: 0 0 0 1px var(--pc-line) inset, 0 10px 20px rgba(0, 0, 0, 0.45), var(--ec-a-fracture-glow, 0 0 0 0 transparent);
+}
+.ec-ta-stage[data-focus="hire"] .ec-coach-card[data-on="true"] {
+  box-shadow: 0 0 0 1px var(--ec-a-coach) inset, 0 10px 20px rgba(0, 0, 0, 0.45), 0 0 18px var(--ec-a-coach-soft);
+}
+
+/* ── The portrait stage ──────────────────────────────────────────────────── */
+/* Behind EVERY player image: a neutral separation field, a team-aware rim light
+   from the top edge, a soft fade into the information zone, and an edge shadow
+   on the figure. Absolutely positioned inside the frozen portrait zone: zero
+   geometry. Colour never touches the image itself. */
+.ec-portrait-stage {
+  --stage-accent: var(--pc-accent, var(--ec-a-gold, #e9b949));
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+}
+.ec-portrait-stage[data-team="blue"] { --stage-accent: var(--pc-accent, var(--ec-a-blue, #7ab0f5)); }
+.ec-pc-portrait > .ec-portrait-stage { z-index: 1; }
+.ec-portrait-field {
+  position: absolute; inset: 0; z-index: 0;
+  /* A lit backdrop with a flat plateau behind the head and shoulders (where a
+     uniform meets the card), falling off before the information zone. The
+     plateau's luminance (~0.09 over the well) is what separates a dark, a
+     mid-blue and a mid-red uniform alike; see portrait-contrast-qa.json. */
+  background: radial-gradient(92% 60% at 50% 34%, var(--ec-a-portrait-field, rgba(214, 222, 236, 0.30)) 0%, var(--ec-a-portrait-field, rgba(214, 222, 236, 0.30)) 46%, transparent 82%);
+}
+.ec-portrait-rim {
+  position: absolute; inset: 0; z-index: 0;
+  background: radial-gradient(120% 55% at 50% -8%, color-mix(in srgb, var(--stage-accent) 34%, transparent), transparent 62%);
+}
+.ec-portrait-fade {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 34%; z-index: 2;
+  background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--ec-a-panel-raised, #172130) 90%, transparent));
+}
+.ec-portrait-stage > img { position: relative; z-index: 1; filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.55)); }
+.ec-portrait-stage > .ec-pc-figure { z-index: 1; filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.6)); }
+.ec-portrait-stage > .ec-pc-figure-initials { z-index: 3; }
+.ec-portrait-stage > .ec-pc-elig { z-index: 3; }
+/* The measurement harness renders the pre-9A.2 layer for the before/after table. */
+[data-stage-off="true"] .ec-portrait-field, [data-stage-off="true"] .ec-portrait-rim, [data-stage-off="true"] .ec-portrait-fade { display: none; }
+[data-stage-off="true"] .ec-portrait-stage > img, [data-stage-off="true"] .ec-portrait-stage > .ec-pc-figure { filter: none; }
+[data-stage-off="true"] .ec-pc-portrait {
+  background:
+    radial-gradient(140% 70% at 50% 100%, color-mix(in srgb, var(--pc-accent) 22%, transparent), transparent 68%),
+    radial-gradient(120% 80% at 50% 4%, rgba(255, 255, 255, 0.09), transparent 58%),
+    linear-gradient(180deg, #0e1a2b 0%, #050a12 100%);
+}
+
+/* ── The master-brand header and the lobby brand band ─────────────────────── */
+.ec-brand-header .ec-brand-logo { height: 34px; width: auto; }
+.ec-lobby-fracture { width: 100%; }
+/* Glyphs by mode family, restrained: competitive modes cool, era modes violet,
+   the recommended flagship gold. Never the only signal — every card is named. */
+.ec-lobby-court .ec-mode-card[data-mode="dream"] .ec-mode-glyph,
+.ec-lobby-court .ec-mode-card[data-mode="daily"] .ec-mode-glyph,
+.ec-lobby-court .ec-mode-card[data-mode="bo7"] .ec-mode-glyph,
+.ec-lobby-court .ec-mode-card[data-mode="win82"] .ec-mode-glyph,
+.ec-lobby-court .ec-mode-card[data-mode="tournament"] .ec-mode-glyph { color: var(--ec-l-glyph-cool, var(--ec-l-glyph, var(--ec-a-gold))); }
+.ec-lobby-court .ec-mode-card[data-mode="gauntlet"] .ec-mode-glyph { color: var(--ec-l-glyph-era, var(--ec-l-glyph, var(--ec-a-gold))); }
+.ec-lobby-court .ec-mode-card--primary:not(.ec-mode-card--recommended) .ec-mode-glyph {
+  background: var(--ec-l-panel-soft, var(--ec-a-panel-soft)); border-color: var(--ec-l-border, var(--ec-a-border));
+}
+@media (max-width: 640px) {
+  .ec-brand-header .ec-brand-logo { height: 30px; }
+  .ec-lobby-hero { padding: 12px 12px 10px; }
+}
+
+/* ── Phase 9A.2 accessibility: real headings inside the frozen geometry ─────── */
+/* The stage title, Coach Chaos, Live Intel and the Result Dock are headings now;
+   their classes already set every metric, so only the UA margin is reset. */
+h1.ec-ta-title-main, h2.ec-ta-coach-title, h2.ec-intel-heading, h3.ec-intel-heading { margin: 0; font-size: inherit; }
+h1.ec-ta-title-main { font-size: 21px; }
+h2.ec-ta-coach-title { font-size: 16px; }
+h2.ec-intel-heading, h3.ec-intel-heading { font-size: 10.5px; }
+/* The result hero's VS mark carries the reading-scope fracture. */
+.ec-fracture-text {
+  background-image: var(--ec-t-fracture, linear-gradient(120deg, #e9b949 30%, #ffffff 50%, #7ab0f5 70%));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+/* One dominant glow in the lobby: the recommended flagship. Other primary CTAs stay gold, without the halo. */
+.ec-lobby-court .ec-mode-card--primary:not(.ec-mode-card--recommended) .ec-mode-action[data-intent="OPEN_MODE"] { box-shadow: 0 1px 0 rgba(255, 255, 255, 0.35) inset; }
+/* Touch layouts (the rail stacks below 1180px): every Result Dock tab is a 44px
+   touch target. The canonical desktop keeps the frozen 40px. */
+@media (max-width: 1179px) { .ec-dock-tab { min-height: 44px !important; } }

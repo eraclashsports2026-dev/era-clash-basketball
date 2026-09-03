@@ -4,7 +4,7 @@ import { readFileSync, existsSync } from "node:fs";
 import { MASTER_BRAND, MASTER_BRAND_ROLES, ERA_FRACTURE, MASTER_BRAND_VERSION } from "../src/theme/masterBrandTokens.js";
 import { SEMANTIC_ROLES, SEMANTIC_DEFAULTS, SEMANTIC_REGIONS, SEMANTIC_VERSION } from "../src/theme/semanticTokens.js";
 import { BASKETBALL_THEMES } from "../src/theme/basketballThemes.js";
-import { THEME_IDS, CONTROL_THEME_ID, ARENA_KEYS, LOBBY_KEYS, READING_KEYS, ROOT_ALIAS_KEYS } from "../src/theme/themeTypes.js";
+import { THEME_IDS, CANDIDATE_THEME_IDS, PRODUCTION_THEME_ID, CONTROL_THEME_ID, ARENA_KEYS, LOBBY_KEYS, READING_KEYS, ROOT_ALIAS_KEYS } from "../src/theme/themeTypes.js";
 import { themeCss, themeCssFor, validateTheme, getTheme, applyTheme, themeTokenTable, THEME_RESOLVER_VERSION } from "../src/theme/themeResolver.js";
 import { T } from "../src/theme.js";
 
@@ -60,8 +60,9 @@ describe("layer 3 — semantic colours", () => {
 });
 
 describe("layer 2 — four Basketball candidates from one resolver", () => {
-  it("defines exactly the four themes, with the control first", () => {
-    expect(THEME_IDS).toEqual(["fracture-core", "night-court", "modern-court", "hardwood-luxe"]);
+  it("defines the four historical candidates, with the control first, plus the Phase 9A.2 production hybrid", () => {
+    expect(CANDIDATE_THEME_IDS).toEqual(["fracture-core", "night-court", "modern-court", "hardwood-luxe"]);
+    expect(THEME_IDS).toEqual([...CANDIDATE_THEME_IDS, PRODUCTION_THEME_ID]);
     expect(CONTROL_THEME_ID).toBe("fracture-core");
     expect(Object.keys(BASKETBALL_THEMES).sort()).toEqual([...THEME_IDS].sort());
     expect(getTheme("night-court").role).toBe("OPTION A");
@@ -70,7 +71,7 @@ describe("layer 2 — four Basketball candidates from one resolver", () => {
   });
   it("every theme supplies every token in every scope, and nothing extra", () => {
     for (const id of THEME_IDS) expect(validateTheme(getTheme(id)), id).toEqual([]);
-    expect(ARENA_KEYS.length).toBeGreaterThan(30); expect(LOBBY_KEYS.length).toBe(12); expect(READING_KEYS.length).toBeGreaterThan(28); expect(ROOT_ALIAS_KEYS.length).toBe(11);
+    expect(ARENA_KEYS.length).toBeGreaterThan(30); expect(LOBBY_KEYS.length).toBe(18); expect(READING_KEYS.length).toBeGreaterThan(28); expect(ROOT_ALIAS_KEYS.length).toBe(11);
   });
   it("declares a 60–30–10 structure per theme", () => {
     for (const id of THEME_IDS) {
@@ -132,7 +133,7 @@ describe("layer 2 — four Basketball candidates from one resolver", () => {
     const selectors = [...css.matchAll(/^([^\s{/][^{\n]*)\{/gm)].map((m) => m[1].trim());
     for (const s of selectors) expect(s, s).toMatch(/^html\[data-theme="/);
     expect(read("src/main.jsx")).toMatch(/theme\/basketball-themes\.css/);
-    expect(THEME_RESOLVER_VERSION).toBe("1.0.0");
+    expect(THEME_RESOLVER_VERSION).toBe("1.1.0");
   });
   it("the default product is untouched: every T token falls back to its original value", () => {
     const originals = {
@@ -150,11 +151,12 @@ describe("layer 2 — four Basketball candidates from one resolver", () => {
     const shell = read("src/index.css").match(/\.ec-arena-shell \{[\s\S]*?\n\}/)[0];
     for (const v of ["--ec-a-bg: #03070d", "--ec-a-gold: #f2b51d", "--ec-a-blue: #3b9bff", "--ec-a-coach: #a864e8"]) expect(shell).toContain(v);
   });
-  it("applyTheme sets and clears data-theme and refuses unknown ids", () => {
+  it("applyTheme sets data-theme, refuses unknown ids, restores the production default on null and clears on false", () => {
     const root = { dataset: {} };
     expect(applyTheme("night-court", root)).toBe(true); expect(root.dataset.theme).toBe("night-court");
     expect(applyTheme("nope", root)).toBe(false); expect(root.dataset.theme).toBe("night-court");
-    expect(applyTheme(null, root)).toBe(true); expect(root.dataset.theme).toBeUndefined();
+    expect(applyTheme(null, root)).toBe(true); expect(root.dataset.theme).toBe(PRODUCTION_THEME_ID);
+    expect(applyTheme(false, root)).toBe(true); expect(root.dataset.theme).toBeUndefined();
   });
   it("a token table is exportable per theme", () => {
     const t = themeTokenTable("hardwood-luxe");
