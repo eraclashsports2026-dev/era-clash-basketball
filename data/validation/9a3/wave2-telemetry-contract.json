@@ -1,0 +1,55 @@
+{
+  "artifact": "wave2-telemetry-contract",
+  "phase": "9A.3 — Wave 2 private-beta preparation",
+  "status": "FROZEN",
+  "frozenAt": "2026-09-03T20:27:02.101Z",
+  "version": "wave2-telemetry-v1",
+  "transport": "src/analytics.js → POST /api/events (existing route; allowlisted; no new function)",
+  "events": [
+    "play_lobby_viewed",
+    "play_mode_selected",
+    "active_run_continue_clicked",
+    "active_run_abandon_started",
+    "active_run_abandoned",
+    "time_to_mode_selection_recorded",
+    "time_to_first_roll_recorded",
+    "chaos_roll_completed",
+    "chaos_era_revealed",
+    "chaos_coach_selected",
+    "chaos_game_completed",
+    "result_tab_opened",
+    "new_clash_started",
+    "rematch_started",
+    "dream_player_selected",
+    "eligible_position_choice_shown",
+    "dream_player_placed",
+    "dream_player_auto_placed",
+    "dream_player_swap_completed",
+    "feedback_submitted",
+    "preview_fallback_invoked"
+  ],
+  "serverSideEvents": [
+    "preview_fallback_invoked (api/game.js → counters)"
+  ],
+  "partitions": [
+    "waveId",
+    "cohort",
+    "testerId",
+    "buildStamp"
+  ],
+  "partitionKey": "wave2-metrics:<waveId>:<cohort>:<testerId>:<buildStamp> (HINCRBY <event>) plus wave2-metrics:events:<waveId> totals per event",
+  "identitySource": "the signed preview session (server), never the client payload",
+  "forbidden": [
+    "email",
+    "key",
+    "cookie",
+    "token",
+    "IP",
+    "free text"
+  ],
+  "crossWaveAggregation": "none — no counter mixes waves",
+  "timings": [
+    "time_to_mode_selection_recorded {ms, bucket}",
+    "time_to_first_roll_recorded {ms, bucket, from}"
+  ]
+}
