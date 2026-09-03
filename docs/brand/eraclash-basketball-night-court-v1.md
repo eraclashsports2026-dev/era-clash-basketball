@@ -66,4 +66,4 @@ CLEARLY DISTINCT. the arena shares 82-0's dark-ground + warm-button STRUCTURE; d
 
 ## Preview
 
-`<branch-preview>/play` (owner or tester session) · lab: `<branch-preview>/dev/basketball-theme-lab?theme=night-court-production-hybrid` (owner only).
+`https://era-clash-basketball-git-phase-9a2-night-court-2460ee-era-clash.vercel.app/play` (owner or tester session) · lab: `https://era-clash-basketball-git-phase-9a2-night-court-2460ee-era-clash.vercel.app/dev/basketball-theme-lab?theme=night-court-production-hybrid` (owner only).

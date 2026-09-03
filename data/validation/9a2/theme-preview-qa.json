@@ -1,0 +1,234 @@
+{
+  "artifact": "theme-preview-qa",
+  "phase": "9A.2 — Night Court Editorial production theme",
+  "deployment": {
+    "baseUrl": "https://era-clash-basketball-git-phase-9a2-night-court-2460ee-era-clash.vercel.app",
+    "commit": "212e6c6",
+    "buildStamp": "eraclash-assets:2.7.2:929de2565d1e",
+    "environment": "vercel preview, access-gated; the lab owner-only"
+  },
+  "candidateUnderTest": {
+    "deployed": {
+      "enabled": true,
+      "candidateId": "Candidate 4",
+      "candidateCoreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+      "calibrationVersion": "1.4.0",
+      "featureFlag": "PREVIEW_SIM_ENGINE_ENABLED",
+      "fallbackEngine": "production engine 3.2.0 (per-request fallback; emergency-off returns every new request to production while stored preview results stay readable by version)",
+      "cacheNamespace": "preview-*",
+      "persistenceNamespace": "pv_ result-id prefix",
+      "accessControl": "hashed-key allowlist (config/previewAccess.js)"
+    },
+    "local": {
+      "candidateId": "Candidate 4",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+      "possessionCalibrationVersion": "1.4.0",
+      "actionLibraryVersion": "2.1.0",
+      "possessionEngineVersion": "1.2.0",
+      "fallbackEngine": "production engineVersion 3.2.0"
+    }
+  },
+  "keys": [
+    {
+      "testerId": "owner",
+      "role": "owner",
+      "sha256Prefix": "6d3f1c7811d9",
+      "accepted": true
+    },
+    {
+      "testerId": "wave1-tester-01",
+      "role": "tester",
+      "sha256Prefix": "d17a2b5f486b",
+      "accepted": true
+    },
+    {
+      "testerId": "wave1-tester-02",
+      "role": "tester",
+      "sha256Prefix": "e20e4070dd4f",
+      "accepted": true
+    },
+    {
+      "testerId": "wave1-tester-03",
+      "role": "tester",
+      "sha256Prefix": "d344c1b3d9f3",
+      "accepted": true
+    },
+    {
+      "testerId": "wave1-tester-04",
+      "role": "tester",
+      "sha256Prefix": "56cc3895d659",
+      "accepted": true
+    },
+    {
+      "testerId": "wave1-tester-05",
+      "role": "tester",
+      "sha256Prefix": "a018c836d98e",
+      "accepted": true
+    },
+    {
+      "testerId": "wave1-tester-06",
+      "role": "tester",
+      "sha256Prefix": "944c41929417",
+      "accepted": true
+    },
+    {
+      "testerId": "wave1-tester-07",
+      "role": "tester",
+      "sha256Prefix": "015542cebecc",
+      "accepted": true
+    }
+  ],
+  "feedback": {
+    "httpStatus": 204,
+    "note": "204 is this endpoint's success response for a stored preview record; persistence is verified by `npm run preview:wave1-feedback-report` in a shell with store credentials."
+  },
+  "stableWave1": {
+    "stamp": "eraclash-assets:2.7.2:2f35a3b70c30",
+    "expected": "eraclash-assets:2.7.2:2f35a3b70c30",
+    "labStatus": 404
+  },
+  "gates": [
+    {
+      "name": "unauthenticated /play is refused (401 access page)",
+      "ok": true,
+      "detail": "HTTP 401"
+    },
+    {
+      "name": "an invalid / pre-rotation-format key is denied and sets no session",
+      "ok": true,
+      "detail": "HTTP 401"
+    },
+    {
+      "name": "the key file carries no burned v1 key (every key is v2 or later; rotations logged)",
+      "ok": true,
+      "detail": "versions 2/3, 2 rotation entries"
+    },
+    {
+      "name": "all 8 existing Wave 1 keys still open a session",
+      "ok": true,
+      "detail": "owner, wave1-tester-01, wave1-tester-02, wave1-tester-03, wave1-tester-04, wave1-tester-05, wave1-tester-06, wave1-tester-07"
+    },
+    {
+      "name": "a tester's valid session: 404 at the lab, 200 at /play",
+      "ok": true,
+      "detail": "lab 404 · play 200"
+    },
+    {
+      "name": "the deployment runs this checkout's candidate (Candidate 4, 1.4.0)",
+      "ok": true,
+      "detail": "Candidate 4 / 55bb26a20e7d / 1.4.0"
+    },
+    {
+      "name": "the lobby renders the production theme: obsidian header + band with the Mk1 logo, ivory canvas, ink titles, one fracture, no picker",
+      "ok": true,
+      "detail": "{\"theme\":\"night-court-production-hybrid\",\"canvas\":\"rgb(241, 237, 228)\"}"
+    },
+    {
+      "name": "an empty Chaos Arena: ten card backs, the fracture divide, the one glow on ROLL 1",
+      "ok": true,
+      "detail": "{\"backs\":10,\"focus\":\"empty\"}"
+    },
+    {
+      "name": "Roll 1: holds register; held cards carry the fracture edge and the one glow moves from the CTA to the cards; every portrait rides the stage",
+      "ok": true,
+      "detail": "{\"held\":2,\"focus\":\"hold\",\"stages\":10}"
+    },
+    {
+      "name": "Era Reveal: the era arrives with Roll 2 and the era section carries the fracture edge; era intelligence reads violet",
+      "ok": true,
+      "detail": "2010s · rgb(160, 138, 230)"
+    },
+    {
+      "name": "Coach Chaos: the selected staff carries the fracture edge and the one glow (violet); the others do not",
+      "ok": true,
+      "detail": "{\"focus\":\"hire\",\"title\":\"rgb(160, 138, 230)\"}"
+    },
+    {
+      "name": "the Result Dock: Story leads a live result, the final-score panel carries the fracture edge, the active tab is underlined by it",
+      "ok": true,
+      "detail": "{\"open\":\"Game Story\"}"
+    },
+    {
+      "name": "the simulation held the central fracture transition while it ran",
+      "ok": true,
+      "detail": "1 transition element(s) holding"
+    },
+    {
+      "name": "every result tab opens",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Full Postgame: dark result hero (fracture VS + watermark) above a light editorial report, with a heading",
+      "ok": true,
+      "detail": "{\"heroDark\":true,\"paperLight\":true,\"vs\":\"linear-gradient(112deg, rgb(225, 167, 44) 0%, rgb(225, 167, 44) 44%, rgb(247, 230, 184) 46%, rgb(255, 255, 255) 47%, rgb(156, 194, 245) 48%, rgb(38, 124, 232) 50%, rgb(38, 124, 232) 100%)\",\"watermark\":1,\"h1\":1}"
+    },
+    {
+      "name": "Box Score: ONE table, tabular numerals, no wrapped cell, ink on ivory, scroll isolated, no page overflow",
+      "ok": true,
+      "detail": "{\"tables\":1,\"wrapped\":0}"
+    },
+    {
+      "name": "preview feedback is accepted from the themed report and confirmed to the tester",
+      "ok": true,
+      "detail": "HTTP 204"
+    },
+    {
+      "name": "Dream Matchup placement is byte-for-byte 9A: Durant lights SG · SF · PF; PG and C are ineligible; states carry words",
+      "ok": true,
+      "detail": "{\"PG\":\"INELIGIBLE\",\"SG\":\"ELIGIBLE\",\"SF\":\"ELIGIBLE\",\"PF\":\"ELIGIBLE\",\"C\":\"INELIGIBLE\"}"
+    },
+    {
+      "name": "the Dream builder is an editorial (ivory) surface with worded slot states",
+      "ok": true,
+      "detail": "{\"theme\":\"night-court-production-hybrid\",\"paper\":\"rgb(241, 237, 228)\",\"words\":5}"
+    },
+    {
+      "name": "a manual placement lands",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the account gate: obsidian header, ivory content, one gold primary action with light ink, no prices",
+      "ok": true,
+      "detail": "{\"header\":0.0017377043840657394,\"paper\":0.8487058209167213,\"gold\":\"rgb(138, 100, 16)\",\"ink\":0.9828787031929049,\"prices\":false}"
+    },
+    {
+      "name": "the membership gate: editorial shell — ivory page and panels, ink heading, obsidian header, no prices or checkout",
+      "ok": true,
+      "detail": "{\"header\":0.0017377043840657394,\"page\":0.8487058209167213,\"panel\":0.9399490663507462,\"h1\":0.010706702559891609,\"prices\":false,\"editorial\":true}"
+    },
+    {
+      "name": "the portrait-stage fixture renders ten uniform tests on the deployment, each on the stage",
+      "ok": true,
+      "detail": "{\"tests\":10,\"stages\":10,\"layers\":10}"
+    },
+    {
+      "name": "tablet lobby: two columns, no overflow, controls ≥ 44px, obsidian header",
+      "ok": true,
+      "detail": "{\"overflow\":0,\"cols\":2,\"tap\":44,\"header\":\"rgba(3, 6, 11, 0.94)\"}"
+    },
+    {
+      "name": "tablet Time Arena: no overflow, no ten-card compression (2 rows, min 132px), controls ≥ 44px, rail stacked",
+      "ok": true,
+      "detail": "{\"overflow\":0,\"rows\":2,\"minW\":132,\"tap\":44,\"stacked\":true}"
+    },
+    {
+      "name": "mobile lobby: one column, no overflow, controls ≥ 44px, obsidian header",
+      "ok": true,
+      "detail": "{\"overflow\":0,\"cols\":1,\"tap\":44,\"header\":\"rgba(3, 6, 11, 0.94)\"}"
+    },
+    {
+      "name": "mobile Time Arena: no overflow, no ten-card compression (6 rows, min 164px), controls ≥ 44px, rail stacked",
+      "ok": true,
+      "detail": "{\"overflow\":0,\"rows\":6,\"minW\":164,\"tap\":44,\"stacked\":true}"
+    },
+    {
+      "name": "the stable Wave 1 alias still serves the pre-9A build (stamp 2f35a3b70c30), has no lab and no production theme",
+      "ok": true,
+      "detail": "eraclash-assets:2.7.2:2f35a3b70c30 · lab HTTP 404"
+    }
+  ],
+  "passed": 28,
+  "failed": 0
+}

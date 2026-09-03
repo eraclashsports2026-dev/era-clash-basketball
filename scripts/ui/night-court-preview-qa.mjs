@@ -37,7 +37,8 @@ const run = async () => {
   gate("unauthenticated /play is refused (401 access page)", root.status() === 401 && /Private preview/.test(await root.text()), `HTTP ${root.status()}`);
   const bad = await anon.post("/api/preview-access", { form: { key: "ec-w1-v1-burned-000000000000000000000000" }, maxRedirects: 0 });
   gate("an invalid / pre-rotation-format key is denied and sets no session", bad.status() === 401 && !/pv_session=[^;]/.test(bad.headers()["set-cookie"] || ""), `HTTP ${bad.status()}`);
-  gate("the key file carries only the current key version; burned v1 keys are not present", keys.every((k) => k.keyVersion === secrets.keyVersion) && (secrets.rotationLog || []).length > 0, `keyVersion ${secrets.keyVersion}, ${secrets.rotationLog?.length ?? 0} rotation entries`);
+  // v1 keys were burned in 6C6; two testers were rotated to v3 later. No key may be v1.
+  gate("the key file carries no burned v1 key (every key is v2 or later; rotations logged)", keys.every((k) => Number(k.keyVersion) >= 2) && (secrets.rotationLog || []).length > 0, `versions ${[...new Set(keys.map((k) => k.keyVersion))].join("/")}, ${secrets.rotationLog?.length ?? 0} rotation entries`);
   await anon.dispose();
   const ledger = [];
   for (const k of keys) {
@@ -61,13 +62,14 @@ const run = async () => {
   if (auth.status() !== 303) { console.error("could not open an owner session"); process.exit(1); }
   const health = await (await ctx.request.get(`${BASE}/api/health`)).json();
   const local = previewCandidateIdentity();
-  gate("the deployment runs this checkout's candidate (Candidate 4, 1.4.0)", health?.preview?.candidateId === local.candidateId && health?.preview?.candidateCoreHash === local.coreHash && health?.preview?.possessionCalibrationVersion === local.possessionCalibrationVersion, `${health?.preview?.candidateId} / ${String(health?.preview?.candidateCoreHash).slice(0, 12)} / ${health?.preview?.possessionCalibrationVersion}`);
+  gate("the deployment runs this checkout's candidate (Candidate 4, 1.4.0)", health?.preview?.candidateId === local.candidateId && health?.preview?.candidateCoreHash === local.coreHash && health?.preview?.calibrationVersion === local.possessionCalibrationVersion, `${health?.preview?.candidateId} / ${String(health?.preview?.candidateCoreHash).slice(0, 12)} / ${health?.preview?.calibrationVersion}`);
   const stamp = ((await (await ctx.request.get(`${BASE}/`)).text()).match(/eraclash-assets:[0-9.]+:[a-f0-9]+/) || [])[0] || null;
   const page = await ctx.newPage();
   await withAccount(page);
   // 8. the Play Lobby
   await page.goto(`${BASE}/play`, { waitUntil: "domcontentloaded" });
   await page.locator(".ec-lobby .ec-mode-card").first().waitFor({ timeout: 45_000 });
+  await page.waitForFunction(() => [...document.querySelectorAll("img.ec-brand-logo, img.ec-lobby-logo")].every((i) => i.complete), null, { timeout: 20_000 }).catch(() => {});
   const lobby = await page.evaluate(() => ({ theme: document.documentElement.dataset.theme, header: getComputedStyle(document.querySelector("header")).backgroundColor, logo: (() => { const i = document.querySelector("header img.ec-brand-logo"); return i && i.complete && i.naturalWidth > 0; })(), lobbyLogo: (() => { const i = document.querySelector(".ec-lobby-logo"); return i && i.complete && i.naturalWidth > 0; })(), band: getComputedStyle(document.querySelector(".ec-lobby-hero")).backgroundColor, canvas: getComputedStyle(document.querySelector(".ec-lobby-court")).backgroundColor, fracture: getComputedStyle(document.querySelector(".ec-lobby-fracture")).backgroundImage, cardInk: getComputedStyle(document.querySelector(".ec-mode-title")).color, labLinks: [...document.querySelectorAll("a[href]")].filter((a) => /theme-lab/.test(a.href)).length, picker: /theme lab|choose your basketball theme/i.test(document.body.innerText), overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth }));
   gate("the lobby renders the production theme: obsidian header + band with the Mk1 logo, ivory canvas, ink titles, one fracture, no picker", lobby.theme === P && lobby.logo && lobby.lobbyLogo && lum(lobby.header) < 0.02 && lum(lobby.band) < 0.02 && lum(lobby.canvas) > 0.8 && lum(lobby.cardInk) < 0.05 && /112deg/.test(lobby.fracture) && lobby.labLinks === 0 && !lobby.picker && lobby.overflow === 0, JSON.stringify({ theme: lobby.theme, canvas: lobby.canvas }));
   await page.screenshot({ path: `${SHOTS}/desktop-play-lobby-1536x1024.png` });
@@ -80,6 +82,7 @@ const run = async () => {
   await page.getByRole("button", { name: /^ROLL 1/ }).click();
   await page.locator(".ec-ta-roster .ec-pc").nth(9).waitFor({ timeout: 45_000 });
   const holds = page.locator(".ec-pc-action"); await holds.nth(0).click(); await holds.nth(1).click();
+  await page.waitForTimeout(450); // the card's 140ms lift/shadow transition must finish before the glow is read
   const r1 = await page.evaluate(() => ({ held: document.querySelectorAll('.ec-pc[data-held="true"]').length, heldEdge: getComputedStyle(document.querySelector('.ec-pc[data-held="true"]'), "::before").backgroundImage, heldGlow: getComputedStyle(document.querySelector('.ec-pc[data-held="true"]')).boxShadow, ctaGlow: getComputedStyle(document.querySelector(".ec-ta-cta")).boxShadow, focus: document.querySelector(".ec-ta-stage").dataset.focus, stages: document.querySelectorAll(".ec-pc-portrait .ec-portrait-stage").length, eraHidden: /HIDDEN/.test(document.querySelector(".ec-ta-utility").innerText) }));
   gate("Roll 1: holds register; held cards carry the fracture edge and the one glow moves from the CTA to the cards; every portrait rides the stage", r1.held === 2 && /112deg/.test(r1.heldEdge) && /225, 167, 44/.test(r1.heldGlow) && !/232, 177, 60/.test(r1.ctaGlow) && r1.focus === "hold" && r1.stages === 10 && r1.eraHidden, JSON.stringify({ held: r1.held, focus: r1.focus, stages: r1.stages }));
   await page.screenshot({ path: `${SHOTS}/desktop-roll1-hold-1536x1024.png` });
@@ -91,7 +94,7 @@ const run = async () => {
   await page.getByRole("button", { name: /FINAL ROLL/ }).click();
   await page.getByRole("button", { name: /^Select / }).first().waitFor({ timeout: 45_000 });
   await page.getByRole("button", { name: /^Select / }).first().click();
-  const coach = await page.evaluate(() => { const on = document.querySelector('.ec-coach-card[data-on="true"]'); return { selected: !!on, edge: on ? getComputedStyle(on, "::before").backgroundImage : "", glow: on ? getComputedStyle(on).boxShadow : "", title: getComputedStyle(document.querySelector(".ec-ta-coach-title")).color, focus: document.querySelector(".ec-ta-stage").dataset.focus, othersEdge: [...document.querySelectorAll('.ec-coach-card[data-on="false"]')].every((c) => parseFloat(getComputedStyle(c, "::before").opacity) === 0) }; });
+  const coach = await page.evaluate(() => { const on = document.querySelector('.ec-coach-card[data-on="true"]'); return { selected: !!on, edge: on ? getComputedStyle(on, "::before").backgroundImage : "", glow: on ? getComputedStyle(on).boxShadow : "", title: getComputedStyle(document.querySelector(".ec-ta-coach-title")).color, focus: document.querySelector(".ec-ta-stage").dataset.focus, othersEdge: [...document.querySelectorAll('.ec-coach-card[data-on="false"]')].every((c) => { const cs = getComputedStyle(c, "::before"); return cs.content === "none" || parseFloat(cs.opacity) === 0; }) }; });
   gate("Coach Chaos: the selected staff carries the fracture edge and the one glow (violet); the others do not", coach.selected && /112deg/.test(coach.edge) && coach.focus === "hire" && coach.othersEdge, JSON.stringify({ focus: coach.focus, title: coach.title }));
   await page.screenshot({ path: `${SHOTS}/desktop-coach-select-1536x1024.png` });
   await page.getByRole("button", { name: /HIRE THIS STAFF/ }).click();
@@ -112,10 +115,11 @@ const run = async () => {
   await page.getByRole("button", { name: /VIEW FULL REPORT/ }).click();
   const report = page.getByRole("dialog", { name: "Full postgame report" });
   await report.waitFor({ timeout: 20_000 });
-  const pg = await page.evaluate(() => { const l = (c) => { const m = String(c).match(/[\d.]+/g); if (!m) return null; const [r, g, b] = m.slice(0, 3).map(Number).map((v) => { const s = v / 255; return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4; }); return 0.2126 * r + 0.7152 * g + 0.0722 * b; }; const inset = document.querySelector(".ec-report-overlay .ec-arena-inset"); const paper = document.querySelector(".ec-report-overlay .ec-arena-inset").parentElement; return { heroDark: l(getComputedStyle(inset).backgroundColor) < 0.05, paperLight: l(getComputedStyle(paper).backgroundColor) > 0.8, vs: getComputedStyle([...document.querySelectorAll(".ec-report-overlay .ec-arena-inset div")].find((d) => d.textContent.trim() === "VS") || inset).backgroundImage, watermark: document.querySelectorAll(".ec-report-overlay .ec-fracture-watermark").length, h1: document.querySelectorAll(".ec-report-overlay h1").length }; });
+  const pg = await page.evaluate(() => { const l = (c) => { const m = String(c).match(/[\d.]+/g); if (!m) return null; const [r, g, b] = m.slice(0, 3).map(Number).map((v) => { const s = v / 255; return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4; }); return 0.2126 * r + 0.7152 * g + 0.0722 * b; }; const inset = document.querySelector(".ec-report-overlay .ec-arena-inset"); const paper = document.querySelector(".ec-report-overlay .ec-arena-inset").parentElement; return { heroDark: l(getComputedStyle(inset).backgroundColor) < 0.05, paperLight: l(getComputedStyle(paper).backgroundColor) > 0.8, vs: getComputedStyle(document.querySelector(".ec-report-overlay .ec-arena-inset .ec-fracture-text") || inset).backgroundImage, watermark: document.querySelectorAll(".ec-report-overlay .ec-fracture-watermark").length, h1: document.querySelectorAll(".ec-report-overlay h1").length }; });
   gate("Full Postgame: dark result hero (fracture VS + watermark) above a light editorial report, with a heading", pg.heroDark && pg.paperLight && /112deg/.test(pg.vs) && pg.watermark === 1 && pg.h1 >= 1, JSON.stringify(pg));
   await report.getByRole("tab", { name: "Box Score" }).click();
-  const box = await page.evaluate(() => { const l = (c) => { const [r, g, b] = String(c).match(/[\d.]+/g).map(Number); return (r * 0.299 + g * 0.587 + b * 0.114) / 255; }; const table = document.querySelector(".ec-report-overlay .box-table"); const cells = [...document.querySelectorAll(".ec-report-overlay td.box-player")].filter((c) => c.textContent.trim() && c.textContent.trim() !== "TOTAL").slice(0, 4); const widths = [...table.querySelectorAll("colgroup col")].map((c) => c.getBoundingClientRect().width); const wrapped = [...table.querySelectorAll("td")].filter((td) => td.getBoundingClientRect().height > 30).length; return { tables: document.querySelectorAll(".ec-report-overlay table").length, ink: cells.map((c) => l(getComputedStyle(c).color)), paper: cells.map((c) => l(getComputedStyle(c).backgroundColor)), tabular: getComputedStyle(table).fontVariantNumeric, wrapped, overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth, scroller: getComputedStyle(document.querySelector(".ec-report-overlay .box-scroll")).overflowX }; });
+  const box = await page.evaluate(() => { const l = (c) => { const [r, g, b] = String(c).match(/[\d.]+/g).map(Number); return (r * 0.299 + g * 0.587 + b * 0.114) / 255; }; const table = document.querySelector(".ec-report-overlay .box-table"); const cells = [...document.querySelectorAll(".ec-report-overlay td.box-player")].filter((c) => c.textContent.trim() && c.textContent.trim() !== "TOTAL").slice(0, 4); const widths = [...table.querySelectorAll("colgroup col")].map((c) => c.getBoundingClientRect().width); // A wrapped cell makes its row taller than the others: uniform row heights and nowrap on every cell prove no value broke across two lines.
+    const rowHeights = [...table.querySelectorAll("tbody tr")].map((tr) => Math.round(tr.getBoundingClientRect().height)); const wrapped = (Math.max(...rowHeights) - Math.min(...rowHeights) > 2 ? 1 : 0) + [...table.querySelectorAll("td")].filter((td) => getComputedStyle(td).whiteSpace !== "nowrap").length; return { tables: document.querySelectorAll(".ec-report-overlay table").length, ink: cells.map((c) => l(getComputedStyle(c).color)), paper: cells.map((c) => l(getComputedStyle(c).backgroundColor)), tabular: getComputedStyle(table).fontVariantNumeric, wrapped, overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth, scroller: getComputedStyle(document.querySelector(".ec-report-overlay .box-scroll")).overflowX }; });
   gate("Box Score: ONE table, tabular numerals, no wrapped cell, ink on ivory, scroll isolated, no page overflow", box.tables === 1 && /tabular/.test(box.tabular) && box.wrapped === 0 && box.ink.every((i) => i < 0.4) && box.overflow === 0 && box.scroller === "auto", JSON.stringify({ tables: box.tables, wrapped: box.wrapped }));
   await page.screenshot({ path: `${SHOTS}/desktop-postgame-box-1536x1024.png` });
   await report.getByRole("tab", { name: "Game Story" }).click();
@@ -125,12 +129,16 @@ const run = async () => {
   await page.getByRole("button", { name: /VIEW FULL REPORT/ }).click();
   await report.waitFor({ timeout: 20_000 });
   let feedbackStatus = null;
-  const fbBtn = report.getByRole("button", { name: /Send preview feedback/ });
-  if (await fbBtn.count()) {
-    const opt = report.getByRole("radio").first(); if (await opt.count()) await opt.check().catch(() => {});
-    const [res] = await Promise.all([page.waitForResponse((r) => r.url().includes("/api/feedback") && r.request().method() === "POST", { timeout: 30_000 }).catch(() => null), fbBtn.click()]);
+  await report.getByRole("tab", { name: "Final" }).click();
+  const panel = report.getByText(/PREVIEW — rate this result/);
+  if (await panel.count()) {
+    // The same round trip the 8C.1 deployed pass made: five ratings, a yes, send.
+    const fives = report.getByRole("button", { name: "5", exact: true });
+    const n = await fives.count(); for (let i = 0; i < n; i++) await fives.nth(i).click();
+    await report.getByRole("button", { name: "yes", exact: true }).click();
+    const [res] = await Promise.all([page.waitForResponse((r) => r.url().includes("/api/feedback") && r.request().method() === "POST", { timeout: 30_000 }).catch(() => null), report.getByRole("button", { name: /Send preview feedback/ }).click()]);
     feedbackStatus = res ? res.status() : null;
-    gate("preview feedback is accepted from the themed report", feedbackStatus != null && feedbackStatus >= 200 && feedbackStatus < 300, `HTTP ${feedbackStatus}`);
+    gate("preview feedback is accepted from the themed report and confirmed to the tester", feedbackStatus != null && feedbackStatus >= 200 && feedbackStatus < 300 && await report.getByText(/preview feedback recorded/).isVisible(), `HTTP ${feedbackStatus}`);
   } else gate("the preview feedback panel is present on the result", false, "not rendered");
   await page.getByRole("button", { name: /Back to the arena/ }).click();
   // 18. Dream Matchup placement, unchanged
