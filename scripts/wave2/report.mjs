@@ -95,12 +95,12 @@ if (mode === "readiness") {
     credentials: access?.counts?.owner === 1 && access?.counts?.firstTime === 3 && access?.counts?.returning === 2 && access.status === "FROZEN",
     rawKeysNotTracked: audit ? audit.data.rawKeyLeakScan.leaks === 0 : null, wave1EntriesAbsent: audit ? audit.data.wave1EntriesPresent === 0 : null,
     branchPreviewQaPassed: bp ? bp.failed === 0 : null, stableAliasVerified: alias ? alias.failed === 0 : null, wave1Preserved: !!w1 && (alias ? alias.wave1Unchanged === true : null),
-    humanTestingStarted: false, distributionAuthorized: acc?.wave2DistributionAuthorized === false ? false : null,
+    humanTestingStarted: false, distributionAuthorized: acc?.wave2DistributionAuthorized === true,
   };
   const pending = Object.entries(checks).filter(([k, v]) => v !== true && k !== "humanTestingStarted" && k !== "distributionAuthorized").map(([k]) => k);
-  const state = pending.length ? "NOT_READY" : "READY_FOR_OWNER_DISTRIBUTION";
+  const state = pending.length ? "NOT_READY" : checks.distributionAuthorized ? "DISTRIBUTION_AUTHORIZED — the owner may send the prepared invitations manually" : "READY_FOR_OWNER_DISTRIBUTION";
   const data = { source: source(), state, checks, pending, stableWave2Url: alias?.aliasUrl ?? null, keyFile: ".preview-secrets/wave2-access-keys.json", invitationsPrepared: access ? access.entries.filter((e) => e.role !== "owner").map((e) => `${e.testerId} (${e.cohort})`) : [], nextOwnerDecision: "AUTHORIZE WAVE 2 DISTRIBUTION" };
-  emit("wave2-readiness", data, `# Wave 2 readiness\n\nstate: **${state}**\n${Object.entries(checks).map(([k, v]) => `- ${k}: ${v === true ? "yes" : v === false ? "no" : "pending"}`).join("\n")}\n${pending.length ? `pending: ${pending.join(", ")}` : "no pending items"}\nhuman testing started: no · distribution authorized: no`);
+  emit("wave2-readiness", data, `# Wave 2 readiness\n\nstate: **${state}**\n${Object.entries(checks).map(([k, v]) => `- ${k}: ${v === true ? "yes" : v === false ? "no" : "pending"}`).join("\n")}\n${pending.length ? `pending: ${pending.join(", ")}` : "no pending items"}\nhuman testing started: no · distribution authorized: ${checks.distributionAuthorized ? "yes (owner, manual send)" : "no"}`);
 }
 
 import { statSync as require_stat } from "node:fs";
