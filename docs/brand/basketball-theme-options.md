@@ -29,7 +29,7 @@ Fracture Cobalt; a controlled diagonal Era Fracture; EraClash Logo Mk1.
 
 **Fatigue risk (thresholded, not a preference):** MODERATE — nearBlackAreaPct 62.8, lowContrastSecondaryShare 0, glowCount 6, glowNearText 0, borderedPer100kPx 3.683, longParagraphsOnDark 0, saturatedAccentPct 2, capsShare 0.257.
 
-**Competitive differentiation:** DISTINCT WITH RISKS — dominant background is a saturated navy like 82-0's; dark ground + warm CTA is the same STRUCTURE as 82-0 (dark + warm button); differentiation rests on obsidian-not-navy, gold-not-orange, platinum structure and the cobalt fracture.
+**Competitive differentiation:** DISTINCT WITH RISKS — dark ground + warm CTA is the same STRUCTURE as 82-0 (dark + warm button); differentiation rests on obsidian-not-navy, gold-not-orange, platinum structure and the cobalt fracture.
 
 **Portrait compatibility:** silhouette-to-frame 1.2:1; uniform swatches with blend risk: 1 of 5.
 
@@ -54,7 +54,7 @@ Fracture Cobalt; a controlled diagonal Era Fracture; EraClash Logo Mk1.
 
 **Fatigue risk (thresholded, not a preference):** MODERATE — nearBlackAreaPct 56.3, lowContrastSecondaryShare 0, glowCount 6, glowNearText 0, borderedPer100kPx 3.683, longParagraphsOnDark 0, saturatedAccentPct 1.9, capsShare 0.257.
 
-**Competitive differentiation:** DISTINCT WITH RISKS — dominant background is a saturated navy like 82-0's.
+**Competitive differentiation:** CLEARLY DISTINCT.
 
 **Portrait compatibility:** silhouette-to-frame 1.21:1; uniform swatches with blend risk: 1 of 5.
 

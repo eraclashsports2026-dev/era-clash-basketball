@@ -505,7 +505,11 @@ if (MODE === "competitive") {
     const t = getTheme(id);
     const dom = t.families.dominant.colors[0], acc = t.families.accent.colors[0], cta = t.arena["cta-mid"];
     const domHue = hue(dom), accHue = hue(acc), ctaHue = hue(cta);
-    const navyDominant = domHue !== null && domHue >= 205 && domHue <= 235 && lumRgb(hexRgb(dom)) < 0.06 && sat(dom) > 0.35;
+    // A saturated NAVY is a visible blue-black (82-0's ground, lum ≈ 0.01–0.08
+    // with real chroma). A near-black obsidian in the same hue band is not navy:
+    // its chroma is a few RGB steps and it reads as black.
+    const chroma = (h) => { const [r, g, b] = hexRgb(h); return (Math.max(r, g, b) - Math.min(r, g, b)) / 255; };
+    const navyDominant = domHue !== null && domHue >= 205 && domHue <= 235 && lumRgb(hexRgb(dom)) >= 0.01 && lumRgb(hexRgb(dom)) < 0.08 && chroma(dom) >= 20 / 255;
     const orangeCta = ctaHue !== null && ctaHue >= 15 && ctaHue < 36 && sat(cta) > 0.7;
     const orangeAccent = accHue !== null && accHue >= 15 && accHue < 36 && sat(acc) > 0.6;
     const risks = [];
