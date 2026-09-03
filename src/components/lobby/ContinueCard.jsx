@@ -63,10 +63,10 @@ export default function ContinueCard({ run, lastActivityAt, expired = false, bus
         </p>
         <p className="ec-continue-teams">
           <span className="ec-continue-team ec-continue-team--gold">
-            <span className="ec-continue-team-name">TEAM GOLD</span> your five{held ? ` · ${held} held` : ""}
+            <span className="ec-continue-team-name">TEAM GOLD</span> Your Five{held ? ` · ${held} held` : ""}
           </span>
           <span className="ec-continue-team ec-continue-team--blue">
-            <span className="ec-continue-team-name">TEAM BLUE</span> Legend CPU
+            <span className="ec-continue-team-name">TEAM BLUE</span> Legend Rival
           </span>
         </p>
       </div>

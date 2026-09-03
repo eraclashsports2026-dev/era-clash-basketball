@@ -1,0 +1,37 @@
+{
+  "artifact": "active-candidate-reconciliation",
+  "phase": "9A.1 \u2014 Basketball theme decision lab",
+  "activeCandidate": "Candidate 4",
+  "calibrationVersion": "1.4.0",
+  "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+  "liveCoreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+  "coreDrift": 0,
+  "closureFiles": 53,
+  "parentCandidate": "Candidate 3",
+  "parentCoreHash": "6a423d4fedf45bef3889b9425651e815c95da4f6e573a2c51a3f0ef713360b69",
+  "grandparentCandidate": "Candidate 2",
+  "successionArtifact": "data/validation/8d/candidate4-lock.json (lock and succession manifest in one; lockedAtCommit b09e557cc01353529619b1cf1118d23fa1349260)",
+  "successionReason": "four defects root-caused by the whole-project audit of 2026-08-31, each traced to a specific line before any change and each measured in isolation on a fixed 720-game probe. (1) game.js chooseShotCategory: the era three-point scale is 0 in a pre-line era, and it was applied BEFORE the transfer to MIDRANGE, so the documented 'the shot goes, the skill does not' transfer moved exactly zero weight in three of eight eras. (2) actions.js selectAction: ZONE_ATTACK could be drawn on a man possession, where resolveAction has no route for it and it fell through to the generic resolver; the ATTACK_ZONE_* coach adjustments bump exactly that family into exactly that mix. (3) actions.js resolveTransition: a pulled-out break resolved through resolveGenericHalfCourt without the allocator. The first fix passed alloc through and INVERTED the usage hierarchy, because the transition draw had already recorded an attempt for a player who never shot; the possession now decides whether it is still a break before drawing anyone, so one possession makes one draw and one ledger record. (4) actions.js POST_UP kickout: `- x * -1 + x` applied the receiver's matchup shot-quality modifier twice, one-sidedly, since the upper clamp ate the upside.",
+  "sourceFilesChangedAtSuccession": [
+    "src/v3/possession/game.js",
+    "src/v3/possession/actions.js"
+  ],
+  "sourceFilesChangedInThisPhase": 0,
+  "engineBehaviourChangedAtSuccession": true,
+  "parameters": {
+    "lockedParameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+    "liveParameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+    "parametersLocked": true,
+    "parameterChangesAtSuccession": 0,
+    "activeParameterCount": 53,
+    "overriddenFromDefault": []
+  },
+  "status": {
+    "lock": "LOCKED",
+    "calibration": "PREVIEW_READY_LOCKED",
+    "formalValidation": "FORMAL_VALIDATION_INCOMPLETE",
+    "postLockMutationPolicy": "no result-affecting change without a new candidate id and manifest"
+  },
+  "terminology": "Older prompts said 'Candidate 3'. Repository truth since 2026-09-01 (commit aa1414b, lock at b09e557) is Candidate 4, minted as Candidate 3's audited successor under the repository's own succession rule. Candidate 3's lock (data/validation/6c4d0/candidate3-lock.json) is untouched. This phase names the active candidate by repository truth.",
+  "engineDiagnosisPerformedInThisPhase": false
+}

@@ -260,7 +260,7 @@ test("mobile keeps both boards readable with no page-level horizontal overflow",
     await rollOne(page);
     await expect(page.getByText("TEAM GOLD", { exact: true })).toBeVisible();
     await expect(page.getByText("TEAM BLUE", { exact: true })).toBeVisible();
-    await expect(page.getByText("LEGEND CPU", { exact: true })).toBeVisible();
+    await expect(page.getByText("LEGEND RIVAL", { exact: true })).toBeVisible();
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1);
     expect(overflow, `page overflows horizontally at ${w}x${h}`).toBe(false);
   }

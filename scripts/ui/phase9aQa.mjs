@@ -110,7 +110,7 @@ if (MODE === "lobby") {
   ok("a game-opening link bypasses the lobby", /q\.get\("chaos"\)\) p = "\/play\/chaos"/.test(app) && /q\.get\("scenario"\)\) p = "\/play\/dream"/.test(app));
   ok("the lobby fits the access gate and the SPA rewrites", /"\/play", "\/play\/:path\*"/.test(read("middleware.js")) && JSON.parse(read("vercel.json")).rewrites.some((r) => r.source === "/play/:path*"));
   ok("the Continue card shows stage, era status, last activity, both identities, Continue and Abandon",
-    ["CONTINUE YOUR CHAOS CLASH", "era not yet revealed", "last activity", "TEAM GOLD", "TEAM BLUE", "CONTINUE", "ABANDON"].every((w) => card.includes(w)));
+    ["CONTINUE YOUR CHAOS CLASH", "era not yet revealed", "last activity", "TEAM GOLD", "TEAM BLUE", "Legend Rival", "Your Five", "CONTINUE", "ABANDON"].every((w) => card.includes(w)));
 }
 
 // ── Active run ───────────────────────────────────────────────────────────────

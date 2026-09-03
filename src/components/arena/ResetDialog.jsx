@@ -41,7 +41,7 @@ export default function ResetDialog({ open, state = "draft", busy = false, onCon
 
   return (
     <div role="dialog" aria-modal="true" aria-label={copy.title} onClick={onCancel} style={{
-      position: "fixed", inset: 0, zIndex: 95, background: "rgba(3,7,13,0.9)",
+      position: "fixed", inset: 0, zIndex: 95, background: "var(--ec-a-scrim, rgba(3,7,13,0.9))",
       display: "flex", alignItems: "center", justifyContent: "center", padding: 16,
     }}>
       <div onClick={(e) => e.stopPropagation()} className="ec-panel ec-panel-raised"

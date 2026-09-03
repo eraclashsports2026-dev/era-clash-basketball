@@ -19,7 +19,11 @@ const srcFiles = () => readdirSync("src/components").filter((f) => f.endsWith(".
 describe("hybrid theme", () => {
   it("the page is warm light and the arena is navy", () => {
     // page/card surfaces are light, ink is dark — the inverse of the old shell
-    const lum = (hex) => { const n = parseInt(hex.slice(1), 16); return (((n >> 16) & 255) * 0.299 + ((n >> 8) & 255) * 0.587 + (n & 255) * 0.114) / 255; };
+    // Phase 9A.1 made every T token a CSS-variable reference whose FALLBACK is
+    // the value it always had — `var(--ec-t-bg, #f2efe8)` — so the default
+    // product is unchanged. This contract reads that fallback.
+    const hexOf = (v) => (String(v).match(/#[0-9a-fA-F]{6}/) || [v])[0];
+    const lum = (v) => { const n = parseInt(hexOf(v).slice(1), 16); return (((n >> 16) & 255) * 0.299 + ((n >> 8) & 255) * 0.587 + (n & 255) * 0.114) / 255; };
     expect(lum(T.bg), "page background is light").toBeGreaterThan(0.8);
     expect(lum(T.bgCard), "cards are light").toBeGreaterThan(0.9);
     expect(lum(T.text), "ink is dark").toBeLessThan(0.25);

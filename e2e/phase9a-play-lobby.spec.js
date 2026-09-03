@@ -130,7 +130,7 @@ test("choosing Chaos Clash opens the Time Arena; the lobby remembers the run; Co
   await expect(card).toContainText(/era not yet revealed/);
   await expect(card).toContainText(/last activity/);
   await expect(card).toContainText("TEAM GOLD");
-  await expect(card).toContainText("Legend CPU");
+  await expect(card).toContainText("Legend Rival");
   expect(await page.evaluate(() => localStorage.getItem("ec_chaos_run"))).toBe(runId);
   // Nothing unrevealed leaks: no era id, no CPU hold count.
   await expect(card.getByText(/^\d{4}s$/)).toHaveCount(0);

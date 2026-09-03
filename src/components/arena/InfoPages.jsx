@@ -181,7 +181,7 @@ const GUIDE = {
       ["Draft Pressure", "LOW, RISING or HIGH: how much of your board is already rare talent. Higher pressure means the next elite pull is less likely, never impossible."],
       ["Era Style", "The rules and pace of a decade — what is legal, what a shot is worth, how physical the perimeter may be. Both teams play in the same era."],
       ["Hold, release, burn", "Holding keeps a card through the next roll. Releasing sends it back — and burns it, so it cannot return in that Clash."],
-      ["Legend CPU", "The opponent. It drafts, holds and hires with the same rules and the same odds you do."],
+      ["Legend Rival", "The opponent — Team Blue in solo play, run by the computer. It drafts, holds and hires with the same rules and the same odds you do."],
       ["Result Dock", "The right-hand surface that carries your result: story, box score, coaching and analysis, with the full report one tap away."],
     ],
   },
@@ -198,7 +198,7 @@ export function ArenaGuide({ section = "play", onSection, onClose }) {
   const active = GUIDE[section] ? section : "play";
   return (
     <div role="dialog" aria-modal="true" aria-label="Arena guide" onClick={onClose} style={{
-      position: "fixed", inset: 0, zIndex: 90, background: "rgba(3,7,13,0.9)",
+      position: "fixed", inset: 0, zIndex: 90, background: "var(--ec-a-scrim, rgba(3,7,13,0.9))",
       display: "flex", alignItems: "center", justifyContent: "center", padding: 16,
     }}>
       <div ref={ref} tabIndex={-1} onClick={(e) => e.stopPropagation()} className="ec-panel ec-panel-raised" style={{
@@ -244,7 +244,7 @@ export function HowModesModal({ tier, onClose }) {
   }, [onClose]);
   return (
     <div role="dialog" aria-modal="true" aria-label="How modes work" onClick={onClose} style={{
-      position: "fixed", inset: 0, zIndex: 90, background: "rgba(3,7,13,0.9)",
+      position: "fixed", inset: 0, zIndex: 90, background: "var(--ec-a-scrim, rgba(3,7,13,0.9))",
       display: "flex", alignItems: "center", justifyContent: "center", padding: 16,
     }}>
       <div ref={ref} tabIndex={-1} onClick={(e) => e.stopPropagation()} className="ec-panel ec-panel-raised" style={{
