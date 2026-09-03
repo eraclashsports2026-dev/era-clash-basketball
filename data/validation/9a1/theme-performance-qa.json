@@ -1,0 +1,95 @@
+{
+  "artifact": "theme-performance-qa",
+  "phase": "9A.1 — Basketball theme decision lab",
+  "build": "theme-lab build (VITE_EC_THEME_LAB=1) — production compiles the lab out",
+  "themeCssBytes": 12648,
+  "labChunk": {
+    "file": "ThemeLab-hlV04aNf.js",
+    "bytes": 30969
+  },
+  "mainBundleBytes": [
+    695601
+  ],
+  "cssBundleBytes": [
+    61930
+  ],
+  "perTheme": {
+    "fracture-core": {
+      "fcpMs": 180,
+      "lcpMs": 180,
+      "cls": 0,
+      "themeSwitchMs": [
+        21.6,
+        33.9,
+        49.9,
+        50
+      ],
+      "transferredKb": 217
+    },
+    "night-court": {
+      "fcpMs": 176,
+      "lcpMs": 176,
+      "cls": 0,
+      "themeSwitchMs": [
+        25.4,
+        49.7,
+        49.9,
+        49.9
+      ],
+      "transferredKb": 217
+    },
+    "modern-court": {
+      "fcpMs": 176,
+      "lcpMs": 176,
+      "cls": 0,
+      "themeSwitchMs": [
+        25.5,
+        35.1,
+        64.6,
+        51.7
+      ],
+      "transferredKb": 217
+    },
+    "hardwood-luxe": {
+      "fcpMs": 180,
+      "lcpMs": 180,
+      "cls": 0,
+      "themeSwitchMs": [
+        13.3,
+        64.6,
+        51.6,
+        50
+      ],
+      "transferredKb": 217
+    }
+  },
+  "checks": 5,
+  "passed": 5,
+  "results": [
+    {
+      "name": "fracture-core: first paint 180ms, LCP 180ms, CLS 0, theme switch ≤ 50ms",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "night-court: first paint 176ms, LCP 176ms, CLS 0, theme switch ≤ 49.9ms",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "modern-court: first paint 176ms, LCP 176ms, CLS 0, theme switch ≤ 64.6ms",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "hardwood-luxe: first paint 180ms, LCP 180ms, CLS 0, theme switch ≤ 64.6ms",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no theme-specific raster, video or remote font was added",
+      "pass": true,
+      "detail": "eraclash-logo-mk1.png"
+    }
+  ]
+}

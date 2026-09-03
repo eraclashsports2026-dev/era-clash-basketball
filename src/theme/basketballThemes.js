@@ -9,7 +9,11 @@
 // family. Each theme also declares its 60–30–10 families and its semantic set;
 // the audit reads those declarations rather than guessing.
 //
-// Luminance is tuned per surface so text passes WCAG AA; meanings never move:
+// Luminance is tuned per surface so text passes WCAG AA; meanings never move.
+// In particular Team Blue sits a step above the specification's hex on the dark
+// themes: #2B82DE-class blues measure ~4.4:1 as TEXT on the card panels (OVR
+// digits, dock heads), so each dark theme's blue is lifted to ≥ 5:1 at the same
+// hue. The semantic declarations follow the text-bearing values:
 // gold is Team Gold, blue is Team Blue, violet is Coach/Era, red is danger,
 // green is success, platinum/graphite is neutral structure.
 import { MASTER_BRAND } from "./masterBrandTokens.js";
@@ -74,7 +78,7 @@ const lobbyFromArena = (a) => ({
 const fractureCoreArena = arenaFamily({
   bg: MASTER_BRAND.obsidian, arena: "#060A12", panel: "#10161F", panelRaised: MASTER_BRAND.graphite, panelSoft: "#1B2330",
   text: MASTER_BRAND.platinum, textSecondary: MASTER_BRAND.platinumDeep, textMuted: "#98A2B3",
-  teamGold: "#E4AA31", teamBlue: "#2B82DE", coach: "#8E5BDD", coachDeep: "#4A2A85", green: "#35B875", red: "#E65353",
+  teamGold: "#E4AA31", teamBlue: "#3F8FE6", coach: "#A27BE6", coachDeep: "#4A2A85", green: "#35B875", red: "#EE6A6A",
   brandGold: MASTER_BRAND.fractureGold, accent: MASTER_BRAND.fractureCobalt,
   header: rgba(MASTER_BRAND.obsidian, 0.94), scrim: rgba(MASTER_BRAND.obsidian, 0.9),
   ctaHi: "#F3C452", ctaMid: MASTER_BRAND.fractureGold, ctaLo: "#B8841C", ctaInk: "#14100A", ctaGlow: "0 8px 18px rgba(225, 167, 44, 0.18)",
@@ -94,7 +98,10 @@ const fractureCoreReading = readingFamily({
 const nightCourtArena = arenaFamily({
   bg: "#070A0F", arena: "#0A0E15", panel: "#10151D", panelRaised: "#151B24", panelSoft: "#1B2230",
   text: "#F1EDE4", textSecondary: "#CFC9BC", textMuted: "#9A9890",
-  teamGold: "#E8B13C", teamBlue: "#2F83E7", coach: "#7656D7", coachDeep: "#3E2A80", green: "#2FA96D", red: "#D95050",
+  // Royal violet #7656D7 is the accent for surfaces and lines; text-bearing
+  // violet (coach role labels, era highlights) is lifted to clear AA on the
+  // night panels (#A08AE6 on #151B24 ≈ 6:1). Same hue, same meaning.
+  teamGold: "#E8B13C", teamBlue: "#4A92EA", coach: "#A08AE6", coachDeep: "#3E2A80", green: "#2FA96D", red: "#E06060",
   brandGold: MASTER_BRAND.fractureGold, accent: "#7656D7",
   header: rgba("#070A0F", 0.94), scrim: rgba("#070A0F", 0.9),
   ctaHi: "#F5C553", ctaMid: "#E8B13C", ctaLo: "#B9841F", ctaInk: "#14100A", ctaGlow: "0 8px 18px rgba(232, 177, 60, 0.18)",
@@ -119,8 +126,8 @@ const nightCourtLobby = {
 // ── OPTION B — MODERN COURT LIGHT ────────────────────────────────────────────
 const modernCourtArena = arenaFamily({
   bg: "#F3F0E9", arena: "#131923", panel: "#1A2130", panelRaised: "#202838", panelSoft: "#27303F",
-  text: "#F3F0E9", textSecondary: "#CDD2DC", textMuted: "#9AA3B2",
-  teamGold: "#D99B21", teamBlue: "#4A90E0", coach: "#8F6CDB", coachDeep: "#4A2F8C", green: "#269A68", red: "#CF4D4D",
+  text: "#F3F0E9", textSecondary: "#D8DCE4", textMuted: "#A6AEBC",
+  teamGold: "#E0A52A", teamBlue: "#5296E3", coach: "#A991E8", coachDeep: "#4A2F8C", green: "#34A772", red: "#EA6E6E",
   brandGold: MASTER_BRAND.fractureGold, accent: "#20B8B2",
   header: "#131923", scrim: rgba("#131923", 0.9),
   ctaHi: "#F0B84A", ctaMid: "#D99B21", ctaLo: "#B27C12", ctaInk: "#14100A", ctaGlow: "0 8px 18px rgba(217, 155, 33, 0.16)",
@@ -159,7 +166,7 @@ const hardwoodReading = readingFamily({
   bg: "#F0E5D2", card: "#F8F1E4", cardHover: "#EFE3CF", muted: "#E6DCC9",
   border: "#D9C6A6", borderStrong: "#C7A475", text: "#1E1712", textDim: "#5C4E42", textMuted: "#6B5C4E", cream: "#F5ECDC",
   arena: "#150F0C", arenaSoft: "#241B15", arenaBorder: "#3A2E24", onArena: "#F0E5D2", onArenaDim: "#C4B39A",
-  gold: "#85610D", goldOnDark: "#E5B23E", goldSoft: "#F6E7C2", goldBorder: "#DDB65A",
+  gold: "#7A580A", goldOnDark: "#E5B23E", goldSoft: "#F6E7C2", goldBorder: "#DDB65A",
   blue: "#1F5FA8", blueOnDark: "#7FB6F2", blueSoft: "#E4EEFA", blueBorder: "#8FB4E5",
   green: "#23784C", red: "#AE3F3A", orange: "#9C6414", onGold: "#FFFDF8", insetHi: "#241B15", insetLo: "#100C0A",
 });
@@ -179,7 +186,7 @@ export const BASKETBALL_THEMES = Object.freeze({
       secondary: { name: "Graphite + Platinum", colors: [MASTER_BRAND.graphite, "#1B2330", "#1F2836", "#2A3340", MASTER_BRAND.platinum, MASTER_BRAND.platinumDeep, "#B4BCC9", "#98A2B3"] },
       accent: { name: "Fracture Gold + Fracture Cobalt", colors: [MASTER_BRAND.fractureGold, "#F3C452", "#B8841C", MASTER_BRAND.fractureCobalt], split: { gold: 0.06, cobalt: 0.04 } },
     },
-    semantic: { teamGold: "#E4AA31", teamBlue: "#2B82DE", coachViolet: "#8E5BDD", success: "#35B875", danger: "#E65353" },
+    semantic: { teamGold: "#E4AA31", teamBlue: "#3F8FE6", coachViolet: "#A27BE6", success: "#35B875", danger: "#EE6A6A" },
     secondaryIsLight: false,
     arena: fractureCoreArena, reading: fractureCoreReading, lobby: lobbyFromArena(fractureCoreArena),
   },
@@ -191,7 +198,7 @@ export const BASKETBALL_THEMES = Object.freeze({
       secondary: { name: "Warm Court Ivory + Editorial Ink", colors: ["#F1EDE4", "#FBF8F1", "#F4EFE5", "#E8E2D6", "#151B24", "#1B2230", "#CFC9BC", "#9A9890"] },
       accent: { name: "Royal Violet", colors: ["#7656D7"] },
     },
-    semantic: { teamGold: "#E8B13C", teamBlue: "#2F83E7", coachViolet: "#7656D7", success: "#2FA96D", danger: "#D95050" },
+    semantic: { teamGold: "#E8B13C", teamBlue: "#4A92EA", coachViolet: "#A08AE6", success: "#2FA96D", danger: "#E06060" },
     secondaryIsLight: true,
     arena: nightCourtArena, reading: nightCourtReading, lobby: nightCourtLobby,
   },
@@ -203,7 +210,7 @@ export const BASKETBALL_THEMES = Object.freeze({
       secondary: { name: "Midnight Graphite", colors: ["#131923", "#1A2130", "#202838", "#27303F", "#CDD2DC", "#9AA3B2"] },
       accent: { name: "Electric Teal", colors: ["#20B8B2"] },
     },
-    semantic: { teamGold: "#D99B21", teamBlue: "#2C78D0", coachViolet: "#8058D3", success: "#269A68", danger: "#CF4D4D" },
+    semantic: { teamGold: "#E0A52A", teamBlue: "#5296E3", coachViolet: "#A991E8", success: "#34A772", danger: "#EA6E6E" },
     secondaryIsLight: false,
     arena: modernCourtArena, reading: modernCourtReading, lobby: modernCourtLobby,
   },
