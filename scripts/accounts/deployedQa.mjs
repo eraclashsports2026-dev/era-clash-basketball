@@ -128,13 +128,21 @@ const run = async () => {
     if (!d) return null;
     return { modal: d.getAttribute("aria-modal"), labelled: !!d.getAttribute("aria-labelledby"), buttons: [...d.querySelectorAll("button")].map((b) => b.textContent.trim()), hasPassword: !!d.querySelector('input[type="password"]'), text: d.innerText.slice(0, 200), minTarget: Math.min(...[...d.querySelectorAll("button")].map((b) => Math.round(b.getBoundingClientRect().height))) };
   });
+  gate("the header call to action opens the account dialog rather than doing nothing", !!dialog, dialog ? "dialog opened" : "NOTHING HAPPENED");
   if (CONFIGURED) {
     gate("the dialog offers Google and email, with no password field", dialog && /GOOGLE/i.test(dialog.buttons.join(" ")) && /EMAIL/i.test(dialog.buttons.join(" ")) && !dialog.hasPassword);
   } else {
     gate("with the provider unconfigured the dialog says so honestly and offers no fake sign-in",
-      dialog && /not switched on/i.test(dialog.text) && !/CONTINUE WITH GOOGLE/i.test(dialog.buttons.join(" ")) && !dialog.hasPassword, dialog?.text.split("\n").slice(-1)[0]);
+      dialog && /not switched on/i.test(dialog.text) && !/CONTINUE WITH GOOGLE/i.test(dialog.buttons.join(" ")) && !dialog.hasPassword,
+      (dialog?.text || "").split("|").slice(-2)[0]?.trim() || "");
   }
   gate("the dialog is a labelled modal with 44px controls", dialog?.modal === "true" && dialog.labelled && dialog.minTarget >= 44);
+  // The device-scoped gate the product has always shown is still reachable at a
+  // mode's own route, so an existing local career is not stranded.
+  await page.keyboard.press("Escape");
+  await page.goto(`${BASE}/play/dream`, { waitUntil: "domcontentloaded" });
+  await page.getByText("FREE ACCOUNT REQUIRED").waitFor({ timeout: 30_000 });
+  gate("the account-required gate is still reachable at the mode's own route", await page.getByRole("button", { name: "BACK TO THE LOBBY" }).isVisible());
   await page.screenshot({ path: `${SHOTS}/account-dialog-1440x900.png` });
   await page.keyboard.press("Escape");
 

@@ -1814,10 +1814,17 @@ export default function App() {
         onModeAction={handleModeAction}
         onNavigate={navigate}
         onCreateAccount={() => {
-          // With a provider configured this is a real sign-up; without one it
-          // remains the device-scoped gate the product has always shown.
-          if (accountProvider()) { openAccountDialog({ entryPoint: "header", intent: "signup" }); return; }
-          setNav("Play"); setGate({ kind: "ACCOUNT", message: "Create a free account to unlock every mode." });
+          // The header CTA always opens the account dialog, which is honest
+          // either way: it offers Google and email when the provider is
+          // configured, and says plainly that accounts are not switched on when
+          // it is not.
+          //
+          // It used to call setGate() instead — and on the lobby route the gate
+          // branch sits BELOW showLobby in this render, so the button silently
+          // did nothing. That predates this phase and is live on the Wave 2
+          // build; the mode-route gate (Dream Matchup) was always reachable and
+          // is unchanged.
+          openAccountDialog({ entryPoint: "header", intent: "signup" });
         }}
         account={acct} onSignIn={() => openAccountDialog({ entryPoint: "header", intent: "signin" })}
         onSignOutAccount={async () => { await signOutAccount(); setTier(currentTier()); setCloudSave({ resultId: null, state: "idle" }); setSavedReport(null); }}
