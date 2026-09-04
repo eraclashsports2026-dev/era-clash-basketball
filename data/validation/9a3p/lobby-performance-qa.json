@@ -1,0 +1,53 @@
+{
+  "artifact": "lobby-performance-qa",
+  "phase": "9A.3P — Play Lobby brand, CTA and entry polish",
+  "mode": "performance",
+  "baseUrl": "http://localhost:4177",
+  "presentationVersion": "play-lobby-polish-v1",
+  "checks": 6,
+  "passed": 6,
+  "failed": 0,
+  "results": [
+    {
+      "name": "first contentful paint under 1.5s on the harness",
+      "pass": true,
+      "detail": "52ms"
+    },
+    {
+      "name": "no layout shift after first paint (CLS < 0.02) for a first-time visitor",
+      "pass": true,
+      "detail": "0"
+    },
+    {
+      "name": "the seven signatures add under 8KB of inline SVG",
+      "pass": true,
+      "detail": "6499 bytes"
+    },
+    {
+      "name": "the polish layer is under 8KB of CSS source",
+      "pass": true,
+      "detail": "6867 bytes"
+    },
+    {
+      "name": "no layout shift for a returning device (compact hero)",
+      "pass": true,
+      "detail": "0"
+    },
+    {
+      "name": "no layout shift when the active run resolves into the Continue card",
+      "pass": true,
+      "detail": "0"
+    }
+  ],
+  "perf": {
+    "domContentLoaded": 17,
+    "fcp": 52,
+    "cls": 0,
+    "signatureBytes": 6499,
+    "transfer": 822256,
+    "polishCssBytes": 6867,
+    "returningCls": 0,
+    "activeRunCls": 0,
+    "note": "The Continue card mounts once the server's view of the remembered run arrives; the hero above it is already compact, so the shift is the card's own insertion below the band."
+  }
+}
