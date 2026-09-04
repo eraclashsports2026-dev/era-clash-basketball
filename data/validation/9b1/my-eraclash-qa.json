@@ -6,8 +6,8 @@
   "provider": "supabase (auth + postgres + row level security)",
   "cloudAccountsConfigured": false,
   "cloudAccountsReady": false,
-  "checks": 7,
-  "passed": 7,
+  "checks": 9,
+  "passed": 9,
   "failed": 0,
   "results": [
     {
@@ -36,6 +36,16 @@
       "detail": "[{\"text\":\"Image credits\",\"height\":12}]"
     },
     {
+      "name": "every text element on the career page clears WCAG AA on the surface it sits on",
+      "pass": true,
+      "detail": "3 elements, lowest 5.28:1"
+    },
+    {
+      "name": "the career page and the sign-in callback are editorial reading surfaces",
+      "pass": true,
+      "detail": ""
+    },
+    {
       "name": "guest play is untouched: Chaos Clash still carries the one primary action",
       "pass": true,
       "detail": ""
@@ -44,6 +54,32 @@
       "name": "the header shows an account call to action and no signed-in identity",
       "pass": true,
       "detail": ""
+    }
+  ],
+  "contrast": [
+    {
+      "tag": "H1",
+      "text": "My EraClash",
+      "fontPx": 22,
+      "large": true,
+      "ratio": 16.31,
+      "floor": 3
+    },
+    {
+      "tag": "P",
+      "text": "Your career, your saved Clas",
+      "fontPx": 13.5,
+      "large": false,
+      "ratio": 6.85,
+      "floor": 4.5
+    },
+    {
+      "tag": "BUTTON",
+      "text": "CREATE FREE ACCOUNT OR SIGN ",
+      "fontPx": 13.5,
+      "large": false,
+      "ratio": 5.28,
+      "floor": 4.5
     }
   ],
   "myEraClash": {

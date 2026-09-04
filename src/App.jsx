@@ -1800,7 +1800,13 @@ export default function App() {
   // surfaces. They keep the arena shell (their components read arena tokens) and
   // add the editorial shell, which remaps those tokens to Warm Court Ivory and
   // Editorial Ink under the production theme. The header stays obsidian.
-  const editorialMode = route.startsWith("/membership") || route.startsWith("/fantasy/") || route.startsWith("/modes/");
+  // Phase 9B.1: the career page and the sign-in callback are READING surfaces,
+  // exactly like membership, fantasy and the mode pages — so they take the
+  // editorial shell, which remaps the arena tokens to Warm Court Ivory and
+  // Editorial Ink. Without it a heading inherited the arena's platinum text and
+  // sat almost invisibly on an ivory card.
+  const editorialMode = route.startsWith("/membership") || route.startsWith("/fantasy/") || route.startsWith("/modes/")
+    || route === "/my-eraclash" || route === "/auth/callback";
   const arenaMode = showLobby || (isChaos && !sharedResult && !gate) || editorialMode;
 
   // ── Render ─────────────────────────────────────────────────────────────────

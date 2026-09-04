@@ -283,6 +283,23 @@ if (MODE === "my-eraclash" || MODE === "responsive") {
     ok("no rank, contender grade, percentile or leaderboard position is invented", !m.fabricated);
     ok("every account control and header control is at least 44px, and the page does not overflow", m.minTarget >= 44 && m.overflow <= 0, `${m.minTarget}px · ${m.overflow}px`);
     ok("the pre-existing global footer credits link is recorded as an out-of-scope gap, not silently excluded", Array.isArray(m.footerLinks), JSON.stringify(m.footerLinks));
+
+    // Contrast, measured against the surface each element actually sits on.
+    // The career page is a READING surface: without the editorial shell its
+    // heading inherited the arena's platinum text and sat almost invisibly on
+    // an ivory card, which is exactly what this gate exists to catch.
+    const contrast = await page.evaluate(() => {
+      const lum = (c) => { const m = String(c).match(/[\d.]+/g); if (!m) return null; const [r, g, b] = m.slice(0, 3).map(Number).map((v) => { const s = v / 255; return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4; }); return 0.2126 * r + 0.7152 * g + 0.0722 * b; };
+      const ratio = (fg, bg) => { const a = lum(fg), z = lum(bg); return a == null || z == null ? null : +(((Math.max(a, z) + 0.05) / (Math.min(a, z) + 0.05))).toFixed(2); };
+      const bgOf = (el) => { let n = el; while (n && n !== document.documentElement) { const c = getComputedStyle(n).backgroundColor; const m = c.match(/[\d.]+/g); if (m && (m.length < 4 || Number(m[3]) > 0.6)) return c; n = n.parentElement; } return getComputedStyle(document.body).backgroundColor; };
+      return [...document.querySelectorAll("main h1, main h2, main p, main dt, main dd, main button, main a")]
+        .filter((e) => e.getBoundingClientRect().height > 0 && (e.textContent || "").trim().length > 1)
+        .map((e) => { const cs = getComputedStyle(e); const px = parseFloat(cs.fontSize); const large = px >= 24 || (px >= 18.66 && parseInt(cs.fontWeight, 10) >= 700); return { tag: e.tagName, text: (e.textContent || "").trim().slice(0, 28), fontPx: +px.toFixed(1), large, ratio: ratio(cs.color, bgOf(e)), floor: large ? 3 : 4.5 }; });
+    });
+    const failing = contrast.filter((c) => c.ratio == null || c.ratio < c.floor);
+    ok("every text element on the career page clears WCAG AA on the surface it sits on", failing.length === 0, failing.length ? failing.map((c) => `${c.tag} "${c.text}" ${c.ratio}`).join(" · ") : `${contrast.length} elements, lowest ${Math.min(...contrast.map((c) => c.ratio)).toFixed(2)}:1`);
+    ok("the career page and the sign-in callback are editorial reading surfaces", await page.evaluate(() => !!document.querySelector(".ec-editorial-shell")));
+    extra.contrast = contrast;
     // With accounts unconfigured the dialog states the honest reason.
     await page.goto(`${BASE}/play`, { waitUntil: "domcontentloaded" });
     await page.waitForSelector(".ec-lobby .ec-mode-card", { timeout: 30_000 });
