@@ -42,9 +42,19 @@ export default function AuthCallback({ onDone }) {
     }
     if (!provider()) { setFailure("CLOUD_ACCOUNTS_DISABLED"); setState("failed"); return; }
 
+    // A link can arrive carrying either proof, and they behave differently:
+    //   token_hash — self-contained, so it signs you in in ANY browser
+    //   code       — PKCE, so it only completes in the browser that asked
+    // Prefer the token hash when it is there, because it is the one that
+    // survives forwarding the email to a phone.
+    const tokenHash = params.get("token_hash") || params.get("token");
+    const otpType = params.get("type");
+
     (async () => {
       try {
-        const session = await withProvider((p) => p.exchangeCodeForSession(url));
+        const session = tokenHash
+          ? await withProvider((p) => p.verifyTokenHash(tokenHash, otpType))
+          : await withProvider((p) => p.exchangeCodeForSession(url));
         if (!session) throw Object.assign(new Error("CODE_INVALID_OR_EXPIRED"), { code: "CODE_INVALID_OR_EXPIRED" });
         await adopt(session);
         track("account_signin_completed", { success: true, authMethod: session.authMethod });

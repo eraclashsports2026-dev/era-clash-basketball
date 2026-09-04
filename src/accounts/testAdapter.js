@@ -57,6 +57,10 @@ export const createTestProvider = ({ users = [] } = {}) => {
       const userId = [...db.users].find(([, u]) => u.email === String(email))?.[0] || addUser({ userId: `u-${db.users.size + 1}`, email: String(email) });
       current = session(userId); emit(); return current;
     },
+    async verifyTokenHash(tokenHash) {
+      if (!db.users.has(String(tokenHash))) throw err("CODE_INVALID_OR_EXPIRED");
+      current = session(String(tokenHash)); emit(); return current;
+    },
     async exchangeCodeForSession(url) {
       const code = new URL(url, "https://test.invalid").searchParams.get("code");
       if (!code || !db.users.has(String(code))) throw err("CODE_INVALID_OR_EXPIRED");

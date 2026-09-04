@@ -139,8 +139,8 @@ export default function AccountDialog({ open, entryPoint = "header", returnTo = 
         {available && stage === "code" && (
           <>
             <p style={{ fontSize: 13, color: T.textDim, margin: "0 0 12px", lineHeight: 1.55 }}>
-              We sent a one-time code to <b>{email}</b>. Enter it here — that works on any device.
-              The link in the same message only works in this browser.
+              Check <b>{email}</b>. If the message shows a code, enter it here. If it only shows a
+              link, open that link <b>in this browser</b> — a link cannot sign you in anywhere else.
             </p>
             <label htmlFor="ec-auth-code" style={label}>One-time code</label>
             <input id="ec-auth-code" inputMode="numeric" autoComplete="one-time-code" value={code} maxLength={8}

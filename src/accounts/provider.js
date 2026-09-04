@@ -134,6 +134,24 @@ const supabaseProvider = {
     }
     throw asError(firstError || new Error("CODE_INVALID_OR_EXPIRED"));
   },
+  /**
+   * Verify an emailed token hash. Unlike the PKCE code path this carries its
+   * own proof, so it establishes a session in ANY browser — which is what makes
+   * a link forwarded to a phone work. Supabase only puts a token hash in the
+   * email when the template asks for one, so this is the path that becomes
+   * available once the templates are updated.
+   */
+  async verifyTokenHash(tokenHash, type) {
+    const c = await client();
+    const kinds = type ? [type] : ["magiclink", "signup", "email"];
+    let firstError = null;
+    for (const t of kinds) {
+      const { data, error } = await c.auth.verifyOtp({ token_hash: String(tokenHash), type: t });
+      if (!error && data?.session) return session(data.session);
+      firstError = firstError || error;
+    }
+    throw asError(firstError || new Error("CODE_INVALID_OR_EXPIRED"));
+  },
   async exchangeCodeForSession(url) {
     const c = await client();
     const { data, error } = await c.auth.exchangeCodeForSession(url);
