@@ -843,6 +843,24 @@ describe("redeeming an email link", () => {
     }
   });
 
+  it("every account gate's own call to action actually opens the dialog", () => {
+    // This bug shipped twice. The header's Create free account called setGate,
+    // which never renders on the lobby route, so the click did nothing. Then
+    // the route-level Dream Matchup gate was rendered without onUseAccount, so
+    // its primary button did nothing either while the header's still worked.
+    // The gate is the conversion path for the mode someone is trying to enter,
+    // so a dead button there is worse than no button.
+    const app = src("src/App.jsx");
+    const renders = [...app.matchAll(/<AccountGate\b[\s\S]*?\/>/g)].map((m) => m[0]);
+    expect(renders.length).toBeGreaterThan(0);
+    for (const [i, r] of renders.entries()) {
+      expect(r, `AccountGate render #${i + 1} has no onUseAccount`).toMatch(/onUseAccount=\{/);
+      expect(r, `AccountGate render #${i + 1} has no way back`).toMatch(/onBack=\{/);
+    }
+    // And the component must actually call what it is given.
+    expect(src("src/components/chaos/AccountGate.jsx")).toMatch(/onUseAccount\?\.\(\)/);
+  });
+
   it("no copy promises a code the default template does not send", () => {
     // Supabase's stock templates render only the confirmation URL. Telling
     // someone to "enter the 6-digit code" when no code was sent is the failure
