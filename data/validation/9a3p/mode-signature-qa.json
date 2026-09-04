@@ -1,0 +1,259 @@
+{
+  "artifact": "mode-signature-qa",
+  "phase": "9A.3P — Play Lobby brand, CTA and entry polish",
+  "mode": "signatures",
+  "baseUrl": "http://localhost:4177",
+  "presentationVersion": "play-lobby-polish-v1",
+  "checks": 9,
+  "passed": 9,
+  "failed": 0,
+  "results": [
+    {
+      "name": "every card carries the registry's signature, and no two match",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "every signature is decorative: aria-hidden, unfocusable, pointer-events none",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "restrained: rendered opacity between 4% and 10% on every card",
+      "pass": true,
+      "detail": "0.07,0.07,0.07,0.07,0.07,0.07,0.07"
+    },
+    {
+      "name": "one grammar: thin strokes only (≤2.6px), no embedded imagery, clipped to the card",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "each motif is tinted by its accent role from the theme's own tokens (gold / cobalt / violet / graphite-as-platinum)",
+      "pass": true,
+      "detail": "chaos:gold · dream:platinum-cobalt · daily:cobalt · bo7:platinum-gold · win82:cobalt-platinum · tournament:gold-platinum · gauntlet:violet"
+    },
+    {
+      "name": "the icon, name, sentence, badge and action stay legible in front of the motif",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "all seven signatures weigh under 8KB of markup together",
+      "pass": true,
+      "detail": "6499 bytes"
+    },
+    {
+      "name": "one restrained hover transition: the motif rises to at most 12%",
+      "pass": true,
+      "detail": "0.12"
+    },
+    {
+      "name": "reduced motion removes the motif transition",
+      "pass": true,
+      "detail": "1e-05s"
+    }
+  ],
+  "signatures": [
+    {
+      "id": "chaos",
+      "accent": "gold",
+      "signature": "fracture-dice",
+      "ariaHidden": "true",
+      "focusable": "false",
+      "opacity": 0.07,
+      "pointer": "none",
+      "color": "rgb(138, 100, 16)",
+      "tokenColors": {
+        "gold": "rgb(138, 100, 16)",
+        "cobalt": "rgb(36, 97, 184)",
+        "violet": "rgb(91, 63, 184)",
+        "platinum": "rgb(58, 65, 80)"
+      },
+      "clipped": true,
+      "insideCardBox": true,
+      "hasImage": false,
+      "strokes": [
+        1.5,
+        1.2,
+        1.1
+      ],
+      "bytes": 815,
+      "glyphVisible": true,
+      "titleVisible": true
+    },
+    {
+      "id": "dream",
+      "accent": "platinum-cobalt",
+      "signature": "crossing-timelines",
+      "ariaHidden": "true",
+      "focusable": "false",
+      "opacity": 0.07,
+      "pointer": "none",
+      "color": "rgb(58, 65, 80)",
+      "tokenColors": {
+        "gold": "rgb(138, 100, 16)",
+        "cobalt": "rgb(36, 97, 184)",
+        "violet": "rgb(91, 63, 184)",
+        "platinum": "rgb(58, 65, 80)"
+      },
+      "clipped": true,
+      "insideCardBox": true,
+      "hasImage": false,
+      "strokes": [
+        1.5,
+        1.5,
+        1.1,
+        1.1,
+        1.1,
+        1.1
+      ],
+      "bytes": 1035,
+      "glyphVisible": true,
+      "titleVisible": true
+    },
+    {
+      "id": "daily",
+      "accent": "cobalt",
+      "signature": "spotlight-calendar",
+      "ariaHidden": "true",
+      "focusable": "false",
+      "opacity": 0.07,
+      "pointer": "none",
+      "color": "rgb(36, 97, 184)",
+      "tokenColors": {
+        "gold": "rgb(138, 100, 16)",
+        "cobalt": "rgb(36, 97, 184)",
+        "violet": "rgb(91, 63, 184)",
+        "platinum": "rgb(58, 65, 80)"
+      },
+      "clipped": true,
+      "insideCardBox": true,
+      "hasImage": false,
+      "strokes": [
+        1.1,
+        1.5,
+        1.5,
+        1
+      ],
+      "bytes": 811,
+      "glyphVisible": true,
+      "titleVisible": true
+    },
+    {
+      "id": "bo7",
+      "accent": "platinum-gold",
+      "signature": "series-ticks",
+      "ariaHidden": "true",
+      "focusable": "false",
+      "opacity": 0.07,
+      "pointer": "none",
+      "color": "rgb(58, 65, 80)",
+      "tokenColors": {
+        "gold": "rgb(138, 100, 16)",
+        "cobalt": "rgb(36, 97, 184)",
+        "violet": "rgb(91, 63, 184)",
+        "platinum": "rgb(58, 65, 80)"
+      },
+      "clipped": true,
+      "insideCardBox": true,
+      "hasImage": false,
+      "strokes": [
+        1.5,
+        1.5,
+        1.5,
+        1.5,
+        1.1
+      ],
+      "bytes": 1080,
+      "glyphVisible": true,
+      "titleVisible": true
+    },
+    {
+      "id": "win82",
+      "accent": "cobalt-platinum",
+      "signature": "season-arc",
+      "ariaHidden": "true",
+      "focusable": "false",
+      "opacity": 0.07,
+      "pointer": "none",
+      "color": "rgb(36, 97, 184)",
+      "tokenColors": {
+        "gold": "rgb(138, 100, 16)",
+        "cobalt": "rgb(36, 97, 184)",
+        "violet": "rgb(91, 63, 184)",
+        "platinum": "rgb(58, 65, 80)"
+      },
+      "clipped": true,
+      "insideCardBox": true,
+      "hasImage": false,
+      "strokes": [
+        1.5,
+        2.6,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1.5
+      ],
+      "bytes": 1407,
+      "glyphVisible": true,
+      "titleVisible": true
+    },
+    {
+      "id": "tournament",
+      "accent": "gold-platinum",
+      "signature": "bracket",
+      "ariaHidden": "true",
+      "focusable": "false",
+      "opacity": 0.07,
+      "pointer": "none",
+      "color": "rgb(138, 100, 16)",
+      "tokenColors": {
+        "gold": "rgb(138, 100, 16)",
+        "cobalt": "rgb(36, 97, 184)",
+        "violet": "rgb(91, 63, 184)",
+        "platinum": "rgb(58, 65, 80)"
+      },
+      "clipped": true,
+      "insideCardBox": true,
+      "hasImage": false,
+      "strokes": [
+        1.2,
+        1.5,
+        1.5
+      ],
+      "bytes": 674,
+      "glyphVisible": true,
+      "titleVisible": true
+    },
+    {
+      "id": "gauntlet",
+      "accent": "violet",
+      "signature": "era-steps",
+      "ariaHidden": "true",
+      "focusable": "false",
+      "opacity": 0.07,
+      "pointer": "none",
+      "color": "rgb(91, 63, 184)",
+      "tokenColors": {
+        "gold": "rgb(138, 100, 16)",
+        "cobalt": "rgb(36, 97, 184)",
+        "violet": "rgb(91, 63, 184)",
+        "platinum": "rgb(58, 65, 80)"
+      },
+      "clipped": true,
+      "insideCardBox": true,
+      "hasImage": false,
+      "strokes": [
+        1.5,
+        1.2
+      ],
+      "bytes": 677,
+      "glyphVisible": true,
+      "titleVisible": true
+    }
+  ]
+}

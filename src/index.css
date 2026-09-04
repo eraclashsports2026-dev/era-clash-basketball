@@ -1359,7 +1359,8 @@ button { font-family: inherit; }
   background: var(--ec-l-panel-soft, var(--ec-a-panel-soft));
   color: var(--ec-l-text, var(--ec-a-text));
 }
-.ec-mode-card--primary .ec-mode-action[data-intent="OPEN_MODE"] {
+/* Phase 9A.3P: the ONE filled-Gold action — the registry's PRIMARY hierarchy (Chaos Clash). */
+.ec-mode-action[data-hierarchy="primary"] {
   border-color: var(--ec-a-gold-line);
   background: linear-gradient(180deg, var(--ec-a-cta-hi, #ffd257) 0%, var(--ec-a-cta-mid, var(--ec-a-gold)) 46%, var(--ec-a-cta-lo, #c98f0c) 100%);
   color: var(--ec-a-cta-ink, #14100a);
@@ -1421,6 +1422,7 @@ button { font-family: inherit; }
   .ec-lobby-body { padding: 12px 12px 32px; gap: 14px; }
   .ec-lobby-primary { grid-template-columns: minmax(0, 1fr); }
   .ec-lobby-secondary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ec-lobby-secondary-grid { grid-template-columns: minmax(0, 1fr); }
   .ec-mode-card--primary { min-height: 0; }
   .ec-mode-card--secondary { min-height: 0; }
   .ec-continue { grid-template-columns: minmax(0, 1fr); }
@@ -1687,8 +1689,106 @@ h2.ec-intel-heading, h3.ec-intel-heading { font-size: 10.5px; }
   background-image: var(--ec-t-fracture, linear-gradient(120deg, #e9b949 30%, #ffffff 50%, #7ab0f5 70%));
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
-/* One dominant glow in the lobby: the recommended flagship. Other primary CTAs stay gold, without the halo. */
-.ec-lobby-court .ec-mode-card--primary:not(.ec-mode-card--recommended) .ec-mode-action[data-intent="OPEN_MODE"] { box-shadow: 0 1px 0 rgba(255, 255, 255, 0.35) inset; }
+/* One dominant glow in the lobby: the recommended flagship's primary action (Phase 9A.3P: the only filled-Gold CTA). */
 /* Touch layouts (the rail stacks below 1180px): every Result Dock tab is a 44px
    touch target. The canonical desktop keeps the frozen 40px. */
 @media (max-width: 1179px) { .ec-dock-tab { min-height: 44px !important; } }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PHASE 9A.3P — PLAY LOBBY POLISH V1
+   Same lobby, same geometry, same tokens. Four refinements:
+     · CTA hierarchy — one filled-Gold primary (Chaos Clash), obviously clickable
+       secondaries, visibly unavailable "coming soon"
+     · action labels — uppercase display of the registry's verbs, never wrapping
+     · the adaptive brand band — full for a first-time state, compact otherwise
+     · original mode signatures — one motif per card at a few percent opacity
+   ═══════════════════════════════════════════════════════════════════════════ */
+/* Labels: the registry's Title Case verbs, shown as display capitals. */
+.ec-mode-action { text-transform: uppercase; white-space: nowrap; gap: 8px; transition: transform 0.16s ease, box-shadow 0.16s ease, background-color 0.16s ease, border-color 0.16s ease; }
+.ec-mode-card--secondary .ec-mode-action { font-size: 12.5px; letter-spacing: 1.3px; padding: 0 12px; }
+
+/* PRIMARY — filled EraClash Gold, dark ink, the lobby's one glow (declared above). */
+.ec-mode-action[data-hierarchy="primary"]:hover { filter: brightness(1.04); transform: translateY(-1px); }
+.ec-mode-action[data-hierarchy="primary"]:active { filter: none; transform: translateY(0); }
+
+/* SECONDARY — Warm Ivory face, visible border, ink text, a directional arrow.
+   It reads as a control, never as a disabled one. */
+.ec-mode-action[data-hierarchy="secondary"] {
+  background: var(--ec-l-panel-raised, var(--ec-a-panel-raised));
+  border: 1.5px solid var(--ec-l-border-strong, var(--ec-a-border-strong));
+  color: var(--ec-l-text, var(--ec-a-text));
+  box-shadow: 0 1px 0 rgba(21, 27, 36, 0.06);
+}
+.ec-mode-action[data-hierarchy="secondary"]::after {
+  content: "→"; font-family: var(--ec-display); font-size: 1em; line-height: 1; letter-spacing: 0;
+  color: var(--ec-acc-color, var(--ec-l-text-secondary, var(--ec-a-text-secondary)));
+  transition: transform 0.16s ease;
+}
+.ec-mode-action[data-hierarchy="secondary"]:hover {
+  background: var(--ec-l-panel-soft, var(--ec-a-panel-soft));
+  border-color: var(--ec-l-text-secondary, var(--ec-a-text-secondary));
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(21, 27, 36, 0.10);
+}
+.ec-mode-action[data-hierarchy="secondary"]:hover::after { transform: translateX(3px); }
+.ec-mode-action[data-hierarchy="secondary"]:active { transform: translateY(0); box-shadow: 0 1px 0 rgba(21, 27, 36, 0.06); }
+/* The Daily card's lightly Cobalt-supported secondary. */
+.ec-mode-action[data-hierarchy="secondary"][data-accent="cobalt"] { border-color: var(--ec-l-glyph-cool, var(--ec-a-blue)); }
+
+/* UNAVAILABLE — subdued: dashed edge, muted ink, no arrow, no lift on hover.
+   Still a real link when a real information page exists (Learn more). */
+.ec-mode-action[data-hierarchy="unavailable"] {
+  background: transparent;
+  border: 1.5px dashed var(--ec-l-border-strong, var(--ec-a-border-strong));
+  color: var(--ec-l-text-muted, var(--ec-a-text-muted));
+  box-shadow: none;
+}
+.ec-mode-action[data-hierarchy="unavailable"]:hover { text-decoration: underline; text-underline-offset: 3px; }
+.ec-mode-action[aria-disabled="true"] { cursor: default; }
+
+/* Accent roles → the two colour slots a card may use (signature, then arrow/tile accent).
+   Semantic families only: gold, cobalt, violet, and graphite-as-platinum on ivory. */
+.ec-mode-card[data-accent="gold"]             { --ec-sig-color: var(--ec-l-glyph, var(--ec-a-gold)); --ec-acc-color: var(--ec-l-glyph, var(--ec-a-gold)); }
+.ec-mode-card[data-accent="platinum-cobalt"]  { --ec-sig-color: var(--ec-l-text-secondary, var(--ec-a-text-secondary)); --ec-acc-color: var(--ec-l-glyph-cool, var(--ec-a-blue)); }
+.ec-mode-card[data-accent="cobalt"]           { --ec-sig-color: var(--ec-l-glyph-cool, var(--ec-a-blue)); --ec-acc-color: var(--ec-l-glyph-cool, var(--ec-a-blue)); }
+.ec-mode-card[data-accent="platinum-gold"]    { --ec-sig-color: var(--ec-l-text-secondary, var(--ec-a-text-secondary)); --ec-acc-color: var(--ec-l-glyph, var(--ec-a-gold)); }
+.ec-mode-card[data-accent="cobalt-platinum"]  { --ec-sig-color: var(--ec-l-glyph-cool, var(--ec-a-blue)); --ec-acc-color: var(--ec-l-text-secondary, var(--ec-a-text-secondary)); }
+.ec-mode-card[data-accent="gold-platinum"]    { --ec-sig-color: var(--ec-l-glyph, var(--ec-a-gold)); --ec-acc-color: var(--ec-l-text-secondary, var(--ec-a-text-secondary)); }
+.ec-mode-card[data-accent="violet"]           { --ec-sig-color: var(--ec-l-glyph-era, var(--ec-a-coach)); --ec-acc-color: var(--ec-l-glyph-era, var(--ec-a-coach)); }
+.ec-mode-card--secondary[data-accent] .ec-mode-glyph { box-shadow: inset 0 -2px 0 var(--ec-acc-color); }
+
+/* The signature: behind the top-right corner, clipped by the card, decorative. */
+.ec-mode-card { overflow: hidden; }
+.ec-mode-signature {
+  position: absolute; right: -18px; top: -16px; width: 132px; height: 132px;
+  color: var(--ec-sig-color, currentColor); opacity: var(--ec-sig-opacity, 0.07);
+  pointer-events: none; user-select: none; transition: opacity 0.18s ease;
+}
+.ec-mode-card--secondary .ec-mode-signature { width: 96px; height: 96px; right: -14px; top: -12px; }
+.ec-mode-card:hover .ec-mode-signature { opacity: 0.12; }
+.ec-mode-card > *:not(.ec-mode-signature) { position: relative; }
+
+/* The compact brand band: the same mark, shorter, the grid moved up. */
+.ec-lobby-hero--compact {
+  grid-template-columns: auto minmax(0, 1fr); justify-items: start; align-items: center;
+  gap: 16px; text-align: left;
+  /* Full-bleed obsidian band; only the CONTENT is held to the lobby body's 1180px column. */
+  padding: 9px max(18px, calc((100% - 1180px) / 2)) 8px;
+}
+.ec-lobby-hero--compact .ec-lobby-logo { width: 150px; }
+.ec-lobby-hero--compact .ec-lobby-line { font-size: 13.5px; max-width: none; }
+@media (max-width: 640px) {
+  .ec-lobby-hero--compact { gap: 12px; padding: 8px 12px; }
+  .ec-lobby-hero--compact .ec-lobby-logo { width: 118px; }
+  .ec-lobby-hero--compact .ec-lobby-line { font-size: 12.5px; }
+}
+/* The pending Continue card: the real card's geometry, muted, while the run is read. */
+.ec-continue--pending { border-color: var(--ec-l-border, var(--ec-a-border)); background: var(--ec-l-panel-raised, var(--ec-a-panel-raised)); }
+.ec-continue--pending .ec-continue-title { color: var(--ec-l-text-muted, var(--ec-a-text-muted)); }
+.ec-continue--pending .ec-continue-glyph { color: var(--ec-l-text-muted, var(--ec-a-text-muted)); background: transparent; border-color: var(--ec-l-border, var(--ec-a-border)); }
+.ec-continue--pending .ec-continue-team-name { color: var(--ec-l-text-muted, var(--ec-a-text-muted)); }
+.ec-continue-cta--pending { display: inline-flex; align-items: center; background: var(--ec-l-panel-soft, var(--ec-a-panel-soft)); border-color: var(--ec-l-border, var(--ec-a-border)); color: transparent; }
+@media (prefers-reduced-motion: reduce) {
+  .ec-mode-action, .ec-mode-action::after, .ec-mode-signature { transition: none; }
+  .ec-mode-action:hover { transform: none; }
+}

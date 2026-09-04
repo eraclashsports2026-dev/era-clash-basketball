@@ -39,6 +39,9 @@ export default function ThemeLab() {
   const fixture = LAB_FIXTURE_IDS.includes(q.get("fixture")) ? q.get("fixture") : "lobby";
   const chrome = q.get("chrome") !== "0"; // the lab's own strip, outside the product screenshot
   const stageOff = q.get("stage") === "0"; // the pre-9A.2 portrait layer, for the before/after measurement
+  // Phase 9A.3P: the lobby fixture's hero state. "full" (default), "compact-returning",
+  // or "compact-active-run" — the last rendering the frozen ROLL 1 run on the Continue card.
+  const hero = ["full", "compact-returning", "compact-active-run"].includes(q.get("hero")) ? q.get("hero") : "full";
   const t = getTheme(theme);
 
   // data-theme on the document is the ONLY variable. On unmount the PRODUCT
@@ -74,7 +77,8 @@ export default function ThemeLab() {
   if (fixture === "lobby") {
     body = (
       <div className="ec-arena-court ec-lobby-court">
-        <PlayLobby tier="FREE" chaosAvailable previewCandidateActive={false} entrance onModeAction={noop} onContinue={noop} onAbandoned={noop} lab />
+        <PlayLobby tier="FREE" chaosAvailable previewCandidateActive={false} entrance onModeAction={noop} onContinue={noop} onAbandoned={noop} lab
+          fixture={{ hero, run: hero === "compact-active-run" ? labRun("roll1") : null }} />
       </div>
     );
   } else if (fixture === "empty" || fixture === "roll2" || fixture === "coach") {

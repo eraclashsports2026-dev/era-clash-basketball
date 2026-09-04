@@ -1,0 +1,228 @@
+{
+  "artifact": "phase9a3p-preflight",
+  "phase": "9A.3P — Play Lobby brand, CTA and entry polish",
+  "parent": {
+    "branch": "phase-9a3-night-court-wave2-beta",
+    "commit": "ef0caa525c4cf6830fe20b4a8ef5d483e29afd86",
+    "draftPR": 39,
+    "isStableWave2Head": true
+  },
+  "specificationDiscrepancy": {
+    "specSaidWave2Head": "ff8fda0",
+    "repositoryTruth": "ef0caa5",
+    "resolution": "repository truth used; ff8fda0 does not exist in this repository"
+  },
+  "references": {
+    "main": "9cd95ff8797f8cdef252bbe67d63158c01b9f9bd",
+    "originMain": "9cd95ff8797f8cdef252bbe67d63158c01b9f9bd",
+    "wave1": "4dc59e7b2175b82cea8d5ab5c336b75b550c7f59",
+    "wave2": "ef0caa525c4cf6830fe20b4a8ef5d483e29afd86"
+  },
+  "functionBudget": {
+    "apiRoutes": 12,
+    "middleware": 1,
+    "total": 13,
+    "budget": 13
+  },
+  "environment": "Run on a detached git worktree at the parent commit (node_modules, .preview-secrets copied with 0700/0600, .cache linked) BEFORE any Phase 9A.3P edit, so the parent was measured untouched while the branch was being prepared.",
+  "gates": [
+    {
+      "gate": "vitest",
+      "result": "FAIL",
+      "detail": "2343/2344 on the parent — one stale test pin (tests/v9a3-wave2.test.js pins wave2DistributionAuthorized=false; the record-only commit ef0caa5 set it true); calibration + gitignore tests pass once .cache and a real .preview-secrets are present"
+    },
+    {
+      "gate": "build (production)",
+      "result": "PASS",
+      "detail": "[plugin eraclash-sw-version] service worker cache identity: eraclash-assets:2.7.2:a53d4c142a27"
+    },
+    {
+      "gate": "playwright",
+      "result": "PASS",
+      "detail": "74 passed (1.5m)"
+    },
+    {
+      "gate": "preview:preflight",
+      "result": "PASS",
+      "detail": "preview:preflight — 6 passed, 0 failed (0.0s)"
+    },
+    {
+      "gate": "preview:smoke",
+      "result": "PASS",
+      "detail": "preview:smoke — 5 passed, 0 failed (0.3s)"
+    },
+    {
+      "gate": "preview:security",
+      "result": "PASS",
+      "detail": "preview:security — 9 passed, 0 failed (0.0s)"
+    },
+    {
+      "gate": "preview:browser-qa",
+      "result": "PASS",
+      "detail": "preview:browser-qa — 1 passed, 0 failed (87.8s)"
+    },
+    {
+      "gate": "preview:wave1-access-audit",
+      "result": "PASS",
+      "detail": "→ data/validation/6c6/candidate3-wave1-access-audit.json"
+    },
+    {
+      "gate": "preview:wave2-access-audit",
+      "result": "PASS",
+      "detail": "→ data/validation/9a3/wave2-access-audit.{json,md}"
+    },
+    {
+      "gate": "preview:wave2-readiness",
+      "result": "PASS",
+      "detail": "→ data/validation/9a3/wave2-readiness.{json,md}"
+    },
+    {
+      "gate": "preview:wave2-security-qa",
+      "result": "PASS",
+      "detail": "security: 22/22 checks passed (re-run with a real 0700 .preview-secrets; the first pass measured a symlink)"
+    },
+    {
+      "gate": "preview:wave2-contracts",
+      "result": "PASS",
+      "detail": "wrote data/validation/9a3/wave2-identity.json"
+    },
+    {
+      "gate": "chaos:fairness",
+      "result": "PASS",
+      "detail": "23/23 fairness checks passed"
+    },
+    {
+      "gate": "chaos:replay",
+      "result": "PASS",
+      "detail": "9/9 replay checks passed"
+    },
+    {
+      "gate": "chaos:security",
+      "result": "PASS",
+      "detail": "27/27 security checks passed"
+    },
+    {
+      "gate": "chaos:browser-qa",
+      "result": "PASS",
+      "detail": "91/91 deployed chaos-flow checks passed"
+    },
+    {
+      "gate": "postgame:story-qa",
+      "result": "PASS",
+      "detail": "story contract holds on every game"
+    },
+    {
+      "gate": "ui:play-lobby-qa",
+      "result": "PASS",
+      "detail": "lobby: 20/20 checks passed → data/validation/9a/play-lobby-qa.json"
+    },
+    {
+      "gate": "ui:mode-registry-qa",
+      "result": "PASS",
+      "detail": "registry: 18/18 checks passed → data/validation/9a/mode-registry-verification.json"
+    },
+    {
+      "gate": "ui:active-run-qa",
+      "result": "PASS",
+      "detail": "active-run: 15/15 checks passed → data/validation/9a/active-run-continuation-qa.json"
+    },
+    {
+      "gate": "ui:progressive-disclosure-qa",
+      "result": "PASS",
+      "detail": "disclosure: 15/15 checks passed → data/validation/9a/progressive-disclosure-qa.json"
+    },
+    {
+      "gate": "ui:multi-position-qa",
+      "result": "PASS",
+      "detail": "multi-position: 20/20 checks passed → data/validation/9a/multi-position-qa.json"
+    },
+    {
+      "gate": "ui:activation-telemetry-qa",
+      "result": "PASS",
+      "detail": "telemetry: 9/9 checks passed → data/validation/9a/activation-telemetry-qa.json"
+    },
+    {
+      "gate": "ui:play-lobby-contracts",
+      "result": "PASS",
+      "detail": "wrote data/validation/9a/competitive-decisions.json"
+    },
+    {
+      "gate": "ui:night-court-contracts",
+      "result": "PASS",
+      "detail": "contracts: 7/7 checks passed"
+    },
+    {
+      "gate": "build (lab + fixtures)",
+      "result": "PASS",
+      "detail": "[plugin eraclash-sw-version] service worker cache identity: eraclash-assets:2.7.2:0c9de7f1dcd7"
+    },
+    {
+      "gate": "ui:play-lobby-responsive-qa",
+      "result": "PASS",
+      "detail": "responsive: 37/37 checks passed → data/validation/9a/responsive-qa.json"
+    },
+    {
+      "gate": "ui:play-lobby-accessibility-qa",
+      "result": "PASS",
+      "detail": "accessibility: 18/18 checks passed → data/validation/9a/accessibility-qa.json"
+    },
+    {
+      "gate": "ui:night-court-production",
+      "result": "PASS",
+      "detail": "production: 34/34 checks passed"
+    },
+    {
+      "gate": "ui:night-court-fracture",
+      "result": "PASS",
+      "detail": "fracture: 14/14 checks passed"
+    },
+    {
+      "gate": "ui:night-court-semantic",
+      "result": "PASS",
+      "detail": "semantic: 12/12 checks passed"
+    },
+    {
+      "gate": "ui:night-court-portrait",
+      "result": "PASS",
+      "detail": "portrait: 19/19 checks passed"
+    },
+    {
+      "gate": "ui:night-court-editorial",
+      "result": "PASS",
+      "detail": "editorial: 13/13 checks passed"
+    },
+    {
+      "gate": "ui:night-court-responsive",
+      "result": "PASS",
+      "detail": "responsive: 106/106 checks passed"
+    },
+    {
+      "gate": "ui:night-court-accessibility",
+      "result": "PASS",
+      "detail": "accessibility: 92/92 checks passed"
+    },
+    {
+      "gate": "build (production)",
+      "result": "PASS",
+      "detail": "[plugin eraclash-sw-version] service worker cache identity: eraclash-assets:2.7.2:a53d4c142a27"
+    }
+  ],
+  "passed": 35,
+  "failed": 1,
+  "parentReproducibility": {
+    "verdict": "REPRODUCIBLE_WITH_ONE_STALE_TEST_PIN",
+    "vitest": {
+      "total": 2344,
+      "failedOnParent": 1,
+      "failing": "tests/v9a3-wave2.test.js › owner acceptance › is recorded with the exact text, private-beta scope, and no promotion authorised",
+      "rootCause": "The record-only commit ef0caa5 (AUTHORIZE WAVE 2 DISTRIBUTION) set wave2DistributionAuthorized=true in the acceptance record without re-running vitest; the test still pinned false. Product truth (the authorization record with the exact text) is correct.",
+      "correction": "On the 9A.3P branch the assertion accepts true only when data/validation/9a3/wave2-distribution-authorization.json exists with the exact authorization text; promotion flags stay pinned false. No product change."
+    },
+    "environmentalOnly": [
+      "preview:wave2-security-qa 21/22 on the first worktree pass: .preview-secrets was a symlink (lstat mode) — 22/22 once copied with 0700/0600",
+      "tests/v6c2c4, v6c2c6 ×2: .cache/calibration absent in the worktree — pass once linked",
+      "tests/v6c6 '.preview-secrets is gitignored': git check-ignore does not match a symlink — passes with the real directory"
+    ]
+  },
+  "humanTestActivity": "Live Wave 2 feedback and metrics were not readable from this shell (no store credentials): EMPTY-DATA mode. This is not a claim that no tester activity exists."
+}

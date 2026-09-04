@@ -418,7 +418,7 @@ const textAudit = async (page) => page.evaluate(({ arenaPanel, arenaRaised, lobb
     while (n && n !== document.documentElement) {
       const cs = getComputedStyle(n); const m = cs.backgroundColor.match(/[\d.]+/g);
       if (m && (m.length < 4 || Number(m[3]) > 0.6)) return cs.backgroundColor;
-      if (n.matches(".ec-ta-cta, .ec-mode-card--primary .ec-mode-action[data-intent='OPEN_MODE'], .ec-continue-cta") && !n.disabled) return hexRgb(ctaMid);
+      if (n.matches(".ec-ta-cta, .ec-mode-action[data-hierarchy='primary'], .ec-continue-cta") && !n.disabled) return hexRgb(ctaMid);
       if (n.matches('.ec-pc-action[data-on="true"]')) { const v = cs.getPropertyValue("--pc-accent").trim(); return v.startsWith("#") ? hexRgb(v) : (v || hexRgb(teamGold)); }
       if (n.matches('.ec-coach-action[data-on="true"]')) return hexRgb(coach);
       const inLobby = !!n.closest(".ec-lobby"), inHero = !!n.closest(".ec-lobby-hero");

@@ -1,0 +1,367 @@
+{
+  "artifact": "adaptive-hero-qa",
+  "phase": "9A.3P — Play Lobby brand, CTA and entry polish",
+  "mode": "hero",
+  "baseUrl": "http://localhost:4177",
+  "presentationVersion": "play-lobby-polish-v1",
+  "checks": 21,
+  "passed": 21,
+  "failed": 0,
+  "results": [
+    {
+      "name": "first-time @1536×1024: full hero, large mark, product line, no Continue card, no run, no POST, fits one viewport",
+      "pass": true,
+      "detail": "hero 188px · logo 340px · doc 1024/1024"
+    },
+    {
+      "name": "first-time @1536×1024: no layout shift after first paint",
+      "pass": true,
+      "detail": "0.0000"
+    },
+    {
+      "name": "first-time @1440×900: full hero, large mark, product line, no Continue card, no run, no POST, fits one viewport",
+      "pass": true,
+      "detail": "hero 188px · logo 340px · doc 900/900"
+    },
+    {
+      "name": "first-time @1440×900: no layout shift after first paint",
+      "pass": true,
+      "detail": "0.0000"
+    },
+    {
+      "name": "first-time @1280×800: full hero, large mark, product line, no Continue card, no run, no POST, fits one viewport",
+      "pass": true,
+      "detail": "hero 188px · logo 340px · doc 800/800"
+    },
+    {
+      "name": "first-time @1280×800: no layout shift after first paint",
+      "pass": true,
+      "detail": "0.0000"
+    },
+    {
+      "name": "returning @1536×1024: compact hero, smaller mark, one line, grid moved up 111px, no Continue card, no POST",
+      "pass": true,
+      "detail": "hero 77px (was 188px)"
+    },
+    {
+      "name": "returning @1536×1024: no layout shift after first paint",
+      "pass": true,
+      "detail": "0.0000"
+    },
+    {
+      "name": "returning @1440×900: compact hero, smaller mark, one line, grid moved up 111px, no Continue card, no POST",
+      "pass": true,
+      "detail": "hero 77px (was 188px)"
+    },
+    {
+      "name": "returning @1440×900: no layout shift after first paint",
+      "pass": true,
+      "detail": "0.0000"
+    },
+    {
+      "name": "returning @1280×800: compact hero, smaller mark, one line, grid moved up 111px, no Continue card, no POST",
+      "pass": true,
+      "detail": "hero 77px (was 188px)"
+    },
+    {
+      "name": "returning @1280×800: no layout shift after first paint",
+      "pass": true,
+      "detail": "0.0000"
+    },
+    {
+      "name": "active run @1536×1024: compact hero at first paint and after the run resolves (same height); Continue above the grid; era hidden; run kept; only a READ",
+      "pass": true,
+      "detail": "hero 77→77px · posts start,view"
+    },
+    {
+      "name": "active run @1536×1024: no layout shift from hero-state resolution",
+      "pass": true,
+      "detail": "0.0000"
+    },
+    {
+      "name": "active run @1536×1024: the logo returns to the lobby with the run intact",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "active run @1440×900: compact hero at first paint and after the run resolves (same height); Continue above the grid; era hidden; run kept; only a READ",
+      "pass": true,
+      "detail": "hero 77→77px · posts start,view"
+    },
+    {
+      "name": "active run @1440×900: no layout shift from hero-state resolution",
+      "pass": true,
+      "detail": "0.0000"
+    },
+    {
+      "name": "active run @1440×900: the logo returns to the lobby with the run intact",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "active run @1280×800: compact hero at first paint and after the run resolves (same height); Continue above the grid; era hidden; run kept; only a READ",
+      "pass": true,
+      "detail": "hero 77→77px · posts start,view"
+    },
+    {
+      "name": "active run @1280×800: no layout shift from hero-state resolution",
+      "pass": true,
+      "detail": "0.0000"
+    },
+    {
+      "name": "active run @1280×800: the logo returns to the lobby with the run intact",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "rows": {
+    "first-time@1536x1024": {
+      "hero": "full",
+      "presentation": "play-lobby-polish-v1",
+      "compact": false,
+      "heroHeight": 188,
+      "bandFullBleed": true,
+      "logoWidth": 340,
+      "line": "Choose how you want to play.",
+      "gridTop": 269,
+      "continueTop": null,
+      "continueCard": false,
+      "fractures": 1,
+      "docHeight": 1024,
+      "overflow": 0,
+      "run": null,
+      "eraLeak": false,
+      "cls": 0,
+      "posts": 0
+    },
+    "first-time@1440x900": {
+      "hero": "full",
+      "presentation": "play-lobby-polish-v1",
+      "compact": false,
+      "heroHeight": 188,
+      "bandFullBleed": true,
+      "logoWidth": 340,
+      "line": "Choose how you want to play.",
+      "gridTop": 269,
+      "continueTop": null,
+      "continueCard": false,
+      "fractures": 1,
+      "docHeight": 900,
+      "overflow": 0,
+      "run": null,
+      "eraLeak": false,
+      "cls": 0,
+      "posts": 0
+    },
+    "first-time@1280x800": {
+      "hero": "full",
+      "presentation": "play-lobby-polish-v1",
+      "compact": false,
+      "heroHeight": 188,
+      "bandFullBleed": true,
+      "logoWidth": 340,
+      "line": "Choose how you want to play.",
+      "gridTop": 269,
+      "continueTop": null,
+      "continueCard": false,
+      "fractures": 1,
+      "docHeight": 800,
+      "overflow": 0,
+      "run": null,
+      "eraLeak": false,
+      "cls": 0,
+      "posts": 0
+    },
+    "returning@1536x1024": {
+      "hero": "compact-returning",
+      "presentation": "play-lobby-polish-v1",
+      "compact": true,
+      "heroHeight": 77,
+      "bandFullBleed": true,
+      "logoWidth": 150,
+      "line": "Welcome back. Choose how you want to play.",
+      "gridTop": 158,
+      "continueTop": null,
+      "continueCard": false,
+      "fractures": 1,
+      "docHeight": 1024,
+      "overflow": 0,
+      "run": null,
+      "eraLeak": false,
+      "cls": 0,
+      "posts": 0
+    },
+    "returning@1440x900": {
+      "hero": "compact-returning",
+      "presentation": "play-lobby-polish-v1",
+      "compact": true,
+      "heroHeight": 77,
+      "bandFullBleed": true,
+      "logoWidth": 150,
+      "line": "Welcome back. Choose how you want to play.",
+      "gridTop": 158,
+      "continueTop": null,
+      "continueCard": false,
+      "fractures": 1,
+      "docHeight": 900,
+      "overflow": 0,
+      "run": null,
+      "eraLeak": false,
+      "cls": 0,
+      "posts": 0
+    },
+    "returning@1280x800": {
+      "hero": "compact-returning",
+      "presentation": "play-lobby-polish-v1",
+      "compact": true,
+      "heroHeight": 77,
+      "bandFullBleed": true,
+      "logoWidth": 150,
+      "line": "Welcome back. Choose how you want to play.",
+      "gridTop": 158,
+      "continueTop": null,
+      "continueCard": false,
+      "fractures": 1,
+      "docHeight": 800,
+      "overflow": 0,
+      "run": null,
+      "eraLeak": false,
+      "cls": 0,
+      "posts": 0
+    },
+    "active-run@1536x1024": {
+      "firstPaint": {
+        "hero": "compact-active-run",
+        "presentation": "play-lobby-polish-v1",
+        "compact": true,
+        "heroHeight": 77,
+        "bandFullBleed": true,
+        "logoWidth": 150,
+        "line": "Your Chaos Clash is waiting. Pick it up, or choose another way to play.",
+        "gridTop": 268,
+        "continueTop": 158,
+        "continueCard": true,
+        "fractures": 1,
+        "docHeight": 1024,
+        "overflow": 0,
+        "run": "ci5pxysxahta",
+        "eraLeak": false
+      },
+      "resolved": {
+        "hero": "compact-active-run",
+        "presentation": "play-lobby-polish-v1",
+        "compact": true,
+        "heroHeight": 77,
+        "bandFullBleed": true,
+        "logoWidth": 150,
+        "line": "Your Chaos Clash is waiting. Pick it up, or choose another way to play.",
+        "gridTop": 268,
+        "continueTop": 158,
+        "continueCard": true,
+        "fractures": 1,
+        "docHeight": 1024,
+        "overflow": 0,
+        "run": "ci5pxysxahta",
+        "eraLeak": false
+      },
+      "cls": 0,
+      "posts": [
+        "start",
+        "view",
+        "view",
+        "view"
+      ]
+    },
+    "active-run@1440x900": {
+      "firstPaint": {
+        "hero": "compact-active-run",
+        "presentation": "play-lobby-polish-v1",
+        "compact": true,
+        "heroHeight": 77,
+        "bandFullBleed": true,
+        "logoWidth": 150,
+        "line": "Your Chaos Clash is waiting. Pick it up, or choose another way to play.",
+        "gridTop": 268,
+        "continueTop": 158,
+        "continueCard": true,
+        "fractures": 1,
+        "docHeight": 900,
+        "overflow": 0,
+        "run": "y5ijxevwxnm8",
+        "eraLeak": false
+      },
+      "resolved": {
+        "hero": "compact-active-run",
+        "presentation": "play-lobby-polish-v1",
+        "compact": true,
+        "heroHeight": 77,
+        "bandFullBleed": true,
+        "logoWidth": 150,
+        "line": "Your Chaos Clash is waiting. Pick it up, or choose another way to play.",
+        "gridTop": 268,
+        "continueTop": 158,
+        "continueCard": true,
+        "fractures": 1,
+        "docHeight": 900,
+        "overflow": 0,
+        "run": "y5ijxevwxnm8",
+        "eraLeak": false
+      },
+      "cls": 0,
+      "posts": [
+        "start",
+        "view",
+        "view",
+        "view"
+      ]
+    },
+    "active-run@1280x800": {
+      "firstPaint": {
+        "hero": "compact-active-run",
+        "presentation": "play-lobby-polish-v1",
+        "compact": true,
+        "heroHeight": 77,
+        "bandFullBleed": true,
+        "logoWidth": 150,
+        "line": "Your Chaos Clash is waiting. Pick it up, or choose another way to play.",
+        "gridTop": 268,
+        "continueTop": 158,
+        "continueCard": true,
+        "fractures": 1,
+        "docHeight": 800,
+        "overflow": 0,
+        "run": "yuan8b6dc5cv",
+        "eraLeak": false
+      },
+      "resolved": {
+        "hero": "compact-active-run",
+        "presentation": "play-lobby-polish-v1",
+        "compact": true,
+        "heroHeight": 77,
+        "bandFullBleed": true,
+        "logoWidth": 150,
+        "line": "Your Chaos Clash is waiting. Pick it up, or choose another way to play.",
+        "gridTop": 268,
+        "continueTop": 158,
+        "continueCard": true,
+        "fractures": 1,
+        "docHeight": 800,
+        "overflow": 0,
+        "run": "yuan8b6dc5cv",
+        "eraLeak": false
+      },
+      "cls": 0,
+      "posts": [
+        "start",
+        "view",
+        "view",
+        "view"
+      ]
+    }
+  },
+  "decision": {
+    "full": "no remembered run, no finished game on this device, device not seen before",
+    "compactReturning": "career.gamesPlayed > 0 or recentGames > 0 or the session's returning flag",
+    "compactActiveRun": "ec_chaos_run remembered (the Continue card renders once the server view arrives; the hero does not wait for it)"
+  }
+}

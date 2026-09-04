@@ -11,9 +11,31 @@
 //   /                the public entrance (the lobby, carrying the product line)
 //   /play            the Play Lobby — visual mode selection; nothing starts here
 //   /play/<mode>     the selected mode's own surface (the Time Arena for Chaos)
+//
+// Phase 9A.3P adds the lobby's PRESENTATION contract to the same records: the
+// action a card offers (a verb that says what happens next, never "Open"), its
+// place in the CTA hierarchy (one primary: Chaos Clash), its accent role and
+// its original visual signature. The lobby renders these; it defines none.
 import { can, CAPABILITIES, FEATURE_FLAGS, gateReason, TRIAL_CAPABILITY } from "./entitlements.js";
 
-export const NAVIGATION_REGISTRY_VERSION = "1.1.0";
+export const NAVIGATION_REGISTRY_VERSION = "1.2.0";
+
+/** Phase 9A.3P: the lobby presentation this registry describes. Carried on telemetry as a bounded string. */
+export const LOBBY_PRESENTATION_VERSION = "play-lobby-polish-v1";
+
+/**
+ * The CTA hierarchy. Exactly one lobby card is PRIMARY (the flagship, filled
+ * EraClash Gold); every other playable card is SECONDARY (outlined, obviously
+ * clickable, never mistaken for disabled); a mode that cannot be played here is
+ * UNAVAILABLE (visibly subdued, and never routed to a checkout).
+ */
+export const ACTION_HIERARCHY = Object.freeze({ PRIMARY: "primary", SECONDARY: "secondary", UNAVAILABLE: "unavailable" });
+
+/** Accent roles a card may carry — semantic colour families only, never a new palette. */
+export const ACCENT_ROLE = Object.freeze({
+  GOLD: "gold", PLATINUM_COBALT: "platinum-cobalt", COBALT: "cobalt",
+  PLATINUM_GOLD: "platinum-gold", COBALT_PLATINUM: "cobalt-platinum", GOLD_PLATINUM: "gold-platinum", VIOLET: "violet",
+});
 
 /** The lobby's own route. `/` serves the same lobby as the public entrance. */
 export const PLAY_LOBBY_ROUTE = "/play";
@@ -52,6 +74,8 @@ export const PLAY_MODES = Object.freeze([
     route: "/play/chaos", category: MODE_CATEGORY.PRIMARY, recommended: true, continuationSupport: true,
     shortDescription: "Three rolls. Hold your legends. Adapt to the era.",
     tagline: "Three rolls. Hold your legends. Adapt to the era.",
+    actionLabel: "Start Chaos Clash", actionVerb: "Start", actionHierarchy: ACTION_HIERARCHY.PRIMARY,
+    visualSignature: "fracture-dice", accentRole: ACCENT_ROLE.GOLD,
     description: "Draft under pressure against a Legend CPU, adapt when the era is revealed, then run it on the possession engine.",
     implementationNote: "Built. A server-authoritative three-roll draft on /api/game; a guest has three runs, a free account has unlimited.",
     capability: C.CHAOS_CLASH, appMode: "Chaos",
@@ -61,6 +85,8 @@ export const PLAY_MODES = Object.freeze([
     route: "/play/dream", category: MODE_CATEGORY.PRIMARY, recommended: false, continuationSupport: false,
     shortDescription: "Build any historical matchup.",
     tagline: "Build any matchup you want.",
+    actionLabel: "Build Matchup", actionVerb: "Build", actionHierarchy: ACTION_HIERARCHY.SECONDARY,
+    visualSignature: "crossing-timelines", accentRole: ACCENT_ROLE.PLATINUM_COBALT,
     description: "The manual sandbox: pick both fives by hand, choose from the full coach library, and set the Era Style yourself.",
     implementationNote: "Built. The manual builder with multi-position placement; a free account is asked for while Chaos Clash is the free default.",
     capability: C.DREAM_MATCHUP, appMode: "Single",
@@ -70,6 +96,8 @@ export const PLAY_MODES = Object.freeze([
     route: "/play/daily", category: MODE_CATEGORY.PRIMARY, recommended: false, continuationSupport: false,
     shortDescription: "One shared challenge for everyone.",
     tagline: "One shared challenge each day.",
+    actionLabel: "Play Today’s Clash", actionVerb: "Play", actionHierarchy: ACTION_HIERARCHY.SECONDARY,
+    visualSignature: "spotlight-calendar", accentRole: ACCENT_ROLE.COBALT,
     description: "Everyone in the world gets the same seeded draft and the same opponent. One official attempt.",
     implementationNote: "Built. Server-seeded; one official attempt per day.",
     capability: C.DAILY, nav: "Daily",
@@ -79,6 +107,8 @@ export const PLAY_MODES = Object.freeze([
     route: "/play/best-of-7", category: MODE_CATEGORY.SECONDARY, recommended: false, continuationSupport: false,
     shortDescription: "Settle it over a series.",
     tagline: "Settle it over a series.",
+    actionLabel: "Start Series", actionVerb: "Start", actionHierarchy: ACTION_HIERARCHY.SECONDARY,
+    visualSignature: "series-ticks", accentRole: ACCENT_ROLE.PLATINUM_GOLD,
     description: "The same setup as a single game, played as a seven-game series.",
     implementationNote: "Built. Opens on a free account through its trial capability; runs on the production engine.",
     capability: C.BEST_OF_7, trialCapability: C.BEST_OF_7_TRIAL, appMode: "Best7",
@@ -89,6 +119,8 @@ export const PLAY_MODES = Object.freeze([
     route: "/play/win-82", category: MODE_CATEGORY.SECONDARY, recommended: false, continuationSupport: false,
     shortDescription: "Survive a full season.",
     tagline: "Survive a full season.",
+    actionLabel: "Start Season", actionVerb: "Start", actionHierarchy: ACTION_HIERARCHY.SECONDARY,
+    visualSignature: "season-arc", accentRole: ACCENT_ROLE.COBALT_PLATINUM,
     description: "Eighty-two games against a generated schedule.",
     implementationNote: "Built as a preview on a free account through its trial capability.",
     capability: C.WIN_82, trialCapability: C.WIN_82_PREVIEW, appMode: "Win82",
@@ -98,6 +130,8 @@ export const PLAY_MODES = Object.freeze([
     route: "/play/tournament", category: MODE_CATEGORY.SECONDARY, recommended: false, continuationSupport: false,
     shortDescription: "Four rounds to a title.",
     tagline: "Four rounds to a title.",
+    actionLabel: "Enter Tournament", actionVerb: "Enter", actionHierarchy: ACTION_HIERARCHY.SECONDARY,
+    visualSignature: "bracket", accentRole: ACCENT_ROLE.GOLD_PLATINUM,
     description: "Bracket play against generated opponents.",
     implementationNote: "Built. Joining needs a free account; creating a private bracket is a commissioner capability.",
     capability: C.TOURNAMENT_JOIN, createCapability: C.TOURNAMENT_CREATE, appMode: "Tournament",
@@ -107,6 +141,8 @@ export const PLAY_MODES = Object.freeze([
     route: "/play/era-gauntlet", category: MODE_CATEGORY.SECONDARY, recommended: false, continuationSupport: false,
     shortDescription: "Conquer the eras.",
     tagline: "Conquer the eras.",
+    actionLabel: "Learn More", actionVerb: "Learn more about", actionHierarchy: ACTION_HIERARCHY.UNAVAILABLE,
+    visualSignature: "era-steps", accentRole: ACCENT_ROLE.VIOLET,
     description: "Draft, win, carry one player forward, reroll the rest, and face a harder opponent in a new era. Specified and in development.",
     implementationNote: "Not built. Specified; flagged off; its card opens the information page and never a checkout.",
     capability: C.ERA_GAUNTLET, infoRoute: "/modes/era-gauntlet",
@@ -192,16 +228,56 @@ export const STATUS_LABEL = Object.freeze({
   UNAVAILABLE_HERE: "Not available here",
 });
 
-/** The one action word on a lobby card, by status. */
+/**
+ * The action word by STATUS — the fallback when a status, not the mode, decides
+ * what the click does (a membership page, an explanation, an information page).
+ * A playable or account-gated mode uses its own `actionLabel` instead, so no
+ * card ever says "Open": the button says what happens next, the badge says
+ * what it needs.
+ */
 export const ACTION_LABEL = Object.freeze({
   AVAILABLE: "Play",
-  ACCOUNT_REQUIRED: "Open",
+  ACCOUNT_REQUIRED: "Play",
   SUBSCRIPTION_REQUIRED: "About membership",
   COMMISSIONER_REQUIRED: "About membership",
   COMING_SOON: "Learn more",
   DISABLED_FOR_PREVIEW: "Why not now",
   UNAVAILABLE_HERE: "Learn more",
 });
+
+/** The label a lobby card's ONE action shows for this mode in this status. */
+export const actionLabelFor = (mode, status) => {
+  if (status === MODE_STATUS.AVAILABLE || status === MODE_STATUS.ACCOUNT_REQUIRED) return mode.actionLabel || ACTION_LABEL[status];
+  if (status === MODE_STATUS.COMING_SOON && mode.actionLabel && mode.actionHierarchy === ACTION_HIERARCHY.UNAVAILABLE) return mode.actionLabel;
+  return ACTION_LABEL[status] || mode.actionLabel || "Play";
+};
+
+/** Where the action sits in the CTA hierarchy for this status. Only a playable Chaos card is ever primary. */
+export const actionHierarchyFor = (mode, status) => {
+  if (status === MODE_STATUS.COMING_SOON || status === MODE_STATUS.UNAVAILABLE_HERE || status === MODE_STATUS.DISABLED_FOR_PREVIEW) return ACTION_HIERARCHY.UNAVAILABLE;
+  if (status === MODE_STATUS.AVAILABLE) return mode.actionHierarchy || ACTION_HIERARCHY.SECONDARY;
+  // Gated: still an obvious, honest action (the gate is at the mode's own route) — never the filled primary.
+  return ACTION_HIERARCHY.SECONDARY;
+};
+
+/**
+ * The accessible name of a card's action: the purpose, the mode, and what the
+ * badge says, in words — "Start Chaos Clash, recommended mode",
+ * "Build Dream Matchup, free account required", "Learn more about Era Gauntlet, coming soon".
+ */
+export const accessibleActionName = (mode, status) => {
+  const verb = mode.actionVerb || actionLabelFor(mode, status);
+  switch (status) {
+    case MODE_STATUS.AVAILABLE: return `${verb} ${mode.label}${mode.recommended ? ", recommended mode" : ""}`;
+    case MODE_STATUS.ACCOUNT_REQUIRED: return `${verb} ${mode.label}, free account required`;
+    case MODE_STATUS.SUBSCRIPTION_REQUIRED: return `About membership for ${mode.label}, EraClash+ required`;
+    case MODE_STATUS.COMMISSIONER_REQUIRED: return `About membership for ${mode.label}, commissioner required`;
+    case MODE_STATUS.COMING_SOON: return `Learn more about ${mode.label}, coming soon`;
+    case MODE_STATUS.UNAVAILABLE_HERE: return `Learn more about ${mode.label}, not available here`;
+    case MODE_STATUS.DISABLED_FOR_PREVIEW: return `Why ${mode.label} is not available now, not in preview`;
+    default: return `${verb} ${mode.label}`;
+  }
+};
 
 /**
  * The ONE decision every mode entry point asks: what happens when this is

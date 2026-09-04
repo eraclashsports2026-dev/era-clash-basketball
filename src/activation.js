@@ -41,9 +41,16 @@ const FIRST_ROLL = "ec_first_roll_recorded";
 /** Called once at app boot: the clock the first roll is measured against. */
 export const markEntry = () => { if (!ss.get(ENTRY_AT)) ss.set(ENTRY_AT, Date.now()); };
 
-export const markLobbyViewed = ({ hasActiveRun = false, route = "/play" } = {}) => {
+// Phase 9A.3P: the SAME allowlisted event carries two bounded presentation
+// properties — which lobby presentation was shown and which hero state resolved
+// (full · compact-active-run · compact-returning). No new event, no free text.
+const HERO_STATE_SHAPE = /^(full|compact-active-run|compact-returning)$/;
+export const markLobbyViewed = ({ hasActiveRun = false, route = "/play", heroState = null, lobbyPresentationVersion = null } = {}) => {
   if (!ss.get(LOBBY_AT)) ss.set(LOBBY_AT, Date.now());
-  track("play_lobby_viewed", { has_active_run: !!hasActiveRun, route });
+  const props = { has_active_run: !!hasActiveRun, route };
+  if (HERO_STATE_SHAPE.test(String(heroState))) props.hero_state = heroState;
+  if (/^[a-z0-9-]{1,40}$/.test(String(lobbyPresentationVersion))) props.lobby_presentation_version = lobbyPresentationVersion;
+  track("play_lobby_viewed", props);
 };
 
 const MODE_CHOSEN = "ec_mode_chosen_recorded";

@@ -20,7 +20,13 @@ describe("owner acceptance", () => {
     expect(a.acceptanceText).toBe("APPROVE NIGHT COURT V1"); expect(a.acceptanceAuthority).toBe("OWNER");
     expect(a.themeId).toBe("basketball-night-court-v1"); expect(a.themeStatus).toBe("OWNER_ACCEPTED_FOR_PRIVATE_BETA");
     expect(a.implementationBranch).toBe("phase-9a2-night-court-production-theme");
-    expect(a.wave2DistributionAuthorized).toBe(false); expect(a.stableWave1PromotionAuthorized).toBe(false); expect(a.productionPromotionAuthorized).toBe(false);
+    // Distribution is a SEPARATE owner decision: the flag may be true only when the
+    // authorization record exists with the exact text (AUTHORIZE WAVE 2 DISTRIBUTION,
+    // recorded 2026-09-03). Promotion of Wave 1 or production is never authorised here.
+    const auth = json("data/validation/9a3/wave2-distribution-authorization.json");
+    if (a.wave2DistributionAuthorized) expect(auth?.authorizationText).toBe("AUTHORIZE WAVE 2 DISTRIBUTION");
+    else expect(auth).toBeNull();
+    expect(a.stableWave1PromotionAuthorized).toBe(false); expect(a.productionPromotionAuthorized).toBe(false);
     expect(a.doesNotMean).toContain("production approved");
   });
 });

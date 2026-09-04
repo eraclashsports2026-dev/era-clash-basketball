@@ -1,0 +1,252 @@
+{
+  "artifact": "mode-registry-qa",
+  "phase": "9A.3P — Play Lobby brand, CTA and entry polish",
+  "mode": "registry",
+  "baseUrl": null,
+  "presentationVersion": "play-lobby-polish-v1",
+  "checks": 11,
+  "passed": 11,
+  "failed": 0,
+  "results": [
+    {
+      "name": "registry version 1.2.0",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "seven modes; ids, routes and signatures unique",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "every label, verb, hierarchy, accent and signature is declared and valid",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "exactly one primary for every tier and every context",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "routes, categories, recommendation, continuation, implementation and per-tier statuses equal the Phase 9A record",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "order unchanged: chaos, dream, daily · bo7, win82, tournament, gauntlet",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Coming soon still never routes to checkout; a gated mode still links to its own route",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no duplicated action-label map anywhere else in src/",
+      "pass": true,
+      "detail": "only src/navigation.js"
+    },
+    {
+      "name": "no status resolves to Open / Continue / Enter / Go as a bare action word",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the Play dropdown and the lobby read the same PLAY_MODES",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "feature flags and entitlement matrix untouched by the registry extension",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "registry": [
+    {
+      "id": "chaos",
+      "actionLabel": "Start Chaos Clash",
+      "actionHierarchy": "primary",
+      "accentRole": "gold",
+      "visualSignature": "fracture-dice",
+      "route": "/play/chaos",
+      "statusByTier": {
+        "GUEST": "AVAILABLE",
+        "FREE": "AVAILABLE",
+        "PLUS": "AVAILABLE",
+        "COMMISSIONER": "AVAILABLE"
+      },
+      "labelByTier": {
+        "GUEST": "Start Chaos Clash",
+        "FREE": "Start Chaos Clash",
+        "PLUS": "Start Chaos Clash",
+        "COMMISSIONER": "Start Chaos Clash"
+      },
+      "hierarchyByTier": {
+        "GUEST": "primary",
+        "FREE": "primary",
+        "PLUS": "primary",
+        "COMMISSIONER": "primary"
+      }
+    },
+    {
+      "id": "dream",
+      "actionLabel": "Build Matchup",
+      "actionHierarchy": "secondary",
+      "accentRole": "platinum-cobalt",
+      "visualSignature": "crossing-timelines",
+      "route": "/play/dream",
+      "statusByTier": {
+        "GUEST": "ACCOUNT_REQUIRED",
+        "FREE": "AVAILABLE",
+        "PLUS": "AVAILABLE",
+        "COMMISSIONER": "AVAILABLE"
+      },
+      "labelByTier": {
+        "GUEST": "Build Matchup",
+        "FREE": "Build Matchup",
+        "PLUS": "Build Matchup",
+        "COMMISSIONER": "Build Matchup"
+      },
+      "hierarchyByTier": {
+        "GUEST": "secondary",
+        "FREE": "secondary",
+        "PLUS": "secondary",
+        "COMMISSIONER": "secondary"
+      }
+    },
+    {
+      "id": "daily",
+      "actionLabel": "Play Today’s Clash",
+      "actionHierarchy": "secondary",
+      "accentRole": "cobalt",
+      "visualSignature": "spotlight-calendar",
+      "route": "/play/daily",
+      "statusByTier": {
+        "GUEST": "AVAILABLE",
+        "FREE": "AVAILABLE",
+        "PLUS": "AVAILABLE",
+        "COMMISSIONER": "AVAILABLE"
+      },
+      "labelByTier": {
+        "GUEST": "Play Today’s Clash",
+        "FREE": "Play Today’s Clash",
+        "PLUS": "Play Today’s Clash",
+        "COMMISSIONER": "Play Today’s Clash"
+      },
+      "hierarchyByTier": {
+        "GUEST": "secondary",
+        "FREE": "secondary",
+        "PLUS": "secondary",
+        "COMMISSIONER": "secondary"
+      }
+    },
+    {
+      "id": "bo7",
+      "actionLabel": "Start Series",
+      "actionHierarchy": "secondary",
+      "accentRole": "platinum-gold",
+      "visualSignature": "series-ticks",
+      "route": "/play/best-of-7",
+      "statusByTier": {
+        "GUEST": "ACCOUNT_REQUIRED",
+        "FREE": "AVAILABLE",
+        "PLUS": "AVAILABLE",
+        "COMMISSIONER": "AVAILABLE"
+      },
+      "labelByTier": {
+        "GUEST": "Start Series",
+        "FREE": "Start Series",
+        "PLUS": "Start Series",
+        "COMMISSIONER": "Start Series"
+      },
+      "hierarchyByTier": {
+        "GUEST": "secondary",
+        "FREE": "secondary",
+        "PLUS": "secondary",
+        "COMMISSIONER": "secondary"
+      }
+    },
+    {
+      "id": "win82",
+      "actionLabel": "Start Season",
+      "actionHierarchy": "secondary",
+      "accentRole": "cobalt-platinum",
+      "visualSignature": "season-arc",
+      "route": "/play/win-82",
+      "statusByTier": {
+        "GUEST": "ACCOUNT_REQUIRED",
+        "FREE": "AVAILABLE",
+        "PLUS": "AVAILABLE",
+        "COMMISSIONER": "AVAILABLE"
+      },
+      "labelByTier": {
+        "GUEST": "Start Season",
+        "FREE": "Start Season",
+        "PLUS": "Start Season",
+        "COMMISSIONER": "Start Season"
+      },
+      "hierarchyByTier": {
+        "GUEST": "secondary",
+        "FREE": "secondary",
+        "PLUS": "secondary",
+        "COMMISSIONER": "secondary"
+      }
+    },
+    {
+      "id": "tournament",
+      "actionLabel": "Enter Tournament",
+      "actionHierarchy": "secondary",
+      "accentRole": "gold-platinum",
+      "visualSignature": "bracket",
+      "route": "/play/tournament",
+      "statusByTier": {
+        "GUEST": "ACCOUNT_REQUIRED",
+        "FREE": "AVAILABLE",
+        "PLUS": "AVAILABLE",
+        "COMMISSIONER": "AVAILABLE"
+      },
+      "labelByTier": {
+        "GUEST": "Enter Tournament",
+        "FREE": "Enter Tournament",
+        "PLUS": "Enter Tournament",
+        "COMMISSIONER": "Enter Tournament"
+      },
+      "hierarchyByTier": {
+        "GUEST": "secondary",
+        "FREE": "secondary",
+        "PLUS": "secondary",
+        "COMMISSIONER": "secondary"
+      }
+    },
+    {
+      "id": "gauntlet",
+      "actionLabel": "Learn More",
+      "actionHierarchy": "unavailable",
+      "accentRole": "violet",
+      "visualSignature": "era-steps",
+      "route": "/play/era-gauntlet",
+      "statusByTier": {
+        "GUEST": "COMING_SOON",
+        "FREE": "COMING_SOON",
+        "PLUS": "COMING_SOON",
+        "COMMISSIONER": "COMING_SOON"
+      },
+      "labelByTier": {
+        "GUEST": "Learn More",
+        "FREE": "Learn More",
+        "PLUS": "Learn More",
+        "COMMISSIONER": "Learn More"
+      },
+      "hierarchyByTier": {
+        "GUEST": "unavailable",
+        "FREE": "unavailable",
+        "PLUS": "unavailable",
+        "COMMISSIONER": "unavailable"
+      }
+    }
+  ],
+  "duplicateLabelMaps": []
+}
