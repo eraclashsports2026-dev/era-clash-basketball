@@ -29,6 +29,9 @@ export default function AccountDialog({ open, entryPoint = "header", returnTo = 
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const [failure, setFailure] = useState(null);
+  // Only offer a method the project actually has switched on. A dead
+  // "Continue with Google" is worse than no Google at all.
+  const [methods, setMethods] = useState({ google: false, email: true });
   const dialogRef = useRef(null);
   const firstRef = useRef(null);
   const status = cloudAccountsStatus();
@@ -37,6 +40,10 @@ export default function AccountDialog({ open, entryPoint = "header", returnTo = 
   useEffect(() => {
     if (!open) { setStage("choose"); setCode(""); setFailure(null); return undefined; }
     track("account_gate_shown", { entryPoint, intent });
+    let alive = true;
+    withProvider((p) => p.capabilities?.() ?? { google: false, email: true }, { google: false, email: true })
+      .then((c) => { if (alive) setMethods({ google: !!c?.google, email: c?.email !== false }); })
+      .catch(() => { /* email stays available: it is the floor */ });
     firstRef.current?.focus();
     const onKey = (e) => {
       if (e.key === "Escape") { onClose?.(); return; }
@@ -50,7 +57,7 @@ export default function AccountDialog({ open, entryPoint = "header", returnTo = 
       else if (!e.shiftKey && i === list.length - 1) { e.preventDefault(); list[0].focus(); }
     };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    return () => { alive = false; window.removeEventListener("keydown", onKey); };
   }, [open, entryPoint, intent, onClose]);
 
   if (!open) return null;
@@ -106,17 +113,21 @@ export default function AccountDialog({ open, entryPoint = "header", returnTo = 
 
         {available && stage !== "code" && (
           <>
-            <button ref={firstRef} onClick={google} disabled={stage === "working"} style={primary}>
-              CONTINUE WITH GOOGLE
-            </button>
-            <div aria-hidden="true" style={{ display: "flex", alignItems: "center", gap: 10, margin: "14px 0", color: T.textMuted, fontSize: 11 }}>
-              <span style={{ flex: 1, height: 1, background: T.border }} />OR<span style={{ flex: 1, height: 1, background: T.border }} />
-            </div>
+            {methods.google && (
+              <>
+                <button ref={firstRef} onClick={google} disabled={stage === "working"} style={primary}>
+                  CONTINUE WITH GOOGLE
+                </button>
+                <div aria-hidden="true" style={{ display: "flex", alignItems: "center", gap: 10, margin: "14px 0", color: T.textMuted, fontSize: 11 }}>
+                  <span style={{ flex: 1, height: 1, background: T.border }} />OR<span style={{ flex: 1, height: 1, background: T.border }} />
+                </div>
+              </>
+            )}
             <label htmlFor="ec-auth-email" style={label}>Email address</label>
-            <input id="ec-auth-email" type="email" inputMode="email" autoComplete="email" value={email}
+            <input id="ec-auth-email" ref={methods.google ? undefined : firstRef} type="email" inputMode="email" autoComplete="email" value={email}
               onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com"
               aria-describedby={failure ? "ec-auth-error" : undefined} style={input} />
-            <button onClick={sendCode} disabled={stage === "working" || !/.+@.+\..+/.test(email)} style={secondary}>
+            <button onClick={sendCode} disabled={stage === "working" || !/.+@.+\..+/.test(email)} style={methods.google ? secondary : primary}>
               {stage === "working" ? "SENDING…" : "CONTINUE WITH EMAIL"}
             </button>
           </>

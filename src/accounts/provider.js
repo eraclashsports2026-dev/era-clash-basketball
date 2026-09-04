@@ -61,8 +61,30 @@ export const FAILURE_CODES = Object.freeze([
   "RESULT_NOT_FOUND", "NOT_YOUR_RESULT", "ALREADY_CLAIMED", "SAVE_FAILED",
 ]);
 
+/**
+ * What the PROJECT actually offers, read from its public settings endpoint and
+ * cached for the tab. Without this the dialog offered "Continue with Google"
+ * whenever the provider was configured, even when Google was switched off in
+ * the project — a button that could only ever fail. Email is the floor: if the
+ * settings call fails we still offer it, because it is the method the product
+ * requires and a failed probe should not remove a working path.
+ */
+let capabilitiesPromise = null;
+const supabaseCapabilities = async () => {
+  if (!capabilitiesPromise) {
+    capabilitiesPromise = fetch(`${String(SUPABASE_URL).trim().replace(/\/+$/, "")}/auth/v1/settings`, {
+      headers: { apikey: SUPABASE_ANON_KEY },
+    })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((j) => ({ google: !!j?.external?.google, email: j ? j.external?.email !== false : true, signupsAllowed: j ? j.disable_signup !== true : true }))
+      .catch(() => ({ google: false, email: true, signupsAllowed: true }));
+  }
+  return capabilitiesPromise;
+};
+
 const supabaseProvider = {
   id: "supabase",
+  capabilities: supabaseCapabilities,
   async currentSession() {
     const c = await client();
     const { data } = await c.auth.getSession();

@@ -46,6 +46,7 @@ export const createTestProvider = ({ users = [] } = {}) => {
 
   const provider = {
     id: "test",
+    async capabilities() { return { google: true, email: true, signupsAllowed: true }; },
     // ── auth ────────────────────────────────────────────────────────────────
     async currentSession() { return current; },
     async onChange(cb) { changeListeners.add(cb); return () => changeListeners.delete(cb); },
