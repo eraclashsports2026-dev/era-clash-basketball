@@ -69,10 +69,12 @@ export default function ArenaHeader({
         }}>
           {/* The canonical mark, never redrawn: public/brand/eraclash-logo-mk1.png
               (data/validation/9a2/logo-mk1-manifest.json). Sized by height so the
-              header keeps its 64px contract. */}
-          <img className="ec-brand-logo" src="/brand/eraclash-logo-mk1.png" alt="" width="760" height="304" decoding="async"
+              header keeps its 64px contract. Phase 9A.3P: this is the header's ONLY
+              image — EraClash's own mark with its BASKETBALL descriptor. No league
+              mark, no second crest, nothing added to fill space. */}
+          <img className="ec-brand-logo" src="/brand/eraclash-logo-mk1.png" alt="" width="760" height="304" decoding="async" data-brand-mark="eraclash-logo-mk1"
             style={{ height: 34, width: "auto", display: "block" }} />
-          <span className="ec-brand-sport" style={{ fontSize: 8.5, letterSpacing: 3.4, color: "var(--ec-a-text-muted, #93a0b5)", fontWeight: 800, lineHeight: 1 }}>BASKETBALL</span>
+          <span className="ec-brand-sport" style={{ fontSize: 8.5, letterSpacing: 3.4, color: "var(--ec-a-text-secondary, #c3cddd)", fontWeight: 800, lineHeight: 1 }}>BASKETBALL</span>
         </button>
 
         <nav aria-label="Main" style={{ display: "flex", alignItems: "center", gap: 4, flexWrap: "wrap" }}>
