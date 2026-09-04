@@ -2,13 +2,13 @@
   "artifact": "my-eraclash-qa",
   "phase": "9B.1 — real accounts, cloud career, My EraClash",
   "mode": "my-eraclash",
-  "baseUrl": "http://localhost:4177",
+  "baseUrl": "http://localhost:4180",
   "provider": "supabase (auth + postgres + row level security)",
   "cloudAccountsConfigured": false,
   "cloudAccountsReady": false,
   "checks": 9,
-  "passed": 8,
-  "failed": 1,
+  "passed": 9,
+  "failed": 0,
   "results": [
     {
       "name": "the career page requires an account and says so, with a labelled landmark and an h1",
@@ -32,8 +32,8 @@
     },
     {
       "name": "the global footer's controls are at least a 44px touch target",
-      "pass": false,
-      "detail": "[{\"text\":\"Image credits\",\"height\":12,\"width\":68}]"
+      "pass": true,
+      "detail": "[{\"text\":\"Image credits\",\"height\":44,\"width\":84}]"
     },
     {
       "name": "every text element on the career page clears WCAG AA on the surface it sits on",
@@ -103,8 +103,8 @@
     "footerLinks": [
       {
         "text": "Image credits",
-        "height": 12,
-        "width": 68
+        "height": 44,
+        "width": 84
       }
     ]
   }

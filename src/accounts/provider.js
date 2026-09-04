@@ -10,7 +10,7 @@
 // The SDK is imported dynamically so a build with cloud accounts off never
 // downloads it, and guest play is untouched.
 import { SUPABASE_URL, SUPABASE_ANON_KEY, cloudAccountsEnabled, cleanDisplayName } from "./config.js";
-import { readProof, PROOF } from "./linkProof.js";
+import { readProof, VIA } from "./linkProof.js";
 
 let injected = null;
 /** Tests (and only tests) install an adapter here. */
@@ -118,7 +118,7 @@ const supabaseProvider = {
     if (error) throw asError(error);
     return { sent: true };
   },
-  async verifyEmailCode(email, code) {
+  async verifyEmailCode(email, code, type = null) {
     const c = await client();
     const addr = String(email || "").trim();
     const token = String(code || "").trim();
@@ -128,8 +128,12 @@ const supabaseProvider = {
     // both rather than making the visitor guess, and keep the first real
     // failure to report if neither works.
     let firstError = null;
-    for (const type of ["email", "signup", "magiclink"]) {
-      const { data, error } = await c.auth.verifyOtp({ email: addr, token, type });
+    // Which type a token carries depends on whether the address already
+    // existed, which the dialog cannot know. Try the stated one first, then the
+    // rest, rather than making someone guess.
+    const types = type ? [type, ...["email", "signup", "magiclink"].filter((t) => t !== type)] : ["email", "signup", "magiclink"];
+    for (const type_ of types) {
+      const { data, error } = await c.auth.verifyOtp({ email: addr, token, type: type_ });
       if (!error && data?.session) return session(data.session);
       firstError = firstError || error;
     }
@@ -160,8 +164,8 @@ const supabaseProvider = {
    */
   async exchangeCodeForSession(codeOrUrl) {
     const c = await client();
-    const proof = readProof(codeOrUrl);
-    const code = proof?.kind === PROOF.CODE ? proof.value : String(codeOrUrl || "").trim();
+    const first = readProof(codeOrUrl);
+    const code = first?.via === VIA.CODE ? first.value : String(codeOrUrl || "").trim();
     const { data, error } = await c.auth.exchangeCodeForSession(code);
     if (error) {
       // PKCE keeps the code verifier in the REQUESTING browser's storage, so a

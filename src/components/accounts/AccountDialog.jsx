@@ -1,5 +1,5 @@
 // ── Sign in / create a free account ─────────────────────────────────────────
-// One dialog, two real routes to an account: Google, or an email one-time code.
+// One dialog, two real routes to an account: Google, or an emailed link.
 // No password field exists anywhere in this product, so there is no password to
 // store, leak or reset. The email is used to authenticate and is never shown as
 // a public identity.
@@ -11,6 +11,7 @@ import { useEffect, useRef, useState } from "react";
 import { T, R } from "../../theme.js";
 import { withProvider, provider } from "../../accounts/provider.js";
 import { cloudAccountsStatus, safeReturnPath } from "../../accounts/config.js";
+import { redeem } from "../../accounts/linkProof.js";
 import { adopt } from "../../accounts/accountState.js";
 import { track } from "../../analytics.js";
 
@@ -80,14 +81,15 @@ export default function AccountDialog({ open, entryPoint = "header", returnTo = 
     try {
       // Whatever the email actually gave you: a typed code, a link copied out
       // of the message, or a link copied out of an address bar that failed to
-      // load. src/accounts/linkProof.js decides which of the three it is.
-      const proof = readProof(code);
-      if (!proof) throw Object.assign(new Error("CODE_INVALID_OR_EXPIRED"), { code: "CODE_INVALID_OR_EXPIRED" });
-      const session = proof.kind === PROOF.OTP
-        ? await withProvider((p) => p.verifyEmailCode(email, proof.value))
-        : proof.kind === PROOF.TOKEN_HASH
-          ? await withProvider((p) => p.verifyTokenHash(proof.value, null))
-          : await withProvider((p) => p.exchangeCodeForSession(proof.value));
+      // load. linkProof.js works out every legitimate way to redeem it and
+      // tries them best-first — the same single-use proof, presented the way
+      // each endpoint expects it.
+      const session = await redeem(code, {
+        email,
+        verifyEmailCode: (a, v, t) => withProvider((p) => p.verifyEmailCode(a, v, t)),
+        verifyTokenHash: (v, t) => withProvider((p) => p.verifyTokenHash(v, t)),
+        exchangeCodeForSession: (v) => withProvider((p) => p.exchangeCodeForSession(v)),
+      });
       if (!session) throw Object.assign(new Error("CODE_INVALID_OR_EXPIRED"), { code: "CODE_INVALID_OR_EXPIRED" });
       await adopt(session);
       track("account_signin_completed", { authMethod: "email", entryPoint });

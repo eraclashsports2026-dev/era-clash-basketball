@@ -16,7 +16,7 @@ import { useEffect, useRef, useState } from "react";
 import { T, R } from "../../theme.js";
 import { withProvider, provider } from "../../accounts/provider.js";
 import { safeReturnPath } from "../../accounts/config.js";
-import { readProof, PROOF } from "../../accounts/linkProof.js";
+import { redeem } from "../../accounts/linkProof.js";
 import { adopt } from "../../accounts/accountState.js";
 import { track } from "../../analytics.js";
 
@@ -48,16 +48,15 @@ export default function AuthCallback({ onDone }) {
     // the dialog's paste field, so a link behaves identically wherever it is
     // redeemed. A bare OTP token cannot be redeemed here, because redeeming one
     // needs the address and this route has no way to know it.
-    const proof = readProof(url);
 
     (async () => {
       try {
-        if (!proof || proof.kind === PROOF.OTP) {
-          throw Object.assign(new Error("CODE_INVALID_OR_EXPIRED"), { code: "CODE_INVALID_OR_EXPIRED" });
-        }
-        const session = proof.kind === PROOF.TOKEN_HASH
-          ? await withProvider((p) => p.verifyTokenHash(proof.value, params.get("type")))
-          : await withProvider((p) => p.exchangeCodeForSession(proof.value));
+        // No address is passed, so the attempts that need one are skipped
+        // rather than sent with a guessed address.
+        const session = await redeem(url, {
+          verifyTokenHash: (v, t) => withProvider((p) => p.verifyTokenHash(v, t)),
+          exchangeCodeForSession: (v) => withProvider((p) => p.exchangeCodeForSession(v)),
+        });
         if (!session) throw Object.assign(new Error("CODE_INVALID_OR_EXPIRED"), { code: "CODE_INVALID_OR_EXPIRED" });
         await adopt(session);
         track("account_signin_completed", { success: true, authMethod: session.authMethod });
