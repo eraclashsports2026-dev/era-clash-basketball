@@ -22,7 +22,7 @@ const MESSAGE = {
   NETWORK: "The network dropped out. Try again.",
   PROVIDER_ERROR: "Sign-in is unavailable for a moment. Try again.",
   CLOUD_ACCOUNTS_DISABLED: "Accounts are not switched on in this build yet.",
-  LINK_OPENED_ELSEWHERE: "That link has to be opened in this browser. Enter the code from the email instead — that works anywhere.",
+  LINK_OPENED_ELSEWHERE: "That link belongs to a different browser. Copy the link's address out of the email and paste it above, here, in the browser that asked for it.",
 };
 
 export default function AccountDialog({ open, entryPoint = "header", returnTo = "/play", intent = "signup", onClose, onSignedIn }) {
@@ -78,7 +78,16 @@ export default function AccountDialog({ open, entryPoint = "header", returnTo = 
   const verify = async () => {
     setFailure(null);
     try {
-      const session = await withProvider((p) => p.verifyEmailCode(email, code));
+      // Whatever the email actually gave you: a typed code, a link copied out
+      // of the message, or a link copied out of an address bar that failed to
+      // load. src/accounts/linkProof.js decides which of the three it is.
+      const proof = readProof(code);
+      if (!proof) throw Object.assign(new Error("CODE_INVALID_OR_EXPIRED"), { code: "CODE_INVALID_OR_EXPIRED" });
+      const session = proof.kind === PROOF.OTP
+        ? await withProvider((p) => p.verifyEmailCode(email, proof.value))
+        : proof.kind === PROOF.TOKEN_HASH
+          ? await withProvider((p) => p.verifyTokenHash(proof.value, null))
+          : await withProvider((p) => p.exchangeCodeForSession(proof.value));
       if (!session) throw Object.assign(new Error("CODE_INVALID_OR_EXPIRED"), { code: "CODE_INVALID_OR_EXPIRED" });
       await adopt(session);
       track("account_signin_completed", { authMethod: "email", entryPoint });
@@ -139,14 +148,15 @@ export default function AccountDialog({ open, entryPoint = "header", returnTo = 
         {available && stage === "code" && (
           <>
             <p style={{ fontSize: 13, color: T.textDim, margin: "0 0 12px", lineHeight: 1.55 }}>
-              Check <b>{email}</b>. If the message shows a code, enter it here. If it only shows a
-              link, open that link <b>in this browser</b> — a link cannot sign you in anywhere else.
+              Check <b>{email}</b>. Paste the code if the message shows one — or right-click the
+              sign-in link, copy the address, and paste the whole thing here. Do it in this browser,
+              which is the one that asked for it.
             </p>
-            <label htmlFor="ec-auth-code" style={label}>One-time code</label>
-            <input id="ec-auth-code" inputMode="numeric" autoComplete="one-time-code" value={code} maxLength={8}
-              onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))}
+            <label htmlFor="ec-auth-code" style={label}>Code, or the sign-in link</label>
+            <input id="ec-auth-code" autoComplete="one-time-code" value={code} maxLength={400}
+              onChange={(e) => setCode(e.target.value)}
               aria-describedby={failure ? "ec-auth-error" : undefined} style={input} />
-            <button onClick={verify} disabled={code.length < 6} style={primary}>SIGN IN</button>
+            <button onClick={verify} disabled={code.trim().length < 6} style={primary}>SIGN IN</button>
             <button onClick={() => { setStage("choose"); setCode(""); }} style={quiet}>USE A DIFFERENT ADDRESS</button>
           </>
         )}

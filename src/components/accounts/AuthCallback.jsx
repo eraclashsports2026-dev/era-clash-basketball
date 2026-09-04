@@ -16,6 +16,7 @@ import { useEffect, useRef, useState } from "react";
 import { T, R } from "../../theme.js";
 import { withProvider, provider } from "../../accounts/provider.js";
 import { safeReturnPath } from "../../accounts/config.js";
+import { readProof, PROOF } from "../../accounts/linkProof.js";
 import { adopt } from "../../accounts/accountState.js";
 import { track } from "../../analytics.js";
 
@@ -42,19 +43,21 @@ export default function AuthCallback({ onDone }) {
     }
     if (!provider()) { setFailure("CLOUD_ACCOUNTS_DISABLED"); setState("failed"); return; }
 
-    // A link can arrive carrying either proof, and they behave differently:
-    //   token_hash — self-contained, so it signs you in in ANY browser
-    //   code       — PKCE, so it only completes in the browser that asked
-    // Prefer the token hash when it is there, because it is the one that
-    // survives forwarding the email to a phone.
-    const tokenHash = params.get("token_hash") || params.get("token");
-    const otpType = params.get("type");
+    // A link can arrive carrying more than one kind of proof, and they are not
+    // interchangeable — see src/accounts/linkProof.js. The same reader serves
+    // the dialog's paste field, so a link behaves identically wherever it is
+    // redeemed. A bare OTP token cannot be redeemed here, because redeeming one
+    // needs the address and this route has no way to know it.
+    const proof = readProof(url);
 
     (async () => {
       try {
-        const session = tokenHash
-          ? await withProvider((p) => p.verifyTokenHash(tokenHash, otpType))
-          : await withProvider((p) => p.exchangeCodeForSession(url));
+        if (!proof || proof.kind === PROOF.OTP) {
+          throw Object.assign(new Error("CODE_INVALID_OR_EXPIRED"), { code: "CODE_INVALID_OR_EXPIRED" });
+        }
+        const session = proof.kind === PROOF.TOKEN_HASH
+          ? await withProvider((p) => p.verifyTokenHash(proof.value, params.get("type")))
+          : await withProvider((p) => p.exchangeCodeForSession(proof.value));
         if (!session) throw Object.assign(new Error("CODE_INVALID_OR_EXPIRED"), { code: "CODE_INVALID_OR_EXPIRED" });
         await adopt(session);
         track("account_signin_completed", { success: true, authMethod: session.authMethod });
@@ -79,7 +82,7 @@ export default function AuthCallback({ onDone }) {
             : failure === "CLOUD_ACCOUNTS_DISABLED"
               ? "Accounts are not switched on in this build yet. Guest play is unaffected."
               : failure === "LINK_OPENED_ELSEWHERE"
-                ? "This link only works in the browser that asked for it. Your account is fine — go back, enter your email again, and type the code from the message instead. A code works on any device."
+                ? "This link only works in the browser that asked for it. Your account is fine. Go back to the lobby, enter your email, and when the message arrives copy the link's address and paste it into the code field in THIS browser."
                 : "The sign-in link was already used or has expired. Nothing was lost — try again from the header."}
         </div>
         {state === "failed" && (

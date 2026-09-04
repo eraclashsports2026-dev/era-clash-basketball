@@ -10,6 +10,7 @@
 // The SDK is imported dynamically so a build with cloud accounts off never
 // downloads it, and guest play is untouched.
 import { SUPABASE_URL, SUPABASE_ANON_KEY, cloudAccountsEnabled, cleanDisplayName } from "./config.js";
+import { readProof, PROOF } from "./linkProof.js";
 
 let injected = null;
 /** Tests (and only tests) install an adapter here. */
@@ -127,7 +128,7 @@ const supabaseProvider = {
     // both rather than making the visitor guess, and keep the first real
     // failure to report if neither works.
     let firstError = null;
-    for (const type of ["email", "signup"]) {
+    for (const type of ["email", "signup", "magiclink"]) {
       const { data, error } = await c.auth.verifyOtp({ email: addr, token, type });
       if (!error && data?.session) return session(data.session);
       firstError = firstError || error;
@@ -152,9 +153,16 @@ const supabaseProvider = {
     }
     throw asError(firstError || new Error("CODE_INVALID_OR_EXPIRED"));
   },
-  async exchangeCodeForSession(url) {
+  /**
+   * @param codeOrUrl a bare PKCE code, or a URL carrying ?code=. The SDK takes
+   *   the CODE — passing it a whole URL fails every time, which is the bug that
+   *   made this callback unable to complete a sign-in even in the right browser.
+   */
+  async exchangeCodeForSession(codeOrUrl) {
     const c = await client();
-    const { data, error } = await c.auth.exchangeCodeForSession(url);
+    const proof = readProof(codeOrUrl);
+    const code = proof?.kind === PROOF.CODE ? proof.value : String(codeOrUrl || "").trim();
+    const { data, error } = await c.auth.exchangeCodeForSession(code);
     if (error) {
       // PKCE keeps the code verifier in the REQUESTING browser's storage, so a
       // link opened anywhere else — a phone, another browser, a private window

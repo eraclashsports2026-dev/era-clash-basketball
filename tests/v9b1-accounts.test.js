@@ -18,6 +18,7 @@ import {
   CANDIDATE_ID_SHAPE, MAX_IMPORT_CANDIDATES, flagOn as serverFlagOn, keyShapeOk as serverKeyShapeOk,
   looksLikeSecretKey as serverLooksLikeSecretKey, serviceKeyShapeOk as serverServiceKeyShapeOk,
 } from "../api/_lib/cloudAccounts.js";
+import { readProof, isBrowserBound, PROOF } from "../src/accounts/linkProof.js";
 import { EVENTS_ALLOWLIST } from "../api/events.js";
 import { ACTIVATION_EVENTS } from "../src/activation.js";
 
@@ -587,5 +588,101 @@ describe("preservation", () => {
     expect(csp).toMatch(/connect-src 'self' https:\/\/\*\.supabase\.co https:\/\/\*\.supabase\.in;/);
     expect(csp).toMatch(/script-src 'self';/);          // no third-party script may run
     expect(csp).toMatch(/frame-ancestors 'none'/);
+  });
+});
+
+// ── Redeeming what the email actually sent ───────────────────────────────────
+// This block exists because of a defect I shipped: the callback handed a whole
+// URL to exchangeCodeForSession, whose parameter is a code. It could never have
+// produced a session, and no test noticed, because every test built its own
+// happy path instead of reading the SDK's signature. So these tests pin the
+// signature and the argument, not just the behaviour.
+describe("redeeming an email link", () => {
+  const REF = "https://lfybiphmqkiecfrqsfzt.supabase.co";
+
+  it("a typed one-time code is a one-time code", () => {
+    expect(readProof("123456")).toEqual({ kind: PROOF.OTP, value: "123456" });
+    expect(readProof(" 12345678 ")).toEqual({ kind: PROOF.OTP, value: "12345678" });
+  });
+
+  it("the untouched link out of the email is portable, and stays portable", () => {
+    // This is the shape Supabase's default template sends. Its token is
+    // redeemed WITH the address, so it works on any device — which is the whole
+    // reason the paste field accepts a URL at all.
+    const p = readProof(`${REF}/auth/v1/verify?token=abc123def456&type=magiclink&redirect_to=https://x.vercel.app/auth/callback`);
+    expect(p).toEqual({ kind: PROOF.OTP, value: "abc123def456" });
+    expect(isBrowserBound(p)).toBe(false);
+  });
+
+  it("what is left in a failed address bar is a PKCE code, and is browser-bound", () => {
+    // Exactly the URL the owner's Safari could not load: the provider had
+    // already consumed the token and redirected with a code.
+    const p = readProof("http://localhost:3000/?code=e0c581d9-f03d-48ef-9ec4-ad7fd8a2ddd4");
+    expect(p).toEqual({ kind: PROOF.CODE, value: "e0c581d9-f03d-48ef-9ec4-ad7fd8a2ddd4" });
+    expect(isBrowserBound(p)).toBe(true);
+  });
+
+  it("a portable proof is never downgraded to a browser-bound one", () => {
+    const p = readProof("https://x.vercel.app/auth/callback?token_hash=deadbeef&code=e0c581d9-f03d-48ef-9ec4-ad7fd8a2ddd4");
+    expect(p.kind).toBe(PROOF.TOKEN_HASH);
+  });
+
+  it("bare values are told apart by shape", () => {
+    expect(readProof("e0c581d9-f03d-48ef-9ec4-ad7fd8a2ddd4").kind).toBe(PROOF.CODE);
+    expect(readProof("pkce_9f2c1a").kind).toBe(PROOF.CODE);
+    expect(readProof("a".repeat(0) + "0123456789abcdef".repeat(4)).kind).toBe(PROOF.TOKEN_HASH);
+  });
+
+  it("nothing usable produces nothing, rather than a request built on a guess", () => {
+    expect(readProof("")).toBeNull();
+    expect(readProof(null)).toBeNull();
+    expect(readProof("   ")).toBeNull();
+    expect(readProof("https://x.vercel.app/auth/callback?next=/play")).toBeNull();
+  });
+
+  it("angle brackets from a copied mail client link are stripped", () => {
+    expect(readProof("<https://x.vercel.app/c?token_hash=abc123>").value).toBe("abc123");
+  });
+
+  it("the SDK's exchange really does take a code, not a URL", () => {
+    // The defect in one line. If a future SDK changes this parameter, this test
+    // fails and the callback gets looked at, instead of silently breaking.
+    const dts = "node_modules/@supabase/auth-js/dist/module/GoTrueClient.d.ts";
+    if (!existsSync(dts)) return;
+    expect(read(dts)).toMatch(/exchangeCodeForSession\(authCode: string/);
+  });
+
+  it("no caller ever hands a whole URL to the exchange", () => {
+    for (const f of ["src/components/accounts/AuthCallback.jsx", "src/components/accounts/AccountDialog.jsx"]) {
+      const t = src(f);
+      expect(t, f).not.toMatch(/exchangeCodeForSession\(\s*url\s*\)/);
+      expect(t, f).not.toMatch(/exchangeCodeForSession\(\s*window\.location/);
+      expect(t, f).toMatch(/exchangeCodeForSession\(proof\.value\)/);
+    }
+  });
+
+  it("the paste field keeps what was pasted", () => {
+    // It used to strip every non-digit, so a link or a UUID code could not be
+    // entered at all — the field silently ate the only proof the owner had.
+    const t = src("src/components/accounts/AccountDialog.jsx");
+    expect(t).not.toMatch(/setCode\(e\.target\.value\.replace/);
+    expect(t).toMatch(/onChange=\{\(e\) => setCode\(e\.target\.value\)\}/);
+    expect(t).toMatch(/maxLength=\{400\}/);
+  });
+
+  it("all three entry points redeem through the one reader", () => {
+    for (const f of ["src/components/accounts/AuthCallback.jsx", "src/components/accounts/AccountDialog.jsx", "src/accounts/provider.js"]) {
+      expect(src(f), f).toMatch(/readProof/);
+    }
+  });
+
+  it("no copy promises a code the default template does not send", () => {
+    // Supabase's stock templates render only the confirmation URL. Telling
+    // someone to "enter the 6-digit code" when no code was sent is the failure
+    // this asserts against.
+    for (const f of ["src/components/accounts/AccountDialog.jsx", "src/components/accounts/AuthCallback.jsx"]) {
+      expect(read(f), f).not.toMatch(/6[- ]digit/i);
+      expect(read(f), f).not.toMatch(/type the code from the (message|email)/i);
+    }
   });
 });
