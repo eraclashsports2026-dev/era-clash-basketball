@@ -1,0 +1,18 @@
+{
+  "artifact": "phase9b1-ledger-reconciliation",
+  "phase": "9B.1A — Supabase preview activation and live account certification",
+  "items": [
+    "signed-in header",
+    "cross-device sync"
+  ],
+  "historicalState": "NOT_REPRODUCIBLE_WITH_EVIDENCE",
+  "correctPreActivationState": "EXTERNAL_CONFIGURATION_PENDING",
+  "reason": "A live Supabase session and cloud database did not exist when Phase 9B.1 ran. The capabilities were not unreproducible; they were not yet live-testable. The distinction matters because one implies a defect that could not be pinned down and the other implies a dependency that had not been supplied.",
+  "currentState": "EXTERNAL_CONFIGURATION_PENDING — the provider is now active and the database side is certified, but both items still need a real signed-in session, and establishing one is blocked by the sign-in defect this phase found.",
+  "requiredTerminalState": [
+    "FIXED_AND_VERIFIED",
+    "EXTERNAL_BLOCKER_WITH_SAFE_PRODUCT_FALLBACK"
+  ],
+  "historicalEvidenceRewritten": false,
+  "note": "data/validation/9b1/* is left exactly as it was recorded. This file is the correction, kept beside it rather than in place of it."
+}

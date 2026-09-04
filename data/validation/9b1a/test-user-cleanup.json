@@ -1,0 +1,17 @@
+{
+  "artifact": "test-user-cleanup",
+  "phase": "9B.1A — Supabase preview activation and live account certification",
+  "syntheticUsersCreated": 2,
+  "syntheticUsersRemoved": 2,
+  "syntheticCareerRowsCreated": 2,
+  "syntheticCareerRowsRemoved": 2,
+  "syntheticClaimsCreated": 2,
+  "syntheticClaimsRemoved": 2,
+  "method": "Deleted from auth.users; every account table cascades, which this run also verifies.",
+  "verifiedAfter": {
+    "savedClashes": 0,
+    "resultClaims": 0
+  },
+  "localSecretFiles": "none created — no synthetic passwords were needed, because the probes set the role and JWT claims directly rather than signing in",
+  "residual": "One pre-existing real account remains and was deliberately NOT touched: it is the owner's own, and deleting it needs their permission."
+}

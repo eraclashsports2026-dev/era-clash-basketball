@@ -1,0 +1,40 @@
+{
+  "artifact": "live-migration-qa",
+  "phase": "9B.1A — Supabase preview activation and live account certification",
+  "method": "Read against the live project through the Supabase connector.",
+  "migrations": [
+    {
+      "version": "0001_accounts",
+      "appliedAt": "2026-09-04T18:34:33.719Z"
+    },
+    {
+      "version": "0002_accounts_hardening",
+      "appliedAt": "2026-09-04T18:45:55.545Z"
+    }
+  ],
+  "tables": {
+    "profiles": "present",
+    "saved_clashes": "present",
+    "result_claims": "present",
+    "schema_migrations": "present"
+  },
+  "views": {
+    "career_summary": "security_invoker=true",
+    "career_by_mode": "security_invoker=true",
+    "career_streak": "security_invoker=true"
+  },
+  "constraints": {
+    "profilesUserIdReferencesAuthUsers": true,
+    "savedClashesUserIdReferencesAuthUsers": true,
+    "uniqueUserIdResultId": true,
+    "onDeleteCascade": true,
+    "resultIdShapeChecked": true,
+    "displayNameLengthAndContentChecked": true
+  },
+  "triggers": {
+    "on_auth_user_created": "verified live — creating a user produced its profile with the display name seeded from full_name",
+    "profiles_touch_updated_at": "present"
+  },
+  "careerViewsComputeCorrectly": "verified live: games_played 1, streak outcome win for one user and loss for the other",
+  "passed": true
+}

@@ -59,6 +59,7 @@ export const FAILURE_CODES = Object.freeze([
   "RATE_LIMITED", "CODE_INVALID_OR_EXPIRED", "EMAIL_INVALID", "NOT_PERMITTED",
   "NETWORK", "PROVIDER_ERROR", "DISPLAY_NAME_INVALID", "CLOUD_ACCOUNTS_DISABLED",
   "RESULT_NOT_FOUND", "NOT_YOUR_RESULT", "ALREADY_CLAIMED", "SAVE_FAILED",
+  "LINK_OPENED_ELSEWHERE",
 ]);
 
 /**
@@ -118,16 +119,33 @@ const supabaseProvider = {
   },
   async verifyEmailCode(email, code) {
     const c = await client();
-    const { data, error } = await c.auth.verifyOtp({
-      email: String(email || "").trim(), token: String(code || "").trim(), type: "email",
-    });
-    if (error) throw asError(error);
-    return data?.session ? session(data.session) : null;
+    const addr = String(email || "").trim();
+    const token = String(code || "").trim();
+    // A code issued to a BRAND NEW address is a "signup" token; one issued to
+    // an existing account is an "email" token. Which of the two you get depends
+    // on whether the address already existed, which the dialog cannot know. Try
+    // both rather than making the visitor guess, and keep the first real
+    // failure to report if neither works.
+    let firstError = null;
+    for (const type of ["email", "signup"]) {
+      const { data, error } = await c.auth.verifyOtp({ email: addr, token, type });
+      if (!error && data?.session) return session(data.session);
+      firstError = firstError || error;
+    }
+    throw asError(firstError || new Error("CODE_INVALID_OR_EXPIRED"));
   },
   async exchangeCodeForSession(url) {
     const c = await client();
     const { data, error } = await c.auth.exchangeCodeForSession(url);
-    if (error) throw asError(error);
+    if (error) {
+      // PKCE keeps the code verifier in the REQUESTING browser's storage, so a
+      // link opened anywhere else — a phone, another browser, a private window
+      // — cannot complete even though the address was verified. That is the
+      // difference between an account that exists and a session that exists,
+      // and it deserves its own message rather than "invalid link".
+      const missingVerifier = /verifier|code challenge|pkce/i.test(String(error?.message || ""));
+      throw Object.assign(new Error(missingVerifier ? "LINK_OPENED_ELSEWHERE" : asError(error).code), { code: missingVerifier ? "LINK_OPENED_ELSEWHERE" : asError(error).code });
+    }
     return data?.session ? session(data.session) : null;
   },
   async signOut() {

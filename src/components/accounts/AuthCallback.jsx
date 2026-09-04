@@ -68,7 +68,9 @@ export default function AuthCallback({ onDone }) {
             ? "One moment. Your Clash and your place in the game are being kept."
             : failure === "CLOUD_ACCOUNTS_DISABLED"
               ? "Accounts are not switched on in this build yet. Guest play is unaffected."
-              : "The sign-in link was already used or has expired. Nothing was lost — try again from the header."}
+              : failure === "LINK_OPENED_ELSEWHERE"
+                ? "This link only works in the browser that asked for it. Your account is fine — go back, enter your email again, and type the code from the message instead. A code works on any device."
+                : "The sign-in link was already used or has expired. Nothing was lost — try again from the header."}
         </div>
         {state === "failed" && (
           <button onClick={() => onDone?.({ session: null, next: "/play" })} style={{
