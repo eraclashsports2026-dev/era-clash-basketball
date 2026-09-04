@@ -299,13 +299,17 @@ if (MODE === "my-eraclash" || MODE === "responsive") {
       overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
       // Out of this phase's scope, measured so it is not lost: the global
       // footer's credits link predates Phase 9B.1 and is below 44px.
-      footerLinks: [...document.querySelectorAll("footer button, footer a")].filter((b) => b.offsetParent).map((b) => ({ text: (b.textContent || "").trim().slice(0, 24), height: Math.round(b.getBoundingClientRect().height) })),
+      footerLinks: [...document.querySelectorAll("footer button, footer a")].filter((b) => b.offsetParent).map((b) => ({ text: (b.textContent || "").trim().slice(0, 24), height: Math.round(b.getBoundingClientRect().height), width: Math.round(b.getBoundingClientRect().width) })),
     }));
     ok("the career page requires an account and says so, with a labelled landmark and an h1", /My EraClash/.test(m.heading || "") && m.landmark);
     ok("a signed-out visitor is offered an account rather than shown someone's data", m.cta.some((c) => /CREATE FREE ACCOUNT OR SIGN IN/.test(c)));
     ok("no rank, contender grade, percentile or leaderboard position is invented", !m.fabricated);
     ok("every account control and header control is at least 44px, and the page does not overflow", m.minTarget >= 44 && m.overflow <= 0, `${m.minTarget}px · ${m.overflow}px`);
-    ok("the pre-existing global footer credits link is recorded as an out-of-scope gap, not silently excluded", Array.isArray(m.footerLinks), JSON.stringify(m.footerLinks));
+    // Was recorded as an out-of-scope gap in Phase 9B.1; now asserted, because
+    // the footer's hit area has been raised to the same 44px minimum.
+    ok("the global footer's controls are at least a 44px touch target",
+      m.footerLinks.length > 0 && m.footerLinks.every((l) => l.height >= 44),
+      JSON.stringify(m.footerLinks));
 
     // Contrast, measured against the surface each element actually sits on.
     // The career page is a READING surface: without the editorial shell its
