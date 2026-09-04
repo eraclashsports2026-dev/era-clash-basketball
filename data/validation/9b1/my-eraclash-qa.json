@@ -1,0 +1,74 @@
+{
+  "artifact": "my-eraclash-qa",
+  "phase": "9B.1 — real accounts, cloud career, My EraClash",
+  "mode": "my-eraclash",
+  "baseUrl": "http://localhost:4177",
+  "provider": "supabase (auth + postgres + row level security)",
+  "cloudAccountsConfigured": false,
+  "cloudAccountsReady": false,
+  "checks": 7,
+  "passed": 7,
+  "failed": 0,
+  "results": [
+    {
+      "name": "the career page requires an account and says so, with a labelled landmark and an h1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a signed-out visitor is offered an account rather than shown someone's data",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no rank, contender grade, percentile or leaderboard position is invented",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "every account control and header control is at least 44px, and the page does not overflow",
+      "pass": true,
+      "detail": "44px · 0px"
+    },
+    {
+      "name": "the pre-existing global footer credits link is recorded as an out-of-scope gap, not silently excluded",
+      "pass": true,
+      "detail": "[{\"text\":\"Image credits\",\"height\":12}]"
+    },
+    {
+      "name": "guest play is untouched: Chaos Clash still carries the one primary action",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the header shows an account call to action and no signed-in identity",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "myEraClash": {
+    "heading": "My EraClash",
+    "landmark": true,
+    "cta": [
+      "BASKETBALL",
+      "Play▾",
+      "Fantasy▾",
+      "Daily",
+      "Challenges",
+      "Leaderboard",
+      "My EraClash",
+      "Create free account",
+      "CREATE FREE ACCOUNT OR SIGN IN",
+      "Image credits"
+    ],
+    "fabricated": false,
+    "minTarget": 44,
+    "overflow": 0,
+    "footerLinks": [
+      {
+        "text": "Image credits",
+        "height": 12
+      }
+    ]
+  }
+}

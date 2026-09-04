@@ -1,0 +1,83 @@
+{
+  "artifact": "account-schema-contract",
+  "phase": "9B.1 — real accounts, cloud career, My EraClash",
+  "mode": "migrations",
+  "baseUrl": null,
+  "provider": "supabase (auth + postgres + row level security)",
+  "cloudAccountsConfigured": false,
+  "cloudAccountsReady": false,
+  "checks": 11,
+  "passed": 11,
+  "failed": 0,
+  "results": [
+    {
+      "name": "one versioned migration exists and records its own version",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "every user-owned table exists with a user_id bound to auth.users",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a profile is unique per user and its name is length- and content-constrained",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "one clash per user per result, and one owner per result",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the result id shape is enforced in the database, not only in the client",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "career statistics are derived views, not mutable counters that can drift",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no email column, no seed, no key, no password anywhere in the schema",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the device session is stored only as a 64-hex hash",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a snapshot is stored so a saved report survives the result cache expiring",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "exactly one profile is created per sign-up, idempotently",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "deleting an account cascades rather than orphaning private career data",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "schema": {
+    "migration": "supabase/migrations/0001_accounts.sql",
+    "sha256": "de9c9abdb6c734729a67bfff2754f90e6c01e9e81964a8054070cc5771a24b19",
+    "tables": [
+      "profiles",
+      "saved_clashes",
+      "result_claims"
+    ],
+    "views": [
+      "career_summary",
+      "career_by_mode",
+      "career_streak"
+    ]
+  }
+}

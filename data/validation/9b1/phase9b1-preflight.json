@@ -1,0 +1,78 @@
+{
+  "artifact": "phase9b1-preflight",
+  "phase": "9B.1 — real accounts, cloud career, My EraClash",
+  "mode": "preflight",
+  "baseUrl": null,
+  "provider": "supabase (auth + postgres + row level security)",
+  "cloudAccountsConfigured": false,
+  "cloudAccountsReady": false,
+  "checks": 10,
+  "passed": 10,
+  "failed": 0,
+  "results": [
+    {
+      "name": "the account layer declares one version on both sides",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "one module owns the flag; nothing else reads the provider environment directly",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "with no provider configured the build reports itself disabled, with a reason",
+      "pass": true,
+      "detail": "PROVIDER_NOT_CONFIGURED"
+    },
+    {
+      "name": "the server reports configuration as booleans only — never a key or a fragment",
+      "pass": true,
+      "detail": "{\"providerUrlConfigured\":false,\"serviceRoleConfigured\":false,\"anonKeyConfigured\":false,\"enabled\":false}"
+    },
+    {
+      "name": "no fake account can succeed while disabled: every call goes through withProvider",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the test adapter is a test double and is imported by nothing under src/",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "guest play needs no account: Chaos Clash and the Daily are GUEST capabilities",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no serverless function was added: twelve routes plus middleware",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the cloud actions live on the existing career route",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the new client-rendered routes are gated by the preview middleware and served by the SPA",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "configuration": {
+    "client": {
+      "enabled": false,
+      "reason": "PROVIDER_NOT_CONFIGURED"
+    },
+    "server": {
+      "providerUrlConfigured": false,
+      "serviceRoleConfigured": false,
+      "anonKeyConfigured": false,
+      "enabled": false
+    },
+    "ready": false
+  },
+  "setupDocument": "docs/accounts/eraclash-account-provider-setup.md"
+}

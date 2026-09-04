@@ -1,0 +1,173 @@
+{
+  "artifact": "guest-claim-qa",
+  "phase": "9B.1 — real accounts, cloud career, My EraClash",
+  "mode": "guest-claim",
+  "baseUrl": null,
+  "provider": "supabase (auth + postgres + row level security)",
+  "cloudAccountsConfigured": false,
+  "cloudAccountsReady": false,
+  "checks": 23,
+  "passed": 23,
+  "failed": 0,
+  "results": [
+    {
+      "name": "the account identity comes from verifying the token with the provider, never from a body",
+      "pass": true,
+      "detail": "who.userId, who.userId"
+    },
+    {
+      "name": "the game data comes from the authoritative record, never from the request",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "ownership is proved by the server-minted device session cookie",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "one result has one owner, decided by a primary key rather than a check-then-write race",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a repeated save is idempotent on (user, result)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a save never re-runs the simulation",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the snapshot drops the device session, so a career row cannot identify a browser",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a challenge is fingerprinted, never stored in the clear",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a proposed import list is capped and every id is authorised on its own",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "only authoritative result-id shapes are accepted",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the career row's scores, era, MVP and candidate all come from the record",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a tie and a loss are derived from the score, not from a `won` claim",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no device session appears anywhere in the stored row",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the current result is claimed once",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a repeated claim creates no duplicate",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a second account cannot claim the same result",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "another device's result is refused",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "an unknown result id is refused honestly",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "an unverifiable token saves nothing",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a device import takes only this device's results",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a repeated import is safe and adds nothing",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the visible save states are the three the specification names",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a failed save keeps the result and offers a retry",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "claimLedger": {
+    "first": "saved",
+    "repeat": "already_saved",
+    "secondAccount": "already_claimed",
+    "otherDevice": "not_your_result",
+    "unknown": "not_found",
+    "forgedToken": "not_authenticated",
+    "import": {
+      "proposed": 3,
+      "imported": 1,
+      "alreadySaved": 1,
+      "refused": 1,
+      "results": [
+        {
+          "resultId": "pv_guest12345",
+          "status": "already_saved"
+        },
+        {
+          "resultId": "pv_mine2222aa",
+          "status": "saved"
+        },
+        {
+          "resultId": "pv_other333bb",
+          "status": "not_your_result"
+        }
+      ]
+    },
+    "reimport": {
+      "proposed": 2,
+      "imported": 0,
+      "alreadySaved": 2,
+      "refused": 0,
+      "results": [
+        {
+          "resultId": "pv_guest12345",
+          "status": "already_saved"
+        },
+        {
+          "resultId": "pv_mine2222aa",
+          "status": "already_saved"
+        }
+      ]
+    }
+  }
+}

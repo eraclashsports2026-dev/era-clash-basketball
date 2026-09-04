@@ -1,0 +1,95 @@
+{
+  "artifact": "account-rls-qa",
+  "phase": "9B.1 — real accounts, cloud career, My EraClash",
+  "mode": "rls",
+  "baseUrl": null,
+  "provider": "supabase (auth + postgres + row level security)",
+  "cloudAccountsConfigured": false,
+  "cloudAccountsReady": false,
+  "checks": 9,
+  "passed": 9,
+  "failed": 0,
+  "results": [
+    {
+      "name": "row level security is enabled on every user-owned table",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "every policy is granted to authenticated only and scoped to auth.uid()",
+      "pass": true,
+      "detail": "profiles:select profiles:update saved_clashes:select result_claims:select"
+    },
+    {
+      "name": "no client role may INSERT, UPDATE or DELETE career data",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a profile may be updated by its owner only, with a matching write check",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "anonymous is revoked on every user-owned object and every career view",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "career views run as the caller so the table's policies apply",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "two synthetic users: no cross-user read",
+      "pass": true,
+      "detail": "crossUserReads 0"
+    },
+    {
+      "name": "two synthetic users: no cross-user write",
+      "pass": true,
+      "detail": "crossUserWrites 0"
+    },
+    {
+      "name": "anonymous reads nothing that belongs to a user",
+      "pass": true,
+      "detail": "anonymousProtectedReads 0"
+    }
+  ],
+  "isolation": {
+    "crossUserReads": 0,
+    "crossUserWrites": 0,
+    "anonymousProtectedReads": 0,
+    "method": "policy analysis of the applied DDL plus a two-user simulation against an adapter that implements the same rules; not yet executed against a live Postgres (no provider credentials in this shell)"
+  },
+  "policies": [
+    {
+      "name": "profiles_select_own",
+      "table": "profiles",
+      "cmd": "select",
+      "role": "authenticated",
+      "using": "user_id = auth.uid()"
+    },
+    {
+      "name": "profiles_update_own",
+      "table": "profiles",
+      "cmd": "update",
+      "role": "authenticated",
+      "using": "user_id = auth.uid()) with check (user_id = auth.uid()"
+    },
+    {
+      "name": "saved_clashes_select_own",
+      "table": "saved_clashes",
+      "cmd": "select",
+      "role": "authenticated",
+      "using": "user_id = auth.uid()"
+    },
+    {
+      "name": "result_claims_select_own",
+      "table": "result_claims",
+      "cmd": "select",
+      "role": "authenticated",
+      "using": "user_id = auth.uid()"
+    }
+  ]
+}

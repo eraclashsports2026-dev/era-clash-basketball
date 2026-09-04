@@ -1,0 +1,85 @@
+{
+  "artifact": "account-security-qa",
+  "phase": "9B.1 — real accounts, cloud career, My EraClash",
+  "mode": "security",
+  "baseUrl": null,
+  "provider": "supabase (auth + postgres + row level security)",
+  "cloudAccountsConfigured": false,
+  "cloudAccountsReady": false,
+  "checks": 13,
+  "passed": 13,
+  "failed": 0,
+  "results": [
+    {
+      "name": "no browser module names a service-role key",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the service-role key is server-only and never logged",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no built bundle contains a service-role reference or a JWT-shaped secret",
+      "pass": true,
+      "detail": "2 bundles scanned"
+    },
+    {
+      "name": "the provider SDK is code-split, so guest play never downloads it",
+      "pass": true,
+      "detail": "entry 721KB carries no SDK internals; 1 lazy chunk(s) do"
+    },
+    {
+      "name": "the token travels in an Authorization header, never in a URL",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "open redirects are refused by one guard used everywhere",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a display name is cleaned and capped on the client, in the API and in the database",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "preview access and product authentication stay separate layers",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "product sign-in cannot bypass the preview gate: the gate runs in middleware ahead of every route",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "account telemetry carries no email, name, token or cookie",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "every account event is allowlisted on the server",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the content policy opens only the provider's own hosts and still forbids third-party script",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the cloud actions are rate limited and origin checked like every other mutation",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "security": {
+    "serviceRoleInClient": 0,
+    "tokensInUrl": 0,
+    "openRedirects": 0,
+    "previewLeakage": 0
+  }
+}
