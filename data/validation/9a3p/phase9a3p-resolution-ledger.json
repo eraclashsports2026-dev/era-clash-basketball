@@ -40,10 +40,11 @@
     "reduced motion": "FIXED_AND_VERIFIED (1 checks; transitions removed; no automatic animation)",
     "telemetry preservation": "FIXED_AND_VERIFIED (1 checks; no new event; hero_state + lobby_presentation_version on play_lobby_viewed; Wave 2 schemas byte-identical)",
     "branch preview": "FIXED_AND_VERIFIED (34/34 deployed gates on https://era-clash-basketball-git-phase-9a3p-play-lobby-962b44-era-clash.vercel.app)",
-    "production isolation": "FIXED_AND_VERIFIED (main @ 9cd95ff; production build 2.7.2 without a preview block; wave1 and wave2 heads unchanged)"
+    "production isolation": "FIXED_AND_VERIFIED (main @ 9cd95ff; production build 2.7.2 without a preview block; wave1 and wave2 heads unchanged)",
+    "owner acceptance": "FIXED_AND_VERIFIED (OWNER; \"APPROVE PLAY LOBBY POLISH V1\"; branch-preview scope; no promotion, merge, distribution or Phase 9B authorised)"
   },
   "counts": {
-    "FIXED_AND_VERIFIED": 38,
+    "FIXED_AND_VERIFIED": 39,
     "NOT_REPRODUCIBLE_WITH_EVIDENCE": 1,
     "EXTERNAL_BLOCKER_WITH_SAFE_PRODUCT_FALLBACK": 0,
     "DEFERRED_BY_SCOPE": 0,
@@ -53,5 +54,12 @@
     "aria-disabled is not set on Learn more because a real information destination exists (spec: 'when appropriate')",
     "the header's BASKETBALL descriptor was clarified in place; no icon was added to replace a mark that did not exist"
   ],
-  "unresolvedTechnicalFailures": 0
+  "unresolvedTechnicalFailures": 0,
+  "ownerAcceptance": {
+    "text": "APPROVE PLAY LOBBY POLISH V1",
+    "authority": "OWNER",
+    "acceptedAt": "2026-09-04T17:00:46.756Z",
+    "status": "OWNER_ACCEPTED_ON_BRANCH_PREVIEW",
+    "record": "data/validation/9a3p/play-lobby-polish-v1-owner-acceptance.json"
+  }
 }

@@ -83,7 +83,7 @@
     "productionChanges": 0
   },
   "ledger": {
-    "FIXED_AND_VERIFIED": 38,
+    "FIXED_AND_VERIFIED": 39,
     "NOT_REPRODUCIBLE_WITH_EVIDENCE": 1,
     "EXTERNAL_BLOCKER_WITH_SAFE_PRODUCT_FALLBACK": 0,
     "DEFERRED_BY_SCOPE": 0,
@@ -354,17 +354,28 @@
   },
   "verdict": "PLAY LOBBY POLISH V1 COMPLETE — READY FOR OWNER ACCEPTANCE",
   "ownerDecision": {
+    "received": "APPROVE PLAY LOBBY POLISH V1",
+    "receivedAt": "2026-09-04T17:00:46.756Z",
     "format": [
       "APPROVE PLAY LOBBY POLISH V1",
       "REVISE: [precise changes]"
     ],
-    "nextWithoutSeparateAuthorization": [
-      "do not update wave2",
-      "do not update wave1",
-      "do not merge to main",
-      "do not deploy to production",
-      "do not begin Phase 9B",
-      "do not distribute the branch preview to current testers"
-    ]
+    "stillRequiringSeparateAuthorization": [
+      "stable Wave 2 promotion",
+      "stable Wave 1 promotion",
+      "merge into the Phase 9A.3 parent branch or into main",
+      "production promotion",
+      "public launch",
+      "distribution of the polish preview to current Wave 2 testers",
+      "authorisation to begin Phase 9B"
+    ],
+    "nextPrompt": "the owner chooses the next prompt: Phase 9A.4 (Wave 2 evidence adjudication) or Phase 9A.5 (Wave 2B lobby-polish validation). Neither is started here."
+  },
+  "ownerAcceptance": {
+    "text": "APPROVE PLAY LOBBY POLISH V1",
+    "authority": "OWNER",
+    "acceptedAt": "2026-09-04T17:00:46.756Z",
+    "status": "OWNER_ACCEPTED_ON_BRANCH_PREVIEW",
+    "record": "data/validation/9a3p/play-lobby-polish-v1-owner-acceptance.json"
   }
 }

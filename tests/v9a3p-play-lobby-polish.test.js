@@ -26,6 +26,54 @@ const LABELS = { chaos: "Start Chaos Clash", dream: "Build Matchup", daily: "Pla
 const SIGS = { chaos: "fracture-dice", dream: "crossing-timelines", daily: "spotlight-calendar", bo7: "series-ticks", win82: "season-arc", tournament: "bracket", gauntlet: "era-steps" };
 const ACCENTS = { chaos: "gold", dream: "platinum-cobalt", daily: "cobalt", bo7: "platinum-gold", win82: "cobalt-platinum", tournament: "gold-platinum", gauntlet: "violet" };
 
+describe("owner acceptance", () => {
+  const REC = "data/validation/9a3p/play-lobby-polish-v1-owner-acceptance.json";
+  // Each promotion flag may be true ONLY when its own authorization record exists
+  // carrying the exact text. Written this way deliberately: a hard-coded `false`
+  // became a stale pin at the Phase 9A.3 head when a later record-only commit
+  // flipped one of these, so the assertion tracks the authorising artifact instead.
+  const AUTHORIZERS = {
+    wave2PromotionAuthorized: ["data/validation/9a3p/wave2-promotion-authorization.json", "AUTHORIZE WAVE 2 PROMOTION"],
+    wave1PromotionAuthorized: ["data/validation/9a3p/wave1-promotion-authorization.json", "AUTHORIZE WAVE 1 PROMOTION"],
+    parentMergeAuthorized: ["data/validation/9a3p/parent-merge-authorization.json", "AUTHORIZE PARENT MERGE"],
+    productionPromotionAuthorized: ["data/validation/9a3p/production-promotion-authorization.json", "AUTHORIZE PRODUCTION PROMOTION"],
+    testerDistributionAuthorized: ["data/validation/9a3p/polish-distribution-authorization.json", "AUTHORIZE POLISH DISTRIBUTION"],
+    phase9bAuthorized: ["data/validation/9a3p/phase9b-authorization.json", "AUTHORIZE PHASE 9B"],
+  };
+  it("is recorded with the exact text, the branch-preview scope and the build it was reviewed on", () => {
+    expect(existsSync(REC)).toBe(true);
+    const a = json(REC);
+    expect(a.acceptanceText).toBe("APPROVE PLAY LOBBY POLISH V1");
+    expect(a.acceptanceAuthority).toBe("OWNER");
+    expect(a.status).toBe("OWNER_ACCEPTED_ON_BRANCH_PREVIEW");
+    expect(a.lobbyPresentationVersion).toBe(LOBBY_PRESENTATION_VERSION);
+    expect(a.implementationBranch).toBe("phase-9a3p-play-lobby-brand-polish");
+    expect(a.parent.commit).toBe(PARENT);
+    expect(a.reviewedOn.buildStamp).toBe(json("data/validation/9a3p/lobby-preview-qa.json").deployment.buildStamp);
+    expect(a.doesNotMean).toContain("production promotion");
+    expect(a.doesNotMean).toContain("authorisation to begin Phase 9B");
+  });
+  it("authorises no promotion, merge, distribution or Phase 9B without its own authorization record", () => {
+    const a = json(REC);
+    for (const [flag, [file, text]] of Object.entries(AUTHORIZERS)) {
+      expect(flag in a, flag).toBe(true);
+      if (a[flag]) expect(existsSync(file) && json(file).authorizationText, flag).toBe(text);
+      else expect(existsSync(file), `${flag} is false, so ${file} must not exist`).toBe(false);
+    }
+  });
+  it("did not move the frozen builds", () => {
+    const a = json(REC);
+    expect(a.frozenAtAcceptance.stableWave2.head).toBe(PARENT);
+    expect(a.frozenAtAcceptance.stableWave2.carriesPolish).toBe(false);
+    expect(a.frozenAtAcceptance.stableWave2.buildStamp).toBe("eraclash-assets:2.7.2:d3d5455dcf91");
+    expect(a.frozenAtAcceptance.wave1.buildStamp).toBe("eraclash-assets:2.7.2:2f35a3b70c30");
+    expect(a.frozenAtAcceptance.main).toBe("9cd95ff8797f8cdef252bbe67d63158c01b9f9bd");
+  });
+  it("does not claim live tester activity it could not read", () => {
+    expect(json(REC).humanTestActivity).toMatch(/not a claim that no tester activity exists/i);
+  });
+});
+
 describe("the registry carries the lobby's presentation contract", () => {
   it("bumped its version for the presentation fields", () => { expect(NAVIGATION_REGISTRY_VERSION).toBe("1.2.0"); expect(LOBBY_PRESENTATION_VERSION).toBe("play-lobby-polish-v1"); });
   it("every mode declares actionLabel, actionVerb, actionHierarchy, visualSignature and accentRole", () => {

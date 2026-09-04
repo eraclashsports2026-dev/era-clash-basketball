@@ -9,8 +9,10 @@
   },
   "specificationDiscrepancy": {
     "specSaidWave2Head": "ff8fda0",
-    "repositoryTruth": "ef0caa5",
-    "resolution": "repository truth used; ff8fda0 does not exist in this repository"
+    "repositoryTruth": "ef0caa525c4cf6830fe20b4a8ef5d483e29afd86",
+    "finding": "ff8fda0 IS a real, reachable commit — 'Phase 9A.3 checkpoint 6' — and is the immediate PARENT of the current head ef0caa5. The specification quoted the Wave 2 head as of checkpoint 6, one commit behind the final record-only authorization commit. data/validation/9a3/wave2-distribution-authorization.json also records recordedAtCommit: ff8fda0 (the HEAD at generation time, before the artifact was itself committed as ef0caa5).",
+    "resolution": "Repository truth (ef0caa5) was used as the parent for Phase 9A.3P. No divergence: ef0caa5 is a direct child of ff8fda0, and origin/wave2 points at ef0caa5.",
+    "correction": "An earlier version of this artifact stated that ff8fda0 does not exist in this repository. That was wrong and is corrected here. The 9A.3 authorization artifact's stale self-reference was NOT edited, so this phase's wave2EvidenceChanges stays 0."
   },
   "references": {
     "main": "9cd95ff8797f8cdef252bbe67d63158c01b9f9bd",
