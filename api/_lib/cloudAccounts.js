@@ -150,6 +150,24 @@ export const buildSavedClash = ({ record, userId, claimedFrom, buildStamp = null
   };
 };
 
+/** The provider refusing the server's own credential, as opposed to refusing the caller. */
+export const serverKeyRejected = (status) => status === 401 || status === 403;
+
+/**
+ * Ask the provider whether it accepts the server's own credential, and answer
+ * with a boolean. Nothing about the key is returned or logged. This exists
+ * because a key that is correctly SHAPED and has been revoked looks perfectly
+ * healthy to every other check: cloud accounts reported ready while every save
+ * failed with a 401.
+ */
+export const serviceKeyAccepted = async (fetchImpl = fetch) => {
+  if (!serviceKeyShapeOk(serviceKey())) return false;
+  try {
+    const r = await rest("profiles?select=user_id&limit=1", { method: "GET" }, fetchImpl);
+    return !serverKeyRejected(r.status);
+  } catch { return false; }
+};
+
 const rest = async (path, init = {}, fetchImpl = fetch) => {
   const r = await fetchImpl(`${url()}/rest/v1/${path}`, {
     ...init,
@@ -194,6 +212,12 @@ export const claimAndSaveResult = async ({ resultId, userId, deviceSession, clai
     body: JSON.stringify({ result_id: String(record.id), user_id: userId, device_session_hash: hash, claimed_via: claimedFrom }),
   }, fetchImpl);
 
+  // A 401 or 403 here is the provider refusing OUR OWN credential, not anything
+  // about the player or the result. Retrying cannot fix it and the operator
+  // needs to know that: it means the server's key is absent, wrong, or was
+  // rotated without the deployment being updated. It is worth its own status,
+  // because "save failed, try again" invites a loop that can never succeed.
+  if (serverKeyRejected(claim.status)) return { status: "save_failed", detail: "provider_rejected_server_key" };
   if (!claim.ok) return { status: "save_failed", detail: `claim_http_${claim.status}` };
 
   // ignore-duplicates returns an empty array when the row already existed:
@@ -213,6 +237,7 @@ export const claimAndSaveResult = async ({ resultId, userId, deviceSession, clai
     body: JSON.stringify(row),
   }, fetchImpl);
 
+  if (serverKeyRejected(saved.status)) return { status: "save_failed", detail: "provider_rejected_server_key" };
   if (!saved.ok) return { status: "save_failed", detail: `save_http_${saved.status}` };
   const created = Array.isArray(saved.body) && saved.body.length > 0;
   return { status: created ? "saved" : "already_saved", resultId: row.result_id, outcome: row.outcome, mode: row.mode };

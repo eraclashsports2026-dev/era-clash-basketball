@@ -17,6 +17,7 @@ import {
   verifyAccountToken, cloudAccountsServerStatus, cloudAccountsReady, sha256,
   CANDIDATE_ID_SHAPE, MAX_IMPORT_CANDIDATES, flagOn as serverFlagOn, keyShapeOk as serverKeyShapeOk,
   looksLikeSecretKey as serverLooksLikeSecretKey, serviceKeyShapeOk as serverServiceKeyShapeOk,
+  serverKeyRejected, serviceKeyAccepted,
 } from "../api/_lib/cloudAccounts.js";
 import { readProof, isBrowserBound, redemptionPlan, redeem, VIA } from "../src/accounts/linkProof.js";
 import { EVENTS_ALLOWLIST } from "../api/events.js";
@@ -869,5 +870,71 @@ describe("redeeming an email link", () => {
       expect(read(f), f).not.toMatch(/6[- ]digit/i);
       expect(read(f), f).not.toMatch(/type the code from the (message|email)/i);
     }
+  });
+});
+
+// ── When the provider refuses OUR credential ────────────────────────────────
+// A revoked service-role key is correctly shaped, so every static check kept
+// reporting cloud accounts ready while every save failed with a 401. Nothing
+// surfaced it until a real game was played and saved on the deployment. The
+// point of these is that the failure now names itself and can be probed.
+describe("a rejected server credential", () => {
+  const configured = () => {
+    vi.stubEnv("SUPABASE_URL", "https://abcdefghijklmnopqrst.supabase.co");
+    vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", "sb_secret_" + "A".repeat(32));
+    vi.stubEnv("SUPABASE_ANON_KEY", "sb_publishable_" + "B".repeat(32));
+    vi.stubEnv("CLOUD_ACCOUNTS_ENABLED", "true");
+  };
+  const GUEST = "d".repeat(48);
+
+  it("401 and 403 are the provider refusing us; other failures are not", () => {
+    expect(serverKeyRejected(401)).toBe(true);
+    expect(serverKeyRejected(403)).toBe(true);
+    for (const s of [200, 201, 400, 404, 409, 429, 500, 502]) expect(serverKeyRejected(s), String(s)).toBe(false);
+  });
+
+  it("a save refused at 401 says so, instead of inviting a retry that cannot work", async () => {
+    configured();
+    const out = await claimAndSaveResult(
+      { resultId: "pv_abc123def4", userId: "u-1", deviceSession: GUEST },
+      { record: record({ session: GUEST }), fetch: async () => new Response("", { status: 401 }) },
+    );
+    expect(out).toEqual({ status: "save_failed", detail: "provider_rejected_server_key" });
+    vi.unstubAllEnvs();
+  });
+
+  it("an ordinary failure keeps its own status code, so the two stay distinguishable", async () => {
+    configured();
+    const out = await claimAndSaveResult(
+      { resultId: "pv_abc123def4", userId: "u-1", deviceSession: GUEST },
+      { record: record({ session: GUEST }), fetch: async () => new Response("", { status: 500 }) },
+    );
+    expect(out.status).toBe("save_failed");
+    expect(out.detail).toMatch(/_http_500$/);
+    vi.unstubAllEnvs();
+  });
+
+  it("the credential can be probed for acceptance, and answers with a boolean", async () => {
+    configured();
+    expect(await serviceKeyAccepted(async () => new Response("[]", { status: 200 }))).toBe(true);
+    expect(await serviceKeyAccepted(async () => new Response("", { status: 401 }))).toBe(false);
+    expect(await serviceKeyAccepted(async () => { throw new Error("network"); })).toBe(false);
+    vi.unstubAllEnvs();
+    // With nothing configured there is nothing to accept.
+    expect(await serviceKeyAccepted(async () => new Response("[]", { status: 200 }))).toBe(false);
+  });
+
+  it("the probe never returns or logs anything about the key itself", () => {
+    const fn = String(serviceKeyAccepted);
+    expect(fn).not.toMatch(/console\./);
+    expect(fn).toMatch(/return !serverKeyRejected|return false|return true/);
+  });
+
+  it("health reports cloud readiness as booleans, and only probes when asked", () => {
+    const h = src("api/health.js");
+    expect(h).toMatch(/cloudAccounts: cloud/);
+    expect(h).toMatch(/req\.query\?\.deep === "1"/);
+    // The round trip must not happen on every health call.
+    expect(h).not.toMatch(/serviceKeyAcceptedByProvider = await serviceKeyAccepted\(\);\s*\n\s*const/);
   });
 });

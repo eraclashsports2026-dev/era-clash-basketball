@@ -1,0 +1,119 @@
+{
+  "phase": "9B.1A",
+  "artifact": "live-signed-in-qa",
+  "generatedAt": "2026-09-04T23:35:56.125Z",
+  "origin": "https://era-clash-basketball-git-phase-9b1a-supabase-l-f071d0-era-clash.vercel.app",
+  "commit": "6ff77bd",
+  "sessionSource": "The provider's anonymous sign-in, enabled by the owner for this run. These are real sessions with a real auth.uid(), so RLS, the sign-up trigger and the authoritative save are exercised for real. Every one is adopted through the product's own /auth/callback in a URL fragment, exactly as an emailed link delivers one — nothing is injected into storage behind the app's back.",
+  "notCertifiable": "Signing back in with a credential. An anonymous account has none. The owner's own real sign-in on this origin already demonstrates that path for a credentialed account.",
+  "accounts": {
+    "first": "30d3703a-3cd4-4627-91b0-a24937d72332",
+    "second": "d241c132-5a76-4264-bf4c-df4b573d4f26"
+  },
+  "checks": [
+    {
+      "name": "the provider issues a real session with a real user id",
+      "pass": true,
+      "detail": "anonymous=true"
+    },
+    {
+      "name": "the callback adopts a session arriving in a fragment and leaves a safe path",
+      "pass": true,
+      "detail": "<origin>/play"
+    },
+    {
+      "name": "no token survives in the address bar",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the header stops asking for an account once you have one",
+      "pass": true,
+      "detail": "guest: \"BASKETBALL Play ▾ Fantasy ▾ Daily Challe…\" → signed in: \"BASKETBALL Play ▾ Fantasy ▾ Daily Challe…\""
+    },
+    {
+      "name": "the header shows an identity rather than an email address",
+      "pass": true,
+      "detail": "BASKETBALL Play ▾ Fantasy ▾ Daily Challenges Leaderboard My "
+    },
+    {
+      "name": "the session survives a reload",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the postgame panel is the signed-in variant, not the guest pitch",
+      "pass": true,
+      "detail": "{\"mode\":\"signed-in\",\"heading\":\"SAVING…\",\"buttons\":[]}"
+    },
+    {
+      "name": "a signed-in player can save the Clash from the postgame",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "My EraClash renders for a signed-in account without asking for one",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "it shows no email address anywhere",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a fresh browser starts as a guest",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the same account signs in on a second device",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the second device sees the same career as the first",
+      "pass": false,
+      "detail": ""
+    },
+    {
+      "name": "the second account is a different user",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a different account does not see the first account's career",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the server refuses a save addressed to somebody else's account",
+      "pass": true,
+      "detail": "HTTP 400"
+    },
+    {
+      "name": "the account gate is gone once you have an account",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a signed-in player can sign out",
+      "pass": false,
+      "detail": ""
+    },
+    {
+      "name": "signing out returns the header to asking for an account",
+      "pass": true,
+      "detail": "BASKETBALL Play ▾ Fantasy ▾ Daily Challenges Leade"
+    },
+    {
+      "name": "guest play is intact after signing out",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": 18,
+  "total": 20,
+  "allPassed": false,
+  "note": "No token or credential is recorded here. User ids are opaque uuids and the accounts are deleted after this run."
+}

@@ -9,6 +9,7 @@ import { computeResult, newSeed } from "./_lib/game-core.js";
 import { PLAYERS } from "../src/players.js";
 import { previewCandidateIdentity } from "./_lib/previewEngine.js";
 import { PREVIEW_ACCESS } from "../config/previewAccess.js";
+import { cloudAccountsServerStatus, serviceKeyAccepted } from "./_lib/cloudAccounts.js";
 
 export default async function handler(req, res) {
   let coreEngine = "ok";
@@ -29,6 +30,16 @@ export default async function handler(req, res) {
   const circuit = await circuitState();
   res.setHeader("Cache-Control", "no-store");
   const identity = previewCandidateIdentity();
+
+  // Cloud-account readiness, as booleans and never a key. `deep=1` additionally
+  // asks the provider whether it still accepts the server's own credential,
+  // which costs a round trip and so is opt-in. It exists because a revoked key
+  // is correctly shaped: every static check reported ready while every save
+  // failed with a 401, and nothing surfaced that until a game was played.
+  const cloud = cloudAccountsServerStatus();
+  if (req.query?.deep === "1" || req.query?.deep === "true") {
+    cloud.serviceKeyAcceptedByProvider = await serviceKeyAccepted();
+  }
   return res.status(200).json({
     status: f.maintenance ? "maintenance" : coreEngine === "ok" ? "ok" : "degraded",
     build: VERSIONS.app,
@@ -36,6 +47,7 @@ export default async function handler(req, res) {
     persistence,
     aiNarrative: !f.aiNarrative ? "disabled" : circuit === "OPEN" ? "circuit_open" : "ok",
     simV3: f.simV3,
+    cloudAccounts: cloud,
     // Protected-preview health block. Identity fields only — the candidate id,
     // its version identity, the governing flag and the fallback path. No
     // hashes, secrets or internal diagnostics.
