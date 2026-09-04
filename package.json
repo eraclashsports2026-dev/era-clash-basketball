@@ -354,9 +354,24 @@
     "ui:lobby-polish-accessibility": "node scripts/ui/lobbyPolishQa.mjs accessibility",
     "ui:lobby-polish-performance": "node scripts/ui/lobbyPolishQa.mjs performance",
     "ui:lobby-polish-deployed": "node scripts/ui/lobby-polish-preview-qa.mjs",
-    "phase9a3p:summary": "node scripts/ui/phase9a3pSummary.mjs summary"
+    "phase9a3p:summary": "node scripts/ui/phase9a3pSummary.mjs summary",
+    "account:preflight": "node scripts/accounts/accountQa.mjs preflight",
+    "account:migrations-qa": "node scripts/accounts/accountQa.mjs migrations",
+    "account:rls-qa": "node scripts/accounts/accountQa.mjs rls",
+    "account:auth-qa": "node scripts/accounts/accountQa.mjs auth",
+    "account:guest-claim-qa": "node scripts/accounts/accountQa.mjs guest-claim",
+    "account:cloud-save-qa": "node scripts/accounts/accountQa.mjs cloud-save",
+    "account:security-qa": "node scripts/accounts/accountQa.mjs security",
+    "account:my-eraclash-qa": "node scripts/accounts/accountQa.mjs my-eraclash",
+    "account:responsive-qa": "node scripts/accounts/accountQa.mjs responsive",
+    "account:deployed-qa": "node scripts/accounts/deployedQa.mjs",
+    "account:verify-provider": "node scripts/accounts/verifyProvider.mjs",
+    "phase9b1:summary": "node scripts/accounts/phase9b1Summary.mjs summary",
+    "account:verify-provider-local": "node --env-file=.env.local scripts/accounts/verifyProvider.mjs --remote",
+    "preview:wave2-copy-key": "node scripts/wave2/copyKey.mjs"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.115.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },

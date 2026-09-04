@@ -1,0 +1,84 @@
+{
+  "artifact": "auth-flow-qa",
+  "phase": "9B.1 — real accounts, cloud career, My EraClash",
+  "mode": "auth",
+  "baseUrl": null,
+  "provider": "supabase (auth + postgres + row level security)",
+  "cloudAccountsConfigured": false,
+  "cloudAccountsReady": false,
+  "checks": 13,
+  "passed": 13,
+  "failed": 0,
+  "results": [
+    {
+      "name": "Google and an email one-time code are the two routes to an account",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the flow is PKCE with a persisted, auto-refreshed session",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no password field exists anywhere in the product",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the callback route exchanges the code itself rather than trusting a URL fragment",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the address bar is scrubbed BEFORE the exchange, so no code survives in history",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the return destination is filtered through the same-origin guard",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the dialog is a real modal: labelled, focus-trapped and dismissible by Escape",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "failures are a closed vocabulary, and the provider's own text never reaches the UI",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "sign-out clears the account from memory immediately and keeps guest play",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "an active Chaos run and the current result are not touched by the callback",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the header offers Sign in beside Create free account when accounts are real",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a wrong code is refused and the right code signs the right user in",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "an invalid callback fails safely",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "flows": {
+    "google": "signInWithOAuth(pkce) → /auth/callback?next=<safe path>",
+    "email": "signInWithOtp → one-time code or emailRedirectTo → /auth/callback",
+    "signOut": "provider session ended, state cleared, guest play intact"
+  }
+}

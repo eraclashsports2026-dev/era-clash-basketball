@@ -35,6 +35,16 @@ import {
   modeForRoute, isLobbyRoute, isPlayRoute, routeForAppMode, PLAY_LOBBY_ROUTE,
 } from "./navigation.js";
 import PlayLobby from "./components/lobby/PlayLobby.jsx";
+// Phase 9B.1: real accounts, the cloud career and My EraClash. All four are
+// inert when the provider is not configured — the flag lives in one module.
+import AccountDialog from "./components/accounts/AccountDialog.jsx";
+import AuthCallback from "./components/accounts/AuthCallback.jsx";
+import SaveThisClash from "./components/accounts/SaveThisClash.jsx";
+import MyEraClash from "./components/accounts/MyEraClash.jsx";
+import { startAccountState, subscribeAccount, accountState, signOutAccount } from "./accounts/accountState.js";
+import { provider as accountProvider } from "./accounts/provider.js";
+import { saveResultToCareer, claimGuestResult } from "./accounts/cloudSave.js";
+import { rememberResult } from "./accounts/deviceResults.js";
 import { placementPlan, place as placePlayer, describeSelection, describePlacement, PLACEMENT_MODE } from "./lineupPlacement.js";
 import { markEntry } from "./activation.js";
 import AccountGate from "./components/chaos/AccountGate.jsx";
@@ -169,6 +179,12 @@ export default function App() {
     return <Suspense fallback={null}><ThemeLab /></Suspense>;
   }
   const [tier, setTier] = useState(() => currentTier());  // GUEST | FREE (central entitlement input)
+  // Phase 9B.1 account state. `authDialog` is null or {entryPoint, intent,
+  // returnTo, claimResultId}; `cloudSave` tracks the current result's save.
+  const [acct, setAcct] = useState(() => accountState());
+  const [authDialog, setAuthDialog] = useState(null);
+  const [cloudSave, setCloudSave] = useState({ resultId: null, state: "idle" });
+  const [savedReport, setSavedReport] = useState(null);   // a cloud-saved clash reopened from its own snapshot
   const [gate, setGate] = useState(null);                 // an entitlement gate to render
   const [chaosChallengeId, setChaosChallengeId] = useState(null);
   // Bumped on a new clash and on account creation to force a re-render. It is
@@ -245,6 +261,54 @@ export default function App() {
   useEffect(() => {
     syncCareer(career, { badges, savedTeams: saved.map((t) => ({ name: t.name, ids: t.ids, rating: t.rating })), daily });
   }, [career, badges, saved, daily]);
+
+  // The provider session decides the tier as soon as it is known, so an
+  // account-gated mode opens on a real account and not on a local flag.
+  useEffect(() => {
+    const stop = subscribeAccount((next) => { setAcct(next); setTier(currentTier()); });
+    startAccountState();
+    return stop;
+  }, []);
+
+  // Every authoritative result this browser produces is remembered locally (a
+  // candidate list for the device import, never proof of ownership), and a
+  // signed-in visitor's result is saved to the cloud career immediately.
+  //
+  // The save NEVER re-runs the simulation: it sends the result id and the
+  // server reads the authoritative record. A failure leaves the result on
+  // screen and offers a retry.
+  const token = acct.session?.accessToken || null;
+  const runCloudSave = useCallback(async (resultId, mode, kind = "cloud-save") => {
+    if (!resultId || !token) return null;
+    setCloudSave({ resultId, state: "saving" });
+    track(kind === "claim" ? "guest_result_claim_started" : "cloud_result_save_started", { mode, resultPresent: true });
+    try {
+      const call = kind === "claim" ? claimGuestResult : saveResultToCareer;
+      const r = await call({ resultId, accessToken: token });
+      const ok = r?.status === "saved" || r?.status === "already_saved";
+      setCloudSave({ resultId, state: ok ? r.status : "failed" });
+      if (kind === "claim") track("guest_result_claim_completed", { mode, success: ok, ...(ok ? {} : { failureCode: r?.status || "SAVE_FAILED" }) });
+      else track(ok ? "cloud_result_save_completed" : "cloud_result_save_failed", { mode, success: ok, ...(ok ? {} : { failureCode: r?.status || "SAVE_FAILED" }) });
+      return r;
+    } catch {
+      setCloudSave({ resultId, state: "failed" });
+      track(kind === "claim" ? "guest_result_claim_completed" : "cloud_result_save_failed", { mode, success: false, failureCode: "NETWORK" });
+      return null;
+    }
+  }, [token]);
+
+  useEffect(() => {
+    const rid = result?.resultId;
+    if (!rid) return;
+    rememberResult({ resultId: rid, mode: result?.type || "single" });
+    if (!token) { setCloudSave({ resultId: rid, state: "idle" }); return; }
+    setCloudSave((prev) => (prev.resultId === rid && prev.state !== "idle" ? prev : { resultId: rid, state: "pending" }));
+  }, [result?.resultId, result?.type, token]);
+
+  useEffect(() => {
+    if (cloudSave.state !== "pending" || !cloudSave.resultId || !token) return;
+    runCloudSave(cloudSave.resultId, result?.type || "single", "cloud-save");
+  }, [cloudSave.state, cloudSave.resultId, token, runCloudSave, result?.type]);
 
   useEffect(() => {
     fetch("/api/health").then((r) => (r.ok ? r.json() : null)).then((h) => {
@@ -396,6 +460,24 @@ export default function App() {
         return;
     }
   }, [gameMode, navigate, result]);
+
+  /** The ONE way the account dialog opens, from any entry point. */
+  const openAccountDialog = useCallback((opts = {}) => {
+    setAuthDialog({
+      entryPoint: opts.entryPoint || "header",
+      intent: opts.intent || "signup",
+      returnTo: opts.returnTo || (window.location.pathname + window.location.search),
+      claimResultId: opts.claimResultId || null,
+    });
+  }, []);
+
+  /** After a successful sign-in, the result that convinced them is claimed. */
+  const afterSignIn = useCallback(async (dialog) => {
+    setTier(currentTier());
+    const rid = dialog?.claimResultId;
+    setAuthDialog(null);
+    if (rid) await runCloudSave(rid, result?.type || "single", "claim");
+  }, [runCloudSave, result?.type]);
 
   const goHome = useCallback(() => {
     if (window.location.pathname !== "/") { window.history.pushState({}, "", "/"); setRoute("/"); }
@@ -1670,6 +1752,16 @@ export default function App() {
         onChallenge={live ? doShare : null} onSwap={live ? startSwap : null}
         onShare={live ? doShare : null}
         onLeaderboard={() => handleNav("Daily")} />
+      {/* Phase 9B.1: Save This Clash. Under the result, never over it, and
+          only for the live result — a previous clash's report is a record. */}
+      {live && res.resultId && (
+        <SaveThisClash resultId={res.resultId} signedIn={!!acct.session?.userId}
+          saveState={cloudSave.resultId === res.resultId ? (cloudSave.state === "pending" ? "saving" : cloudSave.state) : "idle"}
+          accountsAvailable={!!accountProvider()}
+          onSignIn={() => openAccountDialog({ entryPoint: "postgame", intent: "signup", claimResultId: res.resultId })}
+          onSaveAgain={() => runCloudSave(res.resultId, res.type || "single", "cloud-save")}
+          onViewCareer={() => navigate("/my-eraclash")} />
+      )}
       {res.tag === "daily" && <DailyPanel daily={daily} career={career} />}
       {live && (
         <div style={{ display: "flex", gap: 10, maxWidth: 700, margin: "12px auto 0" }}>
@@ -1703,12 +1795,18 @@ export default function App() {
   // destinations; every other view keeps the hybrid theme.
   // The lobby is the entrance at `/` and at /play, unless a shared result or a
   // nav destination has taken the page.
-  const showLobby = isLobbyRoute(route) && nav === "Play" && !sharedResult;
+  const showLobby = isLobbyRoute(route) && nav === "Play" && !sharedResult && route !== "/auth/callback" && route !== "/my-eraclash";
   // Phase 9A.2: membership, fantasy and mode-information pages are READING
   // surfaces. They keep the arena shell (their components read arena tokens) and
   // add the editorial shell, which remaps those tokens to Warm Court Ivory and
   // Editorial Ink under the production theme. The header stays obsidian.
-  const editorialMode = route.startsWith("/membership") || route.startsWith("/fantasy/") || route.startsWith("/modes/");
+  // Phase 9B.1: the career page and the sign-in callback are READING surfaces,
+  // exactly like membership, fantasy and the mode pages — so they take the
+  // editorial shell, which remaps the arena tokens to Warm Court Ivory and
+  // Editorial Ink. Without it a heading inherited the arena's platinum text and
+  // sat almost invisibly on an ivory card.
+  const editorialMode = route.startsWith("/membership") || route.startsWith("/fantasy/") || route.startsWith("/modes/")
+    || route === "/my-eraclash" || route === "/auth/callback";
   const arenaMode = showLobby || (isChaos && !sharedResult && !gate) || editorialMode;
 
   // ── Render ─────────────────────────────────────────────────────────────────
@@ -1721,7 +1819,21 @@ export default function App() {
         activeModeId={nav === "Play" && !showLobby ? (PLAY_MODES.find((m) => m.appMode === gameMode)?.id || null) : null}
         onModeAction={handleModeAction}
         onNavigate={navigate}
-        onCreateAccount={() => { setNav("Play"); setGate({ kind: "ACCOUNT", message: "Create a free account to unlock every mode." }); }}
+        onCreateAccount={() => {
+          // The header CTA always opens the account dialog, which is honest
+          // either way: it offers Google and email when the provider is
+          // configured, and says plainly that accounts are not switched on when
+          // it is not.
+          //
+          // It used to call setGate() instead — and on the lobby route the gate
+          // branch sits BELOW showLobby in this render, so the button silently
+          // did nothing. That predates this phase and is live on the Wave 2
+          // build; the mode-route gate (Dream Matchup) was always reachable and
+          // is unchanged.
+          openAccountDialog({ entryPoint: "header", intent: "signup" });
+        }}
+        account={acct} onSignIn={() => openAccountDialog({ entryPoint: "header", intent: "signin" })}
+        onSignOutAccount={async () => { await signOutAccount(); setTier(currentTier()); setCloudSave({ resultId: null, state: "idle" }); setSavedReport(null); }}
         onHowModes={() => setHowModes(true)}
         onAccountChanged={() => setTier(currentTier())}
         previewCandidateActive={!!result?.sim?.previewCandidate} />
@@ -1737,7 +1849,19 @@ export default function App() {
       )}
       {err && <div role="alert" style={{ background: "#3a1520", color: "#ff8a9a", padding: 12, textAlign: "center", fontSize: 13 }}>{err}</div>}
 
-      {route.startsWith("/membership") ? (
+      {route === "/auth/callback" ? (
+        <AuthCallback onDone={({ next }) => {
+          setTier(currentTier());
+          const rid = authDialog?.claimResultId || null;
+          setAuthDialog(null);
+          if (rid) runCloudSave(rid, result?.type || "single", "claim");
+          navigate(next || "/play");
+        }} />
+      ) : route === "/my-eraclash" ? (
+        <MyEraClash
+          onSignIn={() => openAccountDialog({ entryPoint: "my_eraclash", intent: "signin", returnTo: "/my-eraclash" })}
+          onOpenReport={(clash) => setSavedReport(clash)} />
+      ) : route.startsWith("/membership") ? (
         <main>
           <MembershipPage query={new URLSearchParams(window.location.search)} onBack={goHome}
             onCreateAccount={() => { goHome(); setGate({ kind: "ACCOUNT", message: "Create a free account to unlock every mode." }); }} />
@@ -1763,6 +1887,7 @@ export default function App() {
             title={gate.modeLabel || "Keep playing Chaos Clash"}
             blurb={gate.message || "Create a free account to keep playing Chaos Clash."}
             onCreated={() => { setGate(null); setTier(currentTier()); setChaosNonce((n) => n + 1); }}
+            onUseAccount={() => openAccountDialog({ entryPoint: "dream_matchup", intent: "signup", returnTo: window.location.pathname })}
             onBack={() => { setGate(null); navigate(PLAY_LOBBY_ROUTE); }} />
         </main>
       ) : isChaos && !sharedResult && !gate ? (
@@ -1828,6 +1953,38 @@ export default function App() {
           playView
         )}
       </main>
+      )}
+
+      {/* Phase 9B.1: one dialog for Google and email, from any entry point. */}
+      <AccountDialog open={!!authDialog} entryPoint={authDialog?.entryPoint} intent={authDialog?.intent}
+        returnTo={authDialog?.returnTo} onClose={() => setAuthDialog(null)}
+        onSignedIn={() => afterSignIn(authDialog)} />
+
+      {/* A cloud-saved clash reopens from ITS OWN snapshot: the original
+          candidate's numbers, never recomputed by a newer engine. */}
+      {savedReport && (
+        <div className="ec-report-overlay ec-arena-shell" role="dialog" aria-modal="true" aria-label="Saved postgame report">
+          <div style={{ maxWidth: 900, margin: "0 auto", padding: "12px 16px 60px" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, flexWrap: "wrap", marginBottom: 10 }}>
+              <div style={{ fontSize: 11.5, color: T.textDim }}>
+                SAVED CLASH · {[savedReport.candidate_id, savedReport.calibration_version].filter(Boolean).join(" · ") || "production engine"}
+              </div>
+              <button onClick={() => setSavedReport(null)} style={{
+                minHeight: 44, padding: "0 16px", borderRadius: 9, cursor: "pointer", fontWeight: 800, fontSize: 12.5,
+                border: `1px solid ${T.border}`, background: "transparent", color: T.text }}>CLOSE</button>
+            </div>
+            {(() => {
+              const snap = savedReport.result_snapshot;
+              if (!snap?.core) return <p style={{ color: T.textDim, fontSize: 13 }}>This saved report is missing its snapshot and cannot be reopened.</p>;
+              const five = (savedReport.gold_roster || []).map((p) => findCard(p.id)).filter(Boolean);
+              const opp = (savedReport.blue_roster || []).map((p) => findCard(p.id)).filter(Boolean);
+              return <ResultView
+                result={{ type: savedReport.mode === "best7" ? "best7" : "single", sim: viewSim(snap), w: savedReport.outcome === "win", won: savedReport.outcome === "win", tag: savedReport.mode, opp, resultId: savedReport.result_id, record: snap, persisted: true }}
+                team={five} feedbackCtx={null} narrative={{ status: "none" }} onRetryNarrative={null}
+                onRematch={null} onBest7={null} onChallenge={null} onSwap={null} onShare={null} onLeaderboard={null} />;
+            })()}
+          </div>
+        </div>
       )}
 
       {howModes && <ArenaHowModes tier={tier} onClose={() => setHowModes(false)} />}

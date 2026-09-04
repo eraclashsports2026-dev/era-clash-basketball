@@ -12,8 +12,28 @@ import { getOrCreateSession, sameOrigin } from "./_lib/session.js";
 import { sendError, newRequestId } from "./_lib/errors.js";
 import { flags, limits } from "./_lib/flags.js";
 import { tooLarge, cleanName, cleanText } from "./_lib/validate.js";
+// Phase 9B.1: the authoritative cloud-career path lives here rather than in a
+// new route — the deployment's serverless function budget is full at 13, so
+// real accounts reuse the route that already owns career persistence.
+import {
+  cloudAccountsServerStatus, cloudAccountsReady, verifyAccountToken,
+  claimAndSaveResult, importDeviceHistory, countEligibleForImport,
+  CANDIDATE_ID_SHAPE, MAX_IMPORT_CANDIDATES,
+} from "./_lib/cloudAccounts.js";
 
 const KEY = (sid) => `profile:${sid}`;
+const RESULT_ID_SHAPE = CANDIDATE_ID_SHAPE;
+const CLOUD_ACTIONS = new Set(["cloud-save", "claim-result", "import-device-history", "import-preview"]);
+
+/** The bearer token, from the header only — never from a logged request body. */
+const bearer = (req) => {
+  const h = String(req.headers?.authorization || "");
+  return /^Bearer .+/.test(h) ? h.slice(7).trim() : "";
+};
+const stamp = (req) => {
+  const v = String(req.body?.buildStamp || "");
+  return /^[\w.:-]{1,64}$/.test(v) ? v : null;
+};
 const LEGACY_KEY = (uid) => `pf:${uid}`;
 const MAX_BYTES = 30_000;
 
@@ -68,6 +88,12 @@ export default async function handler(req, res) {
   if (!hasStore()) return sendError(res, "KV_UNAVAILABLE", requestId);
   const session = getOrCreateSession(req, res);
 
+  // Safe configuration probe: booleans only, no key and no fragment of one.
+  if (req.method === "GET" && req.query?.cloud === "status") {
+    res.setHeader("Cache-Control", "private, no-store");
+    return res.status(200).json({ cloudAccounts: { ...cloudAccountsServerStatus(), ready: cloudAccountsReady() } });
+  }
+
   if (req.method === "GET") {
     const profile = await getJSON(KEY(session));
     if (!profile) return sendError(res, "NOT_FOUND", requestId);
@@ -81,6 +107,43 @@ export default async function handler(req, res) {
   if (tooLarge(req, MAX_BYTES + 5000)) return sendError(res, "PAYLOAD_TOO_LARGE", requestId);
   if (!(await rateLimit(`pf:${clientIp(req)}`, limits().profilePerMinIp, 60))) {
     return sendError(res, "RATE_LIMITED", requestId, { retryAfter: 30 });
+  }
+
+  // ── Phase 9B.1 cloud-career actions ──────────────────────────────────────
+  // Identity comes from verifying the bearer token with the provider; game data
+  // comes from the authoritative result record; ownership comes from the
+  // HttpOnly device-session cookie. Nothing here trusts the request body for
+  // a user id, a score, a roster or a candidate identity.
+  const action = typeof req.body?.action === "string" ? req.body.action : null;
+  if (action) {
+    if (!CLOUD_ACTIONS.has(action)) return sendError(res, "VALIDATION_FAILURE", requestId);
+    if (!cloudAccountsReady()) return res.status(503).json({ error: "CLOUD_ACCOUNTS_DISABLED", requestId });
+    if (!(await rateLimit(`acct:${clientIp(req)}`, 30, 60))) return sendError(res, "RATE_LIMITED", requestId, { retryAfter: 30 });
+
+    const who = await verifyAccountToken(bearer(req));
+    if (!who) return res.status(401).json({ error: "NOT_AUTHENTICATED", requestId });
+
+    if (action === "import-preview") {
+      const count = await countEligibleForImport({ candidateIds: req.body?.resultIds, deviceSession: session });
+      return res.status(200).json({ ...count, max: MAX_IMPORT_CANDIDATES, requestId });
+    }
+    if (action === "import-device-history") {
+      const out = await importDeviceHistory({
+        candidateIds: req.body?.resultIds, userId: who.userId, deviceSession: session,
+        buildStamp: stamp(req), themeVersion: req.body?.themeVersion ? cleanText(String(req.body.themeVersion), 40) : null,
+      });
+      return res.status(200).json({ ...out, requestId });
+    }
+
+    const resultId = String(req.body?.resultId || "");
+    if (!RESULT_ID_SHAPE.test(resultId)) return sendError(res, "VALIDATION_FAILURE", requestId);
+    const out = await claimAndSaveResult({
+      resultId, userId: who.userId, deviceSession: session,
+      claimedFrom: action === "claim-result" ? "guest_claim" : "signed_in",
+      buildStamp: stamp(req), themeVersion: req.body?.themeVersion ? cleanText(String(req.body.themeVersion), 40) : null,
+    });
+    const code = { saved: 200, already_saved: 200, not_found: 404, not_your_result: 403, already_claimed: 409, not_configured: 503, save_failed: 502 }[out.status] ?? 500;
+    return res.status(code).json({ ...out, requestId });
   }
 
   const clean = sanitize(req.body?.profile);

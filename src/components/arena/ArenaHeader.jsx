@@ -43,6 +43,8 @@ function MenuRow({ icon, title, subtitle, badge, badgeTone, onClick, disabled })
 export default function ArenaHeader({
   nav, onNav, tier, activeModeId, onModeAction, onNavigate, onCreateAccount,
   onHowModes, onAccountChanged, previewCandidateActive,
+  // Phase 9B.1: the real account, when cloud accounts are configured.
+  account = null, onSignIn, onSignOutAccount,
 }) {
   // Six top-level items cannot share a line on a phone. Wrapping them made the
   // sticky header 217px tall — a quarter of the viewport, permanently, on every
@@ -137,7 +139,8 @@ export default function ArenaHeader({
         </nav>
 
         <div style={{ marginLeft: "auto" }}>
-          <AccountControl onCreateAccount={onCreateAccount} onNavigate={onNavigate} onChanged={onAccountChanged} />
+          <AccountControl onCreateAccount={onCreateAccount} onNavigate={onNavigate} onChanged={onAccountChanged}
+            account={account} onSignIn={onSignIn} onSignOutAccount={onSignOutAccount} />
         </div>
       </div>
     </header>

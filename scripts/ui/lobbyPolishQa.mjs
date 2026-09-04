@@ -83,7 +83,16 @@ if (MODE === "contracts") {
   ok("the hero has three states, decided synchronously from existing state (run, career, returning flag)", HERO_STATE_IDS.join() === "full,compact-active-run,compact-returning" && /useState\(\(\) => \(lab \? \(fixture\?\.hero \|\| HERO_STATES\.FULL\) : readHeroState/.test(lobby) && /getSession\(\)\.returning/.test(lobby) && !/setItem|document\.cookie/.test(src("src/components/lobby/heroState.js")));
   ok("the Continue card stays above the grid; the one fracture moment stays; nothing starts or deletes a run", lobby.indexOf("<ContinueCard") < lobby.indexOf('className="ec-lobby-primary"') && (lobby.match(/<EraFractureDivider/g) || []).length === 1 && /viewChaos\(id, tier\)/.test(lobby) && !/startChaos|chaosAction: "start"/.test(lobby));
   ok("signatures: seven ids, aria-hidden, currentColor strokes, no imagery, 4–10% opacity, ≤12% on hover, reduced-motion covered", SIGNATURE_IDS.length === 7 && /aria-hidden="true" focusable="false"/.test(src("src/components/lobby/ModeSignature.jsx")) && !/<image|href=|http|url\(/i.test(src("src/components/lobby/ModeSignature.jsx")) && /--ec-sig-opacity, 0\.0[4-9]\)|--ec-sig-opacity, 0\.10\)/.test(polishCss) && /:hover \.ec-mode-signature \{ opacity: 0\.(0\d|1[0-2])/.test(polishCss) && /prefers-reduced-motion: reduce\) \{\s*\.ec-mode-action, \.ec-mode-action::after, \.ec-mode-signature \{ transition: none/.test(polishCss));
-  ok("telemetry: no new event; the lobby event carries hero_state and lobby_presentation_version only", EVENTS_ALLOWLIST.size === 69 && ACTIVATION_EVENTS.length === 22 && /hero_state/.test(src("src/activation.js")) && /lobby_presentation_version/.test(src("src/activation.js")) && LOBBY_PRESENTATION_VERSION === "play-lobby-polish-v1");
+  // Phase 9A.3P added no event of its own. A later phase may add its own, so
+  // the invariant is that none was removed and the two lists still agree —
+  // never a frozen global count.
+  ok("telemetry: this phase added no event, removed none, and carries its two bounded properties on the existing lobby event",
+    EVENTS_ALLOWLIST.size >= 69 && ACTIVATION_EVENTS.length >= 22
+    && ACTIVATION_EVENTS.every((e) => EVENTS_ALLOWLIST.has(e))
+    && ["play_lobby_viewed", "play_mode_selected", "time_to_mode_selection_recorded"].every((e) => ACTIVATION_EVENTS.includes(e))
+    && /hero_state/.test(src("src/activation.js")) && /lobby_presentation_version/.test(src("src/activation.js"))
+    && LOBBY_PRESENTATION_VERSION === "play-lobby-polish-v1",
+    `${EVENTS_ALLOWLIST.size} allowlisted · ${ACTIVATION_EVENTS.length} tracked`);
   extra.contract = {
     artifact: "play-lobby-polish-contract", phase: PHASE, status: "FROZEN", presentationVersion: LOBBY_PRESENTATION_VERSION, registryVersion: NAVIGATION_REGISTRY_VERSION,
     architecturePreserved: ["three primary cards then a row of four", "Chaos Clash first and recommended", "Play Lobby separate from the Time Arena", "Night Court V1 (obsidian shell, ivory lobby canvas)", "one Era Fracture moment under the brand band", "registry-driven cards and dropdown", "one-viewport desktop fit"],

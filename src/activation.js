@@ -28,6 +28,15 @@ export const ACTIVATION_EVENTS = Object.freeze([
   "time_to_mode_selection_recorded",
   "chaos_roll_completed", "chaos_era_revealed", "chaos_coach_selected", "chaos_game_completed",
   "result_tab_opened", "new_clash_started",
+  // Phase 9B.1 real accounts and cloud career (mirrored in api/events.js).
+  // Metadata is a closed vocabulary: authMethod, entryPoint, mode, success,
+  // resultPresent, claimCountBucket and a failureCode — never an email, a
+  // name, a token, a cookie or a stack.
+  "account_signup_started", "account_signup_completed",
+  "account_signin_started", "account_signin_completed", "account_signout_completed",
+  "guest_result_claim_started", "guest_result_claim_completed", "guest_history_imported",
+  "cloud_result_save_started", "cloud_result_save_completed", "cloud_result_save_failed",
+  "my_eraclash_viewed", "recent_clash_expanded", "saved_report_opened", "display_name_updated",
 ]);
 
 const ss = {

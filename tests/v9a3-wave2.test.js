@@ -156,6 +156,13 @@ describe("frozen study contracts and cohorts", () => {
     expect(read("src/components/arena/InfoPages.jsx")).toMatch(/feedback: \{ title: "Wave 2 feedback"/);
     expect(read("src/components/arena/UtilityBar.jsx")).toMatch(/\["FEEDBACK", "feedback"/);
     expect(execSync("ls api/*.js | grep -v _lib | wc -l", { encoding: "utf8" }).trim()).toBe("12");
-    expect(JSON.parse(read("vercel.json")).rewrites.length).toBe(8);
+    // The invariant is the serverless FUNCTION budget, which a rewrite does not
+    // consume: a later phase may add SPA routes (9B.1 added /auth/* and
+    // /my-eraclash) without touching the 13-function limit. What must stay true
+    // is that every Wave 2 route is still rewritten to the app shell.
+    const rewrites = JSON.parse(read("vercel.json")).rewrites.map((r) => r.source);
+    for (const required of ["/play", "/play/:path*", "/membership", "/fantasy/:path*", "/modes/:path*"]) {
+      expect(rewrites, required).toContain(required);
+    }
   });
 });

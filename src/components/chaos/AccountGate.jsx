@@ -5,9 +5,38 @@
 import { useState } from "react";
 import { T, R } from "../../theme.js";
 import { createFreeAccount } from "../../account.js";
+import { provider as accountProvider } from "../../accounts/provider.js";
 
-export default function AccountGate({ title, blurb, onCreated, onBack, backLabel = "BACK TO THE LOBBY" }) {
+export default function AccountGate({ title, blurb, onCreated, onBack, onUseAccount, backLabel = "BACK TO THE LOBBY" }) {
   const [name, setName] = useState("");
+  // Phase 9B.1: when cloud accounts are configured this gate stops asking for a
+  // device-scoped name and offers the real thing — Google or an email code —
+  // so a mode that needs an account is opened by an account that travels.
+  const cloud = !!accountProvider();
+  if (cloud) {
+    return (
+      <div style={{
+        maxWidth: 460, margin: "0 auto", padding: 22, borderRadius: R.lg,
+        border: `1px solid ${T.border}`, background: T.bgCard, textAlign: "center",
+      }}>
+        <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 2, color: T.textDim }}>FREE ACCOUNT REQUIRED</div>
+        <h2 style={{ margin: "8px 0 6px", fontSize: 22 }}>{title}</h2>
+        <p style={{ color: T.textDim, fontSize: 13.5, lineHeight: 1.6, margin: "0 0 14px" }}>{blurb}</p>
+        <button onClick={() => onUseAccount?.()} style={{
+          width: "100%", minHeight: 48, borderRadius: R.sm, cursor: "pointer",
+          fontWeight: 900, fontSize: 14, letterSpacing: 0.8,
+          border: `1px solid ${T.goldBorder}`, background: T.gold, color: T.onGold,
+        }}>CREATE FREE ACCOUNT OR SIGN IN</button>
+        <button onClick={onBack} style={{
+          width: "100%", minHeight: 44, marginTop: 8, borderRadius: R.sm, cursor: "pointer",
+          fontWeight: 800, fontSize: 13, border: `1px solid ${T.border}`, background: "transparent", color: T.textDim,
+        }}>{backLabel}</button>
+        <div style={{ fontSize: 11.5, color: T.textMuted, marginTop: 10, lineHeight: 1.5 }}>
+          Google or an email code. No password, no payment. Chaos Clash stays open without an account.
+        </div>
+      </div>
+    );
+  }
   return (
     <div style={{
       maxWidth: 460, margin: "0 auto", padding: 22, borderRadius: R.lg,

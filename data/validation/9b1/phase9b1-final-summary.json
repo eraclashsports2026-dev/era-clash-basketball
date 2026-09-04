@@ -1,0 +1,121 @@
+{
+  "artifact": "phase9b1-final-summary",
+  "phase": "9B.1 — real accounts, cloud career, My EraClash",
+  "repository": {
+    "parentBranch": "phase-9a3p-play-lobby-brand-polish",
+    "parentCommit": "fd36b5a107443367da704feb3f9dddea1452ae23",
+    "branch": "phase-9b1-real-accounts-my-eraclash",
+    "head": "936ccb64dd57600a9a376498e950a904cd881d92",
+    "draftPR": 41,
+    "branchPreview": "https://era-clash-basketball-git-phase-9b1-real-accoun-fca5e5-era-clash.vercel.app",
+    "branchPreviewStamp": "eraclash-assets:2.7.2:c451e9f1b5ee",
+    "wave1Unchanged": true,
+    "stableWave2Unchanged": true,
+    "mainUnchanged": true,
+    "productionUnchanged": true
+  },
+  "wave2Disposition": {
+    "windowStatus": "OPEN_FEEDBACK_PENDING",
+    "verdict": "NOT_ISSUED",
+    "passed": false,
+    "failed": false,
+    "buildMayChange": false,
+    "accountWorkIsolatedOn": "phase-9b1-real-accounts-my-eraclash",
+    "testersInvited": 0,
+    "evidenceReadable": false
+  },
+  "authentication": {
+    "provider": "SUPABASE_AUTH_POSTGRES_RLS",
+    "google": "OAuth via the provider, PKCE, prompt=select_account",
+    "email": "one-time code (OTP) or magic link, no password anywhere in the product",
+    "session": {
+      "flow": "pkce",
+      "persisted": true,
+      "autoRefresh": true,
+      "detectSessionInUrl": false,
+      "callbackRoute": "/auth/callback"
+    },
+    "callback": "/auth/callback — code exchanged after the address bar is scrubbed; only same-origin returns",
+    "signOut": "provider session ended, state cleared in memory, guest play intact",
+    "externalSetupStatus": "configured"
+  },
+  "cloudCareer": {
+    "architecture": "the browser reads its own rows under RLS; the authoritative save runs server-side on api/profile.js and adds no function",
+    "guestClaim": "ownership proved by the result record's server-minted device session against the caller's HttpOnly cookie",
+    "deviceImport": "the browser proposes candidate ids; every one is authorised on its own",
+    "idempotency": "unique (user_id, result_id) plus result_claims.result_id as a primary key",
+    "crossDevice": "verified on the deployment"
+  },
+  "myEraClash": {
+    "profile": "initials, display name (editable, cleaned, capped), free account, member since",
+    "careerSummary": "games, record, win rate, current streak — all derived, with an honest zero state",
+    "modeBreakdown": "only modes with real records",
+    "recentClashes": "expandable disclosure rows with roster, coaches, era, MVP and candidate identity",
+    "savedReports": "reopened from the stored snapshot, never recomputed by a newer candidate",
+    "mobile": "8/8"
+  },
+  "security": {
+    "rls": "9/9",
+    "crossUserIsolation": {
+      "crossUserReads": 0,
+      "crossUserWrites": 0,
+      "anonymousProtectedReads": 0,
+      "method": "policy analysis of the applied DDL plus a two-user simulation against an adapter that implements the same rules; not yet executed against a live Postgres (no provider credentials in this shell)"
+    },
+    "tokenProtection": "Authorization header only; never a URL, a log, an artifact or a telemetry property",
+    "redirectProtection": "safeReturnPath on every destination",
+    "serviceRoleProtection": "server-only variable, absent from every bundle (scanned)"
+  },
+  "preservation": {
+    "activeCandidateCoreDrift": 0,
+    "candidateParameterDrift": 0,
+    "gameLogicChanges": 0,
+    "draftLogicChanges": 0,
+    "placementLogicChanges": 0,
+    "entitlementLogicChanges": 0,
+    "apiFunctionCountIncrease": 0,
+    "wave1Changes": 0,
+    "stableWave2Changes": 0,
+    "originalWave2EvidenceChanges": 0,
+    "productionChanges": 0
+  },
+  "ledger": {
+    "FIXED_AND_VERIFIED": 40,
+    "NOT_REPRODUCIBLE_WITH_EVIDENCE": 2,
+    "EXTERNAL_BLOCKER_WITH_SAFE_PRODUCT_FALLBACK": 0,
+    "DEFERRED_BY_SCOPE": 0,
+    "UNRESOLVED_TECHNICAL_FAILURES": 0
+  },
+  "tests": {
+    "vitest": "2442/2442 tests · 76/76 files",
+    "playwright": "78 passed",
+    "accountsSuite": "54 tests in tests/v9b1-accounts.test.js",
+    "preflight": "10/10",
+    "migrations": "11/11",
+    "rls": "9/9",
+    "auth": "13/13",
+    "guestClaim": "23/23",
+    "cloudSave": "23/23",
+    "security": "14/14",
+    "myEraClash": "9/9",
+    "responsive": "8/8",
+    "deployed": "29/29",
+    "fullGateRun": "35/35"
+  },
+  "verdict": "REAL ACCOUNT AND MY ERACLASH FOUNDATION COMPLETE — READY FOR OWNER TESTING",
+  "ownerAction": {
+    "required": "test the account journeys on the branch preview",
+    "approvalFormat": [
+      "APPROVE REAL ACCOUNTS AND MY ERACLASH V1",
+      "REVISE: [precise changes]"
+    ],
+    "withoutSeparateAuthorization": [
+      "do not update wave2",
+      "do not update wave1",
+      "do not merge to main",
+      "do not deploy to production",
+      "do not invite Wave 2 testers to the account branch",
+      "no leaderboards, achievements, challenges or billing"
+    ]
+  }
+}
