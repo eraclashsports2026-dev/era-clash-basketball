@@ -209,8 +209,20 @@ describe("the database contract", () => {
     expect(v.effectivePrivileges.finding).toMatch(/TRUNCATE is not subject to RLS/);
     expect(v.supabaseSecurityAdvisors.warningsRemaining).toBe(0);
     expect(v.unauthenticatedProbes.every((p) => p.status === 401 || p.status === 404)).toBe(true);
-    // The phase must not claim an end-to-end result it has not measured.
-    expect(v.endToEndStillPending).toMatch(/Vercel Preview environment/);
+    // The phase must not claim an end-to-end result it has not measured. What
+    // remains unmeasured has moved on — first it was the Vercel wiring, now it
+    // is the emailed one-time code — so assert that the field still names a
+    // real outstanding step rather than pinning one phrasing of it.
+    expect(v.endToEndStillPending).toMatch(/one-time code|Vercel Preview environment/);
+    expect(v.endToEndStillPending.length).toBeGreaterThan(40);
+    // And the three configuration incidents are recorded with their fixes.
+    expect(v.keyIncidents).toHaveLength(3);
+    for (const i of v.keyIncidents) { expect(i.what).toBeTruthy(); expect(i.effect).toBeTruthy(); expect(i.fix).toBeTruthy(); }
+    expect(JSON.stringify(v.keyIncidents)).toMatch(/bypasses row level security/);
+    expect(v.rotationVerified).toEqual({ leakedSecretRejected: true, httpStatus: 401, verifiedAt: expect.any(String) });
+    // No incident record may quote the credential it is about.
+    expect(JSON.stringify(v)).not.toMatch(/sb_secret_[A-Za-z0-9_-]{8,}/);
+    expect(JSON.stringify(v)).not.toMatch(/eyJ[A-Za-z0-9_-]{20,}\./);
   });
   it("revokes everything from anonymous on every user-owned object", () => {
     for (const t of ["profiles", "saved_clashes", "result_claims"]) {
