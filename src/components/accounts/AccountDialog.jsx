@@ -106,7 +106,9 @@ export default function AccountDialog({ open, entryPoint = "header", returnTo = 
 
         {!available && (
           <div role="status" style={{ padding: 12, borderRadius: R.sm, border: `1px solid ${T.border}`, background: T.bg, fontSize: 13, lineHeight: 1.55, color: T.textDim }}>
-            Accounts are not switched on in this build yet. Chaos Clash and the Daily are open to everyone in the meantime.
+            {status.reason === "ANON_KEY_MALFORMED"
+              ? "Accounts are configured but the provider key is not valid, so sign-in is switched off rather than shown as broken. Chaos Clash and the Daily are open to everyone."
+              : "Accounts are not switched on in this build yet. Chaos Clash and the Daily are open to everyone in the meantime."}
             <div style={{ fontSize: 11.5, marginTop: 6, color: T.textMuted }}>Status: {status.reason}</div>
           </div>
         )}

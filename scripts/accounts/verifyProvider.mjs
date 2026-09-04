@@ -18,13 +18,16 @@ const flagOn = (v) => ["true", "1", "yes", "on"].includes(String(v ?? "").trim()
 const flagServer = flagOn(process.env.CLOUD_ACCOUNTS_ENABLED);
 const flagClient = flagOn(process.env.VITE_CLOUD_ACCOUNTS_ENABLED);
 
+const keyShapeOk = (v) => { const s2 = String(v ?? "").trim(); if (!s2 || /[^\x21-\x7e]/.test(s2)) return false; return /^eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/.test(s2) || /^sb_(publishable|secret)_[A-Za-z0-9_-]{16,}$/.test(s2); };
 const urlOk = /^https:\/\/[a-z0-9-]+\.supabase\.(co|in)$/i.test(url);
 const line = (k, v) => console.log(`${k}: ${v}`);
 
-line("configured", urlOk && anon.length > 40);
+line("configured", urlOk && keyShapeOk(anon));
 line("provider url valid", urlOk);
-line("anon key present", anon.length > 40);
-line("service role key present (server only)", service.length > 40);
+line("anon key present and correctly shaped", keyShapeOk(anon));
+line("service role key present and correctly shaped (server only)", keyShapeOk(service));
+if (anon && !keyShapeOk(anon)) line("anon key problem", "not a JWT or sb_ key — a value copied from a masked dashboard field looks long but is not a key");
+if (service && !keyShapeOk(service)) line("service role key problem", "not a JWT or sb_ key — a value copied from a masked dashboard field looks long but is not a key");
 line("service role key absent from VITE_ variables", !Object.keys(process.env).some((k) => k.startsWith("VITE_") && /SERVICE|SECRET/i.test(k)));
 line("cloud accounts flag (server)", flagServer);
 line("cloud accounts flag (client)", flagClient);

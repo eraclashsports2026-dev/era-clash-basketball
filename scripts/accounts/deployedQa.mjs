@@ -32,6 +32,7 @@ const w1owner = JSON.parse(readFileSync(".preview-secrets/wave1-access-keys.json
 const lum = (c) => { const m = String(c).match(/[\d.]+/g); if (!m) return null; const [r, g, b] = m.slice(0, 3).map(Number).map((v) => { const s = v / 255; return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4; }); return 0.2126 * r + 0.7152 * g + 0.0722 * b; };
 const stampOf = async (ctx, base) => (((await (await ctx.get(`${base}/`)).text()).match(/eraclash-assets:[0-9.]+:[a-f0-9]+/) || [])[0] || null);
 const guest = (page) => page.addInitScript(() => { try { localStorage.clear(); sessionStorage.clear(); } catch (e) {} });
+let extra_projectMethods = null, extra_authProbes = null;
 
 const run = async () => {
   console.log(`\nDEPLOYED ACCOUNT QA — ${BASE}\n\nA. preview access and identity`);
@@ -130,7 +131,48 @@ const run = async () => {
   });
   gate("the header call to action opens the account dialog rather than doing nothing", !!dialog, dialog ? "dialog opened" : "NOTHING HAPPENED");
   if (CONFIGURED) {
-    gate("the dialog offers Google and email, with no password field", dialog && /GOOGLE/i.test(dialog.buttons.join(" ")) && /EMAIL/i.test(dialog.buttons.join(" ")) && !dialog.hasPassword);
+    // The dialog must offer exactly the methods the PROJECT can honour. Both
+    // the project URL and its anon key are in the deployed bundle by design, so
+    // the driver reads them and asks the project itself rather than assuming.
+    let projectMethods = null;
+    try {
+      const shell = await (await ctx.request.get(`${BASE}/play`)).text();
+      let projectUrl = null, anonKey = null;
+      for (const chunk of (shell.match(/\/assets\/[^"]+\.js/g) || [])) {
+        const t = await (await ctx.request.get(`${BASE}${chunk}`)).text();
+        projectUrl = projectUrl || (t.match(/https:\/\/[a-z0-9-]+\.supabase\.(?:co|in)/) || [])[0] || null;
+        anonKey = anonKey || (t.match(/eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{10,}/) || [])[0] || (t.match(/sb_publishable_[A-Za-z0-9_-]{10,}/) || [])[0] || null;
+        if (projectUrl && anonKey) break;
+      }
+      if (projectUrl && anonKey) {
+        const st = await (await ctx.request.get(`${projectUrl}/auth/v1/settings`, { headers: { apikey: anonKey } })).json();
+        projectMethods = { google: !!st?.external?.google, email: st?.external?.email !== false, signupsAllowed: st?.disable_signup !== true };
+      }
+    } catch { projectMethods = null; }
+
+    const offersGoogle = !!dialog && /GOOGLE/i.test(dialog.buttons.join(" "));
+    const offersEmail = !!dialog && /EMAIL/i.test(dialog.buttons.join(" "));
+    gate("the project's own settings are readable, and signups are open", !!projectMethods && projectMethods.signupsAllowed, JSON.stringify(projectMethods));
+    gate("the dialog offers email, and no password field exists anywhere in it", offersEmail && dialog && !dialog.hasPassword);
+    gate("the dialog offers Google only when the project has Google enabled — no button that can only fail",
+      !!projectMethods && offersGoogle === projectMethods.google,
+      `project google=${projectMethods?.google} · dialog offers google=${offersGoogle}`);
+    // The cloud actions are live: a forged or missing token is refused by the
+    // PROVIDER now, not by the disabled-state shortcut.
+    const authProbe = async (bearer) => {
+      const r = await ctx.request.post(`${BASE}/api/profile`, {
+        headers: { "content-type": "application/json", origin: BASE, ...(bearer ? { authorization: `Bearer ${bearer}` } : {}) },
+        data: { action: "cloud-save", resultId: "pv_abc123def4" }, failOnStatusCode: false,
+      });
+      return { status: r.status(), body: await r.json().catch(() => null) };
+    };
+    const noToken = await authProbe(null);
+    const forged = await authProbe("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmYWtlIiwiZXhwIjoxfQ.AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+    gate("the save endpoint is wired to the provider: no token and a forged token are both refused as unauthenticated, not as disabled",
+      noToken.status === 401 && noToken.body?.error === "NOT_AUTHENTICATED" && forged.status === 401 && forged.body?.error === "NOT_AUTHENTICATED",
+      `no-token ${noToken.status}/${noToken.body?.error} · forged ${forged.status}/${forged.body?.error}`);
+    extra_projectMethods = projectMethods;
+    extra_authProbes = { noToken, forged };
   } else {
     gate("with the provider unconfigured the dialog says so honestly and offers no fake sign-in",
       dialog && /not switched on/i.test(dialog.text) && !/CONTINUE WITH GOOGLE/i.test(dialog.buttons.join(" ")) && !dialog.hasPassword,
@@ -180,10 +222,11 @@ const run = async () => {
   await mp.screenshot({ path: `${SHOTS}/my-eraclash-390x844.png`, fullPage: true });
   await m.close();
 
-  if (!CONFIGURED) {
-    console.log("\nH. real-account journeys: NOT RUN (provider not configured on this deployment)");
-    gate("no real-account journey is claimed while the provider is unconfigured", true, "external configuration state, recorded honestly");
-  }
+  console.log(CONFIGURED
+    ? "\nH. signed-in journeys: NOT RUN — they need an emailed one-time code this driver cannot receive"
+    : "\nH. real-account journeys: NOT RUN (provider not configured on this deployment)");
+  gate("no signed-in journey is claimed that was not actually performed", true,
+    CONFIGURED ? "wiring measured both sides of the emailed code; the session itself needs one human sign-in" : "external configuration state, recorded honestly");
 
   console.log("\nI. the frozen builds did not move");
   const w2 = await pwRequest.newContext();
@@ -211,7 +254,11 @@ const run = async () => {
   const out = {
     artifact: "account-preview-qa", phase: "9B.1 — real accounts, cloud career, My EraClash",
     deployment: { baseUrl: BASE, commit: process.env.PHASE9B1_COMMIT || null, buildStamp: stamp, health: health?.preview || null },
-    cloudAccounts: { ...cloud, realAccountJourneysRun: CONFIGURED },
+    cloudAccounts: { ...cloud, providerReachable: !!extra_projectMethods },
+    projectMethods: extra_projectMethods,
+    authProbes: extra_authProbes,
+    signedInJourneysRun: false,
+    signedInJourneysNote: "Creating a real session needs an emailed one-time code, which this driver cannot receive, and minting one directly would need the project's service-role key or JWT secret — neither of which belongs in a QA runner. The wiring either side of that step IS measured here: the provider is reachable, the dialog matches the project's enabled methods, and the save endpoint refuses forged and missing tokens through a real provider round trip. One human sign-in closes the gap, after which the resulting rows can be read back through the database.",
     guestPlay: lobby, conversionPanel: panel, accountDialog: dialog, careerPage: career, mobile: mob,
     frozen: {
       wave2: { alias: WAVE2_ALIAS, stamp: w2stamp, expected: WAVE2_STAMP, unchanged: w2stamp === WAVE2_STAMP },

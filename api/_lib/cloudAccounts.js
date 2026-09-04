@@ -20,6 +20,19 @@ import { getJSON } from "./store.js";
 
 export const CLOUD_ACCOUNTS_SERVER_VERSION = "1.0.0";
 
+/**
+ * Is this actually a provider key? A key copied out of a dashboard's masked
+ * view is a few real characters followed by bullet characters — long enough to
+ * pass a length check, useless as a credential. See the client's twin.
+ */
+export const keyShapeOk = (value) => {
+  const v = String(value ?? "").trim();
+  if (!v) return false;
+  if (/[^\x21-\x7e]/.test(v)) return false;
+  return /^eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/.test(v)
+    || /^sb_(publishable|secret)_[A-Za-z0-9_-]{16,}$/.test(v);
+};
+
 /** The same forgiving boolean the client uses: a dashboard text box is not code. */
 export const flagOn = (value) => ["true", "1", "yes", "on"].includes(String(value ?? "").trim().toLowerCase());
 
@@ -30,8 +43,8 @@ const anonKey = () => String(process.env.SUPABASE_ANON_KEY || process.env.VITE_S
 /** Configuration state, safe to report: booleans only, never a key or a fragment of one. */
 export const cloudAccountsServerStatus = () => ({
   providerUrlConfigured: /^https:\/\/[a-z0-9-]+\.supabase\.(co|in)$/i.test(url()),
-  serviceRoleConfigured: serviceKey().length > 40,
-  anonKeyConfigured: anonKey().length > 40,
+  serviceRoleConfigured: keyShapeOk(serviceKey()),
+  anonKeyConfigured: keyShapeOk(anonKey()),
   enabled: flagOn(process.env.CLOUD_ACCOUNTS_ENABLED),
 });
 

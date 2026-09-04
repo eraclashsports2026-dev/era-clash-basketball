@@ -8,14 +8,14 @@ import { execSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import {
   providerConfigured, cloudAccountsEnabled, cloudAccountsStatus, safeReturnPath,
-  cleanDisplayName, MAX_DISPLAY_NAME, CLOUD_ACCOUNTS_VERSION, flagOn,
+  cleanDisplayName, MAX_DISPLAY_NAME, CLOUD_ACCOUNTS_VERSION, flagOn, keyShapeOk, providerUrlOk,
 } from "../src/accounts/config.js";
 import { provider, withProvider, _setProvider, FAILURE_CODES } from "../src/accounts/provider.js";
 import { createTestProvider } from "../src/accounts/testAdapter.js";
 import {
   buildSavedClash, claimAndSaveResult, importDeviceHistory, countEligibleForImport,
   verifyAccountToken, cloudAccountsServerStatus, cloudAccountsReady, sha256,
-  CANDIDATE_ID_SHAPE, MAX_IMPORT_CANDIDATES, flagOn as serverFlagOn,
+  CANDIDATE_ID_SHAPE, MAX_IMPORT_CANDIDATES, flagOn as serverFlagOn, keyShapeOk as serverKeyShapeOk,
 } from "../api/_lib/cloudAccounts.js";
 import { EVENTS_ALLOWLIST } from "../api/events.js";
 import { ACTIVATION_EVENTS } from "../src/activation.js";
@@ -48,6 +48,7 @@ describe("configuration and the feature flag", () => {
   it("reports itself unconfigured with no provider environment, and never claims to be enabled", () => {
     expect(providerConfigured()).toBe(false);
     expect(cloudAccountsEnabled()).toBe(false);
+    expect(providerUrlOk()).toBe(false);
     expect(cloudAccountsStatus()).toEqual({ enabled: false, reason: "PROVIDER_NOT_CONFIGURED" });
     expect(CLOUD_ACCOUNTS_VERSION).toBe("1.0.0");
   });
@@ -68,6 +69,29 @@ describe("configuration and the feature flag", () => {
     expect(serverFlagOn("nope")).toBe(false);
     expect(src("api/_lib/cloudAccounts.js")).toMatch(/enabled: flagOn\(process\.env\.CLOUD_ACCOUNTS_ENABLED\)/);
     expect(src("src/accounts/config.js")).toMatch(/flagOn\(env\("VITE_CLOUD_ACCOUNTS_ENABLED"\)\)/);
+  });
+  it("rejects a key copied out of a masked dashboard field", () => {
+    // This cost a deployment round trip: the anon key had been copied from a
+    // partly-masked view, giving "eyJhbGci" plus 200 bullet characters. It is
+    // 208 characters long, so the old length > 40 check waved it through and
+    // every auth call then failed with a vendor error that explained nothing.
+    const real = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSJ9.GmUgMjZLOb4xkqGcMvkZBKAxlTpEyIPehZCFSA3fMhw";
+    expect(keyShapeOk(real)).toBe(true);
+    expect(keyShapeOk(real + "\n")).toBe(true);                       // trimmed
+    const fakeSuffix = "0".repeat(24);
+    expect(keyShapeOk(`sb_publishable_${fakeSuffix}`)).toBe(true);
+    expect(keyShapeOk(`sb_secret_${fakeSuffix}`)).toBe(true);
+    expect(keyShapeOk("sb_publishable_short")).toBe(false);
+    expect(keyShapeOk("eyJhbGci" + "\u2022".repeat(200))).toBe(false);  // the masked paste
+    expect(keyShapeOk("x".repeat(300))).toBe(false);                    // long but not a key
+    expect(keyShapeOk("")).toBe(false);
+    expect(keyShapeOk(null)).toBe(false);
+    // Both sides apply it, and the status names the problem distinctly.
+    expect(serverKeyShapeOk("eyJhbGci" + "\u2022".repeat(200))).toBe(false);
+    expect(src("api/_lib/cloudAccounts.js")).toMatch(/serviceRoleConfigured: keyShapeOk\(serviceKey\(\)\)/);
+    expect(src("api/_lib/cloudAccounts.js")).toMatch(/anonKeyConfigured: keyShapeOk\(anonKey\(\)\)/);
+    expect(src("src/accounts/config.js")).toMatch(/ANON_KEY_MALFORMED/);
+    expect(src("src/components/accounts/AccountDialog.jsx")).toMatch(/ANON_KEY_MALFORMED/);
   });
   it("tolerates a pasted URL with trailing slashes or stray whitespace", () => {
     expect(src("src/accounts/config.js")).toMatch(/String\(SUPABASE_URL\)\.trim\(\)\.replace\(\/\\\/\+\$\/, ""\)/);
@@ -404,7 +428,9 @@ describe("secrets, tokens and telemetry stay where they belong", () => {
     expect(server).toMatch(/process\.env\.SUPABASE_SERVICE_ROLE_KEY/);
     expect(server).not.toMatch(/console\.(log|info|warn|error)/);
     // The status probe reports booleans, not values.
-    expect(server).toMatch(/serviceRoleConfigured: serviceKey\(\)\.length > 40/);
+    // It judges the key by its SHAPE, so a value copied from a masked dashboard
+    // field is reported as absent rather than accepted for being long.
+    expect(server).toMatch(/serviceRoleConfigured: keyShapeOk\(serviceKey\(\)\)/);
   });
   it("the account token travels in the Authorization header, not in a URL or a body field", () => {
     const client = src("src/accounts/cloudSave.js");
