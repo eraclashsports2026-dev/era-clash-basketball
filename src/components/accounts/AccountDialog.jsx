@@ -150,11 +150,13 @@ export default function AccountDialog({ open, entryPoint = "header", returnTo = 
         {available && stage === "code" && (
           <>
             <p style={{ fontSize: 13, color: T.textDim, margin: "0 0 12px", lineHeight: 1.55 }}>
-              Check <b>{email}</b>. Paste the code if the message shows one — or right-click the
-              sign-in link, copy the address, and paste the whole thing here. Do it in this browser,
-              which is the one that asked for it.
+              Check <b>{email}</b> and enter the code from the message. It works on any device.
+              If the message shows a link instead of a code, copy the link's address and paste that
+              here rather than clicking it — a clicked link can only finish in this browser, and
+              some mail providers open links themselves to scan them, which spends the link before
+              you ever see it.
             </p>
-            <label htmlFor="ec-auth-code" style={label}>Code, or the sign-in link</label>
+            <label htmlFor="ec-auth-code" style={label}>Sign-in code</label>
             <input id="ec-auth-code" autoComplete="one-time-code" value={code} maxLength={400}
               onChange={(e) => setCode(e.target.value)}
               aria-describedby={failure ? "ec-auth-error" : undefined} style={input} />
