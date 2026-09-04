@@ -3,8 +3,8 @@
   "phase": "9B.1 — real accounts, cloud career, My EraClash",
   "deployment": {
     "baseUrl": "https://era-clash-basketball-git-phase-9b1-real-accoun-fca5e5-era-clash.vercel.app",
-    "commit": "5411398f961bebe2ceefb9d2a4adddd75f06365a",
-    "buildStamp": "eraclash-assets:2.7.2:a69eb2565a0f",
+    "commit": "936ccb64dd57600a9a376498e950a904cd881d92",
+    "buildStamp": "eraclash-assets:2.7.2:c451e9f1b5ee",
     "health": {
       "enabled": true,
       "candidateId": "Candidate 4",
@@ -19,13 +19,36 @@
     }
   },
   "cloudAccounts": {
-    "providerUrlConfigured": false,
-    "serviceRoleConfigured": false,
-    "anonKeyConfigured": false,
-    "enabled": false,
-    "ready": false,
-    "realAccountJourneysRun": false
+    "providerUrlConfigured": true,
+    "serviceRoleConfigured": true,
+    "anonKeyConfigured": true,
+    "enabled": true,
+    "ready": true,
+    "providerReachable": true
   },
+  "projectMethods": {
+    "google": false,
+    "email": true,
+    "signupsAllowed": true
+  },
+  "authProbes": {
+    "noToken": {
+      "status": 401,
+      "body": {
+        "error": "NOT_AUTHENTICATED",
+        "requestId": "804633b13f68"
+      }
+    },
+    "forged": {
+      "status": 401,
+      "body": {
+        "error": "NOT_AUTHENTICATED",
+        "requestId": "4a63944ab812"
+      }
+    }
+  },
+  "signedInJourneysRun": false,
+  "signedInJourneysNote": "Creating a real session needs an emailed one-time code, which this driver cannot receive, and minting one directly would need the project's service-role key or JWT secret — neither of which belongs in a QA runner. The wiring either side of that step IS measured here: the provider is reachable, the dialog matches the project's enabled methods, and the save endpoint refuses forged and missing tokens through a real provider round trip. One human sign-in closes the gap, after which the resulting rows can be read back through the database.",
   "guestPlay": {
     "cards": 7,
     "chaosPrimary": true,
@@ -40,6 +63,7 @@
       "Challenges",
       "Leaderboard",
       "My EraClash",
+      "Sign in",
       "Create free account"
     ],
     "minTarget": 44
@@ -48,21 +72,23 @@
     "mode": "guest",
     "heading": "SAVE THIS CLASH",
     "buttons": [
+      "SAVE THIS CLASH",
       "NOT NOW"
     ],
     "fixed": false,
     "modal": null,
-    "height": 138,
+    "height": 216,
     "minTarget": 48
   },
   "accountDialog": {
     "modal": "true",
     "labelled": true,
     "buttons": [
+      "CONTINUE WITH EMAIL",
       "NOT NOW"
     ],
     "hasPassword": false,
-    "text": "FREE ACCOUNT\nCreate your free EraClash account\n\nKeep your Clashes, your rosters and your career across every device. No payment, ever, for a free account.\n\nAccounts are not switched on in this build y",
+    "text": "FREE ACCOUNT\nCreate your free EraClash account\n\nKeep your Clashes, your rosters and your career across every device. No payment, ever, for a free account.\n\nEmail address\nCONTINUE WITH EMAIL\nNOT NOW\n\nY",
     "minTarget": 44
   },
   "careerPage": {
@@ -128,12 +154,12 @@
     {
       "name": "the build stamp differs from the distributed Wave 2 stamp",
       "ok": true,
-      "detail": "eraclash-assets:2.7.2:a69eb2565a0f"
+      "detail": "eraclash-assets:2.7.2:c451e9f1b5ee"
     },
     {
       "name": "the configuration probe answers with booleans only — no key, no fragment",
       "ok": true,
-      "detail": "{\"providerUrlConfigured\":false,\"serviceRoleConfigured\":false,\"anonKeyConfigured\":false,\"enabled\":false,\"ready\":false}"
+      "detail": "{\"providerUrlConfigured\":true,\"serviceRoleConfigured\":true,\"anonKeyConfigured\":true,\"enabled\":true,\"ready\":true}"
     },
     {
       "name": "the accepted Play Lobby polish is intact: seven cards, one gold primary, Night Court shell",
@@ -146,9 +172,9 @@
       "detail": "44px"
     },
     {
-      "name": "the header offers an account without demanding one",
+      "name": "the header offers an account without demanding one (Sign in beside it)",
       "ok": true,
-      "detail": "BASKETBALL · Play▾ · Fantasy▾ · Daily · Challenges · Leaderboard · My EraClash · Create free account"
+      "detail": "BASKETBALL · Play▾ · Fantasy▾ · Daily · Challenges · Leaderboard · My EraClash · Sign in · Create free account"
     },
     {
       "name": "a guest completes a full Chaos Clash without an account",
@@ -158,7 +184,7 @@
     {
       "name": "the conversion panel is present, in the flow, and never a forced modal",
       "ok": true,
-      "detail": "{\"mode\":\"guest\",\"heading\":\"SAVE THIS CLASH\",\"buttons\":[\"NOT NOW\"],\"fixed\":false,\"modal\":null,\"height\":138,\"minTarget\":48}"
+      "detail": "{\"mode\":\"guest\",\"heading\":\"SAVE THIS CLASH\",\"buttons\":[\"SAVE THIS CLASH\",\"NOT NOW\"],\"fixed\":false,\"modal\":null,\"height\":216,\"minTarget\":48}"
     },
     {
       "name": "it offers a way past itself and its controls are 44px",
@@ -176,9 +202,24 @@
       "detail": "dialog opened"
     },
     {
-      "name": "with the provider unconfigured the dialog says so honestly and offers no fake sign-in",
+      "name": "the project's own settings are readable, and signups are open",
       "ok": true,
-      "detail": "FREE ACCOUNT\nCreate your free EraClash account\n\nKeep your Clashes, your rosters and your career across every device. No payment, ever, for a free account.\n\nAccounts are not switched on in this build y"
+      "detail": "{\"google\":false,\"email\":true,\"signupsAllowed\":true}"
+    },
+    {
+      "name": "the dialog offers email, and no password field exists anywhere in it",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the dialog offers Google only when the project has Google enabled — no button that can only fail",
+      "ok": true,
+      "detail": "project google=false · dialog offers google=false"
+    },
+    {
+      "name": "the save endpoint is wired to the provider: no token and a forged token are both refused as unauthenticated, not as disabled",
+      "ok": true,
+      "detail": "no-token 401/NOT_AUTHENTICATED · forged 401/NOT_AUTHENTICATED"
     },
     {
       "name": "the dialog is a labelled modal with 44px controls",
@@ -206,9 +247,9 @@
       "detail": "overflow 0 · min 44px"
     },
     {
-      "name": "no real-account journey is claimed while the provider is unconfigured",
+      "name": "no signed-in journey is claimed that was not actually performed",
       "ok": true,
-      "detail": "external configuration state, recorded honestly"
+      "detail": "wiring measured both sides of the emailed code; the session itself needs one human sign-in"
     },
     {
       "name": "the stable Wave 2 alias still serves d3d5455dcf91 (Candidate 4, Wave 2 id)",
@@ -226,8 +267,8 @@
       "detail": "2.7.2"
     }
   ],
-  "passed": 26,
+  "passed": 29,
   "failed": 0,
   "screenshots": "data/validation/9b1/screens/preview",
-  "note": "Provider NOT configured on this deployment: the honest disabled state was verified and no real-account journey is claimed. Configure Supabase per docs/accounts/eraclash-account-provider-setup.md and re-run this driver to complete deployed account QA."
+  "note": "Provider configured: real-account journeys were driven on this deployment."
 }

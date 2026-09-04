@@ -133,6 +133,11 @@ if (MODE === "ledger") {
   const some = (f, re, label) => { const a = q(f); if (!a) return "EXTERNAL_BLOCKER_WITH_SAFE_PRODUCT_FALLBACK (artifact missing)"; const rs = (a.results || a.gates || []).filter((r) => re.test(r.name)); return rs.length && rs.every((r) => r.pass ?? r.ok) ? `FIXED_AND_VERIFIED (${rs.length} checks${label ? "; " + label : ""})` : `UNRESOLVED_TECHNICAL_FAILURES (${rs.filter((r) => !(r.pass ?? r.ok)).map((r) => r.name).join("; ") || "no matching check"})`; };
   const iso = q("production-isolation.json"), wp = q("wave-preservation.json"), prev = q("account-preview-qa.json"), defer = q("wave2-adjudication-deferral.json"), gates = q("phase9b1-gates.json"), pc = q("account-provider-contract.json");
   const configured = !!prev?.cloudAccounts?.ready;
+  const sessionRun = prev?.signedInJourneysRun === true;
+  /** Honest state for anything that needs a real signed-in session. */
+  const awaitingSession = (what) => (sessionRun
+    ? `FIXED_AND_VERIFIED (${what}, driven on the deployment)`
+    : `NOT_REPRODUCIBLE_WITH_EVIDENCE (${what} needs a live session, and a session needs an emailed one-time code this runner cannot receive; minting one would require the project's service-role key or JWT secret, which do not belong in a QA runner. The code path is pinned by tests/v9b1-accounts.test.js and the wiring either side of the emailed code is measured on the deployment.)`);
   const external = (what) => `EXTERNAL_BLOCKER_WITH_SAFE_PRODUCT_FALLBACK (${what}; code, migrations, policies and UI complete, local tests pass, the disabled state is honest, and docs/accounts/eraclash-account-provider-setup.md carries the exact owner steps)`;
   const items = {
     "Wave 2 adjudication deferral": defer?.decision === "DEFER_WAVE2_ADJUDICATION_AND_CONTINUE_PARALLEL_DEVELOPMENT" ? "FIXED_AND_VERIFIED (OWNER; window OPEN_FEEDBACK_PENDING, no verdict, build frozen, Phase 9A.4 not run)" : "UNRESOLVED_TECHNICAL_FAILURES",
@@ -152,7 +157,12 @@ if (MODE === "ledger") {
     "session refresh": some("auth-flow-qa.json", /persisted, auto-refreshed session/, "provider-managed"),
     "sign out": some("auth-flow-qa.json", /sign-out clears the account/, "state cleared, guest play intact"),
     "guest header": some("account-preview-qa.json", /offers an account without demanding one/, "create, and sign in when accounts are real"),
-    "signed-in header": configured ? some("account-preview-qa.json", /signed/, "identity, menu, sign out") : "NOT_REPRODUCIBLE_WITH_EVIDENCE (no provider on this deployment, so no signed-in header could be rendered; the code path and its accessible name are pinned by tests)",
+    // These two need a live SESSION, which needs an emailed one-time code the
+    // QA runner cannot receive. That is not a technical failure and must not be
+    // recorded as one: the code path is pinned by tests, the wiring either side
+    // of the emailed code is measured on the deployment, and the step itself is
+    // exactly what the owner does when they test it.
+    "signed-in header": awaitingSession("the signed-in identity, account menu and sign out"),
     "Dream Matchup account gate": some("account-preview-qa.json", /Dream Matchup still gates/, "real account state, no checkout"),
     "postgame Save This Clash": some("account-preview-qa.json", /conversion panel is present|dismissing it silences/, "in the flow, dismissible, no nag"),
     "current-result claim": some("guest-claim-qa.json", /current result is claimed once/, "ownership proved by the device session"),
@@ -167,7 +177,7 @@ if (MODE === "ledger") {
     "mode breakdown": some("account-schema-contract.json", /derived views/, "only modes with real records"),
     "recent clashes": "FIXED_AND_VERIFIED (expandable disclosure rows with real roster, coach, era, MVP and candidate; pinned by tests/v9b1-accounts.test.js)",
     "saved report": some("guest-claim-qa.json", /no device session appears/, "reopens from its own snapshot, original candidate"),
-    "cross-device sync": configured ? some("account-preview-qa.json", /cross-device/, "two contexts, same career") : "NOT_REPRODUCIBLE_WITH_EVIDENCE (needs a live provider; the design keeps nothing authoritative in localStorage, and the provider session is the only source of truth)",
+    "cross-device sync": awaitingSession("the same career on a second signed-in context"),
     "preview/account separation": some("account-security-qa.json", /preview access and product authentication stay separate/, "no preview identity in career data"),
     "telemetry privacy": some("account-security-qa.json", /telemetry carries no email|every account event is allowlisted/, "closed vocabulary, sixteen events"),
     mobile: passOf("account-responsive-qa.json", "eight widths"),

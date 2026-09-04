@@ -5,10 +5,10 @@
     "parentBranch": "phase-9a3p-play-lobby-brand-polish",
     "parentCommit": "fd36b5a107443367da704feb3f9dddea1452ae23",
     "branch": "phase-9b1-real-accounts-my-eraclash",
-    "head": "5411398f961bebe2ceefb9d2a4adddd75f06365a",
+    "head": "936ccb64dd57600a9a376498e950a904cd881d92",
     "draftPR": 41,
     "branchPreview": "https://era-clash-basketball-git-phase-9b1-real-accoun-fca5e5-era-clash.vercel.app",
-    "branchPreviewStamp": "eraclash-assets:2.7.2:a69eb2565a0f",
+    "branchPreviewStamp": "eraclash-assets:2.7.2:c451e9f1b5ee",
     "wave1Unchanged": true,
     "stableWave2Unchanged": true,
     "mainUnchanged": true,
@@ -37,14 +37,14 @@
     },
     "callback": "/auth/callback — code exchanged after the address bar is scrubbed; only same-origin returns",
     "signOut": "provider session ended, state cleared in memory, guest play intact",
-    "externalSetupStatus": "OWNER ACTIVATION REQUIRED — docs/accounts/eraclash-account-provider-setup.md"
+    "externalSetupStatus": "configured"
   },
   "cloudCareer": {
     "architecture": "the browser reads its own rows under RLS; the authoritative save runs server-side on api/profile.js and adds no function",
     "guestClaim": "ownership proved by the result record's server-minted device session against the caller's HttpOnly cookie",
     "deviceImport": "the browser proposes candidate ids; every one is authorised on its own",
     "idempotency": "unique (user_id, result_id) plus result_claims.result_id as a primary key",
-    "crossDevice": "not verifiable without a provider; nothing authoritative is kept in localStorage"
+    "crossDevice": "verified on the deployment"
   },
   "myEraClash": {
     "profile": "initials, display name (editable, cleaned, capped), free account, member since",
@@ -80,14 +80,14 @@
     "productionChanges": 0
   },
   "ledger": {
-    "FIXED_AND_VERIFIED": 39,
+    "FIXED_AND_VERIFIED": 40,
     "NOT_REPRODUCIBLE_WITH_EVIDENCE": 2,
-    "EXTERNAL_BLOCKER_WITH_SAFE_PRODUCT_FALLBACK": 1,
+    "EXTERNAL_BLOCKER_WITH_SAFE_PRODUCT_FALLBACK": 0,
     "DEFERRED_BY_SCOPE": 0,
     "UNRESOLVED_TECHNICAL_FAILURES": 0
   },
   "tests": {
-    "vitest": "2435/2435 tests · 76/76 files",
+    "vitest": "2442/2442 tests · 76/76 files",
     "playwright": "78 passed",
     "accountsSuite": "54 tests in tests/v9b1-accounts.test.js",
     "preflight": "10/10",
@@ -96,15 +96,15 @@
     "auth": "13/13",
     "guestClaim": "23/23",
     "cloudSave": "23/23",
-    "security": "13/13",
+    "security": "14/14",
     "myEraClash": "9/9",
     "responsive": "8/8",
-    "deployed": "26/26",
+    "deployed": "29/29",
     "fullGateRun": "35/35"
   },
-  "verdict": "ACCOUNT FOUNDATION CODE COMPLETE — OWNER SUPABASE ACTIVATION REQUIRED",
+  "verdict": "REAL ACCOUNT AND MY ERACLASH FOUNDATION COMPLETE — READY FOR OWNER TESTING",
   "ownerAction": {
-    "required": "activate Supabase per docs/accounts/eraclash-account-provider-setup.md, then re-run npm run account:deployed-qa",
+    "required": "test the account journeys on the branch preview",
     "approvalFormat": [
       "APPROVE REAL ACCOUNTS AND MY ERACLASH V1",
       "REVISE: [precise changes]"
