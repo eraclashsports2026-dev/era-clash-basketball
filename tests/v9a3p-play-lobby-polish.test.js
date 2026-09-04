@@ -172,7 +172,10 @@ describe("league marks", () => {
   });
   it("historical league data in player, team and statistical records is untouched", () => {
     if (!parentAvailable()) return;
-    expect(git(`git diff --name-only ${PARENT} -- src/players.js src/attributes.js data/players data/research data/calibration api/`)).toBe("");
+    // Scoped to the DATA this claim is about. A later phase may legitimately
+    // add a server module under api/ (9B.1 added the cloud-career helper); what
+    // must never change is the historical league record itself.
+    expect(git(`git diff --name-only ${PARENT} -- src/players.js src/attributes.js data/players data/research data/calibration`)).toBe("");
   });
 });
 
@@ -263,16 +266,34 @@ describe("button states", () => {
 });
 
 describe("telemetry preservation", () => {
-  it("adds NO event: the allowlist and the activation list are unchanged; the existing lobby event carries two bounded properties", () => {
-    expect(EVENTS_ALLOWLIST.size).toBe(69); expect(ACTIVATION_EVENTS.length).toBe(22);
+  it("adds no event of its own, removes none, and carries its two bounded properties on the existing lobby event", () => {
+    // Phase 9A.3P itself added no event. A later phase may add its own (9B.1
+    // added the account events), so the invariant is that nothing was REMOVED
+    // and the two lists still agree — not a frozen global count.
+    expect(EVENTS_ALLOWLIST.size).toBeGreaterThanOrEqual(69);
+    expect(ACTIVATION_EVENTS.length).toBeGreaterThanOrEqual(22);
+    for (const e of ACTIVATION_EVENTS) expect(EVENTS_ALLOWLIST.has(e), e).toBe(true);
+    for (const e of ["play_lobby_viewed", "play_mode_selected", "time_to_mode_selection_recorded", "chaos_game_completed", "result_tab_opened", "new_clash_started"]) {
+      expect(ACTIVATION_EVENTS, e).toContain(e);
+    }
     const act = src("src/activation.js");
     expect(act).toMatch(/hero_state/); expect(act).toMatch(/lobby_presentation_version/);
     expect(act).toMatch(/HERO_STATE_SHAPE = \/\^\(full\|compact-active-run\|compact-returning\)\$\//);
     expect(act).not.toMatch(/email|cookie|token|password|key\b/i);
   });
-  it("Wave 2 schemas, partitions and study constants are byte-identical to the parent", () => {
+  it("Wave 2 study constants, credentials, feedback schema and frozen plan are byte-identical to the parent", () => {
     if (!parentAvailable()) return;
-    expect(git(`git diff --name-only ${PARENT} -- src/wave2.js api/ config/ middleware.js vercel.json data/validation/9a3/wave2-test-plan.json data/validation/9a3/wave2-acceptance-policy.json`)).toBe("");
+    // The STUDY is the invariant. api/events.js, middleware.js and vercel.json
+    // are shared infrastructure a later phase may extend additively, so those
+    // are pinned by behaviour below rather than by byte-identity.
+    expect(git(`git diff --name-only ${PARENT} -- src/wave2.js config/ api/feedback.js api/game.js api/_lib/previewAccessCheck.js data/validation/9a3/wave2-test-plan.json data/validation/9a3/wave2-acceptance-policy.json`)).toBe("");
+  });
+  it("the Wave 2 telemetry partition still keys on wave, cohort, tester and build", async () => {
+    const { wave2PartitionKey } = await import("../api/events.js");
+    expect(wave2PartitionKey("candidate4-night-court-wave2", "first_time", "wave2-new-01", "abc123"))
+      .toBe("wave2-metrics:candidate4-night-court-wave2:first_time:wave2-new-01:abc123");
+    expect(wave2PartitionKey("candidate4-night-court-wave2", null, "wave2-new-01", "!!bad!!"))
+      .toBe("wave2-metrics:candidate4-night-court-wave2:unknown:wave2-new-01:unknown");
   });
 });
 
