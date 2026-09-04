@@ -1,24 +1,33 @@
 {
   "phase": "9B.1A",
   "artifact": "link-redemption-live-qa",
-  "generatedAt": "2026-09-04T21:05:53.896Z",
-  "build": "https://era-clash-basketball-hos40e7zo-era-clash.vercel.app",
-  "commit": "344bd54",
-  "method": "Each shape of proof an emailed link can carry is presented to the deployed /auth/callback against the real provider. Every proof is invalid by construction, so no account is touched and no email is sent; the request the client makes is the evidence. Case A seeds a PKCE code verifier, because with none the SDK throws locally and sends nothing — the same reason the original defect could not be seen from outside.",
+  "generatedAt": "2026-09-04T21:23:14.909Z",
+  "build": "https://era-clash-basketball-2fdenkfqu-era-clash.vercel.app",
+  "commit": "e605fee",
+  "method": "Every shape of proof an emailed link can carry is presented to the deployed /auth/callback against the real provider. All proofs are invalid by construction, so no account is touched and no email is sent; the request the client makes is the evidence. Two synthetic code verifiers are seeded — one in the flow's own slot, one under the legacy fixed key — so the request itself reveals which slot was consulted. With no verifier at all the SDK throws locally and sends nothing, which is why the original defect could not be observed from outside the browser.",
   "defectsClosed": [
     "exchangeCodeForSession was handed window.location.href; its parameter is an auth code, so no click could ever have produced a session",
     "the paste field stripped every non-digit, so the only proof the default email template sends could not be entered",
-    "a pkce_-prefixed token was redeemed as a raw token, which hashes it twice and always fails"
+    "a pkce_-prefixed token was redeemed as a raw token, which hashes it twice and always fails",
+    "the address-bar scrub erased the SDK's sb_flow_id before the exchange read it, so the lookup fell back to a key holding only the newest flow — the older of two links would present the wrong verifier and burn a good code"
   ],
+  "ownerConfiguration": {
+    "siteUrlFallbackHost": "era-clash-basketball.vercel.app",
+    "previewCallbackAllowlisted": true,
+    "unallowlistedTargetRefused": true,
+    "note": "Confirmed by asking the provider to redirect an invalid token: it resolves the target before rejecting the token, so the Location header shows the decision without sending mail."
+  },
   "verdict": {
     "exchangeReceivesTheBareCode": true,
     "exchangeNeverReceivesAUrl": true,
     "exchangeUsesThePkceGrant": true,
+    "namedFlowUsesItsOwnVerifier": true,
+    "unnamedFlowFallsBackRatherThanFailing": true,
     "digestVerifiedAsAHashWithItsType": true,
     "plainDigestAlsoVerified": true,
     "noAddressIsEverInvented": true,
     "nothingIsSentWithoutAProof": true
   },
   "allPassed": true,
-  "note": "No credential, key or address appears in this artifact by construction: only booleans, endpoint paths and body key names are recorded."
+  "note": "No credential, key or address appears in this artifact by construction: only booleans, endpoint paths and body key names are recorded. The two verifiers are synthetic values created by this script."
 }
