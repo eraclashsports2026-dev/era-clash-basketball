@@ -633,7 +633,7 @@ describe("redeeming an email link", () => {
     // Exactly the URL the owner's Safari could not load: the provider had
     // already consumed the token and redirected with a code.
     const plan = redemptionPlan("http://localhost:3000/?code=e0c581d9-f03d-48ef-9ec4-ad7fd8a2ddd4");
-    expect(plan).toEqual([{ via: VIA.CODE, value: "e0c581d9-f03d-48ef-9ec4-ad7fd8a2ddd4", type: null }]);
+    expect(plan).toEqual([{ via: VIA.CODE, value: "e0c581d9-f03d-48ef-9ec4-ad7fd8a2ddd4", type: null, flowId: null }]);
     expect(isBrowserBound(plan[0])).toBe(true);
   });
 
@@ -647,6 +647,44 @@ describe("redeeming an email link", () => {
     expect(vias("e0c581d9-f03d-48ef-9ec4-ad7fd8a2ddd4")).toEqual([VIA.CODE]);
     expect(vias("pkce_9f2c1a")).toEqual([VIA.TOKEN_HASH, VIA.OTP]);
     expect(vias("0123456789abcdef".repeat(4))).toEqual([VIA.TOKEN_HASH, VIA.OTP]);
+  });
+
+  it("the flow id travels with the code, so the right verifier is used", () => {
+    // The SDK appends sb_flow_id to the redirect it asks for, and keeps each
+    // flow's verifier in a slot named after it. Lose the id and the lookup
+    // falls back to one fixed key holding only the newest flow — which makes
+    // clicking the older of two links burn a code that was perfectly good.
+    const plan = redemptionPlan("https://x.vercel.app/auth/callback?sb_flow_id=0123456789abcdef0123456789abcdef&code=e0c581d9-f03d-48ef-9ec4-ad7fd8a2ddd4");
+    expect(plan).toEqual([{ via: VIA.CODE, value: "e0c581d9-f03d-48ef-9ec4-ad7fd8a2ddd4", type: null, flowId: "0123456789abcdef0123456789abcdef" }]);
+  });
+
+  it("a missing or malformed flow id falls back rather than failing", () => {
+    expect(redemptionPlan("http://localhost:3000/?code=e0c581d9-f03d-48ef-9ec4-ad7fd8a2ddd4")[0].flowId).toBeNull();
+    expect(redemptionPlan("https://x/auth/callback?sb_flow_id=nope&code=e0c581d9-f03d-48ef-9ec4-ad7fd8a2ddd4")[0].flowId).toBeNull();
+  });
+
+  it("the flow id reaches the exchange, not just the plan", async () => {
+    const seen = [];
+    await redeem("https://x.vercel.app/auth/callback?sb_flow_id=0123456789abcdef0123456789abcdef&code=e0c581d9-f03d-48ef-9ec4-ad7fd8a2ddd4", {
+      exchangeCodeForSession: (v, flowId) => { seen.push([v, flowId]); return { ok: true }; },
+      verifyTokenHash: () => null, verifyEmailCode: () => null,
+    });
+    expect(seen).toEqual([["e0c581d9-f03d-48ef-9ec4-ad7fd8a2ddd4", "0123456789abcdef0123456789abcdef"]]);
+  });
+
+  it("the callback reads the URL before it scrubs the address bar", () => {
+    // Order, not presence. Scrubbing first would silently drop the flow id.
+    const t = src("src/components/accounts/AuthCallback.jsx");
+    const read = t.indexOf("const url = window.location.href");
+    const scrub = t.indexOf("window.history.replaceState");
+    expect(read).toBeGreaterThan(-1);
+    expect(scrub).toBeGreaterThan(-1);
+    expect(read).toBeLessThan(scrub);
+  });
+
+  it("the provider names the flow when it has one, and omits it when it does not", () => {
+    const t = src("src/accounts/provider.js");
+    expect(t).toMatch(/exchangeCodeForSession\(code, flowId \? \{ flowId \} : undefined\)/);
   });
 
   it("nothing usable produces nothing, rather than a request built on a guess", () => {

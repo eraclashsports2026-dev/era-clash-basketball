@@ -88,7 +88,7 @@ export default function AccountDialog({ open, entryPoint = "header", returnTo = 
         email,
         verifyEmailCode: (a, v, t) => withProvider((p) => p.verifyEmailCode(a, v, t)),
         verifyTokenHash: (v, t) => withProvider((p) => p.verifyTokenHash(v, t)),
-        exchangeCodeForSession: (v) => withProvider((p) => p.exchangeCodeForSession(v)),
+        exchangeCodeForSession: (v, flowId) => withProvider((p) => p.exchangeCodeForSession(v, flowId)),
       });
       if (!session) throw Object.assign(new Error("CODE_INVALID_OR_EXPIRED"), { code: "CODE_INVALID_OR_EXPIRED" });
       await adopt(session);

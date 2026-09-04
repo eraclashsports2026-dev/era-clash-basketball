@@ -162,11 +162,14 @@ const supabaseProvider = {
    *   the CODE — passing it a whole URL fails every time, which is the bug that
    *   made this callback unable to complete a sign-in even in the right browser.
    */
-  async exchangeCodeForSession(codeOrUrl) {
+  async exchangeCodeForSession(codeOrUrl, flowId = null) {
     const c = await client();
     const first = readProof(codeOrUrl);
     const code = first?.via === VIA.CODE ? first.value : String(codeOrUrl || "").trim();
-    const { data, error } = await c.auth.exchangeCodeForSession(code);
+    // Naming the flow makes the lookup slot-only. Without it the SDK reads the
+    // fixed legacy key, which holds whichever flow started last — fine for one
+    // link, wrong for the older of two.
+    const { data, error } = await c.auth.exchangeCodeForSession(code, flowId ? { flowId } : undefined);
     if (error) {
       // PKCE keeps the code verifier in the REQUESTING browser's storage, so a
       // link opened anywhere else — a phone, another browser, a private window

@@ -28,6 +28,12 @@ export default function AuthCallback({ onDone }) {
   useEffect(() => {
     if (ran.current) return;
     ran.current = true;
+    // Captured BEFORE the address bar is cleaned, and this order matters: the
+    // URL carries the SDK's own sb_flow_id, which names the storage slot
+    // holding this flow's verifier. Scrub first and read second, and the
+    // exchange falls back to a single fixed key that mirrors whichever flow
+    // started last — so clicking the older of two links would present the
+    // wrong verifier and burn a code that was perfectly good.
     const url = window.location.href;
     const params = new URLSearchParams(window.location.search);
     const next = safeReturnPath(params.get("next"), "/play");
@@ -55,7 +61,7 @@ export default function AuthCallback({ onDone }) {
         // rather than sent with a guessed address.
         const session = await redeem(url, {
           verifyTokenHash: (v, t) => withProvider((p) => p.verifyTokenHash(v, t)),
-          exchangeCodeForSession: (v) => withProvider((p) => p.exchangeCodeForSession(v)),
+          exchangeCodeForSession: (v, flowId) => withProvider((p) => p.exchangeCodeForSession(v, flowId)),
         });
         if (!session) throw Object.assign(new Error("CODE_INVALID_OR_EXPIRED"), { code: "CODE_INVALID_OR_EXPIRED" });
         await adopt(session);

@@ -28,6 +28,13 @@ export const VIA = Object.freeze({ OTP: "otp", TOKEN_HASH: "tokenHash", CODE: "c
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const DIGEST = /^[0-9a-f]{40,}$/i;
 const clean = (v) => String(v ?? "").trim().replace(/^<+|>+$/g, "");
+// The SDK appends this to the redirect it asks the provider to use, and keeps
+// each flow's verifier in a slot named after it. Without it the exchange falls
+// back to a single fixed key that mirrors only the MOST RECENT flow — so
+// clicking an older link would present the wrong verifier and burn a code that
+// was perfectly good. It has to survive the address-bar scrub, which is why it
+// is read out of the string handed in rather than out of window.location.
+const FLOW_ID = /^[0-9a-f]{32}$/i;
 // A digest masquerading as a token: the PKCE marker, or a bare hex hash.
 const isDigest = (v) => /^pkce_/i.test(v) || DIGEST.test(v);
 
@@ -55,6 +62,8 @@ export const redemptionPlan = (raw) => {
     } catch { return []; }
     const pick = (k) => q.get(k) || h.get(k) || null;
     const type = pick("type");
+    const rawFlow = pick("sb_flow_id");
+    const flowId = rawFlow && FLOW_ID.test(rawFlow) ? rawFlow : null;
     const tokenHash = pick("token_hash");
     const token = pick("token");
     const code = pick("code");
@@ -63,7 +72,7 @@ export const redemptionPlan = (raw) => {
     // downgraded to PKCE and made un-redeemable on a phone.
     if (tokenHash) return [{ via: VIA.TOKEN_HASH, value: tokenHash, type }, { via: VIA.OTP, value: tokenHash, type }];
     if (token) return both(token, type);
-    if (code) return [{ via: VIA.CODE, value: code, type }];
+    if (code) return [{ via: VIA.CODE, value: code, type, flowId }];
     return [];
   }
 
@@ -91,7 +100,8 @@ export const isBrowserBound = (proof) => proof?.via === VIA.CODE;
  * Attempts that redeem against an address are skipped when no address is
  * known, because guessing one would mean sending a forged request.
  *
- * @param raw whatever was pasted, or the callback's own URL
+ * @param raw whatever was pasted, or the callback's own URL — read as a string,
+ *   so a flow id survives a caller that has already cleaned the address bar
  * @param calls the three provider methods, plus the address if there is one
  * @returns the session, or null if nothing in the plan was usable
  * @throws the FIRST real failure, which is the one that explains the problem —
@@ -107,7 +117,7 @@ export const redeem = async (raw, { email = null, verifyEmailCode, verifyTokenHa
         ? await verifyEmailCode(email, a.value, a.type)
         : a.via === VIA.TOKEN_HASH
           ? await verifyTokenHash(a.value, a.type)
-          : await exchangeCodeForSession(a.value);
+          : await exchangeCodeForSession(a.value, a.flowId ?? null);
       if (session) return session;
     } catch (e) { firstFailure = firstFailure || e; }
   }
