@@ -1,0 +1,482 @@
+{
+  "artifact": "lobby-preview-qa",
+  "phase": "9A.3P — Play Lobby brand, CTA and entry polish",
+  "deployment": {
+    "baseUrl": "https://era-clash-basketball-git-phase-9a3p-play-lobby-962b44-era-clash.vercel.app",
+    "commit": "1a7ab1052e1fc413272316d303035da2fe8cf90a",
+    "buildStamp": "eraclash-assets:2.7.2:b51302d6a301",
+    "health": {
+      "enabled": true,
+      "candidateId": "Candidate 4",
+      "candidateCoreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+      "calibrationVersion": "1.4.0",
+      "featureFlag": "PREVIEW_SIM_ENGINE_ENABLED",
+      "waveId": "candidate4-night-court-wave2",
+      "fallbackEngine": "production engine 3.2.0 (per-request fallback; emergency-off returns every new request to production while stored preview results stay readable by version)",
+      "cacheNamespace": "preview-*",
+      "persistenceNamespace": "pv_ result-id prefix",
+      "accessControl": "hashed-key allowlist (config/previewAccess.js)"
+    },
+    "commitNote": "deployment of branch head 1a7ab10 (Vercel status success); the commit label was corrected after the run — the measured URL and build stamp are unchanged"
+  },
+  "frozen": {
+    "wave2": {
+      "alias": "https://era-clash-basketball-git-wave2-era-clash.vercel.app",
+      "stamp": "eraclash-assets:2.7.2:d3d5455dcf91",
+      "expected": "eraclash-assets:2.7.2:d3d5455dcf91",
+      "unchanged": true
+    },
+    "wave1": {
+      "alias": "https://era-clash-basketball-git-wave1-era-clash.vercel.app",
+      "stamp": "eraclash-assets:2.7.2:2f35a3b70c30",
+      "expected": "eraclash-assets:2.7.2:2f35a3b70c30",
+      "unchanged": true
+    },
+    "production": {
+      "url": "https://era-clash-basketball.vercel.app",
+      "build": "2.7.2",
+      "unchanged": true
+    }
+  },
+  "firstTime": {
+    "hero": "full",
+    "presentation": "play-lobby-polish-v1",
+    "compact": false,
+    "cards": [
+      {
+        "id": "chaos",
+        "label": "START CHAOS CLASH",
+        "hierarchy": "primary",
+        "name": "Start Chaos Clash, recommended mode",
+        "gradient": true,
+        "border": "solid",
+        "arrow": "none",
+        "href": "/play/chaos",
+        "signature": "fracture-dice",
+        "sigHidden": "true",
+        "sigOpacity": 0.07,
+        "wraps": false
+      },
+      {
+        "id": "dream",
+        "label": "BUILD MATCHUP",
+        "hierarchy": "secondary",
+        "name": "Build Dream Matchup, free account required",
+        "gradient": false,
+        "border": "solid",
+        "arrow": "\"→\"",
+        "href": "/play/dream",
+        "signature": "crossing-timelines",
+        "sigHidden": "true",
+        "sigOpacity": 0.07,
+        "wraps": false
+      },
+      {
+        "id": "daily",
+        "label": "PLAY TODAY’S CLASH",
+        "hierarchy": "secondary",
+        "name": "Play Daily Clash",
+        "gradient": false,
+        "border": "solid",
+        "arrow": "\"→\"",
+        "href": "/play/daily",
+        "signature": "spotlight-calendar",
+        "sigHidden": "true",
+        "sigOpacity": 0.07,
+        "wraps": false
+      },
+      {
+        "id": "bo7",
+        "label": "START SERIES",
+        "hierarchy": "secondary",
+        "name": "Start Best of 7, free account required",
+        "gradient": false,
+        "border": "solid",
+        "arrow": "\"→\"",
+        "href": "/play/best-of-7",
+        "signature": "series-ticks",
+        "sigHidden": "true",
+        "sigOpacity": 0.07,
+        "wraps": false
+      },
+      {
+        "id": "win82",
+        "label": "START SEASON",
+        "hierarchy": "secondary",
+        "name": "Start Win 82, free account required",
+        "gradient": false,
+        "border": "solid",
+        "arrow": "\"→\"",
+        "href": "/play/win-82",
+        "signature": "season-arc",
+        "sigHidden": "true",
+        "sigOpacity": 0.07,
+        "wraps": false
+      },
+      {
+        "id": "tournament",
+        "label": "ENTER TOURNAMENT",
+        "hierarchy": "secondary",
+        "name": "Enter Tournament, free account required",
+        "gradient": false,
+        "border": "solid",
+        "arrow": "\"→\"",
+        "href": "/play/tournament",
+        "signature": "bracket",
+        "sigHidden": "true",
+        "sigOpacity": 0.07,
+        "wraps": false
+      },
+      {
+        "id": "gauntlet",
+        "label": "LEARN MORE",
+        "hierarchy": "unavailable",
+        "name": "Learn more about Era Gauntlet, coming soon",
+        "gradient": false,
+        "border": "dashed",
+        "arrow": "none",
+        "href": "/modes/era-gauntlet",
+        "signature": "era-steps",
+        "sigHidden": "true",
+        "sigOpacity": 0.07,
+        "wraps": false
+      }
+    ],
+    "headerImgs": [
+      "/brand/eraclash-logo-mk1.png"
+    ],
+    "headerHeight": 65,
+    "anyNba": false,
+    "headerBg": "rgba(3, 6, 11, 0.94)",
+    "canvas": "rgb(241, 237, 228)",
+    "continueCard": false,
+    "continueAboveGrid": null,
+    "eraLeak": false,
+    "overflow": 0,
+    "docHeight": 1024,
+    "run": null,
+    "minTarget": 44,
+    "primaryCols": 3
+  },
+  "returning": {
+    "hero": "compact-returning",
+    "presentation": "play-lobby-polish-v1",
+    "compact": true,
+    "cards": [
+      {
+        "id": "chaos",
+        "label": "START CHAOS CLASH",
+        "hierarchy": "primary",
+        "name": "Start Chaos Clash, recommended mode",
+        "gradient": true,
+        "border": "solid",
+        "arrow": "none",
+        "href": "/play/chaos",
+        "signature": "fracture-dice",
+        "sigHidden": "true",
+        "sigOpacity": 0.07,
+        "wraps": false
+      },
+      {
+        "id": "dream",
+        "label": "BUILD MATCHUP",
+        "hierarchy": "secondary",
+        "name": "Build Dream Matchup",
+        "gradient": false,
+        "border": "solid",
+        "arrow": "\"→\"",
+        "href": "/play/dream",
+        "signature": "crossing-timelines",
+        "sigHidden": "true",
+        "sigOpacity": 0.07,
+        "wraps": false
+      },
+      {
+        "id": "daily",
+        "label": "PLAY TODAY’S CLASH",
+        "hierarchy": "secondary",
+        "name": "Play Daily Clash",
+        "gradient": false,
+        "border": "solid",
+        "arrow": "\"→\"",
+        "href": "/play/daily",
+        "signature": "spotlight-calendar",
+        "sigHidden": "true",
+        "sigOpacity": 0.07,
+        "wraps": false
+      },
+      {
+        "id": "bo7",
+        "label": "START SERIES",
+        "hierarchy": "secondary",
+        "name": "Start Best of 7",
+        "gradient": false,
+        "border": "solid",
+        "arrow": "\"→\"",
+        "href": "/play/best-of-7",
+        "signature": "series-ticks",
+        "sigHidden": "true",
+        "sigOpacity": 0.07,
+        "wraps": false
+      },
+      {
+        "id": "win82",
+        "label": "START SEASON",
+        "hierarchy": "secondary",
+        "name": "Start Win 82",
+        "gradient": false,
+        "border": "solid",
+        "arrow": "\"→\"",
+        "href": "/play/win-82",
+        "signature": "season-arc",
+        "sigHidden": "true",
+        "sigOpacity": 0.07,
+        "wraps": false
+      },
+      {
+        "id": "tournament",
+        "label": "ENTER TOURNAMENT",
+        "hierarchy": "secondary",
+        "name": "Enter Tournament",
+        "gradient": false,
+        "border": "solid",
+        "arrow": "\"→\"",
+        "href": "/play/tournament",
+        "signature": "bracket",
+        "sigHidden": "true",
+        "sigOpacity": 0.07,
+        "wraps": false
+      },
+      {
+        "id": "gauntlet",
+        "label": "LEARN MORE",
+        "hierarchy": "unavailable",
+        "name": "Learn more about Era Gauntlet, coming soon",
+        "gradient": false,
+        "border": "dashed",
+        "arrow": "none",
+        "href": "/modes/era-gauntlet",
+        "signature": "era-steps",
+        "sigHidden": "true",
+        "sigOpacity": 0.07,
+        "wraps": false
+      }
+    ],
+    "headerImgs": [
+      "/brand/eraclash-logo-mk1.png"
+    ],
+    "headerHeight": 65,
+    "anyNba": false,
+    "headerBg": "rgba(3, 6, 11, 0.94)",
+    "canvas": "rgb(241, 237, 228)",
+    "continueCard": false,
+    "continueAboveGrid": null,
+    "eraLeak": false,
+    "overflow": 0,
+    "docHeight": 1024,
+    "run": null,
+    "minTarget": 44,
+    "primaryCols": 3
+  },
+  "activeRun": {
+    "heroAtFirstPaint": {
+      "hero": "compact-active-run",
+      "h": 77
+    },
+    "continueAboveGrid": true,
+    "eraLeak": false,
+    "runPreserved": true
+  },
+  "routes": {
+    "dream": "/play/dream",
+    "daily": "/play/daily",
+    "bo7": "/play/best-of-7",
+    "win82": "/play/win-82",
+    "tournament": "/play/tournament",
+    "gauntlet": "/modes/era-gauntlet",
+    "chaos": "/play/chaos"
+  },
+  "dock": {
+    "open": "Game Story",
+    "scores": [
+      131,
+      130
+    ]
+  },
+  "gates": [
+    {
+      "name": "unauthenticated / is refused (401)",
+      "ok": true,
+      "detail": "HTTP 401"
+    },
+    {
+      "name": "unauthenticated /play is refused (401)",
+      "ok": true,
+      "detail": "HTTP 401"
+    },
+    {
+      "name": "unauthenticated /play/chaos is refused (401)",
+      "ok": true,
+      "detail": "HTTP 401"
+    },
+    {
+      "name": "unauthenticated /play/dream is refused (401)",
+      "ok": true,
+      "detail": "HTTP 401"
+    },
+    {
+      "name": "a wrong key is refused",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the Wave 1 owner key is refused on the polish preview (Wave 2 pool only)",
+      "ok": true,
+      "detail": "HTTP 401"
+    },
+    {
+      "name": "the Wave 2 owner key opens a session on the polish preview",
+      "ok": true,
+      "detail": "HTTP 303"
+    },
+    {
+      "name": "the preview runs Candidate 4 / 1.4.0 with this checkout's core hash and the Wave 2 id",
+      "ok": true,
+      "detail": "Candidate 4 / 1.4.0 / candidate4-night-court-wave2"
+    },
+    {
+      "name": "the preview build stamp differs from the stable Wave 2 stamp (a new build, not the distributed one)",
+      "ok": true,
+      "detail": "eraclash-assets:2.7.2:b51302d6a301"
+    },
+    {
+      "name": "full hero for a first-time visitor; Night Court shell (obsidian header, ivory canvas); presentation play-lobby-polish-v1",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the header shows the Mk1 mark only; no league mark anywhere in the shell or the lobby; header not taller than the parent's 65px",
+      "ok": true,
+      "detail": "/brand/eraclash-logo-mk1.png · 65px"
+    },
+    {
+      "name": "all seven action labels are exact",
+      "ok": true,
+      "detail": "chaos:START CHAOS CLASH · dream:BUILD MATCHUP · daily:PLAY TODAY’S CLASH · bo7:START SERIES · win82:START SEASON · tournament:ENTER TOURNAMENT · gauntlet:LEARN MORE"
+    },
+    {
+      "name": "exactly one filled-Gold CTA (Chaos); five bordered+arrowed secondaries; one dashed unavailable (Era Gauntlet)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "accessible names carry purpose, mode and access fact",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "seven distinct signatures, hidden from assistive tech, 4–10% opacity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "no label wraps; no overflow; one desktop viewport; no run created; no POST",
+      "ok": true,
+      "detail": "doc 1024px · posts 0"
+    },
+    {
+      "name": "every card routes to its mode's own address (Era Gauntlet to its information page, never a checkout)",
+      "ok": true,
+      "detail": "{\"dream\":\"/play/dream\",\"daily\":\"/play/daily\",\"bo7\":\"/play/best-of-7\",\"win82\":\"/play/win-82\",\"tournament\":\"/play/tournament\",\"gauntlet\":\"/modes/era-gauntlet\",\"chaos\":\"/play/chaos\"}"
+    },
+    {
+      "name": "Coming Soon opens an information page, not a purchase",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "BUILD MATCHUP as a guest continues through the existing account gate at /play/dream",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "compact hero for a returning device; the same seven labels and the one primary; no run; no POST",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the logo returns to the lobby: compact hero at first paint and after the run resolves (no shift), Continue above the grid, era hidden, run preserved",
+      "ok": true,
+      "detail": "hero 77→77px"
+    },
+    {
+      "name": "Continue reopens the exact run (same first card, same id); only one start was ever posted",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "one Chaos Clash completes on Candidate 4; the Result Dock leads with the Story and two scores",
+      "ok": true,
+      "detail": "{\"open\":\"Game Story\",\"scores\":[131,130]}"
+    },
+    {
+      "name": "every result tab opens",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "after the game the lobby is compact (returning) with no false Continue card",
+      "ok": true,
+      "detail": "compact-returning"
+    },
+    {
+      "name": "tablet 768×1024: no overflow, Chaos first, ≥44px controls, labels intact, Mk1 only in the header, two columns",
+      "ok": true,
+      "detail": "overflow 0 · min 44px · cols 2"
+    },
+    {
+      "name": "mobile 430×932: no overflow, Chaos first, ≥44px controls, labels intact, Mk1 only in the header, one column with a full-width primary",
+      "ok": true,
+      "detail": "overflow 0 · min 44px · cols 1"
+    },
+    {
+      "name": "mobile 390×844: no overflow, Chaos first, ≥44px controls, labels intact, Mk1 only in the header, one column with a full-width primary",
+      "ok": true,
+      "detail": "overflow 0 · min 44px · cols 1"
+    },
+    {
+      "name": "mobile 390×844 returning: compact hero",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "mobile 375×812: no overflow, Chaos first, ≥44px controls, labels intact, Mk1 only in the header, one column with a full-width primary",
+      "ok": true,
+      "detail": "overflow 0 · min 44px · cols 1"
+    },
+    {
+      "name": "the stable Wave 2 alias still serves eraclash-assets:2.7.2:d3d5455dcf91 (Candidate 4, Wave 2 id) — current testers were not moved",
+      "ok": true,
+      "detail": "eraclash-assets:2.7.2:d3d5455dcf91"
+    },
+    {
+      "name": "the stable Wave 2 build does not carry the polish (no play-lobby-polish-v1 in its bundle)",
+      "ok": true,
+      "detail": "1935 bytes of shell"
+    },
+    {
+      "name": "the Wave 1 alias still serves eraclash-assets:2.7.2:2f35a3b70c30 (Candidate 3)",
+      "ok": true,
+      "detail": "eraclash-assets:2.7.2:2f35a3b70c30 · Candidate 3"
+    },
+    {
+      "name": "production is unchanged: build 2.7.2, no preview block, no lobby, no polish",
+      "ok": true,
+      "detail": "2.7.2"
+    }
+  ],
+  "passed": 34,
+  "failed": 0,
+  "screenshots": "data/validation/9a3p/screens/preview",
+  "note": "Owner-review branch preview only. No tester was invited to it; the stable Wave 2 alias was read, never written."
+}

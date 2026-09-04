@@ -11,7 +11,7 @@
     {
       "name": "first contentful paint under 1.5s on the harness",
       "pass": true,
-      "detail": "52ms"
+      "detail": "44ms"
     },
     {
       "name": "no layout shift after first paint (CLS < 0.02) for a first-time visitor",
@@ -26,7 +26,7 @@
     {
       "name": "the polish layer is under 8KB of CSS source",
       "pass": true,
-      "detail": "6867 bytes"
+      "detail": "6923 bytes"
     },
     {
       "name": "no layout shift for a returning device (compact hero)",
@@ -40,12 +40,12 @@
     }
   ],
   "perf": {
-    "domContentLoaded": 17,
-    "fcp": 52,
+    "domContentLoaded": 16,
+    "fcp": 44,
     "cls": 0,
     "signatureBytes": 6499,
-    "transfer": 822256,
-    "polishCssBytes": 6867,
+    "transfer": 822210,
+    "polishCssBytes": 6923,
     "returningCls": 0,
     "activeRunCls": 0,
     "note": "The Continue card mounts once the server's view of the remembered run arrives; the hero above it is already compact, so the shift is the card's own insertion below the band."

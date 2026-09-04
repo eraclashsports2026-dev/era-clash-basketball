@@ -1,0 +1,370 @@
+{
+  "artifact": "phase9a3p-final-summary",
+  "phase": "9A.3P — Play Lobby brand, CTA and entry polish",
+  "repository": {
+    "parentBranch": "phase-9a3-night-court-wave2-beta",
+    "parentCommit": "ef0caa525c4cf6830fe20b4a8ef5d483e29afd86",
+    "branch": "phase-9a3p-play-lobby-brand-polish",
+    "head": "1a7ab1052e1fc413272316d303035da2fe8cf90a",
+    "draftPR": 40,
+    "branchPreview": "https://era-clash-basketball-git-phase-9a3p-play-lobby-962b44-era-clash.vercel.app",
+    "branchPreviewStamp": "eraclash-assets:2.7.2:b51302d6a301",
+    "main": "9cd95ff8797f8cdef252bbe67d63158c01b9f9bd",
+    "mainUnchanged": true,
+    "wave1": {
+      "head": "4dc59e7b2175b82cea8d5ab5c336b75b550c7f59",
+      "stamp": "eraclash-assets:2.7.2:2f35a3b70c30",
+      "unchanged": true
+    },
+    "wave2": {
+      "head": "ef0caa525c4cf6830fe20b4a8ef5d483e29afd86",
+      "alias": "https://era-clash-basketball-git-wave2-era-clash.vercel.app",
+      "stamp": "eraclash-assets:2.7.2:d3d5455dcf91",
+      "unchanged": true,
+      "servesPolish": false,
+      "testersMoved": false
+    }
+  },
+  "lobbyChanges": {
+    "leagueMarkRemoval": "NOT_REPRODUCIBLE_WITH_EVIDENCE (no league-owned asset exists in the repository, the header source or the rendered header on the parent, the polish preview or the stable Wave 2 build — the header's only image is EraClash Logo Mk1; a test and deployed gate now scan every rendered img/alt/aria-label/background-image so one can never appear; header copy and the footer disclaimer are text, not marks)",
+    "logoTreatment": "EraClash Logo Mk1 (canonical PNG, SHA-256 manifested) at left with the BASKETBALL descriptor; Create free account at right; no replacement mark",
+    "ctaHierarchy": "one filled-Gold primary (Chaos Clash); five bordered, arrowed secondaries; one dashed unavailable (Era Gauntlet)",
+    "actionLabels": {
+      "chaos": "START CHAOS CLASH",
+      "dream": "BUILD MATCHUP",
+      "daily": "PLAY TODAY’S CLASH",
+      "bo7": "START SERIES",
+      "win82": "START SEASON",
+      "tournament": "ENTER TOURNAMENT",
+      "gauntlet": "LEARN MORE"
+    },
+    "modeSignatures": "seven original motifs in one grammar (fracture-dice, crossing-timelines, spotlight-calendar, series-ticks, season-arc, bracket, era-steps), 7% opacity, aria-hidden, tinted by accent role from theme tokens",
+    "buttonStateClarity": "primary / secondary / unavailable distinguishable by fill, border style and arrow — verified in default, hover, focus, pressed, forced-colours and on a phone"
+  },
+  "adaptiveExperience": {
+    "firstTimeHero": "full (large Mk1 mark, product line, fracture divider)",
+    "returningHero": "compact-returning from the career store or the session's returning flag",
+    "activeRunHero": "compact-active-run from the remembered run; Continue card is the top action",
+    "continueBehaviour": "above the grid and first in the tab order; resumes the exact server-authoritative run; era hidden until revealed",
+    "layoutShift": {
+      "first-time@1536x1024": 0,
+      "first-time@1440x900": 0,
+      "first-time@1280x800": 0,
+      "returning@1536x1024": 0,
+      "returning@1440x900": 0,
+      "returning@1280x800": 0,
+      "active-run@1536x1024": 0,
+      "active-run@1440x900": 0,
+      "active-run@1280x800": 0
+    }
+  },
+  "responsiveAndAccessibility": {
+    "desktop": "91/91",
+    "tablet": "768×1024 two columns",
+    "mobile": "430/390/375 one column, full-width primary, Continue first, 44px",
+    "keyboard": "Tab order chaos→gauntlet, Continue first when a run waits, visible focus, Enter opens",
+    "screenReader": "purpose + mode + access fact in every name; badges and Recommended as text; motifs hidden",
+    "contrast": "every action ≥4.5:1 on its own face; hero line ≥4.5:1 on the band",
+    "reducedMotion": "transitions removed; no automatic animation",
+    "accessibility": "16/16"
+  },
+  "preservation": {
+    "activeCandidateCoreDrift": 0,
+    "candidateParameterDrift": 0,
+    "gameLogicChanges": 0,
+    "draftLogicChanges": 0,
+    "placementLogicChanges": 0,
+    "entitlementLogicChanges": 0,
+    "apiChanges": 0,
+    "apiFunctionCountIncrease": 0,
+    "wave1Changes": 0,
+    "wave2StableChanges": 0,
+    "wave2EvidenceChanges": 0,
+    "productionChanges": 0
+  },
+  "ledger": {
+    "FIXED_AND_VERIFIED": 38,
+    "NOT_REPRODUCIBLE_WITH_EVIDENCE": 1,
+    "EXTERNAL_BLOCKER_WITH_SAFE_PRODUCT_FALLBACK": 0,
+    "DEFERRED_BY_SCOPE": 0,
+    "UNRESOLVED_TECHNICAL_FAILURES": 0
+  },
+  "tests": {
+    "vitest": "2376/2376 tests · 75/75 files",
+    "playwright": "78 passed",
+    "lobbyQa": {
+      "contracts": "12/12",
+      "registry": "11/11"
+    },
+    "ctaQa": "16/16",
+    "adaptiveHeroQa": "21/21",
+    "modeSignatureQa": "9/9",
+    "responsive": "91/91",
+    "accessibility": "16/16",
+    "performance": "6/6",
+    "deployedQa": "34/34",
+    "preflightOnParent": "35/36",
+    "postGates": {
+      "artifact": "phase9a3p-post-gates",
+      "phase": "9A.3P — Play Lobby brand, CTA and entry polish",
+      "head": "1a7ab1052e1fc413272316d303035da2fe8cf90a",
+      "vitest": "2376/2376 tests · 75/75 files",
+      "playwright": "78 passed",
+      "gates": [
+        {
+          "gate": "vitest",
+          "result": "PASS",
+          "detail": "Duration  24.73s (transform 3.88s, setup 0ms, import 29.14s, tests 111.08s, environment 7ms)"
+        },
+        {
+          "gate": "build (production)",
+          "result": "PASS",
+          "detail": "[plugin eraclash-sw-version] service worker cache identity: eraclash-assets:2.7.2:1f5d859ff660"
+        },
+        {
+          "gate": "playwright",
+          "result": "PASS",
+          "detail": "78 passed (1.5m)"
+        },
+        {
+          "gate": "preview:preflight",
+          "result": "PASS",
+          "detail": "preview:preflight — 6 passed, 0 failed (0.0s)"
+        },
+        {
+          "gate": "preview:smoke",
+          "result": "PASS",
+          "detail": "preview:smoke — 5 passed, 0 failed (0.3s)"
+        },
+        {
+          "gate": "preview:security",
+          "result": "PASS",
+          "detail": "preview:security — 9 passed, 0 failed (0.0s)"
+        },
+        {
+          "gate": "preview:browser-qa",
+          "result": "PASS",
+          "detail": "preview:browser-qa — 1 passed, 0 failed (89.4s)"
+        },
+        {
+          "gate": "preview:wave1-access-audit",
+          "result": "PASS",
+          "detail": "→ data/validation/6c6/candidate3-wave1-access-audit.json"
+        },
+        {
+          "gate": "preview:wave2-access-audit",
+          "result": "PASS",
+          "detail": "→ data/validation/9a3/wave2-access-audit.{json,md}"
+        },
+        {
+          "gate": "preview:wave2-readiness",
+          "result": "PASS",
+          "detail": "→ data/validation/9a3/wave2-readiness.{json,md}"
+        },
+        {
+          "gate": "preview:wave2-security-qa",
+          "result": "PASS",
+          "detail": "security: 22/22 checks passed"
+        },
+        {
+          "gate": "preview:wave2-contracts",
+          "result": "PASS",
+          "detail": "wrote data/validation/9a3/wave2-identity.json"
+        },
+        {
+          "gate": "chaos:fairness",
+          "result": "PASS",
+          "detail": "23/23 fairness checks passed"
+        },
+        {
+          "gate": "chaos:replay",
+          "result": "PASS",
+          "detail": "9/9 replay checks passed"
+        },
+        {
+          "gate": "postgame:story-qa",
+          "result": "PASS",
+          "detail": "story contract holds on every game"
+        },
+        {
+          "gate": "ui:play-lobby-qa",
+          "result": "PASS",
+          "detail": "lobby: 20/20 checks passed → data/validation/9a/play-lobby-qa.json"
+        },
+        {
+          "gate": "ui:mode-registry-qa",
+          "result": "PASS",
+          "detail": "registry: 18/18 checks passed → data/validation/9a/mode-registry-verification.json"
+        },
+        {
+          "gate": "ui:active-run-qa",
+          "result": "PASS",
+          "detail": "active-run: 15/15 checks passed → data/validation/9a/active-run-continuation-qa.json"
+        },
+        {
+          "gate": "ui:progressive-disclosure-qa",
+          "result": "PASS",
+          "detail": "disclosure: 15/15 checks passed → data/validation/9a/progressive-disclosure-qa.json"
+        },
+        {
+          "gate": "ui:multi-position-qa",
+          "result": "PASS",
+          "detail": "multi-position: 20/20 checks passed → data/validation/9a/multi-position-qa.json"
+        },
+        {
+          "gate": "ui:activation-telemetry-qa",
+          "result": "PASS",
+          "detail": "telemetry: 9/9 checks passed → data/validation/9a/activation-telemetry-qa.json"
+        },
+        {
+          "gate": "ui:play-lobby-contracts",
+          "result": "PASS",
+          "detail": "wrote data/validation/9a/competitive-decisions.json"
+        },
+        {
+          "gate": "ui:night-court-contracts",
+          "result": "PASS",
+          "detail": "contracts: 7/7 checks passed"
+        },
+        {
+          "gate": "ui:play-lobby-polish-qa",
+          "result": "PASS",
+          "detail": "contracts: 12/12 checks passed → data/validation/9a3p/play-lobby-polish-contract-qa.json"
+        },
+        {
+          "gate": "ui:lobby-mode-registry-qa",
+          "result": "PASS",
+          "detail": "registry: 11/11 checks passed → data/validation/9a3p/mode-registry-qa.json"
+        },
+        {
+          "gate": "build (lab + fixtures)",
+          "result": "PASS",
+          "detail": "[plugin eraclash-sw-version] service worker cache identity: eraclash-assets:2.7.2:836615392f59"
+        },
+        {
+          "gate": "chaos:security",
+          "result": "PASS",
+          "detail": "27/27 security checks passed"
+        },
+        {
+          "gate": "chaos:browser-qa",
+          "result": "PASS",
+          "detail": "91/91 deployed chaos-flow checks passed"
+        },
+        {
+          "gate": "ui:lobby-polish-cta",
+          "result": "PASS",
+          "detail": "cta: 16/16 checks passed → data/validation/9a3p/cta-hierarchy-qa.json"
+        },
+        {
+          "gate": "ui:lobby-polish-hero",
+          "result": "PASS",
+          "detail": "hero: 21/21 checks passed → data/validation/9a3p/adaptive-hero-qa.json"
+        },
+        {
+          "gate": "ui:lobby-polish-signatures",
+          "result": "PASS",
+          "detail": "signatures: 9/9 checks passed → data/validation/9a3p/mode-signature-qa.json"
+        },
+        {
+          "gate": "ui:lobby-polish-responsive",
+          "result": "PASS",
+          "detail": "responsive: 91/91 checks passed → data/validation/9a3p/lobby-responsive-qa.json"
+        },
+        {
+          "gate": "ui:lobby-polish-accessibility",
+          "result": "PASS",
+          "detail": "accessibility: 16/16 checks passed → data/validation/9a3p/lobby-accessibility-qa.json"
+        },
+        {
+          "gate": "ui:lobby-polish-performance",
+          "result": "PASS",
+          "detail": "performance: 6/6 checks passed → data/validation/9a3p/lobby-performance-qa.json"
+        },
+        {
+          "gate": "ui:play-lobby-responsive-qa",
+          "result": "PASS",
+          "detail": "responsive: 37/37 checks passed → data/validation/9a/responsive-qa.json"
+        },
+        {
+          "gate": "ui:play-lobby-accessibility-qa",
+          "result": "PASS",
+          "detail": "accessibility: 18/18 checks passed → data/validation/9a/accessibility-qa.json"
+        },
+        {
+          "gate": "ui:night-court-production",
+          "result": "PASS",
+          "detail": "production: 34/34 checks passed"
+        },
+        {
+          "gate": "ui:night-court-fracture",
+          "result": "PASS",
+          "detail": "fracture: 14/14 checks passed"
+        },
+        {
+          "gate": "ui:night-court-semantic",
+          "result": "PASS",
+          "detail": "semantic: 12/12 checks passed"
+        },
+        {
+          "gate": "ui:night-court-portrait",
+          "result": "PASS",
+          "detail": "portrait: 19/19 checks passed"
+        },
+        {
+          "gate": "ui:night-court-editorial",
+          "result": "PASS",
+          "detail": "editorial: 13/13 checks passed"
+        },
+        {
+          "gate": "ui:night-court-responsive",
+          "result": "PASS",
+          "detail": "responsive: 106/106 checks passed"
+        },
+        {
+          "gate": "ui:night-court-accessibility",
+          "result": "PASS",
+          "detail": "accessibility: 92/92 checks passed"
+        },
+        {
+          "gate": "ui:theme-lab (9A.1 candidates, rerun)",
+          "result": "PASS",
+          "detail": "lab: 25/25 checks passed"
+        },
+        {
+          "gate": "ui:theme-dom-invariant (9A.1 candidates, rerun)",
+          "result": "PASS",
+          "detail": "dom-invariant: 108/108 checks passed"
+        },
+        {
+          "gate": "ui:theme-accessibility (9A.1 candidates, rerun)",
+          "result": "PASS",
+          "detail": "accessibility: 52/52 checks passed"
+        },
+        {
+          "gate": "build (production)",
+          "result": "PASS",
+          "detail": "[plugin eraclash-sw-version] service worker cache identity: eraclash-assets:2.7.2:1f5d859ff660"
+        }
+      ],
+      "passed": 47,
+      "failed": 0,
+      "note": "Run serially on the branch head after every edit (harness on 4177 for chaos and lobby-polish browser modes; vite preview on 4176 for the 9A, Night Court and theme-lab reruns). Prior-phase evidence directories were restored afterwards; the Night Court and theme-lab reruns wrote under data/validation/9a3p/."
+    }
+  },
+  "verdict": "PLAY LOBBY POLISH V1 COMPLETE — READY FOR OWNER ACCEPTANCE",
+  "ownerDecision": {
+    "format": [
+      "APPROVE PLAY LOBBY POLISH V1",
+      "REVISE: [precise changes]"
+    ],
+    "nextWithoutSeparateAuthorization": [
+      "do not update wave2",
+      "do not update wave1",
+      "do not merge to main",
+      "do not deploy to production",
+      "do not begin Phase 9B",
+      "do not distribute the branch preview to current testers"
+    ]
+  }
+}
