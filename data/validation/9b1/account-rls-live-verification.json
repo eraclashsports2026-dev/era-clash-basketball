@@ -143,5 +143,27 @@
     "emailAutoconfirm": false,
     "passwordProvider": "not used — the product has no password field"
   },
-  "endToEndStillPending": "A real sign-in, save and claim needs the deployed app, which cannot reach the provider until the Vercel Preview environment carries the seven account variables. Structural verification is complete; behavioural verification is not."
+  "endToEndStillPending": "A real sign-in, save and claim needs an emailed one-time code. The wiring either side of it is measured on the deployment (29/29 gates); the session itself is what the owner exercises when they test.",
+  "keyIncidents": [
+    {
+      "what": "VITE_CLOUD_ACCOUNTS_ENABLED was \"TRUE\"",
+      "effect": "a strict === \"true\" comparison read it as off, so accounts stayed disabled while every value was correct",
+      "fix": "flagOn() accepts true/1/yes/on in any case with surrounding whitespace, on both the client and the server"
+    },
+    {
+      "what": "the anon key was a masked paste: \"eyJhbGci\" plus 200 bullet characters",
+      "effect": "208 characters long, so a length > 40 check accepted it; every auth call would have failed with an unhelpful vendor error",
+      "fix": "keyShapeOk() requires a real credential shape and rejects any non-printable-ASCII character"
+    },
+    {
+      "what": "VITE_SUPABASE_ANON_KEY held an sb_secret_ SECRET key, which shipped in the browser bundle",
+      "effect": "a secret key bypasses row level security entirely, so any reader of that bundle had full database access. Exposure was limited to holders of a Wave 2 preview credential; production was never affected. The key was rotated and now returns 401.",
+      "fix": "looksLikeSecretKey() detects both the sb_secret_ prefix and a legacy service_role JWT by decoding its role claim; keyShapeOk() refuses either for the browser at any length; cloudAccountsStatus() reports ANON_KEY_IS_A_SECRET_KEY; and account:security-qa fails the build if any bundle contains a secret by shape rather than by variable name"
+    }
+  ],
+  "rotationVerified": {
+    "leakedSecretRejected": true,
+    "httpStatus": 401,
+    "verifiedAt": "2026-09-04T19:56:40.487Z"
+  }
 }
