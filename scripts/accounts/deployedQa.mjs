@@ -137,14 +137,16 @@ const run = async () => {
       (dialog?.text || "").split("|").slice(-2)[0]?.trim() || "");
   }
   gate("the dialog is a labelled modal with 44px controls", dialog?.modal === "true" && dialog.labelled && dialog.minTarget >= 44);
+  // Capture the DIALOG before navigating anywhere, so the evidence file shows
+  // what its name says.
+  await page.screenshot({ path: `${SHOTS}/account-dialog-1440x900.png` });
+  await page.keyboard.press("Escape");
+
   // The device-scoped gate the product has always shown is still reachable at a
   // mode's own route, so an existing local career is not stranded.
-  await page.keyboard.press("Escape");
   await page.goto(`${BASE}/play/dream`, { waitUntil: "domcontentloaded" });
   await page.getByText("FREE ACCOUNT REQUIRED").waitFor({ timeout: 30_000 });
   gate("the account-required gate is still reachable at the mode's own route", await page.getByRole("button", { name: "BACK TO THE LOBBY" }).isVisible());
-  await page.screenshot({ path: `${SHOTS}/account-dialog-1440x900.png` });
-  await page.keyboard.press("Escape");
 
   console.log("\nF. My EraClash and the account gate");
   await page.goto(`${BASE}/my-eraclash`, { waitUntil: "domcontentloaded" });
