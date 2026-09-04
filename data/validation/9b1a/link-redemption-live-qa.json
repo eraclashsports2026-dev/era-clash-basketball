@@ -1,0 +1,24 @@
+{
+  "phase": "9B.1A",
+  "artifact": "link-redemption-live-qa",
+  "generatedAt": "2026-09-04T21:05:53.896Z",
+  "build": "https://era-clash-basketball-hos40e7zo-era-clash.vercel.app",
+  "commit": "344bd54",
+  "method": "Each shape of proof an emailed link can carry is presented to the deployed /auth/callback against the real provider. Every proof is invalid by construction, so no account is touched and no email is sent; the request the client makes is the evidence. Case A seeds a PKCE code verifier, because with none the SDK throws locally and sends nothing — the same reason the original defect could not be seen from outside.",
+  "defectsClosed": [
+    "exchangeCodeForSession was handed window.location.href; its parameter is an auth code, so no click could ever have produced a session",
+    "the paste field stripped every non-digit, so the only proof the default email template sends could not be entered",
+    "a pkce_-prefixed token was redeemed as a raw token, which hashes it twice and always fails"
+  ],
+  "verdict": {
+    "exchangeReceivesTheBareCode": true,
+    "exchangeNeverReceivesAUrl": true,
+    "exchangeUsesThePkceGrant": true,
+    "digestVerifiedAsAHashWithItsType": true,
+    "plainDigestAlsoVerified": true,
+    "noAddressIsEverInvented": true,
+    "nothingIsSentWithoutAProof": true
+  },
+  "allPassed": true,
+  "note": "No credential, key or address appears in this artifact by construction: only booleans, endpoint paths and body key names are recorded."
+}
