@@ -6,8 +6,8 @@
   "provider": "supabase (auth + postgres + row level security)",
   "cloudAccountsConfigured": false,
   "cloudAccountsReady": false,
-  "checks": 13,
-  "passed": 13,
+  "checks": 14,
+  "passed": 14,
   "failed": 0,
   "results": [
     {
@@ -16,9 +16,14 @@
       "detail": ""
     },
     {
-      "name": "the flow is PKCE with a persisted, auto-refreshed session",
+      "name": "the session flow is named in one place, justified, persisted and auto-refreshed",
       "pass": true,
-      "detail": ""
+      "detail": "implicit"
+    },
+    {
+      "name": "whichever flow is chosen, the callback can complete it",
+      "pass": true,
+      "detail": "flow implicit"
     },
     {
       "name": "no password field exists anywhere in the product",
@@ -26,12 +31,12 @@
       "detail": ""
     },
     {
-      "name": "the callback route exchanges the code itself rather than trusting a URL fragment",
+      "name": "the SDK never consumes the URL by itself; the callback decides",
       "pass": true,
       "detail": ""
     },
     {
-      "name": "the address bar is scrubbed BEFORE the exchange, so no code survives in history",
+      "name": "the address bar is scrubbed BEFORE anything is redeemed, so no proof survives in history",
       "pass": true,
       "detail": ""
     },
@@ -77,8 +82,9 @@
     }
   ],
   "flows": {
-    "google": "signInWithOAuth(pkce) → /auth/callback?next=<safe path>",
-    "email": "signInWithOtp → one-time code or emailRedirectTo → /auth/callback",
+    "emailLinkFlow": "implicit",
+    "google": "signInWithOAuth(implicit) → /auth/callback?next=<safe path>",
+    "email": "signInWithOtp → a code typed into the dialog, or a link whose proof the callback reads; every shape is triaged by src/accounts/linkProof.js",
     "signOut": "provider session ended, state cleared, guest play intact"
   }
 }

@@ -29,7 +29,7 @@ already in Postgres is untouched.
 | `npm run account:preflight` | the layer is coherent and honestly disabled when unconfigured |
 | `npm run account:migrations-qa` | the schema contract, including the absence of an email column |
 | `npm run account:rls-qa` | every policy is scoped to `auth.uid()`; two synthetic users cannot see each other |
-| `npm run account:auth-qa` | PKCE, Google, email code, callback scrubbing, redirect guard, closed failure codes |
+| `npm run account:auth-qa` | the session flow and its justification, Google, email code, callback scrubbing order, redirect guard, closed failure codes |
 | `npm run account:guest-claim-qa` | one owner per result, idempotent claims, refused foreign results |
 | `npm run account:cloud-save-qa` | the career row is built from the authoritative record only |
 | `npm run account:security-qa` | no service key in any bundle, no token in a URL, preview and product stay separate |

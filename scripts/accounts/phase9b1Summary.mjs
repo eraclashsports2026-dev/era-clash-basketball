@@ -37,8 +37,8 @@ if (MODE === "contracts") {
     artifact: "account-provider-contract", phase: PHASE, status: "FROZEN",
     decision: "SUPABASE_AUTH_POSTGRES_RLS",
     reason: "The repository contained no authentication provider before this phase: no auth dependency, no migrations directory, and a 'free account' that was a localStorage flag. One decision was made from that repository truth and executed.",
-    methods: { google: "OAuth via the provider, PKCE, prompt=select_account", email: "one-time code (OTP) or magic link, no password anywhere in the product" },
-    session: { flow: "pkce", persisted: true, autoRefresh: true, detectSessionInUrl: false, callbackRoute: "/auth/callback" },
+    methods: { google: "OAuth via the provider, prompt=select_account", email: "a one-time code typed in, or an emailed link redeemed on any device, no password anywhere in the product" },
+    session: { flow: "implicit", flowReason: "PKCE binds an emailed link to the browser that requested it, and mail apps open links in the system browser, so the link could never complete; the implicit flow returns the session in the URL fragment and works on any device. Fragments never reach a server and the callback scrubs the address bar first.", persisted: true, autoRefresh: true, detectSessionInUrl: false, callbackRoute: "/auth/callback" },
     redirectSafety: "every post-sign-in destination passes safeReturnPath(): same-origin paths only, /auth/* and /api/* refused",
     flag: { server: "CLOUD_ACCOUNTS_ENABLED", client: "VITE_CLOUD_ACCOUNTS_ENABLED", rule: "accounts run only when the flag is true AND the provider is genuinely configured; otherwise guest play is untouched and nothing fake succeeds" },
     environment: {

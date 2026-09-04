@@ -8,8 +8,15 @@
 //                        the address or the digest, so it works in ANY browser
 //                        on ANY device. Copy the link's address, don't click it.
 //   code                 what is LEFT after the link has been clicked and the
-//                        provider has redirected. PKCE: only the browser that
-//                        asked can finish it, because the verifier never left.
+//                        provider has redirected under PKCE: only the browser
+//                        that asked can finish it, because the verifier never
+//                        left that browser. This is the shape that made every
+//                        early attempt fail, since mail apps open links in the
+//                        system browser and not the one you were using.
+//   session              the provider redirected with the session itself in the
+//                        URL fragment. Nothing to redeem and nothing to match:
+//                        it works in ANY browser. This is what the product asks
+//                        for now — see EMAIL_LINK_FLOW in provider.js.
 //
 // The shapes overlap in ways that are not safe to guess at. With the PKCE flow
 // switched on, `?token=` in a magic link holds a `pkce_`-prefixed DIGEST rather
@@ -23,7 +30,12 @@
 // This exists because of a defect I shipped: the callback handed a whole URL to
 // exchangeCodeForSession, whose parameter is a code. It could not ever have
 // produced a session, in any browser, and no test noticed.
-export const VIA = Object.freeze({ OTP: "otp", TOKEN_HASH: "tokenHash", CODE: "code" });
+export const VIA = Object.freeze({
+  SESSION: "session",       // the link already carried the session; nothing to redeem
+  OTP: "otp",
+  TOKEN_HASH: "tokenHash",
+  CODE: "code",
+});
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const DIGEST = /^[0-9a-f]{40,}$/i;
@@ -62,6 +74,15 @@ export const redemptionPlan = (raw) => {
     } catch { return []; }
     const pick = (k) => q.get(k) || h.get(k) || null;
     const type = pick("type");
+    // A session in the fragment outranks everything: it needs no round trip, no
+    // verifier and no address, so it cannot fail for a reason we would have to
+    // explain. Fragments never reach a server, and the caller scrubs the
+    // address bar before doing anything with this.
+    const accessToken = pick("access_token");
+    const refreshToken = pick("refresh_token");
+    if (accessToken && refreshToken) {
+      return [{ via: VIA.SESSION, value: accessToken, refreshToken, type }];
+    }
     const rawFlow = pick("sb_flow_id");
     const flowId = rawFlow && FLOW_ID.test(rawFlow) ? rawFlow : null;
     const tokenHash = pick("token_hash");
@@ -107,13 +128,17 @@ export const isBrowserBound = (proof) => proof?.via === VIA.CODE;
  * @throws the FIRST real failure, which is the one that explains the problem —
  *   a later attempt failing for its own reason must not mask it
  */
-export const redeem = async (raw, { email = null, verifyEmailCode, verifyTokenHash, exchangeCodeForSession } = {}) => {
-  const plan = redemptionPlan(raw).filter((a) => a.via !== VIA.OTP || email);
+export const redeem = async (raw, { email = null, verifyEmailCode, verifyTokenHash, exchangeCodeForSession, setSession } = {}) => {
+  const plan = redemptionPlan(raw)
+    .filter((a) => a.via !== VIA.OTP || email)
+    .filter((a) => a.via !== VIA.SESSION || typeof setSession === "function");
   if (!plan.length) return null;
   let firstFailure = null;
   for (const a of plan) {
     try {
-      const session = a.via === VIA.OTP
+      const session = a.via === VIA.SESSION
+        ? await setSession(a.value, a.refreshToken)
+        : a.via === VIA.OTP
         ? await verifyEmailCode(email, a.value, a.type)
         : a.via === VIA.TOKEN_HASH
           ? await verifyTokenHash(a.value, a.type)

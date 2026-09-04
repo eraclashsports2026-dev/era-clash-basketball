@@ -17,13 +17,26 @@ let injected = null;
 export const _setProvider = (p) => { injected = p; };
 export const _providerIsInjected = () => !!injected;
 
+/** One line to revert, and the reason to is documented where it is used. */
+export const EMAIL_LINK_FLOW = "implicit";
+
 let clientPromise = null;
 const client = async () => {
   if (!clientPromise) {
     clientPromise = import("@supabase/supabase-js").then(({ createClient }) =>
       createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
         auth: {
-          flowType: "pkce",            // the code, not a token, travels through the URL
+          // An emailed link is not an OAuth redirect through a third party,
+          // which is the threat PKCE is built for. What PKCE costs here is
+          // severe and unavoidable: the verifier never leaves the browser that
+          // asked, so a link opened by a mail app in the system browser can
+          // never complete, and the code is spent either way. The implicit
+          // flow returns the session in the URL fragment instead, which works
+          // in any browser and on any device. A fragment is never sent to a
+          // server, and AuthCallback scrubs the address bar before it does
+          // anything else. Revisit this only if a third-party OAuth provider
+          // is switched on, which is what PKCE would actually protect.
+          flowType: EMAIL_LINK_FLOW,
           persistSession: true,
           autoRefreshToken: true,
           detectSessionInUrl: false,   // the callback route exchanges the code itself
@@ -146,6 +159,22 @@ const supabaseProvider = {
    * email when the template asks for one, so this is the path that becomes
    * available once the templates are updated.
    */
+  /**
+   * Adopt a session the provider already minted and handed back in the URL
+   * fragment. There is nothing to verify with the provider — it issued these —
+   * but setSession still validates them and starts the refresh timer. The
+   * tokens are never logged, and the caller has already cleaned the address bar.
+   */
+  async setSessionFromTokens(accessToken, refreshToken) {
+    const c = await client();
+    const { data, error } = await c.auth.setSession({
+      access_token: String(accessToken || ""),
+      refresh_token: String(refreshToken || ""),
+    });
+    if (error) throw asError(error);
+    return data?.session ? session(data.session) : null;
+  },
+
   async verifyTokenHash(tokenHash, type) {
     const c = await client();
     const kinds = type ? [type] : ["magiclink", "signup", "email"];

@@ -649,6 +649,56 @@ describe("redeeming an email link", () => {
     expect(vias("0123456789abcdef".repeat(4))).toEqual([VIA.TOKEN_HASH, VIA.OTP]);
   });
 
+  it("a session in the fragment is adopted directly, and outranks every proof", () => {
+    // The product asks the provider for this shape now. There is nothing to
+    // redeem: no round trip, no verifier, no address — so it cannot fail for a
+    // reason anyone would have to explain, and it works on any device.
+    const plan = redemptionPlan("https://x.vercel.app/auth/callback#access_token=aaa.bbb.ccc&refresh_token=rrr&token_type=bearer&type=magiclink");
+    expect(plan).toEqual([{ via: VIA.SESSION, value: "aaa.bbb.ccc", refreshToken: "rrr", type: "magiclink" }]);
+  });
+
+  it("a fragment session beats a code in the same URL", () => {
+    const plan = redemptionPlan("https://x.vercel.app/auth/callback?code=e0c581d9-f03d-48ef-9ec4-ad7fd8a2ddd4#access_token=aaa&refresh_token=rrr");
+    expect(plan.map((a) => a.via)).toEqual([VIA.SESSION]);
+  });
+
+  it("half a session is not a session", () => {
+    expect(redemptionPlan("https://x.vercel.app/auth/callback#access_token=aaa")).toEqual([]);
+    expect(redemptionPlan("https://x.vercel.app/auth/callback#refresh_token=rrr")).toEqual([]);
+  });
+
+  it("both tokens reach setSession, in the right order", async () => {
+    const seen = [];
+    const out = await redeem("https://x.vercel.app/auth/callback#access_token=aaa.bbb.ccc&refresh_token=rrr", {
+      setSession: (a, r) => { seen.push([a, r]); return { ok: true }; },
+      verifyEmailCode: () => null, verifyTokenHash: () => null, exchangeCodeForSession: () => null,
+    });
+    expect(seen).toEqual([["aaa.bbb.ccc", "rrr"]]);
+    expect(out).toEqual({ ok: true });
+  });
+
+  it("a caller that cannot adopt a session is not handed one", async () => {
+    // The dialog and the callback both inject setSession, but redeem must not
+    // assume it: a missing adopter should skip the attempt, not throw.
+    let calls = 0;
+    const out = await redeem("https://x.vercel.app/auth/callback#access_token=aaa&refresh_token=rrr", {
+      verifyEmailCode: () => { calls += 1; }, verifyTokenHash: () => { calls += 1; }, exchangeCodeForSession: () => { calls += 1; },
+    });
+    expect(out).toBeNull();
+    expect(calls).toBe(0);
+  });
+
+  it("no token is ever handed to telemetry", () => {
+    // Adopting a session must not turn into a logged credential.
+    for (const f of ["src/components/accounts/AuthCallback.jsx", "src/components/accounts/AccountDialog.jsx"]) {
+      const t = src(f);
+      const tracks = [...t.matchAll(/track\([^)]*\)/g)].map((m) => m[0]).join(" ");
+      // e.code is a closed failure vocabulary, not a credential — what must
+      // never appear is a token, a pasted value or a proof.
+      expect(tracks, f).not.toMatch(/access_token|refresh_token|accessToken|refreshToken|proof\.value|attempt\.value|session\.accessToken|\bsetCode\b|\bcode:\s/);
+    }
+  });
+
   it("the flow id travels with the code, so the right verifier is used", () => {
     // The SDK appends sb_flow_id to the redirect it asks for, and keeps each
     // flow's verifier in a slot named after it. Lose the id and the lookup
