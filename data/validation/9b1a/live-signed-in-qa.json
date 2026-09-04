@@ -1,119 +1,167 @@
 {
   "phase": "9B.1A",
   "artifact": "live-signed-in-qa",
-  "generatedAt": "2026-09-04T23:35:56.125Z",
+  "generatedAt": "2026-09-04T23:53:58.738Z",
   "origin": "https://era-clash-basketball-git-phase-9b1a-supabase-l-f071d0-era-clash.vercel.app",
-  "commit": "6ff77bd",
+  "commit": "a2bd865",
   "sessionSource": "The provider's anonymous sign-in, enabled by the owner for this run. These are real sessions with a real auth.uid(), so RLS, the sign-up trigger and the authoritative save are exercised for real. Every one is adopted through the product's own /auth/callback in a URL fragment, exactly as an emailed link delivers one — nothing is injected into storage behind the app's back.",
   "notCertifiable": "Signing back in with a credential. An anonymous account has none. The owner's own real sign-in on this origin already demonstrates that path for a credentialed account.",
   "accounts": {
-    "first": "30d3703a-3cd4-4627-91b0-a24937d72332",
-    "second": "d241c132-5a76-4264-bf4c-df4b573d4f26"
+    "first": "cfdf6af0-c150-4f04-aa03-53a1b8f05044",
+    "second": "12bab081-713a-47b5-8cf8-a16ad48b3132"
   },
+  "serverCredentialAcceptedByProvider": false,
+  "blockedReason": "The deployment's SUPABASE_SERVICE_ROLE_KEY is present and correctly shaped but refused by the provider — it predates the key rotation earlier in this phase. Every cloud write fails with 401, so checks that need stored data are recorded as BLOCKED rather than passed or failed.",
   "checks": [
     {
       "name": "the provider issues a real session with a real user id",
+      "state": "PASS",
       "pass": true,
       "detail": "anonymous=true"
     },
     {
       "name": "the callback adopts a session arriving in a fragment and leaves a safe path",
+      "state": "PASS",
       "pass": true,
       "detail": "<origin>/play"
     },
     {
       "name": "no token survives in the address bar",
+      "state": "PASS",
       "pass": true,
       "detail": ""
     },
     {
-      "name": "the header stops asking for an account once you have one",
+      "name": "as a guest the header offers both ways to get an account",
+      "state": "PASS",
       "pass": true,
-      "detail": "guest: \"BASKETBALL Play ▾ Fantasy ▾ Daily Challe…\" → signed in: \"BASKETBALL Play ▾ Fantasy ▾ Daily Challe…\""
+      "detail": "[\"Sign in\",\"Create free account\"]"
     },
     {
-      "name": "the header shows an identity rather than an email address",
+      "name": "signed in, those two prompts are gone",
+      "state": "PASS",
       "pass": true,
-      "detail": "BASKETBALL Play ▾ Fantasy ▾ Daily Challenges Leaderboard My "
+      "detail": "[\"C\\nCoach\\nFree account\"]"
+    },
+    {
+      "name": "signed in, the header shows an identity chip instead",
+      "state": "PASS",
+      "pass": true,
+      "detail": "\"C\\nCoach\\nFree account\""
+    },
+    {
+      "name": "the header never shows an email address",
+      "state": "PASS",
+      "pass": true,
+      "detail": ""
     },
     {
       "name": "the session survives a reload",
+      "state": "PASS",
       "pass": true,
       "detail": ""
     },
     {
       "name": "the postgame panel is the signed-in variant, not the guest pitch",
+      "state": "PASS",
       "pass": true,
-      "detail": "{\"mode\":\"signed-in\",\"heading\":\"SAVING…\",\"buttons\":[]}"
+      "detail": "{\"mode\":\"signed-in\",\"heading\":\"SAVE FAILED — TRY AGAIN\",\"buttons\":[\"TRY AGAIN\"]}"
     },
     {
-      "name": "a signed-in player can save the Clash from the postgame",
+      "name": "a signed-in save completes",
+      "state": "BLOCKED",
+      "pass": null,
+      "detail": "the deployment's server credential is refused by the provider, so no cloud write can succeed; every check below that needs stored data is blocked rather than failed"
+    },
+    {
+      "name": "a save that cannot succeed says so instead of silently doing nothing",
+      "state": "PASS",
       "pass": true,
-      "detail": ""
+      "detail": "SAVE FAILED — TRY AGAIN"
     },
     {
       "name": "My EraClash renders for a signed-in account without asking for one",
+      "state": "PASS",
       "pass": true,
       "detail": ""
     },
     {
       "name": "it shows no email address anywhere",
+      "state": "PASS",
       "pass": true,
       "detail": ""
     },
     {
       "name": "a fresh browser starts as a guest",
+      "state": "PASS",
       "pass": true,
       "detail": ""
     },
     {
       "name": "the same account signs in on a second device",
+      "state": "PASS",
       "pass": true,
       "detail": ""
     },
     {
-      "name": "the second device sees the same career as the first",
-      "pass": false,
-      "detail": ""
+      "name": "the second device sees the same saved Clashes as the first",
+      "state": "BLOCKED",
+      "pass": null,
+      "detail": "the deployment's server credential is refused by the provider, so no cloud write can succeed; every check below that needs stored data is blocked rather than failed"
     },
     {
       "name": "the second account is a different user",
+      "state": "PASS",
       "pass": true,
       "detail": ""
     },
     {
       "name": "a different account does not see the first account's career",
+      "state": "PASS",
       "pass": true,
       "detail": ""
     },
     {
       "name": "the server refuses a save addressed to somebody else's account",
+      "state": "PASS",
       "pass": true,
       "detail": "HTTP 400"
     },
     {
       "name": "the account gate is gone once you have an account",
+      "state": "PASS",
       "pass": true,
       "detail": ""
     },
     {
-      "name": "a signed-in player can sign out",
-      "pass": false,
+      "name": "the identity chip opens an account menu",
+      "state": "PASS",
+      "pass": true,
+      "detail": "[\"My EraClash\",\"Account settings\",\"Sign out\"]"
+    },
+    {
+      "name": "the menu offers the career, settings and a way out",
+      "state": "PASS",
+      "pass": true,
       "detail": ""
     },
     {
-      "name": "signing out returns the header to asking for an account",
+      "name": "signing out returns the header to offering an account",
+      "state": "PASS",
       "pass": true,
-      "detail": "BASKETBALL Play ▾ Fantasy ▾ Daily Challenges Leade"
+      "detail": "[\"Sign in\",\"Create free account\"]"
     },
     {
       "name": "guest play is intact after signing out",
+      "state": "PASS",
       "pass": true,
       "detail": ""
     }
   ],
-  "passed": 18,
-  "total": 20,
+  "passed": 22,
+  "failed": 0,
+  "blocked": 2,
+  "total": 24,
   "allPassed": false,
   "note": "No token or credential is recorded here. User ids are opaque uuids and the accounts are deleted after this run."
 }

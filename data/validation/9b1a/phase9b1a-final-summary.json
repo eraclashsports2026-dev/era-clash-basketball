@@ -1,8 +1,8 @@
 {
   "phase": "9B.1A — Supabase live activation and account certification",
-  "generatedAt": "2026-09-04T23:15:27.127Z",
+  "generatedAt": "2026-09-04T23:55:07.746Z",
   "branch": "phase-9b1a-supabase-live-certification",
-  "head": "8e7bc051ebf5a45346f62495cefc8f1491815d75",
+  "head": "a2bd865c4fc452aaf9d41090771ba483519ad743",
   "durableOrigin": "https://era-clash-basketball-git-phase-9b1a-supabase-l-f071d0-era-clash.vercel.app",
   "originPolicy": "All browser and authentication certification runs against the durable branch origin. A commit-specific preview URL is a different browser origin on every push, so a session and its storage do not survive one, and each would need its own entry in the provider's redirect allow list.",
   "candidate": {
@@ -88,6 +88,14 @@
         "bytes": 778343
       }
     },
+    "signedInJourneys": {
+      "state": "VERIFIED_EXCEPT_BLOCKED",
+      "passed": 22,
+      "failed": 0,
+      "blocked": 2,
+      "covers": "sign-in adopted through the product's own callback, the signed-in header and its account menu, a signed-in Chaos Clash to a result, My EraClash, the same account on a second device, a second account seeing none of it, the server refusing a save addressed to another account, Dream Matchup's gate lifting, and sign-out returning the header to a guest state",
+      "sessionSource": "The provider's anonymous sign-in, enabled by the owner for this run. These are real sessions with a real auth.uid(), so RLS, the sign-up trigger and the authoritative save are exercised for real. Every one is adopted through the product's own /auth/callback in a URL fragment, exactly as an emailed link delivers one — nothing is injected into storage behind the app's back."
+    },
     "deployedQa": {
       "state": "VERIFIED",
       "origin": "https://era-clash-basketball-git-phase-9b1a-supabase-l-f071d0-era-clash.vercel.app"
@@ -95,14 +103,16 @@
   },
   "notCertified": [
     {
-      "item": "signed-in header and account menu, a signed-in Chaos Clash save, authoritative cloud persistence, the guest-result claim completing, My EraClash with real rows, cross-device persistence in isolated contexts, and sign-out then re-sign-in",
-      "reason": "Each needs a signed-in session inside the QA browser. A session lives in its own browser's storage, so the owner's cannot be borrowed.",
-      "whyNoSyntheticSession": [
-        "the provider's email rate limit refuses a sign-in link to a QA address, and the built-in mail service caps sends per hour",
-        "anonymous sign-ins are disabled on the project (anonymous_provider_disabled)",
-        "writing a synthetic user into auth.users is denied by this session's permissions"
-      ],
-      "safeFallback": "Guest play is never blocked, and every gate that asks for an account is certified live to ask honestly and invent no identity. The database half of isolation and persistence is certified live against the owner's real account."
+      "item": "a cloud save actually persisting, and a second device reading back the same saved Clashes",
+      "reason": "The deployment's SUPABASE_SERVICE_ROLE_KEY is present and correctly shaped but REFUSED by the provider — it predates the key rotation earlier in this phase. Every cloud write returns 401, so nothing can be stored to read back. This is a deployment configuration fault, not a product defect: the same code path is exercised and refuses forged and unauthenticated callers correctly.",
+      "evidence": "GET /api/health?deep=1 reports serverCredentialAccepted: false while every other field is true.",
+      "ownerAction": "Set SUPABASE_SERVICE_ROLE_KEY in the Vercel project to the current secret key and redeploy. Then re-run account:live-signed-in-qa; the two blocked checks are the only ones left.",
+      "safeFallback": "The failure is honest rather than silent: the postgame panel says SAVE FAILED — TRY AGAIN, the result stays on screen, and nothing is simulated again. Guest play is unaffected."
+    },
+    {
+      "item": "signing back in with a credential after signing out",
+      "reason": "The QA sessions come from anonymous sign-in, and an anonymous account has no credential to sign back in with.",
+      "evidence": "The owner's own real sign-in on this origin already demonstrates that path for a credentialed account."
     }
   ],
   "defectsFoundAndFixedThisPhase": [
@@ -140,6 +150,7 @@
     "data/validation/9b1a/live-migration-qa.json",
     "data/validation/9b1a/live-rls-qa.json",
     "data/validation/9b1a/live-security-advisors.json",
+    "data/validation/9b1a/live-signed-in-qa.json",
     "data/validation/9b1a/phase9b1-ledger-reconciliation.json",
     "data/validation/9b1a/phase9b1a-final-summary.json",
     "data/validation/9b1a/phase9b1a-preflight.json",

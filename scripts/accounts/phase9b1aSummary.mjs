@@ -21,6 +21,7 @@ const implicit = maybe(`${DIR}/implicit-flow-live-qa.json`);
 const redemption = maybe(`${DIR}/link-redemption-live-qa.json`);
 const alias = maybe(`${DIR}/stable-alias-live-qa.json`);
 const isolation = maybe(`${DIR}/live-cross-account-isolation.json`);
+const signedIn = maybe(`${DIR}/live-signed-in-qa.json`);
 const ledger = maybe(`${DIR}/phase9b1-ledger-reconciliation.json`);
 const deployed = maybe("data/validation/9b1/account-preview-qa.json");
 
@@ -61,19 +62,27 @@ const summary = {
     emailLinkFlow: implicit ? { state: "VERIFIED", verdict: implicit.verdict } : null,
     durableOriginBehaviour: alias ? { state: "VERIFIED", verdict: alias.verdict } : null,
     guestSurfacesAndSecrets: guest ? { state: "VERIFIED", passed: `${guest.passed}/${guest.total}`, bundleAudit: guest.bundleAudit } : null,
+    signedInJourneys: signedIn ? {
+      state: signedIn.failed === 0 ? "VERIFIED_EXCEPT_BLOCKED" : "FAILING",
+      passed: signedIn.passed, failed: signedIn.failed, blocked: signedIn.blocked,
+      covers: "sign-in adopted through the product's own callback, the signed-in header and its account menu, a signed-in Chaos Clash to a result, My EraClash, the same account on a second device, a second account seeing none of it, the server refusing a save addressed to another account, Dream Matchup's gate lifting, and sign-out returning the header to a guest state",
+      sessionSource: signedIn.sessionSource,
+    } : null,
     deployedQa: deployed ? { state: "VERIFIED", origin: ORIGIN } : null,
   },
 
   notCertified: [
     {
-      item: "signed-in header and account menu, a signed-in Chaos Clash save, authoritative cloud persistence, the guest-result claim completing, My EraClash with real rows, cross-device persistence in isolated contexts, and sign-out then re-sign-in",
-      reason: "Each needs a signed-in session inside the QA browser. A session lives in its own browser's storage, so the owner's cannot be borrowed.",
-      whyNoSyntheticSession: [
-        "the provider's email rate limit refuses a sign-in link to a QA address, and the built-in mail service caps sends per hour",
-        "anonymous sign-ins are disabled on the project (anonymous_provider_disabled)",
-        "writing a synthetic user into auth.users is denied by this session's permissions",
-      ],
-      safeFallback: "Guest play is never blocked, and every gate that asks for an account is certified live to ask honestly and invent no identity. The database half of isolation and persistence is certified live against the owner's real account.",
+      item: "a cloud save actually persisting, and a second device reading back the same saved Clashes",
+      reason: "The deployment's SUPABASE_SERVICE_ROLE_KEY is present and correctly shaped but REFUSED by the provider — it predates the key rotation earlier in this phase. Every cloud write returns 401, so nothing can be stored to read back. This is a deployment configuration fault, not a product defect: the same code path is exercised and refuses forged and unauthenticated callers correctly.",
+      evidence: "GET /api/health?deep=1 reports serverCredentialAccepted: false while every other field is true.",
+      ownerAction: "Set SUPABASE_SERVICE_ROLE_KEY in the Vercel project to the current secret key and redeploy. Then re-run account:live-signed-in-qa; the two blocked checks are the only ones left.",
+      safeFallback: "The failure is honest rather than silent: the postgame panel says SAVE FAILED — TRY AGAIN, the result stays on screen, and nothing is simulated again. Guest play is unaffected.",
+    },
+    {
+      item: "signing back in with a credential after signing out",
+      reason: "The QA sessions come from anonymous sign-in, and an anonymous account has no credential to sign back in with.",
+      evidence: "The owner's own real sign-in on this origin already demonstrates that path for a credentialed account.",
     },
   ],
 
@@ -96,4 +105,5 @@ writeFileSync(`${DIR}/phase9b1a-final-summary.json`, JSON.stringify(summary, nul
 console.log(`→ ${DIR}/phase9b1a-final-summary.json`);
 console.log(`   ${artifacts.length + 1} artifacts · head ${summary.head?.slice(0, 7)} · origin ${new URL(ORIGIN).host}`);
 console.log(`   frozen: wave1 ${summary.frozenRefs.wave1} · wave2 ${summary.frozenRefs.wave2} · main ${summary.frozenRefs.main}`);
-console.log(`   not certified: ${summary.notCertified.length} item group, blocked on one synthetic signed-in session`);
+console.log(`   signed-in: ${signedIn ? `${signedIn.passed} passed · ${signedIn.failed} failed · ${signedIn.blocked} blocked` : "not run"}`);
+console.log(`   not certified: ${summary.notCertified.length} items — see notCertified[].ownerAction`);

@@ -26,7 +26,12 @@ const SHOTS = "data/validation/9b1a/screens";
 mkdirSync(SHOTS, { recursive: true });
 
 const results = [];
-const ok = (name, pass, detail = "") => { results.push({ name, pass: !!pass, detail }); console.log(`  ${pass ? "PASS" : "FAIL"}  ${name}${detail ? ` … ${detail}` : ""}`); };
+const ok = (name, pass, detail = "") => { results.push({ name, state: pass ? "PASS" : "FAIL", pass: !!pass, detail }); console.log(`  ${pass ? "PASS" : "FAIL"}  ${name}${detail ? ` … ${detail}` : ""}`); };
+// A check that cannot run because the deployment's own credential is refused is
+// neither a pass nor a failure of the product. Saying "blocked" keeps the
+// verdict honest: nothing here is claimed to work, and nothing is blamed on
+// code that was never reached.
+const blocked = (name, why) => { results.push({ name, state: "BLOCKED", pass: null, detail: why }); console.log(`  BLOCKED  ${name} … ${why}`); };
 
 const browser = await chromium.launch();
 const newCtx = async () => {
@@ -60,7 +65,12 @@ const adopt = async (page, s) => {
   await page.goto(`${BASE}/auth/callback#access_token=${s.access}&refresh_token=${s.refresh}&token_type=bearer&type=magiclink`, { waitUntil: "networkidle" });
   await page.waitForTimeout(2500);
 };
-const headerText = async (page) => (await page.locator("header").first().innerText().catch(() => "")).replace(/\s+/g, " ").trim();
+// The page has two <header> elements: the brand header and the lobby hero.
+// Only the first carries the account control, and picking the wrong one is how
+// an earlier run of this script "passed" three header checks vacuously.
+const BRAND = "header.ec-brand-header";
+const headerButtons = async (page) => page.locator(`${BRAND} button`).allInnerTexts();
+const headerText = async (page) => (await page.locator(BRAND).innerText().catch(() => "")).replace(/\s+/g, " ").trim();
 
 const playChaos = async (page) => {
   await page.goto(`${BASE}/play`, { waitUntil: "networkidle" });
@@ -87,13 +97,18 @@ const savePanel = async (page) => page.evaluate(() => {
            buttons: [...p.querySelectorAll("button")].map((b) => b.textContent.trim()) };
 });
 
+const deep = await (await ctxA.request.get(`${BASE}/api/health?deep=1`)).json();
+const CRED = deep?.cloudAccounts?.serverCredentialAccepted === true;
+const CRED_WHY = "the deployment's server credential is refused by the provider, so no cloud write can succeed; every check below that needs stored data is blocked rather than failed";
+
 console.log(`\nLIVE SIGNED-IN QA — ${BASE}`);
+console.log(`server credential accepted by the provider: ${CRED}`);
 
 // ── A. signing in through the product's own path ────────────────────────────
 console.log("\nA. a session adopted the way an emailed link delivers one");
 const pageA = await ctxA.newPage();
 await pageA.goto(`${BASE}/play`, { waitUntil: "networkidle" });
-const guestHeader = await headerText(pageA);
+const guestButtons = await headerButtons(pageA);
 const sessionA = await mintSession(pageA);
 ok("the provider issues a real session with a real user id", !!sessionA.access && !!sessionA.userId, `anonymous=${sessionA.anonymous}`);
 await adopt(pageA, sessionA);
@@ -103,14 +118,20 @@ ok("no token survives in the address bar", !/access_token|refresh_token/.test(pa
 // ── B. the signed-in header ─────────────────────────────────────────────────
 console.log("\nB. the signed-in header and account menu");
 await pageA.goto(`${BASE}/play`, { waitUntil: "networkidle" });
-const signedHeader = await headerText(pageA);
-ok("the header stops asking for an account once you have one",
-  /free account|sign in/i.test(guestHeader) && !/create free account/i.test(signedHeader), `guest: "${guestHeader.slice(0, 40)}…" → signed in: "${signedHeader.slice(0, 40)}…"`);
-ok("the header shows an identity rather than an email address", signedHeader.length > 0 && !/@/.test(signedHeader), signedHeader.slice(0, 60));
+await pageA.waitForTimeout(1200);
+const signedButtons = await headerButtons(pageA);
+const has = (list, re) => list.some((t) => re.test(t));
+ok("as a guest the header offers both ways to get an account",
+  has(guestButtons, /^Sign in$/i) && has(guestButtons, /create free account/i), JSON.stringify(guestButtons.slice(-2)));
+ok("signed in, those two prompts are gone",
+  !has(signedButtons, /^Sign in$/i) && !has(signedButtons, /create free account/i), JSON.stringify(signedButtons.slice(-1)));
+const chipText = signedButtons[signedButtons.length - 1] || "";
+ok("signed in, the header shows an identity chip instead", /coach|free account/i.test(chipText) && chipText.length > 0, JSON.stringify(chipText));
+ok("the header never shows an email address", !/@/.test(await headerText(pageA)));
 await pageA.screenshot({ path: `${SHOTS}/signed-in-header-1440x900.png` });
 // Reloading must not silently drop the session.
 await pageA.reload({ waitUntil: "networkidle" });
-ok("the session survives a reload", !/create free account/i.test(await headerText(pageA)));
+ok("the session survives a reload", !has(await headerButtons(pageA), /create free account/i));
 
 // ── C. a signed-in Chaos Clash, saved ───────────────────────────────────────
 console.log("\nC. a signed-in Chaos Clash and its save");
@@ -122,9 +143,14 @@ ok("the postgame panel is the signed-in variant, not the guest pitch",
   !!panel && panel.mode !== "guest", JSON.stringify(panel));
 await pageA.screenshot({ path: `${SHOTS}/signed-in-postgame-1440x900.png` });
 const saveBtn = pageA.getByRole("button", { name: /SAVE/i }).first();
-let saveClicked = false;
-if (await saveBtn.count()) { await saveBtn.click().catch(() => {}); await pageA.waitForTimeout(3000); saveClicked = true; }
-ok("a signed-in player can save the Clash from the postgame", saveClicked);
+let savedHeading = "";
+if (await saveBtn.count()) { await saveBtn.click().catch(() => {}); await pageA.waitForTimeout(6000); }
+savedHeading = await pageA.evaluate(() => document.querySelector("[data-save-panel] h2")?.textContent.trim() || "");
+if (CRED) ok("a signed-in save completes", !/FAIL/i.test(savedHeading), savedHeading);
+else {
+  blocked("a signed-in save completes", CRED_WHY);
+  ok("a save that cannot succeed says so instead of silently doing nothing", /FAIL/i.test(savedHeading), savedHeading);
+}
 
 // ── D. My EraClash, with the row that was actually saved ────────────────────
 console.log("\nD. My EraClash on real cloud data");
@@ -146,8 +172,9 @@ await pageB.goto(`${BASE}/my-eraclash`, { waitUntil: "networkidle" });
 await pageB.waitForTimeout(2500);
 const careerB = await pageB.locator("body").innerText();
 ok("the same account signs in on a second device", !/create free account or sign in/i.test(careerB));
-ok("the second device sees the same career as the first",
-  careerB.replace(/\s+/g, " ").slice(0, 400) === careerA.replace(/\s+/g, " ").slice(0, 400));
+const clashCount = (t) => (t.match(/CHAOS CLASH|Clash Across Eras/gi) || []).length;
+if (CRED) ok("the second device sees the same career as the first", clashCount(careerB) === clashCount(careerA), `${clashCount(careerA)} vs ${clashCount(careerB)}`);
+else blocked("the second device sees the same saved Clashes as the first", CRED_WHY);
 
 // ── F. cross-account isolation, in the browser ──────────────────────────────
 console.log("\nF. a different account sees none of it");
@@ -178,27 +205,53 @@ await pageA.screenshot({ path: `${SHOTS}/dream-signed-in-1440x900.png` });
 
 // ── H. signing out ──────────────────────────────────────────────────────────
 console.log("\nH. signing out");
-await pageA.goto(`${BASE}/my-eraclash`, { waitUntil: "networkidle" });
-const signOut = pageA.getByRole("button", { name: /sign out|log out/i }).first();
-let signedOut = false;
-if (await signOut.count()) { await signOut.click().catch(() => {}); await pageA.waitForTimeout(2500); signedOut = true; }
-ok("a signed-in player can sign out", signedOut);
+// Sign out lives inside the account menu, which the identity chip opens.
 await pageA.goto(`${BASE}/play`, { waitUntil: "networkidle" });
-const afterOut = await headerText(pageA);
-ok("signing out returns the header to asking for an account", /free account|sign in/i.test(afterOut), afterOut.slice(0, 50));
+await pageA.waitForTimeout(1200);
+// Wait for the chip to be interactive rather than guessing at a delay: an
+// earlier version of this clicked before hydration settled and reported a
+// working menu as broken.
+// The chip is a controlled toggle: a click that lands mid-hydration is
+// swallowed, so open it by state rather than by timer, and retry.
+const menuBefore = await pageA.locator('[role="menu"]').count();
+let menuOpen = false;
+for (let i = 0; i < 5 && !menuOpen; i += 1) {
+  const chip = pageA.locator(`${BRAND} button[aria-haspopup="true"]`).last();
+  await chip.waitFor({ state: "visible", timeout: 15_000 }).catch(() => {});
+  await chip.click({ timeout: 8000 }).catch(() => {});
+  menuOpen = await pageA.locator('[role="menu"]').first().isVisible().catch(() => false);
+  if (!menuOpen) await pageA.waitForTimeout(1200);
+}
+const menuItems = await pageA.locator('[role="menu"] [role="menuitem"]').allInnerTexts().catch(() => []);
+ok("the identity chip opens an account menu", menuBefore === 0 && menuOpen && menuItems.length > 0, JSON.stringify(menuItems));
+ok("the menu offers the career, settings and a way out",
+  menuItems.some((t) => /my eraclash/i.test(t)) && menuItems.some((t) => /account settings/i.test(t)) && menuItems.some((t) => /^sign out$/i.test(t)));
+// These are menuitems, not buttons — correct for a menu, and the reason an
+// earlier selector of mine silently never clicked anything.
+const signOut = pageA.getByRole("menuitem", { name: /^sign out$/i }).first();
+if (await signOut.count()) { await signOut.click().catch(() => {}); await pageA.waitForTimeout(4000); }
+await pageA.goto(`${BASE}/play`, { waitUntil: "networkidle" });
+const afterOut = await headerButtons(pageA);
+ok("signing out returns the header to offering an account",
+  has(afterOut, /^Sign in$/i) && has(afterOut, /create free account/i), JSON.stringify(afterOut.slice(-2)));
 ok("guest play is intact after signing out", (await pageA.locator('.ec-mode-card[data-mode="chaos"] .ec-mode-action').count()) > 0);
 
-const passed = results.filter((r) => r.pass).length;
-console.log(`\n${passed}/${results.length} live signed-in checks passed`);
+const passed = results.filter((r) => r.state === "PASS").length;
+const failed = results.filter((r) => r.state === "FAIL").length;
+const blockedN = results.filter((r) => r.state === "BLOCKED").length;
+console.log(`\n${passed} passed · ${failed} failed · ${blockedN} blocked, of ${results.length} live signed-in checks`);
 writeFileSync("data/validation/9b1a/live-signed-in-qa.json", JSON.stringify({
   phase: "9B.1A", artifact: "live-signed-in-qa", generatedAt: new Date().toISOString(),
   origin: BASE, commit: process.argv[3] ?? null,
   sessionSource: "The provider's anonymous sign-in, enabled by the owner for this run. These are real sessions with a real auth.uid(), so RLS, the sign-up trigger and the authoritative save are exercised for real. Every one is adopted through the product's own /auth/callback in a URL fragment, exactly as an emailed link delivers one — nothing is injected into storage behind the app's back.",
   notCertifiable: "Signing back in with a credential. An anonymous account has none. The owner's own real sign-in on this origin already demonstrates that path for a credentialed account.",
   accounts: { first: sessionA.userId, second: sessionC.userId },
-  checks: results, passed, total: results.length, allPassed: passed === results.length,
+  serverCredentialAcceptedByProvider: CRED,
+  blockedReason: CRED ? null : "The deployment's SUPABASE_SERVICE_ROLE_KEY is present and correctly shaped but refused by the provider — it predates the key rotation earlier in this phase. Every cloud write fails with 401, so checks that need stored data are recorded as BLOCKED rather than passed or failed.",
+  checks: results, passed, failed, blocked: blockedN, total: results.length,
+  allPassed: failed === 0 && blockedN === 0,
   note: "No token or credential is recorded here. User ids are opaque uuids and the accounts are deleted after this run.",
 }, null, 2) + "\n");
 console.log("→ data/validation/9b1a/live-signed-in-qa.json");
 await browser.close();
-process.exit(passed === results.length ? 0 : 1);
+process.exit(failed === 0 ? 0 : 1);

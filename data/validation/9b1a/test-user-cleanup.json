@@ -14,7 +14,7 @@
   },
   "localSecretFiles": "none created \u2014 no synthetic passwords were needed, because the probes set the role and JWT claims directly rather than signing in",
   "residual": "One real account remains and was deliberately not touched: it is the owner's own. It now has a live session, a sign-in timestamp and a profile row, all created by their own sign-in.",
-  "reconciledAt": "2026-09-04T23:14:37.632664+00:00",
+  "reconciledAt": "2026-09-04T23:54:43.380013+00:00",
   "secondPass": {
     "attempted": "Two synthetic QA accounts, to obtain real signed-in sessions without an inbox.",
     "created": 0,
@@ -25,5 +25,23 @@
     ],
     "passwordHandling": "The passwords were generated locally and hashed locally with bcrypt, so only a one-way hash would ever have reached the project. No plaintext was printed, committed or transmitted, and both files are now deleted.",
     "databaseResidue": "none \u2014 a delete matching the QA address pattern was run and matched zero rows, confirming nothing was left behind"
+  },
+  "thirdPass": {
+    "route": "The owner enabled anonymous sign-ins for the duration of the signed-in certification, which issues real sessions with a real auth.uid() and needs no inbox and no privileged write.",
+    "syntheticUsersCreated": 21,
+    "syntheticUsersRemoved": 21,
+    "removedBy": "delete from auth.users where is_anonymous",
+    "cascadeVerified": true,
+    "afterCleanup": {
+      "users": 1,
+      "anonymousUsers": 0,
+      "sessions": 1,
+      "profiles": 1,
+      "savedClashes": 0,
+      "resultClaims": 0,
+      "identities": 1
+    },
+    "residual": "One real account remains, deliberately untouched: the owner's own, with their own live session and profile row.",
+    "ownerActionOutstanding": "Anonymous sign-ins are still enabled and should be switched back off once the remaining two blocked checks have been re-run."
   }
 }

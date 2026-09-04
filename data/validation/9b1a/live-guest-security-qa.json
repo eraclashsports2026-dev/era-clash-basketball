@@ -1,9 +1,9 @@
 {
   "phase": "9B.1A",
   "artifact": "live-guest-security-qa",
-  "generatedAt": "2026-09-04T23:13:24.595Z",
+  "generatedAt": "2026-09-04T23:56:26.232Z",
   "origin": "https://era-clash-basketball-git-phase-9b1a-supabase-l-f071d0-era-clash.vercel.app",
-  "commit": "8e7bc05",
+  "commit": null,
   "scope": "Everything certifiable against a real deployment without a signed-in session, run against the durable branch origin rather than a commit-specific URL.",
   "bundleAudit": {
     "assets": 1,
@@ -12,7 +12,7 @@
     "serviceWords": 0,
     "anonPresent": true,
     "urlPresent": true,
-    "bytes": 778343
+    "bytes": 777998
   },
   "checks": [
     {
@@ -38,12 +38,27 @@
     {
       "name": "the health route leaks no key material of any shape",
       "pass": true,
-      "detail": "669 bytes"
+      "detail": "797 bytes"
     },
     {
       "name": "the deployed build is Candidate 4 on the frozen calibration",
       "pass": true,
       "detail": "Candidate 4 · 1.4.0"
+    },
+    {
+      "name": "cloud accounts report configuration as booleans only",
+      "pass": true,
+      "detail": "{\"providerConfigured\":true,\"serverCredentialConfigured\":true,\"browserCredentialConfigured\":true,\"enabled\":true,\"serverCredentialAccepted\":false}"
+    },
+    {
+      "name": "the provider still accepts the server's own credential",
+      "pass": false,
+      "detail": "REJECTED — the deployment's server credential is absent, wrong, or was rotated without the deployment being updated"
+    },
+    {
+      "name": "the deep probe returns no key material",
+      "pass": true,
+      "detail": ""
     },
     {
       "name": "a cloud save with no bearer token is refused",
@@ -116,8 +131,8 @@
       "detail": "<origin>/play/dream"
     }
   ],
-  "passed": 20,
-  "total": 20,
-  "allPassed": true,
+  "passed": 22,
+  "total": 23,
+  "allPassed": false,
   "note": "No credential appears in this artifact: the bundle audit records counts and shapes only."
 }
