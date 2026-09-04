@@ -221,11 +221,34 @@ if (MODE === "guest-claim" || MODE === "cloud-save") {
 if (MODE === "security") {
   const walk = (dir) => fs.readdirSync(dir).flatMap((f) => { const p = `${dir}/${f}`; return fs.statSync(p).isDirectory() ? walk(p) : /\.(jsx?|css)$/.test(f) ? [p] : []; });
   const clientFiles = walk("src");
-  ok("no browser module names a service-role key", clientFiles.every((f) => !/SERVICE_ROLE|service_role/.test(read(f))));
-  ok("the service-role key is server-only and never logged", /process\.env\.SUPABASE_SERVICE_ROLE_KEY/.test(src("api/_lib/cloudAccounts.js")) && !/console\./.test(src("api/_lib/cloudAccounts.js")));
+  // The hazard is a browser module READING a service credential, not the word
+  // appearing: config.js must name the service_role claim to detect and refuse
+  // a secret key that was pasted into a browser variable.
+  const readsServiceEnv = clientFiles.filter((f) => /env\(\s*["'`][^"'`]*SERVICE[^"'`]*["'`]|import\.meta\.env\.\w*SERVICE|process\.env\.\w*SERVICE|VITE_SUPABASE_SERVICE|VITE_\w*SECRET/i.test(read(f)));
+  ok("no browser module reads a service-role or secret environment variable", readsServiceEnv.length === 0, readsServiceEnv.join(", ") || `${clientFiles.length} modules scanned`);
+  ok("one browser module deliberately KNOWS the secret-key shapes, so it can refuse them",
+    /looksLikeSecretKey/.test(src("src/accounts/config.js")) && /ANON_KEY_IS_A_SECRET_KEY/.test(src("src/accounts/config.js")));
+  ok("the service-role key is server-only, shape-checked as a secret, and never logged",
+    /process\.env\.SUPABASE_SERVICE_ROLE_KEY/.test(src("api/_lib/cloudAccounts.js"))
+    && /serviceRoleConfigured: serviceKeyShapeOk/.test(src("api/_lib/cloudAccounts.js"))
+    && !/console\./.test(src("api/_lib/cloudAccounts.js")));
   if (fs.existsSync("dist")) {
     const bundles = fs.readdirSync("dist/assets").filter((f) => f.endsWith(".js")).map((f) => `dist/assets/${f}`);
-    ok("no built bundle contains a service-role reference or a JWT-shaped secret", bundles.every((f) => { const b = read(f); return !/service_role/.test(b) && !/eyJ[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{20,}\./.test(b); }), `${bundles.length} bundles scanned`);
+    // A secret in a bundle is the worst outcome this phase can produce, so it is
+    // scanned for by SHAPE rather than by variable name: an sb_secret_ key, or
+    // any JWT whose payload carries role service_role, whatever it was named.
+    const secretInBundle = [];
+    for (const file of bundles) {
+      const b = read(file);
+      if (/sb_secret_[A-Za-z0-9_-]{8,}/.test(b)) secretInBundle.push(`${file}: sb_secret_ key`);
+      for (const jwt of b.match(/eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{5,}/g) || []) {
+        try {
+          const role = JSON.parse(Buffer.from(jwt.split(".")[1], "base64url").toString("utf8"))?.role;
+          if (role === "service_role") secretInBundle.push(`${file}: service_role JWT`);
+        } catch { /* not a readable JWT payload */ }
+      }
+    }
+    ok("no built bundle contains a secret key, by shape and not merely by name", secretInBundle.length === 0, secretInBundle.join(" · ") || `${bundles.length} bundles scanned clean`);
     // The SDK's own internals (its auth client) must live in a lazily loaded
     // chunk, not in the entry bundle a guest downloads to play Chaos Clash.
     const entry = bundles.sort((a, b) => fs.statSync(b).size - fs.statSync(a).size)[0];

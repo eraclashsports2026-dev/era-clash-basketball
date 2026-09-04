@@ -20,18 +20,30 @@ import { getJSON } from "./store.js";
 
 export const CLOUD_ACCOUNTS_SERVER_VERSION = "1.0.0";
 
-/**
- * Is this actually a provider key? A key copied out of a dashboard's masked
- * view is a few real characters followed by bullet characters — long enough to
- * pass a length check, useless as a credential. See the client's twin.
- */
+const jwtRole = (v) => {
+  const parts = String(v).split(".");
+  if (parts.length !== 3) return null;
+  try { return JSON.parse(Buffer.from(parts[1], "base64url").toString("utf8"))?.role ?? null; } catch { return null; }
+};
+const printableAscii = (v) => !!v && !/[^\x21-\x7e]/.test(v);
+
+/** A secret credential in any form: sb_secret_, or a legacy service_role JWT. */
+export const looksLikeSecretKey = (value) => {
+  const v = String(value ?? "").trim();
+  if (!printableAscii(v)) return false;
+  return /^sb_secret_/.test(v) || jwtRole(v) === "service_role";
+};
+
+/** A key the BROWSER may hold — anon JWT or sb_publishable_, never a secret. */
 export const keyShapeOk = (value) => {
   const v = String(value ?? "").trim();
-  if (!v) return false;
-  if (/[^\x21-\x7e]/.test(v)) return false;
-  return /^eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/.test(v)
-    || /^sb_(publishable|secret)_[A-Za-z0-9_-]{16,}$/.test(v);
+  if (!printableAscii(v) || looksLikeSecretKey(v)) return false;
+  if (/^sb_publishable_[A-Za-z0-9_-]{16,}$/.test(v)) return true;
+  return /^eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/.test(v);
 };
+
+/** The privileged key the SERVER uses. It must BE a secret, and must be one. */
+export const serviceKeyShapeOk = (value) => looksLikeSecretKey(value);
 
 /** The same forgiving boolean the client uses: a dashboard text box is not code. */
 export const flagOn = (value) => ["true", "1", "yes", "on"].includes(String(value ?? "").trim().toLowerCase());
@@ -43,7 +55,7 @@ const anonKey = () => String(process.env.SUPABASE_ANON_KEY || process.env.VITE_S
 /** Configuration state, safe to report: booleans only, never a key or a fragment of one. */
 export const cloudAccountsServerStatus = () => ({
   providerUrlConfigured: /^https:\/\/[a-z0-9-]+\.supabase\.(co|in)$/i.test(url()),
-  serviceRoleConfigured: keyShapeOk(serviceKey()),
+  serviceRoleConfigured: serviceKeyShapeOk(serviceKey()),
   anonKeyConfigured: keyShapeOk(anonKey()),
   enabled: flagOn(process.env.CLOUD_ACCOUNTS_ENABLED),
 });

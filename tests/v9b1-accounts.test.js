@@ -8,7 +8,7 @@ import { execSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import {
   providerConfigured, cloudAccountsEnabled, cloudAccountsStatus, safeReturnPath,
-  cleanDisplayName, MAX_DISPLAY_NAME, CLOUD_ACCOUNTS_VERSION, flagOn, keyShapeOk, providerUrlOk,
+  cleanDisplayName, MAX_DISPLAY_NAME, CLOUD_ACCOUNTS_VERSION, flagOn, keyShapeOk, providerUrlOk, looksLikeSecretKey,
 } from "../src/accounts/config.js";
 import { provider, withProvider, _setProvider, FAILURE_CODES } from "../src/accounts/provider.js";
 import { createTestProvider } from "../src/accounts/testAdapter.js";
@@ -16,6 +16,7 @@ import {
   buildSavedClash, claimAndSaveResult, importDeviceHistory, countEligibleForImport,
   verifyAccountToken, cloudAccountsServerStatus, cloudAccountsReady, sha256,
   CANDIDATE_ID_SHAPE, MAX_IMPORT_CANDIDATES, flagOn as serverFlagOn, keyShapeOk as serverKeyShapeOk,
+  looksLikeSecretKey as serverLooksLikeSecretKey, serviceKeyShapeOk as serverServiceKeyShapeOk,
 } from "../api/_lib/cloudAccounts.js";
 import { EVENTS_ALLOWLIST } from "../api/events.js";
 import { ACTIVATION_EVENTS } from "../src/activation.js";
@@ -70,6 +71,32 @@ describe("configuration and the feature flag", () => {
     expect(src("api/_lib/cloudAccounts.js")).toMatch(/enabled: flagOn\(process\.env\.CLOUD_ACCOUNTS_ENABLED\)/);
     expect(src("src/accounts/config.js")).toMatch(/flagOn\(env\("VITE_CLOUD_ACCOUNTS_ENABLED"\)\)/);
   });
+  it("refuses a SECRET key in a browser variable, in either of its forms", () => {
+    // This actually happened: VITE_SUPABASE_ANON_KEY was set to an sb_secret_
+    // key, which shipped in the bundle. A secret key bypasses row level
+    // security completely, so a reader of the bundle would have had full
+    // database access. Length and printability both said it was fine.
+    const anonJwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJvbGUiOiJhbm9uIn0.sig";
+    const serviceJwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJvbGUiOiJzZXJ2aWNlX3JvbGUifQ.sig";
+    const secretPrefixed = `sb_secret_${"0".repeat(24)}`;
+    // Detected as secrets.
+    expect(looksLikeSecretKey(secretPrefixed)).toBe(true);
+    expect(looksLikeSecretKey(serviceJwt)).toBe(true);
+    expect(serverLooksLikeSecretKey(secretPrefixed)).toBe(true);
+    expect(serverLooksLikeSecretKey(serviceJwt)).toBe(true);
+    expect(looksLikeSecretKey(anonJwt)).toBe(false);
+    // Therefore refused for the browser, at any length.
+    expect(keyShapeOk(secretPrefixed)).toBe(false);
+    expect(keyShapeOk(serviceJwt)).toBe(false);
+    expect(serverKeyShapeOk(secretPrefixed)).toBe(false);
+    expect(keyShapeOk(anonJwt)).toBe(true);
+    // The server's own key must BE a secret; an anon key there is refused.
+    expect(serverServiceKeyShapeOk(serviceJwt)).toBe(true);
+    expect(serverServiceKeyShapeOk(secretPrefixed)).toBe(true);
+    expect(serverServiceKeyShapeOk(anonJwt)).toBe(false);
+    // And the status names this mistake separately from a malformed value.
+    expect(src("src/accounts/config.js")).toMatch(/ANON_KEY_IS_A_SECRET_KEY/);
+  });
   it("rejects a key copied out of a masked dashboard field", () => {
     // This cost a deployment round trip: the anon key had been copied from a
     // partly-masked view, giving "eyJhbGci" plus 200 bullet characters. It is
@@ -80,7 +107,7 @@ describe("configuration and the feature flag", () => {
     expect(keyShapeOk(real + "\n")).toBe(true);                       // trimmed
     const fakeSuffix = "0".repeat(24);
     expect(keyShapeOk(`sb_publishable_${fakeSuffix}`)).toBe(true);
-    expect(keyShapeOk(`sb_secret_${fakeSuffix}`)).toBe(true);
+    expect(keyShapeOk(`sb_secret_${fakeSuffix}`)).toBe(false);   // a secret is never a browser key
     expect(keyShapeOk("sb_publishable_short")).toBe(false);
     expect(keyShapeOk("eyJhbGci" + "\u2022".repeat(200))).toBe(false);  // the masked paste
     expect(keyShapeOk("x".repeat(300))).toBe(false);                    // long but not a key
@@ -88,7 +115,7 @@ describe("configuration and the feature flag", () => {
     expect(keyShapeOk(null)).toBe(false);
     // Both sides apply it, and the status names the problem distinctly.
     expect(serverKeyShapeOk("eyJhbGci" + "\u2022".repeat(200))).toBe(false);
-    expect(src("api/_lib/cloudAccounts.js")).toMatch(/serviceRoleConfigured: keyShapeOk\(serviceKey\(\)\)/);
+    expect(src("api/_lib/cloudAccounts.js")).toMatch(/serviceRoleConfigured: serviceKeyShapeOk\(serviceKey\(\)\)/);
     expect(src("api/_lib/cloudAccounts.js")).toMatch(/anonKeyConfigured: keyShapeOk\(anonKey\(\)\)/);
     expect(src("src/accounts/config.js")).toMatch(/ANON_KEY_MALFORMED/);
     expect(src("src/components/accounts/AccountDialog.jsx")).toMatch(/ANON_KEY_MALFORMED/);
@@ -419,8 +446,15 @@ describe("secrets, tokens and telemetry stay where they belong", () => {
   it("no service-role key is referenced by any browser module", () => {
     const walk = (dir) => readdirSync(dir).flatMap((f) => { const p = `${dir}/${f}`; return statSync(p).isDirectory() ? walk(p) : /\.(jsx?|css)$/.test(f) ? [p] : []; });
     for (const f of walk("src")) {
-      expect(read(f), f).not.toMatch(/SERVICE_ROLE|service_role/);
-      expect(read(f), f).not.toMatch(/VITE_SUPABASE_SERVICE/);
+      // What must never happen is a browser module READING a service-role
+      // credential from the environment. The words themselves are wanted in
+      // one place — config.js has to name the role claim in order to detect a
+      // secret key and refuse it — so the test asks about the access, not the
+      // vocabulary.
+      expect(read(f), f).not.toMatch(/env\(\s*["'`][^"'`]*SERVICE[^"'`]*["'`]/i);
+      expect(read(f), f).not.toMatch(/import\.meta\.env\.\w*SERVICE/i);
+      expect(read(f), f).not.toMatch(/process\.env\.\w*SERVICE/i);
+      expect(read(f), f).not.toMatch(/VITE_SUPABASE_SERVICE|VITE_\w*SECRET/i);
     }
   });
   it("the service-role key is read only on the server, and never logged", () => {
@@ -430,7 +464,7 @@ describe("secrets, tokens and telemetry stay where they belong", () => {
     // The status probe reports booleans, not values.
     // It judges the key by its SHAPE, so a value copied from a masked dashboard
     // field is reported as absent rather than accepted for being long.
-    expect(server).toMatch(/serviceRoleConfigured: keyShapeOk\(serviceKey\(\)\)/);
+    expect(server).toMatch(/serviceRoleConfigured: serviceKeyShapeOk\(serviceKey\(\)\)/);
   });
   it("the account token travels in the Authorization header, not in a URL or a body field", () => {
     const client = src("src/accounts/cloudSave.js");
