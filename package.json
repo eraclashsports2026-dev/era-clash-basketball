@@ -366,7 +366,8 @@
     "account:responsive-qa": "node scripts/accounts/accountQa.mjs responsive",
     "account:deployed-qa": "node scripts/accounts/deployedQa.mjs",
     "account:verify-provider": "node scripts/accounts/verifyProvider.mjs",
-    "phase9b1:summary": "node scripts/accounts/phase9b1Summary.mjs summary"
+    "phase9b1:summary": "node scripts/accounts/phase9b1Summary.mjs summary",
+    "account:verify-provider-local": "node --env-file=.env.local scripts/accounts/verifyProvider.mjs --remote"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.115.0",
