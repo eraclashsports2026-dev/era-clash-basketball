@@ -298,7 +298,7 @@ const textAudit = async (page, theme) => {
         // Gradient-backed controls: the primary action is the CTA gold, a held
         // player control is the team accent, a held staff control is violet.
         // A DISABLED primary action is the translucent plate over the stage, not the gold button.
-        if (n.matches(".ec-ta-cta, .ec-mode-card--primary .ec-mode-action[data-intent='OPEN_MODE'], .ec-continue-cta") && !n.disabled) return hexRgb(ctaMid);
+        if (n.matches(".ec-ta-cta, .ec-mode-action[data-hierarchy='primary'], .ec-continue-cta") && !n.disabled) return hexRgb(ctaMid);
         if (n.matches('.ec-pc-action[data-on="true"]')) { const v = cs.getPropertyValue("--pc-accent").trim(); return v.startsWith("#") ? hexRgb(v) : (v || hexRgb(teamGold)); }
         if (n.matches('.ec-coach-action[data-on="true"]')) return hexRgb(coach);
         // Panels whose colour is a gradient of tokens: use the theme's panel token.

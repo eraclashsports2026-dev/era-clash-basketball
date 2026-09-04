@@ -105,7 +105,7 @@ test("choosing Chaos Clash opens the Time Arena; the lobby remembers the run; Co
   await withAccount(page);
   const posts = watchGame(page);
   await page.goto("/play");
-  await page.getByRole("link", { name: /Play Chaos Clash, recommended/ }).click();
+  await page.getByRole("link", { name: /Start Chaos Clash, recommended/ }).click();
   await expect(page).toHaveURL(/\/play\/chaos$/);
   await expect(page.locator(".ec-ta")).toBeVisible();
   // The arena is open and STILL nothing has been dealt.
@@ -424,10 +424,10 @@ test("the lobby is keyboard operable and announces what each card is", async ({ 
   // Every card is a real link or button with a full accessible name.
   const names = await page.locator(".ec-mode-action").evaluateAll((els) => els.map((e) => ({ tag: e.tagName, name: e.getAttribute("aria-label"), href: e.getAttribute("href") })));
   expect(names).toHaveLength(7);
-  expect(names[0].name).toMatch(/^Play Chaos Clash, recommended/);
+  expect(names[0].name).toMatch(/^Start Chaos Clash, recommended/);
   for (const n of names) expect(["A", "BUTTON"]).toContain(n.tag);
   // Tab reaches the recommended card's action and Enter opens it.
-  const chaos = page.getByRole("link", { name: /Play Chaos Clash, recommended/ });
+  const chaos = page.getByRole("link", { name: /Start Chaos Clash, recommended/ });
   await chaos.focus();
   const outline = await chaos.evaluate((e) => getComputedStyle(e).outlineStyle);
   expect(outline).not.toBe("none");

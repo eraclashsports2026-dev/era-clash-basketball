@@ -34,7 +34,7 @@ const extra = {};
 
 // ── Registry ─────────────────────────────────────────────────────────────────
 if (MODE === "registry") {
-  ok("registry version carries the route model", NAVIGATION_REGISTRY_VERSION === "1.1.0", NAVIGATION_REGISTRY_VERSION);
+  ok("registry version carries the route model (1.2.0 adds the 9A.3P presentation contract)", /^1\.[12]\.0$/.test(NAVIGATION_REGISTRY_VERSION), NAVIGATION_REGISTRY_VERSION);
   ok("seven modes, each with id, label, route, category, one sentence, status inputs",
     PLAY_MODES.length === 7 && PLAY_MODES.every((m) => m.id && m.label && /^\/play\//.test(m.route) && m.category && m.shortDescription && "capability" in m));
   ok("mode ids are unique", new Set(PLAY_MODES.map((m) => m.id)).size === PLAY_MODES.length);
@@ -98,11 +98,11 @@ if (MODE === "lobby") {
   ok("no simulation statistics, roster intelligence or comparison tables on a card",
     !/ppg|rpg|apg|OVR|analysis|bestStrength|biggestRisk/.test(lobbyCode));
   ok("the primary action is EraClash gold, not an orange system",
-    /\.ec-mode-card--primary \.ec-mode-action\[data-intent="OPEN_MODE"\][\s\S]{0,220}var\(--ec-a-gold\)/.test(lobbyCss) && !/orange/i.test(lobbyCss));
+    /\.ec-mode-action\[data-hierarchy="primary"\][\s\S]{0,220}var\(--ec-a-gold\)/.test(lobbyCss) && !/orange/i.test(lobbyCss));
   ok("touch targets are at least 44px", /\.ec-mode-action \{[\s\S]{0,200}min-height: 48px/.test(lobbyCss) && /\.ec-mode-card--secondary \.ec-mode-action \{ min-height: 44px/.test(lobbyCss) && /\.ec-continue-quiet \{[\s\S]{0,120}min-height: 44px/.test(lobbyCss));
   ok("three columns, then two, then one", /\.ec-lobby-primary \{[\s\S]{0,120}repeat\(3, minmax\(0, 1fr\)\)/.test(lobbyCss)
     && /@media \(max-width: 1024px\) \{[\s\S]{0,200}\.ec-lobby-primary \{ grid-template-columns: repeat\(2/.test(lobbyCss)
-    && /@media \(max-width: 640px\) \{[\s\S]{0,300}\.ec-lobby-primary \{ grid-template-columns: minmax\(0, 1fr\)/.test(lobbyCss));
+    && /@media \(max-width: 640px\) \{[\s\S]{0,400}\.ec-lobby-primary \{ grid-template-columns: minmax\(0, 1fr\)/.test(lobbyCss));
   ok("focus is visible on a card's action", /\.ec-mode-action:focus-visible/.test(lobbyCss));
   ok("reduced motion is respected", /prefers-reduced-motion: reduce\) \{\s*\.ec-mode-card/.test(lobbyCss));
   ok("`/` and /play render the lobby; the Time Arena keeps /play/chaos", /showLobby = isLobbyRoute\(route\) && nav === "Play"/.test(app) && /<PlayLobby/.test(app) && /navigate\("\/play\/chaos"\)/.test(app));

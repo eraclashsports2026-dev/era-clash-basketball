@@ -14,7 +14,7 @@ const src = (f) => read(f).replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$
 
 describe("one registry, extended for the lobby", () => {
   it("bumped its version for the route model", () => {
-    expect(NAVIGATION_REGISTRY_VERSION).toBe("1.1.0");
+    expect(NAVIGATION_REGISTRY_VERSION).toBe("1.2.0");
   });
   it("gives every mode a route, a category, one sentence and an implementation note", () => {
     for (const m of PLAY_MODES) {
@@ -221,7 +221,7 @@ describe("the lobby's own assets are ours", () => {
   });
   it("no dominant orange CTA system: the lobby's primary action is EraClash gold", () => {
     const css = read("src/index.css").slice(read("src/index.css").indexOf("PHASE 9A — THE PLAY LOBBY"));
-    expect(css).toMatch(/\.ec-mode-card--primary \.ec-mode-action\[data-intent="OPEN_MODE"\][\s\S]{0,200}var\(--ec-a-gold\)/);
+    expect(css).toMatch(/\.ec-mode-action\[data-hierarchy="primary"\][\s\S]{0,200}var\(--ec-a-gold\)/);
     expect(css).not.toMatch(/#f{2}[6-9a][0-9a-f]00|orange/i);
   });
   it("no casino or gambling language reaches a card", () => {
