@@ -79,59 +79,5 @@
       "career_by_mode",
       "career_streak"
     ]
-  },
-  "status": "FROZEN",
-  "migration": {
-    "path": "supabase/migrations/0001_accounts.sql",
-    "sha256": "de9c9abdb6c734729a67bfff2754f90e6c01e9e81964a8054070cc5771a24b19",
-    "version": "0001_accounts"
-  },
-  "tables": {
-    "profiles": {
-      "key": "user_id → auth.users (cascade)",
-      "columns": [
-        "display_name (1-24, no <>)",
-        "avatar_url (https only)",
-        "created_at",
-        "updated_at"
-      ],
-      "emailColumn": false,
-      "createdBy": "the handle_new_user trigger, once per account"
-    },
-    "saved_clashes": {
-      "key": "unique (user_id, result_id)",
-      "authoritativeSource": "the result record in the store",
-      "snapshot": "result_snapshot, minus the device session",
-      "candidateIdentity": [
-        "candidate_id",
-        "calibration_version",
-        "candidate_core_hash"
-      ],
-      "challenge": "challenge_fingerprint (sha256, truncated) — never the seed"
-    },
-    "result_claims": {
-      "key": "result_id PRIMARY KEY — one result, one owner",
-      "stores": "device_session_hash (sha256, 64 hex) — never the session"
-    }
-  },
-  "careerStatistics": {
-    "method": "derived views, not mutable counters",
-    "views": [
-      "career_summary",
-      "career_by_mode",
-      "career_streak"
-    ],
-    "security": "security_invoker = true, so the table's policies isolate each career"
-  },
-  "fabricated": {
-    "rank": false,
-    "contenderGrade": false,
-    "percentile": false,
-    "leaderboardPosition": false
-  },
-  "deletion": {
-    "cascadesFromAuthUsers": true,
-    "selfService": false,
-    "limitation": "self-service deletion and export are deferred to an account-hardening phase and are stated on the career page; this build is not public-launch ready without them"
   }
 }

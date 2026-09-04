@@ -23,6 +23,7 @@ import { ACTIVATION_EVENTS } from "../src/activation.js";
 const read = (f) => readFileSync(f, "utf8");
 const src = (f) => read(f).replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "").replace(/\{\/\*[\s\S]*?\*\/\}/g, "");
 const SQL = read("supabase/migrations/0001_accounts.sql");
+const SQL2 = read("supabase/migrations/0002_accounts_hardening.sql");
 /** The SQL with its comments stripped: what Postgres actually applies. */
 const DDL = SQL.replace(/^\s*--.*$/gm, "");
 /** DDL without COMMENT ON statements, whose prose is documentation, not schema. */
@@ -103,6 +104,45 @@ describe("the database contract", () => {
   });
   it("an update policy also constrains the row it writes", () => {
     expect(SQL).toMatch(/profiles_update_own[\s\S]{0,160}with check \(user_id = auth\.uid\(\)\)/);
+  });
+  it("narrows the authenticated role too, not only anonymous", () => {
+    // 0001 revoked anon and stopped there, so Supabase's blanket default grants
+    // left a signed-in browser holding INSERT, UPDATE, DELETE and TRUNCATE on
+    // the career tables. Row level security blocked every reachable write, but
+    // TRUNCATE is not subject to RLS and the grants contradicted 0001's own
+    // comment. Confirmed against the live database, and corrected by 0002:
+    // data/validation/9b1/account-rls-live-verification.json
+    for (const t of ["profiles", "saved_clashes", "result_claims"]) {
+      expect(SQL2, t).toMatch(new RegExp(`revoke all on public\\.${t}\\s+from authenticated`));
+    }
+    expect(SQL2).toMatch(/revoke all on public\.career_summary, public\.career_by_mode, public\.career_streak from authenticated/);
+    // Granted back: reads, plus a COLUMN-scoped update so a row's own user_id
+    // and created_at cannot be rewritten even by its owner.
+    expect(SQL2).toMatch(/grant select on public\.saved_clashes to authenticated/);
+    expect(SQL2).toMatch(/grant select on public\.result_claims to authenticated/);
+    expect(SQL2).toMatch(/grant update \(display_name, avatar_url\) on public\.profiles to authenticated/);
+    expect(SQL2).not.toMatch(/grant (insert|delete|truncate|all) on public\.(saved_clashes|result_claims|profiles)/i);
+    // A table added later starts closed rather than open.
+    expect(SQL2).toMatch(/alter default privileges in schema public revoke all on tables from anon, authenticated/);
+  });
+  it("keeps the trigger functions off the REST API and pins their search_path", () => {
+    for (const fn of ["handle_new_user", "touch_updated_at"]) {
+      expect(SQL2, fn).toMatch(new RegExp(`revoke execute on function public\\.${fn}\\(\\)\\s+from public, anon, authenticated`));
+    }
+    expect(SQL2).toMatch(/alter function public\.touch_updated_at\(\) set search_path = public/);
+    expect(SQL).toMatch(/security definer set search_path = public/);   // 0001 already pinned this one
+  });
+  it("records the live verification, including what it found wrong", () => {
+    const v = JSON.parse(read("data/validation/9b1/account-rls-live-verification.json"));
+    expect(v.migrationsApplied.map((m) => m.version)).toEqual(["0001_accounts", "0002_accounts_hardening"]);
+    expect(v.method).toMatch(/Not a simulation/);
+    expect(v.effectivePrivileges.anon).toMatch(/none/);
+    expect(v.effectivePrivileges.authenticated.saved_clashes).toBe("SELECT");
+    expect(v.effectivePrivileges.finding).toMatch(/TRUNCATE is not subject to RLS/);
+    expect(v.supabaseSecurityAdvisors.warningsRemaining).toBe(0);
+    expect(v.unauthenticatedProbes.every((p) => p.status === 401 || p.status === 404)).toBe(true);
+    // The phase must not claim an end-to-end result it has not measured.
+    expect(v.endToEndStillPending).toMatch(/Vercel Preview environment/);
   });
   it("revokes everything from anonymous on every user-owned object", () => {
     for (const t of ["profiles", "saved_clashes", "result_claims"]) {

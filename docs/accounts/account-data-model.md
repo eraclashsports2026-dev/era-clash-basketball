@@ -86,8 +86,35 @@ Enabled on every user-owned table. The complete policy set:
 There is deliberately **no** insert, update or delete policy on `saved_clashes`
 or `result_claims`, and no insert or delete policy on `profiles`. A signed-in
 browser therefore cannot forge a career record, edit a score, or delete someone
-else's history even with a completely valid session. `anon` is revoked on every
-user-owned object and on all three views.
+else's history even with a completely valid session.
+
+## Effective privileges (migration 0002)
+
+Policies are only half of it. Supabase grants every new table in `public` to
+`anon` and `authenticated` by default, so migration 0001 — which revoked
+`anon` and stopped there — left a signed-in browser holding INSERT, UPDATE,
+DELETE, TRUNCATE, REFERENCES and TRIGGER on the career tables. Row level
+security blocked every write reachable through PostgREST, but **TRUNCATE is not
+subject to row level security**, and the grants contradicted what 0001's own
+comment claimed. Migration 0002 narrows them:
+
+| Role | profiles | saved_clashes | result_claims | career views |
+| --- | --- | --- | --- | --- |
+| `anon` | none | none | none | none |
+| `authenticated` | SELECT, and UPDATE on `display_name` and `avatar_url` only | SELECT | SELECT | SELECT |
+
+The column list on that UPDATE matters: without it, a user could rewrite their
+own row's `user_id` or `created_at`. The `updated_at` trigger still fires,
+because column privileges are checked against the columns a statement names,
+not against what a trigger sets.
+
+Default privileges in `public` are revoked for both roles, so a table added by
+a later migration starts closed rather than open. Neither trigger function is
+executable by `anon` or `authenticated`, so neither is published at
+`/rest/v1/rpc/`, and both pin `search_path`.
+
+Verified against the live database rather than read off the migration text:
+`data/validation/9b1/account-rls-live-verification.json`.
 
 ## What the server never trusts
 
