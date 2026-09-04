@@ -20,16 +20,19 @@ import { getJSON } from "./store.js";
 
 export const CLOUD_ACCOUNTS_SERVER_VERSION = "1.0.0";
 
-const url = () => String(process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || "").replace(/\/$/, "");
-const serviceKey = () => String(process.env.SUPABASE_SERVICE_ROLE_KEY || "");
-const anonKey = () => String(process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || "");
+/** The same forgiving boolean the client uses: a dashboard text box is not code. */
+export const flagOn = (value) => ["true", "1", "yes", "on"].includes(String(value ?? "").trim().toLowerCase());
+
+const url = () => String(process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || "").trim().replace(/\/+$/, "");
+const serviceKey = () => String(process.env.SUPABASE_SERVICE_ROLE_KEY || "").trim();
+const anonKey = () => String(process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || "").trim();
 
 /** Configuration state, safe to report: booleans only, never a key or a fragment of one. */
 export const cloudAccountsServerStatus = () => ({
   providerUrlConfigured: /^https:\/\/[a-z0-9-]+\.supabase\.(co|in)$/i.test(url()),
   serviceRoleConfigured: serviceKey().length > 40,
   anonKeyConfigured: anonKey().length > 40,
-  enabled: process.env.CLOUD_ACCOUNTS_ENABLED === "true",
+  enabled: flagOn(process.env.CLOUD_ACCOUNTS_ENABLED),
 });
 
 export const cloudAccountsReady = () => {

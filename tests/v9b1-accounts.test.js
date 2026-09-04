@@ -8,14 +8,14 @@ import { execSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import {
   providerConfigured, cloudAccountsEnabled, cloudAccountsStatus, safeReturnPath,
-  cleanDisplayName, MAX_DISPLAY_NAME, CLOUD_ACCOUNTS_VERSION,
+  cleanDisplayName, MAX_DISPLAY_NAME, CLOUD_ACCOUNTS_VERSION, flagOn,
 } from "../src/accounts/config.js";
 import { provider, withProvider, _setProvider, FAILURE_CODES } from "../src/accounts/provider.js";
 import { createTestProvider } from "../src/accounts/testAdapter.js";
 import {
   buildSavedClash, claimAndSaveResult, importDeviceHistory, countEligibleForImport,
   verifyAccountToken, cloudAccountsServerStatus, cloudAccountsReady, sha256,
-  CANDIDATE_ID_SHAPE, MAX_IMPORT_CANDIDATES,
+  CANDIDATE_ID_SHAPE, MAX_IMPORT_CANDIDATES, flagOn as serverFlagOn,
 } from "../api/_lib/cloudAccounts.js";
 import { EVENTS_ALLOWLIST } from "../api/events.js";
 import { ACTIVATION_EVENTS } from "../src/activation.js";
@@ -56,6 +56,23 @@ describe("configuration and the feature flag", () => {
     expect(provider()).toBe(null);
     await expect(withProvider((p) => p.currentSession())).rejects.toThrow("CLOUD_ACCOUNTS_DISABLED");
     expect(await withProvider((p) => p.currentSession(), null)).toBe(null);
+  });
+  it("reads a boolean flag the way a person types it into a dashboard", () => {
+    // A strict === "true" turned a capitalised value into a feature that
+    // silently did not exist, which cost a deployment round trip. Both sides
+    // now read the flag the same forgiving way.
+    for (const on of ["true", "TRUE", "True", " true ", "1", "yes", "on", "ON"]) expect(flagOn(on), on).toBe(true);
+    for (const off of ["false", "FALSE", "0", "no", "off", "", "  ", null, undefined, "truthy"]) expect(flagOn(off), String(off)).toBe(false);
+    // The server uses the identical rule.
+    expect(serverFlagOn("TRUE")).toBe(true);
+    expect(serverFlagOn("nope")).toBe(false);
+    expect(src("api/_lib/cloudAccounts.js")).toMatch(/enabled: flagOn\(process\.env\.CLOUD_ACCOUNTS_ENABLED\)/);
+    expect(src("src/accounts/config.js")).toMatch(/flagOn\(env\("VITE_CLOUD_ACCOUNTS_ENABLED"\)\)/);
+  });
+  it("tolerates a pasted URL with trailing slashes or stray whitespace", () => {
+    expect(src("src/accounts/config.js")).toMatch(/String\(SUPABASE_URL\)\.trim\(\)\.replace\(\/\\\/\+\$\/, ""\)/);
+    expect(src("api/_lib/cloudAccounts.js")).toMatch(/\.trim\(\)\.replace\(\/\\\/\+\$\/, ""\)/);
+    expect(src("api/_lib/cloudAccounts.js")).toMatch(/SUPABASE_SERVICE_ROLE_KEY \|\| ""\)\.trim\(\)/);
   });
   it("the server reports its own configuration as booleans only", () => {
     const s = cloudAccountsServerStatus();

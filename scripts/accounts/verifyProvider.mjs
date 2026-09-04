@@ -14,8 +14,9 @@ const REMOTE = process.argv.includes("--remote");
 const url = String(process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || "").replace(/\/$/, "");
 const anon = String(process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || "");
 const service = String(process.env.SUPABASE_SERVICE_ROLE_KEY || "");
-const flagServer = process.env.CLOUD_ACCOUNTS_ENABLED === "true";
-const flagClient = process.env.VITE_CLOUD_ACCOUNTS_ENABLED === "true";
+const flagOn = (v) => ["true", "1", "yes", "on"].includes(String(v ?? "").trim().toLowerCase());
+const flagServer = flagOn(process.env.CLOUD_ACCOUNTS_ENABLED);
+const flagClient = flagOn(process.env.VITE_CLOUD_ACCOUNTS_ENABLED);
 
 const urlOk = /^https:\/\/[a-z0-9-]+\.supabase\.(co|in)$/i.test(url);
 const line = (k, v) => console.log(`${k}: ${v}`);
