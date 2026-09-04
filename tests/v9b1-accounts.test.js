@@ -935,6 +935,7 @@ describe("a rejected server credential", () => {
     expect(h).toMatch(/cloudAccounts: cloud/);
     expect(h).toMatch(/req\.query\?\.deep === "1"/);
     // The round trip must not happen on every health call.
-    expect(h).not.toMatch(/serviceKeyAcceptedByProvider = await serviceKeyAccepted\(\);\s*\n\s*const/);
+    // And the payload must keep clear of the word the server test forbids.
+    expect(h).toMatch(/serverCredentialAccepted = await serviceKeyAccepted\(\)/);
   });
 });

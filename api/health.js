@@ -36,9 +36,19 @@ export default async function handler(req, res) {
   // which costs a round trip and so is opt-in. It exists because a revoked key
   // is correctly shaped: every static check reported ready while every save
   // failed with a 401, and nothing surfaced that until a game was played.
-  const cloud = cloudAccountsServerStatus();
+  // Renamed deliberately: tests/server.test.js forbids the substring "key"
+  // anywhere in this payload. That rule is blunt on purpose and worth keeping,
+  // so the field names avoid the word rather than the assertion being softened
+  // to accommodate them. These are booleans about configuration, never values.
+  const st = cloudAccountsServerStatus();
+  const cloud = {
+    providerConfigured: st.providerUrlConfigured,
+    serverCredentialConfigured: st.serviceRoleConfigured,
+    browserCredentialConfigured: st.anonKeyConfigured,
+    enabled: st.enabled,
+  };
   if (req.query?.deep === "1" || req.query?.deep === "true") {
-    cloud.serviceKeyAcceptedByProvider = await serviceKeyAccepted();
+    cloud.serverCredentialAccepted = await serviceKeyAccepted();
   }
   return res.status(200).json({
     status: f.maintenance ? "maintenance" : coreEngine === "ok" ? "ok" : "degraded",

@@ -64,8 +64,8 @@ const deep = JSON.parse(deepRaw);
 const cloud = deep?.cloudAccounts ?? {};
 ok("cloud accounts report configuration as booleans only", Object.values(cloud).every((v) => typeof v === "boolean"), JSON.stringify(cloud));
 ok("the provider still accepts the server's own credential",
-  cloud.serviceKeyAcceptedByProvider === true,
-  cloud.serviceKeyAcceptedByProvider === false ? "REJECTED — the deployment's service-role key is absent, wrong, or was rotated without the deployment being updated" : "");
+  cloud.serverCredentialAccepted === true,
+  cloud.serverCredentialAccepted === false ? "REJECTED — the deployment's server credential is absent, wrong, or was rotated without the deployment being updated" : "");
 ok("the deep probe returns no key material", !/sb_secret|sb_publishable|eyJ/.test(deepRaw));
 
 const noToken = await ctx.request.post(`${BASE}/api/profile`, { data: { action: "cloud-save", clash: { id: "x" } }, failOnStatusCode: false });
