@@ -1,0 +1,151 @@
+{
+  "phase": "9B.1A — Supabase live activation and account certification",
+  "generatedAt": "2026-09-04T23:15:27.127Z",
+  "branch": "phase-9b1a-supabase-live-certification",
+  "head": "8e7bc051ebf5a45346f62495cefc8f1491815d75",
+  "durableOrigin": "https://era-clash-basketball-git-phase-9b1a-supabase-l-f071d0-era-clash.vercel.app",
+  "originPolicy": "All browser and authentication certification runs against the durable branch origin. A commit-specific preview URL is a different browser origin on every push, so a session and its storage do not survive one, and each would need its own entry in the provider's redirect allow list.",
+  "candidate": {
+    "candidateId": "Candidate 4",
+    "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+    "possessionCalibrationVersion": "1.4.0",
+    "unchanged": true,
+    "evidence": "Recomputed from this checkout and matched against the deployed build's health route in the deployed QA pass."
+  },
+  "frozenRefs": {
+    "wave1": "4dc59e7",
+    "wave2": "ef0caa5",
+    "main": "9cd95ff",
+    "movedByThisPhase": false,
+    "production": "build 2.7.2, no preview block, no account surface — asserted live in the deployed QA pass"
+  },
+  "certifiedLive": {
+    "signInCompletes": {
+      "state": "VERIFIED",
+      "evidence": "The owner completed a real sign-in on the durable origin. The provider records a live session and a sign-in timestamp on the real account."
+    },
+    "signUpTrigger": {
+      "state": "VERIFIED",
+      "evidence": "The profile row for the owner's real account exists and is readable by that account alone."
+    },
+    "crossAccountIsolation": {
+      "state": "VERIFIED",
+      "verdict": {
+        "crossAccountReads": 0,
+        "crossAccountWrites": 0,
+        "anonymousProtectedReads": 0,
+        "forgedCareerWrites": 0,
+        "ownerSeesOwnRow": true,
+        "signUpTriggerCreatedTheProfile": true
+      }
+    },
+    "linkRedemption": {
+      "state": "VERIFIED",
+      "verdict": {
+        "exchangeReceivesTheBareCode": true,
+        "exchangeNeverReceivesAUrl": true,
+        "exchangeUsesThePkceGrant": true,
+        "namedFlowUsesItsOwnVerifier": true,
+        "unnamedFlowFallsBackRatherThanFailing": true,
+        "digestVerifiedAsAHashWithItsType": true,
+        "plainDigestAlsoVerified": true,
+        "noAddressIsEverInvented": true,
+        "nothingIsSentWithoutAProof": true
+      }
+    },
+    "emailLinkFlow": {
+      "state": "VERIFIED",
+      "verdict": {
+        "bundleUsesImplicitFlow": true,
+        "fragmentReachedTheProvider": true,
+        "addressBarCarriesNoToken": true,
+        "addressBarLandedOnASafePath": true,
+        "forgedSessionRefusedByProvider": true
+      }
+    },
+    "durableOriginBehaviour": {
+      "state": "VERIFIED",
+      "verdict": {
+        "stableAliasServesTheAccountBuild": true,
+        "aliasCallbackAcceptedByProvider": true,
+        "bundleUsesImplicitFlow": true,
+        "fragmentReachedTheProvider": true,
+        "forgedSessionRefusedByProvider": true,
+        "addressBarCarriesNoToken": true,
+        "addressBarLandedOnASafePath": true
+      }
+    },
+    "guestSurfacesAndSecrets": {
+      "state": "VERIFIED",
+      "passed": "20/20",
+      "bundleAudit": {
+        "assets": 1,
+        "secretShaped": 0,
+        "serviceRoleJwt": 0,
+        "serviceWords": 0,
+        "anonPresent": true,
+        "urlPresent": true,
+        "bytes": 778343
+      }
+    },
+    "deployedQa": {
+      "state": "VERIFIED",
+      "origin": "https://era-clash-basketball-git-phase-9b1a-supabase-l-f071d0-era-clash.vercel.app"
+    }
+  },
+  "notCertified": [
+    {
+      "item": "signed-in header and account menu, a signed-in Chaos Clash save, authoritative cloud persistence, the guest-result claim completing, My EraClash with real rows, cross-device persistence in isolated contexts, and sign-out then re-sign-in",
+      "reason": "Each needs a signed-in session inside the QA browser. A session lives in its own browser's storage, so the owner's cannot be borrowed.",
+      "whyNoSyntheticSession": [
+        "the provider's email rate limit refuses a sign-in link to a QA address, and the built-in mail service caps sends per hour",
+        "anonymous sign-ins are disabled on the project (anonymous_provider_disabled)",
+        "writing a synthetic user into auth.users is denied by this session's permissions"
+      ],
+      "safeFallback": "Guest play is never blocked, and every gate that asks for an account is certified live to ask honestly and invent no identity. The database half of isolation and persistence is certified live against the owner's real account."
+    }
+  ],
+  "defectsFoundAndFixedThisPhase": [
+    "exchangeCodeForSession was handed a URL where its parameter is an auth code — no click could ever have completed a sign-in",
+    "the one-time code field stripped every non-digit, so the only proof the default email template sends could not be entered",
+    "a pkce_-prefixed token was redeemed as a raw token, which hashes it twice and always fails",
+    "the address-bar scrub erased the SDK's sb_flow_id before the exchange read it, so the older of two links presented the wrong verifier",
+    "PKCE bound an emailed link to the browser that requested it, which a mail app almost never is — the email flow is now implicit",
+    "the Dream Matchup route-level gate was rendered without onUseAccount, so its own call to action was inert while the header's worked",
+    "the account dialog referenced a symbol it never imported, which built cleanly because a bundler cannot see an identifier only reached on click"
+  ],
+  "ledger": {
+    "signInBlocker": "FIXED_AND_VERIFIED",
+    "items": [
+      {
+        "item": "signed-in header and account menu",
+        "state": "EXTERNAL_CONFIGURATION_PENDING",
+        "blocker": "Certifying the signed-in UI needs a session inside the QA browser. A session lives in its own browser's storage, so the owner's session cannot be borrowed, and no synthetic session can be created: the email rate limit refuses a link to a QA address, anonymous sign-ins are disabled on the project, and writing a synthetic user into auth.users is denied by this session's permissions.",
+        "safeFallback": "A guest is never blocked. The lobby, My EraClash and the Dream Matchup gate all certify live that they ask for an account and invent no identity."
+      },
+      {
+        "item": "cross-device sync",
+        "state": "EXTERNAL_CONFIGURATION_PENDING",
+        "blocker": "Same dependency: two isolated browser contexts each need their own real session.",
+        "safeFallback": "The database half is certified live. Career data is readable only by its owner, career rows cannot be forged, and an unauthenticated caller is refused at the table."
+      }
+    ]
+  },
+  "artifacts": [
+    "data/validation/9b1a/implicit-flow-live-qa.json",
+    "data/validation/9b1a/link-redemption-live-qa.json",
+    "data/validation/9b1a/live-cross-account-isolation.json",
+    "data/validation/9b1a/live-email-auth-qa.json",
+    "data/validation/9b1a/live-guest-security-qa.json",
+    "data/validation/9b1a/live-migration-qa.json",
+    "data/validation/9b1a/live-rls-qa.json",
+    "data/validation/9b1a/live-security-advisors.json",
+    "data/validation/9b1a/phase9b1-ledger-reconciliation.json",
+    "data/validation/9b1a/phase9b1a-final-summary.json",
+    "data/validation/9b1a/phase9b1a-preflight.json",
+    "data/validation/9b1a/stable-alias-live-qa.json",
+    "data/validation/9b1a/supabase-preview-project.json",
+    "data/validation/9b1a/test-user-cleanup.json"
+  ],
+  "secrets": "No credential appears in any artifact. Bundle audits record counts and shapes; probes record booleans, endpoint paths and refusal messages. Synthetic values used in probes are unsigned and generated by the scripts themselves."
+}

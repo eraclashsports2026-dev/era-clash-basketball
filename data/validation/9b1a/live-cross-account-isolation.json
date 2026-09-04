@@ -1,0 +1,51 @@
+{
+  "phase": "9B.1A",
+  "artifact": "live-cross-account-isolation",
+  "generatedAt": "2026-09-04T23:11:22.362336+00:00",
+  "project": "lfybiphmqkiecfrqsfzt",
+  "method": "Probes run inside a transaction against the owner's real Postgres, each one setting `role` and `request.jwt.claims` to impersonate a specific caller, which is exactly what PostgREST does for a real bearer token. This exercises the policies themselves rather than a client that might simply be asking politely. The owner's real account is the subject: this is not a synthetic-only result.",
+  "callers": {
+    "owner": "the real account created by the owner's own sign-up, profile row created by the handle_new_user trigger",
+    "stranger": "a signed-in caller whose uid matches no row in any table",
+    "anon": "the unauthenticated role the browser uses before signing in"
+  },
+  "probes": [
+    {
+      "probe": "stranger reads profiles",
+      "rowsVisible": 0
+    },
+    {
+      "probe": "stranger reads saved_clashes",
+      "rowsVisible": 0
+    },
+    {
+      "probe": "stranger reads result_claims",
+      "rowsVisible": 0
+    },
+    {
+      "probe": "owner reads own profile",
+      "rowsVisible": 1
+    },
+    {
+      "probe": "anon reads profiles",
+      "result": "refused: permission denied for table profiles"
+    },
+    {
+      "probe": "stranger forges a saved clash owned by the owner",
+      "result": "refused: permission denied for table saved_clashes"
+    },
+    {
+      "probe": "stranger rewrites the owner's display name",
+      "rowsChanged": 0
+    }
+  ],
+  "verdict": {
+    "crossAccountReads": 0,
+    "crossAccountWrites": 0,
+    "anonymousProtectedReads": 0,
+    "forgedCareerWrites": 0,
+    "ownerSeesOwnRow": true,
+    "signUpTriggerCreatedTheProfile": true
+  },
+  "note": "No email address, credential or personal field is recorded here. Counts and refusal messages only."
+}

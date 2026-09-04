@@ -1,10 +1,10 @@
 {
   "phase": "9B.1A",
   "artifact": "live-guest-security-qa",
-  "generatedAt": "2026-09-04T23:07:27.263Z",
+  "generatedAt": "2026-09-04T23:13:24.595Z",
   "origin": "https://era-clash-basketball-git-phase-9b1a-supabase-l-f071d0-era-clash.vercel.app",
-  "commit": "93bc996",
-  "scope": "Everything certifiable without a signed-in session, run against the durable branch origin rather than a commit-specific URL.",
+  "commit": "8e7bc05",
+  "scope": "Everything certifiable against a real deployment without a signed-in session, run against the durable branch origin rather than a commit-specific URL.",
   "bundleAudit": {
     "assets": 1,
     "secretShaped": 0,
@@ -12,7 +12,7 @@
     "serviceWords": 0,
     "anonPresent": true,
     "urlPresent": true,
-    "bytes": 778249
+    "bytes": 778343
   },
   "checks": [
     {
@@ -56,7 +56,12 @@
       "detail": "HTTP 401"
     },
     {
-      "name": "My EraClash requires an account and shows no fabricated career",
+      "name": "a cloud save with a forged bearer token is refused",
+      "pass": true,
+      "detail": "HTTP 401"
+    },
+    {
+      "name": "My EraClash requires an account and invents no career",
       "pass": true,
       "detail": ""
     },
@@ -96,23 +101,23 @@
       "detail": ""
     },
     {
-      "name": "the gate's call to action opens the account dialog",
-      "pass": false,
+      "name": "the gate's OWN call to action opens the account dialog",
+      "pass": true,
       "detail": ""
     },
     {
-      "name": "authenticating never navigates away from the mode you were entering",
+      "name": "authenticating never navigates away from the mode being entered",
       "pass": true,
       "detail": "<origin>/play/dream"
     },
     {
-      "name": "dismissing the dialog leaves you on that same route, not the lobby",
+      "name": "dismissing the dialog leaves you on that route, not the lobby",
       "pass": true,
       "detail": "<origin>/play/dream"
     }
   ],
-  "passed": 18,
-  "total": 19,
-  "allPassed": false,
+  "passed": 20,
+  "total": 20,
+  "allPassed": true,
   "note": "No credential appears in this artifact: the bundle audit records counts and shapes only."
 }
