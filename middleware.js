@@ -144,5 +144,8 @@ export const config = {
     "/play", "/play/:path*",
     // Phase 9A.1: the owner-only theme lab.
     "/dev/:path*",
+    // Phase 9B.1: the account callback and the career page are client-rendered
+    // paths served by the SPA fallback, so they need the same gate.
+    "/auth/:path*", "/my-eraclash",
   ],
 };

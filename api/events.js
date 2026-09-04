@@ -49,6 +49,14 @@ const ALLOWED = new Set([
   "time_to_mode_selection_recorded",
   "chaos_roll_completed", "chaos_era_revealed", "chaos_coach_selected", "chaos_game_completed",
   "result_tab_opened", "new_clash_started",
+  // Phase 9B.1 real accounts and cloud career. Mirrored by ACTIVATION_EVENTS in
+  // src/activation.js; a contract test pins the two lists together. No event
+  // here carries an email, a name, a token, a cookie or a free-form string.
+  "account_signup_started", "account_signup_completed",
+  "account_signin_started", "account_signin_completed", "account_signout_completed",
+  "guest_result_claim_started", "guest_result_claim_completed", "guest_history_imported",
+  "cloud_result_save_started", "cloud_result_save_completed", "cloud_result_save_failed",
+  "my_eraclash_viewed", "recent_clash_expanded", "saved_report_opened", "display_name_updated",
 ]);
 export const EVENTS_ALLOWLIST = ALLOWED;
 
