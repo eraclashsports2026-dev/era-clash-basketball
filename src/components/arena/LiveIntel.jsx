@@ -13,7 +13,7 @@
 import { useState } from "react";
 import { membershipHref } from "../../navigation.js";
 import { track } from "../../analytics.js";
-import { GUIDED_EVENTS } from "../../chaos/guidedState.js";
+import { GUIDED_EVENTS } from "./guidedState.js";
 
 const PRESSURE_TONE = {
   LOW: "var(--ec-a-text-secondary)",
@@ -82,7 +82,7 @@ export default function LiveIntel({ run, onEraChange, onMembership, compact = fa
           </div>
 
           <div style={{ display: "grid", gap: 2, marginTop: 8 }}>
-            {(eraCtx?.highlights || []).filter(Boolean).map((h, i) => (
+            {(panel === "era" ? [] : (eraCtx?.highlights || [])).filter(Boolean).map((h, i) => (
               <div key={h} className={i === 0 ? "ec-intel-value" : "ec-intel-value ec-intel-value--sub"}
                 style={i === 0 ? { color: "var(--ec-a-coach)" } : undefined}>{h}</div>
             ))}

@@ -33,7 +33,7 @@ const asGuest = async (page) => {
 const roll = async (page, label) => { await page.getByRole("button", { name: label }).click(); };
 
 /** Continue from a board that already has Roll 1 on it, and stop at READY. */
-// Phase 9B.3 guided flow: the words come from src/chaos/guidedState.js, and the
+// Phase 9B.3 guided flow: the words come from src/components/arena/guidedState.js, and the
 // era reveal is a dedicated state between Roll 2 and the final roll.
 const adaptToEra = async (page) => {
   await expect(page.locator(".ec-era-reveal-id")).toHaveText(/^\d{4}s$/, { timeout: 20_000 });
@@ -314,7 +314,7 @@ test("a finished game offers a new clash on the board, not only in the result", 
   await page.goto("/play/chaos");
   await toReady(page);
   await page.getByRole("button", { name: /RUN CLASH/ }).click();
-  await expect(page.locator(".ec-ta-result-hero").getByText("FINAL SCORE", { exact: true }).first())
+  await expect(page.locator(".ec-ta-score"))
     .toBeVisible({ timeout: 45_000 });
 
   const onBoard = page.locator(".ec-ta-stage .ec-ta-stage-actions")
@@ -324,7 +324,7 @@ test("a finished game offers a new clash on the board, not only in the result", 
   const dialog = page.getByRole("dialog", { name: /Start a new Clash/ });
   await expect(dialog.getByText(/stays in the Result Dock/)).toBeVisible();
   await dialog.getByRole("button", { name: /No, stay on this result/ }).click();
-  await expect(page.locator(".ec-ta-result-hero").getByText("FINAL SCORE", { exact: true }).first()).toBeVisible();
+  await expect(page.locator(".ec-ta-score")).toBeVisible();
 
   await onBoard.click();
   await page.getByRole("dialog", { name: /Start a new Clash/ })
@@ -342,7 +342,7 @@ test("the result lands in the dock, the report opens over the page, and a new cl
   await page.getByRole("button", { name: /RUN CLASH/ }).click();
 
   const hero = page.locator(".ec-ta-result-hero");
-  await expect(hero.getByText("FINAL SCORE", { exact: true }).first()).toBeVisible({ timeout: 45_000 });
+  await expect(page.locator(".ec-ta-score")).toBeVisible({ timeout: 45_000 });
   await expect(hero.getByText("THIS CLASH").first()).toBeVisible();
   // Phase 9B.3: no rail competes with the result; the result IS the content.
   await expect(page.locator(".ec-ta-rail")).toHaveCount(0);
@@ -350,7 +350,7 @@ test("the result lands in the dock, the report opens over the page, and a new cl
     await expect(page.getByRole("tab", { name: t }).first()).toBeVisible();
   }
   // The MVP's line is a formatted stat line, not an object.
-  await expect(hero.getByText(/\d+ PTS/).first()).toBeVisible();
+  await expect(page.locator(".ec-ta-score-mvp")).toContainText(/\d+ PTS/);
   // The matchup they built is still on screen.
   await expect(page.getByText("THE MATCHUP YOU BUILT").first()).toBeVisible();
 
@@ -410,7 +410,7 @@ test("a run resumed after a reload still runs", async ({ page }) => {
   await page.reload();
   await expect(page.getByRole("button", { name: /RUN CLASH/ })).toBeVisible({ timeout: 20_000 });
   await page.getByRole("button", { name: /RUN CLASH/ }).click();
-  await expect(page.getByText("FINAL SCORE", { exact: true }).first()).toBeVisible({ timeout: 45_000 });
+  await expect(page.locator(".ec-ta-score")).toBeVisible({ timeout: 45_000 });
 });
 
 test("Run it back replays the SAME matchup and actually completes", async ({ page }) => {
@@ -419,7 +419,7 @@ test("Run it back replays the SAME matchup and actually completes", async ({ pag
   await page.goto("/play/chaos");
   await toReady(page);
   await page.getByRole("button", { name: /RUN CLASH/ }).click();
-  await expect(page.getByText("FINAL SCORE", { exact: true }).first()).toBeVisible({ timeout: 45_000 });
+  await expect(page.locator(".ec-ta-score")).toBeVisible({ timeout: 45_000 });
 
   // The rematch must send a mode the server accepts, with the stored coaches
   // and era — an earlier build sent mode "chaos" and every rematch failed.
@@ -433,7 +433,7 @@ test("Run it back replays the SAME matchup and actually completes", async ({ pag
     }
   });
   await page.getByRole("button", { name: "Run it back" }).click();
-  await expect(page.getByText("FINAL SCORE", { exact: true }).first()).toBeVisible({ timeout: 45_000 });
+  await expect(page.locator(".ec-ta-score")).toBeVisible({ timeout: 45_000 });
   expect(body).toBeTruthy();
   expect(body.mode).toBe("single");
   expect(body.coachGoldId).toBeTruthy();
@@ -488,22 +488,24 @@ test("mobile stacks, leads with the result, and never overflows", async ({ page 
 
   await toReadyFromRoll1(page);
   await page.getByRole("button", { name: /RUN CLASH/ }).click();
-  await expect(page.getByText("FINAL SCORE", { exact: true }).first()).toBeVisible({ timeout: 45_000 });
+  await expect(page.locator(".ec-ta-score")).toBeVisible({ timeout: 45_000 });
   // Phase 9B.3: in the Result state the contextual rail is gone and THIS game
   // is the hero of the main column, above the matchup that produced it.
   const finished = await page.evaluate(() => {
     const hero = document.querySelector(".ec-ta-result-hero");
     const stage = document.querySelector(".ec-ta-stage");
+    const score = document.querySelector(".ec-ta-score");
     return {
       heroPresent: !!hero,
-      heroAboveStage: !!hero && hero.getBoundingClientRect().top < stage.getBoundingClientRect().top,
-      heroTop: hero ? Math.round(hero.getBoundingClientRect().top + window.scrollY) : null,
+      // The score leads: it sits in the stage head, above the tabs and actions.
+      scoreAboveHero: !!hero && !!score && score.getBoundingClientRect().top < hero.getBoundingClientRect().top,
+      scoreTop: score ? Math.round(score.getBoundingClientRect().top + window.scrollY) : null,
       railPresent: !!document.querySelector(".ec-ta-rail"),
       overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
     };
   });
   expect(finished.heroPresent).toBe(true);
-  expect(finished.heroAboveStage).toBe(true);
+  expect(finished.scoreAboveHero).toBe(true);
   expect(finished.railPresent).toBe(false);
   expect(finished.overflow).toBe(0);
 

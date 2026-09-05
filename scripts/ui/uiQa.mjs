@@ -196,7 +196,7 @@ if (MODE === "arena") {
   // words changed deliberately with the guided flow (ROLL 1 → ROLL, LOCK &
   // ROLL 2 → ROLL 2, HIRE THIS STAFF → CONTINUE WITH COACH, RUN SIM → RUN
   // CLASH) and an ADAPT TO ERA action was added for the dedicated reveal.
-  const guided = read("src/chaos/guidedState.js");
+  const guided = read("src/components/arena/guidedState.js");
   ok("one CTA carries whatever the run is waiting on",
     ["\"ROLL\"", "ROLL 2", "FINAL ROLL", "ADAPT TO ERA", "CONTINUE WITH COACH", "RUN CLASH"].every((l) => guided.includes(l))
     && /primaryAction\(state/.test(stage) && !/HIRE THIS STAFF|RUN SIM|LOCK & ROLL 2/.test(stage));

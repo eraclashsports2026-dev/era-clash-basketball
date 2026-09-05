@@ -26,7 +26,7 @@ import UtilityBar from "./UtilityBar.jsx";
 import {
   GUIDED, resolveGuidedState, eraAcknowledged, acknowledgeEra, contextualPanel, showsPriorResult,
   GUIDED_EVENTS, stateViewEvent,
-} from "../../chaos/guidedState.js";
+} from "./guidedState.js";
 import { track } from "../../analytics.js";
 
 const useCompact = (max = 560) => {
@@ -127,6 +127,17 @@ export default function TimeArena({
   return (
     <div className="ec-ta" data-guided-state={state}>
       <div className="ec-ta-main">
+        <ChaosStage
+          run={chaosRun} tier={tier} challengeId={challengeId} resume={resume}
+          onRunChange={onRunChange} onReady={onReady} onGated={onGated}
+          onRunClash={onRunClash} phase={phase} busy={busy} error={error} result={result}
+          onReset={onReset}
+          guidedState={state} onAcknowledgeEra={acknowledge} onGuide={onGuide}
+          mobileTeam={mobileTeam} onMobileTeam={setMobileTeam} />
+
+        {/* The Result: the score leads in the stage head above the matchup that
+            produced it; the story, box score, coaching, analysis and the
+            actions follow here, framed to the board's width. */}
         {state === GUIDED.RESULT && (
           <div className="ec-ta-result-hero">
             <ResultDock variant="hero"
@@ -136,14 +147,6 @@ export default function TimeArena({
               onNewClash={onNewClash} onChallenge={onChallenge} busy={busy} />
           </div>
         )}
-
-        <ChaosStage
-          run={chaosRun} tier={tier} challengeId={challengeId} resume={resume}
-          onRunChange={onRunChange} onReady={onReady} onGated={onGated}
-          onRunClash={onRunClash} phase={phase} busy={busy} error={error}
-          onReset={onReset}
-          guidedState={state} onAcknowledgeEra={acknowledge} onGuide={onGuide}
-          mobileTeam={mobileTeam} onMobileTeam={setMobileTeam} />
 
         <UtilityBar eraState={chaosRun?.eraState} compact={compact} showEra={state !== GUIDED.EMPTY}
           onGuide={onGuide} onSettings={onSettings} />

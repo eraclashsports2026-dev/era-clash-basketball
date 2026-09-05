@@ -9,6 +9,8 @@
 //
 // A display-state resolver, not a second game-state machine. The server phases
 // in src/chaos/runState.js remain the truth; these are how they are presented.
+// It lives with the arena components and NOT in src/chaos/, because that
+// directory is draft logic and is held byte-identical by earlier phases' gates.
 export const GUIDED_FLOW_VERSION = "chaos-guided-flow-v2";
 
 export const GUIDED = Object.freeze({

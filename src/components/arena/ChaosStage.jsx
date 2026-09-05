@@ -29,7 +29,9 @@ import {
 import {
   GUIDED, primaryAction, rosterCompressed, rosterInteractive, showsCoachOffers,
   holdAnnouncement, coachAnnouncement, stateAnnouncement, GUIDED_EVENTS,
-} from "../../chaos/guidedState.js";
+} from "./guidedState.js";
+import { COACHES } from "../../v3/coaches.js";
+import { statLine } from "./ResultDock.jsx";
 import { recordFirstRoll } from "../../activation.js";
 import { track } from "../../analytics.js";
 
@@ -77,15 +79,20 @@ function Bench({ team, roster, heldSlots, keptSlots = [], interactive, locked, b
   );
 }
 
-/** The compressed staff line under a five, from the run's own offers. */
-const StaffLine = ({ team, run }) => {
-  const id = run?.selectedCoaches?.[team];
-  const offers = team === "gold" ? (run?.coachDraft?.offers || []) : [];
-  const hired = offers.find((o) => o.coachId === id);
-  const blueName = run?.cpuCoachCommit?.name || run?.coachDraft?.opponent?.find?.((o) => o.coachId === id)?.name;
-  const name = team === "gold" ? hired?.name : (blueName || null);
-  const role = team === "gold" ? (hired?.roleLabel || hired?.role) : null;
-  if (!name && !role) return null;
+/**
+ * The staff under a five, once staffs are DECIDED. Gold's comes from the offer
+ * that was hired; Blue's is the coach id the server publishes at READY, named
+ * from the coach roster the client already holds; after the game both come
+ * from the recorded coaching. Nothing is shown before a decision exists —
+ * an earlier version matched Blue's first offer against an undefined pick.
+ */
+const coachName = (id) => (id ? COACHES.find((c) => c.id === id)?.name || null : null);
+const StaffLine = ({ team, run, result }) => {
+  const id = run?.selectedCoaches?.[team] || null;
+  const offer = team === "gold" ? (run?.coachDraft?.offers || []).find((o) => o.coachId === id) : null;
+  const name = result?.sim?.v3?.coaching?.[team]?.coach || offer?.name || coachName(id);
+  const role = offer?.roleLabel || offer?.role || null;
+  if (!name) return null;
   return (
     <div className={`ec-ta-staff ec-ta-staff--${team}`}>
       <span className="ec-ta-staff-k">COACH</span>
@@ -97,7 +104,7 @@ const StaffLine = ({ team, run }) => {
 
 export default function ChaosStage({
   run, tier = "GUEST", challengeId, onRunChange, onReady, onGated, onRunClash, onReset,
-  phase, busy = false, error = null, resume = true,
+  phase, busy = false, error = null, resume = true, result = null,
   guidedState = GUIDED.EMPTY, onAcknowledgeEra, onGuide,
   mobileTeam = "gold", onMobileTeam,
 }) {
@@ -261,6 +268,21 @@ export default function ChaosStage({
           <h1 className="ec-ta-title-main">{title}</h1>
           <div className="ec-ta-title-sub">{subtitle}</div>
           {state !== GUIDED.RESULT && <RollStepper run={run} />}
+          {state === GUIDED.RESULT && !simulating && result?.sim?.finalScore && (() => {
+            const g = result.sim.finalScore.gold ?? 0, b = result.sim.finalScore.blue ?? 0;
+            const line = statLine(result.sim.mvpLine);
+            return (
+              <div className="ec-ta-score" data-winner={g > b ? "gold" : "blue"}>
+                <div className="ec-ta-score-row">
+                  <span className="ec-ta-score-n ec-ta-score-n--gold">{g}</span>
+                  <span className="ec-ta-score-final">FINAL</span>
+                  <span className="ec-ta-score-n ec-ta-score-n--blue">{b}</span>
+                </div>
+                <div className="ec-ta-score-winner">{g > b ? "TEAM GOLD WINS" : "TEAM BLUE WINS"}</div>
+                {result.sim.mvp && <div className="ec-ta-score-mvp">MVP · {result.sim.mvp}{line ? ` · ${line}` : ""}</div>}
+              </div>
+            );
+          })()}
           {(state === GUIDED.READY || state === GUIDED.RESULT || state === GUIDED.COACH_SELECT) && eraId && (
             <div className="ec-ta-era-chip" aria-label={`Era ${eraId}${run?.eraState?.custom ? ", custom" : ""}`}>
               <span aria-hidden="true">🗓</span> ERA: {eraId}{run?.eraState?.custom ? " · CUSTOM" : ""}
@@ -294,10 +316,10 @@ export default function ChaosStage({
           interactive={false} locked={!interactive && !!run} busy={spinning} />
       </div>
 
-      {compressed && (
+      {(state === GUIDED.READY || (state === GUIDED.RESULT && !simulating)) && (
         <div className="ec-ta-staff-row">
-          <StaffLine team="gold" run={run} />
-          <StaffLine team="blue" run={run} />
+          <StaffLine team="gold" run={run} result={result} />
+          <StaffLine team="blue" run={run} result={result} />
         </div>
       )}
 
@@ -342,12 +364,6 @@ export default function ChaosStage({
                 {state === GUIDED.READY && <button onClick={makeChallenge} style={quiet}>CHALLENGE THIS CHAOS</button>}
                 <button onClick={() => setConfirmReset(true)} style={quiet}
                   aria-label="Reset this Clash and deal a new one">RESET</button>
-              </div>
-            ) : state === GUIDED.EMPTY ? (
-              <div className="ec-ta-stage-actions">
-                <button onClick={() => onGuide?.("play")} style={quiet} aria-label="How Chaos Clash works">
-                  <span aria-hidden="true">?</span> HOW IT WORKS
-                </button>
               </div>
             ) : <span aria-hidden="true" />}
           </div>

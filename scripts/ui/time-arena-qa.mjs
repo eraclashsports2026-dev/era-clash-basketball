@@ -59,7 +59,7 @@ const states = async (page) => {
   // Every wait below is on something a PLAYER can see. The roll number is also
   // announced in a screen-reader live region, and waiting on that invisible
   // copy waits forever.
-  // Phase 9B.3 guided flow: the words are the resolver's (src/chaos/guidedState.js)
+  // Phase 9B.3 guided flow: the words are the resolver's (src/components/arena/guidedState.js)
   // and the era reveal is a state of its own between Roll 2 and the final roll.
   await click(page, /^ROLL$/);
   await page.locator(".ec-ta-roster .ec-pc").nth(9).waitFor({ timeout: 45_000 });
@@ -83,7 +83,7 @@ const states = async (page) => {
   await page.waitForTimeout(600);
   await shot("7-simulating");
 
-  await page.getByText("FINAL SCORE", { exact: true }).first().waitFor({ timeout: 60_000 });
+  await page.locator(".ec-ta-score").waitFor({ timeout: 60_000 });
   await shot("8-result-dock");
 
   await click(page, /VIEW FULL REPORT/);

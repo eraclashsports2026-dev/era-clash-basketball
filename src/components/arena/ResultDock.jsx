@@ -161,6 +161,9 @@ export default function ResultDock({
     const winner = gold > blue ? "Gold" : "Blue";
     return (
       <DockShell variant={variant} label={previous ? agoLabel(priorAt) : "THIS CLASH"}>
+        {/* In the hero variant THIS clash's score already leads the stage head
+            (Phase 9B.3); a previous clash in the sheet keeps its own. */}
+        {!(variant === "hero" && !previous) && (
         <Panel style={{ textAlign: "center", padding: "11px 12px", position: "relative", overflow: "hidden", borderColor: won ? "var(--ec-a-gold-line)" : "var(--ec-a-blue-line)" }}>
           {/* Approved fracture placement 8: the dock's state transition to a result. */}
           <EraFractureActiveEdge on={!previous} />
@@ -198,6 +201,7 @@ export default function ResultDock({
             </div>
           )}
         </Panel>
+        )}
 
         <div role="tablist" aria-label="Result sections" style={{ display: "grid", gridTemplateColumns: "repeat(4, minmax(0,1fr))", gap: 4 }}>
           {TABS.map(([id, label]) => (

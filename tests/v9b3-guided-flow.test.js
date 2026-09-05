@@ -10,7 +10,7 @@ import {
   showsCoachOffers, showsResultHero, rosterCompressed, rosterInteractive, showsPriorResult,
   holdAnnouncement, eraAnnouncement, coachAnnouncement, resultAnnouncement, stateAnnouncement,
   GUIDED_EVENTS, stateViewEvent,
-} from "../src/chaos/guidedState.js";
+} from "../src/components/arena/guidedState.js";
 
 const run = (over = {}) => ({
   chaosRunId: "run-1", phase: "ROLL_1_REVEALED", roll: 1, totalRolls: 3, status: "ACTIVE",

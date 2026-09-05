@@ -8,23 +8,38 @@
 // so this panel wears that hook and no new fracture is introduced.
 import { EraFractureDivider } from "../brand/EraFracture.jsx";
 
-const clean = (s) => String(s || "").replace(/\.$/, "");
+const clean = (s) => String(s || "").replace(/\.$/, "").trim();
 
-/** The three rule cards, from the run's real era context. Never a fixture. */
+/**
+ * A fact, read as a headline: its first clause, capped at a word boundary. The
+ * whole fact stays on the card as its title and for screen readers, so nothing
+ * is lost — only shortened. Never a fixture: every string is the run's own.
+ */
+export const headline = (fact, max = 34) => {
+  const first = clean(fact).split(/\s*[;:(—–]\s*/)[0].trim();
+  if (first.length <= max) return first;
+  const cut = first.slice(0, max).replace(/\s+\S*$/, "");
+  return `${cut}…`;
+};
+
+/** The three rule cards, from the run's real era context: highlights first. */
 export const eraRuleCards = (run) => {
   const ctx = run?.eraContext || {};
-  const facts = [...(ctx.ruleFacts || [])].filter(Boolean).map(clean);
-  // Pace and rebounding are real reads too; they fill in only if fewer than
-  // three rule facts exist, so the panel never invents a rule.
-  for (const extra of [ctx.pace, ctx.rebounding]) if (facts.length < 3 && extra) facts.push(clean(extra));
-  return facts.slice(0, 3);
+  const seen = new Set();
+  const out = [];
+  for (const f of [...(ctx.highlights || []), ...(ctx.ruleFacts || []), ctx.pace, ctx.rebounding]) {
+    const full = clean(f);
+    if (!full || seen.has(full)) continue;
+    seen.add(full);
+    out.push({ full, short: headline(full) });
+    if (out.length === 3) break;
+  }
+  return out;
 };
 
 export default function EraRevealPanel({ run, onContinue, onRules, busy = false }) {
   const era = run?.eraState?.eraStyleId;
   if (!era) return null;
-  const ctx = run?.eraContext || {};
-  const tagline = ctx.highlights?.[0] || null;
   const cards = eraRuleCards(run);
   const custom = !!run?.eraState?.custom;
 
@@ -32,11 +47,15 @@ export default function EraRevealPanel({ run, onContinue, onRules, busy = false 
     <section className="ec-era-reveal ec-intel-era" data-revealed="true" aria-labelledby="ec-era-reveal-title">
       <div className="ec-era-reveal-kicker">ERA REVEALED</div>
       <h2 id="ec-era-reveal-title" className="ec-era-reveal-id">{era}</h2>
-      {tagline && <div className="ec-era-reveal-tag">{tagline}</div>}
       <EraFractureDivider width="56%" className="ec-era-reveal-rule" />
       {cards.length > 0 && (
         <ul className="ec-era-reveal-cards" aria-label={`${era} rules`}>
-          {cards.map((f) => <li key={f} className="ec-era-reveal-card">{f}</li>)}
+          {cards.map((c) => (
+            <li key={c.full} className="ec-era-reveal-card" title={c.full}>
+              <span aria-hidden="true">{c.short}</span>
+              <span className="sr-only">{c.full}</span>
+            </li>
+          ))}
         </ul>
       )}
       <p className="ec-era-reveal-body">
