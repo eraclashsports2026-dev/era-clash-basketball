@@ -65,7 +65,12 @@ const cloud = deep?.cloudAccounts ?? {};
 ok("cloud accounts report configuration as booleans only", Object.values(cloud).every((v) => typeof v === "boolean"), JSON.stringify(cloud));
 ok("the provider still accepts the server's own credential",
   cloud.serverCredentialAccepted === true,
-  cloud.serverCredentialAccepted === false ? "REJECTED — the deployment's server credential is absent, wrong, or was rotated without the deployment being updated" : "");
+  cloud.serverCredentialAccepted === false
+    ? "REJECTED — the deployment's server credential is absent, wrong, or was rotated without the deployment being updated. "
+      + "If it was just changed: an environment variable is bound at BUILD time, so the value only takes effect on the next "
+      + "deployment. Vercel also skips a SHA it has already built, so a redeploy needs either the dashboard's Redeploy button "
+      + "or a new commit. Check the variable is set for the Preview environment too, not Production alone."
+    : "");
 ok("the deep probe returns no key material", !/sb_secret|sb_publishable|eyJ/.test(deepRaw));
 
 const noToken = await ctx.request.post(`${BASE}/api/profile`, { data: { action: "cloud-save", clash: { id: "x" } }, failOnStatusCode: false });
