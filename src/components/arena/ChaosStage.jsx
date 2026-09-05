@@ -224,6 +224,16 @@ export default function ChaosStage({
   };
 
   const spinning = working || busy;
+  // Coach Chaos: the continuation is disabled until an offer is picked, and a
+  // disabled control cannot hold focus — so focus goes to the decision itself,
+  // the first offer's Select, once the offers have finished dealing.
+  useEffect(() => {
+    if (guidedState !== GUIDED.COACH_SELECT || spinning || picked) return;
+    const active = document.activeElement;
+    const inStage = active && active !== document.body && active.closest?.(".ec-ta-stage") && !active.disabled;
+    if (inStage) return;
+    document.querySelector(".ec-ta-stage .ec-coach-action:not([disabled])")?.focus?.({ preventScroll: true });
+  }, [guidedState, spinning, picked]);
   const state = guidedState;
   const offers = run?.coachDraft?.offers || [];
   const interactive = rosterInteractive(state) && !!run;
@@ -268,6 +278,21 @@ export default function ChaosStage({
           <h1 className="ec-ta-title-main">{title}</h1>
           <div className="ec-ta-title-sub">{subtitle}</div>
           {state !== GUIDED.RESULT && <RollStepper run={run} />}
+          {/* While the game runs, the score's space is reserved — same box, no
+              numbers — so the board does not jump when the final lands in it.
+              The title above and the live region carry the meaning; this is
+              decoration until the result exists. */}
+          {state === GUIDED.RESULT && simulating && (
+            <div className="ec-ta-score-pending" aria-hidden="true">
+              <div className="ec-ta-score-row">
+                <span className="ec-ta-score-n ec-ta-score-n--gold">–</span>
+                <span className="ec-ta-score-final">FINAL</span>
+                <span className="ec-ta-score-n ec-ta-score-n--blue">–</span>
+              </div>
+              <div className="ec-ta-score-winner">LET HISTORY DECIDE</div>
+              <div className="ec-ta-score-mvp">SIMULATING…</div>
+            </div>
+          )}
           {state === GUIDED.RESULT && !simulating && result?.sim?.finalScore && (() => {
             const g = result.sim.finalScore.gold ?? 0, b = result.sim.finalScore.blue ?? 0;
             const line = statLine(result.sim.mvpLine);
@@ -316,7 +341,9 @@ export default function ChaosStage({
           interactive={false} locked={!interactive && !!run} busy={spinning} />
       </div>
 
-      {(state === GUIDED.READY || (state === GUIDED.RESULT && !simulating)) && (
+      {/* Both staffs are known from READY on, so the row stays through the
+          simulation: the board under the reserved score does not move. */}
+      {(state === GUIDED.READY || state === GUIDED.RESULT) && (
         <div className="ec-ta-staff-row">
           <StaffLine team="gold" run={run} result={result} />
           <StaffLine team="blue" run={run} result={result} />
@@ -385,10 +412,12 @@ export default function ChaosStage({
         </div>
       )}
 
-      {/* A finished game keeps its way out ON THE BOARD (the dock has one too). */}
-      {state === GUIDED.RESULT && !simulating && (
-        <div className="ec-ta-stage-actions">
-          <button onClick={() => setConfirmReset(true)} style={quiet} aria-label="Start a new Clash">NEW CLASH</button>
+      {/* A finished game keeps its way out ON THE BOARD (the dock has one too).
+          While the game runs the row's space is held, invisibly, so the result
+          below does not drop when NEW CLASH appears. */}
+      {state === GUIDED.RESULT && (
+        <div className="ec-ta-stage-actions" aria-hidden={simulating ? "true" : undefined} style={simulating ? { visibility: "hidden" } : undefined}>
+          <button onClick={() => setConfirmReset(true)} style={quiet} aria-label="Start a new Clash" tabIndex={simulating ? -1 : 0} disabled={simulating}>NEW CLASH</button>
         </div>
       )}
       {run && !cta && state !== GUIDED.RESULT && (

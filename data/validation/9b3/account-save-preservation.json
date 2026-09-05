@@ -1,0 +1,26 @@
+{
+  "artifact": "account-save-preservation",
+  "phase": "9B.3 — Chaos Clash Guided Flow V2",
+  "generatedAt": "2026-09-05T04:45:57.038Z",
+  "codeUntouched": {
+    "paths": [
+      "src/accounts",
+      "api/_lib/cloudAccounts.js",
+      "api/account.js",
+      "src/components/career",
+      "src/components/account",
+      "supabase"
+    ],
+    "diffAgainstParent": "(empty)",
+    "untouched": true
+  },
+  "resultPlumbing": "TimeArena still receives result/priorResult/onRunItBack/onViewFullReport from App.jsx; the guided flow changed where the result renders, not what is saved. The RESULT state renders the same ResultDock (variant=hero) whose RUN IT BACK and FULL REPORT actions are wired to App.",
+  "gates": {
+    "cloudSave": "PASS cloud-save: 23/23 checks passed → data/validation/9b1/cloud-save-qa.json",
+    "savedRosters": "PASS 10/10 passed → data/validation/9b2/saved-roster-contract.json",
+    "runItBack": "PASS 9/9 passed → data/validation/9b2/run-it-back-qa.json",
+    "playwright": "78 passed (1.5m)"
+  },
+  "runItBackFromMyEraClash": "unchanged: My EraClash → Run It Back rebuilds the saved matchup and lands in the arena; the arena resolves READY/RESULT from the run it is given (documented in docs/ui/chaos-clash-state-machine.md).",
+  "passed": true
+}

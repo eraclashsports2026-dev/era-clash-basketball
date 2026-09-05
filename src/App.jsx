@@ -166,6 +166,18 @@ const initialRoute = () => {
   return p;
 };
 
+// ── The last finished Clash, kept in this browser (Phase 9B.3) ───────────────
+// Only ever shown under a LAST CLASH label. A reload after a result used to
+// lose the game entirely; now it is one tap away. Nothing here is authority:
+// the server's run and a signed-in account's history are.
+const PRIOR_RESULT_KEY = "ec_prior_result";
+const readPriorResult = () => {
+  try { const v = JSON.parse(localStorage.getItem(PRIOR_RESULT_KEY) || "null"); return v?.result?.sim ? v : null; } catch { return null; }
+};
+const writePriorResult = (p) => {
+  try { if (p?.result?.sim) localStorage.setItem(PRIOR_RESULT_KEY, JSON.stringify(p)); else localStorage.removeItem(PRIOR_RESULT_KEY); } catch { /* private mode or quota: the in-memory value still shows */ }
+};
+
 export default function App() {
   const [nav, setNav] = useState("Play");             // Play | Daily | Challenges | Board | Profile | Credits
   const [view, setView] = useState("builder");        // builder | simulating | postgame
@@ -196,8 +208,11 @@ export default function App() {
   const [chaosRun, setChaosRun] = useState(null);    // the live run, shared with the Result Dock
   const [fullReport, setFullReport] = useState(false);
   // The clash before this one, kept whole so its report still opens. It is only
-  // ever shown under a LAST CLASH label, never as the draft on screen.
-  const [prior, setPrior] = useState(null);
+  // ever shown under a LAST CLASH label, never as the draft on screen. It is
+  // kept in this browser too (9B.3), so a reload after a finished game leaves
+  // the result one tap away instead of gone.
+  const [prior, setPriorState] = useState(readPriorResult);
+  const setPrior = (p) => { setPriorState(p); writePriorResult(p); };
   const [reportBundle, setReportBundle] = useState(null);
   const [guide, setGuide] = useState(null);
   const resultAtRef = useRef(0);
@@ -1231,8 +1246,13 @@ export default function App() {
   };
 
   // The moment a result exists, so the dock can age it honestly rather than
-  // guessing when the game happened.
-  useEffect(() => { if (result?.sim) resultAtRef.current = Date.now(); }, [result]);
+  // guessing when the game happened. The finished game is written to this
+  // browser at the same moment, so a reload keeps it as the LAST CLASH.
+  useEffect(() => {
+    if (!result?.sim) return;
+    resultAtRef.current = Date.now();
+    writePriorResult({ result, team, narrative, at: resultAtRef.current });
+  }, [result]);
 
   const newChaosClash = () => {
     track("new_clash_started", { from: view === "postgame" ? "result" : "board" });

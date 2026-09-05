@@ -7,6 +7,12 @@
 // before the final decision, a player-centered story, and a box score whose
 // columns agree and whose values never wrap. They are asserted against the
 // TIME ARENA, because that is the surface people play.
+//
+// Phase 9B.3 (Chaos Clash Guided Flow V2) changed the PRESENTATION, not the
+// mechanics: the arena resolves one of six states, the era reveal is its own
+// state with one action (ADAPT TO ERA), Coach Chaos appears only once the five
+// is set, and the result leads with the score. The steps below drive that flow;
+// what they assert about the game is unchanged.
 import { test, expect } from "@playwright/test";
 
 /** Sign in with a free account so the guest run budget does not gate the flow. */
@@ -21,10 +27,19 @@ const withAccount = async (page) => {
 };
 
 /** Phase 8B: the board opens EMPTY and the first roster needs an explicit roll. */
+const stage = (page, st) => page.locator(`.ec-ta-stage[data-guided-state="${st}"]`);
 const rollOne = async (page) => {
-  await expect(page.getByText("THREE ROLLS AVAILABLE").first()).toBeVisible();
-  await page.getByRole("button", { name: /^ROLL 1/ }).click();
-  await expect(page.getByText(/ROLL 1 OF 3/).first()).toBeVisible({ timeout: 20_000 });
+  await expect(stage(page, "EMPTY")).toBeVisible();
+  await page.getByRole("button", { name: /^ROLL$/ }).click();
+  await expect(stage(page, "DRAFTING")).toBeVisible({ timeout: 20_000 });
+  await expect(page.locator('.ec-ta-team[data-team="gold"] .ec-pc').nth(4)).toBeVisible({ timeout: 20_000 });
+};
+/** 9B.3: the era is revealed WITH Roll 2 as its own state; one action continues. */
+const adaptToEra = async (page) => {
+  await expect(stage(page, "ERA_REVEAL")).toBeVisible({ timeout: 20_000 });
+  await expect(page.locator(".ec-era-reveal-id")).toHaveText(/^\d{4}s$/);
+  await page.getByRole("button", { name: /ADAPT TO ERA/ }).click();
+  await expect(stage(page, "DRAFTING")).toBeVisible({ timeout: 20_000 });
 };
 
 /**
@@ -32,13 +47,15 @@ const rollOne = async (page) => {
  * have rolls of their own: they ride the same three-roll sequence as the five.
  */
 const hireStaff = async (page) => {
-  await expect(page.getByText("CHOOSE YOUR STAFF").first()).toBeVisible({ timeout: 20_000 });
+  await expect(stage(page, "COACH_SELECT")).toBeVisible({ timeout: 20_000 });
+  await expect(page.getByText("COACH CHAOS").first()).toBeVisible();
   await page.getByRole("button", { name: /^Select / }).first().click();
-  await page.getByRole("button", { name: /HIRE THIS STAFF/ }).click();
+  await page.getByRole("button", { name: /CONTINUE WITH COACH/ }).click();
 };
 
+/** Roll 2 or the final roll, whichever the board offers; then let it land. */
 const lockHolds = async (page) => {
-  await page.getByRole("button", { name: /LOCK & ROLL 2|FINAL ROLL/ }).click();
+  await page.getByRole("button", { name: /^ROLL 2$|FINAL ROLL/ }).click();
   await page.waitForTimeout(1200);
 };
 
@@ -47,13 +64,16 @@ test("Chaos Clash is the default Play experience and opens with an empty board",
   await page.goto("/play/chaos");
   // Phase 8C: the Time Arena is the canonical Play layout.
   await expect(page.locator(".ec-ta")).toBeVisible();
-  await expect(page.getByRole("complementary", { name: "Live intel and result" })).toBeVisible();
+  await expect(page.getByRole("complementary", { name: "Live intel" })).toBeVisible();
   // No permanent mode shelf on the Play surface: the arena is for the Clash in
   // front of you, and the Play menu carries every mode.
   await expect(page.getByText("EXPLORE MORE MODES")).toHaveCount(0);
-  // Nothing is drawn until the user asks for it.
-  await expect(page.getByText("THREE ROLLS AVAILABLE").first()).toBeVisible();
-  await expect(page.getByText("ERA HIDDEN").first()).toBeVisible();
+  // Nothing is drawn until the user asks for it: one ROLL, no era, no coaches.
+  await expect(stage(page, "EMPTY")).toBeVisible();
+  await expect(page.getByRole("button", { name: /^ROLL$/ })).toBeVisible();
+  await expect(page.getByText(/ROLL 1 OF 3/).first()).toBeVisible();
+  await expect(page.locator(".ec-intel-era-id, .ec-era-reveal-id, .ec-ta-era-chip")).toHaveCount(0);
+  await expect(page.locator(".ec-coach-card")).toHaveCount(0);
   await expect(page.getByRole("button", { name: /^(Hold|Release) / })).toHaveCount(0);
   expect(await page.locator(".ec-pc-empty").count()).toBe(10);
   // There is no difficulty control anywhere in the Chaos flow.
@@ -79,11 +99,12 @@ test("every hold control stays live in both decision rounds", async ({ page }) =
     expect(await b.isDisabled()).toBe(false);
   }
 
-  await page.getByRole("button", { name: /LOCK & ROLL 2/ }).click();
-  await expect(page.getByText(/ROLL 2 OF 3/).first()).toBeVisible({ timeout: 20_000 });
+  await page.getByRole("button", { name: /^ROLL 2$/ }).click();
+  // 9B.3: Roll 2 lands as the ERA REVEAL; one action returns to the draft.
+  await adaptToEra(page);
 
-  // Roll 2: the controls are LIVE immediately — no acknowledgement gate — and
-  // the cards kept through Roll 1 start already selected.
+  // Roll 2: back on the draft the controls are LIVE, and the cards kept through
+  // Roll 1 start already selected.
   for (const b of await page.getByRole("button", { name: /^(Hold|Release) / }).all()) {
     expect(await b.isDisabled(), "a hold control was disabled at Roll 2").toBe(false);
   }
@@ -101,8 +122,9 @@ test("three rolls, holds, era reveal before the final holds, then coach offers",
   await page.goto("/play/chaos");
   await rollOne(page);
 
-  // The era is not shown before Roll 2.
-  await expect(page.getByText("ERA HIDDEN").first()).toBeVisible();
+  // The era is not shown before Roll 2 — and neither is Coach Chaos.
+  await expect(page.locator(".ec-ta-utility").getByText(/ERA: HIDDEN/)).toBeVisible();
+  await expect(page.locator(".ec-coach-card")).toHaveCount(0);
 
   // Hold one card, then roll. The accessible name flips from "Hold X" to
   // "Release X" once held, so the assertion must follow THAT card rather than
@@ -114,24 +136,29 @@ test("three rolls, holds, era reveal before the final holds, then coach offers",
   await expect(page.getByRole("button", { name: `Release ${who}` })).toHaveAttribute("aria-pressed", "true");
   await lockHolds(page);
 
-  await expect(page.getByText(/ROLL 2 OF 3/).first()).toBeVisible();
-  // The era is revealed WITH Roll 2 and stays on screen from here on: the rail's
-  // Era Impact panel names it and the utility bar repeats it. It is stated once
-  // in each place and never twice in either.
-  await expect(page.locator(".ec-ta-rail").getByText("CURRENT ERA")).toBeVisible();
-  await expect(page.locator(".ec-intel-era-id")).toHaveText(/^\d{4}s$/);
+  // The era is revealed WITH Roll 2, as its own state: the reveal names it, the
+  // rail's era panel names it, and Coach Chaos is still nowhere on the board.
+  await expect(stage(page, "ERA_REVEAL")).toBeVisible({ timeout: 20_000 });
+  await expect(page.locator(".ec-era-reveal-id")).toHaveText(/^\d{4}s$/);
+  await expect(page.locator(".ec-ta-rail .ec-intel-era-id")).toHaveText(/^\d{4}s$/);
+  await expect(page.locator(".ec-coach-card")).toHaveCount(0);
+  await adaptToEra(page);
+  // Back on the draft the era stays on screen, stated once in the utility bar.
   await expect(page.locator(".ec-ta-utility").getByText(/^ERA: \d{4}s/)).toBeVisible();
-  await expect(page.getByText("Team Blue's decisions were locked before yours were submitted.")).toBeVisible();
+  await expect(page.locator(".ec-ta-rail .ec-intel-era-id")).toHaveCount(0);
 
   await lockHolds(page);
-  await expect(page.getByText("CHOOSE YOUR STAFF").first()).toBeVisible({ timeout: 20_000 });
-  // The final roster is locked: no hold control survives, and the cards say so.
-  await expect(page.getByText("FINAL ROSTER").first()).toBeVisible();
-  // Three offers, in three distinct roles, with the era still visible.
+  await expect(stage(page, "COACH_SELECT")).toBeVisible({ timeout: 20_000 });
+  // The final roster is locked and compressed: no hold control survives.
+  await expect(page.locator('.ec-ta-stage[data-roster="compressed"]')).toBeVisible();
+  await expect(page.getByRole("button", { name: /^(Hold|Release) / })).toHaveCount(0);
+  // Three offers, in three distinct roles, with the era still visible as a chip.
+  await expect(page.getByText("COACH CHAOS").first()).toBeVisible();
+  await expect(page.locator(".ec-coach-card")).toHaveCount(3);
   for (const role of ["ROSTER MAXIMIZER", "OPPONENT COUNTER", "ERA ADAPTER"]) {
     await expect(page.getByText(role, { exact: true })).toBeVisible();
   }
-  await expect(page.locator(".ec-ta-rail").getByText("CURRENT ERA")).toBeVisible();
+  await expect(page.locator(".ec-ta-era-chip")).toContainText(/ERA: \d{4}s/);
 });
 
 test("a full Clash reaches a postgame with a player-centered story and an aligned box score", async ({ page }) => {
@@ -140,13 +167,14 @@ test("a full Clash reaches a postgame with a player-centered story and an aligne
   await page.goto("/play/chaos");
   await rollOne(page);
   await lockHolds(page);
+  await adaptToEra(page);
   await lockHolds(page);
   await hireStaff(page);
-  await expect(page.getByRole("button", { name: /RUN SIM/ })).toBeVisible({ timeout: 20_000 });
-  await page.getByRole("button", { name: /RUN SIM/ }).click();
+  await expect(page.getByRole("button", { name: /RUN CLASH/ })).toBeVisible({ timeout: 20_000 });
+  await page.getByRole("button", { name: /RUN CLASH/ }).click();
 
-  // Phase 8C: the result lands in the dock; the full report opens over the page.
-  await expect(page.getByText("FINAL SCORE", { exact: true }).first()).toBeVisible({ timeout: 40_000 });
+  // 9B.3: the score leads the stage head; the full report opens over the page.
+  await expect(page.locator(".ec-ta-score[data-winner]")).toBeVisible({ timeout: 40_000 });
   await page.getByRole("button", { name: /VIEW FULL REPORT/ }).click();
   await expect(page.getByRole("dialog", { name: "Full postgame report" })).toBeVisible();
 
@@ -203,10 +231,11 @@ test("box-score stat values never wrap", async ({ page }) => {
   await page.goto("/play/chaos");
   await rollOne(page);
   await lockHolds(page);
+  await adaptToEra(page);
   await lockHolds(page);
   await hireStaff(page);
-  await page.getByRole("button", { name: /RUN SIM/ }).click();
-  await expect(page.getByText("FINAL SCORE", { exact: true }).first()).toBeVisible({ timeout: 40_000 });
+  await page.getByRole("button", { name: /RUN CLASH/ }).click();
+  await expect(page.locator(".ec-ta-score[data-winner]")).toBeVisible({ timeout: 40_000 });
   await page.getByRole("button", { name: /VIEW FULL REPORT/ }).click();
   await page.getByRole("tab", { name: "Box Score" }).last().click();
   const wrapped = await page.evaluate(() => {
@@ -219,7 +248,7 @@ test("box-score stat values never wrap", async ({ page }) => {
 
 test("Dream Matchup is gated behind a free account and can be reached from the Play menu", async ({ page }) => {
   await page.goto("/play/chaos");   // deliberately signed out
-  await expect(page.getByText("THREE ROLLS AVAILABLE").first()).toBeVisible({ timeout: 20_000 });
+  await expect(stage(page, "EMPTY")).toBeVisible({ timeout: 20_000 });
   // The shelf is gone; the Play menu is where a mode is chosen.
   await page.getByRole("button", { name: /^Play/ }).click();
   await page.getByRole("menuitem", { name: /Dream Matchup/ }).click();
@@ -258,9 +287,16 @@ test("mobile keeps both boards readable with no page-level horizontal overflow",
     await page.setViewportSize({ width: w, height: h });
     await page.goto("/play/chaos");
     await rollOne(page);
-    await expect(page.getByText("TEAM GOLD", { exact: true })).toBeVisible();
-    await expect(page.getByText("TEAM BLUE", { exact: true })).toBeVisible();
-    await expect(page.getByText("LEGEND RIVAL", { exact: true })).toBeVisible();
+    // Both boards are reachable: on a phone (9B.3) one team shows at a time and
+    // the other is one tab away; wider than that both are on screen.
+    await expect(page.getByText("TEAM GOLD", { exact: true }).locator("visible=true").first()).toBeVisible();
+    await expect(page.getByText("TEAM BLUE", { exact: true }).locator("visible=true").first()).toBeVisible();
+    if (w <= 767) {
+      await page.getByRole("tab", { name: /TEAM BLUE/ }).click();
+      await expect(page.locator('.ec-ta-team[data-team="blue"] .ec-pc').first()).toBeVisible();
+    } else {
+      await expect(page.getByText("LEGEND RIVAL", { exact: true }).first()).toBeVisible();
+    }
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1);
     expect(overflow, `page overflows horizontally at ${w}x${h}`).toBe(false);
   }

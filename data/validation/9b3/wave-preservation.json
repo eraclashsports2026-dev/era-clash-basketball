@@ -1,0 +1,105 @@
+{
+  "artifact": "wave-preservation",
+  "phase": "9B.3 — Chaos Clash Guided Flow V2",
+  "generatedAt": "2026-09-05T04:45:57.006Z",
+  "origin": null,
+  "candidate": {
+    "harness": {
+      "candidateId": "Candidate 4",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+      "calibrationVersion": "1.4.0",
+      "build": null
+    },
+    "deployedPreview": null,
+    "expected": {
+      "candidateId": "Candidate 4",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+      "calibrationVersion": "1.4.0"
+    }
+  },
+  "frozenRefs": {
+    "wave1": "4dc59e7",
+    "wave2": "ef0caa5",
+    "main": "9cd95ff"
+  },
+  "expectedRefs": {
+    "wave1": "4dc59e7",
+    "wave2": "ef0caa5",
+    "main": "9cd95ff"
+  },
+  "frozenLogicByteIdentity": {
+    "paths": [
+      "src/chaos/runState.js",
+      "api/game.js",
+      "api/_lib/game-core.js",
+      "api/_lib/previewEngine.js",
+      "src/entitlements.js",
+      "src/lineupPlacement.js",
+      "src/players.js",
+      "src/chaos/client.js"
+    ],
+    "diffAgainstParent": "(empty — byte-identical)",
+    "identical": true
+  },
+  "preservedPaths": {
+    "paths": [
+      "src/chaos",
+      "src/v3",
+      "src/engine.js",
+      "src/rating.js",
+      "src/players.js",
+      "src/draft.js",
+      "src/dailyChallenge.js",
+      "src/lineupPlacement.js",
+      "src/entitlements.js",
+      "src/theme",
+      "data/calibration",
+      "src/components/lobby",
+      "src/navigation.js",
+      "config",
+      "api/game.js",
+      "api/_lib/game-core.js",
+      "api/_lib/previewEngine.js",
+      "src/accounts",
+      "api/_lib/cloudAccounts.js",
+      "api/account.js",
+      "supabase"
+    ],
+    "diffAgainstParent": "(empty — untouched)",
+    "untouched": true
+  },
+  "api": {
+    "routes": 12,
+    "middleware": true,
+    "apiFunctionCountIncrease": 0
+  },
+  "filesChangedThisPhase": [
+    "api/events.js",
+    "data/validation/8c-time-arena/phase8c-responsive-qa.json",
+    "data/validation/8c-time-arena/synchronized-chaos-runtime.json",
+    "data/validation/9b3/current-chaos-flow-map.json",
+    "data/validation/9b3/phase9b2-acceptance.json",
+    "data/validation/9b3/phase9b3-preflight.json",
+    "data/validation/9b3/reference-manifest.json",
+    "docs/ui/references/chaos-guided-flow-v2/UI1-foundation.png",
+    "docs/ui/references/chaos-guided-flow-v2/UI2-drafting.png",
+    "docs/ui/references/chaos-guided-flow-v2/UI3-era-reveal.png",
+    "docs/ui/references/chaos-guided-flow-v2/UI4-coach-chaos.png",
+    "docs/ui/references/chaos-guided-flow-v2/UI5-clash-ready.png",
+    "docs/ui/references/chaos-guided-flow-v2/UI6-result.png",
+    "e2e/phase8c-time-arena.spec.js",
+    "scripts/ui/time-arena-qa.mjs",
+    "scripts/ui/uiQa.mjs",
+    "src/activation.js",
+    "src/components/arena/ChaosStage.jsx",
+    "src/components/arena/EraRevealPanel.jsx",
+    "src/components/arena/LiveIntel.jsx",
+    "src/components/arena/ResultDock.jsx",
+    "src/components/arena/TimeArena.jsx",
+    "src/components/arena/UtilityBar.jsx",
+    "src/components/arena/guidedState.js",
+    "src/index.css",
+    "tests/v9b3-guided-flow.test.js"
+  ],
+  "deployedFrozenBuilds": "account:deployed-qa not in this sweep log"
+}

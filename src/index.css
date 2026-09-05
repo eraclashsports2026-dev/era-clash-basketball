@@ -1985,7 +1985,7 @@ h2.ec-intel-heading, h3.ec-intel-heading { font-size: 10.5px; }
 }
 
 /* ── 9B.3 result head: the score leads, framed by the two fives ──────────── */
-.ec-ta-score { display: grid; justify-items: center; gap: 2px; margin-top: 4px; }
+.ec-ta-score, .ec-ta-score-pending { display: grid; justify-items: center; gap: 2px; margin-top: 4px; }
 .ec-ta-score-row { display: grid; grid-template-columns: 1fr auto 1fr; align-items: baseline; gap: 18px; }
 .ec-ta-score-n { font-family: var(--ec-display); font-size: 58px; font-weight: 700; line-height: 1; letter-spacing: 1px; }
 .ec-ta-score-n--gold { color: var(--ec-a-gold); text-align: right; }
@@ -2010,3 +2010,28 @@ h2.ec-intel-heading, h3.ec-intel-heading { font-size: 10.5px; }
   .ec-ta-score-n { font-size: 42px; }
   .ec-ta-score-row { gap: 12px; }
 }
+
+/* 9B.3 · On a phone or a tablet every rail control is a 44px touch target — the
+   era rules toggle, CHANGE ERA and its chips, VIEW DETAILS, LAST CLASH and the
+   era reveal's VIEW ALL ERA RULES. 1179px is the touch boundary 8C.1 already
+   uses for the coach detail toggle and the result tabs; desktop pointer sizes
+   above it are unchanged. */
+.ec-intel-link { min-height: 36px; }
+@media (max-width: 1179px) {
+  .ec-ta-rail button, .ec-intel-link, .ec-era-reveal-more { min-height: 44px; }
+}
+
+/* 9B.3 · The reserved score box while the game runs: same geometry, no claim. */
+.ec-ta-score-pending { opacity: 0.45; }
+.ec-ta-score-pending .ec-ta-score-n { color: var(--ec-a-text-secondary); }
+
+/* 9B.3 · The result hero reserves the height of a typical finished story while
+   the game runs, so the utility bar and footer below it settle before the
+   result lands instead of dropping when it does. */
+.ec-ta[data-guided-state="RESULT"] .ec-ta-result-hero { min-height: 560px; }
+@media (max-width: 767px) { .ec-ta[data-guided-state="RESULT"] .ec-ta-result-hero { min-height: 720px; } }
+
+/* 9B.3 · The coach card's detail toggle is a 44px touch target through the
+   tablet range too (8C.1 sized it at ≤900px; 1179px is the touch boundary the
+   result tabs already use). Desktop pointer size above it is unchanged. */
+@media (max-width: 1179px) { .ec-coach-detail-toggle { height: 44px; min-height: 44px; } }

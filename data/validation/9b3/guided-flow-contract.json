@@ -1,0 +1,156 @@
+{
+  "artifact": "guided-flow-contract",
+  "phase": "9B.3 — Chaos Clash Guided Flow V2",
+  "generatedAt": "2026-09-05T04:45:57.003Z",
+  "version": "chaos-guided-flow-v2",
+  "route": "/play/chaos",
+  "states": [
+    "EMPTY",
+    "DRAFTING",
+    "ERA_REVEAL",
+    "COACH_SELECT",
+    "READY",
+    "RESULT"
+  ],
+  "derivation": {
+    "EMPTY": "no run, or run.status === ABANDONED",
+    "DRAFTING": "ROLL_1_REVEALED; ROLL_2_REVEALED once the era is acknowledged for this run id",
+    "ERA_REVEAL": "ROLL_2_REVEALED with eraState.revealed and no acknowledgement",
+    "COACH_SELECT": "coachDraft.selecting, or a legacy sequence-1 coach phase",
+    "READY": "run.phase === READY",
+    "RESULT": "shell phase simulating; shell phase complete with a result; run.phase === SIMULATED"
+  },
+  "worked": {
+    "noRun": "EMPTY",
+    "roll1": "DRAFTING",
+    "roll2Unseen": "ERA_REVEAL",
+    "roll2Seen": "DRAFTING",
+    "selecting": "COACH_SELECT",
+    "ready": "READY",
+    "simulating": "RESULT"
+  },
+  "primaryAction": {
+    "EMPTY": {
+      "action": "deal",
+      "label": "ROLL",
+      "sub": "ROLL 1 OF 3",
+      "enabled": true
+    },
+    "DRAFTING": {
+      "action": "roll",
+      "label": "ROLL 2",
+      "sub": "ROLL 1 OF 3",
+      "enabled": true
+    },
+    "ERA_REVEAL": {
+      "action": "acknowledge-era",
+      "label": "ADAPT TO ERA",
+      "sub": "FINAL ROLL NEXT",
+      "enabled": true
+    },
+    "COACH_SELECT": {
+      "action": "hire",
+      "label": "CONTINUE WITH COACH",
+      "sub": "One staff, for the whole game.",
+      "enabled": true
+    },
+    "READY": {
+      "action": "run",
+      "label": "RUN CLASH",
+      "sub": "LET HISTORY DECIDE",
+      "enabled": true
+    },
+    "RESULT": null
+  },
+  "contextualPanel": {
+    "EMPTY": "guide",
+    "DRAFTING": "intel-compact",
+    "ERA_REVEAL": "era",
+    "COACH_SELECT": "roster",
+    "READY": "matchup",
+    "RESULT": null
+  },
+  "disclosure": {
+    "EMPTY": {
+      "coachOffers": false,
+      "resultHero": false,
+      "rosterCompressed": false,
+      "rosterInteractive": false,
+      "priorResultReachable": true
+    },
+    "DRAFTING": {
+      "coachOffers": false,
+      "resultHero": false,
+      "rosterCompressed": false,
+      "rosterInteractive": true,
+      "priorResultReachable": true
+    },
+    "ERA_REVEAL": {
+      "coachOffers": false,
+      "resultHero": false,
+      "rosterCompressed": false,
+      "rosterInteractive": false,
+      "priorResultReachable": true
+    },
+    "COACH_SELECT": {
+      "coachOffers": true,
+      "resultHero": false,
+      "rosterCompressed": true,
+      "rosterInteractive": false,
+      "priorResultReachable": true
+    },
+    "READY": {
+      "coachOffers": false,
+      "resultHero": false,
+      "rosterCompressed": true,
+      "rosterInteractive": false,
+      "priorResultReachable": true
+    },
+    "RESULT": {
+      "coachOffers": false,
+      "resultHero": true,
+      "rosterCompressed": true,
+      "rosterInteractive": false,
+      "priorResultReachable": false
+    }
+  },
+  "eraAcknowledgement": {
+    "storage": "localStorage ec_chaos_era_ack",
+    "keyedBy": "run id",
+    "leaksAcrossRuns": false
+  },
+  "events": {
+    "STATE_VIEWED": "chaos_state_viewed",
+    "PRIMARY_ACTION": "chaos_primary_action",
+    "ERA_REVEAL_VIEWED": "era_reveal_viewed",
+    "ERA_REVEAL_CONTINUED": "era_reveal_continued",
+    "COACH_CHAOS_VIEWED": "coach_chaos_viewed",
+    "COACH_OFFER_SELECTED": "coach_offer_selected",
+    "CLASH_READY_VIEWED": "clash_ready_viewed",
+    "RUN_CLASH_STARTED": "run_clash_started",
+    "RESULT_STATE_VIEWED": "result_state_viewed",
+    "LIVE_INTEL_EXPANDED": "live_intel_expanded",
+    "ERA_RULES_EXPANDED": "era_rules_expanded"
+  },
+  "entryEvents": {
+    "EMPTY": null,
+    "DRAFTING": null,
+    "ERA_REVEAL": "era_reveal_viewed",
+    "COACH_SELECT": "coach_chaos_viewed",
+    "READY": "clash_ready_viewed",
+    "RESULT": "result_state_viewed"
+  },
+  "serverContractUnchanged": {
+    "chaosClient": "src/chaos/client.js byte-identical to the parent",
+    "fields": [
+      "phase",
+      "roll",
+      "eraState",
+      "eraContext",
+      "coachDraft",
+      "draftPressure",
+      "selectedCoaches",
+      "cpuCoachCommit"
+    ]
+  }
+}

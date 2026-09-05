@@ -1,0 +1,119 @@
+{
+  "artifact": "era-reveal-flow-qa",
+  "phase": "9B.3 — Chaos Clash Guided Flow V2",
+  "generatedAt": "2026-09-05T04:43:42.211Z",
+  "origin": "http://localhost:4180",
+  "state": "ERA_REVEAL",
+  "viewports": [
+    "1536x1024"
+  ],
+  "reference": "docs/ui/references/chaos-guided-flow-v2/UI3-era-reveal.png",
+  "runs": [
+    {
+      "viewport": "1536x1024",
+      "screenshot": "data/validation/9b3/screens/1536x1024/03-era-reveal.png",
+      "facts": {
+        "guidedState": "ERA_REVEAL",
+        "rosterMode": "full",
+        "cta": "ADAPT TO ERA →",
+        "ctaCount": 1,
+        "ctaDisabled": false,
+        "cards": 10,
+        "emptyCards": 0,
+        "holdControls": 0,
+        "heldCards": 2,
+        "keptTags": 0,
+        "heldLocked": 0,
+        "coachCards": 0,
+        "staffLines": 0,
+        "docks": 0,
+        "rail": 1,
+        "railPanel": "",
+        "intelCompact": false,
+        "viewDetails": 0,
+        "draftPressureMentions": 0,
+        "eraId": "1970s",
+        "eraReveal": 1,
+        "eraCards": 3,
+        "eraChip": 0,
+        "lastClash": 0,
+        "score": false,
+        "scoreText": "",
+        "winner": "",
+        "tabs": 0,
+        "storyOpen": false,
+        "scoreAboveTabs": false,
+        "predictions": false,
+        "fakeProgress": false,
+        "overflow": 0,
+        "minButton": 36,
+        "minButtonSel": "ec-intel-link",
+        "liveRegionText": "Era revealed: 1970s. 24-second shot clock in effect (league-wide since 1954-55). No three-point line: every field goal counted two points. The NBA did not adopt the three-pointer until 1979-80 (23'9\" arc, 22' in the corners). Zone defenses were illegal. Officials enforced anti-zone rules (the codified 'illegal defense guidelines' came in 1981-82; zones remained outlawed until 2001-02).",
+        "focusOnCta": false,
+        "teamToggle": false,
+        "blueVisible": true,
+        "goldVisible": true,
+        "stateWord": "ERA_REVEAL"
+      },
+      "checks": [
+        {
+          "check": "the stage is in the expected state",
+          "pass": true,
+          "detail": "ERA_REVEAL"
+        },
+        {
+          "check": "no horizontal overflow",
+          "pass": true,
+          "detail": "0px"
+        },
+        {
+          "check": "every control is at least a 24px pointer target",
+          "pass": true,
+          "detail": "36px · ec-intel-link"
+        },
+        {
+          "check": "nothing predicts a winner",
+          "pass": true,
+          "detail": ""
+        },
+        {
+          "check": "no fabricated progress figure",
+          "pass": true,
+          "detail": ""
+        },
+        {
+          "check": "the era is the focus, with its real name",
+          "pass": true,
+          "detail": "1970s"
+        },
+        {
+          "check": "three rule cards from the run's own facts",
+          "pass": true,
+          "detail": "3"
+        },
+        {
+          "check": "one action: ADAPT TO ERA",
+          "pass": true,
+          "detail": "ADAPT TO ERA →"
+        },
+        {
+          "check": "the roster stays present",
+          "pass": true,
+          "detail": ""
+        },
+        {
+          "check": "Coach Chaos is not on the board at the reveal",
+          "pass": true,
+          "detail": ""
+        },
+        {
+          "check": "no Result Dock at the reveal",
+          "pass": true,
+          "detail": ""
+        }
+      ]
+    }
+  ],
+  "failed": [],
+  "passed": true
+}

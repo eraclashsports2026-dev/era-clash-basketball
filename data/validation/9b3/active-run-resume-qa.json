@@ -1,0 +1,82 @@
+{
+  "artifact": "active-run-resume-qa",
+  "phase": "9B.3 — Chaos Clash Guided Flow V2",
+  "generatedAt": "2026-09-05T04:43:37.149Z",
+  "origin": "http://localhost:4180",
+  "rows": [
+    {
+      "state": "EMPTY",
+      "reload": "EMPTY",
+      "heldAfterReload": 0,
+      "lobbyOffered": "START CHAOS CLASH",
+      "continue": "EMPTY",
+      "sameRun": null,
+      "pass": true
+    },
+    {
+      "state": "DRAFTING",
+      "reload": "DRAFTING",
+      "heldAfterReload": 0,
+      "lobbyOffered": "Continue",
+      "continue": "DRAFTING",
+      "sameRun": true,
+      "pass": true
+    },
+    {
+      "state": "ERA_REVEAL",
+      "reload": "ERA_REVEAL",
+      "heldAfterReload": 1,
+      "lobbyOffered": "Continue",
+      "continue": "ERA_REVEAL",
+      "sameRun": true,
+      "pass": true
+    },
+    {
+      "state": "DRAFTING (roll 2, era acknowledged)",
+      "reload": "DRAFTING",
+      "heldAfterReload": 1,
+      "lobbyOffered": "Continue",
+      "continue": "DRAFTING",
+      "sameRun": true,
+      "pass": true
+    },
+    {
+      "state": "COACH_SELECT (final roster locked, offers dealt)",
+      "reload": "COACH_SELECT",
+      "heldAfterReload": 3,
+      "lobbyOffered": "Continue",
+      "continue": "COACH_SELECT",
+      "sameRun": true,
+      "pass": true
+    },
+    {
+      "state": "COACH_SELECT (offer picked, not yet continued)",
+      "reload": "COACH_SELECT",
+      "offersAfterReload": 3,
+      "pickCleared": true,
+      "sameRun": true,
+      "pass": true,
+      "note": "a pick becomes a hire only on CONTINUE WITH COACH; the reload returns the offers and asks for the pick again"
+    },
+    {
+      "state": "READY",
+      "reload": "READY",
+      "heldAfterReload": 3,
+      "lobbyOffered": "Continue",
+      "continue": "READY",
+      "sameRun": true,
+      "pass": true
+    },
+    {
+      "state": "RESULT",
+      "reload": "EMPTY",
+      "lastClashAfterReload": "LAST CLASH 101 – 98 JUST NOW",
+      "scoreKept": true,
+      "lobbyContinueOffered": false,
+      "pass": true,
+      "note": "a finished game is not an active run: a hard reload returns to the empty frame with the result one tap away as LAST CLASH, the lobby offers no Continue for it, and a signed-in account has it in My EraClash"
+    }
+  ],
+  "passed": true,
+  "note": "The era acknowledgement is kept per run id in this browser, so ERA_REVEAL returns until it has been adapted to and DRAFTING returns after. No Continue spends a run: the run id is unchanged across every round-trip."
+}

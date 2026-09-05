@@ -1,0 +1,63 @@
+{
+  "artifact": "state-machine-qa",
+  "phase": "9B.3 — Chaos Clash Guided Flow V2",
+  "generatedAt": "2026-09-05T04:43:37.149Z",
+  "origin": "http://localhost:4180",
+  "resolver": "src/components/arena/guidedState.js",
+  "states": [
+    "EMPTY",
+    "DRAFTING",
+    "ERA_REVEAL",
+    "COACH_SELECT",
+    "READY",
+    "RESULT"
+  ],
+  "derivedFrom": "the server run view (phase, coachDraft.selecting, eraState.revealed) + the shell's game phase + a per-run era acknowledgement",
+  "reached": [
+    "EMPTY",
+    "DRAFTING",
+    "ERA_REVEAL",
+    "DRAFTING (roll 2, era acknowledged)",
+    "COACH_SELECT (final roster locked, offers dealt)",
+    "COACH_SELECT (offer picked, not yet continued)",
+    "READY",
+    "RESULT"
+  ],
+  "recoverable": [
+    {
+      "state": "EMPTY",
+      "reload": "EMPTY",
+      "continue": "EMPTY"
+    },
+    {
+      "state": "DRAFTING",
+      "reload": "DRAFTING",
+      "continue": "DRAFTING"
+    },
+    {
+      "state": "ERA_REVEAL",
+      "reload": "ERA_REVEAL",
+      "continue": "ERA_REVEAL"
+    },
+    {
+      "state": "DRAFTING (roll 2, era acknowledged)",
+      "reload": "DRAFTING",
+      "continue": "DRAFTING"
+    },
+    {
+      "state": "COACH_SELECT (final roster locked, offers dealt)",
+      "reload": "COACH_SELECT",
+      "continue": "COACH_SELECT"
+    },
+    {
+      "state": "COACH_SELECT (offer picked, not yet continued)",
+      "reload": "COACH_SELECT"
+    },
+    {
+      "state": "READY",
+      "reload": "READY",
+      "continue": "READY"
+    }
+  ],
+  "passed": true
+}

@@ -96,7 +96,7 @@ export default function LiveIntel({ run, onEraChange, onMembership, compact = fa
             </ul>
           )}
           <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap", marginTop: 4 }}>
-            <button onClick={toggleRules} aria-expanded={rulesOpen} style={linkBtn}>
+            <button onClick={toggleRules} aria-expanded={rulesOpen} className="ec-intel-link" style={linkBtn}>
               {rulesOpen ? "Less" : "Era rules"}
             </button>
             {eraState.custom && eraState.seedEraStyleId && (
@@ -139,7 +139,7 @@ export default function LiveIntel({ run, onEraChange, onMembership, compact = fa
           ) : change?.reason === "NOT_ENTITLED" ? (
             <div style={{ marginTop: 8, borderTop: "1px solid var(--ec-a-border)", paddingTop: 8 }}>
               <button onClick={() => onMembership?.(membershipHref({ feature: "custom-era", required: "PLUS", from: "live-intel" }))}
-                style={linkBtn}>Change eras with membership</button>
+                className="ec-intel-link" style={linkBtn}>Change eras with membership</button>
               <div className="ec-intel-note" style={{ marginTop: 2 }}>
                 Your era is rolled for you, and it is the same environment for both teams.
               </div>
@@ -233,6 +233,6 @@ export default function LiveIntel({ run, onEraChange, onMembership, compact = fa
 }
 
 const linkBtn = {
-  minHeight: 36, padding: 0, background: "transparent", border: "none", cursor: "pointer",
+  padding: 0, background: "transparent", border: "none", cursor: "pointer",
   color: "var(--ec-a-text-secondary)", fontSize: 11.5, fontWeight: 700, textDecoration: "underline",
 };

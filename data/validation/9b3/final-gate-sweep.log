@@ -1,0 +1,44 @@
+=== PHASE 9B.3 FINAL SWEEP 2026-09-05T04:40:53Z @ 03de30a ===
+--- unit ---
+ Test Files  78 passed (78)
+      Tests  2541 passed (2541)
+--- build ---
+✓ built in 750ms
+[plugin eraclash-sw-version] service worker cache identity: eraclash-assets:2.7.2:55840f886476
+--- e2e ---
+  78 passed (1.5m)
+--- repository ui gates ---
+ui:time-arena-qa                   PASS
+ui:result-dock-qa                  PASS
+ui:live-intel-qa                   PASS
+ui:coach-chaos-qa                  PASS
+ui:player-card-theme-qa            PASS
+ui:synchronized-chaos-qa           PASS
+ui:era-membership-qa               PASS
+ui:navigation-qa                   PASS
+ui:membership-routing-qa           PASS
+ui:activation-telemetry-qa         PASS
+ui:play-lobby-contracts            PASS
+ui:night-court-contracts           PASS
+ui:play-lobby-polish-qa            PASS
+--- account gates (9B.1 / 9B.2, local harness) ---
+account:guest-claim-qa             PASS guest-claim: 23/23 checks passed → data/validation/9b1/guest-claim-qa.json
+account:cloud-save-qa              PASS cloud-save: 23/23 checks passed → data/validation/9b1/cloud-save-qa.json
+account:my-eraclash-qa             PASS my-eraclash: 9/9 checks passed → data/validation/9b1/my-eraclash-qa.json
+account:saved-rosters-qa           PASS 10/10 passed → data/validation/9b2/saved-roster-contract.json
+account:run-it-back-qa             PASS 9/9 passed → data/validation/9b2/run-it-back-qa.json
+--- 9B.3 gates (harness http://localhost:4180) ---
+chaos:guided-flow-qa               PASS
+chaos:state-machine-qa             PASS
+chaos:era-reveal-qa                PASS
+chaos:coach-flow-qa                PASS
+chaos:result-flow-qa               PASS
+chaos:accessibility-qa             PASS
+chaos:performance-qa               PASS
+chaos:contact-sheets               PASS
+--- preservation ---
+api routes: 12 + middleware: yes
+wave1  4dc59e7
+wave2  ef0caa5
+main   9cd95ff
+=== DONE 2026-09-05T04:44:18Z ===
