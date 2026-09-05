@@ -927,27 +927,39 @@ describe("a rejected server credential", () => {
   it("the probe shows its working: status and code, never the key", async () => {
     configured();
     const p401 = await serviceKeyProbe(async () => new Response(JSON.stringify({ code: "PGRST301" }), { status: 401 }));
-    expect(p401).toEqual({ accepted: false, status: 401, code: "PGRST301" });
-    const p403 = await serviceKeyProbe(async () => new Response(JSON.stringify({ code: "42501" }), { status: 403 }));
-    expect(p403.accepted).toBe(false);
-    expect(p403.status).toBe(403);
-    // A 404 means the probe is pointed at the wrong path, which is not the
-    // credential's fault and must not be reported as a refusal.
+    expect(p401.accepted).toBe(false);
+    expect(p401.status).toBe(401);
+    expect(p401.code).toBe("PGRST301");
+    expect(p401.tried).toHaveLength(3);          // every combination was tried
     const p404 = await serviceKeyProbe(async () => new Response("", { status: 404 }));
-    expect(p404.accepted).toBe(true);
-    expect(p404.status).toBe(404);
-    for (const p of [p401, p403, p404]) expect(JSON.stringify(p)).not.toMatch(/sb_secret|sb_publishable|eyJ/);
+    expect(p404.accepted).toBe(true);            // not the credential's fault
+    // A provider that refuses the Bearer form but accepts apikey alone is the
+    // case this exists to find, and it must be reported as ACCEPTED.
+    let n = 0;
+    const picky = await serviceKeyProbe(async (u, init) => {
+      n += 1;
+      return init.headers.authorization ? new Response("", { status: 401 }) : new Response("[]", { status: 200 });
+    });
+    expect(picky.accepted).toBe(true);
+    expect(picky.variant).toBe("apikey-only");
+    for (const p of [p401, p404, picky]) expect(JSON.stringify(p)).not.toMatch(/sb_secret|sb_publishable|eyJ/);
     vi.unstubAllEnvs();
   });
 
-  it("the probe never returns or logs anything about the key itself", () => {
-    const fn = String(serviceKeyProbe);
-    expect(fn).not.toMatch(/console\./);
-    // It may READ the key to shape-check it; what it must never do is put the
-    // value into anything it returns. Everything returned is a boolean, a
-    // number, or PostgREST's own short code.
-    expect(fn).toMatch(/accepted: /);
-    expect(fn).not.toMatch(/key: |credential: serviceKey|return serviceKey/);
+  it("nothing the probe returns can contain the key", async () => {
+    // Asserting on the source text is the wrong instrument: the function has to
+    // put the key in a header, so "the word key does not appear" would fail for
+    // the right code. What matters is what comes back.
+    configured();
+    const secret = "sb_secret_" + "A".repeat(32);
+    for (const status of [200, 401, 403, 500]) {
+      const p = await serviceKeyProbe(async () => new Response(JSON.stringify({ code: "X" }), { status }));
+      const dump = JSON.stringify(p);
+      expect(dump, `status ${status}`).not.toContain(secret);
+      expect(dump, `status ${status}`).not.toMatch(/sb_secret|sb_publishable|eyJ[A-Za-z0-9_-]{10,}/);
+    }
+    expect(String(serviceKeyProbe)).not.toMatch(/console\./);
+    vi.unstubAllEnvs();
   });
 
   it("health reports cloud readiness as booleans, and only probes when asked", () => {

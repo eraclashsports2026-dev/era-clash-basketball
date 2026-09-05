@@ -189,12 +189,31 @@ export const serviceKeyAccepted = async (fetchImpl = fetch) => (await serviceKey
  * blaming the key".
  */
 export const serviceKeyProbe = async (fetchImpl = fetch) => {
-  if (!serviceKeyShapeOk(serviceKey())) return { accepted: false, status: null, code: "not_configured" };
-  try {
-    const r = await rest("profiles?select=user_id&limit=1", { method: "GET" }, fetchImpl);
-    const code = typeof r.body?.code === "string" ? r.body.code.slice(0, 16) : null;
-    return { accepted: !serverKeyRejected(r.status), status: r.status, code };
-  } catch { return { accepted: false, status: null, code: "unreachable" }; }
+  const k = serviceKey();
+  if (!serviceKeyShapeOk(k)) return { accepted: false, status: null, code: "not_configured", variant: null, tried: [] };
+  // Which header combination does this provider actually accept? A legacy
+  // service_role credential is a JWT and is happy as a Bearer token. A new
+  // sb_secret_ key is NOT a JWT, and a gateway that insists on parsing the
+  // Authorization header as one answers 401 — which from outside looks exactly
+  // like a revoked key, and had me blaming configuration twice.
+  const variants = [
+    ["both", { apikey: k, authorization: `Bearer ${k}` }],
+    ["apikey-only", { apikey: k }],
+    ["bearer-only", { authorization: `Bearer ${k}` }],
+  ];
+  const tried = [];
+  for (const [variant, headers] of variants) {
+    try {
+      const r = await fetchImpl(`${url()}/rest/v1/profiles?select=user_id&limit=1`, { method: "GET", headers });
+      const text = await r.text();
+      let body = null; try { body = text ? JSON.parse(text) : null; } catch { body = null; }
+      const code = typeof body?.code === "string" ? body.code.slice(0, 16) : null;
+      tried.push({ variant, status: r.status, code });
+      if (!serverKeyRejected(r.status)) return { accepted: true, status: r.status, code, variant, tried };
+    } catch { tried.push({ variant, status: null, code: "unreachable" }); }
+  }
+  const first = tried[0] || { status: null, code: null };
+  return { accepted: false, status: first.status, code: first.code, variant: null, tried };
 };
 
 const rest = async (path, init = {}, fetchImpl = fetch) => {

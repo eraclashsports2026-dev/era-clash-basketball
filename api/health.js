@@ -54,6 +54,8 @@ export default async function handler(req, res) {
     // permission problem or a probe pointed at the wrong path.
     cloud.serverCredentialProbeStatus = probe.status;
     cloud.serverCredentialProbeCode = probe.code;
+    cloud.serverCredentialAcceptedVia = probe.variant;
+    cloud.serverCredentialAttempts = probe.tried;
     // A boolean, not a URL: whether the server and the browser are configured
     // for the same project at all. If they are not, a perfectly valid
     // credential still gets a 401, because it is being shown to the wrong door.
