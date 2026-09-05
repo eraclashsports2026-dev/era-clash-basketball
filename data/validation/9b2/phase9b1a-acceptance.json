@@ -29,5 +29,16 @@
   },
   "carriedForward": [
     "a formal sign-out \u2192 fresh-credential reauthentication regression (section 15)"
-  ]
+  ],
+  "reconfirmedAt": "2026-09-05T02:40:23.257806+00:00",
+  "reconfirmation": {
+    "ownerResponse": "APPROVE PHASE 9B.1A",
+    "ownerStatement": "ANONYMOUS SIGN-INS ARE DISABLED.",
+    "startConditionsReverifiedLive": {
+      "anonymousAuthDisabled": "POST /auth/v1/signup with an empty body \u2192 422 anonymous_provider_disabled; /auth/v1/settings reports no anonymous provider",
+      "serverCredentialAccepted": "GET /api/health?deep=1 \u2192 serverCredentialAccepted true, probe status 200, same project, fingerprint c812fed6",
+      "durableOrigin": "https://era-clash-basketball-git-phase-9b2-my-eraclash-594ed5-era-clash.vercel.app serves Candidate 4 / 1.4.0, core 55bb26a2"
+    },
+    "note": "Recorded by a fresh session that found Phase 9B.2 already built by its predecessor. The work was verified against the specification and re-gated rather than rebuilt."
+  }
 }
