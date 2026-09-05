@@ -950,7 +950,13 @@ describe("a rejected server credential", () => {
     const good = "sb_secret_" + "A".repeat(32);
     vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", good);
     let r = serviceKeyIntegrity();
-    expect(r).toEqual({ length: good.length, charsetOk: true, hadSurroundingWhitespace: false, hasQuotes: false, kind: "sb_secret" });
+    expect(r).toMatchObject({ length: good.length, charsetOk: true, hadSurroundingWhitespace: false, hasQuotes: false, kind: "sb_secret" });
+    // A fingerprint that identifies without revealing: short, one-way, and
+    // different for a different key.
+    expect(r.fingerprint).toMatch(/^[0-9a-f]{8}$/);
+    vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", "sb_secret_" + "B".repeat(32));
+    expect(serviceKeyIntegrity().fingerprint).not.toBe(r.fingerprint);
+    vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", good);
     // The failures that pass every shape check and still get a 401.
     vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", `"${good}"`);
     r = serviceKeyIntegrity();

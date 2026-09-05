@@ -204,6 +204,12 @@ export const serviceKeyIntegrity = () => {
     hadSurroundingWhitespace: raw !== k,
     hasQuotes: /["']/.test(k),
     kind: /^sb_secret_/.test(k) ? "sb_secret" : /^eyJ/.test(k) ? "legacy_jwt" : "unrecognised",
+    // A one-way fingerprint, so the deployment's value can be compared with the
+    // one in the provider's dashboard WITHOUT either of them being shown to
+    // anyone. Eight hex characters of a sha256: enough to tell two keys apart,
+    // useless for reconstructing one. The same convention the preview access
+    // keys already use.
+    fingerprint: k ? sha256(k).slice(0, 8) : null,
   };
 };
 
