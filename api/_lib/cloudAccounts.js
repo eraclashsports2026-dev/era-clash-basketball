@@ -175,12 +175,26 @@ export const serverKeyRejected = (status) => status === 401 || status === 403;
  * healthy to every other check: cloud accounts reported ready while every save
  * failed with a 401.
  */
-export const serviceKeyAccepted = async (fetchImpl = fetch) => {
-  if (!serviceKeyShapeOk(serviceKey())) return false;
+export const serviceKeyAccepted = async (fetchImpl = fetch) => (await serviceKeyProbe(fetchImpl)).accepted;
+
+/**
+ * The same question with its working shown: the HTTP status the provider gave,
+ * and PostgREST's own short error code if it sent one. Both are safe to report
+ * — a status is a number and the code is a symbol like PGRST301 or 42501 — and
+ * they separate causes that a boolean cannot:
+ *   401  the credential is not accepted at all
+ *   403  accepted, but not permitted to read that table
+ *   404  the path is wrong, which would mean the probe is at fault
+ * That distinction is the difference between "replace the key" and "stop
+ * blaming the key".
+ */
+export const serviceKeyProbe = async (fetchImpl = fetch) => {
+  if (!serviceKeyShapeOk(serviceKey())) return { accepted: false, status: null, code: "not_configured" };
   try {
     const r = await rest("profiles?select=user_id&limit=1", { method: "GET" }, fetchImpl);
-    return !serverKeyRejected(r.status);
-  } catch { return false; }
+    const code = typeof r.body?.code === "string" ? r.body.code.slice(0, 16) : null;
+    return { accepted: !serverKeyRejected(r.status), status: r.status, code };
+  } catch { return { accepted: false, status: null, code: "unreachable" }; }
 };
 
 const rest = async (path, init = {}, fetchImpl = fetch) => {

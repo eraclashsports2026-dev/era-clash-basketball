@@ -9,7 +9,7 @@ import { computeResult, newSeed } from "./_lib/game-core.js";
 import { PLAYERS } from "../src/players.js";
 import { previewCandidateIdentity } from "./_lib/previewEngine.js";
 import { PREVIEW_ACCESS } from "../config/previewAccess.js";
-import { cloudAccountsServerStatus, serviceKeyAccepted, providerRefsMatch } from "./_lib/cloudAccounts.js";
+import { cloudAccountsServerStatus, serviceKeyProbe, providerRefsMatch } from "./_lib/cloudAccounts.js";
 
 export default async function handler(req, res) {
   let coreEngine = "ok";
@@ -48,7 +48,12 @@ export default async function handler(req, res) {
     enabled: st.enabled,
   };
   if (req.query?.deep === "1" || req.query?.deep === "true") {
-    cloud.serverCredentialAccepted = await serviceKeyAccepted();
+    const probe = await serviceKeyProbe();
+    cloud.serverCredentialAccepted = probe.accepted;
+    // Status and PostgREST's own code, so a refusal can be told apart from a
+    // permission problem or a probe pointed at the wrong path.
+    cloud.serverCredentialProbeStatus = probe.status;
+    cloud.serverCredentialProbeCode = probe.code;
     // A boolean, not a URL: whether the server and the browser are configured
     // for the same project at all. If they are not, a perfectly valid
     // credential still gets a 401, because it is being shown to the wrong door.

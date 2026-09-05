@@ -17,7 +17,7 @@ import {
   verifyAccountToken, cloudAccountsServerStatus, cloudAccountsReady, sha256,
   CANDIDATE_ID_SHAPE, MAX_IMPORT_CANDIDATES, flagOn as serverFlagOn, keyShapeOk as serverKeyShapeOk,
   looksLikeSecretKey as serverLooksLikeSecretKey, serviceKeyShapeOk as serverServiceKeyShapeOk,
-  serverKeyRejected, serviceKeyAccepted,
+  serverKeyRejected, serviceKeyAccepted, serviceKeyProbe,
 } from "../api/_lib/cloudAccounts.js";
 import { readProof, isBrowserBound, redemptionPlan, redeem, VIA } from "../src/accounts/linkProof.js";
 import { EVENTS_ALLOWLIST } from "../api/events.js";
@@ -924,10 +924,30 @@ describe("a rejected server credential", () => {
     expect(await serviceKeyAccepted(async () => new Response("[]", { status: 200 }))).toBe(false);
   });
 
+  it("the probe shows its working: status and code, never the key", async () => {
+    configured();
+    const p401 = await serviceKeyProbe(async () => new Response(JSON.stringify({ code: "PGRST301" }), { status: 401 }));
+    expect(p401).toEqual({ accepted: false, status: 401, code: "PGRST301" });
+    const p403 = await serviceKeyProbe(async () => new Response(JSON.stringify({ code: "42501" }), { status: 403 }));
+    expect(p403.accepted).toBe(false);
+    expect(p403.status).toBe(403);
+    // A 404 means the probe is pointed at the wrong path, which is not the
+    // credential's fault and must not be reported as a refusal.
+    const p404 = await serviceKeyProbe(async () => new Response("", { status: 404 }));
+    expect(p404.accepted).toBe(true);
+    expect(p404.status).toBe(404);
+    for (const p of [p401, p403, p404]) expect(JSON.stringify(p)).not.toMatch(/sb_secret|sb_publishable|eyJ/);
+    vi.unstubAllEnvs();
+  });
+
   it("the probe never returns or logs anything about the key itself", () => {
-    const fn = String(serviceKeyAccepted);
+    const fn = String(serviceKeyProbe);
     expect(fn).not.toMatch(/console\./);
-    expect(fn).toMatch(/return !serverKeyRejected|return false|return true/);
+    // It may READ the key to shape-check it; what it must never do is put the
+    // value into anything it returns. Everything returned is a boolean, a
+    // number, or PostgREST's own short code.
+    expect(fn).toMatch(/accepted: /);
+    expect(fn).not.toMatch(/key: |credential: serviceKey|return serviceKey/);
   });
 
   it("health reports cloud readiness as booleans, and only probes when asked", () => {
@@ -936,6 +956,7 @@ describe("a rejected server credential", () => {
     expect(h).toMatch(/req\.query\?\.deep === "1"/);
     // The round trip must not happen on every health call.
     // And the payload must keep clear of the word the server test forbids.
-    expect(h).toMatch(/serverCredentialAccepted = await serviceKeyAccepted\(\)/);
+    expect(h).toMatch(/serverCredentialAccepted = probe\.accepted/);
+    expect(h).toMatch(/serverCredentialProbeStatus = probe\.status/);
   });
 });
