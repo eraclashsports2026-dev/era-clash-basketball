@@ -1,24 +1,67 @@
 {
   "phase": "9B.2",
-  "generatedAt": "2026-09-05T02:19:05.838904+00:00",
-  "artifact": "saved-roster-contract",
-  "table": "public.saved_rosters",
+  "mode": "saved-rosters",
+  "generatedAt": "2026-09-05T02:25:26.000Z",
+  "trustModel": "The real Career V2 modules exercised against the test account adapter, which enforces the same ownership rules the SQL policies enforce. Live database RLS is certified separately in live-rls-qa.json.",
+  "checks": [
+    {
+      "name": "a snapshot keeps identity only",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a name is suggested from surnames and cleaned",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a roster saves for its owner",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a roster renames and stamps renamed_at",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a roster favorites",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a second account sees none of the first's rosters",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a second account cannot rename another's roster",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the 11th roster is refused",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a roster deletes",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the database refuses a rating-bearing snapshot by constraint",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": 10,
+  "total": 10,
+  "allPassed": true,
   "limitFree": 10,
-  "limitEnforcedBy": "trigger enforce_saved_roster_limit",
-  "snapshotKeysAllowed": [
+  "snapshotKeys": [
     "id",
     "name",
     "pos"
-  ],
-  "snapshotEnforcedBy": "roster_snapshot_ok() CHECK constraint",
-  "immutable": [
-    "roster_snapshot",
-    "snapshot_version",
-    "user_id (owner)"
-  ],
-  "editable": [
-    "display_name",
-    "favorite"
-  ],
-  "noForgedCapability": "a client-supplied rating is dropped by rosterSnapshotFrom() AND refused by the constraint; the game reconstructs every player from the canonical registry at play time"
+  ]
 }

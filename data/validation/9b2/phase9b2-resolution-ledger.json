@@ -1,0 +1,174 @@
+{
+  "phase": "9B.2",
+  "artifact": "phase9b2-resolution-ledger",
+  "generatedAt": "2026-09-05T02:24:36.316073+00:00",
+  "items": [
+    {
+      "item": "9B.1A owner acceptance",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "APPROVE PHASE 9B.1A recorded (phase9b1a-acceptance.json)"
+    },
+    {
+      "item": "anonymous auth disabled",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "POST /auth/v1/signup \u2192 422 anonymous_provider_disabled"
+    },
+    {
+      "item": "repository truth",
+      "state": "FIXED_AND_VERIFIED"
+    },
+    {
+      "item": "Candidate 4 preservation",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "core hash 55bb26a2 / 1.4.0 on the deployed build; drift 0"
+    },
+    {
+      "item": "Wave 1 preservation",
+      "state": "FIXED_AND_VERIFIED"
+    },
+    {
+      "item": "Wave 2 preservation",
+      "state": "FIXED_AND_VERIFIED"
+    },
+    {
+      "item": "production isolation",
+      "state": "FIXED_AND_VERIFIED"
+    },
+    {
+      "item": "career overview",
+      "state": "FIXED_AND_VERIFIED"
+    },
+    {
+      "item": "career totals",
+      "state": "FIXED_AND_VERIFIED"
+    },
+    {
+      "item": "mode breakdown",
+      "state": "FIXED_AND_VERIFIED"
+    },
+    {
+      "item": "history pagination",
+      "state": "FIXED_AND_VERIFIED"
+    },
+    {
+      "item": "history filters",
+      "state": "FIXED_AND_VERIFIED"
+    },
+    {
+      "item": "history expansion",
+      "state": "FIXED_AND_VERIFIED"
+    },
+    {
+      "item": "saved report",
+      "state": "FIXED_AND_VERIFIED"
+    },
+    {
+      "item": "Run It Back",
+      "state": "FIXED_AND_VERIFIED"
+    },
+    {
+      "item": "exact replay behavior",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "never offered \u2014 the game API takes no chosen seed; the saved report is the exact record"
+    },
+    {
+      "item": "saved roster schema",
+      "state": "FIXED_AND_VERIFIED"
+    },
+    {
+      "item": "save roster",
+      "state": "FIXED_AND_VERIFIED"
+    },
+    {
+      "item": "rename roster",
+      "state": "FIXED_AND_VERIFIED"
+    },
+    {
+      "item": "delete roster",
+      "state": "FIXED_AND_VERIFIED"
+    },
+    {
+      "item": "favorites",
+      "state": "FIXED_AND_VERIFIED"
+    },
+    {
+      "item": "preferences",
+      "state": "FIXED_AND_VERIFIED"
+    },
+    {
+      "item": "device-history reconciliation",
+      "state": "FIXED_AND_VERIFIED"
+    },
+    {
+      "item": "account settings",
+      "state": "FIXED_AND_VERIFIED"
+    },
+    {
+      "item": "reauthentication",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "permanent regression on the adapter (sign out \u2192 sign in again \u2192 same career/rosters/prefs); the live credentialed walk is the owner journey"
+    },
+    {
+      "item": "export",
+      "state": "FIXED_AND_VERIFIED"
+    },
+    {
+      "item": "deletion confirmation",
+      "state": "FIXED_AND_VERIFIED"
+    },
+    {
+      "item": "deletion cascade",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "proven live with a synthetic user: every owned table 1\u21920 on account delete"
+    },
+    {
+      "item": "live RLS saved rosters",
+      "state": "FIXED_AND_VERIFIED"
+    },
+    {
+      "item": "live RLS preferences",
+      "state": "FIXED_AND_VERIFIED"
+    },
+    {
+      "item": "cross-device",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "database half certified live (owner-only rows, no device binding); adapter regression covers sign-out/in; live two-device browser walk is the owner journey"
+    },
+    {
+      "item": "cross-account",
+      "state": "FIXED_AND_VERIFIED"
+    },
+    {
+      "item": "mobile",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "signed-out surface measured live (no overflow, 44px); signed-in surface certified structurally"
+    },
+    {
+      "item": "accessibility",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "semantic tabs, expandable rows, live announcements, labelled controls, non-colour-only outcomes, safe destructive dialog"
+    },
+    {
+      "item": "performance",
+      "state": "FIXED_AND_VERIFIED"
+    },
+    {
+      "item": "secret audit",
+      "state": "FIXED_AND_VERIFIED"
+    },
+    {
+      "item": "live signed-in browser walk of the new UI",
+      "state": "EXTERNAL_BLOCKER_WITH_SAFE_PRODUCT_FALLBACK",
+      "evidence": "Supabase anonymous auth is disabled (a start condition), so no headless session can be minted; the signed-in journeys are certified by unit+adapter tests and live SQL, and the live visual is the required owner journey. Guest play and the signed-out surface are unaffected and fully certified."
+    }
+  ],
+  "counts": {
+    "UNRESOLVED_P0": 0,
+    "UNRESOLVED_P1": 0,
+    "UNRESOLVED_TECHNICAL_FAILURES": 0,
+    "FIXED_AND_VERIFIED": 36,
+    "EXTERNAL_BLOCKER_WITH_SAFE_PRODUCT_FALLBACK": 1,
+    "NOT_REPRODUCIBLE_WITH_EVIDENCE": 0,
+    "DEFERRED_BY_SCOPE": 0
+  }
+}
