@@ -1,0 +1,33 @@
+{
+  "artifact": "phase9b1a-acceptance",
+  "phase": "9B.2",
+  "recordedAt": "2026-09-05T01:51:56.551397+00:00",
+  "acceptedPhase": "9B.1A \u2014 Supabase live activation and account certification",
+  "acceptedHead": "d5e7b5265b69920e5e58801ce51712311fcd75cf",
+  "acceptedBranch": "phase-9b1a-supabase-live-certification",
+  "pr": 43,
+  "ownerResponse": "APPROVE PHASE 9B.1A",
+  "ownerRationale": "The untested sign-out-then-reauthenticate-with-a-credential case is not enough to block the phase. The owner's own real account exercised the real passwordless sign-in path, while automated certification proved session, save, ownership, isolation and cross-device behaviour. A formal reauthentication regression is added in 9B.2 rather than reopening 9B.1A.",
+  "startConditionsVerifiedLive": {
+    "anonymousAuthDisabled": {
+      "verified": true,
+      "method": "POST /auth/v1/signup with an empty body returned 422 anonymous_provider_disabled"
+    },
+    "serverCredentialAccepted": {
+      "verified": true,
+      "method": "GET /api/health?deep=1 reported serverCredentialAccepted true, probe status 200, fingerprint c812fed6"
+    }
+  },
+  "repositoryTruth": {
+    "main": "9cd95ff",
+    "wave1": "4dc59e7",
+    "wave2": "ef0caa5",
+    "phase9b1Head": "08f71c9",
+    "phase9b1aHead": "d5e7b52",
+    "apiRoutes": 12,
+    "middleware": true
+  },
+  "carriedForward": [
+    "a formal sign-out \u2192 fresh-credential reauthentication regression (section 15)"
+  ]
+}
