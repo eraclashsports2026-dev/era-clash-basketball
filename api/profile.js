@@ -17,13 +17,13 @@ import { tooLarge, cleanName, cleanText } from "./_lib/validate.js";
 // real accounts reuse the route that already owns career persistence.
 import {
   cloudAccountsServerStatus, cloudAccountsReady, verifyAccountToken,
-  claimAndSaveResult, importDeviceHistory, countEligibleForImport,
+  claimAndSaveResult, importDeviceHistory, countEligibleForImport, deleteAccount,
   CANDIDATE_ID_SHAPE, MAX_IMPORT_CANDIDATES,
 } from "./_lib/cloudAccounts.js";
 
 const KEY = (sid) => `profile:${sid}`;
 const RESULT_ID_SHAPE = CANDIDATE_ID_SHAPE;
-const CLOUD_ACTIONS = new Set(["cloud-save", "claim-result", "import-device-history", "import-preview"]);
+const CLOUD_ACTIONS = new Set(["cloud-save", "claim-result", "import-device-history", "import-preview", "delete-account"]);
 
 /** The bearer token, from the header only — never from a logged request body. */
 const bearer = (req) => {
@@ -133,6 +133,14 @@ export default async function handler(req, res) {
         buildStamp: stamp(req), themeVersion: req.body?.themeVersion ? cleanText(String(req.body.themeVersion), 40) : null,
       });
       return res.status(200).json({ ...out, requestId });
+    }
+
+    if (action === "delete-account") {
+      // The one destructive account action. Identity is the verified token's
+      // own user id — the request body cannot name someone else to delete.
+      const out = await deleteAccount({ userId: who.userId });
+      const code = { deleted: 200, not_configured: 503, invalid_user: 400, provider_rejected_server_key: 502, delete_failed: 502 }[out.status] ?? 500;
+      return res.status(code).json({ ...out, requestId });
     }
 
     const resultId = String(req.body?.resultId || "");

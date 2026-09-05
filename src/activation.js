@@ -37,6 +37,14 @@ export const ACTIVATION_EVENTS = Object.freeze([
   "guest_result_claim_started", "guest_result_claim_completed", "guest_history_imported",
   "cloud_result_save_started", "cloud_result_save_completed", "cloud_result_save_failed",
   "my_eraclash_viewed", "recent_clash_expanded", "saved_report_opened", "display_name_updated",
+  // Phase 9B.2 My EraClash Career V2
+  "career_history_viewed", "career_filter_changed", "saved_clash_favorited",
+  "roster_saved", "roster_renamed", "roster_deleted", "roster_favorited",
+  "run_it_back_started", "exact_replay_started",
+  "device_reconciliation_viewed", "device_history_imported",
+  "account_export_started", "account_export_completed",
+  "account_deletion_started", "account_deletion_cancelled", "account_deletion_completed",
+  "reauthentication_completed", "preference_updated",
 ]);
 
 const ss = {

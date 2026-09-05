@@ -140,7 +140,11 @@ export const buildSavedClash = ({ record, userId, claimedFrom, buildStamp = null
   return {
     user_id: userId,
     result_id: String(record.id),
-    mode: String(record.mode || "single").slice(0, 20),
+    // A chaos run reaches the server as mode "single" (the draft is unspoofable
+    // that way), but the career must tell a Chaos Clash apart from a hand-built
+    // Dream Matchup — the presence of a revealed chaos draft is the honest
+    // signal, set here so no game-logic path has to change.
+    mode: (record?.chaosDraft ? "chaos" : String(record.mode || "single")).slice(0, 20),
     user_side: "gold",
     outcome: OUTCOME(record),
     gold_score: Number.isFinite(record?.finalScore?.gold) ? record.finalScore.gold : null,
@@ -317,6 +321,28 @@ export const claimAndSaveResult = async ({ resultId, userId, deviceSession, clai
 };
 
 /** Result ids a browser proposes are only candidates; each is authorised on its own. */
+/**
+ * Delete an account and everything it owns. The user id comes ONLY from a token
+ * the provider has already verified — never from the request body — so a caller
+ * can delete no account but their own. The admin endpoint needs the service
+ * role, and on delete every account-owned table cascades from auth.users.
+ * Returns a closed status; nothing about the credential is logged or returned.
+ */
+export const deleteAccount = async ({ userId }, deps = {}) => {
+  const fetchImpl = deps.fetch || fetch;
+  if (!cloudAccountsReady() || !serviceKeyShapeOk(serviceKey())) return { status: "not_configured" };
+  if (!/^[0-9a-f-]{36}$/i.test(String(userId || ""))) return { status: "invalid_user" };
+  try {
+    const r = await fetchImpl(`${url()}/auth/v1/admin/users/${userId}`, {
+      method: "DELETE",
+      headers: { apikey: serviceKey(), authorization: `Bearer ${serviceKey()}` },
+    });
+    if (serverKeyRejected(r.status)) return { status: "provider_rejected_server_key" };
+    if (!r.ok && r.status !== 404) return { status: "delete_failed", detail: `admin_http_${r.status}` };
+    return { status: "deleted" };
+  } catch { return { status: "delete_failed", detail: "unreachable" }; }
+};
+
 export const CANDIDATE_ID_SHAPE = /^(pv_)?[a-z0-9]{6,16}$/;
 export const MAX_IMPORT_CANDIDATES = 25;
 
