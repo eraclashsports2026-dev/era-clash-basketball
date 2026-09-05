@@ -12,6 +12,10 @@
 // installed only through provider._setProvider from the suite. A fake account
 // must never appear in a user-facing preview.
 import { cleanDisplayName } from "./config.js";
+import {
+  rosterSnapshotFrom, coachSnapshotFrom, cleanRosterName, cleanPrefs,
+  SAVED_ROSTER_LIMIT_FREE,
+} from "./careerV2.js";
 
 const err = (code) => Object.assign(new Error(code), { code });
 
@@ -21,6 +25,8 @@ export const createTestProvider = ({ users = [] } = {}) => {
     profiles: new Map(),       // userId → profile row
     savedClashes: [],          // rows, server-inserted only
     claims: new Map(),         // resultId → { userId, deviceSessionHash }
+    rosters: [],               // saved_rosters rows, owner-written
+    prefs: new Map(),          // userId → prefs object
   };
   let current = null;          // the signed-in session
   const changeListeners = new Set();
@@ -103,11 +109,92 @@ export const createTestProvider = ({ users = [] } = {}) => {
       const ordered = [...rows].sort((a, b) => new Date(b.played_at) - new Date(a.played_at));
       let streak = 0;
       for (const r of ordered) { if (r.outcome === ordered[0]?.outcome) streak++; else break; }
+      // Longest win streak: the same gaps-and-islands the SQL view computes.
+      let longest = 0, run = 0;
+      for (const r of [...rows].sort((a, b) => new Date(a.played_at) - new Date(b.played_at))) {
+        run = r.outcome === "win" ? run + 1 : 0;
+        if (run > longest) longest = run;
+      }
       return {
         summary: { user_id: s.userId, games_played: rows.length, wins, losses, ties, win_rate: rows.length ? Number((wins / rows.length).toFixed(4)) : null, last_played_at: ordered[0]?.played_at || null },
         byMode,
         streak: ordered.length ? { user_id: s.userId, streak_outcome: ordered[0].outcome, streak_length: streak } : null,
+        longestWinStreak: longest,
       };
+    },
+    async recentActivity(limit = 5) {
+      const s = requireSession();
+      const acts = [];
+      for (const r of db.savedClashes.filter((r) => r.user_id === s.userId)) {
+        acts.push({ kind: "clash_saved", occurred_at: r.created_at || r.played_at, ref: r.result_id, label: r.mode });
+        if (r.favorite && r.favorited_at) acts.push({ kind: "clash_favorited", occurred_at: r.favorited_at, ref: r.result_id, label: r.mode });
+      }
+      for (const r of db.rosters.filter((r) => r.user_id === s.userId)) {
+        acts.push({ kind: "roster_saved", occurred_at: r.created_at, ref: r.id, label: r.display_name });
+        if (r.renamed_at) acts.push({ kind: "roster_renamed", occurred_at: r.renamed_at, ref: r.id, label: r.display_name });
+        if (r.favorite && r.favorited_at) acts.push({ kind: "roster_favorited", occurred_at: r.favorited_at, ref: r.id, label: r.display_name });
+      }
+      return acts.sort((a, b) => new Date(b.occurred_at) - new Date(a.occurred_at)).slice(0, limit);
+    },
+    async setClashFavorite(resultId, favorite) {
+      const s = requireSession();
+      const row = db.savedClashes.find((r) => r.user_id === s.userId && r.result_id === String(resultId));
+      if (!row) return null;
+      row.favorite = !!favorite; row.favorited_at = favorite ? new Date().toISOString() : null;
+      return { result_id: row.result_id, favorite: row.favorite };
+    },
+    // ── saved rosters ─────────────────────────────────────────────────────────
+    async listRosters() {
+      const s = requireSession();
+      return db.rosters.filter((r) => r.user_id === s.userId)
+        .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at)).map((r) => ({ ...r }));
+    },
+    async saveRoster({ displayName, roster, coach = null, sourceMode = null, sourceResultId = null, eraPreference = null }) {
+      const s = requireSession();
+      if (db.rosters.filter((r) => r.user_id === s.userId).length >= SAVED_ROSTER_LIMIT_FREE) throw err("ROSTER_LIMIT_REACHED");
+      const snap = rosterSnapshotFrom(roster);
+      if (snap.length < 1) throw err("ROSTER_INVALID");
+      const now = new Date().toISOString();
+      const row = {
+        id: `sr-${db.rosters.length + 1}`, user_id: s.userId,
+        display_name: cleanRosterName(displayName) || "My Five",
+        source_mode: sourceMode || null, source_result_id: sourceResultId || null,
+        roster_snapshot: snap, coach_snapshot: coachSnapshotFrom(coach),
+        era_preference: eraPreference || null, snapshot_version: 1,
+        favorite: false, favorited_at: null, renamed_at: null, created_at: now, updated_at: now,
+      };
+      db.rosters.push(row);
+      return { ...row };
+    },
+    async renameRoster(id, displayName) {
+      const s = requireSession();
+      const clean = cleanRosterName(displayName);
+      if (!clean) throw err("ROSTER_NAME_INVALID");
+      const row = db.rosters.find((r) => r.user_id === s.userId && r.id === String(id));
+      if (!row) throw err("NOT_PERMITTED");
+      row.display_name = clean; row.renamed_at = new Date().toISOString(); row.updated_at = row.renamed_at;
+      return { ...row };
+    },
+    async setRosterFavorite(id, favorite) {
+      const s = requireSession();
+      const row = db.rosters.find((r) => r.user_id === s.userId && r.id === String(id));
+      if (!row) return null;
+      row.favorite = !!favorite; row.favorited_at = favorite ? new Date().toISOString() : null; row.updated_at = new Date().toISOString();
+      return { id: row.id, favorite: row.favorite };
+    },
+    async deleteRoster(id) {
+      const s = requireSession();
+      const i = db.rosters.findIndex((r) => r.user_id === s.userId && r.id === String(id));
+      if (i >= 0) db.rosters.splice(i, 1);
+      return { deleted: true };
+    },
+    // ── preferences ─────────────────────────────────────────────────────────
+    async getPreferences() { const s = requireSession(); return cleanPrefs(db.prefs.get(s.userId) || {}); },
+    async setPreferences(prefs) {
+      const s = requireSession();
+      const clean = cleanPrefs(prefs);
+      db.prefs.set(s.userId, clean);
+      return { ...clean };
     },
   };
 

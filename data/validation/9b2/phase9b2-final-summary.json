@@ -1,0 +1,184 @@
+{
+  "phase": "9B.2 \u2014 My EraClash Career V2 and account hardening",
+  "generatedAt": "2026-09-05T02:26:23.591465+00:00",
+  "verdict": "MY ERACLASH CAREER V2 AND ACCOUNT HARDENING COMPLETE \u2014 READY FOR OWNER ACCEPTANCE",
+  "repository": {
+    "parent": "d5e7b52 (phase-9b1a-supabase-live-certification, PR #43, APPROVED)",
+    "branch": "phase-9b2-my-eraclash-career-v2",
+    "draftPR": 44,
+    "protectedPreview": "https://era-clash-basketball-git-phase-9b2-my-eraclash-594ed5-era-clash.vercel.app",
+    "supabaseMigration": "0003_career_v2 (applied live to lfybiphmqkiecfrqsfzt)",
+    "preservation": {
+      "wave1": "4dc59e7 unchanged",
+      "wave2": "ef0caa5 unchanged",
+      "main": "9cd95ff unchanged",
+      "production": "2.7.2, no account surface, unchanged"
+    },
+    "headAtSummary": "b83be17d0c62321ace12d47d22c74db0a732fd41",
+    "finalCommit": "recorded in PR #44 \u2014 the commit that carries this summary is by definition one past what it can name"
+  },
+  "myEraClassV2": {
+    "tabs": [
+      "Overview",
+      "Clash History",
+      "Saved Rosters",
+      "Favorites",
+      "Account"
+    ],
+    "overview": "identity (no public email), derived totals incl. longest win streak, by-mode, recent activity",
+    "history": "filters (mode/outcome/era/range), sorts (newest/oldest/margin/closest), 25-per-page, expandable rows",
+    "savedReports": "reopen from the stored snapshot"
+  },
+  "persistentTools": {
+    "runItBack": "same five/coaches/era, new seed",
+    "exactReplay": "never offered \u2014 game API takes no chosen seed",
+    "savedRosters": "identity-only snapshots, 10-limit, immutable snapshot, rename/delete/favorite",
+    "favorites": "clashes and rosters, private",
+    "preferences": "closed vocabulary, cloud-truth sync",
+    "deviceReconciliation": "idempotent, never claims another browser's data"
+  },
+  "accountHardening": {
+    "reauthentication": "30-min window + permanent regression",
+    "export": "JSON+CSV, deep exclusion of secrets/proofs/identifiers",
+    "deletion": "server-only, token-own-user, typed DELETE, reauth-gated",
+    "cascade": "verified live 1\u21920 on every owned table"
+  },
+  "liveSecurity": {
+    "rls": "two-user, saved_rosters + user_preferences",
+    "crossUser": 0,
+    "crossDevice": "owner-only rows, no device binding",
+    "anonymous": 0,
+    "secrets": "0 in bundle, 0 service_role"
+  },
+  "preservation": {
+    "activeCandidateCoreDrift": 0,
+    "candidateParameterDrift": 0,
+    "gameLogicChanges": 0,
+    "draftLogicChanges": 0,
+    "placementLogicChanges": 0,
+    "apiFunctionCountIncrease": 0,
+    "wave1Changes": 0,
+    "stableWave2Changes": 0,
+    "mainChanges": 0,
+    "productionChanges": 0
+  },
+  "gates": {
+    "unitTests": 2516,
+    "accountGates": "17 non-browser + 2 browser, all pass",
+    "deployedQA": "29/29",
+    "liveGuest": "24/24"
+  },
+  "ledger": {
+    "UNRESOLVED_P0": 0,
+    "UNRESOLVED_P1": 0,
+    "UNRESOLVED_TECHNICAL_FAILURES": 0,
+    "FIXED_AND_VERIFIED": 36,
+    "EXTERNAL_BLOCKER_WITH_SAFE_PRODUCT_FALLBACK": 1,
+    "NOT_REPRODUCIBLE_WITH_EVIDENCE": 1,
+    "DEFERRED_BY_SCOPE": 0
+  },
+  "artifacts": [
+    "account-accessibility-qa.json",
+    "account-deletion-qa.json",
+    "account-export-qa.json",
+    "account-performance-qa.json",
+    "account-responsive-qa.json",
+    "career-history-qa.json",
+    "career-v2-contract.json",
+    "device-reconciliation-qa.json",
+    "live-cross-account-qa.json",
+    "live-cross-device-qa.json",
+    "live-rls-qa.json",
+    "phase9b1a-acceptance.json",
+    "phase9b2-preflight.json",
+    "phase9b2-resolution-ledger.json",
+    "preference-contract.json",
+    "production-isolation.json",
+    "reauthentication-qa.json",
+    "run-it-back-qa.json",
+    "saved-roster-contract.json",
+    "secret-audit.json",
+    "wave-preservation.json"
+  ],
+  "finalSweep": {
+    "ranAt": "2026-09-05T02:37:09Z",
+    "at": "deceab2",
+    "unitTests": {
+      "files": 77,
+      "tests": 2516
+    },
+    "accountGates9B1": {
+      "preflight": "10/10",
+      "migrations": "11/11",
+      "rls": "9/9",
+      "auth": "14/14",
+      "guest-claim": "23/23",
+      "cloud-save": "23/23",
+      "security": "14/14",
+      "my-eraclash": "9/9",
+      "responsive": "8/8"
+    },
+    "accountGates9B2": {
+      "career-v2": 9,
+      "saved-rosters": 10,
+      "run-it-back": 9,
+      "reauthentication": 8,
+      "export": 6,
+      "deletion": 8,
+      "device-reconciliation": 7,
+      "career-performance": 5,
+      "career-responsive": 6,
+      "career-accessibility": 8
+    },
+    "liveOnDurableOrigin": {
+      "liveGuestAndSecurity": "24/24",
+      "deployedQA": "29/29"
+    },
+    "preservation": {
+      "apiRoutes": 12,
+      "middleware": true,
+      "wave1": "4dc59e7",
+      "wave2": "ef0caa5",
+      "main": "9cd95ff"
+    },
+    "liveSchema": {
+      "migrations": [
+        "accounts_hardening",
+        "0003_career_v2"
+      ],
+      "rlsOnEveryPublicTable": true,
+      "policies": {
+        "saved_rosters": 4,
+        "user_preferences": 3,
+        "saved_clashes": 2,
+        "profiles": 2,
+        "result_claims": 1
+      },
+      "functionsWithPinnedSearchPath": 8,
+      "advisorWarningsNew": 0
+    },
+    "repoWideGates": {
+      "ranAt": "2026-09-05T02:39:48Z",
+      "at": "deceab2",
+      "playwright": {
+        "directRun": "77 passed, 1 failed (P1: Ready and Postgame show the SAME pregame read, candidate3-preview)",
+        "insidePreviewBrowserQa": "78 passed",
+        "isolatedRerunOfTheFailedTest": "1 passed (5.0s)",
+        "classification": "NOT_REPRODUCIBLE_WITH_EVIDENCE \u2014 a flake under load; it began at the instant a local server was stopped with three further suites queued, and the identical suite passed in full a minute later"
+      },
+      "preview": {
+        "preflight": "6/6",
+        "smoke": "5/5",
+        "security": "9/9",
+        "browser-qa": "1/1 (78 e2e journeys, preview flag off)"
+      },
+      "waveAccessAudits": {
+        "wave1": "0 failed attempts",
+        "wave2": "0 failed attempts; store credentials absent in this shell, nothing claimed absent"
+      },
+      "frozenEvidence": "the wave2 audit runner left data/validation/9a3/wave2-access-audit.json modified; restored from git, 0 files differ",
+      "verifyProviderRemote": "env-less in this shell (configured false); the deployed probe is the live equivalent and reports 200"
+    },
+    "note": "Every 9B.2 QA artifact is timestamped within this sweep, which is how a re-run is told apart from a re-read."
+  }
+}

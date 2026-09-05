@@ -1,0 +1,53 @@
+{
+  "phase": "9B.2",
+  "mode": "reauthentication",
+  "generatedAt": "2026-09-05T02:37:40.166Z",
+  "trustModel": "The real Career V2 modules exercised against the test account adapter, which enforces the same ownership rules the SQL policies enforce. Live database RLS is certified separately in live-rls-qa.json.",
+  "checks": [
+    {
+      "name": "a fresh session does not need reauthentication",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a session older than the window does",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "an unreadable token is treated as needing reauthentication",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "signed out, private data is unreachable",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "after reauthentication the same career returns",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "after reauthentication the same rosters return",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "after reauthentication the same preferences return",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a wrong code is refused",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": 8,
+  "total": 8,
+  "allPassed": true,
+  "window": "30 minutes",
+  "note": "The live credentialed reauthentication is exercised by the owner journey; this is the permanent regression."
+}

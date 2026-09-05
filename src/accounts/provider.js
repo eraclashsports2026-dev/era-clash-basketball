@@ -11,6 +11,7 @@
 // downloads it, and guest play is untouched.
 import { SUPABASE_URL, SUPABASE_ANON_KEY, cloudAccountsEnabled, cleanDisplayName } from "./config.js";
 import { readProof, VIA } from "./linkProof.js";
+import { rosterSnapshotFrom, coachSnapshotFrom, cleanRosterName, cleanPrefs } from "./careerV2.js";
 
 let injected = null;
 /** Tests (and only tests) install an adapter here. */
@@ -69,10 +70,20 @@ const asError = (e) => {
   return Object.assign(new Error(code), { code });
 };
 
+/** Roster writes raise named database exceptions; map them to codes the UI explains. */
+const rosterError = (e) => {
+  const raw = String(e?.message || "") + " " + String(e?.details || "") + " " + String(e?.hint || "");
+  if (/ROSTER_LIMIT_REACHED/.test(raw)) return Object.assign(new Error("ROSTER_LIMIT_REACHED"), { code: "ROSTER_LIMIT_REACHED" });
+  if (/ROSTER_SNAPSHOT_IMMUTABLE/.test(raw)) return Object.assign(new Error("ROSTER_IMMUTABLE"), { code: "ROSTER_IMMUTABLE" });
+  if (/saved_rosters_(name|snapshot|coach)/.test(raw)) return Object.assign(new Error("ROSTER_INVALID"), { code: "ROSTER_INVALID" });
+  return asError(e);
+};
+
 export const FAILURE_CODES = Object.freeze([
   "RATE_LIMITED", "CODE_INVALID_OR_EXPIRED", "EMAIL_INVALID", "NOT_PERMITTED",
   "NETWORK", "PROVIDER_ERROR", "DISPLAY_NAME_INVALID", "CLOUD_ACCOUNTS_DISABLED",
   "RESULT_NOT_FOUND", "NOT_YOUR_RESULT", "ALREADY_CLAIMED", "SAVE_FAILED",
+  "ROSTER_LIMIT_REACHED", "ROSTER_IMMUTABLE", "ROSTER_INVALID", "ROSTER_NAME_INVALID",
   "LINK_OPENED_ELSEWHERE",
 ]);
 
@@ -233,10 +244,10 @@ const supabaseProvider = {
     if (error) throw asError(error);
     return data || null;
   },
-  async listSavedClashes({ limit = 25 } = {}) {
+  async listSavedClashes({ limit = 250 } = {}) {
     const c = await client();
     const { data, error } = await c.from("saved_clashes")
-      .select("id, result_id, mode, user_side, outcome, gold_score, blue_score, era_id, gold_roster, blue_roster, gold_coach, blue_coach, mvp, candidate_id, calibration_version, theme_version, played_at, claimed_from")
+      .select("id, result_id, mode, user_side, outcome, gold_score, blue_score, era_id, gold_roster, blue_roster, gold_coach, blue_coach, mvp, candidate_id, calibration_version, theme_version, played_at, claimed_from, favorite, favorited_at")
       .order("played_at", { ascending: false }).limit(limit);
     if (error) throw asError(error);
     return data || [];
@@ -248,19 +259,108 @@ const supabaseProvider = {
     if (error) throw asError(error);
     return data || null;
   },
+  /** Flip the ONE column a browser may change on a saved Clash. RLS + a column grant keep it to `favorite`. */
+  async setClashFavorite(resultId, favorite) {
+    const c = await client();
+    const { data: me } = await c.auth.getUser();
+    const { data, error } = await c.from("saved_clashes")
+      .update({ favorite: !!favorite }).eq("user_id", me?.user?.id).eq("result_id", String(resultId))
+      .select("result_id, favorite").maybeSingle();
+    if (error) throw asError(error);
+    return data || null;
+  },
   async career() {
     const c = await client();
-    const [summary, byMode, streak] = await Promise.all([
+    const [summary, byMode, streak, longest] = await Promise.all([
       c.from("career_summary").select("*").maybeSingle(),
       c.from("career_by_mode").select("*").order("games_played", { ascending: false }),
       c.from("career_streak").select("*").maybeSingle(),
+      c.from("career_longest_win_streak").select("*").maybeSingle(),
     ]);
-    for (const r of [summary, byMode, streak]) if (r.error) throw asError(r.error);
+    for (const r of [summary, byMode, streak, longest]) if (r.error) throw asError(r.error);
     return {
       summary: summary.data || { games_played: 0, wins: 0, losses: 0, ties: 0, win_rate: null, last_played_at: null },
       byMode: byMode.data || [],
       streak: streak.data || null,
+      longestWinStreak: longest.data?.longest_win_streak ?? 0,
     };
+  },
+  /** The five most recent account activities, derived from existing data (no event table). */
+  async recentActivity(limit = 5) {
+    const c = await client();
+    const { data, error } = await c.from("account_activity")
+      .select("kind, occurred_at, ref, label").order("occurred_at", { ascending: false }).limit(limit);
+    if (error) throw asError(error);
+    return data || [];
+  },
+  // ── saved rosters ─────────────────────────────────────────────────────────
+  async listRosters() {
+    const c = await client();
+    const { data, error } = await c.from("saved_rosters")
+      .select("id, display_name, source_mode, source_result_id, roster_snapshot, coach_snapshot, era_preference, snapshot_version, favorite, favorited_at, created_at, updated_at")
+      .order("updated_at", { ascending: false });
+    if (error) throw asError(error);
+    return data || [];
+  },
+  async saveRoster({ displayName, roster, coach = null, sourceMode = null, sourceResultId = null, eraPreference = null }) {
+    const c = await client();
+    const { data: me } = await c.auth.getUser();
+    const row = {
+      user_id: me?.user?.id,
+      display_name: cleanRosterName(displayName) || "My Five",
+      roster_snapshot: rosterSnapshotFrom(roster),
+      coach_snapshot: coachSnapshotFrom(coach),
+      source_mode: sourceMode ? String(sourceMode).slice(0, 20) : null,
+      source_result_id: sourceResultId ? String(sourceResultId).slice(0, 16) : null,
+      era_preference: eraPreference ? String(eraPreference).slice(0, 24) : null,
+    };
+    const { data, error } = await c.from("saved_rosters").insert(row).select("*").maybeSingle();
+    if (error) throw rosterError(error);
+    return data || null;
+  },
+  async renameRoster(id, displayName) {
+    const c = await client();
+    const clean = cleanRosterName(displayName);
+    if (!clean) throw Object.assign(new Error("ROSTER_NAME_INVALID"), { code: "ROSTER_NAME_INVALID" });
+    const { data: me } = await c.auth.getUser();
+    const { data, error } = await c.from("saved_rosters")
+      .update({ display_name: clean }).eq("user_id", me?.user?.id).eq("id", String(id))
+      .select("*").maybeSingle();
+    if (error) throw rosterError(error);
+    return data || null;
+  },
+  async setRosterFavorite(id, favorite) {
+    const c = await client();
+    const { data: me } = await c.auth.getUser();
+    const { data, error } = await c.from("saved_rosters")
+      .update({ favorite: !!favorite }).eq("user_id", me?.user?.id).eq("id", String(id))
+      .select("id, favorite").maybeSingle();
+    if (error) throw asError(error);
+    return data || null;
+  },
+  async deleteRoster(id) {
+    const c = await client();
+    const { data: me } = await c.auth.getUser();
+    const { error } = await c.from("saved_rosters").delete().eq("user_id", me?.user?.id).eq("id", String(id));
+    if (error) throw asError(error);
+    return { deleted: true };
+  },
+  // ── preferences: cloud truth ────────────────────────────────────────────────
+  async getPreferences() {
+    const c = await client();
+    const { data, error } = await c.from("user_preferences").select("prefs").maybeSingle();
+    if (error) throw asError(error);
+    return cleanPrefs(data?.prefs || {});
+  },
+  async setPreferences(prefs) {
+    const c = await client();
+    const { data: me } = await c.auth.getUser();
+    const clean = cleanPrefs(prefs);
+    const { data, error } = await c.from("user_preferences")
+      .upsert({ user_id: me?.user?.id, prefs: clean }, { onConflict: "user_id" })
+      .select("prefs").maybeSingle();
+    if (error) throw asError(error);
+    return cleanPrefs(data?.prefs || clean);
   },
 };
 

@@ -45,6 +45,7 @@ import { startAccountState, subscribeAccount, accountState, signOutAccount } fro
 import { provider as accountProvider } from "./accounts/provider.js";
 import { saveResultToCareer, claimGuestResult } from "./accounts/cloudSave.js";
 import { rememberResult } from "./accounts/deviceResults.js";
+import { runItBackSetup } from "./accounts/careerV2.js";
 import { placementPlan, place as placePlayer, describeSelection, describePlacement, PLACEMENT_MODE } from "./lineupPlacement.js";
 import { markEntry } from "./activation.js";
 import AccountGate from "./components/chaos/AccountGate.jsx";
@@ -984,7 +985,7 @@ export default function App() {
     if (remaining > 0) await new Promise((r) => setTimeout(r, remaining));
   };
 
-  const runSingle = async (oppOverride, tag, setupOverride = null) => {
+  const runSingle = async (oppOverride, tag, setupOverride = null, goldOverride = null) => {
     if (loading) return;
     const simT0 = Date.now();
     setView("simulating");
@@ -994,6 +995,9 @@ export default function App() {
     // server mode — a chaos rematch is an ordinary single game replaying the
     // same five, coaches and era. Sending mode:"chaos" was rejected outright.
     const mode = tag === "chaos" ? "single" : (tag || "single");
+    // goldOverride lets Run It Back start from a reconstructed five without
+    // waiting for setTeam to flush; without it the run would read a stale team.
+    const gold = goldOverride || team;
     try {
       const opp = oppOverride || opponent || genOpponent();
       lastOppRef.current = opp;
@@ -1005,7 +1009,7 @@ export default function App() {
         });
       }
       const { resultId, result: record, records } = await runGame({
-        mode, gold: team, blue: opp,
+        mode, gold, blue: opp,
         challengeId: tag === "challenge" ? challenge?.id : undefined,
         dailyDecisions: tag === "daily" ? dailyDecisionsRef.current : undefined,
         // Daily: submit ONLY the coach id. The era, the opponent staff, the
@@ -1163,6 +1167,33 @@ export default function App() {
     runSingle(tag === "challenge" ? challenge?.team : lastOppRef.current, tag, setup);
   };
   const doBest7FromResult = () => { setResult(null); runBest7(lastOppRef.current, "from_result"); };
+
+  // Run It Back from a saved Clash: the same five, coaches and era, a NEW seed.
+  // The five and the opponent are reconstructed from the stored identity refs;
+  // the server decides everything else. Exact replay is deliberately NOT this —
+  // the game API never takes a chosen seed, so a stored Clash cannot be
+  // re-simulated exactly, and its saved report is the exact record.
+  const runItBackFromSaved = (clash) => {
+    const setup = runItBackSetup(clash);
+    if (!setup) return;
+    const five = setup.goldIds.map((id) => findCard(id)).filter(Boolean);
+    if (five.length !== 5) return;
+    const opp = setup.blueIds.map((id) => findCard(id)).filter(Boolean);
+    setTeam(five); setResult(null); setSavedReport(null);
+    if (opp.length === 5) { setOpponent(opp); lastOppRef.current = opp; }
+    goHome();
+    runSingle(opp.length === 5 ? opp : null, setup.tag,
+      { coachGoldId: setup.coachGoldId, coachBlueId: setup.coachBlueId, eraStyleId: setup.eraStyleId }, five);
+  };
+
+  const handleCareerSignedOut = async ({ reason } = {}) => {
+    try { await signOutAccount(); } catch { /* already gone */ }
+    setTier(currentTier());
+    navigate("/play");
+    if (reason === "reauth_for_delete") {
+      openAccountDialog({ entryPoint: "my_eraclash", intent: "signin", returnTo: "/my-eraclash" });
+    }
+  };
   // Swap One: back to the builder with BOTH squads preserved (spec #12/#13).
   // ── Run the Clash ─────────────────────────────────────────────────────────
   // The setup is entirely server-side: this call sends a run id and nothing
@@ -1865,7 +1896,9 @@ export default function App() {
       ) : route === "/my-eraclash" ? (
         <MyEraClash
           onSignIn={() => openAccountDialog({ entryPoint: "my_eraclash", intent: "signin", returnTo: "/my-eraclash" })}
-          onOpenReport={(clash) => setSavedReport(clash)} />
+          onOpenReport={(clash) => setSavedReport(clash)}
+          onRunItBack={runItBackFromSaved}
+          onSignedOut={handleCareerSignedOut} />
       ) : route.startsWith("/membership") ? (
         <main>
           <MembershipPage query={new URLSearchParams(window.location.search)} onBack={goHome}

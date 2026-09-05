@@ -1,0 +1,54 @@
+{
+  "phase": "9B.2",
+  "mode": "device-reconciliation",
+  "generatedAt": "2026-09-05T02:37:40.504Z",
+  "trustModel": "The real Career V2 modules exercised against the test account adapter, which enforces the same ownership rules the SQL policies enforce. Live database RLS is certified separately in live-rls-qa.json.",
+  "checks": [
+    {
+      "name": "no device history → NO_DEVICE_HISTORY",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "nothing unsaved → IMPORT_COMPLETE",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "eligible unsaved → IMPORT_AVAILABLE",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "owned by another → CONFLICT",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "mixed outcome → PARTIAL_IMPORT",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "importing is idempotent — the second pass adds nothing",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a device cannot claim a result it did not play",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": 7,
+  "total": 7,
+  "allPassed": true,
+  "states": [
+    "NO_DEVICE_HISTORY",
+    "IMPORT_AVAILABLE",
+    "PARTIAL_IMPORT",
+    "IMPORT_COMPLETE",
+    "CONFLICT"
+  ],
+  "idempotent": true
+}

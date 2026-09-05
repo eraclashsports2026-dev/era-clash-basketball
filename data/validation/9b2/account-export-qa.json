@@ -1,0 +1,59 @@
+{
+  "phase": "9B.2",
+  "mode": "export",
+  "generatedAt": "2026-09-05T02:37:40.278Z",
+  "trustModel": "The real Career V2 modules exercised against the test account adapter, which enforces the same ownership rules the SQL policies enforce. Live database RLS is certified separately in live-rls-qa.json.",
+  "checks": [
+    {
+      "name": "no excluded key survives at any depth",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no email or session value leaks",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the export carries profile, cleaned prefs, clashes, rosters and favorites",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the CSV header and a row are present",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the filename is date-stamped",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the export runs through browser-owned reads, not a new server function",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": 6,
+  "total": 6,
+  "allPassed": true,
+  "format": "eraclash-account-export",
+  "version": 1,
+  "excluded": [
+    "session",
+    "access_token",
+    "refresh_token",
+    "accessToken",
+    "refreshToken",
+    "token",
+    "token_hash",
+    "device_session_hash",
+    "build_stamp",
+    "theme_version",
+    "candidate_core_hash",
+    "challenge_fingerprint",
+    "narrativeKeyId",
+    "email"
+  ]
+}

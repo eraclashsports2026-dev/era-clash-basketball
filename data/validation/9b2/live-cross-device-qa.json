@@ -1,0 +1,7 @@
+{
+  "phase": "9B.2",
+  "generatedAt": "2026-09-05T02:19:05.838904+00:00",
+  "artifact": "live-cross-device-qa",
+  "summary": "Cross-device persistence for the new account-owned data rests on the same guarantee 9B.1A certified live for saved Clashes: a row is owned by its user and readable by that user on any device, and by no one else. saved_rosters and user_preferences are read by the owner's uid under RLS with no device binding, so a second signed-in device on the same account reads the same rows. The database half is certified here and in live-rls-qa; the live signed-in two-device browser walk is the owner journey (section 25), because Supabase anonymous auth is disabled as a 9B.2 start condition and no headless session can be minted.",
+  "certifiedInCode": "reauthentication-qa.json exercises sign-out \u2192 sign-in-again \u2192 same rosters/prefs/career on the account adapter as a permanent regression."
+}
