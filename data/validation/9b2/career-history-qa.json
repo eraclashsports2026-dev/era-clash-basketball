@@ -1,0 +1,78 @@
+{
+  "phase": "9B.2",
+  "mode": "career-v2",
+  "generatedAt": "2026-09-05T02:17:42.760Z",
+  "trustModel": "The real Career V2 modules exercised against the test account adapter, which enforces the same ownership rules the SQL policies enforce. Live database RLS is certified separately in live-rls-qa.json.",
+  "checks": [
+    {
+      "name": "the five tabs are exactly overview/history/rosters/favorites/account",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a URL tab is honoured and an unknown one falls back to overview",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "history filters by mode, outcome and era independently",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "only eras that occur are offered, in order",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "sorting never crashes on a scoreless row",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "history pages at 25",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no rank, percentile or contender grade is a Career V2 concept",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "career totals are derived, not invented",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "recent activity is derived from real rows",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": 9,
+  "total": 9,
+  "allPassed": true,
+  "contract": {
+    "tabs": [
+      "overview",
+      "history",
+      "rosters",
+      "favorites",
+      "account"
+    ],
+    "filters": [
+      "mode",
+      "outcome",
+      "era",
+      "range"
+    ],
+    "sorts": [
+      "newest",
+      "oldest",
+      "margin",
+      "closest"
+    ],
+    "pageSize": 25
+  }
+}

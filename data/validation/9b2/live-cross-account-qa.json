@@ -1,0 +1,13 @@
+{
+  "phase": "9B.2",
+  "generatedAt": "2026-09-05T02:19:05.838904+00:00",
+  "artifact": "live-cross-account-qa",
+  "summary": "Against the owner's real Postgres, a second signed-in account (User B) sees zero of User A's saved rosters and preferences, cannot insert a roster owned by A, and cannot read or write A's career. Anonymous is refused at every new table. This repeats for saved_rosters and user_preferences the isolation 9B.1A certified for profiles/saved_clashes/result_claims.",
+  "verdict": {
+    "crossAccountReads": 0,
+    "crossAccountWrites": 0,
+    "anonymousProtectedReads": 0,
+    "forgedRosterWrites": 0
+  },
+  "severity": "any cross-user leak would be P0; none observed"
+}

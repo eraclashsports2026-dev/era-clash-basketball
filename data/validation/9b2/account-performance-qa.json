@@ -1,0 +1,55 @@
+{
+  "phase": "9B.2",
+  "mode": "performance",
+  "generatedAt": "2026-09-05T02:17:43.500Z",
+  "trustModel": "The real Career V2 modules exercised against the test account adapter, which enforces the same ownership rules the SQL policies enforce. Live database RLS is certified separately in live-rls-qa.json.",
+  "checks": [
+    {
+      "name": "filtering, sorting and paging 0 Clashes 20× stays responsive",
+      "pass": true,
+      "detail": "0.1ms"
+    },
+    {
+      "name": "filtering, sorting and paging 10 Clashes 20× stays responsive",
+      "pass": true,
+      "detail": "0.4ms"
+    },
+    {
+      "name": "filtering, sorting and paging 100 Clashes 20× stays responsive",
+      "pass": true,
+      "detail": "0.6ms"
+    },
+    {
+      "name": "filtering, sorting and paging 500 Clashes 20× stays responsive",
+      "pass": true,
+      "detail": "1.8ms"
+    },
+    {
+      "name": "history is bounded by pagination, never rendering an unbounded list",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": 5,
+  "total": 5,
+  "allPassed": true,
+  "sizes": [
+    {
+      "n": 0,
+      "ms": 0.1
+    },
+    {
+      "n": 10,
+      "ms": 0.4
+    },
+    {
+      "n": 100,
+      "ms": 0.6
+    },
+    {
+      "n": 500,
+      "ms": 1.8
+    }
+  ],
+  "note": "Synthetic fixtures following the saved-result schema; no real simulations were run."
+}

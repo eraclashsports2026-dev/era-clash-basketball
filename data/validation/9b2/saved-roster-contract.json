@@ -1,0 +1,24 @@
+{
+  "phase": "9B.2",
+  "generatedAt": "2026-09-05T02:19:05.838904+00:00",
+  "artifact": "saved-roster-contract",
+  "table": "public.saved_rosters",
+  "limitFree": 10,
+  "limitEnforcedBy": "trigger enforce_saved_roster_limit",
+  "snapshotKeysAllowed": [
+    "id",
+    "name",
+    "pos"
+  ],
+  "snapshotEnforcedBy": "roster_snapshot_ok() CHECK constraint",
+  "immutable": [
+    "roster_snapshot",
+    "snapshot_version",
+    "user_id (owner)"
+  ],
+  "editable": [
+    "display_name",
+    "favorite"
+  ],
+  "noForgedCapability": "a client-supplied rating is dropped by rosterSnapshotFrom() AND refused by the constraint; the game reconstructs every player from the canonical registry at play time"
+}
