@@ -4,28 +4,26 @@
   "items": [
     {
       "item": "signed-in header and account menu",
-      "state": "EXTERNAL_CONFIGURATION_PENDING",
-      "blocker": "Certifying the signed-in UI needs a session inside the QA browser. A session lives in its own browser's storage, so the owner's session cannot be borrowed, and no synthetic session can be created: the email rate limit refuses a link to a QA address, anonymous sign-ins are disabled on the project, and writing a synthetic user into auth.users is denied by this session's permissions.",
-      "safeFallback": "A guest is never blocked. The lobby, My EraClash and the Dream Matchup gate all certify live that they ask for an account and invent no identity."
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "Live on the durable origin: the header drops both account prompts for an identity chip, and the chip opens a menu offering My EraClash, Account settings and Sign out. Signing out returns the header to Sign in and Create free account with guest play intact."
     },
     {
       "item": "cross-device sync",
-      "state": "EXTERNAL_CONFIGURATION_PENDING",
-      "blocker": "Same dependency: two isolated browser contexts each need their own real session.",
-      "safeFallback": "The database half is certified live. Career data is readable only by its owner, career rows cannot be forged, and an unauthenticated caller is refused at the table."
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "Live, with two isolated browser contexts: a Clash saved on the first device is read back on the second by RESULT ID, not merely by count, and a third context signed in as a different account sees none of them."
     }
   ],
   "historicalState": "NOT_REPRODUCIBLE_WITH_EVIDENCE",
   "correctPreActivationState": "EXTERNAL_CONFIGURATION_PENDING",
   "reason": "A live Supabase session and cloud database did not exist when Phase 9B.1 ran. The capabilities were not unreproducible; they were not yet live-testable. The distinction matters because one implies a defect that could not be pinned down and the other implies a dependency that had not been supplied.",
-  "currentState": "The sign-in defect is FIXED_AND_VERIFIED and a real session now exists. The two ledger items remain EXTERNAL_CONFIGURATION_PENDING, with a blocker that is now specific and small: one synthetic signed-in session for the QA browser. Every layer either side of it is certified live.",
+  "currentState": "Both ledger items are FIXED_AND_VERIFIED. Reaching that state also required a deployment fault to be corrected: the Preview-scoped SUPABASE_SERVICE_ROLE_KEY had never been updated, so every cloud write returned 401 while every static check reported the system ready.",
   "requiredTerminalState": [
     "FIXED_AND_VERIFIED",
     "EXTERNAL_BLOCKER_WITH_SAFE_PRODUCT_FALLBACK"
   ],
   "historicalEvidenceRewritten": false,
   "note": "data/validation/9b1/* is left exactly as recorded. This file is the correction kept beside it. No item has been marked verified on the strength of a code path alone.",
-  "reconciledAt": "2026-09-04T23:12:30.230825+00:00",
+  "reconciledAt": "2026-09-05T01:37:58.702944+00:00",
   "signInBlocker": {
     "state": "FIXED_AND_VERIFIED",
     "defects": [

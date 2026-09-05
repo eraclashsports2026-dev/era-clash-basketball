@@ -155,10 +155,16 @@ else {
 // ── D. My EraClash, with the row that was actually saved ────────────────────
 console.log("\nD. My EraClash on real cloud data");
 await pageA.goto(`${BASE}/my-eraclash`, { waitUntil: "networkidle" });
-await pageA.waitForTimeout(2500);
+await pageA.waitForTimeout(3500);
 const careerA = await pageA.locator("body").innerText();
+// Each saved Clash renders as a row carrying its own result id, so this counts
+// stored rows rather than matching words in prose — an earlier version counted
+// prose and passed on nothing at all.
+const savedA = await pageA.locator("[data-clash]").count();
 ok("My EraClash renders for a signed-in account without asking for one", !/create free account or sign in/i.test(careerA));
 ok("it shows no email address anywhere", !/@/.test(careerA));
+if (CRED) ok("the Clash that was just saved is listed on the career page", savedA >= 1, `${savedA} saved`);
+else blocked("the Clash that was just saved is listed on the career page", CRED_WHY);
 await pageA.screenshot({ path: `${SHOTS}/my-eraclash-signed-in-1440x900.png` });
 
 // ── E. cross-device: a second context, the same account ─────────────────────
@@ -169,12 +175,16 @@ await pageB.goto(`${BASE}/play`, { waitUntil: "networkidle" });
 ok("a fresh browser starts as a guest", /free account|sign in/i.test(await headerText(pageB)));
 await adopt(pageB, sessionA);
 await pageB.goto(`${BASE}/my-eraclash`, { waitUntil: "networkidle" });
-await pageB.waitForTimeout(2500);
+await pageB.waitForTimeout(3500);
 const careerB = await pageB.locator("body").innerText();
 ok("the same account signs in on a second device", !/create free account or sign in/i.test(careerB));
-const clashCount = (t) => (t.match(/CHAOS CLASH|Clash Across Eras/gi) || []).length;
-if (CRED) ok("the second device sees the same career as the first", clashCount(careerB) === clashCount(careerA), `${clashCount(careerA)} vs ${clashCount(careerB)}`);
-else blocked("the second device sees the same saved Clashes as the first", CRED_WHY);
+const savedB = await pageB.locator("[data-clash]").count();
+if (CRED) {
+  ok("the second device reads back the same saved Clashes, by id", savedB === savedA && savedB >= 1, `${savedA} on the first, ${savedB} on the second`);
+  const idsA = await pageA.locator("[data-clash]").evaluateAll((n) => n.map((e) => e.dataset.clash).sort());
+  const idsB = await pageB.locator("[data-clash]").evaluateAll((n) => n.map((e) => e.dataset.clash).sort());
+  ok("the rows are the same rows, not merely the same number", JSON.stringify(idsA) === JSON.stringify(idsB) && idsA.length >= 1);
+} else blocked("the second device reads back the same saved Clashes", CRED_WHY);
 
 // ── F. cross-account isolation, in the browser ──────────────────────────────
 console.log("\nF. a different account sees none of it");
@@ -185,10 +195,9 @@ const sessionC = await mintSession(pageC);
 await adopt(pageC, sessionC);
 ok("the second account is a different user", sessionC.userId && sessionC.userId !== sessionA.userId);
 await pageC.goto(`${BASE}/my-eraclash`, { waitUntil: "networkidle" });
-await pageC.waitForTimeout(2500);
-const careerC = await pageC.locator("body").innerText();
-ok("a different account does not see the first account's career",
-  careerC.replace(/\s+/g, " ").slice(0, 400) !== careerA.replace(/\s+/g, " ").slice(0, 400));
+await pageC.waitForTimeout(3500);
+const savedC = await pageC.locator("[data-clash]").count();
+ok("a different account sees none of the first account's saved Clashes", savedC === 0, `${savedC} visible`);
 // And the server must refuse it directly, not only hide it in the UI.
 const stealing = await ctxC.request.post(`${BASE}/api/profile`, {
   data: { action: "cloud-save", clash: { user_id: sessionA.userId, id: "forged" } },

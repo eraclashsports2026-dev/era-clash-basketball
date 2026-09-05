@@ -1,7 +1,7 @@
 {
   "phase": "9B.1A",
   "artifact": "live-guest-security-qa",
-  "generatedAt": "2026-09-04T23:56:26.232Z",
+  "generatedAt": "2026-09-05T01:40:02.076Z",
   "origin": "https://era-clash-basketball-git-phase-9b1a-supabase-l-f071d0-era-clash.vercel.app",
   "commit": null,
   "scope": "Everything certifiable against a real deployment without a signed-in session, run against the durable branch origin rather than a commit-specific URL.",
@@ -12,13 +12,13 @@
     "serviceWords": 0,
     "anonPresent": true,
     "urlPresent": true,
-    "bytes": 777998
+    "bytes": 777444
   },
   "checks": [
     {
       "name": "no secret-shaped key is served to a browser",
       "pass": true,
-      "detail": "1 asset(s), 760KB scanned"
+      "detail": "1 asset(s), 759KB scanned"
     },
     {
       "name": "no service_role JWT is served, decided by decoding the role claim",
@@ -46,19 +46,24 @@
       "detail": "Candidate 4 · 1.4.0"
     },
     {
-      "name": "cloud accounts report configuration as booleans only",
+      "name": "the configuration flags are booleans",
       "pass": true,
-      "detail": "{\"providerConfigured\":true,\"serverCredentialConfigured\":true,\"browserCredentialConfigured\":true,\"enabled\":true,\"serverCredentialAccepted\":false}"
+      "detail": "{\"providerConfigured\":true,\"serverCredentialConfigured\":true,\"browserCredentialConfigured\":true,\"enabled\":true}"
     },
     {
       "name": "the provider still accepts the server's own credential",
-      "pass": false,
-      "detail": "REJECTED — the deployment's server credential is absent, wrong, or was rotated without the deployment being updated"
+      "pass": true,
+      "detail": ""
     },
     {
       "name": "the deep probe returns no key material",
       "pass": true,
       "detail": ""
+    },
+    {
+      "name": "the deployed credential is identified by fingerprint, never by value",
+      "pass": true,
+      "detail": "c812fed6"
     },
     {
       "name": "a cloud save with no bearer token is refused",
@@ -131,8 +136,8 @@
       "detail": "<origin>/play/dream"
     }
   ],
-  "passed": 22,
-  "total": 23,
-  "allPassed": false,
+  "passed": 24,
+  "total": 24,
+  "allPassed": true,
   "note": "No credential appears in this artifact: the bundle audit records counts and shapes only."
 }

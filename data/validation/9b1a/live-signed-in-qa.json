@@ -1,17 +1,17 @@
 {
   "phase": "9B.1A",
   "artifact": "live-signed-in-qa",
-  "generatedAt": "2026-09-04T23:53:58.738Z",
+  "generatedAt": "2026-09-05T01:37:14.901Z",
   "origin": "https://era-clash-basketball-git-phase-9b1a-supabase-l-f071d0-era-clash.vercel.app",
-  "commit": "a2bd865",
+  "commit": "12896e0",
   "sessionSource": "The provider's anonymous sign-in, enabled by the owner for this run. These are real sessions with a real auth.uid(), so RLS, the sign-up trigger and the authoritative save are exercised for real. Every one is adopted through the product's own /auth/callback in a URL fragment, exactly as an emailed link delivers one — nothing is injected into storage behind the app's back.",
   "notCertifiable": "Signing back in with a credential. An anonymous account has none. The owner's own real sign-in on this origin already demonstrates that path for a credentialed account.",
   "accounts": {
-    "first": "cfdf6af0-c150-4f04-aa03-53a1b8f05044",
-    "second": "12bab081-713a-47b5-8cf8-a16ad48b3132"
+    "first": "a8721caa-97cf-4784-bb3f-50895398f245",
+    "second": "aba20e58-3928-4608-b124-ea38dfad8354"
   },
-  "serverCredentialAcceptedByProvider": false,
-  "blockedReason": "The deployment's SUPABASE_SERVICE_ROLE_KEY is present and correctly shaped but refused by the provider — it predates the key rotation earlier in this phase. Every cloud write fails with 401, so checks that need stored data are recorded as BLOCKED rather than passed or failed.",
+  "serverCredentialAcceptedByProvider": true,
+  "blockedReason": null,
   "checks": [
     {
       "name": "the provider issues a real session with a real user id",
@@ -65,19 +65,13 @@
       "name": "the postgame panel is the signed-in variant, not the guest pitch",
       "state": "PASS",
       "pass": true,
-      "detail": "{\"mode\":\"signed-in\",\"heading\":\"SAVE FAILED — TRY AGAIN\",\"buttons\":[\"TRY AGAIN\"]}"
+      "detail": "{\"mode\":\"signed-in\",\"heading\":\"SAVING…\",\"buttons\":[]}"
     },
     {
       "name": "a signed-in save completes",
-      "state": "BLOCKED",
-      "pass": null,
-      "detail": "the deployment's server credential is refused by the provider, so no cloud write can succeed; every check below that needs stored data is blocked rather than failed"
-    },
-    {
-      "name": "a save that cannot succeed says so instead of silently doing nothing",
       "state": "PASS",
       "pass": true,
-      "detail": "SAVE FAILED — TRY AGAIN"
+      "detail": "SAVED TO MY ERACLASH"
     },
     {
       "name": "My EraClash renders for a signed-in account without asking for one",
@@ -92,6 +86,12 @@
       "detail": ""
     },
     {
+      "name": "the Clash that was just saved is listed on the career page",
+      "state": "PASS",
+      "pass": true,
+      "detail": "1 saved"
+    },
+    {
       "name": "a fresh browser starts as a guest",
       "state": "PASS",
       "pass": true,
@@ -104,10 +104,16 @@
       "detail": ""
     },
     {
-      "name": "the second device sees the same saved Clashes as the first",
-      "state": "BLOCKED",
-      "pass": null,
-      "detail": "the deployment's server credential is refused by the provider, so no cloud write can succeed; every check below that needs stored data is blocked rather than failed"
+      "name": "the second device reads back the same saved Clashes, by id",
+      "state": "PASS",
+      "pass": true,
+      "detail": "1 on the first, 1 on the second"
+    },
+    {
+      "name": "the rows are the same rows, not merely the same number",
+      "state": "PASS",
+      "pass": true,
+      "detail": ""
     },
     {
       "name": "the second account is a different user",
@@ -116,10 +122,10 @@
       "detail": ""
     },
     {
-      "name": "a different account does not see the first account's career",
+      "name": "a different account sees none of the first account's saved Clashes",
       "state": "PASS",
       "pass": true,
-      "detail": ""
+      "detail": "0 visible"
     },
     {
       "name": "the server refuses a save addressed to somebody else's account",
@@ -158,10 +164,10 @@
       "detail": ""
     }
   ],
-  "passed": 22,
+  "passed": 25,
   "failed": 0,
-  "blocked": 2,
-  "total": 24,
-  "allPassed": false,
+  "blocked": 0,
+  "total": 25,
+  "allPassed": true,
   "note": "No token or credential is recorded here. User ids are opaque uuids and the accounts are deleted after this run."
 }

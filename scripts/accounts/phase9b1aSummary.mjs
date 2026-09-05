@@ -71,20 +71,28 @@ const summary = {
     deployedQa: deployed ? { state: "VERIFIED", origin: ORIGIN } : null,
   },
 
-  notCertified: [
-    {
-      item: "a cloud save actually persisting, and a second device reading back the same saved Clashes",
-      reason: "The deployment's SUPABASE_SERVICE_ROLE_KEY is present and correctly shaped but REFUSED by the provider — it predates the key rotation earlier in this phase. Every cloud write returns 401, so nothing can be stored to read back. This is a deployment configuration fault, not a product defect: the same code path is exercised and refuses forged and unauthenticated callers correctly.",
-      evidence: "GET /api/health?deep=1 reports serverCredentialAccepted: false while every other field is true.",
-      ownerAction: "Set SUPABASE_SERVICE_ROLE_KEY in the Vercel project to the current secret key and redeploy. Then re-run account:live-signed-in-qa; the two blocked checks are the only ones left.",
-      safeFallback: "The failure is honest rather than silent: the postgame panel says SAVE FAILED — TRY AGAIN, the result stays on screen, and nothing is simulated again. Guest play is unaffected.",
-    },
-    {
-      item: "signing back in with a credential after signing out",
-      reason: "The QA sessions come from anonymous sign-in, and an anonymous account has no credential to sign back in with.",
-      evidence: "The owner's own real sign-in on this origin already demonstrates that path for a credentialed account.",
-    },
-  ],
+  notCertified: signedIn && signedIn.blocked === 0 && signedIn.failed === 0
+    ? [
+        {
+          item: "signing back in with a credential after signing out",
+          reason: "The QA sessions come from anonymous sign-in, and an anonymous account has no credential to sign back in with.",
+          evidence: "The owner's own real sign-in on this origin demonstrates that path for a credentialed account, and sign-out itself is certified here.",
+          severity: "informational — every other signed-in journey is certified live",
+        },
+      ]
+    : [
+        {
+          item: "whatever live-signed-in-qa still reports as blocked or failing",
+          reason: "See data/validation/9b1a/live-signed-in-qa.json for the per-check state and the blockedReason.",
+        },
+      ],
+
+  deploymentFaultFoundAndFixed: {
+    item: "cloud save returned 401 for every signed-in player",
+    cause: "Three rows existed for SUPABASE_SERVICE_ROLE_KEY scoped to Development, Production and Preview. Vercel stores a value per environment, so updates never reached the Preview row, and the branch alias is a Preview deployment. Its value predated the key rotation earlier in the phase.",
+    whyItHid: "The key was present and correctly shaped, so every static check reported cloud accounts ready while every write failed.",
+    nowGuardedBy: "GET /api/health?deep=1 reports whether the provider ACCEPTS the credential, with the probe status and a one-way fingerprint of the deployed value; account:live-guest-qa asserts it.",
+  },
 
   defectsFoundAndFixedThisPhase: [
     "exchangeCodeForSession was handed a URL where its parameter is an auth code — no click could ever have completed a sign-in",

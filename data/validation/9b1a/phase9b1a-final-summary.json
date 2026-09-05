@@ -1,8 +1,8 @@
 {
   "phase": "9B.1A — Supabase live activation and account certification",
-  "generatedAt": "2026-09-05T01:07:23.010Z",
+  "generatedAt": "2026-09-05T01:40:23.239Z",
   "branch": "phase-9b1a-supabase-live-certification",
-  "head": "c2007fed308e38bacc9f8040180dfc585b8b0997",
+  "head": "12896e06aa3cc6d2a9cefe13aabbde8d55005a9b",
   "durableOrigin": "https://era-clash-basketball-git-phase-9b1a-supabase-l-f071d0-era-clash.vercel.app",
   "originPolicy": "All browser and authentication certification runs against the durable branch origin. A commit-specific preview URL is a different browser origin on every push, so a session and its storage do not survive one, and each would need its own entry in the provider's redirect allow list.",
   "candidate": {
@@ -77,7 +77,7 @@
     },
     "guestSurfacesAndSecrets": {
       "state": "VERIFIED",
-      "passed": "22/23",
+      "passed": "24/24",
       "bundleAudit": {
         "assets": 1,
         "secretShaped": 0,
@@ -85,14 +85,14 @@
         "serviceWords": 0,
         "anonPresent": true,
         "urlPresent": true,
-        "bytes": 777998
+        "bytes": 777444
       }
     },
     "signedInJourneys": {
       "state": "VERIFIED_EXCEPT_BLOCKED",
-      "passed": 22,
+      "passed": 25,
       "failed": 0,
-      "blocked": 2,
+      "blocked": 0,
       "covers": "sign-in adopted through the product's own callback, the signed-in header and its account menu, a signed-in Chaos Clash to a result, My EraClash, the same account on a second device, a second account seeing none of it, the server refusing a save addressed to another account, Dream Matchup's gate lifting, and sign-out returning the header to a guest state",
       "sessionSource": "The provider's anonymous sign-in, enabled by the owner for this run. These are real sessions with a real auth.uid(), so RLS, the sign-up trigger and the authoritative save are exercised for real. Every one is adopted through the product's own /auth/callback in a URL fragment, exactly as an emailed link delivers one — nothing is injected into storage behind the app's back."
     },
@@ -103,18 +103,18 @@
   },
   "notCertified": [
     {
-      "item": "a cloud save actually persisting, and a second device reading back the same saved Clashes",
-      "reason": "The deployment's SUPABASE_SERVICE_ROLE_KEY is present and correctly shaped but REFUSED by the provider — it predates the key rotation earlier in this phase. Every cloud write returns 401, so nothing can be stored to read back. This is a deployment configuration fault, not a product defect: the same code path is exercised and refuses forged and unauthenticated callers correctly.",
-      "evidence": "GET /api/health?deep=1 reports serverCredentialAccepted: false while every other field is true.",
-      "ownerAction": "Set SUPABASE_SERVICE_ROLE_KEY in the Vercel project to the current secret key and redeploy. Then re-run account:live-signed-in-qa; the two blocked checks are the only ones left.",
-      "safeFallback": "The failure is honest rather than silent: the postgame panel says SAVE FAILED — TRY AGAIN, the result stays on screen, and nothing is simulated again. Guest play is unaffected."
-    },
-    {
       "item": "signing back in with a credential after signing out",
       "reason": "The QA sessions come from anonymous sign-in, and an anonymous account has no credential to sign back in with.",
-      "evidence": "The owner's own real sign-in on this origin already demonstrates that path for a credentialed account."
+      "evidence": "The owner's own real sign-in on this origin demonstrates that path for a credentialed account, and sign-out itself is certified here.",
+      "severity": "informational — every other signed-in journey is certified live"
     }
   ],
+  "deploymentFaultFoundAndFixed": {
+    "item": "cloud save returned 401 for every signed-in player",
+    "cause": "Three rows existed for SUPABASE_SERVICE_ROLE_KEY scoped to Development, Production and Preview. Vercel stores a value per environment, so updates never reached the Preview row, and the branch alias is a Preview deployment. Its value predated the key rotation earlier in the phase.",
+    "whyItHid": "The key was present and correctly shaped, so every static check reported cloud accounts ready while every write failed.",
+    "nowGuardedBy": "GET /api/health?deep=1 reports whether the provider ACCEPTS the credential, with the probe status and a one-way fingerprint of the deployed value; account:live-guest-qa asserts it."
+  },
   "defectsFoundAndFixedThisPhase": [
     "exchangeCodeForSession was handed a URL where its parameter is an auth code — no click could ever have completed a sign-in",
     "the one-time code field stripped every non-digit, so the only proof the default email template sends could not be entered",
@@ -129,15 +129,13 @@
     "items": [
       {
         "item": "signed-in header and account menu",
-        "state": "EXTERNAL_CONFIGURATION_PENDING",
-        "blocker": "Certifying the signed-in UI needs a session inside the QA browser. A session lives in its own browser's storage, so the owner's session cannot be borrowed, and no synthetic session can be created: the email rate limit refuses a link to a QA address, anonymous sign-ins are disabled on the project, and writing a synthetic user into auth.users is denied by this session's permissions.",
-        "safeFallback": "A guest is never blocked. The lobby, My EraClash and the Dream Matchup gate all certify live that they ask for an account and invent no identity."
+        "state": "FIXED_AND_VERIFIED",
+        "evidence": "Live on the durable origin: the header drops both account prompts for an identity chip, and the chip opens a menu offering My EraClash, Account settings and Sign out. Signing out returns the header to Sign in and Create free account with guest play intact."
       },
       {
         "item": "cross-device sync",
-        "state": "EXTERNAL_CONFIGURATION_PENDING",
-        "blocker": "Same dependency: two isolated browser contexts each need their own real session.",
-        "safeFallback": "The database half is certified live. Career data is readable only by its owner, career rows cannot be forged, and an unauthenticated caller is refused at the table."
+        "state": "FIXED_AND_VERIFIED",
+        "evidence": "Live, with two isolated browser contexts: a Clash saved on the first device is read back on the second by RESULT ID, not merely by count, and a third context signed in as a different account sees none of them."
       }
     ]
   },

@@ -62,7 +62,13 @@ ok("the deployed build is Candidate 4 on the frozen calibration",
 const deepRaw = await (await ctx.request.get(`${BASE}/api/health?deep=1`)).text();
 const deep = JSON.parse(deepRaw);
 const cloud = deep?.cloudAccounts ?? {};
-ok("cloud accounts report configuration as booleans only", Object.values(cloud).every((v) => typeof v === "boolean"), JSON.stringify(cloud));
+// The four configuration flags must stay booleans. The diagnostic fields
+// beside them are deliberately richer — a status number, a kind label, a
+// fingerprint — so "every value is a boolean" is the wrong test now and would
+// fail for a payload that is doing its job.
+const FLAGS = ["providerConfigured", "serverCredentialConfigured", "browserCredentialConfigured", "enabled"];
+ok("the configuration flags are booleans", FLAGS.every((k) => typeof cloud[k] === "boolean"),
+  JSON.stringify(Object.fromEntries(FLAGS.map((k) => [k, cloud[k]]))));
 ok("the provider still accepts the server's own credential",
   cloud.serverCredentialAccepted === true,
   cloud.serverCredentialAccepted === false
@@ -71,7 +77,14 @@ ok("the provider still accepts the server's own credential",
       + "deployment. Vercel also skips a SHA it has already built, so a redeploy needs either the dashboard's Redeploy button "
       + "or a new commit. Check the variable is set for the Preview environment too, not Production alone."
     : "");
-ok("the deep probe returns no key material", !/sb_secret|sb_publishable|eyJ/.test(deepRaw));
+// A KEY, not the word. "sb_secret" appears as a kind label and must not be
+// mistaken for a credential; what would be a leak is the prefix followed by a
+// real body, or a three-part JWT.
+const looksLikeAKey = /sb_(secret|publishable)_[A-Za-z0-9_-]{16,}/.test(deepRaw)
+  || /eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{10,}/.test(deepRaw);
+ok("the deep probe returns no key material", !looksLikeAKey);
+ok("the deployed credential is identified by fingerprint, never by value",
+  /^[0-9a-f]{8}$/.test(cloud.serverCredentialIntegrity?.fingerprint || ""), cloud.serverCredentialIntegrity?.fingerprint);
 
 const noToken = await ctx.request.post(`${BASE}/api/profile`, { data: { action: "cloud-save", clash: { id: "x" } }, failOnStatusCode: false });
 ok("a cloud save with no bearer token is refused", noToken.status() >= 400, `HTTP ${noToken.status()}`);
