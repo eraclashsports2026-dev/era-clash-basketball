@@ -1,7 +1,7 @@
 {
   "artifact": "challenge-rls-live",
   "phase": "9C — Challenges + Persistent Competitive Identity V1",
-  "verifiedAt": "2026-09-05T05:55:59.201Z",
+  "verifiedAt": "2026-09-05T06:19:16.159Z",
   "project": "lfybiphmqkiecfrqsfzt (the certified preview project; production has no cloud accounts)",
   "method": "Not a simulation: statements executed on the live database through the Supabase management API inside transactions that were rolled back, switching to the anon / authenticated roles with request.jwt.claims set to the QA accounts' ids. QA accounts qa-9c-creator / qa-9c-recipient (throwaway, deleted at the end of the phase) own the seeded rows.",
   "migration": "0004_challenges recorded in public.schema_migrations; policies challenges_select_own, challenge_attempts_select_own, challenge_attempts_select_responses; triggers on_auth_user_created, on_auth_user_deleted_challenges present on auth.users",
@@ -14,13 +14,41 @@
     "expired": "EC-WHPM-36XY (expires_at in the past)",
     "revoked": "EC-X6G8-V2L4 (revoked_at set)"
   },
-  "expiration": null,
-  "creatorDeletion": null,
-  "recipientDeletion": null,
-  "responses": null,
-  "pending": [
-    "guest accept + complete on the durable alias against EC-8ABQ-MKGY, then: creator sees the response row under challenge_attempts_select_responses",
-    "expired and revoked invitations read on the alias",
-    "deletion of the QA accounts: trigger anonymises; history stays"
-  ]
+  "expiration": {
+    "pass": true,
+    "evidence": "EC-WHPM-36XY (expires_at in the past) reads expired on the alias and refuses a new attempt (status expired); the invitation renders 'This challenge has expired'"
+  },
+  "creatorDeletion": {
+    "pass": true,
+    "evidence": "the QA creator was deleted from auth.users: all three QA challenges keep their rows with creator_user_id null, creator_display_snapshot 'Deleted account', creator_roster [], creator_coach and creator_mvp null; their 2 completed guest attempts and the secret row remain; on the durable alias every one of them now reads the same one-key `unavailable` as an unknown code (EC-8ABQ-MKGY, EC-WHPM-36XY, EC-X6G8-V2L4 vs EC-ZZZZ-ZZZZ)"
+  },
+  "recipientDeletion": {
+    "pass": true,
+    "evidence": "a QA recipient with an attempt in progress on EC-8ABQ-MKGY was deleted from auth.users: the attempt row stays with user_id null and display_snapshot 'Deleted account' (status unchanged); guest attempts untouched"
+  },
+  "responses": {
+    "pass": true,
+    "evidence": "after a guest accepted and completed EC-8ABQ-MKGY on the durable alias (134–141, performance −7, challenge outcome creator, comparison 1.0.0, result and run ids well-shaped, 64-char device hash): creator (authenticated, sub=A) sees 1 attempt / 1 completed through challenge_attempts_select_responses; recipient (authenticated, sub=B) sees 1 attempt (own, in progress) and 0 challenges"
+  },
+  "pending": [],
+  "liveAttempt": {
+    "challenge": "EC-8ABQ-MKGY",
+    "guest": true,
+    "status": "completed",
+    "score": {
+      "gold": 134,
+      "blue": 141
+    },
+    "outcome": "loss",
+    "performance": -7,
+    "challengeOutcome": "creator",
+    "comparisonVersion": "1.0.0",
+    "manifestRemintedFromKeptSeed": true,
+    "note": "the seeded challenge had no run-store manifest; accept re-minted it from challenge_secrets and the recipient played the seeded opening"
+  },
+  "revocation": {
+    "pass": true,
+    "evidence": "EC-X6G8-V2L4 (revoked_at set) reads revoked on the alias and refuses a new attempt; the invitation renders 'withdrawn'"
+  },
+  "cleanup": "the QA users are deleted; the three QA challenge rows (and their attempts and secret, by cascade) are deleted at the end of the phase so the live database carries no QA data"
 }

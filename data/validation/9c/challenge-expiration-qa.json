@@ -1,0 +1,35 @@
+{
+  "artifact": "challenge-expiration-qa",
+  "phase": "9C — Challenges + Persistent Competitive Identity V1",
+  "generatedAt": "2026-09-05T06:24:18.421Z",
+  "derivedFrom": [
+    "challenge-contract",
+    "challenge-deployed-qa"
+  ],
+  "checks": [
+    {
+      "check": "30-day lifetime, derived status",
+      "pass": true,
+      "detail": "",
+      "from": "challenge-contract"
+    },
+    {
+      "check": "a live expired challenge reads expired and refuses new attempts",
+      "pass": true,
+      "detail": "expired",
+      "from": "challenge-deployed-qa"
+    },
+    {
+      "check": "the expired invitation renders honestly on the preview",
+      "pass": true,
+      "detail": "",
+      "from": "challenge-deployed-qa"
+    }
+  ],
+  "passed": true,
+  "unit": "derived status from expires_at; an expired challenge cannot start attempts",
+  "live": {
+    "pass": true,
+    "evidence": "EC-WHPM-36XY (expires_at in the past) reads expired on the alias and refuses a new attempt (status expired); the invitation renders 'This challenge has expired'"
+  }
+}

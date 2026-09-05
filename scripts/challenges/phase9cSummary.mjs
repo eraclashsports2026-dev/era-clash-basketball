@@ -30,8 +30,12 @@ const cand = (h) => (h?.preview ? { candidateId: h.preview.candidateId, coreHash
 
 const A = Object.fromEntries(["challenge-contract", "challenge-seed-qa", "challenge-rls-qa", "challenge-security-qa", "challenge-history-qa", "challenge-responsive-qa", "challenge-accessibility-qa", "challenge-deployed-qa", "challenge-create-qa", "challenge-accept-qa", "challenge-result-qa", "challenge-revocation-qa", "challenge-expiration-qa", "challenge-enumeration-qa", "challenge-cross-account-qa", "challenge-guest-qa", "challenge-performance-qa", "challenge-secret-audit", "challenge-rls-live"].map((n) => [n, read(n)]));
 const sweep = existsSync(`${OUT}/final-gate-sweep.log`) ? readFileSync(`${OUT}/final-gate-sweep.log`, "utf8") : "";
-const grab = (re) => { const all = [...sweep.matchAll(new RegExp(re.source, re.flags.includes("g") ? re.flags : re.flags + "g"))]; return all.length ? all.at(-1)[1] : null; };
-const facts = { vitest: grab(/Tests\s+(\d+ passed[^\n]*)/), playwright: grab(/\n\s*(\d+ passed[^\n]*)/), gateFailures: (sweep.match(/^(ui:[a-z-]+|chaos:[a-z0-9-]+|account:[a-z-]+|challenge:[a-z-]+|preview:[a-z-]+)\s+FAIL/gm) || []), gates: (sweep.match(/^(ui:[a-z-]+|chaos:[a-z0-9-]+|account:[a-z-]+|challenge:[a-z-]+|preview:[a-z-]+)\s+PASS/gm) || []).length, liveGuest: grab(/live-guest-qa\s+([^\n]+)/), deployedAccount: grab(/^deployed-qa\s+([^\n]+)/m) };
+// The log keeps every section (first sweep, deployed runs, the final sweep on
+// the final code). Suite totals and gate verdicts come from the LAST sweep
+// section; deployed lines from their last occurrence anywhere.
+const finalSection = sweep.slice(sweep.lastIndexOf("=== PHASE 9C FINAL SWEEP"));
+const grab = (re, text = sweep) => { const all = [...text.matchAll(new RegExp(re.source, re.flags.includes("g") ? re.flags : re.flags + "g"))]; return all.length ? all.at(-1)[1] : null; };
+const facts = { vitest: grab(/Tests\s+(\d+ passed[^\n]*)/, finalSection), playwright: grab(/\n\s*(\d+ passed[^\n]*)/, finalSection), gateFailures: (finalSection.match(/^(ui:[a-z-]+|chaos:[a-z0-9-]+|account:[a-z-]+|challenge:[a-z-]+|preview:[a-z-]+)\s+FAIL/gm) || []), gates: (finalSection.match(/^(ui:[a-z-]+|chaos:[a-z0-9-]+|account:[a-z-]+|challenge:[a-z-]+|preview:[a-z-]+)\s+PASS/gm) || []).length, liveGuest: grab(/live-guest-qa\s+([^\n]+)/), deployedAccount: grab(/^deployed-qa\s+([^\n]+)/m), deployedChallenge: grab(/^challenge:deployed-qa\s+(PASS|FAIL)/m), deployedChaos: grab(/^chaos:deployed-qa\s+(PASS|FAIL)/m) };
 
 write("challenge-comparison-contract", { artifact: "challenge-comparison-contract", phase: PHASE, generatedAt: now(), comparisonVersion: C.COMPARISON_VERSION,
   performanceScore: "+margin on a win, −margin on a loss, 0 on a tie (user side Gold)", challengeOutcome: "higher performance wins; equal is a tie",

@@ -118,7 +118,7 @@ if (httpModes.has(MODE)) {
 
   if (MODE === "security") {
     const health = await (await context.request.get(`${BASE}/api/health`)).json();
-    ok("the account provider is configured on this origin", !!health?.cloud?.serverCredentialConfigured || isFake, JSON.stringify(health?.cloud || {}).slice(0, 80));
+    ok("the account provider is configured on this origin", !!(health?.cloudAccounts?.providerConfigured && health?.cloudAccounts?.serverCredentialConfigured), JSON.stringify(health?.cloudAccounts || {}).slice(0, 120));
     // enumeration: unknown, malformed, sequential-looking, empty
     const codes = ["EC-ZZZZ-ZZZZ", "EC-AAAA-AAAA", "EC-AAAA-AAAB", "nonsense", "", "../x", "EC-0000-0000", "%00"];
     const views = [];
@@ -275,7 +275,7 @@ if (httpModes.has(MODE)) {
     // for accept/complete are seeded by the phase's live QA (see the summary).
     const health = await (await context.request.get(`${BASE}/api/health`)).json();
     ok("Candidate 4 on the preview", health?.preview?.candidateId === "Candidate 4" && health?.preview?.calibrationVersion === "1.4.0", `${health?.preview?.candidateId} ${health?.preview?.calibrationVersion}`);
-    ok("the account provider is configured", !!health?.cloud?.serverCredentialConfigured, JSON.stringify(health?.cloud || {}).slice(0, 100));
+    ok("the account provider is configured", !!(health?.cloudAccounts?.providerConfigured && health?.cloudAccounts?.serverCredentialConfigured), JSON.stringify(health?.cloudAccounts || {}).slice(0, 120));
     const un = await (await post(context, { action: "challenge-view", code: "EC-ZZZZ-ZZZZ" })).json();
     ok("an unknown code is generically unavailable", un.status === "unavailable");
     ok("create without an account is refused", (await post(context, { action: "challenge-create", chaosRunId: "runaaaaaaaa1" })).status() === 401);

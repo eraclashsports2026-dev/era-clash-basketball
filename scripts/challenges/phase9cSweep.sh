@@ -11,7 +11,8 @@ DEPLOYED="${1:-}"
 HARNESS=http://localhost:4180
 FAKE=http://localhost:4178
 SKIP_UNIT="${SKIP_UNIT:-0}"
-TEE=tee; [ "$SKIP_UNIT" = "1" ] && TEE="tee -a"
+APPEND="${APPEND:-0}"            # APPEND=1: keep earlier sections (e.g. a deployed run) and add this sweep below them
+TEE=tee; { [ "$SKIP_UNIT" = "1" ] || [ "$APPEND" = "1" ]; } && TEE="tee -a"
 mkdir -p data/validation/9c
 # the fake-cloud harness for the challenge gates
 if ! curl -sf -m 3 "$FAKE/api/health" >/dev/null 2>&1; then
@@ -21,7 +22,7 @@ else STARTED_FAKE=0; fi
 gate() { local name="$1"; shift; if "$@" >/dev/null 2>&1; then printf '%-34s PASS\n' "$name"; else printf '%-34s FAIL\n' "$name"; fi; }
 {
   if [ "$SKIP_UNIT" = "1" ]; then echo "=== PHASE 9C FINAL SWEEP PART 2 $(date -u +%FT%TZ) @ $(git rev-parse --short HEAD) (unit suite: see part 1) ===";
-  else echo "=== PHASE 9C FINAL SWEEP $(date -u +%FT%TZ) @ $(git rev-parse --short HEAD) ===";
+  else echo "=== PHASE 9C FINAL SWEEP${APPEND:+ (final code)} $(date -u +%FT%TZ) @ $(git rev-parse --short HEAD) ===";
   echo "--- unit ---"; npx vitest run 2>&1 | grep -E 'Test Files|Tests |FAIL|✗|failed' | head -20; fi
   echo "--- build ---"; npm run build 2>&1 | tail -2
   echo "--- e2e (all projects, incl. challenges-fake-cloud) ---"; npx playwright test 2>&1 | grep -E 'passed|failed|flaky|skipped|Error' | tail -6
