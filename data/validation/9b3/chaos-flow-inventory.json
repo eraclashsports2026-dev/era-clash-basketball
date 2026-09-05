@@ -1,0 +1,169 @@
+{
+  "artifact": "chaos-flow-inventory",
+  "phase": "9B.3",
+  "generatedAt": "2026-09-05T02:56:01.173038+00:00",
+  "purpose": "Ground truth of the Chaos Clash flow as it exists at the 9B.2 head, so the six-state refactor is laid over facts. Read-only survey; nothing here proposes a change. Claims marked verified were re-read directly after the survey.",
+  "stateMachine": {
+    "serverPhases": {
+      "where": "src/chaos/runState.js:51-53",
+      "values": [
+        "ROLL_1_REVEALED",
+        "ROLL_2_REVEALED",
+        "ROLL_3_REVEALED",
+        "ROSTERS_LOCKED",
+        "COACH_ROLL_1..3",
+        "COACH_SELECTION",
+        "READY",
+        "SIMULATED",
+        "ABANDONED"
+      ],
+      "note": "sequence 2 (live) hires from ROLL_3_REVEALED; COACH_SELECTION is legacy sequence 1 (runState.js:536-545)"
+    },
+    "clientDerivation": {
+      "where": "src/components/arena/ChaosStage.jsx:201-216",
+      "note": "no explicit client state enum; drafting/selecting/ready are derived from the run object; one cta object and a data-focus attribute (:278-281) drive presentation"
+    },
+    "renderBranchesToday": {
+      "where": "src/components/arena/ChaosStage.jsx:222-272 and :280-404",
+      "count": 2,
+      "note": "post-game branch vs everything else; all six target states currently share one JSX tree"
+    },
+    "outerPhaseProp": {
+      "where": "src/App.jsx:1937 \u2192 src/components/arena/TimeArena.jsx:45",
+      "values": [
+        "draft",
+        "simulating",
+        "complete"
+      ]
+    }
+  },
+  "resultDock": {
+    "where": "src/components/arena/TimeArena.jsx:63-67",
+    "verified": true,
+    "finding": "mounted unconditionally inside the rail, never unmounted \u2014 this is why the previous Clash persists while a new one is built",
+    "internalStates": "ResultDock.jsx:329 complete \u00b7 :332 simulating \u00b7 :358 prior result \u00b7 :361 empty",
+    "prevPhaseRef": "ResultDock.jsx:128-132 auto-opens the Story only on simulating\u2192complete; unmounting the dock between states kills it"
+  },
+  "liveIntel": {
+    "where": "src/components/arena/LiveIntel.jsx:41-160",
+    "finding": "always mounted, never collapsible as a whole; two inner toggles only (rulesOpen :106, eraOpen :119)"
+  },
+  "draftPressure": {
+    "displayCount": 1,
+    "where": "src/components/arena/LiveIntel.jsx:59-61",
+    "pinnedBy": [
+      "scripts/ui/uiQa.mjs:283-286",
+      "tests/chaos-synchronized-draft.test.js:519-527",
+      "e2e/phase8c-time-arena.spec.js:197-210"
+    ]
+  },
+  "coachChaos": {
+    "where": "src/components/arena/ChaosStage.jsx:313-343",
+    "verified": true,
+    "finding": "always rendered from the empty board onward; three placeholders when offers are empty; only visually subdued via data-active; actionable hire begins at selecting, i.e. after Roll 3 lands, which is when the five is complete"
+  },
+  "eraReveal": {
+    "server": "src/chaos/runState.js:286-290 \u2014 revealed WITH Roll 2",
+    "verified": true,
+    "client": "no dedicated state; surfaces in LiveIntel.jsx:66-88, UtilityBar.jsx:48-57, the CTA sub-copy ChaosStage.jsx:212, and an sr-only region :296-298",
+    "analytics": "chaos_era_revealed at ChaosStage.jsx:168 compares new vs old revealed \u2014 a dedicated state must not double-fire"
+  },
+  "clashReadyRead": {
+    "finding": "Chaos has NO matchup preview; its pre-sim read is Live Intel. The 'MATCHUP PREVIEW' read and e2e/phase7b-preview.spec.js P1 belong to Dream Matchup (MatchupPreview.jsx, PlayPanels.jsx, api/_lib/pregameRead.js), not to this flow."
+  },
+  "postgameHooks": {
+    "savePanel": "src/components/accounts/SaveThisClash.jsx:43 (signed-in) / :67 (guest), rendered inside renderReport when live && resultId (App.jsx:1791-1800), reached via onViewFullReport \u2192 setFullReport (App.jsx:1941-1946) \u2192 overlay :2033-2046",
+    "autoSave": "App.jsx:310-312",
+    "runItBack": "ResultDock.jsx:305 \u2192 App.jsx:1947 doRematch('chaos') (:1156-1166); saved-roster path runItBackFromSaved (:1176-1186) via goldOverride on runSingle (:988-1000)",
+    "saveSquad": "App.jsx:1803-1806, live only"
+  },
+  "serverContractUnchanged": {
+    "where": "src/chaos/client.js:18-32 \u2192 POST /api/game",
+    "chaosActions": [
+      "start",
+      "view",
+      "holds",
+      "decide",
+      "era",
+      "coachHolds",
+      "coach",
+      "abandon",
+      "challenge",
+      "simulate"
+    ],
+    "validation": "api/game.js:94-230"
+  },
+  "css": {
+    "scopes": [
+      ".ec-arena-shell",
+      ".ec-arena-page",
+      ".ec-arena-court",
+      ".ec-ta",
+      ".ec-ta-main",
+      ".ec-ta-rail",
+      ".ec-ta-rail--front",
+      ".ec-ta-stage",
+      ".ec-ta-stepper",
+      ".ec-ta-roster",
+      ".ec-ta-coach",
+      ".ec-cc-offers",
+      ".ec-coach-card",
+      ".ec-ta-cta-*",
+      ".ec-ta-utility",
+      ".ec-intel-*",
+      ".ec-dock-*",
+      ".ec-ta-atmos"
+    ],
+    "breakpoints": [
+      1439,
+      1279,
+      1179,
+      900,
+      767,
+      430
+    ],
+    "jsCompact": "useCompact(560) TimeArena.jsx:25-35"
+  },
+  "gatesThatPinThisFlow": {
+    "e2e": [
+      "e2e/phase8c-time-arena.spec.js (24 tests: .ec-ta columns, CTA labels, dock, mobile order)",
+      "e2e/phase8a-chaos.spec.js",
+      "e2e/journeys.spec.js",
+      "e2e/phase9a-play-lobby.spec.js",
+      "e2e/phase9a3p-lobby-polish.spec.js"
+    ],
+    "vitestSourceGates": [
+      "tests/v8c-arena-navigation.test.js",
+      "tests/v9a1-theme-architecture.test.js",
+      "tests/v9a2-night-court-production.test.js",
+      "tests/v9a3-wave2.test.js",
+      "tests/v9b1-accounts.test.js:541",
+      "tests/v9a-play-lobby.test.js",
+      "tests/chaos-synchronized-draft.test.js",
+      "tests/v8a-chaos-api.test.js",
+      "tests/v8a-component-integrity.test.js"
+    ],
+    "uiGates": {
+      "verified": true,
+      "uiQa.mjs:195-196": "requires the literals ROLL 1 / LOCK & ROLL 2 / FINAL ROLL / HIRE THIS STAFF / RUN SIM inside ChaosStage.jsx specifically",
+      "uiQa.mjs:167": "asserts ec-ta-rail--front appears in TimeArena.jsx",
+      "time-arena-qa.mjs:66-83": "the nine-screenshot states walk waits on .ec-intel-era-id, then .ec-coach-card nth(2) BEFORE the hire step, then RUN SIM, then FINAL SCORE"
+    }
+  },
+  "risks": [
+    "resumed ref (ChaosStage.jsx:101,127-140) fires once per mount; separately mounted state components would re-run or skip the resume pass",
+    "runKey effect (ChaosStage.jsx:119-124) re-seeds holds/coachHolds/picked on chaosRunId:roll:phase; new branches must not remount away a pending decision mid-roll",
+    "ResultDock prevPhase ref and its 30s agoLabel interval depend on staying mounted; a Result hero that unmounts the drafting dock loses the LAST CLASH state",
+    "localStorage ec_chaos_run / ec_chaos_run_at written ChaosStage.jsx:36-40, removed App.jsx:1222,1248, read by the lobby Continue card (runStorage.js:4-5)",
+    "analytics call sites: chaos_roll_completed :156,:167 \u00b7 chaos_era_revealed :168 \u00b7 chaos_coach_selected :174 \u00b7 result_tab_opened ResultDock.jsx:202 \u00b7 new_clash_started App.jsx:1238",
+    "hiding Coach Chaos until the five is complete breaks time-arena-qa.mjs:69 unless the walk is updated; moving CTA literals out of ChaosStage.jsx breaks uiQa.mjs:195",
+    "onReady fires only on hire (ChaosStage.jsx:174); runChaosClash reads chaosRun || chaosReady (App.jsx:1205-1206) because a reloaded READY run never fires it"
+  ],
+  "designConsequences": [
+    "Result Dock must be removed from the board while a new Clash is being built without losing the simulating\u2192complete transition or the LAST CLASH affordance elsewhere",
+    "Era Reveal needs a dedicated client state gated on the ROLL_2_REVEALED transition, firing chaos_era_revealed exactly once",
+    "Coach Chaos must not mount until the five is complete (selecting), and the states walk must be updated to match",
+    "Live Intel becomes progressive disclosure; Draft Pressure keeps exactly one visible instance",
+    "Clash Ready has one primary action, RUN CLASH; gates that pin RUN SIM / HIRE THIS STAFF literals will need deliberate, recorded updates rather than silent edits"
+  ]
+}
