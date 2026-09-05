@@ -225,7 +225,7 @@ const rules = (st, f, mobile, touch = mobile) => {
 };
 
 // ── states ───────────────────────────────────────────────────────────────────
-async function statesMode(viewports = [...DESKTOP, ...TABLET, ...MOBILE], only = null) {
+async function statesMode(viewports = [...DESKTOP, ...TABLET, ...MOBILE], only = null, prefix = "") {
   const browser = await chromium.launch();
   const perState = Object.fromEntries(STATES.map((s) => [s, []]));
   const transitions = {};
@@ -234,7 +234,7 @@ async function statesMode(viewports = [...DESKTOP, ...TABLET, ...MOBILE], only =
     await openSession(context);
     const page = await context.newPage();
     await freshAccount(page);
-    const dir = `${SHOTS}/${vw}x${vh}`; mkdirSync(dir, { recursive: true });
+    const dir = `${SHOTS}/${prefix}${vw}x${vh}`; mkdirSync(dir, { recursive: true });
     console.log(`\n${vw}×${vh}`);
     const t = await walk(page, async (st) => {
       // Captures start at the top of the page: on a phone the sticky action or a
@@ -259,16 +259,16 @@ async function statesMode(viewports = [...DESKTOP, ...TABLET, ...MOBILE], only =
     const failed = runs.flatMap((r) => r.checks.filter((c) => !c.pass).map((c) => ({ viewport: r.viewport, ...c })));
     if (failed.length) allPass = false;
     // A focused single-state run must not overwrite the seven-viewport record.
-    const name = only ? { ERA_REVEAL: "era-reveal-flow-qa", COACH_SELECT: "coach-flow-qa", RESULT: "result-flow-qa" }[st] || `${ARTIFACT[st]}-focused` : ARTIFACT[st];
+    const name = prefix + (only ? { ERA_REVEAL: "era-reveal-flow-qa", COACH_SELECT: "coach-flow-qa", RESULT: "result-flow-qa" }[st] || `${ARTIFACT[st]}-focused` : ARTIFACT[st]);
     write(name, { artifact: name, phase: PHASE, generatedAt: now(), origin: BASE, state: st, viewports: viewports.map(([w, h]) => `${w}x${h}`), reference: `${REF_DIR}/${REF[st]}`, runs, failed, passed: failed.length === 0 });
   }
   if (!only) {
     const overflow = Object.fromEntries(STATES.map((s) => [s, Object.fromEntries(perState[s].map((r) => [r.viewport, r.facts.overflow]))]));
     const minButton = Object.fromEntries(STATES.map((s) => [s, Object.fromEntries(perState[s].map((r) => [r.viewport, r.facts.minButton]))]));
-    write("responsive-qa", { artifact: "responsive-qa", phase: PHASE, generatedAt: now(), origin: BASE, viewports: viewports.map(([w, h]) => `${w}x${h}`), overflowByState: overflow, minControlByState: minButton, classes: { desktop: DESKTOP.map(([w, h]) => `${w}x${h}`), tablet: TABLET.map(([w, h]) => `${w}x${h}`), mobile: MOBILE.map(([w, h]) => `${w}x${h}`) }, mobilePattern: "one team at a time (Gold first, Blue one tap away), sticky primary action; 44px touch targets through 1179px", transitionsMs: transitions, passed: allPass });
+    write(`${prefix}responsive-qa`, { artifact: `${prefix}responsive-qa`, phase: PHASE, generatedAt: now(), origin: BASE, viewports: viewports.map(([w, h]) => `${w}x${h}`), overflowByState: overflow, minControlByState: minButton, classes: { desktop: DESKTOP.map(([w, h]) => `${w}x${h}`), tablet: TABLET.map(([w, h]) => `${w}x${h}`), mobile: MOBILE.map(([w, h]) => `${w}x${h}`) }, mobilePattern: "one team at a time (Gold first, Blue one tap away), sticky primary action; 44px touch targets through 1179px", transitionsMs: transitions, passed: allPass });
     const d = (st, k) => perState[st].map((r) => r.facts[k]);
-    write("progressive-disclosure-qa", {
-      artifact: "progressive-disclosure-qa", phase: PHASE, generatedAt: now(), origin: BASE,
+    write(`${prefix}progressive-disclosure-qa`, {
+      artifact: `${prefix}progressive-disclosure-qa`, phase: PHASE, generatedAt: now(), origin: BASE,
       coachChaosHiddenUntilRosterSet: ["EMPTY", "DRAFTING", "ERA_REVEAL"].every((s) => d(s, "coachCards").every((n) => n === 0)) && d("COACH_SELECT", "coachCards").every((n) => n === 3),
       resultDockAbsentDuringDraft: ["EMPTY", "DRAFTING", "ERA_REVEAL", "COACH_SELECT", "READY"].every((s) => d(s, "docks").every((n) => n === 0)),
       liveIntelCompactWhileDrafting: d("DRAFTING", "intelCompact").every(Boolean),
@@ -526,7 +526,7 @@ async function contactSheets() {
 // ── deployed: the states drive against a gated preview, plus what it ships ───
 async function deployedMode() {
   if (!BASE.startsWith("https://")) { console.error("deployed mode needs an https origin"); process.exit(2); }
-  const passed = await statesMode([[1536, 1024], [390, 844]]);
+  const passed = await statesMode([[1536, 1024], [390, 844]], null, "deployed-");
   const browser = await chromium.launch(); const context = await browser.newContext(); await openSession(context);
   const page = await context.newPage(); await page.goto(`${BASE}/play`, { waitUntil: "networkidle" });
   const audit = await page.evaluate(async () => {
@@ -537,10 +537,19 @@ async function deployedMode() {
     return out;
   });
   const health = await (await context.request.get(`${BASE}/api/health`)).json();
+  // Which build the alias serves. The service worker's cache identity is a
+  // content hash and differs from a local build because the environment is
+  // baked into the bundle, so it is recorded, not compared. The proof that the
+  // alias serves THIS head is a marker only this head carries: the browser key
+  // the finished game is kept under (App.jsx, 9B.3).
+  const idOf = (t) => (String(t).match(/eraclash-assets:[0-9.]+:[0-9a-f]+/) || [null])[0];
+  const served = idOf(await (await context.request.get(`${BASE}/sw.js`)).text());
+  const local = existsSync("dist/sw.js") ? idOf(readFileSync("dist/sw.js", "utf8")) : null;
+  const bundleHasMarker = await page.evaluate(async () => { for (const s of [...document.querySelectorAll("script[src]")].map((x) => x.src)) { if ((await (await fetch(s)).text()).includes("ec_prior_result")) return true; } return false; });
   await browser.close();
-  const ok = passed && audit.secretShaped === 0 && audit.serviceRoleJwt === 0 && health?.preview?.candidateId === "Candidate 4";
-  write("secret-audit", { artifact: "secret-audit", phase: PHASE, generatedAt: now(), origin: BASE, bundle: audit, candidate: { id: health?.preview?.candidateId, coreHash: health?.preview?.candidateCoreHash, calibration: health?.preview?.calibrationVersion }, passed: audit.secretShaped === 0 && audit.serviceRoleJwt === 0 });
-  console.log(`  deployed: states ${passed ? "pass" : "FAIL"} · secrets ${audit.secretShaped + audit.serviceRoleJwt} · ${health?.preview?.candidateId} ${health?.preview?.calibrationVersion}`);
+  const ok = passed && audit.secretShaped === 0 && audit.serviceRoleJwt === 0 && health?.preview?.candidateId === "Candidate 4" && bundleHasMarker;
+  write("secret-audit", { artifact: "secret-audit", phase: PHASE, generatedAt: now(), origin: BASE, bundle: audit, buildIdentity: { served, localFinalBuild: local, servesThisHead: bundleHasMarker, note: "content hashes differ between a local and a Vercel build (environment is baked in); servesThisHead reads a marker introduced at this head" }, candidate: { id: health?.preview?.candidateId, coreHash: health?.preview?.candidateCoreHash, calibration: health?.preview?.calibrationVersion }, passed: audit.secretShaped === 0 && audit.serviceRoleJwt === 0 });
+  console.log(`  deployed: states ${passed ? "pass" : "FAIL"} · secrets ${audit.secretShaped + audit.serviceRoleJwt} · ${health?.preview?.candidateId} ${health?.preview?.calibrationVersion} · build ${served} · serves this head ${bundleHasMarker}`);
   return ok;
 }
 

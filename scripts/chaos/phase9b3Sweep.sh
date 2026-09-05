@@ -42,5 +42,5 @@ HARNESS=http://localhost:4180
   echo "=== DONE $(date -u +%FT%TZ) ==="
 } 2>&1 | $TEE "$LOG"
 # Frozen evidence must not carry this run's rewrites.
-git checkout -- data/validation/7a data/validation/7b data/validation/8c1 data/validation/9a data/validation/9a1 data/validation/9a3p data/validation/9a2 data/validation/9a3 data/validation/9b1 data/validation/9b2 2>/dev/null || true
+git checkout -- data/validation/7a data/validation/7b data/validation/8c1 data/validation/9a data/validation/9a1 data/validation/9a3p data/validation/9a2 data/validation/9a3 data/validation/9b1 data/validation/9b1a data/validation/9b2 2>/dev/null || true
 git status --short data/validation | head

@@ -1,11 +1,11 @@
 {
   "phase": "9B.3 — Chaos Clash Guided Flow V2",
-  "generatedAt": "2026-09-05T04:45:57.040Z",
-  "verdict": "CHAOS CLASH GUIDED FLOW V2 — 1 OPEN: deployed QA on the durable alias",
+  "generatedAt": "2026-09-05T04:52:01.360Z",
+  "verdict": "CHAOS CLASH GUIDED FLOW V2 COMPLETE — READY FOR OWNER ACCEPTANCE",
   "repository": {
     "toplevel": "/Users/josephjohnson/era-clash-basketball",
     "branch": "phase-9b3-chaos-guided-flow-v2",
-    "head": "03de30a",
+    "head": "a93bffd",
     "parent": "4c1476d (phase-9b2-my-eraclash-career-v2, PR #44, APPROVED)",
     "frozenRefs": {
       "wave1": "4dc59e7",
@@ -13,8 +13,8 @@
       "main": "9cd95ff"
     },
     "draftPR": 45,
-    "protectedPreview": null,
-    "headAtSummary": "03de30acd2dc8b50b3fe702b2451a601669fee19"
+    "protectedPreview": "https://era-clash-basketball-git-phase-9b3-chaos-guide-413239-era-clash.vercel.app",
+    "headAtSummary": "a93bffdb1f50cf733140e212bcc199ecde88e037"
   },
   "flow": {
     "version": "chaos-guided-flow-v2",
@@ -50,8 +50,8 @@
     "vitest": "2541 passed (2541)",
     "vitestFiles": "78 passed (78)",
     "playwright": "78 passed (1.5m)",
-    "liveGuest": null,
-    "deployedAccount": null,
+    "liveGuest": "24/24 live guest and security checks passed",
+    "deployedAccount": "29/29 deployed gates passed → data/validation/9b1/account-preview-qa.json",
     "runItBack": "PASS 9/9 passed → data/validation/9b2/run-it-back-qa.json",
     "savedRosters": "PASS 10/10 passed → data/validation/9b2/saved-roster-contract.json",
     "cloudSave": "PASS cloud-save: 23/23 checks passed → data/validation/9b1/cloud-save-qa.json",
@@ -83,7 +83,8 @@
       "chaos:result-flow-qa               PASS",
       "chaos:accessibility-qa             PASS",
       "chaos:performance-qa               PASS",
-      "chaos:contact-sheets               PASS"
+      "chaos:contact-sheets               PASS",
+      "chaos:deployed-qa                  PASS"
     ],
     "gateFailures": []
   },
@@ -95,6 +96,14 @@
     "coach-chaos-qa.json",
     "coach-flow-qa.json",
     "current-chaos-flow-map.json",
+    "deployed-clash-ready-qa.json",
+    "deployed-coach-chaos-qa.json",
+    "deployed-drafting-qa.json",
+    "deployed-era-reveal-qa.json",
+    "deployed-foundation-qa.json",
+    "deployed-progressive-disclosure-qa.json",
+    "deployed-responsive-qa.json",
+    "deployed-result-state-qa.json",
     "drafting-qa.json",
     "era-reveal-flow-qa.json",
     "era-reveal-qa.json",
@@ -112,6 +121,7 @@
     "responsive-qa.json",
     "result-flow-qa.json",
     "result-state-qa.json",
+    "secret-audit.json",
     "state-machine-qa.json",
     "visual-reference-comparison.json",
     "wave-preservation.json"
@@ -122,11 +132,9 @@
     "docs/ui/chaos-progressive-disclosure.md"
   ],
   "ledger": {
-    "total": 32,
-    "fixedAndVerified": 30,
-    "open": [
-      "deployed QA on the durable alias"
-    ],
+    "total": 33,
+    "fixedAndVerified": 32,
+    "open": [],
     "tradeOffs": [
       "staff holds not surfaced"
     ]
