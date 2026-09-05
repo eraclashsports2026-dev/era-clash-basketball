@@ -191,8 +191,15 @@ if (MODE === "arena") {
     /run \? run\.roll/.test(read("src/components/arena/RollStepper.jsx")));
   ok("the stage names the three rolls",
     ["FOUNDATION", "ADAPT", "COMMIT"].every((w) => read("src/components/arena/RollStepper.jsx").includes(w)));
+  // Phase 9B.3: the six states' single actions are named in ONE place — the
+  // display-state resolver — and the stage renders whatever it hands back. The
+  // words changed deliberately with the guided flow (ROLL 1 → ROLL, LOCK &
+  // ROLL 2 → ROLL 2, HIRE THIS STAFF → CONTINUE WITH COACH, RUN SIM → RUN
+  // CLASH) and an ADAPT TO ERA action was added for the dedicated reveal.
+  const guided = read("src/chaos/guidedState.js");
   ok("one CTA carries whatever the run is waiting on",
-    ["ROLL 1", "LOCK & ROLL 2", "FINAL ROLL", "HIRE THIS STAFF", "RUN SIM"].every((l) => stage.includes(l)));
+    ["\"ROLL\"", "ROLL 2", "FINAL ROLL", "ADAPT TO ERA", "CONTINUE WITH COACH", "RUN CLASH"].every((l) => guided.includes(l))
+    && /primaryAction\(state/.test(stage) && !/HIRE THIS STAFF|RUN SIM|LOCK & ROLL 2/.test(stage));
   ok("the era panel belongs to the rail alone",
     !/EraContextBanner/.test(stage) && /ERA IMPACT/.test(read("src/components/arena/LiveIntel.jsx")));
   ok("the utility bar states the era and never competes with the CTA",

@@ -99,11 +99,11 @@ export const agoLabel = (at, now = Date.now()) => {
   return "EARLIER TODAY";
 };
 
-const DockShell = ({ children, label }) => (
-  <div style={{ display: "grid", gap: 12 }}>
+const DockShell = ({ children, label, variant = "dock" }) => (
+  <div className="ec-dock" data-variant={variant} style={{ display: "grid", gap: 12 }}>
     <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
       <span aria-hidden="true" style={{ fontSize: 12 }}>🏆</span>
-      <h2 style={{ margin: 0, fontSize: 10.5, fontWeight: 900, letterSpacing: 2, color: "var(--ec-a-text)" }}>RESULT DOCK</h2>
+      <h2 style={{ margin: 0, fontSize: 10.5, fontWeight: 900, letterSpacing: 2, color: "var(--ec-a-text)" }}>{variant === "hero" ? "RESULT" : "RESULT DOCK"}</h2>
       {label && (
         <span style={{ marginLeft: "auto", fontSize: 9.5, fontWeight: 900, letterSpacing: 1, color: "var(--ec-a-text-muted)" }}>
           {label}
@@ -117,6 +117,9 @@ const DockShell = ({ children, label }) => (
 export default function ResultDock({
   phase, run, result, priorResult, priorAt, simStage,
   onViewFullReport, onRunItBack, onNewClash, onChallenge, busy,
+  // "dock": the rail surface. "hero": Phase 9B.3's Result state, where THIS
+  // game leads the main column above the matchup that produced it.
+  variant = "dock",
 }) {
   // No section is open in the canonical reference state — the summary and four
   // tab controls fit the first viewport, and the frozen 8C.1 geometry contract
@@ -157,7 +160,7 @@ export default function ResultDock({
     const gold = sim.finalScore?.gold ?? 0, blue = sim.finalScore?.blue ?? 0;
     const winner = gold > blue ? "Gold" : "Blue";
     return (
-      <DockShell label={previous ? agoLabel(priorAt) : "THIS CLASH"}>
+      <DockShell variant={variant} label={previous ? agoLabel(priorAt) : "THIS CLASH"}>
         <Panel style={{ textAlign: "center", padding: "11px 12px", position: "relative", overflow: "hidden", borderColor: won ? "var(--ec-a-gold-line)" : "var(--ec-a-blue-line)" }}>
           {/* Approved fracture placement 8: the dock's state transition to a result. */}
           <EraFractureActiveEdge on={!previous} />
@@ -329,25 +332,19 @@ export default function ResultDock({
   if (phase === "complete" && sim) return renderClash(result);
 
   // ── C · SIMULATING ────────────────────────────────────────────────────────
+  // Chaos exposes no real simulation milestones to the client — `simStage` is
+  // only ever reset — so this is ONE honest state rather than a fabricated
+  // progression (spec 9B.3 §14). Reduced motion needs nothing here: nothing moves.
   if (phase === "simulating") {
-    const idx = Math.max(0, SIM_PHASES.findIndex((p) => p.toLowerCase().startsWith(String(simStage || "").toLowerCase().slice(0, 6))));
     return (
-      <DockShell label="IN PROGRESS">
+      <DockShell variant={variant} label="IN PROGRESS">
         <Panel>
           <Head tone="var(--ec-a-gold, #f2b51d)">SIMULATING THE CLASH</Head>
-          <div aria-live="polite" style={{ display: "grid", gap: 6, marginTop: 8 }}>
-            {SIM_PHASES.map((p, i) => (
-              <div key={p} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12.5, color: i <= idx ? "var(--ec-a-text, #f5f7fb)" : "var(--ec-a-text-muted, #93a0b5)" }}>
-                <span aria-hidden="true" style={{
-                  width: 8, height: 8, borderRadius: 999,
-                  background: i < idx ? "var(--ec-a-green, #4ade80)" : i === idx ? "var(--ec-a-gold, #f2b51d)" : "var(--ec-a-border-strong)",
-                }} />
-                {p}
-              </div>
-            ))}
+          <div aria-live="polite" style={{ ...body, marginTop: 8 }}>
+            Your five and the Legend Rival's five are locked. The possession engine is playing it out.
+            {simStage ? ` ${simStage}` : ""}
           </div>
         </Panel>
-        <Panel><div style={muted}>Your five and the Legend Rival's five are locked. The possession engine is playing it out.</div></Panel>
       </DockShell>
     );
   }
@@ -359,7 +356,7 @@ export default function ResultDock({
 
   // ── A · NOTHING YET ───────────────────────────────────────────────────────
   return (
-    <DockShell>
+    <DockShell variant={variant}>
       <Panel style={{ textAlign: "center" }}>
         <Head tone="var(--ec-a-gold, #f2b51d)">YOUR RESULT WILL APPEAR HERE</Head>
         <div style={{ ...body, marginTop: 6 }}>

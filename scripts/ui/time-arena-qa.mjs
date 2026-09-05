@@ -59,24 +59,27 @@ const states = async (page) => {
   // Every wait below is on something a PLAYER can see. The roll number is also
   // announced in a screen-reader live region, and waiting on that invisible
   // copy waits forever.
-  await click(page, /^ROLL 1/);
+  // Phase 9B.3 guided flow: the words are the resolver's (src/chaos/guidedState.js)
+  // and the era reveal is a state of its own between Roll 2 and the final roll.
+  await click(page, /^ROLL$/);
   await page.locator(".ec-ta-roster .ec-pc").nth(9).waitFor({ timeout: 45_000 });
   await shot("2-roll-1");
-  await click(page, /LOCK & ROLL 2/, 45_000);
-  await page.locator(".ec-intel-era-id").waitFor({ timeout: 45_000 });
+  await click(page, /^ROLL 2$/, 45_000);
+  await page.locator(".ec-era-reveal-id").waitFor({ timeout: 45_000 });
   await shot("3-roll-2-era-revealed");
+  await click(page, /ADAPT TO ERA/, 45_000);
   await click(page, /FINAL ROLL/, 45_000);
   await page.locator(".ec-coach-card").nth(2).waitFor({ timeout: 45_000 });
   await shot("4-final-roll-locked");
 
   await page.getByRole("button", { name: /^Select / }).first().click();
   await shot("5-coach-selected");
-  await click(page, /HIRE THIS STAFF/, 45_000);
-  await page.getByRole("button", { name: /RUN SIM/ }).waitFor({ timeout: 45_000 });
+  await click(page, /CONTINUE WITH COACH/, 45_000);
+  await page.getByRole("button", { name: /RUN CLASH/ }).waitFor({ timeout: 45_000 });
   await shot("6-ready");
 
   // Simulating is transient: capture it without waiting for the result.
-  await page.getByRole("button", { name: /RUN SIM/ }).first().click();
+  await page.getByRole("button", { name: /RUN CLASH/ }).first().click();
   await page.waitForTimeout(600);
   await shot("7-simulating");
 

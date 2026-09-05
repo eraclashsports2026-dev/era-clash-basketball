@@ -33,20 +33,27 @@ const asGuest = async (page) => {
 const roll = async (page, label) => { await page.getByRole("button", { name: label }).click(); };
 
 /** Continue from a board that already has Roll 1 on it, and stop at READY. */
+// Phase 9B.3 guided flow: the words come from src/chaos/guidedState.js, and the
+// era reveal is a dedicated state between Roll 2 and the final roll.
+const adaptToEra = async (page) => {
+  await expect(page.locator(".ec-era-reveal-id")).toHaveText(/^\d{4}s$/, { timeout: 20_000 });
+  await page.getByRole("button", { name: /ADAPT TO ERA/ }).click();
+};
 const toReadyFromRoll1 = async (page) => {
-  await roll(page, /LOCK & ROLL 2/);
+  await roll(page, /^ROLL 2$/);
+  await adaptToEra(page);
   await expect(page.getByText(/ROLL 2 OF 3/).first()).toBeVisible({ timeout: 20_000 });
   await roll(page, /FINAL ROLL/);
-  await expect(page.getByText("CHOOSE YOUR STAFF").first()).toBeVisible({ timeout: 20_000 });
+  await expect(page.getByText("YOUR ROSTER IS SET").first()).toBeVisible({ timeout: 20_000 });
   await page.getByRole("button", { name: /^Select / }).first().click();
-  await page.getByRole("button", { name: /HIRE THIS STAFF/ }).click();
-  await expect(page.getByRole("button", { name: /RUN SIM/ })).toBeVisible({ timeout: 20_000 });
+  await page.getByRole("button", { name: /CONTINUE WITH COACH/ }).click();
+  await expect(page.getByRole("button", { name: /RUN CLASH/ })).toBeVisible({ timeout: 20_000 });
 };
 
 /** Deal, roll twice, hire, and stop at READY. */
 const toReady = async (page) => {
-  await page.getByRole("button", { name: /^ROLL 1/ }).click();
-  await expect(page.getByText(/ROLL 1 OF 3/).first()).toBeVisible({ timeout: 20_000 });
+  await page.getByRole("button", { name: /^ROLL$/ }).click();
+  await expect(page.locator(".ec-ta-roster .ec-pc").nth(9)).toBeVisible({ timeout: 20_000 });
   await toReadyFromRoll1(page);
 };
 
@@ -54,7 +61,7 @@ test("the Time Arena is one workspace with a persistent rail", async ({ page }) 
   await withAccount(page);
   await page.goto("/play/chaos");
   await expect(page.locator(".ec-ta")).toBeVisible();
-  await expect(page.getByRole("complementary", { name: "Live intel and result" })).toBeVisible();
+  await expect(page.getByRole("complementary", { name: "Live intel" })).toBeVisible();
 
   const layout = await page.evaluate(() => {
     const ta = document.querySelector(".ec-ta");
@@ -79,9 +86,12 @@ test("the Time Arena is one workspace with a persistent rail", async ({ page }) 
   expect(layout.verticalScrollers, "the page is the arena's only vertical scroller").toEqual([]);
   expect(layout.overflow).toBe(0);
 
-  // Nothing is claimed before anything has happened.
-  await expect(page.getByText("YOUR RESULT WILL APPEAR HERE")).toBeVisible();
-  await expect(page.getByText("THREE ROLLS AVAILABLE").first()).toBeVisible();
+  // Nothing is claimed before anything has happened. Phase 9B.3: the empty
+  // frame carries a short guide and ONE action; no Result Dock sits beside it.
+  await expect(page.getByText("HOW CHAOS WORKS").first()).toBeVisible();
+  await expect(page.locator(".ec-dock")).toHaveCount(0);
+  await expect(page.getByText(/ROLL 1 OF 3/).first()).toBeVisible();
+  await expect(page.getByRole("button", { name: /^ROLL$/ })).toBeVisible();
   await expect(page.getByText("FINAL SCORE", { exact: true }).first()).toHaveCount(0);
   await expect(page.locator(".ec-pc-empty")).toHaveCount(10);
 });
@@ -92,8 +102,8 @@ test("ten cards, five a side, and the TEAM owns the colour", async ({ page }) =>
   // where ten cards stay readable.
   await page.setViewportSize({ width: 1536, height: 900 });
   await page.goto("/play/chaos");
-  await page.getByRole("button", { name: /^ROLL 1/ }).click();
-  await expect(page.getByText(/ROLL 1 OF 3/).first()).toBeVisible({ timeout: 20_000 });
+  await page.getByRole("button", { name: /^ROLL$/ }).click();
+  await expect(page.locator(".ec-ta-roster .ec-pc").nth(9)).toBeVisible({ timeout: 20_000 });
 
   const board = await page.evaluate(() => {
     const read = (team) => [...document.querySelectorAll(`.ec-ta-team[data-team="${team}"] .ec-pc`)].map((c) => ({
@@ -141,38 +151,35 @@ test("players and coaches move through ONE three-roll sequence", async ({ page }
   test.slow();
   await withAccount(page);
   await page.goto("/play/chaos");
-  await page.getByRole("button", { name: /^ROLL 1/ }).click();
-  await expect(page.getByText(/ROLL 1 OF 3/).first()).toBeVisible({ timeout: 20_000 });
+  await page.getByRole("button", { name: /^ROLL$/ }).click();
+  await expect(page.locator(".ec-ta-roster .ec-pc").nth(9)).toBeVisible({ timeout: 20_000 });
 
-  // Roll 1 deals BOTH boards, and the era is not out yet.
-  await expect(page.locator(".ec-coach-card")).toHaveCount(3);
-  await expect(page.getByText(/ERA HIDDEN/).first()).toBeVisible();
+  // Roll 1 deals the players. Coach Chaos is a LATER decision (Phase 9B.3): no
+  // staff is on the board until the five is set, and the era is not out yet.
+  await expect(page.locator(".ec-coach-card")).toHaveCount(0);
+  await expect(page.locator(".ec-ta-utility").getByText(/ERA: HIDDEN/)).toBeVisible();
 
-  // Hold two players and one staff.
+  // Hold two players.
   const gold = page.locator('.ec-ta-team[data-team="gold"]');
   for (const slot of ["PG", "C"]) {
     await gold.locator(`.ec-pc[data-slot="${slot}"]`).getByRole("button", { name: /^Hold/ }).click();
   }
-  const keptCoach = (await page.locator(".ec-coach-card").first().innerText()).split("\n")[1];
-  await page.locator(".ec-coach-card").first().getByRole("button", { name: /^Hold/ }).click();
-  // The counts share the CTA's single sub-line now — the reference carries one
-  // line there, and three stacked lines were part of the density overrun.
+  // The count shares the CTA's single sub-line — one line, as the reference has.
   await expect(page.locator(".ec-ta-cta-wrap")).toContainText(/holding 2\/5/);
-  await expect(page.locator(".ec-ta-cta-wrap")).toContainText(/1\/3 staffs/);
 
-  await roll(page, /LOCK & ROLL 2/);
+  await roll(page, /^ROLL 2$/);
+
+  // The era arrives with Roll 2 as a state of its own, then collapses to status.
+  await adaptToEra(page);
   await expect(page.getByText(/ROLL 2 OF 3/).first()).toBeVisible({ timeout: 20_000 });
-
-  // The era arrives with Roll 2, and what was held survived on both boards.
-  await expect(page.locator(".ec-intel-era-id")).toHaveText(/^\d{4}s$/);
   await expect(page.locator(".ec-ta-utility").getByText(/^ERA: \d{4}s/)).toBeVisible();
+  // What was held survived.
   for (const slot of ["PG", "C"]) {
     await expect(gold.locator(`.ec-pc[data-slot="${slot}"]`)).toContainText("KEPT");
   }
-  expect(await page.locator(".ec-coach-card").first().innerText()).toContain(keptCoach);
 
   await roll(page, /FINAL ROLL/);
-  await expect(page.getByText("CHOOSE YOUR STAFF").first()).toBeVisible({ timeout: 20_000 });
+  await expect(page.getByText("YOUR ROSTER IS SET").first()).toBeVisible({ timeout: 20_000 });
 
   // Roll 3 locks both boards: no HOLD anywhere, no fourth roll, and the coach
   // controls became a hire.
@@ -183,22 +190,25 @@ test("players and coaches move through ONE three-roll sequence", async ({ page }
 
   // The hire is one of the three; the other two stay visible as what they were.
   await page.getByRole("button", { name: /^Select / }).first().click();
-  await page.getByRole("button", { name: /HIRE THIS STAFF/ }).click();
-  await expect(page.getByRole("button", { name: /RUN SIM/ })).toBeVisible({ timeout: 20_000 });
-  await expect(page.getByText("YOUR STAFF")).toHaveCount(1);
-  await expect(page.getByText("NOT HIRED")).toHaveCount(2);
+  await page.getByRole("button", { name: /CONTINUE WITH COACH/ }).click();
+  await expect(page.getByRole("button", { name: /RUN CLASH/ })).toBeVisible({ timeout: 20_000 });
+  // Clash Ready carries the decision as a staff line under the five, not as
+  // three cards competing with RUN CLASH.
+  await expect(page.locator(".ec-ta-staff--gold")).toContainText(/COACH/);
+  await expect(page.locator(".ec-coach-card")).toHaveCount(0);
 
   artifact("synchronized-chaos-runtime.json", {
-    artifact: "synchronized-chaos-runtime", phase: "8C — Time Arena",
-    keptCoach, eraRevealedAtRoll: 2, rolls: 3, fourthRollOffered: false, hires: 1,
+    artifact: "synchronized-chaos-runtime", phase: "8C — Time Arena · 9B.3 guided flow",
+    eraRevealedAtRoll: 2, eraRevealIsAState: true, rolls: 3, fourthRollOffered: false, hires: 1,
+    staffHoldsSurfacedMidDraft: false,
   });
 });
 
 test("Draft Pressure is stated once, in the rail", async ({ page }) => {
   await withAccount(page);
   await page.goto("/play/chaos");
-  await page.getByRole("button", { name: /^ROLL 1/ }).click();
-  await expect(page.getByText(/ROLL 1 OF 3/).first()).toBeVisible({ timeout: 20_000 });
+  await page.getByRole("button", { name: /^ROLL$/ }).click();
+  await expect(page.locator(".ec-ta-roster .ec-pc").nth(9)).toBeVisible({ timeout: 20_000 });
 
   const where = await page.evaluate(() => [...document.querySelectorAll("*")]
     .filter((e) => e.children.length === 0 && /DRAFT PRESSURE/i.test(e.textContent || ""))
@@ -212,10 +222,12 @@ test("Draft Pressure is stated once, in the rail", async ({ page }) => {
 test("the era is locked for a free account and routes to membership", async ({ page }) => {
   await withAccount(page);
   await page.goto("/play/chaos");
-  await page.getByRole("button", { name: /^ROLL 1/ }).click();
-  await expect(page.getByText(/ROLL 1 OF 3/).first()).toBeVisible({ timeout: 20_000 });
-  await roll(page, /LOCK & ROLL 2/);
-  await expect(page.getByText(/ROLL 2 OF 3/).first()).toBeVisible({ timeout: 20_000 });
+  await page.getByRole("button", { name: /^ROLL$/ }).click();
+  await expect(page.locator(".ec-ta-roster .ec-pc").nth(9)).toBeVisible({ timeout: 20_000 });
+  await roll(page, /^ROLL 2$/);
+  // At the reveal the rail is the era panel; the lock and the membership route
+  // are read there, before the player adapts.
+  await expect(page.locator(".ec-era-reveal-id")).toHaveText(/^\d{4}s$/, { timeout: 20_000 });
 
   const rail = page.locator(".ec-ta-rail");
   await expect(rail.getByText("CURRENT ERA").first()).toBeVisible();
@@ -244,10 +256,10 @@ test("an entitled run offers the era selector the server allows", async ({ page 
     await route.fulfill({ response: res, json });
   });
   await page.goto("/play/chaos");
-  await page.getByRole("button", { name: /^ROLL 1/ }).click();
-  await expect(page.getByText(/ROLL 1 OF 3/).first()).toBeVisible({ timeout: 20_000 });
-  await roll(page, /LOCK & ROLL 2/);
-  await expect(page.getByText(/ROLL 2 OF 3/).first()).toBeVisible({ timeout: 20_000 });
+  await page.getByRole("button", { name: /^ROLL$/ }).click();
+  await expect(page.locator(".ec-ta-roster .ec-pc").nth(9)).toBeVisible({ timeout: 20_000 });
+  await roll(page, /^ROLL 2$/);
+  await expect(page.locator(".ec-era-reveal-id")).toHaveText(/^\d{4}s$/, { timeout: 20_000 });
 
   const rail = page.locator(".ec-ta-rail");
   await rail.getByRole("button", { name: /CHANGE ERA/ }).click();
@@ -278,7 +290,7 @@ test("starting over is on the BOARD, and it asks first", async ({ page }) => {
   await dialog.getByRole("button", { name: /No, keep drafting/ }).click();
   await expect(dialog).toHaveCount(0);
   await expect(page.locator(".ec-ta-roster .ec-pc")).toHaveCount(10);
-  await expect(page.getByRole("button", { name: /RUN SIM/ })).toBeVisible();
+  await expect(page.getByRole("button", { name: /RUN CLASH/ })).toBeVisible();
 
   // Escape is also No: the safe answer, and it is what has focus.
   await resetBtn.click();
@@ -292,8 +304,8 @@ test("starting over is on the BOARD, and it asks first", async ({ page }) => {
   await page.getByRole("dialog", { name: /Reset this Clash/ })
     .getByRole("button", { name: /Yes, reset this Clash/ }).click();
   await expect(page.locator(".ec-pc-empty")).toHaveCount(10, { timeout: 20_000 });
-  await expect(page.getByRole("button", { name: /^ROLL 1/ })).toBeVisible();
-  await expect(page.getByText("THREE ROLLS AVAILABLE").first()).toBeVisible();
+  await expect(page.getByRole("button", { name: /^ROLL$/ })).toBeVisible();
+  await expect(page.getByText(/ROLL 1 OF 3/).first()).toBeVisible();
 });
 
 test("a finished game offers a new clash on the board, not only in the result", async ({ page }) => {
@@ -301,8 +313,8 @@ test("a finished game offers a new clash on the board, not only in the result", 
   await withAccount(page);
   await page.goto("/play/chaos");
   await toReady(page);
-  await page.getByRole("button", { name: /RUN SIM/ }).click();
-  await expect(page.locator(".ec-ta-rail").getByText("FINAL SCORE", { exact: true }).first())
+  await page.getByRole("button", { name: /RUN CLASH/ }).click();
+  await expect(page.locator(".ec-ta-result-hero").getByText("FINAL SCORE", { exact: true }).first())
     .toBeVisible({ timeout: 45_000 });
 
   const onBoard = page.locator(".ec-ta-stage .ec-ta-stage-actions")
@@ -312,7 +324,7 @@ test("a finished game offers a new clash on the board, not only in the result", 
   const dialog = page.getByRole("dialog", { name: /Start a new Clash/ });
   await expect(dialog.getByText(/stays in the Result Dock/)).toBeVisible();
   await dialog.getByRole("button", { name: /No, stay on this result/ }).click();
-  await expect(page.locator(".ec-ta-rail").getByText("FINAL SCORE", { exact: true }).first()).toBeVisible();
+  await expect(page.locator(".ec-ta-result-hero").getByText("FINAL SCORE", { exact: true }).first()).toBeVisible();
 
   await onBoard.click();
   await page.getByRole("dialog", { name: /Start a new Clash/ })
@@ -327,23 +339,25 @@ test("the result lands in the dock, the report opens over the page, and a new cl
   await withAccount(page);
   await page.goto("/play/chaos");
   await toReady(page);
-  await page.getByRole("button", { name: /RUN SIM/ }).click();
+  await page.getByRole("button", { name: /RUN CLASH/ }).click();
 
-  const rail = page.locator(".ec-ta-rail");
-  await expect(rail.getByText("FINAL SCORE", { exact: true }).first()).toBeVisible({ timeout: 45_000 });
-  await expect(rail.getByText("THIS CLASH").first()).toBeVisible();
+  const hero = page.locator(".ec-ta-result-hero");
+  await expect(hero.getByText("FINAL SCORE", { exact: true }).first()).toBeVisible({ timeout: 45_000 });
+  await expect(hero.getByText("THIS CLASH").first()).toBeVisible();
+  // Phase 9B.3: no rail competes with the result; the result IS the content.
+  await expect(page.locator(".ec-ta-rail")).toHaveCount(0);
   for (const t of ["Game Story", "Box Score", "Coaching", "Analysis"]) {
     await expect(page.getByRole("tab", { name: t }).first()).toBeVisible();
   }
   // The MVP's line is a formatted stat line, not an object.
-  await expect(rail.getByText(/\d+ PTS/).first()).toBeVisible();
+  await expect(hero.getByText(/\d+ PTS/).first()).toBeVisible();
   // The matchup they built is still on screen.
   await expect(page.getByText("THE MATCHUP YOU BUILT").first()).toBeVisible();
 
   // Every counting stat in the dock's box score.
-  await rail.getByRole("tab", { name: "Box Score" }).click();
+  await hero.getByRole("tab", { name: "Box Score" }).click();
   for (const h of ["PTS", "FG", "REB", "AST", "STL", "BLK", "TO"]) {
-    await expect(rail.getByText(h, { exact: true }).first()).toBeVisible();
+    await expect(hero.getByText(h, { exact: true }).first()).toBeVisible();
   }
 
   // The full report expands over the same page and reads on its light surface.
@@ -368,13 +382,23 @@ test("the result lands in the dock, the report opens over the page, and a new cl
 
   // A new Clash keeps the finished one — labelled, and never as the live draft.
   await page.getByRole("button", { name: "New Chaos Clash" }).click();
-  await expect(rail.getByText("LAST CLASH · NOT THE DRAFT ON SCREEN").first()).toBeVisible();
-  await expect(page.getByText("THREE ROLLS AVAILABLE").first()).toBeVisible();
+  await expect(page.getByText(/ROLL 1 OF 3/).first()).toBeVisible();
   await expect(page.locator(".ec-pc-empty")).toHaveCount(10);
-  await expect(page.getByRole("button", { name: /RUN SIM/ })).toHaveCount(0);
-  await expect(page.getByRole("button", { name: /^ROLL 1/ })).toBeVisible();
+  await expect(page.getByRole("button", { name: /RUN CLASH/ })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: /^ROLL$/ })).toBeVisible();
   await expect(page.locator(".ec-intel-era-id")).toHaveCount(0);
-  await expect(page.locator(".ec-ta-utility").getByText(/HIDDEN UNTIL ROLL 2/)).toBeVisible();
+  // The empty frame says nothing about an era at all (spec 9B.3 §9).
+  await expect(page.locator(".ec-ta-utility")).not.toContainText(/ERA:/);
+  // The finished game is one tap away, compact, and never a dock beside the
+  // new draft; the sheet it opens labels it as the LAST clash, twice over.
+  const last = page.locator(".ec-ta-lastclash");
+  await expect(last).toBeVisible();
+  await expect(page.locator(".ec-dock")).toHaveCount(0);
+  await last.click();
+  const sheet = page.getByRole("dialog", { name: "Your last Clash" });
+  await expect(sheet.getByText("LAST CLASH · NOT THE DRAFT ON SCREEN").first()).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(sheet).toHaveCount(0);
 });
 
 test("a run resumed after a reload still runs", async ({ page }) => {
@@ -384,8 +408,8 @@ test("a run resumed after a reload still runs", async ({ page }) => {
   await toReady(page);
   await page.evaluate(() => sessionStorage.setItem("e2e_keep_run", "1"));
   await page.reload();
-  await expect(page.getByRole("button", { name: /RUN SIM/ })).toBeVisible({ timeout: 20_000 });
-  await page.getByRole("button", { name: /RUN SIM/ }).click();
+  await expect(page.getByRole("button", { name: /RUN CLASH/ })).toBeVisible({ timeout: 20_000 });
+  await page.getByRole("button", { name: /RUN CLASH/ }).click();
   await expect(page.getByText("FINAL SCORE", { exact: true }).first()).toBeVisible({ timeout: 45_000 });
 });
 
@@ -394,7 +418,7 @@ test("Run it back replays the SAME matchup and actually completes", async ({ pag
   await withAccount(page);
   await page.goto("/play/chaos");
   await toReady(page);
-  await page.getByRole("button", { name: /RUN SIM/ }).click();
+  await page.getByRole("button", { name: /RUN CLASH/ }).click();
   await expect(page.getByText("FINAL SCORE", { exact: true }).first()).toBeVisible({ timeout: 45_000 });
 
   // The rematch must send a mode the server accepts, with the stored coaches
@@ -432,8 +456,10 @@ test("mobile stacks, leads with the result, and never overflows", async ({ page 
   expect(draft.overflow).toBe(0);
   expect(draft.utility).toMatch(/HELP & SETTINGS/);
 
-  await page.getByRole("button", { name: /^ROLL 1/ }).click();
-  await expect(page.getByText(/ROLL 1 OF 3/).first()).toBeVisible({ timeout: 20_000 });
+  await page.getByRole("button", { name: /^ROLL$/ }).click();
+  // Phase 9B.3: a phone shows one team at a time (Gold first, Blue one tap away).
+  await expect(page.locator('.ec-ta-team[data-team="gold"] .ec-pc').nth(4)).toBeVisible({ timeout: 20_000 });
+  await expect(page.getByRole("tab", { name: "TEAM BLUE" })).toBeVisible();
   const cards = await page.evaluate(() => {
     const vw = document.documentElement.clientWidth;
     // Content past the edge is only acceptable inside something that scrolls.
@@ -461,20 +487,24 @@ test("mobile stacks, leads with the result, and never overflows", async ({ page 
   expect(cards.cardWidth, "a phone card must stay a readable width").toBeGreaterThanOrEqual(120);
 
   await toReadyFromRoll1(page);
-  await page.getByRole("button", { name: /RUN SIM/ }).click();
+  await page.getByRole("button", { name: /RUN CLASH/ }).click();
   await expect(page.getByText("FINAL SCORE", { exact: true }).first()).toBeVisible({ timeout: 45_000 });
+  // Phase 9B.3: in the Result state the contextual rail is gone and THIS game
+  // is the hero of the main column, above the matchup that produced it.
   const finished = await page.evaluate(() => {
-    const rail = document.querySelector(".ec-ta-rail");
+    const hero = document.querySelector(".ec-ta-result-hero");
     const stage = document.querySelector(".ec-ta-stage");
     return {
-      railOrder: getComputedStyle(rail).order,
-      railAboveStage: rail.getBoundingClientRect().top < stage.getBoundingClientRect().top,
-      railTop: Math.round(rail.getBoundingClientRect().top + window.scrollY),
+      heroPresent: !!hero,
+      heroAboveStage: !!hero && hero.getBoundingClientRect().top < stage.getBoundingClientRect().top,
+      heroTop: hero ? Math.round(hero.getBoundingClientRect().top + window.scrollY) : null,
+      railPresent: !!document.querySelector(".ec-ta-rail"),
       overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
     };
   });
-  expect(finished.railOrder).toBe("-1");
-  expect(finished.railAboveStage).toBe(true);
+  expect(finished.heroPresent).toBe(true);
+  expect(finished.heroAboveStage).toBe(true);
+  expect(finished.railPresent).toBe(false);
   expect(finished.overflow).toBe(0);
 
   artifact("phase8c-responsive-qa.json", {
