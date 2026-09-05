@@ -9,7 +9,7 @@ import { computeResult, newSeed } from "./_lib/game-core.js";
 import { PLAYERS } from "../src/players.js";
 import { previewCandidateIdentity } from "./_lib/previewEngine.js";
 import { PREVIEW_ACCESS } from "../config/previewAccess.js";
-import { cloudAccountsServerStatus, serviceKeyAccepted } from "./_lib/cloudAccounts.js";
+import { cloudAccountsServerStatus, serviceKeyAccepted, providerRefsMatch } from "./_lib/cloudAccounts.js";
 
 export default async function handler(req, res) {
   let coreEngine = "ok";
@@ -49,6 +49,10 @@ export default async function handler(req, res) {
   };
   if (req.query?.deep === "1" || req.query?.deep === "true") {
     cloud.serverCredentialAccepted = await serviceKeyAccepted();
+    // A boolean, not a URL: whether the server and the browser are configured
+    // for the same project at all. If they are not, a perfectly valid
+    // credential still gets a 401, because it is being shown to the wrong door.
+    cloud.serverAndBrowserSameProject = providerRefsMatch();
   }
   return res.status(200).json({
     status: f.maintenance ? "maintenance" : coreEngine === "ok" ? "ok" : "degraded",

@@ -52,6 +52,21 @@ const url = () => String(process.env.SUPABASE_URL || process.env.VITE_SUPABASE_U
 const serviceKey = () => String(process.env.SUPABASE_SERVICE_ROLE_KEY || "").trim();
 const anonKey = () => String(process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || "").trim();
 
+/**
+ * Do the server and the browser point at the SAME project? A mismatch is
+ * invisible to every other check — both halves look correctly configured, and
+ * the server's credential is simply valid for a project it is not calling, so
+ * the provider answers 401 exactly as it would for a revoked key.
+ * Compared as project refs, never as URLs, so nothing identifying is returned.
+ */
+const refOf = (u) => (String(u || "").match(/^https:\/\/([a-z0-9-]+)\.supabase\.(?:co|in)$/i) || [])[1] || null;
+export const providerRefsMatch = () => {
+  const server = refOf(process.env.SUPABASE_URL);
+  const browser = refOf(process.env.VITE_SUPABASE_URL);
+  if (!server || !browser) return null;   // nothing to compare, not a mismatch
+  return server === browser;
+};
+
 /** Configuration state, safe to report: booleans only, never a key or a fragment of one. */
 export const cloudAccountsServerStatus = () => ({
   providerUrlConfigured: /^https:\/\/[a-z0-9-]+\.supabase\.(co|in)$/i.test(url()),
