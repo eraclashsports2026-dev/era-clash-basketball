@@ -195,10 +195,16 @@ if (MODE === "guest-claim" || MODE === "cloud-save") {
   const server = src("api/_lib/cloudAccounts.js");
   const route = src("api/profile.js");
   const userIdAssignments = [...route.matchAll(/userId:\s*([A-Za-z0-9_.?]+)/g)].map(([, v]) => v);
+  // Phase 9C: a guest may open or accept a challenge, so ONE guest identity
+  // exists — `GUEST_IDENTITY = { userId: null }` — and `who` is only ever the
+  // verified token or that object. Every other assignment is still who.userId.
+  const guestNulls = userIdAssignments.filter((v) => v === "null").length;
   ok("the account identity comes from verifying the token with the provider, never from a body",
     /verifyAccountToken/.test(server) && /auth\/v1\/user/.test(server)
     && !/req\.body\??\.\s*user_?[iI]d/.test(route)                    // never read off the body
-    && userIdAssignments.length > 0 && userIdAssignments.every((v) => v === "who.userId"),  // always the verified token
+    && userIdAssignments.length > 0 && userIdAssignments.every((v) => v === "who.userId" || v === "null")  // the verified token, or the guest identity
+    && guestNulls <= 1 && /const GUEST_IDENTITY = Object\.freeze\(\{ userId: null \}\)/.test(route)
+    && (route.match(/const who = /g) || []).every(Boolean) && !/const who = (?!verified \|\| GUEST_IDENTITY)/.test(route.split("Phase 9C challenge actions")[1] || ""),
     userIdAssignments.join(", ") || "none");
   ok("the game data comes from the authoritative record, never from the request", /readAuthoritativeResult/.test(server) && /buildSavedClash\(\{ record/.test(server));
   ok("ownership is proved by the server-minted device session cookie", /record\.session !== deviceSession/.test(server) && /getOrCreateSession/.test(src("api/profile.js")));

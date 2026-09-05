@@ -1,0 +1,60 @@
+{
+  "artifact": "challenge-history-qa",
+  "phase": "9C — Challenges + Persistent Competitive Identity V1",
+  "generatedAt": "2026-09-05T06:08:17.095Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "created",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "CREATED lists the challenge with zero responses",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the guest's result is compared once the server binds it",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the creator sees the guest's completed response with the contract outcome",
+      "pass": true,
+      "detail": "{\"name\":\"Guest\",\"status\":\"completed\",\"outcome\":\"loss\",\"score\":{\"gold\":99,\"blue\":119},\"performance\":-20,\"challengeOutcome"
+    },
+    {
+      "check": "the response carries no email, user id or device hash",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a signed-in recipient starts one official attempt",
+      "pass": true,
+      "detail": "started"
+    },
+    {
+      "check": "accepting again resumes the same run",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "ACCEPTED lists the attempt in progress with the creator's name and headline",
+      "pass": true,
+      "detail": "{\"code\":\"EC-GTJZ-D2F3\",\"creatorName\":\"Joseph\",\"status\":\"started\",\"challengeStatus\":\"open\",\"creatorScore\":{\"gold\":128,\"bl"
+    },
+    {
+      "check": "the creator cannot accept their own challenge",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "revocation shows in CREATED and keeps the completed response (and the attempt in progress)",
+      "pass": true,
+      "detail": "revoke → revoked · listed revoked · responses completed,started"
+    }
+  ],
+  "passed": true,
+  "outcome": "creator"
+}

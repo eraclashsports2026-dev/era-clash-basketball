@@ -1,0 +1,44 @@
+{
+  "artifact": "challenge-performance-qa",
+  "phase": "9C — Challenges + Persistent Competitive Identity V1",
+  "generatedAt": "2026-09-05T06:08:25.308Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "create answers within 2s on the harness",
+      "pass": true,
+      "detail": "17ms"
+    },
+    {
+      "check": "the invitation lookup answers within 1s",
+      "pass": true,
+      "detail": "2ms"
+    },
+    {
+      "check": "the invitation's heading is in the document within 2.5s and the page does not shift",
+      "pass": true,
+      "detail": "FCP 44 · first heading 42ms · CLS 0.083"
+    },
+    {
+      "check": "accept → arena at DRAFTING within 5s",
+      "pass": true,
+      "detail": "154ms"
+    },
+    {
+      "check": "the history list answers within 1.5s",
+      "pass": true,
+      "detail": "3ms"
+    }
+  ],
+  "passed": true,
+  "ms": {
+    "create": 17,
+    "view": 2,
+    "invitationLoad": 48,
+    "accept": 154,
+    "list": 3
+  },
+  "firstContentfulPaintMs": 44,
+  "firstHeadingMs": 42,
+  "invitationCls": 0.083
+}

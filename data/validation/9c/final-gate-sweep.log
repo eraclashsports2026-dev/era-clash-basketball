@@ -1,0 +1,52 @@
+=== PHASE 9C FINAL SWEEP 2026-09-05T06:05:04Z @ 5a896b7 ===
+--- unit ---
+ Test Files  79 passed (79)
+      Tests  2569 passed (2569)
+--- build ---
+✓ built in 720ms
+[plugin eraclash-sw-version] service worker cache identity: eraclash-assets:2.7.2:35a5b7cb210b
+--- e2e (all projects, incl. challenges-fake-cloud) ---
+  80 passed (1.6m)
+--- preview gates (static) ---
+preview:preflight                  PASS
+preview:security                   PASS
+--- repository ui gates ---
+ui:time-arena-qa                   PASS
+ui:result-dock-qa                  PASS
+ui:live-intel-qa                   PASS
+ui:coach-chaos-qa                  PASS
+ui:player-card-theme-qa            PASS
+ui:synchronized-chaos-qa           PASS
+ui:era-membership-qa               PASS
+ui:navigation-qa                   PASS
+ui:membership-routing-qa           PASS
+ui:activation-telemetry-qa         PASS
+ui:play-lobby-contracts            PASS
+ui:night-court-contracts           PASS
+ui:play-lobby-polish-qa            PASS
+--- account gates (9B.1 / 9B.2, local harness) ---
+account:guest-claim-qa             FAIL
+account:cloud-save-qa              FAIL
+account:my-eraclash-qa             PASS
+account:saved-rosters-qa           PASS
+account:run-it-back-qa             PASS
+--- 9B.3 chaos gates (harness http://localhost:4180) ---
+chaos:guided-flow-qa               PASS
+chaos:state-machine-qa             PASS
+chaos:accessibility-qa             PASS
+chaos:performance-qa               PASS
+--- 9C challenge gates (fake-cloud harness http://localhost:4178) ---
+challenge:contract-qa              PASS
+challenge:seed-qa                  PASS
+challenge:rls-qa                   PASS
+challenge:security-qa              PASS
+challenge:history-qa               PASS
+challenge:responsive-qa            PASS
+challenge:accessibility-qa         PASS
+challenge:performance-qa           PASS
+--- preservation ---
+api routes: 12 + middleware: yes
+wave1  4dc59e7
+wave2  ef0caa5
+main   9cd95ff
+=== DONE 2026-09-05T06:08:25Z ===

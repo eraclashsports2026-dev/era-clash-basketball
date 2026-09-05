@@ -1,0 +1,145 @@
+{
+  "artifact": "challenge-contract",
+  "phase": "9C — Challenges + Persistent Competitive Identity V1",
+  "generatedAt": "2026-09-05T06:08:10.253Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "versions are pinned",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "codes: 32 symbols, no 0/O/1/I, EC-XXXX-XXXX, case-insensitive",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the link carries the code only",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "30-day lifetime, derived status",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "comparison: win/loss first, margin as tie-break",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the invitation shows no five, coach, MVP, result id or user id",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "one official attempt per account",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "ten closed events; metadata excludes identity",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "every event is allowlisted server-side and mirrored client-side",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "no new serverless function",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": true,
+  "contract": {
+    "challengeVersion": "1.0.0",
+    "comparisonVersion": "1.0.0",
+    "ttlDays": 30,
+    "codeAlphabet": "ABCDEFGHJKLMNPQRSTUVWXYZ23456789",
+    "codeShape": "EC-XXXX-XXXX",
+    "fingerprintFields": [
+      "challengeVersion",
+      "draftModelVersion",
+      "playerPoolVersion",
+      "candidateId",
+      "parameterHash",
+      "eraContractVersion",
+      "cpuPolicyVersion",
+      "creatorChallengeSeedDomain",
+      "chaosSequenceVersion"
+    ],
+    "publicInvitationFields": [
+      "code",
+      "status",
+      "mode",
+      "challengeVersion",
+      "comparisonVersion",
+      "creatorName",
+      "creatorInitials",
+      "creatorScore",
+      "creatorOutcome",
+      "era",
+      "eraCustom",
+      "createdAt",
+      "expiresAt",
+      "responses",
+      "viewer"
+    ],
+    "forbiddenLinkFields": [
+      "seedId",
+      "seed",
+      "serverSeed",
+      "chaosManifestId",
+      "chaos",
+      "resultId",
+      "result_id",
+      "creator_result_id",
+      "userId",
+      "user_id",
+      "creator_user_id",
+      "email",
+      "testerId",
+      "pv",
+      "previewKey",
+      "session",
+      "pv_session",
+      "accessToken",
+      "token",
+      "cookie",
+      "commitSecret",
+      "_commitSecret",
+      "id"
+    ],
+    "events": {
+      "CREATED": "challenge_created",
+      "LINK_COPIED": "challenge_link_copied",
+      "SHARE_INVOKED": "challenge_share_invoked",
+      "OPENED": "challenge_opened",
+      "ACCEPT_STARTED": "challenge_accept_started",
+      "ATTEMPT_STARTED": "challenge_attempt_started",
+      "ATTEMPT_COMPLETED": "challenge_attempt_completed",
+      "COMPARISON_VIEWED": "challenge_comparison_viewed",
+      "REVOKED": "challenge_revoked",
+      "EXPIRED_VIEWED": "challenge_expired_viewed"
+    },
+    "eventMetadata": [
+      "challengeVersion",
+      "authState",
+      "entryPoint",
+      "status",
+      "mode",
+      "success",
+      "failureCode"
+    ],
+    "attempts": {
+      "perAccount": 1,
+      "perGuestDevice": 1,
+      "rerunsVisible": "every attempt stays visible; none is hidden behind a best"
+    }
+  }
+}

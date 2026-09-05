@@ -1,0 +1,26 @@
+{
+  "artifact": "challenge-rls-live",
+  "phase": "9C — Challenges + Persistent Competitive Identity V1",
+  "verifiedAt": "2026-09-05T05:55:59.201Z",
+  "project": "lfybiphmqkiecfrqsfzt (the certified preview project; production has no cloud accounts)",
+  "method": "Not a simulation: statements executed on the live database through the Supabase management API inside transactions that were rolled back, switching to the anon / authenticated roles with request.jwt.claims set to the QA accounts' ids. QA accounts qa-9c-creator / qa-9c-recipient (throwaway, deleted at the end of the phase) own the seeded rows.",
+  "migration": "0004_challenges recorded in public.schema_migrations; policies challenges_select_own, challenge_attempts_select_own, challenge_attempts_select_responses; triggers on_auth_user_created, on_auth_user_deleted_challenges present on auth.users",
+  "rls": {
+    "pass": true,
+    "evidence": "creator (authenticated, sub=A): challenges 1 (own, own code visible), attempts 0 · recipient (authenticated, sub=B): challenges 0, attempts 0 · anon: permission denied for table challenges · authenticated: permission denied for table challenge_secrets · authenticated update on challenges: permission denied (writes are the service role's alone)"
+  },
+  "seeded": {
+    "open": "EC-8ABQ-MKGY (creator A, 118–104 win, 1990s; seed kept only in challenge_secrets)",
+    "expired": "EC-WHPM-36XY (expires_at in the past)",
+    "revoked": "EC-X6G8-V2L4 (revoked_at set)"
+  },
+  "expiration": null,
+  "creatorDeletion": null,
+  "recipientDeletion": null,
+  "responses": null,
+  "pending": [
+    "guest accept + complete on the durable alias against EC-8ABQ-MKGY, then: creator sees the response row under challenge_attempts_select_responses",
+    "expired and revoked invitations read on the alias",
+    "deletion of the QA accounts: trigger anonymises; history stays"
+  ]
+}
