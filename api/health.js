@@ -9,7 +9,7 @@ import { computeResult, newSeed } from "./_lib/game-core.js";
 import { PLAYERS } from "../src/players.js";
 import { previewCandidateIdentity } from "./_lib/previewEngine.js";
 import { PREVIEW_ACCESS } from "../config/previewAccess.js";
-import { cloudAccountsServerStatus, serviceKeyProbe, providerRefsMatch } from "./_lib/cloudAccounts.js";
+import { cloudAccountsServerStatus, serviceKeyProbe, providerRefsMatch, serviceKeyIntegrity } from "./_lib/cloudAccounts.js";
 
 export default async function handler(req, res) {
   let coreEngine = "ok";
@@ -56,6 +56,8 @@ export default async function handler(req, res) {
     cloud.serverCredentialProbeCode = probe.code;
     cloud.serverCredentialAcceptedVia = probe.variant;
     cloud.serverCredentialAttempts = probe.tried;
+    // Length and booleans only: whether the stored value is intact, not what it is.
+    cloud.serverCredentialIntegrity = serviceKeyIntegrity();
     // A boolean, not a URL: whether the server and the browser are configured
     // for the same project at all. If they are not, a perfectly valid
     // credential still gets a 401, because it is being shown to the wrong door.

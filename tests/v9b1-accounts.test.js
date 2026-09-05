@@ -17,7 +17,7 @@ import {
   verifyAccountToken, cloudAccountsServerStatus, cloudAccountsReady, sha256,
   CANDIDATE_ID_SHAPE, MAX_IMPORT_CANDIDATES, flagOn as serverFlagOn, keyShapeOk as serverKeyShapeOk,
   looksLikeSecretKey as serverLooksLikeSecretKey, serviceKeyShapeOk as serverServiceKeyShapeOk,
-  serverKeyRejected, serviceKeyAccepted, serviceKeyProbe,
+  serverKeyRejected, serviceKeyAccepted, serviceKeyProbe, serviceKeyIntegrity,
 } from "../api/_lib/cloudAccounts.js";
 import { readProof, isBrowserBound, redemptionPlan, redeem, VIA } from "../src/accounts/linkProof.js";
 import { EVENTS_ALLOWLIST } from "../api/events.js";
@@ -943,6 +943,27 @@ describe("a rejected server credential", () => {
     expect(picky.accepted).toBe(true);
     expect(picky.variant).toBe("apikey-only");
     for (const p of [p401, p404, picky]) expect(JSON.stringify(p)).not.toMatch(/sb_secret|sb_publishable|eyJ/);
+    vi.unstubAllEnvs();
+  });
+
+  it("the integrity report describes the value without revealing it", () => {
+    const good = "sb_secret_" + "A".repeat(32);
+    vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", good);
+    let r = serviceKeyIntegrity();
+    expect(r).toEqual({ length: good.length, charsetOk: true, hadSurroundingWhitespace: false, hasQuotes: false, kind: "sb_secret" });
+    // The failures that pass every shape check and still get a 401.
+    vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", `"${good}"`);
+    r = serviceKeyIntegrity();
+    expect(r.hasQuotes).toBe(true);
+    expect(r.charsetOk).toBe(false);
+    vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", ` ${good}\n`);
+    expect(serviceKeyIntegrity().hadSurroundingWhitespace).toBe(true);
+    vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", good + ",");
+    expect(serviceKeyIntegrity().charsetOk).toBe(false);
+    for (const v of [good, `"${good}"`, good + ","]) {
+      vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", v);
+      expect(JSON.stringify(serviceKeyIntegrity())).not.toContain("A".repeat(8));
+    }
     vi.unstubAllEnvs();
   });
 

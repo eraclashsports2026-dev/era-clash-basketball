@@ -188,6 +188,25 @@ export const serviceKeyAccepted = async (fetchImpl = fetch) => (await serviceKey
  * That distinction is the difference between "replace the key" and "stop
  * blaming the key".
  */
+/**
+ * Is the stored credential INTACT, as opposed to merely the right kind? A value
+ * that picked up a stray quote, a trailing comma or an invisible character
+ * still starts with the right prefix and is still printable, so every shape
+ * check passes and the gateway still refuses it. Reported as a length and a
+ * boolean, which say nothing about the value.
+ */
+export const serviceKeyIntegrity = () => {
+  const k = serviceKey();
+  const raw = String(process.env.SUPABASE_SERVICE_ROLE_KEY ?? "");
+  return {
+    length: k.length || null,
+    charsetOk: /^sb_secret_[A-Za-z0-9_-]+$/.test(k) || /^eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/.test(k),
+    hadSurroundingWhitespace: raw !== k,
+    hasQuotes: /["']/.test(k),
+    kind: /^sb_secret_/.test(k) ? "sb_secret" : /^eyJ/.test(k) ? "legacy_jwt" : "unrecognised",
+  };
+};
+
 export const serviceKeyProbe = async (fetchImpl = fetch) => {
   const k = serviceKey();
   if (!serviceKeyShapeOk(k)) return { accepted: false, status: null, code: "not_configured", variant: null, tried: [] };
