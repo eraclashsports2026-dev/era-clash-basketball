@@ -141,10 +141,31 @@ if (MODE === "auth") {
   const dialog = src("src/components/accounts/AccountDialog.jsx");
   const callback = src("src/components/accounts/AuthCallback.jsx");
   ok("Google and an email one-time code are the two routes to an account", /signInWithOAuth/.test(provider) && /provider: "google"/.test(provider) && /signInWithOtp/.test(provider) && /verifyOtp/.test(provider));
-  ok("the flow is PKCE with a persisted, auto-refreshed session", /flowType: "pkce"/.test(provider) && /persistSession: true/.test(provider) && /autoRefreshToken: true/.test(provider));
+  // Deliberately not pinned to a literal flow name. The flow was changed on
+  // purpose — PKCE binds an emailed link to the browser that asked for it, and
+  // mail apps open links somewhere else — so what is worth enforcing is that
+  // the choice is named in one place, justified in the source, and comes with a
+  // persisted, auto-refreshed session either way.
+  const flow = (provider.match(/EMAIL_LINK_FLOW = "(implicit|pkce)"/) || [])[1] || null;
+  // The justification is a comment, so it has to be read from the raw file —
+  // src() strips comments, and a silently-absent rationale is the thing this
+  // check exists to prevent.
+  const providerRaw = read("src/accounts/provider.js");
+  ok("the session flow is named in one place, justified, persisted and auto-refreshed",
+    !!flow && /flowType: EMAIL_LINK_FLOW/.test(provider) && /persistSession: true/.test(provider)
+    && /autoRefreshToken: true/.test(provider) && /Revisit this only if a third-party OAuth provider/.test(providerRaw), flow);
+  ok("whichever flow is chosen, the callback can complete it",
+    flow === "implicit"
+      ? /setSessionFromTokens/.test(provider) && /setSession:/.test(callback)
+      : /exchangeCodeForSession/.test(callback), `flow ${flow}`);
   ok("no password field exists anywhere in the product", !/type="password"/.test(dialog) && !/password/i.test(dialog) && !/signInWithPassword/.test(provider));
-  ok("the callback route exchanges the code itself rather than trusting a URL fragment", /detectSessionInUrl: false/.test(provider) && /exchangeCodeForSession/.test(callback));
-  ok("the address bar is scrubbed BEFORE the exchange, so no code survives in history", callback.indexOf("history.replaceState") < callback.indexOf("exchangeCodeForSession"));
+  // The SDK is never allowed to consume the URL on its own. The callback reads
+  // it, scrubs the address bar, and only then decides what the proof was — the
+  // ordering is what keeps a token or a code out of history.
+  ok("the SDK never consumes the URL by itself; the callback decides", /detectSessionInUrl: false/.test(provider) && /redeem\(url/.test(callback));
+  ok("the address bar is scrubbed BEFORE anything is redeemed, so no proof survives in history",
+    callback.indexOf("history.replaceState") < callback.indexOf("redeem(url")
+    && callback.indexOf("const url = window.location.href") < callback.indexOf("history.replaceState"));
   ok("the return destination is filtered through the same-origin guard", /safeReturnPath/.test(callback) && ["//evil.com", "https://evil.com", "/api/game"].every((b) => safeReturnPath(b) === "/play"));
   ok("the dialog is a real modal: labelled, focus-trapped and dismissible by Escape", /role="dialog" aria-modal="true"/.test(dialog) && /aria-labelledby="ec-auth-title"/.test(dialog) && /e\.key === "Escape"/.test(dialog) && /e\.key !== "Tab"/.test(dialog));
   ok("failures are a closed vocabulary, and the provider's own text never reaches the UI", FAILURE_CODES.length >= 8 && /const asError/.test(provider) && /PROVIDER_ERROR/.test(provider));
@@ -161,7 +182,12 @@ if (MODE === "auth") {
   try { await ctx.provider.exchangeCodeForSession("https://x.invalid/auth/callback?code=nope"); } catch { badCallback = true; }
   ok("a wrong code is refused and the right code signs the right user in", wrongRefused && session?.userId === "u-1");
   ok("an invalid callback fails safely", badCallback);
-  extra.flows = { google: "signInWithOAuth(pkce) → /auth/callback?next=<safe path>", email: "signInWithOtp → one-time code or emailRedirectTo → /auth/callback", signOut: "provider session ended, state cleared, guest play intact" };
+  extra.flows = {
+    emailLinkFlow: flow,
+    google: `signInWithOAuth(${flow}) → /auth/callback?next=<safe path>`,
+    email: "signInWithOtp → a code typed into the dialog, or a link whose proof the callback reads; every shape is triaged by src/accounts/linkProof.js",
+    signOut: "provider session ended, state cleared, guest play intact",
+  };
 }
 
 // ── guest-claim and cloud-save ──────────────────────────────────────────────
@@ -299,13 +325,17 @@ if (MODE === "my-eraclash" || MODE === "responsive") {
       overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
       // Out of this phase's scope, measured so it is not lost: the global
       // footer's credits link predates Phase 9B.1 and is below 44px.
-      footerLinks: [...document.querySelectorAll("footer button, footer a")].filter((b) => b.offsetParent).map((b) => ({ text: (b.textContent || "").trim().slice(0, 24), height: Math.round(b.getBoundingClientRect().height) })),
+      footerLinks: [...document.querySelectorAll("footer button, footer a")].filter((b) => b.offsetParent).map((b) => ({ text: (b.textContent || "").trim().slice(0, 24), height: Math.round(b.getBoundingClientRect().height), width: Math.round(b.getBoundingClientRect().width) })),
     }));
     ok("the career page requires an account and says so, with a labelled landmark and an h1", /My EraClash/.test(m.heading || "") && m.landmark);
     ok("a signed-out visitor is offered an account rather than shown someone's data", m.cta.some((c) => /CREATE FREE ACCOUNT OR SIGN IN/.test(c)));
     ok("no rank, contender grade, percentile or leaderboard position is invented", !m.fabricated);
     ok("every account control and header control is at least 44px, and the page does not overflow", m.minTarget >= 44 && m.overflow <= 0, `${m.minTarget}px · ${m.overflow}px`);
-    ok("the pre-existing global footer credits link is recorded as an out-of-scope gap, not silently excluded", Array.isArray(m.footerLinks), JSON.stringify(m.footerLinks));
+    // Was recorded as an out-of-scope gap in Phase 9B.1; now asserted, because
+    // the footer's hit area has been raised to the same 44px minimum.
+    ok("the global footer's controls are at least a 44px touch target",
+      m.footerLinks.length > 0 && m.footerLinks.every((l) => l.height >= 44),
+      JSON.stringify(m.footerLinks));
 
     // Contrast, measured against the surface each element actually sits on.
     // The career page is a READING surface: without the editorial shell its

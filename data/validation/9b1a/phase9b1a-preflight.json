@@ -1,0 +1,27 @@
+{
+  "artifact": "phase9b1a-preflight",
+  "phase": "9B.1A — Supabase preview activation and live account certification",
+  "startedAt": "2026-09-04T20:27:03.103Z",
+  "ancestryCorrection": {
+    "specPreferredParent": "fix/footer-touch-target @ d92b929",
+    "finding": "Stale. The footer branch forked from the account branch at 8a0227d and adds exactly one commit. The account branch has since advanced 14 commits, including every key-security fix (tolerant flags, key shape validation, refusal of a secret key in a browser variable, the live database hardening) and the deployed certification. Starting from the footer branch would have silently dropped all of it.",
+    "actionTaken": "Branched from the current account head 08f71c9 and cherry-picked the footer commit d92b929 onto it, so this branch carries both in full.",
+    "parentBranch": "phase-9b1-real-accounts-my-eraclash",
+    "parentCommit": "08f71c9",
+    "footerCommitApplied": "d92b929 → 64386d1",
+    "branch": "phase-9b1a-supabase-live-certification",
+    "head": "64386d11285f122eb5c2e8c0f07a06348835bf2a"
+  },
+  "references": {
+    "main": "9cd95ff8797f8cdef252bbe67d63158c01b9f9bd",
+    "wave1": "4dc59e7b2175b82cea8d5ab5c336b75b550c7f59",
+    "wave2": "ef0caa525c4cf6830fe20b4a8ef5d483e29afd86",
+    "polishParent": "fd36b5a107443367da704feb3f9dddea1452ae23"
+  },
+  "functionBudget": {
+    "apiRoutes": 12,
+    "middleware": 1,
+    "budget": 13
+  },
+  "scope": "Live certification only. No new product features."
+}

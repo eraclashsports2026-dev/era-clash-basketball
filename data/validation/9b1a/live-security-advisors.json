@@ -1,0 +1,27 @@
+{
+  "phase": "9B.1A",
+  "artifact": "live-security-advisors",
+  "generatedAt": "2026-09-04T23:15:27.019172+00:00",
+  "project": "lfybiphmqkiecfrqsfzt",
+  "source": "Supabase security advisors, read live at the end of the phase.",
+  "findings": [
+    {
+      "name": "rls_enabled_no_policy",
+      "level": "INFO",
+      "entity": "public.schema_migrations",
+      "assessment": "INTENTIONAL, and the safe state rather than a gap. Row level security is on and no policy grants access, so the table is readable by nobody through the API. It records which migrations have run and is not application data; adding a policy would open it, not close it.",
+      "action": "none"
+    },
+    {
+      "name": "auth_leaked_password_protection",
+      "level": "WARN",
+      "assessment": "NOT APPLICABLE. This product has no passwords. There is no password field anywhere in the interface, no password is ever set or stored for a player, and authentication is an emailed link or a one-time code. A check against a breached-password corpus has nothing to check.",
+      "action": "none while the product stays passwordless; revisit only if a password sign-in is ever added"
+    }
+  ],
+  "verdict": {
+    "blockingFindings": 0,
+    "warningsRequiringAction": 0
+  },
+  "note": "Recorded rather than silently dismissed: an advisory that is deliberately left open should say so and say why."
+}

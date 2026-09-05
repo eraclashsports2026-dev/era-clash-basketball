@@ -52,6 +52,21 @@ const url = () => String(process.env.SUPABASE_URL || process.env.VITE_SUPABASE_U
 const serviceKey = () => String(process.env.SUPABASE_SERVICE_ROLE_KEY || "").trim();
 const anonKey = () => String(process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || "").trim();
 
+/**
+ * Do the server and the browser point at the SAME project? A mismatch is
+ * invisible to every other check — both halves look correctly configured, and
+ * the server's credential is simply valid for a project it is not calling, so
+ * the provider answers 401 exactly as it would for a revoked key.
+ * Compared as project refs, never as URLs, so nothing identifying is returned.
+ */
+const refOf = (u) => (String(u || "").match(/^https:\/\/([a-z0-9-]+)\.supabase\.(?:co|in)$/i) || [])[1] || null;
+export const providerRefsMatch = () => {
+  const server = refOf(process.env.SUPABASE_URL);
+  const browser = refOf(process.env.VITE_SUPABASE_URL);
+  if (!server || !browser) return null;   // nothing to compare, not a mismatch
+  return server === browser;
+};
+
 /** Configuration state, safe to report: booleans only, never a key or a fragment of one. */
 export const cloudAccountsServerStatus = () => ({
   providerUrlConfigured: /^https:\/\/[a-z0-9-]+\.supabase\.(co|in)$/i.test(url()),
@@ -150,6 +165,76 @@ export const buildSavedClash = ({ record, userId, claimedFrom, buildStamp = null
   };
 };
 
+/** The provider refusing the server's own credential, as opposed to refusing the caller. */
+export const serverKeyRejected = (status) => status === 401 || status === 403;
+
+/**
+ * Ask the provider whether it accepts the server's own credential, and answer
+ * with a boolean. Nothing about the key is returned or logged. This exists
+ * because a key that is correctly SHAPED and has been revoked looks perfectly
+ * healthy to every other check: cloud accounts reported ready while every save
+ * failed with a 401.
+ */
+export const serviceKeyAccepted = async (fetchImpl = fetch) => (await serviceKeyProbe(fetchImpl)).accepted;
+
+/**
+ * The same question with its working shown: the HTTP status the provider gave,
+ * and PostgREST's own short error code if it sent one. Both are safe to report
+ * — a status is a number and the code is a symbol like PGRST301 or 42501 — and
+ * they separate causes that a boolean cannot:
+ *   401  the credential is not accepted at all
+ *   403  accepted, but not permitted to read that table
+ *   404  the path is wrong, which would mean the probe is at fault
+ * That distinction is the difference between "replace the key" and "stop
+ * blaming the key".
+ */
+/**
+ * Is the stored credential INTACT, as opposed to merely the right kind? A value
+ * that picked up a stray quote, a trailing comma or an invisible character
+ * still starts with the right prefix and is still printable, so every shape
+ * check passes and the gateway still refuses it. Reported as a length and a
+ * boolean, which say nothing about the value.
+ */
+export const serviceKeyIntegrity = () => {
+  const k = serviceKey();
+  const raw = String(process.env.SUPABASE_SERVICE_ROLE_KEY ?? "");
+  return {
+    length: k.length || null,
+    charsetOk: /^sb_secret_[A-Za-z0-9_-]+$/.test(k) || /^eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/.test(k),
+    hadSurroundingWhitespace: raw !== k,
+    hasQuotes: /["']/.test(k),
+    kind: /^sb_secret_/.test(k) ? "sb_secret" : /^eyJ/.test(k) ? "legacy_jwt" : "unrecognised",
+  };
+};
+
+export const serviceKeyProbe = async (fetchImpl = fetch) => {
+  const k = serviceKey();
+  if (!serviceKeyShapeOk(k)) return { accepted: false, status: null, code: "not_configured", variant: null, tried: [] };
+  // Which header combination does this provider actually accept? A legacy
+  // service_role credential is a JWT and is happy as a Bearer token. A new
+  // sb_secret_ key is NOT a JWT, and a gateway that insists on parsing the
+  // Authorization header as one answers 401 — which from outside looks exactly
+  // like a revoked key, and had me blaming configuration twice.
+  const variants = [
+    ["both", { apikey: k, authorization: `Bearer ${k}` }],
+    ["apikey-only", { apikey: k }],
+    ["bearer-only", { authorization: `Bearer ${k}` }],
+  ];
+  const tried = [];
+  for (const [variant, headers] of variants) {
+    try {
+      const r = await fetchImpl(`${url()}/rest/v1/profiles?select=user_id&limit=1`, { method: "GET", headers });
+      const text = await r.text();
+      let body = null; try { body = text ? JSON.parse(text) : null; } catch { body = null; }
+      const code = typeof body?.code === "string" ? body.code.slice(0, 16) : null;
+      tried.push({ variant, status: r.status, code });
+      if (!serverKeyRejected(r.status)) return { accepted: true, status: r.status, code, variant, tried };
+    } catch { tried.push({ variant, status: null, code: "unreachable" }); }
+  }
+  const first = tried[0] || { status: null, code: null };
+  return { accepted: false, status: first.status, code: first.code, variant: null, tried };
+};
+
 const rest = async (path, init = {}, fetchImpl = fetch) => {
   const r = await fetchImpl(`${url()}/rest/v1/${path}`, {
     ...init,
@@ -194,6 +279,12 @@ export const claimAndSaveResult = async ({ resultId, userId, deviceSession, clai
     body: JSON.stringify({ result_id: String(record.id), user_id: userId, device_session_hash: hash, claimed_via: claimedFrom }),
   }, fetchImpl);
 
+  // A 401 or 403 here is the provider refusing OUR OWN credential, not anything
+  // about the player or the result. Retrying cannot fix it and the operator
+  // needs to know that: it means the server's key is absent, wrong, or was
+  // rotated without the deployment being updated. It is worth its own status,
+  // because "save failed, try again" invites a loop that can never succeed.
+  if (serverKeyRejected(claim.status)) return { status: "save_failed", detail: "provider_rejected_server_key" };
   if (!claim.ok) return { status: "save_failed", detail: `claim_http_${claim.status}` };
 
   // ignore-duplicates returns an empty array when the row already existed:
@@ -213,6 +304,7 @@ export const claimAndSaveResult = async ({ resultId, userId, deviceSession, clai
     body: JSON.stringify(row),
   }, fetchImpl);
 
+  if (serverKeyRejected(saved.status)) return { status: "save_failed", detail: "provider_rejected_server_key" };
   if (!saved.ok) return { status: "save_failed", detail: `save_http_${saved.status}` };
   const created = Array.isArray(saved.body) && saved.body.length > 0;
   return { status: created ? "saved" : "already_saved", resultId: row.result_id, outcome: row.outcome, mode: row.mode };

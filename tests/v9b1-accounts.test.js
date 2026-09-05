@@ -17,7 +17,9 @@ import {
   verifyAccountToken, cloudAccountsServerStatus, cloudAccountsReady, sha256,
   CANDIDATE_ID_SHAPE, MAX_IMPORT_CANDIDATES, flagOn as serverFlagOn, keyShapeOk as serverKeyShapeOk,
   looksLikeSecretKey as serverLooksLikeSecretKey, serviceKeyShapeOk as serverServiceKeyShapeOk,
+  serverKeyRejected, serviceKeyAccepted, serviceKeyProbe, serviceKeyIntegrity,
 } from "../api/_lib/cloudAccounts.js";
+import { readProof, isBrowserBound, redemptionPlan, redeem, VIA } from "../src/accounts/linkProof.js";
 import { EVENTS_ALLOWLIST } from "../api/events.js";
 import { ACTIVATION_EVENTS } from "../src/activation.js";
 
@@ -587,5 +589,407 @@ describe("preservation", () => {
     expect(csp).toMatch(/connect-src 'self' https:\/\/\*\.supabase\.co https:\/\/\*\.supabase\.in;/);
     expect(csp).toMatch(/script-src 'self';/);          // no third-party script may run
     expect(csp).toMatch(/frame-ancestors 'none'/);
+  });
+});
+
+// ── Redeeming what the email actually sent ───────────────────────────────────
+// This block exists because of a defect I shipped: the callback handed a whole
+// URL to exchangeCodeForSession, whose parameter is a code. It could never have
+// produced a session, and no test noticed, because every test built its own
+// happy path instead of reading the SDK's signature. So these pin the
+// signature and the argument, not only the behaviour.
+describe("redeeming an email link", () => {
+  const REF = "https://lfybiphmqkiecfrqsfzt.supabase.co";
+  const vias = (raw) => redemptionPlan(raw).map((a) => a.via);
+
+  it("a typed one-time code is a one-time code, and nothing else is tried", () => {
+    expect(redemptionPlan("123456")).toEqual([{ via: VIA.OTP, value: "123456", type: null }]);
+    expect(vias(" 12345678 ")).toEqual([VIA.OTP]);
+  });
+
+  it("with PKCE on, a magic link's token is a DIGEST and is redeemed as one", () => {
+    // The trap: flowType "pkce" turns ?token= into a pkce_-prefixed digest.
+    // Redeeming that as a raw token hashes it twice and always fails, so the
+    // digest call has to come first — and the raw reading stays as a fallback
+    // for a project with PKCE off.
+    const plan = redemptionPlan(`${REF}/auth/v1/verify?token=pkce_abcdef0123456789&type=magiclink&redirect_to=https://x.vercel.app/auth/callback`);
+    expect(plan.map((a) => a.via)).toEqual([VIA.TOKEN_HASH, VIA.OTP]);
+    expect(plan[0]).toEqual({ via: VIA.TOKEN_HASH, value: "pkce_abcdef0123456789", type: "magiclink" });
+  });
+
+  it("without PKCE, the same parameter is a raw token and is tried that way first", () => {
+    const plan = redemptionPlan(`${REF}/auth/v1/verify?token=abc123XYZ&type=magiclink&redirect_to=https://x.vercel.app/`);
+    expect(plan.map((a) => a.via)).toEqual([VIA.OTP, VIA.TOKEN_HASH]);
+    expect(plan[0].value).toBe("abc123XYZ");
+  });
+
+  it("the untouched link out of the email is portable either way", () => {
+    for (const t of ["pkce_abcdef0123456789", "abc123XYZ"]) {
+      const p = readProof(`${REF}/auth/v1/verify?token=${t}&type=magiclink`);
+      expect(isBrowserBound(p)).toBe(false);
+    }
+  });
+
+  it("what is left in a failed address bar is a PKCE code, and is browser-bound", () => {
+    // Exactly the URL the owner's Safari could not load: the provider had
+    // already consumed the token and redirected with a code.
+    const plan = redemptionPlan("http://localhost:3000/?code=e0c581d9-f03d-48ef-9ec4-ad7fd8a2ddd4");
+    expect(plan).toEqual([{ via: VIA.CODE, value: "e0c581d9-f03d-48ef-9ec4-ad7fd8a2ddd4", type: null, flowId: null }]);
+    expect(isBrowserBound(plan[0])).toBe(true);
+  });
+
+  it("a portable proof is never downgraded to a browser-bound one", () => {
+    const plan = redemptionPlan("https://x.vercel.app/auth/callback?token_hash=deadbeef00&code=e0c581d9-f03d-48ef-9ec4-ad7fd8a2ddd4&type=email");
+    expect(plan.map((a) => a.via)).not.toContain(VIA.CODE);
+    expect(plan[0].via).toBe(VIA.TOKEN_HASH);
+  });
+
+  it("bare values are told apart by shape", () => {
+    expect(vias("e0c581d9-f03d-48ef-9ec4-ad7fd8a2ddd4")).toEqual([VIA.CODE]);
+    expect(vias("pkce_9f2c1a")).toEqual([VIA.TOKEN_HASH, VIA.OTP]);
+    expect(vias("0123456789abcdef".repeat(4))).toEqual([VIA.TOKEN_HASH, VIA.OTP]);
+  });
+
+  it("a session in the fragment is adopted directly, and outranks every proof", () => {
+    // The product asks the provider for this shape now. There is nothing to
+    // redeem: no round trip, no verifier, no address — so it cannot fail for a
+    // reason anyone would have to explain, and it works on any device.
+    const plan = redemptionPlan("https://x.vercel.app/auth/callback#access_token=aaa.bbb.ccc&refresh_token=rrr&token_type=bearer&type=magiclink");
+    expect(plan).toEqual([{ via: VIA.SESSION, value: "aaa.bbb.ccc", refreshToken: "rrr", type: "magiclink" }]);
+  });
+
+  it("a fragment session beats a code in the same URL", () => {
+    const plan = redemptionPlan("https://x.vercel.app/auth/callback?code=e0c581d9-f03d-48ef-9ec4-ad7fd8a2ddd4#access_token=aaa&refresh_token=rrr");
+    expect(plan.map((a) => a.via)).toEqual([VIA.SESSION]);
+  });
+
+  it("half a session is not a session", () => {
+    expect(redemptionPlan("https://x.vercel.app/auth/callback#access_token=aaa")).toEqual([]);
+    expect(redemptionPlan("https://x.vercel.app/auth/callback#refresh_token=rrr")).toEqual([]);
+  });
+
+  it("both tokens reach setSession, in the right order", async () => {
+    const seen = [];
+    const out = await redeem("https://x.vercel.app/auth/callback#access_token=aaa.bbb.ccc&refresh_token=rrr", {
+      setSession: (a, r) => { seen.push([a, r]); return { ok: true }; },
+      verifyEmailCode: () => null, verifyTokenHash: () => null, exchangeCodeForSession: () => null,
+    });
+    expect(seen).toEqual([["aaa.bbb.ccc", "rrr"]]);
+    expect(out).toEqual({ ok: true });
+  });
+
+  it("a caller that cannot adopt a session is not handed one", async () => {
+    // The dialog and the callback both inject setSession, but redeem must not
+    // assume it: a missing adopter should skip the attempt, not throw.
+    let calls = 0;
+    const out = await redeem("https://x.vercel.app/auth/callback#access_token=aaa&refresh_token=rrr", {
+      verifyEmailCode: () => { calls += 1; }, verifyTokenHash: () => { calls += 1; }, exchangeCodeForSession: () => { calls += 1; },
+    });
+    expect(out).toBeNull();
+    expect(calls).toBe(0);
+  });
+
+  it("no token is ever handed to telemetry", () => {
+    // Adopting a session must not turn into a logged credential.
+    for (const f of ["src/components/accounts/AuthCallback.jsx", "src/components/accounts/AccountDialog.jsx"]) {
+      const t = src(f);
+      const tracks = [...t.matchAll(/track\([^)]*\)/g)].map((m) => m[0]).join(" ");
+      // e.code is a closed failure vocabulary, not a credential — what must
+      // never appear is a token, a pasted value or a proof.
+      expect(tracks, f).not.toMatch(/access_token|refresh_token|accessToken|refreshToken|proof\.value|attempt\.value|session\.accessToken|\bsetCode\b|\bcode:\s/);
+    }
+  });
+
+  it("the flow id travels with the code, so the right verifier is used", () => {
+    // The SDK appends sb_flow_id to the redirect it asks for, and keeps each
+    // flow's verifier in a slot named after it. Lose the id and the lookup
+    // falls back to one fixed key holding only the newest flow — which makes
+    // clicking the older of two links burn a code that was perfectly good.
+    const plan = redemptionPlan("https://x.vercel.app/auth/callback?sb_flow_id=0123456789abcdef0123456789abcdef&code=e0c581d9-f03d-48ef-9ec4-ad7fd8a2ddd4");
+    expect(plan).toEqual([{ via: VIA.CODE, value: "e0c581d9-f03d-48ef-9ec4-ad7fd8a2ddd4", type: null, flowId: "0123456789abcdef0123456789abcdef" }]);
+  });
+
+  it("a missing or malformed flow id falls back rather than failing", () => {
+    expect(redemptionPlan("http://localhost:3000/?code=e0c581d9-f03d-48ef-9ec4-ad7fd8a2ddd4")[0].flowId).toBeNull();
+    expect(redemptionPlan("https://x/auth/callback?sb_flow_id=nope&code=e0c581d9-f03d-48ef-9ec4-ad7fd8a2ddd4")[0].flowId).toBeNull();
+  });
+
+  it("the flow id reaches the exchange, not just the plan", async () => {
+    const seen = [];
+    await redeem("https://x.vercel.app/auth/callback?sb_flow_id=0123456789abcdef0123456789abcdef&code=e0c581d9-f03d-48ef-9ec4-ad7fd8a2ddd4", {
+      exchangeCodeForSession: (v, flowId) => { seen.push([v, flowId]); return { ok: true }; },
+      verifyTokenHash: () => null, verifyEmailCode: () => null,
+    });
+    expect(seen).toEqual([["e0c581d9-f03d-48ef-9ec4-ad7fd8a2ddd4", "0123456789abcdef0123456789abcdef"]]);
+  });
+
+  it("the callback reads the URL before it scrubs the address bar", () => {
+    // Order, not presence. Scrubbing first would silently drop the flow id.
+    const t = src("src/components/accounts/AuthCallback.jsx");
+    const read = t.indexOf("const url = window.location.href");
+    const scrub = t.indexOf("window.history.replaceState");
+    expect(read).toBeGreaterThan(-1);
+    expect(scrub).toBeGreaterThan(-1);
+    expect(read).toBeLessThan(scrub);
+  });
+
+  it("the provider names the flow when it has one, and omits it when it does not", () => {
+    const t = src("src/accounts/provider.js");
+    expect(t).toMatch(/exchangeCodeForSession\(code, flowId \? \{ flowId \} : undefined\)/);
+  });
+
+  it("nothing usable produces nothing, rather than a request built on a guess", () => {
+    for (const bad of ["", null, "   ", "https://x.vercel.app/auth/callback?next=/play"]) {
+      expect(redemptionPlan(bad), String(bad)).toEqual([]);
+      expect(readProof(bad)).toBeNull();
+    }
+  });
+
+  it("angle brackets from a copied mail-client link are stripped", () => {
+    expect(readProof("<https://x.vercel.app/c?token_hash=abc123def>").value).toBe("abc123def");
+  });
+
+  it("the SDK's exchange really does take a code, not a URL", () => {
+    // The defect in one line. If a future SDK changes this parameter, this
+    // fails and the callback gets looked at instead of silently breaking.
+    const dts = "node_modules/@supabase/auth-js/dist/module/GoTrueClient.d.ts";
+    if (!existsSync(dts)) return;
+    expect(read(dts)).toMatch(/exchangeCodeForSession\(authCode: string/);
+  });
+
+  it("the exchange is handed a code, never the URL it came in", async () => {
+    // The original defect, now caught by behaviour rather than by reading the
+    // source: a URL reaching exchangeCodeForSession can never succeed.
+    const seen = [];
+    await redeem("http://localhost:3000/?code=e0c581d9-f03d-48ef-9ec4-ad7fd8a2ddd4", {
+      exchangeCodeForSession: (v) => { seen.push(v); return { ok: true }; },
+      verifyTokenHash: () => null, verifyEmailCode: () => null,
+    });
+    expect(seen).toEqual(["e0c581d9-f03d-48ef-9ec4-ad7fd8a2ddd4"]);
+    expect(seen[0]).not.toMatch(/^https?:|[?#]/);
+  });
+
+  it("the paste field keeps what was pasted", () => {
+    // It used to strip every non-digit, so a link or a UUID code could not be
+    // entered at all — the field silently ate the only proof on offer.
+    const t = src("src/components/accounts/AccountDialog.jsx");
+    expect(t).not.toMatch(/setCode\(e\.target\.value\.replace/);
+    expect(t).toMatch(/onChange=\{\(e\) => setCode\(e\.target\.value\)\}/);
+    expect(t).toMatch(/maxLength=\{400\}/);
+  });
+
+  it("a later attempt failing never masks the reason the first one failed", async () => {
+    const boom = (code) => () => { throw Object.assign(new Error(code), { code }); };
+    await expect(redeem("https://x.supabase.co/auth/v1/verify?token=pkce_abcdef0123456789&type=magiclink", {
+      email: "a@b.co",
+      verifyTokenHash: boom("CODE_INVALID_OR_EXPIRED"),
+      verifyEmailCode: boom("RATE_LIMITED"),
+      exchangeCodeForSession: boom("PROVIDER_ERROR"),
+    })).rejects.toMatchObject({ code: "CODE_INVALID_OR_EXPIRED" });
+  });
+
+  it("the second reading of the same proof is really tried when the first fails", async () => {
+    // A project with PKCE off puts a RAW token in ?token=. The digest call is
+    // tried first and fails; the raw reading behind it has to succeed, or a
+    // correct link would be rejected.
+    const tried = [];
+    const session = await redeem("https://x.supabase.co/auth/v1/verify?token=" + "0123456789abcdef".repeat(4) + "&type=magiclink", {
+      email: "a@b.co",
+      verifyTokenHash: () => { tried.push("tokenHash"); throw Object.assign(new Error("CODE_INVALID_OR_EXPIRED"), { code: "CODE_INVALID_OR_EXPIRED" }); },
+      verifyEmailCode: (addr, v, t) => { tried.push(`otp:${addr}:${t}`); return { ok: true }; },
+      exchangeCodeForSession: () => { tried.push("code"); return null; },
+    });
+    expect(session).toEqual({ ok: true });
+    expect(tried).toEqual(["tokenHash", "otp:a@b.co:magiclink"]);
+  });
+
+  it("a plan with nothing usable makes no request at all", async () => {
+    let calls = 0;
+    const count = () => { calls += 1; return { ok: true }; };
+    const out = await redeem("https://x.vercel.app/auth/callback?next=/play", {
+      email: "a@b.co", verifyEmailCode: count, verifyTokenHash: count, exchangeCodeForSession: count,
+    });
+    expect(out).toBeNull();
+    expect(calls).toBe(0);
+  });
+
+  it("without an address, the attempts that need one are skipped, not guessed", async () => {
+    // This is the callback's situation: it has a URL and no idea whose it is.
+    const tried = [];
+    const out = await redeem("https://x.supabase.co/auth/v1/verify?token=pkce_abcdef0123456789&type=magiclink", {
+      verifyTokenHash: () => { tried.push("tokenHash"); return null; },
+      verifyEmailCode: () => { tried.push("otp"); return { ok: true }; },
+      exchangeCodeForSession: () => { tried.push("code"); return null; },
+    });
+    expect(tried).toEqual(["tokenHash"]);
+    expect(out).toBeNull();
+    expect(src("src/components/accounts/AuthCallback.jsx")).not.toMatch(/verifyEmailCode/);
+  });
+
+  it("every symbol these files use from the reader is actually imported", () => {
+    // A dropped import is invisible to the bundler and only fails when someone
+    // clicks. That happened here: the dialog referenced redemptionPlan with no
+    // import and still built cleanly.
+    const exported = ["redemptionPlan", "readProof", "redeem", "isBrowserBound", "VIA"];
+    for (const f of ["src/components/accounts/AuthCallback.jsx", "src/components/accounts/AccountDialog.jsx", "src/accounts/provider.js"]) {
+      const t = src(f);
+      expect(t, f).toContain("linkProof.js");
+      const imported = [...t.matchAll(/import\s*\{([^}]*)\}\s*from\s*"[^"]*linkProof\.js"/g)]
+        .flatMap((m) => m[1].split(",").map((x) => x.trim()));
+      for (const sym of exported) {
+        if (new RegExp(`\\b${sym}\\b`).test(t.replace(/import[^;]*linkProof\.js";/g, ""))) {
+          expect(imported, `${f} uses ${sym}`).toContain(sym);
+        }
+      }
+    }
+  });
+
+  it("every account gate's own call to action actually opens the dialog", () => {
+    // This bug shipped twice. The header's Create free account called setGate,
+    // which never renders on the lobby route, so the click did nothing. Then
+    // the route-level Dream Matchup gate was rendered without onUseAccount, so
+    // its primary button did nothing either while the header's still worked.
+    // The gate is the conversion path for the mode someone is trying to enter,
+    // so a dead button there is worse than no button.
+    const app = src("src/App.jsx");
+    const renders = [...app.matchAll(/<AccountGate\b[\s\S]*?\/>/g)].map((m) => m[0]);
+    expect(renders.length).toBeGreaterThan(0);
+    for (const [i, r] of renders.entries()) {
+      expect(r, `AccountGate render #${i + 1} has no onUseAccount`).toMatch(/onUseAccount=\{/);
+      expect(r, `AccountGate render #${i + 1} has no way back`).toMatch(/onBack=\{/);
+    }
+    // And the component must actually call what it is given.
+    expect(src("src/components/chaos/AccountGate.jsx")).toMatch(/onUseAccount\?\.\(\)/);
+  });
+
+  it("no copy promises a code the default template does not send", () => {
+    // Supabase's stock templates render only the confirmation URL. Telling
+    // someone to "enter the 6-digit code" when no code was sent is the failure
+    // this asserts against.
+    for (const f of ["src/components/accounts/AccountDialog.jsx", "src/components/accounts/AuthCallback.jsx"]) {
+      expect(read(f), f).not.toMatch(/6[- ]digit/i);
+      expect(read(f), f).not.toMatch(/type the code from the (message|email)/i);
+    }
+  });
+});
+
+// ── When the provider refuses OUR credential ────────────────────────────────
+// A revoked service-role key is correctly shaped, so every static check kept
+// reporting cloud accounts ready while every save failed with a 401. Nothing
+// surfaced it until a real game was played and saved on the deployment. The
+// point of these is that the failure now names itself and can be probed.
+describe("a rejected server credential", () => {
+  const configured = () => {
+    vi.stubEnv("SUPABASE_URL", "https://abcdefghijklmnopqrst.supabase.co");
+    vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", "sb_secret_" + "A".repeat(32));
+    vi.stubEnv("SUPABASE_ANON_KEY", "sb_publishable_" + "B".repeat(32));
+    vi.stubEnv("CLOUD_ACCOUNTS_ENABLED", "true");
+  };
+  const GUEST = "d".repeat(48);
+
+  it("401 and 403 are the provider refusing us; other failures are not", () => {
+    expect(serverKeyRejected(401)).toBe(true);
+    expect(serverKeyRejected(403)).toBe(true);
+    for (const s of [200, 201, 400, 404, 409, 429, 500, 502]) expect(serverKeyRejected(s), String(s)).toBe(false);
+  });
+
+  it("a save refused at 401 says so, instead of inviting a retry that cannot work", async () => {
+    configured();
+    const out = await claimAndSaveResult(
+      { resultId: "pv_abc123def4", userId: "u-1", deviceSession: GUEST },
+      { record: record({ session: GUEST }), fetch: async () => new Response("", { status: 401 }) },
+    );
+    expect(out).toEqual({ status: "save_failed", detail: "provider_rejected_server_key" });
+    vi.unstubAllEnvs();
+  });
+
+  it("an ordinary failure keeps its own status code, so the two stay distinguishable", async () => {
+    configured();
+    const out = await claimAndSaveResult(
+      { resultId: "pv_abc123def4", userId: "u-1", deviceSession: GUEST },
+      { record: record({ session: GUEST }), fetch: async () => new Response("", { status: 500 }) },
+    );
+    expect(out.status).toBe("save_failed");
+    expect(out.detail).toMatch(/_http_500$/);
+    vi.unstubAllEnvs();
+  });
+
+  it("the credential can be probed for acceptance, and answers with a boolean", async () => {
+    configured();
+    expect(await serviceKeyAccepted(async () => new Response("[]", { status: 200 }))).toBe(true);
+    expect(await serviceKeyAccepted(async () => new Response("", { status: 401 }))).toBe(false);
+    expect(await serviceKeyAccepted(async () => { throw new Error("network"); })).toBe(false);
+    vi.unstubAllEnvs();
+    // With nothing configured there is nothing to accept.
+    expect(await serviceKeyAccepted(async () => new Response("[]", { status: 200 }))).toBe(false);
+  });
+
+  it("the probe shows its working: status and code, never the key", async () => {
+    configured();
+    const p401 = await serviceKeyProbe(async () => new Response(JSON.stringify({ code: "PGRST301" }), { status: 401 }));
+    expect(p401.accepted).toBe(false);
+    expect(p401.status).toBe(401);
+    expect(p401.code).toBe("PGRST301");
+    expect(p401.tried).toHaveLength(3);          // every combination was tried
+    const p404 = await serviceKeyProbe(async () => new Response("", { status: 404 }));
+    expect(p404.accepted).toBe(true);            // not the credential's fault
+    // A provider that refuses the Bearer form but accepts apikey alone is the
+    // case this exists to find, and it must be reported as ACCEPTED.
+    let n = 0;
+    const picky = await serviceKeyProbe(async (u, init) => {
+      n += 1;
+      return init.headers.authorization ? new Response("", { status: 401 }) : new Response("[]", { status: 200 });
+    });
+    expect(picky.accepted).toBe(true);
+    expect(picky.variant).toBe("apikey-only");
+    for (const p of [p401, p404, picky]) expect(JSON.stringify(p)).not.toMatch(/sb_secret|sb_publishable|eyJ/);
+    vi.unstubAllEnvs();
+  });
+
+  it("the integrity report describes the value without revealing it", () => {
+    const good = "sb_secret_" + "A".repeat(32);
+    vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", good);
+    let r = serviceKeyIntegrity();
+    expect(r).toEqual({ length: good.length, charsetOk: true, hadSurroundingWhitespace: false, hasQuotes: false, kind: "sb_secret" });
+    // The failures that pass every shape check and still get a 401.
+    vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", `"${good}"`);
+    r = serviceKeyIntegrity();
+    expect(r.hasQuotes).toBe(true);
+    expect(r.charsetOk).toBe(false);
+    vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", ` ${good}\n`);
+    expect(serviceKeyIntegrity().hadSurroundingWhitespace).toBe(true);
+    vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", good + ",");
+    expect(serviceKeyIntegrity().charsetOk).toBe(false);
+    for (const v of [good, `"${good}"`, good + ","]) {
+      vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", v);
+      expect(JSON.stringify(serviceKeyIntegrity())).not.toContain("A".repeat(8));
+    }
+    vi.unstubAllEnvs();
+  });
+
+  it("nothing the probe returns can contain the key", async () => {
+    // Asserting on the source text is the wrong instrument: the function has to
+    // put the key in a header, so "the word key does not appear" would fail for
+    // the right code. What matters is what comes back.
+    configured();
+    const secret = "sb_secret_" + "A".repeat(32);
+    for (const status of [200, 401, 403, 500]) {
+      const p = await serviceKeyProbe(async () => new Response(JSON.stringify({ code: "X" }), { status }));
+      const dump = JSON.stringify(p);
+      expect(dump, `status ${status}`).not.toContain(secret);
+      expect(dump, `status ${status}`).not.toMatch(/sb_secret|sb_publishable|eyJ[A-Za-z0-9_-]{10,}/);
+    }
+    expect(String(serviceKeyProbe)).not.toMatch(/console\./);
+    vi.unstubAllEnvs();
+  });
+
+  it("health reports cloud readiness as booleans, and only probes when asked", () => {
+    const h = src("api/health.js");
+    expect(h).toMatch(/cloudAccounts: cloud/);
+    expect(h).toMatch(/req\.query\?\.deep === "1"/);
+    // The round trip must not happen on every health call.
+    // And the payload must keep clear of the word the server test forbids.
+    expect(h).toMatch(/serverCredentialAccepted = probe\.accepted/);
+    expect(h).toMatch(/serverCredentialProbeStatus = probe\.status/);
   });
 });

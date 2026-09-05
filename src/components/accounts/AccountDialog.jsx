@@ -1,5 +1,5 @@
 // ── Sign in / create a free account ─────────────────────────────────────────
-// One dialog, two real routes to an account: Google, or an email one-time code.
+// One dialog, two real routes to an account: Google, or an emailed link.
 // No password field exists anywhere in this product, so there is no password to
 // store, leak or reset. The email is used to authenticate and is never shown as
 // a public identity.
@@ -11,6 +11,7 @@ import { useEffect, useRef, useState } from "react";
 import { T, R } from "../../theme.js";
 import { withProvider, provider } from "../../accounts/provider.js";
 import { cloudAccountsStatus, safeReturnPath } from "../../accounts/config.js";
+import { redeem } from "../../accounts/linkProof.js";
 import { adopt } from "../../accounts/accountState.js";
 import { track } from "../../analytics.js";
 
@@ -22,6 +23,7 @@ const MESSAGE = {
   NETWORK: "The network dropped out. Try again.",
   PROVIDER_ERROR: "Sign-in is unavailable for a moment. Try again.",
   CLOUD_ACCOUNTS_DISABLED: "Accounts are not switched on in this build yet.",
+  LINK_OPENED_ELSEWHERE: "That link belongs to a different browser. Copy the link's address out of the email and paste it above, here, in the browser that asked for it.",
 };
 
 export default function AccountDialog({ open, entryPoint = "header", returnTo = "/play", intent = "signup", onClose, onSignedIn }) {
@@ -77,7 +79,18 @@ export default function AccountDialog({ open, entryPoint = "header", returnTo = 
   const verify = async () => {
     setFailure(null);
     try {
-      const session = await withProvider((p) => p.verifyEmailCode(email, code));
+      // Whatever the email actually gave you: a typed code, a link copied out
+      // of the message, or a link copied out of an address bar that failed to
+      // load. linkProof.js works out every legitimate way to redeem it and
+      // tries them best-first — the same single-use proof, presented the way
+      // each endpoint expects it.
+      const session = await redeem(code, {
+        email,
+        verifyEmailCode: (a, v, t) => withProvider((p) => p.verifyEmailCode(a, v, t)),
+        verifyTokenHash: (v, t) => withProvider((p) => p.verifyTokenHash(v, t)),
+        exchangeCodeForSession: (v, flowId) => withProvider((p) => p.exchangeCodeForSession(v, flowId)),
+        setSession: (a, r) => withProvider((p) => p.setSessionFromTokens(a, r)),
+      });
       if (!session) throw Object.assign(new Error("CODE_INVALID_OR_EXPIRED"), { code: "CODE_INVALID_OR_EXPIRED" });
       await adopt(session);
       track("account_signin_completed", { authMethod: "email", entryPoint });
@@ -138,13 +151,17 @@ export default function AccountDialog({ open, entryPoint = "header", returnTo = 
         {available && stage === "code" && (
           <>
             <p style={{ fontSize: 13, color: T.textDim, margin: "0 0 12px", lineHeight: 1.55 }}>
-              We sent a one-time code to <b>{email}</b>. Enter it below, or open the link in the message.
+              Check <b>{email}</b> and enter the code from the message. It works on any device.
+              If the message shows a link instead of a code, copy the link's address and paste that
+              here rather than clicking it — a clicked link can only finish in this browser, and
+              some mail providers open links themselves to scan them, which spends the link before
+              you ever see it.
             </p>
-            <label htmlFor="ec-auth-code" style={label}>One-time code</label>
-            <input id="ec-auth-code" inputMode="numeric" autoComplete="one-time-code" value={code} maxLength={8}
-              onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))}
+            <label htmlFor="ec-auth-code" style={label}>Sign-in code</label>
+            <input id="ec-auth-code" autoComplete="one-time-code" value={code} maxLength={400}
+              onChange={(e) => setCode(e.target.value)}
               aria-describedby={failure ? "ec-auth-error" : undefined} style={input} />
-            <button onClick={verify} disabled={code.length < 6} style={primary}>SIGN IN</button>
+            <button onClick={verify} disabled={code.trim().length < 6} style={primary}>SIGN IN</button>
             <button onClick={() => { setStage("choose"); setCode(""); }} style={quiet}>USE A DIFFERENT ADDRESS</button>
           </>
         )}

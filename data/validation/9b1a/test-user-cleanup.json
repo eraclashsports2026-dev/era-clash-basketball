@@ -1,0 +1,47 @@
+{
+  "artifact": "test-user-cleanup",
+  "phase": "9B.1A \u2014 Supabase preview activation and live account certification",
+  "syntheticUsersCreated": 2,
+  "syntheticUsersRemoved": 2,
+  "syntheticCareerRowsCreated": 2,
+  "syntheticCareerRowsRemoved": 2,
+  "syntheticClaimsCreated": 2,
+  "syntheticClaimsRemoved": 2,
+  "method": "Deleted from auth.users; every account table cascades, which this run also verifies.",
+  "verifiedAfter": {
+    "savedClashes": 0,
+    "resultClaims": 0
+  },
+  "localSecretFiles": "none created \u2014 no synthetic passwords were needed, because the probes set the role and JWT claims directly rather than signing in",
+  "residual": "One real account remains and was deliberately not touched: it is the owner's own. It now has a live session, a sign-in timestamp and a profile row, all created by their own sign-in.",
+  "reconciledAt": "2026-09-04T23:54:43.380013+00:00",
+  "secondPass": {
+    "attempted": "Two synthetic QA accounts, to obtain real signed-in sessions without an inbox.",
+    "created": 0,
+    "reason": "The insert into auth.users was denied by this session's permissions, which is a reasonable guardrail: writing rows into an auth schema is indistinguishable from forging an account. Two other routes were tried and are closed as well \u2014 the provider's email rate limit refuses a sign-in link to a QA address, and anonymous sign-ins are disabled on the project.",
+    "localArtefactsRemoved": [
+      ".preview-secrets/9b1a-synthetic-users.json (never used; the passwords in it were never sent anywhere)",
+      "a temporary file of locally computed bcrypt hashes"
+    ],
+    "passwordHandling": "The passwords were generated locally and hashed locally with bcrypt, so only a one-way hash would ever have reached the project. No plaintext was printed, committed or transmitted, and both files are now deleted.",
+    "databaseResidue": "none \u2014 a delete matching the QA address pattern was run and matched zero rows, confirming nothing was left behind"
+  },
+  "thirdPass": {
+    "route": "The owner enabled anonymous sign-ins for the duration of the signed-in certification, which issues real sessions with a real auth.uid() and needs no inbox and no privileged write.",
+    "syntheticUsersCreated": 21,
+    "syntheticUsersRemoved": 21,
+    "removedBy": "delete from auth.users where is_anonymous",
+    "cascadeVerified": true,
+    "afterCleanup": {
+      "users": 1,
+      "anonymousUsers": 0,
+      "sessions": 1,
+      "profiles": 1,
+      "savedClashes": 0,
+      "resultClaims": 0,
+      "identities": 1
+    },
+    "residual": "One real account remains, deliberately untouched: the owner's own, with their own live session and profile row.",
+    "ownerActionOutstanding": "Anonymous sign-ins are still enabled and should be switched back off once the remaining two blocked checks have been re-run."
+  }
+}

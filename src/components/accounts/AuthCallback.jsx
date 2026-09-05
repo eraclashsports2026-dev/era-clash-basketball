@@ -16,6 +16,7 @@ import { useEffect, useRef, useState } from "react";
 import { T, R } from "../../theme.js";
 import { withProvider, provider } from "../../accounts/provider.js";
 import { safeReturnPath } from "../../accounts/config.js";
+import { redeem } from "../../accounts/linkProof.js";
 import { adopt } from "../../accounts/accountState.js";
 import { track } from "../../analytics.js";
 
@@ -27,6 +28,12 @@ export default function AuthCallback({ onDone }) {
   useEffect(() => {
     if (ran.current) return;
     ran.current = true;
+    // Captured BEFORE the address bar is cleaned, and this order matters: the
+    // URL carries the SDK's own sb_flow_id, which names the storage slot
+    // holding this flow's verifier. Scrub first and read second, and the
+    // exchange falls back to a single fixed key that mirrors whichever flow
+    // started last — so clicking the older of two links would present the
+    // wrong verifier and burn a code that was perfectly good.
     const url = window.location.href;
     const params = new URLSearchParams(window.location.search);
     const next = safeReturnPath(params.get("next"), "/play");
@@ -42,9 +49,21 @@ export default function AuthCallback({ onDone }) {
     }
     if (!provider()) { setFailure("CLOUD_ACCOUNTS_DISABLED"); setState("failed"); return; }
 
+    // A link can arrive carrying more than one kind of proof, and they are not
+    // interchangeable — see src/accounts/linkProof.js. The same reader serves
+    // the dialog's paste field, so a link behaves identically wherever it is
+    // redeemed. A bare OTP token cannot be redeemed here, because redeeming one
+    // needs the address and this route has no way to know it.
+
     (async () => {
       try {
-        const session = await withProvider((p) => p.exchangeCodeForSession(url));
+        // No address is passed, so the attempts that need one are skipped
+        // rather than sent with a guessed address.
+        const session = await redeem(url, {
+          verifyTokenHash: (v, t) => withProvider((p) => p.verifyTokenHash(v, t)),
+          exchangeCodeForSession: (v, flowId) => withProvider((p) => p.exchangeCodeForSession(v, flowId)),
+          setSession: (a, r) => withProvider((p) => p.setSessionFromTokens(a, r)),
+        });
         if (!session) throw Object.assign(new Error("CODE_INVALID_OR_EXPIRED"), { code: "CODE_INVALID_OR_EXPIRED" });
         await adopt(session);
         track("account_signin_completed", { success: true, authMethod: session.authMethod });
@@ -68,7 +87,9 @@ export default function AuthCallback({ onDone }) {
             ? "One moment. Your Clash and your place in the game are being kept."
             : failure === "CLOUD_ACCOUNTS_DISABLED"
               ? "Accounts are not switched on in this build yet. Guest play is unaffected."
-              : "The sign-in link was already used or has expired. Nothing was lost — try again from the header."}
+              : failure === "LINK_OPENED_ELSEWHERE"
+                ? "This link only works in the browser that asked for it. Your account is fine. Go back to the lobby, enter your email, and when the message arrives copy the link's address and paste it into the code field in THIS browser."
+                : "The sign-in link was already used or has expired. Nothing was lost — try again from the header."}
         </div>
         {state === "failed" && (
           <button onClick={() => onDone?.({ session: null, next: "/play" })} style={{

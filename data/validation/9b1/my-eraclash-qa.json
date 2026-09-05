@@ -2,7 +2,7 @@
   "artifact": "my-eraclash-qa",
   "phase": "9B.1 — real accounts, cloud career, My EraClash",
   "mode": "my-eraclash",
-  "baseUrl": "http://localhost:4177",
+  "baseUrl": "http://localhost:4180",
   "provider": "supabase (auth + postgres + row level security)",
   "cloudAccountsConfigured": false,
   "cloudAccountsReady": false,
@@ -31,9 +31,9 @@
       "detail": "44px · 0px"
     },
     {
-      "name": "the pre-existing global footer credits link is recorded as an out-of-scope gap, not silently excluded",
+      "name": "the global footer's controls are at least a 44px touch target",
       "pass": true,
-      "detail": "[{\"text\":\"Image credits\",\"height\":12}]"
+      "detail": "[{\"text\":\"Image credits\",\"height\":44,\"width\":84}]"
     },
     {
       "name": "every text element on the career page clears WCAG AA on the surface it sits on",
@@ -103,7 +103,8 @@
     "footerLinks": [
       {
         "text": "Image credits",
-        "height": 12
+        "height": 44,
+        "width": 84
       }
     ]
   }

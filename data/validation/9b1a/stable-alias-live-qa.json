@@ -1,0 +1,21 @@
+{
+  "phase": "9B.1A",
+  "artifact": "stable-alias-live-qa",
+  "generatedAt": "2026-09-04T22:44:27.130Z",
+  "alias": "https://era-clash-basketball-git-phase-9b1a-supabase-l-f071d0-era-clash.vercel.app",
+  "commit": "76775e7",
+  "why": "A per-commit preview URL is a new browser origin on every push, and a session lives in the origin's own storage. Signing in on one and then being sent the next build's URL loses the session every time. The branch alias is one origin that always serves the branch head, so a session survives every later commit — and it is a single entry in the provider's redirect allow list instead of one per commit.",
+  "finding": "The owner's first successful verification landed on production, which is an older build with no account surface, so the browser never adopted the session even though the provider had verified the token. The redirect was baked into an older email, sent before the allow list covered the preview. Both the current per-commit host and this alias are accepted now.",
+  "method": "The provider is asked to redirect an invalid token, which it resolves before rejecting, so the allow list can be read without sending mail. A synthetic unsigned session is then presented to the alias's callback in a URL fragment.",
+  "verdict": {
+    "stableAliasServesTheAccountBuild": true,
+    "aliasCallbackAcceptedByProvider": true,
+    "bundleUsesImplicitFlow": true,
+    "fragmentReachedTheProvider": true,
+    "forgedSessionRefusedByProvider": true,
+    "addressBarCarriesNoToken": true,
+    "addressBarLandedOnASafePath": true
+  },
+  "allPassed": true,
+  "note": "Synthetic unsigned tokens only. No real credential appears in this artifact."
+}

@@ -1375,6 +1375,11 @@ export default function App() {
           title="Dream Matchup"
           blurb="Build both teams by hand, pick from the full coach library and choose the era yourself. A free account keeps your matchups and history."
           onCreated={() => setTier(currentTier())}
+          /* Without this the gate's own call to action did nothing: the route
+             was reachable directly, and the only working way in was the
+             header. The return destination is this route, so signing in drops
+             you back into the mode you were entering. */
+          onUseAccount={() => openAccountDialog({ entryPoint: "dream_matchup", intent: "signup", returnTo: window.location.pathname })}
           onBack={() => navigate(PLAY_LOBBY_ROUTE)} />
       ) : isDaily && dailyDone && !team && !result ? (
         <div>
@@ -2024,7 +2029,9 @@ export default function App() {
       <footer style={{ textAlign: "center", padding: 20, fontSize: 10.5, color: T.textDim, borderTop: `1px solid ${T.border}` }}>
         EraClash is an independent fan-made game. Not affiliated with or endorsed by the NBA.
         {" · "}
-        <button onClick={() => handleNav("Credits")} style={{ background: "none", border: "none", color: T.textDim, cursor: "pointer", fontSize: 10.5, textDecoration: "underline", padding: 0 }}>
+        {/* .ec-footer-link carries the 44px touch target; the inline padding:0
+            it used to set is gone so the class can apply. Copy unchanged. */}
+        <button className="ec-footer-link" onClick={() => handleNav("Credits")} style={{ background: "none", border: "none", color: T.textDim, cursor: "pointer", fontSize: 10.5, textDecoration: "underline" }}>
           Image credits
         </button>
         {" · "}

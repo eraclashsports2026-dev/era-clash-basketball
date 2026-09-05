@@ -395,6 +395,32 @@ if (MODE === "responsive" || MODE === "accessibility") {
     ok("titles clear WCAG AA on the panel", (a.titleContrast || 0) >= 4.5, `${(a.titleContrast || 0).toFixed(2)}:1`);
     ok("the logo has alt text", a.logoAlt === "EraClash Basketball", a.logoAlt);
     ok("reduced motion is respected by the lobby", a.reducedMotionRule);
+    // The global chrome is part of every page's accessibility, so the footer is
+    // MEASURED here rather than left out. Its credits control was 12px tall —
+    // the one control in the product under the minimum — until the hit area was
+    // expanded with padding offset by an equal negative margin.
+    const chrome = await page.evaluate(() => {
+      const controls = [...document.querySelectorAll("footer button, footer a, .ec-brand-header button, .ec-brand-header a")].filter((el) => el.offsetParent);
+      const f = document.querySelector("footer");
+      return {
+        footerHeight: f ? Math.round(f.getBoundingClientRect().height) : null,
+        controls: controls.map((el) => ({
+          where: el.closest("footer") ? "footer" : "header",
+          text: (el.textContent || "").trim().slice(0, 24),
+          height: Math.round(el.getBoundingClientRect().height),
+          width: Math.round(el.getBoundingClientRect().width),
+          fontPx: parseFloat(getComputedStyle(el).fontSize),
+        })),
+      };
+    });
+    const undersized = chrome.controls.filter((c) => c.height < 44 || c.width < 44);
+    ok("every control in the global header and footer is at least a 44px touch target",
+      chrome.controls.length > 0 && undersized.length === 0,
+      undersized.length ? undersized.map((c) => `${c.where} "${c.text}" ${c.height}x${c.width}`).join(" · ") : `${chrome.controls.length} controls, smallest ${Math.min(...chrome.controls.map((c) => Math.min(c.height, c.width)))}px`);
+    ok("the footer keeps its fine-print size and its height: the target grew, the layout did not",
+      chrome.controls.some((c) => c.where === "footer" && c.fontPx <= 11) && chrome.footerHeight <= 60,
+      `footer ${chrome.footerHeight}px, credits font ${chrome.controls.find((c) => c.where === "footer")?.fontPx}px`);
+    extra.globalChrome = chrome;
     // Keyboard: Tab reaches the first action; Enter opens the route.
     await page.keyboard.press("Tab");
     let reached = false;

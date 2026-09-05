@@ -1,0 +1,234 @@
+{
+  "artifact": "lobby-accessibility-qa",
+  "phase": "9A.3P — Play Lobby brand, CTA and entry polish",
+  "mode": "accessibility",
+  "baseUrl": "http://localhost:4177",
+  "presentationVersion": "play-lobby-polish-v1",
+  "checks": 16,
+  "passed": 16,
+  "failed": 0,
+  "results": [
+    {
+      "name": "landmark, heading and regions intact",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "every action is a real link or button whose name carries the purpose and the mode",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the recommended, free-account and coming-soon facts are announced in the names",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "badges and the recommended flag are text",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "primary / secondary / unavailable are distinguishable without colour (fill+no-arrow · solid border+arrow · dashed border)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the unavailable action with a real destination is a link and not aria-disabled; no automatic animation runs",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "decorative motifs and glyphs are hidden from assistive technology",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "both marks are described once: the lobby image by alt, the header image by its button",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the hero line clears AA on the brand band",
+      "pass": true,
+      "detail": "12.97:1"
+    },
+    {
+      "name": "every action's text clears AA on its own face (primary ink on gold, ink on ivory, muted ink on the card)",
+      "pass": true,
+      "detail": "chaos 9.73 · dream 17.3 · daily 17.3 · bo7 17.3 · win82 17.3 · tournament 17.3 · gauntlet 6.21"
+    },
+    {
+      "name": "Tab reaches the Chaos action first with a visible focus ring",
+      "pass": true,
+      "detail": "{\"mode\":\"chaos\",\"outline\":\"solid\"}"
+    },
+    {
+      "name": "Tab moves through the seven actions in card order",
+      "pass": true,
+      "detail": "chaos,dream,daily,bo7,win82,tournament,gauntlet"
+    },
+    {
+      "name": "Enter on the primary opens /play/chaos",
+      "pass": true,
+      "detail": "http://localhost:4177/play/chaos"
+    },
+    {
+      "name": "reduced motion removes the action and signature transitions",
+      "pass": true,
+      "detail": "{\"action\":\"1e-05s\",\"sig\":\"1e-05s\",\"card\":\"1e-05s\"}"
+    },
+    {
+      "name": "with a run waiting, Continue is reached before any mode action and is named for what it does",
+      "pass": true,
+      "detail": "continue,mode"
+    },
+    {
+      "name": "390×844: every control is at least 44px",
+      "pass": true,
+      "detail": "44px"
+    }
+  ],
+  "audit": {
+    "main": true,
+    "h1": "Play EraClash Basketball",
+    "names": [
+      {
+        "id": "chaos",
+        "tag": "A",
+        "name": "Start Chaos Clash, recommended mode",
+        "href": "/play/chaos",
+        "ariaDisabled": null,
+        "hierarchy": "primary",
+        "border": "solid",
+        "arrow": "none",
+        "gradient": true
+      },
+      {
+        "id": "dream",
+        "tag": "A",
+        "name": "Build Dream Matchup, free account required",
+        "href": "/play/dream",
+        "ariaDisabled": null,
+        "hierarchy": "secondary",
+        "border": "solid",
+        "arrow": "\"→\"",
+        "gradient": false
+      },
+      {
+        "id": "daily",
+        "tag": "A",
+        "name": "Play Daily Clash",
+        "href": "/play/daily",
+        "ariaDisabled": null,
+        "hierarchy": "secondary",
+        "border": "solid",
+        "arrow": "\"→\"",
+        "gradient": false
+      },
+      {
+        "id": "bo7",
+        "tag": "A",
+        "name": "Start Best of 7, free account required",
+        "href": "/play/best-of-7",
+        "ariaDisabled": null,
+        "hierarchy": "secondary",
+        "border": "solid",
+        "arrow": "\"→\"",
+        "gradient": false
+      },
+      {
+        "id": "win82",
+        "tag": "A",
+        "name": "Start Win 82, free account required",
+        "href": "/play/win-82",
+        "ariaDisabled": null,
+        "hierarchy": "secondary",
+        "border": "solid",
+        "arrow": "\"→\"",
+        "gradient": false
+      },
+      {
+        "id": "tournament",
+        "tag": "A",
+        "name": "Enter Tournament, free account required",
+        "href": "/play/tournament",
+        "ariaDisabled": null,
+        "hierarchy": "secondary",
+        "border": "solid",
+        "arrow": "\"→\"",
+        "gradient": false
+      },
+      {
+        "id": "gauntlet",
+        "tag": "A",
+        "name": "Learn more about Era Gauntlet, coming soon",
+        "href": "/modes/era-gauntlet",
+        "ariaDisabled": null,
+        "hierarchy": "unavailable",
+        "border": "dashed",
+        "arrow": "none",
+        "gradient": false
+      }
+    ],
+    "badges": [
+      "Free account",
+      "Free account",
+      "Free account",
+      "Free account",
+      "Coming soon"
+    ],
+    "flag": "RECOMMENDED",
+    "decorativeHidden": true,
+    "heroLineColor": "rgb(201, 207, 218)",
+    "bandBg": "rgb(3, 6, 11)",
+    "headings": 7,
+    "sections": [
+      "Game modes",
+      "More ways to play"
+    ],
+    "logoAlt": "EraClash Basketball",
+    "headerLogoAlt": "",
+    "homeName": "EraClash Basketball home",
+    "autoAnimations": 0
+  },
+  "contrast": [
+    {
+      "id": "chaos",
+      "ratio": 9.73
+    },
+    {
+      "id": "dream",
+      "ratio": 17.3
+    },
+    {
+      "id": "daily",
+      "ratio": 17.3
+    },
+    {
+      "id": "bo7",
+      "ratio": 17.3
+    },
+    {
+      "id": "win82",
+      "ratio": 17.3
+    },
+    {
+      "id": "tournament",
+      "ratio": 17.3
+    },
+    {
+      "id": "gauntlet",
+      "ratio": 6.21
+    }
+  ],
+  "tabOrder": [
+    "chaos",
+    "dream",
+    "daily",
+    "bo7",
+    "win82",
+    "tournament",
+    "gauntlet"
+  ]
+}

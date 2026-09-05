@@ -10,11 +10,15 @@
 // The SDK is imported dynamically so a build with cloud accounts off never
 // downloads it, and guest play is untouched.
 import { SUPABASE_URL, SUPABASE_ANON_KEY, cloudAccountsEnabled, cleanDisplayName } from "./config.js";
+import { readProof, VIA } from "./linkProof.js";
 
 let injected = null;
 /** Tests (and only tests) install an adapter here. */
 export const _setProvider = (p) => { injected = p; };
 export const _providerIsInjected = () => !!injected;
+
+/** One line to revert, and the reason to is documented where it is used. */
+export const EMAIL_LINK_FLOW = "implicit";
 
 let clientPromise = null;
 const client = async () => {
@@ -22,7 +26,17 @@ const client = async () => {
     clientPromise = import("@supabase/supabase-js").then(({ createClient }) =>
       createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
         auth: {
-          flowType: "pkce",            // the code, not a token, travels through the URL
+          // An emailed link is not an OAuth redirect through a third party,
+          // which is the threat PKCE is built for. What PKCE costs here is
+          // severe and unavoidable: the verifier never leaves the browser that
+          // asked, so a link opened by a mail app in the system browser can
+          // never complete, and the code is spent either way. The implicit
+          // flow returns the session in the URL fragment instead, which works
+          // in any browser and on any device. A fragment is never sent to a
+          // server, and AuthCallback scrubs the address bar before it does
+          // anything else. Revisit this only if a third-party OAuth provider
+          // is switched on, which is what PKCE would actually protect.
+          flowType: EMAIL_LINK_FLOW,
           persistSession: true,
           autoRefreshToken: true,
           detectSessionInUrl: false,   // the callback route exchanges the code itself
@@ -59,6 +73,7 @@ export const FAILURE_CODES = Object.freeze([
   "RATE_LIMITED", "CODE_INVALID_OR_EXPIRED", "EMAIL_INVALID", "NOT_PERMITTED",
   "NETWORK", "PROVIDER_ERROR", "DISPLAY_NAME_INVALID", "CLOUD_ACCOUNTS_DISABLED",
   "RESULT_NOT_FOUND", "NOT_YOUR_RESULT", "ALREADY_CLAIMED", "SAVE_FAILED",
+  "LINK_OPENED_ELSEWHERE",
 ]);
 
 /**
@@ -116,18 +131,83 @@ const supabaseProvider = {
     if (error) throw asError(error);
     return { sent: true };
   },
-  async verifyEmailCode(email, code) {
+  async verifyEmailCode(email, code, type = null) {
     const c = await client();
-    const { data, error } = await c.auth.verifyOtp({
-      email: String(email || "").trim(), token: String(code || "").trim(), type: "email",
+    const addr = String(email || "").trim();
+    const token = String(code || "").trim();
+    // A code issued to a BRAND NEW address is a "signup" token; one issued to
+    // an existing account is an "email" token. Which of the two you get depends
+    // on whether the address already existed, which the dialog cannot know. Try
+    // both rather than making the visitor guess, and keep the first real
+    // failure to report if neither works.
+    let firstError = null;
+    // Which type a token carries depends on whether the address already
+    // existed, which the dialog cannot know. Try the stated one first, then the
+    // rest, rather than making someone guess.
+    const types = type ? [type, ...["email", "signup", "magiclink"].filter((t) => t !== type)] : ["email", "signup", "magiclink"];
+    for (const type_ of types) {
+      const { data, error } = await c.auth.verifyOtp({ email: addr, token, type: type_ });
+      if (!error && data?.session) return session(data.session);
+      firstError = firstError || error;
+    }
+    throw asError(firstError || new Error("CODE_INVALID_OR_EXPIRED"));
+  },
+  /**
+   * Verify an emailed token hash. Unlike the PKCE code path this carries its
+   * own proof, so it establishes a session in ANY browser — which is what makes
+   * a link forwarded to a phone work. Supabase only puts a token hash in the
+   * email when the template asks for one, so this is the path that becomes
+   * available once the templates are updated.
+   */
+  /**
+   * Adopt a session the provider already minted and handed back in the URL
+   * fragment. There is nothing to verify with the provider — it issued these —
+   * but setSession still validates them and starts the refresh timer. The
+   * tokens are never logged, and the caller has already cleaned the address bar.
+   */
+  async setSessionFromTokens(accessToken, refreshToken) {
+    const c = await client();
+    const { data, error } = await c.auth.setSession({
+      access_token: String(accessToken || ""),
+      refresh_token: String(refreshToken || ""),
     });
     if (error) throw asError(error);
     return data?.session ? session(data.session) : null;
   },
-  async exchangeCodeForSession(url) {
+
+  async verifyTokenHash(tokenHash, type) {
     const c = await client();
-    const { data, error } = await c.auth.exchangeCodeForSession(url);
-    if (error) throw asError(error);
+    const kinds = type ? [type] : ["magiclink", "signup", "email"];
+    let firstError = null;
+    for (const t of kinds) {
+      const { data, error } = await c.auth.verifyOtp({ token_hash: String(tokenHash), type: t });
+      if (!error && data?.session) return session(data.session);
+      firstError = firstError || error;
+    }
+    throw asError(firstError || new Error("CODE_INVALID_OR_EXPIRED"));
+  },
+  /**
+   * @param codeOrUrl a bare PKCE code, or a URL carrying ?code=. The SDK takes
+   *   the CODE — passing it a whole URL fails every time, which is the bug that
+   *   made this callback unable to complete a sign-in even in the right browser.
+   */
+  async exchangeCodeForSession(codeOrUrl, flowId = null) {
+    const c = await client();
+    const first = readProof(codeOrUrl);
+    const code = first?.via === VIA.CODE ? first.value : String(codeOrUrl || "").trim();
+    // Naming the flow makes the lookup slot-only. Without it the SDK reads the
+    // fixed legacy key, which holds whichever flow started last — fine for one
+    // link, wrong for the older of two.
+    const { data, error } = await c.auth.exchangeCodeForSession(code, flowId ? { flowId } : undefined);
+    if (error) {
+      // PKCE keeps the code verifier in the REQUESTING browser's storage, so a
+      // link opened anywhere else — a phone, another browser, a private window
+      // — cannot complete even though the address was verified. That is the
+      // difference between an account that exists and a session that exists,
+      // and it deserves its own message rather than "invalid link".
+      const missingVerifier = /verifier|code challenge|pkce/i.test(String(error?.message || ""));
+      throw Object.assign(new Error(missingVerifier ? "LINK_OPENED_ELSEWHERE" : asError(error).code), { code: missingVerifier ? "LINK_OPENED_ELSEWHERE" : asError(error).code });
+    }
     return data?.session ? session(data.session) : null;
   },
   async signOut() {

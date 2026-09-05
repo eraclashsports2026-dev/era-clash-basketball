@@ -9,6 +9,7 @@ import { computeResult, newSeed } from "./_lib/game-core.js";
 import { PLAYERS } from "../src/players.js";
 import { previewCandidateIdentity } from "./_lib/previewEngine.js";
 import { PREVIEW_ACCESS } from "../config/previewAccess.js";
+import { cloudAccountsServerStatus, serviceKeyProbe, providerRefsMatch, serviceKeyIntegrity } from "./_lib/cloudAccounts.js";
 
 export default async function handler(req, res) {
   let coreEngine = "ok";
@@ -29,6 +30,39 @@ export default async function handler(req, res) {
   const circuit = await circuitState();
   res.setHeader("Cache-Control", "no-store");
   const identity = previewCandidateIdentity();
+
+  // Cloud-account readiness, as booleans and never a key. `deep=1` additionally
+  // asks the provider whether it still accepts the server's own credential,
+  // which costs a round trip and so is opt-in. It exists because a revoked key
+  // is correctly shaped: every static check reported ready while every save
+  // failed with a 401, and nothing surfaced that until a game was played.
+  // Renamed deliberately: tests/server.test.js forbids the substring "key"
+  // anywhere in this payload. That rule is blunt on purpose and worth keeping,
+  // so the field names avoid the word rather than the assertion being softened
+  // to accommodate them. These are booleans about configuration, never values.
+  const st = cloudAccountsServerStatus();
+  const cloud = {
+    providerConfigured: st.providerUrlConfigured,
+    serverCredentialConfigured: st.serviceRoleConfigured,
+    browserCredentialConfigured: st.anonKeyConfigured,
+    enabled: st.enabled,
+  };
+  if (req.query?.deep === "1" || req.query?.deep === "true") {
+    const probe = await serviceKeyProbe();
+    cloud.serverCredentialAccepted = probe.accepted;
+    // Status and PostgREST's own code, so a refusal can be told apart from a
+    // permission problem or a probe pointed at the wrong path.
+    cloud.serverCredentialProbeStatus = probe.status;
+    cloud.serverCredentialProbeCode = probe.code;
+    cloud.serverCredentialAcceptedVia = probe.variant;
+    cloud.serverCredentialAttempts = probe.tried;
+    // Length and booleans only: whether the stored value is intact, not what it is.
+    cloud.serverCredentialIntegrity = serviceKeyIntegrity();
+    // A boolean, not a URL: whether the server and the browser are configured
+    // for the same project at all. If they are not, a perfectly valid
+    // credential still gets a 401, because it is being shown to the wrong door.
+    cloud.serverAndBrowserSameProject = providerRefsMatch();
+  }
   return res.status(200).json({
     status: f.maintenance ? "maintenance" : coreEngine === "ok" ? "ok" : "degraded",
     build: VERSIONS.app,
@@ -36,6 +70,7 @@ export default async function handler(req, res) {
     persistence,
     aiNarrative: !f.aiNarrative ? "disabled" : circuit === "OPEN" ? "circuit_open" : "ok",
     simV3: f.simV3,
+    cloudAccounts: cloud,
     // Protected-preview health block. Identity fields only — the candidate id,
     // its version identity, the governing flag and the fallback path. No
     // hashes, secrets or internal diagnostics.
