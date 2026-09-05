@@ -1,0 +1,74 @@
+{
+  "artifact": "phase9c-preflight",
+  "phase": "9C — Challenges + Persistent Competitive Identity V1",
+  "generatedAt": "2026-09-05T05:26:43.667Z",
+  "startConditions": {
+    "phase9b1a": "OWNER APPROVED — data/validation/9b2/phase9b1a-acceptance.json",
+    "phase9b2": "OWNER APPROVED — data/validation/9b3/phase9b2-acceptance.json",
+    "phase9b3": "OWNER APPROVED — data/validation/9c/phase9b3-acceptance.json (APPROVE CHAOS CLASH GUIDED FLOW V2 to close 9B.3 and start Phase 9C from 5a896b7)"
+  },
+  "repositoryTruth": {
+    "toplevel": "/Users/josephjohnson/era-clash-basketball",
+    "branch": "phase-9c-challenges-competitive-identity-v1",
+    "parent": "phase-9b3-chaos-guided-flow-v2 @ 5a896b7 (PR #45, APPROVED; app code dad4411)",
+    "main": "9cd95ff",
+    "wave1": "4dc59e7",
+    "wave2": "ef0caa5"
+  },
+  "frozen": {
+    "candidateId": "Candidate 4",
+    "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+    "calibrationVersion": "1.4.0",
+    "apiRoutes": 12,
+    "middleware": true,
+    "migrations": [
+      "0001_accounts.sql",
+      "0002_accounts_hardening.sql",
+      "0003_career_v2.sql"
+    ],
+    "eventsAllowlist": 118
+  },
+  "existingMechanics": {
+    "sameSeedChallenge": "src/chaos/challenge.js + api/_lib/chaosRun.js publishChallenge/createRun: an opaque seed-hash manifest id (KV chaos-chal:<id>, 60-day TTL) reproduces the same starting chaos under the minted sequence; a custom era travels pinned; deep link /?chaos=<id> (kept working, no longer surfaced as the product's challenge)",
+    "legacyRivalryChallenge": "api/challenge.js + src/challengeClient.js: a Dream-Matchup-style rivalry with a stored rival five (mode 'challenge', flag CHALLENGES_ENABLED) — a different product; untouched",
+    "chaosRunOwnership": "runs are owned by the HttpOnly device session (ownsRun); guest budget is server-side (GUEST_CHAOS_RUNS=3, consumeGuestRun); tier is a body field that gates ACCESS only — no odds function takes a tier",
+    "results": "KV result:<id> written by /api/game simulate; run.resultId recorded on the run; cloud save via /api/profile actions with a verified bearer (claimAndSaveResult → result_claims + saved_clashes)",
+    "accounts": "Supabase profiles(display_name), saved_clashes (has challenge_fingerprint), result_claims, saved_rosters, user_preferences; RLS: authenticated reads own rows, anon none; writes by the server's service role",
+    "myEraClash": "src/components/accounts/MyEraClash.jsx — five tabs from CAREER_TABS in src/accounts/careerV2.js",
+    "guestEntitlement": "src/entitlements.js CAPABILITIES; guests may play Chaos within the run budget"
+  },
+  "functionBudget": {
+    "routes": 12,
+    "middleware": true,
+    "plan": "challenge actions live inside api/profile.js (the account route) and reuse api/_lib/chaosRun.js createRun; apiFunctionCountIncrease must stay 0"
+  },
+  "frozenLogicFiles": [
+    "src/chaos/**",
+    "src/v3/**",
+    "src/engine.js",
+    "src/rating.js",
+    "src/players.js",
+    "src/draft.js",
+    "src/dailyChallenge.js",
+    "src/lineupPlacement.js",
+    "src/entitlements.js",
+    "src/components/arena/guidedState.js (state sequencing)",
+    "api/game.js",
+    "api/_lib/game-core.js",
+    "api/_lib/previewEngine.js",
+    "data/calibration/**"
+  ],
+  "supabaseProject": {
+    "ref": "lfybiphmqkiecfrqsfzt",
+    "region": "us-west-2",
+    "plan": "apply 0004_challenges via the Supabase MCP before live certification"
+  },
+  "checkpoints": [
+    "1 contract + security model",
+    "2 persistence/schema",
+    "3 creation + share flow",
+    "4 acceptance/play flow",
+    "5 comparison + My EraClash history",
+    "6 mobile/accessibility/deployed certification"
+  ]
+}

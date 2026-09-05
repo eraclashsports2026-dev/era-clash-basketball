@@ -85,6 +85,9 @@ export default function TimeArena({
   onRunClash, onViewFullReport, onRunItBack, onNewClash, onChallenge, onEraChange, onReset,
   onGuide, onSettings, onMembership,
   busy, error, resume = true,
+  // Phase 9C: the run is a challenge attempt (badge), the share sheet on a
+  // finished Clash, and the comparison once an attempt has been bound.
+  challengeContext = null, challengeShare = null, challengeComparison = null,
 }) {
   const compact = useCompact();
   // The one browser-side fact the resolver needs: has THIS run's era reveal
@@ -133,7 +136,8 @@ export default function TimeArena({
           onRunClash={onRunClash} phase={phase} busy={busy} error={error} result={result}
           onReset={onReset}
           guidedState={state} onAcknowledgeEra={acknowledge} onGuide={onGuide}
-          mobileTeam={mobileTeam} onMobileTeam={setMobileTeam} />
+          mobileTeam={mobileTeam} onMobileTeam={setMobileTeam}
+          challengeContext={challengeContext} />
 
         {/* The Result: the score leads in the stage head above the matchup that
             produced it; the story, box score, coaching, analysis and the
@@ -144,7 +148,8 @@ export default function TimeArena({
               phase={phase} run={chaosRun} result={result}
               priorResult={null} priorAt={null} simStage={simStage}
               onViewFullReport={onViewFullReport} onRunItBack={onRunItBack}
-              onNewClash={onNewClash} onChallenge={onChallenge} busy={busy} />
+              onNewClash={onNewClash} onChallenge={onChallenge} busy={busy}
+              challengeShare={challengeShare} challengeComparison={challengeComparison} />
           </div>
         )}
 

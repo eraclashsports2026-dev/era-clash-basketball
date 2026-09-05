@@ -120,6 +120,9 @@ export default function ResultDock({
   // "dock": the rail surface. "hero": Phase 9B.3's Result state, where THIS
   // game leads the main column above the matchup that produced it.
   variant = "dock",
+  // Phase 9C: CHALLENGE THIS CHAOS (the share sheet) and, for a recipient, the
+  // comparison against the original — both supplied by the App.
+  challengeShare = null, challengeComparison = null,
 }) {
   // No section is open in the canonical reference state — the summary and four
   // tab controls fit the first viewport, and the frozen 8C.1 geometry contract
@@ -141,16 +144,9 @@ export default function ResultDock({
     const t = setInterval(() => tick((n) => n + 1), 30_000);
     return () => clearInterval(t);
   }, [priorAt, phase]);
-  const [challengeId, setChallengeId] = useState(null);
-  // A share link belongs to ONE clash. Nothing remounts this dock between
-  // clashes, so without this the next clash printed the previous clash's link
-  // under "Same opening rolls" and suppressed its own Challenge button for the
-  // rest of the session.
-  useEffect(() => { setChallengeId(null); }, [run?.chaosRunId, result?.resultId]);
-  const makeChallenge = async () => {
-    if (!onChallenge) return;
-    try { setChallengeId(await onChallenge()); } catch { /* a failed share never breaks the result */ }
-  };
+  // Phase 9C replaced the seed-link "Challenge this Chaos" with a governed
+  // challenge (share sheet from the App); onChallenge is kept for callers.
+  void onChallenge;
   const sim = result?.sim;
 
   // ── One clash, rendered the same way whether it is THIS one or the last one.
@@ -203,6 +199,8 @@ export default function ResultDock({
         </Panel>
         )}
 
+        {/* Phase 9C: a recipient's comparison against the original leads the result. */}
+        {challengeComparison}
         <div role="tablist" aria-label="Result sections" style={{ display: "grid", gridTemplateColumns: "repeat(4, minmax(0,1fr))", gap: 4 }}>
           {TABS.map(([id, label]) => (
             <button key={id} role="tab" className="ec-dock-tab" aria-selected={tab === id} aria-controls="ec-dock-panel"
@@ -317,15 +315,7 @@ export default function ResultDock({
             <div style={{ ...muted, textAlign: "center", lineHeight: 1.5 }}>
               Run it back replays this same five, staff and era. A new Clash rolls fresh players and reveals a new era.
             </div>
-            {onChallenge && !challengeId && (
-              <button onClick={makeChallenge} style={secondaryCta}>Challenge this Chaos</button>
-            )}
-            {challengeId && (
-              <div style={{ ...muted, textAlign: "center", lineHeight: 1.5, wordBreak: "break-all" }}>
-                Same opening rolls, their own decisions:{" "}
-                <span style={{ color: "var(--ec-a-gold, #f2b51d)" }}>{`${window.location.origin}/?chaos=${challengeId}`}</span>
-              </div>
-            )}
+            {challengeShare}
           </>
         )}
       </DockShell>

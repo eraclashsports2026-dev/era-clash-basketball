@@ -24,7 +24,7 @@ import EraRevealPanel from "./EraRevealPanel.jsx";
 import { EraFractureTransition } from "../brand/EraFracture.jsx";
 import {
   startChaos, viewChaos, submitChaosDecisions, chooseChaosCoach,
-  publishChaosChallenge, abandonChaos,
+  abandonChaos,
 } from "../../chaos/client.js";
 import {
   GUIDED, primaryAction, rosterCompressed, rosterInteractive, showsCoachOffers,
@@ -107,18 +107,20 @@ export default function ChaosStage({
   phase, busy = false, error = null, resume = true, result = null,
   guidedState = GUIDED.EMPTY, onAcknowledgeEra, onGuide,
   mobileTeam = "gold", onMobileTeam,
+  // Phase 9C: when this run is a challenge attempt, a compact badge says so.
+  challengeContext = null,
 }) {
   const [holds, setHolds] = useState([]);
   const [picked, setPicked] = useState(null);
   const [working, setWorking] = useState(false);
   const [err, setErr] = useState(null);
-  const [challenge, setChallenge] = useState(null);
+
   const [confirmReset, setConfirmReset] = useState(false);
   const [resetting, setResetting] = useState(false);
   const [announce, setAnnounce] = useState("");
   const resumed = useRef(false);
   const ctaRef = useRef(null);
-  useEffect(() => { setChallenge(null); }, [run?.chaosRunId]);
+
 
   const adopt = useCallback((chaos) => {
     setHolds(chaos?.gold?.heldSlots || []);
@@ -169,7 +171,7 @@ export default function ChaosStage({
     const r = await act(() => startChaos({ tier, challengeId }), "Could not deal a Chaos Clash.");
     if (!r) return;
     if (r.gated) { onGated?.(r.gate); return; }
-    adopt(r.chaos); setChallenge(null);
+    adopt(r.chaos);
     track("chaos_roll_completed", { roll: 0, holds: 0, staff_holds: 0, next_phase: r.chaos?.phase || null });
   };
   const submitRoll = async () => {
@@ -197,13 +199,9 @@ export default function ChaosStage({
     }
     store.clear();
     setHolds([]); setPicked(null);
-    setChallenge(null); setConfirmReset(false); setResetting(false);
+    setConfirmReset(false); setResetting(false);
     if (onReset) onReset();
     else onRunChange?.(null);
-  };
-  const makeChallenge = async () => {
-    try { setChallenge((await publishChaosChallenge(run.chaosRunId, tier)).challengeId); }
-    catch { /* a failed share must never break the run */ }
   };
 
   const togglePlayer = (card) => {
@@ -308,6 +306,11 @@ export default function ChaosStage({
               </div>
             );
           })()}
+          {challengeContext && (
+            <div className="ec-ta-chal-chip" aria-label={`Challenge mode${challengeContext.creatorName ? `, from ${challengeContext.creatorName}` : ""}`}>
+              <span aria-hidden="true">⚔</span> CHALLENGE{challengeContext.creatorName ? ` · FROM ${String(challengeContext.creatorName).toUpperCase()}` : " MODE"}
+            </div>
+          )}
           {(state === GUIDED.READY || state === GUIDED.RESULT || state === GUIDED.COACH_SELECT) && eraId && (
             <div className="ec-ta-era-chip" aria-label={`Era ${eraId}${run?.eraState?.custom ? ", custom" : ""}`}>
               <span aria-hidden="true">🗓</span> ERA: {eraId}{run?.eraState?.custom ? " · CUSTOM" : ""}
@@ -388,7 +391,6 @@ export default function ChaosStage({
             </button>
             {run && state !== GUIDED.ERA_REVEAL ? (
               <div className="ec-ta-stage-actions">
-                {state === GUIDED.READY && <button onClick={makeChallenge} style={quiet}>CHALLENGE THIS CHAOS</button>}
                 <button onClick={() => setConfirmReset(true)} style={quiet}
                   aria-label="Reset this Clash and deal a new one">RESET</button>
               </div>
@@ -426,12 +428,6 @@ export default function ChaosStage({
         </div>
       )}
 
-      {challenge && (
-        <div style={{ marginTop: 6, fontSize: 11.5, color: "var(--ec-a-text-muted)", textAlign: "center", wordBreak: "break-all" }}>
-          Same opening rolls, their own decisions:{" "}
-          <span style={{ color: "var(--ec-a-gold)" }}>{`${window.location.origin}/?chaos=${challenge}`}</span>
-        </div>
-      )}
 
       {state === GUIDED.RESULT ? (
         <ResetDialog open={confirmReset} state="complete" busy={resetting}

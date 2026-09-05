@@ -1,0 +1,68 @@
+{
+  "artifact": "challenge-accept-qa",
+  "phase": "9C — Challenges + Persistent Competitive Identity V1",
+  "generatedAt": "2026-09-05T06:24:18.421Z",
+  "derivedFrom": [
+    "challenge-history-qa",
+    "challenge-performance-qa",
+    "challenge-accessibility-qa"
+  ],
+  "checks": [
+    {
+      "check": "a signed-in recipient starts one official attempt",
+      "pass": true,
+      "detail": "started",
+      "from": "challenge-history-qa"
+    },
+    {
+      "check": "accepting again resumes the same run",
+      "pass": true,
+      "detail": "",
+      "from": "challenge-history-qa"
+    },
+    {
+      "check": "ACCEPTED lists the attempt in progress with the creator's name and headline",
+      "pass": true,
+      "detail": "{\"code\":\"EC-38S3-S9WH\",\"creatorName\":\"Joseph\",\"status\":\"started\",\"challengeStatus\":\"open\",\"creatorScore\":{\"gold\":98,\"blu",
+      "from": "challenge-history-qa"
+    },
+    {
+      "check": "the creator cannot accept their own challenge",
+      "pass": true,
+      "detail": "",
+      "from": "challenge-history-qa"
+    },
+    {
+      "check": "revocation shows in CREATED and keeps the completed response (and the attempt in progress)",
+      "pass": true,
+      "detail": "revoke → revoked · listed revoked · responses completed,started",
+      "from": "challenge-history-qa"
+    },
+    {
+      "check": "accept → arena at DRAFTING within 5s",
+      "pass": true,
+      "detail": "145ms",
+      "from": "challenge-performance-qa"
+    },
+    {
+      "check": "1440×900: Tab reaches ACCEPT CHALLENGE",
+      "pass": true,
+      "detail": "",
+      "from": "challenge-accessibility-qa"
+    },
+    {
+      "check": "390×844: Tab reaches ACCEPT CHALLENGE",
+      "pass": true,
+      "detail": "",
+      "from": "challenge-accessibility-qa"
+    },
+    {
+      "check": "Enter accepts and the arena takes focus on the decision",
+      "pass": true,
+      "detail": "",
+      "from": "challenge-accessibility-qa"
+    }
+  ],
+  "passed": true,
+  "e2e": "refresh resumes the same run; CONTINUE CHALLENGE; second device refused by the index"
+}

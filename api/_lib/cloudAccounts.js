@@ -245,7 +245,8 @@ export const serviceKeyProbe = async (fetchImpl = fetch) => {
   return { accepted: false, status: first.status, code: first.code, variant: null, tried };
 };
 
-const rest = async (path, init = {}, fetchImpl = fetch) => {
+/** Service-role REST call. Shared with the Phase 9C challenge library; never reachable from a browser. */
+export const rest = async (path, init = {}, fetchImpl = fetch) => {
   const r = await fetchImpl(`${url()}/rest/v1/${path}`, {
     ...init,
     headers: {

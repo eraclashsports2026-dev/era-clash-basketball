@@ -21,7 +21,7 @@ export default defineConfig({
   projects: [
     {
       name: "production-flags-off",
-      testIgnore: /(daily-coach-era|phase7b-preview|phase8a-chaos|phase8c-time-arena|phase9a-play-lobby|phase9a3p-lobby-polish)\.spec\.js/,
+      testIgnore: /(daily-coach-era|phase7b-preview|phase8a-chaos|phase8c-time-arena|phase9a-play-lobby|phase9a3p-lobby-polish|phase9c-challenges)\.spec\.js/,
     },
     {
       name: "daily-coach-era-preview",
@@ -35,6 +35,13 @@ export default defineConfig({
       name: "candidate3-preview",
       testMatch: /(phase7b-preview|phase8a-chaos|phase8c-time-arena|phase9a-play-lobby|phase9a3p-lobby-polish)\.spec\.js/,
       use: { baseURL: "http://localhost:4175" },
+    },
+    {
+      // Phase 9C: the challenge flow needs an account provider; the harness
+      // plays one in memory (fake cloud) on its own port.
+      name: "challenges-fake-cloud",
+      testMatch: /phase9c-challenges\.spec\.js/,
+      use: { baseURL: "http://localhost:4178" },
     },
   ],
   webServer: [
@@ -57,6 +64,13 @@ export default defineConfig({
       reuseExistingServer: true,
       timeout: 30_000,
       env: { PREVIEW_SIM_ENGINE_ENABLED: "true", VERCEL_ENV: "preview" },
+    },
+    {
+      command: "node scripts/harness.mjs 4178",
+      url: "http://localhost:4178/api/health",
+      reuseExistingServer: true,
+      timeout: 30_000,
+      env: { PREVIEW_SIM_ENGINE_ENABLED: "true", VERCEL_ENV: "preview", ECLASH_FAKE_CLOUD: "1", RL_PROFILE_PER_MIN_IP: "500", RL_CHALLENGE_ACTIONS_PER_MIN_IP: "500", RL_CHALLENGE_VIEW_PER_MIN_IP: "500" },
     },
   ],
 });

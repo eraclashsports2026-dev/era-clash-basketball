@@ -51,3 +51,12 @@ Postgres under row-level security — the account can only ever touch its own
 rows, and the only column it may change on a saved Clash is `favorite`. Account
 deletion is the one action that needs the server. Nothing on this page can
 influence a simulation.
+
+## Phase 9C — the Challenges tab
+
+A sixth tab, between Favorites and Account: **CREATED** (each challenge's code,
+original result, status, every response, COPY LINK and REVOKE), **ACCEPTED**
+(attempts in progress, with the creator's name and headline) and **COMPLETED**
+(the comparison, with the original's five and coach). Everything comes through
+the server for the verified account (`challenge-list`); nothing here is a feed.
+

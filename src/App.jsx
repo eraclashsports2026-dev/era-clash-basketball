@@ -50,7 +50,14 @@ import { placementPlan, place as placePlayer, describeSelection, describePlaceme
 import { markEntry } from "./activation.js";
 import AccountGate from "./components/chaos/AccountGate.jsx";
 import { currentTier, hasAccount } from "./account.js";
-import { simulateChaos, publishChaosChallenge, chooseChaosEra } from "./chaos/client.js";
+import { simulateChaos, chooseChaosEra } from "./chaos/client.js";
+// Phase 9C: a finished Chaos Clash becomes a governed challenge; a link opens an
+// invitation; an accepted challenge is an ordinary Chaos run the arena resumes.
+import ChallengeInvite from "./components/challenges/ChallengeInvite.jsx";
+import ChallengeShare from "./components/challenges/ChallengeShare.jsx";
+import ChallengeComparison from "./components/challenges/ChallengeComparison.jsx";
+import { completeChallengeRequest, rememberChallengeRun, challengeForRun, forgetChallengeRun } from "./challenges/client.js";
+import { codeFromSearch, CHALLENGE_EVENTS } from "./challenges/contract.js";
 import { can, CAPABILITIES } from "./entitlements.js";
 import RosterGrid from "./components/RosterGrid.jsx";
 import { MatchupGrid, ArenaCentre, BallIqToggle } from "./components/PlayPanels.jsx";
@@ -212,6 +219,10 @@ export default function App() {
   // kept in this browser too (9B.3), so a reload after a finished game leaves
   // the result one tap away instead of gone.
   const [prior, setPriorState] = useState(readPriorResult);
+  // Phase 9C: the invitation a /?challenge=CODE link opened, and the attempt the
+  // current Chaos run is (so the result can be compared once it exists).
+  const [challengeInvite, setChallengeInvite] = useState(() => (typeof window !== "undefined" ? codeFromSearch(window.location.search) : null));
+  const [challengeAttempt, setChallengeAttempt] = useState(null);
   const setPrior = (p) => { setPriorState(p); writePriorResult(p); };
   const [reportBundle, setReportBundle] = useState(null);
   const [guide, setGuide] = useState(null);
@@ -325,6 +336,29 @@ export default function App() {
     if (cloudSave.state !== "pending" || !cloudSave.resultId || !token) return;
     runCloudSave(cloudSave.resultId, result?.type || "single", "cloud-save");
   }, [cloudSave.state, cloudSave.resultId, token, runCloudSave, result?.type]);
+
+  // Phase 9C: bind the recipient's stored result to their attempt. Guests
+  // complete at once; an account waits for its career save to settle first.
+  const completeChallenge = useCallback(async (attempt) => {
+    setChallengeAttempt((a) => (a && a.chaosRunId === attempt.chaosRunId ? { ...a, state: "completing" } : a));
+    const authState = token ? "account" : "guest";   // the event carries the state, never the credential
+    try {
+      const r = await completeChallengeRequest({ chaosRunId: attempt.chaosRunId, accessToken: token });
+      const ok = r.status === "completed" || r.status === "already_completed";
+      track(CHALLENGE_EVENTS.ATTEMPT_COMPLETED, { challengeVersion: "1.0.0", authState, success: ok, ...(ok ? { status: r.comparison?.outcome } : { failureCode: r.status || "network" }) });
+      setChallengeAttempt((a) => (a && a.chaosRunId === attempt.chaosRunId ? { ...a, state: ok ? "completed" : "failed", comparison: r.comparison || null, challenge: r.challenge || null } : a));
+      if (ok) forgetChallengeRun();
+    } catch {
+      track(CHALLENGE_EVENTS.ATTEMPT_COMPLETED, { challengeVersion: "1.0.0", authState, success: false, failureCode: "network" });
+      setChallengeAttempt((a) => (a && a.chaosRunId === attempt.chaosRunId ? { ...a, state: "failed" } : a));
+    }
+  }, [token]);
+  useEffect(() => {
+    const a = challengeAttempt;
+    if (!a || a.state !== "pending" || !a.resultId) return;
+    const settled = !token || (cloudSave.resultId === a.resultId && ["saved", "already_saved", "failed"].includes(cloudSave.state));
+    if (settled) completeChallenge(a);
+  }, [challengeAttempt, cloudSave.resultId, cloudSave.state, token, completeChallenge]);
 
   useEffect(() => {
     fetch("/api/health").then((r) => (r.ok ? r.json() : null)).then((h) => {
@@ -1231,6 +1265,10 @@ export default function App() {
       bookkeepGame(w, "single", record.core.seriesResult, record.core.mvp, "", opp, gold);
       setResult({ type: "single", sim: viewSim(record), w, tag: "chaos", opp, resultId, record, persisted: !!records?.persisted });
       fetchNarrative(resultId, record, !!records?.persisted);
+      // A challenge attempt is compared once the server has the result (and,
+      // for an account, once the career save has settled so the row can bind).
+      const ctx = challengeForRun(activeRun.chaosRunId);
+      setChallengeAttempt(ctx ? { ...ctx, resultId, state: "pending" } : null);
       track("chaos_clash_completed", { era_style: record.eraId || null });
       track("chaos_game_completed", { era_style: record.eraId || null, won: !!record.won || false });
       // The run is spent; a return to Chaos Clash starts from an empty board.
@@ -1932,6 +1970,22 @@ export default function App() {
         <main>
           <ModeInfoPage id={route.split("/")[2]} onBack={goHome} />
         </main>
+      ) : challengeInvite && isLobbyRoute(route) && nav === "Play" && !sharedResult ? (
+        <div className="ec-arena-court">
+          <ChallengeInvite code={challengeInvite} accessToken={token} tier={tier} signedIn={!!token}
+            onAccepted={({ chaosRunId, code, creatorName }) => {
+              rememberChallengeRun({ chaosRunId, code, creatorName });
+              try { localStorage.setItem("ec_chaos_run", chaosRunId); localStorage.setItem("ec_chaos_run_at", String(Date.now())); } catch { /* private mode */ }
+              try { window.history.replaceState({}, "", "/"); } catch { /* ignore */ }
+              setChallengeInvite(null); setChallengeAttempt(null);
+              setChaosRun(null); setChaosReady(null); setChaosChallengeId(null); setResult(null); setReportBundle(null);
+              setNav("Play"); setGameMode("Chaos"); setChaosNonce((n) => n + 1);
+              navigate("/play/chaos");
+            }}
+            onSignIn={() => openAccountDialog({ entryPoint: "challenge_invite", intent: "signup", returnTo: `/?challenge=${encodeURIComponent(challengeInvite)}` })}
+            onBack={() => { try { window.history.replaceState({}, "", "/"); } catch { /* ignore */ } setChallengeInvite(null); navigate("/play"); }}
+            onViewMine={() => { setChallengeInvite(null); navigate("/my-eraclash?tab=challenges"); }} />
+        </div>
       ) : showLobby ? (
         <div className="ec-arena-court ec-lobby-court">
           <PlayLobby tier={tier} chaosAvailable={chaosAvailable} previewCandidateActive={!!result?.sim?.previewCandidate}
@@ -1967,11 +2021,16 @@ export default function App() {
             onRunItBack={() => { setFullReport(false); doRematch("chaos"); }}
             onNewClash={() => { setFullReport(false); newChaosClash(); }}
             onReset={() => { setFullReport(false); newChaosClash(); }}
-            onChallenge={chaosRun ? async () => {
-              const r = await publishChaosChallenge(chaosRun.chaosRunId, tier);
-              track("chaos_challenge_created", { from: "result_dock" });
-              return r.challengeId;
-            } : null}
+            challengeContext={challengeForRun(chaosRun?.chaosRunId) || (challengeAttempt && challengeAttempt.resultId === result?.resultId ? challengeAttempt : null)}
+            challengeShare={result?.resultId && chaosRun?.chaosRunId && !(challengeAttempt && challengeAttempt.resultId === result?.resultId)
+              ? <ChallengeShare chaosRunId={chaosRun.chaosRunId} accessToken={token}
+                  onNeedAccount={() => openAccountDialog({ entryPoint: "challenge_create", intent: "signup", claimResultId: result.resultId, returnTo: "/play/chaos" })} />
+              : null}
+            challengeComparison={challengeAttempt && challengeAttempt.resultId === result?.resultId
+              ? <ChallengeComparison state={challengeAttempt.state === "completed" ? "ready" : challengeAttempt.state === "failed" ? "failed" : "pending"}
+                  comparison={challengeAttempt.comparison} challenge={challengeAttempt.challenge} creatorName={challengeAttempt.creatorName}
+                  onRetry={() => completeChallenge(challengeAttempt)} />
+              : null}
             onEraChange={changeChaosEra}
             onGuide={(section) => setGuide(section || "play")}
             onSettings={() => { navigate("/"); handleNav("Profile"); }}
