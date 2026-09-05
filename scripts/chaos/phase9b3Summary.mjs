@@ -121,6 +121,7 @@ const sheets = existsSync(`${OUT}/screens/contact`) ? readdirSync(`${OUT}/screen
 write("visual-reference-comparison", {
   artifact: "visual-reference-comparison", phase: PHASE, generatedAt: now(), references: refs?.references || refs,
   viewports: resp?.viewports, contactSheets: sheets.map((f) => `${OUT}/screens/contact/${f}`),
+  phone: "On a phone the head's team labels are hidden (the team tabs carry TEAM GOLD · YOUR FIVE and TEAM BLUE · LEGEND RIVAL), one team shows at a time, and the primary action is pinned to the bottom of the screen while the board is in view; the states gate reads its position at the top of the page at 430×932 and 390×844.",
   portraitPolicy: "The references carry real player photographs; the build renders the approved EraClash silhouettes (Night Court V1 portrait policy, 9A.2). Every other comparison below is structural: hierarchy, one primary action, what is present and absent.",
   perState: {
     "01-foundation": "matches UI1: empty ten-card frame, one Gold ROLL (sub ROLL 1 OF 3), the guide in the rail; no result dock, coach block or era. Deviation: the reference's HOW IT WORKS / ABANDON header controls live in the rail guide and the utility bar.",
@@ -159,6 +160,7 @@ const ledger = [
   { item: "live guest and account gates on the alias", state: st(/24\/24|passed/.test(sweepFacts.liveGuest || "") && /29\/29|passed/.test(sweepFacts.deployedAccount || "")), evidence: `${sweepFacts.liveGuest || "live-guest-qa not run"} · ${sweepFacts.deployedAccount || "deployed-qa not run"}` },
   { item: "unit tests", state: st(/passed/.test(sweepFacts.vitest || "") && !/failed/.test(sweepFacts.vitest || "")), evidence: sweepFacts.vitest || "not in sweep log" },
   { item: "Playwright e2e", state: st(/passed/.test(sweepFacts.playwright || "") && !/failed/.test(sweepFacts.playwright || "")), evidence: sweepFacts.playwright || "not in sweep log" },
+  { item: "phone: the primary action is on screen at the top of every decision state", state: st(["foundation-qa", "drafting-qa", "era-reveal-qa", "coach-chaos-qa", "clash-ready-qa"].every((n) => (stateQa[n]?.runs || []).filter((r) => /^(430|390)x/.test(r.viewport)).every((r) => r.facts?.ctaOnScreen === true))), evidence: "state QA facts.ctaOnScreen at 430×932 and 390×844 — sticky action engaged (overflow: clip on the stage and court), head labels hidden on phones" },
   { item: "tablet viewports (1024×1366, 768×1024)", state: st(resp?.viewports?.includes("1024x1366") && resp?.passed), evidence: "responsive-qa.json — 44px touch targets through 1179px" },
   { item: "finished game survives a reload (LAST CLASH)", state: st(resume?.rows?.find((r) => r.state === "RESULT")?.pass), evidence: "active-run-resume-qa.json RESULT row — ec_prior_result written when the result exists" },
   { item: "older Playwright specs moved to the guided contract", state: st(/passed/.test(sweepFacts.playwright || "") && !/failed/.test(sweepFacts.playwright || "")), evidence: "phase8a-chaos, phase9a-play-lobby, phase9a3p-lobby-polish: presentation-level steps only; game assertions unchanged" },

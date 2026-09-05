@@ -64,6 +64,12 @@ Through 1179px every control is a 44px touch target (the rail's links and
 chips, the era reveal's VIEW ALL ERA RULES, the coach card's detail toggle, the
 result tabs); above it desktop pointer sizes apply. Below 768px the columns
 stack, the board shows one team at a time — Gold first, Blue one tap away on a
-semantic tablist — and the primary action is sticky so the decision is never
-scrolled out of reach. The states are captured at 1536×1024, 1440×900,
+semantic tablist whose tabs carry the YOUR FIVE / LEGEND RIVAL captions (the
+head's team labels are hidden there, so the first card is reached sooner) — and
+the primary action is sticky at the bottom of the screen while the board is in
+view, so the decision is never scrolled out of reach. The stage and the court
+clip with `overflow: clip` on a phone: `overflow: hidden` would have made them
+scroll containers and disabled the sticky action, which is what an earlier
+build did; the states gate now reads the action's position at the top of the
+page on every phone viewport. The states are captured at 1536×1024, 1440×900,
 1280×800, 1024×1366, 768×1024, 430×932 and 390×844.

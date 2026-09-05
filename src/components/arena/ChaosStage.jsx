@@ -323,9 +323,9 @@ export default function ChaosStage({
 
       {/* Phone: one team at a time, the other one tap away. Desktop ignores this. */}
       <div className="ec-ta-team-toggle" role="tablist" aria-label="Show a team">
-        {[["gold", "TEAM GOLD"], ["blue", "TEAM BLUE"]].map(([t, l]) => (
+        {[["gold", "TEAM GOLD", "YOUR FIVE"], ["blue", "TEAM BLUE", "LEGEND RIVAL"]].map(([t, l, sub]) => (
           <button key={t} role="tab" aria-selected={mobileTeam === t} data-team={t}
-            onClick={() => onMobileTeam?.(t)}>{l}</button>
+            onClick={() => onMobileTeam?.(t)}>{l}<span className="ec-ta-team-toggle-sub">{sub}</span></button>
         ))}
       </div>
 

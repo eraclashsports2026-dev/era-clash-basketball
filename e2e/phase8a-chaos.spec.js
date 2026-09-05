@@ -287,14 +287,17 @@ test("mobile keeps both boards readable with no page-level horizontal overflow",
     await page.setViewportSize({ width: w, height: h });
     await page.goto("/play/chaos");
     await rollOne(page);
-    // Both boards are reachable: on a phone (9B.3) one team shows at a time and
-    // the other is one tab away; wider than that both are on screen.
-    await expect(page.getByText("TEAM GOLD", { exact: true }).locator("visible=true").first()).toBeVisible();
-    await expect(page.getByText("TEAM BLUE", { exact: true }).locator("visible=true").first()).toBeVisible();
+    // Both boards are reachable: on a phone (9B.3) the team tabs name them —
+    // TEAM GOLD · YOUR FIVE, TEAM BLUE · LEGEND RIVAL — one team shows at a time
+    // and the other is one tap away; wider than that both labels are on screen.
     if (w <= 767) {
+      await expect(page.getByRole("tab", { name: /TEAM GOLD/ })).toBeVisible();
+      await expect(page.getByRole("tab", { name: /TEAM BLUE/ })).toBeVisible();
       await page.getByRole("tab", { name: /TEAM BLUE/ }).click();
       await expect(page.locator('.ec-ta-team[data-team="blue"] .ec-pc').first()).toBeVisible();
     } else {
+      await expect(page.getByText("TEAM GOLD", { exact: true }).first()).toBeVisible();
+      await expect(page.getByText("TEAM BLUE", { exact: true }).first()).toBeVisible();
       await expect(page.getByText("LEGEND RIVAL", { exact: true }).first()).toBeVisible();
     }
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1);
