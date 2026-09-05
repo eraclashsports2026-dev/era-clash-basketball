@@ -45,6 +45,14 @@ export const ACTIVATION_EVENTS = Object.freeze([
   "account_export_started", "account_export_completed",
   "account_deletion_started", "account_deletion_cancelled", "account_deletion_completed",
   "reauthentication_completed", "preference_updated",
+  // Phase 9B.3 Chaos Clash guided flow. Mirrored by ACTIVATION_EVENTS; the same
+  // contract test pins the two lists together. Properties are the six state
+  // names, roll numbers, era ids and action names — never free text.
+  "chaos_state_viewed", "chaos_primary_action",
+  "era_reveal_viewed", "era_reveal_continued",
+  "coach_chaos_viewed", "coach_offer_selected",
+  "clash_ready_viewed", "run_clash_started", "result_state_viewed",
+  "live_intel_expanded", "era_rules_expanded",
 ]);
 
 const ss = {

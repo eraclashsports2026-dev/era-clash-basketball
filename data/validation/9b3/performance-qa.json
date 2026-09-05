@@ -1,0 +1,55 @@
+{
+  "artifact": "performance-qa",
+  "phase": "9B.3 — Chaos Clash Guided Flow V2",
+  "generatedAt": "2026-09-05T05:08:39.763Z",
+  "origin": "http://localhost:4180",
+  "firstContentfulPaintMs": 80,
+  "cumulativeLayoutShiftByState": {
+    "EMPTY": 0,
+    "DRAFTING": 0,
+    "ERA_REVEAL": 0,
+    "COACH_SELECT": 0,
+    "READY": 0,
+    "RESULT": 0.0044
+  },
+  "stateTransitionMs": {
+    "EMPTY": 43,
+    "DRAFTING": 44,
+    "ERA_REVEAL": 115,
+    "COACH_SELECT": 24,
+    "READY": 25,
+    "RESULT": 1293
+  },
+  "note": "Transition times include the server round trip for the action (a roll, a hire, the simulation); RESULT includes the whole simulation. CLS is cumulative across the flow, so the RESULT figure is the total.",
+  "resultArrivalShifts": [
+    {
+      "t": 4533,
+      "value": 0.0044,
+      "nodes": [
+        "::after",
+        "ec-ta-title",
+        "ec-ta-team-label",
+        "SPAN"
+      ]
+    }
+  ],
+  "bundle": {
+    "largest": [
+      {
+        "file": "index-Bbp1QNFu.js",
+        "kb": 767
+      },
+      {
+        "file": "index-CANu9Cpy.js",
+        "kb": 218
+      },
+      {
+        "file": "index-pgucD2yB.css",
+        "kb": 92
+      }
+    ],
+    "totalKb": 1077
+  },
+  "failures": [],
+  "passed": true
+}
