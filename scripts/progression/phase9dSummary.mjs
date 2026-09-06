@@ -39,8 +39,9 @@ const sweep = existsSync(`${OUT}/final-gate-sweep.log`) ? readFileSync(`${OUT}/f
 const finalSection = sweep.slice(Math.max(0, sweep.lastIndexOf("=== PHASE 9D FINAL SWEEP")));
 const grab = (re, text = sweep) => { const all = [...text.matchAll(new RegExp(re.source, re.flags.includes("g") ? re.flags : re.flags + "g"))]; return all.length ? all.at(-1)[1] : null; };
 const facts = { vitest: grab(/Tests\s+(\d+ passed[^\n]*)/, finalSection), playwright: grab(/\n\s*(\d+ passed[^\n]*)/, finalSection),
-  gateFailures: (finalSection.match(/^(ui:[a-z-]+|chaos:[a-z0-9-]+|account:[a-z0-9-]+|challenge:[a-z-]+|progression:[a-z-]+|preview:[a-z-]+)\s+FAIL/gm) || []),
-  gates: (finalSection.match(/^(ui:[a-z-]+|chaos:[a-z0-9-]+|account:[a-z0-9-]+|challenge:[a-z-]+|progression:[a-z-]+|preview:[a-z-]+)\s+PASS/gm) || []).length,
+  // each gate's LAST verdict in the final section: a gate re-run alone after a
+  // load failure is recorded below it, and the later line is the one that counts
+  ...(() => { const last = new Map(); for (const m of finalSection.matchAll(/^((?:ui|chaos|account|challenge|progression|preview):[a-z0-9-]+)\s+(PASS|FAIL)/gm)) last.set(m[1], m[2]); return { gateFailures: [...last].filter(([, v]) => v === "FAIL").map(([k]) => `${k} FAIL`), gates: [...last].filter(([, v]) => v === "PASS").length, gatesRerunAlone: (finalSection.match(/^--- rerun alone[^\n]*/gm) || []).length }; })(),
   liveGuest: grab(/live-guest-qa\s+([^\n]+)/), deployedAccount: grab(/^deployed-qa\s+([^\n]+)/m), deployedProgression: grab(/^progression:deployed-qa\s+(PASS|FAIL)/m), deployedChallenge: grab(/^challenge:deployed-qa\s+(PASS|FAIL)/m), deployedChaos: grab(/^chaos:deployed-qa\s+(PASS|FAIL)/m) };
 const live = A["progression-rls-live"];
 

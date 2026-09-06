@@ -415,6 +415,14 @@ button { font-family: inherit; }
   border-radius: 50%;
   pointer-events: none;
 }
+/* Phase 9D. The ornament is centred on the court, so when the result lands and
+   the court grows under it, it used to drift down with the content — a layout
+   shift the 9B.3 performance gate counts against the head, and one that grows
+   with anything shown under a result (comparison, share sheet, career
+   progress). In the RESULT state it stays where READY left it (the court is
+   ~640px tall through the decision states; 50% ≈ 320px). Every other state is
+   untouched; browsers without :has() keep the previous behaviour. */
+.ec-arena-court:has(.ec-ta-stage[data-guided-state="RESULT"])::after { top: 320px; }
 
 /* ── Two-column command centre ─────────────────────────────────────────────── */
 .ec-cc {

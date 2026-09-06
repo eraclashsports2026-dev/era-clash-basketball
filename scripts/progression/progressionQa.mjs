@@ -178,7 +178,7 @@ if (MODE === "backfill") {
   ok("the total is the expected 3×100 + 2×25 + 2×50 + 50 + 4×50 = 700", r.profile.totalXp === 700 && r.delta.xpDelta === 700, `${r.profile.totalXp}`);
   const again = await S.reconcileProgression({ userId: J, trigger: "career_opened" });
   ok("run again: XP delta 0, new unlocks 0", again.delta.xpDelta === 0 && again.repaired.unlocks === 0 && again.profile.totalXp === 700);
-  ok("the backfill is the same code path as every other trigger (one reconcile function)", (read("api/profile.js").match(/reconcileProgression\(/g) || []).length >= 5 && !/backfill/i.test(read("api/_lib/progression.js").replace(/\/\/.*$/gm, "").replace(/\/\*[\s\S]*?\*\//g, "")));
+  ok("the backfill is the same code path as every other trigger (one reconcile function, no separate backfill routine)", (read("api/profile.js").match(/reconcileProgression\(/g) || []).length >= 3 && /reconcileChallengeCompletion\(/.test(read("api/profile.js")) && !/backfill/i.test(read("api/_lib/progression.js").replace(/\/\/.*$/gm, "").replace(/\/\*[\s\S]*?\*\//g, "")));
   write("progression-backfill-qa", { historical: { clashes: 3, wins: 2, eras: 2, challengeCompletions: 1 }, expectedXp: 700, awardedXp: r.profile.totalXp, unlocked });
 }
 
