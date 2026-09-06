@@ -1,7 +1,7 @@
 {
   "artifact": "result-progression-qa",
   "phase": "9D — Progression, XP and Achievements V1",
-  "generatedAt": "2026-09-06T14:17:25.843Z",
+  "generatedAt": "2026-09-06T14:23:03.051Z",
   "origin": "http://localhost:4178",
   "checks": [
     {
@@ -12,17 +12,17 @@
     {
       "check": "exactly one completion XP source",
       "pass": true,
-      "detail": "clash:completion"
+      "detail": "clash:completion,clash:win,era:first_completion,achievement:unlock,achievement:unlock,achievement:unlock,achievement:unlock"
     },
     {
       "check": "win bonus only if won",
-      "pass": false,
+      "pass": true,
       "detail": "winner gold"
     },
     {
       "check": "Era first-completion bonus only if first in that Era",
       "pass": true,
-      "detail": "eras 4 → 4"
+      "detail": "eras 0 → 1"
     },
     {
       "check": "achievements evaluated and the level computed from the ledger",
@@ -37,7 +37,7 @@
     {
       "check": "the total moved by exactly the response's delta",
       "pass": true,
-      "detail": "+100"
+      "detail": "+375"
     },
     {
       "check": "refresh: no new XP",
@@ -60,10 +60,16 @@
       "detail": ""
     }
   ],
-  "passed": false,
+  "passed": true,
   "winner": "gold",
-  "delta": 100,
+  "delta": 375,
   "categories": [
-    "clash:completion"
+    "clash:completion",
+    "clash:win",
+    "era:first_completion",
+    "achievement:unlock",
+    "achievement:unlock",
+    "achievement:unlock",
+    "achievement:unlock"
   ]
 }

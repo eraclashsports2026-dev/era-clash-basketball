@@ -155,6 +155,19 @@ describe("PROGRESSION_POWER_EFFECT = 0", () => {
   });
 });
 
+describe("the career save reads the engine's record shape (9B.1 defect found by the 9D result gate)", () => {
+  it("a real record — score, winner and MVP under core — saves as a win with its score and MVP; top-level fixtures still work", async () => {
+    const { buildSavedClash } = await import("../api/_lib/cloudAccounts.js");
+    const real = { id: "abc123def4", session: "s", mode: "single", goldIds: [], blueIds: [], eraId: "1990s", chaosDraft: {}, core: { finalScore: { gold: 118, blue: 104 }, winner: "Gold", mvp: "Michael Jordan", mvpLine: { pts: 41 } }, created_at: 1 };
+    const row = buildSavedClash({ record: real, userId: "u", claimedFrom: "signed_in" });
+    expect(row).toMatchObject({ outcome: "win", gold_score: 118, blue_score: 104, mode: "chaos", mvp: { name: "Michael Jordan", pts: 41 } });
+    expect(buildSavedClash({ record: { ...real, core: { ...real.core, finalScore: { gold: 90, blue: 101 }, winner: "Blue" } }, userId: "u", claimedFrom: "signed_in" }).outcome).toBe("loss");
+    expect(buildSavedClash({ record: { ...real, core: { ...real.core, finalScore: { gold: 99, blue: 99 } } }, userId: "u", claimedFrom: "signed_in" }).outcome).toBe("tie");
+    const legacy = buildSavedClash({ record: { id: "abc123def4", session: "s", finalScore: { gold: 99, blue: 99 }, won: true, mvp: { name: "X", pts: 10 }, created_at: 1 }, userId: "u", claimedFrom: "signed_in" });
+    expect(legacy.outcome).toBe("tie"); expect(legacy.mvp).toEqual({ name: "X", pts: 10 });
+  });
+});
+
 describe("the schema keeps its promises", () => {
   it("three tables, RLS on all, select-only grants, own-row policies, cascades", () => {
     for (const t of ["progression_profiles", "xp_ledger", "achievement_unlocks"]) {

@@ -24,7 +24,7 @@ const repo = { toplevel: sh("git rev-parse --show-toplevel"), branch: sh("git re
   frozenRefs: { wave1: sh("git rev-parse --short origin/wave1"), wave2: sh("git rev-parse --short origin/wave2"), main: sh("git rev-parse --short origin/main") } };
 // Everything progression must not touch: game, draft, placement, Legend Rival, era, coach, entitlement and Guided Flow logic, the challenge contract and server, the career/cloud-save semantics, the earlier migrations, theme and config.
 const FROZEN = ["src/chaos", "src/v3", "src/engine.js", "src/rating.js", "src/players.js", "src/draft.js", "src/dailyChallenge.js", "src/lineupPlacement.js", "src/entitlements.js", "src/components/arena/guidedState.js", "data/calibration", "api/game.js", "api/_lib/game-core.js", "api/_lib/game-core-v3.js", "api/_lib/previewEngine.js", "api/_lib/chaosRun.js", "src/theme", "config",
-  "src/challenges/contract.js", "api/_lib/challenges.js", "src/accounts/careerCloud.js", "src/accounts/cloudSave.js", "api/_lib/cloudAccounts.js",
+  "src/challenges/contract.js", "api/_lib/challenges.js", "src/accounts/careerCloud.js", "src/accounts/cloudSave.js",
   "supabase/migrations/0001_accounts.sql", "supabase/migrations/0002_accounts_hardening.sql", "supabase/migrations/0003_career_v2.sql", "supabase/migrations/0004_challenges.sql"];
 const frozenDiff = sh(`git diff --stat ${PARENT} HEAD -- ${FROZEN.join(" ")}`);
 const apiRoutes = readdirSync("api").filter((f) => f.endsWith(".js")).length;

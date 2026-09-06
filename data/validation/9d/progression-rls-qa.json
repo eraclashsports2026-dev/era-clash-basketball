@@ -1,7 +1,7 @@
 {
   "artifact": "progression-rls-qa",
   "phase": "9D — Progression, XP and Achievements V1",
-  "generatedAt": "2026-09-06T14:07:06.931Z",
+  "generatedAt": "2026-09-06T14:23:00.648Z",
   "origin": "http://localhost:4178",
   "checks": [
     {
@@ -96,10 +96,46 @@
     },
     {
       "check": "the live role-switch verification is recorded from the database",
-      "pass": false,
-      "detail": "not yet recorded"
+      "pass": true,
+      "detail": "verified 2026-09-06T14:22:00Z"
     }
   ],
-  "passed": false,
-  "live": null
+  "passed": true,
+  "live": {
+    "artifact": "progression-rls-live",
+    "phase": "9D — Progression, XP and Achievements V1",
+    "verifiedAt": "2026-09-06T14:22:00Z",
+    "project": "lfybiphmqkiecfrqsfzt (the certified preview project; production has no cloud accounts)",
+    "method": "Not a simulation: statements executed on the live database through the Supabase management API, each call one transaction, switching to the anon / authenticated roles with request.jwt.claims set to the synthetic accounts' ids. Synthetic accounts qa-9d-a / qa-9d-b (throwaway) were created with three saved Clashes (A: win 112–101 in the 1990s, loss 95–101 in the 1980s, win 104–102 in the 1980s; B: loss 90–100 in the 1990s) and one completed official challenge (A's challenge, B's attempt, comparison to the creator), then deleted at the end.",
+    "migration": "0005_progression_v1 applied 2026-09-06 and recorded in public.schema_migrations (0001…0005); tables progression_profiles, xp_ledger, achievement_unlocks; function progression_apply(uuid, jsonb, jsonb, text, text) SECURITY DEFINER; progression_level_for(bigint); triggers xp_ledger_immutable_trg, progression_profile_guard_trg",
+    "apply": {
+      "pass": true,
+      "evidence": "the awards the contract derives for A (8 record awards + 5 unlocks: first_clash, first_win, first_chaos, challenger, nail_biter) applied through progression_apply → totalXp 725, level 3, 13 ledger rows; for B (3 record awards + 3 unlocks) → totalXp 350, level 2, 6 ledger rows — exactly the totals the JavaScript contract predicted (expectedAwards + achievementAwards; levelForXp(725).level = 3, levelForXp(350).level = 2)"
+    },
+    "duplicate": {
+      "pass": true,
+      "evidence": "the SAME award list applied a second time for A: awarded [], unlocked [], totalXp 725, ledger still 13 rows; the profile equals the ledger sum (A 725/3, B 350/2)"
+    },
+    "rls": {
+      "pass": true,
+      "evidence": "authenticated sub=A: progression_profiles 1, xp_ledger 13, achievement_unlocks 5, every ledger row owned by A · authenticated sub=B: 1 / 6 / 3, every row owned by B · authenticated sub=C (no history): 0 / 0 / 0 · anon: permission denied for table progression_profiles"
+    },
+    "forge": {
+      "pass": true,
+      "evidence": "as authenticated (sub=B): insert into xp_ledger → permission denied for table xp_ledger; update progression_profiles set total_xp = 999999, career_level = 100 → permission denied for table progression_profiles; insert into achievement_unlocks (century_club) → permission denied for table achievement_unlocks; select progression_apply(...) → permission denied for function progression_apply. As the service role: update progression_profiles set total_xp = 999999 → P0001 PROGRESSION_TOTAL_FORGED (total_xp must equal the sum of the account's xp_ledger); update … set career_level = 50 → P0001 PROGRESSION_LEVEL_FORGED; update xp_ledger set xp_delta = 999 → P0001 XP_LEDGER_IMMUTABLE; progression_apply with xp_delta 99999 → 23514 xp_ledger_delta_range; with source_type 'login' → 23514 xp_ledger_source_type; for a non-existent user → P0001 PROGRESSION_USER_REQUIRED"
+    },
+    "concurrency": {
+      "pass": true,
+      "evidence": "the function takes pg_advisory_xact_lock(hashtext('progression:' || user id)) and inserts ON CONFLICT ON CONSTRAINT xp_ledger_one_award DO NOTHING; the live second apply inserted nothing; six simultaneous saves of one result on the fake-cloud harness awarded once (progression-concurrency-qa.json)"
+    },
+    "deletion": {
+      "pass": true,
+      "evidence": "delete from auth.users where id = B: B's progression_profiles 0, xp_ledger 0, achievement_unlocks 0, saved_clashes 0 (cascade); A's profile and 13 ledger rows untouched (total 725); B's completed challenge attempt row remained with user_id null (0004's anonymisation, unchanged). Then A and the QA challenge were deleted."
+    },
+    "cleanup": {
+      "pass": true,
+      "evidence": "final counts: auth.users 1 (the owner), profiles 1, saved_clashes 0, result_claims 0, challenges 0, challenge_attempts 0, challenge_secrets 0, progression_profiles 0, xp_ledger 0, achievement_unlocks 0"
+    },
+    "notCertifiedLive": "the signed-in browser journey (a real session saving a real Clash on the alias) — the project cannot mint a synthetic session without a credential passing through this transcript; the same server code path is certified end to end on the fake-cloud harness (result-progression-qa, challenge-progression-qa, e2e) and the database half is certified here; the owner journey exercises it live"
+  }
 }

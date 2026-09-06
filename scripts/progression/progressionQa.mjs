@@ -486,9 +486,12 @@ if (httpModes.has(MODE)) {
     // the completion hook, as the recipient account would call it, answers with the recipient's progression
     const done = await (await bea.request.post(`${BASE}/api/profile`, { data: { action: "challenge-complete", chaosRunId: acc.chaosRunId }, headers: { "content-type": "application/json", ...beaAuth } })).json();
     const bea1 = await (await post(context, { action: "progression-get" }, beaAuth)).json();
-    const beaCats = bea1.recent.map((r) => r.category);
-    ok("the recipient earns challenge completion XP once", ["completed", "already_completed"].includes(done.status) && beaCats.filter((c) => c === "challenge_attempt:completion").length === 1 && bea1.profile.totalXp > bea0.profile.totalXp, `${done.status} · outcome ${outcome}`);
-    ok("victory XP only when the comparison decided recipient", (outcome === "recipient") === beaCats.includes("challenge_attempt:victory"), `outcome ${outcome}`);
+    const heldBefore = new Set(bea0.achievements.filter((a) => a.unlocked).map((a) => a.id));
+    const newlyXp = bea1.achievements.filter((a) => a.unlocked && !heldBefore.has(a.id)).reduce((s, a) => s + a.xp, 0);
+    const expectedDelta = P.XP.CLASH_COMPLETION + P.XP.CLASH_WIN * (bea1.facts.wins - bea0.facts.wins) + P.XP.ERA_FIRST_COMPLETION * (bea1.facts.erasCompleted.length - bea0.facts.erasCompleted.length)
+      + P.XP.CHALLENGE_COMPLETION * (bea1.facts.challengesCompleted - bea0.facts.challengesCompleted) + P.XP.CHALLENGE_VICTORY * (bea1.facts.challengeWins - bea0.facts.challengeWins) + newlyXp;
+    ok("the recipient earns challenge completion XP once (one more completed attempt; the total moved by exactly its Clash + challenge + unlock XP)", ["completed", "already_completed"].includes(done.status) && bea1.facts.challengesCompleted === bea0.facts.challengesCompleted + 1 && bea1.profile.totalXp - bea0.profile.totalXp === expectedDelta, `${done.status} · outcome ${outcome} · +${bea1.profile.totalXp - bea0.profile.totalXp} (expected ${expectedDelta})`);
+    ok("victory XP only when the comparison decided recipient", (outcome === "recipient") === (bea1.facts.challengeWins === bea0.facts.challengeWins + 1), `outcome ${outcome}`);
     ok("FIRST CHALLENGE unlocks for the recipient", bea1.achievements.find((a) => a.id === "first_challenge").unlocked);
     const joe3 = await (await post(context, { action: "progression-get" }, auth)).json();
     const challengerBefore = joe2.achievements.find((a) => a.id === "challenger").unlocked;
