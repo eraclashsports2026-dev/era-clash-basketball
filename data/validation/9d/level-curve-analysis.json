@@ -1,0 +1,96 @@
+{
+  "artifact": "level-curve-analysis",
+  "phase": "9D — Progression, XP and Achievements V1",
+  "generatedAt": "2026-09-06T14:07:06.342Z",
+  "levelCurveVersion": "1.0.0",
+  "thresholds": [
+    0,
+    250,
+    550,
+    900,
+    1300,
+    1750,
+    2250,
+    2800,
+    3400,
+    4050
+  ],
+  "formulaAfterLevel10": "stepCost(L) = 650 + (L − 10) × 75 for the step from L to L+1",
+  "levelCap": 100,
+  "capBehaviour": "XP keeps accumulating; display says MAX LEVEL; no prestige, no reset",
+  "cumulativeXp": {
+    "2": 250,
+    "5": 1300,
+    "10": 4050,
+    "11": 4700,
+    "12": 5425,
+    "25": 21675,
+    "50": 88550,
+    "75": 202300,
+    "100": 362925
+  },
+  "velocity": {
+    "atWinRate50": {
+      "winRate": 0.5,
+      "xpPerClash": 112.5,
+      "xpPerClashEarly": 122.5,
+      "gamesToLevel": {
+        "2": 3,
+        "5": 11,
+        "10": 34,
+        "25": 193,
+        "50": 788,
+        "100": 3226
+      },
+      "cumulativeXp": {
+        "5": 1300,
+        "10": 4050,
+        "25": 21675,
+        "50": 88550,
+        "100": 362925
+      }
+    },
+    "atWinRate35": {
+      "winRate": 0.35,
+      "xpPerClash": 108.75,
+      "xpPerClashEarly": 118.8,
+      "gamesToLevel": {
+        "2": 3,
+        "5": 11,
+        "10": 35,
+        "25": 200,
+        "50": 815,
+        "100": 3338
+      },
+      "cumulativeXp": {
+        "5": 1300,
+        "10": 4050,
+        "25": 21675,
+        "50": 88550,
+        "100": 362925
+      }
+    },
+    "atWinRate65": {
+      "winRate": 0.65,
+      "xpPerClash": 116.25,
+      "xpPerClashEarly": 126.3,
+      "gamesToLevel": {
+        "2": 2,
+        "5": 11,
+        "10": 33,
+        "25": 187,
+        "50": 762,
+        "100": 3122
+      },
+      "cumulativeXp": {
+        "5": 1300,
+        "10": 4050,
+        "25": 21675,
+        "50": 88550,
+        "100": 362925
+      }
+    }
+  },
+  "reasoning": "An ordinary Clash earns 100 + 25 at a win, plus the Era-first bonus while new Eras are still being met and modest achievement XP early on. Levels 2–5 arrive inside the first dozen games (a level every three or four Clashes), Level 10 after roughly thirty-five, Level 25 around two hundred, Level 50 near eight hundred: early levels are regular, high levels are sustained play, Level 50 is not two days of normal play and Level 10 is not hundreds of games. Achievement XP (about 2,000 across the catalog) shortens the early path without changing the shape.",
+  "sqlMirror": "public.progression_level_for(bigint) in 0005_progression_v1.sql; pinned to the JavaScript curve by tests/v9d-progression.test.js"
+}

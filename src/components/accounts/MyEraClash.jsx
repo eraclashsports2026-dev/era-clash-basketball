@@ -1,6 +1,6 @@
 // ── /my-eraclash — the persistent career home (Career V2) ───────────────────
-// A sports-career destination, not an admin panel. Five tabs: Overview, Clash
-// History, Saved Rosters, Favorites, Account. Everything on it is real: totals
+// A sports-career destination, not an admin panel. Seven tabs: Overview, Clash
+// History, Saved Rosters, Favorites, Challenges (9C), Achievements (9D), Account. Everything on it is real: totals
 // are derived in the database, a saved report reopens from its own snapshot,
 // and where there is nothing the page says so.
 //
@@ -27,6 +27,10 @@ import {
 } from "../../accounts/careerV2.js";
 import { track } from "../../analytics.js";
 import ChallengesTab from "../challenges/ChallengesTab.jsx";   // Phase 9C
+// Phase 9D: progression is read (and reconciled) through the server for the verified account.
+import { progressionGetRequest } from "../../progression/client.js";
+import ProgressionHero from "../progression/ProgressionHero.jsx";
+import AchievementsTab from "../progression/AchievementsTab.jsx";
 
 const dateOf = (iso) => { try { return new Date(iso).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" }); } catch { return ""; } };
 const OUTCOME_WORD = { win: "Won", loss: "Lost", tie: "Tied" };
@@ -35,7 +39,7 @@ const WIN_GREEN = "var(--ec-a-green, #2fa96d)";
 export default function MyEraClash({ onOpenReport, onRunItBack, onSaveRoster, onSignIn, onSignedOut }) {
   const account = useAccount();
   const [tab, setTab] = useState(() => tabFromSearch(typeof window !== "undefined" ? window.location.search : ""));
-  const [data, setData] = useState({ career: null, clashes: [], rosters: [], prefs: PREF_DEFAULTS, activity: [] });
+  const [data, setData] = useState({ career: null, clashes: [], rosters: [], prefs: PREF_DEFAULTS, activity: [], progression: null });
   const [loading, setLoading] = useState(true);
   const [notice, setNotice] = useState(null);
   const [importOffer, setImportOffer] = useState(null);
@@ -45,14 +49,15 @@ export default function MyEraClash({ onOpenReport, onRunItBack, onSaveRoster, on
   const load = useCallback(async () => {
     setLoading(true);
     try {
-      const [career, clashes, rosters, prefs, activity] = await Promise.all([
+      const [career, clashes, rosters, prefs, activity, progression] = await Promise.all([
         withProvider((p) => p.career(), null),
         withProvider((p) => p.listSavedClashes({ limit: 1000 }), []),
         withProvider((p) => p.listRosters(), []),
         withProvider((p) => p.getPreferences(), {}),
         withProvider((p) => p.recentActivity(5), []),
+        progressionGetRequest({ accessToken: token }).catch(() => null),
       ]);
-      setData({ career, clashes: clashes || [], rosters: rosters || [], prefs: mergePrefs(prefs, {}), activity: activity || [] });
+      setData({ career, clashes: clashes || [], rosters: rosters || [], prefs: mergePrefs(prefs, {}), activity: activity || [], progression: progression || null });
       if (!importOfferDismissed()) {
         const candidates = unsavedDeviceResultIds((clashes || []).map((r) => r.result_id));
         if (candidates.length) {
@@ -120,6 +125,7 @@ export default function MyEraClash({ onOpenReport, onRunItBack, onSaveRoster, on
         {tab === "rosters" && <Rosters {...shared} />}
         {tab === "favorites" && <Favorites {...shared} />}
         {tab === "challenges" && <ChallengesTab accessToken={token} displayName={account.displayName} />}
+        {tab === "achievements" && <AchievementsTab progression={data.progression} loading={loading} />}
         {tab === "account" && <Account {...shared} onSignedOut={onSignedOut} />}
       </div>
     </main>
@@ -173,6 +179,9 @@ function Overview({ data, loading, account, flash, load, importOffer, setImportO
           )}
         </div>
       </section>
+
+      {/* Phase 9D: progression supplements the career; it never replaces it. */}
+      <ProgressionHero progression={data.progression} displayName={account.displayName} loading={loading} onOpenAchievements={() => goTab("achievements")} />
 
       {importOffer && (
         <section style={{ ...card, borderColor: T.goldBorder }}>

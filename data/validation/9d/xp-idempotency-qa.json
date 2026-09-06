@@ -1,0 +1,86 @@
+{
+  "artifact": "xp-idempotency-qa",
+  "phase": "9D — Progression, XP and Achievements V1",
+  "generatedAt": "2026-09-06T14:10:32.457Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "a saved Clash earns completion + win + Era-first exactly once",
+      "pass": true,
+      "detail": "delta 325"
+    },
+    {
+      "check": "refreshing the result: XP gained 0",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "opening My EraClash: XP gained 0",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "re-saving the same result: XP gained 0",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "five retried requests: XP gained 0 additional",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a loss and a tie earn completion, never the win bonus",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a second Clash in the same Era earns no second Era bonus",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a first Clash in a new Era earns the Era bonus once",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a huge XP delta is refused by the check constraint (xp_delta between 1 and 1000)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a negative delta is refused",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a source type or reason outside the closed vocabulary is refused",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a forged result id that is not a saved Clash awards nothing",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "abandoned or unsimulated games have no saved row and so earn nothing",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "nothing awards for rolling, holding, revealing, coach choice, links, sign-in or refresh",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the ledger is the total: the profile equals the ledger sum and the curve's level",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": true,
+  "ledgerRows": 13,
+  "totalXp": 825
+}

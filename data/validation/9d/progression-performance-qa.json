@@ -1,0 +1,65 @@
+{
+  "artifact": "progression-performance-qa",
+  "phase": "9D — Progression, XP and Achievements V1",
+  "generatedAt": "2026-09-06T14:14:45.860Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "1440×900: the fixture (three postgame states, the hero and 23 achievement cards) renders within 3s",
+      "pass": true,
+      "detail": "59ms"
+    },
+    {
+      "check": "1440×900: CLS effectively zero",
+      "pass": true,
+      "detail": "0"
+    },
+    {
+      "check": "390×844: the fixture (three postgame states, the hero and 23 achievement cards) renders within 3s",
+      "pass": true,
+      "detail": "50ms"
+    },
+    {
+      "check": "390×844: CLS effectively zero",
+      "pass": true,
+      "detail": "0"
+    },
+    {
+      "check": "progression-get (reconcile + read) answers within 1.5s on the harness",
+      "pass": true,
+      "detail": "5ms"
+    },
+    {
+      "check": "a career save with its progression answers within 2s",
+      "pass": true,
+      "detail": "6ms"
+    },
+    {
+      "check": "no N+1: reconciliation reads a fixed handful of queries regardless of history size (no rest() inside a loop)",
+      "pass": true,
+      "detail": "9 rest() sites, none in a loop"
+    },
+    {
+      "check": "the catalog is static client configuration; the user payload is compact (achievements carry progress, not history)",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": true,
+  "rows": [
+    {
+      "viewport": "1440x900",
+      "loadMs": 59,
+      "cls": 0
+    },
+    {
+      "viewport": "390x844",
+      "loadMs": 50,
+      "cls": 0
+    }
+  ],
+  "ms": {
+    "progressionGet": 5,
+    "saveWithProgression": 6
+  }
+}

@@ -27,7 +27,9 @@ if (process.env.ECLASH_FAKE_CLOUD === "1") {
 }
 
 const PORT = Number(process.argv[2]) || 4173;
-const DIST = new URL("../dist", import.meta.url).pathname;
+// ECLASH_DIST points the harness at another build (Phase 9D: the dev-fixtures
+// build in dist-fixtures, so UI gates can measure fixture routes) — never deployed.
+const DIST = process.env.ECLASH_DIST ? new URL(`../${process.env.ECLASH_DIST.replace(/^\.\//, "")}`, import.meta.url).pathname : new URL("../dist", import.meta.url).pathname;
 
 // Fail fast on a missing build. The readiness probe Playwright waits on is
 // /api/health — a live handler import — so it answers even when dist/ is absent,

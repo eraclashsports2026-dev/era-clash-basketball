@@ -40,9 +40,9 @@ const clash = (over = {}) => ({
 });
 
 describe("navigation", () => {
-  it("has the six named tabs and reads a valid one from the URL", () => {
-    // Phase 9C added Challenges between Favorites and Account.
-    expect(CAREER_TAB_IDS).toEqual(["overview", "history", "rosters", "favorites", "challenges", "account"]);
+  it("has the seven named tabs and reads a valid one from the URL", () => {
+    // Phase 9C added Challenges, Phase 9D Achievements, both before Account.
+    expect(CAREER_TAB_IDS).toEqual(["overview", "history", "rosters", "favorites", "challenges", "achievements", "account"]);
     expect(tabFromSearch("?tab=history")).toBe("history");
     expect(tabFromSearch("?tab=nonsense")).toBe("overview");
     expect(tabFromSearch("")).toBe("overview");

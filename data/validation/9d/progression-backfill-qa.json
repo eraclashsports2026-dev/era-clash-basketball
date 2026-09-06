@@ -1,0 +1,68 @@
+{
+  "artifact": "progression-backfill-qa",
+  "phase": "9D — Progression, XP and Achievements V1",
+  "generatedAt": "2026-09-06T14:07:06.709Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "before initialisation the account holds no progression rows",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "completion XP for each historical Clash",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "win XP for the two wins only",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Era-first XP for the two Eras",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "challenge completion XP, no victory (the comparison went to the creator)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "eligible achievements: first clash, first win, first chaos, first challenge",
+      "pass": true,
+      "detail": "first_challenge,first_chaos,first_clash,first_win"
+    },
+    {
+      "check": "the total is the expected 3×100 + 2×25 + 2×50 + 50 + 4×50 = 700",
+      "pass": true,
+      "detail": "700"
+    },
+    {
+      "check": "run again: XP delta 0, new unlocks 0",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the backfill is the same code path as every other trigger (one reconcile function)",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": true,
+  "historical": {
+    "clashes": 3,
+    "wins": 2,
+    "eras": 2,
+    "challengeCompletions": 1
+  },
+  "expectedXp": 700,
+  "awardedXp": 700,
+  "unlocked": [
+    "first_challenge",
+    "first_chaos",
+    "first_clash",
+    "first_win"
+  ]
+}

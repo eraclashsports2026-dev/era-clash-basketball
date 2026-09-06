@@ -1,0 +1,44 @@
+{
+  "artifact": "progression-concurrency-qa",
+  "phase": "9D — Progression, XP and Achievements V1",
+  "generatedAt": "2026-09-06T14:10:37.141Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "6 simultaneous saves of the same result award exactly once",
+      "pass": true,
+      "detail": "deltas 150/0/0/0/0/0 · total 300 → 450"
+    },
+    {
+      "check": "the total moved by exactly the one legitimate delta for this result",
+      "pass": true,
+      "detail": "150 vs 150"
+    },
+    {
+      "check": "the recent ledger's newest completion is this result's, and there is one more completion than before",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "four simultaneous reconciles repair nothing and agree on the total",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "in Postgres the same is decided by a per-account advisory lock and the unique constraint",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": true,
+  "simultaneous": 6,
+  "deltas": [
+    150,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "totalXp": 450
+}

@@ -28,6 +28,9 @@ import {
   createChallenge, viewChallenge, acceptChallenge, completeChallengeAttempt, revokeChallenge, listChallenges, displayNameFor,
 } from "./_lib/challenges.js";
 import { normalizeCode } from "../src/challenges/contract.js";
+// Phase 9D: progression rides the same route. Awards are decided here and in
+// the database, never in a browser; every hook below is idempotent.
+import { reconcileProgression, recentLedger, compactProgression, challengeParticipants } from "./_lib/progression.js";
 import { normalizeTier } from "../src/entitlements.js";
 import { validRunId } from "./_lib/chaosRun.js";
 
@@ -36,6 +39,7 @@ const RESULT_ID_SHAPE = CANDIDATE_ID_SHAPE;
 const CLOUD_ACTIONS = new Set(["cloud-save", "claim-result", "import-device-history", "import-preview", "delete-account"]);
 const CHALLENGE_ACTIONS = new Set(["challenge-create", "challenge-view", "challenge-accept", "challenge-complete", "challenge-revoke", "challenge-list"]);
 const ACCOUNT_ONLY_CHALLENGE_ACTIONS = new Set(["challenge-create", "challenge-revoke", "challenge-list"]);
+const PROGRESSION_ACTIONS = new Set(["progression-get", "progression-reconcile"]);
 /** A guest: an identity with no user id. Never a stand-in for a token that failed verification. */
 const GUEST_IDENTITY = Object.freeze({ userId: null });
 
@@ -179,7 +183,16 @@ export default async function handler(req, res) {
       if (!chaosRunId) return sendError(res, "VALIDATION_FAILURE", requestId);
       out = await completeChallengeAttempt({ chaosRunId, userId: who.userId, deviceSession: session, displayName });
       const http = { completed: 200, already_completed: 200, not_found: 404, not_your_run: 403, not_simulated: 409, not_configured: 503, save_failed: 502 }[out.status] ?? 500;
-      return res.status(http).json({ ...out, requestId });
+      // Phase 9D: a completed official attempt earns the recipient ACCOUNT its
+      // challenge XP and, once, the creator a response. Guests earn nothing and
+      // earn the creator nothing. Both calls are idempotent reconciliations.
+      let progression = null;
+      if (out.status === "completed" || out.status === "already_completed") {
+        const parts = await challengeParticipants({ chaosRunId });
+        if (who.userId && parts?.recipientUserId === who.userId) progression = compactProgression(await reconcileProgression({ userId: who.userId, trigger: "challenge_completed" }));
+        if (out.status === "completed" && parts?.creatorUserId && parts.recipientUserId && parts.creatorUserId !== parts.recipientUserId) await reconcileProgression({ userId: parts.creatorUserId, trigger: "challenge_response_completed" });
+      }
+      return res.status(http).json({ ...out, ...(progression ? { progression } : {}), requestId });
     }
     if (action9c === "challenge-revoke") {
       out = code ? await revokeChallenge({ code, userId: who.userId }) : { status: "unavailable" };
@@ -189,6 +202,24 @@ export default async function handler(req, res) {
     out = await listChallenges({ userId: who.userId });
     res.setHeader("Cache-Control", "private, no-store");
     return res.status(out.status === "ok" ? 200 : 503).json({ ...out, requestId });
+  }
+
+  // ── Phase 9D progression actions ─────────────────────────────────────────
+  // Account only. Reading progression reconciles it: whatever the account's
+  // authoritative records earn and the ledger lacks is inserted (once), so a
+  // failed callback, a historical backfill or a claim is repaired by opening
+  // the career page. No body field is read.
+  const action9d = typeof req.body?.action === "string" ? req.body.action : null;
+  if (action9d && PROGRESSION_ACTIONS.has(action9d)) {
+    if (!cloudAccountsReady()) return res.status(503).json({ error: "CLOUD_ACCOUNTS_DISABLED", requestId });
+    if (!(await rateLimit(`prog:${clientIp(req)}`, limits().progressionPerMinIp, 60))) return sendError(res, "RATE_LIMITED", requestId, { retryAfter: 30 });
+    const who = await verifyAccountToken(bearer(req));
+    if (!who) return res.status(401).json({ error: "NOT_AUTHENTICATED", requestId });
+    const out = await reconcileProgression({ userId: who.userId, trigger: action9d === "progression-get" ? "career_opened" : "manual_reconcile" });
+    res.setHeader("Cache-Control", "private, no-store");
+    if (out.status !== "ok") return res.status({ not_configured: 503, apply_failed: 502 }[out.status] ?? 500).json({ status: out.status, requestId });
+    const recent = await recentLedger(who.userId);
+    return res.status(200).json({ status: "ok", profile: out.profile, achievements: out.achievements, summary: out.summary, facts: out.facts, recent, repaired: out.repaired, requestId });
   }
 
   // ── Phase 9B.1 cloud-career actions ──────────────────────────────────────
@@ -214,7 +245,9 @@ export default async function handler(req, res) {
         candidateIds: req.body?.resultIds, userId: who.userId, deviceSession: session,
         buildStamp: stamp(req), themeVersion: req.body?.themeVersion ? cleanText(String(req.body.themeVersion), 40) : null,
       });
-      return res.status(200).json({ ...out, requestId });
+      // Phase 9D: imported results are authoritative history; one reconcile awards them, once.
+      const progression = out.imported > 0 ? compactProgression(await reconcileProgression({ userId: who.userId, trigger: "device_import" })) : null;
+      return res.status(200).json({ ...out, ...(progression ? { progression } : {}), requestId });
     }
 
     if (action === "delete-account") {
@@ -233,7 +266,13 @@ export default async function handler(req, res) {
       buildStamp: stamp(req), themeVersion: req.body?.themeVersion ? cleanText(String(req.body.themeVersion), 40) : null,
     });
     const code = { saved: 200, already_saved: 200, not_found: 404, not_your_result: 403, already_claimed: 409, not_configured: 503, save_failed: 502 }[out.status] ?? 500;
-    return res.status(code).json({ ...out, requestId });
+    // Phase 9D: a saved (or claimed) authoritative result earns its XP here,
+    // once — a re-save collides in the ledger and the delta comes back as 0.
+    // A progression failure never turns a successful save into a failed one.
+    const progression = out.status === "saved" || out.status === "already_saved"
+      ? compactProgression(await reconcileProgression({ userId: who.userId, trigger: action === "claim-result" ? "guest_result_claimed" : "clash_saved" }))
+      : null;
+    return res.status(code).json({ ...out, ...(progression ? { progression } : {}), requestId });
   }
 
   const clean = sanitize(req.body?.profile);

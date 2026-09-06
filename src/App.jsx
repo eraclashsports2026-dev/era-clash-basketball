@@ -29,6 +29,7 @@ import StageWizard from "./components/StageWizard.jsx";
 import ArenaHeader from "./components/arena/ArenaHeader.jsx";
 import TimeArena from "./components/arena/TimeArena.jsx";
 import ReferenceFixture from "./ui/time-arena/ReferenceFixture.jsx";
+import ProgressionReferenceFixture from "./ui/progression/ProgressionReferenceFixture.jsx";   // Phase 9D, same dev-only gate
 import { MembershipPage, FantasyPage, ModeInfoPage, HowModesModal as ArenaHowModes, ArenaGuide } from "./components/arena/InfoPages.jsx";
 import {
   PLAY_MODES, findMode, defaultMode, MODE_STATUS,
@@ -57,6 +58,9 @@ import ChallengeInvite from "./components/challenges/ChallengeInvite.jsx";
 import ChallengeShare from "./components/challenges/ChallengeShare.jsx";
 import ChallengeComparison from "./components/challenges/ChallengeComparison.jsx";
 import { completeChallengeRequest, rememberChallengeRun, challengeForRun, forgetChallengeRun } from "./challenges/client.js";
+// Phase 9D: what a saved result earned (server-decided), shown after the score.
+import { rememberProgression, progressionFor, mergeProgression } from "./progression/client.js";
+import CareerProgress from "./components/progression/CareerProgress.jsx";
 import { codeFromSearch, CHALLENGE_EVENTS } from "./challenges/contract.js";
 import { can, CAPABILITIES } from "./entitlements.js";
 import RosterGrid from "./components/RosterGrid.jsx";
@@ -148,6 +152,7 @@ const MODE_TO_ANALYTICS = { Win82: "82", Single: "single", Best7: "best7", Tourn
 // statically eliminates both this route and the fixture module.
 const DEV_FIXTURES = import.meta.env.DEV || import.meta.env.VITE_EC_DEV_FIXTURES === "1";
 const FIXTURE_ROUTE = "/dev/time-arena-reference";
+const PROGRESSION_FIXTURE_ROUTE = "/dev/progression-reference";
 // Phase 9A.1 — the Basketball theme decision lab. __EC_THEME_LAB__ is a build
 // constant (vite.config.js): true on preview deployments and the dev server,
 // false in production, where this whole branch — and the lazily imported lab
@@ -195,6 +200,9 @@ export default function App() {
   if (DEV_FIXTURES && typeof window !== "undefined" && window.location.pathname === FIXTURE_ROUTE) {
     return <ReferenceFixture />;
   }
+  if (DEV_FIXTURES && typeof window !== "undefined" && window.location.pathname === PROGRESSION_FIXTURE_ROUTE) {
+    return <ProgressionReferenceFixture />;
+  }
   if (THEME_LAB && typeof window !== "undefined" && window.location.pathname === THEME_LAB_ROUTE) {
     return <Suspense fallback={null}><ThemeLab /></Suspense>;
   }
@@ -223,6 +231,15 @@ export default function App() {
   // current Chaos run is (so the result can be compared once it exists).
   const [challengeInvite, setChallengeInvite] = useState(() => (typeof window !== "undefined" ? codeFromSearch(window.location.search) : null));
   const [challengeAttempt, setChallengeAttempt] = useState(null);
+  // Phase 9D: the progression each authoritative result earned, by result id.
+  // One result can earn twice (career save, then challenge completion); the
+  // two server answers merge into one block and are remembered per result so a
+  // reload shows the same figures without awarding anything again.
+  const [progressionByResult, setProgressionByResult] = useState({});
+  const noteProgression = useCallback((resultId, p) => {
+    if (!resultId || !p) return;
+    setProgressionByResult((m) => { const merged = mergeProgression(m[resultId], p); rememberProgression(resultId, merged); return { ...m, [resultId]: merged }; });
+  }, []);
   const setPrior = (p) => { setPriorState(p); writePriorResult(p); };
   const [reportBundle, setReportBundle] = useState(null);
   const [guide, setGuide] = useState(null);
@@ -314,6 +331,7 @@ export default function App() {
       const r = await call({ resultId, accessToken: token });
       const ok = r?.status === "saved" || r?.status === "already_saved";
       setCloudSave({ resultId, state: ok ? r.status : "failed" });
+      if (ok && r?.progression) noteProgression(resultId, r.progression);
       if (kind === "claim") track("guest_result_claim_completed", { mode, success: ok, ...(ok ? {} : { failureCode: r?.status || "SAVE_FAILED" }) });
       else track(ok ? "cloud_result_save_completed" : "cloud_result_save_failed", { mode, success: ok, ...(ok ? {} : { failureCode: r?.status || "SAVE_FAILED" }) });
       return r;
@@ -322,7 +340,7 @@ export default function App() {
       track(kind === "claim" ? "guest_result_claim_completed" : "cloud_result_save_failed", { mode, success: false, failureCode: "NETWORK" });
       return null;
     }
-  }, [token]);
+  }, [token, noteProgression]);
 
   useEffect(() => {
     const rid = result?.resultId;
@@ -345,6 +363,7 @@ export default function App() {
     try {
       const r = await completeChallengeRequest({ chaosRunId: attempt.chaosRunId, accessToken: token });
       const ok = r.status === "completed" || r.status === "already_completed";
+      if (ok && r.progression && attempt.resultId) noteProgression(attempt.resultId, r.progression);
       track(CHALLENGE_EVENTS.ATTEMPT_COMPLETED, { challengeVersion: "1.0.0", authState, success: ok, ...(ok ? { status: r.comparison?.outcome } : { failureCode: r.status || "network" }) });
       setChallengeAttempt((a) => (a && a.chaosRunId === attempt.chaosRunId ? { ...a, state: ok ? "completed" : "failed", comparison: r.comparison || null, challenge: r.challenge || null } : a));
       if (ok) forgetChallengeRun();
@@ -352,7 +371,7 @@ export default function App() {
       track(CHALLENGE_EVENTS.ATTEMPT_COMPLETED, { challengeVersion: "1.0.0", authState, success: false, failureCode: "network" });
       setChallengeAttempt((a) => (a && a.chaosRunId === attempt.chaosRunId ? { ...a, state: "failed" } : a));
     }
-  }, [token]);
+  }, [token, noteProgression]);
   useEffect(() => {
     const a = challengeAttempt;
     if (!a || a.state !== "pending" || !a.resultId) return;
@@ -1856,6 +1875,13 @@ export default function App() {
           onSaveAgain={() => runCloudSave(res.resultId, res.type || "single", "cloud-save")}
           onViewCareer={() => navigate("/my-eraclash")} />
       )}
+      {/* Phase 9D: what this result earned — after the score, never over it. */}
+      {live && res.resultId && (
+        <CareerProgress surface="light" resultId={res.resultId} mode={res.type || "single"} signedIn={!!token}
+          outcome={progressionByResult[res.resultId] || progressionFor(res.resultId)}
+          pending={!!token && cloudSave.resultId === res.resultId && ["pending", "saving"].includes(cloudSave.state)}
+          onViewAchievements={() => navigate("/my-eraclash?tab=achievements")} />
+      )}
       {res.tag === "daily" && <DailyPanel daily={daily} career={career} />}
       {live && (
         <div style={{ display: "flex", gap: 10, maxWidth: 700, margin: "12px auto 0" }}>
@@ -2030,6 +2056,16 @@ export default function App() {
               ? <ChallengeComparison state={challengeAttempt.state === "completed" ? "ready" : challengeAttempt.state === "failed" ? "failed" : "pending"}
                   comparison={challengeAttempt.comparison} challenge={challengeAttempt.challenge} creatorName={challengeAttempt.creatorName}
                   onRetry={() => completeChallenge(challengeAttempt)} />
+              : null}
+            careerProgress={result?.resultId
+              ? <CareerProgress resultId={result.resultId} mode={result.type || "single"} signedIn={!!token}
+                  outcome={progressionByResult[result.resultId] || progressionFor(result.resultId)}
+                  pending={!!token && cloudSave.resultId === result.resultId && ["pending", "saving"].includes(cloudSave.state)}
+                  onViewAchievements={() => navigate("/my-eraclash?tab=achievements")}
+                  onSignIn={() => openAccountDialog({ entryPoint: "postgame", intent: "signup", claimResultId: result.resultId, returnTo: "/play/chaos" })} />
+              : null}
+            priorCareerProgress={prior?.result?.resultId
+              ? <CareerProgress resultId={prior.result.resultId} previous signedIn={!!token} outcome={progressionByResult[prior.result.resultId] || progressionFor(prior.result.resultId)} />
               : null}
             onEraChange={changeChaosEra}
             onGuide={(section) => setGuide(section || "play")}

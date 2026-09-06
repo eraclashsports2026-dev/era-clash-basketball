@@ -1,0 +1,94 @@
+{
+  "artifact": "progression-security-qa",
+  "phase": "9D — Progression, XP and Achievements V1",
+  "generatedAt": "2026-09-06T14:10:34.910Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "the account provider is configured on this origin",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "progression-get without an account is refused (anonymous reads nothing)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "progression-reconcile without an account is refused",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a presented but invalid token is refused, never downgraded",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "an unknown progression action is a validation failure",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "no route reads XP, a level, an achievement, a score or a user id from the body",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the progression actions are rate-limited per IP",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the client bundle source never names the database function",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "no event property carries a name, an email, an id of a result, a challenge or an account, a token or a session",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a forged owner id in the body is ignored: the token's own account answers (Bea sees Bea)",
+      "pass": true,
+      "detail": "clashes 0"
+    },
+    {
+      "check": "a forged XP delta, level or award list changes nothing",
+      "pass": true,
+      "detail": "xp 0 level 1"
+    },
+    {
+      "check": "the arena result offers a guest the one-line career note after the score",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a signed-in save earns completion (+ win where won) and Era-first, once, in the save response",
+      "pass": true,
+      "detail": "+300"
+    },
+    {
+      "check": "saving the same result again: already_saved, XP delta 0",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "another device cannot claim the result, so it cannot earn from it",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "cross-account: Bea's progression shows none of Joseph's Clashes or XP",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the owner reads their own progression: profile, achievements with progress, recent ledger, no ids; the total moved by exactly the save's delta",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": true
+}

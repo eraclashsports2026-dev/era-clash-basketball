@@ -1,0 +1,105 @@
+{
+  "artifact": "progression-rls-qa",
+  "phase": "9D — Progression, XP and Achievements V1",
+  "generatedAt": "2026-09-06T14:07:06.931Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "progression_profiles: RLS enabled",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "progression_profiles: anon and authenticated revoked, select granted back to authenticated only",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "progression_profiles: own rows only",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "progression_profiles: cascades from auth.users",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "xp_ledger: RLS enabled",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "xp_ledger: anon and authenticated revoked, select granted back to authenticated only",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "xp_ledger: own rows only",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "xp_ledger: cascades from auth.users",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "achievement_unlocks: RLS enabled",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "achievement_unlocks: anon and authenticated revoked, select granted back to authenticated only",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "achievement_unlocks: own rows only",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "achievement_unlocks: cascades from auth.users",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "no client role may insert, update or delete",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the write path is one SECURITY DEFINER function, revoked from public/anon/authenticated",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "awards are unique per (user, source type, source id, reason)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the ledger refuses UPDATE; the profile refuses a total or level that disagrees with the ledger",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the function serialises one account with an advisory lock and refuses a non-user",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the migration records its version",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the live role-switch verification is recorded from the database",
+      "pass": false,
+      "detail": "not yet recorded"
+    }
+  ],
+  "passed": false,
+  "live": null
+}

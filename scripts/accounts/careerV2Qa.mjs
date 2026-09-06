@@ -54,7 +54,8 @@ const clash = (over = {}) => ({
 
 // ── career-v2: overview + history behaviour ─────────────────────────────────
 if (MODE === "career-v2") {
-  ok("the five tabs are exactly overview/history/rosters/favorites/account", CAREER_TAB_IDS.join(",") === "overview,history,rosters,favorites,account");
+  // Pinned as the invariant, not a snapshot: later phases add tabs before Account (9C Challenges, 9D Achievements).
+  ok("the tabs begin overview/history/rosters/favorites and end with account", CAREER_TAB_IDS.slice(0, 4).join(",") === "overview,history,rosters,favorites" && CAREER_TAB_IDS.at(-1) === "account");
   ok("a URL tab is honoured and an unknown one falls back to overview", tabFromSearch("?tab=rosters") === "rosters" && tabFromSearch("?tab=x") === "overview");
   const rows = [clash({ mode: "chaos", era_id: "1990s" }), clash({ mode: "single", outcome: "loss", era_id: "1980s", gold_score: 90, blue_score: 99 }), clash({ mode: "daily", outcome: "tie", gold_score: 100, blue_score: 100 })];
   ok("history filters by mode, outcome and era independently", applyHistoryFilters(rows, { mode: "chaos" }).length === 1 && applyHistoryFilters(rows, { outcome: "tie" }).length === 1 && applyHistoryFilters(rows, { era: "1980s" }).length === 1);

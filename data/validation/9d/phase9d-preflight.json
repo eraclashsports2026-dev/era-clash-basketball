@@ -1,0 +1,46 @@
+{
+  "artifact": "phase9d-preflight",
+  "phase": "9D — Progression, XP and Achievements V1",
+  "generatedAt": "2026-09-06T13:36:00Z",
+  "startConditions": {
+    "phase9b1a": "OWNER APPROVED — data/validation/9b2/phase9b1a-acceptance.json",
+    "phase9b2": "OWNER APPROVED — data/validation/9b3/phase9b2-acceptance.json",
+    "phase9b3": "OWNER APPROVED — data/validation/9c/phase9b3-acceptance.json",
+    "phase9c": "OWNER APPROVED — data/validation/9c/phase9c-acceptance.json (approve challenges v1 this works, 2026-09-06); copied to data/validation/9d/phase9c-acceptance.json"
+  },
+  "repositoryTruth": {
+    "toplevel": "/Users/josephjohnson/era-clash-basketball",
+    "remote": "https://github.com/eraclashsports2026-dev/era-clash-basketball.git",
+    "approved9cHead": "98cd4ef80fc73d47779537c7d55a988b8c3f92ea (app code 009030a; acceptance record 27f1b58)",
+    "pr46": "MERGED into phase-9b3-chaos-guided-flow-v2 at 520b34b on 2026-09-06 (owner instruction); branch retained for its durable alias",
+    "branch": "phase-9d-progression-xp-achievements-v1",
+    "parent": "phase-9b3-chaos-guided-flow-v2 @ 520b34b (contains the approved 9C head)",
+    "main": "9cd95ff",
+    "wave1": "4dc59e7",
+    "wave2": "ef0caa5",
+    "openDraftPrs": "45, 44, 42, 41, 40, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 17, 16 (phase chain); 46 merged"
+  },
+  "frozen": {
+    "candidateId": "Candidate 4",
+    "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+    "calibrationVersion": "1.4.0",
+    "apiRoutes": 12,
+    "middleware": true,
+    "migrations": ["0001_accounts.sql", "0002_accounts_hardening.sql", "0003_career_v2.sql", "0004_challenges.sql"],
+    "liveMigrationHead": "0004_challenges (public.schema_migrations on lfybiphmqkiecfrqsfzt)",
+    "liveDatabaseState": "1 auth user (the owner), 1 profile, 0 saved_clashes, 0 claims, 0 challenges, 0 attempts, 0 secrets",
+    "eventsAllowlistUnique": 122
+  },
+  "existingArchitecture": {
+    "myEraClash": "src/components/accounts/MyEraClash.jsx — six tabs from CAREER_TABS (overview, history, rosters, favorites, challenges, account); Overview derives career totals from database views",
+    "savedClashes": "saved_clashes(user_id, result_id, mode, outcome, gold_score, blue_score, era_id, gold_roster, blue_roster, gold_coach, blue_coach, mvp, candidate_id, claimed_from, result_snapshot, played_at, favorite); inserted only by claimAndSaveResult (service role) after ownership proof",
+    "challenges": "challenges / challenge_attempts (status completed carries challenge_outcome creator|recipient|tie) / challenge_secrets; RLS own rows + responses",
+    "accounts": "profiles(display_name); identity = verified bearer via /auth/v1/user; result_claims decides one owner per result",
+    "careerDerivation": "career_summary / career_by_mode / career_streak / career_longest_win_streak views; client careerV2.js pure filters — progression facts derive from the same saved_clashes rows",
+    "telemetry": "api/events.js ALLOWED mirrored by src/activation.js ACTIVATION_EVENTS; contract tests pin the two",
+    "cloudSaveFlow": "App.jsx runCloudSave → /api/profile cloud-save (bearer) → claimAndSaveResult; guest claim after sign-in via claim-result; challenge completion waits for the save to settle"
+  },
+  "functionBudget": { "routes": 12, "middleware": true, "plan": "progression actions and hooks live inside api/profile.js; the one write is a database function; apiFunctionCountIncrease must stay 0" },
+  "preEditSweep": "data/validation/9d/pre-edit-sweep.log — unit 2569/2569, e2e 80/80, all gates PASS except account:career-v2-qa (a stale 9B.2 snapshot pin 'five tabs' made false by 9C; re-pinned as the invariant in this phase)",
+  "checkpoints": ["1 progression contract", "2 XP ledger + level engine (migration 0005)", "3 achievements", "4 My EraClash progression UI", "5 postgame progression", "6 security / anti-farming / responsive / deployed certification"]
+}

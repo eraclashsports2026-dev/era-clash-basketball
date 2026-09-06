@@ -1,0 +1,69 @@
+{
+  "artifact": "result-progression-qa",
+  "phase": "9D — Progression, XP and Achievements V1",
+  "generatedAt": "2026-09-06T14:17:25.843Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "score and winner appear, then the progression module (MVP sits in the stage head with the score)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "exactly one completion XP source",
+      "pass": true,
+      "detail": "clash:completion"
+    },
+    {
+      "check": "win bonus only if won",
+      "pass": false,
+      "detail": "winner gold"
+    },
+    {
+      "check": "Era first-completion bonus only if first in that Era",
+      "pass": true,
+      "detail": "eras 4 → 4"
+    },
+    {
+      "check": "achievements evaluated and the level computed from the ledger",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the cloud result is saved exactly once (one more career row)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the total moved by exactly the response's delta",
+      "pass": true,
+      "detail": "+100"
+    },
+    {
+      "check": "refresh: no new XP",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "navigate away and back: no new XP",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a re-save answers already_saved with a zero delta",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the finished game is still this browser's LAST CLASH after the reload, and the server was asked for nothing new",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": false,
+  "winner": "gold",
+  "delta": 100,
+  "categories": [
+    "clash:completion"
+  ]
+}

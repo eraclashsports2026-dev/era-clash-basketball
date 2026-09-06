@@ -88,6 +88,9 @@ export default function TimeArena({
   // Phase 9C: the run is a challenge attempt (badge), the share sheet on a
   // finished Clash, and the comparison once an attempt has been bound.
   challengeContext = null, challengeShare = null, challengeComparison = null,
+  // Phase 9D: the CAREER PROGRESS module for this result, and the remembered
+  // one for the previous clash in the rail.
+  careerProgress = null, priorCareerProgress = null,
 }) {
   const compact = useCompact();
   // The one browser-side fact the resolver needs: has THIS run's era reveal
@@ -149,7 +152,7 @@ export default function TimeArena({
               priorResult={null} priorAt={null} simStage={simStage}
               onViewFullReport={onViewFullReport} onRunItBack={onRunItBack}
               onNewClash={onNewClash} onChallenge={onChallenge} busy={busy}
-              challengeShare={challengeShare} challengeComparison={challengeComparison} />
+              challengeShare={challengeShare} challengeComparison={challengeComparison} careerProgress={careerProgress} />
           </div>
         )}
 
@@ -172,7 +175,7 @@ export default function TimeArena({
         <div className="ec-sheet-scrim" role="presentation" onMouseDown={(e) => { if (e.target === e.currentTarget) setPriorOpen(false); }}>
           <div className="ec-sheet" role="dialog" aria-modal="true" aria-label="Your last Clash">
             <button type="button" className="ec-sheet-close" onClick={() => setPriorOpen(false)} autoFocus>← BACK TO THE DRAFT</button>
-            <ResultDock phase="draft" run={chaosRun} result={null} priorResult={priorResult} priorAt={priorAt}
+            <ResultDock phase="draft" run={chaosRun} result={null} priorResult={priorResult} priorAt={priorAt} priorCareerProgress={priorCareerProgress}
               onViewFullReport={(res) => { setPriorOpen(false); onViewFullReport?.(res); }} busy={busy} />
           </div>
         </div>

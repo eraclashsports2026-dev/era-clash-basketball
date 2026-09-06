@@ -123,6 +123,9 @@ export default function ResultDock({
   // Phase 9C: CHALLENGE THIS CHAOS (the share sheet) and, for a recipient, the
   // comparison against the original — both supplied by the App.
   challengeShare = null, challengeComparison = null,
+  // Phase 9D: CAREER PROGRESS after the result hierarchy; a previous clash
+  // shows what it earned from browser memory, never a new award.
+  careerProgress = null, priorCareerProgress = null,
 }) {
   // No section is open in the canonical reference state — the summary and four
   // tab controls fit the first viewport, and the frozen 8C.1 geometry contract
@@ -300,6 +303,9 @@ export default function ResultDock({
           )}
         </Panel>
         )}
+
+        {/* Phase 9D: career progress — after the score, the winner and the MVP. */}
+        {previous ? priorCareerProgress : careerProgress}
 
         <button onClick={() => onViewFullReport?.(previous ? res : null)} style={primaryCta}>
           VIEW FULL REPORT →
