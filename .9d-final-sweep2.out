@@ -1,0 +1,73 @@
+=== PHASE 9D FINAL SWEEP 2026-09-06T14:34:05Z @ 2c5e0d0 ===
+--- unit ---
+ Test Files  80 passed (80)
+      Tests  2595 passed (2595)
+--- build ---
+✓ built in 781ms
+[plugin eraclash-sw-version] service worker cache identity: eraclash-assets:2.7.2:68cbb5823cd0
+--- e2e (all projects) ---
+  82 passed (1.7m)
+--- preview gates (static) ---
+preview:preflight                        PASS
+preview:security                         PASS
+--- repository ui gates ---
+ui:time-arena-qa                         PASS
+ui:result-dock-qa                        PASS
+ui:live-intel-qa                         PASS
+ui:coach-chaos-qa                        PASS
+ui:player-card-theme-qa                  PASS
+ui:synchronized-chaos-qa                 PASS
+ui:era-membership-qa                     PASS
+ui:navigation-qa                         PASS
+ui:membership-routing-qa                 PASS
+ui:activation-telemetry-qa               PASS
+ui:play-lobby-contracts                  PASS
+ui:night-court-contracts                 PASS
+ui:play-lobby-polish-qa                  PASS
+--- account gates (9B.1 / 9B.2, harness http://localhost:4180) ---
+account:guest-claim-qa                   PASS
+account:cloud-save-qa                    PASS
+account:my-eraclash-qa                   PASS
+account:saved-rosters-qa                 PASS
+account:run-it-back-qa                   PASS
+account:career-v2-qa                     PASS
+--- 9B.3 chaos gates (harness http://localhost:4180) ---
+chaos:guided-flow-qa                     PASS
+chaos:state-machine-qa                   PASS
+chaos:accessibility-qa                   PASS
+chaos:performance-qa                     FAIL
+--- 9C challenge gates (fake-cloud harness http://localhost:4178) ---
+challenge:contract-qa                    PASS
+challenge:seed-qa                        PASS
+challenge:rls-qa                         PASS
+challenge:security-qa                    PASS
+challenge:history-qa                     PASS
+challenge:responsive-qa                  PASS
+challenge:accessibility-qa               PASS
+challenge:performance-qa                 PASS
+--- 9D progression gates (fake-cloud harness http://localhost:4178) ---
+progression:contract-qa                  PASS
+progression:xp-qa                        PASS
+progression:achievement-qa               PASS
+progression:backfill-qa                  FAIL
+progression:reconcile-qa                 PASS
+progression:rls-qa                       PASS
+progression:security-qa                  PASS
+progression:concurrency-qa               PASS
+progression:result-qa                    PASS
+progression:challenge-qa                 PASS
+progression:responsive-qa                PASS
+progression:accessibility-qa             PASS
+progression:performance-qa               PASS
+--- deployed (https://era-clash-basketball-git-phase-9d-progression-45dc9b-era-clash.vercel.app) ---
+progression:deployed-qa                  PASS
+challenge:deployed-qa                    PASS
+chaos:deployed-qa                        PASS
+live-guest-qa 24/24 live guest and security checks passed
+deployed-qa 29/29 deployed gates passed → data/validation/9b1/account-preview-qa.json
+--- preservation ---
+api routes: 12 + middleware: yes
+wave1  4dc59e7
+wave2  ef0caa5
+main   9cd95ff
+=== DONE 2026-09-06T14:40:04Z ===

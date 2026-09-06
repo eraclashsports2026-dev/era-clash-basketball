@@ -1,0 +1,243 @@
+{
+  "artifact": "phase9d-resolution-ledger",
+  "phase": "9D — Progression, XP and Achievements V1",
+  "generatedAt": "2026-09-06T14:57:26.964Z",
+  "items": [
+    {
+      "item": "9C owner acceptance",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "phase9c-acceptance.json (approve challenges v1 this works, 2026-09-06)"
+    },
+    {
+      "item": "repository truth",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "phase-9d-progression-xp-achievements-v1 @ ac1a000, parent 520b34b"
+    },
+    {
+      "item": "Candidate 4 preservation",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "harness 55bb26a2 / 1.4.0; frozen paths byte-identical"
+    },
+    {
+      "item": "XP contract",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "progression-contract.json, xp-contract.json"
+    },
+    {
+      "item": "XP idempotency",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "xp-idempotency-qa.json — refresh, retry, re-save, five retries: 0 additional"
+    },
+    {
+      "item": "completion XP",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "+100 per authoritative completed Clash"
+    },
+    {
+      "item": "win XP",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "+25 on a win only"
+    },
+    {
+      "item": "Era exploration XP",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "+50 once per account per Era (unique constraint)"
+    },
+    {
+      "item": "challenge completion XP",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "+50 per completed official attempt"
+    },
+    {
+      "item": "challenge victory XP",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "+25 when the comparison decided recipient (challenge-progression-qa.json, unit)"
+    },
+    {
+      "item": "creator response XP",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "+25 once per other ACCOUNT's completed attempt; guests earn the creator nothing"
+    },
+    {
+      "item": "level curve",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "level-curve-analysis.json"
+    },
+    {
+      "item": "level cap",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "LEVEL_CAP 100; XP keeps accumulating; MAX LEVEL displayed"
+    },
+    {
+      "item": "historical backfill",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "progression-backfill-qa.json — 3 Clashes, 2 wins, 2 Eras, 1 challenge → 700 XP; repeat 0"
+    },
+    {
+      "item": "reconciliation",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "progression-reconcile-qa.json — repairs the missing award only; a failed read erases nothing"
+    },
+    {
+      "item": "guest claim",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "guest-claim-progression-qa.json — claim then save: once"
+    },
+    {
+      "item": "achievement catalog",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "achievement-catalog.json — 23 achievements, 2 hidden, no RIVALRY (privacy)"
+    },
+    {
+      "item": "achievement evaluator",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "achievement-evaluator-qa.json"
+    },
+    {
+      "item": "achievement progress",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "counts derived from records; binary states in words"
+    },
+    {
+      "item": "achievement XP",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "achievement-unlock-qa.json — once per id; repeat 0"
+    },
+    {
+      "item": "multiple unlocks",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "one list, one module; fixture screenshot achievement-unlock.png"
+    },
+    {
+      "item": "result presentation",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "kicker → delta → bar after the score; guest note after the score (harness + e2e)"
+    },
+    {
+      "item": "level-up presentation",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "LEVEL UP block inside the module; no interruption; screenshot level-up.png"
+    },
+    {
+      "item": "My EraClash overview",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "overview-progression-desktop/mobile.png; the hero supplements the career"
+    },
+    {
+      "item": "Achievements page",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "achievements-desktop/mobile.png; filters, cards, words for state"
+    },
+    {
+      "item": "challenge integration",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "challenge-progression-qa.json"
+    },
+    {
+      "item": "Run It Back",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "e2e: the new game earns; the original earns nothing again"
+    },
+    {
+      "item": "RLS",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "authenticated sub=A: progression_profiles 1, xp_ledger 13, achievement_unlocks 5, every ledger row owned by A · authenticated sub=B: 1 / 6 / 3, every row owned by B · authenticated sub=C (no history): 0 / 0 / 0 · anon: permission denied for table progression_profiles"
+    },
+    {
+      "item": "cross-account isolation",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "Bea reads none of Joseph's rows (harness); live RLS role switch"
+    },
+    {
+      "item": "arbitrary XP forge",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "as authenticated (sub=B): insert into xp_ledger → permission denied for table xp_ledger; update progression_profiles set total_xp = 999999, career_level = 100 → permission denied for table progression_profiles; insert into achievement_unlocks (century_club) → permission denied for table achievement_unlocks; select progression_apply(...) → permission denied for function progression_apply. As the service role: update progression_profiles set total_xp = 999999 → P0001 PROGRESSION_TOTAL_FORGED (total_xp must equal the sum of the account's xp_ledger); update … set career_level = 50 → P0001 PROGRESSION_LEVEL_FORGED; update xp_ledger set xp_delta = 999 → P0001 XP_LEDGER_IMMUTABLE; progression_apply with xp_delta 99999 → 23514 xp_ledger_delta_range; with source_type 'login' → 23514 xp_ledger_source_type; for a non-existent user → P0001 PROGRESSION_USER_REQUIRED"
+    },
+    {
+      "item": "level forge",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "as authenticated (sub=B): insert into xp_ledger → permission denied for table xp_ledger; update progression_profiles set total_xp = 999999, career_level = 100 → permission denied for table progression_profiles; insert into achievement_unlocks (century_club) → permission denied for table achievement_unlocks; select progression_apply(...) → permission denied for function progression_apply. As the service role: update progression_profiles set total_xp = 999999 → P0001 PROGRESSION_TOTAL_FORGED (total_xp must equal the sum of the account's xp_ledger); update … set career_level = 50 → P0001 PROGRESSION_LEVEL_FORGED; update xp_ledger set xp_delta = 999 → P0001 XP_LEDGER_IMMUTABLE; progression_apply with xp_delta 99999 → 23514 xp_ledger_delta_range; with source_type 'login' → 23514 xp_ledger_source_type; for a non-existent user → P0001 PROGRESSION_USER_REQUIRED"
+    },
+    {
+      "item": "achievement forge",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "as authenticated (sub=B): insert into xp_ledger → permission denied for table xp_ledger; update progression_profiles set total_xp = 999999, career_level = 100 → permission denied for table progression_profiles; insert into achievement_unlocks (century_club) → permission denied for table achievement_unlocks; select progression_apply(...) → permission denied for function progression_apply. As the service role: update progression_profiles set total_xp = 999999 → P0001 PROGRESSION_TOTAL_FORGED (total_xp must equal the sum of the account's xp_ledger); update … set career_level = 50 → P0001 PROGRESSION_LEVEL_FORGED; update xp_ledger set xp_delta = 999 → P0001 XP_LEDGER_IMMUTABLE; progression_apply with xp_delta 99999 → 23514 xp_ledger_delta_range; with source_type 'login' → 23514 xp_ledger_source_type; for a non-existent user → P0001 PROGRESSION_USER_REQUIRED"
+    },
+    {
+      "item": "duplicate award",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "the SAME award list applied a second time for A: awarded [], unlocked [], totalXp 725, ledger still 13 rows; the profile equals the ledger sum (A 725/3, B 350/2)"
+    },
+    {
+      "item": "concurrent award",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "progression-concurrency-qa.json — six simultaneous saves, one award; Postgres: advisory lock + unique constraint"
+    },
+    {
+      "item": "account deletion",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "delete from auth.users where id = B: B's progression_profiles 0, xp_ledger 0, achievement_unlocks 0, saved_clashes 0 (cascade); A's profile and 13 ledger rows untouched (total 725); B's completed challenge attempt row remained with user_id null (0004's anonymisation, unchanged). Then A and the QA challenge were deleted."
+    },
+    {
+      "item": "mobile",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "progression-responsive-qa.json — eight viewports, no overflow, 44px, grid collapses"
+    },
+    {
+      "item": "accessibility",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "progression-accessibility-qa.json"
+    },
+    {
+      "item": "performance",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "progression-performance-qa.json"
+    },
+    {
+      "item": "telemetry privacy",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "closed vocabulary; metadata excludes identity"
+    },
+    {
+      "item": "secret audit",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "bundle scan on the preview"
+    },
+    {
+      "item": "Wave 1 preservation",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "4dc59e7"
+    },
+    {
+      "item": "Wave 2 preservation",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "ef0caa5"
+    },
+    {
+      "item": "production isolation",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "production 2.7.2: no preview block, no cloud accounts"
+    },
+    {
+      "item": "API function count",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "12 routes + middleware"
+    },
+    {
+      "item": "unit tests",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "2595 passed (2595)"
+    },
+    {
+      "item": "Playwright e2e",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "82 passed (1.7m)"
+    },
+    {
+      "item": "gates",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "49 gates PASS"
+    }
+  ],
+  "open": []
+}

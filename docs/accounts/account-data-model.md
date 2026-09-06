@@ -146,3 +146,17 @@ is the server's, after verifying who is asking and reading the result it binds.
 Deleting an account nulls its references and a trigger clears what named it,
 so the other participant keeps competitive history against "Deleted account".
 
+## Phase 9D — progression
+
+Three more tables, in `supabase/migrations/0005_progression_v1.sql`, documented
+in `docs/progression/progression-contract-v1.md` and `progression-security.md`:
+`progression_profiles` (total XP and the level it earns, recomputed from the
+ledger), `xp_ledger` (every XP award, once — unique per account, source type,
+source id and reason; immutable after insert) and `achievement_unlocks` (one
+unlock per achievement per account; progress is derived, never stored). A
+browser reads its own rows and nothing else; the only write path is the
+service-role-only database function `progression_apply()`, and a trigger
+refuses any profile whose total or level disagrees with the ledger. All three
+cascade from `auth.users`: deleting an account leaves no XP, level or unlock
+behind. Nothing in these tables is read by any game path.
+

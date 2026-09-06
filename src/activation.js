@@ -59,6 +59,12 @@ export const ACTIVATION_EVENTS = Object.freeze([
   "challenge_created", "challenge_link_copied", "challenge_share_invoked", "challenge_opened",
   "challenge_accept_started", "challenge_attempt_started", "challenge_attempt_completed",
   "challenge_comparison_viewed", "challenge_revoked", "challenge_expired_viewed",
+  // Phase 9D — Progression, XP and Achievements V1 (closed vocabulary; metadata
+  // may carry level, xpDelta, reasonCategory, achievementId, achievementCategory,
+  // unlockCount, mode, success, failureCode, filter — never a name, an email, a
+  // result id, a challenge id, an account id, a token or a session id)
+  "progression_viewed", "xp_awarded_ui_shown", "level_up_shown", "achievement_unlocked_ui_shown",
+  "achievements_viewed", "achievement_filter_changed", "progression_reconciled",
 ]);
 
 const ss = {
