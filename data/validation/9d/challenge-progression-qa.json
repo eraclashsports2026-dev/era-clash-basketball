@@ -1,7 +1,7 @@
 {
   "artifact": "challenge-progression-qa",
   "phase": "9D — Progression, XP and Achievements V1",
-  "generatedAt": "2026-09-06T14:23:07.157Z",
+  "generatedAt": "2026-09-06T14:30:02.846Z",
   "origin": "http://localhost:4178",
   "checks": [
     {
@@ -27,12 +27,12 @@
     {
       "check": "the recipient earns challenge completion XP once (one more completed attempt; the total moved by exactly its Clash + challenge + unlock XP)",
       "pass": true,
-      "detail": "already_completed · outcome creator · +525 (expected 525)"
+      "detail": "already_completed · outcome recipient · +400 (expected 400)"
     },
     {
       "check": "victory XP only when the comparison decided recipient",
       "pass": true,
-      "detail": "outcome creator"
+      "detail": "outcome recipient"
     },
     {
       "check": "FIRST CHALLENGE unlocks for the recipient",
@@ -42,7 +42,7 @@
     {
       "check": "the creator earns one response (+25) and CHALLENGER (+50 the first time)",
       "pass": true,
-      "detail": "550 → 625"
+      "detail": "825 → 900"
     },
     {
       "check": "completing again: already_completed, recipient delta 0, creator unchanged",
@@ -56,7 +56,7 @@
     }
   ],
   "passed": true,
-  "outcome": "creator",
+  "outcome": "recipient",
   "creatorDelta": 75,
-  "recipientDelta": 525
+  "recipientDelta": 400
 }

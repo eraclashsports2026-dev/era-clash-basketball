@@ -142,6 +142,25 @@ export const challengeParticipants = async ({ chaosRunId }, fetchImpl = fetch) =
   return { recipientUserId: attempt.user_id || null, creatorUserId: challenge?.creator_user_id || null, completed: attempt.status === "completed" };
 };
 
+/**
+ * The challenge-completion hook. The caller is the verified account (or a guest,
+ * null); the recipient and the creator are read from the run store and the
+ * database. The recipient ACCOUNT gets its progression back; the creator is
+ * reconciled once when the attempt has just completed and the recipient is an
+ * account (a guest's response earns the creator nothing). Every user id here
+ * comes from the database, never from a request.
+ */
+export const reconcileChallengeCompletion = async ({ chaosRunId, callerUserId = null, justCompleted = false }, fetchImpl = fetch) => {
+  const parts = await challengeParticipants({ chaosRunId }, fetchImpl);
+  if (!parts) return null;
+  let recipient = null;
+  if (callerUserId && parts.recipientUserId === callerUserId) recipient = compactProgression(await reconcileProgression({ userId: callerUserId, trigger: "challenge_completed" }, { fetch: fetchImpl }));
+  if (justCompleted && parts.creatorUserId && parts.recipientUserId && parts.creatorUserId !== parts.recipientUserId) {
+    await reconcileProgression({ userId: parts.creatorUserId, trigger: "challenge_response_completed" }, { fetch: fetchImpl });
+  }
+  return recipient;
+};
+
 /** Policy in one place, for the operator guide and the gates. */
 export const PROGRESSION_SERVER_POLICY = Object.freeze({
   writePath: "rpc/progression_apply (service role only)",

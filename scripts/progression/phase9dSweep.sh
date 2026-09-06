@@ -54,6 +54,8 @@ gate() { local name="$1"; shift; if ! has "$name"; then printf '%-40s SKIPPED (n
     gate "challenge:deployed-qa" npm run -s challenge:deployed-qa -- "$DEPLOYED"
     gate "chaos:deployed-qa" npm run -s chaos:deployed-qa -- "$DEPLOYED"
     node scripts/accounts/liveGuestQa.mjs "$DEPLOYED" 2>&1 | grep -E 'live guest|checks passed|FAIL' | sed 's/^/live-guest-qa /' | tail -3
+    # the account route allows 20 requests a minute per IP; the deployed gates above spend most of it — let the window pass
+    sleep 65
     node scripts/accounts/deployedQa.mjs "$DEPLOYED" 2>&1 | grep -E 'deployed gates|[0-9]+/[0-9]+ .*passed|FAIL' | sed 's/^/deployed-qa /' | tail -3
   fi
   echo "--- preservation ---"

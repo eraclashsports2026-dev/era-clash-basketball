@@ -1,7 +1,7 @@
 {
   "artifact": "progression-security-qa",
   "phase": "9D — Progression, XP and Achievements V1",
-  "generatedAt": "2026-09-06T14:23:09.434Z",
+  "generatedAt": "2026-09-06T14:29:54.122Z",
   "origin": "http://localhost:4178",
   "checks": [
     {
@@ -52,12 +52,12 @@
     {
       "check": "a forged owner id in the body is ignored: the token's own account answers (Bea sees Bea)",
       "pass": true,
-      "detail": "clashes 1"
+      "detail": "clashes 2"
     },
     {
       "check": "a forged XP delta, level or award list changes nothing",
       "pass": true,
-      "detail": "xp 525 level 2"
+      "detail": "xp 400 level 2"
     },
     {
       "check": "the arena result offers a guest the one-line career note after the score",
@@ -67,7 +67,7 @@
     {
       "check": "a signed-in save earns completion (+ win where won) and Era-first, once, in the save response",
       "pass": true,
-      "detail": "+250"
+      "detail": "+150"
     },
     {
       "check": "saving the same result again: already_saved, XP delta 0",

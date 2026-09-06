@@ -1,13 +1,13 @@
 {
   "artifact": "progression-performance-qa",
   "phase": "9D — Progression, XP and Achievements V1",
-  "generatedAt": "2026-09-06T14:14:45.860Z",
+  "generatedAt": "2026-09-06T14:30:07.507Z",
   "origin": "http://localhost:4178",
   "checks": [
     {
       "check": "1440×900: the fixture (three postgame states, the hero and 23 achievement cards) renders within 3s",
       "pass": true,
-      "detail": "59ms"
+      "detail": "56ms"
     },
     {
       "check": "1440×900: CLS effectively zero",
@@ -17,7 +17,7 @@
     {
       "check": "390×844: the fixture (three postgame states, the hero and 23 achievement cards) renders within 3s",
       "pass": true,
-      "detail": "50ms"
+      "detail": "51ms"
     },
     {
       "check": "390×844: CLS effectively zero",
@@ -27,12 +27,12 @@
     {
       "check": "progression-get (reconcile + read) answers within 1.5s on the harness",
       "pass": true,
-      "detail": "5ms"
+      "detail": "6ms"
     },
     {
       "check": "a career save with its progression answers within 2s",
       "pass": true,
-      "detail": "6ms"
+      "detail": "7ms"
     },
     {
       "check": "no N+1: reconciliation reads a fixed handful of queries regardless of history size (no rest() inside a loop)",
@@ -49,17 +49,17 @@
   "rows": [
     {
       "viewport": "1440x900",
-      "loadMs": 59,
+      "loadMs": 56,
       "cls": 0
     },
     {
       "viewport": "390x844",
-      "loadMs": 50,
+      "loadMs": 51,
       "cls": 0
     }
   ],
   "ms": {
-    "progressionGet": 5,
-    "saveWithProgression": 6
+    "progressionGet": 6,
+    "saveWithProgression": 7
   }
 }

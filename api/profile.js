@@ -30,7 +30,7 @@ import {
 import { normalizeCode } from "../src/challenges/contract.js";
 // Phase 9D: progression rides the same route. Awards are decided here and in
 // the database, never in a browser; every hook below is idempotent.
-import { reconcileProgression, recentLedger, compactProgression, challengeParticipants } from "./_lib/progression.js";
+import { reconcileProgression, recentLedger, compactProgression, reconcileChallengeCompletion } from "./_lib/progression.js";
 import { normalizeTier } from "../src/entitlements.js";
 import { validRunId } from "./_lib/chaosRun.js";
 
@@ -186,12 +186,9 @@ export default async function handler(req, res) {
       // Phase 9D: a completed official attempt earns the recipient ACCOUNT its
       // challenge XP and, once, the creator a response. Guests earn nothing and
       // earn the creator nothing. Both calls are idempotent reconciliations.
-      let progression = null;
-      if (out.status === "completed" || out.status === "already_completed") {
-        const parts = await challengeParticipants({ chaosRunId });
-        if (who.userId && parts?.recipientUserId === who.userId) progression = compactProgression(await reconcileProgression({ userId: who.userId, trigger: "challenge_completed" }));
-        if (out.status === "completed" && parts?.creatorUserId && parts.recipientUserId && parts.creatorUserId !== parts.recipientUserId) await reconcileProgression({ userId: parts.creatorUserId, trigger: "challenge_response_completed" });
-      }
+      const progression = out.status === "completed" || out.status === "already_completed"
+        ? await reconcileChallengeCompletion({ chaosRunId, callerUserId: who.userId, justCompleted: out.status === "completed" })
+        : null;
       return res.status(http).json({ ...out, ...(progression ? { progression } : {}), requestId });
     }
     if (action9c === "challenge-revoke") {

@@ -1,18 +1,18 @@
 {
   "artifact": "progression-concurrency-qa",
   "phase": "9D — Progression, XP and Achievements V1",
-  "generatedAt": "2026-09-06T14:23:11.660Z",
+  "generatedAt": "2026-09-06T14:29:56.374Z",
   "origin": "http://localhost:4178",
   "checks": [
     {
       "check": "6 simultaneous saves of the same result award exactly once",
       "pass": true,
-      "detail": "deltas 150/0/0/0/0/0 · total 875 → 1025"
+      "detail": "deltas 100/0/0/0/0/0 · total 450 → 550"
     },
     {
       "check": "the total moved by exactly the one legitimate delta for this result",
       "pass": true,
-      "detail": "150 vs 150"
+      "detail": "100 vs 100"
     },
     {
       "check": "the recent ledger's newest completion is this result's, and there is one more completion than before",
@@ -33,12 +33,12 @@
   "passed": true,
   "simultaneous": 6,
   "deltas": [
-    150,
+    100,
     0,
     0,
     0,
     0,
     0
   ],
-  "totalXp": 1025
+  "totalXp": 550
 }
