@@ -133,3 +133,16 @@ Every table cascades from `auth.users`, so removing an account removes its
 profile, its saved clashes and its claims together. Self-service deletion and
 export are **not** in this phase; an operator performs it. That limitation is
 stated on the career page and blocks any claim of public-launch readiness.
+
+## Phase 9C — challenges
+
+Three more tables, in `supabase/migrations/0004_challenges.sql`, documented in
+`docs/challenges/challenge-contract-v1.md` and `challenge-security.md`:
+`challenges` (the immutable contract and the creator's original result),
+`challenge_attempts` (one official attempt per account, a unique index) and
+`challenge_secrets` (the seed; RLS on, no policy, no grant — service role only).
+The same rule holds: a browser reads its own rows and nothing else; every write
+is the server's, after verifying who is asking and reading the result it binds.
+Deleting an account nulls its references and a trigger clears what named it,
+so the other participant keeps competitive history against "Deleted account".
+

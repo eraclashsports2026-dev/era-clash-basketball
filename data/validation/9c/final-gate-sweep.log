@@ -1,0 +1,133 @@
+=== PHASE 9C FINAL SWEEP 2026-09-05T06:05:04Z @ 5a896b7 ===
+--- unit ---
+ Test Files  79 passed (79)
+      Tests  2569 passed (2569)
+--- build ---
+✓ built in 720ms
+[plugin eraclash-sw-version] service worker cache identity: eraclash-assets:2.7.2:35a5b7cb210b
+--- e2e (all projects, incl. challenges-fake-cloud) ---
+  80 passed (1.6m)
+--- preview gates (static) ---
+preview:preflight                  PASS
+preview:security                   PASS
+--- repository ui gates ---
+ui:time-arena-qa                   PASS
+ui:result-dock-qa                  PASS
+ui:live-intel-qa                   PASS
+ui:coach-chaos-qa                  PASS
+ui:player-card-theme-qa            PASS
+ui:synchronized-chaos-qa           PASS
+ui:era-membership-qa               PASS
+ui:navigation-qa                   PASS
+ui:membership-routing-qa           PASS
+ui:activation-telemetry-qa         PASS
+ui:play-lobby-contracts            PASS
+ui:night-court-contracts           PASS
+ui:play-lobby-polish-qa            PASS
+--- account gates (9B.1 / 9B.2, local harness) ---
+account:guest-claim-qa             FAIL
+account:cloud-save-qa              FAIL
+account:my-eraclash-qa             PASS
+account:saved-rosters-qa           PASS
+account:run-it-back-qa             PASS
+--- 9B.3 chaos gates (harness http://localhost:4180) ---
+chaos:guided-flow-qa               PASS
+chaos:state-machine-qa             PASS
+chaos:accessibility-qa             PASS
+chaos:performance-qa               PASS
+--- 9C challenge gates (fake-cloud harness http://localhost:4178) ---
+challenge:contract-qa              PASS
+challenge:seed-qa                  PASS
+challenge:rls-qa                   PASS
+challenge:security-qa              PASS
+challenge:history-qa               PASS
+challenge:responsive-qa            PASS
+challenge:accessibility-qa         PASS
+challenge:performance-qa           PASS
+--- preservation ---
+api routes: 12 + middleware: yes
+wave1  4dc59e7
+wave2  ef0caa5
+main   9cd95ff
+=== DONE 2026-09-05T06:08:25Z ===
+--- deployed (https://era-clash-basketball-git-phase-9c-challenges-c-20aea6-era-clash.vercel.app) @ 009030a 2026-09-05T06:14:43Z ---
+challenge:deployed-qa              FAIL
+    PASS  Candidate 4 on the preview … Candidate 4 1.4.0
+    FAIL  the account provider is configured … {}
+    PASS  an unknown code is generically unavailable
+    PASS  create without an account is refused
+    PASS  a forged token is refused
+    PASS  the unavailable invitation renders on the preview
+    PASS  the seeded live challenge renders its invitation
+    PASS  a guest accepts on the preview and the arena opens badged
+    PASS  the guest's result is compared on the preview … creator
+    PASS  a live expired challenge reads expired and refuses new attempts … expired
+    PASS  the expired invitation renders honestly on the preview
+    PASS  a live revoked challenge reads revoked and refuses new attempts … revoked
+    PASS  the revoked invitation renders honestly on the preview
+    PASS  no secret-shaped string in the bundle
+    PASS  the bundle carries the challenge client and never the secrets table name
+chaos:deployed-qa                  PASS
+    deployed: states pass · secrets 0 · Candidate 4 1.4.0 · build eraclash-assets:2.7.2:c98adbb9ee58 · serves this head true
+live-guest-qa 24/24 live guest and security checks passed
+deployed-qa 29/29 deployed gates passed → data/validation/9b1/account-preview-qa.json
+--- deployed re-run (gate health field fixed) @ 009030a 2026-09-05T06:16:22Z ---
+challenge:deployed-qa              PASS
+  15/15 passed → data/validation/9c/challenge-deployed-qa.json
+=== PHASE 9C FINAL SWEEP (final code) 2026-09-05T06:17:43Z @ 009030a ===
+--- unit ---
+ Test Files  79 passed (79)
+      Tests  2569 passed (2569)
+--- build ---
+✓ built in 729ms
+[plugin eraclash-sw-version] service worker cache identity: eraclash-assets:2.7.2:35a5b7cb210b
+--- e2e (all projects, incl. challenges-fake-cloud) ---
+    Error: the stored read is reused verbatim
+    Error Context: test-results/phase7b-preview-P1-Ready-a-1bb8a--show-the-SAME-pregame-read-candidate3-preview/error-context.md
+  1 failed
+  79 passed (1.6m)
+--- preview gates (static) ---
+preview:preflight                  PASS
+preview:security                   PASS
+--- repository ui gates ---
+ui:time-arena-qa                   PASS
+ui:result-dock-qa                  PASS
+ui:live-intel-qa                   PASS
+ui:coach-chaos-qa                  PASS
+ui:player-card-theme-qa            PASS
+ui:synchronized-chaos-qa           PASS
+ui:era-membership-qa               PASS
+ui:navigation-qa                   PASS
+ui:membership-routing-qa           PASS
+ui:activation-telemetry-qa         PASS
+ui:play-lobby-contracts            PASS
+ui:night-court-contracts           PASS
+ui:play-lobby-polish-qa            PASS
+--- account gates (9B.1 / 9B.2, local harness) ---
+account:guest-claim-qa             PASS
+account:cloud-save-qa              PASS
+account:my-eraclash-qa             PASS
+account:saved-rosters-qa           PASS
+account:run-it-back-qa             PASS
+--- 9B.3 chaos gates (harness http://localhost:4180) ---
+chaos:guided-flow-qa               PASS
+chaos:state-machine-qa             PASS
+chaos:accessibility-qa             PASS
+chaos:performance-qa               PASS
+--- 9C challenge gates (fake-cloud harness http://localhost:4178) ---
+challenge:contract-qa              PASS
+challenge:seed-qa                  PASS
+challenge:rls-qa                   PASS
+challenge:security-qa              PASS
+challenge:history-qa               PASS
+challenge:responsive-qa            PASS
+challenge:accessibility-qa         PASS
+challenge:performance-qa           PASS
+--- preservation ---
+api routes: 12 + middleware: yes
+wave1  4dc59e7
+wave2  ef0caa5
+main   9cd95ff
+=== DONE 2026-09-05T06:21:03Z ===
+--- e2e re-run (final code) 2026-09-05T06:21:55Z: the one phase7b failure above did not reproduce ---
+  80 passed (1.6m)

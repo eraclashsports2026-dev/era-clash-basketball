@@ -36,7 +36,7 @@ result reports on, framed to the same width as the score above it.
 | 2 Drafting / Hold | UI2 | Ten cards, HOLD on the five you control (LOCKED with a lock glyph and `aria-pressed` when held; KEPT ribbons after a re-roll), one **ROLL 2** / **FINAL ROLL**, Live Intel compact with four single-line reads and VIEW DETAILS, Draft Pressure once. The era is hidden until Roll 2. |
 | 3 Era Reveal | UI3 | A dedicated state: `ERA REVEALED`, the era's name at 56px, three headline rule cards built from the run's own facts (full fact on hover and for screen readers), the board dimmed beneath, one **ADAPT TO ERA** (sub `FINAL ROLL NEXT`), the era panel in the rail with CHANGE ERA where the account allows it. |
 | 4 Coach Chaos | UI4 | Three coaching offers as the hero under `COACH CHAOS`, the finished five compressed above them, a compact era chip, YOUR FIVE, READ in the rail, **CONTINUE WITH COACH** enabled once an offer is picked. No staff line until a decision exists. |
-| 5 Clash Ready | UI5 | Both fives compressed with Gold's hire and Blue's coach as staff lines, the era chip, MATCHUP INTEL in the rail, one Gold **RUN CLASH** (sub `LET HISTORY DECIDE`). The three offers no longer compete with the action. |
+| 5 Clash Ready | UI5 | Both fives compressed with Gold's hire and Blue's coach as staff lines, the era chip, MATCHUP INTEL in the rail, one Gold **RUN CLASH** (sub `LET HISTORY DECIDE`). The three offers no longer compete with the action. Phase 9C removed the seed-link CHALLENGE THIS CHAOS that sat beside RESET here: a challenge is created from a finished result (`docs/challenges/challenge-contract-v1.md`). |
 | 6 Result | UI6 | The score leads in the stage head — final, `TEAM GOLD WINS` / `TEAM BLUE WINS`, MVP with a stat line — above the matchup that produced it, then the result hero: story open, box score, coaching and analysis on tabs, FULL REPORT, RUN IT BACK, NEW CLASH, challenge. No rail. |
 
 ## Run Clash
@@ -52,6 +52,10 @@ progress figure.
 
 ## What was removed, and where it went
 
+- **Phase 9C note.** The result's `Challenge this Chaos` seed link became the
+  governed challenge share sheet (CHALLENGE THIS CHAOS → code + link), and a
+  recipient's result carries the comparison against the original above the
+  tabs. The `/?chaos=<id>` deep link still works but is no longer surfaced.
 - **The persistent Result Dock beside an active draft.** A previous game is a
   compact LAST CLASH control in the rail (score and how long ago) that opens a
   sheet with the full previous result and a way back to the draft. It is

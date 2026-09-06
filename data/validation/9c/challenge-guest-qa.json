@@ -1,0 +1,50 @@
+{
+  "artifact": "challenge-guest-qa",
+  "phase": "9C — Challenges + Persistent Competitive Identity V1",
+  "generatedAt": "2026-09-05T06:24:18.422Z",
+  "derivedFrom": [
+    "challenge-history-qa",
+    "challenge-responsive-qa"
+  ],
+  "checks": [
+    {
+      "check": "the guest's result is compared once the server binds it",
+      "pass": true,
+      "detail": "",
+      "from": "challenge-history-qa"
+    },
+    {
+      "check": "the creator sees the guest's completed response with the contract outcome",
+      "pass": true,
+      "detail": "{\"name\":\"Guest\",\"status\":\"completed\",\"outcome\":\"win\",\"score\":{\"gold\":105,\"blue\":92},\"performance\":13,\"challengeOutcome\":",
+      "from": "challenge-history-qa"
+    },
+    {
+      "check": "1440×900: exactly one dominant action; creator, score and era readable",
+      "pass": true,
+      "detail": "",
+      "from": "challenge-responsive-qa"
+    },
+    {
+      "check": "430×932: exactly one dominant action; creator, score and era readable",
+      "pass": true,
+      "detail": "",
+      "from": "challenge-responsive-qa"
+    },
+    {
+      "check": "390×844: exactly one dominant action; creator, score and era readable",
+      "pass": true,
+      "detail": "",
+      "from": "challenge-responsive-qa"
+    },
+    {
+      "check": "375×812: exactly one dominant action; creator, score and era readable",
+      "pass": true,
+      "detail": "",
+      "from": "challenge-responsive-qa"
+    }
+  ],
+  "passed": true,
+  "unit": "a guest may accept within the run budget; at the limit the answer is the account gate",
+  "e2e": "guest invitation, accept, play, compare, 'You have completed this challenge'"
+}

@@ -1,0 +1,68 @@
+{
+  "artifact": "challenge-create-qa",
+  "phase": "9C — Challenges + Persistent Competitive Identity V1",
+  "generatedAt": "2026-09-05T06:24:18.420Z",
+  "derivedFrom": [
+    "challenge-security-qa",
+    "challenge-history-qa"
+  ],
+  "checks": [
+    {
+      "check": "create without an account is refused",
+      "pass": true,
+      "detail": "",
+      "from": "challenge-security-qa"
+    },
+    {
+      "check": "a signed-in creator creates from their own run",
+      "pass": true,
+      "detail": "created · EC-64NP-ULEL",
+      "from": "challenge-security-qa"
+    },
+    {
+      "check": "another device cannot mint a challenge from someone else's run",
+      "pass": true,
+      "detail": "not_your_result",
+      "from": "challenge-security-qa"
+    },
+    {
+      "check": "created",
+      "pass": true,
+      "detail": "",
+      "from": "challenge-history-qa"
+    },
+    {
+      "check": "CREATED lists the challenge with zero responses",
+      "pass": true,
+      "detail": "",
+      "from": "challenge-history-qa"
+    },
+    {
+      "check": "the creator sees the guest's completed response with the contract outcome",
+      "pass": true,
+      "detail": "{\"name\":\"Guest\",\"status\":\"completed\",\"outcome\":\"win\",\"score\":{\"gold\":105,\"blue\":92},\"performance\":13,\"challengeOutcome\":",
+      "from": "challenge-history-qa"
+    },
+    {
+      "check": "ACCEPTED lists the attempt in progress with the creator's name and headline",
+      "pass": true,
+      "detail": "{\"code\":\"EC-38S3-S9WH\",\"creatorName\":\"Joseph\",\"status\":\"started\",\"challengeStatus\":\"open\",\"creatorScore\":{\"gold\":98,\"blu",
+      "from": "challenge-history-qa"
+    },
+    {
+      "check": "the creator cannot accept their own challenge",
+      "pass": true,
+      "detail": "",
+      "from": "challenge-history-qa"
+    },
+    {
+      "check": "revocation shows in CREATED and keeps the completed response (and the attempt in progress)",
+      "pass": true,
+      "detail": "revoke → revoked · listed revoked · responses completed,started",
+      "from": "challenge-history-qa"
+    }
+  ],
+  "passed": true,
+  "unit": "tests/v9c-challenges.test.js: create once, refuse another device / unsimulated / non-Chaos, real record shape",
+  "e2e": "e2e/phase9c-challenges.spec.js: guest 401, forged 401, created, already_created, no leak"
+}

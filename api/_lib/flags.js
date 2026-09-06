@@ -89,6 +89,9 @@ export const limits = () => ({
   feedbackPerMinIp: num("RL_FEEDBACK_PER_MIN_IP", 20),
   eventsPerMinIp: num("RL_EVENTS_PER_MIN_IP", 120),
   profilePerMinIp: num("RL_PROFILE_PER_MIN_IP", 20),
+  // Phase 9C challenge actions and invitation lookups (per IP, per minute)
+  challengeActionsPerMinIp: num("RL_CHALLENGE_ACTIONS_PER_MIN_IP", 30),
+  challengeViewPerMinIp: num("RL_CHALLENGE_VIEW_PER_MIN_IP", 60),
   // global emergency ceilings (fixed 1-minute / 1-day windows)
   maxCoreSimsPerMinute: num("MAX_CORE_SIMULATIONS_PER_MINUTE", 600),
   maxAiPerMinute: num("MAX_AI_REQUESTS_PER_MINUTE", 60),

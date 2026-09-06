@@ -1,0 +1,40 @@
+{
+  "artifact": "challenge-cross-account-qa",
+  "phase": "9C — Challenges + Persistent Competitive Identity V1",
+  "generatedAt": "2026-09-05T06:24:18.422Z",
+  "derivedFrom": [
+    "challenge-security-qa",
+    "challenge-history-qa"
+  ],
+  "checks": [
+    {
+      "check": "another device cannot mint a challenge from someone else's run",
+      "pass": true,
+      "detail": "not_your_result",
+      "from": "challenge-security-qa"
+    },
+    {
+      "check": "another device cannot complete someone else's run",
+      "pass": true,
+      "detail": "not_found",
+      "from": "challenge-security-qa"
+    },
+    {
+      "check": "the response carries no email, user id or device hash",
+      "pass": true,
+      "detail": "",
+      "from": "challenge-history-qa"
+    },
+    {
+      "check": "the creator cannot accept their own challenge",
+      "pass": true,
+      "detail": "",
+      "from": "challenge-history-qa"
+    }
+  ],
+  "passed": true,
+  "live": {
+    "pass": true,
+    "evidence": "creator (authenticated, sub=A): challenges 1 (own, own code visible), attempts 0 · recipient (authenticated, sub=B): challenges 0, attempts 0 · anon: permission denied for table challenges · authenticated: permission denied for table challenge_secrets · authenticated update on challenges: permission denied (writes are the service role's alone)"
+  }
+}

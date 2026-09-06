@@ -26,6 +26,7 @@ import {
   DELETION_PHRASE, DELETION_REMOVES, DELETION_RETAINS, needsReauthentication,
 } from "../../accounts/careerV2.js";
 import { track } from "../../analytics.js";
+import ChallengesTab from "../challenges/ChallengesTab.jsx";   // Phase 9C
 
 const dateOf = (iso) => { try { return new Date(iso).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" }); } catch { return ""; } };
 const OUTCOME_WORD = { win: "Won", loss: "Lost", tie: "Tied" };
@@ -118,6 +119,7 @@ export default function MyEraClash({ onOpenReport, onRunItBack, onSaveRoster, on
         {tab === "history" && <History {...shared} />}
         {tab === "rosters" && <Rosters {...shared} />}
         {tab === "favorites" && <Favorites {...shared} />}
+        {tab === "challenges" && <ChallengesTab accessToken={token} displayName={account.displayName} />}
         {tab === "account" && <Account {...shared} onSignedOut={onSignedOut} />}
       </div>
     </main>

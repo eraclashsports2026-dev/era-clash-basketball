@@ -14,6 +14,17 @@ process.env.ENABLE_CHAOS_TESTS ||= "true";
 process.env.ANTHROPIC_API_KEY ||= "harness-fake-key"; // narrative degrades gracefully
 process.env.MAX_AI_REQUESTS_PER_DAY ||= "0"; // budget-blocked: no real network calls
 process.env.SIM_ENGINE_V3_ENABLED ||= "true"; // V3 engine on in the test harness
+// Phase 9C: ECLASH_FAKE_CLOUD=1 plays the account provider in memory so the
+// challenge flow (create as a signed-in test user, accept as a guest, compare)
+// can be driven end to end here. Test users: bearer `test-token.<uuid>`.
+if (process.env.ECLASH_FAKE_CLOUD === "1") {
+  const { installFakeCloud } = await import("./lib/fakeCloud.mjs");
+  globalThis.__fakeCloud = installFakeCloud({ users: [
+    { userId: "11111111-1111-4111-8111-111111111111", displayName: "Joseph" },
+    { userId: "22222222-2222-4222-8222-222222222222", displayName: "Bea" },
+  ] });
+  console.log("harness: fake cloud installed (test users Joseph, Bea)");
+}
 
 const PORT = Number(process.argv[2]) || 4173;
 const DIST = new URL("../dist", import.meta.url).pathname;

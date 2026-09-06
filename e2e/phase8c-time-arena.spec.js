@@ -276,7 +276,9 @@ test("starting over is on the BOARD, and it asks first", async ({ page }) => {
 
   const stage = page.locator(".ec-ta-stage");
   const actions = stage.locator(".ec-ta-stage-actions");
-  await expect(actions.getByRole("button", { name: /CHALLENGE THIS CHAOS/ })).toBeVisible();
+  // Phase 9C: challenges are created from a FINISHED Clash (the share sheet on
+  // the result), so no challenge control sits beside RUN CLASH any more.
+  await expect(actions.getByRole("button", { name: /CHALLENGE THIS CHAOS/ })).toHaveCount(0);
   const resetBtn = actions.getByRole("button", { name: /Reset this Clash/ });
   await expect(resetBtn).toBeVisible();
   // A reset is a real touch target, like every other control on the board.

@@ -76,6 +76,12 @@ const ALLOWED = new Set([
   "coach_chaos_viewed", "coach_offer_selected",
   "clash_ready_viewed", "run_clash_started", "result_state_viewed",
   "live_intel_expanded", "era_rules_expanded",
+  // Phase 9C — Challenges + Persistent Competitive Identity V1 (closed vocabulary;
+  // metadata may carry challengeVersion, authState, entryPoint, status, mode,
+  // success, failureCode — never a name, a code, an id, a payload, a seed or a token)
+  "challenge_created", "challenge_link_copied", "challenge_share_invoked", "challenge_opened",
+  "challenge_accept_started", "challenge_attempt_started", "challenge_attempt_completed",
+  "challenge_comparison_viewed", "challenge_revoked", "challenge_expired_viewed",
 ]);
 export const EVENTS_ALLOWLIST = ALLOWED;
 
