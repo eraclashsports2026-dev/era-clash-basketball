@@ -1,7 +1,7 @@
 {
   "artifact": "competitive-rating-contract",
   "phase": "9E — Competitive Rating + Leaderboards V1",
-  "generatedAt": "2026-09-07T01:52:41.381Z",
+  "generatedAt": "2026-09-07T02:00:43.555Z",
   "origin": "http://localhost:4178",
   "checks": [
     {
@@ -68,6 +68,11 @@
       "check": "no XP, level or achievement leaderboard; no tiers; the career tabs are unchanged (no new Competitive tab)",
       "pass": true,
       "detail": "overview,history,rosters,favorites,challenges,achievements,account"
+    },
+    {
+      "check": "the build strips Vercel's VITE_-prefixed Git metadata, so a commit message or committer never reaches the browser bundle",
+      "pass": true,
+      "detail": ""
     },
     {
       "check": "no new serverless function",
