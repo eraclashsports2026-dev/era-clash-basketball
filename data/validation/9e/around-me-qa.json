@@ -1,0 +1,39 @@
+{
+  "artifact": "around-me-qa",
+  "phase": "9E — Competitive Rating + Leaderboards V1",
+  "generatedAt": "2026-09-07T00:53:25.878Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "Around Me is server-side (rpc/competitive_rank_of); the browser never downloads the whole board to find itself",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a provisional or private account gets no Around Me",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a placed public account in the interior gets exactly two above, itself, and two below, in rank order",
+      "pass": true,
+      "detail": "rank 4: 2,3,4,5,6"
+    },
+    {
+      "check": "the window carries the same safe projection as the board — no email, no account id, no private field",
+      "pass": true,
+      "detail": "rank,displayName,initials,rating,wins,losses,ties,matches,winPct,level,streak,isMe"
+    },
+    {
+      "check": "at the top of the board the window is honestly short, never padded and never wrapped",
+      "pass": true,
+      "detail": "1,2,3"
+    },
+    {
+      "check": "the window is drawn from the same public ranking: every neighbour is a public, placed row on the board",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": true
+}

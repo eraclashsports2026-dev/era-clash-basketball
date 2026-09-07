@@ -1,0 +1,140 @@
+{
+  "artifact": "rating-backfill-qa",
+  "phase": "9E — Competitive Rating + Leaderboards V1",
+  "generatedAt": "2026-09-07T00:49:00.803Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "before initialisation: no events, no profiles",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the backfill rates all five in completed_at order",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "every rating_before, delta and rating_after equals the contract's independent replay",
+      "pass": true,
+      "detail": "1000→980/1000→1020 980→1001/1000→979 1020→1018/979→981 981→962/1001→1020 1018→1038/1020→1000"
+    },
+    {
+      "check": "profiles equal the replay (A 1000 2-2, B 1038 2-0-1, C 962 0-2-1)",
+      "pass": true,
+      "detail": "1000/1038/962"
+    },
+    {
+      "check": "run again: new events 0, rating changes 0",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "inserted out of order, rated in completed_at order: identical numbers",
+      "pass": true,
+      "detail": "5"
+    },
+    {
+      "check": "ordinary reconciliation never rewrites rated history and never resets to 1000",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a late-arriving completion is rated once from the current ratings (no retroactive rewrite of rated history)",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": true,
+  "order": [
+    "completed_at asc",
+    "challenge_attempt id asc"
+  ],
+  "expected": [
+    {
+      "attempt": "at0002",
+      "creator": {
+        "before": 1000,
+        "expected": 0.5,
+        "k": 40,
+        "delta": -20,
+        "after": 980
+      },
+      "recipient": {
+        "before": 1000,
+        "expected": 0.5,
+        "k": 40,
+        "delta": 20,
+        "after": 1020
+      }
+    },
+    {
+      "attempt": "at0004",
+      "creator": {
+        "before": 980,
+        "expected": 0.4712,
+        "k": 40,
+        "delta": 21,
+        "after": 1001
+      },
+      "recipient": {
+        "before": 1000,
+        "expected": 0.5288,
+        "k": 40,
+        "delta": -21,
+        "after": 979
+      }
+    },
+    {
+      "attempt": "at0006",
+      "creator": {
+        "before": 1020,
+        "expected": 0.5587,
+        "k": 40,
+        "delta": -2,
+        "after": 1018
+      },
+      "recipient": {
+        "before": 979,
+        "expected": 0.4413,
+        "k": 40,
+        "delta": 2,
+        "after": 981
+      }
+    },
+    {
+      "attempt": "at0008",
+      "creator": {
+        "before": 981,
+        "expected": 0.4712,
+        "k": 40,
+        "delta": -19,
+        "after": 962
+      },
+      "recipient": {
+        "before": 1001,
+        "expected": 0.5288,
+        "k": 40,
+        "delta": 19,
+        "after": 1020
+      }
+    },
+    {
+      "attempt": "at0010",
+      "creator": {
+        "before": 1018,
+        "expected": 0.4971,
+        "k": 40,
+        "delta": 20,
+        "after": 1038
+      },
+      "recipient": {
+        "before": 1020,
+        "expected": 0.5029,
+        "k": 40,
+        "delta": -20,
+        "after": 1000
+      }
+    }
+  ]
+}

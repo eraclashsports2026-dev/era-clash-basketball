@@ -1,0 +1,58 @@
+{
+  "artifact": "leaderboard-contract",
+  "phase": "9E — Competitive Rating + Leaderboards V1",
+  "generatedAt": "2026-09-07T00:48:53.462Z",
+  "primary": "CHALLENGE RATING (Elo-style, official account-vs-account Challenges only)",
+  "eligibility": "public visibility (user_preferences.leaderboard_visibility = 'public', default private) AND placed (≥ 5 rated matches AND ≥ 3 unique opponents)",
+  "ordering": [
+    "current_rating desc",
+    "rated_wins desc",
+    "rated_losses asc",
+    "last_rated_at asc",
+    "user_id asc"
+  ],
+  "tieBreakContract": "1 higher rating · 2 more rated wins · 3 fewer rated losses · 4 who reached the current rating first (last_rated_at asc) · 5 user id asc (stable, never shown)",
+  "top": 100,
+  "aroundMe": "2 above, me, 2 below — public and placed accounts only; private means private (no approximate rank)",
+  "winPct": "rated wins / rated matches (ties visible in W–L–T; not a tie-break)",
+  "publicFields": [
+    "rank",
+    "displayName",
+    "initials",
+    "rating",
+    "wins",
+    "losses",
+    "ties",
+    "matches",
+    "winPct",
+    "level",
+    "streak"
+  ],
+  "forbiddenFields": [
+    "email",
+    "user_id",
+    "userId",
+    "account",
+    "location",
+    "created_at",
+    "joined",
+    "provider",
+    "result_id",
+    "challenge_id",
+    "attempt_id",
+    "xp",
+    "seed",
+    "token"
+  ],
+  "signedOut": "may read the public Top 100; never a private account",
+  "refresh": "on page load and navigation; no polling; the My Rating module updates from the completion response",
+  "notBuilt": [
+    "XP/level/achievement leaderboards",
+    "public profiles",
+    "friends",
+    "seasons",
+    "rewards",
+    "tiers",
+    "approximate private rank"
+  ]
+}

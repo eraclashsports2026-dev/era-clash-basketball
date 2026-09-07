@@ -31,15 +31,19 @@ import ChallengesTab from "../challenges/ChallengesTab.jsx";   // Phase 9C
 import { progressionGetRequest } from "../../progression/client.js";
 import ProgressionHero from "../progression/ProgressionHero.jsx";
 import AchievementsTab from "../progression/AchievementsTab.jsx";
+// Phase 9E: the competitive module on the Overview and the visibility control in Account.
+import { competitiveMeRequest, setLeaderboardVisibility, visibilityFrom } from "../../competitive/client.js";
+import CompetitiveModule from "../competitive/CompetitiveModule.jsx";
+import VisibilitySetting from "../competitive/VisibilitySetting.jsx";
 
 const dateOf = (iso) => { try { return new Date(iso).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" }); } catch { return ""; } };
 const OUTCOME_WORD = { win: "Won", loss: "Lost", tie: "Tied" };
 const WIN_GREEN = "var(--ec-a-green, #2fa96d)";
 
-export default function MyEraClash({ onOpenReport, onRunItBack, onSaveRoster, onSignIn, onSignedOut }) {
+export default function MyEraClash({ onOpenReport, onRunItBack, onSaveRoster, onSignIn, onSignedOut, onOpenLeaderboard }) {
   const account = useAccount();
   const [tab, setTab] = useState(() => tabFromSearch(typeof window !== "undefined" ? window.location.search : ""));
-  const [data, setData] = useState({ career: null, clashes: [], rosters: [], prefs: PREF_DEFAULTS, activity: [], progression: null });
+  const [data, setData] = useState({ career: null, clashes: [], rosters: [], prefs: PREF_DEFAULTS, activity: [], progression: null, competitive: null });
   const [loading, setLoading] = useState(true);
   const [notice, setNotice] = useState(null);
   const [importOffer, setImportOffer] = useState(null);
@@ -49,15 +53,16 @@ export default function MyEraClash({ onOpenReport, onRunItBack, onSaveRoster, on
   const load = useCallback(async () => {
     setLoading(true);
     try {
-      const [career, clashes, rosters, prefs, activity, progression] = await Promise.all([
+      const [career, clashes, rosters, prefs, activity, progression, competitive] = await Promise.all([
         withProvider((p) => p.career(), null),
         withProvider((p) => p.listSavedClashes({ limit: 1000 }), []),
         withProvider((p) => p.listRosters(), []),
         withProvider((p) => p.getPreferences(), {}),
         withProvider((p) => p.recentActivity(5), []),
         progressionGetRequest({ accessToken: token }).catch(() => null),
+        competitiveMeRequest({ accessToken: token }).catch(() => null),
       ]);
-      setData({ career, clashes: clashes || [], rosters: rosters || [], prefs: mergePrefs(prefs, {}), activity: activity || [], progression: progression || null });
+      setData({ career, clashes: clashes || [], rosters: rosters || [], prefs: mergePrefs(prefs, {}), activity: activity || [], progression: progression || null, competitive: competitive || null });
       if (!importOfferDismissed()) {
         const candidates = unsavedDeviceResultIds((clashes || []).map((r) => r.result_id));
         if (candidates.length) {
@@ -98,7 +103,7 @@ export default function MyEraClash({ onOpenReport, onRunItBack, onSaveRoster, on
     );
   }
 
-  const shared = { data, setData, loading, token, account, flash, load, onOpenReport, onRunItBack, onSaveRoster, importOffer, setImportOffer };
+  const shared = { data, setData, loading, token, account, flash, load, onOpenReport, onRunItBack, onSaveRoster, importOffer, setImportOffer, onOpenLeaderboard };
 
   return (
     <main aria-labelledby="ec-me-title" style={wrap}>
@@ -133,7 +138,7 @@ export default function MyEraClash({ onOpenReport, onRunItBack, onSaveRoster, on
 }
 
 // ── Overview ─────────────────────────────────────────────────────────────────
-function Overview({ data, loading, account, flash, load, importOffer, setImportOffer, token, goTab }) {
+function Overview({ data, loading, account, flash, load, importOffer, setImportOffer, token, goTab, onOpenLeaderboard }) {
   const [editing, setEditing] = useState(false);
   const [nameDraft, setNameDraft] = useState("");
   const s = data.career?.summary || { games_played: 0, wins: 0, losses: 0, ties: 0, win_rate: null };
@@ -182,6 +187,8 @@ function Overview({ data, loading, account, flash, load, importOffer, setImportO
 
       {/* Phase 9D: progression supplements the career; it never replaces it. */}
       <ProgressionHero progression={data.progression} displayName={account.displayName} loading={loading} onOpenAchievements={() => goTab("achievements")} />
+      {/* Phase 9E: competitive rating beside the career, never mixed with it */}
+      <CompetitiveModule me={data.competitive} loading={loading} onOpenLeaderboard={onOpenLeaderboard} />
 
       {importOffer && (
         <section style={{ ...card, borderColor: T.goldBorder }}>
@@ -461,7 +468,14 @@ function Favorites({ data, loading, onOpenReport }) {
 }
 
 // ── Account ───────────────────────────────────────────────────────────────────
-function Account({ account, data, flash, token, onSignedOut }) {
+function Account({ account, data, setData, flash, token, onSignedOut, load }) {
+  const [visBusy, setVisBusy] = useState(false);
+  const changeVisibility = async (v) => {
+    setVisBusy(true);
+    try { const saved = await setLeaderboardVisibility(v, data.prefs); setData((d) => ({ ...d, prefs: { ...d.prefs, leaderboard_visibility: saved } })); flash(saved === "public" ? "Your rating, record and display name may now appear on the leaderboard." : "Your rating is private again."); load?.(); return true; }
+    catch { flash("That setting could not be saved."); return false; }
+    finally { setVisBusy(false); }
+  };
   const [exporting, setExporting] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deletePhrase, setDeletePhrase] = useState("");
@@ -509,6 +523,11 @@ function Account({ account, data, flash, token, onSignedOut }) {
           <KV k="Sign-in method" v={authMethod} />
           <KV k="Joined" v={account.profile?.created_at ? dateOf(account.profile.created_at) : "—"} />
         </dl>
+      </section>
+
+      <section style={card}>
+        {/* Phase 9E: public leaderboard participation is the owner's choice; private by default. */}
+        <VisibilitySetting visibility={visibilityFrom(data.prefs)} onChange={changeVisibility} busy={visBusy} />
       </section>
 
       <section style={card}>

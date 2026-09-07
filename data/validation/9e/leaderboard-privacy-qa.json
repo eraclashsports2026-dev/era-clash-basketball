@@ -1,0 +1,69 @@
+{
+  "artifact": "leaderboard-privacy-qa",
+  "phase": "9E — Competitive Rating + Leaderboards V1",
+  "generatedAt": "2026-09-07T00:49:34.988Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "J and B are placed, K is provisional",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "with everyone private the public leaderboard is EMPTY",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "public + placed appears; public + provisional does not; private + placed does not",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a public row exposes only the safe fields",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a private placed account still has its rating, record and placement — privately",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Around Me for a private account: not available, no approximate rank",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "private → public publishes on the next query; the rating did not change",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "public → private removes the row on the next query; the rating persists",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a display-name change updates the public row without a second identity or a rating change",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a deleted account disappears from the public leaderboard immediately",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "its opponents keep the rating changes earned at the time; the events stand with the deleted side null",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "history against the deleted account reads DELETED ACCOUNT, never a restored snapshot name",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": true
+}

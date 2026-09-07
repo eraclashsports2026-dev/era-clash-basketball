@@ -1,0 +1,19 @@
+{
+  "artifact": "rating-deletion-qa",
+  "phase": "9E — Competitive Rating + Leaderboards V1",
+  "generatedAt": "2026-09-07T00:49:34.988Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "private → public → private: the same rating throughout",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the SQL cascades the profile and nulls the deleted side of events; events are never deleted or recomputed",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": true
+}

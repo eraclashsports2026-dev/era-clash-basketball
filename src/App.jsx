@@ -61,6 +61,10 @@ import { completeChallengeRequest, rememberChallengeRun, challengeForRun, forget
 // Phase 9D: what a saved result earned (server-decided), shown after the score.
 import { rememberProgression, progressionFor, mergeProgression } from "./progression/client.js";
 import CareerProgress from "./components/progression/CareerProgress.jsx";
+// Phase 9E: the Challenge Rating leaderboard and the rating movement after a comparison.
+import LeaderboardPage from "./components/competitive/LeaderboardPage.jsx";
+import RatingChange from "./components/competitive/RatingChange.jsx";
+import CompetitiveReferenceFixture from "./ui/competitive/CompetitiveReferenceFixture.jsx";   // dev-only gate
 import { codeFromSearch, CHALLENGE_EVENTS } from "./challenges/contract.js";
 import { can, CAPABILITIES } from "./entitlements.js";
 import RosterGrid from "./components/RosterGrid.jsx";
@@ -153,6 +157,8 @@ const MODE_TO_ANALYTICS = { Win82: "82", Single: "single", Best7: "best7", Tourn
 const DEV_FIXTURES = import.meta.env.DEV || import.meta.env.VITE_EC_DEV_FIXTURES === "1";
 const FIXTURE_ROUTE = "/dev/time-arena-reference";
 const PROGRESSION_FIXTURE_ROUTE = "/dev/progression-reference";
+const COMPETITIVE_FIXTURE_ROUTE = "/dev/competitive-reference";
+const LEADERBOARD_ROUTE = "/leaderboard";
 // Phase 9A.1 — the Basketball theme decision lab. __EC_THEME_LAB__ is a build
 // constant (vite.config.js): true on preview deployments and the dev server,
 // false in production, where this whole branch — and the lazily imported lab
@@ -202,6 +208,9 @@ export default function App() {
   }
   if (DEV_FIXTURES && typeof window !== "undefined" && window.location.pathname === PROGRESSION_FIXTURE_ROUTE) {
     return <ProgressionReferenceFixture />;
+  }
+  if (DEV_FIXTURES && typeof window !== "undefined" && window.location.pathname === COMPETITIVE_FIXTURE_ROUTE) {
+    return <CompetitiveReferenceFixture />;
   }
   if (THEME_LAB && typeof window !== "undefined" && window.location.pathname === THEME_LAB_ROUTE) {
     return <Suspense fallback={null}><ThemeLab /></Suspense>;
@@ -365,7 +374,8 @@ export default function App() {
       const ok = r.status === "completed" || r.status === "already_completed";
       if (ok && r.progression && attempt.resultId) noteProgression(attempt.resultId, r.progression);
       track(CHALLENGE_EVENTS.ATTEMPT_COMPLETED, { challengeVersion: "1.0.0", authState, success: ok, ...(ok ? { status: r.comparison?.outcome } : { failureCode: r.status || "network" }) });
-      setChallengeAttempt((a) => (a && a.chaosRunId === attempt.chaosRunId ? { ...a, state: ok ? "completed" : "failed", comparison: r.comparison || null, challenge: r.challenge || null } : a));
+      // Phase 9E: the rating movement (or the unrated reason) rides the same answer
+      setChallengeAttempt((a) => (a && a.chaosRunId === attempt.chaosRunId ? { ...a, state: ok ? "completed" : "failed", comparison: r.comparison || null, challenge: r.challenge || null, rating: r.rating || null } : a));
       if (ok) forgetChallengeRun();
     } catch {
       track(CHALLENGE_EVENTS.ATTEMPT_COMPLETED, { challengeVersion: "1.0.0", authState, success: false, failureCode: "network" });
@@ -908,7 +918,12 @@ export default function App() {
     setOpponent(null); setPicker(null); setView("builder");
     setPlayStage("ROSTERS"); setEraLocked(false);
   };
-  const handleNav = (id) => { resetPlay(); setSharedResult(null); setNav(id); };
+  const handleNav = (id) => {
+    resetPlay(); setSharedResult(null); setNav(id);
+    // Phase 9E: the Leaderboard entry is a real route; leaving it clears the path.
+    if (id === "Board") navigate(LEADERBOARD_ROUTE);
+    else if (route === LEADERBOARD_ROUTE) replaceRoute("/");
+  };
 
   // ── Game bookkeeping ───────────────────────────────────────────────────────
   // `mine` is passed explicitly by callers whose roster is not yet in state.
@@ -1926,7 +1941,7 @@ export default function App() {
   // Editorial Ink. Without it a heading inherited the arena's platinum text and
   // sat almost invisibly on an ivory card.
   const editorialMode = route.startsWith("/membership") || route.startsWith("/fantasy/") || route.startsWith("/modes/")
-    || route === "/my-eraclash" || route === "/auth/callback";
+    || route === "/my-eraclash" || route === "/auth/callback" || route === LEADERBOARD_ROUTE;
   const arenaMode = showLobby || (isChaos && !sharedResult && !gate) || editorialMode;
 
   // ── Render ─────────────────────────────────────────────────────────────────
@@ -1977,11 +1992,15 @@ export default function App() {
           if (rid) runCloudSave(rid, result?.type || "single", "claim");
           navigate(next || "/play");
         }} />
+      ) : route === LEADERBOARD_ROUTE ? (
+        <LeaderboardPage signedIn={!!token} accessToken={token}
+          onSignIn={() => openAccountDialog({ entryPoint: "leaderboard", intent: "signin", returnTo: LEADERBOARD_ROUTE })} />
       ) : route === "/my-eraclash" ? (
         <MyEraClash
           onSignIn={() => openAccountDialog({ entryPoint: "my_eraclash", intent: "signin", returnTo: "/my-eraclash" })}
           onOpenReport={(clash) => setSavedReport(clash)}
           onRunItBack={runItBackFromSaved}
+          onOpenLeaderboard={() => navigate(LEADERBOARD_ROUTE)}
           onSignedOut={handleCareerSignedOut} />
       ) : route.startsWith("/membership") ? (
         <main>
@@ -2053,9 +2072,13 @@ export default function App() {
                   onNeedAccount={() => openAccountDialog({ entryPoint: "challenge_create", intent: "signup", claimResultId: result.resultId, returnTo: "/play/chaos" })} />
               : null}
             challengeComparison={challengeAttempt && challengeAttempt.resultId === result?.resultId
-              ? <ChallengeComparison state={challengeAttempt.state === "completed" ? "ready" : challengeAttempt.state === "failed" ? "failed" : "pending"}
-                  comparison={challengeAttempt.comparison} challenge={challengeAttempt.challenge} creatorName={challengeAttempt.creatorName}
-                  onRetry={() => completeChallenge(challengeAttempt)} />
+              ? <>
+                  <ChallengeComparison state={challengeAttempt.state === "completed" ? "ready" : challengeAttempt.state === "failed" ? "failed" : "pending"}
+                    comparison={challengeAttempt.comparison} challenge={challengeAttempt.challenge} creatorName={challengeAttempt.creatorName}
+                    onRetry={() => completeChallenge(challengeAttempt)} />
+                  {/* Phase 9E: basketball → comparison → rating movement → career XP */}
+                  {challengeAttempt.state === "completed" && <RatingChange rating={challengeAttempt.rating} />}
+                </>
               : null}
             careerProgress={result?.resultId
               ? <CareerProgress resultId={result.resultId} mode={result.type || "single"} signedIn={!!token}
@@ -2091,9 +2114,9 @@ export default function App() {
               onLoadTeam={(ids) => { const t = ids.map((id) => findCard(id)); if (!t.some((x) => !x)) { resetPlay(); setNav("Play"); navigate("/play/dream"); setTeam(t); } }} />
           </div>
         ) : nav === "Board" ? (
-          <div style={{ maxWidth: 720, margin: "16px auto 0" }}>
-            <Board board={board} streaks={streaks} badges={badges} BADGES={BADGES} />
-          </div>
+          /* Phase 9E: the Leaderboard entry is the Challenge Rating leaderboard (a real route) */
+          <LeaderboardPage signedIn={!!token} accessToken={token}
+            onSignIn={() => openAccountDialog({ entryPoint: "leaderboard", intent: "signin", returnTo: LEADERBOARD_ROUTE })} />
         ) : nav === "Credits" ? (
           <div style={{ maxWidth: 860, margin: "16px auto 0" }}><Credits /></div>
         ) : nav === "Challenges" && !challenge ? (

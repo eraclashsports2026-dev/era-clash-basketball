@@ -1,0 +1,19 @@
+{
+  "artifact": "rating-cross-account-qa",
+  "phase": "9E — Competitive Rating + Leaderboards V1",
+  "generatedAt": "2026-09-07T00:49:39.207Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "User A reads no User B private rating (server: token identity; database: own-row policies)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "anonymous holds no privilege on either table; the public projection is a service-role function with a fixed select list",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": true
+}

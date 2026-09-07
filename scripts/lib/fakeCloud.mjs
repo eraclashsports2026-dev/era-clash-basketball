@@ -10,6 +10,7 @@
 // the shared curve. Installed only by scripts/harness.mjs when
 // ECLASH_FAKE_CLOUD=1; nothing under src/ or api/ imports it.
 import { levelForXp } from "../../src/progression/contract.js";
+import { rateMatch, eligibility, isPlaced, compareRows, RATED_PAIR_WINDOW_DAYS, INITIAL_RATING } from "../../src/competitive/contract.js";
 
 export const FAKE_URL = "https://abcdefghijklmnopqrst.supabase.co";
 
@@ -22,14 +23,20 @@ export const installFakeCloud = ({ users = [] } = {}) => {
     challenges: [], challenge_secrets: [], challenge_attempts: [], saved_clashes: [], result_claims: [],
     profiles: users.map((u) => ({ user_id: u.userId, display_name: u.displayName || "Coach" })),
     progression_profiles: [], xp_ledger: [], achievement_unlocks: [],
+    user_preferences: [], competitive_profiles: [], competitive_rating_events: [],
   };
   const userExists = (id) => tables.profiles.some((p) => p.user_id === id);
   const parse = (path) => {
     const [table, qs = ""] = path.split("?"); const p = new URLSearchParams(qs); const filters = [];
-    for (const [k, v] of p) { if (["select", "order", "limit", "on_conflict"].includes(k)) continue; const m = v.match(/^(eq|in|is|neq)\.(.*)$/); if (m) filters.push({ k, op: m[1], v: m[2] }); }
+    for (const [k, v] of p) {
+      if (["select", "order", "limit", "on_conflict"].includes(k)) continue;
+      if (k === "or") { const alts = v.slice(1, -1).split(",").map((t) => { const m = t.match(/^([a-z_]+)\.(eq|is|neq)\.(.*)$/); return m ? { k: m[1], op: m[2], v: m[3] } : null; }).filter(Boolean); filters.push({ or: alts }); continue; }
+      const m = v.match(/^(eq|in|is|neq)\.(.*)$/); if (m) filters.push({ k, op: m[1], v: m[2] });
+    }
     return { table, filters, onConflict: p.get("on_conflict"), order: p.get("order"), limit: p.get("limit") };
   };
-  const match = (row, f) => f.every(({ k, op, v }) => op === "eq" ? String(row[k]) === v : op === "neq" ? String(row[k]) !== v : op === "is" ? (v === "null" ? row[k] == null : row[k] === (v === "true")) : v.slice(1, -1).split(",").includes(String(row[k])));
+  const one = (row, { k, op, v }) => op === "eq" ? String(row[k]) === v : op === "neq" ? String(row[k]) !== v : op === "is" ? (v === "null" ? row[k] == null : row[k] === (v === "true")) : v.slice(1, -1).split(",").includes(String(row[k]));
+  const match = (row, f) => f.every((c) => (c.or ? c.or.some((alt) => one(row, alt)) : one(row, c)));
   const shape = (list, { order, limit }) => {
     let out = [...list];
     if (order) { const [col, dir = "asc"] = order.split("."); out.sort((a, b) => (String(a[col] ?? "") < String(b[col] ?? "") ? -1 : String(a[col] ?? "") > String(b[col] ?? "") ? 1 : 0) * (dir === "desc" ? -1 : 1)); }
@@ -70,6 +77,38 @@ export const installFakeCloud = ({ users = [] } = {}) => {
     return { totalXp: total, level, awarded: inserted, unlocked };
   };
 
+
+  // ── the competitive functions, as the SQL behaves ─────────────────────────
+  const compProfile = (uid) => { let p = tables.competitive_profiles.find((x) => x.user_id === uid); if (!p) { p = { user_id: uid, current_rating: INITIAL_RATING, rated_wins: 0, rated_losses: 0, rated_ties: 0, rated_matches: 0, unique_opponents: 0, rating_version: "1.0.0", last_rated_at: null, placed_at: null, created_at: nowIso(), updated_at: nowIso() }; tables.competitive_profiles.push(p); } return p; };
+  const uniqueOpp = (uid) => new Set(tables.competitive_rating_events.filter((e) => e.creator_user_id === uid || e.recipient_user_id === uid).map((e) => (e.creator_user_id === uid ? e.recipient_user_id : e.creator_user_id))).size;
+  const rateAttemptFn = ({ p_attempt_id, p_version, p_pair_limit, p_window_days }) => {
+    const at = tables.challenge_attempts.find((x) => x.id === p_attempt_id); if (!at) return { rated: false, reason: "not_eligible" };
+    const ch = tables.challenges.find((x) => x.id === at.challenge_id); if (!ch) return { rated: false, reason: "not_eligible" };
+    if (tables.competitive_rating_events.some((e) => e.challenge_attempt_id === at.id && e.rating_version === p_version)) return { rated: false, reason: "already_rated" };
+    const completedAt = at.completed_at || nowIso();
+    const pair = tables.competitive_rating_events.filter((e) => ((e.creator_user_id === ch.creator_user_id && e.recipient_user_id === at.user_id) || (e.creator_user_id === at.user_id && e.recipient_user_id === ch.creator_user_id)) && Date.parse(e.completed_at) <= Date.parse(completedAt) && Date.parse(e.completed_at) > Date.parse(completedAt) - p_window_days * 86_400_000).length;
+    const el = eligibility({ creatorUserId: ch.creator_user_id, recipientUserId: at.user_id, status: at.status, challengeOutcome: at.challenge_outcome, pairRatedInWindow: pair });
+    if (!el.rated) return { rated: false, reason: el.reason };
+    const pc = compProfile(ch.creator_user_id), pr = compProfile(at.user_id);
+    const m = rateMatch({ creator: { rating: pc.current_rating, matches: pc.rated_matches }, recipient: { rating: pr.current_rating, matches: pr.rated_matches }, outcome: at.challenge_outcome });
+    const ev = { id: uuid(), challenge_id: ch.id, challenge_attempt_id: at.id, creator_user_id: ch.creator_user_id, recipient_user_id: at.user_id, rating_version: p_version, creator_rating_before: m.creator.before, recipient_rating_before: m.recipient.before, creator_expected: m.creator.expected, recipient_expected: m.recipient.expected, outcome: at.challenge_outcome, creator_delta: m.creator.delta, recipient_delta: m.recipient.delta, creator_rating_after: m.creator.after, recipient_rating_after: m.recipient.after, completed_at: completedAt, created_at: nowIso() };
+    tables.competitive_rating_events.push(ev);
+    const apply = (p, side, won, lost, tied) => { p.current_rating = side.after; p.rated_matches++; p.rated_wins += won; p.rated_losses += lost; p.rated_ties += tied; p.unique_opponents = uniqueOpp(p.user_id); p.last_rated_at = completedAt; if (!p.placed_at && isPlaced(p)) p.placed_at = completedAt; p.updated_at = nowIso(); };
+    apply(pc, m.creator, at.challenge_outcome === "creator" ? 1 : 0, at.challenge_outcome === "recipient" ? 1 : 0, at.challenge_outcome === "tie" ? 1 : 0);
+    apply(pr, m.recipient, at.challenge_outcome === "recipient" ? 1 : 0, at.challenge_outcome === "creator" ? 1 : 0, at.challenge_outcome === "tie" ? 1 : 0);
+    return { rated: true, eventId: ev.id, attemptId: at.id, challengeId: ch.id, outcome: at.challenge_outcome, completedAt, creator: { userId: ch.creator_user_id, ...m.creator }, recipient: { userId: at.user_id, ...m.recipient } };
+  };
+  const reconcileFn = ({ p_version, p_pair_limit, p_window_days, p_limit }) => {
+    const pending = tables.challenge_attempts.filter((at) => at.status === "completed" && at.user_id && at.completed_at && tables.challenges.find((c) => c.id === at.challenge_id)?.creator_user_id && !tables.competitive_rating_events.some((e) => e.challenge_attempt_id === at.id && e.rating_version === p_version))
+      .sort((a, b) => (Date.parse(a.completed_at) - Date.parse(b.completed_at)) || String(a.id).localeCompare(String(b.id))).slice(0, Math.max(1, p_limit || 500));
+    let rated = 0, skipped = 0; for (const at of pending) { const r = rateAttemptFn({ p_attempt_id: at.id, p_version, p_pair_limit, p_window_days }); if (r.rated) rated++; else skipped++; }
+    return { seen: pending.length, rated, skipped };
+  };
+  const streakFor = (uid) => { const evs = tables.competitive_rating_events.filter((e) => e.creator_user_id === uid || e.recipient_user_id === uid).sort((a, b) => Date.parse(b.completed_at) - Date.parse(a.completed_at)); if (!evs.length) return null; const side = (e) => (e.outcome === "tie" ? "T" : (e.outcome === "creator") === (e.creator_user_id === uid) ? "W" : "L"); const first = side(evs[0]); let n = 0; for (const e of evs) { if (side(e) === first) n++; else break; } return `${first}${n}`; };
+  const rankedPublic = () => tables.competitive_profiles.filter((p) => isPlaced(p) && (tables.user_preferences.find((u) => u.user_id === p.user_id)?.prefs?.leaderboard_visibility === "public")).sort(compareRows).map((p, i) => ({ rank: i + 1, user_id: p.user_id, display_name: tables.profiles.find((x) => x.user_id === p.user_id)?.display_name || "Coach", current_rating: p.current_rating, rated_wins: p.rated_wins, rated_losses: p.rated_losses, rated_ties: p.rated_ties, rated_matches: p.rated_matches, career_level: tables.progression_profiles.find((x) => x.user_id === p.user_id)?.career_level ?? null, streak: streakFor(p.user_id) }));
+  const leaderboardFn = ({ p_limit, p_offset }) => rankedPublic().slice(Math.max(0, p_offset || 0), Math.max(0, p_offset || 0) + Math.min(100, Math.max(1, p_limit || 100))).map(({ user_id, ...r }) => r);
+  const rankOfFn = ({ p_user_id, p_span }) => { const all = rankedPublic(); const me = all.find((r) => r.user_id === p_user_id); if (!me) return []; return all.filter((r) => Math.abs(r.rank - me.rank) <= Math.max(0, p_span || 0)).map(({ user_id, ...r }) => ({ ...r, is_me: user_id === p_user_id })); };
+
   const realFetch = globalThis.fetch;
   globalThis.fetch = async (input, init = {}) => {
     const u = String(input instanceof Request ? input.url : input);
@@ -86,6 +125,10 @@ export const installFakeCloud = ({ users = [] } = {}) => {
       try { const out = progressionApply(JSON.parse(init.body || "{}")); return out.error ? reply(400, out.error) : reply(200, out); }
       catch (e) { return reply(400, { code: "23514", message: String(e.message) }); }
     }
+    if (rel.startsWith("rpc/competitive_rate_attempt")) return reply(200, rateAttemptFn(JSON.parse(init.body || "{}")));
+    if (rel.startsWith("rpc/competitive_reconcile")) return reply(200, reconcileFn(JSON.parse(init.body || "{}")));
+    if (rel.startsWith("rpc/competitive_leaderboard")) return reply(200, leaderboardFn(JSON.parse(init.body || "{}")));
+    if (rel.startsWith("rpc/competitive_rank_of")) return reply(200, rankOfFn(JSON.parse(init.body || "{}")));
     if (rel.startsWith("rpc/")) return reply(404, { message: "no such function" });
     const { table, filters, onConflict, order, limit } = parse(rel);
     const rows = tables[table]; if (!rows) return reply(404, { message: `no table ${table}` });
@@ -93,7 +136,8 @@ export const installFakeCloud = ({ users = [] } = {}) => {
     if (method === "GET") return reply(200, shape(rows.filter((r) => match(r, filters)), { order, limit }));
     if (method === "POST") {
       // the progression tables are written by the function alone
-      if (["progression_profiles", "xp_ledger", "achievement_unlocks"].includes(table)) return reply(403, { code: "42501", message: "permission denied (write through rpc/progression_apply)" });
+      if (["progression_profiles", "xp_ledger", "achievement_unlocks", "competitive_profiles", "competitive_rating_events"].includes(table)) return reply(403, { code: "42501", message: "permission denied (write through the database functions)" });
+      if (table === "user_preferences") { const body = JSON.parse(init.body); const hit = rows.find((r) => r.user_id === body.user_id); if (hit) { Object.assign(hit, body, { updated_at: nowIso() }); return reply(201, [hit]); } const row = { updated_at: nowIso(), ...body }; rows.push(row); return reply(201, [row]); }
       const row = { id: uuid(), created_at: nowIso(), ...JSON.parse(init.body) };
       const dup = (table === "challenges" && rows.some((r) => r.public_code === row.public_code || (r.creator_user_id === row.creator_user_id && r.creator_result_id === row.creator_result_id)))
         || (table === "challenge_attempts" && row.user_id && rows.some((r) => r.challenge_id === row.challenge_id && r.user_id === row.user_id))
@@ -108,5 +152,5 @@ export const installFakeCloud = ({ users = [] } = {}) => {
   };
   /** Account deletion, as the cascades would do it (for in-process gates). */
   const deleteUser = (userId) => { for (const t of Object.keys(tables)) tables[t] = tables[t].filter((r) => r.user_id !== userId); for (const c of tables.challenges) if (c.creator_user_id === userId) c.creator_user_id = null; };
-  return { tables, tokenFor: (userId) => `test-token.${userId}`, deleteUser, progressionApply };
+  return { tables, tokenFor: (userId) => `test-token.${userId}`, deleteUser, progressionApply, rateAttempt: rateAttemptFn, reconcileRatings: reconcileFn, leaderboard: leaderboardFn, rankOf: rankOfFn };
 };

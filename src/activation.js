@@ -65,6 +65,12 @@ export const ACTIVATION_EVENTS = Object.freeze([
   // result id, a challenge id, an account id, a token or a session id)
   "progression_viewed", "xp_awarded_ui_shown", "level_up_shown", "achievement_unlocked_ui_shown",
   "achievements_viewed", "achievement_filter_changed", "progression_reconciled",
+  // Phase 9E — Competitive Rating + Leaderboards V1 (closed vocabulary; metadata
+  // may carry authState, visibility, provisional, rankBucket, ratedMatchCount,
+  // ratingDelta, outcome, success, failureCode, reason — never a name, an email,
+  // an account id, a challenge code or id, an attempt id, a token or a session)
+  "leaderboard_viewed", "leaderboard_visibility_changed", "competitive_rating_viewed",
+  "competitive_rating_change_shown", "competitive_provisional_progress_viewed", "around_me_viewed",
 ]);
 
 const ss = {

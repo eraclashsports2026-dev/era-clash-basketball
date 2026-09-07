@@ -1,0 +1,143 @@
+{
+  "artifact": "rating-rls-qa",
+  "phase": "9E — Competitive Rating + Leaderboards V1",
+  "generatedAt": "2026-09-07T01:12:43.948Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "competitive_profiles: RLS enabled; anon and authenticated revoked; select granted back to authenticated only",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "competitive_rating_events: RLS enabled; anon and authenticated revoked; select granted back to authenticated only",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "profiles: own row only; events: own side only",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "no client role may insert, update or delete",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "four SECURITY DEFINER functions, all revoked from public/anon/authenticated",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the ledger is immutable (update/delete refused) and the profile guard refuses a forged rating or record",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "one event per attempt and version; both accounts locked in a fixed order",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "visibility lives in the closed preference vocabulary (prefs_ok extended)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the migration records its version",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "no `on conflict do nothing` insert into a table that carries a BEFORE INSERT trigger (9E-L1)",
+      "pass": true,
+      "detail": "guarded: competitive_profiles · on-conflict inserts: schema_migrations"
+    },
+    {
+      "check": "the profile is seeded with a not-exists insert, under the advisory locks taken above",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the live role-switch verification is recorded from the database",
+      "pass": true,
+      "detail": "verified 2026-09-07T02:05:00Z"
+    }
+  ],
+  "passed": true,
+  "live": {
+    "artifact": "rating-rls-live",
+    "phase": "9E — Competitive Rating + Leaderboards V1",
+    "verifiedAt": "2026-09-07T02:05:00Z",
+    "project": "lfybiphmqkiecfrqsfzt (the certified preview project; production has no cloud accounts)",
+    "method": "Not a simulation: every statement below was executed on the live preview database through the Supabase management API, each call one transaction, switching to the anon / authenticated roles with request.jwt.claims set to the synthetic accounts' ids. Synthetic accounts qa-9e-a…qa-9e-d (throwaway, @example.invalid) with twelve official challenges and attempts; all deleted at the end.",
+    "migration": "0006_competitive_rating_v1 recorded in public.schema_migrations (0001…0006). Tables competitive_profiles, competitive_rating_events; functions competitive_rate_attempt(uuid,text,integer,integer), competitive_reconcile(text,integer,integer,integer), competitive_leaderboard(integer,integer), competitive_rank_of(uuid,integer), plus the guards competitive_profile_guard() and competitive_events_immutable(); triggers competitive_profile_guard_trg, competitive_events_immutable_trg; index competitive_profiles_board_idx over the five ordering columns; unique competitive_events_once (challenge_attempt_id, rating_version).",
+    "sourceOfTruth": {
+      "pass": true,
+      "evidence": "All seven function bodies in the live database are byte-for-byte identical to supabase/migrations/0006_competitive_rating_v1.sql (md5 of pg_proc.prosrc compared against the body extracted from the committed file): prefs_ok, competitive_events_immutable, competitive_profile_guard, competitive_rate_attempt, competitive_reconcile, competitive_leaderboard, competitive_rank_of — 7 compared, 0 differing."
+    },
+    "defectFoundLive": {
+      "id": "9E-L1",
+      "severity": "P1 — every account's SECOND rated match would have failed on real Postgres",
+      "symptom": "competitive_reconcile → competitive_rate_attempt raised P0001 COMPETITIVE_RECORD_FORGED from competitive_profile_guard() on the first backfill run.",
+      "cause": "competitive_rate_attempt seeded both profiles with `insert … on conflict (user_id) do nothing`. In Postgres a BEFORE INSERT trigger fires BEFORE the conflict is detected, so competitive_profile_guard saw a fresh 1000 / 0-0-0 row for an account that already held rating events and refused it. The fake-cloud harness emulates the function in JavaScript and has no trigger, so every repository gate passed over a database that could not rate a second match.",
+      "fix": "Insert only when the row is genuinely absent (`insert … select … where not exists (…)`). Both accounts are already held under pg_advisory_xact_lock at that point, so the read-then-insert cannot race. Applied to the migration file and to the live database; the whole sequence below was then re-run from an empty ledger.",
+      "regressionGate": "competitive:rls-qa now fails if the SQL reintroduces an `on conflict … do nothing` insert into a table carrying a BEFORE INSERT trigger."
+    },
+    "backfill": {
+      "pass": true,
+      "evidence": "The §61 A/B/C sequence (A v B recipient 08-01, A v C creator 08-02, B v C tie 08-03, C v A recipient 08-04, B v A creator 08-05) was INSERTED OUT OF CHRONOLOGICAL ORDER (4,1,5,3,2) and reconciled once: seen 5, rated 5, skipped 0, rated in completed_at order. Every event equals the JavaScript contract's independent replay to four decimals — 1000→980/1000→1020 (E 0.5000/0.5000) · 980→1001/1000→979 (E 0.4712/0.5288) · 1020→1018/979→981 (E 0.5587/0.4413) · 981→962/1001→1020 (E 0.4712/0.5288) · 1018→1038/1020→1000 (E 0.4971/0.5029). Final profiles A 1000 2-2-0, B 1038 2-0-1, C 962 0-2-1 — exactly the contract's replayRatings() output."
+    },
+    "backfillSecondRun": {
+      "pass": true,
+      "evidence": "competitive_reconcile run again: seen 0, rated 0, skipped 0; events still 5; zero competitive_profiles rows differ from the pre-run snapshot (EXCEPT returned 0). No ordinary profile was reset."
+    },
+    "idempotency": {
+      "pass": true,
+      "evidence": "competitive_rate_attempt on an already-rated attempt returned {rated:false, reason:'already_rated'} and the ledger stayed at 5 rows. A direct duplicate insert of an existing event was refused by 23505 duplicate key value violates unique constraint \"competitive_events_once\" (challenge_attempt_id, rating_version) — one attempt id can create at most one immutable event, enforced in storage, not only in application code."
+    },
+    "eligibility": {
+      "pass": true,
+      "evidence": "Live, from the closed reason set: self-challenge (creator = recipient) → same_account, no event · attempt whose recipient is a guest (user_id null) → guest_participant · status 'started' → not_completed · unknown attempt id → not_eligible · the fourth rated outcome between the same pair inside seven days → repeat_opponent_limit, while the third was rated. Ledger held 0 self events and exactly 3 A–B events."
+    },
+    "comparisonNotScore": {
+      "pass": true,
+      "evidence": "Every fixture attempt carried the SAME basketball result (gold 105, blue 99, outcome 'win'): 1 distinct basketball result across 8 events, yet 3 distinct competitive outcomes, and the event outcome equalled challenge_attempts.challenge_outcome in every row. The rating consumes Phase 9C's comparison and never reinterprets a score."
+    },
+    "placement": {
+      "pass": true,
+      "evidence": "Both conditions are required, live: with 5 rated matches but only 2 unique opponents A had placed_at null and did not appear publicly; a match against a third opponent (6 matches, 3 opponents) set placed_at and A appeared. B likewise placed only on reaching 5 matches and 3 opponents."
+    },
+    "leaderboardPrivacy": {
+      "pass": true,
+      "evidence": "With no user_preferences rows at all (the default), competitive_leaderboard(100,0) returned 0 rows — private by default is the database's behaviour, not the client's. With A and B public and placed, C public but provisional, D private and placed-ineligible, the board returned exactly A and B. The projection carries rank, display_name, current_rating, W-L-T, rated_matches, career_level and streak — no user_id, no email, no attempt or challenge id.",
+      "p0": "competitive_rank_of returned NULL for the private account D and NULL for the public-but-provisional account C: no public rank, no Around Me, and no hypothetical rank is computed for them. For the placed public account A it returned the window with is_me marked."
+    },
+    "rls": {
+      "pass": true,
+      "evidence": "anon: permission denied for table competitive_profiles; permission denied for table competitive_rating_events. authenticated sub=A: competitive_profiles 1 row (own), 0 other accounts' rows; competitive_rating_events 6 rows, 0 unrelated. authenticated sub=B: 1 profile (rating 1034, its own), 5 events, 0 unrelated. No cross-account private read is possible."
+    },
+    "forge": {
+      "pass": true,
+      "evidence": "As authenticated (sub=B): update competitive_profiles set current_rating = 9999 → permission denied for table competitive_profiles; insert into competitive_rating_events → permission denied for table competitive_rating_events; delete from competitive_rating_events → permission denied for table competitive_rating_events; select competitive_rate_attempt(…) → permission denied for function competitive_rate_attempt; select competitive_leaderboard(…) → permission denied for function competitive_leaderboard; select competitive_rank_of(…) → permission denied for function competitive_rank_of. As the service role, past the grants: update competitive_profiles set current_rating = 9999 → P0001 COMPETITIVE_RATING_FORGED; set rated_wins = 99 → P0001 COMPETITIVE_RECORD_FORGED; update a rating event → P0001 RATING_EVENT_IMMUTABLE ('A rating event is never edited.'); delete a rating event → P0001 RATING_EVENT_IMMUTABLE ('A rating event is never deleted; past opponents keep what they earned.')."
+    },
+    "preferenceVocabulary": {
+      "pass": true,
+      "evidence": "prefs_ok live: {'leaderboard_visibility':'public'} true · 'private' true · 'friends' false · 'PUBLIC' false (case is not coerced) · unknown key {'leaderboard_rank':'public'} false · a valid key with a smuggled extra key {'leaderboard_visibility':'public','is_admin':true} false. The closed vocabulary gained exactly one key and rejects everything else."
+    },
+    "atomicity": {
+      "pass": true,
+      "evidence": "The event insert and both profile updates happen inside competitive_rate_attempt in one transaction, after pg_advisory_xact_lock on both accounts taken in a fixed order (least, greatest) so two concurrent completions sharing an account cannot deadlock; a caller that waited re-checks the ledger and returns already_rated. The unique constraint competitive_events_once is the storage-level backstop, proven above. Six simultaneous completions producing exactly one event is certified on the harness (rating-concurrency-qa.json)."
+    },
+    "deletion": {
+      "pass": true,
+      "evidence": "delete from auth.users where id = B: B's competitive_profiles row gone (ON DELETE CASCADE); all 8 events survived with B's side set null (ON DELETE SET NULL — a rating event is never deleted); A's rating 1041 and record 4-2-0 untouched; B vanished from competitive_leaderboard immediately, leaving A alone at rank 1. Opponents keep what they earned."
+    },
+    "cleanup": {
+      "pass": true,
+      "evidence": "The synthetic accounts were deleted; removing their ledger rows required ALTER TABLE … DISABLE TRIGGER competitive_events_immutable_trg as the table owner (further evidence that nothing short of ownership can delete an event), and the trigger was re-enabled immediately — both competitive triggers report tgenabled 'O'. Final counts: auth.users 1 (the owner), profiles 1, user_preferences 0, challenges 0, challenge_attempts 0, competitive_profiles 0, competitive_rating_events 0, public leaderboard 0 rows."
+    },
+    "notCertifiedLive": "The signed-in browser journey on the alias (a real session completing a Challenge and watching its own rating move) — the project cannot mint a synthetic session without a credential passing through this transcript. The same server path is certified end to end on the fake-cloud harness (rating-security-qa, rating-result-qa, leaderboard-ordering-qa, e2e) and the database half is certified here; the owner's leaderboard test exercises it live."
+  }
+}

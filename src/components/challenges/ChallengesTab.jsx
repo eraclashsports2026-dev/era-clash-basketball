@@ -6,6 +6,9 @@ import { useCallback, useEffect, useState } from "react";
 import { listChallengesRequest, revokeChallengeRequest, challengeLink, copyText } from "../../challenges/client.js";
 import { CHALLENGE_EVENTS } from "../../challenges/contract.js";
 import { track } from "../../analytics.js";
+// Phase 9E: the compact, auditable rating history rides the Challenges tab.
+import { competitiveMeRequest } from "../../competitive/client.js";
+import { fmt } from "../../competitive/contract.js";
 
 const signed = (n) => (n == null ? "—" : n > 0 ? `+${n}` : String(n));
 const dateOf = (iso) => { try { return iso ? new Date(iso).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" }) : "—"; } catch { return "—"; } };
@@ -17,9 +20,11 @@ export default function ChallengesTab({ accessToken, displayName = "You", onOpen
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [notice, setNotice] = useState("");
+  const [competitive, setCompetitive] = useState(null);
   const load = useCallback(async () => {
     if (!accessToken) { setLoading(false); return; }
     setLoading(true);
+    competitiveMeRequest({ accessToken }).then((m) => setCompetitive(m.status === "ok" ? m : null)).catch(() => setCompetitive(null));
     try { const r = await listChallengesRequest({ accessToken }); setData(r.status === "ok" ? r : null); if (r.status !== "ok") setNotice("Challenges could not be loaded just now."); }
     catch { setNotice("Challenges could not be loaded just now."); }
     setLoading(false);
@@ -45,6 +50,25 @@ export default function ChallengesTab({ accessToken, displayName = "You", onOpen
   return (
     <div className="ec-chal-tab">
       <output className="ec-chal-feedback" aria-live="polite">{notice}</output>
+
+      {competitive && (
+        <section className="ec-me-card" aria-labelledby="ec-chal-rating" data-rating-history={competitive.history.length}>
+          <h2 id="ec-chal-rating" className="ec-me-section">Rating history</h2>
+          <p className="ec-me-muted">Challenge Rating <b>{fmt(competitive.rating)}</b> · rated record {competitive.record.wins}–{competitive.record.losses}–{competitive.record.ties}{competitive.provisional ? " · provisional" : competitive.rank ? ` · #${competitive.rank} global` : " · placed"}</p>
+          {competitive.history.length === 0 ? <p className="ec-me-muted">No rated challenges yet. Only official Challenges between two accounts are rated.</p> : (
+            <ul className="ec-chal-list ec-cr-history" aria-label="Recent rating changes">
+              {competitive.history.map((h, i) => (
+                <li key={i} className="ec-chal-row ec-cr-history-row" data-outcome={h.outcome}>
+                  <span className="ec-cr-history-vs">vs {h.opponent}</span>
+                  <b className="ec-cr-history-o">{h.outcome}</b>
+                  <span className="ec-cr-history-d">{h.delta > 0 ? `+${h.delta}` : h.delta < 0 ? `−${Math.abs(h.delta)}` : "±0"}</span>
+                  <span className="ec-cr-history-r">{fmt(h.before)} → {fmt(h.after)}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+      )}
 
       <section className="ec-me-card" aria-labelledby="ec-chal-created">
         <h2 id="ec-chal-created" className="ec-me-section">Created</h2>

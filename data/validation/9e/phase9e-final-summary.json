@@ -1,0 +1,174 @@
+{
+  "phase": "9E — Competitive Rating + Leaderboards V1",
+  "generatedAt": "2026-09-07T01:15:04.903Z",
+  "verdict": "COMPETITIVE RATING V1 — 6 OPEN: rating algorithm; secret audit; deployed certification; unit tests; Playwright e2e; gates",
+  "repository": {
+    "toplevel": "/Users/josephjohnson/era-clash-basketball",
+    "branch": "phase-9e-competitive-rating-leaderboards-v1",
+    "head": "f34f6f1",
+    "parent": "f34f6f1 (phase-9b3-chaos-guided-flow-v2 with PR #47 merged; approved 9D head 90224cb)",
+    "frozenRefs": {
+      "wave1": "4dc59e7",
+      "wave2": "ef0caa5",
+      "main": "9cd95ff"
+    },
+    "protectedPreview": null,
+    "headAtSummary": "f34f6f1a232a3a9bacef8d31fe9b3bab8255322b"
+  },
+  "contract": {
+    "competitiveRatingVersion": "1.0.0",
+    "initial": 1000,
+    "floor": 100,
+    "k": {
+      "provisional": 40,
+      "established": 24,
+      "switchAt": 10
+    },
+    "placement": {
+      "matches": 5,
+      "uniqueOpponents": 3
+    },
+    "pairLimit": {
+      "limit": 3,
+      "windowDays": 7
+    },
+    "leaderboard": {
+      "limit": 100,
+      "ordering": [
+        "current_rating desc",
+        "rated_wins desc",
+        "rated_losses asc",
+        "last_rated_at asc",
+        "user_id asc"
+      ],
+      "aroundMe": 2
+    },
+    "visibility": {
+      "key": "leaderboard_visibility",
+      "values": [
+        "private",
+        "public"
+      ],
+      "default": "private"
+    },
+    "powerEffect": 0,
+    "notBuilt": [
+      "XP/level/achievement leaderboards",
+      "public profiles",
+      "friends",
+      "seasons",
+      "rewards",
+      "tiers",
+      "approximate private rank"
+    ]
+  },
+  "drift": {
+    "activeCandidateCoreDrift": 0,
+    "candidateParameterDrift": 0,
+    "gameLogicChanges": 0,
+    "draftLogicChanges": 0,
+    "placementLogicChanges": 0,
+    "legendRivalLogicChanges": 0,
+    "eraLogicChanges": 0,
+    "coachLogicChanges": 0,
+    "challengeFairnessChanges": 0,
+    "challengeComparisonChanges": 0,
+    "progressionContractChanges": 0,
+    "competitiveRatingPowerEffect": 0,
+    "apiFunctionCountIncrease": 0,
+    "wave1Changes": 0,
+    "stableWave2Changes": 0,
+    "mainChanges": 0,
+    "productionChanges": 0
+  },
+  "preservation": {
+    "candidate": {
+      "candidateId": "Candidate 4",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+      "calibrationVersion": "1.4.0"
+    },
+    "frozenLogicIdentical": true,
+    "apiRoutes": 12,
+    "frozenRefs": {
+      "wave1": "4dc59e7",
+      "wave2": "ef0caa5",
+      "main": "9cd95ff"
+    },
+    "production": {
+      "build": "2.7.2",
+      "cloudAccounts": false
+    }
+  },
+  "liveDatabase": {
+    "verifiedAt": "2026-09-07T02:05:00Z",
+    "project": "lfybiphmqkiecfrqsfzt (the certified preview project; production has no cloud accounts)",
+    "sourceOfTruth": true,
+    "defectFoundLive": "9E-L1",
+    "finalState": "The synthetic accounts were deleted; removing their ledger rows required ALTER TABLE … DISABLE TRIGGER competitive_events_immutable_trg as the table owner (further evidence that nothing short of ownership can delete an event), and the trigger was re-enabled immediately — both competitive triggers report tgenabled 'O'. Final counts: auth.users 1 (the owner), profiles 1, user_preferences 0, challenges 0, challenge_attempts 0, competitive_profiles 0, competitive_rating_events 0, public leaderboard 0 rows."
+  },
+  "gates": {
+    "vitest": null,
+    "playwright": null,
+    "gateFailures": [],
+    "gateSkips": [],
+    "gates": 0,
+    "liveGuest": null,
+    "deployedAccount": null,
+    "deployedCompetitive": null,
+    "deployedProgression": null,
+    "deployedChallenge": null,
+    "deployedChaos": null
+  },
+  "ledger": {
+    "total": 51,
+    "fixedAndVerified": 45,
+    "open": [
+      "rating algorithm",
+      "secret audit",
+      "deployed certification",
+      "unit tests",
+      "Playwright e2e",
+      "gates"
+    ]
+  },
+  "evidence": [
+    "around-me-qa.json",
+    "competitive-rating-contract.json",
+    "leaderboard-contract.json",
+    "leaderboard-ordering-qa.json",
+    "leaderboard-privacy-qa.json",
+    "my-eraclash-competitive-qa.json",
+    "phase9d-acceptance.json",
+    "phase9e-resolution-ledger.json",
+    "production-isolation.json",
+    "provisional-placement-qa.json",
+    "rating-accessibility-qa.json",
+    "rating-algorithm-qa.json",
+    "rating-backfill-qa.json",
+    "rating-concurrency-qa.json",
+    "rating-cross-account-qa.json",
+    "rating-deletion-qa.json",
+    "rating-idempotency-qa.json",
+    "rating-ledger-qa.json",
+    "rating-performance-qa.json",
+    "rating-responsive-qa.json",
+    "rating-result-qa.json",
+    "rating-rls-live.json",
+    "rating-rls-qa.json",
+    "rating-security-qa.json",
+    "repeat-opponent-qa.json",
+    "self-challenge-rating-qa.json",
+    "wave-preservation.json"
+  ],
+  "screenshots": [
+    "challenge-rating-change.png",
+    "leaderboard-around-me.png",
+    "leaderboard-desktop.png",
+    "leaderboard-empty.png",
+    "leaderboard-mobile.png",
+    "leaderboard-privacy-setting.png",
+    "leaderboard-provisional.png",
+    "my-eraclash-rating.png"
+  ],
+  "documents": []
+}
