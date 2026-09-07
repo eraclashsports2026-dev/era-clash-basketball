@@ -16,7 +16,27 @@ APPEND="${APPEND:-0}"
 TEE=tee; [ "$APPEND" = "1" ] && TEE="tee -a"
 mkdir -p data/validation/9e
 has() { node -e 'const p=require("./package.json");process.exit(p.scripts[process.argv[1]]?0:1)' "$1"; }
-gate() { local name="$1"; shift; if ! has "$name"; then printf '%-40s SKIPPED (no such script)\n' "$name"; return; fi; if "$@" >/dev/null 2>&1; then printf '%-40s PASS\n' "$name"; else printf '%-40s FAIL\n' "$name"; fi; }
+# A fresh fake-cloud harness: the in-memory cloud is per-process, so restarting
+# it is the only way to hand a gate an unspent pair.
+restart_fake() {
+  pkill -f "harness.mjs 4178" 2>/dev/null
+  sleep 1
+  (PREVIEW_SIM_ENGINE_ENABLED=true VERCEL_ENV=preview ECLASH_FAKE_CLOUD=1 RL_PROFILE_PER_MIN_IP=500 RL_CHALLENGE_ACTIONS_PER_MIN_IP=500 RL_CHALLENGE_VIEW_PER_MIN_IP=500 RL_PROGRESSION_PER_MIN_IP=500 RL_COMPETITIVE_PER_MIN_IP=500 node scripts/harness.mjs 4178 > .9e-harness-4178.log 2>&1 &)
+  for _ in 1 2 3 4 5 6 7 8 9 10; do curl -sf -m 2 "$FAKE/api/health" >/dev/null 2>&1 && break; sleep 1; done
+  STARTED_FAKE=1
+}
+# A gate's output is kept, so a failure in a long serial sweep can be read afterwards
+# instead of guessed at: the last lines go into this log and the whole run into
+# .9e-gate-<name>.log.
+gate() {
+  local name="$1"; shift
+  if ! has "$name"; then printf '%-40s SKIPPED (no such script)\n' "$name"; return; fi
+  local out=".9e-gate-$(echo "$name" | tr ':/' '__').log"
+  if "$@" >"$out" 2>&1; then printf '%-40s PASS\n' "$name"; else
+    printf '%-40s FAIL\n' "$name"
+    sed -n 's/^/      | /p' "$out" | grep -E 'FAIL|Error|error:|throw|at [A-Za-z]|timeout|429' | tail -8
+  fi
+}
 {
   echo "=== PHASE 9E $LABEL SWEEP $(date -u +%FT%TZ) @ $(git rev-parse --short HEAD) ==="
   echo "--- unit ---"; npx vitest run 2>&1 | grep -E 'Test Files|Tests |FAIL|✗|failed' | head -20
@@ -24,14 +44,14 @@ gate() { local name="$1"; shift; if ! has "$name"; then printf '%-40s SKIPPED (n
   # harnesses serve dist/, so they start after the build
   STARTED_MAIN=0; STARTED_FAKE=0
   if ! curl -sf -m 3 "$HARNESS/api/health" >/dev/null 2>&1; then
-    (PREVIEW_SIM_ENGINE_ENABLED=true VERCEL_ENV=preview RL_PROFILE_PER_MIN_IP=500 node scripts/harness.mjs 4180 > .9d-harness-4180.log 2>&1 &); sleep 3; STARTED_MAIN=1; fi
+    (PREVIEW_SIM_ENGINE_ENABLED=true VERCEL_ENV=preview RL_PROFILE_PER_MIN_IP=500 node scripts/harness.mjs 4180 > .9e-harness-4180.log 2>&1 &); sleep 3; STARTED_MAIN=1; fi
   # the fixtures harness (dev-only reference routes) for the progression and competitive UI gates
   STARTED_FIX=0
   if ! curl -sf -m 3 "http://localhost:4179/api/health" >/dev/null 2>&1; then
     npm run -s build:fixtures >/dev/null 2>&1
-    (PREVIEW_SIM_ENGINE_ENABLED=true VERCEL_ENV=preview ECLASH_FAKE_CLOUD=1 ECLASH_DIST=dist-fixtures RL_PROFILE_PER_MIN_IP=500 RL_PROGRESSION_PER_MIN_IP=500 RL_COMPETITIVE_PER_MIN_IP=500 node scripts/harness.mjs 4179 > .9d-harness-4179.log 2>&1 &); sleep 3; STARTED_FIX=1; fi
+    (PREVIEW_SIM_ENGINE_ENABLED=true VERCEL_ENV=preview ECLASH_FAKE_CLOUD=1 ECLASH_DIST=dist-fixtures RL_PROFILE_PER_MIN_IP=500 RL_PROGRESSION_PER_MIN_IP=500 RL_COMPETITIVE_PER_MIN_IP=500 node scripts/harness.mjs 4179 > .9e-harness-4179.log 2>&1 &); sleep 3; STARTED_FIX=1; fi
   if ! curl -sf -m 3 "$FAKE/api/health" >/dev/null 2>&1; then
-    (PREVIEW_SIM_ENGINE_ENABLED=true VERCEL_ENV=preview ECLASH_FAKE_CLOUD=1 RL_PROFILE_PER_MIN_IP=500 RL_CHALLENGE_ACTIONS_PER_MIN_IP=500 RL_CHALLENGE_VIEW_PER_MIN_IP=500 RL_PROGRESSION_PER_MIN_IP=500 RL_COMPETITIVE_PER_MIN_IP=500 node scripts/harness.mjs 4178 > .9d-harness-4178.log 2>&1 &); sleep 3; STARTED_FAKE=1; fi
+    (PREVIEW_SIM_ENGINE_ENABLED=true VERCEL_ENV=preview ECLASH_FAKE_CLOUD=1 RL_PROFILE_PER_MIN_IP=500 RL_CHALLENGE_ACTIONS_PER_MIN_IP=500 RL_CHALLENGE_VIEW_PER_MIN_IP=500 RL_PROGRESSION_PER_MIN_IP=500 RL_COMPETITIVE_PER_MIN_IP=500 node scripts/harness.mjs 4178 > .9e-harness-4178.log 2>&1 &); sleep 3; STARTED_FAKE=1; fi
   echo "--- e2e (all projects) ---"; npx playwright test 2>&1 | grep -E 'passed|failed|flaky|skipped|Error' | tail -6
   echo "--- preview gates (static) ---"
   for g in preview:preflight preview:security; do gate "$g" npm run -s "$g"; done
@@ -50,7 +70,17 @@ gate() { local name="$1"; shift; if ! has "$name"; then printf '%-40s SKIPPED (n
   for g in security-qa concurrency-qa result-qa challenge-qa responsive-qa accessibility-qa performance-qa; do gate "progression:$g" npm run -s "progression:$g" -- "$FAKE"; done
   echo "--- 9E competitive gates (fake-cloud harness $FAKE) ---"
   for g in contract-qa rating-qa backfill-qa rls-qa; do gate "competitive:$g" npm run -s "competitive:$g"; done
-  for g in concurrency-qa privacy-qa leaderboard-qa security-qa responsive-qa accessibility-qa performance-qa; do gate "competitive:$g" npm run -s "competitive:$g" -- "$FAKE"; done
+  for g in concurrency-qa privacy-qa leaderboard-qa; do gate "competitive:$g" npm run -s "competitive:$g" -- "$FAKE"; done
+  # The security gate plays a whole account-vs-account Challenge between the
+  # harness's only two test accounts, Joseph and Bea. Every 9C, 9D and 9E gate
+  # before it completes Challenges for that same pair on this same harness, and
+  # each of those now creates a rating event — so by this point the pair has
+  # legitimately spent its three rated outcomes in seven days and the completion
+  # is refused, correctly, as repeat_opponent_limit. Restart the fake cloud so
+  # the gate measures the rating movement rather than the anti-farming rule
+  # (which repeat-opponent-qa owns).
+  restart_fake
+  for g in security-qa responsive-qa accessibility-qa performance-qa; do gate "competitive:$g" npm run -s "competitive:$g" -- "$FAKE"; done
   if [ -n "$DEPLOYED" ]; then
     echo "--- deployed ($DEPLOYED) ---"
     gate "competitive:deployed-qa" npm run -s competitive:deployed-qa -- "$DEPLOYED"

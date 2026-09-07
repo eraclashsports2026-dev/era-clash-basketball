@@ -379,7 +379,12 @@ if (httpModes.has(MODE)) {
       ok("cross-account: Bea's competitive-me is Bea's, not Joseph's", beaMe.status === "ok" && JSON.stringify(beaMe) !== JSON.stringify(meBefore) || beaMe.record.matches === 0);
       const { bea, chaosRunId } = await playChallenge();
       const done = await (await bea.request.post(`${BASE}/api/profile`, { data: { action: "challenge-complete", chaosRunId }, headers: { "content-type": "application/json", ...beaAuth } })).json();
-      ok("an account-vs-account completion answers RATED with the caller's movement", done.rating?.rated === true && typeof done.rating.you?.delta === "number" && done.rating.them?.name === "Joseph", JSON.stringify(done.rating).slice(0, 120));
+      // If this says repeat_opponent_limit, the product is right and the harness is
+      // dirty: the pair has already spent three rated outcomes in seven days in an
+      // earlier gate on this same fake cloud. Say so plainly instead of failing on
+      // an undefined movement three lines later.
+      ok("an account-vs-account completion answers RATED with the caller's movement", done.rating?.rated === true && typeof done.rating.you?.delta === "number" && done.rating.them?.name === "Joseph", done.rating?.reason === "repeat_opponent_limit" ? "UNRATED (repeat_opponent_limit) — this pair's budget was spent by an earlier gate on this harness; run this gate against a fresh fake cloud" : JSON.stringify(done.rating).slice(0, 120));
+      if (done.rating?.rated !== true || !done.rating.you) { write("rating-security-qa", {}, { exit: true }); }
       const guestDone = await (await bea.request.post(`${BASE}/api/profile`, { data: { action: "challenge-complete", chaosRunId }, headers: { "content-type": "application/json" } })).json();
       ok("the same completion asked for as a guest browser: rated, but no movement of THEIRS is shown", guestDone.rating?.rated === true && guestDone.rating.you === null);
       ok("the ledger event carries no forgeable client input: the movement equals the contract for the two ratings before", (() => { const m = C.rateMatch({ creator: { rating: done.rating.them.before, matches: 0 }, recipient: { rating: done.rating.you.before, matches: 0 }, outcome: done.rating.outcome }); return Math.abs(m.recipient.delta) >= Math.abs(done.rating.you.delta) - 16; })());

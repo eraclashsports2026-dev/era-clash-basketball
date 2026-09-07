@@ -1,7 +1,7 @@
 {
   "artifact": "phase9e-resolution-ledger",
   "phase": "9E — Competitive Rating + Leaderboards V1",
-  "generatedAt": "2026-09-07T01:15:04.902Z",
+  "generatedAt": "2026-09-07T01:55:57.554Z",
   "items": [
     {
       "item": "9D owner acceptance",
@@ -11,7 +11,7 @@
     {
       "item": "repository truth",
       "state": "FIXED_AND_VERIFIED",
-      "evidence": "phase-9e-competitive-rating-leaderboards-v1 @ f34f6f1, parent f34f6f1"
+      "evidence": "phase-9e-competitive-rating-leaderboards-v1 @ 97998d6, parent f34f6f1"
     },
     {
       "item": "Candidate 4 preservation",
@@ -30,7 +30,7 @@
     },
     {
       "item": "rating algorithm",
-      "state": "OPEN",
+      "state": "FIXED_AND_VERIFIED",
       "evidence": "rating-algorithm-qa.json — win/loss/tie, both K values, the floor"
     },
     {
@@ -210,13 +210,13 @@
     },
     {
       "item": "secret audit",
-      "state": "OPEN",
-      "evidence": "deployed gate not run"
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "bundle scan on the protected preview"
     },
     {
       "item": "deployed certification",
-      "state": "OPEN",
-      "evidence": "deployed gate not run"
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "deployed gate on https://era-clash-basketball-git-phase-9e-competitive-690a16-era-clash.vercel.app"
     },
     {
       "item": "Wave 1 preservation",
@@ -245,26 +245,24 @@
     },
     {
       "item": "unit tests",
-      "state": "OPEN",
-      "evidence": "not in sweep log"
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "2616 passed (2616)"
     },
     {
       "item": "Playwright e2e",
-      "state": "OPEN",
-      "evidence": "not in sweep log"
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "84 passed (1.8m)"
+    },
+    {
+      "item": "9C deployed preservation",
+      "state": "EXTERNAL_BLOCKER_WITH_SAFE_PRODUCT_FALLBACK",
+      "evidence": "8/11 on the protected preview — every product check passes (unknown code unavailable, create refused without an account, forged token refused, the invitation renders, bundle scan clean). Unmet: a seeded live challenge code was provided (LIVE_CHALLENGE_CODE); a live expired code was provided (LIVE_EXPIRED_CODE); a live revoked code was provided (LIVE_REVOKED_CODE) — these three need live 9C challenge codes supplied as operator fixtures, and the certified preview database is deliberately empty (Phase 9C's own live rows were deleted when that phase closed), so there is no live row to point them at. Seeding synthetic 9C challenges on the preview the owner is about to test on is outside Phase 9E's scope. The accept-and-compare path is certified end to end on the harness (challenge:security-qa PASS) and was certified live in Phase 9C (its frozen record is 15/15)."
     },
     {
       "item": "gates",
-      "state": "OPEN",
-      "evidence": "0 gates PASS"
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "60 gates PASS; challenge:deployed-qa partial on unsupplied 9C operator fixtures only"
     }
   ],
-  "open": [
-    "rating algorithm",
-    "secret audit",
-    "deployed certification",
-    "unit tests",
-    "Playwright e2e",
-    "gates"
-  ]
+  "open": []
 }

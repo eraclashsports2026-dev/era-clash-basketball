@@ -1,0 +1,62 @@
+{
+  "artifact": "rating-deployed-qa",
+  "phase": "9E — Competitive Rating + Leaderboards V1",
+  "generatedAt": "2026-09-07T01:53:00.458Z",
+  "origin": "https://era-clash-basketball-git-phase-9e-competitive-690a16-era-clash.vercel.app",
+  "checks": [
+    {
+      "check": "Candidate 4 on the preview",
+      "pass": true,
+      "detail": "Candidate 4 1.4.0"
+    },
+    {
+      "check": "the account provider is configured",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the public leaderboard answers signed out with safe rows only (public AND placed accounts)",
+      "pass": true,
+      "detail": "0 rows"
+    },
+    {
+      "check": "competitive-me without an account is refused on the preview",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a forged token is refused",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the /leaderboard route renders signed out: the public table or the honest cold-start state, the sign-in entry, no overflow",
+      "pass": true,
+      "detail": "{\"rows\":0,\"empty\":true,\"signedOut\":true,\"overflow\":0}"
+    },
+    {
+      "check": "no secret-shaped string in the bundle",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the bundle carries the competitive client and never the database functions or the dev fixture",
+      "pass": true,
+      "detail": "{\"bytes\":888596,\"secretShaped\":0,\"serviceJwt\":0,\"hasClient\":true,\"namesFunction\":false,\"fixtureRoute\":false}"
+    }
+  ],
+  "passed": true,
+  "bundle": {
+    "bytes": 888596,
+    "secretShaped": 0,
+    "serviceJwt": 0,
+    "hasClient": true,
+    "namesFunction": false,
+    "fixtureRoute": false
+  },
+  "health": {
+    "candidate": "Candidate 4",
+    "calibration": "1.4.0"
+  },
+  "leaderboardRows": 0
+}

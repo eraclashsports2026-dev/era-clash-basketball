@@ -1,18 +1,18 @@
 {
   "artifact": "rating-concurrency-qa",
   "phase": "9E — Competitive Rating + Leaderboards V1",
-  "generatedAt": "2026-09-07T00:49:34.827Z",
+  "generatedAt": "2026-09-07T01:52:45.983Z",
   "origin": "http://localhost:4178",
   "checks": [
     {
       "check": "6 simultaneous completions: every answer carries the SAME movement; one event",
       "pass": true,
-      "detail": "6 rated answers · 20"
+      "detail": "6 rated answers · 24"
     },
     {
       "check": "the creator's record grew by exactly one match",
       "pass": true,
-      "detail": "0 → 1 · 1000 → 980"
+      "detail": "2 → 3 · 1038 → 1014"
     },
     {
       "check": "the recipient's history gained exactly one event for this challenge",
@@ -33,11 +33,11 @@
   "passed": true,
   "simultaneous": 6,
   "deltas": [
-    20,
-    20,
-    20,
-    20,
-    20,
-    20
+    24,
+    24,
+    24,
+    24,
+    24,
+    24
   ]
 }
