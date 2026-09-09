@@ -18,7 +18,8 @@ const byId = new Map(ACHIEVEMENTS.map((a) => [a.id, a]));
 const Metric = ({ label, value, sub = null, size = "md" }) => (
   <div className="ec-pp-metric" data-size={size}>
     <dt className="ec-pp-metric-k">{label}</dt>
-    <dd className="ec-pp-metric-v">{value}{sub ? <span className="ec-pp-metric-sub">{sub}</span> : null}</dd>
+    <dd className="ec-pp-metric-v">{value}</dd>
+    {sub ? <dd className="ec-pp-metric-sub">{sub}</dd> : null}
   </div>
 );
 
@@ -44,7 +45,7 @@ export default function PlayerCard({ profile, variant = "public" }) {
       {placed ? (
         <dl className="ec-pp-metrics">
           <Metric label="COMPETITIVE RATING" value={fmt(p.rating)} size="xl" />
-          <Metric label="RECORD" value={`${p.wins}–${p.losses}–${p.ties}`} sub={p.winPct == null ? null : ` · ${p.winPct}%`} />
+          <Metric label="RECORD" value={`${p.wins}–${p.losses}–${p.ties}`} sub={p.winPct == null ? null : `${p.winPct}% WIN RATE`} />
           {p.rank ? <Metric label="GLOBAL RANK" value={`#${p.rank}`} /> : null}
           {p.level != null ? <Metric label="CAREER LEVEL" value={p.level} /> : null}
         </dl>

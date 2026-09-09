@@ -111,7 +111,17 @@ export const PROFILE_STATE_COPY = Object.freeze({
   none: "NO RATED CHALLENGES YET",
 });
 export const profileState = ({ placed = false, matches = 0 } = {}) => (placed ? "placed" : matches > 0 ? "provisional" : "none");
-/** A public rank is shown only when the account is genuinely eligible for one — placed AND on the leaderboard. */
+/**
+ * A public rank is shown only when the account is genuinely eligible for one —
+ * PLACED and on the public leaderboard. This is the documented rule, and the
+ * SQL projection implements it (the gates pin the two together).
+ *
+ * It is deliberately NOT applied inside publicProfile(): leaderboard_visibility
+ * is a private preference and must never travel in a public payload, so a public
+ * row cannot carry it and the projection has no business re-deriving the rule
+ * from it. The database is the authority; a public row simply carries the rank
+ * it was granted, or none.
+ */
 export const showsPublicRank = ({ state, leaderboardVisibility } = {}) => state === "placed" && leaderboardVisibility === "public";
 /** A public profile shows a rating only once placed. Never an estimate, never a "would be #X". */
 export const showsPublicRating = ({ state } = {}) => state === "placed";
@@ -157,7 +167,6 @@ export const publicProfile = (row = {}) => {
   const state = profileState({ placed: !!row.placed, matches: Number(row.rated_matches ?? row.matches ?? 0) });
   const matches = Number(row.rated_matches ?? row.matches ?? 0);
   const wins = Number(row.rated_wins ?? row.wins ?? 0), losses = Number(row.rated_losses ?? row.losses ?? 0), ties = Number(row.rated_ties ?? row.ties ?? 0);
-  const leaderboardVisibility = row.leaderboard_visibility ?? row.leaderboardVisibility ?? "private";
   const base = {
     slug: row.slug ?? null,
     displayName: row.display_name ?? row.displayName ?? "Coach",
@@ -172,7 +181,8 @@ export const publicProfile = (row = {}) => {
   return {
     ...base,
     rating: Number(row.current_rating ?? row.rating ?? 0),
-    rank: showsPublicRank({ state, leaderboardVisibility }) ? (row.rank ?? null) : null,
+    // the authority already applied showsPublicRank; a withheld rank arrives null
+    rank: row.rank ?? null,
     wins, losses, ties, matches,
     winPct: matches > 0 ? Math.round((wins / matches) * 100) : null,
   };

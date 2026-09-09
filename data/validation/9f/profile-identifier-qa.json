@@ -1,0 +1,55 @@
+{
+  "artifact": "profile-identifier-qa",
+  "phase": "9F — Public Competitive Profiles + Player Cards V1",
+  "generatedAt": "2026-09-09T17:40:21.764Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "20 symbols of a 32-symbol alphabet = 100 bits, and the alphabet is unambiguous (no i, l, o, u)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the database generates it with no modulo bias (256 is divisible by 32)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a slug is accepted; a near miss, an uppercase copy and an ambiguous letter are not",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "an auth uuid is never a slug, at the contract and in the SQL",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "it is minted with the account, so a visibility change never has to create one",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "it is immutable: a shared link keeps resolving, and no one may choose their own",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "it is not derived from an email and is not the auth or database id",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "it disappears with the account",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "live: four consecutive accounts received unrelated, non-sequential slugs",
+      "pass": true,
+      "detail": "20 symbols of a 32-symbol alphabet = 100 bits, from extensions.gen_random_bytes with byte % 32 (256 is divisible by 32, "
+    }
+  ],
+  "passed": true,
+  "live": "20 symbols of a 32-symbol alphabet = 100 bits, from extensions.gen_random_bytes with byte % 32 (256 is divisible by 32, so uniform — no modulo bias). Observed slugs for four consecutive accounts: e6dj0mdh6qfaks3n3mw1, 8bx792sy72jz0nfv088z, yt5p66889a7smv9mzc9j, 03gnv3ncan6qhsmj2bpk — unrelated to each other and to the sequential uuids that produced them."
+}

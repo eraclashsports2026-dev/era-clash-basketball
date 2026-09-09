@@ -67,6 +67,7 @@ import PublicProfilePage from "./components/profiles/PublicProfilePage.jsx";   /
 import { slugFromPath, PUBLIC_PROFILE_ROUTE } from "./profiles/contract.js";
 import RatingChange from "./components/competitive/RatingChange.jsx";
 import CompetitiveReferenceFixture from "./ui/competitive/CompetitiveReferenceFixture.jsx";   // dev-only gate
+import ProfileReferenceFixture from "./ui/profiles/ProfileReferenceFixture.jsx";   // dev-only gate
 import { codeFromSearch, CHALLENGE_EVENTS } from "./challenges/contract.js";
 import { can, CAPABILITIES } from "./entitlements.js";
 import RosterGrid from "./components/RosterGrid.jsx";
@@ -160,6 +161,7 @@ const DEV_FIXTURES = import.meta.env.DEV || import.meta.env.VITE_EC_DEV_FIXTURES
 const FIXTURE_ROUTE = "/dev/time-arena-reference";
 const PROGRESSION_FIXTURE_ROUTE = "/dev/progression-reference";
 const COMPETITIVE_FIXTURE_ROUTE = "/dev/competitive-reference";
+const PROFILE_FIXTURE_ROUTE = "/dev/profile-reference";
 const LEADERBOARD_ROUTE = "/leaderboard";
 const isProfileRoute = (r) => String(r || "").startsWith(`${PUBLIC_PROFILE_ROUTE}/`);
 // Phase 9A.1 — the Basketball theme decision lab. __EC_THEME_LAB__ is a build
@@ -214,6 +216,9 @@ export default function App() {
   }
   if (DEV_FIXTURES && typeof window !== "undefined" && window.location.pathname === COMPETITIVE_FIXTURE_ROUTE) {
     return <CompetitiveReferenceFixture />;
+  }
+  if (DEV_FIXTURES && typeof window !== "undefined" && window.location.pathname === PROFILE_FIXTURE_ROUTE) {
+    return <ProfileReferenceFixture />;
   }
   if (THEME_LAB && typeof window !== "undefined" && window.location.pathname === THEME_LAB_ROUTE) {
     return <Suspense fallback={null}><ThemeLab /></Suspense>;

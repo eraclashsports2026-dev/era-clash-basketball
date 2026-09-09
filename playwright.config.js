@@ -21,7 +21,7 @@ export default defineConfig({
   projects: [
     {
       name: "production-flags-off",
-      testIgnore: /(daily-coach-era|phase7b-preview|phase8a-chaos|phase8c-time-arena|phase9a-play-lobby|phase9a3p-lobby-polish|phase9c-challenges|phase9d-progression|phase9e-competitive)\.spec\.js/,
+      testIgnore: /(daily-coach-era|phase7b-preview|phase8a-chaos|phase8c-time-arena|phase9a-play-lobby|phase9a3p-lobby-polish|phase9c-challenges|phase9d-progression|phase9e-competitive|phase9f-profiles)\.spec\.js/,
     },
     {
       name: "daily-coach-era-preview",
@@ -40,7 +40,7 @@ export default defineConfig({
       // Phase 9C/9D: the challenge and progression flows need an account
       // provider; the harness plays one in memory (fake cloud) on its own port.
       name: "challenges-fake-cloud",
-      testMatch: /(phase9c-challenges|phase9d-progression|phase9e-competitive)\.spec\.js/,
+      testMatch: /(phase9c-challenges|phase9d-progression|phase9e-competitive|phase9f-profiles)\.spec\.js/,
       use: { baseURL: "http://localhost:4178" },
     },
   ],

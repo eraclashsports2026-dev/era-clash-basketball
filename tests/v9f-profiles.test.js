@@ -122,8 +122,13 @@ describe("the public projection", () => {
   });
 
   it("shows a rank ONLY when the account is placed and on the leaderboard — never an estimate", () => {
-    expect(F.publicProfile({ ...placedRow, leaderboard_visibility: "private" }).rank).toBeNull();
+    // publicProfile carries the rank the AUTHORITY granted and never re-derives it:
+    // leaderboard_visibility is private and must not travel in a public payload.
+    expect(F.publicProfile({ ...placedRow, rank: null }).rank).toBeNull();
     expect(F.publicProfile(placedRow).rank).toBe(38);
+    // a provisional row is never given one at all
+    expect(F.publicProfile({ ...placedRow, placed: false, rated_matches: 2 }).rank).toBeUndefined();
+    // and the rule itself is the documented predicate the SQL mirrors
     expect(F.showsPublicRank({ state: "placed", leaderboardVisibility: "public" })).toBe(true);
     expect(F.showsPublicRank({ state: "placed", leaderboardVisibility: "private" })).toBe(false);
     expect(F.showsPublicRank({ state: "provisional", leaderboardVisibility: "public" })).toBe(false);

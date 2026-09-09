@@ -1,0 +1,56 @@
+{
+  "artifact": "public-profile-projection-qa",
+  "phase": "9F — Public Competitive Profiles + Player Cards V1",
+  "generatedAt": "2026-09-09T17:41:21.957Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "a public, placed account resolves with the rating, record, rank and level",
+      "pass": true,
+      "detail": "{\"slug\":\"11111111111111111111\",\"displayName\":\"Alpha\",\"initials\":\"A\",\"state\":\"placed\",\"level\":24,\"featured\":[],\"placement\":{\"matches\":5,\"matchesTarget\""
+    },
+    {
+      "check": "every key present is one the contract allows; not one forbidden field appears",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the projection comes from the server, not from a base row the client filters",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the card renders only what arrived: it reads no rating when none was sent",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "with no preference row at all the profile is PRIVATE — the default is the database's, not the client's",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": true,
+  "sample": {
+    "slug": "11111111111111111111",
+    "displayName": "Alpha",
+    "initials": "A",
+    "state": "placed",
+    "level": 24,
+    "featured": [],
+    "placement": {
+      "matches": 5,
+      "matchesTarget": 5,
+      "opponents": 3,
+      "opponentsTarget": 3
+    },
+    "profileVersion": "1.0.0",
+    "rating": 1100,
+    "rank": 1,
+    "wins": 3,
+    "losses": 2,
+    "ties": 0,
+    "matches": 5,
+    "winPct": 60
+  }
+}

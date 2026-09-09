@@ -1,0 +1,45 @@
+{
+  "artifact": "profile-leaderboard-integration-qa",
+  "phase": "9F — Public Competitive Profiles + Player Cards V1",
+  "generatedAt": "2026-09-09T17:43:19.054Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "the board-links action answers with rank→slug pairs only",
+      "pass": true,
+      "detail": "{}"
+    },
+    {
+      "check": "it never carries a name, an account id or anything but a rank and a slug",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the Phase 9E leaderboard still answers exactly as before, with its own field list",
+      "pass": true,
+      "detail": "0 rows"
+    },
+    {
+      "check": "a leaderboard row is not required to have a profile: linking is additive",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the leaderboard component links only where a link exists",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Phase 9E's own ranking decides the rank — 9F does not re-sort anyone",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Phase 9E's ordering, limit and projection are untouched in this phase",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": true,
+  "links": {}
+}

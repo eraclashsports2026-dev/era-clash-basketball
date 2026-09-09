@@ -1,0 +1,64 @@
+{
+  "artifact": "profile-visibility-qa",
+  "phase": "9F — Public Competitive Profiles + Player Cards V1",
+  "generatedAt": "2026-09-09T17:41:22.068Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "a profile is reachable exactly when profile_visibility is public, whatever the leaderboard says",
+      "pass": true,
+      "detail": "[\"private/private:false\",\"private/public:false\",\"public/private:true\",\"public/public:true\"]"
+    },
+    {
+      "check": "a rank appears only when the account is placed AND on the leaderboard",
+      "pass": true,
+      "detail": "[null,null,null,1]"
+    },
+    {
+      "check": "a leaderboard row links only when the profile is public too",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the two settings are never combined in code: profile visibility is read from its own key",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "an invalid value and an unknown key are refused by the schema, not coerced",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": true,
+  "combinations": [
+    {
+      "profile": "private",
+      "leaderboard": "private",
+      "reachable": false,
+      "rank": null,
+      "linked": false
+    },
+    {
+      "profile": "private",
+      "leaderboard": "public",
+      "reachable": false,
+      "rank": null,
+      "linked": false
+    },
+    {
+      "profile": "public",
+      "leaderboard": "private",
+      "reachable": true,
+      "rank": null,
+      "linked": false
+    },
+    {
+      "profile": "public",
+      "leaderboard": "public",
+      "reachable": true,
+      "rank": 1,
+      "linked": true
+    }
+  ]
+}
