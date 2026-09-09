@@ -1396,14 +1396,19 @@ export default function App() {
       : result?.type === "best7" ? (result.sim?.seriesResult || (result.won ? "4 wins" : "series loss"))
       : result?.type === "tournament" ? (result.won ? "CHAMPION" : "eliminated")
       : result?.w ? "W" : "L";
+    // A Chaos result is challenged through the governed 9C invitation
+    // (ChallengeShare -> /?challenge=EC-XXXX-XXXX), never through the legacy
+    // roster challenge: that link lands the recipient in the pre-9C builder
+    // instead of the Chaos flow. Dream/Best7/Win82/Tournament/Daily keep it.
+    const legacyChallenge = result?.tag !== "chaos";
     const [resultUrl, ch] = await Promise.all([
       result && result.type !== "tournament" ? publishResult(buildSnapshot()) : Promise.resolve(null),
-      createChallenge(team, rec),
+      legacyChallenge ? createChallenge(team, rec) : Promise.resolve(null),
     ]);
     if (resultUrl) track("result_created", { kind: result?.type || "single" });
-    const url = resultUrl || ch.url;
+    const url = resultUrl || ch?.url || `${location.origin}/`;
     const roster = POSITIONS.map((pos, i) => `${pos}: ${team[i].name} (${team[i].decade})`).join("\n");
-    const text = `🏀 My EraClash squad went ${rec}\n\n${roster}\n\nTeam Rating: ${teamRating(team)}\n\nThink you can beat my five? Play them here:\n${resultUrl ? `${resultUrl}\n(or take the direct challenge: ${ch.url})` : url}`;
+    const text = `🏀 My EraClash squad went ${rec}\n\n${roster}\n\nTeam Rating: ${teamRating(team)}\n\nThink you can beat my five? Play them here:\n${resultUrl && ch ? `${resultUrl}\n(or take the direct challenge: ${ch.url})` : url}`;
     if (result?.tag === "daily") track("daily_result_shared", {});
     const outcome = await shareText(text, result?.tag === "daily" ? "daily_result" : result?.type || "result");
     if (outcome !== "shared") setShare({ text, url });
@@ -1885,7 +1890,7 @@ export default function App() {
         // to fail. The dock owns Run it back, New Clash and Challenge.
         onRematch={live ? () => doRematch(res?.tag) : null}
         onBest7={live && res.type !== "best7" ? doBest7FromResult : null}
-        onChallenge={live ? doShare : null} onSwap={live ? startSwap : null}
+        onChallenge={live && res?.tag !== "chaos" ? doShare : null} onSwap={live ? startSwap : null}
         onShare={live ? doShare : null}
         onLeaderboard={() => handleNav("Daily")} />
       {/* Phase 9B.1: Save This Clash. Under the result, never over it, and

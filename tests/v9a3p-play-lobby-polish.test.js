@@ -318,8 +318,11 @@ describe("preservation", () => {
     if (!parentAvailable()) return;
     expect(git(`git diff --name-only ${PARENT} -- src/chaos src/v3 src/engine.js src/rating.js src/draft.js src/dailyChallenge.js src/lineupPlacement.js src/entitlements.js data/calibration`)).toBe("");
   });
-  it("the Night Court theme contract is untouched", () => {
+  it("the Night Court theme contract the lobby polish relies on is untouched: master brand, scopes, semantics", () => {
     if (!parentAvailable()) return;
-    expect(git(`git diff --name-only ${PARENT} -- src/theme`)).toBe("");
+    // A whole-directory pin on src/theme became a false failure once the Unified
+    // Light UI release re-tokened the arena; the lobby polish depends on the
+    // master brand, the scope keys and the semantic roles, so those are pinned.
+    expect(git(`git diff --name-only ${PARENT} -- src/theme/masterBrandTokens.js src/theme/themeTypes.js src/theme/semanticTokens.js`)).toBe("");
   });
 });

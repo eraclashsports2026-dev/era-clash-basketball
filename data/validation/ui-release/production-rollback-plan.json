@@ -1,0 +1,17 @@
+{
+  "artifact": "production-rollback-plan",
+  "status": "PREPARED — NOT EXECUTED",
+  "release": "ui/light-court-release-candidate",
+  "rcCommit": "__RC_COMMIT__",
+  "recordedAt": "2026-09-09",
+  "knownGood": { "deployment": "main@9cd95ff v2.7.2 (current production)", "database": "none (production runs without cloud accounts today)" },
+  "tiers": [
+    { "tier": "A — presentation only", "trigger": "Light Court renders wrong on the domain but gameplay is fine", "action": "Vercel -> Deployments -> Promote the previous production deployment (instant, no data change). Or revert the RC commit on main and let Git-integration redeploy.", "dataImpact": "none", "time": "< 2 minutes" },
+    { "tier": "B — feature disable", "trigger": "one subsystem misbehaves (challenges, leaderboard, narrative, chaos)", "action": "Set the flag to false in Production env and redeploy env only: CHALLENGES_ENABLED, PUBLIC_LEADERBOARD_ENABLED, AI_NARRATIVE_ENABLED, CHAOS_CLASH_ENABLED, or CLOUD_ACCOUNTS_ENABLED=false to return to the guest-only product. MAINTENANCE_MODE=true stops all mutations while reads continue.", "dataImpact": "none; stored rows stay readable", "time": "< 5 minutes" },
+    { "tier": "C — full application rollback", "trigger": "the RC is unfit", "action": "Promote main@9cd95ff (or its Vercel deployment) to production. Unset CLOUD_ACCOUNTS_ENABLED. The production Supabase project may be left in place (dormant) or paused; do NOT drop it while any real user has signed in — export first.", "dataImpact": "accounts created after promotion become unreachable from the app until re-enabled; nothing is deleted", "time": "< 10 minutes" },
+    { "tier": "D — database", "trigger": "a migration proves defective in production", "action": "Migrations 0001..0007 are forward-only (no down scripts are shipped). Rollback is Tier C (app off the database) plus a targeted corrective migration reviewed like a phase. Never edit an applied migration file.", "dataImpact": "assessed per defect", "time": "planned, not immediate" }
+  ],
+  "clientCache": "The service worker cache identity is build-derived with skipWaiting; a rolled-back deployment is picked up on the next load. Network-first HTML means no manual purge.",
+  "dns": "No DNS change is part of this release or its rollback; www.eraclashbasketball.com stays pointed at the Vercel project.",
+  "verification": ["/api/health build and flags match the rolled-back state", "Home renders and a guest Chaos Clash completes", "no 5xx in Vercel runtime logs for 10 minutes"]
+}

@@ -59,8 +59,8 @@ export default function ResetDialog({ open, state = "draft", busy = false, onCon
               minHeight: 44, borderRadius: 9, cursor: busy ? "default" : "pointer",
               fontFamily: "var(--ec-display)", fontSize: 13, fontWeight: 700, letterSpacing: 1,
               border: "1px solid var(--ec-a-gold-line)",
-              background: "linear-gradient(180deg, var(--ec-a-gold), #b07d09)",
-              color: "#0a0f18", opacity: busy ? 0.6 : 1,
+              background: "linear-gradient(180deg, var(--ec-a-cta-hi, var(--ec-a-gold)), var(--ec-a-cta-lo, #b07d09))",
+              color: "var(--ec-a-cta-ink, #0a0f18)", opacity: busy ? 0.6 : 1,
             }}>{busy ? (state === "abandon" ? "ABANDONING…" : "RESETTING…") : "YES"}</button>
           <button ref={noRef} onClick={onCancel}
             aria-label={state === "complete" ? "No, stay on this result" : state === "abandon" ? "No, keep this Chaos Clash" : "No, keep drafting"}

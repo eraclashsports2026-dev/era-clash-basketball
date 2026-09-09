@@ -1,0 +1,19 @@
+{
+  "artifact": "domain-release-readiness",
+  "release": "ui/light-court-release-candidate",
+  "rcCommit": "__RC_COMMIT__",
+  "recordedAt": "2026-09-09",
+  "verdictScope": "readiness of the candidate and of the plan — NOT a promotion. Promotion needs 'APPROVE UI — PREPARE FINAL DOMAIN PROMOTION' and then a separate execution approval.",
+  "domain": { "canonical": "https://www.eraclashbasketball.com", "apex": "https://eraclashbasketball.com -> 308 -> www", "servedBy": "Vercel project era-clash-basketball, production = main", "dnsChangeNeeded": false },
+  "gap": "Production is pre-accounts main@9cd95ff (v2.7.2, no database). The RC carries 9B.1 accounts, 9B.2 career, 9B.3 guided flow, 9C challenges, 9D progression, 9E rating/leaderboards, 9F public profiles, and the Unified Light UI — all currently proven only on the preview database.",
+  "blockersForPromotion": [
+    { "id": "B1", "owner": "owner", "item": "Create the production Supabase project and apply 0001..0007 (production-migration-plan steps 1-3)" },
+    { "id": "B2", "owner": "owner", "item": "Set production env keys (names in production-migration-plan step 4); never the preview project's values" },
+    { "id": "B3", "owner": "owner decision", "item": "Flags: CHAOS_CLASH_ENABLED=true; PREVIEW_SIM_ENGINE_ENABLED (Candidate 4 vs production engine 3.2.0)" },
+    { "id": "B4", "owner": "owner", "item": "Merge chain: PR #49 (9F) and the RC PR are open drafts; main must receive the chain in order" },
+    { "id": "B5", "owner": "owner", "item": "Owner test of the RC on its durable preview alias (journeys A-H) and the verdict APPROVE UI" }
+  ],
+  "readyNow": ["Application build at the RC commit (13 serverless functions incl. middleware, budget held)", "Shared-token Light Court with the dark global navigation kept", "Chaos challenge entry corrected with a regression gate", "Runbooks: production-migration-plan, production-rollback-plan, production-isolation"],
+  "evidenceLegend": { "automated": "gate or test output recorded in data/validation/ui-release", "manual-developer": "developer drove the preview in a browser", "owner-reported": "the owner said it worked; not independently reproduced", "not-yet-verified": "no evidence" },
+  "environmentFacts": { "supabaseProjects": ["lfybiphmqkiecfrqsfzt (preview only)"], "productionMigrations": 0, "previewMigrations": 7, "serverlessFunctions": 13, "middleware": "preview access gate active only when VERCEL_ENV=preview" }
+}

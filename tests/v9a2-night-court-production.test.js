@@ -42,7 +42,10 @@ describe("the production theme", () => {
     expect(MASTER_BRAND.obsidian).toBe("#03060B"); expect(MASTER_BRAND.platinum).toBe("#E7EAF0"); expect(MASTER_BRAND.graphite).toBe("#141A24"); expect(MASTER_BRAND.fractureGold).toBe("#E1A72C"); expect(MASTER_BRAND.fractureCobalt).toBe("#267CE8");
     expect(NIGHT_COURT_V1.layer2).toEqual({ nightObsidian: "#070A0F", arenaGraphite: "#111823", raisedGraphite: "#172130", warmCourtIvory: "#F1EDE4", editorialInk: "#151B24", secondaryInk: "#505765", softIvoryDivider: "#D7D1C6" });
     expect(P.semantic).toEqual({ teamGold: "#E8B13C", teamBlue: "#2F83E7", coachViolet: "#7656D7", success: "#2FA96D", warning: "#C58B23", danger: "#D95050" });
-    expect(P.arena.bg).toBe("#070A0F"); expect(P.arena.panel).toBe("#111823"); expect(P.arena["panel-raised"]).toBe("#172130"); expect(P.arena.text).toBe("#E7EAF0");
+    // Unified Light UI release: the arena reads on Warm Court Ivory with Editorial Ink;
+    // the portrait well stays dark so the jersey/stage separation contract holds.
+    expect(P.arena.bg).toBe("#F1EDE4"); expect(P.arena.panel).toBe("#FBF8F1"); expect(P.arena["panel-raised"]).toBe("#FFFFFF"); expect(P.arena.text).toBe("#151B24");
+    expect(P.arena["portrait-well-lo"]).toBe("#0B1220"); expect(P.arena.header).toBe("rgba(3, 6, 11, 0.94)");
     expect(P.reading.bg).toBe("#F1EDE4"); expect(P.reading.text).toBe("#151B24"); expect(P.reading.border).toBe("#D7D1C6");
     expect(P.lobby.bg).toBe("#F1EDE4"); expect(P.lobby["hero-bg"]).toBe("#03060B");
   });
@@ -63,7 +66,7 @@ describe("the production theme", () => {
   it("declares the two contexts of the contextual 60–30–10 rule", () => {
     expect(P.contexts.arena.fixtures).toEqual(["empty", "roll2", "coach", "result"]);
     expect(P.contexts.editorial.fixtures).toContain("postgame"); expect(P.contexts.editorial.fixtures).toContain("lobby");
-    expect(P.contexts.arena.dominant.colors).toContain("#070A0F"); expect(P.contexts.editorial.dominant.colors).toContain("#F1EDE4");
+    expect(P.contexts.arena.dominant.colors).toContain("#F1EDE4"); expect(P.contexts.editorial.dominant.colors).toContain("#F1EDE4");
     expect(P.contexts.arena.targets).toEqual({ dominant: [55, 68], secondary: [22, 35], accent: [6, 10] });
   });
 });

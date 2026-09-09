@@ -1,0 +1,74 @@
+{
+  "artifact": "challenge-entry-regression-qa",
+  "mode": "challenge-entry",
+  "origin": "http://localhost:4180",
+  "recordedAt": "2026-09-09T20:03:40.182Z",
+  "pass": true,
+  "checks": [
+    {
+      "name": "source: the legacy Challenge CTA is withdrawn on a Chaos result",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "source: doShare mints the legacy roster challenge only for non-Chaos results",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "source: the legacy /?c= and /?ch= handler is intact (old links never break)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "source: the governed ChallengeShare is the challenge surface on a Chaos result",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "source: the legacy codec is unchanged (verbatim guard)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "browser: a completed Chaos result renders",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "browser: no legacy 'Challenge a Friend' CTA on a Chaos result",
+      "pass": true,
+      "detail": "legacy CTAs 0"
+    },
+    {
+      "name": "browser: the governed challenge surface (ChallengeShare) is offered on the Chaos result",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "browser: no /challenge/{id} legacy link is shown on the Chaos result",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "browser: the full report keeps Share on the Chaos result (result sharing is not a challenge)",
+      "pass": true,
+      "detail": "{\"share\":1,\"legacy\":0}"
+    },
+    {
+      "name": "browser: the full report shows no legacy Challenge CTA on the Chaos result",
+      "pass": true,
+      "detail": "{\"share\":1,\"legacy\":0}"
+    },
+    {
+      "name": "browser: a legacy /?c= link still opens the legacy challenge path (not silently redirected into Chaos)",
+      "pass": true,
+      "detail": "{\"builder\":true,\"chaos\":false}"
+    },
+    {
+      "name": "browser: a /?challenge=EC-… invitation resolves to the Chaos invite surface, never the roster builder",
+      "pass": true,
+      "detail": "{\"invite\":true,\"builder\":false}"
+    }
+  ]
+}

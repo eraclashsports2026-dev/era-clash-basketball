@@ -1,0 +1,181 @@
+{
+  "artifact": "wave-preservation",
+  "release": "ui/light-court-release-candidate",
+  "base": "aae565c",
+  "head": "aae565c",
+  "recordedAt": "2026-09-09T20:13:17.618Z",
+  "method": "git diff --name-only aae565c -- <paths> per metric; refs compared to ui-release-preflight.json",
+  "metrics": {
+    "activeCandidateCoreDrift": {
+      "value": 0,
+      "paths": "api/_lib/game-core-v3.js api/_lib/previewEngine.js data/calibration",
+      "files": []
+    },
+    "candidateParameterDrift": {
+      "value": 0,
+      "paths": "data/calibration config/previewAccess.js",
+      "files": []
+    },
+    "gameLogicChanges": {
+      "value": 0,
+      "paths": "src/engine.js src/rating.js src/v3 api/_lib/game-core.js api/_lib/game-core-v3.js api/game.js api/simulate.js",
+      "files": []
+    },
+    "draftLogicChanges": {
+      "value": 0,
+      "paths": "src/draft.js src/chaos api/_lib/chaosRun.js",
+      "files": []
+    },
+    "placementLogicChanges": {
+      "value": 0,
+      "paths": "src/lineupPlacement.js",
+      "files": []
+    },
+    "legendRivalLogicChanges": {
+      "value": 0,
+      "paths": "src/chaos/legendCpu.js api/_lib/chaosRun.js",
+      "files": []
+    },
+    "eraLogicChanges": {
+      "value": 0,
+      "paths": "src/chaos/eraTranslation.js api/_lib/chaosRun.js",
+      "files": []
+    },
+    "coachLogicChanges": {
+      "value": 0,
+      "paths": "src/chaos/coachOffers.js api/_lib/previewCoaching.js",
+      "files": []
+    },
+    "challengeFairnessChanges": {
+      "value": 0,
+      "paths": "api/_lib/challenges.js api/challenge.js supabase/migrations/0004_challenges.sql",
+      "files": []
+    },
+    "challengeComparisonChanges": {
+      "value": 0,
+      "paths": "api/_lib/challenges.js src/components/challenges/ChallengeComparison.jsx",
+      "files": []
+    },
+    "progressionContractChanges": {
+      "value": 0,
+      "paths": "api/_lib/progression.js supabase/migrations/0005_progression_v1.sql src/progression",
+      "files": []
+    },
+    "competitiveRatingContractChanges": {
+      "value": 0,
+      "paths": "api/_lib/competitive.js supabase/migrations/0006_competitive_rating_v1.sql",
+      "files": []
+    },
+    "competitivePlacementContractChanges": {
+      "value": 0,
+      "paths": "api/_lib/competitive.js supabase/migrations/0006_competitive_rating_v1.sql",
+      "files": []
+    },
+    "privacyContractChanges": {
+      "value": 0,
+      "paths": "api/_lib/profiles.js api/profile.js supabase/migrations/0007_public_competitive_profiles_v1.sql api/_lib/cloudAccounts.js",
+      "files": []
+    },
+    "apiFunctionCountIncrease": {
+      "value": 0,
+      "paths": "api/*.js middleware.js",
+      "files": [],
+      "detail": "api/*.js 12 -> 12 (+ middleware.js = 13 of 13)"
+    },
+    "wave1Changes": {
+      "value": 0,
+      "detail": {
+        "recorded": "4dc59e7",
+        "now": "4dc59e7",
+        "moved": false
+      }
+    },
+    "stableWave2Changes": {
+      "value": 0,
+      "detail": {
+        "recorded": "ef0caa5",
+        "now": "ef0caa5",
+        "moved": false
+      }
+    },
+    "mainChanges": {
+      "value": 0,
+      "detail": {
+        "recorded": "9cd95ff",
+        "now": "9cd95ff",
+        "moved": false
+      }
+    },
+    "productionChanges": {
+      "value": 0,
+      "detail": "no production deployment, migration, env or DNS action was taken; production /api/health read live at summary time (see production-isolation.json)"
+    }
+  },
+  "allZero": true,
+  "changedFiles": [
+    "data/validation/9b3/accessibility-qa.json",
+    "data/validation/9b3/clash-ready-qa.json",
+    "data/validation/9b3/coach-chaos-qa.json",
+    "data/validation/9b3/drafting-qa.json",
+    "data/validation/9b3/era-reveal-qa.json",
+    "data/validation/9b3/foundation-qa.json",
+    "data/validation/9b3/performance-qa.json",
+    "data/validation/9b3/progressive-disclosure-qa.json",
+    "data/validation/9b3/responsive-qa.json",
+    "data/validation/9b3/result-state-qa.json",
+    "data/validation/9b3/screens/1024x1366/01-foundation.png",
+    "data/validation/9b3/screens/1024x1366/02-drafting.png",
+    "data/validation/9b3/screens/1024x1366/03-era-reveal.png",
+    "data/validation/9b3/screens/1024x1366/04-coach-chaos.png",
+    "data/validation/9b3/screens/1024x1366/05-clash-ready.png",
+    "data/validation/9b3/screens/1024x1366/06-result.png",
+    "data/validation/9b3/screens/1280x800/01-foundation.png",
+    "data/validation/9b3/screens/1280x800/02-drafting.png",
+    "data/validation/9b3/screens/1280x800/03-era-reveal.png",
+    "data/validation/9b3/screens/1280x800/04-coach-chaos.png",
+    "data/validation/9b3/screens/1280x800/05-clash-ready.png",
+    "data/validation/9b3/screens/1280x800/06-result.png",
+    "data/validation/9b3/screens/1440x900/01-foundation.png",
+    "data/validation/9b3/screens/1440x900/02-drafting.png",
+    "data/validation/9b3/screens/1440x900/03-era-reveal.png",
+    "data/validation/9b3/screens/1440x900/04-coach-chaos.png",
+    "data/validation/9b3/screens/1440x900/05-clash-ready.png",
+    "data/validation/9b3/screens/1440x900/06-result.png",
+    "data/validation/9b3/screens/1536x1024/01-foundation.png",
+    "data/validation/9b3/screens/1536x1024/02-drafting.png",
+    "data/validation/9b3/screens/1536x1024/03-era-reveal.png",
+    "data/validation/9b3/screens/1536x1024/04-coach-chaos.png",
+    "data/validation/9b3/screens/1536x1024/05-clash-ready.png",
+    "data/validation/9b3/screens/1536x1024/06-result.png",
+    "data/validation/9b3/screens/390x844/01-foundation.png",
+    "data/validation/9b3/screens/390x844/02-drafting.png",
+    "data/validation/9b3/screens/390x844/03-era-reveal.png",
+    "data/validation/9b3/screens/390x844/04-coach-chaos.png",
+    "data/validation/9b3/screens/390x844/05-clash-ready.png",
+    "data/validation/9b3/screens/390x844/06-result.png",
+    "data/validation/9b3/screens/430x932/01-foundation.png",
+    "data/validation/9b3/screens/430x932/02-drafting.png",
+    "data/validation/9b3/screens/430x932/03-era-reveal.png",
+    "data/validation/9b3/screens/430x932/04-coach-chaos.png",
+    "data/validation/9b3/screens/430x932/05-clash-ready.png",
+    "data/validation/9b3/screens/430x932/06-result.png",
+    "data/validation/9b3/screens/768x1024/01-foundation.png",
+    "data/validation/9b3/screens/768x1024/02-drafting.png",
+    "data/validation/9b3/screens/768x1024/03-era-reveal.png",
+    "data/validation/9b3/screens/768x1024/04-coach-chaos.png",
+    "data/validation/9b3/screens/768x1024/05-clash-ready.png",
+    "data/validation/9b3/screens/768x1024/06-result.png",
+    "package.json",
+    "scripts/ui/nightCourtQa.mjs",
+    "src/App.jsx",
+    "src/components/arena/InfoPages.jsx",
+    "src/components/arena/ResetDialog.jsx",
+    "src/components/arena/ResultDock.jsx",
+    "src/index.css",
+    "src/theme/basketball-themes.css",
+    "src/theme/basketballThemes.js",
+    "src/theme/themeResolver.js",
+    "tests/v9a2-night-court-production.test.js",
+    "tests/v9a3p-play-lobby-polish.test.js"
+  ]
+}

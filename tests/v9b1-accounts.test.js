@@ -565,9 +565,11 @@ describe("preservation", () => {
     // The cloud actions live on the existing career route.
     expect(src("api/profile.js")).toMatch(/CLOUD_ACTIONS/);
   });
-  it("game, draft, placement and theme code are untouched", () => {
+  it("game, draft, placement and the theme's brand/scope/semantic contracts are untouched", () => {
     if (!parentAvailable()) return;
-    expect(git(`git diff --name-only ${PARENT} -- src/chaos src/v3 src/engine.js src/rating.js src/players.js src/draft.js src/dailyChallenge.js src/lineupPlacement.js src/theme data/calibration`)).toBe("");
+    // src/theme as a whole is no longer pinned: the Unified Light UI release re-tokened the
+    // arena palette on purpose. The master brand, the scope keys and the semantic roles are.
+    expect(git(`git diff --name-only ${PARENT} -- src/chaos src/v3 src/engine.js src/rating.js src/players.js src/draft.js src/dailyChallenge.js src/lineupPlacement.js src/theme/masterBrandTokens.js src/theme/themeTypes.js src/theme/semanticTokens.js data/calibration`)).toBe("");
   });
   it("the Play Lobby polish is preserved exactly as accepted", () => {
     if (!parentAvailable()) return;

@@ -69,7 +69,7 @@ export function MembershipPage({ query, onBack, onCreateAccount }) {
         {tier === "GUEST" && (
           <button onClick={onCreateAccount} style={{
             minHeight: 46, padding: "0 18px", borderRadius: 10, cursor: "pointer", fontWeight: 900, fontSize: 13.5,
-            border: "1px solid var(--ec-a-gold-line)", background: "var(--ec-a-gold, #f2b51d)", color: "#0a0f18",
+            border: "1px solid var(--ec-a-gold-line)", background: "var(--ec-a-cta-mid, var(--ec-a-gold, #f2b51d))", color: "var(--ec-a-cta-ink, #0a0f18)",
           }}>Create a free account</button>
         )}
       </Card>

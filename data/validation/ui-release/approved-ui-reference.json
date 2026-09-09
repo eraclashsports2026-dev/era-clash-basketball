@@ -1,0 +1,16 @@
+{
+  "artifact": "approved-ui-reference",
+  "generatedAt": "2026-09-10T00:00:00Z",
+  "source": "Owner-attached generated mockup of the Chaos Clash gameplay screen (light), plus the owner's Home and Daily Clash screenshots as the reference visual family.",
+  "controls": "VISUAL DIRECTION ONLY. It does not override approved behaviour, navigation or product scope.",
+  "adopt": ["warm cream / off-white page background (Warm Court Ivory #F1EDE4, continuous with Home's lobby canvas)", "ivory / white elevated cards (#FBF8F1 / #FFFFFF)", "dark charcoal / navy readable text (Editorial Ink #151B24)", "restrained text-grade gold (#8A6410, AA on ivory and cards) with bright Fracture Gold reserved for the ONE primary action fill under dark ink", "cobalt Team Blue (#2461B8)", "fine borders (#D7D1C6)", "subtle shadows", "generous spacing", "editorial sports typography (existing display + system sans)", "coherent Team Gold vs Team Blue identity", "restrained court-line / background detailing"],
+  "correctionsToTheMockup": {
+    "keepDarkGlobalNavigation": "The existing obsidian .ec-brand-header with the Mk1 logo, real destinations and real account states is retained. The mockup's light header, search, notifications and avatar menu are NOT adopted.",
+    "noCoachChoicesBeforeUnlock": "Coach Chaos stays hidden until roster completion (approved 9B.3 state 4). The mockup's three coach cards on the pre-roll screen are NOT adopted.",
+    "noDominantEmptyResultDock": "The RESULT DOCK stays subordinate during an active draft (9B.3 rule: previous results never dominate a draft). The mockup's large empty dock is NOT adopted.",
+    "noProgressTrackerReplacingTheSixStates": "FOUNDATION / ADAPT / COMMIT is not adopted as a state model. The approved six-state flow (Foundation, Drafting/Hold, Era Reveal, Coach Chaos, Clash Ready, Result) is unchanged; its existing step indicator is re-themed, not replaced.",
+    "noDecorativeCopyAsProductTruth": "'DIFFERENT ERAS. SAME GREATNESS.', 'HISTORY MEETS COMPETITION', 'ROSTER MAXIMIZER' etc. are not adopted as product mechanics or copy.",
+    "darkCenterpieceAllowed": "The player cards' portrait stage keeps its dark well (the certified Phase 9A.2 jersey-visibility measurement depends on it); the matchup centre may stay dark. A wholesale dark application is not the goal."
+  },
+  "implementationSeam": "One shared token set. The production theme's arena family (productionArena in src/theme/basketballThemes.js) is re-palletted from the same Night Court reading values Home, Daily, My EraClash, the leaderboard and the Player Card already use; the generated stylesheet is rebuilt by scripts/ui/build-theme-css.mjs. The brand header is decoupled onto explicit master-brand tokens so it stays obsidian regardless of the arena palette. No page-by-page overrides, no second design system, no new dependency, no new serverless function."
+}

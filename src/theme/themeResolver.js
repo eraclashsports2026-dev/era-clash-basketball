@@ -38,10 +38,31 @@ export const validateTheme = (theme) => {
   return problems;
 };
 
-/** The header's own tokens: arena values, always (the header never goes light). */
-const brandHeaderTokens = (t) => Object.fromEntries(
-  ["header", "text", "text-secondary", "text-muted", "gold", "gold-soft", "gold-line", "border", "border-strong", "panel-raised", "green", "fracture"]
-    .map((k) => [k, t.arena[k]]));
+/**
+ * The header's own tokens. The global navigation is a MASTER-BRAND surface —
+ * Brand Obsidian, metallic Platinum, Fracture Gold — in every shell and under
+ * every theme, so it is declared from master-brand constants and NOT copied
+ * from the theme's arena. Until the UI release candidate it copied the arena
+ * values, which was only ever correct because the arena happened to be dark;
+ * the Light Court arena is ivory-and-ink, and a header that followed it would
+ * have set ink text on an obsidian bar. These are the exact values the header
+ * rendered with before the arena changed, so the navigation is unchanged to the
+ * pixel. The Era Fracture underline stays the production divide.
+ */
+const BRAND_HEADER = Object.freeze({
+  "header": "rgba(3, 6, 11, 0.94)",
+  "text": "#E7EAF0",
+  "text-secondary": "#C9CFDA",
+  "text-muted": "#98A2B3",
+  "gold": "#E8B13C",
+  "gold-soft": "rgba(232, 177, 60, 0.14)",
+  "gold-line": "rgba(232, 177, 60, 0.45)",
+  "border": "rgba(231, 234, 240, 0.15)",
+  "border-strong": "rgba(231, 234, 240, 0.3)",
+  "panel-raised": "#172130",
+  "green": "#2FA96D",
+});
+const brandHeaderTokens = (t) => ({ ...BRAND_HEADER, fracture: t.arena.fracture });
 
 const decl = (prefix, obj) => Object.entries(obj).map(([k, v]) => `  ${prefix}${k}: ${v};`).join("\n");
 

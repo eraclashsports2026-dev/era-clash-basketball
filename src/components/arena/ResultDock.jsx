@@ -208,7 +208,7 @@ export default function ResultDock({
           {TABS.map(([id, label]) => (
             <button key={id} role="tab" className="ec-dock-tab" aria-selected={tab === id} aria-controls="ec-dock-panel"
               onClick={() => { setTab((t) => (t === id ? null : id)); if (tab !== id) track("result_tab_opened", { tab: id, previous: !!previous }); }} style={{
-              minHeight: 40, borderRadius: 9, cursor: "pointer", fontSize: 11.5, fontWeight: 800,
+              minHeight: 44, borderRadius: 9, cursor: "pointer", fontSize: 11.5, fontWeight: 800,
               border: `1px solid ${tab === id ? "var(--ec-a-gold-line)" : "var(--ec-a-border)"}`,
               background: tab === id ? "var(--ec-a-gold-soft)" : "transparent",
               color: tab === id ? "var(--ec-a-gold, #f2b51d)" : "var(--ec-a-text-secondary, #c3cddd)",
@@ -376,7 +376,7 @@ const muted = { fontSize: 11.5, color: "var(--ec-a-text-muted, #93a0b5)" };
 const primaryCta = {
   minHeight: 48, width: "100%", borderRadius: 10, cursor: "pointer",
   fontWeight: 900, fontSize: 13, letterSpacing: 0.8,
-  border: "1px solid var(--ec-a-gold-line)", background: "var(--ec-a-gold, #f2b51d)", color: "#0a0f18",
+  border: "1px solid var(--ec-a-gold-line)", background: "var(--ec-a-cta-mid, var(--ec-a-gold, #f2b51d))", color: "var(--ec-a-cta-ink, #0a0f18)",
 };
 const secondaryCta = {
   minHeight: 44, width: "100%", borderRadius: 10, cursor: "pointer",

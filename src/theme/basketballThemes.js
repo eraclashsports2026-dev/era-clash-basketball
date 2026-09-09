@@ -224,15 +224,26 @@ export const NIGHT_COURT_V1 = Object.freeze({
   textLifted: { teamBlue: "#4A92EA", coachViolet: "#A08AE6", danger: "#E06060" },
 });
 const NC1 = NIGHT_COURT_V1.layer2, NC3 = NIGHT_COURT_V1.layer3, NCT = NIGHT_COURT_V1.textLifted;
+// ── LIGHT COURT — the gameplay field continues Home and Daily ────────────────
+// UI release candidate. Home's lobby canvas and Daily Clash already read on Warm
+// Court Ivory with Editorial Ink; the arena used to switch to Night Obsidian at
+// the moment play began. Gameplay is now a continuation of that family: the same
+// ivory canvas, off-white panels and ink type, with text-grade gold (#8A6410 —
+// 4.6:1 on ivory, 5.1:1 on a card) and cobalt (#2461B8) as the two team voices.
+// Bright Fracture Gold is a FILL, never text: it survives only in the CTA tokens
+// under dark ink, exactly as before. The portrait STAGE keeps its dark well — the
+// Phase 9A.2 jersey-visibility measurement is certified against it — so the
+// player cards remain the one deliberately dark centrepiece on a light court.
+// The brand header does not read from here at all (see themeResolver).
 const productionArena = arenaFamily({
-  bg: NC1.nightObsidian, arena: "#0A0E15", panel: NC1.arenaGraphite, panelRaised: NC1.raisedGraphite, panelSoft: "#1D2838",
-  text: MASTER_BRAND.platinum, textSecondary: MASTER_BRAND.platinumDeep, textMuted: "#98A2B3",
-  teamGold: NC3.teamGold, teamBlue: NCT.teamBlue, coach: NCT.coachViolet, coachDeep: NC3.coachVioletDeep, green: NC3.success, red: NCT.danger,
+  bg: NC1.warmCourtIvory, arena: "#F6F1E7", panel: "#FBF8F1", panelRaised: "#FFFFFF", panelSoft: "#ECE6DA",
+  text: NC1.editorialInk, textSecondary: "#3A4150", textMuted: NC1.secondaryInk,
+  teamGold: "#8A6410", teamBlue: "#2461B8", coach: "#5B3FB8", coachDeep: NC3.coachVioletDeep, green: "#237A4F", red: "#B54040",
   brandGold: MASTER_BRAND.fractureGold, accent: MASTER_BRAND.fractureCobalt,
-  header: rgba(MASTER_BRAND.obsidian, 0.94), scrim: rgba(MASTER_BRAND.obsidian, 0.9),
+  header: rgba(MASTER_BRAND.obsidian, 0.94), scrim: rgba(MASTER_BRAND.obsidian, 0.62),
   ctaHi: "#F5C553", ctaMid: NC3.teamGold, ctaLo: "#B9841F", ctaInk: "#14100A", ctaGlow: "0 8px 18px rgba(232, 177, 60, 0.18)",
-  border: rgba(MASTER_BRAND.platinum, 0.15), borderStrong: rgba(MASTER_BRAND.platinum, 0.30),
-  courtOpacity: 0.9, texture: "none", spotWarm: rgba(NC3.teamGold, 0.09), spotCool: rgba(MASTER_BRAND.fractureCobalt, 0.10),
+  border: NC1.softIvoryDivider, borderStrong: "#C3BAA8",
+  courtOpacity: 0.35, texture: "none", spotWarm: rgba(NC3.teamGold, 0.10), spotCool: rgba(MASTER_BRAND.fractureCobalt, 0.08),
   fracture: eraFractureGradient(), fractureGlow: ERA_FRACTURE_GLOW, fractureOn: "1",
   portraitField: "rgba(214, 222, 236, 0.32)", portraitWellHi: "#1E2A3B", portraitWellLo: "#0B1220",
 });
@@ -332,8 +343,9 @@ export const BASKETBALL_THEMES = Object.freeze({
     contexts: {
       arena: {
         fixtures: ["empty", "roll2", "coach", "result"],
-        dominant: { name: "Night Obsidian / deep arena", colors: [NC1.nightObsidian, "#0A0E15", MASTER_BRAND.obsidian, "#050B14", "#030811"] },
-        secondary: { name: "Graphite / Platinum structure", colors: [NC1.arenaGraphite, NC1.raisedGraphite, "#1D2838", MASTER_BRAND.platinum, MASTER_BRAND.platinumDeep, "#98A2B3"] },
+        // UI release candidate: the arena is Light Court — the same ivory family as the editorial surfaces.
+        dominant: { name: "Warm Court Ivory / light court", colors: [NC1.warmCourtIvory, "#F6F1E7", "#FBF8F1", "#FFFFFF", "#ECE6DA"] },
+        secondary: { name: "Editorial Ink / Graphite structure (portrait wells stay dark)", colors: [NC1.editorialInk, "#3A4150", NC1.secondaryInk, NC1.softIvoryDivider, "#C3BAA8", "#1E2A3B", "#0B1220", MASTER_BRAND.obsidian] },
         accent: { name: "Gold + Cobalt (+ Violet reported separately)", colors: [MASTER_BRAND.fractureGold, "#F5C553", "#B9841F", MASTER_BRAND.fractureCobalt] },
         targets: { dominant: [55, 68], secondary: [22, 35], accent: [6, 10] },
       },
