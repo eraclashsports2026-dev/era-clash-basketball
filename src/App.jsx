@@ -2024,7 +2024,9 @@ export default function App() {
       <footer style={{ textAlign: "center", padding: 20, fontSize: 10.5, color: T.textDim, borderTop: `1px solid ${T.border}` }}>
         EraClash is an independent fan-made game. Not affiliated with or endorsed by the NBA.
         {" · "}
-        <button onClick={() => handleNav("Credits")} style={{ background: "none", border: "none", color: T.textDim, cursor: "pointer", fontSize: 10.5, textDecoration: "underline", padding: 0 }}>
+        {/* .ec-footer-link carries the 44px touch target; the inline padding:0
+            it used to set is gone so the class can apply. Copy unchanged. */}
+        <button className="ec-footer-link" onClick={() => handleNav("Credits")} style={{ background: "none", border: "none", color: T.textDim, cursor: "pointer", fontSize: 10.5, textDecoration: "underline" }}>
           Image credits
         </button>
         {" · "}

@@ -32,6 +32,14 @@ const ok = (n, p, d = "") => { checks.push({ name: n, pass: !!p, detail: String(
 const read = (f) => fs.readFileSync(f, "utf8");
 const src = (f) => read(f).replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "").replace(/\{\/\*[\s\S]*?\*\/\}/g, "");
 const json = (f) => JSON.parse(read(f));
+/** One phase's CSS section: from its banner to the next banner, never to EOF. */
+const cssSection = (marker) => {
+  const all = read("src/index.css");
+  const start = all.indexOf(marker);
+  if (start < 0) return "";
+  const next = all.indexOf("/* \u2550\u2550\u2550", start + marker.length);
+  return next < 0 ? all.slice(start) : all.slice(start, next);
+};
 const extra = {};
 const LABELS = { chaos: "Start Chaos Clash", dream: "Build Matchup", daily: "Play Today’s Clash", bo7: "Start Series", win82: "Start Season", tournament: "Enter Tournament", gauntlet: "Learn More" };
 const UPPER = Object.fromEntries(Object.entries(LABELS).map(([k, v]) => [k, v.toUpperCase()]));
@@ -71,7 +79,7 @@ const installCls = (page) => page.addInitScript(() => { window.__cls = 0; try { 
 
 // ── contracts (source + registry) ────────────────────────────────────────────
 if (MODE === "contracts") {
-  const lobby = src("src/components/lobby/PlayLobby.jsx"), header = src("src/components/arena/ArenaHeader.jsx"), css = read("src/index.css"), polishCss = css.slice(css.indexOf("PHASE 9A.3P"));
+  const lobby = src("src/components/lobby/PlayLobby.jsx"), header = src("src/components/arena/ArenaHeader.jsx"), css = read("src/index.css"), polishCss = cssSection("PHASE 9A.3P");
   ok("registry 1.2.0 carries actionLabel, actionVerb, actionHierarchy, visualSignature, accentRole for every mode", NAVIGATION_REGISTRY_VERSION === "1.2.0" && PLAY_MODES.every((m) => m.actionLabel && m.actionVerb && m.actionHierarchy && m.visualSignature && m.accentRole));
   ok("the seven action labels are exactly the specification's", PLAY_MODES.every((m) => m.actionLabel === LABELS[m.id]), PLAY_MODES.map((m) => m.actionLabel).join(" · "));
   ok("Chaos Clash is the only PRIMARY; Era Gauntlet is UNAVAILABLE; the rest are SECONDARY", PLAY_MODES.filter((m) => m.actionHierarchy === "primary").map((m) => m.id).join() === "chaos" && findMode("gauntlet").actionHierarchy === "unavailable" && PLAY_MODES.filter((m) => m.actionHierarchy === "secondary").length === 5);
@@ -360,7 +368,7 @@ if (BROWSER.includes(MODE)) {
     const ctx = await ctxOf(1440, 900); const page = await ctx.newPage(); await firstTime(page); await installCls(page);
     await openLobby(page); await page.waitForTimeout(800);
     const perf = await page.evaluate(() => { const nav = performance.getEntriesByType("navigation")[0]; const fcp = performance.getEntriesByName("first-contentful-paint")[0]; return { domContentLoaded: Math.round(nav.domContentLoadedEventEnd), fcp: fcp ? Math.round(fcp.startTime) : null, cls: +window.__cls.toFixed(4), signatureBytes: [...document.querySelectorAll(".ec-mode-signature")].reduce((n, s) => n + s.outerHTML.length, 0), transfer: performance.getEntriesByType("resource").filter((r) => /\.(js|css)$/.test(r.name)).reduce((n, r) => n + (r.transferSize || r.encodedBodySize || 0), 0) }; });
-    const css = read("src/index.css"); const polish = css.slice(css.indexOf("PHASE 9A.3P")).length;
+    const polish = cssSection("PHASE 9A.3P").length;
     ok("first contentful paint under 1.5s on the harness", perf.fcp != null && perf.fcp < 1500, `${perf.fcp}ms`);
     ok("no layout shift after first paint (CLS < 0.02) for a first-time visitor", perf.cls < 0.02, String(perf.cls));
     ok("the seven signatures add under 8KB of inline SVG", perf.signatureBytes < 8192, `${perf.signatureBytes} bytes`);

@@ -1,0 +1,355 @@
+{
+  "artifact": "play-lobby-polish-contract",
+  "phase": "9A.3P — Play Lobby brand, CTA and entry polish",
+  "status": "FROZEN",
+  "presentationVersion": "play-lobby-polish-v1",
+  "registryVersion": "1.2.0",
+  "architecturePreserved": [
+    "three primary cards then a row of four",
+    "Chaos Clash first and recommended",
+    "Play Lobby separate from the Time Arena",
+    "Night Court V1 (obsidian shell, ivory lobby canvas)",
+    "one Era Fracture moment under the brand band",
+    "registry-driven cards and dropdown",
+    "one-viewport desktop fit"
+  ],
+  "leagueMarks": {
+    "rule": "No league-owned visual mark renders in the header, the lobby or the global shell. The header's only image is EraClash Logo Mk1 (manifested by SHA-256). Historical league data in player, team and statistical records is untouched.",
+    "replacement": "none — the Mk1 mark with its BASKETBALL descriptor at left, Create free account at right"
+  },
+  "modes": [
+    {
+      "id": "chaos",
+      "label": "Chaos Clash",
+      "actionLabel": "Start Chaos Clash",
+      "displayed": "START CHAOS CLASH",
+      "actionVerb": "Start",
+      "actionHierarchy": "primary",
+      "accentRole": "gold",
+      "visualSignature": "fracture-dice",
+      "route": "/play/chaos",
+      "category": "PRIMARY",
+      "recommended": true,
+      "requiresAccount": false,
+      "statusByTier": {
+        "GUEST": "AVAILABLE",
+        "FREE": "AVAILABLE",
+        "PLUS": "AVAILABLE",
+        "COMMISSIONER": "AVAILABLE"
+      },
+      "accessibleName": {
+        "asGuest": "Start Chaos Clash, recommended mode",
+        "asFree": "Start Chaos Clash, recommended mode"
+      }
+    },
+    {
+      "id": "dream",
+      "label": "Dream Matchup",
+      "actionLabel": "Build Matchup",
+      "displayed": "BUILD MATCHUP",
+      "actionVerb": "Build",
+      "actionHierarchy": "secondary",
+      "accentRole": "platinum-cobalt",
+      "visualSignature": "crossing-timelines",
+      "route": "/play/dream",
+      "category": "PRIMARY",
+      "recommended": false,
+      "requiresAccount": true,
+      "statusByTier": {
+        "GUEST": "ACCOUNT_REQUIRED",
+        "FREE": "AVAILABLE",
+        "PLUS": "AVAILABLE",
+        "COMMISSIONER": "AVAILABLE"
+      },
+      "accessibleName": {
+        "asGuest": "Build Dream Matchup, free account required",
+        "asFree": "Build Dream Matchup"
+      }
+    },
+    {
+      "id": "daily",
+      "label": "Daily Clash",
+      "actionLabel": "Play Today’s Clash",
+      "displayed": "PLAY TODAY’S CLASH",
+      "actionVerb": "Play",
+      "actionHierarchy": "secondary",
+      "accentRole": "cobalt",
+      "visualSignature": "spotlight-calendar",
+      "route": "/play/daily",
+      "category": "PRIMARY",
+      "recommended": false,
+      "requiresAccount": false,
+      "statusByTier": {
+        "GUEST": "AVAILABLE",
+        "FREE": "AVAILABLE",
+        "PLUS": "AVAILABLE",
+        "COMMISSIONER": "AVAILABLE"
+      },
+      "accessibleName": {
+        "asGuest": "Play Daily Clash",
+        "asFree": "Play Daily Clash"
+      }
+    },
+    {
+      "id": "bo7",
+      "label": "Best of 7",
+      "actionLabel": "Start Series",
+      "displayed": "START SERIES",
+      "actionVerb": "Start",
+      "actionHierarchy": "secondary",
+      "accentRole": "platinum-gold",
+      "visualSignature": "series-ticks",
+      "route": "/play/best-of-7",
+      "category": "SECONDARY",
+      "recommended": false,
+      "requiresAccount": true,
+      "statusByTier": {
+        "GUEST": "ACCOUNT_REQUIRED",
+        "FREE": "AVAILABLE",
+        "PLUS": "AVAILABLE",
+        "COMMISSIONER": "AVAILABLE"
+      },
+      "accessibleName": {
+        "asGuest": "Start Best of 7, free account required",
+        "asFree": "Start Best of 7"
+      }
+    },
+    {
+      "id": "win82",
+      "label": "Win 82",
+      "actionLabel": "Start Season",
+      "displayed": "START SEASON",
+      "actionVerb": "Start",
+      "actionHierarchy": "secondary",
+      "accentRole": "cobalt-platinum",
+      "visualSignature": "season-arc",
+      "route": "/play/win-82",
+      "category": "SECONDARY",
+      "recommended": false,
+      "requiresAccount": true,
+      "statusByTier": {
+        "GUEST": "ACCOUNT_REQUIRED",
+        "FREE": "AVAILABLE",
+        "PLUS": "AVAILABLE",
+        "COMMISSIONER": "AVAILABLE"
+      },
+      "accessibleName": {
+        "asGuest": "Start Win 82, free account required",
+        "asFree": "Start Win 82"
+      }
+    },
+    {
+      "id": "tournament",
+      "label": "Tournament",
+      "actionLabel": "Enter Tournament",
+      "displayed": "ENTER TOURNAMENT",
+      "actionVerb": "Enter",
+      "actionHierarchy": "secondary",
+      "accentRole": "gold-platinum",
+      "visualSignature": "bracket",
+      "route": "/play/tournament",
+      "category": "SECONDARY",
+      "recommended": false,
+      "requiresAccount": true,
+      "statusByTier": {
+        "GUEST": "ACCOUNT_REQUIRED",
+        "FREE": "AVAILABLE",
+        "PLUS": "AVAILABLE",
+        "COMMISSIONER": "AVAILABLE"
+      },
+      "accessibleName": {
+        "asGuest": "Enter Tournament, free account required",
+        "asFree": "Enter Tournament"
+      }
+    },
+    {
+      "id": "gauntlet",
+      "label": "Era Gauntlet",
+      "actionLabel": "Learn More",
+      "displayed": "LEARN MORE",
+      "actionVerb": "Learn more about",
+      "actionHierarchy": "unavailable",
+      "accentRole": "violet",
+      "visualSignature": "era-steps",
+      "route": "/play/era-gauntlet",
+      "category": "SECONDARY",
+      "recommended": false,
+      "requiresAccount": true,
+      "statusByTier": {
+        "GUEST": "COMING_SOON",
+        "FREE": "COMING_SOON",
+        "PLUS": "COMING_SOON",
+        "COMMISSIONER": "COMING_SOON"
+      },
+      "accessibleName": {
+        "asGuest": "Learn more about Era Gauntlet, coming soon",
+        "asFree": "Learn more about Era Gauntlet, coming soon"
+      }
+    }
+  ],
+  "buttonStates": {
+    "primary": {
+      "used": "Chaos Clash only",
+      "treatment": [
+        "filled EraClash Gold gradient (cta-hi/mid/lo)",
+        "dark ink",
+        "the lobby's one glow",
+        "hover: brightness +4%, lift 1px",
+        "pressed: no lift",
+        "focus: 3px gold outline"
+      ]
+    },
+    "secondary": {
+      "used": "Dream Matchup, Daily Clash, Best of 7, Win 82, Tournament (and any account-gated mode)",
+      "treatment": [
+        "Warm Ivory face",
+        "1.5px solid border (border-strong; Cobalt for Daily)",
+        "Editorial Ink text",
+        "directional arrow in the accent role",
+        "hover: soft face, darker border, lift 1px, shadow",
+        "pressed: no lift",
+        "focus: 3px gold outline"
+      ],
+      "neverLooksDisabled": true
+    },
+    "unavailable": {
+      "used": "Coming Soon (Era Gauntlet); Not available here; Not in preview",
+      "treatment": [
+        "transparent face",
+        "1.5px dashed border",
+        "muted ink",
+        "no arrow",
+        "hover: underline only (no lift)",
+        "aria-disabled only on a button without a destination; Learn more stays a real link to the information page"
+      ],
+      "checkoutRouting": false
+    }
+  },
+  "hero": {
+    "states": [
+      "full",
+      "compact-active-run",
+      "compact-returning"
+    ],
+    "decision": "resolveHeroState({ hasRememberedRun, gamesPlayed, recentGames, returningDevice }) — synchronous, before first paint",
+    "inputs": [
+      "localStorage ec_chaos_run (existing)",
+      "localStorage ec_career.gamesPlayed and ec_recent (existing career store)",
+      "getSession().returning (existing analytics identity: ec_seen existed before this tab)"
+    ],
+    "full": [
+      "large Mk1 mark (min(340px, 78vw))",
+      "the product line",
+      "Gold/Cobalt fracture divider"
+    ],
+    "compact": [
+      "150px Mk1 mark (118px on a phone)",
+      "one concise line",
+      "Continue card when a run exists",
+      "grid moved up",
+      "the same fracture divider"
+    ],
+    "lines": {
+      "compact-active-run": "Your Chaos Clash is waiting. Pick it up, or choose another way to play.",
+      "compact-returning": "Welcome back. Choose how you want to play."
+    },
+    "forbidden": [
+      "deleting a run",
+      "starting a run",
+      "changing entitlements",
+      "changing telemetry identity",
+      "revealing hidden Era information",
+      "layout shift after first paint",
+      "a new cookie or storage key"
+    ]
+  },
+  "signatures": {
+    "grammar": [
+      "1.5px strokes (≤2.6 for one progress emphasis)",
+      "round caps and joins",
+      "currentColor tinted by accent role",
+      "120×120 viewBox",
+      "no fills heavier than a dot",
+      "opacity 0.07 (0.12 on hover)",
+      "position absolute, clipped by the card",
+      "aria-hidden, unfocusable, pointer-events none"
+    ],
+    "byMode": {
+      "chaos": {
+        "signature": "fracture-dice",
+        "accent": "gold"
+      },
+      "dream": {
+        "signature": "crossing-timelines",
+        "accent": "platinum-cobalt"
+      },
+      "daily": {
+        "signature": "spotlight-calendar",
+        "accent": "cobalt"
+      },
+      "bo7": {
+        "signature": "series-ticks",
+        "accent": "platinum-gold"
+      },
+      "win82": {
+        "signature": "season-arc",
+        "accent": "cobalt-platinum"
+      },
+      "tournament": {
+        "signature": "bracket",
+        "accent": "gold-platinum"
+      },
+      "gauntlet": {
+        "signature": "era-steps",
+        "accent": "violet"
+      }
+    },
+    "accentTokens": {
+      "gold": "--ec-l-glyph",
+      "cobalt": "--ec-l-glyph-cool",
+      "violet": "--ec-l-glyph-era",
+      "platinum": "--ec-l-text-secondary (graphite as platinum on ivory)"
+    }
+  },
+  "telemetry": {
+    "event": "play_lobby_viewed (existing, allowlisted)",
+    "added": {
+      "hero_state": [
+        "full",
+        "compact-active-run",
+        "compact-returning"
+      ],
+      "lobby_presentation_version": "play-lobby-polish-v1"
+    },
+    "newEvents": 0,
+    "forbidden": [
+      "email",
+      "real name",
+      "raw access key",
+      "session cookie",
+      "full URL with credentials",
+      "free-form text"
+    ]
+  },
+  "contentDiscipline": {
+    "allowed": [
+      "icon",
+      "mode name",
+      "one sentence",
+      "status/access badge",
+      "one action",
+      "low-opacity motif"
+    ],
+    "forbidden": [
+      "feature bullets",
+      "rule explanations",
+      "prices",
+      "statistics",
+      "simulation details",
+      "portraits",
+      "screenshots",
+      "multiple CTAs",
+      "upsell paragraphs"
+    ]
+  }
+}

@@ -2,10 +2,10 @@
   "artifact": "accessibility-qa",
   "phase": "9A — Play Lobby, activation clarity, multi-position placement",
   "mode": "accessibility",
-  "generatedAt": "2026-09-03T01:11:53.847Z",
+  "generatedAt": "2026-09-04T18:17:28.005Z",
   "baseUrl": "http://localhost:4176",
-  "checks": 18,
-  "passed": 18,
+  "checks": 20,
+  "passed": 20,
   "failed": 0,
   "results": [
     {
@@ -46,12 +46,12 @@
     {
       "name": "body copy clears WCAG AA on the panel",
       "pass": true,
-      "detail": "11.62:1"
+      "detail": "10.23:1"
     },
     {
       "name": "titles clear WCAG AA on the panel",
       "pass": true,
-      "detail": "17.38:1"
+      "detail": "17.30:1"
     },
     {
       "name": "the logo has alt text",
@@ -62,6 +62,16 @@
       "name": "reduced motion is respected by the lobby",
       "pass": true,
       "detail": ""
+    },
+    {
+      "name": "every control in the global header and footer is at least a 44px touch target",
+      "pass": true,
+      "detail": "9 controls, smallest 44px"
+    },
+    {
+      "name": "the footer keeps its fine-print size and its height: the target grew, the layout did not",
+      "pass": true,
+      "detail": "footer 57px, credits font 10.5px"
     },
     {
       "name": "Tab reaches a mode card's action",
@@ -99,6 +109,74 @@
       "detail": ""
     }
   ],
+  "globalChrome": {
+    "footerHeight": 57,
+    "controls": [
+      {
+        "where": "header",
+        "text": "BASKETBALL",
+        "height": 44,
+        "width": 197,
+        "fontPx": 13.3333
+      },
+      {
+        "where": "header",
+        "text": "Play▾",
+        "height": 44,
+        "width": 72,
+        "fontPx": 13.5
+      },
+      {
+        "where": "header",
+        "text": "Fantasy▾",
+        "height": 44,
+        "width": 98,
+        "fontPx": 13.5
+      },
+      {
+        "where": "header",
+        "text": "Daily",
+        "height": 44,
+        "width": 59,
+        "fontPx": 13.5
+      },
+      {
+        "where": "header",
+        "text": "Challenges",
+        "height": 44,
+        "width": 100,
+        "fontPx": 13.5
+      },
+      {
+        "where": "header",
+        "text": "Leaderboard",
+        "height": 44,
+        "width": 111,
+        "fontPx": 13.5
+      },
+      {
+        "where": "header",
+        "text": "My EraClash",
+        "height": 44,
+        "width": 109,
+        "fontPx": 13.5
+      },
+      {
+        "where": "header",
+        "text": "QQAFree account",
+        "height": 44,
+        "width": 123,
+        "fontPx": 13.3333
+      },
+      {
+        "where": "footer",
+        "text": "Image credits",
+        "height": 44,
+        "width": 84,
+        "fontPx": 10.5
+      }
+    ]
+  },
   "accessibility": {
     "main": true,
     "h1": "Play EraClash Basketball",
@@ -110,12 +188,12 @@
     "actions": [
       {
         "tag": "A",
-        "name": "Play Chaos Clash, recommended",
+        "name": "Start Chaos Clash, recommended mode",
         "href": "/play/chaos"
       },
       {
         "tag": "A",
-        "name": "Play Dream Matchup",
+        "name": "Build Dream Matchup",
         "href": "/play/dream"
       },
       {
@@ -125,28 +203,28 @@
       },
       {
         "tag": "A",
-        "name": "Play Best of 7",
+        "name": "Start Best of 7",
         "href": "/play/best-of-7"
       },
       {
         "tag": "A",
-        "name": "Play Win 82",
+        "name": "Start Win 82",
         "href": "/play/win-82"
       },
       {
         "tag": "A",
-        "name": "Play Tournament",
+        "name": "Enter Tournament",
         "href": "/play/tournament"
       },
       {
         "tag": "A",
-        "name": "Learn more Era Gauntlet — Coming soon",
+        "name": "Learn more about Era Gauntlet, coming soon",
         "href": "/modes/era-gauntlet"
       }
     ],
     "describedBy": true,
-    "lineContrast": 11.623986216820358,
-    "titleContrast": 17.377621838284384,
+    "lineContrast": 10.23459528023564,
+    "titleContrast": 17.296277935111004,
     "badgeText": "Coming soon",
     "recommendedWord": true,
     "logoAlt": "EraClash Basketball",

@@ -1792,3 +1792,27 @@ h2.ec-intel-heading, h3.ec-intel-heading { font-size: 10.5px; }
   .ec-mode-action, .ec-mode-action::after, .ec-mode-signature { transition: none; }
   .ec-mode-action:hover { transform: none; }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   GLOBAL FOOTER — a real touch target on a small text link
+   The credits control is 10.5px text inside a centred run, so its own box was
+   12px tall: the only interactive control in the product below the 44px
+   minimum every gate enforces. The hit area is expanded with padding and the
+   extra height is pulled straight back with an equal negative margin, so the
+   TARGET is 44px while the footer's line box, height and visual weight are
+   unchanged. The font size is deliberately not raised — the footer is fine
+   print and should stay fine print.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.ec-footer-link {
+  display: inline-block;
+  box-sizing: content-box;
+  /* 12px of text + 16px above + 16px below = a 44px target. */
+  padding: 16px 8px;
+  margin: -16px -8px;
+  /* A short label still needs 44px of width to be tappable. */
+  min-width: 44px;
+  /* The label must sit on the surrounding text's baseline, not be pushed by
+     its own padding. */
+  vertical-align: baseline;
+}
+.ec-footer-link:focus-visible { outline: 2px solid var(--ec-a-gold, #f2b51d); outline-offset: -14px; }

@@ -7,8 +7,8 @@
   "cloudAccountsConfigured": false,
   "cloudAccountsReady": false,
   "checks": 9,
-  "passed": 9,
-  "failed": 0,
+  "passed": 8,
+  "failed": 1,
   "results": [
     {
       "name": "the career page requires an account and says so, with a labelled landmark and an h1",
@@ -31,9 +31,9 @@
       "detail": "44px · 0px"
     },
     {
-      "name": "the pre-existing global footer credits link is recorded as an out-of-scope gap, not silently excluded",
-      "pass": true,
-      "detail": "[{\"text\":\"Image credits\",\"height\":12}]"
+      "name": "the global footer's controls are at least a 44px touch target",
+      "pass": false,
+      "detail": "[{\"text\":\"Image credits\",\"height\":12,\"width\":68}]"
     },
     {
       "name": "every text element on the career page clears WCAG AA on the surface it sits on",
@@ -103,7 +103,8 @@
     "footerLinks": [
       {
         "text": "Image credits",
-        "height": 12
+        "height": 12,
+        "width": 68
       }
     ]
   }

@@ -18,6 +18,14 @@ const read = (f) => readFileSync(f, "utf8");
 const src = (f) => read(f).replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "").replace(/\{\/\*[\s\S]*?\*\/\}/g, "");
 const json = (f) => JSON.parse(read(f));
 const sha = (s) => createHash("sha256").update(s).digest("hex");
+/** One phase's CSS section: from its banner to the next banner, never to EOF. */
+const cssSection = (marker) => {
+  const all = read("src/index.css");
+  const start = all.indexOf(marker);
+  if (start < 0) return "";
+  const next = all.indexOf("/* ═══", start + marker.length);
+  return next < 0 ? all.slice(start) : all.slice(start, next);
+};
 const PARENT = "ef0caa525c4cf6830fe20b4a8ef5d483e29afd86"; // Phase 9A.3 head = stable Wave 2 head
 const git = (c) => { try { return execSync(c, { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim(); } catch { return null; } };
 const parentAvailable = () => git(`git cat-file -t ${PARENT}`) === "commit";
@@ -228,14 +236,14 @@ describe("mode signatures", () => {
   });
   it("is decorative: hidden from assistive tech, unfocusable, no pointer events, low opacity, restrained on hover", () => {
     expect(sig).toMatch(/aria-hidden="true" focusable="false"/);
-    const css = read("src/index.css").slice(read("src/index.css").indexOf("PHASE 9A.3P"));
+    const css = cssSection("PHASE 9A.3P");
     expect(css).toMatch(/\.ec-mode-signature \{[\s\S]{0,300}pointer-events: none/);
     const base = parseFloat(css.match(/--ec-sig-opacity, ([\d.]+)\)/)[1]); const hover = parseFloat(css.match(/\.ec-mode-card:hover \.ec-mode-signature \{ opacity: ([\d.]+)/)[1]);
     expect(base).toBeGreaterThanOrEqual(0.04); expect(base).toBeLessThanOrEqual(0.10); expect(hover).toBeLessThanOrEqual(0.12);
     expect(css).toMatch(/prefers-reduced-motion: reduce\) \{\s*\.ec-mode-action, \.ec-mode-action::after, \.ec-mode-signature \{ transition: none; \}/);
   });
   it("uses only the semantic accent families the theme already defines", () => {
-    const css = read("src/index.css").slice(read("src/index.css").indexOf("PHASE 9A.3P"));
+    const css = cssSection("PHASE 9A.3P");
     for (const acc of Object.values(ACCENT_ROLE)) expect(css).toMatch(new RegExp(`\\.ec-mode-card\\[data-accent="${acc}"\\]`));
     expect(css.match(/--ec-sig-color: var\(--ec-l-(glyph|glyph-cool|glyph-era|text-secondary)/g).length).toBe(7);
     expect(css).not.toMatch(/#[0-9a-f]{6}/i); // no new palette — tokens only
