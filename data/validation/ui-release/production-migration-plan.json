@@ -2,7 +2,7 @@
   "artifact": "production-migration-plan",
   "status": "PREPARED — NOT EXECUTED. Nothing in this plan has been run against any production system.",
   "release": "ui/light-court-release-candidate",
-  "rcCommit": "__RC_COMMIT__",
+  "rcCommit": "149eef3 (code) — see ui-release-final-summary.json for the certified head",
   "recordedAt": "2026-09-09",
   "currentProduction": { "origin": "https://www.eraclashbasketball.com (apex 308 -> www)", "deployment": "main@9cd95ff v2.7.2, deployed 2026-08-24", "database": "NONE — production has zero Supabase migrations and no cloud accounts; the only Supabase project (lfybiphmqkiecfrqsfzt) is the PREVIEW database and must never become production's" },
   "principle": "Production gets its OWN Supabase project. Preview user data, QA fixtures and test accounts are never copied. The preview project is never pointed at by production env vars.",

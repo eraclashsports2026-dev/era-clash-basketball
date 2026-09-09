@@ -77,6 +77,8 @@ gate() {
   for g in contract-qa seed-qa rls-qa; do gate "challenge:$g" npm run -s "challenge:$g"; done
   for g in security-qa history-qa responsive-qa accessibility-qa performance-qa; do gate "challenge:$g" npm run -s "challenge:$g" -- "$FAKE"; done
   for g in contract-qa xp-qa achievement-qa backfill-qa reconcile-qa rls-qa; do gate "progression:$g" npm run -s "progression:$g"; done
+  # the progression security gate expects a fresh Era-first: it must not inherit the challenge gates' completions
+  restart_fake
   for g in security-qa concurrency-qa result-qa challenge-qa responsive-qa accessibility-qa performance-qa; do gate "progression:$g" npm run -s "progression:$g" -- "$FAKE"; done
   for g in contract-qa rating-qa backfill-qa rls-qa; do gate "competitive:$g" npm run -s "competitive:$g"; done
   restart_fake

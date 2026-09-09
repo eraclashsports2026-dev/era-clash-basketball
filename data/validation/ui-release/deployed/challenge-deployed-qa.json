@@ -1,0 +1,76 @@
+{
+  "artifact": "challenge-deployed-qa",
+  "phase": "9C — Challenges + Persistent Competitive Identity V1",
+  "generatedAt": "2026-09-09T20:20:03.632Z",
+  "origin": "https://era-clash-basketball-git-ui-light-court-releas-343e8b-era-clash.vercel.app",
+  "checks": [
+    {
+      "check": "Candidate 4 on the preview",
+      "pass": true,
+      "detail": "Candidate 4 1.4.0"
+    },
+    {
+      "check": "the account provider is configured",
+      "pass": true,
+      "detail": "{\"providerConfigured\":true,\"serverCredentialConfigured\":true,\"browserCredentialConfigured\":true,\"enabled\":true}"
+    },
+    {
+      "check": "an unknown code is generically unavailable",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "create without an account is refused",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a forged token is refused",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the unavailable invitation renders on the preview",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a seeded live challenge code was provided (LIVE_CHALLENGE_CODE)",
+      "pass": false,
+      "detail": "not provided — accept/complete on the preview not exercised by this run"
+    },
+    {
+      "check": "a live expired code was provided (LIVE_EXPIRED_CODE)",
+      "pass": false,
+      "detail": "not provided"
+    },
+    {
+      "check": "a live revoked code was provided (LIVE_REVOKED_CODE)",
+      "pass": false,
+      "detail": "not provided"
+    },
+    {
+      "check": "no secret-shaped string in the bundle",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the bundle carries the challenge client and never the secrets table name",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": false,
+  "seededCode": null,
+  "bundle": {
+    "bytes": 905343,
+    "secretShaped": 0,
+    "serviceJwt": 0,
+    "hasContract": true,
+    "seedIdLiteral": false
+  },
+  "health": {
+    "candidate": "Candidate 4",
+    "calibration": "1.4.0"
+  }
+}

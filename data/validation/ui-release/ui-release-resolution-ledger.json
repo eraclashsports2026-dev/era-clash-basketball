@@ -1,0 +1,89 @@
+{
+  "artifact": "ui-release-resolution-ledger",
+  "release": "ui/light-court-release-candidate",
+  "codeCommit": "149eef3",
+  "recordedAt": "2026-09-09T20:36:10.862Z",
+  "items": [
+    {
+      "id": "UIR-1",
+      "found": "Owner report: challenge recipients landed outside the Chaos flow",
+      "cause": "legacy Postgame Challenge/Share on a Chaos result minted /challenge/{id} \u2192 /?ch= \u2192 pre-9C roster builder",
+      "resolution": "App.jsx guards (renderReport onChallenge, doShare legacyChallenge); regression gate ui-release:challenge-entry-qa 13/13",
+      "state": "fixed, gated"
+    },
+    {
+      "id": "UIR-2",
+      "found": "Light presentation required across all game surfaces without page patches",
+      "resolution": "productionArena re-tokened; .ec-brand-header frozen master-brand block; index.css night literals \u2192 tokens/color-mix; gold fills \u2192 cta tokens",
+      "state": "done; ui-release:theme-qa 36/36"
+    },
+    {
+      "id": "UIR-3",
+      "found": "Crowd silhouette SVG has an opaque near-black rect: read as a grey slab over the ivory stage",
+      "resolution": ".ec-ta-crowd opacity follows --ec-a-court-opacity and multiplies",
+      "state": "fixed (developer visual review of theme-drafting.png)"
+    },
+    {
+      "id": "UIR-4",
+      "found": "Rail links (36px), era-rules control (40px), coach scouting toggles (28px), result tabs (40px) under 44px on desktop",
+      "resolution": "44px rule for these controls at every viewport (end of index.css); dock tab inline minHeight 44",
+      "state": "fixed; ui-release:responsive-qa 128/128, chaos:responsive-qa PASS"
+    },
+    {
+      "id": "UIR-5",
+      "found": "Unit pins encoded the old dark arena palette or whole-directory src/theme diffs (v9a2, v9a3p, v9b1)",
+      "resolution": "re-pinned to the invariants they protect (master brand, scope keys, semantic roles, Light Court values, dark portrait well, obsidian header)",
+      "state": "done; vitest 2647/2647"
+    },
+    {
+      "id": "UIR-6",
+      "found": "9A.2 semantic gate asserted platinum/graphite arena text",
+      "resolution": "re-contracted to ivory/ink",
+      "state": "done"
+    },
+    {
+      "id": "UIR-7",
+      "found": "9A.2 production/fracture/semantic browser gates time out on '.ec-ta-rail [role=tab]' (removed by 9B.3)",
+      "resolution": "reproduced identically on the untouched baseline aae565c (worktree, port 4177) \u2014 pre-existing harness drift, not caused by this release; recorded in shared-theme-contract.json; not repaired (out of scope)",
+      "state": "documented"
+    },
+    {
+      "id": "UIR-8",
+      "found": "First chaos:accessibility-qa run hit a TimeoutError; alone it passed",
+      "resolution": "intermittent (sweep discipline: rerun alone recorded)",
+      "state": "intermittent"
+    },
+    {
+      "id": "UIR-9",
+      "found": "ui:night-court-deployed / ui:lobby-polish-deployed fail on the RC alias",
+      "resolution": "those gates exchange the eight Wave 1 keys against the stable Wave 1 alias by design; the RC alias is a Wave 2-gated branch preview. Not applicable to this alias; Wave 1 untouched (4dc59e7)",
+      "state": "not applicable"
+    },
+    {
+      "id": "UIR-10",
+      "found": "challenge:deployed-qa 3 seeded checks need LIVE/EXPIRED/REVOKED codes; preview has 0 challenge rows and refuses anonymous sign-up",
+      "resolution": "fixture procedure prepared (scripts/ui-release/liveChallengeFixtures.mjs + fixture SQL); the auth.users insert was blocked by the session's permission classifier and not worked around",
+      "state": "not yet verified \u2014 owner decision",
+      "evidence": "deployed/challenge-seeded-checks.json"
+    },
+    {
+      "id": "UIR-11",
+      "found": "Gates rewrite frozen 9A.2/9B.3/9C\u20139F evidence when run",
+      "resolution": "restored from git after each run; this release records into data/validation/ui-release",
+      "state": "handled"
+    },
+    {
+      "id": "UIR-12",
+      "found": "Sweep: ui-release:accessibility-qa FAIL \u2014 ERA_REVEAL CTA sampled mid colour-transition, 4.49 vs 4.5",
+      "resolution": "passed alone 21/21 (twice); gate settles 600ms before sampling",
+      "state": "intermittent \u2192 hardened"
+    },
+    {
+      "id": "UIR-13",
+      "found": "Sweep: progression:security-qa FAIL \u2014 +100 instead of completion+win+Era-first; the shared fake-cloud harness already held the challenge gates' completions",
+      "resolution": "passed alone 17/17 on a fresh 4178 harness; uiReleaseSweep.sh restarts the fake before the progression http gates (the known shared-harness leak)",
+      "state": "intermittent by harness state \u2192 sweep fixed"
+    }
+  ],
+  "sweep": {"unit":"2647 passed (2647)","e2e":"89 passed (1.8m)","gates":92,"pass":86,"fail":["ui-release:accessibility-qa","ui:night-court-production-qa","ui:era-fracture-qa","ui:semantic-color-qa","progression:security-qa","challenge:deployed-qa"],"skipped":[],"failExplained":{"ui-release:accessibility-qa":"sweep run sampled the ERA_REVEAL CTA mid colour-transition (4.49 vs 4.5); passed alone 21/21 twice; gate now settles 600ms before sampling","ui:night-court-production-qa":"pre-existing 9B.3 selector drift, identical on the untouched baseline","ui:era-fracture-qa":"pre-existing 9B.3 selector drift, identical on the untouched baseline","ui:semantic-color-qa":"pre-existing 9B.3 selector drift, identical on the untouched baseline","progression:security-qa":"inherited the challenge gates' completions on the shared fake-cloud harness (+100, Era-first already awarded); passed alone 17/17 on a fresh harness; sweep now restarts the fake before it","challenge:deployed-qa":"3 seeded checks not yet verified (owner decision on fixtures); 8/11 guest-visible checks passed"}}
+}

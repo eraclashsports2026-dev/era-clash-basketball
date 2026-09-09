@@ -1,7 +1,7 @@
 # Unified Light UI release candidate — owner test journey
 
-Preview: `__PREVIEW_ALIAS__` (durable, protected branch alias; owner access key as before).
-Candidate: branch `ui/light-court-release-candidate` @ `__RC_COMMIT__`, stacked on the verified 9F head `aae565c`.
+Preview: `https://era-clash-basketball-git-ui-light-court-releas-343e8b-era-clash.vercel.app` (durable, protected branch alias; owner access key as before).
+Candidate: branch `ui/light-court-release-candidate` @ `149eef3 (code) — see ui-release-final-summary.json for the certified head`, stacked on the verified 9F head `aae565c`.
 
 What changed, in one line each: the game surfaces now read on the Light Court
 (ivory canvas, ink text, gold CTA) through the shared theme tokens; the dark

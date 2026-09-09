@@ -1,11 +1,11 @@
 {
   "phase": "9B.2",
   "mode": "career-v2",
-  "generatedAt": "2026-09-05T02:37:39.837Z",
+  "generatedAt": "2026-09-09T20:31:28.055Z",
   "trustModel": "The real Career V2 modules exercised against the test account adapter, which enforces the same ownership rules the SQL policies enforce. Live database RLS is certified separately in live-rls-qa.json.",
   "checks": [
     {
-      "name": "the five tabs are exactly overview/history/rosters/favorites/account",
+      "name": "the tabs begin overview/history/rosters/favorites and end with account",
       "pass": true,
       "detail": ""
     },
@@ -35,9 +35,9 @@
       "detail": ""
     },
     {
-      "name": "no rank, percentile or contender grade is a Career V2 concept",
+      "name": "no rank, percentile or contender grade is a Career V2 concept (competitive words belong to the 9E module alone)",
       "pass": true,
-      "detail": ""
+      "detail": "clean"
     },
     {
       "name": "career totals are derived, not invented",
@@ -59,6 +59,8 @@
       "history",
       "rosters",
       "favorites",
+      "challenges",
+      "achievements",
       "account"
     ],
     "filters": [

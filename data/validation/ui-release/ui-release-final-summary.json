@@ -1,0 +1,101 @@
+{
+  "artifact": "ui-release-final-summary",
+  "release": "ui/light-court-release-candidate",
+  "codeCommit": "149eef3",
+  "certifiedHead": "149eef3",
+  "generatedAt": "2026-09-09T20:36:29.909Z",
+  "branch": {
+    "base": "phase-9f-public-competitive-profiles-v1 @ aae565c (PR #49, unmerged)",
+    "pr": "https://github.com/eraclashsports2026-dev/era-clash-basketball/pull/50 (draft)",
+    "alias": "https://era-clash-basketball-git-ui-light-court-releas-343e8b-era-clash.vercel.app"
+  },
+  "sweep": {
+    "unit": "2647 passed (2647)",
+    "e2e": "89 passed (1.8m)",
+    "gates": 92,
+    "pass": 86,
+    "fail": [
+      "ui-release:accessibility-qa",
+      "ui:night-court-production-qa",
+      "ui:era-fracture-qa",
+      "ui:semantic-color-qa",
+      "progression:security-qa",
+      "challenge:deployed-qa"
+    ],
+    "skipped": [],
+    "failExplained": {
+      "ui-release:accessibility-qa": "sweep run sampled the ERA_REVEAL CTA mid colour-transition (4.49 vs 4.5); passed alone 21/21 twice; gate now settles 600ms before sampling",
+      "ui:night-court-production-qa": "pre-existing 9B.3 selector drift, identical on the untouched baseline",
+      "ui:era-fracture-qa": "pre-existing 9B.3 selector drift, identical on the untouched baseline",
+      "ui:semantic-color-qa": "pre-existing 9B.3 selector drift, identical on the untouched baseline",
+      "progression:security-qa": "inherited the challenge gates' completions on the shared fake-cloud harness (+100, Era-first already awarded); passed alone 17/17 on a fresh harness; sweep now restarts the fake before it",
+      "challenge:deployed-qa": "3 seeded checks not yet verified (owner decision on fixtures); 8/11 guest-visible checks passed"
+    }
+  },
+  "preservation": {
+    "allZero": true,
+    "metrics": {
+      "activeCandidateCoreDrift": 0,
+      "candidateParameterDrift": 0,
+      "gameLogicChanges": 0,
+      "draftLogicChanges": 0,
+      "placementLogicChanges": 0,
+      "legendRivalLogicChanges": 0,
+      "eraLogicChanges": 0,
+      "coachLogicChanges": 0,
+      "challengeFairnessChanges": 0,
+      "challengeComparisonChanges": 0,
+      "progressionContractChanges": 0,
+      "competitiveRatingContractChanges": 0,
+      "competitivePlacementContractChanges": 0,
+      "privacyContractChanges": 0,
+      "apiFunctionCountIncrease": 0,
+      "wave1Changes": 0,
+      "stableWave2Changes": 0,
+      "mainChanges": 0,
+      "productionChanges": 0
+    }
+  },
+  "notYetVerified": [
+    "a seeded live challenge code was provided (LIVE_CHALLENGE_CODE)",
+    "a live expired code was provided (LIVE_EXPIRED_CODE)",
+    "a live revoked code was provided (LIVE_REVOKED_CODE)"
+  ],
+  "evidenceClasses": {
+    "automated": "gate/test output in data/validation/ui-release and the sweep log",
+    "manualDeveloper": "screenshots reviewed by the developer (theme-*.png)",
+    "ownerReported": "9F public profiles work (owner statement, not reproduced)",
+    "notYetVerified": "the three seeded live challenge checks; live challenge create/accept on the preview"
+  },
+  "notDone": [
+    "no PR merged",
+    "main/wave1/wave2 unmoved",
+    "no production deployment, migration, env var, DNS or domain change",
+    "no testers invited",
+    "no new feature phase"
+  ],
+  "artifacts": [
+    "approved-ui-reference.json",
+    "challenge-entry-regression-qa.json",
+    "challenge-entry-root-cause.json",
+    "domain-release-readiness.json",
+    "full-journey-qa.json",
+    "production-isolation.json",
+    "production-migration-plan.json",
+    "production-rollback-plan.json",
+    "shared-theme-contract.json",
+    "shared-theme-live-qa.json",
+    "ui-accessibility-qa.json",
+    "ui-performance-qa.json",
+    "ui-release-final-summary.json",
+    "ui-release-preflight.json",
+    "ui-release-resolution-ledger.json",
+    "ui-responsive-qa.json",
+    "wave-preservation.json"
+  ],
+  "verdict": "UNIFIED UI RELEASE CANDIDATE READY FOR OWNER TEST — DOMAIN RELEASE PLAN PREPARED",
+  "stopFor": [
+    "APPROVE UI — PREPARE FINAL DOMAIN PROMOTION",
+    "REVISE: <what you saw>"
+  ]
+}

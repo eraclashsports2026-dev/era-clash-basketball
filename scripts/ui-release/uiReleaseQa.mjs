@@ -258,6 +258,8 @@ async function accessibility() {
   try {
     const { page } = await newPage(browser, { width: 1536, height: 1024 }, { reducedMotion: "reduce" });
     await walk(page, async (st) => {
+      // let colour transitions settle (the CTA animates from its disabled colour when it enables)
+      await page.waitForTimeout(600);
       perState[st] = await contrastFacts(page);
       // keyboard: Tab reaches a visible focusable; the primary CTA is a real button
       await page.keyboard.press("Tab");

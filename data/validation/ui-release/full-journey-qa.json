@@ -1,0 +1,18 @@
+{
+  "artifact": "full-journey-qa",
+  "release": "ui/light-court-release-candidate",
+  "origin": "https://era-clash-basketball-git-ui-light-court-releas-343e8b-era-clash.vercel.app",
+  "recordedAt": "2026-09-09T20:28:02Z",
+  "evidenceClasses": ["automated", "manual-developer", "owner-reported", "not yet verified"],
+  "journeys": [
+    { "id": "A", "name": "Home", "automated": ["ui-release:theme-qa Home ivory canvas + obsidian navigation", "ui-release:responsive-qa Home × 8 viewports", "chaos:deployed-qa lobby (RC alias)", "e2e 89/89"], "manualDeveloper": "theme-home.png reviewed: unchanged layout", "ownerReported": null, "state": "verified on the RC preview by automated gates" },
+    { "id": "B", "name": "Chaos six states, light court", "automated": ["ui-release:theme-qa 36/36 (six states + Home + Daily)", "chaos:guided-flow-qa", "chaos:responsive-qa", "chaos:accessibility-qa", "chaos:deployed-qa (RC alias)"], "manualDeveloper": "theme-drafting.png / theme-result.png reviewed after the crowd-layer fix", "state": "verified" },
+    { "id": "C", "name": "Result hierarchy + full report", "automated": ["ui:result-dock-qa 12/12", "ui-release:challenge-entry-qa (full report keeps Share, no legacy Challenge)", "ui-release:responsive-qa RESULT tabs 44px"], "manualDeveloper": "theme-result.png reviewed", "state": "verified; the Challenge-comparison and rating-movement rows appear only on a challenge attempt (not exercised without a seeded code — see deployed/challenge-seeded-checks.json)" },
+    { "id": "D", "name": "Run It Back (same roster, new seed)", "automated": ["account:run-it-back-qa (sweep)", "chaos:guided-flow-qa result actions"], "state": "verified by existing gates; logic untouched (wave-preservation draftLogicChanges=0)" },
+    { "id": "E", "name": "Challenge creator on a Chaos result", "automated": ["ui-release:challenge-entry-qa 13/13: governed ChallengeShare present, no legacy CTA, no /challenge/{id} link"], "state": "verified on the harness; on the preview the create step needs a signed-in account — not yet verified live" },
+    { "id": "F", "name": "Challenge recipient lands in Chaos", "automated": ["ui-release:challenge-entry-qa: /?challenge=EC-… → Chaos invite surface; legacy /?c= → roster builder (preserved)", "challenge:deployed-qa 8/11: unavailable invitation renders on the RC preview; accept/complete needs LIVE_CHALLENGE_CODE"], "state": "root cause fixed and regression-gated; live accept/complete not yet verified (owner decision on fixtures)" },
+    { "id": "G", "name": "Daily and legacy modes unchanged", "automated": ["ui-release:theme-qa Daily light canvas", "e2e J6 legacy /?ch= builder", "source guard: legacy modes keep onChallenge"], "state": "verified" },
+    { "id": "H", "name": "Browser update picks up the new build", "automated": ["build: service worker cache identity is build-derived (plugin eraclash-sw-version stamps each build)", "chaos:deployed-qa on the fresh alias"], "manualDeveloper": "not driven in a real browser session across two builds", "state": "mechanism verified by build; owner journey H covers the live reload" }
+  ],
+  "ownerReportedBaseline": "9F public profiles reported working by the owner (owner-reported evidence only, not reproduced here)."
+}
