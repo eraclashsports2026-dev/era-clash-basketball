@@ -19,11 +19,16 @@ export const installFakeCloud = ({ users = [] } = {}) => {
   process.env.SUPABASE_SERVICE_ROLE_KEY = "sb_secret_" + "A".repeat(32);
   process.env.SUPABASE_ANON_KEY = "sb_publishable_" + "B".repeat(32);
   process.env.CLOUD_ACCOUNTS_ENABLED = "true";
+  // The harness needs stable slugs so a gate can navigate to one; the SHAPE is the
+  // real contract's (20 symbols of the 32-symbol alphabet), the randomness is not.
+  const fakeSlug = (i) => (String(i + 1).repeat(20) + "0".repeat(20)).slice(0, 20).replace(/[^0-9abcdefghjkmnpqrstvwxyz]/g, "0");
   const tables = {
     challenges: [], challenge_secrets: [], challenge_attempts: [], saved_clashes: [], result_claims: [],
     profiles: users.map((u) => ({ user_id: u.userId, display_name: u.displayName || "Coach" })),
     progression_profiles: [], xp_ledger: [], achievement_unlocks: [],
     user_preferences: [], competitive_profiles: [], competitive_rating_events: [],
+    // Phase 9F: one opaque slug per account, minted with the profile, and the featured showcase
+    public_profiles: users.map((u, i) => ({ user_id: u.userId, slug: fakeSlug(i) })), profile_featured_achievements: [],
   };
   const userExists = (id) => tables.profiles.some((p) => p.user_id === id);
   const parse = (path) => {
@@ -109,6 +114,72 @@ export const installFakeCloud = ({ users = [] } = {}) => {
   const leaderboardFn = ({ p_limit, p_offset }) => rankedPublic().slice(Math.max(0, p_offset || 0), Math.max(0, p_offset || 0) + Math.min(100, Math.max(1, p_limit || 100))).map(({ user_id, ...r }) => r);
   const rankOfFn = ({ p_user_id, p_span }) => { const all = rankedPublic(); const me = all.find((r) => r.user_id === p_user_id); if (!me) return []; return all.filter((r) => Math.abs(r.rank - me.rank) <= Math.max(0, p_span || 0)).map(({ user_id, ...r }) => ({ ...r, is_me: user_id === p_user_id })); };
 
+  // ── Phase 9F profile functions, as the SQL behaves ─────────────────────────
+  const prefsOf = (uid) => tables.user_preferences.find((u) => u.user_id === uid)?.prefs || {};
+  const featuredOf = (uid) => tables.profile_featured_achievements.filter((f) => f.user_id === uid).sort((a, b) => a.slot - b.slot).map((f) => f.achievement_id);
+  const unlockedOf = (uid) => tables.achievement_unlocks.filter((u) => u.user_id === uid).map((u) => u.achievement_id);
+  const stateOf = (cp) => (cp && isPlaced(cp) ? "placed" : cp && cp.rated_matches > 0 ? "provisional" : "none");
+  const profilePublicGetFn = ({ p_slug }) => {
+    if (!/^[0-9abcdefghjkmnpqrstvwxyz]{20}$/.test(String(p_slug || ""))) return [];
+    const pp = tables.public_profiles.find((x) => x.slug === p_slug);
+    if (!pp) return [];
+    if (prefsOf(pp.user_id).profile_visibility !== "public") return [];
+    const cp = tables.competitive_profiles.find((x) => x.user_id === pp.user_id) || null;
+    const placed = !!cp && isPlaced(cp);
+    const lb = prefsOf(pp.user_id).leaderboard_visibility === "public";
+    const rank = placed && lb ? (rankedPublic().find((r) => r.user_id === pp.user_id)?.rank ?? null) : null;
+    return [{
+      slug: pp.slug,
+      display_name: tables.profiles.find((x) => x.user_id === pp.user_id)?.display_name || "Coach",
+      state: stateOf(cp),
+      current_rating: placed ? cp.current_rating : null,
+      rank,
+      rated_wins: placed ? cp.rated_wins : null, rated_losses: placed ? cp.rated_losses : null, rated_ties: placed ? cp.rated_ties : null,
+      rated_matches: cp?.rated_matches ?? 0, unique_opponents: cp?.unique_opponents ?? 0,
+      career_level: tables.progression_profiles.find((x) => x.user_id === pp.user_id)?.career_level ?? null,
+      featured: featuredOf(pp.user_id),
+    }];
+  };
+  const profileOwnerGetFn = ({ p_user_id }) => {
+    const pp = tables.public_profiles.find((x) => x.user_id === p_user_id);
+    if (!pp) return [];
+    const cp = tables.competitive_profiles.find((x) => x.user_id === p_user_id) || null;
+    const placed = !!cp && isPlaced(cp);
+    const pf = prefsOf(p_user_id);
+    const lb = pf.leaderboard_visibility === "public";
+    return [{
+      slug: pp.slug,
+      display_name: tables.profiles.find((x) => x.user_id === p_user_id)?.display_name || "Coach",
+      profile_visibility: pf.profile_visibility === "public" ? "public" : "private",
+      leaderboard_visibility: lb ? "public" : "private",
+      state: stateOf(cp),
+      current_rating: cp?.current_rating ?? INITIAL_RATING,
+      rank: placed && lb ? (rankedPublic().find((r) => r.user_id === p_user_id)?.rank ?? null) : null,
+      rated_wins: cp?.rated_wins ?? 0, rated_losses: cp?.rated_losses ?? 0, rated_ties: cp?.rated_ties ?? 0,
+      rated_matches: cp?.rated_matches ?? 0, unique_opponents: cp?.unique_opponents ?? 0,
+      career_level: tables.progression_profiles.find((x) => x.user_id === p_user_id)?.career_level ?? null,
+      featured: featuredOf(p_user_id), unlocked: unlockedOf(p_user_id),
+    }];
+  };
+  const profileSetFeaturedFn = ({ p_user_id, p_ids }) => {
+    if (!p_user_id) return { ok: false, reason: "user_required" };
+    const ids = Array.isArray(p_ids) ? p_ids : [];
+    if (ids.length > 3) return { ok: false, reason: "too_many" };
+    if (new Set(ids).size !== ids.length) return { ok: false, reason: "duplicate" };
+    if (ids.some((x) => !/^[a-z0-9_]{1,40}$/.test(String(x)))) return { ok: false, reason: "malformed" };
+    const mine = new Set(unlockedOf(p_user_id));
+    const bad = ids.find((x) => !mine.has(x));
+    if (bad) return { ok: false, reason: "not_unlocked", achievementId: bad };
+    tables.profile_featured_achievements = tables.profile_featured_achievements.filter((f) => f.user_id !== p_user_id);
+    ids.forEach((id, i) => tables.profile_featured_achievements.push({ user_id: p_user_id, achievement_id: id, slot: i + 1 }));
+    return { ok: true, featured: ids };
+  };
+  const profileBoardLinksFn = ({ p_limit }) => rankedPublic()
+    .filter((r) => prefsOf(r.user_id).profile_visibility === "public")
+    .filter((r) => r.rank <= Math.min(100, Math.max(1, p_limit || 100)))
+    .map((r) => ({ rank: r.rank, slug: tables.public_profiles.find((x) => x.user_id === r.user_id)?.slug }))
+    .filter((x) => !!x.slug);
+
   const realFetch = globalThis.fetch;
   globalThis.fetch = async (input, init = {}) => {
     const u = String(input instanceof Request ? input.url : input);
@@ -129,6 +200,10 @@ export const installFakeCloud = ({ users = [] } = {}) => {
     if (rel.startsWith("rpc/competitive_reconcile")) return reply(200, reconcileFn(JSON.parse(init.body || "{}")));
     if (rel.startsWith("rpc/competitive_leaderboard")) return reply(200, leaderboardFn(JSON.parse(init.body || "{}")));
     if (rel.startsWith("rpc/competitive_rank_of")) return reply(200, rankOfFn(JSON.parse(init.body || "{}")));
+    if (rel.startsWith("rpc/profile_public_get")) return reply(200, profilePublicGetFn(JSON.parse(init.body || "{}")));
+    if (rel.startsWith("rpc/profile_owner_get")) return reply(200, profileOwnerGetFn(JSON.parse(init.body || "{}")));
+    if (rel.startsWith("rpc/profile_set_featured")) return reply(200, profileSetFeaturedFn(JSON.parse(init.body || "{}")));
+    if (rel.startsWith("rpc/profile_board_links")) return reply(200, profileBoardLinksFn(JSON.parse(init.body || "{}")));
     if (rel.startsWith("rpc/")) return reply(404, { message: "no such function" });
     const { table, filters, onConflict, order, limit } = parse(rel);
     const rows = tables[table]; if (!rows) return reply(404, { message: `no table ${table}` });

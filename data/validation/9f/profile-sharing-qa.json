@@ -1,0 +1,50 @@
+{
+  "artifact": "profile-sharing-qa",
+  "phase": "9F — Public Competitive Profiles + Player Cards V1",
+  "generatedAt": "2026-09-09T18:15:24.807Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "sharing uses the Web Share API where offered and the clipboard otherwise",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a cancelled native share is not treated as a failure and does not fall through",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "no social SDK is loaded",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the share URL is the profile route and carries no tracking parameter or viewer identity",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "no auth or session data can appear in a shared URL",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the owner is given a real shareable link for their own profile",
+      "pass": true,
+      "detail": "http://localhost:4178/player/11111111111111111111"
+    },
+    {
+      "check": "the share telemetry records the METHOD and nothing about the profile",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "dynamic Open Graph metadata: the limitation is documented rather than faked",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": true,
+  "url": "http://localhost:4178/player/11111111111111111111"
+}

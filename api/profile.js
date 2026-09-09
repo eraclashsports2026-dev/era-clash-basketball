@@ -34,6 +34,7 @@ import { reconcileProgression, recentLedger, compactProgression, reconcileChalle
 // Phase 9E: Competitive Rating rides the same route. The database rates; the
 // server relays the caller's side; the leaderboard is the safe projection.
 import { rateChallengeCompletion, competitiveMe, leaderboard as competitiveLeaderboard, aroundMe as competitiveAroundMe } from "./_lib/competitive.js";
+import { publicProfileBySlug, profileMe, setFeaturedAchievements, profileBoardLinks } from "./_lib/profiles.js";   // Phase 9F
 import { normalizeTier } from "../src/entitlements.js";
 import { validRunId } from "./_lib/chaosRun.js";
 
@@ -45,6 +46,12 @@ const ACCOUNT_ONLY_CHALLENGE_ACTIONS = new Set(["challenge-create", "challenge-r
 const PROGRESSION_ACTIONS = new Set(["progression-get", "progression-reconcile"]);
 const COMPETITIVE_ACTIONS = new Set(["competitive-leaderboard", "competitive-me", "competitive-around-me"]);
 const ACCOUNT_ONLY_COMPETITIVE_ACTIONS = new Set(["competitive-me", "competitive-around-me"]);
+// Phase 9F. profile-public is readable by anyone WITH THE SLUG — that is the
+// whole access model, and it is why there is no listing action here. The other
+// two are the account's own. Visibility itself is a PREFERENCE, written through
+// the existing 9B.2 path under owner-only RLS, so it has no action.
+const PROFILE_ACTIONS = new Set(["profile-public", "profile-me", "profile-featured-set", "profile-board-links"]);
+const ACCOUNT_ONLY_PROFILE_ACTIONS = new Set(["profile-me", "profile-featured-set"]);
 /** A guest: an identity with no user id. Never a stand-in for a token that failed verification. */
 const GUEST_IDENTITY = Object.freeze({ userId: null });
 
@@ -247,6 +254,30 @@ export default async function handler(req, res) {
     const out = action9e === "competitive-leaderboard" ? await competitiveLeaderboard({})
       : action9e === "competitive-me" ? await competitiveMe({ userId: who.userId })
       : await competitiveAroundMe({ userId: who.userId });
+    return res.status(out.status === "ok" ? 200 : { not_configured: 503, failed: 502 }[out.status] ?? 500).json({ ...out, requestId });
+  }
+
+  // ── Phase 9F public-profile actions ──────────────────────────────────────
+  // A public profile is fetched by SLUG and by nothing else. The response for a
+  // private profile, an unknown slug, a malformed slug and an auth uuid passed
+  // as a slug is identical, so nothing here reveals whether an account exists.
+  const action9f = typeof req.body?.action === "string" ? req.body.action : null;
+  if (action9f && PROFILE_ACTIONS.has(action9f)) {
+    if (!cloudAccountsReady()) return res.status(503).json({ error: "CLOUD_ACCOUNTS_DISABLED", requestId });
+    if (!(await rateLimit(`prof:${clientIp(req)}`, limits().profilePerMinIp, 60))) return sendError(res, "RATE_LIMITED", requestId, { retryAfter: 30 });
+    const token = bearer(req);
+    const verified = token ? await verifyAccountToken(token) : null;
+    if (token && !verified) return res.status(401).json({ error: "NOT_AUTHENTICATED", requestId });
+    const who = verified || GUEST_IDENTITY;
+    if (ACCOUNT_ONLY_PROFILE_ACTIONS.has(action9f) && !who.userId) return res.status(401).json({ error: "NOT_AUTHENTICATED", requestId });
+    // A public profile is the one cacheable surface here, but only briefly: a
+    // visibility change must take effect quickly, so it is private to the edge
+    // like every other account response.
+    res.setHeader("Cache-Control", "private, no-store");
+    const out = action9f === "profile-public" ? await publicProfileBySlug({ slug: typeof req.body?.slug === "string" ? req.body.slug : "" })
+      : action9f === "profile-board-links" ? await profileBoardLinks({})
+      : action9f === "profile-me" ? await profileMe({ userId: who.userId })
+      : await setFeaturedAchievements({ userId: who.userId, ids: Array.isArray(req.body?.featured) ? req.body.featured : null });
     return res.status(out.status === "ok" ? 200 : { not_configured: 503, failed: 502 }[out.status] ?? 500).json({ ...out, requestId });
   }
 

@@ -1,0 +1,296 @@
+{
+  "artifact": "phase9f-resolution-ledger",
+  "phase": "9F — Public Competitive Profiles + Player Cards V1",
+  "generatedAt": "2026-09-09T18:17:45.337Z",
+  "items": [
+    {
+      "item": "9E owner acceptance",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "phase9e-acceptance.json — 'Approve Leaderboards V1'; PR #48 merged at 7d2673e; the two-account rated flow is OWNER-REPORTED, recorded as testimony rather than as generated evidence"
+    },
+    {
+      "item": "repository truth",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "phase-9f-public-competitive-profiles-v1 @ cf17871, from the accepted chain head fec7a12"
+    },
+    {
+      "item": "Candidate 4 preservation",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "harness 55bb26a2 / 1.4.0; every frozen path byte-identical to fec7a12"
+    },
+    {
+      "item": "public profile contract",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "public-profile-contract.json — version 1.0.0, private by default, PUBLIC_PROFILE_POWER_EFFECT 0"
+    },
+    {
+      "item": "account private by default",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "creating an account creates no discoverable profile; with no preference row at all the database answers PRIVATE"
+    },
+    {
+      "item": "profile_visibility vocabulary",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "only private|public, default private, closed vocabulary preserved, unknown keys still rejected, all six keys valid together"
+    },
+    {
+      "item": "leaderboard_visibility independence",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "all four combinations held live and on the harness; the two settings are never combined"
+    },
+    {
+      "item": "safe public identifier",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "profile-identifier-qa.json — 20 symbols of 32, 100 bits, server-minted, immutable, not an email/auth/row id, not enumerable"
+    },
+    {
+      "item": "raw user/auth id never exposed",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "the projection's key list is closed and a uuid is refused where a slug belongs, at the contract, the server and in SQL"
+    },
+    {
+      "item": "safe public projection",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "public-profile-projection-qa.json — a fixed select list in a SECURITY DEFINER function; no base row reaches a client"
+    },
+    {
+      "item": "private profile not readable cross-account",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "anon: permission denied for table public_profiles; permission denied for table profile_featured_achievements; permission denied for function profile_public_get. authenticated sub=A: sees 1 public_prof"
+    },
+    {
+      "item": "anonymous cannot read a private profile",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "anon is denied both tables and the projection function outright"
+    },
+    {
+      "item": "private profile leak (P0)",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "D (profile_visibility private, and placed with leaderboard_visibility public) returned NO ROWS from profile_public_get while remaining visible on competitive_leaderboard. That is the PROFILE PRIVATE + LEADERBOARD PUBLIC combination working live: the ranking is listed, the profile is not reachable and nothing links to it."
+    },
+    {
+      "item": "enumeration prevented",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "The complete set of profile functions in the database is profile_owner_get(uuid), profile_public_get(text), profile_set_featured(uuid, text[]), profile_slug_new(), public_profile_provision(), public_profile_guard(). NONE of them lists profiles: profile_public_get takes one slug and returns at most one row. There is no equivalent of GET ALL PUBLIC USERS. The Phase 9E leaderboard remains the one intentionally bounded public competitive listing."
+    },
+    {
+      "item": "public profile route",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "/player/:slug on the protected preview, no overflow, saying nothing about existence"
+    },
+    {
+      "item": "private owner preview",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "screens/profile-owner-private-preview.png — the real card, from the server's own projection, marked PRIVATE PREVIEW · NOT VISIBLE TO ANYONE ELSE"
+    },
+    {
+      "item": "Player Card",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "screens/player-card-desktop.png and player-card-mobile.png"
+    },
+    {
+      "item": "placed rating displays correctly",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "rating dominant, record and rank secondary, Career Level a separate labelled metric"
+    },
+    {
+      "item": "provisional behaviour preserves 9E privacy",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "A provisional account's rating never reaches a public surface, exactly as in Phase 9E, where competitive_leaderboard requires placement and competitive_rank_of returns nothing for a provisional account."
+    },
+    {
+      "item": "no fake provisional rank",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "no rating, no rank, no estimate; nothing computes a 'would be #X'"
+    },
+    {
+      "item": "public rank only when eligible",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "live: a placed account with a private leaderboard got a rating and rank NULL"
+    },
+    {
+      "item": "Career Level separate from rating",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "two labelled metrics, never merged; no XP leaderboard exists"
+    },
+    {
+      "item": "featured achievements max 3, unlocked only",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "Live, through profile_set_featured: three unlocked ids accepted in slot order; a LOCKED achievement (century_club) refused with not_unlocked; four ids refused with too_many; a duplicate refused with duplicate; an unknown"
+    },
+    {
+      "item": "achievement contract unchanged",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "catalog 1.0.0, 23 achievements; 9F defines none and writes no unlock"
+    },
+    {
+      "item": "leaderboard links only when public",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "live: of two board rows, only the doubly-opted-in one had a link"
+    },
+    {
+      "item": "leaderboard usable with a private profile",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "a private-profile row renders identically, with no link and no slug"
+    },
+    {
+      "item": "Phase 9E leaderboard untouched",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "0006 and both 9E modules byte-identical; 9F resolves links through 9E's own competitive_rank_of rather than duplicating its ordering"
+    },
+    {
+      "item": "profile share link",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "Web Share where offered, clipboard otherwise; no SDK, no tracking parameter, no viewer identity or session in the URL"
+    },
+    {
+      "item": "dynamic Open Graph",
+      "state": "DEFERRED_BY_SCOPE",
+      "evidence": "NOT built in V1, and documented rather than faked: the serverless budget is full at 13, and serving /player/<slug> from share-page.js would put a redirect hop in front of every human visit and require the Player Card to exist twice (server HTML and React). docs/public-profiles/public-profile-contract-v1.md records the reasoning. No image-generation infrastructure was added."
+    },
+    {
+      "item": "display-name change preserves the profile",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "Renaming A from 'QA Alpha' to 'QA Alpha Renamed' left the slug e6dj0mdh6qfaks3n3mw1 unchanged, the rating 1010 unchanged, the rank 2 unchanged, the Career Level 18 unchanged, the featured showcase unchanged and all five of A's rating events intact — while the public profile immediately served the new current display name. No new public profile was created."
+    },
+    {
+      "item": "deletion removes the public profile safely",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "delete from auth.users where id = B: profile_public_get(B's slug) returns no rows; B's public_profiles row, profiles row and featured rows are all gone (ON DELETE CASCADE), so the former display name leaks nowhere and no stale profile route remains; A's rating 1010 and record survive; all 9 rating events are preserved with B's side set null (ON DELETE SET NULL — a rating event is never deleted, so surviving opponents keep what they earned); B vanished from competitive_leaderboard per Phase 9E behaviour."
+    },
+    {
+      "item": "historical competitive math intact",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "all rating events preserved with the deleted side nulled; surviving opponents keep what they earned"
+    },
+    {
+      "item": "RLS",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "read-your-own-row only; no insert/update/delete policy; every function SECURITY DEFINER and revoked from anon and authenticated"
+    },
+    {
+      "item": "no earlier RLS rule weakened",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "0007 drops no earlier policy and grants no new write"
+    },
+    {
+      "item": "live database certification",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "verified 2026-09-09T17:20:00Z; all 7 live function bodies byte-identical to the committed migration"
+    },
+    {
+      "item": "9F-L1 projection column mis-mapping",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "found live before the UI existed; unique_opponents carried rated_matches"
+    },
+    {
+      "item": "9F-L2 provisional card had nothing to show",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "found live; the two placement counts are now public, the rating and rank are not"
+    },
+    {
+      "item": "Competitive Rating contract unchanged",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "version 1.0.0, initial 1000, floor 100, K 40/24 at 10, placement 5 & 3, pair 3 in 7 days — and src/competitive/contract.js, api/_lib/competitive.js and 0006 all byte-identical to the accepted head"
+    },
+    {
+      "item": "Progression contract unchanged",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "src/progression/contract.js and api/_lib/progression.js byte-identical; XP values, level curve and unlock rules untouched"
+    },
+    {
+      "item": "Challenge contract unchanged",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "src/challenges/contract.js and api/_lib/challenges.js byte-identical"
+    },
+    {
+      "item": "no basketball power created",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "96+ game, draft, era, coach, placement, Guided Flow, challenge, rating and progression files scanned; none reads the profile system"
+    },
+    {
+      "item": "mobile",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "profile-responsive-qa.json — eight viewports, no overflow, 44px controls, the card fits its column"
+    },
+    {
+      "item": "accessibility",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "profile-accessibility-qa.json — one h1, a single-sentence screen-reader summary, status in words, contrast, keyboard, focus-visible, reduced motion"
+    },
+    {
+      "item": "performance",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "profile-performance-qa.json — one indexed lookup by slug; none of the heavy datasets loaded; no client-side join"
+    },
+    {
+      "item": "telemetry privacy",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "six closed events mirrored in both allowlists; metadata carries no name, id, slug or token"
+    },
+    {
+      "item": "secret audit",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "bundle scan on the protected preview: no secret, no service_role JWT, no server function name, no fixture route, no Git metadata"
+    },
+    {
+      "item": "deployed certification",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "deployed gate on https://era-clash-basketball-git-phase-9f-public-compe-0d8e8f-era-clash.vercel.app"
+    },
+    {
+      "item": "Wave 1 preservation",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "4dc59e7"
+    },
+    {
+      "item": "Wave 2 preservation",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "ef0caa5"
+    },
+    {
+      "item": "main preservation",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "9cd95ff"
+    },
+    {
+      "item": "production isolation",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "production 2.7.2: no preview block, no cloud accounts"
+    },
+    {
+      "item": "API function count",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "12 routes + middleware; apiFunctionCountIncrease 0"
+    },
+    {
+      "item": "preview left clean for the owner",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "synthetic accounts deleted; the preview holds 1 account, an empty public board and 0 profile links — no fake public profiles"
+    },
+    {
+      "item": "9C deployed preservation",
+      "state": "EXTERNAL_BLOCKER_WITH_SAFE_PRODUCT_FALLBACK",
+      "evidence": "every product check passes; unmet: a seeded live challenge code was provided (LIVE_CHALLENGE_CODE); a live expired code was provided (LIVE_EXPIRED_CODE); a live revoked code was provided (LIVE_REVOKED_CODE) — these three need live Phase 9C challenge codes supplied as operator fixtures, and the certified preview database is deliberately empty. Phase 9C's own frozen record is 15/15 and the accept-and-compare path is certified on the harness."
+    },
+    {
+      "item": "unit tests",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "2647 passed (2647)"
+    },
+    {
+      "item": "Playwright e2e",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "88 passed (1.8m) · rerun alone: e2e/phase7b-preview.spec.js PASS ALONE"
+    },
+    {
+      "item": "gates",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "77 gates PASS; challenge:deployed-qa partial on unsupplied 9C operator fixtures only"
+    }
+  ],
+  "open": [],
+  "unresolvedP0": 0,
+  "unresolvedP1": 0,
+  "unresolvedTechnicalFailures": 0
+}

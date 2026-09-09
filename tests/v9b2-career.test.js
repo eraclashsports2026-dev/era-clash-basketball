@@ -6,7 +6,7 @@
 // user. These prove all of that as plain functions, plus contracts that pin the
 // database, the entitlement number and the event allowlist together.
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import {
   CAREER_TABS, CAREER_TAB_IDS, tabFromSearch, modeName, MODE_LABEL,
   HISTORY_FILTERS, HISTORY_SORTS, defaultHistoryFilters, erasInHistory,
@@ -137,10 +137,17 @@ describe("preferences are a closed vocabulary", () => {
     // The default-result-tab values must be real ResultDock tabs.
     expect(PREF_SCHEMA.default_result_tab.values).toEqual(["story", "box", "coaching", "analysis"]);
     expect(PREF_KEYS.every((k) => typeof PREF_DEFAULTS[k] === "string")).toBe(true);
-    // The migration and the client agree on the vocabulary.
-    // 0003 defined the vocabulary; 0006 (Phase 9E) extends prefs_ok with leaderboard_visibility.
-    const PREFS_SQL = SQL + readFileSync("supabase/migrations/0006_competitive_rating_v1.sql", "utf8");
-    for (const k of PREF_KEYS) expect(PREFS_SQL).toContain(k);
+    // The migration and the client agree on the vocabulary. prefs_ok is
+    // redefined by whichever phase last extended it (0003 defined it, 9E added
+    // leaderboard_visibility, 9F added profile_visibility), so find the CURRENT
+    // definition rather than naming files here — a list of migrations in a test
+    // is a snapshot that every later phase has to come back and edit.
+    const migrations = readdirSync("supabase/migrations").filter((f) => f.endsWith(".sql")).sort();
+    const defining = migrations.filter((f) => readFileSync(`supabase/migrations/${f}`, "utf8").includes("function public.prefs_ok"));
+    expect(defining.length).toBeGreaterThan(0);
+    const current = readFileSync(`supabase/migrations/${defining.at(-1)}`, "utf8");
+    const prefsOk = current.slice(current.indexOf("function public.prefs_ok"));
+    for (const k of PREF_KEYS) expect(prefsOk).toContain(k);
   });
 });
 

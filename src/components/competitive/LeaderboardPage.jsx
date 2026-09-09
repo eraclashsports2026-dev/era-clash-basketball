@@ -9,12 +9,15 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { leaderboardRequest, competitiveMeRequest, aroundMeRequest, setLeaderboardVisibility } from "../../competitive/client.js";
 import { COMPETITIVE_EVENTS, LEADERBOARD_LIMIT, announceRow, fmt, rankBucket } from "../../competitive/contract.js";
 import VisibilitySetting from "./VisibilitySetting.jsx";
+// Phase 9F: a row links only when that account made its profile public.
+import { boardLinksRequest } from "../../profiles/client.js";
+import { PROFILE_EVENTS, profilePath } from "../../profiles/contract.js";
 import { track } from "../../analytics.js";
 
 const COLS = [["rank", "RANK"], ["player", "PLAYER"], ["rating", "RATING"], ["record", "RECORD"], ["winPct", "WIN %"], ["matches", "MATCHES"], ["streak", "STREAK"]];
 
 /** The standings, as a real table with explicit roles so phone layouts keep their semantics. */
-export function StandingsTable({ rows, meRank = null, caption = "Top players by Challenge Rating" }) {
+export function StandingsTable({ rows, meRank = null, caption = "Top players by Challenge Rating", profileLinks = null, onOpenProfile = null }) {
   return (
     <table className="ec-cr-table" role="table">
       <caption className="ec-cr-sr">{caption}</caption>
@@ -23,7 +26,21 @@ export function StandingsTable({ rows, meRank = null, caption = "Top players by 
         {rows.map((r) => (
           <tr key={r.rank} role="row" data-rank={r.rank} data-podium={r.rank <= 3 ? r.rank : undefined} data-me={meRank === r.rank ? "true" : undefined} aria-label={announceRow(r)}>
             <td role="cell" data-col="rank"><span className="ec-cr-rank">{r.rank}</span></td>
-            <td role="cell" data-col="player"><span className="ec-cr-avatar" aria-hidden="true">{r.initials}</span><span className="ec-cr-name">{r.displayName}</span>{r.level != null && <span className="ec-cr-level">LEVEL {r.level}</span>}</td>
+            <td role="cell" data-col="player">
+              {/* Phase 9F: a row links ONLY when that account made its profile public.
+                  A private-profile row is otherwise identical — no link, no slug, no hint. */}
+              {profileLinks?.[r.rank] && onOpenProfile ? (
+                <button type="button" className="ec-cr-player-link" data-profile="public"
+                  onClick={() => onOpenProfile(profileLinks[r.rank], r.rank)}>
+                  <span className="ec-cr-avatar" aria-hidden="true">{r.initials}</span>
+                  <span className="ec-cr-name">{r.displayName}</span>
+                  <span className="ec-cr-sr"> — view public profile</span>
+                </button>
+              ) : (
+                <><span className="ec-cr-avatar" aria-hidden="true">{r.initials}</span><span className="ec-cr-name">{r.displayName}</span></>
+              )}
+              {r.level != null && <span className="ec-cr-level">LEVEL {r.level}</span>}
+            </td>
             <td role="cell" data-col="rating"><span className="ec-cr-rating">{fmt(r.rating)}</span></td>
             <td role="cell" data-col="record">{r.wins}–{r.losses}–{r.ties}</td>
             <td role="cell" data-col="winPct">{r.winPct == null ? "—" : `${r.winPct}%`}</td>
@@ -37,7 +54,7 @@ export function StandingsTable({ rows, meRank = null, caption = "Top players by 
 }
 
 /** Pure presentation, so the fixture and the gates can render every state without a server. */
-export function LeaderboardView({ state = "ok", rows = [], signedIn = false, me = null, around = null, visibility = "private", onVisibility = null, busy = false, onSignIn = null, onRetry = null }) {
+export function LeaderboardView({ state = "ok", rows = [], signedIn = false, me = null, around = null, visibility = "private", onVisibility = null, busy = false, onSignIn = null, onRetry = null, profileLinks = null, onOpenProfile = null }) {
   const placedPublic = me?.status === "ok" && !me.provisional && me.visibility === "public";
   return (
     <main className="ec-cr-page" aria-labelledby="ec-cr-title">
@@ -103,23 +120,27 @@ export function LeaderboardView({ state = "ok", rows = [], signedIn = false, me 
             <p className="ec-cr-muted">Complete official Challenges to establish your Competitive Rating. A player appears here after placement — five rated matches against three different opponents — and only by choosing public visibility.</p>
           </div>
         )}
-        {state === "ok" && rows.length > 0 && <StandingsTable rows={rows} meRank={placedPublic ? me.rank : null} />}
+        {state === "ok" && rows.length > 0 && <StandingsTable rows={rows} meRank={placedPublic ? me.rank : null} profileLinks={profileLinks} onOpenProfile={onOpenProfile} />}
       </section>
       <p className="ec-cr-foot">Ranked by Challenge Rating, then rated wins, then fewer losses, then who reached the rating first. Win % is rated wins over rated matches. Rating never changes a roll, a draft, an era, a coach or a score.</p>
     </main>
   );
 }
 
-export default function LeaderboardPage({ signedIn = false, accessToken = null, onSignIn }) {
+export default function LeaderboardPage({ signedIn = false, accessToken = null, onSignIn, onOpenProfile = null }) {
   const [board, setBoard] = useState({ state: "loading", rows: [] });
   const [me, setMe] = useState(null);
   const [around, setAround] = useState(null);
   const [busy, setBusy] = useState(false);
+  // Phase 9F: which rows may be linked. Absent, and every row renders exactly as it did.
+  const [profileLinks, setProfileLinks] = useState(null);
   const viewed = useRef(false);
   const load = useCallback(async () => {
     setBoard((b) => ({ ...b, state: "loading" }));
     try { const r = await leaderboardRequest({ accessToken }); setBoard(r.status === "ok" ? { state: "ok", rows: r.rows || [] } : { state: "error", rows: [] }); }
     catch { setBoard({ state: "error", rows: [] }); }
+    try { const l = await boardLinksRequest({ accessToken }); setProfileLinks(l.status === "ok" ? l.links : null); }
+    catch { setProfileLinks(null); }
     if (signedIn && accessToken) {
       try { const m = await competitiveMeRequest({ accessToken }); setMe(m); if (m.status === "ok" && !m.provisional && m.visibility === "public") { const a = await aroundMeRequest({ accessToken }); setAround(a.status === "ok" ? a : null); if (a.available) track(COMPETITIVE_EVENTS.AROUND_ME_VIEWED, { rankBucket: rankBucket(m.rank) }); } else setAround(null); if (m.status === "ok" && m.provisional && m.record.matches > 0) track(COMPETITIVE_EVENTS.PROVISIONAL_VIEWED, { ratedMatchCount: m.record.matches }); }
       catch { setMe({ status: "failed" }); }
@@ -131,5 +152,8 @@ export default function LeaderboardPage({ signedIn = false, accessToken = null, 
     setBusy(true);
     try { await setLeaderboardVisibility(v); await load(); return true; } catch { return false; } finally { setBusy(false); }
   };
-  return <LeaderboardView state={board.state} rows={board.rows} signedIn={signedIn} me={me} around={around} visibility={me?.visibility || "private"} onVisibility={signedIn ? onVisibility : null} busy={busy} onSignIn={onSignIn} onRetry={load} />;
+  const openProfile = onOpenProfile
+    ? (slug, rank) => { track(PROFILE_EVENTS.LEADERBOARD_OPENED, { authState: signedIn ? "account" : "guest", hasRank: !!rank }); onOpenProfile(profilePath(slug)); }
+    : null;
+  return <LeaderboardView state={board.state} rows={board.rows} signedIn={signedIn} me={me} around={around} visibility={me?.visibility || "private"} onVisibility={signedIn ? onVisibility : null} busy={busy} onSignIn={onSignIn} onRetry={load} profileLinks={profileLinks} onOpenProfile={openProfile} />;
 }

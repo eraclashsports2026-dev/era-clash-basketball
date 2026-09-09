@@ -1,0 +1,74 @@
+{
+  "artifact": "profile-rls-live",
+  "phase": "9F — Public Competitive Profiles + Player Cards V1",
+  "verifiedAt": "2026-09-09T17:20:00Z",
+  "project": "lfybiphmqkiecfrqsfzt (the certified preview project; production has no cloud accounts)",
+  "method": "Not a simulation: every statement was executed on the live preview database through the Supabase management API, each call one transaction, switching to the anon and authenticated roles with request.jwt.claims set to the synthetic accounts' ids. Synthetic accounts qa-9f-a..d (throwaway, @example.invalid) with nine rated official Challenges, achievement unlocks and progression, covering all four visibility combinations. Certified BEFORE any client code existed, so the database is the thing being trusted.",
+  "migration": "0007_public_competitive_profiles_v1 recorded in public.schema_migrations (0001..0007). Tables public_profiles, profile_featured_achievements; functions profile_slug_new(), profile_set_featured(uuid, text[]), profile_public_get(text), profile_owner_get(uuid), plus the guards public_profile_provision() and public_profile_guard(); prefs_ok() extended.",
+  "sourceOfTruth": {
+    "pass": true,
+    "evidence": "All seven function bodies in the live database are byte-for-byte identical to supabase/migrations/0007_public_competitive_profiles_v1.sql (md5 of pg_proc.prosrc compared against the body extracted from the committed file): prefs_ok, profile_slug_new, public_profile_provision, profile_set_featured, profile_public_get, profile_owner_get, public_profile_guard — 7 compared, 0 differing."
+  },
+  "defectsFoundLive": [
+    {
+      "id": "9F-L1",
+      "severity": "P2 — wrong public data",
+      "symptom": "profile_public_get returned unique_opponents = 5 for an account whose real unique_opponents was 3.",
+      "cause": "The select list mapped rated_matches into the unique_opponents output position of the RETURNS TABLE. Column-position mapping in a function returning a wide table is easy to get wrong and the types matched, so nothing complained.",
+      "consequence": "A provisional public profile would have shown the match count where the opponent count belongs — 'n / 3 OPPONENTS' would have read the wrong number.",
+      "fix": "Corrected the mapping and added coalesce(c.unique_opponents, 0)."
+    },
+    {
+      "id": "9F-L2",
+      "severity": "P2 — the provisional card could not render",
+      "symptom": "A provisional public profile returned rated_matches = null.",
+      "cause": "rated_matches was gated behind `case when c.placed`, along with the rating and the W-L-T split.",
+      "consequence": "The provisional card is specified to say '3 / 5 RATED MATCHES, 2 / 3 OPPONENTS'; with both counts withheld it had nothing to show.",
+      "fix": "The two PLACEMENT COUNTS are no longer withheld — they are the provisional card's whole content. The rating, the rank and the W-L-T split remain private until placement, which is the Phase 9E invariant."
+    }
+  ],
+  "publicProjection": {
+    "pass": true,
+    "evidence": "A (profile public, placed, leaderboard public): rating 1010, rank 2, record 3-2-0, matches 5, opponents 3, level 18, featured [first_clash, first_win, ten_wins]. B (profile public, placed, leaderboard PRIVATE): rating 1019 and the record, rank NULL — a rating without a rank, because a rank is a leaderboard fact and that listing is governed separately. C (profile public, PROVISIONAL): rating NULL, rank NULL, wins/losses/ties NULL, and only matches 3 / opponents 3 for the progress display. The select list is fixed in the function; no client ever receives a base row to filter.",
+    "phase9EInvariantPreserved": "A provisional account's rating never reaches a public surface, exactly as in Phase 9E, where competitive_leaderboard requires placement and competitive_rank_of returns nothing for a provisional account."
+  },
+  "privateProfile": {
+    "pass": true,
+    "evidence": "D (profile_visibility private, and placed with leaderboard_visibility public) returned NO ROWS from profile_public_get while remaining visible on competitive_leaderboard. That is the PROFILE PRIVATE + LEADERBOARD PUBLIC combination working live: the ranking is listed, the profile is not reachable and nothing links to it."
+  },
+  "enumeration": {
+    "pass": true,
+    "evidence": "profile_public_get('zzzzzzzzzzzzzzzzzzzz') (random), 'abc' (too short), 'E6DJ0MDH6QFAKS3N3MW1' (uppercase), '9f000001-0000-4000-8000-000000000001' (the account's real auth uuid supplied as a slug), a quote-and-OR injection attempt, and '' (empty) ALL returned exactly what a private profile returns: no rows. Nothing distinguishes 'private', 'does not exist' and 'malformed'.",
+    "noListing": "The complete set of profile functions in the database is profile_owner_get(uuid), profile_public_get(text), profile_set_featured(uuid, text[]), profile_slug_new(), public_profile_provision(), public_profile_guard(). NONE of them lists profiles: profile_public_get takes one slug and returns at most one row. There is no equivalent of GET ALL PUBLIC USERS. The Phase 9E leaderboard remains the one intentionally bounded public competitive listing.",
+    "identifier": "20 symbols of a 32-symbol alphabet = 100 bits, from extensions.gen_random_bytes with byte % 32 (256 is divisible by 32, so uniform — no modulo bias). Observed slugs for four consecutive accounts: e6dj0mdh6qfaks3n3mw1, 8bx792sy72jz0nfv088z, yt5p66889a7smv9mzc9j, 03gnv3ncan6qhsmj2bpk — unrelated to each other and to the sequential uuids that produced them."
+  },
+  "featuredAchievements": {
+    "pass": true,
+    "evidence": "Live, through profile_set_featured: three unlocked ids accepted in slot order; a LOCKED achievement (century_club) refused with not_unlocked; four ids refused with too_many; a duplicate refused with duplicate; an unknown id refused with not_unlocked (fail-closed — the database validates unlock state, and the JavaScript contract distinguishes unknown from locked for the UI's benefit); 'DROP TABLE users' refused with malformed; account B featuring an achievement that only A had unlocked refused with not_unlocked; a null account refused with user_required. Every refusal was ATOMIC — the previously saved showcase survived each one intact. An empty array clears the showcase and is idempotent (two consecutive clears both returned ok).",
+    "achievementContractUntouched": "profile_set_featured only READS achievement_unlocks. No achievement definition, unlock rule or XP value was altered, and no achievement was created for 9F."
+  },
+  "rls": {
+    "pass": true,
+    "evidence": "anon: permission denied for table public_profiles; permission denied for table profile_featured_achievements; permission denied for function profile_public_get. authenticated sub=A: sees 1 public_profiles row (its own) and 0 other accounts'; sees its own 3 featured rows and 0 other accounts'. Public reads therefore reach a browser only through the server's service-role call to the fixed-select-list projection, exactly as Phase 9E's leaderboard does.",
+    "writes": "authenticated sub=A: insert into profile_featured_achievements → permission denied for table; select profile_set_featured(...) → permission denied for function; update public_profiles set slug → permission denied for table. As the service role, past the grants: update public_profiles set slug → P0001 PUBLIC_PROFILE_SLUG_IMMUTABLE.",
+    "crossAccountVisibilityWrite": "authenticated sub=A attempting `update user_preferences set prefs = '{\"profile_visibility\":\"public\"}' where user_id = D` raised NO error and changed NOTHING: RLS scoped the statement to A's own rows, so it matched zero rows. Recorded precisely — this is silent zero-row scoping, not an error refusal. D's preferences remained private and D's profile still did not resolve."
+  },
+  "preferenceVocabulary": {
+    "pass": true,
+    "evidence": "prefs_ok live: profile_visibility 'private' true, 'public' true, 'friends' false, 'PUBLIC' false (case is not coerced), boolean true false (type is not coerced), unknown key {profile_public} false, a valid key with a smuggled extra key {profile_visibility:public, is_admin:true} false, all SIX keys together true (every previously approved key remains valid alongside the new one), a previously approved key with a bad value {reduced_motion:'nope'} still false, and {} true. The vocabulary stayed closed and no existing validation was weakened.",
+    "independence": "leaderboard_visibility and profile_visibility are separate keys and were never combined. All four combinations were held live: A public/public, B public/private, C public(provisional)/public, D private/public."
+  },
+  "displayNameChange": {
+    "pass": true,
+    "evidence": "Renaming A from 'QA Alpha' to 'QA Alpha Renamed' left the slug e6dj0mdh6qfaks3n3mw1 unchanged, the rating 1010 unchanged, the rank 2 unchanged, the Career Level 18 unchanged, the featured showcase unchanged and all five of A's rating events intact — while the public profile immediately served the new current display name. No new public profile was created."
+  },
+  "deletion": {
+    "pass": true,
+    "evidence": "delete from auth.users where id = B: profile_public_get(B's slug) returns no rows; B's public_profiles row, profiles row and featured rows are all gone (ON DELETE CASCADE), so the former display name leaks nowhere and no stale profile route remains; A's rating 1010 and record survive; all 9 rating events are preserved with B's side set null (ON DELETE SET NULL — a rating event is never deleted, so surviving opponents keep what they earned); B vanished from competitive_leaderboard per Phase 9E behaviour."
+  },
+  "powerEffect": {
+    "pass": true,
+    "evidence": "PUBLIC_PROFILE_POWER_EFFECT = 0. The 9F schema is read by nothing in any game, draft, era, coach, Legend Rival, challenge, rating or XP path; 9F reads competitive_profiles and progression_profiles and writes neither. No second source of truth for rating or level was created — the projection joins the Phase 9E and 9D tables directly."
+  },
+  "notCertifiedLive": "The signed-in browser journeys on the alias (an owner toggling visibility, featuring achievements and sharing their link, and a second account opening it). As in Phase 9E, the project cannot mint a synthetic authenticated session without a credential passing through a transcript. The server path is certified on the fake-cloud harness and the database half is certified here; the owner's test journey exercises it live."
+}

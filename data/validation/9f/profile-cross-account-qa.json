@@ -1,0 +1,49 @@
+{
+  "artifact": "profile-cross-account-qa",
+  "phase": "9F — Public Competitive Profiles + Player Cards V1",
+  "generatedAt": "2026-09-09T18:15:24.104Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "an account's own profile state is its own",
+      "pass": true,
+      "detail": "11111111111111111111 vs 22222222222222222222"
+    },
+    {
+      "check": "profile-me without an account is refused (401), never downgraded to a guest view",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a forged token is refused",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "featuring is refused without an account",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a forged user id, slug or visibility in the body changes nothing — the token's own account answers",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "one account cannot write another's showcase",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "anonymous can read a PUBLIC projection and nothing else",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "an unknown profile action is a validation failure, not a partial answer",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": true
+}
