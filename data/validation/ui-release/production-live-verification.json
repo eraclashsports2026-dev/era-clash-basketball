@@ -1,0 +1,41 @@
+{
+  "artifact": "production-live-verification",
+  "domain": "https://www.eraclashbasketball.com (apex https://eraclashbasketball.com → 308 → www)",
+  "verifiedAt": "2026-09-09T22:20:00Z",
+  "release": { "mainCommits": ["7e14f0c release merge of PR #50 (code)", "b8def7e redeploy (empty commit)", "dca0456 release guard (vite.config.js)", "64eb676 execution record"], "codeHead": "dca0456 (64eb676 is records-only)", "servingDeployment": "Vercel production, owner-triggered fresh redeploy of main@64eb676 without build cache; GitHub commit status success; live SW cache identity eraclash-assets:2.7.2:6c2599b938b9; the bundle carries the production project ref and publishable key, which only the post-guard code with the corrected env can produce" },
+  "configuration": {
+    "method": "GET /api/health?deep=1 on the domain — booleans, kinds and lengths only; no values",
+    "providerConfigured": true, "serverCredentialConfigured": true, "browserCredentialConfigured": true, "enabled": true,
+    "serverCredentialAccepted": true, "serverCredentialProbeStatus": 200, "serverCredentialAcceptedVia": "both", "serverCredentialKind": "sb_secret (length 41, charset ok, no whitespace/quotes)",
+    "serverAndBrowserSameProject": true,
+    "note": "serverCredentialAccepted is an actual authenticated PostgREST round-trip (HTTP 200), not a key-presence or key-shape check. The bundle contains the production ref dxdtnhdeaanhfoqngdel (1) and no preview ref (0)."
+  },
+  "engine": { "flagVisible": { "preview.enabled": true, "candidateId": "Candidate 4", "candidateCoreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff", "calibrationVersion": "1.4.0" }, "runtimeProof": "the live /api/game run response for the completed Clash carried preview:true, core.engine 'possession-preview', candidate.coreHash 55bb26a2…, possessionCalibrationVersion 1.4.0, fallbackEngine 'production engineVersion 3.2.0' — Candidate 4 served the actual simulation" },
+  "smoke": [
+    { "check": "Home renders Light Court lobby, obsidian navigation, Chaos Clash recommended with START CHAOS CLASH, Sign in / Create free account", "result": "PASS (screenshot live/screens/theme-home.png)" },
+    { "check": "Chaos six states reachable on the domain (EMPTY→DRAFTING with hold→ERA_REVEAL→COACH_SELECT (3 offers)→READY→RESULT)", "result": "PASS (developer-driven in the browser pane + Playwright theme gate 35/36; screenshots live/screens/theme-*.png)" },
+    { "check": "A Clash completes", "result": "PASS — 108–140, Blue, MVP line present, ~2.0s from RUN CLASH to score" },
+    { "check": "Result experience: dock, VIEW FULL REPORT, tabs, Run it back / Rematch, Share; no legacy 'Challenge a Friend'; governed 'CHALLENGE THIS CHAOS' offered", "result": "PASS" },
+    { "check": "Mobile 390×844: Home and drafting render, overflow 0px", "result": "PASS (live/screens/mobile-*.png)" },
+    { "check": "Daily reachable via navigation; light canvas (lum 0.85), obsidian header (lum 0.002), overflow 0", "result": "PASS — note /daily is not a URL route (404 by design; Daily is a nav destination), which is why the gate's Daily URL check reads 0" },
+    { "check": "Leaderboard page loads; empty public board ('THE FIRST RANKINGS ARE FORMING'); API rows: []", "result": "PASS" },
+    { "check": "Privacy: unknown profile slug → {found:false}; unknown challenge code → 'unavailable' generic; challenge-create without account → 401", "result": "PASS" },
+    { "check": "No fake users/fixtures: production DB users 0, profiles 0, challenges 0, saved_clashes 0, competitive 0", "result": "PASS" },
+    { "check": "Governed recipient flow on the domain: /?challenge=EC-ZZZZ-ZZZZ renders 'ERACLASH CHALLENGE — This challenge is not available' with PLAY CHAOS CLASH (never the legacy roster builder)", "result": "PASS" },
+    { "check": "Challenge links use the main domain", "result": "PASS by construction (src/challenges/client.js challengeLink = invitationUrl(window.location.origin, code)); a live created link needs a signed-in account — NOT exercised (see notVerified)" },
+    { "check": "Sign-in dialog opens (email flow), redirect target is `${origin}/auth/callback` (src/accounts/provider.js REDIRECT)", "result": "PASS (dialog + source); the emailed round-trip was NOT exercised" },
+    { "check": "No preview access key required on public pages; dev/fixture routes absent (/dev/basketball-theme-lab, /dev/time-arena-reference, /dev/profile-reference: 0 fixture markers)", "result": "PASS" },
+    { "check": "Secrets: bundle has no sb_secret_ key material (only the 10-char regex literal) and no service_role JWT; health exposes booleans/length/kind only", "result": "PASS" },
+    { "check": "Security headers: CSP (connect-src self + *.supabase.co), HSTS 2y, nosniff", "result": "PASS" },
+    { "check": "Service worker: build-derived cache identity, skipWaiting, clients.claim, old caches deleted", "result": "mechanism verified in the served sw.js; an existing-session upgrade from the pre-release cache was NOT observed in a real browser" },
+    { "check": "Wave 1 4dc59e7 / Wave 2 ef0caa5 unchanged", "result": "PASS" }
+  ],
+  "notVerified": [
+    "Production sign-in email round-trip and return to the requested route (Supabase built-in email: organisation-team addresses only, 2 emails/hour; custom SMTP needed for public sign-up)",
+    "Authenticated two-account Challenge (create → link → recipient accept → comparison → rating) on production — requires two real accounts; no fixtures were created",
+    "Existing-browser-session upgrade from the pre-release cache (mechanism verified only)",
+    "The three seeded challenge:deployed-qa checks (carried over from the RC)"
+  ],
+  "emailLimitation": "Separate from database/gameplay configuration, which is correct: Supabase's built-in email is restricted to organisation-team addresses and currently 2/hour. Public sign-up needs a custom SMTP provider configured in Supabase Auth (owner decision; no code change). Authentication was NOT weakened and no ordinary user was added as an organisation member.",
+  "stackedPRs": "Owner-authorised release merge: #49 → phase-9b3 (f400dd9), #50 → main (7e14f0c). PRs #16–#44 (except #42) closed as contained in main; #45 (phase-9b3 merge record) and #42 (footer touch target, separate fix) left open."
+}
