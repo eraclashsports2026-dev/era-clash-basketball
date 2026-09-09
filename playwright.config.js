@@ -1,6 +1,12 @@
 // Playwright E2E against the local integration harness (real handlers,
 // in-memory store, chaos enabled). vitest owns tests/*.test.js; Playwright
 // owns e2e/*.spec.js.
+//
+// Two harnesses, deliberately: the default one runs with every preview flag
+// OFF, so the existing journeys keep proving that production behaviour is
+// unchanged. A second harness on 4174 runs with DAILY_COACH_ERA_ENABLED so
+// the new Daily flow can be exercised as a real user WITHOUT that flag
+// leaking into the isolation journeys.
 import { defineConfig } from "@playwright/test";
 
 export default defineConfig({
@@ -12,10 +18,59 @@ export default defineConfig({
     baseURL: "http://localhost:4173",
     viewport: { width: 1280, height: 900 },
   },
-  webServer: {
-    command: "node scripts/harness.mjs 4173",
-    url: "http://localhost:4173/api/health",
-    reuseExistingServer: true,
-    timeout: 30_000,
-  },
+  projects: [
+    {
+      name: "production-flags-off",
+      testIgnore: /(daily-coach-era|phase7b-preview|phase8a-chaos|phase8c-time-arena|phase9a-play-lobby|phase9a3p-lobby-polish|phase9c-challenges|phase9d-progression|phase9e-competitive|phase9f-profiles)\.spec\.js/,
+    },
+    {
+      name: "daily-coach-era-preview",
+      testMatch: /daily-coach-era\.spec\.js/,
+      use: { baseURL: "http://localhost:4174" },
+    },
+    {
+      // Candidate 3 surfaces (coaching detail, key moments, matchup patterns,
+      // series continuity) exist only on the preview engine, which is what the
+      // Wave 1 testers actually use — so they get their own harness.
+      name: "candidate3-preview",
+      testMatch: /(phase7b-preview|phase8a-chaos|phase8c-time-arena|phase9a-play-lobby|phase9a3p-lobby-polish)\.spec\.js/,
+      use: { baseURL: "http://localhost:4175" },
+    },
+    {
+      // Phase 9C/9D: the challenge and progression flows need an account
+      // provider; the harness plays one in memory (fake cloud) on its own port.
+      name: "challenges-fake-cloud",
+      testMatch: /(phase9c-challenges|phase9d-progression|phase9e-competitive|phase9f-profiles)\.spec\.js/,
+      use: { baseURL: "http://localhost:4178" },
+    },
+  ],
+  webServer: [
+    {
+      command: "node scripts/harness.mjs 4173",
+      url: "http://localhost:4173/api/health",
+      reuseExistingServer: true,
+      timeout: 30_000,
+    },
+    {
+      command: "node scripts/harness.mjs 4174",
+      url: "http://localhost:4174/api/health",
+      reuseExistingServer: true,
+      timeout: 30_000,
+      env: { DAILY_COACH_ERA_ENABLED: "true" },
+    },
+    {
+      command: "node scripts/harness.mjs 4175",
+      url: "http://localhost:4175/api/health",
+      reuseExistingServer: true,
+      timeout: 30_000,
+      env: { PREVIEW_SIM_ENGINE_ENABLED: "true", VERCEL_ENV: "preview" },
+    },
+    {
+      command: "node scripts/harness.mjs 4178",
+      url: "http://localhost:4178/api/health",
+      reuseExistingServer: true,
+      timeout: 30_000,
+      env: { PREVIEW_SIM_ENGINE_ENABLED: "true", VERCEL_ENV: "preview", ECLASH_FAKE_CLOUD: "1", RL_PROFILE_PER_MIN_IP: "500", RL_CHALLENGE_ACTIONS_PER_MIN_IP: "500", RL_CHALLENGE_VIEW_PER_MIN_IP: "500", RL_PROGRESSION_PER_MIN_IP: "500", RL_COMPETITIVE_PER_MIN_IP: "500", RL_PROFILE_PUBLIC_PER_MIN_IP: "500" },
+    },
+  ],
 });

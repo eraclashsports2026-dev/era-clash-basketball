@@ -7,11 +7,18 @@ export const CODES = {
   MODEL_RATE_LIMITED: [429, "Enhanced analysis is busy — try again shortly."],
   MODEL_INVALID_OUTPUT: [502, "Enhanced analysis returned an invalid response."],
   MODEL_UNAVAILABLE: [503, "Enhanced analysis is temporarily unavailable."],
+  // The model produced text that contradicted the authoritative result; the
+  // deterministic recap stands instead.
+  MODEL_CONTRADICTED_RESULT: [503, "Enhanced analysis did not match the result, so the game engine's own recap is shown."],
   KV_UNAVAILABLE: [503, "Cloud saving is temporarily unavailable."],
   VALIDATION_FAILURE: [400, "That request isn't valid."],
   RATE_LIMITED: [429, "Too many requests — slow down a little."],
   IDEMPOTENCY_CONFLICT: [409, "This request was already processed."],
   DAILY_INVALID_LINEUP: [400, "That lineup doesn't match today's official Daily draft. Your attempt was not used."],
+  DAILY_INVALID_COACH: [400, "That coach isn't one of today's official options. Your attempt was not used."],
+  DAILY_INVALID_ERA: [400, "Today's Daily has one fixed Era Style. Your attempt was not used."],
+  DAILY_VERSION_MISMATCH: [409, "Today's Daily was updated. Reload to get the current configuration — your attempt was not used."],
+  DAILY_ALREADY_COMPLETED: [409, "You've already completed today's Daily Challenge."],
   DUPLICATE_PERSON: [400, "A team can't field two era-versions of the same player. Different versions may face each other on opposite teams."],
   UNAUTHORIZED: [401, "You need a session for that."],
   FORBIDDEN: [403, "You can't modify that."],

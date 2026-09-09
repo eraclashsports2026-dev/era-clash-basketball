@@ -1,0 +1,331 @@
+{
+  "artifact": "candidate1-defense-repair",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run c1:defense-repair",
+  "generatedAt": "2026-08-27T01:17:29.423Z",
+  "gitCommit": "a3559ff6b4b7e0341ea2e17fd6321b4ee9ed8f84",
+  "branch": "phase-6c4a-candidate1-trait-fidelity",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "pairsPerCell": 1000,
+    "shareProxyProtection": {
+      "baselineMeanComposite": 0.0431,
+      "maxRegressionFactor": 1.15,
+      "bound": 0.049565,
+      "frozenBefore": "any Candidate 1 share measurement"
+    },
+    "liveReferenceSelfBaselines": {
+      "1970s": {
+        "n": 1000,
+        "mean": 1.17597,
+        "sd": 0.09787,
+        "se": 0.00309,
+        "ci95": {
+          "lower": 1.1699,
+          "upper": 1.18204
+        }
+      },
+      "1980s": {
+        "n": 1000,
+        "mean": 1.22542,
+        "sd": 0.0996,
+        "se": 0.00315,
+        "ci95": {
+          "lower": 1.21924,
+          "upper": 1.23159
+        }
+      },
+      "2000s": {
+        "n": 1000,
+        "mean": 1.14162,
+        "sd": 0.11236,
+        "se": 0.00355,
+        "ci95": {
+          "lower": 1.13465,
+          "upper": 1.14858
+        }
+      },
+      "1990s": {
+        "n": 1000,
+        "mean": 1.2255,
+        "sd": 0.10528,
+        "se": 0.00333,
+        "ci95": {
+          "lower": 1.21898,
+          "upper": 1.23203
+        }
+      },
+      "2020s": {
+        "n": 1000,
+        "mean": 1.31085,
+        "sd": 0.11981,
+        "se": 0.00379,
+        "ci95": {
+          "lower": 1.30342,
+          "upper": 1.31828
+        }
+      }
+    },
+    "v4EliteDefense": [
+      {
+        "fixtureId": "v4-1978-79-supersonics",
+        "eraStyleId": "1970s",
+        "refPppVsTeam": {
+          "n": 2000,
+          "mean": 1.23378,
+          "sd": 0.09288,
+          "se": 0.00208,
+          "ci95": {
+            "lower": 1.22971,
+            "upper": 1.23785
+          }
+        },
+        "refSelfPpp": 1.17597,
+        "diff": {
+          "diff": 0.05781,
+          "se": 0.00372,
+          "z": 15.52009,
+          "ci95": {
+            "lower": 0.05051,
+            "upper": 0.06511
+          },
+          "significant": true
+        },
+        "compositeShareMae": 0.02877
+      },
+      {
+        "fixtureId": "v4-1989-90-pistons",
+        "eraStyleId": "1980s",
+        "refPppVsTeam": {
+          "n": 2000,
+          "mean": 1.26134,
+          "sd": 0.10345,
+          "se": 0.00231,
+          "ci95": {
+            "lower": 1.25681,
+            "upper": 1.26587
+          }
+        },
+        "refSelfPpp": 1.22542,
+        "diff": {
+          "diff": 0.03592,
+          "se": 0.00391,
+          "z": 9.19558,
+          "ci95": {
+            "lower": 0.02826,
+            "upper": 0.04358
+          },
+          "significant": true
+        },
+        "compositeShareMae": 0.04197
+      }
+    ],
+    "heldInEliteDefense": [
+      {
+        "fixtureId": "h3-1972-73-knicks",
+        "eraStyleId": "1970s",
+        "refPppVsTeam": {
+          "n": 2000,
+          "mean": 1.21637,
+          "sd": 0.09636,
+          "se": 0.00215,
+          "ci95": {
+            "lower": 1.21214,
+            "upper": 1.22059
+          }
+        },
+        "refSelfPpp": 1.17597,
+        "diff": {
+          "diff": 0.0404,
+          "se": 0.00376,
+          "z": 10.73216,
+          "ci95": {
+            "lower": 0.03302,
+            "upper": 0.04778
+          },
+          "significant": true
+        },
+        "compositeShareMae": 0.01652
+      },
+      {
+        "fixtureId": "h3-2003-04-pistons",
+        "eraStyleId": "2000s",
+        "refPppVsTeam": {
+          "n": 2000,
+          "mean": 1.13223,
+          "sd": 0.11858,
+          "se": 0.00265,
+          "ci95": {
+            "lower": 1.12704,
+            "upper": 1.13743
+          }
+        },
+        "refSelfPpp": 1.14162,
+        "diff": {
+          "diff": -0.00939,
+          "se": 0.00443,
+          "z": -2.11963,
+          "ci95": {
+            "lower": -0.01807,
+            "upper": -0.00071
+          },
+          "significant": true
+        },
+        "compositeShareMae": 0.03502
+      }
+    ],
+    "nonEliteTeams": [
+      {
+        "fixtureId": "h3-1994-95-rockets",
+        "eraStyleId": "1990s",
+        "refPppVsTeam": {
+          "n": 2000,
+          "mean": 1.17662,
+          "sd": 0.10846,
+          "se": 0.00243,
+          "ci95": {
+            "lower": 1.17187,
+            "upper": 1.18137
+          }
+        },
+        "refSelfPpp": 1.2255,
+        "diff": {
+          "diff": -0.04888,
+          "se": 0.00412,
+          "z": -11.8573,
+          "ci95": {
+            "lower": -0.05696,
+            "upper": -0.0408
+          },
+          "significant": true
+        },
+        "compositeShareMae": 0.03609
+      },
+      {
+        "fixtureId": "h3-2022-23-heat",
+        "eraStyleId": "2020s",
+        "refPppVsTeam": {
+          "n": 2000,
+          "mean": 1.32595,
+          "sd": 0.12389,
+          "se": 0.00277,
+          "ci95": {
+            "lower": 1.32052,
+            "upper": 1.33138
+          }
+        },
+        "refSelfPpp": 1.31085,
+        "diff": {
+          "diff": 0.0151,
+          "se": 0.00469,
+          "z": 3.21663,
+          "ci95": {
+            "lower": 0.0059,
+            "upper": 0.0243
+          },
+          "significant": true
+        },
+        "compositeShareMae": 0.02359
+      },
+      {
+        "fixtureId": "h3-1971-72-lakers",
+        "eraStyleId": "1970s",
+        "refPppVsTeam": {
+          "n": 2000,
+          "mean": 1.18372,
+          "sd": 0.09274,
+          "se": 0.00207,
+          "ci95": {
+            "lower": 1.17965,
+            "upper": 1.18778
+          }
+        },
+        "refSelfPpp": 1.17597,
+        "diff": {
+          "diff": 0.00775,
+          "se": 0.00372,
+          "z": 2.08374,
+          "ci95": {
+            "lower": 0.00046,
+            "upper": 0.01504
+          },
+          "significant": true
+        },
+        "compositeShareMae": 0.02331
+      },
+      {
+        "fixtureId": "h3-1973-74-celtics",
+        "eraStyleId": "1970s",
+        "refPppVsTeam": {
+          "n": 2000,
+          "mean": 1.20637,
+          "sd": 0.09596,
+          "se": 0.00215,
+          "ci95": {
+            "lower": 1.20217,
+            "upper": 1.21058
+          }
+        },
+        "refSelfPpp": 1.17597,
+        "diff": {
+          "diff": 0.0304,
+          "se": 0.00376,
+          "z": 8.07569,
+          "ci95": {
+            "lower": 0.02302,
+            "upper": 0.03778
+          },
+          "significant": true
+        },
+        "compositeShareMae": 0.02742
+      }
+    ],
+    "nonElitePopulationMeanDiff": 0.00109,
+    "decomposition": {
+      "mechanismCapacity": "WS3 defense-lift intervention closed the full gap (oppPpp -0.095/-0.097) — the possession layer renders defensive inputs",
+      "accoladeCoverage": {
+        "v4-1978-79-supersonics": {
+          "flooredPlayers": 1,
+          "of": 5
+        },
+        "v4-1989-90-pistons": {
+          "flooredPlayers": 1,
+          "of": 5
+        },
+        "h3-1972-73-knicks": {
+          "flooredPlayers": 2,
+          "of": 5
+        },
+        "h3-2003-04-pistons": {
+          "flooredPlayers": 1,
+          "of": 5
+        }
+      },
+      "residualCauses": [
+        "EVIDENCE_COVERAGE: award pages floor 2 of 5 players on each failing five; the authorized source records no defensive evidence for the rest",
+        "REFERENCE_CONSTRUCTION: the reference self-baseline embeds a champions-median defence (Wilt/Frazier floors), so any subject below reference-grade defence shows diff > 0"
+      ],
+      "disposition": "MECHANISM_REPAIRED_EVIDENCE_AND_REFERENCE_LIMITED",
+      "v5Action": "re-certify era references under Candidate 1 and score team-level defensive traits only where player-level evidence coverage supports them"
+    },
+    "meanCompositeShareMae": 0.02909,
+    "priorV4Deficits": {
+      "v4-1978-79-supersonics": 0.08607,
+      "v4-1989-90-pistons": 0.05834
+    },
+    "gates": {
+      "v4DeficitsMateriallyReducedBeyondMargin": true,
+      "documentedDefendersRenderEliteChannels": true,
+      "fullEvidenceHeldInDefencePasses": true,
+      "noUniversalDefensiveShift": true,
+      "shareProxyProtected": true
+    },
+    "failedGates": [],
+    "pass": true
+  },
+  "outputHash": "14fa4459d1da51b4356c1dfa98b7a157c75c459edb30dffb22ef467cb1e8d395"
+}

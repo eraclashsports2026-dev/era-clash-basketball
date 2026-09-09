@@ -1,0 +1,173 @@
+{
+  "artifact": "synthetic-v2-formal-policy",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run syn:policy",
+  "generatedAt": "2026-08-27T12:50:59.099Z",
+  "gitCommit": "3a7ae6431486125c55cd41ded522a443ca518bd9",
+  "branch": "phase-6c4b1s-synthetic-v2-package",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "syntheticStressPolicyVersion": "1.0.0",
+    "set": "synthetic-stress-holdout-v2",
+    "stage": {
+      "number": 2,
+      "of": 2,
+      "stageOne": "historical-holdout-v5",
+      "order": "this set may not be opened unless Historical Holdout V5 has been opened and returned PASS. A synthetic stress pass says nothing about a candidate that failed the historical stage, and opening this set would consume a one-shot resource for no evidence. The runner enforces it as SYNTHETIC_ACCESS_REFUSED before the seal is touched."
+    },
+    "frozenBeforeAnySyntheticObservation": true,
+    "candidate": {
+      "id": "Candidate 1",
+      "lockRevision": 2,
+      "calibrationVersion": "1.1.0",
+      "commit": "c370182bb805cd068427283ce2b45a7eda725d1c"
+    },
+    "membership": {
+      "fixtureCount": 16,
+      "membershipHash": "71267875cbf69a9ffa2bd420a2f4bb87437ecb78d6ca2029e7b6826759dbcd19",
+      "fixtureIds": [
+        "ss2-all-bigs",
+        "ss2-all-guards",
+        "ss2-no-spacing-1960s",
+        "ss2-no-spacing-modern",
+        "ss2-mismatch-chain",
+        "ss2-zone-edge-legal",
+        "ss2-zone-edge-illegal",
+        "ss2-era-edge-old-in-modern",
+        "ss2-era-edge-modern-in-old",
+        "ss2-coach-toolkit-edge",
+        "ss2-usage-concentration",
+        "ss2-statistical-tails",
+        "ss2-series-variance",
+        "ss2-win82-variance",
+        "ss2-duplicate-role",
+        "ss2-extreme-strength-gap"
+      ],
+      "purposes": {
+        "ss2-all-bigs": "EXPLOIT_ROLE_OVERLAP",
+        "ss2-all-guards": "EXPLOIT_ROLE_OVERLAP",
+        "ss2-no-spacing-1960s": "IMPOSSIBLE_SPACING",
+        "ss2-no-spacing-modern": "IMPOSSIBLE_SPACING",
+        "ss2-mismatch-chain": "DEFENSIVE_MISMATCH_CHAIN",
+        "ss2-zone-edge-legal": "ZONE_EDGE_CASE",
+        "ss2-zone-edge-illegal": "ZONE_EDGE_CASE",
+        "ss2-era-edge-old-in-modern": "ERA_EDGE_CASE",
+        "ss2-era-edge-modern-in-old": "ERA_EDGE_CASE",
+        "ss2-coach-toolkit-edge": "COACH_TOOLKIT_EDGE",
+        "ss2-usage-concentration": "USAGE_CONCENTRATION",
+        "ss2-statistical-tails": "STATISTICAL_TAILS",
+        "ss2-series-variance": "SERIES_VARIANCE",
+        "ss2-win82-variance": "WIN82_VARIANCE",
+        "ss2-duplicate-role": "DUPLICATE_ROLE_OVERLOAD",
+        "ss2-extreme-strength-gap": "EXTREME_STRENGTH_GAP"
+      },
+      "unchangedSincePhase": "phase-6c2c1"
+    },
+    "guardrails": {
+      "frozenKeyCount": 11,
+      "adjudicableCount": 8,
+      "thresholdParameterCount": 3,
+      "countReconciliation": "Phase prose has referred to 'ten conceptual guardrails'. The frozen object holds eleven keys: eight boolean requirements plus three numeric thresholds parameterising two of them. Both prior artifacts (the 6C4B2 preflight and blocker) recorded eleven. All eleven are registered here; the thresholds are classified as THRESHOLD_PARAMETER rather than merged into their parents, so nothing is reinterpreted and the count reconciles with the frozen source rather than with the prose."
+    },
+    "surfaces": {
+      "MIRROR": "the fixture five against ITSELF under its own coach, side-balanced across paired seeds. Construction is the only variable, so an action-mix, variance or structural result cannot be an artifact of the opponent.",
+      "ZONE_ASYMMETRIC": "the fixture five on BOTH sides, personnel therefore exactly controlled, with the frozen zone-heavy coach on one side and the frozen matched man coach on the other, side-balanced. A zone side exists by design rather than by chance, so a shell win rate is defined.",
+      "ZONE_ASYMMETRIC_ILLEGAL_ERA_CONTROL": "the identical construction in a zone-ILLEGAL era, where the engine cannot realize a zone possession at all. Any win-rate deviation from 0.5 here is the coach confound with the shell removed, so the shell's own contribution is the difference between the two surfaces.",
+      "VS_COHERENT_LOWER_CONTROL": "the fixture five against a coherent five built to a summed card rating strictly BELOW the fixture's, under the neutral coach on both sides so coaching cannot explain the result. The only decidable surface for a construction-beats-talent claim, because it needs two different constructions and a known rating direction.",
+      "VS_ROLE_MATCHED_UPGRADE": "the fixture five against ITSELF UPGRADED SLOT BY SLOT: same five slots, same functional role in each, a strictly better card wherever the pool offers one, under the neutral coach on both sides and side-balanced. Card quality is the only thing that moved, so a win-rate difference is a talent effect and not a construction effect."
+    },
+    "controlTargets": {
+      "lowerControlFactor": 0.8,
+      "upgradeFactor": 1.75,
+      "minUpgradeTeamRatingRatio": 1.25
+    },
+    "thresholds": {
+      "maxSingleActionFamilyShare": 0.6,
+      "maxSingleShellWinRate": 0.65,
+      "minSingleShellWinRate": 0.35,
+      "minCombinedScoreSd": 13,
+      "constructionWinRateFloor": 0.02,
+      "constructionExistentialBar": 0.35,
+      "talentWinRateFloor": 0.5,
+      "distinctScorelineRatioFloorByGames": {
+        "2048": 0.34,
+        "note": "REPORTED, NEVER ADJUDICATED. Measured on the same fixtures the ratio read about 0.486 at 102 games and 0.356 to 0.399 at 2,048, so a single frozen floor is not comparable across the mirror and tail-extension volumes. Recorded per volume for diagnosis only."
+      }
+    },
+    "margins": {
+      "maxActionFamilyShare": 0.01,
+      "shellSideWinRate": 0.03315,
+      "combinedScoreSd": 0.82962,
+      "coherentLowerControlWinRate": 0.03315,
+      "roleMatchedUpgradeWinRate": 0.03312
+    },
+    "marginRule": "margin = max(3 x the largest standard error observed for that metric on the development surfaces, a predeclared domain floor). The three-sigma term keeps sampling noise from deciding a verdict; the domain floor keeps a very precise measurement from making a trivially small difference decisive.",
+    "floorRule": "floor = the largest step-multiple at or below (smallest development observation - 3 x largest standard error - the practical margin). So the weakest legitimate construction observed on a non-holdout fixture still clears the floor by the full margin, and a FAIL requires a genuine collapse rather than an unlucky sample.",
+    "dualGate": "a cell is PASS or FAIL only when the observation clears its threshold by at least the practical margin. Inside the margin it is INDETERMINATE: no pass credit, no failure contribution. Phase 6C4A withdrew four of Historical V4's twelve hard failures as sub-margin artifacts, which is why no gate here is allowed to run without one.",
+    "countsHaveNoMargin": "requireZeroInvariantFailures, requireZeroImpossibleResults and requireSameSeedReplay compare exact counts against zero. A count has no sampling noise, so no margin applies and one violation is one failure.",
+    "protocol": {
+      "volumes": {
+        "MIRROR": 1024,
+        "MIRROR_TAIL_EXTENSION": 4096,
+        "ZONE_ASYMMETRIC": 1024,
+        "ZONE_ABLATION_TWIN": 256,
+        "VS_COHERENT_LOWER_CONTROL": 1024,
+        "VS_ROLE_MATCHED_UPGRADE": 1024
+      },
+      "competitionModes": {
+        "REPLAY_SEEDS_PER_FIXTURE": 64,
+        "SERIES_BEST_OF_7": 256,
+        "SEASONS_OF_82": 32,
+        "TOURNAMENT_BRACKETS": 24,
+        "TOURNAMENT_FIELD": 16
+      },
+      "totalGames": 79444,
+      "minGamesPerHoldoutFixture": 1000,
+      "seedStream": "synthetic-stress-holdout-v2",
+      "seedAddressing": "fixtureIndex * FIXTURE_STRIDE + SURFACE_SLOTS[slot] * SURFACE_STRIDE + pairIndex"
+    },
+    "outcomes": {
+      "pass": "SYNTHETIC_HOLDOUT_V2_PASS",
+      "fail": "SYNTHETIC_HOLDOUT_V2_FAIL",
+      "invalid": "SYNTHETIC_HOLDOUT_V2_INVALID_RUN",
+      "whatAPassDoesNotAuthorize": "A pass here is the second of two formal stages. It does not by itself make Candidate 1 HOLDOUT_VALIDATED, PRIVATE_PREVIEW_VALIDATED, PRODUCTION_READY or ACTIVE, and it authorizes no deployment. Those statuses belong to the phase that earns them, and production activation requires an explicit CEO GO LIVE."
+    },
+    "aggregationRule": [
+      "1. Compute every guardrail-fixture cell from the frozen thresholds and the frozen practical margins. A cell is PASS or FAIL only if the observation clears the threshold by at least the practical margin; inside the margin it is INDETERMINATE.",
+      "2. Apply the catastrophic rule: a failed structural or determinism guardrail makes its fixture FAIL and every non-structural cell on that fixture INDETERMINATE.",
+      "3. A fixture's verdict is FAIL if any of its cells is FAIL; INVALID_RUN if any required cell is NOT_MEASURED; otherwise PASS provided at least one cell is PASS.",
+      "4. The set verdict is SYNTHETIC_HOLDOUT_V2_FAIL if any fixture is FAIL.",
+      "5. Otherwise the set verdict is SYNTHETIC_HOLDOUT_V2_INVALID_RUN if any fixture is INVALID_RUN, or if any adjudicable guardrail was decided PASS on fewer than its minDecidedFixturesForSetPass applicable fixtures.",
+      "6. Otherwise the set verdict is SYNTHETIC_HOLDOUT_V2_PASS."
+    ],
+    "hashes": {
+      "candidateCoreHash": "de57e1a96e1fd1450d1aea9c5463b0138a56d77bbf58c748ba042e6f78f5c94d",
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "possessionCalibrationVersion": "1.1.0",
+      "lockRevision": 2,
+      "acceptancePolicyHash": "a3583d6ada42d61ff9ee40322d999154250613ba94a2cd6f073e2196315919b0",
+      "guardrailRegistryHash": "e308e6544cb6f4b49ccb31fa98536cc12e0eac431d47cda961e845b8e55a3097",
+      "practicalMarginPolicyHash": "d285af9ca18d10a8387dbe32828378d35d61e40e4376f0cb2eca4e401f509511",
+      "surfacePlanHash": "9aaf2efaf09d47de8dae6d156ccdce966374fa37c73145c041af7265e2c7f122",
+      "samplePlanHash": "97236ee97d740b0d185333a10af2f9be0f4bcb90139b7ae65ed68be179451980",
+      "seedSetHash": "cece58c06bcdb2cc09829d11c34f0c56a23ada26b4e511ca0d03583fd273b2c1",
+      "aggregationPolicyHash": "d65321cae9ee46ac02a14ea04bfcfc1e2dc65a61c7b8e31fb0b7c44714e2eca0",
+      "verdictSchemaHash": "c702785be80b5372e51ed572a29b4c953ac9b2178dcec71f4306fa56323bac01",
+      "membershipHash": "71267875cbf69a9ffa2bd420a2f4bb87437ecb78d6ca2029e7b6826759dbcd19"
+    },
+    "evidenceBasis": {
+      "whereTheDerivedNumbersCameFrom": "the 14 SYNTHETIC_DEVELOPMENT_V2 fixtures run through the exact formal surfaces at the frozen volumes, plus a role-matched upgrade ladder over the same 14. Non-holdout throughout: every control excludes every person appearing in any sealed fixture.",
+      "marginEvidenceHash": "b8188a7d6382e80205d25dcabaa268641b6c5be6fd388db281f9340779438795",
+      "talentGapLadderHash": "cd5e391c652420443dcec8ec71a0d7c468dee95e4323fdda256dbb73f65a3926",
+      "syntheticObservationsUsed": 0
+    },
+    "pass": true,
+    "failedGates": [],
+    "policyHash": "f93847b4b35ca064572f2b7c97c451ee9f3109f34ea49f3742c5a677ea495946"
+  },
+  "outputHash": "310799a74291f5d71accade6a53c769e30a4fb395e4a307946eee345a80b9888"
+}

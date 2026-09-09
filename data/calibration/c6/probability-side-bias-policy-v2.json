@@ -1,0 +1,692 @@
+{
+  "artifact": "probability-side-bias-policy-v2",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run calibration:c6:policy",
+  "generatedAt": "2026-08-26T17:23:56.925Z",
+  "gitCommit": "a261a04544c8c3b073bfc645eaf54f7c67807450",
+  "branch": "phase-6c2c6-probability-side-bias-lock",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "policy": {
+      "version": "2.0.0",
+      "seedSetVersion": "2.0.0",
+      "seedDomain": "side-bias-v2",
+      "phase": "6C2C6",
+      "frozenBeforeResults": true,
+      "supersedes": {
+        "version": "1.0.0",
+        "rule": "absolute per-cell point estimate <= 0.05, no multiplicity control, SE from the wrong sample and the wrong design",
+        "preservedUnedited": true,
+        "v1Observation": 0.0781,
+        "v1Threshold": 0.05,
+        "marginNotMovedInResponse": true
+      },
+      "EFFECT": {
+        "name": "paired orientation effect",
+        "symbol": "delta",
+        "perPairObservation": "D = Y_gold - Y_blue, where Y_gold = 1 when the PERSPECTIVE team wins with the Gold label and Y_blue = 1 when the same team wins with the Blue label, both on the SAME seed",
+        "support": [
+          -1,
+          0,
+          1
+        ],
+        "estimator": "delta = mean(D) over paired seeds",
+        "mirrorEquivalent": "For an exact mirror matchup the two teams are identical, so delta reduces to 2 * (Gold win rate - 0.5).",
+        "positiveMeaning": "The perspective team performs BETTER when labelled Gold.",
+        "negativeMeaning": "The perspective team performs BETTER when labelled Blue.",
+        "perspectiveRule": "Every reported delta names its perspective team explicitly. A bare 'Gold advantage' is not reportable: without a perspective it cannot be signed.",
+        "supersedesV1Statistic": "goldWinsOverall / n - 0.5, which equals delta / 2 for this design"
+      },
+      "MARGINS": {
+        "perCell": 0.05,
+        "aggregate": 0.01,
+        "perCellNote": "Preserved from v1 in magnitude. Applied to the corrected paired scale, which makes it strictly stricter than v1.",
+        "aggregateNote": "A systematic effect across the whole family must be an order of magnitude smaller than a tolerable local anomaly, because it would apply to every match rather than one.",
+        "notDerivedFromObservation": "Neither margin was chosen after seeing 0.0781. The per-cell margin is v1's. The aggregate margin is the tighter of v1's implied aggregate tolerance and the actual-game side-symmetry suite's own aggregate tolerance."
+      },
+      "ALPHA": 0.05,
+      "FAMILY_WISE": {
+        "method": "holm-bonferroni",
+        "alpha": 0.05,
+        "appliedTo": "BOTH directions, separately and for different reasons",
+        "equivalenceDirection": "Holm-adjusted TOST. Claiming 'this cell is equivalent' at an adjusted alpha is CONSERVATIVE: a smaller alpha demands a tighter interval, so correction makes equivalence harder to establish, never easier.",
+        "detectionDirection": "Holm-adjusted two-sided paired test. This is the direction v1 got wrong: it took the MAXIMUM of 30 point estimates and compared it against an unadjusted fixed threshold, which is the same error as a max|t| rule that cannot see how many comparisons happened.",
+        "bothRequired": "A cell passes only if it is positively established as EQUIVALENT. Failing to detect a difference is not equivalence — that is INCONCLUSIVE, and it does not pass."
+      },
+      "CONFIDENCE": {
+        "primary": "paired large-sample (Wald) interval on mean(D), SE = sd(D) / sqrt(pairs)",
+        "secondary": "paired percentile bootstrap, 10,000 resamples, resampling PAIRS not games",
+        "agreementRequired": true,
+        "agreementNote": "The two intervals must agree on the classification. D has three-point discrete support, so a normal approximation is an approximation; a bootstrap that disagrees with it is a signal to trust neither.",
+        "whyNotTwoIndependentProportions": "The two orientations share a seed. Treating them as independent proportions discards the pairing and uses the wrong variance. Measured on the v1 failing cell, 40.6% of pairs were discordant, giving sd(D) = 0.620 against the 0.707 that independence implies — so the paired design is genuinely more precise, and the independent formula is not merely wrong but wrong in the direction that hides real effects."
+      },
+      "SAMPLE_LADDER": {
+        "stages": [
+          {
+            "stage": 1,
+            "cumulativePairs": 256
+          },
+          {
+            "stage": 2,
+            "cumulativePairs": 1024
+          },
+          {
+            "stage": 3,
+            "cumulativePairs": 4096
+          },
+          {
+            "stage": 4,
+            "cumulativePairs": 16384
+          }
+        ],
+        "cumulative": true,
+        "cumulativeNote": "Each stage EXTENDS the previous seed block. Earlier observations are never discarded, so a stage boundary cannot be used to drop an unfavourable sample.",
+        "maximumPairs": 16384,
+        "maximumJustification": "Measured throughput is 537 games/sec single-threaded. Stage 4 is 32,768 games per cell, about 61s, and the full 30-cell family reaches at most about 41 minutes single-threaded or roughly 5 minutes across 8 workers. The maximum is set by what resolves the question, not by what is convenient.",
+        "perCellGamesAtMax": 32768
+      },
+      "STOPPING": {
+        "equivalenceEstablished": "The adjusted interval lies entirely inside [-perCell, +perCell]. Stop: EQUIVALENT.",
+        "materialBiasEstablished": "The adjusted interval lies entirely outside [-perCell, +perCell] on one side. Stop: MATERIALLY_BIASED.",
+        "maximumReached": "At the maximum sample a cell is EQUIVALENT, MATERIALLY_BIASED, or INCONCLUSIVE.",
+        "inconclusiveDoesNotPass": true,
+        "forbidden": [
+          "Stopping a cell because its point estimate looks favourable.",
+          "Adding samples only to cells whose direction is unfavourable.",
+          "Discarding an earlier stage.",
+          "Raising a margin after seeing an interval.",
+          "Choosing the stage at which to report."
+        ],
+        "uniformEscalation": "Every unresolved cell escalates together. The decision to escalate depends only on classification, never on sign or magnitude."
+      },
+      "AGGREGATE_GATE": {
+        "statistic": "mean of per-cell delta across the family, and the pooled paired mean across all pairs",
+        "margin": 0.01,
+        "requires": [
+          "The aggregate adjusted interval lies inside the aggregate margin.",
+          "No stratum shows a systematic same-direction effect: by era, by coach family, by defensive shell, by competition mode, by strength band."
+        ],
+        "stratifiedNote": "Per-cell pairing can hide a systematic engine effect if every cell leans the same way by a little. The strata exist to make that visible."
+      },
+      "FAILURE_SEMANTICS": {
+        "EQUIVALENT": "Positively established as practically equivalent to zero. Passes.",
+        "MATERIALLY_BIASED": "Positively established as beyond the practical margin. Does NOT pass; requires root-cause diagnosis.",
+        "INCONCLUSIVE": "Neither established at the maximum sample. Does NOT pass. The margin must not be widened to convert this into a pass."
+      },
+      "CLASSIFICATIONS": [
+        "EQUIVALENT",
+        "MATERIALLY_BIASED",
+        "INCONCLUSIVE"
+      ],
+      "AUDIT_CLASSES": [
+        "SAMPLING_NOISE",
+        "HARNESS_PERSPECTIVE_DEFECT",
+        "CACHE_COMPLEMENT_DEFECT",
+        "SEED_DOMAIN_DEFECT",
+        "SIDE_REVERSAL_STATE_DEFECT",
+        "LOCAL_ACTUAL_GAME_SIDE_BIAS",
+        "SYSTEMATIC_ACTUAL_GAME_SIDE_BIAS",
+        "INCONCLUSIVE"
+      ],
+      "BLOCKS_LOCK": [
+        "INCONCLUSIVE",
+        "LOCAL_ACTUAL_GAME_SIDE_BIAS",
+        "SYSTEMATIC_ACTUAL_GAME_SIDE_BIAS"
+      ]
+    },
+    "policyHash": "51005eccf853e9a609f8e7e2b1b026c89d90794e153c2adee95841fa6f3384a1",
+    "frozenBeforeAnyFreshResult": true,
+    "seedManifest": {
+      "probabilitySideBiasSeedSetVersion": "2.0.0",
+      "domain": "side-bias-v2",
+      "master": 7089258,
+      "masterCommitment": "d6d372b5131c83448fb1a5117185a7ef",
+      "generationAlgorithm": "domainSeed(master, domain, index) = splitmix32(hash(domain) ^ master, index); cumulative index 0..maximumPairs-1",
+      "maximumPairs": 16384,
+      "pairCountByStage": [
+        {
+          "stage": 1,
+          "cumulativePairs": 256
+        },
+        {
+          "stage": 2,
+          "cumulativePairs": 1024
+        },
+        {
+          "stage": 3,
+          "cumulativePairs": 4096
+        },
+        {
+          "stage": 4,
+          "cumulativePairs": 16384
+        }
+      ],
+      "distinctSeeds": 16384,
+      "allDistinct": true,
+      "overlapWithPriorDomains": {
+        "side-bias-v2|actual-game": 0,
+        "side-bias-v2|prediction": 0,
+        "side-bias-v2|probability-validation": 0
+      },
+      "totalOverlap": 0,
+      "allPairwiseOverlaps": {
+        "actual-game|prediction": 0,
+        "actual-game|probability-validation": 0,
+        "actual-game|side-bias-v2": 0,
+        "prediction|probability-validation": 0,
+        "prediction|side-bias-v2": 0,
+        "probability-validation|side-bias-v2": 0
+      },
+      "seedsChosenBeforeResults": true,
+      "manifestHash": "648b82b5826ed4132c203fb181d87149cf5f2ed5eaf8f61dd1f67a52ed6c7346"
+    },
+    "cellFamily": {
+      "frozenBeforeResults": true,
+      "count": 44,
+      "byKind": {
+        "MIRROR": 14,
+        "NON_MIRROR": 30
+      },
+      "byEra": {
+        "2010s": 36,
+        "1960s": 3,
+        "2020s": 3,
+        "1970s": 1,
+        "1990s": 1
+      },
+      "byCoach": {
+        "gregg-popovich": 8,
+        "mike-dantoni": 12,
+        "steve-kerr": 11,
+        "tom-thibodeau": 5,
+        "red-auerbach": 2,
+        "nick-nurse": 1,
+        "lenny-wilkens": 1,
+        "erik-spoelstra": 2,
+        "jerry-sloan": 1,
+        "phil-jackson": 1
+      },
+      "reconciliation": {
+        "label": "cell-family",
+        "sum": 44,
+        "expectedTotal": 44,
+        "reconciles": true,
+        "problems": []
+      },
+      "holdoutContamination": "PASS",
+      "eraCoverageNote": "Phase 6C2C5's family was 30 non-mirror cells, of which 28 of 30 were 2010s. Mirror cells add the remaining eras, so the era stratum of the aggregate gate can actually be evaluated.",
+      "cells": [
+        {
+          "id": "mirror:sd2-balanced-lower-ovr",
+          "kind": "MIRROR",
+          "era": "2010s",
+          "teamA": "sd2-balanced-lower-ovr",
+          "teamB": "sd2-balanced-lower-ovr",
+          "coachA": "gregg-popovich",
+          "coachB": "gregg-popovich",
+          "perspectiveTeam": "sd2-balanced-lower-ovr",
+          "note": "Identical rosters and identical coach. No team-quality component; delta measures the slot directly."
+        },
+        {
+          "id": "mirror:sd2-creator-stack",
+          "kind": "MIRROR",
+          "era": "2010s",
+          "teamA": "sd2-creator-stack",
+          "teamB": "sd2-creator-stack",
+          "coachA": "mike-dantoni",
+          "coachB": "mike-dantoni",
+          "perspectiveTeam": "sd2-creator-stack",
+          "note": "Identical rosters and identical coach. No team-quality component; delta measures the slot directly."
+        },
+        {
+          "id": "mirror:sd2-elite-shooting",
+          "kind": "MIRROR",
+          "era": "2010s",
+          "teamA": "sd2-elite-shooting",
+          "teamB": "sd2-elite-shooting",
+          "coachA": "steve-kerr",
+          "coachB": "steve-kerr",
+          "perspectiveTeam": "sd2-elite-shooting",
+          "note": "Identical rosters and identical coach. No team-quality component; delta measures the slot directly."
+        },
+        {
+          "id": "mirror:sd2-weak-shooting",
+          "kind": "MIRROR",
+          "era": "2010s",
+          "teamA": "sd2-weak-shooting",
+          "teamB": "sd2-weak-shooting",
+          "coachA": "tom-thibodeau",
+          "coachB": "tom-thibodeau",
+          "perspectiveTeam": "sd2-weak-shooting",
+          "note": "Identical rosters and identical coach. No team-quality component; delta measures the slot directly."
+        },
+        {
+          "id": "mirror:sd2-extreme-size",
+          "kind": "MIRROR",
+          "era": "1960s",
+          "teamA": "sd2-extreme-size",
+          "teamB": "sd2-extreme-size",
+          "coachA": "red-auerbach",
+          "coachB": "red-auerbach",
+          "perspectiveTeam": "sd2-extreme-size",
+          "note": "Identical rosters and identical coach. No team-quality component; delta measures the slot directly."
+        },
+        {
+          "id": "mirror:sd2-extreme-small",
+          "kind": "MIRROR",
+          "era": "2020s",
+          "teamA": "sd2-extreme-small",
+          "teamB": "sd2-extreme-small",
+          "coachA": "steve-kerr",
+          "coachB": "steve-kerr",
+          "perspectiveTeam": "sd2-extreme-small",
+          "note": "Identical rosters and identical coach. No team-quality component; delta measures the slot directly."
+        },
+        {
+          "id": "mirror:sd2-passing-hub",
+          "kind": "MIRROR",
+          "era": "2020s",
+          "teamA": "sd2-passing-hub",
+          "teamB": "sd2-passing-hub",
+          "coachA": "nick-nurse",
+          "coachB": "nick-nurse",
+          "perspectiveTeam": "sd2-passing-hub",
+          "note": "Identical rosters and identical coach. No team-quality component; delta measures the slot directly."
+        },
+        {
+          "id": "mirror:sd2-no-rim-protection",
+          "kind": "MIRROR",
+          "era": "2010s",
+          "teamA": "sd2-no-rim-protection",
+          "teamB": "sd2-no-rim-protection",
+          "coachA": "mike-dantoni",
+          "coachB": "mike-dantoni",
+          "perspectiveTeam": "sd2-no-rim-protection",
+          "note": "Identical rosters and identical coach. No team-quality component; delta measures the slot directly."
+        },
+        {
+          "id": "mirror:sd2-movement-shooters",
+          "kind": "MIRROR",
+          "era": "2010s",
+          "teamA": "sd2-movement-shooters",
+          "teamB": "sd2-movement-shooters",
+          "coachA": "steve-kerr",
+          "coachB": "steve-kerr",
+          "perspectiveTeam": "sd2-movement-shooters",
+          "note": "Identical rosters and identical coach. No team-quality component; delta measures the slot directly."
+        },
+        {
+          "id": "mirror:sd2-post-mismatch",
+          "kind": "MIRROR",
+          "era": "1970s",
+          "teamA": "sd2-post-mismatch",
+          "teamB": "sd2-post-mismatch",
+          "coachA": "lenny-wilkens",
+          "coachB": "lenny-wilkens",
+          "perspectiveTeam": "sd2-post-mismatch",
+          "note": "Identical rosters and identical coach. No team-quality component; delta measures the slot directly."
+        },
+        {
+          "id": "mirror:sd2-zone-attack",
+          "kind": "MIRROR",
+          "era": "2010s",
+          "teamA": "sd2-zone-attack",
+          "teamB": "sd2-zone-attack",
+          "coachA": "erik-spoelstra",
+          "coachB": "erik-spoelstra",
+          "perspectiveTeam": "sd2-zone-attack",
+          "note": "Identical rosters and identical coach. No team-quality component; delta measures the slot directly."
+        },
+        {
+          "id": "mirror:sd2-weak-defender-hiding",
+          "kind": "MIRROR",
+          "era": "2010s",
+          "teamA": "sd2-weak-defender-hiding",
+          "teamB": "sd2-weak-defender-hiding",
+          "coachA": "mike-dantoni",
+          "coachB": "mike-dantoni",
+          "perspectiveTeam": "sd2-weak-defender-hiding",
+          "note": "Identical rosters and identical coach. No team-quality component; delta measures the slot directly."
+        },
+        {
+          "id": "mirror:sd2-action-family-stress",
+          "kind": "MIRROR",
+          "era": "1990s",
+          "teamA": "sd2-action-family-stress",
+          "teamB": "sd2-action-family-stress",
+          "coachA": "jerry-sloan",
+          "coachB": "jerry-sloan",
+          "perspectiveTeam": "sd2-action-family-stress",
+          "note": "Identical rosters and identical coach. No team-quality component; delta measures the slot directly."
+        },
+        {
+          "id": "mirror:sd2-cross-era",
+          "kind": "MIRROR",
+          "era": "1960s",
+          "teamA": "sd2-cross-era",
+          "teamB": "sd2-cross-era",
+          "coachA": "phil-jackson",
+          "coachB": "phil-jackson",
+          "perspectiveTeam": "sd2-cross-era",
+          "note": "Identical rosters and identical coach. No team-quality component; delta measures the slot directly."
+        },
+        {
+          "id": "pair:sd2-balanced-lower-ovr|sd2-creator-stack",
+          "kind": "NON_MIRROR",
+          "era": "2010s",
+          "teamA": "sd2-balanced-lower-ovr",
+          "teamB": "sd2-creator-stack",
+          "coachA": "gregg-popovich",
+          "coachB": "mike-dantoni",
+          "perspectiveTeam": "sd2-balanced-lower-ovr"
+        },
+        {
+          "id": "pair:sd2-balanced-lower-ovr|sd2-elite-shooting",
+          "kind": "NON_MIRROR",
+          "era": "2010s",
+          "teamA": "sd2-balanced-lower-ovr",
+          "teamB": "sd2-elite-shooting",
+          "coachA": "gregg-popovich",
+          "coachB": "steve-kerr",
+          "perspectiveTeam": "sd2-balanced-lower-ovr"
+        },
+        {
+          "id": "pair:sd2-balanced-lower-ovr|sd2-weak-shooting",
+          "kind": "NON_MIRROR",
+          "era": "2010s",
+          "teamA": "sd2-balanced-lower-ovr",
+          "teamB": "sd2-weak-shooting",
+          "coachA": "gregg-popovich",
+          "coachB": "tom-thibodeau",
+          "perspectiveTeam": "sd2-balanced-lower-ovr"
+        },
+        {
+          "id": "pair:sd2-balanced-lower-ovr|sd2-no-rim-protection",
+          "kind": "NON_MIRROR",
+          "era": "2010s",
+          "teamA": "sd2-balanced-lower-ovr",
+          "teamB": "sd2-no-rim-protection",
+          "coachA": "gregg-popovich",
+          "coachB": "mike-dantoni",
+          "perspectiveTeam": "sd2-balanced-lower-ovr"
+        },
+        {
+          "id": "pair:sd2-balanced-lower-ovr|sd2-movement-shooters",
+          "kind": "NON_MIRROR",
+          "era": "2010s",
+          "teamA": "sd2-balanced-lower-ovr",
+          "teamB": "sd2-movement-shooters",
+          "coachA": "gregg-popovich",
+          "coachB": "steve-kerr",
+          "perspectiveTeam": "sd2-balanced-lower-ovr"
+        },
+        {
+          "id": "pair:sd2-balanced-lower-ovr|sd2-zone-attack",
+          "kind": "NON_MIRROR",
+          "era": "2010s",
+          "teamA": "sd2-balanced-lower-ovr",
+          "teamB": "sd2-zone-attack",
+          "coachA": "gregg-popovich",
+          "coachB": "erik-spoelstra",
+          "perspectiveTeam": "sd2-balanced-lower-ovr"
+        },
+        {
+          "id": "pair:sd2-balanced-lower-ovr|sd2-weak-defender-hiding",
+          "kind": "NON_MIRROR",
+          "era": "2010s",
+          "teamA": "sd2-balanced-lower-ovr",
+          "teamB": "sd2-weak-defender-hiding",
+          "coachA": "gregg-popovich",
+          "coachB": "mike-dantoni",
+          "perspectiveTeam": "sd2-balanced-lower-ovr"
+        },
+        {
+          "id": "pair:sd2-creator-stack|sd2-elite-shooting",
+          "kind": "NON_MIRROR",
+          "era": "2010s",
+          "teamA": "sd2-creator-stack",
+          "teamB": "sd2-elite-shooting",
+          "coachA": "mike-dantoni",
+          "coachB": "steve-kerr",
+          "perspectiveTeam": "sd2-creator-stack"
+        },
+        {
+          "id": "pair:sd2-creator-stack|sd2-weak-shooting",
+          "kind": "NON_MIRROR",
+          "era": "2010s",
+          "teamA": "sd2-creator-stack",
+          "teamB": "sd2-weak-shooting",
+          "coachA": "mike-dantoni",
+          "coachB": "tom-thibodeau",
+          "perspectiveTeam": "sd2-creator-stack"
+        },
+        {
+          "id": "pair:sd2-creator-stack|sd2-no-rim-protection",
+          "kind": "NON_MIRROR",
+          "era": "2010s",
+          "teamA": "sd2-creator-stack",
+          "teamB": "sd2-no-rim-protection",
+          "coachA": "mike-dantoni",
+          "coachB": "mike-dantoni",
+          "perspectiveTeam": "sd2-creator-stack"
+        },
+        {
+          "id": "pair:sd2-creator-stack|sd2-movement-shooters",
+          "kind": "NON_MIRROR",
+          "era": "2010s",
+          "teamA": "sd2-creator-stack",
+          "teamB": "sd2-movement-shooters",
+          "coachA": "mike-dantoni",
+          "coachB": "steve-kerr",
+          "perspectiveTeam": "sd2-creator-stack"
+        },
+        {
+          "id": "pair:sd2-creator-stack|sd2-zone-attack",
+          "kind": "NON_MIRROR",
+          "era": "2010s",
+          "teamA": "sd2-creator-stack",
+          "teamB": "sd2-zone-attack",
+          "coachA": "mike-dantoni",
+          "coachB": "erik-spoelstra",
+          "perspectiveTeam": "sd2-creator-stack"
+        },
+        {
+          "id": "pair:sd2-creator-stack|sd2-weak-defender-hiding",
+          "kind": "NON_MIRROR",
+          "era": "2010s",
+          "teamA": "sd2-creator-stack",
+          "teamB": "sd2-weak-defender-hiding",
+          "coachA": "mike-dantoni",
+          "coachB": "mike-dantoni",
+          "perspectiveTeam": "sd2-creator-stack"
+        },
+        {
+          "id": "pair:sd2-elite-shooting|sd2-weak-shooting",
+          "kind": "NON_MIRROR",
+          "era": "2010s",
+          "teamA": "sd2-elite-shooting",
+          "teamB": "sd2-weak-shooting",
+          "coachA": "steve-kerr",
+          "coachB": "tom-thibodeau",
+          "perspectiveTeam": "sd2-elite-shooting"
+        },
+        {
+          "id": "pair:sd2-elite-shooting|sd2-no-rim-protection",
+          "kind": "NON_MIRROR",
+          "era": "2010s",
+          "teamA": "sd2-elite-shooting",
+          "teamB": "sd2-no-rim-protection",
+          "coachA": "steve-kerr",
+          "coachB": "mike-dantoni",
+          "perspectiveTeam": "sd2-elite-shooting"
+        },
+        {
+          "id": "pair:sd2-elite-shooting|sd2-movement-shooters",
+          "kind": "NON_MIRROR",
+          "era": "2010s",
+          "teamA": "sd2-elite-shooting",
+          "teamB": "sd2-movement-shooters",
+          "coachA": "steve-kerr",
+          "coachB": "steve-kerr",
+          "perspectiveTeam": "sd2-elite-shooting"
+        },
+        {
+          "id": "pair:sd2-elite-shooting|sd2-zone-attack",
+          "kind": "NON_MIRROR",
+          "era": "2010s",
+          "teamA": "sd2-elite-shooting",
+          "teamB": "sd2-zone-attack",
+          "coachA": "steve-kerr",
+          "coachB": "erik-spoelstra",
+          "perspectiveTeam": "sd2-elite-shooting"
+        },
+        {
+          "id": "pair:sd2-elite-shooting|sd2-weak-defender-hiding",
+          "kind": "NON_MIRROR",
+          "era": "2010s",
+          "teamA": "sd2-elite-shooting",
+          "teamB": "sd2-weak-defender-hiding",
+          "coachA": "steve-kerr",
+          "coachB": "mike-dantoni",
+          "perspectiveTeam": "sd2-elite-shooting"
+        },
+        {
+          "id": "pair:sd2-weak-shooting|sd2-no-rim-protection",
+          "kind": "NON_MIRROR",
+          "era": "2010s",
+          "teamA": "sd2-weak-shooting",
+          "teamB": "sd2-no-rim-protection",
+          "coachA": "tom-thibodeau",
+          "coachB": "mike-dantoni",
+          "perspectiveTeam": "sd2-weak-shooting"
+        },
+        {
+          "id": "pair:sd2-weak-shooting|sd2-movement-shooters",
+          "kind": "NON_MIRROR",
+          "era": "2010s",
+          "teamA": "sd2-weak-shooting",
+          "teamB": "sd2-movement-shooters",
+          "coachA": "tom-thibodeau",
+          "coachB": "steve-kerr",
+          "perspectiveTeam": "sd2-weak-shooting"
+        },
+        {
+          "id": "pair:sd2-weak-shooting|sd2-zone-attack",
+          "kind": "NON_MIRROR",
+          "era": "2010s",
+          "teamA": "sd2-weak-shooting",
+          "teamB": "sd2-zone-attack",
+          "coachA": "tom-thibodeau",
+          "coachB": "erik-spoelstra",
+          "perspectiveTeam": "sd2-weak-shooting"
+        },
+        {
+          "id": "pair:sd2-weak-shooting|sd2-weak-defender-hiding",
+          "kind": "NON_MIRROR",
+          "era": "2010s",
+          "teamA": "sd2-weak-shooting",
+          "teamB": "sd2-weak-defender-hiding",
+          "coachA": "tom-thibodeau",
+          "coachB": "mike-dantoni",
+          "perspectiveTeam": "sd2-weak-shooting"
+        },
+        {
+          "id": "pair:sd2-extreme-size|sd2-cross-era",
+          "kind": "NON_MIRROR",
+          "era": "1960s",
+          "teamA": "sd2-extreme-size",
+          "teamB": "sd2-cross-era",
+          "coachA": "red-auerbach",
+          "coachB": "phil-jackson",
+          "perspectiveTeam": "sd2-extreme-size"
+        },
+        {
+          "id": "pair:sd2-extreme-small|sd2-passing-hub",
+          "kind": "NON_MIRROR",
+          "era": "2020s",
+          "teamA": "sd2-extreme-small",
+          "teamB": "sd2-passing-hub",
+          "coachA": "steve-kerr",
+          "coachB": "nick-nurse",
+          "perspectiveTeam": "sd2-extreme-small"
+        },
+        {
+          "id": "pair:sd2-no-rim-protection|sd2-movement-shooters",
+          "kind": "NON_MIRROR",
+          "era": "2010s",
+          "teamA": "sd2-no-rim-protection",
+          "teamB": "sd2-movement-shooters",
+          "coachA": "mike-dantoni",
+          "coachB": "steve-kerr",
+          "perspectiveTeam": "sd2-no-rim-protection"
+        },
+        {
+          "id": "pair:sd2-no-rim-protection|sd2-zone-attack",
+          "kind": "NON_MIRROR",
+          "era": "2010s",
+          "teamA": "sd2-no-rim-protection",
+          "teamB": "sd2-zone-attack",
+          "coachA": "mike-dantoni",
+          "coachB": "erik-spoelstra",
+          "perspectiveTeam": "sd2-no-rim-protection"
+        },
+        {
+          "id": "pair:sd2-no-rim-protection|sd2-weak-defender-hiding",
+          "kind": "NON_MIRROR",
+          "era": "2010s",
+          "teamA": "sd2-no-rim-protection",
+          "teamB": "sd2-weak-defender-hiding",
+          "coachA": "mike-dantoni",
+          "coachB": "mike-dantoni",
+          "perspectiveTeam": "sd2-no-rim-protection"
+        },
+        {
+          "id": "pair:sd2-movement-shooters|sd2-zone-attack",
+          "kind": "NON_MIRROR",
+          "era": "2010s",
+          "teamA": "sd2-movement-shooters",
+          "teamB": "sd2-zone-attack",
+          "coachA": "steve-kerr",
+          "coachB": "erik-spoelstra",
+          "perspectiveTeam": "sd2-movement-shooters"
+        },
+        {
+          "id": "pair:sd2-movement-shooters|sd2-weak-defender-hiding",
+          "kind": "NON_MIRROR",
+          "era": "2010s",
+          "teamA": "sd2-movement-shooters",
+          "teamB": "sd2-weak-defender-hiding",
+          "coachA": "steve-kerr",
+          "coachB": "mike-dantoni",
+          "perspectiveTeam": "sd2-movement-shooters"
+        },
+        {
+          "id": "pair:sd2-zone-attack|sd2-weak-defender-hiding",
+          "kind": "NON_MIRROR",
+          "era": "2010s",
+          "teamA": "sd2-zone-attack",
+          "teamB": "sd2-weak-defender-hiding",
+          "coachA": "erik-spoelstra",
+          "coachB": "mike-dantoni",
+          "perspectiveTeam": "sd2-zone-attack"
+        }
+      ]
+    },
+    "coverageAgainstBriefRequirements": {
+      "exactMirrors": 14,
+      "nonMirrorPairs": 30,
+      "zoneCapable": 8,
+      "shootingAdvantage": 21,
+      "sizeAdvantage": 2,
+      "defensiveAdvantage": 15,
+      "balancedVersusHigherOvr": 8,
+      "distinctEras": 5,
+      "note": "Counted from the frozen family, not asserted. Cells are drawn only from the synthetic DEVELOPMENT set; no holdout fixture appears."
+    }
+  },
+  "outputHash": "0865b0c612d508c64d105f62d6ee5cade8432e54b9e96a6746064abfdabeb588"
+}

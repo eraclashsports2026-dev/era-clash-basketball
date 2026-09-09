@@ -1,0 +1,750 @@
+{
+  "artifact": "internal-reference-baseline",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run validation:reference",
+  "generatedAt": "2026-08-26T20:12:37.568Z",
+  "gitCommit": "500e30ae72f75bee7928253a3017fce09896cc43",
+  "branch": "phase-6c3-formal-holdout-preview",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {
+    "data/calibration/historical-corpus-v3.json": "d8c8e1edd2964392718bacda9af83f59f36928f8c498cb14b12014ff0085a6cc",
+    "data/calibration/historical-targets-v3.json": "a9b7eaf89bcb68baf37e6d992ea71d8a7caddd478365d890f9bfe2a73a8640ac"
+  },
+  "data": {
+    "purpose": "The denominator for the holdout ratio gate, and the medians the identity rubric compares against. Both frozen before any holdout opened.",
+    "computedFrom": "historical calibration v3 (already-seen fixtures)",
+    "sealedFixturesUsed": 0,
+    "seedBlock": "probability-validation @ 900000+, disjoint from the holdout seed block",
+    "seedsPerFixture": 512,
+    "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+    "possessionCalibrationVersion": "1.0.0",
+    "baseline": {
+      "internalCompositeMean": 0.04338,
+      "internalCompositeMedian": 0.04424,
+      "internalCompositeMin": 0.02636,
+      "internalCompositeMax": 0.06217,
+      "fixturesContributing": 23,
+      "fixturesTotal": 24,
+      "perMetric": {
+        "playerScoringShares": {
+          "fixtures": 23,
+          "mean": 0.05914,
+          "median": 0.05319
+        },
+        "playerReboundShares": {
+          "fixtures": 23,
+          "mean": 0.02746,
+          "median": 0.02261
+        },
+        "playerAssistShares": {
+          "fixtures": 23,
+          "mean": 0.03742,
+          "median": 0.03729
+        },
+        "playerStealShares": {
+          "fixtures": 16,
+          "mean": 0.05478,
+          "median": 0.05344
+        },
+        "playerBlockShares": {
+          "fixtures": 16,
+          "mean": 0.04485,
+          "median": 0.04273
+        }
+      }
+    },
+    "referenceMedians": {
+      "pointsPerPossession": 1.11979,
+      "opponentPointsPerPossession": 1.12067,
+      "possessions": 100.57911,
+      "threeShare": 0.08178,
+      "rimShare": 0.07068,
+      "offensiveReboundShare": 0.34862,
+      "reboundsPerGame": 50.64551,
+      "meanTopOptionShare": 0.27739
+    },
+    "perFixture": [
+      {
+        "fixtureId": "h3-1956-57-celtics",
+        "eraStyleId": "1950s",
+        "compositeMae": 0.03937,
+        "supportedShareMetrics": [
+          "playerScoringShares",
+          "playerReboundShares",
+          "playerAssistShares"
+        ],
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleStatistics": 0,
+          "meanPossessions": 125.23633,
+          "meanPoints": 115.68555,
+          "meanOpponentPoints": 115.75977,
+          "pointsPerPossession": 0.92374,
+          "opponentPointsPerPossession": 0.92433,
+          "threeShare": 0,
+          "rimShare": 0.07802,
+          "offensiveReboundShare": 0.3955,
+          "reboundsPerGame": 82.71289,
+          "meanTopOptionShare": 0.27817,
+          "topOptionShareWithinBounds": true,
+          "threePointAttemptsInPreThreeEra": 0
+        }
+      },
+      {
+        "fixtureId": "h3-1958-59-celtics",
+        "eraStyleId": "1950s",
+        "compositeMae": 0.05345,
+        "supportedShareMetrics": [
+          "playerScoringShares",
+          "playerReboundShares",
+          "playerAssistShares"
+        ],
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleStatistics": 0,
+          "meanPossessions": 125.54883,
+          "meanPoints": 119.67383,
+          "meanOpponentPoints": 119.34961,
+          "pointsPerPossession": 0.95321,
+          "opponentPointsPerPossession": 0.95062,
+          "threeShare": 0,
+          "rimShare": 0.07811,
+          "offensiveReboundShare": 0.38653,
+          "reboundsPerGame": 80.30273,
+          "meanTopOptionShare": 0.27982,
+          "topOptionShareWithinBounds": true,
+          "threePointAttemptsInPreThreeEra": 0
+        }
+      },
+      {
+        "fixtureId": "h3-1951-52-lakers",
+        "eraStyleId": "1950s",
+        "compositeMae": 0.0335,
+        "supportedShareMetrics": [
+          "playerScoringShares",
+          "playerReboundShares",
+          "playerAssistShares"
+        ],
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleStatistics": 0,
+          "meanPossessions": 117.36719,
+          "meanPoints": 105.91992,
+          "meanOpponentPoints": 106.96484,
+          "pointsPerPossession": 0.90247,
+          "opponentPointsPerPossession": 0.91137,
+          "threeShare": 0,
+          "rimShare": 0.077,
+          "offensiveReboundShare": 0.41284,
+          "reboundsPerGame": 80.3418,
+          "meanTopOptionShare": 0.27063,
+          "topOptionShareWithinBounds": true,
+          "threePointAttemptsInPreThreeEra": 0
+        }
+      },
+      {
+        "fixtureId": "h3-1962-63-celtics",
+        "eraStyleId": "1960s",
+        "compositeMae": 0.05617,
+        "supportedShareMetrics": [
+          "playerScoringShares",
+          "playerReboundShares",
+          "playerAssistShares"
+        ],
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleStatistics": 0,
+          "meanPossessions": 127.23633,
+          "meanPoints": 122.34375,
+          "meanOpponentPoints": 121.68555,
+          "pointsPerPossession": 0.96155,
+          "opponentPointsPerPossession": 0.95637,
+          "threeShare": 0,
+          "rimShare": 0.07929,
+          "offensiveReboundShare": 0.40546,
+          "reboundsPerGame": 79.96875,
+          "meanTopOptionShare": 0.26568,
+          "topOptionShareWithinBounds": true,
+          "threePointAttemptsInPreThreeEra": 0
+        }
+      },
+      {
+        "fixtureId": "h3-1964-65-celtics",
+        "eraStyleId": "1960s",
+        "compositeMae": null,
+        "supportedShareMetrics": [],
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleStatistics": 0,
+          "meanPossessions": 127.37695,
+          "meanPoints": 121.91797,
+          "meanOpponentPoints": 120.68555,
+          "pointsPerPossession": 0.95714,
+          "opponentPointsPerPossession": 0.94747,
+          "threeShare": 0,
+          "rimShare": 0.08208,
+          "offensiveReboundShare": 0.40257,
+          "reboundsPerGame": 80.71094,
+          "meanTopOptionShare": 0.26239,
+          "topOptionShareWithinBounds": true,
+          "threePointAttemptsInPreThreeEra": 0
+        }
+      },
+      {
+        "fixtureId": "h3-1969-70-knicks",
+        "eraStyleId": "1960s",
+        "compositeMae": 0.02718,
+        "supportedShareMetrics": [
+          "playerScoringShares",
+          "playerReboundShares",
+          "playerAssistShares"
+        ],
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleStatistics": 0,
+          "meanPossessions": 120.44727,
+          "meanPoints": 117.69727,
+          "meanOpponentPoints": 117.70508,
+          "pointsPerPossession": 0.97717,
+          "opponentPointsPerPossession": 0.97723,
+          "threeShare": 0,
+          "rimShare": 0.07629,
+          "offensiveReboundShare": 0.37756,
+          "reboundsPerGame": 72.42773,
+          "meanTopOptionShare": 0.26983,
+          "topOptionShareWithinBounds": true,
+          "threePointAttemptsInPreThreeEra": 0
+        }
+      },
+      {
+        "fixtureId": "h3-1971-72-lakers",
+        "eraStyleId": "1970s",
+        "compositeMae": 0.03516,
+        "supportedShareMetrics": [
+          "playerScoringShares",
+          "playerReboundShares",
+          "playerAssistShares"
+        ],
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleStatistics": 0,
+          "meanPossessions": 112.26367,
+          "meanPoints": 114.40039,
+          "meanOpponentPoints": 115.92773,
+          "pointsPerPossession": 1.01903,
+          "opponentPointsPerPossession": 1.03264,
+          "threeShare": 0,
+          "rimShare": 0.07741,
+          "offensiveReboundShare": 0.35331,
+          "reboundsPerGame": 60.66992,
+          "meanTopOptionShare": 0.2766,
+          "topOptionShareWithinBounds": true,
+          "threePointAttemptsInPreThreeEra": 0
+        }
+      },
+      {
+        "fixtureId": "h3-1972-73-knicks",
+        "eraStyleId": "1970s",
+        "compositeMae": 0.02636,
+        "supportedShareMetrics": [
+          "playerScoringShares",
+          "playerReboundShares",
+          "playerAssistShares"
+        ],
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleStatistics": 0,
+          "meanPossessions": 105.42188,
+          "meanPoints": 109.1875,
+          "meanOpponentPoints": 109.86523,
+          "pointsPerPossession": 1.03572,
+          "opponentPointsPerPossession": 1.04215,
+          "threeShare": 0,
+          "rimShare": 0.07864,
+          "offensiveReboundShare": 0.34701,
+          "reboundsPerGame": 55.85742,
+          "meanTopOptionShare": 0.26624,
+          "topOptionShareWithinBounds": true,
+          "threePointAttemptsInPreThreeEra": 0
+        }
+      },
+      {
+        "fixtureId": "h3-1973-74-celtics",
+        "eraStyleId": "1970s",
+        "compositeMae": 0.04041,
+        "supportedShareMetrics": [
+          "playerScoringShares",
+          "playerReboundShares",
+          "playerAssistShares",
+          "playerStealShares",
+          "playerBlockShares"
+        ],
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleStatistics": 0,
+          "meanPossessions": 112.18164,
+          "meanPoints": 116.80469,
+          "meanOpponentPoints": 116.94141,
+          "pointsPerPossession": 1.04121,
+          "opponentPointsPerPossession": 1.04243,
+          "threeShare": 0,
+          "rimShare": 0.07721,
+          "offensiveReboundShare": 0.35022,
+          "reboundsPerGame": 59.21484,
+          "meanTopOptionShare": 0.26893,
+          "topOptionShareWithinBounds": true,
+          "threePointAttemptsInPreThreeEra": 0
+        }
+      },
+      {
+        "fixtureId": "h3-1985-86-celtics",
+        "eraStyleId": "1980s",
+        "compositeMae": 0.04701,
+        "supportedShareMetrics": [
+          "playerScoringShares",
+          "playerReboundShares",
+          "playerAssistShares",
+          "playerStealShares",
+          "playerBlockShares"
+        ],
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleStatistics": 0,
+          "meanPossessions": 101.11133,
+          "meanPoints": 114.10156,
+          "meanOpponentPoints": 114.13281,
+          "pointsPerPossession": 1.12847,
+          "opponentPointsPerPossession": 1.12878,
+          "threeShare": 0.05493,
+          "rimShare": 0.07185,
+          "offensiveReboundShare": 0.35815,
+          "reboundsPerGame": 51.27734,
+          "meanTopOptionShare": 0.26991,
+          "topOptionShareWithinBounds": true,
+          "threePointAttemptsInPreThreeEra": null
+        }
+      },
+      {
+        "fixtureId": "h3-1986-87-lakers",
+        "eraStyleId": "1980s",
+        "compositeMae": 0.0367,
+        "supportedShareMetrics": [
+          "playerScoringShares",
+          "playerReboundShares",
+          "playerAssistShares",
+          "playerStealShares",
+          "playerBlockShares"
+        ],
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleStatistics": 0,
+          "meanPossessions": 103.83789,
+          "meanPoints": 116.05469,
+          "meanOpponentPoints": 116.29102,
+          "pointsPerPossession": 1.11765,
+          "opponentPointsPerPossession": 1.11993,
+          "threeShare": 0.05274,
+          "rimShare": 0.07291,
+          "offensiveReboundShare": 0.35243,
+          "reboundsPerGame": 52.54883,
+          "meanTopOptionShare": 0.26654,
+          "topOptionShareWithinBounds": true,
+          "threePointAttemptsInPreThreeEra": null
+        }
+      },
+      {
+        "fixtureId": "h3-1988-89-pistons",
+        "eraStyleId": "1980s",
+        "compositeMae": 0.04258,
+        "supportedShareMetrics": [
+          "playerScoringShares",
+          "playerReboundShares",
+          "playerAssistShares",
+          "playerStealShares",
+          "playerBlockShares"
+        ],
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleStatistics": 0,
+          "meanPossessions": 98.49219,
+          "meanPoints": 112.25977,
+          "meanOpponentPoints": 111.60938,
+          "pointsPerPossession": 1.13978,
+          "opponentPointsPerPossession": 1.13318,
+          "threeShare": 0.05681,
+          "rimShare": 0.07281,
+          "offensiveReboundShare": 0.35097,
+          "reboundsPerGame": 49.2168,
+          "meanTopOptionShare": 0.27344,
+          "topOptionShareWithinBounds": true,
+          "threePointAttemptsInPreThreeEra": null
+        }
+      },
+      {
+        "fixtureId": "h3-1995-96-bulls",
+        "eraStyleId": "1990s",
+        "compositeMae": 0.05023,
+        "supportedShareMetrics": [
+          "playerScoringShares",
+          "playerReboundShares",
+          "playerAssistShares",
+          "playerStealShares",
+          "playerBlockShares"
+        ],
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleStatistics": 0,
+          "meanPossessions": 95.76953,
+          "meanPoints": 108.5918,
+          "meanOpponentPoints": 109.3125,
+          "pointsPerPossession": 1.13389,
+          "opponentPointsPerPossession": 1.14141,
+          "threeShare": 0.11106,
+          "rimShare": 0.06928,
+          "offensiveReboundShare": 0.34563,
+          "reboundsPerGame": 48.69336,
+          "meanTopOptionShare": 0.27639,
+          "topOptionShareWithinBounds": true,
+          "threePointAttemptsInPreThreeEra": null
+        }
+      },
+      {
+        "fixtureId": "h3-1996-97-jazz",
+        "eraStyleId": "1990s",
+        "compositeMae": 0.05012,
+        "supportedShareMetrics": [
+          "playerScoringShares",
+          "playerReboundShares",
+          "playerAssistShares",
+          "playerStealShares",
+          "playerBlockShares"
+        ],
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleStatistics": 0,
+          "meanPossessions": 95.74414,
+          "meanPoints": 109.96094,
+          "meanOpponentPoints": 110.81641,
+          "pointsPerPossession": 1.14849,
+          "opponentPointsPerPossession": 1.15742,
+          "threeShare": 0.10674,
+          "rimShare": 0.06568,
+          "offensiveReboundShare": 0.35322,
+          "reboundsPerGame": 48.22852,
+          "meanTopOptionShare": 0.28274,
+          "topOptionShareWithinBounds": true,
+          "threePointAttemptsInPreThreeEra": null
+        }
+      },
+      {
+        "fixtureId": "h3-1994-95-rockets",
+        "eraStyleId": "1990s",
+        "compositeMae": 0.04446,
+        "supportedShareMetrics": [
+          "playerScoringShares",
+          "playerReboundShares",
+          "playerAssistShares",
+          "playerStealShares",
+          "playerBlockShares"
+        ],
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleStatistics": 0,
+          "meanPossessions": 95.76172,
+          "meanPoints": 108.86328,
+          "meanOpponentPoints": 108.80469,
+          "pointsPerPossession": 1.13681,
+          "opponentPointsPerPossession": 1.1362,
+          "threeShare": 0.11255,
+          "rimShare": 0.06951,
+          "offensiveReboundShare": 0.34277,
+          "reboundsPerGame": 49.26563,
+          "meanTopOptionShare": 0.27134,
+          "topOptionShareWithinBounds": true,
+          "threePointAttemptsInPreThreeEra": null
+        }
+      },
+      {
+        "fixtureId": "h3-2000-01-lakers",
+        "eraStyleId": "2000s",
+        "compositeMae": 0.06217,
+        "supportedShareMetrics": [
+          "playerScoringShares",
+          "playerReboundShares",
+          "playerAssistShares",
+          "playerStealShares",
+          "playerBlockShares"
+        ],
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleStatistics": 0,
+          "meanPossessions": 89.37305,
+          "meanPoints": 101.63477,
+          "meanOpponentPoints": 101.73828,
+          "pointsPerPossession": 1.1372,
+          "opponentPointsPerPossession": 1.13836,
+          "threeShare": 0.22061,
+          "rimShare": 0.05776,
+          "offensiveReboundShare": 0.28569,
+          "reboundsPerGame": 46.0918,
+          "meanTopOptionShare": 0.29834,
+          "topOptionShareWithinBounds": true,
+          "threePointAttemptsInPreThreeEra": null
+        }
+      },
+      {
+        "fixtureId": "h3-2003-04-pistons",
+        "eraStyleId": "2000s",
+        "compositeMae": 0.04066,
+        "supportedShareMetrics": [
+          "playerScoringShares",
+          "playerReboundShares",
+          "playerAssistShares",
+          "playerStealShares",
+          "playerBlockShares"
+        ],
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleStatistics": 0,
+          "meanPossessions": 89.58398,
+          "meanPoints": 99.92773,
+          "meanOpponentPoints": 98.51367,
+          "pointsPerPossession": 1.11546,
+          "opponentPointsPerPossession": 1.09968,
+          "threeShare": 0.21986,
+          "rimShare": 0.05729,
+          "offensiveReboundShare": 0.28987,
+          "reboundsPerGame": 48.05469,
+          "meanTopOptionShare": 0.302,
+          "topOptionShareWithinBounds": true,
+          "threePointAttemptsInPreThreeEra": null
+        }
+      },
+      {
+        "fixtureId": "h3-2004-05-spurs",
+        "eraStyleId": "2000s",
+        "compositeMae": 0.05865,
+        "supportedShareMetrics": [
+          "playerScoringShares",
+          "playerReboundShares",
+          "playerAssistShares",
+          "playerStealShares",
+          "playerBlockShares"
+        ],
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleStatistics": 0,
+          "meanPossessions": 89.41992,
+          "meanPoints": 100.32422,
+          "meanOpponentPoints": 100.27539,
+          "pointsPerPossession": 1.12194,
+          "opponentPointsPerPossession": 1.1214,
+          "threeShare": 0.21626,
+          "rimShare": 0.05771,
+          "offensiveReboundShare": 0.30625,
+          "reboundsPerGame": 47.26367,
+          "meanTopOptionShare": 0.29117,
+          "topOptionShareWithinBounds": true,
+          "threePointAttemptsInPreThreeEra": null
+        }
+      },
+      {
+        "fixtureId": "h3-2015-16-warriors",
+        "eraStyleId": "2010s",
+        "compositeMae": 0.04424,
+        "supportedShareMetrics": [
+          "playerScoringShares",
+          "playerReboundShares",
+          "playerAssistShares",
+          "playerStealShares",
+          "playerBlockShares"
+        ],
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleStatistics": 0,
+          "meanPossessions": 100.04688,
+          "meanPoints": 116.64063,
+          "meanOpponentPoints": 116.1875,
+          "pointsPerPossession": 1.16586,
+          "opponentPointsPerPossession": 1.16133,
+          "threeShare": 0.28966,
+          "rimShare": 0.04922,
+          "offensiveReboundShare": 0.21605,
+          "reboundsPerGame": 48.78125,
+          "meanTopOptionShare": 0.28457,
+          "topOptionShareWithinBounds": true,
+          "threePointAttemptsInPreThreeEra": null
+        }
+      },
+      {
+        "fixtureId": "h3-2013-14-spurs",
+        "eraStyleId": "2010s",
+        "compositeMae": 0.04469,
+        "supportedShareMetrics": [
+          "playerScoringShares",
+          "playerReboundShares",
+          "playerAssistShares",
+          "playerStealShares",
+          "playerBlockShares"
+        ],
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleStatistics": 0,
+          "meanPossessions": 94.72852,
+          "meanPoints": 108.21484,
+          "meanOpponentPoints": 110.17773,
+          "pointsPerPossession": 1.14237,
+          "opponentPointsPerPossession": 1.16309,
+          "threeShare": 0.29433,
+          "rimShare": 0.05258,
+          "offensiveReboundShare": 0.26795,
+          "reboundsPerGame": 48.49414,
+          "meanTopOptionShare": 0.2837,
+          "topOptionShareWithinBounds": true,
+          "threePointAttemptsInPreThreeEra": null
+        }
+      },
+      {
+        "fixtureId": "h3-2010-11-bulls",
+        "eraStyleId": "2010s",
+        "compositeMae": 0.04525,
+        "supportedShareMetrics": [
+          "playerScoringShares",
+          "playerReboundShares",
+          "playerAssistShares",
+          "playerStealShares",
+          "playerBlockShares"
+        ],
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleStatistics": 0,
+          "meanPossessions": 93.35938,
+          "meanPoints": 104.00586,
+          "meanOpponentPoints": 103.72461,
+          "pointsPerPossession": 1.11404,
+          "opponentPointsPerPossession": 1.11103,
+          "threeShare": 0.29517,
+          "rimShare": 0.05432,
+          "offensiveReboundShare": 0.25048,
+          "reboundsPerGame": 49.28906,
+          "meanTopOptionShare": 0.28502,
+          "topOptionShareWithinBounds": true,
+          "threePointAttemptsInPreThreeEra": null
+        }
+      },
+      {
+        "fixtureId": "h3-2021-22-warriors",
+        "eraStyleId": "2020s",
+        "compositeMae": 0.03039,
+        "supportedShareMetrics": [
+          "playerScoringShares",
+          "playerReboundShares",
+          "playerAssistShares",
+          "playerStealShares",
+          "playerBlockShares"
+        ],
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleStatistics": 0,
+          "meanPossessions": 104.86133,
+          "meanPoints": 128.90234,
+          "meanOpponentPoints": 128.51758,
+          "pointsPerPossession": 1.22926,
+          "opponentPointsPerPossession": 1.2256,
+          "threeShare": 0.41898,
+          "rimShare": 0.04323,
+          "offensiveReboundShare": 0.22653,
+          "reboundsPerGame": 51.42969,
+          "meanTopOptionShare": 0.28825,
+          "topOptionShareWithinBounds": true,
+          "threePointAttemptsInPreThreeEra": null
+        }
+      },
+      {
+        "fixtureId": "h3-2022-23-heat",
+        "eraStyleId": "2020s",
+        "compositeMae": 0.03907,
+        "supportedShareMetrics": [
+          "playerScoringShares",
+          "playerReboundShares",
+          "playerAssistShares",
+          "playerStealShares",
+          "playerBlockShares"
+        ],
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleStatistics": 0,
+          "meanPossessions": 99.30078,
+          "meanPoints": 120.76367,
+          "meanOpponentPoints": 120.14258,
+          "pointsPerPossession": 1.21614,
+          "opponentPointsPerPossession": 1.20989,
+          "threeShare": 0.43148,
+          "rimShare": 0.04176,
+          "offensiveReboundShare": 0.23423,
+          "reboundsPerGame": 50.01367,
+          "meanTopOptionShare": 0.28196,
+          "topOptionShareWithinBounds": true,
+          "threePointAttemptsInPreThreeEra": null
+        }
+      },
+      {
+        "fixtureId": "h3-2022-23-sixers",
+        "eraStyleId": "2020s",
+        "compositeMae": 0.04991,
+        "supportedShareMetrics": [
+          "playerScoringShares",
+          "playerReboundShares",
+          "playerAssistShares",
+          "playerStealShares",
+          "playerBlockShares"
+        ],
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleStatistics": 0,
+          "meanPossessions": 99.3418,
+          "meanPoints": 126.9375,
+          "meanOpponentPoints": 127.28711,
+          "pointsPerPossession": 1.27779,
+          "opponentPointsPerPossession": 1.2813,
+          "threeShare": 0.42947,
+          "rimShare": 0.04048,
+          "offensiveReboundShare": 0.22267,
+          "reboundsPerGame": 46.39258,
+          "meanTopOptionShare": 0.27864,
+          "topOptionShareWithinBounds": true,
+          "threePointAttemptsInPreThreeEra": null
+        }
+      }
+    ],
+    "referenceHash": "488db9cecd25930751c379d60d0e9d72f72da33ae7d576d89f77464114c54d64"
+  },
+  "outputHash": "79e2a93257256ab4d1ef9f62d00f0e431e3be4a18ec6ca1f6ff2a05a3ca4e76c"
+}

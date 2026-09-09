@@ -1,0 +1,367 @@
+{
+  "artifact": "historical-v5-formal-results",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run exec:record-v5",
+  "generatedAt": "2026-08-27T13:44:34.576Z",
+  "gitCommit": "6ea84e3e9a25950835b62a118c9f53088a514b46",
+  "branch": "phase-6c4b2r-candidate1-formal-execution",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "set": "historical-holdout-v5",
+    "verdict": "HISTORICAL_HOLDOUT_V5_FAIL",
+    "outcome": "FAIL",
+    "failureClass": "OBSERVABLE_DEFENSIVE_SUPPRESSION_AND_ASSISTED_OFFENCE_TRAIT_FAILURE",
+    "identity": {
+      "candidateId": "Candidate 1",
+      "candidateCommit": "c370182bb805cd068427283ce2b45a7eda725d1c",
+      "coreHash": "de57e1a96e1fd1450d1aea9c5463b0138a56d77bbf58c748ba042e6f78f5c94d",
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "calibrationVersion": "1.1.0",
+      "lockRevision": 2,
+      "policyHash": "64abec44451702338af814f388bcc16748df490e4e0a8b7fb0dfb2e6196a6cc1",
+      "holdoutManifestHash": "2ecaf7dbbc4338446d971af6954b46a9924f29fb8052ba044fc83fcf5ebcbcff",
+      "practicalMarginPolicyHash": "f92f05a662eb5c2820b2011761c65a454132ee0badd8ce1b70c1edf76bac704b",
+      "traitRegistryHash": "c034937be7e40bd18932fe53151e0b8a877dc47095004653e1bb11aa5c73a0cf",
+      "observabilityHash": "b6976ba81c26aca61f58653010c7ed02708f6fd12693e44b876176ee1bd98c7a",
+      "referenceCertificationHash": "e8482201d390fe076ef508821e1c010cc0685cf1d183d4a2d46dfb5c1a690e4f",
+      "seedSetHash": "d288e8c5754a04f8053b6a29b5892f224bb981c181b95e1a01499a33bf4564c5",
+      "seedStream": "historical-holdout-v5",
+      "pairsPerSurface": 2048
+    },
+    "accessEvent": {
+      "seq": 1,
+      "set": "historical-holdout-v5",
+      "actor": "joseph.johnson@indagare.com",
+      "reason": "Phase 6C4B2R stage one: formal one-time revalidation of locked Candidate 1 against Historical Holdout V5 under frozen compound package v2, authorization 30174f6a0d37ae57",
+      "parameterVersion": null,
+      "commit": null,
+      "argv": [
+        "--unlock-holdout",
+        "--unlock-historical-holdout-v5"
+      ],
+      "openedAtCommit": "6ea84e3e9a25950835b62a118c9f53088a514b46"
+    },
+    "accessCountBefore": 0,
+    "accessCountAfter": 1,
+    "runStatus": "COMPLETE",
+    "runHash": "0140e9ad8d0e9ef08683c491d041e0cdbc812db24fa9a65ad42848cc7fedb370",
+    "matchupsEvaluated": 8,
+    "gamesPerSurface": 4096,
+    "totalGames": 98304,
+    "erasCovered": [
+      "1950s",
+      "1960s",
+      "1970s",
+      "1980s",
+      "1990s",
+      "2000s",
+      "2010s",
+      "2020s"
+    ],
+    "numeric": {
+      "teamSurfacesScored": 13,
+      "holdoutComposite": 0.03741,
+      "internalBaselineMean": 0.0431,
+      "ratio": 0.86789,
+      "ratioGate": 1.5,
+      "catastrophicThreshold": 0.13038,
+      "catastrophicTeams": []
+    },
+    "traits": {
+      "scored": 74,
+      "passed": 58,
+      "failed": 16,
+      "passRate": 0.78378,
+      "minPassRate": 0.75,
+      "hardFails": [
+        "ball movement, drive and kick, corner threes",
+        "ELITE_DEFENSE",
+        "elite team man defence"
+      ],
+      "notScoredUnobservable": 19,
+      "perMatchupMajority": [
+        {
+          "matchupId": "v5m-1950s",
+          "scored": 8,
+          "failed": 1,
+          "failsMajority": false
+        },
+        {
+          "matchupId": "v5m-1960s",
+          "scored": 10,
+          "failed": 0,
+          "failsMajority": false
+        },
+        {
+          "matchupId": "v5m-1970s",
+          "scored": 9,
+          "failed": 2,
+          "failsMajority": false
+        },
+        {
+          "matchupId": "v5m-1980s",
+          "scored": 11,
+          "failed": 3,
+          "failsMajority": false
+        },
+        {
+          "matchupId": "v5m-1990s",
+          "scored": 7,
+          "failed": 1,
+          "failsMajority": false
+        },
+        {
+          "matchupId": "v5m-2000s",
+          "scored": 10,
+          "failed": 3,
+          "failsMajority": false
+        },
+        {
+          "matchupId": "v5m-2010s",
+          "scored": 10,
+          "failed": 3,
+          "failsMajority": false
+        },
+        {
+          "matchupId": "v5m-2020s",
+          "scored": 9,
+          "failed": 3,
+          "failsMajority": false
+        }
+      ]
+    },
+    "gates": {
+      "everyMatchupExecuted": true,
+      "zeroInvariantFailures": true,
+      "zeroFinalTies": true,
+      "zeroImpossibleScores": true,
+      "zeroPreThreeEraThreePointAttempts": true,
+      "replayExactEverywhere": true,
+      "compositeRatioWithinPolicy": true,
+      "zeroCatastrophicTeams": true,
+      "traitPassRateMet": true,
+      "zeroTraitHardFails": false,
+      "noMatchupFailsMajorityOfTraits": true
+    },
+    "hardFailures": [
+      {
+        "matchupId": "v5m-2000s",
+        "era": "2000s",
+        "side": "teamB",
+        "team": "Dallas Mavericks",
+        "season": "2002-03",
+        "traitId": "ball movement, drive and kick, corner threes",
+        "metric": "assistedRate",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "surface": "VS_ERA_REFERENCE",
+        "subjectMean": 0.44784,
+        "referenceMean": 0.4763,
+        "diff": -0.02846,
+        "z": -17.03917,
+        "ci95": {
+          "lower": -0.03173,
+          "upper": -0.02519
+        },
+        "practicalMargin": 0.02,
+        "beyondPracticalMargin": true,
+        "statisticallyOpposite": true,
+        "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+      },
+      {
+        "matchupId": "v5m-2020s",
+        "era": "2020s",
+        "side": "teamA",
+        "team": "New York Knicks",
+        "season": "2020-21",
+        "traitId": "ELITE_DEFENSE",
+        "metric": "refPppVsTeam",
+        "direction": "BELOW_REFERENCE_BASELINE",
+        "surface": "REFERENCE_VS_TEAM",
+        "subjectMean": 1.36011,
+        "referenceMean": 1.32206,
+        "diff": 0.03805,
+        "z": 14.84653,
+        "ci95": {
+          "lower": 0.03303,
+          "upper": 0.04307
+        },
+        "practicalMargin": 0.02,
+        "beyondPracticalMargin": true,
+        "statisticallyOpposite": true,
+        "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+      },
+      {
+        "matchupId": "v5m-2020s",
+        "era": "2020s",
+        "side": "teamA",
+        "team": "New York Knicks",
+        "season": "2020-21",
+        "traitId": "elite team man defence",
+        "metric": "refPppVsTeam",
+        "direction": "BELOW_REFERENCE_BASELINE",
+        "surface": "REFERENCE_VS_TEAM",
+        "subjectMean": 1.36011,
+        "referenceMean": 1.32206,
+        "diff": 0.03805,
+        "z": 14.84653,
+        "ci95": {
+          "lower": 0.03303,
+          "upper": 0.04307
+        },
+        "practicalMargin": 0.02,
+        "beyondPracticalMargin": true,
+        "statisticallyOpposite": true,
+        "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+      }
+    ],
+    "hardFailureCount": 3,
+    "distinctHardFailMeasurements": 2,
+    "hardFailureNote": "3 hard-failing trait instances resolve to 2 distinct measurements: ELITE_DEFENSE and \"elite team man defence\" are both keyed on refPppVsTeam on the same surface for the same team, so they report one observation twice.",
+    "softFailureCount": 13,
+    "softFailures": [
+      {
+        "matchupId": "v5m-1950s",
+        "team": "Boston Celtics",
+        "traitId": "ELITE_DEFENSE",
+        "metric": "refPppVsTeam",
+        "diff": 0.0009,
+        "practicalMargin": 0.02,
+        "beyondPracticalMargin": false,
+        "statisticallyOpposite": false
+      },
+      {
+        "matchupId": "v5m-1970s",
+        "team": "Los Angeles Lakers",
+        "traitId": "ELITE_DEFENSE",
+        "metric": "refPppVsTeam",
+        "diff": 0.01432,
+        "practicalMargin": 0.02,
+        "beyondPracticalMargin": false,
+        "statisticallyOpposite": true
+      },
+      {
+        "matchupId": "v5m-1970s",
+        "team": "Los Angeles Lakers",
+        "traitId": "elite team man",
+        "metric": "refPppVsTeam",
+        "diff": 0.01432,
+        "practicalMargin": 0.02,
+        "beyondPracticalMargin": false,
+        "statisticallyOpposite": true
+      },
+      {
+        "matchupId": "v5m-1980s",
+        "team": "Los Angeles Lakers",
+        "traitId": "PASSING_HUB",
+        "metric": "assistedRate",
+        "diff": -0.0124,
+        "practicalMargin": 0.02,
+        "beyondPracticalMargin": false,
+        "statisticallyOpposite": true
+      },
+      {
+        "matchupId": "v5m-1980s",
+        "team": "Boston Celtics",
+        "traitId": "POST_HEAVY",
+        "metric": "postUpShare",
+        "diff": -0.00482,
+        "practicalMargin": 0.03,
+        "beyondPracticalMargin": false,
+        "statisticallyOpposite": true
+      },
+      {
+        "matchupId": "v5m-1980s",
+        "team": "Boston Celtics",
+        "traitId": "half-court execution, elite passing front line",
+        "metric": "assistedRate",
+        "diff": -0.0107,
+        "practicalMargin": 0.02,
+        "beyondPracticalMargin": false,
+        "statisticallyOpposite": true
+      },
+      {
+        "matchupId": "v5m-1990s",
+        "team": "Chicago Bulls",
+        "traitId": "triangle: post reads, cuts, spacing",
+        "metric": "postUpShare",
+        "diff": -0.00138,
+        "practicalMargin": 0.03,
+        "beyondPracticalMargin": false,
+        "statisticallyOpposite": false
+      },
+      {
+        "matchupId": "v5m-2000s",
+        "team": "Dallas Mavericks",
+        "traitId": "ZONE_CAPABLE",
+        "metric": "defensiveZoneShare",
+        "diff": 0,
+        "practicalMargin": 0.05,
+        "beyondPracticalMargin": false,
+        "statisticallyOpposite": false
+      },
+      {
+        "matchupId": "v5m-2000s",
+        "team": "Dallas Mavericks",
+        "traitId": "zone-capable, scheme-heavy",
+        "metric": "defensiveZoneShare",
+        "diff": 0,
+        "practicalMargin": 0.05,
+        "beyondPracticalMargin": false,
+        "statisticallyOpposite": false
+      },
+      {
+        "matchupId": "v5m-2010s",
+        "team": "Los Angeles Clippers",
+        "traitId": "fast",
+        "metric": "gamePace",
+        "diff": -0.79569,
+        "practicalMargin": 1,
+        "beyondPracticalMargin": false,
+        "statisticallyOpposite": true
+      },
+      {
+        "matchupId": "v5m-2010s",
+        "team": "San Antonio Spurs",
+        "traitId": "ELITE_DEFENSE",
+        "metric": "refPppVsTeam",
+        "diff": 0.01648,
+        "practicalMargin": 0.02,
+        "beyondPracticalMargin": false,
+        "statisticallyOpposite": true
+      },
+      {
+        "matchupId": "v5m-2010s",
+        "team": "San Antonio Spurs",
+        "traitId": "elite team man defence",
+        "metric": "refPppVsTeam",
+        "diff": 0.01648,
+        "practicalMargin": 0.02,
+        "beyondPracticalMargin": false,
+        "statisticallyOpposite": true
+      },
+      {
+        "matchupId": "v5m-2020s",
+        "team": "Philadelphia 76ers",
+        "traitId": "SIZE_HEAVY",
+        "metric": "interiorShotShare",
+        "diff": -0.00314,
+        "practicalMargin": 0.02,
+        "beyondPracticalMargin": false,
+        "statisticallyOpposite": true
+      }
+    ],
+    "dualGateEffect": "of 16 failing trait instances, 13 are inside their metric's practical margin and 3 are both statistically opposite and beyond it. Only the latter are hard failures. Phase 6C4A withdrew four of Historical V4's twelve hard failures as sub-margin artifacts; the margin is doing the same work here, in the other direction.",
+    "excludedFromScoring": {
+      "unobservableTraitInstances": 19,
+      "note": "unavailable and unobservable metrics remain null and excluded. None was converted to zero, none contributed pass credit, and none contributed failure."
+    },
+    "copiedFrom": "data/validation/6c4b1/historical-holdout-v5-results.json",
+    "sourceArtifactOutputHash": "46bf6088c27d48fe323fcb08762e0fe9ac5765f81fbd2afbb5821a08a3e6bfbd",
+    "recomputed": false
+  },
+  "outputHash": "c07e77487f24668074ceac39b7eac93dc8df521c30f9147533a35fe775964165"
+}

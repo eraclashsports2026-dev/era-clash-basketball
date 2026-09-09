@@ -1,0 +1,58 @@
+{
+  "artifact": "legend-cpu-benchmark",
+  "phase": "8A",
+  "samplesPerPolicy": 900,
+  "policies": {
+    "legend": {
+      "finalRosterValue": 0.7196689084004846,
+      "talent": 0.6030704445638636,
+      "construction": 0.9057891879705788,
+      "topTierPlayersHeld": 0.5888888888888889,
+      "samples": 900
+    },
+    "random": {
+      "finalRosterValue": 0.6233559391803043,
+      "talent": 0.4352523792204692,
+      "construction": 0.8340429832969609,
+      "topTierPlayersHeld": 0.3022222222222222,
+      "samples": 900
+    },
+    "ovrOnly": {
+      "finalRosterValue": 0.7086513570338959,
+      "talent": 0.6013992974965904,
+      "construction": 0.8848311407435896,
+      "topTierPlayersHeld": 0.62,
+      "samples": 900
+    },
+    "constructionOnly": {
+      "finalRosterValue": 0.6264886194252355,
+      "talent": 0.4411533669593331,
+      "construction": 0.8350419329969719,
+      "topTierPlayersHeld": 0.32,
+      "samples": 900
+    }
+  },
+  "legendOutperforms": {
+    "vsRandom": 0.09631296922018029,
+    "vsOvrOnly": 0.011017551366588663,
+    "vsConstructionOnly": 0.0931802889752491
+  },
+  "luckParity": {
+    "note": "Top-tier cards RECEIVED per slot. Legend must win by deciding better, not by drawing better.",
+    "legendGoldTopTierRate": 0.124,
+    "legendBlueTopTierRate": 0.11266666666666666,
+    "matchups": 900
+  },
+  "noPeeking": {
+    "structural": "REFUSED",
+    "structuralNote": "cpuHoldDecision refuses any state carrying a forbidden field.",
+    "behaviouralChecks": 300,
+    "behaviouralStable": 300,
+    "behaviouralNote": "Identical visible state yields an identical decision; the decision never reads the draw stream."
+  },
+  "hopelessMatchupRate": {
+    "rate": 0.043333333333333335,
+    "matchups": 900,
+    "note": "Legend vs Legend — both sides playing the shipped policy."
+  }
+}

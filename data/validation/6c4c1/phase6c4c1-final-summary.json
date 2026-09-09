@@ -1,0 +1,244 @@
+{
+  "artifact": "phase6c4c1-final-summary",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run c2:summary",
+  "generatedAt": "2026-08-27T15:29:51.179Z",
+  "gitCommit": "136b6446a8a65c7b9b551eed120cf0d4aa5078fd",
+  "branch": "phase-6c4c1-candidate2-trait-repair",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "phase": "6C4C1",
+    "phaseType": "TARGETED_REPAIR_AND_INTERNAL_LOCK",
+    "question": "can Candidate 2 repair the two independent Historical V5 failures generically, preserve everything Candidate 1 did well, and lock ready for an unseen Historical Holdout V6?",
+    "answer": "Yes.",
+    "finalVerdict": "CANDIDATE 2 LOCKED — READY FOR HISTORICAL V6 PREPARATION",
+    "preservedState": {
+      "candidate0": "LOCKED at 1.0.0, untouched",
+      "candidate1": "LOCKED at 1.1.0, untouched, zero drift",
+      "historicalV3": 1,
+      "historicalV4": 1,
+      "historicalV5": 1,
+      "syntheticV2AccessCount": 0,
+      "historicalV5Role": "FAILED_HOLDOUT_DIAGNOSTIC_SET"
+    },
+    "reconciliationsAtPreflight": [
+      {
+        "id": "CALIBRATION_STATUS_CONVENTION",
+        "resolved": true,
+        "summary": "Candidate 1 calibrationStatus reconciled from DEVELOPMENT_LOCKED_SCOPED to HOLDOUT_FAILED, matching the Candidate 0 precedent"
+      },
+      {
+        "id": "DEFENSIVE_PATTERN_COUNT",
+        "resolved": true,
+        "summary": "the \"5 of 8 matchups\" figure is not what the artifacts say: 4 of 7 matchups carrying the metric are wrong-direction, 3 of 8 team-sides significantly so",
+        "artifactDerived": {
+          "instances": 13,
+          "matchupsCarryingMetric": 7,
+          "distinctTeamSides": 8,
+          "wrongDirectionMatchups": 4,
+          "wrongDirectionTeamSides": 4,
+          "wrongAndStatisticallyOppositeTeamSides": 3
+        }
+      }
+    ],
+    "diagnosticRegister": {
+      "nominalFailures": 16,
+      "formalHardFailLabels": 3,
+      "independentEvidenceClusters": 2,
+      "practicalMarginContained": 13,
+      "defensiveSurvey": "4 of 8 team-sides are in the wrong direction and 3 significantly so, against 4 correctly suppressing. The mean difference across all team-sides is near zero, so this is NOT a uniform downward bias on team defence — it is heterogeneous, and the diagnosis has to explain which defences fail rather than assume all do."
+    },
+    "rootCauses": {
+      "assistedOffense": {
+        "firstDivergence": "assist crediting",
+        "evidence": "creation responds to the coach (Spearman 0.32733 on pass-created rate) but CREDITING does not (Spearman -0.20003), and the end-to-end assisted rate is 0.29096 over a range of only 0.02402.",
+        "conclusion": "the coach's ball-movement identity reaches action selection and stops before assist crediting. This is a lost lever, not a missing mechanic: the previous engine generation had it."
+      },
+      "defensiveSuppression": {
+        "layer": "upstream of the possession engine: defensive rating derivation, then coach scheme truncation",
+        "engineRespondsCorrectly": "Pearson(subject composite minus reference composite, measured difference) = -0.91845 across 8 team-sides. The possession engine converts the defensive ratings it is given into opponent points per possession with the right sign and a strong magnitude.",
+        "inversion": "6 of 8 defences have above-neutral coach help intent truncated to BELOW the neutral default of 5, so the engine scores a documented elite defensive coach as less helping than a generic one.",
+        "undecidableEras": "3 of 8 comparisons are not decidable at all: in pre-recording eras steals and blocks are null, every defender derives from the position bonus alone, and subject and reference land on identical composites."
+      }
+    },
+    "repairs": [
+      {
+        "changeId": "c2-01",
+        "file": "src/v3/possession/game.js",
+        "clusters": [
+          "ASSISTED_OFFENSE_EXPRESSION"
+        ],
+        "rootCause": "the possession rewrite dropped a lever the prior engine generation had. src/v3/possession.js line 335 computes assistedP from (ballMovement - 5) * 0.03 + (motion - 5) * 0.02; no expression in the new actions.js references ballMovementPref."
+      },
+      {
+        "changeId": "c2-02",
+        "file": "src/v3/defense/scheme.js",
+        "clusters": [
+          "DEFENSIVE_SUPPRESSION"
+        ],
+        "rootCause": "scheme is what a coach uses to get team defence out of limited individual defenders, so capping scheme intent at raw personnel capability makes the dimension inexpressible. The capability inputs themselves derive from steals and blocks alone, so a defence built on discipline rather than event accumulation was penalised twice."
+      },
+      {
+        "changeId": "c2-03",
+        "file": "src/v3/possession/game.js",
+        "clusters": [
+          "DEFENSIVE_SUPPRESSION"
+        ],
+        "rootCause": "the mechanic was designed and plumbed but never consumed. Restoring the coach's realized help value in c2-02 alone changed nothing measurable, because nothing downstream read it."
+      }
+    ],
+    "repairProperties": {
+      "entityHardcodes": 0,
+      "flatBonuses": 0,
+      "parameterChanges": 0,
+      "dataChanges": 0,
+      "registryParametersAtDefault": 53
+    },
+    "candidate2": {
+      "id": "Candidate 2",
+      "parent": "Candidate 1",
+      "coreHash": "3733b648f050a4f50f9dc3cb6ecf62fce419dd282f24c910b91e7b077d63711d",
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "calibrationVersion": "1.2.0",
+      "possessionEngineVersion": "1.2.0",
+      "defensiveMatchupVersion": "1.2.0",
+      "identityCollisions": 0,
+      "selectionStatus": "SELECTED",
+      "lockStatus": "LOCKED",
+      "calibrationStatus": "DEVELOPMENT_LOCKED_SCOPED",
+      "formalValidationStatus": "NOT_RUN"
+    },
+    "comparison": {
+      "criteriaEvaluated": 28,
+      "criteriaPassed": 28,
+      "criteriaFailed": [],
+      "identicalSeeds": true,
+      "gamesPerCandidate": 37202,
+      "assistLadder": {
+        "candidate1": {
+          "spearman": 0,
+          "range": 0.05176,
+          "creditSpearman": 0.41825,
+          "creationSpearman": 0.34551
+        },
+        "candidate2": {
+          "spearman": 0.80013,
+          "range": 0.17884,
+          "creditSpearman": 0.94561,
+          "creationSpearman": 0.34551
+        }
+      },
+      "defenceLadder": {
+        "candidate1": {
+          "spearman": -0.14712,
+          "range": 0.01109
+        },
+        "candidate2": {
+          "spearman": -0.88273,
+          "range": 0.06342
+        }
+      }
+    },
+    "thresholdCorrectionsRecorded": [
+      "the first freeze of this policy set an absolute floor of 400 games per second. That was mis-specified: measured on this harness Candidate 1 itself runs at 366.8, so the floor could never distinguish a Candidate 2 regression from the harness's own cost — it would have failed the parent too. Corrected to a relative bound against the parent measured on identical seeds and identical cells, which is what the guardrail was for. The absolute number and both measurements are recorded so the correction is visible.",
+      "the in-harness side-symmetry cells ran 1,600 games, where one standard error of the paired difference is 0.0125; a single 2-sigma cell out of five cannot separate structure from noise. The claim moved to a dedicated 8,000-games-per-cell measurement across eight era and coach mirrors, plus an asymmetric side swap, both run under each candidate."
+    ],
+    "globalValidation": {
+      "replayMismatches": 0,
+      "invariantViolations": 0,
+      "finalTies": 0,
+      "astGtFgm": 0,
+      "sideSymmetryCellsContainingHalf": "7/8 at 8000 games",
+      "asymmetricSwapConsistentWithZero": {
+        "candidate1": false,
+        "candidate2": true
+      },
+      "competition": {
+        "meanSeriesLength": 5.51,
+        "meanSeasonWins": 42.4,
+        "seriesInvariants": 0,
+        "seasonInvariants": 0
+      }
+    },
+    "v5FindingResolution": {
+      "counts": {
+        "PRACTICAL_MARGIN_ONLY": 13,
+        "ASSISTED_OFFENSE_REPAIR_ACCEPTED": 1,
+        "DEFENSIVE_SUPPRESSION_REPAIR_ACCEPTED": 2
+      },
+      "unresolved": 0,
+      "dataLimitations": [
+        {
+          "matchupId": "v5m-2010s",
+          "teamName": "San Antonio Spurs",
+          "teamSeason": "2015-16",
+          "classification": "DATA_LIMITATION",
+          "detail": "this defence derives a composite of 3.915 against its era reference's 4.045, and carries defensiveEvidence on 0/5 players. Its documented defensive value is not event-visible: the adapter reads steals and blocks, and a band floor would lift it only where per-season defensive evidence exists in the store. Adding that evidence requires verifying per-season awards from the authorized source, which is data work rather than an engine repair, so it is named as a limitation instead of being repaired here. Its coach's help intent equals the neutral default, so neither Candidate 2 change reaches it — which is the honest outcome: a repair that moved it would have had to be aimed at it."
+        }
+      ],
+      "historicalV5NotRescored": "the Historical V5 formal verdict remains HISTORICAL_HOLDOUT_V5_FAIL. Candidate 2 is compared against those diagnostics; no replacement verdict is emitted and none may be."
+    },
+    "historicalV6": {
+      "poolReady": true,
+      "eligibleTeams": 65,
+      "pairsByEra": {
+        "1950s": 3,
+        "1960s": 4,
+        "1970s": 4,
+        "1980s": 4,
+        "1990s": 4,
+        "2000s": 4,
+        "2010s": 4,
+        "2020s": 4
+      },
+      "candidate2SimulationsUsed": 0,
+      "notSelected": true,
+      "notSealed": true,
+      "notSimulated": true,
+      "storesRead": [
+        "data/calibration/calibration-players-v3.json",
+        "data/validation/6c3r/calibration-players-v4.json",
+        "data/validation/6c4a/calibration-players-v5.json"
+      ]
+    },
+    "syntheticV2": {
+      "accessCount": 0,
+      "disposition": "POLICY_COMPATIBLE_REBIND_REQUIRED",
+      "dispositionReason": "membership, metric definitions, guardrail meanings, competition definitions, result and replay schemas and the runner interface are all preserved. What must change is the identity binding and the development-derived thresholds — a rebind, not a replacement. A replacement V3 would be required only if a metric or guardrail had changed meaning, and none did.",
+      "whatMustBeRebound": [
+        "the compound package's stage-two hashes name Candidate 1's core and parameter-set hashes; a Candidate 2 run must bind Candidate 2's",
+        "the synthetic formal policy records candidateCoreHash and lockRevision for Candidate 1",
+        "the derived thresholds (variance floor, construction floor and existential bar, talent floor) were calibrated from development evidence measured under Candidate 1 and should be re-derived under Candidate 2 before a formal run",
+        "the runner's pre-access check requires a PASSING historical stage; Historical V5 failed, so the gate must name Historical V6"
+      ]
+    },
+    "production": {
+      "mainCommit": "9cd95ff8797f8cdef252bbe67d63158c01b9f9bd",
+      "unchanged": true,
+      "productionEngineVersion": "3.2.0",
+      "previewDeployments": 0,
+      "productionDeployments": 0,
+      "mergedToMain": false,
+      "productionFlagsChanged": 0
+    },
+    "statusesNotClaimed": {
+      "notClaimed": [
+        "HOLDOUT_VALIDATED",
+        "PRIVATE_PREVIEW_VALIDATED",
+        "PRODUCTION_READY",
+        "ACTIVE"
+      ],
+      "why": "Candidate 2 is locked for development and scoped to a future Historical Holdout V6. It has run no formal validation. A locked candidate is not a validated one."
+    },
+    "nextPhase": "Phase 6C4C2 — Historical Holdout V6 selection, policy freeze, seal and Synthetic Candidate 2 rebinding",
+    "recordedAtCommit": "136b6446a8a65c7b9b551eed120cf0d4aa5078fd",
+    "branch": "phase-6c4c1-candidate2-trait-repair",
+    "pass": true,
+    "summaryHash": "b3600e4aa6c603702bcf143bd279465533ab5dea3dd9be1598f48a51c20d9913"
+  },
+  "outputHash": "138b1d6709f63a3c04c9618b31083cafa93bf2e95e15a5f88cac6ccfff0e4d47"
+}

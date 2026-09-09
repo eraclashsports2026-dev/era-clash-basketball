@@ -1,0 +1,71 @@
+{
+  "artifact": "historical-v6-sample-plan",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run v6:policy",
+  "generatedAt": "2026-08-27T20:12:58.291Z",
+  "gitCommit": "f2e7bcf93477e77648c9004d60d6088af1eb2a6f",
+  "branch": "phase-6c4c2-v6-freeze-and-seal",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "historicalV6SamplePlanVersion": "1.0.0",
+    "tiers": [
+      {
+        "tier": 0,
+        "gamesPerSurface": 512,
+        "role": "DRY_RUN_ONLY",
+        "mayProduceVerdict": false,
+        "why": "exercises every runner branch cheaply. A verdict at this size would be noise."
+      },
+      {
+        "tier": 1,
+        "gamesPerSurface": 1024,
+        "role": "SMOKE",
+        "mayProduceVerdict": false,
+        "why": "confirms the surfaces populate and the seeds resolve before the decision tier is spent."
+      },
+      {
+        "tier": 2,
+        "gamesPerSurface": 2048,
+        "role": "PRECHECK",
+        "mayProduceVerdict": false,
+        "why": "half the decision tier; used only to confirm equivalence with it."
+      },
+      {
+        "tier": 3,
+        "gamesPerSurface": 4096,
+        "role": "DECISION",
+        "mayProduceVerdict": true,
+        "why": "the frozen V5 protocol size, so V6 and V5 measurements are directly comparable."
+      },
+      {
+        "tier": 4,
+        "gamesPerSurface": 8192,
+        "role": "ESCALATION",
+        "mayProduceVerdict": true,
+        "why": "resolves a measurement that is statistically different but inside its practical margin at the decision tier."
+      }
+    ],
+    "decisionTier": 3,
+    "decisionGamesPerSurface": 4096,
+    "surfacesPerMatchup": 3,
+    "matchups": 8,
+    "gamesAtDecisionTier": 98304,
+    "maxGamesIfEveryMeasurementEscalates": 196608,
+    "progressiveEquivalence": {
+      "rule": "a cluster verdict is declared only when the decision tier and the tier below it (2048) agree on that cluster's state. Where they disagree, the cluster escalates to 8192 and the escalated state governs.",
+      "escalationTrigger": "the cluster is INDETERMINATE at the decision tier (statistically different, inside its practical margin), or the precheck and decision tiers disagree on its state",
+      "symmetry": "escalation is triggered by indeterminacy or disagreement alone. It is never conditioned on the sign of the difference, so it cannot preferentially rescue a failing measurement or a passing one.",
+      "cap": "8192 games per surface. A cluster still indeterminate at the cap is reported INDETERMINATE and contributes neither pass credit nor failure.",
+      "noAdaptiveStopping": "The decision tier is always run in full. Escalation adds samples; it never truncates a tier early on a favourable interim reading."
+    },
+    "sideBalanced": true,
+    "seedAllocation": "every tier draws from its own pre-allocated block of the HISTORICAL_V6_FORMAL domain, so an escalation cannot reuse a decision-tier seed and inflate agreement",
+    "frozenBeforeSeal": true,
+    "samplePlanHash": "1ed77e62b545c9d72117355ec290a760b748225fee8df55bd71913a628bd3672"
+  },
+  "outputHash": "a7a787f24ba3a3190d4ade2b4d52e37c2831618f6fd51f115dfb3e40795eff69"
+}

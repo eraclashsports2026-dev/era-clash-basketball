@@ -1,5 +1,5 @@
 // ── EraClash Basketball Player Database ──────────────────────────────────────
-// 372 player-decade entries across 8 decades (1950s = NBA 75 team only)
+// 381 player-decade entries across 8 decades (1950s = NBA 75 team only)
 // pos = primary position, positions = all eligible positions
 export const PLAYERS = [
   // ═══ 1950s ═══
@@ -33,7 +33,7 @@ export const PLAYERS = [
   // ═══ 1960s ═══
   { id:"wilt-60s",   name:"Wilt Chamberlain",        decade:"1960s", pos:"C",  positions:["C"],           team:"Warriors/76ers",  pts:37.6, reb:27.2, ast:4.2,  stl:0.0, blk:0.0 , mvp:4, fmvp:0, dpoy:0, an1:7, an2:0, an3:0, ad1:0, ad2:0, win:6, pop:9 },
   { id:"bill-60s",   name:"Bill Russell",             decade:"1960s", pos:"C",  positions:["C"],           team:"Celtics",         pts:16.2, reb:23.6, ast:4.3,  stl:0.0, blk:0.0 , mvp:5, fmvp:0, dpoy:0, an1:3, an2:4, an3:0, ad1:0, ad2:0, win:10, pop:9 },
-  { id:"oscar-60s",  name:"Oscar Robertson",          decade:"1960s", pos:"PG", positions:["PG","SG"],     team:"Royals",          pts:30.8, reb:10.4, ast:11.4, stl:0.0, blk:0.0 , mvp:1, fmvp:0, dpoy:0, an1:6, an2:2, an3:0, ad1:0, ad2:0, win:5, pop:9 },
+  { id:"oscar-60s",  name:"Oscar Robertson",          decade:"1960s", pos:"PG", positions:["PG","SG"],     team:"Royals",          pts:30.8, reb:10.4, ast:11.4, stl:0.0, blk:0.0 , mvp:1, fmvp:0, dpoy:0, an1:9, an2:1, an3:0, ad1:0, ad2:0, win:5, pop:9 },
   { id:"jerry-60s",  name:"Jerry West",               decade:"1960s", pos:"PG", positions:["PG","SG"],     team:"Lakers",          pts:27.0, reb:5.8,  ast:6.7,  stl:0.0, blk:0.0 , mvp:0, fmvp:1, dpoy:0, an1:4, an2:2, an3:0, ad1:0, ad2:0, win:6, pop:9 },
   { id:"elgin-60s",  name:"Elgin Baylor",             decade:"1960s", pos:"SF", positions:["SF","PF"],     team:"Lakers",          pts:34.8, reb:19.8, ast:4.6,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:5, an2:4, an3:0, ad1:0, ad2:0, win:5, pop:8 },
   { id:"hal-60s",    name:"Hal Greer",                decade:"1960s", pos:"SG", positions:["SG","PG"],     team:"76ers",           pts:22.1, reb:5.3,  ast:4.5,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:1, an3:2, ad1:0, ad2:0, win:6, pop:5 },
@@ -57,8 +57,8 @@ export const PLAYERS = [
   { id:"george-70s", name:"George Gervin",            decade:"1970s", pos:"SG", positions:["SG","SF"],     team:"Spurs",           pts:27.1, reb:5.5,  ast:3.6,  stl:1.3, blk:0.8 , mvp:0, fmvp:0, dpoy:0, an1:3, an2:2, an3:0, ad1:0, ad2:0, win:5, pop:8 },
   { id:"artis-70s",  name:"Artis Gilmore",            decade:"1970s", pos:"C",  positions:["C"],           team:"Bulls",           pts:22.3, reb:17.1, ast:2.8,  stl:1.0, blk:2.9 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:1, an3:0, ad1:0, ad2:0, win:5, pop:5 },
   { id:"john-h-70s", name:"John Havlicek",            decade:"1970s", pos:"SF", positions:["SF","SG"],     team:"Celtics",         pts:22.6, reb:7.2,  ast:5.5,  stl:1.5, blk:0.5 , mvp:0, fmvp:1, dpoy:0, an1:4, an2:0, an3:0, ad1:3, ad2:2, win:7, pop:8 },
-  { id:"wilt-70s",   name:"Wilt Chamberlain",         decade:"1970s", pos:"C",  positions:["C"],           team:"Lakers",          pts:14.8, reb:19.2, ast:4.1,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:1, an2:0, an3:0, ad1:1, ad2:0, win:6, pop:8 },
-  { id:"oscar-70s",  name:"Oscar Robertson",          decade:"1970s", pos:"PG", positions:["PG","SG"],     team:"Bucks",           pts:15.5, reb:5.7,  ast:8.2,  stl:0.0, blk:0.0 , mvp:0, fmvp:1, dpoy:0, an1:0, an2:2, an3:0, ad1:1, ad2:0, win:7, pop:8 },
+  { id:"wilt-70s",   name:"Wilt Chamberlain",         decade:"1970s", pos:"C",  positions:["C"],           team:"Lakers",          pts:14.8, reb:19.2, ast:4.1,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:1, an2:0, an3:0, ad1:2, ad2:0, win:6, pop:8 },
+  { id:"oscar-70s",  name:"Oscar Robertson",          decade:"1970s", pos:"PG", positions:["PG","SG"],     team:"Bucks",           pts:15.5, reb:5.7,  ast:8.2,  stl:0.0, blk:0.0 , mvp:0, fmvp:1, dpoy:0, an1:0, an2:1, an3:0, ad1:0, ad2:0, win:7, pop:8 },
   { id:"walt-70s",   name:"Walt Frazier",             decade:"1970s", pos:"PG", positions:["PG","SG"],     team:"Knicks",          pts:19.3, reb:6.1,  ast:6.9,  stl:1.8, blk:0.3 , mvp:0, fmvp:0, dpoy:0, an1:2, an2:2, an3:0, ad1:5, ad2:2, win:7, pop:8 },
   { id:"bob-l-70s",  name:"Bob Lanier",               decade:"1970s", pos:"C",  positions:["C","PF"],      team:"Pistons",         pts:22.7, reb:11.3, ast:3.1,  stl:0.9, blk:1.6 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:1, an3:1, ad1:0, ad2:0, win:4, pop:5 },
   { id:"gail-70s",   name:"Gail Goodrich",            decade:"1970s", pos:"SG", positions:["SG","PG"],     team:"Lakers",          pts:22.0, reb:3.5,  ast:5.3,  stl:1.1, blk:0.2 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:1, an3:0, ad1:0, ad2:0, win:6, pop:5 },
@@ -229,7 +229,7 @@ export const PLAYERS = [
   { id:"tom-b-70s",   name:"Tom Burleson",            decade:"1970s", pos:"C",  positions:["C"],           team:"Sonics",          pts:12.1, reb:9.5,  ast:1.5,  stl:0.6, blk:1.5 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:4, pop:2 },
   { id:"swen-70s",    name:"Swen Nater",              decade:"1970s", pos:"C",  positions:["C","PF"],      team:"Braves",          pts:12.2, reb:13.4, ast:1.4,  stl:0.6, blk:0.8 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:4, pop:2 },
   { id:"billy-p-70s", name:"Billy Paultz",            decade:"1970s", pos:"C",  positions:["C"],           team:"Spurs",           pts:14.6, reb:9.8,  ast:2.5,  stl:0.7, blk:1.4 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:4, pop:2 },
-  { id:"luol-70s",    name:"Curtis Perry",            decade:"1970s", pos:"PF", positions:["PF","C"],      team:"Bucks",           pts:10.5, reb:9.2,  ast:1.5,  stl:1.0, blk:0.6 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:5, pop:2 },
+  { id:"curtis-perry-70s", name:"Curtis Perry",            decade:"1970s", pos:"PF", positions:["PF","C"],      team:"Bucks",           pts:10.5, reb:9.2,  ast:1.5,  stl:1.0, blk:0.6 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:5, pop:2 },
   { id:"clint-70s",   name:"Clint Richardson",        decade:"1970s", pos:"SG", positions:["SG","PG"],     team:"76ers",           pts:10.9, reb:3.6,  ast:3.1,  stl:1.3, blk:0.4 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:4, pop:2 },
   { id:"connie-70s",  name:"Connie Hawkins",          decade:"1970s", pos:"SF", positions:["SF","PF"],     team:"Suns",            pts:20.0, reb:8.8,  ast:4.3,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:1, an2:0, an3:0, ad1:0, ad2:0, win:4, pop:5 },
   { id:"james-70s",   name:"James Silas",             decade:"1970s", pos:"PG", positions:["PG","SG"],     team:"Spurs",           pts:20.1, reb:3.0,  ast:5.5,  stl:1.6, blk:0.2 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:4, pop:3 },
@@ -256,7 +256,7 @@ export const PLAYERS = [
   { id:"ricky-80s",   name:"Ricky Pierce",            decade:"1980s", pos:"SG", positions:["SG"],          team:"Bucks",           pts:18.8, reb:3.0,  ast:2.7,  stl:1.0, blk:0.2 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:4, pop:3 },
   { id:"buck-80s",    name:"Buck Williams",           decade:"1980s", pos:"PF", positions:["PF","C"],      team:"Nets",            pts:16.4, reb:12.5, ast:1.3,  stl:0.9, blk:1.3 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:2, an3:1, ad1:0, ad2:2, win:5, pop:5 },
   { id:"chambers-80s",name:"Tom Chambers",           decade:"1980s", pos:"PF", positions:["PF","SF"],     team:"Suns",            pts:18.3, reb:6.7,  ast:2.1,  stl:0.8, blk:0.6 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:1, an3:0, ad1:0, ad2:0, win:4, pop:4 },
-  { id:"nance-80s",   name:"Larry Nance",             decade:"1980s", pos:"PF", positions:["PF","C"],      team:"Suns",            pts:16.5, reb:7.9,  ast:2.2,  stl:0.9, blk:2.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:5, pop:4 },
+  { id:"nance-80s",   name:"Larry Nance",             decade:"1980s", pos:"PF", positions:["PF","C"],      team:"Suns/Cavaliers",            pts:16.5, reb:7.9,  ast:2.2,  stl:0.9, blk:2.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:1, ad2:0, win:5, pop:4 }, // ad1 CORRECTED 0->1: All-Defensive First Team 1988-89, verified against that season's award page. Team widened: traded to Cleveland Feb 1988, so his 1980s window spans both clubs.
   { id:"xavier-80s",  name:"Xavier McDaniel",         decade:"1980s", pos:"PF", positions:["PF","SF"],     team:"Sonics",          pts:18.5, reb:7.5,  ast:1.7,  stl:1.0, blk:0.7 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:4, pop:4 },
   { id:"tree-80s",    name:"Tree Rollins",            decade:"1980s", pos:"C",  positions:["C"],           team:"Hawks",           pts:7.5,  reb:6.8,  ast:0.9,  stl:0.7, blk:2.7 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:4, pop:2 },
   { id:"brad-80s",    name:"Brad Daugherty",          decade:"1980s", pos:"C",  positions:["C"],           team:"Cavaliers",       pts:19.0, reb:9.5,  ast:3.4,  stl:0.6, blk:1.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:4, pop:3 },
@@ -347,56 +347,56 @@ export const PLAYERS = [
 
   // ═══ v2 EXPANSION (+44) — defense & playmaking emphasis ═══
   // 1960s (+5)
-  { id:"arizin-60s",  name:"Paul Arizin",             decade:"1960s", pos:"SF", positions:["SF","SG"],     team:"Warriors",        pts:22.3, reb:7.2,  ast:2.1,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:1, an2:1, an3:0, ad1:0, ad2:0, win:5, pop:5 },
-  { id:"rodgers-60s", name:"Guy Rodgers",             decade:"1960s", pos:"PG", positions:["PG"],          team:"Warriors",        pts:12.0, reb:4.5,  ast:8.7,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:5, pop:4 },
-  { id:"beaty-60s",   name:"Zelmo Beaty",             decade:"1960s", pos:"C",  positions:["C","PF"],      team:"Hawks",           pts:19.0, reb:11.0, ast:1.5,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:5, pop:4 },
-  { id:"guerin-60s",  name:"Richie Guerin",           decade:"1960s", pos:"PG", positions:["PG","SG"],     team:"Knicks",          pts:21.8, reb:6.4,  ast:6.0,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:1, an3:0, ad1:0, ad2:0, win:4, pop:4 },
-  { id:"barry-60s",   name:"Rick Barry",              decade:"1960s", pos:"SF", positions:["SF","SG"],     team:"Warriors",        pts:30.5, reb:8.0,  ast:3.5,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:2, an2:0, an3:0, ad1:0, ad2:0, win:5, pop:7 },
+  { id:"arizin-60s",  name:"Paul Arizin",             decade:"1960s", pos:"SF", positions:["SF","SG"],     team:"Warriors",        pts:22.5, reb:7.7,  ast:2.5,  stl:0, blk:0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:5, pop:5 },
+  { id:"rodgers-60s", name:"Guy Rodgers",             decade:"1960s", pos:"PG", positions:["PG"],          team:"Warriors",        pts:11.7, reb:3.9,  ast:7.9,  stl:0, blk:0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:5, pop:4 },
+  { id:"beaty-60s",   name:"Zelmo Beaty",             decade:"1960s", pos:"C",  positions:["C","PF"],      team:"Hawks",           pts:17.3, reb:11.2, ast:1.5,  stl:0, blk:0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:5, pop:4 },
+  { id:"guerin-60s",  name:"Richie Guerin",           decade:"1960s", pos:"PG", positions:["PG","SG"],     team:"Knicks",          pts:16.8, reb:4.1,  ast:5,  stl:0, blk:0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:1, an3:0, ad1:0, ad2:0, win:4, pop:4 },
+  { id:"barry-60s",   name:"Rick Barry",              decade:"1960s", pos:"SF", positions:["SF","SG"],     team:"Warriors",        pts:30.7, reb:9.9,  ast:2.9,  stl:0, blk:0 , mvp:0, fmvp:0, dpoy:0, an1:2, an2:0, an3:0, ad1:0, ad2:0, win:5, pop:7 },
   // 1970s (+7)
-  { id:"monroe-70s",  name:"Earl Monroe",             decade:"1970s", pos:"SG", positions:["SG","PG"],     team:"Knicks",          pts:21.0, reb:3.5,  ast:4.5,  stl:1.0, blk:0.1 , mvp:0, fmvp:0, dpoy:0, an1:1, an2:0, an3:0, ad1:0, ad2:0, win:6, pop:8 },
-  { id:"murphy-70s",  name:"Calvin Murphy",           decade:"1970s", pos:"PG", positions:["PG"],          team:"Rockets",         pts:20.0, reb:2.5,  ast:5.5,  stl:1.5, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:4, pop:5 },
-  { id:"westphal-70s",name:"Paul Westphal",           decade:"1970s", pos:"SG", positions:["SG","PG"],     team:"Suns",            pts:21.5, reb:2.5,  ast:5.5,  stl:1.7, blk:0.3 , mvp:0, fmvp:0, dpoy:0, an1:3, an2:1, an3:0, ad1:0, ad2:0, win:5, pop:6 },
-  { id:"marques-70s", name:"Marques Johnson",         decade:"1970s", pos:"SF", positions:["SF","PF"],     team:"Bucks",           pts:21.0, reb:7.0,  ast:3.5,  stl:1.2, blk:0.6 , mvp:0, fmvp:0, dpoy:0, an1:1, an2:2, an3:0, ad1:0, ad2:0, win:5, pop:5 },
-  { id:"hudson-70s",  name:"Lou Hudson",              decade:"1970s", pos:"SG", positions:["SG","SF"],     team:"Hawks",           pts:24.0, reb:5.0,  ast:3.5,  stl:1.2, blk:0.2 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:1, an3:0, ad1:0, ad2:0, win:4, pop:5 },
-  { id:"wicks-70s",   name:"Sidney Wicks",            decade:"1970s", pos:"PF", positions:["PF","C"],      team:"Blazers",         pts:22.0, reb:10.0, ast:4.0,  stl:1.0, blk:0.9 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:3, pop:4 },
+  { id:"monroe-70s",  name:"Earl Monroe",             decade:"1970s", pos:"SG", positions:["SG","PG"],     team:"Knicks",          pts:16.2, reb:2.5,  ast:3.5,  stl:1, blk:0.3 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:6, pop:8 },
+  { id:"murphy-70s",  name:"Calvin Murphy",           decade:"1970s", pos:"PG", positions:["PG"],          team:"Rockets",         pts:19.1, reb:2.3,  ast:4.8,  stl:1.7, blk:0.1 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:4, pop:5 },
+  { id:"westphal-70s",name:"Paul Westphal",           decade:"1970s", pos:"SG", positions:["SG","PG"],     team:"Suns",            pts:16.8, reb:2.1,  ast:4.3,  stl:1.5, blk:0.4 , mvp:0, fmvp:0, dpoy:0, an1:3, an2:1, an3:0, ad1:0, ad2:0, win:5, pop:6 },
+  { id:"marques-70s", name:"Marques Johnson",         decade:"1970s", pos:"SF", positions:["SF","PF"],     team:"Bucks",           pts:22.3, reb:8.5,  ast:3,  stl:1.3, blk:1.1 , mvp:0, fmvp:0, dpoy:0, an1:1, an2:1, an3:0, ad1:0, ad2:0, win:5, pop:5 },
+  { id:"hudson-70s",  name:"Lou Hudson",              decade:"1970s", pos:"SG", positions:["SG","SF"],     team:"Hawks",           pts:20.2, reb:4,  ast:3,  stl:1.4, blk:0.3 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:4, pop:5 },
+  { id:"wicks-70s",   name:"Sidney Wicks",            decade:"1970s", pos:"PF", positions:["PF","C"],      team:"Blazers",         pts:17.4, reb:8.9, ast:3.3,  stl:1, blk:0.7 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:3, pop:4 },
   { id:"lucas-m-70s", name:"Maurice Lucas",           decade:"1970s", pos:"PF", positions:["PF","C"],      team:"Blazers",         pts:18.0, reb:10.0, ast:2.5,  stl:1.0, blk:0.6 , mvp:0, fmvp:0, dpoy:0, an1:1, an2:0, an3:0, ad1:0, ad2:1, win:5, pop:5 },
   // 1980s (+6)
-  { id:"moncrief-80s",name:"Sidney Moncrief",         decade:"1980s", pos:"SG", positions:["SG","PG"],     team:"Bucks",           pts:20.0, reb:5.5,  ast:4.5,  stl:1.4, blk:0.3 , mvp:0, fmvp:0, dpoy:2, an1:1, an2:4, an3:0, ad1:4, ad2:1, win:5, pop:6 },
-  { id:"king-80s",    name:"Bernard King",            decade:"1980s", pos:"SF", positions:["SF","PF"],     team:"Knicks",          pts:25.5, reb:5.5,  ast:3.0,  stl:1.0, blk:0.2 , mvp:0, fmvp:0, dpoy:0, an1:2, an2:1, an3:0, ad1:0, ad2:0, win:4, pop:7 },
-  { id:"cooper-80s",  name:"Michael Cooper",          decade:"1980s", pos:"SG", positions:["SG","SF"],     team:"Lakers",          pts:9.5,  reb:3.2,  ast:4.0,  stl:1.2, blk:0.6 , mvp:0, fmvp:0, dpoy:1, an1:0, an2:0, an3:0, ad1:5, ad2:3, win:9, pop:6 },
-  { id:"toney-80s",   name:"Andrew Toney",            decade:"1980s", pos:"SG", positions:["SG","PG"],     team:"76ers",           pts:17.5, reb:2.5,  ast:4.0,  stl:1.0, blk:0.2 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:6, pop:5 },
-  { id:"sugar-80s",   name:"Micheal Ray Richardson",  decade:"1980s", pos:"PG", positions:["PG","SG"],     team:"Knicks/Nets",     pts:15.5, reb:5.5,  ast:7.0,  stl:2.6, blk:0.3 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:1, ad2:1, win:3, pop:5 },
-  { id:"blackman-80s",name:"Rolando Blackman",        decade:"1980s", pos:"SG", positions:["SG"],          team:"Mavericks",       pts:19.5, reb:3.5,  ast:3.5,  stl:1.0, blk:0.3 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:4, pop:5 },
+  { id:"moncrief-80s",name:"Sidney Moncrief",         decade:"1980s", pos:"SG", positions:["SG","PG"],     team:"Bucks",           pts:17.1, reb:4.8,  ast:4,  stl:1.2, blk:0.3 , mvp:0, fmvp:0, dpoy:2, an1:1, an2:4, an3:0, ad1:4, ad2:1, win:5, pop:6 },
+  { id:"king-80s",    name:"Bernard King",            decade:"1980s", pos:"SF", positions:["SF","PF"],     team:"Knicks",          pts:23.3, reb:5.3,  ast:3.4,  stl:1, blk:0.2 , mvp:0, fmvp:0, dpoy:0, an1:2, an2:1, an3:0, ad1:0, ad2:0, win:4, pop:7 },
+  { id:"cooper-80s",  name:"Michael Cooper",          decade:"1980s", pos:"SG", positions:["SG","SF"],     team:"Lakers",          pts:8.9,  reb:3.2,  ast:4.4,  stl:1.2, blk:0.6 , mvp:0, fmvp:0, dpoy:1, an1:0, an2:0, an3:0, ad1:5, ad2:3, win:9, pop:6 },
+  { id:"toney-80s",   name:"Andrew Toney",            decade:"1980s", pos:"SG", positions:["SG","PG"],     team:"76ers",           pts:15, reb:2.1,  ast:4.2,  stl:0.7, blk:0.2 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:6, pop:5 },
+  { id:"sugar-80s",   name:"Micheal Ray Richardson",  decade:"1980s", pos:"PG", positions:["PG","SG"],     team:"Knicks/Nets",     pts:15.8, reb:5.5,  ast:6.9,  stl:2.7, blk:0.4 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:1, ad2:0, win:3, pop:5 },
+  { id:"blackman-80s",name:"Rolando Blackman",        decade:"1980s", pos:"SG", positions:["SG"],          team:"Mavericks",       pts:19.3, reb:3.6,  ast:3.2,  stl:0.8, blk:0.3 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:4, pop:5 },
   // 1990s (+7)
-  { id:"mookie-90s",  name:"Mookie Blaylock",         decade:"1990s", pos:"PG", positions:["PG"],          team:"Hawks",           pts:15.0, reb:4.5,  ast:7.0,  stl:2.5, blk:0.5 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:2, ad2:4, win:4, pop:5 },
-  { id:"hornacek-90s",name:"Jeff Hornacek",           decade:"1990s", pos:"SG", positions:["SG","PG"],     team:"Jazz",            pts:16.5, reb:3.5,  ast:4.5,  stl:1.3, blk:0.2 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:5, pop:5 },
-  { id:"oakley-90s",  name:"Charles Oakley",          decade:"1990s", pos:"PF", positions:["PF","C"],      team:"Knicks",          pts:10.5, reb:10.5, ast:2.5,  stl:1.0, blk:0.3 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:1, ad2:1, win:5, pop:6 },
-  { id:"spree-90s",   name:"Latrell Sprewell",        decade:"1990s", pos:"SG", positions:["SG","SF"],     team:"Warriors/Knicks", pts:20.5, reb:4.5,  ast:4.0,  stl:1.5, blk:0.4 , mvp:0, fmvp:0, dpoy:0, an1:1, an2:0, an3:0, ad1:0, ad2:0, win:4, pop:6 },
-  { id:"bigdog-90s",  name:"Glenn Robinson",          decade:"1990s", pos:"SF", positions:["SF","PF"],     team:"Bucks",           pts:20.5, reb:6.0,  ast:2.7,  stl:1.1, blk:0.5 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:3, pop:5 },
-  { id:"kukoc-90s",   name:"Toni Kukoc",              decade:"1990s", pos:"SF", positions:["SF","PF"],     team:"Bulls",           pts:14.5, reb:4.5,  ast:4.5,  stl:1.1, blk:0.4 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:8, pop:6 },
-  { id:"majerle-90s", name:"Dan Majerle",             decade:"1990s", pos:"SG", positions:["SG","SF"],     team:"Suns",            pts:14.5, reb:4.5,  ast:3.0,  stl:1.5, blk:0.4 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:2, win:4, pop:5 },
+  { id:"mookie-90s",  name:"Mookie Blaylock",         decade:"1990s", pos:"PG", positions:["PG"],          team:"Hawks",           pts:14.3, reb:4.4,  ast:7,  stl:2.4, blk:0.4 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:2, ad2:4, win:4, pop:5 },
+  { id:"hornacek-90s",name:"Jeff Hornacek",           decade:"1990s", pos:"SG", positions:["SG","PG"],     team:"Jazz",            pts:15.7, reb:3.4,  ast:4.6,  stl:1.4, blk:0.2 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:5, pop:5 },
+  { id:"oakley-90s",  name:"Charles Oakley",          decade:"1990s", pos:"PF", positions:["PF","C"],      team:"Knicks",          pts:9.1, reb:9.2, ast:2.6,  stl:1.1, blk:0.3 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:1, ad2:1, win:5, pop:6 },
+  { id:"spree-90s",   name:"Latrell Sprewell",        decade:"1990s", pos:"SG", positions:["SG","SF"],     team:"Warriors/Knicks", pts:19.3, reb:4.3,  ast:4.2,  stl:1.6, blk:0.6 , mvp:0, fmvp:0, dpoy:0, an1:1, an2:0, an3:0, ad1:0, ad2:1, win:4, pop:6 },
+  { id:"bigdog-90s",  name:"Glenn Robinson",          decade:"1990s", pos:"SF", positions:["SF","PF"],     team:"Bucks",           pts:21, reb:6,  ast:2.8,  stl:1.2, blk:0.6 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:3, pop:5 },
+  { id:"kukoc-90s",   name:"Toni Kukoc",              decade:"1990s", pos:"SF", positions:["SF","PF"],     team:"Bulls",           pts:14.4, reb:4.9,  ast:4.3,  stl:1.1, blk:0.4 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:8, pop:6 },
+  { id:"majerle-90s", name:"Dan Majerle",             decade:"1990s", pos:"SG", positions:["SG","SF"],     team:"Suns",            pts:12.3, reb:4.6,  ast:3.2,  stl:1.3, blk:0.4 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:2, win:4, pop:5 },
   // 2000s (+8)
-  { id:"sheed-2ks",   name:"Rasheed Wallace",         decade:"2000s", pos:"PF", positions:["PF","C"],      team:"Blazers/Pistons", pts:16.5, reb:7.5,  ast:2.0,  stl:1.0, blk:1.3 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:7, pop:7 },
-  { id:"jermaine-2ks",name:"Jermaine O'Neal",         decade:"2000s", pos:"PF", positions:["PF","C"],      team:"Pacers",          pts:20.0, reb:9.5,  ast:2.0,  stl:0.5, blk:2.3 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:1, an3:2, ad1:0, ad2:0, win:4, pop:6 },
-  { id:"ak47-2ks",    name:"Andrei Kirilenko",        decade:"2000s", pos:"SF", positions:["SF","PF"],     team:"Jazz",            pts:14.5, reb:6.5,  ast:3.0,  stl:1.5, blk:2.3 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:1, ad2:2, win:4, pop:5 },
-  { id:"artest-2ks",  name:"Ron Artest",              decade:"2000s", pos:"SF", positions:["SF","SG"],     team:"Pacers/Kings",    pts:17.0, reb:5.0,  ast:3.0,  stl:2.1, blk:0.6 , mvp:0, fmvp:0, dpoy:1, an1:0, an2:0, an3:1, ad1:2, ad2:2, win:5, pop:6 },
-  { id:"bowen-2ks",   name:"Bruce Bowen",             decade:"2000s", pos:"SF", positions:["SF","SG"],     team:"Spurs",           pts:7.5,  reb:3.0,  ast:1.3,  stl:0.9, blk:0.4 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:5, ad2:3, win:8, pop:5 },
-  { id:"camby-2ks",   name:"Marcus Camby",            decade:"2000s", pos:"C",  positions:["C","PF"],      team:"Nuggets",         pts:10.5, reb:11.0, ast:2.5,  stl:1.0, blk:3.0 , mvp:0, fmvp:0, dpoy:1, an1:0, an2:0, an3:0, ad1:2, ad2:2, win:4, pop:5 },
-  { id:"deron-2ks",   name:"Deron Williams",          decade:"2000s", pos:"PG", positions:["PG"],          team:"Jazz",            pts:18.5, reb:3.5,  ast:10.0, stl:1.0, blk:0.2 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:2, an3:0, ad1:0, ad2:0, win:4, pop:6 },
-  { id:"cassell-2ks", name:"Sam Cassell",             decade:"2000s", pos:"PG", positions:["PG","SG"],     team:"Wolves",          pts:17.5, reb:4.0,  ast:6.5,  stl:1.2, blk:0.2 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:1, an3:0, ad1:0, ad2:0, win:5, pop:5 },
+  { id:"sheed-2ks",   name:"Rasheed Wallace",         decade:"2000s", pos:"PF", positions:["PF","C"],      team:"Blazers/Pistons", pts:14.8, reb:7,  ast:1.9,  stl:1, blk:1.4 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:7, pop:7 },
+  { id:"jermaine-2ks",name:"Jermaine O'Neal",         decade:"2000s", pos:"PF", positions:["PF","C"],      team:"Pacers",          pts:17.7, reb:8.8,  ast:1.9,  stl:0.6, blk:2.2 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:1, an3:2, ad1:0, ad2:0, win:4, pop:6 },
+  { id:"ak47-2ks",    name:"Andrei Kirilenko",        decade:"2000s", pos:"SF", positions:["SF","PF"],     team:"Jazz",            pts:12.5, reb:5.7,  ast:2.8,  stl:1.4, blk:2.1 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:1, ad2:2, win:4, pop:5 },
+  { id:"artest-2ks",  name:"Ron Artest",              decade:"2000s", pos:"SF", positions:["SF","SG"],     team:"Pacers/Kings",    pts:16, reb:5.1,  ast:3.2,  stl:2.1, blk:0.6 , mvp:0, fmvp:0, dpoy:1, an1:0, an2:0, an3:1, ad1:2, ad2:2, win:5, pop:6 },
+  { id:"bowen-2ks",   name:"Bruce Bowen",             decade:"2000s", pos:"SF", positions:["SF","SG"],     team:"Spurs",           pts:6.6,  reb:2.9,  ast:1.3,  stl:0.8, blk:0.4 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:5, ad2:3, win:8, pop:5 },
+  { id:"camby-2ks",   name:"Marcus Camby",            decade:"2000s", pos:"C",  positions:["C","PF"],      team:"Nuggets",         pts:10.1, reb:11, ast:2.1,  stl:1.1, blk:2.5 , mvp:0, fmvp:0, dpoy:1, an1:0, an2:0, an3:0, ad1:2, ad2:2, win:4, pop:5 },
+  { id:"deron-2ks",   name:"Deron Williams",          decade:"2000s", pos:"PG", positions:["PG"],          team:"Jazz",            pts:16.8, reb:3.1,  ast:9.1, stl:1.1, blk:0.2 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:2, an3:0, ad1:0, ad2:0, win:4, pop:6 },
+  { id:"cassell-2ks", name:"Sam Cassell",             decade:"2000s", pos:"PG", positions:["PG","SG"],     team:"Wolves",          pts:16.4, reb:3.4,  ast:5.9,  stl:0.9, blk:0.2 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:1, an3:0, ad1:0, ad2:0, win:5, pop:5 },
   // 2010s (+6)
-  { id:"lowry-2010s", name:"Kyle Lowry",              decade:"2010s", pos:"PG", positions:["PG"],          team:"Raptors",         pts:17.5, reb:4.8,  ast:7.0,  stl:1.4, blk:0.3 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:1, ad1:0, ad2:0, win:6, pop:6 },
-  { id:"wall-2010s",  name:"John Wall",               decade:"2010s", pos:"PG", positions:["PG"],          team:"Wizards",         pts:19.0, reb:4.3,  ast:9.2,  stl:1.7, blk:0.6 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:1, ad1:0, ad2:1, win:4, pop:7 },
-  { id:"demar-2010s", name:"DeMar DeRozan",           decade:"2010s", pos:"SG", positions:["SG","SF"],     team:"Raptors",         pts:21.5, reb:4.4,  ast:3.9,  stl:1.0, blk:0.3 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:1, an3:1, ad1:0, ad2:0, win:4, pop:7 },
-  { id:"boogie-2010s",name:"DeMarcus Cousins",        decade:"2010s", pos:"C",  positions:["C","PF"],      team:"Kings",           pts:24.0, reb:11.5, ast:4.0,  stl:1.4, blk:1.3 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:2, an3:0, ad1:0, ad2:0, win:2, pop:7 },
-  { id:"ibaka-2010s", name:"Serge Ibaka",             decade:"2010s", pos:"PF", positions:["PF","C"],      team:"Thunder",         pts:13.5, reb:7.5,  ast:0.8,  stl:0.5, blk:2.7 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:3, ad2:0, win:5, pop:5 },
-  { id:"drummond-2010s",name:"Andre Drummond",        decade:"2010s", pos:"C",  positions:["C"],           team:"Pistons",         pts:14.5, reb:14.5, ast:1.5,  stl:1.5, blk:1.6 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:1, ad1:0, ad2:0, win:3, pop:5 },
+  { id:"lowry-2010s", name:"Kyle Lowry",              decade:"2010s", pos:"PG", positions:["PG"],          team:"Raptors",         pts:16.8, reb:4.8,  ast:7,  stl:1.5, blk:0.3 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:1, ad1:0, ad2:0, win:6, pop:6 },
+  { id:"wall-2010s",  name:"John Wall",               decade:"2010s", pos:"PG", positions:["PG"],          team:"Wizards",         pts:19, reb:4.2,  ast:9.1,  stl:1.6, blk:0.7 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:1, ad1:0, ad2:1, win:4, pop:7 },
+  { id:"demar-2010s", name:"DeMar DeRozan",           decade:"2010s", pos:"SG", positions:["SG","SF"],     team:"Raptors",         pts:21.2, reb:4.5,  ast:3.9,  stl:1, blk:0.3 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:1, an3:1, ad1:0, ad2:0, win:4, pop:7 },
+  { id:"boogie-2010s",name:"DeMarcus Cousins",        decade:"2010s", pos:"C",  positions:["C","PF"],      team:"Kings",           pts:21.4, reb:10.8, ast:3.4,  stl:1.4, blk:1.3 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:2, an3:0, ad1:0, ad2:0, win:2, pop:7 },
+  { id:"ibaka-2010s", name:"Serge Ibaka",             decade:"2010s", pos:"PF", positions:["PF","C"],      team:"Thunder",         pts:13.2, reb:7.6,  ast:0.8,  stl:0.5, blk:2.1 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:3, ad2:0, win:5, pop:5 },
+  { id:"drummond-2010s",name:"Andre Drummond",        decade:"2010s", pos:"C",  positions:["C"],           team:"Pistons",         pts:14.4, reb:13.8, ast:1.3,  stl:1.4, blk:1.6 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:1, ad1:0, ad2:0, win:3, pop:5 },
   // 2020s (+5)
-  { id:"jrue-20s",    name:"Jrue Holiday",            decade:"2020s", pos:"PG", positions:["PG","SG"],     team:"Bucks/Celtics",   pts:17.5, reb:4.5,  ast:6.5,  stl:1.5, blk:0.5 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:3, ad2:2, win:7, pop:7 },
-  { id:"jjj-20s",     name:"Jaren Jackson Jr.",       decade:"2020s", pos:"PF", positions:["PF","C"],      team:"Grizzlies",       pts:19.5, reb:6.0,  ast:1.5,  stl:1.0, blk:2.6 , mvp:0, fmvp:0, dpoy:1, an1:0, an2:0, an3:0, ad1:2, ad2:0, win:4, pop:6 },
-  { id:"zion-20s",    name:"Zion Williamson",         decade:"2020s", pos:"PF", positions:["PF","SF"],     team:"Pelicans",        pts:25.5, reb:7.0,  ast:4.5,  stl:1.0, blk:0.6 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:1, an3:0, ad1:0, ad2:0, win:2, pop:8 },
-  { id:"smart-20s",   name:"Marcus Smart",            decade:"2020s", pos:"PG", positions:["PG","SG"],     team:"Celtics",         pts:11.5, reb:3.5,  ast:5.5,  stl:1.6, blk:0.4 , mvp:0, fmvp:0, dpoy:1, an1:0, an2:0, an3:0, ad1:3, ad2:0, win:5, pop:6 },
-  { id:"siakam-20s",  name:"Pascal Siakam",           decade:"2020s", pos:"PF", positions:["PF","SF"],     team:"Raptors/Pacers",  pts:21.5, reb:7.5,  ast:4.5,  stl:0.9, blk:0.5 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:1, an3:1, ad1:0, ad2:0, win:5, pop:6 },
+  { id:"jrue-20s",    name:"Jrue Holiday",            decade:"2020s", pos:"PG", positions:["PG","SG"],     team:"Bucks/Celtics",   pts:15.9, reb:4.7,  ast:5.8,  stl:1.2, blk:0.5 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:2, ad2:2, win:7, pop:7 },
+  { id:"jjj-20s",     name:"Jaren Jackson Jr.",       decade:"2020s", pos:"PF", positions:["PF","C"],      team:"Grizzlies",       pts:19.8, reb:5.9,  ast:1.7,  stl:1.1, blk:2 , mvp:0, fmvp:0, dpoy:1, an1:0, an2:0, an3:0, ad1:2, ad2:1, win:4, pop:6 },
+  { id:"zion-20s",    name:"Zion Williamson",         decade:"2020s", pos:"PF", positions:["PF","SF"],     team:"Pelicans",        pts:24.3, reb:6.6,  ast:4.4,  stl:1.1, blk:0.7 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:2, pop:8 },
+  { id:"smart-20s",   name:"Marcus Smart",            decade:"2020s", pos:"PG", positions:["PG","SG"],     team:"Celtics",         pts:11.6, reb:3,  ast:4.7,  stl:1.6, blk:0.4 , mvp:0, fmvp:0, dpoy:1, an1:0, an2:0, an3:0, ad1:1, ad2:0, win:5, pop:6 },
+  { id:"siakam-20s",  name:"Pascal Siakam",           decade:"2020s", pos:"PF", positions:["PF","SF"],     team:"Raptors/Pacers",  pts:22.4, reb:7.3,  ast:4.5,  stl:1, blk:0.5 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:1, ad1:0, ad2:0, win:5, pop:6 },
   { id:"kat-20s",       name:"Karl-Anthony Towns",       decade:"2020s", pos:"C",  positions:["C","PF"],      team:"Timberwolves/Knicks", pts:23.3, reb:10.3, ast:3.8,  stl:0.9, blk:0.8 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:2, ad1:0, ad2:0, win:4, pop:7 },
   { id:"maxey-20s",     name:"Tyrese Maxey",             decade:"2020s", pos:"PG", positions:["PG","SG"],     team:"76ers",           pts:21.1, reb:3.2,  ast:4.8,  stl:1.1, blk:0.4 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:1, ad1:0, ad2:0, win:4, pop:7 },
   { id:"gobert-20s",    name:"Rudy Gobert",              decade:"2020s", pos:"C",  positions:["C"],           team:"Jazz/Timberwolves", pts:13.6, reb:12.7, ast:1.4,  stl:0.7, blk:1.9 , mvp:0, fmvp:0, dpoy:2, an1:0, an2:0, an3:2, ad1:5, ad2:0, win:4, pop:6 },
@@ -433,6 +433,59 @@ export const PLAYERS = [
   { id:"queen-20s",      name:"Derik Queen",              decade:"2020s", pos:"C",  positions:["C","PF"],      team:"Pelicans",        pts:11.7, reb:7.1,  ast:3.7,  stl:1.0, blk:0.9 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:2, pop:5 },
   { id:"cmb-20s",        name:"Collin Murray-Boyles",     decade:"2020s", pos:"PF", positions:["PF","C"],      team:"Raptors",         pts:8.5,  reb:5.0,  ast:1.9,  stl:0.9, blk:0.9 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:2, pop:4 },
   { id:"clayton-20s",    name:"Walter Clayton Jr.",       decade:"2020s", pos:"PG", positions:["PG","SG"],     team:"Jazz/Grizzlies",  pts:7.8,  reb:2.0,  ast:4.0,  stl:0.6, blk:0.3 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:2, pop:4 },
+  // ═══ v2.8 EXPANSION (+7) — profile anchors for the Player Intelligence layer ═══
+  // Seven player-decades the intelligence layer needs in order to express roles
+  // the pool could not previously describe: a pure rim-deterrent anchor (Eaton),
+  // two elite movement/off-ball shooters (Mullin, Petrovic), two low-usage
+  // wing defenders who hold value at minimum touches (Prince, Finley), and two
+  // event-generating help defenders (Smith, Wallace).
+  //
+  // VERIFIED 2026-08-24 against each player's published per-season career table
+  // (Wikipedia, which mirrors Basketball-Reference; b-ref blocks automated reads).
+  // Every accolade below was additionally cross-checked against the per-season
+  // NBA award pages — NOT taken from the player article alone, because player
+  // articles are where the previously-audited invented All-NBA honors came from.
+  //
+  // DECADE RULE (matches the verified 1950s pass; reverse-engineered from
+  // russell-50s): a season belongs to the decade of its STARTING year, and each
+  // stat is the UNWEIGHTED MEAN of that player's per-season averages inside the
+  // decade. So these are decade cards, not peak cards: Mullin's 16.7 includes
+  // his Indiana decline, and Wallace's 12.1 includes three Sacramento bench
+  // years. Petrovic's 1990-91 is games-weighted across his POR/NJN split first,
+  // then treated as one season.
+  //
+  // ACCOLADES ARE DECADE-SCOPED. Awards are dated by the season they were won
+  // in: Mullin's 1990 All-NBA Third Team belongs to the 1989-90 season and so
+  // sits in the 1980s, which is why it is absent here.
+  { id:"eaton-80s",     name:"Mark Eaton",               decade:"1980s", pos:"C",  positions:["C"],           team:"Jazz",            pts:6.7,  reb:8.5,  ast:1.1,  stl:0.4, blk:4.0 , mvp:0, fmvp:0, dpoy:2, an1:0, an2:0, an3:0, ad1:3, ad2:2, win:5, pop:5 },
+  { id:"mullin-90s",    name:"Chris Mullin",             decade:"1990s", pos:"SF", positions:["SF","SG"],     team:"Warriors/Pacers", pts:16.7, reb:4.1,  ast:3.3,  stl:1.5, blk:0.6 , mvp:0, fmvp:0, dpoy:0, an1:1, an2:1, an3:0, ad1:0, ad2:0, win:4, pop:7 },
+  { id:"petrovic-90s",  name:"Drazen Petrovic",          decade:"1990s", pos:"SG", positions:["SG"],          team:"Nets",            pts:17.7, reb:2.5,  ast:2.7,  stl:1.1, blk:0.1 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:1, ad1:0, ad2:0, win:3, pop:7 },
+  { id:"prince-00s",    name:"Tayshaun Prince",          decade:"2000s", pos:"SF", positions:["SF","PF"],     team:"Pistons",         pts:12.2, reb:4.6,  ast:2.6,  stl:0.6, blk:0.6 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:4, win:7, pop:6 },
+  { id:"finley-00s",    name:"Michael Finley",           decade:"2000s", pos:"SG", positions:["SG","SF"],     team:"Mavericks/Spurs", pts:13.9, reb:3.9,  ast:2.3,  stl:0.7, blk:0.3 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:6, pop:6 },
+  { id:"joshsmith-00s", name:"Josh Smith",               decade:"2000s", pos:"PF", positions:["PF","SF"],     team:"Hawks",           pts:14.3, reb:7.6,  ast:2.9,  stl:1.3, blk:2.3 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:1, win:3, pop:6 },
+  { id:"gwallace-00s",  name:"Gerald Wallace",           decade:"2000s", pos:"SF", positions:["SF","PF"],     team:"Kings/Bobcats",   pts:12.1, reb:5.6,  ast:1.8,  stl:1.4, blk:0.9 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:1, ad2:0, win:3, pop:6 },
+  // ═══ v2.8.1 — decade cards justified by the Phase 2B identity reconciliation ═══
+  // Both were assessed against the decade-card rule rather than added on
+  // request: a second card must describe a MATERIALLY DIFFERENT player, not
+  // repeat one. Both do.
+  //
+  // walt-b-70s — his 1960s card is a 20.1/13.7 interior force; this is the
+  //   declining-but-productive starter (15.6/12.1) of his Atlanta years.
+  //   GAMES THRESHOLD: his 1974-75 season is ONE game (6.0/5.0) and is
+  //   excluded. The unweighted-mean convention has no defence against a token
+  //   season — including it would have moved his card 2.4 points. Seasons under
+  //   20 games are not seasons, and this is the first card where that mattered.
+  //   Steals and blocks are 0.0 because three of his four qualifying seasons
+  //   predate official recording (1973-74). Averaging the one recorded season
+  //   would dress a single data point as a four-season rate; the 1950s/1960s
+  //   cards already treat unrecorded as 0.0 and this follows them.
+  //
+  // nance-90s — 2 All-Defensive Second Teams (1991-92, 1992-93) and an All-Star
+  //   berth (1993) that belong to the 1990s under the season-start-year rule and
+  //   therefore CANNOT sit on his 1980s card. He also blocked more shots in the
+  //   90s than the 80s card records.
+  { id:"walt-b-70s",   name:"Walt Bellamy",            decade:"1970s", pos:"C",  positions:["C","PF"],      team:"Hawks",           pts:15.6, reb:12.1, ast:2.7,  stl:0.0, blk:0.0 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:0, win:4, pop:5 },
+  { id:"nance-90s",    name:"Larry Nance",             decade:"1990s", pos:"PF", positions:["PF","C"],      team:"Cavaliers",       pts:16.0, reb:8.1,  ast:2.6,  stl:0.8, blk:2.4 , mvp:0, fmvp:0, dpoy:0, an1:0, an2:0, an3:0, ad1:0, ad2:2, win:4, pop:5 },
 ];
 
 export const DECADE_COLORS = {
@@ -442,3 +495,15 @@ export const DECADE_COLORS = {
 };
 export const POSITIONS = ["PG", "SG", "SF", "PF", "C"];
 export const ERAS = ["1950s", "1960s", "1970s", "1980s", "1990s", "2000s", "2010s", "2020s"];
+
+// ── Card lookup with alias resolution ───────────────────────────────────────
+// The ONLY lookup that should be used for an id that came from OUTSIDE this
+// process — a stored result, a saved team, a challenge link, a fingerprint.
+// A bare PLAYERS.find would return undefined for a retired alias and silently
+// break an old record.
+import { resolveCardId } from "./v3/data/cardAliases.js";
+
+const BY_ID = new Map(PLAYERS.map((p) => [p.id, p]));
+
+export const findCard = (id) => BY_ID.get(id) ?? BY_ID.get(resolveCardId(id)) ?? null;
+export const cardExists = (id) => findCard(id) != null;

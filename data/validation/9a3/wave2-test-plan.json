@@ -1,0 +1,200 @@
+{
+  "artifact": "wave2-test-plan",
+  "phase": "9A.3 — Wave 2 private-beta preparation",
+  "status": "FROZEN — before any human Wave 2 feedback",
+  "frozenAt": "2026-09-03T21:04:51.079Z",
+  "waveId": "candidate4-night-court-wave2",
+  "studyVersion": "wave2-activation-v1",
+  "principle": "Tasks preserve genuine activation evidence: the first-time sequence gives no guidance beyond the task line; comparison questions are asked only after the initial interaction is recorded.",
+  "firstTime": {
+    "cohort": "first-time",
+    "testerIds": [
+      "wave2-new-01",
+      "wave2-new-02",
+      "wave2-new-03"
+    ],
+    "tasks": [
+      {
+        "id": "N1",
+        "title": "Choose what to play",
+        "instruction": "Open the link and begin the game that looks like the main EraClash experience.",
+        "guidance": "none beyond the instruction",
+        "observe": [
+          "whether Chaos Clash is selected",
+          "time to mode selection",
+          "confusion or hesitation",
+          "whether the tester understands the mode differences"
+        ],
+        "telemetry": [
+          "play_lobby_viewed",
+          "play_mode_selected",
+          "time_to_mode_selection_recorded"
+        ],
+        "ratings": [
+          "startingClarity",
+          "modeChoiceClarity",
+          "visualComfort",
+          "visualPremiumQuality",
+          "brandDistinctiveness"
+        ]
+      },
+      {
+        "id": "N2",
+        "title": "Complete one Chaos Clash",
+        "observe": [
+          "time to first roll",
+          "hold understanding",
+          "Era Reveal understanding",
+          "coach choice understanding",
+          "completion",
+          "result comprehension"
+        ],
+        "telemetry": [
+          "time_to_first_roll_recorded",
+          "chaos_roll_completed",
+          "chaos_era_revealed",
+          "chaos_coach_selected",
+          "chaos_game_completed"
+        ],
+        "ratings": [
+          "draftClarity",
+          "eraClarity",
+          "coachChoiceClarity",
+          "resultClarity",
+          "visualComfort"
+        ]
+      },
+      {
+        "id": "N3",
+        "title": "Postgame exploration",
+        "instruction": "Explore whatever interests you.",
+        "observe": [
+          "first result tab used",
+          "whether the Story is understood",
+          "whether the Box Score is found",
+          "whether Coaching is useful",
+          "whether Analysis is attempted"
+        ],
+        "telemetry": [
+          "result_tab_opened"
+        ],
+        "ratings": [
+          "resultClarity",
+          "visualComfort",
+          "visualPremiumQuality"
+        ]
+      },
+      {
+        "id": "N4",
+        "title": "Voluntary continuation signal",
+        "instruction": "none — do not instruct the tester to play again",
+        "observe": [
+          "starts another Chaos Clash",
+          "runs a rematch",
+          "opens Dream Matchup",
+          "creates a challenge",
+          "exits"
+        ],
+        "telemetry": [
+          "new_clash_started",
+          "rematch_started",
+          "play_mode_selected"
+        ],
+        "ratings": [
+          "desireToPlayAgain",
+          "brandDistinctiveness"
+        ],
+        "note": "diagnostic signal, not a hard pass/fail gate at this sample size"
+      },
+      {
+        "id": "N5",
+        "title": "Mobile check",
+        "instruction": "At least one first-time tester completes the entry and one full game on a phone.",
+        "ratings": [
+          "startingClarity",
+          "draftClarity",
+          "resultClarity",
+          "visualComfort"
+        ]
+      }
+    ]
+  },
+  "returning": {
+    "cohort": "returning",
+    "testerIds": [
+      "wave2-returning-01",
+      "wave2-returning-02"
+    ],
+    "eligibility": [
+      "a Wave 1 tester may join only after completing their Wave 1 sessions",
+      "after their Wave 1 feedback is preserved",
+      "through a separate Wave 2 credential",
+      "with a distinct Wave 2 tester id"
+    ],
+    "tasks": [
+      {
+        "id": "R1",
+        "title": "Compare the entry",
+        "steps": [
+          "open the Wave 2 lobby",
+          "say whether starting is easier than Wave 1 (asked only after the lobby interaction is recorded)",
+          "continue an active run",
+          "verify the logo preserves the run"
+        ],
+        "telemetry": [
+          "play_lobby_viewed",
+          "active_run_continue_clicked"
+        ],
+        "ratings": [
+          "startingClarity",
+          "modeChoiceClarity",
+          "desireToPlayAgain"
+        ]
+      },
+      {
+        "id": "R2",
+        "title": "Dream Matchup placement",
+        "steps": [
+          "select Kevin Durant or another multi-position player",
+          "place manually",
+          "trigger automatic placement with a one-position player",
+          "test an occupied-slot swap",
+          "test Undo"
+        ],
+        "telemetry": [
+          "dream_player_selected",
+          "eligible_position_choice_shown",
+          "dream_player_placed",
+          "dream_player_auto_placed",
+          "dream_player_swap_completed"
+        ],
+        "ratings": [
+          "placementClarity"
+        ]
+      },
+      {
+        "id": "R3",
+        "title": "Night Court comparison",
+        "compare": [
+          "Lobby",
+          "Time Arena",
+          "Result Dock",
+          "Full Postgame",
+          "Mobile"
+        ],
+        "rule": "do not reveal the intended answer",
+        "ratings": [
+          "visualComfort",
+          "visualPremiumQuality",
+          "brandDistinctiveness",
+          "resultClarity"
+        ]
+      }
+    ]
+  },
+  "operatorRules": [
+    "no rescue unless the tester is stuck for 3 minutes; every rescue is recorded as a failure of the task",
+    "record observations in the operator log with tester id and task id only",
+    "never type a tester's key for them in a shared screen"
+  ]
+}

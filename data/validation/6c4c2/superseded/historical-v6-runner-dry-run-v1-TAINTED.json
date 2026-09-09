@@ -1,0 +1,316 @@
+{
+  "artifact": "historical-v6-runner-dry-run",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run v6:dryrun",
+  "generatedAt": "2026-08-27T20:07:46.403Z",
+  "gitCommit": "57c7ba61b2ad3b3f0f4372a7ea110433c61e0b77",
+  "branch": "phase-6c4c2-v6-freeze-and-seal",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "historicalV6RunnerDryRunVersion": "1.0.0",
+    "rehearsedCommand": "npm run validation:historical-v6",
+    "importsTheRealRunner": true,
+    "pairsPerSurface": 64,
+    "branchesExercised": 43,
+    "branches": [
+      {
+        "name": "noModeRefused",
+        "ok": true,
+        "detail": "the command refuses to do anything without an explicit mode, so a bare invocation cannot reach the seal"
+      },
+      {
+        "name": "helpExitsZeroAndTouchesNothing",
+        "ok": true,
+        "detail": "--help exited 0, access count still 0"
+      },
+      {
+        "name": "unknownFlagRefused",
+        "ok": true,
+        "detail": "a mistyped unlock flag is refused outright rather than ignored — Phase 6C4B2R found a command accepting unknown flags and writing an artifact out of order"
+      },
+      {
+        "name": "twoModesRefused",
+        "ok": true,
+        "detail": "two modes at once is a refusal, not a precedence rule"
+      },
+      {
+        "name": "runWithoutOperatorOrReasonRefused",
+        "ok": true,
+        "detail": "an unexplained access is not an audit record"
+      },
+      {
+        "name": "runWithoutUnlockFlagsRefusedBeforeSeal",
+        "ok": true,
+        "detail": "refused with the seal untouched; access count still 0"
+      },
+      {
+        "name": "resumeOutsideRunRefused",
+        "ok": true,
+        "detail": "--resume cannot be smuggled into a read-only mode"
+      },
+      {
+        "name": "preflightIsReadOnly",
+        "ok": true,
+        "detail": "preflight passed, wrote no results artifact, access count still 0"
+      },
+      {
+        "name": "dryRunFlagDelegates",
+        "ok": true,
+        "detail": "--dry-run on the sealed command refuses and names this script, so mock-fixture construction stays out of the file that can open the real seal"
+      },
+      {
+        "name": "knownFlagListIsClosed",
+        "ok": true,
+        "detail": "10 accepted flags: --help --preflight --dry-run --run --resume --unlock-holdout --unlock-historical-holdout-v6 --operator --reason --refreeze"
+      },
+      {
+        "name": "everyIdentityCheckPasses",
+        "ok": true,
+        "detail": "33 checks, 0 failing"
+      },
+      {
+        "name": "perFixtureRubricClean",
+        "ok": true,
+        "detail": "45 scored traits across 16 sides, 0 contradictions"
+      },
+      {
+        "name": "everyScoredTraitCarriesAMargin",
+        "ok": true,
+        "detail": "the dual gate has a margin available for every trait it will judge"
+      },
+      {
+        "name": "baselinesResolveByMetricId",
+        "ok": true,
+        "detail": "every scored metric resolves a Candidate 2 baseline — the V5 dry run caught this keyed by sample field, which would have scored every trait NOT_APPLICABLE"
+      },
+      {
+        "name": "mockSetContainsNoV6Id",
+        "ok": true,
+        "detail": "4 mock members, none a V6 id"
+      },
+      {
+        "name": "sealRefusesWithoutItsOwnFlag",
+        "ok": true,
+        "detail": "a set with no --unlock flag of its own refuses to open"
+      },
+      {
+        "name": "unlockWithoutReasonRefused",
+        "ok": true,
+        "detail": "refused with NO_REASON"
+      },
+      {
+        "name": "resumeWithNoStateRefused",
+        "ok": true,
+        "detail": "refused with NOTHING_TO_RESUME"
+      },
+      {
+        "name": "unlockIncrementsExactlyOnce",
+        "ok": true,
+        "detail": "access count 1"
+      },
+      {
+        "name": "crashLeavesResumableState",
+        "ok": true,
+        "detail": "status RUNNING, 2 members written incrementally — a crash loses at most one member's work"
+      },
+      {
+        "name": "secondRunRefused",
+        "ok": true,
+        "detail": "refused with SECOND_RUN_REFUSED"
+      },
+      {
+        "name": "resumeCompletesUnderSameAccessEvent",
+        "ok": true,
+        "detail": "4/4 members, access count still 1"
+      },
+      {
+        "name": "resumeProducesARunHash",
+        "ok": true,
+        "detail": "23bf98555289db92..."
+      },
+      {
+        "name": "resumingACompleteRunRefused",
+        "ok": true,
+        "detail": "refused with ALREADY_COMPLETE"
+      },
+      {
+        "name": "changedIdentityRefusedOnResume",
+        "ok": true,
+        "detail": "coreHash:IDENTITY_MISMATCH parameterSetHash:IDENTITY_MISMATCH verdictPolicyHash:IDENTITY_MISMATCH holdoutManifestHash:IDENTITY_MISMATCH"
+      },
+      {
+        "name": "scoringPathProducesANumber",
+        "ok": true,
+        "detail": "h3-1951-52-lakers on 1950s: ELITE_OFFENSE diff -0.02822 vs margin 0.02 -> PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+      },
+      {
+        "name": "dualGateNeedsBothConditions",
+        "ok": true,
+        "detail": "statisticallyOpposite true, beyondPracticalMargin true -> hardFail true"
+      },
+      {
+        "name": "shareMaeProducesANumber",
+        "ok": true,
+        "detail": "composite share MAE 0.03391"
+      },
+      {
+        "name": "nullTargetsContributeNothing",
+        "ok": true,
+        "detail": "a fixture with null team targets still scores, because a null contributes no error rather than a zero"
+      },
+      {
+        "name": "structuralCountersLive",
+        "ok": true,
+        "detail": "128 games: 0 invariant violations, 0 ties, replay exact true"
+      },
+      {
+        "name": "duplicateLabelsCollapseToOneCluster",
+        "ok": true,
+        "detail": "2 hard-fail labels -> 1 independent cluster; this is exactly the V5 case where 3 labels were 2 measurements"
+      },
+      {
+        "name": "bothLabelsPreserved",
+        "ok": true,
+        "detail": "labels kept: ELITE_DEFENSE, elite team man defence"
+      },
+      {
+        "name": "differentMatchupsAreDifferentClusters",
+        "ok": true,
+        "detail": "the same metric failing on two different matchups is two independent measurements, not one"
+      },
+      {
+        "name": "clusterKeyIsIdentityOnly",
+        "ok": true,
+        "detail": "the cluster key does not contain the trait label, so renaming a trait cannot change the evidence count"
+      },
+      {
+        "name": "clusterGateFiresOnRealEvidence",
+        "ok": true,
+        "detail": "one independent hard-fail cluster fails the cluster gate, so collapsing labels does not weaken the gate"
+      },
+      {
+        "name": "evaluatorRunsPrecheckAndDecisionTiers",
+        "ok": true,
+        "detail": "precheck tier 2, decision tier 3, governing tier 4"
+      },
+      {
+        "name": "progressiveEquivalenceRecorded",
+        "ok": true,
+        "detail": "escalated true (governing tier 4), 2 tier disagreement(s)"
+      },
+      {
+        "name": "escalationTierDrawsItsOwnSeeds",
+        "ok": true,
+        "detail": "the tier is part of the seed address, so the escalation cannot reuse a decision-tier seed and manufacture agreement between tiers"
+      },
+      {
+        "name": "escalationIsDirectionBlind",
+        "ok": true,
+        "detail": "the frozen plan conditions escalation on indeterminacy or tier disagreement alone"
+      },
+      {
+        "name": "v6AccessCountUnchanged",
+        "ok": true,
+        "detail": "historical-holdout-v6 access count 0 -> 0"
+      },
+      {
+        "name": "syntheticV2AccessCountUnchanged",
+        "ok": true,
+        "detail": "the synthetic stress holdout is untouched by this rehearsal"
+      },
+      {
+        "name": "noResultsArtifactWritten",
+        "ok": true,
+        "detail": "no V6 results artifact exists; a dry run cannot produce one"
+      },
+      {
+        "name": "mockArtifactsAreOutsideTheSetDirectory",
+        "ok": true,
+        "detail": "mock state lives in data/validation/6c4c2/mock/, never in a real access log"
+      }
+    ],
+    "mockSet": {
+      "members": [
+        "sd2-balanced-lower-ovr",
+        "sd2-creator-stack",
+        "sd2-elite-shooting",
+        "sd2-weak-shooting"
+      ],
+      "log": "data/validation/6c4c2/mock/v6-dryrun-access.jsonl",
+      "runPath": "data/validation/6c4c2/mock/v6-dryrun-run.json",
+      "containsNoV6Id": true
+    },
+    "refusalCodesExercised": [
+      "MOCK_SEALED",
+      "NO_REASON",
+      "NOTHING_TO_RESUME",
+      "SECOND_RUN_REFUSED",
+      "ALREADY_COMPLETE",
+      "IDENTITY_MISMATCH"
+    ],
+    "commandSurfaceRefusals": [
+      "no mode",
+      "unknown flag",
+      "two modes",
+      "--run without operator or reason",
+      "--run without unlock flags",
+      "--resume outside --run",
+      "--dry-run delegated"
+    ],
+    "clusterAggregation": {
+      "duplicateLabelsCollapse": true,
+      "differentMatchupsStaySeparate": true,
+      "clusterKeyExcludesLabel": true,
+      "gateStillFires": true
+    },
+    "progressiveEquivalence": {
+      "precheckTierRun": true,
+      "decisionTierRun": true,
+      "escalationExercised": true,
+      "escalationSeedsDisjointFromDecision": true,
+      "directionBlind": true,
+      "sampleResult": {
+        "matchupId": "v6m-1950s",
+        "governingTier": 4,
+        "escalated": true,
+        "disagreements": [
+          {
+            "side": "teamB",
+            "traitId": "post-centred, interior scoring",
+            "precheck": "INCONCLUSIVE",
+            "decision": "PASS"
+          },
+          {
+            "side": "teamB",
+            "traitId": "POST_HEAVY",
+            "precheck": "INCONCLUSIVE",
+            "decision": "PASS"
+          }
+        ]
+      }
+    },
+    "scoringPathProof": {
+      "fixtureId": "h3-1951-52-lakers",
+      "eraStyleId": "1950s",
+      "traitId": "ELITE_OFFENSE",
+      "diff": -0.02822,
+      "practicalMargin": 0.02,
+      "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED",
+      "compositeShareMae": 0.03391
+    },
+    "sealState": {
+      "set": "historical-holdout-v6",
+      "accessCountBefore": 0,
+      "accessCountAfter": 0,
+      "syntheticStressHoldoutV2AccessCount": 0
+    },
+    "pass": true,
+    "failedBranches": [],
+    "dryRunHash": "6096608193e68ba802dbc915c5feae75a5af2ab4691fa8231de23d317c9f5aaf"
+  },
+  "outputHash": "92e2449fbd7e53c015bbb218b86bd215ecedef3d82d06d71ea04daded0d6c78e"
+}

@@ -1,0 +1,146 @@
+{
+  "artifact": "historical-v6-eligibility-policy",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run v6:eligibility",
+  "generatedAt": "2026-08-27T19:36:01.735Z",
+  "gitCommit": "71a89a150ded4e22023667ad3339b2055151fa35",
+  "branch": "phase-6c4c2-v6-freeze-and-seal",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "historicalV6EligibilityPolicyVersion": "1.0.0",
+    "frozenBeforeSelection": true,
+    "allowedInputs": [
+      "team-season identity",
+      "era",
+      "franchise",
+      "coach identity",
+      "coach-season verification",
+      "player-season verification",
+      "position legality",
+      "source completeness",
+      "trait observability",
+      "data confidence",
+      "opponent availability",
+      "style diversity",
+      "tactical diversity",
+      "era diversity"
+    ],
+    "forbiddenInputs": [
+      "Candidate 2 win rate",
+      "Candidate 2 points per possession",
+      "Candidate 2 box scores",
+      "Candidate 2 trait scores",
+      "Candidate 2 action mix",
+      "Candidate 2 expected margin",
+      "Candidate 2 probability",
+      "any Candidate 2 result output",
+      "similarity to Candidate 1's Historical V5 failures as a selection preference"
+    ],
+    "requirements": {
+      "minProfiledPlayers": 5,
+      "minDocumentedStarters": 5,
+      "minPositionsCovered": 4,
+      "maxLowConfidenceProfiles": 2,
+      "requireEraStyle": true,
+      "requireCoachIdentified": true,
+      "requireCoachNamedOnSeasonPage": true,
+      "coachNote": "coach identity is carried by the fixture spec rather than the player store, and is joined here on the canonical team-season key. Where the spec row exists, the coach must also have been verified as named on that season's own Wikipedia page at store-build time. A team-season with no resolvable, verified coach cannot be selected."
+    },
+    "hardExclusions": [
+      "historical-calibration-v3",
+      "historical-holdout-v3",
+      "historical-holdout-v4",
+      "historical-holdout-v5",
+      "synthetic-development-v2",
+      "synthetic-stress-holdout-v2",
+      "candidate-0-calibration-fixtures",
+      "candidate-1-development-fixtures",
+      "candidate-2-diagnostic-fixtures",
+      "candidate-2-assisted-offense-controls",
+      "candidate-2-defensive-controls",
+      "candidate-2-comparison-fixtures",
+      "probability-validation-fixtures",
+      "side-symmetry-fixtures",
+      "era-reference-teams"
+    ],
+    "nearOverlapRules": {
+      "fiveOfFive": "EXCLUDE — the same five people is the same lineup whatever the ids say",
+      "fourOfFive": "EXCLUDE — one substitution away from a seen lineup is a proxy for it",
+      "threeOfFive": "ALLOW, recorded — three shared people out of five is a different team",
+      "aliasSameTeamSeason": "EXCLUDE — normalised by canonical team and season, so an alias cannot slip through",
+      "sameFiveDifferentSlots": "EXCLUDE — lineup identity is the unordered person set, not the slot assignment",
+      "sameTeamAndCoachSeasonTrivialDifference": "EXCLUDE at 4/5 or above; below that the roster genuinely differs",
+      "canonicalPersonOverlap": "every comparison is made on canonical person ids, not card or calibration-player ids, so a person appearing under two ids cannot disguise an overlap"
+    },
+    "outputBlind": true,
+    "candidate2SimulationsPermitted": 0,
+    "exclusionSetsResolved": {
+      "historicalCalibrationV3": 24,
+      "historicalHoldoutV3": 8,
+      "historicalHoldoutV4": 16,
+      "historicalHoldoutV5": 16,
+      "eraReferences": 8,
+      "syntheticDevelopmentV2": 14,
+      "syntheticStressHoldoutV2": 16,
+      "candidate2ControlFixtures": 11,
+      "seenTeamSeasonKeys": 64,
+      "seenLineupKeys": 96
+    },
+    "universeSources": [
+      {
+        "origin": "CALIBRATION_PLAYER_STORE_V3",
+        "path": "data/calibration/calibration-players-v3.json",
+        "present": true,
+        "profiles": 160,
+        "teamSeasons": 32,
+        "coachChecks": 0,
+        "storeHash": null
+      },
+      {
+        "origin": "CALIBRATION_PLAYER_STORE_V4",
+        "path": "data/validation/6c3r/calibration-players-v4.json",
+        "present": true,
+        "profiles": 170,
+        "teamSeasons": 34,
+        "coachChecks": 34,
+        "storeHash": "c648d679cb211d3bc0294a87ddc9341846f4bae631cae3e002db4d5e758b790a"
+      },
+      {
+        "origin": "CALIBRATION_PLAYER_STORE_V5",
+        "path": "data/validation/6c4a/calibration-players-v5.json",
+        "present": true,
+        "profiles": 75,
+        "teamSeasons": 15,
+        "coachChecks": 15,
+        "storeHash": "0ec0c03355515fb6a4cbddf248b29e40fd23f4c9b13a012487c5efbc17e4539b"
+      },
+      {
+        "origin": "CALIBRATION_PLAYER_STORE_V6",
+        "path": "data/validation/6c4c2/calibration-players-v6.json",
+        "present": true,
+        "profiles": 145,
+        "teamSeasons": 29,
+        "coachChecks": 29,
+        "storeHash": "c14399a4da748f67af4407feb013a8c4e5ecb8b16310f133a208669179745fcf"
+      }
+    ],
+    "universeNote": "the corpus and the prior holdout manifests supply the exclusion set; the calibration player stores supply the candidates. A universe of consumed team-seasons alone yields 0 eligible, which is what the corrected policy returned before the stores were read.",
+    "priorPhaseDefectCorrected": {
+      "what": "Phase 6C4C1's pool added the calibration and Historical V3 exclusion lists as raw fixture ids while keying candidate rows as team-name-and-season, so neither exclusion could ever match.",
+      "consequence": "24 calibration team-seasons and 8 consumed Historical V3 team-seasons remained in that pool. Its first eligible row was h3-1956-57-celtics, a calibration corpus team.",
+      "correction": "every id is normalised to a canonical team-and-season key, and every lineup comparison is made on canonical person ids.",
+      "alsoAdded": "near-overlap protection at 5/5 and 4/5, era-reference and Candidate 2 control-fixture lineups, and a resolvable-coach requirement."
+    },
+    "normalisation": {
+      "teamSeasonKey": "lowercased team name and season with non-alphanumerics stripped",
+      "lineupKey": "the sorted, de-duplicated set of canonical person ids",
+      "personResolution": "calibration-player ids resolve to their person segment; public card ids resolve through the person store"
+    },
+    "policyHash": "303f37e023c3d4ea116478ff61f904f79c84a2b308f10cfb83229b544b734275"
+  },
+  "outputHash": "e5f2f317986e02f19608ed023767e318c3d42ae5784699cfc7a0ae6e07bbe3a3"
+}

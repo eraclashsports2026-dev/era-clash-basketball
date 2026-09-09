@@ -1,0 +1,63 @@
+{
+  "artifact": "multi-position-contract",
+  "phase": "9A",
+  "status": "FROZEN",
+  "version": "1.0.0",
+  "authoritativeSource": "src/players.js — each card's `positions` array (primary `pos` first). Never inferred from name, height, team, decade or rating.",
+  "display": {
+    "card": [
+      "primary position",
+      "all eligible positions",
+      "team",
+      "decade",
+      "draft-guide OVR"
+    ],
+    "example": "KEVIN DURANT — Eligible: SF · PF · SG"
+  },
+  "slotStates": [
+    "ELIGIBLE",
+    "SELECTED",
+    "OCCUPIED",
+    "INELIGIBLE"
+  ],
+  "modes": [
+    "AUTO",
+    "CHOOSE",
+    "SWAP_ONLY",
+    "DUPLICATE_PERSON",
+    "NONE"
+  ],
+  "behaviour": {
+    "select": [
+      "determine legal slots",
+      "highlight eligible",
+      "disable ineligible",
+      "explain unavailable",
+      "keyboard and pointer",
+      "preserve legal roster structure",
+      "prevent duplicate canonical people"
+    ],
+    "oneLegalSlot": "place automatically, announce, offer Undo",
+    "severalLegalSlots": "present only those; ineligible slots are not controls",
+    "allEligibleOccupied": "offer a swap; never replace silently; never produce an illegal lineup",
+    "swapValidity": "a swap is valid only when the resulting lineup remains legal; a displaced player with exactly one other open eligible slot is moved there, otherwise leaves (announced, undoable)"
+  },
+  "announcement": "Kevin Durant selected. Eligible positions: small forward and power forward. Two legal positions available.",
+  "chaosBoundary": {
+    "cardsShowEligiblePositions": true,
+    "slotLogicChanged": false,
+    "postDraftRepositioning": "not added — recorded as a future fairness-tested enhancement"
+  },
+  "tested": [
+    "SF/PF",
+    "PG/SG",
+    "PF/C",
+    "three-position players",
+    "one-position specialists",
+    "occupied slots",
+    "undo",
+    "same person with multiple decade cards",
+    "keyboard placement",
+    "mobile placement"
+  ]
+}

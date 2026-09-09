@@ -1,0 +1,40 @@
+{
+  "phase": "9B.2",
+  "generatedAt": "2026-09-05T02:19:05.838904+00:00",
+  "artifact": "phase9b2-preflight",
+  "startConditions": {
+    "phase9b1aAccepted": {
+      "verified": true,
+      "response": "APPROVE PHASE 9B.1A",
+      "head": "d5e7b52"
+    },
+    "anonymousAuthDisabled": {
+      "verified": true,
+      "method": "POST /auth/v1/signup \u2192 422 anonymous_provider_disabled"
+    },
+    "serverCredentialAccepted": {
+      "verified": true,
+      "method": "GET /api/health?deep=1 \u2192 serverCredentialAccepted true"
+    }
+  },
+  "repositoryTruth": {
+    "parent": "d5e7b52",
+    "branch": "phase-9b2-my-eraclash-career-v2",
+    "main": "9cd95ff",
+    "wave1": "4dc59e7",
+    "wave2": "ef0caa5"
+  },
+  "liveProject": {
+    "ref": "lfybiphmqkiecfrqsfzt",
+    "migrations": [
+      "0001_accounts",
+      "0002_accounts_hardening",
+      "0003_career_v2"
+    ]
+  },
+  "functionBudget": {
+    "apiRoutes": 12,
+    "middleware": true,
+    "apiFunctionCountIncrease": 0
+  }
+}

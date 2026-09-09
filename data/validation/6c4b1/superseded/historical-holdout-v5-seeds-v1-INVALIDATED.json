@@ -1,0 +1,92 @@
+{
+  "artifact": "historical-holdout-v5-seeds",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run v5:seeds",
+  "generatedAt": "2026-08-27T04:16:19.196Z",
+  "gitCommit": "1af5c244774ba2dc5402af0b96d420569ed434cf",
+  "branch": "phase-6c4b1-v5-freeze-and-seal",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "historicalHoldoutSeedSetVersion": "3.0.0",
+    "set": "historical-holdout-v5",
+    "master": 7097104,
+    "masterCommitment": "c5bff11670078da68cf14be0e6986deb7f4c232187a4f5cec412d46cc8b42aa9",
+    "streams": {
+      "historical-holdout-v5": {
+        "purpose": "The one-time V5 holdout run",
+        "streamMaster": 96736645,
+        "streamCommitment": "05c41585a428c78edbb98666e06dd5fc"
+      },
+      "v5-dryrun": {
+        "purpose": "The transactional runner dry run, on non-holdout mock fixtures",
+        "streamMaster": -285688547,
+        "streamCommitment": "eef8bd1d51915fbceed6422a00f56de4"
+      }
+    },
+    "generationAlgorithm": "streamMaster = sha256('eraclash-6c4b1:<stream>:<master>').readInt32BE(0); seed = deriveSeed(streamMaster, index) using the frozen splitmix32 derivation in src/v3/seed.js",
+    "surfaceAddressing": "v5Seed('historical-holdout-v5', matchupIndex*300000 + surfaceIndex*100000 + pairIndex)",
+    "volume": {
+      "matchups": 8,
+      "surfacesPerMatchup": 3,
+      "pairsPerSurface": 2048,
+      "gamesPerSurface": 4096,
+      "gamesPerMatchup": 12288,
+      "totalGames": 98304,
+      "holdoutSeedCount": 49152
+    },
+    "disjointnessProof": {
+      "seedsPerStream": 49152,
+      "priorPopulationsChecked": 17,
+      "comparisons": 35,
+      "totalOverlap": 0,
+      "overlaps": {
+        "historical-holdout-v5 x actual-game": 0,
+        "historical-holdout-v5 x prediction": 0,
+        "historical-holdout-v5 x probability-validation": 0,
+        "historical-holdout-v5 x side-bias-v2": 0,
+        "historical-holdout-v5 x historical-holdout-v3-block": 0,
+        "historical-holdout-v5 x internal-reference-block": 0,
+        "historical-holdout-v5 x candidate1-internal-validation-block": 0,
+        "historical-holdout-v5 x candidate1-diagnostic-movement": 0,
+        "historical-holdout-v5 x candidate1-diagnostic-offense": 0,
+        "historical-holdout-v5 x candidate1-diagnostic-defense": 0,
+        "historical-holdout-v5 x candidate1-diagnostic-oreb": 0,
+        "historical-holdout-v5 x candidate1-behaviour-proof": 0,
+        "historical-holdout-v5 x realized-zone-controls": 0,
+        "historical-holdout-v5 x v4:era-reference-cert": 0,
+        "historical-holdout-v5 x v4:observability-controls": 0,
+        "historical-holdout-v5 x v4:v4-dryrun": 0,
+        "historical-holdout-v5 x v4:historical-holdout-v4": 0,
+        "v5-dryrun x actual-game": 0,
+        "v5-dryrun x prediction": 0,
+        "v5-dryrun x probability-validation": 0,
+        "v5-dryrun x side-bias-v2": 0,
+        "v5-dryrun x historical-holdout-v3-block": 0,
+        "v5-dryrun x internal-reference-block": 0,
+        "v5-dryrun x candidate1-internal-validation-block": 0,
+        "v5-dryrun x candidate1-diagnostic-movement": 0,
+        "v5-dryrun x candidate1-diagnostic-offense": 0,
+        "v5-dryrun x candidate1-diagnostic-defense": 0,
+        "v5-dryrun x candidate1-diagnostic-oreb": 0,
+        "v5-dryrun x candidate1-behaviour-proof": 0,
+        "v5-dryrun x realized-zone-controls": 0,
+        "v5-dryrun x v4:era-reference-cert": 0,
+        "v5-dryrun x v4:observability-controls": 0,
+        "v5-dryrun x v4:v4-dryrun": 0,
+        "v5-dryrun x v4:historical-holdout-v4": 0,
+        "historical-holdout-v5 x v5-dryrun": 0
+      },
+      "details": []
+    },
+    "manifestHash": "1d8afdb004edf0370df03afc1baebb7823f2c7b54b3b01ff5173a49d35d4582f",
+    "frozenBeforeRun": true,
+    "pass": true,
+    "failedGates": [],
+    "seedHash": "d288e8c5754a04f8053b6a29b5892f224bb981c181b95e1a01499a33bf4564c5"
+  },
+  "outputHash": "66f1ca9518952fb910407d989906f85874e5a6c1a67e740e17f244d0907ae395"
+}

@@ -1,0 +1,112 @@
+{
+  "artifact": "live-rls-qa",
+  "phase": "9B.1A — Supabase preview activation and live account certification",
+  "method": "Two synthetic users created in the live project, then every probe run inside a transaction with `set local role authenticated` and `set local request.jwt.claims`, which is exactly how PostgREST presents a signed-in caller. Not a simulation and not static SQL analysis.",
+  "syntheticUsers": [
+    "account-live-a (aaaaaaaa-…-000a)",
+    "account-live-b (bbbbbbbb-…-000b)"
+  ],
+  "userA": {
+    "ownClashesVisible": 1,
+    "otherUserClashesVisible": 0,
+    "totalClashesVisible": 1,
+    "otherClashByGuessedId": 0,
+    "ownProfileVisible": 1,
+    "otherProfileVisible": 0,
+    "totalProfilesVisible": 1,
+    "careerSummaryRows": 1,
+    "careerGamesPlayed": 1,
+    "careerStreak": "win"
+  },
+  "userB": {
+    "ownClashesVisible": 1,
+    "otherUserClashesVisible": 0,
+    "otherClashByGuessedId": 0,
+    "otherProfileVisible": 0,
+    "careerGamesPlayed": 1,
+    "careerStreak": "loss"
+  },
+  "writeAttempts": [
+    {
+      "as": "A",
+      "attempt": "forge a career row for self",
+      "outcome": "refused: permission denied for table saved_clashes"
+    },
+    {
+      "as": "A",
+      "attempt": "forge a career row for user B",
+      "outcome": "refused: permission denied for table saved_clashes"
+    },
+    {
+      "as": "A",
+      "attempt": "rewrite own score",
+      "outcome": "refused: permission denied for table saved_clashes"
+    },
+    {
+      "as": "A",
+      "attempt": "rewrite user B score",
+      "outcome": "refused: permission denied for table saved_clashes"
+    },
+    {
+      "as": "A",
+      "attempt": "delete user B career row",
+      "outcome": "refused: permission denied for table saved_clashes"
+    },
+    {
+      "as": "A",
+      "attempt": "rename user B profile",
+      "outcome": "no rows affected (row level security filtered it)"
+    },
+    {
+      "as": "A",
+      "attempt": "reassign own profile to user B",
+      "outcome": "refused: permission denied for table profiles (the column-scoped UPDATE grant)"
+    },
+    {
+      "as": "A",
+      "attempt": "rename OWN profile",
+      "outcome": "succeeded, as intended"
+    },
+    {
+      "as": "A",
+      "attempt": "forge an ownership claim",
+      "outcome": "refused: permission denied for table result_claims"
+    },
+    {
+      "as": "A",
+      "attempt": "TRUNCATE the career table",
+      "outcome": "refused: permission denied for table saved_clashes"
+    },
+    {
+      "as": "B",
+      "attempt": "rename user A profile",
+      "outcome": "no rows affected"
+    },
+    {
+      "as": "B",
+      "attempt": "delete user A career row",
+      "outcome": "refused: permission denied for table saved_clashes"
+    },
+    {
+      "as": "B",
+      "attempt": "steal user A ownership claim",
+      "outcome": "refused: permission denied for table result_claims"
+    },
+    {
+      "as": "anon",
+      "attempt": "read each of the seven objects",
+      "outcome": "refused on all seven: permission denied"
+    },
+    {
+      "as": "anon",
+      "attempt": "forge a career row",
+      "outcome": "refused: permission denied for table saved_clashes"
+    }
+  ],
+  "truncateNote": "TRUNCATE is not subject to row level security, so this probe matters on its own. Migration 0002 removed the privilege; this run confirms it against the live database.",
+  "crossUserReads": 0,
+  "crossUserWrites": 0,
+  "anonymousProtectedReads": 0,
+  "forgedCareerWrites": 0,
+  "passed": true
+}

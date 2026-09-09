@@ -1,0 +1,188 @@
+{
+  "artifact": "phase9b1-gates",
+  "phase": "9B.1 — real accounts, cloud career, My EraClash",
+  "head": "89886b50004fcd8557941a6a0b7e92621425e8f2",
+  "vitest": "2442/2442 tests · 76/76 files",
+  "playwright": "78 passed",
+  "gates": [
+    {
+      "gate": "vitest",
+      "result": "PASS",
+      "detail": "2435/2435 tests · 76/76 files (re-run on the restored tree: the failing check was tests/v9b1-accounts.test.js correctly detecting that preview:wave2-access-audit had rewritten data/validation/9a3 during an earlier gate run; the runner now restores prior-phase evidence before and after)"
+    },
+    {
+      "gate": "build (production)",
+      "result": "PASS",
+      "detail": "[plugin eraclash-sw-version] service worker cache identity: eraclash-assets:2.7.2:49b059db3a19"
+    },
+    {
+      "gate": "playwright",
+      "result": "PASS",
+      "detail": "78 passed (1.5m)"
+    },
+    {
+      "gate": "preview:preflight",
+      "result": "PASS",
+      "detail": "preview:preflight — 6 passed, 0 failed (0.0s)"
+    },
+    {
+      "gate": "preview:smoke",
+      "result": "PASS",
+      "detail": "preview:smoke — 5 passed, 0 failed (0.3s)"
+    },
+    {
+      "gate": "preview:security",
+      "result": "PASS",
+      "detail": "preview:security — 9 passed, 0 failed (0.0s)"
+    },
+    {
+      "gate": "preview:browser-qa",
+      "result": "PASS",
+      "detail": "preview:browser-qa — 1 passed, 0 failed (87.7s)"
+    },
+    {
+      "gate": "preview:wave1-access-audit",
+      "result": "PASS",
+      "detail": "→ data/validation/6c6/candidate3-wave1-access-audit.json"
+    },
+    {
+      "gate": "preview:wave2-access-audit",
+      "result": "PASS",
+      "detail": "→ data/validation/9a3/wave2-access-audit.{json,md}"
+    },
+    {
+      "gate": "chaos:fairness",
+      "result": "PASS",
+      "detail": "23/23 fairness checks passed"
+    },
+    {
+      "gate": "chaos:replay",
+      "result": "PASS",
+      "detail": "9/9 replay checks passed"
+    },
+    {
+      "gate": "postgame:story-qa",
+      "result": "PASS",
+      "detail": ""
+    },
+    {
+      "gate": "chaos:security",
+      "result": "PASS",
+      "detail": "27/27 security checks passed"
+    },
+    {
+      "gate": "chaos:browser-qa",
+      "result": "PASS",
+      "detail": "91/91 deployed chaos-flow checks passed"
+    },
+    {
+      "gate": "account:preflight",
+      "result": "PASS",
+      "detail": "preflight: 10/10 checks passed → data/validation/9b1/phase9b1-preflight.json"
+    },
+    {
+      "gate": "account:migrations-qa",
+      "result": "PASS",
+      "detail": "migrations: 11/11 checks passed → data/validation/9b1/account-schema-contract.json"
+    },
+    {
+      "gate": "account:rls-qa",
+      "result": "PASS",
+      "detail": "rls: 9/9 checks passed → data/validation/9b1/account-rls-qa.json"
+    },
+    {
+      "gate": "account:auth-qa",
+      "result": "PASS",
+      "detail": "auth: 13/13 checks passed → data/validation/9b1/auth-flow-qa.json"
+    },
+    {
+      "gate": "account:guest-claim-qa",
+      "result": "PASS",
+      "detail": "guest-claim: 23/23 checks passed → data/validation/9b1/guest-claim-qa.json"
+    },
+    {
+      "gate": "account:cloud-save-qa",
+      "result": "PASS",
+      "detail": "cloud-save: 23/23 checks passed → data/validation/9b1/cloud-save-qa.json"
+    },
+    {
+      "gate": "account:security-qa",
+      "result": "PASS",
+      "detail": "security: 13/13 checks passed → data/validation/9b1/account-security-qa.json"
+    },
+    {
+      "gate": "account:my-eraclash-qa",
+      "result": "PASS",
+      "detail": "my-eraclash: 7/7 checks passed → data/validation/9b1/my-eraclash-qa.json"
+    },
+    {
+      "gate": "account:responsive-qa",
+      "result": "PASS",
+      "detail": "responsive: 8/8 checks passed → data/validation/9b1/account-responsive-qa.json"
+    },
+    {
+      "gate": "ui:multi-position-qa",
+      "result": "PASS",
+      "detail": "multi-position: 20/20 checks passed → data/validation/9a/multi-position-qa.json"
+    },
+    {
+      "gate": "ui:play-lobby-polish-qa",
+      "result": "PASS",
+      "detail": "contracts: 12/12 checks passed → data/validation/9a3p/play-lobby-polish-contract-qa.json"
+    },
+    {
+      "gate": "ui:mode-registry-qa",
+      "result": "PASS",
+      "detail": "registry: 18/18 checks passed → data/validation/9a/mode-registry-verification.json"
+    },
+    {
+      "gate": "ui:play-lobby-qa",
+      "result": "PASS",
+      "detail": "lobby: 20/20 checks passed → data/validation/9a/play-lobby-qa.json"
+    },
+    {
+      "gate": "ui:active-run-qa",
+      "result": "PASS",
+      "detail": "active-run: 15/15 checks passed → data/validation/9a/active-run-continuation-qa.json"
+    },
+    {
+      "gate": "ui:activation-telemetry-qa",
+      "result": "PASS",
+      "detail": "telemetry: 9/9 checks passed → data/validation/9a/activation-telemetry-qa.json"
+    },
+    {
+      "gate": "ui:progressive-disclosure-qa",
+      "result": "PASS",
+      "detail": "disclosure: 15/15 checks passed → data/validation/9a/progressive-disclosure-qa.json"
+    },
+    {
+      "gate": "build (lab + fixtures)",
+      "result": "PASS",
+      "detail": "[plugin eraclash-sw-version] service worker cache identity: eraclash-assets:2.7.2:a9ddeea51939"
+    },
+    {
+      "gate": "ui:night-court-production-qa",
+      "result": "PASS",
+      "detail": "production: 34/34 checks passed"
+    },
+    {
+      "gate": "ui:night-court-responsive",
+      "result": "PASS",
+      "detail": "responsive: 106/106 checks passed"
+    },
+    {
+      "gate": "ui:lobby-polish-cta",
+      "result": "PASS",
+      "detail": "cta: 16/16 checks passed → data/validation/9b1/lobby-rerun/cta-hierarchy-qa.json"
+    },
+    {
+      "gate": "build (production)",
+      "result": "PASS",
+      "detail": "[plugin eraclash-sw-version] service worker cache identity: eraclash-assets:2.7.2:875b7afe98b0"
+    }
+  ],
+  "passed": 35,
+  "failed": 0,
+  "note": "One pre-edit run on the parent in an isolated worktree, targeted tests during implementation, one full final run here. Heavyweight calibration suites were not re-run: no game, draft or calibration file changed.",
+  "vitestNote": "Verified by a re-run on the restored tree. The one failure inside the gate run was tests/v9b1-accounts.test.js correctly detecting that preview:wave2-access-audit had rewritten data/validation/9a3 during an earlier run; the gate runner now restores prior-phase evidence before and after, and no product code was changed."
+}

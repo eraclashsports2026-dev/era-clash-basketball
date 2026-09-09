@@ -1,0 +1,24 @@
+{
+  "artifact": "wave2-accessibility-qa",
+  "phase": "9A.3 — Wave 2 private beta",
+  "basis": "the 9A.2 accessibility harness re-run against this branch's lab build: every rendered text pair on ten fixtures at 1536 and 390, focus visibility, heading/tab/table/image semantics, 44px primary controls, reduced motion; the Wave 2 feedback panel adds labelled rating groups (aria-labelledby), aria-pressed chips, a status/alert line and a 44px submit",
+  "local": {
+    "source": "data/validation/9a3/night-court-rerun/theme-accessibility-qa.json",
+    "checks": 92,
+    "passed": 92,
+    "failed": 0,
+    "namedPairsLowest": 5.06
+  },
+  "feedbackPanel": {
+    "component": "src/components/Wave2Feedback.jsx",
+    "controls": [
+      "role=group + aria-labelledby per rating",
+      "aria-pressed on every chip",
+      "role=status on success, role=alert on failure",
+      "textarea aria-label, maxLength 500",
+      "submit ≥ 44px"
+    ]
+  },
+  "checks": 92,
+  "passed": 92
+}

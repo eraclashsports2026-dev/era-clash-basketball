@@ -1,0 +1,24 @@
+{
+  "artifact": "candidate3-preview-tester-readiness",
+  "generatedBy": "phase 6C5 deployed verification",
+  "data": {
+    "cohort": "owner + tester-pool-1 key active; per-person keys mintable in one command",
+    "addTester": "node scripts/preview/accessKey.mjs new <label> \u2192 deliver key out of band \u2192 commit hash line \u2192 push",
+    "revocation": "delete the hash line, push (verified live via DELETE + gate return)",
+    "verified": [
+      "owner access",
+      "tester key full browser journey",
+      "unauthorized 401 (page + API)",
+      "feedback end-to-end (API + UI)",
+      "result sharing stays behind the gate on the preview host",
+      "telemetry events privacy-filtered",
+      "candidate identity on every preview result",
+      "emergency-off documented and rehearsed"
+    ],
+    "guides": [
+      "docs/preview/candidate3-tester-guide.md",
+      "docs/preview/candidate3-operator-guide.md"
+    ],
+    "scenarioMatrix": "8 bounded scenarios in the tester guide, each with its evaluation question"
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "artifact": "phase6c4b1s-final-readiness",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run syn:final",
+  "generatedAt": "2026-08-27T13:15:31.613Z",
+  "gitCommit": "7cbedd91fc3e2716063f8bf06da25d356a9dd9ce",
+  "branch": "phase-6c4b1s-synthetic-v2-package",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "phase": "6C4B1S",
+    "phaseType": "PREPARATION_ONLY",
+    "title": "Synthetic Stress Holdout V2 formal policy, seeds, runner and execution-package certification",
+    "packageExecutable": true,
+    "candidate": {
+      "id": "Candidate 1",
+      "lockRevision": 2,
+      "coreHash": "de57e1a96e1fd1450d1aea9c5463b0138a56d77bbf58c748ba042e6f78f5c94d",
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "calibrationVersion": "1.1.0",
+      "candidateSelectionStatus": "SELECTED",
+      "candidateLockStatus": "LOCKED",
+      "calibrationStatus": "DEVELOPMENT_LOCKED_SCOPED",
+      "validationAttemptStatus": "NOT_RUN",
+      "statusNote": "every status is carried forward from the lock recertification unchanged; this phase altered none of them",
+      "changedInThisPhase": false
+    },
+    "holdouts": {
+      "historical-holdout-v5": {
+        "state": "SEALED_UNREAD",
+        "accessCount": 0,
+        "packageState": "COMPLETE since Phase 6C4B1",
+        "runnable": true
+      },
+      "synthetic-stress-holdout-v2": {
+        "state": "SEALED_UNREAD",
+        "accessCount": 0,
+        "packageState": "COMPLETE as of this phase",
+        "runnable": "only after Historical V5 returns PASS"
+      }
+    },
+    "blockerClosure": {
+      "blockerId": "SYNTHETIC_V2_PACKAGE_INCOMPLETE",
+      "keysClosed": [
+        "seedSet",
+        "aggregationRule",
+        "runner",
+        "preparedCommandResolvable",
+        "dryRun",
+        "packageBinding"
+      ],
+      "register": "6b78a9df2492ea79861674cd6502a46b653c67c9317f2a4a927f4a1fd87a566f",
+      "allClosed": true
+    },
+    "protocol": {
+      "fixtures": 16,
+      "totalGames": 79444,
+      "adjudicableGuardrails": 8,
+      "thresholdParameters": 3
+    },
+    "hashes": {
+      "formalPolicyHash": "f93847b4b35ca064572f2b7c97c451ee9f3109f34ea49f3742c5a677ea495946",
+      "compoundPackageHash": "fed02b5c407b5b3888187e1194141fa6380b3a3d189522fdfbd7401f3ad1f5ea",
+      "readinessRegisterHash": "6b78a9df2492ea79861674cd6502a46b653c67c9317f2a4a927f4a1fd87a566f",
+      "dryRunHash": "743493073f76f4c8599a36247fb2056ed0961c7b1351be90818ac16d5f6c4205",
+      "commandCertificationHash": "b49e9723c75766663c14b0e8c09e9d3e6f966ccc60d72a4a508f12e1a00d40df"
+    },
+    "artifacts": [
+      "data/validation/6c4b1s/phase6c4b1s-preflight.json",
+      "data/validation/6c4b1s/synthetic-v2-formal-readiness-register.json",
+      "data/validation/6c4b1s/synthetic-v2-guardrail-registry.json",
+      "data/validation/6c4b1s/synthetic-v2-surface-plan.json",
+      "data/validation/6c4b1s/synthetic-v2-development-controls.json",
+      "data/validation/6c4b1s/synthetic-v2-margin-evidence.json",
+      "data/validation/6c4b1s/synthetic-v2-talent-gap-ladder.json",
+      "data/validation/6c4b1s/synthetic-v2-practical-margins.json",
+      "data/validation/6c4b1s/synthetic-v2-formal-policy.json",
+      "data/validation/6c4b1s/synthetic-v2-sample-plan.json",
+      "data/validation/6c4b1s/synthetic-v2-seeds.json",
+      "data/validation/6c4b1s/synthetic-v2-verdict-schema.json",
+      "data/validation/6c4b1s/synthetic-v2-aggregation-policy.json",
+      "data/validation/6c4b1s/synthetic-v2-mock-manifest.json",
+      "data/validation/6c4b1s/synthetic-v2-dry-run.json",
+      "data/validation/6c4b1s/synthetic-v2-command-certification.json",
+      "data/validation/6c4b1s/compound-formal-validation-package-v2.json"
+    ],
+    "docs": [
+      "docs/simulation-v3/synthetic-v2-formal-execution-readiness.md",
+      "docs/simulation-v3/synthetic-v2-guardrail-registry.md",
+      "docs/simulation-v3/synthetic-v2-measurement-surfaces.md",
+      "docs/simulation-v3/synthetic-v2-practical-margins.md",
+      "docs/simulation-v3/synthetic-v2-verdict-schema.md",
+      "docs/simulation-v3/synthetic-v2-aggregation-policy.md",
+      "docs/simulation-v3/synthetic-v2-sample-plan.md",
+      "docs/simulation-v3/synthetic-v2-seed-domain.md",
+      "docs/simulation-v3/synthetic-v2-runner.md",
+      "docs/simulation-v3/synthetic-v2-mock-stress-set.md",
+      "docs/simulation-v3/synthetic-v2-runner-dry-run.md",
+      "docs/simulation-v3/synthetic-v2-command-certification.md",
+      "docs/simulation-v3/compound-formal-validation-package-v2.md",
+      "docs/simulation-v3/phase6c4b1s-synthetic-v2-preparation.md"
+    ],
+    "stillNotTrue": [
+      {
+        "item": "Historical Holdout V5 has not been run",
+        "consequence": "stage two cannot be cleared to run: its preflight refuses with SYNTHETIC_ACCESS_REFUSED, which is the intended behaviour, not a defect"
+      },
+      {
+        "item": "Synthetic Stress Holdout V2 has not been run",
+        "consequence": "no synthetic stress result exists"
+      },
+      {
+        "item": "no compound formal verdict exists",
+        "consequence": "Candidate 1 carries no formal holdout verdict from either stage"
+      }
+    ],
+    "statusesNotClaimed": {
+      "notClaimed": [
+        "HOLDOUT_VALIDATED",
+        "PRIVATE_PREVIEW_VALIDATED",
+        "PRODUCTION_READY",
+        "ACTIVE"
+      ],
+      "why": "a complete execution package is not a validated candidate. Each of those statuses belongs to the phase that earns it, and production activation requires an explicit CEO GO LIVE."
+    },
+    "deployments": {
+      "preview": 0,
+      "production": 0,
+      "mergedToMain": false
+    },
+    "recordedAtCommit": "7cbedd91fc3e2716063f8bf06da25d356a9dd9ce",
+    "branch": "phase-6c4b1s-synthetic-v2-package",
+    "pass": true,
+    "failedGates": [],
+    "readinessHash": "61c50bd5de4b635cf2e6d5816db104ca10528fda2474c9fc547f9d36684d7a92"
+  },
+  "outputHash": "7e9ff457a79207745f0548562fc9cb9231a755da7e0039798cff2ef05898c1e6"
+}

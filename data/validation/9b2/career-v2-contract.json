@@ -1,0 +1,50 @@
+{
+  "phase": "9B.2",
+  "generatedAt": "2026-09-05T02:19:05.838904+00:00",
+  "artifact": "career-v2-contract",
+  "version": "2.0.0",
+  "tabs": [
+    "overview",
+    "history",
+    "rosters",
+    "favorites",
+    "account"
+  ],
+  "overview": [
+    "identity (no public email)",
+    "career totals (games, record, win rate, current streak, longest win streak) \u2014 all derived, none invented",
+    "by-mode (only modes with records)",
+    "recent activity (5, derived, no security events)"
+  ],
+  "history": {
+    "filters": [
+      "mode",
+      "outcome",
+      "era",
+      "range"
+    ],
+    "sorts": [
+      "newest",
+      "oldest",
+      "margin",
+      "closest"
+    ],
+    "pageSize": 25,
+    "rowActions": [
+      "VIEW FULL REPORT",
+      "RUN IT BACK",
+      "SAVE ROSTER",
+      "favorite"
+    ]
+  },
+  "runItBack": "same five, coaches, era; new server seed",
+  "exactReplay": "never offered \u2014 the game API takes no chosen seed; the saved report is the exact record",
+  "noFabrication": [
+    "rank",
+    "percentile",
+    "contender grade",
+    "global rating",
+    "leaderboard position"
+  ],
+  "chaosSurface": "a chaos run is stored under mode 'chaos' (derived from record.chaosDraft) so the career distinguishes it from a hand-built Dream Matchup; no game-logic path changed"
+}

@@ -1,0 +1,445 @@
+{
+  "artifact": "phase6c4b2r-preflight",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run exec:preflight",
+  "generatedAt": "2026-08-27T13:35:58.255Z",
+  "gitCommit": "3ebf47229d0cceb278e1f11355e56aa8f838b507",
+  "branch": "phase-6c4b2r-candidate1-formal-execution",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "phase": "6C4B2R",
+    "phaseType": "EXECUTION_ONLY",
+    "candidate1Valid": true,
+    "candidate1CoreStable": true,
+    "candidate1ParameterSetStable": true,
+    "historicalV5Ready": true,
+    "historicalV5AccessCount": 0,
+    "syntheticV2Ready": true,
+    "syntheticV2AccessCount": 0,
+    "compoundPackageValid": true,
+    "commandsResolvable": true,
+    "formalOutputsAbsent": true,
+    "formalExecutionAuthorized": true,
+    "candidate": {
+      "id": "Candidate 1",
+      "parentId": "Candidate 0",
+      "lockRevision": 2,
+      "coreHash": "de57e1a96e1fd1450d1aea9c5463b0138a56d77bbf58c748ba042e6f78f5c94d",
+      "coreFileCount": 53,
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "parameterChanges": 0,
+      "calibrationVersion": "1.1.0",
+      "candidateSelectionStatus": "SELECTED",
+      "candidateLockStatus": "LOCKED",
+      "calibrationStatus": "DEVELOPMENT_LOCKED_SCOPED",
+      "validationAttemptStatus": "NOT_RUN",
+      "recertifiedAtCommit": "c370182bb805cd068427283ce2b45a7eda725d1c"
+    },
+    "candidate0": {
+      "coreHash": "58c5fb6974e694c29f87934ab107ff47ce32963a9c0695e36f941c2a70ae6683",
+      "sharedParameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "note": "Candidate 0 and Candidate 1 legitimately share a parameter-set hash; their authoritative identities differ by core hash, which is what every result, probability, competition and replay identity is keyed on."
+    },
+    "seals": {
+      "historical-holdout-v2": {
+        "accessCount": 0,
+        "accessLogExists": false
+      },
+      "synthetic-stress-v1": {
+        "accessCount": 0,
+        "accessLogExists": false
+      },
+      "historical-holdout-v3": {
+        "accessCount": 1,
+        "accessLogExists": true
+      },
+      "synthetic-stress-holdout-v2": {
+        "accessCount": 0,
+        "accessLogExists": false
+      },
+      "historical-holdout-v4": {
+        "accessCount": 1,
+        "accessLogExists": true
+      },
+      "historical-holdout-v5": {
+        "accessCount": 0,
+        "accessLogExists": false
+      }
+    },
+    "compoundPackage": {
+      "version": "2.0.0",
+      "packageHash": "fed02b5c407b5b3888187e1194141fa6380b3a3d189522fdfbd7401f3ad1f5ea",
+      "boundHashCount": 20,
+      "hashVerification": [
+        {
+          "key": "stage1.policyHash",
+          "bound": "64abec44451702338af814f388bcc16748df490e4e0a8b7fb0dfb2e6196a6cc1",
+          "live": "64abec44451702338af814f388bcc16748df490e4e0a8b7fb0dfb2e6196a6cc1",
+          "match": true,
+          "derivable": true
+        },
+        {
+          "key": "stage1.manifestHash",
+          "bound": "2ecaf7dbbc4338446d971af6954b46a9924f29fb8052ba044fc83fcf5ebcbcff",
+          "live": "2ecaf7dbbc4338446d971af6954b46a9924f29fb8052ba044fc83fcf5ebcbcff",
+          "match": true,
+          "derivable": true
+        },
+        {
+          "key": "stage1.seedSetHash",
+          "bound": "d288e8c5754a04f8053b6a29b5892f224bb981c181b95e1a01499a33bf4564c5",
+          "live": "d288e8c5754a04f8053b6a29b5892f224bb981c181b95e1a01499a33bf4564c5",
+          "match": true,
+          "derivable": true
+        },
+        {
+          "key": "stage1.sealHash",
+          "bound": "14b17792344cce81321f3cb2d944ada64cbe6a9a30bac5209962cdf94fb01ec2",
+          "live": "14b17792344cce81321f3cb2d944ada64cbe6a9a30bac5209962cdf94fb01ec2",
+          "match": true,
+          "derivable": true
+        },
+        {
+          "key": "stage1.practicalMarginPolicyHash",
+          "bound": "f92f05a662eb5c2820b2011761c65a454132ee0badd8ce1b70c1edf76bac704b",
+          "live": "f92f05a662eb5c2820b2011761c65a454132ee0badd8ce1b70c1edf76bac704b",
+          "match": true,
+          "derivable": true
+        },
+        {
+          "key": "stage1.dryRunArtifactHash",
+          "bound": "6a9693b82703b7ec07ad8b9626e88eadf35c8daeded09e1ed8364d67e1be5722",
+          "live": "6a9693b82703b7ec07ad8b9626e88eadf35c8daeded09e1ed8364d67e1be5722",
+          "match": true,
+          "derivable": true
+        },
+        {
+          "key": "stage2.policyHash",
+          "bound": "f93847b4b35ca064572f2b7c97c451ee9f3109f34ea49f3742c5a677ea495946",
+          "live": "f93847b4b35ca064572f2b7c97c451ee9f3109f34ea49f3742c5a677ea495946",
+          "match": true,
+          "derivable": true
+        },
+        {
+          "key": "stage2.membershipHash",
+          "bound": "71267875cbf69a9ffa2bd420a2f4bb87437ecb78d6ca2029e7b6826759dbcd19",
+          "live": "71267875cbf69a9ffa2bd420a2f4bb87437ecb78d6ca2029e7b6826759dbcd19",
+          "match": true,
+          "derivable": true
+        },
+        {
+          "key": "stage2.manifestFileSha256",
+          "bound": "e17dca60bebfd2170d41b9b64b918538bf941825a0e6125962a67a69c5cae2b6",
+          "live": "e17dca60bebfd2170d41b9b64b918538bf941825a0e6125962a67a69c5cae2b6",
+          "match": true,
+          "derivable": true
+        },
+        {
+          "key": "stage2.seedSetHash",
+          "bound": "cece58c06bcdb2cc09829d11c34f0c56a23ada26b4e511ca0d03583fd273b2c1",
+          "live": "cece58c06bcdb2cc09829d11c34f0c56a23ada26b4e511ca0d03583fd273b2c1",
+          "match": true,
+          "derivable": true
+        },
+        {
+          "key": "stage2.practicalMarginPolicyHash",
+          "bound": "d285af9ca18d10a8387dbe32828378d35d61e40e4376f0cb2eca4e401f509511",
+          "live": "d285af9ca18d10a8387dbe32828378d35d61e40e4376f0cb2eca4e401f509511",
+          "match": true,
+          "derivable": true
+        },
+        {
+          "key": "stage2.guardrailRegistryHash",
+          "bound": "e308e6544cb6f4b49ccb31fa98536cc12e0eac431d47cda961e845b8e55a3097",
+          "live": "e308e6544cb6f4b49ccb31fa98536cc12e0eac431d47cda961e845b8e55a3097",
+          "match": true,
+          "derivable": true
+        },
+        {
+          "key": "stage2.surfacePlanHash",
+          "bound": "9aaf2efaf09d47de8dae6d156ccdce966374fa37c73145c041af7265e2c7f122",
+          "live": "9aaf2efaf09d47de8dae6d156ccdce966374fa37c73145c041af7265e2c7f122",
+          "match": true,
+          "derivable": true
+        },
+        {
+          "key": "stage2.samplePlanHash",
+          "bound": "97236ee97d740b0d185333a10af2f9be0f4bcb90139b7ae65ed68be179451980",
+          "live": "97236ee97d740b0d185333a10af2f9be0f4bcb90139b7ae65ed68be179451980",
+          "match": true,
+          "derivable": true
+        },
+        {
+          "key": "stage2.aggregationPolicyHash",
+          "bound": "d65321cae9ee46ac02a14ea04bfcfc1e2dc65a61c7b8e31fb0b7c44714e2eca0",
+          "live": "d65321cae9ee46ac02a14ea04bfcfc1e2dc65a61c7b8e31fb0b7c44714e2eca0",
+          "match": true,
+          "derivable": true
+        },
+        {
+          "key": "stage2.verdictSchemaHash",
+          "bound": "c702785be80b5372e51ed572a29b4c953ac9b2178dcec71f4306fa56323bac01",
+          "live": "c702785be80b5372e51ed572a29b4c953ac9b2178dcec71f4306fa56323bac01",
+          "match": true,
+          "derivable": true
+        },
+        {
+          "key": "stage2.mockManifestHash",
+          "bound": "5acbe433bbf6a954c46ac1eb57101ca5bd8cbb7a7a2fdba2669c42ac4044661c",
+          "live": "5acbe433bbf6a954c46ac1eb57101ca5bd8cbb7a7a2fdba2669c42ac4044661c",
+          "match": true,
+          "derivable": true
+        },
+        {
+          "key": "stage2.dryRunArtifactHash",
+          "bound": "ccc0d660bca8bf20f978e4e04ee2dfbb68442f9ae8813e360d347b5b733c8994",
+          "live": "ccc0d660bca8bf20f978e4e04ee2dfbb68442f9ae8813e360d347b5b733c8994",
+          "match": true,
+          "derivable": true
+        },
+        {
+          "key": "stage2.commandCertificationHash",
+          "bound": "b49e9723c75766663c14b0e8c09e9d3e6f966ccc60d72a4a508f12e1a00d40df",
+          "live": "b49e9723c75766663c14b0e8c09e9d3e6f966ccc60d72a4a508f12e1a00d40df",
+          "match": true,
+          "derivable": true
+        },
+        {
+          "key": "stage2.acceptancePolicyHash",
+          "bound": "a3583d6ada42d61ff9ee40322d999154250613ba94a2cd6f073e2196315919b0",
+          "live": "a3583d6ada42d61ff9ee40322d999154250613ba94a2cd6f073e2196315919b0",
+          "match": true,
+          "derivable": true
+        }
+      ],
+      "collidingKeyNames": [
+        "policyHash",
+        "seedSetHash",
+        "practicalMarginPolicyHash",
+        "dryRunArtifactHash"
+      ]
+    },
+    "packageDimensions": {
+      "stage1": {
+        "membershipSealed": true,
+        "policyFrozen": true,
+        "marginsFrozen": true,
+        "samplePlanFrozen": true,
+        "seedsFrozen": true,
+        "runnerCertified": true,
+        "transactionSafe": true,
+        "dryRunPassed": true,
+        "commandResolvable": true,
+        "adjudicable": true
+      },
+      "stage2": {
+        "membershipSealed": true,
+        "policyFrozen": true,
+        "marginsFrozen": true,
+        "samplePlanFrozen": true,
+        "seedsFrozen": true,
+        "runnerCertified": true,
+        "transactionSafe": true,
+        "dryRunPassed": true,
+        "commandResolvable": true,
+        "adjudicable": true
+      }
+    },
+    "historicalV5RunnerConditions": [
+      {
+        "name": "dryRunPassed",
+        "ok": true
+      },
+      {
+        "name": "candidateCoreUnchanged",
+        "ok": true
+      },
+      {
+        "name": "parameterSetUnchanged",
+        "ok": true
+      },
+      {
+        "name": "zeroParameterDrift",
+        "ok": true
+      },
+      {
+        "name": "calibrationVersionUnchanged",
+        "ok": true
+      },
+      {
+        "name": "traitRegistryUnchanged",
+        "ok": true
+      },
+      {
+        "name": "observabilityUnchanged",
+        "ok": true
+      },
+      {
+        "name": "referencesUnchanged",
+        "ok": true
+      },
+      {
+        "name": "holdoutManifestUnchanged",
+        "ok": true
+      },
+      {
+        "name": "marginPolicyUnchanged",
+        "ok": true
+      },
+      {
+        "name": "seedSetUnchanged",
+        "ok": true
+      },
+      {
+        "name": "seedsStillDisjoint",
+        "ok": true
+      }
+    ],
+    "syntheticV2RunnerConditions": [
+      {
+        "name": "dryRunPassed",
+        "ok": true
+      },
+      {
+        "name": "candidateCoreUnchanged",
+        "ok": true
+      },
+      {
+        "name": "parameterSetUnchanged",
+        "ok": true
+      },
+      {
+        "name": "calibrationVersionUnchanged",
+        "ok": true
+      },
+      {
+        "name": "lockRevisionUnchanged",
+        "ok": true
+      },
+      {
+        "name": "acceptancePolicyUnchanged",
+        "ok": true
+      },
+      {
+        "name": "guardrailRegistryUnchanged",
+        "ok": true
+      },
+      {
+        "name": "marginPolicyUnchanged",
+        "ok": true
+      },
+      {
+        "name": "surfacePlanUnchanged",
+        "ok": true
+      },
+      {
+        "name": "samplePlanUnchanged",
+        "ok": true
+      },
+      {
+        "name": "seedSetUnchanged",
+        "ok": true
+      },
+      {
+        "name": "aggregationPolicyUnchanged",
+        "ok": true
+      },
+      {
+        "name": "verdictSchemaUnchanged",
+        "ok": true
+      },
+      {
+        "name": "membershipUnchanged",
+        "ok": true
+      },
+      {
+        "name": "seedsStillDisjoint",
+        "ok": true
+      },
+      {
+        "name": "volumeMeetsFrozenMinimum",
+        "ok": true
+      }
+    ],
+    "protocol": {
+      "stage1": {
+        "matchups": 8,
+        "eras": [
+          "1950s",
+          "1960s",
+          "1970s",
+          "1980s",
+          "1990s",
+          "2000s",
+          "2010s",
+          "2020s"
+        ],
+        "teamSeasons": 16,
+        "surfaces": [
+          "TEAM_A_VS_TEAM_B",
+          "TEAM_A_VS_ERA_REFERENCE",
+          "TEAM_B_VS_ERA_REFERENCE"
+        ],
+        "pairsPerSurface": 2048,
+        "totalGames": 98304
+      },
+      "stage2": {
+        "fixtures": 16,
+        "guardrailKeys": 11,
+        "adjudicableRequirements": 8,
+        "thresholdParameters": 3,
+        "totalGames": 79444,
+        "addressedSeeds": 37432,
+        "seedComparisons": 51,
+        "priorPopulations": 25,
+        "seedOverlaps": 0
+      }
+    },
+    "commandSurface": {
+      "validation:historical-v5": {
+        "script": "node scripts/validation/historical-holdout-v5.mjs",
+        "nonAccessingModes": [],
+        "finding": "this command offers no --help or --preflight mode. Both flags exit 2 with \"--operator and --reason are required\" BEFORE any seal contact, so the access delta is 0 and the safety property holds, but the modes are not available. Left unmodified: the V5 runner is about to be opened and its dry-run artifact hash is bound in the compound package, so it is not touched at execution time. Its twelve preflight conditions were instead evaluated independently here."
+      },
+      "validation:synthetic-v2": {
+        "script": "node scripts/validation/synthetic-stress-holdout-v2.mjs",
+        "nonAccessingModes": [
+          "--help",
+          "--preflight",
+          "--dry-run"
+        ]
+      },
+      "validation:candidate1-formal-verdict": {
+        "script": "node scripts/validation/candidate1FormalVerdict.mjs",
+        "nonAccessingModes": [
+          "--help",
+          "--preflight"
+        ],
+        "nonSemanticAdditionInThisPhase": "a read-only --preflight mode was added. Without it an unrecognised flag fell through to the writing path, so --preflight would have issued a compound verdict artifact before either stage had run — an out-of-order write of the very artifact stage three exists to produce. The addition changes no verdict rule, threshold, hash or exit semantics of the writing path; it gates the final write and returns 2 instead."
+      }
+    },
+    "outputPathIsolation": {
+      "stage1RunPath": "data/validation/6c4b1/historical-holdout-v5-run.json",
+      "stage2RunPath": "data/validation/6c4b1s/synthetic-v2-run.json",
+      "distinctDirectories": true,
+      "thisPhaseOutputDir": "data/validation/6c4b2r",
+      "noOverlapWithV3orV4": true,
+      "v3AccessLogSha256": "43061e20c24d3301e9ebf025139b514b5f05ef53c8ea8732a1e43bd87b244879",
+      "v4AccessLogSha256": "55150cad1d9583fb73e0fada9265a104ea93bcac6f523672d2ccdfbd4f7db9d8"
+    },
+    "authorization": {
+      "operator": "joseph.johnson@indagare.com",
+      "reason": "Phase 6C4B2R — formal two-stage Candidate 1 holdout execution under the frozen compound package v2"
+    },
+    "recordedAtCommit": "3ebf47229d0cceb278e1f11355e56aa8f838b507",
+    "branch": "phase-6c4b2r-candidate1-formal-execution",
+    "pass": true,
+    "failedGates": [],
+    "preflightHash": "323df9f90299ad49d5ec88d7894c01274d3a3a3a9b5e2ae5c7f8ffc864bf346a"
+  },
+  "outputHash": "79daf94a8724b875456fe9f96c1f8dd28a1481a3e657d5de25febc940cd9e280"
+}

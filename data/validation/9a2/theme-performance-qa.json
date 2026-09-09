@@ -1,0 +1,70 @@
+{
+  "artifact": "theme-performance-qa",
+  "phase": "9A.2 — Night Court Editorial production theme",
+  "theme": "night-court-production-hybrid",
+  "build": "lab + dev-fixture build (VITE_EC_THEME_LAB=1 VITE_EC_DEV_FIXTURES=1); production compiles both out",
+  "themeCssBytes": 25614,
+  "priorThemeCssBytes": 12648,
+  "mainBundleBytes": 719076,
+  "priorMainBundleBytes": 695601,
+  "labChunk": {
+    "file": "ThemeLab-zbksTz9i.js",
+    "bytes": 25501
+  },
+  "cssBundleBytes": [
+    80283
+  ],
+  "perSurface": {
+    "lobby": {
+      "fcpMs": 52,
+      "lcpMs": 60,
+      "cls": 0,
+      "sweepFramesIn900ms": null,
+      "transferredKb": 454
+    },
+    "roll2": {
+      "fcpMs": 188,
+      "lcpMs": 188,
+      "cls": 0,
+      "sweepFramesIn900ms": 55,
+      "transferredKb": 225
+    },
+    "postgame": {
+      "fcpMs": 80,
+      "lcpMs": 96,
+      "cls": 0,
+      "sweepFramesIn900ms": null,
+      "transferredKb": 454
+    }
+  },
+  "checks": 5,
+  "passed": 5,
+  "failed": 0,
+  "results": [
+    {
+      "name": "lobby: first paint 52ms, LCP 60ms, CLS 0",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "roll2: first paint 188ms, LCP 188ms, CLS 0, fracture sweep 55 frames/900ms",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "postgame: first paint 80ms, LCP 96ms, CLS 0",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no new raster, video or remote font: the brand folder holds the one Mk1 PNG; the arena kit is SVG",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "theme CSS 25614 B (was 12648 B for four themes; five themes + editorial/header scopes now)",
+      "pass": true,
+      "detail": ""
+    }
+  ]
+}

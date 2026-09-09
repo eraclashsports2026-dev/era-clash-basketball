@@ -1,0 +1,51 @@
+{
+  "artifact": "historical-v5-formal-verdict",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run exec:record-v5",
+  "generatedAt": "2026-08-27T13:44:34.601Z",
+  "gitCommit": "6ea84e3e9a25950835b62a118c9f53088a514b46",
+  "branch": "phase-6c4b2r-candidate1-formal-execution",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "set": "historical-holdout-v5",
+    "verdict": "HISTORICAL_HOLDOUT_V5_FAIL",
+    "outcome": "FAIL",
+    "candidateId": "Candidate 1",
+    "candidateCoreHash": "de57e1a96e1fd1450d1aea9c5463b0138a56d77bbf58c748ba042e6f78f5c94d",
+    "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+    "calibrationVersion": "1.1.0",
+    "lockRevision": 2,
+    "allowedVerdicts": [
+      "HISTORICAL_HOLDOUT_V5_PASS",
+      "HISTORICAL_HOLDOUT_V5_FAIL",
+      "HISTORICAL_HOLDOUT_V5_INVALID_RUN"
+    ],
+    "decidedBy": "the gates frozen in historical-holdout-v5-policy.json before the set was selected",
+    "gatesPassed": [
+      "everyMatchupExecuted",
+      "zeroInvariantFailures",
+      "zeroFinalTies",
+      "zeroImpossibleScores",
+      "zeroPreThreeEraThreePointAttempts",
+      "replayExactEverywhere",
+      "compositeRatioWithinPolicy",
+      "zeroCatastrophicTeams",
+      "traitPassRateMet",
+      "noMatchupFailsMajorityOfTraits"
+    ],
+    "gatesFailed": [
+      "zeroTraitHardFails"
+    ],
+    "noConditionalPass": "there is no conditional pass, no near pass and no waiver. One frozen gate failed, so the verdict is FAIL.",
+    "whyNotInvalidRun": "the run completed all eight matchups under one access event with zero invariant failures, zero impossible scores, zero final ties and exact replay everywhere. The apparatus worked; the candidate did not clear a frozen gate. That is a FAIL, not an INVALID_RUN.",
+    "immutable": true,
+    "consequence": "Synthetic Stress Holdout V2 must NOT be opened. A synthetic stress pass says nothing about a candidate that failed the historical stage, and opening it would consume a one-shot resource for no evidence.",
+    "recordedAtCommit": "6ea84e3e9a25950835b62a118c9f53088a514b46",
+    "verdictHash": "232d9b84d639b3842d223f8adae25f4692686c8ffc0227263dccd1e50bf32b50"
+  },
+  "outputHash": "ce74d76cd1ed14d064d3df4d3ef30b740601c176032299d19649e81f4c535c9c"
+}

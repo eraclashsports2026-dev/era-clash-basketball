@@ -11,7 +11,7 @@
 // The dataset has NO shooting-split data (no FG%/3P%/FT%), so all shooting
 // skill for non-curated players is INFERRED from position, era, scoring
 // volume, and accolades — that uncertainty is explicit, not hidden.
-import { PLAYERS } from "../players.js";
+import { PLAYERS, findCard } from "../players.js";
 import { getAttrs } from "../attributes.js";
 import LEAGUE_NORMS from "./data/leagueNorms.js";
 
@@ -145,4 +145,5 @@ export const playerDNA = (p) => {
 };
 
 export const teamDNA = (team) => team.map(playerDNA);
-export const findPlayer = (id) => PLAYERS.find((p) => p.id === id);
+// Resolves retired aliases, so an old stored lineup still builds a profile.
+export const findPlayer = (id) => findCard(id);

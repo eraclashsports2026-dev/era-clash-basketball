@@ -1,0 +1,66 @@
+{
+  "artifact": "phase9f-preflight",
+  "phase": "9F — Public Competitive Profiles + Player Cards V1",
+  "generatedAt": "2026-09-09T17:10:00Z",
+  "startConditions": {
+    "phase9b1a": "OWNER APPROVED — data/validation/9b2/phase9b1a-acceptance.json",
+    "phase9b2": "OWNER APPROVED — data/validation/9b3/phase9b2-acceptance.json",
+    "phase9b3": "OWNER APPROVED — data/validation/9c/phase9b3-acceptance.json",
+    "phase9c": "OWNER APPROVED — data/validation/9d/phase9c-acceptance.json",
+    "phase9d": "OWNER APPROVED — data/validation/9e/phase9d-acceptance.json",
+    "phase9e": "OWNER APPROVED — data/validation/9f/phase9e-acceptance.json ('Approve Leaderboards V1', 2026-09-09); PR #48 merged at 7d2673e; the two-account rated flow is OWNER-REPORTED, not automated"
+  },
+  "repositoryTruth": {
+    "toplevel": "/Users/josephjohnson/era-clash-basketball",
+    "remote": "https://github.com/eraclashsports2026-dev/era-clash-basketball.git",
+    "branch": "phase-9f-public-competitive-profiles-v1",
+    "acceptedChainHead": "fec7a12 (origin/phase-9b3-chaos-guided-flow-v2) — the branch point for 9F",
+    "chainBranch": "phase-9b3-chaos-guided-flow-v2",
+    "main": "9cd95ff",
+    "wave1": "4dc59e7",
+    "wave2": "ef0caa5",
+    "openPr45": "#45 phase-9b3-chaos-guided-flow-v2 -> phase-9b2-my-eraclash-career-v2 (the chain PR, left open by convention)",
+    "verifiedAgainstReportedValues": "Every reported value was checked against the repository rather than trusted. Phase 9E PR #48 MERGED: confirmed. Certified head 37bac49: confirmed. Merge commit 7d2673e with parents f34f6f1 and 37bac49: confirmed. Merge-record commit fec7a12: confirmed. Merge destination phase-9b3-chaos-guided-flow-v2: confirmed. wave1 4dc59e7, wave2 ef0caa5, main 9cd95ff: all confirmed unmoved. Candidate 4 core prefix 55bb26a2 and calibration 1.4.0: confirmed from /api/health on the harness. Migrations 0001-0006 applied, so 0007 is the correct next number: confirmed."
+  },
+  "frozen": {
+    "candidateId": "Candidate 4",
+    "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+    "calibrationVersion": "1.4.0",
+    "build": "2.7.2",
+    "apiRoutes": 12,
+    "middleware": true,
+    "functionBudget": "FULL at 13 (12 api routes + middleware). api/share-page.js and middleware.js both document the budget in comments. Phase 9F must add NO serverless function: apiFunctionCountIncrease must be 0.",
+    "migrationsBefore9F": ["0001_accounts.sql", "0002_accounts_hardening.sql", "0003_career_v2.sql", "0004_challenges.sql", "0005_progression_v1.sql", "0006_competitive_rating_v1.sql"],
+    "competitiveRatingVersion": "1.0.0",
+    "progressionVersion": "1.0.0",
+    "achievementCatalog": "23 achievements (2 hidden), catalog version 1.0.0 — unchanged by 9F"
+  },
+  "existingArchitectureToReuse": {
+    "preferences": "user_preferences.prefs, a CLOSED vocabulary: PREF_SCHEMA in src/accounts/careerV2.js (reduced_motion, default_result_tab, career_density, lobby_landing, leaderboard_visibility) mirrored by prefs_ok() in SQL. 9F adds exactly one key, profile_visibility, and must not weaken validation.",
+    "identity": "public.profiles(user_id, display_name, avatar_url) — display_name 1-24 chars, no angle brackets. No public identifier exists yet; 9F adds an opaque server-generated slug.",
+    "competitive": "competitive_profiles / competitive_rating_events plus competitive_leaderboard() and competitive_rank_of(). PUBLIC_ROW_FIELDS already defines the safe leaderboard projection; 9F composes with it and adds no second rating source of truth.",
+    "progression": "progression_profiles.career_level and achievement_unlocks — read for display only.",
+    "routing": "SPA routes are rewritten to /index.html in vercel.json (/leaderboard, /my-eraclash, /play/*). Server-rendered public share pages with dynamic OG metadata live in api/share-page.js, dispatched by ?kind= and rewritten from /result/:id and /challenge/:id.",
+    "dispatch": "api/profile.js dispatches an action block per phase (9C challenge, 9D progression, 9E competitive) inside ONE function. 9F adds a profile action block there.",
+    "telemetry": "api/events.js ALLOWED mirrored by src/activation.js ACTIVATION_EVENTS; contract tests pin the two equal."
+  },
+  "phase9EInvariantVerifiedForReuse": {
+    "question": "Did Phase 9E intend the raw provisional Competitive Rating to remain private until placement?",
+    "answer": "YES, and 9F must preserve it publicly.",
+    "evidence": "competitive_leaderboard() returns only accounts with rated_matches >= 5 AND unique_opponents >= 3, so a provisional rating has never reached any public surface. competitive_rank_of() returned NULL for a public-but-provisional account in the live certification (data/validation/9e/rating-rls-live.json, leaderboardPrivacy.p0). The account owner's own view does show their provisional rating (LeaderboardPage), and that stays.",
+    "consequence": "A PUBLIC 9F profile of a provisional player shows COMPETITIVE / PROVISIONAL and the placement progress counts only — no rating number, no rank, no estimate. This is stricter than 'no rank' and is the correct reading of the accepted 9E contract."
+  },
+  "preEditSweep": {
+    "log": "data/validation/9f/pre-edit-sweep.log — at fec7a12",
+    "unit": "2616/2616 across 81 files",
+    "e2e": "83 passed, 1 failed",
+    "gates": "57 PASS, 0 FAIL; the sixteen 9F profile gates SKIPPED (no such script) because the phase had not begun",
+    "knownBaselineFlake": {
+      "test": "e2e/phase7b-preview.spec.js — 'P1: Ready and Postgame show the SAME pregame read' (candidate3-preview project)",
+      "detail": "Failed once in the full suite with 'the stored read is reused verbatim'; the whole spec file then passed 6/6 standalone. A Phase 7B surface, unrelated to Phase 9F. Playwright already runs workers:1 retries:0, so this is a genuine intermittent rather than a parallelism artifact.",
+      "decision": "NOT masked. The shared Playwright retry setting is left alone, because raising it would hide failures for every phase. Instead scripts/profiles/phase9fSweep.sh re-runs a failing spec once ALONE and records whether it passes alone (intermittent) or fails alone (a real failure), so the final report can tell them apart.",
+      "preExisting": true
+    }
+  },
+  "checkpoints": ["1 public profile contract and opaque identifier", "2 migration 0007: profile_visibility, slug, featured achievements, safe public projection", "3 server library and the profile action block", "4 Player Card and the public profile route", "5 My EraClash public-profile module, preview and sharing", "6 leaderboard integration", "7 privacy / enumeration / RLS / responsive / accessibility / live and deployed certification"]
+}

@@ -1,0 +1,265 @@
+{
+  "artifact": "objective-visibility-resolution",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run calibration:c6:visibility",
+  "generatedAt": "2026-08-26T17:44:10.633Z",
+  "gitCommit": "26d030a9aef4ebb25e5278cfe0e7f7a0f617a1a8",
+  "branch": "phase-6c2c6-probability-side-bias-lock",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {
+    "data/calibration/c5/candidate-history.json": "5b13be1ed22b7c390d26f322c6dc5563533a20bd1b8e21daea11cfb4158b53bc",
+    "data/calibration/c5/no-effect-triage.json": "6a35ee346ac030c60e025783f8ebd4c7e6aae8120a7aed215d227292a1306558"
+  },
+  "data": {
+    "objectiveVisibilityResolutionVersion": "1.0.0",
+    "visibilityClasses": [
+      "ADJUDICATED_BY_PRIMARY_OBJECTIVE",
+      "ADJUDICATED_BY_CONDITIONAL_MECHANICAL_TARGET",
+      "DEFAULT_FROZEN_UNADJUDICATED",
+      "GUARDRAIL_ONLY"
+    ],
+    "parametersReadFromArtifact": [
+      "opportunity.mismatch.severe",
+      "zone.highPostVulnerability",
+      "zone.cornerVulnerability"
+    ],
+    "sourceOfParameterIds": "data/calibration/c5/candidate-history.json -> adjudicability.blindParameters",
+    "resolved": [
+      {
+        "id": "opportunity.mismatch.severe",
+        "module": "opportunityAllocation",
+        "defaultValue": 2.6,
+        "candidateValue": 2.6,
+        "valueEqualsDefault": true,
+        "registryRange": {
+          "min": 1,
+          "max": 4
+        },
+        "mechanic": "mismatch:SEVERE",
+        "mechanicContext": "possessions carrying a SEVERE mismatch",
+        "activatedPossessions": 20192,
+        "activationMet": true,
+        "primaryObjectiveVisibility": {
+          "visible": false,
+          "cellsDiffering": 0,
+          "cellsTotal": 288,
+          "measuredAt": "the FULL registry range, wider than the search's own movement cap",
+          "meaning": "The scoring-share objective is blind to this parameter. It cannot rank two values, so it can neither identify nor refute one."
+        },
+        "conditionalMechanicalTarget": {
+          "targetClass": "MECHANICAL_CONSISTENCY_TARGET",
+          "predeclared": true,
+          "predeclaredIn": "Phase 6C2C5 exercise contracts, frozen before the candidate search ran",
+          "claim": "a larger bias concentrates the mismatch possessions on its beneficiary",
+          "directionMetric": "primaryConcentration",
+          "secondaryMetric": null,
+          "primary": {
+            "metric": "primaryConcentration",
+            "available": true,
+            "atMinMeanDelta": -0.01151,
+            "atMinT": -6.14376,
+            "atMaxMeanDelta": 0.0086,
+            "atMaxT": 5.06138,
+            "spanAcrossRange": 0.02011,
+            "monotoneAcrossRange": true,
+            "bracketsTheDefault": true,
+            "directionConsistentWithClaim": true
+          },
+          "secondary": null,
+          "guardrails": {
+            "possessions": {
+              "meanDelta": 0.07813,
+              "t": 0.8733
+            },
+            "makeRateAll": {
+              "meanDelta": -0.00152,
+              "t": -0.8931
+            }
+          },
+          "guardrailBreaches": [],
+          "directionConfirmed": true,
+          "mechanicallyConsistent": true,
+          "whatThisEstablishes": "The mechanic responds to the parameter, in the declared direction, monotonically across the full registry range, without breaching a guardrail.",
+          "whatThisDoesNotEstablish": "A magnitude. Sign and monotonicity do not select a value, so this target cannot prefer the default over any other value in range. The default is retained because nothing available can rank values, not because it was shown to be best.",
+          "notInventedAfterResults": "The contract, its conditional metrics, its guardrails and its expected direction were all written in Phase 6C2C5 before the candidate search produced any result. No target was added or re-aimed in response to a candidate outcome."
+        },
+        "priorReadinessV3": "STRUCTURAL_CALIBRATION_ONLY",
+        "finalLockClassification": "DEFAULT_FROZEN_UNADJUDICATED",
+        "visibilityClass": "ADJUDICATED_BY_CONDITIONAL_MECHANICAL_TARGET",
+        "reclassificationReason": "Phase 6C2C5 filed this as STRUCTURAL_CALIBRATION_ONLY, which implies a bounded search could tune it. That search then proved the only available numeric objective cannot see the parameter at all. DEFAULT_FROZEN_UNADJUDICATED states the true position: identifiable through its own mechanic, unrankable by any available target, frozen at its default."
+      },
+      {
+        "id": "zone.highPostVulnerability",
+        "module": "zoneResolution",
+        "defaultValue": 1,
+        "candidateValue": 1,
+        "valueEqualsDefault": true,
+        "registryRange": {
+          "min": 0.3,
+          "max": 2
+        },
+        "mechanic": "zoneGap:HIGH_POST",
+        "mechanicContext": "high-post attacks against a live zone",
+        "activatedPossessions": 1268,
+        "activationMet": true,
+        "primaryObjectiveVisibility": {
+          "visible": false,
+          "cellsDiffering": 0,
+          "cellsTotal": 288,
+          "measuredAt": "the FULL registry range, wider than the search's own movement cap",
+          "meaning": "The scoring-share objective is blind to this parameter. It cannot rank two values, so it can neither identify nor refute one."
+        },
+        "conditionalMechanicalTarget": {
+          "targetClass": "MECHANICAL_CONSISTENCY_TARGET",
+          "predeclared": true,
+          "predeclaredIn": "Phase 6C2C5 exercise contracts, frozen before the candidate search ran",
+          "claim": "higher vulnerability draws more high-post attacks and better looks",
+          "directionMetric": "expectedMake",
+          "secondaryMetric": "count",
+          "primary": {
+            "metric": "expectedMake",
+            "available": true,
+            "atMinMeanDelta": -0.02073,
+            "atMinT": -3.39359,
+            "atMaxMeanDelta": 0.02166,
+            "atMaxT": 7.33036,
+            "spanAcrossRange": 0.04239,
+            "monotoneAcrossRange": true,
+            "bracketsTheDefault": true,
+            "directionConsistentWithClaim": true
+          },
+          "secondary": {
+            "metric": "count",
+            "available": true,
+            "atMinMeanDelta": -3.42969,
+            "atMinT": -26.55728,
+            "atMaxMeanDelta": 4.02734,
+            "atMaxT": 26.33398,
+            "spanAcrossRange": 7.45703,
+            "monotoneAcrossRange": true,
+            "bracketsTheDefault": true,
+            "directionConsistentWithClaim": true
+          },
+          "guardrails": {
+            "possessions": {
+              "meanDelta": 0.20703,
+              "t": 1.20907
+            }
+          },
+          "guardrailBreaches": [],
+          "directionConfirmed": true,
+          "mechanicallyConsistent": true,
+          "whatThisEstablishes": "The mechanic responds to the parameter, in the declared direction, monotonically across the full registry range, without breaching a guardrail.",
+          "whatThisDoesNotEstablish": "A magnitude. Sign and monotonicity do not select a value, so this target cannot prefer the default over any other value in range. The default is retained because nothing available can rank values, not because it was shown to be best.",
+          "notInventedAfterResults": "The contract, its conditional metrics, its guardrails and its expected direction were all written in Phase 6C2C5 before the candidate search produced any result. No target was added or re-aimed in response to a candidate outcome."
+        },
+        "priorReadinessV3": "STRONGLY_REGULARIZED_CALIBRATION",
+        "finalLockClassification": "DEFAULT_FROZEN_UNADJUDICATED",
+        "visibilityClass": "ADJUDICATED_BY_CONDITIONAL_MECHANICAL_TARGET",
+        "reclassificationReason": "Phase 6C2C5 filed this as STRONGLY_REGULARIZED_CALIBRATION, which implies a bounded search could tune it. That search then proved the only available numeric objective cannot see the parameter at all. DEFAULT_FROZEN_UNADJUDICATED states the true position: identifiable through its own mechanic, unrankable by any available target, frozen at its default."
+      },
+      {
+        "id": "zone.cornerVulnerability",
+        "module": "zoneResolution",
+        "defaultValue": 1,
+        "candidateValue": 1,
+        "valueEqualsDefault": true,
+        "registryRange": {
+          "min": 0.3,
+          "max": 2
+        },
+        "mechanic": "zoneGap:CORNER",
+        "mechanicContext": "corner attacks against a live zone",
+        "activatedPossessions": 9031,
+        "activationMet": true,
+        "primaryObjectiveVisibility": {
+          "visible": false,
+          "cellsDiffering": 0,
+          "cellsTotal": 288,
+          "measuredAt": "the FULL registry range, wider than the search's own movement cap",
+          "meaning": "The scoring-share objective is blind to this parameter. It cannot rank two values, so it can neither identify nor refute one."
+        },
+        "conditionalMechanicalTarget": {
+          "targetClass": "MECHANICAL_CONSISTENCY_TARGET",
+          "predeclared": true,
+          "predeclaredIn": "Phase 6C2C5 exercise contracts, frozen before the candidate search ran",
+          "claim": "higher vulnerability draws more corner attacks and better looks",
+          "directionMetric": "expectedMake",
+          "secondaryMetric": "count",
+          "primary": {
+            "metric": "expectedMake",
+            "available": true,
+            "atMinMeanDelta": -0.00177,
+            "atMinT": -1.20044,
+            "atMaxMeanDelta": 0.02977,
+            "atMaxT": 26.36431,
+            "spanAcrossRange": 0.03154,
+            "monotoneAcrossRange": true,
+            "bracketsTheDefault": true,
+            "directionConsistentWithClaim": true
+          },
+          "secondary": {
+            "metric": "count",
+            "available": true,
+            "atMinMeanDelta": -8.14844,
+            "atMinT": -23.56654,
+            "atMaxMeanDelta": 8.82031,
+            "atMaxT": 22.04347,
+            "spanAcrossRange": 16.96875,
+            "monotoneAcrossRange": true,
+            "bracketsTheDefault": true,
+            "directionConsistentWithClaim": true
+          },
+          "guardrails": {
+            "possessions": {
+              "meanDelta": 0.05078,
+              "t": 0.39149
+            }
+          },
+          "guardrailBreaches": [],
+          "directionConfirmed": true,
+          "mechanicallyConsistent": true,
+          "whatThisEstablishes": "The mechanic responds to the parameter, in the declared direction, monotonically across the full registry range, without breaching a guardrail.",
+          "whatThisDoesNotEstablish": "A magnitude. Sign and monotonicity do not select a value, so this target cannot prefer the default over any other value in range. The default is retained because nothing available can rank values, not because it was shown to be best.",
+          "notInventedAfterResults": "The contract, its conditional metrics, its guardrails and its expected direction were all written in Phase 6C2C5 before the candidate search produced any result. No target was added or re-aimed in response to a candidate outcome."
+        },
+        "priorReadinessV3": "STRONGLY_REGULARIZED_CALIBRATION",
+        "finalLockClassification": "DEFAULT_FROZEN_UNADJUDICATED",
+        "visibilityClass": "ADJUDICATED_BY_CONDITIONAL_MECHANICAL_TARGET",
+        "reclassificationReason": "Phase 6C2C5 filed this as STRONGLY_REGULARIZED_CALIBRATION, which implies a bounded search could tune it. That search then proved the only available numeric objective cannot see the parameter at all. DEFAULT_FROZEN_UNADJUDICATED states the true position: identifiable through its own mechanic, unrankable by any available target, frozen at its default."
+      }
+    ],
+    "counts": {
+      "unseenByPrimaryObjective": 3,
+      "directionConfirmed": 3,
+      "mechanicallyConsistent": 3,
+      "frozenAtDefault": 3
+    },
+    "noParameterSearchPerformed": true,
+    "noParameterSearchNote": "Values were measured at the registry minimum and maximum to establish DIRECTION. No value was scored against an objective, ranked, or selected. Every parameter remains at its registry default.",
+    "readinessV4": {
+      "DEFAULT_FROZEN_TRUE_NO_EFFECT": 29,
+      "STRUCTURAL_CALIBRATION_ONLY": 4,
+      "STRONGLY_REGULARIZED_CALIBRATION": 4,
+      "DEFAULT_FROZEN_PENDING_EXTERNAL_DATA": 9,
+      "DEFAULT_FROZEN_CONFOUNDED": 2,
+      "DEFAULT_FROZEN_GUARDRAIL": 2,
+      "DEFAULT_FROZEN_UNADJUDICATED": 3
+    },
+    "readinessReconciliation": {
+      "label": "readiness-v4",
+      "sum": 53,
+      "expectedTotal": 53,
+      "reconciles": true,
+      "problems": []
+    },
+    "activeParameterCount": 53,
+    "allValuesAtRegistryDefault": true,
+    "drift": [],
+    "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309"
+  },
+  "outputHash": "f764f904a1a197f6520270da3c375aa604f6d8a13a473de0c95c9cc723d2168c"
+}

@@ -1,0 +1,26 @@
+{
+  "artifact": "phase8a-production-isolation",
+  "phase": "8A",
+  "productionChanges": 0,
+  "candidate3CoreDrift": 0,
+  "checks": {
+    "main": "9cd95ff8797f8cdef252bbe67d63158c01b9f9bd — local = origin, unchanged from preflight",
+    "productionDeployment": {
+      "id": 6072350574,
+      "note": "pre-phase, unchanged"
+    },
+    "productionHealth": "ok · 2.7.2 · no preview block (Candidate 3 disabled in production)",
+    "productionNamespaceWrites": 0,
+    "newNamespaces": [
+      "chaos-run",
+      "chaos-chal",
+      "chaos-guest"
+    ],
+    "chaosFlagInProduction": "CHAOS_CLASH_ENABLED defaults to preview-only, so production never serves Chaos Clash",
+    "mergedIntoMain": false,
+    "candidate3DeployedToProduction": false,
+    "srcV3Modified": false,
+    "syntheticV2": "unopened",
+    "historicalArtifacts": "unchanged"
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "artifact": "candidate1-competition-validation",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run c1:internal-validation",
+  "generatedAt": "2026-08-27T01:45:34.280Z",
+  "gitCommit": "348bdfa9009b79e2a1e7599ff2e927dda0c9b072",
+  "branch": "phase-6c4a-candidate1-trait-fidelity",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "candidateId": "Candidate 1",
+    "coreHash": "390a8fec6d2da894a36590b30bf0c244eab9479474af2a3459d4306b32f68aa7",
+    "modes": [
+      {
+        "mode": "Single Game",
+        "games": 500,
+        "invariantViolations": 0
+      },
+      {
+        "mode": "Best of 7",
+        "games": 1028,
+        "invariantViolations": 0,
+        "series": 220,
+        "meanLength": 4.67,
+        "lengthDistribution": "{\"4\":128,\"5\":50,\"6\":28,\"7\":14}"
+      },
+      {
+        "mode": "Win 82",
+        "games": 4264,
+        "invariantViolations": 0,
+        "seasons": 52,
+        "meanWins": 43.08,
+        "minWins": 0,
+        "maxWins": 82
+      },
+      {
+        "mode": "Tournament",
+        "games": 168,
+        "invariantViolations": 0,
+        "brackets": 24,
+        "roundsPerBracket": 3
+      },
+      {
+        "mode": "Mirror seasons",
+        "games": 984,
+        "invariantViolations": 0,
+        "seasons": 12,
+        "meanGoldWins": 42.08,
+        "range": "33-52"
+      }
+    ],
+    "totalGames": 6944,
+    "totalInvariantViolations": 0,
+    "gates": {
+      "mirrorSeasonUnbiased": true,
+      "competitionModesClean": true,
+      "competitionMinimumsMet": true
+    },
+    "pass": true
+  },
+  "outputHash": "a9cca17c3d1a78974b1063d8462e6c95e0b8fdb37d4daca9014dc6b84bc48103"
+}

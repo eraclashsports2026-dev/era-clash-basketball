@@ -1,0 +1,223 @@
+{
+  "artifact": "historical-v5-runner-dry-run",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run v5:dryrun",
+  "generatedAt": "2026-08-27T04:37:38.995Z",
+  "gitCommit": "174d2af7dc240e597f28a6349bfe2065ea7ea4b8",
+  "branch": "phase-6c4b1-v5-freeze-and-seal",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "historicalHoldoutRunnerVersion": "3.0.0",
+    "runnerModule": "scripts/validation/historical-holdout-v5.mjs",
+    "exactCodePath": "runSealedSetOnce from scripts/validation/runner.mjs — the same function the V5 command calls; the scoring path uses the same teamFromFixture, playSurface, shareMae and scoreTrait the runner imports",
+    "mockSet": {
+      "members": [
+        "sd2-balanced-lower-ovr",
+        "sd2-creator-stack",
+        "sd2-elite-shooting",
+        "sd2-weak-shooting"
+      ],
+      "source": "SYNTHETIC_DEVELOPMENT_V2 — development fixtures, never a holdout",
+      "containsV5Id": false
+    },
+    "pairsPerSurface": 40,
+    "checks": [
+      {
+        "name": "candidateCoreMatchesPolicy",
+        "pass": true,
+        "detail": "de57e1a96e1fd145... == policy"
+      },
+      {
+        "name": "parameterSetMatchesPolicy",
+        "pass": true,
+        "detail": "hash matches, zero drift"
+      },
+      {
+        "name": "calibrationVersionMatchesPolicy",
+        "pass": true,
+        "detail": "1.1.0"
+      },
+      {
+        "name": "manifestHashStable",
+        "pass": true,
+        "detail": "2ecaf7dbbc433844..."
+      },
+      {
+        "name": "policyHashStable",
+        "pass": true,
+        "detail": "64abec4445170233..."
+      },
+      {
+        "name": "marginPolicyHashMatches",
+        "pass": true,
+        "detail": "f92f05a662eb5c28..."
+      },
+      {
+        "name": "observabilityHashMatches",
+        "pass": true,
+        "detail": "b6976ba81c26aca6..."
+      },
+      {
+        "name": "referenceHashMatches",
+        "pass": true,
+        "detail": "e8482201d390fe07..."
+      },
+      {
+        "name": "traitRegistryStable",
+        "pass": true,
+        "detail": "c034937be7e40bd1..."
+      },
+      {
+        "name": "seedHashStable",
+        "pass": true,
+        "detail": "seed manifest stable and still disjoint at 2,048 seeds"
+      },
+      {
+        "name": "everyV5PlayerResolves",
+        "pass": true,
+        "detail": "80 fixture players, 0 unresolved"
+      },
+      {
+        "name": "everyEraReferencePlayerResolves",
+        "pass": true,
+        "detail": "40 era-reference players, 0 unresolved — the omission that burned V4's unlock"
+      },
+      {
+        "name": "simplifiedMapWouldStillFail",
+        "pass": true,
+        "detail": "a V5-store-only map still misses era-reference players, so preflighting one would prove nothing"
+      },
+      {
+        "name": "typedTargetAccessorUsed",
+        "pass": true,
+        "detail": "39 usable target values, 351 null — none zero-filled"
+      },
+      {
+        "name": "perFixtureRubricClean",
+        "pass": true,
+        "detail": "74 scored traits across 16 fixtures, 0 contradictions"
+      },
+      {
+        "name": "everyScoredTraitCarriesAMargin",
+        "pass": true,
+        "detail": "the dual gate has a margin available for every trait it will judge"
+      },
+      {
+        "name": "mockSetContainsNoV5Id",
+        "pass": true,
+        "detail": "4 mock members, none a V5 id"
+      },
+      {
+        "name": "sealRefusesWithoutItsOwnFlag",
+        "pass": true,
+        "detail": "a set with no --unlock flag of its own refuses to open"
+      },
+      {
+        "name": "unlockIncrementsExactlyOnce",
+        "pass": true,
+        "detail": "access count 1"
+      },
+      {
+        "name": "crashLeavesResumableState",
+        "pass": true,
+        "detail": "status RUNNING, 2 members completed and written incrementally"
+      },
+      {
+        "name": "secondRunRefused",
+        "pass": true,
+        "detail": "refused with SECOND_RUN_REFUSED"
+      },
+      {
+        "name": "resumeCompletesUnderSameAccessEvent",
+        "pass": true,
+        "detail": "4/4 members, access count still 1"
+      },
+      {
+        "name": "resumeProducesARunHash",
+        "pass": true,
+        "detail": "b0a00b7ff2907ae9..."
+      },
+      {
+        "name": "changedIdentityRefusedOnResume",
+        "pass": true,
+        "detail": "coreHash:IDENTITY_MISMATCH parameterSetHash:IDENTITY_MISMATCH policyHash:IDENTITY_MISMATCH manifestHash:IDENTITY_MISMATCH"
+      },
+      {
+        "name": "traitScoringPathWorks",
+        "pass": true,
+        "detail": "ELITE_OFFENSE scored FAIL with diff -0.01063"
+      },
+      {
+        "name": "shareMaePathWorks",
+        "pass": true,
+        "detail": "composite 0.03439 over 3 supported share metrics (playerScoringShares, playerReboundShares, playerAssistShares)"
+      },
+      {
+        "name": "dualGateEvaluates",
+        "pass": true,
+        "detail": "statistical false AND practical false => hard fail false"
+      },
+      {
+        "name": "structuralGatesMeasurable",
+        "pass": true,
+        "detail": "invariants 0, ties 0, replay true"
+      },
+      {
+        "name": "v5AccessStillZero",
+        "pass": true,
+        "detail": "historical-holdout-v5 access 0"
+      },
+      {
+        "name": "syntheticV2AccessStillZero",
+        "pass": true,
+        "detail": "synthetic-stress-holdout-v2 access 0"
+      }
+    ],
+    "identityMismatchOutcomes": {
+      "coreHash": "IDENTITY_MISMATCH",
+      "parameterSetHash": "IDENTITY_MISMATCH",
+      "policyHash": "IDENTITY_MISMATCH",
+      "manifestHash": "IDENTITY_MISMATCH"
+    },
+    "targetAccess": {
+      "usableTargetValues": 39,
+      "nullTargetValues": 351,
+      "zeroFilled": 0
+    },
+    "realEvaluation": {
+      "fixtureId": "h3-1951-52-lakers",
+      "games": 80,
+      "compositeShareMae": 0.03439,
+      "supportedShareMetrics": [
+        "playerScoringShares",
+        "playerReboundShares",
+        "playerAssistShares"
+      ],
+      "trait": "ELITE_OFFENSE",
+      "traitResult": "FAIL",
+      "traitDiff": -0.01063,
+      "practicalMargin": 0.02,
+      "dualGate": {
+        "statisticallyOpposite": false,
+        "beyondPracticalMargin": false,
+        "hardFail": false
+      },
+      "invariantViolations": 0,
+      "ties": 0,
+      "replayExact": true
+    },
+    "accessCounts": {
+      "historicalHoldoutV5": 0,
+      "syntheticStressHoldoutV2": 0,
+      "historicalHoldoutV4": 1,
+      "historicalHoldoutV3": 1
+    },
+    "pass": true,
+    "failedChecks": []
+  },
+  "outputHash": "6a9693b82703b7ec07ad8b9626e88eadf35c8daeded09e1ed8364d67e1be5722"
+}

@@ -1,0 +1,25 @@
+{
+  "artifact": "phase8c-production-isolation",
+  "phase": "8C — Time Arena",
+  "measuredAgainst": {
+    "startCommit": "6a7dcdb",
+    "guardedPaths": [
+      "src/v3",
+      "data/calibration",
+      "data/validation/6c6"
+    ]
+  },
+  "candidate3DriftCommitted": "none",
+  "candidate3DriftIncludingWorkingTree": "none",
+  "candidate3CoreDrift": 0,
+  "serverlessFunctions": {
+    "apiRoutes": 12,
+    "middleware": true,
+    "total": 13,
+    "budget": 13
+  },
+  "withinFunctionBudget": true,
+  "mainSha": "9cd95ff8797f8cdef252bbe67d63158c01b9f9bd",
+  "mainTouchedByThisPhase": false,
+  "note": "main is not a comparison basis for the engine: v2.7.2 predates V3, so the invariant is that this phase changed none of the guarded paths."
+}

@@ -14,17 +14,45 @@ import { flags, limits } from "./_lib/flags.js";
 import { tooLarge, MODES, validateTeamIds, validSimId, validChallengeId, cleanName } from "./_lib/validate.js";
 import { computeResult, dailyScore, newSeed } from "./_lib/game-core.js";
 import { computeResultV3 } from "./_lib/game-core-v3.js";
+import { computeResultPreview, PREVIEW_NAMESPACES, PREVIEW_RESULT_ID_PREFIX } from "./_lib/previewEngine.js";
+import { buildPregameRead } from "./_lib/pregameRead.js";
+import { buildDeterministicSummary, deriveDraftConsequences, buildExpandedAnalysis, eraImpactLine } from "./_lib/postgameStory.js";
+import { PREVIEW_ACCESS } from "../config/previewAccess.js";
+import { previewIdentity } from "./_lib/previewAccessCheck.js";
+import { previewEvent } from "./_lib/previewTelemetry.js";
+
+// A played run stays claimed longer than the run lives (6h), so a retry that
+// arrives after the run has expired still cannot replay it.
+const CHAOS_PLAYED_TTL = 60 * 60 * 24;
 import { validCoachId, validEraId } from "./_lib/validate.js";
 import { validDifficulty } from "../src/v3/difficulty.js";
 import { findDuplicatePerson } from "../src/v3/persons.js";
 import { utcDateKey, verifyDailyLineup, dailyOpponent } from "../src/dailyChallenge.js";
+// NOTE: dailyConfig is deliberately NOT imported here. Building a config in
+// the game route is what split the Daily across a mid-day deploy; the route
+// must read the stored record via officialDailyConfig().
+import { dailySimulationSeed, validateDailySelection, validateDailyVersions } from "../src/v3/dailyCoachEra.js";
+import { officialDailyConfig } from "./_lib/dailyOfficial.js";
+import {
+  createRun, loadRun, saveRun, ownsRun, applyHolds, applyCoachHolds, applyRollDecisions, applyEraChoice,
+  applyCoach, applyAbandon, publishChallenge, eraChangeState,
+  view as chaosView, simulationSetup, draftHistory, validRunId, validChaosChallengeId,
+  guestRunsUsed, consumeGuestRun, guestLimitReached,
+} from "./_lib/chaosRun.js";
+import { can, CAPABILITIES, gateReason, GUEST_CHAOS_RUNS } from "../src/entitlements.js";
 
 const RESULT_TTL = 60 * 60 * 24 * 180;
 const IDEM_TTL = 60 * 60 * 24;
 
-const chaosHeader = (req) =>
-  process.env.ENABLE_CHAOS_TESTS === "true" && process.env.NODE_ENV !== "production"
-    ? String(req.headers["x-chaos"] || "") : "";
+const chaosHeader = (req) => {
+  const v = String(req.headers["x-chaos"] || "");
+  if (process.env.ENABLE_CHAOS_TESTS === "true" && process.env.NODE_ENV !== "production") return v;
+  // A deployed Preview permits ONLY the preview-scoped failure injection so
+  // the fallback drill can run against the real deployment. Production never
+  // honors any chaos value.
+  if (process.env.VERCEL_ENV === "preview" && v === "preview-fail") return v;
+  return "";
+};
 
 // Public, sanitized view of a stored result (never expose the owner session).
 const publicResult = (r) => { const { session, ...rest } = r; return rest; };
@@ -36,8 +64,9 @@ export default async function handler(req, res) {
 
   if (req.method === "GET") {
     const id = String(req.query?.id || "");
-    if (!/^[a-z0-9]{6,16}$/.test(id)) return sendError(res, "VALIDATION_FAILURE", requestId);
-    const r = hasStore() ? await getJSON(`result:${id}`) : null;
+    const isPreviewId = /^pv_[a-z0-9]{6,16}$/.test(id);
+    if (!isPreviewId && !/^[a-z0-9]{6,16}$/.test(id)) return sendError(res, "VALIDATION_FAILURE", requestId);
+    const r = hasStore() ? await getJSON(`${isPreviewId ? "preview-result" : "result"}:${id}`) : null;
     if (!r) return sendError(res, "NOT_FOUND", requestId);
     res.setHeader("Cache-Control", "public, max-age=300");
     return res.status(200).json(publicResult(r));
@@ -54,6 +83,157 @@ export default async function handler(req, res) {
 
   try {
     const b = req.body || {};
+
+    // ── Chaos Clash actions ─────────────────────────────────────────────────
+    // These ride /api/game because the deployment sits at its 13-function
+    // budget (12 API routes + middleware); a dedicated route would fail the
+    // build. Every action is server-authoritative: the client submits which
+    // slots to HOLD and which of three OFFERED coaches to take, and nothing
+    // else. Player ids, the era, the CPU's holds, the CPU's coach and the seed
+    // are never read from the request body.
+    const chaosAction = typeof b.chaosAction === "string" ? b.chaosAction : null;
+    if (chaosAction) {
+      if (!f.chaosClash) return sendError(res, "FEATURE_DISABLED", requestId);
+      if (!hasStore()) return sendError(res, "SERVICE_UNAVAILABLE", requestId);
+      const ip = clientIp(req);
+      const okRate = await Promise.all([
+        rateLimit(`chaos:s:${session.slice(0, 16)}`, L.chaosPerMinSession ?? 40, 60),
+        rateLimit(`chaos:ip:${ip}`, L.chaosPerMinIp ?? 90, 60),
+      ]);
+      if (okRate.some((a) => !a)) return sendError(res, "RATE_LIMITED", requestId, { retryAfter: 20 });
+
+      // Entitlement is read from the session's tier. It gates ACCESS to a mode.
+      // It never reaches the draft: no odds function takes a tier.
+      const tier = String(b.tier || "GUEST");
+      if (!can(tier, CAPABILITIES.CHAOS_CLASH)) {
+        // A gate is a product state, not an error: sendError deliberately drops
+        // extra fields, so the reason is returned explicitly for the UI to show.
+        return res.status(403).json({ requestId, gated: true, gate: gateReason(tier, CAPABILITIES.CHAOS_CLASH) });
+      }
+      // Era control is entitlement + run state. Computed once, attached to every
+      // view, so the client never has to infer it.
+      const eraCtl = (r) => eraChangeState(r, {
+        entitled: can(tier, CAPABILITIES.CHAOS_CUSTOM_ERA),
+        gate: gateReason(tier, CAPABILITIES.CHAOS_CUSTOM_ERA),
+      });
+
+      if (chaosAction === "start") {
+        if (!can(tier, CAPABILITIES.CHAOS_UNLIMITED)) {
+          // Guest run budget is server-side; a cleared localStorage does not
+          // mint more runs.
+          const used = await guestRunsUsed(session);
+          if (guestLimitReached(used)) {
+            return res.status(403).json({
+              requestId, gated: true, guestRunsUsed: used, guestRunsAllowed: GUEST_CHAOS_RUNS,
+              gate: { kind: "ACCOUNT", message: "Create a free account to keep playing Chaos Clash." },
+            });
+          }
+        }
+        const chalId = b.challengeId ? validChaosChallengeId(b.challengeId) : null;
+        if (b.challengeId && !chalId) return sendError(res, "VALIDATION_FAILURE", requestId);
+        const created = await createRun({ session, challengeId: chalId });
+        if (!created.ok) return sendError(res, created.code || "NOT_FOUND", requestId);
+        if (!can(tier, CAPABILITIES.CHAOS_UNLIMITED)) await consumeGuestRun(session);
+        logReq({ requestId, route: "game", mode: "chaos", action: "start", status: 200 });
+        return res.status(200).json({ requestId, chaos: chaosView(created.run, { eraChange: eraCtl(created.run) }) });
+      }
+
+      const runId = validRunId(b.chaosRunId);
+      if (!runId) return sendError(res, "VALIDATION_FAILURE", requestId);
+      const run = await loadRun(runId);
+      if (!run) return sendError(res, "NOT_FOUND", requestId);
+      // Draft state cannot cross users.
+      if (!ownsRun(run, session)) return sendError(res, "FORBIDDEN", requestId);
+      if (run.expiresAt && Date.now() > run.expiresAt) return sendError(res, "NOT_FOUND", requestId);
+      // An abandoned run is gone: it can never be advanced or resumed, which is
+      // what stops repeated navigation from farming fresh opening rolls.
+      if (run.status === "ABANDONED" && chaosAction !== "view") return sendError(res, "NOT_FOUND", requestId);
+
+      if (chaosAction === "view") {
+        return res.status(200).json({ requestId, chaos: chaosView(run, { includeCpuHolds: run.currentRoll > 1, eraChange: eraCtl(run) }) });
+      }
+      if (chaosAction === "holds") {
+        if (!Array.isArray(b.holdSlots)) return sendError(res, "VALIDATION_FAILURE", requestId);
+        if (b.holdSlots.length > 5) return sendError(res, "VALIDATION_FAILURE", requestId);
+        const r = await applyHolds(run, b.holdSlots);
+        if (!r.ok) return sendError(res, "VALIDATION_FAILURE", requestId, { reason: r.code, phase: r.phase });
+        return res.status(200).json({ requestId, chaos: chaosView(run, { includeCpuHolds: true, eraChange: eraCtl(run) }) });
+      }
+      // ── The synchronized sequence: ONE decision covers players and coaches ──
+      if (chaosAction === "decide") {
+        if (!Array.isArray(b.holdSlots) || !Array.isArray(b.holdRoles)) return sendError(res, "VALIDATION_FAILURE", requestId);
+        if (b.holdSlots.length > 5 || b.holdRoles.length > 3) return sendError(res, "VALIDATION_FAILURE", requestId);
+        const r = await applyRollDecisions(run, { holdSlots: b.holdSlots, holdRoles: b.holdRoles });
+        if (!r.ok) return sendError(res, "VALIDATION_FAILURE", requestId, { reason: r.code, phase: r.phase });
+        return res.status(200).json({ requestId, chaos: chaosView(run, { includeCpuHolds: true, eraChange: eraCtl(run) }) });
+      }
+      if (chaosAction === "era") {
+        // The server decides whether this run's era may be set at all. A
+        // competitive run refuses for every tier; an unentitled account is told
+        // where membership lives, not given the change.
+        const ctl = eraCtl(run);
+        if (!ctl.allowed) {
+          return res.status(403).json({ requestId, gated: true, eraChange: ctl, gate: ctl.gate || null });
+        }
+        const r = await applyEraChoice(run, String(b.eraStyleId || ""));
+        if (!r.ok) return sendError(res, "VALIDATION_FAILURE", requestId, { reason: r.code, phase: r.phase });
+        logReq({ requestId, route: "game", mode: "chaos", action: "era", status: 200 });
+        return res.status(200).json({ requestId, chaos: chaosView(run, { includeCpuHolds: true, eraChange: eraCtl(run) }) });
+      }
+      if (chaosAction === "coachHolds") {
+        if (!Array.isArray(b.holdRoles)) return sendError(res, "VALIDATION_FAILURE", requestId);
+        if (b.holdRoles.length > 3) return sendError(res, "VALIDATION_FAILURE", requestId);
+        const r = await applyCoachHolds(run, b.holdRoles);
+        if (!r.ok) return sendError(res, "VALIDATION_FAILURE", requestId, { reason: r.code, phase: r.phase });
+        return res.status(200).json({ requestId, chaos: chaosView(run, { includeCpuHolds: true, eraChange: eraCtl(run) }) });
+      }
+      if (chaosAction === "abandon") {
+        const r = await applyAbandon(run);
+        if (!r.ok) return sendError(res, "VALIDATION_FAILURE", requestId, { reason: r.code });
+        logReq({ requestId, route: "game", mode: "chaos", action: "abandon", status: 200 });
+        return res.status(200).json({ requestId, abandoned: true });
+      }
+      if (chaosAction === "coach") {
+        const r = await applyCoach(run, String(b.coachId || ""));
+        if (!r.ok) return sendError(res, "VALIDATION_FAILURE", requestId, { reason: r.code });
+        return res.status(200).json({ requestId, chaos: chaosView(run, { includeCpuHolds: true, eraChange: eraCtl(run) }) });
+      }
+      if (chaosAction === "challenge") {
+        const manifest = await publishChallenge(run);
+        return res.status(200).json({ requestId, challengeId: manifest.challengeId });
+      }
+      if (chaosAction !== "simulate") return sendError(res, "VALIDATION_FAILURE", requestId);
+      if (run.currentPhase !== "READY") {
+        return sendError(res, "VALIDATION_FAILURE", requestId, { reason: "INVALID_TRANSITION", phase: run.currentPhase });
+      }
+      // The phase check above is a read; the write that retires the run happens
+      // after the simulation. Two requests arriving together both read READY and
+      // both play the draft, so one locked roster yields two results and only
+      // the last one is remembered. simulationId idempotency does not cover it:
+      // the client mints a fresh one per click.
+      //
+      // Claim the RUN, not the request. A second caller is told the draft has
+      // already been played rather than quietly playing it again. The claim
+      // outlives the run itself so a late retry cannot resurrect it.
+      if (hasStore()) {
+        const claimed = await setNX(`chaos:played:${run.chaosRunId}`, { requestId, at: Date.now() }, CHAOS_PLAYED_TTL);
+        if (!claimed) {
+          return sendError(res, "VALIDATION_FAILURE", requestId, { reason: "ALREADY_SIMULATED", phase: run.currentPhase });
+        }
+      }
+      // Fall through to the normal simulation path with the STORED setup. The
+      // request body's own team/coach/era fields are discarded here, which is
+      // what makes the draft unspoofable.
+      const setup = simulationSetup(run);
+      b.mode = "single";
+      b.goldIds = setup.goldIds;
+      b.blueIds = setup.blueIds;
+      b.coachGoldId = setup.coachGoldId;
+      b.coachBlueId = setup.coachBlueId;
+      b.eraStyleId = setup.eraStyleId;
+      req._chaosRun = run;
+    }
+
     const mode = MODES.has(b.mode) ? b.mode : null;
     const simulationId = validSimId(b.simulationId);
     if (!mode || !simulationId) return sendError(res, "VALIDATION_FAILURE", requestId);
@@ -97,6 +277,7 @@ export default async function handler(req, res) {
     // generator). Client-supplied seeds/dates are never read. A rejected
     // lineup never consumes the official attempt.
     const today = utcDateKey();
+    let dailyCfg = null;   // set only when the coach/era Daily flag is on
     if (mode === "daily") {
       blue = dailyOpponent(today);
       const legal = verifyDailyLineup(today, b.dailyDecisions, gold.map((p) => p.id));
@@ -106,7 +287,32 @@ export default async function handler(req, res) {
       }
       if (hasStore()) {
         const existing = await getJSON(`daily:claim:${today}:${session}`);
-        if (existing) return sendError(res, "IDEMPOTENCY_CONFLICT", requestId);
+        if (existing) return sendError(res, "DAILY_ALREADY_COMPLETED", requestId);
+      }
+
+      // ── Official coach + Era Style (flag-gated, default OFF) ──────────────
+      // When the flag is off none of this runs and the Daily behaves exactly as
+      // before, which is the rollback path.
+      //
+      // Everything authoritative is SERVER-GENERATED. The client may submit a
+      // coachId, and only a coachId, and only one drawn from today's official
+      // options. The era, the option pool, the date, the seed and the data
+      // versions are never the client's to supply.
+      if (f.dailyCoachEra) {
+        // The STORED record for today, not a fresh build from current
+        // versions. A mid-day deploy must not hand the afternoon a different
+        // era, different coaches, or a different derived seed than the morning.
+        dailyCfg = (await officialDailyConfig(today)).config;
+        const vers = validateDailyVersions({ config: dailyCfg, submitted: b.dailyVersions });
+        if (!vers.ok) {
+          logReq({ requestId, route: "game", mode, status: 409, error_code: vers.code, field: vers.field });
+          return sendError(res, vers.code, requestId);
+        }
+        const sel = validateDailySelection({ config: dailyCfg, coachId: b.coachGoldId, eraStyleId: b.eraStyleId });
+        if (!sel.ok) {
+          logReq({ requestId, route: "game", mode, status: 400, error_code: sel.code, submitted: String(b.coachGoldId).slice(0, 40) });
+          return sendError(res, sel.code, requestId);
+        }
       }
     }
 
@@ -116,7 +322,7 @@ export default async function handler(req, res) {
       if (!claimed) {
         const idem = await getJSON(`idem:${simulationId}`);
         if (idem?.resultId) {
-          const prior = await getJSON(`result:${idem.resultId}`);
+          const prior = await getJSON(`${String(idem.resultId).startsWith("pv_") ? "preview-result" : "result"}:${idem.resultId}`);
           if (prior) return res.status(200).json({ requestId, resultId: idem.resultId, result: publicResult(prior), records: idem.records || null, replayed: true });
         }
         return sendError(res, "IDEMPOTENCY_CONFLICT", requestId);
@@ -139,20 +345,134 @@ export default async function handler(req, res) {
         return sendError(res, "DUPLICATE_PERSON", requestId);
       }
     }
-    const seed = newSeed();
+    // Daily seed policy: DERIVED from the official configuration and the
+    // player's legal choices, never from session, browser, or request time.
+    // Same decisions must reproduce the same game, and a refresh must not
+    // reroll it. Every other mode keeps server-random variance so rematches
+    // stay different.
+    const seed = dailyCfg
+      ? dailySimulationSeed({ config: dailyCfg, goldIds: gold.map((p) => p.id), coachId: b.coachGoldId }).seed
+      : newSeed();
     // V3 possession engine (flag-gated; preview-only by default). Coach and
     // Era Style ids are validated and loaded canonically server-side — the
     // browser cannot author coach attributes or era modifiers.
-    const computed = f.simV3
-      ? computeResultV3(mode, gold, blue, {
+    // ── Protected preview (default off) ─────────────────────────────────
+    // When PREVIEW_SIM_ENGINE_ENABLED is true, single games run on the LOCKED
+    // preview candidate. ANY preview failure — including out-of-scope modes —
+    // falls back to the production engine for that request, so the preview can
+    // never take a user request down. With the flag false (the default) this
+    // block is skipped entirely and the code below is byte-identical to
+    // pre-preview behavior.
+    let previewComputed = null;
+    if (f.previewSimEngine && f.simV3 && mode === "single" && blue && !dailyCfg) {
+      const pvT0 = Date.now();
+      const who = await previewIdentity(req.headers).catch(() => ({ ok: false }));
+      // Phase 9A.3: counters live in the WAVE's own namespace — never mixed.
+      const COUNTERS = PREVIEW_ACCESS.waveId === "candidate3-wave1" ? "preview-metrics:counters" : "wave2-metrics:counters";
+      if (hasStore()) await pipeline([["HINCRBY", COUNTERS, "games_started", 1]]).catch(() => {});
+      const testerId = who.ok ? who.testerId : "unattributed";
+      const sid = who.ok && who.sid ? who.sid : undefined;
+      try {
+        previewEvent("simulation_started", { mode });
+        previewEvent("preview_game_started", { mode, waveId: PREVIEW_ACCESS.waveId, testerId, sid });
+        if (chaos === "preview-fail") {
+          const err = new Error("preview chaos injection");
+          err.code = "PREVIEW_CHAOS";
+          throw err;
+        }
+        previewComputed = computeResultPreview(mode, gold, blue, {
           coachGoldId: validCoachId(b.coachGoldId) || "neutral",
           coachBlueId: validCoachId(b.coachBlueId) || "neutral",
           eraStyleId: validEraId(b.eraStyleId) || undefined,
+        }, seed);
+        previewEvent("preview_game_completed", { mode, waveId: PREVIEW_ACCESS.waveId, testerId, sid,
+          candidateId: previewComputed.candidate.candidateId,
+          calibrationVersion: previewComputed.candidate.possessionCalibrationVersion,
+          simulationLatency: Date.now() - pvT0, fallbackUsed: false });
+        if (hasStore()) await pipeline([["HINCRBY", COUNTERS, "games_completed", 1]]).catch(() => {});
+      } catch (e) {
+        previewComputed = null;
+        previewEvent("fallback_invoked", { mode, reason: String(e.code ?? e.message).slice(0, 80) });
+        previewEvent("preview_fallback_invoked", { mode, waveId: PREVIEW_ACCESS.waveId, testerId, sid,
+          reason: String(e.code ?? e.message).slice(0, 80), fallbackUsed: true });
+        if (hasStore()) await pipeline([["HINCRBY", COUNTERS, "fallback_invoked", 1]]).catch(() => {});
+      }
+    }
+    // A Daily with the coach/era feature OFF still scores onto the shared board,
+    // so its inputs must not come from the caller.
+    const dailyLocked = mode === "daily" && !dailyCfg;
+    const computed = previewComputed ?? (f.simV3
+      ? computeResultV3(mode, gold, blue, {
+          // In a coach/era Daily the era is the OFFICIAL one and Blue takes the
+          // neutral staff, so the puzzle is identical for everyone and the only
+          // variable is the player's own coach choice.
+          // Single, Best of 7, Challenge and Chaos are the player's OWN game:
+          // their coach, the opponent's coach and the era are theirs to choose.
+          //
+          // The Daily is not — it is one shared puzzle and its scores go on a
+          // public board. With the coach/era Daily enabled the official era and
+          // a neutral opponent staff come from the config and only the player's
+          // own coach varies; with it DISABLED everything is neutral. Honouring
+          // the caller's values there would hand them the seed inputs, so they
+          // could search offline for a maximal score and bank it.
+          coachGoldId: dailyCfg ? b.coachGoldId : dailyLocked ? "neutral" : (validCoachId(b.coachGoldId) || "neutral"),
+          coachBlueId: dailyCfg || dailyLocked ? "neutral" : (validCoachId(b.coachBlueId) || "neutral"),
+          eraStyleId: dailyCfg ? dailyCfg.officialEraStyleId : dailyLocked ? undefined : (validEraId(b.eraStyleId) || undefined),
           difficulty: validDifficulty(b.difficulty),
           dailyDate: mode === "daily" ? today : undefined,
+          // The coach/era Daily derives its own seed above, including the
+          // active data versions, so the engine must not re-derive a
+          // version-blind one. One derivation, one owner.
+          dailySeedPolicy: dailyCfg ? "caller-derived" : undefined,
         }, seed)
-      : computeResult(mode, gold, blue, seed);
-    const resultId = newId(10);
+      : computeResult(mode, gold, blue, seed));
+    // Preview results are namespaced end-to-end: a pv_ id, stored only under
+    // preview-result:*. Production namespaces never hold a preview record.
+    // The pregame read is stored WITH the result, computed from the same
+    // inputs the builder displayed. The postgame renders this object rather
+    // than recomputing a read from the finished game.
+    let pregameSnapshot = null;
+    if (f.simV3 && blue) {
+      try {
+        const { resolveCoach, resolveEra } = await import("../src/v3/engine.js");
+        pregameSnapshot = {
+          ...buildPregameRead(gold, blue,
+            resolveCoach(dailyCfg ? b.coachGoldId : dailyLocked ? "neutral" : (validCoachId(b.coachGoldId) || "neutral")),
+            resolveCoach(dailyCfg || dailyLocked ? "neutral" : (validCoachId(b.coachBlueId) || "neutral")),
+            resolveEra(dailyCfg ? dailyCfg.officialEraStyleId : dailyLocked ? undefined : (validEraId(b.eraStyleId) || undefined))),
+          generatedAt: Date.now(),
+        };
+      } catch { pregameSnapshot = null; }
+    }
+    // The opening story is DETERMINISTIC and computed here, so it is on the
+    // result the moment the game exists — no provider, no spinner, and it is
+    // present on a shared result too.
+    let story = null;
+    try {
+      story = buildDeterministicSummary({
+        record: computed,
+        quarterFlow: computed.v3?.quarterFlow || [],
+        moments: computed.v3?.keyMoments || [],
+        patterns: computed.v3?.matchupPatterns || [],
+      });
+    } catch { story = null; }
+
+    // The long-form analysis, computed from the record. This is what the
+    // Enhanced Analysis panel shows whenever the external provider cannot
+    // deliver a validated recap, so the feature is never an empty panel.
+    let expandedAnalysis = null;
+    try {
+      expandedAnalysis = buildExpandedAnalysis({
+        record: computed,
+        quarterFlow: computed.v3?.quarterFlow || [],
+        moments: computed.v3?.keyMoments || [],
+        patterns: computed.v3?.matchupPatterns || [],
+        coaching: computed.v3?.coaching || null,
+        eraId: computed.eraId || null,
+      });
+    } catch { expandedAnalysis = null; }
+
+    const resultId = (previewComputed ? PREVIEW_RESULT_ID_PREFIX : "") + newId(10);
     const record = {
       v: 1,
       id: resultId,
@@ -161,19 +481,64 @@ export default async function handler(req, res) {
       goldIds: gold.map((p) => p.id),
       blueIds: blue ? blue.map((p) => p.id) : computed.blueIds || null,
       ...computed,
+      pregame: pregameSnapshot,
+      story,
+      expandedAnalysis,
+      eraImpact: computed.eraId ? eraImpactLine(computed.eraId) : null,
+      // Non-result-affecting setup history. Records only what was REVEALED —
+      // no unchosen branch and no unrevealed future card is ever written.
+      chaosDraft: req._chaosRun ? draftHistory(req._chaosRun) : null,
+      draftConsequences: req._chaosRun
+        ? deriveDraftConsequences({
+            chaosDraft: draftHistory(req._chaosRun), record: computed,
+            cards: new Map([...gold, ...(blue || [])].map((p) => [p.id, p])),
+          })
+        : null,
       challengeId: challenge ? challenge.id : null,
       dailyDate: mode === "daily" ? today : null,
+      // Narrative identity for a coach/era Daily is the GAME, not the player.
+      // Everyone who makes the same official decisions gets a byte-identical
+      // result, so paying a provider call per player to write the same recap
+      // is pure waste. The narrative path holds no user identity (no name, no
+      // session, no uid), so one text is correct for all of them. Absent on
+      // every other mode, which keeps their per-result keying unchanged.
+      narrativeKeyId: dailyCfg ? `d.${dailyCfg.dailyId}.s${computed.seed >>> 0}` : null,
       core_result_status: "complete",
       narrative_status: "not_requested",
       created_at: Date.now(),
     };
 
+    if (req._chaosRun) {
+      req._chaosRun.currentPhase = "SIMULATED";
+      req._chaosRun.status = "SIMULATED";
+      req._chaosRun.resultId = resultId;
+      await saveRun(req._chaosRun).catch(() => {});
+    }
+
     // ── Persist immutably + apply record updates from OUR result ────────────
     const records = { persisted: false, daily: null, challenge: null };
     const kvDown = chaos === "kv-down" || !hasStore();
     if (!kvDown) {
-      await setJSON(`result:${resultId}`, record, RESULT_TTL); // written once, never rewritten
-      records.persisted = true;
+      const resultKey = previewComputed ? `${PREVIEW_NAMESPACES.result}:${resultId}` : `result:${resultId}`;
+      // cmd() swallows every store failure and resolves null, so an UNCHECKED
+      // write reports a success it did not achieve — and the client then asks
+      // /api/narrative for a resultId that was never stored. The graceful path
+      // for persisted:false already exists; it just was never reached.
+      const wrote = await setJSON(resultKey, record, RESULT_TTL); // written once, never rewritten
+      if (previewComputed) {
+        // Wave metrics: cheap counters under the preview-metrics namespace so
+        // operator reports work without log access. No identity beyond the
+        // pseudonymous tester id; latency in coarse buckets.
+        const ms = Date.now() - started;
+        const bucket = ms < 250 ? "lt250" : ms < 500 ? "lt500" : ms < 1000 ? "lt1000" : ms < 2000 ? "lt2000" : "gte2000";
+        await pipeline([
+          ["HINCRBY", "preview-metrics:counters", "games_completed", 1],
+          ["HINCRBY", "preview-metrics:counters", "latency_ms_sum", ms],
+          ["HINCRBY", "preview-metrics:counters", `latency_${bucket}`, 1],
+          ["HINCRBY", "preview-metrics:games-by-tester", (await previewIdentity(req.headers).catch(() => ({})))?.testerId ?? "unattributed", 1],
+        ]).catch(() => {});
+      }
+      records.persisted = wrote === "OK";
 
       if (mode === "daily") {
         // atomic claim AFTER a stored, valid result — a failed request never burns it

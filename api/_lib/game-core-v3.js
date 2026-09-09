@@ -87,7 +87,17 @@ export const computeResultV3 = (mode, gold, blue, opts, seed) => {
   // Daily fairness (documented model): the official daily V3 seed is DERIVED
   // from the date + both lineups + coaches + era, so two players making
   // identical official decisions get the IDENTICAL game — no luck lottery.
-  const gameSeed = mode === "daily" && opts.dailyDate
+  //
+  // Two derivations of the same number would be a drift hazard: a caller that
+  // derives a version-aware seed and an engine that quietly re-derives one
+  // without the versions cannot both be authoritative. So when the caller
+  // states it already derived the daily seed (dailySeedPolicy
+  // "caller-derived", used by the coach/era Daily, whose derivation also
+  // folds in the active data versions), the engine honors that seed verbatim
+  // and does not re-derive. Callers that do not say so keep the legacy
+  // date-based derivation, unchanged.
+  const callerDerived = opts.dailySeedPolicy === "caller-derived";
+  const gameSeed = mode === "daily" && opts.dailyDate && !callerDerived
     ? hashString(`${opts.dailyDate}|${gold.map((p) => p.id).join(",")}|${blue.map((p) => p.id).join(",")}|${opts.coachGoldId}|${opts.coachBlueId}|${era.id}`)
     : seed;
 

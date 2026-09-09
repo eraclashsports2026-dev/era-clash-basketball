@@ -1,0 +1,73 @@
+{
+  "artifact": "prior-failing-cell",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run calibration:c6:audit",
+  "generatedAt": "2026-08-26T17:32:52.922Z",
+  "gitCommit": "26d030a9aef4ebb25e5278cfe0e7f7a0f617a1a8",
+  "branch": "phase-6c2c6-probability-side-bias-lock",
+  "parameterSetHash": "210409189ebc1ff894bb90b8f0adb6ef2d06d6caac9fdcbe93e61d3521ed5940",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {
+    ".cache/calibration/probability-validation-v3.json": "2cd6e2a864c28783d89be8b8b71e13117cc1c5978cf176acf8f8e459a5c270bc"
+  },
+  "data": {
+    "cellId": "sd2-balanced-lower-ovr vs sd2-movement-shooters",
+    "indexInFamily": 4,
+    "familySize": 30,
+    "teamA": {
+      "id": "sd2-balanced-lower-ovr",
+      "five": [
+        "cp3-10s",
+        "kawhi-10s",
+        "butler-10s",
+        "jokic-10s",
+        "dwight-10s"
+      ],
+      "coach": "gregg-popovich"
+    },
+    "teamB": {
+      "id": "sd2-movement-shooters",
+      "five": [
+        "curry-10s",
+        "durant-10s",
+        "kawhi-10s",
+        "dirk-10s",
+        "jokic-10s"
+      ],
+      "coach": "steve-kerr"
+    },
+    "eraStyleId": "2010s",
+    "defensiveShellsEnabled": {
+      "defensiveMatchups": true,
+      "zoneResolution": true,
+      "expandedActions": true,
+      "offensiveAdjustments": true
+    },
+    "parameterSetHash": "210409189ebc1ff894bb90b8f0adb6ef2d06d6caac9fdcbe93e61d3521ed5940",
+    "sampleTier": "STANDARD",
+    "estimatorSampleCount": 256,
+    "estimatorPairs": 128,
+    "empiricalValidationGames": 256,
+    "predictionSeedSetVersion": "1.0.0",
+    "rawOrientationResults": {
+      "perspectiveTeam": "sd2-balanced-lower-ovr",
+      "firstAsGoldWinRate": 0.4922,
+      "firstAsBlueWinRate": 0.6484,
+      "goldOrientationRate": 0.4219,
+      "blueOrientationRate": 0.5781
+    },
+    "v1SideBiasDefinition": "goldWinsOverall / n - 0.5",
+    "v1PointEstimate": -0.0781,
+    "v1ReportedStandardError": 0.03125,
+    "v1Threshold": 0.05,
+    "v1GateResult": "FAIL",
+    "correctedPairedEffect": -0.1562,
+    "scaleRelationship": "v1 point estimate == correctedPairedEffect / 2",
+    "scaleVerified": true,
+    "predicted": 0.5703,
+    "empirical": 0.4922
+  },
+  "outputHash": "3525d79950dff9c33e7c0a9083a0e7621e356acbc9a75cb8e6944aecce275b6c"
+}

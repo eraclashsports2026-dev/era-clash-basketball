@@ -1,0 +1,55 @@
+{
+  "phase": "9B.2",
+  "mode": "deletion",
+  "generatedAt": "2026-09-05T02:37:40.396Z",
+  "trustModel": "The real Career V2 modules exercised against the test account adapter, which enforces the same ownership rules the SQL policies enforce. Live database RLS is certified separately in live-rls-qa.json.",
+  "checks": [
+    {
+      "name": "deletion calls the admin endpoint for exactly the given user, with DELETE",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a malformed user id is refused and no request is made",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a rejected server credential is reported distinctly",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a 404 is treated as already deleted",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the server takes the user id from the verified token, never the body",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "deletion is gated by a typed phrase in the UI",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "deletion is gated by reauthentication in the UI",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "account-owned tables cascade on delete",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": 8,
+  "total": 8,
+  "allPassed": true,
+  "phrase": "DELETE",
+  "reauthGated": true,
+  "cascade": "auth.users → profiles, saved_clashes, saved_rosters, user_preferences, result_claims",
+  "liveCascade": "verified with synthetic users in live-rls-qa.json"
+}

@@ -1,0 +1,33 @@
+{
+  "artifact": "shared-theme-contract",
+  "release": "ui/light-court-release-candidate",
+  "recordedAt": "2026-09-09",
+  "principle": "One theme object (night-court-production-hybrid) resolved by one resolver into four scopes; the light presentation is a change to the shared arena tokens, not page-level patches. No second design system, no new dependency, no new serverless function.",
+  "sources": {
+    "themeObject": "src/theme/basketballThemes.js (productionArena)",
+    "resolver": "src/theme/themeResolver.js (brandHeaderTokens now frozen master-brand constants, independent of the arena palette)",
+    "generated": "src/theme/basketball-themes.css via npm run theme:css (pinned in sync by ui:night-court-contracts)",
+    "consumers": ["src/index.css (.ec-arena-shell / --ec-a-*)", "src/components/arena/*.jsx (inline var(--ec-a-*) with fallbacks)"]
+  },
+  "palette": {
+    "surface": { "bg": "#F1EDE4", "arena": "#F6F1E7", "panel": "#FBF8F1", "panel-raised": "#FFFFFF", "panel-soft": "#ECE6DA" },
+    "ink": { "text": "#151B24", "text-secondary": "#3A4150", "text-muted": "#505765" },
+    "structure": { "border": "#D7D1C6", "border-strong": "#C3BAA8" },
+    "semantic": { "gold (text-grade)": "#8A6410", "blue (text-grade)": "#2461B8", "coach": "#5B3FB8", "green": "#237A4F", "red": "#B54040" },
+    "cta": { "cta-hi": "#F5C553", "cta-mid": "#E8B13C", "cta-lo": "#B9841F", "cta-ink": "#14100A" },
+    "brand": { "brand-gold": "#E1A72C", "accent (cobalt)": "#267CE8", "fracture": "Era Fracture gradient (E1A72C / 267CE8), fracture-on 1" },
+    "keptDark": { "header": "rgba(3, 6, 11, 0.94) — global navigation stays obsidian", "scrim": "rgba(3, 6, 11, 0.62)", "portrait-well-hi/lo": "#1E2A3B / #0B1220 — jersey-vs-stage separation contract", "lobby hero": "#03060B (unchanged)" }
+  },
+  "rules": [
+    "Solid gold fills carry cta-ink and use cta-mid, never text-grade gold.",
+    "Text-grade gold/blue are darkened for AA on ivory; hue preserved (Team Gold 36–50°, Team Blue 200–230°).",
+    "Hard-coded night literals in index.css were replaced by tokens or color-mix over --ec-a-bg; the two remaining rgba(3,7,13) values are fallbacks inside var().",
+    "Editorial, reading and lobby scopes are unchanged (they were already ivory/ink)."
+  ],
+  "gatesUpdated": [
+    { "where": "tests/v9a2-night-court-production.test.js", "why": "pinned the pre-release dark arena values; re-pinned to the Light Court contract + dark portrait well + obsidian header" },
+    { "where": "tests/v9a3p-play-lobby-polish.test.js", "why": "a whole-directory diff on src/theme became a false failure; now pins masterBrandTokens/themeTypes/semanticTokens" },
+    { "where": "scripts/ui/nightCourtQa.mjs semantic", "why": "'platinum/graphite is the neutral structure' re-contracted to ivory/ink" }
+  ],
+  "preExistingGateDrift": "nightCourtQa production/fracture/semantic browser checks wait for '.ec-ta-rail [role=tab]' and '.ec-ta-coach-title', selectors removed by 9B.3; identical failures reproduced on the untouched baseline aae565c (worktree, port 4177). Not caused by this release; recorded, not repaired here."
+}

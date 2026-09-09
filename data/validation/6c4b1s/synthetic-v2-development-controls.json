@@ -1,0 +1,804 @@
+{
+  "artifact": "synthetic-v2-development-controls",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run syn:controls",
+  "generatedAt": "2026-08-27T12:09:57.339Z",
+  "gitCommit": "3231adc58fbfe6b71e4c13fac13acf396a447b91",
+  "branch": "phase-6c4b1s-synthetic-v2-package",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "basis": "SYNTHETIC_DEVELOPMENT_V2 only — 14 non-holdout fixtures. No Synthetic V2 fixture was simulated and no Synthetic V2 output was read.",
+    "pairsPerFixture": 1000,
+    "gamesPerMirror": 2000,
+    "gamesPerControlSurface": 1000,
+    "balancedControl": {
+      "five": [
+        "sugar-80s",
+        "beal-20s",
+        "bigdog-90s",
+        "buck-80s",
+        "drummond-2010s"
+      ],
+      "coachId": "neutral",
+      "medianCardRating": 31.06,
+      "summedRating": 155.05,
+      "rule": "the five legal starters whose card rating is closest to the public-pool median, one card per person, ties broken by card id, under the neutral coach"
+    },
+    "controlIsNotAHoldoutLineup": true,
+    "metricFunctions": [
+      "maxActionFamilyShare",
+      "shellSideWinRate",
+      "seedVariance",
+      "structuralOf",
+      "subjectWinRate"
+    ],
+    "fixtures": [
+      {
+        "devFixtureId": "sd2-balanced-lower-ovr",
+        "purpose": "BALANCED_CONSTRUCTION",
+        "era": "2010s",
+        "coach": "gregg-popovich",
+        "mirror": {
+          "maxActionFamilyShare": 0.17093,
+          "dominantFamily": "POST_UP",
+          "actionDistribution": {
+            "POST_UP": 0.17093,
+            "TRANSITION": 0.13818,
+            "PICK_AND_ROLL": 0.1343,
+            "OFF_BALL_SCREEN": 0.11009,
+            "GENERIC_HALF_COURT": 0.09193,
+            "HANDOFF": 0.089,
+            "CUT": 0.08653,
+            "SPOT_UP": 0.06467,
+            "ISOLATION": 0.05943,
+            "ZONE_ATTACK": 0.05495
+          },
+          "possessions": 216910,
+          "shell": {
+            "winRate": 0.49891,
+            "decidedGames": 1832,
+            "realizedZoneShare": 0.09049,
+            "zoneAttackShare": 0.60527
+          },
+          "variance": {
+            "combinedScoreSd": 16.23249,
+            "marginSd": 9.15727,
+            "distinctScorelineRatio": 0.3805,
+            "games": 2000
+          },
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2000
+        },
+        "vsBalancedControl": {
+          "subjectWinRate": 0.924,
+          "decidedGames": 1000,
+          "controlWinRate": 0.076,
+          "fixtureSummedRating": 183.64,
+          "controlSummedRating": 155.05,
+          "ratingGap": 28.59,
+          "games": 1000
+        }
+      },
+      {
+        "devFixtureId": "sd2-creator-stack",
+        "purpose": "SUPERSTAR_STACK",
+        "era": "2010s",
+        "coach": "mike-dantoni",
+        "mirror": {
+          "maxActionFamilyShare": 0.18894,
+          "dominantFamily": "TRANSITION",
+          "actionDistribution": {
+            "TRANSITION": 0.18894,
+            "PICK_AND_ROLL": 0.1798,
+            "ISOLATION": 0.11363,
+            "ZONE_ATTACK": 0.09512,
+            "SPOT_UP": 0.09445,
+            "HANDOFF": 0.07824,
+            "GENERIC_HALF_COURT": 0.07392,
+            "OFF_BALL_SCREEN": 0.07176,
+            "CUT": 0.06569,
+            "POST_UP": 0.03844
+          },
+          "possessions": 226112,
+          "shell": {
+            "winRate": 0.52052,
+            "decidedGames": 1852,
+            "realizedZoneShare": 0.15717,
+            "zoneAttackShare": 0.60222
+          },
+          "variance": {
+            "combinedScoreSd": 17.14174,
+            "marginSd": 9.62291,
+            "distinctScorelineRatio": 0.3825,
+            "games": 2000
+          },
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2000
+        },
+        "vsBalancedControl": {
+          "subjectWinRate": 0.901,
+          "decidedGames": 1000,
+          "controlWinRate": 0.099,
+          "fixtureSummedRating": 272.17,
+          "controlSummedRating": 155.05,
+          "ratingGap": 117.12,
+          "games": 1000
+        }
+      },
+      {
+        "devFixtureId": "sd2-elite-shooting",
+        "purpose": "ELITE_SHOOTING",
+        "era": "2010s",
+        "coach": "steve-kerr",
+        "mirror": {
+          "maxActionFamilyShare": 0.1791,
+          "dominantFamily": "OFF_BALL_SCREEN",
+          "actionDistribution": {
+            "OFF_BALL_SCREEN": 0.1791,
+            "TRANSITION": 0.15744,
+            "PICK_AND_ROLL": 0.15281,
+            "SPOT_UP": 0.12249,
+            "ISOLATION": 0.12138,
+            "CUT": 0.09506,
+            "POST_UP": 0.08822,
+            "GENERIC_HALF_COURT": 0.08349
+          },
+          "possessions": 222968,
+          "shell": {
+            "winRate": null,
+            "decidedGames": 0,
+            "realizedZoneShare": 0,
+            "zoneAttackShare": null
+          },
+          "variance": {
+            "combinedScoreSd": 17.49296,
+            "marginSd": 9.65133,
+            "distinctScorelineRatio": 0.392,
+            "games": 2000
+          },
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2000
+        },
+        "vsBalancedControl": {
+          "subjectWinRate": 0.804,
+          "decidedGames": 1000,
+          "controlWinRate": 0.196,
+          "fixtureSummedRating": 209.47,
+          "controlSummedRating": 155.05,
+          "ratingGap": 54.42,
+          "games": 1000
+        }
+      },
+      {
+        "devFixtureId": "sd2-weak-shooting",
+        "purpose": "WEAK_SHOOTING",
+        "era": "2010s",
+        "coach": "tom-thibodeau",
+        "mirror": {
+          "maxActionFamilyShare": 0.13929,
+          "dominantFamily": "POST_UP",
+          "actionDistribution": {
+            "POST_UP": 0.13929,
+            "PICK_AND_ROLL": 0.13642,
+            "TRANSITION": 0.13556,
+            "HANDOFF": 0.12241,
+            "GENERIC_HALF_COURT": 0.09147,
+            "OFF_BALL_SCREEN": 0.08872,
+            "CUT": 0.0884,
+            "ISOLATION": 0.08524,
+            "SPOT_UP": 0.05927,
+            "ZONE_ATTACK": 0.05322
+          },
+          "possessions": 212622,
+          "shell": {
+            "winRate": 0.52275,
+            "decidedGames": 1802,
+            "realizedZoneShare": 0.09179,
+            "zoneAttackShare": 0.58177
+          },
+          "variance": {
+            "combinedScoreSd": 15.35991,
+            "marginSd": 8.78374,
+            "distinctScorelineRatio": 0.374,
+            "games": 2000
+          },
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2000
+        },
+        "vsBalancedControl": {
+          "subjectWinRate": 0.769,
+          "decidedGames": 1000,
+          "controlWinRate": 0.231,
+          "fixtureSummedRating": 174.03,
+          "controlSummedRating": 155.05,
+          "ratingGap": 18.98,
+          "games": 1000
+        }
+      },
+      {
+        "devFixtureId": "sd2-extreme-size",
+        "purpose": "EXTREME_SIZE",
+        "era": "1960s",
+        "coach": "red-auerbach",
+        "mirror": {
+          "maxActionFamilyShare": 0.17062,
+          "dominantFamily": "TRANSITION",
+          "actionDistribution": {
+            "TRANSITION": 0.17062,
+            "GENERIC_HALF_COURT": 0.16728,
+            "PICK_AND_ROLL": 0.16374,
+            "ISOLATION": 0.14214,
+            "POST_UP": 0.13,
+            "CUT": 0.09134,
+            "SPOT_UP": 0.06874,
+            "OFF_BALL_SCREEN": 0.06616
+          },
+          "possessions": 296362,
+          "shell": {
+            "winRate": null,
+            "decidedGames": 0,
+            "realizedZoneShare": 0,
+            "zoneAttackShare": null
+          },
+          "variance": {
+            "combinedScoreSd": 16.50122,
+            "marginSd": 9.38775,
+            "distinctScorelineRatio": 0.3735,
+            "games": 2000
+          },
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2000
+        },
+        "vsBalancedControl": {
+          "subjectWinRate": 0.991,
+          "decidedGames": 1000,
+          "controlWinRate": 0.009,
+          "fixtureSummedRating": 306.02,
+          "controlSummedRating": 155.05,
+          "ratingGap": 150.97,
+          "games": 1000
+        }
+      },
+      {
+        "devFixtureId": "sd2-extreme-small",
+        "purpose": "EXTREME_SMALL_BALL",
+        "era": "2020s",
+        "coach": "steve-kerr",
+        "mirror": {
+          "maxActionFamilyShare": 0.21729,
+          "dominantFamily": "OFF_BALL_SCREEN",
+          "actionDistribution": {
+            "OFF_BALL_SCREEN": 0.21729,
+            "GENERIC_HALF_COURT": 0.20416,
+            "TRANSITION": 0.16888,
+            "SPOT_UP": 0.14926,
+            "CUT": 0.13266,
+            "PICK_AND_ROLL": 0.12775
+          },
+          "possessions": 236884,
+          "shell": {
+            "winRate": null,
+            "decidedGames": 0,
+            "realizedZoneShare": 0,
+            "zoneAttackShare": null
+          },
+          "variance": {
+            "combinedScoreSd": 18.01977,
+            "marginSd": 10.60571,
+            "distinctScorelineRatio": 0.4085,
+            "games": 2000
+          },
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2000
+        },
+        "vsBalancedControl": {
+          "subjectWinRate": 0.135,
+          "decidedGames": 1000,
+          "controlWinRate": 0.865,
+          "fixtureSummedRating": 93.28,
+          "controlSummedRating": 155.05,
+          "ratingGap": -61.77,
+          "games": 1000
+        }
+      },
+      {
+        "devFixtureId": "sd2-passing-hub",
+        "purpose": "PASSING_HUB",
+        "era": "2020s",
+        "coach": "nick-nurse",
+        "mirror": {
+          "maxActionFamilyShare": 0.17583,
+          "dominantFamily": "PICK_AND_ROLL",
+          "actionDistribution": {
+            "PICK_AND_ROLL": 0.17583,
+            "TRANSITION": 0.1586,
+            "ISOLATION": 0.14045,
+            "POST_UP": 0.12157,
+            "HANDOFF": 0.09946,
+            "GENERIC_HALF_COURT": 0.08311,
+            "OFF_BALL_SCREEN": 0.07909,
+            "SPOT_UP": 0.07557,
+            "CUT": 0.06632
+          },
+          "possessions": 232150,
+          "shell": {
+            "winRate": null,
+            "decidedGames": 0,
+            "realizedZoneShare": 0,
+            "zoneAttackShare": null
+          },
+          "variance": {
+            "combinedScoreSd": 17.69876,
+            "marginSd": 10.22782,
+            "distinctScorelineRatio": 0.39,
+            "games": 2000
+          },
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2000
+        },
+        "vsBalancedControl": {
+          "subjectWinRate": 0.738,
+          "decidedGames": 1000,
+          "controlWinRate": 0.262,
+          "fixtureSummedRating": 223.45,
+          "controlSummedRating": 155.05,
+          "ratingGap": 68.4,
+          "games": 1000
+        }
+      },
+      {
+        "devFixtureId": "sd2-no-rim-protection",
+        "purpose": "NO_RIM_PROTECTION",
+        "era": "2010s",
+        "coach": "mike-dantoni",
+        "mirror": {
+          "maxActionFamilyShare": 0.19387,
+          "dominantFamily": "PICK_AND_ROLL",
+          "actionDistribution": {
+            "PICK_AND_ROLL": 0.19387,
+            "TRANSITION": 0.18093,
+            "ISOLATION": 0.14259,
+            "OFF_BALL_SCREEN": 0.11193,
+            "SPOT_UP": 0.08613,
+            "HANDOFF": 0.08587,
+            "GENERIC_HALF_COURT": 0.08425,
+            "POST_UP": 0.06046,
+            "CUT": 0.05397
+          },
+          "possessions": 227626,
+          "shell": {
+            "winRate": null,
+            "decidedGames": 0,
+            "realizedZoneShare": 0,
+            "zoneAttackShare": null
+          },
+          "variance": {
+            "combinedScoreSd": 17.25251,
+            "marginSd": 9.50732,
+            "distinctScorelineRatio": 0.394,
+            "games": 2000
+          },
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2000
+        },
+        "vsBalancedControl": {
+          "subjectWinRate": 0.811,
+          "decidedGames": 1000,
+          "controlWinRate": 0.189,
+          "fixtureSummedRating": 209.65,
+          "controlSummedRating": 155.05,
+          "ratingGap": 54.6,
+          "games": 1000
+        }
+      },
+      {
+        "devFixtureId": "sd2-movement-shooters",
+        "purpose": "MOVEMENT_SHOOTERS",
+        "era": "2010s",
+        "coach": "steve-kerr",
+        "mirror": {
+          "maxActionFamilyShare": 0.15832,
+          "dominantFamily": "TRANSITION",
+          "actionDistribution": {
+            "TRANSITION": 0.15832,
+            "OFF_BALL_SCREEN": 0.14068,
+            "PICK_AND_ROLL": 0.1347,
+            "ISOLATION": 0.10665,
+            "SPOT_UP": 0.10481,
+            "HANDOFF": 0.09564,
+            "CUT": 0.08868,
+            "POST_UP": 0.08774,
+            "GENERIC_HALF_COURT": 0.08277
+          },
+          "possessions": 221090,
+          "shell": {
+            "winRate": null,
+            "decidedGames": 0,
+            "realizedZoneShare": 0,
+            "zoneAttackShare": null
+          },
+          "variance": {
+            "combinedScoreSd": 17.24927,
+            "marginSd": 9.89833,
+            "distinctScorelineRatio": 0.387,
+            "games": 2000
+          },
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2000
+        },
+        "vsBalancedControl": {
+          "subjectWinRate": 0.902,
+          "decidedGames": 1000,
+          "controlWinRate": 0.098,
+          "fixtureSummedRating": 222.07,
+          "controlSummedRating": 155.05,
+          "ratingGap": 67.02,
+          "games": 1000
+        }
+      },
+      {
+        "devFixtureId": "sd2-post-mismatch",
+        "purpose": "POST_MISMATCH",
+        "era": "1970s",
+        "coach": "lenny-wilkens",
+        "mirror": {
+          "maxActionFamilyShare": 0.20796,
+          "dominantFamily": "PICK_AND_ROLL",
+          "actionDistribution": {
+            "PICK_AND_ROLL": 0.20796,
+            "POST_UP": 0.14915,
+            "TRANSITION": 0.13713,
+            "CUT": 0.12513,
+            "ISOLATION": 0.11546,
+            "GENERIC_HALF_COURT": 0.09956,
+            "OFF_BALL_SCREEN": 0.09685,
+            "SPOT_UP": 0.06877
+          },
+          "possessions": 246130,
+          "shell": {
+            "winRate": null,
+            "decidedGames": 0,
+            "realizedZoneShare": 0,
+            "zoneAttackShare": null
+          },
+          "variance": {
+            "combinedScoreSd": 15.8198,
+            "marginSd": 8.73391,
+            "distinctScorelineRatio": 0.3615,
+            "games": 2000
+          },
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2000
+        },
+        "vsBalancedControl": {
+          "subjectWinRate": 0.915,
+          "decidedGames": 1000,
+          "controlWinRate": 0.085,
+          "fixtureSummedRating": 244.08,
+          "controlSummedRating": 155.05,
+          "ratingGap": 89.03,
+          "games": 1000
+        }
+      },
+      {
+        "devFixtureId": "sd2-zone-attack",
+        "purpose": "ZONE_ATTACK",
+        "era": "2010s",
+        "coach": "erik-spoelstra",
+        "mirror": {
+          "maxActionFamilyShare": 0.37313,
+          "dominantFamily": "ZONE_ATTACK",
+          "actionDistribution": {
+            "ZONE_ATTACK": 0.37313,
+            "GENERIC_HALF_COURT": 0.15398,
+            "TRANSITION": 0.14505,
+            "SPOT_UP": 0.06467,
+            "POST_UP": 0.0574,
+            "PICK_AND_ROLL": 0.05219,
+            "CUT": 0.04681,
+            "ISOLATION": 0.04055,
+            "OFF_BALL_SCREEN": 0.0374,
+            "HANDOFF": 0.02881
+          },
+          "possessions": 216364,
+          "shell": {
+            "winRate": 0.50529,
+            "decidedGames": 1892,
+            "realizedZoneShare": 0.58951,
+            "zoneAttackShare": 0.63322
+          },
+          "variance": {
+            "combinedScoreSd": 16.18598,
+            "marginSd": 9.22031,
+            "distinctScorelineRatio": 0.378,
+            "games": 2000
+          },
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2000
+        },
+        "vsBalancedControl": {
+          "subjectWinRate": 0.868,
+          "decidedGames": 1000,
+          "controlWinRate": 0.132,
+          "fixtureSummedRating": 284.75,
+          "controlSummedRating": 155.05,
+          "ratingGap": 129.7,
+          "games": 1000
+        }
+      },
+      {
+        "devFixtureId": "sd2-weak-defender-hiding",
+        "purpose": "WEAK_DEFENDER_HIDING",
+        "era": "2010s",
+        "coach": "mike-dantoni",
+        "mirror": {
+          "maxActionFamilyShare": 0.22431,
+          "dominantFamily": "PICK_AND_ROLL",
+          "actionDistribution": {
+            "PICK_AND_ROLL": 0.22431,
+            "TRANSITION": 0.18124,
+            "ISOLATION": 0.15891,
+            "SPOT_UP": 0.10154,
+            "POST_UP": 0.09832,
+            "OFF_BALL_SCREEN": 0.09299,
+            "GENERIC_HALF_COURT": 0.08104,
+            "CUT": 0.06163
+          },
+          "possessions": 229206,
+          "shell": {
+            "winRate": null,
+            "decidedGames": 0,
+            "realizedZoneShare": 0,
+            "zoneAttackShare": null
+          },
+          "variance": {
+            "combinedScoreSd": 16.69141,
+            "marginSd": 9.54562,
+            "distinctScorelineRatio": 0.388,
+            "games": 2000
+          },
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2000
+        },
+        "vsBalancedControl": {
+          "subjectWinRate": 0.789,
+          "decidedGames": 1000,
+          "controlWinRate": 0.211,
+          "fixtureSummedRating": 228.75,
+          "controlSummedRating": 155.05,
+          "ratingGap": 73.7,
+          "games": 1000
+        }
+      },
+      {
+        "devFixtureId": "sd2-action-family-stress",
+        "purpose": "ACTION_FAMILY_STRESS",
+        "era": "1990s",
+        "coach": "jerry-sloan",
+        "mirror": {
+          "maxActionFamilyShare": 0.24013,
+          "dominantFamily": "PICK_AND_ROLL",
+          "actionDistribution": {
+            "PICK_AND_ROLL": 0.24013,
+            "POST_UP": 0.12581,
+            "TRANSITION": 0.11894,
+            "OFF_BALL_SCREEN": 0.11422,
+            "GENERIC_HALF_COURT": 0.09763,
+            "HANDOFF": 0.08615,
+            "CUT": 0.08508,
+            "ISOLATION": 0.07951,
+            "SPOT_UP": 0.05252
+          },
+          "possessions": 224436,
+          "shell": {
+            "winRate": null,
+            "decidedGames": 0,
+            "realizedZoneShare": 0,
+            "zoneAttackShare": null
+          },
+          "variance": {
+            "combinedScoreSd": 14.75729,
+            "marginSd": 8.78666,
+            "distinctScorelineRatio": 0.3505,
+            "games": 2000
+          },
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2000
+        },
+        "vsBalancedControl": {
+          "subjectWinRate": 0.684,
+          "decidedGames": 1000,
+          "controlWinRate": 0.316,
+          "fixtureSummedRating": 257.12,
+          "controlSummedRating": 155.05,
+          "ratingGap": 102.07,
+          "games": 1000
+        }
+      },
+      {
+        "devFixtureId": "sd2-cross-era",
+        "purpose": "CROSS_ERA_TRANSLATION",
+        "era": "1960s",
+        "coach": "phil-jackson",
+        "mirror": {
+          "maxActionFamilyShare": 0.17166,
+          "dominantFamily": "ISOLATION",
+          "actionDistribution": {
+            "ISOLATION": 0.17166,
+            "TRANSITION": 0.13544,
+            "HANDOFF": 0.12276,
+            "POST_UP": 0.11677,
+            "OFF_BALL_SCREEN": 0.11448,
+            "CUT": 0.10577,
+            "GENERIC_HALF_COURT": 0.08788,
+            "PICK_AND_ROLL": 0.07987,
+            "SPOT_UP": 0.06537
+          },
+          "possessions": 277450,
+          "shell": {
+            "winRate": null,
+            "decidedGames": 0,
+            "realizedZoneShare": 0,
+            "zoneAttackShare": null
+          },
+          "variance": {
+            "combinedScoreSd": 15.57856,
+            "marginSd": 9.33496,
+            "distinctScorelineRatio": 0.367,
+            "games": 2000
+          },
+          "structural": {
+            "invariantViolationCount": 0,
+            "impossibleScoreCount": 0,
+            "nonFiniteStatCount": 0,
+            "negativeStatCount": 0,
+            "finalTieCount": 0
+          },
+          "games": 2000
+        },
+        "vsBalancedControl": {
+          "subjectWinRate": 0.995,
+          "decidedGames": 1000,
+          "controlWinRate": 0.005,
+          "fixtureSummedRating": 368.18,
+          "controlSummedRating": 155.05,
+          "ratingGap": 213.13,
+          "games": 1000
+        }
+      }
+    ],
+    "summary": {
+      "maxActionFamilyShare": {
+        "n": 14,
+        "min": 0.13929,
+        "max": 0.37313,
+        "mean": 0.20081,
+        "sd": 0.0566
+      },
+      "combinedScoreSd": {
+        "n": 14,
+        "min": 14.75729,
+        "max": 18.01977,
+        "mean": 16.57012,
+        "sd": 0.96312
+      },
+      "distinctScorelineRatio": {
+        "n": 14,
+        "min": 0.3505,
+        "max": 0.4085,
+        "mean": 0.3805,
+        "sd": 0.01476
+      },
+      "shellSideWinRate": {
+        "n": 4,
+        "min": 0.49891,
+        "max": 0.52275,
+        "mean": 0.51187,
+        "sd": 0.01161
+      },
+      "subjectWinRateVsControl": {
+        "n": 14,
+        "min": 0.135,
+        "max": 0.995,
+        "mean": 0.80186,
+        "sd": 0.21286
+      },
+      "structuralTotals": {
+        "invariantViolationCount": 0,
+        "impossibleScoreCount": 0,
+        "nonFiniteStatCount": 0,
+        "negativeStatCount": 0,
+        "finalTieCount": 0
+      }
+    },
+    "seedDomains": {
+      "mirror": "0x6c4b15",
+      "vsControl": "0x6c4b16",
+      "note": "preparation-only development streams, distinct from the formal Synthetic V2 domain frozen in WS6"
+    },
+    "controlsHash": "2ef31bc3d78442f20f88f3ec314c46fdd4dff8f9cbbe5ed692daa304b2880240"
+  },
+  "outputHash": "d00f60a8b53d5ed8449c2b3c3e694e62d07e43ab34761563b8eaa7794f3b1e11"
+}

@@ -1,0 +1,45 @@
+{
+  "artifact": "legend-cpu-policy",
+  "phase": "8A",
+  "version": "1.0.0",
+  "policy": "LEGEND",
+  "difficultySelector": "ABSENT — there is exactly one CPU policy and it is never weakened",
+  "newUserSupport": "guidance, never a weaker opponent",
+  "visibleStateKeys": [
+    "side",
+    "roll",
+    "roster",
+    "held",
+    "opponentRoster",
+    "burnedIds",
+    "revealedEraId"
+  ],
+  "forbiddenStateKeys": [
+    "futureDraws",
+    "nextCards",
+    "seedId",
+    "serverSeed",
+    "result",
+    "winner",
+    "finalScore",
+    "userHolds",
+    "opponentHeldSlots",
+    "coachOffers",
+    "branches",
+    "rngSteps"
+  ],
+  "method": "Deterministic expected-value lookahead over the probability model across all 32 hold subsets.",
+  "preEraObjective": {
+    "talent": 0.42,
+    "construction": 0.3,
+    "eraAdaptability": 0.16,
+    "opponentInteraction": 0.12
+  },
+  "postEraObjective": {
+    "talent": 0.36,
+    "construction": 0.28,
+    "eraTranslation": 0.24,
+    "opponentInteraction": 0.12
+  },
+  "commitment": "The CPU's hold decision is computed and hashed BEFORE the user's holds are accepted, then revealed after."
+}

@@ -1,0 +1,348 @@
+{
+  "artifact": "phase7b-ui-resolution-ledger",
+  "data": {
+    "items": [
+      {
+        "issueId": "u01",
+        "description": "visual composition did not match the premium court-centered design",
+        "severity": "HIGH",
+        "leadingRootCause": "the 7A rebuild kept the flat two-panel layout and never introduced an arena surface",
+        "alternativeTheories": [
+          "theme-only problem",
+          "missing assets"
+        ],
+        "implementedFix": "ArenaCentre navy inset (EC mark, VS, preview) between the team panels; navy score hero, Ready tipoff band and loading",
+        "verification": "browser + screenshots at 1440/768/375",
+        "regressionTest": "e2e R6 asserts a light page with a navy header",
+        "status": "FIXED_AND_VERIFIED"
+      },
+      {
+        "issueId": "u02",
+        "description": "interface excessively dark, causing readability strain",
+        "severity": "HIGH",
+        "leadingRootCause": "every surface token was near-black, so all reading happened on #0b0e17",
+        "alternativeTheories": [
+          "font size only",
+          "contrast of accents only"
+        ],
+        "implementedFix": "theme.js rewritten to warm ivory page / off-white cards / deep navy ink; 16px base type",
+        "verification": "computed body background luminance > 0.8, ink < 0.3",
+        "regressionTest": "v7b theme luminance test + e2e R6",
+        "status": "FIXED_AND_VERIFIED"
+      },
+      {
+        "issueId": "u03",
+        "description": "all-white alternative too drastic",
+        "severity": "MEDIUM",
+        "leadingRootCause": "n/a \u2014 avoided by design",
+        "alternativeTheories": [],
+        "implementedFix": "hybrid: light for reading surfaces, navy reserved for header, court, loading, score hero",
+        "verification": "visual review of every stage",
+        "regressionTest": "e2e R6 asserts BOTH the light page and the navy header",
+        "status": "FIXED_AND_VERIFIED"
+      },
+      {
+        "issueId": "u04",
+        "description": "coach selection cluttered; All Coaches view lost detail",
+        "severity": "HIGH",
+        "leadingRootCause": "three long scouting cards inline plus a name-only list for the other 22",
+        "alternativeTheories": [
+          "needed shorter cards",
+          "needed pagination"
+        ],
+        "implementedFix": "CoachModal: search, system-family filter, sort, list + detail pane, one Select CTA",
+        "verification": "deployed + mobile browser QA",
+        "regressionTest": "journeys J11 asserts search/filter/sort/detail; R2 asserts the phone modal",
+        "status": "FIXED_AND_VERIFIED"
+      },
+      {
+        "issueId": "u05",
+        "description": "legacy Chemistry presented as if it drives Candidate 3",
+        "severity": "CRITICAL",
+        "leadingRootCause": "the legacy analyzeBalance multiplier was surfaced as a headline score next to engine output",
+        "alternativeTheories": [
+          "wording only",
+          "placement only"
+        ],
+        "implementedFix": "RosterBalance replaces the meter with named strengths/tradeoffs and a 'does not decide the game' note; chemistry dial removed from postgame",
+        "verification": "no chemistry number remains in the builder or postgame",
+        "regressionTest": "v7b copy test + e2e P2",
+        "status": "FIXED_AND_VERIFIED"
+      },
+      {
+        "issueId": "u06",
+        "description": "pregame and postgame matchup reads disagreed",
+        "severity": "CRITICAL",
+        "leadingRootCause": "two implementations: /api/v3meta mapped edges to words, the postgame rendered the same model's raw numbers",
+        "alternativeTheories": [
+          "rounding",
+          "different inputs",
+          "stale cache"
+        ],
+        "implementedFix": "api/_lib/pregameRead.js is the single implementation; /api/game stores the snapshot; postgame renders the stored object",
+        "verification": "e2e P1 captures the Ready rows and asserts the postgame rows are identical",
+        "regressionTest": "P1 + v7b determinism test",
+        "status": "FIXED_AND_VERIFIED"
+      },
+      {
+        "issueId": "u07",
+        "description": "raw internal edge values exposed",
+        "severity": "HIGH",
+        "leadingRootCause": "the postgame EdgeBars printed the \u00b120 model scale",
+        "alternativeTheories": [
+          "debug leftover"
+        ],
+        "implementedFix": "EdgeBars deleted; StoredPregameRead prints Even / Gold Edge / Strong Gold Edge only",
+        "verification": "no /(Gold|Blue) \\+\\d+/ anywhere in the UI",
+        "regressionTest": "e2e P2 scans all four postgame tabs",
+        "status": "FIXED_AND_VERIFIED"
+      },
+      {
+        "issueId": "u08",
+        "description": "coach cards showed Era fit before an era was selected",
+        "severity": "HIGH",
+        "leadingRootCause": "eraStyle carried a default ('2020s') that was passed to the recommender during the coach stage",
+        "alternativeTheories": [
+          "recommender bug"
+        ],
+        "implementedFix": "eraStyleId is undefined until eraLocked; the modal hides era fit and says where it appears",
+        "verification": "modal shows the deferral note pre-era",
+        "regressionTest": "journeys J11 + v7b era-gating test",
+        "status": "FIXED_AND_VERIFIED"
+      },
+      {
+        "issueId": "u09",
+        "description": "two competing box scores",
+        "severity": "HIGH",
+        "leadingRootCause": "a legacy 5-column table and the possession box both rendered",
+        "alternativeTheories": [
+          "duplicate component"
+        ],
+        "implementedFix": "one AuthoritativeBox built from the possession lines with reconciled totals",
+        "verification": "one BOX SCORE heading; the other two strings are gone",
+        "regressionTest": "e2e P6 + v7b box test",
+        "status": "FIXED_AND_VERIFIED"
+      },
+      {
+        "issueId": "u10",
+        "description": "personal fouls displayed with no foul-out/rotation system",
+        "severity": "MEDIUM",
+        "leadingRootCause": "the column was carried over from the possession box; the engine's own note says no disqualification is modelled",
+        "alternativeTheories": [
+          "data missing"
+        ],
+        "implementedFix": "PF column removed",
+        "verification": "no PF header in the DOM",
+        "regressionTest": "e2e P6 asserts PF is absent",
+        "status": "FIXED_AND_VERIFIED"
+      },
+      {
+        "issueId": "u11",
+        "description": "narrative contained contradictions and unsupported causal claims",
+        "severity": "CRITICAL",
+        "leadingRootCause": "the model was asked not to contradict the result but nothing verified the output",
+        "alternativeTheories": [
+          "prompt wording",
+          "temperature"
+        ],
+        "implementedFix": "narrativeEvidence.js: evidence packet + claim validation; contradictions are rejected (MODEL_CONTRADICTED_RESULT) and the deterministic recap stands",
+        "verification": "winner/score/margin/stat/inferred-cause cases all rejected",
+        "regressionTest": "v7b claim-validation suite",
+        "status": "FIXED_AND_VERIFIED"
+      },
+      {
+        "issueId": "u12",
+        "description": "duplicate real people on opposing teams were ambiguous",
+        "severity": "HIGH",
+        "leadingRootCause": "narrative and coaching text used bare names when the same card person was on both sides",
+        "alternativeTheories": [
+          "rare edge case"
+        ],
+        "implementedFix": "packet lists duplicates; validator rejects bare mentions; coaching qualifies them Gold's/Blue's",
+        "verification": "'Michael Jordan vs Michael Jordan' became 'Gold's \u2026 vs Blue's \u2026'",
+        "regressionTest": "v7b duplicate tests (validator + coaching)",
+        "status": "FIXED_AND_VERIFIED"
+      },
+      {
+        "issueId": "u13",
+        "description": "Key Moments mixed discrete events with game-long patterns",
+        "severity": "HIGH",
+        "leadingRootCause": "one deriver emitted both, so 'attacked a mismatch 12 times' sat among single plays",
+        "alternativeTheories": [
+          "labelling only"
+        ],
+        "implementedFix": "derivePatterns split out; separate MATCHUP PATTERNS panel",
+        "verification": "no game-long count appears under KEY MOMENTS",
+        "regressionTest": "e2e P4 + v7b separation test",
+        "status": "FIXED_AND_VERIFIED"
+      },
+      {
+        "issueId": "u14",
+        "description": "Candidate 3 single game led into a possibly different-engine Best of 7",
+        "severity": "CRITICAL",
+        "leadingRootCause": "the CTA was engine-agnostic while the preview scope is single-game",
+        "alternativeTheories": [
+          "series support exists"
+        ],
+        "implementedFix": "Best of 7 withdrawn on preview results with an explanation; Rematch stays",
+        "verification": "no Best of 7 control on a Candidate 3 result",
+        "regressionTest": "e2e P5",
+        "status": "FIXED_AND_VERIFIED"
+      },
+      {
+        "issueId": "u15",
+        "description": "approved player imagery underused",
+        "severity": "MEDIUM",
+        "leadingRootCause": "approved.json is empty, so every card falls back",
+        "alternativeTheories": [
+          "component bug"
+        ],
+        "implementedFix": "RosterGrid/Ready/hero all render PlayerImage, which serves approved art the moment it exists",
+        "verification": "no invented likeness anywhere",
+        "regressionTest": "v7a asset test retained",
+        "status": "FIXED_AND_VERIFIED"
+      },
+      {
+        "issueId": "u16",
+        "description": "initial roster page top-heavy and duplicated mode selection",
+        "severity": "HIGH",
+        "leadingRootCause": "the 7A build added Daily/Ball IQ hero cards, a four-mode row and a marketing strip above the panels",
+        "alternativeTheories": [
+          "spacing only"
+        ],
+        "implementedFix": "all four removed; one compact selected-mode chip; Ball IQ is a draft setting",
+        "verification": "first viewport is the matchup",
+        "regressionTest": "v7b copy test asserts the strip is gone",
+        "status": "FIXED_AND_VERIFIED"
+      },
+      {
+        "issueId": "u17",
+        "description": "Ready state visually sparse",
+        "severity": "HIGH",
+        "leadingRootCause": "it was a preview card plus a button",
+        "alternativeTheories": [
+          "needs more data"
+        ],
+        "implementedFix": "navy tipoff band: both fives with portraits, coaches, era, read, one dominant CTA, edit controls",
+        "verification": "screenshot review",
+        "regressionTest": "e2e R1/R5 traverse it",
+        "status": "FIXED_AND_VERIFIED"
+      },
+      {
+        "issueId": "u18",
+        "description": "coach cards too text-dense",
+        "severity": "MEDIUM",
+        "leadingRootCause": "full scouting reports rendered inline",
+        "alternativeTheories": [
+          "font size"
+        ],
+        "implementedFix": "one-line summary in the stage; detail lives in the modal behind progressive disclosure",
+        "verification": "coach stage is a summary + Change coach",
+        "regressionTest": "journeys J11",
+        "status": "FIXED_AND_VERIFIED"
+      },
+      {
+        "issueId": "u19",
+        "description": "Postgame too long, report-like and repetitive",
+        "severity": "HIGH",
+        "leadingRootCause": "every section rendered in one column with duplicate team info",
+        "alternativeTheories": [
+          "needs tabs"
+        ],
+        "implementedFix": "two-column Final (MVP/moments/patterns | context/breakdown/period), tabs for the rest",
+        "verification": "screenshot review",
+        "regressionTest": "e2e R3 mobile density",
+        "status": "FIXED_AND_VERIFIED"
+      },
+      {
+        "issueId": "u20",
+        "description": "Coaching & Strategy did not show coaching",
+        "severity": "HIGH",
+        "leadingRootCause": "it showed usage percentages and a raw edge chart",
+        "alternativeTheories": [
+          "data unavailable"
+        ],
+        "implementedFix": "previewCoaching.js surfaces opening mix, pace, initiator, defensive shell + constraints, adjustments with triggers, attacked matchups",
+        "verification": "real values render for Candidate 3; production says it records none",
+        "regressionTest": "e2e P3 + journeys J11",
+        "status": "FIXED_AND_VERIFIED"
+      },
+      {
+        "issueId": "u21",
+        "description": "Save Career did not reflect authentication state",
+        "severity": "MEDIUM",
+        "leadingRootCause": "one button regardless of whether a name was set",
+        "alternativeTheories": [
+          "needs real auth"
+        ],
+        "implementedFix": "the control states 'On this device only' vs 'Career saved' \u2014 no fake login invented",
+        "verification": "both states render correctly",
+        "regressionTest": "visual review",
+        "status": "FIXED_AND_VERIFIED"
+      },
+      {
+        "issueId": "u22",
+        "description": "Chaos Draft controls asymmetric",
+        "severity": "MEDIUM",
+        "leadingRootCause": "Chaos Draft is a seeded drafting game for YOUR five; Blue is the opposition",
+        "alternativeTheories": [
+          "missing feature"
+        ],
+        "implementedFix": "Manual first on both sides; a line on the Blue panel explains why Chaos Draft is Gold-only",
+        "verification": "no unexplained asymmetry",
+        "regressionTest": "visual review",
+        "status": "FIXED_AND_VERIFIED"
+      },
+      {
+        "issueId": "u23",
+        "description": "player Fit labels uninformative (nearly all EXCELLENT)",
+        "severity": "MEDIUM",
+        "leadingRootCause": "the label rendered for every fit value",
+        "alternativeTheories": [
+          "threshold tuning"
+        ],
+        "implementedFix": "only POOR (OFF-ROLE) and NEUTRAL are surfaced",
+        "verification": "clean cards; a real role problem still shows",
+        "regressionTest": "visual review",
+        "status": "FIXED_AND_VERIFIED"
+      },
+      {
+        "issueId": "u24",
+        "description": "legacy feature-strip language made inaccurate claims",
+        "severity": "HIGH",
+        "leadingRootCause": "'unlock bonuses' and 'AI Game Simulation' were marketing copy predating the engine",
+        "alternativeTheories": [
+          "wording"
+        ],
+        "implementedFix": "strip removed entirely; index.html description corrected in 7A",
+        "verification": "no occurrence remains",
+        "regressionTest": "v7b copy test",
+        "status": "FIXED_AND_VERIFIED"
+      },
+      {
+        "issueId": "u25",
+        "description": "loading and postgame had to inherit the new theme",
+        "severity": "HIGH",
+        "leadingRootCause": "n/a",
+        "alternativeTheories": [],
+        "implementedFix": "both converted to the arena inset with light-on-navy ink",
+        "verification": "screenshot review",
+        "regressionTest": "e2e R6",
+        "status": "FIXED_AND_VERIFIED"
+      },
+      {
+        "issueId": "u26",
+        "description": "Wave 1 access, scenarios, feedback, telemetry, Candidate 3 identity and isolation must survive",
+        "severity": "CRITICAL",
+        "leadingRootCause": "n/a \u2014 preservation requirement",
+        "alternativeTheories": [],
+        "implementedFix": "no engine, access, namespace or key change in this phase",
+        "verification": "preview suites + access audit + deployed QA",
+        "regressionTest": "preflight and production-isolation artifacts",
+        "status": "FIXED_AND_VERIFIED"
+      }
+    ],
+    "unresolvedTechnicalFailures": 0,
+    "unresolvedIds": []
+  }
+}

@@ -1,0 +1,329 @@
+{
+  "artifact": "phase6c3-preflight",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run validation:preflight",
+  "generatedAt": "2026-08-26T20:08:33.943Z",
+  "gitCommit": "1a68d20e3885fca6c1b913237bb05df211b2daf6",
+  "branch": "phase-6c3-formal-holdout-preview",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {
+    "data/calibration/c6/baseline-candidate-lock.json": "94e695648196b9efd3e7a6bbe24a559ec8e22c884852e75029fdbd5e0011a954",
+    "data/calibration/c6/phase-6c3-validation-package.json": "b9f2cfdced45b89169eb0b86c19ae14c90aa17634d358a2bc55009fdd64951a8"
+  },
+  "data": {
+    "candidateLockValid": true,
+    "candidateCoreClean": true,
+    "historicalHoldoutEligible": true,
+    "syntheticHoldoutEligible": true,
+    "holdoutAccessCounts": {
+      "historicalHoldoutV3": 0,
+      "syntheticStressHoldoutV2": 0
+    },
+    "formalValidationMayBegin": true,
+    "failedGates": [],
+    "lockedCandidate": {
+      "candidateId": "Candidate 0",
+      "calibrationStatus": "DEVELOPMENT_LOCKED_BASELINE",
+      "possessionCalibrationVersion": "1.0.0",
+      "parameterChanges": 0,
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "lockManifestHash": "4e0c814f0c5ddd32f6f5db9281908203a650e739ce95448ca27dc2ad858bc751",
+      "activeParameterCount": 53
+    },
+    "candidateCore": {
+      "fileCount": 52,
+      "aggregateCoreHash": "58c5fb6974e694c29f87934ab107ff47ce32963a9c0695e36f941c2a70ae6683",
+      "missing": []
+    },
+    "seals": {
+      "legacy-holdout-v1": {
+        "accessCount": 0,
+        "status": "SEALED_UNREAD",
+        "integrity": "Never read. Any Phase 6C2 tuning result can be honestly validated against it.",
+        "set": "legacy-holdout-v1",
+        "note": "LEGACY_MIXED_HOLDOUT — preserved unchanged, not reused for formal historical validation."
+      },
+      "historical-holdout-v2": {
+        "set": "historical-holdout-v2",
+        "accessCount": 0,
+        "status": "SEALED_UNREAD",
+        "integrity": "Never read. A Phase 6C3 validation against it is genuinely independent.",
+        "note": "INSUFFICIENT_SAMPLE_ARCHIVE — genuinely unread, but three fixtures cannot validate generalisation. Superseded by v3 and archived rather than consumed."
+      },
+      "synthetic-stress-v1": {
+        "set": "synthetic-stress-v1",
+        "accessCount": 0,
+        "status": "PREVIOUSLY_INSPECTED_ARCHIVE",
+        "integrity": "Never read. A Phase 6C3 validation against it is genuinely independent.",
+        "note": "Its counter reads 0 because the seal was created after the simulations. Not a holdout."
+      },
+      "historical-holdout-v3": {
+        "set": "historical-holdout-v3",
+        "accessCount": 0,
+        "status": "SEALED_UNREAD",
+        "integrity": "Never read. A Phase 6C3 validation against it is genuinely independent."
+      },
+      "synthetic-stress-holdout-v2": {
+        "set": "synthetic-stress-holdout-v2",
+        "accessCount": 0,
+        "status": "SEALED_UNREAD",
+        "integrity": "Never read. A Phase 6C3 validation against it is genuinely independent."
+      }
+    },
+    "manifestHashes": {
+      "historicalHoldoutV3": "9e799c4bfc84eedf09c8f46b5a983dff0882e908404e6326cc1e8c874d6335fc",
+      "syntheticStressHoldoutV2": "71267875cbf69a9ffa2bd420a2f4bb87437ecb78d6ca2029e7b6826759dbcd19"
+    },
+    "sealedFixtureLeakage": {
+      "checked": 24,
+      "dirsChecked": [
+        "data/calibration/c5",
+        "data/calibration/c6",
+        ".cache/calibration",
+        "data/validation"
+      ],
+      "leaks": []
+    },
+    "policies": {
+      "holdoutAcceptancePolicyVersion": "1.0.0",
+      "acceptancePolicyHash": "a3583d6ada42d61ff9ee40322d999154250613ba94a2cd6f073e2196315919b0",
+      "holdoutSupportedScopeVersion": "1.0.0",
+      "supportedScopePolicyHash": "594ec258891eebfcd11cdab9190a59f944c331fc4b219261b5fc076312302bf7",
+      "maxHoldoutToInternalCompositeRatio": 1.5,
+      "minGamesPerHoldoutFixture": 1000,
+      "maxOpeningsPerSet": 1
+    },
+    "supportedScopeCensus": {
+      "teamFieldCells": 240,
+      "byClass": {
+        "NOT_APPLICABLE": 24,
+        "UNAVAILABLE": 216
+      },
+      "reconciliation": {
+        "label": "team-field-census",
+        "sum": 240,
+        "expectedTotal": 240,
+        "reconciles": true,
+        "problems": []
+      },
+      "proxyShareMapsAvailable": 31,
+      "proxyShareMapsPossible": 40,
+      "fixturesWithNoNumericSurface": [
+        "h3-1976-77-blazers"
+      ],
+      "erasCovered": [
+        "1950s",
+        "1960s",
+        "1970s",
+        "1980s",
+        "1990s",
+        "2000s",
+        "2010s",
+        "2020s"
+      ],
+      "perFixture": [
+        {
+          "fixtureId": "h3-1953-54-lakers",
+          "teamName": "Minneapolis Lakers",
+          "season": "1953-54",
+          "eraStyleId": "1950s",
+          "confidence": "MEDIUM_HIGH",
+          "unitConfidence": "MEDIUM",
+          "teamFieldsEvaluated": 0,
+          "teamFieldsTotal": 30,
+          "supportedProxyShareMaps": [
+            "playerScoringShares",
+            "playerReboundShares",
+            "playerAssistShares"
+          ],
+          "supportedProxyCount": 3,
+          "nullShareMaps": [
+            "playerOpportunityShares",
+            "playerUsageShares",
+            "playerTurnoverShares"
+          ],
+          "identityTraitCount": 6,
+          "hasAnyNumericSurface": true
+        },
+        {
+          "fixtureId": "h3-1968-69-knicks",
+          "teamName": "New York Knicks",
+          "season": "1968-69",
+          "eraStyleId": "1960s",
+          "confidence": "MEDIUM_HIGH",
+          "unitConfidence": "MEDIUM",
+          "teamFieldsEvaluated": 0,
+          "teamFieldsTotal": 30,
+          "supportedProxyShareMaps": [
+            "playerScoringShares",
+            "playerReboundShares",
+            "playerAssistShares"
+          ],
+          "supportedProxyCount": 3,
+          "nullShareMaps": [
+            "playerOpportunityShares",
+            "playerUsageShares",
+            "playerTurnoverShares"
+          ],
+          "identityTraitCount": 6,
+          "hasAnyNumericSurface": true
+        },
+        {
+          "fixtureId": "h3-1976-77-blazers",
+          "teamName": "Portland Trail Blazers",
+          "season": "1976-77",
+          "eraStyleId": "1970s",
+          "confidence": "MEDIUM",
+          "unitConfidence": "LOW",
+          "teamFieldsEvaluated": 0,
+          "teamFieldsTotal": 30,
+          "supportedProxyShareMaps": [],
+          "supportedProxyCount": 0,
+          "nullShareMaps": [
+            "playerOpportunityShares",
+            "playerUsageShares",
+            "playerTurnoverShares"
+          ],
+          "identityTraitCount": 6,
+          "hasAnyNumericSurface": false
+        },
+        {
+          "fixtureId": "h3-1982-83-sixers",
+          "teamName": "Philadelphia 76ers",
+          "season": "1982-83",
+          "eraStyleId": "1980s",
+          "confidence": "MEDIUM_HIGH",
+          "unitConfidence": "MEDIUM",
+          "teamFieldsEvaluated": 0,
+          "teamFieldsTotal": 30,
+          "supportedProxyShareMaps": [
+            "playerScoringShares",
+            "playerReboundShares",
+            "playerAssistShares",
+            "playerStealShares",
+            "playerBlockShares"
+          ],
+          "supportedProxyCount": 5,
+          "nullShareMaps": [
+            "playerOpportunityShares",
+            "playerUsageShares",
+            "playerTurnoverShares"
+          ],
+          "identityTraitCount": 7,
+          "hasAnyNumericSurface": true
+        },
+        {
+          "fixtureId": "h3-1993-94-knicks",
+          "teamName": "New York Knicks",
+          "season": "1993-94",
+          "eraStyleId": "1990s",
+          "confidence": "MEDIUM_HIGH",
+          "unitConfidence": "MEDIUM",
+          "teamFieldsEvaluated": 0,
+          "teamFieldsTotal": 30,
+          "supportedProxyShareMaps": [
+            "playerScoringShares",
+            "playerReboundShares",
+            "playerAssistShares",
+            "playerStealShares",
+            "playerBlockShares"
+          ],
+          "supportedProxyCount": 5,
+          "nullShareMaps": [
+            "playerOpportunityShares",
+            "playerUsageShares",
+            "playerTurnoverShares"
+          ],
+          "identityTraitCount": 8,
+          "hasAnyNumericSurface": true
+        },
+        {
+          "fixtureId": "h3-2006-07-suns",
+          "teamName": "Phoenix Suns",
+          "season": "2006-07",
+          "eraStyleId": "2000s",
+          "confidence": "MEDIUM_HIGH",
+          "unitConfidence": "MEDIUM",
+          "teamFieldsEvaluated": 0,
+          "teamFieldsTotal": 30,
+          "supportedProxyShareMaps": [
+            "playerScoringShares",
+            "playerReboundShares",
+            "playerAssistShares",
+            "playerStealShares",
+            "playerBlockShares"
+          ],
+          "supportedProxyCount": 5,
+          "nullShareMaps": [
+            "playerOpportunityShares",
+            "playerUsageShares",
+            "playerTurnoverShares"
+          ],
+          "identityTraitCount": 9,
+          "hasAnyNumericSurface": true
+        },
+        {
+          "fixtureId": "h3-2012-13-heat",
+          "teamName": "Miami Heat",
+          "season": "2012-13",
+          "eraStyleId": "2010s",
+          "confidence": "MEDIUM_HIGH",
+          "unitConfidence": "MEDIUM",
+          "teamFieldsEvaluated": 0,
+          "teamFieldsTotal": 30,
+          "supportedProxyShareMaps": [
+            "playerScoringShares",
+            "playerReboundShares",
+            "playerAssistShares",
+            "playerStealShares",
+            "playerBlockShares"
+          ],
+          "supportedProxyCount": 5,
+          "nullShareMaps": [
+            "playerOpportunityShares",
+            "playerUsageShares",
+            "playerTurnoverShares"
+          ],
+          "identityTraitCount": 8,
+          "hasAnyNumericSurface": true
+        },
+        {
+          "fixtureId": "h3-2022-23-raptors",
+          "teamName": "Toronto Raptors",
+          "season": "2022-23",
+          "eraStyleId": "2020s",
+          "confidence": "MEDIUM_HIGH",
+          "unitConfidence": "MEDIUM",
+          "teamFieldsEvaluated": 0,
+          "teamFieldsTotal": 30,
+          "supportedProxyShareMaps": [
+            "playerScoringShares",
+            "playerReboundShares",
+            "playerAssistShares",
+            "playerStealShares",
+            "playerBlockShares"
+          ],
+          "supportedProxyCount": 5,
+          "nullShareMaps": [
+            "playerOpportunityShares",
+            "playerUsageShares",
+            "playerTurnoverShares"
+          ],
+          "identityTraitCount": 8,
+          "hasAnyNumericSurface": true
+        }
+      ],
+      "honestSummary": "Only 0 of 240 team-level cells carry an authorized recorded value, and all of them are season records classified NOT_APPLICABLE to a fixed-sample fixture simulation. The historical holdout's numeric surface is therefore the Tier C selected-five share proxies plus structural guardrails, with documented identity traits judged qualitatively."
+    },
+    "externalPreconditionsUnmet": [
+      "An authorized independent second source exists",
+      "Tier B target coverage is adequate",
+      "src/v3/data/eras.js no longer cites the excluded publisher"
+    ],
+    "externalPreconditionTreatment": "SCOPE_LIMITATION_NOT_ENGINEERING_BLOCKER, per the Phase 6C3 external-data assumption."
+  },
+  "outputHash": "37b085d20ad6dfb73a66fa0895744cb6333807c8bb71331de7b7489042372980"
+}

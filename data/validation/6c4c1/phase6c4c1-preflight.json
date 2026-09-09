@@ -1,0 +1,96 @@
+{
+  "artifact": "phase6c4c1-preflight",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run c2:preflight",
+  "generatedAt": "2026-08-27T14:16:44.959Z",
+  "gitCommit": "d88cca10747f68c859a250ecf7996249b94afba6",
+  "branch": "phase-6c4c1-candidate2-trait-repair",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "phase": "6C4C1",
+    "phaseType": "TARGETED_REPAIR_AND_INTERNAL_LOCK",
+    "candidate0Preserved": true,
+    "candidate1Preserved": true,
+    "candidate0DriftCount": 0,
+    "candidate1DriftCount": 0,
+    "historicalV3AccessCount": 1,
+    "historicalV4AccessCount": 1,
+    "historicalV5AccessCount": 1,
+    "historicalV5Verdict": "HISTORICAL_HOLDOUT_V5_FAIL",
+    "historicalV5Role": "FAILED_HOLDOUT_DIAGNOSTIC_SET",
+    "historicalV5RoleNote": "Historical V5 is consumed. It may be referenced only as a diagnostic set. It is never unseen evidence for Candidate 2 and no replacement V5 verdict may be emitted.",
+    "syntheticV2AccessCount": 0,
+    "syntheticV2FormalOutputs": 0,
+    "candidate2Exists": false,
+    "candidate2DevelopmentMayBegin": true,
+    "reconciliations": [
+      {
+        "id": "CALIBRATION_STATUS_CONVENTION",
+        "resolved": true,
+        "summary": "Candidate 1 calibrationStatus reconciled from DEVELOPMENT_LOCKED_SCOPED to HOLDOUT_FAILED, matching the Candidate 0 precedent"
+      },
+      {
+        "id": "DEFENSIVE_PATTERN_COUNT",
+        "resolved": true,
+        "summary": "the \"5 of 8 matchups\" figure is not what the artifacts say: 4 of 7 matchups carrying the metric are wrong-direction, 3 of 8 team-sides significantly so",
+        "artifactDerived": {
+          "instances": 13,
+          "matchupsCarryingMetric": 7,
+          "distinctTeamSides": 8,
+          "wrongDirectionMatchups": 4,
+          "wrongDirectionTeamSides": 4,
+          "wrongAndStatisticallyOppositeTeamSides": 3
+        }
+      }
+    ],
+    "immutableArtifactHashes": {
+      "data/calibration/c6/baseline-candidate-lock.json": "94e695648196b9efd3e7a6bbe24a559ec8e22c884852e75029fdbd5e0011a954",
+      "data/validation/6c4b1/candidate1-lock-recertification.json": "55df5d5103d08dc1d67b5579c9c0687e290229c7bd6654e74616338fe1d9db35",
+      "data/validation/6c4b1/historical-holdout-v5-policy.json": "1d916e3227adefbf4cdf195f816552717efd6151076933ff0b901bc50f3d3ac8",
+      "data/validation/6c4b1/historical-holdout-v5-manifest.json": "0434817e2506746729bfd019a8c93a696b03436d063320f67bfb071e3bef414a",
+      "data/validation/6c4b1/historical-holdout-v5-seeds.json": "c56bffc2c24ad29d01b0c89bea2a819a0bff19eb18b24b479d53b97262a8aead",
+      "data/validation/6c4b1/historical-holdout-v5-seal.json": "4121df6df253087656de6dc28cef9ae5817c3bb7e8779cb01d9f0f49d3977992",
+      "data/validation/6c4b1/historical-holdout-v5-results.json": "29ec7fe7998fb69d43ebefa477be74c0834ffe5f1a98deb4415682709e7430cc",
+      "data/validation/6c4b1/historical-holdout-v5-run.json": "c9891effcb3e3f2d80c7678f1e270d8cf4c9d273b8cb1dc81541f95ca12d80b4",
+      "data/validation/6c4b2r/historical-v5-formal-results.json": "6a966e509462a15a08d71ca2bc85b346def7fcbc11b9c447a93ea101c35fc81b",
+      "data/validation/6c4b2r/historical-v5-formal-verdict.json": "e5043edaf3e5fe764f3c03a26e4ee678cbad9b851db2a2e3fdc1314b00663dfa",
+      "data/validation/6c4b2r/historical-v5-access-event.json": "0b0cbc53c9e1b64ab10013e0797a95f8221253d331562ec75c4735c5d2b3d09a",
+      "data/validation/6c4b2r/historical-v5-fixture-results.json": "0a0a19f87aae93c136a9310e5b07ec53e3b132642d0610b199f3acf9fec05a97",
+      "data/validation/6c4b2r/candidate1-formal-status.json": "412420521e46302915201b68409d9dcd5ec2cfbc51baff03e5eabe10e397b313",
+      "data/calibration/historical-holdout-v3-access-log.jsonl": "43061e20c24d3301e9ebf025139b514b5f05ef53c8ea8732a1e43bd87b244879",
+      "data/calibration/historical-holdout-v4-access-log.jsonl": "55150cad1d9583fb73e0fada9265a104ea93bcac6f523672d2ccdfbd4f7db9d8",
+      "data/calibration/historical-holdout-v5-access-log.jsonl": "1acf5941465930a143ac4bc566ee084353159aad438804211ec221825addace7",
+      "data/calibration/synthetic-stress-holdout-v2-manifest.json": "e17dca60bebfd2170d41b9b64b918538bf941825a0e6125962a67a69c5cae2b6",
+      "data/validation/6c4b1s/synthetic-v2-formal-policy.json": "75288203ee628d3cddf1d149a10c4977fc744eb7a3069b714740ea95614df4d9",
+      "data/validation/6c4b1s/synthetic-v2-seeds.json": "10be2336dc5f2abc3ec8af52c7481076601e1fe9b86284995e11a62e2fb7ab0b",
+      "data/validation/6c4b1s/synthetic-v2-sample-plan.json": "2c4809b9caa370ea86b10103bfb9b0106e3bdc1bd930263d6407649c09c71f90",
+      "data/validation/6c4b1s/synthetic-v2-guardrail-registry.json": "6a0826f73d89b651a2fc3cc19e7938b6b721b0a4a935a34d3f25ada4f7093bd2",
+      "data/validation/6c4b1s/synthetic-v2-aggregation-policy.json": "b832b0c4cc431ee6f8e5232bbf0c9ef53a7369c2e30a52ee71ab0353b351d090",
+      "data/validation/6c4b1s/compound-formal-validation-package-v2.json": "e227204554f0c24a9f4a8091a6059777d0ec320b243a79ff5200c89d3822a412"
+    },
+    "quality": {
+      "vitestTests": 1753,
+      "vitestFiles": 51,
+      "playwrightJourneys": 19,
+      "buildClean": true,
+      "note": "verified by running the gates on this branch before any change"
+    },
+    "production": {
+      "mainCommit": "9cd95ff8797f8cdef252bbe67d63158c01b9f9bd",
+      "unchanged": true,
+      "previewDeployments": 0,
+      "productionDeployments": 0,
+      "mergedToMain": false
+    },
+    "recordedAtCommit": "d88cca10747f68c859a250ecf7996249b94afba6",
+    "branch": "phase-6c4c1-candidate2-trait-repair",
+    "pass": true,
+    "failedGates": [],
+    "preflightHash": "5be1572400e0266594b59facbed9a2f46c025b2da199102386c1423738439b09"
+  },
+  "outputHash": "0988758def17157704bf146ec0467a7c653b56f9735dd1ccfd79bf3b262f9136"
+}

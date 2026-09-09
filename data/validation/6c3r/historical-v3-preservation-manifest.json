@@ -1,0 +1,52 @@
+{
+  "artifact": "historical-v3-preservation-manifest",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run validation:6c3r:preflight",
+  "generatedAt": "2026-08-26T21:53:50.917Z",
+  "gitCommit": "ad60304c758ff04a5c7140b798c6bbecc80295bc",
+  "branch": "phase-6c3r-validation-surface-repair",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {
+    "data/validation/6c3/historical-holdout-results.json": "6493e2a69347f791eb24574fc0eda2ec8342aac830b30bf56646df3b83537876",
+    "data/validation/6c3/formal-holdout-verdict.json": "4303f44fe27bc1c7a88ac8a57bfa8115a816ca779eb001e2bd08707c30855edd"
+  },
+  "data": {
+    "holdout": "historical-holdout-v3",
+    "state": "CONSUMED",
+    "accessCount": 1,
+    "candidateCommit": "1a68d20e3885fca6c1b913237bb05df211b2daf6",
+    "candidateCoreHash": "58c5fb6974e694c29f87934ab107ff47ce32963a9c0695e36f941c2a70ae6683",
+    "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+    "holdoutManifestHash": "9e799c4bfc84eedf09c8f46b5a983dff0882e908404e6326cc1e8c874d6335fc",
+    "acceptancePolicyHash": "a3583d6ada42d61ff9ee40322d999154250613ba94a2cd6f073e2196315919b0",
+    "scopePolicyHash": "594ec258891eebfcd11cdab9190a59f944c331fc4b219261b5fc076312302bf7",
+    "seedBlock": "actual-game @ 6030000+",
+    "accessEvent": {
+      "seq": 1,
+      "set": "historical-holdout-v3",
+      "actor": "CEO-authorized Phase 6C3",
+      "reason": "One-time formal validation of locked Candidate 0 (possessionCalibrationVersion 1.0.0, parameterSetHash 83f5a17d)",
+      "parameterVersion": null,
+      "commit": null,
+      "argv": [
+        "--unlock-holdout",
+        "--unlock-historical-holdout-v3"
+      ],
+      "openedAtCommit": "9a46217a5bf4eac9b171a62aa27ebd8f0d4e5b24"
+    },
+    "runHash": "767000a26d2ec986898bfe601f60866b47bdaf4a3172880affd690fbbd84a6eb",
+    "resultsFileSha256": "6493e2a69347f791eb24574fc0eda2ec8342aac830b30bf56646df3b83537876",
+    "verdictFileSha256": "4303f44fe27bc1c7a88ac8a57bfa8115a816ca779eb001e2bd08707c30855edd",
+    "accessLogSha256": "43061e20c24d3301e9ebf025139b514b5f05ef53c8ea8732a1e43bd87b244879",
+    "formalVerdict": "HISTORICAL_HOLDOUT_FAIL",
+    "combinedVerdict": "HISTORICAL_HOLDOUT_FAILED",
+    "verdictHash": "dcb0215b1a878ce422f2db5439d3bea36850e6d0cb5400061faf1873710f93da",
+    "failureClass": "NONIDENTIFIABLE_MEASUREMENT_SURFACE",
+    "neverRescored": true,
+    "mutationRule": "Any change to these hashes invalidates Phase 6C3R. The V3 FAIL is a permanent, valid record of a failed validation DESIGN, and erasing it would erase the reason V4 exists."
+  },
+  "outputHash": "a30b5d75ad2e25c2f04096fed7da457c7c55bf65ecc5c7876d6b9bb4aad5a59f"
+}

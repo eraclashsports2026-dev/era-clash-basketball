@@ -1,0 +1,141 @@
+{
+  "artifact": "synthetic-v2-package-blocker",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run v6:blocker",
+  "generatedAt": "2026-08-27T05:35:00.722Z",
+  "gitCommit": "a83280bede49368632205d4ff9795d5a8a0b8ed2",
+  "branch": "phase-6c4b2-candidate1-formal-revalidation",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "blockerId": "SYNTHETIC_V2_PACKAGE_INCOMPLETE",
+    "detectedInPhase": "6C4B2",
+    "detectedBeforeAnyHoldoutAccess": true,
+    "severity": "BLOCKS_FORMAL_EXECUTION_OF_BOTH_STAGES",
+    "summary": "The Synthetic Stress Holdout V2 second-stage package cannot be executed: its fixtures, guardrail policy and seal exist and are frozen, but it has no frozen seed set, no per-fixture sample volume, no verdict aggregation rule, no runner, and no dry run.",
+    "frozenAndPresent": {
+      "fixtures": {
+        "count": 16,
+        "manifestPath": "data/calibration/synthetic-stress-holdout-v2-manifest.json",
+        "manifestHash": "71267875cbf69a9ffa2bd420a2f4bb87437ecb78d6ca2029e7b6826759dbcd19",
+        "setVersion": "2.0.0",
+        "frozenAt": "phase-6c2c1",
+        "purposes": {
+          "ss2-all-bigs": "EXPLOIT_ROLE_OVERLAP",
+          "ss2-all-guards": "EXPLOIT_ROLE_OVERLAP",
+          "ss2-no-spacing-1960s": "IMPOSSIBLE_SPACING",
+          "ss2-no-spacing-modern": "IMPOSSIBLE_SPACING",
+          "ss2-mismatch-chain": "DEFENSIVE_MISMATCH_CHAIN",
+          "ss2-zone-edge-legal": "ZONE_EDGE_CASE",
+          "ss2-zone-edge-illegal": "ZONE_EDGE_CASE",
+          "ss2-era-edge-old-in-modern": "ERA_EDGE_CASE",
+          "ss2-era-edge-modern-in-old": "ERA_EDGE_CASE",
+          "ss2-coach-toolkit-edge": "COACH_TOOLKIT_EDGE",
+          "ss2-usage-concentration": "USAGE_CONCENTRATION",
+          "ss2-statistical-tails": "STATISTICAL_TAILS",
+          "ss2-series-variance": "SERIES_VARIANCE",
+          "ss2-win82-variance": "WIN82_VARIANCE",
+          "ss2-duplicate-role": "DUPLICATE_ROLE_OVERLOAD",
+          "ss2-extreme-strength-gap": "EXTREME_STRENGTH_GAP"
+        },
+        "note": "Sixteen public-card fives with coaches and eras — structurally exactly what the engine consumes. Compatibility with Candidate 1 is not the problem."
+      },
+      "guardrailPolicy": {
+        "location": "HOLDOUT.syntheticGuardrails in src/v3/calibration/acceptancePolicy.js",
+        "acceptancePolicyHash": "a3583d6ada42d61ff9ee40322d999154250613ba94a2cd6f073e2196315919b0",
+        "guardrails": {
+          "requireZeroInvariantFailures": true,
+          "requireZeroImpossibleResults": true,
+          "forbidUniversalActionDominance": true,
+          "forbidUniversalShellDominance": true,
+          "maxSingleActionFamilyShare": 0.6,
+          "maxSingleShellWinRate": 0.65,
+          "minSingleShellWinRate": 0.35,
+          "requireSameSeedReplay": true,
+          "requireNewSeedVariance": true,
+          "requireConstructionCanBeatHigherOvr": true,
+          "requireExtremeTalentRemainsMeaningful": true
+        },
+        "minGamesPerHoldoutFixture": 1000,
+        "note": "Ten named per-fixture guardrails, frozen since Phase 6C2C2 and covered by the pre-calibration artifact freeze."
+      },
+      "seal": {
+        "registered": true,
+        "accessLogPath": "data/calibration/synthetic-stress-holdout-v2-access-log.jsonl",
+        "accessCount": 0,
+        "accessLogExists": false,
+        "state": "SEALED_UNREAD"
+      }
+    },
+    "missing": {
+      "seedSet": "NO frozen synthetic-V2 seed manifest exists. The set manifest names predictionSeedSetVersion and probabilityValidationSeedSetVersion — the shared domains — but no synthetic-specific seed set with a hash was ever frozen, so there is nothing to verify a seed hash against.",
+      "aggregationRule": "NO frozen rule turns per-fixture guardrail outcomes into a set verdict. The guardrails are per-fixture predicates; the pass/fail arithmetic over 16 fixtures is undefined.",
+      "runner": "NO synthetic-V2 runner module exists, and no npm script matches /synthetic/. Every reference to the set in scripts/ is a seal-integrity assertion that its access count is still zero.",
+      "preparedCommandResolvable": "the B2 package prepares \"npm run validation:synthetic-v2 -- --unlock-holdout --unlock-synthetic-stress-holdout-v2 --operator=\"<name>\" --reason=\"<why>\"\" but package.json has no validation:synthetic-v2 script, so the prepared command cannot execute",
+      "dryRun": "NO synthetic-V2 runner dry run exists. Historical V5 received 30 transactional dry-run checks in Phase 6C4B1; the synthetic set received none, because no runner was ever built to rehearse.",
+      "packageBinding": "the Phase 6C4B2 validation package binds V5 hashes only — it names no synthetic manifest, policy, seed or seal hash, so there is no recorded expectation to verify the synthetic package against"
+    },
+    "whyHistoricalV5WasNotOpened": "The phase brief instructs: 'If its frozen package is incompatible with Candidate 1: Detect the incompatibility before Historical V5 opens. Do not alter Synthetic V2. Stop and report the blocker. Do not consume Historical V5 while the second-stage package is known to be unusable.' Historical V5 is a one-shot resource and its access is irreversible, so it is not opened.",
+    "whyNotBuiltInThisPhase": "Authoring a synthetic seed set, per-fixture volumes, a verdict aggregation rule and a runner is validation-methodology design. This phase is execution-only and its permitted writes are access events, result artifacts, verdicts, reports, status artifacts, the preview package, and tests — none of which covers a new holdout policy or runner. Building those here would also mean the same session authored and then executed the semantics, which is precisely the independence the holdout apparatus exists to protect: every prior holdout had its policy and seeds frozen and pushed in a separate preparation phase before any runner could read them.",
+    "irreversibility": "A sealed set can be opened once. Opening Historical V5 would have consumed it permanently and produced, at best, a stage-one result inside a validation defined by both stages passing. That trade is the owner's to make, not this phase's, and the brief already made it: do not consume V5 while the second stage is known unusable.",
+    "requiredToUnblock": [
+      "A preparation phase that freezes a synthetic-V2 seed set in its own domain, proven disjoint from every prior domain at full generated volume.",
+      "A frozen per-fixture and per-competition-mode sample volume for the 16 synthetic fixtures.",
+      "A frozen aggregation rule converting the 10 per-fixture guardrails into SYNTHETIC_HOLDOUT_V2_PASS / FAIL / INVALID_RUN, including how many fixtures may fail which guardrail.",
+      "A synthetic-V2 runner that uses the same transactional runSealedSetOnce path, registered as the npm script the package names.",
+      "A transactional dry run of that runner on non-holdout fixtures, mirroring the 30 checks Historical V5 received.",
+      "A second-stage package artifact binding the synthetic manifest, policy, seed and seal hashes so a later execution phase has a recorded expectation to verify against."
+    ],
+    "referenceImplementation": {
+      "note": "Historical V5's own preparation is the worked example, and every piece has a direct counterpart.",
+      "map": [
+        {
+          "need": "seed set in its own domain, disjointness proven at full volume",
+          "precedent": "scripts/v5/seeds.mjs — 49,152 seeds per stream, 35 comparisons against 17 prior populations, zero overlap"
+        },
+        {
+          "need": "frozen sample volume",
+          "precedent": "historical-holdout-v5-policy.json protocol block — 2,048 pairs, 4,096 games per surface, fixed before selection"
+        },
+        {
+          "need": "verdict aggregation rule",
+          "precedent": "historical-holdout-v5-policy.json traitGates.aggregate — minimum pass rate, maximum hard fails, per-fixture and per-era rules"
+        },
+        {
+          "need": "transactional runner",
+          "precedent": "scripts/validation/historical-holdout-v5.mjs on runSealedSetOnce"
+        },
+        {
+          "need": "dry run on non-holdout fixtures",
+          "precedent": "scripts/v5/dryRun.mjs — 30 checks including crash, resume, duplicate refusal and four identity-mismatch refusals"
+        },
+        {
+          "need": "second-stage package binding",
+          "precedent": "phase6c4b2-validation-package.json holdout block, which binds V5's hashes and names its runner"
+        }
+      ]
+    },
+    "unaffected": {
+      "historicalV5Package": "Historical Holdout V5's package. Every V5 hash cross-checks, its dry run passed, and it remains SEALED_UNREAD at access 0, ready for a future execution phase once the second stage exists.",
+      "candidate1": "Candidate 1 remains SELECTED / LOCKED / DEVELOPMENT_LOCKED_SCOPED at calibration 1.1.0, lock revision 2, with its core and parameter hashes verified equal to the sealed package in this phase's preflight.",
+      "priorVerdicts": "Historical V3 and V4 remain CONSUMED / FAIL at access 1 each, untouched.",
+      "production": "engine 3.2.0, app 2.7.2, main at 9cd95ff, every production flag false, no deployment."
+    },
+    "holdoutsOpenedInThisPhase": {
+      "historicalV5": 0,
+      "syntheticV2": 0
+    },
+    "preparedCommandsExecuted": {
+      "historicalV5": 0,
+      "syntheticV2": 0,
+      "formalVerdict": 0
+    },
+    "preflightArtifactHash": "fa14e2f959188e46a7850b86630aca780bb2a2be076ca7ab5567799936501119",
+    "recordedAtCommit": "a83280bede49368632205d4ff9795d5a8a0b8ed2",
+    "recommendedNextPhase": "A Synthetic Stress Holdout V2 preparation phase (the counterpart of 6C4B1 for the second stage), after which a re-run of this execution phase can open both sets in order."
+  },
+  "outputHash": "97c2843a31d80011d667a03205d0ee1462e92a920a95481670bed17e818be32a"
+}

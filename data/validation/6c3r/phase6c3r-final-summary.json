@@ -1,0 +1,131 @@
+{
+  "artifact": "phase6c3r-final-summary",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run validation:6c3r:summary",
+  "generatedAt": "2026-08-26T23:12:26.660Z",
+  "gitCommit": "800e482da0680044df345a2f4ca03d4bbb0ce86b",
+  "branch": "phase-6c3r-validation-surface-repair",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {
+    "data/validation/6c3r/replacement-formal-verdict.json": "720595b3027b23c42b7f102f51bf19860a8a4e511208fff1551f81eab35a7b77",
+    "data/validation/6c3r/historical-holdout-v4-results.json": "c93c7feebfa954372ca6aa562bda87f79408bf25825eb27db3cecd6774884cb5"
+  },
+  "data": {
+    "phase": "6C3R",
+    "finalVerdict": "HISTORICAL V4 FAILED — CANDIDATE REVALIDATION FAILED",
+    "candidate": {
+      "candidateId": "Candidate 0",
+      "candidateSelectionStatus": "SELECTED",
+      "candidateLockStatus": "LOCKED",
+      "possessionCalibrationVersion": "1.0.0",
+      "calibrationStatus": "HOLDOUT_FAILED",
+      "parameterChanges": 0,
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "candidateCoreHash": "58c5fb6974e694c29f87934ab107ff47ce32963a9c0695e36f941c2a70ae6683",
+      "coreUnchangedAllPhase": true,
+      "parameterDrift": 0
+    },
+    "v3Preservation": {
+      "verdict": "HISTORICAL_HOLDOUT_FAIL",
+      "failureClass": "NONIDENTIFIABLE_MEASUREMENT_SURFACE",
+      "accessCount": 1,
+      "neverRescored": true
+    },
+    "traitFramework": {
+      "vocabulary": 81,
+      "byClass": {
+        "DIRECTLY_OBSERVABLE": 9,
+        "PROXY_OBSERVABLE": 6,
+        "STRUCTURALLY_OBSERVABLE": 58,
+        "UNOBSERVABLE_ON_THIS_SURFACE": 8
+      },
+      "metricsCertified": 12,
+      "metricsTotal": 16,
+      "failedMetrics": [
+        "isolationShare",
+        "stealRateForced",
+        "rimShareAgainst",
+        "defensiveZoneShare"
+      ],
+      "finalEligibleTraits": 54,
+      "v3RubricRejectedByDetector": true
+    },
+    "eraReferences": {
+      "count": 8,
+      "certified": 8,
+      "gamesEach": 20000
+    },
+    "candidatePool": {
+      "teams": 34,
+      "eligibleTeams": 31,
+      "eligiblePairs": 45,
+      "erasWithTwoPlus": 8,
+      "candidateZeroOutputsUsed": 0,
+      "newVerifiedProfiles": 170,
+      "coachPagesNamingCoach": "34/34"
+    },
+    "historicalV4": {
+      "matchups": 8,
+      "teams": 16,
+      "eras": 8,
+      "totalGames": 98304,
+      "accessCount": 1,
+      "verdict": "HISTORICAL_HOLDOUT_V4_FAIL",
+      "numericRatio": 0.97839,
+      "numericGate": 1.5,
+      "traitPassRate": 0.80822,
+      "hardFails": 12,
+      "gatesPassed": 9,
+      "gatesTotal": 11,
+      "dryRunChecks": "17/17"
+    },
+    "syntheticV2": {
+      "verdict": "NOT_OPENED",
+      "accessCount": 0,
+      "state": "SEALED_UNREAD"
+    },
+    "attempts": [
+      {
+        "attemptId": "attempt-1-historical-v3",
+        "formalVerdict": "HISTORICAL_HOLDOUT_FAIL",
+        "accessCount": null
+      },
+      {
+        "attemptId": "attempt-2-historical-v4",
+        "formalVerdict": "HISTORICAL_HOLDOUT_V4_FAIL",
+        "accessCount": 1
+      },
+      {
+        "attemptId": "synthetic-v2",
+        "formalVerdict": "NOT_OPENED",
+        "accessCount": 0
+      }
+    ],
+    "previewPackage": {
+      "prepared": false,
+      "reason": "Preview preparation requires both formal holdouts passing.",
+      "deploymentCommandsExecuted": 0
+    },
+    "productionIsolation": {
+      "mainCommit": "9cd95ff8797f8cdef252bbe67d63158c01b9f9bd",
+      "mainUnchanged": true,
+      "productionEngineVersion": "3.2.0",
+      "developmentFlagsFalse": "6/6",
+      "previewDeployments": 0,
+      "productionDeployments": 0
+    },
+    "nextPhase": {
+      "recommended": "Candidate revision addressing the specific trait-fidelity findings, then Historical Holdout V5 from unseen team-seasons, then a fresh validation cycle",
+      "requires": [
+        "a new candidate version and parameter-set hash if engine behaviour changes",
+        "a trait policy carrying practical-equivalence margins on the hard-fail rule",
+        "a Historical Holdout V5 drawn from the 13 remaining eligible pool teams plus further source expansion"
+      ],
+      "ownerDecision": "Whether to revise the engine's coach-action and defensive-quality renderings or to accept trait-level infidelity as a scope limitation is a product decision, not an engineering one."
+    }
+  },
+  "outputHash": "d7ead20c4471725a99694d0d7418ea251fa3faf4bc028f972f977e179bca86c1"
+}

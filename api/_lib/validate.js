@@ -3,8 +3,19 @@
 // client-supplied "authority" fields never reach game logic. Mass-assignment
 // safe: handlers read ONLY the fields validated here.
 import { PLAYERS } from "../../src/players.js";
+import { CARD_ID_ALIASES } from "../../src/v3/data/cardAliases.js";
 
-const byId = new Map(PLAYERS.map((p) => [p.id, p]));
+// Alias keys are included so a stored result or challenge link containing a
+// RETIRED card id still validates. Without this, renaming a card would reject
+// every old record that mentions it.
+const byId = (() => {
+  const m = new Map(PLAYERS.map((p) => [p.id, p]));
+  for (const [oldId, canonicalId] of Object.entries(CARD_ID_ALIASES)) {
+    const card = m.get(canonicalId);
+    if (card) m.set(oldId, card);
+  }
+  return m;
+})();
 
 export const MODES = new Set(["single", "best7", "82", "tournament", "daily", "challenge"]);
 
@@ -24,6 +35,11 @@ export const validateTeamIds = (ids) => {
   const seenPerson = new Set();
   for (const id of ids) {
     if (typeof id !== "string") return null;
+    // Calibration-only player-season profiles live in the `cal:` namespace and
+    // must never reach the public product. They would already fail the lookup
+    // below, but an explicit rejection makes the isolation intentional and
+    // testable rather than a side effect of them being absent from PLAYERS.
+    if (id.startsWith("cal:")) return null;
     const p = byId.get(id);
     if (!p) return null;
     if (seenEntry.has(id)) return null;
@@ -47,6 +63,14 @@ export const validChallengeId = (s) =>
   typeof s === "string" && /^[a-z0-9]{6,16}$/.test(s) ? s : null;
 
 export const validResultId = validChallengeId;
+
+// A shared narrative identity, as written onto our OWN result record (see
+// narrativeKeyId in api/game.js). Deliberately a separate, wider shape from
+// validResultId: result ids are public handles and stay short and opaque,
+// while this is a content address built from a daily id and a seed. Validated
+// anyway — a corrupted record must not be able to author a cache key.
+export const validNarrativeKeyId = (s) =>
+  typeof s === "string" && /^[a-z0-9][a-z0-9._-]{5,120}$/.test(s) ? s : null;
 
 // Display names: plain text only. Strips angle brackets and control chars so
 // nothing executable can reach UI, OG metadata, logs, or admin tools.

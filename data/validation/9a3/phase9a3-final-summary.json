@@ -1,0 +1,119 @@
+{
+  "artifact": "phase9a3-final-summary",
+  "phase": "9A.3 — Night Court V1 owner acceptance · Wave 2 private-beta preparation",
+  "repository": {
+    "parentBranch": "phase-9a2-night-court-production-theme",
+    "parentCommit": "48c13a5a1ca30d0028719764efb534ebbf870e4d",
+    "branch": "wave2",
+    "head": "971bba4abc94fe2aaa882b5b6c36c269a60ae27d",
+    "workingTreeClean": false,
+    "draftPR": "https://github.com/eraclashsports2026-dev/era-clash-basketball/pull/39",
+    "wave2Branch": "971bba4abc94fe2aaa882b5b6c36c269a60ae27d"
+  },
+  "ownerAcceptance": {
+    "theme": "basketball-night-court-v1",
+    "status": "OWNER_ACCEPTED_FOR_PRIVATE_BETA",
+    "acceptanceText": "APPROVE NIGHT COURT V1",
+    "scope": [
+      "approved for Wave 2 private-beta preparation"
+    ],
+    "productionPromotionAuthorized": false,
+    "wave2DistributionAuthorized": false
+  },
+  "waveSeparation": {
+    "wave1": {
+      "waveId": "candidate3-wave1",
+      "branch": "wave1",
+      "commit": "4dc59e7b2175b82cea8d5ab5c336b75b550c7f59",
+      "alias": "https://era-clash-basketball-git-wave1-era-clash.vercel.app",
+      "buildStamp": "eraclash-assets:2.7.2:2f35a3b70c30"
+    },
+    "wave2": {
+      "waveId": "candidate4-night-court-wave2",
+      "studyVersion": "wave2-activation-v1",
+      "alias": "https://era-clash-basketball-git-wave2-era-clash.vercel.app",
+      "buildStamp": "eraclash-assets:2.7.2:d3d5455dcf91",
+      "branchPreview": "https://era-clash-basketball-git-phase-9a3-night-court-6e72c7-era-clash.vercel.app"
+    },
+    "accessIsolation": {
+      "wave1KeysRefusedOnWave2": true,
+      "wave2KeysRefusedOnWave1": true
+    },
+    "dataIsolation": "wave2-feedback:* / wave2-metrics:* only; preview-* never written on Wave 2",
+    "buildIsolation": "separate branch, alias and build stamp"
+  },
+  "cohorts": {
+    "firstTime": [
+      "wave2-new-01",
+      "wave2-new-02",
+      "wave2-new-03"
+    ],
+    "returning": [
+      "wave2-returning-01",
+      "wave2-returning-02"
+    ],
+    "owner": [
+      "wave2-owner"
+    ],
+    "humanTestingStarted": false
+  },
+  "deployedQa": {
+    "branchPreview": {
+      "passed": 43,
+      "gates": 43
+    },
+    "stableAlias": {
+      "passed": 43,
+      "gates": 43,
+      "redeploySurvival": {
+        "aliasUrl": "https://era-clash-basketball-git-wave2-era-clash.vercel.app",
+        "firstCommit": "3b27e5d",
+        "firstStamp": "eraclash-assets:2.7.2:d3d5455dcf91",
+        "secondCommit": "971bba4",
+        "secondStamp": "eraclash-assets:2.7.2:d3d5455dcf91",
+        "sameAlias": true,
+        "servedAfterRedeploy": true,
+        "secondDeploymentSucceeded": true,
+        "secondDeployment": "https://vercel.com/era-clash/era-clash-basketball/D3WmcNjMbR2nTpq6TShQbZ3eYetX",
+        "note": "the follow-up commit was metadata-only, so the asset set and therefore the build stamp are unchanged; the alias served a fresh, successful deployment at the same address",
+        "wave1StampAfter": "eraclash-assets:2.7.2:2f35a3b70c30",
+        "wave1UnchangedAfter": true
+      }
+    },
+    "security": {
+      "passed": 22,
+      "checks": 22
+    }
+  },
+  "preservation": {
+    "activeCandidateCoreDrift": 0,
+    "candidateParameterDrift": 0,
+    "gameLogicChanges": 0,
+    "draftLogicChanges": 0,
+    "placementLogicChanges": 0,
+    "apiFunctionCountIncrease": 0,
+    "wave1CodeChanges": 0,
+    "wave1CredentialChanges": 0,
+    "wave1DataChanges": 0,
+    "productionChanges": 0
+  },
+  "ledger": {
+    "FIXED_AND_VERIFIED": 36,
+    "NOT_REPRODUCIBLE_WITH_EVIDENCE": 0,
+    "EXTERNAL_BLOCKER_WITH_SAFE_PRODUCT_FALLBACK": 0,
+    "DEFERRED_BY_SCOPE": 0,
+    "UNRESOLVED_TECHNICAL_FAILURES": 0
+  },
+  "readiness": "READY_FOR_OWNER_DISTRIBUTION",
+  "tests": {
+    "vitest": "74 files, 2344/2344 (pre-edit on the 9A.2 head: 73 files, 2331/2331)",
+    "playwright": "74/74 (pre-edit and post-edit)"
+  },
+  "verdict": "NIGHT COURT V1 WAVE 2 PRIVATE BETA READY — AWAITING OWNER DISTRIBUTION",
+  "ownerDecision": {
+    "format": "AUTHORIZE WAVE 2 DISTRIBUTION",
+    "decidedByClaude": null,
+    "humanTestingStarted": false,
+    "invitationsSent": 0
+  }
+}

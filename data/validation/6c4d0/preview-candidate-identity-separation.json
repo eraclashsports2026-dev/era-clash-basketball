@@ -1,0 +1,66 @@
+{
+  "artifact": "preview-candidate-identity-separation",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run d0:c3-identity",
+  "generatedAt": "2026-08-27T23:00:05.688Z",
+  "gitCommit": "731a0192e135e77e79c9d9c81048c2f13a4df56f",
+  "branch": "phase-6c4d0-v6-invalidity-and-profile-repair",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "candidateId": "Candidate 3",
+    "parentCandidateId": "Candidate 2",
+    "collisions": {
+      "coreHashVsCandidate2": false,
+      "coreHashVsCandidate1": false,
+      "coreHashVsCandidate0": false,
+      "calibrationVersionVsCandidate2": false,
+      "actionLibraryVersionVsCandidate2": false
+    },
+    "collisionCount": 0,
+    "authoritativeIdentity": {
+      "possessionCalibrationVersion": "1.3.0",
+      "actionLibraryVersion": "2.1.0",
+      "possessionEngineVersion": "1.2.0",
+      "coreHash": "6a423d4fedf45bef3889b9425651e815c95da4f6e573a2c51a3f0ef713360b69",
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309"
+    },
+    "replayProbe": {
+      "seed": 424242,
+      "fingerprint": {
+        "engineVersion": "3.2.0",
+        "possessionEngineVersion": "1.2.0",
+        "possessionCalibrationVersion": "1.3.0",
+        "actionLibraryVersion": "2.1.0",
+        "defensiveMatchupVersion": "1.2.0",
+        "coachAdjustmentVersion": "1.0.0",
+        "opportunityAllocationVersion": "1.0.0",
+        "playerDataVersion": "2026-08-24",
+        "playerIntelligenceVersion": "1.0.0",
+        "teamIntelligenceVersion": "1.0.0",
+        "coachDataVersion": "1.1.0",
+        "coachIntelligenceVersion": "1.0.0",
+        "eraDataVersion": "1.0.0",
+        "eraStyleVersion": "1.0.0",
+        "calibrationVersion": "backtest-1",
+        "runtimeParameterBindingVersion": "1.0.0",
+        "calibrationParameterRegistryVersion": "2.0.0",
+        "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+        "parameterSetStatus": "UNCALIBRATED_DEFAULTS",
+        "matchupFingerprint": "20b113e56be5436e",
+        "simulationSeed": 424242
+      },
+      "replayExact": true
+    },
+    "cacheSeparation": "every result fingerprint, result cache key, probability cache key, competition manifest and replay manifest carries possessionCalibrationVersion and actionLibraryVersion, both of which differ from every prior candidate — a Candidate 3 result can never be served from a prior candidate's cache",
+    "parameterSetHashIntentionallyShared": {
+      "shared": true,
+      "why": "all three candidates run the registry defaults. A parameter hash therefore cannot separate them, which is exactly the collision Phase 6C4B1 found and repaired by making the core hash authoritative and adding the calibration version to the result fingerprint."
+    },
+    "pass": true
+  },
+  "outputHash": "84ad66eff1a57eb6485cc299e1085fe79904e5cae12de7666a771a8502f531ce"
+}

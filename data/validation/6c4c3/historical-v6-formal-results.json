@@ -1,0 +1,823 @@
+{
+  "artifact": "historical-v6-formal-results",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run exec:record-v6",
+  "generatedAt": "2026-08-27T21:05:10.184Z",
+  "gitCommit": "a7d1606c4e134e9d8307b873c335bdfb8c7df237",
+  "branch": "phase-6c4c3-candidate2-formal-execution",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "historicalV6FormalResultsVersion": "1.0.0",
+    "set": "historical-holdout-v6",
+    "outcome": "FAIL",
+    "verdict": "HISTORICAL_HOLDOUT_V6_FAIL",
+    "runStatus": "COMPLETE",
+    "runComplete": true,
+    "identity": {
+      "candidateId": "Candidate 2",
+      "candidateCommit": "136b6446a8a65c7b9b551eed120cf0d4aa5078fd",
+      "coreHash": "3733b648f050a4f50f9dc3cb6ecf62fce419dd282f24c910b91e7b077d63711d",
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "calibrationVersion": "1.2.0",
+      "verdictPolicyHash": "d433cddcd3af4294dc8468481b8b85702a7768e16878a1003c6567ddb22c5ae4",
+      "holdoutManifestHash": "5a728d98f644d4ae8f7b2d406615fa9125bf7aca77269f536f2a078b92e83d02",
+      "practicalMarginPolicyHash": "099d513ab855520c68f1c55991a156f9c56b3a6df123f06a708529f27b6413ae",
+      "traitRegistryHash": "c034937be7e40bd18932fe53151e0b8a877dc47095004653e1bb11aa5c73a0cf",
+      "observabilityHash": "5e9a4070f4f9a747992561c19586b491971b2479f2161a5cef5bb5b8474c9349",
+      "referenceCertificationHash": "4713a12f2d2e1447f1f21b03ef3a7219e69136e6eec160cebe0ed5df3486b37f",
+      "seedSetHash": "7f0b3ce38d104865d1c8b692e1472835dc315fc84be68862c2e50c3c407b8a09",
+      "samplePlanHash": "1ed77e62b545c9d72117355ec290a760b748225fee8df55bd71913a628bd3672",
+      "seedDomain": "HISTORICAL_V6_FORMAL",
+      "decisionGamesPerSurface": 4096
+    },
+    "matchupsEvaluated": 8,
+    "totalGames": 172032,
+    "erasCovered": [
+      "1950s",
+      "1960s",
+      "1970s",
+      "1980s",
+      "1990s",
+      "2000s",
+      "2010s",
+      "2020s"
+    ],
+    "escalatedMatchups": [
+      "v6m-1980s"
+    ],
+    "numeric": {
+      "teamSurfacesScored": 16,
+      "holdoutComposite": 0.0345,
+      "internalBaselineMean": 0.0431,
+      "ratio": 0.80054,
+      "ratioGate": 1.5,
+      "catastrophicThreshold": 0.13038,
+      "catastrophicTeams": []
+    },
+    "traits": {
+      "scored": 46,
+      "passed": 31,
+      "failed": 15,
+      "passRate": 0.67391,
+      "minPassRate": 0.75,
+      "hardFailLabels": [
+        "STRONG_OFFENSIVE_REBOUNDING",
+        "movement shooting off screens",
+        "MOTION",
+        "elite team man defence",
+        "ELITE_DEFENSE",
+        "PASSING_HUB",
+        "slow",
+        "motion and cutting",
+        "MOTION",
+        "POST_HEAVY",
+        "half-court motion and passing",
+        "MOTION"
+      ],
+      "hardFailLabelCount": 12,
+      "independentHardFailClusters": 8,
+      "maxIndependentHardFailClusters": 0,
+      "clusters": [
+        {
+          "clusterKey": "v6m-1970s|teamB|orebRate|VS_ERA_REFERENCE|ABOVE_REFERENCE_BASELINE||",
+          "matchupId": "v6m-1970s",
+          "eraStyleId": "1970s",
+          "side": "teamB",
+          "teamName": "Portland Trail Blazers",
+          "season": "1974-75",
+          "metric": "orebRate",
+          "surface": "VS_ERA_REFERENCE",
+          "direction": "ABOVE_REFERENCE_BASELINE",
+          "observed": null,
+          "reference": null,
+          "difference": -0.02558,
+          "practicalMargin": 0.02,
+          "zScore": -17.29919,
+          "ci95": {
+            "lower": -0.02848,
+            "upper": -0.02268
+          },
+          "formalTraitLabels": [
+            "STRONG_OFFENSIVE_REBOUNDING"
+          ],
+          "formalLabelCount": 1,
+          "independentMeasurements": 1,
+          "duplicateLabelNote": null
+        },
+        {
+          "clusterKey": "v6m-1990s|teamA|movementShare|VS_ERA_REFERENCE|ABOVE_REFERENCE_BASELINE||",
+          "matchupId": "v6m-1990s",
+          "eraStyleId": "1990s",
+          "side": "teamA",
+          "teamName": "Indiana Pacers",
+          "season": "1994-95",
+          "metric": "movementShare",
+          "surface": "VS_ERA_REFERENCE",
+          "direction": "ABOVE_REFERENCE_BASELINE",
+          "observed": null,
+          "reference": null,
+          "difference": -0.06151,
+          "practicalMargin": 0.03,
+          "zScore": -80.53089,
+          "ci95": {
+            "lower": -0.06301,
+            "upper": -0.06001
+          },
+          "formalTraitLabels": [
+            "movement shooting off screens",
+            "MOTION"
+          ],
+          "formalLabelCount": 2,
+          "independentMeasurements": 1,
+          "duplicateLabelNote": "2 formal trait labels (\"movement shooting off screens\", \"MOTION\") report ONE observation: identical matchup, side, metric, surface, direction, observed and reference values. Both labels are preserved; the evidence count is 1."
+        },
+        {
+          "clusterKey": "v6m-2000s|teamA|refPppVsTeam|REFERENCE_VS_TEAM|BELOW_REFERENCE_BASELINE||",
+          "matchupId": "v6m-2000s",
+          "eraStyleId": "2000s",
+          "side": "teamA",
+          "teamName": "Boston Celtics",
+          "season": "2007-08",
+          "metric": "refPppVsTeam",
+          "surface": "REFERENCE_VS_TEAM",
+          "direction": "BELOW_REFERENCE_BASELINE",
+          "observed": null,
+          "reference": null,
+          "difference": 0.02226,
+          "practicalMargin": 0.02,
+          "zScore": 8.87861,
+          "ci95": {
+            "lower": 0.01735,
+            "upper": 0.02717
+          },
+          "formalTraitLabels": [
+            "elite team man defence",
+            "ELITE_DEFENSE"
+          ],
+          "formalLabelCount": 2,
+          "independentMeasurements": 1,
+          "duplicateLabelNote": "2 formal trait labels (\"elite team man defence\", \"ELITE_DEFENSE\") report ONE observation: identical matchup, side, metric, surface, direction, observed and reference values. Both labels are preserved; the evidence count is 1."
+        },
+        {
+          "clusterKey": "v6m-2000s|teamA|assistedRate|VS_ERA_REFERENCE|ABOVE_REFERENCE_BASELINE||",
+          "matchupId": "v6m-2000s",
+          "eraStyleId": "2000s",
+          "side": "teamA",
+          "teamName": "Boston Celtics",
+          "season": "2007-08",
+          "metric": "assistedRate",
+          "surface": "VS_ERA_REFERENCE",
+          "direction": "ABOVE_REFERENCE_BASELINE",
+          "observed": null,
+          "reference": null,
+          "difference": -0.03726,
+          "practicalMargin": 0.02,
+          "zScore": -22.20968,
+          "ci95": {
+            "lower": -0.04055,
+            "upper": -0.03397
+          },
+          "formalTraitLabels": [
+            "PASSING_HUB"
+          ],
+          "formalLabelCount": 1,
+          "independentMeasurements": 1,
+          "duplicateLabelNote": null
+        },
+        {
+          "clusterKey": "v6m-2000s|teamB|gamePace|VS_ERA_REFERENCE|BELOW_REFERENCE_BASELINE||",
+          "matchupId": "v6m-2000s",
+          "eraStyleId": "2000s",
+          "side": "teamB",
+          "teamName": "Houston Rockets",
+          "season": "2007-08",
+          "metric": "gamePace",
+          "surface": "VS_ERA_REFERENCE",
+          "direction": "BELOW_REFERENCE_BASELINE",
+          "observed": null,
+          "reference": null,
+          "difference": 1.35678,
+          "practicalMargin": 1,
+          "zScore": 30.80383,
+          "ci95": {
+            "lower": 1.27045,
+            "upper": 1.44311
+          },
+          "formalTraitLabels": [
+            "slow"
+          ],
+          "formalLabelCount": 1,
+          "independentMeasurements": 1,
+          "duplicateLabelNote": null
+        },
+        {
+          "clusterKey": "v6m-2000s|teamB|movementShare|VS_ERA_REFERENCE|ABOVE_REFERENCE_BASELINE||",
+          "matchupId": "v6m-2000s",
+          "eraStyleId": "2000s",
+          "side": "teamB",
+          "teamName": "Houston Rockets",
+          "season": "2007-08",
+          "metric": "movementShare",
+          "surface": "VS_ERA_REFERENCE",
+          "direction": "ABOVE_REFERENCE_BASELINE",
+          "observed": null,
+          "reference": null,
+          "difference": -0.04803,
+          "practicalMargin": 0.03,
+          "zScore": -64.68724,
+          "ci95": {
+            "lower": -0.04949,
+            "upper": -0.04657
+          },
+          "formalTraitLabels": [
+            "motion and cutting",
+            "MOTION"
+          ],
+          "formalLabelCount": 2,
+          "independentMeasurements": 1,
+          "duplicateLabelNote": "2 formal trait labels (\"motion and cutting\", \"MOTION\") report ONE observation: identical matchup, side, metric, surface, direction, observed and reference values. Both labels are preserved; the evidence count is 1."
+        },
+        {
+          "clusterKey": "v6m-2000s|teamB|postUpShare|VS_ERA_REFERENCE|ABOVE_REFERENCE_BASELINE||",
+          "matchupId": "v6m-2000s",
+          "eraStyleId": "2000s",
+          "side": "teamB",
+          "teamName": "Houston Rockets",
+          "season": "2007-08",
+          "metric": "postUpShare",
+          "surface": "VS_ERA_REFERENCE",
+          "direction": "ABOVE_REFERENCE_BASELINE",
+          "observed": null,
+          "reference": null,
+          "difference": -0.03628,
+          "practicalMargin": 0.03,
+          "zScore": -38.44593,
+          "ci95": {
+            "lower": -0.03813,
+            "upper": -0.03443
+          },
+          "formalTraitLabels": [
+            "POST_HEAVY"
+          ],
+          "formalLabelCount": 1,
+          "independentMeasurements": 1,
+          "duplicateLabelNote": null
+        },
+        {
+          "clusterKey": "v6m-2020s|teamB|movementShare|VS_ERA_REFERENCE|ABOVE_REFERENCE_BASELINE||",
+          "matchupId": "v6m-2020s",
+          "eraStyleId": "2020s",
+          "side": "teamB",
+          "teamName": "San Antonio Spurs",
+          "season": "2020-21",
+          "metric": "movementShare",
+          "surface": "VS_ERA_REFERENCE",
+          "direction": "ABOVE_REFERENCE_BASELINE",
+          "observed": null,
+          "reference": null,
+          "difference": -0.05344,
+          "practicalMargin": 0.03,
+          "zScore": -64.01033,
+          "ci95": {
+            "lower": -0.05508,
+            "upper": -0.0518
+          },
+          "formalTraitLabels": [
+            "half-court motion and passing",
+            "MOTION"
+          ],
+          "formalLabelCount": 2,
+          "independentMeasurements": 1,
+          "duplicateLabelNote": "2 formal trait labels (\"half-court motion and passing\", \"MOTION\") report ONE observation: identical matchup, side, metric, surface, direction, observed and reference values. Both labels are preserved; the evidence count is 1."
+        }
+      ],
+      "aggregationUnit": "INDEPENDENT_MEASUREMENT_CLUSTER",
+      "labelVsClusterNote": "the gate is on clusters. Labels are reported and never aggregated, so two trait names on one measurement cannot double-count.",
+      "notScoredUnobservable": 36,
+      "perMatchupMajority": [
+        {
+          "matchupId": "v6m-1950s",
+          "scored": 6,
+          "failed": 0,
+          "failsMajority": false
+        },
+        {
+          "matchupId": "v6m-1960s",
+          "scored": 4,
+          "failed": 0,
+          "failsMajority": false
+        },
+        {
+          "matchupId": "v6m-1970s",
+          "scored": 4,
+          "failed": 1,
+          "failsMajority": false
+        },
+        {
+          "matchupId": "v6m-1980s",
+          "scored": 7,
+          "failed": 1,
+          "failsMajority": false
+        },
+        {
+          "matchupId": "v6m-1990s",
+          "scored": 8,
+          "failed": 2,
+          "failsMajority": false
+        },
+        {
+          "matchupId": "v6m-2000s",
+          "scored": 7,
+          "failed": 7,
+          "failsMajority": true
+        },
+        {
+          "matchupId": "v6m-2010s",
+          "scored": 4,
+          "failed": 1,
+          "failsMajority": false
+        },
+        {
+          "matchupId": "v6m-2020s",
+          "scored": 6,
+          "failed": 3,
+          "failsMajority": false
+        }
+      ],
+      "perEra": [
+        {
+          "eraStyleId": "1950s",
+          "scored": 6,
+          "allFailed": false
+        },
+        {
+          "eraStyleId": "1960s",
+          "scored": 4,
+          "allFailed": false
+        },
+        {
+          "eraStyleId": "1970s",
+          "scored": 4,
+          "allFailed": false
+        },
+        {
+          "eraStyleId": "1980s",
+          "scored": 7,
+          "allFailed": false
+        },
+        {
+          "eraStyleId": "1990s",
+          "scored": 8,
+          "allFailed": false
+        },
+        {
+          "eraStyleId": "2000s",
+          "scored": 7,
+          "allFailed": true
+        },
+        {
+          "eraStyleId": "2010s",
+          "scored": 4,
+          "allFailed": false
+        },
+        {
+          "eraStyleId": "2020s",
+          "scored": 6,
+          "allFailed": false
+        }
+      ]
+    },
+    "gates": {
+      "everyMatchupExecuted": true,
+      "zeroInvariantFailures": true,
+      "zeroFinalTies": true,
+      "zeroImpossibleScores": true,
+      "zeroPreThreeEraThreePointAttempts": true,
+      "replayExactEverywhere": true,
+      "compositeRatioWithinPolicy": true,
+      "zeroCatastrophicTeams": true,
+      "traitPassRateMet": false,
+      "zeroIndependentHardFailClusters": false,
+      "noMatchupFailsMajorityOfTraits": false,
+      "noEraFailsEveryScoredTrait": false
+    },
+    "hardFailLabels": [
+      {
+        "matchupId": "v6m-1970s",
+        "side": "teamB",
+        "teamName": "Portland Trail Blazers",
+        "season": "1974-75",
+        "traitId": "STRONG_OFFENSIVE_REBOUNDING",
+        "metric": "orebRate",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "subjectMean": 0.31214,
+        "referenceMean": 0.33772,
+        "difference": -0.02558,
+        "practicalMargin": 0.02,
+        "zScore": -17.29919,
+        "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+      },
+      {
+        "matchupId": "v6m-1990s",
+        "side": "teamA",
+        "teamName": "Indiana Pacers",
+        "season": "1994-95",
+        "traitId": "movement shooting off screens",
+        "metric": "movementShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "subjectMean": 0.15075,
+        "referenceMean": 0.21226,
+        "difference": -0.06151,
+        "practicalMargin": 0.03,
+        "zScore": -80.53089,
+        "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+      },
+      {
+        "matchupId": "v6m-1990s",
+        "side": "teamA",
+        "teamName": "Indiana Pacers",
+        "season": "1994-95",
+        "traitId": "MOTION",
+        "metric": "movementShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "subjectMean": 0.15075,
+        "referenceMean": 0.21226,
+        "difference": -0.06151,
+        "practicalMargin": 0.03,
+        "zScore": -80.53089,
+        "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+      },
+      {
+        "matchupId": "v6m-2000s",
+        "side": "teamA",
+        "teamName": "Boston Celtics",
+        "season": "2007-08",
+        "traitId": "elite team man defence",
+        "metric": "refPppVsTeam",
+        "direction": "BELOW_REFERENCE_BASELINE",
+        "subjectMean": 1.17134,
+        "referenceMean": 1.14908,
+        "difference": 0.02226,
+        "practicalMargin": 0.02,
+        "zScore": 8.87861,
+        "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+      },
+      {
+        "matchupId": "v6m-2000s",
+        "side": "teamA",
+        "teamName": "Boston Celtics",
+        "season": "2007-08",
+        "traitId": "ELITE_DEFENSE",
+        "metric": "refPppVsTeam",
+        "direction": "BELOW_REFERENCE_BASELINE",
+        "subjectMean": 1.17134,
+        "referenceMean": 1.14908,
+        "difference": 0.02226,
+        "practicalMargin": 0.02,
+        "zScore": 8.87861,
+        "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+      },
+      {
+        "matchupId": "v6m-2000s",
+        "side": "teamA",
+        "teamName": "Boston Celtics",
+        "season": "2007-08",
+        "traitId": "PASSING_HUB",
+        "metric": "assistedRate",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "subjectMean": 0.43829,
+        "referenceMean": 0.47555,
+        "difference": -0.03726,
+        "practicalMargin": 0.02,
+        "zScore": -22.20968,
+        "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+      },
+      {
+        "matchupId": "v6m-2000s",
+        "side": "teamB",
+        "teamName": "Houston Rockets",
+        "season": "2007-08",
+        "traitId": "slow",
+        "metric": "gamePace",
+        "direction": "BELOW_REFERENCE_BASELINE",
+        "subjectMean": 92.15698,
+        "referenceMean": 90.8002,
+        "difference": 1.35678,
+        "practicalMargin": 1,
+        "zScore": 30.80383,
+        "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+      },
+      {
+        "matchupId": "v6m-2000s",
+        "side": "teamB",
+        "teamName": "Houston Rockets",
+        "season": "2007-08",
+        "traitId": "motion and cutting",
+        "metric": "movementShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "subjectMean": 0.12636,
+        "referenceMean": 0.17439,
+        "difference": -0.04803,
+        "practicalMargin": 0.03,
+        "zScore": -64.68724,
+        "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+      },
+      {
+        "matchupId": "v6m-2000s",
+        "side": "teamB",
+        "teamName": "Houston Rockets",
+        "season": "2007-08",
+        "traitId": "MOTION",
+        "metric": "movementShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "subjectMean": 0.12636,
+        "referenceMean": 0.17439,
+        "difference": -0.04803,
+        "practicalMargin": 0.03,
+        "zScore": -64.68724,
+        "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+      },
+      {
+        "matchupId": "v6m-2000s",
+        "side": "teamB",
+        "teamName": "Houston Rockets",
+        "season": "2007-08",
+        "traitId": "POST_HEAVY",
+        "metric": "postUpShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "subjectMean": 0.22432,
+        "referenceMean": 0.2606,
+        "difference": -0.03628,
+        "practicalMargin": 0.03,
+        "zScore": -38.44593,
+        "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+      },
+      {
+        "matchupId": "v6m-2020s",
+        "side": "teamB",
+        "teamName": "San Antonio Spurs",
+        "season": "2020-21",
+        "traitId": "half-court motion and passing",
+        "metric": "movementShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "subjectMean": 0.183,
+        "referenceMean": 0.23644,
+        "difference": -0.05344,
+        "practicalMargin": 0.03,
+        "zScore": -64.01033,
+        "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+      },
+      {
+        "matchupId": "v6m-2020s",
+        "side": "teamB",
+        "teamName": "San Antonio Spurs",
+        "season": "2020-21",
+        "traitId": "MOTION",
+        "metric": "movementShare",
+        "direction": "ABOVE_REFERENCE_BASELINE",
+        "subjectMean": 0.183,
+        "referenceMean": 0.23644,
+        "difference": -0.05344,
+        "practicalMargin": 0.03,
+        "zScore": -64.01033,
+        "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+      }
+    ],
+    "independentHardFailClustersEnriched": [
+      {
+        "clusterKey": "v6m-1970s|teamB|orebRate|VS_ERA_REFERENCE|ABOVE_REFERENCE_BASELINE|0.31214|0.33772",
+        "matchupId": "v6m-1970s",
+        "eraStyleId": "1970s",
+        "side": "teamB",
+        "teamName": "Portland Trail Blazers",
+        "season": "1974-75",
+        "metric": "orebRate",
+        "surface": "VS_ERA_REFERENCE",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "subjectMean": 0.31214,
+        "referenceMean": 0.33772,
+        "difference": -0.02558,
+        "practicalMargin": 0.02,
+        "zScore": -17.29919,
+        "ci95": {
+          "lower": -0.02848,
+          "upper": -0.02268
+        },
+        "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED",
+        "formalTraitLabels": [
+          "STRONG_OFFENSIVE_REBOUNDING"
+        ],
+        "formalLabelCount": 1,
+        "independentMeasurements": 1
+      },
+      {
+        "clusterKey": "v6m-1990s|teamA|movementShare|VS_ERA_REFERENCE|ABOVE_REFERENCE_BASELINE|0.15075|0.21226",
+        "matchupId": "v6m-1990s",
+        "eraStyleId": "1990s",
+        "side": "teamA",
+        "teamName": "Indiana Pacers",
+        "season": "1994-95",
+        "metric": "movementShare",
+        "surface": "VS_ERA_REFERENCE",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "subjectMean": 0.15075,
+        "referenceMean": 0.21226,
+        "difference": -0.06151,
+        "practicalMargin": 0.03,
+        "zScore": -80.53089,
+        "ci95": {
+          "lower": -0.06301,
+          "upper": -0.06001
+        },
+        "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED",
+        "formalTraitLabels": [
+          "movement shooting off screens",
+          "MOTION"
+        ],
+        "formalLabelCount": 2,
+        "independentMeasurements": 1
+      },
+      {
+        "clusterKey": "v6m-2000s|teamA|refPppVsTeam|REFERENCE_VS_TEAM|BELOW_REFERENCE_BASELINE|1.17134|1.14908",
+        "matchupId": "v6m-2000s",
+        "eraStyleId": "2000s",
+        "side": "teamA",
+        "teamName": "Boston Celtics",
+        "season": "2007-08",
+        "metric": "refPppVsTeam",
+        "surface": "REFERENCE_VS_TEAM",
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "subjectMean": 1.17134,
+        "referenceMean": 1.14908,
+        "difference": 0.02226,
+        "practicalMargin": 0.02,
+        "zScore": 8.87861,
+        "ci95": {
+          "lower": 0.01735,
+          "upper": 0.02717
+        },
+        "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED",
+        "formalTraitLabels": [
+          "elite team man defence",
+          "ELITE_DEFENSE"
+        ],
+        "formalLabelCount": 2,
+        "independentMeasurements": 1
+      },
+      {
+        "clusterKey": "v6m-2000s|teamA|assistedRate|VS_ERA_REFERENCE|ABOVE_REFERENCE_BASELINE|0.43829|0.47555",
+        "matchupId": "v6m-2000s",
+        "eraStyleId": "2000s",
+        "side": "teamA",
+        "teamName": "Boston Celtics",
+        "season": "2007-08",
+        "metric": "assistedRate",
+        "surface": "VS_ERA_REFERENCE",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "subjectMean": 0.43829,
+        "referenceMean": 0.47555,
+        "difference": -0.03726,
+        "practicalMargin": 0.02,
+        "zScore": -22.20968,
+        "ci95": {
+          "lower": -0.04055,
+          "upper": -0.03397
+        },
+        "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED",
+        "formalTraitLabels": [
+          "PASSING_HUB"
+        ],
+        "formalLabelCount": 1,
+        "independentMeasurements": 1
+      },
+      {
+        "clusterKey": "v6m-2000s|teamB|gamePace|VS_ERA_REFERENCE|BELOW_REFERENCE_BASELINE|92.15698|90.8002",
+        "matchupId": "v6m-2000s",
+        "eraStyleId": "2000s",
+        "side": "teamB",
+        "teamName": "Houston Rockets",
+        "season": "2007-08",
+        "metric": "gamePace",
+        "surface": "VS_ERA_REFERENCE",
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "subjectMean": 92.15698,
+        "referenceMean": 90.8002,
+        "difference": 1.35678,
+        "practicalMargin": 1,
+        "zScore": 30.80383,
+        "ci95": {
+          "lower": 1.27045,
+          "upper": 1.44311
+        },
+        "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED",
+        "formalTraitLabels": [
+          "slow"
+        ],
+        "formalLabelCount": 1,
+        "independentMeasurements": 1
+      },
+      {
+        "clusterKey": "v6m-2000s|teamB|movementShare|VS_ERA_REFERENCE|ABOVE_REFERENCE_BASELINE|0.12636|0.17439",
+        "matchupId": "v6m-2000s",
+        "eraStyleId": "2000s",
+        "side": "teamB",
+        "teamName": "Houston Rockets",
+        "season": "2007-08",
+        "metric": "movementShare",
+        "surface": "VS_ERA_REFERENCE",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "subjectMean": 0.12636,
+        "referenceMean": 0.17439,
+        "difference": -0.04803,
+        "practicalMargin": 0.03,
+        "zScore": -64.68724,
+        "ci95": {
+          "lower": -0.04949,
+          "upper": -0.04657
+        },
+        "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED",
+        "formalTraitLabels": [
+          "motion and cutting",
+          "MOTION"
+        ],
+        "formalLabelCount": 2,
+        "independentMeasurements": 1
+      },
+      {
+        "clusterKey": "v6m-2000s|teamB|postUpShare|VS_ERA_REFERENCE|ABOVE_REFERENCE_BASELINE|0.22432|0.2606",
+        "matchupId": "v6m-2000s",
+        "eraStyleId": "2000s",
+        "side": "teamB",
+        "teamName": "Houston Rockets",
+        "season": "2007-08",
+        "metric": "postUpShare",
+        "surface": "VS_ERA_REFERENCE",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "subjectMean": 0.22432,
+        "referenceMean": 0.2606,
+        "difference": -0.03628,
+        "practicalMargin": 0.03,
+        "zScore": -38.44593,
+        "ci95": {
+          "lower": -0.03813,
+          "upper": -0.03443
+        },
+        "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED",
+        "formalTraitLabels": [
+          "POST_HEAVY"
+        ],
+        "formalLabelCount": 1,
+        "independentMeasurements": 1
+      },
+      {
+        "clusterKey": "v6m-2020s|teamB|movementShare|VS_ERA_REFERENCE|ABOVE_REFERENCE_BASELINE|0.183|0.23644",
+        "matchupId": "v6m-2020s",
+        "eraStyleId": "2020s",
+        "side": "teamB",
+        "teamName": "San Antonio Spurs",
+        "season": "2020-21",
+        "metric": "movementShare",
+        "surface": "VS_ERA_REFERENCE",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "subjectMean": 0.183,
+        "referenceMean": 0.23644,
+        "difference": -0.05344,
+        "practicalMargin": 0.03,
+        "zScore": -64.01033,
+        "ci95": {
+          "lower": -0.05508,
+          "upper": -0.0518
+        },
+        "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED",
+        "formalTraitLabels": [
+          "half-court motion and passing",
+          "MOTION"
+        ],
+        "formalLabelCount": 2,
+        "independentMeasurements": 1
+      }
+    ],
+    "clusterRecordNote": {
+      "what": "the formal cluster record in historical-v6-results.json carries observed and reference as null, because clusterHardFails read t.observed and t.reference while the trait records name those fields subjectMean and referenceMean.",
+      "consequence": "the cluster key reduced to (matchup, side, metric, surface, direction).",
+      "didItChangeTheAdjudication": false,
+      "proof": "12 hard-fail labels · 8 clusters under the as-run key · 8 under the intended key with the real means · the gate requires 0",
+      "whyNotFixed": "the runner's semantics are frozen and the set is consumed. Changing the cluster key after access would make the run INVALID rather than correct it. A coarser key can only merge labels, never split them, so the recorded count is a lower bound and the verdict is identical under both keys.",
+      "valuesSuppliedBelow": "the means, z scores and intervals are read from the preserved per-trait results in the same artifact. This is formatting a recorded value, not re-adjudicating one."
+    },
+    "accessCountBefore": 0,
+    "accessCountAfter": 1,
+    "runHash": "83461d3181ae384eb31872c3fb11977c683692ba5b172c3cbaecfb51456a3f02",
+    "agreementChecks": {
+      "performed": 13,
+      "disagreements": 0,
+      "note": "every value above is copied from the formal results artifact. The checks confirm the artifact is internally consistent; they do not substitute a recomputed value for a recorded one."
+    },
+    "sourceArtifact": "data/validation/6c4c2/historical-v6-results.json"
+  },
+  "outputHash": "4d2d0272cf8b1ef90308911c3bb3d87b0e34b0c79358674759e5c252b751e9f9"
+}

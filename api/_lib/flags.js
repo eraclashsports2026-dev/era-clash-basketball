@@ -19,6 +19,8 @@ const bool = (name, dflt) => {
   return !["false", "0", "off", "no"].includes(String(v).toLowerCase());
 };
 
+import { PREVIEW_ENV } from "../../config/previewEnv.js";
+
 export const flags = () => ({
   maintenance: bool("MAINTENANCE_MODE", false),
   // V3 possession engine: default OFF. Auto-enabled on Vercel PREVIEW
@@ -28,9 +30,43 @@ export const flags = () => ({
   // Kill switch: set SIM_ENGINE_V3_ENABLED=false in Vercel env and redeploy —
   // the V2 engine remains in the codebase as the instant fallback path.
   simV3: bool("SIM_ENGINE_V3_ENABLED", true),
+  // Chaos Clash. Its own flag so the new default Play mode can be switched off
+  // without touching Dream Matchup, the Daily, or the preview candidate. ON by
+  // default on preview deployments, OFF in production until it is promoted.
+  chaosClash: bool("CHAOS_CLASH_ENABLED", process.env.VERCEL_ENV === "preview"),
   aiNarrative: bool("AI_NARRATIVE_ENABLED", true),
   challenges: bool("CHALLENGES_ENABLED", true),
   daily: bool("DAILY_ENABLED", true),
+  // Daily coach + Era Style integration. DEFAULT OFF everywhere. When off, the
+  // Daily behaves exactly as it does today, which is the rollback path: no
+  // coach selection, no official era, server-generated seed.
+  dailyCoachEra: bool("DAILY_COACH_ERA_ENABLED", false),
+  // Possession Engine 1.0. Its own explicit flag — deliberately NOT folded
+  // into SIM_ENGINE_V3_ENABLED, which already means too many things. Default
+  // false: no production route may select the possession engine.
+  possessionEngine: bool("POSSESSION_ENGINE_ENABLED", false),
+  // Defensive matchup engine. Its own flag again — the possession engine can
+  // run without it, and that A/B is how the defensive system is measured.
+  defensiveMatchupEngine: bool("DEFENSIVE_MATCHUP_ENGINE_ENABLED", false),
+  // Phase 6B2. Three separate flags because they are three separate systems
+  // and the A/B comparisons need them independently switchable.
+  zoneResolution: bool("ZONE_RESOLUTION_ENABLED", false),
+  expandedOffensiveActions: bool("EXPANDED_OFFENSIVE_ACTIONS_ENABLED", false),
+  offensiveCoachAdjustments: bool("OFFENSIVE_COACH_ADJUSTMENTS_ENABLED", false),
+  // Phase 6C2A. Its own flag for the same reason: the structural before/after
+  // is only measurable if allocation can be switched independently of the
+  // families that consume it.
+  opportunityAllocation: bool("OPPORTUNITY_ALLOCATION_ENABLED", false),
+  // Protected preview: the LOCKED preview candidate (Candidate 3, possession
+  // engine line) behind its own default-off flag. When false — the default in
+  // every environment — no code path differs from production behavior, and
+  // engine 3.2.0 remains the fallback for every request even when true.
+  // An explicit PREVIEW_SIM_ENGINE_ENABLED always wins; otherwise Vercel
+  // Preview deployments read the repository preview config (production and
+  // local runs ignore it — the default stays false).
+  previewSimEngine: process.env.PREVIEW_SIM_ENGINE_ENABLED != null && process.env.PREVIEW_SIM_ENGINE_ENABLED !== ""
+    ? bool("PREVIEW_SIM_ENGINE_ENABLED", false)
+    : (process.env.VERCEL_ENV === "preview" && PREVIEW_ENV.previewSimEngine === true),
   leaderboard: bool("PUBLIC_LEADERBOARD_ENABLED", true),
   feedback: bool("FEEDBACK_ENABLED", true),
 });
@@ -43,6 +79,8 @@ const num = (name, dflt) => {
 };
 
 export const limits = () => ({
+  chaosPerMinSession: num("CHAOS_PER_MIN_SESSION", 40),
+  chaosPerMinIp: num("CHAOS_PER_MIN_IP", 90),
   // per-session / per-IP fixed windows
   simPerMinSession: num("RL_SIM_PER_MIN_SESSION", 10),
   simPerMinIp: num("RL_SIM_PER_MIN_IP", 20),
@@ -51,6 +89,14 @@ export const limits = () => ({
   feedbackPerMinIp: num("RL_FEEDBACK_PER_MIN_IP", 20),
   eventsPerMinIp: num("RL_EVENTS_PER_MIN_IP", 120),
   profilePerMinIp: num("RL_PROFILE_PER_MIN_IP", 20),
+  // Phase 9C challenge actions and invitation lookups (per IP, per minute)
+  challengeActionsPerMinIp: num("RL_CHALLENGE_ACTIONS_PER_MIN_IP", 30),
+  challengeViewPerMinIp: num("RL_CHALLENGE_VIEW_PER_MIN_IP", 60),
+  // Phase 9D progression reads/reconciles (per IP, per minute)
+  progressionPerMinIp: num("RL_PROGRESSION_PER_MIN_IP", 30),
+  // Phase 9E leaderboard reads and competitive state (per IP, per minute)
+  competitivePerMinIp: num("RL_COMPETITIVE_PER_MIN_IP", 60),
+  profilePerMinIp: num("RL_PROFILE_PUBLIC_PER_MIN_IP", 60),
   // global emergency ceilings (fixed 1-minute / 1-day windows)
   maxCoreSimsPerMinute: num("MAX_CORE_SIMULATIONS_PER_MINUTE", 600),
   maxAiPerMinute: num("MAX_AI_REQUESTS_PER_MINUTE", 60),

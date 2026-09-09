@@ -1,0 +1,36 @@
+{
+  "artifact": "phase8b-responsive-qa",
+  "phase": "8B",
+  "viewports": [
+    "1600x900",
+    "1440x900",
+    "1280x800",
+    "1024x768",
+    "768x1024",
+    "430x932",
+    "390x844",
+    "375x812"
+  ],
+  "pageLevelHorizontalOverflow": "none at any tested viewport",
+  "playerDraft": {
+    "holdTargets": ">= 44px",
+    "multiHoldKeyboardAccessible": true,
+    "heldStateNotColourOnly": "aria-pressed plus a name that changes between Hold and Release",
+    "rollCounterAlwaysVisible": true,
+    "eraBannerVisibleAfterReveal": true,
+    "cpuRosterAccessible": true
+  },
+  "coachDraft": {
+    "offersReadable": true,
+    "holdControlsAccessible": true,
+    "detailsExpandInPlace": true,
+    "mobileStacks": "offers collapse to one column below 900px"
+  },
+  "postgame": {
+    "statCellsNeverWrap": true,
+    "tableScrollIsolated": true,
+    "coachingSubSectionsKeyboardOperable": "a real tablist",
+    "longAdjustmentListGrouped": true
+  },
+  "evidence": "e2e/phase8a-chaos.spec.js mobile and keyboard specs; playwright 29/29 across three projects"
+}

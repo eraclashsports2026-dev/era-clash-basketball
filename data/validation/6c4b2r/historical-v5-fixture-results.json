@@ -1,0 +1,1920 @@
+{
+  "artifact": "historical-v5-fixture-results",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run exec:record-v5",
+  "generatedAt": "2026-08-27T13:44:34.558Z",
+  "gitCommit": "6ea84e3e9a25950835b62a118c9f53088a514b46",
+  "branch": "phase-6c4b2r-candidate1-formal-execution",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "set": "historical-holdout-v5",
+    "matchupCount": 8,
+    "fixtures": [
+      {
+        "matchupId": "v5m-1950s",
+        "eraStyleId": "1950s",
+        "gamesPlayed": 12288,
+        "teamA": {
+          "fixtureId": "v4-1957-58-celtics",
+          "teamName": "Boston Celtics",
+          "season": "1957-58",
+          "shareMae": null,
+          "traitsScored": 4,
+          "traitsPassed": 3,
+          "traitsFailed": 1,
+          "hardFails": [],
+          "notScored": [
+            {
+              "traitId": "rim-anchored man",
+              "result": "NOT_SCORED_UNOBSERVABLE",
+              "reason": "METRIC_NOT_CERTIFIED_UNDER_CANDIDATE_1"
+            }
+          ],
+          "traits": [
+            {
+              "traitId": "TRANSITION",
+              "metric": "transitionShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.17605,
+              "referenceMean": 0.14584,
+              "diff": 0.03021,
+              "z": 47.85602,
+              "ci95": {
+                "lower": 0.02897,
+                "upper": 0.03145
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.03,
+              "beyondPracticalMargin": true,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "ELITE_DEFENSE",
+              "metric": "refPppVsTeam",
+              "direction": "BELOW_REFERENCE_BASELINE",
+              "surface": "REFERENCE_VS_TEAM",
+              "subjectMean": 1.12041,
+              "referenceMean": 1.11951,
+              "diff": 0.0009,
+              "z": 0.47783,
+              "ci95": {
+                "lower": -0.00279,
+                "upper": 0.00459
+              },
+              "result": "FAIL",
+              "hardFail": false,
+              "practicalMargin": 0.02,
+              "beyondPracticalMargin": false,
+              "statisticallyOpposite": false,
+              "reportedState": "INCONCLUSIVE"
+            },
+            {
+              "traitId": "very fast",
+              "metric": "gamePace",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 122.69751,
+              "referenceMean": 120.039,
+              "diff": 2.65851,
+              "z": 48.50995,
+              "ci95": {
+                "lower": 2.5511,
+                "upper": 2.76592
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 1,
+              "beyondPracticalMargin": true,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "fast break from defensive rebounding",
+              "metric": "transitionShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.17605,
+              "referenceMean": 0.14584,
+              "diff": 0.03021,
+              "z": 47.85602,
+              "ci95": {
+                "lower": 0.02897,
+                "upper": 0.03145
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.03,
+              "beyondPracticalMargin": true,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            }
+          ]
+        },
+        "teamB": {
+          "fixtureId": "v5-1950-51-lakers",
+          "teamName": "Minneapolis Lakers",
+          "season": "1950-51",
+          "shareMae": null,
+          "traitsScored": 4,
+          "traitsPassed": 4,
+          "traitsFailed": 0,
+          "hardFails": [],
+          "notScored": [
+            {
+              "traitId": "post-centred through the pivot",
+              "result": "NOT_APPLICABLE",
+              "reason": "NOT_IN_TRAIT_REGISTRY"
+            },
+            {
+              "traitId": "physical man",
+              "result": "NOT_SCORED_UNOBSERVABLE",
+              "reason": "METRIC_NOT_CERTIFIED_UNDER_CANDIDATE_1"
+            }
+          ],
+          "traits": [
+            {
+              "traitId": "POST_HEAVY",
+              "metric": "postUpShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.26149,
+              "referenceMean": 0.25517,
+              "diff": 0.00632,
+              "z": 8.11324,
+              "ci95": {
+                "lower": 0.00479,
+                "upper": 0.00785
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.03,
+              "beyondPracticalMargin": false,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "SIZE_HEAVY",
+              "metric": "interiorShotShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.76228,
+              "referenceMean": 0.75151,
+              "diff": 0.01077,
+              "z": 12.47779,
+              "ci95": {
+                "lower": 0.00908,
+                "upper": 0.01246
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.02,
+              "beyondPracticalMargin": false,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "STRONG_OFFENSIVE_REBOUNDING",
+              "metric": "orebRate",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.40561,
+              "referenceMean": 0.38566,
+              "diff": 0.01995,
+              "z": 15.31086,
+              "ci95": {
+                "lower": 0.0174,
+                "upper": 0.0225
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.02,
+              "beyondPracticalMargin": false,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "slow",
+              "metric": "gamePace",
+              "direction": "BELOW_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 118.67651,
+              "referenceMean": 120.039,
+              "diff": -1.36249,
+              "z": -24.94225,
+              "ci95": {
+                "lower": -1.46956,
+                "upper": -1.25542
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 1,
+              "beyondPracticalMargin": true,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            }
+          ]
+        },
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleScores": 0,
+          "preThreeEraThreePointAttempts": 0,
+          "replayExactAllSurfaces": true
+        }
+      },
+      {
+        "matchupId": "v5m-1960s",
+        "eraStyleId": "1960s",
+        "gamesPlayed": 12288,
+        "teamA": {
+          "fixtureId": "v4-1966-67-warriors",
+          "teamName": "San Francisco Warriors",
+          "season": "1966-67",
+          "shareMae": null,
+          "traitsScored": 5,
+          "traitsPassed": 5,
+          "traitsFailed": 0,
+          "hardFails": [],
+          "notScored": [
+            {
+              "traitId": "rim-anchored man",
+              "result": "NOT_SCORED_UNOBSERVABLE",
+              "reason": "METRIC_NOT_CERTIFIED_UNDER_CANDIDATE_1"
+            }
+          ],
+          "traits": [
+            {
+              "traitId": "TRANSITION",
+              "metric": "transitionShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.17509,
+              "referenceMean": 0.14267,
+              "diff": 0.03242,
+              "z": 51.35691,
+              "ci95": {
+                "lower": 0.03118,
+                "upper": 0.03366
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.03,
+              "beyondPracticalMargin": true,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "PACE_EXTREME",
+              "metric": "gamePace",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 124.43921,
+              "referenceMean": 121.9086,
+              "diff": 2.53061,
+              "z": 50.95216,
+              "ci95": {
+                "lower": 2.43326,
+                "upper": 2.62796
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 1,
+              "beyondPracticalMargin": true,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "STRONG_OFFENSIVE_REBOUNDING",
+              "metric": "orebRate",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.42085,
+              "referenceMean": 0.39279,
+              "diff": 0.02806,
+              "z": 20.1615,
+              "ci95": {
+                "lower": 0.02533,
+                "upper": 0.03079
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.02,
+              "beyondPracticalMargin": true,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "very fast",
+              "metric": "gamePace",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 124.43921,
+              "referenceMean": 121.9086,
+              "diff": 2.53061,
+              "z": 50.95216,
+              "ci95": {
+                "lower": 2.43326,
+                "upper": 2.62796
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 1,
+              "beyondPracticalMargin": true,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "fast break, early offence",
+              "metric": "transitionShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.17509,
+              "referenceMean": 0.14267,
+              "diff": 0.03242,
+              "z": 51.35691,
+              "ci95": {
+                "lower": 0.03118,
+                "upper": 0.03366
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.03,
+              "beyondPracticalMargin": true,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            }
+          ]
+        },
+        "teamB": {
+          "fixtureId": "v5-1960-61-celtics",
+          "teamName": "Boston Celtics",
+          "season": "1960-61",
+          "shareMae": null,
+          "traitsScored": 5,
+          "traitsPassed": 5,
+          "traitsFailed": 0,
+          "hardFails": [],
+          "notScored": [],
+          "traits": [
+            {
+              "traitId": "TRANSITION",
+              "metric": "transitionShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.17369,
+              "referenceMean": 0.14267,
+              "diff": 0.03102,
+              "z": 49.13915,
+              "ci95": {
+                "lower": 0.02978,
+                "upper": 0.03226
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.03,
+              "beyondPracticalMargin": true,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "ELITE_DEFENSE",
+              "metric": "refPppVsTeam",
+              "direction": "BELOW_REFERENCE_BASELINE",
+              "surface": "REFERENCE_VS_TEAM",
+              "subjectMean": 1.13262,
+              "referenceMean": 1.14736,
+              "diff": -0.01474,
+              "z": -7.94497,
+              "ci95": {
+                "lower": -0.01838,
+                "upper": -0.0111
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.02,
+              "beyondPracticalMargin": false,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "very fast",
+              "metric": "gamePace",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 124.55396,
+              "referenceMean": 121.9086,
+              "diff": 2.64536,
+              "z": 49.22705,
+              "ci95": {
+                "lower": 2.54003,
+                "upper": 2.75069
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 1,
+              "beyondPracticalMargin": true,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "fast break and early offence",
+              "metric": "transitionShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.17369,
+              "referenceMean": 0.14267,
+              "diff": 0.03102,
+              "z": 49.13915,
+              "ci95": {
+                "lower": 0.02978,
+                "upper": 0.03226
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.03,
+              "beyondPracticalMargin": true,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "elite team man defence",
+              "metric": "refPppVsTeam",
+              "direction": "BELOW_REFERENCE_BASELINE",
+              "surface": "REFERENCE_VS_TEAM",
+              "subjectMean": 1.13262,
+              "referenceMean": 1.14736,
+              "diff": -0.01474,
+              "z": -7.94497,
+              "ci95": {
+                "lower": -0.01838,
+                "upper": -0.0111
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.02,
+              "beyondPracticalMargin": false,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            }
+          ]
+        },
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleScores": 0,
+          "preThreeEraThreePointAttempts": 0,
+          "replayExactAllSurfaces": true
+        }
+      },
+      {
+        "matchupId": "v5m-1970s",
+        "eraStyleId": "1970s",
+        "gamesPlayed": 12288,
+        "teamA": {
+          "fixtureId": "v4-1972-73-lakers",
+          "teamName": "Los Angeles Lakers",
+          "season": "1972-73",
+          "shareMae": null,
+          "traitsScored": 5,
+          "traitsPassed": 3,
+          "traitsFailed": 2,
+          "hardFails": [],
+          "notScored": [],
+          "traits": [
+            {
+              "traitId": "TRANSITION",
+              "metric": "transitionShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.16143,
+              "referenceMean": 0.13747,
+              "diff": 0.02396,
+              "z": 35.17449,
+              "ci95": {
+                "lower": 0.02262,
+                "upper": 0.0253
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.03,
+              "beyondPracticalMargin": false,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "ELITE_DEFENSE",
+              "metric": "refPppVsTeam",
+              "direction": "BELOW_REFERENCE_BASELINE",
+              "surface": "REFERENCE_VS_TEAM",
+              "subjectMean": 1.20051,
+              "referenceMean": 1.18619,
+              "diff": 0.01432,
+              "z": 7.1749,
+              "ci95": {
+                "lower": 0.01041,
+                "upper": 0.01823
+              },
+              "result": "FAIL",
+              "hardFail": false,
+              "practicalMargin": 0.02,
+              "beyondPracticalMargin": false,
+              "statisticallyOpposite": true,
+              "reportedState": "STATISTICALLY_DIFFERENT_PRACTICALLY_EQUIVALENT"
+            },
+            {
+              "traitId": "fast",
+              "metric": "gamePace",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 109.58154,
+              "referenceMean": 106.8238,
+              "diff": 2.75774,
+              "z": 50.41057,
+              "ci95": {
+                "lower": 2.65052,
+                "upper": 2.86496
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 1,
+              "beyondPracticalMargin": true,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "fast break from defensive rebounding",
+              "metric": "transitionShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.16143,
+              "referenceMean": 0.13747,
+              "diff": 0.02396,
+              "z": 35.17449,
+              "ci95": {
+                "lower": 0.02262,
+                "upper": 0.0253
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.03,
+              "beyondPracticalMargin": false,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "elite team man",
+              "metric": "refPppVsTeam",
+              "direction": "BELOW_REFERENCE_BASELINE",
+              "surface": "REFERENCE_VS_TEAM",
+              "subjectMean": 1.20051,
+              "referenceMean": 1.18619,
+              "diff": 0.01432,
+              "z": 7.1749,
+              "ci95": {
+                "lower": 0.01041,
+                "upper": 0.01823
+              },
+              "result": "FAIL",
+              "hardFail": false,
+              "practicalMargin": 0.02,
+              "beyondPracticalMargin": false,
+              "statisticallyOpposite": true,
+              "reportedState": "STATISTICALLY_DIFFERENT_PRACTICALLY_EQUIVALENT"
+            }
+          ]
+        },
+        "teamB": {
+          "fixtureId": "v4-1975-76-celtics",
+          "teamName": "Boston Celtics",
+          "season": "1975-76",
+          "shareMae": null,
+          "traitsScored": 4,
+          "traitsPassed": 4,
+          "traitsFailed": 0,
+          "hardFails": [],
+          "notScored": [
+            {
+              "traitId": "physical man",
+              "result": "NOT_SCORED_UNOBSERVABLE",
+              "reason": "METRIC_NOT_CERTIFIED_UNDER_CANDIDATE_1"
+            }
+          ],
+          "traits": [
+            {
+              "traitId": "TRANSITION",
+              "metric": "transitionShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.14647,
+              "referenceMean": 0.13747,
+              "diff": 0.009,
+              "z": 13.6662,
+              "ci95": {
+                "lower": 0.00771,
+                "upper": 0.01029
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.03,
+              "beyondPracticalMargin": false,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "STRONG_OFFENSIVE_REBOUNDING",
+              "metric": "orebRate",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.34472,
+              "referenceMean": 0.33828,
+              "diff": 0.00644,
+              "z": 4.31051,
+              "ci95": {
+                "lower": 0.00351,
+                "upper": 0.00937
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.02,
+              "beyondPracticalMargin": false,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "fast",
+              "metric": "gamePace",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 109.51001,
+              "referenceMean": 106.8238,
+              "diff": 2.68621,
+              "z": 50.20619,
+              "ci95": {
+                "lower": 2.58134,
+                "upper": 2.79108
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 1,
+              "beyondPracticalMargin": true,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "fast break, balanced scoring",
+              "metric": "transitionShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.14647,
+              "referenceMean": 0.13747,
+              "diff": 0.009,
+              "z": 13.6662,
+              "ci95": {
+                "lower": 0.00771,
+                "upper": 0.01029
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.03,
+              "beyondPracticalMargin": false,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            }
+          ]
+        },
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleScores": 0,
+          "preThreeEraThreePointAttempts": 0,
+          "replayExactAllSurfaces": true
+        }
+      },
+      {
+        "matchupId": "v5m-1980s",
+        "eraStyleId": "1980s",
+        "gamesPlayed": 12288,
+        "teamA": {
+          "fixtureId": "v4-1984-85-lakers",
+          "teamName": "Los Angeles Lakers",
+          "season": "1984-85",
+          "shareMae": null,
+          "traitsScored": 6,
+          "traitsPassed": 5,
+          "traitsFailed": 1,
+          "hardFails": [],
+          "notScored": [
+            {
+              "traitId": "man with help",
+              "result": "NOT_SCORED_UNOBSERVABLE",
+              "reason": "METRIC_NOT_CERTIFIED_UNDER_CANDIDATE_1"
+            }
+          ],
+          "traits": [
+            {
+              "traitId": "TRANSITION",
+              "metric": "transitionShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.13858,
+              "referenceMean": 0.11663,
+              "diff": 0.02195,
+              "z": 33.61444,
+              "ci95": {
+                "lower": 0.02067,
+                "upper": 0.02323
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.03,
+              "beyondPracticalMargin": false,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "PACE_EXTREME",
+              "metric": "gamePace",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 102.45923,
+              "referenceMean": 101.1362,
+              "diff": 1.32303,
+              "z": 25.69886,
+              "ci95": {
+                "lower": 1.22213,
+                "upper": 1.42393
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 1,
+              "beyondPracticalMargin": true,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "ELITE_OFFENSE",
+              "metric": "pppVsReference",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 1.25969,
+              "referenceMean": 1.23831,
+              "diff": 0.02138,
+              "z": 10.38292,
+              "ci95": {
+                "lower": 0.01734,
+                "upper": 0.02542
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.02,
+              "beyondPracticalMargin": true,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "PASSING_HUB",
+              "metric": "assistedRate",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.4443,
+              "referenceMean": 0.4567,
+              "diff": -0.0124,
+              "z": -8.42116,
+              "ci95": {
+                "lower": -0.01529,
+                "upper": -0.00951
+              },
+              "result": "FAIL",
+              "hardFail": false,
+              "practicalMargin": 0.02,
+              "beyondPracticalMargin": false,
+              "statisticallyOpposite": true,
+              "reportedState": "STATISTICALLY_DIFFERENT_PRACTICALLY_EQUIVALENT"
+            },
+            {
+              "traitId": "very fast",
+              "metric": "gamePace",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 102.45923,
+              "referenceMean": 101.1362,
+              "diff": 1.32303,
+              "z": 25.69886,
+              "ci95": {
+                "lower": 1.22213,
+                "upper": 1.42393
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 1,
+              "beyondPracticalMargin": true,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "Showtime transition and early offence",
+              "metric": "transitionShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.13858,
+              "referenceMean": 0.11663,
+              "diff": 0.02195,
+              "z": 33.61444,
+              "ci95": {
+                "lower": 0.02067,
+                "upper": 0.02323
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.03,
+              "beyondPracticalMargin": false,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            }
+          ]
+        },
+        "teamB": {
+          "fixtureId": "v4-1983-84-celtics",
+          "teamName": "Boston Celtics",
+          "season": "1983-84",
+          "shareMae": null,
+          "traitsScored": 5,
+          "traitsPassed": 3,
+          "traitsFailed": 2,
+          "hardFails": [],
+          "notScored": [
+            {
+              "traitId": "moderate",
+              "result": "NOT_SCORED_UNOBSERVABLE",
+              "reason": "METRIC_NOT_CERTIFIED_UNDER_CANDIDATE_1"
+            }
+          ],
+          "traits": [
+            {
+              "traitId": "ELITE_DEFENSE",
+              "metric": "refPppVsTeam",
+              "direction": "BELOW_REFERENCE_BASELINE",
+              "surface": "REFERENCE_VS_TEAM",
+              "subjectMean": 1.22869,
+              "referenceMean": 1.23831,
+              "diff": -0.00962,
+              "z": -4.57323,
+              "ci95": {
+                "lower": -0.01374,
+                "upper": -0.0055
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.02,
+              "beyondPracticalMargin": false,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "STRONG_OFFENSIVE_REBOUNDING",
+              "metric": "orebRate",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.38897,
+              "referenceMean": 0.35361,
+              "diff": 0.03536,
+              "z": 22.2809,
+              "ci95": {
+                "lower": 0.03225,
+                "upper": 0.03847
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.02,
+              "beyondPracticalMargin": true,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "POST_HEAVY",
+              "metric": "postUpShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.25494,
+              "referenceMean": 0.25976,
+              "diff": -0.00482,
+              "z": -5.72311,
+              "ci95": {
+                "lower": -0.00647,
+                "upper": -0.00317
+              },
+              "result": "FAIL",
+              "hardFail": false,
+              "practicalMargin": 0.03,
+              "beyondPracticalMargin": false,
+              "statisticallyOpposite": true,
+              "reportedState": "STATISTICALLY_DIFFERENT_PRACTICALLY_EQUIVALENT"
+            },
+            {
+              "traitId": "half-court execution, elite passing front line",
+              "metric": "assistedRate",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.446,
+              "referenceMean": 0.4567,
+              "diff": -0.0107,
+              "z": -7.19402,
+              "ci95": {
+                "lower": -0.01362,
+                "upper": -0.00778
+              },
+              "result": "FAIL",
+              "hardFail": false,
+              "practicalMargin": 0.02,
+              "beyondPracticalMargin": false,
+              "statisticallyOpposite": true,
+              "reportedState": "STATISTICALLY_DIFFERENT_PRACTICALLY_EQUIVALENT"
+            },
+            {
+              "traitId": "elite team man defence",
+              "metric": "refPppVsTeam",
+              "direction": "BELOW_REFERENCE_BASELINE",
+              "surface": "REFERENCE_VS_TEAM",
+              "subjectMean": 1.22869,
+              "referenceMean": 1.23831,
+              "diff": -0.00962,
+              "z": -4.57323,
+              "ci95": {
+                "lower": -0.01374,
+                "upper": -0.0055
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.02,
+              "beyondPracticalMargin": false,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            }
+          ]
+        },
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleScores": 0,
+          "preThreeEraThreePointAttempts": 0,
+          "replayExactAllSurfaces": true
+        }
+      },
+      {
+        "matchupId": "v5m-1990s",
+        "eraStyleId": "1990s",
+        "gamesPlayed": 12288,
+        "teamA": {
+          "fixtureId": "v4-1992-93-bulls",
+          "teamName": "Chicago Bulls",
+          "season": "1992-93",
+          "shareMae": null,
+          "traitsScored": 3,
+          "traitsPassed": 2,
+          "traitsFailed": 1,
+          "hardFails": [],
+          "notScored": [
+            {
+              "traitId": "moderate",
+              "result": "NOT_SCORED_UNOBSERVABLE",
+              "reason": "METRIC_NOT_CERTIFIED_UNDER_CANDIDATE_1"
+            },
+            {
+              "traitId": "pressure man with help",
+              "result": "NOT_SCORED_UNOBSERVABLE",
+              "reason": "METRIC_NOT_CERTIFIED_UNDER_CANDIDATE_1"
+            }
+          ],
+          "traits": [
+            {
+              "traitId": "ELITE_OFFENSE",
+              "metric": "pppVsReference",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 1.27821,
+              "referenceMean": 1.23962,
+              "diff": 0.03859,
+              "z": 17.47424,
+              "ci95": {
+                "lower": 0.03426,
+                "upper": 0.04292
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.02,
+              "beyondPracticalMargin": true,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "MOTION",
+              "metric": "movementShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.32244,
+              "referenceMean": 0.2131,
+              "diff": 0.10934,
+              "z": 120.91553,
+              "ci95": {
+                "lower": 0.10757,
+                "upper": 0.11111
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.03,
+              "beyondPracticalMargin": true,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "triangle: post reads, cuts, spacing",
+              "metric": "postUpShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.25806,
+              "referenceMean": 0.25944,
+              "diff": -0.00138,
+              "z": -1.58412,
+              "ci95": {
+                "lower": -0.00309,
+                "upper": 0.00033
+              },
+              "result": "FAIL",
+              "hardFail": false,
+              "practicalMargin": 0.03,
+              "beyondPracticalMargin": false,
+              "statisticallyOpposite": false,
+              "reportedState": "INCONCLUSIVE"
+            }
+          ]
+        },
+        "teamB": {
+          "fixtureId": "v4-1995-96-supersonics",
+          "teamName": "Seattle SuperSonics",
+          "season": "1995-96",
+          "shareMae": null,
+          "traitsScored": 4,
+          "traitsPassed": 4,
+          "traitsFailed": 0,
+          "hardFails": [],
+          "notScored": [
+            {
+              "traitId": "aggressive switching and trapping",
+              "result": "NOT_SCORED_UNOBSERVABLE",
+              "reason": "METRIC_NOT_CERTIFIED_UNDER_CANDIDATE_1"
+            }
+          ],
+          "traits": [
+            {
+              "traitId": "ELITE_DEFENSE",
+              "metric": "refPppVsTeam",
+              "direction": "BELOW_REFERENCE_BASELINE",
+              "surface": "REFERENCE_VS_TEAM",
+              "subjectMean": 1.203,
+              "referenceMean": 1.23962,
+              "diff": -0.03662,
+              "z": -16.36224,
+              "ci95": {
+                "lower": -0.04101,
+                "upper": -0.03223
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.02,
+              "beyondPracticalMargin": true,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "TRANSITION",
+              "metric": "transitionShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.14945,
+              "referenceMean": 0.1127,
+              "diff": 0.03675,
+              "z": 54.34464,
+              "ci95": {
+                "lower": 0.03542,
+                "upper": 0.03808
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.03,
+              "beyondPracticalMargin": true,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "fast",
+              "metric": "gamePace",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 99.78516,
+              "referenceMean": 97.0794,
+              "diff": 2.70576,
+              "z": 59.4565,
+              "ci95": {
+                "lower": 2.61656,
+                "upper": 2.79496
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 1,
+              "beyondPracticalMargin": true,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "transition and post scoring",
+              "metric": "transitionShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.14945,
+              "referenceMean": 0.1127,
+              "diff": 0.03675,
+              "z": 54.34464,
+              "ci95": {
+                "lower": 0.03542,
+                "upper": 0.03808
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.03,
+              "beyondPracticalMargin": true,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            }
+          ]
+        },
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleScores": 0,
+          "preThreeEraThreePointAttempts": 0,
+          "replayExactAllSurfaces": true
+        }
+      },
+      {
+        "matchupId": "v5m-2000s",
+        "eraStyleId": "2000s",
+        "gamesPlayed": 12288,
+        "teamA": {
+          "fixtureId": "v4-2004-05-suns",
+          "teamName": "Phoenix Suns",
+          "season": "2004-05",
+          "shareMae": null,
+          "traitsScored": 5,
+          "traitsPassed": 5,
+          "traitsFailed": 0,
+          "hardFails": [],
+          "notScored": [
+            {
+              "traitId": "THREE_POINT_HEAVY",
+              "result": "NOT_SCORED_UNOBSERVABLE",
+              "reason": "METRIC_NOT_CERTIFIED_UNDER_CANDIDATE_1"
+            },
+            {
+              "traitId": "gambling man defence",
+              "result": "NOT_SCORED_UNOBSERVABLE",
+              "reason": "METRIC_NOT_CERTIFIED_UNDER_CANDIDATE_1"
+            }
+          ],
+          "traits": [
+            {
+              "traitId": "ELITE_OFFENSE",
+              "metric": "pppVsReference",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 1.22375,
+              "referenceMean": 1.15215,
+              "diff": 0.0716,
+              "z": 29.39516,
+              "ci95": {
+                "lower": 0.06683,
+                "upper": 0.07637
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.02,
+              "beyondPracticalMargin": true,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "PACE_EXTREME",
+              "metric": "gamePace",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 94.16162,
+              "referenceMean": 90.737,
+              "diff": 3.42462,
+              "z": 82.20824,
+              "ci95": {
+                "lower": 3.34297,
+                "upper": 3.50627
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 1,
+              "beyondPracticalMargin": true,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "PICK_AND_ROLL",
+              "metric": "pnrShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.24385,
+              "referenceMean": 0.18449,
+              "diff": 0.05936,
+              "z": 69.60925,
+              "ci95": {
+                "lower": 0.05769,
+                "upper": 0.06103
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.03,
+              "beyondPracticalMargin": true,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "very fast",
+              "metric": "gamePace",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 94.16162,
+              "referenceMean": 90.737,
+              "diff": 3.42462,
+              "z": 82.20824,
+              "ci95": {
+                "lower": 3.34297,
+                "upper": 3.50627
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 1,
+              "beyondPracticalMargin": true,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "seven seconds or less: pick-and-roll and spacing",
+              "metric": "pnrShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.24385,
+              "referenceMean": 0.18449,
+              "diff": 0.05936,
+              "z": 69.60925,
+              "ci95": {
+                "lower": 0.05769,
+                "upper": 0.06103
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.03,
+              "beyondPracticalMargin": true,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            }
+          ]
+        },
+        "teamB": {
+          "fixtureId": "v4-2002-03-mavericks",
+          "teamName": "Dallas Mavericks",
+          "season": "2002-03",
+          "shareMae": null,
+          "traitsScored": 5,
+          "traitsPassed": 2,
+          "traitsFailed": 3,
+          "hardFails": [
+            "ball movement, drive and kick, corner threes"
+          ],
+          "notScored": [
+            {
+              "traitId": "THREE_POINT_HEAVY",
+              "result": "NOT_SCORED_UNOBSERVABLE",
+              "reason": "METRIC_NOT_CERTIFIED_UNDER_CANDIDATE_1"
+            }
+          ],
+          "traits": [
+            {
+              "traitId": "ELITE_OFFENSE",
+              "metric": "pppVsReference",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 1.18395,
+              "referenceMean": 1.15215,
+              "diff": 0.0318,
+              "z": 13.09529,
+              "ci95": {
+                "lower": 0.02704,
+                "upper": 0.03656
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.02,
+              "beyondPracticalMargin": true,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "ZONE_CAPABLE",
+              "metric": "defensiveZoneShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "REFERENCE_VS_TEAM",
+              "subjectMean": 0,
+              "referenceMean": 0,
+              "diff": 0,
+              "z": null,
+              "ci95": {
+                "lower": 0,
+                "upper": 0
+              },
+              "result": "FAIL",
+              "hardFail": false,
+              "practicalMargin": 0.05,
+              "beyondPracticalMargin": false,
+              "statisticallyOpposite": false,
+              "reportedState": "INCONCLUSIVE"
+            },
+            {
+              "traitId": "fast",
+              "metric": "gamePace",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 93.49194,
+              "referenceMean": 90.737,
+              "diff": 2.75494,
+              "z": 66.13252,
+              "ci95": {
+                "lower": 2.67329,
+                "upper": 2.83659
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 1,
+              "beyondPracticalMargin": true,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "ball movement, drive and kick, corner threes",
+              "metric": "assistedRate",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.44784,
+              "referenceMean": 0.4763,
+              "diff": -0.02846,
+              "z": -17.03917,
+              "ci95": {
+                "lower": -0.03173,
+                "upper": -0.02519
+              },
+              "result": "FAIL",
+              "hardFail": true,
+              "practicalMargin": 0.02,
+              "beyondPracticalMargin": true,
+              "statisticallyOpposite": true,
+              "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+            },
+            {
+              "traitId": "zone-capable, scheme-heavy",
+              "metric": "defensiveZoneShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "REFERENCE_VS_TEAM",
+              "subjectMean": 0,
+              "referenceMean": 0,
+              "diff": 0,
+              "z": null,
+              "ci95": {
+                "lower": 0,
+                "upper": 0
+              },
+              "result": "FAIL",
+              "hardFail": false,
+              "practicalMargin": 0.05,
+              "beyondPracticalMargin": false,
+              "statisticallyOpposite": false,
+              "reportedState": "INCONCLUSIVE"
+            }
+          ]
+        },
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleScores": 0,
+          "preThreeEraThreePointAttempts": 0,
+          "replayExactAllSurfaces": true
+        }
+      },
+      {
+        "matchupId": "v5m-2010s",
+        "eraStyleId": "2010s",
+        "gamesPlayed": 12288,
+        "teamA": {
+          "fixtureId": "v4-2013-14-clippers",
+          "teamName": "Los Angeles Clippers",
+          "season": "2013-14",
+          "shareMae": null,
+          "traitsScored": 5,
+          "traitsPassed": 4,
+          "traitsFailed": 1,
+          "hardFails": [],
+          "notScored": [
+            {
+              "traitId": "man with help",
+              "result": "NOT_SCORED_UNOBSERVABLE",
+              "reason": "METRIC_NOT_CERTIFIED_UNDER_CANDIDATE_1"
+            }
+          ],
+          "traits": [
+            {
+              "traitId": "ELITE_OFFENSE",
+              "metric": "pppVsReference",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 1.26018,
+              "referenceMean": 1.18505,
+              "diff": 0.07513,
+              "z": 30.31704,
+              "ci95": {
+                "lower": 0.07027,
+                "upper": 0.07999
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.02,
+              "beyondPracticalMargin": true,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "PICK_AND_ROLL",
+              "metric": "pnrShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.17454,
+              "referenceMean": 0.14429,
+              "diff": 0.03025,
+              "z": 44.90979,
+              "ci95": {
+                "lower": 0.02893,
+                "upper": 0.03157
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.03,
+              "beyondPracticalMargin": true,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "TRANSITION",
+              "metric": "transitionShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.13561,
+              "referenceMean": 0.13298,
+              "diff": 0.00263,
+              "z": 3.82933,
+              "ci95": {
+                "lower": 0.00128,
+                "upper": 0.00398
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.03,
+              "beyondPracticalMargin": false,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "fast",
+              "metric": "gamePace",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 95.33691,
+              "referenceMean": 96.1326,
+              "diff": -0.79569,
+              "z": -18.44266,
+              "ci95": {
+                "lower": -0.88025,
+                "upper": -0.71113
+              },
+              "result": "FAIL",
+              "hardFail": false,
+              "practicalMargin": 1,
+              "beyondPracticalMargin": false,
+              "statisticallyOpposite": true,
+              "reportedState": "STATISTICALLY_DIFFERENT_PRACTICALLY_EQUIVALENT"
+            },
+            {
+              "traitId": "pick-and-roll around a lead guard",
+              "metric": "pnrShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.17454,
+              "referenceMean": 0.14429,
+              "diff": 0.03025,
+              "z": 44.90979,
+              "ci95": {
+                "lower": 0.02893,
+                "upper": 0.03157
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.03,
+              "beyondPracticalMargin": true,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            }
+          ]
+        },
+        "teamB": {
+          "fixtureId": "v5-2015-16-spurs",
+          "teamName": "San Antonio Spurs",
+          "season": "2015-16",
+          "shareMae": null,
+          "traitsScored": 5,
+          "traitsPassed": 3,
+          "traitsFailed": 2,
+          "hardFails": [],
+          "notScored": [
+            {
+              "traitId": "ball movement into post and mid-range",
+              "result": "NOT_APPLICABLE",
+              "reason": "NOT_IN_TRAIT_REGISTRY"
+            }
+          ],
+          "traits": [
+            {
+              "traitId": "PASSING_HUB",
+              "metric": "assistedRate",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.47623,
+              "referenceMean": 0.4538,
+              "diff": 0.02243,
+              "z": 14.07466,
+              "ci95": {
+                "lower": 0.01931,
+                "upper": 0.02555
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.02,
+              "beyondPracticalMargin": true,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "ELITE_DEFENSE",
+              "metric": "refPppVsTeam",
+              "direction": "BELOW_REFERENCE_BASELINE",
+              "surface": "REFERENCE_VS_TEAM",
+              "subjectMean": 1.20153,
+              "referenceMean": 1.18505,
+              "diff": 0.01648,
+              "z": 6.57101,
+              "ci95": {
+                "lower": 0.01156,
+                "upper": 0.0214
+              },
+              "result": "FAIL",
+              "hardFail": false,
+              "practicalMargin": 0.02,
+              "beyondPracticalMargin": false,
+              "statisticallyOpposite": true,
+              "reportedState": "STATISTICALLY_DIFFERENT_PRACTICALLY_EQUIVALENT"
+            },
+            {
+              "traitId": "POST_HEAVY",
+              "metric": "postUpShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.25706,
+              "referenceMean": 0.25152,
+              "diff": 0.00554,
+              "z": 6.25799,
+              "ci95": {
+                "lower": 0.0038,
+                "upper": 0.00728
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.03,
+              "beyondPracticalMargin": false,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "slow",
+              "metric": "gamePace",
+              "direction": "BELOW_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 95.3457,
+              "referenceMean": 96.1326,
+              "diff": -0.7869,
+              "z": -18.10965,
+              "ci95": {
+                "lower": -0.87207,
+                "upper": -0.70173
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 1,
+              "beyondPracticalMargin": false,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "elite team man defence",
+              "metric": "refPppVsTeam",
+              "direction": "BELOW_REFERENCE_BASELINE",
+              "surface": "REFERENCE_VS_TEAM",
+              "subjectMean": 1.20153,
+              "referenceMean": 1.18505,
+              "diff": 0.01648,
+              "z": 6.57101,
+              "ci95": {
+                "lower": 0.01156,
+                "upper": 0.0214
+              },
+              "result": "FAIL",
+              "hardFail": false,
+              "practicalMargin": 0.02,
+              "beyondPracticalMargin": false,
+              "statisticallyOpposite": true,
+              "reportedState": "STATISTICALLY_DIFFERENT_PRACTICALLY_EQUIVALENT"
+            }
+          ]
+        },
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleScores": 0,
+          "preThreeEraThreePointAttempts": 0,
+          "replayExactAllSurfaces": true
+        }
+      },
+      {
+        "matchupId": "v5m-2020s",
+        "eraStyleId": "2020s",
+        "gamesPlayed": 12288,
+        "teamA": {
+          "fixtureId": "v4-2020-21-knicks",
+          "teamName": "New York Knicks",
+          "season": "2020-21",
+          "shareMae": null,
+          "traitsScored": 4,
+          "traitsPassed": 2,
+          "traitsFailed": 2,
+          "hardFails": [
+            "ELITE_DEFENSE",
+            "elite team man defence"
+          ],
+          "notScored": [
+            {
+              "traitId": "LOW_THREE_POINT",
+              "result": "NOT_SCORED_UNOBSERVABLE",
+              "reason": "METRIC_NOT_CERTIFIED_UNDER_CANDIDATE_1"
+            },
+            {
+              "traitId": "ISOLATION_HEAVY",
+              "result": "NOT_SCORED_UNOBSERVABLE",
+              "reason": "METRIC_NOT_CERTIFIED_UNDER_CANDIDATE_1"
+            },
+            {
+              "traitId": "isolation and post-up in the half court",
+              "result": "NOT_SCORED_UNOBSERVABLE",
+              "reason": "METRIC_NOT_CERTIFIED_UNDER_CANDIDATE_1"
+            }
+          ],
+          "traits": [
+            {
+              "traitId": "ELITE_DEFENSE",
+              "metric": "refPppVsTeam",
+              "direction": "BELOW_REFERENCE_BASELINE",
+              "surface": "REFERENCE_VS_TEAM",
+              "subjectMean": 1.36011,
+              "referenceMean": 1.32206,
+              "diff": 0.03805,
+              "z": 14.84653,
+              "ci95": {
+                "lower": 0.03303,
+                "upper": 0.04307
+              },
+              "result": "FAIL",
+              "hardFail": true,
+              "practicalMargin": 0.02,
+              "beyondPracticalMargin": true,
+              "statisticallyOpposite": true,
+              "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+            },
+            {
+              "traitId": "SLOW_HALF_COURT",
+              "metric": "gamePace",
+              "direction": "BELOW_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 99.38721,
+              "referenceMean": 100.813,
+              "diff": -1.42579,
+              "z": -30.89699,
+              "ci95": {
+                "lower": -1.51624,
+                "upper": -1.33534
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 1,
+              "beyondPracticalMargin": true,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "very slow",
+              "metric": "gamePace",
+              "direction": "BELOW_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 99.38721,
+              "referenceMean": 100.813,
+              "diff": -1.42579,
+              "z": -30.89699,
+              "ci95": {
+                "lower": -1.51624,
+                "upper": -1.33534
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 1,
+              "beyondPracticalMargin": true,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "elite team man defence",
+              "metric": "refPppVsTeam",
+              "direction": "BELOW_REFERENCE_BASELINE",
+              "surface": "REFERENCE_VS_TEAM",
+              "subjectMean": 1.36011,
+              "referenceMean": 1.32206,
+              "diff": 0.03805,
+              "z": 14.84653,
+              "ci95": {
+                "lower": 0.03303,
+                "upper": 0.04307
+              },
+              "result": "FAIL",
+              "hardFail": true,
+              "practicalMargin": 0.02,
+              "beyondPracticalMargin": true,
+              "statisticallyOpposite": true,
+              "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+            }
+          ]
+        },
+        "teamB": {
+          "fixtureId": "v4-2020-21-76ers",
+          "teamName": "Philadelphia 76ers",
+          "season": "2020-21",
+          "shareMae": null,
+          "traitsScored": 5,
+          "traitsPassed": 4,
+          "traitsFailed": 1,
+          "hardFails": [],
+          "notScored": [
+            {
+              "traitId": "drop coverage with a rim anchor",
+              "result": "NOT_SCORED_UNOBSERVABLE",
+              "reason": "METRIC_NOT_CERTIFIED_UNDER_CANDIDATE_1"
+            }
+          ],
+          "traits": [
+            {
+              "traitId": "ELITE_DEFENSE",
+              "metric": "refPppVsTeam",
+              "direction": "BELOW_REFERENCE_BASELINE",
+              "surface": "REFERENCE_VS_TEAM",
+              "subjectMean": 1.31488,
+              "referenceMean": 1.32206,
+              "diff": -0.00718,
+              "z": -2.78537,
+              "ci95": {
+                "lower": -0.01223,
+                "upper": -0.00213
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.02,
+              "beyondPracticalMargin": false,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "POST_HEAVY",
+              "metric": "postUpShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.24276,
+              "referenceMean": 0.24217,
+              "diff": 0.00059,
+              "z": 0.68842,
+              "ci95": {
+                "lower": -0.00109,
+                "upper": 0.00227
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.03,
+              "beyondPracticalMargin": false,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "SIZE_HEAVY",
+              "metric": "interiorShotShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.40986,
+              "referenceMean": 0.413,
+              "diff": -0.00314,
+              "z": -2.91743,
+              "ci95": {
+                "lower": -0.00525,
+                "upper": -0.00103
+              },
+              "result": "FAIL",
+              "hardFail": false,
+              "practicalMargin": 0.02,
+              "beyondPracticalMargin": false,
+              "statisticallyOpposite": true,
+              "reportedState": "STATISTICALLY_DIFFERENT_PRACTICALLY_EQUIVALENT"
+            },
+            {
+              "traitId": "slow",
+              "metric": "gamePace",
+              "direction": "BELOW_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 100.06812,
+              "referenceMean": 100.813,
+              "diff": -0.74488,
+              "z": -16.32425,
+              "ci95": {
+                "lower": -0.83432,
+                "upper": -0.65544
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 1,
+              "beyondPracticalMargin": false,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            },
+            {
+              "traitId": "post-up and pick-and-roll around an MVP centre",
+              "metric": "postUpShare",
+              "direction": "ABOVE_REFERENCE_BASELINE",
+              "surface": "VS_ERA_REFERENCE",
+              "subjectMean": 0.24276,
+              "referenceMean": 0.24217,
+              "diff": 0.00059,
+              "z": 0.68842,
+              "ci95": {
+                "lower": -0.00109,
+                "upper": 0.00227
+              },
+              "result": "PASS",
+              "hardFail": false,
+              "practicalMargin": 0.03,
+              "beyondPracticalMargin": false,
+              "statisticallyOpposite": false,
+              "reportedState": "PASS"
+            }
+          ]
+        },
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleScores": 0,
+          "preThreeEraThreePointAttempts": 0,
+          "replayExactAllSurfaces": true
+        }
+      }
+    ],
+    "copiedFrom": "data/validation/6c4b1/historical-holdout-v5-results.json",
+    "recomputed": false
+  },
+  "outputHash": "5d75520b65ba076af54cb8200e12db9009088970f4f71a5bbe04ae69ba49a70a"
+}

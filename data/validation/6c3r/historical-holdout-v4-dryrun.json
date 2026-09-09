@@ -1,0 +1,114 @@
+{
+  "artifact": "historical-holdout-v4-dryrun",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run validation:6c3r:dryrun",
+  "generatedAt": "2026-08-26T22:58:19.243Z",
+  "gitCommit": "77deb356292b6d82f53dce6c86298bc675b6d95f",
+  "branch": "phase-6c3r-validation-surface-repair",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {
+    "data/validation/6c3r/historical-holdout-v4-manifest.json": "180899b07e15e30f330d8ef65652d3158b0d7b7585cc6675bc2cdb74f2e4fb48"
+  },
+  "data": {
+    "historicalHoldoutRunnerVersion": "2.0.0",
+    "mockMatchup": [
+      "h3-2015-16-warriors",
+      "h3-2013-14-spurs"
+    ],
+    "pairsPerSurface": 128,
+    "checks": [
+      {
+        "name": "mockUsesNoV4Member",
+        "pass": true,
+        "detail": "h3-2015-16-warriors vs h3-2013-14-spurs — development fixtures only"
+      },
+      {
+        "name": "threeSurfacesRun",
+        "pass": true,
+        "detail": "768 games across A-vs-B, A-vs-ref, B-vs-ref, side-balanced"
+      },
+      {
+        "name": "replayExactOnEverySurface",
+        "pass": true,
+        "detail": "repeat of the first pair is byte-identical on all three surfaces"
+      },
+      {
+        "name": "invariantsCleanEverywhere",
+        "pass": true,
+        "detail": "zero invariant violations and zero ties across all surfaces"
+      },
+      {
+        "name": "numericScoringProducesSupportedOnlyError",
+        "pass": true,
+        "detail": "composite 0.04514 over 5 supported share metrics; unsupported maps contribute nothing"
+      },
+      {
+        "name": "certifiedTraitScores",
+        "pass": true,
+        "detail": "TRANSITION scored PASS on VS_ERA_REFERENCE (diff 0.03303, z 14.28332)"
+      },
+      {
+        "name": "uncertifiedTraitExcludedBeforeScoring",
+        "pass": true,
+        "detail": "ZONE_CAPABLE and the pressure strings failed certification and are not in the eligible set the runner consumes"
+      },
+      {
+        "name": "mirrorOffenseDefenseScoringRejected",
+        "pass": true,
+        "detail": "MIRROR_PPP group scored on a MIRROR surface: ELITE_OFFENSE, ELITE_DEFENSE — the exact V3 defect"
+      },
+      {
+        "name": "offenseQualityIdentifiableVsReference",
+        "pass": true,
+        "detail": "ELITE_OFFENSE machinery produces a defined vs-reference differential (0.07719)"
+      },
+      {
+        "name": "mockSealedWithoutUnlock",
+        "pass": true,
+        "detail": "The mock-v4 set is sealed. Pass --unlock-mock-v4 to read it."
+      },
+      {
+        "name": "mockAccessIncrementsOnce",
+        "pass": true,
+        "detail": "access 1 after injected crash"
+      },
+      {
+        "name": "mockDuplicateRunRefused",
+        "pass": true,
+        "detail": "mock-v4 has already been opened (access count 1). A sealed set is opened ONCE."
+      },
+      {
+        "name": "mockResumeCompletesSameEvent",
+        "pass": true,
+        "detail": "status COMPLETE, access still 1"
+      },
+      {
+        "name": "mockArtifactsReconcile",
+        "pass": true,
+        "detail": "2 members, evaluated exactly once each"
+      },
+      {
+        "name": "realV4SealUntouched",
+        "pass": true,
+        "detail": "historical-holdout-v4 access 0"
+      },
+      {
+        "name": "realSyntheticSealUntouched",
+        "pass": true,
+        "detail": "synthetic-stress-holdout-v2 access 0"
+      },
+      {
+        "name": "realV3SealUntouched",
+        "pass": true,
+        "detail": "historical-holdout-v3 access still exactly 1"
+      }
+    ],
+    "checksPassed": 17,
+    "checksTotal": 17,
+    "allPass": true
+  },
+  "outputHash": "725c8b48d1961a79891540b27b85b6b9f39fbdbe540d03c7ce200ac8bd7eb983"
+}

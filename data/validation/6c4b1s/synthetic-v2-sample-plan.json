@@ -1,0 +1,1002 @@
+{
+  "artifact": "synthetic-v2-sample-plan",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run syn:sample-plan",
+  "generatedAt": "2026-08-27T12:41:30.853Z",
+  "gitCommit": "46fd4f99b29972c0baed17cd566b11eef7db2232",
+  "branch": "phase-6c4b1s-synthetic-v2-package",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "syntheticSamplePlanVersion": "1.0.0",
+    "frozenBeforeAnyResult": true,
+    "minGamesPerHoldoutFixture": 1000,
+    "volumes": {
+      "MIRROR": 1024,
+      "MIRROR_TAIL_EXTENSION": 4096,
+      "ZONE_ASYMMETRIC": 1024,
+      "ZONE_ABLATION_TWIN": 256,
+      "VS_COHERENT_LOWER_CONTROL": 1024,
+      "VS_ROLE_MATCHED_UPGRADE": 1024
+    },
+    "competitionModes": {
+      "REPLAY_SEEDS_PER_FIXTURE": 64,
+      "SERIES_BEST_OF_7": 256,
+      "SEASONS_OF_82": 32,
+      "TOURNAMENT_BRACKETS": 24,
+      "TOURNAMENT_FIELD": 16
+    },
+    "modeTriggers": {
+      "SERIES_BEST_OF_7": [
+        "SERIES_VARIANCE"
+      ],
+      "SEASONS_OF_82": [
+        "WIN82_VARIANCE"
+      ],
+      "MIRROR_TAIL_EXTENSION": [
+        "STATISTICAL_TAILS"
+      ]
+    },
+    "fixtures": [
+      {
+        "fixtureId": "ss2-all-bigs",
+        "purpose": "EXPLOIT_ROLE_OVERLAP",
+        "era": "2000s",
+        "surfaces": {
+          "MIRROR": {
+            "pairs": 1024,
+            "games": 2048,
+            "adjudicates": true,
+            "tailExtension": false,
+            "extensionReason": null
+          },
+          "ZONE_ASYMMETRIC": {
+            "pairs": 1024,
+            "games": 2048,
+            "adjudicates": true
+          },
+          "ZONE_ABLATION_TWIN": {
+            "pairs": 256,
+            "games": 512,
+            "adjudicates": false,
+            "role": "DIAGNOSTIC_ONLY",
+            "note": "identical era, coaches and personnel with zoneResolution disabled, so any win-rate deviation here is the coach confound with the shell removed. Runs the engine in a non-production module configuration and therefore never adjudicates a guardrail."
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "pairs": 1024,
+            "games": 2048,
+            "adjudicates": true
+          },
+          "VS_ROLE_MATCHED_UPGRADE": {
+            "pairs": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        },
+        "modes": {
+          "REPLAY": {
+            "seeds": 64,
+            "reRunGames": 64,
+            "adjudicates": true,
+            "note": "the first N mirror seeds are re-run and compared byte-for-byte"
+          },
+          "SERIES_BEST_OF_7": {
+            "series": 0,
+            "estimatedGames": 0,
+            "adjudicates": false,
+            "reason": "purpose EXPLOIT_ROLE_OVERLAP does not name series play"
+          },
+          "SEASONS_OF_82": {
+            "seasons": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "purpose EXPLOIT_ROLE_OVERLAP does not name season play"
+          }
+        },
+        "totalGames": 6720
+      },
+      {
+        "fixtureId": "ss2-all-guards",
+        "purpose": "EXPLOIT_ROLE_OVERLAP",
+        "era": "2010s",
+        "surfaces": {
+          "MIRROR": {
+            "pairs": 1024,
+            "games": 2048,
+            "adjudicates": true,
+            "tailExtension": false,
+            "extensionReason": null
+          },
+          "ZONE_ASYMMETRIC": {
+            "pairs": 1024,
+            "games": 2048,
+            "adjudicates": true
+          },
+          "ZONE_ABLATION_TWIN": {
+            "pairs": 256,
+            "games": 512,
+            "adjudicates": false,
+            "role": "DIAGNOSTIC_ONLY",
+            "note": "identical era, coaches and personnel with zoneResolution disabled, so any win-rate deviation here is the coach confound with the shell removed. Runs the engine in a non-production module configuration and therefore never adjudicates a guardrail."
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "pairs": 1024,
+            "games": 2048,
+            "adjudicates": true
+          },
+          "VS_ROLE_MATCHED_UPGRADE": {
+            "pairs": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        },
+        "modes": {
+          "REPLAY": {
+            "seeds": 64,
+            "reRunGames": 64,
+            "adjudicates": true,
+            "note": "the first N mirror seeds are re-run and compared byte-for-byte"
+          },
+          "SERIES_BEST_OF_7": {
+            "series": 0,
+            "estimatedGames": 0,
+            "adjudicates": false,
+            "reason": "purpose EXPLOIT_ROLE_OVERLAP does not name series play"
+          },
+          "SEASONS_OF_82": {
+            "seasons": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "purpose EXPLOIT_ROLE_OVERLAP does not name season play"
+          }
+        },
+        "totalGames": 6720
+      },
+      {
+        "fixtureId": "ss2-no-spacing-1960s",
+        "purpose": "IMPOSSIBLE_SPACING",
+        "era": "1960s",
+        "surfaces": {
+          "MIRROR": {
+            "pairs": 1024,
+            "games": 2048,
+            "adjudicates": true,
+            "tailExtension": false,
+            "extensionReason": null
+          },
+          "ZONE_ASYMMETRIC": {
+            "pairs": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "zone is illegal in 1960s, so no zone possession can be realized and no shell win rate exists"
+          },
+          "ZONE_ABLATION_TWIN": {
+            "pairs": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "no zone-asymmetric surface to diagnose"
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "pairs": 1024,
+            "games": 2048,
+            "adjudicates": true
+          },
+          "VS_ROLE_MATCHED_UPGRADE": {
+            "pairs": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        },
+        "modes": {
+          "REPLAY": {
+            "seeds": 64,
+            "reRunGames": 64,
+            "adjudicates": true,
+            "note": "the first N mirror seeds are re-run and compared byte-for-byte"
+          },
+          "SERIES_BEST_OF_7": {
+            "series": 0,
+            "estimatedGames": 0,
+            "adjudicates": false,
+            "reason": "purpose IMPOSSIBLE_SPACING does not name series play"
+          },
+          "SEASONS_OF_82": {
+            "seasons": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "purpose IMPOSSIBLE_SPACING does not name season play"
+          }
+        },
+        "totalGames": 4160
+      },
+      {
+        "fixtureId": "ss2-no-spacing-modern",
+        "purpose": "IMPOSSIBLE_SPACING",
+        "era": "2020s",
+        "surfaces": {
+          "MIRROR": {
+            "pairs": 1024,
+            "games": 2048,
+            "adjudicates": true,
+            "tailExtension": false,
+            "extensionReason": null
+          },
+          "ZONE_ASYMMETRIC": {
+            "pairs": 1024,
+            "games": 2048,
+            "adjudicates": true
+          },
+          "ZONE_ABLATION_TWIN": {
+            "pairs": 256,
+            "games": 512,
+            "adjudicates": false,
+            "role": "DIAGNOSTIC_ONLY",
+            "note": "identical era, coaches and personnel with zoneResolution disabled, so any win-rate deviation here is the coach confound with the shell removed. Runs the engine in a non-production module configuration and therefore never adjudicates a guardrail."
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "pairs": 1024,
+            "games": 2048,
+            "adjudicates": true
+          },
+          "VS_ROLE_MATCHED_UPGRADE": {
+            "pairs": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        },
+        "modes": {
+          "REPLAY": {
+            "seeds": 64,
+            "reRunGames": 64,
+            "adjudicates": true,
+            "note": "the first N mirror seeds are re-run and compared byte-for-byte"
+          },
+          "SERIES_BEST_OF_7": {
+            "series": 0,
+            "estimatedGames": 0,
+            "adjudicates": false,
+            "reason": "purpose IMPOSSIBLE_SPACING does not name series play"
+          },
+          "SEASONS_OF_82": {
+            "seasons": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "purpose IMPOSSIBLE_SPACING does not name season play"
+          }
+        },
+        "totalGames": 6720
+      },
+      {
+        "fixtureId": "ss2-mismatch-chain",
+        "purpose": "DEFENSIVE_MISMATCH_CHAIN",
+        "era": "2010s",
+        "surfaces": {
+          "MIRROR": {
+            "pairs": 1024,
+            "games": 2048,
+            "adjudicates": true,
+            "tailExtension": false,
+            "extensionReason": null
+          },
+          "ZONE_ASYMMETRIC": {
+            "pairs": 1024,
+            "games": 2048,
+            "adjudicates": true
+          },
+          "ZONE_ABLATION_TWIN": {
+            "pairs": 256,
+            "games": 512,
+            "adjudicates": false,
+            "role": "DIAGNOSTIC_ONLY",
+            "note": "identical era, coaches and personnel with zoneResolution disabled, so any win-rate deviation here is the coach confound with the shell removed. Runs the engine in a non-production module configuration and therefore never adjudicates a guardrail."
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "pairs": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+          },
+          "VS_ROLE_MATCHED_UPGRADE": {
+            "pairs": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        },
+        "modes": {
+          "REPLAY": {
+            "seeds": 64,
+            "reRunGames": 64,
+            "adjudicates": true,
+            "note": "the first N mirror seeds are re-run and compared byte-for-byte"
+          },
+          "SERIES_BEST_OF_7": {
+            "series": 0,
+            "estimatedGames": 0,
+            "adjudicates": false,
+            "reason": "purpose DEFENSIVE_MISMATCH_CHAIN does not name series play"
+          },
+          "SEASONS_OF_82": {
+            "seasons": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "purpose DEFENSIVE_MISMATCH_CHAIN does not name season play"
+          }
+        },
+        "totalGames": 4672
+      },
+      {
+        "fixtureId": "ss2-zone-edge-legal",
+        "purpose": "ZONE_EDGE_CASE",
+        "era": "2020s",
+        "surfaces": {
+          "MIRROR": {
+            "pairs": 1024,
+            "games": 2048,
+            "adjudicates": true,
+            "tailExtension": false,
+            "extensionReason": null
+          },
+          "ZONE_ASYMMETRIC": {
+            "pairs": 1024,
+            "games": 2048,
+            "adjudicates": true
+          },
+          "ZONE_ABLATION_TWIN": {
+            "pairs": 256,
+            "games": 512,
+            "adjudicates": false,
+            "role": "DIAGNOSTIC_ONLY",
+            "note": "identical era, coaches and personnel with zoneResolution disabled, so any win-rate deviation here is the coach confound with the shell removed. Runs the engine in a non-production module configuration and therefore never adjudicates a guardrail."
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "pairs": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+          },
+          "VS_ROLE_MATCHED_UPGRADE": {
+            "pairs": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        },
+        "modes": {
+          "REPLAY": {
+            "seeds": 64,
+            "reRunGames": 64,
+            "adjudicates": true,
+            "note": "the first N mirror seeds are re-run and compared byte-for-byte"
+          },
+          "SERIES_BEST_OF_7": {
+            "series": 0,
+            "estimatedGames": 0,
+            "adjudicates": false,
+            "reason": "purpose ZONE_EDGE_CASE does not name series play"
+          },
+          "SEASONS_OF_82": {
+            "seasons": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "purpose ZONE_EDGE_CASE does not name season play"
+          }
+        },
+        "totalGames": 4672
+      },
+      {
+        "fixtureId": "ss2-zone-edge-illegal",
+        "purpose": "ZONE_EDGE_CASE",
+        "era": "1970s",
+        "surfaces": {
+          "MIRROR": {
+            "pairs": 1024,
+            "games": 2048,
+            "adjudicates": true,
+            "tailExtension": false,
+            "extensionReason": null
+          },
+          "ZONE_ASYMMETRIC": {
+            "pairs": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "zone is illegal in 1970s, so no zone possession can be realized and no shell win rate exists"
+          },
+          "ZONE_ABLATION_TWIN": {
+            "pairs": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "no zone-asymmetric surface to diagnose"
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "pairs": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+          },
+          "VS_ROLE_MATCHED_UPGRADE": {
+            "pairs": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        },
+        "modes": {
+          "REPLAY": {
+            "seeds": 64,
+            "reRunGames": 64,
+            "adjudicates": true,
+            "note": "the first N mirror seeds are re-run and compared byte-for-byte"
+          },
+          "SERIES_BEST_OF_7": {
+            "series": 0,
+            "estimatedGames": 0,
+            "adjudicates": false,
+            "reason": "purpose ZONE_EDGE_CASE does not name series play"
+          },
+          "SEASONS_OF_82": {
+            "seasons": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "purpose ZONE_EDGE_CASE does not name season play"
+          }
+        },
+        "totalGames": 2112
+      },
+      {
+        "fixtureId": "ss2-era-edge-old-in-modern",
+        "purpose": "ERA_EDGE_CASE",
+        "era": "2020s",
+        "surfaces": {
+          "MIRROR": {
+            "pairs": 1024,
+            "games": 2048,
+            "adjudicates": true,
+            "tailExtension": false,
+            "extensionReason": null
+          },
+          "ZONE_ASYMMETRIC": {
+            "pairs": 1024,
+            "games": 2048,
+            "adjudicates": true
+          },
+          "ZONE_ABLATION_TWIN": {
+            "pairs": 256,
+            "games": 512,
+            "adjudicates": false,
+            "role": "DIAGNOSTIC_ONLY",
+            "note": "identical era, coaches and personnel with zoneResolution disabled, so any win-rate deviation here is the coach confound with the shell removed. Runs the engine in a non-production module configuration and therefore never adjudicates a guardrail."
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "pairs": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+          },
+          "VS_ROLE_MATCHED_UPGRADE": {
+            "pairs": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        },
+        "modes": {
+          "REPLAY": {
+            "seeds": 64,
+            "reRunGames": 64,
+            "adjudicates": true,
+            "note": "the first N mirror seeds are re-run and compared byte-for-byte"
+          },
+          "SERIES_BEST_OF_7": {
+            "series": 0,
+            "estimatedGames": 0,
+            "adjudicates": false,
+            "reason": "purpose ERA_EDGE_CASE does not name series play"
+          },
+          "SEASONS_OF_82": {
+            "seasons": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "purpose ERA_EDGE_CASE does not name season play"
+          }
+        },
+        "totalGames": 4672
+      },
+      {
+        "fixtureId": "ss2-era-edge-modern-in-old",
+        "purpose": "ERA_EDGE_CASE",
+        "era": "1950s",
+        "surfaces": {
+          "MIRROR": {
+            "pairs": 1024,
+            "games": 2048,
+            "adjudicates": true,
+            "tailExtension": false,
+            "extensionReason": null
+          },
+          "ZONE_ASYMMETRIC": {
+            "pairs": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "zone is illegal in 1950s, so no zone possession can be realized and no shell win rate exists"
+          },
+          "ZONE_ABLATION_TWIN": {
+            "pairs": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "no zone-asymmetric surface to diagnose"
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "pairs": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+          },
+          "VS_ROLE_MATCHED_UPGRADE": {
+            "pairs": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        },
+        "modes": {
+          "REPLAY": {
+            "seeds": 64,
+            "reRunGames": 64,
+            "adjudicates": true,
+            "note": "the first N mirror seeds are re-run and compared byte-for-byte"
+          },
+          "SERIES_BEST_OF_7": {
+            "series": 0,
+            "estimatedGames": 0,
+            "adjudicates": false,
+            "reason": "purpose ERA_EDGE_CASE does not name series play"
+          },
+          "SEASONS_OF_82": {
+            "seasons": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "purpose ERA_EDGE_CASE does not name season play"
+          }
+        },
+        "totalGames": 2112
+      },
+      {
+        "fixtureId": "ss2-coach-toolkit-edge",
+        "purpose": "COACH_TOOLKIT_EDGE",
+        "era": "1960s",
+        "surfaces": {
+          "MIRROR": {
+            "pairs": 1024,
+            "games": 2048,
+            "adjudicates": true,
+            "tailExtension": false,
+            "extensionReason": null
+          },
+          "ZONE_ASYMMETRIC": {
+            "pairs": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "zone is illegal in 1960s, so no zone possession can be realized and no shell win rate exists"
+          },
+          "ZONE_ABLATION_TWIN": {
+            "pairs": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "no zone-asymmetric surface to diagnose"
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "pairs": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+          },
+          "VS_ROLE_MATCHED_UPGRADE": {
+            "pairs": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        },
+        "modes": {
+          "REPLAY": {
+            "seeds": 64,
+            "reRunGames": 64,
+            "adjudicates": true,
+            "note": "the first N mirror seeds are re-run and compared byte-for-byte"
+          },
+          "SERIES_BEST_OF_7": {
+            "series": 0,
+            "estimatedGames": 0,
+            "adjudicates": false,
+            "reason": "purpose COACH_TOOLKIT_EDGE does not name series play"
+          },
+          "SEASONS_OF_82": {
+            "seasons": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "purpose COACH_TOOLKIT_EDGE does not name season play"
+          }
+        },
+        "totalGames": 2112
+      },
+      {
+        "fixtureId": "ss2-usage-concentration",
+        "purpose": "USAGE_CONCENTRATION",
+        "era": "1960s",
+        "surfaces": {
+          "MIRROR": {
+            "pairs": 1024,
+            "games": 2048,
+            "adjudicates": true,
+            "tailExtension": false,
+            "extensionReason": null
+          },
+          "ZONE_ASYMMETRIC": {
+            "pairs": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "zone is illegal in 1960s, so no zone possession can be realized and no shell win rate exists"
+          },
+          "ZONE_ABLATION_TWIN": {
+            "pairs": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "no zone-asymmetric surface to diagnose"
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "pairs": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+          },
+          "VS_ROLE_MATCHED_UPGRADE": {
+            "pairs": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        },
+        "modes": {
+          "REPLAY": {
+            "seeds": 64,
+            "reRunGames": 64,
+            "adjudicates": true,
+            "note": "the first N mirror seeds are re-run and compared byte-for-byte"
+          },
+          "SERIES_BEST_OF_7": {
+            "series": 0,
+            "estimatedGames": 0,
+            "adjudicates": false,
+            "reason": "purpose USAGE_CONCENTRATION does not name series play"
+          },
+          "SEASONS_OF_82": {
+            "seasons": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "purpose USAGE_CONCENTRATION does not name season play"
+          }
+        },
+        "totalGames": 2112
+      },
+      {
+        "fixtureId": "ss2-statistical-tails",
+        "purpose": "STATISTICAL_TAILS",
+        "era": "1970s",
+        "surfaces": {
+          "MIRROR": {
+            "pairs": 4096,
+            "games": 8192,
+            "adjudicates": true,
+            "tailExtension": true,
+            "extensionReason": "purpose STATISTICAL_TAILS: the tail guardrail needs the extra volume to resolve a p01/p99 scoreline"
+          },
+          "ZONE_ASYMMETRIC": {
+            "pairs": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "zone is illegal in 1970s, so no zone possession can be realized and no shell win rate exists"
+          },
+          "ZONE_ABLATION_TWIN": {
+            "pairs": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "no zone-asymmetric surface to diagnose"
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "pairs": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+          },
+          "VS_ROLE_MATCHED_UPGRADE": {
+            "pairs": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        },
+        "modes": {
+          "REPLAY": {
+            "seeds": 64,
+            "reRunGames": 64,
+            "adjudicates": true,
+            "note": "the first N mirror seeds are re-run and compared byte-for-byte"
+          },
+          "SERIES_BEST_OF_7": {
+            "series": 0,
+            "estimatedGames": 0,
+            "adjudicates": false,
+            "reason": "purpose STATISTICAL_TAILS does not name series play"
+          },
+          "SEASONS_OF_82": {
+            "seasons": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "purpose STATISTICAL_TAILS does not name season play"
+          }
+        },
+        "totalGames": 8256
+      },
+      {
+        "fixtureId": "ss2-series-variance",
+        "purpose": "SERIES_VARIANCE",
+        "era": "1990s",
+        "surfaces": {
+          "MIRROR": {
+            "pairs": 1024,
+            "games": 2048,
+            "adjudicates": true,
+            "tailExtension": false,
+            "extensionReason": null
+          },
+          "ZONE_ASYMMETRIC": {
+            "pairs": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "zone is illegal in 1990s, so no zone possession can be realized and no shell win rate exists"
+          },
+          "ZONE_ABLATION_TWIN": {
+            "pairs": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "no zone-asymmetric surface to diagnose"
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "pairs": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+          },
+          "VS_ROLE_MATCHED_UPGRADE": {
+            "pairs": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        },
+        "modes": {
+          "REPLAY": {
+            "seeds": 64,
+            "reRunGames": 64,
+            "adjudicates": true,
+            "note": "the first N mirror seeds are re-run and compared byte-for-byte"
+          },
+          "SERIES_BEST_OF_7": {
+            "series": 256,
+            "estimatedGames": 1196,
+            "adjudicates": true
+          },
+          "SEASONS_OF_82": {
+            "seasons": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "purpose SERIES_VARIANCE does not name season play"
+          }
+        },
+        "totalGames": 3308
+      },
+      {
+        "fixtureId": "ss2-win82-variance",
+        "purpose": "WIN82_VARIANCE",
+        "era": "2000s",
+        "surfaces": {
+          "MIRROR": {
+            "pairs": 1024,
+            "games": 2048,
+            "adjudicates": true,
+            "tailExtension": false,
+            "extensionReason": null
+          },
+          "ZONE_ASYMMETRIC": {
+            "pairs": 1024,
+            "games": 2048,
+            "adjudicates": true
+          },
+          "ZONE_ABLATION_TWIN": {
+            "pairs": 256,
+            "games": 512,
+            "adjudicates": false,
+            "role": "DIAGNOSTIC_ONLY",
+            "note": "identical era, coaches and personnel with zoneResolution disabled, so any win-rate deviation here is the coach confound with the shell removed. Runs the engine in a non-production module configuration and therefore never adjudicates a guardrail."
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "pairs": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+          },
+          "VS_ROLE_MATCHED_UPGRADE": {
+            "pairs": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        },
+        "modes": {
+          "REPLAY": {
+            "seeds": 64,
+            "reRunGames": 64,
+            "adjudicates": true,
+            "note": "the first N mirror seeds are re-run and compared byte-for-byte"
+          },
+          "SERIES_BEST_OF_7": {
+            "series": 0,
+            "estimatedGames": 0,
+            "adjudicates": false,
+            "reason": "purpose WIN82_VARIANCE does not name series play"
+          },
+          "SEASONS_OF_82": {
+            "seasons": 32,
+            "games": 2624,
+            "adjudicates": true
+          }
+        },
+        "totalGames": 7296
+      },
+      {
+        "fixtureId": "ss2-duplicate-role",
+        "purpose": "DUPLICATE_ROLE_OVERLOAD",
+        "era": "2010s",
+        "surfaces": {
+          "MIRROR": {
+            "pairs": 1024,
+            "games": 2048,
+            "adjudicates": true,
+            "tailExtension": false,
+            "extensionReason": null
+          },
+          "ZONE_ASYMMETRIC": {
+            "pairs": 1024,
+            "games": 2048,
+            "adjudicates": true
+          },
+          "ZONE_ABLATION_TWIN": {
+            "pairs": 256,
+            "games": 512,
+            "adjudicates": false,
+            "role": "DIAGNOSTIC_ONLY",
+            "note": "identical era, coaches and personnel with zoneResolution disabled, so any win-rate deviation here is the coach confound with the shell removed. Runs the engine in a non-production module configuration and therefore never adjudicates a guardrail."
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "pairs": 1024,
+            "games": 2048,
+            "adjudicates": true
+          },
+          "VS_ROLE_MATCHED_UPGRADE": {
+            "pairs": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "requireExtremeTalentRemainsMeaningful does not map to this fixture in the guardrail registry"
+          }
+        },
+        "modes": {
+          "REPLAY": {
+            "seeds": 64,
+            "reRunGames": 64,
+            "adjudicates": true,
+            "note": "the first N mirror seeds are re-run and compared byte-for-byte"
+          },
+          "SERIES_BEST_OF_7": {
+            "series": 0,
+            "estimatedGames": 0,
+            "adjudicates": false,
+            "reason": "purpose DUPLICATE_ROLE_OVERLOAD does not name series play"
+          },
+          "SEASONS_OF_82": {
+            "seasons": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "purpose DUPLICATE_ROLE_OVERLOAD does not name season play"
+          }
+        },
+        "totalGames": 6720
+      },
+      {
+        "fixtureId": "ss2-extreme-strength-gap",
+        "purpose": "EXTREME_STRENGTH_GAP",
+        "era": "2010s",
+        "surfaces": {
+          "MIRROR": {
+            "pairs": 1024,
+            "games": 2048,
+            "adjudicates": true,
+            "tailExtension": false,
+            "extensionReason": null
+          },
+          "ZONE_ASYMMETRIC": {
+            "pairs": 1024,
+            "games": 2048,
+            "adjudicates": true
+          },
+          "ZONE_ABLATION_TWIN": {
+            "pairs": 256,
+            "games": 512,
+            "adjudicates": false,
+            "role": "DIAGNOSTIC_ONLY",
+            "note": "identical era, coaches and personnel with zoneResolution disabled, so any win-rate deviation here is the coach confound with the shell removed. Runs the engine in a non-production module configuration and therefore never adjudicates a guardrail."
+          },
+          "VS_COHERENT_LOWER_CONTROL": {
+            "pairs": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "requireConstructionCanBeatHigherOvr does not map to this fixture in the guardrail registry"
+          },
+          "VS_ROLE_MATCHED_UPGRADE": {
+            "pairs": 1024,
+            "games": 2048,
+            "adjudicates": true
+          }
+        },
+        "modes": {
+          "REPLAY": {
+            "seeds": 64,
+            "reRunGames": 64,
+            "adjudicates": true,
+            "note": "the first N mirror seeds are re-run and compared byte-for-byte"
+          },
+          "SERIES_BEST_OF_7": {
+            "series": 0,
+            "estimatedGames": 0,
+            "adjudicates": false,
+            "reason": "purpose EXTREME_STRENGTH_GAP does not name series play"
+          },
+          "SEASONS_OF_82": {
+            "seasons": 0,
+            "games": 0,
+            "adjudicates": false,
+            "reason": "purpose EXTREME_STRENGTH_GAP does not name season play"
+          }
+        },
+        "totalGames": 6720
+      }
+    ],
+    "tournament": {
+      "brackets": 24,
+      "field": 16,
+      "gamesPerBracket": 15,
+      "games": 360,
+      "adjudicates": false,
+      "role": "SET_LEVEL_STRUCTURAL_ONLY",
+      "note": "a single-elimination bracket over the 16 sealed fixtures. No frozen guardrail and no fixture purpose names tournament play, so it contributes only to the two structural guardrails (zero invariant failures, zero impossible results) and never decides a per-fixture verdict."
+    },
+    "totalGames": 79444,
+    "rationale": {
+      "sideBalance": "every adjudicating surface plays each seed twice with the sides swapped. Phase 6C3R established that an opponent-relative claim scored on an unbalanced surface cannot separate a construction effect from a side effect.",
+      "powersOfTwo": "so a run can be split in half for a split-half standard-error diagnostic without remainders",
+      "tailExtension": "the STATISTICAL_TAILS fixture gets four times the mirror volume because a p01/p99 scoreline claim needs the extra resolution; no other fixture's guardrails depend on the extreme tail",
+      "volumeChosenBeforeSelection": "these volumes are frozen in this preparation phase and hashed into the package, so the execution phase cannot raise them after seeing a marginal result"
+    },
+    "pass": true,
+    "failedGates": [],
+    "samplePlanHash": "97236ee97d740b0d185333a10af2f9be0f4bcb90139b7ae65ed68be179451980"
+  },
+  "outputHash": "6020fe7ca6ed4cbaa05a68ea5448452b0be1989ca9530ad5a7f9f076be0861d9"
+}

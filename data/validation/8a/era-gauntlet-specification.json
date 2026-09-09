@@ -1,0 +1,35 @@
+{
+  "artifact": "era-gauntlet-specification",
+  "phase": "8A",
+  "eraGauntletVersion": null,
+  "status": "PLANNED",
+  "featureFlag": false,
+  "entitlement": "PLUS",
+  "publicControl": "none — no dead button is shown",
+  "coreLoop": [
+    "Chaos Draft",
+    "play a game",
+    "win",
+    "carry one player forward",
+    "reroll the other four",
+    "new Era Reveal",
+    "new coach offers",
+    "a harder opponent",
+    "continue across eras"
+  ],
+  "carryForward": {
+    "choice": "the player picks exactly one card to keep",
+    "constraint": "the kept card is removed from the redraw pool and its Draft Pressure persists into the next leg"
+  },
+  "eraSequence": "Seeded per run and revealed one leg at a time, so a run cannot be pre-planned; each era is visited at most once.",
+  "difficulty": {
+    "source": "opponent roster quality only",
+    "explicitly": "CPU intelligence is ALWAYS Legend and is never scaled up or down"
+  },
+  "runPersistence": "one open run per account, resumable, stored under a gauntlet namespace",
+  "failureState": "a loss ends the run; the run's history remains readable",
+  "rewards": "run length, era badges, and a shareable run summary — no draft-odds advantage of any kind",
+  "sameSeedChallenge": "a whole run is challengeable by its opening seed, with the same branching rules as a single Chaos Clash",
+  "crossSportPortability": "the loop is sport-agnostic: draft, environment reveal, carry-forward, escalating opponent",
+  "notBuiltInThisPhase": true
+}

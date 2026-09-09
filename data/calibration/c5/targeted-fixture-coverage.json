@@ -1,0 +1,5819 @@
+{
+  "artifact": "targeted-fixture-coverage",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run calibration:c5:targeted",
+  "generatedAt": "2026-08-26T14:58:44.967Z",
+  "gitCommit": "d31b80e455637e73274f9c91d5000a723d805e95",
+  "branch": "phase-6c2c5-targeted-mechanic-calibration",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "targetedMechanicFixtureVersion": "1.0.0",
+  "contractsHash": "a69cdefc076e2589f2ee1ef9731727d9f74e769fea660eaf7a2636cdfad9d221",
+  "seedBatches": [
+    64,
+    128,
+    256,
+    512
+  ],
+  "maxSeedBudget": 960,
+  "elapsedMs": 40729,
+  "data": {
+    "coverage": {
+      "activeParameters": 53,
+      "exerciseContracts": 53,
+      "activationVerified": 53,
+      "activationUnmet": 0,
+      "totalActivatedPossessions": 1915080,
+      "missingContracts": 0,
+      "orphanContracts": 0
+    },
+    "reconciliation": {
+      "label": "targeted-fixture-coverage",
+      "sum": 53,
+      "expectedTotal": 53,
+      "reconciles": true,
+      "problems": []
+    },
+    "parameters": [
+      {
+        "id": "opportunity.saturation.strength",
+        "module": "opportunityAllocation",
+        "defaultValue": 1.35,
+        "min": 0.6,
+        "max": 2.5,
+        "contract": {
+          "fixtures": "construction",
+          "activationPredicate": "afterWarmup:16",
+          "activationMinimum": 200,
+          "conditionalMetrics": [
+            "primaryConcentration",
+            "distinctPrimaries"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "higher strength lowers concentration",
+          "context": "possessions after the warmup window",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 56971,
+        "activationMet": true,
+        "atMax": {
+          "value": 2.5,
+          "seeds": 64,
+          "fixtures": [
+            "balanced-vs-creators",
+            "shooters-vs-bigs",
+            "synthdev-sd2-extreme-size",
+            "synthdev-sd2-extreme-small"
+          ],
+          "activatedPossessions": 56971,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 256,
+              "mean": -0.00132,
+              "se": 0.00071,
+              "t": -1.8504
+            },
+            "distinctPrimaries": {
+              "n": 256,
+              "mean": 0,
+              "se": 0,
+              "t": 0
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": 0.04297,
+              "se": 0.13995,
+              "t": 0.30703
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": -0.00241,
+              "se": 0.00211,
+              "t": -1.14282
+            }
+          }
+        },
+        "atMin": {
+          "value": 0.6,
+          "seeds": 64,
+          "fixtures": [
+            "balanced-vs-creators",
+            "shooters-vs-bigs",
+            "synthdev-sd2-extreme-size",
+            "synthdev-sd2-extreme-small"
+          ],
+          "activatedPossessions": 56971,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 256,
+              "mean": 0.00198,
+              "se": 0.00077,
+              "t": 2.57421
+            },
+            "distinctPrimaries": {
+              "n": 256,
+              "mean": 0,
+              "se": 0,
+              "t": 0
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": 0.0625,
+              "se": 0.11696,
+              "t": 0.53437
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": -0.00045,
+              "se": 0.00226,
+              "t": -0.20003
+            }
+          }
+        }
+      },
+      {
+        "id": "opportunity.saturation.floor",
+        "module": "opportunityAllocation",
+        "defaultValue": 0.16,
+        "min": 0.05,
+        "max": 0.4,
+        "contract": {
+          "fixtures": "construction",
+          "activationPredicate": "afterWarmup:16",
+          "activationMinimum": 200,
+          "conditionalMetrics": [
+            "primaryConcentration"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "higher floor raises the ceiling a saturated player can reach",
+          "context": "post-warmup possessions",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 56971,
+        "activationMet": true,
+        "atMax": {
+          "value": 0.4,
+          "seeds": 64,
+          "fixtures": [
+            "balanced-vs-creators",
+            "shooters-vs-bigs",
+            "synthdev-sd2-extreme-size",
+            "synthdev-sd2-extreme-small"
+          ],
+          "activatedPossessions": 56971,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 256,
+              "mean": 0.00018,
+              "se": 0.00022,
+              "t": 0.83706
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": 0.04297,
+              "se": 0.04002,
+              "t": 1.07381
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": -0.00007,
+              "se": 0.00054,
+              "t": -0.12508
+            }
+          }
+        },
+        "atMin": {
+          "value": 0.05,
+          "seeds": 64,
+          "fixtures": [
+            "balanced-vs-creators",
+            "shooters-vs-bigs",
+            "synthdev-sd2-extreme-size",
+            "synthdev-sd2-extreme-small"
+          ],
+          "activatedPossessions": 56971,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 256,
+              "mean": 0,
+              "se": 0,
+              "t": 0
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": 0,
+              "se": 0,
+              "t": 0
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": 0,
+              "se": 0,
+              "t": 0
+            }
+          }
+        }
+      },
+      {
+        "id": "opportunity.saturation.underTargetCeiling",
+        "module": "opportunityAllocation",
+        "defaultValue": 1.35,
+        "min": 1,
+        "max": 2,
+        "contract": {
+          "fixtures": "construction",
+          "activationPredicate": "afterWarmup:16",
+          "activationMinimum": 200,
+          "conditionalMetrics": [
+            "distinctPrimaries",
+            "primaryConcentration"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "higher ceiling spreads opportunity to under-target players",
+          "context": "post-warmup possessions",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 56971,
+        "activationMet": true,
+        "atMax": {
+          "value": 2,
+          "seeds": 64,
+          "fixtures": [
+            "balanced-vs-creators",
+            "shooters-vs-bigs",
+            "synthdev-sd2-extreme-size",
+            "synthdev-sd2-extreme-small"
+          ],
+          "activatedPossessions": 56971,
+          "conditional": {
+            "distinctPrimaries": {
+              "n": 256,
+              "mean": 0,
+              "se": 0,
+              "t": 0
+            },
+            "primaryConcentration": {
+              "n": 256,
+              "mean": -0.00139,
+              "se": 0.00074,
+              "t": -1.89675
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": 0.00391,
+              "se": 0.12408,
+              "t": 0.03148
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": -0.00228,
+              "se": 0.00205,
+              "t": -1.11094
+            }
+          }
+        },
+        "atMin": {
+          "value": 1,
+          "seeds": 64,
+          "fixtures": [
+            "balanced-vs-creators",
+            "shooters-vs-bigs",
+            "synthdev-sd2-extreme-size",
+            "synthdev-sd2-extreme-small"
+          ],
+          "activatedPossessions": 56971,
+          "conditional": {
+            "distinctPrimaries": {
+              "n": 256,
+              "mean": 0,
+              "se": 0,
+              "t": 0
+            },
+            "primaryConcentration": {
+              "n": 256,
+              "mean": 0.00237,
+              "se": 0.00067,
+              "t": 3.56117
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": 0.125,
+              "se": 0.12025,
+              "t": 1.03948
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": -0.00205,
+              "se": 0.002,
+              "t": -1.026
+            }
+          }
+        }
+      },
+      {
+        "id": "opportunity.saturation.warmupPossessions",
+        "module": "opportunityAllocation",
+        "defaultValue": 8,
+        "min": 0,
+        "max": 30,
+        "contract": {
+          "fixtures": "construction",
+          "activationPredicate": "always",
+          "activationMinimum": 200,
+          "conditionalMetrics": [
+            "primaryConcentration"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "a longer warmup delays saturation, raising early concentration",
+          "context": "whole game",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 61665,
+        "activationMet": true,
+        "atMax": {
+          "value": 30,
+          "seeds": 64,
+          "fixtures": [
+            "balanced-vs-creators",
+            "shooters-vs-bigs",
+            "synthdev-sd2-extreme-size",
+            "synthdev-sd2-extreme-small"
+          ],
+          "activatedPossessions": 61665,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 256,
+              "mean": 0.003,
+              "se": 0.00076,
+              "t": 3.95385
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": -0.07422,
+              "se": 0.0996,
+              "t": -0.74517
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": 0.00032,
+              "se": 0.00269,
+              "t": 0.12025
+            }
+          }
+        },
+        "atMin": {
+          "value": 0,
+          "seeds": 64,
+          "fixtures": [
+            "balanced-vs-creators",
+            "shooters-vs-bigs",
+            "synthdev-sd2-extreme-size",
+            "synthdev-sd2-extreme-small"
+          ],
+          "activatedPossessions": 61665,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 256,
+              "mean": 0.00092,
+              "se": 0.00079,
+              "t": 1.16431
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": 0.13672,
+              "se": 0.17504,
+              "t": 0.78105
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": 0.00081,
+              "se": 0.00314,
+              "t": 0.25771
+            }
+          }
+        }
+      },
+      {
+        "id": "opportunity.mismatch.severe",
+        "module": "opportunityAllocation",
+        "defaultValue": 2.6,
+        "min": 1,
+        "max": 4,
+        "contract": {
+          "fixtures": "mismatch",
+          "activationPredicate": "mismatch:SEVERE",
+          "activationMinimum": 150,
+          "conditionalMetrics": [
+            "primaryConcentration",
+            "count",
+            "pointsPerPossession"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "a larger bias concentrates the mismatch possessions on its beneficiary",
+          "context": "possessions carrying a SEVERE mismatch",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 20192,
+        "activationMet": true,
+        "atMax": {
+          "value": 4,
+          "seeds": 64,
+          "fixtures": [
+            "synthdev-sd2-elite-shooting",
+            "balanced-vs-creators",
+            "era-1960s",
+            "shooters-vs-bigs"
+          ],
+          "activatedPossessions": 20192,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 256,
+              "mean": 0.0086,
+              "se": 0.0017,
+              "t": 5.06138
+            },
+            "count": {
+              "n": 256,
+              "mean": -0.24609,
+              "se": 0.28797,
+              "t": -0.85458
+            },
+            "pointsPerPossession": {
+              "n": 256,
+              "mean": -0.00156,
+              "se": 0.00444,
+              "t": -0.35056
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": 0.07813,
+              "se": 0.08946,
+              "t": 0.8733
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": -0.00152,
+              "se": 0.0017,
+              "t": -0.8931
+            }
+          }
+        },
+        "atMin": {
+          "value": 1,
+          "seeds": 64,
+          "fixtures": [
+            "synthdev-sd2-elite-shooting",
+            "balanced-vs-creators",
+            "era-1960s",
+            "shooters-vs-bigs"
+          ],
+          "activatedPossessions": 20192,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 256,
+              "mean": -0.01151,
+              "se": 0.00187,
+              "t": -6.14376
+            },
+            "count": {
+              "n": 256,
+              "mean": 0.94141,
+              "se": 0.39983,
+              "t": 2.35449
+            },
+            "pointsPerPossession": {
+              "n": 256,
+              "mean": -0.00987,
+              "se": 0.00569,
+              "t": -1.73552
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": 0.24219,
+              "se": 0.16893,
+              "t": 1.43363
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": 0.00019,
+              "se": 0.00248,
+              "t": 0.07732
+            }
+          }
+        }
+      },
+      {
+        "id": "opportunity.mismatch.major",
+        "module": "opportunityAllocation",
+        "defaultValue": 2,
+        "min": 1,
+        "max": 3.5,
+        "contract": {
+          "fixtures": "mismatch",
+          "activationPredicate": "mismatch:MAJOR",
+          "activationMinimum": 150,
+          "conditionalMetrics": [
+            "primaryConcentration",
+            "count",
+            "pointsPerPossession"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "a larger bias concentrates the mismatch possessions on its beneficiary",
+          "context": "possessions carrying a MAJOR mismatch",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 16870,
+        "activationMet": true,
+        "atMax": {
+          "value": 3.5,
+          "seeds": 64,
+          "fixtures": [
+            "synthdev-sd2-elite-shooting",
+            "balanced-vs-creators",
+            "era-1960s",
+            "shooters-vs-bigs"
+          ],
+          "activatedPossessions": 16870,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 256,
+              "mean": 0.00617,
+              "se": 0.00145,
+              "t": 4.25645
+            },
+            "count": {
+              "n": 256,
+              "mean": -0.14844,
+              "se": 0.22505,
+              "t": -0.65957
+            },
+            "pointsPerPossession": {
+              "n": 256,
+              "mean": 0.00292,
+              "se": 0.00392,
+              "t": 0.74454
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": -0.03516,
+              "se": 0.09415,
+              "t": -0.3734
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": 0.00014,
+              "se": 0.00142,
+              "t": 0.09579
+            }
+          }
+        },
+        "atMin": {
+          "value": 1,
+          "seeds": 64,
+          "fixtures": [
+            "synthdev-sd2-elite-shooting",
+            "balanced-vs-creators",
+            "era-1960s",
+            "shooters-vs-bigs"
+          ],
+          "activatedPossessions": 16870,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 256,
+              "mean": -0.00602,
+              "se": 0.00174,
+              "t": -3.45739
+            },
+            "count": {
+              "n": 256,
+              "mean": 0.17578,
+              "se": 0.23552,
+              "t": 0.74635
+            },
+            "pointsPerPossession": {
+              "n": 256,
+              "mean": 0.00357,
+              "se": 0.00364,
+              "t": 0.97986
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": -0.07422,
+              "se": 0.09758,
+              "t": -0.76059
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": 0.00097,
+              "se": 0.0017,
+              "t": 0.56822
+            }
+          }
+        }
+      },
+      {
+        "id": "opportunity.mismatch.moderate",
+        "module": "opportunityAllocation",
+        "defaultValue": 1.55,
+        "min": 1,
+        "max": 3,
+        "contract": {
+          "fixtures": "mismatch",
+          "activationPredicate": "mismatch:MODERATE",
+          "activationMinimum": 150,
+          "conditionalMetrics": [
+            "primaryConcentration",
+            "count",
+            "pointsPerPossession"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "a larger bias concentrates the mismatch possessions on its beneficiary",
+          "context": "possessions carrying a MODERATE mismatch",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 10126,
+        "activationMet": true,
+        "atMax": {
+          "value": 3,
+          "seeds": 64,
+          "fixtures": [
+            "synthdev-sd2-elite-shooting",
+            "balanced-vs-creators",
+            "era-1960s",
+            "shooters-vs-bigs"
+          ],
+          "activatedPossessions": 10126,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 256,
+              "mean": -0.00172,
+              "se": 0.00076,
+              "t": -2.26704
+            },
+            "count": {
+              "n": 256,
+              "mean": 0.08594,
+              "se": 0.11043,
+              "t": 0.77819
+            },
+            "pointsPerPossession": {
+              "n": 256,
+              "mean": -0.00032,
+              "se": 0.00175,
+              "t": -0.18177
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": -0.01562,
+              "se": 0.01658,
+              "t": -0.9426
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": 0.00011,
+              "se": 0.00067,
+              "t": 0.15777
+            }
+          }
+        },
+        "atMin": {
+          "value": 1,
+          "seeds": 64,
+          "fixtures": [
+            "synthdev-sd2-elite-shooting",
+            "balanced-vs-creators",
+            "era-1960s",
+            "shooters-vs-bigs"
+          ],
+          "activatedPossessions": 10126,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 256,
+              "mean": 0.00175,
+              "se": 0.00103,
+              "t": 1.69046
+            },
+            "count": {
+              "n": 256,
+              "mean": -0.14844,
+              "se": 0.07347,
+              "t": -2.02042
+            },
+            "pointsPerPossession": {
+              "n": 256,
+              "mean": 0.00333,
+              "se": 0.002,
+              "t": 1.6646
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": -0.02344,
+              "se": 0.01912,
+              "t": -1.22595
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": 0.00025,
+              "se": 0.00068,
+              "t": 0.37266
+            }
+          }
+        }
+      },
+      {
+        "id": "opportunity.mismatch.minor",
+        "module": "opportunityAllocation",
+        "defaultValue": 1.25,
+        "min": 1,
+        "max": 2,
+        "contract": {
+          "fixtures": "mismatch",
+          "activationPredicate": "mismatch:MINOR",
+          "activationMinimum": 150,
+          "conditionalMetrics": [
+            "primaryConcentration",
+            "count",
+            "pointsPerPossession"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "a larger bias concentrates the mismatch possessions on its beneficiary",
+          "context": "possessions carrying a MINOR mismatch",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 748,
+        "activationMet": true,
+        "atMax": {
+          "value": 2,
+          "seeds": 64,
+          "fixtures": [
+            "synthdev-sd2-elite-shooting",
+            "balanced-vs-creators",
+            "era-1960s",
+            "shooters-vs-bigs"
+          ],
+          "activatedPossessions": 748,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 70,
+              "mean": 0.01191,
+              "se": 0.01123,
+              "t": 1.06041
+            },
+            "count": {
+              "n": 256,
+              "mean": -0.02344,
+              "se": 0.03498,
+              "t": -0.6701
+            },
+            "pointsPerPossession": {
+              "n": 70,
+              "mean": 0.00206,
+              "se": 0.01323,
+              "t": 0.15553
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": -0.00391,
+              "se": 0.01174,
+              "t": -0.33275
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": 0.00011,
+              "se": 0.00058,
+              "t": 0.18436
+            }
+          }
+        },
+        "atMin": {
+          "value": 1,
+          "seeds": 64,
+          "fixtures": [
+            "synthdev-sd2-elite-shooting",
+            "balanced-vs-creators",
+            "era-1960s",
+            "shooters-vs-bigs"
+          ],
+          "activatedPossessions": 748,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 70,
+              "mean": 0.00629,
+              "se": 0.0075,
+              "t": 0.83849
+            },
+            "count": {
+              "n": 256,
+              "mean": 0.00781,
+              "se": 0.02767,
+              "t": 0.28233
+            },
+            "pointsPerPossession": {
+              "n": 70,
+              "mean": 0.00514,
+              "se": 0.01495,
+              "t": 0.34374
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": 0.00391,
+              "se": 0.00391,
+              "t": 1
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": 0.00046,
+              "se": 0.00041,
+              "t": 1.10562
+            }
+          }
+        }
+      },
+      {
+        "id": "opportunity.form.low",
+        "module": "opportunityAllocation",
+        "defaultValue": 0.82,
+        "min": 0.6,
+        "max": 1,
+        "contract": {
+          "fixtures": "construction",
+          "activationPredicate": "afterWarmup:16",
+          "activationMinimum": 200,
+          "conditionalMetrics": [
+            "primaryConcentration",
+            "distinctPrimaries"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "a lower floor widens nightly spread",
+          "context": "post-warmup possessions",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 56971,
+        "activationMet": true,
+        "atMax": {
+          "value": 1,
+          "seeds": 64,
+          "fixtures": [
+            "balanced-vs-creators",
+            "shooters-vs-bigs",
+            "synthdev-sd2-extreme-size",
+            "synthdev-sd2-extreme-small"
+          ],
+          "activatedPossessions": 56971,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 256,
+              "mean": 0.00055,
+              "se": 0.00063,
+              "t": 0.87326
+            },
+            "distinctPrimaries": {
+              "n": 256,
+              "mean": 0,
+              "se": 0,
+              "t": 0
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": -0.04297,
+              "se": 0.07911,
+              "t": -0.54317
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": -0.00056,
+              "se": 0.00163,
+              "t": -0.34572
+            }
+          }
+        },
+        "atMin": {
+          "value": 0.6,
+          "seeds": 64,
+          "fixtures": [
+            "balanced-vs-creators",
+            "shooters-vs-bigs",
+            "synthdev-sd2-extreme-size",
+            "synthdev-sd2-extreme-small"
+          ],
+          "activatedPossessions": 56971,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 256,
+              "mean": 0.00148,
+              "se": 0.0008,
+              "t": 1.84586
+            },
+            "distinctPrimaries": {
+              "n": 256,
+              "mean": 0,
+              "se": 0,
+              "t": 0
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": -0.14453,
+              "se": 0.10278,
+              "t": -1.40617
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": -0.00323,
+              "se": 0.00199,
+              "t": -1.62503
+            }
+          }
+        }
+      },
+      {
+        "id": "opportunity.form.high",
+        "module": "opportunityAllocation",
+        "defaultValue": 1.18,
+        "min": 1,
+        "max": 1.6,
+        "contract": {
+          "fixtures": "construction",
+          "activationPredicate": "afterWarmup:16",
+          "activationMinimum": 200,
+          "conditionalMetrics": [
+            "primaryConcentration",
+            "distinctPrimaries"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "a higher ceiling widens nightly spread",
+          "context": "post-warmup possessions",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 56971,
+        "activationMet": true,
+        "atMax": {
+          "value": 1.6,
+          "seeds": 64,
+          "fixtures": [
+            "balanced-vs-creators",
+            "shooters-vs-bigs",
+            "synthdev-sd2-extreme-size",
+            "synthdev-sd2-extreme-small"
+          ],
+          "activatedPossessions": 56971,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 256,
+              "mean": 0.00142,
+              "se": 0.00081,
+              "t": 1.7478
+            },
+            "distinctPrimaries": {
+              "n": 256,
+              "mean": 0,
+              "se": 0,
+              "t": 0
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": -0.14062,
+              "se": 0.10198,
+              "t": -1.37892
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": -0.00333,
+              "se": 0.00196,
+              "t": -1.69624
+            }
+          }
+        },
+        "atMin": {
+          "value": 1,
+          "seeds": 64,
+          "fixtures": [
+            "balanced-vs-creators",
+            "shooters-vs-bigs",
+            "synthdev-sd2-extreme-size",
+            "synthdev-sd2-extreme-small"
+          ],
+          "activatedPossessions": 56971,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 256,
+              "mean": 0.00018,
+              "se": 0.0006,
+              "t": 0.29635
+            },
+            "distinctPrimaries": {
+              "n": 256,
+              "mean": 0,
+              "se": 0,
+              "t": 0
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": 0.03906,
+              "se": 0.07525,
+              "t": 0.51913
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": -0.00073,
+              "se": 0.00153,
+              "t": -0.47725
+            }
+          }
+        }
+      },
+      {
+        "id": "opportunity.lateGame.primaryBoost",
+        "module": "opportunityAllocation",
+        "defaultValue": 0.5,
+        "min": 0,
+        "max": 1.5,
+        "contract": {
+          "fixtures": "general",
+          "activationPredicate": "lateGame",
+          "activationMinimum": 150,
+          "conditionalMetrics": [
+            "primaryConcentration",
+            "distinctPrimaries"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "a larger boost concentrates late possessions on the primary creator",
+          "context": "fourth-quarter and overtime possessions",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 10498,
+        "activationMet": true,
+        "atMax": {
+          "value": 1.5,
+          "seeds": 64,
+          "fixtures": [
+            "era-2010s",
+            "balanced-vs-creators",
+            "coach-mike-dantoni-vs-jerry-sloan"
+          ],
+          "activatedPossessions": 10498,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 192,
+              "mean": 0.00331,
+              "se": 0.00138,
+              "t": 2.40421
+            },
+            "distinctPrimaries": {
+              "n": 192,
+              "mean": 0.01042,
+              "se": 0.01475,
+              "t": 0.70618
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 192,
+              "mean": 0.03646,
+              "se": 0.05785,
+              "t": 0.63018
+            },
+            "makeRateAll": {
+              "n": 192,
+              "mean": -0.00121,
+              "se": 0.00157,
+              "t": -0.76967
+            }
+          }
+        },
+        "atMin": {
+          "value": 0,
+          "seeds": 64,
+          "fixtures": [
+            "era-2010s",
+            "balanced-vs-creators",
+            "coach-mike-dantoni-vs-jerry-sloan"
+          ],
+          "activatedPossessions": 10498,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 192,
+              "mean": -0.00014,
+              "se": 0.00116,
+              "t": -0.12133
+            },
+            "distinctPrimaries": {
+              "n": 192,
+              "mean": -0.01562,
+              "se": 0.01728,
+              "t": -0.9041
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 192,
+              "mean": 0.04688,
+              "se": 0.08993,
+              "t": 0.52124
+            },
+            "makeRateAll": {
+              "n": 192,
+              "mean": 0.00066,
+              "se": 0.00126,
+              "t": 0.52176
+            }
+          }
+        }
+      },
+      {
+        "id": "fitBand.SPOT_UP.lo",
+        "module": "opportunityAllocation",
+        "defaultValue": 0.2,
+        "min": 0.1,
+        "max": 1,
+        "contract": {
+          "fixtures": "general",
+          "activationPredicate": "action:SPOT_UP",
+          "activationMinimum": 100,
+          "conditionalMetrics": [
+            "primaryConcentration",
+            "distinctPrimaries",
+            "count"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "a higher floor lets poorer fits take the action, spreading it",
+          "context": "SPOT_UP possessions only",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 3614,
+        "activationMet": true,
+        "atMax": {
+          "value": 1,
+          "seeds": 64,
+          "fixtures": [
+            "era-2010s",
+            "balanced-vs-creators",
+            "coach-mike-dantoni-vs-jerry-sloan"
+          ],
+          "activatedPossessions": 3614,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 192,
+              "mean": -0.00674,
+              "se": 0.00304,
+              "t": -2.21635
+            },
+            "distinctPrimaries": {
+              "n": 192,
+              "mean": 0.15625,
+              "se": 0.05892,
+              "t": 2.65187
+            },
+            "count": {
+              "n": 192,
+              "mean": 0.11458,
+              "se": 0.1343,
+              "t": 0.85316
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 192,
+              "mean": 0.14583,
+              "se": 0.1229,
+              "t": 1.18659
+            },
+            "makeRateAll": {
+              "n": 192,
+              "mean": 0.00143,
+              "se": 0.00144,
+              "t": 0.99604
+            }
+          }
+        },
+        "atMin": {
+          "value": 0.1,
+          "seeds": 64,
+          "fixtures": [
+            "era-2010s",
+            "balanced-vs-creators",
+            "coach-mike-dantoni-vs-jerry-sloan"
+          ],
+          "activatedPossessions": 3614,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 192,
+              "mean": 0.0008,
+              "se": 0.00153,
+              "t": 0.52136
+            },
+            "distinctPrimaries": {
+              "n": 192,
+              "mean": 0.01042,
+              "se": 0.03302,
+              "t": 0.31549
+            },
+            "count": {
+              "n": 192,
+              "mean": 0.03125,
+              "se": 0.04363,
+              "t": 0.71623
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 192,
+              "mean": 0.04167,
+              "se": 0.03289,
+              "t": 1.2669
+            },
+            "makeRateAll": {
+              "n": 192,
+              "mean": 0.00077,
+              "se": 0.00087,
+              "t": 0.88117
+            }
+          }
+        }
+      },
+      {
+        "id": "fitBand.SPOT_UP.hi",
+        "module": "opportunityAllocation",
+        "defaultValue": 2.4,
+        "min": 1,
+        "max": 3,
+        "contract": {
+          "fixtures": "general",
+          "activationPredicate": "action:SPOT_UP",
+          "activationMinimum": 100,
+          "conditionalMetrics": [
+            "primaryConcentration",
+            "distinctPrimaries",
+            "count"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "a higher ceiling lets the best fit take more of the action",
+          "context": "SPOT_UP possessions only",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 3614,
+        "activationMet": true,
+        "atMax": {
+          "value": 3,
+          "seeds": 64,
+          "fixtures": [
+            "era-2010s",
+            "balanced-vs-creators",
+            "coach-mike-dantoni-vs-jerry-sloan"
+          ],
+          "activatedPossessions": 3614,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 192,
+              "mean": 0.00154,
+              "se": 0.00089,
+              "t": 1.72051
+            },
+            "distinctPrimaries": {
+              "n": 192,
+              "mean": 0.01563,
+              "se": 0.01879,
+              "t": 0.83138
+            },
+            "count": {
+              "n": 192,
+              "mean": 0.02083,
+              "se": 0.01469,
+              "t": 1.41793
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 192,
+              "mean": 0,
+              "se": 0.00738,
+              "t": 0
+            },
+            "makeRateAll": {
+              "n": 192,
+              "mean": 0.00037,
+              "se": 0.00043,
+              "t": 0.85337
+            }
+          }
+        },
+        "atMin": {
+          "value": 1,
+          "seeds": 64,
+          "fixtures": [
+            "era-2010s",
+            "balanced-vs-creators",
+            "coach-mike-dantoni-vs-jerry-sloan"
+          ],
+          "activatedPossessions": 3614,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 192,
+              "mean": -0.00369,
+              "se": 0.00195,
+              "t": -1.89647
+            },
+            "distinctPrimaries": {
+              "n": 192,
+              "mean": 0.09896,
+              "se": 0.04465,
+              "t": 2.21617
+            },
+            "count": {
+              "n": 192,
+              "mean": 0.11458,
+              "se": 0.07594,
+              "t": 1.50888
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 192,
+              "mean": 0.08333,
+              "se": 0.11208,
+              "t": 0.74352
+            },
+            "makeRateAll": {
+              "n": 192,
+              "mean": -0.00073,
+              "se": 0.00116,
+              "t": -0.6292
+            }
+          }
+        }
+      },
+      {
+        "id": "fitBand.OFF_BALL_SCREEN.lo",
+        "module": "opportunityAllocation",
+        "defaultValue": 0.25,
+        "min": 0.1,
+        "max": 1,
+        "contract": {
+          "fixtures": "general",
+          "activationPredicate": "action:OFF_BALL_SCREEN",
+          "activationMinimum": 100,
+          "conditionalMetrics": [
+            "primaryConcentration",
+            "distinctPrimaries",
+            "count"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "a higher floor lets poorer fits take the action, spreading it",
+          "context": "OFF_BALL_SCREEN possessions only",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 5329,
+        "activationMet": true,
+        "atMax": {
+          "value": 1,
+          "seeds": 64,
+          "fixtures": [
+            "era-2010s",
+            "balanced-vs-creators",
+            "coach-mike-dantoni-vs-jerry-sloan"
+          ],
+          "activatedPossessions": 5329,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 192,
+              "mean": -0.0037,
+              "se": 0.0022,
+              "t": -1.67894
+            },
+            "distinctPrimaries": {
+              "n": 192,
+              "mean": 0.08854,
+              "se": 0.03674,
+              "t": 2.4101
+            },
+            "count": {
+              "n": 192,
+              "mean": -0.02604,
+              "se": 0.1429,
+              "t": -0.18224
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 192,
+              "mean": 0.03125,
+              "se": 0.02754,
+              "t": 1.13474
+            },
+            "makeRateAll": {
+              "n": 192,
+              "mean": -0.00145,
+              "se": 0.00154,
+              "t": -0.94571
+            }
+          }
+        },
+        "atMin": {
+          "value": 0.1,
+          "seeds": 64,
+          "fixtures": [
+            "era-2010s",
+            "balanced-vs-creators",
+            "coach-mike-dantoni-vs-jerry-sloan"
+          ],
+          "activatedPossessions": 5329,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 192,
+              "mean": -0.00068,
+              "se": 0.00123,
+              "t": -0.55682
+            },
+            "distinctPrimaries": {
+              "n": 192,
+              "mean": 0,
+              "se": 0.01651,
+              "t": 0
+            },
+            "count": {
+              "n": 192,
+              "mean": 0.04167,
+              "se": 0.10094,
+              "t": 0.41278
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 192,
+              "mean": -0.08333,
+              "se": 0.10608,
+              "t": -0.78557
+            },
+            "makeRateAll": {
+              "n": 192,
+              "mean": -0.00054,
+              "se": 0.00106,
+              "t": -0.50816
+            }
+          }
+        }
+      },
+      {
+        "id": "fitBand.OFF_BALL_SCREEN.hi",
+        "module": "opportunityAllocation",
+        "defaultValue": 2.2,
+        "min": 1,
+        "max": 3,
+        "contract": {
+          "fixtures": "general",
+          "activationPredicate": "action:OFF_BALL_SCREEN",
+          "activationMinimum": 100,
+          "conditionalMetrics": [
+            "primaryConcentration",
+            "distinctPrimaries",
+            "count"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "a higher ceiling lets the best fit take more of the action",
+          "context": "OFF_BALL_SCREEN possessions only",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 5329,
+        "activationMet": true,
+        "atMax": {
+          "value": 3,
+          "seeds": 64,
+          "fixtures": [
+            "era-2010s",
+            "balanced-vs-creators",
+            "coach-mike-dantoni-vs-jerry-sloan"
+          ],
+          "activatedPossessions": 5329,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 192,
+              "mean": -0.00031,
+              "se": 0.001,
+              "t": -0.31178
+            },
+            "distinctPrimaries": {
+              "n": 192,
+              "mean": 0.01042,
+              "se": 0.01277,
+              "t": 0.81579
+            },
+            "count": {
+              "n": 192,
+              "mean": 0.10938,
+              "se": 0.09175,
+              "t": 1.19211
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 192,
+              "mean": -0.08333,
+              "se": 0.10556,
+              "t": -0.78941
+            },
+            "makeRateAll": {
+              "n": 192,
+              "mean": -0.00063,
+              "se": 0.00073,
+              "t": -0.86428
+            }
+          }
+        },
+        "atMin": {
+          "value": 1,
+          "seeds": 64,
+          "fixtures": [
+            "era-2010s",
+            "balanced-vs-creators",
+            "coach-mike-dantoni-vs-jerry-sloan"
+          ],
+          "activatedPossessions": 5329,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 192,
+              "mean": -0.0025,
+              "se": 0.00157,
+              "t": -1.59118
+            },
+            "distinctPrimaries": {
+              "n": 192,
+              "mean": 0.04167,
+              "se": 0.0254,
+              "t": 1.64016
+            },
+            "count": {
+              "n": 192,
+              "mean": 0.09896,
+              "se": 0.10716,
+              "t": 0.92346
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 192,
+              "mean": 0,
+              "se": 0.01477,
+              "t": 0
+            },
+            "makeRateAll": {
+              "n": 192,
+              "mean": -0.00111,
+              "se": 0.00138,
+              "t": -0.80298
+            }
+          }
+        }
+      },
+      {
+        "id": "fitBand.POST_UP.lo",
+        "module": "opportunityAllocation",
+        "defaultValue": 0.3,
+        "min": 0.1,
+        "max": 1,
+        "contract": {
+          "fixtures": "construction",
+          "activationPredicate": "action:POST_UP",
+          "activationMinimum": 100,
+          "conditionalMetrics": [
+            "primaryConcentration",
+            "distinctPrimaries",
+            "count"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "a higher floor lets poorer fits take the action, spreading it",
+          "context": "POST_UP possessions only",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 6468,
+        "activationMet": true,
+        "atMax": {
+          "value": 1,
+          "seeds": 64,
+          "fixtures": [
+            "balanced-vs-creators",
+            "shooters-vs-bigs",
+            "synthdev-sd2-extreme-size",
+            "synthdev-sd2-extreme-small"
+          ],
+          "activatedPossessions": 6468,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 256,
+              "mean": -0.01649,
+              "se": 0.00317,
+              "t": -5.2055
+            },
+            "distinctPrimaries": {
+              "n": 256,
+              "mean": 0.06641,
+              "se": 0.03911,
+              "t": 1.69777
+            },
+            "count": {
+              "n": 256,
+              "mean": 0.13672,
+              "se": 0.15774,
+              "t": 0.86676
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": 0.00781,
+              "se": 0.0559,
+              "t": 0.13976
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": 0.00018,
+              "se": 0.00126,
+              "t": 0.1464
+            }
+          }
+        },
+        "atMin": {
+          "value": 0.1,
+          "seeds": 64,
+          "fixtures": [
+            "balanced-vs-creators",
+            "shooters-vs-bigs",
+            "synthdev-sd2-extreme-size",
+            "synthdev-sd2-extreme-small"
+          ],
+          "activatedPossessions": 6468,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 256,
+              "mean": 0.00263,
+              "se": 0.00182,
+              "t": 1.44561
+            },
+            "distinctPrimaries": {
+              "n": 256,
+              "mean": 0,
+              "se": 0.02475,
+              "t": 0
+            },
+            "count": {
+              "n": 256,
+              "mean": -0.03906,
+              "se": 0.08017,
+              "t": -0.48722
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": 0.03516,
+              "se": 0.02371,
+              "t": 1.48305
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": 0.00119,
+              "se": 0.00091,
+              "t": 1.30736
+            }
+          }
+        }
+      },
+      {
+        "id": "fitBand.POST_UP.hi",
+        "module": "opportunityAllocation",
+        "defaultValue": 2.1,
+        "min": 1,
+        "max": 3,
+        "contract": {
+          "fixtures": "construction",
+          "activationPredicate": "action:POST_UP",
+          "activationMinimum": 100,
+          "conditionalMetrics": [
+            "primaryConcentration",
+            "distinctPrimaries",
+            "count"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "a higher ceiling lets the best fit take more of the action",
+          "context": "POST_UP possessions only",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 6468,
+        "activationMet": true,
+        "atMax": {
+          "value": 3,
+          "seeds": 64,
+          "fixtures": [
+            "balanced-vs-creators",
+            "shooters-vs-bigs",
+            "synthdev-sd2-extreme-size",
+            "synthdev-sd2-extreme-small"
+          ],
+          "activatedPossessions": 6468,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 256,
+              "mean": 0.00075,
+              "se": 0.00143,
+              "t": 0.52563
+            },
+            "distinctPrimaries": {
+              "n": 256,
+              "mean": -0.03516,
+              "se": 0.02022,
+              "t": -1.73888
+            },
+            "count": {
+              "n": 256,
+              "mean": -0.04297,
+              "se": 0.06366,
+              "t": -0.67501
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": 0.00781,
+              "se": 0.0175,
+              "t": 0.44651
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": 0.00042,
+              "se": 0.00064,
+              "t": 0.65082
+            }
+          }
+        },
+        "atMin": {
+          "value": 1,
+          "seeds": 64,
+          "fixtures": [
+            "balanced-vs-creators",
+            "shooters-vs-bigs",
+            "synthdev-sd2-extreme-size",
+            "synthdev-sd2-extreme-small"
+          ],
+          "activatedPossessions": 6468,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 256,
+              "mean": -0.00514,
+              "se": 0.00216,
+              "t": -2.37864
+            },
+            "distinctPrimaries": {
+              "n": 256,
+              "mean": 0.0625,
+              "se": 0.03006,
+              "t": 2.07895
+            },
+            "count": {
+              "n": 256,
+              "mean": 0.125,
+              "se": 0.10959,
+              "t": 1.14062
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": 0.00391,
+              "se": 0.06323,
+              "t": 0.06178
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": -0.00168,
+              "se": 0.00088,
+              "t": -1.90983
+            }
+          }
+        }
+      },
+      {
+        "id": "fitBand.HANDOFF.lo",
+        "module": "opportunityAllocation",
+        "defaultValue": 0.35,
+        "min": 0.1,
+        "max": 1,
+        "contract": {
+          "fixtures": "general",
+          "activationPredicate": "action:HANDOFF",
+          "activationMinimum": 100,
+          "conditionalMetrics": [
+            "primaryConcentration",
+            "distinctPrimaries",
+            "count"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "a higher floor lets poorer fits take the action, spreading it",
+          "context": "HANDOFF possessions only",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 4331,
+        "activationMet": true,
+        "atMax": {
+          "value": 1,
+          "seeds": 64,
+          "fixtures": [
+            "era-2010s",
+            "balanced-vs-creators",
+            "coach-mike-dantoni-vs-jerry-sloan"
+          ],
+          "activatedPossessions": 4331,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 192,
+              "mean": 0.00024,
+              "se": 0.00239,
+              "t": 0.10029
+            },
+            "distinctPrimaries": {
+              "n": 192,
+              "mean": 0.04167,
+              "se": 0.04776,
+              "t": 0.87233
+            },
+            "count": {
+              "n": 192,
+              "mean": 0.00521,
+              "se": 0.13667,
+              "t": 0.03811
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 192,
+              "mean": 0.08854,
+              "se": 0.06212,
+              "t": 1.42543
+            },
+            "makeRateAll": {
+              "n": 192,
+              "mean": 0.00078,
+              "se": 0.0015,
+              "t": 0.52139
+            }
+          }
+        },
+        "atMin": {
+          "value": 0.1,
+          "seeds": 64,
+          "fixtures": [
+            "era-2010s",
+            "balanced-vs-creators",
+            "coach-mike-dantoni-vs-jerry-sloan"
+          ],
+          "activatedPossessions": 4331,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 192,
+              "mean": 0.00244,
+              "se": 0.0016,
+              "t": 1.52451
+            },
+            "distinctPrimaries": {
+              "n": 192,
+              "mean": -0.03646,
+              "se": 0.03165,
+              "t": -1.15177
+            },
+            "count": {
+              "n": 192,
+              "mean": 0.05208,
+              "se": 0.09304,
+              "t": 0.55977
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 192,
+              "mean": -0.01562,
+              "se": 0.0215,
+              "t": -0.72671
+            },
+            "makeRateAll": {
+              "n": 192,
+              "mean": -0.00139,
+              "se": 0.00123,
+              "t": -1.12892
+            }
+          }
+        }
+      },
+      {
+        "id": "fitBand.HANDOFF.hi",
+        "module": "opportunityAllocation",
+        "defaultValue": 2,
+        "min": 1,
+        "max": 3,
+        "contract": {
+          "fixtures": "general",
+          "activationPredicate": "action:HANDOFF",
+          "activationMinimum": 100,
+          "conditionalMetrics": [
+            "primaryConcentration",
+            "distinctPrimaries",
+            "count"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "a higher ceiling lets the best fit take more of the action",
+          "context": "HANDOFF possessions only",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 4331,
+        "activationMet": true,
+        "atMax": {
+          "value": 3,
+          "seeds": 64,
+          "fixtures": [
+            "era-2010s",
+            "balanced-vs-creators",
+            "coach-mike-dantoni-vs-jerry-sloan"
+          ],
+          "activatedPossessions": 4331,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 192,
+              "mean": 0.0016,
+              "se": 0.00122,
+              "t": 1.30762
+            },
+            "distinctPrimaries": {
+              "n": 192,
+              "mean": -0.04167,
+              "se": 0.02431,
+              "t": -1.71419
+            },
+            "count": {
+              "n": 192,
+              "mean": 0.03646,
+              "se": 0.08302,
+              "t": 0.43916
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 192,
+              "mean": -0.01042,
+              "se": 0.0165,
+              "t": -0.63146
+            },
+            "makeRateAll": {
+              "n": 192,
+              "mean": -0.00086,
+              "se": 0.00108,
+              "t": -0.79486
+            }
+          }
+        },
+        "atMin": {
+          "value": 1,
+          "seeds": 64,
+          "fixtures": [
+            "era-2010s",
+            "balanced-vs-creators",
+            "coach-mike-dantoni-vs-jerry-sloan"
+          ],
+          "activatedPossessions": 4331,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 192,
+              "mean": -0.0008,
+              "se": 0.00203,
+              "t": -0.39269
+            },
+            "distinctPrimaries": {
+              "n": 192,
+              "mean": 0.03125,
+              "se": 0.03686,
+              "t": 0.84791
+            },
+            "count": {
+              "n": 192,
+              "mean": 0.03125,
+              "se": 0.10926,
+              "t": 0.286
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 192,
+              "mean": 0.04167,
+              "se": 0.02195,
+              "t": 1.89836
+            },
+            "makeRateAll": {
+              "n": 192,
+              "mean": -0.00064,
+              "se": 0.00113,
+              "t": -0.56861
+            }
+          }
+        }
+      },
+      {
+        "id": "fitBand.ZONE_ATTACK.lo",
+        "module": "opportunityAllocation",
+        "defaultValue": 0.4,
+        "min": 0.1,
+        "max": 1,
+        "contract": {
+          "fixtures": "zone",
+          "activationPredicate": "zonePossession",
+          "activationMinimum": 100,
+          "conditionalMetrics": [
+            "primaryConcentration",
+            "distinctPrimaries",
+            "count"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "a higher floor lets poorer fits take the action, spreading it",
+          "context": "ZONE_ATTACK possessions only",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 17139,
+        "activationMet": true,
+        "atMax": {
+          "value": 1,
+          "seeds": 64,
+          "fixtures": [
+            "real-zone-nick-nurse",
+            "real-zone-erik-spoelstra",
+            "real-zone-rick-carlisle",
+            "real-zone-don-nelson"
+          ],
+          "activatedPossessions": 17139,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 256,
+              "mean": -0.00037,
+              "se": 0.00105,
+              "t": -0.35365
+            },
+            "distinctPrimaries": {
+              "n": 256,
+              "mean": 0,
+              "se": 0,
+              "t": 0
+            },
+            "count": {
+              "n": 256,
+              "mean": 0.17188,
+              "se": 0.174,
+              "t": 0.98778
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": 0.11328,
+              "se": 0.08113,
+              "t": 1.39623
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": 0.00187,
+              "se": 0.00129,
+              "t": 1.45481
+            }
+          }
+        },
+        "atMin": {
+          "value": 0.1,
+          "seeds": 64,
+          "fixtures": [
+            "real-zone-nick-nurse",
+            "real-zone-erik-spoelstra",
+            "real-zone-rick-carlisle",
+            "real-zone-don-nelson"
+          ],
+          "activatedPossessions": 17139,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 256,
+              "mean": 0.00174,
+              "se": 0.00068,
+              "t": 2.5439
+            },
+            "distinctPrimaries": {
+              "n": 256,
+              "mean": 0,
+              "se": 0,
+              "t": 0
+            },
+            "count": {
+              "n": 256,
+              "mean": 0.28906,
+              "se": 0.11837,
+              "t": 2.4421
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": 0.04688,
+              "se": 0.07104,
+              "t": 0.65985
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": 0.00191,
+              "se": 0.00094,
+              "t": 2.03847
+            }
+          }
+        }
+      },
+      {
+        "id": "fitBand.ZONE_ATTACK.hi",
+        "module": "opportunityAllocation",
+        "defaultValue": 1.9,
+        "min": 1,
+        "max": 3,
+        "contract": {
+          "fixtures": "zone",
+          "activationPredicate": "zonePossession",
+          "activationMinimum": 100,
+          "conditionalMetrics": [
+            "primaryConcentration",
+            "distinctPrimaries",
+            "count"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "a higher ceiling lets the best fit take more of the action",
+          "context": "ZONE_ATTACK possessions only",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 17139,
+        "activationMet": true,
+        "atMax": {
+          "value": 3,
+          "seeds": 64,
+          "fixtures": [
+            "real-zone-nick-nurse",
+            "real-zone-erik-spoelstra",
+            "real-zone-rick-carlisle",
+            "real-zone-don-nelson"
+          ],
+          "activatedPossessions": 17139,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 256,
+              "mean": 0.00065,
+              "se": 0.00054,
+              "t": 1.2053
+            },
+            "distinctPrimaries": {
+              "n": 256,
+              "mean": 0,
+              "se": 0,
+              "t": 0
+            },
+            "count": {
+              "n": 256,
+              "mean": 0.14453,
+              "se": 0.08801,
+              "t": 1.6422
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": -0.00781,
+              "se": 0.05725,
+              "t": -0.13645
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": 0.00108,
+              "se": 0.00064,
+              "t": 1.67531
+            }
+          }
+        },
+        "atMin": {
+          "value": 1,
+          "seeds": 64,
+          "fixtures": [
+            "real-zone-nick-nurse",
+            "real-zone-erik-spoelstra",
+            "real-zone-rick-carlisle",
+            "real-zone-don-nelson"
+          ],
+          "activatedPossessions": 17139,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 256,
+              "mean": -0.00155,
+              "se": 0.00086,
+              "t": -1.79757
+            },
+            "distinctPrimaries": {
+              "n": 256,
+              "mean": 0,
+              "se": 0,
+              "t": 0
+            },
+            "count": {
+              "n": 256,
+              "mean": 0.33203,
+              "se": 0.16965,
+              "t": 1.95718
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": 0.14844,
+              "se": 0.07613,
+              "t": 1.94976
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": 0.00053,
+              "se": 0.00108,
+              "t": 0.48787
+            }
+          }
+        }
+      },
+      {
+        "id": "fitBand.CUT.lo",
+        "module": "opportunityAllocation",
+        "defaultValue": 0.4,
+        "min": 0.1,
+        "max": 1,
+        "contract": {
+          "fixtures": "general",
+          "activationPredicate": "action:CUT",
+          "activationMinimum": 100,
+          "conditionalMetrics": [
+            "primaryConcentration",
+            "distinctPrimaries",
+            "count"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "a higher floor lets poorer fits take the action, spreading it",
+          "context": "CUT possessions only",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 3393,
+        "activationMet": true,
+        "atMax": {
+          "value": 1,
+          "seeds": 64,
+          "fixtures": [
+            "era-2010s",
+            "balanced-vs-creators",
+            "coach-mike-dantoni-vs-jerry-sloan"
+          ],
+          "activatedPossessions": 3393,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 192,
+              "mean": 0.00072,
+              "se": 0.00237,
+              "t": 0.30268
+            },
+            "distinctPrimaries": {
+              "n": 192,
+              "mean": 0.07813,
+              "se": 0.04039,
+              "t": 1.93421
+            },
+            "count": {
+              "n": 192,
+              "mean": 0.0625,
+              "se": 0.08942,
+              "t": 0.69892
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 192,
+              "mean": 0.04167,
+              "se": 0.06127,
+              "t": 0.68005
+            },
+            "makeRateAll": {
+              "n": 192,
+              "mean": 0.00065,
+              "se": 0.00092,
+              "t": 0.71134
+            }
+          }
+        },
+        "atMin": {
+          "value": 0.1,
+          "seeds": 64,
+          "fixtures": [
+            "era-2010s",
+            "balanced-vs-creators",
+            "coach-mike-dantoni-vs-jerry-sloan"
+          ],
+          "activatedPossessions": 3393,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 192,
+              "mean": 0.00145,
+              "se": 0.00184,
+              "t": 0.78543
+            },
+            "distinctPrimaries": {
+              "n": 192,
+              "mean": -0.03125,
+              "se": 0.03611,
+              "t": -0.86546
+            },
+            "count": {
+              "n": 192,
+              "mean": 0.04167,
+              "se": 0.06388,
+              "t": 0.65222
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 192,
+              "mean": -0.02083,
+              "se": 0.01644,
+              "t": -1.2669
+            },
+            "makeRateAll": {
+              "n": 192,
+              "mean": -0.00165,
+              "se": 0.00102,
+              "t": -1.61813
+            }
+          }
+        }
+      },
+      {
+        "id": "fitBand.CUT.hi",
+        "module": "opportunityAllocation",
+        "defaultValue": 1.9,
+        "min": 1,
+        "max": 3,
+        "contract": {
+          "fixtures": "general",
+          "activationPredicate": "action:CUT",
+          "activationMinimum": 100,
+          "conditionalMetrics": [
+            "primaryConcentration",
+            "distinctPrimaries",
+            "count"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "a higher ceiling lets the best fit take more of the action",
+          "context": "CUT possessions only",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 3393,
+        "activationMet": true,
+        "atMax": {
+          "value": 3,
+          "seeds": 64,
+          "fixtures": [
+            "era-2010s",
+            "balanced-vs-creators",
+            "coach-mike-dantoni-vs-jerry-sloan"
+          ],
+          "activatedPossessions": 3393,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 192,
+              "mean": 0.00021,
+              "se": 0.00102,
+              "t": 0.20256
+            },
+            "distinctPrimaries": {
+              "n": 192,
+              "mean": -0.01562,
+              "se": 0.01879,
+              "t": -0.83138
+            },
+            "count": {
+              "n": 192,
+              "mean": -0.00521,
+              "se": 0.02022,
+              "t": -0.25757
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 192,
+              "mean": -0.00521,
+              "se": 0.00521,
+              "t": -1
+            },
+            "makeRateAll": {
+              "n": 192,
+              "mean": -0.00015,
+              "se": 0.00014,
+              "t": -1.05325
+            }
+          }
+        },
+        "atMin": {
+          "value": 1,
+          "seeds": 64,
+          "fixtures": [
+            "era-2010s",
+            "balanced-vs-creators",
+            "coach-mike-dantoni-vs-jerry-sloan"
+          ],
+          "activatedPossessions": 3393,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 192,
+              "mean": 0.00055,
+              "se": 0.00212,
+              "t": 0.26132
+            },
+            "distinctPrimaries": {
+              "n": 192,
+              "mean": 0.06771,
+              "se": 0.03546,
+              "t": 1.90926
+            },
+            "count": {
+              "n": 192,
+              "mean": 0.03646,
+              "se": 0.07435,
+              "t": 0.49033
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 192,
+              "mean": 0.04167,
+              "se": 0.06127,
+              "t": 0.68005
+            },
+            "makeRateAll": {
+              "n": 192,
+              "mean": 0.00006,
+              "se": 0.00085,
+              "t": 0.07034
+            }
+          }
+        }
+      },
+      {
+        "id": "fitBand.ISOLATION.lo",
+        "module": "opportunityAllocation",
+        "defaultValue": 0.5,
+        "min": 0.1,
+        "max": 1,
+        "contract": {
+          "fixtures": "construction",
+          "activationPredicate": "action:ISOLATION",
+          "activationMinimum": 100,
+          "conditionalMetrics": [
+            "primaryConcentration",
+            "distinctPrimaries",
+            "count"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "a higher floor lets poorer fits take the action, spreading it",
+          "context": "ISOLATION possessions only",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 4677,
+        "activationMet": true,
+        "atMax": {
+          "value": 1,
+          "seeds": 64,
+          "fixtures": [
+            "balanced-vs-creators",
+            "shooters-vs-bigs",
+            "synthdev-sd2-extreme-size",
+            "synthdev-sd2-extreme-small"
+          ],
+          "activatedPossessions": 4677,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 256,
+              "mean": -0.00678,
+              "se": 0.00141,
+              "t": -4.80598
+            },
+            "distinctPrimaries": {
+              "n": 256,
+              "mean": 0.12109,
+              "se": 0.0344,
+              "t": 3.52025
+            },
+            "count": {
+              "n": 256,
+              "mean": -0.12109,
+              "se": 0.05634,
+              "t": -2.14916
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": 0.00391,
+              "se": 0.05974,
+              "t": 0.06538
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": 0.00007,
+              "se": 0.00084,
+              "t": 0.08579
+            }
+          }
+        },
+        "atMin": {
+          "value": 0.1,
+          "seeds": 64,
+          "fixtures": [
+            "balanced-vs-creators",
+            "shooters-vs-bigs",
+            "synthdev-sd2-extreme-size",
+            "synthdev-sd2-extreme-small"
+          ],
+          "activatedPossessions": 4677,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 256,
+              "mean": 0.00875,
+              "se": 0.0022,
+              "t": 3.97498
+            },
+            "distinctPrimaries": {
+              "n": 256,
+              "mean": -0.10156,
+              "se": 0.03212,
+              "t": -3.16173
+            },
+            "count": {
+              "n": 256,
+              "mean": 0.09766,
+              "se": 0.0622,
+              "t": 1.57003
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": 0.15625,
+              "se": 0.12313,
+              "t": 1.26896
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": -0.00165,
+              "se": 0.00077,
+              "t": -2.14063
+            }
+          }
+        }
+      },
+      {
+        "id": "fitBand.ISOLATION.hi",
+        "module": "opportunityAllocation",
+        "defaultValue": 1.8,
+        "min": 1,
+        "max": 3,
+        "contract": {
+          "fixtures": "construction",
+          "activationPredicate": "action:ISOLATION",
+          "activationMinimum": 100,
+          "conditionalMetrics": [
+            "primaryConcentration",
+            "distinctPrimaries",
+            "count"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "a higher ceiling lets the best fit take more of the action",
+          "context": "ISOLATION possessions only",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 4677,
+        "activationMet": true,
+        "atMax": {
+          "value": 3,
+          "seeds": 64,
+          "fixtures": [
+            "balanced-vs-creators",
+            "shooters-vs-bigs",
+            "synthdev-sd2-extreme-size",
+            "synthdev-sd2-extreme-small"
+          ],
+          "activatedPossessions": 4677,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 256,
+              "mean": 0.00445,
+              "se": 0.00179,
+              "t": 2.48016
+            },
+            "distinctPrimaries": {
+              "n": 256,
+              "mean": -0.05469,
+              "se": 0.02187,
+              "t": -2.50013
+            },
+            "count": {
+              "n": 256,
+              "mean": 0.03125,
+              "se": 0.03451,
+              "t": 0.9055
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": 0.01563,
+              "se": 0.01658,
+              "t": 0.9426
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": -0.00091,
+              "se": 0.00046,
+              "t": -1.96469
+            }
+          }
+        },
+        "atMin": {
+          "value": 1,
+          "seeds": 64,
+          "fixtures": [
+            "balanced-vs-creators",
+            "shooters-vs-bigs",
+            "synthdev-sd2-extreme-size",
+            "synthdev-sd2-extreme-small"
+          ],
+          "activatedPossessions": 4677,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 256,
+              "mean": -0.00646,
+              "se": 0.00138,
+              "t": -4.6817
+            },
+            "distinctPrimaries": {
+              "n": 256,
+              "mean": 0.08984,
+              "se": 0.03154,
+              "t": 2.84868
+            },
+            "count": {
+              "n": 256,
+              "mean": -0.09766,
+              "se": 0.0523,
+              "t": -1.86724
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": 0.04688,
+              "se": 0.04487,
+              "t": 1.04465
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": 0.00005,
+              "se": 0.00083,
+              "t": 0.05472
+            }
+          }
+        }
+      },
+      {
+        "id": "fitBand.PICK_AND_ROLL.lo",
+        "module": "opportunityAllocation",
+        "defaultValue": 0.55,
+        "min": 0.1,
+        "max": 1,
+        "contract": {
+          "fixtures": "general",
+          "activationPredicate": "action:PICK_AND_ROLL",
+          "activationMinimum": 100,
+          "conditionalMetrics": [
+            "primaryConcentration",
+            "distinctPrimaries",
+            "count"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "a higher floor lets poorer fits take the action, spreading it",
+          "context": "PICK_AND_ROLL possessions only",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 6973,
+        "activationMet": true,
+        "atMax": {
+          "value": 1,
+          "seeds": 64,
+          "fixtures": [
+            "era-2010s",
+            "balanced-vs-creators",
+            "coach-mike-dantoni-vs-jerry-sloan"
+          ],
+          "activatedPossessions": 6973,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 192,
+              "mean": -0.00387,
+              "se": 0.0021,
+              "t": -1.8446
+            },
+            "distinctPrimaries": {
+              "n": 192,
+              "mean": -0.02083,
+              "se": 0.0295,
+              "t": -0.70618
+            },
+            "count": {
+              "n": 192,
+              "mean": -0.22396,
+              "se": 0.19296,
+              "t": -1.16067
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 192,
+              "mean": 0.17708,
+              "se": 0.11862,
+              "t": 1.49289
+            },
+            "makeRateAll": {
+              "n": 192,
+              "mean": 0.00181,
+              "se": 0.00186,
+              "t": 0.97368
+            }
+          }
+        },
+        "atMin": {
+          "value": 0.1,
+          "seeds": 64,
+          "fixtures": [
+            "era-2010s",
+            "balanced-vs-creators",
+            "coach-mike-dantoni-vs-jerry-sloan"
+          ],
+          "activatedPossessions": 6973,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 192,
+              "mean": -0.00032,
+              "se": 0.00139,
+              "t": -0.22742
+            },
+            "distinctPrimaries": {
+              "n": 192,
+              "mean": -0.00521,
+              "se": 0.02153,
+              "t": -0.24194
+            },
+            "count": {
+              "n": 192,
+              "mean": 0.13021,
+              "se": 0.11744,
+              "t": 1.10877
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 192,
+              "mean": -0.04167,
+              "se": 0.07267,
+              "t": -0.57336
+            },
+            "makeRateAll": {
+              "n": 192,
+              "mean": -0.00213,
+              "se": 0.00107,
+              "t": -1.98762
+            }
+          }
+        }
+      },
+      {
+        "id": "fitBand.PICK_AND_ROLL.hi",
+        "module": "opportunityAllocation",
+        "defaultValue": 1.7,
+        "min": 1,
+        "max": 3,
+        "contract": {
+          "fixtures": "general",
+          "activationPredicate": "action:PICK_AND_ROLL",
+          "activationMinimum": 100,
+          "conditionalMetrics": [
+            "primaryConcentration",
+            "distinctPrimaries",
+            "count"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "a higher ceiling lets the best fit take more of the action",
+          "context": "PICK_AND_ROLL possessions only",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 6973,
+        "activationMet": true,
+        "atMax": {
+          "value": 3,
+          "seeds": 64,
+          "fixtures": [
+            "era-2010s",
+            "balanced-vs-creators",
+            "coach-mike-dantoni-vs-jerry-sloan"
+          ],
+          "activatedPossessions": 6973,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 192,
+              "mean": -0.00063,
+              "se": 0.00074,
+              "t": -0.8436
+            },
+            "distinctPrimaries": {
+              "n": 192,
+              "mean": -0.00521,
+              "se": 0.01882,
+              "t": -0.27668
+            },
+            "count": {
+              "n": 192,
+              "mean": 0.03125,
+              "se": 0.07985,
+              "t": 0.39137
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 192,
+              "mean": -0.01042,
+              "se": 0.07639,
+              "t": -0.13637
+            },
+            "makeRateAll": {
+              "n": 192,
+              "mean": -0.00057,
+              "se": 0.0008,
+              "t": -0.71381
+            }
+          }
+        },
+        "atMin": {
+          "value": 1,
+          "seeds": 64,
+          "fixtures": [
+            "era-2010s",
+            "balanced-vs-creators",
+            "coach-mike-dantoni-vs-jerry-sloan"
+          ],
+          "activatedPossessions": 6973,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 192,
+              "mean": -0.00324,
+              "se": 0.00193,
+              "t": -1.68337
+            },
+            "distinctPrimaries": {
+              "n": 192,
+              "mean": -0.02083,
+              "se": 0.02658,
+              "t": -0.78368
+            },
+            "count": {
+              "n": 192,
+              "mean": -0.21875,
+              "se": 0.1905,
+              "t": -1.1483
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 192,
+              "mean": 0.16146,
+              "se": 0.11862,
+              "t": 1.36115
+            },
+            "makeRateAll": {
+              "n": 192,
+              "mean": 0.00073,
+              "se": 0.00165,
+              "t": 0.44359
+            }
+          }
+        }
+      },
+      {
+        "id": "fitBand.TRANSITION.lo",
+        "module": "opportunityAllocation",
+        "defaultValue": 0.6,
+        "min": 0.1,
+        "max": 1,
+        "contract": {
+          "fixtures": "general",
+          "activationPredicate": "action:TRANSITION",
+          "activationMinimum": 100,
+          "conditionalMetrics": [
+            "primaryConcentration",
+            "distinctPrimaries",
+            "count"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "a higher floor lets poorer fits take the action, spreading it",
+          "context": "TRANSITION possessions only",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 6320,
+        "activationMet": true,
+        "atMax": {
+          "value": 1,
+          "seeds": 64,
+          "fixtures": [
+            "era-2010s",
+            "balanced-vs-creators",
+            "coach-mike-dantoni-vs-jerry-sloan"
+          ],
+          "activatedPossessions": 6320,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 192,
+              "mean": -0.00316,
+              "se": 0.00135,
+              "t": -2.34952
+            },
+            "distinctPrimaries": {
+              "n": 192,
+              "mean": 0.04688,
+              "se": 0.02589,
+              "t": 1.81065
+            },
+            "count": {
+              "n": 192,
+              "mean": 0.02604,
+              "se": 0.09975,
+              "t": 0.26108
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 192,
+              "mean": -0.01562,
+              "se": 0.01563,
+              "t": -1
+            },
+            "makeRateAll": {
+              "n": 192,
+              "mean": -0.00081,
+              "se": 0.00109,
+              "t": -0.73806
+            }
+          }
+        },
+        "atMin": {
+          "value": 0.1,
+          "seeds": 64,
+          "fixtures": [
+            "era-2010s",
+            "balanced-vs-creators",
+            "coach-mike-dantoni-vs-jerry-sloan"
+          ],
+          "activatedPossessions": 6320,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 192,
+              "mean": 0.00362,
+              "se": 0.00133,
+              "t": 2.72299
+            },
+            "distinctPrimaries": {
+              "n": 192,
+              "mean": -0.06771,
+              "se": 0.02342,
+              "t": -2.89066
+            },
+            "count": {
+              "n": 192,
+              "mean": 0.09896,
+              "se": 0.13964,
+              "t": 0.70865
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 192,
+              "mean": 0.09375,
+              "se": 0.06894,
+              "t": 1.3598
+            },
+            "makeRateAll": {
+              "n": 192,
+              "mean": 0.00042,
+              "se": 0.00062,
+              "t": 0.67166
+            }
+          }
+        }
+      },
+      {
+        "id": "fitBand.TRANSITION.hi",
+        "module": "opportunityAllocation",
+        "defaultValue": 1.6,
+        "min": 1,
+        "max": 3,
+        "contract": {
+          "fixtures": "general",
+          "activationPredicate": "action:TRANSITION",
+          "activationMinimum": 100,
+          "conditionalMetrics": [
+            "primaryConcentration",
+            "distinctPrimaries",
+            "count"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "a higher ceiling lets the best fit take more of the action",
+          "context": "TRANSITION possessions only",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 6320,
+        "activationMet": true,
+        "atMax": {
+          "value": 3,
+          "seeds": 64,
+          "fixtures": [
+            "era-2010s",
+            "balanced-vs-creators",
+            "coach-mike-dantoni-vs-jerry-sloan"
+          ],
+          "activatedPossessions": 6320,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 192,
+              "mean": 0.00167,
+              "se": 0.00097,
+              "t": 1.72444
+            },
+            "distinctPrimaries": {
+              "n": 192,
+              "mean": -0.04167,
+              "se": 0.01784,
+              "t": -2.33605
+            },
+            "count": {
+              "n": 192,
+              "mean": 0.10417,
+              "se": 0.1132,
+              "t": 0.92021
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 192,
+              "mean": 0.09375,
+              "se": 0.06815,
+              "t": 1.37567
+            },
+            "makeRateAll": {
+              "n": 192,
+              "mean": 0.00017,
+              "se": 0.00052,
+              "t": 0.32875
+            }
+          }
+        },
+        "atMin": {
+          "value": 1,
+          "seeds": 64,
+          "fixtures": [
+            "era-2010s",
+            "balanced-vs-creators",
+            "coach-mike-dantoni-vs-jerry-sloan"
+          ],
+          "activatedPossessions": 6320,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 192,
+              "mean": -0.00225,
+              "se": 0.00127,
+              "t": -1.77278
+            },
+            "distinctPrimaries": {
+              "n": 192,
+              "mean": 0.04167,
+              "se": 0.02431,
+              "t": 1.71419
+            },
+            "count": {
+              "n": 192,
+              "mean": 0.03125,
+              "se": 0.0996,
+              "t": 0.31375
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 192,
+              "mean": -0.01562,
+              "se": 0.01563,
+              "t": -1
+            },
+            "makeRateAll": {
+              "n": 192,
+              "mean": -0.00083,
+              "se": 0.00109,
+              "t": -0.75628
+            }
+          }
+        }
+      },
+      {
+        "id": "fitBand.GENERIC_HALF_COURT.lo",
+        "module": "opportunityAllocation",
+        "defaultValue": 0.75,
+        "min": 0.1,
+        "max": 1,
+        "contract": {
+          "fixtures": "general",
+          "activationPredicate": "action:GENERIC_HALF_COURT",
+          "activationMinimum": 100,
+          "conditionalMetrics": [
+            "primaryConcentration",
+            "distinctPrimaries",
+            "count"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "a higher floor lets poorer fits take the action, spreading it",
+          "context": "GENERIC_HALF_COURT possessions only",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 3791,
+        "activationMet": true,
+        "atMax": {
+          "value": 1,
+          "seeds": 64,
+          "fixtures": [
+            "era-2010s",
+            "balanced-vs-creators",
+            "coach-mike-dantoni-vs-jerry-sloan"
+          ],
+          "activatedPossessions": 3791,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 192,
+              "mean": -0.00273,
+              "se": 0.00139,
+              "t": -1.95646
+            },
+            "distinctPrimaries": {
+              "n": 192,
+              "mean": 0.04167,
+              "se": 0.02195,
+              "t": 1.89836
+            },
+            "count": {
+              "n": 192,
+              "mean": 0.07813,
+              "se": 0.06306,
+              "t": 1.2389
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 192,
+              "mean": 0.00521,
+              "se": 0.01566,
+              "t": 0.33256
+            },
+            "makeRateAll": {
+              "n": 192,
+              "mean": 0.00079,
+              "se": 0.00082,
+              "t": 0.96621
+            }
+          }
+        },
+        "atMin": {
+          "value": 0.1,
+          "seeds": 64,
+          "fixtures": [
+            "era-2010s",
+            "balanced-vs-creators",
+            "coach-mike-dantoni-vs-jerry-sloan"
+          ],
+          "activatedPossessions": 3791,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 192,
+              "mean": 0.00356,
+              "se": 0.00242,
+              "t": 1.47196
+            },
+            "distinctPrimaries": {
+              "n": 192,
+              "mean": -0.03646,
+              "se": 0.04807,
+              "t": -0.75842
+            },
+            "count": {
+              "n": 192,
+              "mean": 0.29688,
+              "se": 0.10445,
+              "t": 2.84229
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 192,
+              "mean": 0.04688,
+              "se": 0.05237,
+              "t": 0.89507
+            },
+            "makeRateAll": {
+              "n": 192,
+              "mean": -0.00071,
+              "se": 0.00173,
+              "t": -0.4121
+            }
+          }
+        }
+      },
+      {
+        "id": "fitBand.GENERIC_HALF_COURT.hi",
+        "module": "opportunityAllocation",
+        "defaultValue": 1.35,
+        "min": 1,
+        "max": 3,
+        "contract": {
+          "fixtures": "general",
+          "activationPredicate": "action:GENERIC_HALF_COURT",
+          "activationMinimum": 100,
+          "conditionalMetrics": [
+            "primaryConcentration",
+            "distinctPrimaries",
+            "count"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "a higher ceiling lets the best fit take more of the action",
+          "context": "GENERIC_HALF_COURT possessions only",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 3791,
+        "activationMet": true,
+        "atMax": {
+          "value": 3,
+          "seeds": 64,
+          "fixtures": [
+            "era-2010s",
+            "balanced-vs-creators",
+            "coach-mike-dantoni-vs-jerry-sloan"
+          ],
+          "activatedPossessions": 3791,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 192,
+              "mean": 0.00399,
+              "se": 0.00179,
+              "t": 2.22229
+            },
+            "distinctPrimaries": {
+              "n": 192,
+              "mean": 0,
+              "se": 0.03618,
+              "t": 0
+            },
+            "count": {
+              "n": 192,
+              "mean": 0.14583,
+              "se": 0.07493,
+              "t": 1.94616
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 192,
+              "mean": 0.01563,
+              "se": 0.02019,
+              "t": 0.77379
+            },
+            "makeRateAll": {
+              "n": 192,
+              "mean": -0.00039,
+              "se": 0.00099,
+              "t": -0.39317
+            }
+          }
+        },
+        "atMin": {
+          "value": 1,
+          "seeds": 64,
+          "fixtures": [
+            "era-2010s",
+            "balanced-vs-creators",
+            "coach-mike-dantoni-vs-jerry-sloan"
+          ],
+          "activatedPossessions": 3791,
+          "conditional": {
+            "primaryConcentration": {
+              "n": 192,
+              "mean": -0.00273,
+              "se": 0.00139,
+              "t": -1.95646
+            },
+            "distinctPrimaries": {
+              "n": 192,
+              "mean": 0.04167,
+              "se": 0.02195,
+              "t": 1.89836
+            },
+            "count": {
+              "n": 192,
+              "mean": 0.07813,
+              "se": 0.06306,
+              "t": 1.2389
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 192,
+              "mean": 0.00521,
+              "se": 0.01566,
+              "t": 0.33256
+            },
+            "makeRateAll": {
+              "n": 192,
+              "mean": 0.00079,
+              "se": 0.00082,
+              "t": 0.96621
+            }
+          }
+        }
+      },
+      {
+        "id": "shotLocation.rimWeight",
+        "module": "possessionContext",
+        "defaultValue": 0.34,
+        "min": 0.15,
+        "max": 0.6,
+        "contract": {
+          "fixtures": "allEras",
+          "activationPredicate": "anyShot",
+          "activationMinimum": 400,
+          "conditionalMetrics": [
+            "locationShare:RIM",
+            "locationShare:PAINT_OR_POST"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "higher weight raises rim share",
+          "context": "all shot possessions",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 99288,
+        "activationMet": true,
+        "atMax": {
+          "value": 0.6,
+          "seeds": 64,
+          "fixtures": [
+            "era-1950s",
+            "era-1960s",
+            "era-1970s",
+            "era-1980s",
+            "era-1990s",
+            "era-2000s",
+            "era-2010s",
+            "era-2020s"
+          ],
+          "activatedPossessions": 99288,
+          "conditional": {
+            "locationShare:RIM": {
+              "n": 512,
+              "mean": 0.08884,
+              "se": 0.00173,
+              "t": 51.49844
+            },
+            "locationShare:PAINT_OR_POST": {
+              "n": 512,
+              "mean": -0.0384,
+              "se": 0.00158,
+              "t": -24.33776
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 512,
+              "mean": -0.01758,
+              "se": 0.1518,
+              "t": -0.1158
+            },
+            "makeRateAll": {
+              "n": 512,
+              "mean": 0.01094,
+              "se": 0.00251,
+              "t": 4.35483
+            }
+          }
+        },
+        "atMin": {
+          "value": 0.15,
+          "seeds": 64,
+          "fixtures": [
+            "era-1950s",
+            "era-1960s",
+            "era-1970s",
+            "era-1980s",
+            "era-1990s",
+            "era-2000s",
+            "era-2010s",
+            "era-2020s"
+          ],
+          "activatedPossessions": 99288,
+          "conditional": {
+            "locationShare:RIM": {
+              "n": 512,
+              "mean": -0.09407,
+              "se": 0.00175,
+              "t": -53.70297
+            },
+            "locationShare:PAINT_OR_POST": {
+              "n": 512,
+              "mean": 0.04493,
+              "se": 0.00174,
+              "t": 25.81264
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 512,
+              "mean": -0.07812,
+              "se": 0.12366,
+              "t": -0.63177
+            },
+            "makeRateAll": {
+              "n": 512,
+              "mean": -0.01428,
+              "se": 0.00255,
+              "t": -5.59677
+            }
+          }
+        }
+      },
+      {
+        "id": "shotLocation.postWeight",
+        "module": "possessionContext",
+        "defaultValue": 0.42,
+        "min": 0.2,
+        "max": 0.7,
+        "contract": {
+          "fixtures": "allEras",
+          "activationPredicate": "anyShot",
+          "activationMinimum": 400,
+          "conditionalMetrics": [
+            "locationShare:PAINT_OR_POST"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "higher weight raises paint share",
+          "context": "all shot possessions",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 99288,
+        "activationMet": true,
+        "atMax": {
+          "value": 0.7,
+          "seeds": 64,
+          "fixtures": [
+            "era-1950s",
+            "era-1960s",
+            "era-1970s",
+            "era-1980s",
+            "era-1990s",
+            "era-2000s",
+            "era-2010s",
+            "era-2020s"
+          ],
+          "activatedPossessions": 99288,
+          "conditional": {
+            "locationShare:PAINT_OR_POST": {
+              "n": 512,
+              "mean": 0.07189,
+              "se": 0.00149,
+              "t": 48.29366
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 512,
+              "mean": -0.12695,
+              "se": 0.11491,
+              "t": -1.10479
+            },
+            "makeRateAll": {
+              "n": 512,
+              "mean": -0.00627,
+              "se": 0.0021,
+              "t": -2.98272
+            }
+          }
+        },
+        "atMin": {
+          "value": 0.2,
+          "seeds": 64,
+          "fixtures": [
+            "era-1950s",
+            "era-1960s",
+            "era-1970s",
+            "era-1980s",
+            "era-1990s",
+            "era-2000s",
+            "era-2010s",
+            "era-2020s"
+          ],
+          "activatedPossessions": 99288,
+          "conditional": {
+            "locationShare:PAINT_OR_POST": {
+              "n": 512,
+              "mean": -0.06641,
+              "se": 0.00143,
+              "t": -46.34793
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 512,
+              "mean": 0.10938,
+              "se": 0.12588,
+              "t": 0.86887
+            },
+            "makeRateAll": {
+              "n": 512,
+              "mean": 0.00376,
+              "se": 0.00222,
+              "t": 1.69521
+            }
+          }
+        }
+      },
+      {
+        "id": "shotLocation.midrangeWeight",
+        "module": "possessionContext",
+        "defaultValue": 0.18,
+        "min": 0.05,
+        "max": 0.5,
+        "contract": {
+          "fixtures": "allEras",
+          "activationPredicate": "anyShot",
+          "activationMinimum": 400,
+          "conditionalMetrics": [
+            "locationShare:MIDRANGE"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "higher weight raises midrange share",
+          "context": "all shot possessions",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 99288,
+        "activationMet": true,
+        "atMax": {
+          "value": 0.5,
+          "seeds": 64,
+          "fixtures": [
+            "era-1950s",
+            "era-1960s",
+            "era-1970s",
+            "era-1980s",
+            "era-1990s",
+            "era-2000s",
+            "era-2010s",
+            "era-2020s"
+          ],
+          "activatedPossessions": 99288,
+          "conditional": {
+            "locationShare:MIDRANGE": {
+              "n": 512,
+              "mean": 0.11683,
+              "se": 0.00189,
+              "t": 61.87494
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 512,
+              "mean": -0.09961,
+              "se": 0.12873,
+              "t": -0.77376
+            },
+            "makeRateAll": {
+              "n": 512,
+              "mean": -0.0086,
+              "se": 0.00253,
+              "t": -3.39213
+            }
+          }
+        },
+        "atMin": {
+          "value": 0.05,
+          "seeds": 64,
+          "fixtures": [
+            "era-1950s",
+            "era-1960s",
+            "era-1970s",
+            "era-1980s",
+            "era-1990s",
+            "era-2000s",
+            "era-2010s",
+            "era-2020s"
+          ],
+          "activatedPossessions": 99288,
+          "conditional": {
+            "locationShare:MIDRANGE": {
+              "n": 512,
+              "mean": -0.07099,
+              "se": 0.00146,
+              "t": -48.71828
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 512,
+              "mean": 0.05664,
+              "se": 0.13572,
+              "t": 0.41733
+            },
+            "makeRateAll": {
+              "n": 512,
+              "mean": 0.00136,
+              "se": 0.0023,
+              "t": 0.58926
+            }
+          }
+        }
+      },
+      {
+        "id": "shotLocation.threeWeight",
+        "module": "possessionContext",
+        "defaultValue": 0.22,
+        "min": 0.05,
+        "max": 0.6,
+        "contract": {
+          "fixtures": "allEras",
+          "activationPredicate": "anyShot",
+          "activationMinimum": 400,
+          "conditionalMetrics": [
+            "locationShare:THREE_POINT",
+            "threeRate"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "higher weight raises three share where the line exists",
+          "context": "all shot possessions",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 99288,
+        "activationMet": true,
+        "atMax": {
+          "value": 0.6,
+          "seeds": 64,
+          "fixtures": [
+            "era-1950s",
+            "era-1960s",
+            "era-1970s",
+            "era-1980s",
+            "era-1990s",
+            "era-2000s",
+            "era-2010s",
+            "era-2020s"
+          ],
+          "activatedPossessions": 99288,
+          "conditional": {
+            "locationShare:THREE_POINT": {
+              "n": 512,
+              "mean": 0.00444,
+              "se": 0.0006,
+              "t": 7.41884
+            },
+            "threeRate": {
+              "n": 512,
+              "mean": 0.00377,
+              "se": 0.00096,
+              "t": 3.92688
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 512,
+              "mean": -0.04492,
+              "se": 0.07844,
+              "t": -0.57266
+            },
+            "makeRateAll": {
+              "n": 512,
+              "mean": -0.00089,
+              "se": 0.00101,
+              "t": -0.87623
+            }
+          }
+        },
+        "atMin": {
+          "value": 0.05,
+          "seeds": 64,
+          "fixtures": [
+            "era-1950s",
+            "era-1960s",
+            "era-1970s",
+            "era-1980s",
+            "era-1990s",
+            "era-2000s",
+            "era-2010s",
+            "era-2020s"
+          ],
+          "activatedPossessions": 99288,
+          "conditional": {
+            "locationShare:THREE_POINT": {
+              "n": 512,
+              "mean": -0.00177,
+              "se": 0.00064,
+              "t": -2.7777
+            },
+            "threeRate": {
+              "n": 512,
+              "mean": -0.00264,
+              "se": 0.00095,
+              "t": -2.78985
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 512,
+              "mean": -0.08008,
+              "se": 0.05549,
+              "t": -1.44301
+            },
+            "makeRateAll": {
+              "n": 512,
+              "mean": 0.00061,
+              "se": 0.00102,
+              "t": 0.597
+            }
+          }
+        }
+      },
+      {
+        "id": "shotLocation.rimBiasMultiplier",
+        "module": "possessionGame",
+        "defaultValue": 1.6,
+        "min": 0.5,
+        "max": 3,
+        "contract": {
+          "fixtures": "general",
+          "activationPredicate": "action:PICK_AND_ROLL,TRANSITION,CUT",
+          "activationMinimum": 150,
+          "conditionalMetrics": [
+            "locationShare:RIM"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "higher multiplier raises rim share within rim-biased actions",
+          "context": "rim-biased action possessions",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 16686,
+        "activationMet": true,
+        "atMax": {
+          "value": 3,
+          "seeds": 64,
+          "fixtures": [
+            "era-2010s",
+            "balanced-vs-creators",
+            "coach-mike-dantoni-vs-jerry-sloan"
+          ],
+          "activatedPossessions": 16686,
+          "conditional": {
+            "locationShare:RIM": {
+              "n": 192,
+              "mean": 0.05255,
+              "se": 0.00404,
+              "t": 12.99823
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 192,
+              "mean": -0.08333,
+              "se": 0.17606,
+              "t": -0.47334
+            },
+            "makeRateAll": {
+              "n": 192,
+              "mean": 0.00751,
+              "se": 0.00377,
+              "t": 1.99318
+            }
+          }
+        },
+        "atMin": {
+          "value": 0.5,
+          "seeds": 64,
+          "fixtures": [
+            "era-2010s",
+            "balanced-vs-creators",
+            "coach-mike-dantoni-vs-jerry-sloan"
+          ],
+          "activatedPossessions": 16686,
+          "conditional": {
+            "locationShare:RIM": {
+              "n": 192,
+              "mean": -0.05013,
+              "se": 0.0038,
+              "t": -13.20384
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 192,
+              "mean": 0.03646,
+              "se": 0.18934,
+              "t": 0.19255
+            },
+            "makeRateAll": {
+              "n": 192,
+              "mean": -0.00709,
+              "se": 0.00351,
+              "t": -2.01841
+            }
+          }
+        }
+      },
+      {
+        "id": "shotLocation.perimeterBiasMultiplier",
+        "module": "possessionGame",
+        "defaultValue": 1.5,
+        "min": 0.5,
+        "max": 3,
+        "contract": {
+          "fixtures": "general",
+          "activationPredicate": "action:SPOT_UP,OFF_BALL_SCREEN,HANDOFF",
+          "activationMinimum": 150,
+          "conditionalMetrics": [
+            "locationShare:THREE_POINT"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "higher multiplier raises three share within perimeter actions",
+          "context": "perimeter action possessions",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 13274,
+        "activationMet": true,
+        "atMax": {
+          "value": 3,
+          "seeds": 64,
+          "fixtures": [
+            "era-2010s",
+            "balanced-vs-creators",
+            "coach-mike-dantoni-vs-jerry-sloan"
+          ],
+          "activatedPossessions": 13274,
+          "conditional": {
+            "locationShare:THREE_POINT": {
+              "n": 192,
+              "mean": 0.05769,
+              "se": 0.00372,
+              "t": 15.52094
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 192,
+              "mean": -0.11979,
+              "se": 0.18931,
+              "t": -0.63278
+            },
+            "makeRateAll": {
+              "n": 192,
+              "mean": -0.0111,
+              "se": 0.00333,
+              "t": -3.33593
+            }
+          }
+        },
+        "atMin": {
+          "value": 0.5,
+          "seeds": 64,
+          "fixtures": [
+            "era-2010s",
+            "balanced-vs-creators",
+            "coach-mike-dantoni-vs-jerry-sloan"
+          ],
+          "activatedPossessions": 13274,
+          "conditional": {
+            "locationShare:THREE_POINT": {
+              "n": 192,
+              "mean": -0.04764,
+              "se": 0.00316,
+              "t": -15.09722
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 192,
+              "mean": -0.09375,
+              "se": 0.16907,
+              "t": -0.55449
+            },
+            "makeRateAll": {
+              "n": 192,
+              "mean": 0.00492,
+              "se": 0.00258,
+              "t": 1.90714
+            }
+          }
+        }
+      },
+      {
+        "id": "conversion.rimBonus",
+        "module": "possessionGame",
+        "defaultValue": 0.155,
+        "min": 0.05,
+        "max": 0.28,
+        "contract": {
+          "fixtures": "allEras",
+          "activationPredicate": "shotAt:RIM",
+          "activationMinimum": 300,
+          "conditionalMetrics": [
+            "makeRate",
+            "expectedMake"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "rimShareGuard"
+          ],
+          "expectedDirection": "a larger bonus raises rim conversion",
+          "context": "rim attempts only",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 39229,
+        "activationMet": true,
+        "atMax": {
+          "value": 0.28,
+          "seeds": 64,
+          "fixtures": [
+            "era-1950s",
+            "era-1960s",
+            "era-1970s",
+            "era-1980s",
+            "era-1990s",
+            "era-2000s",
+            "era-2010s",
+            "era-2020s"
+          ],
+          "activatedPossessions": 39229,
+          "conditional": {
+            "makeRate": {
+              "n": 512,
+              "mean": 0.12527,
+              "se": 0.00298,
+              "t": 41.99749
+            },
+            "expectedMake": {
+              "n": 512,
+              "mean": 0.11953,
+              "se": 0.00038,
+              "t": 313.57509
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 512,
+              "mean": 0.05859,
+              "se": 0.14401,
+              "t": 0.40686
+            },
+            "rimShareGuard": {
+              "n": 512,
+              "mean": 0.00379,
+              "se": 0.00163,
+              "t": 2.32
+            }
+          }
+        },
+        "atMin": {
+          "value": 0.05,
+          "seeds": 64,
+          "fixtures": [
+            "era-1950s",
+            "era-1960s",
+            "era-1970s",
+            "era-1980s",
+            "era-1990s",
+            "era-2000s",
+            "era-2010s",
+            "era-2020s"
+          ],
+          "activatedPossessions": 39229,
+          "conditional": {
+            "makeRate": {
+              "n": 512,
+              "mean": -0.09931,
+              "se": 0.00304,
+              "t": -32.66928
+            },
+            "expectedMake": {
+              "n": 512,
+              "mean": -0.10129,
+              "se": 0.00033,
+              "t": -306.54568
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 512,
+              "mean": 0.04688,
+              "se": 0.13903,
+              "t": 0.33717
+            },
+            "rimShareGuard": {
+              "n": 512,
+              "mean": 0.00187,
+              "se": 0.00161,
+              "t": 1.16111
+            }
+          }
+        }
+      },
+      {
+        "id": "conversion.paintBonus",
+        "module": "possessionGame",
+        "defaultValue": 0.015,
+        "min": -0.1,
+        "max": 0.12,
+        "contract": {
+          "fixtures": "allEras",
+          "activationPredicate": "shotAt:PAINT_OR_POST",
+          "activationMinimum": 300,
+          "conditionalMetrics": [
+            "makeRate",
+            "expectedMake"
+          ],
+          "guardrailMetrics": [
+            "possessions"
+          ],
+          "expectedDirection": "a larger bonus raises paint conversion",
+          "context": "paint attempts only",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 20563,
+        "activationMet": true,
+        "atMax": {
+          "value": 0.12,
+          "seeds": 64,
+          "fixtures": [
+            "era-1950s",
+            "era-1960s",
+            "era-1970s",
+            "era-1980s",
+            "era-1990s",
+            "era-2000s",
+            "era-2010s",
+            "era-2020s"
+          ],
+          "activatedPossessions": 20563,
+          "conditional": {
+            "makeRate": {
+              "n": 512,
+              "mean": 0.09264,
+              "se": 0.00392,
+              "t": 23.6414
+            },
+            "expectedMake": {
+              "n": 512,
+              "mean": 0.10196,
+              "se": 0.00033,
+              "t": 313.62161
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 512,
+              "mean": -0.08789,
+              "se": 0.11849,
+              "t": -0.74178
+            }
+          }
+        },
+        "atMin": {
+          "value": -0.1,
+          "seeds": 64,
+          "fixtures": [
+            "era-1950s",
+            "era-1960s",
+            "era-1970s",
+            "era-1980s",
+            "era-1990s",
+            "era-2000s",
+            "era-2010s",
+            "era-2020s"
+          ],
+          "activatedPossessions": 20563,
+          "conditional": {
+            "makeRate": {
+              "n": 512,
+              "mean": -0.11524,
+              "se": 0.00413,
+              "t": -27.89715
+            },
+            "expectedMake": {
+              "n": 512,
+              "mean": -0.10464,
+              "se": 0.00088,
+              "t": -118.30396
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 512,
+              "mean": -0.12109,
+              "se": 0.11636,
+              "t": -1.04067
+            }
+          }
+        }
+      },
+      {
+        "id": "conversion.midrangePenalty",
+        "module": "possessionGame",
+        "defaultValue": -0.055,
+        "min": -0.15,
+        "max": 0.02,
+        "contract": {
+          "fixtures": "allEras",
+          "activationPredicate": "shotAt:MIDRANGE",
+          "activationMinimum": 300,
+          "conditionalMetrics": [
+            "makeRate",
+            "expectedMake"
+          ],
+          "guardrailMetrics": [
+            "possessions"
+          ],
+          "expectedDirection": "a less negative penalty raises midrange conversion",
+          "context": "midrange attempts only",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 27552,
+        "activationMet": true,
+        "atMax": {
+          "value": 0.02,
+          "seeds": 64,
+          "fixtures": [
+            "era-1950s",
+            "era-1960s",
+            "era-1970s",
+            "era-1980s",
+            "era-1990s",
+            "era-2000s",
+            "era-2010s",
+            "era-2020s"
+          ],
+          "activatedPossessions": 27552,
+          "conditional": {
+            "makeRate": {
+              "n": 512,
+              "mean": 0.06839,
+              "se": 0.00333,
+              "t": 20.51751
+            },
+            "expectedMake": {
+              "n": 512,
+              "mean": 0.07289,
+              "se": 0.00036,
+              "t": 199.9483
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 512,
+              "mean": -0.02148,
+              "se": 0.13739,
+              "t": -0.15637
+            }
+          }
+        },
+        "atMin": {
+          "value": -0.15,
+          "seeds": 64,
+          "fixtures": [
+            "era-1950s",
+            "era-1960s",
+            "era-1970s",
+            "era-1980s",
+            "era-1990s",
+            "era-2000s",
+            "era-2010s",
+            "era-2020s"
+          ],
+          "activatedPossessions": 27552,
+          "conditional": {
+            "makeRate": {
+              "n": 512,
+              "mean": -0.08779,
+              "se": 0.00329,
+              "t": -26.66165
+            },
+            "expectedMake": {
+              "n": 512,
+              "mean": -0.08698,
+              "se": 0.00077,
+              "t": -112.42624
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 512,
+              "mean": 0.04297,
+              "se": 0.12329,
+              "t": 0.34851
+            }
+          }
+        }
+      },
+      {
+        "id": "era.paceTempoScale",
+        "module": "possessionContext",
+        "defaultValue": 1.35,
+        "min": 0.5,
+        "max": 3,
+        "contract": {
+          "fixtures": "allEras",
+          "activationPredicate": "always",
+          "activationMinimum": 200,
+          "conditionalMetrics": [
+            "possessions"
+          ],
+          "guardrailMetrics": [
+            "makeRateAll"
+          ],
+          "expectedDirection": "a larger scale lets coach tempo move pace further",
+          "context": "whole game",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 123417,
+        "activationMet": true,
+        "atMax": {
+          "value": 3,
+          "seeds": 64,
+          "fixtures": [
+            "era-1950s",
+            "era-1960s",
+            "era-1970s",
+            "era-1980s",
+            "era-1990s",
+            "era-2000s",
+            "era-2010s",
+            "era-2020s"
+          ],
+          "activatedPossessions": 123417,
+          "conditional": {
+            "possessions": {
+              "n": 512,
+              "mean": 0.86719,
+              "se": 0.11574,
+              "t": 7.49232
+            }
+          },
+          "guardrails": {
+            "makeRateAll": {
+              "n": 512,
+              "mean": -0.00103,
+              "se": 0.00199,
+              "t": -0.51907
+            }
+          }
+        },
+        "atMin": {
+          "value": 0.5,
+          "seeds": 64,
+          "fixtures": [
+            "era-1950s",
+            "era-1960s",
+            "era-1970s",
+            "era-1980s",
+            "era-1990s",
+            "era-2000s",
+            "era-2010s",
+            "era-2020s"
+          ],
+          "activatedPossessions": 123417,
+          "conditional": {
+            "possessions": {
+              "n": 512,
+              "mean": -0.51367,
+              "se": 0.10626,
+              "t": -4.83429
+            }
+          },
+          "guardrails": {
+            "makeRateAll": {
+              "n": 512,
+              "mean": -0.00015,
+              "se": 0.00152,
+              "t": -0.09982
+            }
+          }
+        }
+      },
+      {
+        "id": "era.paceBoundFraction",
+        "module": "possessionContext",
+        "defaultValue": 0.14,
+        "min": 0.05,
+        "max": 0.3,
+        "contract": {
+          "fixtures": "allEras",
+          "activationPredicate": "always",
+          "activationMinimum": 200,
+          "conditionalMetrics": [
+            "possessions"
+          ],
+          "guardrailMetrics": [
+            "makeRateAll"
+          ],
+          "expectedDirection": "a wider band permits more pace deviation — only when the band binds",
+          "context": "whole game",
+          "suspectedGuardrail": true
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 123417,
+        "activationMet": true,
+        "atMax": {
+          "value": 0.3,
+          "seeds": 64,
+          "fixtures": [
+            "era-1950s",
+            "era-1960s",
+            "era-1970s",
+            "era-1980s",
+            "era-1990s",
+            "era-2000s",
+            "era-2010s",
+            "era-2020s"
+          ],
+          "activatedPossessions": 123417,
+          "conditional": {
+            "possessions": {
+              "n": 512,
+              "mean": 0,
+              "se": 0,
+              "t": 0
+            }
+          },
+          "guardrails": {
+            "makeRateAll": {
+              "n": 512,
+              "mean": 0,
+              "se": 0,
+              "t": 0
+            }
+          }
+        },
+        "atMin": {
+          "value": 0.05,
+          "seeds": 64,
+          "fixtures": [
+            "era-1950s",
+            "era-1960s",
+            "era-1970s",
+            "era-1980s",
+            "era-1990s",
+            "era-2000s",
+            "era-2010s",
+            "era-2020s"
+          ],
+          "activatedPossessions": 123417,
+          "conditional": {
+            "possessions": {
+              "n": 512,
+              "mean": 0,
+              "se": 0,
+              "t": 0
+            }
+          },
+          "guardrails": {
+            "makeRateAll": {
+              "n": 512,
+              "mean": 0,
+              "se": 0,
+              "t": 0
+            }
+          }
+        }
+      },
+      {
+        "id": "era.threeAnchorMax",
+        "module": "possessionContext",
+        "defaultValue": 12,
+        "min": 2,
+        "max": 30,
+        "contract": {
+          "fixtures": "allEras",
+          "activationPredicate": "anyShot",
+          "activationMinimum": 400,
+          "conditionalMetrics": [
+            "locationShare:THREE_POINT",
+            "threeRate"
+          ],
+          "guardrailMetrics": [
+            "possessions"
+          ],
+          "expectedDirection": "a lower clamp caps the three-point anchor — only when the clamp binds",
+          "context": "all shot possessions",
+          "suspectedGuardrail": true
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 99288,
+        "activationMet": true,
+        "atMax": {
+          "value": 30,
+          "seeds": 64,
+          "fixtures": [
+            "era-1950s",
+            "era-1960s",
+            "era-1970s",
+            "era-1980s",
+            "era-1990s",
+            "era-2000s",
+            "era-2010s",
+            "era-2020s"
+          ],
+          "activatedPossessions": 99288,
+          "conditional": {
+            "locationShare:THREE_POINT": {
+              "n": 512,
+              "mean": 0,
+              "se": 0,
+              "t": 0
+            },
+            "threeRate": {
+              "n": 512,
+              "mean": 0,
+              "se": 0,
+              "t": 0
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 512,
+              "mean": 0,
+              "se": 0,
+              "t": 0
+            }
+          }
+        },
+        "atMin": {
+          "value": 2,
+          "seeds": 64,
+          "fixtures": [
+            "era-1950s",
+            "era-1960s",
+            "era-1970s",
+            "era-1980s",
+            "era-1990s",
+            "era-2000s",
+            "era-2010s",
+            "era-2020s"
+          ],
+          "activatedPossessions": 99288,
+          "conditional": {
+            "locationShare:THREE_POINT": {
+              "n": 512,
+              "mean": -0.00399,
+              "se": 0.00061,
+              "t": -6.48634
+            },
+            "threeRate": {
+              "n": 512,
+              "mean": -0.00387,
+              "se": 0.00088,
+              "t": -4.4028
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 512,
+              "mean": 0.00586,
+              "se": 0.01501,
+              "t": 0.39024
+            }
+          }
+        }
+      },
+      {
+        "id": "era.freeThrowTripRate",
+        "module": "possessionContext",
+        "defaultValue": 0.5,
+        "min": 0.2,
+        "max": 1,
+        "contract": {
+          "fixtures": "allEras",
+          "activationPredicate": "always",
+          "activationMinimum": 200,
+          "conditionalMetrics": [
+            "ftaPerPossession"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "a higher trip rate raises free-throw attempts",
+          "context": "whole game",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 123417,
+        "activationMet": true,
+        "atMax": {
+          "value": 1,
+          "seeds": 64,
+          "fixtures": [
+            "era-1950s",
+            "era-1960s",
+            "era-1970s",
+            "era-1980s",
+            "era-1990s",
+            "era-2000s",
+            "era-2010s",
+            "era-2020s"
+          ],
+          "activatedPossessions": 123417,
+          "conditional": {
+            "ftaPerPossession": {
+              "n": 512,
+              "mean": 0.24458,
+              "se": 0.0046,
+              "t": 53.18912
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 512,
+              "mean": 0.08203,
+              "se": 0.14867,
+              "t": 0.55178
+            },
+            "makeRateAll": {
+              "n": 512,
+              "mean": -0.00439,
+              "se": 0.00309,
+              "t": -1.42287
+            }
+          }
+        },
+        "atMin": {
+          "value": 0.2,
+          "seeds": 64,
+          "fixtures": [
+            "era-1950s",
+            "era-1960s",
+            "era-1970s",
+            "era-1980s",
+            "era-1990s",
+            "era-2000s",
+            "era-2010s",
+            "era-2020s"
+          ],
+          "activatedPossessions": 123417,
+          "conditional": {
+            "ftaPerPossession": {
+              "n": 512,
+              "mean": -0.13456,
+              "se": 0.00329,
+              "t": -40.92538
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 512,
+              "mean": 0.16016,
+              "se": 0.15021,
+              "t": 1.06625
+            },
+            "makeRateAll": {
+              "n": 512,
+              "mean": 0.0033,
+              "se": 0.00277,
+              "t": 1.18925
+            }
+          }
+        }
+      },
+      {
+        "id": "zone.highPostVulnerability",
+        "module": "zoneResolution",
+        "defaultValue": 1,
+        "min": 0.3,
+        "max": 2,
+        "contract": {
+          "fixtures": "zone",
+          "activationPredicate": "zoneGap:HIGH_POST",
+          "activationMinimum": 60,
+          "conditionalMetrics": [
+            "count",
+            "makeRate",
+            "pointsPerPossession",
+            "expectedMake"
+          ],
+          "guardrailMetrics": [
+            "possessions"
+          ],
+          "expectedDirection": "higher vulnerability draws more high-post attacks and better looks",
+          "context": "high-post attacks against a live zone",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 1268,
+        "activationMet": true,
+        "atMax": {
+          "value": 2,
+          "seeds": 64,
+          "fixtures": [
+            "real-zone-nick-nurse",
+            "real-zone-erik-spoelstra",
+            "real-zone-rick-carlisle",
+            "real-zone-don-nelson"
+          ],
+          "activatedPossessions": 1268,
+          "conditional": {
+            "count": {
+              "n": 256,
+              "mean": 4.02734,
+              "se": 0.15293,
+              "t": 26.33398
+            },
+            "makeRate": {
+              "n": 252,
+              "mean": 0.0451,
+              "se": 0.01599,
+              "t": 2.82073
+            },
+            "pointsPerPossession": {
+              "n": 255,
+              "mean": 0.09051,
+              "se": 0.02947,
+              "t": 3.07066
+            },
+            "expectedMake": {
+              "n": 252,
+              "mean": 0.02166,
+              "se": 0.00296,
+              "t": 7.33036
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": 0.20703,
+              "se": 0.17123,
+              "t": 1.20907
+            }
+          }
+        },
+        "atMin": {
+          "value": 0.3,
+          "seeds": 64,
+          "fixtures": [
+            "real-zone-nick-nurse",
+            "real-zone-erik-spoelstra",
+            "real-zone-rick-carlisle",
+            "real-zone-don-nelson"
+          ],
+          "activatedPossessions": 1268,
+          "conditional": {
+            "count": {
+              "n": 256,
+              "mean": -3.42969,
+              "se": 0.12914,
+              "t": -26.55728
+            },
+            "makeRate": {
+              "n": 178,
+              "mean": -0.00162,
+              "se": 0.02524,
+              "t": -0.06413
+            },
+            "pointsPerPossession": {
+              "n": 200,
+              "mean": 0.02956,
+              "se": 0.05106,
+              "t": 0.57893
+            },
+            "expectedMake": {
+              "n": 178,
+              "mean": -0.02073,
+              "se": 0.00611,
+              "t": -3.39359
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": 0.21094,
+              "se": 0.11914,
+              "t": 1.7705
+            }
+          }
+        }
+      },
+      {
+        "id": "zone.cornerVulnerability",
+        "module": "zoneResolution",
+        "defaultValue": 1,
+        "min": 0.3,
+        "max": 2,
+        "contract": {
+          "fixtures": "zone",
+          "activationPredicate": "zoneGap:CORNER",
+          "activationMinimum": 60,
+          "conditionalMetrics": [
+            "count",
+            "makeRate",
+            "pointsPerPossession",
+            "expectedMake"
+          ],
+          "guardrailMetrics": [
+            "possessions"
+          ],
+          "expectedDirection": "higher vulnerability draws more corner attacks and better looks",
+          "context": "corner attacks against a live zone",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 9031,
+        "activationMet": true,
+        "atMax": {
+          "value": 2,
+          "seeds": 64,
+          "fixtures": [
+            "real-zone-nick-nurse",
+            "real-zone-erik-spoelstra",
+            "real-zone-rick-carlisle",
+            "real-zone-don-nelson"
+          ],
+          "activatedPossessions": 9031,
+          "conditional": {
+            "count": {
+              "n": 256,
+              "mean": 8.82031,
+              "se": 0.40013,
+              "t": 22.04347
+            },
+            "makeRate": {
+              "n": 256,
+              "mean": 0.02808,
+              "se": 0.00601,
+              "t": 4.67067
+            },
+            "pointsPerPossession": {
+              "n": 256,
+              "mean": 0.06714,
+              "se": 0.01267,
+              "t": 5.29912
+            },
+            "expectedMake": {
+              "n": 256,
+              "mean": 0.02977,
+              "se": 0.00113,
+              "t": 26.36431
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": 0.05078,
+              "se": 0.12971,
+              "t": 0.39149
+            }
+          }
+        },
+        "atMin": {
+          "value": 0.3,
+          "seeds": 64,
+          "fixtures": [
+            "real-zone-nick-nurse",
+            "real-zone-erik-spoelstra",
+            "real-zone-rick-carlisle",
+            "real-zone-don-nelson"
+          ],
+          "activatedPossessions": 9031,
+          "conditional": {
+            "count": {
+              "n": 256,
+              "mean": -8.14844,
+              "se": 0.34576,
+              "t": -23.56654
+            },
+            "makeRate": {
+              "n": 256,
+              "mean": -0.01201,
+              "se": 0.00625,
+              "t": -1.92279
+            },
+            "pointsPerPossession": {
+              "n": 256,
+              "mean": -0.02757,
+              "se": 0.01278,
+              "t": -2.15715
+            },
+            "expectedMake": {
+              "n": 256,
+              "mean": -0.00177,
+              "se": 0.00148,
+              "t": -1.20044
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": 0.01172,
+              "se": 0.13092,
+              "t": 0.08951
+            }
+          }
+        }
+      },
+      {
+        "id": "coach.actionMixInfluence",
+        "module": "coachIntelligence",
+        "defaultValue": 1,
+        "min": 0.3,
+        "max": 2,
+        "contract": {
+          "fixtures": "coach",
+          "activationPredicate": "always",
+          "activationMinimum": 200,
+          "conditionalMetrics": [
+            "mixDistanceFromNeutral",
+            "actionShare:PICK_AND_ROLL",
+            "actionShare:POST_UP"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "a larger influence pushes the mix further from neutral",
+          "context": "whole game",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 55966,
+        "activationMet": true,
+        "atMax": {
+          "value": 2,
+          "seeds": 64,
+          "fixtures": [
+            "coach-phil-jackson-vs-gregg-popovich",
+            "coach-red-auerbach-vs-pat-riley",
+            "coach-mike-dantoni-vs-jerry-sloan",
+            "coach-neutral-vs-neutral"
+          ],
+          "activatedPossessions": 55966,
+          "conditional": {
+            "mixDistanceFromNeutral": {
+              "n": 256,
+              "mean": 0.01572,
+              "se": 0.00212,
+              "t": 7.42924
+            },
+            "actionShare:PICK_AND_ROLL": {
+              "n": 256,
+              "mean": 0.02319,
+              "se": 0.00261,
+              "t": 8.86953
+            },
+            "actionShare:POST_UP": {
+              "n": 256,
+              "mean": 0.00548,
+              "se": 0.00208,
+              "t": 2.62869
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": 0.01172,
+              "se": 0.16793,
+              "t": 0.06978
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": 0.00203,
+              "se": 0.00388,
+              "t": 0.52391
+            }
+          }
+        },
+        "atMin": {
+          "value": 0.3,
+          "seeds": 64,
+          "fixtures": [
+            "coach-phil-jackson-vs-gregg-popovich",
+            "coach-red-auerbach-vs-pat-riley",
+            "coach-mike-dantoni-vs-jerry-sloan",
+            "coach-neutral-vs-neutral"
+          ],
+          "activatedPossessions": 55966,
+          "conditional": {
+            "mixDistanceFromNeutral": {
+              "n": 256,
+              "mean": -0.00915,
+              "se": 0.00232,
+              "t": -3.95192
+            },
+            "actionShare:PICK_AND_ROLL": {
+              "n": 256,
+              "mean": -0.06402,
+              "se": 0.00203,
+              "t": -31.60252
+            },
+            "actionShare:POST_UP": {
+              "n": 256,
+              "mean": -0.00364,
+              "se": 0.00216,
+              "t": -1.68498
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": 0.19922,
+              "se": 0.20684,
+              "t": 0.96316
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": 0.00419,
+              "se": 0.00441,
+              "t": 0.94944
+            }
+          }
+        }
+      },
+      {
+        "id": "coach.rosterSensitivity",
+        "module": "coachIntelligence",
+        "defaultValue": 1,
+        "min": 0.3,
+        "max": 2,
+        "contract": {
+          "fixtures": "coach",
+          "activationPredicate": "always",
+          "activationMinimum": 200,
+          "conditionalMetrics": [
+            "mixDistanceFromNeutral",
+            "actionShare:PICK_AND_ROLL",
+            "actionShare:POST_UP"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "a larger sensitivity bends the mix toward roster strengths",
+          "context": "whole game",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 55966,
+        "activationMet": true,
+        "atMax": {
+          "value": 2,
+          "seeds": 64,
+          "fixtures": [
+            "coach-phil-jackson-vs-gregg-popovich",
+            "coach-red-auerbach-vs-pat-riley",
+            "coach-mike-dantoni-vs-jerry-sloan",
+            "coach-neutral-vs-neutral"
+          ],
+          "activatedPossessions": 55966,
+          "conditional": {
+            "mixDistanceFromNeutral": {
+              "n": 256,
+              "mean": -0.00132,
+              "se": 0.00177,
+              "t": -0.74953
+            },
+            "actionShare:PICK_AND_ROLL": {
+              "n": 256,
+              "mean": 0.00113,
+              "se": 0.00215,
+              "t": 0.52611
+            },
+            "actionShare:POST_UP": {
+              "n": 256,
+              "mean": 0.00536,
+              "se": 0.00207,
+              "t": 2.58574
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": -0.18359,
+              "se": 0.15618,
+              "t": -1.17551
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": 0.00124,
+              "se": 0.00394,
+              "t": 0.31564
+            }
+          }
+        },
+        "atMin": {
+          "value": 0.3,
+          "seeds": 64,
+          "fixtures": [
+            "coach-phil-jackson-vs-gregg-popovich",
+            "coach-red-auerbach-vs-pat-riley",
+            "coach-mike-dantoni-vs-jerry-sloan",
+            "coach-neutral-vs-neutral"
+          ],
+          "activatedPossessions": 55966,
+          "conditional": {
+            "mixDistanceFromNeutral": {
+              "n": 256,
+              "mean": -0.00395,
+              "se": 0.0023,
+              "t": -1.72023
+            },
+            "actionShare:PICK_AND_ROLL": {
+              "n": 256,
+              "mean": -0.05517,
+              "se": 0.00198,
+              "t": -27.87908
+            },
+            "actionShare:POST_UP": {
+              "n": 256,
+              "mean": 0.00769,
+              "se": 0.0021,
+              "t": 3.66315
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": -0.16016,
+              "se": 0.15421,
+              "t": -1.03855
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": -0.00125,
+              "se": 0.00392,
+              "t": -0.31997
+            }
+          }
+        }
+      },
+      {
+        "id": "coach.offensiveAdjustmentMinEvents",
+        "module": "coachAdjustment",
+        "defaultValue": 6,
+        "min": 1,
+        "max": 16,
+        "contract": {
+          "fixtures": "coach",
+          "activationPredicate": "always",
+          "activationMinimum": 200,
+          "conditionalMetrics": [
+            "adjustmentCount",
+            "mixDistanceFromNeutral"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "a higher bar reduces adjustment count",
+          "context": "whole game",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 55966,
+        "activationMet": true,
+        "atMax": {
+          "value": 16,
+          "seeds": 64,
+          "fixtures": [
+            "coach-phil-jackson-vs-gregg-popovich",
+            "coach-red-auerbach-vs-pat-riley",
+            "coach-mike-dantoni-vs-jerry-sloan",
+            "coach-neutral-vs-neutral"
+          ],
+          "activatedPossessions": 55966,
+          "conditional": {
+            "adjustmentCount": {
+              "n": 256,
+              "mean": -2.10156,
+              "se": 0.0914,
+              "t": -22.99275
+            },
+            "mixDistanceFromNeutral": {
+              "n": 256,
+              "mean": 0.00015,
+              "se": 0.00124,
+              "t": 0.12201
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": -0.03125,
+              "se": 0.16576,
+              "t": -0.18852
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": 0.00219,
+              "se": 0.00269,
+              "t": 0.81376
+            }
+          }
+        },
+        "atMin": {
+          "value": 1,
+          "seeds": 64,
+          "fixtures": [
+            "coach-phil-jackson-vs-gregg-popovich",
+            "coach-red-auerbach-vs-pat-riley",
+            "coach-mike-dantoni-vs-jerry-sloan",
+            "coach-neutral-vs-neutral"
+          ],
+          "activatedPossessions": 55966,
+          "conditional": {
+            "adjustmentCount": {
+              "n": 256,
+              "mean": 5.22656,
+              "se": 0.12407,
+              "t": 42.12633
+            },
+            "mixDistanceFromNeutral": {
+              "n": 256,
+              "mean": 0.00645,
+              "se": 0.0019,
+              "t": 3.39265
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": -0.125,
+              "se": 0.18615,
+              "t": -0.67151
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": 0.00217,
+              "se": 0.00353,
+              "t": 0.61412
+            }
+          }
+        }
+      },
+      {
+        "id": "coach.defensiveAdjustmentMinEvents",
+        "module": "coachAdjustment",
+        "defaultValue": 5,
+        "min": 1,
+        "max": 16,
+        "contract": {
+          "fixtures": "coach",
+          "activationPredicate": "always",
+          "activationMinimum": 200,
+          "conditionalMetrics": [
+            "adjustmentCount"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "a higher bar reduces defensive assignment changes",
+          "context": "whole game",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 55966,
+        "activationMet": true,
+        "atMax": {
+          "value": 16,
+          "seeds": 64,
+          "fixtures": [
+            "coach-phil-jackson-vs-gregg-popovich",
+            "coach-red-auerbach-vs-pat-riley",
+            "coach-mike-dantoni-vs-jerry-sloan",
+            "coach-neutral-vs-neutral"
+          ],
+          "activatedPossessions": 55966,
+          "conditional": {
+            "adjustmentCount": {
+              "n": 256,
+              "mean": -0.05469,
+              "se": 0.03395,
+              "t": -1.61091
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": 0.08984,
+              "se": 0.07659,
+              "t": 1.17305
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": -0.00007,
+              "se": 0.00126,
+              "t": -0.05969
+            }
+          }
+        },
+        "atMin": {
+          "value": 1,
+          "seeds": 64,
+          "fixtures": [
+            "coach-phil-jackson-vs-gregg-popovich",
+            "coach-red-auerbach-vs-pat-riley",
+            "coach-mike-dantoni-vs-jerry-sloan",
+            "coach-neutral-vs-neutral"
+          ],
+          "activatedPossessions": 55966,
+          "conditional": {
+            "adjustmentCount": {
+              "n": 256,
+              "mean": 0,
+              "se": 0.04067,
+              "t": 0
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": 0.01172,
+              "se": 0.0663,
+              "t": 0.17675
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": 0.00046,
+              "se": 0.00112,
+              "t": 0.40857
+            }
+          }
+        }
+      },
+      {
+        "id": "coach.offensiveAdjustmentCooldown",
+        "module": "coachAdjustment",
+        "defaultValue": 30,
+        "min": 4,
+        "max": 60,
+        "contract": {
+          "fixtures": "coach",
+          "activationPredicate": "always",
+          "activationMinimum": 200,
+          "conditionalMetrics": [
+            "adjustmentCount",
+            "mixDistanceFromNeutral"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "a longer cooldown reduces adjustment count",
+          "context": "whole game",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 55966,
+        "activationMet": true,
+        "atMax": {
+          "value": 60,
+          "seeds": 64,
+          "fixtures": [
+            "coach-phil-jackson-vs-gregg-popovich",
+            "coach-red-auerbach-vs-pat-riley",
+            "coach-mike-dantoni-vs-jerry-sloan",
+            "coach-neutral-vs-neutral"
+          ],
+          "activatedPossessions": 55966,
+          "conditional": {
+            "adjustmentCount": {
+              "n": 256,
+              "mean": -0.74219,
+              "se": 0.06323,
+              "t": -11.73806
+            },
+            "mixDistanceFromNeutral": {
+              "n": 256,
+              "mean": 0.00024,
+              "se": 0.00074,
+              "t": 0.32061
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": -0.10547,
+              "se": 0.11911,
+              "t": -0.88547
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": -0.00061,
+              "se": 0.00155,
+              "t": -0.39545
+            }
+          }
+        },
+        "atMin": {
+          "value": 4,
+          "seeds": 64,
+          "fixtures": [
+            "coach-phil-jackson-vs-gregg-popovich",
+            "coach-red-auerbach-vs-pat-riley",
+            "coach-mike-dantoni-vs-jerry-sloan",
+            "coach-neutral-vs-neutral"
+          ],
+          "activatedPossessions": 55966,
+          "conditional": {
+            "adjustmentCount": {
+              "n": 256,
+              "mean": 1.88281,
+              "se": 0.26834,
+              "t": 7.01659
+            },
+            "mixDistanceFromNeutral": {
+              "n": 256,
+              "mean": 0.00174,
+              "se": 0.00063,
+              "t": 2.77018
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": -0.08984,
+              "se": 0.09563,
+              "t": -0.93954
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": -0.00104,
+              "se": 0.00137,
+              "t": -0.76231
+            }
+          }
+        }
+      },
+      {
+        "id": "coach.defensiveAdjustmentCooldown",
+        "module": "coachAdjustment",
+        "defaultValue": 34,
+        "min": 4,
+        "max": 60,
+        "contract": {
+          "fixtures": "coach",
+          "activationPredicate": "always",
+          "activationMinimum": 200,
+          "conditionalMetrics": [
+            "adjustmentCount"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "a longer cooldown reduces defensive assignment changes",
+          "context": "whole game",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 55966,
+        "activationMet": true,
+        "atMax": {
+          "value": 60,
+          "seeds": 64,
+          "fixtures": [
+            "coach-phil-jackson-vs-gregg-popovich",
+            "coach-red-auerbach-vs-pat-riley",
+            "coach-mike-dantoni-vs-jerry-sloan",
+            "coach-neutral-vs-neutral"
+          ],
+          "activatedPossessions": 55966,
+          "conditional": {
+            "adjustmentCount": {
+              "n": 256,
+              "mean": 0.00781,
+              "se": 0.0207,
+              "t": 0.37733
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": -0.03125,
+              "se": 0.04063,
+              "t": -0.76919
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": 0.00025,
+              "se": 0.00081,
+              "t": 0.3113
+            }
+          }
+        },
+        "atMin": {
+          "value": 4,
+          "seeds": 64,
+          "fixtures": [
+            "coach-phil-jackson-vs-gregg-popovich",
+            "coach-red-auerbach-vs-pat-riley",
+            "coach-mike-dantoni-vs-jerry-sloan",
+            "coach-neutral-vs-neutral"
+          ],
+          "activatedPossessions": 55966,
+          "conditional": {
+            "adjustmentCount": {
+              "n": 256,
+              "mean": -0.01172,
+              "se": 0.01612,
+              "t": -0.72694
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": 0.05469,
+              "se": 0.05822,
+              "t": 0.9394
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": 0.00073,
+              "se": 0.00086,
+              "t": 0.84538
+            }
+          }
+        }
+      },
+      {
+        "id": "coach.adjustmentMagnitude",
+        "module": "coachAdjustment",
+        "defaultValue": 0.06,
+        "min": 0.01,
+        "max": 0.2,
+        "contract": {
+          "fixtures": "coach",
+          "activationPredicate": "always",
+          "activationMinimum": 200,
+          "conditionalMetrics": [
+            "mixDistanceFromNeutral",
+            "actionShare:SPOT_UP"
+          ],
+          "guardrailMetrics": [
+            "possessions",
+            "makeRateAll"
+          ],
+          "expectedDirection": "a larger step moves the action mix further per adjustment",
+          "context": "whole game",
+          "suspectedGuardrail": false
+        },
+        "seedsUsed": 64,
+        "seedBudget": 960,
+        "activatedPossessions": 55966,
+        "activationMet": true,
+        "atMax": {
+          "value": 0.2,
+          "seeds": 64,
+          "fixtures": [
+            "coach-phil-jackson-vs-gregg-popovich",
+            "coach-red-auerbach-vs-pat-riley",
+            "coach-mike-dantoni-vs-jerry-sloan",
+            "coach-neutral-vs-neutral"
+          ],
+          "activatedPossessions": 55966,
+          "conditional": {
+            "mixDistanceFromNeutral": {
+              "n": 256,
+              "mean": 0.01219,
+              "se": 0.00194,
+              "t": 6.28263
+            },
+            "actionShare:SPOT_UP": {
+              "n": 256,
+              "mean": 0.0055,
+              "se": 0.00182,
+              "t": 3.0157
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": -0.13281,
+              "se": 0.16621,
+              "t": -0.79905
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": 0.00232,
+              "se": 0.00345,
+              "t": 0.67328
+            }
+          }
+        },
+        "atMin": {
+          "value": 0.01,
+          "seeds": 64,
+          "fixtures": [
+            "coach-phil-jackson-vs-gregg-popovich",
+            "coach-red-auerbach-vs-pat-riley",
+            "coach-mike-dantoni-vs-jerry-sloan",
+            "coach-neutral-vs-neutral"
+          ],
+          "activatedPossessions": 55966,
+          "conditional": {
+            "mixDistanceFromNeutral": {
+              "n": 256,
+              "mean": -0.00132,
+              "se": 0.00138,
+              "t": -0.95426
+            },
+            "actionShare:SPOT_UP": {
+              "n": 256,
+              "mean": -0.00568,
+              "se": 0.00127,
+              "t": -4.47559
+            }
+          },
+          "guardrails": {
+            "possessions": {
+              "n": 256,
+              "mean": -0.23047,
+              "se": 0.15476,
+              "t": -1.48925
+            },
+            "makeRateAll": {
+              "n": 256,
+              "mean": -0.0008,
+              "se": 0.00281,
+              "t": -0.28414
+            }
+          }
+        }
+      }
+    ]
+  },
+  "outputHash": "cf96f88ac046fffa335b72ea7be08245f43c307521358319c73445c3df5cd844"
+}

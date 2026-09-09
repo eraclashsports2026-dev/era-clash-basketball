@@ -1,0 +1,24 @@
+{
+  "v6DryRunTaintVersion": "1.0.0",
+  "what": "Two team-seasons selected into Historical V6 were simulated by Candidate 2 during the version-1 runner dry run, outside the formal run.",
+  "howItHappened": "The dry run's progressive-equivalence section built its evaluator from pkg.m.matchups[0] — the REAL first V6 matchup — rather than from a mock matchup. It played 128 games per surface at the precheck, decision and escalation tiers and recorded per-trait reported states for both sides.",
+  "evidence": {
+    "artifact": "data/validation/6c4c2/superseded/historical-v6-runner-dry-run-v1-TAINTED.json",
+    "field": "progressiveEquivalence.sampleResult",
+    "matchupId": "v6m-1950s",
+    "observedStates": [
+      { "side": "teamB", "traitId": "post-centred, interior scoring", "precheck": "INCONCLUSIVE", "decision": "PASS" },
+      { "side": "teamB", "traitId": "POST_HEAVY", "precheck": "INCONCLUSIVE", "decision": "PASS" }
+    ]
+  },
+  "taintedTeamSeasons": [
+    { "key": "bostonceltics|195051", "teamName": "Boston Celtics", "season": "1950-51", "eraStyleId": "1950s" },
+    { "key": "minneapolislakers|195556", "teamName": "Minneapolis Lakers", "season": "1955-56", "eraStyleId": "1950s" }
+  ],
+  "howItWasCaught": "the V6 seal's noV6IdInAnySimulationOutput gate. It searches only output-bearing artifacts, so it distinguishes a definition — which is how an unconsumed set exists at all — from a result. It found v6m-1950s in the dry-run artifact and refused the seal.",
+  "remedy": "Both team-seasons are excluded from the V6 pool with reason SIMULATED_DURING_V6_DRY_RUN, the eligibility and selection policies are re-frozen at version 3.0.0, and the 1950s matchup is re-selected from the remaining eligible teams. The dry run no longer builds its evaluator from a real V6 matchup; it constructs a mock matchup from calibration fixtures.",
+  "whyNotWaived": "the seal artifact claims Candidate 2 has never been simulated against any of the sixteen selected team-seasons. That claim would have been false for two of them. Weakening the claim to fit what happened would make the seal worthless; excluding the two team-seasons keeps it true.",
+  "whatWasNotAffected": "no engine behaviour changed, no threshold moved, no Candidate 2 parameter was touched, and the observed states were not used to alter anything. The taint is that the team-seasons are no longer unseen, which is sufficient on its own to disqualify them.",
+  "syntheticStressHoldoutV2AccessCount": 0,
+  "historicalHoldoutV6AccessCount": 0
+}

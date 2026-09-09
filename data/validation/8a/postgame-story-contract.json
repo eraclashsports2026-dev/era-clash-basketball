@@ -1,0 +1,48 @@
+{
+  "artifact": "postgame-story-contract",
+  "phase": "8A",
+  "deterministicOpening": {
+    "headline": "How <Winner> Won",
+    "availability": "immediate, computed server-side with the result; no provider involved",
+    "leadsWith": [
+      "the decisive individual performance",
+      "the mechanism (targeted matchup, movement, or the glass)",
+      "where the game turned",
+      "how it closed"
+    ],
+    "neverLeadsWith": [
+      "the pregame prediction",
+      "a generic 'comfortable win'",
+      "chemistry",
+      "a raw internal edge",
+      "a candidate score"
+    ]
+  },
+  "quarterFlow": {
+    "source": "period scores and possession position",
+    "phases": [
+      "Early",
+      "Mid",
+      "Late"
+    ],
+    "clock": "NEVER fabricated — the engine records periods and possession order, not a wall clock"
+  },
+  "keyMoments": {
+    "count": "3-5",
+    "salienceFloor": 6,
+    "diversity": "one moment per category"
+  },
+  "matchupPatterns": {
+    "placement": "game-long behaviour only",
+    "duplication": "no sentence appears in both moments and patterns"
+  },
+  "coaching": {
+    "adjustments": "named coach, quarter phase and score state",
+    "declined": "kept separate from applied",
+    "enums": "never printed raw"
+  },
+  "draftConsequences": {
+    "source": "actual before/after roster evaluations",
+    "counterfactuals": "never claimed"
+  }
+}

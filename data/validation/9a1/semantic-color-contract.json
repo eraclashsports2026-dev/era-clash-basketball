@@ -1,0 +1,101 @@
+{
+  "artifact": "semantic-color-contract",
+  "phase": "9A.1 — Basketball theme decision lab",
+  "status": "FROZEN",
+  "version": "1.0.0",
+  "roles": {
+    "teamGold": "Team Gold — the user's side in solo play; scores, edges and holds on that side; winning emphasis",
+    "teamBlue": "Team Blue — the opposing side (Legend Rival in solo play); scores, edges and holds on that side",
+    "coachViolet": "Coach Chaos, Era intelligence and time mechanics — a third identity, never a team",
+    "success": "success and valid states",
+    "warning": "warnings that are not yet errors",
+    "danger": "errors, destructive actions and losses",
+    "disabled": "unavailable controls",
+    "neutral": "neutral structure and typography"
+  },
+  "defaults": {
+    "teamGold": "#E4AA31",
+    "teamBlue": "#2B82DE",
+    "coachViolet": "#8E5BDD",
+    "success": "#35B875",
+    "warning": "#E1A72C",
+    "danger": "#E65353",
+    "disabled": "#6B7280",
+    "neutral": "#E7EAF0"
+  },
+  "regionsForAudit": {
+    "teamGold": [
+      ".ec-ta-team[data-team=\"gold\"]",
+      ".ec-pc[data-team=\"gold\"]",
+      ".ec-ta-team-label:not(.ec-ta-team-label--blue)",
+      ".ec-continue-team--gold",
+      "[data-side=\"gold\"]",
+      ".ec-dock-score-gold"
+    ],
+    "teamBlue": [
+      ".ec-ta-team[data-team=\"blue\"]",
+      ".ec-pc[data-team=\"blue\"]",
+      ".ec-ta-team-label--blue",
+      ".ec-continue-team--blue",
+      "[data-side=\"blue\"]",
+      ".ec-dock-score-blue"
+    ],
+    "coachViolet": [
+      ".ec-coach-card",
+      ".ec-ta-coach",
+      ".ec-intel-era",
+      ".ec-cc-offers"
+    ],
+    "success": [
+      "[data-tone=\"success\"]",
+      ".ec-mode-badge--available"
+    ],
+    "danger": [
+      "[role=\"alert\"]",
+      "[data-tone=\"danger\"]"
+    ]
+  },
+  "perTheme": {
+    "fracture-core": {
+      "teamGold": "#E4AA31",
+      "teamBlue": "#3F8FE6",
+      "coachViolet": "#A27BE6",
+      "success": "#35B875",
+      "danger": "#EE6A6A"
+    },
+    "night-court": {
+      "teamGold": "#E8B13C",
+      "teamBlue": "#4A92EA",
+      "coachViolet": "#A08AE6",
+      "success": "#2FA96D",
+      "danger": "#E06060"
+    },
+    "modern-court": {
+      "teamGold": "#E0A52A",
+      "teamBlue": "#5296E3",
+      "coachViolet": "#A991E8",
+      "success": "#34A772",
+      "danger": "#EA6E6E"
+    },
+    "hardwood-luxe": {
+      "teamGold": "#E5B23E",
+      "teamBlue": "#2C79CF",
+      "coachViolet": "#8B61CE",
+      "success": "#37A66E",
+      "danger": "#D2504A"
+    }
+  },
+  "rule": "A theme may adjust luminance for contrast; it may never reverse a meaning. Team Gold is the user's side, Team Blue the Legend Rival, violet is Coach/Era, red is danger, green is success, platinum/graphite is neutral.",
+  "visibleLabels": {
+    "solo": {
+      "gold": "TEAM GOLD · YOUR FIVE",
+      "blue": "TEAM BLUE · LEGEND RIVAL"
+    },
+    "internal": [
+      "cpu",
+      "legendCpu",
+      "blueRoster"
+    ],
+    "note": "Visible labels only; stored result sides are not remapped."
+  }
+}

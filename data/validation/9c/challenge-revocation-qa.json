@@ -1,0 +1,31 @@
+{
+  "artifact": "challenge-revocation-qa",
+  "phase": "9C — Challenges + Persistent Competitive Identity V1",
+  "generatedAt": "2026-09-05T06:24:18.421Z",
+  "derivedFrom": [
+    "challenge-history-qa",
+    "challenge-deployed-qa"
+  ],
+  "checks": [
+    {
+      "check": "revocation shows in CREATED and keeps the completed response (and the attempt in progress)",
+      "pass": true,
+      "detail": "revoke → revoked · listed revoked · responses completed,started",
+      "from": "challenge-history-qa"
+    },
+    {
+      "check": "a live revoked challenge reads revoked and refuses new attempts",
+      "pass": true,
+      "detail": "revoked",
+      "from": "challenge-deployed-qa"
+    },
+    {
+      "check": "the revoked invitation renders honestly on the preview",
+      "pass": true,
+      "detail": "",
+      "from": "challenge-deployed-qa"
+    }
+  ],
+  "passed": true,
+  "e2e": "revoke is the creator's; the link then reads withdrawn; accept refused"
+}

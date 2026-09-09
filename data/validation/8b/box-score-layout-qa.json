@@ -1,0 +1,31 @@
+{
+  "artifact": "box-score-layout-qa",
+  "phase": "8B",
+  "defect": "Made-attempted values such as 40-79, 38-79 and 21-28 wrapped onto a second line.",
+  "rootCause": "A fixed table layout with percentage column widths gave the pair columns less width than their widest real value, and only the player cell was nowrap.",
+  "fix": "Pair columns (FG, 3PT, FT) get their own wider track, all columns use pixel widths, the table min-width rose to 760px, and every cell is white-space: nowrap with normal word-break.",
+  "measuredInBrowser": {
+    "wrappedCells": 0,
+    "columnsAligned": true,
+    "tables": 1,
+    "pageHorizontalOverflow": false,
+    "sampleTotalsRow": "TOTAL 93 37-78 5-13 14-22 6 30 36 13 3 1 10"
+  },
+  "columns": [
+    "PLAYER",
+    "PTS",
+    "FG",
+    "3PT",
+    "FT",
+    "OREB",
+    "DREB",
+    "REB",
+    "AST",
+    "STL",
+    "BLK",
+    "TO"
+  ],
+  "pfColumn": "absent",
+  "mobile": "the player column is sticky and the table scrolls inside its own container; the page never scrolls horizontally",
+  "regressionTest": "e2e/phase8a-chaos.spec.js measures rendered cell heights and fails if any stat cell exceeds one line"
+}

@@ -1,0 +1,53 @@
+{
+  "artifact": "candidate2-formal-execution-authorization",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run exec:c3-preflight",
+  "generatedAt": "2026-08-27T20:55:34.782Z",
+  "gitCommit": "775a245168ebac131c51c91c3f6cb125bb0af599",
+  "branch": "phase-6c4c3-candidate2-formal-execution",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "candidate2FormalExecutionAuthorizationVersion": "1.0.0",
+    "operator": "joseph.johnson@indagare.com",
+    "reason": "Phase 6C4C3 compound preflight: verify Candidate 2 and both frozen stage packages before any seal opens",
+    "authorizationTimestamp": "2026-08-27T16:35:46-04:00",
+    "authorizedAtCommit": "775a245168ebac131c51c91c3f6cb125bb0af599",
+    "candidateId": "Candidate 2",
+    "candidateCommit": "136b6446a8a65c7b9b551eed120cf0d4aa5078fd",
+    "candidateCoreHash": "3733b648f050a4f50f9dc3cb6ecf62fce419dd282f24c910b91e7b077d63711d",
+    "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+    "calibrationVersion": "1.2.0",
+    "historicalV6PackageHash": "1f5d03dda500f1d7ac68f059f9b4d9ee313e7cc705dd619aa3b669f1e0e56ba7",
+    "syntheticPackageHash": "68105b1979dde9753e7c0561521cfb44a1dd2628df9defa2a6bfd8fcca728a6f",
+    "compoundPackageHash": "d72a6914dfd5cf7b788fca719241af210b303d35c08dd6b67c0de3a5ec12632f",
+    "preflightHash": "04cb152eabc1cff1aa98f03bb219e6c0ca7a62a3ca0bcba1bfcbd4097abdacc1",
+    "permits": [
+      "Historical Holdout V6 formal access, exactly once",
+      "Synthetic Stress Holdout V2 formal access, exactly once, and only after Historical V6 returns PASS on this same core and parameter set",
+      "compound Candidate 2 formal verdict generation"
+    ],
+    "doesNotPermit": [
+      "any change to the candidate source, core, parameters, data, coaches, eras or module versions",
+      "any change to a policy, target, margin, seed, reference, trait scope or runner semantic",
+      "post-holdout tuning of any kind",
+      "opening either set a second time",
+      "opening the Synthetic set without a passing Historical V6",
+      "building or deploying a preview, deploying production, activating a production flag, or merging to main"
+    ],
+    "stageOrder": [
+      "historical-holdout-v6",
+      "synthetic-stress-holdout-v2"
+    ],
+    "preparedCommands": {
+      "stageOne": "npm run validation:historical-v6 -- --run --unlock-holdout --unlock-historical-holdout-v6 --operator=\"<email>\" --reason=\"<why>\"",
+      "stageTwo": "npm run validation:synthetic-candidate2 -- --run --unlock-holdout --unlock-synthetic-stress-holdout-v2 --operator=\"<email>\" --reason=\"<why>\"",
+      "stageThree": "npm run validation:candidate2-formal-verdict -- --issue"
+    },
+    "authorizationHash": "4e41aade0a0c6197f0900a8f3722dafee7097d204b3971e349dceaf34fd173fa"
+  },
+  "outputHash": "2a6350ec48212589bcaa5e65ec00fe50f6b010f82ec3d0103e70265478a63a12"
+}

@@ -1,0 +1,118 @@
+// ── Phase 7B — Candidate 3 preview surfaces ──────────────────────────────────
+// These run against a harness with the preview engine ON, because coaching
+// detail, key moments, matchup patterns and series continuity only exist on
+// Candidate 3 — the engine the Wave 1 testers are actually using.
+import { test, expect } from "@playwright/test";
+
+const buildMatchup = async (page) => {
+  // Chaos Clash is the default Play experience as of Phase 8A. These tests
+  // describe the MANUAL builder, which now lives behind Dream Matchup, so they
+  // sign in and switch to it instead of asserting against the Chaos board.
+  await page.addInitScript(() => {
+    try { localStorage.setItem("ec_account", "1"); localStorage.setItem("ec_name", "E2E"); } catch (e) {}
+  });
+  await page.goto("/");
+  // Phase 8C.1: the permanent mode shelf left the Play surface, so a mode is
+  // chosen from the registry-driven Play menu.
+  await page.getByRole("button", { name: /^Play/ }).click();
+  await page.getByRole("menuitem", { name: /Dream Matchup/ }).click();
+  await page.getByRole("button", { name: /Random Team/ }).first().click();
+  await page.getByRole("tab", { name: /Random Team/ }).click();
+  await page.getByRole("button", { name: /Continue to Coaches/ }).click();
+  const next = page.getByRole("button", { name: /Continue to Era Style/ });
+  await next.waitFor({ state: "visible", timeout: 8000 });
+  for (let i = 0; i < 3 && (await next.isDisabled()); i++) {
+    await page.getByRole("button", { name: "Choose Coach" }).first().click();
+    const d = page.getByRole("dialog", { name: /Select coach/i });
+    await d.waitFor({ state: "visible", timeout: 8000 });
+    await d.getByRole("button", { name: /^Select / }).click();
+    await d.waitFor({ state: "detached", timeout: 8000 }).catch(() => {});
+  }
+  await next.click();
+  await page.getByRole("button", { name: /Lock Era Style/ }).click();
+};
+const runSim = async (page) => {
+  await page.getByRole("button", { name: /RUN THE SIM/ }).click();
+  await expect(page.getByText(/TEAM (GOLD|BLUE) WINS/)).toBeVisible({ timeout: 20000 });
+};
+
+test("P1: Ready and Postgame show the SAME pregame read", async ({ page }) => {
+  await buildMatchup(page);
+  // capture the read shown on the Ready screen
+  await expect(page.getByText("MATCHUP PREVIEW")).toBeVisible({ timeout: 10000 });
+  const readyText = await page.locator("body").innerText();
+  const readRow = (t) => (t.match(/(Talent|Construction|Creation|Spacing|Defense|Rebounding)\n(Strong Gold Edge|Strong Blue Edge|Gold Edge|Blue Edge|Even)/g) ?? []);
+  const before = readRow(readyText);
+  expect(before.length, "the ready screen shows category reads").toBeGreaterThan(0);
+  await runSim(page);
+  await page.getByRole("tab", { name: "Coaching & Strategy" }).click();
+  await expect(page.getByText("BEFORE TIPOFF")).toBeVisible();
+  const after = readRow(await page.locator("body").innerText());
+  expect(after, "the stored read is reused verbatim").toEqual(before);
+});
+
+test("P2: no raw engine numbers reach the user", async ({ page }) => {
+  await buildMatchup(page);
+  await runSim(page);
+  for (const tab of ["Final", "Box Score", "Game Story", "Coaching & Strategy"]) {
+    await page.getByRole("tab", { name: tab }).click();
+    const body = await page.locator("body").innerText();
+    expect(body, `${tab}: raw edge value leaked`).not.toMatch(/\b(Gold|Blue) \+\d+\b/);
+    expect(body, `${tab}: team rating total leaked`).not.toMatch(/RATING\s+\d{3,4}/);
+    expect(body, `${tab}: chemistry presented as an engine input`).not.toMatch(/unlock bonuses|Computed from ratings/i);
+  }
+});
+
+test("P3: Coaching & Strategy shows real recorded coaching", async ({ page }) => {
+  await buildMatchup(page);
+  await runSim(page);
+  await page.getByRole("tab", { name: "Coaching & Strategy" }).click();
+  // Phase 8B reorganised this tab into three sub-sections, so the three
+  // headings are reachable one at a time rather than all at once.
+  for (const sec of ["Offensive Scheme", "Defensive Scheme", "In-Game Adjustments"]) {
+    await expect(page.getByRole("tab", { name: sec })).toBeVisible();
+  }
+  await page.getByRole("tab", { name: "In-Game Adjustments" }).click();
+  const body = await page.locator("body").innerText();
+  // Adjustments are attributed to a NAMED coach — either the single form
+  // ("…, so Coach X did Y.") or the grouped form ("Coach X did Y twice
+  // between Q1 and Q3 as …") — or they are explicitly absent.
+  expect(body).toMatch(/(so )?Coach [A-Z][A-Za-z'\- ]+ .*(so Coach|times|twice)|so Coach [A-Z]|No in-game adjustment was recorded/);
+  expect(body).not.toMatch(/so the staff/);
+  // No internal enum and no fabricated clock reaches the screen.
+  expect(body).not.toMatch(/switch_heavy|drop_heavy|MAN_ILLEGAL_DEFENSE/);
+  expect(body).not.toMatch(/\bPoss\. \d+/);
+});
+
+test("P4: key moments and matchup patterns are separate sections", async ({ page }) => {
+  await buildMatchup(page);
+  await runSim(page);
+  await expect(page.getByText("KEY MOMENTS")).toBeVisible();
+  const body = await page.locator("body").innerText();
+  // moments carry a period, never an invented game clock
+  expect(body).not.toMatch(/Q[1-4]\s+\d+:\d{2}/);
+  const km = body.slice(body.indexOf("KEY MOMENTS"), body.indexOf("MATCHUP PATTERNS") > 0 ? body.indexOf("MATCHUP PATTERNS") : undefined);
+  // a game-long count belongs to patterns, not moments
+  expect(km).not.toMatch(/\b\d+ times for \d+ points\b/);
+});
+
+test("P5: a Candidate 3 result never offers a different-engine series", async ({ page }) => {
+  await buildMatchup(page);
+  await runSim(page);
+  await expect(page.getByRole("button", { name: /Best of 7/i })).toHaveCount(0);
+  await expect(page.getByText(/Best of 7 is unavailable in this preview/)).toBeVisible();
+  await expect(page.getByRole("button", { name: /Rematch/i }).first()).toBeVisible();
+});
+
+test("P6: one box score, no PF column", async ({ page }) => {
+  await buildMatchup(page);
+  await runSim(page);
+  await page.getByRole("tab", { name: "Box Score" }).click();
+  await expect(page.getByText("BOX SCORE", { exact: true })).toBeVisible();
+  await expect(page.getByText("POSSESSION BOX SCORE")).toHaveCount(0);
+  await expect(page.getByText("FULL BOX SCORE")).toHaveCount(0);
+  const headers = await page.locator("th").allInnerTexts();
+  expect(headers).not.toContain("PF");
+  expect(headers).toContain("OREB");
+  expect(headers).toContain("TO");
+});

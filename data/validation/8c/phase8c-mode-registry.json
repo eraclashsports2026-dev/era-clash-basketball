@@ -1,0 +1,116 @@
+{
+  "artifact": "phase8c-mode-registry",
+  "phase": "8C",
+  "registryVersion": "1.0.0",
+  "singleSource": "src/navigation.js — the Play dropdown, the mode shelf and the membership resolver all read it",
+  "statuses": [
+    "AVAILABLE",
+    "ACCOUNT_REQUIRED",
+    "SUBSCRIPTION_REQUIRED",
+    "COMMISSIONER_REQUIRED",
+    "COMING_SOON",
+    "DISABLED_FOR_PREVIEW"
+  ],
+  "statusLabels": {
+    "AVAILABLE": null,
+    "ACCOUNT_REQUIRED": "Free account",
+    "SUBSCRIPTION_REQUIRED": "EraClash+",
+    "COMMISSIONER_REQUIRED": "Commissioner",
+    "COMING_SOON": "Coming soon",
+    "DISABLED_FOR_PREVIEW": "Not in preview"
+  },
+  "modes": [
+    {
+      "id": "chaos",
+      "label": "Chaos Clash",
+      "implemented": true,
+      "capability": "CHAOS_CLASH",
+      "byTier": {
+        "GUEST": "AVAILABLE",
+        "FREE": "AVAILABLE",
+        "PLUS": "AVAILABLE",
+        "COMMISSIONER": "AVAILABLE"
+      }
+    },
+    {
+      "id": "dream",
+      "label": "Dream Matchup",
+      "implemented": true,
+      "capability": "DREAM_MATCHUP",
+      "byTier": {
+        "GUEST": "ACCOUNT_REQUIRED",
+        "FREE": "AVAILABLE",
+        "PLUS": "AVAILABLE",
+        "COMMISSIONER": "AVAILABLE"
+      }
+    },
+    {
+      "id": "daily",
+      "label": "Daily Clash",
+      "implemented": true,
+      "capability": "DAILY",
+      "byTier": {
+        "GUEST": "AVAILABLE",
+        "FREE": "AVAILABLE",
+        "PLUS": "AVAILABLE",
+        "COMMISSIONER": "AVAILABLE"
+      }
+    },
+    {
+      "id": "bo7",
+      "label": "Best of 7",
+      "implemented": true,
+      "capability": "BEST_OF_7",
+      "byTier": {
+        "GUEST": "SUBSCRIPTION_REQUIRED",
+        "FREE": "AVAILABLE",
+        "PLUS": "AVAILABLE",
+        "COMMISSIONER": "AVAILABLE"
+      }
+    },
+    {
+      "id": "win82",
+      "label": "Win 82",
+      "implemented": true,
+      "capability": "WIN_82",
+      "byTier": {
+        "GUEST": "SUBSCRIPTION_REQUIRED",
+        "FREE": "AVAILABLE",
+        "PLUS": "AVAILABLE",
+        "COMMISSIONER": "AVAILABLE"
+      }
+    },
+    {
+      "id": "tournament",
+      "label": "Tournament",
+      "implemented": true,
+      "capability": "TOURNAMENT_JOIN",
+      "byTier": {
+        "GUEST": "ACCOUNT_REQUIRED",
+        "FREE": "AVAILABLE",
+        "PLUS": "AVAILABLE",
+        "COMMISSIONER": "AVAILABLE"
+      }
+    },
+    {
+      "id": "gauntlet",
+      "label": "Era Gauntlet",
+      "implemented": false,
+      "capability": "ERA_GAUNTLET",
+      "byTier": {
+        "GUEST": "COMING_SOON",
+        "FREE": "COMING_SOON",
+        "PLUS": "COMING_SOON",
+        "COMMISSIONER": "COMING_SOON"
+      }
+    }
+  ],
+  "behaviours": {
+    "AVAILABLE": "opens the mode",
+    "ACCOUNT_REQUIRED": "opens the free-account gate — never a payment page",
+    "SUBSCRIPTION_REQUIRED": "routes to /membership with feature, required tier and return path",
+    "COMMISSIONER_REQUIRED": "routes to /membership with required=commissioner",
+    "COMING_SOON": "opens the mode information page — never checkout",
+    "DISABLED_FOR_PREVIEW": "explains the Candidate 3 limitation — never sold past"
+  }
+}

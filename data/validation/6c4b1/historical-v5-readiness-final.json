@@ -1,0 +1,95 @@
+{
+  "artifact": "historical-v5-readiness-final",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run v5:readiness",
+  "generatedAt": "2026-08-27T04:46:20.638Z",
+  "gitCommit": "3db4e7b8202a3658b20b51c0b5ac1df204182e1d",
+  "branch": "phase-6c4b1-v5-freeze-and-seal",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "historicalV5ReadinessFinalVersion": "1.0.0",
+    "candidate1LockValid": true,
+    "candidate1CoreStable": true,
+    "identitySeparationCertified": true,
+    "realizedZoneMeasurementCertified": true,
+    "eraReferencesCertified": true,
+    "historicalObservabilityCertified": true,
+    "candidate1ResidualsDisposed": true,
+    "practicalMarginPolicyFrozen": true,
+    "candidatePoolValid": true,
+    "selectionDeterministic": true,
+    "manifestValid": true,
+    "seedsDisjoint": true,
+    "runnerDryRunPassed": true,
+    "v5Sealed": true,
+    "v5AccessCountZero": true,
+    "syntheticV2StillSealed": true,
+    "allBlockersResolved": true,
+    "productionUntouched": true,
+    "mayOpenInPhase6C4B2": true,
+    "gatesFailed": [],
+    "candidate": {
+      "candidateId": "Candidate 1",
+      "lockRevision": 2,
+      "coreHash": "de57e1a96e1fd1450d1aea9c5463b0138a56d77bbf58c748ba042e6f78f5c94d",
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "possessionCalibrationVersion": "1.1.0",
+      "calibrationStatus": "DEVELOPMENT_LOCKED_SCOPED",
+      "validationAttemptStatus": "NOT_RUN"
+    },
+    "holdoutState": {
+      "historicalHoldoutV3": {
+        "state": "CONSUMED",
+        "accessCount": 1,
+        "verdict": "FAIL",
+        "failureClass": "NONIDENTIFIABLE_MEASUREMENT_SURFACE"
+      },
+      "historicalHoldoutV4": {
+        "state": "CONSUMED",
+        "accessCount": 1,
+        "verdict": "FAIL",
+        "failureClass": "OBSERVABLE_HISTORICAL_TRAIT_FIDELITY_FAILURE"
+      },
+      "historicalHoldoutV5": {
+        "state": "SEALED_UNREAD",
+        "accessCount": 0,
+        "verdict": "NOT_RUN"
+      },
+      "syntheticStressHoldoutV2": {
+        "state": "SEALED_UNREAD",
+        "accessCount": 0
+      }
+    },
+    "limitations": [
+      {
+        "id": "PAIR_TYPES_ALL_SAME_ERA_CONTRAST",
+        "detail": "All eight selected pairs are typed SAME_ERA_CONTRAST_PAIR. The pool was not built with head-to-head source verification, so no actual-opponent label could be earned honestly. One selected pair (2020-21 Knicks vs 2020-21 76ers) is same-season and could be verified as ACTUAL_REGULAR_SEASON_OPPONENTS by a future source check; the others are cross-season and cannot be actual opponents by construction."
+      },
+      {
+        "id": "FOUR_METRICS_UNCERTIFIED",
+        "detail": "isolationShare, threeShare, stealRateForced, rimShareAgainst remain uncertified under Candidate 1. threeShare, stealRateForced and rimShareAgainst fail practical separation — their maximal control range is smaller than their own practical margin — and isolationShare fails its neutral-cell floor. Traits claiming them are excluded before scoring, never scored weakly."
+      },
+      {
+        "id": "NINETIES_REFERENCE_DISCRIMINATION",
+        "detail": "The 1990s era reference separates its three era calibration teams by only 0.011 points per possession, the narrowest of the eight. It passes every frozen criterion, but a V5 offensive-quality finding in the 1990s rests on a reference that distinguishes its own era's champions weakly."
+      },
+      {
+        "id": "REFERENCE_ZONE_SHARE_ZERO",
+        "detail": "Realized zone share is 0 for all eight era references: calibration-profile fives cannot reach the zone shells' personnel gates. defensiveZoneShare is certified on public-card controls but is not observable on the reference surface, so no V5 trait is scored on it."
+      },
+      {
+        "id": "MODULE_VERSIONS_STALE",
+        "detail": "Every engine module version reads the same under Candidate 1 as under Candidate 0 although several modules changed semantics. The calibration version separates the candidates in every identity surface so no collision remains, but module-level provenance is imprecise. Recommended for the Candidate 2 lock procedure, not repairable without invalidating Candidate 1's lock."
+      },
+      {
+        "id": "V4_DIAGNOSTICS_CONSUMED",
+        "detail": "Candidate 1 was developed against Historical V4's diagnostics, so V4 can never again be evidence of generalisation for this candidate. That is precisely what V5 exists to provide, and why it must be opened exactly once."
+      }
+    ]
+  },
+  "outputHash": "4960e335b7261ae95a96af63d746a67f6b312e9a426c922da3f2884b9116917c"
+}

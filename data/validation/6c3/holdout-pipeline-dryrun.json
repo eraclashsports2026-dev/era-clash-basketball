@@ -1,0 +1,124 @@
+{
+  "artifact": "holdout-pipeline-dryrun",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run validation:dryrun",
+  "generatedAt": "2026-08-26T20:14:10.185Z",
+  "gitCommit": "500e30ae72f75bee7928253a3017fce09896cc43",
+  "branch": "phase-6c3-formal-holdout-preview",
+  "parameterSetHash": null,
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "formalHoldoutRunVersion": "1.0.0",
+    "mockMembers": [
+      "h3-1951-52-lakers",
+      "h3-1956-57-celtics",
+      "h3-1958-59-celtics",
+      "h3-1962-63-celtics"
+    ],
+    "mockMembersAreHoldoutFixtures": false,
+    "checks": [
+      {
+        "name": "mockMembersAreNotHoldoutFixtures",
+        "pass": true,
+        "detail": "4 development fixtures: h3-1951-52-lakers, h3-1956-57-celtics, h3-1958-59-celtics, h3-1962-63-celtics"
+      },
+      {
+        "name": "sealedWithoutExplicitUnlock",
+        "pass": true,
+        "detail": "The mock-sealed set is sealed. Pass --unlock-mock-sealed to read it."
+      },
+      {
+        "name": "accessCountStillZeroAfterRefusal",
+        "pass": true,
+        "detail": "access count 0"
+      },
+      {
+        "name": "crashPropagatesRatherThanSilentlyPassing",
+        "pass": true,
+        "detail": "injected crash"
+      },
+      {
+        "name": "accessEventCreatedExactlyOnce",
+        "pass": true,
+        "detail": "access count 1"
+      },
+      {
+        "name": "statusIsRunningAfterCrash",
+        "pass": true,
+        "detail": "status RUNNING"
+      },
+      {
+        "name": "partialResultsWrittenIncrementally",
+        "pass": true,
+        "detail": "2 of 4 members written before the crash"
+      },
+      {
+        "name": "crashAfterUnlockConsumesTheAccessEvent",
+        "pass": true,
+        "detail": "the set has been seen whether or not the process finished, so the event counts"
+      },
+      {
+        "name": "secondIndependentRunRefused",
+        "pass": true,
+        "detail": "mock-sealed has already been opened (access count 1). A sealed set is opened ONCE."
+      },
+      {
+        "name": "resumeWithChangedCoreRefused",
+        "pass": true,
+        "detail": "resume identity mismatch on core: run recorded mock-core, current TAMPERED. A resume must continue the same candidate, core, policy and holdout. This is an INVALID_RUN."
+      },
+      {
+        "name": "resumeCompletesUnderTheSameAccessEvent",
+        "pass": true,
+        "detail": "status COMPLETE, access count 1"
+      },
+      {
+        "name": "resumeDidNotRepeatCompletedMembers",
+        "pass": true,
+        "detail": "4 results for 4 members — no duplicates"
+      },
+      {
+        "name": "everyMemberEvaluatedExactlyOnce",
+        "pass": true,
+        "detail": "4 completed, 4 distinct"
+      },
+      {
+        "name": "runHashPresentOnCompletion",
+        "pass": true,
+        "detail": "5da069a968d5a1e1ffee5f3385dd2b772e1b405937c32ff1e9fe08a3239d51e4"
+      },
+      {
+        "name": "resumingACompletedRunRefused",
+        "pass": true,
+        "detail": "mock-sealed run is already COMPLETE. Nothing to resume."
+      },
+      {
+        "name": "realHistoricalHoldoutStillSealed",
+        "pass": true,
+        "detail": "access count 0"
+      },
+      {
+        "name": "realSyntheticHoldoutStillSealed",
+        "pass": true,
+        "detail": "access count 0"
+      },
+      {
+        "name": "mockArtifactsDisposed",
+        "pass": true,
+        "detail": "mock log and run state removed"
+      }
+    ],
+    "checksPassed": 18,
+    "checksTotal": 18,
+    "realSealsUntouched": {
+      "historicalHoldoutV3": 0,
+      "syntheticStressHoldoutV2": 0
+    },
+    "allPass": true,
+    "purpose": "Every path the real run takes, exercised on a disposable mock set. A pipeline first exercised on the real holdout has been tested once, on the one dataset that cannot be re-run."
+  },
+  "outputHash": "39a1612306cb1a02e71119d16fb5ab50b064203ef4cd24ef8da4ed4c936666c8"
+}

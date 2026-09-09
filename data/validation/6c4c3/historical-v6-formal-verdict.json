@@ -1,0 +1,74 @@
+{
+  "artifact": "historical-v6-formal-verdict",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run exec:record-v6",
+  "generatedAt": "2026-08-27T21:05:10.211Z",
+  "gitCommit": "a7d1606c4e134e9d8307b873c335bdfb8c7df237",
+  "branch": "phase-6c4c3-candidate2-formal-execution",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "historicalV6FormalVerdictVersion": "1.0.0",
+    "set": "historical-holdout-v6",
+    "formalVerdict": "HISTORICAL_HOLDOUT_V6_FAIL",
+    "outcome": "FAIL",
+    "allowedVerdicts": [
+      "HISTORICAL_HOLDOUT_V6_PASS",
+      "HISTORICAL_HOLDOUT_V6_FAIL",
+      "HISTORICAL_HOLDOUT_V6_INVALID_RUN"
+    ],
+    "failureClass": "OBSERVABLE_HISTORICAL_TRAIT_FIDELITY_FAILURE",
+    "gates": {
+      "everyMatchupExecuted": true,
+      "zeroInvariantFailures": true,
+      "zeroFinalTies": true,
+      "zeroImpossibleScores": true,
+      "zeroPreThreeEraThreePointAttempts": true,
+      "replayExactEverywhere": true,
+      "compositeRatioWithinPolicy": true,
+      "zeroCatastrophicTeams": true,
+      "traitPassRateMet": false,
+      "zeroIndependentHardFailClusters": false,
+      "noMatchupFailsMajorityOfTraits": false,
+      "noEraFailsEveryScoredTrait": false
+    },
+    "failedGates": [
+      "traitPassRateMet",
+      "zeroIndependentHardFailClusters",
+      "noMatchupFailsMajorityOfTraits",
+      "noEraFailsEveryScoredTrait"
+    ],
+    "independentHardFailClusters": 8,
+    "hardFailLabelCount": 12,
+    "clusterRecordNote": {
+      "what": "the formal cluster record in historical-v6-results.json carries observed and reference as null, because clusterHardFails read t.observed and t.reference while the trait records name those fields subjectMean and referenceMean.",
+      "consequence": "the cluster key reduced to (matchup, side, metric, surface, direction).",
+      "didItChangeTheAdjudication": false,
+      "proof": "12 hard-fail labels · 8 clusters under the as-run key · 8 under the intended key with the real means · the gate requires 0",
+      "whyNotFixed": "the runner's semantics are frozen and the set is consumed. Changing the cluster key after access would make the run INVALID rather than correct it. A coarser key can only merge labels, never split them, so the recorded count is a lower bound and the verdict is identical under both keys.",
+      "valuesSuppliedBelow": "the means, z scores and intervals are read from the preserved per-trait results in the same artifact. This is formatting a recorded value, not re-adjudicating one."
+    },
+    "conditionalPass": false,
+    "nearPass": false,
+    "operatorWaiver": false,
+    "waiverPolicy": "no conditional pass, no near pass and no operator waiver exists. The verdict is what the frozen gates produce.",
+    "candidate": {
+      "candidateId": "Candidate 2",
+      "coreHash": "3733b648f050a4f50f9dc3cb6ecf62fce419dd282f24c910b91e7b077d63711d",
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "calibrationVersion": "1.2.0"
+    },
+    "accessCount": 1,
+    "policyHash": "d433cddcd3af4294dc8468481b8b85702a7768e16878a1003c6567ddb22c5ae4",
+    "runHash": "83461d3181ae384eb31872c3fb11977c683692ba5b172c3cbaecfb51456a3f02",
+    "issuedAtCommit": "a7d1606c4e134e9d8307b873c335bdfb8c7df237",
+    "immutability": "this verdict is final for Historical Holdout V6. The set is consumed and cannot be re-run.",
+    "authorizesStageTwo": false,
+    "stageTwoNote": "Synthetic Stress Holdout V2 remains SEALED_UNREAD at access 0. A synthetic stress pass says nothing about a candidate that failed the historical stage.",
+    "verdictHash": "84fccef727067aeb614af2ac0a3e8c2f7500bcaadb5dc4e64a3d36d2ca667ac0"
+  },
+  "outputHash": "e77597adc5577e6c53492fa27affb1ab427da6c4fddcb01fd0fafb0aa8c263ac"
+}

@@ -1,0 +1,32 @@
+{
+  "artifact": "box-score-layout-verification",
+  "phase": "8A",
+  "defect": "Each team rendered its own <table> inside its own scroll container, so the two teams sized their columns independently and a long name in one pushed its numbers out of line with the other.",
+  "fix": "ONE table, one shared colgroup, fixed table-layout, explicit column widths, two tbody row groups, tabular numerals, sticky player column below 720px.",
+  "measuredInBrowser": {
+    "tables": 1,
+    "colgroupColumns": 12,
+    "rowGroups": 2,
+    "columnsAligned": true,
+    "pageHorizontalOverflow": false
+  },
+  "columns": [
+    "PLAYER",
+    "PTS",
+    "FG",
+    "3PT",
+    "FT",
+    "OREB",
+    "DREB",
+    "REB",
+    "AST",
+    "STL",
+    "BLK",
+    "TO"
+  ],
+  "pfColumn": "absent — the engine records fouls but surfaces no foul-out, substitution or rotation consequence, so a PF column would read as a feature the game does not have",
+  "mvpRow": "highlighted with a star and a raised background",
+  "totalsReconcile": true,
+  "preThreePointEra": "3PT renders 0-0",
+  "regressionTest": "e2e/phase8a-chaos.spec.js compares gold and blue cell offsets numerically"
+}

@@ -1,0 +1,56 @@
+{
+  "artifact": "phase6c4d0-final-summary",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "node scripts/d0/finalizePhase.mjs",
+  "generatedAt": "2026-08-27T23:30:53.901Z",
+  "gitCommit": "98e2313381c0dda7ed52edcde730144c4acc46c8",
+  "branch": "phase-6c4d0-v6-invalidity-and-profile-repair",
+  "parameterSetHash": null,
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "phase": "6C4D0R — IDEA #101 SOLVE EVERYTHING",
+    "unresolvedTechnicalFailures": 0,
+    "resolutionCounts": {
+      "FIXED_AND_VERIFIED": 22,
+      "EXTERNAL_BLOCKER_WITH_SAFE_PRODUCT_FALLBACK": 1,
+      "NOT_REPRODUCIBLE_WITH_EVIDENCE": 1
+    },
+    "v6Adjudication": {
+      "runValidity": "INVALID",
+      "effectiveFormalVerdict": "HISTORICAL_HOLDOUT_V6_INVALID_RUN",
+      "originalArtifacts": "preserved, 13 hash-bound",
+      "candidateFailureEstablished": false,
+      "replacementHoldoutRequired": true
+    },
+    "successorCandidate": {
+      "id": "Candidate 3",
+      "coreHash": "6a423d4fedf45bef3889b9425651e815c95da4f6e573a2c51a3f0ef713360b69",
+      "parentCoreHash": "3733b648f050a4f50f9dc3cb6ecf62fce419dd282f24c910b91e7b077d63711d",
+      "changes": [
+        "c3-01 INTENT_CARRY (coach intent escapes roster reach gate, floor 0.5, ISOLATION/OFF_BALL_SCREEN/CUT)",
+        "c3-02 postThreat derivation (interior scoring volume-led, rebounds bounded)"
+      ],
+      "lockStates": [
+        "SELECTED",
+        "LOCKED",
+        "PREVIEW_READY_LOCKED",
+        "FORMAL_VALIDATION_INCOMPLETE"
+      ]
+    },
+    "remainingDiagnosticClusters": {
+      "SA movementShare": "REFERENCE_LIMITATION (counterfactual lever +0.047 > 0.030 margin; roster gap −0.129)",
+      "Houston gamePace": "DATA_LIMITATION (career-blend tempo; machinery exact: expected 92.35 vs observed 92.08)"
+    },
+    "protectedDomains": "byte-identical on all public-card surfaces (internal measurement, 800 pairs)",
+    "shareMae": {
+      "candidate3": 0.03441,
+      "baseline": 0.0431,
+      "verdict": "improved"
+    },
+    "verdict": "ALL KNOWN FAILURES RESOLVED — PREVIEW CANDIDATE LOCKED AND PROTECTED PREVIEW READY"
+  },
+  "outputHash": "412cbb3b901e947c24b0899e3d4d854ca996849af9cc729b638473ae0311f506"
+}

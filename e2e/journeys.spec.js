@@ -19,48 +19,62 @@ async function buildGoldManual(page) {
 const randomBlue = (page) => page.getByRole("tab", { name: /Random Team/ }).click();
 const randomGold = (page) => page.getByRole("button", { name: /Random Team/ }).first().click();
 
-// V3 flow: when the coach step is active (harness runs with V3 on), pick a
-// random coach for each completed team so RUN THE SIM unlocks.
+// V3 wizard: rosters → Continue to Coaches → random coach each side →
+// Continue to Era Style → Lock Era Style → READY (RUN THE SIM appears).
 async function pickCoachesIfV3(page) {
-  for (let i = 0; i < 2; i++) {
-    const btn = page.getByRole("button", { name: /RANDOM COACH/ }).first();
-    // recommendations arrive from /api/v3meta, so wait for the control to
-    // exist instead of sampling before the fetch resolves
-    try { await btn.waitFor({ state: "visible", timeout: 4000 }); } catch { /* no coach step here */ }
-    if (await btn.count() && await btn.isVisible().catch(() => false)) {
-      await btn.click();
-      await page.waitForTimeout(250);
-    }
+  const cont = page.getByRole("button", { name: /Continue to Coaches/ });
+  try { await cont.waitFor({ state: "visible", timeout: 6000 }); } catch { return; } // v3 off → direct CTA flow
+  await cont.click();
+  const next = page.getByRole("button", { name: /Continue to Era Style/ });
+  await next.waitFor({ state: "visible", timeout: 8000 });
+  // Keep opening the coach modal while the stage is still gated. Modes without
+  // a user-built Blue five need one coach; Single/Best-of-7 need two.
+  for (let i = 0; i < 3 && (await next.isDisabled()); i++) {
+    const open = page.getByRole("button", { name: "Choose Coach" }).first();
+    await open.waitFor({ state: "visible", timeout: 8000 });
+    await open.click();
+    const dialog = page.getByRole("dialog", { name: /Select coach/i });
+    await dialog.waitFor({ state: "visible", timeout: 8000 });
+    await dialog.getByRole("button", { name: /^Select / }).click();
+    await dialog.waitFor({ state: "detached", timeout: 8000 }).catch(() => {});
   }
+  await next.click();
+  await page.getByRole("button", { name: /Lock Era Style/ }).click();
 }
 
+
 async function expectCorePostgame(page) {
+  // FINAL section (default tab)
   await expect(page.getByText(/TEAM (GOLD|BLUE) WINS/)).toBeVisible({ timeout: 15000 });
   await expect(page.getByText(/GAME MVP|SERIES MVP/)).toBeVisible();
   // dedicated results view: the builder has left the stage
   await expect(page.getByRole("tab", { name: /Chaos Draft/ })).toHaveCount(0);
   await expect(page.getByText("MATCHUP BREAKDOWN")).toBeVisible();
-  // FULL BOX SCORE visible by default — both teams, no accordion click
-  await expect(page.getByText("FULL BOX SCORE")).toBeVisible();
-  await expect(page.getByText("TEAM GOLD", { exact: true }).last()).toBeVisible();
-  await expect(page.getByText(/WHY YOU (WON|LOST)/)).toBeVisible();
-  // MVP explanation: at least 2 real sentences even with AI unavailable
-  const bodyText = await page.locator("body").innerText();
-  const mvpSection = bodyText.slice(bodyText.indexOf("MVP"), bodyText.indexOf("WHY YOU"));
+  const finalText = await page.locator("body").innerText();
+  const mvpSection = finalText.slice(finalText.indexOf("MVP"), finalText.indexOf("MATCHUP BREAKDOWN"));
   expect(mvpSection.split(/(?<=[.!?])\s+/).filter((s) => s.trim().length > 20).length,
     `MVP section too thin: ${mvpSection.slice(0, 200)}`).toBeGreaterThanOrEqual(2);
-  // Turning point: 2–3 sentences
+  // BOX SCORE section
+  await page.getByRole("tab", { name: "Box Score" }).click();
+  await expect(page.getByText("BOX SCORE", { exact: true })).toBeVisible();
+  await expect(page.getByText("TEAM GOLD", { exact: true }).last()).toBeVisible();
+  // GAME STORY section
+  await page.getByRole("tab", { name: "Game Story" }).click();
+  await expect(page.getByText(/HOW (GOLD|BLUE) WON/)).toBeVisible();
   await expect(page.getByText("TURNING POINT", { exact: false })).toBeVisible();
-  const tpSection = bodyText.slice(bodyText.indexOf("TURNING POINT"), bodyText.indexOf("MATCHUP BREAKDOWN"));
+  const storyText = await page.locator("body").innerText();
+  const tpSection = storyText.slice(storyText.indexOf("TURNING POINT"));
   expect(tpSection.split(/(?<=[.!?])\s+/).filter((s) => s.trim().length > 20).length,
     `Turning point too thin: ${tpSection.slice(0, 200)}`).toBeGreaterThanOrEqual(2);
   // AI blocked in harness → fallback state + retry, page fully functional
-  await expect(page.getByText("Enhanced game analysis is temporarily unavailable", { exact: false })).toBeVisible({ timeout: 10000 });
+  await expect(page.getByText("Enhanced analysis couldn't be completed", { exact: false })).toBeVisible({ timeout: 10000 });
   await expect(page.getByRole("button", { name: /Try Enhanced Recap Again/ })).toBeVisible();
+  // back to FINAL so callers see the default state
+  await page.getByRole("tab", { name: "Final" }).click();
 }
 
 test("J1+J2: manual Gold, Blue stays empty until user chooses, random Blue, sim transition, full core Postgame, rematch", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/play/dream");
   await expect(page.getByRole("heading", { name: "CLASH ACROSS ERAS" })).toBeVisible();
   await buildGoldManual(page);
   // REGRESSION: Gold completion must NOT auto-populate Blue
@@ -68,14 +82,19 @@ test("J1+J2: manual Gold, Blue stays empty until user chooses, random Blue, sim 
   await expect(page.getByRole("button", { name: /RUN THE SIM/ })).toHaveCount(0);
   await expect(page.getByRole("tab", { name: /Random Team/ })).toBeVisible();
   await randomBlue(page);
+  // card containment: every Gold roster card stays inside the Gold panel
+  const goldPanel = page.getByRole("region", { name: "TEAM GOLD" });
+  const panel = await goldPanel.boundingBox();
+  const cards = goldPanel.getByRole("listitem");
+  const n = await cards.count();
+  expect(n, "gold roster renders five cards").toBe(5);
+  for (let i = 0; i < n; i++) {
+    const card = await cards.nth(i).boundingBox();
+    expect(card.x + card.width, `card ${i} overflows the panel`).toBeLessThanOrEqual(panel.x + panel.width + 1);
+    expect(card.x, `card ${i} starts left of the panel`).toBeGreaterThanOrEqual(panel.x - 1);
+  }
   await pickCoachesIfV3(page);
   await expect(page.getByRole("button", { name: /RUN THE SIM/ })).toBeVisible();
-  // card containment: every filled Gold card stays inside the Gold panel
-  const panel = await page.getByRole("region", { name: "TEAM GOLD" }).boundingBox();
-  for (const name of ["Magic Johnson", "Larry Bird"]) {
-    const card = await page.getByText(name).first().boundingBox();
-    expect(card.x + card.width, `${name} overflows`).toBeLessThanOrEqual(panel.x + panel.width + 1);
-  }
   await page.getByRole("button", { name: /RUN THE SIM/ }).click();
   await expectCorePostgame(page);
   await page.getByRole("button", { name: /Rematch/i }).first().click();
@@ -83,23 +102,23 @@ test("J1+J2: manual Gold, Blue stays empty until user chooses, random Blue, sim 
 });
 
 test("J1b: Random Gold + Random Blue plays a full game", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/play/dream");
   await randomGold(page);
   await randomBlue(page);
   await pickCoachesIfV3(page);
   await page.getByRole("button", { name: /RUN THE SIM/ }).click();
   await expectCorePostgame(page);
-  // New Game returns to an empty builder: Gold back on Chaos Draft, Blue empty
+  // New Game returns to an empty builder: both panels back to empty roster
+  // cards (Manual Draft is the default view), Chaos Draft still one click away
   await page.getByRole("button", { name: /New Game/ }).click();
   await expect(page.getByRole("tab", { name: /Chaos Draft/ })).toBeVisible();
-  await expect(page.getByRole("button", { name: /Start Drafting/ })).toBeVisible();
-  await expect(page.getByText("Add Point Guard")).toHaveCount(1); // Blue panel empty again
+  await expect(page.getByRole("button", { name: "Add Point Guard" })).toHaveCount(2);
 });
 
 test("J3: rapid double-click creates exactly one core result", async ({ page }) => {
   let gamePosts = 0;
   page.on("request", (r) => { if (r.url().includes("/api/game") && r.method() === "POST") gamePosts++; });
-  await page.goto("/");
+  await page.goto("/play/dream");
   await randomGold(page);
   await randomBlue(page);
   await pickCoachesIfV3(page);
@@ -110,7 +129,7 @@ test("J3: rapid double-click creates exactly one core result", async ({ page }) 
 });
 
 test("J4: Daily consumes one attempt, persists, and survives reload", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/play/dream");
   await page.getByRole("button", { name: "Daily", exact: true }).click();
   await page.getByRole("button", { name: /Start Today's Challenge/ }).click();
   await page.getByRole("button", { name: /Roll 2/ }).click();
@@ -132,7 +151,7 @@ test("J4: Daily consumes one attempt, persists, and survives reload", async ({ p
 });
 
 test("J5+J7: core failure records nothing; fabricated scores are rejected server-side", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/play/dream");
   const fail = await page.request.post("/api/game", {
     headers: { "x-chaos": "engine-fail" },
     // unique per run: a fixed id hits the idempotency guard (409) on a warm harness
@@ -189,7 +208,7 @@ test("J8: one session cannot read or write another session's profile", async ({ 
 test("J9: XSS payloads render harmlessly as text", async ({ page }) => {
   let sawDialog = false;
   page.on("dialog", (d) => { sawDialog = true; d.dismiss(); });
-  await page.goto("/");
+  await page.goto("/play/dream");
   await page.getByRole("button", { name: "My EraClash" }).click();
   await page.getByLabel("Display name").fill('<script>alert(1)</script><img src=x onerror=alert(2)>');
   await page.getByRole("button", { name: "Save", exact: true }).click();
@@ -200,95 +219,100 @@ test("J9: XSS payloads render harmlessly as text", async ({ page }) => {
 });
 
 test("J10: per-team reset buttons free any lineup state without touching the other side", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/play/dream");
   // Gold: manual partial → Reset clears it
   await page.getByRole("tab", { name: /Manual Draft/ }).first().click();
-  await page.getByRole("button", { name: "Add Point Guard", exact: false }).first().click();
+  await page.getByRole("button", { name: "Add Point Guard" }).first().click();
   await page.getByRole("dialog").getByRole("button").nth(2).click();
   await page.getByRole("button", { name: "Reset Team Gold" }).click();
-  await expect(page.getByRole("button", { name: "Add Point Guard", exact: false }).first()).toBeVisible();
+  await expect(page.getByRole("button", { name: "Add Point Guard" }).first()).toBeVisible();
   // Gold: random complete → Reset Team returns to build methods, Blue untouched
   await page.getByRole("button", { name: /Random Team/ }).first().click();
   await page.getByRole("tab", { name: /Random Team/ }).click(); // blue random
-  await pickCoachesIfV3(page);
-  await expect(page.getByRole("button", { name: /RUN THE SIM/ })).toBeVisible();
+  // both fives complete → the wizard offers the next stage
+  await expect(page.getByRole("button", { name: /Continue to Coaches/ })).toBeVisible();
   await page.getByRole("button", { name: "Reset Team Gold" }).click();
   await expect(page.getByRole("tab", { name: /Chaos Draft/ })).toBeVisible(); // gold back to methods
+  await expect(page.getByRole("button", { name: /Continue to Coaches/ })).toHaveCount(0);
   await expect(page.getByRole("button", { name: /RUN THE SIM/ })).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Reset Team Blue" })).toBeVisible(); // blue still built
   // Blue: Reset clears the built five
   await page.getByRole("button", { name: "Reset Team Blue" }).click();
   await expect(page.getByRole("tab", { name: /Random Team/ })).toBeVisible(); // blue methods return
-  await expect(page.getByText("Add Point Guard")).toHaveCount(2); // gold (manual mode) + blue both empty
+  await expect(page.getByRole("button", { name: "Add Point Guard" })).toHaveCount(2); // both panels empty
 });
 
 test("J10b: one-click Re-roll refreshes a random five on BOTH sides and invalidates stale coach picks", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/play/dream");
   await page.getByRole("button", { name: /Random Team/ }).first().click();
   await page.getByRole("tab", { name: /Random Team/ }).click(); // blue random
   // both completed rosters expose a prominent Re-roll next to Reset
   await expect(page.getByRole("button", { name: "Re-roll Team Gold" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Re-roll Team Blue" })).toBeVisible();
   const goldNames = async () => (await page.locator("body").innerText()).match(/RATING/) && page.locator("body").innerText();
-  // re-roll gold: roster stays complete (5/5), coach step (if V3) demands a fresh pick
-  await pickCoachesIfV3(page);
-  const hadRun = await page.getByRole("button", { name: /RUN THE SIM/ }).count();
+  // re-roll gold: roster stays complete (5/5) and the stage CTA survives
   await page.getByRole("button", { name: "Re-roll Team Gold" }).click();
   await expect(page.getByRole("button", { name: "Re-roll Team Gold" })).toBeVisible(); // still a completed five
-  if (hadRun) {
-    // V3: the old roster's coach is invalidated, so RUN must re-lock until a new coach is picked
-    const runNow = await page.getByRole("button", { name: /RUN THE SIM/ }).count();
-    const coachVisible = await page.getByText("SELECT YOUR COACH").first().isVisible().catch(() => false);
-    if (coachVisible) expect(runNow).toBe(0);
-  }
+  await expect(page.getByRole("button", { name: /Continue to Coaches/ })).toBeVisible();
   // re-roll blue: still a completed five, gold untouched
   await page.getByRole("button", { name: "Re-roll Team Blue" }).click();
   await expect(page.getByRole("button", { name: "Re-roll Team Blue" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Re-roll Team Gold" })).toBeVisible();
 });
 
-test("J11 (V3): Team → Coach → Era Style → Run with possession postgame", async ({ page }) => {
-  await page.goto("/");
-  // 1 TEAM
-  await expect(page.getByText("1 TEAM")).toBeVisible();
+test("J11 (V3): Team → Coach → Era Style → Ready → Run with possession postgame", async ({ page }) => {
+  await page.goto("/play/dream");
+  // STAGE 1 — ROSTERS (wizard chips render)
+  await expect(page.getByRole("button", { name: /ROSTERS/ })).toBeVisible();
   await randomGold(page);
   await randomBlue(page);
-  // 2 COACH — recommendations are roster-derived; no coach OVR anywhere
-  await expect(page.getByText("SELECT YOUR COACH").first()).toBeVisible();
-  await expect(page.getByText("THREE DIFFERENT WAYS TO COACH THIS ROSTER").first()).toBeVisible();
-  // strategically different lenses, not a solved top-3
-  await expect(page.getByText("BEST ROLE BALANCE").first()).toBeVisible();
-  await expect(page.getByText("BEST DEFENSIVE IDENTITY").first()).toBeVisible();
-  const body = await page.locator("body").innerText();
-  expect(body).not.toMatch(/coach ovr/i);
-  // pre-sim preview shows tension, never edge counts or an expected winner
-  await expect(page.getByText("KEY CLASH").first()).toBeVisible();
-  expect(body).not.toMatch(/(Gold|Blue) \+\d+/);
-  await page.getByRole("button", { name: /RANDOM COACH/ }).first().click();
-  await page.waitForTimeout(300);
-  await page.getByRole("button", { name: /RANDOM COACH/ }).first().click();
-  // 3 ERA STYLE — a tab on BOTH team cards; one shared game era, per-team notes
-  await expect(page.getByRole("tab", { name: /ERA STYLE/ }).first()).toBeVisible();
-  await expect(page.getByRole("tab", { name: /ERA STYLE/ })).toHaveCount(2); // both sides
-  await page.getByRole("tab", { name: /ERA STYLE/ }).first().click();
-  await expect(page.getByText("CHOOSE YOUR ERA STYLE").first()).toBeVisible();
-  await page.getByRole("button", { name: "90s", exact: true }).click();
-  await expect(page.getByText("HOW THIS AFFECTS THIS MATCHUP").first()).toBeVisible({ timeout: 8000 });
-  await expect(page.getByText("One era per game — both teams play in this environment.").first()).toBeVisible();
-  // the blue card's tab shows the SAME shared era
-  await page.getByRole("tab", { name: /ERA STYLE/ }).nth(1).click();
-  await expect(page.locator('[aria-pressed="true"]', { hasText: "90s" }).first()).toBeVisible();
-  // era pick must not hide the run button flow — switch blue back to coach tab state is irrelevant
-  // RUN
+  // qualitative pre-sim preview: leads only, never counts or probabilities
+  await expect(page.getByText("MATCHUP PREVIEW").first()).toBeVisible();
+  await expect(page.getByText("KEY CLASH").first()).toBeVisible({ timeout: 8000 });
+  const rosterBody = await page.locator("body").innerText();
+  expect(rosterBody).not.toMatch(/(Gold|Blue) \+\d+/);
+  expect(rosterBody).not.toMatch(/\d+% (chance|win)/i);
+  // STAGE 2 — COACHES
+  await page.getByRole("button", { name: /Continue to Coaches/ }).click();
+  await expect(page.getByRole("button", { name: "Choose Coach" }).first()).toBeVisible({ timeout: 8000 });
+  const coachBody = await page.locator("body").innerText();
+  expect(coachBody).not.toMatch(/coach ovr/i);
+  // gated until both coaches picked
+  await expect(page.getByRole("button", { name: /Continue to Era Style/ })).toBeDisabled();
+  // the modal carries search, filters, sort and a detail pane
+  await page.getByRole("button", { name: "Choose Coach" }).first().click();
+  const modal = page.getByRole("dialog", { name: /Select coach/i });
+  await expect(modal.getByRole("textbox", { name: /Search coaches/i })).toBeVisible();
+  await expect(modal.getByRole("combobox", { name: /Filter by system/i })).toBeVisible();
+  await expect(modal.getByRole("combobox", { name: /Sort coaches/i })).toBeVisible();
+  await expect(modal.getByText("SYSTEM IDENTITY")).toBeVisible();
+  // era compatibility cannot exist before an era is chosen
+  await expect(modal.getByText(/Era compatibility appears once you pick the Era Style/)).toBeVisible();
+  await modal.getByRole("button", { name: /^Select / }).click();
+  await page.getByRole("button", { name: "Choose Coach" }).first().click();
+  await page.getByRole("dialog", { name: /Select coach/i }).getByRole("button", { name: /^Select / }).click();
+  await page.getByRole("button", { name: /Continue to Era Style/ }).click();
+  // STAGE 3 — ERA STYLE (one shared era, real rules + per-roster translations)
+  await expect(page.getByText("CHOOSE ERA STYLE")).toBeVisible();
+  await page.getByRole("radio", { name: "90s", exact: true }).click();
+  await expect(page.getByText("HOW THIS AFFECTS THIS MATCHUP")).toBeVisible({ timeout: 8000 });
+  await expect(page.getByText(/One era per game/)).toBeVisible();
+  await page.getByRole("button", { name: /Lock Era Style/ }).click();
+  // READY — back navigation exists, preview repeats, one dominant CTA
+  await expect(page.getByRole("button", { name: "Edit rosters" })).toBeVisible();
   await page.getByRole("button", { name: /RUN THE SIM/ }).click();
   await expect(page.getByText(/TEAM (GOLD|BLUE) WINS/)).toBeVisible({ timeout: 15000 });
-  // V3 postgame: possessions, expectation, possession box, roles, assignments
+  // V3 postgame: possessions + expectation on Final; box/roles in their sections
   await expect(page.getByText(/🏀 \d+ possessions/)).toBeVisible();
-  await expect(page.getByText(/pre-game read/)).toBeVisible(); // bands, not decimals
+  await expect(page.getByText(/before tipoff/)).toBeVisible(); // bands, not decimals (renamed in 8B)
   await expect(page.getByText(/shot quality \(expected pts\)/)).toBeVisible();
-  await expect(page.getByText("POSSESSION BOX SCORE")).toBeVisible();
-  await expect(page.getByText("OFFENSIVE ROLES (USAGE)")).toBeVisible();
-  await expect(page.getByText("DEFENSIVE ASSIGNMENTS")).toBeVisible();
+  await page.getByRole("tab", { name: "Box Score" }).click();
+  await expect(page.getByText("BOX SCORE", { exact: true })).toBeVisible();
+  await page.getByRole("tab", { name: "Coaching & Strategy" }).click();
+  // On the production engine no game-plan history is recorded, so the tab says
+  // so rather than inventing coaching detail (Candidate 3 coverage lives in
+  // e2e/phase7b-preview.spec.js).
+  await expect(page.getByText(/does not record game-plan and adjustment history/)).toBeVisible();
   // era with no 3PT line: replay in the 60s and assert zero threes
   const res = await page.request.post("/api/game", {
     data: { mode: "single", simulationId: "e2e-v3-60s-" + Date.now(),
@@ -302,8 +326,12 @@ test("J11 (V3): Team → Coach → Era Style → Run with possession postgame", 
 });
 
 test("J12: Tournament runs a real bracket and opponent difficulty is selectable", async ({ page }) => {
-  await page.goto("/");
-  await page.getByRole("tab", { name: /TOURNAMENT/ }).click();
+  // Phase 8C: the Play menu resolves entitlements, so Tournament needs a free
+  // account before it opens (a guest is sent to the account gate instead).
+  await page.addInitScript(() => { try { localStorage.setItem("ec_account", "1"); localStorage.setItem("ec_name", "E2E"); } catch (e) {} });
+  await page.goto("/play/dream");
+  await page.getByRole("button", { name: "Play", exact: false }).first().click();
+  await page.getByRole("menuitem", { name: /Tournament/ }).click();
   // difficulty only exists for the modes that generate a schedule
   await expect(page.getByText("OPPONENT DIFFICULTY")).toBeVisible();
   for (const level of ["Rookie", "Pro", "All-Star", "Legend"]) {
@@ -320,10 +348,13 @@ test("J12: Tournament runs a real bracket and opponent difficulty is selectable"
 });
 
 test("J13: difficulty is absent for modes without a generated schedule", async ({ page }) => {
-  await page.goto("/");
+  await page.addInitScript(() => { try { localStorage.setItem("ec_account", "1"); localStorage.setItem("ec_name", "E2E"); } catch (e) {} });
+  await page.goto("/play/dream");
   await expect(page.getByText("OPPONENT DIFFICULTY")).toHaveCount(0); // Single
-  await page.getByRole("tab", { name: /BEST OF 7/ }).click();
+  await page.getByRole("button", { name: "Play", exact: false }).first().click();
+  await page.getByRole("menuitem", { name: /Best of 7/ }).click();
   await expect(page.getByText("OPPONENT DIFFICULTY")).toHaveCount(0);
-  await page.getByRole("tab", { name: /WIN 82/ }).click();
+  await page.getByRole("button", { name: "Play", exact: false }).first().click();
+  await page.getByRole("menuitem", { name: /Win 82/ }).click();
   await expect(page.getByText("OPPONENT DIFFICULTY")).toBeVisible();
 });

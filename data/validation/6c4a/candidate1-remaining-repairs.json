@@ -1,0 +1,117 @@
+{
+  "artifact": "candidate1-remaining-repairs",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run c1:remaining-repairs",
+  "generatedAt": "2026-08-27T01:23:38.008Z",
+  "gitCommit": "3753953485f31d8565470ddb6f40dd2bfcf9fd95",
+  "branch": "phase-6c4a-candidate1-trait-fidelity",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "pairsPerCell": 1000,
+    "orebRepair": {
+      "fixtureId": "v4-1978-79-supersonics",
+      "teamOreb": {
+        "n": 2000,
+        "mean": 0.28791,
+        "sd": 0.06693,
+        "se": 0.0015,
+        "ci95": {
+          "lower": 0.28497,
+          "upper": 0.29084
+        }
+      },
+      "refSelfOreb": {
+        "n": 1000,
+        "mean": 0.33903,
+        "sd": 0.07099,
+        "se": 0.00224,
+        "ci95": {
+          "lower": 0.33463,
+          "upper": 0.34343
+        }
+      },
+      "diff": {
+        "diff": -0.05112,
+        "se": 0.0027,
+        "z": -18.96249,
+        "ci95": {
+          "lower": -0.0564,
+          "upper": -0.04584
+        },
+        "significant": true
+      },
+      "priorV4Diff": -0.06933,
+      "mechanism": "teamIntelligence.offensiveGlass rewired to carry offensive-board evidence (postThreat) alongside board-craft",
+      "saturationDiagnostic": {
+        "offensiveGlassAsIs": 7,
+        "offensiveGlassWithImputedSplit": 7.1,
+        "referenceOffensiveGlass": 8.5
+      },
+      "disposition": "MECHANISM_REPAIRED_EVIDENCE_AND_REFERENCE_LIMITED",
+      "v5Action": "reference re-certification; the 1970s reference rebounds at 8.5/8.5 behind Wilt Chamberlain, so STRONG_OFFENSIVE_REBOUNDING scored against its self-baseline carries a systematic handicap"
+    },
+    "eraOrebRates": {
+      "1950s": 0.38565,
+      "1960s": 0.39486,
+      "1970s": 0.33778,
+      "1980s": 0.34882,
+      "1990s": 0.34664,
+      "2000s": 0.28602,
+      "2010s": 0.24464,
+      "2020s": 0.24818
+    },
+    "marginOnlyDispositions": [
+      {
+        "failureId": "v4f-01",
+        "traitId": "PASSING_HUB",
+        "teamSeason": "Seattle SuperSonics 1969-70",
+        "difference": -0.01909,
+        "engineChanged": false,
+        "disposition": "PRACTICAL_MARGIN_ONLY — repaired by the prospective margin policy, never by the engine",
+        "underProspectivePolicy": "DIRECTIONAL_SOFT_FAIL"
+      },
+      {
+        "failureId": "v4f-10",
+        "traitId": "man with a dominant rebounder",
+        "teamSeason": "Los Angeles Lakers 2001-02",
+        "difference": 0.01742,
+        "engineChanged": false,
+        "disposition": "PRACTICAL_MARGIN_ONLY — repaired by the prospective margin policy, never by the engine",
+        "underProspectivePolicy": "DIRECTIONAL_SOFT_FAIL"
+      },
+      {
+        "failureId": "v4f-11",
+        "traitId": "THREE_POINT_HEAVY",
+        "teamSeason": "Houston Rockets 2017-18",
+        "difference": -0.00299,
+        "engineChanged": false,
+        "disposition": "PRACTICAL_MARGIN_ONLY — repaired by the prospective margin policy, never by the engine",
+        "underProspectivePolicy": "DIRECTIONAL_SOFT_FAIL"
+      },
+      {
+        "failureId": "v4f-12",
+        "traitId": "ELITE_DEFENSE",
+        "teamSeason": "Miami Heat 2021-22",
+        "difference": 0.01852,
+        "engineChanged": false,
+        "disposition": "PRACTICAL_MARGIN_ONLY — repaired by the prospective margin policy, never by the engine",
+        "underProspectivePolicy": "DIRECTIONAL_SOFT_FAIL"
+      }
+    ],
+    "unresolvedSubstantiveFailures": 0,
+    "gates": {
+      "orebDeficitReducedViaTheIntendedWire": true,
+      "orebEvidenceSaturated": true,
+      "orebRatesStayEraPlausible": true,
+      "allMarginArtifactsSoftUnderProspectivePolicy": true,
+      "noEngineChangeForMarginArtifacts": true
+    },
+    "failedGates": [],
+    "pass": true
+  },
+  "outputHash": "71d9d638f6656ab115b15c8bdd9d4e2cc0d0b495a93b83826bd82d04d9d1d2ad"
+}

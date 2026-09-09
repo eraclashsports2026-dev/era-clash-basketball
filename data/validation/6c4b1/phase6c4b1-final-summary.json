@@ -1,0 +1,301 @@
+{
+  "artifact": "phase6c4b1-final-summary",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run v5:summary",
+  "generatedAt": "2026-08-27T04:50:10.580Z",
+  "gitCommit": "3db4e7b8202a3658b20b51c0b5ac1df204182e1d",
+  "branch": "phase-6c4b1-v5-freeze-and-seal",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "phase": "6C4B1",
+    "title": "Candidate 1 reference re-certification, Historical Holdout V5 selection, policy freeze and seal",
+    "outcome": "HISTORICAL_V5_SEALED_READY_FOR_ONE_TIME_FORMAL_VALIDATION",
+    "artifactsWritten": 23,
+    "artifactsInvalid": 0,
+    "blockers": {
+      "source": 6,
+      "registered": 6,
+      "resolved": 6,
+      "unresolved": 0,
+      "byCategory": {
+        "REFERENCE_CERTIFICATION": 1,
+        "OBSERVABILITY_CERTIFICATION": 1,
+        "SELECTION_POLICY": 1,
+        "PRACTICAL_MARGIN_POLICY": 1,
+        "SEAL_INTEGRITY": 1,
+        "RUNNER_PREFLIGHT": 1
+      },
+      "phaseFindings": 1
+    },
+    "candidate": {
+      "candidateId": "Candidate 1",
+      "lockRevision": 2,
+      "coreHash": "de57e1a96e1fd1450d1aea9c5463b0138a56d77bbf58c748ba042e6f78f5c94d",
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "possessionCalibrationVersion": "1.1.0",
+      "calibrationStatus": "DEVELOPMENT_LOCKED_SCOPED",
+      "validationAttemptStatus": "NOT_RUN",
+      "parameterChanges": 0,
+      "lockRevisionReason": "IDENTITY_INFRASTRUCTURE_REPAIR — Candidate 0 and Candidate 1 produced byte-identical development result fingerprints; resultVersions() now states the calibration version. No simulated result changed.",
+      "behaviourIdenticalToRevision1": true
+    },
+    "coreGraph": {
+      "version": "3.0.0",
+      "parser": "es-module-lexer (the import analyser Vite uses)",
+      "declaredModules": 53,
+      "runtimeObserved": 54,
+      "missingExecuted": 0,
+      "unresolvedImports": 0,
+      "offensivePlanIncluded": true,
+      "reproducesPriorBuilder": true
+    },
+    "identitySeparation": {
+      "comparisons": 15,
+      "collisions": 0,
+      "collisionsFoundBeforeRepair": 2,
+      "probeCases": 3,
+      "behaviourProofCases": 441,
+      "behaviourIdentical": true
+    },
+    "realizedZone": {
+      "version": "2.0.0",
+      "gamesPerCell": 300,
+      "zoneCapableRealizedShare": 0.59101,
+      "manPossessionsExcluded": 13150,
+      "illegalEraRealized": 0,
+      "pass": true
+    },
+    "eraReferences": {
+      "version": "2.0.0",
+      "certified": 8,
+      "failed": 0,
+      "replaced": 0,
+      "gamesPerEra": 5000,
+      "v5PoolOverlap": 0,
+      "withdrawnCriterion": "reference outscored by every population team => EXTREME",
+      "erasThatCriterionWouldHaveFailed": 4
+    },
+    "observability": {
+      "version": "2.0.0",
+      "metricsCertified": 12,
+      "metricsTotal": 16,
+      "eligibleTraits": 55,
+      "changedFromCandidate0": [
+        {
+          "metric": "threeShare",
+          "candidate0": true,
+          "candidate1": false
+        },
+        {
+          "metric": "defensiveZoneShare",
+          "candidate0": false,
+          "candidate1": true
+        }
+      ],
+      "practicalSeparationFailures": 3,
+      "contradictoryDependentRules": 0
+    },
+    "residuals": {
+      "disposed": 3,
+      "unresolvedSubstantive": 0,
+      "verdict": "CANDIDATE_1_INTACT",
+      "referenceAttributionRevised": "Measured under Candidate 1, the references are outscored by their era populations in five of eight eras and dominate none. The reference-construction half of the attribution is not supported; the data-coverage half is."
+    },
+    "policy": {
+      "marginPolicyVersion": "2.0.0",
+      "marginPolicyHash": "f92f05a662eb5c2820b2011761c65a454132ee0badd8ce1b70c1edf76bac704b",
+      "acceptancePolicyVersion": "3.0.0",
+      "acceptancePolicyHash": "64abec44451702338af814f388bcc16748df490e4e0a8b7fb0dfb2e6196a6cc1",
+      "frozenBeforeSelection": true,
+      "dualGate": "direction opposite to the claim AND the 95% interval excludes zero AND |difference| > margin[metric]",
+      "distinctMargins": 5
+    },
+    "pool": {
+      "version": "2.0.0",
+      "eligibleTeams": 30,
+      "eligiblePairs": 42,
+      "erasWithTwoPlusPairs": 8,
+      "candidate1SimulationsUsed": 0,
+      "poolHash": "97ea154bb04d5845603c17558bbc381cbb80cca5d915df90afc794b3b84ced31"
+    },
+    "selection": {
+      "version": "1.1.0",
+      "selectionHash": "6023ccf55b6ae034898787fe2833c1349ca85bae47c10994cd061fda29ba1842",
+      "matchups": 8,
+      "distinctTeams": 16,
+      "eraStyles": 8,
+      "candidate1OutputsConsulted": 0,
+      "deterministic": {
+        "repeatIdentical": true,
+        "reversedIdentical": true,
+        "rotatedIdentical": true
+      },
+      "rejectedAlternatives": 34,
+      "diversityCovered": 11,
+      "diversityAvailable": 11,
+      "supersededSelection": {
+        "version": "1.0.0",
+        "selectionHash": "6023ccf55b6ae034898787fe2833c1349ca85bae47c10994cd061fda29ba1842",
+        "reproducedIdentically": true,
+        "whyInvalidated": "the acceptance policy was re-frozen after the era-reference certification was re-issued to key its self-baselines by metric id; a policy may not be re-frozen while a selection stands, so the selection was invalidated, the version bumped, and the selector re-run"
+      }
+    },
+    "manifest": {
+      "version": "5.0.0",
+      "manifestHash": "2ecaf7dbbc4338446d971af6954b46a9924f29fb8052ba044fc83fcf5ebcbcff",
+      "matchups": 8,
+      "teams": 16,
+      "profiles": 80,
+      "coaches": 13,
+      "scoredTraits": 74,
+      "excludedTraits": 19,
+      "usableTargets": 39,
+      "nullTargets": 351
+    },
+    "seeds": {
+      "version": "3.0.0",
+      "seedHash": "d288e8c5754a04f8053b6a29b5892f224bb981c181b95e1a01499a33bf4564c5",
+      "holdoutSeeds": 49152,
+      "totalGames": 98304,
+      "comparisons": 35,
+      "seedsPerStream": 49152,
+      "priorPopulations": 17,
+      "overlap": 0
+    },
+    "dryRun": {
+      "version": "3.0.0",
+      "checks": 30,
+      "failed": 0,
+      "accessCounts": {
+        "historicalHoldoutV5": 0,
+        "syntheticStressHoldoutV2": 0,
+        "historicalHoldoutV4": 1,
+        "historicalHoldoutV3": 1
+      },
+      "caughtDefect": "the era-reference self-baselines were keyed by sample field rather than metric id, which would have scored every V5 trait NOT_APPLICABLE on the one-time run"
+    },
+    "seal": {
+      "version": "1.0.0",
+      "state": "SEALED_UNREAD",
+      "accessCount": 0,
+      "sealHash": "14b17792344cce81321f3cb2d944ada64cbe6a9a30bac5209962cdf94fb01ec2",
+      "accessLogExists": false,
+      "leaksFound": 0,
+      "outputArtifactsSearched": 17,
+      "authorizedRunner": "scripts/validation/historical-holdout-v5.mjs"
+    },
+    "holdoutState": {
+      "historicalHoldoutV3": {
+        "state": "CONSUMED",
+        "accessCount": 1,
+        "verdict": "FAIL",
+        "failureClass": "NONIDENTIFIABLE_MEASUREMENT_SURFACE"
+      },
+      "historicalHoldoutV4": {
+        "state": "CONSUMED",
+        "accessCount": 1,
+        "verdict": "FAIL",
+        "failureClass": "OBSERVABLE_HISTORICAL_TRAIT_FIDELITY_FAILURE"
+      },
+      "historicalHoldoutV5": {
+        "state": "SEALED_UNREAD",
+        "accessCount": 0,
+        "verdict": "NOT_RUN"
+      },
+      "syntheticStressHoldoutV2": {
+        "state": "SEALED_UNREAD",
+        "accessCount": 0
+      }
+    },
+    "allSeals": {
+      "legacy-holdout-v1": {
+        "status": "SEALED_UNREAD",
+        "accessCount": 0
+      },
+      "historical-holdout-v2": {
+        "status": "SEALED_UNREAD",
+        "accessCount": 0
+      },
+      "synthetic-stress-v1": {
+        "status": "PREVIOUSLY_INSPECTED_ARCHIVE",
+        "accessCount": 0
+      },
+      "historical-holdout-v3": {
+        "status": "UNSEALED",
+        "accessCount": 1
+      },
+      "synthetic-stress-holdout-v2": {
+        "status": "SEALED_UNREAD",
+        "accessCount": 0
+      },
+      "historical-holdout-v4": {
+        "status": "UNSEALED",
+        "accessCount": 1
+      },
+      "historical-holdout-v5": {
+        "status": "SEALED_UNREAD",
+        "accessCount": 0
+      }
+    },
+    "phase6C4B2Package": {
+      "version": "1.0.0",
+      "packageHash": "0bcdd736744389f48a279b7c92ceabc2b68b515bd58400a43d7ee8af7f0ee616",
+      "commandsExecuted": {
+        "historicalV5": 0,
+        "syntheticV2": 0,
+        "formalVerdict": 0
+      }
+    },
+    "productionIsolation": {
+      "engineVersion": "3.2.0",
+      "appVersion": "2.7.2",
+      "main": "9cd95ff",
+      "branch": "phase-6c4b1-v5-freeze-and-seal"
+    },
+    "limitations": [
+      {
+        "id": "PAIR_TYPES_ALL_SAME_ERA_CONTRAST",
+        "detail": "All eight selected pairs are typed SAME_ERA_CONTRAST_PAIR. The pool was not built with head-to-head source verification, so no actual-opponent label could be earned honestly. One selected pair (2020-21 Knicks vs 2020-21 76ers) is same-season and could be verified as ACTUAL_REGULAR_SEASON_OPPONENTS by a future source check; the others are cross-season and cannot be actual opponents by construction."
+      },
+      {
+        "id": "FOUR_METRICS_UNCERTIFIED",
+        "detail": "isolationShare, threeShare, stealRateForced, rimShareAgainst remain uncertified under Candidate 1. threeShare, stealRateForced and rimShareAgainst fail practical separation — their maximal control range is smaller than their own practical margin — and isolationShare fails its neutral-cell floor. Traits claiming them are excluded before scoring, never scored weakly."
+      },
+      {
+        "id": "NINETIES_REFERENCE_DISCRIMINATION",
+        "detail": "The 1990s era reference separates its three era calibration teams by only 0.011 points per possession, the narrowest of the eight. It passes every frozen criterion, but a V5 offensive-quality finding in the 1990s rests on a reference that distinguishes its own era's champions weakly."
+      },
+      {
+        "id": "REFERENCE_ZONE_SHARE_ZERO",
+        "detail": "Realized zone share is 0 for all eight era references: calibration-profile fives cannot reach the zone shells' personnel gates. defensiveZoneShare is certified on public-card controls but is not observable on the reference surface, so no V5 trait is scored on it."
+      },
+      {
+        "id": "MODULE_VERSIONS_STALE",
+        "detail": "Every engine module version reads the same under Candidate 1 as under Candidate 0 although several modules changed semantics. The calibration version separates the candidates in every identity surface so no collision remains, but module-level provenance is imprecise. Recommended for the Candidate 2 lock procedure, not repairable without invalidating Candidate 1's lock."
+      },
+      {
+        "id": "V4_DIAGNOSTICS_CONSUMED",
+        "detail": "Candidate 1 was developed against Historical V4's diagnostics, so V4 can never again be evidence of generalisation for this candidate. That is precisely what V5 exists to provide, and why it must be opened exactly once."
+      }
+    ],
+    "scopeRespected": {
+      "v5NotOpened": true,
+      "v5NotSimulated": true,
+      "v5NotScored": true,
+      "syntheticV2NotOpened": true,
+      "v3AndV4NotRescored": true,
+      "candidate1ParametersUnchanged": true,
+      "candidate1BehaviourUnchanged": true,
+      "noPreviewDeployment": true,
+      "noProductionDeployment": true,
+      "mainNotMerged": true
+    },
+    "mayOpenInPhase6C4B2": true,
+    "nextPhase": "Phase 6C4B2 — Historical Holdout V5 and Synthetic Stress Holdout V2 formal Candidate 1 revalidation"
+  },
+  "outputHash": "fb9679a029af7ceec93effddf26327c71c0f01333c7a61ed05f46338bfead34a"
+}

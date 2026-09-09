@@ -1,0 +1,37 @@
+{
+  "artifact": "wave2-adjudication-deferral",
+  "phase": "9B.1 — real accounts, cloud career, My EraClash",
+  "decisionAuthority": "OWNER",
+  "decision": "DEFER_WAVE2_ADJUDICATION_AND_CONTINUE_PARALLEL_DEVELOPMENT",
+  "decidedAt": "2026-09-04T17:46:54.081Z",
+  "wave2WindowStatus": "OPEN_FEEDBACK_PENDING",
+  "wave2Verdict": "NOT_ISSUED",
+  "wave2Passed": false,
+  "wave2Failed": false,
+  "wave2BuildMayChange": false,
+  "engineeringMayContinueOnSeparateBranch": true,
+  "meaning": [
+    "Wave 2 remains open and its build is frozen",
+    "no Wave 2 threshold was lowered and no missing feedback was invented",
+    "Phase 9A.4 was NOT run: its hard start conditions (complete cohort, or CLOSE WAVE 2 TESTING WINDOW) are still unmet",
+    "account development proceeds on a separate branch that no Wave 2 tester is invited to"
+  ],
+  "wave2": {
+    "branch": "wave2",
+    "head": "ef0caa525c4cf6830fe20b4a8ef5d483e29afd86",
+    "productBranch": "phase-9a3-night-court-wave2-beta",
+    "productHead": "ef0caa525c4cf6830fe20b4a8ef5d483e29afd86",
+    "stableUrl": "https://era-clash-basketball-git-wave2-era-clash.vercel.app",
+    "buildStamp": "eraclash-assets:2.7.2:d3d5455dcf91",
+    "studyId": "candidate4-night-court-wave2",
+    "evidenceReadableFromThisShell": false,
+    "evidenceNote": "The Wave 2 feedback and metrics store is not readable here: no UPSTASH_REDIS_REST_* or KV_REST_API_* variables are set (only .env.example is on disk), so the reports run in explicit EMPTY-DATA mode. This is not a claim that no tester activity exists."
+  },
+  "accountWork": {
+    "branch": "phase-9b1-real-accounts-my-eraclash",
+    "parentBranch": "phase-9a3p-play-lobby-brand-polish",
+    "parentCommit": "fd36b5a107443367da704feb3f9dddea1452ae23",
+    "parentAcceptance": "APPROVE PLAY LOBBY POLISH V1 (data/validation/9a3p/play-lobby-polish-v1-owner-acceptance.json)",
+    "waveTestersInvited": 0
+  }
+}

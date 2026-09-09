@@ -1,0 +1,109 @@
+{
+  "artifact": "semantic-color-qa",
+  "phase": "9A.2 — Night Court Editorial production theme",
+  "theme": "night-court-production-hybrid",
+  "semanticBases": {
+    "teamGold": "#E8B13C",
+    "teamBlue": "#2F83E7",
+    "coachViolet": "#7656D7",
+    "success": "#2FA96D",
+    "warning": "#C58B23",
+    "danger": "#D95050"
+  },
+  "textLifted": {
+    "teamBlue": "#4A92EA",
+    "coachViolet": "#A08AE6",
+    "danger": "#E06060"
+  },
+  "rendered": {
+    "blueFooters": 5,
+    "coachTitle": [
+      160,
+      138,
+      230
+    ],
+    "riskLabel": [
+      224,
+      96,
+      96
+    ]
+  },
+  "leagueScan": {
+    "assetFiles": 11,
+    "leagueFiles": [],
+    "hotlinks": [],
+    "copiedWording": [],
+    "disclaimerTextRetained": [
+      "src/App.jsx"
+    ],
+    "researchCitationUrls": [
+      "src/v3/data/coachPhases.js"
+    ],
+    "note": "The footer's 'independent fan-made game, not affiliated with or endorsed by the NBA' line is a legal disclaimer in text, not a mark; it is retained. researchCitationUrls are provenance strings inside research data files (never rendered as assets)."
+  },
+  "checks": 12,
+  "passed": 12,
+  "failed": 0,
+  "results": [
+    {
+      "name": "Team Gold is gold, Team Blue is blue, Coach/Era is violet, success is green, danger is red, warning is amber",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the specification's semantic hexes are the bases",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "text-bearing blue, violet and red are lifted to AA on the night panels at the same hue",
+      "pass": true,
+      "detail": "blue 5.59 · violet 6.17 · red 5.1"
+    },
+    {
+      "name": "platinum/graphite is the neutral structure (arena text is Metallic Platinum, panels are graphite)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no orange CTA system: every CTA stop is EraClash gold (hue 36–50°)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Blue cards never use Gold action styling (footers and OVR read cobalt, never gold)",
+      "pass": true,
+      "detail": "5 blue footers"
+    },
+    {
+      "name": "Gold cards read gold (OVR and held footer)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "neutral panels carry no decorative cobalt or gold border",
+      "pass": true,
+      "detail": "231,234,240 | 231,234,240 | 231,234,240"
+    },
+    {
+      "name": "Coach Chaos heading and coach roles are violet; violet is not used for navigation or body text",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "BIGGEST RISK is red; team labels are gold and cobalt",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "solo labels say YOUR FIVE and LEGEND RIVAL; CPU is not the public opponent identity",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no league or competitor asset file, hotlink or copied wording in the product",
+      "pass": true,
+      "detail": ""
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "phase": "9B.2",
+  "generatedAt": "2026-09-05T02:19:05.838904+00:00",
+  "artifact": "live-rls-qa",
+  "project": "lfybiphmqkiecfrqsfzt",
+  "method": "Probes run inside a transaction against the owner's real Postgres, each setting role and request.jwt.claims to impersonate a specific caller \u2014 exactly what PostgREST does for a bearer token \u2014 so the policies themselves are exercised, not a polite client. Synthetic users are seeded to satisfy the FK and deleted at the end.",
+  "tables": [
+    "saved_rosters",
+    "user_preferences",
+    "saved_clashes (favorite column)"
+  ],
+  "results": {
+    "ownerWritesOwnRosterAndPrefs": true,
+    "strangerReadsRosters": 0,
+    "strangerReadsPreferences": 0,
+    "strangerForgesRosterOwnedByOwner": "refused: new row violates row-level security policy",
+    "anonReadsRosters": "refused: permission denied for table saved_rosters",
+    "ratingBearingRosterRefused": "refused: check constraint saved_rosters_snapshot_shape",
+    "unknownPreferenceKeyRefused": "refused: check constraint user_preferences_shape / policy",
+    "eleventhRosterRefused": "refused by enforce_saved_roster_limit trigger at 10"
+  },
+  "cascadeOnAccountDeletion": {
+    "method": "A synthetic user was given a profile, a saved clash, a saved roster and preferences; the auth user was deleted; every owned table was re-counted.",
+    "before": {
+      "profile": 1,
+      "saved_clashes": 1,
+      "saved_rosters": 1,
+      "user_preferences": 1
+    },
+    "after": {
+      "profile": 0,
+      "saved_clashes": 0,
+      "saved_rosters": 0,
+      "user_preferences": 0,
+      "result_claims": 0
+    },
+    "verdict": "every account-owned table cascades to zero on account deletion"
+  },
+  "advisors": {
+    "searchPathWarningsOnCheckFunctions": "fixed (search_path pinned to '')",
+    "remainingIntentional": [
+      "rls_enabled_no_policy on schema_migrations (safe: readable by nobody)",
+      "auth_leaked_password_protection (not applicable: passwordless product)"
+    ]
+  },
+  "verdict": {
+    "crossAccountReads": 0,
+    "crossAccountWrites": 0,
+    "anonymousReads": 0,
+    "constraintBypass": 0,
+    "limitBypass": 0,
+    "cascadeGaps": 0
+  },
+  "cleanup": "all synthetic users deleted; database holds one real account (the owner's) and no synthetic residue",
+  "note": "No email, credential or personal field recorded. Counts and refusal messages only."
+}

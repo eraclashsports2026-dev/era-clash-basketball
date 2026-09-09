@@ -85,13 +85,22 @@ export function FilledSlot({ p, pos, team, fit, hideStats, onSwap, flash }) {
 }
 
 // side = "gold" | "blue"
-export function TeamShell({ team: side, title, count, children }) {
+export function TeamShell({ team: side, title, count, children, chemistry, chemistryLabel }) {
   const accent = teamAccent(side);
   return (
-    <section aria-label={title} style={{ ...teamPanel(side), padding: 16, flex: "1 1 340px", minWidth: 0 }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 12 }}>
+    <section aria-label={title} style={{ ...teamPanel(side), padding: 16, flex: "1 1 430px", minWidth: 0 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 12, gap: 10 }}>
         <h2 style={{ margin: 0, fontSize: 17, fontWeight: 900, fontStyle: "italic", letterSpacing: 1, color: accent }}>{title}</h2>
-        {count != null && <span style={{ fontSize: 12, color: T.textDim, fontWeight: 700 }}>{count} / 5</span>}
+        <span style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
+          {chemistry != null && (
+            <>
+              <span style={{ fontSize: 10.5, color: T.textDim, fontWeight: 700, letterSpacing: 1 }}>Chemistry</span>
+              <span style={{ fontSize: 17, fontWeight: 900, fontStyle: "italic", color: accent }}>{chemistry}</span>
+              {chemistryLabel && <span style={{ fontSize: 9, fontWeight: 800, letterSpacing: 1, color: T.green }}>{chemistryLabel}</span>}
+            </>
+          )}
+          {count != null && <span style={{ fontSize: 12, color: T.textDim, fontWeight: 700 }}>{count} / 5</span>}
+        </span>
       </div>
       {children}
     </section>

@@ -1,0 +1,373 @@
+{
+  "capturedFor": "phase-6c1-calibration-framework",
+  "purpose": "Regression fixture. Detects accidental engine change during framework work. NOT a claim of historical correctness.",
+  "moduleVersions": {
+    "appVersion": "2.7.2",
+    "engineVersion": "3.2.0",
+    "calibrationFrameworkVersion": "1.0.0",
+    "historicalFixtureDataVersion": "1.0.0",
+    "historicalTargetSchemaVersion": "1.0.0",
+    "historicalTargetDataVersion": "1.0.0",
+    "opportunityAllocationVersion": "1.0.0",
+    "holdoutSetVersion": "1.0.0",
+    "benchmarkSeedSetVersion": "1.0.0",
+    "possessionCalibrationVersion": null,
+    "zoneResolutionVersion": "1.0.0",
+    "coachAdjustmentVersion": "1.0.0",
+    "defensiveMatchupVersion": "1.1.0",
+    "possessionEngineVersion": "1.1.0",
+    "playerIntelligenceVersion": "1.0.0",
+    "teamIntelligenceVersion": "1.0.0",
+    "coachIntelligenceVersion": "1.0.0",
+    "eraStyleVersion": "1.0.0",
+    "playerDataVersion": "2026-08-24",
+    "coachDataVersion": "1.1.0",
+    "eraDataVersion": "1.0.0",
+    "ratingVersion": "2.0",
+    "chemistryVersion": "2.5",
+    "narrativePromptVersion": "2.1",
+    "narrativeSchemaVersion": "1.0.0",
+    "actionLibraryVersion": "2.0.0",
+    "playerCardDesignVersion": null,
+    "dailyConfigSchemaVersion": "1.0.0",
+    "calibrationVersion": "backtest-1"
+  },
+  "cases": [
+    {
+      "id": "showtime-vs-splash-1990s-man",
+      "inputFingerprint": "7ad74951908d32e2",
+      "simulationSeed": 777,
+      "matchupFingerprint": "f72a3ad901b25486",
+      "moduleVersions": {
+        "engineVersion": "3.2.0",
+        "possessionEngineVersion": "1.1.0",
+        "actionLibraryVersion": "2.0.0",
+        "defensiveMatchupVersion": "1.1.0",
+        "coachAdjustmentVersion": "1.0.0",
+        "opportunityAllocationVersion": "1.0.0",
+        "playerDataVersion": "2026-08-24",
+        "playerIntelligenceVersion": "1.0.0",
+        "teamIntelligenceVersion": "1.0.0",
+        "coachDataVersion": "1.1.0",
+        "coachIntelligenceVersion": "1.0.0",
+        "eraDataVersion": "1.0.0",
+        "eraStyleVersion": "1.0.0",
+        "calibrationVersion": "backtest-1",
+        "matchupFingerprint": "f72a3ad901b25486",
+        "simulationSeed": 777
+      },
+      "finalScore": {
+        "gold": 110,
+        "blue": 131
+      },
+      "winner": "Blue",
+      "periods": 4,
+      "overtimes": 0,
+      "rngSteps": 2258,
+      "possessions": {
+        "gold": 97,
+        "blue": 98
+      },
+      "goldBoxHash": "c4e8fbebfb857ae0",
+      "blueBoxHash": "f34dfba1048ba8e9",
+      "ledgerHash": "c8b81565db96ddd4",
+      "defenseHash": "a7a904b13a48917d",
+      "offenseHash": "9cd5ddd16a7d9f81",
+      "actionDistribution": {
+        "CUT": 12,
+        "GENERIC_HALF_COURT": 19,
+        "HANDOFF": 29,
+        "ISOLATION": 32,
+        "OFF_BALL_SCREEN": 33,
+        "PICK_AND_ROLL": 29,
+        "POST_UP": 29,
+        "SPOT_UP": 15,
+        "TRANSITION": 25
+      },
+      "zoneShells": {
+        "gold": null,
+        "blue": null
+      },
+      "replayStable": true
+    },
+    {
+      "id": "stoppers-vs-splash-2020s-zone",
+      "inputFingerprint": "bdd820e2c73ad054",
+      "simulationSeed": 4242,
+      "matchupFingerprint": "239926993c229a4e",
+      "moduleVersions": {
+        "engineVersion": "3.2.0",
+        "possessionEngineVersion": "1.1.0",
+        "actionLibraryVersion": "2.0.0",
+        "defensiveMatchupVersion": "1.1.0",
+        "zoneResolutionVersion": "1.0.0",
+        "coachAdjustmentVersion": "1.0.0",
+        "opportunityAllocationVersion": "1.0.0",
+        "playerDataVersion": "2026-08-24",
+        "playerIntelligenceVersion": "1.0.0",
+        "teamIntelligenceVersion": "1.0.0",
+        "coachDataVersion": "1.1.0",
+        "coachIntelligenceVersion": "1.0.0",
+        "eraDataVersion": "1.0.0",
+        "eraStyleVersion": "1.0.0",
+        "calibrationVersion": "backtest-1",
+        "matchupFingerprint": "239926993c229a4e",
+        "simulationSeed": 4242
+      },
+      "finalScore": {
+        "gold": 117,
+        "blue": 125
+      },
+      "winner": "Blue",
+      "periods": 4,
+      "overtimes": 0,
+      "rngSteps": 2493,
+      "possessions": {
+        "gold": 103,
+        "blue": 104
+      },
+      "goldBoxHash": "b2c0734e8edc344e",
+      "blueBoxHash": "eedf5fda270f1e9d",
+      "ledgerHash": "3f5df442a3744f63",
+      "defenseHash": "66d6088a44487dd3",
+      "offenseHash": "f25dcb5809cb3ab1",
+      "actionDistribution": {
+        "CUT": 16,
+        "GENERIC_HALF_COURT": 8,
+        "HANDOFF": 11,
+        "ISOLATION": 7,
+        "OFF_BALL_SCREEN": 11,
+        "PICK_AND_ROLL": 13,
+        "POST_UP": 43,
+        "SPOT_UP": 22,
+        "TRANSITION": 42,
+        "ZONE_ATTACK": 58
+      },
+      "zoneShells": {
+        "gold": "MATCHUP",
+        "blue": null
+      },
+      "replayStable": true
+    },
+    {
+      "id": "size-vs-small-2010s",
+      "inputFingerprint": "4a42a4f0916a0439",
+      "simulationSeed": 31337,
+      "matchupFingerprint": "9da2abb4c4238e15",
+      "moduleVersions": {
+        "engineVersion": "3.2.0",
+        "possessionEngineVersion": "1.1.0",
+        "actionLibraryVersion": "2.0.0",
+        "defensiveMatchupVersion": "1.1.0",
+        "coachAdjustmentVersion": "1.0.0",
+        "opportunityAllocationVersion": "1.0.0",
+        "playerDataVersion": "2026-08-24",
+        "playerIntelligenceVersion": "1.0.0",
+        "teamIntelligenceVersion": "1.0.0",
+        "coachDataVersion": "1.1.0",
+        "coachIntelligenceVersion": "1.0.0",
+        "eraDataVersion": "1.0.0",
+        "eraStyleVersion": "1.0.0",
+        "calibrationVersion": "backtest-1",
+        "matchupFingerprint": "9da2abb4c4238e15",
+        "simulationSeed": 31337
+      },
+      "finalScore": {
+        "gold": 122,
+        "blue": 117
+      },
+      "winner": "Gold",
+      "periods": 5,
+      "overtimes": 1,
+      "rngSteps": 2644,
+      "possessions": {
+        "gold": 107,
+        "blue": 107
+      },
+      "goldBoxHash": "6392faba113824e2",
+      "blueBoxHash": "0f2fe141ff54b2c1",
+      "ledgerHash": "4ff9cd848f83f801",
+      "defenseHash": "abf6f3ce08864865",
+      "offenseHash": "1729cbd0573e7e67",
+      "actionDistribution": {
+        "CUT": 17,
+        "GENERIC_HALF_COURT": 24,
+        "HANDOFF": 20,
+        "ISOLATION": 18,
+        "OFF_BALL_SCREEN": 36,
+        "PICK_AND_ROLL": 41,
+        "POST_UP": 35,
+        "SPOT_UP": 26,
+        "TRANSITION": 30
+      },
+      "zoneShells": {
+        "gold": null,
+        "blue": null
+      },
+      "replayStable": true
+    },
+    {
+      "id": "pre-three-point-1960s",
+      "inputFingerprint": "396cbb1f15abae6b",
+      "simulationSeed": 1960,
+      "matchupFingerprint": "b52b67e36c4bf548",
+      "moduleVersions": {
+        "engineVersion": "3.2.0",
+        "possessionEngineVersion": "1.1.0",
+        "actionLibraryVersion": "2.0.0",
+        "defensiveMatchupVersion": "1.1.0",
+        "coachAdjustmentVersion": "1.0.0",
+        "opportunityAllocationVersion": "1.0.0",
+        "playerDataVersion": "2026-08-24",
+        "playerIntelligenceVersion": "1.0.0",
+        "teamIntelligenceVersion": "1.0.0",
+        "coachDataVersion": "1.1.0",
+        "coachIntelligenceVersion": "1.0.0",
+        "eraDataVersion": "1.0.0",
+        "eraStyleVersion": "1.0.0",
+        "calibrationVersion": "backtest-1",
+        "matchupFingerprint": "b52b67e36c4bf548",
+        "simulationSeed": 1960
+      },
+      "finalScore": {
+        "gold": 138,
+        "blue": 153
+      },
+      "winner": "Blue",
+      "periods": 4,
+      "overtimes": 0,
+      "rngSteps": 2743,
+      "possessions": {
+        "gold": 122,
+        "blue": 122
+      },
+      "goldBoxHash": "aa5802eac7b95d00",
+      "blueBoxHash": "d27b1fe98b091143",
+      "ledgerHash": "53a2c684759ca095",
+      "defenseHash": "ab1326bdb5e643ab",
+      "offenseHash": "7ded9219a6e7b6a7",
+      "actionDistribution": {
+        "CUT": 23,
+        "GENERIC_HALF_COURT": 25,
+        "HANDOFF": 9,
+        "ISOLATION": 44,
+        "OFF_BALL_SCREEN": 23,
+        "PICK_AND_ROLL": 30,
+        "POST_UP": 53,
+        "SPOT_UP": 14,
+        "TRANSITION": 55
+      },
+      "zoneShells": {
+        "gold": null,
+        "blue": null
+      },
+      "replayStable": true
+    },
+    {
+      "id": "dantoni-pace-2020s",
+      "inputFingerprint": "1a24b7c59d5011ef",
+      "simulationSeed": 13,
+      "matchupFingerprint": "34e471ebc4ffb252",
+      "moduleVersions": {
+        "engineVersion": "3.2.0",
+        "possessionEngineVersion": "1.1.0",
+        "actionLibraryVersion": "2.0.0",
+        "defensiveMatchupVersion": "1.1.0",
+        "coachAdjustmentVersion": "1.0.0",
+        "opportunityAllocationVersion": "1.0.0",
+        "playerDataVersion": "2026-08-24",
+        "playerIntelligenceVersion": "1.0.0",
+        "teamIntelligenceVersion": "1.0.0",
+        "coachDataVersion": "1.1.0",
+        "coachIntelligenceVersion": "1.0.0",
+        "eraDataVersion": "1.0.0",
+        "eraStyleVersion": "1.0.0",
+        "calibrationVersion": "backtest-1",
+        "matchupFingerprint": "34e471ebc4ffb252",
+        "simulationSeed": 13
+      },
+      "finalScore": {
+        "gold": 143,
+        "blue": 133
+      },
+      "winner": "Gold",
+      "periods": 4,
+      "overtimes": 0,
+      "rngSteps": 2469,
+      "possessions": {
+        "gold": 103,
+        "blue": 104
+      },
+      "goldBoxHash": "58292cc790fab47c",
+      "blueBoxHash": "1512bae1d6401ba0",
+      "ledgerHash": "7066ad18c37df709",
+      "defenseHash": "c79921d04ba16b54",
+      "offenseHash": "8d46280cf2913880",
+      "actionDistribution": {
+        "CUT": 14,
+        "GENERIC_HALF_COURT": 17,
+        "HANDOFF": 26,
+        "ISOLATION": 20,
+        "OFF_BALL_SCREEN": 21,
+        "PICK_AND_ROLL": 47,
+        "POST_UP": 32,
+        "SPOT_UP": 19,
+        "TRANSITION": 37
+      },
+      "zoneShells": {
+        "gold": null,
+        "blue": null
+      },
+      "replayStable": true
+    },
+    {
+      "id": "flag-off-6b1-path",
+      "inputFingerprint": "3cecacb6032857fa",
+      "simulationSeed": 777,
+      "matchupFingerprint": "f72a3ad901b25486",
+      "moduleVersions": {
+        "engineVersion": "3.2.0",
+        "possessionEngineVersion": "1.1.0",
+        "actionLibraryVersion": "2.0.0",
+        "defensiveMatchupVersion": "1.1.0",
+        "playerDataVersion": "2026-08-24",
+        "playerIntelligenceVersion": "1.0.0",
+        "teamIntelligenceVersion": "1.0.0",
+        "coachDataVersion": "1.1.0",
+        "coachIntelligenceVersion": "1.0.0",
+        "eraDataVersion": "1.0.0",
+        "eraStyleVersion": "1.0.0",
+        "calibrationVersion": "backtest-1",
+        "matchupFingerprint": "f72a3ad901b25486",
+        "simulationSeed": 777
+      },
+      "finalScore": {
+        "gold": 100,
+        "blue": 102
+      },
+      "winner": "Blue",
+      "periods": 4,
+      "overtimes": 0,
+      "rngSteps": 2147,
+      "possessions": {
+        "gold": 95,
+        "blue": 97
+      },
+      "goldBoxHash": "7c9878252f62ee2c",
+      "blueBoxHash": "64105e636e20fc8a",
+      "ledgerHash": "6fa096fe9666b3ba",
+      "defenseHash": "ffc46bb5f5b993dd",
+      "offenseHash": null,
+      "actionDistribution": {
+        "GENERIC_HALF_COURT": 136,
+        "PICK_AND_ROLL": 38,
+        "TRANSITION": 44
+      },
+      "zoneShells": {
+        "gold": null,
+        "blue": null
+      },
+      "replayStable": true
+    }
+  ]
+}

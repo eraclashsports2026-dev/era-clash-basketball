@@ -1,0 +1,1042 @@
+{
+  "artifact": "candidate-history",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run calibration:c5:search",
+  "generatedAt": "2026-08-26T15:22:04.158Z",
+  "gitCommit": "233a47f2e8a40ec45334ba9529d209054b3fecf8",
+  "branch": "phase-6c2c5-targeted-mechanic-calibration",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {
+    "data/calibration/c5/no-effect-triage.json": "6a35ee346ac030c60e025783f8ebd4c7e6aae8120a7aed215d227292a1306558",
+    "data/calibration/internal-folds-v3.json": "8c1e89f3e3ec7c95640a509d5847deb58b5e2d8bd01d47aa813e77c48113ef7a"
+  },
+  "targetedCalibrationPolicyVersion": "1.0.0",
+  "data": {
+    "policy": {
+      "version": "1.0.0",
+      "scanPointsPerParameter": 4,
+      "seedsPerFixture": 24,
+      "minTuningImprovement": 0.0005,
+      "maxValidationDegradation": 0.01,
+      "regularizationWeight": 0.25,
+      "objective": "Tier C player scoring-share mean absolute error over the selected five, on historical calibration v3 fixtures",
+      "candidateZeroAlwaysCompetes": true
+    },
+    "tuningFixtures": [
+      "h3-1951-52-lakers",
+      "h3-1969-70-knicks",
+      "h3-1971-72-lakers",
+      "h3-1972-73-knicks",
+      "h3-1986-87-lakers",
+      "h3-1995-96-bulls",
+      "h3-1996-97-jazz",
+      "h3-2000-01-lakers",
+      "h3-2015-16-warriors",
+      "h3-2010-11-bulls",
+      "h3-2021-22-warriors",
+      "h3-2022-23-sixers"
+    ],
+    "validationFixtures": [
+      "h3-1956-57-celtics",
+      "h3-1958-59-celtics",
+      "h3-1962-63-celtics",
+      "h3-1973-74-celtics",
+      "h3-1985-86-celtics",
+      "h3-1988-89-pistons",
+      "h3-1994-95-rockets",
+      "h3-2003-04-pistons",
+      "h3-2004-05-spurs",
+      "h3-2013-14-spurs",
+      "h3-2022-23-heat"
+    ],
+    "seedsPerFixture": 24,
+    "candidateZero": {
+      "tuningMae": 0.07707,
+      "validationMae": 0.06703,
+      "perFixtureTuning": [
+        {
+          "fixtureId": "h3-1951-52-lakers",
+          "mae": 0.07108,
+          "n": 24
+        },
+        {
+          "fixtureId": "h3-1969-70-knicks",
+          "mae": 0.04921,
+          "n": 24
+        },
+        {
+          "fixtureId": "h3-1971-72-lakers",
+          "mae": 0.05191,
+          "n": 24
+        },
+        {
+          "fixtureId": "h3-1972-73-knicks",
+          "mae": 0.04962,
+          "n": 24
+        },
+        {
+          "fixtureId": "h3-1986-87-lakers",
+          "mae": 0.05663,
+          "n": 24
+        },
+        {
+          "fixtureId": "h3-1995-96-bulls",
+          "mae": 0.10218,
+          "n": 24
+        },
+        {
+          "fixtureId": "h3-1996-97-jazz",
+          "mae": 0.06615,
+          "n": 24
+        },
+        {
+          "fixtureId": "h3-2000-01-lakers",
+          "mae": 0.14779,
+          "n": 24
+        },
+        {
+          "fixtureId": "h3-2015-16-warriors",
+          "mae": 0.07736,
+          "n": 24
+        },
+        {
+          "fixtureId": "h3-2010-11-bulls",
+          "mae": 0.08713,
+          "n": 24
+        },
+        {
+          "fixtureId": "h3-2021-22-warriors",
+          "mae": 0.06281,
+          "n": 24
+        },
+        {
+          "fixtureId": "h3-2022-23-sixers",
+          "mae": 0.10302,
+          "n": 24
+        }
+      ]
+    },
+    "candidateCount": 45,
+    "changedCandidates": 44,
+    "acceptedCount": 1,
+    "rejectedCount": 43,
+    "winner": "C40",
+    "winnerChanges": [
+      {
+        "id": "coach.offensiveAdjustmentMinEvents",
+        "from": 6,
+        "to": 7.8
+      }
+    ],
+    "reconciliation": {
+      "label": "candidate-history",
+      "sum": 44,
+      "expectedTotal": 44,
+      "reconciles": true,
+      "problems": []
+    },
+    "history": [
+      {
+        "candidateId": "C0",
+        "label": "wired defaults",
+        "changes": [],
+        "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703,
+        "accepted": true,
+        "reason": "Candidate 0 is the incumbent and always competes."
+      },
+      {
+        "candidateId": "C1",
+        "label": "opportunity.mismatch.severe=2.24",
+        "changes": [
+          {
+            "id": "opportunity.mismatch.severe",
+            "from": 2.6,
+            "to": 2.24,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2
+          }
+        ],
+        "parameterSetHash": "bbf4f56d3786510af7230eb1560f6fc17f51fbe5d4880b3a7831645f6e32920d",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703,
+        "tuningGain": 0,
+        "validationRelativeDelta": 0,
+        "accepted": false,
+        "reason": "Tuning MAE gain 0 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C2",
+        "label": "opportunity.mismatch.severe=2.48",
+        "changes": [
+          {
+            "id": "opportunity.mismatch.severe",
+            "from": 2.6,
+            "to": 2.48,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2
+          }
+        ],
+        "parameterSetHash": "b8b4f3e48e58fcc791b60abb012e10d3aa0c6e71fb937861a0a9cf01f2dc5e10",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703,
+        "tuningGain": 0,
+        "validationRelativeDelta": 0,
+        "accepted": false,
+        "reason": "Tuning MAE gain 0 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C3",
+        "label": "opportunity.mismatch.severe=2.72",
+        "changes": [
+          {
+            "id": "opportunity.mismatch.severe",
+            "from": 2.6,
+            "to": 2.72,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2
+          }
+        ],
+        "parameterSetHash": "1ec4dcd27ab2e2df36fdf27b96bcde76d3ea61b4e2d9a34b13f27bca682d4242",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703,
+        "tuningGain": 0,
+        "validationRelativeDelta": 0,
+        "accepted": false,
+        "reason": "Tuning MAE gain 0 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C4",
+        "label": "opportunity.mismatch.severe=2.96",
+        "changes": [
+          {
+            "id": "opportunity.mismatch.severe",
+            "from": 2.6,
+            "to": 2.96,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2
+          }
+        ],
+        "parameterSetHash": "241cec429e367f70129671bdf4f525b537bb4375bf2d8ebc799d1ca690e4a81c",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703,
+        "tuningGain": 0,
+        "validationRelativeDelta": 0,
+        "accepted": false,
+        "reason": "Tuning MAE gain 0 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C5",
+        "label": "opportunity.mismatch.major=1.85",
+        "changes": [
+          {
+            "id": "opportunity.mismatch.major",
+            "from": 2,
+            "to": 1.85,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1
+          }
+        ],
+        "parameterSetHash": "72e51b08d06f483f3db3d2e1dba167f5e298204eaf35b0071b45844d91d9a9c0",
+        "tuningMae": 0.07722,
+        "validationMae": 0.06686,
+        "tuningGain": -0.00015,
+        "validationRelativeDelta": -0.00254,
+        "accepted": false,
+        "reason": "Tuning MAE gain -0.00015 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C6",
+        "label": "opportunity.mismatch.major=1.95",
+        "changes": [
+          {
+            "id": "opportunity.mismatch.major",
+            "from": 2,
+            "to": 1.95,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1
+          }
+        ],
+        "parameterSetHash": "983712d8c7cd67d04aa0382a9caeffc8c5127f31d58599dff1d82e01a17a6334",
+        "tuningMae": 0.07706,
+        "validationMae": 0.06681,
+        "tuningGain": 0.00001,
+        "validationRelativeDelta": -0.00328,
+        "accepted": false,
+        "reason": "Tuning MAE gain 0.00001 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C7",
+        "label": "opportunity.mismatch.major=2.05",
+        "changes": [
+          {
+            "id": "opportunity.mismatch.major",
+            "from": 2,
+            "to": 2.05,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1
+          }
+        ],
+        "parameterSetHash": "e7aafb401922331b5bf86d84cdb52cb7218f89620665742bee2365817f5afa4c",
+        "tuningMae": 0.07701,
+        "validationMae": 0.06721,
+        "tuningGain": 0.00006,
+        "validationRelativeDelta": 0.00269,
+        "accepted": false,
+        "reason": "Tuning MAE gain 0.00006 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C8",
+        "label": "opportunity.mismatch.major=2.15",
+        "changes": [
+          {
+            "id": "opportunity.mismatch.major",
+            "from": 2,
+            "to": 2.15,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1
+          }
+        ],
+        "parameterSetHash": "91198caa9412376e989db3e42e04402e75feb0807963302d69e591df74b14b54",
+        "tuningMae": 0.07686,
+        "validationMae": 0.06726,
+        "tuningGain": 0.00021,
+        "validationRelativeDelta": 0.00343,
+        "accepted": false,
+        "reason": "Tuning MAE gain 0.00021 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C9",
+        "label": "fitBand.POST_UP.lo=0.246",
+        "changes": [
+          {
+            "id": "fitBand.POST_UP.lo",
+            "from": 0.3,
+            "to": 0.246,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1
+          }
+        ],
+        "parameterSetHash": "e907aa7cacad2e35b08f3c2afeb493efe5e867a2713d56ffa9416b3aaf2a7a60",
+        "tuningMae": 0.07744,
+        "validationMae": 0.06713,
+        "tuningGain": -0.00037,
+        "validationRelativeDelta": 0.00149,
+        "accepted": false,
+        "reason": "Tuning MAE gain -0.00037 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C10",
+        "label": "fitBand.POST_UP.lo=0.282",
+        "changes": [
+          {
+            "id": "fitBand.POST_UP.lo",
+            "from": 0.3,
+            "to": 0.282,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1
+          }
+        ],
+        "parameterSetHash": "da0328d6e748c7d575b9513f103a680872d7b8305ecd52349ce41a84eba26929",
+        "tuningMae": 0.07741,
+        "validationMae": 0.0671,
+        "tuningGain": -0.00034,
+        "validationRelativeDelta": 0.00104,
+        "accepted": false,
+        "reason": "Tuning MAE gain -0.00034 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C11",
+        "label": "fitBand.POST_UP.lo=0.318",
+        "changes": [
+          {
+            "id": "fitBand.POST_UP.lo",
+            "from": 0.3,
+            "to": 0.318,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1
+          }
+        ],
+        "parameterSetHash": "f3a520991cf154c21f616e3430b6f08033dd7d0043a4360594a1a8452d08ae6c",
+        "tuningMae": 0.07687,
+        "validationMae": 0.06706,
+        "tuningGain": 0.0002,
+        "validationRelativeDelta": 0.00045,
+        "accepted": false,
+        "reason": "Tuning MAE gain 0.0002 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C12",
+        "label": "fitBand.POST_UP.lo=0.354",
+        "changes": [
+          {
+            "id": "fitBand.POST_UP.lo",
+            "from": 0.3,
+            "to": 0.354,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1
+          }
+        ],
+        "parameterSetHash": "0442f5fe506a9f967cf4f0538f964205cc31b955faafab10194ada414a6810e1",
+        "tuningMae": 0.07681,
+        "validationMae": 0.06687,
+        "tuningGain": 0.00026,
+        "validationRelativeDelta": -0.00239,
+        "accepted": false,
+        "reason": "Tuning MAE gain 0.00026 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C13",
+        "label": "fitBand.ISOLATION.lo=0.446",
+        "changes": [
+          {
+            "id": "fitBand.ISOLATION.lo",
+            "from": 0.5,
+            "to": 0.446,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1
+          }
+        ],
+        "parameterSetHash": "b73c603f56028c2c01207dbf671a1648c1d259e75a19c277515037e64c3f6bef",
+        "tuningMae": 0.07715,
+        "validationMae": 0.06706,
+        "tuningGain": -0.00008,
+        "validationRelativeDelta": 0.00045,
+        "accepted": false,
+        "reason": "Tuning MAE gain -0.00008 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C14",
+        "label": "fitBand.ISOLATION.lo=0.482",
+        "changes": [
+          {
+            "id": "fitBand.ISOLATION.lo",
+            "from": 0.5,
+            "to": 0.482,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1
+          }
+        ],
+        "parameterSetHash": "4053a7e73986f0c50c86ad210adbbba682fcc202e087dcadad8268261771418f",
+        "tuningMae": 0.07714,
+        "validationMae": 0.06703,
+        "tuningGain": -0.00007,
+        "validationRelativeDelta": 0,
+        "accepted": false,
+        "reason": "Tuning MAE gain -0.00007 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C15",
+        "label": "fitBand.ISOLATION.lo=0.518",
+        "changes": [
+          {
+            "id": "fitBand.ISOLATION.lo",
+            "from": 0.5,
+            "to": 0.518,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1
+          }
+        ],
+        "parameterSetHash": "f128d993f65df9e0fd8a9c6dc73e914022abb266c79080d64e46e4294df395a0",
+        "tuningMae": 0.07705,
+        "validationMae": 0.06714,
+        "tuningGain": 0.00002,
+        "validationRelativeDelta": 0.00164,
+        "accepted": false,
+        "reason": "Tuning MAE gain 0.00002 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C16",
+        "label": "fitBand.ISOLATION.lo=0.554",
+        "changes": [
+          {
+            "id": "fitBand.ISOLATION.lo",
+            "from": 0.5,
+            "to": 0.554,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1
+          }
+        ],
+        "parameterSetHash": "4a7f5a62a0558ca09fc7a8d37ff416088aa1075666339c0e34808c75b1b8cba2",
+        "tuningMae": 0.07714,
+        "validationMae": 0.06714,
+        "tuningGain": -0.00007,
+        "validationRelativeDelta": 0.00164,
+        "accepted": false,
+        "reason": "Tuning MAE gain -0.00007 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C17",
+        "label": "fitBand.ISOLATION.hi=1.68",
+        "changes": [
+          {
+            "id": "fitBand.ISOLATION.hi",
+            "from": 1.8,
+            "to": 1.68,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1
+          }
+        ],
+        "parameterSetHash": "dcc28b1d4965cde278a02d4d0ce7f9a15e5a6c793cebc5c1cd81fd09bbb24e77",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06714,
+        "tuningGain": 0,
+        "validationRelativeDelta": 0.00164,
+        "accepted": false,
+        "reason": "Tuning MAE gain 0 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C18",
+        "label": "fitBand.ISOLATION.hi=1.76",
+        "changes": [
+          {
+            "id": "fitBand.ISOLATION.hi",
+            "from": 1.8,
+            "to": 1.76,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1
+          }
+        ],
+        "parameterSetHash": "f87214e474fb94b5837b4260546b0b2ba3fb3ccacdda2abd4d6da0e896f4ef02",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703,
+        "tuningGain": 0,
+        "validationRelativeDelta": 0,
+        "accepted": false,
+        "reason": "Tuning MAE gain 0 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C19",
+        "label": "fitBand.ISOLATION.hi=1.84",
+        "changes": [
+          {
+            "id": "fitBand.ISOLATION.hi",
+            "from": 1.8,
+            "to": 1.84,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1
+          }
+        ],
+        "parameterSetHash": "36d22ac95f7dac46a12ff1025fb328d939ec46548b3698bdc0a6482d4367863a",
+        "tuningMae": 0.07713,
+        "validationMae": 0.06703,
+        "tuningGain": -0.00006,
+        "validationRelativeDelta": 0,
+        "accepted": false,
+        "reason": "Tuning MAE gain -0.00006 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C20",
+        "label": "fitBand.ISOLATION.hi=1.92",
+        "changes": [
+          {
+            "id": "fitBand.ISOLATION.hi",
+            "from": 1.8,
+            "to": 1.92,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1
+          }
+        ],
+        "parameterSetHash": "1858e8aafd71b8ecbffe629634626b509f3f0f1df1007e4667a8cbd1f3be4cc3",
+        "tuningMae": 0.07714,
+        "validationMae": 0.06703,
+        "tuningGain": -0.00007,
+        "validationRelativeDelta": 0,
+        "accepted": false,
+        "reason": "Tuning MAE gain -0.00007 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C21",
+        "label": "zone.highPostVulnerability=0.898",
+        "changes": [
+          {
+            "id": "zone.highPostVulnerability",
+            "from": 1,
+            "to": 0.898,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1
+          }
+        ],
+        "parameterSetHash": "c355b7a408eb88a2fe9c5549e42f36105745ac559b6d8ea1322dc669a822859e",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703,
+        "tuningGain": 0,
+        "validationRelativeDelta": 0,
+        "accepted": false,
+        "reason": "Tuning MAE gain 0 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C22",
+        "label": "zone.highPostVulnerability=0.966",
+        "changes": [
+          {
+            "id": "zone.highPostVulnerability",
+            "from": 1,
+            "to": 0.966,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1
+          }
+        ],
+        "parameterSetHash": "9d471651acd690bafcc4b75b2955ab30dd6d621cb8ece90c281b767ba4a1c3ca",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703,
+        "tuningGain": 0,
+        "validationRelativeDelta": 0,
+        "accepted": false,
+        "reason": "Tuning MAE gain 0 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C23",
+        "label": "zone.highPostVulnerability=1.034",
+        "changes": [
+          {
+            "id": "zone.highPostVulnerability",
+            "from": 1,
+            "to": 1.034,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1
+          }
+        ],
+        "parameterSetHash": "9bc31e9cbd712182540b03483e0aa7bc286442cf22d4806754cb6e666083330e",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703,
+        "tuningGain": 0,
+        "validationRelativeDelta": 0,
+        "accepted": false,
+        "reason": "Tuning MAE gain 0 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C24",
+        "label": "zone.highPostVulnerability=1.102",
+        "changes": [
+          {
+            "id": "zone.highPostVulnerability",
+            "from": 1,
+            "to": 1.102,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1
+          }
+        ],
+        "parameterSetHash": "79d0d397a5e2d5fa1d718a94780d93d4735abc34fae377e3dd5c68c8650ea12c",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703,
+        "tuningGain": 0,
+        "validationRelativeDelta": 0,
+        "accepted": false,
+        "reason": "Tuning MAE gain 0 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C25",
+        "label": "zone.cornerVulnerability=0.898",
+        "changes": [
+          {
+            "id": "zone.cornerVulnerability",
+            "from": 1,
+            "to": 0.898,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1
+          }
+        ],
+        "parameterSetHash": "bf33543facdff5033b5812264d5e10d4d200d46bd42a5a0d8174b6ba25a8cb74",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703,
+        "tuningGain": 0,
+        "validationRelativeDelta": 0,
+        "accepted": false,
+        "reason": "Tuning MAE gain 0 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C26",
+        "label": "zone.cornerVulnerability=0.966",
+        "changes": [
+          {
+            "id": "zone.cornerVulnerability",
+            "from": 1,
+            "to": 0.966,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1
+          }
+        ],
+        "parameterSetHash": "cc9787a020026957e766669e59d9f40b122fbc488eeb110f2d112ae55d404ea1",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703,
+        "tuningGain": 0,
+        "validationRelativeDelta": 0,
+        "accepted": false,
+        "reason": "Tuning MAE gain 0 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C27",
+        "label": "zone.cornerVulnerability=1.034",
+        "changes": [
+          {
+            "id": "zone.cornerVulnerability",
+            "from": 1,
+            "to": 1.034,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1
+          }
+        ],
+        "parameterSetHash": "1b449153e78a4fa0503ffb4dfc79ae450d32a8f56458ae1fad8212429fcb9aaa",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703,
+        "tuningGain": 0,
+        "validationRelativeDelta": 0,
+        "accepted": false,
+        "reason": "Tuning MAE gain 0 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C28",
+        "label": "zone.cornerVulnerability=1.102",
+        "changes": [
+          {
+            "id": "zone.cornerVulnerability",
+            "from": 1,
+            "to": 1.102,
+            "readiness": "STRONGLY_REGULARIZED_CALIBRATION",
+            "capFraction": 0.1
+          }
+        ],
+        "parameterSetHash": "e0bbcc3193f91201cce945a301cf177fb6f1952e9262b8242221f73e782bee9c",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06703,
+        "tuningGain": 0,
+        "validationRelativeDelta": 0,
+        "accepted": false,
+        "reason": "Tuning MAE gain 0 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C29",
+        "label": "coach.actionMixInfluence=0.796",
+        "changes": [
+          {
+            "id": "coach.actionMixInfluence",
+            "from": 1,
+            "to": 0.796,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2
+          }
+        ],
+        "parameterSetHash": "85920de768ecf744336263e10b56edcdcaea4bde33d380fc5681ecadc47dbbcb",
+        "tuningMae": 0.07691,
+        "validationMae": 0.06624,
+        "tuningGain": 0.00016,
+        "validationRelativeDelta": -0.01179,
+        "accepted": false,
+        "reason": "Tuning MAE gain 0.00016 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C30",
+        "label": "coach.actionMixInfluence=0.932",
+        "changes": [
+          {
+            "id": "coach.actionMixInfluence",
+            "from": 1,
+            "to": 0.932,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2
+          }
+        ],
+        "parameterSetHash": "2fc1551964de8af23a5535f6581b13a1d1de0340c064e32e44380f0d19762ac6",
+        "tuningMae": 0.07772,
+        "validationMae": 0.06763,
+        "tuningGain": -0.00065,
+        "validationRelativeDelta": 0.00895,
+        "accepted": false,
+        "reason": "Tuning MAE gain -0.00065 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C31",
+        "label": "coach.actionMixInfluence=1.068",
+        "changes": [
+          {
+            "id": "coach.actionMixInfluence",
+            "from": 1,
+            "to": 1.068,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2
+          }
+        ],
+        "parameterSetHash": "71c743b8ce0b72a08ca4325bbc58bc4ee708d7af771dab0cea68884b1662ad8b",
+        "tuningMae": 0.07756,
+        "validationMae": 0.06655,
+        "tuningGain": -0.00049,
+        "validationRelativeDelta": -0.00716,
+        "accepted": false,
+        "reason": "Tuning MAE gain -0.00049 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C32",
+        "label": "coach.actionMixInfluence=1.204",
+        "changes": [
+          {
+            "id": "coach.actionMixInfluence",
+            "from": 1,
+            "to": 1.204,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2
+          }
+        ],
+        "parameterSetHash": "2c0cbee51ec6912d9f1c1735bb8f0af68a0ff52163e8839e334ffcca4733dfb2",
+        "tuningMae": 0.07659,
+        "validationMae": 0.06732,
+        "tuningGain": 0.00048,
+        "validationRelativeDelta": 0.00433,
+        "accepted": false,
+        "reason": "Tuning MAE gain 0.00048 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C33",
+        "label": "coach.rosterSensitivity=0.796",
+        "changes": [
+          {
+            "id": "coach.rosterSensitivity",
+            "from": 1,
+            "to": 0.796,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2
+          }
+        ],
+        "parameterSetHash": "113c08e9794ca1634c39615504b9ab7d6bb7147a9aa5f074d73e04ba6529b9b2",
+        "tuningMae": 0.07764,
+        "validationMae": 0.06712,
+        "tuningGain": -0.00057,
+        "validationRelativeDelta": 0.00134,
+        "accepted": false,
+        "reason": "Tuning MAE gain -0.00057 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C34",
+        "label": "coach.rosterSensitivity=0.932",
+        "changes": [
+          {
+            "id": "coach.rosterSensitivity",
+            "from": 1,
+            "to": 0.932,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2
+          }
+        ],
+        "parameterSetHash": "120c5df3f5dbc0f0505bc250825c21ab559fc541a982c988f3243c18956996a7",
+        "tuningMae": 0.07827,
+        "validationMae": 0.06794,
+        "tuningGain": -0.0012,
+        "validationRelativeDelta": 0.01358,
+        "accepted": false,
+        "reason": "Tuning MAE gain -0.0012 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C35",
+        "label": "coach.rosterSensitivity=1.068",
+        "changes": [
+          {
+            "id": "coach.rosterSensitivity",
+            "from": 1,
+            "to": 1.068,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2
+          }
+        ],
+        "parameterSetHash": "3cfa69ec790394c9d4babb577b9c6a7c54e54802001e09de302fd62436faf41a",
+        "tuningMae": 0.07919,
+        "validationMae": 0.0658,
+        "tuningGain": -0.00212,
+        "validationRelativeDelta": -0.01835,
+        "accepted": false,
+        "reason": "Tuning MAE gain -0.00212 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C36",
+        "label": "coach.rosterSensitivity=1.204",
+        "changes": [
+          {
+            "id": "coach.rosterSensitivity",
+            "from": 1,
+            "to": 1.204,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2
+          }
+        ],
+        "parameterSetHash": "8f45c2b92d6374dd93f25c65a3c028c2ce294795e8164769769f8e71ffa1fe52",
+        "tuningMae": 0.07736,
+        "validationMae": 0.06715,
+        "tuningGain": -0.00029,
+        "validationRelativeDelta": 0.00179,
+        "accepted": false,
+        "reason": "Tuning MAE gain -0.00029 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C37",
+        "label": "coach.offensiveAdjustmentMinEvents=4.2",
+        "changes": [
+          {
+            "id": "coach.offensiveAdjustmentMinEvents",
+            "from": 6,
+            "to": 4.2,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2
+          }
+        ],
+        "parameterSetHash": "3ac21c4913a9d22364261e777fb5415ce7344108869883f099624e0c42b32e7d",
+        "tuningMae": 0.07688,
+        "validationMae": 0.06613,
+        "tuningGain": 0.00019,
+        "validationRelativeDelta": -0.01343,
+        "accepted": false,
+        "reason": "Tuning MAE gain 0.00019 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C38",
+        "label": "coach.offensiveAdjustmentMinEvents=5.4",
+        "changes": [
+          {
+            "id": "coach.offensiveAdjustmentMinEvents",
+            "from": 6,
+            "to": 5.4,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2
+          }
+        ],
+        "parameterSetHash": "cd7c20dc82dce1b83b542507a883bbc6f9357210b3f90068384b267553921a95",
+        "tuningMae": 0.07707,
+        "validationMae": 0.06701,
+        "tuningGain": 0,
+        "validationRelativeDelta": -0.0003,
+        "accepted": false,
+        "reason": "Tuning MAE gain 0 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C39",
+        "label": "coach.offensiveAdjustmentMinEvents=6.6",
+        "changes": [
+          {
+            "id": "coach.offensiveAdjustmentMinEvents",
+            "from": 6,
+            "to": 6.6,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2
+          }
+        ],
+        "parameterSetHash": "9c67d58eff1d8822494de60b78404d7700a4f5723aac0d5ec5f8704cf51d4a48",
+        "tuningMae": 0.07693,
+        "validationMae": 0.06694,
+        "tuningGain": 0.00014,
+        "validationRelativeDelta": -0.00134,
+        "accepted": false,
+        "reason": "Tuning MAE gain 0.00014 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C40",
+        "label": "coach.offensiveAdjustmentMinEvents=7.8",
+        "changes": [
+          {
+            "id": "coach.offensiveAdjustmentMinEvents",
+            "from": 6,
+            "to": 7.8,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2
+          }
+        ],
+        "parameterSetHash": "f368251f5bcb31e10515991c74b275d2425cc130d85f384f6e34c6cdf02cd5f8",
+        "tuningMae": 0.07635,
+        "validationMae": 0.06655,
+        "tuningGain": 0.00072,
+        "validationRelativeDelta": -0.00716,
+        "accepted": true,
+        "reason": "Tuning MAE improves by 0.00072 and validation degrades by -0.00716 relative, within the 0.01 tolerance."
+      },
+      {
+        "candidateId": "C41",
+        "label": "coach.adjustmentMagnitude=0.0372",
+        "changes": [
+          {
+            "id": "coach.adjustmentMagnitude",
+            "from": 0.06,
+            "to": 0.0372,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2
+          }
+        ],
+        "parameterSetHash": "6d68ac947ccba5fe1d0abbfc433cddc06d3235fced027adf4f08bed980ef8dd4",
+        "tuningMae": 0.07882,
+        "validationMae": 0.06649,
+        "tuningGain": -0.00175,
+        "validationRelativeDelta": -0.00806,
+        "accepted": false,
+        "reason": "Tuning MAE gain -0.00175 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C42",
+        "label": "coach.adjustmentMagnitude=0.0524",
+        "changes": [
+          {
+            "id": "coach.adjustmentMagnitude",
+            "from": 0.06,
+            "to": 0.0524,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2
+          }
+        ],
+        "parameterSetHash": "56af99cc5df467597f177363ada076375dc3e7e069fc35f6ccb1e15d5299440a",
+        "tuningMae": 0.07799,
+        "validationMae": 0.06757,
+        "tuningGain": -0.00092,
+        "validationRelativeDelta": 0.00806,
+        "accepted": false,
+        "reason": "Tuning MAE gain -0.00092 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C43",
+        "label": "coach.adjustmentMagnitude=0.0676",
+        "changes": [
+          {
+            "id": "coach.adjustmentMagnitude",
+            "from": 0.06,
+            "to": 0.0676,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2
+          }
+        ],
+        "parameterSetHash": "80197d453ee12ae1597bfc74fedc0cc96e4cae4f2ff7b5e41c5d27b7cb9882df",
+        "tuningMae": 0.07798,
+        "validationMae": 0.06822,
+        "tuningGain": -0.00091,
+        "validationRelativeDelta": 0.01775,
+        "accepted": false,
+        "reason": "Tuning MAE gain -0.00091 is below the 0.0005 minimum — noise, not progress."
+      },
+      {
+        "candidateId": "C44",
+        "label": "coach.adjustmentMagnitude=0.0828",
+        "changes": [
+          {
+            "id": "coach.adjustmentMagnitude",
+            "from": 0.06,
+            "to": 0.0828,
+            "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+            "capFraction": 0.2
+          }
+        ],
+        "parameterSetHash": "3bedd1cf95f47a25c3eaaa6dfce5c6e99cc2719fc868c1a78cdc2e7b25b3eb83",
+        "tuningMae": 0.07819,
+        "validationMae": 0.06639,
+        "tuningGain": -0.00112,
+        "validationRelativeDelta": -0.00955,
+        "accepted": false,
+        "reason": "Tuning MAE gain -0.00112 is below the 0.0005 minimum — noise, not progress."
+      }
+    ]
+  },
+  "outputHash": "ab340310fd46db981aa57a66b197c8312fce44121795dc83dcb6451bd8204c6c",
+  "supersededBy": "candidate-history.json",
+  "supersededReason": "INVALID_METHOD_TWO_DEFECTS",
+  "defects": [
+    "OFF_GRID_SCAN: every eligible parameter declares a registry step, and all 44 candidates were generated at interior points ignoring it. The accepted candidate set coach.offensiveAdjustmentMinEvents to 7.8, a fractional event count the parameter cannot take.",
+    "NO_MULTIPLICITY_CONTROL: 44 candidates were compared against a fixed 0.0005 practical threshold with no family-wise correction. The candidate gain distribution has mean -0.00020 and sd 0.00054, so the threshold sits 0.93 sd out and roughly 8 of 44 candidates would be expected to cross it by chance. The accepted candidate reached 1.70 sd above the family mean, while the expected maximum of 44 null draws is about 2.15 sd. The accepted result is weaker than the best of pure noise."
+  ],
+  "disclosure": "This run was completed and read before the defects were identified. It is retained unaltered. The correction was therefore made AFTER seeing this result, and it is strictly stricter in both respects: it removes off-grid values from the search space and adds family-wise significance on top of the existing practical and validation gates. It cannot turn a rejection into an acceptance. The candidate it accepted, C40, is reclassified as noise."
+}

@@ -1,0 +1,84 @@
+{
+  "artifact": "challenge-enumeration-qa",
+  "phase": "9C — Challenges + Persistent Competitive Identity V1",
+  "generatedAt": "2026-09-05T06:24:18.422Z",
+  "derivedFrom": [
+    "challenge-security-qa",
+    "challenge-deployed-qa"
+  ],
+  "checks": [
+    {
+      "check": "every unknown or malformed code reads as one generic unavailable",
+      "pass": true,
+      "detail": "unavailable,unavailable,unavailable,unavailable,unavailable,unavailable,unavailable,unavailable",
+      "from": "challenge-security-qa"
+    },
+    {
+      "check": "the GET form answers the same way",
+      "pass": true,
+      "detail": "",
+      "from": "challenge-security-qa"
+    },
+    {
+      "check": "an unknown action is a validation failure",
+      "pass": true,
+      "detail": "",
+      "from": "challenge-security-qa"
+    },
+    {
+      "check": "the invitation lookup is rate-limited per IP",
+      "pass": true,
+      "detail": "",
+      "from": "challenge-security-qa"
+    },
+    {
+      "check": "an unknown code is generically unavailable",
+      "pass": true,
+      "detail": "",
+      "from": "challenge-deployed-qa"
+    }
+  ],
+  "passed": true,
+  "codes": [
+    {
+      "code": "EC-ZZZZ-ZZZZ",
+      "http": 200,
+      "status": "unavailable"
+    },
+    {
+      "code": "EC-AAAA-AAAA",
+      "http": 200,
+      "status": "unavailable"
+    },
+    {
+      "code": "EC-AAAA-AAAB",
+      "http": 200,
+      "status": "unavailable"
+    },
+    {
+      "code": "nonsense",
+      "http": 200,
+      "status": "unavailable"
+    },
+    {
+      "code": "",
+      "http": 200,
+      "status": "unavailable"
+    },
+    {
+      "code": "../x",
+      "http": 200,
+      "status": "unavailable"
+    },
+    {
+      "code": "EC-0000-0000",
+      "http": 200,
+      "status": "unavailable"
+    },
+    {
+      "code": "%00",
+      "http": 200,
+      "status": "unavailable"
+    }
+  ]
+}

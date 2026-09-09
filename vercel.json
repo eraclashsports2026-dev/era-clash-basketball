@@ -1,43 +1,118 @@
 {
   "functions": {
-    "api/narrative.js": { "maxDuration": 60 }
+    "api/narrative.js": {
+      "maxDuration": 60
+    }
   },
   "rewrites": [
-    { "source": "/result/:id", "destination": "/api/result-page?id=:id" },
-    { "source": "/challenge/:id", "destination": "/api/challenge-page?id=:id" }
+    {
+      "source": "/result/:id",
+      "destination": "/api/share-page?kind=result&id=:id"
+    },
+    {
+      "source": "/challenge/:id",
+      "destination": "/api/share-page?kind=challenge&id=:id"
+    },
+    {
+      "source": "/membership",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/fantasy/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/modes/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/play",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/play/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/dev/basketball-theme-lab",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/auth/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/my-eraclash",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/leaderboard",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/player/:slug",
+      "destination": "/index.html"
+    }
   ],
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains" },
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=(), payment=()" },
-        { "key": "Cross-Origin-Opener-Policy", "value": "same-origin" },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(), payment=()"
+        },
+        {
+          "key": "Cross-Origin-Opener-Policy",
+          "value": "same-origin"
+        },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'"
+          "value": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://*.supabase.co https://*.supabase.in; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'"
         }
       ]
     },
     {
       "source": "/api/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "no-store" }
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        }
       ]
     },
     {
       "source": "/assets/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
       ]
     },
     {
       "source": "/players/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=604800" },
-        { "key": "Cross-Origin-Resource-Policy", "value": "same-origin" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=604800"
+        },
+        {
+          "key": "Cross-Origin-Resource-Policy",
+          "value": "same-origin"
+        }
       ]
     }
   ]

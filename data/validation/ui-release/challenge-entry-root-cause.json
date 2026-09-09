@@ -1,0 +1,24 @@
+{
+  "artifact": "challenge-entry-root-cause",
+  "release": "ui/light-court-release-candidate",
+  "recordedAt": "2026-09-09",
+  "ownerReport": "Challenge recipients landed in a non-Chaos game mode instead of the Chaos Clash flow.",
+  "investigation": {
+    "method": "traced every code path that mints a challenge link from a Chaos result and every code path that consumes one; CSS was NOT assumed to be the cause",
+    "linkMinters": [
+      { "path": "governed 9C", "where": "src/components/challenges/ChallengeShare.jsx -> challenge-create -> invitationUrl /?challenge=EC-XXXX-XXXX", "recipientLands": "ChallengeInvite (Chaos flow, same opening rolls and rules)", "correct": true },
+      { "path": "legacy roster challenge", "where": "src/App.jsx doShare() -> src/challengeClient.js createChallenge(team, rec) -> /challenge/{id} (api/share-page.js meta-refresh) -> /?ch={id}", "recipientLands": "pre-9C 'YOU'VE BEEN CHALLENGED' Dream builder via setChallenge + setNav('Challenges')", "correct": "only for Dream / Best 7 / Win 82 / Tournament / Daily results" }
+    ],
+    "defect": "On a CHAOS result, ResultView -> Postgame received onChallenge={doShare} and onShare={doShare} (src/App.jsx renderReport). Postgame renders '⚔️ Challenge a Friend' for mode 'single' (a Chaos result is type 'single', tag 'chaos'), and doShare ALWAYS called the legacy createChallenge(team, rec) and appended '(or take the direct challenge: /challenge/{id})' to the share text. A recipient who followed that link was routed by the legacy /?ch= handler into the roster-challenge builder, not the Chaos flow. The governed ChallengeShare was also present on the same result, so two different challenge products were offered from one Chaos result.",
+    "notCauses": ["CSS/theme (the routing decision is made in App.jsx before any presentation)", "the 9C invitation codec (EC-XXXX-XXXX links resolve to ChallengeInvite in every mode tested)", "the /?chaos= deep link (still resolves to the Chaos flow)"]
+  },
+  "fix": {
+    "files": ["src/App.jsx"],
+    "changes": [
+      "renderReport: onChallenge={live && res?.tag !== 'chaos' ? doShare : null} — the legacy Challenge CTA is withdrawn on a Chaos result; the governed ChallengeShare is the only challenge surface there.",
+      "doShare: const legacyChallenge = result?.tag !== 'chaos'; createChallenge is called only for legacy modes, and the '(or take the direct challenge: …)' line is emitted only when a legacy challenge exists. Share on a Chaos result shares the published result / origin only."
+    ],
+    "preserved": ["legacy /?c=, /?ch= and /challenge/{id} formats and their codec (src/challengeClient.js verbatim)", "legacy Challenge a Friend for Dream, Best 7, Win 82, Tournament and Daily", "9C invitation validation, guest/auth handling, attempt limits, expiration, revocation, comparison semantics, rating/XP eligibility (api/challenge*.js untouched)", "e2e J6 legacy-link journey"]
+  },
+  "regression": { "gate": "npm run ui-release:challenge-entry-qa (scripts/ui-release/uiReleaseQa.mjs challenge-entry)", "asserts": ["source guards present", "a completed Chaos result shows the governed ChallengeShare and NO legacy 'Challenge a Friend' CTA", "the legacy /?ch= route still opens the roster builder (J6 preserved)", "a /?challenge=EC-… invitation resolves to the Chaos invite surface"] }
+}

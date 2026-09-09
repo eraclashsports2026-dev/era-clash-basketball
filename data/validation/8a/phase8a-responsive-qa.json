@@ -1,0 +1,29 @@
+{
+  "artifact": "phase8a-responsive-qa",
+  "phase": "8A",
+  "viewports": [
+    "1600x900",
+    "1440x900",
+    "1280x800",
+    "1024x768",
+    "768x1024",
+    "430x932",
+    "390x844",
+    "375x812"
+  ],
+  "pageLevelHorizontalOverflow": "none at any tested viewport",
+  "mobile": {
+    "bothBoardsUnderstandable": true,
+    "userRosterPrimary": "the user board renders first and owns the tap targets; the CPU board sits below it in context",
+    "holdControlMinHeight": 44,
+    "currentRollAlwaysVisible": true,
+    "draftPressureVisible": true,
+    "eraRevealLegible": true,
+    "finalRollUnmistakable": true,
+    "coachOffersFitMobile": "offers stack to one column below 900px",
+    "postgameReadable": true,
+    "boxScoreScrollIsolated": true
+  },
+  "evidence": "e2e/phase8a-chaos.spec.js — mobile spec asserts no page overflow and both boards visible at 375, 390, 430 and 768 wide",
+  "playwright": "27/27 across production-flags-off, daily-coach-era-preview and candidate3-preview"
+}

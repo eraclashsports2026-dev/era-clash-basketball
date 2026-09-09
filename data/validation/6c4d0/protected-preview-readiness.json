@@ -1,0 +1,69 @@
+{
+  "artifact": "protected-preview-readiness",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "node scripts/d0/finalizePhase.mjs",
+  "generatedAt": "2026-08-27T23:30:53.884Z",
+  "gitCommit": "98e2313381c0dda7ed52edcde730144c4acc46c8",
+  "branch": "phase-6c4d0-v6-invalidity-and-profile-repair",
+  "parameterSetHash": null,
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "previewStatus": "PACKAGE_READY_NOT_DEPLOYED",
+    "candidate": {
+      "candidateId": "Candidate 3",
+      "coreHash": "6a423d4fedf45bef3889b9425651e815c95da4f6e573a2c51a3f0ef713360b69",
+      "possessionCalibrationVersion": "1.3.0",
+      "actionLibraryVersion": "2.1.0",
+      "candidateSelectionStatus": "SELECTED",
+      "candidateLockStatus": "LOCKED",
+      "calibrationStatus": "PREVIEW_READY_LOCKED",
+      "formalValidationStatus": "FORMAL_VALIDATION_INCOMPLETE"
+    },
+    "featureFlag": {
+      "name": "PREVIEW_SIM_ENGINE_ENABLED",
+      "default": false,
+      "emergencyOff": "unset or false/0/off/no returns every new request to production; stored preview records stay readable by version"
+    },
+    "namespaces": {
+      "result": "preview-result",
+      "probability": "preview-probability",
+      "narrative": "preview-narrative",
+      "competition": "preview-competition",
+      "daily": "preview-daily",
+      "challenge": "preview-challenge"
+    },
+    "resultIdPrefix": "pv_",
+    "productionFallback": "engine 3.2.0 via computeResultV3, per request, on any preview failure (fallback_invoked)",
+    "scope": "single-game only; season/daily/challenge/series stay on production",
+    "telemetry": {
+      "events": "allowlisted operational events only",
+      "filter": "token/secret/authorization/cookie/password/email/session keys stripped; only number/string/boolean values pass"
+    },
+    "commands": [
+      "preview:preflight",
+      "preview:smoke",
+      "preview:soak",
+      "preview:security",
+      "preview:browser-qa"
+    ],
+    "verification": {
+      "vitest": "1963/1963",
+      "previewPreflight": "6/6",
+      "previewSmoke": "5/5 (40 games)",
+      "previewSoak": "5/5 (400 games, p50 2ms, p95 3ms, replay 0 breaks)",
+      "previewSecurity": "9/9",
+      "browserQaFlagOff": "playwright 19/19"
+    },
+    "notDone": [
+      "no deployment",
+      "no Vercel environment change",
+      "no main merge",
+      "no formal holdout access",
+      "no HOLDOUT_VALIDATED/PRODUCTION_READY/ACTIVE claim"
+    ]
+  },
+  "outputHash": "4ba3a87a6af31c1a26b0ceaa443e13713e7dd00ccb565d9c2af8b7470b9e2bd2"
+}

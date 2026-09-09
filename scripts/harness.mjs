@@ -14,9 +14,31 @@ process.env.ENABLE_CHAOS_TESTS ||= "true";
 process.env.ANTHROPIC_API_KEY ||= "harness-fake-key"; // narrative degrades gracefully
 process.env.MAX_AI_REQUESTS_PER_DAY ||= "0"; // budget-blocked: no real network calls
 process.env.SIM_ENGINE_V3_ENABLED ||= "true"; // V3 engine on in the test harness
+// Phase 9C: ECLASH_FAKE_CLOUD=1 plays the account provider in memory so the
+// challenge flow (create as a signed-in test user, accept as a guest, compare)
+// can be driven end to end here. Test users: bearer `test-token.<uuid>`.
+if (process.env.ECLASH_FAKE_CLOUD === "1") {
+  const { installFakeCloud } = await import("./lib/fakeCloud.mjs");
+  globalThis.__fakeCloud = installFakeCloud({ users: [
+    { userId: "11111111-1111-4111-8111-111111111111", displayName: "Joseph" },
+    { userId: "22222222-2222-4222-8222-222222222222", displayName: "Bea" },
+  ] });
+  console.log("harness: fake cloud installed (test users Joseph, Bea)");
+}
 
 const PORT = Number(process.argv[2]) || 4173;
-const DIST = new URL("../dist", import.meta.url).pathname;
+// ECLASH_DIST points the harness at another build (Phase 9D: the dev-fixtures
+// build in dist-fixtures, so UI gates can measure fixture routes) — never deployed.
+const DIST = process.env.ECLASH_DIST ? new URL(`../${process.env.ECLASH_DIST.replace(/^\.\//, "")}`, import.meta.url).pathname : new URL("../dist", import.meta.url).pathname;
+
+// Fail fast on a missing build. The readiness probe Playwright waits on is
+// /api/health — a live handler import — so it answers even when dist/ is absent,
+// and every navigation would then fall through to a 404-turned-index and grade
+// nothing at all. A silent pass on an empty build is worse than no run.
+if (!existsSync(join(DIST, "index.html"))) {
+  console.error(`harness: ${DIST}/index.html is missing — run \`npm run build\` first.`);
+  process.exit(1);
+}
 
 const routes = {
   "/api/game": (await import("../api/game.js")).default,
@@ -28,8 +50,7 @@ const routes = {
   "/api/events": (await import("../api/events.js")).default,
   "/api/feedback": (await import("../api/feedback.js")).default,
   "/api/result": (await import("../api/result.js")).default,
-  "/api/result-page": (await import("../api/result-page.js")).default,
-  "/api/challenge-page": (await import("../api/challenge-page.js")).default,
+  "/api/share-page": (await import("../api/share-page.js")).default,
   "/api/simulate": (await import("../api/simulate.js")).default,
   "/api/v3meta": (await import("../api/v3meta.js")).default,
 };
@@ -61,8 +82,8 @@ createServer(async (req, res) => {
 
   // vercel.json rewrites
   let m;
-  if ((m = path.match(/^\/result\/([a-z0-9]+)$/))) { path = "/api/result-page"; url.searchParams.set("id", m[1]); }
-  if ((m = path.match(/^\/challenge\/([a-z0-9]+)$/))) { path = "/api/challenge-page"; url.searchParams.set("id", m[1]); }
+  if ((m = path.match(/^\/result\/([a-z0-9]+)$/))) { path = "/api/share-page"; url.searchParams.set("kind", "result"); url.searchParams.set("id", m[1]); }
+  if ((m = path.match(/^\/challenge\/([a-z0-9]+)$/))) { path = "/api/share-page"; url.searchParams.set("kind", "challenge"); url.searchParams.set("id", m[1]); }
 
   const handler = routes[path];
   if (handler) {

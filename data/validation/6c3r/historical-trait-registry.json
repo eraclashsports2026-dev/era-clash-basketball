@@ -1,0 +1,1983 @@
+{
+  "artifact": "historical-trait-registry",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run validation:6c3r:traits",
+  "generatedAt": "2026-08-26T22:06:38.290Z",
+  "gitCommit": "612177cfcfb3c74fd3a9ccfe6a32445192fc871a",
+  "branch": "phase-6c3r-validation-surface-repair",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {
+    "data/calibration/historical-targets-v3.json": "a9b7eaf89bcb68baf37e6d992ea71d8a7caddd478365d890f9bfe2a73a8640ac"
+  },
+  "data": {
+    "historicalTraitRegistryVersion": "1.0.0",
+    "traits": [
+      {
+        "traitId": "very fast",
+        "displayName": "very fast",
+        "traitFamily": "PACE",
+        "definition": "Documented very fast pace: game pace against the frozen era reference sits above the reference's self-baseline.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "DIRECTLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "gamePace"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "fast",
+        "displayName": "fast",
+        "traitFamily": "PACE",
+        "definition": "Documented fast pace.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "DIRECTLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "gamePace"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "moderate",
+        "displayName": "moderate",
+        "traitFamily": "PACE",
+        "definition": "Documented moderate pace: no direction is claimed, so nothing is scored. NOT_APPLICABLE at scoring time.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "DIRECTLY_OBSERVABLE",
+        "requiredMeasurementSurface": "NONE",
+        "primaryMetrics": [],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "NONE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": false,
+        "eligibilityNote": "NOT_APPLICABLE_NO_DIRECTIONAL_CLAIM"
+      },
+      {
+        "traitId": "slow",
+        "displayName": "slow",
+        "traitFamily": "PACE",
+        "definition": "Documented slow pace.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "DIRECTLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "gamePace"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "very slow",
+        "displayName": "very slow",
+        "traitFamily": "PACE",
+        "definition": "Documented very slow pace.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "DIRECTLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "gamePace"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "ELITE_OFFENSE",
+        "displayName": "ELITE_OFFENSE",
+        "traitFamily": "OFFENSE_QUALITY",
+        "definition": "Documented elite offence: scores on the frozen era-reference defence above the reference's own self-baseline. Requires the VS_ERA_REFERENCE surface; unobservable on a mirror, which is the exact V3 defect.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "PROXY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "pppVsReference"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "ELITE_DEFENSE",
+        "displayName": "ELITE_DEFENSE",
+        "traitFamily": "DEFENSE_QUALITY",
+        "definition": "Documented elite defence: holds the frozen era-reference offence below its self-baseline. Requires the REFERENCE_VS_TEAM surface.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "PROXY_OBSERVABLE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "primaryMetrics": [
+          "refPppVsTeam"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "PACE_EXTREME",
+        "displayName": "PACE_EXTREME",
+        "traitFamily": "PACE",
+        "definition": "Documented extreme pace; every historical use of this tag accompanies a fast identity.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "DIRECTLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "gamePace"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "SLOW_HALF_COURT",
+        "displayName": "SLOW_HALF_COURT",
+        "traitFamily": "PACE",
+        "definition": "Documented slow, half-court identity.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "DIRECTLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "gamePace"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "THREE_POINT_HEAVY",
+        "displayName": "THREE_POINT_HEAVY",
+        "traitFamily": "SHOT_PROFILE",
+        "definition": "Documented three-point volume above the era norm.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "DIRECTLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "threeShare"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [
+          "ERA_HAS_THREE_POINT_LINE"
+        ],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "LOW_THREE_POINT",
+        "displayName": "LOW_THREE_POINT",
+        "traitFamily": "SHOT_PROFILE",
+        "definition": "Documented low three-point volume for its era.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "DIRECTLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "threeShare"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "contextDependencies": [
+          "ERA_HAS_THREE_POINT_LINE"
+        ],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "POST_HEAVY",
+        "displayName": "POST_HEAVY",
+        "traitFamily": "ACTION_IDENTITY",
+        "definition": "Documented post-centred offence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "postUpShare"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "ISOLATION_HEAVY",
+        "displayName": "ISOLATION_HEAVY",
+        "traitFamily": "ACTION_IDENTITY",
+        "definition": "Documented isolation-centred offence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "isolationShare"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "PICK_AND_ROLL",
+        "displayName": "PICK_AND_ROLL",
+        "traitFamily": "ACTION_IDENTITY",
+        "definition": "Documented pick-and-roll-centred offence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "pnrShare"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "MOTION",
+        "displayName": "MOTION",
+        "traitFamily": "ACTION_IDENTITY",
+        "definition": "Documented motion offence: off-ball screens, cuts and handoffs.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "movementShare"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "TRANSITION",
+        "displayName": "TRANSITION",
+        "traitFamily": "ACTION_IDENTITY",
+        "definition": "Documented transition offence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "transitionShare"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "SMALL_BALL",
+        "displayName": "SMALL_BALL",
+        "traitFamily": "SHOT_PROFILE",
+        "definition": "Documented small-ball identity: the shot mix moves away from the interior.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "interiorShotShare"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "SIZE_HEAVY",
+        "displayName": "SIZE_HEAVY",
+        "traitFamily": "ROSTER_BALANCE",
+        "definition": "Documented size-heavy identity: the shot mix concentrates inside.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "interiorShotShare"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "STRONG_OFFENSIVE_REBOUNDING",
+        "displayName": "STRONG_OFFENSIVE_REBOUNDING",
+        "traitFamily": "REBOUNDING",
+        "definition": "Documented offensive-rebounding strength, measured against the frozen reference's defensive rebounding.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "orebRate"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "WEAK_OFFENSIVE_REBOUNDING",
+        "displayName": "WEAK_OFFENSIVE_REBOUNDING",
+        "traitFamily": "REBOUNDING",
+        "definition": "Documented offensive-rebounding weakness.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "orebRate"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "PASSING_HUB",
+        "displayName": "PASSING_HUB",
+        "traitFamily": "PLAYMAKING",
+        "definition": "Documented hub passing identity: a higher share of makes are assisted.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "assistedRate"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "ZONE_CAPABLE",
+        "displayName": "ZONE_CAPABLE",
+        "traitFamily": "ZONE_IDENTITY",
+        "definition": "Documented zone usage where the era allows it.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "primaryMetrics": [
+          "defensiveZoneShare"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [
+          "ERA_ALLOWS_ZONE"
+        ],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "BALANCED_CHAMPION",
+        "displayName": "BALANCED_CHAMPION",
+        "traitFamily": "ERA_EXPRESSION",
+        "definition": "A championship-season identity. A title is a property of an 82-game season and a bracket, not of a fixed-sample fixture simulation; no surface here observes it.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "UNOBSERVABLE_ON_THIS_SURFACE",
+        "requiredMeasurementSurface": "NONE",
+        "primaryMetrics": [],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "NONE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": false,
+        "eligibilityNote": "NOT_SCORED_UNOBSERVABLE"
+      },
+      {
+        "traitId": "NON_CHAMPION",
+        "displayName": "NON_CHAMPION",
+        "traitFamily": "ERA_EXPRESSION",
+        "definition": "The complement of a championship identity, unobservable for the same reason.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "UNOBSERVABLE_ON_THIS_SURFACE",
+        "requiredMeasurementSurface": "NONE",
+        "primaryMetrics": [],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "NONE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": false,
+        "eligibilityNote": "NOT_SCORED_UNOBSERVABLE"
+      },
+      {
+        "traitId": "Showtime transition and early offence",
+        "displayName": "Showtime transition and early offence",
+        "traitFamily": "ACTION_IDENTITY",
+        "definition": "Documented running offence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "transitionShare"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "fast break and early offence",
+        "displayName": "fast break and early offence",
+        "traitFamily": "ACTION_IDENTITY",
+        "definition": "Documented running offence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "transitionShare"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "fast break from defensive rebounding",
+        "displayName": "fast break from defensive rebounding",
+        "traitFamily": "ACTION_IDENTITY",
+        "definition": "Documented running offence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "transitionShare"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "fast break, balanced scoring",
+        "displayName": "fast break, balanced scoring",
+        "traitFamily": "ACTION_IDENTITY",
+        "definition": "Documented running offence; the balance clause is carried by concentration metrics, which no eligible trait claims.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "transitionShare"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "fast break, depth scoring",
+        "displayName": "fast break, depth scoring",
+        "traitFamily": "ACTION_IDENTITY",
+        "definition": "Documented running offence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "transitionShare"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "fast break, early offence",
+        "displayName": "fast break, early offence",
+        "traitFamily": "ACTION_IDENTITY",
+        "definition": "Documented running offence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "transitionShare"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "running game, off-ball movement",
+        "displayName": "running game, off-ball movement",
+        "traitFamily": "ACTION_IDENTITY",
+        "definition": "Documented running offence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "transitionShare"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "transition and post scoring",
+        "displayName": "transition and post scoring",
+        "traitFamily": "ACTION_IDENTITY",
+        "definition": "Documented running offence with a post component; transition is the primary claim.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "transitionShare"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "the canonical pick-and-roll",
+        "displayName": "the canonical pick-and-roll",
+        "traitFamily": "ACTION_IDENTITY",
+        "definition": "Documented pick-and-roll offence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "pnrShare"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "pick-and-roll around a lead guard",
+        "displayName": "pick-and-roll around a lead guard",
+        "traitFamily": "ACTION_IDENTITY",
+        "definition": "Documented pick-and-roll offence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "pnrShare"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "seven seconds or less: pick-and-roll and spacing",
+        "displayName": "seven seconds or less: pick-and-roll and spacing",
+        "traitFamily": "ACTION_IDENTITY",
+        "definition": "Documented spread pick-and-roll offence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "pnrShare"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "post and pick-and-roll, disciplined",
+        "displayName": "post and pick-and-roll, disciplined",
+        "traitFamily": "ACTION_IDENTITY",
+        "definition": "Documented post-first offence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "postUpShare"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "post entry to a dominant centre",
+        "displayName": "post entry to a dominant centre",
+        "traitFamily": "ACTION_IDENTITY",
+        "definition": "Documented post-centred offence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "postUpShare"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "post-centred, interior scoring",
+        "displayName": "post-centred, interior scoring",
+        "traitFamily": "ACTION_IDENTITY",
+        "definition": "Documented post-centred offence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "postUpShare"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "post-up and isolation, low volume",
+        "displayName": "post-up and isolation, low volume",
+        "traitFamily": "ACTION_IDENTITY",
+        "definition": "Documented post-first offence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "postUpShare"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "post-up and pick-and-roll around an MVP centre",
+        "displayName": "post-up and pick-and-roll around an MVP centre",
+        "traitFamily": "ACTION_IDENTITY",
+        "definition": "Documented post-first offence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "postUpShare"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "post-up centre with perimeter spacing",
+        "displayName": "post-up centre with perimeter spacing",
+        "traitFamily": "ACTION_IDENTITY",
+        "definition": "Documented post-centred offence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "postUpShare"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "triangle around a dominant post centre",
+        "displayName": "triangle around a dominant post centre",
+        "traitFamily": "ACTION_IDENTITY",
+        "definition": "Documented triangle offence through the post.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "postUpShare"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "triangle: post reads, cuts, spacing",
+        "displayName": "triangle: post reads, cuts, spacing",
+        "traitFamily": "ACTION_IDENTITY",
+        "definition": "Documented triangle offence through the post.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "postUpShare"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "isolation and post-up in the half court",
+        "displayName": "isolation and post-up in the half court",
+        "traitFamily": "ACTION_IDENTITY",
+        "definition": "Documented isolation-first half-court offence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "isolationShare"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "motion and cutting",
+        "displayName": "motion and cutting",
+        "traitFamily": "ACTION_IDENTITY",
+        "definition": "Documented motion offence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "movementShare"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "motion, ball movement, high-post passing",
+        "displayName": "motion, ball movement, high-post passing",
+        "traitFamily": "ACTION_IDENTITY",
+        "definition": "Documented motion offence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "movementShare"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "movement shooting and handoffs",
+        "displayName": "movement shooting and handoffs",
+        "traitFamily": "ACTION_IDENTITY",
+        "definition": "Documented movement-shooting offence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "movementShare"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "movement shooting off screens",
+        "displayName": "movement shooting off screens",
+        "traitFamily": "ACTION_IDENTITY",
+        "definition": "Documented movement-shooting offence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "movementShare"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "movement shooting, off-ball screens, handoffs",
+        "displayName": "movement shooting, off-ball screens, handoffs",
+        "traitFamily": "ACTION_IDENTITY",
+        "definition": "Documented movement-shooting offence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "movementShare"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "spacing around a point-forward, cutting",
+        "displayName": "spacing around a point-forward, cutting",
+        "traitFamily": "ACTION_IDENTITY",
+        "definition": "Documented cutting offence around a hub.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "movementShare"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "half-court motion and passing",
+        "displayName": "half-court motion and passing",
+        "traitFamily": "ACTION_IDENTITY",
+        "definition": "Documented half-court motion offence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "movementShare"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "ball movement, drive and kick, corner threes",
+        "displayName": "ball movement, drive and kick, corner threes",
+        "traitFamily": "PLAYMAKING",
+        "definition": "Documented ball-movement offence: assisted share of makes.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "assistedRate"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "half-court execution, elite passing front line",
+        "displayName": "half-court execution, elite passing front line",
+        "traitFamily": "PLAYMAKING",
+        "definition": "Documented passing-driven offence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "assistedRate"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "passing-hub centre, cutting and movement",
+        "displayName": "passing-hub centre, cutting and movement",
+        "traitFamily": "PLAYMAKING",
+        "definition": "Documented hub passing offence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "assistedRate"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "size-driven drives and offensive rebounding",
+        "displayName": "size-driven drives and offensive rebounding",
+        "traitFamily": "REBOUNDING",
+        "definition": "Documented crash-the-glass offence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "VS_ERA_REFERENCE",
+        "primaryMetrics": [
+          "orebRate"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "elite physical man",
+        "displayName": "elite physical man",
+        "traitFamily": "DEFENSE_QUALITY",
+        "definition": "Documented elite man defence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "PROXY_OBSERVABLE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "primaryMetrics": [
+          "refPppVsTeam"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "elite scheme-driven man",
+        "displayName": "elite scheme-driven man",
+        "traitFamily": "DEFENSE_QUALITY",
+        "definition": "Documented elite man defence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "PROXY_OBSERVABLE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "primaryMetrics": [
+          "refPppVsTeam"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "elite team man defence",
+        "displayName": "elite team man defence",
+        "traitFamily": "DEFENSE_QUALITY",
+        "definition": "Documented elite man defence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "PROXY_OBSERVABLE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "primaryMetrics": [
+          "refPppVsTeam"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "elite team man",
+        "displayName": "elite team man",
+        "traitFamily": "DEFENSE_QUALITY",
+        "definition": "Documented elite man defence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "PROXY_OBSERVABLE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "primaryMetrics": [
+          "refPppVsTeam"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "elite man with rim protection",
+        "displayName": "elite man with rim protection",
+        "traitFamily": "RIM_PROTECTION",
+        "definition": "Documented rim-protecting defence: the reference offence's shot mix is pushed off the rim.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "primaryMetrics": [
+          "rimShareAgainst"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "rim-anchored man",
+        "displayName": "rim-anchored man",
+        "traitFamily": "RIM_PROTECTION",
+        "definition": "Documented rim-anchored defence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "primaryMetrics": [
+          "rimShareAgainst"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "rim-protected man",
+        "displayName": "rim-protected man",
+        "traitFamily": "RIM_PROTECTION",
+        "definition": "Documented rim-protected defence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "primaryMetrics": [
+          "rimShareAgainst"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "drop coverage with a rim anchor",
+        "displayName": "drop coverage with a rim anchor",
+        "traitFamily": "RIM_PROTECTION",
+        "definition": "Documented drop-coverage defence behind a rim anchor.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "primaryMetrics": [
+          "rimShareAgainst"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "switching with a rim anchor",
+        "displayName": "switching with a rim anchor",
+        "traitFamily": "RIM_PROTECTION",
+        "definition": "Documented switching defence with a rim anchor.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "primaryMetrics": [
+          "rimShareAgainst"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "size-heavy man",
+        "displayName": "size-heavy man",
+        "traitFamily": "RIM_PROTECTION",
+        "definition": "Documented size-heavy man defence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "primaryMetrics": [
+          "rimShareAgainst"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "pressure man",
+        "displayName": "pressure man",
+        "traitFamily": "PRESSURE_DEFENSE",
+        "definition": "Documented pressure defence: forces steals from the reference offence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "primaryMetrics": [
+          "stealRateForced"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "pressure man with help",
+        "displayName": "pressure man with help",
+        "traitFamily": "PRESSURE_DEFENSE",
+        "definition": "Documented pressure defence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "primaryMetrics": [
+          "stealRateForced"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "switching pressure man",
+        "displayName": "switching pressure man",
+        "traitFamily": "PRESSURE_DEFENSE",
+        "definition": "Documented pressure defence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "primaryMetrics": [
+          "stealRateForced"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "switching, aggressive man",
+        "displayName": "switching, aggressive man",
+        "traitFamily": "PRESSURE_DEFENSE",
+        "definition": "Documented aggressive switching defence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "primaryMetrics": [
+          "stealRateForced"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "physical, trapping man",
+        "displayName": "physical, trapping man",
+        "traitFamily": "PRESSURE_DEFENSE",
+        "definition": "Documented trapping defence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "primaryMetrics": [
+          "stealRateForced"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "aggressive switching and trapping",
+        "displayName": "aggressive switching and trapping",
+        "traitFamily": "PRESSURE_DEFENSE",
+        "definition": "Documented trapping defence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "primaryMetrics": [
+          "stealRateForced"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "gambling man defence",
+        "displayName": "gambling man defence",
+        "traitFamily": "PRESSURE_DEFENSE",
+        "definition": "Documented gambling defence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "primaryMetrics": [
+          "stealRateForced"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "man with a dominant rebounder",
+        "displayName": "man with a dominant rebounder",
+        "traitFamily": "REBOUNDING",
+        "definition": "Documented defensive-rebounding strength: the reference offence's second chances are suppressed.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "primaryMetrics": [
+          "orebRateAgainst"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "zone-capable, long switching",
+        "displayName": "zone-capable, long switching",
+        "traitFamily": "ZONE_IDENTITY",
+        "definition": "Documented zone usage.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "primaryMetrics": [
+          "defensiveZoneShare"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [
+          "ERA_ALLOWS_ZONE"
+        ],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "zone-capable, scheme-heavy",
+        "displayName": "zone-capable, scheme-heavy",
+        "traitFamily": "ZONE_IDENTITY",
+        "definition": "Documented zone usage.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "STRUCTURALLY_OBSERVABLE",
+        "requiredMeasurementSurface": "REFERENCE_VS_TEAM",
+        "primaryMetrics": [
+          "defensiveZoneShare"
+        ],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "contextDependencies": [
+          "ERA_ALLOWS_ZONE"
+        ],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": true,
+        "eligibilityNote": "PENDING_CONTROL_CERTIFICATION"
+      },
+      {
+        "traitId": "disciplined man",
+        "displayName": "disciplined man",
+        "traitFamily": "DEFENSE_QUALITY",
+        "definition": "Discipline names a process quality with no distinguishing observable on this surface: no metric here separates disciplined man defence from ordinary man defence.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "UNOBSERVABLE_ON_THIS_SURFACE",
+        "requiredMeasurementSurface": "NONE",
+        "primaryMetrics": [],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "NONE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": false,
+        "eligibilityNote": "NOT_SCORED_UNOBSERVABLE"
+      },
+      {
+        "traitId": "disciplined team man",
+        "displayName": "disciplined team man",
+        "traitFamily": "DEFENSE_QUALITY",
+        "definition": "As for disciplined man: no distinguishing observable.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "UNOBSERVABLE_ON_THIS_SURFACE",
+        "requiredMeasurementSurface": "NONE",
+        "primaryMetrics": [],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "NONE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": false,
+        "eligibilityNote": "NOT_SCORED_UNOBSERVABLE"
+      },
+      {
+        "traitId": "help-heavy man",
+        "displayName": "help-heavy man",
+        "traitFamily": "DEFENSE_QUALITY",
+        "definition": "Help frequency is driven by the coach model's coverage selection and has no certified team-level observable; scoring it would grade the coach model against itself.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "UNOBSERVABLE_ON_THIS_SURFACE",
+        "requiredMeasurementSurface": "NONE",
+        "primaryMetrics": [],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "NONE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": false,
+        "eligibilityNote": "NOT_SCORED_UNOBSERVABLE"
+      },
+      {
+        "traitId": "man with help",
+        "displayName": "man with help",
+        "traitFamily": "DEFENSE_QUALITY",
+        "definition": "As for help-heavy man.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "UNOBSERVABLE_ON_THIS_SURFACE",
+        "requiredMeasurementSurface": "NONE",
+        "primaryMetrics": [],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "NONE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": false,
+        "eligibilityNote": "NOT_SCORED_UNOBSERVABLE"
+      },
+      {
+        "traitId": "physical man",
+        "displayName": "physical man",
+        "traitFamily": "DEFENSE_QUALITY",
+        "definition": "Physicality has no observable on this surface: the engine does not simulate fouls-as-style or bodily contact intensity.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "UNOBSERVABLE_ON_THIS_SURFACE",
+        "requiredMeasurementSurface": "NONE",
+        "primaryMetrics": [],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "NONE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": false,
+        "eligibilityNote": "NOT_SCORED_UNOBSERVABLE"
+      },
+      {
+        "traitId": "switching small-ball",
+        "displayName": "switching small-ball",
+        "traitFamily": "DEFENSE_QUALITY",
+        "definition": "Switch rate appears only in rare coverage records driven by the coach model; too sparse to certify, so it is not scored.",
+        "sourceEvidenceTypes": [
+          "DOCUMENTED_STYLE"
+        ],
+        "observabilityClass": "UNOBSERVABLE_ON_THIS_SURFACE",
+        "requiredMeasurementSurface": "NONE",
+        "primaryMetrics": [],
+        "secondaryMetrics": [],
+        "guardrails": [
+          "invariantViolations=0",
+          "ties=0"
+        ],
+        "expectedDirection": "NONE",
+        "contextDependencies": [],
+        "confidenceRules": "Trait confidence is inherited from the fixture's styleIdentityConfidence.",
+        "scoringEligibility": false,
+        "eligibilityNote": "NOT_SCORED_UNOBSERVABLE"
+      }
+    ],
+    "counts": {
+      "total": 81,
+      "byClass": {
+        "DIRECTLY_OBSERVABLE": 9,
+        "PROXY_OBSERVABLE": 6,
+        "STRUCTURALLY_OBSERVABLE": 58,
+        "UNOBSERVABLE_ON_THIS_SURFACE": 8
+      },
+      "byFamily": {
+        "PACE": 7,
+        "OFFENSE_QUALITY": 1,
+        "DEFENSE_QUALITY": 11,
+        "SHOT_PROFILE": 3,
+        "ACTION_IDENTITY": 32,
+        "ROSTER_BALANCE": 1,
+        "REBOUNDING": 4,
+        "PLAYMAKING": 4,
+        "ZONE_IDENTITY": 3,
+        "ERA_EXPRESSION": 2,
+        "RIM_PROTECTION": 6,
+        "PRESSURE_DEFENSE": 7
+      },
+      "scoringEligible": 72
+    },
+    "registryHash": "c034937be7e40bd18932fe53151e0b8a877dc47095004653e1bb11aa5c73a0cf",
+    "builtFrom": "Trait semantics and metric identifiability only. No Candidate 0 output on any fixture was consulted, and no holdout artifact was read."
+  },
+  "outputHash": "c41dbc1730624b97ca109bd7ffc41cde717ca2f06fa08ce96591c7e2222044f7"
+}

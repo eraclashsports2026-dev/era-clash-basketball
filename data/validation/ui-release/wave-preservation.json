@@ -1,0 +1,212 @@
+{
+  "artifact": "wave-preservation",
+  "release": "ui/light-court-release-candidate",
+  "base": "aae565c",
+  "head": "149eef3",
+  "recordedAt": "2026-09-09T20:18:30.222Z",
+  "method": "git diff --name-only aae565c -- <paths> per metric; refs compared to ui-release-preflight.json",
+  "metrics": {
+    "activeCandidateCoreDrift": {
+      "value": 0,
+      "paths": "api/_lib/game-core-v3.js api/_lib/previewEngine.js data/calibration",
+      "files": []
+    },
+    "candidateParameterDrift": {
+      "value": 0,
+      "paths": "data/calibration config/previewAccess.js",
+      "files": []
+    },
+    "gameLogicChanges": {
+      "value": 0,
+      "paths": "src/engine.js src/rating.js src/v3 api/_lib/game-core.js api/_lib/game-core-v3.js api/game.js api/simulate.js",
+      "files": []
+    },
+    "draftLogicChanges": {
+      "value": 0,
+      "paths": "src/draft.js src/chaos api/_lib/chaosRun.js",
+      "files": []
+    },
+    "placementLogicChanges": {
+      "value": 0,
+      "paths": "src/lineupPlacement.js",
+      "files": []
+    },
+    "legendRivalLogicChanges": {
+      "value": 0,
+      "paths": "src/chaos/legendCpu.js api/_lib/chaosRun.js",
+      "files": []
+    },
+    "eraLogicChanges": {
+      "value": 0,
+      "paths": "src/chaos/eraTranslation.js api/_lib/chaosRun.js",
+      "files": []
+    },
+    "coachLogicChanges": {
+      "value": 0,
+      "paths": "src/chaos/coachOffers.js api/_lib/previewCoaching.js",
+      "files": []
+    },
+    "challengeFairnessChanges": {
+      "value": 0,
+      "paths": "api/_lib/challenges.js api/challenge.js supabase/migrations/0004_challenges.sql",
+      "files": []
+    },
+    "challengeComparisonChanges": {
+      "value": 0,
+      "paths": "api/_lib/challenges.js src/components/challenges/ChallengeComparison.jsx",
+      "files": []
+    },
+    "progressionContractChanges": {
+      "value": 0,
+      "paths": "api/_lib/progression.js supabase/migrations/0005_progression_v1.sql src/progression",
+      "files": []
+    },
+    "competitiveRatingContractChanges": {
+      "value": 0,
+      "paths": "api/_lib/competitive.js supabase/migrations/0006_competitive_rating_v1.sql",
+      "files": []
+    },
+    "competitivePlacementContractChanges": {
+      "value": 0,
+      "paths": "api/_lib/competitive.js supabase/migrations/0006_competitive_rating_v1.sql",
+      "files": []
+    },
+    "privacyContractChanges": {
+      "value": 0,
+      "paths": "api/_lib/profiles.js api/profile.js supabase/migrations/0007_public_competitive_profiles_v1.sql api/_lib/cloudAccounts.js",
+      "files": []
+    },
+    "apiFunctionCountIncrease": {
+      "value": 0,
+      "paths": "api/*.js middleware.js",
+      "files": [],
+      "detail": "api/*.js 12 -> 12 (+ middleware.js = 13 of 13)"
+    },
+    "wave1Changes": {
+      "value": 0,
+      "detail": {
+        "recorded": "4dc59e7",
+        "now": "4dc59e7",
+        "moved": false
+      }
+    },
+    "stableWave2Changes": {
+      "value": 0,
+      "detail": {
+        "recorded": "ef0caa5",
+        "now": "ef0caa5",
+        "moved": false
+      }
+    },
+    "mainChanges": {
+      "value": 0,
+      "detail": {
+        "recorded": "9cd95ff",
+        "now": "9cd95ff",
+        "moved": false
+      }
+    },
+    "productionChanges": {
+      "value": 0,
+      "detail": "no production deployment, migration, env or DNS action was taken; production /api/health read live at summary time (see production-isolation.json)"
+    }
+  },
+  "allZero": true,
+  "changedFiles": [
+    ".gitignore",
+    "data/validation/7a/screens/1440-coach-modal.png",
+    "data/validation/7a/screens/1440-coaches.png",
+    "data/validation/7a/screens/1440-era.png",
+    "data/validation/7a/screens/1440-play-dropdown.png",
+    "data/validation/7a/screens/1440-postgame-box.png",
+    "data/validation/7a/screens/1440-postgame-coaching.png",
+    "data/validation/7a/screens/1440-postgame-final.png",
+    "data/validation/7a/screens/1440-postgame-story.png",
+    "data/validation/7a/screens/1440-ready.png",
+    "data/validation/7a/screens/1440-rosters-complete.png",
+    "data/validation/7a/screens/1440-rosters-empty.png",
+    "data/validation/7a/screens/1600x900-rosters.png",
+    "data/validation/7a/screens/375-postgame-box.png",
+    "data/validation/7a/screens/375-postgame.png",
+    "data/validation/7a/screens/375-ready.png",
+    "data/validation/7a/screens/375-rosters.png",
+    "data/validation/7a/screens/768x1024-rosters.png",
+    "data/validation/7b/screens/1440-rosters-empty.png",
+    "data/validation/7b/screens/1600x900-rosters.png",
+    "data/validation/7b/screens/375-coach-modal.png",
+    "data/validation/7b/screens/375-postgame-box.png",
+    "data/validation/7b/screens/375-postgame.png",
+    "data/validation/7b/screens/375x812-rosters.png",
+    "data/validation/7b/screens/768x1024-rosters.png",
+    "data/validation/8c-time-arena/phase8c-responsive-qa.json",
+    "data/validation/8c-time-arena/player-card-theme-runtime.json",
+    "data/validation/9a/active-run-continuation-runtime.json",
+    "data/validation/9a/progressive-disclosure-runtime.json",
+    "data/validation/ui-release/approved-ui-reference.json",
+    "data/validation/ui-release/challenge-entry-regression-qa.json",
+    "data/validation/ui-release/challenge-entry-root-cause.json",
+    "data/validation/ui-release/domain-release-readiness.json",
+    "data/validation/ui-release/production-isolation.json",
+    "data/validation/ui-release/production-migration-plan.json",
+    "data/validation/ui-release/production-rollback-plan.json",
+    "data/validation/ui-release/screens/challenge-entry-chaos-full-report.png",
+    "data/validation/ui-release/screens/challenge-entry-chaos-result.png",
+    "data/validation/ui-release/screens/challenge-entry-invite-surface.png",
+    "data/validation/ui-release/screens/responsive-coach_select-1536x1024.png",
+    "data/validation/ui-release/screens/responsive-coach_select-390x844.png",
+    "data/validation/ui-release/screens/responsive-coach_select-768x1024.png",
+    "data/validation/ui-release/screens/responsive-daily-1536x1024.png",
+    "data/validation/ui-release/screens/responsive-daily-390x844.png",
+    "data/validation/ui-release/screens/responsive-daily-768x1024.png",
+    "data/validation/ui-release/screens/responsive-drafting-1536x1024.png",
+    "data/validation/ui-release/screens/responsive-drafting-390x844.png",
+    "data/validation/ui-release/screens/responsive-drafting-768x1024.png",
+    "data/validation/ui-release/screens/responsive-empty-1536x1024.png",
+    "data/validation/ui-release/screens/responsive-empty-390x844.png",
+    "data/validation/ui-release/screens/responsive-empty-768x1024.png",
+    "data/validation/ui-release/screens/responsive-era_reveal-1536x1024.png",
+    "data/validation/ui-release/screens/responsive-era_reveal-390x844.png",
+    "data/validation/ui-release/screens/responsive-era_reveal-768x1024.png",
+    "data/validation/ui-release/screens/responsive-home-1536x1024.png",
+    "data/validation/ui-release/screens/responsive-home-390x844.png",
+    "data/validation/ui-release/screens/responsive-home-768x1024.png",
+    "data/validation/ui-release/screens/responsive-ready-1536x1024.png",
+    "data/validation/ui-release/screens/responsive-ready-390x844.png",
+    "data/validation/ui-release/screens/responsive-ready-768x1024.png",
+    "data/validation/ui-release/screens/responsive-result-1536x1024.png",
+    "data/validation/ui-release/screens/responsive-result-390x844.png",
+    "data/validation/ui-release/screens/responsive-result-768x1024.png",
+    "data/validation/ui-release/screens/theme-coach_select.png",
+    "data/validation/ui-release/screens/theme-daily.png",
+    "data/validation/ui-release/screens/theme-drafting.png",
+    "data/validation/ui-release/screens/theme-empty.png",
+    "data/validation/ui-release/screens/theme-era_reveal.png",
+    "data/validation/ui-release/screens/theme-home.png",
+    "data/validation/ui-release/screens/theme-ready.png",
+    "data/validation/ui-release/screens/theme-result.png",
+    "data/validation/ui-release/shared-theme-contract.json",
+    "data/validation/ui-release/shared-theme-live-qa.json",
+    "data/validation/ui-release/ui-accessibility-qa.json",
+    "data/validation/ui-release/ui-performance-qa.json",
+    "data/validation/ui-release/ui-release-preflight.json",
+    "data/validation/ui-release/ui-responsive-qa.json",
+    "data/validation/ui-release/wave-preservation.json",
+    "docs/ui-release/owner-test-journey.md",
+    "package.json",
+    "scripts/ui-release/uiReleaseQa.mjs",
+    "scripts/ui-release/uiReleaseSweep.sh",
+    "scripts/ui-release/wavePreservation.mjs",
+    "scripts/ui/nightCourtQa.mjs",
+    "src/App.jsx",
+    "src/components/arena/InfoPages.jsx",
+    "src/components/arena/ResetDialog.jsx",
+    "src/components/arena/ResultDock.jsx",
+    "src/index.css",
+    "src/theme/basketball-themes.css",
+    "src/theme/basketballThemes.js",
+    "src/theme/themeResolver.js",
+    "tests/v9a2-night-court-production.test.js",
+    "tests/v9a3p-play-lobby-polish.test.js",
+    "tests/v9b1-accounts.test.js"
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "artifact": "mode-entitlement-contract",
+  "phase": "8A",
+  "version": "1.0.0",
+  "centralFunction": "can(tier, capability) in src/entitlements.js — the single decision point",
+  "oddsIndependence": "No module under src/chaos/** imports entitlements.js, and a test replays one seed with identical decisions as GUEST, FREE, PLUS and COMMISSIONER asserting a byte-identical draft path.",
+  "guestChaosRuns": 3,
+  "guestCountAuthority": "server-side (chaos-guest:<session>), not plain localStorage",
+  "matrix": {
+    "GUEST": [
+      "CHAOS_CLASH",
+      "DAILY"
+    ],
+    "FREE": [
+      "CHAOS_CLASH",
+      "CHAOS_UNLIMITED",
+      "DREAM_MATCHUP",
+      "DAILY",
+      "CHALLENGES",
+      "SAVED_HISTORY",
+      "BEST_OF_7_TRIAL",
+      "WIN_82_PREVIEW",
+      "TOURNAMENT_JOIN"
+    ],
+    "PLUS": [
+      "CHAOS_CLASH",
+      "CHAOS_UNLIMITED",
+      "DREAM_MATCHUP",
+      "DAILY",
+      "CHALLENGES",
+      "SAVED_HISTORY",
+      "BEST_OF_7_TRIAL",
+      "BEST_OF_7",
+      "WIN_82_PREVIEW",
+      "WIN_82",
+      "TOURNAMENT_JOIN",
+      "ERA_GAUNTLET",
+      "ADVANCED_RECAP"
+    ],
+    "COMMISSIONER": [
+      "CHAOS_CLASH",
+      "CHAOS_UNLIMITED",
+      "DREAM_MATCHUP",
+      "DAILY",
+      "CHALLENGES",
+      "SAVED_HISTORY",
+      "BEST_OF_7_TRIAL",
+      "BEST_OF_7",
+      "WIN_82_PREVIEW",
+      "WIN_82",
+      "TOURNAMENT_JOIN",
+      "TOURNAMENT_CREATE",
+      "ERA_GAUNTLET",
+      "ADVANCED_RECAP"
+    ]
+  },
+  "modes": [
+    {
+      "id": "chaos",
+      "label": "Chaos Clash",
+      "capability": "CHAOS_CLASH",
+      "default": true,
+      "tagline": "Three rolls. Hold your legends. Adapt to the era."
+    },
+    {
+      "id": "dream",
+      "label": "Dream Matchup",
+      "capability": "DREAM_MATCHUP",
+      "tagline": "Build both teams exactly how you want."
+    },
+    {
+      "id": "daily",
+      "label": "Daily Clash",
+      "capability": "DAILY",
+      "tagline": "One shared matchup, once a day."
+    },
+    {
+      "id": "bo7",
+      "label": "Best of 7",
+      "capability": "BEST_OF_7",
+      "trialCapability": "BEST_OF_7_TRIAL",
+      "tagline": "A seven-game series."
+    },
+    {
+      "id": "win82",
+      "label": "Win 82",
+      "capability": "WIN_82",
+      "trialCapability": "WIN_82_PREVIEW",
+      "tagline": "A full season."
+    },
+    {
+      "id": "tournament",
+      "label": "Tournament",
+      "capability": "TOURNAMENT_JOIN",
+      "tagline": "Bracket play."
+    }
+  ],
+  "featureFlags": {
+    "eraGauntlet": {
+      "featureFlag": false,
+      "entitlement": "PLUS",
+      "implementationStatus": "PLANNED",
+      "eraGauntletVersion": null
+    }
+  },
+  "billing": "not implemented in this phase; no checkout is shown",
+  "unavailablePaidCopy": "Membership feature — not active during private preview"
+}

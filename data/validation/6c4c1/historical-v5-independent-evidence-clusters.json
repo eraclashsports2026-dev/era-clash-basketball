@@ -1,0 +1,83 @@
+{
+  "artifact": "historical-v5-independent-evidence-clusters",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run c2:register",
+  "generatedAt": "2026-08-27T14:17:54.886Z",
+  "gitCommit": "d88cca10747f68c859a250ecf7996249b94afba6",
+  "branch": "phase-6c4c1-candidate2-trait-repair",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "historicalV5IndependentEvidenceVersion": "1.0.0",
+    "formalHardFailLabels": 3,
+    "independentEvidenceClusters": 2,
+    "collapseRule": "two formal trait labels are one independent measurement when they share fixture, side, metric, surface, expected direction, observed value and reference value. Every formal label is preserved; only the evidence count collapses.",
+    "clusters": [
+      {
+        "clusterId": "ASSISTED_OFFENSE_EXPRESSION",
+        "measurementKey": "v5m-2000s|teamB|assistedRate|VS_ERA_REFERENCE|ABOVE_REFERENCE_BASELINE|0.44784|0.4763",
+        "formalTraitLabels": [
+          "ball movement, drive and kick, corner threes"
+        ],
+        "formalLabelCount": 1,
+        "independentMeasurements": 1,
+        "fixtureId": "v4-2002-03-mavericks",
+        "matchupId": "v5m-2000s",
+        "side": "teamB",
+        "teamName": "Dallas Mavericks",
+        "teamSeason": "2002-03",
+        "eraStyleId": "2000s",
+        "metricId": "assistedRate",
+        "measurementSurface": "VS_ERA_REFERENCE",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "observedValue": 0.44784,
+        "referenceValue": 0.4763,
+        "difference": -0.02846,
+        "practicalMargin": 0.02,
+        "zScore": -17.03917,
+        "ci95": {
+          "lower": -0.03173,
+          "upper": -0.02519
+        },
+        "underlyingMechanic": "the chain from action selection through pass-created opportunity to assist crediting",
+        "duplicateLabelNote": null
+      },
+      {
+        "clusterId": "DEFENSIVE_SUPPRESSION",
+        "measurementKey": "v5m-2020s|teamA|refPppVsTeam|REFERENCE_VS_TEAM|BELOW_REFERENCE_BASELINE|1.36011|1.32206",
+        "formalTraitLabels": [
+          "ELITE_DEFENSE",
+          "elite team man defence"
+        ],
+        "formalLabelCount": 2,
+        "independentMeasurements": 1,
+        "fixtureId": "v4-2020-21-knicks",
+        "matchupId": "v5m-2020s",
+        "side": "teamA",
+        "teamName": "New York Knicks",
+        "teamSeason": "2020-21",
+        "eraStyleId": "2020s",
+        "metricId": "refPppVsTeam",
+        "measurementSurface": "REFERENCE_VS_TEAM",
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "observedValue": 1.36011,
+        "referenceValue": 1.32206,
+        "difference": 0.03805,
+        "practicalMargin": 0.02,
+        "zScore": 14.84653,
+        "ci95": {
+          "lower": 0.03303,
+          "upper": 0.04307
+        },
+        "underlyingMechanic": "the chain from team defensive personnel and scheme through opponent shot quality to realized opponent points per possession",
+        "duplicateLabelNote": "2 formal trait labels (\"ELITE_DEFENSE\", \"elite team man defence\") report ONE observation: identical fixture, side, metric, surface, direction, observed and reference values. Both labels are preserved in the register; the evidence count is 1."
+      }
+    ],
+    "whyThisMatters": "the verdict is identical either way, because the gate is zero hard failures. But a repair phase that believes it has three independent signals will look for three causes, and one of them does not exist.",
+    "pass": true
+  },
+  "outputHash": "1027d790466b41ff3a7cc06ae67826f429615dd844c11113fe3bb98ddbee35a7"
+}

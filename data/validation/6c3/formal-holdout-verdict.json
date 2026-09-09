@@ -1,0 +1,168 @@
+{
+  "artifact": "formal-holdout-verdict",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run validation:verdict",
+  "generatedAt": "2026-08-26T20:22:51.394Z",
+  "gitCommit": "9a46217a5bf4eac9b171a62aa27ebd8f0d4e5b24",
+  "branch": "phase-6c3-formal-holdout-preview",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {
+    "data/validation/6c3/historical-holdout-results.json": "6493e2a69347f791eb24574fc0eda2ec8342aac830b30bf56646df3b83537876",
+    "data/validation/6c3/candidate-core-manifest.json": "b855fbff9f78655e71328a38c6966d6373df99c96e569fd904f1da4e6b9574d2"
+  },
+  "data": {
+    "formalHoldoutVerdictVersion": "1.0.0",
+    "combinedVerdict": "HISTORICAL_HOLDOUT_FAILED",
+    "historicalHoldout": {
+      "verdict": "HISTORICAL_HOLDOUT_FAIL",
+      "accessCountAfter": 1,
+      "fixtures": 8,
+      "gamesPerFixture": 4096,
+      "totalGames": 32768,
+      "erasCovered": [
+        "1950s",
+        "1960s",
+        "1970s",
+        "1980s",
+        "1990s",
+        "2000s",
+        "2010s",
+        "2020s"
+      ],
+      "runHash": "767000a26d2ec986898bfe601f60866b47bdaf4a3172880affd690fbbd84a6eb",
+      "gates": {
+        "everyFixtureExecuted": true,
+        "zeroInvariantFailures": true,
+        "zeroFinalTies": true,
+        "replayExactEverywhere": true,
+        "noImpossibleStatistics": true,
+        "opportunityWithinBounds": true,
+        "eraRulesAuthoritative": true,
+        "identityDirectionallyPreserved": false,
+        "zeroCatastrophicFixtures": true,
+        "compositeRatioWithinPolicy": true,
+        "noHighConfidenceFixtureFails": true,
+        "everyFixturePasses": false
+      }
+    },
+    "syntheticHoldout": {
+      "verdict": "NOT_OPENED",
+      "accessCountAfter": 0,
+      "notOpenedBecause": "The historical holdout did not pass. The frozen failure policy forbids opening the synthetic holdout after a historical failure, so it remains SEALED_UNREAD and is still available to a future candidate."
+    },
+    "candidateImmutability": {
+      "coreHashAtHoldout": "58c5fb6974e694c29f87934ab107ff47ce32963a9c0695e36f941c2a70ae6683",
+      "coreHashNow": "58c5fb6974e694c29f87934ab107ff47ce32963a9c0695e36f941c2a70ae6683",
+      "coreUnchanged": true,
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "parameterUnchanged": true,
+      "parameterDrift": [],
+      "parameterChangesAfterHoldout": 0,
+      "policyChangesAfterHoldout": 0,
+      "postHoldoutTuning": "NONE"
+    },
+    "quantitative": {
+      "gatePassed": true,
+      "internalCompositeMae": 0.04338,
+      "holdoutCompositeMae": 0.04339,
+      "ratio": 1.00026,
+      "ratioGate": 1.5,
+      "interpretation": "This is the gate the phase was built around, and it passed decisively: holdout error is indistinguishable from internal error at a ratio of 1.00026 against a 1.5 threshold. It is a valid result and independent of the identity-rubric defect. It says the calibration did not overfit its own folds; it does not say the engine is historically accurate, because 216 of 240 team-level target cells were unavailable.",
+      "structuralGatesPassed": [
+        "zeroInvariantFailures",
+        "zeroFinalTies",
+        "replayExactEverywhere",
+        "noImpossibleStatistics",
+        "opportunityWithinBounds",
+        "eraRulesAuthoritative",
+        "zeroCatastrophicFixtures",
+        "noHighConfidenceFixtureFails",
+        "everyFixtureExecuted"
+      ]
+    },
+    "diagnosis": {
+      "failedGates": [
+        "identityDirectionallyPreserved",
+        "everyFixturePasses"
+      ],
+      "failingFixtures": [
+        {
+          "fixtureId": "h3-1993-94-knicks",
+          "reasons": [
+            "identity 0/1 traits passed"
+          ]
+        },
+        {
+          "fixtureId": "h3-2006-07-suns",
+          "reasons": [
+            "identity 1/2 traits passed"
+          ]
+        },
+        {
+          "fixtureId": "h3-2012-13-heat",
+          "reasons": [
+            "identity 2/3 traits passed"
+          ]
+        }
+      ],
+      "rootCause": "MY_VALIDATION_SURFACE_DEFECT_NOT_A_CANDIDATE_DEFECT",
+      "explanation": "Every fixture plays a MIRROR of itself, which is correct for the Tier C share proxy — that target describes a season's internal distribution and no opponent target exists. But it makes pointsPerPossession and opponentPointsPerPossession the SAME quantity up to seeded noise, because both sides are the same roster. Across all 8 fixtures the two differ by at most 0.00348. An ELITE_DEFENSE trait requires opponentPointsPerPossession below the corpus median while ELITE_OFFENSE requires pointsPerPossession above it, so on a mirror surface the two are near-contradictory. h3-2012-13-heat carries both tags and passed one while failing the other.",
+      "maxPointsPerPossessionGapAcrossFixtures": 0.00348,
+      "scoredTraits": 7,
+      "traitsFailedOnMirrorAmbiguousMetrics": 3,
+      "traitsFailedOnValidMetrics": 0,
+      "mirrorAmbiguousFailures": [
+        {
+          "fixtureId": "h3-1993-94-knicks",
+          "trait": "ELITE_DEFENSE",
+          "metric": "opponentPointsPerPossession",
+          "observed": 1.137,
+          "referenceMedian": 1.12067
+        },
+        {
+          "fixtureId": "h3-2006-07-suns",
+          "trait": "ELITE_OFFENSE",
+          "metric": "pointsPerPossession",
+          "observed": 1.10139,
+          "referenceMedian": 1.11979
+        },
+        {
+          "fixtureId": "h3-2012-13-heat",
+          "trait": "ELITE_DEFENSE",
+          "metric": "opponentPointsPerPossession",
+          "observed": 1.13769,
+          "referenceMedian": 1.12067
+        }
+      ],
+      "validMetricFailures": [],
+      "whatWasNotReScored": "Nothing. The frozen identity rubric produced these results and the verdict stands on them. Re-scoring opened holdout data under a corrected rubric would be exactly the post-hoc gate movement this phase forbids.",
+      "whyTheVerdictIsNotDowngradedToInvalidRun": "INVALID_RUN in the frozen policy means the process failed before a valid result existed — a hash mismatch, a crash, a corrupted artifact. Here every other gate produced a valid result, including the central quantitative one. Reclassifying a FAIL as INVALID_RUN because the gate that failed was badly designed is the self-serving direction, and I am not taking it unilaterally. The verdict is FAIL; the defect is recorded for the owner to weigh."
+    },
+    "calibrationStatusAfterVerdict": "HOLDOUT_FAILED",
+    "possessionCalibrationVersion": "1.0.0",
+    "consequences": [
+      "Candidate 0 is NOT holdout validated.",
+      "The synthetic stress holdout is NOT opened and remains sealed and unread.",
+      "No preview integration and no preview deployment. Both are gated on a passing holdout.",
+      "Candidate 0 is NOT changed. Its parameter values, core and lock manifest are untouched.",
+      "historical holdout v3 is CONSUMED. Access count 1. It cannot validate this or any candidate again.",
+      "Any future attempt needs a replacement historical holdout drawn from fixtures this candidate has never been evaluated against."
+    ],
+    "replacementHoldoutRecommendation": {
+      "required": true,
+      "why": "historical holdout v3 is consumed regardless of which label the failure carries.",
+      "beforeReRunning": [
+        "Fix the identity rubric so no trait is scored on a metric the evaluation surface cannot distinguish. On a mirror surface that rules out opponent-relative metrics entirely.",
+        "Decide whether an opponent-relative identity claim can be tested at all without opponent targets. If it cannot, it should not be a gate.",
+        "Expand the rubric vocabulary: 51 of 58 identity traits had no rubric entry, so the qualitative gate rested on 7 traits across 8 fixtures.",
+        "Freeze the corrected rubric, and its reference medians, before the replacement holdout is opened."
+      ],
+      "candidateDecision": "OWNER. The quantitative generalisation evidence is strong and valid. Whether Candidate 0 is re-validated unchanged against a replacement holdout, or a new candidate is built first, is not an engineering call."
+    },
+    "verdictHash": "dcb0215b1a878ce422f2db5439d3bea36850e6d0cb5400061faf1873710f93da"
+  },
+  "outputHash": "0df2faddccc70647207eaa4c9d5006b07bc9b74b3be68c6fd9d581b5b1442cc1"
+}

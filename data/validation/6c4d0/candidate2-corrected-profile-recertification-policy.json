@@ -1,0 +1,54 @@
+{
+  "artifact": "candidate2-corrected-profile-recertification-policy",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run d0:corrected-v6",
+  "generatedAt": "2026-08-27T22:29:51.133Z",
+  "gitCommit": "81770175ef0de31f9be201851d8d91535e42f90d",
+  "branch": "phase-6c4d0-v6-invalidity-and-profile-repair",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "candidate2RecertificationVersion": "1.0.0",
+    "frozenBeforeAnyCorrectedRun": true,
+    "engine": {
+      "candidateId": "Candidate 2",
+      "coreHash": "3733b648f050a4f50f9dc3cb6ecf62fce419dd282f24c910b91e7b077d63711d",
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "calibrationVersion": "1.2.0",
+      "engineChangesPermitted": false
+    },
+    "uses": [
+      "historical calibration corpus",
+      "consumed V6 diagnostics (CORRECTED_INPUT_DIAGNOSTIC)",
+      "era references (re-derived baselines)",
+      "synthetic development results (unchanged by calibration data — public cards only)",
+      "existing replay/invariant/symmetry/probability/competition certifications, which consume no calibration profile"
+    ],
+    "doesNotUse": [
+      "Synthetic V2",
+      "any V7 pool",
+      "any unseen formal set"
+    ],
+    "metrics": "the frozen V6 metric set and practical margins (historical-v6-practical-margins), applied per trait with the dual gate",
+    "sampleVolumes": {
+      "correctedDiagnosticPairsPerSurface": 1024,
+      "referenceSelfBaselinePairs": 1024
+    },
+    "seeds": "tier-0 diagnostic block of the HISTORICAL_V6_FORMAL domain (v6SurfaceSeed tier 0) — never the formal decision tiers",
+    "classificationRules": {
+      "DATA_PIPELINE_RESOLVED": "hard fail under formal inputs; passes or drops inside margin with complete records, before enrichment mattered",
+      "ROLE_BACKFILL_RESOLVED": "resolves only once role enrichment is present",
+      "DEFENSIVE_EVIDENCE_RESOLVED": "resolves only once defensive-evidence enrichment is present",
+      "DATA_LIMITATION": "input the sources cannot provide (e.g. unrecorded splits); no engine change can honestly compensate",
+      "REFERENCE_LIMITATION": "the reference instrument cannot carry the claim",
+      "TRAIT_MAPPING_LIMITATION": "the claim/metric mapping is the defect",
+      "REAL_ENGINE_FAILURE": "persists with complete inputs AND reproduces on non-V6 development controls",
+      "INCONCLUSIVE": "insufficient evidence to classify"
+    },
+    "passFailRules": "a diagnostic classification never changes the formal V6 verdict; REAL_ENGINE_FAILURE routes to the persistent-failure workstream"
+  },
+  "outputHash": "7c4dc03bde2d43bf4f964992a205515d49bdb6941f60df8f553ebbb412d0c631"
+}

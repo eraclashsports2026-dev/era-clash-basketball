@@ -1,0 +1,896 @@
+{
+  "artifact": "contextual-60-30-10-audit",
+  "phase": "9A.2 — Night Court Editorial production theme",
+  "theme": "night-court-production-hybrid",
+  "method": "nearest-palette pixel classification (stride 2, RGB distance ≤ 42) of viewport screenshots; portraits, logos and images masked; the ARENA fixtures are classified against the arena context's declared families and the EDITORIAL fixtures against the editorial context's; the combined row uses the theme's overall declaration. Team, coach and state colours are semantic inside their DOM regions (SEMANTIC_REGIONS) and decorative elsewhere.",
+  "contexts": {
+    "arena": {
+      "context": "arena",
+      "fixtures": [
+        "empty",
+        "roll2",
+        "coach",
+        "result"
+      ],
+      "dominantPct": 35.5,
+      "secondaryPct": 49.4,
+      "decorativeAccentPct": 1.8,
+      "targets": {
+        "dominant": [
+          55,
+          68
+        ],
+        "secondary": [
+          22,
+          35
+        ],
+        "accent": [
+          6,
+          10
+        ]
+      },
+      "panelAsDeepArena": {
+        "dominantPct": 70.4,
+        "secondaryPct": 14.4,
+        "note": "the same pixels with Arena Graphite (#111823) counted as deep-arena family, as Phase 9A.1 counted the candidate's panel"
+      }
+    },
+    "editorial": {
+      "context": "editorial",
+      "fixtures": [
+        "lobby",
+        "postgame",
+        "gate",
+        "membership"
+      ],
+      "dominantPct": 81.3,
+      "secondaryPct": 15,
+      "decorativeAccentPct": 1.5,
+      "targets": {
+        "dominant": [
+          55,
+          68
+        ],
+        "secondary": [
+          22,
+          35
+        ],
+        "accent": [
+          6,
+          10
+        ]
+      }
+    },
+    "combined": {
+      "dominantPct": 33.7,
+      "secondaryPct": 57.6,
+      "decorativeAccentPct": 1.7
+    }
+  },
+  "rows": [
+    {
+      "fixture": "lobby",
+      "label": "Play Lobby",
+      "context": "editorial",
+      "viewport": "1536x1024",
+      "dominantPct": 67.9,
+      "secondaryPct": 25.2,
+      "decorativeAccentPct": 3.29,
+      "semanticPct": {
+        "teamGold": 0,
+        "teamBlue": 0,
+        "coachViolet": 0,
+        "success": 0,
+        "danger": 0
+      },
+      "portraitMaskedPct": 3.13,
+      "unclassifiedPct": 0.48,
+      "raw": {
+        "secondary": 25.2,
+        "accent": 0.9,
+        "dominant": 67.9,
+        "teamGold:decorative": 2.39,
+        "teamBlue:decorative": 0,
+        "coachViolet:decorative": 0
+      },
+      "combined": {
+        "dominantPct": 22.75,
+        "secondaryPct": 70.34,
+        "accentPct": 2.16
+      },
+      "panelAsDeepArena": null,
+      "targets": {
+        "dominant": [
+          55,
+          68
+        ],
+        "secondary": [
+          22,
+          35
+        ],
+        "accent": [
+          6,
+          10
+        ]
+      },
+      "within": {
+        "dominant": true,
+        "secondary": true,
+        "accent": false
+      }
+    },
+    {
+      "fixture": "postgame",
+      "label": "Full Postgame",
+      "context": "editorial",
+      "viewport": "1536x1024",
+      "dominantPct": 74.23,
+      "secondaryPct": 20.66,
+      "decorativeAccentPct": 1.3,
+      "semanticPct": {
+        "teamGold": 0,
+        "teamBlue": 0,
+        "coachViolet": 0,
+        "success": 0,
+        "danger": 0
+      },
+      "portraitMaskedPct": 3.27,
+      "unclassifiedPct": 0.54,
+      "raw": {
+        "secondary": 20.66,
+        "accent": 0.89,
+        "dominant": 74.23,
+        "teamGold:decorative": 0.04,
+        "teamBlue:decorative": 0.37,
+        "danger": 0
+      },
+      "combined": {
+        "dominantPct": 6.43,
+        "secondaryPct": 88.65,
+        "accentPct": 0.76
+      },
+      "panelAsDeepArena": null,
+      "targets": {
+        "dominant": [
+          55,
+          68
+        ],
+        "secondary": [
+          22,
+          35
+        ],
+        "accent": [
+          6,
+          10
+        ]
+      },
+      "within": {
+        "dominant": false,
+        "secondary": false,
+        "accent": false
+      }
+    },
+    {
+      "fixture": "gate",
+      "label": "Account Gate",
+      "context": "editorial",
+      "viewport": "1536x1024",
+      "dominantPct": 91.81,
+      "secondaryPct": 6.62,
+      "decorativeAccentPct": 1.23,
+      "semanticPct": {
+        "teamGold": 0,
+        "teamBlue": 0,
+        "coachViolet": 0,
+        "success": 0,
+        "danger": 0
+      },
+      "portraitMaskedPct": 0.19,
+      "unclassifiedPct": 0.17,
+      "raw": {
+        "secondary": 6.62,
+        "accent": 1.21,
+        "dominant": 91.81,
+        "teamGold:decorative": 0.02
+      },
+      "combined": {
+        "dominantPct": 5.38,
+        "secondaryPct": 93.11,
+        "accentPct": 1.21
+      },
+      "panelAsDeepArena": null,
+      "targets": {
+        "dominant": [
+          55,
+          68
+        ],
+        "secondary": [
+          22,
+          35
+        ],
+        "accent": [
+          6,
+          10
+        ]
+      },
+      "within": {
+        "dominant": false,
+        "secondary": false,
+        "accent": false
+      }
+    },
+    {
+      "fixture": "membership",
+      "label": "Membership",
+      "context": "editorial",
+      "viewport": "1536x1024",
+      "dominantPct": 91.24,
+      "secondaryPct": 7.72,
+      "decorativeAccentPct": 0.35,
+      "semanticPct": {
+        "teamGold": 0,
+        "teamBlue": 0,
+        "coachViolet": 0,
+        "success": 0,
+        "danger": 0
+      },
+      "portraitMaskedPct": 0.19,
+      "unclassifiedPct": 0.51,
+      "raw": {
+        "secondary": 7.72,
+        "accent": 0.33,
+        "dominant": 91.24,
+        "teamGold:decorative": 0.02,
+        "teamBlue:decorative": 0
+      },
+      "combined": {
+        "dominantPct": 5.38,
+        "secondaryPct": 93.8,
+        "accentPct": 0.34
+      },
+      "panelAsDeepArena": null,
+      "targets": {
+        "dominant": [
+          55,
+          68
+        ],
+        "secondary": [
+          22,
+          35
+        ],
+        "accent": [
+          6,
+          10
+        ]
+      },
+      "within": {
+        "dominant": false,
+        "secondary": false,
+        "accent": false
+      }
+    },
+    {
+      "fixture": "empty",
+      "label": "Empty Chaos Arena",
+      "context": "arena",
+      "viewport": "1536x1024",
+      "dominantPct": 48.62,
+      "secondaryPct": 46.27,
+      "decorativeAccentPct": 2.39,
+      "semanticPct": {
+        "teamGold": 0.02,
+        "teamBlue": 0.03,
+        "coachViolet": 0,
+        "success": 0,
+        "danger": 0
+      },
+      "portraitMaskedPct": 1.58,
+      "unclassifiedPct": 1.09,
+      "raw": {
+        "dominant": 48.62,
+        "teamGold:decorative": 1.49,
+        "secondary": 46.27,
+        "accent": 0.83,
+        "teamBlue:decorative": 0.07,
+        "teamGold": 0.02,
+        "teamBlue": 0.03,
+        "success": 0,
+        "danger": 0
+      },
+      "combined": {
+        "dominantPct": 67.12,
+        "secondaryPct": 28.37,
+        "accentPct": 0.92
+      },
+      "panelAsDeepArena": {
+        "dominantPct": 83.31,
+        "secondaryPct": 11.57
+      },
+      "targets": {
+        "dominant": [
+          55,
+          68
+        ],
+        "secondary": [
+          22,
+          35
+        ],
+        "accent": [
+          6,
+          10
+        ]
+      },
+      "within": {
+        "dominant": false,
+        "secondary": false,
+        "accent": false
+      }
+    },
+    {
+      "fixture": "roll2",
+      "label": "Populated Roll 2",
+      "context": "arena",
+      "viewport": "1536x1024",
+      "dominantPct": 29.26,
+      "secondaryPct": 50.09,
+      "decorativeAccentPct": 3.05,
+      "semanticPct": {
+        "teamGold": 0.46,
+        "teamBlue": 0.13,
+        "coachViolet": 0.97,
+        "success": 0,
+        "danger": 0.02
+      },
+      "portraitMaskedPct": 13.71,
+      "unclassifiedPct": 2.31,
+      "raw": {
+        "dominant": 29.26,
+        "teamGold:decorative": 1.55,
+        "secondary": 50.09,
+        "accent": 1.43,
+        "teamBlue:decorative": 0.07,
+        "teamGold": 0.46,
+        "teamBlue": 0.13,
+        "success": 0,
+        "danger": 0.02,
+        "coachViolet": 0.97
+      },
+      "combined": {
+        "dominantPct": 51.03,
+        "secondaryPct": 29.71,
+        "accentPct": 1.92
+      },
+      "panelAsDeepArena": {
+        "dominantPct": 63.51,
+        "secondaryPct": 15.84
+      },
+      "targets": {
+        "dominant": [
+          55,
+          68
+        ],
+        "secondary": [
+          22,
+          35
+        ],
+        "accent": [
+          6,
+          10
+        ]
+      },
+      "within": {
+        "dominant": false,
+        "secondary": false,
+        "accent": false
+      }
+    },
+    {
+      "fixture": "coach",
+      "label": "Final Coach State",
+      "context": "arena",
+      "viewport": "1536x1024",
+      "dominantPct": 31.36,
+      "secondaryPct": 50.33,
+      "decorativeAccentPct": 1.54,
+      "semanticPct": {
+        "teamGold": 0.24,
+        "teamBlue": 0.1,
+        "coachViolet": 0.33,
+        "success": 0,
+        "danger": 0.02
+      },
+      "portraitMaskedPct": 13.71,
+      "unclassifiedPct": 2.37,
+      "raw": {
+        "dominant": 31.36,
+        "teamGold:decorative": 1.24,
+        "secondary": 50.33,
+        "accent": 0.21,
+        "teamBlue:decorative": 0.09,
+        "teamGold": 0.24,
+        "teamBlue": 0.1,
+        "success": 0,
+        "danger": 0.02,
+        "coachViolet": 0.33
+      },
+      "combined": {
+        "dominantPct": 54.73,
+        "secondaryPct": 28.35,
+        "accentPct": 0.56
+      },
+      "panelAsDeepArena": {
+        "dominantPct": 66.85,
+        "secondaryPct": 14.84
+      },
+      "targets": {
+        "dominant": [
+          55,
+          68
+        ],
+        "secondary": [
+          22,
+          35
+        ],
+        "accent": [
+          6,
+          10
+        ]
+      },
+      "within": {
+        "dominant": false,
+        "secondary": false,
+        "accent": false
+      }
+    },
+    {
+      "fixture": "result",
+      "label": "Result Dock",
+      "context": "arena",
+      "viewport": "1536x1024",
+      "dominantPct": 32.69,
+      "secondaryPct": 50.72,
+      "decorativeAccentPct": 0.42,
+      "semanticPct": {
+        "teamGold": 0.04,
+        "teamBlue": 0.06,
+        "coachViolet": 0.34,
+        "success": 0,
+        "danger": 0.02
+      },
+      "portraitMaskedPct": 13.71,
+      "unclassifiedPct": 2,
+      "raw": {
+        "dominant": 32.69,
+        "teamGold:decorative": 0.18,
+        "secondary": 50.72,
+        "accent": 0.2,
+        "teamBlue:decorative": 0.04,
+        "teamGold": 0.04,
+        "teamBlue": 0.06,
+        "success": 0,
+        "danger": 0.02,
+        "coachViolet": 0.34
+      },
+      "combined": {
+        "dominantPct": 56.5,
+        "secondaryPct": 28.39,
+        "accentPct": 0.29
+      },
+      "panelAsDeepArena": {
+        "dominantPct": 67.96,
+        "secondaryPct": 15.46
+      },
+      "targets": {
+        "dominant": [
+          55,
+          68
+        ],
+        "secondary": [
+          22,
+          35
+        ],
+        "accent": [
+          6,
+          10
+        ]
+      },
+      "within": {
+        "dominant": false,
+        "secondary": false,
+        "accent": false
+      }
+    },
+    {
+      "fixture": "lobby",
+      "label": "mobile lobby",
+      "context": "editorial",
+      "viewport": "390x844",
+      "dominantPct": 46.36,
+      "secondaryPct": 29.57,
+      "decorativeAccentPct": 10.57,
+      "semanticPct": {
+        "teamGold": 0,
+        "teamBlue": 0,
+        "coachViolet": 0,
+        "success": 0,
+        "danger": 0
+      },
+      "portraitMaskedPct": 12.16,
+      "unclassifiedPct": 1.34,
+      "raw": {
+        "secondary": 29.57,
+        "accent": 3.28,
+        "teamGold:decorative": 7.29,
+        "dominant": 46.36,
+        "teamBlue:decorative": 0
+      },
+      "combined": {
+        "dominantPct": 24.43,
+        "secondaryPct": 51.82,
+        "accentPct": 7.23
+      },
+      "panelAsDeepArena": null,
+      "targets": {
+        "dominant": [
+          55,
+          68
+        ],
+        "secondary": [
+          22,
+          35
+        ],
+        "accent": [
+          6,
+          10
+        ]
+      },
+      "within": {
+        "dominant": false,
+        "secondary": true,
+        "accent": false
+      }
+    },
+    {
+      "fixture": "roll2",
+      "label": "mobile gameplay",
+      "context": "arena",
+      "viewport": "390x844",
+      "dominantPct": 43.1,
+      "secondaryPct": 15.96,
+      "decorativeAccentPct": 3.52,
+      "semanticPct": {
+        "teamGold": 2.12,
+        "teamBlue": 0.12,
+        "coachViolet": 0,
+        "success": 0,
+        "danger": 0
+      },
+      "portraitMaskedPct": 32.97,
+      "unclassifiedPct": 2.21,
+      "raw": {
+        "dominant": 43.1,
+        "secondary": 15.96,
+        "teamGold:decorative": 0.44,
+        "accent": 3.07,
+        "teamBlue:decorative": 0.01,
+        "teamGold": 2.12,
+        "teamBlue": 0.12
+      },
+      "combined": {
+        "dominantPct": 49.26,
+        "secondaryPct": 11.28,
+        "accentPct": 4.86
+      },
+      "panelAsDeepArena": {
+        "dominantPct": 55.16,
+        "secondaryPct": 3.9
+      },
+      "targets": {
+        "dominant": [
+          55,
+          68
+        ],
+        "secondary": [
+          22,
+          35
+        ],
+        "accent": [
+          6,
+          10
+        ]
+      },
+      "within": {
+        "dominant": false,
+        "secondary": false,
+        "accent": false
+      }
+    },
+    {
+      "fixture": "result",
+      "label": "mobile result",
+      "context": "arena",
+      "viewport": "390x844",
+      "dominantPct": 47.07,
+      "secondaryPct": 38.16,
+      "decorativeAccentPct": 5.97,
+      "semanticPct": {
+        "teamGold": 0.11,
+        "teamBlue": 0.12,
+        "coachViolet": 0,
+        "success": 0,
+        "danger": 0
+      },
+      "portraitMaskedPct": 5.81,
+      "unclassifiedPct": 2.77,
+      "raw": {
+        "dominant": 47.07,
+        "secondary": 38.16,
+        "teamGold:decorative": 5.63,
+        "accent": 0.27,
+        "teamBlue:decorative": 0.07,
+        "teamGold": 0.11,
+        "teamBlue": 0.12
+      },
+      "combined": {
+        "dominantPct": 47.17,
+        "secondaryPct": 40.02,
+        "accentPct": 0.53
+      },
+      "panelAsDeepArena": {
+        "dominantPct": 48.05,
+        "secondaryPct": 37.17
+      },
+      "targets": {
+        "dominant": [
+          55,
+          68
+        ],
+        "secondary": [
+          22,
+          35
+        ],
+        "accent": [
+          6,
+          10
+        ]
+      },
+      "within": {
+        "dominant": false,
+        "secondary": false,
+        "accent": false
+      }
+    },
+    {
+      "fixture": "postgame",
+      "label": "mobile full postgame",
+      "context": "editorial",
+      "viewport": "390x844",
+      "dominantPct": 26.15,
+      "secondaryPct": 55.45,
+      "decorativeAccentPct": 2.94,
+      "semanticPct": {
+        "teamGold": 0,
+        "teamBlue": 0,
+        "coachViolet": 0,
+        "success": 0,
+        "danger": 0
+      },
+      "portraitMaskedPct": 14.92,
+      "unclassifiedPct": 0.54,
+      "raw": {
+        "secondary": 55.45,
+        "accent": 0.98,
+        "teamGold:decorative": 0.13,
+        "dominant": 26.15,
+        "teamBlue:decorative": 1.83
+      },
+      "combined": {
+        "dominantPct": 13.72,
+        "secondaryPct": 68.09,
+        "accentPct": 0.58
+      },
+      "panelAsDeepArena": null,
+      "targets": {
+        "dominant": [
+          55,
+          68
+        ],
+        "secondary": [
+          22,
+          35
+        ],
+        "accent": [
+          6,
+          10
+        ]
+      },
+      "within": {
+        "dominant": false,
+        "secondary": false,
+        "accent": false
+      }
+    }
+  ],
+  "deviations": [
+    {
+      "fixture": "Play Lobby",
+      "viewport": "1536x1024",
+      "dominantPct": 67.9,
+      "secondaryPct": 25.2,
+      "decorativeAccentPct": 3.29,
+      "within": {
+        "dominant": true,
+        "secondary": true,
+        "accent": false
+      }
+    },
+    {
+      "fixture": "Full Postgame",
+      "viewport": "1536x1024",
+      "dominantPct": 74.23,
+      "secondaryPct": 20.66,
+      "decorativeAccentPct": 1.3,
+      "within": {
+        "dominant": false,
+        "secondary": false,
+        "accent": false
+      }
+    },
+    {
+      "fixture": "Account Gate",
+      "viewport": "1536x1024",
+      "dominantPct": 91.81,
+      "secondaryPct": 6.62,
+      "decorativeAccentPct": 1.23,
+      "within": {
+        "dominant": false,
+        "secondary": false,
+        "accent": false
+      }
+    },
+    {
+      "fixture": "Membership",
+      "viewport": "1536x1024",
+      "dominantPct": 91.24,
+      "secondaryPct": 7.72,
+      "decorativeAccentPct": 0.35,
+      "within": {
+        "dominant": false,
+        "secondary": false,
+        "accent": false
+      }
+    },
+    {
+      "fixture": "Empty Chaos Arena",
+      "viewport": "1536x1024",
+      "dominantPct": 48.62,
+      "secondaryPct": 46.27,
+      "decorativeAccentPct": 2.39,
+      "within": {
+        "dominant": false,
+        "secondary": false,
+        "accent": false
+      }
+    },
+    {
+      "fixture": "Populated Roll 2",
+      "viewport": "1536x1024",
+      "dominantPct": 29.26,
+      "secondaryPct": 50.09,
+      "decorativeAccentPct": 3.05,
+      "within": {
+        "dominant": false,
+        "secondary": false,
+        "accent": false
+      }
+    },
+    {
+      "fixture": "Final Coach State",
+      "viewport": "1536x1024",
+      "dominantPct": 31.36,
+      "secondaryPct": 50.33,
+      "decorativeAccentPct": 1.54,
+      "within": {
+        "dominant": false,
+        "secondary": false,
+        "accent": false
+      }
+    },
+    {
+      "fixture": "Result Dock",
+      "viewport": "1536x1024",
+      "dominantPct": 32.69,
+      "secondaryPct": 50.72,
+      "decorativeAccentPct": 0.42,
+      "within": {
+        "dominant": false,
+        "secondary": false,
+        "accent": false
+      }
+    },
+    {
+      "fixture": "mobile lobby",
+      "viewport": "390x844",
+      "dominantPct": 46.36,
+      "secondaryPct": 29.57,
+      "decorativeAccentPct": 10.57,
+      "within": {
+        "dominant": false,
+        "secondary": true,
+        "accent": false
+      }
+    },
+    {
+      "fixture": "mobile gameplay",
+      "viewport": "390x844",
+      "dominantPct": 43.1,
+      "secondaryPct": 15.96,
+      "decorativeAccentPct": 3.52,
+      "within": {
+        "dominant": false,
+        "secondary": false,
+        "accent": false
+      }
+    },
+    {
+      "fixture": "mobile result",
+      "viewport": "390x844",
+      "dominantPct": 47.07,
+      "secondaryPct": 38.16,
+      "decorativeAccentPct": 5.97,
+      "within": {
+        "dominant": false,
+        "secondary": false,
+        "accent": false
+      }
+    },
+    {
+      "fixture": "mobile full postgame",
+      "viewport": "390x844",
+      "dominantPct": 26.15,
+      "secondaryPct": 55.45,
+      "decorativeAccentPct": 2.94,
+      "within": {
+        "dominant": false,
+        "secondary": false,
+        "accent": false
+      }
+    }
+  ],
+  "reasons": {
+    "decorativeAccentBelowTarget": "The Era Fracture is a LINE system by contract (2px divides, edges and underlines, one sweep) and the one-glow rule removes halos; the gold CTA and the fracture are the only decorative accent fills on a screen. Pixel area is therefore ~2–3% while the accent is visible and recognisable; adding fills to reach 6% would violate the contract's forbidden list (borders on every card, glow on every panel).",
+    "arenaStructureAboveTarget": "Arena Graphite (#111823) is the specification's PANEL colour and is classified as structure; the ten cards, the rail panels and the coach cards are large, so structure reads ~49% and the deep floor ~35%. Counted the other way (panel as deep-arena family, as 9A.1 did) the same screens read ~70/14 (contexts.arena.panelAsDeepArena). The panels are the specification's own values and carry the content; darkening them toward obsidian to hit 60/30 would flatten the card/floor separation the 8C.1 contract depends on.",
+    "editorialDominantAboveTarget": "Reading surfaces are ivory canvas with ink text; at 1536×1024 the lobby and gate hold whitespace by design (one decision per screen). Ink and graphite are text and dividers, so their pixel area is small even when the hierarchy is strong."
+  },
+  "rule": "The interface is not altered merely to hit a pixel percentage where that would harm clarity; every deviation is listed with its measured value.",
+  "checks": 5,
+  "passed": 5,
+  "failed": 0,
+  "results": [
+    {
+      "name": "arena context measured: dominant 35.5% · secondary 49.4% · decorative accent 1.8% (targets 55–68 / 22–35 / 6–10)",
+      "pass": true,
+      "detail": "outside target: dominant, secondary, accent — documented, not enforced"
+    },
+    {
+      "name": "editorial context measured: dominant ivory 81.3% · secondary ink/graphite 15% · decorative accent 1.5% (targets 55–68 / 22–35 / 6–10)",
+      "pass": true,
+      "detail": "outside target: dominant, secondary, accent — documented, not enforced"
+    },
+    {
+      "name": "every deviation from a target is documented with its measured value and the reason",
+      "pass": true,
+      "detail": "see deviations[] and reasons[]"
+    },
+    {
+      "name": "no context is dominated by a semantic colour (gold, cobalt or violet each < 12% outside semantic regions)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "red appears only where it means something (< 0.5% outside the postgame)",
+      "pass": true,
+      "detail": ""
+    }
+  ]
+}

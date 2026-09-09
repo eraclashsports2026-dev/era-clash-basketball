@@ -1,0 +1,37 @@
+{
+  "artifact": "enhanced-analysis-state-machine-contract",
+  "phase": "8B",
+  "states": [
+    "IDLE",
+    "REQUESTING",
+    "PENDING",
+    "READY",
+    "FAILED_RETRYABLE",
+    "FAILED_UNAVAILABLE"
+  ],
+  "pollDelaysMs": [
+    1200,
+    1800,
+    2200,
+    2600,
+    2600,
+    2600
+  ],
+  "maxPolls": 6,
+  "terminalGuarantee": "every request ends READY, FAILED_RETRYABLE or FAILED_UNAVAILABLE within a bounded period",
+  "fallback": {
+    "always": true,
+    "source": "DETERMINISTIC_EXPANDED",
+    "sections": [
+      "The result",
+      "Who decided it",
+      "How the winner scored",
+      "Where it turned",
+      "The benches",
+      "The era",
+      "The margins"
+    ]
+  },
+  "labelling": "The panel says the analysis was built from the game record and is not AI-assisted whenever the deterministic path is shown.",
+  "retry": "clears the prior terminal state, starts one bounded attempt, cancels on unmount or result switch, and never spins indefinitely"
+}

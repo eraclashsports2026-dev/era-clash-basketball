@@ -1,0 +1,74 @@
+{
+  "artifact": "candidate3-wave1-soak",
+  "generatedBy": "node scripts/c5/deployedQa.mjs soak",
+  "baseUrl": "https://era-clash-basketball-git-wave1-era-clash.vercel.app",
+  "data": {
+    "passed": 7,
+    "failed": 0,
+    "gates": [
+      {
+        "name": "success rate \u2265 0.99",
+        "ok": true,
+        "detail": "60/60 = 100.0%"
+      },
+      {
+        "name": "p50 < 1500ms",
+        "ok": true,
+        "detail": "p50 221ms"
+      },
+      {
+        "name": "p95 < 3000ms",
+        "ok": true,
+        "detail": "p95 382ms"
+      },
+      {
+        "name": "p99 < 5000ms",
+        "ok": true,
+        "detail": "p99 564ms \u00b7 max 564ms"
+      },
+      {
+        "name": "stored-result reloads stable",
+        "ok": true,
+        "detail": "6 probes"
+      },
+      {
+        "name": "fallback rate \u2264 0.01",
+        "ok": true,
+        "detail": "0/60"
+      },
+      {
+        "name": "no unexpected errors",
+        "ok": true,
+        "detail": ""
+      }
+    ],
+    "n": 60,
+    "thresholds": {
+      "successRate": 0.99,
+      "p50": 1500,
+      "p95": 3000,
+      "p99": 5000,
+      "replayFailures": 0,
+      "fallbackRate": 0.01
+    },
+    "latency": {
+      "p50": 221,
+      "p95": 382,
+      "p99": 564,
+      "max": 564
+    },
+    "successRate": 1,
+    "fallbacks": 0,
+    "replayBreaks": 0,
+    "errors": [],
+    "thresholdsFrozenBeforeRun": {
+      "successRate": ">=99%",
+      "replayFailures": 0,
+      "invariantFailures": 0,
+      "unexpectedFallback": "<=1%",
+      "p95": "<= 6C5 baseline 347ms +25% = 434ms",
+      "productionNamespaceWrites": 0
+    },
+    "note": "targeted soak (60 games, minimum sufficient validation): Candidate 3 simulation core unchanged this phase (git diff empty on src/v3 + previewEngine)"
+  }
+}

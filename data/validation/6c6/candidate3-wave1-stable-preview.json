@@ -1,0 +1,13 @@
+{
+  "artifact": "candidate3-wave1-stable-preview",
+  "generatedBy": "phase 6C6 WS3/WS10 deployed verification",
+  "data": {
+    "stablePreviewUrl": "https://era-clash-basketball-git-wave1-era-clash.vercel.app",
+    "mechanism": "Vercel branch alias for the short-named `wave1` branch (the phase branch name exceeds the DNS label limit; `wave1` tracks the phase head)",
+    "redeployProof": "three pushes to wave1 served from the SAME URL: marker deploy (gate 401), revocation-drill head (tester-05 dead, others live), launch head (tester-05 restored) — behavior changes at a constant address prove head-tracking",
+    "accessRestricted": true,
+    "candidate3Active": true,
+    "brokenCommitContainment": "the one corrupted commit (truncated previewAccess.js) was rejected by the wave1 push (non-fast-forward) and never reached the stable alias; repaired before any wave1 update",
+    "productionUrlUnchanged": "https://era-clash-basketball.vercel.app (no gate, no preview block)"
+  }
+}

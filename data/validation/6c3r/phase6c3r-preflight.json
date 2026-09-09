@@ -1,0 +1,83 @@
+{
+  "artifact": "phase6c3r-preflight",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run validation:6c3r:preflight",
+  "generatedAt": "2026-08-26T21:53:50.968Z",
+  "gitCommit": "ad60304c758ff04a5c7140b798c6bbecc80295bc",
+  "branch": "phase-6c3r-validation-surface-repair",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "candidateLockValid": true,
+    "candidateCoreUnchanged": true,
+    "historicalV3Preserved": true,
+    "syntheticV2StillSealed": true,
+    "replacementValidationMayBegin": true,
+    "failedGates": [],
+    "seals": {
+      "legacy-holdout-v1": {
+        "accessCount": 0,
+        "status": "SEALED_UNREAD",
+        "integrity": "Never read. Any Phase 6C2 tuning result can be honestly validated against it.",
+        "set": "legacy-holdout-v1",
+        "note": "LEGACY_MIXED_HOLDOUT — preserved unchanged, not reused for formal historical validation."
+      },
+      "historical-holdout-v2": {
+        "set": "historical-holdout-v2",
+        "accessCount": 0,
+        "status": "SEALED_UNREAD",
+        "integrity": "Never read. A Phase 6C3 validation against it is genuinely independent.",
+        "note": "INSUFFICIENT_SAMPLE_ARCHIVE — genuinely unread, but three fixtures cannot validate generalisation. Superseded by v3 and archived rather than consumed."
+      },
+      "synthetic-stress-v1": {
+        "set": "synthetic-stress-v1",
+        "accessCount": 0,
+        "status": "PREVIOUSLY_INSPECTED_ARCHIVE",
+        "integrity": "Never read. A Phase 6C3 validation against it is genuinely independent.",
+        "note": "Its counter reads 0 because the seal was created after the simulations. Not a holdout."
+      },
+      "historical-holdout-v3": {
+        "set": "historical-holdout-v3",
+        "accessCount": 1,
+        "status": "UNSEALED",
+        "integrity": "Read 1 time(s). Check the access log before treating a result as independent."
+      },
+      "synthetic-stress-holdout-v2": {
+        "set": "synthetic-stress-holdout-v2",
+        "accessCount": 0,
+        "status": "SEALED_UNREAD",
+        "integrity": "Never read. A Phase 6C3 validation against it is genuinely independent."
+      },
+      "historical-holdout-v4": {
+        "set": "historical-holdout-v4",
+        "accessCount": 0,
+        "status": "SEALED_UNREAD",
+        "integrity": "Never read. A Phase 6C3 validation against it is genuinely independent."
+      }
+    },
+    "validationVersions": {
+      "formalValidationAttemptRegistryVersion": "1.0.0",
+      "historicalTraitRegistryVersion": "1.0.0",
+      "historicalMeasurementSurfaceVersion": "1.0.0",
+      "historicalReferenceOpponentVersion": "1.0.0",
+      "observabilityCertificationVersion": "1.0.0",
+      "replacementHoldoutSelectionVersion": "1.0.0",
+      "historicalHoldoutSetVersion": "4.0.0",
+      "historicalHoldoutManifestVersion": "4.0.0",
+      "historicalHoldoutSeedSetVersion": "2.0.0",
+      "historicalHoldoutAcceptancePolicyVersion": "2.0.0",
+      "historicalHoldoutRunnerVersion": "2.0.0",
+      "formalValidationAttemptVersion": "2.0.0",
+      "formalHoldoutVerdictVersion": "2.0.0",
+      "replacementValidationPackageVersion": "1.0.0",
+      "calibrationPlayerStoreV4Version": "1.0.0",
+      "historicalCorpusV4Version": "1.0.0",
+      "historicalTargetsV4Version": "1.0.0"
+    },
+    "versionRegistryNote": "Validation-attempt version keys live in src/v3/calibration/validationVersions.js, OUTSIDE the candidate core, because src/versions.js is one of the 52 frozen core files and adding keys there would mutate the candidate core that both holdout verdicts hash."
+  },
+  "outputHash": "46a8cdd6ee1322d94d74ab5f02c42b5c500cb43e9a5ab6b17e3f4e45f9e83ac2"
+}

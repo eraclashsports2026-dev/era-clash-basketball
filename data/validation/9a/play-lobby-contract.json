@@ -1,0 +1,98 @@
+{
+  "artifact": "play-lobby-contract",
+  "phase": "9A — Play Lobby, activation clarity, multi-position placement",
+  "status": "FROZEN",
+  "routes": {
+    "entrance": "/",
+    "lobby": "/play",
+    "modes": {
+      "chaos": "/play/chaos",
+      "dream": "/play/dream",
+      "daily": "/play/daily",
+      "bo7": "/play/best-of-7",
+      "win82": "/play/win-82",
+      "tournament": "/play/tournament",
+      "gauntlet": "/play/era-gauntlet"
+    }
+  },
+  "layers": {
+    "publicEntrance": "/ — the lobby with the product line",
+    "playLobby": "/play — visual mode selection; starts nothing",
+    "timeArena": "/play/chaos — where Chaos Clash is played"
+  },
+  "hierarchy": {
+    "primary": [
+      "chaos",
+      "dream",
+      "daily"
+    ],
+    "secondary": [
+      "bo7",
+      "win82",
+      "tournament",
+      "gauntlet"
+    ],
+    "recommended": "chaos"
+  },
+  "card": {
+    "contains": [
+      "original glyph",
+      "mode name",
+      "one sentence",
+      "status or entitlement badge",
+      "one action"
+    ],
+    "excludes": [
+      "long descriptions",
+      "simulation statistics",
+      "roster intelligence",
+      "comparison tables",
+      "competing buttons",
+      "promotional panels"
+    ]
+  },
+  "identity": {
+    "logo": "public/brand/eraclash-logo-mk1.png (EraClash Logo Mk1)",
+    "palette": [
+      "near-black arena base",
+      "metallic silver",
+      "EraClash gold",
+      "cobalt",
+      "coach violet"
+    ],
+    "forbidden": [
+      "dominant orange CTA system",
+      "competitor icons, wording, animations, rules"
+    ]
+  },
+  "rules": [
+    "/play never silently starts a Chaos run",
+    "direct Chaos links open Chaos",
+    "challenge links (?chaos=) open the challenge",
+    "Dream Matchup links open its account gate or builder",
+    "Back returns predictably (history API)",
+    "refresh preserves the route",
+    "logo navigation preserves an active run",
+    "abandonment is explicit and confirmed"
+  ],
+  "continuation": {
+    "shows": [
+      "stage",
+      "era status (only if revealed)",
+      "time since last activity (browser stamp)",
+      "compact Gold/Blue identity",
+      "Continue",
+      "Abandon"
+    ],
+    "never": [
+      "unrevealed era",
+      "Legend CPU holds",
+      "a false card when no run exists"
+    ]
+  },
+  "responsive": {
+    "desktop": "3 primary cards, secondary row, one viewport when practical",
+    "tablet": "2 columns",
+    "mobile": "1 column, Chaos first, 44px targets, no page overflow"
+  }
+}

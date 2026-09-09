@@ -31,7 +31,7 @@ export default class ErrorBoundary extends Component {
             Something went wrong displaying this screen. Your saved data is untouched.
             <br />Support code: <b style={{ color: T.text }}>{this.state.supportId}</b>
           </p>
-          <button onClick={() => window.location.assign("/")} style={{ padding: "12px 28px", fontSize: 14, fontWeight: 800, border: "none", borderRadius: 10, background: T.gold, color: "#111", cursor: "pointer" }}>
+          <button onClick={() => window.location.assign("/")} style={{ padding: "12px 28px", fontSize: 14, fontWeight: 800, border: "none", borderRadius: 10, background: T.gold, color: "#fffdf8", cursor: "pointer" }}>
             Back to the arena
           </button>
         </div>

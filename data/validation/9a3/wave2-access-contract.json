@@ -1,0 +1,104 @@
+{
+  "artifact": "wave2-access-contract",
+  "phase": "9A.3 — Wave 2 private-beta preparation",
+  "status": "FROZEN",
+  "frozenAt": "2026-09-03T21:04:51.079Z",
+  "accessConfigVersion": 3,
+  "waveId": "candidate4-night-court-wave2",
+  "entries": [
+    {
+      "testerId": "wave2-owner",
+      "role": "owner",
+      "cohort": null,
+      "waveId": "candidate4-night-court-wave2",
+      "keyVersion": 1,
+      "enabled": true,
+      "sha256": "501285518b15f8fa69be01b04f1d9cf58fb0bbcca726c66361def3784bc490dc",
+      "createdAt": "2026-09-03"
+    },
+    {
+      "testerId": "wave2-new-01",
+      "role": "tester",
+      "cohort": "first-time",
+      "waveId": "candidate4-night-court-wave2",
+      "keyVersion": 1,
+      "enabled": true,
+      "sha256": "3c8e3ca3e5954a6ac2f47e2b56daf4247a4b4159aef264d8dbfb3879ef08860f",
+      "createdAt": "2026-09-03"
+    },
+    {
+      "testerId": "wave2-new-02",
+      "role": "tester",
+      "cohort": "first-time",
+      "waveId": "candidate4-night-court-wave2",
+      "keyVersion": 1,
+      "enabled": true,
+      "sha256": "c0203718f4e0eb96ac57dc51b04a6403ef541b02d0c102929de3186a16507bba",
+      "createdAt": "2026-09-03"
+    },
+    {
+      "testerId": "wave2-new-03",
+      "role": "tester",
+      "cohort": "first-time",
+      "waveId": "candidate4-night-court-wave2",
+      "keyVersion": 1,
+      "enabled": true,
+      "sha256": "b17053990219106998bac7141095391d84236b6e9709099758b2994ba8f8aca5",
+      "createdAt": "2026-09-03"
+    },
+    {
+      "testerId": "wave2-returning-01",
+      "role": "tester",
+      "cohort": "returning",
+      "waveId": "candidate4-night-court-wave2",
+      "keyVersion": 1,
+      "enabled": true,
+      "sha256": "b492bfe8fecc6e1d9e2ef5f26f1ef0bd8d0a314680fc68891d68ca2818b9abed",
+      "createdAt": "2026-09-03"
+    },
+    {
+      "testerId": "wave2-returning-02",
+      "role": "tester",
+      "cohort": "returning",
+      "waveId": "candidate4-night-court-wave2",
+      "keyVersion": 1,
+      "enabled": true,
+      "sha256": "d95721ddf5e07a1c39be9102ca9b42df96163b76912eb3dca35325ee2a1acc4f",
+      "createdAt": "2026-09-03"
+    }
+  ],
+  "counts": {
+    "owner": 1,
+    "firstTime": 3,
+    "returning": 2
+  },
+  "rawKeys": {
+    "location": ".preview-secrets/wave2-access-keys.json",
+    "directoryMode": "0700",
+    "fileMode": "0600",
+    "gitIgnored": true,
+    "committed": false
+  },
+  "session": {
+    "cookie": "pv_session",
+    "format": "v3.<payload>.<hmac>",
+    "payload": [
+      "v",
+      "wave",
+      "testerId",
+      "role",
+      "keyVersion",
+      "sid",
+      "iat",
+      "exp"
+    ],
+    "secret": "HMAC over `pv-session-v3|<store token>|<waveId>` — wave-bound, so a Wave 1 session cannot verify here and a Wave 2 session cannot verify on Wave 1",
+    "ttlSeconds": 604800,
+    "revocation": "every request re-checks the allowlist entry (enabled, keyVersion, role, wave)"
+  },
+  "isolation": [
+    "Wave 1 tester keys are not in this allowlist and are refused",
+    "Wave 2 keys are not in the Wave 1 allowlist and are refused there",
+    "the Wave 2 owner key is separate from the Wave 1 owner key"
+  ]
+}

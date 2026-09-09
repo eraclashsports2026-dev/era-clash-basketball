@@ -1,0 +1,65 @@
+{
+  "artifact": "candidate3-preview-soak",
+  "generatedBy": "node scripts/c5/deployedQa.mjs soak",
+  "baseUrl": "https://era-clash-basketball-ddehacso6-era-clash.vercel.app",
+  "data": {
+    "passed": 7,
+    "failed": 0,
+    "gates": [
+      {
+        "name": "success rate ≥ 0.99",
+        "ok": true,
+        "detail": "120/120 = 100.0%"
+      },
+      {
+        "name": "p50 < 1500ms",
+        "ok": true,
+        "detail": "p50 213ms"
+      },
+      {
+        "name": "p95 < 3000ms",
+        "ok": true,
+        "detail": "p95 347ms"
+      },
+      {
+        "name": "p99 < 5000ms",
+        "ok": true,
+        "detail": "p99 485ms · max 732ms"
+      },
+      {
+        "name": "stored-result reloads stable",
+        "ok": true,
+        "detail": "12 probes"
+      },
+      {
+        "name": "fallback rate ≤ 0.01",
+        "ok": true,
+        "detail": "0/120"
+      },
+      {
+        "name": "no unexpected errors",
+        "ok": true,
+        "detail": ""
+      }
+    ],
+    "n": 120,
+    "thresholds": {
+      "successRate": 0.99,
+      "p50": 1500,
+      "p95": 3000,
+      "p99": 5000,
+      "replayFailures": 0,
+      "fallbackRate": 0.01
+    },
+    "latency": {
+      "p50": 213,
+      "p95": 347,
+      "p99": 485,
+      "max": 732
+    },
+    "successRate": 1,
+    "fallbacks": 0,
+    "replayBreaks": 0,
+    "errors": []
+  }
+}

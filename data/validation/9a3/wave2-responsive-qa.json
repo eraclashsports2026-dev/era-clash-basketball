@@ -1,0 +1,70 @@
+{
+  "artifact": "wave2-responsive-qa",
+  "phase": "9A.3 — Wave 2 private beta",
+  "basis": "the Night Court V1 product on the Phase 9A.3 branch (the Wave 2 build): the 9A.2 responsive harness re-run against this branch's lab build (eight viewports × ten fixtures + the real routes), plus the tablet and mobile gates measured on the deployed branch preview and the stable alias",
+  "local": {
+    "source": "data/validation/9a3/night-court-rerun/theme-responsive-qa.json",
+    "checks": 106,
+    "passed": 106,
+    "failed": 0,
+    "viewports": [
+      "1536x1024",
+      "1440x900",
+      "1280x800",
+      "1024x768",
+      "768x1024",
+      "430x932",
+      "390x844",
+      "375x812"
+    ],
+    "screenshots": 95
+  },
+  "deployed": {
+    "branchPreview": [
+      {
+        "name": "tablet lobby: two columns, no overflow, controls ≥ 44px",
+        "ok": true,
+        "detail": "{\"overflow\":0,\"cols\":2,\"tap\":44}"
+      },
+      {
+        "name": "tablet Time Arena: no overflow, no ten-card compression, controls ≥ 44px",
+        "ok": true,
+        "detail": "{\"overflow\":0,\"rows\":2,\"tap\":44}"
+      },
+      {
+        "name": "mobile lobby: one column, no overflow, controls ≥ 44px",
+        "ok": true,
+        "detail": "{\"overflow\":0,\"cols\":1,\"tap\":44}"
+      },
+      {
+        "name": "mobile Time Arena: no overflow, no ten-card compression, controls ≥ 44px",
+        "ok": true,
+        "detail": "{\"overflow\":0,\"rows\":6,\"tap\":44}"
+      }
+    ],
+    "stableAlias": [
+      {
+        "name": "tablet lobby: two columns, no overflow, controls ≥ 44px",
+        "ok": true,
+        "detail": "{\"overflow\":0,\"cols\":2,\"tap\":44}"
+      },
+      {
+        "name": "tablet Time Arena: no overflow, no ten-card compression, controls ≥ 44px",
+        "ok": true,
+        "detail": "{\"overflow\":0,\"rows\":2,\"tap\":44}"
+      },
+      {
+        "name": "mobile lobby: one column, no overflow, controls ≥ 44px",
+        "ok": true,
+        "detail": "{\"overflow\":0,\"cols\":1,\"tap\":44}"
+      },
+      {
+        "name": "mobile Time Arena: no overflow, no ten-card compression, controls ≥ 44px",
+        "ok": true,
+        "detail": "{\"overflow\":0,\"rows\":6,\"tap\":44}"
+      }
+    ]
+  },
+  "checks": 114,
+  "passed": 114
+}

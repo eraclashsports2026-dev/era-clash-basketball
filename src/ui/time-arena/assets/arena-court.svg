@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 420" preserveAspectRatio="none" role="presentation">
+  <!-- Locally authored hardwood floor in perspective. No photograph, no traced
+       imagery: planks converge on a vanishing point above the centre line, and
+       the court markings are the real geometry of a half court seen from the
+       stands. -->
+  <defs>
+    <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4a2f14"/>
+      <stop offset="45%" stop-color="#33200e"/>
+      <stop offset="100%" stop-color="#150d06"/>
+    </linearGradient>
+    <linearGradient id="sheen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.10"/>
+      <stop offset="60%" stop-color="#ffffff" stop-opacity="0.02"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <g id="planks">
+      <!-- 33 planks, each converging toward x=600 at the horizon. -->
+      <g stroke="#0d0803" stroke-opacity="0.55" stroke-width="1.2">
+        <path d="M-260 420 L444 0"/><path d="M-160 420 L463 0"/><path d="M-60 420 L482 0"/>
+        <path d="M40 420 L501 0"/><path d="M140 420 L520 0"/><path d="M240 420 L539 0"/>
+        <path d="M340 420 L558 0"/><path d="M440 420 L577 0"/><path d="M540 420 L596 0"/>
+        <path d="M640 420 L615 0"/><path d="M740 420 L634 0"/><path d="M840 420 L653 0"/>
+        <path d="M940 420 L672 0"/><path d="M1040 420 L691 0"/><path d="M1140 420 L710 0"/>
+        <path d="M1240 420 L729 0"/><path d="M1340 420 L748 0"/><path d="M1460 420 L767 0"/>
+      </g>
+    </g>
+  </defs>
+
+  <rect width="1200" height="420" fill="url(#floor)"/>
+  <use href="#planks"/>
+  <rect width="1200" height="420" fill="url(#sheen)"/>
+
+  <!-- Court markings, faint: a sideline, the centre line and the arc. -->
+  <g stroke="#e8dcc4" stroke-opacity="0.16" fill="none" stroke-width="2">
+    <path d="M0 300 L1200 300"/>
+    <path d="M0 168 L1200 168"/>
+    <path d="M600 168 L600 300"/>
+    <ellipse cx="600" cy="300" rx="188" ry="52"/>
+    <ellipse cx="600" cy="168" rx="74" ry="21"/>
+  </g>
+</svg>

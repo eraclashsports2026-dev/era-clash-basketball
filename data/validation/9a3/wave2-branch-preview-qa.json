@@ -1,0 +1,359 @@
+{
+  "artifact": "wave2-branch-preview-qa",
+  "phase": "9A.3 — Wave 2 private beta",
+  "deployment": {
+    "baseUrl": "https://era-clash-basketball-git-phase-9a3-night-court-6e72c7-era-clash.vercel.app",
+    "aliasUrl": null,
+    "commit": "0cc36fd",
+    "buildStamp": "eraclash-assets:2.7.2:d3d5455dcf91",
+    "waveId": "candidate4-night-court-wave2"
+  },
+  "candidateUnderTest": {
+    "deployed": {
+      "enabled": true,
+      "candidateId": "Candidate 4",
+      "candidateCoreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+      "calibrationVersion": "1.4.0",
+      "featureFlag": "PREVIEW_SIM_ENGINE_ENABLED",
+      "waveId": "candidate4-night-court-wave2",
+      "fallbackEngine": "production engine 3.2.0 (per-request fallback; emergency-off returns every new request to production while stored preview results stay readable by version)",
+      "cacheNamespace": "preview-*",
+      "persistenceNamespace": "pv_ result-id prefix",
+      "accessControl": "hashed-key allowlist (config/previewAccess.js)"
+    },
+    "local": {
+      "candidateId": "Candidate 4",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+      "possessionCalibrationVersion": "1.4.0",
+      "actionLibraryVersion": "2.1.0",
+      "possessionEngineVersion": "1.2.0",
+      "fallbackEngine": "production engineVersion 3.2.0"
+    }
+  },
+  "wave2Keys": [
+    {
+      "testerId": "wave2-owner",
+      "role": "owner",
+      "cohort": null,
+      "sha256Prefix": "501285518b15",
+      "accepted": true
+    },
+    {
+      "testerId": "wave2-new-01",
+      "role": "tester",
+      "cohort": "first-time",
+      "sha256Prefix": "3c8e3ca3e595",
+      "accepted": true
+    },
+    {
+      "testerId": "wave2-new-02",
+      "role": "tester",
+      "cohort": "first-time",
+      "sha256Prefix": "c0203718f4e0",
+      "accepted": true
+    },
+    {
+      "testerId": "wave2-new-03",
+      "role": "tester",
+      "cohort": "first-time",
+      "sha256Prefix": "b17053990219",
+      "accepted": true
+    },
+    {
+      "testerId": "wave2-returning-01",
+      "role": "tester",
+      "cohort": "returning",
+      "sha256Prefix": "b492bfe8fecc",
+      "accepted": true
+    },
+    {
+      "testerId": "wave2-returning-02",
+      "role": "tester",
+      "cohort": "returning",
+      "sha256Prefix": "d95721ddf5e0",
+      "accepted": true
+    }
+  ],
+  "wave1KeysOnWave2": [
+    {
+      "testerId": "owner",
+      "status": 401
+    },
+    {
+      "testerId": "wave1-tester-01",
+      "status": 401
+    },
+    {
+      "testerId": "wave1-tester-02",
+      "status": 401
+    },
+    {
+      "testerId": "wave1-tester-03",
+      "status": 401
+    },
+    {
+      "testerId": "wave1-tester-04",
+      "status": 401
+    },
+    {
+      "testerId": "wave1-tester-05",
+      "status": 401
+    },
+    {
+      "testerId": "wave1-tester-06",
+      "status": 401
+    },
+    {
+      "testerId": "wave1-tester-07",
+      "status": 401
+    }
+  ],
+  "wave2KeysOnWave1": [
+    {
+      "testerId": "wave2-owner",
+      "status": 401
+    },
+    {
+      "testerId": "wave2-new-01",
+      "status": 401
+    },
+    {
+      "testerId": "wave2-new-02",
+      "status": 401
+    },
+    {
+      "testerId": "wave2-new-03",
+      "status": 401
+    },
+    {
+      "testerId": "wave2-returning-01",
+      "status": 401
+    },
+    {
+      "testerId": "wave2-returning-02",
+      "status": 401
+    }
+  ],
+  "wave1Unchanged": true,
+  "wave1Stamp": "eraclash-assets:2.7.2:2f35a3b70c30",
+  "feedbackResultId": "pv_… (present)",
+  "gates": [
+    {
+      "name": "anonymous /play is refused with the access page (401)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "anonymous API is 401 JSON",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "a wrong key is refused and sets no session",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "a tampered / forged session cookie is refused",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "a Wave 1-format (v2) session is refused on Wave 2",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the Wave 2 owner key and all five Wave 2 tester keys open HttpOnly Secure sessions",
+      "ok": true,
+      "detail": "wave2-owner, wave2-new-01, wave2-new-02, wave2-new-03, wave2-returning-01, wave2-returning-02"
+    },
+    {
+      "name": "every Wave 1 key (8, owner included) is refused on Wave 2",
+      "ok": true,
+      "detail": "owner:401 wave1-tester-01:401 wave1-tester-02:401 wave1-tester-03:401 wave1-tester-04:401 wave1-tester-05:401 wave1-tester-06:401 wave1-tester-07:401"
+    },
+    {
+      "name": "every Wave 2 key (6) is refused on the Wave 1 alias",
+      "ok": true,
+      "detail": "wave2-owner:401 wave2-new-01:401 wave2-new-02:401 wave2-new-03:401 wave2-returning-01:401 wave2-returning-02:401"
+    },
+    {
+      "name": "a tester session: 200 at /play, 404 at the owner-only lab (no role escalation)",
+      "ok": true,
+      "detail": "play 200 · lab 404"
+    },
+    {
+      "name": "logout clears the session (DELETE → 204, then 401)",
+      "ok": true,
+      "detail": "204 → 401"
+    },
+    {
+      "name": "the deployment runs Candidate 4 / 1.4.0 with this checkout's core hash and the Wave 2 id",
+      "ok": true,
+      "detail": "Candidate 4 / 1.4.0 / candidate4-night-court-wave2"
+    },
+    {
+      "name": "Play Lobby: seven modes, Chaos first and recommended, Night Court (obsidian header, ivory canvas), viewing created no run and no POST",
+      "ok": true,
+      "detail": "{\"first\":\"chaos\",\"posts\":0}"
+    },
+    {
+      "name": "direct mode links: Dream Matchup links to /play/dream; Era Gauntlet is truthfully Coming soon",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "refresh keeps the lobby",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the logo returns to the lobby and the Continue card shows the run (run preserved)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Continue reopens the exact same run (same first card, same id)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "abandoning asks for confirmation first",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "multiple holds register",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Era Reveal arrives with Roll 2",
+      "ok": true,
+      "detail": "2010s"
+    },
+    {
+      "name": "a Candidate 4 game completes; the Result Dock leads with the Story and two scores",
+      "ok": true,
+      "detail": "{\"open\":\"Game Story\",\"scores\":[85,114],\"candidate\":true}"
+    },
+    {
+      "name": "every result tab opens",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Full Postgame: dark hero over the ivory report; the Wave 2 feedback panel replaces the Wave 1 panel",
+      "ok": true,
+      "detail": "{\"heroDark\":true,\"paperLight\":true,\"wave2Panel\":1,\"wave1Panel\":false}"
+    },
+    {
+      "name": "Box Score: one table, uniform rows, nowrap cells, no page overflow",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Wave 2 feedback (task N2, five ratings) is accepted and confirmed to the tester; the request carries no identity field",
+      "ok": true,
+      "detail": "HTTP 204 · fields kind,taskId,resultId,ratings,issueCategory,clientBuildStamp"
+    },
+    {
+      "name": "a resubmission with spoofed identity fields is accepted as a revision (server identity wins)",
+      "ok": true,
+      "detail": "HTTP 204"
+    },
+    {
+      "name": "an unknown task id is rejected (400)",
+      "ok": true,
+      "detail": "HTTP 400"
+    },
+    {
+      "name": "the stored result reloads consistently: two reads of the shared snapshot are identical and carry both dock scores",
+      "ok": true,
+      "detail": "418 bytes"
+    },
+    {
+      "name": "a new Clash starts from the dock and the previous result stays labelled",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "after a refresh the arena is coherent: ten cards or ten card backs, no error",
+      "ok": true,
+      "detail": "{\"cards\":0,\"backs\":10,\"alerts\":0}"
+    },
+    {
+      "name": "multi-position selection lights SG · SF · PF only",
+      "ok": true,
+      "detail": "{\"PG\":\"INELIGIBLE\",\"SG\":\"ELIGIBLE\",\"SF\":\"ELIGIBLE\",\"PF\":\"ELIGIBLE\",\"C\":\"INELIGIBLE\"}"
+    },
+    {
+      "name": "manual placement lands",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "a one-position player is placed automatically",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Undo restores the five",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "an occupied eligible slot is offered as a swap",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the swap is explicit and legal",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the same person cannot be added twice (duplicate-person refusal)",
+      "ok": true,
+      "detail": "withheld from the picker"
+    },
+    {
+      "name": "a guest at an account-required mode sees the gate with a way back",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the owner reaches the lab; dark and light uniforms and the silhouette ride the portrait stage",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "tablet lobby: two columns, no overflow, controls ≥ 44px",
+      "ok": true,
+      "detail": "{\"overflow\":0,\"cols\":2,\"tap\":44}"
+    },
+    {
+      "name": "tablet Time Arena: no overflow, no ten-card compression, controls ≥ 44px",
+      "ok": true,
+      "detail": "{\"overflow\":0,\"rows\":2,\"tap\":44}"
+    },
+    {
+      "name": "mobile lobby: one column, no overflow, controls ≥ 44px",
+      "ok": true,
+      "detail": "{\"overflow\":0,\"cols\":1,\"tap\":44}"
+    },
+    {
+      "name": "mobile Time Arena: no overflow, no ten-card compression, controls ≥ 44px",
+      "ok": true,
+      "detail": "{\"overflow\":0,\"rows\":6,\"tap\":44}"
+    },
+    {
+      "name": "the Wave 1 alias still serves its original build (stamp 2f35a3b70c30, Candidate 3), the Wave 1 owner key still opens it, no lobby, no Night Court",
+      "ok": true,
+      "detail": "eraclash-assets:2.7.2:2f35a3b70c30 · Candidate 3"
+    }
+  ],
+  "passed": 43,
+  "failed": 0
+}

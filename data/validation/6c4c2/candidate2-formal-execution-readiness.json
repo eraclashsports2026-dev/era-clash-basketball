@@ -1,0 +1,623 @@
+{
+  "artifact": "candidate2-formal-execution-readiness",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run v6:certify",
+  "generatedAt": "2026-08-27T20:28:56.331Z",
+  "gitCommit": "d19de418a65e40e5c3f02cc0e952d31697bde533",
+  "branch": "phase-6c4c2-v6-freeze-and-seal",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "candidate2FormalExecutionReadinessVersion": "1.0.0",
+    "phase": "6C4C2",
+    "mayExecutePhase6C4C3": true,
+    "whatPhase6C4C3MayDo": [
+      "open Historical Holdout V6 exactly once, via the certified command with its unlock flags, operator and reason",
+      "if and only if stage one returns PASS on this same core and parameter set, open Synthetic Stress Holdout V2 exactly once",
+      "issue the compound formal verdict"
+    ],
+    "whatPhase6C4C3MayNotDo": [
+      "change any bound hash, threshold, margin, trait, target, reference, seed or policy",
+      "re-select, re-seal or re-derive anything",
+      "tune Candidate 2 against a V6 or Synthetic V2 observation",
+      "open Synthetic Stress Holdout V2 without a passing Historical V6",
+      "build or deploy a preview, deploy production, activate a production flag, or merge to main",
+      "claim HOLDOUT_VALIDATED, PRIVATE_PREVIEW_VALIDATED, PRODUCTION_READY or ACTIVE"
+    ],
+    "requirements": [
+      {
+        "requirement": "priorStateReconciled",
+        "met": true,
+        "detail": "Phase 6C4C1's outcome was read from repository artifacts, not reconstructed"
+      },
+      {
+        "requirement": "candidate2StillLocked",
+        "met": true,
+        "detail": "LOCKED, core 3733b648f050a4f5..."
+      },
+      {
+        "requirement": "engineUnchangedThisPhase",
+        "met": true,
+        "detail": "a preparation phase does not move engine behaviour"
+      },
+      {
+        "requirement": "zeroParameterDrift",
+        "met": true,
+        "detail": "no parameter drifted"
+      },
+      {
+        "requirement": "historicalV6Sealed",
+        "met": true,
+        "detail": "SEALED_UNREAD at 0"
+      },
+      {
+        "requirement": "syntheticV2StillSealed",
+        "met": true,
+        "detail": "access 0, never opened"
+      },
+      {
+        "requirement": "bothRepairedMechanismsScoreable",
+        "met": true,
+        "detail": "a holdout that cannot observe the repair cannot validate it"
+      },
+      {
+        "requirement": "dryRunPassed",
+        "met": true,
+        "detail": "44 branches"
+      },
+      {
+        "requirement": "syntheticRebound",
+        "met": true,
+        "detail": "rebound, not replaced: no metric or guardrail changed meaning"
+      },
+      {
+        "requirement": "executionPackageBuilt",
+        "met": true,
+        "detail": "40 bound entries across 4 namespaces"
+      },
+      {
+        "requirement": "commandSurfacesCertified",
+        "met": true,
+        "detail": "19 invocations measured"
+      },
+      {
+        "requirement": "neitherStageExecuted",
+        "met": true,
+        "detail": "preparation only"
+      },
+      {
+        "requirement": "noPreviewOrProductionAction",
+        "met": true,
+        "detail": "no preview built, no preview deployed, no production deployment, no production flag activated, nothing merged to main"
+      }
+    ],
+    "commandCertification": {
+      "commands": [
+        {
+          "command": "validation:historical-v6",
+          "module": "scripts/validation/historical-holdout-v6.mjs",
+          "invocations": 9
+        },
+        {
+          "command": "validation:synthetic-candidate2",
+          "module": "scripts/validation/synthetic-candidate2.mjs",
+          "invocations": 5
+        },
+        {
+          "command": "validation:candidate2-formal-verdict",
+          "module": "scripts/validation/candidate2FormalVerdict.mjs",
+          "invocations": 5
+        }
+      ],
+      "invocations": [
+        {
+          "command": "validation:historical-v6",
+          "args": [
+            "--help"
+          ],
+          "exitCode": 0,
+          "expectedExitCode": 0,
+          "exitCodeAsExpected": true,
+          "outputMatchedExpectation": true,
+          "expectedPattern": "/MODES \\(exactly one required\\)/",
+          "accessCountsBefore": {
+            "historical-holdout-v6": 0,
+            "synthetic-stress-holdout-v2": 0
+          },
+          "accessCountsAfter": {
+            "historical-holdout-v6": 0,
+            "synthetic-stress-holdout-v2": 0
+          },
+          "setsOpened": [],
+          "sealUntouched": true,
+          "ok": true
+        },
+        {
+          "command": "validation:historical-v6",
+          "args": [],
+          "exitCode": 2,
+          "expectedExitCode": 2,
+          "exitCodeAsExpected": true,
+          "outputMatchedExpectation": true,
+          "expectedPattern": "/a mode is required/",
+          "accessCountsBefore": {
+            "historical-holdout-v6": 0,
+            "synthetic-stress-holdout-v2": 0
+          },
+          "accessCountsAfter": {
+            "historical-holdout-v6": 0,
+            "synthetic-stress-holdout-v2": 0
+          },
+          "setsOpened": [],
+          "sealUntouched": true,
+          "ok": true
+        },
+        {
+          "command": "validation:historical-v6",
+          "args": [
+            "--preflight"
+          ],
+          "exitCode": 0,
+          "expectedExitCode": 0,
+          "exitCodeAsExpected": true,
+          "outputMatchedExpectation": true,
+          "expectedPattern": "/PREFLIGHT: READY/",
+          "accessCountsBefore": {
+            "historical-holdout-v6": 0,
+            "synthetic-stress-holdout-v2": 0
+          },
+          "accessCountsAfter": {
+            "historical-holdout-v6": 0,
+            "synthetic-stress-holdout-v2": 0
+          },
+          "setsOpened": [],
+          "sealUntouched": true,
+          "ok": true
+        },
+        {
+          "command": "validation:historical-v6",
+          "args": [
+            "--run",
+            "--unlok-historical-holdout-v6"
+          ],
+          "exitCode": 2,
+          "expectedExitCode": 2,
+          "exitCodeAsExpected": true,
+          "outputMatchedExpectation": true,
+          "expectedPattern": "/unrecognised flag/",
+          "accessCountsBefore": {
+            "historical-holdout-v6": 0,
+            "synthetic-stress-holdout-v2": 0
+          },
+          "accessCountsAfter": {
+            "historical-holdout-v6": 0,
+            "synthetic-stress-holdout-v2": 0
+          },
+          "setsOpened": [],
+          "sealUntouched": true,
+          "ok": true
+        },
+        {
+          "command": "validation:historical-v6",
+          "args": [
+            "--preflight",
+            "--run"
+          ],
+          "exitCode": 2,
+          "expectedExitCode": 2,
+          "exitCodeAsExpected": true,
+          "outputMatchedExpectation": true,
+          "expectedPattern": "/exactly one mode/",
+          "accessCountsBefore": {
+            "historical-holdout-v6": 0,
+            "synthetic-stress-holdout-v2": 0
+          },
+          "accessCountsAfter": {
+            "historical-holdout-v6": 0,
+            "synthetic-stress-holdout-v2": 0
+          },
+          "setsOpened": [],
+          "sealUntouched": true,
+          "ok": true
+        },
+        {
+          "command": "validation:historical-v6",
+          "args": [
+            "--run"
+          ],
+          "exitCode": 2,
+          "expectedExitCode": 2,
+          "exitCodeAsExpected": true,
+          "outputMatchedExpectation": true,
+          "expectedPattern": "/--operator and --reason are required/",
+          "accessCountsBefore": {
+            "historical-holdout-v6": 0,
+            "synthetic-stress-holdout-v2": 0
+          },
+          "accessCountsAfter": {
+            "historical-holdout-v6": 0,
+            "synthetic-stress-holdout-v2": 0
+          },
+          "setsOpened": [],
+          "sealUntouched": true,
+          "ok": true
+        },
+        {
+          "command": "validation:historical-v6",
+          "args": [
+            "--run",
+            "--operator=cert",
+            "--reason=command surface certification: unlock flags absent"
+          ],
+          "exitCode": 2,
+          "expectedExitCode": 2,
+          "exitCodeAsExpected": true,
+          "outputMatchedExpectation": true,
+          "expectedPattern": "/.*/",
+          "accessCountsBefore": {
+            "historical-holdout-v6": 0,
+            "synthetic-stress-holdout-v2": 0
+          },
+          "accessCountsAfter": {
+            "historical-holdout-v6": 0,
+            "synthetic-stress-holdout-v2": 0
+          },
+          "setsOpened": [],
+          "sealUntouched": true,
+          "ok": true
+        },
+        {
+          "command": "validation:historical-v6",
+          "args": [
+            "--preflight",
+            "--resume"
+          ],
+          "exitCode": 2,
+          "expectedExitCode": 2,
+          "exitCodeAsExpected": true,
+          "outputMatchedExpectation": true,
+          "expectedPattern": "/--resume applies to --run only/",
+          "accessCountsBefore": {
+            "historical-holdout-v6": 0,
+            "synthetic-stress-holdout-v2": 0
+          },
+          "accessCountsAfter": {
+            "historical-holdout-v6": 0,
+            "synthetic-stress-holdout-v2": 0
+          },
+          "setsOpened": [],
+          "sealUntouched": true,
+          "ok": true
+        },
+        {
+          "command": "validation:historical-v6",
+          "args": [
+            "--dry-run"
+          ],
+          "exitCode": 2,
+          "expectedExitCode": 2,
+          "exitCodeAsExpected": true,
+          "outputMatchedExpectation": true,
+          "expectedPattern": "/npm run v6:dryrun/",
+          "accessCountsBefore": {
+            "historical-holdout-v6": 0,
+            "synthetic-stress-holdout-v2": 0
+          },
+          "accessCountsAfter": {
+            "historical-holdout-v6": 0,
+            "synthetic-stress-holdout-v2": 0
+          },
+          "setsOpened": [],
+          "sealUntouched": true,
+          "ok": true
+        },
+        {
+          "command": "validation:synthetic-candidate2",
+          "args": [
+            "--help"
+          ],
+          "exitCode": 0,
+          "expectedExitCode": 0,
+          "exitCodeAsExpected": true,
+          "outputMatchedExpectation": true,
+          "expectedPattern": "/STAGE ORDER/",
+          "accessCountsBefore": {
+            "historical-holdout-v6": 0,
+            "synthetic-stress-holdout-v2": 0
+          },
+          "accessCountsAfter": {
+            "historical-holdout-v6": 0,
+            "synthetic-stress-holdout-v2": 0
+          },
+          "setsOpened": [],
+          "sealUntouched": true,
+          "ok": true
+        },
+        {
+          "command": "validation:synthetic-candidate2",
+          "args": [],
+          "exitCode": 2,
+          "expectedExitCode": 2,
+          "exitCodeAsExpected": true,
+          "outputMatchedExpectation": true,
+          "expectedPattern": "/a mode is required/",
+          "accessCountsBefore": {
+            "historical-holdout-v6": 0,
+            "synthetic-stress-holdout-v2": 0
+          },
+          "accessCountsAfter": {
+            "historical-holdout-v6": 0,
+            "synthetic-stress-holdout-v2": 0
+          },
+          "setsOpened": [],
+          "sealUntouched": true,
+          "ok": true
+        },
+        {
+          "command": "validation:synthetic-candidate2",
+          "args": [
+            "--preflight"
+          ],
+          "exitCode": 2,
+          "expectedExitCode": 2,
+          "exitCodeAsExpected": true,
+          "outputMatchedExpectation": true,
+          "expectedPattern": "/SYNTHETIC_ACCESS_REFUSED/",
+          "accessCountsBefore": {
+            "historical-holdout-v6": 0,
+            "synthetic-stress-holdout-v2": 0
+          },
+          "accessCountsAfter": {
+            "historical-holdout-v6": 0,
+            "synthetic-stress-holdout-v2": 0
+          },
+          "setsOpened": [],
+          "sealUntouched": true,
+          "ok": true
+        },
+        {
+          "command": "validation:synthetic-candidate2",
+          "args": [
+            "--run",
+            "--operator=cert",
+            "--reason=command surface certification: stage one has not run"
+          ],
+          "exitCode": 2,
+          "expectedExitCode": 2,
+          "exitCodeAsExpected": true,
+          "outputMatchedExpectation": true,
+          "expectedPattern": "/SYNTHETIC_ACCESS_REFUSED/",
+          "accessCountsBefore": {
+            "historical-holdout-v6": 0,
+            "synthetic-stress-holdout-v2": 0
+          },
+          "accessCountsAfter": {
+            "historical-holdout-v6": 0,
+            "synthetic-stress-holdout-v2": 0
+          },
+          "setsOpened": [],
+          "sealUntouched": true,
+          "ok": true
+        },
+        {
+          "command": "validation:synthetic-candidate2",
+          "args": [
+            "--run",
+            "--unlok-holdout"
+          ],
+          "exitCode": 2,
+          "expectedExitCode": 2,
+          "exitCodeAsExpected": true,
+          "outputMatchedExpectation": true,
+          "expectedPattern": "/unrecognised flag/",
+          "accessCountsBefore": {
+            "historical-holdout-v6": 0,
+            "synthetic-stress-holdout-v2": 0
+          },
+          "accessCountsAfter": {
+            "historical-holdout-v6": 0,
+            "synthetic-stress-holdout-v2": 0
+          },
+          "setsOpened": [],
+          "sealUntouched": true,
+          "ok": true
+        },
+        {
+          "command": "validation:candidate2-formal-verdict",
+          "args": [
+            "--help"
+          ],
+          "exitCode": 0,
+          "expectedExitCode": 0,
+          "exitCodeAsExpected": true,
+          "outputMatchedExpectation": true,
+          "expectedPattern": "/stage three of three/",
+          "accessCountsBefore": {
+            "historical-holdout-v6": 0,
+            "synthetic-stress-holdout-v2": 0
+          },
+          "accessCountsAfter": {
+            "historical-holdout-v6": 0,
+            "synthetic-stress-holdout-v2": 0
+          },
+          "setsOpened": [],
+          "sealUntouched": true,
+          "ok": true
+        },
+        {
+          "command": "validation:candidate2-formal-verdict",
+          "args": [],
+          "exitCode": 2,
+          "expectedExitCode": 2,
+          "exitCodeAsExpected": true,
+          "outputMatchedExpectation": true,
+          "expectedPattern": "/a mode is required/",
+          "accessCountsBefore": {
+            "historical-holdout-v6": 0,
+            "synthetic-stress-holdout-v2": 0
+          },
+          "accessCountsAfter": {
+            "historical-holdout-v6": 0,
+            "synthetic-stress-holdout-v2": 0
+          },
+          "setsOpened": [],
+          "sealUntouched": true,
+          "ok": true
+        },
+        {
+          "command": "validation:candidate2-formal-verdict",
+          "args": [
+            "--preflight"
+          ],
+          "exitCode": 2,
+          "expectedExitCode": 2,
+          "exitCodeAsExpected": true,
+          "outputMatchedExpectation": true,
+          "expectedPattern": "/CANDIDATE2_NOT_YET_DETERMINED/",
+          "accessCountsBefore": {
+            "historical-holdout-v6": 0,
+            "synthetic-stress-holdout-v2": 0
+          },
+          "accessCountsAfter": {
+            "historical-holdout-v6": 0,
+            "synthetic-stress-holdout-v2": 0
+          },
+          "setsOpened": [],
+          "sealUntouched": true,
+          "ok": true
+        },
+        {
+          "command": "validation:candidate2-formal-verdict",
+          "args": [
+            "--issue"
+          ],
+          "exitCode": 2,
+          "expectedExitCode": 2,
+          "exitCodeAsExpected": true,
+          "outputMatchedExpectation": true,
+          "expectedPattern": "/requires both stages to have produced a formal result/",
+          "accessCountsBefore": {
+            "historical-holdout-v6": 0,
+            "synthetic-stress-holdout-v2": 0
+          },
+          "accessCountsAfter": {
+            "historical-holdout-v6": 0,
+            "synthetic-stress-holdout-v2": 0
+          },
+          "setsOpened": [],
+          "sealUntouched": true,
+          "ok": true
+        },
+        {
+          "command": "validation:candidate2-formal-verdict",
+          "args": [
+            "--bogus"
+          ],
+          "exitCode": 2,
+          "expectedExitCode": 2,
+          "exitCodeAsExpected": true,
+          "outputMatchedExpectation": true,
+          "expectedPattern": "/unrecognised flag/",
+          "accessCountsBefore": {
+            "historical-holdout-v6": 0,
+            "synthetic-stress-holdout-v2": 0
+          },
+          "accessCountsAfter": {
+            "historical-holdout-v6": 0,
+            "synthetic-stress-holdout-v2": 0
+          },
+          "setsOpened": [],
+          "sealUntouched": true,
+          "ok": true
+        }
+      ],
+      "accessCountsBefore": {
+        "historical-holdout-v6": 0,
+        "synthetic-stress-holdout-v2": 0
+      },
+      "accessCountsAfter": {
+        "historical-holdout-v6": 0,
+        "synthetic-stress-holdout-v2": 0
+      },
+      "method": "each command was actually invoked and both access logs were read before and after. A command that says it opens nothing is certified by the counter, not by its own comment.",
+      "destructiveModesCertifiedBy": "invoking --run without its unlock flags, so the refusal path is exercised for real and the counters prove the seal was never reached"
+    },
+    "candidate": {
+      "candidateId": "Candidate 2",
+      "coreHash": "3733b648f050a4f50f9dc3cb6ecf62fce419dd282f24c910b91e7b077d63711d",
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "possessionCalibrationVersion": "1.2.0"
+    },
+    "packageHash": "d72a6914dfd5cf7b788fca719241af210b303d35c08dd6b67c0de3a5ec12632f",
+    "sealHash": "1f5d03dda500f1d7ac68f059f9b4d9ee313e7cc705dd619aa3b669f1e0e56ba7",
+    "bindingHash": "9080a994fce64edbcf622426b7c0c45aff15b36193dab91f58c677dc23309993",
+    "sealStatuses": {
+      "legacy-holdout-v1": {
+        "accessCount": 0,
+        "status": "SEALED_UNREAD",
+        "integrity": "Never read. Any Phase 6C2 tuning result can be honestly validated against it.",
+        "set": "legacy-holdout-v1",
+        "note": "LEGACY_MIXED_HOLDOUT — preserved unchanged, not reused for formal historical validation."
+      },
+      "historical-holdout-v2": {
+        "set": "historical-holdout-v2",
+        "accessCount": 0,
+        "status": "SEALED_UNREAD",
+        "integrity": "Never read. A Phase 6C3 validation against it is genuinely independent.",
+        "note": "INSUFFICIENT_SAMPLE_ARCHIVE — genuinely unread, but three fixtures cannot validate generalisation. Superseded by v3 and archived rather than consumed."
+      },
+      "synthetic-stress-v1": {
+        "set": "synthetic-stress-v1",
+        "accessCount": 0,
+        "status": "PREVIOUSLY_INSPECTED_ARCHIVE",
+        "integrity": "Never read. A Phase 6C3 validation against it is genuinely independent.",
+        "note": "Its counter reads 0 because the seal was created after the simulations. Not a holdout."
+      },
+      "historical-holdout-v3": {
+        "set": "historical-holdout-v3",
+        "accessCount": 1,
+        "status": "UNSEALED",
+        "integrity": "Read 1 time(s). Check the access log before treating a result as independent."
+      },
+      "synthetic-stress-holdout-v2": {
+        "set": "synthetic-stress-holdout-v2",
+        "accessCount": 0,
+        "status": "SEALED_UNREAD",
+        "integrity": "Never read. A Phase 6C3 validation against it is genuinely independent."
+      },
+      "historical-holdout-v4": {
+        "set": "historical-holdout-v4",
+        "accessCount": 1,
+        "status": "UNSEALED",
+        "integrity": "Read 1 time(s). Check the access log before treating a result as independent."
+      },
+      "historical-holdout-v5": {
+        "set": "historical-holdout-v5",
+        "accessCount": 1,
+        "status": "UNSEALED",
+        "integrity": "Read 1 time(s). Check the access log before treating a result as independent."
+      },
+      "historical-holdout-v6": {
+        "set": "historical-holdout-v6",
+        "accessCount": 0,
+        "status": "SEALED_UNREAD",
+        "integrity": "Never read. A Phase 6C3 validation against it is genuinely independent."
+      }
+    },
+    "sealedSetsRegistered": 7,
+    "notClaimed": [
+      "HOLDOUT_VALIDATED",
+      "PRIVATE_PREVIEW_VALIDATED",
+      "PRODUCTION_READY",
+      "ACTIVE"
+    ],
+    "productionActivation": "requires an explicit CEO GO LIVE. This artifact authorizes no deployment.",
+    "pass": true,
+    "failedGates": [],
+    "readinessHash": "19d51711f12fe7df7f25659dc540a1505519560f39909d537171b05a95743523"
+  },
+  "outputHash": "5cadba039c70ccc96ae80ad7f1b82e872cf9998b809edbee3250ef1106ac004a"
+}

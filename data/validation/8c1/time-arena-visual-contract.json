@@ -1,0 +1,115 @@
+{
+  "artifact": "time-arena-visual-contract",
+  "phase": "8C.1 — pixel-fidelity reconstruction",
+  "status": "FROZEN",
+  "authoredBy": "hand, from the canonical reference and the Phase 8C.1 specification ranges",
+  "authoredBefore": "any implementation change in this phase, so no target is derived from the implementation it grades",
+  "canonicalViewport": { "width": 1536, "height": 1024 },
+
+  "derivation": {
+    "note": "Every point value below sits inside the specification's stated range, and the horizontal budget is closed arithmetic rather than an estimate.",
+    "horizontalBudget": {
+      "viewport": 1536,
+      "pagePaddingX": 18,
+      "pagePaddingTotal": 36,
+      "railWidth": 364,
+      "mainToRailGap": 14,
+      "mainArena": 1122,
+      "arenaPanelPaddingX": 14,
+      "rosterUsable": 1094,
+      "tenCards": "10 x 104 = 1040",
+      "eightIntraSideGaps": "8 x 5 = 40",
+      "centreDividerGap": 14,
+      "rosterTotal": 1094,
+      "slack": 0
+    },
+    "verticalBudget": {
+      "header": 64,
+      "pagePaddingTop": 14,
+      "stagePanel": 784,
+      "stageToFooterGap": 12,
+      "utilityFooter": 58,
+      "pagePaddingBottom": 14,
+      "expectedDocumentHeight": 946,
+      "ceiling": 1040
+    }
+  },
+
+  "targets": {
+    "header": { "height": 64, "tolerance": 2 },
+    "rail": { "width": 364, "tolerance": 4 },
+    "mainArena": { "width": 1122, "tolerance": 4 },
+    "mainToRailGap": { "value": 14, "tolerance": 3 },
+    "playerCard": { "width": 104, "widthTolerance": 3, "height": 322, "heightTolerance": 4 },
+    "playerCardGap": { "value": 5, "tolerance": 2 },
+    "centreDividerGap": { "value": 14, "tolerance": 4 },
+    "portraitZoneRatio": { "min": 0.65, "max": 0.72 },
+    "coachCard": { "width": 248, "widthTolerance": 4, "height": 232, "heightTolerance": 4 },
+    "finalRollCta": { "width": 352, "widthTolerance": 13, "height": 52, "heightTolerance": 4 },
+    "utilityFooter": { "height": 58, "tolerance": 4 },
+    "documentHeight": { "max": 1040 },
+    "horizontalAlignmentTolerance": 4,
+    "coachSectionTopTolerance": 5,
+    "ctaTopTolerance": 5
+  },
+
+  "composition": {
+    "oneRosterRow": true,
+    "cardOrder": [
+      "gold:PG", "gold:SG", "gold:SF", "gold:PF", "gold:C",
+      "blue:PG", "blue:SG", "blue:SF", "blue:PF", "blue:C"
+    ],
+    "teamsStackedAtCanonicalViewport": false,
+    "firstViewportMustContain": [
+      "header", "chaos heading", "roll progression", "gold roster", "blue roster",
+      "coach chaos heading", "three coach cards", "final roll cta", "utility footer",
+      "intel panel", "era impact", "result dock"
+    ],
+    "modeShelfOnPlaySurface": false,
+    "railSurfaces": ["intel panel (live intel + era impact, divided, one border)", "result dock (own border)"]
+  },
+
+  "atmosphereLayers": [
+    "page base",
+    "hardwood perspective",
+    "court lines",
+    "crowd silhouette",
+    "gold spotlight (left)",
+    "blue spotlight (right)",
+    "centre haze",
+    "grain",
+    "vignette"
+  ],
+  "atmosphereRules": {
+    "externalImagery": false,
+    "rasterBackground": false,
+    "locallyAuthoredSvgOrCssOnly": true,
+    "cardsRemainDominantOverBackground": true
+  },
+
+  "cardSystem": {
+    "states": ["EMPTY", "REVEALED", "HOLD_AVAILABLE", "HELD", "LOCKED", "FINAL", "DISABLED"],
+    "emptyBackMatchesPopulatedGeometry": true,
+    "themeSource": "team container only",
+    "positionMayControlTheme": false,
+    "nameLines": 2,
+    "nameMayCollapseToInitials": false,
+    "portraitFallbackFillsFinalZone": true,
+    "approvedPortraitIsAnAssetSwap": true
+  },
+
+  "accessibility": {
+    "bodyTextMinPx": 15,
+    "touchTargetMinPx": 44,
+    "teamIdentityColourOnly": false,
+    "holdStateAnnounced": true,
+    "pageHorizontalOverflow": 0
+  },
+
+  "responsive": {
+    "tenCardRowWhenArenaAtLeastPx": 1080,
+    "mediumDesktop": "1180–1439: adapt the rail before stacking the teams",
+    "tablet": "768–1179: gold row then blue row",
+    "mobile": "<768: gold primary, blue compact, full-width cards, result sheet"
+  }
+}

@@ -1,0 +1,1669 @@
+{
+  "artifact": "historical-v6-remeasurement",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run c3:remeasure",
+  "generatedAt": "2026-08-27T21:45:39.361Z",
+  "gitCommit": "6212fac1600a0298b826812ebb9b364ef7f06f55",
+  "branch": "phase-6c4d1-candidate3-generalization-repair",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "historicalV6RemeasurementVersion": "1.0.0",
+    "purpose": "separate instrumentation loss from mechanic failure on the consumed V6 set",
+    "notARescore": "Historical V6's formal verdict, gates and access artifacts are untouched. This is a diagnostic re-measurement on a consumed set used as FAILED_HOLDOUT_DIAGNOSTIC_SET.",
+    "candidateUnchanged": {
+      "note": "profileMap.mjs, evalV4.mjs and the V6 runner are validation-only and absent from the 53-file Candidate 2 core. No candidate code changed.",
+      "possessionCalibrationVersion": "1.2.0"
+    },
+    "gamesPerSurface": 1024,
+    "profileMap": {
+      "baseSize": 330,
+      "addedFromV5AndV6": 230,
+      "correctedSize": 560
+    },
+    "formalHardFailLabels": 12,
+    "remeasuredHardFailLabels": 8,
+    "resolvedByCorrectedInputs": 4,
+    "persistingAfterCorrection": 8,
+    "newlyHardFailing": 0,
+    "formalTraitPassRate": 0.67391,
+    "remeasuredTraitPassRate": 0.76,
+    "rows": [
+      {
+        "matchupId": "v6m-1950s",
+        "eraStyleId": "1950s",
+        "side": "teamA",
+        "teamName": "Boston Celtics",
+        "teamSeason": "1951-52",
+        "traitId": "fast",
+        "metricId": "gamePace",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 1,
+        "formal": {
+          "subjectMean": 122.71948,
+          "referenceMean": 120.0234,
+          "diff": 2.69608,
+          "result": "PASS",
+          "hardFail": false,
+          "reportedState": "PASS"
+        },
+        "remeasured": {
+          "subjectMean": 122.79,
+          "referenceMean": 120.02,
+          "diff": 2.76664,
+          "result": "PASS",
+          "hardFail": false,
+          "beyondPracticalMargin": true
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-1950s",
+        "eraStyleId": "1950s",
+        "side": "teamA",
+        "teamName": "Boston Celtics",
+        "teamSeason": "1951-52",
+        "traitId": "fast break, early offence",
+        "metricId": "transitionShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 0.03,
+        "formal": {
+          "subjectMean": 0.17413,
+          "referenceMean": 0.14638,
+          "diff": 0.02775,
+          "result": "PASS",
+          "hardFail": false,
+          "reportedState": "PASS"
+        },
+        "remeasured": {
+          "subjectMean": 0.17,
+          "referenceMean": 0.15,
+          "diff": 0.02768,
+          "result": "PASS",
+          "hardFail": false,
+          "beyondPracticalMargin": false
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-1950s",
+        "eraStyleId": "1950s",
+        "side": "teamA",
+        "teamName": "Boston Celtics",
+        "teamSeason": "1951-52",
+        "traitId": "TRANSITION",
+        "metricId": "transitionShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 0.03,
+        "formal": {
+          "subjectMean": 0.17413,
+          "referenceMean": 0.14638,
+          "diff": 0.02775,
+          "result": "PASS",
+          "hardFail": false,
+          "reportedState": "PASS"
+        },
+        "remeasured": {
+          "subjectMean": 0.17,
+          "referenceMean": 0.15,
+          "diff": 0.02768,
+          "result": "PASS",
+          "hardFail": false,
+          "beyondPracticalMargin": false
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-1950s",
+        "eraStyleId": "1950s",
+        "side": "teamA",
+        "teamName": "Boston Celtics",
+        "teamSeason": "1951-52",
+        "traitId": "PASSING_HUB",
+        "metricId": "assistedRate",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 0.02,
+        "formal": {
+          "subjectMean": 0.44568,
+          "referenceMean": 0.41437,
+          "diff": 0.03131,
+          "result": "PASS",
+          "hardFail": false,
+          "reportedState": "PASS"
+        },
+        "remeasured": {
+          "subjectMean": 0.45,
+          "referenceMean": 0.41,
+          "diff": 0.03677,
+          "result": "PASS",
+          "hardFail": false,
+          "beyondPracticalMargin": true
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-1950s",
+        "eraStyleId": "1950s",
+        "side": "teamB",
+        "teamName": "Minneapolis Lakers",
+        "teamSeason": "1956-57",
+        "traitId": "post-centred, interior scoring",
+        "metricId": "postUpShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 0.03,
+        "formal": {
+          "subjectMean": 0.26092,
+          "referenceMean": 0.25556,
+          "diff": 0.00536,
+          "result": "PASS",
+          "hardFail": false,
+          "reportedState": "PASS"
+        },
+        "remeasured": {
+          "subjectMean": 0.26,
+          "referenceMean": 0.26,
+          "diff": 0.00681,
+          "result": "PASS",
+          "hardFail": false,
+          "beyondPracticalMargin": false
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-1950s",
+        "eraStyleId": "1950s",
+        "side": "teamB",
+        "teamName": "Minneapolis Lakers",
+        "teamSeason": "1956-57",
+        "traitId": "POST_HEAVY",
+        "metricId": "postUpShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 0.03,
+        "formal": {
+          "subjectMean": 0.26092,
+          "referenceMean": 0.25556,
+          "diff": 0.00536,
+          "result": "PASS",
+          "hardFail": false,
+          "reportedState": "PASS"
+        },
+        "remeasured": {
+          "subjectMean": 0.26,
+          "referenceMean": 0.26,
+          "diff": 0.00681,
+          "result": "PASS",
+          "hardFail": false,
+          "beyondPracticalMargin": false
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-1960s",
+        "eraStyleId": "1960s",
+        "side": "teamA",
+        "teamName": "New York Knicks",
+        "teamSeason": "1967-68",
+        "traitId": "motion, ball movement, high-post passing",
+        "metricId": "movementShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 0.03,
+        "formal": {
+          "subjectMean": 0.13562,
+          "referenceMean": 0.05918,
+          "diff": 0.07644,
+          "result": "PASS",
+          "hardFail": false,
+          "reportedState": "PASS"
+        },
+        "remeasured": {
+          "subjectMean": 0.17,
+          "referenceMean": 0.06,
+          "diff": 0.11416,
+          "result": "PASS",
+          "hardFail": false,
+          "beyondPracticalMargin": true
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-1960s",
+        "eraStyleId": "1960s",
+        "side": "teamA",
+        "teamName": "New York Knicks",
+        "teamSeason": "1967-68",
+        "traitId": "PASSING_HUB",
+        "metricId": "assistedRate",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 0.02,
+        "formal": {
+          "subjectMean": 0.50673,
+          "referenceMean": 0.4133,
+          "diff": 0.09343,
+          "result": "PASS",
+          "hardFail": false,
+          "reportedState": "PASS"
+        },
+        "remeasured": {
+          "subjectMean": 0.51,
+          "referenceMean": 0.41,
+          "diff": 0.10121,
+          "result": "PASS",
+          "hardFail": false,
+          "beyondPracticalMargin": true
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-1960s",
+        "eraStyleId": "1960s",
+        "side": "teamB",
+        "teamName": "Philadelphia 76ers",
+        "teamSeason": "1968-69",
+        "traitId": "fast",
+        "metricId": "gamePace",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 1,
+        "formal": {
+          "subjectMean": 123.81348,
+          "referenceMean": 121.9066,
+          "diff": 1.90688,
+          "result": "PASS",
+          "hardFail": false,
+          "reportedState": "PASS"
+        },
+        "remeasured": {
+          "subjectMean": 123.83,
+          "referenceMean": 121.91,
+          "diff": 1.9225,
+          "result": "PASS",
+          "hardFail": false,
+          "beyondPracticalMargin": true
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-1960s",
+        "eraStyleId": "1960s",
+        "side": "teamB",
+        "teamName": "Philadelphia 76ers",
+        "teamSeason": "1968-69",
+        "traitId": "TRANSITION",
+        "metricId": "transitionShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 0.03,
+        "formal": {
+          "subjectMean": 0.16686,
+          "referenceMean": 0.14311,
+          "diff": 0.02375,
+          "result": "PASS",
+          "hardFail": false,
+          "reportedState": "PASS"
+        },
+        "remeasured": {
+          "subjectMean": 0.17,
+          "referenceMean": 0.14,
+          "diff": 0.02485,
+          "result": "PASS",
+          "hardFail": false,
+          "beyondPracticalMargin": false
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-1970s",
+        "eraStyleId": "1970s",
+        "side": "teamA",
+        "teamName": "Philadelphia 76ers",
+        "teamSeason": "1977-78",
+        "traitId": "fast",
+        "metricId": "gamePace",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 1,
+        "formal": {
+          "subjectMean": 108.07324,
+          "referenceMean": 106.8108,
+          "diff": 1.26244,
+          "result": "PASS",
+          "hardFail": false,
+          "reportedState": "PASS"
+        },
+        "remeasured": {
+          "subjectMean": 108.17,
+          "referenceMean": 106.81,
+          "diff": 1.35912,
+          "result": "PASS",
+          "hardFail": false,
+          "beyondPracticalMargin": true
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-1970s",
+        "eraStyleId": "1970s",
+        "side": "teamA",
+        "teamName": "Philadelphia 76ers",
+        "teamSeason": "1977-78",
+        "traitId": "TRANSITION",
+        "metricId": "transitionShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 0.03,
+        "formal": {
+          "subjectMean": 0.13988,
+          "referenceMean": 0.13642,
+          "diff": 0.00346,
+          "result": "PASS",
+          "hardFail": false,
+          "reportedState": "PASS"
+        },
+        "remeasured": {
+          "subjectMean": 0.14,
+          "referenceMean": 0.14,
+          "diff": 0.00636,
+          "result": "PASS",
+          "hardFail": false,
+          "beyondPracticalMargin": false
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-1970s",
+        "eraStyleId": "1970s",
+        "side": "teamB",
+        "teamName": "Portland Trail Blazers",
+        "teamSeason": "1974-75",
+        "traitId": "POST_HEAVY",
+        "metricId": "postUpShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 0.03,
+        "formal": {
+          "subjectMean": 0.25372,
+          "referenceMean": 0.25283,
+          "diff": 0.00089,
+          "result": "PASS",
+          "hardFail": false,
+          "reportedState": "PASS"
+        },
+        "remeasured": {
+          "subjectMean": 0.25,
+          "referenceMean": 0.25,
+          "diff": -0.00161,
+          "result": "FAIL",
+          "hardFail": false,
+          "beyondPracticalMargin": false
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-1970s",
+        "eraStyleId": "1970s",
+        "side": "teamB",
+        "teamName": "Portland Trail Blazers",
+        "teamSeason": "1974-75",
+        "traitId": "STRONG_OFFENSIVE_REBOUNDING",
+        "metricId": "orebRate",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 0.02,
+        "formal": {
+          "subjectMean": 0.31214,
+          "referenceMean": 0.33772,
+          "diff": -0.02558,
+          "result": "FAIL",
+          "hardFail": true,
+          "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+        },
+        "remeasured": {
+          "subjectMean": 0.31,
+          "referenceMean": 0.34,
+          "diff": -0.02553,
+          "result": "FAIL",
+          "hardFail": true,
+          "beyondPracticalMargin": true
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-1980s",
+        "eraStyleId": "1980s",
+        "side": "teamA",
+        "teamName": "Los Angeles Lakers",
+        "teamSeason": "1981-82",
+        "traitId": "very fast",
+        "metricId": "gamePace",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 1,
+        "formal": {
+          "subjectMean": 102.4375,
+          "referenceMean": 101.118,
+          "diff": 1.3195,
+          "result": "PASS",
+          "hardFail": false,
+          "reportedState": "PASS"
+        },
+        "remeasured": {
+          "subjectMean": 102.51,
+          "referenceMean": 101.12,
+          "diff": 1.39274,
+          "result": "PASS",
+          "hardFail": false,
+          "beyondPracticalMargin": true
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-1980s",
+        "eraStyleId": "1980s",
+        "side": "teamA",
+        "teamName": "Los Angeles Lakers",
+        "teamSeason": "1981-82",
+        "traitId": "man with a dominant rebounder",
+        "metricId": "orebRateAgainst",
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "practicalMargin": 0.02,
+        "formal": {
+          "subjectMean": 0.35087,
+          "referenceMean": 0.35389,
+          "diff": -0.00302,
+          "result": "PASS",
+          "hardFail": false,
+          "reportedState": "PASS"
+        },
+        "remeasured": {
+          "subjectMean": 0.35,
+          "referenceMean": 0.35,
+          "diff": -0.00064,
+          "result": "PASS",
+          "hardFail": false,
+          "beyondPracticalMargin": false
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-1980s",
+        "eraStyleId": "1980s",
+        "side": "teamA",
+        "teamName": "Los Angeles Lakers",
+        "teamSeason": "1981-82",
+        "traitId": "TRANSITION",
+        "metricId": "transitionShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 0.03,
+        "formal": {
+          "subjectMean": 0.1474,
+          "referenceMean": 0.11738,
+          "diff": 0.03002,
+          "result": "PASS",
+          "hardFail": false,
+          "reportedState": "PASS"
+        },
+        "remeasured": {
+          "subjectMean": 0.15,
+          "referenceMean": 0.12,
+          "diff": 0.02943,
+          "result": "PASS",
+          "hardFail": false,
+          "beyondPracticalMargin": false
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-1980s",
+        "eraStyleId": "1980s",
+        "side": "teamA",
+        "teamName": "Los Angeles Lakers",
+        "teamSeason": "1981-82",
+        "traitId": "PACE_EXTREME",
+        "metricId": "gamePace",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 1,
+        "formal": {
+          "subjectMean": 102.4375,
+          "referenceMean": 101.118,
+          "diff": 1.3195,
+          "result": "PASS",
+          "hardFail": false,
+          "reportedState": "PASS"
+        },
+        "remeasured": {
+          "subjectMean": 102.51,
+          "referenceMean": 101.12,
+          "diff": 1.39274,
+          "result": "PASS",
+          "hardFail": false,
+          "beyondPracticalMargin": true
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-1980s",
+        "eraStyleId": "1980s",
+        "side": "teamA",
+        "teamName": "Los Angeles Lakers",
+        "teamSeason": "1981-82",
+        "traitId": "PASSING_HUB",
+        "metricId": "assistedRate",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 0.02,
+        "formal": {
+          "subjectMean": 0.45091,
+          "referenceMean": 0.45395,
+          "diff": -0.00304,
+          "result": "FAIL",
+          "hardFail": false,
+          "reportedState": "STATISTICALLY_DIFFERENT_PRACTICALLY_EQUIVALENT"
+        },
+        "remeasured": {
+          "subjectMean": 0.45,
+          "referenceMean": 0.45,
+          "diff": -0.00294,
+          "result": "FAIL",
+          "hardFail": false,
+          "beyondPracticalMargin": false
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-1980s",
+        "eraStyleId": "1980s",
+        "side": "teamB",
+        "teamName": "New York Knicks",
+        "teamSeason": "1983-84",
+        "traitId": "slow",
+        "metricId": "gamePace",
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "practicalMargin": 1,
+        "formal": {
+          "subjectMean": 101.08752,
+          "referenceMean": 101.118,
+          "diff": -0.03048,
+          "result": "PASS",
+          "hardFail": false,
+          "reportedState": "PASS"
+        },
+        "remeasured": {
+          "subjectMean": 101.02,
+          "referenceMean": 101.12,
+          "diff": -0.10237,
+          "result": "PASS",
+          "hardFail": false,
+          "beyondPracticalMargin": false
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-1980s",
+        "eraStyleId": "1980s",
+        "side": "teamB",
+        "teamName": "New York Knicks",
+        "teamSeason": "1983-84",
+        "traitId": "SLOW_HALF_COURT",
+        "metricId": "gamePace",
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "practicalMargin": 1,
+        "formal": {
+          "subjectMean": 101.08752,
+          "referenceMean": 101.118,
+          "diff": -0.03048,
+          "result": "PASS",
+          "hardFail": false,
+          "reportedState": "PASS"
+        },
+        "remeasured": {
+          "subjectMean": 101.02,
+          "referenceMean": 101.12,
+          "diff": -0.10237,
+          "result": "PASS",
+          "hardFail": false,
+          "beyondPracticalMargin": false
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-1990s",
+        "eraStyleId": "1990s",
+        "side": "teamA",
+        "teamName": "Indiana Pacers",
+        "teamSeason": "1994-95",
+        "traitId": "slow",
+        "metricId": "gamePace",
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "practicalMargin": 1,
+        "formal": {
+          "subjectMean": 96.44629,
+          "referenceMean": 97.098,
+          "diff": -0.65171,
+          "result": "PASS",
+          "hardFail": false,
+          "reportedState": "PASS"
+        },
+        "remeasured": {
+          "subjectMean": 96.45,
+          "referenceMean": 97.1,
+          "diff": -0.64585,
+          "result": "PASS",
+          "hardFail": false,
+          "beyondPracticalMargin": false
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-1990s",
+        "eraStyleId": "1990s",
+        "side": "teamA",
+        "teamName": "Indiana Pacers",
+        "teamSeason": "1994-95",
+        "traitId": "movement shooting off screens",
+        "metricId": "movementShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 0.03,
+        "formal": {
+          "subjectMean": 0.15075,
+          "referenceMean": 0.21226,
+          "diff": -0.06151,
+          "result": "FAIL",
+          "hardFail": true,
+          "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+        },
+        "remeasured": {
+          "subjectMean": 0.25,
+          "referenceMean": 0.21,
+          "diff": 0.03575,
+          "result": "PASS",
+          "hardFail": false,
+          "beyondPracticalMargin": true
+        },
+        "changed": true
+      },
+      {
+        "matchupId": "v6m-1990s",
+        "eraStyleId": "1990s",
+        "side": "teamA",
+        "teamName": "Indiana Pacers",
+        "teamSeason": "1994-95",
+        "traitId": "MOTION",
+        "metricId": "movementShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 0.03,
+        "formal": {
+          "subjectMean": 0.15075,
+          "referenceMean": 0.21226,
+          "diff": -0.06151,
+          "result": "FAIL",
+          "hardFail": true,
+          "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+        },
+        "remeasured": {
+          "subjectMean": 0.25,
+          "referenceMean": 0.21,
+          "diff": 0.03575,
+          "result": "PASS",
+          "hardFail": false,
+          "beyondPracticalMargin": true
+        },
+        "changed": true
+      },
+      {
+        "matchupId": "v6m-1990s",
+        "eraStyleId": "1990s",
+        "side": "teamA",
+        "teamName": "Indiana Pacers",
+        "teamSeason": "1994-95",
+        "traitId": "SLOW_HALF_COURT",
+        "metricId": "gamePace",
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "practicalMargin": 1,
+        "formal": {
+          "subjectMean": 96.44629,
+          "referenceMean": 97.098,
+          "diff": -0.65171,
+          "result": "PASS",
+          "hardFail": false,
+          "reportedState": "PASS"
+        },
+        "remeasured": {
+          "subjectMean": 96.45,
+          "referenceMean": 97.1,
+          "diff": -0.64585,
+          "result": "PASS",
+          "hardFail": false,
+          "beyondPracticalMargin": false
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-1990s",
+        "eraStyleId": "1990s",
+        "side": "teamB",
+        "teamName": "Portland Trail Blazers",
+        "teamSeason": "1991-92",
+        "traitId": "fast",
+        "metricId": "gamePace",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 1,
+        "formal": {
+          "subjectMean": 98.42505,
+          "referenceMean": 97.098,
+          "diff": 1.32705,
+          "result": "PASS",
+          "hardFail": false,
+          "reportedState": "PASS"
+        },
+        "remeasured": {
+          "subjectMean": 98.39,
+          "referenceMean": 97.1,
+          "diff": 1.29165,
+          "result": "PASS",
+          "hardFail": false,
+          "beyondPracticalMargin": true
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-1990s",
+        "eraStyleId": "1990s",
+        "side": "teamB",
+        "teamName": "Portland Trail Blazers",
+        "teamSeason": "1991-92",
+        "traitId": "fast break and early offence",
+        "metricId": "transitionShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 0.03,
+        "formal": {
+          "subjectMean": 0.13757,
+          "referenceMean": 0.11289,
+          "diff": 0.02468,
+          "result": "PASS",
+          "hardFail": false,
+          "reportedState": "PASS"
+        },
+        "remeasured": {
+          "subjectMean": 0.14,
+          "referenceMean": 0.11,
+          "diff": 0.02381,
+          "result": "PASS",
+          "hardFail": false,
+          "beyondPracticalMargin": false
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-1990s",
+        "eraStyleId": "1990s",
+        "side": "teamB",
+        "teamName": "Portland Trail Blazers",
+        "teamSeason": "1991-92",
+        "traitId": "TRANSITION",
+        "metricId": "transitionShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 0.03,
+        "formal": {
+          "subjectMean": 0.13757,
+          "referenceMean": 0.11289,
+          "diff": 0.02468,
+          "result": "PASS",
+          "hardFail": false,
+          "reportedState": "PASS"
+        },
+        "remeasured": {
+          "subjectMean": 0.14,
+          "referenceMean": 0.11,
+          "diff": 0.02381,
+          "result": "PASS",
+          "hardFail": false,
+          "beyondPracticalMargin": false
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-1990s",
+        "eraStyleId": "1990s",
+        "side": "teamB",
+        "teamName": "Portland Trail Blazers",
+        "teamSeason": "1991-92",
+        "traitId": "STRONG_OFFENSIVE_REBOUNDING",
+        "metricId": "orebRate",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 0.02,
+        "formal": {
+          "subjectMean": 0.36488,
+          "referenceMean": 0.35308,
+          "diff": 0.0118,
+          "result": "PASS",
+          "hardFail": false,
+          "reportedState": "PASS"
+        },
+        "remeasured": {
+          "subjectMean": 0.36,
+          "referenceMean": 0.35,
+          "diff": 0.00904,
+          "result": "PASS",
+          "hardFail": false,
+          "beyondPracticalMargin": false
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-2000s",
+        "eraStyleId": "2000s",
+        "side": "teamA",
+        "teamName": "Boston Celtics",
+        "teamSeason": "2007-08",
+        "traitId": "elite team man defence",
+        "metricId": "refPppVsTeam",
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "practicalMargin": 0.02,
+        "formal": {
+          "subjectMean": 1.17134,
+          "referenceMean": 1.14908,
+          "diff": 0.02226,
+          "result": "FAIL",
+          "hardFail": true,
+          "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+        },
+        "remeasured": {
+          "subjectMean": 1.18,
+          "referenceMean": 1.15,
+          "diff": 0.02913,
+          "result": "FAIL",
+          "hardFail": true,
+          "beyondPracticalMargin": true
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-2000s",
+        "eraStyleId": "2000s",
+        "side": "teamA",
+        "teamName": "Boston Celtics",
+        "teamSeason": "2007-08",
+        "traitId": "ELITE_DEFENSE",
+        "metricId": "refPppVsTeam",
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "practicalMargin": 0.02,
+        "formal": {
+          "subjectMean": 1.17134,
+          "referenceMean": 1.14908,
+          "diff": 0.02226,
+          "result": "FAIL",
+          "hardFail": true,
+          "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+        },
+        "remeasured": {
+          "subjectMean": 1.18,
+          "referenceMean": 1.15,
+          "diff": 0.02913,
+          "result": "FAIL",
+          "hardFail": true,
+          "beyondPracticalMargin": true
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-2000s",
+        "eraStyleId": "2000s",
+        "side": "teamA",
+        "teamName": "Boston Celtics",
+        "teamSeason": "2007-08",
+        "traitId": "PASSING_HUB",
+        "metricId": "assistedRate",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 0.02,
+        "formal": {
+          "subjectMean": 0.43829,
+          "referenceMean": 0.47555,
+          "diff": -0.03726,
+          "result": "FAIL",
+          "hardFail": true,
+          "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+        },
+        "remeasured": {
+          "subjectMean": 0.45,
+          "referenceMean": 0.48,
+          "diff": -0.02787,
+          "result": "FAIL",
+          "hardFail": true,
+          "beyondPracticalMargin": true
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-2000s",
+        "eraStyleId": "2000s",
+        "side": "teamB",
+        "teamName": "Houston Rockets",
+        "teamSeason": "2007-08",
+        "traitId": "slow",
+        "metricId": "gamePace",
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "practicalMargin": 1,
+        "formal": {
+          "subjectMean": 92.15698,
+          "referenceMean": 90.8002,
+          "diff": 1.35678,
+          "result": "FAIL",
+          "hardFail": true,
+          "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+        },
+        "remeasured": {
+          "subjectMean": 92.03,
+          "referenceMean": 90.8,
+          "diff": 1.23007,
+          "result": "FAIL",
+          "hardFail": true,
+          "beyondPracticalMargin": true
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-2000s",
+        "eraStyleId": "2000s",
+        "side": "teamB",
+        "teamName": "Houston Rockets",
+        "teamSeason": "2007-08",
+        "traitId": "motion and cutting",
+        "metricId": "movementShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 0.03,
+        "formal": {
+          "subjectMean": 0.12636,
+          "referenceMean": 0.17439,
+          "diff": -0.04803,
+          "result": "FAIL",
+          "hardFail": true,
+          "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+        },
+        "remeasured": {
+          "subjectMean": 0.21,
+          "referenceMean": 0.17,
+          "diff": 0.03649,
+          "result": "PASS",
+          "hardFail": false,
+          "beyondPracticalMargin": true
+        },
+        "changed": true
+      },
+      {
+        "matchupId": "v6m-2000s",
+        "eraStyleId": "2000s",
+        "side": "teamB",
+        "teamName": "Houston Rockets",
+        "teamSeason": "2007-08",
+        "traitId": "MOTION",
+        "metricId": "movementShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 0.03,
+        "formal": {
+          "subjectMean": 0.12636,
+          "referenceMean": 0.17439,
+          "diff": -0.04803,
+          "result": "FAIL",
+          "hardFail": true,
+          "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+        },
+        "remeasured": {
+          "subjectMean": 0.21,
+          "referenceMean": 0.17,
+          "diff": 0.03649,
+          "result": "PASS",
+          "hardFail": false,
+          "beyondPracticalMargin": true
+        },
+        "changed": true
+      },
+      {
+        "matchupId": "v6m-2000s",
+        "eraStyleId": "2000s",
+        "side": "teamB",
+        "teamName": "Houston Rockets",
+        "teamSeason": "2007-08",
+        "traitId": "POST_HEAVY",
+        "metricId": "postUpShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 0.03,
+        "formal": {
+          "subjectMean": 0.22432,
+          "referenceMean": 0.2606,
+          "diff": -0.03628,
+          "result": "FAIL",
+          "hardFail": true,
+          "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+        },
+        "remeasured": {
+          "subjectMean": 0.21,
+          "referenceMean": 0.26,
+          "diff": -0.05211,
+          "result": "FAIL",
+          "hardFail": true,
+          "beyondPracticalMargin": true
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-2010s",
+        "eraStyleId": "2010s",
+        "side": "teamA",
+        "teamName": "Denver Nuggets",
+        "teamSeason": "2012-13",
+        "traitId": "very fast",
+        "metricId": "gamePace",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 1,
+        "formal": {
+          "subjectMean": 98.79004,
+          "referenceMean": 96.0554,
+          "diff": 2.73464,
+          "result": "PASS",
+          "hardFail": false,
+          "reportedState": "PASS"
+        },
+        "remeasured": {
+          "subjectMean": 98.8,
+          "referenceMean": 96.06,
+          "diff": 2.74148,
+          "result": "PASS",
+          "hardFail": false,
+          "beyondPracticalMargin": true
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-2010s",
+        "eraStyleId": "2010s",
+        "side": "teamA",
+        "teamName": "Denver Nuggets",
+        "teamSeason": "2012-13",
+        "traitId": "fast break and early offence",
+        "metricId": "transitionShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 0.03,
+        "formal": {
+          "subjectMean": 0.16965,
+          "referenceMean": 0.13464,
+          "diff": 0.03501,
+          "result": "PASS",
+          "hardFail": false,
+          "reportedState": "PASS"
+        },
+        "remeasured": {
+          "subjectMean": 0.17,
+          "referenceMean": 0.13,
+          "diff": 0.03348,
+          "result": "PASS",
+          "hardFail": false,
+          "beyondPracticalMargin": true
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-2010s",
+        "eraStyleId": "2010s",
+        "side": "teamA",
+        "teamName": "Denver Nuggets",
+        "teamSeason": "2012-13",
+        "traitId": "TRANSITION",
+        "metricId": "transitionShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 0.03,
+        "formal": {
+          "subjectMean": 0.16965,
+          "referenceMean": 0.13464,
+          "diff": 0.03501,
+          "result": "PASS",
+          "hardFail": false,
+          "reportedState": "PASS"
+        },
+        "remeasured": {
+          "subjectMean": 0.17,
+          "referenceMean": 0.13,
+          "diff": 0.03348,
+          "result": "PASS",
+          "hardFail": false,
+          "beyondPracticalMargin": true
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-2010s",
+        "eraStyleId": "2010s",
+        "side": "teamB",
+        "teamName": "Toronto Raptors",
+        "teamSeason": "2018-19",
+        "traitId": "ELITE_DEFENSE",
+        "metricId": "refPppVsTeam",
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "practicalMargin": 0.02,
+        "formal": {
+          "subjectMean": 1.18888,
+          "referenceMean": 1.18618,
+          "diff": 0.0027,
+          "result": "FAIL",
+          "hardFail": false,
+          "reportedState": "INCONCLUSIVE"
+        },
+        "remeasured": {
+          "subjectMean": 1.19,
+          "referenceMean": 1.19,
+          "diff": 0.00565,
+          "result": "FAIL",
+          "hardFail": false,
+          "beyondPracticalMargin": false
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-2020s",
+        "eraStyleId": "2020s",
+        "side": "teamA",
+        "teamName": "Indiana Pacers",
+        "teamSeason": "2023-24",
+        "traitId": "very fast",
+        "metricId": "gamePace",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 1,
+        "formal": {
+          "subjectMean": 101.3457,
+          "referenceMean": 100.7412,
+          "diff": 0.6045,
+          "result": "PASS",
+          "hardFail": false,
+          "reportedState": "PASS"
+        },
+        "remeasured": {
+          "subjectMean": 101.39,
+          "referenceMean": 100.74,
+          "diff": 0.6504,
+          "result": "PASS",
+          "hardFail": false,
+          "beyondPracticalMargin": false
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-2020s",
+        "eraStyleId": "2020s",
+        "side": "teamA",
+        "teamName": "Indiana Pacers",
+        "teamSeason": "2023-24",
+        "traitId": "fast break and early offence",
+        "metricId": "transitionShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 0.03,
+        "formal": {
+          "subjectMean": 0.13613,
+          "referenceMean": 0.13068,
+          "diff": 0.00545,
+          "result": "PASS",
+          "hardFail": false,
+          "reportedState": "PASS"
+        },
+        "remeasured": {
+          "subjectMean": 0.14,
+          "referenceMean": 0.13,
+          "diff": 0.0048,
+          "result": "PASS",
+          "hardFail": false,
+          "beyondPracticalMargin": false
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-2020s",
+        "eraStyleId": "2020s",
+        "side": "teamA",
+        "teamName": "Indiana Pacers",
+        "teamSeason": "2023-24",
+        "traitId": "TRANSITION",
+        "metricId": "transitionShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 0.03,
+        "formal": {
+          "subjectMean": 0.13613,
+          "referenceMean": 0.13068,
+          "diff": 0.00545,
+          "result": "PASS",
+          "hardFail": false,
+          "reportedState": "PASS"
+        },
+        "remeasured": {
+          "subjectMean": 0.14,
+          "referenceMean": 0.13,
+          "diff": 0.0048,
+          "result": "PASS",
+          "hardFail": false,
+          "beyondPracticalMargin": false
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-2020s",
+        "eraStyleId": "2020s",
+        "side": "teamA",
+        "teamName": "Indiana Pacers",
+        "teamSeason": "2023-24",
+        "traitId": "PASSING_HUB",
+        "metricId": "assistedRate",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 0.02,
+        "formal": {
+          "subjectMean": 0.50935,
+          "referenceMean": 0.5115,
+          "diff": -0.00215,
+          "result": "FAIL",
+          "hardFail": false,
+          "reportedState": "INCONCLUSIVE"
+        },
+        "remeasured": {
+          "subjectMean": 0.54,
+          "referenceMean": 0.51,
+          "diff": 0.02619,
+          "result": "PASS",
+          "hardFail": false,
+          "beyondPracticalMargin": true
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-2020s",
+        "eraStyleId": "2020s",
+        "side": "teamB",
+        "teamName": "San Antonio Spurs",
+        "teamSeason": "2020-21",
+        "traitId": "half-court motion and passing",
+        "metricId": "movementShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 0.03,
+        "formal": {
+          "subjectMean": 0.183,
+          "referenceMean": 0.23644,
+          "diff": -0.05344,
+          "result": "FAIL",
+          "hardFail": true,
+          "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+        },
+        "remeasured": {
+          "subjectMean": 0.18,
+          "referenceMean": 0.24,
+          "diff": -0.05741,
+          "result": "FAIL",
+          "hardFail": true,
+          "beyondPracticalMargin": true
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-2020s",
+        "eraStyleId": "2020s",
+        "side": "teamB",
+        "teamName": "San Antonio Spurs",
+        "teamSeason": "2020-21",
+        "traitId": "MOTION",
+        "metricId": "movementShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 0.03,
+        "formal": {
+          "subjectMean": 0.183,
+          "referenceMean": 0.23644,
+          "diff": -0.05344,
+          "result": "FAIL",
+          "hardFail": true,
+          "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+        },
+        "remeasured": {
+          "subjectMean": 0.18,
+          "referenceMean": 0.24,
+          "diff": -0.05741,
+          "result": "FAIL",
+          "hardFail": true,
+          "beyondPracticalMargin": true
+        },
+        "changed": false
+      }
+    ],
+    "resolved": [
+      {
+        "matchupId": "v6m-1990s",
+        "eraStyleId": "1990s",
+        "side": "teamA",
+        "teamName": "Indiana Pacers",
+        "teamSeason": "1994-95",
+        "traitId": "movement shooting off screens",
+        "metricId": "movementShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 0.03,
+        "formal": {
+          "subjectMean": 0.15075,
+          "referenceMean": 0.21226,
+          "diff": -0.06151,
+          "result": "FAIL",
+          "hardFail": true,
+          "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+        },
+        "remeasured": {
+          "subjectMean": 0.25,
+          "referenceMean": 0.21,
+          "diff": 0.03575,
+          "result": "PASS",
+          "hardFail": false,
+          "beyondPracticalMargin": true
+        },
+        "changed": true
+      },
+      {
+        "matchupId": "v6m-1990s",
+        "eraStyleId": "1990s",
+        "side": "teamA",
+        "teamName": "Indiana Pacers",
+        "teamSeason": "1994-95",
+        "traitId": "MOTION",
+        "metricId": "movementShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 0.03,
+        "formal": {
+          "subjectMean": 0.15075,
+          "referenceMean": 0.21226,
+          "diff": -0.06151,
+          "result": "FAIL",
+          "hardFail": true,
+          "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+        },
+        "remeasured": {
+          "subjectMean": 0.25,
+          "referenceMean": 0.21,
+          "diff": 0.03575,
+          "result": "PASS",
+          "hardFail": false,
+          "beyondPracticalMargin": true
+        },
+        "changed": true
+      },
+      {
+        "matchupId": "v6m-2000s",
+        "eraStyleId": "2000s",
+        "side": "teamB",
+        "teamName": "Houston Rockets",
+        "teamSeason": "2007-08",
+        "traitId": "motion and cutting",
+        "metricId": "movementShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 0.03,
+        "formal": {
+          "subjectMean": 0.12636,
+          "referenceMean": 0.17439,
+          "diff": -0.04803,
+          "result": "FAIL",
+          "hardFail": true,
+          "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+        },
+        "remeasured": {
+          "subjectMean": 0.21,
+          "referenceMean": 0.17,
+          "diff": 0.03649,
+          "result": "PASS",
+          "hardFail": false,
+          "beyondPracticalMargin": true
+        },
+        "changed": true
+      },
+      {
+        "matchupId": "v6m-2000s",
+        "eraStyleId": "2000s",
+        "side": "teamB",
+        "teamName": "Houston Rockets",
+        "teamSeason": "2007-08",
+        "traitId": "MOTION",
+        "metricId": "movementShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 0.03,
+        "formal": {
+          "subjectMean": 0.12636,
+          "referenceMean": 0.17439,
+          "diff": -0.04803,
+          "result": "FAIL",
+          "hardFail": true,
+          "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+        },
+        "remeasured": {
+          "subjectMean": 0.21,
+          "referenceMean": 0.17,
+          "diff": 0.03649,
+          "result": "PASS",
+          "hardFail": false,
+          "beyondPracticalMargin": true
+        },
+        "changed": true
+      }
+    ],
+    "persisting": [
+      {
+        "matchupId": "v6m-1970s",
+        "eraStyleId": "1970s",
+        "side": "teamB",
+        "teamName": "Portland Trail Blazers",
+        "teamSeason": "1974-75",
+        "traitId": "STRONG_OFFENSIVE_REBOUNDING",
+        "metricId": "orebRate",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 0.02,
+        "formal": {
+          "subjectMean": 0.31214,
+          "referenceMean": 0.33772,
+          "diff": -0.02558,
+          "result": "FAIL",
+          "hardFail": true,
+          "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+        },
+        "remeasured": {
+          "subjectMean": 0.31,
+          "referenceMean": 0.34,
+          "diff": -0.02553,
+          "result": "FAIL",
+          "hardFail": true,
+          "beyondPracticalMargin": true
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-2000s",
+        "eraStyleId": "2000s",
+        "side": "teamA",
+        "teamName": "Boston Celtics",
+        "teamSeason": "2007-08",
+        "traitId": "elite team man defence",
+        "metricId": "refPppVsTeam",
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "practicalMargin": 0.02,
+        "formal": {
+          "subjectMean": 1.17134,
+          "referenceMean": 1.14908,
+          "diff": 0.02226,
+          "result": "FAIL",
+          "hardFail": true,
+          "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+        },
+        "remeasured": {
+          "subjectMean": 1.18,
+          "referenceMean": 1.15,
+          "diff": 0.02913,
+          "result": "FAIL",
+          "hardFail": true,
+          "beyondPracticalMargin": true
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-2000s",
+        "eraStyleId": "2000s",
+        "side": "teamA",
+        "teamName": "Boston Celtics",
+        "teamSeason": "2007-08",
+        "traitId": "ELITE_DEFENSE",
+        "metricId": "refPppVsTeam",
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "practicalMargin": 0.02,
+        "formal": {
+          "subjectMean": 1.17134,
+          "referenceMean": 1.14908,
+          "diff": 0.02226,
+          "result": "FAIL",
+          "hardFail": true,
+          "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+        },
+        "remeasured": {
+          "subjectMean": 1.18,
+          "referenceMean": 1.15,
+          "diff": 0.02913,
+          "result": "FAIL",
+          "hardFail": true,
+          "beyondPracticalMargin": true
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-2000s",
+        "eraStyleId": "2000s",
+        "side": "teamA",
+        "teamName": "Boston Celtics",
+        "teamSeason": "2007-08",
+        "traitId": "PASSING_HUB",
+        "metricId": "assistedRate",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 0.02,
+        "formal": {
+          "subjectMean": 0.43829,
+          "referenceMean": 0.47555,
+          "diff": -0.03726,
+          "result": "FAIL",
+          "hardFail": true,
+          "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+        },
+        "remeasured": {
+          "subjectMean": 0.45,
+          "referenceMean": 0.48,
+          "diff": -0.02787,
+          "result": "FAIL",
+          "hardFail": true,
+          "beyondPracticalMargin": true
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-2000s",
+        "eraStyleId": "2000s",
+        "side": "teamB",
+        "teamName": "Houston Rockets",
+        "teamSeason": "2007-08",
+        "traitId": "slow",
+        "metricId": "gamePace",
+        "expectedDirection": "BELOW_REFERENCE_BASELINE",
+        "practicalMargin": 1,
+        "formal": {
+          "subjectMean": 92.15698,
+          "referenceMean": 90.8002,
+          "diff": 1.35678,
+          "result": "FAIL",
+          "hardFail": true,
+          "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+        },
+        "remeasured": {
+          "subjectMean": 92.03,
+          "referenceMean": 90.8,
+          "diff": 1.23007,
+          "result": "FAIL",
+          "hardFail": true,
+          "beyondPracticalMargin": true
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-2000s",
+        "eraStyleId": "2000s",
+        "side": "teamB",
+        "teamName": "Houston Rockets",
+        "teamSeason": "2007-08",
+        "traitId": "POST_HEAVY",
+        "metricId": "postUpShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 0.03,
+        "formal": {
+          "subjectMean": 0.22432,
+          "referenceMean": 0.2606,
+          "diff": -0.03628,
+          "result": "FAIL",
+          "hardFail": true,
+          "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+        },
+        "remeasured": {
+          "subjectMean": 0.21,
+          "referenceMean": 0.26,
+          "diff": -0.05211,
+          "result": "FAIL",
+          "hardFail": true,
+          "beyondPracticalMargin": true
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-2020s",
+        "eraStyleId": "2020s",
+        "side": "teamB",
+        "teamName": "San Antonio Spurs",
+        "teamSeason": "2020-21",
+        "traitId": "half-court motion and passing",
+        "metricId": "movementShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 0.03,
+        "formal": {
+          "subjectMean": 0.183,
+          "referenceMean": 0.23644,
+          "diff": -0.05344,
+          "result": "FAIL",
+          "hardFail": true,
+          "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+        },
+        "remeasured": {
+          "subjectMean": 0.18,
+          "referenceMean": 0.24,
+          "diff": -0.05741,
+          "result": "FAIL",
+          "hardFail": true,
+          "beyondPracticalMargin": true
+        },
+        "changed": false
+      },
+      {
+        "matchupId": "v6m-2020s",
+        "eraStyleId": "2020s",
+        "side": "teamB",
+        "teamName": "San Antonio Spurs",
+        "teamSeason": "2020-21",
+        "traitId": "MOTION",
+        "metricId": "movementShare",
+        "expectedDirection": "ABOVE_REFERENCE_BASELINE",
+        "practicalMargin": 0.03,
+        "formal": {
+          "subjectMean": 0.183,
+          "referenceMean": 0.23644,
+          "diff": -0.05344,
+          "result": "FAIL",
+          "hardFail": true,
+          "reportedState": "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED"
+        },
+        "remeasured": {
+          "subjectMean": 0.18,
+          "referenceMean": 0.24,
+          "diff": -0.05741,
+          "result": "FAIL",
+          "hardFail": true,
+          "beyondPracticalMargin": true
+        },
+        "changed": false
+      }
+    ],
+    "newlyHardFailingRows": [],
+    "registerFailureCount": 15,
+    "remeasurementHash": "8cb14fd2f61877ebacb64796d69c8a5f3fc862d1e21d6aff9c7e4886fb3d9efe"
+  },
+  "outputHash": "e7ff9a559944ea5832f897ac2428c020380d5549f31a16e7bd330c762e518ec0"
+}

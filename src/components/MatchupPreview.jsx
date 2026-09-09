@@ -38,25 +38,43 @@ const CATEGORY_SHORT = {
   "Star Power": "Star Power",
 };
 
-// V3 pre-sim preview (Addendum 26): strategic tension only. No edge counts, no
-// expected winner, no probability — those would answer the question the SIM is
-// supposed to answer. The KEY CLASH is fetched from the server's V3 analysis.
+// V3 pre-sim preview: QUALITATIVE edges only (Gold Edge / Even / Blue Edge —
+// the server maps the analysis model onto its own nearly-even bound; no
+// numbers, no counts, no probability, no winner) plus the KEY CLASH line.
 function KeyClashPreview({ gold, blue, v3 }) {
-  const [clash, setClash] = useState(null);
+  const [data, setData] = useState(null);
   const goldIds = gold.map((p) => p.id), blueIds = blue.map((p) => p.id);
   useEffect(() => {
     let alive = true;
-    setClash(null);
+    setData(null);
     v3meta({ goldIds, blueIds, coachGoldId: v3.coachGoldId, coachBlueId: v3.coachBlueId, eraStyleId: v3.eraStyleId })
-      .then((j) => { if (alive && j?.keyClash) setClash(j.keyClash); });
+      .then((j) => { if (alive && j) setData(j); });
     return () => { alive = false; };
   }, [JSON.stringify(goldIds), JSON.stringify(blueIds), v3.coachGoldId, v3.coachBlueId, v3.eraStyleId]); // eslint-disable-line
+  const CORE = ["Talent", "Construction", "Creation", "Spacing", "Defense", "Rebounding"];
+  const rows = (data?.edges ?? []).filter((e) => CORE.includes(e.category));
   return (
-    <div className="rise" style={{ padding: "14px 16px", borderRadius: 12, background: "rgba(0,0,0,0.45)", border: `1px solid ${T.border}`, maxWidth: 360, margin: "0 auto", width: "100%" }}>
-      <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: 2, color: T.gold, textAlign: "center" }}>KEY CLASH</div>
-      <div style={{ fontSize: 12.5, color: T.text, marginTop: 8, lineHeight: 1.6 }}>
-        {clash || "Reading the matchup…"}
-      </div>
+    <div className="rise" style={{ padding: "14px 16px", borderRadius: 12, background: T.bgMuted, border: `1px solid ${T.border}`, maxWidth: 380, margin: "0 auto", width: "100%" }}>
+      <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: 2, color: T.gold, textAlign: "center" }}>MATCHUP PREVIEW</div>
+      {!data && <div style={{ fontSize: 12, color: T.textDim, marginTop: 8, textAlign: "center" }}>Reading the matchup…</div>}
+      {rows.length > 0 && (
+        <div style={{ marginTop: 10 }}>
+          {rows.map((e) => (
+            <div key={e.category} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "4px 2px", fontSize: 12, borderBottom: `1px solid rgba(35,44,69,0.5)` }}>
+              <span style={{ color: T.textDim }}>{"★ "}{e.category}</span>
+              <span style={{ fontWeight: 800, color: e.lead === "gold" ? T.gold : e.lead === "blue" ? T.blue : T.textMuted }}>
+                {e.lead === "even" ? "Even" : e.lead === "gold" ? "Gold Edge" : "Blue Edge"}{e.strong ? " ★" : ""}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
+      {data?.keyClash && (
+        <div style={{ marginTop: 10 }}>
+          <div style={{ fontSize: 9.5, fontWeight: 800, letterSpacing: 2, color: T.textDim }}>KEY CLASH</div>
+          <div style={{ fontSize: 12, color: T.text, marginTop: 4, lineHeight: 1.55 }}>{data.keyClash}</div>
+        </div>
+      )}
       <div style={{ fontSize: 10.5, color: T.textDim, marginTop: 8, textAlign: "center" }}>Run the sim to find out.</div>
     </div>
   );
@@ -66,7 +84,7 @@ export default function MatchupPreview({ gold, blue, v3 }) {
   const ready = gold?.filter(Boolean).length === 5 && blue?.filter(Boolean).length === 5;
   if (!ready) {
     return (
-      <div style={{ padding: "14px 16px", borderRadius: 12, background: "rgba(0,0,0,0.35)", border: `1px solid ${T.border}`, textAlign: "center", maxWidth: 340, margin: "0 auto" }}>
+      <div style={{ padding: "14px 16px", borderRadius: 12, background: T.bgCardHover, border: `1px solid ${T.border}`, textAlign: "center", maxWidth: 340, margin: "0 auto" }}>
         <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: 2, color: T.gold }}>MATCHUP PREVIEW</div>
         <div style={{ fontSize: 12, color: T.textDim, marginTop: 6, lineHeight: 1.5 }}>
           Complete both teams to see what this matchup comes down to.
@@ -75,41 +93,31 @@ export default function MatchupPreview({ gold, blue, v3 }) {
     );
   }
   if (v3?.enabled) return <KeyClashPreview gold={gold} blue={blue} v3={v3} />;
+  // Phase 7B: the legacy (Daily/Challenge) preview is qualitative too. It used
+  // to print raw category numbers ("Gold +4") and a win probability, which both
+  // exposed model internals and answered the question the simulation exists to
+  // answer. Same model, same thresholds as the wizard read — words only.
+  const EVEN_BOUND = 4, STRONG_BOUND = 10;
+  const label = (edge) => {
+    const a = Math.abs(edge);
+    if (a <= EVEN_BOUND) return "Even";
+    const side = edge > 0 ? "Gold" : "Blue";
+    return a >= STRONG_BOUND ? `Strong ${side} Edge` : `${side} Edge`;
+  };
   const edges = matchupEdges(gold, blue).slice(0, 5);
-  const p = winProbability(gold, blue);
-  const pg = Math.round(p * 100);
   return (
-    <div className="rise" style={{ padding: "14px 16px", borderRadius: 12, background: "rgba(0,0,0,0.45)", border: `1px solid ${T.border}`, maxWidth: 360, margin: "0 auto", width: "100%" }}>
+    <div className="rise" style={{ padding: "14px 16px", borderRadius: 12, background: T.bgMuted, border: `1px solid ${T.border}`, maxWidth: 360, margin: "0 auto", width: "100%" }}>
       <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: 2, color: T.gold, textAlign: "center", marginBottom: 10 }}>MATCHUP PREVIEW</div>
-      {edges.map((e) => {
-        const goldSide = e.edge >= 0;
-        const half = Math.min(45, Math.abs(e.edge) * 2.25); // % from center, capped
-        return (
-          <div key={e.category} style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 7, fontSize: 11.5 }}>
-            <span style={{ width: 78, textAlign: "right", color: T.textDim, flexShrink: 0 }}>{CATEGORY_SHORT[e.category] || e.category}</span>
-            <div style={{ flex: 1, height: 6, borderRadius: 3, background: T.border, position: "relative", overflow: "hidden" }}>
-              {/* bar grows from the center toward the leading team's panel */}
-              <div style={{
-                position: "absolute", top: 0, bottom: 0,
-                left: goldSide ? `${50 - half}%` : "50%",
-                width: `${half}%`,
-                background: goldSide ? T.gold : T.blue, borderRadius: 3,
-              }} />
-              <div style={{ position: "absolute", left: "50%", top: 0, bottom: 0, width: 1, background: "rgba(232,234,242,0.25)" }} />
-            </div>
-            <span style={{ width: 52, fontWeight: 800, color: goldSide ? T.gold : T.blue, flexShrink: 0 }}>
-              {e.edge === 0 ? "—" : `${goldSide ? "Gold" : "Blue"} +${Math.abs(e.edge)}`}
-            </span>
-          </div>
-        );
-      })}
-      <div style={{ display: "flex", justifyContent: "center", gap: 14, marginTop: 10, fontSize: 12.5, fontWeight: 800 }}>
-        <span style={{ color: T.gold }}>Gold {pg}%</span>
-        <span style={{ color: T.textMuted }}>·</span>
-        <span style={{ color: T.blue }}>Blue {100 - pg}%</span>
-      </div>
-      <div style={{ fontSize: 9.5, color: T.textMuted, textAlign: "center", marginTop: 4 }}>
-        Engine prediction from ratings, chemistry & matchups
+      {edges.map((e) => (
+        <div key={e.category} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, padding: "4px 0", fontSize: 13, borderBottom: `1px solid ${T.border}` }}>
+          <span style={{ color: T.textDim }}>{CATEGORY_SHORT[e.category] || e.category}</span>
+          <span style={{ fontWeight: 800, color: Math.abs(e.edge) <= EVEN_BOUND ? T.textMuted : e.edge > 0 ? T.gold : T.blue }}>
+            {label(e.edge)}
+          </span>
+        </div>
+      ))}
+      <div style={{ fontSize: 11, color: T.textMuted, textAlign: "center", marginTop: 8, lineHeight: 1.45 }}>
+        A drafting read from player data. Run the sim to find out.
       </div>
     </div>
   );

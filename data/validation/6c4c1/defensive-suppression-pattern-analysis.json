@@ -1,0 +1,300 @@
+{
+  "artifact": "defensive-suppression-pattern-analysis",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run c2:diagnose",
+  "generatedAt": "2026-08-27T15:25:52.996Z",
+  "gitCommit": "60943bdd575922fa00b038d2004b0393b3ab7865",
+  "branch": "HEAD",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "defensiveSuppressionPatternVersion": "1.0.0",
+    "claimUnderTest": "the defensive metric failed in the same direction on 5 of 8 matchups",
+    "artifactTruth": {
+      "note": "the full picture, not only the failing instances. This is what the pattern claim has to be judged against.",
+      "instances": 13,
+      "matchupsCarryingMetric": 7,
+      "distinctTeamSides": 8,
+      "wrongDirectionTeamSides": 4,
+      "wrongDirectionAndStatisticallyOpposite": 3,
+      "correctDirectionTeamSides": 4,
+      "teamSides": [
+        {
+          "matchupId": "v5m-1950s",
+          "eraStyleId": "1950s",
+          "teamName": "Boston Celtics",
+          "teamSeason": "1957-58",
+          "difference": 0.0009,
+          "zScore": 0.47783,
+          "statisticallyOpposite": false,
+          "result": "FAIL",
+          "hardFail": false
+        },
+        {
+          "matchupId": "v5m-1960s",
+          "eraStyleId": "1960s",
+          "teamName": "Boston Celtics",
+          "teamSeason": "1960-61",
+          "difference": -0.01474,
+          "zScore": -7.94497,
+          "statisticallyOpposite": false,
+          "result": "PASS",
+          "hardFail": false
+        },
+        {
+          "matchupId": "v5m-1970s",
+          "eraStyleId": "1970s",
+          "teamName": "Los Angeles Lakers",
+          "teamSeason": "1972-73",
+          "difference": 0.01432,
+          "zScore": 7.1749,
+          "statisticallyOpposite": true,
+          "result": "FAIL",
+          "hardFail": false
+        },
+        {
+          "matchupId": "v5m-1980s",
+          "eraStyleId": "1980s",
+          "teamName": "Boston Celtics",
+          "teamSeason": "1983-84",
+          "difference": -0.00962,
+          "zScore": -4.57323,
+          "statisticallyOpposite": false,
+          "result": "PASS",
+          "hardFail": false
+        },
+        {
+          "matchupId": "v5m-1990s",
+          "eraStyleId": "1990s",
+          "teamName": "Seattle SuperSonics",
+          "teamSeason": "1995-96",
+          "difference": -0.03662,
+          "zScore": -16.36224,
+          "statisticallyOpposite": false,
+          "result": "PASS",
+          "hardFail": false
+        },
+        {
+          "matchupId": "v5m-2010s",
+          "eraStyleId": "2010s",
+          "teamName": "San Antonio Spurs",
+          "teamSeason": "2015-16",
+          "difference": 0.01648,
+          "zScore": 6.57101,
+          "statisticallyOpposite": true,
+          "result": "FAIL",
+          "hardFail": false
+        },
+        {
+          "matchupId": "v5m-2020s",
+          "eraStyleId": "2020s",
+          "teamName": "New York Knicks",
+          "teamSeason": "2020-21",
+          "difference": 0.03805,
+          "zScore": 14.84653,
+          "statisticallyOpposite": true,
+          "result": "FAIL",
+          "hardFail": true
+        },
+        {
+          "matchupId": "v5m-2020s",
+          "eraStyleId": "2020s",
+          "teamName": "Philadelphia 76ers",
+          "teamSeason": "2020-21",
+          "difference": -0.00718,
+          "zScore": -2.78537,
+          "statisticallyOpposite": false,
+          "result": "PASS",
+          "hardFail": false
+        }
+      ],
+      "meanDifference": 0.0002,
+      "patternCharacterisation": "4 of 8 team-sides are in the wrong direction and 3 significantly so, against 4 correctly suppressing. The mean difference across all team-sides is near zero, so this is NOT a uniform downward bias on team defence \u2014 it is heterogeneous, and the diagnosis has to explain which defences fail rather than assume all do."
+    },
+    "byEra": [
+      {
+        "era": "1950s",
+        "team": "Boston Celtics",
+        "difference": 0.0009,
+        "preRecordingEra": true,
+        "decidable": false,
+        "compositeDelta": 0
+      },
+      {
+        "era": "1960s",
+        "team": "Boston Celtics",
+        "difference": -0.01474,
+        "preRecordingEra": true,
+        "decidable": false,
+        "compositeDelta": 0
+      },
+      {
+        "era": "1970s",
+        "team": "Los Angeles Lakers",
+        "difference": 0.01432,
+        "preRecordingEra": true,
+        "decidable": false,
+        "compositeDelta": 0
+      },
+      {
+        "era": "1980s",
+        "team": "Boston Celtics",
+        "difference": -0.00962,
+        "preRecordingEra": false,
+        "decidable": true,
+        "compositeDelta": 0.075
+      },
+      {
+        "era": "1990s",
+        "team": "Seattle SuperSonics",
+        "difference": -0.03662,
+        "preRecordingEra": false,
+        "decidable": true,
+        "compositeDelta": 0.68
+      },
+      {
+        "era": "2010s",
+        "team": "San Antonio Spurs",
+        "difference": 0.01648,
+        "preRecordingEra": false,
+        "decidable": true,
+        "compositeDelta": -0.13
+      },
+      {
+        "era": "2020s",
+        "team": "New York Knicks",
+        "difference": 0.03805,
+        "preRecordingEra": false,
+        "decidable": true,
+        "compositeDelta": -0.78
+      },
+      {
+        "era": "2020s",
+        "team": "Philadelphia 76ers",
+        "difference": -0.00718,
+        "preRecordingEra": false,
+        "decidable": true,
+        "compositeDelta": 0.075
+      }
+    ],
+    "byCoach": [
+      {
+        "coach": "red-auerbach",
+        "helpIntent": 8,
+        "helpRealized": 4.2,
+        "truncatedBelowNeutral": true,
+        "difference": 0.0009
+      },
+      {
+        "coach": "red-auerbach",
+        "helpIntent": 8,
+        "helpRealized": 4,
+        "truncatedBelowNeutral": true,
+        "difference": -0.01474
+      },
+      {
+        "coach": "bill-sharman",
+        "helpIntent": 6,
+        "helpRealized": 4.5,
+        "truncatedBelowNeutral": true,
+        "difference": 0.01432
+      },
+      {
+        "coach": "kc-jones",
+        "helpIntent": 5,
+        "helpRealized": 3.3,
+        "truncatedBelowNeutral": false,
+        "difference": -0.00962
+      },
+      {
+        "coach": "george-karl",
+        "helpIntent": 8,
+        "helpRealized": 3.4,
+        "truncatedBelowNeutral": true,
+        "difference": -0.03662
+      },
+      {
+        "coach": "gregg-popovich",
+        "helpIntent": 5,
+        "helpRealized": 3.3,
+        "truncatedBelowNeutral": false,
+        "difference": 0.01648
+      },
+      {
+        "coach": "tom-thibodeau",
+        "helpIntent": 9,
+        "helpRealized": 3,
+        "truncatedBelowNeutral": true,
+        "difference": 0.03805
+      },
+      {
+        "coach": "doc-rivers",
+        "helpIntent": 8,
+        "helpRealized": 3.3,
+        "truncatedBelowNeutral": true,
+        "difference": -0.00718
+      }
+    ],
+    "byEvidenceCoverage": [
+      {
+        "team": "Boston Celtics",
+        "coverage": "0/5",
+        "compositeDelta": 0,
+        "difference": 0.0009
+      },
+      {
+        "team": "Boston Celtics",
+        "coverage": "0/5",
+        "compositeDelta": 0,
+        "difference": -0.01474
+      },
+      {
+        "team": "Los Angeles Lakers",
+        "coverage": "2/5",
+        "compositeDelta": 0,
+        "difference": 0.01432
+      },
+      {
+        "team": "Boston Celtics",
+        "coverage": "2/5",
+        "compositeDelta": 0.075,
+        "difference": -0.00962
+      },
+      {
+        "team": "Seattle SuperSonics",
+        "coverage": "1/5",
+        "compositeDelta": 0.68,
+        "difference": -0.03662
+      },
+      {
+        "team": "San Antonio Spurs",
+        "coverage": "0/5",
+        "compositeDelta": -0.13,
+        "difference": 0.01648
+      },
+      {
+        "team": "New York Knicks",
+        "coverage": "0/5",
+        "compositeDelta": -0.78,
+        "difference": 0.03805
+      },
+      {
+        "team": "Philadelphia 76ers",
+        "coverage": "2/5",
+        "compositeDelta": 0.075,
+        "difference": -0.00718
+      }
+    ],
+    "explanation": "the outcome is explained almost entirely by one variable: whether the subject's event-derived defensive composite exceeds its era reference's. Pearson -0.91845. Coach identity contributes nothing because the ceiling truncates it, and in three eras the comparison is undecidable because both sides derive identically. The apparent team-specificity is an artifact of which teams' defensive value was event-visible.",
+    "fiveOfEightClaimResolved": "not supported. 4 wrong-direction team-sides, 3 significant.",
+    "measuredOn": {
+      "candidateId": "Candidate 1",
+      "calibrationVersion": "1.1.0",
+      "how": "run in a git worktree at the pre-repair commit, so every number in this diagnosis is Candidate 1's. An earlier draft of this artifact was regenerated after the repairs landed and therefore described the repaired engine, which is not a diagnosis of the failure."
+    }
+  },
+  "outputHash": "88ec580a33c1b6b2c853448585efb7aa213298c477f73f32cc171031016e60f3"
+}

@@ -1,0 +1,433 @@
+{
+  "calibrationParameterRegistryVersion": "1.0.0",
+  "preservedBy": "phase-6c2c3-runtime-parameter-wiring",
+  "purpose": "The registry exactly as Phases 6C2B, 6C2C1 and 6C2C2 knew it. Preserved because those phases reported results against this structure and this hash; rewriting it would silently invalidate their reports.",
+  "parameterCount": 53,
+  "parameterSetHash": "b8c81cd99161b605c14cceb70388555428d54afb8241ec2089fdfa470a9807e6",
+  "parameters": [
+    {
+      "id": "opportunity.saturation.strength",
+      "module": "opportunityAllocation",
+      "defaultValue": 1.35,
+      "min": 0.6,
+      "max": 2.5,
+      "calibrationSource": "HISTORICAL_TIER_C + SYNTHETIC_GUARDRAIL"
+    },
+    {
+      "id": "opportunity.saturation.floor",
+      "module": "opportunityAllocation",
+      "defaultValue": 0.16,
+      "min": 0.05,
+      "max": 0.4,
+      "calibrationSource": "SYNTHETIC_GUARDRAIL"
+    },
+    {
+      "id": "opportunity.saturation.underTargetCeiling",
+      "module": "opportunityAllocation",
+      "defaultValue": 1.35,
+      "min": 1,
+      "max": 2,
+      "calibrationSource": "SYNTHETIC_GUARDRAIL"
+    },
+    {
+      "id": "opportunity.saturation.warmupPossessions",
+      "module": "opportunityAllocation",
+      "defaultValue": 8,
+      "min": 0,
+      "max": 30,
+      "calibrationSource": "STRUCTURAL"
+    },
+    {
+      "id": "opportunity.mismatch.severe",
+      "module": "opportunityAllocation",
+      "defaultValue": 2.6,
+      "min": 1,
+      "max": 4,
+      "calibrationSource": "SYNTHETIC_GUARDRAIL"
+    },
+    {
+      "id": "opportunity.mismatch.major",
+      "module": "opportunityAllocation",
+      "defaultValue": 2,
+      "min": 1,
+      "max": 3.5,
+      "calibrationSource": "SYNTHETIC_GUARDRAIL"
+    },
+    {
+      "id": "opportunity.mismatch.moderate",
+      "module": "opportunityAllocation",
+      "defaultValue": 1.55,
+      "min": 1,
+      "max": 3,
+      "calibrationSource": "SYNTHETIC_GUARDRAIL"
+    },
+    {
+      "id": "opportunity.mismatch.minor",
+      "module": "opportunityAllocation",
+      "defaultValue": 1.25,
+      "min": 1,
+      "max": 2,
+      "calibrationSource": "SYNTHETIC_GUARDRAIL"
+    },
+    {
+      "id": "opportunity.form.low",
+      "module": "opportunityAllocation",
+      "defaultValue": 0.82,
+      "min": 0.6,
+      "max": 1,
+      "calibrationSource": "STRUCTURAL"
+    },
+    {
+      "id": "opportunity.form.high",
+      "module": "opportunityAllocation",
+      "defaultValue": 1.18,
+      "min": 1,
+      "max": 1.6,
+      "calibrationSource": "STRUCTURAL"
+    },
+    {
+      "id": "opportunity.lateGame.primaryBoost",
+      "module": "opportunityAllocation",
+      "defaultValue": 0.5,
+      "min": 0,
+      "max": 1.5,
+      "calibrationSource": "STRUCTURAL"
+    },
+    {
+      "id": "fitBand.SPOT_UP.lo",
+      "module": "opportunityAllocation",
+      "defaultValue": 0.2,
+      "min": 0.1,
+      "max": 1,
+      "calibrationSource": "SYNTHETIC_GUARDRAIL"
+    },
+    {
+      "id": "fitBand.SPOT_UP.hi",
+      "module": "opportunityAllocation",
+      "defaultValue": 2.4,
+      "min": 1,
+      "max": 3,
+      "calibrationSource": "SYNTHETIC_GUARDRAIL"
+    },
+    {
+      "id": "fitBand.OFF_BALL_SCREEN.lo",
+      "module": "opportunityAllocation",
+      "defaultValue": 0.25,
+      "min": 0.1,
+      "max": 1,
+      "calibrationSource": "SYNTHETIC_GUARDRAIL"
+    },
+    {
+      "id": "fitBand.OFF_BALL_SCREEN.hi",
+      "module": "opportunityAllocation",
+      "defaultValue": 2.2,
+      "min": 1,
+      "max": 3,
+      "calibrationSource": "SYNTHETIC_GUARDRAIL"
+    },
+    {
+      "id": "fitBand.POST_UP.lo",
+      "module": "opportunityAllocation",
+      "defaultValue": 0.3,
+      "min": 0.1,
+      "max": 1,
+      "calibrationSource": "SYNTHETIC_GUARDRAIL"
+    },
+    {
+      "id": "fitBand.POST_UP.hi",
+      "module": "opportunityAllocation",
+      "defaultValue": 2.1,
+      "min": 1,
+      "max": 3,
+      "calibrationSource": "SYNTHETIC_GUARDRAIL"
+    },
+    {
+      "id": "fitBand.HANDOFF.lo",
+      "module": "opportunityAllocation",
+      "defaultValue": 0.35,
+      "min": 0.1,
+      "max": 1,
+      "calibrationSource": "SYNTHETIC_GUARDRAIL"
+    },
+    {
+      "id": "fitBand.HANDOFF.hi",
+      "module": "opportunityAllocation",
+      "defaultValue": 2,
+      "min": 1,
+      "max": 3,
+      "calibrationSource": "SYNTHETIC_GUARDRAIL"
+    },
+    {
+      "id": "fitBand.ZONE_ATTACK.lo",
+      "module": "opportunityAllocation",
+      "defaultValue": 0.4,
+      "min": 0.1,
+      "max": 1,
+      "calibrationSource": "SYNTHETIC_GUARDRAIL"
+    },
+    {
+      "id": "fitBand.ZONE_ATTACK.hi",
+      "module": "opportunityAllocation",
+      "defaultValue": 1.9,
+      "min": 1,
+      "max": 3,
+      "calibrationSource": "SYNTHETIC_GUARDRAIL"
+    },
+    {
+      "id": "fitBand.CUT.lo",
+      "module": "opportunityAllocation",
+      "defaultValue": 0.4,
+      "min": 0.1,
+      "max": 1,
+      "calibrationSource": "SYNTHETIC_GUARDRAIL"
+    },
+    {
+      "id": "fitBand.CUT.hi",
+      "module": "opportunityAllocation",
+      "defaultValue": 1.9,
+      "min": 1,
+      "max": 3,
+      "calibrationSource": "SYNTHETIC_GUARDRAIL"
+    },
+    {
+      "id": "fitBand.ISOLATION.lo",
+      "module": "opportunityAllocation",
+      "defaultValue": 0.5,
+      "min": 0.1,
+      "max": 1,
+      "calibrationSource": "SYNTHETIC_GUARDRAIL"
+    },
+    {
+      "id": "fitBand.ISOLATION.hi",
+      "module": "opportunityAllocation",
+      "defaultValue": 1.8,
+      "min": 1,
+      "max": 3,
+      "calibrationSource": "SYNTHETIC_GUARDRAIL"
+    },
+    {
+      "id": "fitBand.PICK_AND_ROLL.lo",
+      "module": "opportunityAllocation",
+      "defaultValue": 0.55,
+      "min": 0.1,
+      "max": 1,
+      "calibrationSource": "SYNTHETIC_GUARDRAIL"
+    },
+    {
+      "id": "fitBand.PICK_AND_ROLL.hi",
+      "module": "opportunityAllocation",
+      "defaultValue": 1.7,
+      "min": 1,
+      "max": 3,
+      "calibrationSource": "SYNTHETIC_GUARDRAIL"
+    },
+    {
+      "id": "fitBand.TRANSITION.lo",
+      "module": "opportunityAllocation",
+      "defaultValue": 0.6,
+      "min": 0.1,
+      "max": 1,
+      "calibrationSource": "SYNTHETIC_GUARDRAIL"
+    },
+    {
+      "id": "fitBand.TRANSITION.hi",
+      "module": "opportunityAllocation",
+      "defaultValue": 1.6,
+      "min": 1,
+      "max": 3,
+      "calibrationSource": "SYNTHETIC_GUARDRAIL"
+    },
+    {
+      "id": "fitBand.GENERIC_HALF_COURT.lo",
+      "module": "opportunityAllocation",
+      "defaultValue": 0.75,
+      "min": 0.1,
+      "max": 1,
+      "calibrationSource": "SYNTHETIC_GUARDRAIL"
+    },
+    {
+      "id": "fitBand.GENERIC_HALF_COURT.hi",
+      "module": "opportunityAllocation",
+      "defaultValue": 1.35,
+      "min": 1,
+      "max": 3,
+      "calibrationSource": "SYNTHETIC_GUARDRAIL"
+    },
+    {
+      "id": "shotLocation.rimWeight",
+      "module": "possessionContext",
+      "defaultValue": 0.34,
+      "min": 0.15,
+      "max": 0.6,
+      "calibrationSource": "ERA_ENVIRONMENT"
+    },
+    {
+      "id": "shotLocation.postWeight",
+      "module": "possessionContext",
+      "defaultValue": 0.42,
+      "min": 0.2,
+      "max": 0.7,
+      "calibrationSource": "ERA_ENVIRONMENT"
+    },
+    {
+      "id": "shotLocation.midrangeWeight",
+      "module": "possessionContext",
+      "defaultValue": 0.18,
+      "min": 0.05,
+      "max": 0.5,
+      "calibrationSource": "ERA_ENVIRONMENT"
+    },
+    {
+      "id": "shotLocation.threeWeight",
+      "module": "possessionContext",
+      "defaultValue": 0.22,
+      "min": 0.05,
+      "max": 0.6,
+      "calibrationSource": "ERA_ENVIRONMENT"
+    },
+    {
+      "id": "shotLocation.rimBiasMultiplier",
+      "module": "possessionGame",
+      "defaultValue": 1.6,
+      "min": 0.5,
+      "max": 3,
+      "calibrationSource": "ERA_ENVIRONMENT"
+    },
+    {
+      "id": "shotLocation.perimeterBiasMultiplier",
+      "module": "possessionGame",
+      "defaultValue": 1.5,
+      "min": 0.5,
+      "max": 3,
+      "calibrationSource": "ERA_ENVIRONMENT"
+    },
+    {
+      "id": "conversion.rimBonus",
+      "module": "possessionGame",
+      "defaultValue": 0.155,
+      "min": 0.05,
+      "max": 0.28,
+      "calibrationSource": "ERA_ENVIRONMENT"
+    },
+    {
+      "id": "conversion.paintBonus",
+      "module": "possessionGame",
+      "defaultValue": 0.015,
+      "min": -0.1,
+      "max": 0.12,
+      "calibrationSource": "ERA_ENVIRONMENT"
+    },
+    {
+      "id": "conversion.midrangePenalty",
+      "module": "possessionGame",
+      "defaultValue": -0.055,
+      "min": -0.15,
+      "max": 0.02,
+      "calibrationSource": "ERA_ENVIRONMENT"
+    },
+    {
+      "id": "era.paceTempoScale",
+      "module": "possessionContext",
+      "defaultValue": 1.35,
+      "min": 0.5,
+      "max": 3,
+      "calibrationSource": "ERA_ENVIRONMENT"
+    },
+    {
+      "id": "era.paceBoundFraction",
+      "module": "possessionContext",
+      "defaultValue": 0.14,
+      "min": 0.05,
+      "max": 0.3,
+      "calibrationSource": "ERA_ENVIRONMENT"
+    },
+    {
+      "id": "era.threeAnchorMax",
+      "module": "possessionContext",
+      "defaultValue": 12,
+      "min": 2,
+      "max": 30,
+      "calibrationSource": "ERA_ENVIRONMENT"
+    },
+    {
+      "id": "era.freeThrowTripRate",
+      "module": "possessionContext",
+      "defaultValue": 0.5,
+      "min": 0.2,
+      "max": 1,
+      "calibrationSource": "ERA_ENVIRONMENT"
+    },
+    {
+      "id": "zone.selectionFrequency",
+      "module": "zoneResolution",
+      "defaultValue": 0.55,
+      "min": 0.02,
+      "max": 0.8,
+      "calibrationSource": "ERA_ENVIRONMENT"
+    },
+    {
+      "id": "zone.offensiveReboundExposure",
+      "module": "zoneResolution",
+      "defaultValue": 0.073,
+      "min": 0,
+      "max": 0.15,
+      "calibrationSource": "STRUCTURAL"
+    },
+    {
+      "id": "zone.highPostVulnerability",
+      "module": "zoneResolution",
+      "defaultValue": 1,
+      "min": 0.3,
+      "max": 2,
+      "calibrationSource": "STRUCTURAL"
+    },
+    {
+      "id": "zone.cornerVulnerability",
+      "module": "zoneResolution",
+      "defaultValue": 1,
+      "min": 0.3,
+      "max": 2,
+      "calibrationSource": "STRUCTURAL"
+    },
+    {
+      "id": "coach.actionMixInfluence",
+      "module": "coachIntelligence",
+      "defaultValue": 1,
+      "min": 0.3,
+      "max": 2,
+      "calibrationSource": "STRUCTURAL"
+    },
+    {
+      "id": "coach.rosterSensitivity",
+      "module": "coachIntelligence",
+      "defaultValue": 1,
+      "min": 0.3,
+      "max": 2,
+      "calibrationSource": "STRUCTURAL"
+    },
+    {
+      "id": "coach.adjustmentThreshold",
+      "module": "coachAdjustment",
+      "defaultValue": 3,
+      "min": 1,
+      "max": 10,
+      "calibrationSource": "STRUCTURAL"
+    },
+    {
+      "id": "coach.adjustmentCooldown",
+      "module": "coachAdjustment",
+      "defaultValue": 12,
+      "min": 4,
+      "max": 40,
+      "calibrationSource": "STRUCTURAL"
+    },
+    {
+      "id": "coach.adjustmentMagnitude",
+      "module": "coachAdjustment",
+      "defaultValue": 0.05,
+      "min": 0.01,
+      "max": 0.2,
+      "calibrationSource": "STRUCTURAL"
+    }
+  ]
+}

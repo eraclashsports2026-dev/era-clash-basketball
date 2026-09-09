@@ -1,55 +1,76 @@
-/* ── EraClash arena environment ─────────────────────────────────────────────────
-   The arena is felt, not noticed: layered radial light pools, ultra-faint court
-   lines, seating-band gradients, vignette. Pure CSS — no image payload. */
+/* ── EraClash hybrid shell — warm ivory page, navy arena core ─────────────────
+   Phase 7B. The page is a warm editorial surface that stays readable for long
+   stretches; the ARENA is a deliberate navy inset used for the court centre,
+   the loading moment and the final-score hero. Pure CSS — no image payload. */
 :root {
-  --bg: #0b0e17;
-  --gold: #fdb927;
-  --blue: #6ea8fe;
+  --ec-page: #f2efe8;
+  --ec-surface: #fffdf8;
+  --ec-surface-muted: #e9edf3;
+  --ec-navy: #0c1627;
+  --ec-navy-soft: #17233a;
+  --ec-ink: #121a2a;
+  --ec-border: #d9dee7;
+  --gold: #8b660b;
+  --gold-on-dark: #e9b949;
+  --blue: #2d6bc2;
+  --blue-on-dark: #7ab0f5;
 }
 
 * { box-sizing: border-box; }
 html, body { margin: 0; }
 
 body {
-  background: var(--bg);
-  color: #e8eaf2;
+  background: var(--ec-page);
+  color: var(--ec-ink);
   font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Arena backdrop: overhead lights, seating bands, court sheen, vignette */
+/* The page shell: warm paper with the faintest team-side warmth at the edges. */
 .arena {
   position: relative;
   min-height: 100vh;
   isolation: isolate;
   background:
-    /* overhead light pools */
-    radial-gradient(560px 210px at 30% -4%, rgba(245, 240, 220, 0.055), transparent 70%),
-    radial-gradient(560px 210px at 70% -4%, rgba(245, 240, 220, 0.055), transparent 70%),
-    /* team-side ambience */
-    radial-gradient(700px 480px at 8% 46%, rgba(253, 185, 39, 0.05), transparent 70%),
-    radial-gradient(700px 480px at 92% 46%, rgba(110, 168, 254, 0.05), transparent 70%),
-    /* seating bands */
-    linear-gradient(180deg, #060810 0%, #0d1220 26%, #0b0e17 52%, #0a0d15 100%);
+    radial-gradient(720px 460px at 6% 30%, rgba(184, 134, 15, 0.06), transparent 70%),
+    radial-gradient(720px 460px at 94% 30%, rgba(47, 111, 200, 0.06), transparent 70%),
+    linear-gradient(180deg, var(--ec-surface, #f5f2ec) 0%, var(--ec-page) 40%);
 }
-/* faint court lines + center circle, drawn once behind everything */
-.arena::before {
+/* winner atmosphere: a warm wash, never a mood-killing flood */
+.arena.win-gold { box-shadow: inset 0 90px 180px -140px rgba(184, 134, 15, 0.5); }
+.arena.win-blue { box-shadow: inset 0 90px 180px -140px rgba(47, 111, 200, 0.5); }
+
+/* ── ARENA INSET ───────────────────────────────────────────────────────────
+   The cinematic core: navy hardwood with overhead light pools, a centre
+   circle and gold/blue team lighting. Used for the court centre, the
+   simulation moment and the score hero. */
+.ec-arena-inset {
+  position: relative;
+  isolation: isolate;
+  border-radius: 18px;
+  overflow: hidden;
+  color: #f1f4fa;
+  /* An explicit base under the gradient stack: it is what paints if a gradient
+     does not, and it is the only way a contrast audit can tell that the text
+     inside this panel sits on navy rather than on the ivory page behind it. */
+  background:
+    radial-gradient(520px 200px at 30% -10%, rgba(245, 240, 220, 0.10), transparent 70%),
+    radial-gradient(520px 200px at 70% -10%, rgba(245, 240, 220, 0.10), transparent 70%),
+    radial-gradient(620px 420px at 4% 50%, rgba(233, 185, 73, 0.16), transparent 72%),
+    radial-gradient(620px 420px at 96% 50%, rgba(122, 176, 245, 0.16), transparent 72%),
+    linear-gradient(180deg, var(--ec-t-inset-hi, #0e1a2e) 0%, var(--ec-navy) 55%, var(--ec-t-inset-lo, #0a1322) 100%);
+  background-color: var(--ec-navy);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05), 0 10px 30px rgba(12, 22, 39, 0.18);
+}
+.ec-arena-inset::before {
   content: "";
   position: absolute; inset: 0; z-index: -1; pointer-events: none;
   background:
-    radial-gradient(circle 130px at 50% 58%, transparent 128px, rgba(253, 185, 39, 0.035) 129px, transparent 131px),
-    linear-gradient(90deg, transparent 49.85%, rgba(232, 234, 242, 0.028) 50%, transparent 50.15%),
-    repeating-linear-gradient(90deg, transparent 0 119px, rgba(232, 234, 242, 0.012) 119px 120px);
+    radial-gradient(circle 120px at 50% 50%, transparent 118px, rgba(233, 185, 73, 0.16) 119px, transparent 122px),
+    linear-gradient(90deg, transparent 49.85%, rgba(241, 244, 250, 0.10) 50%, transparent 50.15%);
 }
-/* vignette */
-.arena::after {
-  content: "";
-  position: absolute; inset: 0; z-index: -1; pointer-events: none;
-  background: radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(0, 0, 0, 0.5) 100%);
-}
-
-/* winner atmosphere shifts (postgame) */
-.arena.win-gold { box-shadow: inset 0 120px 220px -120px rgba(253, 185, 39, 0.16); }
-.arena.win-blue { box-shadow: inset 0 120px 220px -120px rgba(110, 168, 254, 0.18); }
 
 /* ── Microinteractions ── */
 @keyframes ec-slot-flash-gold {
@@ -86,7 +107,8 @@ body {
 .vs-active { animation: ec-vs-glow 2.4s ease-in-out infinite; }
 
 /* accessibility */
-:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: 4px; }
+:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; border-radius: 6px; }
+.ec-arena-inset :focus-visible { outline-color: var(--gold-on-dark); }
 button { font-family: inherit; }
 
 @media (prefers-reduced-motion: reduce) {
@@ -100,3 +122,2362 @@ button { font-family: inherit; }
 @media (min-width: 900px) {
   .sticky-sim { position: static; }
 }
+
+/* Phase 7A — screen-reader-only utility + wizard/panel helpers */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* Phase 7A — roster card grid: five across, reflowing to two then one */
+.roster-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+@media (max-width: 1100px) { .roster-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 620px)  { .roster-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 380px)  { .roster-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* Phase 7A — matchup edge grid (2×3 on desktop) and the feature strip */
+.edge-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 14px; }
+@media (max-width: 420px) { .edge-grid { grid-template-columns: minmax(0, 1fr); } }
+.feature-strip { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 1100px) { .feature-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px)  { .feature-strip { grid-template-columns: minmax(0, 1fr); } }
+
+/* Phase 7A — hero row: side cards flank the title, stacking on narrow screens */
+.hero-row { display: grid; grid-template-columns: minmax(200px, 240px) 1fr minmax(200px, 240px); gap: 16px; align-items: start; padding: 14px 0 2px; }
+@media (max-width: 1000px) { .hero-row { grid-template-columns: 1fr; } .hero-row > *:first-child, .hero-row > *:last-child { max-width: 420px; margin: 0 auto; width: 100%; } }
+
+/* Phase 7A — postgame Final: MVP/moments column beside summary/breakdown column */
+.pg-final-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+@media (max-width: 900px) { .pg-final-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* Phase 7B — coach modal: two panes on desktop, one stacked pane on phones */
+.coach-modal-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); min-height: 0; flex: 1; overflow: hidden; }
+@media (max-width: 820px) {
+  .coach-modal-body { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) minmax(0, 1fr); }
+  .coach-modal-body > div { border-left: none !important; border-top: 1px solid var(--ec-border); }
+  .coach-modal { max-height: 94vh !important; }
+}
+
+/* Phase 7B — coaching columns */
+.coaching-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+@media (max-width: 900px) { .coaching-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* Phase 7B — ready-to-run tipoff composition */
+.ready-row { display: grid; grid-template-columns: 1fr auto 1fr; gap: 18px; align-items: center; margin-top: 14px; }
+@media (max-width: 820px) { .ready-row { grid-template-columns: minmax(0, 1fr); gap: 10px; } }
+
+/* Phase 7B — coach rows: avatar | name (shrinks) | meta (wraps under on phones) */
+.coach-row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 10px; align-items: center; }
+.coach-row-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+@media (max-width: 560px) {
+  .coach-row { grid-template-columns: auto minmax(0, 1fr); }
+  .coach-row-meta { grid-column: 2; flex-direction: row; align-items: center; flex-wrap: wrap; gap: 8px; }
+}
+
+/* ── Chaos Clash ─────────────────────────────────────────────────────────────
+   Two boards side by side on a wide screen. On a phone the user's own five
+   takes the primary interaction space and the CPU five sits below it, still in
+   context but never competing for the tap targets. */
+.chaos-boards {
+  display: grid;
+  /* minmax(0, 1fr) — NOT 1fr. A bare 1fr floors each column at its content's
+     min width, so one long name made that side's column wider than the other
+     and the two roster summaries stopped lining up. */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+  align-items: stretch;
+}
+/* Both boards are the same height, so Gold's summary panel and Blue's start and
+   end on the same lines even when one five draws taller cards. */
+.chaos-board {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.chaos-read { flex: 1 1 auto; }
+/* Two guards on the top row, wing / centre / forward on the bottom. The top row
+   is centred at the SAME card width as the bottom one rather than stretched
+   across the board. */
+.chaos-roster {
+  display: grid;
+  gap: 8px;
+}
+.chaos-roster-row {
+  display: grid;
+  gap: 8px;
+}
+.chaos-roster-row--three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.chaos-roster-row--two {
+  grid-template-columns: repeat(2, minmax(0, calc((100% - 16px) / 3)));
+  justify-content: center;
+}
+.chaos-offers {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+@media (max-width: 900px) {
+  .chaos-boards { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .chaos-offers { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  /* A stacked board has the whole viewport, so the shape holds; only the gutter
+     tightens. The two-card row's centring maths follows the gap. */
+  .chaos-roster, .chaos-roster-row { gap: 6px; }
+  .chaos-roster-row--two { grid-template-columns: repeat(2, minmax(0, calc((100% - 12px) / 3))); }
+}
+/* The roll reveal is a fade, never a near-miss animation: nothing about the
+   motion suggests an outcome that did not happen. */
+.chaos-card { animation: ec-chaos-in 180ms ease-out both; }
+@keyframes ec-chaos-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .chaos-card { animation: none; }
+}
+
+/* Draft consequence cards */
+.draft-consequences {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 8px;
+  margin-top: 7px;
+}
+
+/* ── Box score ───────────────────────────────────────────────────────────────
+   ONE table, one colgroup, two row groups. Fixed layout plus explicit column
+   widths is what makes Team Gold and Team Blue line up: with auto layout a long
+   name in one group silently re-sizes the columns for that group alone. */
+.box-scroll { overflow-x: auto; margin-top: 8px; }
+.box-table {
+  width: 100%;
+  /* Wide enough that every column can hold its widest real value. The made-
+     attempted totals (40-79, 21-28) are the widest, and percentage widths on a
+     fixed layout were narrow enough to break them across two lines. */
+  min-width: 760px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+.box-col-player { width: 190px; }
+/* Made-attempted pairs need the most room; single counters need the least. */
+.box-col-pair { width: 62px; }
+.box-col-stat { width: 48px; }
+/* A stat cell must never wrap: "40-79" is one value, not two lines. */
+.box-table td, .box-table th {
+  white-space: nowrap;
+  word-break: normal;
+  overflow-wrap: normal;
+}
+.box-table .box-player {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@media (max-width: 720px) {
+  /* The name column stays put while the numbers scroll under it. */
+  .box-table .box-player { position: sticky; left: 0; z-index: 1; }
+}
+
+/* The score is the loudest number in the rail, in the condensed display face
+   the reference uses for it. */
+.ec-dock-score {
+  font-family: var(--ec-display);
+  font-size: 40px; font-weight: 700; line-height: 0.95;
+  color: var(--ec-a-text); font-variant-numeric: tabular-nums;
+}
+
+/* The dock's box score keeps every counting stat; the numbers scroll inside the
+   dock on a narrow column instead of squeezing a made-attempted pair. */
+/* A stat table is wider than the rail, so it scrolls SIDEWAYS inside the dock
+   rather than making the page scroll sideways. overflow-y must be stated: a box
+   with one axis set and the other `visible` computes that other axis to `auto`,
+   which quietly makes this a vertical scroller too. */
+.ec-dock-box { overflow-x: auto; overflow-y: hidden; }
+
+/* Empty draft slot — the board exists before any card does. */
+.chaos-empty-slot {
+  min-height: 150px;
+  border-radius: 12px;
+  border: 1px dashed var(--ec-arena-border, #243350);
+  background: rgba(255, 255, 255, 0.02);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+/* A card's role tags. On a phone a card is about 100px wide, where the pill's
+   padding and border cost more than the words inside it — so the pill is
+   dropped and the tag keeps its text rather than being cut to "Secondary pas…".
+   The row height is unchanged, so cards stay identical in height. */
+.chaos-tag {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 999px;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--ec-a-text-muted, #a9b6cc);
+  border: 1px solid var(--ec-arena-border, #243350);
+}
+@media (max-width: 560px) {
+  .chaos-tag {
+    padding: 2px 0;
+    font-size: 8px;
+    background: transparent;
+    border-color: transparent;
+  }
+}
+
+/* Roster-summary rows: one shared schema, so both teams line up. */
+.chaos-read-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  font-size: 12px;
+  padding: 3px 0;
+  align-items: baseline;
+}
+
+/* Coaching sub-section selector */
+.coaching-sections {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+@media (max-width: 560px) {
+  .coaching-sections button { flex: 1 1 auto; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ARENA COMMAND CENTER — Phase 8C
+   A premium dark arena, scoped to the Play workspace so the rest of the app
+   keeps the hybrid theme. The previous dark interface failed because too many
+   surfaces shared near-identical values and the type was low contrast; every
+   token below is chosen so panels separate and body copy clears AA.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.ec-arena-shell {
+  --ec-a-bg: #03070d;
+  --ec-a-arena: #050b14;
+  --ec-a-panel: #091321;
+  --ec-a-panel-raised: #0d1a2b;
+  --ec-a-panel-soft: #122137;
+
+  --ec-a-text: #f5f7fb;
+  --ec-a-text-secondary: #c3cddd;
+  --ec-a-text-muted: #93a0b5;
+
+  --ec-a-gold: #f2b51d;
+  --ec-a-gold-soft: rgba(242, 181, 29, 0.14);
+  --ec-a-gold-line: rgba(242, 181, 29, 0.45);
+  --ec-a-blue: #3b9bff;
+  --ec-a-blue-soft: rgba(59, 155, 255, 0.14);
+  --ec-a-blue-line: rgba(59, 155, 255, 0.45);
+
+  /* Coach Chaos is a third identity, deliberately not a third team: it never
+     appears on a player card or a score. */
+  --ec-a-coach: #a864e8;
+  --ec-a-coach-soft: rgba(168, 100, 232, 0.14);
+  --ec-a-coach-line: rgba(168, 100, 232, 0.45);
+  --ec-a-coach-deep: #4c2579;
+
+  --ec-a-border: rgba(157, 178, 209, 0.20);
+  --ec-a-border-strong: rgba(157, 178, 209, 0.38);
+  --ec-a-green: #4ade80;
+  --ec-a-red: #f87171;
+
+  background: var(--ec-a-bg);
+  color: var(--ec-a-text);
+  min-height: 100%;
+}
+
+/* Restrained atmosphere: two soft spotlights and a centre-court arc, all in
+   CSS so no large background image is downloaded. */
+.ec-arena-court {
+  position: relative;
+  background:
+    radial-gradient(900px 320px at 22% -8%, var(--ec-a-spot-warm, rgba(242, 181, 29, 0.10)), transparent 62%),
+    radial-gradient(900px 320px at 78% -8%, var(--ec-a-spot-cool, rgba(59, 155, 255, 0.10)), transparent 62%),
+    var(--ec-a-arena);
+  overflow: hidden;
+}
+.ec-arena-court::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 320px;
+  height: 320px;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(157, 178, 209, 0.10);
+  border-radius: 50%;
+  pointer-events: none;
+}
+/* Phase 9D. The ornament is centred on the court, so when the result lands and
+   the court grows under it, it used to drift down with the content — a layout
+   shift the 9B.3 performance gate counts against the head, and one that grows
+   with anything shown under a result (comparison, share sheet, career
+   progress). In the RESULT state it stays where READY left it (the court is
+   ~640px tall through the decision states; 50% ≈ 320px). Every other state is
+   untouched; browsers without :has() keep the previous behaviour. */
+.ec-arena-court:has(.ec-ta-stage[data-guided-state="RESULT"])::after { top: 320px; }
+
+/* ── Two-column command centre ─────────────────────────────────────────────── */
+.ec-cc {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 420px);
+  gap: 16px;
+  align-items: start;
+}
+.ec-cc-dock {
+  position: sticky;
+  top: 12px;
+  /* Bounded so the dock scrolls internally instead of pushing the page or
+     trapping the user in a nested scroller that never ends. */
+  max-height: calc(100vh - 24px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+@media (max-width: 1179px) {
+  .ec-cc { grid-template-columns: minmax(0, 1fr); }
+  .ec-cc-dock { position: static; max-height: none; overflow: visible; }
+  /* When the game is running or finished, the RESULT leads the stacked page —
+     the score must never sit below the roster summary and the mode shelf. */
+  .ec-cc-dock--front { order: -1; }
+}
+
+/* Panels: three distinct elevations so structure reads without glow. */
+.ec-panel {
+  background: var(--ec-a-panel);
+  border: 1px solid var(--ec-a-border);
+  border-radius: 14px;
+}
+.ec-panel-raised { background: var(--ec-a-panel-raised); }
+.ec-panel-soft { background: var(--ec-a-panel-soft); }
+
+/* ── Roll progression strip ────────────────────────────────────────────────── */
+.ec-rollstrip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+@media (max-width: 700px) {
+  .ec-rollstrip { grid-template-columns: 1fr; }
+}
+
+/* ── Control rail ──────────────────────────────────────────────────────────── */
+.ec-arena-main {
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .ec-arena-main { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ── Mode shelf ────────────────────────────────────────────────────────────── */
+.ec-mode-shelf {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+}
+@media (max-width: 768px) {
+  .ec-mode-shelf {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 6px;
+  }
+  .ec-mode-shelf > * { flex: 0 0 200px; scroll-snap-align: start; }
+}
+
+/* ── Dropdown menus ────────────────────────────────────────────────────────── */
+.ec-menu-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 60;
+  min-width: 320px;
+  max-width: min(92vw, 480px);
+  background: var(--ec-a-panel-raised, #0d1a2b);
+  border: 1px solid var(--ec-a-border-strong, rgba(157, 178, 209, 0.30));
+  border-radius: 14px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+  padding: 8px;
+  max-height: min(70vh, 560px);
+  overflow-y: auto;
+}
+@media (max-width: 560px) {
+  .ec-menu-panel { left: 0; right: 0; min-width: 0; max-width: none; }
+}
+
+/* ── Full postgame overlay ─────────────────────────────────────────────────── */
+.ec-report-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: var(--ec-a-scrim, rgba(3, 7, 13, 0.94));
+  overflow-y: auto;
+  padding: 16px;
+}
+.ec-report-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+/* A workspace column may never be wider than the workspace. Both columns are
+   implicit single-track grids, and an implicit `auto` track grows to its
+   content's MAX-content width on a narrow screen — which pushed the draft board
+   about four phone-screens wide inside a clipped container, so the right-hand
+   cards simply could not be reached. An explicit minmax(0, 1fr) track is what
+   holds the column to the space it actually has. */
+.ec-cc > div, .ec-cc-dock > div { grid-template-columns: minmax(0, 1fr); }
+
+/* Reduced motion: the arena is atmosphere, never information. */
+@media (prefers-reduced-motion: reduce) {
+  .ec-arena-court::after { display: none; }
+}
+
+/* The whole page adopts the arena treatment while the command centre is open,
+   so no light band shows beneath the workspace. */
+.ec-arena-page { background: var(--ec-a-bg, #03070d); min-height: 100vh; }
+.ec-arena-page footer, .ec-arena-page .ec-footer { color: var(--ec-a-text-muted, #93a0b5); }
+/* ═══════════════════════════════════════════════════════════════════════════
+   THE TIME ARENA — Phase 8C.1 canonical geometry
+   Rebuilt to the measured contract in
+   data/validation/8c1/time-arena-visual-contract.json. The horizontal budget is
+   closed arithmetic, not an estimate: at the canonical 1536px viewport the ten
+   player cards, their gaps and the centre divider add up to the roster width
+   exactly, which is what puts both teams on ONE row instead of stacking Blue
+   under Gold.
+
+       1536 − 36 (page padding) − 364 (rail) − 14 (gap)      = 1122 main arena
+       1122 − 28 (stage padding)                             = 1094 roster
+       10 × 104 + 8 × 5 (intra-side gaps) + 14 (centre)      = 1094
+   ═══════════════════════════════════════════════════════════════════════════ */
+.ec-arena-shell {
+  /* Geometry — every literal dimension in the arena comes from here. */
+  --arena-header-h: 64px;
+  --arena-rail-w: 364px;
+  --arena-gap: 14px;
+  --arena-page-pad-x: 18px;
+  --arena-page-pad-y: 14px;
+  --arena-stage-pad: 14px;
+
+  --player-card-w: 104px;
+  --player-card-h: 322px;
+  --player-card-gap: 5px;
+  --player-portrait-h: 212px;
+  --player-footer-h: 44px;
+  --roster-divider-w: 4px;
+
+  --coach-card-w: 248px;
+  --coach-card-h: 232px;
+  --coach-card-gap: 14px;
+
+  --cta-w: 352px;
+  --cta-h: 52px;
+  --utility-h: 58px;
+
+  --ec-radius-card: 10px;
+  --ec-radius-panel: 14px;
+
+  /* Condensed display type for names, ratings and roll labels. No remote font
+     is loaded; this is a system stack, and a bundled licensed face would be an
+     asset decision rather than a code one. */
+  --ec-display: "Arial Narrow", "Helvetica Neue Condensed", "Roboto Condensed",
+                "Liberation Sans Narrow", system-ui, sans-serif;
+}
+
+.ec-ta {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--arena-rail-w);
+  gap: var(--arena-gap);
+  align-items: start;
+  padding: var(--arena-page-pad-y) var(--arena-page-pad-x) var(--arena-page-pad-y);
+  /* No max-width clamp: the canonical viewport must resolve to the contract's
+     1122px main arena, and a centred 1600px cap would silently change it. */
+}
+.ec-ta-main { min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+/* The rail is a COLUMN OF THE PAGE, not a pane with its own scrollbar.
+   It used to be sticky with its own max-height and overflow-y, which meant the
+   page scroll stopped working the moment the pointer was over it and up to
+   504px of the result — the story, the box score, the analysis — sat behind an
+   inner scrollbar that looked like an invisible barrier. One scroller: the page.
+   align-self: start keeps it from being stretched to the stage's height. */
+.ec-ta-rail {
+  min-width: 0;
+  align-self: start;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+}
+
+/* ── The stage: one panel, as the reference shows ──────────────────────────*/
+.ec-ta-stage {
+  position: relative;
+  isolation: isolate;
+  padding: var(--arena-stage-pad);
+  border-radius: var(--ec-radius-panel);
+  border: 1px solid var(--ec-a-border);
+  background: transparent;
+  overflow: hidden;
+}
+/* Atmosphere lives behind the stage's content, never over it. */
+.ec-ta-stage > * { position: relative; z-index: 1; }
+
+.ec-ta-stage-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: start;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.ec-ta-team-label { display: grid; gap: 1px; }
+.ec-ta-team-label--blue { justify-items: end; text-align: right; }
+.ec-ta-team-name {
+  font-family: var(--ec-display);
+  font-size: 17px; font-weight: 700; letter-spacing: 1.6px; line-height: 1.1;
+}
+.ec-ta-team-sub { font-size: 10px; font-weight: 800; letter-spacing: 1.4px; color: var(--ec-a-text-muted); }
+
+.ec-ta-title { display: grid; justify-items: center; gap: 3px; }
+.ec-ta-title-main {
+  font-family: var(--ec-display);
+  font-size: 21px; font-weight: 700; letter-spacing: 3px; line-height: 1;
+  color: var(--ec-a-gold);
+}
+.ec-ta-title-sub {
+  font-size: 11.5px; font-weight: 800; letter-spacing: 2px; color: var(--ec-a-text-secondary);
+}
+
+/* ── Roll progression ─────────────────────────────────────────────────────*/
+.ec-ta-stepper { display: flex; align-items: flex-start; gap: 0; }
+.ec-ta-step { display: grid; justify-items: center; gap: 3px; min-width: 68px; }
+.ec-ta-step-dot {
+  width: 24px; height: 24px; border-radius: 999px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--ec-display);
+  font-size: 12.5px; font-weight: 700;
+  border: 1px solid var(--ec-a-border-strong);
+  color: var(--ec-a-text-muted);
+  background: var(--ec-a-panel);
+}
+.ec-ta-step[data-state="COMPLETE"] .ec-ta-step-dot {
+  border-color: var(--ec-a-gold-line); background: var(--ec-a-cta-mid, var(--ec-a-gold)); color: var(--ec-a-cta-ink, #0a0f18);
+}
+.ec-ta-step[data-state="ACTIVE"] .ec-ta-step-dot {
+  border-color: var(--ec-a-gold); color: var(--ec-a-gold);
+  background: var(--ec-a-gold-soft);
+  box-shadow: 0 0 0 3px rgba(242, 181, 29, 0.14);
+}
+.ec-ta-step-label {
+  font-size: 10px; font-weight: 900; letter-spacing: 1px;
+  color: var(--ec-a-text-secondary);
+}
+.ec-ta-step[data-state="ACTIVE"] .ec-ta-step-label,
+.ec-ta-step[data-state="COMPLETE"] .ec-ta-step-label { color: var(--ec-a-text-secondary); }
+.ec-ta-step-rule { height: 1px; width: 22px; background: var(--ec-a-border); margin-top: 12px; }
+
+/* ── One roster row: five Gold, a divider, five Blue ──────────────────────*/
+/* The team group keeps its identity but not its box: with display: contents the
+   five cards become items of the roster grid itself, which is what allows one
+   row of ten. Restore a box for it and the teams stack again. */
+.ec-ta-team { display: contents; }
+.ec-ta-roster {
+  display: grid;
+  grid-template-columns:
+    repeat(5, minmax(0, 1fr))
+    var(--roster-divider-w)
+    repeat(5, minmax(0, 1fr));
+  gap: var(--player-card-gap);
+  /* The cap is the canonical width: ten cards at their token width, eight
+     intra-side gaps, the divider and its two gaps. Below that the fr tracks
+     shrink together, so ten cards stay on one row and none is ever clipped. */
+  max-width: calc(10 * var(--player-card-w) + 10 * var(--player-card-gap) + var(--roster-divider-w));
+  margin-inline: auto;
+  width: 100%;
+}
+/* Phase 9A.2: the main arena divide is the Era Fracture (approved placement 1)
+   under the production theme; the four candidates keep the neutral line they
+   were measured with. 2px inside a 4px track: the cards do not move. */
+.ec-ta-roster-divider {
+  align-self: stretch;
+  justify-self: center;
+  width: 2px;
+  border-radius: 1px;
+  background: var(--ec-a-fracture, linear-gradient(to bottom, transparent, rgba(157, 178, 209, 0.22) 12%, rgba(157, 178, 209, 0.22) 88%, transparent));
+  box-shadow: var(--ec-a-fracture-glow, 0 0 0 0 transparent);
+}
+
+/* ── Player card ───────────────────────────────────────────────────────────
+   Narrow, tall and portrait-dominant: a trading card, not an information tile.
+   The portrait zone is a fixed 212px of the card's 322px (66%), so an approved
+   portrait is a straight asset swap that moves nothing. */
+.ec-pc {
+  --pc-accent: var(--ec-a-gold);
+  --pc-line: var(--ec-a-gold-line);
+  --pc-soft: var(--ec-a-gold-soft);
+  --pc-deep: var(--ec-a-pc-deep-gold, #8b5b08);
+  min-width: 0;
+  height: var(--player-card-h);
+  display: grid;
+  grid-template-rows: var(--player-portrait-h) auto auto 1fr;
+  gap: 4px;
+  padding: 6px;
+  border-radius: var(--ec-radius-card);
+  border: 1px solid var(--ec-a-border);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--pc-accent) 26%, transparent) 0%, transparent 42%),
+    linear-gradient(180deg, var(--ec-a-panel-raised) 0%, var(--ec-a-panel) 100%);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 6px 14px rgba(0, 0, 0, 0.35);
+  transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
+}
+/* The TEAM owns the theme. A position never touches it. */
+.ec-ta-team[data-team="blue"] .ec-pc,
+.ec-pc[data-team="blue"] {
+  --pc-accent: var(--ec-a-blue);
+  --pc-line: var(--ec-a-blue-line);
+  --pc-soft: var(--ec-a-blue-soft);
+  --pc-deep: var(--ec-a-pc-deep-blue, #0e4f91);
+}
+/* Held cards lift, which is a second, non-colour signal. */
+.ec-pc[data-held="true"] {
+  border-color: var(--pc-line);
+  transform: translateY(-3px);
+  box-shadow: 0 0 0 1px var(--pc-line) inset, 0 10px 20px rgba(0, 0, 0, 0.45);
+}
+
+.ec-pc-portrait {
+  position: relative;
+  height: var(--player-portrait-h);
+  border-radius: 8px;
+  overflow: hidden;
+  background:
+    radial-gradient(140% 70% at 50% 100%, color-mix(in srgb, var(--pc-accent) 22%, transparent), transparent 68%),
+    radial-gradient(120% 80% at 50% 4%, rgba(255, 255, 255, 0.09), transparent 58%),
+    linear-gradient(180deg, var(--ec-a-portrait-well-hi, #0e1a2b) 0%, var(--ec-a-portrait-well-lo, #050a12) 100%);
+  border: 1px solid var(--pc-line);
+  box-shadow: 0 -18px 26px -18px color-mix(in srgb, var(--pc-accent) 45%, transparent) inset;
+}
+.ec-pc-portrait img,
+.ec-pc-portrait svg { width: 100%; height: 100%; display: block; object-fit: cover; object-position: top center; }
+.ec-pc-slot {
+  position: absolute; top: 5px; left: 5px; z-index: 2;
+  font-family: var(--ec-display);
+  font-size: 10.5px; font-weight: 700; letter-spacing: 1.2px;
+  padding: 2px 6px; border-radius: 5px;
+  color: var(--pc-accent);
+  border: 1px solid var(--pc-line);
+  background: color-mix(in srgb, var(--ec-a-bg, #03070d) 72%, transparent);
+}
+.ec-pc-name {
+  font-family: var(--ec-display);
+  font-size: 12.5px; font-weight: 700; letter-spacing: 0.4px; line-height: 1.1;
+  text-transform: uppercase;
+  color: var(--ec-a-text);
+  height: 28px; overflow: hidden;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  text-wrap: balance;
+}
+/* One line, always. The card's height is fixed and its footer is the last grid
+   row, so anything that wraps here pushes the button out through the bottom. */
+.ec-pc-meta {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 4px;
+  min-width: 0; white-space: nowrap;
+}
+.ec-pc-decade {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.6px; color: var(--ec-a-text-muted);
+  min-width: 0; overflow: hidden; text-overflow: ellipsis;
+}
+/* The counterpart to the position chip, on the other shoulder. */
+.ec-pc-kept {
+  position: absolute; top: 5px; right: 5px; z-index: 2;
+  font-family: var(--ec-display);
+  font-size: 9px; font-weight: 800; letter-spacing: 1px;
+  padding: 2px 5px; border-radius: 5px;
+  color: var(--pc-accent);
+  border: 1px solid var(--pc-line);
+  background: color-mix(in srgb, var(--ec-a-bg, #03070d) 72%, transparent);
+}
+.ec-pc-ovr {
+  font-family: var(--ec-display);
+  font-size: 17px; font-weight: 700; line-height: 1;
+  color: var(--pc-accent); font-variant-numeric: tabular-nums;
+}
+.ec-pc-ovr span { font-size: 9px; font-weight: 800; color: var(--ec-a-text-muted); margin-left: 2px; letter-spacing: 0.4px; }
+
+.ec-pc-action,
+.ec-pc-static {
+  align-self: end;
+  height: var(--player-footer-h);
+  width: 100%;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center; gap: 4px;
+  font-family: var(--ec-display);
+  font-size: 12px; font-weight: 700; letter-spacing: 1.2px;
+}
+.ec-pc-action {
+  border: 1px solid var(--ec-a-border-strong);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01));
+  color: var(--ec-a-text-secondary);
+  cursor: pointer;
+}
+.ec-pc-action[data-on="true"] {
+  border-color: var(--pc-line);
+  background: linear-gradient(180deg, var(--pc-accent), var(--pc-deep));
+  color: #0a0f18;
+}
+.ec-pc-action[disabled] { cursor: default; opacity: 0.6; }
+.ec-pc-static {
+  border: 1px dashed var(--ec-a-border);
+  color: var(--ec-a-text-muted);
+  font-size: 9.5px; letter-spacing: 1px;
+}
+.ec-pc-static[data-on="true"] {
+  border-style: solid; border-color: var(--pc-line); color: var(--pc-accent);
+  background: var(--pc-soft);
+}
+
+/* The portrait fallback. The silhouette is a MASK, so the fill is the card's
+   team gradient with a rim light along the top-left — which a flat SVG file
+   could not do, and which is why the figure is masked rather than embedded. */
+.ec-pc-figure {
+  position: absolute;
+  inset: 0;
+  background:
+    /* rim light from the upper left, the way the arena lights the floor */
+    radial-gradient(90% 70% at 26% 4%, color-mix(in srgb, var(--pc-accent) 92%, white 8%), transparent 62%),
+    /* the body itself, in team colour falling into the dark */
+    linear-gradient(180deg,
+      color-mix(in srgb, var(--pc-accent) 62%, #0b1220) 0%,
+      color-mix(in srgb, var(--pc-accent) 30%, #070d16) 46%,
+      #060c15 96%);
+  -webkit-mask-image: url("./ui/time-arena/assets/player-silhouette.svg");
+  mask-image: url("./ui/time-arena/assets/player-silhouette.svg");
+  -webkit-mask-size: 118% auto;
+  mask-size: 118% auto;
+  -webkit-mask-position: top center;
+  mask-position: top center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+.ec-pc-figure-initials {
+  position: absolute;
+  left: 0; right: 0; bottom: 8px;
+  text-align: center;
+  font-family: var(--ec-display);
+  font-size: 20px; font-weight: 700; font-style: italic; letter-spacing: 1px;
+  color: rgba(245, 247, 251, 0.72);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8);
+}
+.ec-coach-figure {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(90% 70% at 26% 4%, rgba(196, 150, 245, 0.95), transparent 62%),
+    linear-gradient(180deg, rgba(168, 100, 232, 0.72) 0%, rgba(120, 66, 176, 0.34) 48%, #060c15 96%);
+  -webkit-mask-image: url("./ui/time-arena/assets/coach-silhouette.svg");
+  mask-image: url("./ui/time-arena/assets/coach-silhouette.svg");
+  -webkit-mask-size: 116% auto;
+  mask-size: 116% auto;
+  -webkit-mask-position: top center;
+  mask-position: top center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+.ec-coach-portrait { position: relative; }
+.ec-coach-figure-initials {
+  position: absolute; left: 0; right: 0; bottom: 5px; text-align: center;
+  font-family: var(--ec-display);
+  font-size: 14px; font-weight: 700; font-style: italic;
+  color: rgba(245, 247, 251, 0.75);
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.8);
+}
+
+/* ── Empty card back ──────────────────────────────────────────────────────
+   The SAME geometry as a populated card, so Roll 1 reveals cards instead of
+   reflowing the board. */
+.ec-pc-empty {
+  min-width: 0;
+  height: var(--player-card-h);
+  border-radius: var(--ec-radius-card);
+  border: 1px solid var(--ec-a-border);
+  background:
+    linear-gradient(180deg, var(--pc-soft, rgba(242,181,29,0.06)) 0%, transparent 30%),
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.014) 0 6px, transparent 6px 12px),
+    linear-gradient(180deg, var(--ec-a-panel) 0%, #060c15 100%);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  padding: 8px 6px;
+  justify-items: center;
+  gap: 6px;
+}
+.ec-ta-team[data-team="gold"] .ec-pc-empty, .ec-pc-empty[data-team="gold"] { --pc-soft: rgba(242, 181, 29, 0.07); --pc-accent: var(--ec-a-gold); --pc-line: var(--ec-a-gold-line); }
+.ec-ta-team[data-team="blue"] .ec-pc-empty, .ec-pc-empty[data-team="blue"] { --pc-soft: rgba(59, 155, 255, 0.07); --pc-accent: var(--ec-a-blue); --pc-line: var(--ec-a-blue-line); }
+.ec-pc-empty-slot {
+  justify-self: start;
+  font-family: var(--ec-display);
+  font-size: 10.5px; font-weight: 700; letter-spacing: 1.2px;
+  padding: 2px 6px; border-radius: 5px;
+  color: var(--pc-accent);
+  border: 1px solid var(--pc-line);
+  background: color-mix(in srgb, var(--ec-a-bg, #03070d) 60%, transparent);
+}
+.ec-pc-empty-mark {
+  align-self: center;
+  font-family: var(--ec-display);
+  font-size: 22px; font-weight: 700; font-style: italic; letter-spacing: 1px;
+  color: var(--pc-line);
+  border: 1px solid var(--pc-line);
+  border-radius: 999px;
+  width: 46px; height: 46px;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0.85;
+}
+.ec-pc-empty-hint {
+  font-size: 10px; font-weight: 800; letter-spacing: 1px; line-height: 1.35;
+  color: var(--ec-a-text-muted); text-align: center;
+}
+
+/* ── Coach Chaos ───────────────────────────────────────────────────────────
+   Directly beneath the roster, inside the same stage, so it is part of the
+   first composition rather than something to scroll for. */
+.ec-ta-coach { margin-top: 14px; }
+.ec-ta-coach-head { display: grid; justify-items: center; gap: 2px; margin-bottom: 9px; }
+.ec-ta-coach-title {
+  font-family: var(--ec-display);
+  font-size: 16px; font-weight: 700; letter-spacing: 2.6px;
+  color: var(--ec-a-coach);
+}
+.ec-ta-coach-sub { font-size: 11px; font-weight: 700; letter-spacing: 0.6px; color: var(--ec-a-text-muted); }
+.ec-cc-offers {
+  display: grid;
+  grid-template-columns: repeat(3, var(--coach-card-w));
+  gap: var(--coach-card-gap);
+  justify-content: center;
+}
+.ec-coach-card {
+  width: var(--coach-card-w);
+  /* min-height, not height: an opened scouting detail grows the card, and
+     because the three cards are items of ONE grid row they grow together and
+     stay equal. A fixed height needed an inner scrollbar to keep the footer in,
+     and that is a second invisible barrier. Closed, this is exactly 232px. */
+  min-height: var(--coach-card-h);
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  grid-template-rows: auto 1fr auto;
+  gap: 8px 10px;
+  padding: 10px;
+  border-radius: var(--ec-radius-card);
+  border: 1px solid var(--ec-a-coach-line);
+  background:
+    linear-gradient(180deg, var(--ec-a-coach-soft) 0%, transparent 42%),
+    linear-gradient(180deg, var(--ec-a-panel-raised) 0%, var(--ec-a-panel) 100%);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+}
+.ec-coach-card[data-on="true"] {
+  border-color: var(--ec-a-coach);
+  box-shadow: 0 0 0 1px var(--ec-a-coach) inset, 0 10px 20px rgba(0, 0, 0, 0.45);
+}
+.ec-coach-role {
+  grid-column: 1 / -1;
+  font-size: 10.5px; font-weight: 900; letter-spacing: 1.4px;
+  color: var(--ec-a-coach);
+}
+/* Full-height portrait zone, exactly as the player cards do it, so approved
+   coach art is also a straight swap. */
+.ec-coach-portrait {
+  grid-row: 2;
+  width: 76px; height: 96px;
+  border-radius: 8px; overflow: hidden;
+  border: 1px solid var(--ec-a-coach-line);
+  background: linear-gradient(180deg, rgba(168, 100, 232, 0.22), #060c15 92%);
+}
+.ec-coach-portrait svg, .ec-coach-portrait img { width: 100%; height: 100%; display: block; }
+/* min-height: 0 is what lets the body row shrink at all — without it a grid row
+   cannot go below its content, and one long coaching span pushed the footer
+   clean out through the bottom border while the cards beside it stayed put. */
+.ec-coach-body {
+  grid-row: 2; min-width: 0; min-height: 0;
+  display: grid; align-content: start; gap: 4px;
+}
+.ec-coach-name {
+  font-family: var(--ec-display);
+  font-size: 15px; font-weight: 700; letter-spacing: 0.4px; line-height: 1.1;
+  color: var(--ec-a-text);
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden;
+}
+/* A span is a date range: ONE line on the face. At two lines the body track's
+   min-content grew past its 101px and the whole card went to 237 against a
+   canonical 232 — three cards agreeing with each other and all five out. The
+   full span is the first line of the scouting detail, so nothing is lost. */
+.ec-coach-span {
+  font-size: 10.5px; font-weight: 700; color: var(--ec-a-text-muted);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.ec-coach-card[data-open="true"] .ec-coach-span { white-space: normal; overflow: visible; }
+/* Three lines on the face. The card grows only when a player OPENS the scouting
+   detail; a long offensive summary must not quietly cost the closed card its
+   canonical 232px. */
+.ec-coach-blurb {
+  font-size: 11.5px; line-height: 1.4; color: var(--ec-a-text-secondary);
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden;
+}
+/* Opened, the detail is read in full and the row grows with it. */
+.ec-coach-card[data-open="true"] .ec-coach-blurb { -webkit-line-clamp: unset; }
+.ec-coach-foot { grid-column: 1 / -1; grid-row: 3; display: grid; gap: 5px; }
+.ec-coach-detail-toggle {
+  justify-self: start; min-height: 28px; padding: 0;
+  background: transparent; border: none; cursor: pointer;
+  color: var(--ec-a-text-muted); font-size: 10.5px; font-weight: 700; text-decoration: underline;
+}
+.ec-coach-action {
+  height: 44px; width: 100%; border-radius: 8px; cursor: pointer;
+  font-family: var(--ec-display);
+  font-size: 12px; font-weight: 700; letter-spacing: 1.2px;
+  display: flex; align-items: center; justify-content: center; gap: 4px;
+  border: 1px solid var(--ec-a-border-strong);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01));
+  color: var(--ec-a-text-secondary);
+}
+.ec-coach-action[data-on="true"] {
+  border-color: var(--ec-a-coach);
+  background: linear-gradient(180deg, var(--ec-a-coach), var(--ec-a-coach-deep));
+  color: #0a0f18;
+}
+.ec-coach-static {
+  height: 30px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9.5px; font-weight: 900; letter-spacing: 1px;
+  border: 1px dashed var(--ec-a-border); color: var(--ec-a-text-muted);
+}
+
+/* Secondary actions under the primary one: challenge, and the way to start
+   over. Quieter than the CTA and never competing with it. */
+.ec-ta-stage-actions {
+  margin-top: 8px;
+  display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+}
+
+/* ── The one primary action ────────────────────────────────────────────────*/
+.ec-ta-cta-wrap { margin-top: 14px; display: grid; justify-items: center; gap: 5px; }
+/* 1fr auto 1fr keeps the CTA on the stage's centre line whatever sits beside
+   it: the two flanking columns are always equal, so the button does not drift. */
+.ec-ta-cta-row {
+  width: 100%;
+  display: grid; grid-template-columns: 1fr auto 1fr;
+  align-items: center; gap: 12px;
+}
+.ec-ta-cta-row .ec-ta-stage-actions { margin-top: 0; justify-content: flex-start; }
+.ec-ta-cta {
+  width: var(--cta-w);
+  height: var(--cta-h);
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: var(--ec-display);
+  font-size: 17px; font-weight: 700; letter-spacing: 2.4px;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  border: 1px solid var(--ec-a-gold-line);
+  background: linear-gradient(180deg, var(--ec-a-cta-hi, #ffd257) 0%, var(--ec-a-cta-mid, var(--ec-a-gold)) 46%, var(--ec-a-cta-lo, #c98f0c) 100%);
+  color: var(--ec-a-cta-ink, #14100a);
+  box-shadow: var(--ec-a-cta-glow, 0 8px 18px rgba(242, 181, 29, 0.18)), 0 1px 0 rgba(255, 255, 255, 0.35) inset;
+}
+.ec-ta-cta[disabled] {
+  cursor: default;
+  background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+  border-color: var(--ec-a-border);
+  color: var(--ec-a-text-muted);
+  box-shadow: none;
+}
+.ec-ta-cta-sub { font-size: 12px; font-weight: 700; letter-spacing: 0.4px; color: var(--ec-a-text-muted); }
+
+/* ── Utility bar ───────────────────────────────────────────────────────────*/
+.ec-ta-utility {
+  height: var(--utility-h);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 10px;
+  padding: 0 14px;
+  border-radius: var(--ec-radius-panel);
+  border: 1px solid var(--ec-a-border);
+  background: var(--ec-a-panel);
+}
+.ec-ta-utility-links { display: flex; align-items: center; gap: 2px; }
+.ec-ta-utility button {
+  min-height: 44px; padding: 0 10px; border-radius: 8px;
+  background: transparent; border: none; cursor: pointer;
+  color: var(--ec-a-text-secondary); font-size: 11px; font-weight: 800; letter-spacing: 0.8px;
+}
+.ec-ta-utility button:hover { color: var(--ec-a-text); background: var(--ec-a-panel-soft); }
+
+/* ── Right rail: TWO surfaces, not a column of dashboard cards ─────────────*/
+.ec-intel {
+  border-radius: var(--ec-radius-panel);
+  border: 1px solid var(--ec-a-border);
+  background: var(--ec-a-panel);
+  padding: 11px 13px;
+}
+.ec-intel-head { display: flex; align-items: center; gap: 7px; margin-bottom: 6px; }
+.ec-intel-heading { font-size: 10.5px; font-weight: 900; letter-spacing: 2px; color: var(--ec-a-text); }
+.ec-intel-row { display: grid; gap: 0; padding: 5px 0; border-top: 1px solid var(--ec-a-border); }
+.ec-intel-row:first-of-type { border-top: none; padding-top: 2px; }
+.ec-intel-label { font-size: 10.5px; font-weight: 900; letter-spacing: 1.4px; }
+.ec-intel-values { display: grid; gap: 0; }
+.ec-intel-value { font-size: 13px; color: var(--ec-a-text); line-height: 1.35; }
+.ec-intel-value--sub { font-size: 11.5px; color: var(--ec-a-text-secondary); line-height: 1.3; }
+.ec-intel-note { font-size: 11px; color: var(--ec-a-text-muted); line-height: 1.4; }
+/* Era Impact is a SECTION of the intel panel, divided rather than detached. */
+.ec-intel-era { margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--ec-a-border-strong); }
+.ec-intel-era-id {
+  font-family: var(--ec-display);
+  font-size: 26px; font-weight: 700; line-height: 1; color: var(--ec-a-gold);
+}
+
+/* ── Arena atmosphere ──────────────────────────────────────────────────────
+   Nine locally authored layers: no photograph, no downloaded imagery, no
+   raster background. The court and crowd are SVG files in
+   src/ui/time-arena/assets/, referenced by url() from this stylesheet; the
+   lighting, haze, grain and vignette are CSS. The cards stay dominant — every
+   layer here is under 0.5 opacity. */
+.ec-ta-atmos {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: var(--ec-radius-panel);
+  overflow: hidden;
+  background: linear-gradient(180deg, var(--ec-a-arena, #050b14) 0%, var(--ec-a-bg, #030811) 100%);
+}
+.ec-ta-atmos::before {
+  /* Hardwood in perspective, plus the court lines, anchored to the floor. */
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 70%;
+  background:
+    /* The floor fades in rather than starting at full strength: at 0.9 flat it
+       read as an orange band behind the coach section instead of a court
+       receding under the lights. */
+    linear-gradient(180deg, color-mix(in srgb, var(--ec-a-bg, #03070d) 92%, transparent) 0%, color-mix(in srgb, var(--ec-a-bg, #03070d) 35%, transparent) 26%, transparent 62%),
+    url("./ui/time-arena/assets/arena-court.svg") bottom center / 100% 100% no-repeat,
+    linear-gradient(180deg, transparent, rgba(96, 57, 18, 0.16));
+  opacity: calc(0.72 * var(--ec-a-court-opacity, 1));
+}
+/* A theme may lay one subtle texture over the floor (hardwood grain). Default: none. */
+.ec-ta-atmos { background-image: var(--ec-a-texture, none), linear-gradient(180deg, var(--ec-a-arena, #050b14) 0%, var(--ec-a-bg, #030811) 100%); }
+.ec-ta-atmos::after {
+  /* Two spotlights, a centre haze and a vignette, in one composited layer. */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(820px 340px at 14% -8%, var(--ec-a-spot-warm-strong, rgba(242, 181, 29, 0.26)), transparent 64%),
+    radial-gradient(820px 340px at 86% -8%, var(--ec-a-spot-cool-strong, rgba(59, 155, 255, 0.26)), transparent 64%),
+    radial-gradient(620px 260px at 50% 30%, rgba(190, 210, 240, 0.08), transparent 72%),
+    radial-gradient(130% 105% at 50% 46%, transparent 44%, color-mix(in srgb, var(--ec-a-bg, #03070d) 70%, transparent) 100%);
+}
+.ec-ta-crowd {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 30%;
+  background: url("./ui/time-arena/assets/crowd-silhouette.svg") top center / 620px 100% repeat-x;
+  /* The crowd follows the theme's court strength and multiplies into the canvas:
+     on the Light Court it reads as shade, not as a grey slab over the ivory. */
+  opacity: calc(0.4 * var(--ec-a-court-opacity, 1));
+  mix-blend-mode: multiply;
+}
+.ec-ta-grain {
+  position: absolute;
+  inset: 0;
+  background: url("./ui/time-arena/assets/arena-grain.svg");
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+}
+
+/* ── Container-aware responsive behaviour ─────────────────────────────────
+   The roster composition follows the ARENA's own width, not a viewport guess:
+   ten cards need about 1080px of arena, so the rail narrows first and only then
+   do the teams take separate rows. The central game board is never the first
+   thing sacrificed to keep an oversized rail open. */
+@media (max-width: 1439px) {
+  /* Adapt the rail before touching the board: the arena is the game. */
+  .ec-arena-shell { --arena-rail-w: 320px; --player-card-gap: 4px; }
+}
+@media (max-width: 1279px) {
+  .ec-arena-shell { --arena-rail-w: 300px; --player-card-gap: 4px; --coach-card-w: 214px; }
+}
+@media (max-width: 1179px) {
+  /* Tablet: the rail moves below the arena rather than squeezing it, and each
+     team takes its own row of five. */
+  .ec-ta { grid-template-columns: minmax(0, 1fr); padding: 12px 12px 16px; }
+  .ec-arena-shell { --player-card-w: 132px; --player-card-gap: 8px; --player-card-h: 316px; }
+  .ec-ta-roster {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    max-width: calc(5 * var(--player-card-w) + 4 * var(--player-card-gap));
+  }
+  .ec-ta-roster-divider { display: none; }
+  .ec-ta-roster--blue { margin-top: 12px; }
+  .ec-ta-stage-head { grid-template-columns: minmax(0, 1fr); justify-items: center; }
+  .ec-ta-team-label--blue { justify-items: center; text-align: center; }
+}
+@media (max-width: 900px) {
+  .ec-cc-offers { grid-template-columns: minmax(0, 1fr); }
+  .ec-coach-card { width: 100%; height: auto; min-height: var(--coach-card-h); }
+  .ec-coach-detail-toggle { height: 44px; min-height: 44px; }
+}
+@media (max-width: 767px) {
+  /* Mobile: full-width cards for the user's five, a compact opponent strip,
+     and controls that stay at the touch-target floor. */
+  .ec-arena-shell {
+    --player-card-h: 300px;
+    --player-card-gap: 8px;
+    --cta-w: 100%;
+    --utility-h: auto;
+  }
+  /* Two columns and ten cards in ONE grid put Gold's centre beside Blue's point
+     guard on the third row, with the divider hidden and no boundary between the
+     teams. Each side gets its own grid on a phone, stacked, so a row never
+     mixes them. `display: contents` is what made them one flow; this undoes it
+     at this width only. */
+  .ec-ta-roster { grid-template-columns: minmax(0, 1fr); max-width: none; }
+  .ec-ta-team {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--player-card-gap);
+  }
+  .ec-ta-team[data-team="blue"] { margin-top: 14px; }
+  .ec-ta-utility { height: auto; padding: 8px 10px; flex-wrap: wrap; }
+  .ec-ta-cta { font-size: 15px; letter-spacing: 1.6px; }
+  .ec-ta-cta-row { grid-template-columns: minmax(0, 1fr); }
+  .ec-ta-cta-row > span[aria-hidden] { display: none; }
+  .ec-ta-cta-row .ec-ta-stage-actions { justify-content: center; }
+}
+@media (max-width: 430px) {
+  .ec-arena-shell { --player-card-h: 286px; --player-portrait-h: 176px; }
+}
+
+/* Once a game has been played the result leads the stacked page: a finished
+   score below the whole board is a result nobody scrolls to. */
+@media (max-width: 1179px) {
+  .ec-ta-rail--front { order: -1; }
+}
+
+/* Reduced motion: nothing in the arena carries meaning through movement. */
+@media (prefers-reduced-motion: reduce) {
+  .ec-pc, .ec-coach-card { transition: none; }
+  .ec-pc[data-held="true"] { transform: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PHASE 9A — THE PLAY LOBBY
+   The visual entrance. Same tokens as the arena (this renders inside
+   .ec-arena-shell), one decision per card, and a single primary action per
+   card. Fits one desktop viewport; reflows to two columns on a tablet and one
+   on a phone. Every control is at least 44px tall.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.ec-lobby { display: grid; gap: 0; }
+/* Phase 9A.2: the hero is the lobby's BRAND BAND (obsidian under the production
+   theme, the Mk1 mark on it); the mode grid below sits on the lobby canvas. */
+.ec-lobby-hero {
+  display: grid; justify-items: center; gap: 4px; text-align: center;
+  padding: 14px 18px 12px;
+  background: var(--ec-l-hero-bg, transparent);
+}
+.ec-lobby-body {
+  max-width: 1180px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 14px 18px 28px;
+  display: grid;
+  gap: 14px;
+}
+.ec-lobby-logo { width: min(340px, 78vw); height: auto; display: block; }
+.ec-lobby-line {
+  margin: 0; max-width: 620px;
+  font-size: 14.5px; line-height: 1.55; color: var(--ec-l-text-secondary, var(--ec-a-text-secondary));
+}
+.ec-lobby-kicker {
+  margin: 0 0 8px; font-size: 10.5px; font-weight: 900; letter-spacing: 2px;
+  color: var(--ec-l-text-muted, var(--ec-a-text-muted));
+}
+
+.ec-lobby-primary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+.ec-lobby-secondary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+/* One card: glyph and badges, a name, one sentence, one action. */
+.ec-mode-card {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  gap: 8px;
+  padding: 18px;
+  border-radius: 16px;
+  border: 1px solid var(--ec-l-border, var(--ec-a-border));
+  background: linear-gradient(180deg, var(--ec-l-panel-raised, var(--ec-a-panel-raised)), var(--ec-l-panel, var(--ec-a-panel)));
+  min-width: 0;
+}
+.ec-mode-card--primary { min-height: 212px; }
+.ec-mode-card--secondary { padding: 12px 14px; gap: 6px; min-height: 138px; }
+.ec-mode-card--recommended {
+  border-color: var(--ec-a-gold-line);
+  box-shadow: var(--ec-l-card-shadow, 0 0 0 1px rgba(242, 181, 29, 0.18), 0 18px 40px rgba(0, 0, 0, 0.35));
+}
+.ec-mode-card-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; min-height: 34px; }
+.ec-mode-glyph {
+  display: inline-grid; place-items: center;
+  width: 46px; height: 46px; border-radius: 12px;
+  color: var(--ec-a-gold);
+  background: var(--ec-a-gold-soft);
+  border: 1px solid var(--ec-a-gold-line);
+}
+.ec-mode-card--secondary .ec-mode-glyph {
+  width: 36px; height: 36px; border-radius: 10px;
+  color: var(--ec-l-text-secondary, var(--ec-a-text-secondary)); background: var(--ec-l-panel-soft, var(--ec-a-panel-soft)); border-color: var(--ec-l-border, var(--ec-a-border));
+}
+.ec-mode-flag, .ec-mode-badge {
+  font-size: 9.5px; font-weight: 900; letter-spacing: 1.2px;
+  padding: 4px 8px; border-radius: 999px; white-space: nowrap;
+}
+.ec-mode-flag { margin-left: auto; color: var(--ec-a-cta-ink, #14100a); background: var(--ec-a-cta-mid, var(--ec-a-gold)); }
+.ec-mode-badge--gold { color: var(--ec-a-gold); background: var(--ec-a-gold-soft); border: 1px solid var(--ec-a-gold-line); }
+.ec-mode-badge--muted { color: var(--ec-l-text-muted, var(--ec-a-text-muted)); background: rgba(147, 160, 181, 0.12); border: 1px solid var(--ec-l-border, var(--ec-a-border)); }
+.ec-mode-badge--available { color: var(--ec-a-green); background: rgba(74, 222, 128, 0.12); }
+.ec-mode-title {
+  margin: 0; font-family: var(--ec-display);
+  font-size: 22px; font-weight: 700; letter-spacing: 1.2px; line-height: 1.1;
+  color: var(--ec-l-text, var(--ec-a-text));
+}
+.ec-mode-card--secondary .ec-mode-title { font-size: 16px; letter-spacing: 1px; }
+.ec-mode-line { margin: 0; font-size: 13.5px; line-height: 1.5; color: var(--ec-l-text-secondary, var(--ec-a-text-secondary)); }
+.ec-mode-card--secondary .ec-mode-line { font-size: 12.5px; }
+.ec-mode-action {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 48px; padding: 0 16px; border-radius: 11px;
+  font-family: var(--ec-display); font-size: 14px; font-weight: 700; letter-spacing: 1.8px;
+  text-decoration: none; cursor: pointer;
+  border: 1px solid var(--ec-l-border-strong, var(--ec-a-border-strong));
+  background: var(--ec-l-panel-soft, var(--ec-a-panel-soft));
+  color: var(--ec-l-text, var(--ec-a-text));
+}
+/* Phase 9A.3P: the ONE filled-Gold action — the registry's PRIMARY hierarchy (Chaos Clash). */
+.ec-mode-action[data-hierarchy="primary"] {
+  border-color: var(--ec-a-gold-line);
+  background: linear-gradient(180deg, var(--ec-a-cta-hi, #ffd257) 0%, var(--ec-a-cta-mid, var(--ec-a-gold)) 46%, var(--ec-a-cta-lo, #c98f0c) 100%);
+  color: var(--ec-a-cta-ink, #14100a);
+  box-shadow: var(--ec-a-cta-glow, 0 8px 18px rgba(242, 181, 29, 0.18)), 0 1px 0 rgba(255, 255, 255, 0.35) inset;
+}
+.ec-mode-card--secondary .ec-mode-action { min-height: 44px; font-size: 12.5px; letter-spacing: 1.4px; }
+.ec-mode-action:focus-visible { outline: 3px solid var(--ec-a-gold); outline-offset: 3px; }
+
+/* Continue card: above the grid, unmistakably about an EXISTING run. */
+.ec-continue {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 1px solid var(--ec-a-gold-line);
+  background: linear-gradient(90deg, rgba(242, 181, 29, 0.12), var(--ec-l-panel-raised, var(--ec-a-panel-raised)) 60%);
+}
+.ec-continue--expired { border-color: var(--ec-l-border-strong, var(--ec-a-border-strong)); background: var(--ec-l-panel-raised, var(--ec-a-panel-raised)); }
+.ec-continue-glyph {
+  display: grid; place-items: center; width: 46px; height: 46px; border-radius: 12px;
+  color: var(--ec-a-gold); background: var(--ec-a-gold-soft); border: 1px solid var(--ec-a-gold-line);
+}
+.ec-continue--expired .ec-continue-glyph { color: var(--ec-l-text-muted, var(--ec-a-text-muted)); background: transparent; border-color: var(--ec-l-border, var(--ec-a-border)); }
+.ec-continue-body { min-width: 0; display: grid; gap: 3px; }
+.ec-continue-title {
+  margin: 0; font-family: var(--ec-display); font-size: 15px; font-weight: 700; letter-spacing: 1.6px;
+  color: var(--ec-a-gold);
+}
+.ec-continue--expired .ec-continue-title { color: var(--ec-l-text-secondary, var(--ec-a-text-secondary)); }
+.ec-continue-line { margin: 0; font-size: 12.5px; color: var(--ec-l-text-secondary, var(--ec-a-text-secondary)); line-height: 1.5; }
+.ec-continue-teams { margin: 0; display: flex; gap: 14px; flex-wrap: wrap; font-size: 11.5px; color: var(--ec-l-text-muted, var(--ec-a-text-muted)); }
+.ec-continue-team-name { font-weight: 900; letter-spacing: 1px; margin-right: 6px; }
+.ec-continue-team--gold .ec-continue-team-name { color: var(--ec-a-gold); }
+.ec-continue-team--blue .ec-continue-team-name { color: var(--ec-a-blue); }
+.ec-continue-actions { display: flex; gap: 8px; align-items: center; }
+.ec-continue-cta {
+  min-height: 48px; padding: 0 20px; border-radius: 11px; cursor: pointer;
+  font-family: var(--ec-display); font-size: 14px; font-weight: 700; letter-spacing: 1.8px;
+  border: 1px solid var(--ec-a-gold-line);
+  background: linear-gradient(180deg, var(--ec-a-cta-hi, #ffd257) 0%, var(--ec-a-cta-mid, var(--ec-a-gold)) 46%, var(--ec-a-cta-lo, #c98f0c) 100%);
+  color: var(--ec-a-cta-ink, #14100a);
+}
+.ec-continue-quiet {
+  min-height: 44px; padding: 0 14px; border-radius: 9px; cursor: pointer;
+  font-weight: 800; font-size: 11px; letter-spacing: 0.8px;
+  border: 1px solid var(--ec-l-border, var(--ec-a-border)); background: transparent; color: var(--ec-l-text-muted, var(--ec-a-text-muted));
+}
+.ec-continue-cta[disabled], .ec-continue-quiet[disabled] { opacity: 0.6; cursor: default; }
+
+@media (max-width: 1024px) {
+  .ec-lobby-primary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ec-lobby-secondary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ec-continue { grid-template-columns: auto minmax(0, 1fr); }
+  .ec-continue-actions { grid-column: 1 / -1; justify-content: flex-start; }
+}
+@media (max-width: 640px) {
+  .ec-lobby-body { padding: 12px 12px 32px; gap: 14px; }
+  .ec-lobby-primary { grid-template-columns: minmax(0, 1fr); }
+  .ec-lobby-secondary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ec-lobby-secondary-grid { grid-template-columns: minmax(0, 1fr); }
+  .ec-mode-card--primary { min-height: 0; }
+  .ec-mode-card--secondary { min-height: 0; }
+  .ec-continue { grid-template-columns: minmax(0, 1fr); }
+  .ec-continue-glyph { display: none; }
+  .ec-continue-actions { display: grid; grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 380px) {
+  .ec-lobby-secondary-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ec-mode-card, .ec-mode-action, .ec-continue-cta { transition: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   /* The court behind the lobby: a theme may light the lobby differently from the
+   arena (Night Court keeps the page dark with ivory cards; Modern Court is a
+   light product). Default: the arena court. */
+.ec-lobby-court { background: var(--ec-l-bg, var(--ec-a-arena)); }
+.ec-lobby-court::after { opacity: var(--ec-l-arc-opacity, 1); }
+/* The page under the lobby is the lobby's canvas, not the arena's night floor. */
+.ec-arena-page:has(.ec-lobby-court) { background: var(--ec-l-bg, var(--ec-a-bg, #03070d)); }
+.ec-lobby-court .ec-mode-card { color: var(--ec-l-text, var(--ec-a-text)); }
+.ec-lobby-court .ec-mode-glyph { color: var(--ec-l-glyph, var(--ec-a-gold)); }
+.ec-lobby-court .ec-lobby-line { color: var(--ec-l-hero-text, var(--ec-l-page-text, var(--ec-a-text-secondary))); }
+.ec-lobby-court .ec-lobby-kicker { color: var(--ec-l-page-muted, var(--ec-a-text-muted)); }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PHASE 9A — PROGRESSIVE DISCLOSURE IN THE TIME ARENA
+   Hierarchy, not redesign. The section that is not actionable right now is
+   visibly subdued; the one primary action stays where it was.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.ec-ta-coach[data-active="false"] { opacity: 0.58; }
+.ec-ta-coach[data-active="false"] .ec-ta-coach-title { color: var(--ec-a-text-muted); }
+.ec-ta-stage[data-focus="empty"] .ec-ta-coach .ec-coach-card { filter: saturate(0.4); }
+@media (prefers-reduced-motion: no-preference) {
+  .ec-ta-coach { transition: opacity 180ms ease; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PHASE 9A — MULTI-POSITION PLACEMENT (Dream Matchup builder, light theme)
+   A slot's state is a word and a border, never a colour alone.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.ec-place-bar {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  padding: 10px 12px; margin-bottom: 10px; border-radius: 10px;
+  border: 1px solid var(--gold); background: #fdf3d8; color: var(--ec-ink);
+  font-size: 12.5px; line-height: 1.5;
+}
+.ec-place-bar strong { color: var(--gold); }
+.ec-place-bar-cancel {
+  margin-left: auto; min-height: 40px; padding: 0 12px; border-radius: 8px; cursor: pointer;
+  border: 1px solid var(--ec-border); background: var(--ec-surface); color: var(--ec-ink); font-weight: 800; font-size: 12px;
+}
+.ec-slot-state {
+  display: block; margin-top: 6px; font-size: 9.5px; font-weight: 900; letter-spacing: 1.2px; text-align: center;
+}
+.roster-grid [data-place-state="ELIGIBLE"] > * { border: 2px solid var(--gold) !important; box-shadow: 0 0 0 3px rgba(139, 102, 11, 0.16); }
+.roster-grid [data-place-state="ELIGIBLE"] .ec-slot-state { color: var(--gold); }
+.roster-grid [data-place-state="OCCUPIED"] > * { border: 2px dashed var(--blue) !important; }
+.roster-grid [data-place-state="OCCUPIED"] .ec-slot-state { color: var(--blue); }
+.roster-grid [data-place-state="INELIGIBLE"] > * { opacity: 0.45; }
+.roster-grid [data-place-state="INELIGIBLE"] .ec-slot-state { color: var(--ec-ink); opacity: 0.7; }
+.roster-grid [data-place-state="SELECTED"] > * { border: 2px solid var(--gold) !important; }
+.ec-elig { font-size: 10px; font-weight: 800; letter-spacing: 0.8px; text-align: center; margin-top: 2px; }
+.ec-undo-toast {
+  position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 70;
+  display: flex; align-items: center; gap: 12px; max-width: min(92vw, 560px);
+  padding: 10px 14px; border-radius: 12px;
+  background: var(--ec-navy); color: #f1f4fa; border: 1px solid var(--ec-navy-soft);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35); font-size: 13px; line-height: 1.45;
+}
+.ec-undo-toast button {
+  min-height: 44px; padding: 0 14px; border-radius: 9px; cursor: pointer; flex-shrink: 0;
+  border: 1px solid var(--gold-on-dark); background: transparent; color: var(--gold-on-dark); font-weight: 900; letter-spacing: 1px; font-size: 12px;
+}
+
+/* Chaos cards: every eligible position, as a chip in the portrait zone so the
+   frozen card geometry is untouched. */
+.ec-pc-elig {
+  position: absolute; left: 6px; bottom: 6px; z-index: 2;
+  padding: 2px 6px; border-radius: 6px;
+  font-size: 9px; font-weight: 900; letter-spacing: 0.9px;
+  color: var(--ec-a-text); background: var(--ec-a-panel-raised, rgba(3, 7, 13, 0.62)); border: 1px solid var(--ec-a-border-strong, rgba(157, 178, 209, 0.28));
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PHASE 9A.1 — THE THEME LAB'S OWN STRIP
+   Outside the product screenshot (the harness passes chrome=0), owner-only.
+   Neutral by design so it never tints a comparison.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.ec-theme-lab-strip {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  padding: 8px 14px; font-size: 12px; font-family: system-ui, sans-serif;
+  background: #111; color: #ddd; border-bottom: 1px solid #333;
+}
+.ec-theme-lab-strip strong { letter-spacing: 2px; color: #fff; }
+.ec-theme-lab-strip a { color: #bbb; text-decoration: none; padding: 4px 8px; border-radius: 6px; border: 1px solid #333; min-height: 28px; display: inline-flex; align-items: center; }
+.ec-theme-lab-strip a[aria-current="page"] { color: #fff; border-color: #999; background: #222; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PHASE 9A.2 — NIGHT COURT V1: THE ERA FRACTURE, THE PORTRAIT STAGE, THE
+   MASTER-BRAND HEADER, THE EDITORIAL SHELL, THE ONE-GLOW RULE
+   Every rule here reads tokens. --ec-a-fracture is the diagonal gold→cobalt
+   divide under the production theme and a neutral line under the four historical
+   candidates; --ec-a-fracture-on is 1 or 0 and gates the sweeps and edges so the
+   lab's one-DOM contract holds with the same elements everywhere.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Era Fracture primitives ─────────────────────────────────────────────── */
+.ec-fracture { pointer-events: none; }
+.ec-fracture-divider {
+  height: 2px;
+  background: var(--ec-a-fracture, var(--ec-t-fracture, transparent));
+  box-shadow: var(--ec-a-fracture-glow, 0 0 0 0 transparent);
+}
+.ec-fracture-edge {
+  position: absolute; left: 0; right: 0; top: 0; height: 2px; z-index: 3;
+  background: var(--ec-a-fracture, var(--ec-t-fracture, transparent));
+  opacity: 0;
+  transition: opacity 240ms ease;
+}
+.ec-fracture-edge[data-on="true"] { opacity: var(--ec-a-fracture-on, 1); }
+.ec-fracture-transition {
+  position: absolute; inset: 0; z-index: 3;
+  border-radius: inherit;
+  opacity: 0;
+  background: linear-gradient(112deg, transparent 38%, rgba(225, 167, 44, 0.22) 46%, rgba(255, 255, 255, 0.34) 48%, rgba(38, 124, 232, 0.22) 50%, transparent 58%);
+  background-size: 260% 100%;
+  background-position: 100% 0;
+}
+/* The stage forces its children relative; the overlay must stay absolute. */
+.ec-ta-stage > .ec-fracture-transition { position: absolute; z-index: 3; }
+.ec-fracture-transition[data-active="true"] { animation: ec-fracture-sweep 900ms ease-out 1; }
+.ec-fracture-transition[data-hold="true"] {
+  animation: none;
+  opacity: calc(0.85 * var(--ec-a-fracture-on, 1));
+  background-position: 50% 0;
+}
+@keyframes ec-fracture-sweep {
+  0%   { opacity: 0; background-position: 100% 0; }
+  18%  { opacity: var(--ec-a-fracture-on, 1); }
+  100% { opacity: 0; background-position: 0% 0; }
+}
+.ec-fracture-watermark {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background: var(--ec-t-fracture, var(--ec-a-fracture, transparent));
+  opacity: 0.05;
+  mix-blend-mode: screen;
+}
+/* Selected edges (approved placements 5 and 6) and the era reveal (4). */
+.ec-pc, .ec-coach-card, .ec-intel-era, .ec-dock-tab { position: relative; }
+.ec-pc[data-held="true"]::before,
+.ec-coach-card[data-on="true"]::before,
+.ec-intel-era[data-revealed="true"]::before,
+.ec-dock-tab[aria-selected="true"]::after {
+  content: "";
+  position: absolute; left: 6px; right: 6px; top: 0; height: 2px; z-index: 3;
+  border-radius: 0 0 2px 2px;
+  background: var(--ec-a-fracture, transparent);
+  opacity: var(--ec-a-fracture-on, 0);
+  pointer-events: none;
+}
+.ec-intel-era[data-revealed="true"]::before { left: 0; right: 0; top: -1px; }
+.ec-dock-tab[aria-selected="true"]::after { top: auto; bottom: 3px; left: 10px; right: 10px; border-radius: 2px 2px 0 0; }
+/* Selected navigation (approved placement 2): a 2px fracture underline. */
+.ec-brand-header .ec-nav-item[aria-current="page"]::after,
+.ec-brand-header .ec-nav-item[data-active="true"]::after {
+  content: "";
+  position: absolute; left: 12px; right: 12px; bottom: 4px; height: 2px;
+  border-radius: 1px;
+  background: var(--ec-a-fracture, var(--ec-a-gold));
+  opacity: var(--ec-a-fracture-on, 0);
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ec-fracture-transition[data-active="true"] { animation: none; opacity: 0; }
+  .ec-fracture-transition[data-hold="true"] { opacity: calc(0.45 * var(--ec-a-fracture-on, 1)); }
+  .ec-fracture-edge { transition: none; }
+}
+
+/* ── The one-glow rule: one dominant glow per product state ───────────────── */
+/* empty / ready: the primary action keeps its glow (default). hold: the held
+   cards. hire: the selected staff. sim: the central fracture transition. */
+.ec-ta-stage[data-focus="hold"] .ec-ta-cta,
+.ec-ta-stage[data-focus="hire"] .ec-ta-cta { box-shadow: 0 1px 0 rgba(255, 255, 255, 0.35) inset; }
+.ec-ta-stage[data-focus="hold"] .ec-pc[data-held="true"] {
+  box-shadow: 0 0 0 1px var(--pc-line) inset, 0 10px 20px rgba(0, 0, 0, 0.45), var(--ec-a-fracture-glow, 0 0 0 0 transparent);
+}
+.ec-ta-stage[data-focus="hire"] .ec-coach-card[data-on="true"] {
+  box-shadow: 0 0 0 1px var(--ec-a-coach) inset, 0 10px 20px rgba(0, 0, 0, 0.45), 0 0 18px var(--ec-a-coach-soft);
+}
+
+/* ── The portrait stage ──────────────────────────────────────────────────── */
+/* Behind EVERY player image: a neutral separation field, a team-aware rim light
+   from the top edge, a soft fade into the information zone, and an edge shadow
+   on the figure. Absolutely positioned inside the frozen portrait zone: zero
+   geometry. Colour never touches the image itself. */
+.ec-portrait-stage {
+  --stage-accent: var(--pc-accent, var(--ec-a-gold, #e9b949));
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+}
+.ec-portrait-stage[data-team="blue"] { --stage-accent: var(--pc-accent, var(--ec-a-blue, #7ab0f5)); }
+.ec-pc-portrait > .ec-portrait-stage { z-index: 1; }
+.ec-portrait-field {
+  position: absolute; inset: 0; z-index: 0;
+  /* A lit backdrop with a flat plateau behind the head and shoulders (where a
+     uniform meets the card), falling off before the information zone. The
+     plateau's luminance (~0.09 over the well) is what separates a dark, a
+     mid-blue and a mid-red uniform alike; see portrait-contrast-qa.json. */
+  background: radial-gradient(92% 60% at 50% 34%, var(--ec-a-portrait-field, rgba(214, 222, 236, 0.30)) 0%, var(--ec-a-portrait-field, rgba(214, 222, 236, 0.30)) 46%, transparent 82%);
+}
+.ec-portrait-rim {
+  position: absolute; inset: 0; z-index: 0;
+  background: radial-gradient(120% 55% at 50% -8%, color-mix(in srgb, var(--stage-accent) 34%, transparent), transparent 62%);
+}
+.ec-portrait-fade {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 34%; z-index: 2;
+  background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--ec-a-panel-raised, #172130) 90%, transparent));
+}
+.ec-portrait-stage > img { position: relative; z-index: 1; filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.55)); }
+.ec-portrait-stage > .ec-pc-figure { z-index: 1; filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.6)); }
+.ec-portrait-stage > .ec-pc-figure-initials { z-index: 3; }
+.ec-portrait-stage > .ec-pc-elig { z-index: 3; }
+/* The measurement harness renders the pre-9A.2 layer for the before/after table. */
+[data-stage-off="true"] .ec-portrait-field, [data-stage-off="true"] .ec-portrait-rim, [data-stage-off="true"] .ec-portrait-fade { display: none; }
+[data-stage-off="true"] .ec-portrait-stage > img, [data-stage-off="true"] .ec-portrait-stage > .ec-pc-figure { filter: none; }
+[data-stage-off="true"] .ec-pc-portrait {
+  background:
+    radial-gradient(140% 70% at 50% 100%, color-mix(in srgb, var(--pc-accent) 22%, transparent), transparent 68%),
+    radial-gradient(120% 80% at 50% 4%, rgba(255, 255, 255, 0.09), transparent 58%),
+    linear-gradient(180deg, #0e1a2b 0%, #050a12 100%);
+}
+
+/* ── The master-brand header and the lobby brand band ─────────────────────── */
+.ec-brand-header .ec-brand-logo { height: 34px; width: auto; }
+.ec-lobby-fracture { width: 100%; }
+/* Glyphs by mode family, restrained: competitive modes cool, era modes violet,
+   the recommended flagship gold. Never the only signal — every card is named. */
+.ec-lobby-court .ec-mode-card[data-mode="dream"] .ec-mode-glyph,
+.ec-lobby-court .ec-mode-card[data-mode="daily"] .ec-mode-glyph,
+.ec-lobby-court .ec-mode-card[data-mode="bo7"] .ec-mode-glyph,
+.ec-lobby-court .ec-mode-card[data-mode="win82"] .ec-mode-glyph,
+.ec-lobby-court .ec-mode-card[data-mode="tournament"] .ec-mode-glyph { color: var(--ec-l-glyph-cool, var(--ec-l-glyph, var(--ec-a-gold))); }
+.ec-lobby-court .ec-mode-card[data-mode="gauntlet"] .ec-mode-glyph { color: var(--ec-l-glyph-era, var(--ec-l-glyph, var(--ec-a-gold))); }
+.ec-lobby-court .ec-mode-card--primary:not(.ec-mode-card--recommended) .ec-mode-glyph {
+  background: var(--ec-l-panel-soft, var(--ec-a-panel-soft)); border-color: var(--ec-l-border, var(--ec-a-border));
+}
+@media (max-width: 640px) {
+  .ec-brand-header .ec-brand-logo { height: 30px; }
+  .ec-lobby-hero { padding: 12px 12px 10px; }
+}
+
+/* ── Phase 9A.2 accessibility: real headings inside the frozen geometry ─────── */
+/* The stage title, Coach Chaos, Live Intel and the Result Dock are headings now;
+   their classes already set every metric, so only the UA margin is reset. */
+h1.ec-ta-title-main, h2.ec-ta-coach-title, h2.ec-intel-heading, h3.ec-intel-heading { margin: 0; font-size: inherit; }
+h1.ec-ta-title-main { font-size: 21px; }
+h2.ec-ta-coach-title { font-size: 16px; }
+h2.ec-intel-heading, h3.ec-intel-heading { font-size: 10.5px; }
+/* The result hero's VS mark carries the reading-scope fracture. */
+.ec-fracture-text {
+  background-image: var(--ec-t-fracture, linear-gradient(120deg, #e9b949 30%, #ffffff 50%, #7ab0f5 70%));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+/* One dominant glow in the lobby: the recommended flagship's primary action (Phase 9A.3P: the only filled-Gold CTA). */
+/* Touch layouts (the rail stacks below 1180px): every Result Dock tab is a 44px
+   touch target. The canonical desktop keeps the frozen 40px. */
+@media (max-width: 1179px) { .ec-dock-tab { min-height: 44px !important; } }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PHASE 9A.3P — PLAY LOBBY POLISH V1
+   Same lobby, same geometry, same tokens. Four refinements:
+     · CTA hierarchy — one filled-Gold primary (Chaos Clash), obviously clickable
+       secondaries, visibly unavailable "coming soon"
+     · action labels — uppercase display of the registry's verbs, never wrapping
+     · the adaptive brand band — full for a first-time state, compact otherwise
+     · original mode signatures — one motif per card at a few percent opacity
+   ═══════════════════════════════════════════════════════════════════════════ */
+/* Labels: the registry's Title Case verbs, shown as display capitals. */
+.ec-mode-action { text-transform: uppercase; white-space: nowrap; gap: 8px; transition: transform 0.16s ease, box-shadow 0.16s ease, background-color 0.16s ease, border-color 0.16s ease; }
+.ec-mode-card--secondary .ec-mode-action { font-size: 12.5px; letter-spacing: 1.3px; padding: 0 12px; }
+
+/* PRIMARY — filled EraClash Gold, dark ink, the lobby's one glow (declared above). */
+.ec-mode-action[data-hierarchy="primary"]:hover { filter: brightness(1.04); transform: translateY(-1px); }
+.ec-mode-action[data-hierarchy="primary"]:active { filter: none; transform: translateY(0); }
+
+/* SECONDARY — Warm Ivory face, visible border, ink text, a directional arrow.
+   It reads as a control, never as a disabled one. */
+.ec-mode-action[data-hierarchy="secondary"] {
+  background: var(--ec-l-panel-raised, var(--ec-a-panel-raised));
+  border: 1.5px solid var(--ec-l-border-strong, var(--ec-a-border-strong));
+  color: var(--ec-l-text, var(--ec-a-text));
+  box-shadow: 0 1px 0 rgba(21, 27, 36, 0.06);
+}
+.ec-mode-action[data-hierarchy="secondary"]::after {
+  content: "→"; font-family: var(--ec-display); font-size: 1em; line-height: 1; letter-spacing: 0;
+  color: var(--ec-acc-color, var(--ec-l-text-secondary, var(--ec-a-text-secondary)));
+  transition: transform 0.16s ease;
+}
+.ec-mode-action[data-hierarchy="secondary"]:hover {
+  background: var(--ec-l-panel-soft, var(--ec-a-panel-soft));
+  border-color: var(--ec-l-text-secondary, var(--ec-a-text-secondary));
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(21, 27, 36, 0.10);
+}
+.ec-mode-action[data-hierarchy="secondary"]:hover::after { transform: translateX(3px); }
+.ec-mode-action[data-hierarchy="secondary"]:active { transform: translateY(0); box-shadow: 0 1px 0 rgba(21, 27, 36, 0.06); }
+/* The Daily card's lightly Cobalt-supported secondary. */
+.ec-mode-action[data-hierarchy="secondary"][data-accent="cobalt"] { border-color: var(--ec-l-glyph-cool, var(--ec-a-blue)); }
+
+/* UNAVAILABLE — subdued: dashed edge, muted ink, no arrow, no lift on hover.
+   Still a real link when a real information page exists (Learn more). */
+.ec-mode-action[data-hierarchy="unavailable"] {
+  background: transparent;
+  border: 1.5px dashed var(--ec-l-border-strong, var(--ec-a-border-strong));
+  color: var(--ec-l-text-muted, var(--ec-a-text-muted));
+  box-shadow: none;
+}
+.ec-mode-action[data-hierarchy="unavailable"]:hover { text-decoration: underline; text-underline-offset: 3px; }
+.ec-mode-action[aria-disabled="true"] { cursor: default; }
+
+/* Accent roles → the two colour slots a card may use (signature, then arrow/tile accent).
+   Semantic families only: gold, cobalt, violet, and graphite-as-platinum on ivory. */
+.ec-mode-card[data-accent="gold"]             { --ec-sig-color: var(--ec-l-glyph, var(--ec-a-gold)); --ec-acc-color: var(--ec-l-glyph, var(--ec-a-gold)); }
+.ec-mode-card[data-accent="platinum-cobalt"]  { --ec-sig-color: var(--ec-l-text-secondary, var(--ec-a-text-secondary)); --ec-acc-color: var(--ec-l-glyph-cool, var(--ec-a-blue)); }
+.ec-mode-card[data-accent="cobalt"]           { --ec-sig-color: var(--ec-l-glyph-cool, var(--ec-a-blue)); --ec-acc-color: var(--ec-l-glyph-cool, var(--ec-a-blue)); }
+.ec-mode-card[data-accent="platinum-gold"]    { --ec-sig-color: var(--ec-l-text-secondary, var(--ec-a-text-secondary)); --ec-acc-color: var(--ec-l-glyph, var(--ec-a-gold)); }
+.ec-mode-card[data-accent="cobalt-platinum"]  { --ec-sig-color: var(--ec-l-glyph-cool, var(--ec-a-blue)); --ec-acc-color: var(--ec-l-text-secondary, var(--ec-a-text-secondary)); }
+.ec-mode-card[data-accent="gold-platinum"]    { --ec-sig-color: var(--ec-l-glyph, var(--ec-a-gold)); --ec-acc-color: var(--ec-l-text-secondary, var(--ec-a-text-secondary)); }
+.ec-mode-card[data-accent="violet"]           { --ec-sig-color: var(--ec-l-glyph-era, var(--ec-a-coach)); --ec-acc-color: var(--ec-l-glyph-era, var(--ec-a-coach)); }
+.ec-mode-card--secondary[data-accent] .ec-mode-glyph { box-shadow: inset 0 -2px 0 var(--ec-acc-color); }
+
+/* The signature: behind the top-right corner, clipped by the card, decorative. */
+.ec-mode-card { overflow: hidden; }
+.ec-mode-signature {
+  position: absolute; right: -18px; top: -16px; width: 132px; height: 132px;
+  color: var(--ec-sig-color, currentColor); opacity: var(--ec-sig-opacity, 0.07);
+  pointer-events: none; user-select: none; transition: opacity 0.18s ease;
+}
+.ec-mode-card--secondary .ec-mode-signature { width: 96px; height: 96px; right: -14px; top: -12px; }
+.ec-mode-card:hover .ec-mode-signature { opacity: 0.12; }
+.ec-mode-card > *:not(.ec-mode-signature) { position: relative; }
+
+/* The compact brand band: the same mark, shorter, the grid moved up. */
+.ec-lobby-hero--compact {
+  grid-template-columns: auto minmax(0, 1fr); justify-items: start; align-items: center;
+  gap: 16px; text-align: left;
+  /* Full-bleed obsidian band; only the CONTENT is held to the lobby body's 1180px column. */
+  padding: 9px max(18px, calc((100% - 1180px) / 2)) 8px;
+}
+.ec-lobby-hero--compact .ec-lobby-logo { width: 150px; }
+.ec-lobby-hero--compact .ec-lobby-line { font-size: 13.5px; max-width: none; }
+@media (max-width: 640px) {
+  .ec-lobby-hero--compact { gap: 12px; padding: 8px 12px; }
+  .ec-lobby-hero--compact .ec-lobby-logo { width: 118px; }
+  .ec-lobby-hero--compact .ec-lobby-line { font-size: 12.5px; }
+}
+/* The pending Continue card: the real card's geometry, muted, while the run is read. */
+.ec-continue--pending { border-color: var(--ec-l-border, var(--ec-a-border)); background: var(--ec-l-panel-raised, var(--ec-a-panel-raised)); }
+.ec-continue--pending .ec-continue-title { color: var(--ec-l-text-muted, var(--ec-a-text-muted)); }
+.ec-continue--pending .ec-continue-glyph { color: var(--ec-l-text-muted, var(--ec-a-text-muted)); background: transparent; border-color: var(--ec-l-border, var(--ec-a-border)); }
+.ec-continue--pending .ec-continue-team-name { color: var(--ec-l-text-muted, var(--ec-a-text-muted)); }
+.ec-continue-cta--pending { display: inline-flex; align-items: center; background: var(--ec-l-panel-soft, var(--ec-a-panel-soft)); border-color: var(--ec-l-border, var(--ec-a-border)); color: transparent; }
+@media (prefers-reduced-motion: reduce) {
+  .ec-mode-action, .ec-mode-action::after, .ec-mode-signature { transition: none; }
+  .ec-mode-action:hover { transform: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   GLOBAL FOOTER — a real touch target on a small text link
+   The credits control is 10.5px text inside a centred run, so its own box was
+   12px tall: the only interactive control in the product below the 44px
+   minimum every gate enforces. The hit area is expanded with padding and the
+   extra height is pulled straight back with an equal negative margin, so the
+   TARGET is 44px while the footer's line box, height and visual weight are
+   unchanged. The font size is deliberately not raised — the footer is fine
+   print and should stay fine print.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.ec-footer-link {
+  display: inline-block;
+  box-sizing: content-box;
+  /* 12px of text + 16px above + 16px below = a 44px target. */
+  padding: 16px 8px;
+  margin: -16px -8px;
+  /* A short label still needs 44px of width to be tappable. */
+  min-width: 44px;
+  /* The label must sit on the surrounding text's baseline, not be pushed by
+     its own padding. */
+  vertical-align: baseline;
+}
+.ec-footer-link:focus-visible { outline: 2px solid var(--ec-a-gold, #f2b51d); outline-offset: -14px; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PHASE 9B.3 — CHAOS CLASH GUIDED FLOW V2
+   Six presentations of one board. Every rule here is scoped to a
+   [data-guided-state] / [data-roster] attribute the LIVE arena sets; the frozen
+   8C.1 fixture route sets neither, so its measured geometry is untouched.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* The result IS the content: the contextual rail leaves and the hero takes the row. */
+.ec-ta[data-guided-state="RESULT"] { grid-template-columns: minmax(0, 1fr); }
+.ec-ta-result-hero { min-width: 0; }
+.ec-ta-result-hero .ec-dock[data-variant="hero"] { gap: 14px; }
+.ec-ta-result-hero .ec-dock-score { font-size: 54px; }
+
+/* From Coach Chaos onward the five is SET: the cards compress, their controls go. */
+.ec-ta-stage[data-roster="compressed"] { --player-card-h: 236px; --player-portrait-h: 150px; }
+.ec-ta-stage[data-roster="compressed"] .ec-pc-action,
+.ec-ta-stage[data-roster="compressed"] .ec-pc-static,
+.ec-ta-stage[data-roster="compressed"] .ec-pc-kept { display: none; }
+.ec-ta-stage[data-roster="compressed"] .ec-pc { grid-template-rows: var(--player-portrait-h) auto auto; }
+
+/* Era Reveal: the roster stays present but steps back; the era is the focus. */
+.ec-ta-stage[data-guided-state="ERA_REVEAL"] .ec-ta-roster { opacity: 0.62; filter: saturate(0.85); transition: opacity 0.4s ease; }
+.ec-ta-stage[data-guided-state="ERA_REVEAL"] .ec-pc-static { visibility: hidden; }
+
+.ec-era-reveal {
+  position: relative;
+  margin: 14px auto 0;
+  max-width: 640px;
+  padding: 18px 22px 16px;
+  border-radius: var(--ec-radius-panel);
+  border: 1px solid var(--ec-a-coach-line);
+  background: linear-gradient(180deg, var(--ec-a-panel-raised), var(--ec-a-panel));
+  text-align: center;
+  display: grid; justify-items: center; gap: 6px;
+  animation: ec-era-in 0.5s ease-out both;
+}
+@keyframes ec-era-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.ec-era-reveal-kicker { font-size: 11px; font-weight: 900; letter-spacing: 3px; color: var(--ec-a-gold); }
+.ec-era-reveal-id {
+  margin: 0;
+  font-family: var(--ec-display);
+  font-size: 64px; font-weight: 700; line-height: 1; letter-spacing: 2px;
+  color: var(--ec-a-gold);
+  text-shadow: 0 2px 24px rgba(242, 181, 29, 0.22);
+}
+.ec-era-reveal-tag { font-size: 12px; font-weight: 800; letter-spacing: 1.6px; color: var(--ec-a-text-secondary); text-transform: uppercase; }
+.ec-era-reveal-rule { margin: 6px 0 4px; }
+.ec-era-reveal-cards {
+  margin: 4px 0 0; padding: 0; list-style: none; width: 100%;
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px;
+}
+.ec-era-reveal-card {
+  padding: 12px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--ec-a-border);
+  background: var(--ec-a-panel-soft);
+  font-size: 11.5px; font-weight: 800; letter-spacing: 0.8px; line-height: 1.35;
+  color: var(--ec-a-text); text-transform: uppercase;
+}
+.ec-era-reveal-body { margin: 6px 0 0; font-size: 12.5px; line-height: 1.55; color: var(--ec-a-text-secondary); max-width: 46ch; }
+.ec-era-reveal-actions { display: flex; gap: 10px; justify-content: center; }
+.ec-era-reveal-more {
+  min-height: 40px; padding: 0 12px; border-radius: 8px; cursor: pointer;
+  background: transparent; border: 1px solid var(--ec-a-border);
+  color: var(--ec-a-text-secondary); font-size: 11px; font-weight: 800; letter-spacing: 0.8px;
+}
+
+/* The era, once adapted to, is a compact locked chip under the title. */
+.ec-ta-era-chip {
+  margin-top: 4px; padding: 5px 10px; border-radius: 8px;
+  border: 1px solid var(--ec-a-coach-line); background: var(--ec-a-coach-soft);
+  color: var(--ec-a-coach); font-size: 10.5px; font-weight: 900; letter-spacing: 1.2px;
+}
+
+/* The staff under each compressed five: the decision the board now carries. */
+.ec-ta-staff-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  margin: 10px auto 0; width: 100%;
+  max-width: calc(10 * var(--player-card-w) + 10 * var(--player-card-gap) + var(--roster-divider-w));
+}
+.ec-ta-staff {
+  display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
+  padding: 9px 12px; border-radius: 10px;
+  border: 1px solid var(--ec-a-gold-line); background: var(--ec-a-panel);
+}
+.ec-ta-staff--blue { border-color: var(--ec-a-blue-line); justify-content: flex-end; text-align: right; }
+.ec-ta-staff-k { font-size: 9.5px; font-weight: 900; letter-spacing: 1.6px; color: var(--ec-a-text-muted); }
+.ec-ta-staff-v { font-family: var(--ec-display); font-size: 15px; font-weight: 700; letter-spacing: 1px; color: var(--ec-a-text); }
+.ec-ta-staff-role { font-size: 9.5px; font-weight: 900; letter-spacing: 1.2px; color: var(--ec-a-coach); }
+
+/* State 1's rail: how Chaos works, and nothing else. */
+.ec-ta-guide-steps { margin: 4px 0 0; padding: 0 0 0 18px; display: grid; gap: 6px; font-size: 12.5px; line-height: 1.45; color: var(--ec-a-text-secondary); }
+.ec-ta-guide-steps b { color: var(--ec-a-text); letter-spacing: 0.6px; }
+
+/* Compact intel: one control opens the rest. */
+.ec-intel-more {
+  margin-top: 8px; min-height: 44px; width: 100%; border-radius: 9px; cursor: pointer;
+  border: 1px solid var(--ec-a-border); background: transparent;
+  color: var(--ec-a-text-secondary); font-size: 11px; font-weight: 800; letter-spacing: 0.8px;
+}
+.ec-intel-more:hover { color: var(--ec-a-text); background: var(--ec-a-panel-soft); }
+
+/* A previous game: one compact control, never a dock beside the draft. */
+.ec-ta-lastclash {
+  display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px;
+  min-height: 48px; padding: 0 12px; border-radius: var(--ec-radius-panel); cursor: pointer;
+  border: 1px solid var(--ec-a-border); background: var(--ec-a-panel); color: var(--ec-a-text);
+  text-align: left;
+}
+.ec-ta-lastclash-k { font-size: 9.5px; font-weight: 900; letter-spacing: 1.6px; color: var(--ec-a-text-muted); }
+.ec-ta-lastclash-v { font-family: var(--ec-display); font-size: 15px; font-weight: 700; letter-spacing: 1px; }
+.ec-ta-lastclash-ago { font-size: 9.5px; font-weight: 800; letter-spacing: 1px; color: var(--ec-a-text-muted); }
+
+/* The sheet a previous game opens in. One scroller: the sheet. */
+.ec-sheet-scrim {
+  position: fixed; inset: 0; z-index: 90;
+  display: grid; place-items: end center;
+  background: rgba(3, 6, 11, 0.72);
+}
+.ec-sheet {
+  width: min(560px, 100%); max-height: 88vh; overflow-y: auto;
+  padding: 14px 14px 20px; border-radius: 16px 16px 0 0;
+  border: 1px solid var(--ec-a-border); border-bottom: none;
+  background: var(--ec-a-arena, #0a0f18);
+}
+.ec-sheet-close {
+  min-height: 44px; padding: 0 14px; margin-bottom: 12px; border-radius: 9px; cursor: pointer;
+  border: 1px solid var(--ec-a-border); background: var(--ec-a-panel-raised);
+  color: var(--ec-a-text); font-weight: 800; font-size: 12px; letter-spacing: 0.6px;
+}
+
+/* ── Phone: one team at a time, the decision always in reach ─────────────── */
+.ec-ta-team-toggle { display: none; }
+@media (max-width: 767px) {
+  .ec-ta-team-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 0 0 10px; }
+  .ec-ta-team-toggle button {
+    min-height: 44px; border-radius: 9px; cursor: pointer;
+    font-size: 11.5px; font-weight: 900; letter-spacing: 1.2px;
+    border: 1px solid var(--ec-a-border); background: transparent; color: var(--ec-a-text-secondary);
+  }
+  .ec-ta-team-toggle button[data-team="gold"][aria-selected="true"] { border-color: var(--ec-a-gold-line); background: var(--ec-a-gold-soft); color: var(--ec-a-gold); }
+  .ec-ta-team-toggle button[data-team="blue"][aria-selected="true"] { border-color: var(--ec-a-blue-line); background: var(--ec-a-blue-soft, rgba(59,155,255,0.12)); color: var(--ec-a-blue); }
+  .ec-ta-roster[data-mobile-team="gold"] .ec-ta-team[data-team="blue"],
+  .ec-ta-roster[data-mobile-team="blue"] .ec-ta-team[data-team="gold"] { display: none; }
+  .ec-ta-roster[data-mobile-team] .ec-ta-team[data-team="blue"] { margin-top: 0; }
+  /* The primary action rides the bottom of the screen while the board scrolls. */
+  .ec-ta-stage .ec-ta-cta-wrap {
+    position: sticky; bottom: 0; z-index: 3;
+    padding: 10px 0 12px;
+    background: linear-gradient(180deg, transparent, var(--ec-a-arena, #0a0f18) 30%);
+  }
+  .ec-ta-staff-row { grid-template-columns: minmax(0, 1fr); }
+  .ec-ta-staff--blue { justify-content: flex-start; text-align: left; }
+  .ec-era-reveal { padding: 16px 14px 14px; }
+  .ec-era-reveal-id { font-size: 46px; }
+  .ec-era-reveal-cards { grid-template-columns: minmax(0, 1fr); }
+  .ec-ta-result-hero .ec-dock-score { font-size: 44px; }
+}
+/* Large desktop: keep Gold and Blue side by side down to 1280 (the 1179 stack stands). */
+@media (max-width: 1279px) {
+  .ec-ta-stage[data-roster="compressed"] { --player-card-h: 220px; --player-portrait-h: 138px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ec-era-reveal { animation: none; }
+  .ec-ta-stage[data-guided-state="ERA_REVEAL"] .ec-ta-roster { transition: none; }
+}
+
+/* ── 9B.3 result head: the score leads, framed by the two fives ──────────── */
+.ec-ta-score, .ec-ta-score-pending { display: grid; justify-items: center; gap: 2px; margin-top: 4px; }
+.ec-ta-score-row { display: grid; grid-template-columns: 1fr auto 1fr; align-items: baseline; gap: 18px; }
+.ec-ta-score-n { font-family: var(--ec-display); font-size: 58px; font-weight: 700; line-height: 1; letter-spacing: 1px; }
+.ec-ta-score-n--gold { color: var(--ec-a-gold); text-align: right; }
+.ec-ta-score-n--blue { color: var(--ec-a-blue); text-align: left; }
+.ec-ta-score-final { font-size: 10px; font-weight: 900; letter-spacing: 2px; color: var(--ec-a-text-muted); }
+.ec-ta-score-winner { font-family: var(--ec-display); font-size: 14px; font-weight: 700; letter-spacing: 2px; color: var(--ec-a-text); }
+.ec-ta-score-mvp { font-size: 11.5px; font-weight: 700; letter-spacing: 0.4px; color: var(--ec-a-text-secondary); }
+.ec-ta-result-hero {
+  width: 100%; margin: 0 auto;
+  max-width: calc(10 * var(--player-card-w) + 10 * var(--player-card-gap) + var(--roster-divider-w) + 2 * var(--arena-stage-pad));
+}
+/* Tighter reveal: the era, three headlines, one action — all above the fold at 1024. */
+.ec-era-reveal { padding: 14px 18px 12px; gap: 5px; max-width: 620px; }
+.ec-era-reveal-id { font-size: 56px; }
+.ec-era-reveal-card {
+  padding: 10px 10px; font-size: 11px; letter-spacing: 0.7px;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  min-height: 52px; display: flex; align-items: center; justify-content: center; text-align: center;
+}
+.ec-era-reveal-body { font-size: 12px; margin-top: 4px; }
+@media (max-width: 767px) {
+  .ec-ta-score-n { font-size: 42px; }
+  .ec-ta-score-row { gap: 12px; }
+}
+
+/* 9B.3 · On a phone or a tablet every rail control is a 44px touch target — the
+   era rules toggle, CHANGE ERA and its chips, VIEW DETAILS, LAST CLASH and the
+   era reveal's VIEW ALL ERA RULES. 1179px is the touch boundary 8C.1 already
+   uses for the coach detail toggle and the result tabs; desktop pointer sizes
+   above it are unchanged. */
+.ec-intel-link { min-height: 36px; }
+@media (max-width: 1179px) {
+}
+
+/* 9B.3 · The reserved score box while the game runs: same geometry, no claim. */
+.ec-ta-score-pending { opacity: 0.45; }
+.ec-ta-score-pending .ec-ta-score-n { color: var(--ec-a-text-secondary); }
+
+/* 9B.3 · The result hero reserves the height of a typical finished story while
+   the game runs, so the utility bar and footer below it settle before the
+   result lands instead of dropping when it does. */
+.ec-ta[data-guided-state="RESULT"] .ec-ta-result-hero { min-height: 560px; }
+@media (max-width: 767px) { .ec-ta[data-guided-state="RESULT"] .ec-ta-result-hero { min-height: 720px; } }
+
+/* 9B.3 · The coach card's detail toggle is a 44px touch target through the
+   tablet range too (8C.1 sized it at ≤900px; 1179px is the touch boundary the
+   result tabs already use). Desktop pointer size above it is unchanged. */
+@media (max-width: 1179px) { .ec-coach-detail-toggle { height: 44px; min-height: 44px; } }
+
+/* 9B.3 · Phone: the primary action really is sticky. `overflow: hidden` on the
+   stage and the court (there to clip the atmosphere layers) disabled it — a
+   sticky element cannot pin inside a scroll container. `overflow: clip` clips
+   without creating one, so ROLL / ROLL 2 / ADAPT TO ERA / CONTINUE WITH COACH /
+   RUN CLASH sit at the bottom of the screen while the board is in view instead
+   of 450px below the fold. The team labels in the head are redundant with the
+   team tabs on a phone and go; their captions ride on the tabs. */
+@media (max-width: 767px) {
+  .ec-ta-stage, .ec-arena-court { overflow: clip; }
+  .ec-ta-stage-head .ec-ta-team-label { display: none; }
+  .ec-ta-team-toggle [role="tab"] { display: grid; gap: 1px; line-height: 1.1; padding: 4px 0; }
+  .ec-ta-team-toggle-sub { font-size: 9px; letter-spacing: 1.2px; font-weight: 800; opacity: 0.7; }
+}
+@media (min-width: 768px) { .ec-ta-team-toggle-sub { display: none; } }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PHASE 9C · Challenges + Persistent Competitive Identity V1
+   The share sheet on a finished Clash, the invitation a link opens to, the
+   comparison in the result, the CHALLENGE badge during play, and the Challenges
+   tab in My EraClash. Night Court tokens; 44px controls; nothing colour-only.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.ec-chal-kicker { font-size: 10.5px; font-weight: 900; letter-spacing: 2px; color: var(--ec-a-gold); }
+.ec-chal-title { margin: 6px 0 4px; font-family: var(--ec-display); font-size: 22px; line-height: 1.15; letter-spacing: 0.5px; color: var(--ec-a-text); }
+.ec-chal-h1 { margin: 8px 0 12px; font-family: var(--ec-display); font-size: 26px; line-height: 1.15; letter-spacing: 0.5px; color: var(--ec-a-text); display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.ec-chal-body { margin: 6px 0 0; font-size: 13.5px; line-height: 1.5; color: var(--ec-a-text-secondary); }
+.ec-chal-note { margin: 10px 0 0; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--ec-a-border); background: var(--ec-a-panel-soft); font-size: 12.5px; line-height: 1.45; color: var(--ec-a-text-secondary); }
+.ec-chal-hint { font-size: 12px; color: var(--ec-a-text-secondary); }
+.ec-chal-feedback { display: block; min-height: 18px; margin-top: 6px; font-size: 12.5px; color: var(--ec-a-text-secondary); }
+.ec-chal-btn { min-height: 44px; padding: 0 16px; border-radius: 10px; cursor: pointer; font-size: 12px; font-weight: 900; letter-spacing: 1.2px;
+  border: 1px solid var(--ec-a-border-strong); background: var(--ec-a-panel-soft); color: var(--ec-a-text); }
+.ec-chal-btn:hover { border-color: var(--ec-a-gold-line); }
+.ec-chal-btn:focus-visible { outline: 2px solid var(--ec-a-gold); outline-offset: 2px; }
+.ec-chal-btn:disabled { opacity: 0.6; cursor: default; }
+.ec-chal-btn--primary { background: linear-gradient(180deg, #F7C63A, #D9A11A); color: #1a1200; border-color: #B88A12; }
+.ec-chal-btn--big { min-height: 52px; font-size: 14px; padding: 0 22px; }
+.ec-chal-btn--quiet { background: transparent; color: var(--ec-a-text-secondary); }
+.ec-chal-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 12px; }
+.ec-chal-cta-row { display: grid; gap: 6px; justify-items: center; margin-top: 10px; }
+
+/* Share sheet */
+.ec-chal-share { margin: 12px auto 0; max-width: 520px; padding: 16px 16px 14px; border-radius: 14px; border: 1px solid var(--ec-a-gold-line); background: var(--ec-a-panel); text-align: center; }
+.ec-chal-share .ec-chal-actions { justify-content: center; }
+.ec-chal-code { display: inline-flex; gap: 10px; align-items: baseline; margin-top: 10px; padding: 8px 14px; border-radius: 10px; border: 1px dashed var(--ec-a-gold-line); background: var(--ec-a-gold-soft); }
+.ec-chal-code-k { font-size: 10px; font-weight: 900; letter-spacing: 1.6px; color: var(--ec-a-text-secondary); }
+.ec-chal-code-v { font-family: var(--ec-mono, ui-monospace, SFMono-Regular, Menlo, monospace); font-size: 18px; font-weight: 800; letter-spacing: 2px; color: var(--ec-a-gold); }
+.ec-chal-link { margin-top: 8px; font-size: 11px; color: var(--ec-a-text-muted); word-break: break-all; }
+
+/* Invitation */
+.ec-chal-invite { max-width: 720px; margin: 0 auto; padding: 28px 18px 60px; }
+.ec-chal-avatar { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--ec-a-gold-soft); border: 1px solid var(--ec-a-gold-line); color: var(--ec-a-gold); font-size: 15px; font-weight: 900; letter-spacing: 1px; flex: none; }
+.ec-chal-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 16px; margin: 14px 0 0; padding: 14px; border-radius: 12px; border: 1px solid var(--ec-a-border); background: var(--ec-a-panel); }
+.ec-chal-facts dt { font-size: 10px; font-weight: 900; letter-spacing: 1.6px; color: var(--ec-a-text-secondary); }
+.ec-chal-facts dd { margin: 3px 0 0; font-size: 14px; color: var(--ec-a-text); line-height: 1.4; }
+.ec-chal-score { font-family: var(--ec-display); font-size: 26px; letter-spacing: 1px; color: var(--ec-a-gold); }
+@media (max-width: 560px) { .ec-chal-facts { grid-template-columns: minmax(0, 1fr); } .ec-chal-h1 { font-size: 22px; } .ec-chal-actions .ec-chal-btn { width: 100%; } }
+
+/* Comparison */
+.ec-chal-cmp { margin: 0 0 14px; padding: 16px; border-radius: 14px; border: 1px solid var(--ec-a-gold-line); background: var(--ec-a-panel); }
+.ec-chal-cols { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 14px; align-items: start; margin-top: 12px; }
+.ec-chal-col { padding: 12px; border-radius: 12px; border: 1px solid var(--ec-a-border); background: var(--ec-a-panel-soft); }
+.ec-chal-col[data-side="you"] { border-color: var(--ec-a-gold-line); }
+.ec-chal-col-k { font-size: 10px; font-weight: 900; letter-spacing: 1.6px; color: var(--ec-a-text-secondary); }
+.ec-chal-col-score { font-family: var(--ec-display); font-size: 34px; letter-spacing: 1px; color: var(--ec-a-text); margin-top: 4px; }
+.ec-chal-col-line { display: flex; gap: 8px; align-items: center; font-size: 12.5px; color: var(--ec-a-text-secondary); margin-top: 4px; flex-wrap: wrap; }
+.ec-chal-tag { font-size: 10px; font-weight: 900; letter-spacing: 1.4px; padding: 3px 7px; border-radius: 6px; border: 1px solid var(--ec-a-border-strong); color: var(--ec-a-text); }
+.ec-chal-tag--win { border-color: var(--ec-a-green, #2fa96d); color: var(--ec-a-green, #2fa96d); }
+.ec-chal-tag--loss { border-color: var(--ec-a-red); color: var(--ec-a-red); }
+.ec-chal-vs { align-self: center; font-family: var(--ec-display); font-size: 16px; letter-spacing: 1px; color: var(--ec-a-text-muted); }
+.ec-chal-orig { margin-top: 8px; display: grid; gap: 3px; font-size: 12px; color: var(--ec-a-text-secondary); }
+.ec-chal-orig b { font-size: 10px; letter-spacing: 1.4px; color: var(--ec-a-text-muted); margin-right: 6px; }
+.ec-chal-foot { margin: 10px 0 0; font-size: 11.5px; color: var(--ec-a-text-muted); }
+@media (max-width: 640px) { .ec-chal-cols { grid-template-columns: minmax(0, 1fr); } .ec-chal-vs { justify-self: center; } .ec-chal-col-score { font-size: 30px; } }
+
+/* CHALLENGE badge during play (rides under the title like the era chip) */
+.ec-ta-chal-chip { margin-top: 4px; padding: 5px 10px; border-radius: 8px; border: 1px solid var(--ec-a-gold-line); background: var(--ec-a-gold-soft); color: var(--ec-a-gold); font-size: 10.5px; font-weight: 900; letter-spacing: 1.2px; }
+
+/* My EraClash → Challenges */
+.ec-chal-tab { display: grid; gap: 14px; }
+.ec-me-card { padding: 14px 16px; border-radius: 14px; border: 1px solid var(--ec-a-border); background: var(--ec-a-panel); }
+.ec-me-section { margin: 0 0 6px; font-size: 11px; font-weight: 900; letter-spacing: 2px; color: var(--ec-a-gold); }
+.ec-me-muted { margin: 4px 0 0; font-size: 12.5px; color: var(--ec-a-text-secondary); }
+.ec-chal-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.ec-chal-row { padding: 12px; border-radius: 12px; border: 1px solid var(--ec-a-border); background: var(--ec-a-panel-soft); display: grid; gap: 6px; }
+.ec-chal-row-head { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; font-size: 13px; color: var(--ec-a-text); }
+.ec-chal-row-line { font-size: 13px; color: var(--ec-a-text-secondary); }
+.ec-chal-row-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+.ec-chal-status { margin-left: 8px; font-size: 10px; font-weight: 900; letter-spacing: 1.4px; padding: 2px 7px; border-radius: 6px; border: 1px solid var(--ec-a-border-strong); color: var(--ec-a-text-secondary); }
+.ec-chal-status[data-status="open"] { border-color: var(--ec-a-green, #2fa96d); color: var(--ec-a-green, #2fa96d); }
+.ec-chal-responses { list-style: none; margin: 2px 0 0; padding: 0 0 0 10px; border-left: 2px solid var(--ec-a-border); display: grid; gap: 4px; font-size: 12.5px; color: var(--ec-a-text-secondary); }
+.ec-chal-resp-name { font-weight: 800; color: var(--ec-a-text); margin-right: 8px; }
+.ec-chal-outcome[data-outcome="recipient"] { color: var(--ec-a-green, #2fa96d); }
+.ec-chal-outcome[data-outcome="creator"] { color: var(--ec-a-text); }
+@media (prefers-reduced-motion: reduce) { .ec-chal-btn, .ec-chal-share, .ec-chal-cmp { transition: none; animation: none; } }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PHASE 9D · Progression, XP and Achievements V1
+   The postgame CAREER PROGRESS module (arena, dark tokens; light variant for
+   the report page), the Overview progression hero and the Achievements page
+   (reading surface, light tokens). Four tones from the existing palette. 44px
+   controls; every state is said in words, never colour alone.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.ec-prog, .ec-prog-hero, .ec-ach {
+  --ec-prog-gold: var(--ec-a-gold, #f2b51d); --ec-prog-cobalt: var(--ec-a-blue, #3b9bff); --ec-prog-violet: #a78bfa; --ec-prog-platinum: #cfd8e3;
+}
+/* postgame module — arena surface */
+.ec-prog { margin: 0; padding: 14px 16px; border-radius: 14px; border: 1px solid var(--ec-a-border, rgba(157,178,209,0.2)); background: var(--ec-a-panel, #091321); color: var(--ec-a-text, #f5f7fb); display: grid; gap: 8px; text-align: left; }
+.ec-prog[data-state="earned"] { border-color: var(--ec-a-gold-line, rgba(242,181,29,0.45)); animation: ec-prog-in 240ms ease-out; }
+.ec-prog-head { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+.ec-prog-kicker { margin: 0; font-size: 10.5px; font-weight: 900; letter-spacing: 2px; color: var(--ec-prog-gold); }
+.ec-prog-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.ec-prog-delta { font-family: var(--ec-display); font-size: 30px; line-height: 1; letter-spacing: 1px; color: var(--ec-a-text, #f5f7fb); }
+.ec-prog-body { margin: 0; font-size: 12.5px; line-height: 1.5; color: var(--ec-a-text-secondary, #c3cddd); }
+.ec-prog-lines { list-style: none; margin: 0; padding: 0; display: grid; gap: 3px; font-size: 12.5px; color: var(--ec-a-text-secondary, #c3cddd); }
+.ec-prog-lines li { display: flex; justify-content: space-between; gap: 10px; }
+.ec-prog-lines b { color: var(--ec-a-text, #f5f7fb); font-variant-numeric: tabular-nums; }
+.ec-prog-level { display: grid; gap: 5px; margin-top: 4px; }
+.ec-prog-level-row { display: flex; justify-content: space-between; gap: 10px; font-size: 11px; font-weight: 900; letter-spacing: 1.4px; }
+.ec-prog-level-k { color: var(--ec-a-text, #f5f7fb); }
+.ec-prog-level-v { color: var(--ec-a-text-secondary, #c3cddd); font-variant-numeric: tabular-nums; }
+.ec-prog-bar { height: 8px; border-radius: 999px; background: var(--ec-a-panel-soft, #122137); border: 1px solid var(--ec-a-border, rgba(157,178,209,0.2)); overflow: hidden; }
+.ec-prog-bar-fill { display: block; height: 100%; background: linear-gradient(90deg, #D9A11A, #F7C63A); transition: width 480ms ease-out; }
+.ec-prog-next { font-size: 10.5px; font-weight: 800; letter-spacing: 1.2px; color: var(--ec-a-text-muted, #93a0b5); }
+.ec-prog-levelup { margin-top: 4px; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--ec-a-gold-line, rgba(242,181,29,0.45)); background: var(--ec-a-gold-soft, rgba(242,181,29,0.14)); display: grid; gap: 2px; }
+.ec-prog-levelup-k { font-size: 10px; font-weight: 900; letter-spacing: 2px; color: var(--ec-prog-gold); }
+.ec-prog-levelup-v { font-family: var(--ec-display); font-size: 20px; letter-spacing: 1px; color: var(--ec-a-text, #f5f7fb); }
+.ec-prog-unlocks { margin-top: 4px; display: grid; gap: 6px; }
+.ec-prog-unlocks-k { font-size: 10.5px; font-weight: 900; letter-spacing: 1.6px; color: var(--ec-prog-violet); }
+.ec-prog-unlock-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.ec-prog-unlock-list li { padding: 5px 9px; border-radius: 8px; border: 1px solid var(--ec-a-border-strong, rgba(157,178,209,0.35)); font-size: 11px; font-weight: 900; letter-spacing: 1.2px; color: var(--ec-a-text, #f5f7fb); }
+.ec-prog-btn { min-height: 44px; padding: 0 16px; border-radius: 10px; cursor: pointer; font-size: 12px; font-weight: 900; letter-spacing: 1.2px; border: 1px solid var(--ec-a-border-strong, rgba(157,178,209,0.35)); background: var(--ec-a-panel-soft, #122137); color: var(--ec-a-text, #f5f7fb); justify-self: start; }
+.ec-prog-btn:hover { border-color: var(--ec-a-gold-line, rgba(242,181,29,0.45)); }
+.ec-prog-btn:focus-visible { outline: 2px solid var(--ec-prog-gold); outline-offset: 2px; }
+.ec-prog-btn--quiet { background: transparent; color: var(--ec-a-text-secondary, #c3cddd); }
+/* the same module on the light report page */
+.ec-prog[data-surface="light"] { border-color: var(--ec-t-gold-border, #e0b955); background: var(--ec-t-bg-card, #fffdf8); color: var(--ec-t-text, #1b2434); max-width: 700px; margin: 14px auto 0; }
+.ec-prog[data-surface="light"] .ec-prog-kicker, .ec-prog[data-surface="light"] .ec-prog-levelup-k { color: var(--ec-t-gold, #8b660b); }
+.ec-prog[data-surface="light"] .ec-prog-delta, .ec-prog[data-surface="light"] .ec-prog-level-k, .ec-prog[data-surface="light"] .ec-prog-lines b, .ec-prog[data-surface="light"] .ec-prog-levelup-v, .ec-prog[data-surface="light"] .ec-prog-unlock-list li { color: var(--ec-t-text, #1b2434); }
+.ec-prog[data-surface="light"] .ec-prog-body, .ec-prog[data-surface="light"] .ec-prog-lines, .ec-prog[data-surface="light"] .ec-prog-level-v { color: var(--ec-t-text-dim, #5a6577); }
+.ec-prog[data-surface="light"] .ec-prog-next { color: var(--ec-t-text-muted, #636c83); }
+.ec-prog[data-surface="light"] .ec-prog-bar { background: var(--ec-t-bg, #f4efe6); border-color: var(--ec-t-border, #d9dee7); }
+.ec-prog[data-surface="light"] .ec-prog-levelup { background: var(--ec-t-gold-soft, #fdf3d8); border-color: var(--ec-t-gold-border, #e0b955); }
+.ec-prog[data-surface="light"] .ec-prog-unlocks-k { color: #6d4fd6; }
+.ec-prog[data-surface="light"] .ec-prog-unlock-list li { border-color: var(--ec-t-border, #d9dee7); }
+.ec-prog[data-surface="light"] .ec-prog-btn { background: transparent; color: var(--ec-t-text, #1b2434); border-color: var(--ec-t-border, #d9dee7); }
+
+/* Overview hero — reading surface */
+.ec-prog-hero { padding: 18px; border-radius: 14px; border: 1px solid var(--ec-t-gold-border, #e0b955); background: var(--ec-t-bg-card, #fffdf8); color: var(--ec-t-text, #1b2434); display: grid; gap: 10px; }
+.ec-prog-hero-k { margin: 0; font-size: 12px; font-weight: 900; letter-spacing: 1.6px; color: var(--ec-t-text-dim, #5a6577); }
+.ec-prog-hero-muted { margin: 0; font-size: 13px; color: var(--ec-t-text-dim, #5a6577); line-height: 1.6; }
+.ec-prog-hero-top { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "name level" "xp level"; column-gap: 14px; align-items: end; }
+.ec-prog-hero-name { grid-area: name; font-size: 20px; font-weight: 900; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ec-prog-hero-level { grid-area: level; font-family: var(--ec-display); font-size: 38px; line-height: 1; letter-spacing: 1px; color: var(--ec-t-gold, #8b660b); text-align: right; }
+.ec-prog-hero-xp { grid-area: xp; font-size: 13px; font-weight: 800; color: var(--ec-t-text-dim, #5a6577); font-variant-numeric: tabular-nums; }
+.ec-prog-hero .ec-prog-level-k { color: var(--ec-t-text, #1b2434); }
+.ec-prog-hero .ec-prog-level-v { color: var(--ec-t-text-dim, #5a6577); }
+.ec-prog-hero .ec-prog-bar { background: var(--ec-t-bg, #f4efe6); border-color: var(--ec-t-border, #d9dee7); height: 10px; }
+.ec-prog-hero .ec-prog-next { color: var(--ec-t-text-muted, #636c83); }
+.ec-prog-hero-stats { margin: 4px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); gap: 10px; }
+.ec-prog-hero-stats dt { font-size: 10.5px; font-weight: 800; letter-spacing: 1.1px; color: var(--ec-t-text-muted, #636c83); }
+.ec-prog-hero-stats dd { margin: 3px 0 0; font-size: 22px; font-weight: 900; font-family: var(--ec-display); }
+.ec-prog-hero-of { font-size: 13px; color: var(--ec-t-text-muted, #636c83); font-family: inherit; font-weight: 700; }
+.ec-prog-btn--light { background: transparent; color: var(--ec-t-text, #1b2434); border-color: var(--ec-t-border, #d9dee7); }
+.ec-prog-btn--light:hover { border-color: var(--ec-t-gold-border, #e0b955); }
+.ec-prog-btn--light:focus-visible { outline-color: var(--ec-t-gold, #8b660b); }
+
+/* Achievements page — reading surface */
+.ec-ach { display: grid; gap: 12px; }
+.ec-ach-head { padding: 18px; border-radius: 14px; border: 1px solid var(--ec-t-border, #d9dee7); background: var(--ec-t-bg-card, #fffdf8); display: grid; gap: 10px; }
+.ec-ach-title { margin: 0; font-size: 12px; font-weight: 900; letter-spacing: 1.6px; color: var(--ec-t-text-dim, #5a6577); text-transform: uppercase; }
+.ec-ach-count { font-family: var(--ec-display); font-size: 26px; letter-spacing: 1px; color: var(--ec-t-text, #1b2434); }
+.ec-ach-muted { margin: 0; font-size: 13px; color: var(--ec-t-text-dim, #5a6577); }
+.ec-ach-filters { display: flex; flex-wrap: wrap; gap: 6px; }
+.ec-ach-filter { min-height: 44px; padding: 0 14px; border-radius: 10px; cursor: pointer; font-size: 11.5px; font-weight: 900; letter-spacing: 1.2px; border: 1px solid var(--ec-t-border, #d9dee7); background: transparent; color: var(--ec-t-text-dim, #5a6577); }
+.ec-ach-filter[aria-pressed="true"] { border-color: var(--ec-t-gold-border, #e0b955); background: var(--ec-t-gold-soft, #fdf3d8); color: var(--ec-t-gold, #8b660b); }
+.ec-ach-filter:focus-visible { outline: 2px solid var(--ec-t-gold, #8b660b); outline-offset: 2px; }
+.ec-ach-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+@media (max-width: 1100px) { .ec-ach-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .ec-ach-grid { grid-template-columns: minmax(0, 1fr); } .ec-prog-hero-level { font-size: 32px; } }
+.ec-ach-card { padding: 14px; border-radius: 12px; border: 1px solid var(--ec-t-border, #d9dee7); background: var(--ec-t-bg-card, #fffdf8); display: grid; gap: 6px; min-width: 0; }
+.ec-ach-card[data-state="unlocked"] { border-color: var(--ec-t-gold-border, #e0b955); }
+.ec-ach-card[data-state="locked"], .ec-ach-card[data-state="secret"] { background: var(--ec-t-bg-card-hover, #f6f2ea); }
+.ec-ach-card-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.ec-ach-icon[data-tone="gold"] { color: var(--ec-t-gold, #8b660b); }
+.ec-ach-icon[data-tone="cobalt"] { color: #1f5fc4; }
+.ec-ach-icon[data-tone="violet"] { color: #6d4fd6; }
+.ec-ach-icon[data-tone="platinum"] { color: #55657a; }
+.ec-ach-icon[data-locked="true"] { opacity: 0.55; }
+.ec-ach-state { font-size: 10px; font-weight: 900; letter-spacing: 1.6px; padding: 3px 8px; border-radius: 6px; border: 1px solid var(--ec-t-border, #d9dee7); color: var(--ec-t-text-dim, #5a6577); }
+.ec-ach-card[data-state="unlocked"] .ec-ach-state { border-color: var(--ec-t-gold-border, #e0b955); color: var(--ec-t-gold, #8b660b); background: var(--ec-t-gold-soft, #fdf3d8); }
+.ec-ach-name { margin: 0; font-size: 15px; font-weight: 900; color: var(--ec-t-text, #1b2434); }
+.ec-ach-desc { margin: 0; font-size: 12.5px; line-height: 1.5; color: var(--ec-t-text-dim, #5a6577); }
+.ec-ach-foot { display: flex; justify-content: space-between; gap: 10px; align-items: center; margin-top: 4px; font-size: 11px; font-weight: 800; letter-spacing: 1px; color: var(--ec-t-text-muted, #636c83); }
+.ec-ach-foot b { color: var(--ec-t-text, #1b2434); font-variant-numeric: tabular-nums; }
+.ec-ach-progress { display: grid; gap: 4px; flex: 1; min-width: 0; }
+.ec-ach-progress-n { font-variant-numeric: tabular-nums; color: var(--ec-t-text, #1b2434); }
+.ec-ach-progress-bar { display: block; height: 6px; border-radius: 999px; background: var(--ec-t-bg, #f4efe6); border: 1px solid var(--ec-t-border, #d9dee7); overflow: hidden; max-width: 160px; }
+.ec-ach-progress-bar span { display: block; height: 100%; background: var(--ec-t-gold, #8b660b); }
+.ec-ach-note { margin: 0; font-size: 11.5px; color: var(--ec-t-text-muted, #636c83); }
+@keyframes ec-prog-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .ec-prog, .ec-prog[data-state="earned"] { animation: none; } .ec-prog-bar-fill { transition: none; } }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PHASE 9E · Competitive Rating + Leaderboards V1
+   The leaderboard (reading surface: premium standings, not a spreadsheet), the
+   personal module, AROUND ME, the visibility control, the Overview competitive
+   module, the rating movement in the result (arena surface) and the rating
+   history rows. Numeric rating only; no tiers. 44px controls; state in words.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.ec-cr-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.ec-cr-section { margin: 0; font-size: 11px; font-weight: 900; letter-spacing: 2px; color: var(--ec-t-gold, #8b660b); }
+.ec-cr-muted { margin: 6px 0 0; font-size: 12.5px; line-height: 1.55; color: var(--ec-t-text-dim, #5a6577); }
+.ec-cr-muted-inline { font-size: 10.5px; font-weight: 800; letter-spacing: 1.2px; color: var(--ec-t-text-muted, #636c83); }
+.ec-cr-btn { min-height: 44px; padding: 0 16px; border-radius: 10px; cursor: pointer; font-size: 12px; font-weight: 900; letter-spacing: 1.2px; border: 1px solid var(--ec-t-border, #d9dee7); background: transparent; color: var(--ec-t-text, #121a2a); justify-self: start; margin-top: 8px; }
+.ec-cr-btn:hover { border-color: var(--ec-t-gold-border, #e0b955); }
+.ec-cr-btn:focus-visible { outline: 2px solid var(--ec-t-gold, #8b660b); outline-offset: 2px; }
+/* page */
+.ec-cr-page { max-width: 980px; margin: 0 auto; padding: 16px 16px 64px; display: grid; gap: 14px; }
+.ec-cr-hero { display: grid; gap: 4px; padding: 4px 2px 0; }
+.ec-cr-kicker { font-size: 10.5px; font-weight: 900; letter-spacing: 2px; color: var(--ec-t-gold, #8b660b); }
+.ec-cr-h1 { margin: 0; font-family: var(--ec-display); font-size: 30px; line-height: 1.1; letter-spacing: 0.5px; color: var(--ec-t-text, #121a2a); }
+.ec-cr-sub { margin: 4px 0 0; font-size: 13.5px; line-height: 1.5; color: var(--ec-t-text-dim, #5a6577); max-width: 60ch; }
+.ec-cr-card { padding: 18px; border-radius: 14px; border: 1px solid var(--ec-t-border, #d9dee7); background: var(--ec-t-bg-card, #fffdf8); display: grid; gap: 8px; min-width: 0; }
+.ec-cr-me { border-color: var(--ec-t-gold-border, #e0b955); }
+.ec-cr-me-top { display: flex; gap: 18px; align-items: baseline; flex-wrap: wrap; }
+.ec-cr-me-rating { font-family: var(--ec-display); font-size: 44px; line-height: 1; letter-spacing: 1px; color: var(--ec-t-text, #121a2a); font-variant-numeric: tabular-nums; }
+.ec-cr-me-side { display: grid; gap: 2px; }
+.ec-cr-me-status { font-size: 12px; font-weight: 900; letter-spacing: 1.6px; color: var(--ec-t-gold, #8b660b); }
+.ec-cr-me-record { font-size: 14px; font-weight: 800; color: var(--ec-t-text-dim, #5a6577); font-variant-numeric: tabular-nums; }
+.ec-cr-prov { display: grid; gap: 4px; padding: 10px 12px; border-radius: 10px; background: var(--ec-t-bg, #f2efe8); border: 1px solid var(--ec-t-border, #d9dee7); font-size: 11px; font-weight: 800; letter-spacing: 1.2px; color: var(--ec-t-text-dim, #5a6577); }
+.ec-cr-prov b { color: var(--ec-t-text, #121a2a); font-size: 14px; letter-spacing: 0; margin-right: 6px; font-variant-numeric: tabular-nums; }
+.ec-cr-empty { padding: 18px 6px 8px; display: grid; gap: 6px; }
+.ec-cr-empty-k { font-family: var(--ec-display); font-size: 20px; letter-spacing: 1px; color: var(--ec-t-text, #121a2a); }
+.ec-cr-foot { margin: 0; padding: 0 2px; font-size: 11.5px; line-height: 1.5; color: var(--ec-t-text-muted, #636c83); }
+/* visibility */
+.ec-cr-vis { display: grid; gap: 8px; margin-top: 6px; }
+.ec-cr-vis-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.ec-cr-vis-opt { min-height: 44px; padding: 10px 12px; border-radius: 10px; cursor: pointer; text-align: left; display: grid; gap: 3px; border: 1px solid var(--ec-t-border, #d9dee7); background: transparent; color: var(--ec-t-text, #121a2a); }
+.ec-cr-vis-opt[aria-pressed="true"] { border-color: var(--ec-t-gold-border, #e0b955); background: var(--ec-t-gold-soft, #fdf3d8); }
+.ec-cr-vis-opt:focus-visible { outline: 2px solid var(--ec-t-gold, #8b660b); outline-offset: 2px; }
+.ec-cr-vis-opt:disabled { opacity: 0.6; cursor: default; }
+.ec-cr-vis-k { font-size: 11px; font-weight: 900; letter-spacing: 1.6px; }
+.ec-cr-vis-k::before { content: "○ "; }
+.ec-cr-vis-opt[aria-pressed="true"] .ec-cr-vis-k::before { content: "● "; }
+.ec-cr-vis-d { font-size: 12px; line-height: 1.45; color: var(--ec-t-text-dim, #5a6577); }
+@media (max-width: 560px) { .ec-cr-vis-options { grid-template-columns: minmax(0, 1fr); } }
+/* around me */
+.ec-cr-around { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 4px; }
+.ec-cr-around li { display: grid; grid-template-columns: 52px minmax(0, 1fr) auto auto; gap: 10px; align-items: baseline; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--ec-t-border, #d9dee7); font-size: 13px; color: var(--ec-t-text, #121a2a); }
+.ec-cr-around li[data-me="true"] { border-color: var(--ec-t-gold-border, #e0b955); background: var(--ec-t-gold-soft, #fdf3d8); }
+.ec-cr-around .ec-cr-record { color: var(--ec-t-text-dim, #5a6577); font-variant-numeric: tabular-nums; }
+/* standings */
+.ec-cr-table { width: 100%; border-collapse: collapse; font-size: 13.5px; color: var(--ec-t-text, #121a2a); }
+.ec-cr-table th { text-align: left; font-size: 10px; font-weight: 900; letter-spacing: 1.6px; color: var(--ec-t-text-muted, #636c83); padding: 6px 10px; border-bottom: 1px solid var(--ec-t-border, #d9dee7); }
+.ec-cr-table td { padding: 10px 10px; border-bottom: 1px solid var(--ec-t-border, #d9dee7); vertical-align: middle; min-height: 44px; font-variant-numeric: tabular-nums; }
+.ec-cr-table th[data-col="rating"], .ec-cr-table td[data-col="rating"], .ec-cr-table th[data-col="record"], .ec-cr-table td[data-col="record"], .ec-cr-table th[data-col="winPct"], .ec-cr-table td[data-col="winPct"], .ec-cr-table th[data-col="matches"], .ec-cr-table td[data-col="matches"], .ec-cr-table th[data-col="streak"], .ec-cr-table td[data-col="streak"] { text-align: right; }
+.ec-cr-table td[data-col="player"] { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.ec-cr-rank { display: inline-grid; place-items: center; min-width: 34px; height: 34px; border-radius: 9px; font-weight: 900; font-size: 13px; border: 1px solid var(--ec-t-border, #d9dee7); color: var(--ec-t-text-dim, #5a6577); }
+.ec-cr-avatar { display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; font-size: 11px; font-weight: 900; letter-spacing: 0.5px; background: var(--ec-t-bg, #f2efe8); border: 1px solid var(--ec-t-border, #d9dee7); color: var(--ec-t-text-dim, #5a6577); flex: none; }
+.ec-cr-name { font-weight: 800; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.ec-cr-level { font-size: 10px; font-weight: 800; letter-spacing: 1px; color: var(--ec-t-text-muted, #636c83); margin-left: 4px; flex: none; }
+.ec-cr-rating { font-weight: 900; font-size: 15px; }
+/* top three: stronger but restrained — Rank 1 fracture gold, 2 platinum, 3 cobalt */
+.ec-cr-table tr[data-podium="1"] .ec-cr-rank { background: linear-gradient(180deg, #F7C63A, #D9A11A); color: #1a1200; border-color: #B88A12; }
+.ec-cr-table tr[data-podium="2"] .ec-cr-rank { background: #e6ebf2; color: #3b4658; border-color: #c3ccd9; }
+.ec-cr-table tr[data-podium="3"] .ec-cr-rank { background: #e3edfb; color: #1f5fc4; border-color: #b9cff2; }
+.ec-cr-table tr[data-podium] .ec-cr-rating { font-size: 16px; }
+.ec-cr-table tr[data-me="true"] td { background: var(--ec-t-gold-soft, #fdf3d8); }
+@media (max-width: 640px) {
+  /* phone: rank, player, rating and record lead; the rest wraps beneath */
+  .ec-cr-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .ec-cr-table, .ec-cr-table tbody { display: block; }
+  .ec-cr-table tr { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; grid-template-areas: "rank player rating" "rank record record" "rank meta meta"; gap: 2px 10px; padding: 10px 0; border-bottom: 1px solid var(--ec-t-border, #d9dee7); }
+  .ec-cr-table td { display: block; padding: 0; border: 0; min-height: 0; }
+  .ec-cr-table td[data-col="rank"] { grid-area: rank; }
+  .ec-cr-table td[data-col="player"] { grid-area: player; display: flex; }
+  .ec-cr-table td[data-col="rating"] { grid-area: rating; text-align: right; }
+  .ec-cr-table td[data-col="record"] { grid-area: record; text-align: left; font-size: 12.5px; color: var(--ec-t-text-dim, #5a6577); }
+  .ec-cr-table td[data-col="record"]::before { content: "RECORD "; font-size: 9.5px; font-weight: 900; letter-spacing: 1.2px; color: var(--ec-t-text-muted, #636c83); }
+  .ec-cr-table td[data-col="winPct"], .ec-cr-table td[data-col="matches"], .ec-cr-table td[data-col="streak"] { grid-area: meta; display: inline; text-align: left; font-size: 11.5px; color: var(--ec-t-text-muted, #636c83); margin-right: 10px; }
+  .ec-cr-table td[data-col="winPct"]::before { content: "WIN % "; font-size: 9.5px; font-weight: 900; letter-spacing: 1.2px; }
+  .ec-cr-table td[data-col="matches"]::before { content: "MATCHES "; font-size: 9.5px; font-weight: 900; letter-spacing: 1.2px; }
+  .ec-cr-table td[data-col="streak"]::before { content: "STREAK "; font-size: 9.5px; font-weight: 900; letter-spacing: 1.2px; }
+  .ec-cr-table tr[data-me="true"] { background: var(--ec-t-gold-soft, #fdf3d8); border-radius: 10px; padding-left: 6px; padding-right: 6px; }
+  .ec-cr-table tr[data-me="true"] td { background: transparent; }
+  .ec-cr-me-rating { font-size: 38px; }
+  .ec-cr-around li { grid-template-columns: 44px minmax(0, 1fr) auto; }
+  .ec-cr-around .ec-cr-record { grid-column: 2 / -1; }
+}
+/* Overview module */
+.ec-cr-module { padding: 18px; border-radius: 14px; border: 1px solid var(--ec-t-border, #d9dee7); background: var(--ec-t-bg-card, #fffdf8); display: grid; gap: 8px; color: var(--ec-t-text, #121a2a); }
+.ec-cr-module-stats { margin: 4px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.ec-cr-module-stats dt { font-size: 10.5px; font-weight: 800; letter-spacing: 1.1px; color: var(--ec-t-text-muted, #636c83); }
+.ec-cr-module-stats dd { margin: 3px 0 0; font-size: 22px; font-weight: 900; font-family: var(--ec-display); font-variant-numeric: tabular-nums; }
+.ec-cr-module-rating { color: var(--ec-t-gold, #8b660b); }
+.ec-cr-module-status { font-size: 13px !important; font-family: inherit !important; letter-spacing: 1.2px; align-self: end; }
+/* badge */
+.ec-cr-badge { display: inline-flex; gap: 6px; align-items: baseline; padding: 4px 10px; border-radius: 8px; border: 1px solid var(--ec-t-gold-border, #e0b955); background: var(--ec-t-gold-soft, #fdf3d8); color: var(--ec-t-text, #121a2a); font-weight: 900; font-size: 13px; font-variant-numeric: tabular-nums; }
+.ec-cr-badge-k, .ec-cr-badge-tag { font-size: 9.5px; letter-spacing: 1.4px; color: var(--ec-t-text-dim, #5a6577); }
+/* rating movement in the result (arena surface) */
+.ec-cr-change { margin: 0 0 14px; padding: 14px 16px; border-radius: 14px; border: 1px solid var(--ec-a-border, rgba(157,178,209,0.2)); background: var(--ec-a-panel, #091321); color: var(--ec-a-text, #f5f7fb); display: grid; gap: 8px; }
+.ec-cr-change[data-rated="true"] { border-color: var(--ec-a-gold-line, rgba(242,181,29,0.45)); }
+.ec-cr-change .ec-cr-kicker { color: var(--ec-a-gold, #f2b51d); margin: 0; font-size: 10.5px; }
+.ec-cr-head { display: flex; justify-content: space-between; gap: 10px; }
+.ec-cr-body { margin: 0; font-size: 12.5px; line-height: 1.5; color: var(--ec-a-text-secondary, #c3cddd); }
+.ec-cr-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.ec-cr-col { padding: 10px 12px; border-radius: 12px; border: 1px solid var(--ec-a-border, rgba(157,178,209,0.2)); background: var(--ec-a-panel-soft, #122137); display: grid; gap: 2px; }
+.ec-cr-col[data-side="you"] { border-color: var(--ec-a-gold-line, rgba(242,181,29,0.45)); }
+.ec-cr-col-k { font-size: 10px; font-weight: 900; letter-spacing: 1.6px; color: var(--ec-a-text-secondary, #c3cddd); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ec-cr-col-rating { font-family: var(--ec-display); font-size: 28px; letter-spacing: 1px; color: var(--ec-a-text, #f5f7fb); font-variant-numeric: tabular-nums; }
+.ec-cr-col-delta { font-size: 14px; font-weight: 900; letter-spacing: 0.5px; color: var(--ec-a-text-secondary, #c3cddd); }
+.ec-cr-col-delta[data-direction="up"] { color: var(--ec-a-green, #4ade80); }
+.ec-cr-col-delta[data-direction="down"] { color: var(--ec-a-red, #f87171); }
+.ec-cr-change .ec-cr-foot { color: var(--ec-a-text-muted, #93a0b5); }
+@media (max-width: 480px) { .ec-cr-cols { grid-template-columns: minmax(0, 1fr); } }
+/* rating history rows (Challenges tab) */
+.ec-cr-history-row { display: grid; grid-template-columns: minmax(0, 1fr) 28px 56px auto; gap: 10px; align-items: baseline; font-size: 13px; }
+.ec-cr-history-o { text-align: center; }
+.ec-cr-history-row[data-outcome="W"] .ec-cr-history-o { color: var(--ec-a-green, #2fa96d); }
+.ec-cr-history-d { text-align: right; font-weight: 900; font-variant-numeric: tabular-nums; }
+.ec-cr-history-r { color: var(--ec-a-text-secondary, #5a6577); font-variant-numeric: tabular-nums; }
+@media (prefers-reduced-motion: reduce) { .ec-cr-change, .ec-cr-btn, .ec-cr-vis-opt { transition: none; animation: none; } }
+
+/* ── Phase 9F: public competitive profiles + the EraClash PLAYER CARD ────────
+   A broadcast identity card on the editorial reading surface. The rating is the
+   dominant competitive metric; record and rank are visibly secondary; Career
+   Level is kept apart from the rating so the two are never read as one thing.
+   Status is always carried by words as well as by tone. */
+.ec-pp-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.ec-pp-page { max-width: 760px; margin: 0 auto; padding: 16px 16px 64px; display: grid; gap: 14px; }
+.ec-pp-section { margin: 0; font-size: 11px; font-weight: 900; letter-spacing: 2px; color: var(--ec-t-gold, #8b660b); }
+.ec-pp-muted { margin: 6px 0 0; font-size: 12.5px; line-height: 1.55; color: var(--ec-t-text-dim, #5a6577); }
+.ec-pp-note { margin: 6px 0 0; font-size: 12.5px; font-weight: 700; color: var(--ec-t-text, #121a2a); overflow-wrap: anywhere; }
+.ec-pp-error { margin: 6px 0 0; font-size: 12.5px; font-weight: 700; color: var(--ec-t-loss, #a8352c); }
+.ec-pp-btn { min-height: 44px; padding: 0 16px; border-radius: 10px; cursor: pointer; font-size: 12px; font-weight: 900;
+  letter-spacing: 1.2px; border: 1px solid var(--ec-t-border, #d9dee7); background: transparent; color: var(--ec-t-text, #121a2a); }
+.ec-pp-btn:hover { border-color: var(--ec-t-gold-border, #e0b955); }
+.ec-pp-btn:focus-visible { outline: 2px solid var(--ec-t-gold, #8b660b); outline-offset: 2px; }
+.ec-pp-btn[disabled] { opacity: 0.5; cursor: not-allowed; }
+.ec-pp-btn[data-primary="true"] { border-color: var(--ec-t-gold-border, #e0b955); background: var(--ec-t-gold-soft, rgba(224, 185, 85, 0.16)); }
+
+/* the card */
+.ec-pp-card { padding: 22px; border-radius: 16px; border: 1px solid var(--ec-t-border, #d9dee7);
+  background: var(--ec-t-bg-card, #fffdf8); display: grid; gap: 18px; min-width: 0;
+  box-shadow: 0 1px 0 rgba(18, 26, 42, 0.04), 0 12px 32px -24px rgba(18, 26, 42, 0.35); }
+.ec-pp-card[data-state="placed"] { border-color: var(--ec-t-gold-border, #e0b955); }
+.ec-pp-head { display: flex; gap: 14px; align-items: center; min-width: 0; }
+.ec-pp-avatar { flex: none; width: 52px; height: 52px; border-radius: 999px; display: grid; place-items: center;
+  font-family: var(--ec-display); font-size: 20px; letter-spacing: 0.5px; color: var(--ec-t-text, #121a2a);
+  background: var(--ec-t-bg, #f2efe8); border: 1px solid var(--ec-t-border, #d9dee7); }
+.ec-pp-ident { min-width: 0; display: grid; gap: 2px; }
+.ec-pp-kicker { font-size: 10px; font-weight: 900; letter-spacing: 2.2px; color: var(--ec-t-gold, #8b660b); }
+.ec-pp-name { margin: 0; font-family: var(--ec-display); font-size: 32px; line-height: 1.08; letter-spacing: 0.4px;
+  color: var(--ec-t-text, #121a2a); overflow-wrap: anywhere; }
+
+/* metrics: the rating dominates, the rest are peers below it */
+.ec-pp-metrics { margin: 0; display: grid; gap: 14px 26px; grid-template-columns: repeat(auto-fit, minmax(122px, 1fr)); }
+.ec-pp-metrics[data-compact="true"] { grid-template-columns: minmax(122px, max-content); }
+.ec-pp-metric { min-width: 0; display: grid; gap: 3px; }
+.ec-pp-metric[data-size="xl"] { grid-column: 1 / -1; }
+.ec-pp-metric-k { margin: 0; font-size: 10px; font-weight: 900; letter-spacing: 1.6px; color: var(--ec-t-text-muted, #636c83); }
+.ec-pp-metric-v { margin: 0; font-family: var(--ec-display); font-size: 22px; line-height: 1; letter-spacing: 0.5px;
+  color: var(--ec-t-text, #121a2a); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ec-pp-metric[data-size="xl"] .ec-pp-metric-v { font-size: 58px; letter-spacing: 1px; }
+.ec-pp-metric-sub { margin: 0; font-size: 10px; font-weight: 800; letter-spacing: 1.2px; color: var(--ec-t-text-muted, #636c83); font-variant-numeric: tabular-nums; }
+
+/* provisional: progress in words and counts, never a rating and never a rank */
+.ec-pp-prov { display: grid; gap: 5px; padding: 14px 16px; border-radius: 12px;
+  background: var(--ec-t-bg, #f2efe8); border: 1px solid var(--ec-t-border, #d9dee7); }
+.ec-pp-prov-k { font-size: 12px; font-weight: 900; letter-spacing: 1.8px; color: var(--ec-t-gold, #8b660b); }
+.ec-pp-prov-row { font-size: 11.5px; font-weight: 800; letter-spacing: 1.1px; color: var(--ec-t-text-dim, #5a6577); font-variant-numeric: tabular-nums; }
+.ec-pp-prov-row b { font-family: var(--ec-display); font-size: 15px; letter-spacing: 0.5px; color: var(--ec-t-text, #121a2a); }
+
+/* featured achievements: restrained, never a loot shelf */
+.ec-pp-featured { display: grid; gap: 8px; padding-top: 4px; border-top: 1px solid var(--ec-t-border, #d9dee7); }
+.ec-pp-featured-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.ec-pp-featured-item { display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 999px;
+  border: 1px solid var(--ec-t-border, #d9dee7); background: var(--ec-t-bg, #f2efe8); min-width: 0; }
+.ec-pp-featured-name { font-size: 11.5px; font-weight: 800; letter-spacing: 0.6px; color: var(--ec-t-text, #121a2a); }
+
+.ec-pp-foot { display: grid; gap: 5px; padding-top: 12px; border-top: 1px solid var(--ec-t-border, #d9dee7); }
+.ec-pp-mark { font-family: var(--ec-display); font-size: 12px; letter-spacing: 3px; color: var(--ec-t-gold, #8b660b); }
+.ec-pp-foot-note { font-size: 11px; line-height: 1.5; color: var(--ec-t-text-muted, #636c83); }
+.ec-pp-page-actions, .ec-pp-empty-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* the honest "not available" state — one state for private, unknown and deleted */
+.ec-pp-empty { padding: 26px 22px; border-radius: 16px; border: 1px solid var(--ec-t-border, #d9dee7);
+  background: var(--ec-t-bg-card, #fffdf8); display: grid; gap: 10px; }
+.ec-pp-empty-k { margin: 0; font-family: var(--ec-display); font-size: 20px; line-height: 1.2; letter-spacing: 0.6px; color: var(--ec-t-text, #121a2a); }
+
+/* the owner's module on My EraClash */
+.ec-pp-mod { display: grid; gap: 10px; min-width: 0; }
+.ec-pp-mod-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.ec-pp-badge { font-size: 10px; font-weight: 900; letter-spacing: 1.6px; padding: 4px 9px; border-radius: 999px;
+  border: 1px solid var(--ec-t-border, #d9dee7); color: var(--ec-t-text-dim, #5a6577); }
+.ec-pp-badge[data-state="public"] { border-color: var(--ec-t-gold-border, #e0b955); color: var(--ec-t-gold, #8b660b); background: var(--ec-t-gold-soft, rgba(224, 185, 85, 0.16)); }
+.ec-pp-mod-copy { margin: 0; font-size: 13px; line-height: 1.55; color: var(--ec-t-text, #121a2a); }
+.ec-pp-mod-actions, .ec-pp-mod-featured { display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-start; }
+.ec-pp-mod-featured { display: grid; gap: 8px; justify-items: start; }
+.ec-pp-preview { display: grid; gap: 8px; }
+.ec-pp-preview-k { font-size: 10.5px; font-weight: 900; letter-spacing: 1.6px; color: var(--ec-t-gold, #8b660b); }
+.ec-pp-preview-surface { background: var(--ec-t-bg, #f2efe8); padding: 12px; border-radius: 14px; }
+
+/* the featured picker */
+.ec-pp-picker { display: grid; gap: 10px; }
+.ec-pp-picker-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.ec-pp-picker-opt { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 12px; border-radius: 999px;
+  cursor: pointer; border: 1px solid var(--ec-t-border, #d9dee7); background: transparent; color: var(--ec-t-text, #121a2a); }
+.ec-pp-picker-opt[aria-pressed="true"] { border-color: var(--ec-t-gold-border, #e0b955); background: var(--ec-t-gold-soft, rgba(224, 185, 85, 0.16)); }
+.ec-pp-picker-opt[aria-pressed="true"]::before { content: "✓"; font-size: 12px; font-weight: 900; color: var(--ec-t-gold, #8b660b); }
+.ec-pp-picker-opt[disabled] { opacity: 0.45; cursor: not-allowed; }
+.ec-pp-picker-opt:focus-visible { outline: 2px solid var(--ec-t-gold, #8b660b); outline-offset: 2px; }
+.ec-pp-picker-name { font-size: 11.5px; font-weight: 800; letter-spacing: 0.5px; }
+.ec-pp-picker-foot { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.ec-pp-picker-count { font-size: 11px; font-weight: 900; letter-spacing: 1.2px; color: var(--ec-t-text-muted, #636c83); }
+
+/* a leaderboard row that links to a public profile */
+.ec-cr-player-link { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0; border: 0;
+  background: none; cursor: pointer; color: inherit; text-align: left; min-width: 0; }
+.ec-cr-player-link .ec-cr-name { text-decoration: underline; text-decoration-color: var(--ec-t-gold-border, #e0b955); text-underline-offset: 3px; }
+.ec-cr-player-link:hover .ec-cr-name { text-decoration-color: var(--ec-t-gold, #8b660b); }
+.ec-cr-player-link:focus-visible { outline: 2px solid var(--ec-t-gold, #8b660b); outline-offset: 2px; border-radius: 6px; }
+
+@media (max-width: 640px) {
+  .ec-pp-card { padding: 16px; gap: 14px; border-radius: 14px; }
+  .ec-pp-name { font-size: 26px; }
+  .ec-pp-avatar { width: 44px; height: 44px; font-size: 17px; }
+  .ec-pp-metric[data-size="xl"] .ec-pp-metric-v { font-size: 46px; }
+  .ec-pp-metrics { gap: 12px 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ec-pp-card, .ec-pp-btn, .ec-pp-picker-opt { transition: none !important; animation: none !important; }
+}
+
+/* Unified Light UI release: rail links and the era-rules control are 44px targets at every viewport. */
+.ec-ta-rail button, .ec-intel-link, .ec-era-reveal-more, .ec-coach-detail-toggle, .ec-dock-tab { min-height: 44px; }

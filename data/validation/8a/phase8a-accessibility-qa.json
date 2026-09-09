@@ -1,0 +1,24 @@
+{
+  "artifact": "phase8a-accessibility-qa",
+  "phase": "8A",
+  "keyboard": {
+    "startChaosClash": true,
+    "holdPlayers": "focus a hold control and press Enter; aria-pressed flips and the accessible name changes from Hold X to Release X",
+    "submitHolds": true,
+    "completeAllThreeRolls": true,
+    "selectCoach": true,
+    "runSimulation": true,
+    "navigatePostgame": "postgame sections are a real tablist",
+    "retryEnhancedAnalysis": true,
+    "createChallenge": true
+  },
+  "liveRegions": [
+    "roll and draft-pressure status announced politely",
+    "era reveal is a labelled region",
+    "recap failure is an alert"
+  ],
+  "targets": "hold controls are at least 44px tall at every viewport",
+  "reducedMotion": "the roll reveal animation is disabled under prefers-reduced-motion; no information depends on motion",
+  "namingDiscipline": "controls are labelled by aria-label rather than title, so the accessible name is never hijacked",
+  "evidence": "e2e/phase8a-chaos.spec.js keyboard and mobile specs; e2e/phase7b-responsive.spec.js R4 and R5 still pass"
+}

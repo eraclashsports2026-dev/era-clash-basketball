@@ -1,0 +1,216 @@
+{
+  "artifact": "phase6c4b2-final-summary",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run v6:summary",
+  "generatedAt": "2026-08-27T05:35:51.569Z",
+  "gitCommit": "a83280bede49368632205d4ff9795d5a8a0b8ed2",
+  "branch": "phase-6c4b2-candidate1-formal-revalidation",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "phase": "6C4B2",
+    "title": "Historical Holdout V5 and Synthetic Stress Holdout V2 formal Candidate 1 revalidation",
+    "outcome": "BLOCKED_BEFORE_ACCESS_SECOND_STAGE_PACKAGE_INCOMPLETE",
+    "finalVerdict": "NO FORMAL RESULT — SECOND-STAGE PACKAGE INCOMPLETE, NEITHER HOLDOUT OPENED",
+    "artifactsWritten": 3,
+    "artifactsInvalid": 0,
+    "whatWasVerified": {
+      "candidate1LockValid": true,
+      "candidate1CoreStable": true,
+      "candidate1ReplayValid": true,
+      "candidate0Preserved": true,
+      "historicalV5PackageValid": true,
+      "historicalV3Preserved": true,
+      "historicalV4Preserved": true,
+      "note": "Candidate 1's identity and the entire Historical V5 package verified clean. The stop is not about either of them."
+    },
+    "whatBlocked": {
+      "blockerId": "SYNTHETIC_V2_PACKAGE_INCOMPLETE",
+      "present": [
+        "fixtures",
+        "guardrailPolicy",
+        "seal"
+      ],
+      "missing": [
+        "seedSet",
+        "aggregationRule",
+        "runner",
+        "preparedCommandResolvable",
+        "dryRun",
+        "packageBinding"
+      ],
+      "summary": "The Synthetic Stress Holdout V2 second-stage package cannot be executed: its fixtures, guardrail policy and seal exist and are frozen, but it has no frozen seed set, no per-fixture sample volume, no verdict aggregation rule, no runner, and no dry run.",
+      "instructionFollowed": "Do not consume Historical V5 while the second-stage package is known to be unusable."
+    },
+    "candidate": {
+      "candidateId": "Candidate 1",
+      "candidateCommit": "c370182bb805cd068427283ce2b45a7eda725d1c",
+      "lockRevision": 2,
+      "coreHash": "de57e1a96e1fd1450d1aea9c5463b0138a56d77bbf58c748ba042e6f78f5c94d",
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "possessionCalibrationVersion": "1.1.0",
+      "calibrationStatus": "DEVELOPMENT_LOCKED_SCOPED",
+      "formalValidationStatus": "NOT_RUN"
+    },
+    "historicalV5": {
+      "state": "SEALED_UNREAD",
+      "accessCount": 0,
+      "accessLogExists": false,
+      "packageValid": true,
+      "hashMismatches": 0,
+      "dryRunChecks": 30,
+      "formalVerdict": "NOT_OPENED"
+    },
+    "syntheticV2": {
+      "state": "SEALED_UNREAD",
+      "accessCount": 0,
+      "accessLogExists": false,
+      "fixtureCount": 16,
+      "missingComponents": [
+        "seedSet",
+        "aggregationRule",
+        "runner",
+        "preparedCommandResolvable",
+        "dryRun",
+        "packageBinding"
+      ],
+      "formalVerdict": "NOT_OPENED"
+    },
+    "priorHoldouts": {
+      "historicalHoldoutV3": {
+        "state": "CONSUMED",
+        "accessCount": 1,
+        "verdict": "FAIL",
+        "failureClass": "NONIDENTIFIABLE_MEASUREMENT_SURFACE",
+        "candidate": "Candidate 0"
+      },
+      "historicalHoldoutV4": {
+        "state": "CONSUMED",
+        "accessCount": 1,
+        "verdict": "FAIL",
+        "failureClass": "OBSERVABLE_HISTORICAL_TRAIT_FIDELITY_FAILURE",
+        "candidate": "Candidate 0"
+      }
+    },
+    "allSeals": {
+      "legacy-holdout-v1": {
+        "status": "SEALED_UNREAD",
+        "accessCount": 0
+      },
+      "historical-holdout-v2": {
+        "status": "SEALED_UNREAD",
+        "accessCount": 0
+      },
+      "synthetic-stress-v1": {
+        "status": "PREVIOUSLY_INSPECTED_ARCHIVE",
+        "accessCount": 0
+      },
+      "historical-holdout-v3": {
+        "status": "UNSEALED",
+        "accessCount": 1
+      },
+      "synthetic-stress-holdout-v2": {
+        "status": "SEALED_UNREAD",
+        "accessCount": 0
+      },
+      "historical-holdout-v4": {
+        "status": "UNSEALED",
+        "accessCount": 1
+      },
+      "historical-holdout-v5": {
+        "status": "SEALED_UNREAD",
+        "accessCount": 0
+      }
+    },
+    "attemptRegistry": {
+      "version": "3.0.0",
+      "attempts": 4,
+      "completed": 2,
+      "opened": [
+        "historical-holdout-v3",
+        "historical-holdout-v4"
+      ],
+      "notOpened": [
+        "historical-holdout-v5",
+        "synthetic-stress-holdout-v2"
+      ],
+      "registryHash": "1277cc05ac1d3af28abb19a1c2b902eb08d55987c1f8a8031b192a438bf9f817",
+      "priorVerdictsUnchanged": true
+    },
+    "notCreatedBecauseNoHoldoutOpened": [
+      "historical-v5-access-event.json",
+      "historical-v5-formal-run.json",
+      "historical-v5-fixture-results.json",
+      "historical-v5-formal-results.json",
+      "historical-v5-formal-verdict.json",
+      "synthetic-v2-access-event.json",
+      "synthetic-v2-formal-run.json",
+      "synthetic-v2-fixture-results.json",
+      "synthetic-v2-formal-results.json",
+      "synthetic-v2-formal-verdict.json",
+      "candidate1-formal-holdout-verdict.json",
+      "candidate1-formal-status.json",
+      "candidate1-protected-preview-package.json"
+    ],
+    "claimsNotMade": [
+      "Candidate 1 generalises to unseen historical data",
+      "Candidate 1 is robust under unseen structural stress",
+      "Candidate 1 is HOLDOUT_VALIDATED",
+      "Candidate 1 is ready for a protected private preview",
+      "Historical V5 passed or failed",
+      "Synthetic V2 passed or failed"
+    ],
+    "commandsExecuted": {
+      "historicalV5": 0,
+      "syntheticV2": 0,
+      "formalVerdict": 0,
+      "previewDeployment": 0
+    },
+    "productionIsolation": {
+      "engineVersion": "3.2.0",
+      "appVersion": "2.7.2",
+      "possessionCalibrationVersion": "1.1.0",
+      "main": "9cd95ff",
+      "branch": "phase-6c4b2-candidate1-formal-revalidation",
+      "previewDeployed": false,
+      "productionDeployed": false
+    },
+    "scopeRespected": {
+      "historicalV5NotOpened": true,
+      "syntheticV2NotOpened": true,
+      "syntheticV2NotAltered": true,
+      "historicalV5NotAltered": true,
+      "v3AndV4NotRescored": true,
+      "candidate1Unchanged": true,
+      "noParameterChanges": true,
+      "noPolicyChanges": true,
+      "noMethodologyAuthored": true,
+      "mainNotMerged": true,
+      "noPreviewDeployment": true,
+      "noProductionDeployment": true
+    },
+    "limitations": [
+      {
+        "id": "NO_FORMAL_CANDIDATE_1_RESULT",
+        "detail": "Candidate 1 has never been evaluated on an unseen holdout. Its trait-fidelity repairs are supported only by development evidence and by the V4 diagnostics it was built against, which cannot demonstrate generalisation for the candidate developed from them."
+      },
+      {
+        "id": "SECOND_STAGE_NEVER_PREPARED",
+        "detail": "Synthetic Stress Holdout V2 has had a frozen fixture manifest and guardrail policy since Phase 6C2C1, but no phase ever built its seed set, sample volumes, aggregation rule, runner or dry run — because Historical V3 and V4 both failed before the second stage was needed, and Phase 6C4B1 prepared V5 alone. Its readiness artifact tracked only that the set was still sealed."
+      },
+      {
+        "id": "B2_PACKAGE_NAMED_UNBUILT_COMMANDS",
+        "detail": "The Phase 6C4B1 validation package prepared 'npm run validation:synthetic-v2' and 'npm run validation:candidate1-formal-verdict'. Neither script existed. A prepared command should be verified resolvable at the moment it is prepared; that check is a recommendation for the next preparation phase."
+      },
+      {
+        "id": "HISTORICAL_V5_STILL_UNSPENT",
+        "detail": "This is a limitation of knowledge, not of the package: V5 is fully prepared and verified but tells us nothing yet. Its value is intact precisely because it was not spent."
+      }
+    ],
+    "recommendedNextPhase": "A Synthetic Stress Holdout V2 preparation phase (the counterpart of 6C4B1 for the second stage), after which a re-run of this execution phase can open both sets in order."
+  },
+  "outputHash": "e8da6b63de94d849ea9992a4114716c8cc9acb277cbb13c3d2b98295b567bbe3"
+}

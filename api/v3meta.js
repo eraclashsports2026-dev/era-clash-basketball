@@ -4,6 +4,7 @@
 // Engine attributes never leave the server in raw form beyond what the cards
 // need; there is no coach OVR to expose. Flag-gated with the engine.
 import { sendError, newRequestId } from "./_lib/errors.js";
+import { buildPregameRead } from "./_lib/pregameRead.js";
 import { flags } from "./_lib/flags.js";
 import { tooLarge, validateTeamIds, validEraId, validCoachId } from "./_lib/validate.js";
 import { COACHES } from "../src/v3/coaches.js";
@@ -32,6 +33,9 @@ export default async function handler(req, res) {
       note: ERA_NOTE,
       eras: ERA_STYLES.map(publicEra),
       coaches: COACHES.map(publicCoach),
+      // Mode availability, so the client never lands on a Play screen whose
+      // server feature is switched off.
+      modes: { chaosClash: !!flags().chaosClash },
     });
   }
 
@@ -45,16 +49,22 @@ export default async function handler(req, res) {
   // strategic tension only — never edge counts, never an expected winner. The
   // point of the preview is "I want to see how this plays out."
   const blue = req.body?.blueIds ? validateTeamIds(req.body.blueIds) : null;
-  let keyClash = null;
+  let keyClash = null, edges = null, pregame = null;
   if (blue) {
     const cG = resolveCoach(validCoachId(req.body?.coachGoldId) || "neutral");
     const cB = resolveCoach(validCoachId(req.body?.coachBlueId) || "neutral");
-    keyClash = matchupPreviewV3(team, blue, cG, cB, era).keyClash;
+    // ONE implementation of the pregame read, shared with /api/game so the
+    // builder and the postgame can never disagree (see api/_lib/pregameRead.js).
+    pregame = buildPregameRead(team, blue, cG, cB, era);
+    keyClash = pregame.keyClash;
+    edges = pregame.qualitativeEdges;
   }
 
   return res.status(200).json({
     recommended: recommendCoaches(team, era, 3),
     eraNote: era ? eraInteraction(era, teamDNA(team)) : null,
     keyClash,
+    edges,
+    pregame,
   });
 }

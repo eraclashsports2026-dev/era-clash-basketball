@@ -1,0 +1,63 @@
+{
+  "artifact": "candidate1-preservation",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run c2:preflight",
+  "generatedAt": "2026-08-27T14:16:44.917Z",
+  "gitCommit": "d88cca10747f68c859a250ecf7996249b94afba6",
+  "branch": "phase-6c4c1-candidate2-trait-repair",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "candidateId": "Candidate 1",
+    "parentCandidateId": "Candidate 0",
+    "lockRevision": 2,
+    "coreHash": "de57e1a96e1fd1450d1aea9c5463b0138a56d77bbf58c748ba042e6f78f5c94d",
+    "coreFileCount": 53,
+    "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+    "parameterChanges": 0,
+    "possessionCalibrationVersion": "1.1.0",
+    "candidateSelectionStatus": "SELECTED",
+    "candidateLockStatus": "LOCKED",
+    "calibrationStatus": "HOLDOUT_FAILED",
+    "formalValidationStatus": "HISTORICAL_V5_FAILED",
+    "calibrationStatusReconciliation": {
+      "supersedes": "data/validation/6c4b2r/candidate1-formal-status.json",
+      "priorValue": "DEVELOPMENT_LOCKED_SCOPED",
+      "reconciledValue": "HOLDOUT_FAILED",
+      "precedent": "data/validation/6c3r/replacement-formal-verdict.json calibrationStatusAfterVerdict = HOLDOUT_FAILED",
+      "why": "Candidate 0's calibration status became HOLDOUT_FAILED when it failed Historical V4. Phase 6C4B2R left Candidate 1 at DEVELOPMENT_LOCKED_SCOPED on the reasoning that a formal outcome should not be conflated with a calibration lifecycle status. That reasoning is defensible in isolation but it broke a convention the repository had already set, and an inconsistent status model is worse than either choice. The precedent wins. The 6C4B2R artifact is left exactly as that phase wrote it.",
+      "candidateUnchangedByThis": "this is a status field only. No hash, file, parameter or result identity moved."
+    },
+    "driftFromLock": {
+      "core": 0,
+      "parameters": 0,
+      "calibrationVersion": 0
+    },
+    "liveVerification": {
+      "coreHash": "de57e1a96e1fd1450d1aea9c5463b0138a56d77bbf58c748ba042e6f78f5c94d",
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "calibrationVersion": "1.1.0",
+      "parametersAtDefault": true
+    },
+    "formalAttempts": [
+      {
+        "holdoutId": "historical-holdout-v5",
+        "accessCount": 1,
+        "formalVerdict": "HISTORICAL_HOLDOUT_V5_FAIL",
+        "failureClass": "OBSERVABLE_DEFENSIVE_SUPPRESSION_AND_ASSISTED_OFFENCE_TRAIT_FAILURE"
+      },
+      {
+        "holdoutId": "synthetic-stress-holdout-v2",
+        "accessCount": 0,
+        "formalVerdict": "NOT_OPENED",
+        "failureClass": null
+      }
+    ],
+    "alteredInThisPhase": false,
+    "role": "immutable parent of Candidate 2, and the baseline every Candidate 2 comparison is measured against"
+  },
+  "outputHash": "3ae4847f0e47e729758e3885c653d5961387c4b3acc80500a7707fc37b1a3ee7"
+}

@@ -1,0 +1,161 @@
+{
+  "phase": "9B.1A — Supabase live activation and account certification",
+  "generatedAt": "2026-09-05T01:40:23.239Z",
+  "branch": "phase-9b1a-supabase-live-certification",
+  "head": "12896e06aa3cc6d2a9cefe13aabbde8d55005a9b",
+  "durableOrigin": "https://era-clash-basketball-git-phase-9b1a-supabase-l-f071d0-era-clash.vercel.app",
+  "originPolicy": "All browser and authentication certification runs against the durable branch origin. A commit-specific preview URL is a different browser origin on every push, so a session and its storage do not survive one, and each would need its own entry in the provider's redirect allow list.",
+  "candidate": {
+    "candidateId": "Candidate 4",
+    "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+    "possessionCalibrationVersion": "1.4.0",
+    "unchanged": true,
+    "evidence": "Recomputed from this checkout and matched against the deployed build's health route in the deployed QA pass."
+  },
+  "frozenRefs": {
+    "wave1": "4dc59e7",
+    "wave2": "ef0caa5",
+    "main": "9cd95ff",
+    "movedByThisPhase": false,
+    "production": "build 2.7.2, no preview block, no account surface — asserted live in the deployed QA pass"
+  },
+  "certifiedLive": {
+    "signInCompletes": {
+      "state": "VERIFIED",
+      "evidence": "The owner completed a real sign-in on the durable origin. The provider records a live session and a sign-in timestamp on the real account."
+    },
+    "signUpTrigger": {
+      "state": "VERIFIED",
+      "evidence": "The profile row for the owner's real account exists and is readable by that account alone."
+    },
+    "crossAccountIsolation": {
+      "state": "VERIFIED",
+      "verdict": {
+        "crossAccountReads": 0,
+        "crossAccountWrites": 0,
+        "anonymousProtectedReads": 0,
+        "forgedCareerWrites": 0,
+        "ownerSeesOwnRow": true,
+        "signUpTriggerCreatedTheProfile": true
+      }
+    },
+    "linkRedemption": {
+      "state": "VERIFIED",
+      "verdict": {
+        "exchangeReceivesTheBareCode": true,
+        "exchangeNeverReceivesAUrl": true,
+        "exchangeUsesThePkceGrant": true,
+        "namedFlowUsesItsOwnVerifier": true,
+        "unnamedFlowFallsBackRatherThanFailing": true,
+        "digestVerifiedAsAHashWithItsType": true,
+        "plainDigestAlsoVerified": true,
+        "noAddressIsEverInvented": true,
+        "nothingIsSentWithoutAProof": true
+      }
+    },
+    "emailLinkFlow": {
+      "state": "VERIFIED",
+      "verdict": {
+        "bundleUsesImplicitFlow": true,
+        "fragmentReachedTheProvider": true,
+        "addressBarCarriesNoToken": true,
+        "addressBarLandedOnASafePath": true,
+        "forgedSessionRefusedByProvider": true
+      }
+    },
+    "durableOriginBehaviour": {
+      "state": "VERIFIED",
+      "verdict": {
+        "stableAliasServesTheAccountBuild": true,
+        "aliasCallbackAcceptedByProvider": true,
+        "bundleUsesImplicitFlow": true,
+        "fragmentReachedTheProvider": true,
+        "forgedSessionRefusedByProvider": true,
+        "addressBarCarriesNoToken": true,
+        "addressBarLandedOnASafePath": true
+      }
+    },
+    "guestSurfacesAndSecrets": {
+      "state": "VERIFIED",
+      "passed": "24/24",
+      "bundleAudit": {
+        "assets": 1,
+        "secretShaped": 0,
+        "serviceRoleJwt": 0,
+        "serviceWords": 0,
+        "anonPresent": true,
+        "urlPresent": true,
+        "bytes": 777444
+      }
+    },
+    "signedInJourneys": {
+      "state": "VERIFIED_EXCEPT_BLOCKED",
+      "passed": 25,
+      "failed": 0,
+      "blocked": 0,
+      "covers": "sign-in adopted through the product's own callback, the signed-in header and its account menu, a signed-in Chaos Clash to a result, My EraClash, the same account on a second device, a second account seeing none of it, the server refusing a save addressed to another account, Dream Matchup's gate lifting, and sign-out returning the header to a guest state",
+      "sessionSource": "The provider's anonymous sign-in, enabled by the owner for this run. These are real sessions with a real auth.uid(), so RLS, the sign-up trigger and the authoritative save are exercised for real. Every one is adopted through the product's own /auth/callback in a URL fragment, exactly as an emailed link delivers one — nothing is injected into storage behind the app's back."
+    },
+    "deployedQa": {
+      "state": "VERIFIED",
+      "origin": "https://era-clash-basketball-git-phase-9b1a-supabase-l-f071d0-era-clash.vercel.app"
+    }
+  },
+  "notCertified": [
+    {
+      "item": "signing back in with a credential after signing out",
+      "reason": "The QA sessions come from anonymous sign-in, and an anonymous account has no credential to sign back in with.",
+      "evidence": "The owner's own real sign-in on this origin demonstrates that path for a credentialed account, and sign-out itself is certified here.",
+      "severity": "informational — every other signed-in journey is certified live"
+    }
+  ],
+  "deploymentFaultFoundAndFixed": {
+    "item": "cloud save returned 401 for every signed-in player",
+    "cause": "Three rows existed for SUPABASE_SERVICE_ROLE_KEY scoped to Development, Production and Preview. Vercel stores a value per environment, so updates never reached the Preview row, and the branch alias is a Preview deployment. Its value predated the key rotation earlier in the phase.",
+    "whyItHid": "The key was present and correctly shaped, so every static check reported cloud accounts ready while every write failed.",
+    "nowGuardedBy": "GET /api/health?deep=1 reports whether the provider ACCEPTS the credential, with the probe status and a one-way fingerprint of the deployed value; account:live-guest-qa asserts it."
+  },
+  "defectsFoundAndFixedThisPhase": [
+    "exchangeCodeForSession was handed a URL where its parameter is an auth code — no click could ever have completed a sign-in",
+    "the one-time code field stripped every non-digit, so the only proof the default email template sends could not be entered",
+    "a pkce_-prefixed token was redeemed as a raw token, which hashes it twice and always fails",
+    "the address-bar scrub erased the SDK's sb_flow_id before the exchange read it, so the older of two links presented the wrong verifier",
+    "PKCE bound an emailed link to the browser that requested it, which a mail app almost never is — the email flow is now implicit",
+    "the Dream Matchup route-level gate was rendered without onUseAccount, so its own call to action was inert while the header's worked",
+    "the account dialog referenced a symbol it never imported, which built cleanly because a bundler cannot see an identifier only reached on click"
+  ],
+  "ledger": {
+    "signInBlocker": "FIXED_AND_VERIFIED",
+    "items": [
+      {
+        "item": "signed-in header and account menu",
+        "state": "FIXED_AND_VERIFIED",
+        "evidence": "Live on the durable origin: the header drops both account prompts for an identity chip, and the chip opens a menu offering My EraClash, Account settings and Sign out. Signing out returns the header to Sign in and Create free account with guest play intact."
+      },
+      {
+        "item": "cross-device sync",
+        "state": "FIXED_AND_VERIFIED",
+        "evidence": "Live, with two isolated browser contexts: a Clash saved on the first device is read back on the second by RESULT ID, not merely by count, and a third context signed in as a different account sees none of them."
+      }
+    ]
+  },
+  "artifacts": [
+    "data/validation/9b1a/implicit-flow-live-qa.json",
+    "data/validation/9b1a/link-redemption-live-qa.json",
+    "data/validation/9b1a/live-cross-account-isolation.json",
+    "data/validation/9b1a/live-email-auth-qa.json",
+    "data/validation/9b1a/live-guest-security-qa.json",
+    "data/validation/9b1a/live-migration-qa.json",
+    "data/validation/9b1a/live-rls-qa.json",
+    "data/validation/9b1a/live-security-advisors.json",
+    "data/validation/9b1a/live-signed-in-qa.json",
+    "data/validation/9b1a/phase9b1-ledger-reconciliation.json",
+    "data/validation/9b1a/phase9b1a-final-summary.json",
+    "data/validation/9b1a/phase9b1a-preflight.json",
+    "data/validation/9b1a/server-credential-diagnosis.json",
+    "data/validation/9b1a/stable-alias-live-qa.json",
+    "data/validation/9b1a/supabase-preview-project.json",
+    "data/validation/9b1a/test-user-cleanup.json"
+  ],
+  "secrets": "No credential appears in any artifact. Bundle audits record counts and shapes; probes record booleans, endpoint paths and refusal messages. Synthetic values used in probes are unsigned and generated by the scripts themselves."
+}

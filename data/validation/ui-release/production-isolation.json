@@ -1,0 +1,10 @@
+{
+  "artifact": "production-isolation",
+  "release": "ui/light-court-release-candidate",
+  "rcCommit": "149eef3 (code) — see ui-release-final-summary.json for the certified head",
+  "recordedAt": "2026-09-09",
+  "production": { "origin": "https://www.eraclashbasketball.com", "healthReadLive": { "status": "ok", "build": "2.7.2", "cloudAccounts": "absent (pre-accounts main)", "previewBlock": false }, "readOnly": true, "note": "GET /api/health only; no deployment, env, migration, DNS or domain action was taken" },
+  "deployment": "Git-integration preview of the isolated branch ui/light-court-release-candidate only (stacked on PR #49's verified head aae565c). No promotion to wave1 (4dc59e7), wave2 (ef0caa5) or main (9cd95ff). No testers invited. The 9E and 9F aliases were not mutated.",
+  "supabase": "One project exists (lfybiphmqkiecfrqsfzt) and it is the PREVIEW database. This release adds NO migration (0001..0007 unchanged). Any QA fixture created for the deployed challenge checks is created through the authorised fixture process and deleted afterwards; ordinary users are never reset. Production has no database and the plan (production-migration-plan.json) gives it its own project — preview data is never copied.",
+  "secrets": "No secret values appear in any artifact, log or screenshot of this release; configuration is referenced by key NAME only."
+}

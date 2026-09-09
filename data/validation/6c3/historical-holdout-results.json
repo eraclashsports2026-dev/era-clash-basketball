@@ -1,0 +1,3618 @@
+{
+  "artifact": "historical-holdout-results",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run validation:historical-holdout",
+  "generatedAt": "2026-08-26T20:19:51.371Z",
+  "gitCommit": "9a46217a5bf4eac9b171a62aa27ebd8f0d4e5b24",
+  "branch": "phase-6c3-formal-holdout-preview",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {
+    "data/validation/6c3/phase6c3-preflight.json": "77fcc77aecdfb2e7b81d8e8555ddf7cf31bee032e23349eb3820fdf4fb6275ad",
+    "data/validation/6c3/internal-reference-baseline.json": "3c2bf2d796ca4e32173fc7ea6359b4ebd3d6fccb964460ad38c004a978ebaa03",
+    "data/validation/6c3/candidate-core-manifest.json": "b855fbff9f78655e71328a38c6966d6373df99c96e569fd904f1da4e6b9574d2"
+  },
+  "data": {
+    "formalHoldoutRunVersion": "1.0.0",
+    "set": "historical-holdout-v3",
+    "verdict": "HISTORICAL_HOLDOUT_FAIL",
+    "outcome": "FAIL",
+    "identity": {
+      "candidateCommit": "1a68d20e3885fca6c1b913237bb05df211b2daf6",
+      "coreHash": "58c5fb6974e694c29f87934ab107ff47ce32963a9c0695e36f941c2a70ae6683",
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "calibrationVersion": "1.0.0",
+      "acceptancePolicyHash": "a3583d6ada42d61ff9ee40322d999154250613ba94a2cd6f073e2196315919b0",
+      "scopePolicyHash": "594ec258891eebfcd11cdab9190a59f944c331fc4b219261b5fc076312302bf7",
+      "holdoutManifestHash": "9e799c4bfc84eedf09c8f46b5a983dff0882e908404e6326cc1e8c874d6335fc",
+      "referenceHash": "488db9cecd25930751c379d60d0e9d72f72da33ae7d576d89f77464114c54d64",
+      "seedBlock": "actual-game @ 6030000+",
+      "gamesPerFixture": 4096
+    },
+    "accessEvent": {
+      "seq": 1,
+      "set": "historical-holdout-v3",
+      "actor": "CEO-authorized Phase 6C3",
+      "reason": "One-time formal validation of locked Candidate 0 (possessionCalibrationVersion 1.0.0, parameterSetHash 83f5a17d)",
+      "parameterVersion": null,
+      "commit": null,
+      "argv": [
+        "--unlock-holdout",
+        "--unlock-historical-holdout-v3"
+      ],
+      "openedAtCommit": "9a46217a5bf4eac9b171a62aa27ebd8f0d4e5b24"
+    },
+    "accessCountBefore": 0,
+    "accessCountAfter": 1,
+    "runStatus": "COMPLETE",
+    "runHash": "767000a26d2ec986898bfe601f60866b47bdaf4a3172880affd690fbbd84a6eb",
+    "fixturesEvaluated": 8,
+    "gamesPerFixture": 4096,
+    "totalGames": 32768,
+    "erasCovered": [
+      "1950s",
+      "1960s",
+      "1970s",
+      "1980s",
+      "1990s",
+      "2000s",
+      "2010s",
+      "2020s"
+    ],
+    "internalBaseline": {
+      "mean": 0.04338,
+      "median": 0.04424,
+      "source": "historical calibration v3, same evaluation code, disjoint seeds"
+    },
+    "holdoutComposite": 0.04339,
+    "holdoutToInternalRatio": 1.00026,
+    "ratioGate": 1.5,
+    "catastrophicThreshold": 0.13272,
+    "gates": {
+      "everyFixtureExecuted": true,
+      "zeroInvariantFailures": true,
+      "zeroFinalTies": true,
+      "replayExactEverywhere": true,
+      "noImpossibleStatistics": true,
+      "opportunityWithinBounds": true,
+      "eraRulesAuthoritative": true,
+      "identityDirectionallyPreserved": false,
+      "zeroCatastrophicFixtures": true,
+      "compositeRatioWithinPolicy": true,
+      "noHighConfidenceFixtureFails": true,
+      "everyFixturePasses": false
+    },
+    "perFixture": [
+      {
+        "fixtureId": "h3-1953-54-lakers",
+        "eraStyleId": "1950s",
+        "overallConfidence": null,
+        "compositeMae": 0.03161,
+        "hasNumericSurface": true,
+        "invariantsClean": true,
+        "noTies": true,
+        "noImpossible": true,
+        "replayExact": true,
+        "opportunityOk": true,
+        "eraOk": true,
+        "identityOk": true,
+        "catastrophic": false,
+        "pass": true,
+        "failureReasons": []
+      },
+      {
+        "fixtureId": "h3-1968-69-knicks",
+        "eraStyleId": "1960s",
+        "overallConfidence": null,
+        "compositeMae": 0.02794,
+        "hasNumericSurface": true,
+        "invariantsClean": true,
+        "noTies": true,
+        "noImpossible": true,
+        "replayExact": true,
+        "opportunityOk": true,
+        "eraOk": true,
+        "identityOk": true,
+        "catastrophic": false,
+        "pass": true,
+        "failureReasons": []
+      },
+      {
+        "fixtureId": "h3-1976-77-blazers",
+        "eraStyleId": "1970s",
+        "overallConfidence": null,
+        "compositeMae": null,
+        "hasNumericSurface": false,
+        "invariantsClean": true,
+        "noTies": true,
+        "noImpossible": true,
+        "replayExact": true,
+        "opportunityOk": true,
+        "eraOk": true,
+        "identityOk": true,
+        "catastrophic": false,
+        "pass": true,
+        "failureReasons": []
+      },
+      {
+        "fixtureId": "h3-1982-83-sixers",
+        "eraStyleId": "1980s",
+        "overallConfidence": null,
+        "compositeMae": 0.05657,
+        "hasNumericSurface": true,
+        "invariantsClean": true,
+        "noTies": true,
+        "noImpossible": true,
+        "replayExact": true,
+        "opportunityOk": true,
+        "eraOk": true,
+        "identityOk": true,
+        "catastrophic": false,
+        "pass": true,
+        "failureReasons": []
+      },
+      {
+        "fixtureId": "h3-1993-94-knicks",
+        "eraStyleId": "1990s",
+        "overallConfidence": null,
+        "compositeMae": 0.06579,
+        "hasNumericSurface": true,
+        "invariantsClean": true,
+        "noTies": true,
+        "noImpossible": true,
+        "replayExact": true,
+        "opportunityOk": true,
+        "eraOk": true,
+        "identityOk": false,
+        "catastrophic": false,
+        "pass": false,
+        "failureReasons": [
+          "identity 0/1 traits passed"
+        ]
+      },
+      {
+        "fixtureId": "h3-2006-07-suns",
+        "eraStyleId": "2000s",
+        "overallConfidence": null,
+        "compositeMae": 0.04646,
+        "hasNumericSurface": true,
+        "invariantsClean": true,
+        "noTies": true,
+        "noImpossible": true,
+        "replayExact": true,
+        "opportunityOk": true,
+        "eraOk": true,
+        "identityOk": false,
+        "catastrophic": false,
+        "pass": false,
+        "failureReasons": [
+          "identity 1/2 traits passed"
+        ]
+      },
+      {
+        "fixtureId": "h3-2012-13-heat",
+        "eraStyleId": "2010s",
+        "overallConfidence": null,
+        "compositeMae": 0.05157,
+        "hasNumericSurface": true,
+        "invariantsClean": true,
+        "noTies": true,
+        "noImpossible": true,
+        "replayExact": true,
+        "opportunityOk": true,
+        "eraOk": true,
+        "identityOk": false,
+        "catastrophic": false,
+        "pass": false,
+        "failureReasons": [
+          "identity 2/3 traits passed"
+        ]
+      },
+      {
+        "fixtureId": "h3-2022-23-raptors",
+        "eraStyleId": "2020s",
+        "overallConfidence": null,
+        "compositeMae": 0.0238,
+        "hasNumericSurface": true,
+        "invariantsClean": true,
+        "noTies": true,
+        "noImpossible": true,
+        "replayExact": true,
+        "opportunityOk": true,
+        "eraOk": true,
+        "identityOk": true,
+        "catastrophic": false,
+        "pass": true,
+        "failureReasons": []
+      }
+    ],
+    "highConfidenceFixtures": [],
+    "supportedScope": {
+      "teamFieldClassTotals": {
+        "NOT_APPLICABLE": 24,
+        "UNAVAILABLE": 216
+      },
+      "reconciliation": {
+        "label": "team-field-classes",
+        "sum": 240,
+        "expectedTotal": 240,
+        "reconciles": true,
+        "problems": []
+      },
+      "proxyShareMapsScored": 31,
+      "proxyShareMapsPossible": 40,
+      "fixturesWithoutNumericSurface": [
+        "h3-1976-77-blazers"
+      ],
+      "identityTraitsScored": 7,
+      "identityTraitsUnscored": 51,
+      "zeroFillUsed": false,
+      "exclusionRule": "An UNAVAILABLE or NOT_APPLICABLE metric contributes no error term, no pass credit and no failure. It is reported in the limitations of every artifact that would otherwise appear to have measured it."
+    },
+    "results": [
+      {
+        "fixtureId": "h3-1953-54-lakers",
+        "teamName": "Minneapolis Lakers",
+        "season": "1953-54",
+        "eraStyleId": "1950s",
+        "coachId": "john-kundla",
+        "games": 4096,
+        "seeds": 4096,
+        "shareResults": {
+          "playerScoringShares": {
+            "supported": true,
+            "playersScored": 5,
+            "mae": 0.04197,
+            "perPlayer": [
+              {
+                "id": "cal:MIN_LAKERS:1953:slater-martin",
+                "target": 0.1707,
+                "realised": 0.18517,
+                "absoluteError": 0.01447
+              },
+              {
+                "id": "cal:MIN_LAKERS:1953:whitey-skoog",
+                "target": 0.1241,
+                "realised": 0.18164,
+                "absoluteError": 0.05754
+              },
+              {
+                "id": "cal:MIN_LAKERS:1953:jim-pollard",
+                "target": 0.2017,
+                "realised": 0.19662,
+                "absoluteError": 0.00508
+              },
+              {
+                "id": "cal:MIN_LAKERS:1953:vern-mikkelsen",
+                "target": 0.1914,
+                "realised": 0.22433,
+                "absoluteError": 0.03293
+              },
+              {
+                "id": "cal:MIN_LAKERS:1953:george-mikan",
+                "target": 0.3121,
+                "realised": 0.21225,
+                "absoluteError": 0.09985
+              }
+            ]
+          },
+          "playerReboundShares": {
+            "supported": true,
+            "playersScored": 5,
+            "mae": 0.0321,
+            "perPlayer": [
+              {
+                "id": "cal:MIN_LAKERS:1953:slater-martin",
+                "target": 0.0678,
+                "realised": 0.11164,
+                "absoluteError": 0.04384
+              },
+              {
+                "id": "cal:MIN_LAKERS:1953:whitey-skoog",
+                "target": 0.0904,
+                "realised": 0.12681,
+                "absoluteError": 0.03641
+              },
+              {
+                "id": "cal:MIN_LAKERS:1953:jim-pollard",
+                "target": 0.1977,
+                "realised": 0.19183,
+                "absoluteError": 0.00587
+              },
+              {
+                "id": "cal:MIN_LAKERS:1953:vern-mikkelsen",
+                "target": 0.2401,
+                "realised": 0.234,
+                "absoluteError": 0.0061
+              },
+              {
+                "id": "cal:MIN_LAKERS:1953:george-mikan",
+                "target": 0.404,
+                "realised": 0.33572,
+                "absoluteError": 0.06828
+              }
+            ]
+          },
+          "playerAssistShares": {
+            "supported": true,
+            "playersScored": 5,
+            "mae": 0.02077,
+            "perPlayer": [
+              {
+                "id": "cal:MIN_LAKERS:1953:slater-martin",
+                "target": 0.232,
+                "realised": 0.21129,
+                "absoluteError": 0.02071
+              },
+              {
+                "id": "cal:MIN_LAKERS:1953:whitey-skoog",
+                "target": 0.2,
+                "realised": 0.19755,
+                "absoluteError": 0.00245
+              },
+              {
+                "id": "cal:MIN_LAKERS:1953:jim-pollard",
+                "target": 0.24,
+                "realised": 0.21124,
+                "absoluteError": 0.02876
+              },
+              {
+                "id": "cal:MIN_LAKERS:1953:vern-mikkelsen",
+                "target": 0.136,
+                "realised": 0.17304,
+                "absoluteError": 0.03704
+              },
+              {
+                "id": "cal:MIN_LAKERS:1953:george-mikan",
+                "target": 0.192,
+                "realised": 0.20688,
+                "absoluteError": 0.01488
+              }
+            ]
+          },
+          "playerStealShares": {
+            "supported": false,
+            "reason": "no target map",
+            "mae": null,
+            "perPlayer": null
+          },
+          "playerBlockShares": {
+            "supported": false,
+            "reason": "no target map",
+            "mae": null,
+            "perPlayer": null
+          }
+        },
+        "compositeMae": 0.03161,
+        "supportedShareMetrics": [
+          "playerScoringShares",
+          "playerReboundShares",
+          "playerAssistShares"
+        ],
+        "unsupportedShareMetrics": [
+          {
+            "metric": "playerStealShares",
+            "reason": "no target map"
+          },
+          {
+            "metric": "playerBlockShares",
+            "reason": "no target map"
+          }
+        ],
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleStatistics": 0,
+          "meanPossessions": 117.26831,
+          "meanPoints": 107.44092,
+          "meanOpponentPoints": 107.34717,
+          "pointsPerPossession": 0.9162,
+          "opponentPointsPerPossession": 0.9154,
+          "threeShare": 0,
+          "rimShare": 0.07958,
+          "offensiveReboundShare": 0.417,
+          "reboundsPerGame": 80.66968,
+          "meanTopOptionShare": 0.26979,
+          "topOptionShareWithinBounds": true,
+          "threePointAttemptsInPreThreeEra": 0
+        },
+        "confidence": "MEDIUM_HIGH",
+        "unitConfidence": "MEDIUM",
+        "replay": {
+          "exact": true,
+          "trials": 3
+        },
+        "identity": {
+          "traits": [
+            {
+              "trait": "slow",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "post-centred, interior scoring",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "size-heavy man",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "POST_HEAVY",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "SIZE_HEAVY",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "SLOW_HALF_COURT",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            }
+          ],
+          "traitsTotal": 6,
+          "traitsScored": 0,
+          "traitsUnscored": 6,
+          "traitsPassed": 0,
+          "allScoredPass": true
+        },
+        "supportedScope": {
+          "teamFieldsTotal": 30,
+          "byClass": {
+            "NOT_APPLICABLE": 3,
+            "UNAVAILABLE": 27
+          },
+          "evaluatedTeamFields": [],
+          "unavailable": [
+            {
+              "id": "pointsPerGame",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "pointsAllowedPerGame",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "fieldGoalAttempts",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "fieldGoalPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "twoPointAttempts",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "twoPointPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "threePointAttempts",
+              "availability": "NOT_RECORDED_IN_ERA",
+              "reason": "Never recorded in this era."
+            },
+            {
+              "id": "threePointPct",
+              "availability": "NOT_RECORDED_IN_ERA",
+              "reason": "Never recorded in this era."
+            },
+            {
+              "id": "freeThrowAttempts",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "freeThrowPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "rebounds",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "offensiveRebounds",
+              "availability": "NOT_RECORDED_IN_ERA",
+              "reason": "Never recorded in this era."
+            },
+            {
+              "id": "defensiveRebounds",
+              "availability": "NOT_RECORDED_IN_ERA",
+              "reason": "Never recorded in this era."
+            },
+            {
+              "id": "assists",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "steals",
+              "availability": "NOT_RECORDED_IN_ERA",
+              "reason": "Never recorded in this era."
+            },
+            {
+              "id": "blocks",
+              "availability": "NOT_RECORDED_IN_ERA",
+              "reason": "Never recorded in this era."
+            },
+            {
+              "id": "turnovers",
+              "availability": "NOT_RECORDED_IN_ERA",
+              "reason": "Never recorded in this era."
+            },
+            {
+              "id": "pace",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "offensiveRating",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "defensiveRating",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "netRating",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "efgPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "trueShootingPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "turnoverPct",
+              "availability": "NOT_RECORDED_IN_ERA",
+              "reason": "Never recorded in this era."
+            },
+            {
+              "id": "offensiveReboundPct",
+              "availability": "NOT_RECORDED_IN_ERA",
+              "reason": "Never recorded in this era."
+            },
+            {
+              "id": "freeThrowRate",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "threePointAttemptRate",
+              "availability": "NOT_RECORDED_IN_ERA",
+              "reason": "Never recorded in this era."
+            }
+          ],
+          "notApplicable": [
+            {
+              "id": "games",
+              "reason": "A season game count. The evaluation surface is a fixed number of simulated games, chosen by the frozen sample plan, not by the historical schedule."
+            },
+            {
+              "id": "wins",
+              "reason": "A season win total against a real schedule of real opponents. No opponent targets exist for those opponents, and the fixture has no schedule, so there is nothing to compare a simulated win total to."
+            },
+            {
+              "id": "losses",
+              "reason": "The complement of wins, and unavailable for the same reason."
+            }
+          ]
+        },
+        "elapsedMs": 6334
+      },
+      {
+        "fixtureId": "h3-1968-69-knicks",
+        "teamName": "New York Knicks",
+        "season": "1968-69",
+        "eraStyleId": "1960s",
+        "coachId": "red-holzman",
+        "games": 4096,
+        "seeds": 4096,
+        "shareResults": {
+          "playerScoringShares": {
+            "supported": true,
+            "playersScored": 5,
+            "mae": 0.02986,
+            "perPlayer": [
+              {
+                "id": "cal:NYK:1968:walt-frazier",
+                "target": 0.2059,
+                "realised": 0.23573,
+                "absoluteError": 0.02983
+              },
+              {
+                "id": "cal:NYK:1968:dick-barnett",
+                "target": 0.2071,
+                "realised": 0.192,
+                "absoluteError": 0.0151
+              },
+              {
+                "id": "cal:NYK:1968:bill-bradley",
+                "target": 0.1459,
+                "realised": 0.18869,
+                "absoluteError": 0.04279
+              },
+              {
+                "id": "cal:NYK:1968:dave-debusschere",
+                "target": 0.1929,
+                "realised": 0.19494,
+                "absoluteError": 0.00204
+              },
+              {
+                "id": "cal:NYK:1968:willis-reed",
+                "target": 0.2482,
+                "realised": 0.18864,
+                "absoluteError": 0.05956
+              }
+            ]
+          },
+          "playerReboundShares": {
+            "supported": true,
+            "playersScored": 5,
+            "mae": 0.02927,
+            "perPlayer": [
+              {
+                "id": "cal:NYK:1968:walt-frazier",
+                "target": 0.157,
+                "realised": 0.16584,
+                "absoluteError": 0.00884
+              },
+              {
+                "id": "cal:NYK:1968:dick-barnett",
+                "target": 0.0785,
+                "realised": 0.11596,
+                "absoluteError": 0.03746
+              },
+              {
+                "id": "cal:NYK:1968:bill-bradley",
+                "target": 0.1089,
+                "realised": 0.13577,
+                "absoluteError": 0.02687
+              },
+              {
+                "id": "cal:NYK:1968:dave-debusschere",
+                "target": 0.2886,
+                "realised": 0.26892,
+                "absoluteError": 0.01968
+              },
+              {
+                "id": "cal:NYK:1968:willis-reed",
+                "target": 0.367,
+                "realised": 0.31351,
+                "absoluteError": 0.05349
+              }
+            ]
+          },
+          "playerAssistShares": {
+            "supported": true,
+            "playersScored": 5,
+            "mae": 0.02469,
+            "perPlayer": [
+              {
+                "id": "cal:NYK:1968:walt-frazier",
+                "target": 0.3931,
+                "realised": 0.34007,
+                "absoluteError": 0.05303
+              },
+              {
+                "id": "cal:NYK:1968:dick-barnett",
+                "target": 0.1741,
+                "realised": 0.17283,
+                "absoluteError": 0.00127
+              },
+              {
+                "id": "cal:NYK:1968:bill-bradley",
+                "target": 0.1841,
+                "realised": 0.17666,
+                "absoluteError": 0.00744
+              },
+              {
+                "id": "cal:NYK:1968:dave-debusschere",
+                "target": 0.1343,
+                "realised": 0.16027,
+                "absoluteError": 0.02597
+              },
+              {
+                "id": "cal:NYK:1968:willis-reed",
+                "target": 0.1144,
+                "realised": 0.15016,
+                "absoluteError": 0.03576
+              }
+            ]
+          },
+          "playerStealShares": {
+            "supported": false,
+            "reason": "no target map",
+            "mae": null,
+            "perPlayer": null
+          },
+          "playerBlockShares": {
+            "supported": false,
+            "reason": "no target map",
+            "mae": null,
+            "perPlayer": null
+          }
+        },
+        "compositeMae": 0.02794,
+        "supportedShareMetrics": [
+          "playerScoringShares",
+          "playerReboundShares",
+          "playerAssistShares"
+        ],
+        "unsupportedShareMetrics": [
+          {
+            "metric": "playerStealShares",
+            "reason": "no target map"
+          },
+          {
+            "metric": "playerBlockShares",
+            "reason": "no target map"
+          }
+        ],
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleStatistics": 0,
+          "meanPossessions": 120.4895,
+          "meanPoints": 116.65405,
+          "meanOpponentPoints": 116.83105,
+          "pointsPerPossession": 0.96817,
+          "opponentPointsPerPossession": 0.96964,
+          "threeShare": 0,
+          "rimShare": 0.07819,
+          "offensiveReboundShare": 0.37453,
+          "reboundsPerGame": 72.99243,
+          "meanTopOptionShare": 0.26765,
+          "topOptionShareWithinBounds": true,
+          "threePointAttemptsInPreThreeEra": 0
+        },
+        "confidence": "MEDIUM_HIGH",
+        "unitConfidence": "MEDIUM",
+        "replay": {
+          "exact": true,
+          "trials": 3
+        },
+        "identity": {
+          "traits": [
+            {
+              "trait": "moderate",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "motion and cutting",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "pressure man",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "MOTION",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "ELITE_DEFENSE",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": true,
+              "metric": "opponentPointsPerPossession",
+              "direction": "BELOW_CORPUS_MEDIAN",
+              "observed": 0.96964,
+              "referenceMedian": 1.12067,
+              "pass": true
+            },
+            {
+              "trait": "NON_CHAMPION",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            }
+          ],
+          "traitsTotal": 6,
+          "traitsScored": 1,
+          "traitsUnscored": 5,
+          "traitsPassed": 1,
+          "allScoredPass": true
+        },
+        "supportedScope": {
+          "teamFieldsTotal": 30,
+          "byClass": {
+            "NOT_APPLICABLE": 3,
+            "UNAVAILABLE": 27
+          },
+          "evaluatedTeamFields": [],
+          "unavailable": [
+            {
+              "id": "pointsPerGame",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "pointsAllowedPerGame",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "fieldGoalAttempts",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "fieldGoalPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "twoPointAttempts",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "twoPointPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "threePointAttempts",
+              "availability": "NOT_RECORDED_IN_ERA",
+              "reason": "Never recorded in this era."
+            },
+            {
+              "id": "threePointPct",
+              "availability": "NOT_RECORDED_IN_ERA",
+              "reason": "Never recorded in this era."
+            },
+            {
+              "id": "freeThrowAttempts",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "freeThrowPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "rebounds",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "offensiveRebounds",
+              "availability": "NOT_RECORDED_IN_ERA",
+              "reason": "Never recorded in this era."
+            },
+            {
+              "id": "defensiveRebounds",
+              "availability": "NOT_RECORDED_IN_ERA",
+              "reason": "Never recorded in this era."
+            },
+            {
+              "id": "assists",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "steals",
+              "availability": "NOT_RECORDED_IN_ERA",
+              "reason": "Never recorded in this era."
+            },
+            {
+              "id": "blocks",
+              "availability": "NOT_RECORDED_IN_ERA",
+              "reason": "Never recorded in this era."
+            },
+            {
+              "id": "turnovers",
+              "availability": "NOT_RECORDED_IN_ERA",
+              "reason": "Never recorded in this era."
+            },
+            {
+              "id": "pace",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "offensiveRating",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "defensiveRating",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "netRating",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "efgPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "trueShootingPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "turnoverPct",
+              "availability": "NOT_RECORDED_IN_ERA",
+              "reason": "Never recorded in this era."
+            },
+            {
+              "id": "offensiveReboundPct",
+              "availability": "NOT_RECORDED_IN_ERA",
+              "reason": "Never recorded in this era."
+            },
+            {
+              "id": "freeThrowRate",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "threePointAttemptRate",
+              "availability": "NOT_RECORDED_IN_ERA",
+              "reason": "Never recorded in this era."
+            }
+          ],
+          "notApplicable": [
+            {
+              "id": "games",
+              "reason": "A season game count. The evaluation surface is a fixed number of simulated games, chosen by the frozen sample plan, not by the historical schedule."
+            },
+            {
+              "id": "wins",
+              "reason": "A season win total against a real schedule of real opponents. No opponent targets exist for those opponents, and the fixture has no schedule, so there is nothing to compare a simulated win total to."
+            },
+            {
+              "id": "losses",
+              "reason": "The complement of wins, and unavailable for the same reason."
+            }
+          ]
+        },
+        "elapsedMs": 6362
+      },
+      {
+        "fixtureId": "h3-1976-77-blazers",
+        "teamName": "Portland Trail Blazers",
+        "season": "1976-77",
+        "eraStyleId": "1970s",
+        "coachId": "jack-ramsay",
+        "games": 4096,
+        "seeds": 4096,
+        "shareResults": {
+          "playerScoringShares": {
+            "supported": false,
+            "reason": "no target map",
+            "mae": null,
+            "perPlayer": null
+          },
+          "playerReboundShares": {
+            "supported": false,
+            "reason": "no target map",
+            "mae": null,
+            "perPlayer": null
+          },
+          "playerAssistShares": {
+            "supported": false,
+            "reason": "no target map",
+            "mae": null,
+            "perPlayer": null
+          },
+          "playerStealShares": {
+            "supported": false,
+            "reason": "no target map",
+            "mae": null,
+            "perPlayer": null
+          },
+          "playerBlockShares": {
+            "supported": false,
+            "reason": "no target map",
+            "mae": null,
+            "perPlayer": null
+          }
+        },
+        "compositeMae": null,
+        "supportedShareMetrics": [],
+        "unsupportedShareMetrics": [
+          {
+            "metric": "playerScoringShares",
+            "reason": "no target map"
+          },
+          {
+            "metric": "playerReboundShares",
+            "reason": "no target map"
+          },
+          {
+            "metric": "playerAssistShares",
+            "reason": "no target map"
+          },
+          {
+            "metric": "playerStealShares",
+            "reason": "no target map"
+          },
+          {
+            "metric": "playerBlockShares",
+            "reason": "no target map"
+          }
+        ],
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleStatistics": 0,
+          "meanPossessions": 110.8374,
+          "meanPoints": 110.63892,
+          "meanOpponentPoints": 110.41162,
+          "pointsPerPossession": 0.99821,
+          "opponentPointsPerPossession": 0.99616,
+          "threeShare": 0,
+          "rimShare": 0.07887,
+          "offensiveReboundShare": 0.36065,
+          "reboundsPerGame": 62.4646,
+          "meanTopOptionShare": 0.27199,
+          "topOptionShareWithinBounds": true,
+          "threePointAttemptsInPreThreeEra": 0
+        },
+        "confidence": "MEDIUM",
+        "unitConfidence": "LOW",
+        "replay": {
+          "exact": true,
+          "trials": 3
+        },
+        "identity": {
+          "traits": [
+            {
+              "trait": "fast",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "passing-hub centre, cutting and movement",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "help-heavy man",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "PASSING_HUB",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "MOTION",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "BALANCED_CHAMPION",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            }
+          ],
+          "traitsTotal": 6,
+          "traitsScored": 0,
+          "traitsUnscored": 6,
+          "traitsPassed": 0,
+          "allScoredPass": true
+        },
+        "supportedScope": {
+          "teamFieldsTotal": 30,
+          "byClass": {
+            "NOT_APPLICABLE": 3,
+            "UNAVAILABLE": 27
+          },
+          "evaluatedTeamFields": [],
+          "unavailable": [
+            {
+              "id": "pointsPerGame",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "pointsAllowedPerGame",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "fieldGoalAttempts",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "fieldGoalPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "twoPointAttempts",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "twoPointPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "threePointAttempts",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "threePointPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "freeThrowAttempts",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "freeThrowPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "rebounds",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "offensiveRebounds",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "defensiveRebounds",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "assists",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "steals",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "blocks",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "turnovers",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "pace",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "offensiveRating",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "defensiveRating",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "netRating",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "efgPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "trueShootingPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "turnoverPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "offensiveReboundPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "freeThrowRate",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "threePointAttemptRate",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            }
+          ],
+          "notApplicable": [
+            {
+              "id": "games",
+              "reason": "A season game count. The evaluation surface is a fixed number of simulated games, chosen by the frozen sample plan, not by the historical schedule."
+            },
+            {
+              "id": "wins",
+              "reason": "A season win total against a real schedule of real opponents. No opponent targets exist for those opponents, and the fixture has no schedule, so there is nothing to compare a simulated win total to."
+            },
+            {
+              "id": "losses",
+              "reason": "The complement of wins, and unavailable for the same reason."
+            }
+          ]
+        },
+        "elapsedMs": 6633
+      },
+      {
+        "fixtureId": "h3-1982-83-sixers",
+        "teamName": "Philadelphia 76ers",
+        "season": "1982-83",
+        "eraStyleId": "1980s",
+        "coachId": "billy-cunningham",
+        "games": 4096,
+        "seeds": 4096,
+        "shareResults": {
+          "playerScoringShares": {
+            "supported": true,
+            "playersScored": 5,
+            "mae": 0.07762,
+            "perPlayer": [
+              {
+                "id": "cal:PHI:1982:maurice-cheeks",
+                "target": 0.1502,
+                "realised": 0.20997,
+                "absoluteError": 0.05977
+              },
+              {
+                "id": "cal:PHI:1982:andrew-toney",
+                "target": 0.2368,
+                "realised": 0.19756,
+                "absoluteError": 0.03924
+              },
+              {
+                "id": "cal:PHI:1982:julius-erving",
+                "target": 0.2572,
+                "realised": 0.19538,
+                "absoluteError": 0.06182
+              },
+              {
+                "id": "cal:PHI:1982:marc-iavaroni",
+                "target": 0.0613,
+                "realised": 0.19558,
+                "absoluteError": 0.13428
+              },
+              {
+                "id": "cal:PHI:1982:moses-malone",
+                "target": 0.2945,
+                "realised": 0.20151,
+                "absoluteError": 0.09299
+              }
+            ]
+          },
+          "playerReboundShares": {
+            "supported": true,
+            "playersScored": 5,
+            "mae": 0.04235,
+            "perPlayer": [
+              {
+                "id": "cal:PHI:1982:maurice-cheeks",
+                "target": 0.0823,
+                "realised": 0.11704,
+                "absoluteError": 0.03474
+              },
+              {
+                "id": "cal:PHI:1982:andrew-toney",
+                "target": 0.0886,
+                "realised": 0.11847,
+                "absoluteError": 0.02987
+              },
+              {
+                "id": "cal:PHI:1982:julius-erving",
+                "target": 0.2152,
+                "realised": 0.21542,
+                "absoluteError": 0.00022
+              },
+              {
+                "id": "cal:PHI:1982:marc-iavaroni",
+                "target": 0.1297,
+                "realised": 0.17075,
+                "absoluteError": 0.04105
+              },
+              {
+                "id": "cal:PHI:1982:moses-malone",
+                "target": 0.4842,
+                "realised": 0.37833,
+                "absoluteError": 0.10587
+              }
+            ]
+          },
+          "playerAssistShares": {
+            "supported": true,
+            "playersScored": 5,
+            "mae": 0.05163,
+            "perPlayer": [
+              {
+                "id": "cal:PHI:1982:maurice-cheeks",
+                "target": 0.3966,
+                "realised": 0.30809,
+                "absoluteError": 0.08851
+              },
+              {
+                "id": "cal:PHI:1982:andrew-toney",
+                "target": 0.2586,
+                "realised": 0.2301,
+                "absoluteError": 0.0285
+              },
+              {
+                "id": "cal:PHI:1982:julius-erving",
+                "target": 0.2126,
+                "realised": 0.20055,
+                "absoluteError": 0.01205
+              },
+              {
+                "id": "cal:PHI:1982:marc-iavaroni",
+                "target": 0.0575,
+                "realised": 0.12442,
+                "absoluteError": 0.06692
+              },
+              {
+                "id": "cal:PHI:1982:moses-malone",
+                "target": 0.0747,
+                "realised": 0.13684,
+                "absoluteError": 0.06214
+              }
+            ]
+          },
+          "playerStealShares": {
+            "supported": true,
+            "playersScored": 5,
+            "mae": 0.06052,
+            "perPlayer": [
+              {
+                "id": "cal:PHI:1982:maurice-cheeks",
+                "target": 0.3593,
+                "realised": 0.24421,
+                "absoluteError": 0.11509
+              },
+              {
+                "id": "cal:PHI:1982:andrew-toney",
+                "target": 0.1563,
+                "realised": 0.1201,
+                "absoluteError": 0.0362
+              },
+              {
+                "id": "cal:PHI:1982:julius-erving",
+                "target": 0.25,
+                "realised": 0.28525,
+                "absoluteError": 0.03525
+              },
+              {
+                "id": "cal:PHI:1982:marc-iavaroni",
+                "target": 0.0625,
+                "realised": 0.0964,
+                "absoluteError": 0.0339
+              },
+              {
+                "id": "cal:PHI:1982:moses-malone",
+                "target": 0.1719,
+                "realised": 0.25405,
+                "absoluteError": 0.08215
+              }
+            ]
+          },
+          "playerBlockShares": {
+            "supported": true,
+            "playersScored": 5,
+            "mae": 0.05074,
+            "perPlayer": [
+              {
+                "id": "cal:PHI:1982:maurice-cheeks",
+                "target": 0.08,
+                "realised": 0.11195,
+                "absoluteError": 0.03195
+              },
+              {
+                "id": "cal:PHI:1982:andrew-toney",
+                "target": 0.04,
+                "realised": 0.08478,
+                "absoluteError": 0.04478
+              },
+              {
+                "id": "cal:PHI:1982:julius-erving",
+                "target": 0.36,
+                "realised": 0.29429,
+                "absoluteError": 0.06571
+              },
+              {
+                "id": "cal:PHI:1982:marc-iavaroni",
+                "target": 0.12,
+                "realised": 0.17011,
+                "absoluteError": 0.05011
+              },
+              {
+                "id": "cal:PHI:1982:moses-malone",
+                "target": 0.4,
+                "realised": 0.33887,
+                "absoluteError": 0.06113
+              }
+            ]
+          }
+        },
+        "compositeMae": 0.05657,
+        "supportedShareMetrics": [
+          "playerScoringShares",
+          "playerReboundShares",
+          "playerAssistShares",
+          "playerStealShares",
+          "playerBlockShares"
+        ],
+        "unsupportedShareMetrics": [],
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleStatistics": 0,
+          "meanPossessions": 103.85669,
+          "meanPoints": 108.49414,
+          "meanOpponentPoints": 108.85547,
+          "pointsPerPossession": 1.04465,
+          "opponentPointsPerPossession": 1.04813,
+          "threeShare": 0.05535,
+          "rimShare": 0.07517,
+          "offensiveReboundShare": 0.35926,
+          "reboundsPerGame": 56.75806,
+          "meanTopOptionShare": 0.26534,
+          "topOptionShareWithinBounds": true,
+          "threePointAttemptsInPreThreeEra": null
+        },
+        "confidence": "MEDIUM_HIGH",
+        "unitConfidence": "MEDIUM",
+        "replay": {
+          "exact": true,
+          "trials": 3
+        },
+        "identity": {
+          "traits": [
+            {
+              "trait": "fast",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "transition and post scoring",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "rim-protected man",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "TRANSITION",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "POST_HEAVY",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "STRONG_OFFENSIVE_REBOUNDING",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "BALANCED_CHAMPION",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            }
+          ],
+          "traitsTotal": 7,
+          "traitsScored": 0,
+          "traitsUnscored": 7,
+          "traitsPassed": 0,
+          "allScoredPass": true
+        },
+        "supportedScope": {
+          "teamFieldsTotal": 30,
+          "byClass": {
+            "NOT_APPLICABLE": 3,
+            "UNAVAILABLE": 27
+          },
+          "evaluatedTeamFields": [],
+          "unavailable": [
+            {
+              "id": "pointsPerGame",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "pointsAllowedPerGame",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "fieldGoalAttempts",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "fieldGoalPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "twoPointAttempts",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "twoPointPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "threePointAttempts",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "threePointPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "freeThrowAttempts",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "freeThrowPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "rebounds",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "offensiveRebounds",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "defensiveRebounds",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "assists",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "steals",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "blocks",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "turnovers",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "pace",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "offensiveRating",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "defensiveRating",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "netRating",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "efgPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "trueShootingPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "turnoverPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "offensiveReboundPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "freeThrowRate",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "threePointAttemptRate",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            }
+          ],
+          "notApplicable": [
+            {
+              "id": "games",
+              "reason": "A season game count. The evaluation surface is a fixed number of simulated games, chosen by the frozen sample plan, not by the historical schedule."
+            },
+            {
+              "id": "wins",
+              "reason": "A season win total against a real schedule of real opponents. No opponent targets exist for those opponents, and the fixture has no schedule, so there is nothing to compare a simulated win total to."
+            },
+            {
+              "id": "losses",
+              "reason": "The complement of wins, and unavailable for the same reason."
+            }
+          ]
+        },
+        "elapsedMs": 5900
+      },
+      {
+        "fixtureId": "h3-1993-94-knicks",
+        "teamName": "New York Knicks",
+        "season": "1993-94",
+        "eraStyleId": "1990s",
+        "coachId": "pat-riley",
+        "games": 4096,
+        "seeds": 4096,
+        "shareResults": {
+          "playerScoringShares": {
+            "supported": true,
+            "playersScored": 5,
+            "mae": 0.08927,
+            "perPlayer": [
+              {
+                "id": "cal:NYK:1993:derek-harper",
+                "target": 0.1157,
+                "realised": 0.20158,
+                "absoluteError": 0.08588
+              },
+              {
+                "id": "cal:NYK:1993:john-starks",
+                "target": 0.2557,
+                "realised": 0.18648,
+                "absoluteError": 0.06922
+              },
+              {
+                "id": "cal:NYK:1993:charles-smith",
+                "target": 0.14,
+                "realised": 0.20829,
+                "absoluteError": 0.06829
+              },
+              {
+                "id": "cal:NYK:1993:charles-oakley",
+                "target": 0.1588,
+                "realised": 0.22779,
+                "absoluteError": 0.06899
+              },
+              {
+                "id": "cal:NYK:1993:patrick-ewing",
+                "target": 0.3298,
+                "realised": 0.17585,
+                "absoluteError": 0.15395
+              }
+            ]
+          },
+          "playerReboundShares": {
+            "supported": true,
+            "playersScored": 5,
+            "mae": 0.03556,
+            "perPlayer": [
+              {
+                "id": "cal:NYK:1993:derek-harper",
+                "target": 0.0508,
+                "realised": 0.09144,
+                "absoluteError": 0.04064
+              },
+              {
+                "id": "cal:NYK:1993:john-starks",
+                "target": 0.0984,
+                "realised": 0.12265,
+                "absoluteError": 0.02425
+              },
+              {
+                "id": "cal:NYK:1993:charles-smith",
+                "target": 0.1206,
+                "realised": 0.1446,
+                "absoluteError": 0.024
+              },
+              {
+                "id": "cal:NYK:1993:charles-oakley",
+                "target": 0.3746,
+                "realised": 0.3132,
+                "absoluteError": 0.0614
+              },
+              {
+                "id": "cal:NYK:1993:patrick-ewing",
+                "target": 0.3556,
+                "realised": 0.32811,
+                "absoluteError": 0.02749
+              }
+            ]
+          },
+          "playerAssistShares": {
+            "supported": true,
+            "playersScored": 5,
+            "mae": 0.04149,
+            "perPlayer": [
+              {
+                "id": "cal:NYK:1993:derek-harper",
+                "target": 0.2667,
+                "realised": 0.23904,
+                "absoluteError": 0.02766
+              },
+              {
+                "id": "cal:NYK:1993:john-starks",
+                "target": 0.3576,
+                "realised": 0.28155,
+                "absoluteError": 0.07605
+              },
+              {
+                "id": "cal:NYK:1993:charles-smith",
+                "target": 0.0727,
+                "realised": 0.13531,
+                "absoluteError": 0.06261
+              },
+              {
+                "id": "cal:NYK:1993:charles-oakley",
+                "target": 0.1636,
+                "realised": 0.17817,
+                "absoluteError": 0.01457
+              },
+              {
+                "id": "cal:NYK:1993:patrick-ewing",
+                "target": 0.1394,
+                "realised": 0.16593,
+                "absoluteError": 0.02653
+              }
+            ]
+          },
+          "playerStealShares": {
+            "supported": true,
+            "playersScored": 5,
+            "mae": 0.0839,
+            "perPlayer": [
+              {
+                "id": "cal:NYK:1993:derek-harper",
+                "target": 0.2459,
+                "realised": 0.17223,
+                "absoluteError": 0.07367
+              },
+              {
+                "id": "cal:NYK:1993:john-starks",
+                "target": 0.2623,
+                "realised": 0.18117,
+                "absoluteError": 0.08113
+              },
+              {
+                "id": "cal:NYK:1993:charles-smith",
+                "target": 0.0984,
+                "realised": 0.15775,
+                "absoluteError": 0.05935
+              },
+              {
+                "id": "cal:NYK:1993:charles-oakley",
+                "target": 0.2131,
+                "realised": 0.15815,
+                "absoluteError": 0.05495
+              },
+              {
+                "id": "cal:NYK:1993:patrick-ewing",
+                "target": 0.1803,
+                "realised": 0.3307,
+                "absoluteError": 0.1504
+              }
+            ]
+          },
+          "playerBlockShares": {
+            "supported": true,
+            "playersScored": 5,
+            "mae": 0.07874,
+            "perPlayer": [
+              {
+                "id": "cal:NYK:1993:derek-harper",
+                "target": 0.0244,
+                "realised": 0.08828,
+                "absoluteError": 0.06388
+              },
+              {
+                "id": "cal:NYK:1993:john-starks",
+                "target": 0.0244,
+                "realised": 0.08104,
+                "absoluteError": 0.05664
+              },
+              {
+                "id": "cal:NYK:1993:charles-smith",
+                "target": 0.2439,
+                "realised": 0.21376,
+                "absoluteError": 0.03014
+              },
+              {
+                "id": "cal:NYK:1993:charles-oakley",
+                "target": 0.0488,
+                "realised": 0.12514,
+                "absoluteError": 0.07634
+              },
+              {
+                "id": "cal:NYK:1993:patrick-ewing",
+                "target": 0.6585,
+                "realised": 0.49179,
+                "absoluteError": 0.16671
+              }
+            ]
+          }
+        },
+        "compositeMae": 0.06579,
+        "supportedShareMetrics": [
+          "playerScoringShares",
+          "playerReboundShares",
+          "playerAssistShares",
+          "playerStealShares",
+          "playerBlockShares"
+        ],
+        "unsupportedShareMetrics": [],
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleStatistics": 0,
+          "meanPossessions": 99.75391,
+          "meanPoints": 113.67236,
+          "meanOpponentPoints": 113.41992,
+          "pointsPerPossession": 1.13953,
+          "opponentPointsPerPossession": 1.137,
+          "threeShare": 0.10556,
+          "rimShare": 0.06815,
+          "offensiveReboundShare": 0.36042,
+          "reboundsPerGame": 52.25195,
+          "meanTopOptionShare": 0.26984,
+          "topOptionShareWithinBounds": true,
+          "threePointAttemptsInPreThreeEra": null
+        },
+        "confidence": "MEDIUM_HIGH",
+        "unitConfidence": "MEDIUM",
+        "replay": {
+          "exact": true,
+          "trials": 3
+        },
+        "identity": {
+          "traits": [
+            {
+              "trait": "very slow",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "post-up and isolation, low volume",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "elite physical man",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "ELITE_DEFENSE",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": true,
+              "metric": "opponentPointsPerPossession",
+              "direction": "BELOW_CORPUS_MEDIAN",
+              "observed": 1.137,
+              "referenceMedian": 1.12067,
+              "pass": false
+            },
+            {
+              "trait": "SLOW_HALF_COURT",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "POST_HEAVY",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "SIZE_HEAVY",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "NON_CHAMPION",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            }
+          ],
+          "traitsTotal": 8,
+          "traitsScored": 1,
+          "traitsUnscored": 7,
+          "traitsPassed": 0,
+          "allScoredPass": false
+        },
+        "supportedScope": {
+          "teamFieldsTotal": 30,
+          "byClass": {
+            "NOT_APPLICABLE": 3,
+            "UNAVAILABLE": 27
+          },
+          "evaluatedTeamFields": [],
+          "unavailable": [
+            {
+              "id": "pointsPerGame",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "pointsAllowedPerGame",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "fieldGoalAttempts",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "fieldGoalPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "twoPointAttempts",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "twoPointPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "threePointAttempts",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "threePointPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "freeThrowAttempts",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "freeThrowPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "rebounds",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "offensiveRebounds",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "defensiveRebounds",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "assists",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "steals",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "blocks",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "turnovers",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "pace",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "offensiveRating",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "defensiveRating",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "netRating",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "efgPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "trueShootingPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "turnoverPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "offensiveReboundPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "freeThrowRate",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "threePointAttemptRate",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            }
+          ],
+          "notApplicable": [
+            {
+              "id": "games",
+              "reason": "A season game count. The evaluation surface is a fixed number of simulated games, chosen by the frozen sample plan, not by the historical schedule."
+            },
+            {
+              "id": "wins",
+              "reason": "A season win total against a real schedule of real opponents. No opponent targets exist for those opponents, and the fixture has no schedule, so there is nothing to compare a simulated win total to."
+            },
+            {
+              "id": "losses",
+              "reason": "The complement of wins, and unavailable for the same reason."
+            }
+          ]
+        },
+        "elapsedMs": 6376
+      },
+      {
+        "fixtureId": "h3-2006-07-suns",
+        "teamName": "Phoenix Suns",
+        "season": "2006-07",
+        "eraStyleId": "2000s",
+        "coachId": "mike-dantoni",
+        "games": 4096,
+        "seeds": 4096,
+        "shareResults": {
+          "playerScoringShares": {
+            "supported": true,
+            "playersScored": 5,
+            "mae": 0.06036,
+            "perPlayer": [
+              {
+                "id": "cal:PHX:2006:steve-nash",
+                "target": 0.2299,
+                "realised": 0.26299,
+                "absoluteError": 0.03309
+              },
+              {
+                "id": "cal:PHX:2006:raja-bell",
+                "target": 0.1817,
+                "realised": 0.20954,
+                "absoluteError": 0.02784
+              },
+              {
+                "id": "cal:PHX:2006:shawn-marion",
+                "target": 0.2163,
+                "realised": 0.15654,
+                "absoluteError": 0.05976
+              },
+              {
+                "id": "cal:PHX:2006:boris-diaw",
+                "target": 0.1199,
+                "realised": 0.20987,
+                "absoluteError": 0.08997
+              },
+              {
+                "id": "cal:PHX:2006:amar-e-stoudemire",
+                "target": 0.2522,
+                "realised": 0.16106,
+                "absoluteError": 0.09114
+              }
+            ]
+          },
+          "playerReboundShares": {
+            "supported": true,
+            "playersScored": 5,
+            "mae": 0.02943,
+            "perPlayer": [
+              {
+                "id": "cal:PHX:2006:steve-nash",
+                "target": 0.1151,
+                "realised": 0.13245,
+                "absoluteError": 0.01735
+              },
+              {
+                "id": "cal:PHX:2006:raja-bell",
+                "target": 0.1053,
+                "realised": 0.12836,
+                "absoluteError": 0.02306
+              },
+              {
+                "id": "cal:PHX:2006:shawn-marion",
+                "target": 0.3224,
+                "realised": 0.27654,
+                "absoluteError": 0.04586
+              },
+              {
+                "id": "cal:PHX:2006:boris-diaw",
+                "target": 0.1414,
+                "realised": 0.17458,
+                "absoluteError": 0.03318
+              },
+              {
+                "id": "cal:PHX:2006:amar-e-stoudemire",
+                "target": 0.3158,
+                "realised": 0.28807,
+                "absoluteError": 0.02773
+              }
+            ]
+          },
+          "playerAssistShares": {
+            "supported": true,
+            "playersScored": 5,
+            "mae": 0.04947,
+            "perPlayer": [
+              {
+                "id": "cal:PHX:2006:steve-nash",
+                "target": 0.5371,
+                "realised": 0.43221,
+                "absoluteError": 0.10489
+              },
+              {
+                "id": "cal:PHX:2006:raja-bell",
+                "target": 0.1157,
+                "realised": 0.14612,
+                "absoluteError": 0.03042
+              },
+              {
+                "id": "cal:PHX:2006:shawn-marion",
+                "target": 0.0787,
+                "realised": 0.11505,
+                "absoluteError": 0.03635
+              },
+              {
+                "id": "cal:PHX:2006:boris-diaw",
+                "target": 0.2222,
+                "realised": 0.20342,
+                "absoluteError": 0.01878
+              },
+              {
+                "id": "cal:PHX:2006:amar-e-stoudemire",
+                "target": 0.0463,
+                "realised": 0.1032,
+                "absoluteError": 0.0569
+              }
+            ]
+          },
+          "playerStealShares": {
+            "supported": true,
+            "playersScored": 5,
+            "mae": 0.03114,
+            "perPlayer": [
+              {
+                "id": "cal:PHX:2006:steve-nash",
+                "target": 0.1667,
+                "realised": 0.12318,
+                "absoluteError": 0.04352
+              },
+              {
+                "id": "cal:PHX:2006:raja-bell",
+                "target": 0.125,
+                "realised": 0.12131,
+                "absoluteError": 0.00369
+              },
+              {
+                "id": "cal:PHX:2006:shawn-marion",
+                "target": 0.4167,
+                "realised": 0.38606,
+                "absoluteError": 0.03064
+              },
+              {
+                "id": "cal:PHX:2006:boris-diaw",
+                "target": 0.0833,
+                "realised": 0.11382,
+                "absoluteError": 0.03052
+              },
+              {
+                "id": "cal:PHX:2006:amar-e-stoudemire",
+                "target": 0.2083,
+                "realised": 0.25563,
+                "absoluteError": 0.04733
+              }
+            ]
+          },
+          "playerBlockShares": {
+            "supported": true,
+            "playersScored": 5,
+            "mae": 0.06189,
+            "perPlayer": [
+              {
+                "id": "cal:PHX:2006:steve-nash",
+                "target": 0.027,
+                "realised": 0.09497,
+                "absoluteError": 0.06797
+              },
+              {
+                "id": "cal:PHX:2006:raja-bell",
+                "target": 0.0811,
+                "realised": 0.11714,
+                "absoluteError": 0.03604
+              },
+              {
+                "id": "cal:PHX:2006:shawn-marion",
+                "target": 0.4054,
+                "realised": 0.29879,
+                "absoluteError": 0.10661
+              },
+              {
+                "id": "cal:PHX:2006:boris-diaw",
+                "target": 0.1351,
+                "realised": 0.1858,
+                "absoluteError": 0.0507
+              },
+              {
+                "id": "cal:PHX:2006:amar-e-stoudemire",
+                "target": 0.3514,
+                "realised": 0.3033,
+                "absoluteError": 0.0481
+              }
+            ]
+          }
+        },
+        "compositeMae": 0.04646,
+        "supportedShareMetrics": [
+          "playerScoringShares",
+          "playerReboundShares",
+          "playerAssistShares",
+          "playerStealShares",
+          "playerBlockShares"
+        ],
+        "unsupportedShareMetrics": [],
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleStatistics": 0,
+          "meanPossessions": 97.52075,
+          "meanPoints": 107.4082,
+          "meanOpponentPoints": 107.24756,
+          "pointsPerPossession": 1.10139,
+          "opponentPointsPerPossession": 1.09974,
+          "threeShare": 0.19764,
+          "rimShare": 0.05741,
+          "offensiveReboundShare": 0.23345,
+          "reboundsPerGame": 48.55884,
+          "meanTopOptionShare": 0.29135,
+          "topOptionShareWithinBounds": true,
+          "threePointAttemptsInPreThreeEra": null
+        },
+        "confidence": "MEDIUM_HIGH",
+        "unitConfidence": "MEDIUM",
+        "replay": {
+          "exact": true,
+          "trials": 3
+        },
+        "identity": {
+          "traits": [
+            {
+              "trait": "very fast",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "seven seconds or less: pick-and-roll and spacing",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "gambling man defence",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "PACE_EXTREME",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "PICK_AND_ROLL",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "ELITE_OFFENSE",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": true,
+              "metric": "pointsPerPossession",
+              "direction": "ABOVE_CORPUS_MEDIAN",
+              "observed": 1.10139,
+              "referenceMedian": 1.11979,
+              "pass": false
+            },
+            {
+              "trait": "THREE_POINT_HEAVY",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "WEAK_OFFENSIVE_REBOUNDING",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": true,
+              "metric": "offensiveReboundShare",
+              "direction": "BELOW_CORPUS_MEDIAN",
+              "observed": 0.23345,
+              "referenceMedian": 0.34862,
+              "pass": true
+            },
+            {
+              "trait": "NON_CHAMPION",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            }
+          ],
+          "traitsTotal": 9,
+          "traitsScored": 2,
+          "traitsUnscored": 7,
+          "traitsPassed": 1,
+          "allScoredPass": false
+        },
+        "supportedScope": {
+          "teamFieldsTotal": 30,
+          "byClass": {
+            "NOT_APPLICABLE": 3,
+            "UNAVAILABLE": 27
+          },
+          "evaluatedTeamFields": [],
+          "unavailable": [
+            {
+              "id": "pointsPerGame",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "pointsAllowedPerGame",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "fieldGoalAttempts",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "fieldGoalPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "twoPointAttempts",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "twoPointPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "threePointAttempts",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "threePointPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "freeThrowAttempts",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "freeThrowPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "rebounds",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "offensiveRebounds",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "defensiveRebounds",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "assists",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "steals",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "blocks",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "turnovers",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "pace",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "offensiveRating",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "defensiveRating",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "netRating",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "efgPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "trueShootingPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "turnoverPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "offensiveReboundPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "freeThrowRate",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "threePointAttemptRate",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            }
+          ],
+          "notApplicable": [
+            {
+              "id": "games",
+              "reason": "A season game count. The evaluation surface is a fixed number of simulated games, chosen by the frozen sample plan, not by the historical schedule."
+            },
+            {
+              "id": "wins",
+              "reason": "A season win total against a real schedule of real opponents. No opponent targets exist for those opponents, and the fixture has no schedule, so there is nothing to compare a simulated win total to."
+            },
+            {
+              "id": "losses",
+              "reason": "The complement of wins, and unavailable for the same reason."
+            }
+          ]
+        },
+        "elapsedMs": 5822
+      },
+      {
+        "fixtureId": "h3-2012-13-heat",
+        "teamName": "Miami Heat",
+        "season": "2012-13",
+        "eraStyleId": "2010s",
+        "coachId": "erik-spoelstra",
+        "games": 4096,
+        "seeds": 4096,
+        "shareResults": {
+          "playerScoringShares": {
+            "supported": true,
+            "playersScored": 5,
+            "mae": 0.10545,
+            "perPlayer": [
+              {
+                "id": "cal:MIA:2012:mario-chalmers",
+                "target": 0.1078,
+                "realised": 0.21598,
+                "absoluteError": 0.10818
+              },
+              {
+                "id": "cal:MIA:2012:dwyane-wade",
+                "target": 0.2657,
+                "realised": 0.15454,
+                "absoluteError": 0.11116
+              },
+              {
+                "id": "cal:MIA:2012:lebron-james",
+                "target": 0.3358,
+                "realised": 0.23761,
+                "absoluteError": 0.09819
+              },
+              {
+                "id": "cal:MIA:2012:shane-battier",
+                "target": 0.0827,
+                "realised": 0.23815,
+                "absoluteError": 0.15545
+              },
+              {
+                "id": "cal:MIA:2012:chris-bosh",
+                "target": 0.208,
+                "realised": 0.15372,
+                "absoluteError": 0.05428
+              }
+            ]
+          },
+          "playerReboundShares": {
+            "supported": true,
+            "playersScored": 5,
+            "mae": 0.03678,
+            "perPlayer": [
+              {
+                "id": "cal:MIA:2012:mario-chalmers",
+                "target": 0.0905,
+                "realised": 0.12117,
+                "absoluteError": 0.03067
+              },
+              {
+                "id": "cal:MIA:2012:dwyane-wade",
+                "target": 0.2058,
+                "realised": 0.19286,
+                "absoluteError": 0.01294
+              },
+              {
+                "id": "cal:MIA:2012:lebron-james",
+                "target": 0.3292,
+                "realised": 0.26254,
+                "absoluteError": 0.06666
+              },
+              {
+                "id": "cal:MIA:2012:shane-battier",
+                "target": 0.0947,
+                "realised": 0.15599,
+                "absoluteError": 0.06129
+              },
+              {
+                "id": "cal:MIA:2012:chris-bosh",
+                "target": 0.2798,
+                "realised": 0.26744,
+                "absoluteError": 0.01236
+              }
+            ]
+          },
+          "playerAssistShares": {
+            "supported": true,
+            "playersScored": 5,
+            "mae": 0.04391,
+            "perPlayer": [
+              {
+                "id": "cal:MIA:2012:mario-chalmers",
+                "target": 0.1882,
+                "realised": 0.18683,
+                "absoluteError": 0.00137
+              },
+              {
+                "id": "cal:MIA:2012:dwyane-wade",
+                "target": 0.2742,
+                "realised": 0.2178,
+                "absoluteError": 0.0564
+              },
+              {
+                "id": "cal:MIA:2012:lebron-james",
+                "target": 0.3924,
+                "realised": 0.34039,
+                "absoluteError": 0.05201
+              },
+              {
+                "id": "cal:MIA:2012:shane-battier",
+                "target": 0.0538,
+                "realised": 0.12484,
+                "absoluteError": 0.07104
+              },
+              {
+                "id": "cal:MIA:2012:chris-bosh",
+                "target": 0.0914,
+                "realised": 0.13015,
+                "absoluteError": 0.03875
+              }
+            ]
+          },
+          "playerStealShares": {
+            "supported": true,
+            "playersScored": 5,
+            "mae": 0.04261,
+            "perPlayer": [
+              {
+                "id": "cal:MIA:2012:mario-chalmers",
+                "target": 0.2273,
+                "realised": 0.17761,
+                "absoluteError": 0.04969
+              },
+              {
+                "id": "cal:MIA:2012:dwyane-wade",
+                "target": 0.2878,
+                "realised": 0.25029,
+                "absoluteError": 0.03751
+              },
+              {
+                "id": "cal:MIA:2012:lebron-james",
+                "target": 0.2576,
+                "realised": 0.23827,
+                "absoluteError": 0.01933
+              },
+              {
+                "id": "cal:MIA:2012:shane-battier",
+                "target": 0.0909,
+                "realised": 0.13427,
+                "absoluteError": 0.04337
+              },
+              {
+                "id": "cal:MIA:2012:chris-bosh",
+                "target": 0.1364,
+                "realised": 0.19956,
+                "absoluteError": 0.06316
+              }
+            ]
+          },
+          "playerBlockShares": {
+            "supported": true,
+            "playersScored": 5,
+            "mae": 0.02911,
+            "perPlayer": [
+              {
+                "id": "cal:MIA:2012:mario-chalmers",
+                "target": 0.0488,
+                "realised": 0.10221,
+                "absoluteError": 0.05341
+              },
+              {
+                "id": "cal:MIA:2012:dwyane-wade",
+                "target": 0.1951,
+                "realised": 0.18517,
+                "absoluteError": 0.00993
+              },
+              {
+                "id": "cal:MIA:2012:lebron-james",
+                "target": 0.2195,
+                "realised": 0.20294,
+                "absoluteError": 0.01656
+              },
+              {
+                "id": "cal:MIA:2012:shane-battier",
+                "target": 0.1951,
+                "realised": 0.21446,
+                "absoluteError": 0.01936
+              },
+              {
+                "id": "cal:MIA:2012:chris-bosh",
+                "target": 0.3415,
+                "realised": 0.29522,
+                "absoluteError": 0.04628
+              }
+            ]
+          }
+        },
+        "compositeMae": 0.05157,
+        "supportedShareMetrics": [
+          "playerScoringShares",
+          "playerReboundShares",
+          "playerAssistShares",
+          "playerStealShares",
+          "playerBlockShares"
+        ],
+        "unsupportedShareMetrics": [],
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleStatistics": 0,
+          "meanPossessions": 94.67554,
+          "meanPoints": 107.44434,
+          "meanOpponentPoints": 107.71118,
+          "pointsPerPossession": 1.13487,
+          "opponentPointsPerPossession": 1.13769,
+          "threeShare": 0.29801,
+          "rimShare": 0.05141,
+          "offensiveReboundShare": 0.22666,
+          "reboundsPerGame": 47.64941,
+          "meanTopOptionShare": 0.29076,
+          "topOptionShareWithinBounds": true,
+          "threePointAttemptsInPreThreeEra": null
+        },
+        "confidence": "MEDIUM_HIGH",
+        "unitConfidence": "MEDIUM",
+        "replay": {
+          "exact": true,
+          "trials": 3
+        },
+        "identity": {
+          "traits": [
+            {
+              "trait": "moderate",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "spacing around a point-forward, cutting",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "aggressive switching and trapping",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "SMALL_BALL",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "ELITE_DEFENSE",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": true,
+              "metric": "opponentPointsPerPossession",
+              "direction": "BELOW_CORPUS_MEDIAN",
+              "observed": 1.13769,
+              "referenceMedian": 1.12067,
+              "pass": false
+            },
+            {
+              "trait": "ELITE_OFFENSE",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": true,
+              "metric": "pointsPerPossession",
+              "direction": "ABOVE_CORPUS_MEDIAN",
+              "observed": 1.13487,
+              "referenceMedian": 1.11979,
+              "pass": true
+            },
+            {
+              "trait": "WEAK_OFFENSIVE_REBOUNDING",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": true,
+              "metric": "offensiveReboundShare",
+              "direction": "BELOW_CORPUS_MEDIAN",
+              "observed": 0.22666,
+              "referenceMedian": 0.34862,
+              "pass": true
+            },
+            {
+              "trait": "BALANCED_CHAMPION",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            }
+          ],
+          "traitsTotal": 8,
+          "traitsScored": 3,
+          "traitsUnscored": 5,
+          "traitsPassed": 2,
+          "allScoredPass": false
+        },
+        "supportedScope": {
+          "teamFieldsTotal": 30,
+          "byClass": {
+            "NOT_APPLICABLE": 3,
+            "UNAVAILABLE": 27
+          },
+          "evaluatedTeamFields": [],
+          "unavailable": [
+            {
+              "id": "pointsPerGame",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "pointsAllowedPerGame",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "fieldGoalAttempts",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "fieldGoalPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "twoPointAttempts",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "twoPointPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "threePointAttempts",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "threePointPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "freeThrowAttempts",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "freeThrowPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "rebounds",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "offensiveRebounds",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "defensiveRebounds",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "assists",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "steals",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "blocks",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "turnovers",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "pace",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "offensiveRating",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "defensiveRating",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "netRating",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "efgPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "trueShootingPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "turnoverPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "offensiveReboundPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "freeThrowRate",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "threePointAttemptRate",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            }
+          ],
+          "notApplicable": [
+            {
+              "id": "games",
+              "reason": "A season game count. The evaluation surface is a fixed number of simulated games, chosen by the frozen sample plan, not by the historical schedule."
+            },
+            {
+              "id": "wins",
+              "reason": "A season win total against a real schedule of real opponents. No opponent targets exist for those opponents, and the fixture has no schedule, so there is nothing to compare a simulated win total to."
+            },
+            {
+              "id": "losses",
+              "reason": "The complement of wins, and unavailable for the same reason."
+            }
+          ]
+        },
+        "elapsedMs": 5648
+      },
+      {
+        "fixtureId": "h3-2022-23-raptors",
+        "teamName": "Toronto Raptors",
+        "season": "2022-23",
+        "eraStyleId": "2020s",
+        "coachId": "nick-nurse",
+        "games": 4096,
+        "seeds": 4096,
+        "shareResults": {
+          "playerScoringShares": {
+            "supported": true,
+            "playersScored": 5,
+            "mae": 0.02247,
+            "perPlayer": [
+              {
+                "id": "cal:TOR:2022:fred-vanvleet",
+                "target": 0.2075,
+                "realised": 0.18692,
+                "absoluteError": 0.02058
+              },
+              {
+                "id": "cal:TOR:2022:gary-trent-jr",
+                "target": 0.1871,
+                "realised": 0.19281,
+                "absoluteError": 0.00571
+              },
+              {
+                "id": "cal:TOR:2022:og-anunoby",
+                "target": 0.1806,
+                "realised": 0.22799,
+                "absoluteError": 0.04739
+              },
+              {
+                "id": "cal:TOR:2022:scottie-barnes",
+                "target": 0.1645,
+                "realised": 0.16758,
+                "absoluteError": 0.00308
+              },
+              {
+                "id": "cal:TOR:2022:pascal-siakam",
+                "target": 0.2603,
+                "realised": 0.2247,
+                "absoluteError": 0.0356
+              }
+            ]
+          },
+          "playerReboundShares": {
+            "supported": true,
+            "playersScored": 5,
+            "mae": 0.0159,
+            "perPlayer": [
+              {
+                "id": "cal:TOR:2022:fred-vanvleet",
+                "target": 0.1565,
+                "realised": 0.16681,
+                "absoluteError": 0.01031
+              },
+              {
+                "id": "cal:TOR:2022:gary-trent-jr",
+                "target": 0.0992,
+                "realised": 0.12863,
+                "absoluteError": 0.02943
+              },
+              {
+                "id": "cal:TOR:2022:og-anunoby",
+                "target": 0.1908,
+                "realised": 0.18725,
+                "absoluteError": 0.00355
+              },
+              {
+                "id": "cal:TOR:2022:scottie-barnes",
+                "target": 0.2557,
+                "realised": 0.24834,
+                "absoluteError": 0.00736
+              },
+              {
+                "id": "cal:TOR:2022:pascal-siakam",
+                "target": 0.2978,
+                "realised": 0.26897,
+                "absoluteError": 0.02883
+              }
+            ]
+          },
+          "playerAssistShares": {
+            "supported": true,
+            "playersScored": 5,
+            "mae": 0.02911,
+            "perPlayer": [
+              {
+                "id": "cal:TOR:2022:fred-vanvleet",
+                "target": 0.3364,
+                "realised": 0.30971,
+                "absoluteError": 0.02669
+              },
+              {
+                "id": "cal:TOR:2022:gary-trent-jr",
+                "target": 0.0748,
+                "realised": 0.11598,
+                "absoluteError": 0.04118
+              },
+              {
+                "id": "cal:TOR:2022:og-anunoby",
+                "target": 0.0935,
+                "realised": 0.12509,
+                "absoluteError": 0.03159
+              },
+              {
+                "id": "cal:TOR:2022:scottie-barnes",
+                "target": 0.2243,
+                "realised": 0.2001,
+                "absoluteError": 0.0242
+              },
+              {
+                "id": "cal:TOR:2022:pascal-siakam",
+                "target": 0.271,
+                "realised": 0.24913,
+                "absoluteError": 0.02187
+              }
+            ]
+          },
+          "playerStealShares": {
+            "supported": true,
+            "playersScored": 5,
+            "mae": 0.02066,
+            "perPlayer": [
+              {
+                "id": "cal:TOR:2022:fred-vanvleet",
+                "target": 0.2466,
+                "realised": 0.24105,
+                "absoluteError": 0.00555
+              },
+              {
+                "id": "cal:TOR:2022:gary-trent-jr",
+                "target": 0.2192,
+                "realised": 0.18315,
+                "absoluteError": 0.03605
+              },
+              {
+                "id": "cal:TOR:2022:og-anunoby",
+                "target": 0.2602,
+                "realised": 0.25015,
+                "absoluteError": 0.01005
+              },
+              {
+                "id": "cal:TOR:2022:scottie-barnes",
+                "target": 0.1507,
+                "realised": 0.18057,
+                "absoluteError": 0.02987
+              },
+              {
+                "id": "cal:TOR:2022:pascal-siakam",
+                "target": 0.1233,
+                "realised": 0.14508,
+                "absoluteError": 0.02178
+              }
+            ]
+          },
+          "playerBlockShares": {
+            "supported": true,
+            "playersScored": 5,
+            "mae": 0.03086,
+            "perPlayer": [
+              {
+                "id": "cal:TOR:2022:fred-vanvleet",
+                "target": 0.2143,
+                "realised": 0.19837,
+                "absoluteError": 0.01593
+              },
+              {
+                "id": "cal:TOR:2022:gary-trent-jr",
+                "target": 0.0714,
+                "realised": 0.11967,
+                "absoluteError": 0.04827
+              },
+              {
+                "id": "cal:TOR:2022:og-anunoby",
+                "target": 0.25,
+                "realised": 0.211,
+                "absoluteError": 0.039
+              },
+              {
+                "id": "cal:TOR:2022:scottie-barnes",
+                "target": 0.2857,
+                "realised": 0.26347,
+                "absoluteError": 0.02223
+              },
+              {
+                "id": "cal:TOR:2022:pascal-siakam",
+                "target": 0.1786,
+                "realised": 0.20749,
+                "absoluteError": 0.02889
+              }
+            ]
+          }
+        },
+        "compositeMae": 0.0238,
+        "supportedShareMetrics": [
+          "playerScoringShares",
+          "playerReboundShares",
+          "playerAssistShares",
+          "playerStealShares",
+          "playerBlockShares"
+        ],
+        "unsupportedShareMetrics": [],
+        "structural": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "impossibleStatistics": 0,
+          "meanPossessions": 102.08521,
+          "meanPoints": 121.18335,
+          "meanOpponentPoints": 120.98926,
+          "pointsPerPossession": 1.18708,
+          "opponentPointsPerPossession": 1.18518,
+          "threeShare": 0.42123,
+          "rimShare": 0.04446,
+          "offensiveReboundShare": 0.23021,
+          "reboundsPerGame": 51.90137,
+          "meanTopOptionShare": 0.27922,
+          "topOptionShareWithinBounds": true,
+          "threePointAttemptsInPreThreeEra": null
+        },
+        "confidence": "MEDIUM_HIGH",
+        "unitConfidence": "MEDIUM",
+        "replay": {
+          "exact": true,
+          "trials": 3
+        },
+        "identity": {
+          "traits": [
+            {
+              "trait": "moderate",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "size-driven drives and offensive rebounding",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "zone-capable, long switching",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "ZONE_CAPABLE",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "SIZE_HEAVY",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "STRONG_OFFENSIVE_REBOUNDING",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "LOW_THREE_POINT",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            },
+            {
+              "trait": "NON_CHAMPION",
+              "kind": "DOCUMENTED_STYLE",
+              "confidence": "MEDIUM",
+              "scored": false,
+              "reason": "no predeclared rubric entry"
+            }
+          ],
+          "traitsTotal": 8,
+          "traitsScored": 0,
+          "traitsUnscored": 8,
+          "traitsPassed": 0,
+          "allScoredPass": true
+        },
+        "supportedScope": {
+          "teamFieldsTotal": 30,
+          "byClass": {
+            "NOT_APPLICABLE": 3,
+            "UNAVAILABLE": 27
+          },
+          "evaluatedTeamFields": [],
+          "unavailable": [
+            {
+              "id": "pointsPerGame",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "pointsAllowedPerGame",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "fieldGoalAttempts",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "fieldGoalPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "twoPointAttempts",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "twoPointPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "threePointAttempts",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "threePointPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "freeThrowAttempts",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "freeThrowPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "rebounds",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "offensiveRebounds",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "defensiveRebounds",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "assists",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "steals",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "blocks",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "turnovers",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "pace",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "offensiveRating",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "defensiveRating",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "netRating",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "efgPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "trueShootingPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "turnoverPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "offensiveReboundPct",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "freeThrowRate",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            },
+            {
+              "id": "threePointAttemptRate",
+              "availability": "SOURCE_BLOCKED_LICENSING",
+              "reason": "Blocked by the current source-licence position."
+            }
+          ],
+          "notApplicable": [
+            {
+              "id": "games",
+              "reason": "A season game count. The evaluation surface is a fixed number of simulated games, chosen by the frozen sample plan, not by the historical schedule."
+            },
+            {
+              "id": "wins",
+              "reason": "A season win total against a real schedule of real opponents. No opponent targets exist for those opponents, and the fixture has no schedule, so there is nothing to compare a simulated win total to."
+            },
+            {
+              "id": "losses",
+              "reason": "The complement of wins, and unavailable for the same reason."
+            }
+          ]
+        },
+        "elapsedMs": 6191
+      }
+    ]
+  },
+  "outputHash": "07ee55991c291f93ad90ffdf0bf509e38c58ef077aa20d1320b9a9bebe226a55"
+}

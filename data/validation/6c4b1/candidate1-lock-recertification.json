@@ -1,0 +1,63 @@
+{
+  "artifact": "candidate1-lock-recertification",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run v5:recertify",
+  "generatedAt": "2026-08-27T03:33:14.157Z",
+  "gitCommit": "c370182bb805cd068427283ce2b45a7eda725d1c",
+  "branch": "phase-6c4b1-v5-freeze-and-seal",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "candidateId": "Candidate 1",
+    "lockRevision": 2,
+    "revisionReason": "IDENTITY_INFRASTRUCTURE_REPAIR — Candidate 0 and Candidate 1 produced byte-identical development result fingerprints; resultVersions() now states the calibration version. No simulated result changed.",
+    "supersedesCoreHash": "295ba3d1ba74fe5cecaccb33e8b69ab4f38520a964e00ba39fe6f3bf3fe260bb",
+    "supersedesArtifact": "data/validation/6c4a/candidate1-lock.json",
+    "supersedesLockRevision": 1,
+    "coreHash": "de57e1a96e1fd1450d1aea9c5463b0138a56d77bbf58c748ba042e6f78f5c94d",
+    "coreFileCount": 53,
+    "candidateCoreGraphVersion": "3.0.0",
+    "changedCoreFiles": [
+      "src/v3/possession/index.js"
+    ],
+    "behaviourIdentical": true,
+    "behaviourProofCases": 441,
+    "behaviourHash": "c9dca9a889cdb17a6decdd98a069098266d087788c8f812d419a72da53bcf84b",
+    "parentCandidateId": "Candidate 0",
+    "parentCoreHash": "58c5fb6974e694c29f87934ab107ff47ce32963a9c0695e36f941c2a70ae6683",
+    "candidateSelectionStatus": "SELECTED",
+    "candidateLockStatus": "LOCKED",
+    "calibrationStatus": "DEVELOPMENT_LOCKED_SCOPED",
+    "validationAttemptStatus": "NOT_RUN",
+    "possessionCalibrationVersion": "1.1.0",
+    "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+    "parameterChanges": 0,
+    "scope": "Historical Holdout V5 formal validation. Nothing here authorises synthetic-stress access, preview, or production.",
+    "notClaimed": [
+      "HOLDOUT_VALIDATED",
+      "PRIVATE_PREVIEW_VALIDATED",
+      "PRODUCTION_READY",
+      "ACTIVE"
+    ],
+    "engineVersions": {
+      "productionEngineVersion": "3.2.0"
+    },
+    "formalHoldoutAccessCounts": {
+      "historicalHoldoutV3": 1,
+      "historicalHoldoutV4": 1,
+      "syntheticStressHoldoutV2": 0
+    },
+    "postLockMutationPolicy": "Unchanged from revision 1. This revision exists because an identity defect made the lock's own promise unverifiable; a behaviour change would have required a new candidate, not a revision.",
+    "supportingArtifacts": {
+      "identityRepair": "6d0982f328d75c2d832d1191169bf96d2be8a457c9edf38b0697d5f81b4cbdeb",
+      "coreGraphCertification": "3126a0033c25a9c7a6a984731864983651701e6a50d35d7b46914e7f79bfd5fa",
+      "identitySeparation": "fecae0a634f93af12d1d3245ded876dec807c0843accde306c94158f87080695"
+    },
+    "recertifiedAtCommit": "c370182bb805cd068427283ce2b45a7eda725d1c",
+    "manifestHash": "22967f5bc0859b70ce4567786b8f34f7672fcc74e5a3991b5dbbc776af63aff9"
+  },
+  "outputHash": "a63d11edab612d161233e8032e5c0f8321c0f0a959faaf021be59e0fc7ff0da4"
+}

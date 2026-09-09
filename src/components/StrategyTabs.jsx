@@ -20,7 +20,7 @@ export default function StrategyTabs({ side, coachName, eraLabel, coachContent, 
           <button key={id} role="tab" aria-selected={tab === id} onClick={() => setTab(id)} style={{
             flex: 1, padding: "8px 10px", fontSize: 11.5, fontWeight: 800, borderRadius: 8, cursor: "pointer", minHeight: 40,
             border: `1px solid ${tab === id ? accent : T.border}`,
-            background: tab === id ? (side === "gold" ? "rgba(253,185,39,0.1)" : "rgba(110,168,254,0.1)") : "transparent",
+            background: tab === id ? (side === "gold" ? T.goldSoft : T.blueSoft) : "transparent",
             color: tab === id ? accent : T.textDim,
             whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", minWidth: 0,
           }}>

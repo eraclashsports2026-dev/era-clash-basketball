@@ -1,0 +1,1519 @@
+{
+  "artifact": "candidate2-vs-candidate1",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run c2:accept",
+  "generatedAt": "2026-08-27T15:05:50.931Z",
+  "gitCommit": "136b6446a8a65c7b9b551eed120cf0d4aa5078fd",
+  "branch": "phase-6c4c1-candidate2-trait-repair",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "candidate2ComparisonVersion": "1.0.0",
+    "candidate1": {
+      "calibrationVersion": "1.1.0",
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "measurementHash": "47f6d301a5fcd5d7df583b2ac2d640587959f5dbe392234b17d3113798cc90a0",
+      "measuredInWorktreeAtParentCommit": true
+    },
+    "candidate2": {
+      "calibrationVersion": "1.2.0",
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "measurementHash": "d99f98bd173c476ae5ed4ca87281b42ea79c18c2493129c7d4779dd1d288be65"
+    },
+    "identicalSeeds": true,
+    "pairsPerCell": 800,
+    "gamesPerCandidate": 37202,
+    "criteriaEvaluated": 28,
+    "criteriaPassed": 28,
+    "criteriaFailed": [],
+    "results": [
+      {
+        "criterionId": "A1_leverExists",
+        "group": "assistedOffense",
+        "pass": true,
+        "detail": "Spearman(ballMovement, assistedRate) 0 -> 0.80013 (need >= 0.70)",
+        "evidence": {
+          "candidate1": 0,
+          "candidate2": 0.80013,
+          "threshold": 0.7
+        }
+      },
+      {
+        "criterionId": "A2_leverIsMaterial",
+        "group": "assistedOffense",
+        "pass": true,
+        "detail": "ladder range 0.05176 -> 0.17884 (need >= 0.04)",
+        "evidence": {
+          "candidate1": 0.05176,
+          "candidate2": 0.17884,
+          "threshold": 0.04
+        }
+      },
+      {
+        "criterionId": "A3_neutralUnmoved",
+        "group": "assistedOffense",
+        "pass": true,
+        "detail": "neutral-coach assisted rate 0.56508 -> 0.5651 (delta 0.00002, allow 0.010)",
+        "evidence": {
+          "delta": 0.00002,
+          "threshold": 0.01
+        }
+      },
+      {
+        "criterionId": "A4_v5DiagnosticImproves",
+        "group": "assistedOffense",
+        "pass": true,
+        "detail": "ball-movement coach + compatible roster 0.57635 -> 0.68905 (+0.1127, need > 0.02)",
+        "evidence": {
+          "improvement": 0.1127,
+          "threshold": 0.02
+        }
+      },
+      {
+        "criterionId": "A5_nonV5AnalogsImprove",
+        "group": "assistedOffense",
+        "pass": true,
+        "detail": "AO-1 (compatible) +0.1127 exceeds AO-2 (incompatible roster) +0.10625",
+        "evidence": {
+          "compatible": 0.1127,
+          "incompatible": 0.10625
+        }
+      },
+      {
+        "criterionId": "A6_noUniversalInflation",
+        "group": "assistedOffense",
+        "pass": true,
+        "detail": "mean assisted rate on non-ball-movement cells 0.53535 -> 0.53327 (delta -0.00208, allow 0.010)",
+        "evidence": {
+          "delta": -0.00208,
+          "threshold": 0.01,
+          "cells": [
+            "AO-3",
+            "AO-4",
+            "AO-5",
+            "AO-6"
+          ]
+        }
+      },
+      {
+        "criterionId": "A7_selfCreationSurvives",
+        "group": "assistedOffense",
+        "pass": true,
+        "detail": "iso-heavy roster 0.57416 stays below the ladder mean 0.64188",
+        "evidence": {
+          "isoCell": 0.57416,
+          "ladderMean": 0.64188
+        }
+      },
+      {
+        "criterionId": "A8_astInvariant",
+        "group": "assistedOffense",
+        "pass": true,
+        "detail": "AST <= FGM on every cell, 0 violations across all measured games",
+        "evidence": {
+          "violations": 0
+        }
+      },
+      {
+        "criterionId": "D1_leverExists",
+        "group": "defensiveSuppression",
+        "pass": true,
+        "detail": "Spearman(helpIntent, opponentPPP) -0.14712 -> -0.88273 (need <= -0.70)",
+        "evidence": {
+          "candidate1": -0.14712,
+          "candidate2": -0.88273,
+          "threshold": -0.7
+        }
+      },
+      {
+        "criterionId": "D2_leverIsMaterial",
+        "group": "defensiveSuppression",
+        "pass": true,
+        "detail": "ladder range 0.01109 -> 0.06342 (need >= 0.020)",
+        "evidence": {
+          "candidate1": 0.01109,
+          "candidate2": 0.06342,
+          "threshold": 0.02
+        }
+      },
+      {
+        "criterionId": "D3_noInversionBelowNeutral",
+        "group": "defensiveSuppression",
+        "pass": true,
+        "detail": "0 personnel-truncation inversions across the eight V5 defences (was 6 under Candidate 1); 1 era-cap tie where the illegal-defence rules bind every coach identically",
+        "evidence": {
+          "personnelInversions": [],
+          "eraCapTies": [
+            "Los Angeles Lakers"
+          ],
+          "rows": [
+            {
+              "matchupId": "v5m-1950s",
+              "eraStyleId": "1950s",
+              "teamName": "Boston Celtics",
+              "coachId": "red-auerbach",
+              "helpIntent": 8,
+              "aboveNeutralIntent": true,
+              "coachHelp": 4.5,
+              "neutralHelp": 4.2,
+              "helpDifferential": 0.3,
+              "eraCapBindsBoth": false
+            },
+            {
+              "matchupId": "v5m-1960s",
+              "eraStyleId": "1960s",
+              "teamName": "Boston Celtics",
+              "coachId": "red-auerbach",
+              "helpIntent": 8,
+              "aboveNeutralIntent": true,
+              "coachHelp": 4.5,
+              "neutralHelp": 4,
+              "helpDifferential": 0.5,
+              "eraCapBindsBoth": false
+            },
+            {
+              "matchupId": "v5m-1970s",
+              "eraStyleId": "1970s",
+              "teamName": "Los Angeles Lakers",
+              "coachId": "bill-sharman",
+              "helpIntent": 6,
+              "aboveNeutralIntent": true,
+              "coachHelp": 4.5,
+              "neutralHelp": 4.5,
+              "helpDifferential": 0,
+              "eraCapBindsBoth": true
+            },
+            {
+              "matchupId": "v5m-1980s",
+              "eraStyleId": "1980s",
+              "teamName": "Boston Celtics",
+              "coachId": "kc-jones",
+              "helpIntent": 5,
+              "aboveNeutralIntent": false,
+              "coachHelp": 3.3,
+              "neutralHelp": 3.3,
+              "helpDifferential": 0,
+              "eraCapBindsBoth": true
+            },
+            {
+              "matchupId": "v5m-1990s",
+              "eraStyleId": "1990s",
+              "teamName": "Seattle SuperSonics",
+              "coachId": "george-karl",
+              "helpIntent": 8,
+              "aboveNeutralIntent": true,
+              "coachHelp": 4.5,
+              "neutralHelp": 3.4,
+              "helpDifferential": 1.1,
+              "eraCapBindsBoth": false
+            },
+            {
+              "matchupId": "v5m-2010s",
+              "eraStyleId": "2010s",
+              "teamName": "San Antonio Spurs",
+              "coachId": "gregg-popovich",
+              "helpIntent": 5,
+              "aboveNeutralIntent": false,
+              "coachHelp": 3.3,
+              "neutralHelp": 3.3,
+              "helpDifferential": 0,
+              "eraCapBindsBoth": true
+            },
+            {
+              "matchupId": "v5m-2020s",
+              "eraStyleId": "2020s",
+              "teamName": "New York Knicks",
+              "coachId": "tom-thibodeau",
+              "helpIntent": 9,
+              "aboveNeutralIntent": true,
+              "coachHelp": 5,
+              "neutralHelp": 3,
+              "helpDifferential": 2,
+              "eraCapBindsBoth": false
+            },
+            {
+              "matchupId": "v5m-2020s",
+              "eraStyleId": "2020s",
+              "teamName": "Philadelphia 76ers",
+              "coachId": "doc-rivers",
+              "helpIntent": 8,
+              "aboveNeutralIntent": true,
+              "coachHelp": 4.8,
+              "neutralHelp": 3.3,
+              "helpDifferential": 1.5,
+              "eraCapBindsBoth": false
+            }
+          ]
+        }
+      },
+      {
+        "criterionId": "D4_v5DiagnosticImproves",
+        "group": "defensiveSuppression",
+        "pass": true,
+        "detail": "strong defence + high-help coach opponent PPP 0.88596 -> 0.84323 (suppression +0.04273, need > 0.02)",
+        "evidence": {
+          "improvement": 0.04273,
+          "threshold": 0.02
+        }
+      },
+      {
+        "criterionId": "D5_patternNarrows",
+        "group": "defensiveSuppression",
+        "pass": true,
+        "detail": "the coach lever now has the right sign and more than twice the range; the per-fixture narrowing is recorded in defensive-suppression-repair-results.json",
+        "evidence": {
+          "spearman": [
+            -0.14712,
+            -0.88273
+          ],
+          "range": [
+            0.01109,
+            0.06342
+          ]
+        }
+      },
+      {
+        "criterionId": "D6_strongBeatsWeak",
+        "group": "defensiveSuppression",
+        "pass": true,
+        "detail": "strong suppresses more than weak under the same coach: DS-1 0.84323 < DS-3 0.99861, DS-2 0.89337 < DS-4 1.01567",
+        "evidence": {
+          "strongHelp": 0.84323,
+          "weakHelp": 0.99861,
+          "strongNeutral": 0.89337,
+          "weakNeutral": 1.01567
+        }
+      },
+      {
+        "criterionId": "D7_weakNotUniversallyLifted",
+        "group": "defensiveSuppression",
+        "pass": true,
+        "detail": "weak defence + neutral coach 1.0156 -> 1.01567 (delta 0.00007, allow 0.010) — a flat bonus would move this",
+        "evidence": {
+          "delta": 0.00007,
+          "threshold": 0.01
+        }
+      },
+      {
+        "criterionId": "D8_axesDoNotSubstitute",
+        "group": "defensiveSuppression",
+        "pass": true,
+        "detail": "rim/perimeter/rebounding/pressure cells remain distinguishable, spread 0.05025 (need >= 0.010)",
+        "evidence": {
+          "spread": 0.05025,
+          "cells": [
+            0.94334,
+            0.9511,
+            0.96739,
+            0.91714
+          ]
+        }
+      },
+      {
+        "criterionId": "D9_offenceNotSuppressedUniversally",
+        "group": "defensiveSuppression",
+        "pass": true,
+        "detail": "mean combined score across all eight eras 239.29469 -> 239.28594 (delta -0.00875, allow 2.0)",
+        "evidence": {
+          "delta": -0.00875,
+          "threshold": 2
+        }
+      },
+      {
+        "criterionId": "G_sideSymmetry",
+        "group": "guardrail",
+        "pass": true,
+        "detail": "at 8,000 games per cell: 7/8 mirror cells contain 0.5, largest deviation 0.01625 (2.90842 sigma); asymmetric side swap -0.00275 (0.37046 sigma). Candidate 1 on the same cells: 7/8, largest 0.017",
+        "evidence": {
+          "candidate1": {
+            "cellsContainingHalf": 7,
+            "largestDeviation": 0.017,
+            "swap": -0.01562
+          },
+          "candidate2": {
+            "cellsContainingHalf": 7,
+            "largestDeviation": 0.01625,
+            "swap": -0.00275
+          },
+          "inHarnessCellsWereUnderpowered": {
+            "games": 1600,
+            "standardError": 0.0125,
+            "why": "one 2-sigma cell out of five is ordinary sampling behaviour at that volume; the claim needs power to be a claim"
+          },
+          "preExistingFinding": "both candidates leave one mirror cell near three sigma at 8,000 games (Candidate 1 0.017, Candidate 2 0.01625). Candidate 2 did not introduce it and does not worsen it. Carried forward as a finding rather than attributed to this phase.",
+          "candidate2ImprovesTheSwap": "the asymmetric side swap, where the two sides genuinely differ and a repair could introduce a bias, moves from -0.01562 at 2.14657 sigma (NOT consistent with zero) to -0.00275 at 0.37046 sigma (consistent with zero)."
+        }
+      },
+      {
+        "criterionId": "G_replayExact",
+        "group": "guardrail",
+        "pass": true,
+        "detail": "0 mismatches across 64 designated seeds",
+        "evidence": {
+          "seedsChecked": 64,
+          "mismatches": 0
+        }
+      },
+      {
+        "criterionId": "G_invariants",
+        "group": "guardrail",
+        "pass": true,
+        "detail": "0 invariant violations, 0 final ties, 0 negative, 0 non-finite",
+        "evidence": {
+          "invariantViolations": 0,
+          "finalTies": 0,
+          "negativeStats": 0,
+          "nonFiniteStats": 0,
+          "astGtFgm": 0
+        }
+      },
+      {
+        "criterionId": "G_competitionModes",
+        "group": "guardrail",
+        "pass": true,
+        "detail": "series mean length 5.51, mirror season mean wins 42.4 (range 29-53), 0 invariants",
+        "evidence": {
+          "seriesCount": 200,
+          "seriesGames": 1102,
+          "seriesInvariants": 0,
+          "meanSeriesLength": 5.51,
+          "seasonCount": 50,
+          "seasonGames": 4100,
+          "seasonInvariants": 0,
+          "meanSeasonWins": 42.4,
+          "minSeasonWins": 29,
+          "maxSeasonWins": 53
+        }
+      },
+      {
+        "criterionId": "G_actionDiversity",
+        "group": "guardrail",
+        "pass": true,
+        "detail": "largest action-family share 0.24681 (ceiling 0.6); entropy 2.10799 -> 2.10821",
+        "evidence": {
+          "maxShare": 0.24681
+        }
+      },
+      {
+        "criterionId": "G_eraExpressionPreserved",
+        "group": "guardrail",
+        "pass": true,
+        "detail": "per-era PPP spread 0.1852 -> 0.18511 (must stay within 15% of Candidate 1's)",
+        "evidence": {
+          "candidate1": 0.1852,
+          "candidate2": 0.18511
+        }
+      },
+      {
+        "criterionId": "G_coachIdentityPreserved",
+        "group": "guardrail",
+        "pass": true,
+        "detail": "coaches are more distinguishable, not less: assisted-rate spread 0.05176 -> 0.17884",
+        "evidence": {
+          "candidate1": 0.05176,
+          "candidate2": 0.17884
+        }
+      },
+      {
+        "criterionId": "G_performance",
+        "group": "guardrail",
+        "pass": true,
+        "detail": "366.79351 -> 364.51097 games/sec on identical cells and seeds, 99.378% of the parent (allow a 10% regression)",
+        "evidence": {
+          "candidate1": 366.79351,
+          "candidate2": 364.51097,
+          "ratio": 0.99378,
+          "note": "the first freeze of this policy set an absolute floor of 400 games per second. That was mis-specified: measured on this harness Candidate 1 itself runs at 366.8, so the floor could never distinguish a Candidate 2 regression from the harness's own cost — it would have failed the parent too. Corrected to a relative bound against the parent measured on identical seeds and identical cells, which is what the guardrail was for. The absolute number and both measurements are recorded so the correction is visible."
+        }
+      },
+      {
+        "criterionId": "G_turnoversPlausible",
+        "group": "guardrail",
+        "pass": true,
+        "detail": "turnover rate 0.09194 to 0.09484",
+        "evidence": {}
+      },
+      {
+        "criterionId": "O_notEveryOffenceGainsAssists",
+        "group": "antiOverfitting",
+        "pass": true,
+        "detail": "5/6 assisted-offence cells gained; a universal gain would be a flat bonus",
+        "evidence": {
+          "improved": [
+            "AO-1",
+            "AO-2",
+            "AO-3",
+            "AO-5",
+            "AO-6"
+          ]
+        }
+      },
+      {
+        "criterionId": "O_notEveryDefenceGains",
+        "group": "antiOverfitting",
+        "pass": true,
+        "detail": "3/8 defensive cells improved",
+        "evidence": {
+          "improved": [
+            "DS-1",
+            "DS-3",
+            "DS-8"
+          ]
+        }
+      }
+    ],
+    "ladders": {
+      "candidate1": {
+        "assist": {
+          "spearman": 0,
+          "range": 0.05176,
+          "creditSpearman": 0.41825,
+          "creationSpearman": 0.34551
+        },
+        "defence": {
+          "spearman": -0.14712,
+          "range": 0.01109
+        }
+      },
+      "candidate2": {
+        "assist": {
+          "spearman": 0.80013,
+          "range": 0.17884,
+          "creditSpearman": 0.94561,
+          "creationSpearman": 0.34551
+        },
+        "defence": {
+          "spearman": -0.88273,
+          "range": 0.06342
+        }
+      }
+    },
+    "assistedOffenseControls": {
+      "candidate1": [
+        {
+          "cellId": "AO-1",
+          "coach": "gregg-popovich",
+          "roster": "passingHub",
+          "ballMovement": 9,
+          "assistedRate": 0.57635,
+          "ppp": 1.01716,
+          "eligibleRate": 0.93677,
+          "assistCreditRate": 0.24538,
+          "turnoverRate": 0.09427,
+          "fgaPerPossession": 0.81724,
+          "astLeFgm": true,
+          "maxActionShare": 0.2485,
+          "actionEntropy": 2.07523,
+          "possessions": 178641,
+          "games": 1600,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "AO-2",
+          "coach": "gregg-popovich",
+          "roster": "isoHeavy",
+          "ballMovement": 9,
+          "assistedRate": 0.46791,
+          "ppp": 0.90561,
+          "eligibleRate": 0.91371,
+          "assistCreditRate": 0.18296,
+          "turnoverRate": 0.09545,
+          "fgaPerPossession": 0.81779,
+          "astLeFgm": true,
+          "maxActionShare": 0.20405,
+          "actionEntropy": 2.02706,
+          "possessions": 176317,
+          "games": 1600,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "AO-3",
+          "coach": "neutral",
+          "roster": "passingHub",
+          "ballMovement": 5,
+          "assistedRate": 0.56766,
+          "ppp": 1.02228,
+          "eligibleRate": 0.91309,
+          "assistCreditRate": 0.24987,
+          "turnoverRate": 0.0947,
+          "fgaPerPossession": 0.81721,
+          "astLeFgm": true,
+          "maxActionShare": 0.2411,
+          "actionEntropy": 2.10642,
+          "possessions": 178298,
+          "games": 1600,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "AO-4",
+          "coach": "mike-dantoni",
+          "roster": "passingHub",
+          "ballMovement": 6,
+          "assistedRate": 0.52761,
+          "ppp": 0.99639,
+          "eligibleRate": 0.87153,
+          "assistCreditRate": 0.23965,
+          "turnoverRate": 0.09466,
+          "fgaPerPossession": 0.82045,
+          "astLeFgm": true,
+          "maxActionShare": 0.19382,
+          "actionEntropy": 2.11494,
+          "possessions": 183719,
+          "games": 1600,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "AO-5",
+          "coach": "neutral",
+          "roster": "secondaryHigh",
+          "ballMovement": 5,
+          "assistedRate": 0.59254,
+          "ppp": 1.00496,
+          "eligibleRate": 0.90382,
+          "assistCreditRate": 0.26003,
+          "turnoverRate": 0.09261,
+          "fgaPerPossession": 0.81903,
+          "astLeFgm": true,
+          "maxActionShare": 0.24112,
+          "actionEntropy": 2.10778,
+          "possessions": 176566,
+          "games": 1600,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "AO-6",
+          "coach": "neutral",
+          "roster": "secondaryLow",
+          "ballMovement": 5,
+          "assistedRate": 0.45359,
+          "ppp": 0.91262,
+          "eligibleRate": 0.86415,
+          "assistCreditRate": 0.19176,
+          "turnoverRate": 0.09418,
+          "fgaPerPossession": 0.82057,
+          "astLeFgm": true,
+          "maxActionShare": 0.17117,
+          "actionEntropy": 2.05641,
+          "possessions": 176268,
+          "games": 1600,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        }
+      ],
+      "candidate2": [
+        {
+          "cellId": "AO-1",
+          "coach": "gregg-popovich",
+          "roster": "passingHub",
+          "ballMovement": 9,
+          "assistedRate": 0.68905,
+          "ppp": 1.01715,
+          "eligibleRate": 0.93677,
+          "assistCreditRate": 0.29334,
+          "turnoverRate": 0.09428,
+          "fgaPerPossession": 0.81724,
+          "astLeFgm": true,
+          "maxActionShare": 0.24842,
+          "actionEntropy": 2.07528,
+          "possessions": 178626,
+          "games": 1600,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "AO-2",
+          "coach": "gregg-popovich",
+          "roster": "isoHeavy",
+          "ballMovement": 9,
+          "assistedRate": 0.57416,
+          "ppp": 0.90563,
+          "eligibleRate": 0.91361,
+          "assistCreditRate": 0.22453,
+          "turnoverRate": 0.09544,
+          "fgaPerPossession": 0.81781,
+          "astLeFgm": true,
+          "maxActionShare": 0.20382,
+          "actionEntropy": 2.02726,
+          "possessions": 176323,
+          "games": 1600,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "AO-3",
+          "coach": "neutral",
+          "roster": "passingHub",
+          "ballMovement": 5,
+          "assistedRate": 0.56787,
+          "ppp": 1.02234,
+          "eligibleRate": 0.91314,
+          "assistCreditRate": 0.24994,
+          "turnoverRate": 0.09469,
+          "fgaPerPossession": 0.81713,
+          "astLeFgm": true,
+          "maxActionShare": 0.24115,
+          "actionEntropy": 2.1064,
+          "possessions": 178294,
+          "games": 1600,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "AO-4",
+          "coach": "mike-dantoni",
+          "roster": "passingHub",
+          "ballMovement": 6,
+          "assistedRate": 0.5185,
+          "ppp": 0.997,
+          "eligibleRate": 0.87035,
+          "assistCreditRate": 0.23571,
+          "turnoverRate": 0.09461,
+          "fgaPerPossession": 0.82038,
+          "astLeFgm": true,
+          "maxActionShare": 0.19464,
+          "actionEntropy": 2.1169,
+          "possessions": 183876,
+          "games": 1600,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "AO-5",
+          "coach": "neutral",
+          "roster": "secondaryHigh",
+          "ballMovement": 5,
+          "assistedRate": 0.59304,
+          "ppp": 1.00515,
+          "eligibleRate": 0.90379,
+          "assistCreditRate": 0.26045,
+          "turnoverRate": 0.09244,
+          "fgaPerPossession": 0.81931,
+          "astLeFgm": true,
+          "maxActionShare": 0.24116,
+          "actionEntropy": 2.10774,
+          "possessions": 176670,
+          "games": 1600,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "AO-6",
+          "coach": "neutral",
+          "roster": "secondaryLow",
+          "ballMovement": 5,
+          "assistedRate": 0.45368,
+          "ppp": 0.91266,
+          "eligibleRate": 0.86408,
+          "assistCreditRate": 0.19183,
+          "turnoverRate": 0.0942,
+          "fgaPerPossession": 0.82054,
+          "astLeFgm": true,
+          "maxActionShare": 0.17107,
+          "actionEntropy": 2.05652,
+          "possessions": 176252,
+          "games": 1600,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        }
+      ]
+    },
+    "defensiveControls": {
+      "candidate1": [
+        {
+          "cellId": "DS-1",
+          "roster": "strongDefence",
+          "coach": "tom-thibodeau",
+          "helpIntent": 9,
+          "opponentPpp": 0.88596,
+          "opponentFgPct": 0.42226,
+          "turnoverForcedRate": 0.10026,
+          "possessions": 172587,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "DS-2",
+          "roster": "strongDefence",
+          "coach": "neutral",
+          "helpIntent": 5,
+          "opponentPpp": 0.89324,
+          "opponentFgPct": 0.42612,
+          "turnoverForcedRate": 0.0992,
+          "possessions": 175895,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "DS-3",
+          "roster": "weakDefence",
+          "coach": "tom-thibodeau",
+          "helpIntent": 9,
+          "opponentPpp": 1.01902,
+          "opponentFgPct": 0.49207,
+          "turnoverForcedRate": 0.09516,
+          "possessions": 169927,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "DS-4",
+          "roster": "weakDefence",
+          "coach": "neutral",
+          "helpIntent": 5,
+          "opponentPpp": 1.0156,
+          "opponentFgPct": 0.49018,
+          "turnoverForcedRate": 0.09292,
+          "possessions": 172449,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "DS-5",
+          "roster": "rimStrong",
+          "coach": "neutral",
+          "helpIntent": 5,
+          "opponentPpp": 0.94331,
+          "opponentFgPct": 0.45107,
+          "turnoverForcedRate": 0.09622,
+          "possessions": 173500,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "DS-6",
+          "roster": "perimStrong",
+          "coach": "neutral",
+          "helpIntent": 5,
+          "opponentPpp": 0.95104,
+          "opponentFgPct": 0.45884,
+          "turnoverForcedRate": 0.09747,
+          "possessions": 174457,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "DS-7",
+          "roster": "rebStrong",
+          "coach": "neutral",
+          "helpIntent": 5,
+          "opponentPpp": 0.96739,
+          "opponentFgPct": 0.46533,
+          "turnoverForcedRate": 0.0968,
+          "possessions": 175635,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "DS-8",
+          "roster": "pressStrong",
+          "coach": "neutral",
+          "helpIntent": 5,
+          "opponentPpp": 0.91739,
+          "opponentFgPct": 0.4379,
+          "turnoverForcedRate": 0.09971,
+          "possessions": 177927,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        }
+      ],
+      "candidate2": [
+        {
+          "cellId": "DS-1",
+          "roster": "strongDefence",
+          "coach": "tom-thibodeau",
+          "helpIntent": 9,
+          "opponentPpp": 0.84323,
+          "opponentFgPct": 0.39995,
+          "turnoverForcedRate": 0.10063,
+          "possessions": 173262,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "DS-2",
+          "roster": "strongDefence",
+          "coach": "neutral",
+          "helpIntent": 5,
+          "opponentPpp": 0.89337,
+          "opponentFgPct": 0.4262,
+          "turnoverForcedRate": 0.09931,
+          "possessions": 175857,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "DS-3",
+          "roster": "weakDefence",
+          "coach": "tom-thibodeau",
+          "helpIntent": 9,
+          "opponentPpp": 0.99861,
+          "opponentFgPct": 0.48031,
+          "turnoverForcedRate": 0.09485,
+          "possessions": 170257,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "DS-4",
+          "roster": "weakDefence",
+          "coach": "neutral",
+          "helpIntent": 5,
+          "opponentPpp": 1.01567,
+          "opponentFgPct": 0.49021,
+          "turnoverForcedRate": 0.09289,
+          "possessions": 172445,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "DS-5",
+          "roster": "rimStrong",
+          "coach": "neutral",
+          "helpIntent": 5,
+          "opponentPpp": 0.94334,
+          "opponentFgPct": 0.4511,
+          "turnoverForcedRate": 0.09626,
+          "possessions": 173486,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "DS-6",
+          "roster": "perimStrong",
+          "coach": "neutral",
+          "helpIntent": 5,
+          "opponentPpp": 0.9511,
+          "opponentFgPct": 0.45887,
+          "turnoverForcedRate": 0.09746,
+          "possessions": 174461,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "DS-7",
+          "roster": "rebStrong",
+          "coach": "neutral",
+          "helpIntent": 5,
+          "opponentPpp": 0.96739,
+          "opponentFgPct": 0.46533,
+          "turnoverForcedRate": 0.0968,
+          "possessions": 175635,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "cellId": "DS-8",
+          "roster": "pressStrong",
+          "coach": "neutral",
+          "helpIntent": 5,
+          "opponentPpp": 0.91714,
+          "opponentFgPct": 0.4379,
+          "turnoverForcedRate": 0.09981,
+          "possessions": 177935,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        }
+      ]
+    },
+    "eraCells": {
+      "candidate1": [
+        {
+          "era": "1950s",
+          "assistedRate": 0.52684,
+          "ppp": 0.87876,
+          "eligibleRate": 0.89387,
+          "assistCreditRate": 0.21245,
+          "turnoverRate": 0.09291,
+          "fgaPerPossession": 0.7818,
+          "astLeFgm": true,
+          "maxActionShare": 0.24858,
+          "actionEntropy": 2.00019,
+          "possessions": 59477,
+          "games": 400,
+          "meanCombinedScore": 254.475,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "era": "1960s",
+          "assistedRate": 0.51784,
+          "ppp": 0.97253,
+          "eligibleRate": 0.89225,
+          "assistCreditRate": 0.24143,
+          "turnoverRate": 0.08864,
+          "fgaPerPossession": 0.80003,
+          "astLeFgm": true,
+          "maxActionShare": 0.24939,
+          "actionEntropy": 1.99774,
+          "possessions": 58543,
+          "games": 400,
+          "meanCombinedScore": 277.48,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "era": "1970s",
+          "assistedRate": 0.51778,
+          "ppp": 1.00063,
+          "eligibleRate": 0.88862,
+          "assistCreditRate": 0.2542,
+          "turnoverRate": 0.09911,
+          "fgaPerPossession": 0.80065,
+          "astLeFgm": true,
+          "maxActionShare": 0.25283,
+          "actionEntropy": 2.00114,
+          "possessions": 50600,
+          "games": 400,
+          "meanCombinedScore": 247.32,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "era": "1980s",
+          "assistedRate": 0.52744,
+          "ppp": 1.0211,
+          "eligibleRate": 0.89742,
+          "assistCreditRate": 0.25435,
+          "turnoverRate": 0.096,
+          "fgaPerPossession": 0.79493,
+          "astLeFgm": true,
+          "maxActionShare": 0.24907,
+          "actionEntropy": 2.08181,
+          "possessions": 47915,
+          "games": 400,
+          "meanCombinedScore": 239.84,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "era": "1990s",
+          "assistedRate": 0.53344,
+          "ppp": 1.02898,
+          "eligibleRate": 0.90159,
+          "assistCreditRate": 0.25356,
+          "turnoverRate": 0.0933,
+          "fgaPerPossession": 0.80183,
+          "astLeFgm": true,
+          "maxActionShare": 0.24605,
+          "actionEntropy": 2.09341,
+          "possessions": 46162,
+          "games": 400,
+          "meanCombinedScore": 229.8975,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "era": "2000s",
+          "assistedRate": 0.55742,
+          "ppp": 1.01537,
+          "eligibleRate": 0.90132,
+          "assistCreditRate": 0.24761,
+          "turnoverRate": 0.0953,
+          "fgaPerPossession": 0.79728,
+          "astLeFgm": true,
+          "maxActionShare": 0.24719,
+          "actionEntropy": 2.09032,
+          "possessions": 42562,
+          "games": 400,
+          "meanCombinedScore": 208.8025,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "era": "2010s",
+          "assistedRate": 0.56419,
+          "ppp": 1.02325,
+          "eligibleRate": 0.91099,
+          "assistCreditRate": 0.24833,
+          "turnoverRate": 0.09189,
+          "fgaPerPossession": 0.81872,
+          "astLeFgm": true,
+          "maxActionShare": 0.24261,
+          "actionEntropy": 2.10588,
+          "possessions": 44738,
+          "games": 400,
+          "meanCombinedScore": 218.2825,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "era": "2020s",
+          "assistedRate": 0.57173,
+          "ppp": 1.06396,
+          "eligibleRate": 0.91359,
+          "assistCreditRate": 0.25274,
+          "turnoverRate": 0.09171,
+          "fgaPerPossession": 0.82814,
+          "astLeFgm": true,
+          "maxActionShare": 0.23818,
+          "actionEntropy": 2.10645,
+          "possessions": 46964,
+          "games": 400,
+          "meanCombinedScore": 238.26,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        }
+      ],
+      "candidate2": [
+        {
+          "era": "1950s",
+          "assistedRate": 0.52701,
+          "ppp": 0.87868,
+          "eligibleRate": 0.89399,
+          "assistCreditRate": 0.21245,
+          "turnoverRate": 0.09291,
+          "fgaPerPossession": 0.78171,
+          "astLeFgm": true,
+          "maxActionShare": 0.24885,
+          "actionEntropy": 1.99997,
+          "possessions": 59486,
+          "games": 400,
+          "meanCombinedScore": 254.3925,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "era": "1960s",
+          "assistedRate": 0.51853,
+          "ppp": 0.9728,
+          "eligibleRate": 0.89234,
+          "assistCreditRate": 0.24184,
+          "turnoverRate": 0.08853,
+          "fgaPerPossession": 0.80017,
+          "astLeFgm": true,
+          "maxActionShare": 0.2493,
+          "actionEntropy": 1.99785,
+          "possessions": 58535,
+          "games": 400,
+          "meanCombinedScore": 277.5275,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "era": "1970s",
+          "assistedRate": 0.51767,
+          "ppp": 1.00057,
+          "eligibleRate": 0.88867,
+          "assistCreditRate": 0.25412,
+          "turnoverRate": 0.09916,
+          "fgaPerPossession": 0.8006,
+          "astLeFgm": true,
+          "maxActionShare": 0.25289,
+          "actionEntropy": 2.00103,
+          "possessions": 50596,
+          "games": 400,
+          "meanCombinedScore": 247.34,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "era": "1980s",
+          "assistedRate": 0.52736,
+          "ppp": 1.02129,
+          "eligibleRate": 0.8976,
+          "assistCreditRate": 0.25433,
+          "turnoverRate": 0.09602,
+          "fgaPerPossession": 0.795,
+          "astLeFgm": true,
+          "maxActionShare": 0.2492,
+          "actionEntropy": 2.08173,
+          "possessions": 47918,
+          "games": 400,
+          "meanCombinedScore": 239.85,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "era": "1990s",
+          "assistedRate": 0.53377,
+          "ppp": 1.02961,
+          "eligibleRate": 0.90178,
+          "assistCreditRate": 0.25386,
+          "turnoverRate": 0.09335,
+          "fgaPerPossession": 0.80184,
+          "astLeFgm": true,
+          "maxActionShare": 0.2463,
+          "actionEntropy": 2.09322,
+          "possessions": 46160,
+          "games": 400,
+          "meanCombinedScore": 229.9275,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "era": "2000s",
+          "assistedRate": 0.55756,
+          "ppp": 1.01539,
+          "eligibleRate": 0.90135,
+          "assistCreditRate": 0.24768,
+          "turnoverRate": 0.09529,
+          "fgaPerPossession": 0.79729,
+          "astLeFgm": true,
+          "maxActionShare": 0.24723,
+          "actionEntropy": 2.09032,
+          "possessions": 42563,
+          "games": 400,
+          "meanCombinedScore": 208.8025,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "era": "2010s",
+          "assistedRate": 0.56415,
+          "ppp": 1.02239,
+          "eligibleRate": 0.91092,
+          "assistCreditRate": 0.2481,
+          "turnoverRate": 0.09203,
+          "fgaPerPossession": 0.8186,
+          "astLeFgm": true,
+          "maxActionShare": 0.24236,
+          "actionEntropy": 2.10618,
+          "possessions": 44747,
+          "games": 400,
+          "meanCombinedScore": 218.2375,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        },
+        {
+          "era": "2020s",
+          "assistedRate": 0.57195,
+          "ppp": 1.06379,
+          "eligibleRate": 0.91366,
+          "assistCreditRate": 0.25278,
+          "turnoverRate": 0.09164,
+          "fgaPerPossession": 0.82813,
+          "astLeFgm": true,
+          "maxActionShare": 0.23798,
+          "actionEntropy": 2.10666,
+          "possessions": 46966,
+          "games": 400,
+          "meanCombinedScore": 238.21,
+          "structural": {
+            "invariantViolations": 0,
+            "finalTies": 0,
+            "negativeStats": 0,
+            "nonFiniteStats": 0,
+            "astGtFgm": 0
+          }
+        }
+      ]
+    },
+    "sideSymmetry": [
+      {
+        "era": "2010s",
+        "coach": "tom-thibodeau",
+        "games": 1600,
+        "decided": 1600,
+        "ties": 0,
+        "goldWinRate": 0.475,
+        "ci95": {
+          "lower": 0.45053,
+          "upper": 0.49947
+        },
+        "containsHalf": false
+      },
+      {
+        "era": "2010s",
+        "coach": "steve-kerr",
+        "games": 1600,
+        "decided": 1600,
+        "ties": 0,
+        "goldWinRate": 0.49125,
+        "ci95": {
+          "lower": 0.46675,
+          "upper": 0.51575
+        },
+        "containsHalf": true
+      },
+      {
+        "era": "2010s",
+        "coach": "neutral",
+        "games": 1600,
+        "decided": 1600,
+        "ties": 0,
+        "goldWinRate": 0.495,
+        "ci95": {
+          "lower": 0.4705,
+          "upper": 0.5195
+        },
+        "containsHalf": true
+      },
+      {
+        "era": "1960s",
+        "coach": "red-auerbach",
+        "games": 1600,
+        "decided": 1600,
+        "ties": 0,
+        "goldWinRate": 0.48688,
+        "ci95": {
+          "lower": 0.46238,
+          "upper": 0.51137
+        },
+        "containsHalf": true
+      },
+      {
+        "era": "2020s",
+        "coach": "doc-rivers",
+        "games": 1600,
+        "decided": 1600,
+        "ties": 0,
+        "goldWinRate": 0.50813,
+        "ci95": {
+          "lower": 0.48363,
+          "upper": 0.53262
+        },
+        "containsHalf": true
+      }
+    ],
+    "competition": {
+      "seriesCount": 200,
+      "seriesGames": 1102,
+      "seriesInvariants": 0,
+      "meanSeriesLength": 5.51,
+      "seasonCount": 50,
+      "seasonGames": 4100,
+      "seasonInvariants": 0,
+      "meanSeasonWins": 42.4,
+      "minSeasonWins": 29,
+      "maxSeasonWins": 53
+    },
+    "performance": {
+      "candidate1": {
+        "seconds": 101.42491,
+        "totalGames": 37202,
+        "gamesPerSecond": 366.79351
+      },
+      "candidate2": {
+        "seconds": 102.06003,
+        "totalGames": 37202,
+        "gamesPerSecond": 364.51097
+      }
+    },
+    "pass": true,
+    "comparisonHash": "f47924fce577f747b59dc43c829d1927c4e9fb0315e9b528ee797e3a10db67e9"
+  },
+  "outputHash": "a4894e9428e618617449797b1b3c7cd8e45e9af67726672ad7d1e81e11f41938"
+}

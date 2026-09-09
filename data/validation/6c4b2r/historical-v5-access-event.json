@@ -1,0 +1,55 @@
+{
+  "artifact": "historical-v5-access-event",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run exec:record-v5",
+  "generatedAt": "2026-08-27T13:44:34.519Z",
+  "gitCommit": "6ea84e3e9a25950835b62a118c9f53088a514b46",
+  "branch": "phase-6c4b2r-candidate1-formal-execution",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "set": "historical-holdout-v5",
+    "accessEventCount": 1,
+    "accessCountBefore": 0,
+    "accessCountAfter": 1,
+    "accessCountNow": 1,
+    "event": {
+      "seq": 1,
+      "set": "historical-holdout-v5",
+      "actor": "joseph.johnson@indagare.com",
+      "reason": "Phase 6C4B2R stage one: formal one-time revalidation of locked Candidate 1 against Historical Holdout V5 under frozen compound package v2, authorization 30174f6a0d37ae57",
+      "parameterVersion": null,
+      "commit": null,
+      "argv": [
+        "--unlock-holdout",
+        "--unlock-historical-holdout-v5"
+      ],
+      "openedAtCommit": "6ea84e3e9a25950835b62a118c9f53088a514b46"
+    },
+    "accessLogPath": "data/calibration/historical-holdout-v5-access-log.jsonl",
+    "accessLogSha256": "1acf5941465930a143ac4bc566ee084353159aad438804211ec221825addace7",
+    "accessLogRecords": [
+      {
+        "seq": 1,
+        "set": "historical-holdout-v5",
+        "actor": "joseph.johnson@indagare.com",
+        "reason": "Phase 6C4B2R stage one: formal one-time revalidation of locked Candidate 1 against Historical Holdout V5 under frozen compound package v2, authorization 30174f6a0d37ae57",
+        "parameterVersion": null,
+        "commit": null,
+        "argv": [
+          "--unlock-holdout",
+          "--unlock-historical-holdout-v5"
+        ]
+      }
+    ],
+    "openedAtCommit": "6ea84e3e9a25950835b62a118c9f53088a514b46",
+    "operator": "joseph.johnson@indagare.com",
+    "authorizationHash": "30174f6a0d37ae57599ba80b6b3d08bf970e04a6523a8a81c826ea2b50fd7446",
+    "irreversible": "this event is not deleted or reset. The set has been seen; a crash would not have restored unread status.",
+    "consumedBy": "Phase 6C4B2R stage one"
+  },
+  "outputHash": "0b4ae017d92f33eed3d3299977c475024137791f81b086dd0cf6ae51aab788b6"
+}

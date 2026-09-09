@@ -1,0 +1,177 @@
+{
+  "artifact": "phase-6c3-validation-package",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run calibration:c6:package",
+  "generatedAt": "2026-08-26T18:05:56.706Z",
+  "gitCommit": "2c9a72ca4c18b3cff761b0b4b1d0ff685de0db08",
+  "branch": "phase-6c2c6-probability-side-bias-lock",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {
+    "data/calibration/c6/baseline-candidate-lock.json": "94e695648196b9efd3e7a6bbe24a559ec8e22c884852e75029fdbd5e0011a954",
+    "data/calibration/c6/probability-side-bias-validation-v2.json": "7ff3fcfb438b58e9464a2aad7561d188ece0f8472d8a036db6d0eeb9bdff518a"
+  },
+  "data": {
+    "phase6C3ValidationPackageVersion": "1.0.0",
+    "state": "PREPARED_NOT_RUN",
+    "lockedCandidate": {
+      "candidateId": "Candidate 0",
+      "calibrationStatus": "DEVELOPMENT_LOCKED_BASELINE",
+      "possessionCalibrationVersion": "1.0.0",
+      "parameterChanges": 0,
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "registryDefaultsHash": "210409189ebc1ff894bb90b8f0adb6ef2d06d6caac9fdcbe93e61d3521ed5940",
+      "lockManifestHash": "4e0c814f0c5ddd32f6f5db9281908203a650e739ce95448ca27dc2ad858bc751",
+      "creationCommit": null
+    },
+    "preconditions": [
+      {
+        "name": "A candidate is locked and immutable",
+        "met": true,
+        "detail": "Candidate 0, DEVELOPMENT_LOCKED_BASELINE, manifestHash 4e0c814f0c5ddd32f6f5db9281908203a650e739ce95448ca27dc2ad858bc751"
+      },
+      {
+        "name": "All candidate-lock engineering gates pass",
+        "met": true,
+        "detail": "35/35"
+      },
+      {
+        "name": "Monte Carlo probability suite passes",
+        "met": true,
+        "detail": "All 8 gates pass. The per-cell side-bias gate that failed in Phase 6C2C5 was replaced by side-bias policy v2 and PASSES: 44 of 44 cells equivalent over 722,944 games."
+      },
+      {
+        "name": "Corrected probability side-bias gate passes",
+        "met": true,
+        "detail": "pooled delta -0.00185, CI [-0.00469, 0.001]"
+      },
+      {
+        "name": "An authorized independent second source exists",
+        "met": false,
+        "detail": "NOT MET. No source reaches 'permitted' without purchase; only SportsDataIO does, and it is unpurchased. Owner-managed and outside engineering."
+      },
+      {
+        "name": "Tier B target coverage is adequate",
+        "met": false,
+        "detail": "NOT MET. 2 of 384 fields: 288 licence-blocked, 82 permanently unrecordable before 1973-74. Owner-managed."
+      },
+      {
+        "name": "src/v3/data/eras.js no longer cites the excluded publisher",
+        "met": false,
+        "detail": "NOT MET. That file is read by the live production engine and is why 9 parameters remain DEFAULT_FROZEN_PENDING_EXTERNAL_DATA."
+      }
+    ],
+    "preconditionsMet": 4,
+    "preconditionsUnmet": 3,
+    "unmetPreconditions": [
+      "An authorized independent second source exists",
+      "Tier B target coverage is adequate",
+      "src/v3/data/eras.js no longer cites the excluded publisher"
+    ],
+    "readyToRun": false,
+    "readinessNote": "3 of 7 preconditions are unmet, and all 3 are external-data or licensing matters that engineering cannot resolve. A holdout can be opened ONCE. Opening it against a model whose historical targets are 2 of 384 covered would consume the holdout while being unable to attribute a failure between the parameter set and the missing targets.",
+    "holdouts": {
+      "historicalHoldoutV3": {
+        "members": 8,
+        "manifestHash": "9e799c4bfc84eedf09c8f46b5a983dff0882e908404e6326cc1e8c874d6335fc",
+        "state": "SEALED_UNREAD",
+        "comparisonAccessCount": 0,
+        "rationale": "One fixture per Era Style, declared before any tuning. Stratified on franchise, offensive identity, defensive identity, coach system and pace environment. Includes deliberately unusual but source-valid teams: a 1977 offence run through a passing centre, a 1994 team at the slowest pace in the corpus, and a 2023 team with no true centre."
+      },
+      "syntheticStressHoldoutV2": {
+        "members": 16,
+        "manifestHash": "71267875cbf69a9ffa2bd420a2f4bb87437ecb78d6ca2029e7b6826759dbcd19",
+        "state": "SEALED_UNREAD",
+        "comparisonAccessCount": 0
+      }
+    },
+    "policyHashes": {
+      "sideBiasPolicyVersion": "2.0.0",
+      "sideBiasPolicyHash": "51005eccf853e9a609f8e7e2b1b026c89d90794e153c2adee95841fa6f3384a1",
+      "sideBiasSeedSetVersion": "2.0.0",
+      "sideBiasSeedSetHash": "648b82b5826ed4132c203fb181d87149cf5f2ed5eaf8f61dd1f67a52ed6c7346",
+      "holdoutAcceptancePolicyVersion": "1.0.0",
+      "candidateSearchPolicyHash": "18ced230c601c725035791a699524b887bd6690d9a48c7e8721bf61d27e2e51a"
+    },
+    "seedVersions": {
+      "predictionSeedSetVersion": "1.0.0",
+      "probabilityValidationSeedSetVersion": "1.0.0",
+      "probabilitySideBiasSeedSetVersion": "2.0.0",
+      "internalCalibrationFoldVersion": "3.0.0"
+    },
+    "historicalTargetVersions": {
+      "historicalCorpusVersion": "3.0.0",
+      "historicalTargetSchemaVersion": "1.0.0",
+      "historicalTargetDataVersion": "3.0.0",
+      "tierBTargetDataVersion": "1.0.0"
+    },
+    "commandsPrepared": [
+      {
+        "command": "npm run validation:historical-holdout -- --unlock-holdout",
+        "opensHoldout": true,
+        "executed": 0
+      },
+      {
+        "command": "npm run validation:synthetic-holdout -- --unlock-holdout",
+        "opensHoldout": true,
+        "executed": 0
+      },
+      {
+        "command": "npm run validation:engine-comparison",
+        "opensHoldout": false,
+        "executed": 0
+      },
+      {
+        "command": "npm run validation:private-preview",
+        "opensHoldout": false,
+        "executed": 0
+      }
+    ],
+    "holdoutCommandsExecuted": 0,
+    "replayCommands": [
+      "npm run calibration:c6:regression",
+      "npm run calibration:c6:sidebias",
+      "npm run calibration:c6:lock -- --dry",
+      "node scripts/calibration/side-symmetry.mjs --label=c6-baseline-lock",
+      "node scripts/calibration/probability-v3.mjs"
+    ],
+    "expectedRuntime": {
+      "sideBiasFullFamily": "about 8 minutes across 8 workers, 722,944 games",
+      "sideSymmetry": "about 6 minutes, 240,000 paired games",
+      "probabilityReliability": "about 2 minutes, 30 cells",
+      "internalRegression": "about 30 seconds, 5,875 games"
+    },
+    "executionOrder": [
+      "Re-verify every hash in baseline-candidate-lock.json. Any mismatch voids the package before anything is opened.",
+      "Resolve the external-data preconditions. Owner-managed; engineering cannot.",
+      "Open historical holdout v3 EXACTLY ONCE. Record the access, timestamp, parameter set hash and result before any interpretation.",
+      "Open synthetic stress holdout v2 EXACTLY ONCE.",
+      "Report the holdout result without adjustment.",
+      "Private preview only if the holdout passes.",
+      "Production activation only on explicit CEO GO LIVE. Inferred approval and self-approval are forbidden."
+    ],
+    "failureBehaviour": {
+      "holdoutFails": "Record HOLDOUT_FAILED. Do not re-run, re-score or re-scope. Produce a replacement-holdout recommendation. possessionCalibrationVersion stays 1.0.0 with a HOLDOUT_FAILED status; the parameter set does not change in response to a holdout result.",
+      "thresholdsFrozen": "Every threshold must be frozen before the holdout is opened. This phase is the argument: the Phase 6C2C5 side-bias gate failed on a threshold whose scale and uncertainty had never been verified, and a correctly specified gate then passed on the same engine. A threshold chosen after seeing holdout data is worth nothing.",
+      "accidentalAccess": "Stop. Record the exact access and what was observed. Do not conceal it. Do not claim the holdout remains valid. Produce a replacement-holdout recommendation.",
+      "noParameterChangeAfterOpening": "A parameter change after the holdout is opened invalidates the holdout permanently."
+    },
+    "privatePreviewPrerequisites": [
+      "Historical holdout v3 passed.",
+      "Synthetic stress holdout v2 passed.",
+      "A rollback path verified against production engine 3.2.0.",
+      "All development flags still defaulting to false for anyone outside the preview.",
+      "Explicit owner authorisation. Preparing a preview is not deploying one."
+    ],
+    "notClaimed": [
+      "The holdouts have NOT been opened.",
+      "No private preview has been deployed.",
+      "Nothing here authorises production.",
+      "This package does not make the locked candidate historically validated."
+    ],
+    "packageHash": "47822e44a870de4f8d4f0d8b21de8732eafd2edf6f52f546e3d525fa293e4b7d"
+  },
+  "outputHash": "60f8a5e2c28f027332c4e940e7204407d7f171595a9bc1a5fe2242c45f66a201"
+}

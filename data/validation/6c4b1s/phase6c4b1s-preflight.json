@@ -1,0 +1,151 @@
+{
+  "artifact": "phase6c4b1s-preflight",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run syn:preflight",
+  "generatedAt": "2026-08-27T12:05:20.015Z",
+  "gitCommit": "3231adc58fbfe6b71e4c13fac13acf396a447b91",
+  "branch": "phase-6c4b1s-synthetic-v2-package",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "candidate1Valid": true,
+    "candidate1CoreStable": true,
+    "candidate1ReplayValid": true,
+    "historicalV5StillSealed": true,
+    "historicalV5AccessCount": 0,
+    "syntheticV2StillSealed": true,
+    "syntheticV2AccessCount": 0,
+    "formalHoldoutCommandsExecuted": 0,
+    "syntheticPreparationMayBegin": true,
+    "branch": "phase-6c4b1s-synthetic-v2-package",
+    "gatesFailed": [],
+    "candidate": {
+      "candidateId": "Candidate 1",
+      "candidateCommit": "c370182bb805cd068427283ce2b45a7eda725d1c",
+      "lockRevision": 2,
+      "coreHash": "de57e1a96e1fd1450d1aea9c5463b0138a56d77bbf58c748ba042e6f78f5c94d",
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "possessionCalibrationVersion": "1.1.0",
+      "calibrationStatus": "DEVELOPMENT_LOCKED_SCOPED",
+      "formalValidationStatus": "NOT_RUN"
+    },
+    "historicalV5": {
+      "state": "SEALED_UNREAD",
+      "accessCount": 0,
+      "sealHash": "14b17792344cce81321f3cb2d944ada64cbe6a9a30bac5209962cdf94fb01ec2",
+      "packageValid": true,
+      "commandResolves": true
+    },
+    "syntheticV2Membership": {
+      "fixtureCount": 16,
+      "membershipHash": "71267875cbf69a9ffa2bd420a2f4bb87437ecb78d6ca2029e7b6826759dbcd19",
+      "manifestFileSha256": "e17dca60bebfd2170d41b9b64b918538bf941825a0e6125962a67a69c5cae2b6",
+      "setVersion": "2.0.0",
+      "frozenAt": "phase-6c2c1",
+      "fixtureIds": [
+        "ss2-all-bigs",
+        "ss2-all-guards",
+        "ss2-no-spacing-1960s",
+        "ss2-no-spacing-modern",
+        "ss2-mismatch-chain",
+        "ss2-zone-edge-legal",
+        "ss2-zone-edge-illegal",
+        "ss2-era-edge-old-in-modern",
+        "ss2-era-edge-modern-in-old",
+        "ss2-coach-toolkit-edge",
+        "ss2-usage-concentration",
+        "ss2-statistical-tails",
+        "ss2-series-variance",
+        "ss2-win82-variance",
+        "ss2-duplicate-role",
+        "ss2-extreme-strength-gap"
+      ],
+      "purposes": {
+        "ss2-all-bigs": "EXPLOIT_ROLE_OVERLAP",
+        "ss2-all-guards": "EXPLOIT_ROLE_OVERLAP",
+        "ss2-no-spacing-1960s": "IMPOSSIBLE_SPACING",
+        "ss2-no-spacing-modern": "IMPOSSIBLE_SPACING",
+        "ss2-mismatch-chain": "DEFENSIVE_MISMATCH_CHAIN",
+        "ss2-zone-edge-legal": "ZONE_EDGE_CASE",
+        "ss2-zone-edge-illegal": "ZONE_EDGE_CASE",
+        "ss2-era-edge-old-in-modern": "ERA_EDGE_CASE",
+        "ss2-era-edge-modern-in-old": "ERA_EDGE_CASE",
+        "ss2-coach-toolkit-edge": "COACH_TOOLKIT_EDGE",
+        "ss2-usage-concentration": "USAGE_CONCENTRATION",
+        "ss2-statistical-tails": "STATISTICAL_TAILS",
+        "ss2-series-variance": "SERIES_VARIANCE",
+        "ss2-win82-variance": "WIN82_VARIANCE",
+        "ss2-duplicate-role": "DUPLICATE_ROLE_OVERLOAD",
+        "ss2-extreme-strength-gap": "EXTREME_STRENGTH_GAP"
+      },
+      "accessCount": 0,
+      "state": "SEALED_UNREAD",
+      "changedByThisPhase": false
+    },
+    "frozenGuardrailSource": {
+      "location": "HOLDOUT.syntheticGuardrails in src/v3/calibration/acceptancePolicy.js",
+      "acceptancePolicyHash": "a3583d6ada42d61ff9ee40322d999154250613ba94a2cd6f073e2196315919b0",
+      "keyCount": 11,
+      "keys": [
+        "requireZeroInvariantFailures",
+        "requireZeroImpossibleResults",
+        "forbidUniversalActionDominance",
+        "forbidUniversalShellDominance",
+        "maxSingleActionFamilyShare",
+        "maxSingleShellWinRate",
+        "minSingleShellWinRate",
+        "requireSameSeedReplay",
+        "requireNewSeedVariance",
+        "requireConstructionCanBeatHigherOvr",
+        "requireExtremeTalentRemainsMeaningful"
+      ]
+    },
+    "missingComponentsFromBlocker": [
+      "seedSet",
+      "aggregationRule",
+      "runner",
+      "preparedCommandResolvable",
+      "dryRun",
+      "packageBinding"
+    ],
+    "blockerArtifactHash": "97c2843a31d80011d667a03205d0ee1462e92a920a95481670bed17e818be32a",
+    "priorHoldouts": {
+      "historicalHoldoutV3": 1,
+      "historicalHoldoutV4": 1
+    },
+    "allSeals": {
+      "legacy-holdout-v1": {
+        "status": "SEALED_UNREAD",
+        "accessCount": 0
+      },
+      "historical-holdout-v2": {
+        "status": "SEALED_UNREAD",
+        "accessCount": 0
+      },
+      "synthetic-stress-v1": {
+        "status": "PREVIOUSLY_INSPECTED_ARCHIVE",
+        "accessCount": 0
+      },
+      "historical-holdout-v3": {
+        "status": "UNSEALED",
+        "accessCount": 1
+      },
+      "synthetic-stress-holdout-v2": {
+        "status": "SEALED_UNREAD",
+        "accessCount": 0
+      },
+      "historical-holdout-v4": {
+        "status": "UNSEALED",
+        "accessCount": 1
+      },
+      "historical-holdout-v5": {
+        "status": "SEALED_UNREAD",
+        "accessCount": 0
+      }
+    }
+  },
+  "outputHash": "0ab47ecaae8a2a987693e9f28791faddf2e93eea13ba27d656f96112dcd065fd"
+}

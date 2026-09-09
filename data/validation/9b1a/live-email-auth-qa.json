@@ -1,0 +1,20 @@
+{
+  "artifact": "live-email-auth-qa",
+  "phase": "9B.1A — Supabase preview activation and live account certification",
+  "finding": "A real account exists in the live project, created at 2026-09-04T20:14:19Z through the email provider, with email_confirmed_at set and its profile created by the sign-up trigger. But last_sign_in_at is null and it has no saved clashes: the address was verified and NO SESSION was ever established. That is precisely the owner's report that sign-in 'didn't work exactly as it should'.",
+  "diagnosis": "PKCE keeps its code verifier in the storage of the browser that requested the link. Opening the emailed link anywhere else — another browser, a phone, a private window — verifies the address but cannot complete the exchange, so an account exists while a session does not. A second, independent hazard: a one-time code issued to a brand-new address is a `signup` token while one issued to an existing account is an `email` token, and the dialog cannot know which it will get.",
+  "fixes": [
+    "verifyEmailCode now tries both the email and signup token types instead of guessing one, so a code works whether or not the address already existed",
+    "exchangeCodeForSession distinguishes a missing code verifier and raises LINK_OPENED_ELSEWHERE rather than a generic invalid-link error",
+    "the callback explains that the link only works in the browser that asked for it, and that a code works anywhere",
+    "the dialog now leads with the code and states that the link is browser-bound"
+  ],
+  "liveVerified": {
+    "accountCreation": true,
+    "emailConfirmation": true,
+    "profileTrigger": true,
+    "sessionEstablished": false
+  },
+  "stillPending": "One end-to-end sign-in through the corrected flow. The fix is deployed on this branch's preview; it needs one attempt with the code rather than the link.",
+  "ownerAccountTouched": false
+}

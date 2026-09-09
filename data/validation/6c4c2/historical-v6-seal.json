@@ -1,0 +1,341 @@
+{
+  "artifact": "historical-v6-seal",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run v6:seal",
+  "generatedAt": "2026-08-27T20:16:27.595Z",
+  "gitCommit": "f2e7bcf93477e77648c9004d60d6088af1eb2a6f",
+  "branch": "phase-6c4c2-v6-freeze-and-seal",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "historicalV6SealVersion": "1.0.0",
+    "set": "historical-holdout-v6",
+    "state": "SEALED_UNREAD",
+    "accessCount": 0,
+    "accessLog": "data/calibration/historical-holdout-v6-access-log.jsonl",
+    "accessLogExists": false,
+    "sealedAtCommit": "f2e7bcf93477e77648c9004d60d6088af1eb2a6f",
+    "registrationIsTheSeal": "the set is sealed by being registered in SEALED_SETS with an empty access log. There is no separate lock to forget to apply.",
+    "candidate": {
+      "candidateId": "Candidate 2",
+      "coreHash": "3733b648f050a4f50f9dc3cb6ecf62fce419dd282f24c910b91e7b077d63711d",
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "possessionCalibrationVersion": "1.2.0",
+      "lockStatus": "LOCKED"
+    },
+    "boundHashes": {
+      "eligibilityPolicyHash": "5a9f5a931b51ab4af68eb614fb3aec1a7ceae11a18064c2f315f734355d8411c",
+      "poolHash": "8bc1046bf1cc4093a2dd06c58b09e798eb921fe093486e9446399c371c7f0402",
+      "selectionPolicyHash": "727e048eda74597138932b974c41a752bc7042c6e59144b5febfb0c034122d07",
+      "selectionHash": "7dc4802db43ed50475d8a3b3fd2ec6aaf4b9531ee35166165c529156d3c9c9be",
+      "manifestHash": "5a728d98f644d4ae8f7b2d406615fa9125bf7aca77269f536f2a078b92e83d02",
+      "targetsHash": "5d004698caa676407a279142517dc939503b7044ee2a46fbffc0edcefc2cd3f6",
+      "traitPolicyHash": "8da01e96ee6f68c7585c1ddcc8e901eb7ba6d922a1137a74ba9161851534599e",
+      "practicalMarginPolicyHash": "099d513ab855520c68f1c55991a156f9c56b3a6df123f06a708529f27b6413ae",
+      "samplePlanHash": "1ed77e62b545c9d72117355ec290a760b748225fee8df55bd71913a628bd3672",
+      "verdictPolicyHash": "d433cddcd3af4294dc8468481b8b85702a7768e16878a1003c6567ddb22c5ae4",
+      "observabilityCertificationHash": "5e9a4070f4f9a747992561c19586b491971b2479f2161a5cef5bb5b8474c9349",
+      "eraReferenceCertificationHash": "4713a12f2d2e1447f1f21b03ef3a7219e69136e6eec160cebe0ed5df3486b37f",
+      "seedHash": "7f0b3ce38d104865d1c8b692e1472835dc315fc84be68862c2e50c3c407b8a09",
+      "traitRegistryHash": "c034937be7e40bd18932fe53151e0b8a877dc47095004653e1bb11aa5c73a0cf",
+      "dryRunHash": "117f1b5e2b1b4b2d48e9ea0ca2a83295f399921822e90e02dfeb848edb1cdd4a"
+    },
+    "authorizedRunner": {
+      "command": "npm run validation:historical-v6 -- --run",
+      "requiredFlags": [
+        "--unlock-holdout",
+        "--unlock-historical-holdout-v6",
+        "--operator=<email>",
+        "--reason=<why>"
+      ],
+      "modesThatDoNotOpenTheSeal": [
+        "--help",
+        "--preflight",
+        "--dry-run"
+      ],
+      "unknownFlagsRefused": true,
+      "onePassOnly": "the runner refuses a second independent run and resumes only under the same access event"
+    },
+    "scope": {
+      "matchups": 8,
+      "teams": 16,
+      "players": 80,
+      "coaches": 15,
+      "scoredTraits": 46,
+      "excludedTraits": 36,
+      "scoredMetrics": [
+        "assistedRate",
+        "gamePace",
+        "movementShare",
+        "orebRate",
+        "orebRateAgainst",
+        "postUpShare",
+        "refPppVsTeam",
+        "transitionShare"
+      ],
+      "decisionTierGames": 98304
+    },
+    "repairedMechanismCoverage": [
+      {
+        "metric": "assistedRate",
+        "repairedBy": "c2-01/c2-02 assisted-offense movement lift",
+        "v5Failure": "ASSISTED_OFFENSE_EXPRESSION cluster, v5m-2000s teamB",
+        "covered": true
+      },
+      {
+        "metric": "refPppVsTeam",
+        "repairedBy": "c2-03 defensive help suppression and scheme transfer",
+        "v5Failure": "DEFENSIVE_SUPPRESSION cluster, v5m-2020s teamA",
+        "covered": true
+      }
+    ],
+    "leakScan": {
+      "idsChecked": 40,
+      "filesScanned": 826,
+      "filesNamingAV6Id": 28,
+      "allowed": [
+        {
+          "file": "data/validation/6c4a/calibration-players-v5.json",
+          "ids": 5,
+          "why": "prior-set pool, player-store and selection artifacts. Five V6 sides were defined in the V5 candidate pool and never selected into V5, so the artifacts that define them name them — the carried-but-unplayed case. Verified to declare zero candidate outputs consulted and to carry no per-fixture measurement.",
+          "verified": true
+        },
+        {
+          "file": "data/validation/6c4a/historical-v5-candidate-pool.json",
+          "ids": 5,
+          "why": "prior-set pool, player-store and selection artifacts. Five V6 sides were defined in the V5 candidate pool and never selected into V5, so the artifacts that define them name them — the carried-but-unplayed case. Verified to declare zero candidate outputs consulted and to carry no per-fixture measurement.",
+          "verified": true
+        },
+        {
+          "file": "data/validation/6c4b1/historical-v5-candidate-pool-v2.json",
+          "ids": 5,
+          "why": "prior-set pool, player-store and selection artifacts. Five V6 sides were defined in the V5 candidate pool and never selected into V5, so the artifacts that define them name them — the carried-but-unplayed case. Verified to declare zero candidate outputs consulted and to carry no per-fixture measurement.",
+          "verified": true
+        },
+        {
+          "file": "data/validation/6c4b1/historical-v5-selection.json",
+          "ids": 5,
+          "why": "prior-set pool, player-store and selection artifacts. Five V6 sides were defined in the V5 candidate pool and never selected into V5, so the artifacts that define them name them — the carried-but-unplayed case. Verified to declare zero candidate outputs consulted and to carry no per-fixture measurement.",
+          "verified": true
+        },
+        {
+          "file": "data/validation/6c4b1/superseded/historical-v5-selection-v1.0.0-INVALIDATED.json",
+          "ids": 5,
+          "why": "preserved evidence of what was true when issued, including the TAINTED dry run that recorded the leak this gate caught. Deleting it to make the gate pass would destroy the record.",
+          "verified": false
+        },
+        {
+          "file": "data/validation/6c4c2/calibration-players-v6.json",
+          "ids": 11,
+          "why": "the player store defines the profiles the fixtures are built from.",
+          "verified": false
+        },
+        {
+          "file": "data/validation/6c4c2/historical-holdout-v6-manifest.json",
+          "ids": 40,
+          "why": "the manifest DEFINES the set. A definition is how an unconsumed holdout exists at all.",
+          "verified": false
+        },
+        {
+          "file": "data/validation/6c4c2/historical-v6-expanded-pool.json",
+          "ids": 32,
+          "why": "frozen policy and definition artifacts. They state what will be measured and against what; none contains a measurement.",
+          "verified": false
+        },
+        {
+          "file": "data/validation/6c4c2/historical-v6-pool-audit.json",
+          "ids": 16,
+          "why": "frozen policy and definition artifacts. They state what will be measured and against what; none contains a measurement.",
+          "verified": false
+        },
+        {
+          "file": "data/validation/6c4c2/historical-v6-selection.json",
+          "ids": 40,
+          "why": "frozen policy and definition artifacts. They state what will be measured and against what; none contains a measurement.",
+          "verified": false
+        },
+        {
+          "file": "data/validation/6c4c2/historical-v6-target-coverage.json",
+          "ids": 8,
+          "why": "frozen policy and definition artifacts. They state what will be measured and against what; none contains a measurement.",
+          "verified": false
+        },
+        {
+          "file": "data/validation/6c4c2/historical-v6-targets.json",
+          "ids": 40,
+          "why": "frozen policy and definition artifacts. They state what will be measured and against what; none contains a measurement.",
+          "verified": false
+        },
+        {
+          "file": "data/validation/6c4c2/historical-v6-trait-policy.json",
+          "ids": 16,
+          "why": "frozen policy and definition artifacts. They state what will be measured and against what; none contains a measurement.",
+          "verified": false
+        },
+        {
+          "file": "data/validation/6c4c2/superseded/historical-holdout-v6-manifest-v2.json",
+          "ids": 36,
+          "why": "preserved evidence of what was true when issued, including the TAINTED dry run that recorded the leak this gate caught. Deleting it to make the gate pass would destroy the record.",
+          "verified": false
+        },
+        {
+          "file": "data/validation/6c4c2/superseded/historical-v6-expanded-pool-v1.json",
+          "ids": 28,
+          "why": "preserved evidence of what was true when issued, including the TAINTED dry run that recorded the leak this gate caught. Deleting it to make the gate pass would destroy the record.",
+          "verified": false
+        },
+        {
+          "file": "data/validation/6c4c2/superseded/historical-v6-expanded-pool-v2.json",
+          "ids": 28,
+          "why": "preserved evidence of what was true when issued, including the TAINTED dry run that recorded the leak this gate caught. Deleting it to make the gate pass would destroy the record.",
+          "verified": false
+        },
+        {
+          "file": "data/validation/6c4c2/superseded/historical-v6-pool-audit-v1.json",
+          "ids": 14,
+          "why": "preserved evidence of what was true when issued, including the TAINTED dry run that recorded the leak this gate caught. Deleting it to make the gate pass would destroy the record.",
+          "verified": false
+        },
+        {
+          "file": "data/validation/6c4c2/superseded/historical-v6-pool-audit-v2.json",
+          "ids": 14,
+          "why": "preserved evidence of what was true when issued, including the TAINTED dry run that recorded the leak this gate caught. Deleting it to make the gate pass would destroy the record.",
+          "verified": false
+        },
+        {
+          "file": "data/validation/6c4c2/superseded/historical-v6-runner-dry-run-v1-TAINTED.json",
+          "ids": 1,
+          "why": "preserved evidence of what was true when issued, including the TAINTED dry run that recorded the leak this gate caught. Deleting it to make the gate pass would destroy the record.",
+          "verified": false
+        },
+        {
+          "file": "data/validation/6c4c2/superseded/historical-v6-runner-dry-run-v2.json",
+          "ids": 1,
+          "why": "preserved evidence of what was true when issued, including the TAINTED dry run that recorded the leak this gate caught. Deleting it to make the gate pass would destroy the record.",
+          "verified": false
+        },
+        {
+          "file": "data/validation/6c4c2/superseded/historical-v6-selection-v1.json",
+          "ids": 26,
+          "why": "preserved evidence of what was true when issued, including the TAINTED dry run that recorded the leak this gate caught. Deleting it to make the gate pass would destroy the record.",
+          "verified": false
+        },
+        {
+          "file": "data/validation/6c4c2/superseded/historical-v6-selection-v2.json",
+          "ids": 36,
+          "why": "preserved evidence of what was true when issued, including the TAINTED dry run that recorded the leak this gate caught. Deleting it to make the gate pass would destroy the record.",
+          "verified": false
+        },
+        {
+          "file": "data/validation/6c4c2/superseded/historical-v6-target-coverage-v1.json",
+          "ids": 8,
+          "why": "preserved evidence of what was true when issued, including the TAINTED dry run that recorded the leak this gate caught. Deleting it to make the gate pass would destroy the record.",
+          "verified": false
+        },
+        {
+          "file": "data/validation/6c4c2/superseded/historical-v6-target-coverage-v2.json",
+          "ids": 8,
+          "why": "preserved evidence of what was true when issued, including the TAINTED dry run that recorded the leak this gate caught. Deleting it to make the gate pass would destroy the record.",
+          "verified": false
+        },
+        {
+          "file": "data/validation/6c4c2/superseded/historical-v6-targets-v1.json",
+          "ids": 26,
+          "why": "preserved evidence of what was true when issued, including the TAINTED dry run that recorded the leak this gate caught. Deleting it to make the gate pass would destroy the record.",
+          "verified": false
+        },
+        {
+          "file": "data/validation/6c4c2/superseded/historical-v6-targets-v2.json",
+          "ids": 36,
+          "why": "preserved evidence of what was true when issued, including the TAINTED dry run that recorded the leak this gate caught. Deleting it to make the gate pass would destroy the record.",
+          "verified": false
+        },
+        {
+          "file": "data/validation/6c4c2/superseded/historical-v6-trait-policy-v2.json",
+          "ids": 14,
+          "why": "preserved evidence of what was true when issued, including the TAINTED dry run that recorded the leak this gate caught. Deleting it to make the gate pass would destroy the record.",
+          "verified": false
+        },
+        {
+          "file": "data/validation/6c4c2/v6-dry-run-taint.json",
+          "ids": 1,
+          "why": "the taint record must name the affected team-seasons to be useful. Both are excluded from the pool and appear in no selected matchup.",
+          "verified": false
+        }
+      ],
+      "leaks": [],
+      "verificationFailures": [],
+      "scannedTree": "WORKING_TREE",
+      "method": "every json and jsonl file under data/validation, data/calibration and .cache is searched, and every file naming a V6 identity must be on an allowlist with a stated reason. The first version searched only files matching an output-name pattern and exempted four by name — none of which matched the pattern, so the exemption was dead and the protection was a regex quietly failing to match.",
+      "whyWorkingTree": "the seal binds what is on disk and about to be committed. Scanning HEAD made the gate depend on commit ordering and it failed on an artifact already fixed on disk."
+    },
+    "previouslySimulatedTeamSeasonsExcluded": [
+      "bostonceltics|195051",
+      "minneapolislakers|195556"
+    ],
+    "integrity": {
+      "neverRead": true,
+      "whatThisProves": "Candidate 2 has never been simulated against any of these sixteen team-seasons, and the pool they were drawn from excluded every team-season and every 4-of-5 lineup any prior set has seen. A V6 result is therefore evidence about generalisation, not about fit.",
+      "whatWouldDestroyIt": "any simulation against a V6 team-season before the formal run, any change to a bound hash, or a second access event."
+    },
+    "allSealStatuses": {
+      "legacy-holdout-v1": {
+        "accessCount": 0,
+        "status": "SEALED_UNREAD",
+        "integrity": "Never read. Any Phase 6C2 tuning result can be honestly validated against it.",
+        "set": "legacy-holdout-v1",
+        "note": "LEGACY_MIXED_HOLDOUT — preserved unchanged, not reused for formal historical validation."
+      },
+      "historical-holdout-v2": {
+        "set": "historical-holdout-v2",
+        "accessCount": 0,
+        "status": "SEALED_UNREAD",
+        "integrity": "Never read. A Phase 6C3 validation against it is genuinely independent.",
+        "note": "INSUFFICIENT_SAMPLE_ARCHIVE — genuinely unread, but three fixtures cannot validate generalisation. Superseded by v3 and archived rather than consumed."
+      },
+      "synthetic-stress-v1": {
+        "set": "synthetic-stress-v1",
+        "accessCount": 0,
+        "status": "PREVIOUSLY_INSPECTED_ARCHIVE",
+        "integrity": "Never read. A Phase 6C3 validation against it is genuinely independent.",
+        "note": "Its counter reads 0 because the seal was created after the simulations. Not a holdout."
+      },
+      "historical-holdout-v3": {
+        "set": "historical-holdout-v3",
+        "accessCount": 1,
+        "status": "UNSEALED",
+        "integrity": "Read 1 time(s). Check the access log before treating a result as independent."
+      },
+      "synthetic-stress-holdout-v2": {
+        "set": "synthetic-stress-holdout-v2",
+        "accessCount": 0,
+        "status": "SEALED_UNREAD",
+        "integrity": "Never read. A Phase 6C3 validation against it is genuinely independent."
+      },
+      "historical-holdout-v4": {
+        "set": "historical-holdout-v4",
+        "accessCount": 1,
+        "status": "UNSEALED",
+        "integrity": "Read 1 time(s). Check the access log before treating a result as independent."
+      },
+      "historical-holdout-v5": {
+        "set": "historical-holdout-v5",
+        "accessCount": 1,
+        "status": "UNSEALED",
+        "integrity": "Read 1 time(s). Check the access log before treating a result as independent."
+      },
+      "historical-holdout-v6": {
+        "set": "historical-holdout-v6",
+        "accessCount": 0,
+        "status": "SEALED_UNREAD",
+        "integrity": "Never read. A Phase 6C3 validation against it is genuinely independent."
+      }
+    },
+    "pass": true,
+    "sealHash": "1f5d03dda500f1d7ac68f059f9b4d9ee313e7cc705dd619aa3b669f1e0e56ba7"
+  },
+  "outputHash": "c06ac7b1c1c7776b5648e583ad3719a620ef439754613250ec49c2ee1da60ea2"
+}

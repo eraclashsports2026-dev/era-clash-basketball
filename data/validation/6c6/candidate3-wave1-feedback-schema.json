@@ -1,0 +1,58 @@
+{
+  "artifact": "candidate3-wave1-feedback-schema",
+  "generatedBy": "phase 6C6 WS5/WS6/WS7",
+  "data": {
+    "feedbackSchemaVersion": 2,
+    "waveId": "candidate3-wave1",
+    "serverAuthoritative": [
+      "testerId",
+      "sid",
+      "candidateId",
+      "calibrationVersion",
+      "revision",
+      "createdAt",
+      "updatedAt",
+      "waveId"
+    ],
+    "clientFields": {
+      "resultId": "pv_ id, must exist in preview-result",
+      "scenarioId": "w1-s1..w1-s8 or FREE_FORM",
+      "gameMode": "string<=16",
+      "ratings1to5": [
+        "resultBelievability",
+        "teamIdentityFeltAccurate",
+        "coachDifferenceFeltMeaningful",
+        "eraStyleFeltMeaningful",
+        "postgameExplanationHelpful"
+      ],
+      "wouldRematchOrShare": "boolean",
+      "issueCategory": "closed 12-value set",
+      "optionalComment": "<=500 chars, cleaned"
+    },
+    "issueCategories": [
+      "NONE",
+      "CRASH_OR_ERROR",
+      "IMPOSSIBLE_RESULT",
+      "BASKETBALL_CREDIBILITY",
+      "TEAM_IDENTITY",
+      "COACH_IDENTITY",
+      "ERA_STYLE",
+      "POSTGAME_EXPLANATION",
+      "UI_FRICTION",
+      "MOBILE",
+      "PERFORMANCE",
+      "OTHER"
+    ],
+    "dedup": "one primary record per tester/result (preview-feedback:primary:<resultId>:<testerId>); resubmission replaces it with revision+1 and appends to the log",
+    "neverStored": [
+      "raw access key",
+      "cookie",
+      "authorization header",
+      "password",
+      "api key",
+      "private account object",
+      "IP beyond transient rate-limit keys",
+      "email"
+    ]
+  }
+}

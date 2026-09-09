@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 300" preserveAspectRatio="xMidYMin slice" role="presentation">
+  <!-- Chest-up player figure, used as a CSS MASK so one card token tints it Gold
+       or Blue. Athletic proportions — narrow head, wide shoulders, trapezius
+       slope — with a jersey neckline and armholes cut out of the shape, so it
+       reads as a uniform rather than a bust. Geometry only: nothing here
+       resembles any actual person, and an approved portrait replaces it by
+       swapping the image inside the same zone. -->
+  <defs>
+    <mask id="cutouts">
+      <rect width="200" height="300" fill="#fff"/>
+      <!-- jersey neckline -->
+      <path d="M100 158 l-30 -20 a34 34 0 0 0 60 0 Z" fill="#000"/>
+      <!-- armholes -->
+      <path d="M40 300 V214 a26 30 0 0 1 16 -26 l6 60 V300 Z" fill="#000"/>
+      <path d="M160 300 V214 a26 30 0 0 0 -16 -26 l-6 60 V300 Z" fill="#000"/>
+    </mask>
+  </defs>
+
+  <g mask="url(#cutouts)" fill="#000">
+    <!-- shoulders, deltoids and torso -->
+    <path d="M100 126
+             c26 0 47 8 62 24
+             c12 13 20 30 25 52
+             c5 22 7 46 7 98
+             H6
+             c0 -52 2 -76 7 -98
+             c5 -22 13 -39 25 -52
+             c15 -16 36 -24 62 -24 Z"/>
+    <!-- neck and traps -->
+    <path d="M84 100 h32 v26 c0 10 -32 10 -32 0 Z"/>
+    <path d="M62 150 c10 -18 22 -26 38 -26 s28 8 38 26 c-14 -8 -24 -12 -38 -12 s-24 4 -38 12 Z"/>
+    <!-- head -->
+    <ellipse cx="100" cy="66" rx="31" ry="38"/>
+    <ellipse cx="68" cy="68" rx="5" ry="9"/>
+    <ellipse cx="132" cy="68" rx="5" ry="9"/>
+  </g>
+</svg>

@@ -1,0 +1,50 @@
+{
+  "artifact": "account-provider-contract",
+  "phase": "9B.1 — real accounts, cloud career, My EraClash",
+  "status": "FROZEN",
+  "decision": "SUPABASE_AUTH_POSTGRES_RLS",
+  "reason": "The repository contained no authentication provider before this phase: no auth dependency, no migrations directory, and a 'free account' that was a localStorage flag. One decision was made from that repository truth and executed.",
+  "methods": {
+    "google": "OAuth via the provider, PKCE, prompt=select_account",
+    "email": "one-time code (OTP) or magic link, no password anywhere in the product"
+  },
+  "session": {
+    "flow": "pkce",
+    "persisted": true,
+    "autoRefresh": true,
+    "detectSessionInUrl": false,
+    "callbackRoute": "/auth/callback"
+  },
+  "redirectSafety": "every post-sign-in destination passes safeReturnPath(): same-origin paths only, /auth/* and /api/* refused",
+  "flag": {
+    "server": "CLOUD_ACCOUNTS_ENABLED",
+    "client": "VITE_CLOUD_ACCOUNTS_ENABLED",
+    "rule": "accounts run only when the flag is true AND the provider is genuinely configured; otherwise guest play is untouched and nothing fake succeeds"
+  },
+  "environment": {
+    "browserVisible": [
+      "VITE_SUPABASE_URL",
+      "VITE_SUPABASE_ANON_KEY",
+      "VITE_CLOUD_ACCOUNTS_ENABLED"
+    ],
+    "serverOnly": [
+      "SUPABASE_URL",
+      "SUPABASE_ANON_KEY",
+      "SUPABASE_SERVICE_ROLE_KEY",
+      "CLOUD_ACCOUNTS_ENABLED"
+    ],
+    "neverInABundle": [
+      "SUPABASE_SERVICE_ROLE_KEY"
+    ]
+  },
+  "functionBudget": {
+    "apiRoutes": 12,
+    "middleware": 1,
+    "budget": 13,
+    "increase": 0,
+    "how": "the authoritative save reuses api/profile.js; the browser reads its own rows directly under RLS"
+  },
+  "codeSplitting": "the SDK is dynamically imported, so a build with accounts off never downloads it",
+  "contentSecurityPolicy": "connect-src adds only https://*.supabase.co and https://*.supabase.in; script-src stays 'self'",
+  "setupDocument": "docs/accounts/eraclash-account-provider-setup.md"
+}

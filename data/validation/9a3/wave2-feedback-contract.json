@@ -1,0 +1,136 @@
+{
+  "artifact": "wave2-feedback-contract",
+  "phase": "9A.3 — Wave 2 private-beta preparation",
+  "status": "FROZEN",
+  "frozenAt": "2026-09-03T21:04:51.079Z",
+  "schemaVersion": 3,
+  "route": "POST /api/feedback with kind: \"wave2\" (existing route; no new function)",
+  "serverAuthoritative": [
+    "waveId",
+    "studyVersion",
+    "testerId",
+    "cohort",
+    "sessionId",
+    "candidateId",
+    "calibrationVersion",
+    "candidateCoreHash",
+    "themeVersion",
+    "buildStamp",
+    "submittedAt",
+    "revision"
+  ],
+  "clientIdentityFieldsIgnored": true,
+  "clientFields": {
+    "taskId": [
+      "N1",
+      "N2",
+      "N3",
+      "N4",
+      "N5",
+      "R1",
+      "R2",
+      "R3",
+      "FREE"
+    ],
+    "resultId": "pv_<id> — required for tasks with needsResult, must exist in preview-result:*",
+    "mode": "≤ 16 chars",
+    "ratings": {
+      "startingClarity": "It was clear how to start",
+      "modeChoiceClarity": "It was clear which mode to choose",
+      "draftClarity": "The draft (rolls and holds) was clear",
+      "eraClarity": "The era reveal made sense",
+      "coachChoiceClarity": "Choosing a coach made sense",
+      "visualComfort": "The screens were comfortable to look at",
+      "visualPremiumQuality": "It looked premium",
+      "brandDistinctiveness": "It felt distinctly like EraClash",
+      "resultClarity": "The result was clear",
+      "desireToPlayAgain": "I wanted to play again",
+      "placementClarity": "Placing a player in a position was clear"
+    },
+    "ratingsShownPerTask": {
+      "N1": [
+        "startingClarity",
+        "modeChoiceClarity",
+        "visualComfort",
+        "visualPremiumQuality",
+        "brandDistinctiveness"
+      ],
+      "N2": [
+        "draftClarity",
+        "eraClarity",
+        "coachChoiceClarity",
+        "resultClarity",
+        "visualComfort"
+      ],
+      "N3": [
+        "resultClarity",
+        "visualComfort",
+        "visualPremiumQuality"
+      ],
+      "N4": [
+        "desireToPlayAgain",
+        "brandDistinctiveness"
+      ],
+      "N5": [
+        "startingClarity",
+        "draftClarity",
+        "resultClarity",
+        "visualComfort"
+      ],
+      "R1": [
+        "startingClarity",
+        "modeChoiceClarity",
+        "desireToPlayAgain"
+      ],
+      "R2": [
+        "placementClarity"
+      ],
+      "R3": [
+        "visualComfort",
+        "visualPremiumQuality",
+        "brandDistinctiveness",
+        "resultClarity"
+      ],
+      "FREE": [
+        "visualComfort",
+        "desireToPlayAgain"
+      ]
+    },
+    "issueCategory": [
+      "NONE",
+      "ACCESS",
+      "LOBBY_CONFUSION",
+      "MODE_CONFUSION",
+      "ROLL_CONFUSION",
+      "HOLD_CONFUSION",
+      "ERA_CONFUSION",
+      "COACH_CONFUSION",
+      "PLACEMENT_CONFUSION",
+      "RESULT_CONFUSION",
+      "VISUAL_READABILITY",
+      "MOBILE_LAYOUT",
+      "PERFORMANCE",
+      "UNBELIEVABLE_RESULT",
+      "OTHER"
+    ],
+    "optionalComment": "≤ 500 chars, cleaned, no HTML execution",
+    "clientBuildStamp": "recorded as reported, separate from the server's buildStamp"
+  },
+  "storage": {
+    "primary": "wave2-feedback:primary:<testerId>:<taskId>[:<resultId>] — one primary per tester/task, resubmission REPLACES it and increments revision",
+    "log": "wave2-feedback:log (LPUSH, capped 9999)",
+    "categories": "wave2-feedback:categories",
+    "counters": "wave2-metrics:counters"
+  },
+  "neverStored": [
+    "email",
+    "real name",
+    "raw key",
+    "cookie",
+    "authorization header",
+    "full IP",
+    "device fingerprint",
+    "unbounded text"
+  ],
+  "isolation": "keys are prefixed wave2-*; Wave 1's preview-feedback:* namespace is never written by Wave 2 code paths"
+}

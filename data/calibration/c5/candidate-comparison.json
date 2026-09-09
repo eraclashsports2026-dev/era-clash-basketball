@@ -1,0 +1,71 @@
+{
+  "artifact": "candidate-comparison",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run calibration:c5:compare",
+  "generatedAt": "2026-08-26T15:55:21.283Z",
+  "gitCommit": "bb5b1b2a3ea5b9c673c04706fbe057e35dd99ca0",
+  "branch": "phase-6c2c5-targeted-mechanic-calibration",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {
+    "data/calibration/c5/candidate-history.json": "5b13be1ed22b7c390d26f322c6dc5563533a20bd1b8e21daea11cfb4158b53bc",
+    "data/calibration/c5/calibration-scope.json": "59ae8985b1c4d80867d1f1461a775dd87fdbf4c6fa5a1ca9eda5bdc97f0bc7a3"
+  },
+  "data": {
+    "outcome": "CANDIDATE_ZERO_WINS",
+    "acceptedChangedCandidateExists": false,
+    "whyNoAcceptedCandidate": "All 84 on-grid candidates failed at least one of PRACTICAL_FLOOR, FAMILY_WISE_SIGNIFICANT, VALIDATION_NOT_DEGRADED. 4 cleared the practical floor; 0 were family-wise significant at alpha 0.05 over a family of 84.",
+    "contenderPromotedForTransparency": {
+      "candidateId": "C63",
+      "label": "coach.rosterSensitivity=1.25",
+      "change": {
+        "id": "coach.rosterSensitivity",
+        "from": 1,
+        "to": 1.25,
+        "step": 0.05,
+        "readiness": "STRUCTURAL_CALIBRATION_ONLY",
+        "capFraction": 0.2,
+        "onGrid": true
+      },
+      "rejectedReason": "Rejected on family-wise significance (Holm-adjusted p 1 > 0.05 over a family of 84); validation guard (relative delta 0.02089 > 0.01).",
+      "searchTuningGain": 0.00102,
+      "searchRawP": 0.4372642778019845,
+      "searchHolmAdjustedP": 1
+    },
+    "confirmationSeedOffset": 400,
+    "seedsPerFixture": 24,
+    "freshSeedResults": [
+      {
+        "set": "tuning",
+        "fixtures": 12,
+        "candidateZeroMae": 0.07677,
+        "contenderMae": 0.07757,
+        "gain": -0.0008,
+        "pairedN": 288,
+        "pairedMeanDiff": 0.0008,
+        "t": 0.57373,
+        "rawP": 0.5666
+      },
+      {
+        "set": "validation",
+        "fixtures": 11,
+        "candidateZeroMae": 0.06608,
+        "contenderMae": 0.06755,
+        "gain": -0.00147,
+        "pairedN": 264,
+        "pairedMeanDiff": 0.00148,
+        "t": 1.0792,
+        "rawP": 0.28149
+      }
+    ],
+    "gainRetainedOnFreshSeeds": -0.78431,
+    "contenderHoldsUpOnFreshSeeds": false,
+    "interpretation": "The contender did not retain its advantage on seeds it was not selected on, which is what selection noise looks like. This independently corroborates the family-wise rejection.",
+    "winner": "C0",
+    "candidateZeroParameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+    "contenderParameterSetHash": "9c9e08fbba804fb4a16358b3facfec072d7e25af8f5bfa190c6e965fe7f977fc"
+  },
+  "outputHash": "26c43d1864fd2668911c3f753e45cebedb6019d190bb4fb403cffcea0cb65df0"
+}

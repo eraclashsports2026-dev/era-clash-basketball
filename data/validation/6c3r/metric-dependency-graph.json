@@ -1,0 +1,246 @@
+{
+  "artifact": "metric-dependency-graph",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run validation:6c3r:traits",
+  "generatedAt": "2026-08-26T22:06:38.310Z",
+  "gitCommit": "612177cfcfb3c74fd3a9ccfe6a32445192fc871a",
+  "branch": "phase-6c3r-validation-surface-repair",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "historicalMeasurementSurfaceVersion": "1.0.0",
+    "metrics": [
+      {
+        "id": "gamePace",
+        "identifiableOn": [
+          "VS_ERA_REFERENCE"
+        ],
+        "group": "PACE_JOINT",
+        "note": "Pace is a joint game quantity. It is attributed to the subject only against the frozen reference, compared with the reference's own self-baseline."
+      },
+      {
+        "id": "pppVsReference",
+        "identifiableOn": [
+          "VS_ERA_REFERENCE"
+        ],
+        "group": "MIRROR_PPP",
+        "note": "Offence quality: subject points per possession against the frozen reference defence."
+      },
+      {
+        "id": "refPppVsTeam",
+        "identifiableOn": [
+          "REFERENCE_VS_TEAM"
+        ],
+        "group": "MIRROR_PPP",
+        "note": "Defence quality: the frozen reference offence's points per possession against the subject, read from the subject's defensive side."
+      },
+      {
+        "id": "transitionShare",
+        "identifiableOn": [
+          "VS_ERA_REFERENCE",
+          "MIRROR"
+        ],
+        "group": "ACTION_SHARES",
+        "note": null
+      },
+      {
+        "id": "pnrShare",
+        "identifiableOn": [
+          "VS_ERA_REFERENCE",
+          "MIRROR"
+        ],
+        "group": "ACTION_SHARES",
+        "note": null
+      },
+      {
+        "id": "postUpShare",
+        "identifiableOn": [
+          "VS_ERA_REFERENCE",
+          "MIRROR"
+        ],
+        "group": "ACTION_SHARES",
+        "note": null
+      },
+      {
+        "id": "isolationShare",
+        "identifiableOn": [
+          "VS_ERA_REFERENCE",
+          "MIRROR"
+        ],
+        "group": "ACTION_SHARES",
+        "note": null
+      },
+      {
+        "id": "movementShare",
+        "identifiableOn": [
+          "VS_ERA_REFERENCE",
+          "MIRROR"
+        ],
+        "group": "ACTION_SHARES",
+        "note": null
+      },
+      {
+        "id": "threeShare",
+        "identifiableOn": [
+          "VS_ERA_REFERENCE",
+          "MIRROR"
+        ],
+        "group": "SHOT_MIX",
+        "note": null
+      },
+      {
+        "id": "interiorShotShare",
+        "identifiableOn": [
+          "VS_ERA_REFERENCE",
+          "MIRROR"
+        ],
+        "group": "SHOT_MIX",
+        "note": null
+      },
+      {
+        "id": "orebRate",
+        "identifiableOn": [
+          "VS_ERA_REFERENCE"
+        ],
+        "group": "REBOUND_RATE",
+        "note": "Offensive-rebound rate is a contest against the OPPONENT's defensive rebounding, so it needs the independent reference on the other side."
+      },
+      {
+        "id": "orebRateAgainst",
+        "identifiableOn": [
+          "REFERENCE_VS_TEAM"
+        ],
+        "group": "REBOUND_RATE",
+        "note": null
+      },
+      {
+        "id": "assistedRate",
+        "identifiableOn": [
+          "VS_ERA_REFERENCE",
+          "MIRROR"
+        ],
+        "group": "PLAYMAKING",
+        "note": null
+      },
+      {
+        "id": "stealRateForced",
+        "identifiableOn": [
+          "REFERENCE_VS_TEAM"
+        ],
+        "group": "DEFENSE_EVENTS",
+        "note": "Forced-steal rate depends on the opponent's ball security, so it is measured against the frozen reference offence."
+      },
+      {
+        "id": "rimShareAgainst",
+        "identifiableOn": [
+          "REFERENCE_VS_TEAM"
+        ],
+        "group": "SHOT_MIX",
+        "note": "Rim deterrence: how much of the frozen reference offence's shot mix the subject defence pushes away from the rim."
+      },
+      {
+        "id": "defensiveZoneShare",
+        "identifiableOn": [
+          "REFERENCE_VS_TEAM",
+          "MIRROR"
+        ],
+        "group": "SCHEME",
+        "note": null
+      },
+      {
+        "id": "topScoringShare",
+        "identifiableOn": [
+          "MIRROR",
+          "VS_ERA_REFERENCE"
+        ],
+        "group": "CONCENTRATION",
+        "note": "Reported, not scored: algebraically entangled with scoring entropy, and no eligible trait claims it."
+      }
+    ],
+    "dependencyGroups": [
+      {
+        "id": "MIRROR_PPP",
+        "members": [
+          "pppVsReference",
+          "refPppVsTeam"
+        ],
+        "kind": "ALGEBRAIC_IDENTITY_ON_MIRROR",
+        "restriction": "On a MIRROR surface, points-per-possession and opponent points-per-possession are the same quantity up to seeded noise (measured max separation in V3: 0.00348). Offence and defence claims must therefore be scored on VS_ERA_REFERENCE and REFERENCE_VS_TEAM respectively — different games, independent counterparties."
+      },
+      {
+        "id": "ACTION_SHARES",
+        "members": [
+          "transitionShare",
+          "pnrShare",
+          "postUpShare",
+          "isolationShare",
+          "movementShare"
+        ],
+        "kind": "COMPOSITIONAL_SHARED_DENOMINATOR",
+        "restriction": "Shares of one possession total. A fixture may claim ABOVE on at most three of these simultaneously; more is compositionally self-defeating."
+      },
+      {
+        "id": "SHOT_MIX",
+        "members": [
+          "threeShare",
+          "interiorShotShare",
+          "rimShareAgainst"
+        ],
+        "kind": "NEAR_COMPLEMENTARY",
+        "restriction": "Three-point and interior shares trade off against each other (midrange takes the remainder). A fixture may not claim ABOVE on both threeShare and interiorShotShare."
+      },
+      {
+        "id": "PACE_JOINT",
+        "members": [
+          "gamePace"
+        ],
+        "kind": "JOINTLY_DETERMINED_GAME_QUANTITY",
+        "restriction": "Both teams in a game share its pace. Pace is attributed to the subject only against the frozen reference, compared with the reference's self-baseline; A-vs-B pace attributes to neither side."
+      },
+      {
+        "id": "REBOUND_RATE",
+        "members": [
+          "orebRate",
+          "orebRateAgainst"
+        ],
+        "kind": "OPPONENT_CONTESTED",
+        "restriction": "Rebound rates are contests, so each needs the frozen reference on the other side of the contest."
+      },
+      {
+        "id": "CONCENTRATION",
+        "members": [
+          "topScoringShare"
+        ],
+        "kind": "ENTROPY_LINKED",
+        "restriction": "Top-share and share entropy are functions of the same distribution; only topScoringShare exists in the catalogue, and no eligible trait claims it."
+      }
+    ],
+    "v3RubricRejection": {
+      "rubric": [
+        {
+          "traitId": "ELITE_OFFENSE",
+          "metric": "pppVsReference",
+          "direction": "ABOVE_REFERENCE_BASELINE",
+          "surface": "MIRROR"
+        },
+        {
+          "traitId": "ELITE_DEFENSE",
+          "metric": "refPppVsTeam",
+          "direction": "BELOW_REFERENCE_BASELINE",
+          "surface": "MIRROR"
+        }
+      ],
+      "problems": [
+        "ELITE_OFFENSE: metric pppVsReference is not identifiable on MIRROR (allowed: VS_ERA_REFERENCE)",
+        "ELITE_DEFENSE: metric refPppVsTeam is not identifiable on MIRROR (allowed: REFERENCE_VS_TEAM)",
+        "MIRROR_PPP group scored on a MIRROR surface: ELITE_OFFENSE, ELITE_DEFENSE — the exact V3 defect"
+      ]
+    },
+    "contradictionsInRubric": [],
+    "mirrorRule": "On a MIRROR surface both sides are the same roster, so pointsPerPossession and opponentPointsPerPossession are one quantity (V3 measured max separation 0.00348). The metric catalogue makes this structural: pppVsReference is identifiable only on VS_ERA_REFERENCE, refPppVsTeam only on REFERENCE_VS_TEAM, and the detector hard-fails any rubric that scores either on a mirror."
+  },
+  "outputHash": "189febc4a764edec6584e7c49f3b98e21bd643759883c374d7f708639773527b"
+}

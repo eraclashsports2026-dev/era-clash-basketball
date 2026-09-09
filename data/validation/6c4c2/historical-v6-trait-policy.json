@@ -1,0 +1,849 @@
+{
+  "artifact": "historical-v6-trait-policy",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run v6:manifest",
+  "generatedAt": "2026-08-27T20:12:59.235Z",
+  "gitCommit": "f2e7bcf93477e77648c9004d60d6088af1eb2a6f",
+  "branch": "phase-6c4c2-v6-freeze-and-seal",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "historicalV6TraitPolicyVersion": "1.0.0",
+    "governs": "which identity descriptors may be scored on Historical Holdout V6, on what surface, against what baseline, and what happens to the rest",
+    "vocabulary": {
+      "source": "scripts/validation/traitRegistry.mjs, keyed by the descriptor string",
+      "registryHash": "c034937be7e40bd18932fe53151e0b8a877dc47095004653e1bb11aa5c73a0cf",
+      "traitsInRegistry": 81,
+      "projection": "data/validation/corpus-v6-spec.mjs STYLE_TO_REGISTRY projects documented prose onto the registry vocabulary, mechanically and identically for every fixture. The prose is retained as documentedStyle.",
+      "whyProjectionExists": "the registry is keyed by string, so prose resolves to no trait and no claim. 50 of 92 wave-two descriptors matched nothing, and three sides had no scoreable trait at all.",
+      "neverStrengthened": "a prose term maps only to a term of equal or weaker claim. STRONG_DEFENSE is not mapped to ELITE_DEFENSE: promoting a documented claim to make it scoreable would manufacture evidence."
+    },
+    "eligibility": {
+      "rule": "a descriptor is scored only if the Candidate 2 observability certification marks it scoringEligible, which requires its metric to have certified under Candidate 2",
+      "certificationArtifact": "historical-v6-observability-certification",
+      "metricsCertified": 11,
+      "metricsTotal": 16,
+      "certifiedMetrics": [
+        "gamePace",
+        "pppVsReference",
+        "refPppVsTeam",
+        "transitionShare",
+        "pnrShare",
+        "postUpShare",
+        "movementShare",
+        "orebRate",
+        "orebRateAgainst",
+        "assistedRate",
+        "defensiveZoneShare"
+      ],
+      "uncertifiedMetrics": [
+        "isolationShare",
+        "threeShare",
+        "interiorShotShare",
+        "stealRateForced",
+        "rimShareAgainst"
+      ],
+      "lostSinceCandidate1": [
+        {
+          "metric": "interiorShotShare",
+          "candidate1": true,
+          "candidate2": false,
+          "candidate1ControlRange": 0.02357,
+          "candidate2ControlRange": 0.02016
+        }
+      ],
+      "lostSinceCandidate1Note": "interiorShotShare certified under Candidate 1 and does not under Candidate 2: its strong control no longer separates from neutral. Recorded as a scope reduction attributable to the assisted-offence repair. Raising the sample size until it certified would be choosing the protocol after seeing the result."
+    },
+    "scoring": {
+      "surfaceRule": "each metric is read only on the surface its registry entry declares identifiable, and offence and defence are never read from one mirror",
+      "baseline": "the Candidate 2 era-reference self-baselines, keyed by metric id",
+      "perTrait": {
+        "hardFail": "direction opposite to the claim AND the 95% interval excludes zero AND |difference| > margin[metric]",
+        "directionalSoftFail": "direction opposite to the claim AND (interval includes zero OR |difference| <= margin[metric]) — reported, never verdict-driving",
+        "pass": "direction matches the claim",
+        "indeterminate": "statistically different but inside the practical margin — never a FAIL, and at the decision tier it triggers escalation rather than a verdict",
+        "reportingStates": [
+          "PASS",
+          "STATISTICALLY_DIFFERENT_PRACTICALLY_EQUIVALENT",
+          "PRACTICALLY_MATERIAL_AND_STATISTICALLY_SUPPORTED",
+          "INCONCLUSIVE",
+          "NOT_OBSERVABLE",
+          "NOT_APPLICABLE"
+        ],
+        "dualGate": "Both gates must fire. Statistical significance alone is not a failure at 4,096 games, and a large difference inside noise is not evidence."
+      },
+      "aggregationUnit": "INDEPENDENT_MEASUREMENT_CLUSTER",
+      "duplicateLabels": "two descriptors on one side claiming the same metric, surface and direction are two labels on ONE measurement. Both are reported; the evidence count collapses to one cluster.",
+      "duplicatesPresent": [
+        {
+          "metric": "gamePace",
+          "labels": 13
+        },
+        {
+          "metric": "transitionShare",
+          "labels": 11
+        },
+        {
+          "metric": "assistedRate",
+          "labels": 5
+        },
+        {
+          "metric": "postUpShare",
+          "labels": 4
+        },
+        {
+          "metric": "movementShare",
+          "labels": 7
+        },
+        {
+          "metric": "orebRate",
+          "labels": 2
+        },
+        {
+          "metric": "refPppVsTeam",
+          "labels": 3
+        }
+      ]
+    },
+    "exclusion": {
+      "rule": "an excluded descriptor contributes no error, no pass credit and no failure. It is not scored, not approximated and not zero-filled.",
+      "reasons": {
+        "NO_DIRECTIONAL_CLAIM": 14,
+        "METRIC_NOT_CERTIFIED_UNDER_CANDIDATE_2": 15,
+        "NOT_IN_TRAIT_REGISTRY": 7
+      },
+      "excludedDescriptors": [
+        "ISOLATION_HEAVY",
+        "LOW_THREE_POINT",
+        "SIZE_HEAVY",
+        "THREE_POINT_HEAVY",
+        "balanced three-creator half-court offence",
+        "disciplined man",
+        "drop coverage with a rim anchor",
+        "fast break led by the point guard",
+        "gambling man defence",
+        "help-heavy man",
+        "interior passing through the centre",
+        "isolation and post-up in the half court",
+        "isolation creation with three-point spacing",
+        "man with a shot-blocking centre",
+        "moderate",
+        "perimeter creation and early offence",
+        "physical man",
+        "pressure man",
+        "pressure man with help",
+        "switching man with zone looks"
+      ]
+    },
+    "dependencyGroups": [
+      {
+        "id": "MIRROR_PPP",
+        "members": [
+          "pppVsReference",
+          "refPppVsTeam"
+        ],
+        "kind": "ALGEBRAIC_IDENTITY_ON_MIRROR",
+        "restriction": "On a MIRROR surface, points-per-possession and opponent points-per-possession are the same quantity up to seeded noise (measured max separation in V3: 0.00348). Offence and defence claims must therefore be scored on VS_ERA_REFERENCE and REFERENCE_VS_TEAM respectively — different games, independent counterparties."
+      },
+      {
+        "id": "ACTION_SHARES",
+        "members": [
+          "transitionShare",
+          "pnrShare",
+          "postUpShare",
+          "isolationShare",
+          "movementShare"
+        ],
+        "kind": "COMPOSITIONAL_SHARED_DENOMINATOR",
+        "restriction": "Shares of one possession total. A fixture may claim ABOVE on at most three of these simultaneously; more is compositionally self-defeating."
+      },
+      {
+        "id": "SHOT_MIX",
+        "members": [
+          "threeShare",
+          "interiorShotShare",
+          "rimShareAgainst"
+        ],
+        "kind": "NEAR_COMPLEMENTARY",
+        "restriction": "Three-point and interior shares trade off against each other (midrange takes the remainder). A fixture may not claim ABOVE on both threeShare and interiorShotShare."
+      },
+      {
+        "id": "PACE_JOINT",
+        "members": [
+          "gamePace"
+        ],
+        "kind": "JOINTLY_DETERMINED_GAME_QUANTITY",
+        "restriction": "Both teams in a game share its pace. Pace is attributed to the subject only against the frozen reference, compared with the reference's self-baseline; A-vs-B pace attributes to neither side."
+      },
+      {
+        "id": "REBOUND_RATE",
+        "members": [
+          "orebRate",
+          "orebRateAgainst"
+        ],
+        "kind": "OPPONENT_CONTESTED",
+        "restriction": "Rebound rates are contests, so each needs the frozen reference on the other side of the contest."
+      },
+      {
+        "id": "CONCENTRATION",
+        "members": [
+          "topScoringShare"
+        ],
+        "kind": "ENTROPY_LINKED",
+        "restriction": "Top-share and share entropy are functions of the same distribution; only topScoringShare exists in the catalogue, and no eligible trait claims it."
+      }
+    ],
+    "repairedMechanismCoverage": [
+      {
+        "metric": "assistedRate",
+        "repairedBy": "c2-01/c2-02 assisted-offense movement lift",
+        "v5Failure": "ASSISTED_OFFENSE_EXPRESSION cluster, v5m-2000s teamB",
+        "covered": true
+      },
+      {
+        "metric": "refPppVsTeam",
+        "repairedBy": "c2-03 defensive help suppression and scheme transfer",
+        "v5Failure": "DEFENSIVE_SUPPRESSION cluster, v5m-2020s teamA",
+        "covered": true
+      }
+    ],
+    "perSide": [
+      {
+        "key": "bostonceltics|195152",
+        "eraStyleId": "1950s",
+        "scoredTraits": [
+          {
+            "traitId": "fast",
+            "metric": "gamePace",
+            "direction": "ABOVE_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 1
+          },
+          {
+            "traitId": "fast break, early offence",
+            "metric": "transitionShare",
+            "direction": "ABOVE_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 0.03
+          },
+          {
+            "traitId": "TRANSITION",
+            "metric": "transitionShare",
+            "direction": "ABOVE_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 0.03
+          },
+          {
+            "traitId": "PASSING_HUB",
+            "metric": "assistedRate",
+            "direction": "ABOVE_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 0.02
+          }
+        ],
+        "excludedTraits": [
+          {
+            "traitId": "physical man",
+            "reason": "NO_DIRECTIONAL_CLAIM",
+            "metric": null
+          }
+        ]
+      },
+      {
+        "key": "minneapolislakers|195657",
+        "eraStyleId": "1950s",
+        "scoredTraits": [
+          {
+            "traitId": "post-centred, interior scoring",
+            "metric": "postUpShare",
+            "direction": "ABOVE_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 0.03
+          },
+          {
+            "traitId": "POST_HEAVY",
+            "metric": "postUpShare",
+            "direction": "ABOVE_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 0.03
+          }
+        ],
+        "excludedTraits": [
+          {
+            "traitId": "moderate",
+            "reason": "NO_DIRECTIONAL_CLAIM",
+            "metric": null
+          },
+          {
+            "traitId": "disciplined man",
+            "reason": "NO_DIRECTIONAL_CLAIM",
+            "metric": null
+          },
+          {
+            "traitId": "SIZE_HEAVY",
+            "reason": "METRIC_NOT_CERTIFIED_UNDER_CANDIDATE_2",
+            "metric": "interiorShotShare"
+          }
+        ]
+      },
+      {
+        "key": "newyorkknicks|196768",
+        "eraStyleId": "1960s",
+        "scoredTraits": [
+          {
+            "traitId": "motion, ball movement, high-post passing",
+            "metric": "movementShare",
+            "direction": "ABOVE_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 0.03
+          },
+          {
+            "traitId": "PASSING_HUB",
+            "metric": "assistedRate",
+            "direction": "ABOVE_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 0.02
+          }
+        ],
+        "excludedTraits": [
+          {
+            "traitId": "moderate",
+            "reason": "NO_DIRECTIONAL_CLAIM",
+            "metric": null
+          },
+          {
+            "traitId": "pressure man with help",
+            "reason": "METRIC_NOT_CERTIFIED_UNDER_CANDIDATE_2",
+            "metric": "stealRateForced"
+          }
+        ]
+      },
+      {
+        "key": "philadelphia76ers|196869",
+        "eraStyleId": "1960s",
+        "scoredTraits": [
+          {
+            "traitId": "fast",
+            "metric": "gamePace",
+            "direction": "ABOVE_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 1
+          },
+          {
+            "traitId": "TRANSITION",
+            "metric": "transitionShare",
+            "direction": "ABOVE_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 0.03
+          }
+        ],
+        "excludedTraits": [
+          {
+            "traitId": "perimeter creation and early offence",
+            "reason": "NOT_IN_TRAIT_REGISTRY",
+            "metric": null
+          },
+          {
+            "traitId": "pressure man",
+            "reason": "METRIC_NOT_CERTIFIED_UNDER_CANDIDATE_2",
+            "metric": "stealRateForced"
+          }
+        ]
+      },
+      {
+        "key": "philadelphia76ers|197778",
+        "eraStyleId": "1970s",
+        "scoredTraits": [
+          {
+            "traitId": "fast",
+            "metric": "gamePace",
+            "direction": "ABOVE_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 1
+          },
+          {
+            "traitId": "TRANSITION",
+            "metric": "transitionShare",
+            "direction": "ABOVE_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 0.03
+          }
+        ],
+        "excludedTraits": [
+          {
+            "traitId": "isolation and post-up in the half court",
+            "reason": "METRIC_NOT_CERTIFIED_UNDER_CANDIDATE_2",
+            "metric": "isolationShare"
+          },
+          {
+            "traitId": "disciplined man",
+            "reason": "NO_DIRECTIONAL_CLAIM",
+            "metric": null
+          },
+          {
+            "traitId": "ISOLATION_HEAVY",
+            "reason": "METRIC_NOT_CERTIFIED_UNDER_CANDIDATE_2",
+            "metric": "isolationShare"
+          },
+          {
+            "traitId": "SIZE_HEAVY",
+            "reason": "METRIC_NOT_CERTIFIED_UNDER_CANDIDATE_2",
+            "metric": "interiorShotShare"
+          }
+        ]
+      },
+      {
+        "key": "portlandtrailblazers|197475",
+        "eraStyleId": "1970s",
+        "scoredTraits": [
+          {
+            "traitId": "POST_HEAVY",
+            "metric": "postUpShare",
+            "direction": "ABOVE_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 0.03
+          },
+          {
+            "traitId": "STRONG_OFFENSIVE_REBOUNDING",
+            "metric": "orebRate",
+            "direction": "ABOVE_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 0.02
+          }
+        ],
+        "excludedTraits": [
+          {
+            "traitId": "moderate",
+            "reason": "NO_DIRECTIONAL_CLAIM",
+            "metric": null
+          },
+          {
+            "traitId": "interior passing through the centre",
+            "reason": "NOT_IN_TRAIT_REGISTRY",
+            "metric": null
+          },
+          {
+            "traitId": "man with a shot-blocking centre",
+            "reason": "NOT_IN_TRAIT_REGISTRY",
+            "metric": null
+          }
+        ]
+      },
+      {
+        "key": "losangeleslakers|198182",
+        "eraStyleId": "1980s",
+        "scoredTraits": [
+          {
+            "traitId": "very fast",
+            "metric": "gamePace",
+            "direction": "ABOVE_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 1
+          },
+          {
+            "traitId": "man with a dominant rebounder",
+            "metric": "orebRateAgainst",
+            "direction": "BELOW_REFERENCE_BASELINE",
+            "surface": "REFERENCE_VS_TEAM",
+            "margin": 0.02
+          },
+          {
+            "traitId": "TRANSITION",
+            "metric": "transitionShare",
+            "direction": "ABOVE_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 0.03
+          },
+          {
+            "traitId": "PACE_EXTREME",
+            "metric": "gamePace",
+            "direction": "ABOVE_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 1
+          },
+          {
+            "traitId": "PASSING_HUB",
+            "metric": "assistedRate",
+            "direction": "ABOVE_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 0.02
+          }
+        ],
+        "excludedTraits": [
+          {
+            "traitId": "fast break led by the point guard",
+            "reason": "NOT_IN_TRAIT_REGISTRY",
+            "metric": null
+          }
+        ]
+      },
+      {
+        "key": "newyorkknicks|198384",
+        "eraStyleId": "1980s",
+        "scoredTraits": [
+          {
+            "traitId": "slow",
+            "metric": "gamePace",
+            "direction": "BELOW_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 1
+          },
+          {
+            "traitId": "SLOW_HALF_COURT",
+            "metric": "gamePace",
+            "direction": "BELOW_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 1
+          }
+        ],
+        "excludedTraits": [
+          {
+            "traitId": "isolation and post-up in the half court",
+            "reason": "METRIC_NOT_CERTIFIED_UNDER_CANDIDATE_2",
+            "metric": "isolationShare"
+          },
+          {
+            "traitId": "physical man",
+            "reason": "NO_DIRECTIONAL_CLAIM",
+            "metric": null
+          },
+          {
+            "traitId": "ISOLATION_HEAVY",
+            "reason": "METRIC_NOT_CERTIFIED_UNDER_CANDIDATE_2",
+            "metric": "isolationShare"
+          }
+        ]
+      },
+      {
+        "key": "indianapacers|199495",
+        "eraStyleId": "1990s",
+        "scoredTraits": [
+          {
+            "traitId": "slow",
+            "metric": "gamePace",
+            "direction": "BELOW_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 1
+          },
+          {
+            "traitId": "movement shooting off screens",
+            "metric": "movementShare",
+            "direction": "ABOVE_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 0.03
+          },
+          {
+            "traitId": "MOTION",
+            "metric": "movementShare",
+            "direction": "ABOVE_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 0.03
+          },
+          {
+            "traitId": "SLOW_HALF_COURT",
+            "metric": "gamePace",
+            "direction": "BELOW_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 1
+          }
+        ],
+        "excludedTraits": [
+          {
+            "traitId": "physical man",
+            "reason": "NO_DIRECTIONAL_CLAIM",
+            "metric": null
+          }
+        ]
+      },
+      {
+        "key": "portlandtrailblazers|199192",
+        "eraStyleId": "1990s",
+        "scoredTraits": [
+          {
+            "traitId": "fast",
+            "metric": "gamePace",
+            "direction": "ABOVE_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 1
+          },
+          {
+            "traitId": "fast break and early offence",
+            "metric": "transitionShare",
+            "direction": "ABOVE_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 0.03
+          },
+          {
+            "traitId": "TRANSITION",
+            "metric": "transitionShare",
+            "direction": "ABOVE_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 0.03
+          },
+          {
+            "traitId": "STRONG_OFFENSIVE_REBOUNDING",
+            "metric": "orebRate",
+            "direction": "ABOVE_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 0.02
+          }
+        ],
+        "excludedTraits": [
+          {
+            "traitId": "disciplined man",
+            "reason": "NO_DIRECTIONAL_CLAIM",
+            "metric": null
+          }
+        ]
+      },
+      {
+        "key": "bostonceltics|200708",
+        "eraStyleId": "2000s",
+        "scoredTraits": [
+          {
+            "traitId": "elite team man defence",
+            "metric": "refPppVsTeam",
+            "direction": "BELOW_REFERENCE_BASELINE",
+            "surface": "REFERENCE_VS_TEAM",
+            "margin": 0.02
+          },
+          {
+            "traitId": "ELITE_DEFENSE",
+            "metric": "refPppVsTeam",
+            "direction": "BELOW_REFERENCE_BASELINE",
+            "surface": "REFERENCE_VS_TEAM",
+            "margin": 0.02
+          },
+          {
+            "traitId": "PASSING_HUB",
+            "metric": "assistedRate",
+            "direction": "ABOVE_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 0.02
+          }
+        ],
+        "excludedTraits": [
+          {
+            "traitId": "moderate",
+            "reason": "NO_DIRECTIONAL_CLAIM",
+            "metric": null
+          },
+          {
+            "traitId": "balanced three-creator half-court offence",
+            "reason": "NOT_IN_TRAIT_REGISTRY",
+            "metric": null
+          }
+        ]
+      },
+      {
+        "key": "houstonrockets|200708",
+        "eraStyleId": "2000s",
+        "scoredTraits": [
+          {
+            "traitId": "slow",
+            "metric": "gamePace",
+            "direction": "BELOW_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 1
+          },
+          {
+            "traitId": "motion and cutting",
+            "metric": "movementShare",
+            "direction": "ABOVE_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 0.03
+          },
+          {
+            "traitId": "MOTION",
+            "metric": "movementShare",
+            "direction": "ABOVE_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 0.03
+          },
+          {
+            "traitId": "POST_HEAVY",
+            "metric": "postUpShare",
+            "direction": "ABOVE_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 0.03
+          }
+        ],
+        "excludedTraits": [
+          {
+            "traitId": "help-heavy man",
+            "reason": "NO_DIRECTIONAL_CLAIM",
+            "metric": null
+          }
+        ]
+      },
+      {
+        "key": "denvernuggets|201213",
+        "eraStyleId": "2010s",
+        "scoredTraits": [
+          {
+            "traitId": "very fast",
+            "metric": "gamePace",
+            "direction": "ABOVE_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 1
+          },
+          {
+            "traitId": "fast break and early offence",
+            "metric": "transitionShare",
+            "direction": "ABOVE_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 0.03
+          },
+          {
+            "traitId": "TRANSITION",
+            "metric": "transitionShare",
+            "direction": "ABOVE_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 0.03
+          }
+        ],
+        "excludedTraits": [
+          {
+            "traitId": "gambling man defence",
+            "reason": "METRIC_NOT_CERTIFIED_UNDER_CANDIDATE_2",
+            "metric": "stealRateForced"
+          },
+          {
+            "traitId": "LOW_THREE_POINT",
+            "reason": "METRIC_NOT_CERTIFIED_UNDER_CANDIDATE_2",
+            "metric": "threeShare"
+          }
+        ]
+      },
+      {
+        "key": "torontoraptors|201819",
+        "eraStyleId": "2010s",
+        "scoredTraits": [
+          {
+            "traitId": "ELITE_DEFENSE",
+            "metric": "refPppVsTeam",
+            "direction": "BELOW_REFERENCE_BASELINE",
+            "surface": "REFERENCE_VS_TEAM",
+            "margin": 0.02
+          }
+        ],
+        "excludedTraits": [
+          {
+            "traitId": "moderate",
+            "reason": "NO_DIRECTIONAL_CLAIM",
+            "metric": null
+          },
+          {
+            "traitId": "isolation creation with three-point spacing",
+            "reason": "NOT_IN_TRAIT_REGISTRY",
+            "metric": null
+          },
+          {
+            "traitId": "switching man with zone looks",
+            "reason": "NOT_IN_TRAIT_REGISTRY",
+            "metric": null
+          },
+          {
+            "traitId": "ISOLATION_HEAVY",
+            "reason": "METRIC_NOT_CERTIFIED_UNDER_CANDIDATE_2",
+            "metric": "isolationShare"
+          },
+          {
+            "traitId": "THREE_POINT_HEAVY",
+            "reason": "METRIC_NOT_CERTIFIED_UNDER_CANDIDATE_2",
+            "metric": "threeShare"
+          }
+        ]
+      },
+      {
+        "key": "indianapacers|202324",
+        "eraStyleId": "2020s",
+        "scoredTraits": [
+          {
+            "traitId": "very fast",
+            "metric": "gamePace",
+            "direction": "ABOVE_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 1
+          },
+          {
+            "traitId": "fast break and early offence",
+            "metric": "transitionShare",
+            "direction": "ABOVE_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 0.03
+          },
+          {
+            "traitId": "TRANSITION",
+            "metric": "transitionShare",
+            "direction": "ABOVE_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 0.03
+          },
+          {
+            "traitId": "PASSING_HUB",
+            "metric": "assistedRate",
+            "direction": "ABOVE_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 0.02
+          }
+        ],
+        "excludedTraits": [
+          {
+            "traitId": "drop coverage with a rim anchor",
+            "reason": "METRIC_NOT_CERTIFIED_UNDER_CANDIDATE_2",
+            "metric": "rimShareAgainst"
+          },
+          {
+            "traitId": "THREE_POINT_HEAVY",
+            "reason": "METRIC_NOT_CERTIFIED_UNDER_CANDIDATE_2",
+            "metric": "threeShare"
+          }
+        ]
+      },
+      {
+        "key": "sanantoniospurs|202021",
+        "eraStyleId": "2020s",
+        "scoredTraits": [
+          {
+            "traitId": "half-court motion and passing",
+            "metric": "movementShare",
+            "direction": "ABOVE_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 0.03
+          },
+          {
+            "traitId": "MOTION",
+            "metric": "movementShare",
+            "direction": "ABOVE_REFERENCE_BASELINE",
+            "surface": "VS_ERA_REFERENCE",
+            "margin": 0.03
+          }
+        ],
+        "excludedTraits": [
+          {
+            "traitId": "moderate",
+            "reason": "NO_DIRECTIONAL_CLAIM",
+            "metric": null
+          },
+          {
+            "traitId": "disciplined man",
+            "reason": "NO_DIRECTIONAL_CLAIM",
+            "metric": null
+          },
+          {
+            "traitId": "LOW_THREE_POINT",
+            "reason": "METRIC_NOT_CERTIFIED_UNDER_CANDIDATE_2",
+            "metric": "threeShare"
+          }
+        ]
+      }
+    ],
+    "pass": true,
+    "traitPolicyHash": "8da01e96ee6f68c7585c1ddcc8e901eb7ba6d922a1137a74ba9161851534599e"
+  },
+  "outputHash": "123cd33545e53d4ff51b295fdfe06804a5fa920b217bf5dda48ea88a2adad06a"
+}

@@ -1,0 +1,38 @@
+{
+  "artifact": "enhanced-analysis-root-cause",
+  "phase": "8B",
+  "symptom": "Enhanced Game Analysis never completed on the deployed Phase 8A preview; the panel showed a failure message and Retry did not help.",
+  "tracedOn": "the deployed wave1 preview, with a real chaos result",
+  "observed": {
+    "attempt1": "503 MODEL_CONTRADICTED_RESULT",
+    "attempt2": "503 MODEL_CONTRADICTED_RESULT",
+    "attempt3": "503 MODEL_CONTRADICTED_RESULT",
+    "attempt4": "503 MODEL_UNAVAILABLE"
+  },
+  "rankedCauses": [
+    {
+      "cause": "Narrative validation rejecting every recap",
+      "verdict": "CONFIRMED — this was it"
+    },
+    {
+      "cause": "202 pending never resolving",
+      "verdict": "REJECTED — the Phase 8A state machine already polls 202 to a conclusion; the responses were 503, not 202"
+    },
+    {
+      "cause": "Provider not configured",
+      "verdict": "REJECTED — health reports aiNarrative ok and the provider returned content to validate"
+    },
+    {
+      "cause": "Preview session not forwarded",
+      "verdict": "REJECTED — the same session completed the simulation and every other call"
+    },
+    {
+      "cause": "Cached failure preventing retry",
+      "verdict": "REJECTED — each attempt produced a fresh provider call and a fresh rejection"
+    }
+  ],
+  "rootCause": "validateNarrativeClaims allowed only the FINAL score as a legitimate N-N string. A competent recap cites a quarter score or a shooting line, both of which the record genuinely contains, so essentially every generated narrative was rejected as a fabrication and both retry attempts burned before degrading to MODEL_UNAVAILABLE.",
+  "proof": "A real quarter score (21-28 from periodScores) and a real shooting line (19-31 from the box score) were both rejected by the validator in isolation.",
+  "fix": "The allowed set is now every score the record contains — final, per period, running totals, and every made-attempted pair, individual and team. Invented scores and wrong player totals are still rejected, and single-digit fabrications the old regex could not see are now caught.",
+  "secondaryFix": "A deterministic Expanded Game Analysis is always available, so a provider outage leaves a complete analysis rather than an empty panel."
+}

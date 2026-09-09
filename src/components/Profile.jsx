@@ -4,7 +4,7 @@
 // everything to the cloud (the claim migrates existing local progress).
 import { useState } from "react";
 import { T, card } from "../theme.js";
-import { PLAYERS } from "../players.js";
+import { PLAYERS, findCard } from "../players.js";
 import { DECADE_COLORS } from "../players.js";
 import { favoritePlayers, claimCareer } from "../career.js";
 import { getDisplayName, setDisplayName } from "../identity.js";
@@ -22,7 +22,7 @@ export default function Profile({ career, badges, BADGES, saved, daily, onLoadTe
   const s = career.stats;
   const [name, setName] = useState(getDisplayName());
   const [claimed, setClaimed] = useState(!!getDisplayName());
-  const favs = favoritePlayers(career, 3).map(([id, n]) => ({ p: PLAYERS.find((x) => x.id === id), n })).filter((x) => x.p);
+  const favs = favoritePlayers(career, 3).map(([id, n]) => ({ p: findCard(id), n })).filter((x) => x.p);
 
   const claim = () => {
     const clean = name.trim().slice(0, 24);
@@ -46,7 +46,7 @@ export default function Profile({ career, badges, BADGES, saved, daily, onLoadTe
           {claimed && <span style={{ fontSize: 11, color: T.green, fontWeight: 700 }}>☁️ Career saved</span>}
         </div>
         {!claimed && (
-          <div style={{ marginTop: 12, padding: 12, borderRadius: 9, background: "#2b230a", border: `1px solid ${T.gold}` }}>
+          <div style={{ marginTop: 12, padding: 12, borderRadius: 9, background: T.goldSoft, border: `1px solid ${T.goldBorder}` }}>
             <div style={{ fontSize: 13, fontWeight: 800, color: T.gold }}>💾 Save your EraClash career</div>
             <div style={{ fontSize: 12, color: T.textDim, margin: "4px 0 8px" }}>
               Pick a name to keep your records, streaks and badges — everything you've already earned comes with you.
@@ -55,7 +55,7 @@ export default function Profile({ career, badges, BADGES, saved, daily, onLoadTe
               <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Your baller name" maxLength={24}
                 aria-label="Display name"
                 style={{ flex: 1, padding: 10, fontSize: 13, background: T.bg, color: T.text, border: `1px solid ${T.border}`, borderRadius: 8, minWidth: 0 }} />
-              <button onClick={claim} style={{ padding: "10px 18px", fontSize: 13, fontWeight: 800, border: "none", borderRadius: 8, background: T.gold, color: "#111", cursor: "pointer" }}>
+              <button onClick={claim} style={{ padding: "10px 18px", fontSize: 13, fontWeight: 800, border: "none", borderRadius: 8, background: T.gold, color: T.onGold, cursor: "pointer" }}>
                 Save
               </button>
             </div>
@@ -142,7 +142,7 @@ export default function Profile({ career, badges, BADGES, saved, daily, onLoadTe
               <button key={t.id} onClick={() => onLoadTeam(t.ids)} style={{ textAlign: "left", padding: "8px 10px", background: T.bgCardHover, border: `1px solid ${T.border}`, borderRadius: 8, color: T.text, cursor: "pointer", fontSize: 12.5, fontWeight: 700 }}>
                 {t.name} <span style={{ color: T.gold }}>({t.rating})</span>
                 <span style={{ display: "block", fontSize: 11, color: T.textDim, fontWeight: 400, marginTop: 2 }}>
-                  {t.ids.map((id) => PLAYERS.find((p) => p.id === id)?.name.split(" ").slice(-1)[0]).filter(Boolean).join(" · ")}
+                  {t.ids.map((id) => findCard(id)?.name.split(" ").slice(-1)[0]).filter(Boolean).join(" · ")}
                 </span>
               </button>
             ))}

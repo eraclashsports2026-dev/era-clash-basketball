@@ -206,8 +206,8 @@ describe("player-specific variance guardrails", () => {
 });
 
 describe("coaches: independent, contextual, no OVR", () => {
-  it("25 researched coaches exist and expose no OVR anywhere", () => {
-    expect(COACHES.length).toBe(25);
+  it("30 researched coaches exist and expose no OVR anywhere", () => {
+    expect(COACHES.length).toBe(30);
     for (const c of COACHES) {
       expect(c.ovr).toBeUndefined();
       expect(c.rating).toBeUndefined();

@@ -1,0 +1,25 @@
+{
+  "artifact": "phase9e-owner-test",
+  "phase": "9E — Competitive Rating + Leaderboards V1",
+  "recordedAt": "2026-09-09T00:00:00Z",
+  "prompt": "PHASE 9E READY FOR JOSEPH'S LEADERBOARD TEST",
+  "ownerResponse": "This worked.",
+  "interpretation": "The owner reports the leaderboard test succeeded. Recorded verbatim as a POSITIVE TEST RESULT, not as a formal phase acceptance: the response carries no acceptance token (Phase 9C's was 'approve challenges v1 this works'; Phase 9D's was 'APPROVE PROGRESSION V1'), and no merge, promotion or next phase has been authorised.",
+  "headAtTest": "6d40639",
+  "appCodeAtTest": "c4e999d",
+  "branch": "phase-9e-competitive-rating-leaderboards-v1",
+  "draftPR": 48,
+  "durablePreview": "https://era-clash-basketball-git-phase-9e-competitive-690a16-era-clash.vercel.app",
+  "verdictAtTest": "COMPETITIVE RATING + LEADERBOARDS V1 COMPLETE — READY FOR JOSEPH'S LEADERBOARD TEST",
+  "ledgerAtTest": { "items": 52, "fixedAndVerified": 51, "open": 0, "externalBlocker": 1 },
+  "contractAtTest": { "competitiveRatingVersion": "1.0.0", "initial": 1000, "floor": 100, "k": { "provisional": 40, "established": 24, "switchAt": 10 }, "placement": { "matches": 5, "uniqueOpponents": 3 }, "pairLimit": { "limit": 3, "windowDays": 7 }, "powerEffect": 0 },
+  "liveDatabaseAfterTest": {
+    "readAt": "2026-09-09",
+    "project": "lfybiphmqkiecfrqsfzt",
+    "counts": { "authUsers": 1, "savedClashes": 0, "challenges": 0, "challengeAttempts": 0, "competitiveProfiles": 0, "ratingEvents": 0, "publicBoardRows": 0, "userPreferences": 0 },
+    "reading": "The test left no persistent account data, so it exercised the leaderboard surfaces (the signed-out board, the honest cold-start state, navigation) rather than a completed rated Challenge. Nothing was polluted and no fake public user exists."
+  },
+  "stillUncertifiedByARealSession": "The two-account rated journey — two authenticated accounts completing an official Challenge on the alias and each watching its own rating move. rating-rls-live.json names this as the one thing the project cannot certify itself, because it cannot mint a synthetic session without a credential passing through the transcript. The server path is certified end to end on the fake-cloud harness (rating-security-qa, rating-result-qa, leaderboard-ordering-qa, e2e) and the database half is certified live against the real Postgres. Only a second real account playing a real Challenge closes it.",
+  "notAuthorised": ["merge of PR #48", "promotion to wave1, wave2, main or production", "taking PR #48 out of draft", "inviting testers", "Phase 9F or any next phase"],
+  "note": "Phase 9E remains frozen on its branch at 6d40639 pending the owner's explicit instruction."
+}

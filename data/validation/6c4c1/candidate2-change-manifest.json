@@ -1,0 +1,114 @@
+{
+  "artifact": "candidate2-change-manifest",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run c2:build",
+  "generatedAt": "2026-08-27T14:50:17.661Z",
+  "gitCommit": "136b6446a8a65c7b9b551eed120cf0d4aa5078fd",
+  "branch": "phase-6c4c1-candidate2-trait-repair",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "candidate2ChangeManifestVersion": "1.0.0",
+    "candidateId": "Candidate 2",
+    "parentCandidateId": "Candidate 1",
+    "changeCount": 3,
+    "changes": [
+      {
+        "changeId": "c2-01",
+        "failureClustersAddressed": [
+          "ASSISTED_OFFENSE_EXPRESSION"
+        ],
+        "module": "possession engine core",
+        "file": "src/v3/possession/game.js",
+        "beforeBehavior": "an assist was credited with probability shot.assistLikelihood, a function of roster passing and per-family constants only. The offence's documented ball-movement identity reached action selection through cutPref and stopped there.",
+        "afterBehavior": "the per-family likelihood is scaled by a multiplier built from the offence's own ballMovement, motion and isolation preferences, centred so a neutral coach is an exact fixed point. The multiplier is clamped to [0.72, 1.30] and the resulting probability to 0.97.",
+        "rootCause": "the possession rewrite dropped a lever the prior engine generation had. src/v3/possession.js line 335 computes assistedP from (ballMovement - 5) * 0.03 + (motion - 5) * 0.02; no expression in the new actions.js references ballMovementPref.",
+        "mechanicalRationale": "how often a pass-created look is finished as an assisted basket is exactly what an offensive system governs. A ball-movement offence converts more of its created looks into credited assists; an isolation offence converts fewer. The coefficients are the prior generation's own values, and the isolation term is their mirror so an iso identity reads as less assisted rather than merely not-more-assisted.",
+        "entityHardcodeCheck": "no team, player, coach, fixture or era identifier appears. The inputs are three numeric coach preferences.",
+        "flatBonusCheck": "centred on the neutral default of 5, so a generic coach's multiplier is exactly 1.0 and the league mean does not move. A flat bonus would move every offence.",
+        "parameterChange": "none. ASSIST_IDENTITY is a module constant, not a registry parameter, so the 53 registry parameters stay at their defaults and the parameter-set hash stays comparable across candidates.",
+        "dataChange": "none",
+        "versionChange": [
+          "possessionEngineVersion 1.1.0 -> 1.2.0",
+          "possessionCalibrationVersion 1.1.0 -> 1.2.0"
+        ],
+        "tests": [
+          "tests/v6c4c1-candidate2.test.js — the assist ladder is monotonic and material",
+          "AST <= FGM invariant across every control cell"
+        ],
+        "regressionRisk": "an offence-wide assist inflation if the centring were wrong. Guarded by acceptance criteria A3 and A6 and measured on the neutral cell."
+      },
+      {
+        "changeId": "c2-02",
+        "failureClustersAddressed": [
+          "DEFENSIVE_SUPPRESSION"
+        ],
+        "module": "defensive scheme planning",
+        "file": "src/v3/defense/scheme.js",
+        "beforeBehavior": "every scheme dimension was min(coach intent, era cap, personnel ceiling). helpCeiling sits near 3.0 for every calibration team while coach help intent runs 5 to 9, so the ceiling bound on all eight Historical V5 defences and, because the neutral coach's intent is 5, truncated six of them BELOW what a generic coach would contribute.",
+        "afterBehavior": "switching, help and pressure keep the truncated value as a base and add the coach's intent relative to the neutral default, scaled by a transfer rate of 0.5, with the era cap applied to the result. The plan also exposes a per-dimension coaching differential: the realized value minus what the same personnel would realize under a generic coach.",
+        "rootCause": "scheme is what a coach uses to get team defence out of limited individual defenders, so capping scheme intent at raw personnel capability makes the dimension inexpressible. The capability inputs themselves derive from steals and blocks alone, so a defence built on discipline rather than event accumulation was penalised twice.",
+        "mechanicalRationale": "personnel limits how EFFICIENTLY intent converts, not whether it may be attempted. The era cap stays absolute, so a scheme the rules forbid stays forbidden — and where the cap binds every coach to the same value, as the illegal-defence eras do for pre-rotated help, no differentiation is expressible and none is invented.",
+        "entityHardcodeCheck": "no team, player, coach, fixture or era identifier appears. The era cap is read from the era rules, as before.",
+        "flatBonusCheck": "the differential is zero for a neutral coach on any roster in any era, by construction. Only coaches who deviate from generic intent move, in the direction they deviate.",
+        "parameterChange": "none. SCHEME_TRANSFER is a module constant.",
+        "dataChange": "none",
+        "versionChange": [
+          "defensiveMatchupVersion 1.1.0 -> 1.2.0",
+          "possessionCalibrationVersion 1.1.0 -> 1.2.0"
+        ],
+        "tests": [
+          "tests/v6c4c1-candidate2.test.js — no above-neutral coach realizes below the neutral coach where the era permits differentiation"
+        ],
+        "regressionRisk": "a league-wide defensive lift if the centring were wrong. Guarded by D7 and D9 and measured on the neutral cell."
+      },
+      {
+        "changeId": "c2-03",
+        "failureClustersAddressed": [
+          "DEFENSIVE_SUPPRESSION"
+        ],
+        "module": "possession engine core",
+        "file": "src/v3/possession/game.js",
+        "beforeBehavior": "helpCommitment was computed for every action family and carried on every shot, but consumed only for turnoverRisk and, in one family, for shot quality. Coach help intent therefore correlated with opponent scoring at Spearman +0.29 — the wrong sign — and moved opponent points per possession by 0.014 across a ladder spanning help 4 to 9.",
+        "afterBehavior": "shot make probability carries a help term reading the coach's scheme differential, with a small additional coefficient on interior shots because help arrives at the rim before the arc. The shift is clamped to 0.030.",
+        "rootCause": "the mechanic was designed and plumbed but never consumed. Restoring the coach's realized help value in c2-02 alone changed nothing measurable, because nothing downstream read it.",
+        "mechanicalRationale": "help defence degrades the quality of the look it contests. That is the only claim the term makes, and it reads the coaching differential rather than the absolute help value so a neutral coach contributes exactly zero.",
+        "entityHardcodeCheck": "no entity identifier appears.",
+        "flatBonusCheck": "zero for a neutral coach on any roster, so the league mean does not move.",
+        "parameterChange": "none. HELP_SUPPRESSION is a module constant.",
+        "dataChange": "none",
+        "versionChange": [
+          "possessionEngineVersion 1.1.0 -> 1.2.0"
+        ],
+        "tests": [
+          "tests/v6c4c1-candidate2.test.js — the defensive ladder is monotonically decreasing and material"
+        ],
+        "regressionRisk": "universal offence suppression. Guarded by D9 and measured on combined score."
+      }
+    ],
+    "changedFiles": [
+      "src/v3/possession/game.js",
+      "src/v3/defense/scheme.js"
+    ],
+    "parameterChanges": 0,
+    "dataChanges": 0,
+    "entityHardcodes": 0,
+    "flatBonuses": 0,
+    "versionsBumped": {
+      "possessionCalibrationVersion": "1.2.0",
+      "possessionEngineVersion": "1.2.0",
+      "defensiveMatchupVersion": "1.2.0"
+    },
+    "versionsDeliberatelyUnchanged": {
+      "actionLibraryVersion": "no action model changed — only how a created look is credited",
+      "zoneResolutionVersion": "zone resolution is untouched",
+      "opportunityAllocationVersion": "allocation is untouched",
+      "coachAdjustmentVersion": "the in-game adjustment engine is untouched"
+    },
+    "changeManifestHash": "3262101ed6e7ddf364f843307c2760e2ca060b86ced4f97e3a48d81ed4865b97"
+  },
+  "outputHash": "08a4776fb8071a8ab4acd218dbcc54b09a85ff35a36e1a600b16a58cadb846e2"
+}

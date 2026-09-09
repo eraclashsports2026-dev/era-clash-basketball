@@ -1,0 +1,25 @@
+{
+  "artifact": "candidate3-preview-feedback",
+  "generatedBy": "phase 6C5 deployed verification",
+  "data": {
+    "route": "POST /api/feedback kind=preview (existing route, existing rate limits, anonymous uid)",
+    "shape": {
+      "ratings1to5": [
+        "resultBelievability",
+        "teamIdentityFeltAccurate",
+        "coachDifferenceFeltMeaningful",
+        "eraStyleFeltMeaningful",
+        "postgameExplanationHelpful"
+      ],
+      "wouldRematchOrShare": "boolean",
+      "issueCategory": "existing category set + none",
+      "optionalComment": "\u2264500 chars, cleaned",
+      "resultId": "pv_ required"
+    },
+    "storage": "preview-feedback:log + preview-feedback:categories (KV) \u2014 never production feedback namespaces",
+    "verified": {
+      "deployedApi": "204 accepted; duplicate suppressed (setNX); non-preview id 400; oversized comment 400; injection 400",
+      "deployedUi": "form renders under Postgame on pv_ results only; submit \u2192 204 \u2192 'preview feedback recorded'"
+    }
+  }
+}

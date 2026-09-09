@@ -1,0 +1,169 @@
+{
+  "artifact": "account-rls-live-verification",
+  "phase": "9B.1 — real accounts, cloud career, My EraClash",
+  "verifiedAt": "2026-09-04T18:47:48.147Z",
+  "method": "Read through the Supabase connector against the owner's live project, plus unauthenticated HTTP calls to its REST API. Not a simulation.",
+  "project": {
+    "ref": "lfybiphmqkiecfrqsfzt",
+    "region": "us-west-2",
+    "postgres": "17.6",
+    "status": "ACTIVE_HEALTHY",
+    "url": "https://lfybiphmqkiecfrqsfzt.supabase.co"
+  },
+  "migrationsApplied": [
+    {
+      "version": "0001_accounts",
+      "appliedAt": "2026-09-04T18:34:33.719Z"
+    },
+    {
+      "version": "0002_accounts_hardening",
+      "appliedAt": "2026-09-04T18:45:55.545Z"
+    }
+  ],
+  "rowLevelSecurity": {
+    "profiles": "ENABLED",
+    "saved_clashes": "ENABLED",
+    "result_claims": "ENABLED",
+    "schema_migrations": "ENABLED"
+  },
+  "policies": [
+    {
+      "table": "profiles",
+      "name": "profiles_select_own",
+      "cmd": "SELECT",
+      "roles": [
+        "authenticated"
+      ],
+      "using": "user_id = auth.uid()"
+    },
+    {
+      "table": "profiles",
+      "name": "profiles_update_own",
+      "cmd": "UPDATE",
+      "roles": [
+        "authenticated"
+      ],
+      "using": "user_id = auth.uid()",
+      "withCheck": "user_id = auth.uid()"
+    },
+    {
+      "table": "saved_clashes",
+      "name": "saved_clashes_select_own",
+      "cmd": "SELECT",
+      "roles": [
+        "authenticated"
+      ],
+      "using": "user_id = auth.uid()"
+    },
+    {
+      "table": "result_claims",
+      "name": "result_claims_select_own",
+      "cmd": "SELECT",
+      "roles": [
+        "authenticated"
+      ],
+      "using": "user_id = auth.uid()"
+    }
+  ],
+  "views": {
+    "career_summary": "security_invoker=true",
+    "career_by_mode": "security_invoker=true",
+    "career_streak": "security_invoker=true"
+  },
+  "triggers": {
+    "on_auth_user_created": "auth.users",
+    "profiles_touch_updated_at": "public.profiles"
+  },
+  "effectivePrivileges": {
+    "anon": "none on any user-owned object or view",
+    "authenticated": {
+      "profiles": "SELECT + UPDATE(display_name, avatar_url) only",
+      "saved_clashes": "SELECT",
+      "result_claims": "SELECT",
+      "career_views": "SELECT"
+    },
+    "finding": "0001 revoked anon but left Supabase's blanket default grants on authenticated (INSERT, UPDATE, DELETE, TRUNCATE, REFERENCES, TRIGGER). Row level security had already blocked every reachable write, but TRUNCATE is not subject to RLS and the grants contradicted 0001's own stated contract. 0002 narrowed them.",
+    "defaultPrivileges": "revoked for anon and authenticated, so a table added later is closed rather than open",
+    "functionExecute": {
+      "handle_new_user": "postgres, service_role only",
+      "touch_updated_at": "postgres, service_role only"
+    },
+    "functionSearchPath": {
+      "handle_new_user": "public",
+      "touch_updated_at": "public"
+    }
+  },
+  "unauthenticatedProbes": [
+    {
+      "call": "GET /rest/v1/profiles",
+      "status": 401
+    },
+    {
+      "call": "GET /rest/v1/saved_clashes",
+      "status": 401
+    },
+    {
+      "call": "GET /rest/v1/result_claims",
+      "status": 401
+    },
+    {
+      "call": "GET /rest/v1/career_summary",
+      "status": 401
+    },
+    {
+      "call": "GET /rest/v1/schema_migrations",
+      "status": 401
+    },
+    {
+      "call": "POST /rest/v1/rpc/handle_new_user",
+      "status": 404,
+      "note": "no longer published: EXECUTE revoked"
+    },
+    {
+      "call": "POST /rest/v1/saved_clashes (forged row)",
+      "status": 401
+    }
+  ],
+  "supabaseSecurityAdvisors": {
+    "before": [
+      "rls_enabled_no_policy (INFO, intended)",
+      "function_search_path_mutable (WARN)",
+      "anon_security_definer_function_executable (WARN)",
+      "authenticated_security_definer_function_executable (WARN)"
+    ],
+    "after": [
+      "rls_enabled_no_policy (INFO, intended: schema_migrations is service-role only)"
+    ],
+    "warningsRemaining": 0
+  },
+  "authProviders": {
+    "email": "enabled",
+    "google": "disabled (deferred by the owner; the two are independent in the product)",
+    "signupsAllowed": true,
+    "emailAutoconfirm": false,
+    "passwordProvider": "not used — the product has no password field"
+  },
+  "endToEndStillPending": "A real sign-in, save and claim needs an emailed one-time code. The wiring either side of it is measured on the deployment (29/29 gates); the session itself is what the owner exercises when they test.",
+  "keyIncidents": [
+    {
+      "what": "VITE_CLOUD_ACCOUNTS_ENABLED was \"TRUE\"",
+      "effect": "a strict === \"true\" comparison read it as off, so accounts stayed disabled while every value was correct",
+      "fix": "flagOn() accepts true/1/yes/on in any case with surrounding whitespace, on both the client and the server"
+    },
+    {
+      "what": "the anon key was a masked paste: \"eyJhbGci\" plus 200 bullet characters",
+      "effect": "208 characters long, so a length > 40 check accepted it; every auth call would have failed with an unhelpful vendor error",
+      "fix": "keyShapeOk() requires a real credential shape and rejects any non-printable-ASCII character"
+    },
+    {
+      "what": "VITE_SUPABASE_ANON_KEY held an sb_secret_ SECRET key, which shipped in the browser bundle",
+      "effect": "a secret key bypasses row level security entirely, so any reader of that bundle had full database access. Exposure was limited to holders of a Wave 2 preview credential; production was never affected. The key was rotated and now returns 401.",
+      "fix": "looksLikeSecretKey() detects both the sb_secret_ prefix and a legacy service_role JWT by decoding its role claim; keyShapeOk() refuses either for the browser at any length; cloudAccountsStatus() reports ANON_KEY_IS_A_SECRET_KEY; and account:security-qa fails the build if any bundle contains a secret by shape rather than by variable name"
+    }
+  ],
+  "rotationVerified": {
+    "leakedSecretRejected": true,
+    "httpStatus": 401,
+    "verifiedAt": "2026-09-04T19:56:40.487Z"
+  }
+}

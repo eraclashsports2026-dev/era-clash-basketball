@@ -1,0 +1,49 @@
+<!doctype html><meta charset="utf-8"><title>EraClash Basketball — theme comparison</title>
+<style>
+body{margin:0;background:#161616;color:#eee;font:14px/1.5 system-ui,sans-serif}
+header{padding:14px 18px;border-bottom:1px solid #333;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+h1{font-size:16px;margin:0;letter-spacing:1px}
+nav button,.modes button{background:#222;color:#ddd;border:1px solid #444;border-radius:8px;padding:8px 12px;cursor:pointer;min-height:40px}
+nav button[aria-pressed=true],.modes button[aria-pressed=true]{background:#333;border-color:#999;color:#fff}
+main{padding:16px 18px;display:grid;gap:16px}
+.row{display:grid;gap:12px}
+.row.side{grid-template-columns:repeat(2,minmax(0,1fr))}
+.row.tabs{grid-template-columns:minmax(0,1fr)}
+figure{margin:0;background:#000;border:1px solid #333;border-radius:8px;overflow:hidden}
+figure img{display:block;width:100%;height:auto}
+figcaption{padding:6px 10px;font-weight:700;color:#ddd;background:#111}
+.overlay{position:relative}.overlay img.b{position:absolute;inset:0;opacity:.5}
+table{border-collapse:collapse;width:100%;font-size:13px}td,th{border-bottom:1px solid #333;padding:6px 8px;text-align:left}
+.links a{color:#9cc3ff}
+.note{color:#aaa;font-size:12px}
+</style>
+<header><h1>ERACLASH BASKETBALL · THEME COMPARISON</h1>
+<nav id="fx"></nav><nav id="vp"></nav><div class="modes" id="modes"></div></header>
+<main>
+<section id="view"></section>
+<section><h2 style="font-size:14px">Direct preview links</h2><div class="links" id="links"></div><p class="note">Owner-only. The lab is compiled out of production and hidden from testers. No automatic recommendation is made anywhere on this page.</p></section>
+<section><h2 style="font-size:14px">Objective metrics</h2><div id="metrics"></div></section>
+</main>
+<script>
+const THEMES=[{"id":"fracture-core","label":"CONTROL — Fracture Core"},{"id":"night-court","label":"OPTION A — Night Court Editorial"},{"id":"modern-court","label":"OPTION B — Modern Court Light"},{"id":"hardwood-luxe","label":"OPTION C — Hardwood Luxe"}];
+const FIXTURES=[{"id":"lobby","label":"Play Lobby"},{"id":"empty","label":"Empty Chaos Arena"},{"id":"roll2","label":"Populated Roll 2"},{"id":"coach","label":"Final Coach State"},{"id":"result","label":"Result Dock"},{"id":"postgame","label":"Full Postgame"}];
+const VIEWPORTS=["1536x1024","1440x900","1280x800","1024x768","768x1024","430x932","390x844","375x812"];
+const METRICS={"color":[{"theme":"fracture-core","dominantPct":62.8,"secondaryPct":25.5,"decorativeAccentPct":2,"withinTargets":{"dominant":true,"secondary":true,"accent":false},"flags":["PLATINUM_UNDERREPRESENTED"],"note":"Averages across the six fixtures at 1536×1024; masked portrait zones excluded; anti-aliased pixels beyond the tolerance are 'unclassified' and never counted against a theme."},{"theme":"night-court","dominantPct":56.3,"secondaryPct":32.3,"decorativeAccentPct":1.9,"withinTargets":{"dominant":true,"secondary":true,"accent":false},"flags":["PLATINUM_UNDERREPRESENTED"],"note":"Averages across the six fixtures at 1536×1024; masked portrait zones excluded; anti-aliased pixels beyond the tolerance are 'unclassified' and never counted against a theme."},{"theme":"modern-court","dominantPct":27.1,"secondaryPct":61.7,"decorativeAccentPct":1.8,"withinTargets":{"dominant":false,"secondary":false,"accent":false},"flags":["PLATINUM_UNDERREPRESENTED"],"note":"Averages across the six fixtures at 1536×1024; masked portrait zones excluded; anti-aliased pixels beyond the tolerance are 'unclassified' and never counted against a theme."},{"theme":"hardwood-luxe","dominantPct":48.2,"secondaryPct":40.4,"decorativeAccentPct":1.8,"withinTargets":{"dominant":false,"secondary":false,"accent":false},"flags":[],"note":"Averages across the six fixtures at 1536×1024; masked portrait zones excluded; anti-aliased pixels beyond the tolerance are 'unclassified' and never counted against a theme."}],"access":{"fracture-core":{"factors":{"nearBlackAreaPct":62.8,"lowContrastSecondaryShare":0,"glowCount":6,"glowNearText":0,"borderedPer100kPx":3.683,"longParagraphsOnDark":0,"saturatedAccentPct":2,"capsShare":0.257},"thresholdHits":1,"risk":"MODERATE","thresholds":{"nearBlackAreaPct":55,"lowContrastSecondaryShare":0.05,"glowCount":6,"borderedPer100kPx":4,"longParagraphsOnDark":2,"saturatedAccentPct":12}},"night-court":{"factors":{"nearBlackAreaPct":56.3,"lowContrastSecondaryShare":0,"glowCount":6,"glowNearText":0,"borderedPer100kPx":3.683,"longParagraphsOnDark":0,"saturatedAccentPct":1.9,"capsShare":0.257},"thresholdHits":1,"risk":"MODERATE","thresholds":{"nearBlackAreaPct":55,"lowContrastSecondaryShare":0.05,"glowCount":6,"borderedPer100kPx":4,"longParagraphsOnDark":2,"saturatedAccentPct":12}},"modern-court":{"factors":{"nearBlackAreaPct":0,"lowContrastSecondaryShare":0,"glowCount":6,"glowNearText":0,"borderedPer100kPx":3.683,"longParagraphsOnDark":0,"saturatedAccentPct":1.8,"capsShare":0.257},"thresholdHits":0,"risk":"LOW","thresholds":{"nearBlackAreaPct":55,"lowContrastSecondaryShare":0.05,"glowCount":6,"borderedPer100kPx":4,"longParagraphsOnDark":2,"saturatedAccentPct":12}},"hardwood-luxe":{"factors":{"nearBlackAreaPct":48.2,"lowContrastSecondaryShare":0,"glowCount":6,"glowNearText":0,"borderedPer100kPx":3.683,"longParagraphsOnDark":0,"saturatedAccentPct":1.8,"capsShare":0.257},"thresholdHits":0,"risk":"LOW","thresholds":{"nearBlackAreaPct":55,"lowContrastSecondaryShare":0.05,"glowCount":6,"borderedPer100kPx":4,"longParagraphsOnDark":2,"saturatedAccentPct":12}}},"dom":{"passed":108,"checks":108},"competitive":[{"theme":"fracture-core","classification":"DISTINCT WITH RISKS"},{"theme":"night-court","classification":"CLEARLY DISTINCT"},{"theme":"modern-court","classification":"CLEARLY DISTINCT"},{"theme":"hardwood-luxe","classification":"DISTINCT WITH RISKS"}]};
+const BASE="";
+let fixture="lobby",vp="1536x1024",mode="tabs",tab=THEMES[0].id,overlayA=THEMES[0].id,overlayB=THEMES[1].id;
+const shot=(t)=>`screens/${t}/${fixture}-${vp}.png`;
+const btn=(el,items,cur,set)=>{el.innerHTML="";for(const it of items){const b=document.createElement("button");b.textContent=it.label||it;b.setAttribute("aria-pressed",String((it.id||it)===cur));b.onclick=()=>{set(it.id||it);render()};el.appendChild(b);}};
+function render(){
+ btn(document.getElementById("fx"),FIXTURES,fixture,(v)=>fixture=v);
+ btn(document.getElementById("vp"),VIEWPORTS,vp,(v)=>vp=v);
+ btn(document.getElementById("modes"),[{id:"tabs",label:"Theme tabs"},{id:"side",label:"Side by side"},{id:"overlay",label:"Overlay"}],mode,(v)=>mode=v);
+ const v=document.getElementById("view");
+ if(mode==="tabs"){v.innerHTML=`<div class="row tabs"><nav id="tt"></nav><figure><figcaption>${THEMES.find(t=>t.id===tab).label}</figcaption><img src="${shot(tab)}"></figure></div>`;btn(v.querySelector("#tt"),THEMES,tab,(x)=>tab=x);}
+ else if(mode==="side"){v.innerHTML=`<div class="row side">${THEMES.map(t=>`<figure><figcaption>${t.label}</figcaption><img src="${shot(t.id)}"></figure>`).join("")}</div>`;}
+ else{v.innerHTML=`<div class="row tabs"><div><nav id="oa"></nav> over <nav id="ob" style="display:inline-flex;gap:6px"></nav> <label>opacity <input id="op" type="range" min="0" max="100" value="50"></label></div><figure class="overlay"><figcaption>${THEMES.find(t=>t.id===overlayA).label} over ${THEMES.find(t=>t.id===overlayB).label}</figcaption><div style="position:relative"><img src="${shot(overlayB)}"><img class="b" id="topimg" src="${shot(overlayA)}"></div></figure></div>`;btn(v.querySelector("#oa"),THEMES,overlayA,(x)=>overlayA=x);btn(v.querySelector("#ob"),THEMES,overlayB,(x)=>overlayB=x);v.querySelector("#op").oninput=(e)=>{document.getElementById("topimg").style.opacity=e.target.value/100};}
+ document.getElementById("links").innerHTML=THEMES.map(t=>`<div>${t.label}: <a href="${BASE}/dev/basketball-theme-lab?theme=${t.id}&fixture=${fixture}">${BASE||"<preview base>"}/dev/basketball-theme-lab?theme=${t.id}&fixture=${fixture}</a></div>`).join("");
+ const m=METRICS;const rows=THEMES.map(t=>{const c=(m.color||[]).find(x=>x.theme===t.id)||{};const a=(m.access||{})[t.id]||{};const k=(m.competitive||[]).find(x=>x.theme===t.id)||{};return `<tr><td>${t.label}</td><td>${c.dominantPct??"—"}% / ${c.secondaryPct??"—"}% / ${c.decorativeAccentPct??"—"}%</td><td>${(c.flags||[]).join(", ")||"none"}</td><td>${a.risk??"—"} (${a.thresholdHits??"—"} factors)</td><td>${k.classification??"—"}</td></tr>`}).join("");
+ document.getElementById("metrics").innerHTML=`<table><tr><th>Theme</th><th>Dominant / secondary / decorative accent</th><th>Colour flags</th><th>Fatigue risk</th><th>Differentiation</th></tr>${rows}</table><p class="note">DOM invariant: ${m.dom?`${m.dom.passed}/${m.dom.checks} checks`:"—"}. Owner-judgment fields are on the scorecard and are intentionally blank.</p>`;
+}
+render();
+</script>

@@ -1,0 +1,14 @@
+{
+  "artifact": "challenge-seeded-checks",
+  "release": "ui/light-court-release-candidate",
+  "origin": "https://era-clash-basketball-git-ui-light-court-releas-343e8b-era-clash.vercel.app",
+  "recordedAt": "2026-09-09T20:27:23Z",
+  "checks": [
+    { "name": "a seeded live challenge code was provided (LIVE_CHALLENGE_CODE)", "state": "not yet verified" },
+    { "name": "a live expired code was provided (LIVE_EXPIRED_CODE)", "state": "not yet verified" },
+    { "name": "a live revoked code was provided (LIVE_REVOKED_CODE)", "state": "not yet verified" }
+  ],
+  "whyNotVerified": "The live preview has zero challenge rows and the provider refuses anonymous sign-up, so a seeded code needs a signed-in fixture account. The prepared procedure (scripts/ui-release/liveChallengeFixtures.mjs) signs in three pre-created fixture accounts by password grant, plays three Chaos Clashes, creates three governed challenges, revokes one, and the fixture SQL moves one expiry into the past; cleanup deletes every row those accounts created and the accounts themselves. The SQL that creates the fixture accounts in auth.users on the live preview database was refused by the session's permission classifier, and it was not worked around. Nothing was created: auth.users stayed at 2 (0 anonymous), challenges 0, attempts 0, secrets 0.",
+  "ownerDecisionNeeded": "Authorise the fixture-account SQL on the preview project (or run the three seeded checks yourself by creating a challenge from your own account and pasting the code into LIVE_CHALLENGE_CODE). Not marked passed by history: the 8/11 guest-visible checks did pass on this RC.",
+  "neverDone": ["no fake public users left on the preview", "no ordinary user reset", "QA-fixture-unrated rule untouched"]
+}

@@ -1,0 +1,31 @@
+{
+  "artifact": "candidate3-preview-fallback-drill-request",
+  "generatedBy": "node scripts/c5/deployedQa.mjs fallback",
+  "baseUrl": "https://era-clash-basketball-ddehacso6-era-clash.vercel.app",
+  "data": {
+    "passed": 4,
+    "failed": 0,
+    "gates": [
+      {
+        "name": "injected preview failure still returns a valid result",
+        "ok": true,
+        "detail": "Gold 103-98"
+      },
+      {
+        "name": "fallback result is production, not preview",
+        "ok": true,
+        "detail": "engine v3-possession id jgmdmzjknc"
+      },
+      {
+        "name": "no partial preview record persisted (production id resolves in production namespace)",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "next request returns to Candidate 3",
+        "ok": true,
+        "detail": ""
+      }
+    ]
+  }
+}

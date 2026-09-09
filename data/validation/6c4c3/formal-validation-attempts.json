@@ -1,0 +1,224 @@
+{
+  "artifact": "formal-validation-attempts",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run exec:c3-attempts",
+  "generatedAt": "2026-08-27T21:05:10.338Z",
+  "gitCommit": "a7d1606c4e134e9d8307b873c335bdfb8c7df237",
+  "branch": "phase-6c4c3-candidate2-formal-execution",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "formalValidationAttemptRegistryVersion": "3.0.0",
+    "supersedesRegistry": {
+      "artifact": "data/validation/6c4b2r/formal-validation-attempts.json",
+      "version": "4.0.0",
+      "priorAttemptsCarriedUnchanged": 4,
+      "notOverwritten": true
+    },
+    "attempts": [
+      {
+        "attemptId": "attempt-1",
+        "candidateId": "Candidate 0",
+        "candidateCommit": "4bc1cb878771ee5c7316e3a1e90e84290c135077",
+        "candidateCoreHash": "58c5fb6974e694c29f87934ab107ff47ce32963a9c0695e36f941c2a70ae6683",
+        "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+        "calibrationVersion": "1.0.0",
+        "holdoutId": "historical-holdout-v3",
+        "holdoutManifestHash": "9e799c4bfc84eedf09c8f46b5a983dff0882e908404e6326cc1e8c874d6335fc",
+        "policyHash": "594ec258891eebfcd11cdab9190a59f944c331fc4b219261b5fc076312302bf7",
+        "seedHash": null,
+        "accessEventId": 1,
+        "accessCount": 1,
+        "runStatus": "COMPLETE",
+        "formalVerdict": "FAIL",
+        "failureClass": "NONIDENTIFIABLE_MEASUREMENT_SURFACE",
+        "startedAt": "2026-08-26T20:19:51.371Z",
+        "completedAt": "2026-08-26T20:19:51.371Z",
+        "resultHash": "07ee55991c291f93ad90ffdf0bf509e38c58ef077aa20d1320b9a9bebe226a55",
+        "verdictHash": "0df2faddccc70647207eaa4c9d5006b07bc9b74b3be68c6fd9d581b5b1442cc1",
+        "supersedes": null,
+        "immutable": true,
+        "note": "Candidate 0 on a measurement surface that could not identify offence from defence. The failure was the surface, not only the candidate."
+      },
+      {
+        "attemptId": "attempt-2",
+        "candidateId": "Candidate 0",
+        "candidateCommit": "4bc1cb878771ee5c7316e3a1e90e84290c135077",
+        "candidateCoreHash": "58c5fb6974e694c29f87934ab107ff47ce32963a9c0695e36f941c2a70ae6683",
+        "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+        "calibrationVersion": "1.0.0",
+        "holdoutId": "historical-holdout-v4",
+        "holdoutManifestHash": "5abab14d3b1674a917fa1084cd7e16c15e315896f45229f1237dca4c4f32213c",
+        "policyHash": "6b607348f42ba4a4dc7c155c05944a80c87ccf04c92761993dc32370f8f9ec12",
+        "seedHash": "44262434aea65e22752285d57ed65fac6762fb64a5020d36119e38394c3604b0",
+        "accessEventId": 1,
+        "accessCount": 1,
+        "runStatus": "COMPLETE",
+        "formalVerdict": "FAIL",
+        "failureClass": "OBSERVABLE_HISTORICAL_TRAIT_FIDELITY_FAILURE",
+        "startedAt": "2026-08-26T23:04:12.541Z",
+        "completedAt": "2026-08-26T23:04:12.541Z",
+        "resultHash": "abcc55ff39e1e85cd926925551e3133ca87b003735bef130c06a4360ee34d5e4",
+        "verdictHash": "54b23207fe2ee7fab5f4faef308295041d0dba57b3ad41a422ff46b66b473ed1",
+        "supersedes": "attempt-1",
+        "immutable": true,
+        "note": "A legitimate rejection of Candidate 0 on a repaired, identifiable surface: twelve trait hard failures, eight of them substantive. This is what Candidate 1 was built to repair."
+      },
+      {
+        "attemptId": "attempt-3",
+        "candidateId": "Candidate 1",
+        "candidateCommit": "c370182bb805cd068427283ce2b45a7eda725d1c",
+        "candidateCoreHash": "de57e1a96e1fd1450d1aea9c5463b0138a56d77bbf58c748ba042e6f78f5c94d",
+        "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+        "calibrationVersion": "1.1.0",
+        "holdoutId": "historical-holdout-v5",
+        "holdoutManifestHash": "2ecaf7dbbc4338446d971af6954b46a9924f29fb8052ba044fc83fcf5ebcbcff",
+        "policyHash": "64abec44451702338af814f388bcc16748df490e4e0a8b7fb0dfb2e6196a6cc1",
+        "seedHash": "d288e8c5754a04f8053b6a29b5892f224bb981c181b95e1a01499a33bf4564c5",
+        "accessEventId": 1,
+        "accessCount": 1,
+        "runStatus": "COMPLETE",
+        "formalVerdict": "HISTORICAL_HOLDOUT_V5_FAIL",
+        "failureClass": "OBSERVABLE_DEFENSIVE_SUPPRESSION_AND_ASSISTED_OFFENCE_TRAIT_FAILURE",
+        "startedAt": null,
+        "completedAt": null,
+        "resultHash": "0140e9ad8d0e9ef08683c491d041e0cdbc812db24fa9a65ad42848cc7fedb370",
+        "verdictHash": null,
+        "supersedes": "attempt-2",
+        "immutable": true,
+        "blockedBy": null,
+        "note": "Registered and fully prepared: every V5 hash cross-checks between its producing artifact, the seal and the Phase 6C4B2 package, and the transactional dry run passed 30 of 30 checks. NOT opened, because the second-stage package is unusable and the phase brief forbids consuming Historical V5 while that is known. The set remains SEALED_UNREAD at access 0 and is available unchanged to a future execution phase.",
+        "resultArtifact": "data/validation/6c4b2r/historical-v5-formal-results.json"
+      },
+      {
+        "attemptId": "attempt-4",
+        "candidateId": "Candidate 1",
+        "candidateCommit": "c370182bb805cd068427283ce2b45a7eda725d1c",
+        "candidateCoreHash": "de57e1a96e1fd1450d1aea9c5463b0138a56d77bbf58c748ba042e6f78f5c94d",
+        "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+        "calibrationVersion": "1.1.0",
+        "holdoutId": "synthetic-stress-holdout-v2",
+        "holdoutManifestHash": "71267875cbf69a9ffa2bd420a2f4bb87437ecb78d6ca2029e7b6826759dbcd19",
+        "policyHash": null,
+        "seedHash": null,
+        "accessEventId": null,
+        "accessCount": 0,
+        "runStatus": "NOT_STARTED",
+        "formalVerdict": "NOT_OPENED",
+        "failureClass": null,
+        "startedAt": null,
+        "completedAt": null,
+        "resultHash": null,
+        "verdictHash": null,
+        "supersedes": null,
+        "immutable": false,
+        "blockedBy": "historical-holdout-v5 has not returned PASS",
+        "note": "Never opened, and cannot be: its fixtures, guardrail policy and seal are frozen, but it has no frozen seed set, no per-fixture sample volume, no verdict aggregation rule, no runner and no dry run. Its policyHash and seedHash are null here because no such frozen artifact exists to name.",
+        "resultArtifact": null
+      },
+      {
+        "attemptId": "attempt-5",
+        "candidateId": "Candidate 2",
+        "candidateCommit": "136b6446a8a65c7b9b551eed120cf0d4aa5078fd",
+        "candidateCoreHash": "3733b648f050a4f50f9dc3cb6ecf62fce419dd282f24c910b91e7b077d63711d",
+        "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+        "calibrationVersion": "1.2.0",
+        "holdoutId": "historical-holdout-v6",
+        "membershipHash": "5a728d98f644d4ae8f7b2d406615fa9125bf7aca77269f536f2a078b92e83d02",
+        "policyHash": "d433cddcd3af4294dc8468481b8b85702a7768e16878a1003c6567ddb22c5ae4",
+        "targetHash": "5d004698caa676407a279142517dc939503b7044ee2a46fbffc0edcefc2cd3f6",
+        "seedHash": "7f0b3ce38d104865d1c8b692e1472835dc315fc84be68862c2e50c3c407b8a09",
+        "accessEventId": "seq-1",
+        "accessCount": 1,
+        "runStatus": "COMPLETE",
+        "formalVerdict": "HISTORICAL_HOLDOUT_V6_FAIL",
+        "failureClass": "OBSERVABLE_HISTORICAL_TRAIT_FIDELITY_FAILURE",
+        "resultHash": "83461d3181ae384eb31872c3fb11977c683692ba5b172c3cbaecfb51456a3f02",
+        "verdictHash": "84fccef727067aeb614af2ac0a3e8c2f7500bcaadb5dc4e64a3d36d2ca667ac0",
+        "startedAt": "commit a7d1606c4e134e9d8307b873c335bdfb8c7df237",
+        "completedAt": "commit a7d1606c4e134e9d8307b873c335bdfb8c7df237",
+        "immutable": true,
+        "note": "opened exactly once under one access event; the verdict is final and the set is consumed"
+      },
+      {
+        "attemptId": "attempt-6",
+        "candidateId": "Candidate 2",
+        "candidateCommit": "136b6446a8a65c7b9b551eed120cf0d4aa5078fd",
+        "candidateCoreHash": "3733b648f050a4f50f9dc3cb6ecf62fce419dd282f24c910b91e7b077d63711d",
+        "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+        "calibrationVersion": "1.2.0",
+        "holdoutId": "synthetic-stress-holdout-v2",
+        "membershipHash": "71267875cbf69a9ffa2bd420a2f4bb87437ecb78d6ca2029e7b6826759dbcd19",
+        "policyHash": "f93847b4b35ca064572f2b7c97c451ee9f3109f34ea49f3742c5a677ea495946",
+        "targetHash": null,
+        "targetHashNote": "the synthetic set is structural: it has guardrails and thresholds, not historical targets. Null rather than zero.",
+        "seedHash": "cece58c06bcdb2cc09829d11c34f0c56a23ada26b4e511ca0d03583fd273b2c1",
+        "runnerHash": "9080a994fce64edbcf622426b7c0c45aff15b36193dab91f58c677dc23309993",
+        "accessEventId": null,
+        "accessCount": 0,
+        "runStatus": "NOT_OPENED",
+        "formalVerdict": "NOT_OPENED",
+        "failureClass": null,
+        "resultHash": null,
+        "verdictHash": null,
+        "startedAt": null,
+        "completedAt": null,
+        "immutable": false,
+        "note": "NOT_OPENED — Historical V6 HISTORICAL_HOLDOUT_V6_FAIL. A synthetic stress pass says nothing about a candidate that failed the historical stage, so the set stays sealed at access 0."
+      }
+    ],
+    "attemptCount": 6,
+    "completedAttempts": 4,
+    "openedHoldouts": [
+      "historical-holdout-v3",
+      "historical-holdout-v4",
+      "historical-holdout-v5",
+      "historical-holdout-v6"
+    ],
+    "notOpenedHoldouts": [
+      "synthetic-stress-holdout-v2",
+      "synthetic-stress-holdout-v2"
+    ],
+    "byCandidate": {
+      "Candidate 0": [
+        {
+          "holdoutId": "historical-holdout-v3",
+          "formalVerdict": "FAIL"
+        },
+        {
+          "holdoutId": "historical-holdout-v4",
+          "formalVerdict": "FAIL"
+        }
+      ],
+      "Candidate 1": [
+        {
+          "holdoutId": "historical-holdout-v5",
+          "formalVerdict": "HISTORICAL_HOLDOUT_V5_FAIL"
+        },
+        {
+          "holdoutId": "synthetic-stress-holdout-v2",
+          "formalVerdict": "NOT_OPENED"
+        }
+      ],
+      "Candidate 2": [
+        {
+          "holdoutId": "historical-holdout-v6",
+          "formalVerdict": "HISTORICAL_HOLDOUT_V6_FAIL"
+        },
+        {
+          "holdoutId": "synthetic-stress-holdout-v2",
+          "formalVerdict": "NOT_OPENED"
+        }
+      ]
+    },
+    "priorVerdictsUnchanged": true,
+    "recordedAtCommit": "a7d1606c4e134e9d8307b873c335bdfb8c7df237",
+    "pass": true,
+    "failedGates": [],
+    "registryHash": "ef969bb74a6336f046286c0fbb92fee381ff30f03a43cdd9a708361f1e9f156c"
+  },
+  "outputHash": "bebf9d9c268bb2d18bd53012c1cbc5f5e06ef90479034e4b67562f850f3f7147"
+}

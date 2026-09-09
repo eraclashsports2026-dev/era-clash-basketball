@@ -1,0 +1,138 @@
+// ── The ONE resolver: three token layers → one scoped stylesheet ─────────────
+// Every theme renders from the same DOM. Theme selection sets data-theme on the
+// document element; the generated stylesheet (src/theme/basketball-themes.css,
+// written by scripts/ui/build-theme-css.mjs from this module) supplies the
+// variables under that attribute. Without data-theme nothing here applies and
+// the product renders exactly as it did before Phase 9A.1.
+//
+// Two scopes per theme:
+//   html[data-theme="x"]                 → --ec-t-* (reading), root aliases, --ec-l-* (lobby)
+//   [data-theme="x"] .ec-arena-shell     → --ec-a-* (arena), which index.css declares on the shell
+import { BASKETBALL_THEMES, themeRootAliases } from "./basketballThemes.js";
+import { THEME_IDS, CANDIDATE_THEME_IDS, PRODUCTION_THEME_ID, PRODUCTION_THEME_NAME, ARENA_KEYS, LOBBY_KEYS, READING_KEYS, ROOT_ALIAS_KEYS, EDITORIAL_KEYS, CONTROL_THEME_ID } from "./themeTypes.js";
+import { MASTER_BRAND_VERSION } from "./masterBrandTokens.js";
+import { SEMANTIC_VERSION } from "./semanticTokens.js";
+
+// 1.1.0 (Phase 9A.2): the production hybrid, the editorial shell remap, the
+// brand-header scope, and applyTheme's default.
+export const THEME_RESOLVER_VERSION = "1.1.0";
+export { THEME_IDS, CANDIDATE_THEME_IDS, PRODUCTION_THEME_ID, PRODUCTION_THEME_NAME, CONTROL_THEME_ID };
+
+export const getTheme = (id) => BASKETBALL_THEMES[id] || null;
+export const isThemeId = (id) => THEME_IDS.includes(String(id));
+
+/** Every key present, no extras: a theme that forgets a token is a build error. */
+export const validateTheme = (theme) => {
+  const problems = [];
+  const check = (obj, keys, scope) => {
+    for (const k of keys) if (!(k in obj)) problems.push(`${theme.id}: missing ${scope} token "${k}"`);
+    for (const k of Object.keys(obj)) if (!keys.includes(k)) problems.push(`${theme.id}: unknown ${scope} token "${k}"`);
+  };
+  check(theme.arena, ARENA_KEYS, "arena");
+  check(theme.lobby, LOBBY_KEYS, "lobby");
+  check(theme.reading, READING_KEYS, "reading");
+  check(theme.editorial || {}, EDITORIAL_KEYS, "editorial");
+  const aliases = themeRootAliases(theme);
+  check(aliases, ROOT_ALIAS_KEYS, "root-alias");
+  for (const k of ["teamGold", "teamBlue", "coachViolet", "success", "danger"]) if (!theme.semantic?.[k]) problems.push(`${theme.id}: missing semantic ${k}`);
+  return problems;
+};
+
+/**
+ * The header's own tokens. The global navigation is a MASTER-BRAND surface —
+ * Brand Obsidian, metallic Platinum, Fracture Gold — in every shell and under
+ * every theme, so it is declared from master-brand constants and NOT copied
+ * from the theme's arena. Until the UI release candidate it copied the arena
+ * values, which was only ever correct because the arena happened to be dark;
+ * the Light Court arena is ivory-and-ink, and a header that followed it would
+ * have set ink text on an obsidian bar. These are the exact values the header
+ * rendered with before the arena changed, so the navigation is unchanged to the
+ * pixel. The Era Fracture underline stays the production divide.
+ */
+const BRAND_HEADER = Object.freeze({
+  "header": "rgba(3, 6, 11, 0.94)",
+  "text": "#E7EAF0",
+  "text-secondary": "#C9CFDA",
+  "text-muted": "#98A2B3",
+  "gold": "#E8B13C",
+  "gold-soft": "rgba(232, 177, 60, 0.14)",
+  "gold-line": "rgba(232, 177, 60, 0.45)",
+  "border": "rgba(231, 234, 240, 0.15)",
+  "border-strong": "rgba(231, 234, 240, 0.3)",
+  "panel-raised": "#172130",
+  "green": "#2FA96D",
+});
+const brandHeaderTokens = (t) => ({ ...BRAND_HEADER, fracture: t.arena.fracture });
+
+const decl = (prefix, obj) => Object.entries(obj).map(([k, v]) => `  ${prefix}${k}: ${v};`).join("\n");
+
+/** The CSS for one theme. */
+export const themeCssFor = (id) => {
+  const t = getTheme(id);
+  if (!t) throw new Error(`unknown theme ${id}`);
+  const problems = validateTheme(t);
+  if (problems.length) throw new Error(problems.join("\n"));
+  return [
+    `/* ── ${t.label} (${t.role}) ─────────────────────────────────── */`,
+    `html[data-theme="${id}"] {`,
+    decl("--ec-t-", t.reading),
+    decl("--", themeRootAliases(t)),
+    decl("--ec-l-", t.lobby),
+    `  color-scheme: ${t.secondaryIsLight || id === "modern-court" ? "light" : "dark"};`,
+    `}`,
+    `html[data-theme="${id}"] .ec-arena-shell {`,
+    decl("--ec-a-", t.arena),
+    `}`,
+    // Phase 9A.2 — reading surfaces built from arena names (membership, fantasy,
+    // mode information, the account gate's page) get reading values here. Same
+    // element as .ec-arena-shell, declared later, so it wins by order.
+    `html[data-theme="${id}"] .ec-editorial-shell {`,
+    decl("--ec-a-", t.editorial),
+    `}`,
+    // The global header is a MASTER-BRAND surface in every shell: obsidian,
+    // platinum, gold. It re-declares the arena names it reads so an editorial
+    // page cannot lighten it.
+    `html[data-theme="${id}"] .ec-brand-header {`,
+    decl("--ec-a-", brandHeaderTokens(t)),
+    `}`,
+  ].join("\n");
+};
+
+/** The whole stylesheet: a header, then every theme in THEME_IDS order. */
+export const themeCss = () => [
+  `/* GENERATED by scripts/ui/build-theme-css.mjs from src/theme/basketballThemes.js — do not edit by hand.`,
+  `   master brand ${MASTER_BRAND_VERSION} · semantic ${SEMANTIC_VERSION} · resolver ${THEME_RESOLVER_VERSION}`,
+  `   Applies only under html[data-theme]; the default product is untouched. */`,
+  ...THEME_IDS.map(themeCssFor),
+  "",
+].join("\n");
+
+/**
+ * Apply a theme to the document. Phase 9A.2: the product applies the PRODUCTION
+ * theme at startup (src/main.jsx); the lab applies a candidate for comparison
+ * and restores the production theme on unmount. `null` restores the default
+ * product theme; `false` removes the attribute (the pre-9A.2 render).
+ */
+export const applyTheme = (id, root = typeof document !== "undefined" ? document.documentElement : null) => {
+  if (!root) return false;
+  if (id === false) { delete root.dataset.theme; return true; }
+  if (id == null) { root.dataset.theme = PRODUCTION_THEME_ID; return true; }
+  if (!isThemeId(id)) return false;
+  root.dataset.theme = id;
+  return true;
+};
+
+/** A flat, auditable token table for a theme — what the artifacts record. */
+export const themeTokenTable = (id) => {
+  const t = getTheme(id);
+  return {
+    id, label: t.label, role: t.role, character: t.character, families: t.families, contexts: t.contexts || null, semantic: t.semantic,
+    tokens: {
+      arena: Object.fromEntries(Object.entries(t.arena).map(([k, v]) => [`--ec-a-${k}`, v])),
+      lobby: Object.fromEntries(Object.entries(t.lobby).map(([k, v]) => [`--ec-l-${k}`, v])),
+      reading: Object.fromEntries(Object.entries(t.reading).map(([k, v]) => [`--ec-t-${k}`, v])),
+      editorial: Object.fromEntries(Object.entries(t.editorial).map(([k, v]) => [`.ec-editorial-shell --ec-a-${k}`, v])),
+      rootAliases: Object.fromEntries(Object.entries(themeRootAliases(t)).map(([k, v]) => [`--${k}`, v])),
+    },
+  };
+};

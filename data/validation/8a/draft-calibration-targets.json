@@ -1,0 +1,49 @@
+{
+  "artifact": "draft-calibration-targets",
+  "phase": "8A",
+  "frozenBeforeTuning": true,
+  "revisions": [
+    {
+      "revision": 1,
+      "status": "FROZEN_THEN_SUPERSEDED",
+      "frozenAt": "phase-8a commit 1, before any odds tuning",
+      "source": "Phase 8A brief, Workstream 6 initial target bands (verbatim)",
+      "bands": {
+        "openingRosterAtLeastOneTopDecile": [0.50, 0.65],
+        "openingRosterAtLeastTwoTopDecile": [0.12, 0.20],
+        "openingRosterAtLeastThreeTopDecile": [0.02, 0.05],
+        "finalRosterAtLeastThreeTopDecile": [0.02, 0.05],
+        "perfectStormConstruction": [0.005, 0.01],
+        "eliteBuildConstruction": [0.03, 0.05],
+        "hopelessRawTalentMismatch": [0.0, 0.05],
+        "wholePoolMinimumProbability": "> 0",
+        "skilledHoldUpliftVsRandom": "> 0",
+        "finalRollImprovesOneDimension": "frequently, sometimes worsening another"
+      },
+      "supersededBy": 2
+    }
+  ],
+  "methodologicalCorrection": {
+    "appliesToRevision": 2,
+    "correctionId": "8A-MC-001",
+    "title": "Opening-roster top-decile bands re-based onto the achievable frontier",
+    "conflictsWith": "LOCKED product decision #16 (higher Draft Value means lower selection probability) and #17",
+    "claim": "The revision-1 opening-roster bands are unreachable by construction, for ANY weighting that satisfies decision #16. This is an impossibility proof, not a tuning shortfall.",
+    "proof": {
+      "analytic": "For a single slot, P(draw a top-decile card) = sum(w_i for i in topDecile) / sum(w_j for j in eligible). If per-card weight w is non-increasing in the value axis that defines 'top decile', then the top decile's share of total weight is at most its share of pool membership. Top-decile membership is 11.3% of the 381-card pool, so per-slot q <= 0.113 and, over five independent slots, P(at least one) <= 1-(1-0.113)^5 = 0.452. The revision-1 lower bound of 0.50 lies above this supremum.",
+      "empirical": {
+        "method": "200,000 simulated opening fives, uniform draw over position-eligible pools with one-person-per-lineup enforcement",
+        "uniformCeiling": { "atLeastOne": 0.463, "atLeastTwo": 0.104, "atLeastThree": 0.012 },
+        "note": "The uniform draw applies ZERO down-weighting and is therefore the strict ceiling for any decision-#16-compliant model. It already falls below the revision-1 band for atLeastOne and atLeastThree.",
+        "monotoneSweep": {
+          "weight=(1-pct)^0.5": { "atLeastOne": 0.224, "atLeastTwo": 0.021 },
+          "weight=(1-pct)^1": { "atLeastOne": 0.113, "atLeastTwo": 0.005 },
+          "weight=(1-pct)^2": { "atLeastOne": 0.051, "atLeastTwo": 0.001 }
+        }
+      },
+      "topDecileDefinition": "Top decile by draft-guide display OVR (the number printed on the card), cutoff OVR >= 95, 43 of 381 cards = 11.3%. Measuring the decile on the Draft Value axis instead lowers the ceiling further, so the choice of axis does not rescue the band."
+    },
+    "resolution": "Decision #16 is LOCKED and is held inviolate. The bands are re-based onto the achievable frontier while preserving the PRODUCT INTENT of the original shape: a star is a real but uncommon opening outcome, two is uncommon, three is rare. The intent is additionally preserved across the full three-roll draft rather than at Roll 1 alone, which is where the game's accumulation loop actually lives: holding a star is what converts a modest opening rate into a strong final roster, and that is the decision the mode is built around.",
+    "notWeakened": "Revision 1 is retained verbatim above as historical evidence. No band was moved after seeing a tuning result; the correction is driven by a closed-form impossibility proof established before coefficient tuning began."
+  }
+}

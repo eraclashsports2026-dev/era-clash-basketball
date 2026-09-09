@@ -1,0 +1,228 @@
+{
+  "artifact": "historical-v6-formal-run",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run exec:record-v6",
+  "generatedAt": "2026-08-27T21:05:10.147Z",
+  "gitCommit": "a7d1606c4e134e9d8307b873c335bdfb8c7df237",
+  "branch": "phase-6c4c3-candidate2-formal-execution",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "historicalV6FormalRunVersion": "1.0.0",
+    "set": "historical-holdout-v6",
+    "runStatus": "COMPLETE",
+    "runHash": "83461d3181ae384eb31872c3fb11977c683692ba5b172c3cbaecfb51456a3f02",
+    "members": [
+      "v6m-1950s",
+      "v6m-1960s",
+      "v6m-1970s",
+      "v6m-1980s",
+      "v6m-1990s",
+      "v6m-2000s",
+      "v6m-2010s",
+      "v6m-2020s"
+    ],
+    "memberCount": 8,
+    "completedMembers": [
+      "v6m-1950s",
+      "v6m-1960s",
+      "v6m-1970s",
+      "v6m-1980s",
+      "v6m-1990s",
+      "v6m-2000s",
+      "v6m-2010s",
+      "v6m-2020s"
+    ],
+    "interruptions": 0,
+    "resumeCount": 0,
+    "resumeNote": "the run completed in a single pass under one access event. No interruption occurred, so no resume was needed; the runner's resume path is exercised by its dry run on a mock seal.",
+    "identity": {
+      "candidateId": "Candidate 2",
+      "candidateCommit": "136b6446a8a65c7b9b551eed120cf0d4aa5078fd",
+      "coreHash": "3733b648f050a4f50f9dc3cb6ecf62fce419dd282f24c910b91e7b077d63711d",
+      "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+      "calibrationVersion": "1.2.0",
+      "verdictPolicyHash": "d433cddcd3af4294dc8468481b8b85702a7768e16878a1003c6567ddb22c5ae4",
+      "holdoutManifestHash": "5a728d98f644d4ae8f7b2d406615fa9125bf7aca77269f536f2a078b92e83d02",
+      "practicalMarginPolicyHash": "099d513ab855520c68f1c55991a156f9c56b3a6df123f06a708529f27b6413ae",
+      "traitRegistryHash": "c034937be7e40bd18932fe53151e0b8a877dc47095004653e1bb11aa5c73a0cf",
+      "observabilityHash": "5e9a4070f4f9a747992561c19586b491971b2479f2161a5cef5bb5b8474c9349",
+      "referenceCertificationHash": "4713a12f2d2e1447f1f21b03ef3a7219e69136e6eec160cebe0ed5df3486b37f",
+      "seedSetHash": "7f0b3ce38d104865d1c8b692e1472835dc315fc84be68862c2e50c3c407b8a09",
+      "samplePlanHash": "1ed77e62b545c9d72117355ec290a760b748225fee8df55bd71913a628bd3672",
+      "seedDomain": "HISTORICAL_V6_FORMAL",
+      "decisionGamesPerSurface": 4096
+    },
+    "accessEvent": {
+      "seq": 1,
+      "set": "historical-holdout-v6",
+      "actor": "joseph.johnson@indagare.com",
+      "reason": "Phase 6C4C3 stage one: one-time formal validation of locked Candidate 2 against Historical Holdout V6 under frozen execution package, authorization 4e41aade0a0c6197",
+      "parameterVersion": null,
+      "commit": null,
+      "argv": [
+        "--run",
+        "--unlock-holdout",
+        "--unlock-historical-holdout-v6"
+      ],
+      "openedAtCommit": "a7d1606c4e134e9d8307b873c335bdfb8c7df237"
+    },
+    "accessCountBefore": 0,
+    "accessCountAfter": 1,
+    "openedAtCommit": "a7d1606c4e134e9d8307b873c335bdfb8c7df237",
+    "completedAtCommit": "a7d1606c4e134e9d8307b873c335bdfb8c7df237",
+    "protocol": {
+      "surfacesPerMatchup": [
+        "TEAM_A_VS_TEAM_B",
+        "TEAM_A_VS_ERA_REFERENCE",
+        "TEAM_B_VS_ERA_REFERENCE"
+      ],
+      "sideBalanced": true,
+      "gamesPerSurface": 4096,
+      "gamesPerMatchup": 12288,
+      "matchups": 8,
+      "totalGamesAtDecisionTier": 98304,
+      "seedDomain": "HISTORICAL_V6_FORMAL",
+      "note": "Offence is read only from a team's own side of team-vs-reference games and defence only from the reference's output in those games. Nothing offence/defence is ever read from a mirror — the defect that consumed V3 and the reason a mirror matchup was excluded at selection."
+    },
+    "samplePlanApplied": [
+      {
+        "matchupId": "v6m-1950s",
+        "governingTier": 3,
+        "tiers": {
+          "precheck": {
+            "tier": 2,
+            "gamesPlayed": 6144
+          },
+          "decision": {
+            "tier": 3,
+            "gamesPlayed": 12288
+          },
+          "escalation": null
+        },
+        "escalated": false
+      },
+      {
+        "matchupId": "v6m-1960s",
+        "governingTier": 3,
+        "tiers": {
+          "precheck": {
+            "tier": 2,
+            "gamesPlayed": 6144
+          },
+          "decision": {
+            "tier": 3,
+            "gamesPlayed": 12288
+          },
+          "escalation": null
+        },
+        "escalated": false
+      },
+      {
+        "matchupId": "v6m-1970s",
+        "governingTier": 3,
+        "tiers": {
+          "precheck": {
+            "tier": 2,
+            "gamesPlayed": 6144
+          },
+          "decision": {
+            "tier": 3,
+            "gamesPlayed": 12288
+          },
+          "escalation": null
+        },
+        "escalated": false
+      },
+      {
+        "matchupId": "v6m-1980s",
+        "governingTier": 4,
+        "tiers": {
+          "precheck": {
+            "tier": 2,
+            "gamesPlayed": 6144
+          },
+          "decision": {
+            "tier": 3,
+            "gamesPlayed": 12288
+          },
+          "escalation": {
+            "tier": 4,
+            "gamesPlayed": 24576
+          }
+        },
+        "escalated": true
+      },
+      {
+        "matchupId": "v6m-1990s",
+        "governingTier": 3,
+        "tiers": {
+          "precheck": {
+            "tier": 2,
+            "gamesPlayed": 6144
+          },
+          "decision": {
+            "tier": 3,
+            "gamesPlayed": 12288
+          },
+          "escalation": null
+        },
+        "escalated": false
+      },
+      {
+        "matchupId": "v6m-2000s",
+        "governingTier": 3,
+        "tiers": {
+          "precheck": {
+            "tier": 2,
+            "gamesPlayed": 6144
+          },
+          "decision": {
+            "tier": 3,
+            "gamesPlayed": 12288
+          },
+          "escalation": null
+        },
+        "escalated": false
+      },
+      {
+        "matchupId": "v6m-2010s",
+        "governingTier": 3,
+        "tiers": {
+          "precheck": {
+            "tier": 2,
+            "gamesPlayed": 6144
+          },
+          "decision": {
+            "tier": 3,
+            "gamesPlayed": 12288
+          },
+          "escalation": null
+        },
+        "escalated": false
+      },
+      {
+        "matchupId": "v6m-2020s",
+        "governingTier": 3,
+        "tiers": {
+          "precheck": {
+            "tier": 2,
+            "gamesPlayed": 6144
+          },
+          "decision": {
+            "tier": 3,
+            "gamesPlayed": 12288
+          },
+          "escalation": null
+        },
+        "escalated": false
+      }
+    ],
+    "totalGames": 172032,
+    "sourceArtifact": "data/validation/6c4c2/historical-v6-results.json"
+  },
+  "outputHash": "a309f70e61451c439bbcf185aeb427311dc3b7079dda218eddc371c188e0b222"
+}

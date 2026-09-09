@@ -1,0 +1,41 @@
+{
+  "artifact": "ui-release-preflight",
+  "phase": "UI Release Candidate — Unified Light Court + Challenge Entry Correction + Domain Release Readiness",
+  "generatedAt": "2026-09-10T00:00:00Z",
+  "repositoryTruth": {
+    "toplevel": "/Users/josephjohnson/era-clash-basketball",
+    "remote": "https://github.com/eraclashsports2026-dev/era-clash-basketball.git",
+    "sourceBaseline": "aae565c — Phase 9F head (branch phase-9f-public-competitive-profiles-v1), UNMERGED: PR #49 is OPEN and DRAFT",
+    "branch": "ui/light-court-release-candidate (created from aae565c)",
+    "prTarget": "phase-9f-public-competitive-profiles-v1 — STACKED on PR #49; PR #49 (9F) is the prerequisite and must merge first, or this PR is retargeted to phase-9b3-chaos-guided-flow-v2 after it does",
+    "acceptedChainHead": "fec7a12 (phase-9b3-chaos-guided-flow-v2, contains 9E merge 7d2673e) — 9F is NOT yet part of the accepted chain",
+    "verifiedAgainstReportedValues": "Every reported value was checked against the repository and deployments rather than trusted. PR #49 OPEN draft (confirmed). 9F head aae565c (confirmed). Certified 9F build cf17871 (confirmed; git diff cf17871..aae565c over src api middleware vite.config supabase index.html vercel.json is EMPTY, so 9F's final sweep at cf17871 is valid baseline evidence for aae565c). Accepted chain before 9F phase-9b3-chaos-guided-flow-v2 @ fec7a12 (confirmed). 9E merge 7d2673e with parents f34f6f1+37bac49 (confirmed). 9E merge-record fec7a12 (confirmed). wave1 4dc59e7, wave2 ef0caa5, main 9cd95ff (all confirmed unmoved). Candidate 4 core 55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff, calibration 1.4.0, build 2.7.2 (confirmed from /api/health on the fake-cloud harness).",
+    "uiWorkPreviouslyStarted": false,
+    "uncommittedOwnerWork": "none — the working tree was clean at aae565c"
+  },
+  "protectedRefs": { "wave1": "4dc59e7", "wave2": "ef0caa5", "main": "9cd95ff", "wave1Alias": "https://era-clash-basketball-git-wave1-era-clash.vercel.app", "wave2Alias": "documented in docs/preview/wave2-operator-guide.md; not touched" },
+  "frozen": {
+    "candidateId": "Candidate 4", "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff", "calibrationVersion": "1.4.0",
+    "apiRoutes": 12, "middleware": true, "functionBudget": "FULL at 13 — verified: 12 files in api/ plus middleware.js; api/share-page.js and middleware.js both document it. This UI work adds no function.",
+    "migrations": ["0001_accounts", "0002_accounts_hardening", "0003_career_v2", "0004_challenges", "0005_progression_v1", "0006_competitive_rating_v1", "0007_public_competitive_profiles_v1"],
+    "contracts": { "competitiveRatingVersion": "1.0.0", "progressionVersion": "1.0.0", "publicProfileVersion": "1.0.0", "powerEffects": { "PROGRESSION_POWER_EFFECT": 0, "COMPETITIVE_RATING_POWER_EFFECT": 0, "PUBLIC_PROFILE_POWER_EFFECT": 0 } }
+  },
+  "ownerReportedEvidence": {
+    "phase9fFunctional": { "source": "OWNER-REPORTED, not automated", "statement": "The owner tested the Phase 9F public-profile functionality and reports that it works.", "recordedAs": "testimony; no acceptance token was given and none is fabricated here", "automatedEvidence": "data/validation/9f/ (77 gates PASS, unit 2647/2647, Playwright 88, deployed 10/10 at cf17871)" }
+  },
+  "productionAndDomainStateVerifiedReadOnly": {
+    "canonicalDomain": "https://eraclashbasketball.com → 308 → https://www.eraclashbasketball.com (index.html og:url names eraclashbasketball.com)",
+    "productionHealth": "www.eraclashbasketball.com and era-clash-basketball.vercel.app both answer {status:ok, build:2.7.2, coreEngine:ok, persistence:ok, aiNarrative:ok, simV3:true} with NO cloudAccounts block and NO preview block",
+    "productionCommit": "main@9cd95ff (v2.7.2: reduce the 1950s to the NBA 75th Anniversary Team only), deployed 2026-08-24T22:08Z; GitHub Production deployment environment_url https://era-clash-basketball-5dikkoj8q-era-clash.vercel.app",
+    "whatProductionLacks": "main@9cd95ff contains ZERO supabase/migrations and its api/health.js has no cloudAccounts reporting: production runs no accounts, careers, Challenges (9C), progression, Competitive Rating or public profiles. It is the pre-9B.1 product.",
+    "engineByEnvironment": "Candidate 4 runs only where previewSimEngine is on (VERCEL_ENV=preview via config/previewEnv.js, or PREVIEW_SIM_ENGINE_ENABLED=true). possessionEngine defaults false. Production today runs the production engine (simV3), NOT Candidate 4. CHAOS_CLASH_ENABLED defaults to true only when VERCEL_ENV === 'preview' — Chaos Clash is OFF in production by default.",
+    "supabase": "exactly ONE Supabase project exists: lfybiphmqkiecfrqsfzt — the certified PREVIEW project (migrations 0001–0007 applied). There is NO production Supabase project. Production must never be pointed at the preview database.",
+    "previewAccessGate": "middleware.js runs only on Vercel Preview deployments (VERCEL_ENV === 'preview'); production builds from main do not carry it",
+    "serviceWorker": "public/sw.js: build-derived cache identity, skipWaiting on install, activate purges older eraclash-assets:* caches; localStorage untouched",
+    "authRedirect": "src/accounts/provider.js REDIRECT() = `${window.location.origin}/auth/callback` — same-origin only; Supabase URL Configuration must list the exact production callback (docs/accounts/eraclash-account-provider-setup.md step 3 lists only the preview and vercel.app callbacks today)",
+    "configurationKeysRequiredForTheStack": ["SUPABASE_URL", "SUPABASE_ANON_KEY", "SUPABASE_SERVICE_ROLE_KEY", "VITE_SUPABASE_URL", "VITE_SUPABASE_ANON_KEY", "CLOUD_ACCOUNTS_ENABLED", "CHAOS_CLASH_ENABLED", "PREVIEW_SIM_ENGINE_ENABLED (owner decision: Candidate 4 on the domain or not)", "KV_REST_API_URL / KV_REST_API_TOKEN or UPSTASH_REDIS_REST_URL / UPSTASH_REDIS_REST_TOKEN (already present in production per health persistence:ok)", "ANTHROPIC_API_KEY (present)"],
+    "note": "Names only; no values were read or printed."
+  },
+  "baselineEvidenceReused": { "sweep": "data/validation/9f/final-gate-sweep.log @ cf17871 (code-identical to aae565c)", "unit": "2647/2647 across 82 files", "e2e": "88 passed (phase7b-preview flaked once and passed alone — a pre-existing intermittent recorded in 9F's preflight)", "gates": "77 PASS; challenge:deployed-qa 8/11 on unsupplied 9C operator fixtures" },
+  "defectUnderInvestigation": "Challenge recipient opened an older team-building interface — see challenge-entry-root-cause.json"
+}

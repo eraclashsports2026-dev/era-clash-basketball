@@ -8,6 +8,7 @@
 // anonymous random id, name is the user-chosen display name only where needed.
 import { getUid, getSession } from "./identity.js";
 import { VERSIONS } from "./versions.js";
+import { shortBuild } from "./buildStamp.js";
 
 const FLUSH_MS = 4000;
 const MAX_QUEUE = 40;
@@ -41,6 +42,7 @@ export const track = (event, props = {}) => {
     uid: getUid(),
     session_id: sid,
     app_version: VERSIONS.app,
+    build: shortBuild(),
     ...props,
   };
   if (testSink) { testSink(e); return; }

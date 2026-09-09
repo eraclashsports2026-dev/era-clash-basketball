@@ -1,0 +1,1220 @@
+{
+  "artifact": "synthetic-v2-talent-gap-ladder",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run syn:ladder",
+  "generatedAt": "2026-08-27T20:24:11.059Z",
+  "gitCommit": "bf7efb6defdb51712ea5cb8b44b96546fde5b3dc",
+  "branch": "phase-6c4c2-v6-freeze-and-seal",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "basis": "the 14 SYNTHETIC_DEVELOPMENT_V2 fixtures, each played against its own role-matched upgrade. Every holdout person is excluded from the upgrade pool. No Synthetic V2 fixture was simulated and no Synthetic V2 output was read.",
+    "purpose": "requireExtremeTalentRemainsMeaningful maps to one sealed fixture, so its band cannot be derived from the holdout. This ladder derives it from 14 non-holdout fixtures on the exact surface the formal run will use, and doubles as the check that the surface is monotonic in talent at all.",
+    "upgradeFactor": 1.75,
+    "pairsPerFixture": 1024,
+    "ratingBasis": "src/rating.js teamRating and slotRating",
+    "seedMaster": 7097115,
+    "cells": [
+      {
+        "devFixtureId": "sd2-balanced-lower-ovr",
+        "purpose": "BALANCED_CONSTRUCTION",
+        "era": "2010s",
+        "ratingBefore": 1054,
+        "ratingAfter": 1437,
+        "achievedRatio": 1.36338,
+        "slotsUpgraded": 4,
+        "primaryRoleMatches": 1,
+        "noSlotGotWorse": true,
+        "slots": [
+          {
+            "slot": "PG",
+            "from": "cp3-10s",
+            "to": "magic-80s",
+            "fromRating": 227.89,
+            "toRating": 379.92,
+            "role": "Primary Creator",
+            "roleMatch": "SECONDARY",
+            "reachedTarget": false
+          },
+          {
+            "slot": "SG",
+            "from": "kawhi-10s",
+            "to": "kawhi-10s",
+            "fromRating": 284.54,
+            "toRating": 284.54,
+            "role": "Wing Stopper",
+            "roleMatch": "UNCHANGED",
+            "reachedTarget": false,
+            "reason": "the pool has no card legal at SG carrying the role \"Wing Stopper\" with a higher slot rating"
+          },
+          {
+            "slot": "SF",
+            "from": "butler-10s",
+            "to": "rodman-90s",
+            "fromRating": 123.15,
+            "toRating": 218.16,
+            "role": "Point-of-Attack Stopper",
+            "roleMatch": "SECONDARY",
+            "reachedTarget": true
+          },
+          {
+            "slot": "PF",
+            "from": "jokic-10s",
+            "to": "schayes-50s",
+            "fromRating": 105.74,
+            "toRating": 187.355,
+            "role": "Primary Creator",
+            "roleMatch": "PRIMARY",
+            "reachedTarget": true
+          },
+          {
+            "slot": "C",
+            "from": "dwight-10s",
+            "to": "kg-00s",
+            "fromRating": 252.97,
+            "toRating": 285.25,
+            "role": "Glass Cleaner",
+            "roleMatch": "SECONDARY",
+            "reachedTarget": false
+          }
+        ],
+        "strongerSideWinRate": 0.75732,
+        "se": 0.00947,
+        "decidedGames": 2048,
+        "variance": {
+          "combinedScoreSd": 16.59236,
+          "combinedScoreSdSe": 0.25932,
+          "marginSd": 11.58265,
+          "distinctScorelineRatio": 0.66992,
+          "distinctScorelineRatioSe": 0.00619,
+          "games": 2048
+        },
+        "structural": {
+          "invariantViolationCount": 0,
+          "impossibleScoreCount": 0,
+          "nonFiniteStatCount": 0,
+          "negativeStatCount": 0,
+          "finalTieCount": 0
+        },
+        "games": 2048
+      },
+      {
+        "devFixtureId": "sd2-creator-stack",
+        "purpose": "SUPERSTAR_STACK",
+        "era": "2010s",
+        "ratingBefore": 1396,
+        "ratingAfter": 1875,
+        "achievedRatio": 1.34312,
+        "slotsUpgraded": 4,
+        "primaryRoleMatches": 0,
+        "noSlotGotWorse": true,
+        "slots": [
+          {
+            "slot": "PG",
+            "from": "harden-10s",
+            "to": "magic-80s",
+            "fromRating": 200.19,
+            "toRating": 379.92,
+            "role": "Primary Creator",
+            "roleMatch": "SECONDARY",
+            "reachedTarget": true
+          },
+          {
+            "slot": "SG",
+            "from": "russ-10s",
+            "to": "kawhi-10s",
+            "fromRating": 188.69,
+            "toRating": 284.54,
+            "role": "Primary Creator",
+            "roleMatch": "SECONDARY",
+            "reachedTarget": false
+          },
+          {
+            "slot": "SF",
+            "from": "lebron-10s",
+            "to": "lebron-10s",
+            "fromRating": 422.82,
+            "toRating": 422.82,
+            "role": "Primary Creator",
+            "roleMatch": "UNCHANGED",
+            "reachedTarget": false,
+            "reason": "the pool has no card legal at SF carrying the role \"Primary Creator\" with a higher slot rating"
+          },
+          {
+            "slot": "PF",
+            "from": "durant-10s",
+            "to": "bird-80s",
+            "fromRating": 247.405,
+            "toRating": 363.21,
+            "role": "Primary Creator",
+            "roleMatch": "SECONDARY",
+            "reachedTarget": false
+          },
+          {
+            "slot": "C",
+            "from": "giannis-10s",
+            "to": "kg-00s",
+            "fromRating": 233.1,
+            "toRating": 285.25,
+            "role": "Glass Cleaner",
+            "roleMatch": "SECONDARY",
+            "reachedTarget": false
+          }
+        ],
+        "strongerSideWinRate": 0.83008,
+        "se": 0.0083,
+        "decidedGames": 2048,
+        "variance": {
+          "combinedScoreSd": 16.44099,
+          "combinedScoreSdSe": 0.25695,
+          "marginSd": 12.25094,
+          "distinctScorelineRatio": 0.6665,
+          "distinctScorelineRatioSe": 0.00657,
+          "games": 2048
+        },
+        "structural": {
+          "invariantViolationCount": 0,
+          "impossibleScoreCount": 0,
+          "nonFiniteStatCount": 0,
+          "negativeStatCount": 0,
+          "finalTieCount": 0
+        },
+        "games": 2048
+      },
+      {
+        "devFixtureId": "sd2-elite-shooting",
+        "purpose": "ELITE_SHOOTING",
+        "era": "2010s",
+        "ratingBefore": 871,
+        "ratingAfter": 1424,
+        "achievedRatio": 1.6349,
+        "slotsUpgraded": 4,
+        "primaryRoleMatches": 1,
+        "noSlotGotWorse": true,
+        "slots": [
+          {
+            "slot": "PG",
+            "from": "harden-10s",
+            "to": "magic-80s",
+            "fromRating": 200.19,
+            "toRating": 379.92,
+            "role": "Primary Creator",
+            "roleMatch": "SECONDARY",
+            "reachedTarget": true
+          },
+          {
+            "slot": "SG",
+            "from": "durant-10s",
+            "to": "kawhi-10s",
+            "fromRating": 247.95,
+            "toRating": 284.54,
+            "role": "Primary Creator",
+            "roleMatch": "SECONDARY",
+            "reachedTarget": false
+          },
+          {
+            "slot": "SF",
+            "from": "klay-10s",
+            "to": "bird-80s",
+            "fromRating": 124.41,
+            "toRating": 364.23,
+            "role": "Movement Shooter",
+            "roleMatch": "PRIMARY",
+            "reachedTarget": true
+          },
+          {
+            "slot": "PF",
+            "from": "dirk-10s",
+            "to": "dirk-10s",
+            "fromRating": 165.56,
+            "toRating": 165.56,
+            "role": "Movement Shooter",
+            "roleMatch": "UNCHANGED",
+            "reachedTarget": false,
+            "reason": "the pool has no card legal at PF carrying the role \"Movement Shooter\" with a higher slot rating"
+          },
+          {
+            "slot": "C",
+            "from": "boogie-2010s",
+            "to": "jjj-20s",
+            "fromRating": 99.61,
+            "toRating": 124.64,
+            "role": "Spot-Up Spacer",
+            "roleMatch": "SECONDARY",
+            "reachedTarget": false
+          }
+        ],
+        "strongerSideWinRate": 0.80469,
+        "se": 0.00876,
+        "decidedGames": 2048,
+        "variance": {
+          "combinedScoreSd": 17.01208,
+          "combinedScoreSdSe": 0.26588,
+          "marginSd": 12.16543,
+          "distinctScorelineRatio": 0.6792,
+          "distinctScorelineRatioSe": 0.0064,
+          "games": 2048
+        },
+        "structural": {
+          "invariantViolationCount": 0,
+          "impossibleScoreCount": 0,
+          "nonFiniteStatCount": 0,
+          "negativeStatCount": 0,
+          "finalTieCount": 0
+        },
+        "games": 2048
+      },
+      {
+        "devFixtureId": "sd2-weak-shooting",
+        "purpose": "WEAK_SHOOTING",
+        "era": "2010s",
+        "ratingBefore": 669,
+        "ratingAfter": 1335,
+        "achievedRatio": 1.99552,
+        "slotsUpgraded": 5,
+        "primaryRoleMatches": 3,
+        "noSlotGotWorse": true,
+        "slots": [
+          {
+            "slot": "PG",
+            "from": "russ-10s",
+            "to": "magic-80s",
+            "fromRating": 188.65,
+            "toRating": 379.92,
+            "role": "Primary Creator",
+            "roleMatch": "SECONDARY",
+            "reachedTarget": true
+          },
+          {
+            "slot": "SG",
+            "from": "demar-2010s",
+            "to": "ai-00s",
+            "fromRating": 96.25,
+            "toRating": 197.95,
+            "role": "Primary Creator",
+            "roleMatch": "PRIMARY",
+            "reachedTarget": true
+          },
+          {
+            "slot": "SF",
+            "from": "draymond-10s",
+            "to": "kawhi-10s",
+            "fromRating": 172.27,
+            "toRating": 285.41,
+            "role": "Help Defender",
+            "roleMatch": "SECONDARY",
+            "reachedTarget": false
+          },
+          {
+            "slot": "PF",
+            "from": "love-10s",
+            "to": "moses-80s",
+            "fromRating": 103.84,
+            "toRating": 218.7,
+            "role": "Glass Cleaner",
+            "roleMatch": "PRIMARY",
+            "reachedTarget": true
+          },
+          {
+            "slot": "C",
+            "from": "drummond-2010s",
+            "to": "elvin-70s",
+            "fromRating": 82.27,
+            "toRating": 153.96,
+            "role": "Glass Cleaner",
+            "roleMatch": "PRIMARY",
+            "reachedTarget": true
+          }
+        ],
+        "strongerSideWinRate": 0.88867,
+        "se": 0.00695,
+        "decidedGames": 2048,
+        "variance": {
+          "combinedScoreSd": 16.06149,
+          "combinedScoreSdSe": 0.25102,
+          "marginSd": 13.30111,
+          "distinctScorelineRatio": 0.70898,
+          "distinctScorelineRatioSe": 0.00614,
+          "games": 2048
+        },
+        "structural": {
+          "invariantViolationCount": 0,
+          "impossibleScoreCount": 0,
+          "nonFiniteStatCount": 0,
+          "negativeStatCount": 0,
+          "finalTieCount": 0
+        },
+        "games": 2048
+      },
+      {
+        "devFixtureId": "sd2-extreme-size",
+        "purpose": "EXTREME_SIZE",
+        "era": "1960s",
+        "ratingBefore": 1040,
+        "ratingAfter": 1523,
+        "achievedRatio": 1.46442,
+        "slotsUpgraded": 3,
+        "primaryRoleMatches": 1,
+        "noSlotGotWorse": true,
+        "slots": [
+          {
+            "slot": "PG",
+            "from": "oscar-60s",
+            "to": "magic-80s",
+            "fromRating": 251.1,
+            "toRating": 379.92,
+            "role": "Primary Creator",
+            "roleMatch": "SECONDARY",
+            "reachedTarget": false
+          },
+          {
+            "slot": "SG",
+            "from": "barry-60s",
+            "to": "kawhi-10s",
+            "fromRating": 126.01,
+            "toRating": 284.54,
+            "role": "Slasher",
+            "roleMatch": "SECONDARY",
+            "reachedTarget": true
+          },
+          {
+            "slot": "SF",
+            "from": "elgin-60s",
+            "to": "elgin-60s",
+            "fromRating": 208.94,
+            "toRating": 208.94,
+            "role": "Slasher",
+            "roleMatch": "UNCHANGED",
+            "reachedTarget": false,
+            "reason": "the pool has no card legal at SF carrying the role \"Slasher\" with a higher slot rating"
+          },
+          {
+            "slot": "PF",
+            "from": "nate-60s",
+            "to": "moses-80s",
+            "fromRating": 109.57,
+            "toRating": 218.7,
+            "role": "Glass Cleaner",
+            "roleMatch": "PRIMARY",
+            "reachedTarget": true
+          },
+          {
+            "slot": "C",
+            "from": "wilt-60s",
+            "to": "wilt-60s",
+            "fromRating": 344.86,
+            "toRating": 344.86,
+            "role": "Glass Cleaner",
+            "roleMatch": "UNCHANGED",
+            "reachedTarget": false,
+            "reason": "the pool has no card legal at C carrying the role \"Glass Cleaner\" with a higher slot rating"
+          }
+        ],
+        "strongerSideWinRate": 0.73242,
+        "se": 0.00978,
+        "decidedGames": 2048,
+        "variance": {
+          "combinedScoreSd": 16.36789,
+          "combinedScoreSdSe": 0.25581,
+          "marginSd": 10.35699,
+          "distinctScorelineRatio": 0.61523,
+          "distinctScorelineRatioSe": 0.00609,
+          "games": 2048
+        },
+        "structural": {
+          "invariantViolationCount": 0,
+          "impossibleScoreCount": 0,
+          "nonFiniteStatCount": 0,
+          "negativeStatCount": 0,
+          "finalTieCount": 0
+        },
+        "games": 2048
+      },
+      {
+        "devFixtureId": "sd2-extreme-small",
+        "purpose": "EXTREME_SMALL_BALL",
+        "era": "2020s",
+        "ratingBefore": 267,
+        "ratingAfter": 523,
+        "achievedRatio": 1.9588,
+        "slotsUpgraded": 5,
+        "primaryRoleMatches": 5,
+        "noSlotGotWorse": true,
+        "slots": [
+          {
+            "slot": "PG",
+            "from": "clayton-20s",
+            "to": "toney-80s",
+            "fromRating": 43.48,
+            "toRating": 76.43,
+            "role": "Movement Shooter",
+            "roleMatch": "PRIMARY",
+            "reachedTarget": true
+          },
+          {
+            "slot": "SG",
+            "from": "trejohnson-20s",
+            "to": "maxey-20s",
+            "fromRating": 50.55,
+            "toRating": 89.4,
+            "role": "Movement Shooter",
+            "roleMatch": "PRIMARY",
+            "reachedTarget": true
+          },
+          {
+            "slot": "SF",
+            "from": "klay-20s",
+            "to": "wade-10s",
+            "fromRating": 85.54,
+            "toRating": 162.2,
+            "role": "Movement Shooter",
+            "roleMatch": "PRIMARY",
+            "reachedTarget": true
+          },
+          {
+            "slot": "PF",
+            "from": "acebailey-20s",
+            "to": "butler-20s",
+            "fromRating": 58.06,
+            "toRating": 114.125,
+            "role": "Movement Shooter",
+            "roleMatch": "PRIMARY",
+            "reachedTarget": true
+          },
+          {
+            "slot": "C",
+            "from": "cmb-20s",
+            "to": "jack-80s",
+            "fromRating": 46.94,
+            "toRating": 86.48,
+            "role": "Low-Usage Finisher",
+            "roleMatch": "PRIMARY",
+            "reachedTarget": true
+          }
+        ],
+        "strongerSideWinRate": 0.63477,
+        "se": 0.01064,
+        "decidedGames": 2048,
+        "variance": {
+          "combinedScoreSd": 17.50645,
+          "combinedScoreSdSe": 0.27361,
+          "marginSd": 10.94413,
+          "distinctScorelineRatio": 0.64209,
+          "distinctScorelineRatioSe": 0.00569,
+          "games": 2048
+        },
+        "structural": {
+          "invariantViolationCount": 0,
+          "impossibleScoreCount": 0,
+          "nonFiniteStatCount": 0,
+          "negativeStatCount": 0,
+          "finalTieCount": 0
+        },
+        "games": 2048
+      },
+      {
+        "devFixtureId": "sd2-passing-hub",
+        "purpose": "PASSING_HUB",
+        "era": "2020s",
+        "ratingBefore": 808,
+        "ratingAfter": 1313,
+        "achievedRatio": 1.625,
+        "slotsUpgraded": 4,
+        "primaryRoleMatches": 2,
+        "noSlotGotWorse": true,
+        "slots": [
+          {
+            "slot": "PG",
+            "from": "tyrese-20s",
+            "to": "stock-90s",
+            "fromRating": 106.56,
+            "toRating": 203.08,
+            "role": "Floor General",
+            "roleMatch": "PRIMARY",
+            "reachedTarget": true
+          },
+          {
+            "slot": "SG",
+            "from": "cade-20s",
+            "to": "wade-10s",
+            "fromRating": 84.64,
+            "toRating": 161.81,
+            "role": "Movement Shooter",
+            "roleMatch": "PRIMARY",
+            "reachedTarget": true
+          },
+          {
+            "slot": "SF",
+            "from": "luka-20s",
+            "to": "bird-80s",
+            "fromRating": 184.81,
+            "toRating": 364.23,
+            "role": "Primary Creator",
+            "roleMatch": "SECONDARY",
+            "reachedTarget": true
+          },
+          {
+            "slot": "PF",
+            "from": "jokic-20s",
+            "to": "jokic-20s",
+            "fromRating": 287.955,
+            "toRating": 287.955,
+            "role": "Post Hub",
+            "roleMatch": "UNCHANGED",
+            "reachedTarget": false,
+            "reason": "the pool has no card legal at PF carrying the role \"Post Hub\" with a higher slot rating"
+          },
+          {
+            "slot": "C",
+            "from": "draymond-20s",
+            "to": "rodman-90s",
+            "fromRating": 112.85,
+            "toRating": 221.99,
+            "role": "Low-Usage Finisher",
+            "roleMatch": "SECONDARY",
+            "reachedTarget": true
+          }
+        ],
+        "strongerSideWinRate": 0.81494,
+        "se": 0.00858,
+        "decidedGames": 2048,
+        "variance": {
+          "combinedScoreSd": 17.98066,
+          "combinedScoreSdSe": 0.28102,
+          "marginSd": 13.39525,
+          "distinctScorelineRatio": 0.71777,
+          "distinctScorelineRatioSe": 0.0061,
+          "games": 2048
+        },
+        "structural": {
+          "invariantViolationCount": 0,
+          "impossibleScoreCount": 0,
+          "nonFiniteStatCount": 0,
+          "negativeStatCount": 0,
+          "finalTieCount": 0
+        },
+        "games": 2048
+      },
+      {
+        "devFixtureId": "sd2-no-rim-protection",
+        "purpose": "NO_RIM_PROTECTION",
+        "era": "2010s",
+        "ratingBefore": 1074,
+        "ratingAfter": 1281,
+        "achievedRatio": 1.19274,
+        "slotsUpgraded": 2,
+        "primaryRoleMatches": 2,
+        "noSlotGotWorse": true,
+        "slots": [
+          {
+            "slot": "PG",
+            "from": "curry-10s",
+            "to": "curry-10s",
+            "fromRating": 265.95,
+            "toRating": 265.95,
+            "role": "Movement Shooter",
+            "roleMatch": "UNCHANGED",
+            "reachedTarget": false,
+            "reason": "the pool has no card legal at PG carrying the role \"Movement Shooter\" with a higher slot rating"
+          },
+          {
+            "slot": "SG",
+            "from": "kobe-10s",
+            "to": "kobe-10s",
+            "fromRating": 249.3,
+            "toRating": 249.3,
+            "role": "Primary Creator",
+            "roleMatch": "UNCHANGED",
+            "reachedTarget": false,
+            "reason": "the pool has no card legal at SG carrying the role \"Primary Creator\" with a higher slot rating"
+          },
+          {
+            "slot": "SF",
+            "from": "kawhi-10s",
+            "to": "kawhi-10s",
+            "fromRating": 285.41,
+            "toRating": 285.41,
+            "role": "Wing Stopper",
+            "roleMatch": "UNCHANGED",
+            "reachedTarget": false,
+            "reason": "the pool has no card legal at SF carrying the role \"Wing Stopper\" with a higher slot rating"
+          },
+          {
+            "slot": "PF",
+            "from": "melo-10s",
+            "to": "schayes-50s",
+            "fromRating": 88.26,
+            "toRating": 187.355,
+            "role": "Primary Creator",
+            "roleMatch": "PRIMARY",
+            "reachedTarget": true
+          },
+          {
+            "slot": "C",
+            "from": "jokic-10s",
+            "to": "barkley-90s",
+            "fromRating": 105.84,
+            "toRating": 220.19,
+            "role": "Primary Creator",
+            "roleMatch": "PRIMARY",
+            "reachedTarget": true
+          }
+        ],
+        "strongerSideWinRate": 0.42383,
+        "se": 0.01092,
+        "decidedGames": 2048,
+        "variance": {
+          "combinedScoreSd": 16.87039,
+          "combinedScoreSdSe": 0.26366,
+          "marginSd": 9.80855,
+          "distinctScorelineRatio": 0.61182,
+          "distinctScorelineRatioSe": 0.00611,
+          "games": 2048
+        },
+        "structural": {
+          "invariantViolationCount": 0,
+          "impossibleScoreCount": 0,
+          "nonFiniteStatCount": 0,
+          "negativeStatCount": 0,
+          "finalTieCount": 0
+        },
+        "games": 2048
+      },
+      {
+        "devFixtureId": "sd2-movement-shooters",
+        "purpose": "MOVEMENT_SHOOTERS",
+        "era": "2010s",
+        "ratingBefore": 1156,
+        "ratingAfter": 1458,
+        "achievedRatio": 1.26125,
+        "slotsUpgraded": 2,
+        "primaryRoleMatches": 2,
+        "noSlotGotWorse": true,
+        "slots": [
+          {
+            "slot": "PG",
+            "from": "curry-10s",
+            "to": "curry-10s",
+            "fromRating": 265.95,
+            "toRating": 265.95,
+            "role": "Movement Shooter",
+            "roleMatch": "UNCHANGED",
+            "reachedTarget": false,
+            "reason": "the pool has no card legal at PG carrying the role \"Movement Shooter\" with a higher slot rating"
+          },
+          {
+            "slot": "SG",
+            "from": "durant-10s",
+            "to": "durant-10s",
+            "fromRating": 247.95,
+            "toRating": 247.95,
+            "role": "Primary Creator",
+            "roleMatch": "UNCHANGED",
+            "reachedTarget": false,
+            "reason": "the pool has no card legal at SG carrying the role \"Primary Creator\" with a higher slot rating"
+          },
+          {
+            "slot": "SF",
+            "from": "kawhi-10s",
+            "to": "kawhi-10s",
+            "fromRating": 285.41,
+            "toRating": 285.41,
+            "role": "Wing Stopper",
+            "roleMatch": "UNCHANGED",
+            "reachedTarget": false,
+            "reason": "the pool has no card legal at SF carrying the role \"Wing Stopper\" with a higher slot rating"
+          },
+          {
+            "slot": "PF",
+            "from": "dirk-10s",
+            "to": "bird-80s",
+            "fromRating": 165.56,
+            "toRating": 363.21,
+            "role": "Movement Shooter",
+            "roleMatch": "PRIMARY",
+            "reachedTarget": true
+          },
+          {
+            "slot": "C",
+            "from": "jokic-10s",
+            "to": "schayes-50s",
+            "fromRating": 105.84,
+            "toRating": 187.34,
+            "role": "Primary Creator",
+            "roleMatch": "PRIMARY",
+            "reachedTarget": true
+          }
+        ],
+        "strongerSideWinRate": 0.54199,
+        "se": 0.01101,
+        "decidedGames": 2048,
+        "variance": {
+          "combinedScoreSd": 16.63962,
+          "combinedScoreSdSe": 0.26006,
+          "marginSd": 9.48913,
+          "distinctScorelineRatio": 0.60889,
+          "distinctScorelineRatioSe": 0.00629,
+          "games": 2048
+        },
+        "structural": {
+          "invariantViolationCount": 0,
+          "impossibleScoreCount": 0,
+          "nonFiniteStatCount": 0,
+          "negativeStatCount": 0,
+          "finalTieCount": 0
+        },
+        "games": 2048
+      },
+      {
+        "devFixtureId": "sd2-post-mismatch",
+        "purpose": "POST_MISMATCH",
+        "era": "1970s",
+        "ratingBefore": 907,
+        "ratingAfter": 1514,
+        "achievedRatio": 1.66924,
+        "slotsUpgraded": 5,
+        "primaryRoleMatches": 1,
+        "noSlotGotWorse": true,
+        "slots": [
+          {
+            "slot": "PG",
+            "from": "pete-70s",
+            "to": "gary-90s",
+            "fromRating": 120.55,
+            "toRating": 242.76,
+            "role": "Primary Creator",
+            "roleMatch": "SECONDARY",
+            "reachedTarget": true
+          },
+          {
+            "slot": "SG",
+            "from": "rick-70s",
+            "to": "kawhi-10s",
+            "fromRating": 176.23,
+            "toRating": 284.54,
+            "role": "Primary Creator",
+            "roleMatch": "SECONDARY",
+            "reachedTarget": false
+          },
+          {
+            "slot": "SF",
+            "from": "julius-70s",
+            "to": "magic-80s",
+            "fromRating": 273.82,
+            "toRating": 377.63,
+            "role": "Slasher",
+            "roleMatch": "SECONDARY",
+            "reachedTarget": false
+          },
+          {
+            "slot": "PF",
+            "from": "elvin-70s",
+            "to": "rob-90s",
+            "fromRating": 153.635,
+            "toRating": 277.95,
+            "role": "Glass Cleaner",
+            "roleMatch": "SECONDARY",
+            "reachedTarget": true
+          },
+          {
+            "slot": "C",
+            "from": "artis-70s",
+            "to": "moses-80s",
+            "fromRating": 115.16,
+            "toRating": 218.61,
+            "role": "Glass Cleaner",
+            "roleMatch": "PRIMARY",
+            "reachedTarget": true
+          }
+        ],
+        "strongerSideWinRate": 0.79443,
+        "se": 0.00893,
+        "decidedGames": 2048,
+        "variance": {
+          "combinedScoreSd": 15.04456,
+          "combinedScoreSdSe": 0.23513,
+          "marginSd": 10.70828,
+          "distinctScorelineRatio": 0.625,
+          "distinctScorelineRatioSe": 0.00613,
+          "games": 2048
+        },
+        "structural": {
+          "invariantViolationCount": 0,
+          "impossibleScoreCount": 0,
+          "nonFiniteStatCount": 0,
+          "negativeStatCount": 0,
+          "finalTieCount": 0
+        },
+        "games": 2048
+      },
+      {
+        "devFixtureId": "sd2-zone-attack",
+        "purpose": "ZONE_ATTACK",
+        "era": "2010s",
+        "ratingBefore": 1481,
+        "ratingAfter": 1875,
+        "achievedRatio": 1.26604,
+        "slotsUpgraded": 4,
+        "primaryRoleMatches": 0,
+        "noSlotGotWorse": true,
+        "slots": [
+          {
+            "slot": "PG",
+            "from": "harden-10s",
+            "to": "magic-80s",
+            "fromRating": 200.19,
+            "toRating": 379.92,
+            "role": "Primary Creator",
+            "roleMatch": "SECONDARY",
+            "reachedTarget": true
+          },
+          {
+            "slot": "SG",
+            "from": "curry-10s",
+            "to": "kawhi-10s",
+            "fromRating": 267.47,
+            "toRating": 284.54,
+            "role": "Movement Shooter",
+            "roleMatch": "SECONDARY",
+            "reachedTarget": false
+          },
+          {
+            "slot": "SF",
+            "from": "lebron-10s",
+            "to": "lebron-10s",
+            "fromRating": 422.82,
+            "toRating": 422.82,
+            "role": "Primary Creator",
+            "roleMatch": "UNCHANGED",
+            "reachedTarget": false,
+            "reason": "the pool has no card legal at SF carrying the role \"Primary Creator\" with a higher slot rating"
+          },
+          {
+            "slot": "PF",
+            "from": "durant-10s",
+            "to": "bird-80s",
+            "fromRating": 247.405,
+            "toRating": 363.21,
+            "role": "Primary Creator",
+            "roleMatch": "SECONDARY",
+            "reachedTarget": false
+          },
+          {
+            "slot": "C",
+            "from": "giannis-10s",
+            "to": "kg-00s",
+            "fromRating": 233.1,
+            "toRating": 285.25,
+            "role": "Glass Cleaner",
+            "roleMatch": "SECONDARY",
+            "reachedTarget": false
+          }
+        ],
+        "strongerSideWinRate": 0.82959,
+        "se": 0.00831,
+        "decidedGames": 2048,
+        "variance": {
+          "combinedScoreSd": 16.75321,
+          "combinedScoreSdSe": 0.26183,
+          "marginSd": 12.80602,
+          "distinctScorelineRatio": 0.68799,
+          "distinctScorelineRatioSe": 0.00591,
+          "games": 2048
+        },
+        "structural": {
+          "invariantViolationCount": 0,
+          "impossibleScoreCount": 0,
+          "nonFiniteStatCount": 0,
+          "negativeStatCount": 0,
+          "finalTieCount": 0
+        },
+        "games": 2048
+      },
+      {
+        "devFixtureId": "sd2-weak-defender-hiding",
+        "purpose": "WEAK_DEFENDER_HIDING",
+        "era": "2010s",
+        "ratingBefore": 959,
+        "ratingAfter": 1614,
+        "achievedRatio": 1.683,
+        "slotsUpgraded": 5,
+        "primaryRoleMatches": 1,
+        "noSlotGotWorse": true,
+        "slots": [
+          {
+            "slot": "PG",
+            "from": "harden-10s",
+            "to": "magic-80s",
+            "fromRating": 200.19,
+            "toRating": 379.92,
+            "role": "Primary Creator",
+            "roleMatch": "SECONDARY",
+            "reachedTarget": true
+          },
+          {
+            "slot": "SG",
+            "from": "durant-10s",
+            "to": "kawhi-10s",
+            "fromRating": 247.95,
+            "toRating": 284.54,
+            "role": "Primary Creator",
+            "roleMatch": "SECONDARY",
+            "reachedTarget": false
+          },
+          {
+            "slot": "SF",
+            "from": "kobe-10s",
+            "to": "bird-80s",
+            "fromRating": 249.84,
+            "toRating": 364.23,
+            "role": "Primary Creator",
+            "roleMatch": "SECONDARY",
+            "reachedTarget": false
+          },
+          {
+            "slot": "PF",
+            "from": "melo-10s",
+            "to": "schayes-50s",
+            "fromRating": 88.26,
+            "toRating": 187.355,
+            "role": "Primary Creator",
+            "roleMatch": "PRIMARY",
+            "reachedTarget": true
+          },
+          {
+            "slot": "C",
+            "from": "embiid-10s",
+            "to": "rob-90s",
+            "fromRating": 135.51,
+            "toRating": 278.14,
+            "role": "Rim Protector",
+            "roleMatch": "SECONDARY",
+            "reachedTarget": true
+          }
+        ],
+        "strongerSideWinRate": 0.82568,
+        "se": 0.00838,
+        "decidedGames": 2048,
+        "variance": {
+          "combinedScoreSd": 16.39464,
+          "combinedScoreSdSe": 0.25623,
+          "marginSd": 12.21934,
+          "distinctScorelineRatio": 0.67773,
+          "distinctScorelineRatioSe": 0.00628,
+          "games": 2048
+        },
+        "structural": {
+          "invariantViolationCount": 0,
+          "impossibleScoreCount": 0,
+          "nonFiniteStatCount": 0,
+          "negativeStatCount": 0,
+          "finalTieCount": 0
+        },
+        "games": 2048
+      },
+      {
+        "devFixtureId": "sd2-action-family-stress",
+        "purpose": "ACTION_FAMILY_STRESS",
+        "era": "1990s",
+        "ratingBefore": 1444,
+        "ratingAfter": 1897,
+        "achievedRatio": 1.31371,
+        "slotsUpgraded": 4,
+        "primaryRoleMatches": 1,
+        "noSlotGotWorse": true,
+        "slots": [
+          {
+            "slot": "PG",
+            "from": "isiah-90s",
+            "to": "magic-80s",
+            "fromRating": 125.58,
+            "toRating": 379.92,
+            "role": "Primary Creator",
+            "roleMatch": "SECONDARY",
+            "reachedTarget": true
+          },
+          {
+            "slot": "SG",
+            "from": "gary-90s",
+            "to": "kawhi-10s",
+            "fromRating": 242.29,
+            "toRating": 284.54,
+            "role": "Point-of-Attack Stopper",
+            "roleMatch": "SECONDARY",
+            "reachedTarget": false
+          },
+          {
+            "slot": "SF",
+            "from": "jordan-90s",
+            "to": "jordan-90s",
+            "fromRating": 586.08,
+            "toRating": 586.08,
+            "role": "Primary Creator",
+            "roleMatch": "UNCHANGED",
+            "reachedTarget": false,
+            "reason": "the pool has no card legal at SF carrying the role \"Primary Creator\" with a higher slot rating"
+          },
+          {
+            "slot": "PF",
+            "from": "grant-90s",
+            "to": "barkley-90s",
+            "fromRating": 123.545,
+            "toRating": 220.46,
+            "role": "Primary Creator",
+            "roleMatch": "PRIMARY",
+            "reachedTarget": true
+          },
+          {
+            "slot": "C",
+            "from": "malone-90s",
+            "to": "kg-00s",
+            "fromRating": 259.35,
+            "toRating": 285.25,
+            "role": "Glass Cleaner",
+            "roleMatch": "SECONDARY",
+            "reachedTarget": false
+          }
+        ],
+        "strongerSideWinRate": 0.92969,
+        "se": 0.00565,
+        "decidedGames": 2048,
+        "variance": {
+          "combinedScoreSd": 15.31032,
+          "combinedScoreSdSe": 0.23928,
+          "marginSd": 12.82233,
+          "distinctScorelineRatio": 0.68506,
+          "distinctScorelineRatioSe": 0.0064,
+          "games": 2048
+        },
+        "structural": {
+          "invariantViolationCount": 0,
+          "impossibleScoreCount": 0,
+          "nonFiniteStatCount": 0,
+          "negativeStatCount": 0,
+          "finalTieCount": 0
+        },
+        "games": 2048
+      },
+      {
+        "devFixtureId": "sd2-cross-era",
+        "purpose": "CROSS_ERA_TRANSLATION",
+        "era": "1960s",
+        "ratingBefore": 1901,
+        "ratingAfter": 2178,
+        "achievedRatio": 1.14571,
+        "slotsUpgraded": 2,
+        "primaryRoleMatches": 0,
+        "noSlotGotWorse": true,
+        "slots": [
+          {
+            "slot": "PG",
+            "from": "oscar-60s",
+            "to": "magic-80s",
+            "fromRating": 251.1,
+            "toRating": 379.92,
+            "role": "Primary Creator",
+            "roleMatch": "SECONDARY",
+            "reachedTarget": false
+          },
+          {
+            "slot": "SG",
+            "from": "jordan-90s",
+            "to": "jordan-90s",
+            "fromRating": 585.43,
+            "toRating": 585.43,
+            "role": "Primary Creator",
+            "roleMatch": "UNCHANGED",
+            "reachedTarget": false,
+            "reason": "the pool has no card legal at SG carrying the role \"Primary Creator\" with a higher slot rating"
+          },
+          {
+            "slot": "SF",
+            "from": "elgin-60s",
+            "to": "kawhi-10s",
+            "fromRating": 208.94,
+            "toRating": 285.41,
+            "role": "Slasher",
+            "roleMatch": "SECONDARY",
+            "reachedTarget": false
+          },
+          {
+            "slot": "PF",
+            "from": "lebron-10s",
+            "to": "lebron-10s",
+            "fromRating": 420.61,
+            "toRating": 420.61,
+            "role": "Primary Creator",
+            "roleMatch": "UNCHANGED",
+            "reachedTarget": false,
+            "reason": "the pool has no card legal at PF carrying the role \"Primary Creator\" with a higher slot rating"
+          },
+          {
+            "slot": "C",
+            "from": "wilt-60s",
+            "to": "wilt-60s",
+            "fromRating": 344.86,
+            "toRating": 344.86,
+            "role": "Glass Cleaner",
+            "roleMatch": "UNCHANGED",
+            "reachedTarget": false,
+            "reason": "the pool has no card legal at C carrying the role \"Glass Cleaner\" with a higher slot rating"
+          }
+        ],
+        "strongerSideWinRate": 0.51465,
+        "se": 0.01104,
+        "decidedGames": 2048,
+        "variance": {
+          "combinedScoreSd": 16.43981,
+          "combinedScoreSdSe": 0.25693,
+          "marginSd": 9.28253,
+          "distinctScorelineRatio": 0.59375,
+          "distinctScorelineRatioSe": 0.00589,
+          "games": 2048
+        },
+        "structural": {
+          "invariantViolationCount": 0,
+          "impossibleScoreCount": 0,
+          "nonFiniteStatCount": 0,
+          "negativeStatCount": 0,
+          "finalTieCount": 0
+        },
+        "games": 2048
+      }
+    ],
+    "summary": {
+      "n": 14,
+      "min": 0.42383,
+      "max": 0.92969,
+      "mean": 0.73734,
+      "sd": 0.1508,
+      "maxSe": 0.01104,
+      "upgradeRatio": {
+        "min": 1.14571,
+        "max": 1.99552,
+        "mean": 1.49406
+      },
+      "everyUpgradeWonMoreThanHalf": false,
+      "monotonicCheck": "an upgrade that preserves construction should raise the win rate above 0.5 on every fixture; any fixture where it does not is reported rather than smoothed away",
+      "belowHalf": [
+        {
+          "fixture": "sd2-no-rim-protection",
+          "winRate": 0.42383,
+          "ratio": 1.19274
+        }
+      ],
+      "noSlotGotWorseEverywhere": true,
+      "structuralTotals": {
+        "invariantViolationCount": 0,
+        "impossibleScoreCount": 0,
+        "nonFiniteStatCount": 0,
+        "negativeStatCount": 0,
+        "finalTieCount": 0
+      }
+    },
+    "ladderHash": "39d77022b26ecc0a5027ec6d95b9a85ae350c8a7d8919a7d7a57eee4483f52bc"
+  },
+  "outputHash": "8646d41a5126ecf9bcf87bd14a92f3020fddfba21c2ce12015288ed4fbfb69f1"
+}

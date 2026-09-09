@@ -1,0 +1,240 @@
+{
+  "artifact": "synthetic-v2-formal-readiness-register",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run syn:readiness",
+  "generatedAt": "2026-08-27T12:21:56.498Z",
+  "gitCommit": "3231adc58fbfe6b71e4c13fac13acf396a447b91",
+  "branch": "phase-6c4b1s-synthetic-v2-package",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "syntheticFormalReadinessRegisterVersion": "1.0.0",
+    "authoritativeSource": {
+      "path": "data/validation/6c4b2/synthetic-v2-package-blocker.json",
+      "blockerId": "SYNTHETIC_V2_PACKAGE_INCOMPLETE",
+      "detectedInPhase": "6C4B2",
+      "recordedAtCommit": "a83280bede49368632205d4ff9795d5a8a0b8ed2",
+      "missingKeys": [
+        "seedSet",
+        "aggregationRule",
+        "runner",
+        "preparedCommandResolvable",
+        "dryRun",
+        "packageBinding"
+      ]
+    },
+    "frozenInputs": {
+      "membershipHash": "71267875cbf69a9ffa2bd420a2f4bb87437ecb78d6ca2029e7b6826759dbcd19",
+      "membershipUnchanged": true,
+      "acceptancePolicyHash": "a3583d6ada42d61ff9ee40322d999154250613ba94a2cd6f073e2196315919b0",
+      "acceptancePolicyUnchanged": true,
+      "guardrailKeyCount": 11,
+      "minGamesPerHoldoutFixture": 1000
+    },
+    "stateVocabulary": [
+      "PRESENT_AND_FROZEN",
+      "PRESENT_NOT_CERTIFIED",
+      "MISSING",
+      "BLOCKED",
+      "NOT_APPLICABLE"
+    ],
+    "componentCount": 16,
+    "stateCounts": {
+      "PRESENT_AND_FROZEN": 4,
+      "PRESENT_NOT_CERTIFIED": 0,
+      "MISSING": 12,
+      "BLOCKED": 0,
+      "NOT_APPLICABLE": 0
+    },
+    "components": [
+      {
+        "componentId": "fixtureMembership",
+        "displayName": "Sealed fixture membership",
+        "requiredFor": "knowing what will be run at all",
+        "state": "PRESENT_AND_FROZEN",
+        "evidence": "16 fixtures, manifestHash 71267875cbf69a9ffa2bd420a2f4bb87437ecb78d6ca2029e7b6826759dbcd19, setVersion 2.0.0, frozen at phase-6c2c1, accessPolicy SEALED_UNREAD",
+        "blockerKey": null,
+        "producedInThisPhase": null,
+        "artifactPath": null
+      },
+      {
+        "componentId": "guardrailPolicy",
+        "displayName": "Frozen conceptual guardrails",
+        "requiredFor": "knowing what is being asked of the candidate",
+        "state": "PRESENT_AND_FROZEN",
+        "evidence": "11 keys in HOLDOUT.syntheticGuardrails, inside acceptance policy hash a3583d6ada42d61ff9ee40322d999154250613ba94a2cd6f073e2196315919b0; minGamesPerHoldoutFixture 1000",
+        "blockerKey": null,
+        "producedInThisPhase": null,
+        "artifactPath": null
+      },
+      {
+        "componentId": "guardrailFormalization",
+        "displayName": "Machine-readable guardrail registry",
+        "requiredFor": "turning a prose guardrail into an adjudicable predicate",
+        "state": "PRESENT_AND_FROZEN",
+        "evidence": "data/validation/6c4b1s/synthetic-v2-guardrail-registry.json exists",
+        "blockerKey": null,
+        "producedInThisPhase": "synthetic-v2-guardrail-registry.json",
+        "artifactPath": "data/validation/6c4b1s/synthetic-v2-guardrail-registry.json"
+      },
+      {
+        "componentId": "measurementSurfaces",
+        "displayName": "Per-guardrail measurement surfaces",
+        "requiredFor": "measuring each guardrail somewhere its claim is decidable",
+        "state": "PRESENT_AND_FROZEN",
+        "evidence": "data/validation/6c4b1s/synthetic-v2-surface-plan.json exists",
+        "blockerKey": null,
+        "producedInThisPhase": "synthetic-v2-surface-plan.json",
+        "artifactPath": "data/validation/6c4b1s/synthetic-v2-surface-plan.json"
+      },
+      {
+        "componentId": "practicalMargins",
+        "displayName": "Practical margins",
+        "requiredFor": "preventing a significant-but-meaningless result from deciding the verdict",
+        "state": "MISSING",
+        "evidence": "no artifact synthetic-v2-practical-margins.json exists yet; this phase must author it",
+        "blockerKey": null,
+        "producedInThisPhase": "synthetic-v2-practical-margins.json",
+        "artifactPath": "data/validation/6c4b1s/synthetic-v2-practical-margins.json"
+      },
+      {
+        "componentId": "formalPolicy",
+        "displayName": "Formal stress policy",
+        "requiredFor": "binding guardrails, surfaces, margins and thresholds into one frozen document",
+        "state": "MISSING",
+        "evidence": "no artifact synthetic-v2-formal-policy.json exists yet; this phase must author it",
+        "blockerKey": null,
+        "producedInThisPhase": "synthetic-v2-formal-policy.json",
+        "artifactPath": "data/validation/6c4b1s/synthetic-v2-formal-policy.json"
+      },
+      {
+        "componentId": "perFixtureVerdictSchema",
+        "displayName": "Per-fixture verdict schema",
+        "requiredFor": "recording one defensible outcome per fixture",
+        "state": "MISSING",
+        "evidence": "no artifact synthetic-v2-verdict-schema.json exists yet; this phase must author it",
+        "blockerKey": null,
+        "producedInThisPhase": "synthetic-v2-verdict-schema.json",
+        "artifactPath": "data/validation/6c4b1s/synthetic-v2-verdict-schema.json"
+      },
+      {
+        "componentId": "aggregationRule",
+        "displayName": "Verdict aggregation rule",
+        "requiredFor": "turning 16 fixture verdicts into one set verdict",
+        "state": "MISSING",
+        "evidence": "blocker key \"aggregationRule\": NO frozen rule turns per-fixture guardrail outcomes into a set verdict. The guardrails are per-fixture predicates; the pass/fail arithmetic over 16 fixtures is undefined.",
+        "blockerKey": "aggregationRule",
+        "producedInThisPhase": "synthetic-v2-aggregation-policy.json",
+        "artifactPath": "data/validation/6c4b1s/synthetic-v2-aggregation-policy.json"
+      },
+      {
+        "componentId": "samplePlan",
+        "displayName": "Per-fixture and per-mode sample volumes",
+        "requiredFor": "fixing statistical power before any result is seen",
+        "state": "MISSING",
+        "evidence": "blocker key \"seedSet\": NO frozen synthetic-V2 seed manifest exists. The set manifest names predictionSeedSetVersion and probabilityValidationSeedSetVersion — the shared domains — but no synthetic-specific seed set with a hash was ever frozen, so there is nothing to verify a seed hash against.",
+        "blockerKey": "seedSet",
+        "producedInThisPhase": "synthetic-v2-sample-plan.json",
+        "artifactPath": "data/validation/6c4b1s/synthetic-v2-sample-plan.json"
+      },
+      {
+        "componentId": "seedSet",
+        "displayName": "Frozen disjoint seed domain",
+        "requiredFor": "guaranteeing the holdout is scored on seeds nothing else has used",
+        "state": "MISSING",
+        "evidence": "blocker key \"seedSet\": NO frozen synthetic-V2 seed manifest exists. The set manifest names predictionSeedSetVersion and probabilityValidationSeedSetVersion — the shared domains — but no synthetic-specific seed set with a hash was ever frozen, so there is nothing to verify a seed hash against.",
+        "blockerKey": "seedSet",
+        "producedInThisPhase": "synthetic-v2-seeds.json",
+        "artifactPath": "data/validation/6c4b1s/synthetic-v2-seeds.json"
+      },
+      {
+        "componentId": "runner",
+        "displayName": "Transactional runner",
+        "requiredFor": "executing the set exactly once, with one access event",
+        "state": "MISSING",
+        "evidence": "blocker key \"runner\": NO synthetic-V2 runner module exists, and no npm script matches /synthetic/. Every reference to the set in scripts/ is a seal-integrity assertion that its access count is still zero.",
+        "blockerKey": "runner",
+        "producedInThisPhase": "synthetic-v2-runner-manifest.json",
+        "artifactPath": "data/validation/6c4b1s/synthetic-v2-runner-manifest.json"
+      },
+      {
+        "componentId": "runnerCommand",
+        "displayName": "Resolvable npm command",
+        "requiredFor": "letting the prepared package command actually execute",
+        "state": "MISSING",
+        "evidence": "package.json still has no validation:synthetic-v2 script. Blocker key \"preparedCommandResolvable\": the B2 package prepares \"npm run validation:synthetic-v2 -- --unlock-holdout --unlock-synthetic-stress-holdout-v2 --operator=\"<name>\" --reason=\"<why>\"\" but package.json has no validation:synthetic-v2 script, so the prepared command cannot execute",
+        "blockerKey": "preparedCommandResolvable",
+        "producedInThisPhase": "synthetic-v2-command-certification.json",
+        "artifactPath": "data/validation/6c4b1s/synthetic-v2-command-certification.json"
+      },
+      {
+        "componentId": "mockSet",
+        "displayName": "Non-holdout mock stress set",
+        "requiredFor": "rehearsing the runner without touching the holdout",
+        "state": "MISSING",
+        "evidence": "no artifact synthetic-v2-mock-manifest.json exists yet; this phase must author it",
+        "blockerKey": null,
+        "producedInThisPhase": "synthetic-v2-mock-manifest.json",
+        "artifactPath": "data/validation/6c4b1s/synthetic-v2-mock-manifest.json"
+      },
+      {
+        "componentId": "dryRun",
+        "displayName": "Transactional dry run",
+        "requiredFor": "proving the runner behaves before it is pointed at the sealed set",
+        "state": "MISSING",
+        "evidence": "blocker key \"dryRun\": NO synthetic-V2 runner dry run exists. Historical V5 received 30 transactional dry-run checks in Phase 6C4B1; the synthetic set received none, because no runner was ever built to rehearse.",
+        "blockerKey": "dryRun",
+        "producedInThisPhase": "synthetic-v2-dry-run.json",
+        "artifactPath": "data/validation/6c4b1s/synthetic-v2-dry-run.json"
+      },
+      {
+        "componentId": "commandCertification",
+        "displayName": "Command certification",
+        "requiredFor": "proving help, preflight and dry-run modes cannot open a holdout",
+        "state": "MISSING",
+        "evidence": "blocker key \"preparedCommandResolvable\": the B2 package prepares \"npm run validation:synthetic-v2 -- --unlock-holdout --unlock-synthetic-stress-holdout-v2 --operator=\"<name>\" --reason=\"<why>\"\" but package.json has no validation:synthetic-v2 script, so the prepared command cannot execute",
+        "blockerKey": "preparedCommandResolvable",
+        "producedInThisPhase": "synthetic-v2-command-certification.json",
+        "artifactPath": "data/validation/6c4b1s/synthetic-v2-command-certification.json"
+      },
+      {
+        "componentId": "packageBinding",
+        "displayName": "Compound package binding",
+        "requiredFor": "recording the hashes a future execution phase must verify",
+        "state": "MISSING",
+        "evidence": "blocker key \"packageBinding\": the Phase 6C4B2 validation package binds V5 hashes only — it names no synthetic manifest, policy, seed or seal hash, so there is no recorded expectation to verify the synthetic package against",
+        "blockerKey": "packageBinding",
+        "producedInThisPhase": "compound-formal-validation-package-v2.json",
+        "artifactPath": "data/validation/6c4b1s/compound-formal-validation-package-v2.json"
+      }
+    ],
+    "reconciliation": {
+      "blockerKeysClaimed": [
+        "aggregationRule",
+        "seedSet",
+        "runner",
+        "preparedCommandResolvable",
+        "dryRun",
+        "packageBinding"
+      ],
+      "unclaimed": [],
+      "invented": []
+    },
+    "guardrailCountNote": "The blocker's own note says \"Ten named per-fixture guardrails\" while its enumeration lists eleven keys. The eleven keys are authoritative; the count discrepancy is registered in synthetic-v2-guardrail-registry.json and no guardrail is merged, split or dropped to make either number come out.",
+    "scope": {
+      "thisPhaseIsPreparationOnly": true,
+      "holdoutsOpened": 0,
+      "syntheticFixturesSimulated": 0,
+      "candidate1Changed": false,
+      "syntheticMembershipChanged": false,
+      "historicalV5Changed": false
+    },
+    "pass": true,
+    "failedGates": [],
+    "registerHash": "6b78a9df2492ea79861674cd6502a46b653c67c9317f2a4a927f4a1fd87a566f"
+  },
+  "outputHash": "96e8c4b447651b935895baa22be2409abc29111522947adbfbbbd4e6f437ca69"
+}

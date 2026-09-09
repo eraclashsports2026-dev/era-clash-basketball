@@ -1,0 +1,79 @@
+{
+  "artifact": "historical-v6-seeds",
+  "schemaVersion": "1.0.0",
+  "measurementGovernanceVersion": "1.0.0",
+  "generationCommand": "npm run v6:seeds",
+  "generatedAt": "2026-08-27T20:12:59.058Z",
+  "gitCommit": "f2e7bcf93477e77648c9004d60d6088af1eb2a6f",
+  "branch": "phase-6c4c2-v6-freeze-and-seal",
+  "parameterSetHash": "83f5a17dea0c36d4fd64d80a98a5fcd794ff4b7d2adf3dc955bcec0ca6f1b309",
+  "registryVersion": "2.0.0",
+  "bindingVersion": "1.0.0",
+  "sourceArtifactHashes": {},
+  "data": {
+    "historicalV6SeedSetVersion": "1.0.0",
+    "set": "historical-holdout-v6",
+    "domain": "HISTORICAL_V6_FORMAL",
+    "master": 7097376,
+    "masterCommitment": "2d1b9ad4de4eb736bca053771390d6126a3c4391835fb5cd5636371c5a244802",
+    "streams": {
+      "historical-holdout-v6": {
+        "purpose": "The one-time V6 holdout run, all sample tiers",
+        "streamMaster": 1277040975,
+        "streamCommitment": "4c1e194f8e95c48fbe942a8a9b92b9cb"
+      },
+      "v6-dryrun": {
+        "purpose": "The transactional runner dry run, on non-holdout mock fixtures",
+        "streamMaster": -1360621337,
+        "streamCommitment": "aee690e7be09cabebe4229b8ebca4002"
+      }
+    },
+    "generationAlgorithm": "streamMaster = sha256('eraclash-6c4c2:<stream>:<master>').readInt32BE(0); seed = deriveSeed(streamMaster, index) using the frozen splitmix32 derivation in src/v3/seed.js",
+    "surfaceAddressing": "v6Seed('historical-holdout-v6', tier*5000000 + matchupIndex*300000 + surfaceIndex*100000 + pairIndex)",
+    "whySeedDomainsIsNotEdited": "seedDomains.js is one of the frozen Candidate 2 core files. Registering V6 there would change the core hash the verdict pins, so the domain lives in validation-only code on the same primitives.",
+    "volume": {
+      "matchups": 8,
+      "surfacesPerMatchup": 3,
+      "decisionPairsPerSurface": 2048,
+      "gamesPerSurface": 4096,
+      "totalGamesAtDecisionTier": 98304,
+      "holdoutSeedCount": 49152,
+      "tiers": [
+        {
+          "tier": 0,
+          "gamesPerSurface": 512,
+          "role": "DRY_RUN_ONLY"
+        },
+        {
+          "tier": 1,
+          "gamesPerSurface": 1024,
+          "role": "SMOKE"
+        },
+        {
+          "tier": 2,
+          "gamesPerSurface": 2048,
+          "role": "PRECHECK"
+        },
+        {
+          "tier": 3,
+          "gamesPerSurface": 4096,
+          "role": "DECISION"
+        },
+        {
+          "tier": 4,
+          "gamesPerSurface": 8192,
+          "role": "ESCALATION"
+        }
+      ]
+    },
+    "selectionHash": "7dc4802db43ed50475d8a3b3fd2ec6aaf4b9531ee35166165c529156d3c9c9be",
+    "verdictPolicyHash": "d433cddcd3af4294dc8468481b8b85702a7768e16878a1003c6567ddb22c5ae4",
+    "samplePlanHash": "1ed77e62b545c9d72117355ec290a760b748225fee8df55bd71913a628bd3672",
+    "frozenBeforeRun": true,
+    "frozenBeforeSeal": true,
+    "pass": true,
+    "failedGates": [],
+    "seedHash": "7f0b3ce38d104865d1c8b692e1472835dc315fc84be68862c2e50c3c407b8a09"
+  },
+  "outputHash": "9da91a4efb01b2cc19dbbca9bc3ac8a1bdc7986f09b46a32d51dc89fa16c307c"
+}
