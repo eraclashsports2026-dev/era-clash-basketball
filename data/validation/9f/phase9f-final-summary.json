@@ -1,0 +1,264 @@
+{
+  "phase": "9F — Public Competitive Profiles + Player Cards V1",
+  "generatedAt": "2026-09-09T18:17:45.338Z",
+  "verdict": "PUBLIC COMPETITIVE PROFILES + PLAYER CARDS V1 COMPLETE — READY FOR OWNER ACCEPTANCE",
+  "repository": {
+    "toplevel": "/Users/josephjohnson/era-clash-basketball",
+    "branch": "phase-9f-public-competitive-profiles-v1",
+    "head": "cf17871",
+    "parent": "fec7a12 (phase-9b3-chaos-guided-flow-v2 with PR #48 merged; Phase 9E accepted head 37bac49)",
+    "frozenRefs": {
+      "wave1": "4dc59e7",
+      "wave2": "ef0caa5",
+      "main": "9cd95ff"
+    },
+    "protectedPreview": "https://era-clash-basketball-git-phase-9f-public-compe-0d8e8f-era-clash.vercel.app",
+    "headAtSummary": "cf178713a792aeafc499dd0b89df98bcae28af21",
+    "pr": 49
+  },
+  "contract": {
+    "publicProfileVersion": "1.0.0",
+    "powerEffect": 0,
+    "visibility": {
+      "key": "profile_visibility",
+      "values": [
+        "private",
+        "public"
+      ],
+      "default": "private",
+      "independentOf": "leaderboard_visibility"
+    },
+    "identifier": {
+      "alphabet": "0123456789abcdefghjkmnpqrstvwxyz",
+      "length": 20,
+      "entropyBits": 100
+    },
+    "route": "/player/<slug>",
+    "maxFeatured": 3,
+    "publicFields": [
+      "slug",
+      "displayName",
+      "initials",
+      "state",
+      "rating",
+      "rank",
+      "wins",
+      "losses",
+      "ties",
+      "matches",
+      "winPct",
+      "level",
+      "featured",
+      "placement",
+      "profileVersion"
+    ],
+    "forbiddenFields": [
+      "email",
+      "user_id",
+      "userId",
+      "authId",
+      "auth_id",
+      "provider",
+      "phone",
+      "location",
+      "created_at",
+      "createdAt",
+      "joined",
+      "joinedAt",
+      "birth",
+      "ip",
+      "session",
+      "sessionId",
+      "cookie",
+      "token",
+      "accessToken",
+      "refresh",
+      "rosters",
+      "savedRosters",
+      "favorites",
+      "xp",
+      "totalXp",
+      "xp_ledger",
+      "xpLedger",
+      "xpEvents",
+      "challenge_id",
+      "challengeId",
+      "attempt_id",
+      "attemptId",
+      "challengeCode",
+      "seed",
+      "seed_id",
+      "result_id",
+      "supabase",
+      "moderation",
+      "prefs",
+      "preferences",
+      "displayNameHistory",
+      "deletedNames"
+    ],
+    "notBuilt": [
+      "friends",
+      "following",
+      "followers",
+      "direct messages",
+      "chat",
+      "comments",
+      "likes",
+      "feeds",
+      "activity feeds",
+      "profile search",
+      "player directory",
+      "global user search",
+      "presence indicators",
+      "contact discovery",
+      "email discovery",
+      "seasons",
+      "tournaments",
+      "clans",
+      "leagues",
+      "teams or guilds",
+      "trading",
+      "paid profile boosts",
+      "gameplay rewards",
+      "rating boosts",
+      "XP boosts",
+      "XP leaderboard"
+    ]
+  },
+  "drift": {
+    "activeCandidateCoreDrift": 0,
+    "candidateParameterDrift": 0,
+    "gameLogicChanges": 0,
+    "draftLogicChanges": 0,
+    "placementLogicChanges": 0,
+    "legendRivalLogicChanges": 0,
+    "eraLogicChanges": 0,
+    "coachLogicChanges": 0,
+    "challengeFairnessChanges": 0,
+    "challengeComparisonChanges": 0,
+    "progressionContractChanges": 0,
+    "competitiveRatingContractChanges": 0,
+    "publicProfilePowerEffect": 0,
+    "apiFunctionCountIncrease": 0,
+    "wave1Changes": 0,
+    "stableWave2Changes": 0,
+    "mainChanges": 0,
+    "productionChanges": 0
+  },
+  "preservation": {
+    "candidate": {
+      "candidateId": "Candidate 4",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+      "calibrationVersion": "1.4.0"
+    },
+    "frozenLogicIdentical": true,
+    "apiRoutes": 12,
+    "frozenRefs": {
+      "wave1": "4dc59e7",
+      "wave2": "ef0caa5",
+      "main": "9cd95ff"
+    },
+    "production": {
+      "build": "2.7.2",
+      "cloudAccounts": false
+    }
+  },
+  "liveDatabase": {
+    "verifiedAt": "2026-09-09T17:20:00Z",
+    "project": "lfybiphmqkiecfrqsfzt (the certified preview project; production has no cloud accounts)",
+    "sourceOfTruth": true,
+    "defectsFoundLive": [
+      "9F-L1",
+      "9F-L2"
+    ],
+    "finalState": "synthetic accounts deleted"
+  },
+  "gates": {
+    "vitest": "2647 passed (2647)",
+    "playwright": "88 passed (1.8m)",
+    "gateFailures": [
+      "challenge:deployed-qa FAIL"
+    ],
+    "gateSkips": [],
+    "gates": 77,
+    "e2eRerunAlone": [
+      "e2e/phase7b-preview.spec.js PASS ALONE"
+    ],
+    "unitRerunAlone": [],
+    "liveGuest": "24/24 live guest and security checks passed",
+    "deployedAccount": "29/29 deployed gates passed → data/validation/9b1/account-preview-qa.json",
+    "deployedProfile": "PASS",
+    "deployedCompetitive": "PASS",
+    "deployedProgression": "PASS",
+    "deployedChallenge": "FAIL",
+    "deployedChaos": "PASS",
+    "challengeDeployed": {
+      "source": ".9f-gate-challenge_deployed-qa.log (this run)",
+      "unmet": [
+        "a seeded live challenge code was provided (LIVE_CHALLENGE_CODE)",
+        "a live expired code was provided (LIVE_EXPIRED_CODE)",
+        "a live revoked code was provided (LIVE_REVOKED_CODE)"
+      ],
+      "onlyUnsuppliedFixtures": true
+    }
+  },
+  "ledger": {
+    "total": 57,
+    "fixedAndVerified": 55,
+    "deferredByScope": [
+      "dynamic Open Graph"
+    ],
+    "externalBlocker": [
+      "9C deployed preservation"
+    ],
+    "open": []
+  },
+  "unresolved": {
+    "P0": 0,
+    "P1": 0,
+    "technicalFailures": 0
+  },
+  "evidence": [
+    "featured-achievements-qa.json",
+    "phase9e-acceptance.json",
+    "phase9f-preflight.json",
+    "phase9f-resolution-ledger.json",
+    "production-isolation.json",
+    "profile-accessibility-qa.json",
+    "profile-cross-account-qa.json",
+    "profile-deletion-qa.json",
+    "profile-deployed-qa.json",
+    "profile-display-name-qa.json",
+    "profile-enumeration-qa.json",
+    "profile-identifier-qa.json",
+    "profile-leaderboard-integration-qa.json",
+    "profile-performance-qa.json",
+    "profile-provisional-qa.json",
+    "profile-responsive-qa.json",
+    "profile-rls-live.json",
+    "profile-rls-qa.json",
+    "profile-secret-audit.json",
+    "profile-sharing-qa.json",
+    "profile-visibility-qa.json",
+    "public-profile-contract.json",
+    "public-profile-projection-qa.json",
+    "wave-preservation.json"
+  ],
+  "screenshots": [
+    "deployed-profile-unavailable-1280x900.png",
+    "featured-achievements-state.png",
+    "leaderboard-profile-links.png",
+    "my-eraclash-profile-controls.png",
+    "player-card-desktop.png",
+    "player-card-mobile.png",
+    "player-card-rating-no-rank.png",
+    "profile-owner-private-preview.png",
+    "profile-provisional.png",
+    "profile-unavailable.png"
+  ],
+  "documents": [
+    "docs/public-profiles/profile-operator-guide.md",
+    "docs/public-profiles/profile-privacy.md",
+    "docs/public-profiles/public-profile-contract-v1.md"
+  ]
+}
