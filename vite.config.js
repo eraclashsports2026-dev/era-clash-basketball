@@ -59,6 +59,24 @@ const swVersionPlugin = () => ({
 // committer is identity; neither belongs in a public asset.
 for (const k of ["VITE_VERCEL_GIT_COMMIT_MESSAGE", "VITE_VERCEL_GIT_COMMIT_AUTHOR_NAME", "VITE_VERCEL_GIT_COMMIT_AUTHOR_LOGIN"]) delete process.env[k];
 
+// Release guard (production launch, 2026-09-09). Two configuration mistakes
+// must never reach a public bundle, whatever a dashboard holds:
+//  1. a secret-shaped value in ANY VITE_ variable (sb_secret_ or a service_role
+//     JWT) — dropped, so the bundle cannot carry it;
+//  2. a browser provider (VITE_SUPABASE_URL) that names a DIFFERENT project from
+//     the server's SUPABASE_URL — the browser would sign people up against one
+//     database while the server serves another. Both VITE_SUPABASE_* values are
+//     dropped, so the build degrades to guest play until the pair agrees.
+// Names are logged, never values.
+const jwtRole = (v) => { try { const p = String(v).split("."); if (p.length !== 3) return null; const pad = p[1].replace(/-/g, "+").replace(/_/g, "/"); return JSON.parse(Buffer.from(pad + "=".repeat((4 - (pad.length % 4)) % 4), "base64").toString("utf8"))?.role ?? null; } catch { return null; } };
+const secretShaped = (v) => /^sb_secret_/.test(String(v ?? "").trim()) || jwtRole(String(v ?? "").trim()) === "service_role";
+for (const k of Object.keys(process.env)) if (k.startsWith("VITE_") && secretShaped(process.env[k])) { console.warn(`[release guard] ${k} holds a secret-shaped value and was dropped from the build`); delete process.env[k]; }
+const refOf = (u) => (String(u ?? "").trim().match(/^https:\/\/([a-z0-9-]+)\.supabase\.(co|in)$/i) || [])[1] || null;
+if (process.env.VITE_SUPABASE_URL && process.env.SUPABASE_URL && refOf(process.env.VITE_SUPABASE_URL) !== refOf(process.env.SUPABASE_URL)) {
+  console.warn("[release guard] VITE_SUPABASE_URL names a different project from SUPABASE_URL; VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY were dropped from the build (guest play until they agree)");
+  delete process.env.VITE_SUPABASE_URL; delete process.env.VITE_SUPABASE_ANON_KEY;
+}
+
 export default defineConfig(({ mode }) => ({
   plugins: [react(), swVersionPlugin()],
   define: {
