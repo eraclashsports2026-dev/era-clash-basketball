@@ -6,23 +6,114 @@
     "workingTree": "clean on ui/light-court-release-candidate @ 577f40c",
     "chain": "linear: 354 commits ahead of main@9cd95ff, 0 behind",
     "branchProtection": "main: none",
-    "protectedRefs": { "wave1": "4dc59e7", "wave2": "ef0caa5" },
-    "productionBefore": { "main": "9cd95ff", "build": "2.7.2", "database": "none" }
+    "protectedRefs": {
+      "wave1": "4dc59e7",
+      "wave2": "ef0caa5"
+    },
+    "productionBefore": {
+      "main": "9cd95ff",
+      "build": "2.7.2",
+      "database": "none"
+    }
   },
   "steps": [
-    { "n": 1, "what": "PR #49 (9F) marked ready and merged into phase-9b3-chaos-guided-flow-v2", "result": "merged; phase-9b3 now f400dd9", "at": "2026-09-09T21:33Z" },
-    { "n": 2, "what": "PR #50 retargeted to main and marked ready (NOT merged: production env must exist first because a main merge deploys production)", "result": "done" },
-    { "n": 3, "what": "Production Supabase project provisioned via the authorised provider workflow (MCP create_project; cost confirmed $0/month)", "result": "dxdtnhdeaanhfoqngdel · us-west-1 · ACTIVE_HEALTHY · https://dxdtnhdeaanhfoqngdel.supabase.co", "isolation": "separate from the preview project lfybiphmqkiecfrqsfzt; no data copied; 0 users" },
-    { "n": 4, "what": "Migrations 0001..0007 applied in repository order via apply_migration (verbatim SQL, comments stripped)", "result": "schema_migrations = 0001_accounts,0002_accounts_hardening,0003_career_v2,0004_challenges,0005_progression_v1,0006_competitive_rating_v1,0007_public_competitive_profiles_v1 · 16 tables, RLS on all 16, 26 functions · security advisor: only INFO 'RLS enabled, no policy' on challenge_secrets and schema_migrations — by design (service-role only)" },
-    { "n": 5, "what": "Vercel production environment variables", "result": "BLOCKED for the developer session: Vercel CLI is logged out and the Vercel MCP connector is unauthenticated; no browser session is connected. Owner step required (see ownerSteps). Secret values are never typed by the developer." },
-    { "n": 6, "what": "Supabase Auth URL configuration for the production project", "result": "OWNER STEP (dashboard only; no MCP tool): Site URL and redirect URLs listed in ownerSteps." }
+    {
+      "n": 1,
+      "what": "PR #49 (9F) marked ready and merged into phase-9b3-chaos-guided-flow-v2",
+      "result": "merged; phase-9b3 now f400dd9",
+      "at": "2026-09-09T21:33Z"
+    },
+    {
+      "n": 2,
+      "what": "PR #50 retargeted to main and marked ready (NOT merged: production env must exist first because a main merge deploys production)",
+      "result": "done"
+    },
+    {
+      "n": 3,
+      "what": "Production Supabase project provisioned via the authorised provider workflow (MCP create_project; cost confirmed $0/month)",
+      "result": "dxdtnhdeaanhfoqngdel \u00b7 us-west-1 \u00b7 ACTIVE_HEALTHY \u00b7 https://dxdtnhdeaanhfoqngdel.supabase.co",
+      "isolation": "separate from the preview project lfybiphmqkiecfrqsfzt; no data copied; 0 users"
+    },
+    {
+      "n": 4,
+      "what": "Migrations 0001..0007 applied in repository order via apply_migration (verbatim SQL, comments stripped)",
+      "result": "schema_migrations = 0001_accounts,0002_accounts_hardening,0003_career_v2,0004_challenges,0005_progression_v1,0006_competitive_rating_v1,0007_public_competitive_profiles_v1 \u00b7 16 tables, RLS on all 16, 26 functions \u00b7 security advisor: only INFO 'RLS enabled, no policy' on challenge_secrets and schema_migrations \u2014 by design (service-role only)"
+    },
+    {
+      "n": 5,
+      "what": "Vercel production environment variables",
+      "result": "BLOCKED for the developer session: Vercel CLI is logged out and the Vercel MCP connector is unauthenticated; no browser session is connected. Owner step required (see ownerSteps). Secret values are never typed by the developer."
+    },
+    {
+      "n": 6,
+      "what": "Supabase Auth URL configuration for the production project",
+      "result": "OWNER STEP (dashboard only; no MCP tool): Site URL and redirect URLs listed in ownerSteps."
+    },
+    {
+      "n": 7,
+      "what": "PR #50 merged into main (merge commit)",
+      "result": "main 7e14f0c; Vercel production deployment success; domain serves the new build (Light Court header in shipped CSS; Candidate 4 identity 55bb26a2\u2026/1.4.0 in health)",
+      "at": "2026-09-09T21:40Z"
+    },
+    {
+      "n": 8,
+      "what": "Runtime env check on the domain after 7e14f0c",
+      "result": "only SUPABASE_SERVICE_ROLE_KEY (sb_secret, len 41) visible; URL/anon/flags absent \u2192 owner re-checked env; redeploy b8def7e (empty commit)"
+    },
+    {
+      "n": 9,
+      "what": "Runtime env check after b8def7e",
+      "result": "SUPABASE_URL ok, CLOUD_ACCOUNTS_ENABLED ok; SUPABASE_SERVICE_ROLE_KEY now 40 chars unrecognised; SUPABASE_ANON_KEY rejected; VITE_SUPABASE_URL named the PREVIEW project (ref found in the public bundle) \u2192 wrong browser attachment; PREVIEW_SIM_ENGINE_ENABLED not effective. The 'sb_secret_' string in the bundle was the 10-char regex literal from src/accounts/config.js, NOT key material."
+    },
+    {
+      "n": 10,
+      "what": "Containment: build guard in vite.config.js (main dca0456) drops secret-shaped VITE_ values and the VITE_SUPABASE_* pair when its project ref differs from SUPABASE_URL",
+      "result": "deployed; live bundle has neither the preview nor the production ref (guest play until the pair agrees); browserCredentialConfigured now true after the owner's anon-key fix; server key still unrecognised; Candidate 4 still off"
+    }
   ],
   "ownerSteps": {
     "vercelEnvProduction": {
-      "nonSecret": { "VITE_SUPABASE_URL": "https://dxdtnhdeaanhfoqngdel.supabase.co", "SUPABASE_URL": "https://dxdtnhdeaanhfoqngdel.supabase.co", "VITE_SUPABASE_ANON_KEY": "sb_publishable_YIAKyZH0TGlBL9z5GLPeJg_MEWWLvcP", "SUPABASE_ANON_KEY": "sb_publishable_YIAKyZH0TGlBL9z5GLPeJg_MEWWLvcP", "VITE_CLOUD_ACCOUNTS_ENABLED": "true", "CLOUD_ACCOUNTS_ENABLED": "true", "CHAOS_CLASH_ENABLED": "true", "PREVIEW_SIM_ENGINE_ENABLED": "true" },
-      "secret": { "SUPABASE_SERVICE_ROLE_KEY": "from Supabase dashboard → project dxdtnhdeaanhfoqngdel → Settings → API keys (service_role / secret). Server scope only. Never a VITE_ variable." }
+      "nonSecret": {
+        "VITE_SUPABASE_URL": "https://dxdtnhdeaanhfoqngdel.supabase.co",
+        "SUPABASE_URL": "https://dxdtnhdeaanhfoqngdel.supabase.co",
+        "VITE_SUPABASE_ANON_KEY": "sb_publishable_YIAKyZH0TGlBL9z5GLPeJg_MEWWLvcP",
+        "SUPABASE_ANON_KEY": "sb_publishable_YIAKyZH0TGlBL9z5GLPeJg_MEWWLvcP",
+        "VITE_CLOUD_ACCOUNTS_ENABLED": "true",
+        "CLOUD_ACCOUNTS_ENABLED": "true",
+        "CHAOS_CLASH_ENABLED": "true",
+        "PREVIEW_SIM_ENGINE_ENABLED": "true"
+      },
+      "secret": {
+        "SUPABASE_SERVICE_ROLE_KEY": "from Supabase dashboard \u2192 project dxdtnhdeaanhfoqngdel \u2192 Settings \u2192 API keys (service_role / secret). Server scope only. Never a VITE_ variable."
+      }
     },
-    "supabaseAuth": { "siteUrl": "https://www.eraclashbasketball.com", "redirectUrls": ["https://www.eraclashbasketball.com/auth/callback", "https://eraclashbasketball.com/auth/callback"], "emailProvider": "Email (magic link / OTP) enabled; implicit flow per docs/accounts/eraclash-account-provider-setup.md" }
+    "supabaseAuth": {
+      "siteUrl": "https://www.eraclashbasketball.com",
+      "redirectUrls": [
+        "https://www.eraclashbasketball.com/auth/callback",
+        "https://eraclashbasketball.com/auth/callback"
+      ],
+      "emailProvider": "Email (magic link / OTP) enabled; implicit flow per docs/accounts/eraclash-account-provider-setup.md"
+    }
   },
-  "engineActivation": { "CHAOS_CLASH_ENABLED": "flags.chaosClash defaults to preview-only; true makes Chaos the default Play mode in production", "PREVIEW_SIM_ENGINE_ENABLED": "an explicit value wins over the VERCEL_ENV=preview default; true selects Candidate 4 (api/game.js single-mode path) with engine 3.2.0 as per-request fallback; it does NOT enable the preview access gate (middleware exits unless VERCEL_ENV=preview), the theme lab (build-time preview define) or dev fixture routes (VITE_EC_DEV_FIXTURES only)", "candidateIdentity": { "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff", "calibration": "1.4.0 (verified live after deploy via /api/health)" } }
+  "engineActivation": {
+    "CHAOS_CLASH_ENABLED": "flags.chaosClash defaults to preview-only; true makes Chaos the default Play mode in production",
+    "PREVIEW_SIM_ENGINE_ENABLED": "an explicit value wins over the VERCEL_ENV=preview default; true selects Candidate 4 (api/game.js single-mode path) with engine 3.2.0 as per-request fallback; it does NOT enable the preview access gate (middleware exits unless VERCEL_ENV=preview), the theme lab (build-time preview define) or dev fixture routes (VITE_EC_DEV_FIXTURES only)",
+    "candidateIdentity": {
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+      "calibration": "1.4.0 (verified live after deploy via /api/health)"
+    }
+  },
+  "productionAfterSoFar": {
+    "main": "dca0456",
+    "chain": [
+      "7e14f0c release merge",
+      "b8def7e redeploy",
+      "dca0456 release guard"
+    ],
+    "waveRefs": {
+      "wave1": "4dc59e7",
+      "wave2": "ef0caa5"
+    }
+  }
 }
