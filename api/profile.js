@@ -31,6 +31,9 @@ import { normalizeCode } from "../src/challenges/contract.js";
 // Phase 9D: progression rides the same route. Awards are decided here and in
 // the database, never in a browser; every hook below is idempotent.
 import { reconcileProgression, recentLedger, compactProgression, reconcileChallengeCompletion } from "./_lib/progression.js";
+// Phase 9E: Competitive Rating rides the same route. The database rates; the
+// server relays the caller's side; the leaderboard is the safe projection.
+import { rateChallengeCompletion, competitiveMe, leaderboard as competitiveLeaderboard, aroundMe as competitiveAroundMe } from "./_lib/competitive.js";
 import { normalizeTier } from "../src/entitlements.js";
 import { validRunId } from "./_lib/chaosRun.js";
 
@@ -40,6 +43,8 @@ const CLOUD_ACTIONS = new Set(["cloud-save", "claim-result", "import-device-hist
 const CHALLENGE_ACTIONS = new Set(["challenge-create", "challenge-view", "challenge-accept", "challenge-complete", "challenge-revoke", "challenge-list"]);
 const ACCOUNT_ONLY_CHALLENGE_ACTIONS = new Set(["challenge-create", "challenge-revoke", "challenge-list"]);
 const PROGRESSION_ACTIONS = new Set(["progression-get", "progression-reconcile"]);
+const COMPETITIVE_ACTIONS = new Set(["competitive-leaderboard", "competitive-me", "competitive-around-me"]);
+const ACCOUNT_ONLY_COMPETITIVE_ACTIONS = new Set(["competitive-me", "competitive-around-me"]);
 /** A guest: an identity with no user id. Never a stand-in for a token that failed verification. */
 const GUEST_IDENTITY = Object.freeze({ userId: null });
 
@@ -189,7 +194,13 @@ export default async function handler(req, res) {
       const progression = out.status === "completed" || out.status === "already_completed"
         ? await reconcileChallengeCompletion({ chaosRunId, callerUserId: who.userId, justCompleted: out.status === "completed" })
         : null;
-      return res.status(http).json({ ...out, ...(progression ? { progression } : {}), requestId });
+      // Phase 9E: the comparison is authoritative; the rating consumes it. Rated
+      // between two accounts, once; a guest, self or repeat-opponent attempt is
+      // answered as unrated with its reason. The caller's side only.
+      const rating = out.status === "completed" || out.status === "already_completed"
+        ? await rateChallengeCompletion({ chaosRunId, callerUserId: who.userId })
+        : null;
+      return res.status(http).json({ ...out, ...(progression ? { progression } : {}), ...(rating ? { rating } : {}), requestId });
     }
     if (action9c === "challenge-revoke") {
       out = code ? await revokeChallenge({ code, userId: who.userId }) : { status: "unavailable" };
@@ -217,6 +228,26 @@ export default async function handler(req, res) {
     if (out.status !== "ok") return res.status({ not_configured: 503, apply_failed: 502 }[out.status] ?? 500).json({ status: out.status, requestId });
     const recent = await recentLedger(who.userId);
     return res.status(200).json({ status: "ok", profile: out.profile, achievements: out.achievements, summary: out.summary, facts: out.facts, recent, repaired: out.repaired, requestId });
+  }
+
+  // ── Phase 9E competitive actions ─────────────────────────────────────────
+  // The leaderboard is public (signed out may read the Top 100: public AND
+  // placed accounts, display names only). A user's own rating, record, placement
+  // and rows around them are account only. No body field is read.
+  const action9e = typeof req.body?.action === "string" ? req.body.action : null;
+  if (action9e && COMPETITIVE_ACTIONS.has(action9e)) {
+    if (!cloudAccountsReady()) return res.status(503).json({ error: "CLOUD_ACCOUNTS_DISABLED", requestId });
+    if (!(await rateLimit(`comp:${clientIp(req)}`, limits().competitivePerMinIp, 60))) return sendError(res, "RATE_LIMITED", requestId, { retryAfter: 30 });
+    const token = bearer(req);
+    const verified = token ? await verifyAccountToken(token) : null;
+    if (token && !verified) return res.status(401).json({ error: "NOT_AUTHENTICATED", requestId });
+    const who = verified || GUEST_IDENTITY;
+    if (ACCOUNT_ONLY_COMPETITIVE_ACTIONS.has(action9e) && !who.userId) return res.status(401).json({ error: "NOT_AUTHENTICATED", requestId });
+    res.setHeader("Cache-Control", "private, no-store");
+    const out = action9e === "competitive-leaderboard" ? await competitiveLeaderboard({})
+      : action9e === "competitive-me" ? await competitiveMe({ userId: who.userId })
+      : await competitiveAroundMe({ userId: who.userId });
+    return res.status(out.status === "ok" ? 200 : { not_configured: 503, failed: 502 }[out.status] ?? 500).json({ ...out, requestId });
   }
 
   // ── Phase 9B.1 cloud-career actions ──────────────────────────────────────

@@ -1,0 +1,131 @@
+{
+  "artifact": "competitive-rating-contract",
+  "phase": "9E — Competitive Rating + Leaderboards V1",
+  "generatedAt": "2026-09-07T02:06:59.145Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "version 1.0.0; initial 1000; floor 100; K 40 then 24 at ten; placement 5 & 3; pair 3 in 7 days",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Elo: EA = 1/(1+10^((RB−RA)/400)); 1000 v 1000 win moves ±20 at K 40; rounding half away from zero",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "tie = 0.5 each; loss = 0; the floor holds and before + delta = after",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "SQL mirrors the math (power/400, round 4, K 40/24 at 10, greatest(100,…))",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "eligibility: guest, self, incomplete, pair window, already rated — a closed set with copy",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the comparison decides the competitive outcome; the rating consumes creator/recipient/tie only",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "ordering: rating desc, wins desc, losses asc, earlier attainment, id",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "public projection: display name, initials, rating, W-L-T, matches, win %, level, streak — nothing else",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "visibility: private | public, private by default, a 9B.2 preference key",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "win % is wins / rated matches; Top 100; Around Me 2 above and 2 below",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "six closed events, allowlisted and mirrored; metadata excludes identity",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "COMPETITIVE_RATING_POWER_EFFECT = 0: no game, challenge or progression path mentions the rating",
+      "pass": true,
+      "detail": "96 files scanned"
+    },
+    {
+      "check": "no XP, level or achievement leaderboard; no tiers; the career tabs are unchanged (no new Competitive tab)",
+      "pass": true,
+      "detail": "overview,history,rosters,favorites,challenges,achievements,account"
+    },
+    {
+      "check": "the build strips Vercel's VITE_-prefixed Git metadata, so a commit message or committer never reaches the browser bundle",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "no new serverless function",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": true,
+  "contract": {
+    "powerEffect": 0,
+    "ratedOnly": "official Challenge comparisons between two authenticated accounts",
+    "comparisonAuthority": "Challenge Comparison V1 decides the winner; the rating consumes the outcome",
+    "initial": 1000,
+    "floor": 100,
+    "k": {
+      "provisional": 40,
+      "established": 24,
+      "switchAt": 10
+    },
+    "placement": {
+      "matches": 5,
+      "uniqueOpponents": 3
+    },
+    "pairLimit": {
+      "limit": 3,
+      "windowDays": 7
+    },
+    "visibility": {
+      "default": "private",
+      "values": [
+        "private",
+        "public"
+      ]
+    },
+    "leaderboard": {
+      "limit": 100,
+      "ordering": [
+        "current_rating desc",
+        "rated_wins desc",
+        "rated_losses asc",
+        "last_rated_at asc",
+        "user_id asc"
+      ],
+      "aroundMe": 2
+    },
+    "notBuilt": [
+      "XP/level/achievement leaderboards",
+      "public profiles",
+      "friends",
+      "seasons",
+      "rewards",
+      "tiers",
+      "approximate private rank"
+    ]
+  }
+}

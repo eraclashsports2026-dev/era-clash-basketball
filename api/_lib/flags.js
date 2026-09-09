@@ -94,6 +94,8 @@ export const limits = () => ({
   challengeViewPerMinIp: num("RL_CHALLENGE_VIEW_PER_MIN_IP", 60),
   // Phase 9D progression reads/reconciles (per IP, per minute)
   progressionPerMinIp: num("RL_PROGRESSION_PER_MIN_IP", 30),
+  // Phase 9E leaderboard reads and competitive state (per IP, per minute)
+  competitivePerMinIp: num("RL_COMPETITIVE_PER_MIN_IP", 60),
   // global emergency ceilings (fixed 1-minute / 1-day windows)
   maxCoreSimsPerMinute: num("MAX_CORE_SIMULATIONS_PER_MINUTE", 600),
   maxAiPerMinute: num("MAX_AI_REQUESTS_PER_MINUTE", 60),
