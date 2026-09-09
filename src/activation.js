@@ -71,6 +71,10 @@ export const ACTIVATION_EVENTS = Object.freeze([
   // an account id, a challenge code or id, an attempt id, a token or a session)
   "leaderboard_viewed", "leaderboard_visibility_changed", "competitive_rating_viewed",
   "competitive_rating_change_shown", "competitive_provisional_progress_viewed", "around_me_viewed",
+  // Phase 9F — public competitive profiles. Categories and counts only: never a
+  // display name, an account id, a public profile slug or a token.
+  "public_profile_viewed", "profile_visibility_changed", "public_profile_previewed",
+  "public_profile_shared", "featured_achievement_updated", "leaderboard_profile_opened",
 ]);
 
 const ss = {

@@ -35,15 +35,18 @@ import AchievementsTab from "../progression/AchievementsTab.jsx";
 import { competitiveMeRequest, setLeaderboardVisibility, visibilityFrom } from "../../competitive/client.js";
 import CompetitiveModule from "../competitive/CompetitiveModule.jsx";
 import VisibilitySetting from "../competitive/VisibilitySetting.jsx";
+// Phase 9F: the public competitive profile — its own opt-in, separate from the leaderboard's.
+import { profileMeRequest, setProfileVisibility, setFeaturedRequest } from "../../profiles/client.js";
+import PublicProfileModule from "../profiles/PublicProfileModule.jsx";
 
 const dateOf = (iso) => { try { return new Date(iso).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" }); } catch { return ""; } };
 const OUTCOME_WORD = { win: "Won", loss: "Lost", tie: "Tied" };
 const WIN_GREEN = "var(--ec-a-green, #2fa96d)";
 
-export default function MyEraClash({ onOpenReport, onRunItBack, onSaveRoster, onSignIn, onSignedOut, onOpenLeaderboard }) {
+export default function MyEraClash({ onOpenReport, onRunItBack, onSaveRoster, onSignIn, onSignedOut, onOpenLeaderboard, onOpenProfile }) {
   const account = useAccount();
   const [tab, setTab] = useState(() => tabFromSearch(typeof window !== "undefined" ? window.location.search : ""));
-  const [data, setData] = useState({ career: null, clashes: [], rosters: [], prefs: PREF_DEFAULTS, activity: [], progression: null, competitive: null });
+  const [data, setData] = useState({ career: null, clashes: [], rosters: [], prefs: PREF_DEFAULTS, activity: [], progression: null, competitive: null, profile: null });
   const [loading, setLoading] = useState(true);
   const [notice, setNotice] = useState(null);
   const [importOffer, setImportOffer] = useState(null);
@@ -53,7 +56,7 @@ export default function MyEraClash({ onOpenReport, onRunItBack, onSaveRoster, on
   const load = useCallback(async () => {
     setLoading(true);
     try {
-      const [career, clashes, rosters, prefs, activity, progression, competitive] = await Promise.all([
+      const [career, clashes, rosters, prefs, activity, progression, competitive, profile] = await Promise.all([
         withProvider((p) => p.career(), null),
         withProvider((p) => p.listSavedClashes({ limit: 1000 }), []),
         withProvider((p) => p.listRosters(), []),
@@ -61,8 +64,9 @@ export default function MyEraClash({ onOpenReport, onRunItBack, onSaveRoster, on
         withProvider((p) => p.recentActivity(5), []),
         progressionGetRequest({ accessToken: token }).catch(() => null),
         competitiveMeRequest({ accessToken: token }).catch(() => null),
+        profileMeRequest({ accessToken: token }).catch(() => null),
       ]);
-      setData({ career, clashes: clashes || [], rosters: rosters || [], prefs: mergePrefs(prefs, {}), activity: activity || [], progression: progression || null, competitive: competitive || null });
+      setData({ career, clashes: clashes || [], rosters: rosters || [], prefs: mergePrefs(prefs, {}), activity: activity || [], progression: progression || null, competitive: competitive || null, profile: profile || null });
       if (!importOfferDismissed()) {
         const candidates = unsavedDeviceResultIds((clashes || []).map((r) => r.result_id));
         if (candidates.length) {
@@ -103,7 +107,7 @@ export default function MyEraClash({ onOpenReport, onRunItBack, onSaveRoster, on
     );
   }
 
-  const shared = { data, setData, loading, token, account, flash, load, onOpenReport, onRunItBack, onSaveRoster, importOffer, setImportOffer, onOpenLeaderboard };
+  const shared = { data, setData, loading, token, account, flash, load, onOpenReport, onRunItBack, onSaveRoster, importOffer, setImportOffer, onOpenLeaderboard, onOpenProfile };
 
   return (
     <main aria-labelledby="ec-me-title" style={wrap}>
@@ -138,7 +142,29 @@ export default function MyEraClash({ onOpenReport, onRunItBack, onSaveRoster, on
 }
 
 // ── Overview ─────────────────────────────────────────────────────────────────
-function Overview({ data, loading, account, flash, load, importOffer, setImportOffer, token, goTab, onOpenLeaderboard }) {
+function Overview({ data, setData, loading, account, flash, load, importOffer, setImportOffer, token, goTab, onOpenLeaderboard, onOpenProfile }) {
+  const [profileBusy, setProfileBusy] = useState(false);
+  const changeProfileVisibility = async (v) => {
+    setProfileBusy(true);
+    try {
+      const saved = await setProfileVisibility(v, data.prefs);
+      setData((d) => ({ ...d, prefs: { ...d.prefs, profile_visibility: saved } }));
+      flash(saved === "public" ? "Your EraClash profile can now be viewed with your link." : "Your profile is private again.");
+      await load?.();
+      return true;
+    } catch { flash("That setting could not be saved."); return false; }
+    finally { setProfileBusy(false); }
+  };
+  const changeFeatured = async (ids) => {
+    setProfileBusy(true);
+    try {
+      const r = await setFeaturedRequest({ featured: ids, accessToken: token });
+      if (r?.status !== "ok" || r.ok !== true) { flash("That selection could not be saved."); return false; }
+      await load?.();
+      return true;
+    } catch { flash("That selection could not be saved."); return false; }
+    finally { setProfileBusy(false); }
+  };
   const [editing, setEditing] = useState(false);
   const [nameDraft, setNameDraft] = useState("");
   const s = data.career?.summary || { games_played: 0, wins: 0, losses: 0, ties: 0, win_rate: null };
@@ -189,6 +215,9 @@ function Overview({ data, loading, account, flash, load, importOffer, setImportO
       <ProgressionHero progression={data.progression} displayName={account.displayName} loading={loading} onOpenAchievements={() => goTab("achievements")} />
       {/* Phase 9E: competitive rating beside the career, never mixed with it */}
       <CompetitiveModule me={data.competitive} loading={loading} onOpenLeaderboard={onOpenLeaderboard} />
+      {/* Phase 9F: the public profile is its own opt-in, beside the rating it presents */}
+      <PublicProfileModule me={data.profile} loading={loading} busy={profileBusy}
+        onVisibility={changeProfileVisibility} onFeatured={changeFeatured} onOpenProfile={onOpenProfile} />
 
       {importOffer && (
         <section style={{ ...card, borderColor: T.goldBorder }}>

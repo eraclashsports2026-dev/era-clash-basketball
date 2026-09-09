@@ -63,6 +63,8 @@ import { rememberProgression, progressionFor, mergeProgression } from "./progres
 import CareerProgress from "./components/progression/CareerProgress.jsx";
 // Phase 9E: the Challenge Rating leaderboard and the rating movement after a comparison.
 import LeaderboardPage from "./components/competitive/LeaderboardPage.jsx";
+import PublicProfilePage from "./components/profiles/PublicProfilePage.jsx";   // Phase 9F
+import { slugFromPath, PUBLIC_PROFILE_ROUTE } from "./profiles/contract.js";
 import RatingChange from "./components/competitive/RatingChange.jsx";
 import CompetitiveReferenceFixture from "./ui/competitive/CompetitiveReferenceFixture.jsx";   // dev-only gate
 import { codeFromSearch, CHALLENGE_EVENTS } from "./challenges/contract.js";
@@ -159,6 +161,7 @@ const FIXTURE_ROUTE = "/dev/time-arena-reference";
 const PROGRESSION_FIXTURE_ROUTE = "/dev/progression-reference";
 const COMPETITIVE_FIXTURE_ROUTE = "/dev/competitive-reference";
 const LEADERBOARD_ROUTE = "/leaderboard";
+const isProfileRoute = (r) => String(r || "").startsWith(`${PUBLIC_PROFILE_ROUTE}/`);
 // Phase 9A.1 — the Basketball theme decision lab. __EC_THEME_LAB__ is a build
 // constant (vite.config.js): true on preview deployments and the dev server,
 // false in production, where this whole branch — and the lazily imported lab
@@ -1941,7 +1944,8 @@ export default function App() {
   // Editorial Ink. Without it a heading inherited the arena's platinum text and
   // sat almost invisibly on an ivory card.
   const editorialMode = route.startsWith("/membership") || route.startsWith("/fantasy/") || route.startsWith("/modes/")
-    || route === "/my-eraclash" || route === "/auth/callback" || route === LEADERBOARD_ROUTE;
+    || route === "/my-eraclash" || route === "/auth/callback" || route === LEADERBOARD_ROUTE
+    || isProfileRoute(route);
   const arenaMode = showLobby || (isChaos && !sharedResult && !gate) || editorialMode;
 
   // ── Render ─────────────────────────────────────────────────────────────────
@@ -1992,8 +1996,12 @@ export default function App() {
           if (rid) runCloudSave(rid, result?.type || "single", "claim");
           navigate(next || "/play");
         }} />
+      ) : isProfileRoute(route) ? (
+        <PublicProfilePage slug={slugFromPath(route)} accessToken={token}
+          onPlay={() => navigate("/play")} onLeaderboard={() => navigate(LEADERBOARD_ROUTE)} />
       ) : route === LEADERBOARD_ROUTE ? (
         <LeaderboardPage signedIn={!!token} accessToken={token}
+          onOpenProfile={(path) => navigate(path)}
           onSignIn={() => openAccountDialog({ entryPoint: "leaderboard", intent: "signin", returnTo: LEADERBOARD_ROUTE })} />
       ) : route === "/my-eraclash" ? (
         <MyEraClash
@@ -2001,6 +2009,7 @@ export default function App() {
           onOpenReport={(clash) => setSavedReport(clash)}
           onRunItBack={runItBackFromSaved}
           onOpenLeaderboard={() => navigate(LEADERBOARD_ROUTE)}
+          onOpenProfile={(path) => navigate(path)}
           onSignedOut={handleCareerSignedOut} />
       ) : route.startsWith("/membership") ? (
         <main>

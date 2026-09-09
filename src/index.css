@@ -2365,3 +2365,114 @@ h2.ec-intel-heading, h3.ec-intel-heading { font-size: 10.5px; }
 .ec-cr-history-d { text-align: right; font-weight: 900; font-variant-numeric: tabular-nums; }
 .ec-cr-history-r { color: var(--ec-a-text-secondary, #5a6577); font-variant-numeric: tabular-nums; }
 @media (prefers-reduced-motion: reduce) { .ec-cr-change, .ec-cr-btn, .ec-cr-vis-opt { transition: none; animation: none; } }
+
+/* ── Phase 9F: public competitive profiles + the EraClash PLAYER CARD ────────
+   A broadcast identity card on the editorial reading surface. The rating is the
+   dominant competitive metric; record and rank are visibly secondary; Career
+   Level is kept apart from the rating so the two are never read as one thing.
+   Status is always carried by words as well as by tone. */
+.ec-pp-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.ec-pp-page { max-width: 760px; margin: 0 auto; padding: 16px 16px 64px; display: grid; gap: 14px; }
+.ec-pp-section { margin: 0; font-size: 11px; font-weight: 900; letter-spacing: 2px; color: var(--ec-t-gold, #8b660b); }
+.ec-pp-muted { margin: 6px 0 0; font-size: 12.5px; line-height: 1.55; color: var(--ec-t-text-dim, #5a6577); }
+.ec-pp-note { margin: 6px 0 0; font-size: 12.5px; font-weight: 700; color: var(--ec-t-text, #121a2a); overflow-wrap: anywhere; }
+.ec-pp-error { margin: 6px 0 0; font-size: 12.5px; font-weight: 700; color: var(--ec-t-loss, #a8352c); }
+.ec-pp-btn { min-height: 44px; padding: 0 16px; border-radius: 10px; cursor: pointer; font-size: 12px; font-weight: 900;
+  letter-spacing: 1.2px; border: 1px solid var(--ec-t-border, #d9dee7); background: transparent; color: var(--ec-t-text, #121a2a); }
+.ec-pp-btn:hover { border-color: var(--ec-t-gold-border, #e0b955); }
+.ec-pp-btn:focus-visible { outline: 2px solid var(--ec-t-gold, #8b660b); outline-offset: 2px; }
+.ec-pp-btn[disabled] { opacity: 0.5; cursor: not-allowed; }
+.ec-pp-btn[data-primary="true"] { border-color: var(--ec-t-gold-border, #e0b955); background: var(--ec-t-gold-soft, rgba(224, 185, 85, 0.16)); }
+
+/* the card */
+.ec-pp-card { padding: 22px; border-radius: 16px; border: 1px solid var(--ec-t-border, #d9dee7);
+  background: var(--ec-t-bg-card, #fffdf8); display: grid; gap: 18px; min-width: 0;
+  box-shadow: 0 1px 0 rgba(18, 26, 42, 0.04), 0 12px 32px -24px rgba(18, 26, 42, 0.35); }
+.ec-pp-card[data-state="placed"] { border-color: var(--ec-t-gold-border, #e0b955); }
+.ec-pp-head { display: flex; gap: 14px; align-items: center; min-width: 0; }
+.ec-pp-avatar { flex: none; width: 52px; height: 52px; border-radius: 999px; display: grid; place-items: center;
+  font-family: var(--ec-display); font-size: 20px; letter-spacing: 0.5px; color: var(--ec-t-text, #121a2a);
+  background: var(--ec-t-bg, #f2efe8); border: 1px solid var(--ec-t-border, #d9dee7); }
+.ec-pp-ident { min-width: 0; display: grid; gap: 2px; }
+.ec-pp-kicker { font-size: 10px; font-weight: 900; letter-spacing: 2.2px; color: var(--ec-t-gold, #8b660b); }
+.ec-pp-name { margin: 0; font-family: var(--ec-display); font-size: 32px; line-height: 1.08; letter-spacing: 0.4px;
+  color: var(--ec-t-text, #121a2a); overflow-wrap: anywhere; }
+
+/* metrics: the rating dominates, the rest are peers below it */
+.ec-pp-metrics { margin: 0; display: grid; gap: 14px 26px; grid-template-columns: repeat(auto-fit, minmax(122px, 1fr)); }
+.ec-pp-metrics[data-compact="true"] { grid-template-columns: minmax(122px, max-content); }
+.ec-pp-metric { min-width: 0; display: grid; gap: 3px; }
+.ec-pp-metric[data-size="xl"] { grid-column: 1 / -1; }
+.ec-pp-metric-k { margin: 0; font-size: 10px; font-weight: 900; letter-spacing: 1.6px; color: var(--ec-t-text-muted, #636c83); }
+.ec-pp-metric-v { margin: 0; font-family: var(--ec-display); font-size: 22px; line-height: 1; letter-spacing: 0.5px;
+  color: var(--ec-t-text, #121a2a); font-variant-numeric: tabular-nums; }
+.ec-pp-metric[data-size="xl"] .ec-pp-metric-v { font-size: 58px; letter-spacing: 1px; }
+.ec-pp-metric-sub { font-family: inherit; font-size: 14px; font-weight: 700; color: var(--ec-t-text-dim, #5a6577); }
+
+/* provisional: progress in words and counts, never a rating and never a rank */
+.ec-pp-prov { display: grid; gap: 5px; padding: 14px 16px; border-radius: 12px;
+  background: var(--ec-t-bg, #f2efe8); border: 1px solid var(--ec-t-border, #d9dee7); }
+.ec-pp-prov-k { font-size: 12px; font-weight: 900; letter-spacing: 1.8px; color: var(--ec-t-gold, #8b660b); }
+.ec-pp-prov-row { font-size: 11.5px; font-weight: 800; letter-spacing: 1.1px; color: var(--ec-t-text-dim, #5a6577); font-variant-numeric: tabular-nums; }
+.ec-pp-prov-row b { font-family: var(--ec-display); font-size: 15px; letter-spacing: 0.5px; color: var(--ec-t-text, #121a2a); }
+
+/* featured achievements: restrained, never a loot shelf */
+.ec-pp-featured { display: grid; gap: 8px; padding-top: 4px; border-top: 1px solid var(--ec-t-border, #d9dee7); }
+.ec-pp-featured-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.ec-pp-featured-item { display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 999px;
+  border: 1px solid var(--ec-t-border, #d9dee7); background: var(--ec-t-bg, #f2efe8); min-width: 0; }
+.ec-pp-featured-name { font-size: 11.5px; font-weight: 800; letter-spacing: 0.6px; color: var(--ec-t-text, #121a2a); }
+
+.ec-pp-foot { display: grid; gap: 5px; padding-top: 12px; border-top: 1px solid var(--ec-t-border, #d9dee7); }
+.ec-pp-mark { font-family: var(--ec-display); font-size: 12px; letter-spacing: 3px; color: var(--ec-t-gold, #8b660b); }
+.ec-pp-foot-note { font-size: 11px; line-height: 1.5; color: var(--ec-t-text-muted, #636c83); }
+.ec-pp-page-actions, .ec-pp-empty-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* the honest "not available" state — one state for private, unknown and deleted */
+.ec-pp-empty { padding: 26px 22px; border-radius: 16px; border: 1px solid var(--ec-t-border, #d9dee7);
+  background: var(--ec-t-bg-card, #fffdf8); display: grid; gap: 10px; }
+.ec-pp-empty-k { margin: 0; font-family: var(--ec-display); font-size: 20px; line-height: 1.2; letter-spacing: 0.6px; color: var(--ec-t-text, #121a2a); }
+
+/* the owner's module on My EraClash */
+.ec-pp-mod { display: grid; gap: 10px; min-width: 0; }
+.ec-pp-mod-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.ec-pp-badge { font-size: 10px; font-weight: 900; letter-spacing: 1.6px; padding: 4px 9px; border-radius: 999px;
+  border: 1px solid var(--ec-t-border, #d9dee7); color: var(--ec-t-text-dim, #5a6577); }
+.ec-pp-badge[data-state="public"] { border-color: var(--ec-t-gold-border, #e0b955); color: var(--ec-t-gold, #8b660b); background: var(--ec-t-gold-soft, rgba(224, 185, 85, 0.16)); }
+.ec-pp-mod-copy { margin: 0; font-size: 13px; line-height: 1.55; color: var(--ec-t-text, #121a2a); }
+.ec-pp-mod-actions, .ec-pp-mod-featured { display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-start; }
+.ec-pp-mod-featured { display: grid; gap: 8px; justify-items: start; }
+.ec-pp-preview { display: grid; gap: 8px; }
+.ec-pp-preview-k { font-size: 10.5px; font-weight: 900; letter-spacing: 1.6px; color: var(--ec-t-gold, #8b660b); }
+.ec-pp-preview-surface { background: var(--ec-t-bg, #f2efe8); padding: 12px; border-radius: 14px; }
+
+/* the featured picker */
+.ec-pp-picker { display: grid; gap: 10px; }
+.ec-pp-picker-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.ec-pp-picker-opt { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 12px; border-radius: 999px;
+  cursor: pointer; border: 1px solid var(--ec-t-border, #d9dee7); background: transparent; color: var(--ec-t-text, #121a2a); }
+.ec-pp-picker-opt[aria-pressed="true"] { border-color: var(--ec-t-gold-border, #e0b955); background: var(--ec-t-gold-soft, rgba(224, 185, 85, 0.16)); }
+.ec-pp-picker-opt[aria-pressed="true"]::before { content: "✓"; font-size: 12px; font-weight: 900; color: var(--ec-t-gold, #8b660b); }
+.ec-pp-picker-opt[disabled] { opacity: 0.45; cursor: not-allowed; }
+.ec-pp-picker-opt:focus-visible { outline: 2px solid var(--ec-t-gold, #8b660b); outline-offset: 2px; }
+.ec-pp-picker-name { font-size: 11.5px; font-weight: 800; letter-spacing: 0.5px; }
+.ec-pp-picker-foot { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.ec-pp-picker-count { font-size: 11px; font-weight: 900; letter-spacing: 1.2px; color: var(--ec-t-text-muted, #636c83); }
+
+/* a leaderboard row that links to a public profile */
+.ec-cr-player-link { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0; border: 0;
+  background: none; cursor: pointer; color: inherit; text-align: left; min-width: 0; }
+.ec-cr-player-link .ec-cr-name { text-decoration: underline; text-decoration-color: var(--ec-t-gold-border, #e0b955); text-underline-offset: 3px; }
+.ec-cr-player-link:hover .ec-cr-name { text-decoration-color: var(--ec-t-gold, #8b660b); }
+.ec-cr-player-link:focus-visible { outline: 2px solid var(--ec-t-gold, #8b660b); outline-offset: 2px; border-radius: 6px; }
+
+@media (max-width: 640px) {
+  .ec-pp-card { padding: 16px; gap: 14px; border-radius: 14px; }
+  .ec-pp-name { font-size: 26px; }
+  .ec-pp-avatar { width: 44px; height: 44px; font-size: 17px; }
+  .ec-pp-metric[data-size="xl"] .ec-pp-metric-v { font-size: 46px; }
+  .ec-pp-metrics { gap: 12px 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ec-pp-card, .ec-pp-btn, .ec-pp-picker-opt { transition: none !important; animation: none !important; }
+}

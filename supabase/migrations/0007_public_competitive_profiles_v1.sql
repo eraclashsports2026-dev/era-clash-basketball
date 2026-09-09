@@ -195,6 +195,33 @@ language sql security definer set search_path = public stable as $$
 $$;
 revoke execute on function public.profile_public_get(text) from public, anon, authenticated;
 
+-- ── links for the rows the public leaderboard already shows ─────────────────
+-- Phase 9E's projection deliberately exposes no user_id, so a leaderboard row
+-- cannot be joined to a slug. Rather than duplicate the Phase 9E ordering here
+-- (which would create a second source of truth for ranking), this asks Phase
+-- 9E's OWN authority, competitive_rank_of(), for the rank of each account that
+-- opted in TWICE — profile_visibility public AND leaderboard_visibility public.
+--
+-- This is NOT a profile listing. It takes no identifier, it can return nothing
+-- that the public Top 100 does not already display, and a public profile whose
+-- owner kept their leaderboard private never appears. It exists so a
+-- leaderboard row can link to a profile that chose to be linkable, and for no
+-- other purpose.
+create or replace function public.profile_board_links(p_limit integer)
+returns table (rank bigint, slug text)
+language sql security definer set search_path = public stable as $$
+  select r.rank, pp.slug
+    from public.public_profiles pp
+    join public.user_preferences up on up.user_id = pp.user_id
+     and up.prefs ->> 'profile_visibility' = 'public'
+     and up.prefs ->> 'leaderboard_visibility' = 'public'
+    cross join lateral (select x.rank from public.competitive_rank_of(pp.user_id, 0) x limit 1) r
+   where r.rank is not null
+     and r.rank <= least(greatest(1, p_limit), 100)
+   order by r.rank;
+$$;
+revoke execute on function public.profile_board_links(integer) from public, anon, authenticated;
+
 -- ── the account's own view ──────────────────────────────────────────────────
 -- The owner may see their own slug, both settings, their featured list and the
 -- provisional information Phase 9E already shows them.
