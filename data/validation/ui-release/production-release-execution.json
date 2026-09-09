@@ -69,6 +69,16 @@
       "n": 10,
       "what": "Containment: build guard in vite.config.js (main dca0456) drops secret-shaped VITE_ values and the VITE_SUPABASE_* pair when its project ref differs from SUPABASE_URL",
       "result": "deployed; live bundle has neither the preview nor the production ref (guest play until the pair agrees); browserCredentialConfigured now true after the owner's anon-key fix; server key still unrecognised; Candidate 4 still off"
+    },
+    {
+      "n": 11,
+      "what": "Owner corrected all nine Production variables and redeployed without cache",
+      "result": "health deep: server credential accepted (200, both header styles), same project true, accounts enabled, Candidate 4 enabled; bundle: production ref 1, preview ref 0, publishable key present, no secret material"
+    },
+    {
+      "n": 12,
+      "what": "Main-domain verification",
+      "result": "see production-live-verification.json \u2014 Clash completed live on Candidate 4 (runtime proof from the game response)"
     }
   ],
   "ownerSteps": {
@@ -114,6 +124,15 @@
     "waveRefs": {
       "wave1": "4dc59e7",
       "wave2": "ef0caa5"
+    }
+  },
+  "productionAfter": {
+    "domain": "https://www.eraclashbasketball.com",
+    "main": "64eb676 (code dca0456)",
+    "database": "dxdtnhdeaanhfoqngdel, migrations 0001..0007, 0 users",
+    "before": {
+      "main": "9cd95ff",
+      "database": "none"
     }
   }
 }

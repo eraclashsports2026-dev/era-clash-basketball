@@ -17,7 +17,7 @@ import { chromium } from "@playwright/test";
 
 const MODE = process.argv[2] || "theme";
 const BASE = (process.argv[3] || "http://localhost:4180").replace(/\/$/, "");
-const OUT = "data/validation/ui-release";
+const OUT = process.env.UIRC_OUT || "data/validation/ui-release";
 const SCREENS = `${OUT}/screens`;
 const now = () => new Date().toISOString();
 const rows = [];
@@ -27,6 +27,9 @@ const src = (p) => readFileSync(p, "utf8");
 
 const openSession = async (context) => {
   if (!BASE.startsWith("https://")) return null;
+  // An ungated origin (production) needs no session: health answers without a key.
+  const probe = await context.request.get(`${BASE}/api/health`).catch(() => null);
+  if (probe && probe.status() === 200) return null;
   const f = ".preview-secrets/wave2-access-keys.json";
   if (!existsSync(f)) throw new Error(`${BASE} is gated and ${f} is not on disk`);
   const k = JSON.parse(readFileSync(f, "utf8")).keys.find((x) => x.role === "owner");
