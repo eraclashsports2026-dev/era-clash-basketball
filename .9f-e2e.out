@@ -1,0 +1,131 @@
+
+Running 89 tests using 1 worker
+
+  ✓   1 [production-flags-off] › e2e/journeys.spec.js:76:1 › J1+J2: manual Gold, Blue stays empty until user chooses, random Blue, sim transition, full core Postgame, rematch (4.0s)
+  ✓   2 [production-flags-off] › e2e/journeys.spec.js:104:1 › J1b: Random Gold + Random Blue plays a full game (2.0s)
+  ✓   3 [production-flags-off] › e2e/journeys.spec.js:118:1 › J3: rapid double-click creates exactly one core result (2.6s)
+  ✓   4 [production-flags-off] › e2e/journeys.spec.js:131:1 › J4: Daily consumes one attempt, persists, and survives reload (1.7s)
+  ✓   5 [production-flags-off] › e2e/journeys.spec.js:153:1 › J5+J7: core failure records nothing; fabricated scores are rejected server-side (75ms)
+  ✓   6 [production-flags-off] › e2e/journeys.spec.js:170:1 › J6: challenge link → recipient plays → server decides → immutable rivalry chain (3.2s)
+  ✓   7 [production-flags-off] › e2e/journeys.spec.js:194:1 › J8: one session cannot read or write another session's profile (11ms)
+  ✓   8 [production-flags-off] › e2e/journeys.spec.js:208:1 › J9: XSS payloads render harmlessly as text (977ms)
+  ✓   9 [production-flags-off] › e2e/journeys.spec.js:221:1 › J10: per-team reset buttons free any lineup state without touching the other side (373ms)
+  ✓  10 [production-flags-off] › e2e/journeys.spec.js:245:1 › J10b: one-click Re-roll refreshes a random five on BOTH sides and invalidates stale coach picks (231ms)
+  ✓  11 [production-flags-off] › e2e/journeys.spec.js:263:1 › J11 (V3): Team → Coach → Era Style → Ready → Run with possession postgame (2.0s)
+  ✓  12 [production-flags-off] › e2e/journeys.spec.js:328:1 › J12: Tournament runs a real bracket and opponent difficulty is selectable (1.7s)
+  ✓  13 [production-flags-off] › e2e/journeys.spec.js:350:1 › J13: difficulty is absent for modes without a generated schedule (256ms)
+  ✓  14 [production-flags-off] › e2e/phase7a-ui.spec.js:33:1 › U1: full wizard + postgame at desktop 1440 — screenshots and zero overflow (2.8s)
+  ✓  15 [production-flags-off] › e2e/phase7a-ui.spec.js:72:1 › U2: full wizard + postgame at mobile 375 — zero page overflow, isolated table scroll (2.0s)
+  ✓  16 [production-flags-off] › e2e/phase7a-ui.spec.js:95:1 › U3: remaining viewports hold the rosters and ready layouts (785ms)
+  ✓  17 [production-flags-off] › e2e/phase7a-ui.spec.js:106:1 › U4: keyboard-only completion of the wizard (1.5s)
+  ✓  18 [production-flags-off] › e2e/phase7a-ui.spec.js:140:1 › U5: reduced motion renders every stage without animation dependence (474ms)
+  ✓  19 [production-flags-off] › e2e/phase7a-ui.spec.js:149:1 › U6: How Modes Work modal — focus, escape, truthful engine language (147ms)
+  ✓  20 [production-flags-off] › e2e/phase7b-responsive.spec.js:32:1 › R1: every required viewport holds the builder without page overflow (1.0s)
+  ✓  21 [production-flags-off] › e2e/phase7b-responsive.spec.js:43:1 › R2: the coach modal is usable on a phone (336ms)
+  ✓  22 [production-flags-off] › e2e/phase7b-responsive.spec.js:69:1 › R3: postgame is readable and scroll-isolated on a phone (2.0s)
+  ✓  23 [production-flags-off] › e2e/phase7b-responsive.spec.js:87:1 › R4: keyboard-only completion, including the coach modal (1.5s)
+  ✓  24 [production-flags-off] › e2e/phase7b-responsive.spec.js:123:1 › R5: reduced motion completes the flow (471ms)
+  ✓  25 [production-flags-off] › e2e/phase7b-responsive.spec.js:132:1 › R6: the shell is warm-light with a navy header, not near-black (163ms)
+  ✓  26 [daily-coach-era-preview] › e2e/daily-coach-era.spec.js:31:1 › D1: the official era is shown, and it is the same one the server ran (318ms)
+  ✓  27 [daily-coach-era-preview] › e2e/daily-coach-era.spec.js:46:1 › D2: three coaches, each with tags and a stated difference, and no ratings (297ms)
+  ✓  28 [daily-coach-era-preview] › e2e/daily-coach-era.spec.js:64:1 › D3: the sim is locked until a coach is hired, then unlocks (321ms)
+  ✓  29 [daily-coach-era-preview] › e2e/daily-coach-era.spec.js:80:1 › D4: hiring a coach plays the Daily and the result reports the coach and era (1.8s)
+  ✓  30 [daily-coach-era-preview] › e2e/daily-coach-era.spec.js:97:1 › D5: mobile — the era, all three coaches, and the sim button are usable at 375px (361ms)
+  ✓  31 [daily-coach-era-preview] › e2e/daily-coach-era.spec.js:121:1 › D6: a coach outside today's three is rejected and the attempt survives (310ms)
+  ✘  32 [candidate3-preview] › e2e/phase7b-preview.spec.js:39:1 › P1: Ready and Postgame show the SAME pregame read (2.0s)
+  ✓  33 [candidate3-preview] › e2e/phase7b-preview.spec.js:54:1 › P2: no raw engine numbers reach the user (2.1s)
+  ✓  34 [candidate3-preview] › e2e/phase7b-preview.spec.js:66:1 › P3: Coaching & Strategy shows real recorded coaching (2.0s)
+  ✓  35 [candidate3-preview] › e2e/phase7b-preview.spec.js:87:1 › P4: key moments and matchup patterns are separate sections (1.9s)
+  ✓  36 [candidate3-preview] › e2e/phase7b-preview.spec.js:99:1 › P5: a Candidate 3 result never offers a different-engine series (1.9s)
+  ✓  37 [candidate3-preview] › e2e/phase7b-preview.spec.js:107:1 › P6: one box score, no PF column (2.0s)
+  ✓  38 [candidate3-preview] › e2e/phase8a-chaos.spec.js:62:1 › Chaos Clash is the default Play experience and opens with an empty board (117ms)
+  ✓  39 [candidate3-preview] › e2e/phase8a-chaos.spec.js:83:1 › every hold control stays live in both decision rounds (476ms)
+  ✓  40 [candidate3-preview] › e2e/phase8a-chaos.spec.js:120:1 › three rolls, holds, era reveal before the final holds, then coach offers (2.8s)
+  ✓  41 [candidate3-preview] › e2e/phase8a-chaos.spec.js:164:1 › a full Clash reaches a postgame with a player-centered story and an aligned box score (5.3s)
+  ✓  42 [candidate3-preview] › e2e/phase8a-chaos.spec.js:228:1 › box-score stat values never wrap (5.1s)
+  ✓  43 [candidate3-preview] › e2e/phase8a-chaos.spec.js:249:1 › Dream Matchup is gated behind a free account and can be reached from the Play menu (189ms)
+  ✓  44 [candidate3-preview] › e2e/phase8a-chaos.spec.js:264:1 › the Chaos flow is keyboard operable and the hold targets are large enough (164ms)
+  ✓  45 [candidate3-preview] › e2e/phase8a-chaos.spec.js:284:1 › mobile keeps both boards readable with no page-level horizontal overflow (662ms)
+  ✓  46 [candidate3-preview] › e2e/phase8c-time-arena.spec.js:60:1 › the Time Arena is one workspace with a persistent rail (102ms)
+  ✓  47 [candidate3-preview] › e2e/phase8c-time-arena.spec.js:99:1 › ten cards, five a side, and the TEAM owns the colour (218ms)
+  ✓  48 [candidate3-preview] › e2e/phase8c-time-arena.spec.js:150:1 › players and coaches move through ONE three-roll sequence (589ms)
+  ✓  49 [candidate3-preview] › e2e/phase8c-time-arena.spec.js:207:1 › Draft Pressure is stated once, in the rail (193ms)
+  ✓  50 [candidate3-preview] › e2e/phase8c-time-arena.spec.js:222:1 › the era is locked for a free account and routes to membership (348ms)
+  ✓  51 [candidate3-preview] › e2e/phase8c-time-arena.spec.js:241:1 › an entitled run offers the era selector the server allows (299ms)
+  ✓  52 [candidate3-preview] › e2e/phase8c-time-arena.spec.js:271:1 › starting over is on the BOARD, and it asks first (753ms)
+  ✓  53 [candidate3-preview] › e2e/phase8c-time-arena.spec.js:313:1 › a finished game offers a new clash on the board, not only in the result (2.0s)
+  ✓  54 [candidate3-preview] › e2e/phase8c-time-arena.spec.js:339:1 › the result lands in the dock, the report opens over the page, and a new clash keeps the last one (3.1s)
+  ✓  55 [candidate3-preview] › e2e/phase8c-time-arena.spec.js:406:1 › a run resumed after a reload still runs (2.0s)
+  ✓  56 [candidate3-preview] › e2e/phase8c-time-arena.spec.js:418:1 › Run it back replays the SAME matchup and actually completes (3.3s)
+  ✓  57 [candidate3-preview] › e2e/phase8c-time-arena.spec.js:446:1 › mobile stacks, leads with the result, and never overflows (1.8s)
+  ✓  58 [candidate3-preview] › e2e/phase8c-time-arena.spec.js:521:1 › a Wave 1 scenario link lands a GUEST in the preloaded builder (112ms)
+  ✓  59 [candidate3-preview] › e2e/phase8c-time-arena.spec.js:528:1 › the guide opens, moves between sections, and closes on Escape (164ms)
+  ✓  60 [candidate3-preview] › e2e/phase8c-time-arena.spec.js:561:1 › Play and Fantasy menus are keyboard accessible and registry driven (175ms)
+  ✓  61 [candidate3-preview] › e2e/phase8c-time-arena.spec.js:585:1 › a guest choosing a trial mode is offered the account that opens it, not a subscription (134ms)
+  ✓  62 [candidate3-preview] › e2e/phase8c-time-arena.spec.js:599:1 › the membership destination itself shows no checkout (71ms)
+  ✓  63 [candidate3-preview] › e2e/phase8c-time-arena.spec.js:610:1 › a coming-soon mode explains itself instead of asking for money (136ms)
+  ✓  64 [candidate3-preview] › e2e/phase8c-time-arena.spec.js:621:1 › both fantasy pages are truthful about not being live (103ms)
+  ✓  65 [candidate3-preview] › e2e/phase9a-play-lobby.spec.js:51:1 › /play opens the lobby, and viewing it starts nothing (955ms)
+  ✓  66 [candidate3-preview] › e2e/phase9a-play-lobby.spec.js:90:1 › the Play dropdown and the lobby agree, card by card (108ms)
+  ✓  67 [candidate3-preview] › e2e/phase9a-play-lobby.spec.js:106:1 › choosing Chaos Clash opens the Time Arena; the lobby remembers the run; Continue resumes it exactly (486ms)
+  ✓  68 [candidate3-preview] › e2e/phase9a-play-lobby.spec.js:163:1 › abandoning from the lobby asks first, and abandoning never refunds a guest run (486ms)
+  ✓  69 [candidate3-preview] › e2e/phase9a-play-lobby.spec.js:219:1 › an expired or forgotten run gets an honest expired state, not a Continue card (112ms)
+  ✓  70 [candidate3-preview] › e2e/phase9a-play-lobby.spec.js:232:1 › a guest who picks Dream Matchup meets the account gate at its own address, and the way back is the lobby (150ms)
+  ✓  71 [candidate3-preview] › e2e/phase9a-play-lobby.spec.js:247:1 › one dominant action per Time Arena state, inactive systems subdued, the Story leads the result (4.4s)
+  ✓  72 [candidate3-preview] › e2e/phase9a-play-lobby.spec.js:322:1 › Dream Matchup: a player is chosen first, the legal positions light up, one legal slot auto-places, swaps and undo work, all by keyboard too (593ms)
+  ✓  73 [candidate3-preview] › e2e/phase9a-play-lobby.spec.js:402:1 › the lobby holds on a phone and a tablet with no page overflow and 44px targets (201ms)
+  ✓  74 [candidate3-preview] › e2e/phase9a-play-lobby.spec.js:435:1 › the lobby is keyboard operable and announces what each card is (157ms)
+  ✓  75 [candidate3-preview] › e2e/phase9a3p-lobby-polish.spec.js:26:1 › a first-time visitor gets the full hero; every action label and hierarchy is the registry's; viewing starts nothing (90ms)
+  ✓  76 [candidate3-preview] › e2e/phase9a3p-lobby-polish.spec.js:59:1 › a device that has played gets the compact hero; the grid moves up; nothing else changes (85ms)
+  ✓  77 [candidate3-preview] › e2e/phase9a3p-lobby-polish.spec.js:75:1 › an active run: compact hero, Continue above the grid, no shift when the run resolves, the logo keeps the run (314ms)
+  ✓  78 [candidate3-preview] › e2e/phase9a3p-lobby-polish.spec.js:111:1 › the Play dropdown and the lobby still agree card by card, and the gated card still gates (173ms)
+  ✓  79 [challenges-fake-cloud] › e2e/phase9c-challenges.spec.js:38:1 › a finished Clash becomes a challenge; the link opens an honest invitation; a guest accepts, plays the same opening and is compared (4.2s)
+  ✓  80 [challenges-fake-cloud] › e2e/phase9c-challenges.spec.js:166:1 › the invitation on a phone: readable, one dominant action, 44px controls, no overflow (2.2s)
+  ✓  81 [challenges-fake-cloud] › e2e/phase9d-progression.spec.js:36:1 › a saved Clash earns its XP once; the guest sees the career note after the score; the account reads its own progression (1.9s)
+  ✓  82 [challenges-fake-cloud] › e2e/phase9d-progression.spec.js:92:1 › Run It Back is a new authoritative game: it may earn again; the original never does (3.3s)
+  ✓  83 [challenges-fake-cloud] › e2e/phase9e-competitive.spec.js:32:1 › the leaderboard is readable signed out and never shows a private or provisional account (160ms)
+  ✓  84 [challenges-fake-cloud] › e2e/phase9e-competitive.spec.js:55:1 › an account-vs-account challenge is rated once, from the comparison, and answers each side's movement; a guest completion is unrated (3.8s)
+  ✓  85 [challenges-fake-cloud] › e2e/phase9f-profiles.spec.js:12:1 › a public profile opens by link for a signed-out visitor and shows only safe competitive identity (104ms)
+  ✓  86 [challenges-fake-cloud] › e2e/phase9f-profiles.spec.js:29:1 › a private, an unknown and a uuid-shaped slug are indistinguishable (82ms)
+  ✓  87 [challenges-fake-cloud] › e2e/phase9f-profiles.spec.js:47:1 › the profile route never exposes a rank for an account that is not eligible for one (3ms)
+  ✓  88 [challenges-fake-cloud] › e2e/phase9f-profiles.spec.js:57:1 › the account route refuses profile actions without a verified bearer (2ms)
+  ✓  89 [challenges-fake-cloud] › e2e/phase9f-profiles.spec.js:64:1 › a leaderboard row links only when that account made its profile public (76ms)
+
+
+  1) [candidate3-preview] › e2e/phase7b-preview.spec.js:39:1 › P1: Ready and Postgame show the SAME pregame read 
+
+    Error: the stored read is reused verbatim
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 1
+
+    @@ -4,11 +4,11 @@
+        "Construction
+      Even",
+        "Creation
+      Even",
+        "Spacing
+    - Gold Edge",
+    + Strong Gold Edge",
+        "Defense
+      Even",
+        "Rebounding
+      Even",
+      ]
+
+      49 |   await expect(page.getByText("BEFORE TIPOFF")).toBeVisible();
+      50 |   const after = readRow(await page.locator("body").innerText());
+    > 51 |   expect(after, "the stored read is reused verbatim").toEqual(before);
+         |                                                       ^
+      52 | });
+      53 |
+      54 | test("P2: no raw engine numbers reach the user", async ({ page }) => {
+        at /Users/josephjohnson/era-clash-basketball/e2e/phase7b-preview.spec.js:51:55
+
+    Error Context: test-results/phase7b-preview-P1-Ready-a-1bb8a--show-the-SAME-pregame-read-candidate3-preview/error-context.md
+
+  1 failed
+    [candidate3-preview] › e2e/phase7b-preview.spec.js:39:1 › P1: Ready and Postgame show the SAME pregame read 
+  88 passed (1.8m)

@@ -21,7 +21,7 @@ has() { node -e 'const p=require("./package.json");process.exit(p.scripts[proces
 restart_fake() {
   pkill -f "harness.mjs 4178" 2>/dev/null
   sleep 1
-  (PREVIEW_SIM_ENGINE_ENABLED=true VERCEL_ENV=preview ECLASH_FAKE_CLOUD=1 RL_PROFILE_PER_MIN_IP=500 RL_CHALLENGE_ACTIONS_PER_MIN_IP=500 RL_CHALLENGE_VIEW_PER_MIN_IP=500 RL_PROGRESSION_PER_MIN_IP=500 RL_COMPETITIVE_PER_MIN_IP=500 node scripts/harness.mjs 4178 > .9f-harness-4178.log 2>&1 &)
+  (PREVIEW_SIM_ENGINE_ENABLED=true VERCEL_ENV=preview ECLASH_FAKE_CLOUD=1 RL_PROFILE_PER_MIN_IP=500 RL_CHALLENGE_ACTIONS_PER_MIN_IP=500 RL_CHALLENGE_VIEW_PER_MIN_IP=500 RL_PROGRESSION_PER_MIN_IP=500 RL_COMPETITIVE_PER_MIN_IP=500 RL_PROFILE_PUBLIC_PER_MIN_IP=500 node scripts/harness.mjs 4178 > .9f-harness-4178.log 2>&1 &)
   for _ in 1 2 3 4 5 6 7 8 9 10; do curl -sf -m 2 "$FAKE/api/health" >/dev/null 2>&1 && break; sleep 1; done
   STARTED_FAKE=1
 }
@@ -39,7 +39,22 @@ gate() {
 }
 {
   echo "=== PHASE 9F $LABEL SWEEP $(date -u +%FT%TZ) @ $(git rev-parse --short HEAD) ==="
-  echo "--- unit ---"; npx vitest run 2>&1 | grep -E 'Test Files|Tests |FAIL|✗|failed' | head -20
+  echo "--- unit ---"
+  npx vitest run > .9f-unit.out 2>&1; UNIT_RC=$?
+  grep -E 'Test Files|Tests |FAIL|✗|failed' .9f-unit.out | head -20
+  # same discipline as the e2e run: a failing FILE is re-run alone once, and the
+  # log says whether it passes alone (intermittent) or fails alone (a regression).
+  if [ "$UNIT_RC" != "0" ]; then
+    for f in $(grep -oE 'tests/[a-zA-Z0-9._-]+\.test\.js' .9f-unit.out | sort -u); do
+      echo "--- rerun alone: $f ---"
+      if npx vitest run "$f" > .9f-unit-rerun.out 2>&1; then
+        printf '%-40s PASS ALONE (intermittent under the full suite, not a regression)\n' "$f"
+      else
+        printf '%-40s FAIL ALONE (a real failure)\n' "$f"
+        grep -E 'FAIL|✗|AssertionError|expected' .9f-unit-rerun.out | head -6 | sed 's/^/      | /'
+      fi
+    done
+  fi
   echo "--- build ---"; npm run build 2>&1 | tail -2
   # harnesses serve dist/, so they start after the build
   STARTED_MAIN=0; STARTED_FAKE=0
@@ -49,9 +64,9 @@ gate() {
   STARTED_FIX=0
   if ! curl -sf -m 3 "http://localhost:4179/api/health" >/dev/null 2>&1; then
     npm run -s build:fixtures >/dev/null 2>&1
-    (PREVIEW_SIM_ENGINE_ENABLED=true VERCEL_ENV=preview ECLASH_FAKE_CLOUD=1 ECLASH_DIST=dist-fixtures RL_PROFILE_PER_MIN_IP=500 RL_PROGRESSION_PER_MIN_IP=500 RL_COMPETITIVE_PER_MIN_IP=500 node scripts/harness.mjs 4179 > .9f-harness-4179.log 2>&1 &); sleep 3; STARTED_FIX=1; fi
+    (PREVIEW_SIM_ENGINE_ENABLED=true VERCEL_ENV=preview ECLASH_FAKE_CLOUD=1 ECLASH_DIST=dist-fixtures RL_PROFILE_PER_MIN_IP=500 RL_PROGRESSION_PER_MIN_IP=500 RL_COMPETITIVE_PER_MIN_IP=500 RL_PROFILE_PUBLIC_PER_MIN_IP=500 node scripts/harness.mjs 4179 > .9f-harness-4179.log 2>&1 &); sleep 3; STARTED_FIX=1; fi
   if ! curl -sf -m 3 "$FAKE/api/health" >/dev/null 2>&1; then
-    (PREVIEW_SIM_ENGINE_ENABLED=true VERCEL_ENV=preview ECLASH_FAKE_CLOUD=1 RL_PROFILE_PER_MIN_IP=500 RL_CHALLENGE_ACTIONS_PER_MIN_IP=500 RL_CHALLENGE_VIEW_PER_MIN_IP=500 RL_PROGRESSION_PER_MIN_IP=500 RL_COMPETITIVE_PER_MIN_IP=500 node scripts/harness.mjs 4178 > .9f-harness-4178.log 2>&1 &); sleep 3; STARTED_FAKE=1; fi
+    (PREVIEW_SIM_ENGINE_ENABLED=true VERCEL_ENV=preview ECLASH_FAKE_CLOUD=1 RL_PROFILE_PER_MIN_IP=500 RL_CHALLENGE_ACTIONS_PER_MIN_IP=500 RL_CHALLENGE_VIEW_PER_MIN_IP=500 RL_PROGRESSION_PER_MIN_IP=500 RL_COMPETITIVE_PER_MIN_IP=500 RL_PROFILE_PUBLIC_PER_MIN_IP=500 node scripts/harness.mjs 4178 > .9f-harness-4178.log 2>&1 &); sleep 3; STARTED_FAKE=1; fi
   echo "--- e2e (all projects) ---"
   npx playwright test > .9f-e2e.out 2>&1; E2E_RC=$?
   grep -E 'passed|failed|flaky|skipped|Error' .9f-e2e.out | tail -6
@@ -60,7 +75,7 @@ gate() {
   # THAT spec alone once and record both outcomes, so an intermittent is visible
   # as an intermittent and a real regression is visible as a regression.
   if [ "$E2E_RC" != "0" ]; then
-    for spec in $(grep -oE 'e2e/[a-z0-9-]+\.spec\.js' .9f-e2e.out | sort -u); do
+    for spec in $(grep -E '✘' .9f-e2e.out | grep -oE 'e2e/[a-z0-9-]+\.spec\.js' | sort -u); do
       echo "--- rerun alone: $spec ---"
       if npx playwright test "$spec" > ".9f-e2e-rerun.out" 2>&1; then
         printf '%-40s PASS ALONE (intermittent under the full suite, not a regression)\n' "$spec"
@@ -87,6 +102,14 @@ gate() {
   for g in security-qa concurrency-qa result-qa challenge-qa responsive-qa accessibility-qa performance-qa; do gate "progression:$g" npm run -s "progression:$g" -- "$FAKE"; done
   echo "--- 9E competitive gates (fake-cloud harness $FAKE) ---"
   for g in contract-qa rating-qa backfill-qa rls-qa; do gate "competitive:$g" npm run -s "competitive:$g"; done
+  # competitive:concurrency-qa completes an account-vs-account Challenge for the
+  # harness's only two test accounts, so it needs an UNSPENT pair: every 9C, 9D and
+  # 9F surface before it completes Challenges for that same pair, and each of those
+  # creates a rating event, so by this point the pair has legitimately spent its
+  # three rated outcomes in seven days and the completion is refused — correctly —
+  # as repeat_opponent_limit. Phase 9E already restarts the fake cloud before its
+  # security gate for exactly this reason; concurrency needs the same.
+  restart_fake
   for g in concurrency-qa privacy-qa leaderboard-qa; do gate "competitive:$g" npm run -s "competitive:$g" -- "$FAKE"; done
   # The security gate plays a whole account-vs-account Challenge between the
   # harness's only two test accounts, Joseph and Bea. Every 9C, 9D and 9F gate

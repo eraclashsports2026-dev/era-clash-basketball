@@ -1,0 +1,72 @@
+{
+  "artifact": "profile-deployed-qa",
+  "phase": "9F — Public Competitive Profiles + Player Cards V1",
+  "generatedAt": "2026-09-09T18:08:20.982Z",
+  "origin": "https://era-clash-basketball-git-phase-9f-public-compe-0d8e8f-era-clash.vercel.app",
+  "checks": [
+    {
+      "check": "Candidate 4 on the preview",
+      "pass": true,
+      "detail": "Candidate 4 1.4.0"
+    },
+    {
+      "check": "the account provider is configured",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "an unknown slug answers found:false on the preview, revealing nothing",
+      "pass": true,
+      "detail": "{\"status\":\"ok\",\"found\":false,\"requestId\":\"d091b3442c65\"}"
+    },
+    {
+      "check": "an auth uuid supplied as a slug answers identically",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "profile-me without an account is refused on the preview",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a forged token is refused",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the /player/<slug> route renders on the preview with no overflow, and says nothing about existence",
+      "pass": true,
+      "detail": "0"
+    },
+    {
+      "check": "no secret-shaped string and no service_role JWT in the bundle",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the bundle carries the profile client and never the database functions or the dev fixture",
+      "pass": true,
+      "detail": "{\"bytes\":905033,\"secretShaped\":0,\"serviceJwt\":0,\"hasClient\":true,\"namesFunction\":false,\"fixtureRoute\":false,\"gitMetadata\":[]}"
+    },
+    {
+      "check": "no Git metadata in the bundle",
+      "pass": true,
+      "detail": "none"
+    }
+  ],
+  "passed": true,
+  "bundle": {
+    "bytes": 905033,
+    "secretShaped": 0,
+    "serviceJwt": 0,
+    "hasClient": true,
+    "namesFunction": false,
+    "fixtureRoute": false,
+    "gitMetadata": []
+  },
+  "health": {
+    "candidate": "Candidate 4",
+    "calibration": "1.4.0"
+  }
+}

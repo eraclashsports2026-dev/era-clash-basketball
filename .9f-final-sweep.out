@@ -1,0 +1,112 @@
+=== PHASE 9F FINAL SWEEP 2026-09-09T18:03:33Z @ 886968b ===
+--- unit ---
+ Test Files  82 passed (82)
+      Tests  2647 passed (2647)
+--- build ---
+✓ built in 794ms
+[plugin eraclash-sw-version] service worker cache identity: eraclash-assets:2.7.2:537b40941b3f
+--- e2e (all projects) ---
+    Error: the stored read is reused verbatim
+    Error Context: test-results/phase7b-preview-P1-Ready-a-1bb8a--show-the-SAME-pregame-read-candidate3-preview/error-context.md
+  1 failed
+  88 passed (1.8m)
+--- rerun alone: e2e/phase7b-preview.spec.js ---
+e2e/phase7b-preview.spec.js              PASS ALONE (intermittent under the full suite, not a regression)
+--- preview gates (static) ---
+preview:preflight                        PASS
+preview:security                         PASS
+--- repository ui gates ---
+ui:time-arena-qa                         PASS
+ui:result-dock-qa                        PASS
+ui:live-intel-qa                         PASS
+ui:coach-chaos-qa                        PASS
+ui:player-card-theme-qa                  PASS
+ui:synchronized-chaos-qa                 PASS
+ui:era-membership-qa                     PASS
+ui:navigation-qa                         PASS
+ui:membership-routing-qa                 PASS
+ui:activation-telemetry-qa               PASS
+ui:play-lobby-contracts                  PASS
+ui:night-court-contracts                 PASS
+ui:play-lobby-polish-qa                  PASS
+--- account gates (9B.1 / 9B.2, harness http://localhost:4180) ---
+account:guest-claim-qa                   PASS
+account:cloud-save-qa                    PASS
+account:my-eraclash-qa                   PASS
+account:saved-rosters-qa                 PASS
+account:run-it-back-qa                   PASS
+account:career-v2-qa                     PASS
+--- 9B.3 chaos gates (harness http://localhost:4180) ---
+chaos:guided-flow-qa                     PASS
+chaos:state-machine-qa                   PASS
+chaos:accessibility-qa                   PASS
+chaos:performance-qa                     PASS
+--- 9C challenge gates (fake-cloud harness http://localhost:4178) ---
+challenge:contract-qa                    PASS
+challenge:seed-qa                        PASS
+challenge:rls-qa                         PASS
+challenge:security-qa                    PASS
+challenge:history-qa                     PASS
+challenge:responsive-qa                  PASS
+challenge:accessibility-qa               PASS
+challenge:performance-qa                 PASS
+--- 9D progression gates (fake-cloud harness http://localhost:4178) ---
+progression:contract-qa                  PASS
+progression:xp-qa                        PASS
+progression:achievement-qa               PASS
+progression:backfill-qa                  PASS
+progression:reconcile-qa                 PASS
+progression:rls-qa                       PASS
+progression:security-qa                  PASS
+progression:concurrency-qa               PASS
+progression:result-qa                    PASS
+progression:challenge-qa                 PASS
+progression:responsive-qa                PASS
+progression:accessibility-qa             PASS
+progression:performance-qa               PASS
+--- 9E competitive gates (fake-cloud harness http://localhost:4178) ---
+competitive:contract-qa                  PASS
+competitive:rating-qa                    PASS
+competitive:backfill-qa                  PASS
+competitive:rls-qa                       PASS
+competitive:concurrency-qa               PASS
+competitive:privacy-qa                   PASS
+competitive:leaderboard-qa               PASS
+competitive:security-qa                  PASS
+competitive:responsive-qa                PASS
+competitive:accessibility-qa             PASS
+competitive:performance-qa               PASS
+--- 9F profile gates (fake-cloud harness http://localhost:4178) ---
+profile:contract-qa                      PASS
+profile:identifier-qa                    PASS
+profile:visibility-qa                    PASS
+profile:projection-qa                    PASS
+profile:featured-qa                      PASS
+profile:provisional-qa                   PASS
+profile:display-name-qa                  PASS
+profile:deletion-qa                      PASS
+profile:enumeration-qa                   PASS
+profile:rls-qa                           PASS
+profile:cross-account-qa                 PASS
+profile:leaderboard-qa                   PASS
+profile:sharing-qa                       PASS
+profile:responsive-qa                    PASS
+profile:accessibility-qa                 PASS
+profile:performance-qa                   PASS
+--- deployed (https://era-clash-basketball-git-phase-9f-public-compe-0d8e8f-era-clash.vercel.app) ---
+profile:deployed-qa                      PASS
+competitive:deployed-qa                  PASS
+progression:deployed-qa                  PASS
+challenge:deployed-qa                    FAIL
+      |   FAIL  a seeded live challenge code was provided (LIVE_CHALLENGE_CODE) … not provided — accept/complete on the preview not exercised by this run
+      |   FAIL  a live expired code was provided (LIVE_EXPIRED_CODE) … not provided
+      |   FAIL  a live revoked code was provided (LIVE_REVOKED_CODE) … not provided
+chaos:deployed-qa                        PASS
+live-guest-qa 24/24 live guest and security checks passed
+deployed-qa 29/29 deployed gates passed → data/validation/9b1/account-preview-qa.json
+--- preservation ---
+api routes: 12 + middleware: yes
+wave1  4dc59e7
+wave2  ef0caa5
+main   9cd95ff
+=== DONE 2026-09-09T18:10:14Z ===

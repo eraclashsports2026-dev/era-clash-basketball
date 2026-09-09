@@ -380,6 +380,21 @@ if (httpModes.has(MODE)) {
           for (const [id, file] of [["player-card-provisional", "profile-provisional"], ["profile-unavailable", "profile-unavailable"], ["profile-module", "my-eraclash-profile-controls"], ["leaderboard-rows", "leaderboard-profile-links"], ["player-card-no-rank", "player-card-rating-no-rank"]]) {
             await p.locator(`[data-fixture="${id}"]`).screenshot({ path: `${shots}/${file}.png` });
           }
+          // open the two panels for real, rather than mocking their open state:
+          // the owner's PRIVATE PREVIEW and the featured picker.
+          const mod = p.locator('[data-fixture="profile-module"]');
+          await mod.getByRole("button", { name: /PREVIEW PROFILE/ }).click();
+          await mod.locator('[data-fixture-part="owner-preview"] .ec-pp-card').waitFor({ timeout: 15_000 });
+          const previewLabel = await mod.locator(".ec-pp-preview-k").textContent();
+          ok("the owner's preview is clearly marked PRIVATE and says it is visible to nobody else", /PRIVATE PREVIEW · NOT VISIBLE TO ANYONE ELSE/.test(previewLabel || ""), previewLabel);
+          ok("opening the preview did not make the profile public", (await mod.locator(".ec-pp-badge").textContent()) === "PRIVATE");
+          await mod.screenshot({ path: `${shots}/profile-owner-private-preview.png` });
+          await mod.getByRole("button", { name: /FEATURED ACHIEVEMENTS/ }).click();
+          await mod.locator(".ec-pp-picker-list").waitFor({ timeout: 15_000 });
+          const offered = await mod.locator(".ec-pp-picker-opt").count();
+          const pressed = await mod.locator('.ec-pp-picker-opt[aria-pressed="true"]').count();
+          ok("the picker offers only unlocked achievements and shows which are featured", offered === 6 && pressed === 2, `${offered} offered, ${pressed} featured`);
+          await mod.screenshot({ path: `${shots}/featured-achievements-state.png` });
         }
       }
 

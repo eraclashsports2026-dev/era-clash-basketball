@@ -61,7 +61,9 @@ const Light = ({ children }) => <div className="ec-editorial" style={{ backgroun
 export default function ProfileReferenceFixture() {
   const [vis, setVis] = useState("private");
   const [featured, setFeatured] = useState(ownerBase.featured);
-  const owner = { ...ownerBase, profileVisibility: vis, leaderboardVisibility: "public", featured };
+  // the preview is derived from the SAME featured state the module reports, the way
+  // the real module does (the server sends one projection for both)
+  const owner = { ...ownerBase, profileVisibility: vis, leaderboardVisibility: "public", featured, preview: { ...placed, featured } };
   return (
     <div style={{ minHeight: "100vh", background: "#03070d" }}>
       <main aria-labelledby="ec-prf-title" className="ec-arena-page" style={{ maxWidth: 980, margin: "0 auto", padding: "16px 16px 64px", display: "grid", gap: 22 }}>
