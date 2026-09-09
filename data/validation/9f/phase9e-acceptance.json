@@ -1,0 +1,59 @@
+{
+  "artifact": "phase9e-acceptance",
+  "phase": "9E",
+  "recordedAt": "2026-09-09T00:00:00Z",
+  "accepts": "Phase 9E — Competitive Rating + Leaderboards V1",
+  "ownerResponse": "Approve Leaderboards V1",
+  "acceptedHead": "37bac49",
+  "acceptedAppCode": "c4e999d",
+  "branch": "phase-9e-competitive-rating-leaderboards-v1",
+  "pr": 48,
+  "prState": "MERGED",
+  "mergeCommit": "7d2673e",
+  "mergedInto": "phase-9b3-chaos-guided-flow-v2 (the same chain PR #46 and PR #47 merged into)",
+  "mergeRecordCommit": "fec7a12",
+  "acceptedChainHeadAt9FStart": "fec7a12",
+  "durablePreview": "https://era-clash-basketball-git-phase-9e-competitive-690a16-era-clash.vercel.app",
+  "verdictAtAcceptance": "COMPETITIVE RATING + LEADERBOARDS V1 COMPLETE — READY FOR JOSEPH'S LEADERBOARD TEST",
+  "ledgerAtAcceptance": { "items": 52, "fixedAndVerified": 51, "open": 0, "externalBlocker": 1 },
+  "contractAtAcceptance": {
+    "competitiveRatingVersion": "1.0.0",
+    "initial": 1000,
+    "floor": 100,
+    "k": { "provisional": 40, "established": 24, "switchAt": 10 },
+    "placement": { "matches": 5, "uniqueOpponents": 3 },
+    "pairLimit": { "limit": 3, "windowDays": 7 },
+    "leaderboard": { "limit": 100, "aroundMe": 2 },
+    "visibility": { "key": "leaderboard_visibility", "values": ["private", "public"], "default": "private" },
+    "powerEffect": 0
+  },
+  "ownerReportedEvidence": {
+    "twoAccountRatedFlow": {
+      "source": "OWNER-REPORTED, not automated. The owner states they performed the remaining real two-account authenticated Challenge test and confirmed the two-account rated flow works.",
+      "reportedAt": "2026-09-09",
+      "status": "CONFIRMED BY OWNER",
+      "automatedEvidence": "none — deliberately not fabricated. data/validation/9e/rating-rls-live.json records this journey as the one thing the project cannot certify itself, because it cannot mint a synthetic authenticated session without a credential passing through a transcript. The server path is certified end to end on the fake-cloud harness (rating-security-qa, rating-result-qa, leaderboard-ordering-qa, e2e) and the database half is certified live against real Postgres.",
+      "note": "This closes the one gap Phase 9E left open, on the owner's word rather than on a generated artifact. Recorded as owner testimony so a later reader can tell the two kinds of evidence apart."
+    },
+    "leaderboardSurfaces": {
+      "source": "OWNER-REPORTED",
+      "reportedAt": "2026-09-09",
+      "ownerResponse": "This worked.",
+      "record": "data/validation/9e/phase9e-owner-test.json"
+    }
+  },
+  "phase9EInvariantsFrozenFor9F": [
+    "competitiveRatingVersion 1.0.0",
+    "EA = 1 / (1 + 10 ^ ((RB - RA) / 400))",
+    "win 1 / tie 0.5 / loss 0",
+    "K 40 for a player's first ten rated matches, 24 after",
+    "rating floor 100",
+    "placement requires BOTH 5 rated matches AND 3 unique authenticated opponents",
+    "RATED_PAIR_LIMIT 3 in RATED_PAIR_WINDOW_DAYS 7",
+    "leaderboard_visibility governs leaderboard inclusion, private by default",
+    "provisional accounts get no public rank and no estimate",
+    "Career XP and Competitive Rating stay separate; no XP leaderboard"
+  ],
+  "notStarted": ["public competitive profiles", "player cards", "friends", "following", "seasons", "tournaments", "production promotion"],
+  "note": "Acceptance closes Phase 9E. Phase 9F (Public Competitive Profiles + Player Cards V1) begins from the accepted chain head fec7a12 by owner instruction."
+}
