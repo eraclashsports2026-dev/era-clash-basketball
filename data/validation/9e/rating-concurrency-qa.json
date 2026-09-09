@@ -1,0 +1,43 @@
+{
+  "artifact": "rating-concurrency-qa",
+  "phase": "9E — Competitive Rating + Leaderboards V1",
+  "generatedAt": "2026-09-07T02:07:03.727Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "6 simultaneous completions: every answer carries the SAME movement; one event",
+      "pass": true,
+      "detail": "6 rated answers · 16"
+    },
+    {
+      "check": "the creator's record grew by exactly one match",
+      "pass": true,
+      "detail": "2 → 3 · 962 → 946"
+    },
+    {
+      "check": "the recipient's history gained exactly one event for this challenge",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "outcome matches the comparison the page showed",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "in Postgres the same is decided by two ordered advisory locks and a unique constraint",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": true,
+  "simultaneous": 6,
+  "deltas": [
+    16,
+    16,
+    16,
+    16,
+    16,
+    16
+  ]
+}

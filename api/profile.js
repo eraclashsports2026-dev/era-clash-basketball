@@ -20,10 +20,33 @@ import {
   claimAndSaveResult, importDeviceHistory, countEligibleForImport, deleteAccount,
   CANDIDATE_ID_SHAPE, MAX_IMPORT_CANDIDATES,
 } from "./_lib/cloudAccounts.js";
+// Phase 9C: challenges ride the same route and the same function budget. Their
+// auth rule differs from the career actions — an invitation may be read and a
+// challenge accepted by a guest — so they are dispatched before the bearer-only
+// block, with a token verified whenever one is presented.
+import {
+  createChallenge, viewChallenge, acceptChallenge, completeChallengeAttempt, revokeChallenge, listChallenges, displayNameFor,
+} from "./_lib/challenges.js";
+import { normalizeCode } from "../src/challenges/contract.js";
+// Phase 9D: progression rides the same route. Awards are decided here and in
+// the database, never in a browser; every hook below is idempotent.
+import { reconcileProgression, recentLedger, compactProgression, reconcileChallengeCompletion } from "./_lib/progression.js";
+// Phase 9E: Competitive Rating rides the same route. The database rates; the
+// server relays the caller's side; the leaderboard is the safe projection.
+import { rateChallengeCompletion, competitiveMe, leaderboard as competitiveLeaderboard, aroundMe as competitiveAroundMe } from "./_lib/competitive.js";
+import { normalizeTier } from "../src/entitlements.js";
+import { validRunId } from "./_lib/chaosRun.js";
 
 const KEY = (sid) => `profile:${sid}`;
 const RESULT_ID_SHAPE = CANDIDATE_ID_SHAPE;
 const CLOUD_ACTIONS = new Set(["cloud-save", "claim-result", "import-device-history", "import-preview", "delete-account"]);
+const CHALLENGE_ACTIONS = new Set(["challenge-create", "challenge-view", "challenge-accept", "challenge-complete", "challenge-revoke", "challenge-list"]);
+const ACCOUNT_ONLY_CHALLENGE_ACTIONS = new Set(["challenge-create", "challenge-revoke", "challenge-list"]);
+const PROGRESSION_ACTIONS = new Set(["progression-get", "progression-reconcile"]);
+const COMPETITIVE_ACTIONS = new Set(["competitive-leaderboard", "competitive-me", "competitive-around-me"]);
+const ACCOUNT_ONLY_COMPETITIVE_ACTIONS = new Set(["competitive-me", "competitive-around-me"]);
+/** A guest: an identity with no user id. Never a stand-in for a token that failed verification. */
+const GUEST_IDENTITY = Object.freeze({ userId: null });
 
 /** The bearer token, from the header only — never from a logged request body. */
 const bearer = (req) => {
@@ -94,6 +117,22 @@ export default async function handler(req, res) {
     return res.status(200).json({ cloudAccounts: { ...cloudAccountsServerStatus(), ready: cloudAccountsReady() } });
   }
 
+  if (req.method === "GET" && req.query?.challenge !== undefined) {
+    // The invitation a link opens to. Generic for anything that is not a live
+    // code; rate-limited per IP so codes cannot be swept.
+    if (!cloudAccountsReady()) return res.status(503).json({ error: "CLOUD_ACCOUNTS_DISABLED", requestId });
+    if (!(await rateLimit(`chal-view:${clientIp(req)}`, limits().challengeViewPerMinIp, 60))) return sendError(res, "RATE_LIMITED", requestId, { retryAfter: 30 });
+    const code = normalizeCode(String(req.query.challenge || ""));
+    const token = bearer(req);
+    const verified = token ? await verifyAccountToken(token) : null;
+    if (token && !verified) return res.status(401).json({ error: "NOT_AUTHENTICATED", requestId });
+    const who = verified || GUEST_IDENTITY;
+    const deviceSession = getOrCreateSession(req, res);
+    const out = code ? await viewChallenge({ code, userId: who.userId, deviceSession }) : { status: "unavailable" };
+    res.setHeader("Cache-Control", "private, no-store");
+    return res.status(200).json({ ...out, requestId });
+  }
+
   if (req.method === "GET") {
     const profile = await getJSON(KEY(session));
     if (!profile) return sendError(res, "NOT_FOUND", requestId);
@@ -107,6 +146,108 @@ export default async function handler(req, res) {
   if (tooLarge(req, MAX_BYTES + 5000)) return sendError(res, "PAYLOAD_TOO_LARGE", requestId);
   if (!(await rateLimit(`pf:${clientIp(req)}`, limits().profilePerMinIp, 60))) {
     return sendError(res, "RATE_LIMITED", requestId, { retryAfter: 30 });
+  }
+
+  // ── Phase 9C challenge actions ──────────────────────────────────────────
+  const action9c = typeof req.body?.action === "string" ? req.body.action : null;
+  if (action9c && CHALLENGE_ACTIONS.has(action9c)) {
+    if (!cloudAccountsReady()) return res.status(503).json({ error: "CLOUD_ACCOUNTS_DISABLED", requestId });
+    if (!(await rateLimit(`chal:${clientIp(req)}`, limits().challengeActionsPerMinIp, 60))) return sendError(res, "RATE_LIMITED", requestId, { retryAfter: 30 });
+    // A presented token is verified; an invalid one is refused, never quietly
+    // downgraded to a guest. No token at all is a guest, where a guest is allowed.
+    const token = bearer(req);
+    // `who` is the verified token's identity, or the guest identity (no user id)
+    // where a guest is allowed. Every user id below is read from it and nowhere else.
+    const verified = token ? await verifyAccountToken(token) : null;
+    if (token && !verified) return res.status(401).json({ error: "NOT_AUTHENTICATED", requestId });
+    const who = verified || GUEST_IDENTITY;
+    if (ACCOUNT_ONLY_CHALLENGE_ACTIONS.has(action9c) && !who.userId) return res.status(401).json({ error: "NOT_AUTHENTICATED", requestId });
+    const displayName = who.userId ? await displayNameFor(who.userId) : null;
+    // Tier gates ACCESS only (never odds). A guest cannot claim a tier without a token.
+    const tier = who.userId ? (["FREE", "PLUS", "COMMISSIONER"].includes(normalizeTier(req.body?.tier)) ? normalizeTier(req.body.tier) : "FREE") : "GUEST";
+    const code = normalizeCode(String(req.body?.code || ""));
+    const chaosRunId = validRunId(req.body?.chaosRunId);
+    let out;
+    if (action9c === "challenge-create") {
+      if (!chaosRunId) return sendError(res, "VALIDATION_FAILURE", requestId);
+      out = await createChallenge({ chaosRunId, userId: who.userId, deviceSession: session, displayName });
+      const http = { created: 200, already_created: 200, not_found: 404, not_your_result: 403, not_simulated: 409, not_eligible: 409, not_configured: 503, save_failed: 502 }[out.status] ?? 500;
+      return res.status(http).json({ ...out, challenge: undefined, requestId });
+    }
+    if (action9c === "challenge-view") {
+      out = code ? await viewChallenge({ code, userId: who.userId, deviceSession: session }) : { status: "unavailable" };
+      return res.status(200).json({ ...out, requestId });
+    }
+    if (action9c === "challenge-accept") {
+      out = code ? await acceptChallenge({ code, userId: who.userId, deviceSession: session, tier, displayName }) : { status: "unavailable" };
+      const http = { started: 200, resumed: 200, unavailable: 200, expired: 200, revoked: 200, already_attempted: 409, own_challenge: 403, guest_limit: 403, not_configured: 503, save_failed: 502 }[out.status] ?? 500;
+      if (out.status === "guest_limit") return res.status(403).json({ requestId, status: out.status, gated: true, guestRunsUsed: out.guestRunsUsed, guestRunsAllowed: out.guestRunsAllowed, gate: { kind: "ACCOUNT", message: "Create a free account to keep playing Chaos Clash." } });
+      return res.status(http).json({ ...out, requestId });
+    }
+    if (action9c === "challenge-complete") {
+      if (!chaosRunId) return sendError(res, "VALIDATION_FAILURE", requestId);
+      out = await completeChallengeAttempt({ chaosRunId, userId: who.userId, deviceSession: session, displayName });
+      const http = { completed: 200, already_completed: 200, not_found: 404, not_your_run: 403, not_simulated: 409, not_configured: 503, save_failed: 502 }[out.status] ?? 500;
+      // Phase 9D: a completed official attempt earns the recipient ACCOUNT its
+      // challenge XP and, once, the creator a response. Guests earn nothing and
+      // earn the creator nothing. Both calls are idempotent reconciliations.
+      const progression = out.status === "completed" || out.status === "already_completed"
+        ? await reconcileChallengeCompletion({ chaosRunId, callerUserId: who.userId, justCompleted: out.status === "completed" })
+        : null;
+      // Phase 9E: the comparison is authoritative; the rating consumes it. Rated
+      // between two accounts, once; a guest, self or repeat-opponent attempt is
+      // answered as unrated with its reason. The caller's side only.
+      const rating = out.status === "completed" || out.status === "already_completed"
+        ? await rateChallengeCompletion({ chaosRunId, callerUserId: who.userId })
+        : null;
+      return res.status(http).json({ ...out, ...(progression ? { progression } : {}), ...(rating ? { rating } : {}), requestId });
+    }
+    if (action9c === "challenge-revoke") {
+      out = code ? await revokeChallenge({ code, userId: who.userId }) : { status: "unavailable" };
+      const http = { revoked: 200, already_revoked: 200, unavailable: 200, not_configured: 503, save_failed: 502 }[out.status] ?? 500;
+      return res.status(http).json({ ...out, requestId });
+    }
+    out = await listChallenges({ userId: who.userId });
+    res.setHeader("Cache-Control", "private, no-store");
+    return res.status(out.status === "ok" ? 200 : 503).json({ ...out, requestId });
+  }
+
+  // ── Phase 9D progression actions ─────────────────────────────────────────
+  // Account only. Reading progression reconciles it: whatever the account's
+  // authoritative records earn and the ledger lacks is inserted (once), so a
+  // failed callback, a historical backfill or a claim is repaired by opening
+  // the career page. No body field is read.
+  const action9d = typeof req.body?.action === "string" ? req.body.action : null;
+  if (action9d && PROGRESSION_ACTIONS.has(action9d)) {
+    if (!cloudAccountsReady()) return res.status(503).json({ error: "CLOUD_ACCOUNTS_DISABLED", requestId });
+    if (!(await rateLimit(`prog:${clientIp(req)}`, limits().progressionPerMinIp, 60))) return sendError(res, "RATE_LIMITED", requestId, { retryAfter: 30 });
+    const who = await verifyAccountToken(bearer(req));
+    if (!who) return res.status(401).json({ error: "NOT_AUTHENTICATED", requestId });
+    const out = await reconcileProgression({ userId: who.userId, trigger: action9d === "progression-get" ? "career_opened" : "manual_reconcile" });
+    res.setHeader("Cache-Control", "private, no-store");
+    if (out.status !== "ok") return res.status({ not_configured: 503, apply_failed: 502 }[out.status] ?? 500).json({ status: out.status, requestId });
+    const recent = await recentLedger(who.userId);
+    return res.status(200).json({ status: "ok", profile: out.profile, achievements: out.achievements, summary: out.summary, facts: out.facts, recent, repaired: out.repaired, requestId });
+  }
+
+  // ── Phase 9E competitive actions ─────────────────────────────────────────
+  // The leaderboard is public (signed out may read the Top 100: public AND
+  // placed accounts, display names only). A user's own rating, record, placement
+  // and rows around them are account only. No body field is read.
+  const action9e = typeof req.body?.action === "string" ? req.body.action : null;
+  if (action9e && COMPETITIVE_ACTIONS.has(action9e)) {
+    if (!cloudAccountsReady()) return res.status(503).json({ error: "CLOUD_ACCOUNTS_DISABLED", requestId });
+    if (!(await rateLimit(`comp:${clientIp(req)}`, limits().competitivePerMinIp, 60))) return sendError(res, "RATE_LIMITED", requestId, { retryAfter: 30 });
+    const token = bearer(req);
+    const verified = token ? await verifyAccountToken(token) : null;
+    if (token && !verified) return res.status(401).json({ error: "NOT_AUTHENTICATED", requestId });
+    const who = verified || GUEST_IDENTITY;
+    if (ACCOUNT_ONLY_COMPETITIVE_ACTIONS.has(action9e) && !who.userId) return res.status(401).json({ error: "NOT_AUTHENTICATED", requestId });
+    res.setHeader("Cache-Control", "private, no-store");
+    const out = action9e === "competitive-leaderboard" ? await competitiveLeaderboard({})
+      : action9e === "competitive-me" ? await competitiveMe({ userId: who.userId })
+      : await competitiveAroundMe({ userId: who.userId });
+    return res.status(out.status === "ok" ? 200 : { not_configured: 503, failed: 502 }[out.status] ?? 500).json({ ...out, requestId });
   }
 
   // ── Phase 9B.1 cloud-career actions ──────────────────────────────────────
@@ -132,7 +273,9 @@ export default async function handler(req, res) {
         candidateIds: req.body?.resultIds, userId: who.userId, deviceSession: session,
         buildStamp: stamp(req), themeVersion: req.body?.themeVersion ? cleanText(String(req.body.themeVersion), 40) : null,
       });
-      return res.status(200).json({ ...out, requestId });
+      // Phase 9D: imported results are authoritative history; one reconcile awards them, once.
+      const progression = out.imported > 0 ? compactProgression(await reconcileProgression({ userId: who.userId, trigger: "device_import" })) : null;
+      return res.status(200).json({ ...out, ...(progression ? { progression } : {}), requestId });
     }
 
     if (action === "delete-account") {
@@ -151,7 +294,13 @@ export default async function handler(req, res) {
       buildStamp: stamp(req), themeVersion: req.body?.themeVersion ? cleanText(String(req.body.themeVersion), 40) : null,
     });
     const code = { saved: 200, already_saved: 200, not_found: 404, not_your_result: 403, already_claimed: 409, not_configured: 503, save_failed: 502 }[out.status] ?? 500;
-    return res.status(code).json({ ...out, requestId });
+    // Phase 9D: a saved (or claimed) authoritative result earns its XP here,
+    // once — a re-save collides in the ledger and the delta comes back as 0.
+    // A progression failure never turns a successful save into a failed one.
+    const progression = out.status === "saved" || out.status === "already_saved"
+      ? compactProgression(await reconcileProgression({ userId: who.userId, trigger: action === "claim-result" ? "guest_result_claimed" : "clash_saved" }))
+      : null;
+    return res.status(code).json({ ...out, ...(progression ? { progression } : {}), requestId });
   }
 
   const clean = sanitize(req.body?.profile);

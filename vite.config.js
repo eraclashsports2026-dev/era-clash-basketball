@@ -50,6 +50,15 @@ const swVersionPlugin = () => ({
   },
 });
 
+// Vercel exposes its Git metadata to the build with a VITE_ prefix, and Vite
+// inlines every VITE_ variable into import.meta.env — so the full commit
+// message and the committer's name and login were being shipped inside the
+// browser bundle on every preview deploy. Nothing in src/ reads any of them.
+// Drop them before Vite resolves the env: a commit message is internal
+// narrative (it can name server functions, tables and defects) and a
+// committer is identity; neither belongs in a public asset.
+for (const k of ["VITE_VERCEL_GIT_COMMIT_MESSAGE", "VITE_VERCEL_GIT_COMMIT_AUTHOR_NAME", "VITE_VERCEL_GIT_COMMIT_AUTHOR_LOGIN"]) delete process.env[k];
+
 export default defineConfig(({ mode }) => ({
   plugins: [react(), swVersionPlugin()],
   define: {

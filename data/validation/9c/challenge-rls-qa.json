@@ -1,0 +1,123 @@
+{
+  "artifact": "challenge-rls-qa",
+  "phase": "9C — Challenges + Persistent Competitive Identity V1",
+  "generatedAt": "2026-09-05T06:20:49.256Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "challenges: RLS enabled",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "challenges: anon and authenticated revoked",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "challenge_secrets: RLS enabled",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "challenge_secrets: anon and authenticated revoked",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "challenge_attempts: RLS enabled",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "challenge_attempts: anon and authenticated revoked",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "authenticated may select own challenges and own/response attempts only",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "secrets: no policy, no grant",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "policies scope to auth.uid()",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "one official attempt per account is a unique index",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "deleted accounts are anonymised by a trigger the client cannot call",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the live role-switch verification is recorded from the database",
+      "pass": true,
+      "detail": "verified 2026-09-05T06:19:16.159Z"
+    }
+  ],
+  "passed": true,
+  "live": {
+    "artifact": "challenge-rls-live",
+    "phase": "9C — Challenges + Persistent Competitive Identity V1",
+    "verifiedAt": "2026-09-05T06:19:16.159Z",
+    "project": "lfybiphmqkiecfrqsfzt (the certified preview project; production has no cloud accounts)",
+    "method": "Not a simulation: statements executed on the live database through the Supabase management API inside transactions that were rolled back, switching to the anon / authenticated roles with request.jwt.claims set to the QA accounts' ids. QA accounts qa-9c-creator / qa-9c-recipient (throwaway, deleted at the end of the phase) own the seeded rows.",
+    "migration": "0004_challenges recorded in public.schema_migrations; policies challenges_select_own, challenge_attempts_select_own, challenge_attempts_select_responses; triggers on_auth_user_created, on_auth_user_deleted_challenges present on auth.users",
+    "rls": {
+      "pass": true,
+      "evidence": "creator (authenticated, sub=A): challenges 1 (own, own code visible), attempts 0 · recipient (authenticated, sub=B): challenges 0, attempts 0 · anon: permission denied for table challenges · authenticated: permission denied for table challenge_secrets · authenticated update on challenges: permission denied (writes are the service role's alone)"
+    },
+    "seeded": {
+      "open": "EC-8ABQ-MKGY (creator A, 118–104 win, 1990s; seed kept only in challenge_secrets)",
+      "expired": "EC-WHPM-36XY (expires_at in the past)",
+      "revoked": "EC-X6G8-V2L4 (revoked_at set)"
+    },
+    "expiration": {
+      "pass": true,
+      "evidence": "EC-WHPM-36XY (expires_at in the past) reads expired on the alias and refuses a new attempt (status expired); the invitation renders 'This challenge has expired'"
+    },
+    "creatorDeletion": {
+      "pass": true,
+      "evidence": "the QA creator was deleted from auth.users: all three QA challenges keep their rows with creator_user_id null, creator_display_snapshot 'Deleted account', creator_roster [], creator_coach and creator_mvp null; their 2 completed guest attempts and the secret row remain; on the durable alias every one of them now reads the same one-key `unavailable` as an unknown code (EC-8ABQ-MKGY, EC-WHPM-36XY, EC-X6G8-V2L4 vs EC-ZZZZ-ZZZZ)"
+    },
+    "recipientDeletion": {
+      "pass": true,
+      "evidence": "a QA recipient with an attempt in progress on EC-8ABQ-MKGY was deleted from auth.users: the attempt row stays with user_id null and display_snapshot 'Deleted account' (status unchanged); guest attempts untouched"
+    },
+    "responses": {
+      "pass": true,
+      "evidence": "after a guest accepted and completed EC-8ABQ-MKGY on the durable alias (134–141, performance −7, challenge outcome creator, comparison 1.0.0, result and run ids well-shaped, 64-char device hash): creator (authenticated, sub=A) sees 1 attempt / 1 completed through challenge_attempts_select_responses; recipient (authenticated, sub=B) sees 1 attempt (own, in progress) and 0 challenges"
+    },
+    "pending": [],
+    "liveAttempt": {
+      "challenge": "EC-8ABQ-MKGY",
+      "guest": true,
+      "status": "completed",
+      "score": {
+        "gold": 134,
+        "blue": 141
+      },
+      "outcome": "loss",
+      "performance": -7,
+      "challengeOutcome": "creator",
+      "comparisonVersion": "1.0.0",
+      "manifestRemintedFromKeptSeed": true,
+      "note": "the seeded challenge had no run-store manifest; accept re-minted it from challenge_secrets and the recipient played the seeded opening"
+    },
+    "revocation": {
+      "pass": true,
+      "evidence": "EC-X6G8-V2L4 (revoked_at set) reads revoked on the alias and refuses a new attempt; the invitation renders 'withdrawn'"
+    },
+    "cleanup": "the QA users are deleted; the three QA challenge rows (and their attempts and secret, by cascade) are deleted at the end of the phase so the live database carries no QA data"
+  }
+}

@@ -111,11 +111,24 @@ export const readAuthoritativeResult = async (resultId) => {
   return getJSON(`${isPreview ? "preview-result" : "result"}:${id}`);
 };
 
+// The engines record the final score, the winner and the MVP under `core`
+// (api/game.js spreads the computed result into the record); older test
+// records carry them at the top level. Read both. Phase 9D found the top-level
+// read alone: every real Clash saved as a scoreless loss, which the career
+// page showed and progression would have paid for.
+const scoreOf = (record) => record?.core?.finalScore || record?.finalScore || null;
 const OUTCOME = (record) => {
-  const g = record?.finalScore?.gold, b = record?.finalScore?.blue;
-  if (!Number.isFinite(g) || !Number.isFinite(b)) return record?.won ? "win" : "loss";
+  const s = scoreOf(record);
+  const g = s?.gold, b = s?.blue;
+  if (!Number.isFinite(g) || !Number.isFinite(b)) return record?.won || record?.core?.winner === "Gold" ? "win" : "loss";
   if (g === b) return "tie";
   return g > b ? "win" : "loss";
+};
+const mvpOf = (record) => {
+  const m = record?.mvp ?? record?.core?.mvp;
+  if (!m) return null;
+  if (typeof m === "string") return { name: m.slice(0, 40), pts: Number(record?.core?.mvpLine?.pts) || null };
+  return { name: String(m.name || "").slice(0, 40), pts: Number(m.pts) || null };
 };
 
 const roster = (ids, record) => {
@@ -147,14 +160,14 @@ export const buildSavedClash = ({ record, userId, claimedFrom, buildStamp = null
     mode: (record?.chaosDraft ? "chaos" : String(record.mode || "single")).slice(0, 20),
     user_side: "gold",
     outcome: OUTCOME(record),
-    gold_score: Number.isFinite(record?.finalScore?.gold) ? record.finalScore.gold : null,
-    blue_score: Number.isFinite(record?.finalScore?.blue) ? record.finalScore.blue : null,
+    gold_score: Number.isFinite(scoreOf(record)?.gold) ? scoreOf(record).gold : null,
+    blue_score: Number.isFinite(scoreOf(record)?.blue) ? scoreOf(record).blue : null,
     era_id: record?.eraId ? String(record.eraId).slice(0, 20) : null,
     gold_roster: roster(record?.goldIds, record),
     blue_roster: roster(record?.blueIds, record),
     gold_coach: coach(record?.pregame?.coachGold || record?.coachGold),
     blue_coach: coach(record?.pregame?.coachBlue || record?.coachBlue),
-    mvp: record?.mvp ? { name: String(record.mvp.name || "").slice(0, 40), pts: Number(record.mvp.pts) || null } : null,
+    mvp: mvpOf(record),
     candidate_id: record?.previewCandidate?.candidateId ? String(record.previewCandidate.candidateId).slice(0, 40) : null,
     calibration_version: record?.previewCandidate?.calibrationVersion ? String(record.previewCandidate.calibrationVersion).slice(0, 20) : null,
     candidate_core_hash: record?.previewCandidate?.candidateCoreHash ? String(record.previewCandidate.candidateCoreHash).slice(0, 64) : null,
@@ -245,7 +258,8 @@ export const serviceKeyProbe = async (fetchImpl = fetch) => {
   return { accepted: false, status: first.status, code: first.code, variant: null, tried };
 };
 
-const rest = async (path, init = {}, fetchImpl = fetch) => {
+/** Service-role REST call. Shared with the Phase 9C challenge library; never reachable from a browser. */
+export const rest = async (path, init = {}, fetchImpl = fetch) => {
   const r = await fetchImpl(`${url()}/rest/v1/${path}`, {
     ...init,
     headers: {

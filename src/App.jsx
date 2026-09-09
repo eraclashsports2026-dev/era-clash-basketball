@@ -29,6 +29,7 @@ import StageWizard from "./components/StageWizard.jsx";
 import ArenaHeader from "./components/arena/ArenaHeader.jsx";
 import TimeArena from "./components/arena/TimeArena.jsx";
 import ReferenceFixture from "./ui/time-arena/ReferenceFixture.jsx";
+import ProgressionReferenceFixture from "./ui/progression/ProgressionReferenceFixture.jsx";   // Phase 9D, same dev-only gate
 import { MembershipPage, FantasyPage, ModeInfoPage, HowModesModal as ArenaHowModes, ArenaGuide } from "./components/arena/InfoPages.jsx";
 import {
   PLAY_MODES, findMode, defaultMode, MODE_STATUS,
@@ -50,7 +51,21 @@ import { placementPlan, place as placePlayer, describeSelection, describePlaceme
 import { markEntry } from "./activation.js";
 import AccountGate from "./components/chaos/AccountGate.jsx";
 import { currentTier, hasAccount } from "./account.js";
-import { simulateChaos, publishChaosChallenge, chooseChaosEra } from "./chaos/client.js";
+import { simulateChaos, chooseChaosEra } from "./chaos/client.js";
+// Phase 9C: a finished Chaos Clash becomes a governed challenge; a link opens an
+// invitation; an accepted challenge is an ordinary Chaos run the arena resumes.
+import ChallengeInvite from "./components/challenges/ChallengeInvite.jsx";
+import ChallengeShare from "./components/challenges/ChallengeShare.jsx";
+import ChallengeComparison from "./components/challenges/ChallengeComparison.jsx";
+import { completeChallengeRequest, rememberChallengeRun, challengeForRun, forgetChallengeRun } from "./challenges/client.js";
+// Phase 9D: what a saved result earned (server-decided), shown after the score.
+import { rememberProgression, progressionFor, mergeProgression } from "./progression/client.js";
+import CareerProgress from "./components/progression/CareerProgress.jsx";
+// Phase 9E: the Challenge Rating leaderboard and the rating movement after a comparison.
+import LeaderboardPage from "./components/competitive/LeaderboardPage.jsx";
+import RatingChange from "./components/competitive/RatingChange.jsx";
+import CompetitiveReferenceFixture from "./ui/competitive/CompetitiveReferenceFixture.jsx";   // dev-only gate
+import { codeFromSearch, CHALLENGE_EVENTS } from "./challenges/contract.js";
 import { can, CAPABILITIES } from "./entitlements.js";
 import RosterGrid from "./components/RosterGrid.jsx";
 import { MatchupGrid, ArenaCentre, BallIqToggle } from "./components/PlayPanels.jsx";
@@ -141,6 +156,9 @@ const MODE_TO_ANALYTICS = { Win82: "82", Single: "single", Best7: "best7", Tourn
 // statically eliminates both this route and the fixture module.
 const DEV_FIXTURES = import.meta.env.DEV || import.meta.env.VITE_EC_DEV_FIXTURES === "1";
 const FIXTURE_ROUTE = "/dev/time-arena-reference";
+const PROGRESSION_FIXTURE_ROUTE = "/dev/progression-reference";
+const COMPETITIVE_FIXTURE_ROUTE = "/dev/competitive-reference";
+const LEADERBOARD_ROUTE = "/leaderboard";
 // Phase 9A.1 — the Basketball theme decision lab. __EC_THEME_LAB__ is a build
 // constant (vite.config.js): true on preview deployments and the dev server,
 // false in production, where this whole branch — and the lazily imported lab
@@ -166,6 +184,18 @@ const initialRoute = () => {
   return p;
 };
 
+// ── The last finished Clash, kept in this browser (Phase 9B.3) ───────────────
+// Only ever shown under a LAST CLASH label. A reload after a result used to
+// lose the game entirely; now it is one tap away. Nothing here is authority:
+// the server's run and a signed-in account's history are.
+const PRIOR_RESULT_KEY = "ec_prior_result";
+const readPriorResult = () => {
+  try { const v = JSON.parse(localStorage.getItem(PRIOR_RESULT_KEY) || "null"); return v?.result?.sim ? v : null; } catch { return null; }
+};
+const writePriorResult = (p) => {
+  try { if (p?.result?.sim) localStorage.setItem(PRIOR_RESULT_KEY, JSON.stringify(p)); else localStorage.removeItem(PRIOR_RESULT_KEY); } catch { /* private mode or quota: the in-memory value still shows */ }
+};
+
 export default function App() {
   const [nav, setNav] = useState("Play");             // Play | Daily | Challenges | Board | Profile | Credits
   const [view, setView] = useState("builder");        // builder | simulating | postgame
@@ -175,6 +205,12 @@ export default function App() {
   const [chaosReady, setChaosReady] = useState(null);     // a Chaos run at phase READY
   if (DEV_FIXTURES && typeof window !== "undefined" && window.location.pathname === FIXTURE_ROUTE) {
     return <ReferenceFixture />;
+  }
+  if (DEV_FIXTURES && typeof window !== "undefined" && window.location.pathname === PROGRESSION_FIXTURE_ROUTE) {
+    return <ProgressionReferenceFixture />;
+  }
+  if (DEV_FIXTURES && typeof window !== "undefined" && window.location.pathname === COMPETITIVE_FIXTURE_ROUTE) {
+    return <CompetitiveReferenceFixture />;
   }
   if (THEME_LAB && typeof window !== "undefined" && window.location.pathname === THEME_LAB_ROUTE) {
     return <Suspense fallback={null}><ThemeLab /></Suspense>;
@@ -196,8 +232,24 @@ export default function App() {
   const [chaosRun, setChaosRun] = useState(null);    // the live run, shared with the Result Dock
   const [fullReport, setFullReport] = useState(false);
   // The clash before this one, kept whole so its report still opens. It is only
-  // ever shown under a LAST CLASH label, never as the draft on screen.
-  const [prior, setPrior] = useState(null);
+  // ever shown under a LAST CLASH label, never as the draft on screen. It is
+  // kept in this browser too (9B.3), so a reload after a finished game leaves
+  // the result one tap away instead of gone.
+  const [prior, setPriorState] = useState(readPriorResult);
+  // Phase 9C: the invitation a /?challenge=CODE link opened, and the attempt the
+  // current Chaos run is (so the result can be compared once it exists).
+  const [challengeInvite, setChallengeInvite] = useState(() => (typeof window !== "undefined" ? codeFromSearch(window.location.search) : null));
+  const [challengeAttempt, setChallengeAttempt] = useState(null);
+  // Phase 9D: the progression each authoritative result earned, by result id.
+  // One result can earn twice (career save, then challenge completion); the
+  // two server answers merge into one block and are remembered per result so a
+  // reload shows the same figures without awarding anything again.
+  const [progressionByResult, setProgressionByResult] = useState({});
+  const noteProgression = useCallback((resultId, p) => {
+    if (!resultId || !p) return;
+    setProgressionByResult((m) => { const merged = mergeProgression(m[resultId], p); rememberProgression(resultId, merged); return { ...m, [resultId]: merged }; });
+  }, []);
+  const setPrior = (p) => { setPriorState(p); writePriorResult(p); };
   const [reportBundle, setReportBundle] = useState(null);
   const [guide, setGuide] = useState(null);
   const resultAtRef = useRef(0);
@@ -288,6 +340,7 @@ export default function App() {
       const r = await call({ resultId, accessToken: token });
       const ok = r?.status === "saved" || r?.status === "already_saved";
       setCloudSave({ resultId, state: ok ? r.status : "failed" });
+      if (ok && r?.progression) noteProgression(resultId, r.progression);
       if (kind === "claim") track("guest_result_claim_completed", { mode, success: ok, ...(ok ? {} : { failureCode: r?.status || "SAVE_FAILED" }) });
       else track(ok ? "cloud_result_save_completed" : "cloud_result_save_failed", { mode, success: ok, ...(ok ? {} : { failureCode: r?.status || "SAVE_FAILED" }) });
       return r;
@@ -296,7 +349,7 @@ export default function App() {
       track(kind === "claim" ? "guest_result_claim_completed" : "cloud_result_save_failed", { mode, success: false, failureCode: "NETWORK" });
       return null;
     }
-  }, [token]);
+  }, [token, noteProgression]);
 
   useEffect(() => {
     const rid = result?.resultId;
@@ -310,6 +363,31 @@ export default function App() {
     if (cloudSave.state !== "pending" || !cloudSave.resultId || !token) return;
     runCloudSave(cloudSave.resultId, result?.type || "single", "cloud-save");
   }, [cloudSave.state, cloudSave.resultId, token, runCloudSave, result?.type]);
+
+  // Phase 9C: bind the recipient's stored result to their attempt. Guests
+  // complete at once; an account waits for its career save to settle first.
+  const completeChallenge = useCallback(async (attempt) => {
+    setChallengeAttempt((a) => (a && a.chaosRunId === attempt.chaosRunId ? { ...a, state: "completing" } : a));
+    const authState = token ? "account" : "guest";   // the event carries the state, never the credential
+    try {
+      const r = await completeChallengeRequest({ chaosRunId: attempt.chaosRunId, accessToken: token });
+      const ok = r.status === "completed" || r.status === "already_completed";
+      if (ok && r.progression && attempt.resultId) noteProgression(attempt.resultId, r.progression);
+      track(CHALLENGE_EVENTS.ATTEMPT_COMPLETED, { challengeVersion: "1.0.0", authState, success: ok, ...(ok ? { status: r.comparison?.outcome } : { failureCode: r.status || "network" }) });
+      // Phase 9E: the rating movement (or the unrated reason) rides the same answer
+      setChallengeAttempt((a) => (a && a.chaosRunId === attempt.chaosRunId ? { ...a, state: ok ? "completed" : "failed", comparison: r.comparison || null, challenge: r.challenge || null, rating: r.rating || null } : a));
+      if (ok) forgetChallengeRun();
+    } catch {
+      track(CHALLENGE_EVENTS.ATTEMPT_COMPLETED, { challengeVersion: "1.0.0", authState, success: false, failureCode: "network" });
+      setChallengeAttempt((a) => (a && a.chaosRunId === attempt.chaosRunId ? { ...a, state: "failed" } : a));
+    }
+  }, [token, noteProgression]);
+  useEffect(() => {
+    const a = challengeAttempt;
+    if (!a || a.state !== "pending" || !a.resultId) return;
+    const settled = !token || (cloudSave.resultId === a.resultId && ["saved", "already_saved", "failed"].includes(cloudSave.state));
+    if (settled) completeChallenge(a);
+  }, [challengeAttempt, cloudSave.resultId, cloudSave.state, token, completeChallenge]);
 
   useEffect(() => {
     fetch("/api/health").then((r) => (r.ok ? r.json() : null)).then((h) => {
@@ -840,7 +918,12 @@ export default function App() {
     setOpponent(null); setPicker(null); setView("builder");
     setPlayStage("ROSTERS"); setEraLocked(false);
   };
-  const handleNav = (id) => { resetPlay(); setSharedResult(null); setNav(id); };
+  const handleNav = (id) => {
+    resetPlay(); setSharedResult(null); setNav(id);
+    // Phase 9E: the Leaderboard entry is a real route; leaving it clears the path.
+    if (id === "Board") navigate(LEADERBOARD_ROUTE);
+    else if (route === LEADERBOARD_ROUTE) replaceRoute("/");
+  };
 
   // ── Game bookkeeping ───────────────────────────────────────────────────────
   // `mine` is passed explicitly by callers whose roster is not yet in state.
@@ -1216,6 +1299,10 @@ export default function App() {
       bookkeepGame(w, "single", record.core.seriesResult, record.core.mvp, "", opp, gold);
       setResult({ type: "single", sim: viewSim(record), w, tag: "chaos", opp, resultId, record, persisted: !!records?.persisted });
       fetchNarrative(resultId, record, !!records?.persisted);
+      // A challenge attempt is compared once the server has the result (and,
+      // for an account, once the career save has settled so the row can bind).
+      const ctx = challengeForRun(activeRun.chaosRunId);
+      setChallengeAttempt(ctx ? { ...ctx, resultId, state: "pending" } : null);
       track("chaos_clash_completed", { era_style: record.eraId || null });
       track("chaos_game_completed", { era_style: record.eraId || null, won: !!record.won || false });
       // The run is spent; a return to Chaos Clash starts from an empty board.
@@ -1231,8 +1318,13 @@ export default function App() {
   };
 
   // The moment a result exists, so the dock can age it honestly rather than
-  // guessing when the game happened.
-  useEffect(() => { if (result?.sim) resultAtRef.current = Date.now(); }, [result]);
+  // guessing when the game happened. The finished game is written to this
+  // browser at the same moment, so a reload keeps it as the LAST CLASH.
+  useEffect(() => {
+    if (!result?.sim) return;
+    resultAtRef.current = Date.now();
+    writePriorResult({ result, team, narrative, at: resultAtRef.current });
+  }, [result]);
 
   const newChaosClash = () => {
     track("new_clash_started", { from: view === "postgame" ? "result" : "board" });
@@ -1798,6 +1890,13 @@ export default function App() {
           onSaveAgain={() => runCloudSave(res.resultId, res.type || "single", "cloud-save")}
           onViewCareer={() => navigate("/my-eraclash")} />
       )}
+      {/* Phase 9D: what this result earned — after the score, never over it. */}
+      {live && res.resultId && (
+        <CareerProgress surface="light" resultId={res.resultId} mode={res.type || "single"} signedIn={!!token}
+          outcome={progressionByResult[res.resultId] || progressionFor(res.resultId)}
+          pending={!!token && cloudSave.resultId === res.resultId && ["pending", "saving"].includes(cloudSave.state)}
+          onViewAchievements={() => navigate("/my-eraclash?tab=achievements")} />
+      )}
       {res.tag === "daily" && <DailyPanel daily={daily} career={career} />}
       {live && (
         <div style={{ display: "flex", gap: 10, maxWidth: 700, margin: "12px auto 0" }}>
@@ -1842,7 +1941,7 @@ export default function App() {
   // Editorial Ink. Without it a heading inherited the arena's platinum text and
   // sat almost invisibly on an ivory card.
   const editorialMode = route.startsWith("/membership") || route.startsWith("/fantasy/") || route.startsWith("/modes/")
-    || route === "/my-eraclash" || route === "/auth/callback";
+    || route === "/my-eraclash" || route === "/auth/callback" || route === LEADERBOARD_ROUTE;
   const arenaMode = showLobby || (isChaos && !sharedResult && !gate) || editorialMode;
 
   // ── Render ─────────────────────────────────────────────────────────────────
@@ -1893,11 +1992,15 @@ export default function App() {
           if (rid) runCloudSave(rid, result?.type || "single", "claim");
           navigate(next || "/play");
         }} />
+      ) : route === LEADERBOARD_ROUTE ? (
+        <LeaderboardPage signedIn={!!token} accessToken={token}
+          onSignIn={() => openAccountDialog({ entryPoint: "leaderboard", intent: "signin", returnTo: LEADERBOARD_ROUTE })} />
       ) : route === "/my-eraclash" ? (
         <MyEraClash
           onSignIn={() => openAccountDialog({ entryPoint: "my_eraclash", intent: "signin", returnTo: "/my-eraclash" })}
           onOpenReport={(clash) => setSavedReport(clash)}
           onRunItBack={runItBackFromSaved}
+          onOpenLeaderboard={() => navigate(LEADERBOARD_ROUTE)}
           onSignedOut={handleCareerSignedOut} />
       ) : route.startsWith("/membership") ? (
         <main>
@@ -1912,6 +2015,22 @@ export default function App() {
         <main>
           <ModeInfoPage id={route.split("/")[2]} onBack={goHome} />
         </main>
+      ) : challengeInvite && isLobbyRoute(route) && nav === "Play" && !sharedResult ? (
+        <div className="ec-arena-court">
+          <ChallengeInvite code={challengeInvite} accessToken={token} tier={tier} signedIn={!!token}
+            onAccepted={({ chaosRunId, code, creatorName }) => {
+              rememberChallengeRun({ chaosRunId, code, creatorName });
+              try { localStorage.setItem("ec_chaos_run", chaosRunId); localStorage.setItem("ec_chaos_run_at", String(Date.now())); } catch { /* private mode */ }
+              try { window.history.replaceState({}, "", "/"); } catch { /* ignore */ }
+              setChallengeInvite(null); setChallengeAttempt(null);
+              setChaosRun(null); setChaosReady(null); setChaosChallengeId(null); setResult(null); setReportBundle(null);
+              setNav("Play"); setGameMode("Chaos"); setChaosNonce((n) => n + 1);
+              navigate("/play/chaos");
+            }}
+            onSignIn={() => openAccountDialog({ entryPoint: "challenge_invite", intent: "signup", returnTo: `/?challenge=${encodeURIComponent(challengeInvite)}` })}
+            onBack={() => { try { window.history.replaceState({}, "", "/"); } catch { /* ignore */ } setChallengeInvite(null); navigate("/play"); }}
+            onViewMine={() => { setChallengeInvite(null); navigate("/my-eraclash?tab=challenges"); }} />
+        </div>
       ) : showLobby ? (
         <div className="ec-arena-court ec-lobby-court">
           <PlayLobby tier={tier} chaosAvailable={chaosAvailable} previewCandidateActive={!!result?.sim?.previewCandidate}
@@ -1947,11 +2066,30 @@ export default function App() {
             onRunItBack={() => { setFullReport(false); doRematch("chaos"); }}
             onNewClash={() => { setFullReport(false); newChaosClash(); }}
             onReset={() => { setFullReport(false); newChaosClash(); }}
-            onChallenge={chaosRun ? async () => {
-              const r = await publishChaosChallenge(chaosRun.chaosRunId, tier);
-              track("chaos_challenge_created", { from: "result_dock" });
-              return r.challengeId;
-            } : null}
+            challengeContext={challengeForRun(chaosRun?.chaosRunId) || (challengeAttempt && challengeAttempt.resultId === result?.resultId ? challengeAttempt : null)}
+            challengeShare={result?.resultId && chaosRun?.chaosRunId && !(challengeAttempt && challengeAttempt.resultId === result?.resultId)
+              ? <ChallengeShare chaosRunId={chaosRun.chaosRunId} accessToken={token}
+                  onNeedAccount={() => openAccountDialog({ entryPoint: "challenge_create", intent: "signup", claimResultId: result.resultId, returnTo: "/play/chaos" })} />
+              : null}
+            challengeComparison={challengeAttempt && challengeAttempt.resultId === result?.resultId
+              ? <>
+                  <ChallengeComparison state={challengeAttempt.state === "completed" ? "ready" : challengeAttempt.state === "failed" ? "failed" : "pending"}
+                    comparison={challengeAttempt.comparison} challenge={challengeAttempt.challenge} creatorName={challengeAttempt.creatorName}
+                    onRetry={() => completeChallenge(challengeAttempt)} />
+                  {/* Phase 9E: basketball → comparison → rating movement → career XP */}
+                  {challengeAttempt.state === "completed" && <RatingChange rating={challengeAttempt.rating} />}
+                </>
+              : null}
+            careerProgress={result?.resultId
+              ? <CareerProgress resultId={result.resultId} mode={result.type || "single"} signedIn={!!token}
+                  outcome={progressionByResult[result.resultId] || progressionFor(result.resultId)}
+                  pending={!!token && cloudSave.resultId === result.resultId && ["pending", "saving"].includes(cloudSave.state)}
+                  onViewAchievements={() => navigate("/my-eraclash?tab=achievements")}
+                  onSignIn={() => openAccountDialog({ entryPoint: "postgame", intent: "signup", claimResultId: result.resultId, returnTo: "/play/chaos" })} />
+              : null}
+            priorCareerProgress={prior?.result?.resultId
+              ? <CareerProgress resultId={prior.result.resultId} previous signedIn={!!token} outcome={progressionByResult[prior.result.resultId] || progressionFor(prior.result.resultId)} />
+              : null}
             onEraChange={changeChaosEra}
             onGuide={(section) => setGuide(section || "play")}
             onSettings={() => { navigate("/"); handleNav("Profile"); }}
@@ -1976,9 +2114,9 @@ export default function App() {
               onLoadTeam={(ids) => { const t = ids.map((id) => findCard(id)); if (!t.some((x) => !x)) { resetPlay(); setNav("Play"); navigate("/play/dream"); setTeam(t); } }} />
           </div>
         ) : nav === "Board" ? (
-          <div style={{ maxWidth: 720, margin: "16px auto 0" }}>
-            <Board board={board} streaks={streaks} badges={badges} BADGES={BADGES} />
-          </div>
+          /* Phase 9E: the Leaderboard entry is the Challenge Rating leaderboard (a real route) */
+          <LeaderboardPage signedIn={!!token} accessToken={token}
+            onSignIn={() => openAccountDialog({ entryPoint: "leaderboard", intent: "signin", returnTo: LEADERBOARD_ROUTE })} />
         ) : nav === "Credits" ? (
           <div style={{ maxWidth: 860, margin: "16px auto 0" }}><Credits /></div>
         ) : nav === "Challenges" && !challenge ? (

@@ -68,6 +68,32 @@ const ALLOWED = new Set([
   "account_export_started", "account_export_completed",
   "account_deletion_started", "account_deletion_cancelled", "account_deletion_completed",
   "reauthentication_completed", "preference_updated",
+  // Phase 9B.3 Chaos Clash guided flow. Mirrored by ACTIVATION_EVENTS; the same
+  // contract test pins the two lists together. Properties are the six state
+  // names, roll numbers, era ids and action names — never free text.
+  "chaos_state_viewed", "chaos_primary_action",
+  "era_reveal_viewed", "era_reveal_continued",
+  "coach_chaos_viewed", "coach_offer_selected",
+  "clash_ready_viewed", "run_clash_started", "result_state_viewed",
+  "live_intel_expanded", "era_rules_expanded",
+  // Phase 9C — Challenges + Persistent Competitive Identity V1 (closed vocabulary;
+  // metadata may carry challengeVersion, authState, entryPoint, status, mode,
+  // success, failureCode — never a name, a code, an id, a payload, a seed or a token)
+  "challenge_created", "challenge_link_copied", "challenge_share_invoked", "challenge_opened",
+  "challenge_accept_started", "challenge_attempt_started", "challenge_attempt_completed",
+  "challenge_comparison_viewed", "challenge_revoked", "challenge_expired_viewed",
+  // Phase 9D — Progression, XP and Achievements V1 (closed vocabulary; metadata
+  // may carry level, xpDelta, reasonCategory, achievementId, achievementCategory,
+  // unlockCount, mode, success, failureCode, filter — never a name, an email, a
+  // result id, a challenge id, an account id, a token or a session id)
+  "progression_viewed", "xp_awarded_ui_shown", "level_up_shown", "achievement_unlocked_ui_shown",
+  "achievements_viewed", "achievement_filter_changed", "progression_reconciled",
+  // Phase 9E — Competitive Rating + Leaderboards V1 (closed vocabulary; metadata
+  // may carry authState, visibility, provisional, rankBucket, ratedMatchCount,
+  // ratingDelta, outcome, success, failureCode, reason — never a name, an email,
+  // an account id, a challenge code or id, an attempt id, a token or a session)
+  "leaderboard_viewed", "leaderboard_visibility_changed", "competitive_rating_viewed",
+  "competitive_rating_change_shown", "competitive_provisional_progress_viewed", "around_me_viewed",
 ]);
 export const EVENTS_ALLOWLIST = ALLOWED;
 

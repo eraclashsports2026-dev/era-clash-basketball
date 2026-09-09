@@ -3,15 +3,22 @@
 `/my-eraclash`. Requires a real account. Rendered in the Night Court Editorial
 reading surface. Everything on it is real; where there is nothing, it says so.
 
-Five tabs, selectable and deep-linkable with `?tab=`:
+Seven tabs, selectable and deep-linkable with `?tab=`:
 
 | Tab | What it answers |
 | --- | --- |
-| Overview | Who am I, how much have I played, how have I done, what's next |
+| Overview | Who am I, how much have I played, how have I done, what's next — and (9D) my career level and XP |
 | Clash History | Every saved game, filterable and sortable |
 | Saved Rosters | Fives I chose to keep |
 | Favorites | Clashes and rosters I starred |
+| Challenges | (9C) Challenges I created, accepted and completed |
+| Achievements | (9D) What I have unlocked and how close the rest are |
 | Account | My private settings, my data, and account controls |
+
+Phase 9D adds a **career progression** module to the Overview (level, XP, the
+bar to the next level, counts of Clashes, wins, Eras, challenges and
+achievements) and the Achievements tab. Both read through the server for the
+verified account; reading reconciles progression (`docs/progression/`).
 
 ## Overview
 
@@ -51,3 +58,12 @@ Postgres under row-level security — the account can only ever touch its own
 rows, and the only column it may change on a saved Clash is `favorite`. Account
 deletion is the one action that needs the server. Nothing on this page can
 influence a simulation.
+
+## Phase 9C — the Challenges tab
+
+A sixth tab, between Favorites and Account: **CREATED** (each challenge's code,
+original result, status, every response, COPY LINK and REVOKE), **ACCEPTED**
+(attempts in progress, with the creator's name and headline) and **COMPLETED**
+(the comparison, with the original's five and coach). Everything comes through
+the server for the verified account (`challenge-list`); nothing here is a feed.
+

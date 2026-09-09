@@ -1,0 +1,84 @@
+{
+  "artifact": "rating-algorithm-qa",
+  "phase": "9E — Competitive Rating + Leaderboards V1",
+  "generatedAt": "2026-09-07T02:06:59.293Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "initial rating 1000 for both; a recipient win at 1000 v 1000 moves +20 / −20 (K 40)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a creator win moves the creator up and the recipient down by the expected amounts",
+      "pass": true,
+      "detail": "22/-22"
+    },
+    {
+      "check": "a tie is 0.5 each: the higher-rated side gives up a little",
+      "pass": true,
+      "detail": "0/0"
+    },
+    {
+      "check": "the ledger holds one immutable event per rated attempt with both sides before/expected/delta/after",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "rating the same attempt again: already_rated, no second event, no second delta",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "refresh/retry (three re-rates of every event): profile unchanged",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the profile equals the ledger: rating after the newest event, W-L-T from events",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "provisional: 3 / 5 matches and 2 / 3 unique opponents; no public rank",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "four matches, three opponents: still provisional (five needed)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "five matches AND three opponents: PLACED",
+      "pass": true,
+      "detail": "5 matches, 4 opponents"
+    },
+    {
+      "check": "five matches against one opponent would not place (unique-opponent threshold is independent)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "J reached ten rated matches (no pair spent more than three in seven days)",
+      "pass": true,
+      "detail": "10 matches, 4 opponents"
+    },
+    {
+      "check": "K is 40 for a player's first ten rated matches and 24 after",
+      "pass": true,
+      "detail": "11th: creator k 24 at 1118, recipient k 40"
+    },
+    {
+      "check": "the floor: a rating never drops below 100 and the ledger's delta is the floored difference",
+      "pass": true,
+      "detail": "105 → 100 (-5, uncapped would be -20)"
+    },
+    {
+      "check": "the winner is unaffected by the loser's floor: the deltas are no longer symmetric there",
+      "pass": true,
+      "detail": "20/125"
+    }
+  ],
+  "passed": true
+}

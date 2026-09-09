@@ -1,0 +1,62 @@
+{
+  "artifact": "challenge-progression-qa",
+  "phase": "9D — Progression, XP and Achievements V1",
+  "generatedAt": "2026-09-06T14:54:48.401Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "creating a challenge earns 0 XP by itself",
+      "pass": true,
+      "detail": "created"
+    },
+    {
+      "check": "a signed-in recipient starts one official attempt",
+      "pass": true,
+      "detail": "started"
+    },
+    {
+      "check": "the recipient's run resumes badged as a challenge",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the attempt completes and is compared (the browser holds no bearer; the attempt keeps the account it was started under)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the recipient earns challenge completion XP once (one more completed attempt; the total moved by exactly its Clash + challenge + unlock XP)",
+      "pass": true,
+      "detail": "already_completed · outcome creator · +275 (expected 275)"
+    },
+    {
+      "check": "victory XP only when the comparison decided recipient",
+      "pass": true,
+      "detail": "outcome creator"
+    },
+    {
+      "check": "FIRST CHALLENGE unlocks for the recipient",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the creator earns one response (+25) and CHALLENGER (+50 the first time)",
+      "pass": true,
+      "detail": "1325 → 1400"
+    },
+    {
+      "check": "completing again: already_completed, recipient delta 0, creator unchanged",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "copying a link is a client action with no server call",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": true,
+  "outcome": "creator",
+  "creatorDelta": 75,
+  "recipientDelta": 275
+}

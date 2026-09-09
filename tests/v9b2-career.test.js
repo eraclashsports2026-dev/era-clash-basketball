@@ -40,8 +40,9 @@ const clash = (over = {}) => ({
 });
 
 describe("navigation", () => {
-  it("has the five named tabs and reads a valid one from the URL", () => {
-    expect(CAREER_TAB_IDS).toEqual(["overview", "history", "rosters", "favorites", "account"]);
+  it("has the seven named tabs and reads a valid one from the URL", () => {
+    // Phase 9C added Challenges, Phase 9D Achievements, both before Account.
+    expect(CAREER_TAB_IDS).toEqual(["overview", "history", "rosters", "favorites", "challenges", "achievements", "account"]);
     expect(tabFromSearch("?tab=history")).toBe("history");
     expect(tabFromSearch("?tab=nonsense")).toBe("overview");
     expect(tabFromSearch("")).toBe("overview");
@@ -137,7 +138,9 @@ describe("preferences are a closed vocabulary", () => {
     expect(PREF_SCHEMA.default_result_tab.values).toEqual(["story", "box", "coaching", "analysis"]);
     expect(PREF_KEYS.every((k) => typeof PREF_DEFAULTS[k] === "string")).toBe(true);
     // The migration and the client agree on the vocabulary.
-    for (const k of PREF_KEYS) expect(SQL).toContain(k);
+    // 0003 defined the vocabulary; 0006 (Phase 9E) extends prefs_ok with leaderboard_visibility.
+    const PREFS_SQL = SQL + readFileSync("supabase/migrations/0006_competitive_rating_v1.sql", "utf8");
+    for (const k of PREF_KEYS) expect(PREFS_SQL).toContain(k);
   });
 });
 
