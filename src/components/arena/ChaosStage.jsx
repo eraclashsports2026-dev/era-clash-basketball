@@ -403,7 +403,8 @@ export default function ChaosStage({
             {offers.map((o) => (
               <CoachCard key={o.role} offer={o} mode="select"
                 selected={picked === o.coachId}
-                onSelect={() => pick(o)} disabled={spinning} />
+                onSelect={() => pick(o)} disabled={spinning}
+                variant={rowLayout ? "row" : "card"} />
             ))}
           </div>
         </div>

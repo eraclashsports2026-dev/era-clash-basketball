@@ -1,0 +1,205 @@
+{
+  "artifact": "phone-coach-rows",
+  "date": "2026-09-10",
+  "branch": "fix/phone-coach-rows",
+  "baseline": "main 0e4f309 (flow fix live)",
+  "ownerRequest": "iPhone test of Coach Chaos: 'The coaches section is too large. It needs to be similar in size to the player selection boxes.'",
+  "change": {
+    "what": "On phones (≤767px) the three coach offers render as compact rows with the player row's geometry: a 44px masked-figure thumbnail, the role over the name, the coaching span with a Details toggle, and one 44px SELECT control; the row is 56px minimum, 60px as rendered. Opening Details grows only that row (tendency, role blurb, up to three scouting lines, what it gives up). Desktop cards are unchanged (248px wide, 243px tall on Light Court, as before).",
+    "files": [
+      "src/components/arena/CoachCard.jsx (variant=\"row\", same class hooks and aria labels)",
+      "src/components/arena/ChaosStage.jsx (variant follows the existing phone row switch)",
+      "src/index.css (phone block: .ec-coach-card--row geometry beside the player rows)",
+      "e2e/mobile-compact.spec.js (pins rows within 14px of the base player row, 44px controls)",
+      "scripts/ui-release/coachRowMeasure.mjs (new measurement gate)"
+    ],
+    "hooksKept": [
+      ".ec-coach-card (count 3)",
+      ".ec-coach-action[data-on] with aria-label Select/Selected <name>",
+      ".ec-coach-detail-toggle aria-expanded",
+      ".ec-coach-role/.ec-coach-portrait/.ec-coach-figure(-initials)",
+      "data-role, data-open, data-on"
+    ],
+    "notCreated": "no coach likeness — the thumbnail is the same masked figure with a monogram"
+  },
+  "measurements": {
+    "harness": {
+      "phone-390": {
+        "playerRowH": 80,
+        "coachRowH": 60,
+        "coachRows": [
+          60,
+          60,
+          60
+        ],
+        "actions": [
+          {
+            "w": 88,
+            "h": 44,
+            "x": 264,
+            "y": 758
+          },
+          {
+            "w": 88,
+            "h": 44,
+            "x": 264,
+            "y": 824
+          },
+          {
+            "w": 88,
+            "h": 44,
+            "x": 264,
+            "y": 890
+          }
+        ],
+        "toggles": [
+          {
+            "w": 59,
+            "h": 44,
+            "x": 169,
+            "y": 773
+          },
+          {
+            "w": 59,
+            "h": 44,
+            "x": 166,
+            "y": 839
+          },
+          {
+            "w": 59,
+            "h": 44,
+            "x": 169,
+            "y": 905
+          }
+        ],
+        "rowVariant": 3,
+        "overflow": 0
+      },
+      "phone-430": {
+        "playerRowH": 58,
+        "coachRowH": 60,
+        "coachRows": [
+          60,
+          60,
+          60
+        ],
+        "actions": [
+          {
+            "w": 88,
+            "h": 44,
+            "x": 304,
+            "y": 708
+          },
+          {
+            "w": 88,
+            "h": 44,
+            "x": 304,
+            "y": 774
+          },
+          {
+            "w": 88,
+            "h": 44,
+            "x": 304,
+            "y": 840
+          }
+        ],
+        "toggles": [
+          {
+            "w": 59,
+            "h": 44,
+            "x": 235,
+            "y": 723
+          },
+          {
+            "w": 59,
+            "h": 44,
+            "x": 235,
+            "y": 789
+          },
+          {
+            "w": 59,
+            "h": 44,
+            "x": 163,
+            "y": 855
+          }
+        ],
+        "rowVariant": 3,
+        "overflow": 0
+      },
+      "desktop-1440": {
+        "playerRowH": 236,
+        "coachRowH": 243,
+        "coachRows": [
+          243,
+          243,
+          243
+        ],
+        "actions": [
+          {
+            "w": 226,
+            "h": 44,
+            "x": 156,
+            "y": 681
+          },
+          {
+            "w": 226,
+            "h": 44,
+            "x": 418,
+            "y": 681
+          },
+          {
+            "w": 226,
+            "h": 44,
+            "x": 680,
+            "y": 681
+          }
+        ],
+        "toggles": [
+          {
+            "w": 81,
+            "h": 44,
+            "x": 156,
+            "y": 632
+          },
+          {
+            "w": 81,
+            "h": 44,
+            "x": 418,
+            "y": 632
+          },
+          {
+            "w": 81,
+            "h": 44,
+            "x": 680,
+            "y": 632
+          }
+        ],
+        "rowVariant": 0,
+        "overflow": 0
+      }
+    },
+    "checks": "15/15 passed",
+    "evidence": [
+      "coach-rows.json",
+      "screens/coach-rows-phone-390.png",
+      "screens/coach-rows-phone-390-detail.png",
+      "screens/coach-rows-phone-390-selected.png",
+      "screens/coach-rows-phone-430*.png",
+      "screens/coach-cards-desktop-1440.png"
+    ]
+  },
+  "gates": {
+    "unit": "82/82 files, 2647 tests",
+    "static": "ui:coach-chaos-qa 12/12",
+    "e2e": "mobile-compact 9/9 (candidate3-preview), with the new coach-row pins",
+    "chaos": "accessibility-qa PASS · responsive-qa PASS · guided-flow-qa PASS (4180 harness)",
+    "release": "ui-release:responsive-qa PASS · ui-release:accessibility-qa PASS · ui:time-arena-qa PASS",
+    "playSimulation": "harness web + mobile SCORE 100/100 (187/187 weighted · 50/50 criteria)",
+    "wavePreservation": "allZero=true (main acknowledged at 0e4f309; wave1 4dc59e7, wave2 ef0caa5 unchanged)",
+    "coachRowMeasure": "15/15 (phone-390, phone-430, desktop-1440)"
+  },
+  "pending": [
+    "preview verification",
+    "live verification"
+  ]
+}

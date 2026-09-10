@@ -144,6 +144,16 @@ for (const [w, h] of [[430, 932], [390, 844]]) {
       // the era is not shown before the coach is set
       await expect(page.locator(".ec-era-reveal-id")).toHaveCount(0);
       await page.locator(".ec-coach-action:not([disabled])").nth(2).waitFor({ timeout: 60_000 });
+      // the three offers are rows the size of the player rows, with 44px controls (owner correction 2026-09-10)
+      await expect(page.locator(".ec-coach-card--row")).toHaveCount(3);
+      const geometry = await page.evaluate(() => {
+        const h = (sel) => [...document.querySelectorAll(sel)].map((e) => Math.round(e.getBoundingClientRect().height));
+        const box = (sel) => [...document.querySelectorAll(sel)].map((e) => { const r = e.getBoundingClientRect(); return [Math.round(r.width), Math.round(r.height)]; });
+        return { player: h('.ec-ta-team[data-team="gold"] .ec-pc'), coach: h(".ec-coach-card"), controls: box(".ec-coach-action, .ec-coach-detail-toggle") };
+      });
+      const baseRow = Math.min(...geometry.player); // the shortest player row is the base geometry; names may add a line
+      for (const h of geometry.coach) expect(Math.abs(h - baseRow)).toBeLessThanOrEqual(14);
+      for (const [w, h] of geometry.controls) { expect(w).toBeGreaterThanOrEqual(44); expect(h).toBeGreaterThanOrEqual(44); }
       await page.locator(".ec-coach-action:not([disabled])").first().tap();
       await page.getByRole("button", { name: /CONTINUE WITH COACH/ }).tap();
       await stageIn(page, "READY");
