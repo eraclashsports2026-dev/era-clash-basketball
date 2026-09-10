@@ -16,9 +16,10 @@ import { adopt } from "../../accounts/accountState.js";
 import { track } from "../../analytics.js";
 
 const MESSAGE = {
-  RATE_LIMITED: "Too many attempts just now. Try again in a minute.",
+  RATE_LIMITED: "Sign-in emails are limited right now. Try again in a little while.",
   CODE_INVALID_OR_EXPIRED: "That code is not valid any more. Ask for a new one.",
   EMAIL_INVALID: "That email address does not look right.",
+  EMAIL_NOT_ALLOWED: "Email sign-in is open to invited testers during the launch window. Ask for an invite — your runs stay on this device as a guest meanwhile.",
   NOT_PERMITTED: "That is not available on this account.",
   NETWORK: "The network dropped out. Try again.",
   PROVIDER_ERROR: "Sign-in is unavailable for a moment. Try again.",

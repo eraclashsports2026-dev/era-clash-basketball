@@ -126,7 +126,7 @@ export default function LiveIntel({ run, onEraChange, onMembership, compact = fa
                     ))}
                   </div>
                   <div className="ec-intel-note" style={{ marginTop: 6 }}>
-                    Unranked solo play only, before the final roll. A chosen era is labelled CUSTOM
+                    Unranked solo play only, once your coach is set and before the Clash. A chosen era is labelled CUSTOM
                     wherever this game appears, and every era plays by the same rules for everyone.
                   </div>
                 </div>

@@ -145,6 +145,8 @@ const inspect = (page, state) => page.evaluate((state) => {
     focusOnCta: document.activeElement?.classList?.contains("ec-ta-cta") || false,
     // Read at the top of the page: is the one primary action on screen without scrolling?
     ctaOnScreen: (() => { const e = document.querySelector(".ec-ta-cta"); if (!e) return null; const b = e.getBoundingClientRect(); return b.top >= 0 && b.bottom <= innerHeight; })(),
+    // The primary action follows its decision in normal flow (2026-09-10): it must never sit over a row, an offer, the staff or the era.
+    ctaCoversDecision: (() => { const w = document.querySelector(".ec-ta-cta-wrap"); if (!w) return null; const r = w.getBoundingClientRect(); if (!r.height) return null; return [...document.querySelectorAll(".ec-pc, .ec-coach-card, .ec-era-reveal, .ec-ta-staff")].some((e) => { const b = e.getBoundingClientRect(); return b.width > 0 && b.height > 0 && b.bottom > r.top + 1 && b.top < r.bottom - 1 && b.right > r.left && b.left < r.right; }); })(),
     teamToggle: !!document.querySelector(".ec-ta-team-toggle") && vis(document.querySelector(".ec-ta-team-toggle")),
     blueVisible: [...document.querySelectorAll('.ec-ta-team[data-team="blue"] .ec-pc, .ec-ta-team[data-team="blue"] .ec-pc-empty')].some(vis),
     goldVisible: [...document.querySelectorAll('.ec-ta-team[data-team="gold"] .ec-pc, .ec-ta-team[data-team="gold"] .ec-pc-empty')].some(vis),
@@ -165,7 +167,7 @@ const rules = (st, f, mobile, touch = mobile) => {
   ok("no fabricated progress figure", !f.fakeProgress);
   if (mobile) {
     ok("one team at a time on a phone, Gold first", f.teamToggle && f.goldVisible && (st === "RESULT" || st === "READY" || st === "COACH_SELECT" ? true : !f.blueVisible));
-    if (f.ctaOnScreen !== null) ok("the primary action is on screen at the top of the page (sticky)", f.ctaOnScreen === true);
+    if (f.ctaCoversDecision !== null) ok("the primary action follows its decision in flow and never covers a row, an offer, the staff or the era", f.ctaCoversDecision === false);
   }
   switch (st) {
     case "EMPTY":

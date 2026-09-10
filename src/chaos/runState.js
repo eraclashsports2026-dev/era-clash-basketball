@@ -312,13 +312,18 @@ export const submitHolds = (run, { holdSlots, hydrate }) => {
 // return in this run.
 const rollCoachOffers = (run, rosters, { goldHeld = [], blueHeld = [] } = {}) => {
   const common = { eraId: run.revealedEraStyleId, seedId: run.seedId, roll: run.coachRoll };
+  // One coach, one bench: the user's offers are drawn around the Legend's held
+  // staff, and the Legend's offers around everything the user is offered, so the
+  // same coach can never end up hired on both sides (it did in ~2–7% of runs).
+  // Both draws stay deterministic in the seed and the visible state.
+  const blueHeldIds = (run.coachOffers?.blue || []).filter((o) => blueHeld.includes(o.role)).map((o) => o.coachId);
   const gold = generateOffers({
     ...common, roster: rosters.gold, opponentRoster: rosters.blue, side: USER_SIDE,
-    held: goldHeld, current: run.coachOffers?.gold || [], burnedCoachIds: run.burnedCoachIds,
+    held: goldHeld, current: run.coachOffers?.gold || [], burnedCoachIds: [...new Set([...(run.burnedCoachIds || []), ...blueHeldIds])],
   });
   const blue = generateOffers({
     ...common, roster: rosters.blue, opponentRoster: rosters.gold, side: CPU_SIDE,
-    held: blueHeld, current: run.coachOffers?.blue || [], burnedCoachIds: run.burnedCoachIds,
+    held: blueHeld, current: run.coachOffers?.blue || [], burnedCoachIds: [...new Set([...(run.burnedCoachIds || []), ...gold.map((o) => o.coachId)])],
   });
   run.coachOffers = { gold, blue };
   run.goldCoachHeld = goldHeld;

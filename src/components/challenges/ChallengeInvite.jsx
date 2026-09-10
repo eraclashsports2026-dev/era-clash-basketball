@@ -81,7 +81,7 @@ export default function ChallengeInvite({ code, accessToken, tier = "GUEST", sig
             <div><dt>MODE</dt><dd>Chaos Clash · same opening rolls, your decisions</dd></div>
             <div><dt>STATUS</dt><dd>Open until {dateOf(d.expiresAt)} · {d.responses} {d.responses === 1 ? "response" : "responses"}</dd></div>
           </dl>
-          <p className="ec-chal-body">You get the same starting five on both sides and the same rules. Hold who you want, adapt to the era, choose a coach, run the Clash — then the two results are compared: win or loss first, margin as the tie-break.</p>
+          <p className="ec-chal-body">You get the same starting five on both sides and the same rules. Hold who you want, choose a coach, play the era history reveals, run the Clash — then the two results are compared: win or loss first, margin as the tie-break.</p>
 
           {isCreator ? (
             <div className="ec-chal-actions">

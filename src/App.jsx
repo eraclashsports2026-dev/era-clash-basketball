@@ -33,7 +33,7 @@ import ProgressionReferenceFixture from "./ui/progression/ProgressionReferenceFi
 import { MembershipPage, FantasyPage, ModeInfoPage, HowModesModal as ArenaHowModes, ArenaGuide } from "./components/arena/InfoPages.jsx";
 import {
   PLAY_MODES, findMode, defaultMode, MODE_STATUS,
-  modeForRoute, isLobbyRoute, isPlayRoute, routeForAppMode, PLAY_LOBBY_ROUTE,
+  modeForRoute, isLobbyRoute, isPlayRoute, isKnownRoute, routeForAppMode, PLAY_LOBBY_ROUTE,
 } from "./navigation.js";
 import PlayLobby from "./components/lobby/PlayLobby.jsx";
 // Phase 9B.1: real accounts, the cloud career and My EraClash. All four are
@@ -176,6 +176,9 @@ const ThemeLab = THEME_LAB ? lazy(() => import("./ui/theme-lab/ThemeLab.jsx")) :
 // (?chaos= a same-seed challenge, ?scenario= a guided preview setup) goes
 // straight to its surface, so the lobby never flashes in front of it and never
 // counts a view it did not get.
+// An address the app does not know (a typo, a stale link) lands on the lobby
+// and says so, instead of rendering the Chaos board under the wrong URL.
+let NOT_FOUND_FROM = null;
 const initialRoute = () => {
   if (typeof window === "undefined") return "/";
   const { pathname, search } = window.location;
@@ -185,6 +188,7 @@ const initialRoute = () => {
     if (q.get("chaos")) p = "/play/chaos";
     else if (q.get("scenario")) p = "/play/dream";
   }
+  if (!isKnownRoute(p)) { NOT_FOUND_FROM = p; p = "/"; }
   if (p !== pathname) { try { window.history.replaceState({}, "", p + search); } catch { /* ignore */ } }
   return p;
 };
@@ -266,6 +270,7 @@ export default function App() {
   // shareable and the back button behaves; the SPA rewrites and the preview
   // middleware matcher both cover them.
   const [route, setRoute] = useState(() => initialRoute());
+  const [notFoundFrom, setNotFoundFrom] = useState(NOT_FOUND_FROM);
   const [eraLocked, setEraLocked] = useState(false);      // the era step is a confirmation, not a default
   const [difficulty, setDifficulty] = useState(DEFAULT_DIFFICULTY); // opponent pool for Win82/Tournament
   const [buildMethod, setBuildMethod] = useState("manual"); // manual (concept default) | rolls (Chaos Draft)
@@ -2052,6 +2057,12 @@ export default function App() {
         </div>
       ) : showLobby ? (
         <div className="ec-arena-court ec-lobby-court">
+          {notFoundFrom && (
+            <div className="ec-notfound" role="status">
+              <span>That page doesn't exist (<code>{notFoundFrom}</code>), so you're at the Play lobby.</span>
+              <button type="button" className="ec-notfound-dismiss" onClick={() => setNotFoundFrom(null)}>OK</button>
+            </div>
+          )}
           <PlayLobby tier={tier} chaosAvailable={chaosAvailable} previewCandidateActive={!!result?.sim?.previewCandidate}
             entrance={route === "/"} onModeAction={handleModeAction}
             onContinue={() => navigate("/play/chaos")}
