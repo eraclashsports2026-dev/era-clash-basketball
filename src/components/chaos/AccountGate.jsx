@@ -50,7 +50,7 @@ export default function AccountGate({ title, blurb, onCreated, onBack, onUseAcco
       </label>
       <input id="ec-acct-name" value={name} onChange={(e) => setName(e.target.value)} maxLength={24}
         placeholder="Coach" style={{
-          width: "100%", minHeight: 46, borderRadius: R.sm, padding: "0 12px", fontSize: 14,
+          width: "100%", minHeight: 46, borderRadius: R.sm, padding: "0 12px", fontSize: 16, /* 16px: iOS does not zoom the page on focus */
           border: `1px solid ${T.border}`, background: T.bg, color: T.text, marginBottom: 10,
         }} />
       <button onClick={() => onCreated?.(createFreeAccount(name || "Coach"))} style={{

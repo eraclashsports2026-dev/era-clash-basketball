@@ -637,6 +637,9 @@ button { font-family: inherit; }
   margin-bottom: 10px;
 }
 .ec-ta-team-label { display: grid; gap: 1px; }
+.ec-ta-team-caption { display: none; grid-column: 1 / -1; margin: 2px 0 -2px; font-size: 11px; font-weight: 900; letter-spacing: 1.6px; color: var(--ec-a-gold); }
+.ec-ta-team-caption[data-team="blue"] { color: var(--ec-a-blue); margin-top: 8px; }
+.ec-ta-team-caption span { font-weight: 700; letter-spacing: 1.2px; color: var(--ec-a-text-muted); margin-left: 8px; }
 .ec-ta-team-label--blue { justify-items: end; text-align: right; }
 .ec-ta-team-name {
   font-family: var(--ec-display);
@@ -1213,7 +1216,9 @@ button { font-family: inherit; }
   /* Tablet: the rail moves below the arena rather than squeezing it, and each
      team takes its own row of five. */
   .ec-ta { grid-template-columns: minmax(0, 1fr); padding: 12px 12px 16px; }
-  .ec-arena-shell { --player-card-w: 132px; --player-card-gap: 8px; --player-card-h: 316px; }
+  /* 322px, as on the desktop: at 316px the Hold control's bottom edge sat 5px
+     outside the card (2026-09-10 audit, 768–1179px). */
+  .ec-arena-shell { --player-card-w: 132px; --player-card-gap: 8px; --player-card-h: 322px; }
   .ec-ta-roster {
     grid-template-columns: repeat(5, minmax(0, 1fr));
     max-width: calc(5 * var(--player-card-w) + 4 * var(--player-card-gap));
@@ -1221,7 +1226,10 @@ button { font-family: inherit; }
   .ec-ta-roster-divider { display: none; }
   .ec-ta-roster--blue { margin-top: 12px; }
   .ec-ta-stage-head { grid-template-columns: minmax(0, 1fr); justify-items: center; }
-  .ec-ta-team-label--blue { justify-items: center; text-align: center; }
+  /* With the two fives stacked, a team label belongs above ITS row — not both
+     above the gold row in the stage head (2026-09-10 audit). */
+  .ec-ta-stage-head .ec-ta-team-label { display: none; }
+  .ec-ta-team-caption { display: block; }
 }
 @media (max-width: 900px) {
   .ec-cc-offers { grid-template-columns: minmax(0, 1fr); }
@@ -1971,12 +1979,11 @@ h2.ec-intel-heading, h3.ec-intel-heading { font-size: 10.5px; }
   .ec-ta-roster[data-mobile-team="gold"] .ec-ta-team[data-team="blue"],
   .ec-ta-roster[data-mobile-team="blue"] .ec-ta-team[data-team="gold"] { display: none; }
   .ec-ta-roster[data-mobile-team] .ec-ta-team[data-team="blue"] { margin-top: 0; }
-  /* The primary action rides the bottom of the screen while the board scrolls. */
-  .ec-ta-stage .ec-ta-cta-wrap {
-    position: sticky; bottom: 0; z-index: 3;
-    padding: 10px 0 12px;
-    background: linear-gradient(180deg, transparent, var(--ec-a-arena, #0a0f18) 30%);
-  }
+  /* The primary action follows the decision it closes (rows, then offers, then
+     the era) in normal flow. It used to ride the bottom of the screen as a
+     translucent sticky bar, which sat over the coach offers and the era panel
+     with their text ghosting through (owner report, 2026-09-10). */
+  .ec-ta-stage .ec-ta-cta-wrap { position: static; padding: 12px 0 4px; }
   .ec-ta-staff-row { grid-template-columns: minmax(0, 1fr); }
   .ec-ta-staff--blue { justify-content: flex-start; text-align: left; }
   .ec-era-reveal { padding: 16px 14px 14px; }
@@ -2046,13 +2053,14 @@ h2.ec-intel-heading, h3.ec-intel-heading { font-size: 10.5px; }
 /* 9B.3 · Phone: the primary action really is sticky. `overflow: hidden` on the
    stage and the court (there to clip the atmosphere layers) disabled it — a
    sticky element cannot pin inside a scroll container. `overflow: clip` clips
-   without creating one, so ROLL / ROLL 2 / ADAPT TO ERA / CONTINUE WITH COACH /
+   without creating one, so ROLL / ROLL 2 / FINAL ROLL / CONTINUE WITH COACH /
    RUN CLASH sit at the bottom of the screen while the board is in view instead
    of 450px below the fold. The team labels in the head are redundant with the
    team tabs on a phone and go; their captions ride on the tabs. */
 @media (max-width: 767px) {
   .ec-ta-stage, .ec-arena-court { overflow: clip; }
   .ec-ta-stage-head .ec-ta-team-label { display: none; }
+  .ec-ta-team-caption { display: none; }
   .ec-ta-team-toggle [role="tab"] { display: grid; gap: 1px; line-height: 1.1; padding: 4px 0; }
   .ec-ta-team-toggle-sub { font-size: 9px; letter-spacing: 1.2px; font-weight: 800; opacity: 0.7; }
 }
@@ -2619,20 +2627,14 @@ h2.ec-intel-heading, h3.ec-intel-heading { font-size: 10.5px; }
   .ec-ta-stage .ec-ta-team[data-variant="row"] .ec-pc-empty { height: auto; min-height: 56px; grid-template-rows: auto; }
   .ec-ta-stage[data-roster="compressed"] .ec-ta-team[data-variant="row"] .ec-pc-static { display: flex; }
 
-  /* ── The sticky primary action: the button, compact, never a tap shield ─── */
-  .ec-ta-stage .ec-ta-cta-wrap {
-    pointer-events: none; gap: 4px;
-    padding: 8px 0 calc(8px + env(safe-area-inset-bottom, 0px));
-    background: linear-gradient(180deg, transparent 0, color-mix(in srgb, var(--ec-a-arena, #F6F1E7) 92%, transparent) 26%);
-  }
-  .ec-ta-cta-wrap .ec-ta-cta, .ec-ta-cta-wrap .ec-ta-stage-actions button { pointer-events: auto; }
+  /* ── The primary action: compact, in flow, never a shield over content ──── */
+  .ec-ta-stage .ec-ta-cta-wrap { gap: 6px; padding: 12px 0 calc(4px + env(safe-area-inset-bottom, 0px)); background: none; }
   .ec-ta-cta-wrap .ec-ta-cta-sub { display: none; }
   .ec-ta-cta-row { gap: 4px; }
-  .ec-ta-cta-row .ec-ta-stage-actions button { min-height: 36px; padding: 0 12px; font-size: 11px; }
-  /* A control scrolled into view lands above the sticky bar, never under it;
-     scrolled to the end, the last row clears the bar (it is in-flow at the stage's end). */
-  html:has(.ec-ta-stage .ec-ta-cta-wrap) { scroll-padding-bottom: calc(104px + env(safe-area-inset-bottom, 0px)); }
-  .ec-ta-stage .ec-pc, .ec-ta-stage .ec-pc-action { scroll-margin-bottom: calc(104px + env(safe-area-inset-bottom, 0px)); }
+  .ec-ta-cta-row .ec-ta-stage-actions button { min-height: 44px; padding: 0 14px; font-size: 11px; }
+  /* When a state opens, the stage scrolls its next decision under the pinned
+     header: the new five, the three offers, the staff and era, the score. */
+  .ec-ta-roster, .ec-ta-coach, .ec-ta-staff-row, .ec-ta-stage { scroll-margin-top: calc(var(--ec-header-h, 57px) + 8px); }
 }
 
 /* ── Phone stage: clean cream, no atmosphere layers ───────────────────────────
@@ -2660,3 +2662,9 @@ h2.ec-intel-heading, h3.ec-intel-heading { font-size: 10.5px; }
   /* the feedback chips carry inline 36px minimums; on a phone the touch floor wins */
   .ec-report-overlay button, .ec-report-overlay [role="tab"] { min-height: 44px !important; min-width: 44px !important; }
 }
+
+/* ── Unknown address notice (2026-09-10 audit) ───────────────────────────────── */
+.ec-notfound { display: flex; gap: 12px; align-items: center; justify-content: center; flex-wrap: wrap; margin: 12px auto 0; max-width: 760px; padding: 8px 14px; border-radius: 12px; border: 1px solid var(--ec-a-border); background: var(--ec-a-panel-raised, #FFFFFF); color: var(--ec-a-text); font-size: 13px; line-height: 1.5; }
+.ec-notfound code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; word-break: break-all; }
+.ec-notfound-dismiss { min-height: 44px; min-width: 64px; padding: 0 16px; border-radius: 10px; border: 1px solid var(--ec-a-border-strong); background: transparent; color: var(--ec-a-text); font-weight: 800; letter-spacing: 1px; cursor: pointer; }
+.ec-notfound-dismiss:focus-visible { outline: 3px solid var(--ec-a-accent, #267CE8); outline-offset: 2px; }

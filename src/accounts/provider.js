@@ -63,6 +63,9 @@ const asError = (e) => {
   const raw = String(e?.message || "");
   const code = /rate|too many/i.test(raw) ? "RATE_LIMITED"
     : /expired|invalid.*(token|code|otp)/i.test(raw) ? "CODE_INVALID_OR_EXPIRED"
+    // The built-in email service only delivers to invited addresses until custom
+    // SMTP is configured: the provider answers "not authorized" for the rest.
+    : /not.?authori[sz]ed|not allowed|signups? (?:is |are )?(?:disabled|not allowed)/i.test(raw) ? "EMAIL_NOT_ALLOWED"
     : /email/i.test(raw) ? "EMAIL_INVALID"
     : /row-level security|permission|denied/i.test(raw) ? "NOT_PERMITTED"
     : /network|fetch/i.test(raw) ? "NETWORK"

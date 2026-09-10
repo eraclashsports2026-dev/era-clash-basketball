@@ -65,6 +65,8 @@ const TeamLabel = ({ team, name, sub }) => (
 function Bench({ team, roster, heldSlots, keptSlots = [], interactive, locked, busy, onToggle, variant = "card" }) {
   return (
     <div className="ec-ta-team" data-team={team} data-variant={variant}>
+      {/* Shown only where the two fives stack (768–1179px): the label above its own row. */}
+      <div className="ec-ta-team-caption" data-team={team}>{team === "blue" ? "TEAM BLUE" : "TEAM GOLD"}<span>{team === "blue" ? "LEGEND RIVAL" : "YOUR FIVE"}</span></div>
       {SLOTS.map((slot, i) => {
         const card = roster?.[i];
         if (!card) return <EmptyCard key={slot} slot={slot} team={team} variant={variant} />;
@@ -240,6 +242,20 @@ export default function ChaosStage({
     document.querySelector(".ec-ta-stage .ec-coach-action:not([disabled])")?.focus?.({ preventScroll: true });
   }, [guidedState, spinning, picked]);
   const state = guidedState;
+  // Phone: the primary action sits in flow after the decision it closes, so each
+  // new state brings its decision under the pinned header — the new five after a
+  // roll, the three offers, the staff with the revealed era, then the score.
+  useEffect(() => {
+    if (!rowLayout) return;
+    const target = guidedState === GUIDED.DRAFTING ? ".ec-ta-roster"
+      : guidedState === GUIDED.COACH_SELECT ? ".ec-ta-coach"
+        : guidedState === GUIDED.READY ? ".ec-ta-staff-row"
+          : guidedState === GUIDED.RESULT ? ".ec-ta-stage" : null;
+    if (!target) return;
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    const id = requestAnimationFrame(() => document.querySelector(target)?.scrollIntoView?.({ block: "start", behavior: reduce ? "auto" : "smooth" }));
+    return () => cancelAnimationFrame(id);
+  }, [guidedState, run?.roll, rowLayout]);
   const offers = run?.coachDraft?.offers || [];
   const interactive = rosterInteractive(state) && !!run;
   const compressed = rosterCompressed(state);
@@ -255,7 +271,7 @@ export default function ChaosStage({
     // One tap, one action: a request already in flight, or a second tap on the
     // SAME action in the same state inside 400ms (a double tap, or a tap that
     // landed during the busy re-render), is ignored rather than becoming a
-    // second roll. A different action — FINAL ROLL right after ADAPT TO ERA —
+    // second roll. A different action — CONTINUE WITH COACH right after a hire —
     // is a new decision and is never delayed.
     const now = Date.now();
     const key = `${state}:${cta.action}:${run?.roll ?? 0}`;

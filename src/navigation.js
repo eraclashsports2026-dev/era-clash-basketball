@@ -72,11 +72,11 @@ export const PLAY_MODES = Object.freeze([
   {
     id: "chaos", label: "Chaos Clash", icon: "🎲", implemented: true, isDefault: true,
     route: "/play/chaos", category: MODE_CATEGORY.PRIMARY, recommended: true, continuationSupport: true,
-    shortDescription: "Three rolls. Hold your legends. Adapt to the era.",
-    tagline: "Three rolls. Hold your legends. Adapt to the era.",
+    shortDescription: "Three rolls. Hold your legends. History picks the era.",
+    tagline: "Three rolls. Hold your legends. History picks the era.",
     actionLabel: "Start Chaos Clash", actionVerb: "Start", actionHierarchy: ACTION_HIERARCHY.PRIMARY,
     visualSignature: "fracture-dice", accentRole: ACCENT_ROLE.GOLD,
-    description: "Draft under pressure against a Legend CPU, adapt when the era is revealed, then run it on the possession engine.",
+    description: "Draft under pressure against a Legend CPU, hire your staff, then play the era history reveals on the possession engine.",
     implementationNote: "Built. A server-authoritative three-roll draft on /api/game; a guest has three runs, a free account has unlimited.",
     capability: C.CHAOS_CLASH, appMode: "Chaos",
   },
@@ -353,6 +353,20 @@ export const modeForRoute = (pathname) => {
 export const isLobbyRoute = (pathname) => { const p = trim(pathname); return p === "/" || p === PLAY_LOBBY_ROUTE; };
 /** Any `/play/...` address: the lobby or a mode. */
 export const isPlayRoute = (pathname) => { const p = trim(pathname); return p === PLAY_LOBBY_ROUTE || p.startsWith(`${PLAY_LOBBY_ROUTE}/`); };
+/** Address families the app renders outside the lobby and the modes: a section
+ *  root that is itself a page, and families that need a child segment. */
+export const KNOWN_ROUTES = Object.freeze(["/leaderboard", "/my-eraclash", "/membership"]);
+export const KNOWN_ROUTE_PREFIXES = Object.freeze(["/membership/", "/fantasy/", "/modes/", "/auth/", "/result/", "/challenge/", "/player/", "/dev/", "/__fixtures"]);
+/**
+ * Does this address open something? A mistyped or stale URL used to render
+ * the Chaos board silently under the wrong address; now it lands on the lobby
+ * with a notice (2026-09-10 audit).
+ */
+export const isKnownRoute = (pathname) => {
+  const p = trim(pathname);
+  return isLobbyRoute(p) || !!modeForRoute(p) || KNOWN_ROUTES.includes(p)
+    || KNOWN_ROUTE_PREFIXES.some((pre) => p.startsWith(pre) && p.length > pre.length);
+};
 /** The route for an App-level mode name ("Chaos", "Single", …), for keeping the address truthful. */
 export const routeForAppMode = (appMode) => PLAY_MODES.find((m) => m.appMode === appMode)?.route || null;
 

@@ -575,7 +575,11 @@ describe("preservation", () => {
   });
   it("the Play Lobby polish is preserved exactly as accepted", () => {
     if (!parentAvailable()) return;
-    expect(git(`git diff --name-only ${PARENT} -- src/components/lobby src/navigation.js`)).toBe("");
+    // The lobby components stay byte-identical. src/navigation.js carries the
+    // mode COPY as well as the accepted labels; its copy follows the owner's flow
+    // corrections (2026-09-10: rolls → coach → era), while the seven labels,
+    // routes and hierarchy are pinned by v9a3p-play-lobby-polish.
+    expect(git(`git diff --name-only ${PARENT} -- src/components/lobby`)).toBe("");
   });
   it("the preview access gate and Wave 2 study are untouched", () => {
     if (!parentAvailable()) return;

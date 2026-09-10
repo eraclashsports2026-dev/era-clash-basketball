@@ -14,7 +14,7 @@ const IS_WAVE2 = PREVIEW_ACCESS.waveId === WAVE2.waveId;
 const Wrap = ({ title, kicker, children, onBack }) => (
   <div style={{ maxWidth: 900, margin: "0 auto", padding: "24px 16px 48px" }}>
     <button onClick={onBack} style={{
-      minHeight: 40, padding: "0 12px", borderRadius: 9, cursor: "pointer", marginBottom: 16,
+      minHeight: 44, padding: "0 14px", borderRadius: 9, cursor: "pointer", marginBottom: 16,
       border: "1px solid var(--ec-a-border)", background: "transparent", color: "var(--ec-a-text-secondary, #c3cddd)",
       fontSize: 12.5, fontWeight: 700,
     }}>← Back</button>
@@ -161,7 +161,7 @@ const GUIDE = {
     title: "How to play",
     blocks: [
       ["Three rolls, one board", "Roll 1 deals you five players and three coaching staffs, and deals the Legend CPU its own. You keep what you want and release the rest — players and staffs in the same decision."],
-      ["The era arrives with Roll 2", "Every Clash is played in a randomly drawn era, revealed with your second roll. You still have a decision left after you see it, which is the point."],
+      ["The era arrives with your coach", "Every Clash is played in a randomly drawn era, revealed once your staff is set. Both benches draft and hire blind to it, which is the point — the same rules land on both fives."],
       ["Roll 3 commits", "The third roll is the last one. Your roster and your final three offers lock, and you hire exactly one staff."],
       ["Anyone you release is gone", "A released player or staff is out of that Clash for good — for you and for the CPU. That is what makes keeping something a real decision."],
       ["The result lands beside you", "Run the sim and the final score, story, box score, coaching and analysis appear in the Result Dock without taking you away from the five you built."],

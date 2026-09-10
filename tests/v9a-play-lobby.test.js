@@ -45,7 +45,7 @@ describe("one registry, extended for the lobby", () => {
     expect(PLAY_MODES.filter((m) => m.continuationSupport).map((m) => m.id)).toEqual(["chaos"]);
   });
   it("carries the lobby copy the specification names", () => {
-    expect(findMode("chaos").shortDescription).toBe("Three rolls. Hold your legends. Adapt to the era.");
+    expect(findMode("chaos").shortDescription).toBe("Three rolls. Hold your legends. History picks the era.");
     expect(findMode("dream").shortDescription).toBe("Build any historical matchup.");
     expect(findMode("daily").shortDescription).toBe("One shared challenge for everyone.");
   });
