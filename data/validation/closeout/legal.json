@@ -1,0 +1,20 @@
+{
+  "artifact": "closeout-legal",
+  "date": "2026-09-10",
+  "implemented": {
+    "branch": "legal/privacy-terms (draft PR)",
+    "routes": "/privacy, /terms — editorial shell, reachable signed out, direct address + refresh (vercel rewrites, middleware matcher), footer links, sign-in dialog acceptance/acknowledgement line",
+    "content": "src/legal/documents.js drafted from docs/legal/privacy-data-inventory.md; LEGAL_STATUS.approved=false; owner decisions bracketed; tests refuse an approved document with placeholders"
+  },
+  "verifiedOnHarness": "web + phone: both pages render (h1, 11/9 sections), survive reload, no lobby redirect, no overflow, footer Privacy → /privacy, 0 page errors",
+  "deployed": "NO — must not be published with placeholders or without owner approval",
+  "blocked": "owner decisions + text approval",
+  "remainingOwnerAction": [
+    "Legal operator name (person or business) and location",
+    "Monitored contact email for privacy/support",
+    "Age policy / handling of minors (no birth-date collection exists)",
+    "Governing law / venue, or defer pending legal review",
+    "Confirm retention statements (device cookie 1 year; analytics 14 days raw / ~13 months counts; runs expire within hours; pseudonymous rating/Challenge history retained)",
+    "Approve the exact text; I then set approved=true with the effective date = publication day and publish"
+  ]
+}

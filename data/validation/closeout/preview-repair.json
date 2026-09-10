@@ -1,0 +1,21 @@
+{
+  "artifact": "closeout-preview-repair",
+  "date": "2026-09-10",
+  "problem": "Preview deployments answered account requests with 502 provider_rejected_server_key.",
+  "diagnosis": {
+    "evidence": "preview browser bundle named https://dxdtnhdeaanhfoqngdel.supabase.co (PRODUCTION); operator diagnostics on the preview: serverAndBrowserSameProject true, previewPointedAtProduction true, credential kind sb_secret length 41 rejected 401 by that project",
+    "meaning": "the Preview-scoped SUPABASE_URL / VITE_SUPABASE_URL (and, by the same evidence, the anon keys) name the PRODUCTION project while SUPABASE_SERVICE_ROLE_KEY belongs to the preview project lfybiphmqkiecfrqsfzt. The preview project itself is ACTIVE_HEALTHY (us-west-2). No key needs rotating on this evidence."
+  },
+  "implemented": {
+    "guards": "vite.config.js drops VITE_SUPABASE_* from a PREVIEW build that names the production ref; api/_lib/cloudAccounts.js previewPointedAtProduction() makes cloudAccountsReady() false on such a preview (requests answer 503 CLOUD_ACCOUNTS_DISABLED instead of reaching production); config/projectRefs.js names the two public refs",
+    "commit": "f157067 → main 8d0528b",
+    "verifiedOnPreview": "bundle contains no supabase host; leaderboard → 503 CLOUD_ACCOUNTS_DISABLED; diagnostics previewPointedAtProduction true"
+  },
+  "deployed": "guards YES (main 8d0528b); the Preview environment itself is still misconfigured",
+  "blocked": "Vercel environment variables are owner-only here (CLI logged out, MCP unauthenticated, no browser session)",
+  "remainingOwnerAction": [
+    "Vercel → project era-clash-basketball → Settings → Environment Variables, environment PREVIEW (all branches; remove any branch-specific override): SUPABASE_URL and VITE_SUPABASE_URL = https://lfybiphmqkiecfrqsfzt.supabase.co; SUPABASE_ANON_KEY and VITE_SUPABASE_ANON_KEY = the preview project's publishable key (Supabase → lfybiphmqkiecfrqsfzt → Settings → API Keys → Publishable, sb_publishable_X--8fugunRzXrZ2p1Ewhsg_V9xp9WH8 — publishable, not secret); SUPABASE_SERVICE_ROLE_KEY (Preview) = that project's SECRET key, entered only in Vercel (reveal/create under Secret keys); CLOUD_ACCOUNTS_ENABLED / VITE_CLOUD_ACCOUNTS_ENABLED = true",
+    "Then redeploy a preview (I will push a commit) and I verify: previewPointedAtProduction false, serverCredentialAccepted true, leaderboard/profile 200, isolation checks"
+  ],
+  "expectedAfterFix": "operator diagnostics on the preview: environment preview, serverAndBrowserSameProject true, previewPointedAtProduction false, serverCredentialAccepted true; account surfaces 200; production untouched"
+}
