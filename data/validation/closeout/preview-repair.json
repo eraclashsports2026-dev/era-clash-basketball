@@ -17,5 +17,6 @@
     "Vercel → project era-clash-basketball → Settings → Environment Variables, environment PREVIEW (all branches; remove any branch-specific override): SUPABASE_URL and VITE_SUPABASE_URL = https://lfybiphmqkiecfrqsfzt.supabase.co; SUPABASE_ANON_KEY and VITE_SUPABASE_ANON_KEY = the preview project's publishable key (Supabase → lfybiphmqkiecfrqsfzt → Settings → API Keys → Publishable, sb_publishable_X--8fugunRzXrZ2p1Ewhsg_V9xp9WH8 — publishable, not secret); SUPABASE_SERVICE_ROLE_KEY (Preview) = that project's SECRET key, entered only in Vercel (reveal/create under Secret keys); CLOUD_ACCOUNTS_ENABLED / VITE_CLOUD_ACCOUNTS_ENABLED = true",
     "Then redeploy a preview (I will push a commit) and I verify: previewPointedAtProduction false, serverCredentialAccepted true, leaderboard/profile 200, isolation checks"
   ],
-  "expectedAfterFix": "operator diagnostics on the preview: environment preview, serverAndBrowserSameProject true, previewPointedAtProduction false, serverCredentialAccepted true; account surfaces 200; production untouched"
+  "expectedAfterFix": "operator diagnostics on the preview: environment preview, serverAndBrowserSameProject true, previewPointedAtProduction false, serverCredentialAccepted true; account surfaces 200; production untouched",
+  "verificationScript": "scripts/ui-release/previewIsolationCheck.mjs <previewUrl> (main 5730519)"
 }
