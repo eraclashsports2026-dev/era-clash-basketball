@@ -27,7 +27,7 @@ export const buildManifest = ({ seedId, createdAt, originRunId, sequence = 1, er
   versions: DRAFT_VERSIONS,
   // The draft sequence this link was minted under, so it is replayed as its
   // sender played it rather than reinterpreted by a later mechanic.
-  chaosSequenceVersion: sequence === 2 ? "2.0.0" : "1.0.0",
+  chaosSequenceVersion: sequence === 3 ? "3.0.0" : sequence === 2 ? "2.0.0" : "1.0.0",
   // Present ONLY when the origin run chose a custom era; a rolled era is
   // re-derived from the seed on both sides.
   eraStyleId: eraStyleId || null,

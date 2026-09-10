@@ -1,5 +1,19 @@
 # Chaos Clash — progressive disclosure (Phase 9B.3)
 
+> **Revision — 2026-09-09 (owner correction).** The era interstitial (`ERA_REVEAL` /
+> **ADAPT TO ERA**) was retired. The flow is now **Roll 1 → hold → Roll 2 → hold →
+> Final Roll → Coach Chaos → Clash Ready (the era is revealed here, with its rules)
+> → Run Clash → Result** — five presentation states. On the server this is
+> sequence **3** (`CHAOS_SEQUENCE_VERSION 3.0.0`): the era is still the seed's era,
+> derived exactly as before and pinned for challenge links, but `applyEraReveal`
+> runs in `selectCoach`, so neither side knows the era while drafting or choosing
+> staff (the Legend Rival prices adaptability; the ERA ADAPTER offer is scored on
+> how well a coach travels). Runs and challenges minted under sequence 2 keep
+> revealing the era with Roll 2. The entitled era-change window is Clash Ready.
+> The tables below describe the 9B.3 flow as accepted; read `ERA_REVEAL` rows as
+> retired and the `READY` row as also carrying the era reveal.
+
+
 The principle: **show what the current decision needs, and nothing that
 belongs to a later one.** The previous arena rendered every panel at once —
 Coach Chaos offers, a full Result Dock from the last game, Live Intel with the

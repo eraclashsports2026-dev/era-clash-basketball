@@ -321,7 +321,9 @@ describe("preservation", () => {
   });
   it("game, draft and placement logic are untouched", () => {
     if (!parentAvailable()) return;
-    expect(git(`git diff --name-only ${PARENT} -- src/chaos src/v3 src/engine.js src/rating.js src/draft.js src/dailyChallenge.js src/lineupPlacement.js src/entitlements.js data/calibration`)).toBe("");
+    // src/chaos/runState.js and src/chaos/challenge.js carry the owner-directed sequence-3 change (era revealed with the hire, 2026-09-09);
+    // every odds, value, CPU, era-translation and coach-offer file stays byte-identical.
+    expect(git(`git diff --name-only ${PARENT} -- src/chaos/client.js src/chaos/coachOffers.js src/chaos/construction.js src/chaos/constructionBands.json src/chaos/draftOdds.js src/chaos/draftValue.js src/chaos/eraTranslation.js src/chaos/legendCpu.js src/v3 src/engine.js src/rating.js src/draft.js src/dailyChallenge.js src/lineupPlacement.js src/entitlements.js data/calibration`)).toBe("");
   });
   it("the Night Court theme contract the lobby polish relies on is untouched: master brand, scopes, semantics", () => {
     if (!parentAvailable()) return;

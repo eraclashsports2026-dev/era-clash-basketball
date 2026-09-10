@@ -10,7 +10,7 @@
 //
 // Phase 9B.3 (Chaos Clash Guided Flow V2) changed the PRESENTATION, not the
 // mechanics: the arena resolves one of six states, the era reveal is its own
-// state with one action (ADAPT TO ERA), Coach Chaos appears only once the five
+// (the era interstitial was retired 2026-09-09), Coach Chaos appears only once the five
 // is set, and the result leads with the score. The steps below drive that flow;
 // what they assert about the game is unchanged.
 import { test, expect } from "@playwright/test";
@@ -34,12 +34,11 @@ const rollOne = async (page) => {
   await expect(stage(page, "DRAFTING")).toBeVisible({ timeout: 20_000 });
   await expect(page.locator('.ec-ta-team[data-team="gold"] .ec-pc').nth(4)).toBeVisible({ timeout: 20_000 });
 };
-/** 9B.3: the era is revealed WITH Roll 2 as its own state; one action continues. */
+/** 2026-09-09: Roll 2 lands as drafting again — hold, then the final roll. No era interstitial. */
 const adaptToEra = async (page) => {
-  await expect(stage(page, "ERA_REVEAL")).toBeVisible({ timeout: 20_000 });
-  await expect(page.locator(".ec-era-reveal-id")).toHaveText(/^\d{4}s$/);
-  await page.getByRole("button", { name: /ADAPT TO ERA/ }).click();
+  await expect(page.getByText(/ROLL 2 OF 3/).first()).toBeVisible({ timeout: 20_000 });
   await expect(stage(page, "DRAFTING")).toBeVisible({ timeout: 20_000 });
+  await expect(page.getByRole("button", { name: /ADAPT TO ERA/ })).toHaveCount(0);
 };
 
 /**
@@ -117,7 +116,7 @@ test("every hold control stays live in both decision rounds", async ({ page }) =
   await expect(page.getByRole("button", { name: `Hold ${who}` })).toHaveAttribute("aria-pressed", "false");
 });
 
-test("three rolls, holds, era reveal before the final holds, then coach offers", async ({ page }) => {
+test("three rolls, holds, coach offers, then the era with the hire", async ({ page }) => {
   await withAccount(page);
   await page.goto("/play/chaos");
   await rollOne(page);
@@ -136,16 +135,14 @@ test("three rolls, holds, era reveal before the final holds, then coach offers",
   await expect(page.getByRole("button", { name: `Release ${who}` })).toHaveAttribute("aria-pressed", "true");
   await lockHolds(page);
 
-  // The era is revealed WITH Roll 2, as its own state: the reveal names it, the
-  // rail's era panel names it, and Coach Chaos is still nowhere on the board.
-  await expect(stage(page, "ERA_REVEAL")).toBeVisible({ timeout: 20_000 });
-  await expect(page.locator(".ec-era-reveal-id")).toHaveText(/^\d{4}s$/);
-  await expect(page.locator(".ec-ta-rail .ec-intel-era-id")).toHaveText(/^\d{4}s$/);
-  await expect(page.locator(".ec-coach-card")).toHaveCount(0);
+  // Roll 2 lands as drafting again (2026-09-09: no era interstitial). The era is
+  // still hidden — on the board, in the rail and in the utility bar — and Coach
+  // Chaos is still nowhere on the board.
   await adaptToEra(page);
-  // Back on the draft the era stays on screen, stated once in the utility bar.
-  await expect(page.locator(".ec-ta-utility").getByText(/^ERA: \d{4}s/)).toBeVisible();
+  await expect(page.locator(".ec-era-reveal-id")).toHaveCount(0);
   await expect(page.locator(".ec-ta-rail .ec-intel-era-id")).toHaveCount(0);
+  await expect(page.locator(".ec-ta-utility").getByText(/ERA: HIDDEN/)).toBeVisible();
+  await expect(page.locator(".ec-coach-card")).toHaveCount(0);
 
   await lockHolds(page);
   await expect(stage(page, "COACH_SELECT")).toBeVisible({ timeout: 20_000 });
@@ -158,7 +155,15 @@ test("three rolls, holds, era reveal before the final holds, then coach offers",
   for (const role of ["ROSTER MAXIMIZER", "OPPONENT COUNTER", "ERA ADAPTER"]) {
     await expect(page.getByText(role, { exact: true })).toBeVisible();
   }
+  // The era is still hidden while the coach is chosen; the hire reveals it on
+  // Clash Ready — named, with its rule cards, and stated as a chip.
+  await expect(page.locator(".ec-ta-era-chip")).toHaveCount(0);
+  await hireStaff(page);
+  await expect(page.getByRole("button", { name: /RUN CLASH/ })).toBeVisible({ timeout: 20_000 });
+  await expect(page.locator(".ec-era-reveal-id")).toHaveText(/^\d{4}s$/);
+  await expect(page.locator(".ec-era-reveal-card")).toHaveCount(3);
   await expect(page.locator(".ec-ta-era-chip")).toContainText(/ERA: \d{4}s/);
+  await expect(page.locator(".ec-ta-utility").getByText(/^ERA: \d{4}s/)).toBeVisible();
 });
 
 test("a full Clash reaches a postgame with a player-centered story and an aligned box score", async ({ page }) => {

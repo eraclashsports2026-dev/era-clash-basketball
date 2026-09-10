@@ -29,14 +29,23 @@ const metrics = {
   privacyContractChanges: { paths: "api/_lib/profiles.js api/profile.js supabase/migrations/0007_public_competitive_profiles_v1.sql api/_lib/cloudAccounts.js", files: [] },
   apiFunctionCountIncrease: { paths: "api/*.js middleware.js", files: [] },
 };
-for (const m of Object.values(metrics)) m.files = changed(m.paths);
+// Owner-directed changes are named, never hidden: they are listed per metric and
+// excluded from the count, so a metric reads 0 only when nothing ELSE moved.
+const OWNER_DIRECTED = {
+  "src/chaos/runState.js": "2026-09-09 owner correction: sequence 3 — the era is revealed with the hire (rolls → coach → era); the seed's era, odds and CPU logic unchanged",
+  "src/chaos/challenge.js": "2026-09-09 owner correction: challenge manifests carry chaosSequenceVersion 3.0.0",
+  "api/_lib/chaosRun.js": "2026-09-09 owner correction: the entitled era-change window follows the reveal (Clash Ready); manifest sequence parser accepts 3",
+};
+for (const m of Object.values(metrics)) { const all = changed(m.paths); m.ownerDirected = all.filter((f) => OWNER_DIRECTED[f]).map((f) => ({ file: f, why: OWNER_DIRECTED[f] })); m.files = all.filter((f) => !OWNER_DIRECTED[f]); }
 const apiCount = sh("ls api/*.js | wc -l").trim();
 const baseApiCount = sh(`git ls-tree --name-only ${BASE} api/ | grep -c '\\.js$'`).trim();
 metrics.apiFunctionCountIncrease.value = Number(apiCount) - Number(baseApiCount);
 metrics.apiFunctionCountIncrease.detail = `api/*.js ${baseApiCount} -> ${apiCount} (+ middleware.js = ${Number(apiCount) + 1} of 13)`;
 for (const [k, m] of Object.entries(metrics)) if (m.value === undefined) m.value = m.files.length;
 const refs = {};
-for (const r of ["wave1", "wave2", "main"]) { const now = refNow(r); refs[r] = { recorded: recorded[r] || null, now, moved: recorded[r] ? recorded[r] !== now : null }; }
+// PRESERVE_MAIN / PRESERVE_WAVE1 / PRESERVE_WAVE2 override the recorded refs when a later
+// authorised release has moved one of them (main moved on 2026-09-09 by the production release).
+for (const r of ["wave1", "wave2", "main"]) { const now = refNow(r); const rec = process.env[`PRESERVE_${r.toUpperCase()}`] || recorded[r] || null; refs[r] = { recorded: rec, now, moved: rec ? rec !== now : null }; }
 metrics.wave1Changes = { value: refs.wave1.moved ? 1 : 0, detail: refs.wave1 };
 metrics.stableWave2Changes = { value: refs.wave2.moved ? 1 : 0, detail: refs.wave2 };
 metrics.mainChanges = { value: refs.main.moved ? 1 : 0, detail: refs.main };
@@ -45,7 +54,8 @@ const allChanged = sh(`git diff --name-only ${BASE}`).split("\n").filter(Boolean
 const out = {
   artifact: "wave-preservation", release: "ui/light-court-release-candidate", base: BASE, head, recordedAt: new Date().toISOString(),
   method: `git diff --name-only ${BASE} -- <paths> per metric; refs compared to ui-release-preflight.json`,
-  metrics: Object.fromEntries(Object.entries(metrics).map(([k, m]) => [k, { value: m.value, paths: m.paths, files: m.files, detail: m.detail }])),
+  metrics: Object.fromEntries(Object.entries(metrics).map(([k, m]) => [k, { value: m.value, paths: m.paths, files: m.files, ownerDirected: m.ownerDirected || [], detail: m.detail }])),
+  ownerDirectedChanges: OWNER_DIRECTED,
   allZero: Object.values(metrics).every((m) => m.value === 0),
   changedFiles: allChanged,
 };

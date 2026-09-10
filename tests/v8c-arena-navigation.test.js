@@ -200,7 +200,7 @@ describe("the arena preserves Phase 8B draft behaviour", () => {
     const hold = (slots) => submitRollDecisions(r, { holdSlots: slots, holdRoles: [], hydrate });
     hold(["PG"]);
     expect(r.currentRoll).toBe(2);
-    expect(r.revealedEraStyleId).toBeTruthy();
+    expect(r.revealedEraStyleId).toBeNull(); // sequence 3: the era is revealed with the hire
     hold(["PG"]);
     expect(publicView(r, { hydrate }).rostersLocked).toBe(true);
     expect(hold([]).ok).toBe(false);

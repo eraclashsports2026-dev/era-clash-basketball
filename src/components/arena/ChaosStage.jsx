@@ -4,9 +4,8 @@
 //
 //   EMPTY         the empty frame and one action: ROLL
 //   DRAFTING      cards, HOLD, and the next roll
-//   ERA_REVEAL    the era becomes the focus, once, after Roll 2
 //   COACH_SELECT  the five is set and compresses; the three staffs are the hero
-//   READY         the matchup, and one action: RUN CLASH
+//   READY         the era is revealed (rolls → coach → era), the matchup, RUN CLASH
 //   RESULT        this game, as the hero (the Result Dock renders it beside us)
 //
 // Geometry lives in CSS. Which state we are in is DERIVED by src/chaos/
@@ -106,7 +105,7 @@ const StaffLine = ({ team, run, result }) => {
 export default function ChaosStage({
   run, tier = "GUEST", challengeId, onRunChange, onReady, onGated, onRunClash, onReset,
   phase, busy = false, error = null, resume = true, result = null,
-  guidedState = GUIDED.EMPTY, onAcknowledgeEra, onGuide,
+  guidedState = GUIDED.EMPTY, onGuide,
   mobileTeam = "gold", onMobileTeam,
   // Phase 9C: when this run is a challenge attempt, a compact badge says so.
   challengeContext = null,
@@ -156,14 +155,14 @@ export default function ChaosStage({
 
   // Focus moves with the decision: when the state changes, the primary action
   // receives focus once, so a keyboard user is never left on a control that has
-  // just disappeared. The era reveal is the exception — it announces, it does
-  // not grab, so it cannot steal focus on every re-render (spec §22).
+  // just disappeared. The result is the exception — it announces, it does not
+  // grab (spec §22).
   const stateRef = useRef(guidedState);
   useEffect(() => {
     if (stateRef.current === guidedState) return;
     stateRef.current = guidedState;
     setAnnounce(stateAnnouncement(guidedState, { run }));
-    if (guidedState !== GUIDED.ERA_REVEAL && guidedState !== GUIDED.RESULT) ctaRef.current?.focus?.({ preventScroll: true });
+    if (guidedState !== GUIDED.RESULT) ctaRef.current?.focus?.({ preventScroll: true });
   }, [guidedState, run]);
 
   const act = async (fn, failure) => {
@@ -228,10 +227,6 @@ export default function ChaosStage({
     setAnnounce(coachAnnouncement(o));
     track(GUIDED_EVENTS.COACH_OFFER_SELECTED, { role: o.role || null });
   };
-  const continueFromEra = () => {
-    track(GUIDED_EVENTS.ERA_REVEAL_CONTINUED, { era_style: run?.eraState?.eraStyleId || null });
-    onAcknowledgeEra?.();
-  };
 
   const spinning = working || busy;
   // Coach Chaos: the continuation is disabled until an offer is picked, and a
@@ -253,7 +248,7 @@ export default function ChaosStage({
 
   const cta = primaryAction(state, { run, spinning, picked });
   const onPrimary = cta && {
-    deal, roll: submitRoll, "acknowledge-era": continueFromEra, hire, run: onRunClash,
+    deal, roll: submitRoll, hire, run: onRunClash,
   }[cta.action];
   const firePrimary = () => {
     if (!cta || !onPrimary) return;
@@ -277,7 +272,6 @@ export default function ChaosStage({
         : "CHAOS CLASH";
   const subtitle = state === GUIDED.EMPTY ? "ROLL 1 OF 3"
     : state === GUIDED.DRAFTING ? `ROLL ${run?.roll} OF ${run?.totalRolls}`
-      : state === GUIDED.ERA_REVEAL ? "ADAPT TO THE ERA"
         : state === GUIDED.COACH_SELECT ? "YOUR ROSTER IS SET"
           : state === GUIDED.READY ? "TWO LEGENDARY ROSTERS. ONE ERA. NO PREDICTIONS."
             : simulating ? "LET HISTORY DECIDE" : "THE MATCHUP YOU BUILT";
@@ -349,10 +343,9 @@ export default function ChaosStage({
           sticky action bar below is the button alone, so it stays compact. */}
       {rowLayout && state !== GUIDED.RESULT && (() => {
         const line = state === GUIDED.EMPTY ? ["Roll 1 of 3", "Roll to draft your first five."]
-          : state === GUIDED.DRAFTING ? [`Roll ${run?.roll ?? 1} complete`, "Review your players and choose who to hold."]
-            : state === GUIDED.ERA_REVEAL ? ["Era revealed", "Adapt to the era, then take your final roll."]
-              : state === GUIDED.COACH_SELECT ? ["Roster set", "Choose your coach."]
-                : ["Clash ready", "Run Clash to play it out."];
+          : state === GUIDED.DRAFTING ? [`Roll ${run?.roll ?? 1} complete`, run?.roll === 2 ? "Hold who stays, then take your final roll." : "Review your players and choose who to hold."]
+            : state === GUIDED.COACH_SELECT ? ["Roster set", "Choose your coach."]
+              : [eraId ? `Era revealed: ${eraId}` : "Clash ready", "Both teams play by this era's rules. Run Clash to play it out."];
         return (
           <div className="ec-ta-mobile-status" aria-hidden="true">
             <span className="ec-ta-mobile-status-glyph">🎲</span>
@@ -392,9 +385,9 @@ export default function ChaosStage({
         </div>
       )}
 
-      {/* ── State 3: the era, once ────────────────────────────────────────── */}
-      {state === GUIDED.ERA_REVEAL && (
-        <EraRevealPanel run={run} onRules={() => { track(GUIDED_EVENTS.ERA_RULES_EXPANDED, { from: "era_reveal" }); onGuide?.("glossary"); }} busy={spinning} />
+      {/* ── Clash Ready: the era, revealed once the coach is hired ─────────── */}
+      {state === GUIDED.READY && eraId && (
+        <EraRevealPanel run={run} onRules={() => { track(GUIDED_EVENTS.ERA_RULES_EXPANDED, { from: "clash_ready" }); onGuide?.("glossary"); }} busy={spinning} />
       )}
 
       {/* ── State 4: Coach Chaos, only once the five is set ───────────────── */}
@@ -426,9 +419,8 @@ export default function ChaosStage({
               {cta.action === "run" && <span aria-hidden="true">⚡</span>}
               {cta.label}
               {(cta.action === "deal" || cta.action === "roll") && cta.enabled && !spinning && <span aria-hidden="true"> 🎲</span>}
-              {cta.action === "acknowledge-era" && <span aria-hidden="true"> →</span>}
             </button>
-            {run && state !== GUIDED.ERA_REVEAL ? (
+            {run ? (
               <div className="ec-ta-stage-actions">
                 <button onClick={() => setConfirmReset(true)} style={quiet}
                   aria-label="Reset this Clash and deal a new one">RESET</button>

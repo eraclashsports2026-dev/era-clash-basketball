@@ -1,5 +1,6 @@
 // ── Phase 9B.3: the guided flow's state contract ─────────────────────────────
-// Six presentation states derived from the authoritative run. These tests pin
+// Five presentation states derived from the authoritative run (the era interstitial
+// was retired on 2026-09-09: rolls → coach → era, revealed on Clash Ready). These tests pin
 // the DERIVATION — which run reaches which state, what survives a refresh or a
 // lobby round-trip, and which single action each state offers — and they pin
 // the product's words for those actions, because a gate elsewhere reads them.
@@ -20,10 +21,10 @@ const run = (over = {}) => ({
 });
 const mem = () => { const m = new Map(); return { getItem: (k) => m.get(k) ?? null, setItem: (k, v) => m.set(k, v), removeItem: (k) => m.delete(k) }; };
 
-describe("the six states are derived from the run, never invented", () => {
-  it("names six states in the order a player meets them", () => {
-    expect(GUIDED_ORDER).toEqual(["EMPTY", "DRAFTING", "ERA_REVEAL", "COACH_SELECT", "READY", "RESULT"]);
-    expect(GUIDED_FLOW_VERSION).toBe("chaos-guided-flow-v2");
+describe("the five states are derived from the run, never invented", () => {
+  it("names five states in the order a player meets them", () => {
+    expect(GUIDED_ORDER).toEqual(["EMPTY", "DRAFTING", "COACH_SELECT", "READY", "RESULT"]);
+    expect(GUIDED_FLOW_VERSION).toBe("chaos-guided-flow-v3");
   });
   it("no run is the empty frame; an abandoned run is too", () => {
     expect(resolveGuidedState({ run: null })).toBe(GUIDED.EMPTY);
@@ -32,15 +33,17 @@ describe("the six states are derived from the run, never invented", () => {
   it("roll 1 is drafting", () => {
     expect(resolveGuidedState({ run: run() })).toBe(GUIDED.DRAFTING);
   });
-  it("roll 2 with the era revealed is the ERA REVEAL until it has been seen, then drafting again", () => {
-    const r2 = run({ phase: "ROLL_2_REVEALED", roll: 2, eraState: { revealed: true, eraStyleId: "1950s" } });
-    expect(resolveGuidedState({ run: r2, eraAcknowledged: false })).toBe(GUIDED.ERA_REVEAL);
-    expect(resolveGuidedState({ run: r2, eraAcknowledged: true })).toBe(GUIDED.DRAFTING);
+  it("roll 2 is drafting again — the era is no state of its own, whatever the server says about it", () => {
+    const hidden = run({ phase: "ROLL_2_REVEALED", roll: 2 });
+    expect(resolveGuidedState({ run: hidden })).toBe(GUIDED.DRAFTING);
+    // a sequence-2 run (era revealed with Roll 2) is presented the same way: hold, then the final roll
+    const revealed = run({ phase: "ROLL_2_REVEALED", roll: 2, eraState: { revealed: true, eraStyleId: "1950s" } });
+    expect(resolveGuidedState({ run: revealed })).toBe(GUIDED.DRAFTING);
   });
   it("the final roll landing opens Coach Chaos — and only then", () => {
     expect(resolveGuidedState({ run: run({ phase: "ROLL_3_REVEALED", roll: 3, coachDraft: { selecting: true, offers: [{}, {}, {}] } }) })).toBe(GUIDED.COACH_SELECT);
     expect(showsCoachOffers(GUIDED.DRAFTING)).toBe(false);
-    expect(showsCoachOffers(GUIDED.ERA_REVEAL)).toBe(false);
+    expect(showsCoachOffers(GUIDED.READY)).toBe(false);
     expect(showsCoachOffers(GUIDED.COACH_SELECT)).toBe(true);
   });
   it("legacy sequence-1 phases are also Coach Chaos, so an old run is never stranded", () => {
@@ -59,17 +62,14 @@ describe("the six states are derived from the run, never invented", () => {
 describe("what survives a refresh or a lobby round-trip", () => {
   // Section 23 of the specification: the exact state returns at every stop.
   const s = mem();
-  it("an era acknowledgement is remembered per run, so a resumed run does not repeat the reveal", () => {
+  it("the retired era acknowledgement helpers still work but never change the state", () => {
     expect(eraAcknowledged("run-1", s)).toBe(false);
     acknowledgeEra("run-1", s);
     expect(eraAcknowledged("run-1", s)).toBe(true);
     const r2 = run({ phase: "ROLL_2_REVEALED", roll: 2, eraState: { revealed: true, eraStyleId: "1990s" } });
-    expect(resolveGuidedState({ run: r2, eraAcknowledged: eraAcknowledged(r2.chaosRunId, s) })).toBe(GUIDED.DRAFTING);
-  });
-  it("a NEW run reveals its era again — the acknowledgement does not leak across runs", () => {
+    expect(resolveGuidedState({ run: r2 })).toBe(GUIDED.DRAFTING);
     const other = run({ chaosRunId: "run-2", phase: "ROLL_2_REVEALED", roll: 2, eraState: { revealed: true, eraStyleId: "2010s" } });
-    expect(eraAcknowledged(other.chaosRunId, s)).toBe(false);
-    expect(resolveGuidedState({ run: other, eraAcknowledged: eraAcknowledged(other.chaosRunId, s) })).toBe(GUIDED.ERA_REVEAL);
+    expect(resolveGuidedState({ run: other })).toBe(GUIDED.DRAFTING);
   });
   it("clearing the acknowledgement is explicit and never throws without storage", () => {
     clearEraAck(s);
@@ -89,8 +89,9 @@ describe("one primary action per state, in the product's words", () => {
     expect(primaryAction(GUIDED.DRAFTING, { run: run({ roll: 1 }) }).label).toBe("ROLL 2");
     expect(primaryAction(GUIDED.DRAFTING, { run: run({ roll: 2 }) }).label).toBe("FINAL ROLL");
   });
-  it("the era reveal offers ADAPT TO ERA, Coach Chaos continues only once a coach is picked, Ready offers RUN CLASH", () => {
-    expect(primaryAction(GUIDED.ERA_REVEAL).label).toBe("ADAPT TO ERA");
+  it("no ADAPT TO ERA action exists; Coach Chaos continues only once a coach is picked; Ready offers RUN CLASH and names the era", () => {
+    for (const st of GUIDED_ORDER) expect(primaryAction(st, { run: run() })?.label || "").not.toMatch(/ADAPT TO ERA/);
+    expect(primaryAction(GUIDED.READY, { run: run({ eraState: { revealed: true, eraStyleId: "1980s" } }) }).sub).toBe("ERA: 1980s · LET HISTORY DECIDE");
     expect(primaryAction(GUIDED.COACH_SELECT, { picked: null })).toMatchObject({ label: "CONTINUE WITH COACH", enabled: false });
     expect(primaryAction(GUIDED.COACH_SELECT, { picked: "c1" })).toMatchObject({ enabled: true });
     expect(primaryAction(GUIDED.READY)).toMatchObject({ action: "run", label: "RUN CLASH", enabled: true });
@@ -110,7 +111,8 @@ describe("one primary action per state, in the product's words", () => {
 
 describe("the information architecture follows the decision", () => {
   it("one contextual panel per state, none for the result", () => {
-    expect(GUIDED_ORDER.map(contextualPanel)).toEqual(["guide", "intel-compact", "era", "roster", "matchup", null]);
+    // Clash Ready carries the era in full: it is revealed there (rolls → coach → era).
+    expect(GUIDED_ORDER.map(contextualPanel)).toEqual(["guide", "intel-compact", "roster", "era", null]);
   });
   it("the roster is interactive only while drafting, compressed from Coach Chaos onward, and the result is the only hero", () => {
     expect(GUIDED_ORDER.filter(rosterInteractive)).toEqual([GUIDED.DRAFTING]);
@@ -118,7 +120,7 @@ describe("the information architecture follows the decision", () => {
     expect(GUIDED_ORDER.filter(showsResultHero)).toEqual([GUIDED.RESULT]);
   });
   it("a previous result may be reachable in every state except the result itself", () => {
-    expect(GUIDED_ORDER.filter(showsPriorResult)).toEqual(GUIDED_ORDER.slice(0, 5));
+    expect(GUIDED_ORDER.filter(showsPriorResult)).toEqual(GUIDED_ORDER.slice(0, 4));
   });
 });
 
@@ -153,6 +155,7 @@ describe("telemetry is a closed vocabulary", () => {
     ]);
   });
   it("entry events exist for the four states worth timing, and for no other", () => {
-    expect(GUIDED_ORDER.map(stateViewEvent)).toEqual([null, null, "era_reveal_viewed", "coach_chaos_viewed", "clash_ready_viewed", "result_state_viewed"]);
+    // the era reveal event now rides the Clash Ready transition (TimeArena fires it alongside clash_ready_viewed)
+    expect(GUIDED_ORDER.map(stateViewEvent)).toEqual([null, null, "coach_chaos_viewed", "clash_ready_viewed", "result_state_viewed"]);
   });
 });

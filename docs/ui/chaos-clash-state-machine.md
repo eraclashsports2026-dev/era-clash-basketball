@@ -1,5 +1,19 @@
 # Chaos Clash — the guided flow's state machine (Phase 9B.3)
 
+> **Revision — 2026-09-09 (owner correction).** The era interstitial (`ERA_REVEAL` /
+> **ADAPT TO ERA**) was retired. The flow is now **Roll 1 → hold → Roll 2 → hold →
+> Final Roll → Coach Chaos → Clash Ready (the era is revealed here, with its rules)
+> → Run Clash → Result** — five presentation states. On the server this is
+> sequence **3** (`CHAOS_SEQUENCE_VERSION 3.0.0`): the era is still the seed's era,
+> derived exactly as before and pinned for challenge links, but `applyEraReveal`
+> runs in `selectCoach`, so neither side knows the era while drafting or choosing
+> staff (the Legend Rival prices adaptability; the ERA ADAPTER offer is scored on
+> how well a coach travels). Runs and challenges minted under sequence 2 keep
+> revealing the era with Roll 2. The entitled era-change window is Clash Ready.
+> The tables below describe the 9B.3 flow as accepted; read `ERA_REVEAL` rows as
+> retired and the `READY` row as also carrying the era reveal.
+
+
 One route, `/play/chaos`. One board. Six presentations of it. The arena never
 navigates between pages: it resolves ONE of six presentation states from the
 authoritative run the server already publishes, and every surface — the stage,

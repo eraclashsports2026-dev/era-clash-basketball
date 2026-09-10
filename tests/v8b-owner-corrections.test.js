@@ -60,12 +60,12 @@ describe("player draft state", () => {
     expect(r.currentRoll).toBe(1);
   });
 
-  it("locks after exactly three rolls and reveals the era with Roll 2", () => {
+  it("locks after exactly three rolls and keeps the era hidden through them (sequence 3 reveals it with the hire)", () => {
     const r = startRun({ runId: "e".repeat(10), seedId: "rolls", createdAt: 0 });
     expect(r.revealedEraStyleId).toBeNull();
     hold(r, []);
     expect(r.currentRoll).toBe(2);
-    expect(r.revealedEraStyleId).toBeTruthy();
+    expect(r.revealedEraStyleId).toBeNull();
     hold(r, []);
     expect(r.currentRoll).toBe(3);
     expect(publicView(r, { hydrate }).rostersLocked).toBe(true);
@@ -156,19 +156,18 @@ describe("coach draft (sequence 1, as shared links still play it)", () => {
 });
 
 describe("era stays visible", () => {
-  it("hides the era before Roll 2 and carries it on every view after", () => {
+  it("hides the era through the rolls and carries it on every view from the hire on (sequence 3)", () => {
     const r = startRun({ runId: "i".repeat(10), seedId: "era-1", createdAt: 0 });
     expect(publicView(r, { hydrate }).eraContext).toBeNull();
     hold(r, []);
+    expect(publicView(r, { hydrate }).eraContext).toBeNull();
+    hold(r, []);
+    expect(publicView(r, { hydrate }).eraContext).toBeNull();
+    const offered = r.coachOffers.gold[0].coachId;
+    expect(selectCoach(r, { coachId: offered }).ok).toBe(true);
     const v = publicView(r, { hydrate });
     expect(v.eraContext.headline).toMatch(/ERA$/);
     expect(v.eraContext.highlights.filter(Boolean).length).toBeGreaterThan(0);
-    hold(r, []);
-    // Rolls are done: the era is still on screen through hiring and READY.
-    expect(publicView(r, { hydrate }).eraContext).toBeTruthy();
-    const offered = r.coachOffers.gold[0].coachId;
-    expect(selectCoach(r, { coachId: offered }).ok).toBe(true);
-    expect(publicView(r, { hydrate }).eraContext).toBeTruthy();
   });
 
   it("states a factual era impact for every era", () => {

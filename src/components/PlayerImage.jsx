@@ -2,13 +2,16 @@
 // Resolution order (see docs/IMAGES.md):
 //   1. Approved, provenance-tracked real image for this player entry
 //   2. Approved general-era image for the same player (era_match: general)
-//   3. EraClash branded silhouette fallback (always safe — never a fake face)
+//   3. Generated ARCHETYPE placeholder — a faceless, era-styled figure chosen by
+//      decade and position (src/images/placeholders.json); never a likeness
+//   4. EraClash branded silhouette fallback (always safe — never a fake face)
 // No AI-generated athlete likenesses, ever. No hotlinks in the product: only
-// assets from src/images/approved.json (served from /players/…).
+// assets from src/images/approved.json and public/players/… (served from /players/…).
 import { useState } from "react";
 import approvedData from "../images/approved.json";
 import { DECADE_COLORS } from "../players.js";
 import { T } from "../theme.js";
+import { resolvePlaceholderArt } from "../ui/time-arena/placeholders.js";
 
 const byPlayer = {};
 for (const img of approvedData.images) {
@@ -76,19 +79,25 @@ export default function PlayerImage({ player, variant = "thumbnail", team = "gol
   const [failed, setFailed] = useState(false);
   const v = VARIANTS[variant] || VARIANTS.thumbnail;
   const img = resolvePlayerImage(player.id);
+  const ph = img ? null : resolvePlaceholderArt(player);
 
-  if (!img || failed) return <Silhouette p={player} v={v} team={team} />;
+  if ((!img && !ph) || failed) return <Silhouette p={player} v={v} team={team} />;
+  // the square rendition for small chips, the portrait rendition otherwise
+  const small = Number(v.h) <= 64 && Number(v.w) <= 64;
+  const src = img ? img.local_asset_path : (small ? ph.thumb : ph.src);
 
   return (
-    <div className="ec-portrait-stage" data-team={team} style={{ width: v.w, height: v.h, borderRadius: v.radius, flexShrink: 0, position: "relative", overflow: "hidden", background: T.bgMuted, border: `1px solid ${team === "blue" ? T.blueBorder : T.goldBorder}` }}>
+    <div className="ec-portrait-stage" data-team={team} role={img ? undefined : "img"} aria-label={img ? undefined : ph.alt}
+      style={{ width: v.w, height: v.h, borderRadius: v.radius, flexShrink: 0, position: "relative", overflow: "hidden", background: T.bgMuted, border: `1px solid ${team === "blue" ? T.blueBorder : T.goldBorder}` }}>
       <div className="ec-portrait-field" aria-hidden="true" />
       <div className="ec-portrait-rim" aria-hidden="true" />
       <img
-        src={img.local_asset_path}
-        alt={`${player.name}, ${player.decade} player image`}
+        src={src}
+        alt={img ? `${player.name}, ${player.decade} player image` : ""}
         loading="lazy"
+        data-art={img ? "approved" : "placeholder"}
         onError={() => setFailed(true)}
-        style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center", filter: variant === "mvp" ? "none" : "grayscale(0.35) contrast(1.05)" }}
+        style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center", transform: !img && ph.flip ? "scaleX(-1)" : undefined, filter: img && variant !== "mvp" ? "grayscale(0.35) contrast(1.05)" : "none" }}
       />
       {variant !== "mvp" && <div aria-hidden="true" style={{ position: "absolute", inset: 0, background: TEAM_TINT[team] || TEAM_TINT.gold }} />}
     </div>

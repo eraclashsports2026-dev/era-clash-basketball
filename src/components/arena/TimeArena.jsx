@@ -1,7 +1,7 @@
 // ── The Time Arena ───────────────────────────────────────────────────────────
 // One persistent workspace for the whole Play experience:
 //
-//   draft → era reveal → hire → simulate → result → full report
+//   draft (three rolls) → hire → era revealed → simulate → result → full report
 //
 // none of which navigates away from the five you built. Phase 9B.3 made that
 // literal: the arena resolves ONE of six presentation states from the
@@ -24,7 +24,7 @@ import LiveIntel from "./LiveIntel.jsx";
 import ResultDock, { agoLabel } from "./ResultDock.jsx";
 import UtilityBar from "./UtilityBar.jsx";
 import {
-  GUIDED, resolveGuidedState, eraAcknowledged, acknowledgeEra, contextualPanel, showsPriorResult,
+  GUIDED, resolveGuidedState, contextualPanel, showsPriorResult,
   GUIDED_EVENTS, stateViewEvent,
 } from "./guidedState.js";
 import { track } from "../../analytics.js";
@@ -52,7 +52,7 @@ function GuideCard({ onGuide }) {
       <ol className="ec-ta-guide-steps">
         <li><b>ROLL</b> three times. Each roll offers a new five.</li>
         <li><b>HOLD</b> the legends you want. Released players are gone.</li>
-        <li><b>ADAPT</b> when the era is revealed on Roll 2.</li>
+        <li><b>ROLL</b> again after each hold — three rolls set your five.</li>
         <li><b>CHOOSE</b> a coach once your five is set.</li>
         <li><b>RUN</b> the Clash and let history decide.</li>
       </ol>
@@ -93,13 +93,9 @@ export default function TimeArena({
   careerProgress = null, priorCareerProgress = null,
 }) {
   const compact = useCompact();
-  // The one browser-side fact the resolver needs: has THIS run's era reveal
-  // been seen. Read from storage each render; the tick forces a re-render when
-  // the player continues.
-  const [, ackTick] = useState(0);
-  const runId = chaosRun?.chaosRunId || null;
-  const ack = eraAcknowledged(runId);
-  const state = resolveGuidedState({ run: chaosRun, phase, result, eraAcknowledged: ack });
+  // Pure derivation from the server's run view and the shell's phase; the era is
+  // revealed on the Clash Ready board (sequence 3), so no acknowledgement rides along.
+  const state = resolveGuidedState({ run: chaosRun, phase, result });
   const [mobileTeam, setMobileTeam] = useState("gold");
   const [priorOpen, setPriorOpen] = useState(false);
   const finished = phase === "complete" || phase === "simulating";
@@ -115,6 +111,8 @@ export default function TimeArena({
     track(GUIDED_EVENTS.STATE_VIEWED, props);
     const entry = stateViewEvent(state);
     if (entry) track(entry, props);
+    // The era is revealed with Clash Ready: the reveal event rides the same transition.
+    if (state === GUIDED.READY && props.era_style) track(GUIDED_EVENTS.ERA_REVEAL_VIEWED, props);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state]);
   // A fresh board shows Gold first on a phone.
@@ -128,8 +126,6 @@ export default function TimeArena({
   }, [priorOpen]);
   useEffect(() => { if (!showPrior) setPriorOpen(false); }, [showPrior]);
 
-  const acknowledge = () => { acknowledgeEra(runId); ackTick((n) => n + 1); };
-
   return (
     <div className="ec-ta" data-guided-state={state}>
       <div className="ec-ta-main">
@@ -138,7 +134,7 @@ export default function TimeArena({
           onRunChange={onRunChange} onReady={onReady} onGated={onGated}
           onRunClash={onRunClash} phase={phase} busy={busy} error={error} result={result}
           onReset={onReset}
-          guidedState={state} onAcknowledgeEra={acknowledge} onGuide={onGuide}
+          guidedState={state} onGuide={onGuide}
           mobileTeam={mobileTeam} onMobileTeam={setMobileTeam}
           challengeContext={challengeContext} />
 

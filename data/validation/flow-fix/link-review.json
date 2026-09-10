@@ -1,0 +1,169 @@
+{
+  "artifact": "link-and-error-review",
+  "origin": "http://localhost:4180",
+  "recordedAt": "2026-09-10T03:06:32.553Z",
+  "visited": [
+    {
+      "label": "desktop: Home",
+      "url": "http://localhost:4180/play",
+      "title": "EraClash Basketball — Build Your All-Time Squad",
+      "h1": "Play EraClash Basketball",
+      "overflow": 0
+    },
+    {
+      "label": "desktop: Daily",
+      "url": "http://localhost:4180/",
+      "title": "EraClash Basketball — Build Your All-Time Squad",
+      "h1": "CLASH ACROSS ERAS",
+      "overflow": 0
+    },
+    {
+      "label": "desktop: Challenges",
+      "url": "http://localhost:4180/",
+      "title": "EraClash Basketball — Build Your All-Time Squad",
+      "h1": null,
+      "overflow": 0
+    },
+    {
+      "label": "desktop: Leaderboard",
+      "url": "http://localhost:4180/leaderboard",
+      "title": "EraClash Basketball — Build Your All-Time Squad",
+      "h1": "Challenge Rating",
+      "overflow": 0
+    },
+    {
+      "label": "desktop: My EraClash",
+      "url": "http://localhost:4180/",
+      "title": "EraClash Basketball — Build Your All-Time Squad",
+      "h1": null,
+      "overflow": 0
+    },
+    {
+      "label": "desktop: Fantasy → first",
+      "url": "http://localhost:4180/fantasy/eraclash",
+      "title": "EraClash Basketball — Build Your All-Time Squad",
+      "h1": "EraClash Fantasy",
+      "overflow": 0
+    },
+    {
+      "label": "desktop: Chaos board",
+      "url": "http://localhost:4180/play/chaos",
+      "title": "EraClash Basketball — Build Your All-Time Squad",
+      "h1": "CHAOS CLASH",
+      "overflow": 0
+    },
+    {
+      "label": "desktop: GET /membership",
+      "status": 200
+    },
+    {
+      "label": "desktop: GET /credits",
+      "status": 200
+    },
+    {
+      "label": "desktop: GET /my-eraclash",
+      "status": 200
+    },
+    {
+      "label": "desktop: GET /?challenge=EC-ZZZZ-ZZZZ",
+      "status": 200
+    },
+    {
+      "label": "desktop: GET /challenge/nonexistent",
+      "status": 200
+    },
+    {
+      "label": "desktop: GET /result/zzzzzz",
+      "status": 200
+    },
+    {
+      "label": "phone: Home",
+      "url": "http://localhost:4180/play",
+      "title": "EraClash Basketball — Build Your All-Time Squad",
+      "h1": "Play EraClash Basketball",
+      "overflow": 0
+    },
+    {
+      "label": "phone: menu → /^Daily\\b(?! Clash)/",
+      "url": "http://localhost:4180/",
+      "title": "EraClash Basketball — Build Your All-Time Squad",
+      "h1": "CLASH ACROSS ERAS",
+      "overflow": 0
+    },
+    {
+      "label": "phone: menu → /^Challenges/",
+      "url": "http://localhost:4180/",
+      "title": "EraClash Basketball — Build Your All-Time Squad",
+      "h1": null,
+      "overflow": 0
+    },
+    {
+      "label": "phone: menu → /^Leaderboard/",
+      "url": "http://localhost:4180/leaderboard",
+      "title": "EraClash Basketball — Build Your All-Time Squad",
+      "h1": "Challenge Rating",
+      "overflow": 0
+    },
+    {
+      "label": "phone: menu → /^My EraClash/",
+      "url": "http://localhost:4180/",
+      "title": "EraClash Basketball — Build Your All-Time Squad",
+      "h1": null,
+      "overflow": 0
+    },
+    {
+      "label": "phone: Chaos board",
+      "url": "http://localhost:4180/play/chaos",
+      "title": "EraClash Basketball — Build Your All-Time Squad",
+      "h1": "CHAOS CLASH",
+      "overflow": 0
+    },
+    {
+      "label": "phone: GET /membership",
+      "status": 200
+    },
+    {
+      "label": "phone: GET /credits",
+      "status": 200
+    },
+    {
+      "label": "phone: GET /my-eraclash",
+      "status": 200
+    },
+    {
+      "label": "phone: GET /?challenge=EC-ZZZZ-ZZZZ",
+      "status": 200
+    },
+    {
+      "label": "phone: GET /challenge/nonexistent",
+      "status": 200
+    },
+    {
+      "label": "phone: GET /result/zzzzzz",
+      "status": 200
+    }
+  ],
+  "findings": [
+    {
+      "where": "desktop",
+      "kind": "http-503",
+      "detail": "/api/profile"
+    },
+    {
+      "where": "desktop",
+      "kind": "console-error",
+      "detail": "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+    },
+    {
+      "where": "phone",
+      "kind": "http-503",
+      "detail": "/api/profile"
+    },
+    {
+      "where": "phone",
+      "kind": "console-error",
+      "detail": "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+    }
+  ],
+  "pass": false
+}

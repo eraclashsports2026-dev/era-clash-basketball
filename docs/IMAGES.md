@@ -13,10 +13,18 @@ only for non-identifying surfaces (backgrounds, textures, atmosphere).
 2. **Tier 2** — verified open-license image from a secondary approved repository (Library of
    Congress "Free to Use", rights advisory checked per item)
 3. **Tier 3** — verified general-era image for the player (`era_match_quality: general/near`)
-4. **Tier 4** — EraClash silhouette fallback (initials + era color; never a fake face)
+4. **Tier 4** — **generated archetype placeholder** (owner request, 2026-09-09): a faceless,
+   era-styled figure — one guard, one wing, one big per decade, 24 images in
+   `public/players/placeholders/`, registry `src/images/placeholders.json` — chosen by the
+   player's DECADE and PRIMARY POSITION only. It depicts nobody, carries no face, and is
+   labelled as placeholder art for screen readers. It never sits above Tiers 1–3.
+5. **Tier 5** — EraClash silhouette fallback (initials + era color) when a placeholder file is
+   missing or fails to load
 
-Never fall back to a photorealistic generated likeness. Never show broken images
-(`PlayerImage` swaps to the silhouette on any load error).
+Never fall back to a photorealistic generated likeness. The archetype placeholders are
+non-identifying by construction (no facial features, no names, no numbers, no team marks)
+and are the only generated imagery allowed on a player surface. Never show broken images
+(`PlayerImage` and the arena card swap to the silhouette / initials on any load error).
 
 ## License whitelist
 

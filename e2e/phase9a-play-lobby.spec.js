@@ -268,8 +268,8 @@ test("one dominant action per Time Arena state, inactive systems subdued, the St
     return m;
   };
   // 9B.3 guided flow: one primary action per state, and Coach Chaos does not
-  // exist on the board until the five is set (owner decision: players → era →
-  // coaching → ready → result). `coachActive` is null while it is absent.
+  // exist on the board until the five is set (owner decision 2026-09-09: players →
+  // coaching → era → ready → result). `coachActive` is null while it is absent.
   // Empty frame: ROLL is the only primary action.
   await expect(ctas).toHaveCount(1);
   let m = await snap("empty");
@@ -281,11 +281,8 @@ test("one dominant action per Time Arena state, inactive systems subdued, the St
   expect(m.focus).toBe("drafting"); expect(m.coachActive).toBeNull();
 
   await page.getByRole("button", { name: /^ROLL 2$/ }).click();
-  await expect(stageAt(page, "ERA_REVEAL")).toBeVisible({ timeout: 20_000 });
-  await expect(ctas).toHaveCount(1);
-  m = await snap("era-reveal");
-  expect(m.focus).toBe("era_reveal"); expect(m.coachActive).toBeNull();
-  await page.getByRole("button", { name: /ADAPT TO ERA/ }).click();
+  // 2026-09-09: no era interstitial — Roll 2 lands as drafting again (era on Clash Ready)
+  await expect(page.getByText(/ROLL 2 OF 3/).first()).toBeVisible({ timeout: 20_000 });
   await expect(stageAt(page, "DRAFTING")).toBeVisible({ timeout: 20_000 });
   await expect(ctas).toHaveCount(1);
   await snap("drafting-roll-2");

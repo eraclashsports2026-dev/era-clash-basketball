@@ -29,10 +29,11 @@ const BASE = (process.argv[3] || "http://localhost:4180").replace(/\/$/, "");
 const OUT = "data/validation/9b3";
 const SHOTS = `${OUT}/screens`;
 const REF_DIR = "docs/ui/references/chaos-guided-flow-v2";
-const STATES = ["EMPTY", "DRAFTING", "ERA_REVEAL", "COACH_SELECT", "READY", "RESULT"];
-const FILE = { EMPTY: "01-foundation", DRAFTING: "02-drafting", ERA_REVEAL: "03-era-reveal", COACH_SELECT: "04-coach-chaos", READY: "05-clash-ready", RESULT: "06-result" };
-const REF = { EMPTY: "UI1-foundation.png", DRAFTING: "UI2-drafting.png", ERA_REVEAL: "UI3-era-reveal.png", COACH_SELECT: "UI4-coach-chaos.png", READY: "UI5-clash-ready.png", RESULT: "UI6-result.png" };
-const ARTIFACT = { EMPTY: "foundation-qa", DRAFTING: "drafting-qa", ERA_REVEAL: "era-reveal-qa", COACH_SELECT: "coach-chaos-qa", READY: "clash-ready-qa", RESULT: "result-state-qa" };
+// 2026-09-09: the era interstitial was retired (rolls → coach → era on Clash Ready); five states.
+const STATES = ["EMPTY", "DRAFTING", "COACH_SELECT", "READY", "RESULT"];
+const FILE = { EMPTY: "01-foundation", DRAFTING: "02-drafting", COACH_SELECT: "04-coach-chaos", READY: "05-clash-ready", RESULT: "06-result" };
+const REF = { EMPTY: "UI1-foundation.png", DRAFTING: "UI2-drafting.png", COACH_SELECT: "UI4-coach-chaos.png", READY: "UI5-clash-ready.png", RESULT: "UI6-result.png" };
+const ARTIFACT = { EMPTY: "foundation-qa", DRAFTING: "drafting-qa", COACH_SELECT: "coach-chaos-qa", READY: "clash-ready-qa", RESULT: "result-state-qa" };
 const DESKTOP = [[1536, 1024], [1440, 900], [1280, 800]];
 const TABLET = [[1024, 1366], [768, 1024]];
 const MOBILE = [[430, 932], [390, 844]];
@@ -91,10 +92,9 @@ async function walk(page, at, { hold = true, onEntry = null, afterAdapt = null, 
     }
   });
   await click(page, /^ROLL 2$/);
-  await mark("ERA_REVEAL", async () => { await stageIn(page, "ERA_REVEAL"); await entered("ERA_REVEAL"); });
-  await click(page, /ADAPT TO ERA/);
-  await stageIn(page, "DRAFTING");
-  if (afterAdapt) await afterAdapt();   // roll 2, era acknowledged: a distinct resume stop
+  // Roll 2 lands as drafting again (no era interstitial); wait for the roll count to say so.
+  await page.locator(".ec-ta-title-sub").filter({ hasText: "ROLL 2 OF 3" }).waitFor({ timeout: 60_000 });
+  if (afterAdapt) await afterAdapt();   // roll 2 landed: a distinct resume stop
   await click(page, /FINAL ROLL/);
   await mark("COACH_SELECT", async () => { await stageIn(page, "COACH_SELECT"); await page.locator(".ec-coach-action:not([disabled])").nth(2).waitFor({ timeout: 60_000 }); await entered("COACH_SELECT"); });
   await page.getByRole("button", { name: /^Select / }).first().click();
@@ -188,21 +188,13 @@ const rules = (st, f, mobile, touch = mobile) => {
       ok("Draft Pressure appears exactly once", f.draftPressureMentions === 1, `${f.draftPressureMentions}`);
       ok("the era is still hidden on roll 1", !f.eraId);
       break;
-    case "ERA_REVEAL":
-      ok("the era is the focus, with its real name", f.eraReveal === 1 && /^\d{4}s$/.test(f.eraId), f.eraId);
-      ok("three rule cards from the run's own facts", f.eraCards === 3, `${f.eraCards}`);
-      ok("one action: ADAPT TO ERA", f.ctaCount === 1 && /ADAPT TO ERA/.test(f.cta), f.cta);
-      ok("the roster stays present", f.cards === 10);
-      ok("Coach Chaos is not on the board at the reveal", f.coachCards === 0);
-      ok("no Result Dock at the reveal", f.docks === 0);
-      break;
     case "COACH_SELECT":
       ok("three coaching offers are the hero", f.coachCards === 3);
       ok("the finished five persists, compressed", f.cards === 10 && f.rosterMode === "compressed");
       ok("no hold controls once the five is set", f.holdControls === 0);
       ok("the continuation waits for a choice", f.ctaCount === 1 && /CONTINUE WITH COACH/.test(f.cta) && f.ctaDisabled, f.cta);
       ok("no staff is claimed before a decision exists", f.staffLines === 0);
-      ok("the era rides along as a compact chip", f.eraChip === 1);
+      ok("the era is still hidden while the coach is chosen", f.eraChip === 0 && f.eraReveal === 0, `chip ${f.eraChip} reveal ${f.eraReveal}`);
       ok("no Result Dock beside the coaching decision", f.docks === 0);
       break;
     case "READY":
@@ -211,6 +203,7 @@ const rules = (st, f, mobile, touch = mobile) => {
       ok("the staff decision is carried under the fives", f.staffLines >= 1, `${f.staffLines}`);
       ok("the three offers no longer compete with the action", f.coachCards === 0);
       ok("the era is stated", f.eraChip === 1);
+      ok("the era is revealed here, with its real name and three rule cards (rolls → coach → era)", f.eraReveal === 1 && /^\d{4}s$/.test(f.eraId) && f.eraCards === 3, `${f.eraId} · ${f.eraCards}`);
       ok("no Result Dock beside the ready matchup", f.docks === 0);
       break;
     case "RESULT":
@@ -262,7 +255,7 @@ async function statesMode(viewports = [...DESKTOP, ...TABLET, ...MOBILE], only =
     const failed = runs.flatMap((r) => r.checks.filter((c) => !c.pass).map((c) => ({ viewport: r.viewport, ...c })));
     if (failed.length) allPass = false;
     // A focused single-state run must not overwrite the seven-viewport record.
-    const name = prefix + (only ? { ERA_REVEAL: "era-reveal-flow-qa", COACH_SELECT: "coach-flow-qa", RESULT: "result-flow-qa" }[st] || `${ARTIFACT[st]}-focused` : ARTIFACT[st]);
+    const name = prefix + (only ? { COACH_SELECT: "coach-flow-qa", RESULT: "result-flow-qa", READY: "era-reveal-flow-qa" }[st] || `${ARTIFACT[st]}-focused` : ARTIFACT[st]);
     write(name, { artifact: name, phase: PHASE, generatedAt: now(), origin: BASE, state: st, viewports: viewports.map(([w, h]) => `${w}x${h}`), reference: `${REF_DIR}/${REF[st]}`, runs, failed, passed: failed.length === 0 });
   }
   if (!only) {
@@ -272,11 +265,11 @@ async function statesMode(viewports = [...DESKTOP, ...TABLET, ...MOBILE], only =
     const d = (st, k) => perState[st].map((r) => r.facts[k]);
     write(`${prefix}progressive-disclosure-qa`, {
       artifact: `${prefix}progressive-disclosure-qa`, phase: PHASE, generatedAt: now(), origin: BASE,
-      coachChaosHiddenUntilRosterSet: ["EMPTY", "DRAFTING", "ERA_REVEAL"].every((s) => d(s, "coachCards").every((n) => n === 0)) && d("COACH_SELECT", "coachCards").every((n) => n === 3),
-      resultDockAbsentDuringDraft: ["EMPTY", "DRAFTING", "ERA_REVEAL", "COACH_SELECT", "READY"].every((s) => d(s, "docks").every((n) => n === 0)),
+      coachChaosHiddenUntilRosterSet: ["EMPTY", "DRAFTING"].every((s) => d(s, "coachCards").every((n) => n === 0)) && d("COACH_SELECT", "coachCards").every((n) => n === 3),
+      resultDockAbsentDuringDraft: ["EMPTY", "DRAFTING", "COACH_SELECT", "READY"].every((s) => d(s, "docks").every((n) => n === 0)),
       liveIntelCompactWhileDrafting: d("DRAFTING", "intelCompact").every(Boolean),
       draftPressureStatedOnce: d("DRAFTING", "draftPressureMentions").every((n) => n === 1),
-      eraRevealIsADedicatedState: d("ERA_REVEAL", "eraReveal").every((n) => n === 1),
+      eraRevealedOnClashReady: d("READY", "eraReveal").every((n) => n === 1) && ["EMPTY", "DRAFTING", "COACH_SELECT"].every((s) => d(s, "eraReveal").every((n) => n === 0)),
       contextualRailGoneAtResult: d("RESULT", "rail").every((n) => n === 0),
       passed: allPass,
     });
@@ -347,14 +340,14 @@ async function resumeMode() {
     await page.getByRole("button", { name: /^Select / }).first().click();
   };
   const _label = (st) => (st === "COACH_SELECT" ? "COACH_SELECT (final roster locked, offers dealt)" : st);
-  await walk(page, (st) => probe(st, _label(st)), { afterAdapt: () => probe("DRAFTING", "DRAFTING (roll 2, era acknowledged)"), afterPick: pickProbe });
+  await walk(page, (st) => probe(st, _label(st)), { afterAdapt: () => probe("DRAFTING", "DRAFTING (roll 2 landed)"), afterPick: pickProbe });
   await browser.close();
   const recoverable = rows.filter((r) => r.state !== "RESULT");
   const passed = rows.every((r) => r.pass);
   write("active-run-resume-qa", { artifact: "active-run-resume-qa", phase: PHASE, generatedAt: now(), origin: BASE, rows, passed,
-    note: "The era acknowledgement is kept per run id in this browser, so ERA_REVEAL returns until it has been adapted to and DRAFTING returns after. No Continue spends a run: the run id is unchanged across every round-trip." });
+    note: "The era is revealed on Clash Ready (rolls → coach → era), so Roll 2 simply returns to DRAFTING. No Continue spends a run: the run id is unchanged across every round-trip." });
   write("state-machine-qa", { artifact: "state-machine-qa", phase: PHASE, generatedAt: now(), origin: BASE,
-    resolver: "src/components/arena/guidedState.js", states: STATES, derivedFrom: "the server run view (phase, coachDraft.selecting, eraState.revealed) + the shell's game phase + a per-run era acknowledgement",
+    resolver: "src/components/arena/guidedState.js", states: STATES, derivedFrom: "the server run view (phase, coachDraft.selecting) + the shell's game phase",
     reached: rows.map((r) => r.state), recoverable: recoverable.map((r) => ({ state: r.state, reload: r.reload, continue: r.continue })), passed });
   return passed;
 }
@@ -426,7 +419,7 @@ async function accessibilityMode() {
       if (p.focusVisible === false) failures.push(`${p.state}: focus not visible`);
       if (p.minTarget != null && p.minTarget < (vw <= 767 ? 44 : 24)) failures.push(`${p.state}: ${p.minTarget}px control`);
       if (p.unlabelledButtons) failures.push(`${p.state}: ${p.unlabelledButtons} unlabelled buttons`);
-      if (reduce && p.state === "ERA_REVEAL" && p.eraAnimation && p.eraAnimation !== "none") failures.push("era reveal animates under reduced motion");
+      if (reduce && p.state === "READY" && p.eraAnimation && p.eraAnimation !== "none") failures.push("era reveal animates under reduced motion");
       if (!reduce && ["DRAFTING", "READY"].includes(p.state) && !p.focusOnPrimary) failures.push(`${p.state}: focus did not move to the primary action`);
       if (!reduce && p.state === "COACH_SELECT" && !p.decisionFocused) failures.push(`${p.state}: focus did not move to the decision`);
     }
@@ -561,7 +554,7 @@ const run = async () => {
   let ok = true;
   console.log(`\nCHAOS GUIDED FLOW QA — ${MODE} — ${BASE}`);
   if (MODE === "states") ok = await statesMode();
-  else if (MODE === "era-reveal") ok = await statesMode([[1536, 1024]], "ERA_REVEAL");
+  else if (MODE === "era-reveal") ok = await statesMode([[1536, 1024]], "READY");
   else if (MODE === "coach-flow") ok = await statesMode([[1536, 1024]], "COACH_SELECT");
   else if (MODE === "result-flow") ok = await statesMode([[1536, 1024]], "RESULT");
   else if (MODE === "resume") ok = await resumeMode();

@@ -11,24 +11,23 @@
 // in src/chaos/runState.js remain the truth; these are how they are presented.
 // It lives with the arena components and NOT in src/chaos/, because that
 // directory is draft logic and is held byte-identical by earlier phases' gates.
-export const GUIDED_FLOW_VERSION = "chaos-guided-flow-v2";
+export const GUIDED_FLOW_VERSION = "chaos-guided-flow-v3";
 
 export const GUIDED = Object.freeze({
   EMPTY: "EMPTY",               // 1 Foundation: the empty frame and one ROLL
-  DRAFTING: "DRAFTING",         // 2 Drafting: cards, HOLD, the next roll
-  ERA_REVEAL: "ERA_REVEAL",     // 3 Era Reveal: the era is the focus, once
-  COACH_SELECT: "COACH_SELECT", // 4 Coach Chaos: the five is set, choose staff
-  READY: "READY",               // 5 Clash Ready: the matchup, one action
-  RESULT: "RESULT",             // 6 Result: this game, as the hero
+  DRAFTING: "DRAFTING",         // 2 Drafting: cards, HOLD, the next roll — three rolls
+  COACH_SELECT: "COACH_SELECT", // 3 Coach Chaos: the five is set, choose staff
+  READY: "READY",               // 4 Clash Ready: the era is revealed, the matchup, one action
+  RESULT: "RESULT",             // 5 Result: this game, as the hero
 });
 export const GUIDED_ORDER = Object.freeze([
-  GUIDED.EMPTY, GUIDED.DRAFTING, GUIDED.ERA_REVEAL, GUIDED.COACH_SELECT, GUIDED.READY, GUIDED.RESULT,
+  GUIDED.EMPTY, GUIDED.DRAFTING, GUIDED.COACH_SELECT, GUIDED.READY, GUIDED.RESULT,
 ]);
 
-// ── Era acknowledgement ──────────────────────────────────────────────────────
-// The server reveals the era WITH Roll 2 and never un-reveals it. Whether the
-// player has seen the reveal is a fact about this browser, kept per run id, so a
-// new run reveals again and a resumed run does not repeat itself.
+// ── Era acknowledgement (retired) ───────────────────────────────────────────
+// Sequence 3 reveals the era with the hire, on the Clash Ready board, so no
+// acknowledgement step exists any more. The helpers stay so the key an older
+// build wrote can still be cleared; the resolver no longer reads them.
 const ERA_ACK_KEY = "ec_chaos_era_ack";
 const storageOf = (s) => {
   if (s) return s;
@@ -54,9 +53,9 @@ const LEGACY_COACH_PHASES = new Set([
  * @param run     the authoritative chaos view (publicView), or null
  * @param phase   the shell's game phase: "draft" | "simulating" | "complete"
  * @param result  the shell's current result, when phase is "complete"
- * @param eraAcknowledged whether THIS run's era reveal has been seen
+ * (An earlier flow carried an era acknowledgement here; sequence 3 has none.)
  */
-export const resolveGuidedState = ({ run = null, phase = "draft", result = null, eraAcknowledged: ack = false } = {}) => {
+export const resolveGuidedState = ({ run = null, phase = "draft", result = null } = {}) => {
   // The game, once it is running or has run, is the hero — whatever the run says.
   if (phase === "simulating") return GUIDED.RESULT;
   if (phase === "complete" && result) return GUIDED.RESULT;
@@ -65,7 +64,8 @@ export const resolveGuidedState = ({ run = null, phase = "draft", result = null,
   if (p === "READY") return GUIDED.READY;
   if (p === "SIMULATED") return GUIDED.RESULT;
   if (run.coachDraft?.selecting) return GUIDED.COACH_SELECT;
-  if (p === "ROLL_2_REVEALED" && run.eraState?.revealed && !ack) return GUIDED.ERA_REVEAL;
+  // Roll 1 and Roll 2 are both drafting: hold, then roll again. The era is not
+  // a state of its own any more — it is revealed on the Clash Ready board.
   if (p === "ROLL_1_REVEALED" || p === "ROLL_2_REVEALED") return GUIDED.DRAFTING;
   if (LEGACY_COACH_PHASES.has(p)) return GUIDED.COACH_SELECT;
   return GUIDED.DRAFTING;
@@ -88,15 +88,13 @@ export const primaryAction = (state, { run = null, spinning = false, picked = nu
         action: "roll", label: spinning ? "ROLLING…" : nextRollLabel(run),
         sub: `ROLL ${run?.roll ?? 1} OF ${run?.totalRolls ?? 3}`, enabled: true,
       };
-    case GUIDED.ERA_REVEAL:
-      return { action: "acknowledge-era", label: "ADAPT TO ERA", sub: "FINAL ROLL NEXT", enabled: true };
     case GUIDED.COACH_SELECT:
       return {
         action: "hire", label: spinning ? "HIRING…" : "CONTINUE WITH COACH",
         sub: picked ? "One staff, for the whole game." : "Select a coach to continue.", enabled: !!picked,
       };
     case GUIDED.READY:
-      return { action: "run", label: spinning ? "RUNNING…" : "RUN CLASH", sub: "LET HISTORY DECIDE", enabled: true };
+      return { action: "run", label: spinning ? "RUNNING…" : "RUN CLASH", sub: run?.eraState?.eraStyleId ? `ERA: ${run.eraState.eraStyleId} · LET HISTORY DECIDE` : "LET HISTORY DECIDE", enabled: true };
     default:
       return null;
   }
@@ -106,9 +104,8 @@ export const primaryAction = (state, { run = null, spinning = false, picked = nu
 export const contextualPanel = (state) => ({
   [GUIDED.EMPTY]: "guide",            // how Chaos works, briefly
   [GUIDED.DRAFTING]: "intel-compact", // identity · risk · Blue's strength · draft pressure
-  [GUIDED.ERA_REVEAL]: "era",         // the era in full
   [GUIDED.COACH_SELECT]: "roster",    // the finished five, read strategically
-  [GUIDED.READY]: "matchup",          // compact matchup intel, no prediction
+  [GUIDED.READY]: "era",              // the era in full — revealed here, with its rules (and the member control)
   [GUIDED.RESULT]: null,              // the result IS the content
 }[state] ?? null);
 
@@ -145,9 +142,8 @@ export const stateAnnouncement = (state, { run = null, result = null } = {}) => 
   switch (state) {
     case GUIDED.EMPTY: return "Chaos Clash. Roll 1 of 3. Roll to draft your first five.";
     case GUIDED.DRAFTING: return `Roll ${run?.roll ?? 1} of ${run?.totalRolls ?? 3}. Hold the players you want, then roll.`;
-    case GUIDED.ERA_REVEAL: return eraAnnouncement(run);
     case GUIDED.COACH_SELECT: return "Your roster is set. Choose your coach.";
-    case GUIDED.READY: return "Clash ready. Run Clash to play it out.";
+    case GUIDED.READY: return `${eraAnnouncement(run) || "Clash ready."} Run Clash to play it out.`;
     case GUIDED.RESULT: return resultAnnouncement(result);
     default: return "";
   }
@@ -169,7 +165,6 @@ export const GUIDED_EVENTS = Object.freeze({
 });
 /** The entry event a state fires exactly once on being reached. */
 export const stateViewEvent = (state) => ({
-  [GUIDED.ERA_REVEAL]: GUIDED_EVENTS.ERA_REVEAL_VIEWED,
   [GUIDED.COACH_SELECT]: GUIDED_EVENTS.COACH_CHAOS_VIEWED,
   [GUIDED.READY]: GUIDED_EVENTS.CLASH_READY_VIEWED,
   [GUIDED.RESULT]: GUIDED_EVENTS.RESULT_STATE_VIEWED,

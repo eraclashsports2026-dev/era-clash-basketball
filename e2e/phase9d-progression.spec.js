@@ -19,8 +19,7 @@ const playThrough = async (page) => {
   await page.getByRole("button", { name: /^ROLL$/ }).click();
   await expect(page.locator('.ec-ta-team[data-team="gold"] .ec-pc').nth(4)).toBeVisible({ timeout: 30_000 });
   await page.getByRole("button", { name: /^ROLL 2$/ }).click();
-  await expect(stage(page, "ERA_REVEAL")).toBeVisible({ timeout: 30_000 });
-  await page.getByRole("button", { name: /ADAPT TO ERA/ }).click();
+  await expect(page.getByText(/ROLL 2 OF 3/).first()).toBeVisible({ timeout: 30_000 });
   await page.getByRole("button", { name: /FINAL ROLL/ }).click();
   await expect(page.locator(".ec-coach-action:not([disabled])").nth(2)).toBeVisible({ timeout: 30_000 });
   await page.getByRole("button", { name: /^Select / }).first().click();

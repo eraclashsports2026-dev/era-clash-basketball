@@ -65,9 +65,8 @@ const states = async (page) => {
   await page.locator(".ec-ta-roster .ec-pc").nth(9).waitFor({ timeout: 45_000 });
   await shot("2-roll-1");
   await click(page, /^ROLL 2$/, 45_000);
-  await page.locator(".ec-era-reveal-id").waitFor({ timeout: 45_000 });
-  await shot("3-roll-2-era-revealed");
-  await click(page, /ADAPT TO ERA/, 45_000);
+  await page.locator(".ec-ta-title-sub").filter({ hasText: "ROLL 2 OF 3" }).waitFor({ timeout: 45_000 });
+  await shot("3-roll-2");
   await click(page, /FINAL ROLL/, 45_000);
   await page.locator(".ec-coach-card").nth(2).waitFor({ timeout: 45_000 });
   await shot("4-final-roll-locked");

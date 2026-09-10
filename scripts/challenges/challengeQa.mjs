@@ -109,7 +109,7 @@ if (httpModes.has(MODE)) {
     await page.goto(`${BASE}/play/chaos`, { waitUntil: "domcontentloaded" }); await stage(page, "EMPTY"); await click(page, /^ROLL$/);
     await page.locator('.ec-ta-team[data-team="gold"] .ec-pc').nth(4).waitFor({ timeout: 60_000 });
     const runId = await page.evaluate(() => localStorage.getItem("ec_chaos_run"));
-    await click(page, /^ROLL 2$/); await stage(page, "ERA_REVEAL"); await click(page, /ADAPT TO ERA/); await click(page, /FINAL ROLL/);
+    await click(page, /^ROLL 2$/); await click(page, /FINAL ROLL/);
     await page.locator(".ec-coach-action:not([disabled])").nth(2).waitFor({ timeout: 60_000 }); await page.getByRole("button", { name: /^Select / }).first().click();
     await click(page, /CONTINUE WITH COACH/); await click(page, /RUN CLASH/); await page.locator(".ec-ta-score[data-winner]").waitFor({ timeout: 120_000 });
     return runId;
@@ -172,7 +172,7 @@ if (httpModes.has(MODE)) {
     g.on("response", async (r) => { if (r.url().includes("/api/profile") && r.request().method() === "POST") { try { const b = JSON.parse(r.request().postData() || "{}"); if (String(b.action || "").startsWith("challenge-")) calls.push({ action: b.action, http: r.status(), body: (await r.text()).slice(0, 300) }); } catch (e) { calls.push({ error: String(e).slice(0, 100) }); } } });
     await g.goto(`${BASE}/?challenge=${created.code}`); await g.getByRole("button", { name: /ACCEPT CHALLENGE/ }).click({ timeout: 30_000 });
     await stage(g, "DRAFTING"); await g.locator('.ec-ta-team[data-team="gold"] .ec-pc').nth(4).waitFor({ timeout: 60_000 });
-    await click(g, /^ROLL 2$/); await stage(g, "ERA_REVEAL"); await click(g, /ADAPT TO ERA/); await click(g, /FINAL ROLL/);
+    await click(g, /^ROLL 2$/); await click(g, /FINAL ROLL/);
     await g.locator(".ec-coach-action:not([disabled])").nth(2).waitFor({ timeout: 60_000 }); await g.getByRole("button", { name: /^Select / }).first().click();
     await click(g, /CONTINUE WITH COACH/); await click(g, /RUN CLASH/);
     const compared = await g.locator(".ec-chal-cmp[data-outcome]").waitFor({ timeout: 120_000 }).then(() => true).catch(() => false);
@@ -292,7 +292,7 @@ if (httpModes.has(MODE)) {
       ok("a guest accepts on the preview and the arena opens badged", arrived && (await page.locator(".ec-ta-chal-chip").count()) === 1);
       if (arrived) {
         await page.locator('.ec-ta-team[data-team="gold"] .ec-pc').nth(4).waitFor({ timeout: 60_000 });
-        await click(page, /^ROLL 2$/); await stage(page, "ERA_REVEAL"); await click(page, /ADAPT TO ERA/); await click(page, /FINAL ROLL/);
+        await click(page, /^ROLL 2$/); await click(page, /FINAL ROLL/);
         await page.locator(".ec-coach-action:not([disabled])").nth(2).waitFor({ timeout: 60_000 }); await page.getByRole("button", { name: /^Select / }).first().click();
         await click(page, /CONTINUE WITH COACH/); await click(page, /RUN CLASH/);
         const done = await page.locator(".ec-chal-cmp[data-outcome]").waitFor({ timeout: 150_000 }).then(() => true).catch(() => false);

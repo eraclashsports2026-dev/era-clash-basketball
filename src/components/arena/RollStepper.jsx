@@ -3,9 +3,9 @@
 // authoritative run: it never infers a roll of its own, so it cannot invent a
 // fourth or count an empty board as Roll 1.
 const STEPS = [
-  { n: 1, label: "FOUNDATION", sub: "Draft your first five and your first three staffs." },
-  { n: 2, label: "ADAPT", sub: "The era is revealed. Adapt both boards." },
-  { n: 3, label: "COMMIT", sub: "Final roster, final three offers, one hire." },
+  { n: 1, label: "ROLL 1", sub: "Your first five and your first three staffs." },
+  { n: 2, label: "ROLL 2", sub: "Hold who stays; the rest are rerolled." },
+  { n: 3, label: "FINAL ROLL", sub: "Final roster, final three offers, one hire — then the era." },
 ];
 
 export const rollState = (run, n) => {
