@@ -166,7 +166,12 @@ describe("league marks", () => {
   const brandFiles = ["src/components/arena/ArenaHeader.jsx", "src/components/arena/AccountControl.jsx", "src/components/arena/NavMenu.jsx", "src/components/lobby/PlayLobby.jsx", "src/components/lobby/ModeGlyph.jsx", "src/components/lobby/ModeSignature.jsx", "src/components/lobby/ContinueCard.jsx", "src/components/brand/EraFracture.jsx"];
   it("the header renders exactly one image: EraClash Logo Mk1, manifested", () => {
     const header = src("src/components/arena/ArenaHeader.jsx");
-    expect(header.match(/<img\b/g)?.length).toBe(1);
+    // the desktop header and the compact phone header (mobile correction, 2026-09-09)
+    // each render the SAME manifested mark; no other image appears in either
+    const imgs = header.match(/<img\b/g)?.length;
+    expect(imgs).toBeGreaterThanOrEqual(1);
+    expect(header.match(/data-brand-mark="eraclash-logo-mk1"/g)?.length).toBe(imgs);
+    expect(header.match(/src="\/brand\/eraclash-logo-mk1\.png"/g)?.length).toBe(imgs);
     expect(header).toMatch(/src="\/brand\/eraclash-logo-mk1\.png"/); expect(header).toMatch(/data-brand-mark="eraclash-logo-mk1"/);
     expect(existsSync("public/brand/eraclash-logo-mk1.png")).toBe(true);
     expect(json("data/validation/9a2/logo-mk1-manifest.json").product.sha256).toBe(sha(readFileSync("public/brand/eraclash-logo-mk1.png")));

@@ -16,6 +16,13 @@ import { test, expect } from "@playwright/test";
 const gotoNav = async (page, label) => {
   const direct = page.getByRole("button", { name: label, exact: true });
   if (await direct.count() && await direct.first().isVisible()) return direct.first().click();
+  // The phone (≤767px, mobile correction 2026-09-09): one compact header whose
+  // Menu sheet carries every destination; "Daily" the destination, not "Daily Clash" the mode.
+  const menu = page.getByRole("button", { name: "Menu", exact: true });
+  if (await menu.count() && await menu.first().isVisible()) {
+    await menu.first().click();
+    return page.getByRole("dialog", { name: "Menu" }).getByRole("menuitem", { name: new RegExp(`^${label}\\b(?! Clash)`) }).click();
+  }
   await page.getByRole("button", { name: "More", exact: true }).click();
   await page.getByRole("menuitem", { name: new RegExp(`^${label}`) }).click();
 };

@@ -24,3 +24,5 @@ export const useCompact = (max) => {
 export const NAV_COMPACT_MAX = 900;
 /** Below this, the account chip drops its name and tier and keeps its avatar. */
 export const ACCOUNT_COMPACT_MAX = 620;
+/** Below this, the header is the compact single row and the Chaos roster is five rows (the phone). */
+export const MOBILE_MAX = 767;

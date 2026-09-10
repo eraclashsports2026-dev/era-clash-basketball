@@ -124,7 +124,7 @@ const inspect = (page, state) => page.evaluate((state) => {
     cta: txt(".ec-ta-cta"), ctaCount: q(".ec-ta-cta"), ctaDisabled: !!document.querySelector(".ec-ta-cta")?.disabled,
     cards: q(".ec-ta-roster .ec-pc"), emptyCards: q(".ec-pc-empty"), holdControls: [...document.querySelectorAll(".ec-pc-action")].filter(vis).length,
     heldCards: q('.ec-pc[data-held="true"]'), keptTags: q(".ec-pc-kept"),
-    heldLocked: [...document.querySelectorAll('.ec-pc[data-held="true"] .ec-pc-action[aria-pressed="true"]')].filter((b) => /LOCKED/.test(b.textContent)).length,
+    heldLocked: [...document.querySelectorAll('.ec-pc[data-held="true"] .ec-pc-action[aria-pressed="true"]')].filter((b) => /LOCKED|HELD/.test(b.textContent)).length, // LOCKED on the card, HELD on the phone row (owner-approved mobile layout)
     coachCards: q(".ec-coach-card"), staffLines: q(".ec-ta-staff"),
     docks: q(".ec-dock"), rail: q(".ec-ta-rail"), railPanel: txt(".ec-ta-rail h2"),
     intelCompact: document.querySelector(".ec-intel--compact")?.dataset.expanded === "false", viewDetails: q(".ec-intel-more"),

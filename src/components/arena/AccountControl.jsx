@@ -12,7 +12,18 @@ import { initialsOf } from "../../accounts/accountState.js";
 
 const TIER_LABEL = { GUEST: "Guest", FREE: "Free account", PLUS: "EraClash+", COMMISSIONER: "Commissioner" };
 
-export default function AccountControl({ onCreateAccount, onNavigate, onChanged, account = null, onSignIn, onSignOutAccount }) {
+const PersonGlyph = () => (
+  <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="8" r="4" /><path d="M4 20c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5" />
+  </svg>
+);
+const iconButton = {
+  width: 44, height: 44, borderRadius: 12, cursor: "pointer", display: "grid", placeItems: "center",
+  border: "1px solid var(--ec-a-border, rgba(157,178,209,0.20))", background: "var(--ec-a-panel-raised, #0d1a2b)",
+  color: "var(--ec-a-text, #f5f7fb)", padding: 0,
+};
+
+export default function AccountControl({ onCreateAccount, onNavigate, onChanged, account = null, onSignIn, onSignOutAccount, iconOnly = false }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
   const triggerRef = useRef(null);
@@ -20,7 +31,7 @@ export default function AccountControl({ onCreateAccount, onNavigate, onChanged,
   const tier = currentTier();
   // On a phone the chip is the avatar. The name and tier are one tap away in
   // the menu, and the accessible name still carries both.
-  const compact = useCompact(ACCOUNT_COMPACT_MAX);
+  const compact = useCompact(ACCOUNT_COMPACT_MAX) || iconOnly;
 
   useEffect(() => {
     if (!open) return;
@@ -39,6 +50,16 @@ export default function AccountControl({ onCreateAccount, onNavigate, onChanged,
   const cloudUser = cloud && account?.session?.userId ? account : null;
 
   if (cloud && !cloudUser) {
+    // The compact header (phone): one 44px control opens the account dialog,
+    // which offers sign-in and account creation; the full "Create free
+    // account" action also lives in the menu sheet.
+    if (iconOnly) {
+      return (
+        <button onClick={onSignIn} aria-label="Sign in or create a free account" data-account-icon="true" style={iconButton}>
+          <PersonGlyph />
+        </button>
+      );
+    }
     // Guest, with real accounts available: the CTA creates one, and Sign in
     // sits beside it rather than being hidden behind the same word.
     return (
@@ -101,6 +122,13 @@ export default function AccountControl({ onCreateAccount, onNavigate, onChanged,
 
   // The flag-off path, unchanged since Phase 8A: a device-scoped local identity.
   if (!localAccount) {
+    if (iconOnly) {
+      return (
+        <button onClick={onCreateAccount} aria-label="Create account" data-account-icon="true" style={iconButton}>
+          <PersonGlyph />
+        </button>
+      );
+    }
     return (
       <button onClick={onCreateAccount} style={{
         minHeight: 44, padding: "0 16px", borderRadius: 10, cursor: "pointer",

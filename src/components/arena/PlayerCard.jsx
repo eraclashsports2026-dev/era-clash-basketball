@@ -29,7 +29,17 @@ const TIER_TITLE = {
  * The card back. Same width and height as a populated card, so Roll 1 REVEALS
  * cards rather than reflowing the board.
  */
-export function EmptyCard({ slot, team = "gold" }) {
+export function EmptyCard({ slot, team = "gold", variant = "card" }) {
+  if (variant === "row") {
+    return (
+      <div className="ec-pc-empty ec-pc-empty--row" data-slot={slot} data-team={team}
+        aria-label={`Empty ${slot} slot, Team ${team === "blue" ? "Blue" : "Gold"}`}>
+        <span className="ec-pr-slot">{slot}</span>
+        <span className="ec-pr-thumb ec-pr-thumb--empty" aria-hidden="true">EC</span>
+        <span className="ec-pc-empty-hint ec-pr-empty-hint">ROLL TO REVEAL</span>
+      </div>
+    );
+  }
   return (
     <div className="ec-pc-empty" data-slot={slot} data-team={team}
       aria-label={`Empty ${slot} slot, Team ${team === "blue" ? "Blue" : "Gold"}`}>
@@ -67,13 +77,79 @@ function Portrait({ card, player, team, testArt }) {
   );
 }
 
+/**
+ * The phone presentation of the same card: one compact row — position, a
+ * 44px portrait thumbnail, the name, era and rating, and the Hold control —
+ * so five players and the primary action fit one screen. Same resolver, same
+ * data, same actions; only the geometry differs. The classes the desktop card
+ * shares (.ec-pc, .ec-pc-action, data-held, .ec-pc-name, .ec-pc-ovr) are kept
+ * so gates and tests grade both presentations with one vocabulary.
+ */
+function PlayerRow({ card, player, team, interactive, held, kept, locked, disabled, onToggle }) {
+  const teamLabel = team === "blue" ? "Team Blue" : "Team Gold";
+  // The approved registry is the ONLY portrait source; when it holds nothing
+  // for this person the thumbnail is the initials fallback, sized identically,
+  // so a row never changes height when art exists or arrives.
+  const art = resolvePortrait(card.id, card.decade);
+  const hasArt = art.portraitStatus === PORTRAIT_STATUS.APPROVED && !!art.src;
+  return (
+    <div className="ec-pc ec-pc--row" data-team={team} data-slot={card.slot} data-held={held ? "true" : "false"}
+      aria-label={`${card.name}, ${teamLabel} ${card.slot}, ${card.decade}${kept ? ", kept from the last roll" : ""}${held ? ", held" : ""}`}>
+      <span className="ec-pc-slot ec-pr-slot">{card.slot}</span>
+      <span className="ec-pr-thumb" data-team={team} data-art={hasArt ? "approved" : "fallback"} aria-hidden={hasArt ? undefined : "true"}>
+        {hasArt && (
+          <img className="ec-pr-img" src={art.src} alt={`${card.name}, ${card.decade}`} loading="lazy" decoding="async" width="44" height="44"
+            style={{ objectPosition: art.objectPosition }}
+            onError={(e) => { const t = e.currentTarget.closest(".ec-pr-thumb"); if (t) t.dataset.art = "failed"; }} />
+        )}
+        <span className="ec-pr-initials" aria-hidden="true">{initialsOf(card.name)}</span>
+      </span>
+      <span className="ec-pr-main">
+        <span className="ec-pc-name ec-pr-name" title={card.name}>
+          {card.name}
+          {kept && <span className="ec-pc-kept ec-pr-kept" aria-hidden="true">KEPT</span>}
+        </span>
+        <span className="ec-pc-meta ec-pr-meta">
+          <span className="ec-pc-decade">{card.decade}</span>
+          <span className="ec-pc-ovr" title={`Draft guide rating${card.tier ? ` · ${TIER_TITLE[card.tier] || card.tier}` : ""}`}>
+            {player ? displayOVR(player, card.slot) : "—"}<span>OVR</span>
+          </span>
+          {player && player.positions?.length > 1 && (
+            <span className="ec-pc-elig ec-pr-elig" title={`Eligible positions: ${eligibleLabel(player)}`}>
+              {eligibleLabel(player)}<span className="sr-only"> eligible positions</span>
+            </span>
+          )}
+        </span>
+        {!hasArt && <span className="sr-only">{`${card.name} — EraClash silhouette, no portrait approved yet`}</span>}
+      </span>
+      {interactive ? (
+        <button type="button" className="ec-pc-action ec-pr-action" data-on={held ? "true" : "false"}
+          onClick={onToggle} disabled={disabled} aria-pressed={held}
+          aria-label={`${held ? "Release" : "Hold"} ${card.name}, ${teamLabel} ${card.slot}`}>
+          {held && <span aria-hidden="true">✓ </span>}{held ? "HELD" : "HOLD"}
+        </button>
+      ) : locked ? (
+        <span className="ec-pc-static ec-pr-static" aria-label={`${card.name} is on the final ${teamLabel} roster`}>FINAL</span>
+      ) : (
+        <span className="ec-pc-static ec-pr-static" data-on={held ? "true" : "false"}
+          aria-label={held ? `${card.name} held by the Legend Rival` : `${card.name} not held by the Legend Rival`}>
+          {held ? "HELD" : "—"}
+        </span>
+      )}
+    </div>
+  );
+}
+
 export default function PlayerCard({
   card, team = "gold", interactive = false, held = false, kept = false,
-  locked = false, disabled = false, onToggle, testArt = null,
+  locked = false, disabled = false, onToggle, testArt = null, variant = "card",
 }) {
-  if (!card) return <EmptyCard slot="—" team={team} />;
+  if (!card) return <EmptyCard slot="—" team={team} variant={variant} />;
   const player = byId.get(card.id);
   const teamLabel = team === "blue" ? "Team Blue" : "Team Gold";
+  if (variant === "row") {
+    return <PlayerRow card={card} player={player} team={team} interactive={interactive} held={held} kept={kept} locked={locked} disabled={disabled} onToggle={onToggle} />;
+  }
 
   return (
     <div className="ec-pc" data-team={team} data-slot={card.slot} data-held={held ? "true" : "false"}
