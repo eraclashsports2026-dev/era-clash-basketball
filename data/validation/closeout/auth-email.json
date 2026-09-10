@@ -1,0 +1,39 @@
+{
+  "artifact": "closeout-auth-email",
+  "date": "2026-09-10",
+  "problem": "Production auth uses Supabase's built-in email service: delivery only to organisation-team addresses, a low hourly cap, no SLA — ordinary visitors cannot complete email sign-up.",
+  "currentState": {
+    "provider": "Supabase built-in SMTP (no custom SMTP configured — no provider credentials exist in the repository or its environment surface)",
+    "domainMail": "eraclashbasketball.com has NO MX (no mailboxes), no SPF TXT at the apex, DMARC p=quarantine (GoDaddy default rua), nameservers ns05/ns06.domaincontrol.com (GoDaddy); www → Vercel",
+    "supabaseDefaults": "custom-SMTP default auth-email rate limit 30 new users/hour (Supabase docs); templates locked to defaults without custom SMTP",
+    "appMessaging": "provider 'not authorized' → EMAIL_NOT_ALLOWED invite-only copy (shipped 2026-09-10); RATE_LIMITED copy neutral",
+    "productionAuthSettings": "public /auth/v1/settings: disable_signup false (email sign-up enabled), mailer_autoconfirm false (email verification preserved), external.email true, google false, anonymous_users false"
+  },
+  "recommendation": {
+    "provider": "Resend (transactional) — free tier 3,000 emails/month, 100/day, 3 domains, 30-day retention; Pro $20/month for 50,000; SMTP smtp.resend.com, port 465 (SMTPS) or 587 (STARTTLS), username 'resend', password = API key (verified domain required)",
+    "sendingDomain": "a subdomain such as mail.eraclashbasketball.com so the apex SPF/DMARC and any future mailbox routing stay untouched; Resend then issues account-specific DNS records (DKIM TXT resend._domainkey.<sub>, SPF TXT on <sub>, MX on <sub> for bounces) to add at GoDaddy",
+    "from": "e.g. sign-in@mail.eraclashbasketball.com, sender name 'EraClash Basketball' — owner decision",
+    "contact": "the domain has no mailbox: the monitored privacy/support address must be an existing inbox the owner names",
+    "dnsRecords": "Resend generates account-specific records shown in its Records tab: a DKIM TXT (resend._domainkey.<sub>), an SPF TXT on the sending subdomain, and an MX on the sending subdomain for the return path (bounces). On a subdomain these never touch the apex MX/SPF/DMARC. Exact host/value/purpose will be listed verbatim for approval once the account and subdomain exist."
+  },
+  "implemented": {
+    "messaging": "main 5730519 (PR #63, deployed 2026-09-10T13:51:40Z): closed codes RESEND_COOLDOWN (with seconds), DELIVERY_FAILED, RATE_LIMITED, EMAIL_NOT_ALLOWED (kept until public delivery is verified), EMAIL_INVALID, CODE_INVALID_OR_EXPIRED; malformed addresses never reach the provider (control disabled / refused client-side); no raw provider text; no account-existence disclosure; dialog layout unchanged",
+    "tests": "tests/auth-email-messaging.test.js (12 mappings + dialog pins)"
+  },
+  "verified": {
+    "unit": "85 files / 2672 tests",
+    "live": "dialog opens on www.eraclashbasketball.com; a malformed address keeps CONTINUE WITH EMAIL disabled with zero auth requests; a well-formed address enables it (not sent — no production email quota spent)"
+  },
+  "deployed": "messaging YES (main 5730519); SMTP NOT configured",
+  "blocked": "Provider/account decision, DNS approval and Supabase Auth SMTP entry are owner actions; delivery verification needs owner-controlled ordinary addresses",
+  "remainingOwnerAction": [
+    "Approve Resend on the free tier (no purchase) or name another approved transactional provider/account",
+    "Name the From address + sender name and the monitored contact inbox",
+    "After Resend shows the DNS records for the chosen subdomain: approve their addition at GoDaddy (I will list record type/host/value/purpose verbatim from the provider)",
+    "Supabase → production project dxdtnhdeaanhfoqngdel → Authentication → SMTP Settings: enable custom SMTP with the provider values; keep Site URL https://www.eraclashbasketball.com and the callback destination; leave email confirmation on",
+    "Provide two ordinary (non-organisation) test addresses the owner controls for the delivery + callback + two-account Challenge test"
+  ],
+  "notDoing": [
+    "no auto-confirm, no password/social login, no players added to the Supabase organisation, no guest-budget change, no marketing subscription"
+  ]
+}

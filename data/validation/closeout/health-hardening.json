@@ -1,0 +1,23 @@
+{
+  "artifact": "closeout-health-hardening",
+  "date": "2026-09-10",
+  "problem": "GET /api/health?deep=1 answered anyone with credential metadata (kind, length, fingerprint, probe attempts) and the public payload carried per-credential presence booleans and a configuration dump.",
+  "implemented": {
+    "commit": "f157067 (PR #60, rebase-merged → main 8d0528b)",
+    "public": "status, build, coreEngine, persistence, aiNarrative, simV3, cloudAccounts {enabled, ready}, preview {enabled, candidateId, candidateCoreHash, calibrationVersion}",
+    "operator": "X-Preview-Key header carrying an OWNER-role preview-access key (existing hashed allowlist, server-side verification, or an owner preview session cookie); authorised BEFORE the provider probe; Cache-Control private, no-store; Vary X-Preview-Key, Cookie",
+    "refused": "anonymous, ordinary players, tester keys/sessions, keys in the query string, and every spelling deep=1/true/'', debug, diag, diagnostics, verbose → 401 {error:'unauthorized'} with no probe",
+    "alsoApplied": "/api/profile?cloud=status: public {enabled, ready}; operator: full configuration booleans",
+    "consumers": "App reads only simV3 (boot unaffected); QA scripts send the header via scripts/_lib/operatorHealth.mjs; service worker never caches /api/"
+  },
+  "verified": {
+    "unit": "tests/health-operator-access.test.js (7) + server/v9b1/candidate-identity pins; 84 files / 2657 tests",
+    "harness": "anon 401 (deep, debug), tester 401, owner 200 private/no-store; chaos/challenge/competitive/progression security gates PASS",
+    "preview": "tester session 401 for deep/debug/diag; tester cloud=status minimal; no session 401 (gate); owner header alone 200",
+    "live": "main 8d0528b deployed 2026-09-10T13:40:20Z — anon 401 for all 6 spellings and a query-string key; tester header 401; owner header 200 private, no-store; operator diagnostics: environment production, serverCredentialAccepted true (probe 200), previewPointedAtProduction false; public payload minimal; cloud=status public {enabled,ready}; app boots (/play 200), leaderboard 200"
+  },
+  "deployed": "YES — main 8d0528b",
+  "blocked": null,
+  "remainingOwnerAction": null,
+  "note": "Metadata exposure only; no secret value was ever in the payload (tests forbade key material). No credential rotation performed."
+}
