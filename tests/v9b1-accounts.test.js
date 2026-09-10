@@ -583,7 +583,9 @@ describe("preservation", () => {
   });
   it("the preview access gate and Wave 2 study are untouched", () => {
     if (!parentAvailable()) return;
-    expect(git(`git diff --name-only ${PARENT} -- config/ api/_lib/previewAccessCheck.js src/wave2.js api/feedback.js data/validation/9a3`)).toBe("");
+    // config/previewAccess.js is the gate's allowlist; config/projectRefs.js (2026-09-10) names the
+    // two public Supabase refs for the environment-isolation guards and is not part of the gate.
+    expect(git(`git diff --name-only ${PARENT} -- config/previewAccess.js api/_lib/previewAccessCheck.js src/wave2.js api/feedback.js data/validation/9a3`)).toBe("");
   });
   it("the new client-rendered routes are gated and rewritten like every other one", () => {
     const mw = read("middleware.js");

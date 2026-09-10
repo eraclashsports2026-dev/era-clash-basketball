@@ -59,18 +59,25 @@ const session = (s) => ({
 });
 
 /** Provider errors become closed codes: no vendor text reaches telemetry. */
-const asError = (e) => {
+export const asError = (e) => {
   const raw = String(e?.message || "");
-  const code = /rate|too many/i.test(raw) ? "RATE_LIMITED"
+  const status = Number(e?.status || 0);
+  // The resend cooldown is its own case: "For security purposes, you can only
+  // request this after N seconds." — not abuse, not a delivery problem.
+  const cooldown = raw.match(/only request this after (\d+) seconds?/i);
+  const code = cooldown ? "RESEND_COOLDOWN"
+    : /rate|too many/i.test(raw) ? "RATE_LIMITED"
     : /expired|invalid.*(token|code|otp)/i.test(raw) ? "CODE_INVALID_OR_EXPIRED"
     // The built-in email service only delivers to invited addresses until custom
     // SMTP is configured: the provider answers "not authorized" for the rest.
     : /not.?authori[sz]ed|not allowed|signups? (?:is |are )?(?:disabled|not allowed)/i.test(raw) ? "EMAIL_NOT_ALLOWED"
+    // A mail relay that refused or timed out: the address is fine, the send is not.
+    : (/error sending|failed to send|unable to send|smtp|mailer/i.test(raw) || status >= 500) ? "DELIVERY_FAILED"
     : /email/i.test(raw) ? "EMAIL_INVALID"
     : /row-level security|permission|denied/i.test(raw) ? "NOT_PERMITTED"
     : /network|fetch/i.test(raw) ? "NETWORK"
     : "PROVIDER_ERROR";
-  return Object.assign(new Error(code), { code });
+  return Object.assign(new Error(code), { code, retryAfterSeconds: cooldown ? Number(cooldown[1]) : undefined });
 };
 
 /** Roster writes raise named database exceptions; map them to codes the UI explains. */
@@ -88,6 +95,9 @@ export const FAILURE_CODES = Object.freeze([
   "RESULT_NOT_FOUND", "NOT_YOUR_RESULT", "ALREADY_CLAIMED", "SAVE_FAILED",
   "ROSTER_LIMIT_REACHED", "ROSTER_IMMUTABLE", "ROSTER_INVALID", "ROSTER_NAME_INVALID",
   "LINK_OPENED_ELSEWHERE",
+  "RESEND_COOLDOWN",
+  "DELIVERY_FAILED",
+  "EMAIL_NOT_ALLOWED"
 ]);
 
 /**
