@@ -17,6 +17,8 @@ import { track } from "../../analytics.js";
 
 const MESSAGE = {
   RATE_LIMITED: "Sign-in emails are limited right now. Try again in a little while.",
+  RESEND_COOLDOWN: "You asked for a code a moment ago. Wait a minute before asking for another.",
+  DELIVERY_FAILED: "We could not send the email just now. Your address is fine — try again in a minute.",
   CODE_INVALID_OR_EXPIRED: "That code is not valid any more. Ask for a new one.",
   EMAIL_INVALID: "That email address does not look right.",
   EMAIL_NOT_ALLOWED: "Email sign-in is open to invited testers during the launch window. Ask for an invite — your runs stay on this device as a guest meanwhile.",
@@ -32,6 +34,7 @@ export default function AccountDialog({ open, entryPoint = "header", returnTo = 
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const [failure, setFailure] = useState(null);
+  const [retryAfter, setRetryAfter] = useState(null);
   // Only offer a method the project actually has switched on. A dead
   // "Continue with Google" is worse than no Google at all.
   const [methods, setMethods] = useState({ google: false, email: true });
@@ -65,7 +68,9 @@ export default function AccountDialog({ open, entryPoint = "header", returnTo = 
 
   if (!open) return null;
   const dest = safeReturnPath(returnTo);
-  const fail = (e) => { setFailure(e?.code || "PROVIDER_ERROR"); setStage(stage === "code" ? "code" : "choose"); };
+  const fail = (e) => { setFailure(e?.code || "PROVIDER_ERROR"); setRetryAfter(e?.retryAfterSeconds || null); setStage(stage === "code" ? "code" : "choose"); };
+  // A malformed address is refused here, before any request leaves the browser.
+  const emailLooksValid = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(v || "").trim());
 
   const google = async () => {
     setFailure(null); setStage("working");
@@ -73,7 +78,9 @@ export default function AccountDialog({ open, entryPoint = "header", returnTo = 
     try { await withProvider((p) => p.signInWithGoogle(dest)); } catch (e) { fail(e); }
   };
   const sendCode = async () => {
-    setFailure(null); setStage("working");
+    setFailure(null); setRetryAfter(null);
+    if (!emailLooksValid(email)) { setFailure("EMAIL_INVALID"); return; }
+    setStage("working");
     track("account_signup_started", { authMethod: "email", entryPoint });
     try { await withProvider((p) => p.sendEmailCode(email, dest)); setStage("code"); } catch (e) { fail(e); }
   };
@@ -170,7 +177,7 @@ export default function AccountDialog({ open, entryPoint = "header", returnTo = 
         <div aria-live="polite" style={{ minHeight: 18 }}>
           {failure && (
             <p id="ec-auth-error" role="alert" style={{ margin: "10px 0 0", fontSize: 12.5, color: "var(--ec-a-red, #e06060)" }}>
-              {MESSAGE[failure] || MESSAGE.PROVIDER_ERROR}
+              {failure === "RESEND_COOLDOWN" && retryAfter ? `You asked for a code a moment ago. Wait about ${retryAfter} seconds before asking for another.` : (MESSAGE[failure] || MESSAGE.PROVIDER_ERROR)}
             </p>
           )}
         </div>

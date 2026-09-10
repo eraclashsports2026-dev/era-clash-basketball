@@ -299,7 +299,9 @@ describe("telemetry preservation", () => {
     // The STUDY is the invariant. api/events.js, middleware.js and vercel.json
     // are shared infrastructure a later phase may extend additively, so those
     // are pinned by behaviour below rather than by byte-identity.
-    expect(git(`git diff --name-only ${PARENT} -- src/wave2.js config/ api/feedback.js api/game.js api/_lib/previewAccessCheck.js data/validation/9a3/wave2-test-plan.json data/validation/9a3/wave2-acceptance-policy.json`)).toBe("");
+    // config/previewAccess.js is the study's allowlist; config/projectRefs.js (2026-09-10) is the
+    // environment-isolation guard's public Supabase refs and is not part of the study.
+    expect(git(`git diff --name-only ${PARENT} -- src/wave2.js config/previewAccess.js api/feedback.js api/game.js api/_lib/previewAccessCheck.js data/validation/9a3/wave2-test-plan.json data/validation/9a3/wave2-acceptance-policy.json`)).toBe("");
   });
   it("the Wave 2 telemetry partition still keys on wave, cohort, tester and build", async () => {
     const { wave2PartitionKey } = await import("../api/events.js");
