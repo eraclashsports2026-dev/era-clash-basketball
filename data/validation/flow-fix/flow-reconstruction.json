@@ -1,6 +1,6 @@
 {
   "artifact": "flow-reconstruction",
-  "ownerReport": "2026-09-09 iPhone test: a shadow band under the header; 'Adapt to Era' after the rolls; the flow must be Roll 1 (hold) → Roll 2 (hold) → Roll 3 (final roster) → coach → the era randomized for the game; AI-generated portrait placeholders for every player.",
+  "ownerReport": "LIVE on www.eraclashbasketball.com @ 0e4f309. Flow reconstructed: Roll 1 → Roll 2 → Final Roll (hold after each), coach selection, then the era is revealed (seed-randomised) at Clash Ready — no Adapt to Era step anywhere; both sides are era-blind until the hire. Phone header shadow removed (atmosphere layers hidden ≤767px). Faceless archetype placeholder portraits for all 381 players (24 archetypes, never a likeness; 3 first drafts re-drawn for legibility). Review: full gate sweep — 4 gates re-pinned/extended to the new flow, 1 environment (4177 default), 3 pre-existing lab-selector failures unchanged; preview /api/profile 502 = preview-scoped server key rejected (owner env item; production 200). Web + mobile play simulation 100/100 on harness, preview and live; link review on live: 0 findings.",
   "branch": "fix/flow-era-after-coach-portraits",
   "baseline": "main 1080fba (production)",
   "changes": {
@@ -93,5 +93,29 @@
     "linkReview": "visited 25; only the provider-less 503s above — data/validation/flow-fix/link-review.json",
     "unit": "82/82 files, 2647 tests",
     "wavePreservation": "see wavePreservation"
+  },
+  "liveVerification": {
+    "mergedAs": "PR #54 rebase-merged → main 0e4f309 (2026-09-10T03:44Z); production deployment 6364154034 success",
+    "health": "/api/health?deep=1: status ok · build 2.7.2 · providerConfigured · serverCredentialAccepted=true (PostgREST 200) · serverAndBrowserSameProject · Candidate 4 · calibration 1.4.0 · coreHash 55bb26a2…",
+    "bundle": "assets/index-C7j1Vp-E.js (new); /players/placeholders/2020s-big.jpg 200, 31324 bytes = the re-drawn file",
+    "playSimulation": "SCORE 100/100 (187/187 weighted · 50/50 criteria) — web 1440×900 + mobile 390×844 — data/validation/flow-fix/live/play-simulation-score.json",
+    "linkReview": "visited 25 · findings 0 — data/validation/flow-fix/live/link-review.json",
+    "chaosDeployedQa": "PASS — deployed: states pass · secrets 0 · Candidate 4 1.4.0 · build eraclash-assets:2.7.2:5081550bcd83 · serves this head true",
+    "protectedRefs": "wave1 4dc59e7 · wave2 ef0caa5 unchanged; main 9cd95ff → 1080fba (mobile release) → 0e4f309 (this fix)",
+    "screens": [
+      "live/screens/sim-mobile-roll1-held.png",
+      "live/screens/sim-mobile-ready-era.png",
+      "live/screens/sim-mobile-result.png",
+      "live/screens/sim-web-roll1-held.png",
+      "live/screens/sim-web-ready-era.png",
+      "live/screens/sim-web-result.png"
+    ]
+  },
+  "completionScore": {
+    "live": 100,
+    "preview": 100,
+    "harness": 100,
+    "scale": "0–100 = weighted share of 50 user-journey criteria met on web and mobile (playSimulation.mjs)",
+    "note": "no deductions; the only review findings outside the product are the preview environment's rejected server key and the harness's provider-less 503s"
   }
 }
