@@ -1,0 +1,22 @@
+{
+  "artifact": "mobile-compact-ui",
+  "authorisation": "Owner-approved mobile redesign (compact pinned header, five compact rows with portrait thumbnails, contained HOLD/HELD, Hold/era correction), 2026-09-09.",
+  "branch": "fix/mobile-compact-roster",
+  "baseline": "main 5e1ef38 (production)",
+  "defect": {
+    "reported": "After the first roll, Hold becomes unavailable and Adapt to Era appears instead.",
+    "reproduced": "Yes — measured on the live domain (scripts probe, four phone widths): the sticky primary-action wrap was 172px tall (gradient padding + status text) and at 430×932 the third and fourth HOLD buttons sat under it; document.elementFromPoint at their centres returned the CTA wrap. A tap meant for HOLD therefore fired ROLL 2, which reveals the era (Hold is only legal in DRAFTING), so ADAPT TO ERA appeared with no Hold. At 390/375/360 the same collision occurs as those rows scroll into the bottom band.",
+    "notTheCause": ["the guided-state resolver (ERA_REVEAL is derived only from ROLL_2_REVEALED + revealed era; unchanged)", "roll counts or hold rules (unchanged)", "a duplicate mobile roster (there was none)"],
+    "secondaryHardening": "firePrimary now ignores a tap while a request is in flight and a second tap on the SAME action/state/roll inside 400ms (a real double tap); act() is serialised by a synchronous ref. A different action right after (FINAL ROLL after ADAPT) is never delayed — the first version of the guard blocked that and was corrected before merge.",
+    "fix": ["sticky wrap is pointer-events:none with only the button and RESET receiving events; compact padding; status text hidden on the phone (the instruction moved above the roster)", "scroll-padding-bottom on the root and scroll-margin on rows so a control scrolled into view lands above the bar", "five compact rows replace the tall cards on the phone, so all five Hold controls are visible with the action"]
+  },
+  "implementation": {
+    "header": "ArenaHeader renders CompactHeader at ≤767px: Menu (44px, opens a dialog sheet with game modes, fantasy, the rest of EraClash and the account actions; focus moves in, Tab is trapped, Escape/scrim close, focus returns to the button, body scroll locked) · Mk1 logo (28px, home) · account control icon-only (44px; signed-out: opens the account dialog; signed-in: the existing avatar menu). 57px tall at 390/430; position:sticky top:0 z 50 on the same .ec-brand-header master-brand surface. Desktop header unchanged (65px, six items).",
+    "rows": "PlayerCard variant='row' (PlayerRow) at ≤767px, chosen by ChaosStage via useCompact(MOBILE_MAX); Bench passes it to both teams. Row = position badge · 44px thumbnail · name · era + OVR (+ eligible positions) · HOLD/HELD button (44px, aria-pressed, accessible name carries the player) or a read-only static for Team Blue / FINAL. Same .ec-pc / .ec-pc-action / data-held vocabulary as the card so gates grade both.",
+    "portraits": "resolvePortrait(card.id, card.decade) from src/ui/time-arena/portraits.js over src/images/approved.json — the existing approved registry, unchanged. The registry currently holds ZERO approved images, so every thumbnail renders the existing initials fallback at 44px (dark portrait well, team-tinted ring). When approved art is added, the row shows it (object-fit cover, focal object-position from the registry, onError → fallback) with no layout shift: the 44px box is reserved.",
+    "desktop": "cards (322px), header (65px), nav items, hold labels unchanged — measured on the harness at 1536×1024"
+  },
+  "gatesUpdated": ["scripts/chaos/guidedFlowQa.mjs heldLocked accepts LOCKED (card) or HELD (row)", "playwright.config.js routes e2e/mobile-compact.spec.js to the candidate3-preview project (Chaos flag on)"],
+  "tests": { "new": "e2e/mobile-compact.spec.js — 9 tests at 430×932 and 390×844 with touch taps: compact pinned header + menu focus/escape; every Hold reachable (elementFromPoint = the button), holds only its player, no roll; real double tap on ROLL 2 = one 'decide' request; era acknowledged consumes no roll; kept players; full Clash to Result with Run it back; Team Blue read-only; Home/Daily compact header; desktop keeps the full header" },
+  "residual": ["Approved portraits: none exist in the registry, so no player shows a photograph yet (fallback initials) — reported, not invented", "Real iPhone Safari not exercised by the developer (WebKit/Chromium emulation only); owner retest requested"]
+}

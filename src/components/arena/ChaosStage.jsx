@@ -33,6 +33,7 @@ import {
 import { COACHES } from "../../v3/coaches.js";
 import { statLine } from "./ResultDock.jsx";
 import { recordFirstRoll } from "../../activation.js";
+import { useCompact, MOBILE_MAX } from "../../ui/useCompact.js";
 import { track } from "../../analytics.js";
 
 const SLOTS = ["PG", "SG", "SF", "PF", "C"];
@@ -62,14 +63,14 @@ const TeamLabel = ({ team, name, sub }) => (
 );
 
 /** One side's five. display:contents — the cards are items of the roster grid. */
-function Bench({ team, roster, heldSlots, keptSlots = [], interactive, locked, busy, onToggle }) {
+function Bench({ team, roster, heldSlots, keptSlots = [], interactive, locked, busy, onToggle, variant = "card" }) {
   return (
-    <div className="ec-ta-team" data-team={team}>
+    <div className="ec-ta-team" data-team={team} data-variant={variant}>
       {SLOTS.map((slot, i) => {
         const card = roster?.[i];
-        if (!card) return <EmptyCard key={slot} slot={slot} team={team} />;
+        if (!card) return <EmptyCard key={slot} slot={slot} team={team} variant={variant} />;
         return (
-          <PlayerCard key={card.id} card={card} team={team}
+          <PlayerCard key={card.id} card={card} team={team} variant={variant}
             interactive={interactive} locked={locked} disabled={busy}
             held={heldSlots.includes(card.slot)} kept={keptSlots.includes(card.slot)}
             onToggle={() => onToggle?.(card)} />
@@ -120,6 +121,12 @@ export default function ChaosStage({
   const [announce, setAnnounce] = useState("");
   const resumed = useRef(false);
   const ctaRef = useRef(null);
+  // One request at a time. `working` is React state and a second tap can land
+  // before the re-render disables the control; the ref is synchronous.
+  const inFlight = useRef(false);
+  const lastFire = useRef({ key: "", at: 0 });
+  // The phone presents the five as compact rows (see PlayerRow).
+  const rowLayout = useCompact(MOBILE_MAX);
 
 
   const adopt = useCallback((chaos) => {
@@ -160,10 +167,15 @@ export default function ChaosStage({
   }, [guidedState, run]);
 
   const act = async (fn, failure) => {
+    if (inFlight.current) return null;
+    inFlight.current = true;
     setWorking(true); setErr(null);
     try { return await fn(); }
     catch (e) { setErr(e.message || failure); return null; }
-    finally { setWorking(false); }
+    // The debounce window belongs to ONE action: once the request has answered
+    // the next action is legitimate immediately (ROLL 2 right after the cards
+    // land), so the window is cleared here rather than left to expire.
+    finally { inFlight.current = false; setWorking(false); }
   };
 
   const deal = async () => {
@@ -245,6 +257,15 @@ export default function ChaosStage({
   }[cta.action];
   const firePrimary = () => {
     if (!cta || !onPrimary) return;
+    // One tap, one action: a request already in flight, or a second tap on the
+    // SAME action in the same state inside 400ms (a double tap, or a tap that
+    // landed during the busy re-render), is ignored rather than becoming a
+    // second roll. A different action — FINAL ROLL right after ADAPT TO ERA —
+    // is a new decision and is never delayed.
+    const now = Date.now();
+    const key = `${state}:${cta.action}:${run?.roll ?? 0}`;
+    if (inFlight.current || spinning || (lastFire.current.key === key && now - lastFire.current.at < 400)) return;
+    lastFire.current = { key, at: now };
     track(GUIDED_EVENTS.PRIMARY_ACTION, { state, action: cta.action, roll: run?.roll ?? null });
     if (cta.action === "run") track(GUIDED_EVENTS.RUN_CLASH_STARTED, { era_style: eraId });
     onPrimary();
@@ -324,6 +345,22 @@ export default function ChaosStage({
       {/* One live region: state changes, holds, the era, the pick. Never the CTA text. */}
       <div className="sr-only" aria-live="polite">{announce}</div>
 
+      {/* Phone: a short instruction for the current step, above the five. The
+          sticky action bar below is the button alone, so it stays compact. */}
+      {rowLayout && state !== GUIDED.RESULT && (() => {
+        const line = state === GUIDED.EMPTY ? ["Roll 1 of 3", "Roll to draft your first five."]
+          : state === GUIDED.DRAFTING ? [`Roll ${run?.roll ?? 1} complete`, "Review your players and choose who to hold."]
+            : state === GUIDED.ERA_REVEAL ? ["Era revealed", "Adapt to the era, then take your final roll."]
+              : state === GUIDED.COACH_SELECT ? ["Roster set", "Choose your coach."]
+                : ["Clash ready", "Run Clash to play it out."];
+        return (
+          <div className="ec-ta-mobile-status" aria-hidden="true">
+            <span className="ec-ta-mobile-status-glyph">🎲</span>
+            <span><span className="ec-ta-mobile-status-t">{line[0]}</span><span className="ec-ta-mobile-status-s">{line[1]}</span></span>
+          </div>
+        );
+      })()}
+
       {/* Phone: one team at a time, the other one tap away. Desktop ignores this. */}
       <div className="ec-ta-team-toggle" role="tablist" aria-label="Show a team">
         {[["gold", "TEAM GOLD", "YOUR FIVE"], ["blue", "TEAM BLUE", "LEGEND RIVAL"]].map(([t, l, sub]) => (
@@ -336,12 +373,14 @@ export default function ChaosStage({
         <Bench team="gold" roster={run?.gold?.roster}
           heldSlots={interactive ? holds : (run?.gold?.heldSlots || [])}
           keptSlots={run && run.roll > 1 && state === GUIDED.DRAFTING ? run.gold.heldSlots : []}
-          interactive={interactive} locked={!interactive && !!run} busy={spinning} onToggle={togglePlayer} />
+          interactive={interactive} locked={!interactive && !!run} busy={spinning} onToggle={togglePlayer}
+          variant={rowLayout ? "row" : "card"} />
         <div className="ec-ta-roster-divider" aria-hidden="true" />
         <Bench team="blue" roster={run?.blue?.roster}
           heldSlots={run?.blue?.heldSlots || []}
           keptSlots={run && run.roll > 1 && state === GUIDED.DRAFTING ? run.blue.heldSlots : []}
-          interactive={false} locked={!interactive && !!run} busy={spinning} />
+          interactive={false} locked={!interactive && !!run} busy={spinning}
+          variant={rowLayout ? "row" : "card"} />
       </div>
 
       {/* Both staffs are known from READY on, so the row stays through the
