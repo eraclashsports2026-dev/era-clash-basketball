@@ -17,7 +17,10 @@ only for non-identifying surfaces (backgrounds, textures, atmosphere).
    era-styled figure — one guard, one wing, one big per decade, 24 images in
    `public/players/placeholders/`, registry `src/images/placeholders.json` — chosen by the
    player's DECADE and PRIMARY POSITION only. It depicts nobody, carries no face, and is
-   labelled as placeholder art for screen readers. It never sits above Tiers 1–3.
+   labelled as placeholder art for screen readers. It never sits above Tiers 1–3. Every file
+   must clear the Phase 9A.2 separation rule on the card crop (torso vs its own field
+   ≥ 1.25:1 or ΔE ≥ 30 — `npm run ui:portrait-contrast-qa` measures all 24); three first
+   drafts that failed it were re-drawn on a lighter slate field (2026-09-10).
 5. **Tier 5** — EraClash silhouette fallback (initials + era color) when a placeholder file is
    missing or fails to load
 

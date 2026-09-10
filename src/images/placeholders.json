@@ -1,10 +1,10 @@
 {
-  "policy": "Generated ARCHETYPE placeholders, not likenesses: faceless, era-styled figures \u2014 one guard (PG/SG), one wing (SF) and one big (PF/C) per decade \u2014 mapped to players by decade and primary position only. They never depict a real person and never replace an approved photograph (src/images/approved.json resolves first). See docs/IMAGES.md.",
+  "policy": "Generated ARCHETYPE placeholders, not likenesses: faceless, era-styled figures — one guard (PG/SG), one wing (SF) and one big (PF/C) per decade — mapped to players by decade and primary position only. They never depict a real person and never replace an approved photograph (src/images/approved.json resolves first). See docs/IMAGES.md.",
   "generatedAt": "2026-09-09",
-  "promptStyle": "Stylized flat vector illustration, EraClash trading-card art: a faceless, non-identifying figure (smooth blank face, no facial features), three-quarter view from the chest up, era-appropriate uniform in dark graphite with thin metallic gold trim, no logos, no numbers, no text, dark navy studio backdrop (#0B1220 \u2192 #1E2A3B).",
+  "promptStyle": "Stylized flat vector illustration, EraClash trading-card art: a faceless, non-identifying figure (smooth blank face, no facial features), three-quarter view from the chest up, era-appropriate uniform in dark graphite with thin metallic gold trim, no logos, no numbers, no text, dark navy studio backdrop (#0B1220 → #1E2A3B). Three archetypes (1980s wing, 2010s big, 2020s big) were re-drawn on a lighter slate radial field (#5A6B85 → #0B1220) after the first drafts failed the separation rule below.",
   "renditions": {
-    "portrait": "342\u00d7456 JPEG (card portrait zone, 2\u00d7)",
-    "thumb": "96\u00d796 JPEG (phone row thumbnail, 2\u00d7)"
+    "portrait": "342×456 JPEG (card portrait zone, 2×)",
+    "thumb": "96×96 JPEG (phone row thumbnail, 2×)"
   },
   "images": [
     {
@@ -125,8 +125,9 @@
       "thumb": "/players/placeholders/1980s-wing-thumb.jpg",
       "non_identifying": true,
       "generator": "Recraft v4 (Pixa media connector)",
-      "asset_id": "asset_d1ea38cf0fec40678f6c16f630649dc2",
-      "generated_at": "2026-09-10"
+      "asset_id": "asset_60ed4d929fde46a78be5a73e4228e3ec",
+      "generated_at": "2026-09-10",
+      "regenerated": "2026-09-10: re-drawn with a lighter slate field so the dark kit clears the 9A.2 separation rule on the card crop"
     },
     {
       "id": "1980s-big",
@@ -235,8 +236,9 @@
       "thumb": "/players/placeholders/2010s-big-thumb.jpg",
       "non_identifying": true,
       "generator": "Recraft v4 (Pixa media connector)",
-      "asset_id": "asset_fb840b66dd8f4747ae06cf208d59ef63",
-      "generated_at": "2026-09-10"
+      "asset_id": "asset_9947ad580024469ea07dff402fde4dbe",
+      "generated_at": "2026-09-10",
+      "regenerated": "2026-09-10: re-drawn with a lighter slate field so the dark kit clears the 9A.2 separation rule on the card crop"
     },
     {
       "id": "2020s-guard",
@@ -268,8 +270,13 @@
       "thumb": "/players/placeholders/2020s-big-thumb.jpg",
       "non_identifying": true,
       "generator": "Recraft v4 (Pixa media connector)",
-      "asset_id": "asset_56d8196f8cd444818825ce7e73fd389a",
-      "generated_at": "2026-09-10"
+      "asset_id": "asset_99ff00f55bb44509be14d3c32813ad50",
+      "generated_at": "2026-09-10",
+      "regenerated": "2026-09-10: re-drawn with a lighter slate field so the dark kit clears the 9A.2 separation rule on the card crop"
     }
-  ]
+  ],
+  "legibility": {
+    "rule": "On the card's cover-crop (104×212 zone, object-fit cover, top center) the torso band must separate from the most different visible field patch by ≥ 1.25:1 luminance contrast or CIE76 ΔE ≥ 30 — the Phase 9A.2 dark-uniform rule.",
+    "gate": "npm run ui:portrait-contrast-qa (all registry files, plus one placeholder per team on the lab cards)"
+  }
 }

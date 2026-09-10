@@ -340,6 +340,11 @@ const sampleRegions = async (page, pngPath, regions) => {
 if (MODE === "portrait") {
   fs.mkdirSync(`${SCREENS}/portrait-tests`, { recursive: true });
   const browser = await chromium.launch();
+  // A generated archetype placeholder is a full-bleed image: it covers the stage,
+  // so it must separate its figure from its OWN field. The cover-crop (104×212
+  // zone, object-fit: cover, top center) leaves these field patches visible; the
+  // torso is measured against the most different one, because the poses vary.
+  const PLACEHOLDER_PATCHES = [["TL", 0.03, 0.04, 0.12, 0.12], ["TR", 0.85, 0.04, 0.12, 0.12], ["ML", 0, 0.40, 0.08, 0.20], ["MR", 0.92, 0.40, 0.08, 0.20], ["BL", 0, 0.78, 0.08, 0.14], ["BR", 0.92, 0.78, 0.08, 0.14]];
   const measure = async (stageOn) => {
     const { ctx, page } = await open(browser, P, "portraits", [1536, 1024], {}, stageOn ? "" : "&stage=0");
     const shot = `${SCREENS}/portrait-tests/uniforms-${stageOn ? "stage-on" : "stage-off"}-1536x1024.png`;
@@ -347,11 +352,18 @@ if (MODE === "portrait") {
     const geo = await page.evaluate(() => [...document.querySelectorAll("[data-uniform]")].map((w) => {
       const card = w.querySelector(".ec-pc"), zone = card.querySelector(".ec-pc-portrait");
       const z = zone.getBoundingClientRect(), c = card.getBoundingClientRect();
-      return { id: w.dataset.uniform, jersey: w.dataset.jersey || null, zone: [z.x, z.y, z.width, z.height], card: [c.x, c.y, c.width, c.height], hasStage: !!zone.querySelector(".ec-portrait-stage"), layers: zone.querySelectorAll(".ec-portrait-field, .ec-portrait-rim, .ec-portrait-fade").length, img: !!zone.querySelector("img"), figure: !!zone.querySelector(".ec-pc-figure") };
+      return { id: w.dataset.uniform, jersey: w.dataset.jersey || null, zone: [z.x, z.y, z.width, z.height], card: [c.x, c.y, c.width, c.height], hasStage: !!zone.querySelector(".ec-portrait-stage"), layers: zone.querySelectorAll(".ec-portrait-field, .ec-portrait-rim, .ec-portrait-fade").length, img: !!zone.querySelector("img"), figure: !!zone.querySelector(".ec-pc-figure"), placeholder: !!zone.querySelector("img.ec-pc-placeholder"), loaded: (() => { const im = zone.querySelector("img"); return im ? im.complete && im.naturalWidth > 0 : null; })() };
     }));
     const regions = {};
     for (const gEl of geo) {
       const [x, y, w, h] = gEl.zone;
+      if (gEl.placeholder) {
+        regions[`${gEl.id}:jersey`] = [[x + w * 0.38, y + h * 0.56, w * 0.24, h * 0.14]];
+        regions[`${gEl.id}:head`] = [[x + w * 0.44, y + h * 0.30, w * 0.12, h * 0.10]];
+        for (const [k, rx, ry, rw, rh] of PLACEHOLDER_PATCHES) regions[`${gEl.id}:patch:${k}`] = [[x + w * rx, y + h * ry, w * rw, h * rh]];
+        regions[`${gEl.id}:cardBelow`] = [[x + w * 0.1, y + h + 5, w * 0.8, 6]];
+        continue;
+      }
       // The figure: head centred at 28% height, shoulders from 45%; the jersey fills the lower half.
       // Images: the jersey band. Silhouettes: the shoulder band, where the masked figure carries its tone (its body fades into the dark by design).
       regions[`${gEl.id}:jersey`] = gEl.img ? [[x + w * 0.38, y + h * 0.52, w * 0.24, h * 0.16]] : [[x + w * 0.36, y + h * 0.42, w * 0.28, h * 0.1]];
@@ -364,8 +376,13 @@ if (MODE === "portrait") {
     const samples = await sampleRegions(page, shot, regions);
     await ctx.close();
     return geo.map((gEl) => {
-      const jersey = samples[`${gEl.id}:jersey`], head = samples[`${gEl.id}:head`], bg = samples[`${gEl.id}:bgBesideHead`], below = samples[`${gEl.id}:cardBelow`];
-      return { id: gEl.id, jersey: gEl.jersey, hasStage: gEl.hasStage, layers: gEl.layers, kind: gEl.img ? "image" : "silhouette", zone: gEl.zone.map(Math.round), card: gEl.card.map(Math.round), jerseyRgb: jersey, headRgb: head, bgBesideHeadRgb: bg, cardBelowRgb: below, separationAtShoulder: contrast(jersey, bg), deltaEAtShoulder: deltaE(jersey, bg), separationToCardBelow: contrast(jersey, below), jerseyLum: +lumRgb(jersey).toFixed(4), bgLum: +lumRgb(bg).toFixed(4) };
+      const jersey = samples[`${gEl.id}:jersey`], head = samples[`${gEl.id}:head`], below = samples[`${gEl.id}:cardBelow`];
+      let bg = samples[`${gEl.id}:bgBesideHead`], fieldPatch = null;
+      if (gEl.placeholder) {
+        const cands = PLACEHOLDER_PATCHES.map(([k]) => ({ k, rgb: samples[`${gEl.id}:patch:${k}`] })).filter((c) => c.rgb).sort((a, b) => deltaE(jersey, b.rgb) - deltaE(jersey, a.rgb));
+        bg = cands[0]?.rgb || bg; fieldPatch = cands[0]?.k || null;
+      }
+      return { id: gEl.id, jersey: gEl.jersey, hasStage: gEl.hasStage, layers: gEl.layers, kind: gEl.placeholder ? "placeholder" : gEl.img ? "image" : "silhouette", loaded: gEl.loaded, fieldPatch, zone: gEl.zone.map(Math.round), card: gEl.card.map(Math.round), jerseyRgb: jersey, headRgb: head, bgBesideHeadRgb: bg, cardBelowRgb: below, separationAtShoulder: contrast(jersey, bg), deltaEAtShoulder: deltaE(jersey, bg), separationToCardBelow: contrast(jersey, below), jerseyLum: +lumRgb(jersey).toFixed(4), bgLum: +lumRgb(bg).toFixed(4) };
     });
   };
   const after = await measure(true), before = await measure(false);
@@ -388,6 +405,31 @@ if (MODE === "portrait") {
   ok("light uniforms do not wash out (still ≥ 3:1 against the stage)", light.every((r) => r.separationAtShoulder >= 3), light.map((r) => `${r.id} ${r.separationAtShoulder}`).join(" · "));
   ok("historical black-and-white images remain readable", bw.every((r) => r.visible), bw.map((r) => `${r.id} ${r.separationAtShoulder}`).join(" · "));
   ok("the premium silhouette fallback uses the same stage and separates", sil.every((r) => r.hasStage && r.layers === 3 && r.visible), sil.map((r) => `${r.id} ${r.separationAtShoulder}/ΔE ${r.deltaEAtShoulder}`).join(" · "));
+  const ph = rows.filter((r) => r.kind === "placeholder");
+  ok("the archetype placeholder rides the same stage on both team cards, loads, and separates its figure from its own field", ph.length === 2 && ph.every((r) => r.hasStage && r.layers === 3 && r.loaded && r.visible), ph.map((r) => `${r.id} ${r.separationAtShoulder}/ΔE ${r.deltaEAtShoulder} vs ${r.fieldPatch}`).join(" · "));
+  // Every generated placeholder file, measured on the same cover-crop against the same rule.
+  const registry = JSON.parse(fs.readFileSync("src/images/placeholders.json", "utf8"));
+  const files = registry.images || [];
+  const filePage = await browser.newPage();
+  const fileRows = [];
+  for (const e of files) {
+    const path = `public${e.path}`;
+    if (!fs.existsSync(path)) { fileRows.push({ id: e.id, missing: true, visible: false, thumb: false, nonIdentifying: e.non_identifying === true }); continue; }
+    const s = await filePage.evaluate(async ({ b64, mime, patches }) => {
+      const img = new Image(); img.src = `data:${mime};base64,${b64}`; await img.decode();
+      const W = img.width, H = img.height, cv = document.createElement("canvas"); cv.width = W; cv.height = H; const g = cv.getContext("2d"); g.drawImage(img, 0, 0);
+      const scale = 212 / H, off = ((W * scale - 104) / 2) / scale, vis = 104 / scale;
+      const X = (f) => off + vis * f, Y = (f) => H * f;
+      const avg = (x0, y0, x1, y1) => { const d = g.getImageData(Math.round(x0), Math.round(y0), Math.max(1, Math.round(x1 - x0)), Math.max(1, Math.round(y1 - y0))).data; let r = 0, gg = 0, b = 0, n = 0; for (let i = 0; i < d.length; i += 4) { r += d[i]; gg += d[i + 1]; b += d[i + 2]; n++; } return [Math.round(r / n), Math.round(gg / n), Math.round(b / n)]; };
+      return { W, H, torso: avg(X(0.38), Y(0.56), X(0.62), Y(0.70)), patches: Object.fromEntries(patches.map(([k, rx, ry, rw, rh]) => [k, avg(X(rx), Y(ry), X(rx + rw), Y(ry + rh))])) };
+    }, { b64: fs.readFileSync(path).toString("base64"), mime: /\.png$/i.test(path) ? "image/png" : "image/jpeg", patches: PLACEHOLDER_PATCHES });
+    const cands = Object.entries(s.patches).map(([k, rgb]) => ({ k, rgb, sep: contrast(s.torso, rgb), dE: deltaE(s.torso, rgb) })).sort((a, b) => b.dE - a.dE);
+    const best = cands[0];
+    fileRows.push({ id: e.id, decade: e.decade, archetype: e.archetype, size: `${s.W}x${s.H}`, thumb: fs.existsSync(`public${e.thumb}`), nonIdentifying: e.non_identifying === true, torsoRgb: s.torso, fieldRgb: best.rgb, best: best.k, sep: best.sep, dE: best.dE, visible: best.sep >= THRESHOLD || best.dE >= DE_THRESHOLD });
+  }
+  await filePage.close();
+  const weak = fileRows.filter((r) => r.missing || !r.visible || !r.thumb || !r.nonIdentifying);
+  ok(`every generated archetype placeholder (${files.length} files) exists with its thumbnail, is registered as non-identifying, and separates its figure from its own field on the card crop`, files.length === 24 && weak.length === 0, weak.length ? weak.map((r) => `${r.id} ${r.missing ? "missing" : `${r.sep}:1 / ΔE ${r.dE} vs ${r.best}`}`).join(" · ") : `${fileRows.length} legible`);
   const skin = rows.filter((r) => r.kind === "image" && !/bw|historical/.test(r.id));
   ok("skin tone does not shift (head centre sampled, stage on vs off: max channel Δ ≤ 6/255, hue Δ ≤ 3°)", skin.every((r) => r.skinShiftMax <= 6 && (r.skinHueShift === null || r.skinHueShift <= 3)), skin.map((r) => `${r.id} Δ${r.skinShiftMax}/${r.skinHueShift}°`).join(" · "));
   ok("Gold and Cobalt light do not recolour faces (head hue stays in the skin band 20–40°)", skin.every((r) => { const h = hue(r.headRgb); return h !== null && h >= 18 && h <= 42; }), skin.map((r) => `${r.id} ${Math.round(hue(r.headRgb))}°`).join(" · "));
@@ -401,7 +443,8 @@ if (MODE === "portrait") {
   ok("the Postgame's MVP and lineup portraits use the same stage", pg.stages >= 11, `${pg.stages} stages`);
   await browser.close();
   summarize("portrait-contrast-qa.json", {
-    method: "Ten synthetic uniform figures (not likenesses) on the frozen Roll 2 cards, screenshot at 1536×1024 with the stage on and with the pre-9A.2 layer (stage=0). Mean sRGB → relative luminance per region; separation = WCAG-style luminance-contrast ratio between the jersey band (y 52–68% of the zone) and the stage immediately beside the head/shoulder boundary (y 18–38%, x 6–26% and 74–94%). Skin: head centre sampled with the stage on and off. WCAG applies to text, not photograph edges; the ratio is used here only as a defensible, reproducible visibility measure.",
+    placeholders: { registry: files.length, rule: "torso band (x 38–62%, y 56–70% of the cover-crop) against the most different of six visible field patches; visible under the same 1.25:1 / ΔE 30 rule", patches: PLACEHOLDER_PATCHES, files: fileRows },
+    method: "Ten synthetic uniform figures (not likenesses) plus the two fallback tiers (generated archetype placeholder, masked silhouette) on the frozen Roll 2 cards, screenshot at 1536×1024 with the stage on and with the pre-9A.2 layer (stage=0). Mean sRGB → relative luminance per region; separation = WCAG-style luminance-contrast ratio between the jersey band (y 52–68% of the zone) and the stage immediately beside the head/shoulder boundary (y 18–38%, x 6–26% and 74–94%). Skin: head centre sampled with the stage on and off. WCAG applies to text, not photograph edges; the ratio is used here only as a defensible, reproducible visibility measure.",
     threshold: { separationAtShoulder: THRESHOLD, deltaEAtShoulder: DE_THRESHOLD, rule: "visible when luminance contrast ≥ 1.25:1 OR CIE76 ΔE ≥ 30", derivation: "Phase 9A.1 measured the failing dark-uniform baseline at 1.06:1 in every theme (1.06–1.11 here); 1.25:1 is the first value at which the boundary is visible in the contact sheets and ~2.4× the baseline gap. A neutral backdrop cannot sit below a mid-blue and above a mid-red jersey in luminance at once, so a chromatic measure is paired with it: the failing dark-on-dark baselines measure ΔE 7–15 and 30 is at least twice the largest. Light uniforms are additionally held to ≥ 3:1." },
     skinSwatch: SKIN_SWATCH, rows, screenshots: [`${SCREENS}/portrait-tests/uniforms-stage-on-1536x1024.png`, `${SCREENS}/portrait-tests/uniforms-stage-off-1536x1024.png`, `${SCREENS}/portrait-tests/postgame-portraits-1536x1024.png`],
     limitation: "No approved photorealistic portrait exists in src/images/approved.json, so real facial detail cannot be measured; the stage is built so an approved image is a straight swap into the same geometry.",

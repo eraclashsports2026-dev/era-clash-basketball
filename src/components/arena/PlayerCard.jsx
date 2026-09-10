@@ -59,8 +59,12 @@ export function EmptyCard({ slot, team = "gold", variant = "card" }) {
  * passes it and resolves art from the approved registry alone.
  */
 function Portrait({ card, player, team, testArt }) {
-  const art = testArt ? { portraitStatus: PORTRAIT_STATUS.APPROVED, src: testArt.src, objectPosition: "top center", scale: 1 } : resolvePortrait(card.id, card.decade);
-  if (art.portraitStatus === PORTRAIT_STATUS.APPROVED && art.src) {
+  // `testArt.tier` (lab only) pins a fallback tier — "placeholder" or "silhouette" —
+  // so each tier stays measurable now that every player without an approved
+  // photograph receives the generated archetype placeholder.
+  const forcedTier = testArt && ["placeholder", "silhouette"].includes(testArt.tier) ? testArt.tier : null;
+  const art = forcedTier ? null : testArt ? { portraitStatus: PORTRAIT_STATUS.APPROVED, src: testArt.src, objectPosition: "top center", scale: 1 } : resolvePortrait(card.id, card.decade);
+  if (art && art.portraitStatus === PORTRAIT_STATUS.APPROVED && art.src) {
     return (
       <PortraitStage team={team}>
         <img src={art.src} alt={testArt ? testArt.alt : `${card.name}, ${card.decade}`} loading="lazy" decoding="async"
@@ -72,12 +76,13 @@ function Portrait({ card, player, team, testArt }) {
   // No approved photograph: the generated, non-identifying archetype placeholder
   // for this decade and position (docs/IMAGES.md), over the initials, which
   // stay visible if the file is missing or fails to load.
-  const ph = testArt ? null : resolvePlaceholderArt(player || card);
+  const ph = forcedTier === "silhouette" || (testArt && !forcedTier) ? null : resolvePlaceholderArt(player || card);
   if (ph) {
     return (
       <PortraitStage team={team}>
         <div className="ec-pc-figure-initials" aria-hidden="true">{initialsOf(card.name)}</div>
         <img className="ec-pc-placeholder" src={ph.src} alt="" loading="lazy" decoding="async" data-art="placeholder"
+          data-portrait-test={testArt ? testArt.id : undefined}
           style={{ transform: ph.flip ? "scaleX(-1)" : undefined }}
           onError={(e) => { e.currentTarget.style.display = "none"; }} />
         <span className="sr-only">{ph.alt}</span>
@@ -86,7 +91,7 @@ function Portrait({ card, player, team, testArt }) {
   }
   return (
     <PortraitStage team={team}>
-      <div className="ec-pc-figure" aria-hidden="true" />
+      <div className="ec-pc-figure" aria-hidden="true" data-portrait-test={testArt ? testArt.id : undefined} />
       <div className="ec-pc-figure-initials" aria-hidden="true">{initialsOf(card.name)}</div>
       <span className="sr-only">{`${card.name} — EraClash silhouette, no portrait approved yet`}</span>
     </PortraitStage>

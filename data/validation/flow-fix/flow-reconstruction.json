@@ -20,7 +20,78 @@
   },
   "gatesAndPins": "9B.3 guided-flow gate (five states, era asserted on READY), uiReleaseQa walk, time-arena-qa, uiQa (ROLL 1/ROLL 2/FINAL ROLL, sequence 3), security (era window at READY), holdQa; unit pins in v9b3, chaos-synchronized-draft, v8a, v8b, v8c, v9a2 (three stage renditions), v9a3p/v9b1 (chaos whole-dir pin re-scoped to the frozen odds/CPU/era/coach files); e2e phase8a/8c/9a/9c/9d/9e/mobile walkers.",
   "preExisting": [
-    { "finding": "both teams can hire the same coach", "evidence": "60 seeded runs: sequence 2 (production before this change) 4/60 same coach on both benches, offers overlap 23/60; sequence 3: 1/60 and 20/60. generateOffers excludes burned coaches only, not the other side's offers.", "status": "reported, not changed (coach-draft logic is a preserved area)" },
-    { "finding": "harness-only: /api/profile 503 and /api/narrative 429", "evidence": "the local harness has no account provider and blocks AI narration by budget; both are configured on production", "status": "not a product defect" }
-  ]
+    {
+      "finding": "both teams can hire the same coach",
+      "evidence": "60 seeded runs: sequence 2 (production before this change) 4/60 same coach on both benches, offers overlap 23/60; sequence 3: 1/60 and 20/60. generateOffers excludes burned coaches only, not the other side's offers.",
+      "status": "reported, not changed (coach-draft logic is a preserved area)"
+    },
+    {
+      "finding": "harness-only: /api/profile 503 and /api/narrative 429",
+      "evidence": "the local harness has no account provider and blocks AI narration by budget; both are configured on production",
+      "status": "not a product defect"
+    }
+  ],
+  "reviewSweep": {
+    "log": "data/validation/ui-release/flow-fix-sweep.log (2026-09-10T03:15Z @ b745ac6)",
+    "unit": "82 files / 2647 tests passed",
+    "build": "passed; theme:css --check PASS",
+    "e2e": "98 passed (all projects)",
+    "gates": "all release, preview, chaos, account, challenge, progression, competitive and profile gates PASS except the seven below",
+    "failuresClassified": [
+      {
+        "gate": "ui:era-membership-qa",
+        "cause": "two checks pinned the sequence-2 era timing (reveal with Roll 2, window before the final roll)",
+        "resolution": "re-pinned to the owner-directed flow: era revealed with the hire (sequence 3), frozen sequence 2 still reveals with Roll 2; window = eraWindowPhase(run). Rerun alone: 9/9 PASS",
+        "kind": "pin re-scoped"
+      },
+      {
+        "gate": "ui:player-card-theme-qa",
+        "cause": "the name-area pin rejected the word 'initials' anywhere after the first mention of .ec-pc-name — the compact row thumbnail (PR #52) and the placeholder's initials fallback sit there",
+        "resolution": "pin scoped to the name nodes themselves (still: two lines, never initials). Rerun alone: 10/10 PASS",
+        "kind": "pin re-scoped"
+      },
+      {
+        "gate": "ui:portrait-contrast-qa",
+        "cause": "the lab's two 'silhouette fallback' cards now received the archetype placeholder, so the gate measured a full-bleed image with silhouette regions; the placeholder tier had no measurement of its own",
+        "resolution": "PlayerCard testArt.tier pins a fallback tier (lab only); the lab renders placeholder-gold/blue in a second roster row (same columns, frozen geometry); the gate measures the placeholder tier on the cards and every registry file on the card crop (torso vs the most different visible field patch, same 1.25:1 / ΔE 30 rule). 23/23 PASS",
+        "kind": "gate extended"
+      },
+      {
+        "gate": "account:my-eraclash-qa",
+        "cause": "the gate defaults to http://localhost:4177, which no sweep harness serves (environment)",
+        "resolution": "rerun alone against the 4180 harness: 9/9 PASS",
+        "kind": "environment"
+      },
+      {
+        "gate": "ui:night-court-production-qa / ui:era-fracture-qa / ui:semantic-color-qa",
+        "cause": "pre-existing 9B.3 selector drift (.ec-ta-rail [role=tab]); identical failures in the Light Court release sweep at 149eef3",
+        "resolution": "unchanged; not introduced here",
+        "kind": "pre-existing"
+      }
+    ]
+  },
+  "portraitLegibility": {
+    "rule": "torso band vs the most different of six visible field patches on the 104×212 cover-crop: ≥ 1.25:1 luminance or CIE76 ΔE ≥ 30 (Phase 9A.2 dark-uniform rule)",
+    "firstDrafts": "21/24 legible; 1980s-wing 1.01:1/ΔE 26.8, 2010s-big 1.19:1/ΔE 10.2, 2020s-big 1.14:1/ΔE 7.4 were dark-on-dark",
+    "regenerated": "the three archetypes re-drawn (Recraft v4, same faceless brief) on a lighter slate radial field; now 3.91/40.1, 3.69/38.7, 3.90/40.4 — 24/24 legible; registry asset ids updated, renditions re-cut (336×456 card, 96×96 thumb)",
+    "evidence": [
+      "data/validation/flow-fix/portrait-contrast-qa.json",
+      "data/validation/flow-fix/screens/lab-portrait-tiers-1536.png"
+    ],
+    "policy": "docs/IMAGES.md Tier 4 now states the legibility rule; still never a likeness"
+  },
+  "previewFindings": {
+    "alias": "https://era-clash-basketball-git-fix-flow-era-after-co-4eeef4-era-clash.vercel.app @ b745ac6",
+    "playSimulation": "SCORE 100/100 (187/187 weighted · 50/50 criteria)",
+    "chaosDeployedQa": "PASS",
+    "linkReview": "4 findings, all POST /api/profile → 502 {detail: provider_rejected_server_key} for competitive-leaderboard and profile-board-links (desktop + phone)",
+    "diagnosis": "/api/health?deep=1 on the preview: serverCredentialAccepted=false, PostgREST 401 on all three probe variants, key kind sb_secret length 41, serverAndBrowserSameProject=true; the preview Supabase project lfybiphmqkiecfrqsfzt is ACTIVE_HEALTHY. The Preview-scoped SUPABASE_SERVICE_ROLE_KEY in Vercel no longer matches the preview project (rotated or revoked). Production answers the same requests 200 (competitive-leaderboard rows:[], profile-public found:false) and accepts its key. Environment item for the owner, not a product defect; the leaderboard and My EraClash pages degrade gracefully (no page error).",
+    "harnessNote": "the 4180 harness runs without an account provider, so the same requests answer 503 there — the six harness link-review findings are that, and /api/narrative 429 is the graceful narrative budget fallback"
+  },
+  "harnessVerification": {
+    "playSimulation": "SCORE 100/100 (187/187 weighted · 50/50 criteria) on web 1440×900 and mobile 390×844 — data/validation/flow-fix/play-simulation-score.json",
+    "linkReview": "visited 25; only the provider-less 503s above — data/validation/flow-fix/link-review.json",
+    "unit": "82/82 files, 2647 tests",
+    "wavePreservation": "see wavePreservation"
+  }
 }

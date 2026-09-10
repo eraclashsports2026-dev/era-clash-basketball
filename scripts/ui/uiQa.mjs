@@ -237,9 +237,13 @@ if (MODE === "cards") {
   ok("the HOLD control meets the touch-target floor",
     /--player-footer-h:\s*44px/.test(css)
     && /\.ec-pc-action,\s*\n\.ec-pc-static \{[\s\S]{0,200}height: var\(--player-footer-h\)/.test(css));
+  // The initials fallback lives in the PORTRAIT (behind the archetype placeholder,
+  // and in the row thumbnail); the name node itself never carries it. The pin is
+  // scoped to the name nodes, so a portrait fallback added below them cannot fail it.
+  const nameNodes = card.match(/<(div|span) className="ec-pc-name[^"]*"[^>]*>[\s\S]*?<\/\1>/g) || [];
   ok("the name area is a fixed two lines, and never collapses to initials",
     /-webkit-line-clamp: 2/.test(css) && /\.ec-pc-name \{[\s\S]{0,260}height: 28px/.test(css)
-    && !/initials/i.test(card.split("ec-pc-name")[1] || ""));
+    && nameNodes.length >= 2 && nameNodes.every((n) => /\{card\.name\}/.test(n) && !/initials/i.test(n)));
   ok("no likeness is created here — the approved registry or a masked silhouette",
     /resolvePortrait/.test(card) && /PORTRAIT_STATUS\.APPROVED/.test(card)
     && /ec-pc-figure/.test(card)
@@ -305,14 +309,18 @@ if (MODE === "era") {
   const glue = src("api/_lib/chaosRun.js");
   const ent = src("src/entitlements.js");
   ok("the era is drawn from the seed alone", /export const revealEra/.test(rs) && /never personalised/i.test(read("src/chaos/runState.js")));
-  ok("the era is revealed with Roll 2", /if \(nextRoll === 2\) applyEraReveal\(run\)/.test(rs));
+  // Owner-directed 2026-09-09: rolls → coach → era. Sequence 3 reveals the era
+  // with the hire; the frozen sequence 2 still reveals it with Roll 2.
+  ok("the era is revealed with the hire (sequence 3), and the frozen sequence 2 still reveals it with Roll 2",
+    /if \(sequenceOf\(run\) >= 3\) applyEraReveal\(run\)/.test(rs) && /if \(nextRoll === 2 && sequenceOf\(run\) === 2\) applyEraReveal\(run\)/.test(rs));
   ok("choosing an era is a capability, held by PLUS and COMMISSIONER",
     /CHAOS_CUSTOM_ERA/.test(ent) && /PLUS:[^\]]*CHAOS_CUSTOM_ERA/.test(ent) && !/FREE:[^\]]*CHAOS_CUSTOM_ERA/.test(ent));
   ok("a competitive run refuses every tier", /ERA_LOCKED_FOR_MODE/.test(rs) && /competitiveEraLock/.test(glue));
   ok("the competitive refusal is reported before membership",
     glue.indexOf("COMPETITIVE_LOCK") < glue.indexOf("NOT_ENTITLED"));
-  ok("the window is after the reveal and before the final roll",
-    /run\.currentPhase !== "ROLL_2_REVEALED"/.test(rs) && /WINDOW_CLOSED/.test(glue));
+  ok("the window opens with the reveal: at Clash Ready after the hire (sequence 3); after Roll 2 and before the final roll (sequence 2)",
+    /run\.currentPhase !== eraWindowPhase\(run\)/.test(rs) && /sequenceOf\(run\) >= 3 \? "READY" : "ROLL_2_REVEALED"/.test(rs)
+    && /WINDOW_CLOSED/.test(glue) && /run\.currentPhase !== eraWindowPhase\(run\)/.test(glue));
   ok("a chosen era is marked custom wherever it appears",
     /eraCustom/.test(rs) && /CUSTOM ERA/.test(intel));
   ok("membership routes centrally, with no checkout",
