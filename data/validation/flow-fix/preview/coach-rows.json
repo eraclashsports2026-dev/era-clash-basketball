@@ -1,0 +1,239 @@
+{
+  "artifact": "coach-rows",
+  "origin": "https://era-clash-basketball-be4jtnsra-era-clash.vercel.app",
+  "recordedAt": "2026-09-10T04:44:25.646Z",
+  "rule": "phone coach offers are rows within 14px of the player rows; every control ≥ 44px; the desktop cards are untouched",
+  "measures": {
+    "phone-390": {
+      "playerRowH": 80,
+      "coachRowH": 60,
+      "coachRows": [
+        60,
+        60,
+        60
+      ],
+      "actions": [
+        {
+          "w": 88,
+          "h": 44,
+          "x": 264,
+          "y": 750
+        },
+        {
+          "w": 88,
+          "h": 44,
+          "x": 264,
+          "y": 816
+        },
+        {
+          "w": 88,
+          "h": 44,
+          "x": 264,
+          "y": 882
+        }
+      ],
+      "toggles": [
+        {
+          "w": 59,
+          "h": 44,
+          "x": 167,
+          "y": 765
+        },
+        {
+          "w": 59,
+          "h": 44,
+          "x": 169,
+          "y": 831
+        },
+        {
+          "w": 59,
+          "h": 44,
+          "x": 170,
+          "y": 897
+        }
+      ],
+      "rowVariant": 3,
+      "overflow": 0
+    },
+    "phone-430": {
+      "playerRowH": 58,
+      "coachRowH": 60,
+      "coachRows": [
+        60,
+        60,
+        60
+      ],
+      "actions": [
+        {
+          "w": 88,
+          "h": 44,
+          "x": 304,
+          "y": 708
+        },
+        {
+          "w": 88,
+          "h": 44,
+          "x": 304,
+          "y": 774
+        },
+        {
+          "w": 88,
+          "h": 44,
+          "x": 304,
+          "y": 840
+        }
+      ],
+      "toggles": [
+        {
+          "w": 59,
+          "h": 44,
+          "x": 170,
+          "y": 723
+        },
+        {
+          "w": 59,
+          "h": 44,
+          "x": 168,
+          "y": 789
+        },
+        {
+          "w": 59,
+          "h": 44,
+          "x": 169,
+          "y": 855
+        }
+      ],
+      "rowVariant": 3,
+      "overflow": 0
+    },
+    "desktop-1440": {
+      "playerRowH": 236,
+      "coachRowH": 243,
+      "coachRows": [
+        243,
+        243,
+        243
+      ],
+      "actions": [
+        {
+          "w": 226,
+          "h": 44,
+          "x": 156,
+          "y": 681
+        },
+        {
+          "w": 226,
+          "h": 44,
+          "x": 418,
+          "y": 681
+        },
+        {
+          "w": 226,
+          "h": 44,
+          "x": 680,
+          "y": 681
+        }
+      ],
+      "toggles": [
+        {
+          "w": 81,
+          "h": 44,
+          "x": 156,
+          "y": 632
+        },
+        {
+          "w": 81,
+          "h": 44,
+          "x": 418,
+          "y": 632
+        },
+        {
+          "w": 81,
+          "h": 44,
+          "x": 680,
+          "y": 632
+        }
+      ],
+      "rowVariant": 0,
+      "overflow": 0
+    }
+  },
+  "checks": [
+    {
+      "name": "phone-390: the three offers are rows",
+      "pass": true,
+      "fact": "rows=3"
+    },
+    {
+      "name": "phone-390: a coach row is the size of a player row (within 14px of the base row)",
+      "pass": true,
+      "fact": "player rows 80/80/80/80/58px · coach 60/60/60px"
+    },
+    {
+      "name": "phone-390: every coach control is a 44px target",
+      "pass": true,
+      "fact": "actions 88×44 88×44 88×44 · toggles 59×44 59×44 59×44"
+    },
+    {
+      "name": "phone-390: no horizontal overflow",
+      "pass": true,
+      "fact": "0px"
+    },
+    {
+      "name": "phone-390: the three offers together are shorter than one old card (232px)",
+      "pass": true,
+      "fact": "193px"
+    },
+    {
+      "name": "phone-390: opening a scouting detail grows that row only",
+      "pass": true,
+      "fact": "60/60/60 → 242/60/60"
+    },
+    {
+      "name": "phone-390: one selected staff, CONTINUE WITH COACH enabled",
+      "pass": true,
+      "fact": "selected=1"
+    },
+    {
+      "name": "phone-430: the three offers are rows",
+      "pass": true,
+      "fact": "rows=3"
+    },
+    {
+      "name": "phone-430: a coach row is the size of a player row (within 14px of the base row)",
+      "pass": true,
+      "fact": "player rows 58/58/58/58/58px · coach 60/60/60px"
+    },
+    {
+      "name": "phone-430: every coach control is a 44px target",
+      "pass": true,
+      "fact": "actions 88×44 88×44 88×44 · toggles 59×44 59×44 59×44"
+    },
+    {
+      "name": "phone-430: no horizontal overflow",
+      "pass": true,
+      "fact": "0px"
+    },
+    {
+      "name": "phone-430: the three offers together are shorter than one old card (232px)",
+      "pass": true,
+      "fact": "193px"
+    },
+    {
+      "name": "phone-430: opening a scouting detail grows that row only",
+      "pass": true,
+      "fact": "60/60/60 → 242/60/60"
+    },
+    {
+      "name": "phone-430: one selected staff, CONTINUE WITH COACH enabled",
+      "pass": true,
+      "fact": "selected=1"
+    },
+    {
+      "name": "desktop-1440: the desktop keeps its three coach cards",
+      "pass": true,
+      "fact": "cards 248×243 248×243 248×243"
+    }
+  ],
+  "pass": true
+}
