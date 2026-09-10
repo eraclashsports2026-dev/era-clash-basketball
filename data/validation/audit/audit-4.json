@@ -1,14 +1,19 @@
 {
   "artifact": "full-audit-4",
   "origin": "https://www.eraclashbasketball.com",
-  "recordedAt": "2026-09-10T12:34:23.075Z",
+  "recordedAt": "2026-09-10T12:44:35.556Z",
   "score": 100,
   "of": 100,
-  "weightedPassed": 951,
-  "weightedTotal": 951,
-  "criteria": 411,
-  "passedCriteria": 411,
-  "findings": [],
+  "weightedPassed": 963,
+  "weightedTotal": 966,
+  "criteria": 416,
+  "passedCriteria": 415,
+  "findings": [
+    {
+      "id": "small-phone: no player or coach name splits a word across lines; KEPT stays one badge",
+      "fact": "Abdul-Jabbar split"
+    }
+  ],
   "checks": [
     {
       "id": "document: apple-touch-icon for the phone home screen",
@@ -884,13 +889,19 @@
       "id": "web: each five fills PG, SG, SF, PF, C with a numeric rating",
       "weight": 3,
       "pass": true,
-      "fact": "PG,SG,SF,PF,C · 83/72/73/98/62"
+      "fact": "PG,SG,SF,PF,C · 65/69/86/83/92"
     },
     {
       "id": "web: no player appears on both fives",
       "weight": 4,
       "pass": true,
       "fact": "disjoint"
+    },
+    {
+      "id": "web: no player or coach name splits a word across lines; KEPT stays one badge",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
     },
     {
       "id": "web: two holds, HELD controls contained in their rows/cards",
@@ -950,7 +961,7 @@
       "id": "web: Clash Ready reveals the era with three rule cards, above RUN CLASH",
       "weight": 5,
       "pass": true,
-      "fact": "1950s"
+      "fact": "1980s"
     },
     {
       "id": "web: the primary action covers nothing at Clash Ready",
@@ -968,13 +979,13 @@
       "id": "web: the era chip and the era panel agree",
       "weight": 2,
       "pass": true,
-      "fact": "🗓 ERA: 1950s 🔒 vs 1950s"
+      "fact": "🗓 ERA: 1980s 🔒 vs 1980s"
     },
     {
       "id": "web: both benches are staffed by different coaches",
       "weight": 3,
       "pass": true,
-      "fact": "Gregg Popovich vs Jerry Sloan"
+      "fact": "Tom Heinsohn vs Red Auerbach"
     },
     {
       "id": "web: VIEW ALL ERA RULES opens a readable panel",
@@ -986,19 +997,19 @@
       "id": "web: a reload at Clash Ready resumes the same run (same era)",
       "weight": 3,
       "pass": true,
-      "fact": "1950s"
+      "fact": "1980s"
     },
     {
       "id": "web: the score, the winner label and data-winner agree",
       "weight": 5,
       "pass": true,
-      "fact": "137-134 TEAM GOLD WINS"
+      "fact": "137-122 TEAM GOLD WINS"
     },
     {
       "id": "web: the MVP is a player on one of the two rosters",
       "weight": 2,
       "pass": true,
-      "fact": "MVP · Nikola Jokic · 65 PTS · 28 REB · 11 AST · 2 STL · 1 BLK"
+      "fact": "MVP · Rick Barry · 49 PTS · 10 REB · 3 AST · 1 STL · 1 BLK"
     },
     {
       "id": "web: the primary action covers nothing at the result",
@@ -1034,7 +1045,7 @@
       "id": "web: the first roll answers within 8s and the Clash within 90s",
       "weight": 2,
       "pass": true,
-      "fact": "roll 2374ms · clash 1341ms"
+      "fact": "roll 1843ms · clash 1339ms"
     },
     {
       "id": "web → Daily: renders content, no overflow, nothing covered, no clipped text",
@@ -2018,19 +2029,25 @@
       "id": "phone: the primary action actually paints on screen (Roll 1)",
       "weight": 4,
       "pass": true,
-      "fact": "{\"inside\":[219,168,59],\"beside\":[246,240,227],\"dist\":184.76200908195386,\"paints\":true}"
+      "fact": "{\"inside\":[220,169,60],\"beside\":[246,240,227],\"dist\":183.31939340942628,\"paints\":true}"
     },
     {
       "id": "phone: each five fills PG, SG, SF, PF, C with a numeric rating",
       "weight": 3,
       "pass": true,
-      "fact": "PG,SG,SF,PF,C · 73/84/85/71/83"
+      "fact": "PG,SG,SF,PF,C · 79/65/71/70/80"
     },
     {
       "id": "phone: no player appears on both fives",
       "weight": 4,
       "pass": true,
       "fact": "disjoint"
+    },
+    {
+      "id": "phone: no player or coach name splits a word across lines; KEPT stays one badge",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
     },
     {
       "id": "phone: two holds, HELD controls contained in their rows/cards",
@@ -2108,7 +2125,7 @@
       "id": "phone: Clash Ready reveals the era with three rule cards, above RUN CLASH",
       "weight": 5,
       "pass": true,
-      "fact": "1960s"
+      "fact": "1980s"
     },
     {
       "id": "phone: at Clash Ready the staff and era sit under the pinned header",
@@ -2126,19 +2143,19 @@
       "id": "phone: RUN CLASH paints on screen",
       "weight": 4,
       "pass": true,
-      "fact": "{\"inside\":[216,164,55],\"beside\":[246,240,228],\"dist\":191.3243319601561,\"paints\":true}"
+      "fact": "{\"inside\":[217,165,56],\"beside\":[246,240,228],\"dist\":189.86837546047525,\"paints\":true}"
     },
     {
       "id": "phone: the era chip and the era panel agree",
       "weight": 2,
       "pass": true,
-      "fact": "🗓 ERA: 1960s 🔒 vs 1960s"
+      "fact": "🗓 ERA: 1980s 🔒 vs 1980s"
     },
     {
       "id": "phone: both benches are staffed by different coaches",
       "weight": 3,
       "pass": true,
-      "fact": "Rick Carlisle vs Doc Rivers"
+      "fact": "Pat Riley vs Stan Van Gundy"
     },
     {
       "id": "phone: VIEW ALL ERA RULES opens a readable panel",
@@ -2150,19 +2167,19 @@
       "id": "phone: a reload at Clash Ready resumes the same run (same era)",
       "weight": 3,
       "pass": true,
-      "fact": "1960s"
+      "fact": "1980s"
     },
     {
       "id": "phone: the score, the winner label and data-winner agree",
       "weight": 5,
       "pass": true,
-      "fact": "116-145 TEAM BLUE WINS"
+      "fact": "102-120 TEAM BLUE WINS"
     },
     {
       "id": "phone: the MVP is a player on one of the two rosters",
       "weight": 2,
       "pass": true,
-      "fact": "MVP · Elgin Baylor · 70 PTS · 27 REB · 7 AST"
+      "fact": "MVP · Bob McAdoo · 45 PTS · 24 REB · 8 AST · 3 STL"
     },
     {
       "id": "phone: the primary action covers nothing at the result",
@@ -2198,7 +2215,7 @@
       "id": "phone: the first roll answers within 8s and the Clash within 90s",
       "weight": 2,
       "pass": true,
-      "fact": "roll 1872ms · clash 1372ms"
+      "fact": "roll 2036ms · clash 1367ms"
     },
     {
       "id": "phone: the phone header shows a Menu and is at most 72px",
@@ -2324,13 +2341,19 @@
       "id": "landscape-phone: each five fills PG, SG, SF, PF, C with a numeric rating",
       "weight": 3,
       "pass": true,
-      "fact": "PG,SG,SF,PF,C · 65/65/60/67/70"
+      "fact": "PG,SG,SF,PF,C · 67/75/84/96/61"
     },
     {
       "id": "landscape-phone: no player appears on both fives",
       "weight": 4,
       "pass": true,
       "fact": "disjoint"
+    },
+    {
+      "id": "landscape-phone: no player or coach name splits a word across lines; KEPT stays one badge",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
     },
     {
       "id": "landscape-phone: two holds, HELD controls contained in their rows/cards",
@@ -2378,13 +2401,19 @@
       "id": "tablet: each five fills PG, SG, SF, PF, C with a numeric rating",
       "weight": 3,
       "pass": true,
-      "fact": "PG,SG,SF,PF,C · 61/61/92/67/74"
+      "fact": "PG,SG,SF,PF,C · 67/88/86/72/91"
     },
     {
       "id": "tablet: no player appears on both fives",
       "weight": 4,
       "pass": true,
       "fact": "disjoint"
+    },
+    {
+      "id": "tablet: no player or coach name splits a word across lines; KEPT stays one badge",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
     },
     {
       "id": "tablet: two holds, HELD controls contained in their rows/cards",
@@ -2438,13 +2467,19 @@
       "id": "small-phone: each five fills PG, SG, SF, PF, C with a numeric rating",
       "weight": 3,
       "pass": true,
-      "fact": "PG,SG,SF,PF,C · 86/88/95/68/74"
+      "fact": "PG,SG,SF,PF,C · 69/86/70/71/98"
     },
     {
       "id": "small-phone: no player appears on both fives",
       "weight": 4,
       "pass": true,
       "fact": "disjoint"
+    },
+    {
+      "id": "small-phone: no player or coach name splits a word across lines; KEPT stays one badge",
+      "weight": 3,
+      "pass": false,
+      "fact": "Abdul-Jabbar split"
     },
     {
       "id": "small-phone: two holds, HELD controls contained in their rows/cards",
