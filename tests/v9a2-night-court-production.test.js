@@ -142,8 +142,11 @@ describe("the portrait stage", () => {
   });
   it("the lab's uniform tests are synthetic figures, never likenesses, and cover the required set", () => {
     const ids = UNIFORM_TESTS.map((u) => u.id);
-    for (const id of ["dark-jersey", "light-jersey", "gold-jersey", "blue-jersey", "red-jersey", "white-historical", "bw-portrait", "silhouette-gold", "silhouette-blue"]) expect(ids).toContain(id);
-    for (const u of UNIFORM_TESTS.filter((u) => u.art)) { expect(u.art.src).toMatch(/^data:image\/svg\+xml/); expect(u.art.alt).toMatch(/synthetic portrait test figure/); }
+    for (const id of ["dark-jersey", "light-jersey", "gold-jersey", "blue-jersey", "red-jersey", "white-historical", "bw-portrait", "silhouette-gold", "silhouette-blue", "placeholder-gold", "placeholder-blue"]) expect(ids).toContain(id);
+    // A figure test carries a synthetic SVG; a fallback-tier test only PINS the tier
+    // (placeholder or silhouette) so each tier stays measurable — neither is a likeness.
+    for (const u of UNIFORM_TESTS.filter((u) => u.art && !u.art.tier)) { expect(u.art.src).toMatch(/^data:image\/svg\+xml/); expect(u.art.alt).toMatch(/synthetic portrait test figure/); }
+    for (const u of UNIFORM_TESTS.filter((u) => u.art?.tier)) { expect(["placeholder", "silhouette"]).toContain(u.art.tier); expect(u.art.src).toBeUndefined(); }
     expect(src("src/components/arena/PlayerCard.jsx")).not.toMatch(/midjourney|stable-diffusion|scrape/i);
     expect(LAB_FIXTURE_IDS).toEqual([...FIXTURE_IDS, "portraits", "gate", "membership", "simulating"]);
   });

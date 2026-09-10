@@ -27,7 +27,7 @@ for (const [name, vp, mobile] of [["desktop", { width: 1440, height: 900 }, fals
   const page = await ctx.newPage();
   const errors = []; page.on("pageerror", (e) => errors.push({ kind: "pageerror", detail: String(e.message).slice(0, 200) }));
   page.on("console", (m) => { if (m.type() === "error") errors.push({ kind: "console-error", detail: m.text().slice(0, 200) }); });
-  page.on("response", (r) => { const s = r.status(); if (s >= 400 && !/\/api\/(health|events)/.test(r.url())) errors.push({ kind: `http-${s}`, detail: r.url().replace(BASE, "").slice(0, 160) }); });
+  page.on("response", (r) => { const s = r.status(); if (s >= 400 && !/\/api\/(health|events)/.test(r.url())) errors.push({ kind: `http-${s}`, detail: `${r.request().method()} ${r.url().replace(BASE, "").slice(0, 120)} ${(r.request().postData() || "").slice(0, 80)}` }); });
   await page.addInitScript(() => { try { localStorage.setItem("ec_seen", "1"); } catch {} });
   // 1. Home and every top-level destination
   await page.goto(`${BASE}/play`, { waitUntil: "networkidle" }); await audit(page, `${name}: Home`);

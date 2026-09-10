@@ -174,7 +174,7 @@ const run = async () => {
   await page.goto(`${BASE}${LAB}?theme=${P}&fixture=portraits&chrome=0`, { waitUntil: "domcontentloaded" });
   await page.locator("[data-portrait-test]").first().waitFor({ timeout: 45_000 });
   const por = await page.evaluate(() => ({ tests: document.querySelectorAll("[data-uniform]").length, stages: document.querySelectorAll(".ec-pc-portrait .ec-portrait-stage").length, layers: document.querySelectorAll(".ec-portrait-field").length }));
-  gate("the portrait-stage fixture renders ten uniform tests on the deployment, each on the stage", por.tests === 10 && por.stages === 10 && por.layers === 10, JSON.stringify(por));
+  gate("the portrait-stage fixture renders ten uniform tests on the deployment, each on the stage", por.tests >= 10 && por.stages === por.tests && por.layers === por.tests, JSON.stringify(por));
   await page.screenshot({ path: `${SHOTS}/desktop-portrait-stage-1536x1024.png` });
   await ctx.close();
 

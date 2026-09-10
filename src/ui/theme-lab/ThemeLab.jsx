@@ -107,7 +107,7 @@ export default function ThemeLab() {
           </div>
           <div className="ec-ta-roster">
             <div className="ec-ta-team" data-team="gold">
-              {UNIFORM_TESTS.filter((u) => u.team === "gold").map((u, i) => (
+              {UNIFORM_TESTS.filter((u) => u.team === "gold" && u.slot == null).map((u, i) => (
                 <div key={u.id} data-uniform={u.id} data-jersey={u.jersey || ""} style={{ display: "contents" }}>
                   <PlayerCard card={card("gold", i)} team="gold" locked testArt={u.art} />
                 </div>
@@ -115,12 +115,23 @@ export default function ThemeLab() {
             </div>
             <div className="ec-ta-roster-divider" aria-hidden="true" />
             <div className="ec-ta-team" data-team="blue">
-              {UNIFORM_TESTS.filter((u) => u.team === "blue").map((u, i) => (
+              {UNIFORM_TESTS.filter((u) => u.team === "blue" && u.slot == null).map((u, i) => (
                 <div key={u.id} data-uniform={u.id} data-jersey={u.jersey || ""} style={{ display: "contents" }}>
                   <PlayerCard card={card("blue", i)} team="blue" locked testArt={u.art} />
                 </div>
               ))}
             </div>
+          </div>
+          {/* The fallback tiers that name a roster slot sit in a second row of the same
+              grid, in the same columns, so their cards keep the frozen 8C.1 geometry. */}
+          <div className="ec-ta-roster" data-fixture-row="fallback-tiers" style={{ marginTop: "var(--player-card-gap, 8px)" }}>
+            {UNIFORM_TESTS.filter((u) => u.slot != null).map((u) => (
+              <div key={u.id} className="ec-ta-team" data-team={u.team}>
+                <div data-uniform={u.id} data-jersey={u.jersey || ""} style={{ gridColumn: u.team === "gold" ? 5 : 7 }}>
+                  <PlayerCard card={card(u.team, u.slot)} team={u.team} locked testArt={u.art} />
+                </div>
+              </div>
+            ))}
           </div>
         </section>
       </main>

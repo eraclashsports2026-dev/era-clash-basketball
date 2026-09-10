@@ -181,7 +181,7 @@ const run = async () => {
   // Theme fixture: portraits (owner only)
   const o = await browser.newContext({ viewport: { width: 1536, height: 1024 } }); await o.request.post(`${BASE}/api/preview-access`, { form: { key: owner.key }, maxRedirects: 0 });
   const op = await o.newPage(); await withAccount(op); await op.goto(`${BASE}/dev/basketball-theme-lab?theme=${P}&fixture=portraits&chrome=0`, { waitUntil: "domcontentloaded" }); await op.locator("[data-portrait-test]").first().waitFor({ timeout: 45_000 });
-  gate("the owner reaches the lab; dark and light uniforms and the silhouette ride the portrait stage", (await op.locator("[data-uniform]").count()) === 10 && (await op.locator(".ec-pc-portrait .ec-portrait-stage").count()) === 10);
+  gate("the owner reaches the lab; dark and light uniforms and the silhouette ride the portrait stage", (await op.locator("[data-uniform]").count()) >= 10 && (await op.locator(".ec-pc-portrait .ec-portrait-stage").count()) === (await op.locator("[data-uniform]").count()));
   await op.screenshot({ path: `${SHOTS}/desktop-portrait-stage-1536x1024.png` });
   await o.close(); await ctx.close();
 
