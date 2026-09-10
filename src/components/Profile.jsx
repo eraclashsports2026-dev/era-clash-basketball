@@ -54,8 +54,8 @@ export default function Profile({ career, badges, BADGES, saved, daily, onLoadTe
             <div style={{ display: "flex", gap: 8 }}>
               <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Your baller name" maxLength={24}
                 aria-label="Display name"
-                style={{ flex: 1, padding: 10, fontSize: 13, background: T.bg, color: T.text, border: `1px solid ${T.border}`, borderRadius: 8, minWidth: 0 }} />
-              <button onClick={claim} style={{ padding: "10px 18px", fontSize: 13, fontWeight: 800, border: "none", borderRadius: 8, background: T.gold, color: T.onGold, cursor: "pointer" }}>
+                style={{ flex: 1, minHeight: 44, padding: "0 12px", fontSize: 16, background: T.bg, color: T.text, border: `1px solid ${T.border}`, borderRadius: 8, minWidth: 0 }} />
+              <button onClick={claim} style={{ minHeight: 44, padding: "0 18px", fontSize: 13, fontWeight: 800, border: "none", borderRadius: 8, background: T.gold, color: T.onGold, cursor: "pointer" }}>
                 Save
               </button>
             </div>
