@@ -2248,7 +2248,7 @@ function RollBuilder({ yz, ballIQ, isDaily, onStart, onKeep, onRespin, onRoll })
     return (
       <div style={{ textAlign: "center", padding: "18px 4px" }}>
         <p style={{ color: T.textDim, fontSize: 13, margin: "0 0 14px", lineHeight: 1.6 }}>
-          Three rolls, Yahtzee rules. Keep who you love, re-spin the rest by <b>era</b> or <b>player</b>.
+          Three rolls, dice rules. Keep who you love, re-spin the rest by <b>era</b> or <b>player</b>.
         </p>
         <button onClick={onStart} style={{ padding: "13px 30px", fontSize: 14, fontWeight: 900, border: "none", borderRadius: 10, background: T.gold, color: T.onGold, cursor: "pointer", minHeight: 48 }}>
           {isDaily ? "Start Today's Challenge" : "🎲 Start Drafting"}

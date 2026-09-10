@@ -639,7 +639,7 @@ button { font-family: inherit; }
 .ec-ta-team-label { display: grid; gap: 1px; }
 .ec-ta-team-caption { display: none; grid-column: 1 / -1; margin: 2px 0 -2px; font-size: 11px; font-weight: 900; letter-spacing: 1.6px; color: var(--ec-a-gold); }
 .ec-ta-team-caption[data-team="blue"] { color: var(--ec-a-blue); margin-top: 8px; }
-.ec-ta-team-caption span { font-weight: 700; letter-spacing: 1.2px; color: var(--ec-a-text-muted); margin-left: 8px; }
+.ec-ta-team-caption-sub { font-weight: 700; letter-spacing: 1.2px; color: var(--ec-a-text-muted); margin-left: 8px; }
 .ec-ta-team-label--blue { justify-items: end; text-align: right; }
 .ec-ta-team-name {
   font-family: var(--ec-display);
@@ -1983,7 +1983,7 @@ h2.ec-intel-heading, h3.ec-intel-heading { font-size: 10.5px; }
      the era) in normal flow. It used to ride the bottom of the screen as a
      translucent sticky bar, which sat over the coach offers and the era panel
      with their text ghosting through (owner report, 2026-09-10). */
-  .ec-ta-stage .ec-ta-cta-wrap { position: static; padding: 12px 0 4px; }
+  .ec-ta-stage .ec-ta-cta-wrap { position: relative; z-index: 3; padding: 12px 0 4px; }
   .ec-ta-staff-row { grid-template-columns: minmax(0, 1fr); }
   .ec-ta-staff--blue { justify-content: flex-start; text-align: left; }
   .ec-era-reveal { padding: 16px 14px 14px; }

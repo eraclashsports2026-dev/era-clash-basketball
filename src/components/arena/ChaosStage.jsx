@@ -66,7 +66,10 @@ function Bench({ team, roster, heldSlots, keptSlots = [], interactive, locked, b
   return (
     <div className="ec-ta-team" data-team={team} data-variant={variant}>
       {/* Shown only where the two fives stack (768–1179px): the label above its own row. */}
-      <div className="ec-ta-team-caption" data-team={team}>{team === "blue" ? "TEAM BLUE" : "TEAM GOLD"}<span>{team === "blue" ? "LEGEND RIVAL" : "YOUR FIVE"}</span></div>
+      <div className="ec-ta-team-caption" data-team={team}>
+        <span className="ec-ta-team-caption-name">{team === "blue" ? "TEAM BLUE" : "TEAM GOLD"}</span>
+        <span className="ec-ta-team-caption-sub">{team === "blue" ? "LEGEND RIVAL" : "YOUR FIVE"}</span>
+      </div>
       {SLOTS.map((slot, i) => {
         const card = roster?.[i];
         if (!card) return <EmptyCard key={slot} slot={slot} team={team} variant={variant} />;

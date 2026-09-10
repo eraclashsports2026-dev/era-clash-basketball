@@ -1,0 +1,76 @@
+{
+  "artifact": "launch-audit-program",
+  "date": "2026-09-10",
+  "owner_request": "Fix the phone action bar that scrolled over the coach and Clash Ready sections; find and fix every error, thinking outside the usual checks; verify with three 100% runs; three full audits, then a fourth launch-readiness audit that must reach 95%.",
+  "harness": "scripts/ui-release/fullAudit.mjs — routes (web + phone), the four header destinations, the whole Chaos Clash on web/phone plus the draft on a landscape phone, a tablet and a 360px phone; overlaps, hidden and non-painting controls, clipped text, images, console/network, leaked values, tap targets, iOS input zoom, metadata, icons, share image, redirects, security headers, API health, result arithmetic, roster integrity, disjoint benches, era agreement, keyboard reach, back navigation, mid-run reload. Weighted criteria → 0–100.",
+  "audits": [
+    {
+      "n": 1,
+      "where": "harness (4180, build of the fix branch)",
+      "score": 99,
+      "criteria": "371/373",
+      "findings": [
+        {
+          "id": "web: the primary action covers nothing at the result",
+          "fact": ""
+        },
+        {
+          "id": "phone: the primary action covers nothing at the result",
+          "fact": ""
+        }
+      ],
+      "note": "the two leftovers were the audit's own result-state check (the primary action is gone at the result); corrected"
+    },
+    {
+      "n": 2,
+      "where": "preview deployment of PR #57 @ 2188494",
+      "score": 98,
+      "criteria": "375/383",
+      "findings": [
+        {
+          "id": "api: the account provider accepts the server credential",
+          "fact": "probe 401"
+        },
+        {
+          "id": "web /this-route-does-not-exist: no console errors, no failed requests",
+          "fact": "Failed to load resource: the server responded with a status of 404 () @ /this-route-does-not-exist · 404 GET /this-route-does-not-exist"
+        },
+        {
+          "id": "phone /this-route-does-not-exist: no console errors, no failed requests",
+          "fact": "Failed to load resource: the server responded with a status of 404 () @ /this-route-does-not-exist · 404 GET /this-route-does-not-exist"
+        },
+        {
+          "id": "phone /this-route-does-not-exist: every control is a 44px target",
+          "fact": "a. \"ERACLASH\" 96×23"
+        },
+        {
+          "id": "phone: header destination Daily exists",
+          "fact": "no control found"
+        },
+        {
+          "id": "phone: header destination Challenges exists",
+          "fact": "no control found"
+        },
+        {
+          "id": "phone: header destination Leaderboard exists",
+          "fact": "no control found"
+        },
+        {
+          "id": "phone: header destination My EraClash exists",
+          "fact": "no control found"
+        }
+      ],
+      "note": "provider credential = the preview environment's rejected server key (owner env item); the unknown-route 404 document and the phone Menu rows were audit-side (corrected); the 404 page's wordmark link was 23px (fixed to 44px). Visual review of the preview screens found the in-flow phone action bar painted UNDER the phone's opaque atmosphere layer (tappable but invisible) — fixed with position: relative; z-index: 3, and the audit now samples the screenshot to prove the action bar paints."
+    }
+  ],
+  "fixedByTheAudits": [
+    "phone: primary action in flow after its decision, each state scrolls its decision under the pinned header (owner report)",
+    "phone: the in-flow action bar painted under the atmosphere layer (found by screenshot review, audit 2)",
+    "the same coach could be hired on both benches (~2–7%)",
+    "tablet 768–1179: Hold control 5px outside the card; TEAM BLUE label above the gold row",
+    "unknown addresses rendered the Chaos board: lobby notice + branded 404 page; robots.txt",
+    "stale copy: Adapt to the era, era arrives with Roll 2, custom-era window, challenge invite, 'protected preview' on membership, third-party game mark in the Daily copy",
+    "phone: 14px guest-name input (iOS zoom), 40px Back button",
+    "sign-in: invite-only email copy instead of 'email does not look right'; rate-limit copy"
+  ]
+}

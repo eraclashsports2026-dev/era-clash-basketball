@@ -1,0 +1,2345 @@
+{
+  "artifact": "full-audit-2",
+  "origin": "https://era-clash-basketball-oaf4zrsnq-era-clash.vercel.app",
+  "recordedAt": "2026-09-10T12:14:11.132Z",
+  "score": 98,
+  "of": 100,
+  "weightedPassed": 860,
+  "weightedTotal": 878,
+  "criteria": 383,
+  "passedCriteria": 375,
+  "findings": [
+    {
+      "id": "api: the account provider accepts the server credential",
+      "fact": "probe 401"
+    },
+    {
+      "id": "web /this-route-does-not-exist: no console errors, no failed requests",
+      "fact": "Failed to load resource: the server responded with a status of 404 () @ /this-route-does-not-exist · 404 GET /this-route-does-not-exist"
+    },
+    {
+      "id": "phone /this-route-does-not-exist: no console errors, no failed requests",
+      "fact": "Failed to load resource: the server responded with a status of 404 () @ /this-route-does-not-exist · 404 GET /this-route-does-not-exist"
+    },
+    {
+      "id": "phone /this-route-does-not-exist: every control is a 44px target",
+      "fact": "a. \"ERACLASH\" 96×23"
+    },
+    {
+      "id": "phone: header destination Daily exists",
+      "fact": "no control found"
+    },
+    {
+      "id": "phone: header destination Challenges exists",
+      "fact": "no control found"
+    },
+    {
+      "id": "phone: header destination Leaderboard exists",
+      "fact": "no control found"
+    },
+    {
+      "id": "phone: header destination My EraClash exists",
+      "fact": "no control found"
+    }
+  ],
+  "checks": [
+    {
+      "id": "document: apple-touch-icon for the phone home screen",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "document: index.html is revalidated (no long max-age / immutable), so a new deploy reaches phones",
+      "weight": 2,
+      "pass": true,
+      "fact": "public, max-age=0, must-revalidate"
+    },
+    {
+      "id": "document: title, description, viewport, theme-color, og tags, canonical or manifest",
+      "weight": 2,
+      "pass": true,
+      "fact": "og:true manifest:true theme:true"
+    },
+    {
+      "id": "asset /manifest.json serves",
+      "weight": 1,
+      "pass": true,
+      "fact": "application/json; charset=utf-8"
+    },
+    {
+      "id": "asset /sw.js serves",
+      "weight": 1,
+      "pass": true,
+      "fact": "application/javascript; charset=utf-8"
+    },
+    {
+      "id": "asset /favicon.svg serves",
+      "weight": 1,
+      "pass": true,
+      "fact": "image/svg+xml"
+    },
+    {
+      "id": "manifest: 200 with a name and icons",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "api: health ok, core engine ok, persistence ok",
+      "weight": 4,
+      "pass": true,
+      "fact": "{\"status\":\"ok\",\"core\":\"ok\",\"persistence\":\"ok\"}"
+    },
+    {
+      "id": "api: the account provider accepts the server credential",
+      "weight": 4,
+      "pass": false,
+      "fact": "probe 401"
+    },
+    {
+      "id": "api: an unknown action is refused with a 4xx JSON error, not a 500",
+      "weight": 2,
+      "pass": true,
+      "fact": "400"
+    },
+    {
+      "id": "routing: an unknown route still serves the app shell (SPA) or a 404 page",
+      "weight": 1,
+      "pass": true,
+      "fact": "404"
+    },
+    {
+      "id": "web /: renders (HTTP 200), not blank, no page error",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /: no console errors, no failed requests",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /: no horizontal overflow",
+      "weight": 3,
+      "pass": true,
+      "fact": "0px"
+    },
+    {
+      "id": "web /: every visible image loads; images have alt or are decorative",
+      "weight": 2,
+      "pass": true,
+      "fact": "broken 0 noAlt 0 "
+    },
+    {
+      "id": "web /: nothing fixed or sticky covers a control",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /: no clipped text",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /: every control has an accessible name",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /: no leaked code value in the copy (undefined, NaN, null, Invalid Date, [object Object])",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /: the fan-made / not-affiliated disclaimer is on the page",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /: one h1, a main landmark, a title, lang and viewport meta",
+      "weight": 1,
+      "pass": true,
+      "fact": "h1=1 main=true title=\"EraClash Basketball — Build Your All-Tim\" lang=en"
+    },
+    {
+      "id": "web /play: renders (HTTP 200), not blank, no page error",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /play: no console errors, no failed requests",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /play: no horizontal overflow",
+      "weight": 3,
+      "pass": true,
+      "fact": "0px"
+    },
+    {
+      "id": "web /play: every visible image loads; images have alt or are decorative",
+      "weight": 2,
+      "pass": true,
+      "fact": "broken 0 noAlt 0 "
+    },
+    {
+      "id": "web /play: nothing fixed or sticky covers a control",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /play: no clipped text",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /play: every control has an accessible name",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /play: no leaked code value in the copy (undefined, NaN, null, Invalid Date, [object Object])",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /play: the fan-made / not-affiliated disclaimer is on the page",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /play: one h1, a main landmark, a title, lang and viewport meta",
+      "weight": 1,
+      "pass": true,
+      "fact": "h1=1 main=true title=\"EraClash Basketball — Build Your All-Tim\" lang=en"
+    },
+    {
+      "id": "web /play/chaos: renders (HTTP 200), not blank, no page error",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /play/chaos: no console errors, no failed requests",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /play/chaos: no horizontal overflow",
+      "weight": 3,
+      "pass": true,
+      "fact": "0px"
+    },
+    {
+      "id": "web /play/chaos: every visible image loads; images have alt or are decorative",
+      "weight": 2,
+      "pass": true,
+      "fact": "broken 0 noAlt 0 "
+    },
+    {
+      "id": "web /play/chaos: nothing fixed or sticky covers a control",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /play/chaos: no clipped text",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /play/chaos: every control has an accessible name",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /play/chaos: no leaked code value in the copy (undefined, NaN, null, Invalid Date, [object Object])",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /play/chaos: the fan-made / not-affiliated disclaimer is on the page",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /play/chaos: one h1, a main landmark, a title, lang and viewport meta",
+      "weight": 1,
+      "pass": true,
+      "fact": "h1=1 main=true title=\"EraClash Basketball — Build Your All-Tim\" lang=en"
+    },
+    {
+      "id": "web /play/dream: renders (HTTP 200), not blank, no page error",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /play/dream: no console errors, no failed requests",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /play/dream: no horizontal overflow",
+      "weight": 3,
+      "pass": true,
+      "fact": "0px"
+    },
+    {
+      "id": "web /play/dream: every visible image loads; images have alt or are decorative",
+      "weight": 2,
+      "pass": true,
+      "fact": "broken 0 noAlt 0 "
+    },
+    {
+      "id": "web /play/dream: nothing fixed or sticky covers a control",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /play/dream: no clipped text",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /play/dream: every control has an accessible name",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /play/dream: no leaked code value in the copy (undefined, NaN, null, Invalid Date, [object Object])",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /play/dream: the fan-made / not-affiliated disclaimer is on the page",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /play/dream: one h1, a main landmark, a title, lang and viewport meta",
+      "weight": 1,
+      "pass": true,
+      "fact": "h1=1 main=true title=\"EraClash Basketball — Build Your All-Tim\" lang=en"
+    },
+    {
+      "id": "web /leaderboard: renders (HTTP 200), not blank, no page error",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /leaderboard: no console errors, no failed requests",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /leaderboard: no horizontal overflow",
+      "weight": 3,
+      "pass": true,
+      "fact": "0px"
+    },
+    {
+      "id": "web /leaderboard: every visible image loads; images have alt or are decorative",
+      "weight": 2,
+      "pass": true,
+      "fact": "broken 0 noAlt 0 "
+    },
+    {
+      "id": "web /leaderboard: nothing fixed or sticky covers a control",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /leaderboard: no clipped text",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /leaderboard: every control has an accessible name",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /leaderboard: no leaked code value in the copy (undefined, NaN, null, Invalid Date, [object Object])",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /leaderboard: the fan-made / not-affiliated disclaimer is on the page",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /leaderboard: one h1, a main landmark, a title, lang and viewport meta",
+      "weight": 1,
+      "pass": true,
+      "fact": "h1=1 main=true title=\"EraClash Basketball — Build Your All-Tim\" lang=en"
+    },
+    {
+      "id": "web /my-eraclash: renders (HTTP 200), not blank, no page error",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /my-eraclash: no console errors, no failed requests",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /my-eraclash: no horizontal overflow",
+      "weight": 3,
+      "pass": true,
+      "fact": "0px"
+    },
+    {
+      "id": "web /my-eraclash: every visible image loads; images have alt or are decorative",
+      "weight": 2,
+      "pass": true,
+      "fact": "broken 0 noAlt 0 "
+    },
+    {
+      "id": "web /my-eraclash: nothing fixed or sticky covers a control",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /my-eraclash: no clipped text",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /my-eraclash: every control has an accessible name",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /my-eraclash: no leaked code value in the copy (undefined, NaN, null, Invalid Date, [object Object])",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /my-eraclash: the fan-made / not-affiliated disclaimer is on the page",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /my-eraclash: one h1, a main landmark, a title, lang and viewport meta",
+      "weight": 1,
+      "pass": true,
+      "fact": "h1=1 main=true title=\"EraClash Basketball — Build Your All-Tim\" lang=en"
+    },
+    {
+      "id": "web /membership: renders (HTTP 200), not blank, no page error",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /membership: no console errors, no failed requests",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /membership: no horizontal overflow",
+      "weight": 3,
+      "pass": true,
+      "fact": "0px"
+    },
+    {
+      "id": "web /membership: every visible image loads; images have alt or are decorative",
+      "weight": 2,
+      "pass": true,
+      "fact": "broken 0 noAlt 0 "
+    },
+    {
+      "id": "web /membership: nothing fixed or sticky covers a control",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /membership: no clipped text",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /membership: every control has an accessible name",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /membership: no leaked code value in the copy (undefined, NaN, null, Invalid Date, [object Object])",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /membership: the fan-made / not-affiliated disclaimer is on the page",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /membership: one h1, a main landmark, a title, lang and viewport meta",
+      "weight": 1,
+      "pass": true,
+      "fact": "h1=1 main=true title=\"EraClash Basketball — Build Your All-Tim\" lang=en"
+    },
+    {
+      "id": "web /fantasy/live: renders (HTTP 200), not blank, no page error",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /fantasy/live: no console errors, no failed requests",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /fantasy/live: no horizontal overflow",
+      "weight": 3,
+      "pass": true,
+      "fact": "0px"
+    },
+    {
+      "id": "web /fantasy/live: every visible image loads; images have alt or are decorative",
+      "weight": 2,
+      "pass": true,
+      "fact": "broken 0 noAlt 0 "
+    },
+    {
+      "id": "web /fantasy/live: nothing fixed or sticky covers a control",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /fantasy/live: no clipped text",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /fantasy/live: every control has an accessible name",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /fantasy/live: no leaked code value in the copy (undefined, NaN, null, Invalid Date, [object Object])",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /fantasy/live: the fan-made / not-affiliated disclaimer is on the page",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /fantasy/live: one h1, a main landmark, a title, lang and viewport meta",
+      "weight": 1,
+      "pass": true,
+      "fact": "h1=1 main=true title=\"EraClash Basketball — Build Your All-Tim\" lang=en"
+    },
+    {
+      "id": "web /modes/chaos: renders (HTTP 200), not blank, no page error",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /modes/chaos: no console errors, no failed requests",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /modes/chaos: no horizontal overflow",
+      "weight": 3,
+      "pass": true,
+      "fact": "0px"
+    },
+    {
+      "id": "web /modes/chaos: every visible image loads; images have alt or are decorative",
+      "weight": 2,
+      "pass": true,
+      "fact": "broken 0 noAlt 0 "
+    },
+    {
+      "id": "web /modes/chaos: nothing fixed or sticky covers a control",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /modes/chaos: no clipped text",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /modes/chaos: every control has an accessible name",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /modes/chaos: no leaked code value in the copy (undefined, NaN, null, Invalid Date, [object Object])",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /modes/chaos: the fan-made / not-affiliated disclaimer is on the page",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /modes/chaos: one h1, a main landmark, a title, lang and viewport meta",
+      "weight": 1,
+      "pass": true,
+      "fact": "h1=1 main=true title=\"EraClash Basketball — Build Your All-Tim\" lang=en"
+    },
+    {
+      "id": "web /player/00000000000000000000: renders (HTTP 200), not blank, no page error",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web unknown profile slug: says the profile is not available (or could not be loaded), no page error",
+      "weight": 2,
+      "pass": true,
+      "fact": "BASKETBALL Play ▾ Fantasy ▾ Daily Challenges Leaderboard My EraClash Sign in Create free account THIS PROFILE COULD NOT "
+    },
+    {
+      "id": "web /player/00000000000000000000: no console errors, no failed requests",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /player/00000000000000000000: no horizontal overflow",
+      "weight": 3,
+      "pass": true,
+      "fact": "0px"
+    },
+    {
+      "id": "web /player/00000000000000000000: every visible image loads; images have alt or are decorative",
+      "weight": 2,
+      "pass": true,
+      "fact": "broken 0 noAlt 0 "
+    },
+    {
+      "id": "web /player/00000000000000000000: nothing fixed or sticky covers a control",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /player/00000000000000000000: no clipped text",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /player/00000000000000000000: every control has an accessible name",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /player/00000000000000000000: no leaked code value in the copy (undefined, NaN, null, Invalid Date, [object Object])",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /player/00000000000000000000: the fan-made / not-affiliated disclaimer is on the page",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /player/00000000000000000000: one h1, a main landmark, a title, lang and viewport meta",
+      "weight": 1,
+      "pass": true,
+      "fact": "h1=1 main=true title=\"EraClash Basketball — Build Your All-Tim\" lang=en"
+    },
+    {
+      "id": "web /challenge/EC-ZZZZ-ZZZZ: renders (HTTP 200), not blank, no page error",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /challenge/EC-ZZZZ-ZZZZ: no console errors, no failed requests",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /challenge/EC-ZZZZ-ZZZZ: no horizontal overflow",
+      "weight": 3,
+      "pass": true,
+      "fact": "0px"
+    },
+    {
+      "id": "web /challenge/EC-ZZZZ-ZZZZ: every visible image loads; images have alt or are decorative",
+      "weight": 2,
+      "pass": true,
+      "fact": "broken 0 noAlt 0 "
+    },
+    {
+      "id": "web /challenge/EC-ZZZZ-ZZZZ: nothing fixed or sticky covers a control",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /challenge/EC-ZZZZ-ZZZZ: no clipped text",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /challenge/EC-ZZZZ-ZZZZ: every control has an accessible name",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /challenge/EC-ZZZZ-ZZZZ: no leaked code value in the copy (undefined, NaN, null, Invalid Date, [object Object])",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /challenge/EC-ZZZZ-ZZZZ: the fan-made / not-affiliated disclaimer is on the page",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /challenge/EC-ZZZZ-ZZZZ: one h1, a main landmark, a title, lang and viewport meta",
+      "weight": 1,
+      "pass": true,
+      "fact": "h1=1 main=true title=\"EraClash Basketball — Build Your All-Tim\" lang=en"
+    },
+    {
+      "id": "web /this-route-does-not-exist: renders (HTTP 404), not blank, no page error",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web unknown route: says so and offers a way home (in-app notice, or the branded 404 page)",
+      "weight": 2,
+      "pass": true,
+      "fact": "404 ERACLASH BASKETBALL 404 · PAGE NOT FOUND That page doesn't exist. The link may be old or mistyped. T"
+    },
+    {
+      "id": "web /this-route-does-not-exist: no console errors, no failed requests",
+      "weight": 2,
+      "pass": false,
+      "fact": "Failed to load resource: the server responded with a status of 404 () @ /this-route-does-not-exist · 404 GET /this-route-does-not-exist"
+    },
+    {
+      "id": "web /this-route-does-not-exist: no horizontal overflow",
+      "weight": 3,
+      "pass": true,
+      "fact": "0px"
+    },
+    {
+      "id": "web /this-route-does-not-exist: every visible image loads; images have alt or are decorative",
+      "weight": 2,
+      "pass": true,
+      "fact": "broken 0 noAlt 0 "
+    },
+    {
+      "id": "web /this-route-does-not-exist: nothing fixed or sticky covers a control",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /this-route-does-not-exist: no clipped text",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /this-route-does-not-exist: every control has an accessible name",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /this-route-does-not-exist: no leaked code value in the copy (undefined, NaN, null, Invalid Date, [object Object])",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /this-route-does-not-exist: the fan-made / not-affiliated disclaimer is on the page",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web /this-route-does-not-exist: one h1, a main landmark, a title, lang and viewport meta",
+      "weight": 1,
+      "pass": true,
+      "fact": "h1=1 main=true title=\"Page not found — EraClash Basketball\" lang=en"
+    },
+    {
+      "id": "web: no ADAPT TO ERA anywhere at the start",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web: the primary action covers no row (Roll 1)",
+      "weight": 4,
+      "pass": true,
+      "fact": "0 covered"
+    },
+    {
+      "id": "web: each five fills PG, SG, SF, PF, C with a numeric rating",
+      "weight": 3,
+      "pass": true,
+      "fact": "PG,SG,SF,PF,C · 82/63/71/71/63"
+    },
+    {
+      "id": "web: no player appears on both fives",
+      "weight": 4,
+      "pass": true,
+      "fact": "disjoint"
+    },
+    {
+      "id": "web: two holds, HELD controls contained in their rows/cards",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web: every visible player carries portrait art",
+      "weight": 4,
+      "pass": true,
+      "fact": "{\"shown\":10,\"loaded\":10}"
+    },
+    {
+      "id": "web: Roll 2 keeps the two held players and shows no era",
+      "weight": 4,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web: the primary action covers no offer (Coach Chaos)",
+      "weight": 4,
+      "pass": true,
+      "fact": "0 covered"
+    },
+    {
+      "id": "web: three offers with distinct coaches and distinct roles",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web: Scouting detail opens on one offer and reads",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web: selecting a staff enables CONTINUE WITH COACH (disabled before)",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web: Clash Ready reveals the era with three rule cards, above RUN CLASH",
+      "weight": 5,
+      "pass": true,
+      "fact": "2000s"
+    },
+    {
+      "id": "web: the primary action covers nothing at Clash Ready",
+      "weight": 4,
+      "pass": true,
+      "fact": "0 covered"
+    },
+    {
+      "id": "web: the era chip and the era panel agree",
+      "weight": 2,
+      "pass": true,
+      "fact": "🗓 ERA: 2000s 🔒 vs 2000s"
+    },
+    {
+      "id": "web: both benches are staffed by different coaches",
+      "weight": 3,
+      "pass": true,
+      "fact": "Erik Spoelstra vs Phil Jackson"
+    },
+    {
+      "id": "web: VIEW ALL ERA RULES opens a readable panel",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web: a reload at Clash Ready resumes the same run (same era)",
+      "weight": 3,
+      "pass": true,
+      "fact": "2000s"
+    },
+    {
+      "id": "web: the score, the winner label and data-winner agree",
+      "weight": 5,
+      "pass": true,
+      "fact": "97-90 TEAM GOLD WINS"
+    },
+    {
+      "id": "web: the MVP is a player on one of the two rosters",
+      "weight": 2,
+      "pass": true,
+      "fact": "MVP · Paolo Banchero · 28 PTS · 12 REB · 4 AST · 1 STL"
+    },
+    {
+      "id": "web: the primary action covers nothing at the result",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web: the Coaching tab shows content",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web: the Analysis tab shows content",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web: Run it back is offered after the result",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web: no page errors, console errors or failed requests through the whole Clash",
+      "weight": 5,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web: the first roll answers within 8s and the Clash within 90s",
+      "weight": 2,
+      "pass": true,
+      "fact": "roll 2334ms · clash 1339ms"
+    },
+    {
+      "id": "web → Daily: renders content, no overflow, nothing covered, no clipped text",
+      "weight": 3,
+      "pass": true,
+      "fact": "0px ·  · "
+    },
+    {
+      "id": "web → Daily: every image loads and no leaked code value",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web → Challenges: renders content, no overflow, nothing covered, no clipped text",
+      "weight": 3,
+      "pass": true,
+      "fact": "0px ·  · "
+    },
+    {
+      "id": "web → Challenges: every image loads and no leaked code value",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web → Leaderboard: renders content, no overflow, nothing covered, no clipped text",
+      "weight": 3,
+      "pass": true,
+      "fact": "0px ·  · "
+    },
+    {
+      "id": "web → Leaderboard: every image loads and no leaked code value",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web → My EraClash: renders content, no overflow, nothing covered, no clipped text",
+      "weight": 3,
+      "pass": true,
+      "fact": "0px ·  · "
+    },
+    {
+      "id": "web → My EraClash: every image loads and no leaked code value",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web: the account control opens a panel or dialog",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web: the keyboard reaches the primary action within 40 tabs",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web: browser Back from the board lands on the lobby",
+      "weight": 2,
+      "pass": true,
+      "fact": "/"
+    },
+    {
+      "id": "web: how to play opens a readable panel",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web: glossary opens a readable panel",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "web: utilities produce no errors",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /: renders (HTTP 200), not blank, no page error",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /: no console errors, no failed requests",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /: no horizontal overflow",
+      "weight": 3,
+      "pass": true,
+      "fact": "0px"
+    },
+    {
+      "id": "phone /: every visible image loads; images have alt or are decorative",
+      "weight": 2,
+      "pass": true,
+      "fact": "broken 0 noAlt 0 "
+    },
+    {
+      "id": "phone /: nothing fixed or sticky covers a control",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /: no clipped text",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /: every control has an accessible name",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /: no leaked code value in the copy (undefined, NaN, null, Invalid Date, [object Object])",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /: the fan-made / not-affiliated disclaimer is on the page",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /: one h1, a main landmark, a title, lang and viewport meta",
+      "weight": 1,
+      "pass": true,
+      "fact": "h1=1 main=true title=\"EraClash Basketball — Build Your All-Tim\" lang=en"
+    },
+    {
+      "id": "phone /: every control is a 44px target",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /: no input below 16px (iOS zoom)",
+      "weight": 1,
+      "pass": true,
+      "fact": "0"
+    },
+    {
+      "id": "phone /play: renders (HTTP 200), not blank, no page error",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /play: no console errors, no failed requests",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /play: no horizontal overflow",
+      "weight": 3,
+      "pass": true,
+      "fact": "0px"
+    },
+    {
+      "id": "phone /play: every visible image loads; images have alt or are decorative",
+      "weight": 2,
+      "pass": true,
+      "fact": "broken 0 noAlt 0 "
+    },
+    {
+      "id": "phone /play: nothing fixed or sticky covers a control",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /play: no clipped text",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /play: every control has an accessible name",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /play: no leaked code value in the copy (undefined, NaN, null, Invalid Date, [object Object])",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /play: the fan-made / not-affiliated disclaimer is on the page",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /play: one h1, a main landmark, a title, lang and viewport meta",
+      "weight": 1,
+      "pass": true,
+      "fact": "h1=1 main=true title=\"EraClash Basketball — Build Your All-Tim\" lang=en"
+    },
+    {
+      "id": "phone /play: every control is a 44px target",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /play: no input below 16px (iOS zoom)",
+      "weight": 1,
+      "pass": true,
+      "fact": "0"
+    },
+    {
+      "id": "phone /play/chaos: renders (HTTP 200), not blank, no page error",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /play/chaos: no console errors, no failed requests",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /play/chaos: no horizontal overflow",
+      "weight": 3,
+      "pass": true,
+      "fact": "0px"
+    },
+    {
+      "id": "phone /play/chaos: every visible image loads; images have alt or are decorative",
+      "weight": 2,
+      "pass": true,
+      "fact": "broken 0 noAlt 0 "
+    },
+    {
+      "id": "phone /play/chaos: nothing fixed or sticky covers a control",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /play/chaos: no clipped text",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /play/chaos: every control has an accessible name",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /play/chaos: no leaked code value in the copy (undefined, NaN, null, Invalid Date, [object Object])",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /play/chaos: the fan-made / not-affiliated disclaimer is on the page",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /play/chaos: one h1, a main landmark, a title, lang and viewport meta",
+      "weight": 1,
+      "pass": true,
+      "fact": "h1=1 main=true title=\"EraClash Basketball — Build Your All-Tim\" lang=en"
+    },
+    {
+      "id": "phone /play/chaos: every control is a 44px target",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /play/chaos: no input below 16px (iOS zoom)",
+      "weight": 1,
+      "pass": true,
+      "fact": "0"
+    },
+    {
+      "id": "phone /play/dream: renders (HTTP 200), not blank, no page error",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /play/dream: no console errors, no failed requests",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /play/dream: no horizontal overflow",
+      "weight": 3,
+      "pass": true,
+      "fact": "0px"
+    },
+    {
+      "id": "phone /play/dream: every visible image loads; images have alt or are decorative",
+      "weight": 2,
+      "pass": true,
+      "fact": "broken 0 noAlt 0 "
+    },
+    {
+      "id": "phone /play/dream: nothing fixed or sticky covers a control",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /play/dream: no clipped text",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /play/dream: every control has an accessible name",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /play/dream: no leaked code value in the copy (undefined, NaN, null, Invalid Date, [object Object])",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /play/dream: the fan-made / not-affiliated disclaimer is on the page",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /play/dream: one h1, a main landmark, a title, lang and viewport meta",
+      "weight": 1,
+      "pass": true,
+      "fact": "h1=1 main=true title=\"EraClash Basketball — Build Your All-Tim\" lang=en"
+    },
+    {
+      "id": "phone /play/dream: every control is a 44px target",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /play/dream: no input below 16px (iOS zoom)",
+      "weight": 1,
+      "pass": true,
+      "fact": "0"
+    },
+    {
+      "id": "phone /leaderboard: renders (HTTP 200), not blank, no page error",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /leaderboard: no console errors, no failed requests",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /leaderboard: no horizontal overflow",
+      "weight": 3,
+      "pass": true,
+      "fact": "0px"
+    },
+    {
+      "id": "phone /leaderboard: every visible image loads; images have alt or are decorative",
+      "weight": 2,
+      "pass": true,
+      "fact": "broken 0 noAlt 0 "
+    },
+    {
+      "id": "phone /leaderboard: nothing fixed or sticky covers a control",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /leaderboard: no clipped text",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /leaderboard: every control has an accessible name",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /leaderboard: no leaked code value in the copy (undefined, NaN, null, Invalid Date, [object Object])",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /leaderboard: the fan-made / not-affiliated disclaimer is on the page",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /leaderboard: one h1, a main landmark, a title, lang and viewport meta",
+      "weight": 1,
+      "pass": true,
+      "fact": "h1=1 main=true title=\"EraClash Basketball — Build Your All-Tim\" lang=en"
+    },
+    {
+      "id": "phone /leaderboard: every control is a 44px target",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /leaderboard: no input below 16px (iOS zoom)",
+      "weight": 1,
+      "pass": true,
+      "fact": "0"
+    },
+    {
+      "id": "phone /my-eraclash: renders (HTTP 200), not blank, no page error",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /my-eraclash: no console errors, no failed requests",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /my-eraclash: no horizontal overflow",
+      "weight": 3,
+      "pass": true,
+      "fact": "0px"
+    },
+    {
+      "id": "phone /my-eraclash: every visible image loads; images have alt or are decorative",
+      "weight": 2,
+      "pass": true,
+      "fact": "broken 0 noAlt 0 "
+    },
+    {
+      "id": "phone /my-eraclash: nothing fixed or sticky covers a control",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /my-eraclash: no clipped text",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /my-eraclash: every control has an accessible name",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /my-eraclash: no leaked code value in the copy (undefined, NaN, null, Invalid Date, [object Object])",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /my-eraclash: the fan-made / not-affiliated disclaimer is on the page",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /my-eraclash: one h1, a main landmark, a title, lang and viewport meta",
+      "weight": 1,
+      "pass": true,
+      "fact": "h1=1 main=true title=\"EraClash Basketball — Build Your All-Tim\" lang=en"
+    },
+    {
+      "id": "phone /my-eraclash: every control is a 44px target",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /my-eraclash: no input below 16px (iOS zoom)",
+      "weight": 1,
+      "pass": true,
+      "fact": "0"
+    },
+    {
+      "id": "phone /membership: renders (HTTP 200), not blank, no page error",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /membership: no console errors, no failed requests",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /membership: no horizontal overflow",
+      "weight": 3,
+      "pass": true,
+      "fact": "0px"
+    },
+    {
+      "id": "phone /membership: every visible image loads; images have alt or are decorative",
+      "weight": 2,
+      "pass": true,
+      "fact": "broken 0 noAlt 0 "
+    },
+    {
+      "id": "phone /membership: nothing fixed or sticky covers a control",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /membership: no clipped text",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /membership: every control has an accessible name",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /membership: no leaked code value in the copy (undefined, NaN, null, Invalid Date, [object Object])",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /membership: the fan-made / not-affiliated disclaimer is on the page",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /membership: one h1, a main landmark, a title, lang and viewport meta",
+      "weight": 1,
+      "pass": true,
+      "fact": "h1=1 main=true title=\"EraClash Basketball — Build Your All-Tim\" lang=en"
+    },
+    {
+      "id": "phone /membership: every control is a 44px target",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /membership: no input below 16px (iOS zoom)",
+      "weight": 1,
+      "pass": true,
+      "fact": "0"
+    },
+    {
+      "id": "phone /fantasy/live: renders (HTTP 200), not blank, no page error",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /fantasy/live: no console errors, no failed requests",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /fantasy/live: no horizontal overflow",
+      "weight": 3,
+      "pass": true,
+      "fact": "0px"
+    },
+    {
+      "id": "phone /fantasy/live: every visible image loads; images have alt or are decorative",
+      "weight": 2,
+      "pass": true,
+      "fact": "broken 0 noAlt 0 "
+    },
+    {
+      "id": "phone /fantasy/live: nothing fixed or sticky covers a control",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /fantasy/live: no clipped text",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /fantasy/live: every control has an accessible name",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /fantasy/live: no leaked code value in the copy (undefined, NaN, null, Invalid Date, [object Object])",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /fantasy/live: the fan-made / not-affiliated disclaimer is on the page",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /fantasy/live: one h1, a main landmark, a title, lang and viewport meta",
+      "weight": 1,
+      "pass": true,
+      "fact": "h1=1 main=true title=\"EraClash Basketball — Build Your All-Tim\" lang=en"
+    },
+    {
+      "id": "phone /fantasy/live: every control is a 44px target",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /fantasy/live: no input below 16px (iOS zoom)",
+      "weight": 1,
+      "pass": true,
+      "fact": "0"
+    },
+    {
+      "id": "phone /modes/chaos: renders (HTTP 200), not blank, no page error",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /modes/chaos: no console errors, no failed requests",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /modes/chaos: no horizontal overflow",
+      "weight": 3,
+      "pass": true,
+      "fact": "0px"
+    },
+    {
+      "id": "phone /modes/chaos: every visible image loads; images have alt or are decorative",
+      "weight": 2,
+      "pass": true,
+      "fact": "broken 0 noAlt 0 "
+    },
+    {
+      "id": "phone /modes/chaos: nothing fixed or sticky covers a control",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /modes/chaos: no clipped text",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /modes/chaos: every control has an accessible name",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /modes/chaos: no leaked code value in the copy (undefined, NaN, null, Invalid Date, [object Object])",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /modes/chaos: the fan-made / not-affiliated disclaimer is on the page",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /modes/chaos: one h1, a main landmark, a title, lang and viewport meta",
+      "weight": 1,
+      "pass": true,
+      "fact": "h1=1 main=true title=\"EraClash Basketball — Build Your All-Tim\" lang=en"
+    },
+    {
+      "id": "phone /modes/chaos: every control is a 44px target",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /modes/chaos: no input below 16px (iOS zoom)",
+      "weight": 1,
+      "pass": true,
+      "fact": "0"
+    },
+    {
+      "id": "phone /player/00000000000000000000: renders (HTTP 200), not blank, no page error",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone unknown profile slug: says the profile is not available (or could not be loaded), no page error",
+      "weight": 2,
+      "pass": true,
+      "fact": "THIS PROFILE COULD NOT BE LOADED Something went wrong on our side, not yours. TRY AGAIN EraClash is an independent fan-m"
+    },
+    {
+      "id": "phone /player/00000000000000000000: no console errors, no failed requests",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /player/00000000000000000000: no horizontal overflow",
+      "weight": 3,
+      "pass": true,
+      "fact": "0px"
+    },
+    {
+      "id": "phone /player/00000000000000000000: every visible image loads; images have alt or are decorative",
+      "weight": 2,
+      "pass": true,
+      "fact": "broken 0 noAlt 0 "
+    },
+    {
+      "id": "phone /player/00000000000000000000: nothing fixed or sticky covers a control",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /player/00000000000000000000: no clipped text",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /player/00000000000000000000: every control has an accessible name",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /player/00000000000000000000: no leaked code value in the copy (undefined, NaN, null, Invalid Date, [object Object])",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /player/00000000000000000000: the fan-made / not-affiliated disclaimer is on the page",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /player/00000000000000000000: one h1, a main landmark, a title, lang and viewport meta",
+      "weight": 1,
+      "pass": true,
+      "fact": "h1=1 main=true title=\"EraClash Basketball — Build Your All-Tim\" lang=en"
+    },
+    {
+      "id": "phone /player/00000000000000000000: every control is a 44px target",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /player/00000000000000000000: no input below 16px (iOS zoom)",
+      "weight": 1,
+      "pass": true,
+      "fact": "0"
+    },
+    {
+      "id": "phone /challenge/EC-ZZZZ-ZZZZ: renders (HTTP 200), not blank, no page error",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /challenge/EC-ZZZZ-ZZZZ: no console errors, no failed requests",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /challenge/EC-ZZZZ-ZZZZ: no horizontal overflow",
+      "weight": 3,
+      "pass": true,
+      "fact": "0px"
+    },
+    {
+      "id": "phone /challenge/EC-ZZZZ-ZZZZ: every visible image loads; images have alt or are decorative",
+      "weight": 2,
+      "pass": true,
+      "fact": "broken 0 noAlt 0 "
+    },
+    {
+      "id": "phone /challenge/EC-ZZZZ-ZZZZ: nothing fixed or sticky covers a control",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /challenge/EC-ZZZZ-ZZZZ: no clipped text",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /challenge/EC-ZZZZ-ZZZZ: every control has an accessible name",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /challenge/EC-ZZZZ-ZZZZ: no leaked code value in the copy (undefined, NaN, null, Invalid Date, [object Object])",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /challenge/EC-ZZZZ-ZZZZ: the fan-made / not-affiliated disclaimer is on the page",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /challenge/EC-ZZZZ-ZZZZ: one h1, a main landmark, a title, lang and viewport meta",
+      "weight": 1,
+      "pass": true,
+      "fact": "h1=1 main=true title=\"EraClash Basketball — Build Your All-Tim\" lang=en"
+    },
+    {
+      "id": "phone /challenge/EC-ZZZZ-ZZZZ: every control is a 44px target",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /challenge/EC-ZZZZ-ZZZZ: no input below 16px (iOS zoom)",
+      "weight": 1,
+      "pass": true,
+      "fact": "0"
+    },
+    {
+      "id": "phone /this-route-does-not-exist: renders (HTTP 404), not blank, no page error",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone unknown route: says so and offers a way home (in-app notice, or the branded 404 page)",
+      "weight": 2,
+      "pass": true,
+      "fact": "404 ERACLASH BASKETBALL 404 · PAGE NOT FOUND That page doesn't exist. The link may be old or mistyped. T"
+    },
+    {
+      "id": "phone /this-route-does-not-exist: no console errors, no failed requests",
+      "weight": 2,
+      "pass": false,
+      "fact": "Failed to load resource: the server responded with a status of 404 () @ /this-route-does-not-exist · 404 GET /this-route-does-not-exist"
+    },
+    {
+      "id": "phone /this-route-does-not-exist: no horizontal overflow",
+      "weight": 3,
+      "pass": true,
+      "fact": "0px"
+    },
+    {
+      "id": "phone /this-route-does-not-exist: every visible image loads; images have alt or are decorative",
+      "weight": 2,
+      "pass": true,
+      "fact": "broken 0 noAlt 0 "
+    },
+    {
+      "id": "phone /this-route-does-not-exist: nothing fixed or sticky covers a control",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /this-route-does-not-exist: no clipped text",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /this-route-does-not-exist: every control has an accessible name",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /this-route-does-not-exist: no leaked code value in the copy (undefined, NaN, null, Invalid Date, [object Object])",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /this-route-does-not-exist: the fan-made / not-affiliated disclaimer is on the page",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone /this-route-does-not-exist: one h1, a main landmark, a title, lang and viewport meta",
+      "weight": 1,
+      "pass": true,
+      "fact": "h1=1 main=true title=\"Page not found — EraClash Basketball\" lang=en"
+    },
+    {
+      "id": "phone /this-route-does-not-exist: every control is a 44px target",
+      "weight": 2,
+      "pass": false,
+      "fact": "a. \"ERACLASH\" 96×23"
+    },
+    {
+      "id": "phone /this-route-does-not-exist: no input below 16px (iOS zoom)",
+      "weight": 1,
+      "pass": true,
+      "fact": "0"
+    },
+    {
+      "id": "phone: no ADAPT TO ERA anywhere at the start",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone: after Roll 1 the five sit under the pinned header",
+      "weight": 3,
+      "pass": true,
+      "fact": "roster top 65 header 57"
+    },
+    {
+      "id": "phone: the primary action covers no row (Roll 1)",
+      "weight": 4,
+      "pass": true,
+      "fact": "0 covered"
+    },
+    {
+      "id": "phone: each five fills PG, SG, SF, PF, C with a numeric rating",
+      "weight": 3,
+      "pass": true,
+      "fact": "PG,SG,SF,PF,C · 95/94/90/81/74"
+    },
+    {
+      "id": "phone: no player appears on both fives",
+      "weight": 4,
+      "pass": true,
+      "fact": "disjoint"
+    },
+    {
+      "id": "phone: two holds, HELD controls contained in their rows/cards",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone: every visible player carries portrait art",
+      "weight": 4,
+      "pass": true,
+      "fact": "{\"shown\":5,\"loaded\":5}"
+    },
+    {
+      "id": "phone: no atmosphere band under the pinned header (crowd/grain hidden)",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone: Roll 2 keeps the two held players and shows no era",
+      "weight": 4,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone: after the final roll the coach offers sit under the pinned header",
+      "weight": 4,
+      "pass": true,
+      "fact": "coach top 65 header 57"
+    },
+    {
+      "id": "phone: coach offers are compact rows (≤ 72px)",
+      "weight": 3,
+      "pass": true,
+      "fact": "60/60/60"
+    },
+    {
+      "id": "phone: the primary action covers no offer (Coach Chaos)",
+      "weight": 4,
+      "pass": true,
+      "fact": "0 covered"
+    },
+    {
+      "id": "phone: three offers with distinct coaches and distinct roles",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone: Scouting detail opens on one offer and reads",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone: selecting a staff enables CONTINUE WITH COACH (disabled before)",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone: Clash Ready reveals the era with three rule cards, above RUN CLASH",
+      "weight": 5,
+      "pass": true,
+      "fact": "2020s"
+    },
+    {
+      "id": "phone: at Clash Ready the staff and era sit under the pinned header",
+      "weight": 4,
+      "pass": true,
+      "fact": "staff top 65 header 57"
+    },
+    {
+      "id": "phone: the primary action covers nothing at Clash Ready",
+      "weight": 4,
+      "pass": true,
+      "fact": "0 covered"
+    },
+    {
+      "id": "phone: the era chip and the era panel agree",
+      "weight": 2,
+      "pass": true,
+      "fact": "🗓 ERA: 2020s 🔒 vs 2020s"
+    },
+    {
+      "id": "phone: both benches are staffed by different coaches",
+      "weight": 3,
+      "pass": true,
+      "fact": "Don Nelson vs Jerry Sloan"
+    },
+    {
+      "id": "phone: VIEW ALL ERA RULES opens a readable panel",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone: a reload at Clash Ready resumes the same run (same era)",
+      "weight": 3,
+      "pass": true,
+      "fact": "2020s"
+    },
+    {
+      "id": "phone: the score, the winner label and data-winner agree",
+      "weight": 5,
+      "pass": true,
+      "fact": "102-116 TEAM BLUE WINS"
+    },
+    {
+      "id": "phone: the MVP is a player on one of the two rosters",
+      "weight": 2,
+      "pass": true,
+      "fact": "MVP · Magic Johnson · 31 PTS · 16 REB · 14 AST"
+    },
+    {
+      "id": "phone: the primary action covers nothing at the result",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone: the Coaching tab shows content",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone: the Analysis tab shows content",
+      "weight": 1,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone: Run it back is offered after the result",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone: no page errors, console errors or failed requests through the whole Clash",
+      "weight": 5,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone: the first roll answers within 8s and the Clash within 90s",
+      "weight": 2,
+      "pass": true,
+      "fact": "roll 1965ms · clash 1370ms"
+    },
+    {
+      "id": "phone: the phone header shows a Menu and is at most 72px",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone: the Menu opens with destinations",
+      "weight": 2,
+      "pass": true,
+      "fact": "17 items"
+    },
+    {
+      "id": "phone: header destination Daily exists",
+      "weight": 2,
+      "pass": false,
+      "fact": "no control found"
+    },
+    {
+      "id": "phone: header destination Challenges exists",
+      "weight": 2,
+      "pass": false,
+      "fact": "no control found"
+    },
+    {
+      "id": "phone: header destination Leaderboard exists",
+      "weight": 2,
+      "pass": false,
+      "fact": "no control found"
+    },
+    {
+      "id": "phone: header destination My EraClash exists",
+      "weight": 2,
+      "pass": false,
+      "fact": "no control found"
+    },
+    {
+      "id": "phone: the account control opens a panel or dialog",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "phone: browser Back from the board lands on the lobby",
+      "weight": 2,
+      "pass": true,
+      "fact": "/play"
+    },
+    {
+      "id": "phone: utilities produce no errors",
+      "weight": 2,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "landscape-phone: no ADAPT TO ERA anywhere at the start",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "landscape-phone: the primary action covers no row (Roll 1)",
+      "weight": 4,
+      "pass": true,
+      "fact": "0 covered"
+    },
+    {
+      "id": "landscape-phone: each five fills PG, SG, SF, PF, C with a numeric rating",
+      "weight": 3,
+      "pass": true,
+      "fact": "PG,SG,SF,PF,C · 61/95/89/72/89"
+    },
+    {
+      "id": "landscape-phone: no player appears on both fives",
+      "weight": 4,
+      "pass": true,
+      "fact": "disjoint"
+    },
+    {
+      "id": "landscape-phone: two holds, HELD controls contained in their rows/cards",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "landscape-phone: every visible player carries portrait art",
+      "weight": 4,
+      "pass": true,
+      "fact": "{\"shown\":10,\"loaded\":10}"
+    },
+    {
+      "id": "landscape-phone: Roll 2 keeps the two held players and shows no era",
+      "weight": 4,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "landscape-phone: no page errors, console errors or failed requests through Roll 2",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "tablet: no ADAPT TO ERA anywhere at the start",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "tablet: the primary action covers no row (Roll 1)",
+      "weight": 4,
+      "pass": true,
+      "fact": "0 covered"
+    },
+    {
+      "id": "tablet: each five fills PG, SG, SF, PF, C with a numeric rating",
+      "weight": 3,
+      "pass": true,
+      "fact": "PG,SG,SF,PF,C · 72/99/73/71/84"
+    },
+    {
+      "id": "tablet: no player appears on both fives",
+      "weight": 4,
+      "pass": true,
+      "fact": "disjoint"
+    },
+    {
+      "id": "tablet: two holds, HELD controls contained in their rows/cards",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "tablet: every visible player carries portrait art",
+      "weight": 4,
+      "pass": true,
+      "fact": "{\"shown\":10,\"loaded\":10}"
+    },
+    {
+      "id": "tablet: Roll 2 keeps the two held players and shows no era",
+      "weight": 4,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "tablet: no page errors, console errors or failed requests through Roll 2",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "small-phone: no ADAPT TO ERA anywhere at the start",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "small-phone: after Roll 1 the five sit under the pinned header",
+      "weight": 3,
+      "pass": true,
+      "fact": "roster top 65 header 57"
+    },
+    {
+      "id": "small-phone: the primary action covers no row (Roll 1)",
+      "weight": 4,
+      "pass": true,
+      "fact": "0 covered"
+    },
+    {
+      "id": "small-phone: each five fills PG, SG, SF, PF, C with a numeric rating",
+      "weight": 3,
+      "pass": true,
+      "fact": "PG,SG,SF,PF,C · 83/69/86/86/92"
+    },
+    {
+      "id": "small-phone: no player appears on both fives",
+      "weight": 4,
+      "pass": true,
+      "fact": "disjoint"
+    },
+    {
+      "id": "small-phone: two holds, HELD controls contained in their rows/cards",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "small-phone: every visible player carries portrait art",
+      "weight": 4,
+      "pass": true,
+      "fact": "{\"shown\":5,\"loaded\":5}"
+    },
+    {
+      "id": "small-phone: no atmosphere band under the pinned header (crowd/grain hidden)",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "small-phone: Roll 2 keeps the two held players and shows no era",
+      "weight": 4,
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "id": "small-phone: no page errors, console errors or failed requests through Roll 2",
+      "weight": 3,
+      "pass": true,
+      "fact": ""
+    }
+  ]
+}
