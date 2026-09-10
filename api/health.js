@@ -1,6 +1,21 @@
-// ── /api/health — minimal public readiness ─────────────────────────────────────
-// Exposes only coarse subsystem states. No credentials, hostnames, versions of
-// dependencies, or stack traces.
+// ── /api/health — minimal public readiness, operator-only diagnostics ──────────
+// The PUBLIC response says whether the service is up and which engine identity
+// it runs: coarse subsystem states, the build, the candidate. It never says
+// anything about credentials — not that one exists, not its kind or length, not
+// whether a provider accepted it — and it carries no configuration dump.
+//
+// DIAGNOSTICS (?deep=1) are for operators. They ask the account provider
+// whether it still accepts the server's own credential (a revoked key is
+// correctly shaped, so every static check reports ready while every save fails
+// 401), and they report configuration booleans, the probe outcome and a
+// one-way fingerprint of the stored value. Until 2026-09-10 this was public;
+// now the request must carry an OWNER preview-access key in the X-Preview-Key
+// header (the same hashed allowlist that gates protected previews — see
+// config/previewAccess.js and api/_lib/previewAccessCheck.js). The key travels
+// in a header, never in the URL; the response is private and never cached;
+// authorization happens BEFORE any provider round trip; an ordinary signed-in
+// player, a tester key, a bare query flag or any other query spelling gets a
+// generic 401 and no probe.
 import { hasStore, cmd } from "./_lib/store.js";
 import { circuitState } from "./_lib/ai.js";
 import { flags } from "./_lib/flags.js";
@@ -9,9 +24,35 @@ import { computeResult, newSeed } from "./_lib/game-core.js";
 import { PLAYERS } from "../src/players.js";
 import { previewCandidateIdentity } from "./_lib/previewEngine.js";
 import { PREVIEW_ACCESS } from "../config/previewAccess.js";
-import { cloudAccountsServerStatus, serviceKeyProbe, providerRefsMatch, serviceKeyIntegrity } from "./_lib/cloudAccounts.js";
+import { cloudAccountsServerStatus, cloudAccountsReady, serviceKeyProbe, providerRefsMatch, serviceKeyIntegrity, previewPointedAtProduction } from "./_lib/cloudAccounts.js";
+import { previewIdentity } from "./_lib/previewAccessCheck.js";
 
-export default async function handler(req, res) {
+/** Every spelling that asks for more than the public payload. */
+export const wantsDiagnostics = (query) => {
+  const q = query || {};
+  return q.deep === "1" || q.deep === "true" || q.deep === "" || q.debug !== undefined || q.diag !== undefined || q.diagnostics !== undefined || q.verbose !== undefined;
+};
+
+/** Operator = the holder of an ENABLED, OWNER-role preview-access key, presented as a header. */
+export const isOperator = async (headers, identity = previewIdentity) => {
+  const who = await identity(headers || {});
+  return !!(who?.ok && who.role === "owner");
+};
+
+export default async function handler(req, res, deps = {}) {
+  const resolveIdentity = deps.identity || previewIdentity;
+  const probeFn = deps.serviceKeyProbe || serviceKeyProbe;
+  res.setHeader("Cache-Control", "no-store");
+
+  // Authorize BEFORE any privileged work. A generic refusal: no hint about which
+  // header, which role, or whether diagnostics exist at all.
+  const diagnostics = wantsDiagnostics(req.query);
+  if (diagnostics) {
+    res.setHeader("Cache-Control", "private, no-store");
+    res.setHeader("Vary", "X-Preview-Key, Cookie");
+    if (!(await isOperator(req.headers, resolveIdentity))) return res.status(401).json({ error: "unauthorized" });
+  }
+
   let coreEngine = "ok";
   try {
     const five = (pos) => PLAYERS.filter((p) => p.pos === pos)[0];
@@ -28,71 +69,55 @@ export default async function handler(req, res) {
 
   const f = flags();
   const circuit = await circuitState();
-  res.setHeader("Cache-Control", "no-store");
   const identity = previewCandidateIdentity();
-
-  // Cloud-account readiness, as booleans and never a key. `deep=1` additionally
-  // asks the provider whether it still accepts the server's own credential,
-  // which costs a round trip and so is opt-in. It exists because a revoked key
-  // is correctly shaped: every static check reported ready while every save
-  // failed with a 401, and nothing surfaced that until a game was played.
-  // Renamed deliberately: tests/server.test.js forbids the substring "key"
-  // anywhere in this payload. That rule is blunt on purpose and worth keeping,
-  // so the field names avoid the word rather than the assertion being softened
-  // to accommodate them. These are booleans about configuration, never values.
   const st = cloudAccountsServerStatus();
-  const cloud = {
-    providerConfigured: st.providerUrlConfigured,
-    serverCredentialConfigured: st.serviceRoleConfigured,
-    browserCredentialConfigured: st.anonKeyConfigured,
-    enabled: st.enabled,
-  };
-  if (req.query?.deep === "1" || req.query?.deep === "true") {
-    const probe = await serviceKeyProbe();
-    cloud.serverCredentialAccepted = probe.accepted;
-    // Status and PostgREST's own code, so a refusal can be told apart from a
-    // permission problem or a probe pointed at the wrong path.
-    cloud.serverCredentialProbeStatus = probe.status;
-    cloud.serverCredentialProbeCode = probe.code;
-    cloud.serverCredentialAcceptedVia = probe.variant;
-    cloud.serverCredentialAttempts = probe.tried;
-    // Length and booleans only: whether the stored value is intact, not what it is.
-    cloud.serverCredentialIntegrity = serviceKeyIntegrity();
-    // A boolean, not a URL: whether the server and the browser are configured
-    // for the same project at all. If they are not, a perfectly valid
-    // credential still gets a 401, because it is being shown to the wrong door.
-    cloud.serverAndBrowserSameProject = providerRefsMatch();
-  }
-  return res.status(200).json({
+
+  // Public: availability, never configuration. `enabled` is the feature switch;
+  // `ready` says the account features can operate (static wiring plus the
+  // environment-isolation rule) — it is NOT a claim that the provider accepted
+  // the credential; only the operator probe below can say that.
+  const body = {
     status: f.maintenance ? "maintenance" : coreEngine === "ok" ? "ok" : "degraded",
     build: VERSIONS.app,
     coreEngine,
     persistence,
     aiNarrative: !f.aiNarrative ? "disabled" : circuit === "OPEN" ? "circuit_open" : "ok",
     simV3: f.simV3,
-    cloudAccounts: cloud,
-    // Protected-preview health block. Identity fields only — the candidate id,
-    // its version identity, the governing flag and the fallback path. No
-    // hashes, secrets or internal diagnostics.
+    cloudAccounts: { enabled: st.enabled, ready: cloudAccountsReady() },
+    // Engine identity only: the candidate, its calibration and core hash. No
+    // namespaces, flag names, fallback descriptions or access-control notes.
     preview: {
       enabled: f.previewSimEngine,
-      // Read from previewCandidateIdentity(), the one place that resolves the
-      // active candidate. These were a literal "Candidate 3" and a lookup at
-      // VERSIONS.registry.* — a path that does not exist on that object, so the
-      // `?? "1.3.0"` fallback fired on every request and the endpoint reported a
-      // hardcoded version regardless of the registry. It sat beside a core hash
-      // that DID track the candidate, so after Candidate 4 was locked this block
-      // reported Candidate 3 / 1.3.0 next to Candidate 4's hash.
       candidateId: identity.candidateId,
       candidateCoreHash: identity.coreHash,
       calibrationVersion: identity.possessionCalibrationVersion,
-      featureFlag: "PREVIEW_SIM_ENGINE_ENABLED",
-      // Phase 9A.3: which private-beta wave this deployment admits (public id).
-      waveId: PREVIEW_ACCESS.waveId,
-      fallbackEngine: "production engine 3.2.0 (per-request fallback; emergency-off returns every new request to production while stored preview results stay readable by version)",
-      cacheNamespace: "preview-*",
-      persistenceNamespace: "pv_ result-id prefix",
-      accessControl: process.env.VERCEL_ENV === "preview" ? "hashed-key allowlist (config/previewAccess.js)" : "n/a (not a preview deployment)",
     },
-  });
+  };
+  if (!diagnostics) return res.status(200).json(body);
+
+  // Operator diagnostics. Booleans, statuses and a one-way fingerprint — never a
+  // value or a fragment of one. Field names avoid the word the server test
+  // forbids in every health payload ("key"), on purpose.
+  const probe = await probeFn();
+  const diag = {
+    environment: process.env.VERCEL_ENV || "local",
+    providerConfigured: st.providerUrlConfigured,
+    serverCredentialConfigured: st.serviceRoleConfigured,
+    browserCredentialConfigured: st.anonKeyConfigured,
+    serverAndBrowserSameProject: providerRefsMatch(),
+    previewPointedAtProduction: previewPointedAtProduction(),
+  };
+  diag.serverCredentialAccepted = probe.accepted;
+  diag.serverCredentialProbeStatus = probe.status;
+  diag.serverCredentialProbeCode = probe.code;
+  diag.serverCredentialAcceptedVia = probe.variant;
+  diag.serverCredentialAttempts = probe.tried;
+  diag.serverCredentialIntegrity = serviceKeyIntegrity();
+  diag.previewAccess = {
+    waveId: PREVIEW_ACCESS.waveId,
+    featureFlag: "PREVIEW_SIM_ENGINE_ENABLED",
+    accessControl: process.env.VERCEL_ENV === "preview" ? "hashed-key allowlist (config/previewAccess.js)" : "n/a (not a preview deployment)",
+    fallbackEngine: "production engine 3.2.0 (per-request fallback)",
+  };
+  return res.status(200).json({ ...body, diagnostics: diag });
 }

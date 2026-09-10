@@ -10,6 +10,7 @@
 //   node scripts/ui-release/fullAudit.mjs <baseUrl> <outDir> <auditNumber>
 import { chromium } from "@playwright/test";
 import { mkdirSync, writeFileSync, existsSync, readFileSync } from "node:fs";
+import { operatorDiagnostics } from "../_lib/operatorHealth.mjs";
 const BASE = (process.argv[2] || "http://localhost:4180").replace(/\/$/, "");
 const OUT = process.argv[3] || "data/validation/audit"; const N = process.argv[4] || "1";
 const SHOTS = `${OUT}/screens/audit-${N}`; mkdirSync(SHOTS, { recursive: true });
@@ -234,9 +235,16 @@ const ctx0 = await b.newContext(); await session(ctx0);
   check("document: title, description, viewport, theme-color, og tags, canonical or manifest", 2, /<title>[^<]{4,}/.test(html) && /name="description"/.test(html) && /name="viewport"/.test(html) && /property="og:title"|name="twitter:title"/.test(html) && /rel="manifest"|rel="canonical"/.test(html), `og:${/property="og:title"/.test(html)} manifest:${/rel="manifest"/.test(html)} theme:${/name="theme-color"/.test(html)}`);
   for (const asset of ["/manifest.webmanifest", "/manifest.json", "/sw.js", "/robots.txt", "/favicon.ico", "/favicon.svg"]) { const a = await ctx0.request.get(`${BASE}${asset}`).catch(() => null); if (a && a.status() === 200) check(`asset ${asset} serves`, 1, true, `${a.headers()["content-type"] || ""}`); }
   const manifestHref = (html.match(/rel="manifest"[^>]*href="([^"]+)"/) || [])[1]; if (manifestHref) { const m = await ctx0.request.get(`${BASE}${manifestHref.startsWith("/") ? "" : "/"}${manifestHref}`); check("manifest: 200 with a name and icons", 1, m.status() === 200 && /"name"/.test(await m.text())); }
-  const h = await (await ctx0.request.get(`${BASE}/api/health?deep=1`)).json();
+  const h = await (await ctx0.request.get(`${BASE}/api/health`)).json();
   check("api: health ok, core engine ok, persistence ok", 4, h.status === "ok" && h.coreEngine === "ok" && h.persistence === "ok", JSON.stringify({ status: h.status, core: h.coreEngine, persistence: h.persistence }));
-  if (h.cloudAccounts?.providerConfigured) check("api: the account provider accepts the server credential", 4, h.cloudAccounts.serverCredentialAccepted === true, `probe ${h.cloudAccounts.serverCredentialProbeStatus}`);
+  // Diagnostics are operator-only (2026-09-10): the public payload must not describe credentials, and every deep/debug spelling must refuse anonymous callers.
+  check("api: the public health payload carries no credential metadata or configuration dump", 4, !/serverCredential|Configured|fingerprint|Integrity|accessControl|Namespace|fallbackEngine/.test(JSON.stringify(h)), JSON.stringify(h.cloudAccounts));
+  for (const q of ["deep=1", "deep=true", "deep", "debug=1", "diag=1", "verbose=1"]) { const r = await ctx0.request.get(`${BASE}/api/health?${q}`, { failOnStatusCode: false }); check(`api: anonymous /api/health?${q} is refused`, 2, r.status() === 401 && !/serverCredential/.test(await r.text()), `${r.status()}`); }
+  const tester = (() => { try { return JSON.parse(readFileSync(".preview-secrets/wave2-access-keys.json", "utf8")).keys.find((k) => k.role !== "owner" && k.enabled !== false)?.key || null; } catch { return null; } })();
+  if (tester) { const r = await ctx0.request.get(`${BASE}/api/health?deep=1`, { headers: { "x-preview-key": tester }, failOnStatusCode: false }); check("api: a tester (non-owner) preview key is refused diagnostics", 3, r.status() === 401, `${r.status()}`); }
+  const diag = await operatorDiagnostics(ctx0.request, BASE);
+  if (diag) { check("api: an operator (owner key in a header) receives diagnostics, marked private/no-store", 3, typeof diag.serverCredentialAccepted === "boolean" && typeof diag.providerConfigured === "boolean"); if (diag.providerConfigured) check("api: the account provider accepts the server credential (operator probe)", 4, diag.serverCredentialAccepted === true, `probe ${diag.serverCredentialProbeStatus}`); check("api: a preview deployment is not pointed at the production project", 4, diag.previewPointedAtProduction !== true, `env ${diag.environment}`); }
+  const cs = await (await ctx0.request.get(`${BASE}/api/profile?cloud=status`)).text(); check("api: the public cloud-status probe says only enabled/ready", 2, !/Configured/.test(cs), cs.slice(0, 120));
   const bad = await ctx0.request.post(`${BASE}/api/game`, { data: { action: "nope" }, headers: { "content-type": "application/json" } });
   check("api: an unknown action is refused with a 4xx JSON error, not a 500", 2, bad.status() >= 400 && bad.status() < 500 && /error|code/.test(await bad.text()), `${bad.status()}`);
   const html404 = await ctx0.request.get(`${BASE}/this-route-does-not-exist`); check("routing: an unknown route still serves the app shell (SPA) or a 404 page", 1, [200, 404].includes(html404.status()), `${html404.status()}`);

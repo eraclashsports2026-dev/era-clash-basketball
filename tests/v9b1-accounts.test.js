@@ -999,8 +999,11 @@ describe("a rejected server credential", () => {
 
   it("health reports cloud readiness as booleans, and only probes when asked", () => {
     const h = src("api/health.js");
-    expect(h).toMatch(/cloudAccounts: cloud/);
-    expect(h).toMatch(/req\.query\?\.deep === "1"/);
+    // Public: availability only. Diagnostics: operator-authorized BEFORE the probe (2026-09-10).
+    expect(h).toMatch(/cloudAccounts: \{ enabled: st\.enabled, ready: cloudAccountsReady\(\) \}/);
+    expect(h).toMatch(/await isOperator\(req\.headers, resolveIdentity\)/);
+    expect(h).toMatch(/wantsDiagnostics\(req\.query\)/);
+    expect(h).toMatch(/q\.deep === "1"/);
     // The round trip must not happen on every health call.
     // And the payload must keep clear of the word the server test forbids.
     expect(h).toMatch(/serverCredentialAccepted = probe\.accepted/);

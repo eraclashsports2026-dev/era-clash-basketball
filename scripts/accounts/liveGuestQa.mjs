@@ -13,6 +13,7 @@
 // It prints no credential. The bundle audit records counts and shapes only.
 import { readFileSync, writeFileSync } from "node:fs";
 import { chromium } from "playwright";
+import { operatorHeaders } from "../_lib/operatorHealth.mjs";
 
 const BASE = (process.argv[2] || "").replace(/\/$/, "");
 if (!BASE) { console.error("usage: liveGuestQa.mjs <origin>"); process.exit(2); }
@@ -59,9 +60,13 @@ ok("the deployed build is Candidate 4 on the frozen calibration",
 // A correctly shaped but revoked key passes every static check. Ask the
 // provider directly, because this exact failure hid behind "ready" while every
 // save returned 401.
-const deepRaw = await (await ctx.request.get(`${BASE}/api/health?deep=1`)).text();
+// Diagnostics are operator-only (2026-09-10): the owner key travels in a header.
+const anonDeep = await ctx.request.get(`${BASE}/api/health?deep=1`, { failOnStatusCode: false });
+ok("an anonymous deep-health request is refused (401) and probes nothing", anonDeep.status() === 401, `HTTP ${anonDeep.status()}`);
+ok("the public health payload carries no credential metadata", !/serverCredential|Configured|fingerprint|Integrity/.test(JSON.stringify(health)), JSON.stringify(health?.cloudAccounts));
+const deepRaw = await (await ctx.request.get(`${BASE}/api/health?deep=1`, { headers: operatorHeaders() })).text();
 const deep = JSON.parse(deepRaw);
-const cloud = deep?.cloudAccounts ?? {};
+const cloud = { ...(deep?.cloudAccounts ?? {}), ...(deep?.diagnostics ?? {}) };
 // The four configuration flags must stay booleans. The diagnostic fields
 // beside them are deliberately richer — a status number, a kind label, a
 // fingerprint — so "every value is a boolean" is the wrong test now and would

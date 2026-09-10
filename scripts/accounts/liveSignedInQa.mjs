@@ -18,6 +18,7 @@
 // into storage behind the app's back.
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { chromium } from "playwright";
+import { operatorDiagnostics } from "../_lib/operatorHealth.mjs";
 
 const BASE = (process.argv[2] || "").replace(/\/$/, "");
 if (!BASE) { console.error("usage: liveSignedInQa.mjs <origin>"); process.exit(2); }
@@ -97,8 +98,8 @@ const savePanel = async (page) => page.evaluate(() => {
            buttons: [...p.querySelectorAll("button")].map((b) => b.textContent.trim()) };
 });
 
-const deep = await (await ctxA.request.get(`${BASE}/api/health?deep=1`)).json();
-const CRED = deep?.cloudAccounts?.serverCredentialAccepted === true;
+const deepDiag = await operatorDiagnostics(ctxA.request, BASE);
+const CRED = deepDiag?.serverCredentialAccepted === true;
 const CRED_WHY = "the deployment's server credential is refused by the provider, so no cloud write can succeed; every check below that needs stored data is blocked rather than failed";
 
 console.log(`\nLIVE SIGNED-IN QA — ${BASE}`);

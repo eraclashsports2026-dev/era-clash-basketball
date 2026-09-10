@@ -72,6 +72,15 @@ const jwtRole = (v) => { try { const p = String(v).split("."); if (p.length !== 
 const secretShaped = (v) => /^sb_secret_/.test(String(v ?? "").trim()) || jwtRole(String(v ?? "").trim()) === "service_role";
 for (const k of Object.keys(process.env)) if (k.startsWith("VITE_") && secretShaped(process.env[k])) { console.warn(`[release guard] ${k} holds a secret-shaped value and was dropped from the build`); delete process.env[k]; }
 const refOf = (u) => (String(u ?? "").trim().match(/^https:\/\/([a-z0-9-]+)\.supabase\.(co|in)$/i) || [])[1] || null;
+// 3. (2026-09-10) a PREVIEW build whose browser provider is the PRODUCTION
+//    project. Previews test against the preview project only; a preview that
+//    signed people up against production would mix test traffic into real
+//    careers. The production ref is public (it is in every production bundle).
+const PRODUCTION_SUPABASE_REF = "dxdtnhdeaanhfoqngdel";
+if (process.env.VERCEL_ENV === "preview" && refOf(process.env.VITE_SUPABASE_URL) === PRODUCTION_SUPABASE_REF) {
+  console.warn("[release guard] a PREVIEW build was pointed at the production Supabase project; VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY were dropped from the build (guest play works, accounts are off on this preview). Fix the Preview-scoped environment variables.");
+  delete process.env.VITE_SUPABASE_URL; delete process.env.VITE_SUPABASE_ANON_KEY;
+}
 if (process.env.VITE_SUPABASE_URL && process.env.SUPABASE_URL && refOf(process.env.VITE_SUPABASE_URL) !== refOf(process.env.SUPABASE_URL)) {
   console.warn("[release guard] VITE_SUPABASE_URL names a different project from SUPABASE_URL; VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY were dropped from the build (guest play until they agree)");
   delete process.env.VITE_SUPABASE_URL; delete process.env.VITE_SUPABASE_ANON_KEY;

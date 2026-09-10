@@ -75,9 +75,19 @@ export const cloudAccountsServerStatus = () => ({
   enabled: flagOn(process.env.CLOUD_ACCOUNTS_ENABLED),
 });
 
+/**
+ * Environment isolation (2026-09-10): a PREVIEW deployment must never operate
+ * on the production project, whatever its variables say. The production ref is
+ * public (it is the host in every production bundle), so naming it costs nothing
+ * and the check cannot be talked out of by a mis-set variable.
+ */
+const PRODUCTION_SUPABASE_REF = "dxdtnhdeaanhfoqngdel";
+export const previewPointedAtProduction = () =>
+  process.env.VERCEL_ENV === "preview" && refOf(url()) === PRODUCTION_SUPABASE_REF;
+
 export const cloudAccountsReady = () => {
   const s = cloudAccountsServerStatus();
-  return s.enabled && s.providerUrlConfigured && s.serviceRoleConfigured && s.anonKeyConfigured;
+  return s.enabled && s.providerUrlConfigured && s.serviceRoleConfigured && s.anonKeyConfigured && !previewPointedAtProduction();
 };
 
 export const sha256 = (s) => createHash("sha256").update(String(s)).digest("hex");

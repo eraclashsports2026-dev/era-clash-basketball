@@ -23,6 +23,7 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, statSy
 import { join } from "node:path";
 import * as P from "../../src/progression/contract.js";
 import { ERAS } from "../../src/players.js";
+import { operatorDiagnostics } from "../_lib/operatorHealth.mjs";
 
 const MODE = process.argv[2] || "contract";
 const BASE = (process.argv[3] || "http://localhost:4178").replace(/\/$/, "");
@@ -265,7 +266,7 @@ if (httpModes.has(MODE)) {
 
   if (MODE === "security") {
     const health = await (await context.request.get(`${BASE}/api/health`)).json();
-    ok("the account provider is configured on this origin", !!(health?.cloudAccounts?.providerConfigured && health?.cloudAccounts?.serverCredentialConfigured));
+    ok("the account provider is configured on this origin", !!((await operatorDiagnostics(context.request, BASE))?.providerConfigured && (await operatorDiagnostics(context.request, BASE))?.serverCredentialConfigured));
     ok("progression-get without an account is refused (anonymous reads nothing)", (await post(context, { action: "progression-get" })).status() === 401);
     ok("progression-reconcile without an account is refused", (await post(context, { action: "progression-reconcile" })).status() === 401);
     ok("a presented but invalid token is refused, never downgraded", (await post(context, { action: "progression-get" }, { Authorization: "Bearer test-token.forged" })).status() === 401);
@@ -508,7 +509,7 @@ if (httpModes.has(MODE)) {
   if (MODE === "deployed") {
     const health = await (await context.request.get(`${BASE}/api/health`)).json();
     ok("Candidate 4 on the preview", health?.preview?.candidateId === "Candidate 4" && health?.preview?.calibrationVersion === "1.4.0", `${health?.preview?.candidateId} ${health?.preview?.calibrationVersion}`);
-    ok("the account provider is configured", !!(health?.cloudAccounts?.providerConfigured && health?.cloudAccounts?.serverCredentialConfigured));
+    ok("the account provider is configured", !!((await operatorDiagnostics(context.request, BASE))?.providerConfigured && (await operatorDiagnostics(context.request, BASE))?.serverCredentialConfigured));
     ok("progression-get without an account is refused on the preview", (await post(context, { action: "progression-get" })).status() === 401);
     ok("a forged token is refused", (await post(context, { action: "progression-get" }, { Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmYWtlIn0.AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" })).status() === 401);
     ok("progression-reconcile without an account is refused", (await post(context, { action: "progression-reconcile" })).status() === 401);

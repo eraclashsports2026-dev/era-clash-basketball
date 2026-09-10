@@ -73,3 +73,35 @@ Common causes, in the order worth checking:
 - accept a score, roster, candidate id or user id from a request body
 - put a token in a URL, a log, an artifact or a telemetry property
 - show a fake successful account when the provider is not configured
+
+
+## Operator diagnostics (2026-09-10)
+
+`GET /api/health` is public and minimal: coarse subsystem states, the build, the
+engine identity, and two availability booleans (`cloudAccounts.enabled`,
+`cloudAccounts.ready`). It says nothing about credentials — not that one exists,
+not its kind or length, not whether the provider accepted it.
+
+The diagnostics that used to sit behind `?deep=1` in public are now
+**operator-only**. An operator is the holder of an enabled, OWNER-role
+preview-access key (the same hashed allowlist that gates protected previews,
+`config/previewAccess.js`). Present it in the `X-Preview-Key` header — never in
+the URL — and never paste it into chat, a commit, a screenshot or a log:
+
+```bash
+KEY=$(python3 -c "import json; print([k for k in json.load(open('.preview-secrets/wave2-access-keys.json'))['keys'] if k['role']=='owner'][0]['key'])")
+curl -s -H "x-preview-key: $KEY" "https://www.eraclashbasketball.com/api/health?deep=1"
+```
+
+The response is `Cache-Control: private, no-store` and carries, under
+`diagnostics`: the four configuration booleans, whether the server and browser
+name the same project, whether a Preview deployment is (wrongly) pointed at the
+production project, the provider probe (`serverCredentialAccepted`, status,
+code, variant, attempts) and a one-way fingerprint of the stored credential.
+Anonymous callers, ordinary signed-in players, tester keys and every other
+diagnostic spelling (`deep=true`, `debug`, `diag`, `verbose`) receive a generic
+`401 {"error":"unauthorized"}` and no probe runs. `GET /api/profile?cloud=status`
+follows the same rule: `{enabled, ready}` in public, the full configuration
+booleans for an operator.
+
+QA scripts read the key from disk through `scripts/_lib/operatorHealth.mjs`.
