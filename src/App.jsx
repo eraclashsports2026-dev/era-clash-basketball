@@ -31,6 +31,8 @@ import TimeArena from "./components/arena/TimeArena.jsx";
 import ReferenceFixture from "./ui/time-arena/ReferenceFixture.jsx";
 import ProgressionReferenceFixture from "./ui/progression/ProgressionReferenceFixture.jsx";   // Phase 9D, same dev-only gate
 import { MembershipPage, FantasyPage, ModeInfoPage, HowModesModal as ArenaHowModes, ArenaGuide } from "./components/arena/InfoPages.jsx";
+import LegalPage from "./components/legal/LegalPage.jsx";
+import { LEGAL_ROUTES } from "./navigation.js";
 import {
   PLAY_MODES, findMode, defaultMode, MODE_STATUS,
   modeForRoute, isLobbyRoute, isPlayRoute, isKnownRoute, routeForAppMode, PLAY_LOBBY_ROUTE,
@@ -1958,7 +1960,7 @@ export default function App() {
   // editorial shell, which remaps the arena tokens to Warm Court Ivory and
   // Editorial Ink. Without it a heading inherited the arena's platinum text and
   // sat almost invisibly on an ivory card.
-  const editorialMode = route.startsWith("/membership") || route.startsWith("/fantasy/") || route.startsWith("/modes/")
+  const editorialMode = route.startsWith("/membership") || route.startsWith("/fantasy/") || route.startsWith("/modes/") || LEGAL_ROUTES.includes(route)
     || route === "/my-eraclash" || route === "/auth/callback" || route === LEADERBOARD_ROUTE
     || isProfileRoute(route);
   const arenaMode = showLobby || (isChaos && !sharedResult && !gate) || editorialMode;
@@ -2035,6 +2037,8 @@ export default function App() {
         <main>
           <FantasyPage id={route.split("/")[2] === "live" ? "eraclash-live" : "eraclash-fantasy"} onBack={goHome} />
         </main>
+      ) : LEGAL_ROUTES.includes(route) ? (
+        <LegalPage kind={route === "/terms" ? "terms" : "privacy"} onBack={goHome} onNavigate={(to) => navigate(to)} />
       ) : route.startsWith("/modes/") ? (
         <main>
           <ModeInfoPage id={route.split("/")[2]} onBack={goHome} />
@@ -2235,6 +2239,10 @@ export default function App() {
         <button className="ec-footer-link" onClick={() => handleNav("Credits")} style={{ background: "none", border: "none", color: T.textDim, cursor: "pointer", fontSize: 10.5, textDecoration: "underline" }}>
           Image credits
         </button>
+        {" · "}
+        <a className="ec-footer-link" href="/privacy" onClick={(e) => { e.preventDefault(); navigate("/privacy"); }} style={{ color: T.textDim, fontSize: 10.5, textDecoration: "underline" }}>Privacy</a>
+        {" · "}
+        <a className="ec-footer-link" href="/terms" onClick={(e) => { e.preventDefault(); navigate("/terms"); }} style={{ color: T.textDim, fontSize: 10.5, textDecoration: "underline" }}>Terms</a>
         {" · "}
         <span title="Which build you are running — quote this if you report something">build {shortBuild()}</span>
       </footer>
