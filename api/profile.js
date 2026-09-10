@@ -7,6 +7,7 @@
 // Honest scope: career stats are self-reported gameplay history for the
 // player's own dashboard. Public/competitive records (daily board, challenge
 // rivalries) are server-computed in /api/game and never read from here.
+import { previewIdentity } from "./_lib/previewAccessCheck.js";
 import { hasStore, getJSON, setJSON, setNX, rateLimit, clientIp } from "./_lib/store.js";
 import { getOrCreateSession, sameOrigin } from "./_lib/session.js";
 import { sendError, newRequestId } from "./_lib/errors.js";
@@ -118,10 +119,17 @@ export default async function handler(req, res) {
   if (!hasStore()) return sendError(res, "KV_UNAVAILABLE", requestId);
   const session = getOrCreateSession(req, res);
 
-  // Safe configuration probe: booleans only, no key and no fragment of one.
+  // Availability probe. PUBLIC: the feature switch and whether the account
+  // features can operate — never which credentials exist. The per-credential
+  // configuration booleans are operator diagnostics (an OWNER preview-access
+  // key in the X-Preview-Key header), the same rule as /api/health (2026-09-10).
   if (req.method === "GET" && req.query?.cloud === "status") {
     res.setHeader("Cache-Control", "private, no-store");
-    return res.status(200).json({ cloudAccounts: { ...cloudAccountsServerStatus(), ready: cloudAccountsReady() } });
+    res.setHeader("Vary", "X-Preview-Key, Cookie");
+    const st = cloudAccountsServerStatus();
+    const who = await previewIdentity(req.headers);
+    const operator = !!(who?.ok && who.role === "owner");
+    return res.status(200).json({ cloudAccounts: operator ? { ...st, ready: cloudAccountsReady() } : { enabled: st.enabled, ready: cloudAccountsReady() } });
   }
 
   if (req.method === "GET" && req.query?.challenge !== undefined) {

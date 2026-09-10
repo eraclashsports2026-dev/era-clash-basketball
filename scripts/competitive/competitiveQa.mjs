@@ -18,6 +18,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 import * as C from "../../src/competitive/contract.js";
+import { operatorDiagnostics } from "../_lib/operatorHealth.mjs";
 
 const MODE = process.argv[2] || "contract";
 const BASE = (process.argv[3] || "http://localhost:4178").replace(/\/$/, "");
@@ -360,7 +361,7 @@ if (httpModes.has(MODE)) {
 
   if (MODE === "security") {
     const health = await (await context.request.get(`${BASE}/api/health`)).json();
-    ok("the account provider is configured on this origin", !!(health?.cloudAccounts?.providerConfigured && health?.cloudAccounts?.serverCredentialConfigured));
+    ok("the account provider is configured on this origin", !!((await operatorDiagnostics(context.request, BASE))?.providerConfigured && (await operatorDiagnostics(context.request, BASE))?.serverCredentialConfigured));
     const pub = await (await post(context, { action: "competitive-leaderboard" })).json();
     ok("the public leaderboard is readable signed out and carries only safe rows", pub.status === "ok" && Array.isArray(pub.rows) && pub.rows.every((r) => Object.keys(r).sort().join(",") === [...C.PUBLIC_ROW_FIELDS].sort().join(",")) && !JSON.stringify(pub).match(/user_id|email|1111-4111|2222-4222/));
     ok("competitive-me without an account is refused", (await post(context, { action: "competitive-me" })).status() === 401);
@@ -488,7 +489,7 @@ if (httpModes.has(MODE)) {
   if (MODE === "deployed") {
     const health = await (await context.request.get(`${BASE}/api/health`)).json();
     ok("Candidate 4 on the preview", health?.preview?.candidateId === "Candidate 4" && health?.preview?.calibrationVersion === "1.4.0", `${health?.preview?.candidateId} ${health?.preview?.calibrationVersion}`);
-    ok("the account provider is configured", !!(health?.cloudAccounts?.providerConfigured && health?.cloudAccounts?.serverCredentialConfigured));
+    ok("the account provider is configured", !!((await operatorDiagnostics(context.request, BASE))?.providerConfigured && (await operatorDiagnostics(context.request, BASE))?.serverCredentialConfigured));
     const pub = await (await post(context, { action: "competitive-leaderboard" })).json();
     ok("the public leaderboard answers signed out with safe rows only (public AND placed accounts)", pub.status === "ok" && Array.isArray(pub.rows) && pub.rows.every((r) => Object.keys(r).sort().join(",") === [...C.PUBLIC_ROW_FIELDS].sort().join(",")) && !JSON.stringify(pub).match(/user_id|email|@/), `${pub.rows?.length} rows`);
     ok("competitive-me without an account is refused on the preview", (await post(context, { action: "competitive-me" })).status() === 401);
