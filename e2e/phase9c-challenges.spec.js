@@ -21,8 +21,7 @@ const playThrough = async (page, { hold = true } = {}) => {
   await expect(page.locator('.ec-ta-team[data-team="gold"] .ec-pc').nth(4)).toBeVisible({ timeout: 30_000 });
   if (hold) { await page.locator('.ec-ta-team[data-team="gold"] .ec-pc-action:not([disabled])').first().click(); await expect(page.locator('.ec-pc[data-held="true"]').first()).toBeVisible(); }
   await page.getByRole("button", { name: /^ROLL 2$/ }).click();
-  await expect(stage(page, "ERA_REVEAL")).toBeVisible({ timeout: 30_000 });
-  await page.getByRole("button", { name: /ADAPT TO ERA/ }).click();
+  await expect(page.getByText(/ROLL 2 OF 3/).first()).toBeVisible({ timeout: 30_000 });
   await page.getByRole("button", { name: /FINAL ROLL/ }).click();
   await expect(page.locator(".ec-coach-action:not([disabled])").nth(2)).toBeVisible({ timeout: 30_000 });
   await page.getByRole("button", { name: /^Select / }).first().click();
@@ -47,8 +46,7 @@ test("a finished Clash becomes a challenge; the link opens an honest invitation;
   await expect(a.locator('.ec-ta-team[data-team="gold"] .ec-pc').nth(4)).toBeVisible({ timeout: 30_000 });
   const creatorRun = await runIdOf(a);
   await a.getByRole("button", { name: /^ROLL 2$/ }).click();
-  await expect(stage(a, "ERA_REVEAL")).toBeVisible({ timeout: 30_000 });
-  await a.getByRole("button", { name: /ADAPT TO ERA/ }).click();
+  await expect(a.getByText(/ROLL 2 OF 3/).first()).toBeVisible({ timeout: 30_000 });
   await a.getByRole("button", { name: /FINAL ROLL/ }).click();
   await expect(a.locator(".ec-coach-action:not([disabled])").nth(2)).toBeVisible({ timeout: 30_000 });
   await a.getByRole("button", { name: /^Select / }).first().click();
@@ -112,8 +110,7 @@ test("a finished Clash becomes a challenge; the link opens an honest invitation;
   // play it out
   await expect(b.locator('.ec-ta-team[data-team="gold"] .ec-pc').nth(4)).toBeVisible({ timeout: 30_000 });
   await b.getByRole("button", { name: /^ROLL 2$/ }).click();
-  await expect(stage(b, "ERA_REVEAL")).toBeVisible({ timeout: 30_000 });
-  await b.getByRole("button", { name: /ADAPT TO ERA/ }).click();
+  await expect(b.getByText(/ROLL 2 OF 3/).first()).toBeVisible({ timeout: 30_000 });
   await b.getByRole("button", { name: /FINAL ROLL/ }).click();
   await expect(b.locator(".ec-coach-action:not([disabled])").nth(2)).toBeVisible({ timeout: 30_000 });
   await b.getByRole("button", { name: /^Select / }).first().click();
@@ -172,8 +169,7 @@ test("the invitation on a phone: readable, one dominant action, 44px controls, n
   await expect(a.locator('.ec-ta-team[data-team="gold"] .ec-pc').nth(4)).toBeVisible({ timeout: 30_000 });
   const run = await runIdOf(a);
   await a.getByRole("button", { name: /^ROLL 2$/ }).click();
-  await expect(stage(a, "ERA_REVEAL")).toBeVisible({ timeout: 30_000 });
-  await a.getByRole("button", { name: /ADAPT TO ERA/ }).click();
+  await expect(a.getByText(/ROLL 2 OF 3/).first()).toBeVisible({ timeout: 30_000 });
   await a.getByRole("button", { name: /FINAL ROLL/ }).click();
   await expect(a.locator(".ec-coach-action:not([disabled])").nth(2)).toBeVisible({ timeout: 30_000 });
   await a.getByRole("button", { name: /^Select / }).first().click();

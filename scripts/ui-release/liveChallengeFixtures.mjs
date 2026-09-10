@@ -49,7 +49,7 @@ for (const label of ["live", "revoked", "expired"]) {
   await page.goto(`${BASE}/play/chaos`, { waitUntil: "domcontentloaded" }); await stage(page, "EMPTY"); await click(page, /^ROLL$/);
   await page.locator('.ec-ta-team[data-team="gold"] .ec-pc').nth(4).waitFor({ timeout: 60_000 });
   const runId = await page.evaluate(() => localStorage.getItem("ec_chaos_run"));
-  await click(page, /^ROLL 2$/); await stage(page, "ERA_REVEAL"); await click(page, /ADAPT TO ERA/); await click(page, /FINAL ROLL/);
+  await click(page, /^ROLL 2$/); await click(page, /FINAL ROLL/);
   await page.locator(".ec-coach-action:not([disabled])").nth(2).waitFor({ timeout: 60_000 }); await page.getByRole("button", { name: /^Select / }).first().click();
   await click(page, /CONTINUE WITH COACH/); await click(page, /RUN CLASH/); await page.locator(".ec-ta-score[data-winner]").waitFor({ timeout: 120_000 });
   // The governed share: CHALLENGE creates through the page's own signed-in session.

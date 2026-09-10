@@ -569,7 +569,9 @@ describe("preservation", () => {
     if (!parentAvailable()) return;
     // src/theme as a whole is no longer pinned: the Unified Light UI release re-tokened the
     // arena palette on purpose. The master brand, the scope keys and the semantic roles are.
-    expect(git(`git diff --name-only ${PARENT} -- src/chaos src/v3 src/engine.js src/rating.js src/players.js src/draft.js src/dailyChallenge.js src/lineupPlacement.js src/theme/masterBrandTokens.js src/theme/themeTypes.js src/theme/semanticTokens.js data/calibration`)).toBe("");
+    // src/chaos/runState.js and src/chaos/challenge.js carry the owner-directed sequence-3 change (era revealed with the hire, 2026-09-09);
+    // every odds, value, CPU, era-translation and coach-offer file stays byte-identical.
+    expect(git(`git diff --name-only ${PARENT} -- src/chaos/client.js src/chaos/coachOffers.js src/chaos/construction.js src/chaos/constructionBands.json src/chaos/draftOdds.js src/chaos/draftValue.js src/chaos/eraTranslation.js src/chaos/legendCpu.js src/v3 src/engine.js src/rating.js src/players.js src/draft.js src/dailyChallenge.js src/lineupPlacement.js src/theme/masterBrandTokens.js src/theme/themeTypes.js src/theme/semanticTokens.js data/calibration`)).toBe("");
   });
   it("the Play Lobby polish is preserved exactly as accepted", () => {
     if (!parentAvailable()) return;

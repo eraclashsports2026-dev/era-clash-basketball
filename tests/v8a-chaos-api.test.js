@@ -81,16 +81,23 @@ describe("Chaos Clash — server-authoritative draft", () => {
     expect(res.body.chaos.blue.heldSlots).toEqual([]);
   });
 
-  it("reveals the era after Roll 2 and before the final holds", async () => {
+  it("keeps the era hidden through the rolls and reveals it with the hire (sequence 3)", async () => {
     const start = await call({ chaosAction: "start" });
     expect(start.body.chaos.era).toBeNull();
     const runId = start.body.chaos.chaosRunId;
     const r = await roll(runId, ["PG"]);
     expect(r.body.chaos.roll).toBe(2);
     expect(r.body.chaos.phase).toBe("ROLL_2_REVEALED");
-    expect(r.body.chaos.era?.eraId).toBeTruthy();
+    expect(r.body.chaos.era).toBeNull();
+    expect(r.body.chaos.eraState.revealed).toBe(false);
+    const r3 = await roll(runId, []);
+    expect(r3.body.chaos.phase).toBe("ROLL_3_REVEALED");
+    expect(r3.body.chaos.era).toBeNull();
+    const hire = await call({ chaosAction: "coach", chaosRunId: runId, coachId: r3.body.chaos.coachDraft.offers[0].coachId });
+    expect(hire.body.chaos.phase).toBe("READY");
+    expect(hire.body.chaos.era?.eraId).toBeTruthy();
     // The era stays on screen from here on.
-    expect(r.body.chaos.eraContext?.headline).toMatch(/ERA$/);
+    expect(hire.body.chaos.eraContext?.headline).toMatch(/ERA$/);
   });
 
   it("puts three distinct coach offers on the table with the first five", async () => {

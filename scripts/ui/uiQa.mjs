@@ -190,15 +190,16 @@ if (MODE === "arena") {
   ok("the roll progression is driven by server state, not inferred",
     /run \? run\.roll/.test(read("src/components/arena/RollStepper.jsx")));
   ok("the stage names the three rolls",
-    ["FOUNDATION", "ADAPT", "COMMIT"].every((w) => read("src/components/arena/RollStepper.jsx").includes(w)));
+    ["ROLL 1", "ROLL 2", "FINAL ROLL"].every((w) => read("src/components/arena/RollStepper.jsx").includes(w)));
   // Phase 9B.3: the six states' single actions are named in ONE place — the
   // display-state resolver — and the stage renders whatever it hands back. The
   // words changed deliberately with the guided flow (ROLL 1 → ROLL, LOCK &
   // ROLL 2 → ROLL 2, HIRE THIS STAFF → CONTINUE WITH COACH, RUN SIM → RUN
-  // CLASH) and an ADAPT TO ERA action was added for the dedicated reveal.
+  // CLASH); the ADAPT TO ERA interstitial was retired on 2026-09-09 (the era is
+  // revealed on Clash Ready, after the coach).
   const guided = read("src/components/arena/guidedState.js");
   ok("one CTA carries whatever the run is waiting on",
-    ["\"ROLL\"", "ROLL 2", "FINAL ROLL", "ADAPT TO ERA", "CONTINUE WITH COACH", "RUN CLASH"].every((l) => guided.includes(l))
+    ["\"ROLL\"", "ROLL 2", "FINAL ROLL", "CONTINUE WITH COACH", "RUN CLASH"].every((l) => guided.includes(l)) && !guided.includes("ADAPT TO ERA")
     && /primaryAction\(state/.test(stage) && !/HIRE THIS STAFF|RUN SIM|LOCK & ROLL 2/.test(stage));
   ok("the era panel belongs to the rail alone",
     !/EraContextBanner/.test(stage) && /ERA IMPACT/.test(read("src/components/arena/LiveIntel.jsx")));
@@ -252,7 +253,7 @@ if (MODE === "sync") {
   const rs = src("src/chaos/runState.js");
   const api = src("api/game.js");
   ok("the synchronized sequence has its own version key",
-    /CHAOS_SEQUENCE_VERSION = "2\.0\.0"/.test(rs) && /CURRENT_SEQUENCE = 2/.test(rs));
+    /CHAOS_SEQUENCE_VERSION = "3\.0\.0"/.test(rs) && /CURRENT_SEQUENCE = 3/.test(rs));
   ok("the draw keys are untouched, so no seed is re-dealt",
     /CHAOS_DRAFT_VERSION = "1\.0\.0"/.test(src("src/chaos/draftOdds.js"))
     && /DRAFT_PROBABILITY_VERSION = "1\.0\.0"/.test(src("src/chaos/draftOdds.js")));

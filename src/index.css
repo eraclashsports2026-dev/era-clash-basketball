@@ -1849,8 +1849,6 @@ h2.ec-intel-heading, h3.ec-intel-heading { font-size: 10.5px; }
 .ec-ta-stage[data-roster="compressed"] .ec-pc { grid-template-rows: var(--player-portrait-h) auto auto; }
 
 /* Era Reveal: the roster stays present but steps back; the era is the focus. */
-.ec-ta-stage[data-guided-state="ERA_REVEAL"] .ec-ta-roster { opacity: 0.62; filter: saturate(0.85); transition: opacity 0.4s ease; }
-.ec-ta-stage[data-guided-state="ERA_REVEAL"] .ec-pc-static { visibility: hidden; }
 
 .ec-era-reveal {
   position: relative;
@@ -1992,7 +1990,6 @@ h2.ec-intel-heading, h3.ec-intel-heading { font-size: 10.5px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .ec-era-reveal { animation: none; }
-  .ec-ta-stage[data-guided-state="ERA_REVEAL"] .ec-ta-roster { transition: none; }
 }
 
 /* ── 9B.3 result head: the score leads, framed by the two fives ──────────── */
@@ -2597,4 +2594,30 @@ h2.ec-intel-heading, h3.ec-intel-heading { font-size: 10.5px; }
      scrolled to the end, the last row clears the bar (it is in-flow at the stage's end). */
   html:has(.ec-ta-stage .ec-ta-cta-wrap) { scroll-padding-bottom: calc(104px + env(safe-area-inset-bottom, 0px)); }
   .ec-ta-stage .ec-pc, .ec-ta-stage .ec-pc-action { scroll-margin-bottom: calc(104px + env(safe-area-inset-bottom, 0px)); }
+}
+
+/* ── Phone stage: clean cream, no atmosphere layers ───────────────────────────
+   On a phone the crowd silhouette band, the grain, the court fade, the vignette
+   and the two spotlights read as a smear under the header (owner report,
+   2026-09-09). The stage is the theme's arena colour, flat. Desktop unchanged. */
+@media (max-width: 767px) {
+  .ec-ta-crowd, .ec-ta-grain, .ec-ta-atmos::before, .ec-ta-atmos::after, .ec-arena-court::after { display: none; }
+  .ec-ta-atmos { background: var(--ec-a-arena, #F6F1E7); background-image: none; }
+  .ec-arena-court { background: var(--ec-a-arena, #F6F1E7); }
+  .ec-ta-stage { box-shadow: none; }
+  /* the era panel on Clash Ready sits above the action on the phone */
+  .ec-ta-stage[data-guided-state="READY"] .ec-era-reveal { margin: 8px auto 6px; }
+}
+
+/* Generated archetype placeholder art (non-identifying, see docs/IMAGES.md): it
+   fills the portrait zone like an approved image and sits over the initials,
+   which show if the file is missing or fails to load. */
+.ec-pc-placeholder { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top center; z-index: 1; }
+.ec-portrait-stage > .ec-pc-figure-initials { z-index: 0; }
+
+/* Phone: the full report's controls (result tabs, the tester feedback chips and
+   its 1–5 ratings) are 44px touch targets too. */
+@media (max-width: 767px) {
+  /* the feedback chips carry inline 36px minimums; on a phone the touch floor wins */
+  .ec-report-overlay button, .ec-report-overlay [role="tab"] { min-height: 44px !important; min-width: 44px !important; }
 }

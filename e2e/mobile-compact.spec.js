@@ -104,7 +104,7 @@ for (const [w, h] of [[430, 932], [390, 844]]) {
       await page.getByRole("tab", { name: /TEAM GOLD/ }).tap();
     });
 
-    test("a double tap on ROLL 2 is one roll; the era reveals only after it; held players are kept", async ({ page }) => {
+    test("a double tap on ROLL 2 is one roll; Roll 2 is drafting again; held players are kept", async ({ page }) => {
       await fresh(page);
       const seen = countDecisions(page);
       await page.goto("/play/chaos");
@@ -120,14 +120,14 @@ for (const [w, h] of [[430, 932], [390, 844]]) {
       const box = await page.getByRole("button", { name: /^ROLL 2/ }).boundingBox();
       await page.touchscreen.tap(box.x + box.width / 2, box.y + box.height / 2);
       await page.touchscreen.tap(box.x + box.width / 2, box.y + box.height / 2);
-      await stageIn(page, "ERA_REVEAL");
+      await expect(page.locator(".ec-ta-title-sub")).toHaveText(/ROLL 2 OF 3/, { timeout: 60_000 });
       await page.waitForTimeout(800);
       expect(seen.decisions).toBe(1);
-      await expect(page.getByRole("button", { name: /ADAPT TO ERA/ })).toBeVisible();
-      await page.getByRole("button", { name: /ADAPT TO ERA/ }).tap();
-      await stageIn(page, "DRAFTING");
-      expect(await sub(page)).toMatch(/ROLL 2 OF 3/);
-      expect(seen.decisions).toBe(1);   // acknowledging the era consumed no roll
+      // no era interstitial: Roll 2 is drafting again, with holds, and no ADAPT TO ERA anywhere
+      expect(await state(page)).toBe("DRAFTING");
+      await expect(page.getByRole("button", { name: /ADAPT TO ERA/ })).toHaveCount(0);
+      await expect(holdButtons(page)).toHaveCount(5);
+      expect(seen.decisions).toBe(1);
       const keptNames = await page.locator('.ec-pc--row .ec-pc-kept').locator("xpath=..").allInnerTexts();
       for (const n of heldNames) expect(keptNames.some((k) => k.includes(n))).toBe(true);
     });
@@ -138,15 +138,18 @@ for (const [w, h] of [[430, 932], [390, 844]]) {
       await stageIn(page, "EMPTY");
       await rollOnce(page);
       await page.getByRole("button", { name: /^ROLL 2/ }).tap();
-      await stageIn(page, "ERA_REVEAL");
-      await page.getByRole("button", { name: /ADAPT TO ERA/ }).tap();
-      await stageIn(page, "DRAFTING");
+      await expect(page.locator(".ec-ta-title-sub")).toHaveText(/ROLL 2 OF 3/, { timeout: 60_000 });
       await page.getByRole("button", { name: /FINAL ROLL/ }).tap();
       await stageIn(page, "COACH_SELECT");
+      // the era is not shown before the coach is set
+      await expect(page.locator(".ec-era-reveal-id")).toHaveCount(0);
       await page.locator(".ec-coach-action:not([disabled])").nth(2).waitFor({ timeout: 60_000 });
       await page.locator(".ec-coach-action:not([disabled])").first().tap();
       await page.getByRole("button", { name: /CONTINUE WITH COACH/ }).tap();
       await stageIn(page, "READY");
+      // rolls → coach → era: the era is revealed here, with its rules, above RUN CLASH
+      await expect(page.locator(".ec-era-reveal-id")).toHaveText(/^\d{4}s$/);
+      await expect(page.locator(".ec-era-reveal-card")).toHaveCount(3);
       await page.getByRole("button", { name: /RUN CLASH/ }).tap();
       await page.locator(".ec-ta-score[data-winner]").waitFor({ timeout: 150_000 });
       await stageIn(page, "RESULT");

@@ -184,9 +184,10 @@ describe("roll 1 deals both boards", () => {
   const run = start();
 
   it("defaults to the synchronized sequence", () => {
-    expect(CURRENT_SEQUENCE).toBe(2);
-    expect(CHAOS_SEQUENCE_VERSION).toBe("2.0.0");
-    expect(sequenceOf(run)).toBe(2);
+    // Sequence 3 (2026-09-09): the same synchronized draft, the era revealed with the hire.
+    expect(CURRENT_SEQUENCE).toBe(3);
+    expect(CHAOS_SEQUENCE_VERSION).toBe("3.0.0");
+    expect(sequenceOf(run)).toBe(3);
   });
 
   it("puts five players on each side and three offers on each side", () => {
@@ -248,11 +249,20 @@ describe("one decision covers both boards", () => {
     }
   });
 
-  it("reveals the era with Roll 2, before the final decision", () => {
+  it("keeps the era hidden through Roll 2 and Roll 3, and reveals it with the hire", () => {
     const run = start();
     decide(run, ["PG"], []);
     expect(run.currentPhase).toBe("ROLL_2_REVEALED");
     expect(run.currentRoll).toBe(2);
+    expect(view(run).eraState.revealed).toBe(false);
+    expect(view(run).era).toBeNull();
+    decide(run, [], []);
+    expect(run.currentPhase).toBe("ROLL_3_REVEALED");
+    expect(view(run).eraState.revealed).toBe(false);
+    // the hire reveals the seed's era — the same era the seed always revealed
+    const r = selectCoach(run, { coachId: run.coachOffers.gold[0].coachId });
+    expect(r.ok).toBe(true);
+    expect(run.currentPhase).toBe("READY");
     const v = view(run);
     expect(v.eraState.revealed).toBe(true);
     expect(v.eraState.eraStyleId).toBe(revealEra("syncseed00001"));
@@ -380,6 +390,18 @@ describe("Legend CPU parity", () => {
   });
 });
 
+describe("sequence 2 runs are frozen: the era still arrives with Roll 2", () => {
+  it("reveals the era with Roll 2 for a run stored under sequence 2", () => {
+    const run = start({ sequence: 2 });
+    expect(sequenceOf(run)).toBe(2);
+    decide(run, ["PG"], []);
+    expect(run.currentPhase).toBe("ROLL_2_REVEALED");
+    expect(view(run).eraState.revealed).toBe(true);
+    expect(view(run).eraState.eraStyleId).toBe(revealEra("syncseed00001"));
+    expect(chooseEra(run, { eraStyleId: "1990s" }).ok).toBe(true);
+  });
+});
+
 describe("determinism and branching", () => {
   it("the same decisions reproduce the same draft", () => {
     const a = start(), b = start();
@@ -402,30 +424,38 @@ describe("determinism and branching", () => {
 
   it("the era is the seed's era whatever the decisions", () => {
     const a = start(), b = start();
-    decide(a, [], []);
-    decide(b, ["PG", "SG", "SF"], []);
+    for (const run of [a, b]) { decide(run, run === a ? [] : ["PG", "SG", "SF"], []); decide(run, [], []); selectCoach(run, { coachId: run.coachOffers.gold[0].coachId }); }
+    expect(a.revealedEraStyleId).toBe(revealEra("syncseed00001"));
     expect(a.revealedEraStyleId).toBe(b.revealedEraStyleId);
   });
 });
 
 // ── Era entitlement ─────────────────────────────────────────────────────────
 describe("era control", () => {
-  const atRoll2 = (over = {}) => {
+  // Sequence 3: the era is revealed with the hire, so the one window in which an
+  // entitled player may set it is Clash Ready — after the reveal, before the game.
+  const atReady = (over = {}) => {
     const run = start(over);
     decide(run, [], []);
+    decide(run, [], []);
+    selectCoach(run, { coachId: run.coachOffers.gold[0].coachId });
     return run;
   };
 
-  it("is refused before the reveal and after the window closes", () => {
+  it("is refused before the reveal — at every roll — and only opens at Clash Ready", () => {
     const fresh = start();
     expect(chooseEra(fresh, { eraStyleId: "1990s" }).code).toBe("INVALID_TRANSITION");
-    const run = atRoll2();
-    decide(run, [], []);          // now at Roll 3
+    const run = start();
+    decide(run, [], []);          // Roll 2: still hidden
     expect(chooseEra(run, { eraStyleId: "1990s" }).code).toBe("INVALID_TRANSITION");
+    decide(run, [], []);          // Roll 3: still hidden
+    expect(chooseEra(run, { eraStyleId: "1990s" }).code).toBe("INVALID_TRANSITION");
+    selectCoach(run, { coachId: run.coachOffers.gold[0].coachId });
+    expect(chooseEra(run, { eraStyleId: "1990s" }).ok).toBe(true);
   });
 
-  it("accepts a real era at Roll 2 and marks the run custom", () => {
-    const run = atRoll2();
+  it("accepts a real era at Clash Ready and marks the run custom", () => {
+    const run = atReady();
     const seedEra = revealEra("syncseed00001");
     const target = CHAOS_ERA_IDS.find((e) => e !== seedEra);
     const r = chooseEra(run, { eraStyleId: target });
@@ -439,13 +469,13 @@ describe("era control", () => {
   });
 
   it("refuses an era that does not exist", () => {
-    const run = atRoll2();
+    const run = atReady();
     expect(chooseEra(run, { eraStyleId: "1930s" }).code).toBe("UNKNOWN_ERA");
     expect(chooseEra(run, { eraStyleId: "" }).code).toBe("UNKNOWN_ERA");
   });
 
   it("refuses a same-seed challenge run for every tier", () => {
-    const run = atRoll2({ competitiveEraLock: true });
+    const run = atReady({ competitiveEraLock: true });
     expect(chooseEra(run, { eraStyleId: "1990s" }).code).toBe("ERA_LOCKED_FOR_MODE");
     // And the state the client is shown says so BEFORE it says anything about
     // membership, so nobody is asked to pay for something no tier can do.
@@ -455,19 +485,24 @@ describe("era control", () => {
   });
 
   it("reports why it is unavailable to an unentitled account", () => {
-    const run = atRoll2();
+    const run = atReady();
     const ctl = eraChangeState(run, { entitled: false, gate: { kind: "MEMBERSHIP", message: "m" } });
     expect(ctl.allowed).toBe(false);
     expect(ctl.reason).toBe("NOT_ENTITLED");
     expect(ctl.gate.kind).toBe("MEMBERSHIP");
   });
 
-  it("is available to an entitled account at Roll 2 only", () => {
-    const run = atRoll2();
+  it("is available to an entitled account at Clash Ready only — never before the hire", () => {
+    const early = start();
+    decide(early, [], []);
+    expect(eraChangeState(early, { entitled: true }).reason).toBe("NOT_REVEALED");
+    decide(early, [], []);
+    expect(eraChangeState(early, { entitled: true }).reason).toBe("NOT_REVEALED");
+    const run = atReady();
     const open = eraChangeState(run, { entitled: true });
     expect(open.allowed).toBe(true);
     expect(open.eras).toEqual([...CHAOS_ERA_IDS]);
-    decide(run, [], []);
+    run.currentPhase = "SIMULATED";   // the game has been played: the window is closed
     expect(eraChangeState(run, { entitled: true }).reason).toBe("WINDOW_CLOSED");
   });
 
@@ -487,6 +522,8 @@ describe("era control", () => {
   it("plays a pinned era on both sides of the challenge", () => {
     const run = start({ pinnedEraStyleId: "1990s", competitiveEraLock: true });
     decide(run, [], []);
+    decide(run, [], []);
+    selectCoach(run, { coachId: run.coachOffers.gold[0].coachId });
     expect(run.revealedEraStyleId).toBe("1990s");
     expect(run.seedEraStyleId).toBe(revealEra("syncseed00001"));
     expect(run.eraCustom).toBe(true);

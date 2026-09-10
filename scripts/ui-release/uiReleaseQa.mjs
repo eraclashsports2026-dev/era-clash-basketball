@@ -47,7 +47,7 @@ const freshAccount = (page) => page.addInitScript(() => {
 });
 const stageIn = (page, st, timeout = 60_000) => page.waitForSelector(`.ec-ta-stage[data-guided-state="${st}"]`, { timeout });
 const click = async (page, re, timeout = 30_000) => { const b = page.getByRole("button", { name: re }).first(); await b.waitFor({ state: "visible", timeout }); await b.click(); };
-const STATES = ["EMPTY", "DRAFTING", "ERA_REVEAL", "COACH_SELECT", "READY", "RESULT"];
+const STATES = ["EMPTY", "DRAFTING", "COACH_SELECT", "READY", "RESULT"];
 /** Drive one Clash through the six states, calling at(state) in each. */
 async function walk(page, at) {
   const t = {};
@@ -57,9 +57,7 @@ async function walk(page, at) {
   await click(page, /^ROLL$/);
   await mark("DRAFTING", async () => { await stageIn(page, "DRAFTING"); await page.locator('.ec-ta-team[data-team="gold"] .ec-pc').nth(4).waitFor({ timeout: 60_000 }); });
   await click(page, /^ROLL 2$/);
-  await mark("ERA_REVEAL", () => stageIn(page, "ERA_REVEAL"));
-  await click(page, /ADAPT TO ERA/);
-  await stageIn(page, "DRAFTING");
+  await page.locator(".ec-ta-title-sub").filter({ hasText: "ROLL 2 OF 3" }).waitFor({ timeout: 60_000 });
   await click(page, /FINAL ROLL/);
   await mark("COACH_SELECT", async () => { await stageIn(page, "COACH_SELECT"); await page.locator(".ec-coach-action:not([disabled])").nth(2).waitFor({ timeout: 60_000 }); });
   await page.getByRole("button", { name: /^Select / }).first().click();
@@ -144,7 +142,7 @@ const themeFacts = (page) => page.evaluate((LUM) => {
   const stage = document.querySelector(".ec-ta-stage");
   const canvas = stage ? cs(stage).backgroundColor : cs(arena).backgroundColor;
   const canvasLum = lum(canvas, bodyBg) ?? lum(bodyBg);
-  const well = document.querySelector(".ec-pc-figure");
+  const wellToken = getComputedStyle(document.querySelector(".ec-arena-shell") || document.documentElement).getPropertyValue("--ec-a-portrait-well-lo").trim();
   // The stage's primary control is .ec-ta-cta; on the result the dock's primary is VIEW FULL REPORT.
   const cta = document.querySelector(".ec-ta-cta") || [...document.querySelectorAll("button")].find((b) => /VIEW FULL REPORT|START CHAOS CLASH/.test(b.textContent.trim()) && b.offsetParent);
   const text = [...document.querySelectorAll(".ec-ta-stage h1, .ec-ta-stage h2, .ec-ta-stage h3, .ec-ta-stage p, .ec-lobby h1, .ec-lobby h2, .ec-lobby p")].filter((e) => e.offsetParent).slice(0, 12).map((e) => lum(cs(e).color));
@@ -153,7 +151,7 @@ const themeFacts = (page) => page.evaluate((LUM) => {
     theme: document.documentElement.getAttribute("data-theme"),
     bodyLum: lum(bodyBg), canvas, canvasLum,
     headerLum: header ? lum(cs(header).backgroundColor) : null,
-    wellLum: well ? lum(cs(well).backgroundImage.match(/rgb\([^)]*\)/)?.[0] || cs(well).backgroundColor) : null,
+    wellLum: wellToken ? lum((() => { const m = wellToken.match(/^#([0-9a-f]{6})$/i); return m ? `rgb(${parseInt(m[1].slice(0, 2), 16)}, ${parseInt(m[1].slice(2, 4), 16)}, ${parseInt(m[1].slice(4, 6), 16)})` : wellToken; })()) : null,
     ctaLabel: cta ? cta.textContent.trim() : null, ctaDisabled: cta ? cta.disabled : null,
     ctaBgLum: cta ? lum(cs(cta).backgroundColor, bodyBg) : null,
     ctaInkLum: cta ? lum(cs(cta).color) : null,

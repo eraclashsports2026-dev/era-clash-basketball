@@ -1,8 +1,8 @@
 // ── Era Reveal ───────────────────────────────────────────────────────────────
-// Phase 9B.3, state 3. The server reveals the era WITH Roll 2 (runState.js) and
-// this is the one moment the arena makes it the focus: the era's name, its real
-// rule facts, and one action — adapt. Nothing here decides anything; the run
-// already carries the era, and continuing only records that it has been seen.
+// Phase 9B.3, revised 2026-09-09: the server reveals the era WITH THE HIRE
+// (runState.js, sequence 3) and the Clash Ready board makes it the focus once:
+// the era's name and its real rule facts. Nothing here decides anything; the
+// run already carries the era, and the one action on the board is RUN CLASH.
 //
 // Approved fracture placement 4 is "era reveal → .ec-intel-era[data-revealed]",
 // so this panel wears that hook and no new fracture is introduced.
@@ -60,7 +60,7 @@ export default function EraRevealPanel({ run, onContinue, onRules, busy = false 
       )}
       <p className="ec-era-reveal-body">
         {custom ? "A chosen era, played by the same rules for both teams. " : "Both teams play by this era's rules. "}
-        How will you adapt? Your final roll comes next.
+        Your five and your staff are set — run the Clash when you are ready.
       </p>
       <div className="ec-era-reveal-actions">
         {cards.length > 0 && (

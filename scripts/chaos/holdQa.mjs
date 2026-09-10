@@ -47,8 +47,8 @@ for (const n of [0, 1, 2, 3, 4, 5]) {
   const r = startRun({ runId: "h".repeat(10), seedId: "roll2", createdAt: 0 });
   submitRollDecisions(r, { holdSlots: ["PG", "C"], holdRoles: [], hydrate });
   const v = publicView(r, { hydrate });
-  ok("the era is revealed with Roll 2", !!v.era?.eraId, v.era?.eraId);
-  ok("the era banner is present from Roll 2 onward", !!v.eraContext);
+  ok("the era is still hidden at Roll 2 (sequence 3 reveals it with the hire)", v.era === null && v.eraState.revealed === false);
+  ok("no era banner during the rolls", v.eraContext === null);
   ok("cards kept through Roll 1 are still held at Roll 2",
     v.gold.heldSlots.includes("PG") && v.gold.heldSlots.includes("C"), v.gold.heldSlots.join(","));
   // Release one previously held card and keep a new one.

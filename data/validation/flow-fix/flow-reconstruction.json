@@ -1,0 +1,26 @@
+{
+  "artifact": "flow-reconstruction",
+  "ownerReport": "2026-09-09 iPhone test: a shadow band under the header; 'Adapt to Era' after the rolls; the flow must be Roll 1 (hold) → Roll 2 (hold) → Roll 3 (final roster) → coach → the era randomized for the game; AI-generated portrait placeholders for every player.",
+  "branch": "fix/flow-era-after-coach-portraits",
+  "baseline": "main 1080fba (production)",
+  "changes": {
+    "flow": {
+      "server": "src/chaos/runState.js — sequence 3 (CHAOS_SEQUENCE_VERSION 3.0.0, CURRENT_SEQUENCE 3): applyEraReveal runs in selectCoach, not with Roll 2; sequence 2 keeps its frozen behaviour; eraWindowPhase(run) is READY for sequence 3. The era is still the seed's era (revealEra unchanged, ERA_PINS unchanged), pinned eras still travel with challenge links (chaosSequenceVersion 3.0.0). Both sides draft and choose staff era-blind: the Legend Rival prices adaptability at Roll 3 and picks its coach with eraId null; the ERA ADAPTER offer uses the era-agnostic score (existing code paths).",
+      "api": "api/_lib/chaosRun.js — the entitled era-change window follows the reveal (Clash Ready); sequenceFromManifest accepts 3.",
+      "client": "guidedState.js — five states (EMPTY, DRAFTING, COACH_SELECT, READY, RESULT), GUIDED_FLOW_VERSION chaos-guided-flow-v3, no acknowledge-era action, READY's rail panel is the era; ChaosStage renders EraRevealPanel on READY; RollStepper labels ROLL 1 / ROLL 2 / FINAL ROLL; UtilityBar 'ERA: HIDDEN UNTIL YOUR COACH IS SET'; TimeArena drops the acknowledgement and fires era_reveal_viewed on READY."
+    },
+    "headerShadow": "On the phone the crowd silhouette band (multiply), grain, court fade, vignette and spotlights read as a smear under the header. ≤767px: those layers are display:none, the stage and court are the flat arena colour.",
+    "portraits": {
+      "what": "24 generated ARCHETYPE placeholders — one guard (PG/SG), one wing (SF), one big (PF/C) per decade 1950s–2020s — faceless, era-styled, non-identifying figures on the dark portrait well. Generated with Recraft v4 through the owner's media connector (240 credits from the existing balance; 10 per image). Renditions: 336×456 JPEG for the card zone, 96×96 JPEG for the phone row.",
+      "policy": "docs/IMAGES.md Tier 4: never a likeness of a real athlete (the policy forbids generated likenesses; these depict nobody and carry no face, name, number or team mark). An approved photograph (approved.json) always resolves first; the initials silhouette remains the fallback when a file fails.",
+      "mapping": "src/ui/time-arena/placeholders.js: decade + primary position → image; a stable per-player mirror flip adds variety. Coverage: 381/381 players → 24 images (e.g. 2020s-guard 34 players, 1950s-wing 1).",
+      "surfaces": "arena PlayerCard (desktop) and PlayerRow (phone) via resolvePlaceholderArt; every other player image through PlayerImage.jsx (thumbnail/card/roster/scoreboard/mvp/share variants)."
+    },
+    "phoneReport": "the full report's controls (tabs, feedback chips, 1–5 ratings) are 44px touch targets on the phone"
+  },
+  "gatesAndPins": "9B.3 guided-flow gate (five states, era asserted on READY), uiReleaseQa walk, time-arena-qa, uiQa (ROLL 1/ROLL 2/FINAL ROLL, sequence 3), security (era window at READY), holdQa; unit pins in v9b3, chaos-synchronized-draft, v8a, v8b, v8c, v9a2 (three stage renditions), v9a3p/v9b1 (chaos whole-dir pin re-scoped to the frozen odds/CPU/era/coach files); e2e phase8a/8c/9a/9c/9d/9e/mobile walkers.",
+  "preExisting": [
+    { "finding": "both teams can hire the same coach", "evidence": "60 seeded runs: sequence 2 (production before this change) 4/60 same coach on both benches, offers overlap 23/60; sequence 3: 1/60 and 20/60. generateOffers excludes burned coaches only, not the other side's offers.", "status": "reported, not changed (coach-draft logic is a preserved area)" },
+    { "finding": "harness-only: /api/profile 503 and /api/narrative 429", "evidence": "the local harness has no account provider and blocks AI narration by budget; both are configured on production", "status": "not a product defect" }
+  ]
+}

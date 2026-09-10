@@ -13,6 +13,7 @@
 import { PLAYERS } from "../../players.js";
 import { displayOVR } from "../../rating.js";
 import { resolvePortrait, initialsOf, PORTRAIT_STATUS } from "../../ui/time-arena/portraits.js";
+import { resolvePlaceholderArt } from "../../ui/time-arena/placeholders.js";
 import { eligibleLabel } from "../../lineupPlacement.js";
 import PortraitStage from "../brand/PortraitStage.jsx";
 
@@ -68,6 +69,21 @@ function Portrait({ card, player, team, testArt }) {
       </PortraitStage>
     );
   }
+  // No approved photograph: the generated, non-identifying archetype placeholder
+  // for this decade and position (docs/IMAGES.md), over the initials, which
+  // stay visible if the file is missing or fails to load.
+  const ph = testArt ? null : resolvePlaceholderArt(player || card);
+  if (ph) {
+    return (
+      <PortraitStage team={team}>
+        <div className="ec-pc-figure-initials" aria-hidden="true">{initialsOf(card.name)}</div>
+        <img className="ec-pc-placeholder" src={ph.src} alt="" loading="lazy" decoding="async" data-art="placeholder"
+          style={{ transform: ph.flip ? "scaleX(-1)" : undefined }}
+          onError={(e) => { e.currentTarget.style.display = "none"; }} />
+        <span className="sr-only">{ph.alt}</span>
+      </PortraitStage>
+    );
+  }
   return (
     <PortraitStage team={team}>
       <div className="ec-pc-figure" aria-hidden="true" />
@@ -92,17 +108,23 @@ function PlayerRow({ card, player, team, interactive, held, kept, locked, disabl
   // so a row never changes height when art exists or arrives.
   const art = resolvePortrait(card.id, card.decade);
   const hasArt = art.portraitStatus === PORTRAIT_STATUS.APPROVED && !!art.src;
+  const ph = hasArt ? null : resolvePlaceholderArt(player || card);
   return (
     <div className="ec-pc ec-pc--row" data-team={team} data-slot={card.slot} data-held={held ? "true" : "false"}
       aria-label={`${card.name}, ${teamLabel} ${card.slot}, ${card.decade}${kept ? ", kept from the last roll" : ""}${held ? ", held" : ""}`}>
       <span className="ec-pc-slot ec-pr-slot">{card.slot}</span>
-      <span className="ec-pr-thumb" data-team={team} data-art={hasArt ? "approved" : "fallback"} aria-hidden={hasArt ? undefined : "true"}>
+      <span className="ec-pr-thumb" data-team={team} data-art={hasArt ? "approved" : ph ? "placeholder" : "fallback"} aria-hidden={hasArt ? undefined : "true"}>
+        <span className="ec-pr-initials" aria-hidden="true">{initialsOf(card.name)}</span>
         {hasArt && (
           <img className="ec-pr-img" src={art.src} alt={`${card.name}, ${card.decade}`} loading="lazy" decoding="async" width="44" height="44"
             style={{ objectPosition: art.objectPosition }}
             onError={(e) => { const t = e.currentTarget.closest(".ec-pr-thumb"); if (t) t.dataset.art = "failed"; }} />
         )}
-        <span className="ec-pr-initials" aria-hidden="true">{initialsOf(card.name)}</span>
+        {!hasArt && ph && (
+          <img className="ec-pr-img" src={ph.thumb} alt="" loading="lazy" decoding="async" width="44" height="44"
+            style={{ transform: ph.flip ? "scaleX(-1)" : undefined }}
+            onError={(e) => { const t = e.currentTarget.closest(".ec-pr-thumb"); if (t) t.dataset.art = "failed"; }} />
+        )}
       </span>
       <span className="ec-pr-main">
         <span className="ec-pc-name ec-pr-name" title={card.name}>
@@ -120,7 +142,7 @@ function PlayerRow({ card, player, team, interactive, held, kept, locked, disabl
             </span>
           )}
         </span>
-        {!hasArt && <span className="sr-only">{`${card.name} — EraClash silhouette, no portrait approved yet`}</span>}
+        {!hasArt && <span className="sr-only">{ph ? ph.alt : `${card.name} — EraClash silhouette, no portrait approved yet`}</span>}
       </span>
       {interactive ? (
         <button type="button" className="ec-pc-action ec-pr-action" data-on={held ? "true" : "false"}

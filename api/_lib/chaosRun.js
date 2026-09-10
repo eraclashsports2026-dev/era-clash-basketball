@@ -10,7 +10,7 @@ import { PLAYERS, POSITIONS } from "../../src/players.js";
 import { getJSON, setJSON, newId, cmd } from "./store.js";
 import {
   startRun, submitHolds, submitCoachHolds, submitRollDecisions, chooseEra, selectCoach,
-  abandonRun, publicView, sequenceOf, CURRENT_SEQUENCE, RUN_TTL_SECONDS,
+  abandonRun, publicView, sequenceOf, eraWindowPhase, CURRENT_SEQUENCE, RUN_TTL_SECONDS,
 } from "../../src/chaos/runState.js";
 import { buildManifest, challengeId } from "../../src/chaos/challenge.js";
 import { GUEST_CHAOS_RUNS } from "../../src/entitlements.js";
@@ -27,8 +27,10 @@ export const hydrate = (arr) =>
   Object.fromEntries(POSITIONS.map((s, i) => [s, byId.get(arr?.[i]) || null]));
 
 /** Major version of the sequence a challenge was minted under. */
-export const sequenceFromManifest = (m) =>
-  (parseInt(String(m?.chaosSequenceVersion || "1"), 10) === 2 ? 2 : 1);
+export const sequenceFromManifest = (m) => {
+  const n = parseInt(String(m?.chaosSequenceVersion || "1"), 10);
+  return n === 3 ? 3 : n === 2 ? 2 : 1;
+};
 
 export const validRunId = (v) => (/^[a-z0-9]{8,20}$/.test(String(v || "")) ? String(v) : null);
 export const validChaosChallengeId = (v) => (/^[a-z0-9]{4,14}$/.test(String(v || "")) ? String(v) : null);
@@ -101,7 +103,7 @@ export const applyRollDecisions = async (run, { holdSlots, holdRoles }) => {
   return { ok: true, run };
 };
 
-/** An entitled user setting the era after the reveal, before the final roll. */
+/** An entitled user setting the era after the reveal, before the game is run. */
 export const applyEraChoice = async (run, eraStyleId) => {
   const r = chooseEra(run, { eraStyleId });
   if (!r.ok) return r;
@@ -152,14 +154,14 @@ export const view = (run, opts = {}) => publicView(run, { hydrate, ...opts });
  * a paying user is never told to pay for something no tier can do.
  */
 export const eraChangeState = (run, { entitled = false, gate = null } = {}) => {
-  if (sequenceOf(run) !== 2) return { allowed: false, reason: "NOT_SUPPORTED" };
+  if (sequenceOf(run) < 2) return { allowed: false, reason: "NOT_SUPPORTED" };
   if (run.competitiveEraLock) {
     return { allowed: false, reason: "COMPETITIVE_LOCK",
       message: "Same-seed challenges keep the era they were dealt, for everyone." };
   }
   if (!entitled) return { allowed: false, reason: "NOT_ENTITLED", gate };
   if (!run.revealedEraStyleId) return { allowed: false, reason: "NOT_REVEALED" };
-  if (run.currentPhase !== "ROLL_2_REVEALED") return { allowed: false, reason: "WINDOW_CLOSED" };
+  if (run.currentPhase !== eraWindowPhase(run)) return { allowed: false, reason: "WINDOW_CLOSED" };
   return { allowed: true, reason: null, eras: [...CHAOS_ERA_IDS] };
 };
 

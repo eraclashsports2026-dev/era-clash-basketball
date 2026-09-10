@@ -321,7 +321,7 @@ if (httpModes.has(MODE)) {
     await page.goto(`${BASE}/play/chaos`, { waitUntil: "domcontentloaded" }); await stage(page, "EMPTY"); await click(page, /^ROLL$/);
     await page.locator('.ec-ta-team[data-team="gold"] .ec-pc').nth(4).waitFor({ timeout: 60_000 });
     const runId = await page.evaluate(() => localStorage.getItem("ec_chaos_run"));
-    await click(page, /^ROLL 2$/); await stage(page, "ERA_REVEAL"); await click(page, /ADAPT TO ERA/); await click(page, /FINAL ROLL/);
+    await click(page, /^ROLL 2$/); await click(page, /FINAL ROLL/);
     await page.locator(".ec-coach-action:not([disabled])").nth(2).waitFor({ timeout: 60_000 }); await page.getByRole("button", { name: /^Select / }).first().click();
     await click(page, /CONTINUE WITH COACH/); await click(page, /RUN CLASH/); await page.locator(".ec-ta-score[data-winner]").waitFor({ timeout: 120_000 });
     const resultId = await page.evaluate(() => JSON.parse(localStorage.getItem("ec_prior_result")).result.resultId);
@@ -332,7 +332,7 @@ if (httpModes.has(MODE)) {
     await bp.evaluate(([rid, code]) => { localStorage.setItem("ec_chaos_run", rid); localStorage.setItem("ec_chaos_challenge", JSON.stringify({ chaosRunId: rid, code, creatorName: "Joseph", at: Date.now() })); }, [acc.chaosRunId, created.code]);
     await bp.goto(`${BASE}/play/chaos`, { waitUntil: "domcontentloaded" }); await stage(bp, "DRAFTING");
     await bp.locator('.ec-ta-team[data-team="gold"] .ec-pc').nth(4).waitFor({ timeout: 60_000 });
-    await click(bp, /^ROLL 2$/); await stage(bp, "ERA_REVEAL"); await click(bp, /ADAPT TO ERA/); await click(bp, /FINAL ROLL/);
+    await click(bp, /^ROLL 2$/); await click(bp, /FINAL ROLL/);
     await bp.locator(".ec-coach-action:not([disabled])").nth(2).waitFor({ timeout: 60_000 }); await bp.getByRole("button", { name: /^Select / }).first().click();
     await click(bp, /CONTINUE WITH COACH/); await click(bp, /RUN CLASH/);
     await bp.locator(".ec-chal-cmp[data-outcome]").waitFor({ timeout: 120_000 });

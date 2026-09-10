@@ -129,7 +129,8 @@ describe("the portrait stage", () => {
   it("wraps every player image — arena cards and light-surface variants — in the same three layers and adds no geometry", () => {
     expect(read("src/components/brand/PortraitStage.jsx")).toMatch(/ec-portrait-field[\s\S]*ec-portrait-rim[\s\S]*ec-portrait-fade/);
     const card = src("src/components/arena/PlayerCard.jsx");
-    expect(card).toMatch(/<PortraitStage team=\{team\}>/); expect((card.match(/<PortraitStage/g) || []).length).toBe(2);
+    // three renditions share the stage: the approved photograph, the generated archetype placeholder (2026-09-09), the silhouette
+    expect(card).toMatch(/<PortraitStage team=\{team\}>/); expect((card.match(/<PortraitStage/g) || []).length).toBe(3);
     expect(card).toMatch(/resolvePortrait/); expect(card).toMatch(/PORTRAIT_STATUS\.APPROVED/);
     const img = src("src/components/PlayerImage.jsx");
     expect(img).toMatch(/ec-portrait-stage/); expect((img.match(/ec-portrait-field/g) || []).length).toBe(2);

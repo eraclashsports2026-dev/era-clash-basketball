@@ -52,7 +52,7 @@ export default function UtilityBar({ eraState, onGuide, onSettings, compact = fa
           </div>
         ) : (
           <div style={{ fontSize: 11.5, fontWeight: 800, letterSpacing: 1, color: "var(--ec-a-text-muted)" }}>
-            ERA: HIDDEN UNTIL ROLL 2
+            ERA: HIDDEN UNTIL YOUR COACH IS SET
           </div>
         )}
       </div>

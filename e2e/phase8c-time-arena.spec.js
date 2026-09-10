@@ -33,11 +33,12 @@ const asGuest = async (page) => {
 const roll = async (page, label) => { await page.getByRole("button", { name: label }).click(); };
 
 /** Continue from a board that already has Roll 1 on it, and stop at READY. */
-// Phase 9B.3 guided flow: the words come from src/components/arena/guidedState.js, and the
-// era reveal is a dedicated state between Roll 2 and the final roll.
+// Phase 9B.3 guided flow: the words come from src/components/arena/guidedState.js.
+// 2026-09-09: the era is revealed on Clash Ready (rolls → coach → era); after Roll 2
+// the board is drafting again, with no interstitial.
 const adaptToEra = async (page) => {
-  await expect(page.locator(".ec-era-reveal-id")).toHaveText(/^\d{4}s$/, { timeout: 20_000 });
-  await page.getByRole("button", { name: /ADAPT TO ERA/ }).click();
+  await expect(page.getByText(/ROLL 2 OF 3/).first()).toBeVisible({ timeout: 20_000 });
+  await expect(page.getByRole("button", { name: /ADAPT TO ERA/ })).toHaveCount(0);
 };
 const toReadyFromRoll1 = async (page) => {
   await roll(page, /^ROLL 2$/);
@@ -169,10 +170,11 @@ test("players and coaches move through ONE three-roll sequence", async ({ page }
 
   await roll(page, /^ROLL 2$/);
 
-  // The era arrives with Roll 2 as a state of its own, then collapses to status.
+  // Roll 2 lands as drafting again; the era is still hidden (it arrives with the hire).
   await adaptToEra(page);
   await expect(page.getByText(/ROLL 2 OF 3/).first()).toBeVisible({ timeout: 20_000 });
-  await expect(page.locator(".ec-ta-utility").getByText(/^ERA: \d{4}s/)).toBeVisible();
+  await expect(page.locator(".ec-ta-utility").getByText(/ERA: HIDDEN/)).toBeVisible();
+  await expect(page.locator(".ec-era-reveal-id")).toHaveCount(0);
   // What was held survived.
   for (const slot of ["PG", "C"]) {
     await expect(gold.locator(`.ec-pc[data-slot="${slot}"]`)).toContainText("KEPT");
@@ -196,10 +198,13 @@ test("players and coaches move through ONE three-roll sequence", async ({ page }
   // three cards competing with RUN CLASH.
   await expect(page.locator(".ec-ta-staff--gold")).toContainText(/COACH/);
   await expect(page.locator(".ec-coach-card")).toHaveCount(0);
+  // The era is revealed here, with the hire: named on the board and stated in the utility bar.
+  await expect(page.locator(".ec-era-reveal-id")).toHaveText(/^\d{4}s$/);
+  await expect(page.locator(".ec-ta-utility").getByText(/^ERA: \d{4}s/)).toBeVisible();
 
   artifact("synchronized-chaos-runtime.json", {
-    artifact: "synchronized-chaos-runtime", phase: "8C — Time Arena · 9B.3 guided flow",
-    eraRevealedAtRoll: 2, eraRevealIsAState: true, rolls: 3, fourthRollOffered: false, hires: 1,
+    artifact: "synchronized-chaos-runtime", phase: "8C — Time Arena · 9B.3 guided flow · sequence 3 (era with the hire, 2026-09-09)",
+    eraRevealedAt: "hire (Clash Ready)", eraRevealIsAState: false, rolls: 3, fourthRollOffered: false, hires: 1,
     staffHoldsSurfacedMidDraft: false,
   });
 });
@@ -224,9 +229,9 @@ test("the era is locked for a free account and routes to membership", async ({ p
   await page.goto("/play/chaos");
   await page.getByRole("button", { name: /^ROLL$/ }).click();
   await expect(page.locator(".ec-ta-roster .ec-pc").nth(9)).toBeVisible({ timeout: 20_000 });
-  await roll(page, /^ROLL 2$/);
-  // At the reveal the rail is the era panel; the lock and the membership route
-  // are read there, before the player adapts.
+  // The era is revealed on Clash Ready; the rail is the era panel there, where
+  // the lock and the membership route are read before the game is run.
+  await toReadyFromRoll1(page);
   await expect(page.locator(".ec-era-reveal-id")).toHaveText(/^\d{4}s$/, { timeout: 20_000 });
 
   const rail = page.locator(".ec-ta-rail");
@@ -258,7 +263,7 @@ test("an entitled run offers the era selector the server allows", async ({ page 
   await page.goto("/play/chaos");
   await page.getByRole("button", { name: /^ROLL$/ }).click();
   await expect(page.locator(".ec-ta-roster .ec-pc").nth(9)).toBeVisible({ timeout: 20_000 });
-  await roll(page, /^ROLL 2$/);
+  await toReadyFromRoll1(page);
   await expect(page.locator(".ec-era-reveal-id")).toHaveText(/^\d{4}s$/, { timeout: 20_000 });
 
   const rail = page.locator(".ec-ta-rail");

@@ -33,9 +33,19 @@ export const RUN_TTL_SECONDS = 60 * 60 * 6;
 // for every seed, silently turning existing challenge links into different
 // games. Sequence 1 runs and challenges keep playing the flow they were minted
 // under; only new standard runs open at sequence 2.
-export const CHAOS_SEQUENCE_VERSION = "2.0.0";
-export const CURRENT_SEQUENCE = 2;
-export const sequenceOf = (run) => (Number(run?.sequenceVersion) === 2 ? 2 : 1);
+// Sequence 3 (owner correction, 2026-09-09): the same synchronized three-roll
+// draft as sequence 2, but the ERA is revealed only once the coach is hired —
+// three rolls with holds, the roster, the coach, then the era. Neither side
+// knows the era while drafting or choosing staff: the Legend Rival prices
+// adaptability, not the actual environment, and the ERA ADAPTER offer is scored
+// on how well a coach travels. The era itself is still the seed's era, derived
+// exactly as before, so a challenge link still plays the environment its
+// creator played. Runs stored under sequence 2 keep revealing at Roll 2.
+export const CHAOS_SEQUENCE_VERSION = "3.0.0";
+export const CURRENT_SEQUENCE = 3;
+export const sequenceOf = (run) => { const n = Number(run?.sequenceVersion); return n === 3 ? 3 : n === 2 ? 2 : 1; };
+/** The one phase in which an entitled player may set the era: after the reveal, before the game. */
+export const eraWindowPhase = (run) => (sequenceOf(run) >= 3 ? "READY" : "ROLL_2_REVEALED");
 
 /**
  * FROZEN at the value CHAOS_RUN_VERSION held when eras were first derived.
@@ -156,14 +166,14 @@ export const startRun = ({ runId, seedId, createdAt, sequence = CURRENT_SEQUENCE
     history: [],
     createdAt, expiresAt: createdAt + RUN_TTL_SECONDS * 1000,
     status: "ACTIVE",
-    sequenceVersion: Number(sequence) === 2 ? 2 : 1,
+    sequenceVersion: [2, 3].includes(Number(sequence)) ? Number(sequence) : 1,
     pinnedEraStyleId: pinnedEraStyleId || null,
     competitiveEraLock: !!competitiveEraLock,
     seedEraStyleId: null,
     eraCustom: false,
   };
   commitCpuHolds(run, { gold, blue });
-  if (sequenceOf(run) === 2) {
+  if (sequenceOf(run) >= 2) {
     run.burnedCoachIds = [];
     run.coachOffers = null;
     run.coachRoll = 1;
@@ -230,7 +240,7 @@ export const submitHolds = (run, { holdSlots, hydrate }) => {
   // Sequence 2 submits players and coaches together. Accepting the player-only
   // action for such a run would re-open its coach board from scratch, which is
   // three extra coach rolls nobody is entitled to.
-  if (sequenceOf(run) === 2) return { ok: false, code: "WRONG_SEQUENCE", phase: run.currentPhase };
+  if (sequenceOf(run) >= 2) return { ok: false, code: "WRONG_SEQUENCE", phase: run.currentPhase };
   const expected = run.currentRoll === 1 ? "ROLL_1_REVEALED" : "ROLL_2_REVEALED";
   if (run.currentPhase !== expected) {
     return { ok: false, code: "INVALID_TRANSITION", phase: run.currentPhase };
@@ -353,7 +363,7 @@ export const openCoachDraft = (run, rosters) => {
 
 /** Submit the user's coach holds for this roll and advance. */
 export const submitCoachHolds = (run, { holdRoles, hydrate }) => {
-  if (sequenceOf(run) === 2) return { ok: false, code: "WRONG_SEQUENCE", phase: run.currentPhase };
+  if (sequenceOf(run) >= 2) return { ok: false, code: "WRONG_SEQUENCE", phase: run.currentPhase };
   if (!["COACH_ROLL_1", "COACH_ROLL_2"].includes(run.currentPhase)) {
     return { ok: false, code: "INVALID_TRANSITION", phase: run.currentPhase };
   }
@@ -405,7 +415,7 @@ export const submitCoachHolds = (run, { holdRoles, hydrate }) => {
  * a malformed coach list can never burn a player (or the reverse).
  */
 export const submitRollDecisions = (run, { holdSlots, holdRoles, hydrate }) => {
-  if (sequenceOf(run) !== 2) return { ok: false, code: "WRONG_SEQUENCE", phase: run.currentPhase };
+  if (sequenceOf(run) < 2) return { ok: false, code: "WRONG_SEQUENCE", phase: run.currentPhase };
   const expected = run.currentRoll === 1 ? "ROLL_1_REVEALED" : "ROLL_2_REVEALED";
   if (run.currentPhase !== expected) return { ok: false, code: "INVALID_TRANSITION", phase: run.currentPhase };
 
@@ -477,8 +487,10 @@ export const submitRollDecisions = (run, { holdSlots, holdRoles, hydrate }) => {
 
   // The era arrives WITH Roll 2 and BEFORE the new offers are drawn, so from
   // here the offers and their explanations speak to the real environment and
-  // the final decision is made with full knowledge of it.
-  if (nextRoll === 2) applyEraReveal(run);
+  // the final decision is made with full knowledge of it — under sequence 2.
+  // Sequence 3 keeps the era hidden through every roll and reveals it with the
+  // hire (selectCoach), so both sides draft and choose staff era-blind.
+  if (nextRoll === 2 && sequenceOf(run) === 2) applyEraReveal(run);
 
   run.coachRoll = nextRoll;
   rollCoachOffers(run, { gold: nextGold, blue: nextBlue }, { goldHeld: roles, blueHeld: cpuCoachHold });
@@ -512,9 +524,9 @@ export const submitRollDecisions = (run, { holdSlots, holdRoles, hydrate }) => {
  * a paid environment change would be a paid competitive advantage.
  */
 export const chooseEra = (run, { eraStyleId }) => {
-  if (sequenceOf(run) !== 2) return { ok: false, code: "WRONG_SEQUENCE", phase: run.currentPhase };
+  if (sequenceOf(run) < 2) return { ok: false, code: "WRONG_SEQUENCE", phase: run.currentPhase };
   if (run.competitiveEraLock) return { ok: false, code: "ERA_LOCKED_FOR_MODE" };
-  if (run.currentPhase !== "ROLL_2_REVEALED") return { ok: false, code: "INVALID_TRANSITION", phase: run.currentPhase };
+  if (run.currentPhase !== eraWindowPhase(run)) return { ok: false, code: "INVALID_TRANSITION", phase: run.currentPhase };
   if (!CHAOS_ERA_IDS.includes(eraStyleId)) return { ok: false, code: "UNKNOWN_ERA" };
   const seedEra = run.seedEraStyleId || revealEra(run.seedId);
   run.revealedEraStyleId = eraStyleId;
@@ -535,13 +547,16 @@ export const abandonRun = (run) => {
 export const selectCoach = (run, { coachId }) => {
   // Sequence 2 finishes its three rolls in ROLL_3_REVEALED and hires from
   // there; sequence 1 has a separate COACH_SELECTION phase after its own rolls.
-  const expected = sequenceOf(run) === 2 ? "ROLL_3_REVEALED" : "COACH_SELECTION";
+  const expected = sequenceOf(run) >= 2 ? "ROLL_3_REVEALED" : "COACH_SELECTION";
   if (run.currentPhase !== expected) {
     return { ok: false, code: "INVALID_TRANSITION", phase: run.currentPhase };
   }
   const offered = (run.coachOffers?.gold || []).map((o) => o.coachId);
   if (!offered.includes(coachId)) return { ok: false, code: "COACH_NOT_OFFERED" };
   run.selectedCoaches = { gold: coachId, blue: run._cpuCoach };
+  // Sequence 3: the era is revealed here, with the hire — the roster is set,
+  // the staffs are set, and now the environment both teams play in is known.
+  if (sequenceOf(run) >= 3) applyEraReveal(run);
   run.currentPhase = "READY";
   return { ok: true, run };
 };
@@ -606,8 +621,8 @@ export const publicView = (run, { hydrate, includeCpuHolds = false, eraChange = 
       totalRolls: TOTAL_COACH_ROLLS,
       // Under the synchronized sequence the coach roll IS the player roll, and
       // hiring opens once the third roll has landed.
-      synchronized: sequenceOf(run) === 2,
-      selecting: sequenceOf(run) === 2
+      synchronized: sequenceOf(run) >= 2,
+      selecting: sequenceOf(run) >= 2
         ? run.currentPhase === "ROLL_3_REVEALED"
         : run.currentPhase === "COACH_SELECTION",
       heldRoles: run.goldCoachHeld || [],

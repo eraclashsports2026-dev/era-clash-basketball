@@ -60,13 +60,13 @@ const run = async () => {
   const afterIds = spoof.body?.chaos?.gold?.roster?.map((c) => c.id) || [];
   ok("a client cannot substitute player ids", !afterIds.includes("jordan-90s") || roll1.includes("jordan-90s"));
   // The era a run plays is the seed's era, whatever the request body claims.
-  ok("a client cannot set the era in a roll decision",
-    spoof.body?.chaos?.era?.eraId === spoof.body?.chaos?.eraState?.eraStyleId
-    && spoof.body?.chaos?.eraState?.custom === false);
+  ok("a client cannot set the era in a roll decision (sequence 3: still hidden at Roll 2, and never custom)",
+    (spoof.body?.chaos?.era?.eraId ?? null) === (spoof.body?.chaos?.eraState?.eraStyleId ?? null)
+    && spoof.body?.chaos?.eraState?.custom === false && spoof.body?.chaos?.eraState?.revealed === false);
   ok("a FREE account cannot use the era action",
     (await post({ chaosAction: "era", chaosRunId: runId, eraStyleId: "2020s", tier: "FREE" })).status === 403);
-  const forgedEra = await post({ chaosAction: "era", chaosRunId: runId, eraStyleId: "1830s", tier: "PLUS" });
-  ok("an entitled account cannot set an era that does not exist", forgedEra.status === 400);
+  ok("even an entitled account cannot set the era before it is revealed (sequence 3: hidden until the hire)",
+    (await post({ chaosAction: "era", chaosRunId: runId, eraStyleId: "1830s", tier: "PLUS" })).status === 403);
 
   // A client cannot skip a roll or add a fourth.
   const third = await post({ chaosAction: "decide", chaosRunId: runId, holdSlots: [], holdRoles: [] });
@@ -74,8 +74,11 @@ const run = async () => {
     third.body?.chaos?.phase === "ROLL_3_REVEALED" && third.body?.chaos?.coachDraft?.selecting === true);
   const fourth = await post({ chaosAction: "decide", chaosRunId: runId, holdSlots: [], holdRoles: [] });
   ok("a client cannot add a fourth roll", fourth.status === 400);
-  ok("the era window is closed once the rolls are done",
+  ok("the era is still hidden after the third roll (it is revealed with the hire)",
+    third.body?.chaos?.eraState?.revealed === false && third.body?.chaos?.era === null);
+  ok("the era window has not opened before the hire, even for an entitled account",
     (await post({ chaosAction: "era", chaosRunId: runId, eraStyleId: "2020s", tier: "PLUS" })).status === 403);
+
 
   const view = await post({ chaosAction: "view", chaosRunId: runId });
   ok("a client cannot forge a coach hold role",
@@ -114,6 +117,11 @@ const run = async () => {
   ok("a challenge id leaks no seed or credential",
     !!chalId && !forbidden.some((f) => String(chalId).toLowerCase().includes(f)), chalId);
   ok("a coach can be hired from the offered three", good.status === 200);
+  // Sequence 3: the hire reveals the era and opens the one window; a forged era is still refused there.
+  ok("the hire reveals the era (READY) and it is the seed's era, not the client's",
+    good.body?.chaos?.phase === "READY" && good.body?.chaos?.eraState?.revealed === true && good.body?.chaos?.eraState?.custom === false, `${good.status} ${good.body?.chaos?.phase}`);
+  const forgedEra = await post({ chaosAction: "era", chaosRunId: runId, eraStyleId: "1830s", tier: "PLUS" });
+  ok("an entitled account cannot set an era that does not exist", forgedEra.status === 400);
 
   // Replaying a completed transition is idempotent (refused, not corrupting).
   const replay = await post({ chaosAction: "coach", chaosRunId: runId, coachId: offered[0] });
