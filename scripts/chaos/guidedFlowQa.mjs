@@ -44,6 +44,10 @@ const write = (name, data) => { mkdirSync(OUT, { recursive: true }); writeFileSy
 /** An access session for a gated preview. Keys never reach a URL or a log. */
 const openSession = async (context) => {
   if (!BASE.startsWith("https://")) return null;
+  // The production domain is ungated: /api/health answers 200 with no session, so
+  // the deployed pass runs there as a plain visitor. A gated preview answers 401.
+  const probe = await context.request.get(`${BASE}/api/health`).catch(() => null);
+  if (probe && probe.status() === 200) return null;
   const f = ".preview-secrets/wave2-access-keys.json";
   if (!existsSync(f)) throw new Error(`${BASE} is gated and ${f} is not on disk`);
   const k = JSON.parse(readFileSync(f, "utf8")).keys.find((x) => x.role === "owner");

@@ -15,7 +15,7 @@ const state = (p) => p.locator(".ec-ta-stage").getAttribute("data-guided-state")
 async function play(name, vp, mobile) {
   const ctx = await b.newContext({ viewport: vp, isMobile: mobile, hasTouch: mobile, deviceScaleFactor: mobile ? 2 : 1 }); await session(ctx);
   const p = await ctx.newPage(); const act = mobile ? "tap" : "click";
-  const errors = []; p.on("pageerror", (e) => errors.push("pageerror: " + e.message.slice(0, 120))); p.on("console", (m) => { if (m.type() === "error" && !/narrative|429/.test(m.text())) errors.push("console: " + m.text().slice(0, 120)); });
+  const errors = []; p.on("pageerror", (e) => errors.push("pageerror: " + e.message.slice(0, 120))); p.on("console", (m) => { if (m.type() !== "error") return; const at = m.location?.()?.url || ""; if (/narrative|429|favicon/.test(m.text()) || /\/api\/(health|events|narrative)/.test(at)) return; errors.push(`console: ${m.text().slice(0, 100)}${at ? ` @ ${at.replace(BASE, "").slice(0, 60)}` : ""}`); });
   // /api/narrative is the optional AI recap with a written fallback; a 429 there is the budget guard, not a broken page
   const failed = []; p.on("response", (r) => { if (r.status() >= 400 && !/\/api\/(health|events|narrative)/.test(r.url())) failed.push(`${r.status()} ${r.url().replace(BASE, "")}`); });
   const decisions = { start: 0, decide: 0, coach: 0, sim: 0 }; p.on("request", (r) => { if (r.method() !== "POST" || !/\/api\/game/.test(r.url())) return; const body = r.postData() || ""; for (const k of Object.keys(decisions)) if (body.includes(`"chaosAction":"${k}"`)) decisions[k]++; if (/"chaosAction":"simulate"|simulationId/.test(body)) decisions.sim++; });
@@ -35,6 +35,7 @@ async function play(name, vp, mobile) {
   const cards = mobile ? p.locator('.ec-ta-team[data-team="gold"] .ec-pc--row') : p.locator('.ec-ta-team[data-team="gold"] .ec-pc');
   await cards.nth(4).waitFor({ timeout: 60_000 }); await p.waitForTimeout(700);
   score(`${name}: one tap = one roll (start requests)`, 4, decisions.start === 1, `start=${decisions.start}`);
+  await p.waitForFunction(() => [...document.querySelectorAll(".ec-pc-placeholder, .ec-pr-img, .ec-pc-portrait img")].filter((i) => i.getBoundingClientRect().width > 0).every((i) => i.complete), null, { timeout: 8000 }).catch(() => {});
   const art = await p.evaluate(() => { const imgs = [...document.querySelectorAll('.ec-pc-placeholder, .ec-pr-img, .ec-pc-portrait img')].filter((i) => i.getBoundingClientRect().width > 0); return { shown: imgs.length, loaded: imgs.filter((i) => i.complete && i.naturalWidth > 0).length }; });
   score(`${name}: every visible player carries portrait art (placeholder or approved)`, 5, art.shown >= 5 && art.loaded === art.shown, JSON.stringify(art));
   const sub = () => p.locator(".ec-ta-title-sub").innerText();

@@ -2559,8 +2559,11 @@ h2.ec-intel-heading, h3.ec-intel-heading { font-size: 10.5px; }
   .ec-pr-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
   .ec-pr-thumb[data-art="failed"] .ec-pr-img { display: none; }
   .ec-pr-main { min-width: 0; display: grid; gap: 2px; }
-  .ec-pc--row .ec-pc-name { height: auto; display: block; overflow: visible; text-transform: none; font-size: 14.5px; font-weight: 800; letter-spacing: 0; line-height: 1.2; overflow-wrap: anywhere; text-wrap: pretty; }
-  .ec-pc--row .ec-pc-kept { position: static; margin-left: 6px; font-size: 9px; vertical-align: middle; }
+  /* A name wraps at its spaces and hyphenates a long surname; it never splits a
+     word mid-letter ("Antetokounmp / o" on a 360px phone, 2026-09-10 audit). */
+  .ec-pc--row .ec-pc-name { height: auto; display: block; overflow: visible; text-transform: none; font-size: 14.5px; font-weight: 800; letter-spacing: 0; line-height: 1.2; overflow-wrap: break-word; hyphens: auto; -webkit-hyphens: auto; text-wrap: pretty; }
+  /* The KEPT badge is one piece: it moves to the next line whole, never "KE / PT". */
+  .ec-pc--row .ec-pc-kept { position: static; display: inline-block; white-space: nowrap; margin-left: 6px; font-size: 9px; vertical-align: middle; }
   .ec-pc--row .ec-pc-meta { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
   .ec-pc--row .ec-pc-decade { font-size: 12px; color: var(--ec-a-text-secondary); }
   .ec-pc--row .ec-pc-ovr { font-size: 17px; font-weight: 800; color: var(--pc-deep, var(--pc-accent)); }
@@ -2635,6 +2638,15 @@ h2.ec-intel-heading, h3.ec-intel-heading { font-size: 10.5px; }
   /* When a state opens, the stage scrolls its next decision under the pinned
      header: the new five, the three offers, the staff and era, the score. */
   .ec-ta-roster, .ec-ta-coach, .ec-ta-staff-row, .ec-ta-stage { scroll-margin-top: calc(var(--ec-header-h, 57px) + 8px); }
+}
+/* ── Small phones (≤ 380px): the name column gets the room the controls can spare ── */
+@media (max-width: 380px) {
+  .ec-pc.ec-pc--row { gap: 8px; padding: 6px 8px; grid-template-columns: 32px 44px minmax(0, 1fr) auto; }
+  .ec-pr-slot { width: 32px; }
+  .ec-pc--row .ec-pc-action, .ec-pc--row .ec-pc-static { min-width: 76px; padding: 0 10px; font-size: 11.5px; letter-spacing: 1px; }
+  .ec-pc--row .ec-pc-name { font-size: 14px; }
+  .ec-coach-card.ec-coach-card--row { gap: 0 8px; padding: 6px 8px; }
+  .ec-coach-card--row .ec-coach-action, .ec-coach-card--row .ec-coach-static { min-width: 76px; padding: 0 10px; font-size: 11.5px; letter-spacing: 1px; }
 }
 
 /* ── Phone stage: clean cream, no atmosphere layers ───────────────────────────
