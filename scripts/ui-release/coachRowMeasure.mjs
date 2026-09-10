@@ -31,7 +31,7 @@ for (const [name, vp, mobile] of [["phone-390", { width: 390, height: 844 }, tru
     ok(`${name}: the three offers are rows`, rowVariant === 3 && coach.length === 3, `rows=${rowVariant}`);
     // A player row grows with a two-line name; the base geometry is its shortest
     // row (56px minimum), and every coach row must sit within 14px of that.
-    const baseRow = Math.min(...player.map((r) => r.h));
+    const baseRow = Math.min(58, ...player.map((r) => r.h)); // 56px + borders is the design minimum; every name wrapping makes all five 80px
     ok(`${name}: a coach row is the size of a player row (within 14px of the base row)`, coach.every((r) => Math.abs(r.h - baseRow) <= 14), `player rows ${player.map((r) => r.h).join("/")}px · coach ${coach.map((r) => r.h).join("/")}px`);
     ok(`${name}: every coach control is a 44px target`, actions.every((r) => r.h >= 44 && r.w >= 44) && toggles.every((r) => r.h >= 44 && r.w >= 44), `actions ${actions.map((r) => `${r.w}×${r.h}`).join(" ")} · toggles ${toggles.map((r) => `${r.w}×${r.h}`).join(" ")}`);
     ok(`${name}: no horizontal overflow`, overflow <= 0, `${overflow}px`);

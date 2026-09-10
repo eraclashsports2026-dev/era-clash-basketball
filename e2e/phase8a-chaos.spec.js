@@ -301,9 +301,12 @@ test("mobile keeps both boards readable with no page-level horizontal overflow",
       await page.getByRole("tab", { name: /TEAM BLUE/ }).click();
       await expect(page.locator('.ec-ta-team[data-team="blue"] .ec-pc').first()).toBeVisible();
     } else {
-      await expect(page.getByText("TEAM GOLD", { exact: true }).first()).toBeVisible();
-      await expect(page.getByText("TEAM BLUE", { exact: true }).first()).toBeVisible();
-      await expect(page.getByText("LEGEND RIVAL", { exact: true }).first()).toBeVisible();
+      // 768–1179: the fives stack and each row carries its own caption (the stage head's labels are hidden there)
+      await expect(page.getByText("TEAM GOLD", { exact: true }).locator("visible=true").first()).toBeVisible();
+      await expect(page.getByText("TEAM BLUE", { exact: true }).locator("visible=true").first()).toBeVisible();
+      await expect(page.getByText("LEGEND RIVAL", { exact: true }).locator("visible=true").first()).toBeVisible();
+      const gold = await page.locator('.ec-ta-team-caption[data-team="gold"]').boundingBox(), blueRow = await page.locator('.ec-ta-team[data-team="blue"] .ec-pc').first().boundingBox(), blue = await page.locator('.ec-ta-team-caption[data-team="blue"]').boundingBox();
+      expect(gold.y).toBeLessThan(blueRow.y); expect(blue.y).toBeLessThan(blueRow.y); expect(blue.y).toBeGreaterThan(gold.y);
     }
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1);
     expect(overflow, `page overflows horizontally at ${w}x${h}`).toBe(false);

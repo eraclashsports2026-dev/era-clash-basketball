@@ -65,6 +65,7 @@ const routeAudit = async (ctx, name, mobile) => {
     check(`${name} ${route}: renders (HTTP ${resp?.status() ?? "none"}), not blank, no page error`, 3, resp && resp.status() < 500 && !blank && bag.pageErrors.length === 0, [bag.pageErrors[0], blank ? "blank" : ""].filter(Boolean).join(" · "));
     if (route === "/this-route-does-not-exist") check(`${name} unknown route: says so and offers a way home (in-app notice, or the branded 404 page)`, 2, notFound && /home|play|back|lobby/i.test(f.text) && (!resp || [200, 404].includes(resp.status())), `${resp?.status()} ${f.text.replace(/\s+/g, " ").slice(0, 100)}`);
     if (route === "/player/00000000000000000000") check(`${name} unknown profile slug: says the profile is not available (or could not be loaded), no page error`, 2, /not available|could not be loaded|not found|private|unavailable/i.test(f.text) && bag.pageErrors.length === 0, f.text.replace(/\s+/g, " ").slice(0, 120));
+    if (route === "/this-route-does-not-exist") { bag.failed = bag.failed.filter((x) => !/^404 GET \/this-route-does-not-exist/.test(x)); bag.consoleErrors = bag.consoleErrors.filter((x) => !/404[^@]*@ \/this-route-does-not-exist/.test(x)); }
     check(`${name} ${route}: no console errors, no failed requests`, 2, bag.consoleErrors.length === 0 && bag.failed.length === 0, [...bag.consoleErrors, ...bag.failed].slice(0, 3).join(" · "));
     check(`${name} ${route}: no horizontal overflow`, 3, f.overflow <= 0, `${f.overflow}px`);
     check(`${name} ${route}: every visible image loads; images have alt or are decorative`, 2, f.broken.length === 0 && f.noAlt === 0, `broken ${f.broken.length} noAlt ${f.noAlt} ${f.broken.slice(0, 2).join(" ")}`);
@@ -81,6 +82,26 @@ const routeAudit = async (ctx, name, mobile) => {
 };
 const box = (p, sel) => p.evaluate((s) => { const e = document.querySelector(s); if (!e) return null; const r = e.getBoundingClientRect(); return { top: Math.round(r.top), bottom: Math.round(r.bottom), h: Math.round(r.height), w: Math.round(r.width) }; }, sel);
 const headerBottom = (p) => p.evaluate(() => Math.round(document.querySelector("header")?.getBoundingClientRect().bottom || 0));
+// Does the element PAINT? A control can exist, be enabled and even be tappable
+// while an opaque layer draws over it (the phone's cream atmosphere did this to
+// the in-flow action bar). Sample the screenshot inside the element and compare
+// it with the stage background beside it.
+const paints = async (p, sel) => {
+  const el = p.locator(sel).first(); if (!(await el.count())) return null;
+  await el.scrollIntoViewIfNeeded().catch(() => {}); await sleep(250);
+  const r = await el.boundingBox(); if (!r || r.width < 8 || r.height < 8) return null;
+  const png = (await p.screenshot()).toString("base64"); const dpr = await p.evaluate(() => devicePixelRatio || 1);
+  return p.evaluate(async ({ png, r, dpr }) => {
+    const img = new Image(); img.src = `data:image/png;base64,${png}`; await img.decode();
+    const cv = document.createElement("canvas"); cv.width = img.width; cv.height = img.height; const g = cv.getContext("2d"); g.drawImage(img, 0, 0);
+    const avg = (x, y, w, h) => { const d = g.getImageData(Math.round(x * dpr), Math.round(y * dpr), Math.max(1, Math.round(w * dpr)), Math.max(1, Math.round(h * dpr))).data; let a = [0, 0, 0], n = 0; for (let i = 0; i < d.length; i += 4) { a[0] += d[i]; a[1] += d[i + 1]; a[2] += d[i + 2]; n++; } return a.map((v) => Math.round(v / n)); };
+    const inside = avg(r.x + r.width * 0.1, r.y + r.height * 0.25, r.width * 0.8, r.height * 0.5);
+    const stage = document.querySelector(".ec-ta-stage")?.getBoundingClientRect(); const bx = stage ? Math.max(0, stage.left + 2) : 0;
+    const beside = avg(bx, r.y, 6, r.height);
+    const dist = Math.hypot(inside[0] - beside[0], inside[1] - beside[1], inside[2] - beside[2]);
+    return { inside, beside, dist, paints: dist > 12 };
+  }, { png, r, dpr });
+};
 const ctaCovers = (p) => p.evaluate(() => { const w = document.querySelector(".ec-ta-cta-wrap"); if (!w) return null; const r = w.getBoundingClientRect(); return [...document.querySelectorAll(".ec-pc, .ec-coach-card, .ec-era-reveal, .ec-ta-staff")].filter((e) => { const b = e.getBoundingClientRect(); if (!(b.width > 0 && b.height > 0)) return false; const ix = Math.max(0, Math.min(r.right, b.right) - Math.max(r.left, b.left)), iy = Math.max(0, Math.min(r.bottom, b.bottom) - Math.max(r.top, b.top)); return ix * iy > 0.1 * b.width * b.height; }).length; });
 const journey = async (ctx, name, mobile, { full = true, phone = mobile } = {}) => {
   const p = await ctx.newPage(); const bag = fresh(); wire(p, bag); const act = mobile ? "tap" : "click";
@@ -94,6 +115,7 @@ const journey = async (ctx, name, mobile, { full = true, phone = mobile } = {}) 
   const rollMs = Date.now() - t0;
   if (phone) { const hb = await headerBottom(p), ro = await box(p, ".ec-ta-roster"); check(`${name}: after Roll 1 the five sit under the pinned header`, 3, ro && ro.top >= hb - 2 && ro.top <= hb + 120, `roster top ${ro?.top} header ${hb}`); }
   check(`${name}: the primary action covers no row (Roll 1)`, 4, (await ctaCovers(p)) === 0, `${await ctaCovers(p)} covered`);
+  const paintRoll = await paints(p, ".ec-ta-cta"); check(`${name}: the primary action actually paints on screen (Roll 1)`, 4, paintRoll?.paints === true, JSON.stringify(paintRoll));
   const roster = await p.evaluate(() => { const side = (t) => [...document.querySelectorAll(`.ec-ta-team[data-team="${t}"] .ec-pc`)].map((c) => ({ name: c.querySelector(".ec-pc-name")?.textContent.trim().replace(/KEPT$/, "").trim(), slot: c.dataset.slot || c.querySelector(".ec-pc-slot")?.textContent.trim(), ovr: parseInt(c.querySelector(".ec-pc-ovr")?.textContent, 10) })); return { gold: side("gold"), blue: side("blue") }; });
   const slots = (r) => r.map((x) => x.slot).join(","), names = (r) => r.map((x) => x.name);
   check(`${name}: each five fills PG, SG, SF, PF, C with a numeric rating`, 3, slots(roster.gold) === "PG,SG,SF,PF,C" && roster.gold.every((x) => x.ovr >= 30 && x.ovr <= 99) && (roster.blue.length === 0 || (slots(roster.blue) === "PG,SG,SF,PF,C" && roster.blue.every((x) => x.ovr >= 30 && x.ovr <= 99))), `${slots(roster.gold)} · ${roster.gold.map((x) => x.ovr).join("/")}`);
@@ -114,6 +136,8 @@ const journey = async (ctx, name, mobile, { full = true, phone = mobile } = {}) 
   await p.getByRole("button", { name: /FINAL ROLL/ })[act](); await stage(p, "COACH_SELECT"); await p.locator(".ec-coach-action:not([disabled])").nth(2).waitFor({ timeout: 60_000 }); await sleep(900);
   if (phone) { const hb = await headerBottom(p), co = await box(p, ".ec-ta-coach"); check(`${name}: after the final roll the coach offers sit under the pinned header`, 4, co && co.top >= hb - 2 && co.top <= hb + 120, `coach top ${co?.top} header ${hb}`); const rows = await p.evaluate(() => [...document.querySelectorAll(".ec-coach-card")].map((e) => Math.round(e.getBoundingClientRect().height))); check(`${name}: coach offers are compact rows (≤ 72px)`, 3, rows.length === 3 && rows.every((h) => h <= 72), rows.join("/")); }
   check(`${name}: the primary action covers no offer (Coach Chaos)`, 4, (await ctaCovers(p)) === 0, `${await ctaCovers(p)} covered`);
+  const paintCoach = await paints(p, ".ec-ta-cta"); check(`${name}: CONTINUE WITH COACH paints on screen while disabled`, 4, paintCoach?.paints === true, JSON.stringify(paintCoach));
+  const paintReset = await paints(p, ".ec-ta-stage-actions button"); check(`${name}: RESET paints on screen`, 2, paintReset === null || paintReset.paints === true, JSON.stringify(paintReset));
   check(`${name}: three offers with distinct coaches and distinct roles`, 3, await p.evaluate(() => { const c = [...document.querySelectorAll(".ec-coach-card")]; const names = c.map((e) => e.querySelector(".ec-coach-name")?.textContent.trim()), roles = c.map((e) => e.dataset.role); return c.length === 3 && new Set(names).size === 3 && new Set(roles).size === 3; }));
   const ctaBefore = await p.getByRole("button", { name: /CONTINUE WITH COACH/ }).isEnabled();
   await p.screenshot({ path: `${SHOTS}/${name}-coach.png` });
@@ -126,6 +150,7 @@ const journey = async (ctx, name, mobile, { full = true, phone = mobile } = {}) 
   check(`${name}: Clash Ready reveals the era with three rule cards, above RUN CLASH`, 5, /^\d{4}s$/.test(era) && (await p.locator(".ec-era-reveal-card").count()) === 3 && (await p.evaluate(() => { const e = document.querySelector(".ec-era-reveal")?.getBoundingClientRect(), c = document.querySelector(".ec-ta-cta")?.getBoundingClientRect(); return e && c && e.bottom <= c.top + 1; })), era);
   if (phone) { const hb = await headerBottom(p), st = await box(p, ".ec-ta-staff-row"); check(`${name}: at Clash Ready the staff and era sit under the pinned header`, 4, st && st.top >= hb - 2 && st.top <= hb + 120, `staff top ${st?.top} header ${hb}`); }
   check(`${name}: the primary action covers nothing at Clash Ready`, 4, (await ctaCovers(p)) === 0, `${await ctaCovers(p)} covered`);
+  const paintRun = await paints(p, ".ec-ta-cta"); check(`${name}: RUN CLASH paints on screen`, 4, paintRun?.paints === true, JSON.stringify(paintRun));
   const chip = await p.locator(".ec-ta-era-chip").first().innerText().catch(() => ""); check(`${name}: the era chip and the era panel agree`, 2, !chip || chip.includes(era), `${chip} vs ${era}`);
   const staff = await p.evaluate(() => [...document.querySelectorAll(".ec-ta-staff-v")].map((e) => e.textContent.trim()));
   check(`${name}: both benches are staffed by different coaches`, 3, staff.length === 2 && staff[0] && staff[1] && staff[0] !== staff[1], staff.join(" vs "));
@@ -168,7 +193,8 @@ const extras = async (ctx, name, mobile) => {
   for (const dest of ["Daily", "Challenges", "Leaderboard", "My EraClash"]) {
     await p.goto(`${BASE}/play`, { waitUntil: "networkidle" });
     if (mobile) { await p.getByRole("button", { name: "Menu" })[act](); await sleep(300); }
-    const item = (mobile ? p.locator('[role="dialog"], .ec-menu-sheet, nav') : p.locator("header")).getByRole("button", { name: new RegExp(`^${dest}`) }).or((mobile ? p.locator('[role="dialog"], .ec-menu-sheet, nav') : p.locator("header")).getByRole("link", { name: new RegExp(`^${dest}`) }));
+    const scope = mobile ? p : p.locator("header");
+    const item = scope.getByRole("button", { name: new RegExp(mobile ? dest : `^${dest}`) }).or(scope.getByRole("link", { name: new RegExp(mobile ? dest : `^${dest}`) })).or(scope.getByRole("menuitem", { name: new RegExp(dest) }));
     if (!(await item.count())) { check(`${name}: header destination ${dest} exists`, 2, false, "no control found"); continue; }
     await item.first()[act](); await sleep(700);
     const f = await pageFacts(p, mobile);
@@ -197,6 +223,9 @@ const ctx0 = await b.newContext(); await session(ctx0);
 {
   const r = await ctx0.request.get(`${BASE}/`); const html = await r.text();
   check("document: apple-touch-icon for the phone home screen", 1, /rel="apple-touch-icon"/.test(html));
+  const og = (html.match(/property="og:image"[^>]*content="([^"]+)"/) || html.match(/content="([^"]+)"[^>]*property="og:image"/) || [])[1];
+  if (og) { const ogUrl = /^https?:/.test(og) ? og : `${BASE}${og.startsWith("/") ? "" : "/"}${og}`; const o = await ctx0.request.get(ogUrl).catch(() => null); check("document: the og:image the share cards use actually serves", 2, !!o && o.status() === 200 && /image/.test(o.headers()["content-type"] || ""), `${o?.status()} ${ogUrl.replace(BASE, "")}`); }
+  for (const icon of [...html.matchAll(/rel="(?:icon|apple-touch-icon)"[^>]*href="([^"]+)"/g)].map((m) => m[1])) { const i = await ctx0.request.get(`${BASE}${icon.startsWith("/") ? "" : "/"}${icon}`).catch(() => null); check(`document: icon ${icon} serves`, 1, !!i && i.status() === 200, `${i?.status()}`); }
   const cc = r.headers()["cache-control"] || ""; check("document: index.html is revalidated (no long max-age / immutable), so a new deploy reaches phones", 2, !/immutable/.test(cc) && !/max-age=(?:[1-9]\d{3,})/.test(cc), cc || "(no cache-control)");
   check("document: title, description, viewport, theme-color, og tags, canonical or manifest", 2, /<title>[^<]{4,}/.test(html) && /name="description"/.test(html) && /name="viewport"/.test(html) && /property="og:title"|name="twitter:title"/.test(html) && /rel="manifest"|rel="canonical"/.test(html), `og:${/property="og:title"/.test(html)} manifest:${/rel="manifest"/.test(html)} theme:${/name="theme-color"/.test(html)}`);
   for (const asset of ["/manifest.webmanifest", "/manifest.json", "/sw.js", "/robots.txt", "/favicon.ico", "/favicon.svg"]) { const a = await ctx0.request.get(`${BASE}${asset}`).catch(() => null); if (a && a.status() === 200) check(`asset ${asset} serves`, 1, true, `${a.headers()["content-type"] || ""}`); }
@@ -215,6 +244,18 @@ const ctx0 = await b.newContext(); await session(ctx0);
   }
 }
 await ctx0.close();
+// ── The site keeps its own palette under the OS dark mode and reduced motion ──
+{
+  const dark = await b.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, colorScheme: "dark", reducedMotion: "reduce" }); await session(dark);
+  const p = await dark.newPage(); const bag = fresh(); wire(p, bag);
+  await p.addInitScript(() => { try { localStorage.setItem("ec_seen", "1"); } catch {} });
+  await p.goto(`${BASE}/play`, { waitUntil: "networkidle" });
+  const f = await p.evaluate(() => { const lum = (c) => { const m = String(c).match(/[\d.]+/g); if (!m) return null; const [r, g, b] = m.slice(0, 3).map((v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; }); return 0.2126 * r + 0.7152 * g + 0.0722 * b; }; const body = lum(getComputedStyle(document.body).backgroundColor), court = lum(getComputedStyle(document.querySelector(".ec-lobby-court, main, .ec-arena-court") || document.body).backgroundColor); const text = lum(getComputedStyle(document.querySelector(".ec-mode-card h2, .ec-mode-card h3, main h1, main h2") || document.body).color); return { body, court, text, inputs: [...document.querySelectorAll("input, select, textarea")].map((e) => getComputedStyle(e).colorScheme) }; });
+  check("OS dark mode does not invert the product: the court stays light and headings stay dark", 2, (f.court ?? f.body ?? 1) > 0.5 && f.text !== null && f.text < 0.5, JSON.stringify(f));
+  await p.screenshot({ path: `${SHOTS}/phone-dark-mode-lobby.png` });
+  check("OS dark mode + reduced motion: no console errors or failed requests", 1, bag.pageErrors.length + bag.consoleErrors.length + bag.failed.length === 0, [...bag.pageErrors, ...bag.consoleErrors, ...bag.failed].slice(0, 2).join(" · "));
+  await dark.close();
+}
 // ── Routes + journeys on both form factors ───────────────────────────────────
 for (const [name, vp, mobile] of [["web", { width: 1440, height: 900 }, false], ["phone", { width: 390, height: 844 }, true]]) {
   const ctx = await b.newContext({ viewport: vp, isMobile: mobile, hasTouch: mobile, deviceScaleFactor: mobile ? 2 : 1 }); await session(ctx);

@@ -32,7 +32,7 @@ export default function AccountGate({ title, blurb, onCreated, onBack, onUseAcco
           fontWeight: 800, fontSize: 13, border: `1px solid ${T.border}`, background: "transparent", color: T.textDim,
         }}>{backLabel}</button>
         <div style={{ fontSize: 11.5, color: T.textMuted, marginTop: 10, lineHeight: 1.5 }}>
-          Google or an email code. No password, no payment. Chaos Clash stays open without an account.
+          An email code — no password, no payment. Chaos Clash stays open without an account.
         </div>
       </div>
     );

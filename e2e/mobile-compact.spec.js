@@ -151,7 +151,9 @@ for (const [w, h] of [[430, 932], [390, 844]]) {
         const box = (sel) => [...document.querySelectorAll(sel)].map((e) => { const r = e.getBoundingClientRect(); return [Math.round(r.width), Math.round(r.height)]; });
         return { player: h('.ec-ta-team[data-team="gold"] .ec-pc'), coach: h(".ec-coach-card"), controls: box(".ec-coach-action, .ec-coach-detail-toggle") };
       });
-      const baseRow = Math.min(...geometry.player); // the shortest player row is the base geometry; names may add a line
+      // The row's base geometry is 56px + borders; a roster whose every name wraps makes all five rows 80px,
+      // so compare with the shortest row OR the design minimum, whichever is smaller.
+      const baseRow = Math.min(58, ...geometry.player);
       for (const h of geometry.coach) expect(Math.abs(h - baseRow)).toBeLessThanOrEqual(14);
       for (const [w, h] of geometry.controls) { expect(w).toBeGreaterThanOrEqual(44); expect(h).toBeGreaterThanOrEqual(44); }
       await page.locator(".ec-coach-action:not([disabled])").first().tap();

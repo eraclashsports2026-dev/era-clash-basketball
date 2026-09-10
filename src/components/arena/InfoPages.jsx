@@ -64,7 +64,7 @@ export function MembershipPage({ query, onBack, onCreateAccount }) {
         </Card>
       )}
       <Card style={{ marginBottom: 16 }}>
-        <P><strong style={{ color: "var(--ec-a-text, #f5f7fb)" }}>Membership plans are being prepared.</strong> The protected preview does not process payments, and no plan can be purchased here yet.</P>
+        <P><strong style={{ color: "var(--ec-a-text, #f5f7fb)" }}>Membership plans are being prepared.</strong> EraClash does not process payments yet, and no plan can be purchased here.</P>
         <P>You are currently on: <strong style={{ color: "var(--ec-a-gold, #f2b51d)" }}>{tier}</strong>.</P>
         {tier === "GUEST" && (
           <button onClick={onCreateAccount} style={{
