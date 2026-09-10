@@ -179,6 +179,9 @@ export default function AccountDialog({ open, entryPoint = "header", returnTo = 
         <p style={{ fontSize: 11.5, color: T.textMuted, marginTop: 12, lineHeight: 1.5 }}>
           Your email is only used to sign you in. It is never shown to other players.
         </p>
+        <p className="ec-auth-legal" style={{ fontSize: 11.5, color: T.textMuted, marginTop: 6, lineHeight: 1.5 }}>
+          By continuing you agree to the <a href="/terms" style={{ color: T.text, textDecoration: "underline" }}>Terms of Use</a> and acknowledge the <a href="/privacy" style={{ color: T.text, textDecoration: "underline" }}>Privacy Notice</a>.
+        </p>
       </div>
     </div>
   );
