@@ -1,0 +1,98 @@
+{
+  "artifact": "summary",
+  "phase": "Shareable Clash Cards + Rivalries V1",
+  "generatedAt": "2026-09-16T21:30:00Z",
+  "baseline": {
+    "main": "5730519",
+    "branch": "feature/clash-cards-rivalries-v1",
+    "pr": 64,
+    "head": "b9eb9b5",
+    "productionServing": "5730519 (unchanged during this build)",
+    "wave1": "4dc59e7",
+    "wave2": "ef0caa5",
+    "candidate4": {
+      "corePrefix": "55bb26a2",
+      "calibration": "1.4.0"
+    }
+  },
+  "deployedPreview": {
+    "url": "https://era-clash-basketball-l00l3u8nk-era-clash.vercel.app",
+    "commit": "b9eb9b5",
+    "accountFeaturesReady": false,
+    "why": "Preview-scoped Vercel variables still name the Production Supabase project; the 2026-09-10 guards keep it inert (503 CLOUD_ACCOUNTS_DISABLED). Guest result cards work; invitation cards and Rivalries cannot be exercised on the deployed preview until the owner corrects the variables."
+  },
+  "database": {
+    "previewProject": "lfybiphmqkiecfrqsfzt",
+    "migrationApplied": "0008_rivalries_v1 (restored the paused project first)",
+    "productionMigration": "NOT applied"
+  },
+  "gates": {
+    "card-authority-qa": {
+      "passed": 12,
+      "total": 12,
+      "allPassed": true
+    },
+    "rivalry-lifecycle-qa": {
+      "passed": 47,
+      "total": 47,
+      "allPassed": true
+    },
+    "rivalry-rls-live": {
+      "record": true
+    },
+    "rivalry-rls-qa": {
+      "passed": 10,
+      "total": 10,
+      "allPassed": true
+    },
+    "social-contract": {
+      "passed": 12,
+      "total": 12,
+      "allPassed": true
+    },
+    "social-deployed-qa": {
+      "passed": 11,
+      "total": 11,
+      "allPassed": true
+    },
+    "social-fixture-qa": {
+      "passed": 23,
+      "total": 23,
+      "allPassed": true
+    },
+    "social-harness-qa": {
+      "passed": 33,
+      "total": 33,
+      "allPassed": true
+    }
+  },
+  "vitest": {
+    "files": 86,
+    "tests": 2709,
+    "failed": 0,
+    "newSuite": "tests/social-v1.test.js (37)"
+  },
+  "reruns": {
+    "lifecycle": "3 runs: gate-side timeline bugs fixed (fake cloud has no clock; future timestamps); no product fix",
+    "fixture": "2 runs: the public-profile link was 24px \u2014 moved into the 44px action row (product fix)",
+    "harness": "4 runs: harness env not applied (zsh word-splitting), run id read before the roster was dealt (gate fix); no product fix",
+    "deployed": "2 runs: guest result card needed no account provider (product fix \u2014 card-result skips the accounts gate)"
+  },
+  "preservation": {
+    "protectedContractDrift": 0,
+    "apiFunctionCount": "12 + middleware (unchanged)",
+    "challengeContract": "1.0.0 unchanged",
+    "comparisonContract": "1.0.0 unchanged",
+    "ratingContract": "1.0.0 unchanged",
+    "progression": "unchanged",
+    "gamePathsMentioningRivalry": 0,
+    "careerTabs": "unchanged (Rivalries is a subsection of Challenges)",
+    "mobileLayout": "unchanged header/scroll model; composer and rows measured at 360/375/390/430"
+  },
+  "blocked": [
+    "deployed two-account certification (Preview Vercel variables)",
+    "physical iPhone Safari (emulated only)",
+    "true parallel Postgres race (design: pair advisory lock + unique constraint; API-level concurrency proven on the fake cloud)"
+  ],
+  "ownerDecision": "APPROVE CLASH CARDS + RIVALRIES V1 \u2014 RELEASE TO PRODUCTION  or  REVISE: [precise changes]"
+}
