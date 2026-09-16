@@ -1,0 +1,189 @@
+{
+  "artifact": "social-contract",
+  "phase": "Shareable Clash Cards + Rivalries V1",
+  "generatedAt": "2026-09-16T21:02:04.325Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "rivalry contract 1.0.0, separate from the rating contract",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "bounded requests: 7-day expiry, 10/day, 5 outstanding, 7-day decline cooldown, 1-day close cooldown",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "states idle | pending | active; recipient accepts/declines/blocks, sender cancels, member ends",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A's win equals B's loss; a tie is one tie each",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "streak: consecutive wins from the newest; a tie ends it",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "record line never says a team beat a team",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "cards: 1080×1350, two kinds, neutral attribution, GUEST CLASH label",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "result allowlist: score/outcome/margin/era/guest/displayName — no five, coach, MVP, seed, rating, rank, XP, id",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "invitation allowlist ⊆ public invitation contract + url",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "nine closed events, allowlisted server-side and mirrored client-side; metadata carries no identity",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "no new serverless function (12 + middleware)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "one feature flag, preview-on / production-off, read through the mode registry",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": true,
+  "rivalry": {
+    "version": "1.0.0",
+    "requestTtlDays": 7,
+    "requestsPerDay": 10,
+    "maxOutgoing": 5,
+    "declineCooldownDays": 7,
+    "closeCooldownDays": 1,
+    "states": {
+      "IDLE": "idle",
+      "PENDING": "pending",
+      "ACTIVE": "active"
+    },
+    "closeReasons": [
+      "declined",
+      "canceled",
+      "expired",
+      "ended",
+      "blocked",
+      "account_deleted"
+    ],
+    "eligibility": {
+      "OK": "ok",
+      "NOT_COMPLETED": "not_completed",
+      "GUEST_PARTICIPANT": "guest_participant",
+      "SAME_ACCOUNT": "same_account",
+      "NOT_RIVALS": "not_rivals",
+      "NOT_IN_PERIOD": "not_in_period",
+      "ALREADY_RECORDED": "already_recorded"
+    },
+    "opponentFields": [
+      "name",
+      "deleted",
+      "publicSlug"
+    ],
+    "forbidden": [
+      "email",
+      "user_id",
+      "userId",
+      "opponentUserId",
+      "opponent_user_id",
+      "user_low",
+      "user_high",
+      "auth",
+      "token",
+      "session",
+      "current_rating",
+      "rating",
+      "rank",
+      "total_xp",
+      "xp",
+      "seed",
+      "seedId",
+      "chaos_manifest_id",
+      "device_session_hash"
+    ]
+  },
+  "cards": {
+    "version": "1.0.0",
+    "size": [
+      1080,
+      1350
+    ],
+    "resultFields": [
+      "kind",
+      "cardVersion",
+      "score",
+      "outcome",
+      "margin",
+      "era",
+      "eraCustom",
+      "guest",
+      "displayName",
+      "completedAt"
+    ],
+    "invitationFields": [
+      "kind",
+      "cardVersion",
+      "code",
+      "creatorName",
+      "creatorScore",
+      "creatorOutcome",
+      "era",
+      "eraCustom",
+      "expiresAt",
+      "url"
+    ],
+    "forbidden": [
+      "roster",
+      "creatorRoster",
+      "coach",
+      "creatorCoach",
+      "mvp",
+      "creatorMvp",
+      "legend",
+      "opponent",
+      "seed",
+      "seedId",
+      "rolls",
+      "holds",
+      "chaosManifestId",
+      "manifest",
+      "resultId",
+      "result_id",
+      "userId",
+      "user_id",
+      "email",
+      "rating",
+      "rank",
+      "xp",
+      "totalXp",
+      "level",
+      "achievements",
+      "token",
+      "session",
+      "cookie",
+      "accessToken",
+      "chaosRunId",
+      "attemptId"
+    ]
+  }
+}

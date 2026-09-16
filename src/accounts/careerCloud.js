@@ -11,15 +11,26 @@ import { withProvider, provider } from "./provider.js";
 import { buildAccountExport, historyCsv, exportFilename } from "./careerV2.js";
 
 /** Gather everything this account owns and shape it into the export document. */
-export const assembleAccountExport = async () => {
-  const [profile, prefs, clashes, rosters] = await Promise.all([
+export const assembleAccountExport = async ({ accessToken = null } = {}) => {
+  const [profile, prefs, clashes, rosters, rivalries] = await Promise.all([
     withProvider((p) => p.getProfile(), null),
     withProvider((p) => p.getPreferences(), {}),
     withProvider((p) => p.listSavedClashes({ limit: 1000 }), []),
     withProvider((p) => p.listRosters(), []),
+    // Rivalries V1: the account's own relationship and consent records, as the
+    // server projects them for a member (opponent = permitted display name only).
+    accessToken ? rivalriesForExport(accessToken) : Promise.resolve(null),
   ]);
-  const doc = buildAccountExport({ profile, prefs, clashes, rosters });
+  const doc = buildAccountExport({ profile, prefs, clashes, rosters, rivalries });
   return { doc, csv: historyCsv(clashes), filename: exportFilename() };
+};
+const rivalriesForExport = async (accessToken) => {
+  try {
+    const r = await fetch("/api/profile", { method: "POST", credentials: "same-origin", headers: { "content-type": "application/json", Authorization: `Bearer ${accessToken}` }, body: JSON.stringify({ action: "rivalry-list" }) });
+    if (!r.ok) return null;   // feature off, or unavailable: the export says so rather than failing
+    const j = await r.json();
+    return j?.status === "ok" ? j.rivalries : null;
+  } catch { return null; }
 };
 
 /**

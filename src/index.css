@@ -2680,3 +2680,33 @@ h2.ec-intel-heading, h3.ec-intel-heading { font-size: 10.5px; }
 .ec-notfound code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; word-break: break-all; }
 .ec-notfound-dismiss { min-height: 44px; min-width: 64px; padding: 0 16px; border-radius: 10px; border: 1px solid var(--ec-a-border-strong); background: transparent; color: var(--ec-a-text); font-weight: 800; letter-spacing: 1px; cursor: pointer; }
 .ec-notfound-dismiss:focus-visible { outline: 3px solid var(--ec-a-accent, #267CE8); outline-offset: 2px; }
+
+/* ── Clash Cards + Rivalries V1 ──────────────────────────────────────────────── */
+.ec-card-composer { margin: 12px auto 0; max-width: 520px; padding: 14px 16px 12px; border-radius: 14px; border: 1px solid var(--ec-a-border); background: var(--ec-a-panel); text-align: left; display: grid; gap: 10px; }
+.ec-card-title { margin: 4px 0 0; font-family: var(--ec-display); font-size: 18px; line-height: 1.2; letter-spacing: 0.4px; color: var(--ec-a-text); }
+.ec-card-kinds { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.ec-card-kind { min-height: 44px; border-radius: 10px; border: 1px solid var(--ec-a-border); background: transparent; color: var(--ec-a-text-secondary); font-size: 11px; font-weight: 900; letter-spacing: 1.2px; cursor: pointer; }
+.ec-card-kind[aria-selected="true"] { border-color: var(--ec-a-gold-line); background: var(--ec-a-gold-soft); color: var(--ec-a-gold); }
+.ec-card-kind:disabled { opacity: 0.5; cursor: default; }
+.ec-card-kind:focus-visible { outline: 2px solid var(--ec-a-gold); outline-offset: 2px; }
+.ec-card-help { margin: 0; font-size: 12.5px; line-height: 1.45; color: var(--ec-a-text-secondary); }
+.ec-card-preview-wrap { position: relative; display: grid; justify-items: center; }
+.ec-card-preview { display: block; width: min(100%, 320px); height: auto; aspect-ratio: 1080 / 1350; border-radius: 12px; border: 1px solid var(--ec-a-border); background: #F6F1E7; }
+.ec-card-loading { position: absolute; inset: 0; display: grid; place-items: center; font-size: 12.5px; color: var(--ec-a-text-secondary); }
+.ec-card-toggle { display: flex; gap: 10px; align-items: center; min-height: 44px; font-size: 13px; color: var(--ec-a-text); cursor: pointer; }
+.ec-card-toggle input { width: 20px; height: 20px; accent-color: var(--ec-a-gold); }
+.ec-card-fine { margin: 0; font-size: 11.5px; line-height: 1.45; color: var(--ec-a-text-muted); }
+.ec-card-composer .ec-chal-actions { margin-top: 0; }
+.ec-riv-sub { margin: 12px 0 6px; font-size: 10.5px; font-weight: 900; letter-spacing: 1.8px; color: var(--ec-a-text-secondary); }
+.ec-riv-record { display: grid; gap: 2px; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--ec-a-gold-line); background: var(--ec-a-gold-soft); }
+.ec-riv-record-line { font-family: var(--ec-display); font-size: 22px; letter-spacing: 1px; color: var(--ec-a-text); }
+.ec-riv-link { color: var(--ec-a-gold); }
+.ec-riv-link:focus-visible { outline: 2px solid var(--ec-a-gold); outline-offset: 2px; }
+.ec-riv-detail { display: grid; gap: 10px; padding-top: 8px; border-top: 1px solid var(--ec-a-border); }
+.ec-riv-period { display: grid; gap: 3px; }
+.ec-riv-event { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.ec-riv-pending .ec-chal-response, .ec-riv-event { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+@media (max-width: 767px) {
+  .ec-card-kinds { grid-template-columns: 1fr; }
+  .ec-card-composer .ec-chal-actions .ec-chal-btn, .ec-riv-row .ec-chal-row-actions .ec-chal-btn { flex: 1 1 140px; }
+}

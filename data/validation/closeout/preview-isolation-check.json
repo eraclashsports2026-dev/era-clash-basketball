@@ -1,0 +1,76 @@
+{
+  "artifact": "preview-isolation-check",
+  "origin": "https://era-clash-basketball-git-records-launch-closeout-era-clash.vercel.app",
+  "recordedAt": "2026-09-16T20:30:34.420Z",
+  "diagnostics": {
+    "environment": "preview",
+    "serverAndBrowserSameProject": true,
+    "previewPointedAtProduction": true,
+    "serverCredentialAccepted": false,
+    "probe": 401
+  },
+  "browserHosts": [],
+  "checks": [
+    {
+      "name": "this is a preview deployment",
+      "pass": true,
+      "fact": "preview"
+    },
+    {
+      "name": "server and browser name the same project",
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "name": "the preview is NOT pointed at production",
+      "pass": false,
+      "fact": ""
+    },
+    {
+      "name": "the provider accepts the preview server credential",
+      "pass": false,
+      "fact": "probe 401"
+    },
+    {
+      "name": "account features are ready on the preview",
+      "pass": false,
+      "fact": "{\"enabled\":true,\"ready\":false}"
+    },
+    {
+      "name": "the browser bundle names the PREVIEW project only",
+      "pass": false,
+      "fact": "[]"
+    },
+    {
+      "name": "the leaderboard answers 200 on the preview",
+      "pass": false,
+      "fact": "503 {\"error\":\"CLOUD_ACCOUNTS_DISABLED\",\"requestId\":\"4ea1c94b37d1\"}"
+    },
+    {
+      "name": "a public-profile lookup answers 200 (found:false) — no 502",
+      "pass": false,
+      "fact": "503"
+    },
+    {
+      "name": "anonymous protected reads are still refused",
+      "pass": false,
+      "fact": "503"
+    },
+    {
+      "name": "a forged token is refused",
+      "pass": false,
+      "fact": "503"
+    },
+    {
+      "name": "My EraClash renders without an error state",
+      "pass": true,
+      "fact": ""
+    },
+    {
+      "name": "the Leaderboard page loads its rows (or an honest empty state), not the failure card",
+      "pass": false,
+      "fact": "BASKETBALL Play ▾ Fantasy ▾ Daily Challenges Leaderboard My EraClash Create free account LEADERBOARD Challenge Rating Bu"
+    }
+  ],
+  "pass": false
+}

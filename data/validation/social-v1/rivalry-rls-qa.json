@@ -1,0 +1,158 @@
+{
+  "artifact": "rivalry-rls-qa",
+  "phase": "Shareable Clash Cards + Rivalries V1",
+  "generatedAt": "2026-09-16T21:00:46.014Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "rivalries: RLS on, anon/authenticated revoked",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "rivalry_periods: RLS on, anon/authenticated revoked",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "rivalry_blocks: RLS on, anon/authenticated revoked",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "rivalry_request_log: RLS on, anon/authenticated revoked",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "rivalry_events: RLS on, anon/authenticated revoked",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "members may select own pair, periods, events; blocks and the log have no policy and no grant; no client write",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "eight SECURITY DEFINER functions, execute revoked from public/anon/authenticated, fixed search_path",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the ledger is immutable; one event per attempt; the pair lock is taken before any write",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "deletion trigger on auth.users marks, closes and never rediscovers",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the live role-switch verification is recorded from the Preview database",
+      "pass": true,
+      "detail": "verified 2026-09-16T20:43:37Z"
+    }
+  ],
+  "passed": true,
+  "live": {
+    "artifact": "rivalry-rls-live",
+    "phase": "Shareable Clash Cards + Rivalries V1",
+    "verifiedAt": "2026-09-16T20:43:37Z",
+    "database": "Preview project lfybiphmqkiecfrqsfzt (us-west-2), Postgres 17.6 — restored from INACTIVE (paused) at 2026-09-16T20:38Z before the migration",
+    "migration": "0008_rivalries_v1 applied via the Supabase management API; schema_migrations now lists 0001…0008",
+    "method": "one transaction, rolled back at the end: synthetic auth.users rows A/B/C, a completed A-vs-B comparison, the functions called as the service role, then SET LOCAL ROLE authenticated with request.jwt.claims for A and for C",
+    "results": {
+      "pre-acceptance attempt": {
+        "recorded": false,
+        "reason": "not_rivals"
+      },
+      "C requests from a comparison C did not play": {
+        "status": "not_eligible"
+      },
+      "A requests B": {
+        "status": "requested"
+      },
+      "A retries": {
+        "status": "already_pending",
+        "expiryUnchanged": true
+      },
+      "B crosses (requests A while A's request is pending)": {
+        "status": "pending_incoming"
+      },
+      "A accepts own request": {
+        "status": "not_pending"
+      },
+      "C accepts": {
+        "status": "not_yours"
+      },
+      "B accepts": {
+        "status": "accepted",
+        "periodNo": 1
+      },
+      "the starting comparison (predates acceptance)": {
+        "recorded": false,
+        "reason": "not_in_period"
+      },
+      "request while active": {
+        "status": "already_active"
+      },
+      "new comparison started after acceptance (tie)": {
+        "recorded": true,
+        "lowOutcome": "tie",
+        "rated": false
+      },
+      "record the same attempt again": {
+        "recorded": false,
+        "reason": "already_recorded"
+      },
+      "reconcile": {
+        "seen": 0,
+        "recorded": 0,
+        "skipped": 0
+      },
+      "attempt started at exactly the period start": {
+        "recorded": true
+      },
+      "update rivalry_events": "RIVALRY_EVENT_IMMUTABLE",
+      "delete rivalry_events": "RIVALRY_EVENT_IMMUTABLE",
+      "record as A / as B (creator win)": {
+        "A": "0-1-0",
+        "B": "1-0-0",
+        "symmetric": true
+      },
+      "streak as B after one win": 1,
+      "list as C": [],
+      "detail as C": null,
+      "A ends": {
+        "status": "ended"
+      },
+      "B re-requests inside the 1-day close cooldown": {
+        "status": "cooldown"
+      },
+      "after B's auth.users row is deleted, list as A": {
+        "state": "idle",
+        "lastClosedReason": "account_deleted",
+        "opponent": {
+          "name": "Deleted account",
+          "deleted": true,
+          "publicSlug": null
+        },
+        "periodsRetained": 1
+      },
+      "RLS as authenticated A": {
+        "select rivalries": 1,
+        "select rivalry_events": 1,
+        "call rivalry_list(B)": "permission denied for function rivalry_list",
+        "select rivalry_blocks": "permission denied for table rivalry_blocks",
+        "insert rivalry_events": "permission denied for table rivalry_events"
+      },
+      "RLS as authenticated C": {
+        "select rivalries": 0,
+        "select rivalry_events": 0
+      }
+    },
+    "notTested": "true parallel execution (two sessions racing the same attempt) — the pair advisory lock and the unique constraint are the design; the fake-cloud harness concurrency gate exercises the API path; a live two-session race needs the deployed Preview, which is blocked on the Vercel Preview variables"
+  }
+}

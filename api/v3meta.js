@@ -35,7 +35,7 @@ export default async function handler(req, res) {
       coaches: COACHES.map(publicCoach),
       // Mode availability, so the client never lands on a Play screen whose
       // server feature is switched off.
-      modes: { chaosClash: !!flags().chaosClash },
+      modes: { chaosClash: !!flags().chaosClash, clashSocial: !!flags().clashSocial },
     });
   }
 

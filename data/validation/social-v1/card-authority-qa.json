@@ -1,0 +1,69 @@
+{
+  "artifact": "card-authority-qa",
+  "phase": "Shareable Clash Cards + Rivalries V1",
+  "generatedAt": "2026-09-16T21:00:46.120Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "a guest's own completed run yields a GUEST result payload with no name",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the payload carries only allowlisted fields",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "another device session cannot draw it; a missing run is not_found; an unsimulated run is not_simulated",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a signed-in owner's payload carries the safe display name (opt-in on the client) and guest:false",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the model is neutral by default; the name appears only when the owner opts in",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "forged client values cannot reach the card: the builder reads the stored record only",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the invitation payload is the allowlisted public view + the trusted link: five, coach and seed never pass even when present on the input",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a non-creator, an expired and a revoked Challenge cannot be drawn as an invitation",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the origin is the request's own host — a preview export names the preview host, production the production host",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "alt text and filename carry no name by default, no seed, no id; the code is on the invitation's face and link only",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "ties and negative margins draw honestly",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "long names are clipped to 24 characters and stripped of angle brackets",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": true
+}

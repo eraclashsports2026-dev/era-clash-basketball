@@ -309,6 +309,8 @@ export const listChallenges = async ({ userId, now = Date.now() }, deps = {}) =>
       responses: responses.filter((r) => r.challenge_id === c.id).map((r) => ({
         name: r.user_id ? r.display_snapshot : "Guest", status: r.status, outcome: r.outcome, score: r.gold_score == null ? null : { gold: r.gold_score, blue: r.blue_score },
         performance: r.performance_score, challengeOutcome: r.challenge_outcome, completedAt: r.completed_at, startedAt: r.created_at,
+        // Rivalries V1: the opaque attempt handle START A RIVALRY sends back; only an account-vs-account comparison qualifies
+        attemptId: r.id, account: !!r.user_id,
       })),
     })),
     accepted: accepted.map((a) => { const c = byId.get(a.challenge_id); return {
@@ -316,6 +318,7 @@ export const listChallenges = async ({ userId, now = Date.now() }, deps = {}) =>
       creatorScore: c ? { gold: c.creator_gold_score, blue: c.creator_blue_score } : null, creatorOutcome: c?.creator_outcome || null, era: c?.creator_era_id || null,
       yourScore: a.gold_score == null ? null : { gold: a.gold_score, blue: a.blue_score }, yourOutcome: a.outcome, yourPerformance: a.performance_score,
       challengeOutcome: a.challenge_outcome, startedAt: a.created_at, completedAt: a.completed_at, chaosRunId: a.status === ATTEMPT_STATUS.STARTED ? undefined : undefined,
+      attemptId: a.id, creatorAccount: !!c?.creator_user_id,
       original: c && a.status === ATTEMPT_STATUS.COMPLETED ? publicChallengeForRecipient(c) : null,
     }; }),
   };

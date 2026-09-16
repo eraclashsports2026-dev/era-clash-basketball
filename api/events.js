@@ -98,6 +98,12 @@ const ALLOWED = new Set([
   // display name, an account id, a public profile slug or a token.
   "public_profile_viewed", "profile_visibility_changed", "public_profile_previewed",
   "public_profile_shared", "featured_achievement_updated", "leaderboard_profile_opened",
+  // Clash Cards + Rivalries V1 (closed vocabulary; metadata may carry cardVersion,
+  // contractVersion, kind, method, withName, action, status, success, failureCode,
+  // count, authState — never a name, a code, an account id, a rivalry id, an
+  // attempt id, a payload, an image or a token)
+  "card_composer_opened", "card_exported", "card_share_invoked", "card_export_failed",
+  "rivalry_requested", "rivalry_responded", "rivalry_ended", "rivalries_viewed", "rivalry_challenge_again",
 ]);
 export const EVENTS_ALLOWLIST = ALLOWED;
 

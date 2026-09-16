@@ -1,0 +1,246 @@
+{
+  "artifact": "rivalry-lifecycle-qa",
+  "phase": "Shareable Clash Cards + Rivalries V1",
+  "generatedAt": "2026-09-16T21:02:21.546Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "a third account cannot request from a comparison it did not play",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a guest comparison cannot start a Rivalry (unavailable)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a self comparison cannot start a Rivalry",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a malformed or forged handle is refused without touching the database",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A requests B from the completed comparison: requested, 7-day expiry, opponent resolved server-side",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a retry does not duplicate and does not refresh the expiry",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "B's crossed request answers pending_incoming — no duplicate row, no silent mutual acceptance",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the sender cannot accept their own request; a third account cannot act at all",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "an unknown action is refused",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "B sees the incoming request with the opponent's CURRENT display name and no id",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "B explicitly accepts: active, period 1 begins now",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the comparison that started the relationship predates acceptance: NOT backfilled",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "reconcile enrols nothing that predates the period",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a creator win after acceptance is recorded once as the creator's Rivalry win",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the same attempt again: already_recorded, one event",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "J: 2–0–1 and B: 0–2–1 — A's wins equal B's losses, ties equal",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the streak: a tie is the newest event, so J's streak is 0 (a tie ends the run)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "events carry the code, both scores, rated flag and the era — never an id, an email or a rating",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "an unrated comparison counts and is displayed as unrated (no rating event exists for it)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the hook (completion) is idempotent through the run store path",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "six simultaneous recordings of two distinct attempts: exactly two events, the rest already_recorded",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "totals after concurrency: J 3–1–1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "in Postgres the same is decided by the pair advisory lock and the unique constraint",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "C reads no Rivalry data: empty list, detail not_yours for the real id",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a guessed id reads the same as a non-member's",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a private opponent shows no public slug; both stay private",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a public opponent's slug appears only while public",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a display-name change updates the current identity without touching records",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "an open Challenge from a rival since the period began is a pending Challenge for the other side",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "either member may end; the record is kept",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "an attempt STARTED before closure settles into the archived period (ending cannot erase an imminent loss)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "an attempt started after closure does not count",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a fresh request during the 1-day close cooldown is refused",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "reactivation needs fresh mutual consent and starts period 2; period 1 stays as labelled history",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the late attempt still does not count in period 2 (it started before period 2 began)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "J requests C; C declines; J's re-request is in the 7-day decline cooldown",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "accepting a declined request fails safely",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "after the cooldown J may ask again; J cancels; accepting a cancelled request fails safely",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "C blocks: idle, blocked; J's later request reads the generic 'unavailable'; C's own request is refused the same way",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "blocked state does not leak to the requester: no 'blocked' word in J's view",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "C sees BLOCKED BY ME and may unblock",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "an expired request cannot be accepted and reads as idle/expired",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "B's outstanding requests are capped at 5 (outgoing_limit) before the daily cap",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "B's new requests are capped at 10 in 24 hours (daily_limit)",
+      "pass": true,
+      "detail": "requested,requested,requested,requested,requested,daily_limit,daily_limit,daily_limit,daily_limit,daily_limit,daily_limit,daily_limit"
+    },
+    {
+      "check": "after B's deletion J keeps the private history as 'Deleted account'; the relationship is closed",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a deleted account cannot be requested or accept",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "reconcile after everything enrols nothing new",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": true,
+  "events": 6,
+  "rivalries": 7
+}

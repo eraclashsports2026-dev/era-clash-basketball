@@ -1,0 +1,182 @@
+{
+  "artifact": "social-harness-qa",
+  "phase": "Shareable Clash Cards + Rivalries V1",
+  "generatedAt": "2026-09-16T21:07:07.433Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "the harness has the feature switched on (preview default)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a guest's result offers SHARE A CARD beside CHALLENGE THIS CHAOS (no second large action)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the preview canvas is the 1080×1350 export and it exports as a PNG",
+      "pass": true,
+      "detail": "139687 bytes"
+    },
+    {
+      "check": "the PNG carries no text metadata (no seed, code or id in the file)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a guest card says GUEST CLASH in words and never a display name; the invitation tab is unavailable to a guest",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the server's card payload ignores forged body values (score, outcome, name) and labels the guest",
+      "pass": true,
+      "detail": "200 {\"status\":\"ok\",\"card\":{\"kind\":\"result\",\"cardVersion\":\"1.0.0\",\"score\":{\"gold\":118,\"blue\":111},\"outcome\":\"win\",\"margin\":7,\"era\":\"2020s\",\"eraCustom\":false,\"guest\":"
+    },
+    {
+      "check": "the payload carries only the allowlist",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "another browser cannot draw this run's card",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the composer's controls are ≥ 44px and nothing overflows the phone width",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "rivalry actions refuse a guest (401)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a forged token is refused, never downgraded",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "card-invitation refuses a guest; a malformed code is a validation failure",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "responses are private, uncached",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "CHALLENGE THIS CHAOS is idempotent: a second create returns the same code (opening a composer never mints another)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the creator's invitation payload = public view + this origin's link; no five, coach, MVP, seed",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Bea cannot draw Joseph's invitation",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the completion answer carries comparison, rating AND a rivalry block that says this comparison predates any Rivalry",
+      "pass": true,
+      "detail": "{\"status\":\"ok\",\"contractVersion\":\"1.0.0\",\"recorded\":false,\"reason\":\"not_rivals\",\"rivalryId\":null,\"rated\":null}"
+    },
+    {
+      "check": "the creator's history row carries the opaque attempt handle for START A RIVALRY, account:true",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Joseph starts a Rivalry from that comparison",
+      "pass": true,
+      "detail": "requested"
+    },
+    {
+      "check": "Kai (C) sees nothing and cannot accept",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Bea sees the request with Joseph's display name and nothing identifying",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Bea explicitly accepts",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "both see the same new relationship with the initial 0–0–0 record (the starting comparison is not backfilled)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the result surface labels the share step for the Rivalry",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Joseph sees Bea's new Challenge as a pending Challenge in the Rivalry (your turn)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "6 simultaneous completions: the Rivalry enrols the comparison exactly once",
+      "pass": true,
+      "detail": "1 recorded, reasons /already_recorded"
+    },
+    {
+      "check": "the record updated once and symmetrically: J's wins = B's losses, one total each",
+      "pass": true,
+      "detail": "J 1-0-0 · B 0-1-0"
+    },
+    {
+      "check": "the Rivalry outcome equals the comparison the page showed",
+      "pass": true,
+      "detail": "recipient"
+    },
+    {
+      "check": "the event shows rated/unrated from the rating ledger, never a fake +0",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "refresh / list reconciles add no second event",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "neither profile became public",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Kai still reads nothing",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the list row before the journey had no Rivalry; it has one now",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": true,
+  "simultaneous": 6,
+  "recorded": 1,
+  "journey": {
+    "challenge": "EC-T6AH-GAVE",
+    "rivalry": "opaque id (not recorded)",
+    "challengeAgain": "EC-RL2B-VQ3W",
+    "outcome": "recipient"
+  }
+}
