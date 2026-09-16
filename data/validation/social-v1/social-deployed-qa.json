@@ -1,0 +1,62 @@
+{
+  "artifact": "social-deployed-qa",
+  "phase": "Shareable Clash Cards + Rivalries V1",
+  "generatedAt": "2026-09-16T21:09:52.239Z",
+  "origin": "https://era-clash-basketball-p5zpn8n5y-era-clash.vercel.app",
+  "checks": [
+    {
+      "check": "the preview is gated and the owner key opens it",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the preview build has the feature ON by default and Chaos available",
+      "pass": true,
+      "detail": "{\"chaosClash\":true,\"clashSocial\":true}"
+    },
+    {
+      "check": "the public health payload stays minimal (no new configuration fields)",
+      "pass": true,
+      "detail": "status,build,coreEngine,persistence,aiNarrative,simV3,cloudAccounts,preview"
+    },
+    {
+      "check": "account features on this preview (false = Preview variables still point at Production; the guards keep it inert)",
+      "pass": true,
+      "detail": "ready: false"
+    },
+    {
+      "check": "with account features disabled the composer fails safely (an honest message, no crash, no fabricated card)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "card-result answers 200 with a guest payload, or 503 CLOUD_ACCOUNTS_DISABLED while the Preview variables are wrong — never a Production read",
+      "pass": true,
+      "detail": "503 {\"error\":\"CLOUD_ACCOUNTS_DISABLED\",\"requestId\":\"d3763553923f\"}"
+    },
+    {
+      "check": "rivalry-list without an account: 401 (or 503 while disabled)",
+      "pass": true,
+      "detail": "503"
+    },
+    {
+      "check": "no horizontal overflow on the deployed result surface at 390",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the browser bundle never names the database functions or the production project",
+      "pass": false,
+      "detail": "1 scripts"
+    },
+    {
+      "check": "the invitation link the bundle builds uses window.location.origin (this preview names itself, never production)",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": false,
+  "previewUrl": "https://era-clash-basketball-p5zpn8n5y-era-clash.vercel.app",
+  "accountsReady": false,
+  "note": "Preview Supabase variables still name the Production project; account-backed checks (invitation card, Rivalries) are blocked on the deployed preview until the owner corrects them"
+}
