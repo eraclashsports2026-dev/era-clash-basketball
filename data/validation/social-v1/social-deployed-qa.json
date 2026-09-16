@@ -1,8 +1,8 @@
 {
   "artifact": "social-deployed-qa",
   "phase": "Shareable Clash Cards + Rivalries V1",
-  "generatedAt": "2026-09-16T21:09:52.239Z",
-  "origin": "https://era-clash-basketball-p5zpn8n5y-era-clash.vercel.app",
+  "generatedAt": "2026-09-16T21:11:54.922Z",
+  "origin": "https://era-clash-basketball-l00l3u8nk-era-clash.vercel.app",
   "checks": [
     {
       "check": "the preview is gated and the owner key opens it",
@@ -25,14 +25,19 @@
       "detail": "ready: false"
     },
     {
-      "check": "with account features disabled the composer fails safely (an honest message, no crash, no fabricated card)",
+      "check": "a guest exports a 1080×1350 result card on the deployed preview (no account provider needed)",
+      "pass": true,
+      "detail": "149666 bytes"
+    },
+    {
+      "check": "the PNG carries no text metadata",
       "pass": true,
       "detail": ""
     },
     {
-      "check": "card-result answers 200 with a guest payload, or 503 CLOUD_ACCOUNTS_DISABLED while the Preview variables are wrong — never a Production read",
+      "check": "card-result answers 200 with a GUEST payload from the run store even while account features are disabled",
       "pass": true,
-      "detail": "503 {\"error\":\"CLOUD_ACCOUNTS_DISABLED\",\"requestId\":\"d3763553923f\"}"
+      "detail": "200 {\"status\":\"ok\",\"card\":{\"kind\":\"result\",\"cardVersion\":\"1.0.0\",\"score\":{\"gold\":98,\"blue\":121},\"outcome"
     },
     {
       "check": "rivalry-list without an account: 401 (or 503 while disabled)",
@@ -46,7 +51,7 @@
     },
     {
       "check": "the browser bundle never names the database functions or the production project",
-      "pass": false,
+      "pass": true,
       "detail": "1 scripts"
     },
     {
@@ -55,8 +60,8 @@
       "detail": ""
     }
   ],
-  "passed": false,
-  "previewUrl": "https://era-clash-basketball-p5zpn8n5y-era-clash.vercel.app",
+  "passed": true,
+  "previewUrl": "https://era-clash-basketball-l00l3u8nk-era-clash.vercel.app",
   "accountsReady": false,
   "note": "Preview Supabase variables still name the Production project; account-backed checks (invitation card, Rivalries) are blocked on the deployed preview until the owner corrects them"
 }
