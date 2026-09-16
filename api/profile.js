@@ -314,10 +314,12 @@ export default async function handler(req, res) {
   const actionSocial = typeof req.body?.action === "string" ? req.body.action : null;
   if (actionSocial && SOCIAL_ACTIONS.has(actionSocial)) {
     if (!flags().clashSocial) return sendError(res, "FEATURE_DISABLED", requestId);
-    if (!cloudAccountsReady()) return res.status(503).json({ error: "CLOUD_ACCOUNTS_DISABLED", requestId });
+    // A RESULT card reads the run store only (a guest's own completed Clash),
+    // so it does not need the account provider; everything else does.
+    if (actionSocial !== "card-result" && !cloudAccountsReady()) return res.status(503).json({ error: "CLOUD_ACCOUNTS_DISABLED", requestId });
     if (!(await rateLimit(`social:${clientIp(req)}`, limits().socialPerMinIp, 60))) return sendError(res, "RATE_LIMITED", requestId, { retryAfter: 30 });
     const token = bearer(req);
-    const verified = token ? await verifyAccountToken(token) : null;
+    const verified = token && cloudAccountsReady() ? await verifyAccountToken(token) : null;
     if (token && !verified) return res.status(401).json({ error: "NOT_AUTHENTICATED", requestId });
     const who = verified || GUEST_IDENTITY;
     if (ACCOUNT_ONLY_SOCIAL_ACTIONS.has(actionSocial) && !who.userId) return res.status(401).json({ error: "NOT_AUTHENTICATED", requestId });

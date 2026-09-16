@@ -240,7 +240,7 @@ if (MODE === "cards") {
 }
 
 // ── harness modes ────────────────────────────────────────────────────────────
-if (MODE === "harness" || MODE === "fixture") {
+if (MODE === "harness" || MODE === "fixture" || MODE === "deployed") {
   const { chromium } = await import("@playwright/test");
   const browser = await chromium.launch();
   const shots = `${OUT}/screens`; mkdirSync(shots, { recursive: true });
@@ -366,6 +366,48 @@ if (MODE === "harness" || MODE === "fixture") {
     ok("the list row before the journey had no Rivalry; it has one now", (before.rivalries || []).length === 0 && (await (await post(ctx, { action: "rivalry-list" }, auth(J))).json()).rivalries.length === 1);
     await bea.close(); await joe.close(); await otherCtx.close(); await ctx.close();
     write("social-harness-qa", { simultaneous: N, recorded, journey: { challenge: created.code, rivalry: "opaque id (not recorded)", challengeAgain: created3.code, outcome: outcomeShown } });
+  }
+
+  if (MODE === "deployed") {
+    // A protected preview: the owner key opens the gate for this context only.
+    const f = ".preview-secrets/wave2-access-keys.json";
+    if (!existsSync(f)) throw new Error(`${BASE} is gated and ${f} is not on disk`);
+    const k = JSON.parse(readFileSync(f, "utf8")).keys.find((x) => x.role === "owner");
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+    const gate = await ctx.request.post(`${BASE}/api/preview-access`, { form: { key: k.key }, maxRedirects: 0 });
+    ok("the preview is gated and the owner key opens it", gate.status() === 303);
+    const meta = await (await ctx.request.get(`${BASE}/api/v3meta`)).json();
+    const health = await (await ctx.request.get(`${BASE}/api/health`)).json();
+    ok("the preview build has the feature ON by default and Chaos available", meta.modes?.clashSocial === true && meta.modes?.chaosClash === true, JSON.stringify(meta.modes));
+    ok("the public health payload stays minimal (no new configuration fields)", Object.keys(health).sort().join(",") === "aiNarrative,build,cloudAccounts,coreEngine,persistence,preview,simV3,status", Object.keys(health).join(","));
+    const accountsReady = health.cloudAccounts?.ready === true;
+    ok("account features on this preview (false = Preview variables still point at Production; the guards keep it inert)", true, `ready: ${accountsReady}`);
+    const page = await ctx.newPage(); await fresh(page);
+    await page.goto(`${BASE}/play/chaos`, { waitUntil: "domcontentloaded" }); await stage(page, "EMPTY"); await click(page, /^ROLL$/);
+    await page.locator('.ec-ta-team[data-team="gold"] .ec-pc').nth(4).waitFor({ timeout: 60_000 });
+    const runId = await page.evaluate(() => localStorage.getItem("ec_chaos_run"));
+    await playFromDrafting(page);
+    const shareBtn = page.getByRole("button", { name: /^SHARE A CARD$/ });
+    await shareBtn.scrollIntoViewIfNeeded(); await shareBtn.waitFor({ timeout: 30_000 }); await shareBtn.tap();
+    await page.locator(".ec-card-preview[data-ready='true']").waitFor({ timeout: 30_000 }); await page.waitForTimeout(600);
+    const bytes = await savePng(page, ".ec-card-preview", `${shots}/deployed-guest-result-card-1080x1350.png`);
+    ok("a guest exports a 1080×1350 result card on the deployed preview (no account provider needed)", bytes > 20_000, `${bytes} bytes`);
+    ok("the PNG carries no text metadata", pngHasNoText(`${shots}/deployed-guest-result-card-1080x1350.png`));
+    const card = await ctx.request.post(`${BASE}/api/profile`, { data: { action: "card-result", chaosRunId: runId }, headers: { "content-type": "application/json" } });
+    const cardBody = await card.json();
+    ok("card-result answers 200 with a GUEST payload from the run store even while account features are disabled", card.status() === 200 && cardBody.card?.guest === true && cardBody.card.displayName === null, `${card.status()} ${JSON.stringify(cardBody).slice(0, 100)}`);
+    const riv = await ctx.request.post(`${BASE}/api/profile`, { data: { action: "rivalry-list" }, headers: { "content-type": "application/json" } });
+    ok("rivalry-list without an account: 401 (or 503 while disabled)", [401, 503].includes(riv.status()), String(riv.status()));
+    await page.screenshot({ path: `${shots}/deployed-composer-390.png` });
+    ok("no horizontal overflow on the deployed result surface at 390", await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1));
+    // bundle hygiene: no database function names, no production project ref
+    const html = await (await ctx.request.get(`${BASE}/`)).text();
+    const scripts = [...html.matchAll(/src="(\/assets\/[^"]+\.js)"/g)].map((m) => m[1]);
+    let bundle = ""; for (const sp of scripts) bundle += await (await ctx.request.get(`${BASE}${sp}`)).text();
+    ok("the browser bundle never names the database functions or the production project", !/rpc\/rivalry_|rivalry_record_attempt|rivalry_reconcile|p_actor|p_attempt_id/.test(bundle) && !/dxdtnhdeaanhfoqngdel/.test(bundle), `${scripts.length} scripts`);
+    ok("the invitation link the bundle builds uses window.location.origin (this preview names itself, never production)", /window\.location\.origin/.test(bundle) && !/eraclashbasketball\.com\/\?challenge/.test(bundle));
+    await ctx.close();
+    write("social-deployed-qa", { previewUrl: BASE, accountsReady, note: accountsReady ? "" : "Preview Supabase variables still name the Production project; account-backed checks (invitation card, Rivalries) are blocked on the deployed preview until the owner corrects them" });
   }
 
   if (MODE === "fixture") {
