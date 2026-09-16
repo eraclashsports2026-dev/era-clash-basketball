@@ -67,6 +67,7 @@ import PublicProfilePage from "./components/profiles/PublicProfilePage.jsx";   /
 import { slugFromPath, PUBLIC_PROFILE_ROUTE } from "./profiles/contract.js";
 import RatingChange from "./components/competitive/RatingChange.jsx";
 import CompetitiveReferenceFixture from "./ui/competitive/CompetitiveReferenceFixture.jsx";   // dev-only gate
+import SocialReferenceFixture from "./ui/social/SocialReferenceFixture.jsx";   // dev-only gate (Clash Cards + Rivalries V1)
 import ProfileReferenceFixture from "./ui/profiles/ProfileReferenceFixture.jsx";   // dev-only gate
 import { codeFromSearch, CHALLENGE_EVENTS } from "./challenges/contract.js";
 import { can, CAPABILITIES } from "./entitlements.js";
@@ -161,6 +162,7 @@ const DEV_FIXTURES = import.meta.env.DEV || import.meta.env.VITE_EC_DEV_FIXTURES
 const FIXTURE_ROUTE = "/dev/time-arena-reference";
 const PROGRESSION_FIXTURE_ROUTE = "/dev/progression-reference";
 const COMPETITIVE_FIXTURE_ROUTE = "/dev/competitive-reference";
+const SOCIAL_FIXTURE_ROUTE = "/dev/social-reference";
 const PROFILE_FIXTURE_ROUTE = "/dev/profile-reference";
 const LEADERBOARD_ROUTE = "/leaderboard";
 const isProfileRoute = (r) => String(r || "").startsWith(`${PUBLIC_PROFILE_ROUTE}/`);
@@ -210,6 +212,9 @@ export default function App() {
   const [view, setView] = useState("builder");        // builder | simulating | postgame
   const [gameMode, setGameMode] = useState("Chaos");  // Chaos | Single (Dream Matchup) | Best7 | Win82 | Tournament
   const [chaosAvailable, setChaosAvailable] = useState(true); // until the server says otherwise
+  // Clash Cards + Rivalries V1: one server flag, read with the mode registry;
+  // off (the production default until acceptance) hides every new surface.
+  const [socialEnabled, setSocialEnabled] = useState(false);
   const [playStage, setPlayStage] = useState("ROSTERS"); // ROSTERS | COACHES | ERA | READY (v3 wizard)
   const [chaosReady, setChaosReady] = useState(null);     // a Chaos run at phase READY
   if (DEV_FIXTURES && typeof window !== "undefined" && window.location.pathname === FIXTURE_ROUTE) {
@@ -223,6 +228,9 @@ export default function App() {
   }
   if (DEV_FIXTURES && typeof window !== "undefined" && window.location.pathname === PROFILE_FIXTURE_ROUTE) {
     return <ProfileReferenceFixture />;
+  }
+  if (DEV_FIXTURES && typeof window !== "undefined" && window.location.pathname === SOCIAL_FIXTURE_ROUTE) {
+    return <SocialReferenceFixture />;
   }
   if (THEME_LAB && typeof window !== "undefined" && window.location.pathname === THEME_LAB_ROUTE) {
     return <Suspense fallback={null}><ThemeLab /></Suspense>;
@@ -413,6 +421,7 @@ export default function App() {
         // back to Dream Matchup rather than a Play screen that cannot start.
         const on = m.modes?.chaosClash !== false;
         setChaosAvailable(on);
+        setSocialEnabled(m.modes?.clashSocial === true);
         if (!on) {
           setGameMode((g) => (g === "Chaos" ? "Single" : g));
           // Keep the address truthful: a Chaos link on a deployment without
@@ -2025,6 +2034,8 @@ export default function App() {
           onRunItBack={runItBackFromSaved}
           onOpenLeaderboard={() => navigate(LEADERBOARD_ROUTE)}
           onOpenProfile={(path) => navigate(path)}
+          socialEnabled={socialEnabled}
+          onChallengeAgain={() => { newChaosClash(); setGameMode("Chaos"); setNav("Play"); navigate("/play/chaos"); }}
           onSignedOut={handleCareerSignedOut} />
       ) : route.startsWith("/membership") ? (
         <main>
@@ -2098,7 +2109,7 @@ export default function App() {
             onReset={() => { setFullReport(false); newChaosClash(); }}
             challengeContext={challengeForRun(chaosRun?.chaosRunId) || (challengeAttempt && challengeAttempt.resultId === result?.resultId ? challengeAttempt : null)}
             challengeShare={result?.resultId && chaosRun?.chaosRunId && !(challengeAttempt && challengeAttempt.resultId === result?.resultId)
-              ? <ChallengeShare chaosRunId={chaosRun.chaosRunId} accessToken={token}
+              ? <ChallengeShare chaosRunId={chaosRun.chaosRunId} accessToken={token} socialEnabled={socialEnabled}
                   onNeedAccount={() => openAccountDialog({ entryPoint: "challenge_create", intent: "signup", claimResultId: result.resultId, returnTo: "/play/chaos" })} />
               : null}
             challengeComparison={challengeAttempt && challengeAttempt.resultId === result?.resultId

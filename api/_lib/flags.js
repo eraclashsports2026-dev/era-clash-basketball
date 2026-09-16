@@ -68,6 +68,12 @@ export const flags = () => ({
     ? bool("PREVIEW_SIM_ENGINE_ENABLED", false)
     : (process.env.VERCEL_ENV === "preview" && PREVIEW_ENV.previewSimEngine === true),
   leaderboard: bool("PUBLIC_LEADERBOARD_ENABLED", true),
+  // Shareable Clash Cards + Rivalries V1. ONE flag for the coherent experience
+  // (card → invitation → comparison → Rivalry → Challenge Again). ON by default
+  // on preview deployments, OFF in production until the owner's acceptance;
+  // an explicit CLASH_SOCIAL_V1_ENABLED always wins. Off leaves ordinary
+  // Challenges exactly as they are.
+  clashSocial: bool("CLASH_SOCIAL_V1_ENABLED", process.env.VERCEL_ENV === "preview"),
   feedback: bool("FEEDBACK_ENABLED", true),
 });
 
@@ -97,6 +103,7 @@ export const limits = () => ({
   // Phase 9E leaderboard reads and competitive state (per IP, per minute)
   competitivePerMinIp: num("RL_COMPETITIVE_PER_MIN_IP", 60),
   profilePerMinIp: num("RL_PROFILE_PUBLIC_PER_MIN_IP", 60),
+  socialPerMinIp: num("RL_SOCIAL_PER_MIN_IP", 60),
   // global emergency ceilings (fixed 1-minute / 1-day windows)
   maxCoreSimsPerMinute: num("MAX_CORE_SIMULATIONS_PER_MINUTE", 600),
   maxAiPerMinute: num("MAX_AI_REQUESTS_PER_MINUTE", 60),

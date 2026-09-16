@@ -21,7 +21,7 @@ has() { node -e 'const p=require("./package.json");process.exit(p.scripts[proces
 restart_fake() {
   pkill -f "harness.mjs 4178" 2>/dev/null
   sleep 1
-  (PREVIEW_SIM_ENGINE_ENABLED=true VERCEL_ENV=preview ECLASH_FAKE_CLOUD=1 RL_PROFILE_PER_MIN_IP=500 RL_CHALLENGE_ACTIONS_PER_MIN_IP=500 RL_CHALLENGE_VIEW_PER_MIN_IP=500 RL_PROGRESSION_PER_MIN_IP=500 RL_COMPETITIVE_PER_MIN_IP=500 RL_PROFILE_PUBLIC_PER_MIN_IP=500 node scripts/harness.mjs 4178 > .9f-harness-4178.log 2>&1 &)
+  (PREVIEW_SIM_ENGINE_ENABLED=true VERCEL_ENV=preview ECLASH_FAKE_CLOUD=1 RL_PROFILE_PER_MIN_IP=500 RL_CHALLENGE_ACTIONS_PER_MIN_IP=500 RL_CHALLENGE_VIEW_PER_MIN_IP=500 RL_PROGRESSION_PER_MIN_IP=500 RL_COMPETITIVE_PER_MIN_IP=500 RL_PROFILE_PUBLIC_PER_MIN_IP=500 RL_SOCIAL_PER_MIN_IP=500 node scripts/harness.mjs 4178 > .9f-harness-4178.log 2>&1 &)
   for _ in 1 2 3 4 5 6 7 8 9 10; do curl -sf -m 2 "$FAKE/api/health" >/dev/null 2>&1 && break; sleep 1; done
   STARTED_FAKE=1
 }
@@ -64,9 +64,9 @@ gate() {
   STARTED_FIX=0
   if ! curl -sf -m 3 "http://localhost:4179/api/health" >/dev/null 2>&1; then
     npm run -s build:fixtures >/dev/null 2>&1
-    (PREVIEW_SIM_ENGINE_ENABLED=true VERCEL_ENV=preview ECLASH_FAKE_CLOUD=1 ECLASH_DIST=dist-fixtures RL_PROFILE_PER_MIN_IP=500 RL_PROGRESSION_PER_MIN_IP=500 RL_COMPETITIVE_PER_MIN_IP=500 RL_PROFILE_PUBLIC_PER_MIN_IP=500 node scripts/harness.mjs 4179 > .9f-harness-4179.log 2>&1 &); sleep 3; STARTED_FIX=1; fi
+    (PREVIEW_SIM_ENGINE_ENABLED=true VERCEL_ENV=preview ECLASH_FAKE_CLOUD=1 ECLASH_DIST=dist-fixtures RL_PROFILE_PER_MIN_IP=500 RL_PROGRESSION_PER_MIN_IP=500 RL_COMPETITIVE_PER_MIN_IP=500 RL_PROFILE_PUBLIC_PER_MIN_IP=500 RL_SOCIAL_PER_MIN_IP=500 node scripts/harness.mjs 4179 > .9f-harness-4179.log 2>&1 &); sleep 3; STARTED_FIX=1; fi
   if ! curl -sf -m 3 "$FAKE/api/health" >/dev/null 2>&1; then
-    (PREVIEW_SIM_ENGINE_ENABLED=true VERCEL_ENV=preview ECLASH_FAKE_CLOUD=1 RL_PROFILE_PER_MIN_IP=500 RL_CHALLENGE_ACTIONS_PER_MIN_IP=500 RL_CHALLENGE_VIEW_PER_MIN_IP=500 RL_PROGRESSION_PER_MIN_IP=500 RL_COMPETITIVE_PER_MIN_IP=500 RL_PROFILE_PUBLIC_PER_MIN_IP=500 node scripts/harness.mjs 4178 > .9f-harness-4178.log 2>&1 &); sleep 3; STARTED_FAKE=1; fi
+    (PREVIEW_SIM_ENGINE_ENABLED=true VERCEL_ENV=preview ECLASH_FAKE_CLOUD=1 RL_PROFILE_PER_MIN_IP=500 RL_CHALLENGE_ACTIONS_PER_MIN_IP=500 RL_CHALLENGE_VIEW_PER_MIN_IP=500 RL_PROGRESSION_PER_MIN_IP=500 RL_COMPETITIVE_PER_MIN_IP=500 RL_PROFILE_PUBLIC_PER_MIN_IP=500 RL_SOCIAL_PER_MIN_IP=500 node scripts/harness.mjs 4178 > .9f-harness-4178.log 2>&1 &); sleep 3; STARTED_FAKE=1; fi
   echo "--- e2e (all projects) ---"
   npx playwright test > .9f-e2e.out 2>&1; E2E_RC=$?
   grep -E 'passed|failed|flaky|skipped|Error' .9f-e2e.out | tail -6

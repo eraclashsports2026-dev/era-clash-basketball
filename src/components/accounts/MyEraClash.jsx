@@ -43,7 +43,7 @@ const dateOf = (iso) => { try { return new Date(iso).toLocaleDateString(undefine
 const OUTCOME_WORD = { win: "Won", loss: "Lost", tie: "Tied" };
 const WIN_GREEN = "var(--ec-a-green, #2fa96d)";
 
-export default function MyEraClash({ onOpenReport, onRunItBack, onSaveRoster, onSignIn, onSignedOut, onOpenLeaderboard, onOpenProfile }) {
+export default function MyEraClash({ onOpenReport, onRunItBack, onSaveRoster, onSignIn, onSignedOut, onOpenLeaderboard, onOpenProfile, socialEnabled = false, onChallengeAgain }) {
   const account = useAccount();
   const [tab, setTab] = useState(() => tabFromSearch(typeof window !== "undefined" ? window.location.search : ""));
   const [data, setData] = useState({ career: null, clashes: [], rosters: [], prefs: PREF_DEFAULTS, activity: [], progression: null, competitive: null, profile: null });
@@ -133,7 +133,7 @@ export default function MyEraClash({ onOpenReport, onRunItBack, onSaveRoster, on
         {tab === "history" && <History {...shared} />}
         {tab === "rosters" && <Rosters {...shared} />}
         {tab === "favorites" && <Favorites {...shared} />}
-        {tab === "challenges" && <ChallengesTab accessToken={token} displayName={account.displayName} />}
+        {tab === "challenges" && <ChallengesTab accessToken={token} displayName={account.displayName} socialEnabled={socialEnabled} onChallengeAgain={onChallengeAgain} onOpenProfile={onOpenProfile} />}
         {tab === "achievements" && <AchievementsTab progression={data.progression} loading={loading} />}
         {tab === "account" && <Account {...shared} onSignedOut={onSignedOut} />}
       </div>
@@ -516,7 +516,7 @@ function Account({ account, data, setData, flash, token, onSignedOut, load }) {
   const runExport = async () => {
     setExporting(true); track("account_export_started", {});
     try {
-      const { doc, filename } = await assembleAccountExport();
+      const { doc, filename } = await assembleAccountExport({ accessToken: token });
       const blob = new Blob([JSON.stringify(doc, null, 2)], { type: "application/json" });
       const urlObj = URL.createObjectURL(blob);
       const a = linkRef.current;

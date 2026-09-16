@@ -17,7 +17,7 @@ mkdir -p data/validation/ui-release
 has() { node -e 'const p=require("./package.json");process.exit(p.scripts[process.argv[1]]?0:1)' "$1"; }
 restart_fake() {
   pkill -f "harness.mjs 4178" 2>/dev/null; sleep 1
-  (PREVIEW_SIM_ENGINE_ENABLED=true VERCEL_ENV=preview ECLASH_FAKE_CLOUD=1 RL_PROFILE_PER_MIN_IP=500 RL_CHALLENGE_ACTIONS_PER_MIN_IP=500 RL_CHALLENGE_VIEW_PER_MIN_IP=500 RL_PROGRESSION_PER_MIN_IP=500 RL_COMPETITIVE_PER_MIN_IP=500 RL_PROFILE_PUBLIC_PER_MIN_IP=500 node scripts/harness.mjs 4178 > .uirc-harness-4178.log 2>&1 &)
+  (PREVIEW_SIM_ENGINE_ENABLED=true VERCEL_ENV=preview ECLASH_FAKE_CLOUD=1 RL_PROFILE_PER_MIN_IP=500 RL_CHALLENGE_ACTIONS_PER_MIN_IP=500 RL_CHALLENGE_VIEW_PER_MIN_IP=500 RL_PROGRESSION_PER_MIN_IP=500 RL_COMPETITIVE_PER_MIN_IP=500 RL_PROFILE_PUBLIC_PER_MIN_IP=500 RL_SOCIAL_PER_MIN_IP=500 node scripts/harness.mjs 4178 > .uirc-harness-4178.log 2>&1 &)
   for _ in 1 2 3 4 5 6 7 8 9 10; do curl -sf -m 2 "$FAKE/api/health" >/dev/null 2>&1 && break; sleep 1; done
 }
 gate() {
@@ -47,7 +47,7 @@ gate() {
     (PREVIEW_SIM_ENGINE_ENABLED=true VERCEL_ENV=preview RL_PROFILE_PER_MIN_IP=500 node scripts/harness.mjs 4180 > .uirc-harness-4180.log 2>&1 &); sleep 3; fi
   if ! curl -sf -m 3 "http://localhost:4179/api/health" >/dev/null 2>&1; then
     npm run -s build:fixtures >/dev/null 2>&1
-    (PREVIEW_SIM_ENGINE_ENABLED=true VERCEL_ENV=preview ECLASH_FAKE_CLOUD=1 ECLASH_DIST=dist-fixtures RL_PROFILE_PER_MIN_IP=500 RL_PROGRESSION_PER_MIN_IP=500 RL_COMPETITIVE_PER_MIN_IP=500 RL_PROFILE_PUBLIC_PER_MIN_IP=500 node scripts/harness.mjs 4179 > .uirc-harness-4179.log 2>&1 &); sleep 3; fi
+    (PREVIEW_SIM_ENGINE_ENABLED=true VERCEL_ENV=preview ECLASH_FAKE_CLOUD=1 ECLASH_DIST=dist-fixtures RL_PROFILE_PER_MIN_IP=500 RL_PROGRESSION_PER_MIN_IP=500 RL_COMPETITIVE_PER_MIN_IP=500 RL_PROFILE_PUBLIC_PER_MIN_IP=500 RL_SOCIAL_PER_MIN_IP=500 node scripts/harness.mjs 4179 > .uirc-harness-4179.log 2>&1 &); sleep 3; fi
   restart_fake
   if ! curl -sf -m 3 "http://localhost:4176/play" >/dev/null 2>&1; then
     VITE_EC_THEME_LAB=1 VITE_EC_DEV_FIXTURES=1 npx vite build --outDir dist-lab >/dev/null 2>&1

@@ -11,6 +11,7 @@
 // ECLASH_FAKE_CLOUD=1; nothing under src/ or api/ imports it.
 import { levelForXp } from "../../src/progression/contract.js";
 import { rateMatch, eligibility, isPlaced, compareRows, RATED_PAIR_WINDOW_DAYS, INITIAL_RATING } from "../../src/competitive/contract.js";
+import { canonicalPair, lowOutcome, eligibility as rivalryEligibility, sideOutcome, recordFor, winStreak, compareEventsNewestFirst, opponentView } from "../../src/rivalries/contract.js";
 
 export const FAKE_URL = "https://abcdefghijklmnopqrst.supabase.co";
 
@@ -29,6 +30,8 @@ export const installFakeCloud = ({ users = [] } = {}) => {
     user_preferences: [], competitive_profiles: [], competitive_rating_events: [],
     // Phase 9F: one opaque slug per account, minted with the profile, and the featured showcase
     public_profiles: users.map((u, i) => ({ user_id: u.userId, slug: fakeSlug(i) })), profile_featured_achievements: [],
+    // Clash Cards + Rivalries V1 (0008): the pair, its periods, blocks, the request log and the immutable ledger
+    rivalries: [], rivalry_periods: [], rivalry_blocks: [], rivalry_request_log: [], rivalry_events: [],
   };
   const userExists = (id) => tables.profiles.some((p) => p.user_id === id);
   const parse = (path) => {
@@ -180,6 +183,122 @@ export const installFakeCloud = ({ users = [] } = {}) => {
     .map((r) => ({ rank: r.rank, slug: tables.public_profiles.find((x) => x.user_id === r.user_id)?.slug }))
     .filter((x) => !!x.slug);
 
+  // ── Rivalries V1 functions, as 0008_rivalries_v1.sql behaves ──────────────
+  // Same decisions, same closed statuses, same canonical pair; the pure rules
+  // come from src/rivalries/contract.js so the emulation cannot drift from the
+  // client's reading of them. No locks are needed in a single-threaded fake.
+  const DAY = 86_400_000;
+  const attemptWithChallenge = (id) => { const at = tables.challenge_attempts.find((x) => x.id === id); const ch = at && tables.challenges.find((c) => c.id === at.challenge_id); return at && ch ? { at, ch } : null; };
+  const pairRow = (a, b) => { const [lo, hi] = canonicalPair(a, b); return tables.rivalries.find((r) => r.user_low === lo && r.user_high === hi) || null; };
+  const blockedEither = (a, b) => tables.rivalry_blocks.some((x) => (x.blocker_user_id === a && x.blocked_user_id === b) || (x.blocker_user_id === b && x.blocked_user_id === a));
+  const lapse = (r) => { if (r.state === "pending" && Date.parse(r.pending_expires_at) <= Date.now()) { Object.assign(r, { state: "idle", last_closed_reason: "expired", last_closed_at: r.pending_expires_at, pending_from: null, pending_at: null, pending_expires_at: null, updated_at: nowIso() }); } return r; };
+  const closeRow = (r, reason) => Object.assign(r, { state: "idle", current_period_id: null, pending_from: null, pending_at: null, pending_expires_at: null, last_closed_reason: reason, last_closed_at: nowIso(), updated_at: nowIso() });
+  const rivalryRequestFn = ({ p_actor, p_attempt_id, p_ttl_days, p_daily_limit, p_max_outgoing, p_decline_cooldown_days, p_close_cooldown_days }) => {
+    if (!p_actor) return { status: "not_eligible" };
+    const hit = attemptWithChallenge(p_attempt_id); if (!hit || hit.at.status !== "completed") return { status: "not_eligible" };
+    const { at, ch } = hit;
+    if (!ch.creator_user_id || !at.user_id) return { status: "unavailable" };
+    if (p_actor !== ch.creator_user_id && p_actor !== at.user_id) return { status: "not_eligible" };
+    if (ch.creator_user_id === at.user_id) return { status: "self" };
+    const opp = p_actor === ch.creator_user_id ? at.user_id : ch.creator_user_id;
+    if (!userExists(opp)) return { status: "unavailable" };
+    if (blockedEither(p_actor, opp)) return { status: "unavailable" };
+    let r = pairRow(p_actor, opp); if (r) lapse(r);
+    if (r) {
+      if (r.state === "active") return { status: "already_active", rivalryId: r.id };
+      if (r.state === "pending") return r.pending_from === p_actor ? { status: "already_pending", rivalryId: r.id, expiresAt: r.pending_expires_at } : { status: "pending_incoming", rivalryId: r.id, expiresAt: r.pending_expires_at };
+      const cd = { declined: p_decline_cooldown_days, canceled: p_close_cooldown_days, ended: p_close_cooldown_days }[r.last_closed_reason];
+      if (cd != null && r.last_closed_at && Date.parse(r.last_closed_at) + cd * DAY > Date.now()) return { status: "cooldown", until: new Date(Date.parse(r.last_closed_at) + cd * DAY).toISOString() };
+    }
+    if (tables.rivalry_request_log.filter((l) => l.from_user_id === p_actor && Date.parse(l.created_at) > Date.now() - DAY).length >= p_daily_limit) return { status: "daily_limit" };
+    if (tables.rivalries.filter((x) => x.state === "pending" && x.pending_from === p_actor && Date.parse(x.pending_expires_at) > Date.now()).length >= p_max_outgoing) return { status: "outgoing_limit" };
+    const exp = new Date(Date.now() + Math.max(1, p_ttl_days) * DAY).toISOString();
+    if (!r) { const [lo, hi] = canonicalPair(p_actor, opp); r = { id: uuid(), user_low: lo, user_high: hi, state: "pending", contract_version: "1.0.0", pending_from: p_actor, pending_at: nowIso(), pending_expires_at: exp, current_period_id: null, last_closed_reason: null, last_closed_at: null, low_deleted: false, high_deleted: false, created_at: nowIso(), updated_at: nowIso() }; tables.rivalries.push(r); }
+    else Object.assign(r, { state: "pending", pending_from: p_actor, pending_at: nowIso(), pending_expires_at: exp, updated_at: nowIso() });
+    tables.rivalry_request_log.push({ id: uuid(), rivalry_id: r.id, from_user_id: p_actor, to_user_id: opp, created_at: nowIso() });
+    return { status: "requested", rivalryId: r.id, expiresAt: r.pending_expires_at };
+  };
+  const rivalryRespondFn = ({ p_actor, p_rivalry_id, p_action }) => {
+    const r = tables.rivalries.find((x) => x.id === p_rivalry_id);
+    if (!p_actor || !r || (p_actor !== r.user_low && p_actor !== r.user_high)) return { status: "not_yours" };
+    const opp = p_actor === r.user_low ? r.user_high : r.user_low;
+    if (p_action === "unblock") { tables.rivalry_blocks = tables.rivalry_blocks.filter((b) => !(b.blocker_user_id === p_actor && b.blocked_user_id === opp)); return { status: "unblocked", rivalryId: r.id }; }
+    if (p_action === "accept") {
+      if (r.state !== "pending" || r.pending_from === p_actor) return { status: "not_pending" };
+      if (Date.parse(r.pending_expires_at) <= Date.now()) { lapse(r); return { status: "expired" }; }
+      const oppDeleted = p_actor === r.user_low ? r.high_deleted : r.low_deleted;
+      if (oppDeleted || !userExists(opp) || blockedEither(p_actor, opp)) return { status: "unavailable" };
+      const nxt = tables.rivalry_periods.filter((p) => p.rivalry_id === r.id).length + 1;
+      const per = { id: uuid(), rivalry_id: r.id, period_no: nxt, started_at: nowIso(), ended_at: null, ended_by: null, end_reason: null };
+      tables.rivalry_periods.push(per);
+      Object.assign(r, { state: "active", current_period_id: per.id, pending_from: null, pending_at: null, pending_expires_at: null, updated_at: nowIso() });
+      return { status: "accepted", rivalryId: r.id, periodId: per.id, periodNo: nxt, startedAt: per.started_at };
+    }
+    if (p_action === "decline") { if (r.state !== "pending" || r.pending_from === p_actor) return { status: "not_pending" }; closeRow(r, "declined"); return { status: "declined", rivalryId: r.id }; }
+    if (p_action === "cancel") { if (r.state !== "pending" || r.pending_from !== p_actor) return { status: "not_pending" }; closeRow(r, "canceled"); return { status: "canceled", rivalryId: r.id }; }
+    if (p_action === "end") {
+      if (r.state !== "active") return { status: "not_active" };
+      const per = tables.rivalry_periods.find((p) => p.id === r.current_period_id); if (per && !per.ended_at) Object.assign(per, { ended_at: nowIso(), ended_by: p_actor, end_reason: "ended" });
+      closeRow(r, "ended"); return { status: "ended", rivalryId: r.id };
+    }
+    if (p_action === "block") {
+      if (!tables.rivalry_blocks.some((b) => b.blocker_user_id === p_actor && b.blocked_user_id === opp)) tables.rivalry_blocks.push({ blocker_user_id: p_actor, blocked_user_id: opp, created_at: nowIso() });
+      if (r.state === "active") { const per = tables.rivalry_periods.find((p) => p.id === r.current_period_id); if (per && !per.ended_at) Object.assign(per, { ended_at: nowIso(), ended_by: p_actor, end_reason: "blocked" }); }
+      if (r.state !== "idle") closeRow(r, "blocked");
+      return { status: "blocked", rivalryId: r.id };
+    }
+    return { status: "failed", detail: "unknown_action" };
+  };
+  const rivalryRecordFn = ({ p_attempt_id, p_version }) => {
+    const hit = attemptWithChallenge(p_attempt_id); if (!hit) return { recorded: false, reason: "not_completed" };
+    const { at, ch } = hit;
+    const r = ch.creator_user_id && at.user_id ? pairRow(ch.creator_user_id, at.user_id) : null;
+    const periods = r ? tables.rivalry_periods.filter((p) => p.rivalry_id === r.id).sort((a, b) => b.period_no - a.period_no) : [];
+    const per = periods.find((p) => Date.parse(at.created_at) >= Date.parse(p.started_at) && (!p.ended_at || Date.parse(at.created_at) < Date.parse(p.ended_at))) || null;
+    const el = rivalryEligibility({ status: at.status, challengeOutcome: at.challenge_outcome, creatorUserId: ch.creator_user_id, recipientUserId: at.user_id, attemptStartedAt: at.created_at, period: r ? per : null, alreadyRecorded: tables.rivalry_events.some((e) => e.challenge_attempt_id === at.id) });
+    if (!el.eligible) return { recorded: false, reason: el.reason === "not_rivals" && r ? "not_in_period" : el.reason };
+    const ev = { id: uuid(), rivalry_id: r.id, period_id: per.id, challenge_id: ch.id, challenge_attempt_id: at.id, contract_version: p_version, low_outcome: lowOutcome({ challengeOutcome: at.challenge_outcome, creatorUserId: ch.creator_user_id, recipientUserId: at.user_id }), rated: tables.competitive_rating_events.some((e) => e.challenge_attempt_id === at.id), attempt_started_at: at.created_at, completed_at: at.completed_at, created_at: nowIso() };
+    tables.rivalry_events.push(ev);
+    return { recorded: true, eventId: ev.id, rivalryId: r.id, periodId: per.id, periodNo: per.period_no, lowOutcome: ev.low_outcome, rated: ev.rated, completedAt: ev.completed_at };
+  };
+  const rivalryReconcileFn = ({ p_version, p_limit }) => {
+    const pending = tables.challenge_attempts.filter((at) => at.status === "completed" && at.user_id && at.completed_at && !tables.rivalry_events.some((e) => e.challenge_attempt_id === at.id))
+      .filter((at) => { const ch = tables.challenges.find((c) => c.id === at.challenge_id); return ch?.creator_user_id && ch.creator_user_id !== at.user_id && pairRow(ch.creator_user_id, at.user_id); })
+      .sort((a, b) => (Date.parse(a.completed_at) - Date.parse(b.completed_at)) || String(a.id).localeCompare(String(b.id))).slice(0, Math.max(1, p_limit || 500));
+    let recorded = 0, skipped = 0; for (const at of pending) { const o = rivalryRecordFn({ p_attempt_id: at.id, p_version }); if (o.recorded) recorded++; else skipped++; }
+    return { seen: pending.length, recorded, skipped };
+  };
+  const oppView = (r, me) => { const opp = me === r.user_low ? r.user_high : r.user_low; const deleted = me === r.user_low ? r.high_deleted : r.low_deleted; return opponentView({ displayName: tables.profiles.find((p) => p.user_id === opp)?.display_name, deleted: deleted || !userExists(opp), publicSlug: prefsOf(opp).profile_visibility === "public" ? tables.public_profiles.find((x) => x.user_id === opp)?.slug || null : null }); };
+  const periodEvents = (pid) => tables.rivalry_events.filter((e) => e.period_id === pid).sort(compareEventsNewestFirst);
+  const rowState = (r) => (r.state === "pending" && Date.parse(r.pending_expires_at) <= Date.now() ? "idle" : r.state);
+  const rivalryListFn = ({ p_user }) => tables.rivalries.filter((r) => r.user_low === p_user || r.user_high === p_user).sort((a, b) => Date.parse(b.updated_at) - Date.parse(a.updated_at)).map((r) => {
+    const per = r.current_period_id ? tables.rivalry_periods.find((p) => p.id === r.current_period_id) : null;
+    const pendingLive = r.state === "pending" && Date.parse(r.pending_expires_at) > Date.now();
+    return { rivalryId: r.id, contractVersion: r.contract_version, state: rowState(r), pendingFromMe: pendingLive && r.pending_from === p_user, pendingExpiresAt: pendingLive ? r.pending_expires_at : null,
+      lastClosedReason: rowState(r) === "idle" && r.state === "pending" ? "expired" : r.last_closed_reason, lastClosedAt: r.last_closed_at,
+      blockedByMe: tables.rivalry_blocks.some((b) => b.blocker_user_id === p_user && b.blocked_user_id === (p_user === r.user_low ? r.user_high : r.user_low)),
+      opponent: oppView(r, p_user), period: per ? { periodNo: per.period_no, startedAt: per.started_at, record: recordFor(periodEvents(per.id), p_user, r.user_low) } : null,
+      periods: tables.rivalry_periods.filter((p) => p.rivalry_id === r.id).length };
+  });
+  const rivalryDetailFn = ({ p_user, p_rivalry_id, p_limit, p_offset }) => {
+    const r = tables.rivalries.find((x) => x.id === p_rivalry_id); if (!r || (p_user !== r.user_low && p_user !== r.user_high)) return null;
+    const opp = p_user === r.user_low ? r.user_high : r.user_low;
+    const pendingLive = r.state === "pending" && Date.parse(r.pending_expires_at) > Date.now();
+    const all = tables.rivalry_events.filter((e) => e.rivalry_id === r.id).sort(compareEventsNewestFirst);
+    const page = all.slice(Math.max(0, p_offset || 0), Math.max(0, p_offset || 0) + Math.min(50, Math.max(1, p_limit || 20)));
+    const cur = r.current_period_id ? tables.rivalry_periods.find((p) => p.id === r.current_period_id) : null;
+    return { rivalryId: r.id, contractVersion: r.contract_version, state: rowState(r), pendingFromMe: pendingLive && r.pending_from === p_user, pendingExpiresAt: pendingLive ? r.pending_expires_at : null,
+      lastClosedReason: rowState(r) === "idle" && r.state === "pending" ? "expired" : r.last_closed_reason,
+      blockedByMe: tables.rivalry_blocks.some((b) => b.blocker_user_id === p_user && b.blocked_user_id === opp), opponent: oppView(r, p_user), currentPeriodId: r.current_period_id,
+      periods: tables.rivalry_periods.filter((p) => p.rivalry_id === r.id).sort((a, b) => b.period_no - a.period_no).map((p) => ({ periodId: p.id, periodNo: p.period_no, startedAt: p.started_at, endedAt: p.ended_at, endReason: p.end_reason, endedByMe: p.ended_by ? p.ended_by === p_user : null, record: recordFor(periodEvents(p.id), p_user, r.user_low), streak: winStreak(periodEvents(p.id), p_user, r.user_low) ?? 0 })),
+      events: page.map((e) => { const p = tables.rivalry_periods.find((x) => x.id === e.period_id); const ch = tables.challenges.find((c) => c.id === e.challenge_id); const at = tables.challenge_attempts.find((a) => a.id === e.challenge_attempt_id); const mine = ch.creator_user_id === p_user;
+        return { eventId: e.id, periodNo: p.period_no, completedAt: e.completed_at, rated: e.rated, outcome: sideOutcome(e, p_user, r.user_low), code: ch.public_code, iWasCreator: mine, myScore: mine ? { gold: ch.creator_gold_score, blue: ch.creator_blue_score } : { gold: at.gold_score, blue: at.blue_score }, theirScore: mine ? { gold: at.gold_score, blue: at.blue_score } : { gold: ch.creator_gold_score, blue: ch.creator_blue_score }, era: ch.creator_era_id }; }),
+      eventCount: all.length,
+      pendingChallenges: cur ? tables.challenges.filter((ch) => [p_user, opp].includes(ch.creator_user_id) && ch.status === "open" && !ch.revoked_at && Date.parse(ch.expires_at) > Date.now() && Date.parse(ch.created_at) >= Date.parse(cur.started_at)
+          && !tables.challenge_attempts.some((a) => a.challenge_id === ch.id && a.status === "completed" && a.user_id === (ch.creator_user_id === p_user ? opp : p_user)))
+        .sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at)).map((ch) => ({ code: ch.public_code, mine: ch.creator_user_id === p_user, createdAt: ch.created_at, expiresAt: ch.expires_at, started: tables.challenge_attempts.some((a) => a.challenge_id === ch.id && a.user_id === (ch.creator_user_id === p_user ? opp : p_user)) })) : [] };
+  };
+
   const realFetch = globalThis.fetch;
   globalThis.fetch = async (input, init = {}) => {
     const u = String(input instanceof Request ? input.url : input);
@@ -204,6 +323,12 @@ export const installFakeCloud = ({ users = [] } = {}) => {
     if (rel.startsWith("rpc/profile_owner_get")) return reply(200, profileOwnerGetFn(JSON.parse(init.body || "{}")));
     if (rel.startsWith("rpc/profile_set_featured")) return reply(200, profileSetFeaturedFn(JSON.parse(init.body || "{}")));
     if (rel.startsWith("rpc/profile_board_links")) return reply(200, profileBoardLinksFn(JSON.parse(init.body || "{}")));
+    if (rel.startsWith("rpc/rivalry_request")) return reply(200, rivalryRequestFn(JSON.parse(init.body || "{}")));
+    if (rel.startsWith("rpc/rivalry_respond")) return reply(200, rivalryRespondFn(JSON.parse(init.body || "{}")));
+    if (rel.startsWith("rpc/rivalry_record_attempt")) return reply(200, rivalryRecordFn(JSON.parse(init.body || "{}")));
+    if (rel.startsWith("rpc/rivalry_reconcile")) return reply(200, rivalryReconcileFn(JSON.parse(init.body || "{}")));
+    if (rel.startsWith("rpc/rivalry_list")) return reply(200, rivalryListFn(JSON.parse(init.body || "{}")));
+    if (rel.startsWith("rpc/rivalry_detail")) return reply(200, rivalryDetailFn(JSON.parse(init.body || "{}")));
     if (rel.startsWith("rpc/")) return reply(404, { message: "no such function" });
     const { table, filters, onConflict, order, limit } = parse(rel);
     const rows = tables[table]; if (!rows) return reply(404, { message: `no table ${table}` });
@@ -211,7 +336,7 @@ export const installFakeCloud = ({ users = [] } = {}) => {
     if (method === "GET") return reply(200, shape(rows.filter((r) => match(r, filters)), { order, limit }));
     if (method === "POST") {
       // the progression tables are written by the function alone
-      if (["progression_profiles", "xp_ledger", "achievement_unlocks", "competitive_profiles", "competitive_rating_events"].includes(table)) return reply(403, { code: "42501", message: "permission denied (write through the database functions)" });
+      if (["progression_profiles", "xp_ledger", "achievement_unlocks", "competitive_profiles", "competitive_rating_events", "rivalries", "rivalry_periods", "rivalry_blocks", "rivalry_request_log", "rivalry_events"].includes(table)) return reply(403, { code: "42501", message: "permission denied (write through the database functions)" });
       if (table === "user_preferences") { const body = JSON.parse(init.body); const hit = rows.find((r) => r.user_id === body.user_id); if (hit) { Object.assign(hit, body, { updated_at: nowIso() }); return reply(201, [hit]); } const row = { updated_at: nowIso(), ...body }; rows.push(row); return reply(201, [row]); }
       const row = { id: uuid(), created_at: nowIso(), ...JSON.parse(init.body) };
       const dup = (table === "challenges" && rows.some((r) => r.public_code === row.public_code || (r.creator_user_id === row.creator_user_id && r.creator_result_id === row.creator_result_id)))
@@ -226,6 +351,16 @@ export const installFakeCloud = ({ users = [] } = {}) => {
     return reply(405, {});
   };
   /** Account deletion, as the cascades would do it (for in-process gates). */
-  const deleteUser = (userId) => { for (const t of Object.keys(tables)) tables[t] = tables[t].filter((r) => r.user_id !== userId); for (const c of tables.challenges) if (c.creator_user_id === userId) c.creator_user_id = null; };
-  return { tables, tokenFor: (userId) => `test-token.${userId}`, deleteUser, progressionApply, rateAttempt: rateAttemptFn, reconcileRatings: reconcileFn, leaderboard: leaderboardFn, rankOf: rankOfFn };
+  const deleteUser = (userId) => {
+    for (const t of Object.keys(tables)) tables[t] = tables[t].filter((r) => r.user_id !== userId);
+    for (const c of tables.challenges) if (c.creator_user_id === userId) c.creator_user_id = null;
+    // 0008: the deletion trigger — close open periods, mark the member, keep the pair for the survivor; blocks cascade
+    tables.rivalry_blocks = tables.rivalry_blocks.filter((b) => b.blocker_user_id !== userId && b.blocked_user_id !== userId);
+    for (const r of tables.rivalries) if (r.user_low === userId || r.user_high === userId) {
+      for (const p of tables.rivalry_periods) if (p.rivalry_id === r.id && !p.ended_at) Object.assign(p, { ended_at: nowIso(), end_reason: "account_deleted" });
+      Object.assign(r, { state: "idle", pending_from: null, pending_at: null, pending_expires_at: null, current_period_id: null, last_closed_reason: "account_deleted", last_closed_at: nowIso(), updated_at: nowIso(), low_deleted: r.low_deleted || r.user_low === userId, high_deleted: r.high_deleted || r.user_high === userId });
+    }
+  };
+  return { tables, tokenFor: (userId) => `test-token.${userId}`, deleteUser, progressionApply, rateAttempt: rateAttemptFn, reconcileRatings: reconcileFn, leaderboard: leaderboardFn, rankOf: rankOfFn,
+    rivalryRequest: rivalryRequestFn, rivalryRespond: rivalryRespondFn, rivalryRecord: rivalryRecordFn, rivalryReconcile: rivalryReconcileFn, rivalryList: rivalryListFn, rivalryDetail: rivalryDetailFn };
 };

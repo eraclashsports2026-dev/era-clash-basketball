@@ -9,6 +9,10 @@ import { track } from "../../analytics.js";
 // Phase 9E: the compact, auditable rating history rides the Challenges tab.
 import { competitiveMeRequest } from "../../competitive/client.js";
 import { fmt } from "../../competitive/contract.js";
+// Rivalries V1: START A RIVALRY from a completed account-vs-account comparison, and the Rivalries subsection.
+import RivalriesSection from "../rivalries/RivalriesSection.jsx";
+import { requestRivalryRequest } from "../../rivalries/client.js";
+import { RIVALRY_EVENTS } from "../../rivalries/contract.js";
 
 const signed = (n) => (n == null ? "—" : n > 0 ? `+${n}` : String(n));
 const dateOf = (iso) => { try { return iso ? new Date(iso).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" }) : "—"; } catch { return "—"; } };
@@ -16,11 +20,27 @@ const OUT = { win: "Won", loss: "Lost", tie: "Tied" };
 const CHAL = (o, name) => ({ recipient: `beat ${name}'s Clash`, creator: `${name}'s Clash holds`, tie: "tie" }[o] || "—");
 const STATUS_WORD = { open: "Open", expired: "Expired", revoked: "Withdrawn", unavailable: "Unavailable" };
 
-export default function ChallengesTab({ accessToken, displayName = "You", onOpenResult }) {
+const RIVALRY_COPY = {
+  requested: "Rivalry request sent. It counts once they accept.", pending_incoming: "They already asked you — accept their request under Rivalries.",
+  already_pending: "Your request is still pending.", already_active: "You are already rivals.", unavailable: "That account is not available for a Rivalry.",
+  not_eligible: "Only a completed Challenge between two accounts can start a Rivalry.", self: "You cannot start a Rivalry with yourself.",
+  cooldown: "Not yet — wait before asking this account again.", daily_limit: "You have sent today's limit of Rivalry requests.", outgoing_limit: "Too many requests are waiting for an answer. Cancel one first.",
+};
+
+export default function ChallengesTab({ accessToken, displayName = "You", onOpenResult, socialEnabled = false, onChallengeAgain, onOpenProfile }) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [notice, setNotice] = useState("");
   const [competitive, setCompetitive] = useState(null);
+  const [rivalryRefresh, setRivalryRefresh] = useState(0);
+  const startRivalry = async (attemptId) => {
+    try {
+      const r = await requestRivalryRequest({ attemptId, accessToken });
+      track(RIVALRY_EVENTS.REQUESTED, { contractVersion: "1.0.0", status: r.status, success: r.status === "requested", ...(r.status === "requested" ? {} : { failureCode: r.status || "network" }) });
+      setNotice(RIVALRY_COPY[r.status] || "The request could not be sent. Nothing else changed — try again.");
+      setRivalryRefresh((n) => n + 1);
+    } catch { setNotice("The request could not be sent. Nothing else changed — try again."); }
+  };
   const load = useCallback(async () => {
     if (!accessToken) { setLoading(false); return; }
     setLoading(true);
@@ -90,6 +110,7 @@ export default function ChallengesTab({ accessToken, displayName = "You", onOpen
                         {r.status === "completed" ? (
                           <span>{r.score.gold}–{r.score.blue} · {OUT[r.outcome]} · {signed(r.performance)} · <b data-outcome={r.challengeOutcome}>{r.challengeOutcome === "recipient" ? "they won the challenge" : r.challengeOutcome === "creator" ? "your Clash holds" : "tie"}</b> · {dateOf(r.completedAt)}</span>
                         ) : <span className="ec-me-muted">{r.status === "started" ? "in progress" : r.status} · {dateOf(r.startedAt)}</span>}
+                        {socialEnabled && r.status === "completed" && r.account && r.attemptId && <button type="button" className="ec-chal-btn ec-chal-btn--quiet ec-riv-start" onClick={() => startRivalry(r.attemptId)}>START A RIVALRY</button>}
                       </li>
                     ))}
                   </ul>
@@ -128,11 +149,14 @@ export default function ChallengesTab({ accessToken, displayName = "You", onOpen
                 <div className="ec-chal-row-line">Their result <b>{a.creatorScore.gold}–{a.creatorScore.blue}</b> ({OUT[a.creatorOutcome]}, {signed(a.original?.creatorPerformance)}) · your result <b>{a.yourScore.gold}–{a.yourScore.blue}</b> ({OUT[a.yourOutcome]}, {signed(a.yourPerformance)})</div>
                 <div className="ec-chal-row-line"><b className="ec-chal-outcome" data-outcome={a.challengeOutcome}>{a.challengeOutcome === "recipient" ? `You ${CHAL("recipient", a.creatorName)}` : a.challengeOutcome === "creator" ? CHAL("creator", a.creatorName) : "Tie"}</b>{a.era ? ` · era ${a.era}` : ""}</div>
                 {a.original?.creatorRoster?.length > 0 && <div className="ec-me-muted">Their five: {a.original.creatorRoster.map((p) => p.name || p.id).join(" · ")}{a.original.creatorCoach?.name ? ` · coach ${a.original.creatorCoach.name}` : ""}</div>}
+                {socialEnabled && a.creatorAccount && a.attemptId && <div className="ec-chal-row-actions"><button type="button" className="ec-chal-btn ec-chal-btn--quiet ec-riv-start" onClick={() => startRivalry(a.attemptId)}>START A RIVALRY</button></div>}
               </li>
             ))}
           </ul>
         )}
       </section>
+
+      {socialEnabled && <RivalriesSection accessToken={accessToken} refreshKey={rivalryRefresh} onChallengeAgain={onChallengeAgain} onOpenProfile={onOpenProfile} />}
     </div>
   );
 }

@@ -36,6 +36,11 @@ import { reconcileProgression, recentLedger, compactProgression, reconcileChalle
 // server relays the caller's side; the leaderboard is the safe projection.
 import { rateChallengeCompletion, competitiveMe, leaderboard as competitiveLeaderboard, aroundMe as competitiveAroundMe } from "./_lib/competitive.js";
 import { publicProfileBySlug, profileMe, setFeaturedAchievements, profileBoardLinks } from "./_lib/profiles.js";   // Phase 9F
+// Clash Cards + Rivalries V1: the card payloads (allowlisted, server-built) and
+// the Rivalry lifecycle ride the same route and the same function budget. Both
+// are gated by one server flag and disabled in production until acceptance.
+import { requestRivalry, respondRivalry, listRivalries, rivalryDetail, recordChallengeCompletion } from "./_lib/rivalries.js";
+import { resultCardPayload, invitationCardPayload, trustedOrigin } from "./_lib/cards.js";
 import { normalizeTier } from "../src/entitlements.js";
 import { validRunId } from "./_lib/chaosRun.js";
 
@@ -53,6 +58,13 @@ const ACCOUNT_ONLY_COMPETITIVE_ACTIONS = new Set(["competitive-me", "competitive
 // the existing 9B.2 path under owner-only RLS, so it has no action.
 const PROFILE_ACTIONS = new Set(["profile-public", "profile-me", "profile-featured-set", "profile-board-links"]);
 const ACCOUNT_ONLY_PROFILE_ACTIONS = new Set(["profile-me", "profile-featured-set"]);
+// Clash Cards + Rivalries V1. A RESULT card may be requested by the guest whose
+// device session owns the run; every other action is an account's own. The body
+// names an opaque handle (a run this session owns, a code the caller created, an
+// attempt the caller took part in, a rivalry the caller is a member of) — never
+// an account id, an email, a score or an outcome.
+const SOCIAL_ACTIONS = new Set(["card-result", "card-invitation", "rivalry-request", "rivalry-respond", "rivalry-list", "rivalry-detail"]);
+const ACCOUNT_ONLY_SOCIAL_ACTIONS = new Set(["card-invitation", "rivalry-request", "rivalry-respond", "rivalry-list", "rivalry-detail"]);
 /** A guest: an identity with no user id. Never a stand-in for a token that failed verification. */
 const GUEST_IDENTITY = Object.freeze({ userId: null });
 
@@ -215,7 +227,13 @@ export default async function handler(req, res) {
       const rating = out.status === "completed" || out.status === "already_completed"
         ? await rateChallengeCompletion({ chaosRunId, callerUserId: who.userId })
         : null;
-      return res.status(http).json({ ...out, ...(progression ? { progression } : {}), ...(rating ? { rating } : {}), requestId });
+      // Rivalries V1: the comparison, once settled, is enrolled into the pair's
+      // active Rivalry period if one exists (idempotent; never re-runs the
+      // comparison, the rating or the XP; a failure is reported, not thrown).
+      const rivalry = flags().clashSocial && (out.status === "completed" || out.status === "already_completed") && who.userId
+        ? await recordChallengeCompletion({ chaosRunId, callerUserId: who.userId })
+        : null;
+      return res.status(http).json({ ...out, ...(progression ? { progression } : {}), ...(rating ? { rating } : {}), ...(rivalry ? { rivalry } : {}), requestId });
     }
     if (action9c === "challenge-revoke") {
       out = code ? await revokeChallenge({ code, userId: who.userId }) : { status: "unavailable" };
@@ -287,6 +305,53 @@ export default async function handler(req, res) {
       : action9f === "profile-me" ? await profileMe({ userId: who.userId })
       : await setFeaturedAchievements({ userId: who.userId, ids: Array.isArray(req.body?.featured) ? req.body.featured : null });
     return res.status(out.status === "ok" ? 200 : { not_configured: 503, failed: 502 }[out.status] ?? 500).json({ ...out, requestId });
+  }
+
+  // ── Clash Cards + Rivalries V1 ───────────────────────────────────────────
+  // Behind one server flag (off in production until acceptance). Card payloads
+  // are read-only projections of records the caller already owns or created;
+  // Rivalry writes happen inside the database functions under the pair lock.
+  const actionSocial = typeof req.body?.action === "string" ? req.body.action : null;
+  if (actionSocial && SOCIAL_ACTIONS.has(actionSocial)) {
+    if (!flags().clashSocial) return sendError(res, "FEATURE_DISABLED", requestId);
+    if (!cloudAccountsReady()) return res.status(503).json({ error: "CLOUD_ACCOUNTS_DISABLED", requestId });
+    if (!(await rateLimit(`social:${clientIp(req)}`, limits().socialPerMinIp, 60))) return sendError(res, "RATE_LIMITED", requestId, { retryAfter: 30 });
+    const token = bearer(req);
+    const verified = token ? await verifyAccountToken(token) : null;
+    if (token && !verified) return res.status(401).json({ error: "NOT_AUTHENTICATED", requestId });
+    const who = verified || GUEST_IDENTITY;
+    if (ACCOUNT_ONLY_SOCIAL_ACTIONS.has(actionSocial) && !who.userId) return res.status(401).json({ error: "NOT_AUTHENTICATED", requestId });
+    res.setHeader("Cache-Control", "private, no-store");
+    const UUID_SHAPE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    const uuidField = (k) => (UUID_SHAPE.test(String(req.body?.[k] || "")) ? String(req.body[k]).toLowerCase() : null);
+    let out;
+    if (actionSocial === "card-result") {
+      const chaosRunId = validRunId(req.body?.chaosRunId);
+      if (!chaosRunId) return sendError(res, "VALIDATION_FAILURE", requestId);
+      out = await resultCardPayload({ chaosRunId, deviceSession: session, userId: who.userId });
+      return res.status({ ok: 200, not_found: 404, not_your_result: 403, not_simulated: 409 }[out.status] ?? 500).json({ ...out, requestId });
+    }
+    if (actionSocial === "card-invitation") {
+      const code = normalizeCode(String(req.body?.code || ""));
+      const origin = trustedOrigin(req);
+      if (!code || !origin) return sendError(res, "VALIDATION_FAILURE", requestId);
+      out = await invitationCardPayload({ code, userId: who.userId, origin });
+      return res.status({ ok: 200, unavailable: 404, not_yours: 403, expired: 410, revoked: 410, not_configured: 503 }[out.status] ?? 500).json({ ...out, requestId });
+    }
+    if (actionSocial === "rivalry-request") {
+      out = await requestRivalry({ userId: who.userId, attemptId: uuidField("attemptId") });
+      return res.status({ requested: 200, pending_incoming: 200, already_pending: 200, already_active: 200, unavailable: 200, not_eligible: 409, self: 409, cooldown: 429, daily_limit: 429, outgoing_limit: 429, not_configured: 503, failed: 502 }[out.status] ?? 500).json({ ...out, requestId });
+    }
+    if (actionSocial === "rivalry-respond") {
+      out = await respondRivalry({ userId: who.userId, rivalryId: uuidField("rivalryId"), action: typeof req.body?.rivalryAction === "string" ? req.body.rivalryAction : "" });
+      return res.status({ accepted: 200, declined: 200, blocked: 200, unblocked: 200, canceled: 200, ended: 200, not_pending: 409, not_active: 409, expired: 410, unavailable: 409, not_yours: 404, not_configured: 503, failed: 502 }[out.status] ?? 500).json({ ...out, requestId });
+    }
+    if (actionSocial === "rivalry-detail") {
+      out = await rivalryDetail({ userId: who.userId, rivalryId: uuidField("rivalryId"), limit: Number(req.body?.limit) || undefined, offset: Number(req.body?.offset) || 0 });
+      return res.status({ ok: 200, not_yours: 404, not_configured: 503, failed: 502 }[out.status] ?? 500).json({ ...out, requestId });
+    }
+    out = await listRivalries({ userId: who.userId });
+    return res.status({ ok: 200, not_configured: 503, failed: 502 }[out.status] ?? 500).json({ ...out, requestId });
   }
 
   // ── Phase 9B.1 cloud-career actions ──────────────────────────────────────
