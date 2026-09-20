@@ -94,27 +94,5 @@
     "physical iPhone Safari (emulated only)",
     "true parallel Postgres race (design: pair advisory lock + unique constraint; API-level concurrency proven on the fake cloud)"
   ],
-  "ownerDecision": "APPROVE CLASH CARDS + RIVALRIES V1 \u2014 RELEASE TO PRODUCTION  or  REVISE: [precise changes]",
-  "release": {
-    "approvedBy": "owner, 2026-09-19: APPROVE CLASH CARDS + RIVALRIES V1 \u2014 RELEASE TO PRODUCTION",
-    "mergedToMain": "5af1243 (rebase merge of PR #64; 3 commits)",
-    "productionMigration": "0008_rivalries_v1 applied 2026-09-19 to dxdtnhdeaanhfoqngdel BEFORE the merge deployed; schema_migrations lists 0001\u20260008; 5 tables, 10 functions, RLS on, 0 rows; challenges table untouched",
-    "productionVerification": {
-      "health": "ok, build 2.7.2, cloudAccounts ready",
-      "modes": {
-        "chaosClash": true,
-        "clashSocial": false
-      },
-      "socialActionWhileOff": "FEATURE_DISABLED",
-      "ordinaryChallengeView": "200 unavailable (unchanged)",
-      "leaderboard": 200,
-      "bundleNamesDbFunctions": 0
-    },
-    "waves": {
-      "wave1": "4dc59e7",
-      "wave2": "ef0caa5"
-    },
-    "remainingOwnerStep": "Vercel \u2192 era-clash-basketball \u2192 Settings \u2192 Environment Variables \u2192 Production: add CLASH_SOCIAL_V1_ENABLED = true, then Redeploy the current production deployment. Expected: /api/v3meta modes.clashSocial true; SHARE A CARD appears on a finished Clash; Challenges \u2192 Rivalries appears in My EraClash.",
-    "postEnableSmoke": "guest result card export; two owner-controlled accounts: Challenge \u2192 START A RIVALRY \u2192 ACCEPT \u2192 CHALLENGE AGAIN \u2192 one event recorded once; a third account reads nothing; rollback = set the variable to false and redeploy (tables kept)"
-  }
+  "ownerDecision": "APPROVE CLASH CARDS + RIVALRIES V1 \u2014 RELEASE TO PRODUCTION  or  REVISE: [precise changes]"
 }
