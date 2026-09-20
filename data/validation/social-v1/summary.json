@@ -94,5 +94,34 @@
     "physical iPhone Safari (emulated only)",
     "true parallel Postgres race (design: pair advisory lock + unique constraint; API-level concurrency proven on the fake cloud)"
   ],
-  "ownerDecision": "APPROVE CLASH CARDS + RIVALRIES V1 \u2014 RELEASE TO PRODUCTION  or  REVISE: [precise changes]"
+  "ownerDecision": "APPROVE CLASH CARDS + RIVALRIES V1 \u2014 RELEASE TO PRODUCTION  or  REVISE: [precise changes]",
+  "release": {
+    "approvedBy": "owner, 2026-09-19: APPROVE CLASH CARDS + RIVALRIES V1 \u2014 RELEASE TO PRODUCTION",
+    "mergedToMain": "5af1243 (rebase merge of PR #64; 3 commits)",
+    "productionMigration": "0008_rivalries_v1 applied 2026-09-19 to dxdtnhdeaanhfoqngdel before the merge deployed; schema_migrations lists 0001\u20260008; 5 tables, 10 functions, RLS on, 0 rows; challenges table untouched",
+    "productionVerificationFlagOff": {
+      "health": "ok",
+      "modes": {
+        "chaosClash": true,
+        "clashSocial": false
+      },
+      "socialActionWhileOff": "FEATURE_DISABLED",
+      "ordinaryChallengeView": "200 unavailable (unchanged)",
+      "leaderboard": 200
+    },
+    "productionEnabled": {
+      "at": "2026-09-19 (owner set CLASH_SOCIAL_V1_ENABLED=true and redeployed)",
+      "modes": {
+        "chaosClash": true,
+        "clashSocial": true
+      },
+      "guestSmoke": "social-production-smoke.json 10/10 \u2014 guest result card exported at 1080\u00d71350 on www.eraclashbasketball.com; rivalry actions 401 for a guest; no db function name, no preview ref, no secret value in the bundle (the single sb_secret_ literal is the client's key-shape validator regex)",
+      "twoAccountJourney": "OWNER-ASSISTED, pending: needs two owner-controlled signed-in accounts on production"
+    },
+    "waves": {
+      "wave1": "4dc59e7",
+      "wave2": "ef0caa5"
+    },
+    "rollback": "set CLASH_SOCIAL_V1_ENABLED=false in Vercel Production and redeploy; tables kept"
+  }
 }
