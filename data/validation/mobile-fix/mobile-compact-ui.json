@@ -71,5 +71,28 @@
     "desktop": "1536\u00d71024: 10 cards at 322px, header 65px with 6 nav items, HOLD label, no compact header \u2014 unchanged",
     "realDevice": "NOT tested on a real iPhone or the iOS Simulator (no full Xcode on this Mac; WebKit not installed). Evidence is Chromium emulation; the owner's iPhone retest is the real-Safari evidence."
   },
-  "screens": "data/validation/mobile-fix/screens: before-live-* (production before), home/empty/drafting-held at 390/430/375/360, menu, blue-readonly, era-reveal, drafting-roll2-kept, coach, ready, result at 390, desktop-drafting-1536x1024, owner-retest-390x844.webm (interaction recording)"
+  "screens": "data/validation/mobile-fix/screens: before-live-* (production before), home/empty/drafting-held at 390/430/375/360, menu, blue-readonly, era-reveal, drafting-roll2-kept, coach, ready, result at 390, desktop-drafting-1536x1024, owner-retest-390x844.webm (interaction recording)",
+  "pr": "https://github.com/eraclashsports2026-dev/era-clash-basketball/pull/52 (merged)",
+  "commits": {
+    "fix": "f6d12af",
+    "records": "9fc07fd",
+    "mainMerge": "1080fba"
+  },
+  "preview": {
+    "alias": "https://era-clash-basketball-git-fix-mobile-compact-roster-era-clash.vercel.app",
+    "result": "390\u00d7844 and 430\u00d7932: compact header 57px pinned (top 0 after scroll), all five Hold centres hit the Hold button, two holds \u2192 DRAFTING unchanged, kept marks after Roll 2, full Clash to Result on Candidate 4 (55bb26a2/1.4.0, possession-preview), Run it back present, overflow 0; chaos:deployed-qa PASS"
+  },
+  "live": {
+    "domain": "https://www.eraclashbasketball.com",
+    "main": "1080fba",
+    "deploy": "success",
+    "health": "ok \u00b7 server credential accepted \u00b7 same project \u00b7 accounts enabled \u00b7 Candidate 4 enabled",
+    "bundle": "carries .ec-brand-header--compact / .ec-pc--row",
+    "mobile": "390\u00d7844 and 430\u00d7932 on the domain: header 57px compact pinned, 5/5 Hold hits, holds do not roll, kept marks, Clash completes on Candidate 4 (runtime response), Run it back present, overflow 0 \u2014 screens in data/validation/mobile-fix/screens/live",
+    "serviceWorker": "cache identity rolled from eraclash-assets:2.7.2:6c2599b938b9 to the new build; skipWaiting + clients.claim; no local-save reset (localStorage untouched)",
+    "waveRefs": {
+      "wave1": "4dc59e7",
+      "wave2": "ef0caa5"
+    }
+  }
 }
