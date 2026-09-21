@@ -370,15 +370,19 @@ if (MODE === "harness" || MODE === "fixture" || MODE === "deployed") {
 
   if (MODE === "deployed") {
     // A protected preview: the owner key opens the gate for this context only.
-    const f = ".preview-secrets/wave2-access-keys.json";
-    if (!existsSync(f)) throw new Error(`${BASE} is gated and ${f} is not on disk`);
-    const k = JSON.parse(readFileSync(f, "utf8")).keys.find((x) => x.role === "owner");
+    // Production has no access gate; a preview does (the owner key opens it for this context only).
+    const isProduction = /eraclashbasketball\.com$/.test(new URL(BASE).host);
     const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
-    const gate = await ctx.request.post(`${BASE}/api/preview-access`, { form: { key: k.key }, maxRedirects: 0 });
-    ok("the preview is gated and the owner key opens it", gate.status() === 303);
+    if (!isProduction) {
+      const f = ".preview-secrets/wave2-access-keys.json";
+      if (!existsSync(f)) throw new Error(`${BASE} is gated and ${f} is not on disk`);
+      const k = JSON.parse(readFileSync(f, "utf8")).keys.find((x) => x.role === "owner");
+      const gate = await ctx.request.post(`${BASE}/api/preview-access`, { form: { key: k.key }, maxRedirects: 0 });
+      ok("the preview is gated and the owner key opens it", gate.status() === 303);
+    }
     const meta = await (await ctx.request.get(`${BASE}/api/v3meta`)).json();
     const health = await (await ctx.request.get(`${BASE}/api/health`)).json();
-    ok("the preview build has the feature ON by default and Chaos available", meta.modes?.clashSocial === true && meta.modes?.chaosClash === true, JSON.stringify(meta.modes));
+    ok(isProduction ? "production has the feature switched ON (owner set CLASH_SOCIAL_V1_ENABLED) and Chaos available" : "the preview build has the feature ON by default and Chaos available", meta.modes?.clashSocial === true && meta.modes?.chaosClash === true, JSON.stringify(meta.modes));
     ok("the public health payload stays minimal (no new configuration fields)", Object.keys(health).sort().join(",") === "aiNarrative,build,cloudAccounts,coreEngine,persistence,preview,simV3,status", Object.keys(health).join(","));
     const accountsReady = health.cloudAccounts?.ready === true;
     ok("account features on this preview (false = Preview variables still point at Production; the guards keep it inert)", true, `ready: ${accountsReady}`);
@@ -404,10 +408,13 @@ if (MODE === "harness" || MODE === "fixture" || MODE === "deployed") {
     const html = await (await ctx.request.get(`${BASE}/`)).text();
     const scripts = [...html.matchAll(/src="(\/assets\/[^"]+\.js)"/g)].map((m) => m[1]);
     let bundle = ""; for (const sp of scripts) bundle += await (await ctx.request.get(`${BASE}${sp}`)).text();
-    ok("the browser bundle never names the database functions or the production project", !/rpc\/rivalry_|rivalry_record_attempt|rivalry_reconcile|p_actor|p_attempt_id/.test(bundle) && !/dxdtnhdeaanhfoqngdel/.test(bundle), `${scripts.length} scripts`);
+    // A production bundle legitimately names its own (production) project URL; it must never name the
+    // preview project, a database function, or a secret VALUE (the client's key-shape validator carries
+    // the bare `sb_secret_` literal by design — that is not a value).
+    ok(isProduction ? "the browser bundle never names the database functions, the preview project or a secret key value" : "the browser bundle never names the database functions or the production project", !/rpc\/rivalry_|rivalry_record_attempt|rivalry_reconcile|p_actor|p_attempt_id/.test(bundle) && !/sb_secret_[A-Za-z0-9_-]{16,}/.test(bundle) && (isProduction ? !/lfybiphmqkiecfrqsfzt/.test(bundle) : !/dxdtnhdeaanhfoqngdel/.test(bundle)), `${scripts.length} scripts`);
     ok("the invitation link the bundle builds uses window.location.origin (this preview names itself, never production)", /window\.location\.origin/.test(bundle) && !/eraclashbasketball\.com\/\?challenge/.test(bundle));
     await ctx.close();
-    write("social-deployed-qa", { previewUrl: BASE, accountsReady, note: accountsReady ? "" : "Preview Supabase variables still name the Production project; account-backed checks (invitation card, Rivalries) are blocked on the deployed preview until the owner corrects them" });
+    write(isProduction ? "social-production-smoke" : "social-deployed-qa", { previewUrl: BASE, accountsReady, note: accountsReady ? "" : "Preview Supabase variables still name the Production project; account-backed checks (invitation card, Rivalries) are blocked on the deployed preview until the owner corrects them" });
   }
 
   if (MODE === "fixture") {
