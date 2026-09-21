@@ -1,7 +1,7 @@
 {
   "artifact": "link-and-error-review",
   "origin": "https://era-clash-basketball-git-fix-flow-era-after-co-4eeef4-era-clash.vercel.app",
-  "recordedAt": "2026-09-10T03:17:09.339Z",
+  "recordedAt": "2026-09-10T03:46:30.976Z",
   "visited": [
     {
       "label": "desktop: Home",
@@ -147,7 +147,7 @@
     {
       "where": "desktop",
       "kind": "http-502",
-      "detail": "/api/profile"
+      "detail": "POST /api/profile {\"action\":\"competitive-leaderboard\"}"
     },
     {
       "where": "desktop",
@@ -155,14 +155,24 @@
       "detail": "Failed to load resource: the server responded with a status of 502 ()"
     },
     {
+      "where": "desktop",
+      "kind": "http-502",
+      "detail": "POST /api/profile {\"action\":\"profile-board-links\"}"
+    },
+    {
       "where": "phone",
       "kind": "http-502",
-      "detail": "/api/profile"
+      "detail": "POST /api/profile {\"action\":\"competitive-leaderboard\"}"
     },
     {
       "where": "phone",
       "kind": "console-error",
       "detail": "Failed to load resource: the server responded with a status of 502 ()"
+    },
+    {
+      "where": "phone",
+      "kind": "http-502",
+      "detail": "POST /api/profile {\"action\":\"profile-board-links\"}"
     }
   ],
   "pass": false

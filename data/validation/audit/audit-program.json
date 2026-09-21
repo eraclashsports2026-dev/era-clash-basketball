@@ -61,6 +61,32 @@
         }
       ],
       "note": "provider credential = the preview environment's rejected server key (owner env item); the unknown-route 404 document and the phone Menu rows were audit-side (corrected); the 404 page's wordmark link was 23px (fixed to 44px). Visual review of the preview screens found the in-flow phone action bar painted UNDER the phone's opaque atmosphere layer (tappable but invisible) — fixed with position: relative; z-index: 3, and the audit now samples the screenshot to prove the action bar paints."
+    },
+    {
+      "n": 3,
+      "where": "preview deployment of PR #57 @ ec04056",
+      "score": 99,
+      "criteria": "405/407",
+      "findings": [
+        {
+          "id": "api: the account provider accepts the server credential",
+          "fact": "probe 401"
+        },
+        {
+          "id": "phone → My EraClash: 44px targets",
+          "fact": "input. \"Display name\" 214×37 · button. \"Save\" 68×37"
+        }
+      ],
+      "note": "the preview's rejected server key (owner env item) and the guest career's 37px Display-name input / Save button on the phone — fixed (44px, 16px text)"
+    },
+    {
+      "n": 4,
+      "where": "LIVE www.eraclashbasketball.com @ main e34b5f1 (launch-readiness audit)",
+      "score": 100,
+      "criteria": "416/416",
+      "findings": [],
+      "threshold": 95,
+      "verdict": "READY"
     }
   ],
   "fixedByTheAudits": [
@@ -72,5 +98,63 @@
     "stale copy: Adapt to the era, era arrives with Roll 2, custom-era window, challenge invite, 'protected preview' on membership, third-party game mark in the Daily copy",
     "phone: 14px guest-name input (iOS zoom), 40px Back button",
     "sign-in: invite-only email copy instead of 'email does not look right'; rate-limit copy"
-  ]
+  ],
+  "tripleRunLive": {
+    "rule": "three consecutive full web + mobile journeys on the live domain must each score 100/100",
+    "runs": [
+      {
+        "run": 1,
+        "score": 100,
+        "criteria": "50/50",
+        "failed": []
+      },
+      {
+        "run": 2,
+        "score": 100,
+        "criteria": "50/50",
+        "failed": []
+      },
+      {
+        "run": 3,
+        "score": 100,
+        "criteria": "50/50",
+        "failed": []
+      }
+    ],
+    "pass": true
+  },
+  "guestBudgetLive": {
+    "pass": true,
+    "starts": [
+      [
+        1,
+        200
+      ],
+      [
+        2,
+        200
+      ],
+      [
+        3,
+        200
+      ],
+      [
+        4,
+        403
+      ]
+    ],
+    "signInOffered": true
+  },
+  "launchReadiness": {
+    "score": 100,
+    "threshold": 95,
+    "verdict": "READY",
+    "ownerItemsOutsideTheCode": [
+      "Preview-scoped SUPABASE_SERVICE_ROLE_KEY in Vercel is rejected by the preview project (401): branch previews answer the leaderboard / profile boards with 502 until it is replaced — production is unaffected",
+      "Email sign-in is invite-only until custom SMTP is configured (Supabase built-in email: organization addresses, two per hour); the dialog now says so honestly",
+      "No privacy notice or terms page exists; accounts collect an email address",
+      "/api/health?deep=1 answers publicly with credential metadata (kind, length, fingerprint, probe attempts) — consider gating the deep view",
+      "The AI recap (/api/narrative) falls back to the engine's written recap under budget or model errors (503/429) — expected, but visible in server logs"
+    ]
+  }
 }

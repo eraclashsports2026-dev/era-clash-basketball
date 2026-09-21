@@ -198,8 +198,32 @@
     "wavePreservation": "allZero=true (main acknowledged at 0e4f309; wave1 4dc59e7, wave2 ef0caa5 unchanged)",
     "coachRowMeasure": "15/15 (phone-390, phone-430, desktop-1440)"
   },
-  "pending": [
-    "preview verification",
-    "live verification"
-  ]
+  "pending": [],
+  "preview": {
+    "deployment": "https://era-clash-basketball-be4jtnsra-era-clash.vercel.app @ 2c90b4c",
+    "coachRows": "15/15",
+    "playSimulation": "SCORE 100/100 (187/187 weighted · 50/50 criteria)",
+    "chaosDeployedQa": "PASS — states pass · secrets 0 · Candidate 4 1.4.0 · serves this head"
+  },
+  "live": {
+    "mergedAs": "PR #56 rebase-merged → main 0ae74f6; production deployment 6364764231 success",
+    "health": "/api/health?deep=1 ok · serverCredentialAccepted (PostgREST 200) · Candidate 4 1.4.0",
+    "bundle": "assets/index-Dyfyadfk.js",
+    "coachRows": "15/15 — phone-390 coach 60/60/60px beside 58px base player rows; three offers 193px together; desktop cards 248×243 unchanged",
+    "playSimulation": "SCORE 100/100 (187/187 weighted · 50/50 criteria) web + mobile",
+    "linkReview": "visited 25 · findings 0",
+    "screens": [
+      "live/screens/coach-rows-phone-390.png",
+      "live/screens/coach-rows-phone-390-detail.png",
+      "live/screens/coach-rows-phone-390-selected.png",
+      "live/screens/coach-rows-phone-430.png",
+      "live/screens/coach-cards-desktop-1440.png"
+    ]
+  },
+  "completionScore": {
+    "live": 100,
+    "preview": 100,
+    "harness": 100
+  },
+  "ownerReport": "LIVE @ 0ae74f6: on phones the three Coach Chaos offers are compact rows (60px) the size of the player rows (58px base), with the role over the name, the coaching span, a Details toggle that expands only that row, and one 44px SELECT control; all three fit under the five with CONTINUE WITH COACH on one screen. Desktop cards unchanged. Web + mobile play simulation 100/100 on harness, preview and live; live link review 0 findings."
 }
