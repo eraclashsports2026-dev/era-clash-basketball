@@ -116,12 +116,13 @@
         "clashSocial": true
       },
       "guestSmoke": "social-production-smoke.json 10/10 \u2014 guest result card exported at 1080\u00d71350 on www.eraclashbasketball.com; rivalry actions 401 for a guest; no db function name, no preview ref, no secret value in the bundle (the single sb_secret_ literal is the client's key-shape validator regex)",
-      "twoAccountJourney": "OWNER-ASSISTED, pending: needs two owner-controlled signed-in accounts on production"
+      "twoAccountJourney": "NOT VERIFIED. Owner reported running it on 2026-09-19; the Production database (checked 2026-09-20 as the service role) holds 3 accounts, 0 challenges ever, 0 attempts ever, 0 saved clashes in 24h and 0 rivalry rows; the Preview database is likewise empty. Most likely cause: production sign-in still depends on Supabase's built-in mailer (organisation addresses only), so the browsers stayed guests and no Challenge could be created. Re-run once production auth email delivery is configured, or with two organisation-address accounts."
     },
     "waves": {
       "wave1": "4dc59e7",
       "wave2": "ef0caa5"
     },
-    "rollback": "set CLASH_SOCIAL_V1_ENABLED=false in Vercel Production and redeploy; tables kept"
+    "rollback": "set CLASH_SOCIAL_V1_ENABLED=false in Vercel Production and redeploy; tables kept",
+    "verdictAsOf": "2026-09-20: RELEASED AND ENABLED IN PRODUCTION; guest card path certified live; two-account Rivalry path certified on the fake-cloud harness and the Preview database only \u2014 not yet observed in production"
   }
 }
