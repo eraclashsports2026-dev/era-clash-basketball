@@ -12,6 +12,7 @@
 // installed only through provider._setProvider from the suite. A fake account
 // must never appear in a user-facing preview.
 import { cleanDisplayName } from "./config.js";
+import { listProjection } from "./savedReport.js";
 import {
   rosterSnapshotFrom, coachSnapshotFrom, cleanRosterName, cleanPrefs,
   SAVED_ROSTER_LIMIT_FREE,
@@ -88,7 +89,8 @@ export const createTestProvider = ({ users = [] } = {}) => {
     async listSavedClashes({ limit = 25 } = {}) {
       const s = requireSession();
       return db.savedClashes.filter((r) => r.user_id === s.userId)
-        .sort((a, b) => new Date(b.played_at) - new Date(a.played_at)).slice(0, limit).map((r) => ({ ...r }));
+        // the real provider's list projection: no snapshot (reopen reads the full row)
+        .sort((a, b) => new Date(b.played_at) - new Date(a.played_at)).slice(0, limit).map((r) => listProjection(r));
     },
     async getSavedClash(resultId) {
       const s = requireSession();

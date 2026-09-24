@@ -120,7 +120,8 @@ if (MODE === "rls") {
   let crossUserReads = 0, crossUserWrites = 0, anonymousProtectedReads = 0;
   ctx.signInAs("u-1");
   if (await ctx.provider.getSavedClash("pv_two22222bb")) crossUserReads++;
-  if ((await ctx.provider.listSavedClashes()).some((r) => r.user_id !== "u-1")) crossUserReads++;
+  // the list carries the real provider's projection (no user_id column), so the cross-account check is by result id
+  if ((await ctx.provider.listSavedClashes()).some((r) => r.result_id === "pv_two22222bb")) crossUserReads++;
   if (ctx.server.claimAndSave({ resultId: "pv_two22222bb", token: "test-token.u-1", deviceSession: A }).status === "saved") crossUserWrites++;
   await ctx.provider.updateDisplayName("One Only");
   if (ctx.db.profiles.get("u-2").display_name === "One Only") crossUserWrites++;

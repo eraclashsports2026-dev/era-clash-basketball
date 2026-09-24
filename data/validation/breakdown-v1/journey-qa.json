@@ -1,0 +1,106 @@
+{
+  "artifact": "journey-qa",
+  "phase": "Clash Breakdown V1",
+  "generatedAt": "2026-09-24T05:00:55.108Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "the build has Clash Breakdown switched on",
+      "pass": true,
+      "detail": "{\"chaosClash\":true,\"clashSocial\":true,\"clashBreakdown\":true}"
+    },
+    {
+      "check": "the authoritative /api/game response was captured for the audit",
+      "pass": true,
+      "detail": "pv_bozyo8n7bv"
+    },
+    {
+      "check": "the final score sits above the breakdown entry, which starts collapsed",
+      "pass": true,
+      "detail": "{\"score\":132.8125,\"bd\":916.125,\"bdOpen\":\"false\"}"
+    },
+    {
+      "check": "the collapsed entry states the single largest recorded difference (or the balanced line)",
+      "pass": true,
+      "detail": "Gold finished with 10 fewer turnovers."
+    },
+    {
+      "check": "up to three differences, exactly the projection's (3 shown)",
+      "pass": true,
+      "detail": "turnovers,rebounds,free_throws"
+    },
+    {
+      "check": "every team number shown equals an independent recount of the raw box score",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "directionality: turnovers favour the lower count; splits and possessions are never marked",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "key performances from BOTH teams, exactly the projection's lines",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "game flow: period rows add up to the final score and the facts match",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "no causal wording and no MVP label in the rendered breakdown",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "opening the breakdown makes no API request (pure projection of the result already on screen)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "after a refresh the same breakdown reopens from the remembered result",
+      "pass": true,
+      "detail": "last-clash-sheet"
+    },
+    {
+      "check": "one result for the whole journey: opening, closing and refreshing the breakdown sent no game request and minted no result",
+      "pass": true,
+      "detail": "1 result id(s); 0 game requests after the result"
+    },
+    {
+      "check": "Run It Back (same five, coaches, era) is a new game with a new seed",
+      "pass": true,
+      "detail": "3904889569 → 1793083013"
+    },
+    {
+      "check": "an account can still create a governed Challenge from this Clash",
+      "pass": true,
+      "detail": "created"
+    },
+    {
+      "check": "before the attempt the recipient's invitation carries no box score and no breakdown",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the Challenge completes with the same comparison contract (1.0.0) and a rating answer",
+      "pass": true,
+      "detail": "already_completed"
+    },
+    {
+      "check": "after completing, the recipient sees the comparison first and a breakdown of THEIR OWN game below it",
+      "pass": true,
+      "detail": "comparison-first"
+    }
+  ],
+  "passed": true,
+  "resultId": "pv_bozyo8n7bv",
+  "insightIds": [
+    "turnovers",
+    "rebounds",
+    "free_throws"
+  ],
+  "note": "Chromium device emulation (Playwright), not a physical iPhone."
+}
