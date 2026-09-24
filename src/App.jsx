@@ -43,7 +43,7 @@ import AuthCallback from "./components/accounts/AuthCallback.jsx";
 import SaveThisClash from "./components/accounts/SaveThisClash.jsx";
 import MyEraClash from "./components/accounts/MyEraClash.jsx";
 import { startAccountState, subscribeAccount, accountState, signOutAccount } from "./accounts/accountState.js";
-import { provider as accountProvider } from "./accounts/provider.js";
+import { provider as accountProvider, withProvider } from "./accounts/provider.js";
 import { saveResultToCareer, claimGuestResult } from "./accounts/cloudSave.js";
 import { rememberResult } from "./accounts/deviceResults.js";
 import { runItBackSetup } from "./accounts/careerV2.js";
@@ -56,6 +56,8 @@ import { simulateChaos, chooseChaosEra } from "./chaos/client.js";
 // invitation; an accepted challenge is an ordinary Chaos run the arena resumes.
 import ChallengeInvite from "./components/challenges/ChallengeInvite.jsx";
 import ChallengeShare from "./components/challenges/ChallengeShare.jsx";
+import ClashBreakdown from "./components/breakdown/ClashBreakdown.jsx";   // Clash Breakdown V1
+import { loadSavedReport } from "./accounts/savedReport.js";
 import ChallengeComparison from "./components/challenges/ChallengeComparison.jsx";
 import { completeChallengeRequest, rememberChallengeRun, challengeForRun, forgetChallengeRun } from "./challenges/client.js";
 // Phase 9D: what a saved result earned (server-decided), shown after the score.
@@ -215,6 +217,8 @@ export default function App() {
   // Clash Cards + Rivalries V1: one server flag, read with the mode registry;
   // off (the production default until acceptance) hides every new surface.
   const [socialEnabled, setSocialEnabled] = useState(false);
+  // Clash Breakdown V1: read with the mode registry; off (production default) hides it.
+  const [breakdownEnabled, setBreakdownEnabled] = useState(false);
   const [playStage, setPlayStage] = useState("ROSTERS"); // ROSTERS | COACHES | ERA | READY (v3 wizard)
   const [chaosReady, setChaosReady] = useState(null);     // a Chaos run at phase READY
   if (DEV_FIXTURES && typeof window !== "undefined" && window.location.pathname === FIXTURE_ROUTE) {
@@ -242,6 +246,16 @@ export default function App() {
   const [authDialog, setAuthDialog] = useState(null);
   const [cloudSave, setCloudSave] = useState({ resultId: null, state: "idle" });
   const [savedReport, setSavedReport] = useState(null);   // a cloud-saved clash reopened from its own snapshot
+  // The History list deliberately omits the (large) snapshot column, so opening
+  // a saved Clash reads the owner's full row through the provider under RLS —
+  // the existing owner-only path. Without this the report could not reopen for
+  // a real account (the list row has no snapshot; only the test adapter did).
+  const openSavedReport = useCallback(async (clash) => {
+    if (!clash) return;
+    if (!clash.result_snapshot?.core) setSavedReport({ ...clash, _loading: true });
+    const out = await loadSavedReport(clash, (id) => withProvider((p) => p.getSavedClash(id), null));
+    setSavedReport((cur) => (!cur || cur.result_id === clash.result_id ? { ...out.clash, _loading: false } : cur));
+  }, []);
   const [gate, setGate] = useState(null);                 // an entitlement gate to render
   const [chaosChallengeId, setChaosChallengeId] = useState(null);
   // Bumped on a new clash and on account creation to force a re-render. It is
@@ -422,6 +436,7 @@ export default function App() {
         const on = m.modes?.chaosClash !== false;
         setChaosAvailable(on);
         setSocialEnabled(m.modes?.clashSocial === true);
+        setBreakdownEnabled(m.modes?.clashBreakdown === true);
         if (!on) {
           setGameMode((g) => (g === "Chaos" ? "Single" : g));
           // Keep the address truthful: a Chaos link on a deployment without
@@ -1896,7 +1911,7 @@ export default function App() {
    */
   const renderReport = ({ result: res, team: tm, narrative: nar, live = false }) => res && (
     <div style={{ maxWidth: 900, margin: "0 auto" }}>
-      <ResultView result={res} team={tm} feedbackCtx={feedbackCtx}
+      <ResultView result={res} team={tm} feedbackCtx={feedbackCtx} showBreakdown={breakdownEnabled}
         narrative={nar || { status: "none" }} onRetryNarrative={live ? retryNarrative : null}
         // doRematch and doShare read the LIVE result and five. A previous
         // clash's report is a record, not a control surface — newChaosClash has
@@ -2030,7 +2045,7 @@ export default function App() {
       ) : route === "/my-eraclash" ? (
         <MyEraClash
           onSignIn={() => openAccountDialog({ entryPoint: "my_eraclash", intent: "signin", returnTo: "/my-eraclash" })}
-          onOpenReport={(clash) => setSavedReport(clash)}
+          onOpenReport={openSavedReport}
           onRunItBack={runItBackFromSaved}
           onOpenLeaderboard={() => navigate(LEADERBOARD_ROUTE)}
           onOpenProfile={(path) => navigate(path)}
@@ -2107,6 +2122,7 @@ export default function App() {
             onRunItBack={() => { setFullReport(false); doRematch("chaos"); }}
             onNewClash={() => { setFullReport(false); newChaosClash(); }}
             onReset={() => { setFullReport(false); newChaosClash(); }}
+            showBreakdown={breakdownEnabled}
             challengeContext={challengeForRun(chaosRun?.chaosRunId) || (challengeAttempt && challengeAttempt.resultId === result?.resultId ? challengeAttempt : null)}
             challengeShare={result?.resultId && chaosRun?.chaosRunId && !(challengeAttempt && challengeAttempt.resultId === result?.resultId)
               ? <ChallengeShare chaosRunId={chaosRun.chaosRunId} accessToken={token} socialEnabled={socialEnabled}
@@ -2192,12 +2208,13 @@ export default function App() {
             </div>
             {(() => {
               const snap = savedReport.result_snapshot;
-              if (!snap?.core) return <p style={{ color: T.textDim, fontSize: 13 }}>This saved report is missing its snapshot and cannot be reopened.</p>;
+              if (savedReport._loading) return <p role="status" style={{ color: T.textDim, fontSize: 13 }}>Opening this saved report…</p>;
+              if (!snap?.core) return <p role="status" style={{ color: T.textDim, fontSize: 13 }}>This saved report could not be opened.</p>;
               const five = (savedReport.gold_roster || []).map((p) => findCard(p.id)).filter(Boolean);
               const opp = (savedReport.blue_roster || []).map((p) => findCard(p.id)).filter(Boolean);
               return <ResultView
                 result={{ type: savedReport.mode === "best7" ? "best7" : "single", sim: viewSim(snap), w: savedReport.outcome === "win", won: savedReport.outcome === "win", tag: savedReport.mode, opp, resultId: savedReport.result_id, record: snap, persisted: true }}
-                team={five} feedbackCtx={null} narrative={{ status: "none" }} onRetryNarrative={null}
+                team={five} feedbackCtx={null} narrative={{ status: "none" }} onRetryNarrative={null} showBreakdown={breakdownEnabled}
                 onRematch={null} onBest7={null} onChallenge={null} onSwap={null} onShare={null} onLeaderboard={null} />;
             })()}
           </div>
@@ -2304,7 +2321,7 @@ function RollBuilder({ yz, ballIQ, isDaily, onStart, onKeep, onRespin, onRoll })
 }
 
 // ── Results ──────────────────────────────────────────────────────────────────
-function ResultView({ result, team, feedbackCtx, narrative, onRetryNarrative, onRematch, onBest7, onChallenge, onSwap, onShare, onLeaderboard }) {
+function ResultView({ result, team, feedbackCtx, narrative, onRetryNarrative, onRematch, onBest7, onChallenge, onSwap, onShare, onLeaderboard, showBreakdown = false }) {
   const narrProps = { narrativeStatus: narrative?.status, onRetryNarrative, persisted: result.persisted };
   if (result.type === "82") {
     const pct = ((result.wins / 82) * 100).toFixed(1);
@@ -2328,6 +2345,7 @@ function ResultView({ result, team, feedbackCtx, narrative, onRetryNarrative, on
   if (result.type === "single") {
     const pgMode = result.tag === "challenge" ? "challenge" : result.tag === "daily" ? "daily" : "single";
     return <Postgame sim={result.sim} won={result.w} mode={pgMode} team={team} opp={result.opp} feedbackCtx={feedbackCtx} {...narrProps}
+      breakdown={showBreakdown ? <ClashBreakdown result={result.sim} surface="report" /> : null}
       onRematch={onRematch} onBest7={onBest7} onChallenge={onChallenge} onSwap={onSwap} onShare={onShare} onLeaderboard={onLeaderboard} />;
   }
   if (result.type === "best7") {
