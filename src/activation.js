@@ -81,6 +81,9 @@ export const ACTIVATION_EVENTS = Object.freeze([
   // attempt id, a payload, an image or a token)
   "card_composer_opened", "card_exported", "card_share_invoked", "card_export_failed",
   "rivalry_requested", "rivalry_responded", "rivalry_ended", "rivalries_viewed", "rivalry_challenge_again",
+  // Clash Breakdown V1 (closed; metadata may carry breakdownVersion, surface,
+  // insightCount, hasFlow — never a name, a score, a result id or a stat)
+  "clash_breakdown_opened", "clash_breakdown_comparison_opened",
 ]);
 
 const ss = {

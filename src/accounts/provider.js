@@ -12,6 +12,7 @@
 import { SUPABASE_URL, SUPABASE_ANON_KEY, cloudAccountsEnabled, cleanDisplayName } from "./config.js";
 import { readProof, VIA } from "./linkProof.js";
 import { rosterSnapshotFrom, coachSnapshotFrom, cleanRosterName, cleanPrefs } from "./careerV2.js";
+import { SAVED_CLASH_LIST_SELECT } from "./savedReport.js";   // the History list projection, shared with the test adapter
 
 let injected = null;
 /** Tests (and only tests) install an adapter here. */
@@ -260,7 +261,7 @@ const supabaseProvider = {
   async listSavedClashes({ limit = 250 } = {}) {
     const c = await client();
     const { data, error } = await c.from("saved_clashes")
-      .select("id, result_id, mode, user_side, outcome, gold_score, blue_score, era_id, gold_roster, blue_roster, gold_coach, blue_coach, mvp, candidate_id, calibration_version, theme_version, played_at, claimed_from, favorite, favorited_at")
+      .select(SAVED_CLASH_LIST_SELECT)
       .order("played_at", { ascending: false }).limit(limit);
     if (error) throw asError(error);
     return data || [];
