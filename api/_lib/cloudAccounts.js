@@ -17,6 +17,8 @@
 // forge a career record.
 import { createHash } from "node:crypto";
 import { getJSON } from "./store.js";
+import { findCard } from "../../src/players.js";
+import { getCoach, NEUTRAL_COACH } from "../../src/v3/coaches.js";
 
 export const CLOUD_ACCOUNTS_SERVER_VERSION = "1.0.0";
 
@@ -141,16 +143,38 @@ const mvpOf = (record) => {
   return { name: String(m.name || "").slice(0, 40), pts: Number(m.pts) || null };
 };
 
-const roster = (ids, record) => {
+// The stored record carries ids, not display cards: `goldIds`/`blueIds`, and
+// `coachIds: { gold, blue }` (api/game.js spreads the engine's result into it).
+// Nothing on it is called `pregame.cards` or `coachGold`, and reading those
+// saved every Clash with nameless rosters and no coaches, so Run It Back sent
+// no coach and the server played both sides with the neutral staff.
+//
+// A name and position come from the record's own box score — what that game
+// showed, including the slot each player filled — and otherwise from the
+// catalog, through the alias-aware lookup any stored id must use.
+const roster = (ids, record, side) => {
   const list = Array.isArray(ids) ? ids : [];
-  const byId = new Map((record?.pregame?.cards || []).map((c) => [c.id, c]));
+  const box = new Map((record?.v3?.fullBox?.[side] || []).map((l) => [l?.id, l]));
   return list.slice(0, 5).map((id) => {
-    const c = byId.get(id);
+    const c = box.get(id) || findCard(id);
     return { id: String(id).slice(0, 40), name: c?.name ? String(c.name).slice(0, 40) : null, pos: c?.pos ? String(c.pos).slice(0, 4) : null };
   });
 };
 
-const coach = (c) => (c ? { id: String(c.id ?? "").slice(0, 40) || null, name: c.name ? String(c.name).slice(0, 40) : null } : null);
+// The engines resolve an absent or unknown coach to the neutral staff, so a
+// coach id on the record is a catalog coach or "neutral". Neutral means no coach
+// was chosen and stays null: Run It Back then sends none and the server
+// defaults to the same staff.
+const coach = (id) => {
+  if (typeof id !== "string" || !id || id === NEUTRAL_COACH.id) return null;
+  const known = getCoach(id);
+  return { id: id.slice(0, 40), name: known?.name ? String(known.name).slice(0, 40) : null };
+};
+
+// The identity the preview engine stamps on its record (previewEngine.js).
+// Only a preview result has one — the same gate the browser's view model
+// applies — so a production-engine Clash keeps null and is labelled as such.
+const candidateOf = (record) => (record?.preview === true && record?.candidate ? record.candidate : null);
 
 /**
  * The career row, built ENTIRELY from the authoritative record.
@@ -160,6 +184,7 @@ const coach = (c) => (c ? { id: String(c.id ?? "").slice(0, 40) || null, name: c
  */
 export const buildSavedClash = ({ record, userId, claimedFrom, buildStamp = null, themeVersion = null }) => {
   const { session, ...withoutSession } = record || {};
+  const candidate = candidateOf(record);
   return {
     user_id: userId,
     result_id: String(record.id),
@@ -173,14 +198,14 @@ export const buildSavedClash = ({ record, userId, claimedFrom, buildStamp = null
     gold_score: Number.isFinite(scoreOf(record)?.gold) ? scoreOf(record).gold : null,
     blue_score: Number.isFinite(scoreOf(record)?.blue) ? scoreOf(record).blue : null,
     era_id: record?.eraId ? String(record.eraId).slice(0, 20) : null,
-    gold_roster: roster(record?.goldIds, record),
-    blue_roster: roster(record?.blueIds, record),
-    gold_coach: coach(record?.pregame?.coachGold || record?.coachGold),
-    blue_coach: coach(record?.pregame?.coachBlue || record?.coachBlue),
+    gold_roster: roster(record?.goldIds, record, "gold"),
+    blue_roster: roster(record?.blueIds, record, "blue"),
+    gold_coach: coach(record?.coachIds?.gold),
+    blue_coach: coach(record?.coachIds?.blue),
     mvp: mvpOf(record),
-    candidate_id: record?.previewCandidate?.candidateId ? String(record.previewCandidate.candidateId).slice(0, 40) : null,
-    calibration_version: record?.previewCandidate?.calibrationVersion ? String(record.previewCandidate.calibrationVersion).slice(0, 20) : null,
-    candidate_core_hash: record?.previewCandidate?.candidateCoreHash ? String(record.previewCandidate.candidateCoreHash).slice(0, 64) : null,
+    candidate_id: candidate?.candidateId ? String(candidate.candidateId).slice(0, 40) : null,
+    calibration_version: candidate?.possessionCalibrationVersion ? String(candidate.possessionCalibrationVersion).slice(0, 20) : null,
+    candidate_core_hash: candidate?.coreHash ? String(candidate.coreHash).slice(0, 64) : null,
     theme_version: themeVersion ? String(themeVersion).slice(0, 40) : null,
     build_stamp: buildStamp ? String(buildStamp).slice(0, 64) : null,
     // A non-reversible fingerprint: the same-seed challenge can be recognised
