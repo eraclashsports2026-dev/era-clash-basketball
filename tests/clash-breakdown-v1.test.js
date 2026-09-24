@@ -248,7 +248,8 @@ describe("key performances (rule 1.0.0)", () => {
 
 describe("integration, flag and preservation", () => {
   it("one flag, preview-on / production-off, surfaced through the mode registry and read by the App", () => {
-    expect(read("api/_lib/flags.js")).toContain('clashBreakdown: bool("CLASH_BREAKDOWN_V1_ENABLED", process.env.VERCEL_ENV === "preview")');
+    // released 2026-09-24 on the owner's approval: on by default, CLASH_BREAKDOWN_V1_ENABLED=false is the kill switch
+    expect(read("api/_lib/flags.js")).toContain('clashBreakdown: bool("CLASH_BREAKDOWN_V1_ENABLED", true)');
     expect(read("api/v3meta.js")).toContain("clashBreakdown: !!flags().clashBreakdown");
     expect(read("src/App.jsx")).toContain('setBreakdownEnabled(m.modes?.clashBreakdown === true)');
   });

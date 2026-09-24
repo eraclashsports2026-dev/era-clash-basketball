@@ -78,7 +78,10 @@ export const flags = () => ({
   // Clash, computed from the stored result. ON for preview deployments, OFF in
   // production until the owner's acceptance; an explicit
   // CLASH_BREAKDOWN_V1_ENABLED always wins. Off leaves the result exactly as it is.
-  clashBreakdown: bool("CLASH_BREAKDOWN_V1_ENABLED", process.env.VERCEL_ENV === "preview"),
+  // Owner approval recorded 2026-09-24 ("APPROVE CLASH BREAKDOWN V1 — RELEASE TO
+  // PRODUCTION"): ON by default everywhere. Kill switch: set
+  // CLASH_BREAKDOWN_V1_ENABLED=false in Vercel and redeploy.
+  clashBreakdown: bool("CLASH_BREAKDOWN_V1_ENABLED", true),
   feedback: bool("FEEDBACK_ENABLED", true),
 });
 
