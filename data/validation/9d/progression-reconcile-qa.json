@@ -1,0 +1,46 @@
+{
+  "artifact": "progression-reconcile-qa",
+  "phase": "9D — Progression, XP and Achievements V1",
+  "generatedAt": "2026-09-06T14:54:37.039Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "expected (from records) equals stored (from the ledger)",
+      "pass": true,
+      "detail": "575"
+    },
+    {
+      "check": "a missing legitimate award is repaired, and only that one",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "nothing already held is duplicated",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a temporary read failure erases nothing",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "an empty (failed) record read never removes progression: the ledger only grows",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a claimed guest result earns exactly once (claim, then save: 0)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a guest has no ledger: XP attaches to an identity only",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": true,
+  "expected": 575,
+  "stored": 575
+}

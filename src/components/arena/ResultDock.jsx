@@ -99,11 +99,11 @@ export const agoLabel = (at, now = Date.now()) => {
   return "EARLIER TODAY";
 };
 
-const DockShell = ({ children, label }) => (
-  <div style={{ display: "grid", gap: 12 }}>
+const DockShell = ({ children, label, variant = "dock" }) => (
+  <div className="ec-dock" data-variant={variant} style={{ display: "grid", gap: 12 }}>
     <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
       <span aria-hidden="true" style={{ fontSize: 12 }}>🏆</span>
-      <h2 style={{ margin: 0, fontSize: 10.5, fontWeight: 900, letterSpacing: 2, color: "var(--ec-a-text)" }}>RESULT DOCK</h2>
+      <h2 style={{ margin: 0, fontSize: 10.5, fontWeight: 900, letterSpacing: 2, color: "var(--ec-a-text)" }}>{variant === "hero" ? "RESULT" : "RESULT DOCK"}</h2>
       {label && (
         <span style={{ marginLeft: "auto", fontSize: 9.5, fontWeight: 900, letterSpacing: 1, color: "var(--ec-a-text-muted)" }}>
           {label}
@@ -117,6 +117,15 @@ const DockShell = ({ children, label }) => (
 export default function ResultDock({
   phase, run, result, priorResult, priorAt, simStage,
   onViewFullReport, onRunItBack, onNewClash, onChallenge, busy,
+  // "dock": the rail surface. "hero": Phase 9B.3's Result state, where THIS
+  // game leads the main column above the matchup that produced it.
+  variant = "dock",
+  // Phase 9C: CHALLENGE THIS CHAOS (the share sheet) and, for a recipient, the
+  // comparison against the original — both supplied by the App.
+  challengeShare = null, challengeComparison = null,
+  // Phase 9D: CAREER PROGRESS after the result hierarchy; a previous clash
+  // shows what it earned from browser memory, never a new award.
+  careerProgress = null, priorCareerProgress = null,
 }) {
   // No section is open in the canonical reference state — the summary and four
   // tab controls fit the first viewport, and the frozen 8C.1 geometry contract
@@ -138,16 +147,9 @@ export default function ResultDock({
     const t = setInterval(() => tick((n) => n + 1), 30_000);
     return () => clearInterval(t);
   }, [priorAt, phase]);
-  const [challengeId, setChallengeId] = useState(null);
-  // A share link belongs to ONE clash. Nothing remounts this dock between
-  // clashes, so without this the next clash printed the previous clash's link
-  // under "Same opening rolls" and suppressed its own Challenge button for the
-  // rest of the session.
-  useEffect(() => { setChallengeId(null); }, [run?.chaosRunId, result?.resultId]);
-  const makeChallenge = async () => {
-    if (!onChallenge) return;
-    try { setChallengeId(await onChallenge()); } catch { /* a failed share never breaks the result */ }
-  };
+  // Phase 9C replaced the seed-link "Challenge this Chaos" with a governed
+  // challenge (share sheet from the App); onChallenge is kept for callers.
+  void onChallenge;
   const sim = result?.sim;
 
   // ── One clash, rendered the same way whether it is THIS one or the last one.
@@ -157,7 +159,10 @@ export default function ResultDock({
     const gold = sim.finalScore?.gold ?? 0, blue = sim.finalScore?.blue ?? 0;
     const winner = gold > blue ? "Gold" : "Blue";
     return (
-      <DockShell label={previous ? agoLabel(priorAt) : "THIS CLASH"}>
+      <DockShell variant={variant} label={previous ? agoLabel(priorAt) : "THIS CLASH"}>
+        {/* In the hero variant THIS clash's score already leads the stage head
+            (Phase 9B.3); a previous clash in the sheet keeps its own. */}
+        {!(variant === "hero" && !previous) && (
         <Panel style={{ textAlign: "center", padding: "11px 12px", position: "relative", overflow: "hidden", borderColor: won ? "var(--ec-a-gold-line)" : "var(--ec-a-blue-line)" }}>
           {/* Approved fracture placement 8: the dock's state transition to a result. */}
           <EraFractureActiveEdge on={!previous} />
@@ -195,7 +200,10 @@ export default function ResultDock({
             </div>
           )}
         </Panel>
+        )}
 
+        {/* Phase 9C: a recipient's comparison against the original leads the result. */}
+        {challengeComparison}
         <div role="tablist" aria-label="Result sections" style={{ display: "grid", gridTemplateColumns: "repeat(4, minmax(0,1fr))", gap: 4 }}>
           {TABS.map(([id, label]) => (
             <button key={id} role="tab" className="ec-dock-tab" aria-selected={tab === id} aria-controls="ec-dock-panel"
@@ -296,6 +304,9 @@ export default function ResultDock({
         </Panel>
         )}
 
+        {/* Phase 9D: career progress — after the score, the winner and the MVP. */}
+        {previous ? priorCareerProgress : careerProgress}
+
         <button onClick={() => onViewFullReport?.(previous ? res : null)} style={primaryCta}>
           VIEW FULL REPORT →
         </button>
@@ -310,15 +321,7 @@ export default function ResultDock({
             <div style={{ ...muted, textAlign: "center", lineHeight: 1.5 }}>
               Run it back replays this same five, staff and era. A new Clash rolls fresh players and reveals a new era.
             </div>
-            {onChallenge && !challengeId && (
-              <button onClick={makeChallenge} style={secondaryCta}>Challenge this Chaos</button>
-            )}
-            {challengeId && (
-              <div style={{ ...muted, textAlign: "center", lineHeight: 1.5, wordBreak: "break-all" }}>
-                Same opening rolls, their own decisions:{" "}
-                <span style={{ color: "var(--ec-a-gold, #f2b51d)" }}>{`${window.location.origin}/?chaos=${challengeId}`}</span>
-              </div>
-            )}
+            {challengeShare}
           </>
         )}
       </DockShell>
@@ -329,25 +332,19 @@ export default function ResultDock({
   if (phase === "complete" && sim) return renderClash(result);
 
   // ── C · SIMULATING ────────────────────────────────────────────────────────
+  // Chaos exposes no real simulation milestones to the client — `simStage` is
+  // only ever reset — so this is ONE honest state rather than a fabricated
+  // progression (spec 9B.3 §14). Reduced motion needs nothing here: nothing moves.
   if (phase === "simulating") {
-    const idx = Math.max(0, SIM_PHASES.findIndex((p) => p.toLowerCase().startsWith(String(simStage || "").toLowerCase().slice(0, 6))));
     return (
-      <DockShell label="IN PROGRESS">
+      <DockShell variant={variant} label="IN PROGRESS">
         <Panel>
           <Head tone="var(--ec-a-gold, #f2b51d)">SIMULATING THE CLASH</Head>
-          <div aria-live="polite" style={{ display: "grid", gap: 6, marginTop: 8 }}>
-            {SIM_PHASES.map((p, i) => (
-              <div key={p} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12.5, color: i <= idx ? "var(--ec-a-text, #f5f7fb)" : "var(--ec-a-text-muted, #93a0b5)" }}>
-                <span aria-hidden="true" style={{
-                  width: 8, height: 8, borderRadius: 999,
-                  background: i < idx ? "var(--ec-a-green, #4ade80)" : i === idx ? "var(--ec-a-gold, #f2b51d)" : "var(--ec-a-border-strong)",
-                }} />
-                {p}
-              </div>
-            ))}
+          <div aria-live="polite" style={{ ...body, marginTop: 8 }}>
+            Your five and the Legend Rival's five are locked. The possession engine is playing it out.
+            {simStage ? ` ${simStage}` : ""}
           </div>
         </Panel>
-        <Panel><div style={muted}>Your five and the Legend Rival's five are locked. The possession engine is playing it out.</div></Panel>
       </DockShell>
     );
   }
@@ -359,7 +356,7 @@ export default function ResultDock({
 
   // ── A · NOTHING YET ───────────────────────────────────────────────────────
   return (
-    <DockShell>
+    <DockShell variant={variant}>
       <Panel style={{ textAlign: "center" }}>
         <Head tone="var(--ec-a-gold, #f2b51d)">YOUR RESULT WILL APPEAR HERE</Head>
         <div style={{ ...body, marginTop: 6 }}>

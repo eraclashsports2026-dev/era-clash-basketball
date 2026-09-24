@@ -1,0 +1,131 @@
+{
+  "artifact": "challenge-security-qa",
+  "phase": "9C — Challenges + Persistent Competitive Identity V1",
+  "generatedAt": "2026-09-05T06:20:51.492Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "the account provider is configured on this origin",
+      "pass": true,
+      "detail": "{\"providerConfigured\":true,\"serverCredentialConfigured\":true,\"browserCredentialConfigured\":true,\"enabled\":true}"
+    },
+    {
+      "check": "every unknown or malformed code reads as one generic unavailable",
+      "pass": true,
+      "detail": "unavailable,unavailable,unavailable,unavailable,unavailable,unavailable,unavailable,unavailable"
+    },
+    {
+      "check": "the GET form answers the same way",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "create without an account is refused",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a presented but invalid token is refused, not downgraded to guest",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "list and revoke need an account",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a bad run id is a validation failure",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "an unknown action is a validation failure",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "no route reads a score, outcome or user id from the body",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the seed reaches only challenge_secrets",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the invitation lookup is rate-limited per IP",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "no event property carries a name, code, id, seed, token or payload",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a signed-in creator creates from their own run",
+      "pass": true,
+      "detail": "created · EC-64NP-ULEL"
+    },
+    {
+      "check": "a live code reads open with the headline only",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "another device cannot mint a challenge from someone else's run",
+      "pass": true,
+      "detail": "not_your_result"
+    },
+    {
+      "check": "another device cannot complete someone else's run",
+      "pass": true,
+      "detail": "not_found"
+    }
+  ],
+  "passed": true,
+  "enumeration": [
+    {
+      "code": "EC-ZZZZ-ZZZZ",
+      "http": 200,
+      "status": "unavailable"
+    },
+    {
+      "code": "EC-AAAA-AAAA",
+      "http": 200,
+      "status": "unavailable"
+    },
+    {
+      "code": "EC-AAAA-AAAB",
+      "http": 200,
+      "status": "unavailable"
+    },
+    {
+      "code": "nonsense",
+      "http": 200,
+      "status": "unavailable"
+    },
+    {
+      "code": "",
+      "http": 200,
+      "status": "unavailable"
+    },
+    {
+      "code": "../x",
+      "http": 200,
+      "status": "unavailable"
+    },
+    {
+      "code": "EC-0000-0000",
+      "http": 200,
+      "status": "unavailable"
+    },
+    {
+      "code": "%00",
+      "http": 200,
+      "status": "unavailable"
+    }
+  ]
+}

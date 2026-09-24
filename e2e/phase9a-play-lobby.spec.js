@@ -40,9 +40,12 @@ const watchGame = (page) => {
   return posts;
 };
 
+// 9B.3: the empty frame offers ROLL; a dealt board is the DRAFTING state.
+const stageAt = (page, st) => page.locator(`.ec-ta-stage[data-guided-state="${st}"]`);
 const rollOne = async (page) => {
-  await page.getByRole("button", { name: /^ROLL 1/ }).click();
-  await expect(page.getByText(/ROLL 1 OF 3/).first()).toBeVisible({ timeout: 20_000 });
+  await page.getByRole("button", { name: /^ROLL$/ }).click();
+  await expect(stageAt(page, "DRAFTING")).toBeVisible({ timeout: 20_000 });
+  await expect(page.locator('.ec-ta-team[data-team="gold"] .ec-pc').nth(4)).toBeVisible({ timeout: 20_000 });
 };
 
 test("/play opens the lobby, and viewing it starts nothing", async ({ page }) => {
@@ -144,7 +147,8 @@ test("choosing Chaos Clash opens the Time Arena; the lobby remembers the run; Co
   // Continue resumes the exact server-authoritative run.
   await page.getByRole("button", { name: /Continue your Chaos Clash/ }).click();
   await expect(page).toHaveURL(/\/play\/chaos$/);
-  await expect(page.getByText(/ROLL 1 OF 3/).first()).toBeVisible({ timeout: 20_000 });
+  await expect(stageAt(page, "DRAFTING")).toBeVisible({ timeout: 20_000 });
+  await expect(page.locator('.ec-ta-team[data-team="gold"] .ec-pc').nth(4)).toBeVisible({ timeout: 20_000 });
   expect(await page.locator('.ec-ta-team[data-team="gold"] .ec-pc .ec-pc-name').allInnerTexts()).toEqual(names);
   expect(await page.evaluate(() => localStorage.getItem("ec_chaos_run"))).toBe(runId);
   // Resuming re-read the run; it did not start a new one.
@@ -263,42 +267,52 @@ test("one dominant action per Time Arena state, inactive systems subdued, the St
     record.push({ state: name, ...m });
     return m;
   };
-  // Empty board: ROLL 1 is the only primary action; the coach section is subdued.
+  // 9B.3 guided flow: one primary action per state, and Coach Chaos does not
+  // exist on the board until the five is set (owner decision: players → era →
+  // coaching → ready → result). `coachActive` is null while it is absent.
+  // Empty frame: ROLL is the only primary action.
   await expect(ctas).toHaveCount(1);
   let m = await snap("empty");
-  expect(m.focus).toBe("empty"); expect(m.coachActive).toBe("false"); expect(m.coachOpacity).toBeLessThan(0.7);
+  expect(m.focus).toBe("empty"); expect(m.coachActive).toBeNull();
 
   await rollOne(page);
   await expect(ctas).toHaveCount(1);
-  m = await snap("hold-roll-1");
-  expect(m.focus).toBe("hold"); expect(m.coachActive).toBe("true"); expect(m.coachOpacity).toBe(1);
+  m = await snap("drafting-roll-1");
+  expect(m.focus).toBe("drafting"); expect(m.coachActive).toBeNull();
 
-  await page.getByRole("button", { name: /LOCK & ROLL 2/ }).click();
-  await expect(page.getByText(/ROLL 2 OF 3/).first()).toBeVisible({ timeout: 20_000 });
+  await page.getByRole("button", { name: /^ROLL 2$/ }).click();
+  await expect(stageAt(page, "ERA_REVEAL")).toBeVisible({ timeout: 20_000 });
   await expect(ctas).toHaveCount(1);
-  await snap("hold-roll-2");
+  m = await snap("era-reveal");
+  expect(m.focus).toBe("era_reveal"); expect(m.coachActive).toBeNull();
+  await page.getByRole("button", { name: /ADAPT TO ERA/ }).click();
+  await expect(stageAt(page, "DRAFTING")).toBeVisible({ timeout: 20_000 });
+  await expect(ctas).toHaveCount(1);
+  await snap("drafting-roll-2");
   await page.getByRole("button", { name: /FINAL ROLL/ }).click();
-  await expect(page.getByText("CHOOSE YOUR STAFF").first()).toBeVisible({ timeout: 20_000 });
+  await expect(stageAt(page, "COACH_SELECT")).toBeVisible({ timeout: 20_000 });
+  await expect(page.getByText("COACH CHAOS").first()).toBeVisible();
   await expect(ctas).toHaveCount(1);
-  m = await snap("hire");
-  expect(m.focus).toBe("hire"); expect(m.coachActive).toBe("true");
+  m = await snap("coach-select");
+  expect(m.focus).toBe("coach_select"); expect(m.coachActive).toBe("true"); expect(m.coachOpacity).toBe(1);
   await page.getByRole("button", { name: /^Select / }).first().click();
-  await page.getByRole("button", { name: /HIRE THIS STAFF/ }).click();
-  await expect(page.getByRole("button", { name: /RUN SIM/ })).toBeVisible({ timeout: 20_000 });
+  await page.getByRole("button", { name: /CONTINUE WITH COACH/ }).click();
+  await expect(page.getByRole("button", { name: /RUN CLASH/ })).toBeVisible({ timeout: 20_000 });
   await expect(ctas).toHaveCount(1);
   m = await snap("ready");
-  expect(m.focus).toBe("ready"); expect(m.coachActive).toBe("false");
+  expect(m.focus).toBe("ready"); expect(m.coachActive).toBeNull();
   // Completed rolls compress to ticks.
   expect(await page.locator('.ec-ta-step[data-state="COMPLETE"]').count()).toBe(3);
 
-  await page.getByRole("button", { name: /RUN SIM/ }).click();
-  const rail = page.locator(".ec-ta-rail");
-  await expect(rail.getByText("FINAL SCORE", { exact: true }).first()).toBeVisible({ timeout: 45_000 });
-  // The Story is open by default; the other three are one tap away.
-  await expect(rail.getByRole("tab", { name: "Game Story" })).toHaveAttribute("aria-selected", "true");
-  await expect(rail.locator("#ec-dock-panel")).toBeVisible();
-  for (const t of ["Box Score", "Coaching", "Analysis"]) await expect(rail.getByRole("tab", { name: t })).toHaveAttribute("aria-selected", "false");
-  // The board compressed: no primary CTA, the matchup stays.
+  await page.getByRole("button", { name: /RUN CLASH/ }).click();
+  // The score leads the stage head; the result hero follows, Story open first.
+  await expect(page.locator(".ec-ta-score[data-winner]")).toBeVisible({ timeout: 45_000 });
+  const hero = page.locator(".ec-ta-result-hero");
+  await expect(hero.getByRole("tab", { name: "Game Story" })).toHaveAttribute("aria-selected", "true");
+  await expect(hero.locator("#ec-dock-panel")).toBeVisible();
+  for (const t of ["Box Score", "Coaching", "Analysis"]) await expect(hero.getByRole("tab", { name: t })).toHaveAttribute("aria-selected", "false");
+  // No contextual rail competes with the result; no primary CTA; the matchup stays.
+  await expect(page.locator(".ec-ta-rail")).toHaveCount(0);
   await expect(ctas).toHaveCount(0);
   await expect(page.getByText("THE MATCHUP YOU BUILT").first()).toBeVisible();
   await snap("complete");

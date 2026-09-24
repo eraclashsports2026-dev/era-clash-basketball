@@ -1,0 +1,53 @@
+{
+  "artifact": "leaderboard-ordering-qa",
+  "phase": "9E — Competitive Rating + Leaderboards V1",
+  "generatedAt": "2026-09-07T02:07:04.049Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "every account played six others and is placed and public: seven rows",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the server's order equals the contract's deterministic order (rating, wins, losses, attainment, id)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "ranks are 1..n with no gaps and no stored rank column",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "ties on rating are broken by wins, then losses, then earlier attainment — never by client order",
+      "pass": true,
+      "detail": "4 tied"
+    },
+    {
+      "check": "Around Me: up to two above, me, up to two below, from the same ranking",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "My Rating carries the same rank as the table",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Top 100: the projection caps at 100 rows",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": true,
+  "order": [
+    "Kai",
+    "Bea",
+    "Fay",
+    "Joseph",
+    "Gus",
+    "Dee",
+    "Eli"
+  ]
+}

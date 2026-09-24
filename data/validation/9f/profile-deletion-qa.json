@@ -1,0 +1,44 @@
+{
+  "artifact": "profile-deletion-qa",
+  "phase": "9F — Public Competitive Profiles + Player Cards V1",
+  "generatedAt": "2026-09-09T18:15:21.373Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "B's profile resolves before deletion",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the profile stops resolving immediately",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the slug is gone, so no stale profile route remains",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the former display name leaks nowhere",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the old Player Card cannot be served",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a surviving opponent keeps the rating they earned",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the SQL cascades every owned row and never deletes a rating event",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": true
+}

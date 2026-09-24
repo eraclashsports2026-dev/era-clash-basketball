@@ -1,0 +1,71 @@
+{
+  "artifact": "rating-performance-qa",
+  "phase": "9E — Competitive Rating + Leaderboards V1",
+  "generatedAt": "2026-09-07T02:07:13.158Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "1440×900: the fixture (five leaderboard states, 12 rows each, modules) renders within 3s",
+      "pass": true,
+      "detail": "59ms"
+    },
+    {
+      "check": "1440×900: CLS effectively zero",
+      "pass": true,
+      "detail": "0"
+    },
+    {
+      "check": "390×844: the fixture (five leaderboard states, 12 rows each, modules) renders within 3s",
+      "pass": true,
+      "detail": "56ms"
+    },
+    {
+      "check": "390×844: CLS effectively zero",
+      "pass": true,
+      "detail": "0"
+    },
+    {
+      "check": "the leaderboard answers within 1.5s on the harness",
+      "pass": true,
+      "detail": "9ms"
+    },
+    {
+      "check": "competitive-me (reconcile + read) answers within 1.5s",
+      "pass": true,
+      "detail": "2ms"
+    },
+    {
+      "check": "around-me answers within 1s",
+      "pass": true,
+      "detail": "1ms"
+    },
+    {
+      "check": "the leaderboard is one indexed projection over the ordering columns, not a client-side sort of every account",
+      "pass": true,
+      "detail": "current_rating desc, rated_wins desc, rated_losses asc, last_rated_at asc, user_id asc"
+    },
+    {
+      "check": "no N+1: the server reads a fixed handful of queries per call",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": true,
+  "rows": [
+    {
+      "viewport": "1440x900",
+      "loadMs": 59,
+      "cls": 0
+    },
+    {
+      "viewport": "390x844",
+      "loadMs": 56,
+      "cls": 0
+    }
+  ],
+  "ms": {
+    "leaderboard": 9,
+    "me": 2,
+    "aroundMe": 1
+  }
+}

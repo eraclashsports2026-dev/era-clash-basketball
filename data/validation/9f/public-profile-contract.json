@@ -1,0 +1,246 @@
+{
+  "artifact": "public-profile-contract",
+  "phase": "9F — Public Competitive Profiles + Player Cards V1",
+  "generatedAt": "2026-09-09T18:15:20.386Z",
+  "policy": {
+    "version": "1.0.0",
+    "powerEffect": 0,
+    "default": "private — creating an account creates no publicly discoverable profile",
+    "identifier": "opaque server-generated slug, 20 symbols of a 32-symbol alphabet (100 bits)",
+    "route": "/player/<slug>",
+    "enumeration": "no listing endpoint of any kind; a profile is reachable only by its slug. The Phase 9E leaderboard remains the one bounded public competitive listing.",
+    "provisional": "no rating, no rank, no estimate — only the placement progress, preserving the Phase 9E invariant",
+    "rank": "shown only when the account is placed AND leaderboard_visibility is public",
+    "featured": "up to 3 already-unlocked achievements, ownership validated server-side",
+    "consumes": [
+      "Competitive Rating (Phase 9E)",
+      "Career Level and achievement unlocks (Phase 9D)"
+    ],
+    "computes": "nothing competitive — no rating, no XP, no unlock, no outcome",
+    "notBuilt": [
+      "friends",
+      "following",
+      "followers",
+      "direct messages",
+      "chat",
+      "comments",
+      "likes",
+      "feeds",
+      "activity feeds",
+      "profile search",
+      "player directory",
+      "global user search",
+      "presence indicators",
+      "contact discovery",
+      "email discovery",
+      "seasons",
+      "tournaments",
+      "clans",
+      "leagues",
+      "teams or guilds",
+      "trading",
+      "paid profile boosts",
+      "gameplay rewards",
+      "rating boosts",
+      "XP boosts",
+      "XP leaderboard"
+    ]
+  },
+  "publicFields": [
+    "slug",
+    "displayName",
+    "initials",
+    "state",
+    "rating",
+    "rank",
+    "wins",
+    "losses",
+    "ties",
+    "matches",
+    "winPct",
+    "level",
+    "featured",
+    "placement",
+    "profileVersion"
+  ],
+  "provisionalFields": [
+    "slug",
+    "displayName",
+    "initials",
+    "state",
+    "level",
+    "featured",
+    "placement",
+    "profileVersion"
+  ],
+  "forbiddenFields": [
+    "email",
+    "user_id",
+    "userId",
+    "authId",
+    "auth_id",
+    "provider",
+    "phone",
+    "location",
+    "created_at",
+    "createdAt",
+    "joined",
+    "joinedAt",
+    "birth",
+    "ip",
+    "session",
+    "sessionId",
+    "cookie",
+    "token",
+    "accessToken",
+    "refresh",
+    "rosters",
+    "savedRosters",
+    "favorites",
+    "xp",
+    "totalXp",
+    "xp_ledger",
+    "xpLedger",
+    "xpEvents",
+    "challenge_id",
+    "challengeId",
+    "attempt_id",
+    "attemptId",
+    "challengeCode",
+    "seed",
+    "seed_id",
+    "result_id",
+    "supabase",
+    "moderation",
+    "prefs",
+    "preferences",
+    "displayNameHistory",
+    "deletedNames"
+  ],
+  "visibility": {
+    "profile_visibility": "governs access to the richer Phase 9F public competitive profile",
+    "leaderboard_visibility": "governs inclusion in the Phase 9E public Competitive Rating leaderboard",
+    "combined": false,
+    "combinations": [
+      {
+        "profile": "private",
+        "leaderboard": "private",
+        "profileReachable": false,
+        "onLeaderboard": false,
+        "rowLinksToProfile": false
+      },
+      {
+        "profile": "private",
+        "leaderboard": "public",
+        "profileReachable": false,
+        "onLeaderboard": true,
+        "rowLinksToProfile": false
+      },
+      {
+        "profile": "public",
+        "leaderboard": "private",
+        "profileReachable": true,
+        "onLeaderboard": false,
+        "rowLinksToProfile": false
+      },
+      {
+        "profile": "public",
+        "leaderboard": "public",
+        "profileReachable": true,
+        "onLeaderboard": true,
+        "rowLinksToProfile": true
+      }
+    ]
+  },
+  "identifier": {
+    "alphabet": "0123456789abcdefghjkmnpqrstvwxyz",
+    "length": 20,
+    "entropyBits": 100,
+    "rules": {
+      "stableAcrossDisplayNameChanges": true,
+      "derivedFromEmail": false,
+      "isAuthId": false,
+      "isDatabaseId": false,
+      "sequentiallyEnumerable": false,
+      "serverGenerated": true,
+      "survivesProfileEdits": true,
+      "invalidatedOnAccountDeletion": true
+    }
+  },
+  "events": {
+    "PUBLIC_VIEWED": "public_profile_viewed",
+    "VISIBILITY_CHANGED": "profile_visibility_changed",
+    "PREVIEWED": "public_profile_previewed",
+    "SHARED": "public_profile_shared",
+    "FEATURED_UPDATED": "featured_achievement_updated",
+    "LEADERBOARD_OPENED": "leaderboard_profile_opened"
+  },
+  "checks": [
+    {
+      "check": "version 1.0.0; private by default; only private|public; three featured; a 100-bit slug",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "PUBLIC_PROFILE_POWER_EFFECT = 0: no game, draft, era, coach, challenge, rating or progression path reads the profile system",
+      "pass": true,
+      "detail": "0"
+    },
+    {
+      "check": "the two visibility settings are separate keys and are never combined",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "all four combinations are legitimate and each is preserved as chosen",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the public projection is a closed field list, and the forbidden list names what must never appear",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a placed profile carries the rating, record and rank; a provisional one carries none of them",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "no hypothetical rank is ever computed",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the route is /player/<slug> and refuses a uuid",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "six closed events, allowlisted and mirrored; metadata excludes identity",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the achievement catalog is untouched: 9F defines none and writes no unlock",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "nothing social was built",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "no new serverless function (the budget is full at 13)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "no career tab was added for 9F",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": true
+}

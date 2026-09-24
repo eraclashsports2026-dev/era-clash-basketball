@@ -54,14 +54,23 @@ const clash = (over = {}) => ({
 
 // ── career-v2: overview + history behaviour ─────────────────────────────────
 if (MODE === "career-v2") {
-  ok("the five tabs are exactly overview/history/rosters/favorites/account", CAREER_TAB_IDS.join(",") === "overview,history,rosters,favorites,account");
+  // Pinned as the invariant, not a snapshot: later phases add tabs before Account (9C Challenges, 9D Achievements).
+  ok("the tabs begin overview/history/rosters/favorites and end with account", CAREER_TAB_IDS.slice(0, 4).join(",") === "overview,history,rosters,favorites" && CAREER_TAB_IDS.at(-1) === "account");
   ok("a URL tab is honoured and an unknown one falls back to overview", tabFromSearch("?tab=rosters") === "rosters" && tabFromSearch("?tab=x") === "overview");
   const rows = [clash({ mode: "chaos", era_id: "1990s" }), clash({ mode: "single", outcome: "loss", era_id: "1980s", gold_score: 90, blue_score: 99 }), clash({ mode: "daily", outcome: "tie", gold_score: 100, blue_score: 100 })];
   ok("history filters by mode, outcome and era independently", applyHistoryFilters(rows, { mode: "chaos" }).length === 1 && applyHistoryFilters(rows, { outcome: "tie" }).length === 1 && applyHistoryFilters(rows, { era: "1980s" }).length === 1);
   ok("only eras that occur are offered, in order", erasInHistory(rows).join(",") === "1980s,1990s");
   ok("sorting never crashes on a scoreless row", (() => { try { sortHistory([...rows, clash({ gold_score: null, blue_score: null })], "margin"); return true; } catch { return false; } })());
   ok("history pages at 25", pageOf(Array.from({ length: 60 }, () => clash()), 0).pages === 3);
-  ok("no rank, percentile or contender grade is a Career V2 concept", !/rank|percentile|contender|leaderboard/i.test(readFileSync("src/components/accounts/MyEraClash.jsx", "utf8").replace(/no leaderboard|no rank/gi, "")));
+  // Career V2 never ranks a career. Phase 9E added a competitive rating BESIDE it
+  // (a module on the Overview, a visibility control in Account, an entry point to
+  // /leaderboard) — so the invariant is not "the word never appears", it is that
+  // every competitive word belongs to the delimited 9E integration and no career
+  // statistic is expressed as a rank, a percentile or a grade.
+  const meSrc = readFileSync("src/components/accounts/MyEraClash.jsx", "utf8").replace(/no leaderboard|no rank/gi, "");
+  const competitiveLine = /competitive|Leaderboard\b|VisibilitySetting|leaderboard_visibility|Phase 9E/i;
+  const strayCompetitiveLines = meSrc.split("\n").map((l, i) => [i + 1, l]).filter(([, l]) => /rank|percentile|contender|leaderboard/i.test(l) && !competitiveLine.test(l));
+  ok("no rank, percentile or contender grade is a Career V2 concept (competitive words belong to the 9E module alone)", strayCompetitiveLines.length === 0 && !/percentile|contender/i.test(meSrc), strayCompetitiveLines.map(([n]) => `line ${n}`).join(", ") || "clean");
   const ctx = createTestProvider({ users: [{ userId: "u-1", email: "a@x.co" }] });
   ctx.server.putResult({ id: "pv_a0000001", session: "s", mode: "single", finalScore: { gold: 110, blue: 100 }, goldIds: ["jordan"], created_at: Date.now() - 2000 });
   ctx.server.putResult({ id: "pv_a0000002", session: "s", mode: "single", finalScore: { gold: 120, blue: 90 }, goldIds: ["jordan"], created_at: Date.now() - 1000 });

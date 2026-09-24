@@ -1,0 +1,117 @@
+{
+  "artifact": "progression-contract",
+  "phase": "9D — Progression, XP and Achievements V1",
+  "generatedAt": "2026-09-06T14:54:36.450Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "versions are pinned",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "XP amounts: completion 100, win 25, Era-first 50, challenge 50, victory 25, creator response 25, achievements 50/100/250",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "no XP for rolling, holding, revealing, choosing a coach, opening, copying, signing in, refreshing, daily login",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "level curve: 0/250/550/900/1300/1750/2250/2800/3400/4050 then 650 + (L−10)×75, cap 100, XP keeps accumulating",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "velocity: Level 5 within 15 games, Level 10 within 100, Level 50 beyond 200",
+      "pass": true,
+      "detail": "{\"2\":3,\"5\":11,\"10\":34,\"25\":193,\"50\":788,\"100\":3226}"
+    },
+    {
+      "check": "catalog: 20–30 achievements, unique ids, ≤3 hidden, XP by tier, no RIVALRY",
+      "pass": true,
+      "detail": "23 achievements, 2 hidden"
+    },
+    {
+      "check": "seven closed events; metadata excludes identity",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "every event is allowlisted server-side and mirrored client-side",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "PROGRESSION_POWER_EFFECT = 0: no game path mentions progression; progression imports no odds",
+      "pass": true,
+      "detail": "93 game files scanned"
+    },
+    {
+      "check": "no new serverless function",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "UI components carry no XP number of their own",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": true,
+  "contract": {
+    "progressionVersion": "1.0.0",
+    "levelCurveVersion": "1.0.0",
+    "catalogVersion": "1.0.0",
+    "powerEffect": 0,
+    "sourceTypes": [
+      "clash",
+      "era",
+      "challenge_attempt",
+      "achievement"
+    ],
+    "reasons": [
+      "completion",
+      "win",
+      "first_completion",
+      "victory",
+      "creator_response",
+      "unlock"
+    ],
+    "events": {
+      "VIEWED": "progression_viewed",
+      "XP_SHOWN": "xp_awarded_ui_shown",
+      "LEVEL_UP_SHOWN": "level_up_shown",
+      "UNLOCK_SHOWN": "achievement_unlocked_ui_shown",
+      "ACHIEVEMENTS_VIEWED": "achievements_viewed",
+      "FILTER_CHANGED": "achievement_filter_changed",
+      "RECONCILED": "progression_reconciled"
+    },
+    "eventMetadata": [
+      "level",
+      "xpDelta",
+      "reasonCategory",
+      "achievementId",
+      "achievementCategory",
+      "unlockCount",
+      "mode",
+      "success",
+      "failureCode",
+      "filter"
+    ],
+    "policy": {
+      "powerEffect": 0,
+      "serverDecidesAwards": true,
+      "oneAwardPerSource": "unique (user_id, source_type, source_id, reason)",
+      "guestXp": "none; a claimed guest result earns once, after the claim",
+      "levelCap": 100,
+      "noPrestige": true,
+      "noSeasonalReset": true,
+      "noHiddenThrottle": true,
+      "leaderboards": "none (Phase 9E)",
+      "publicProfile": "none"
+    }
+  }
+}

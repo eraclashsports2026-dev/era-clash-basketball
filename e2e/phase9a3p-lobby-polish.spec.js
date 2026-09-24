@@ -77,8 +77,8 @@ test("an active run: compact hero, Continue above the grid, no shift when the ru
   await withAccount(page);
   const posts = gamePosts(page);
   await page.goto("/play/chaos");
-  await page.getByRole("button", { name: /^ROLL 1/ }).click();
-  await expect(page.getByText(/ROLL 1 OF 3/).first()).toBeVisible({ timeout: 20_000 });
+  await page.getByRole("button", { name: /^ROLL$/ }).click();   // 9B.3: the empty frame offers ROLL
+  await expect(page.locator('.ec-ta-stage[data-guided-state="DRAFTING"]')).toBeVisible({ timeout: 20_000 });
   const runId = await page.evaluate(() => localStorage.getItem("ec_chaos_run"));
   expect(runId).toBeTruthy();
   await page.evaluate(() => sessionStorage.setItem("e2e_keep_run", "1"));

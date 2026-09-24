@@ -1,0 +1,84 @@
+{
+  "artifact": "rating-security-qa",
+  "phase": "9E — Competitive Rating + Leaderboards V1",
+  "generatedAt": "2026-09-07T02:07:10.365Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "the account provider is configured on this origin",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the public leaderboard is readable signed out and carries only safe rows",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "competitive-me without an account is refused",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "competitive-around-me without an account is refused",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a presented but invalid token is refused, never downgraded",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "an unknown competitive action is a validation failure",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "no route reads a rating, delta, K, expected score, outcome, attempt id or user id from the body",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the competitive actions are rate-limited per IP",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the browser bundle source never names the database functions",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "no event property carries a name, email, id, code or token",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a forged rating, delta, owner id or visibility in the body changes nothing (the token's own account answers)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "cross-account: Bea's competitive-me is Bea's, not Joseph's",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "an account-vs-account completion answers RATED with the caller's movement",
+      "pass": true,
+      "detail": "{\"status\":\"ok\",\"rated\":true,\"ratingVersion\":\"1.0.0\",\"outcome\":\"recipient\",\"perspective\":\"recipient\",\"you\":{\"before\":1000"
+    },
+    {
+      "check": "the same completion asked for as a guest browser: rated, but no movement of THEIRS is shown",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the ledger event carries no forgeable client input: the movement equals the contract for the two ratings before",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": true
+}

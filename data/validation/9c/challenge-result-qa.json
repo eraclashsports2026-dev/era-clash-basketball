@@ -1,0 +1,25 @@
+{
+  "artifact": "challenge-result-qa",
+  "phase": "9C — Challenges + Persistent Competitive Identity V1",
+  "generatedAt": "2026-09-05T06:24:18.421Z",
+  "derivedFrom": [
+    "challenge-history-qa"
+  ],
+  "checks": [
+    {
+      "check": "the creator sees the guest's completed response with the contract outcome",
+      "pass": true,
+      "detail": "{\"name\":\"Guest\",\"status\":\"completed\",\"outcome\":\"win\",\"score\":{\"gold\":105,\"blue\":92},\"performance\":13,\"challengeOutcome\":",
+      "from": "challenge-history-qa"
+    },
+    {
+      "check": "revocation shows in CREATED and keeps the completed response (and the attempt in progress)",
+      "pass": true,
+      "detail": "revoke → revoked · listed revoked · responses completed,started",
+      "from": "challenge-history-qa"
+    }
+  ],
+  "passed": true,
+  "e2e": "CHALLENGE COMPLETE comparison with the original's five; a recipient's result offers no self-challenge",
+  "unit": "completion reads the server's result, idempotent, a later 'result' changes nothing"
+}

@@ -1,0 +1,25 @@
+{
+  "artifact": "phase9e-merge",
+  "phase": "9E — Competitive Rating + Leaderboards V1",
+  "mergedAt": "2026-09-09T16:28:43Z",
+  "authorisation": "Owner instruction \"merge it\" on 2026-09-09, after reporting \"This worked.\" on the leaderboard test (data/validation/9e/phase9e-owner-test.json).",
+  "pr": 48,
+  "from": "phase-9e-competitive-rating-leaderboards-v1 @ 37bac49",
+  "into": "phase-9b3-chaos-guided-flow-v2 (the same chain Phase 9C's PR #46 and Phase 9D's PR #47 merged into)",
+  "mergeCommit": "7d2673e00621474a20dc8bbf6bdac967cd38cedf",
+  "parents": ["f34f6f1 (Merge PR #47 — Phase 9D)", "37bac49 (Phase 9E head)"],
+  "divergence": "none — the base branch had not moved since 9E branched from it, so the merged tree is byte-identical to the certified 9E head (git diff 37bac49 7d2673e is empty)",
+  "verifiedAtMergeCommit": {
+    "build": "clean — service worker cache identity eraclash-assets:2.7.2:bc2d22922807, the same as the certified build",
+    "unit": "2616/2616 across 81 files",
+    "competitiveGates": "contract 15/15 · rating 15/15 · ledger 2/2 · idempotency 1/1 · placement 2/2 · repeat-opponent 4/4 · self-challenge 2/2 · backfill 8/8 · rls 12/12"
+  },
+  "untouched": {
+    "wave1": "4dc59e7",
+    "wave2": "ef0caa5",
+    "main": "9cd95ff",
+    "production": "no change — no promotion, and production still has no cloud accounts"
+  },
+  "notAuthorised": ["promotion to wave1, wave2, main or production", "inviting testers", "Phase 9F or any next phase"],
+  "stillUncertifiedByARealSession": "The two-account rated journey on the alias (two authenticated accounts completing an official Challenge and each watching its own rating move). Merging does not close it; see rating-rls-live.json and phase9e-owner-test.json."
+}

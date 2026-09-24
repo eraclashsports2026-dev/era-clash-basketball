@@ -89,13 +89,17 @@ const run = async () => {
   page.on("request", (r) => { if (r.url().includes("/api/game") && r.method() === "POST") { try { posts.push(JSON.parse(r.postData() || "{}").chaosAction || "(sim)"); } catch { posts.push("?"); } } });
   await page.locator('.ec-mode-card[data-mode="chaos"] .ec-mode-action').click();
   await page.locator(".ec-ta").waitFor({ timeout: 45_000 });
-  await page.getByRole("button", { name: /^ROLL 1/ }).click();
+  // 9B.3 guided flow (presentation only; the guest run and its one "start" are unchanged):
+  // ROLL → hold → ROLL 2 → the era reveal → ADAPT TO ERA → FINAL ROLL → Coach Chaos → RUN CLASH.
+  await page.getByRole("button", { name: /^ROLL$/ }).click();
   await page.locator(".ec-ta-roster .ec-pc").nth(9).waitFor({ timeout: 45_000 });
-  const holds = page.locator(".ec-pc-action"); await holds.nth(0).click(); await page.waitForTimeout(200); await holds.nth(2).click(); await page.waitForTimeout(400);
-  await page.getByRole("button", { name: /LOCK & ROLL 2/ }).click(); await page.getByRole("button", { name: /FINAL ROLL/ }).waitFor({ timeout: 45_000 });
-  await page.getByRole("button", { name: /FINAL ROLL/ }).click(); await page.getByRole("button", { name: /^Select / }).first().waitFor({ timeout: 45_000 });
-  await page.getByRole("button", { name: /^Select / }).first().click(); await page.getByRole("button", { name: /HIRE THIS STAFF/ }).click();
-  await page.getByRole("button", { name: /RUN SIM/ }).waitFor({ timeout: 45_000 }); await page.getByRole("button", { name: /RUN SIM/ }).click();
+  const holds = page.locator(".ec-pc-action:not([disabled])"); await holds.nth(0).click(); await page.waitForTimeout(200); await holds.nth(2).click(); await page.waitForTimeout(400);
+  await page.getByRole("button", { name: /^ROLL 2$/ }).click();
+  await page.getByRole("button", { name: /ADAPT TO ERA/ }).waitFor({ timeout: 45_000 }); await page.getByRole("button", { name: /ADAPT TO ERA/ }).click();
+  await page.getByRole("button", { name: /FINAL ROLL/ }).waitFor({ timeout: 45_000 });
+  await page.getByRole("button", { name: /FINAL ROLL/ }).click(); await page.locator(".ec-coach-action:not([disabled])").first().waitFor({ timeout: 45_000 });
+  await page.getByRole("button", { name: /^Select / }).first().click(); await page.getByRole("button", { name: /CONTINUE WITH COACH/ }).click();
+  await page.getByRole("button", { name: /RUN CLASH/ }).waitFor({ timeout: 45_000 }); await page.getByRole("button", { name: /RUN CLASH/ }).click();
   await page.getByRole("button", { name: /VIEW FULL REPORT/ }).waitFor({ timeout: 120_000 });
   gate("a guest completes a full Chaos Clash without an account", posts.filter((p) => p === "start").length === 1);
   await page.getByRole("button", { name: /VIEW FULL REPORT/ }).click();

@@ -1,0 +1,11 @@
+{
+  "artifact": "progression-deletion-qa",
+  "phase": "9D — Progression, XP and Achievements V1",
+  "generatedAt": "2026-09-06T14:57:26.964Z",
+  "derivedFrom": "progression-rls-live.json",
+  "deletion": {
+    "pass": true,
+    "evidence": "delete from auth.users where id = B: B's progression_profiles 0, xp_ledger 0, achievement_unlocks 0, saved_clashes 0 (cascade); A's profile and 13 ledger rows untouched (total 725); B's completed challenge attempt row remained with user_id null (0004's anonymisation, unchanged). Then A and the QA challenge were deleted."
+  },
+  "passed": true
+}

@@ -1,0 +1,55 @@
+{
+  "artifact": "phase9e-preflight",
+  "phase": "9E — Competitive Rating + Leaderboards V1",
+  "generatedAt": "2026-09-07T01:18:43.573Z",
+  "startConditions": {
+    "phase9b1a": "OWNER APPROVED — data/validation/9b2/phase9b1a-acceptance.json",
+    "phase9b2": "OWNER APPROVED — data/validation/9b3/phase9b2-acceptance.json",
+    "phase9b3": "OWNER APPROVED — data/validation/9c/phase9b3-acceptance.json",
+    "phase9c": "OWNER APPROVED — data/validation/9d/phase9c-acceptance.json (approve challenges v1 this works, 2026-09-06)",
+    "phase9d": "OWNER APPROVED — data/validation/9e/phase9d-acceptance.json (APPROVE PROGRESSION V1, 2026-09-06); accepted head 90224cb, app code ac1a000"
+  },
+  "repositoryTruth": {
+    "toplevel": "/Users/josephjohnson/era-clash-basketball",
+    "remote": "https://github.com/eraclashsports2026-dev/era-clash-basketball.git",
+    "branch": "phase-9e-competitive-rating-leaderboards-v1",
+    "parent": "f34f6f1 — Merge PR #47 into phase-9b3-chaos-guided-flow-v2 (Phase 9D OWNER APPROVED)",
+    "headAtStart": "f34f6f1a232a3a9bacef8d31fe9b3bab8255322b",
+    "main": "9cd95ff",
+    "wave1": "4dc59e7",
+    "wave2": "ef0caa5",
+    "verifiedAgainstReportedValues": "Every value the brief reported was checked against the repository and the deployment: Candidate 4 calibration 1.4.0 CONFIRMED (harness /api/health); Candidate 4 core prefix 55bb26a2 CONFIRMED; wave1 4dc59e7 CONFIRMED; wave2 ef0caa5 CONFIRMED; main 9cd95ff CONFIRMED. The likely next migration 0006_competitive_rating_v1 CONFIRMED as correct — 0001…0005 are applied and recorded."
+  },
+  "frozen": {
+    "candidateId": "Candidate 4",
+    "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+    "calibrationVersion": "1.4.0",
+    "apiRoutes": 12,
+    "middleware": true,
+    "migrationsBefore9E": [
+      "0001_accounts.sql",
+      "0002_accounts_hardening.sql",
+      "0003_career_v2.sql",
+      "0004_challenges.sql",
+      "0005_progression_v1.sql"
+    ],
+    "liveMigrationHeadAtStart": "0005_progression_v1 (public.schema_migrations on lfybiphmqkiecfrqsfzt)",
+    "liveDatabaseStateAtStart": "1 auth user (the owner), 1 profile, 0 saved_clashes, 0 claims, 0 challenges, 0 attempts, 0 progression rows"
+  },
+  "existingArchitecture": {
+    "challenges": "challenges / challenge_attempts (status completed carries challenge_outcome creator|recipient|tie, the Phase 9C authoritative comparison) / challenge_secrets",
+    "progression": "progression_profiles / xp_ledger / achievement_unlocks; progression_apply() SECURITY DEFINER — Phase 9D contracts are frozen for 9E",
+    "myEraClash": "src/components/accounts/MyEraClash.jsx — seven tabs from CAREER_TABS (overview, history, rosters, favorites, challenges, achievements, account); 9E adds a restrained Overview module and an Account setting, not a tab",
+    "preferences": "user_preferences.prefs, a closed vocabulary validated by prefs_ok(); 9E adds exactly one key, leaderboard_visibility",
+    "functionBudget": "12 api routes + middleware; competitive actions live inside api/profile.js and the one write is a database function; apiFunctionCountIncrease must stay 0"
+  },
+  "preEditSweep": "data/validation/9e/pre-edit-sweep.log — unit 2595/2595, e2e 82/82, every existing gate PASS; the eleven 9E gates SKIPPED (no such script) because the phase had not begun",
+  "checkpoints": [
+    "1 competitive rating contract",
+    "2 ledger + rating engine (migration 0006)",
+    "3 leaderboard projection, ordering and Around Me",
+    "4 leaderboard page, Overview module and visibility control",
+    "5 Challenge result rating movement",
+    "6 security / anti-farming / privacy / responsive / live + deployed certification"
+  ]
+}

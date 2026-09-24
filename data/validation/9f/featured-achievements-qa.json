@@ -1,0 +1,66 @@
+{
+  "artifact": "featured-achievements-qa",
+  "phase": "9F — Public Competitive Profiles + Player Cards V1",
+  "generatedAt": "2026-09-09T18:15:20.942Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "three unlocked achievements are accepted, in the chosen order",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "they appear on the public card in that order",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a LOCKED achievement is refused",
+      "pass": true,
+      "detail": "not_unlocked"
+    },
+    {
+      "check": "an UNKNOWN achievement is refused, and named as unknown rather than merely locked",
+      "pass": true,
+      "detail": "unknown_achievement"
+    },
+    {
+      "check": "a duplicate is refused",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "a fourth is refused",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "another account's unlock cannot be featured",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "every refusal was ATOMIC — the saved showcase survived all of them",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "clearing is allowed and idempotent",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the database is the authority: it refuses a locked id whoever asks",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the picker can only offer what the account unlocked",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": true,
+  "max": 3,
+  "catalog": 23
+}

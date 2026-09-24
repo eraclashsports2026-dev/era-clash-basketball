@@ -1,0 +1,268 @@
+{
+  "artifact": "phase9e-resolution-ledger",
+  "phase": "9E — Competitive Rating + Leaderboards V1",
+  "generatedAt": "2026-09-07T02:09:39.417Z",
+  "items": [
+    {
+      "item": "9D owner acceptance",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "phase9d-acceptance.json (APPROVE PROGRESSION V1, 2026-09-06)"
+    },
+    {
+      "item": "repository truth",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "phase-9e-competitive-rating-leaderboards-v1 @ c4e999d, parent f34f6f1"
+    },
+    {
+      "item": "Candidate 4 preservation",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "harness 55bb26a2 / 1.4.0; frozen paths byte-identical"
+    },
+    {
+      "item": "rating contract",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "competitive-rating-contract.json — version 1.0.0, initial 1000, floor 100, K 40/24 at 10"
+    },
+    {
+      "item": "Elo expectation and rounding",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "EA = 1/(1+10^((RB−RA)/400)); round half away from zero; SQL mirrors the JavaScript"
+    },
+    {
+      "item": "rating algorithm",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "rating-algorithm-qa.json — win/loss/tie, both K values, the floor"
+    },
+    {
+      "item": "career XP separate from rating",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "no game, challenge or progression path reads the rating; no XP/level/achievement leaderboard; no new career tab"
+    },
+    {
+      "item": "comparison authority",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "Every fixture attempt carried the SAME basketball result (gold 105, blue 99, outcome 'win'): 1 distinct basketball result across 8 events, yet 3 distinct competitive outcomes, and the event outcome equalled challenge_attempts.challenge_outcome in every row. The rating consumes Phase 9C's comparison and never reinterprets a score."
+    },
+    {
+      "item": "rating ledger",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "rating-ledger-qa.json — one immutable event per rated attempt"
+    },
+    {
+      "item": "idempotency",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "competitive_rate_attempt on an already-rated attempt returned {rated:false, reason:'already_rated'} and the ledger stayed at 5 rows. A direct duplicate insert of an existing event was refused by 23505 duplicate key value violates unique constraint \"competitive_events_once\" (challenge_attempt_id, rating_version) — one attempt id can create at most one immutable event, enforced in storage, not only in application code."
+    },
+    {
+      "item": "concurrency",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "rating-concurrency-qa.json — six simultaneous completions, one event; Postgres: two ordered advisory locks + unique constraint"
+    },
+    {
+      "item": "atomicity",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "The event insert and both profile updates happen inside competitive_rate_attempt in one transaction, after pg_advisory_xact_lock on both accounts taken in a fixed order (least, greatest) so two concurrent completions sharing an account cannot deadlock; a caller that waited re-checks the ledger and returns already_rated. The unique constraint competitive_events_once is the storage-level backstop, proven above. Six simultaneous completions producing exactly one event is certified on the harness (rating-concurrency-qa.json)."
+    },
+    {
+      "item": "provisional placement",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "Both conditions are required, live: with 5 rated matches but only 2 unique opponents A had placed_at null and did not appear publicly; a match against a third opponent (6 matches, 3 opponents) set placed_at and A appeared. B likewise placed only on reaching 5 matches and 3 opponents."
+    },
+    {
+      "item": "repeat-opponent limit",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "3 rated outcomes per pair in a rolling 7 days; the fourth is UNRATED and still earns eligible 9D XP"
+    },
+    {
+      "item": "self-challenge unrated",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "self-challenge-rating-qa.json — SAME ACCOUNT, no event; guests UNRATED too"
+    },
+    {
+      "item": "unrated reasons",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "closed reason set with copy; an explicit reason is shown, never a fake +0"
+    },
+    {
+      "item": "historical backfill",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "The §61 A/B/C sequence (A v B recipient 08-01, A v C creator 08-02, B v C tie 08-03, C v A recipient 08-04, B v A creator 08-05) was INSERTED OUT OF CHRONOLOGICAL ORDER (4,1,5,3,2) and reconciled once: seen 5, rated 5, skipped 0, rated in completed_at order. Every event equals the JavaScript contract's independent replay to four decimals — 1000→980/1000→1020 (E 0.5000/0.5000) · 980→1001/1000→979 (E 0.4712/0.5288) · 1020→1018/979→981 (E 0.5587/0.4413) · 981→962/1001→1020 (E 0.4712/0.5288) · 1018→1038/1020→1000 (E 0.4971/0.5029). Final profiles A 1000 2-2-0, B 1038 2-0-1, C 962 0-2-1 — exactly the contract's replayRatings() output."
+    },
+    {
+      "item": "backfill second run",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "competitive_reconcile run again: seen 0, rated 0, skipped 0; events still 5; zero competitive_profiles rows differ from the pre-run snapshot (EXCEPT returned 0). No ordinary profile was reset."
+    },
+    {
+      "item": "A/B/C synthetic sequence",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "validated independently against contract.replayRatings() on the harness and on the live database"
+    },
+    {
+      "item": "leaderboard contract",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "leaderboard-contract.json — raw rating, Top 100, opt-in, documented final tie-breaker"
+    },
+    {
+      "item": "leaderboard ordering",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "leaderboard-ordering-qa.json — rating desc, wins desc, losses asc, attainment, id"
+    },
+    {
+      "item": "indexed server-side query",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "competitive_profiles_board_idx over the five ordering columns; no client-side sort"
+    },
+    {
+      "item": "leaderboard privacy",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "With no user_preferences rows at all (the default), competitive_leaderboard(100,0) returned 0 rows — private by default is the database's behaviour, not the client's. With A and B public and placed, C public but provisional, D private and placed-ineligible, the board returned exactly A and B. The projection carries rank, display_name, current_rating, W-L-T, rated_matches, career_level and streak — no user_id, no email, no attempt or challenge id."
+    },
+    {
+      "item": "private user leak (P0)",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "competitive_rank_of returned NULL for the private account D and NULL for the public-but-provisional account C: no public rank, no Around Me, and no hypothetical rank is computed for them. For the placed public account A it returned the window with is_me marked."
+    },
+    {
+      "item": "Around Me",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "around-me-qa.json — two above, me, two below for a placed public account; short at the top; server-side"
+    },
+    {
+      "item": "safe public projection",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "display name, initials, rating, W-L-T, matches, win %, level, streak — no email, id, seed, token or attempt id"
+    },
+    {
+      "item": "empty state copy",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "THE FIRST RANKINGS ARE FORMING — screens/leaderboard-empty.png"
+    },
+    {
+      "item": "result hierarchy",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "rating-result-qa.json — basketball result, comparison, rating movement, career XP"
+    },
+    {
+      "item": "My EraClash competitive module",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "my-eraclash-competitive-qa.json — a restrained Overview module and an Account setting; no new tab"
+    },
+    {
+      "item": "visibility preference",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "prefs_ok live: {'leaderboard_visibility':'public'} true · 'private' true · 'friends' false · 'PUBLIC' false (case is not coerced) · unknown key {'leaderboard_rank':'public'} false · a valid key with a smuggled extra key {'leaderboard_visibility':'public','is_admin':true} false. The closed vocabulary gained exactly one key and rejects everything else."
+    },
+    {
+      "item": "RLS",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "anon: permission denied for table competitive_profiles; permission denied for table competitive_rating_events. authenticated sub=A: competitive_profiles 1 row (own), 0 other accounts' rows; competitive_rating_events 6 rows, 0 unrelated. authenticated sub=B: 1 profile (rating 1034, its own), 5 events, 0 unrelated. No cross-account private read is possible."
+    },
+    {
+      "item": "cross-account isolation",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "rating-cross-account-qa.json; live RLS role switch"
+    },
+    {
+      "item": "forge refusal",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "As authenticated (sub=B): update competitive_profiles set current_rating = 9999 → permission denied for table competitive_profiles; insert into competitive_rating_events → permission denied for table competitive_rating_events; delete from competitive_rating_events → permission denied for table competitive_rating_events; select competitive_rate_attempt(…) → permission denied for function competitive_rate_attempt; select competitive_leaderboard(…) → permission denied for function competitive_leaderboard; select competitive_rank_of(…) → permission denied for function competitive_rank_of. As the service role, past the grants: update competitive_profiles set current_rating = 9999 → P0001 COMPETITIVE_RATING_FORGED; set rated_wins = 99 → P0001 COMPETITIVE_RECORD_FORGED; update a rating event → P0001 RATING_EVENT_IMMUTABLE ('A rating event is never edited.'); delete a rating event → P0001 RATING_EVENT_IMMUTABLE ('A rating event is never deleted; past opponents keep what they earned.')."
+    },
+    {
+      "item": "ledger immutability",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "RATING_EVENT_IMMUTABLE on update and delete, live"
+    },
+    {
+      "item": "account deletion",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "delete from auth.users where id = B: B's competitive_profiles row gone (ON DELETE CASCADE); all 8 events survived with B's side set null (ON DELETE SET NULL — a rating event is never deleted); A's rating 1041 and record 4-2-0 untouched; B vanished from competitive_leaderboard immediately, leaving A alone at rank 1. Opponents keep what they earned."
+    },
+    {
+      "item": "live database certification",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "verified 2026-09-07T02:05:00Z; live function bodies byte-identical to the committed migration"
+    },
+    {
+      "item": "9E-L1 on-conflict trigger defect",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "P1 — every account's SECOND rated match would have failed on real Postgres — found live, fixed, regression gate added"
+    },
+    {
+      "item": "mobile",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "rating-responsive-qa.json — eight viewports, no overflow, 44px, phone leads with rank/player/rating/record"
+    },
+    {
+      "item": "accessibility",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "rating-accessibility-qa.json — semantic table, rank announcements, keyboard, contrast, reduced motion, sign not colour alone"
+    },
+    {
+      "item": "performance",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "rating-performance-qa.json"
+    },
+    {
+      "item": "telemetry privacy",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "six closed events, allowlisted and mirrored; metadata excludes identity"
+    },
+    {
+      "item": "secret audit",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "bundle scan on the protected preview"
+    },
+    {
+      "item": "deployed certification",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "deployed gate on https://era-clash-basketball-git-phase-9e-competitive-690a16-era-clash.vercel.app"
+    },
+    {
+      "item": "Wave 1 preservation",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "4dc59e7"
+    },
+    {
+      "item": "Wave 2 preservation",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "ef0caa5"
+    },
+    {
+      "item": "main preservation",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "9cd95ff"
+    },
+    {
+      "item": "production isolation",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "production 2.7.2: no preview block, no cloud accounts"
+    },
+    {
+      "item": "API function count",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "12 routes + middleware"
+    },
+    {
+      "item": "unit tests",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "2616 passed (2616)"
+    },
+    {
+      "item": "Playwright e2e",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "84 passed (1.8m)"
+    },
+    {
+      "item": "9C deployed preservation",
+      "state": "EXTERNAL_BLOCKER_WITH_SAFE_PRODUCT_FALLBACK",
+      "evidence": "8/11 on the protected preview — every product check passes (unknown code unavailable, create refused without an account, forged token refused, the invitation renders, bundle scan clean). Unmet: a seeded live challenge code was provided (LIVE_CHALLENGE_CODE); a live expired code was provided (LIVE_EXPIRED_CODE); a live revoked code was provided (LIVE_REVOKED_CODE) — these three need live 9C challenge codes supplied as operator fixtures, and the certified preview database is deliberately empty (Phase 9C's own live rows were deleted when that phase closed), so there is no live row to point them at. Seeding synthetic 9C challenges on the preview the owner is about to test on is outside Phase 9E's scope. The accept-and-compare path is certified end to end on the harness (challenge:security-qa PASS) and was certified live in Phase 9C (its frozen record is 15/15)."
+    },
+    {
+      "item": "gates",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "60 gates PASS; challenge:deployed-qa partial on unsupplied 9C operator fixtures only"
+    }
+  ],
+  "open": []
+}

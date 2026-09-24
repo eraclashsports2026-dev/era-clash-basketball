@@ -1,0 +1,74 @@
+{
+  "artifact": "xp-contract",
+  "phase": "9D — Progression, XP and Achievements V1",
+  "generatedAt": "2026-09-06T14:54:36.451Z",
+  "progressionVersion": "1.0.0",
+  "amounts": {
+    "CLASH_COMPLETION": 100,
+    "CLASH_WIN": 25,
+    "ERA_FIRST_COMPLETION": 50,
+    "CHALLENGE_COMPLETION": 50,
+    "CHALLENGE_VICTORY": 25,
+    "CHALLENGE_CREATOR_RESPONSE": 25,
+    "ACHIEVEMENT": {
+      "small": 50,
+      "medium": 100,
+      "major": 250
+    }
+  },
+  "sources": [
+    {
+      "key": "clash:<result_id>:completion",
+      "xp": 100,
+      "when": "an authoritative completed Clash is saved to the career (any supported mode)"
+    },
+    {
+      "key": "clash:<result_id>:win",
+      "xp": 25,
+      "when": "the saved Clash's outcome is a win; a tie or a loss earns none"
+    },
+    {
+      "key": "era:<era_id>:first_completion",
+      "xp": 50,
+      "when": "the account's first completed Clash in that Era (once per account per Era, decided by the unique constraint)"
+    },
+    {
+      "key": "challenge_attempt:<attempt_id>:completion",
+      "xp": 50,
+      "when": "the account's official challenge attempt is completed"
+    },
+    {
+      "key": "challenge_attempt:<attempt_id>:victory",
+      "xp": 25,
+      "when": "the comparison contract decided recipient"
+    },
+    {
+      "key": "challenge_attempt:<attempt_id>:creator_response",
+      "xp": 25,
+      "when": "another ACCOUNT completes an official attempt against the creator's challenge (guests earn the creator nothing)"
+    },
+    {
+      "key": "achievement:<achievement_id>:unlock",
+      "xp": "50 / 100 / 250 by tier",
+      "when": "an achievement's target is met by the account's records; once per achievement id"
+    }
+  ],
+  "neverAwarded": [
+    "rolling",
+    "holding a player",
+    "revealing an Era",
+    "choosing a coach",
+    "opening a result",
+    "copying a challenge link",
+    "creating a challenge",
+    "opening the site",
+    "signing in",
+    "changing profile settings",
+    "saving or favoriting a roster",
+    "refreshing",
+    "abandoning a game",
+    "daily login"
+  ],
+  "idempotency": "unique (user_id, source_type, source_id, reason) on xp_ledger; every trigger runs the same reconcile; refresh, retry, re-save, concurrency and backfill insert nothing twice",
+  "authority": "server-derived from saved_clashes, challenge_attempts and challenges; no request body field is read"
+}

@@ -19,7 +19,7 @@ const LINKS = [
   ...(PREVIEW_ACCESS.waveId === WAVE2.waveId ? [["FEEDBACK", "feedback", "✎"]] : []),
 ];
 
-export default function UtilityBar({ eraState, onGuide, onSettings, compact = false }) {
+export default function UtilityBar({ eraState, onGuide, onSettings, compact = false, showEra = true }) {
   const era = eraState?.eraStyleId;
   const locked = !eraState?.change?.allowed;
 
@@ -45,7 +45,7 @@ export default function UtilityBar({ eraState, onGuide, onSettings, compact = fa
       </div>
 
       <div style={{ textAlign: "right", minWidth: 0 }}>
-        {era ? (
+        {!showEra ? null : era ? (
           <div style={{ fontSize: 11.5, fontWeight: 900, letterSpacing: 1, color: "var(--ec-a-gold)" }}>
             ERA: {era}{eraState?.custom ? " · CUSTOM" : ""}
             {locked && <span title="Locked for this run"> 🔒</span>}

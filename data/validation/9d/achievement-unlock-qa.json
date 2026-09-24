@@ -1,0 +1,50 @@
+{
+  "artifact": "achievement-unlock-qa",
+  "phase": "9D — Progression, XP and Achievements V1",
+  "generatedAt": "2026-09-06T14:54:36.746Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "one reconcile unlocks every met achievement together",
+      "pass": true,
+      "detail": "14 unlocks"
+    },
+    {
+      "check": "achievement XP is idempotent: a second reconcile unlocks and awards nothing",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "unlock rows carry the catalog version and the XP awarded",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the compact postgame block lists the unlocks by name and category, not by id alone",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "multiple unlocks are one list on one module (no sequential popups in the component)",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": true,
+  "unlocked": [
+    "first_clash",
+    "first_win",
+    "first_chaos",
+    "first_challenge",
+    "ten_clashes",
+    "heat_check",
+    "on_fire",
+    "time_traveler",
+    "era_adapter",
+    "challenger",
+    "coachs_trust",
+    "positionless",
+    "nail_biter",
+    "statement_win"
+  ]
+}

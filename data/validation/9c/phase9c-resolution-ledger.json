@@ -1,0 +1,208 @@
+{
+  "artifact": "phase9c-resolution-ledger",
+  "phase": "9C — Challenges + Persistent Competitive Identity V1",
+  "generatedAt": "2026-09-05T06:24:18.423Z",
+  "items": [
+    {
+      "item": "9B.3 acceptance",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "phase9b3-acceptance.json"
+    },
+    {
+      "item": "repository truth",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "phase-9c-challenges-competitive-identity-v1 @ 009030a"
+    },
+    {
+      "item": "Candidate 4 preservation",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "harness 55bb26a2 / 1.4.0; frozen paths byte-identical"
+    },
+    {
+      "item": "challenge creation",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "challenge-security-qa.json, e2e phase9c-challenges"
+    },
+    {
+      "item": "challenge public id",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "EC-XXXX-XXXX, 32 symbols, random, case-insensitive"
+    },
+    {
+      "item": "challenge code collision",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "unit: 5000 codes distinct; server retries on the unique index (v9c-challenges.test.js)"
+    },
+    {
+      "item": "share link",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "invitationUrl; FORBIDDEN_LINK_FIELDS pinned"
+    },
+    {
+      "item": "guest invitation",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "history/responsive gates; e2e guest journey"
+    },
+    {
+      "item": "signed-in invitation",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "challenge-history-qa.json"
+    },
+    {
+      "item": "accept challenge",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "started/resumed/already_attempted/own_challenge statuses"
+    },
+    {
+      "item": "same-opportunity contract",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "challenge-seed-qa.json — same seed, same opening five; manifest a one-way hash"
+    },
+    {
+      "item": "same-seed branching",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "challenge-seed-qa.json"
+    },
+    {
+      "item": "official-attempt limit",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "unique index (challenge_id, user_id); resume, never a second run"
+    },
+    {
+      "item": "refresh safety",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "e2e: a reload resumes the same attempt run id; CONTINUE CHALLENGE on the invitation"
+    },
+    {
+      "item": "creator result",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "bound from the authoritative record and the creator's own run (unit + security gate)"
+    },
+    {
+      "item": "recipient result",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "server-stored result at completion; a body cannot carry a score"
+    },
+    {
+      "item": "comparison scoring",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "challenge-comparison-contract.json"
+    },
+    {
+      "item": "challenge history",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "challenge-history-qa.json"
+    },
+    {
+      "item": "created list",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "challenge-history-qa.json"
+    },
+    {
+      "item": "accepted list",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "challenge-history-qa.json"
+    },
+    {
+      "item": "response list",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "challenge-history-qa.json"
+    },
+    {
+      "item": "revocation",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "history gate + e2e: withdrawn invitation, no new attempt, response kept"
+    },
+    {
+      "item": "expiration",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "live row expired by SQL reads expired on the preview"
+    },
+    {
+      "item": "creator deletion",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "the QA creator was deleted from auth.users: all three QA challenges keep their rows with creator_user_id null, creator_display_snapshot 'Deleted account', creator_roster [], creator_coach and creator_mvp null; their 2 completed guest attempts and the secret row remain; on the durable alias every one of them now reads the same one-key `unavailable` as an unknown code (EC-8ABQ-MKGY, EC-WHPM-36XY, EC-X6G8-V2L4 vs EC-ZZZZ-ZZZZ)"
+    },
+    {
+      "item": "recipient deletion",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "a QA recipient with an attempt in progress on EC-8ABQ-MKGY was deleted from auth.users: the attempt row stays with user_id null and display_snapshot 'Deleted account' (status unchanged); guest attempts untouched"
+    },
+    {
+      "item": "RLS",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "creator (authenticated, sub=A): challenges 1 (own, own code visible), attempts 0 · recipient (authenticated, sub=B): challenges 0, attempts 0 · anon: permission denied for table challenges · authenticated: permission denied for table challenge_secrets · authenticated update on challenges: permission denied (writes are the service role's alone)"
+    },
+    {
+      "item": "enumeration",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "8 unknown/malformed codes → one generic unavailable, locally and on the preview"
+    },
+    {
+      "item": "cross-account isolation",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "another device: not_your_result / not_found; live RLS: user B reads none of A's rows"
+    },
+    {
+      "item": "mobile",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "challenge-responsive-qa.json — 430/390/375, 44px, no overflow, one dominant action"
+    },
+    {
+      "item": "accessibility",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "challenge-accessibility-qa.json"
+    },
+    {
+      "item": "performance",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "challenge-performance-qa.json"
+    },
+    {
+      "item": "telemetry privacy",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "closed vocabulary; metadata excludes identity; gate + unit"
+    },
+    {
+      "item": "secret audit",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "bundle scan on the preview"
+    },
+    {
+      "item": "Wave 1 preservation",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "4dc59e7"
+    },
+    {
+      "item": "Wave 2 preservation",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "ef0caa5"
+    },
+    {
+      "item": "production isolation",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "production 2.7.2: no preview block, no cloud accounts"
+    },
+    {
+      "item": "API function count",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "12 routes + middleware"
+    },
+    {
+      "item": "unit tests",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "2569 passed (2569)"
+    },
+    {
+      "item": "Playwright e2e",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "80 passed (1.6m)"
+    },
+    {
+      "item": "gates",
+      "state": "FIXED_AND_VERIFIED",
+      "evidence": "32 gates PASS"
+    }
+  ],
+  "open": []
+}

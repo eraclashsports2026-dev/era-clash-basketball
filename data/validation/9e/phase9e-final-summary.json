@@ -1,0 +1,189 @@
+{
+  "phase": "9E — Competitive Rating + Leaderboards V1",
+  "generatedAt": "2026-09-07T02:09:39.418Z",
+  "verdict": "COMPETITIVE RATING + LEADERBOARDS V1 COMPLETE — READY FOR JOSEPH'S LEADERBOARD TEST",
+  "repository": {
+    "toplevel": "/Users/josephjohnson/era-clash-basketball",
+    "branch": "phase-9e-competitive-rating-leaderboards-v1",
+    "head": "c4e999d",
+    "parent": "f34f6f1 (phase-9b3-chaos-guided-flow-v2 with PR #47 merged; approved 9D head 90224cb)",
+    "frozenRefs": {
+      "wave1": "4dc59e7",
+      "wave2": "ef0caa5",
+      "main": "9cd95ff"
+    },
+    "protectedPreview": "https://era-clash-basketball-git-phase-9e-competitive-690a16-era-clash.vercel.app",
+    "headAtSummary": "c4e999d080a93deeb2beb8fdf79d26ae1ad4b4dc"
+  },
+  "contract": {
+    "competitiveRatingVersion": "1.0.0",
+    "initial": 1000,
+    "floor": 100,
+    "k": {
+      "provisional": 40,
+      "established": 24,
+      "switchAt": 10
+    },
+    "placement": {
+      "matches": 5,
+      "uniqueOpponents": 3
+    },
+    "pairLimit": {
+      "limit": 3,
+      "windowDays": 7
+    },
+    "leaderboard": {
+      "limit": 100,
+      "ordering": [
+        "current_rating desc",
+        "rated_wins desc",
+        "rated_losses asc",
+        "last_rated_at asc",
+        "user_id asc"
+      ],
+      "aroundMe": 2
+    },
+    "visibility": {
+      "key": "leaderboard_visibility",
+      "values": [
+        "private",
+        "public"
+      ],
+      "default": "private"
+    },
+    "powerEffect": 0,
+    "notBuilt": [
+      "XP/level/achievement leaderboards",
+      "public profiles",
+      "friends",
+      "seasons",
+      "rewards",
+      "tiers",
+      "approximate private rank"
+    ]
+  },
+  "drift": {
+    "activeCandidateCoreDrift": 0,
+    "candidateParameterDrift": 0,
+    "gameLogicChanges": 0,
+    "draftLogicChanges": 0,
+    "placementLogicChanges": 0,
+    "legendRivalLogicChanges": 0,
+    "eraLogicChanges": 0,
+    "coachLogicChanges": 0,
+    "challengeFairnessChanges": 0,
+    "challengeComparisonChanges": 0,
+    "progressionContractChanges": 0,
+    "competitiveRatingPowerEffect": 0,
+    "apiFunctionCountIncrease": 0,
+    "wave1Changes": 0,
+    "stableWave2Changes": 0,
+    "mainChanges": 0,
+    "productionChanges": 0
+  },
+  "preservation": {
+    "candidate": {
+      "candidateId": "Candidate 4",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+      "calibrationVersion": "1.4.0"
+    },
+    "frozenLogicIdentical": true,
+    "apiRoutes": 12,
+    "frozenRefs": {
+      "wave1": "4dc59e7",
+      "wave2": "ef0caa5",
+      "main": "9cd95ff"
+    },
+    "production": {
+      "build": "2.7.2",
+      "cloudAccounts": false
+    }
+  },
+  "liveDatabase": {
+    "verifiedAt": "2026-09-07T02:05:00Z",
+    "project": "lfybiphmqkiecfrqsfzt (the certified preview project; production has no cloud accounts)",
+    "sourceOfTruth": true,
+    "defectFoundLive": "9E-L1",
+    "finalState": "The synthetic accounts were deleted; removing their ledger rows required ALTER TABLE … DISABLE TRIGGER competitive_events_immutable_trg as the table owner (further evidence that nothing short of ownership can delete an event), and the trigger was re-enabled immediately — both competitive triggers report tgenabled 'O'. Final counts: auth.users 1 (the owner), profiles 1, user_preferences 0, challenges 0, challenge_attempts 0, competitive_profiles 0, competitive_rating_events 0, public leaderboard 0 rows."
+  },
+  "gates": {
+    "vitest": "2616 passed (2616)",
+    "playwright": "84 passed (1.8m)",
+    "gateFailures": [
+      "challenge:deployed-qa FAIL"
+    ],
+    "gateSkips": [],
+    "gates": 60,
+    "liveGuest": "24/24 live guest and security checks passed",
+    "deployedAccount": "29/29 deployed gates passed → data/validation/9b1/account-preview-qa.json",
+    "deployedCompetitive": "PASS",
+    "deployedProgression": "PASS",
+    "deployedChallenge": "FAIL",
+    "deployedChaos": "PASS",
+    "challengeDeployed": {
+      "source": ".9e-gate-challenge_deployed-qa.log (this run; data/validation/9c/challenge-deployed-qa.json on disk is Phase 9C's frozen 15/15 record, which the sweep restores)",
+      "checks": "8/11",
+      "unmet": [
+        "a seeded live challenge code was provided (LIVE_CHALLENGE_CODE)",
+        "a live expired code was provided (LIVE_EXPIRED_CODE)",
+        "a live revoked code was provided (LIVE_REVOKED_CODE)"
+      ],
+      "onlyUnsuppliedFixtures": true
+    }
+  },
+  "ledger": {
+    "total": 52,
+    "fixedAndVerified": 51,
+    "open": []
+  },
+  "evidence": [
+    "around-me-qa.json",
+    "competitive-rating-contract.json",
+    "leaderboard-contract.json",
+    "leaderboard-ordering-qa.json",
+    "leaderboard-privacy-qa.json",
+    "my-eraclash-competitive-qa.json",
+    "phase9d-acceptance.json",
+    "phase9e-final-summary.json",
+    "phase9e-preflight.json",
+    "phase9e-resolution-ledger.json",
+    "production-isolation.json",
+    "provisional-placement-qa.json",
+    "rating-accessibility-qa.json",
+    "rating-algorithm-qa.json",
+    "rating-backfill-qa.json",
+    "rating-concurrency-qa.json",
+    "rating-cross-account-qa.json",
+    "rating-deletion-qa.json",
+    "rating-deployed-qa.json",
+    "rating-idempotency-qa.json",
+    "rating-ledger-qa.json",
+    "rating-performance-qa.json",
+    "rating-responsive-qa.json",
+    "rating-result-qa.json",
+    "rating-rls-live.json",
+    "rating-rls-qa.json",
+    "rating-secret-audit.json",
+    "rating-security-qa.json",
+    "repeat-opponent-qa.json",
+    "self-challenge-rating-qa.json",
+    "wave-preservation.json"
+  ],
+  "screenshots": [
+    "challenge-rating-change.png",
+    "deployed-leaderboard-1280x900.png",
+    "leaderboard-around-me.png",
+    "leaderboard-desktop.png",
+    "leaderboard-empty.png",
+    "leaderboard-mobile.png",
+    "leaderboard-privacy-setting.png",
+    "leaderboard-provisional.png",
+    "my-eraclash-rating.png"
+  ],
+  "documents": [
+    "docs/competitive-rating/competitive-operator-guide.md",
+    "docs/competitive-rating/competitive-rating-contract-v1.md",
+    "docs/competitive-rating/competitive-security.md",
+    "docs/competitive-rating/leaderboard-contract-v1.md"
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "artifact": "profile-provisional-qa",
+  "phase": "9F — Public Competitive Profiles + Player Cards V1",
+  "generatedAt": "2026-09-09T18:15:21.082Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "a provisional account's public profile carries NO rating and NO rank",
+      "pass": true,
+      "detail": "{\"slug\":\"33333333333333333333\",\"displayName\":\"Charlie\",\"initials\":\"C\",\"state\":\"provisional\",\"level\":null,\"featured\":[],\"placement\":{\"matches\":3,\"matchesTarget\":5,\"opponents\":2,\"opponentsTarget\":3},\"profileVersion\":\"1.0.0\"}"
+    },
+    {
+      "check": "it carries no W-L-T split either — that is a placed fact",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "it DOES carry the placement progress, which is the whole provisional card",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "no rank is invented even though the account is on the leaderboard preference",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the owner still sees their own provisional rating (Phase 9E behaviour, unchanged)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the card says the status in words, not by colour",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "placement is Phase 9E's rule (5 matches AND 3 opponents), not a new one",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": true,
+  "provisional": {
+    "slug": "33333333333333333333",
+    "displayName": "Charlie",
+    "initials": "C",
+    "state": "provisional",
+    "level": null,
+    "featured": [],
+    "placement": {
+      "matches": 3,
+      "matchesTarget": 5,
+      "opponents": 2,
+      "opponentsTarget": 3
+    },
+    "profileVersion": "1.0.0"
+  }
+}

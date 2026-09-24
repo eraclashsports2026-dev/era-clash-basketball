@@ -147,5 +147,7 @@ export const config = {
     // Phase 9B.1: the account callback and the career page are client-rendered
     // paths served by the SPA fallback, so they need the same gate.
     "/auth/:path*", "/my-eraclash",
+    // Phase 9E: the leaderboard is a client-rendered reading surface too.
+    "/leaderboard",
   ],
 };

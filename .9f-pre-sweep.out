@@ -1,0 +1,99 @@
+=== PHASE 9F PRE-EDIT SWEEP 2026-09-09T17:01:18Z @ fec7a12 ===
+--- unit ---
+ Test Files  81 passed (81)
+      Tests  2616 passed (2616)
+--- build ---
+✓ built in 784ms
+[plugin eraclash-sw-version] service worker cache identity: eraclash-assets:2.7.2:bc2d22922807
+--- e2e (all projects) ---
+    Error: the stored read is reused verbatim
+    Error Context: test-results/phase7b-preview-P1-Ready-a-1bb8a--show-the-SAME-pregame-read-candidate3-preview/error-context.md
+  1 failed
+  83 passed (1.8m)
+--- preview gates (static) ---
+preview:preflight                        PASS
+preview:security                         PASS
+--- repository ui gates ---
+ui:time-arena-qa                         PASS
+ui:result-dock-qa                        PASS
+ui:live-intel-qa                         PASS
+ui:coach-chaos-qa                        PASS
+ui:player-card-theme-qa                  PASS
+ui:synchronized-chaos-qa                 PASS
+ui:era-membership-qa                     PASS
+ui:navigation-qa                         PASS
+ui:membership-routing-qa                 PASS
+ui:activation-telemetry-qa               PASS
+ui:play-lobby-contracts                  PASS
+ui:night-court-contracts                 PASS
+ui:play-lobby-polish-qa                  PASS
+--- account gates (9B.1 / 9B.2, harness http://localhost:4180) ---
+account:guest-claim-qa                   PASS
+account:cloud-save-qa                    PASS
+account:my-eraclash-qa                   PASS
+account:saved-rosters-qa                 PASS
+account:run-it-back-qa                   PASS
+account:career-v2-qa                     PASS
+--- 9B.3 chaos gates (harness http://localhost:4180) ---
+chaos:guided-flow-qa                     PASS
+chaos:state-machine-qa                   PASS
+chaos:accessibility-qa                   PASS
+chaos:performance-qa                     PASS
+--- 9C challenge gates (fake-cloud harness http://localhost:4178) ---
+challenge:contract-qa                    PASS
+challenge:seed-qa                        PASS
+challenge:rls-qa                         PASS
+challenge:security-qa                    PASS
+challenge:history-qa                     PASS
+challenge:responsive-qa                  PASS
+challenge:accessibility-qa               PASS
+challenge:performance-qa                 PASS
+--- 9D progression gates (fake-cloud harness http://localhost:4178) ---
+progression:contract-qa                  PASS
+progression:xp-qa                        PASS
+progression:achievement-qa               PASS
+progression:backfill-qa                  PASS
+progression:reconcile-qa                 PASS
+progression:rls-qa                       PASS
+progression:security-qa                  PASS
+progression:concurrency-qa               PASS
+progression:result-qa                    PASS
+progression:challenge-qa                 PASS
+progression:responsive-qa                PASS
+progression:accessibility-qa             PASS
+progression:performance-qa               PASS
+--- 9E competitive gates (fake-cloud harness http://localhost:4178) ---
+competitive:contract-qa                  PASS
+competitive:rating-qa                    PASS
+competitive:backfill-qa                  PASS
+competitive:rls-qa                       PASS
+competitive:concurrency-qa               PASS
+competitive:privacy-qa                   PASS
+competitive:leaderboard-qa               PASS
+competitive:security-qa                  PASS
+competitive:responsive-qa                PASS
+competitive:accessibility-qa             PASS
+competitive:performance-qa               PASS
+--- 9F profile gates (fake-cloud harness http://localhost:4178) ---
+profile:contract-qa                      SKIPPED (no such script)
+profile:identifier-qa                    SKIPPED (no such script)
+profile:visibility-qa                    SKIPPED (no such script)
+profile:projection-qa                    SKIPPED (no such script)
+profile:featured-qa                      SKIPPED (no such script)
+profile:provisional-qa                   SKIPPED (no such script)
+profile:display-name-qa                  SKIPPED (no such script)
+profile:deletion-qa                      SKIPPED (no such script)
+profile:enumeration-qa                   SKIPPED (no such script)
+profile:rls-qa                           SKIPPED (no such script)
+profile:cross-account-qa                 SKIPPED (no such script)
+profile:leaderboard-qa                   SKIPPED (no such script)
+profile:sharing-qa                       SKIPPED (no such script)
+profile:responsive-qa                    SKIPPED (no such script)
+profile:accessibility-qa                 SKIPPED (no such script)
+profile:performance-qa                   SKIPPED (no such script)
+--- preservation ---
+api routes: 12 + middleware: yes
+wave1  4dc59e7
+wave2  ef0caa5
+main   9cd95ff
+=== DONE 2026-09-09T17:05:37Z ===

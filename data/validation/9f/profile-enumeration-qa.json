@@ -1,0 +1,100 @@
+{
+  "artifact": "profile-enumeration-qa",
+  "phase": "9F — Public Competitive Profiles + Player Cards V1",
+  "generatedAt": "2026-09-09T18:15:21.519Z",
+  "origin": "http://localhost:4178",
+  "checks": [
+    {
+      "check": "a public profile resolves",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "private, unknown, malformed, uuid, empty and injection-shaped lookups all answer IDENTICALLY",
+      "pass": true,
+      "detail": "[\"a private profile:false\",\"an unknown slug:false\",\"a malformed slug (short):false\",\"a malformed slug (uppercase):false\",\"an auth uuid as a slug:false\",\"an empty slug:false\",\"a sql-ish slug:false\",\"a slug one symbol too long:false\"]"
+    },
+    {
+      "check": "nothing in a miss reveals whether an account exists",
+      "pass": true,
+      "detail": "found,status"
+    },
+    {
+      "check": "there is no listing action and no listing function",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "every profile function takes a slug, a user id, or a bounded limit — none takes nothing and returns everyone",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the one function taking only a limit is bounded by Phase 9E's ranking and needs BOTH opt-ins",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the shape is checked before the database is even asked",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": true,
+  "answers": [
+    {
+      "label": "a public profile",
+      "status": "ok",
+      "found": true,
+      "keys": "found,profile,status"
+    },
+    {
+      "label": "a private profile",
+      "status": "ok",
+      "found": false,
+      "keys": "found,status"
+    },
+    {
+      "label": "an unknown slug",
+      "status": "ok",
+      "found": false,
+      "keys": "found,status"
+    },
+    {
+      "label": "a malformed slug (short)",
+      "status": "ok",
+      "found": false,
+      "keys": "found,status"
+    },
+    {
+      "label": "a malformed slug (uppercase)",
+      "status": "ok",
+      "found": false,
+      "keys": "found,status"
+    },
+    {
+      "label": "an auth uuid as a slug",
+      "status": "ok",
+      "found": false,
+      "keys": "found,status"
+    },
+    {
+      "label": "an empty slug",
+      "status": "ok",
+      "found": false,
+      "keys": "found,status"
+    },
+    {
+      "label": "a sql-ish slug",
+      "status": "ok",
+      "found": false,
+      "keys": "found,status"
+    },
+    {
+      "label": "a slug one symbol too long",
+      "status": "ok",
+      "found": false,
+      "keys": "found,status"
+    }
+  ]
+}

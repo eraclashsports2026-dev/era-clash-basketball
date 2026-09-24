@@ -1,0 +1,80 @@
+{
+  "artifact": "challenge-comparison-contract",
+  "phase": "9C — Challenges + Persistent Competitive Identity V1",
+  "generatedAt": "2026-09-05T06:24:18.417Z",
+  "comparisonVersion": "1.0.0",
+  "performanceScore": "+margin on a win, −margin on a loss, 0 on a tie (user side Gold)",
+  "challengeOutcome": "higher performance wins; equal is a tie",
+  "examples": [
+    {
+      "creator": {
+        "gold": 118,
+        "blue": 104,
+        "outcome": "win",
+        "performance": 14
+      },
+      "recipient": {
+        "gold": 121,
+        "blue": 100,
+        "outcome": "win",
+        "performance": 21
+      },
+      "comparisonVersion": "1.0.0",
+      "outcome": "recipient",
+      "margin": 7
+    },
+    {
+      "creator": {
+        "gold": 118,
+        "blue": 104,
+        "outcome": "win",
+        "performance": 14
+      },
+      "recipient": {
+        "gold": 105,
+        "blue": 102,
+        "outcome": "win",
+        "performance": 3
+      },
+      "comparisonVersion": "1.0.0",
+      "outcome": "creator",
+      "margin": 11
+    },
+    {
+      "creator": {
+        "gold": 100,
+        "blue": 110,
+        "outcome": "loss",
+        "performance": -10
+      },
+      "recipient": {
+        "gold": 102,
+        "blue": 106,
+        "outcome": "loss",
+        "performance": -4
+      },
+      "comparisonVersion": "1.0.0",
+      "outcome": "recipient",
+      "margin": 6
+    },
+    {
+      "creator": {
+        "gold": 110,
+        "blue": 100,
+        "outcome": "win",
+        "performance": 10
+      },
+      "recipient": {
+        "gold": 120,
+        "blue": 110,
+        "outcome": "win",
+        "performance": 10
+      },
+      "comparisonVersion": "1.0.0",
+      "outcome": "tie",
+      "margin": 0
+    }
+  ],
+  "copyRule": "the result says 'You beat X' only when the contract decided recipient",
+  "storedOn": "challenge_attempts.comparison_version"
+}
