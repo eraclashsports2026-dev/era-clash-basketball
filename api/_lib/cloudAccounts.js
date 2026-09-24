@@ -17,8 +17,8 @@
 // forge a career record.
 import { createHash } from "node:crypto";
 import { getJSON } from "./store.js";
-import { findCard } from "../../src/players.js";
-import { getCoach, NEUTRAL_COACH } from "../../src/v3/coaches.js";
+// One reader of the stored record for every consumer (saved career rows, Challenges).
+import { finalScoreOf, mvpOf, savedRosterOf, savedCoachOf, engineIdentity } from "./resultContract.js";
 
 export const CLOUD_ACCOUNTS_SERVER_VERSION = "1.0.0";
 
@@ -128,7 +128,7 @@ export const readAuthoritativeResult = async (resultId) => {
 // records carry them at the top level. Read both. Phase 9D found the top-level
 // read alone: every real Clash saved as a scoreless loss, which the career
 // page showed and progression would have paid for.
-const scoreOf = (record) => record?.core?.finalScore || record?.finalScore || null;
+const scoreOf = finalScoreOf;
 const OUTCOME = (record) => {
   const s = scoreOf(record);
   const g = s?.gold, b = s?.blue;
@@ -136,45 +136,14 @@ const OUTCOME = (record) => {
   if (g === b) return "tie";
   return g > b ? "win" : "loss";
 };
-const mvpOf = (record) => {
-  const m = record?.mvp ?? record?.core?.mvp;
-  if (!m) return null;
-  if (typeof m === "string") return { name: m.slice(0, 40), pts: Number(record?.core?.mvpLine?.pts) || null };
-  return { name: String(m.name || "").slice(0, 40), pts: Number(m.pts) || null };
-};
 
-// The stored record carries ids, not display cards: `goldIds`/`blueIds`, and
-// `coachIds: { gold, blue }` (api/game.js spreads the engine's result into it).
-// Nothing on it is called `pregame.cards` or `coachGold`, and reading those
-// saved every Clash with nameless rosters and no coaches, so Run It Back sent
-// no coach and the server played both sides with the neutral staff.
-//
-// A name and position come from the record's own box score — what that game
-// showed, including the slot each player filled — and otherwise from the
-// catalog, through the alias-aware lookup any stored id must use.
-const roster = (ids, record, side) => {
-  const list = Array.isArray(ids) ? ids : [];
-  const box = new Map((record?.v3?.fullBox?.[side] || []).map((l) => [l?.id, l]));
-  return list.slice(0, 5).map((id) => {
-    const c = box.get(id) || findCard(id);
-    return { id: String(id).slice(0, 40), name: c?.name ? String(c.name).slice(0, 40) : null, pos: c?.pos ? String(c.pos).slice(0, 4) : null };
-  });
-};
-
-// The engines resolve an absent or unknown coach to the neutral staff, so a
-// coach id on the record is a catalog coach or "neutral". Neutral means no coach
-// was chosen and stays null: Run It Back then sends none and the server
-// defaults to the same staff.
-const coach = (id) => {
-  if (typeof id !== "string" || !id || id === NEUTRAL_COACH.id) return null;
-  const known = getCoach(id);
-  return { id: id.slice(0, 40), name: known?.name ? String(known.name).slice(0, 40) : null };
-};
-
-// The identity the preview engine stamps on its record (previewEngine.js).
-// Only a preview result has one — the same gate the browser's view model
-// applies — so a production-engine Clash keeps null and is labelled as such.
-const candidateOf = (record) => (record?.preview === true && record?.candidate ? record.candidate : null);
+// Roster, coach and engine identity are read by api/_lib/resultContract.js —
+// the single reader of the stored record (see its RESULT_RECORD_CONTRACT). The
+// neutral staff is stored as null: no coach was chosen, so Run It Back sends
+// none and the server defaults to the same staff, and progression never counts
+// it as a distinct coach.
+const roster = savedRosterOf;
+const coach = savedCoachOf;
 
 /**
  * The career row, built ENTIRELY from the authoritative record.
@@ -184,7 +153,7 @@ const candidateOf = (record) => (record?.preview === true && record?.candidate ?
  */
 export const buildSavedClash = ({ record, userId, claimedFrom, buildStamp = null, themeVersion = null }) => {
   const { session, ...withoutSession } = record || {};
-  const candidate = candidateOf(record);
+  const engine = engineIdentity(record);
   return {
     user_id: userId,
     result_id: String(record.id),
@@ -203,9 +172,9 @@ export const buildSavedClash = ({ record, userId, claimedFrom, buildStamp = null
     gold_coach: coach(record?.coachIds?.gold),
     blue_coach: coach(record?.coachIds?.blue),
     mvp: mvpOf(record),
-    candidate_id: candidate?.candidateId ? String(candidate.candidateId).slice(0, 40) : null,
-    calibration_version: candidate?.possessionCalibrationVersion ? String(candidate.possessionCalibrationVersion).slice(0, 20) : null,
-    candidate_core_hash: candidate?.coreHash ? String(candidate.coreHash).slice(0, 64) : null,
+    candidate_id: engine.candidateId,
+    calibration_version: engine.calibrationVersion,
+    candidate_core_hash: engine.candidateCoreHash,
     theme_version: themeVersion ? String(themeVersion).slice(0, 40) : null,
     build_stamp: buildStamp ? String(buildStamp).slice(0, 64) : null,
     // A non-reversible fingerprint: the same-seed challenge can be recognised
