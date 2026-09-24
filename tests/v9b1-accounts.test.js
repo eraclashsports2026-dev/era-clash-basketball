@@ -35,14 +35,23 @@ const git = (c) => { try { return execSync(c, { encoding: "utf8", stdio: ["ignor
 const PARENT = "fd36b5a107443367da704feb3f9dddea1452ae23"; // owner-accepted Play Lobby Polish V1
 const parentAvailable = () => git(`git cat-file -t ${PARENT}`) === "commit";
 
-/** An authoritative result record, shaped exactly as api/game.js writes one. */
+/**
+ * An authoritative result record, shaped as api/game.js writes one: the preview
+ * candidate under `candidate`, coach ids under `coachIds`, names in the box
+ * score. (This fixture once carried `previewCandidate` and `pregame.cards`,
+ * which no real record has — so it agreed with a mapping that read them.
+ * tests/saved-clash-field-mapping.test.js holds a captured real record.)
+ */
 const record = (over = {}) => ({
   v: 1, id: "pv_abc123def4", session: "a".repeat(48), mode: "single",
   goldIds: ["g1", "g2", "g3", "g4", "g5"], blueIds: ["b1", "b2", "b3", "b4", "b5"],
   finalScore: { gold: 112, blue: 104 }, eraId: "1990s",
   mvp: { name: "Test Legend", pts: 33 },
-  previewCandidate: { candidateId: "Candidate 4", calibrationVersion: "1.4.0", candidateCoreHash: "c".repeat(64) },
-  pregame: { cards: [{ id: "g1", name: "Gold One", pos: "PG" }], coachGold: { id: "cg", name: "Coach Gold" }, coachBlue: { id: "cb", name: "Coach Blue" } },
+  preview: true,
+  candidate: { candidateId: "Candidate 4", coreHash: "c".repeat(64), possessionCalibrationVersion: "1.4.0" },
+  coachIds: { gold: "phil-jackson", blue: "pat-riley" },
+  v3: { fullBox: { gold: [{ id: "g1", name: "Gold One", pos: "PG" }], blue: [] } },
+  pregame: { pregameSnapshotVersion: 1 },
   core: { winner: "GOLD" }, challengeId: "chal01", created_at: 1_760_000_000_000,
   ...over,
 });
@@ -271,10 +280,13 @@ describe("the authoritative save: nothing is taken from the client", () => {
     expect(row.era_id).toBe("1990s");
     expect(row.candidate_id).toBe("Candidate 4");
     expect(row.calibration_version).toBe("1.4.0");
+    expect(row.candidate_core_hash).toBe("c".repeat(64));
     expect(row.user_id).toBe("u-1");
     expect(row.result_id).toBe("pv_abc123def4");
     expect(row.mvp).toEqual({ name: "Test Legend", pts: 33 });
     expect(row.gold_roster[0]).toEqual({ id: "g1", name: "Gold One", pos: "PG" });
+    expect(row.gold_coach).toEqual({ id: "phil-jackson", name: "Phil Jackson" });
+    expect(row.blue_coach).toEqual({ id: "pat-riley", name: "Pat Riley" });
   });
   it("scores a tie and a loss from the record, never from a `won` claim", () => {
     expect(buildSavedClash({ record: record({ finalScore: { gold: 99, blue: 99 }, won: true }), userId: "u", claimedFrom: "signed_in" }).outcome).toBe("tie");
