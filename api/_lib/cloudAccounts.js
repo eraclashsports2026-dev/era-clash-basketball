@@ -16,6 +16,7 @@
 // role INSERT on saved_clashes, so a browser with a valid session still cannot
 // forge a career record.
 import { createHash } from "node:crypto";
+import { PREVIEW_SUPABASE_URL, PREVIEW_SUPABASE_PUBLISHABLE_KEY, onVercelPreview } from "../../config/projectRefs.js";
 import { getJSON } from "./store.js";
 // One reader of the stored record for every consumer (saved career rows, Challenges).
 import { finalScoreOf, mvpOf, savedRosterOf, savedCoachOf, engineIdentity } from "./resultContract.js";
@@ -50,9 +51,11 @@ export const serviceKeyShapeOk = (value) => looksLikeSecretKey(value);
 /** The same forgiving boolean the client uses: a dashboard text box is not code. */
 export const flagOn = (value) => ["true", "1", "yes", "on"].includes(String(value ?? "").trim().toLowerCase());
 
-const url = () => String(process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || "").trim().replace(/\/+$/, "");
+// A Vercel Preview deployment is pinned to the Preview project's public address
+// and publishable key (config/projectRefs.js); everywhere else the environment decides.
+const url = () => (onVercelPreview() ? PREVIEW_SUPABASE_URL : String(process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || "").trim().replace(/\/+$/, ""));
 const serviceKey = () => String(process.env.SUPABASE_SERVICE_ROLE_KEY || "").trim();
-const anonKey = () => String(process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || "").trim();
+const anonKey = () => (onVercelPreview() ? PREVIEW_SUPABASE_PUBLISHABLE_KEY : String(process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || "").trim());
 
 /**
  * Do the server and the browser point at the SAME project? A mismatch is
@@ -63,6 +66,7 @@ const anonKey = () => String(process.env.SUPABASE_ANON_KEY || process.env.VITE_S
  */
 const refOf = (u) => (String(u || "").match(/^https:\/\/([a-z0-9-]+)\.supabase\.(?:co|in)$/i) || [])[1] || null;
 export const providerRefsMatch = () => {
+  if (onVercelPreview()) return true;   // both halves are pinned to the Preview project
   const server = refOf(process.env.SUPABASE_URL);
   const browser = refOf(process.env.VITE_SUPABASE_URL);
   if (!server || !browser) return null;   // nothing to compare, not a mismatch
