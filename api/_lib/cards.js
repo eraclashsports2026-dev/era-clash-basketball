@@ -40,9 +40,11 @@ export const resultCardPayload = async ({ chaosRunId, deviceSession, userId = nu
   const displayName = userId ? (deps.displayName !== undefined ? deps.displayName : await displayNameFor(userId)) : null;
   const card = {
     kind: CARD_KINDS.RESULT, cardVersion: CARD_VERSION, score, outcome, margin: Math.abs(score.gold - score.blue),
-    era: record.eraId || run.revealedEraStyleId || null, eraCustom: !!(record.eraCustom || run.eraCustom),
+    // eraCustom lives on the chaos run, not the record (resultContract.RESULT_RECORD_CONTRACT.setup)
+    era: record.eraId || run.revealedEraStyleId || null, eraCustom: !!run.eraCustom,
     guest: !userId, displayName: userId ? displayName || "Coach" : null,
-    completedAt: record.createdAt || record.playedAt || null,
+    // the stored record's own timestamp is `created_at` (ms); it never had createdAt/playedAt
+    completedAt: Number.isFinite(Number(record.created_at)) ? new Date(Number(record.created_at)).toISOString() : null,
   };
   return { status: "ok", card: pick(card, RESULT_CARD_FIELDS) };
 };

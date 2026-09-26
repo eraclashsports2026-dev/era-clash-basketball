@@ -12,6 +12,8 @@
 // installed only through provider._setProvider from the suite. A fake account
 // must never appear in a user-facing preview.
 import { cleanDisplayName } from "./config.js";
+import { getCoach } from "../v3/coaches.js";
+import { listProjection } from "./savedReport.js";
 import {
   rosterSnapshotFrom, coachSnapshotFrom, cleanRosterName, cleanPrefs,
   SAVED_ROSTER_LIMIT_FREE,
@@ -88,7 +90,8 @@ export const createTestProvider = ({ users = [] } = {}) => {
     async listSavedClashes({ limit = 25 } = {}) {
       const s = requireSession();
       return db.savedClashes.filter((r) => r.user_id === s.userId)
-        .sort((a, b) => new Date(b.played_at) - new Date(a.played_at)).slice(0, limit).map((r) => ({ ...r }));
+        // the real provider's list projection: no snapshot (reopen reads the full row)
+        .sort((a, b) => new Date(b.played_at) - new Date(a.played_at)).slice(0, limit).map((r) => listProjection(r));
     },
     async getSavedClash(resultId) {
       const s = requireSession();
@@ -223,15 +226,19 @@ export const createTestProvider = ({ users = [] } = {}) => {
       const dup = db.savedClashes.find((r) => r.user_id === who.userId && r.result_id === String(resultId));
       if (dup) return { status: "already_saved" };
       const g = record.finalScore?.gold, b = record.finalScore?.blue;
+      // The fields the server's buildSavedClash reads: the candidate a preview
+      // record carries, and the coach ids (the neutral staff is no coach).
+      const cand = record.preview === true ? record.candidate : null;
+      const coachOf = (id) => (id && id !== "neutral" ? { id, name: getCoach(id)?.name ?? null } : null);
       db.savedClashes.push({
         id: `sc-${db.savedClashes.length + 1}`, user_id: who.userId, result_id: String(resultId),
         mode: record.mode || "single", user_side: "gold",
         outcome: g === b ? "tie" : g > b ? "win" : "loss",
         gold_score: g ?? null, blue_score: b ?? null, era_id: record.eraId || null,
         gold_roster: (record.goldIds || []).map((id) => ({ id })), blue_roster: (record.blueIds || []).map((id) => ({ id })),
-        gold_coach: null, blue_coach: null, mvp: record.mvp || null,
-        candidate_id: record.previewCandidate?.candidateId || null,
-        calibration_version: record.previewCandidate?.calibrationVersion || null,
+        gold_coach: coachOf(record.coachIds?.gold), blue_coach: coachOf(record.coachIds?.blue), mvp: record.mvp || null,
+        candidate_id: cand?.candidateId || null,
+        calibration_version: cand?.possessionCalibrationVersion || null,
         theme_version: null, build_stamp: null, claimed_from: claimedFrom,
         result_snapshot: (({ session, ...rest }) => rest)(record),
         played_at: new Date(record.created_at || Date.now()).toISOString(),

@@ -1,0 +1,12 @@
+{
+  "artifact": "repair-equivalence-result",
+  "ranAt": "2026-09-24T07:10:00Z",
+  "database": "Preview project lfybiphmqkiecfrqsfzt (Postgres 17.6), one transaction, ROLLED BACK",
+  "method": "A scratch saved_clashes row built from the captured Candidate 4 record exactly as the OLD mapping saved it (null candidate, null coaches, nameless rosters); the repair body from supabase/repairs/2026-09-24-saved-clash-fields.sql applied; the repaired row compared with what the NEW buildSavedClash writes for the same record (data/validation/foundation/repair-equivalence-expected.json); the repair applied a second time and the row compared with itself.",
+  "results": {
+    "first run equals buildSavedClash": true,
+    "repaired values": { "candidate_id": "Candidate 4", "gold_coach": { "id": "doc-rivers", "name": "Doc Rivers" }, "blue_coach": { "id": "gregg-popovich", "name": "Gregg Popovich" }, "gold_names": ["Bradley Beal", "Chris Mullin", "Bruce Bowen", "Larry Nance", "Bob McAdoo"] },
+    "second run changed nothing": true
+  },
+  "passed": true
+}

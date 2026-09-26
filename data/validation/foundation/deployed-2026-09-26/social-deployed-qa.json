@@ -1,0 +1,67 @@
+{
+  "artifact": "social-deployed-qa",
+  "phase": "Shareable Clash Cards + Rivalries V1",
+  "generatedAt": "2026-09-26T22:16:16.842Z",
+  "origin": "https://era-clash-basketball-git-phase-data-foundation-8711b8-era-clash.vercel.app",
+  "checks": [
+    {
+      "check": "the preview is gated and the owner key opens it",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the preview build has the feature ON by default and Chaos available",
+      "pass": true,
+      "detail": "{\"chaosClash\":true,\"clashSocial\":true,\"clashBreakdown\":true}"
+    },
+    {
+      "check": "the public health payload stays minimal (no new configuration fields)",
+      "pass": true,
+      "detail": "status,build,coreEngine,persistence,aiNarrative,simV3,cloudAccounts,preview"
+    },
+    {
+      "check": "account features on this preview (false = Preview variables still point at Production; the guards keep it inert)",
+      "pass": true,
+      "detail": "ready: true"
+    },
+    {
+      "check": "a guest exports a 1080×1350 result card on the deployed preview (no account provider needed)",
+      "pass": true,
+      "detail": "142165 bytes"
+    },
+    {
+      "check": "the PNG carries no text metadata",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "card-result answers 200 with a GUEST payload from the run store even while account features are disabled",
+      "pass": true,
+      "detail": "200 {\"status\":\"ok\",\"card\":{\"kind\":\"result\",\"cardVersion\":\"1.0.0\",\"score\":{\"gold\":114,\"blue\":119},\"outcom"
+    },
+    {
+      "check": "rivalry-list without an account: 401 (or 503 while disabled)",
+      "pass": true,
+      "detail": "401"
+    },
+    {
+      "check": "no horizontal overflow on the deployed result surface at 390",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "the browser bundle never names the database functions or the production project",
+      "pass": true,
+      "detail": "1 scripts"
+    },
+    {
+      "check": "the invitation link the bundle builds uses window.location.origin (this preview names itself, never production)",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": true,
+  "previewUrl": "https://era-clash-basketball-git-phase-data-foundation-8711b8-era-clash.vercel.app",
+  "accountsReady": true,
+  "note": ""
+}

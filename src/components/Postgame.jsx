@@ -446,7 +446,7 @@ function SectionTabs({ section, onSection }) {
 }
 
 // ── The Postgame ───────────────────────────────────────────────────────────────
-export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedbackCtx, narrativeStatus, onRetryNarrative, persisted, onRematch, onBest7, onChallenge, onSwap, onShare, onLeaderboard }) {
+export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedbackCtx, narrativeStatus, onRetryNarrative, persisted, onRematch, onBest7, onChallenge, onSwap, onShare, onLeaderboard, breakdown = null }) {
   const [section, setSection] = useState("final");
   const row = mvpRow(sim);
   const mvpP = mvpPlayer(sim, team, opp);
@@ -456,6 +456,8 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
   return (
     <div className="rise" style={{ ...card, marginTop: 14, overflow: "hidden", borderColor: won ? T.goldBorder : T.blueBorder, boxShadow: won ? T.glowGold : T.glowBlue }}>
       <ScoreboardHero sim={sim} won={won} mode={mode} seriesLabel={seriesLabel} team={team} opp={opp} />
+      {/* Clash Breakdown V1: directly under the score, collapsed — the score stays first. */}
+      {breakdown && <div className="ec-arena-shell" style={{ padding: "12px 16px 0" }}>{breakdown}</div>}
 
       <SectionTabs section={section} onSection={setSection} />
       <div role="tabpanel" style={{ padding: "12px 16px 16px", borderTop: `1px solid ${T.border}` }}>

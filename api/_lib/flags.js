@@ -74,6 +74,11 @@ export const flags = () => ({
   // an explicit CLASH_SOCIAL_V1_ENABLED always wins. Off leaves ordinary
   // Challenges exactly as they are.
   clashSocial: bool("CLASH_SOCIAL_V1_ENABLED", process.env.VERCEL_ENV === "preview"),
+  // Clash Breakdown V1: a descriptive, deterministic breakdown of a completed
+  // Clash, computed from the stored result. ON for preview deployments, OFF in
+  // production until the owner's acceptance; an explicit
+  // CLASH_BREAKDOWN_V1_ENABLED always wins. Off leaves the result exactly as it is.
+  clashBreakdown: bool("CLASH_BREAKDOWN_V1_ENABLED", process.env.VERCEL_ENV === "preview"),
   feedback: bool("FEEDBACK_ENABLED", true),
 });
 

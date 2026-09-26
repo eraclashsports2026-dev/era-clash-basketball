@@ -1,0 +1,77 @@
+{
+  "artifact": "summary",
+  "phase": "Clash Breakdown V1",
+  "generatedAt": "2026-09-24T05:40:00Z",
+  "baseline": {
+    "main": "b31d2ad (serving production)",
+    "branch": "feature/clash-breakdown-v1",
+    "pr": 67,
+    "testedCommit": "49b9bb4",
+    "wave1": "4dc59e7",
+    "wave2": "ef0caa5",
+    "candidate": {
+      "id": "Candidate 4",
+      "coreHashPrefix": "55bb26a2",
+      "calibration": "1.4.0"
+    },
+    "clashCardsRivalries": "merged and enabled in production before this build"
+  },
+  "durablePreview": "https://era-clash-basketball-git-feature-clash-breakdown-v1-era-clash.vercel.app",
+  "previewAccounts": "disabled \u2014 Preview-scoped Vercel variables still name the Production Supabase project (isolation check 3/12); guest journey certified there, account journeys on harness + live Preview DB",
+  "contract": {
+    "clashBreakdownVersion": "1.0.0",
+    "keyPerformanceRuleVersion": "1.0.0"
+  },
+  "gates": {
+    "capability-qa": {
+      "passed": 7,
+      "total": 7
+    },
+    "deployed-qa": {
+      "passed": 12,
+      "total": 12
+    },
+    "journey-qa": {
+      "passed": 18,
+      "total": 18
+    },
+    "responsive-qa": {
+      "passed": 11,
+      "total": 11
+    },
+    "screens-qa": {
+      "passed": 4,
+      "total": 4
+    }
+  },
+  "vitest": {
+    "files": 87,
+    "tests": 2758,
+    "failed": 0,
+    "new": "tests/clash-breakdown-v1.test.js (49)"
+  },
+  "e2e": {
+    "passed": 98,
+    "failed": 0,
+    "note": "one earlier run of phase9e-competitive failed on a harness my own gates had dirtied (the test pair's rated-match allowance was spent \u2192 an UNRATED panel); passed on a fresh harness, then the full suite passed 98/98 from clean harnesses"
+  },
+  "reruns": {
+    "tests": "first vitest run 7 failures \u2014 5 test inputs bypassed the engine's own player normalisation (fixed in the engine: selectPerformances now normalises), 1 test expected the wrong family winner (engine correct), 1 regex; 1 more test input corrected (three-point accuracy outranked made threes, as designed)",
+    "journey": "1 hollow check replaced by a real count; the first real count measured all game POSTs (Chaos draft actions use the same endpoint) \u2014 corrected to result ids and post-result requests"
+  },
+  "liveDatabase": "history-rls-live.json \u2014 A reads own saved Clash, B reads 0 rows and cannot update, anon denied",
+  "preservation": {
+    "protectedPathsChanged": 0,
+    "paths": "src/v3 src/chaos engine/draft/placement/players/entitlements config api/game.js api/simulate.js game-core* previewEngine chaosRun postgameStory challenges competitive progression rivalries cards supabase calibration images",
+    "apiFunctions": "12 + middleware (unchanged)",
+    "migrations": "none (latest 0008)",
+    "gameplayPowerEffect": 0
+  },
+  "foundOutOfScope": [
+    "saved_clashes summary columns candidate_id/calibration_version/candidate_core_hash/gold_coach/blue_coach/roster names are always null (cloudAccounts reads fields the record does not have) \u2014 so Run It Back from a saved Clash sends no coaches and the server uses 'neutral'",
+    "the dock's BY QUARTER grid labels an overtime period 'Q5'",
+    "GET /api/game?id= serves any result publicly (session stripped, seed included) \u2014 ids are random, not enumerable; unchanged",
+    "the result payload the browser receives includes the simulation seed; the breakdown never reads it"
+  ],
+  "ownerDecision": "APPROVE CLASH BREAKDOWN V1 \u2014 RELEASE TO PRODUCTION  or  REVISE: [changes]"
+}

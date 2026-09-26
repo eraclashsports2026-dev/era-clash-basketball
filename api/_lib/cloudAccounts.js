@@ -16,7 +16,10 @@
 // role INSERT on saved_clashes, so a browser with a valid session still cannot
 // forge a career record.
 import { createHash } from "node:crypto";
+import { PREVIEW_SUPABASE_URL, PREVIEW_SUPABASE_PUBLISHABLE_KEY, onVercelPreview } from "../../config/projectRefs.js";
 import { getJSON } from "./store.js";
+// One reader of the stored record for every consumer (saved career rows, Challenges).
+import { finalScoreOf, mvpOf, savedRosterOf, savedCoachOf, engineIdentity } from "./resultContract.js";
 
 export const CLOUD_ACCOUNTS_SERVER_VERSION = "1.0.0";
 
@@ -48,9 +51,11 @@ export const serviceKeyShapeOk = (value) => looksLikeSecretKey(value);
 /** The same forgiving boolean the client uses: a dashboard text box is not code. */
 export const flagOn = (value) => ["true", "1", "yes", "on"].includes(String(value ?? "").trim().toLowerCase());
 
-const url = () => String(process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || "").trim().replace(/\/+$/, "");
+// A Vercel Preview deployment is pinned to the Preview project's public address
+// and publishable key (config/projectRefs.js); everywhere else the environment decides.
+const url = () => (onVercelPreview() ? PREVIEW_SUPABASE_URL : String(process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || "").trim().replace(/\/+$/, ""));
 const serviceKey = () => String(process.env.SUPABASE_SERVICE_ROLE_KEY || "").trim();
-const anonKey = () => String(process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || "").trim();
+const anonKey = () => (onVercelPreview() ? PREVIEW_SUPABASE_PUBLISHABLE_KEY : String(process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || "").trim());
 
 /**
  * Do the server and the browser point at the SAME project? A mismatch is
@@ -61,6 +66,7 @@ const anonKey = () => String(process.env.SUPABASE_ANON_KEY || process.env.VITE_S
  */
 const refOf = (u) => (String(u || "").match(/^https:\/\/([a-z0-9-]+)\.supabase\.(?:co|in)$/i) || [])[1] || null;
 export const providerRefsMatch = () => {
+  if (onVercelPreview()) return true;   // both halves are pinned to the Preview project
   const server = refOf(process.env.SUPABASE_URL);
   const browser = refOf(process.env.VITE_SUPABASE_URL);
   if (!server || !browser) return null;   // nothing to compare, not a mismatch
@@ -126,7 +132,7 @@ export const readAuthoritativeResult = async (resultId) => {
 // records carry them at the top level. Read both. Phase 9D found the top-level
 // read alone: every real Clash saved as a scoreless loss, which the career
 // page showed and progression would have paid for.
-const scoreOf = (record) => record?.core?.finalScore || record?.finalScore || null;
+const scoreOf = finalScoreOf;
 const OUTCOME = (record) => {
   const s = scoreOf(record);
   const g = s?.gold, b = s?.blue;
@@ -134,23 +140,14 @@ const OUTCOME = (record) => {
   if (g === b) return "tie";
   return g > b ? "win" : "loss";
 };
-const mvpOf = (record) => {
-  const m = record?.mvp ?? record?.core?.mvp;
-  if (!m) return null;
-  if (typeof m === "string") return { name: m.slice(0, 40), pts: Number(record?.core?.mvpLine?.pts) || null };
-  return { name: String(m.name || "").slice(0, 40), pts: Number(m.pts) || null };
-};
 
-const roster = (ids, record) => {
-  const list = Array.isArray(ids) ? ids : [];
-  const byId = new Map((record?.pregame?.cards || []).map((c) => [c.id, c]));
-  return list.slice(0, 5).map((id) => {
-    const c = byId.get(id);
-    return { id: String(id).slice(0, 40), name: c?.name ? String(c.name).slice(0, 40) : null, pos: c?.pos ? String(c.pos).slice(0, 4) : null };
-  });
-};
-
-const coach = (c) => (c ? { id: String(c.id ?? "").slice(0, 40) || null, name: c.name ? String(c.name).slice(0, 40) : null } : null);
+// Roster, coach and engine identity are read by api/_lib/resultContract.js —
+// the single reader of the stored record (see its RESULT_RECORD_CONTRACT). The
+// neutral staff is stored as null: no coach was chosen, so Run It Back sends
+// none and the server defaults to the same staff, and progression never counts
+// it as a distinct coach.
+const roster = savedRosterOf;
+const coach = savedCoachOf;
 
 /**
  * The career row, built ENTIRELY from the authoritative record.
@@ -160,6 +157,7 @@ const coach = (c) => (c ? { id: String(c.id ?? "").slice(0, 40) || null, name: c
  */
 export const buildSavedClash = ({ record, userId, claimedFrom, buildStamp = null, themeVersion = null }) => {
   const { session, ...withoutSession } = record || {};
+  const engine = engineIdentity(record);
   return {
     user_id: userId,
     result_id: String(record.id),
@@ -173,14 +171,14 @@ export const buildSavedClash = ({ record, userId, claimedFrom, buildStamp = null
     gold_score: Number.isFinite(scoreOf(record)?.gold) ? scoreOf(record).gold : null,
     blue_score: Number.isFinite(scoreOf(record)?.blue) ? scoreOf(record).blue : null,
     era_id: record?.eraId ? String(record.eraId).slice(0, 20) : null,
-    gold_roster: roster(record?.goldIds, record),
-    blue_roster: roster(record?.blueIds, record),
-    gold_coach: coach(record?.pregame?.coachGold || record?.coachGold),
-    blue_coach: coach(record?.pregame?.coachBlue || record?.coachBlue),
+    gold_roster: roster(record?.goldIds, record, "gold"),
+    blue_roster: roster(record?.blueIds, record, "blue"),
+    gold_coach: coach(record?.coachIds?.gold),
+    blue_coach: coach(record?.coachIds?.blue),
     mvp: mvpOf(record),
-    candidate_id: record?.previewCandidate?.candidateId ? String(record.previewCandidate.candidateId).slice(0, 40) : null,
-    calibration_version: record?.previewCandidate?.calibrationVersion ? String(record.previewCandidate.calibrationVersion).slice(0, 20) : null,
-    candidate_core_hash: record?.previewCandidate?.candidateCoreHash ? String(record.previewCandidate.candidateCoreHash).slice(0, 64) : null,
+    candidate_id: engine.candidateId,
+    calibration_version: engine.calibrationVersion,
+    candidate_core_hash: engine.candidateCoreHash,
     theme_version: themeVersion ? String(themeVersion).slice(0, 40) : null,
     build_stamp: buildStamp ? String(buildStamp).slice(0, 64) : null,
     // A non-reversible fingerprint: the same-seed challenge can be recognised
