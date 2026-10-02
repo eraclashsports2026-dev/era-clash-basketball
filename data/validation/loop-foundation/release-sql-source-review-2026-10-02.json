@@ -1,0 +1,698 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-02T09:06:43.949015+00:00",
+  "scope": "Read-only local syntax and structural source review. No database connection, migration, SQL execution or live RLS verification.",
+  "status": "PASS_SOURCE_ONLY",
+  "artifact": "docs/release/10-02-2026-production-release.sql",
+  "artifactSha256": "987121f7ccc6f444d85de7cbc2387617223bb606f083af32bb767b7dab1df927",
+  "parser": {
+    "name": "pglast",
+    "version": "8.4",
+    "PostgresGrammar": [
+      18,
+      4
+    ],
+    "statementCount": 329,
+    "syntax": "PASS",
+    "runtimeTypeResolution": "UNVERIFIED"
+  },
+  "migrationBlocks": [
+    {
+      "file": "supabase/migrations/0001_accounts.sql",
+      "canonicalSha256": "de9c9abdb6c734729a67bfff2754f90e6c01e9e81964a8054070cc5771a24b19",
+      "trimByteEqual": true
+    },
+    {
+      "file": "supabase/migrations/0002_accounts_hardening.sql",
+      "canonicalSha256": "2a047e91eb8d0a05953f8b347149433f23f1d6873115bacb8c1b15c376eca967",
+      "trimByteEqual": true
+    },
+    {
+      "file": "supabase/migrations/0003_career_v2.sql",
+      "canonicalSha256": "0f7fd9de2f9b77de82b68c39d6cc82901aa784dcdb44aa0e80039d41fed81fea",
+      "trimByteEqual": true
+    },
+    {
+      "file": "supabase/migrations/0004_challenges.sql",
+      "canonicalSha256": "f9d2d57a18783a048dab43084597e35c01a17362efbd2e6521f612f0b0bbe3da",
+      "trimByteEqual": true
+    },
+    {
+      "file": "supabase/migrations/0005_progression_v1.sql",
+      "canonicalSha256": "3ba35d300cac478aeda6e93b77b0a2ba0af3efb1774ae7f025f6d4344c524ede",
+      "trimByteEqual": true
+    },
+    {
+      "file": "supabase/migrations/0006_competitive_rating_v1.sql",
+      "canonicalSha256": "1df7d29dea44849b6e6adad76f481be33d3ca108f567f3ab9733ae92b9389372",
+      "trimByteEqual": true
+    },
+    {
+      "file": "supabase/migrations/0007_public_competitive_profiles_v1.sql",
+      "canonicalSha256": "71364d4021cfa641f19549b0f3366b9eb7d4db10d4a562d7476fcfac909834b9",
+      "trimByteEqual": true
+    },
+    {
+      "file": "supabase/migrations/0008_rivalries_v1.sql",
+      "canonicalSha256": "f18b34e144fdf99ffe2c6f26aa252a3015437802aeda9e569a439de05908a42a",
+      "trimByteEqual": true
+    }
+  ],
+  "originalRepairSourceHashes": {
+    "supabase/repairs/2026-09-24-saved-clash-fields.sql": "d745b9e5fd653a0551b39369aac2f684b23ae42cd1bad51efc9e35b36a1f53ab",
+    "scripts/foundation/savedClashRepair.mjs": "57c0de6a7c5ac5e1342d7e03308034daa4d5758ddcd29fbdff942b13103574b0"
+  },
+  "publicTablesRlsEnabled": [
+    "achievement_unlocks",
+    "challenge_attempts",
+    "challenge_secrets",
+    "challenges",
+    "competitive_profiles",
+    "competitive_rating_events",
+    "profile_featured_achievements",
+    "profiles",
+    "progression_profiles",
+    "public_profiles",
+    "result_claims",
+    "rivalries",
+    "rivalry_blocks",
+    "rivalry_events",
+    "rivalry_periods",
+    "rivalry_request_log",
+    "saved_clashes",
+    "saved_rosters",
+    "schema_migrations",
+    "user_preferences",
+    "xp_ledger"
+  ],
+  "publicTableCount": 21,
+  "userDataTableCount": 20,
+  "policies": [
+    {
+      "table": "profiles",
+      "name": "profiles_select_own",
+      "command": "select",
+      "roles": [
+        "authenticated"
+      ],
+      "dropBeforeCreateSource": true
+    },
+    {
+      "table": "profiles",
+      "name": "profiles_update_own",
+      "command": "update",
+      "roles": [
+        "authenticated"
+      ],
+      "dropBeforeCreateSource": true
+    },
+    {
+      "table": "saved_clashes",
+      "name": "saved_clashes_select_own",
+      "command": "select",
+      "roles": [
+        "authenticated"
+      ],
+      "dropBeforeCreateSource": true
+    },
+    {
+      "table": "result_claims",
+      "name": "result_claims_select_own",
+      "command": "select",
+      "roles": [
+        "authenticated"
+      ],
+      "dropBeforeCreateSource": true
+    },
+    {
+      "table": "saved_rosters",
+      "name": "saved_rosters_select_own",
+      "command": "select",
+      "roles": [
+        "authenticated"
+      ],
+      "dropBeforeCreateSource": true
+    },
+    {
+      "table": "saved_rosters",
+      "name": "saved_rosters_insert_own",
+      "command": "insert",
+      "roles": [
+        "authenticated"
+      ],
+      "dropBeforeCreateSource": true
+    },
+    {
+      "table": "saved_rosters",
+      "name": "saved_rosters_update_own",
+      "command": "update",
+      "roles": [
+        "authenticated"
+      ],
+      "dropBeforeCreateSource": true
+    },
+    {
+      "table": "saved_rosters",
+      "name": "saved_rosters_delete_own",
+      "command": "delete",
+      "roles": [
+        "authenticated"
+      ],
+      "dropBeforeCreateSource": true
+    },
+    {
+      "table": "user_preferences",
+      "name": "user_preferences_select_own",
+      "command": "select",
+      "roles": [
+        "authenticated"
+      ],
+      "dropBeforeCreateSource": true
+    },
+    {
+      "table": "user_preferences",
+      "name": "user_preferences_insert_own",
+      "command": "insert",
+      "roles": [
+        "authenticated"
+      ],
+      "dropBeforeCreateSource": true
+    },
+    {
+      "table": "user_preferences",
+      "name": "user_preferences_update_own",
+      "command": "update",
+      "roles": [
+        "authenticated"
+      ],
+      "dropBeforeCreateSource": true
+    },
+    {
+      "table": "saved_clashes",
+      "name": "saved_clashes_update_own_favorite",
+      "command": "update",
+      "roles": [
+        "authenticated"
+      ],
+      "dropBeforeCreateSource": true
+    },
+    {
+      "table": "challenges",
+      "name": "challenges_select_own",
+      "command": "select",
+      "roles": [
+        "authenticated"
+      ],
+      "dropBeforeCreateSource": true
+    },
+    {
+      "table": "challenge_attempts",
+      "name": "challenge_attempts_select_own",
+      "command": "select",
+      "roles": [
+        "authenticated"
+      ],
+      "dropBeforeCreateSource": true
+    },
+    {
+      "table": "challenge_attempts",
+      "name": "challenge_attempts_select_responses",
+      "command": "select",
+      "roles": [
+        "authenticated"
+      ],
+      "dropBeforeCreateSource": true
+    },
+    {
+      "table": "progression_profiles",
+      "name": "progression_profiles_select_own",
+      "command": "select",
+      "roles": [
+        "authenticated"
+      ],
+      "dropBeforeCreateSource": true
+    },
+    {
+      "table": "xp_ledger",
+      "name": "xp_ledger_select_own",
+      "command": "select",
+      "roles": [
+        "authenticated"
+      ],
+      "dropBeforeCreateSource": true
+    },
+    {
+      "table": "achievement_unlocks",
+      "name": "achievement_unlocks_select_own",
+      "command": "select",
+      "roles": [
+        "authenticated"
+      ],
+      "dropBeforeCreateSource": true
+    },
+    {
+      "table": "competitive_profiles",
+      "name": "competitive_profiles_select_own",
+      "command": "select",
+      "roles": [
+        "authenticated"
+      ],
+      "dropBeforeCreateSource": true
+    },
+    {
+      "table": "competitive_rating_events",
+      "name": "competitive_events_select_own",
+      "command": "select",
+      "roles": [
+        "authenticated"
+      ],
+      "dropBeforeCreateSource": true
+    },
+    {
+      "table": "public_profiles",
+      "name": "public_profiles_select_own",
+      "command": "select",
+      "roles": [
+        "authenticated"
+      ],
+      "dropBeforeCreateSource": true
+    },
+    {
+      "table": "profile_featured_achievements",
+      "name": "profile_featured_select_own",
+      "command": "select",
+      "roles": [
+        "authenticated"
+      ],
+      "dropBeforeCreateSource": true
+    },
+    {
+      "table": "rivalries",
+      "name": "rivalries_select_member",
+      "command": "select",
+      "roles": [
+        "authenticated"
+      ],
+      "dropBeforeCreateSource": true
+    },
+    {
+      "table": "rivalry_periods",
+      "name": "rivalry_periods_select_member",
+      "command": "select",
+      "roles": [
+        "authenticated"
+      ],
+      "dropBeforeCreateSource": true
+    },
+    {
+      "table": "rivalry_events",
+      "name": "rivalry_events_select_member",
+      "command": "select",
+      "roles": [
+        "authenticated"
+      ],
+      "dropBeforeCreateSource": true
+    }
+  ],
+  "views": [
+    {
+      "name": "career_summary",
+      "securityInvoker": true
+    },
+    {
+      "name": "career_by_mode",
+      "securityInvoker": true
+    },
+    {
+      "name": "career_streak",
+      "securityInvoker": true
+    },
+    {
+      "name": "career_longest_win_streak",
+      "securityInvoker": true
+    },
+    {
+      "name": "account_activity",
+      "securityInvoker": true
+    }
+  ],
+  "securityDefiners": [
+    {
+      "name": "public.handle_new_user",
+      "fixedSearchPath": true,
+      "clientExecuteRevoked": true
+    },
+    {
+      "name": "public.anonymize_deleted_account",
+      "fixedSearchPath": true,
+      "clientExecuteRevoked": true
+    },
+    {
+      "name": "public.progression_apply",
+      "fixedSearchPath": true,
+      "clientExecuteRevoked": true
+    },
+    {
+      "name": "public.competitive_rate_attempt",
+      "fixedSearchPath": true,
+      "clientExecuteRevoked": true
+    },
+    {
+      "name": "public.competitive_reconcile",
+      "fixedSearchPath": true,
+      "clientExecuteRevoked": true
+    },
+    {
+      "name": "public.competitive_leaderboard",
+      "fixedSearchPath": true,
+      "clientExecuteRevoked": true
+    },
+    {
+      "name": "public.competitive_rank_of",
+      "fixedSearchPath": true,
+      "clientExecuteRevoked": true
+    },
+    {
+      "name": "public.public_profile_provision",
+      "fixedSearchPath": true,
+      "clientExecuteRevoked": true
+    },
+    {
+      "name": "public.profile_set_featured",
+      "fixedSearchPath": true,
+      "clientExecuteRevoked": true
+    },
+    {
+      "name": "public.profile_public_get",
+      "fixedSearchPath": true,
+      "clientExecuteRevoked": true
+    },
+    {
+      "name": "public.profile_board_links",
+      "fixedSearchPath": true,
+      "clientExecuteRevoked": true
+    },
+    {
+      "name": "public.profile_owner_get",
+      "fixedSearchPath": true,
+      "clientExecuteRevoked": true
+    },
+    {
+      "name": "public.rivalries_on_account_deleted",
+      "fixedSearchPath": true,
+      "clientExecuteRevoked": true
+    },
+    {
+      "name": "public.rivalry_opponent_view",
+      "fixedSearchPath": true,
+      "clientExecuteRevoked": true
+    },
+    {
+      "name": "public.rivalry_record",
+      "fixedSearchPath": true,
+      "clientExecuteRevoked": true
+    },
+    {
+      "name": "public.rivalry_request",
+      "fixedSearchPath": true,
+      "clientExecuteRevoked": true
+    },
+    {
+      "name": "public.rivalry_respond",
+      "fixedSearchPath": true,
+      "clientExecuteRevoked": true
+    },
+    {
+      "name": "public.rivalry_record_attempt",
+      "fixedSearchPath": true,
+      "clientExecuteRevoked": true
+    },
+    {
+      "name": "public.rivalry_reconcile",
+      "fixedSearchPath": true,
+      "clientExecuteRevoked": true
+    },
+    {
+      "name": "public.rivalry_list",
+      "fixedSearchPath": true,
+      "clientExecuteRevoked": true
+    },
+    {
+      "name": "public.rivalry_detail",
+      "fixedSearchPath": true,
+      "clientExecuteRevoked": true
+    }
+  ],
+  "functionBodies": [
+    {
+      "name": "public.touch_updated_at",
+      "language": "plpgsql",
+      "syntax": "PASS"
+    },
+    {
+      "name": "public.handle_new_user",
+      "language": "plpgsql",
+      "syntax": "PASS"
+    },
+    {
+      "name": "public.roster_snapshot_ok",
+      "language": "sql",
+      "syntax": "PASS"
+    },
+    {
+      "name": "public.coach_snapshot_ok",
+      "language": "sql",
+      "syntax": "PASS"
+    },
+    {
+      "name": "public.prefs_ok",
+      "language": "sql",
+      "syntax": "PASS"
+    },
+    {
+      "name": "public.enforce_saved_roster_limit",
+      "language": "plpgsql",
+      "syntax": "PASS"
+    },
+    {
+      "name": "public.saved_rosters_guard",
+      "language": "plpgsql",
+      "syntax": "PASS"
+    },
+    {
+      "name": "public.saved_clashes_favorite_guard",
+      "language": "plpgsql",
+      "syntax": "PASS"
+    },
+    {
+      "name": "public.anonymize_deleted_account",
+      "language": "plpgsql",
+      "syntax": "PASS"
+    },
+    {
+      "name": "public.progression_level_for",
+      "language": "plpgsql",
+      "syntax": "PASS"
+    },
+    {
+      "name": "public.xp_ledger_immutable",
+      "language": "plpgsql",
+      "syntax": "PASS"
+    },
+    {
+      "name": "public.progression_profile_guard",
+      "language": "plpgsql",
+      "syntax": "PASS"
+    },
+    {
+      "name": "public.progression_apply",
+      "language": "plpgsql",
+      "syntax": "PASS"
+    },
+    {
+      "name": "public.prefs_ok",
+      "language": "sql",
+      "syntax": "PASS"
+    },
+    {
+      "name": "public.competitive_events_immutable",
+      "language": "plpgsql",
+      "syntax": "PASS"
+    },
+    {
+      "name": "public.competitive_profile_guard",
+      "language": "plpgsql",
+      "syntax": "PASS"
+    },
+    {
+      "name": "public.competitive_rate_attempt",
+      "language": "plpgsql",
+      "syntax": "PASS"
+    },
+    {
+      "name": "public.competitive_reconcile",
+      "language": "plpgsql",
+      "syntax": "PASS"
+    },
+    {
+      "name": "public.competitive_leaderboard",
+      "language": "sql",
+      "syntax": "PASS"
+    },
+    {
+      "name": "public.competitive_rank_of",
+      "language": "sql",
+      "syntax": "PASS"
+    },
+    {
+      "name": "public.prefs_ok",
+      "language": "sql",
+      "syntax": "PASS"
+    },
+    {
+      "name": "public.profile_slug_new",
+      "language": "sql",
+      "syntax": "PASS"
+    },
+    {
+      "name": "public.public_profile_provision",
+      "language": "plpgsql",
+      "syntax": "PASS"
+    },
+    {
+      "name": "public.profile_set_featured",
+      "language": "plpgsql",
+      "syntax": "PASS"
+    },
+    {
+      "name": "public.profile_public_get",
+      "language": "sql",
+      "syntax": "PASS"
+    },
+    {
+      "name": "public.profile_board_links",
+      "language": "sql",
+      "syntax": "PASS"
+    },
+    {
+      "name": "public.profile_owner_get",
+      "language": "sql",
+      "syntax": "PASS"
+    },
+    {
+      "name": "public.public_profile_guard",
+      "language": "plpgsql",
+      "syntax": "PASS"
+    },
+    {
+      "name": "public.rivalry_events_immutable",
+      "language": "plpgsql",
+      "syntax": "PASS"
+    },
+    {
+      "name": "public.rivalries_on_account_deleted",
+      "language": "plpgsql",
+      "syntax": "PASS"
+    },
+    {
+      "name": "public.rivalry_member_deleted",
+      "language": "sql",
+      "syntax": "PASS"
+    },
+    {
+      "name": "public.rivalry_opponent_view",
+      "language": "sql",
+      "syntax": "PASS"
+    },
+    {
+      "name": "public.rivalry_record",
+      "language": "sql",
+      "syntax": "PASS"
+    },
+    {
+      "name": "public.rivalry_request",
+      "language": "plpgsql",
+      "syntax": "PASS"
+    },
+    {
+      "name": "public.rivalry_respond",
+      "language": "plpgsql",
+      "syntax": "PASS"
+    },
+    {
+      "name": "public.rivalry_record_attempt",
+      "language": "plpgsql",
+      "syntax": "PASS"
+    },
+    {
+      "name": "public.rivalry_reconcile",
+      "language": "plpgsql",
+      "syntax": "PASS"
+    },
+    {
+      "name": "public.rivalry_list",
+      "language": "sql",
+      "syntax": "PASS"
+    },
+    {
+      "name": "public.rivalry_detail",
+      "language": "plpgsql",
+      "syntax": "PASS"
+    }
+  ],
+  "repairUpdateGuards": [
+    {
+      "columns": [
+        "candidate_id",
+        "calibration_version",
+        "candidate_core_hash"
+      ],
+      "hasActualChangeGuard": true,
+      "hasOriginalValueGuard": true
+    },
+    {
+      "columns": [
+        "gold_coach"
+      ],
+      "hasActualChangeGuard": true,
+      "hasOriginalValueGuard": true
+    },
+    {
+      "columns": [
+        "blue_coach"
+      ],
+      "hasActualChangeGuard": true,
+      "hasOriginalValueGuard": true
+    },
+    {
+      "columns": [
+        "gold_roster"
+      ],
+      "hasActualChangeGuard": true,
+      "hasOriginalValueGuard": true
+    },
+    {
+      "columns": [
+        "blue_roster"
+      ],
+      "hasActualChangeGuard": true,
+      "hasOriginalValueGuard": true
+    }
+  ],
+  "samePlanOccurrences": 5,
+  "samePlanSha256": "aa885cbd2a88c4d57741bbb712e131acc94b920d4713025d44df78c9f7eea924",
+  "privateBackup": "ops_backup.saved_clashes_20261002_v2",
+  "limitations": [
+    "No observed before/after row counts.",
+    "No live ownership/RLS or privilege-result tests.",
+    "Syntax grammar is PostgreSQL18.4; target Supabase PostgreSQL version is not observed.",
+    "No concurrent database execution or repair rerun was performed.",
+    "Canonical repair/generator retain inherited behavior; this revision exists only in the reviewed release bundle."
+  ],
+  "primaryReferences": [
+    "https://pglast.readthedocs.io/en/latest/parser.html",
+    "https://supabase.com/docs/guides/database/postgres/row-level-security",
+    "https://supabase.com/docs/guides/database/functions",
+    "https://supabase.com/changelog"
+  ]
+}
