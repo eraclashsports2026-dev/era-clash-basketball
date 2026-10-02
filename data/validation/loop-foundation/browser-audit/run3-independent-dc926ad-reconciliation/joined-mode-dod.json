@@ -1,0 +1,3103 @@
+{
+  "recordedAt": "2026-10-02T14:07:05.401164+00:00",
+  "sourceSHA": "dc926adaeebd573f435263265f4251f1814cc0a5",
+  "ownBlindFreezeSHA256": "8af6539d6a459562237cb4dcd24efebb78348d353e982cce63cd7677007987bc",
+  "scope": "Post-blind join of source-only matrix and separately attributed current root/parent/own proof;220cells for20rows. No new execution and no borrowed Run2 acceptance.",
+  "definitionOfDoneFields": [
+    "route",
+    "versioned_contract",
+    "unit_tests",
+    "guest_and_account_journeys",
+    "gate_entry",
+    "og_card",
+    "events",
+    "mobile_profiles",
+    "axe_zero_critical",
+    "mode_inventory_line",
+    "hub_reachability"
+  ],
+  "modes": [
+    {
+      "id": "any-five",
+      "name": "Clash Any Five",
+      "route": "/clash/any-five",
+      "fields": {
+        "route": {
+          "status": "PASS_LOCAL_INITIAL_ROUTE",
+          "evidence": "fullcrawl-report.json.gz",
+          "note": "5 actual initial route/profile checks. Stateful expected mode identity is separately attributed."
+        },
+        "versioned_contract": {
+          "status": "PASS_SOURCE",
+          "evidence": {
+            "path": "docs/clash-any-five/contract.md",
+            "versionDeclaration": "Version: 1.0.0 · Route: `/clash/any-five` · Tag: `ANY_FIVE`."
+          },
+          "note": "Versioned source contract present; source presence is not runtime behavior."
+        },
+        "unit_tests": {
+          "status": "PASS_LISTED_SOURCE_FILES",
+          "evidence": [
+            {
+              "file": "tests/loop-modes-draft.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-foundation-server.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-modes-client.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-modes-career.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-sharing.test.js",
+              "status": "passed"
+            }
+          ],
+          "note": "Matched to actual full100-file Run3 output. Overall full suite remains97/100filesPASS,2failedassertions+1collectionblock; no global unitPASS."
+        },
+        "guest_and_account_journeys": {
+          "status": "PARTIAL_EMULATED_ACCOUNTS",
+          "evidence": "data/validation/loop-foundation/stateful/run-3-final-dc926ada-assessment/mode-data-auth-assessment.md",
+          "note": "Ten Loop modes have actual guest games/cards and saved/history/Breakdown/fresh casual rematch; rooms have fresh emulated two-account boundaries/feed. Real Preview/provider/RLS/SMTP unverified."
+        },
+        "gate_entry": {
+          "status": "PASS_LOOP_GATE",
+          "evidence": [
+            {
+              "command": "node scripts/loop/loopQa.mjs any-five",
+              "exit": 0
+            }
+          ],
+          "note": "All11actualLoopgateentriesexit0. Complete88-gate sweep85PASS/3owner-diagnosticFAIL; broad inherited groups are not silently upgraded."
+        },
+        "og_card": {
+          "status": "PASS_LOCAL_ACTUAL_GAME_CRAWLERS",
+          "evidence": "sharing/run3-independent-dc926ad/report.json",
+          "note": "Ten actual source-mode recaps on each flag, three bots, exact headline/scope/scores/all10names and1200×630PNG. Room feeds reference existing public completed games; no room-specific gamecard. Six inherited formats/Challenge invitation do not each have this fresh bot/card/guest matrix."
+        },
+        "events": {
+          "status": "PASS_BOUNDED_LOCAL",
+          "evidence": {
+            "parentReport": "data/validation/loop-foundation/stateful/run-3-final-dc926ada-cdp-replay/report.json",
+            "modeTaggedNames": [
+              "card_shared",
+              "game_completed",
+              "guest_play_started",
+              "mode_started"
+            ],
+            "all10Counts": {
+              "game_completed": 38,
+              "card_created": 38,
+              "card_shared": 2,
+              "card_opened": 1,
+              "rematch_started_from_card": 1,
+              "guest_play_started": 11,
+              "signup_completed": 1,
+              "daily_attempted": 2,
+              "daily_shared": 1,
+              "mode_started": 72
+            }
+          },
+          "note": "Actual accepted local204receipts; all10names occur in the combined parent cohort. Tonight game/guest events use tonight; its parent mode entry used franchise schedule section, so directTonightmode_started is source-only in that report. No per-format durable delivery claim."
+        },
+        "mobile_profiles": {
+          "status": "PARTIAL_STATE_COMBINATIONS",
+          "evidence": "fullcrawl-report.json.gz;native-and-naming-reverify/report.json",
+          "note": "Initial allfive route profiles have no product overflow/minimum-target failures; expanded states preserve after-scroll warnings. Intrinsic42pxfailure is legacy CoachPick,notnewLoopcoachselects. No physical-device acceptance."
+        },
+        "axe_zero_critical": {
+          "status": "PASS_BOUNDED_ZERO_CRITICAL",
+          "evidence": "fullcrawl-report.json.gz",
+          "note": "Zero critical across initial routes and reversible control states; twelve serious after-control target-size warnings retained. Actual native Tournament/Win82 terminal proof is separately attributed; not every possible account/game state."
+        },
+        "mode_inventory_line": {
+          "status": "PASS_SOURCE_INVENTORY",
+          "evidence": "run3-source-readiness-dc926ad/post-freeze-ledger-source-comparison.json",
+          "note": "Every source mode row is mapped to explicit or grouped governing inventory lines; a row is not full DoD acceptance."
+        },
+        "hub_reachability": {
+          "status": "PASS_SOURCE_AND_OBSERVED_LINK",
+          "evidence": "all-mode-guest-rematches-reverify/report.json;fullcrawl-report.json.gz;source hub inventory",
+          "note": "Direct source hub href is observed and exact destination resolves in fullcrawl; native two-tap count was not independently repeated for every direct entry."
+        }
+      },
+      "fullAcceptance": "PARTIAL",
+      "failedFields": [],
+      "additionalFail": null
+    },
+    {
+      "id": "daily",
+      "name": "Daily Clash (New York)",
+      "route": "/clash/daily",
+      "fields": {
+        "route": {
+          "status": "PASS_LOCAL_INITIAL_ROUTE",
+          "evidence": "fullcrawl-report.json.gz",
+          "note": "5 actual initial route/profile checks. Stateful expected mode identity is separately attributed."
+        },
+        "versioned_contract": {
+          "status": "PASS_SOURCE",
+          "evidence": {
+            "path": "docs/daily-loop/contract.md",
+            "versionDeclaration": "Version: 1.0.0 · Route: `/clash/daily` · Tag: `DAILY`."
+          },
+          "note": "Versioned source contract present; source presence is not runtime behavior."
+        },
+        "unit_tests": {
+          "status": "PASS_LISTED_SOURCE_FILES",
+          "evidence": [
+            {
+              "file": "tests/loop-modes-draft.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-foundation-server.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-modes-client.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-modes-career.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-sharing.test.js",
+              "status": "passed"
+            }
+          ],
+          "note": "Matched to actual full100-file Run3 output. Overall full suite remains97/100filesPASS,2failedassertions+1collectionblock; no global unitPASS."
+        },
+        "guest_and_account_journeys": {
+          "status": "PARTIAL_EMULATED_ACCOUNTS",
+          "evidence": "data/validation/loop-foundation/stateful/run-3-final-dc926ada-assessment/mode-data-auth-assessment.md",
+          "note": "Ten Loop modes have actual guest games/cards and saved/history/Breakdown/fresh casual rematch; rooms have fresh emulated two-account boundaries/feed. Real Preview/provider/RLS/SMTP unverified."
+        },
+        "gate_entry": {
+          "status": "PASS_LOOP_GATE",
+          "evidence": [
+            {
+              "command": "node scripts/loop/loopQa.mjs daily",
+              "exit": 0
+            }
+          ],
+          "note": "All11actualLoopgateentriesexit0. Complete88-gate sweep85PASS/3owner-diagnosticFAIL; broad inherited groups are not silently upgraded."
+        },
+        "og_card": {
+          "status": "PASS_LOCAL_ACTUAL_GAME_CRAWLERS",
+          "evidence": "sharing/run3-independent-dc926ad/report.json",
+          "note": "Ten actual source-mode recaps on each flag, three bots, exact headline/scope/scores/all10names and1200×630PNG. Room feeds reference existing public completed games; no room-specific gamecard. Six inherited formats/Challenge invitation do not each have this fresh bot/card/guest matrix."
+        },
+        "events": {
+          "status": "PASS_BOUNDED_LOCAL",
+          "evidence": {
+            "parentReport": "data/validation/loop-foundation/stateful/run-3-final-dc926ada-cdp-replay/report.json",
+            "modeTaggedNames": [
+              "card_shared",
+              "daily_attempted",
+              "daily_shared",
+              "game_completed",
+              "guest_play_started",
+              "mode_started"
+            ],
+            "all10Counts": {
+              "game_completed": 38,
+              "card_created": 38,
+              "card_shared": 2,
+              "card_opened": 1,
+              "rematch_started_from_card": 1,
+              "guest_play_started": 11,
+              "signup_completed": 1,
+              "daily_attempted": 2,
+              "daily_shared": 1,
+              "mode_started": 72
+            }
+          },
+          "note": "Actual accepted local204receipts; all10names occur in the combined parent cohort. Tonight game/guest events use tonight; its parent mode entry used franchise schedule section, so directTonightmode_started is source-only in that report. No per-format durable delivery claim."
+        },
+        "mobile_profiles": {
+          "status": "PARTIAL_STATE_COMBINATIONS",
+          "evidence": "fullcrawl-report.json.gz;native-and-naming-reverify/report.json",
+          "note": "Initial allfive route profiles have no product overflow/minimum-target failures; expanded states preserve after-scroll warnings. Intrinsic42pxfailure is legacy CoachPick,notnewLoopcoachselects. No physical-device acceptance."
+        },
+        "axe_zero_critical": {
+          "status": "PASS_BOUNDED_ZERO_CRITICAL",
+          "evidence": "fullcrawl-report.json.gz",
+          "note": "Zero critical across initial routes and reversible control states; twelve serious after-control target-size warnings retained. Actual native Tournament/Win82 terminal proof is separately attributed; not every possible account/game state."
+        },
+        "mode_inventory_line": {
+          "status": "PASS_SOURCE_INVENTORY",
+          "evidence": "run3-source-readiness-dc926ad/post-freeze-ledger-source-comparison.json",
+          "note": "Every source mode row is mapped to explicit or grouped governing inventory lines; a row is not full DoD acceptance."
+        },
+        "hub_reachability": {
+          "status": "PASS_SOURCE_AND_OBSERVED_LINK",
+          "evidence": "all-mode-guest-rematches-reverify/report.json;fullcrawl-report.json.gz;source hub inventory",
+          "note": "Direct source hub href is observed and exact destination resolves in fullcrawl; native two-tap count was not independently repeated for every direct entry."
+        }
+      },
+      "fullAcceptance": "FAIL_WITH_PARTIAL_SCOPE",
+      "failedFields": [],
+      "additionalFail": "DailyLCP3329.5477ms>2500ms"
+    },
+    {
+      "id": "franchise",
+      "name": "Franchise Clash",
+      "route": "/clash/franchise",
+      "fields": {
+        "route": {
+          "status": "PASS_LOCAL_INITIAL_ROUTE",
+          "evidence": "fullcrawl-report.json.gz",
+          "note": "5 actual initial route/profile checks. Stateful expected mode identity is separately attributed."
+        },
+        "versioned_contract": {
+          "status": "PASS_SOURCE",
+          "evidence": {
+            "path": "docs/franchise-clash/contract.md",
+            "versionDeclaration": "Version: `loop-franchises-1.0.0` · Basketball only · 2026-10-02."
+          },
+          "note": "Versioned source contract present; source presence is not runtime behavior."
+        },
+        "unit_tests": {
+          "status": "PASS_LISTED_SOURCE_FILES",
+          "evidence": [
+            {
+              "file": "tests/loop-modes-draft.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-foundation-server.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-modes-client.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-modes-career.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-sharing.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-franchises.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-franchises-content.test.js",
+              "status": "passed"
+            }
+          ],
+          "note": "Matched to actual full100-file Run3 output. Overall full suite remains97/100filesPASS,2failedassertions+1collectionblock; no global unitPASS."
+        },
+        "guest_and_account_journeys": {
+          "status": "PARTIAL_EMULATED_ACCOUNTS",
+          "evidence": "data/validation/loop-foundation/stateful/run-3-final-dc926ada-assessment/mode-data-auth-assessment.md",
+          "note": "Ten Loop modes have actual guest games/cards and saved/history/Breakdown/fresh casual rematch; rooms have fresh emulated two-account boundaries/feed. Real Preview/provider/RLS/SMTP unverified."
+        },
+        "gate_entry": {
+          "status": "PASS_LOOP_GATE",
+          "evidence": [
+            {
+              "command": "node scripts/loop/loopQa.mjs franchise",
+              "exit": 0
+            }
+          ],
+          "note": "All11actualLoopgateentriesexit0. Complete88-gate sweep85PASS/3owner-diagnosticFAIL; broad inherited groups are not silently upgraded."
+        },
+        "og_card": {
+          "status": "PASS_LOCAL_ACTUAL_GAME_CRAWLERS",
+          "evidence": "sharing/run3-independent-dc926ad/report.json",
+          "note": "Ten actual source-mode recaps on each flag, three bots, exact headline/scope/scores/all10names and1200×630PNG. Room feeds reference existing public completed games; no room-specific gamecard. Six inherited formats/Challenge invitation do not each have this fresh bot/card/guest matrix."
+        },
+        "events": {
+          "status": "PASS_BOUNDED_LOCAL",
+          "evidence": {
+            "parentReport": "data/validation/loop-foundation/stateful/run-3-final-dc926ada-cdp-replay/report.json",
+            "modeTaggedNames": [
+              "game_completed",
+              "guest_play_started",
+              "mode_started"
+            ],
+            "all10Counts": {
+              "game_completed": 38,
+              "card_created": 38,
+              "card_shared": 2,
+              "card_opened": 1,
+              "rematch_started_from_card": 1,
+              "guest_play_started": 11,
+              "signup_completed": 1,
+              "daily_attempted": 2,
+              "daily_shared": 1,
+              "mode_started": 72
+            }
+          },
+          "note": "Actual accepted local204receipts; all10names occur in the combined parent cohort. Tonight game/guest events use tonight; its parent mode entry used franchise schedule section, so directTonightmode_started is source-only in that report. No per-format durable delivery claim."
+        },
+        "mobile_profiles": {
+          "status": "PARTIAL_STATE_COMBINATIONS",
+          "evidence": "fullcrawl-report.json.gz;native-and-naming-reverify/report.json",
+          "note": "Initial allfive route profiles have no product overflow/minimum-target failures; expanded states preserve after-scroll warnings. Intrinsic42pxfailure is legacy CoachPick,notnewLoopcoachselects. No physical-device acceptance."
+        },
+        "axe_zero_critical": {
+          "status": "PASS_BOUNDED_ZERO_CRITICAL",
+          "evidence": "fullcrawl-report.json.gz",
+          "note": "Zero critical across initial routes and reversible control states; twelve serious after-control target-size warnings retained. Actual native Tournament/Win82 terminal proof is separately attributed; not every possible account/game state."
+        },
+        "mode_inventory_line": {
+          "status": "PASS_SOURCE_INVENTORY",
+          "evidence": "run3-source-readiness-dc926ad/post-freeze-ledger-source-comparison.json",
+          "note": "Every source mode row is mapped to explicit or grouped governing inventory lines; a row is not full DoD acceptance."
+        },
+        "hub_reachability": {
+          "status": "PASS_SOURCE_AND_OBSERVED_LINK",
+          "evidence": "all-mode-guest-rematches-reverify/report.json;fullcrawl-report.json.gz;source hub inventory",
+          "note": "Direct source hub href is observed and exact destination resolves in fullcrawl; native two-tap count was not independently repeated for every direct entry."
+        }
+      },
+      "fullAcceptance": "PARTIAL",
+      "failedFields": [],
+      "additionalFail": null
+    },
+    {
+      "id": "tonight",
+      "name": "Tonight’s Clash",
+      "route": "/clash/tonight",
+      "fields": {
+        "route": {
+          "status": "PASS_LOCAL_INITIAL_ROUTE",
+          "evidence": "fullcrawl-report.json.gz",
+          "note": "5 actual initial route/profile checks. Stateful expected mode identity is separately attributed."
+        },
+        "versioned_contract": {
+          "status": "PASS_SOURCE",
+          "evidence": {
+            "path": "docs/tonights-clash/contract.md",
+            "versionDeclaration": "Version: `tonight-content-1.0.1` · roster dependency `loop-franchises-1.0.0` · Basketball only · 2026-10-02."
+          },
+          "note": "Versioned source contract present; source presence is not runtime behavior."
+        },
+        "unit_tests": {
+          "status": "PASS_LISTED_SOURCE_FILES",
+          "evidence": [
+            {
+              "file": "tests/loop-modes-draft.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-foundation-server.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-modes-client.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-modes-career.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-sharing.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-franchises.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-franchises-content.test.js",
+              "status": "passed"
+            }
+          ],
+          "note": "Matched to actual full100-file Run3 output. Overall full suite remains97/100filesPASS,2failedassertions+1collectionblock; no global unitPASS."
+        },
+        "guest_and_account_journeys": {
+          "status": "PARTIAL_EMULATED_ACCOUNTS",
+          "evidence": "data/validation/loop-foundation/stateful/run-3-final-dc926ada-assessment/mode-data-auth-assessment.md",
+          "note": "Ten Loop modes have actual guest games/cards and saved/history/Breakdown/fresh casual rematch; rooms have fresh emulated two-account boundaries/feed. Real Preview/provider/RLS/SMTP unverified."
+        },
+        "gate_entry": {
+          "status": "PASS_LOOP_GATE",
+          "evidence": [
+            {
+              "command": "node scripts/loop/loopQa.mjs tonight",
+              "exit": 0
+            }
+          ],
+          "note": "All11actualLoopgateentriesexit0. Complete88-gate sweep85PASS/3owner-diagnosticFAIL; broad inherited groups are not silently upgraded."
+        },
+        "og_card": {
+          "status": "PASS_LOCAL_ACTUAL_GAME_CRAWLERS",
+          "evidence": "sharing/run3-independent-dc926ad/report.json",
+          "note": "Ten actual source-mode recaps on each flag, three bots, exact headline/scope/scores/all10names and1200×630PNG. Room feeds reference existing public completed games; no room-specific gamecard. Six inherited formats/Challenge invitation do not each have this fresh bot/card/guest matrix."
+        },
+        "events": {
+          "status": "PASS_BOUNDED_LOCAL",
+          "evidence": {
+            "parentReport": "data/validation/loop-foundation/stateful/run-3-final-dc926ada-cdp-replay/report.json",
+            "modeTaggedNames": [
+              "game_completed",
+              "guest_play_started"
+            ],
+            "all10Counts": {
+              "game_completed": 38,
+              "card_created": 38,
+              "card_shared": 2,
+              "card_opened": 1,
+              "rematch_started_from_card": 1,
+              "guest_play_started": 11,
+              "signup_completed": 1,
+              "daily_attempted": 2,
+              "daily_shared": 1,
+              "mode_started": 72
+            }
+          },
+          "note": "Actual accepted local204receipts; all10names occur in the combined parent cohort. Tonight game/guest events use tonight; its parent mode entry used franchise schedule section, so directTonightmode_started is source-only in that report. No per-format durable delivery claim."
+        },
+        "mobile_profiles": {
+          "status": "PARTIAL_STATE_COMBINATIONS",
+          "evidence": "fullcrawl-report.json.gz;native-and-naming-reverify/report.json",
+          "note": "Initial allfive route profiles have no product overflow/minimum-target failures; expanded states preserve after-scroll warnings. Intrinsic42pxfailure is legacy CoachPick,notnewLoopcoachselects. No physical-device acceptance."
+        },
+        "axe_zero_critical": {
+          "status": "PASS_BOUNDED_ZERO_CRITICAL",
+          "evidence": "fullcrawl-report.json.gz",
+          "note": "Zero critical across initial routes and reversible control states; twelve serious after-control target-size warnings retained. Actual native Tournament/Win82 terminal proof is separately attributed; not every possible account/game state."
+        },
+        "mode_inventory_line": {
+          "status": "PASS_SOURCE_INVENTORY",
+          "evidence": "run3-source-readiness-dc926ad/post-freeze-ledger-source-comparison.json",
+          "note": "Every source mode row is mapped to explicit or grouped governing inventory lines; a row is not full DoD acceptance."
+        },
+        "hub_reachability": {
+          "status": "PASS_SOURCE_AND_OBSERVED_LINK",
+          "evidence": "all-mode-guest-rematches-reverify/report.json;fullcrawl-report.json.gz;source hub inventory",
+          "note": "Direct source hub href is observed and exact destination resolves in fullcrawl; native two-tap count was not independently repeated for every direct entry."
+        }
+      },
+      "fullAcceptance": "PARTIAL",
+      "failedFields": [],
+      "additionalFail": null
+    },
+    {
+      "id": "spin",
+      "name": "Chaos Spin",
+      "route": "/clash/spin",
+      "fields": {
+        "route": {
+          "status": "PASS_LOCAL_INITIAL_ROUTE",
+          "evidence": "fullcrawl-report.json.gz",
+          "note": "5 actual initial route/profile checks. Stateful expected mode identity is separately attributed."
+        },
+        "versioned_contract": {
+          "status": "PASS_SOURCE",
+          "evidence": {
+            "path": "docs/chaos-spin/contract.md",
+            "versionDeclaration": "Version: 1.0.0 · Route: `/clash/spin` · Tag: `SPIN`."
+          },
+          "note": "Versioned source contract present; source presence is not runtime behavior."
+        },
+        "unit_tests": {
+          "status": "PASS_LISTED_SOURCE_FILES",
+          "evidence": [
+            {
+              "file": "tests/loop-modes-draft.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-foundation-server.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-modes-client.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-modes-career.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-sharing.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-franchises.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-franchises-content.test.js",
+              "status": "passed"
+            }
+          ],
+          "note": "Matched to actual full100-file Run3 output. Overall full suite remains97/100filesPASS,2failedassertions+1collectionblock; no global unitPASS."
+        },
+        "guest_and_account_journeys": {
+          "status": "PARTIAL_EMULATED_ACCOUNTS",
+          "evidence": "data/validation/loop-foundation/stateful/run-3-final-dc926ada-assessment/mode-data-auth-assessment.md",
+          "note": "Ten Loop modes have actual guest games/cards and saved/history/Breakdown/fresh casual rematch; rooms have fresh emulated two-account boundaries/feed. Real Preview/provider/RLS/SMTP unverified."
+        },
+        "gate_entry": {
+          "status": "PASS_LOOP_GATE",
+          "evidence": [
+            {
+              "command": "node scripts/loop/loopQa.mjs spin",
+              "exit": 0
+            }
+          ],
+          "note": "All11actualLoopgateentriesexit0. Complete88-gate sweep85PASS/3owner-diagnosticFAIL; broad inherited groups are not silently upgraded."
+        },
+        "og_card": {
+          "status": "PASS_LOCAL_ACTUAL_GAME_CRAWLERS",
+          "evidence": "sharing/run3-independent-dc926ad/report.json",
+          "note": "Ten actual source-mode recaps on each flag, three bots, exact headline/scope/scores/all10names and1200×630PNG. Room feeds reference existing public completed games; no room-specific gamecard. Six inherited formats/Challenge invitation do not each have this fresh bot/card/guest matrix."
+        },
+        "events": {
+          "status": "PASS_BOUNDED_LOCAL",
+          "evidence": {
+            "parentReport": "data/validation/loop-foundation/stateful/run-3-final-dc926ada-cdp-replay/report.json",
+            "modeTaggedNames": [
+              "game_completed",
+              "guest_play_started",
+              "mode_started"
+            ],
+            "all10Counts": {
+              "game_completed": 38,
+              "card_created": 38,
+              "card_shared": 2,
+              "card_opened": 1,
+              "rematch_started_from_card": 1,
+              "guest_play_started": 11,
+              "signup_completed": 1,
+              "daily_attempted": 2,
+              "daily_shared": 1,
+              "mode_started": 72
+            }
+          },
+          "note": "Actual accepted local204receipts; all10names occur in the combined parent cohort. Tonight game/guest events use tonight; its parent mode entry used franchise schedule section, so directTonightmode_started is source-only in that report. No per-format durable delivery claim."
+        },
+        "mobile_profiles": {
+          "status": "PARTIAL_STATE_COMBINATIONS",
+          "evidence": "fullcrawl-report.json.gz;native-and-naming-reverify/report.json",
+          "note": "Initial allfive route profiles have no product overflow/minimum-target failures; expanded states preserve after-scroll warnings. Intrinsic42pxfailure is legacy CoachPick,notnewLoopcoachselects. No physical-device acceptance."
+        },
+        "axe_zero_critical": {
+          "status": "PASS_BOUNDED_ZERO_CRITICAL",
+          "evidence": "fullcrawl-report.json.gz",
+          "note": "Zero critical across initial routes and reversible control states; twelve serious after-control target-size warnings retained. Actual native Tournament/Win82 terminal proof is separately attributed; not every possible account/game state."
+        },
+        "mode_inventory_line": {
+          "status": "PASS_SOURCE_INVENTORY",
+          "evidence": "run3-source-readiness-dc926ad/post-freeze-ledger-source-comparison.json",
+          "note": "Every source mode row is mapped to explicit or grouped governing inventory lines; a row is not full DoD acceptance."
+        },
+        "hub_reachability": {
+          "status": "PASS_SOURCE_AND_OBSERVED_LINK",
+          "evidence": "all-mode-guest-rematches-reverify/report.json;fullcrawl-report.json.gz;source hub inventory",
+          "note": "Direct source hub href is observed and exact destination resolves in fullcrawl; native two-tap count was not independently repeated for every direct entry."
+        }
+      },
+      "fullAcceptance": "PARTIAL",
+      "failedFields": [],
+      "additionalFail": null
+    },
+    {
+      "id": "one-franchise",
+      "name": "One Franchise",
+      "route": "/clash/one-franchise",
+      "fields": {
+        "route": {
+          "status": "PASS_LOCAL_INITIAL_ROUTE",
+          "evidence": "fullcrawl-report.json.gz",
+          "note": "5 actual initial route/profile checks. Stateful expected mode identity is separately attributed."
+        },
+        "versioned_contract": {
+          "status": "PASS_SOURCE",
+          "evidence": {
+            "path": "docs/constraint-filters/contract.md",
+            "versionDeclaration": "Version: 1.0.0 · Routes: `/clash/filters`, `/clash/one-franchise`, `/clash/one-per-era`, `/clash/no-mvps`."
+          },
+          "note": "Versioned source contract present; source presence is not runtime behavior."
+        },
+        "unit_tests": {
+          "status": "PASS_LISTED_SOURCE_FILES",
+          "evidence": [
+            {
+              "file": "tests/loop-modes-draft.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-foundation-server.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-modes-client.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-modes-career.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-sharing.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-franchises.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-franchises-content.test.js",
+              "status": "passed"
+            }
+          ],
+          "note": "Matched to actual full100-file Run3 output. Overall full suite remains97/100filesPASS,2failedassertions+1collectionblock; no global unitPASS."
+        },
+        "guest_and_account_journeys": {
+          "status": "PARTIAL_EMULATED_ACCOUNTS",
+          "evidence": "data/validation/loop-foundation/stateful/run-3-final-dc926ada-assessment/mode-data-auth-assessment.md",
+          "note": "Ten Loop modes have actual guest games/cards and saved/history/Breakdown/fresh casual rematch; rooms have fresh emulated two-account boundaries/feed. Real Preview/provider/RLS/SMTP unverified."
+        },
+        "gate_entry": {
+          "status": "PASS_LOOP_GATE",
+          "evidence": [
+            {
+              "command": "node scripts/loop/loopQa.mjs one-franchise",
+              "exit": 0
+            }
+          ],
+          "note": "All11actualLoopgateentriesexit0. Complete88-gate sweep85PASS/3owner-diagnosticFAIL; broad inherited groups are not silently upgraded."
+        },
+        "og_card": {
+          "status": "PASS_LOCAL_ACTUAL_GAME_CRAWLERS",
+          "evidence": "sharing/run3-independent-dc926ad/report.json",
+          "note": "Ten actual source-mode recaps on each flag, three bots, exact headline/scope/scores/all10names and1200×630PNG. Room feeds reference existing public completed games; no room-specific gamecard. Six inherited formats/Challenge invitation do not each have this fresh bot/card/guest matrix."
+        },
+        "events": {
+          "status": "PASS_BOUNDED_LOCAL",
+          "evidence": {
+            "parentReport": "data/validation/loop-foundation/stateful/run-3-final-dc926ada-cdp-replay/report.json",
+            "modeTaggedNames": [
+              "game_completed",
+              "guest_play_started",
+              "mode_started"
+            ],
+            "all10Counts": {
+              "game_completed": 38,
+              "card_created": 38,
+              "card_shared": 2,
+              "card_opened": 1,
+              "rematch_started_from_card": 1,
+              "guest_play_started": 11,
+              "signup_completed": 1,
+              "daily_attempted": 2,
+              "daily_shared": 1,
+              "mode_started": 72
+            }
+          },
+          "note": "Actual accepted local204receipts; all10names occur in the combined parent cohort. Tonight game/guest events use tonight; its parent mode entry used franchise schedule section, so directTonightmode_started is source-only in that report. No per-format durable delivery claim."
+        },
+        "mobile_profiles": {
+          "status": "PARTIAL_STATE_COMBINATIONS",
+          "evidence": "fullcrawl-report.json.gz;native-and-naming-reverify/report.json",
+          "note": "Initial allfive route profiles have no product overflow/minimum-target failures; expanded states preserve after-scroll warnings. Intrinsic42pxfailure is legacy CoachPick,notnewLoopcoachselects. No physical-device acceptance."
+        },
+        "axe_zero_critical": {
+          "status": "PASS_BOUNDED_ZERO_CRITICAL",
+          "evidence": "fullcrawl-report.json.gz",
+          "note": "Zero critical across initial routes and reversible control states; twelve serious after-control target-size warnings retained. Actual native Tournament/Win82 terminal proof is separately attributed; not every possible account/game state."
+        },
+        "mode_inventory_line": {
+          "status": "PASS_SOURCE_INVENTORY",
+          "evidence": "run3-source-readiness-dc926ad/post-freeze-ledger-source-comparison.json",
+          "note": "Every source mode row is mapped to explicit or grouped governing inventory lines; a row is not full DoD acceptance."
+        },
+        "hub_reachability": {
+          "status": "FAIL_THREE_MOBILE_HOME_TAPS",
+          "evidence": "all-mode-guest-rematches-reverify/report.json;fullcrawl-report.json.gz;source hub inventory",
+          "note": "Twelveactualtrails across3variants×4mobiles require3taps:HomeAllmodes→OpenConstraintfilters→Playvariant."
+        }
+      },
+      "fullAcceptance": "FAIL_WITH_PARTIAL_SCOPE",
+      "failedFields": [
+        "hub_reachability"
+      ],
+      "additionalFail": null
+    },
+    {
+      "id": "one-per-era",
+      "name": "One Per Era",
+      "route": "/clash/one-per-era",
+      "fields": {
+        "route": {
+          "status": "PASS_LOCAL_INITIAL_ROUTE",
+          "evidence": "fullcrawl-report.json.gz",
+          "note": "5 actual initial route/profile checks. Stateful expected mode identity is separately attributed."
+        },
+        "versioned_contract": {
+          "status": "PASS_SOURCE",
+          "evidence": {
+            "path": "docs/constraint-filters/contract.md",
+            "versionDeclaration": "Version: 1.0.0 · Routes: `/clash/filters`, `/clash/one-franchise`, `/clash/one-per-era`, `/clash/no-mvps`."
+          },
+          "note": "Versioned source contract present; source presence is not runtime behavior."
+        },
+        "unit_tests": {
+          "status": "PASS_LISTED_SOURCE_FILES",
+          "evidence": [
+            {
+              "file": "tests/loop-modes-draft.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-foundation-server.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-modes-client.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-modes-career.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-sharing.test.js",
+              "status": "passed"
+            }
+          ],
+          "note": "Matched to actual full100-file Run3 output. Overall full suite remains97/100filesPASS,2failedassertions+1collectionblock; no global unitPASS."
+        },
+        "guest_and_account_journeys": {
+          "status": "PARTIAL_EMULATED_ACCOUNTS",
+          "evidence": "data/validation/loop-foundation/stateful/run-3-final-dc926ada-assessment/mode-data-auth-assessment.md",
+          "note": "Ten Loop modes have actual guest games/cards and saved/history/Breakdown/fresh casual rematch; rooms have fresh emulated two-account boundaries/feed. Real Preview/provider/RLS/SMTP unverified."
+        },
+        "gate_entry": {
+          "status": "PASS_LOOP_GATE",
+          "evidence": [
+            {
+              "command": "node scripts/loop/loopQa.mjs one-per-era",
+              "exit": 0
+            }
+          ],
+          "note": "All11actualLoopgateentriesexit0. Complete88-gate sweep85PASS/3owner-diagnosticFAIL; broad inherited groups are not silently upgraded."
+        },
+        "og_card": {
+          "status": "PASS_LOCAL_ACTUAL_GAME_CRAWLERS",
+          "evidence": "sharing/run3-independent-dc926ad/report.json",
+          "note": "Ten actual source-mode recaps on each flag, three bots, exact headline/scope/scores/all10names and1200×630PNG. Room feeds reference existing public completed games; no room-specific gamecard. Six inherited formats/Challenge invitation do not each have this fresh bot/card/guest matrix."
+        },
+        "events": {
+          "status": "PASS_BOUNDED_LOCAL",
+          "evidence": {
+            "parentReport": "data/validation/loop-foundation/stateful/run-3-final-dc926ada-cdp-replay/report.json",
+            "modeTaggedNames": [
+              "game_completed",
+              "guest_play_started",
+              "mode_started"
+            ],
+            "all10Counts": {
+              "game_completed": 38,
+              "card_created": 38,
+              "card_shared": 2,
+              "card_opened": 1,
+              "rematch_started_from_card": 1,
+              "guest_play_started": 11,
+              "signup_completed": 1,
+              "daily_attempted": 2,
+              "daily_shared": 1,
+              "mode_started": 72
+            }
+          },
+          "note": "Actual accepted local204receipts; all10names occur in the combined parent cohort. Tonight game/guest events use tonight; its parent mode entry used franchise schedule section, so directTonightmode_started is source-only in that report. No per-format durable delivery claim."
+        },
+        "mobile_profiles": {
+          "status": "PARTIAL_STATE_COMBINATIONS",
+          "evidence": "fullcrawl-report.json.gz;native-and-naming-reverify/report.json",
+          "note": "Initial allfive route profiles have no product overflow/minimum-target failures; expanded states preserve after-scroll warnings. Intrinsic42pxfailure is legacy CoachPick,notnewLoopcoachselects. No physical-device acceptance."
+        },
+        "axe_zero_critical": {
+          "status": "PASS_BOUNDED_ZERO_CRITICAL",
+          "evidence": "fullcrawl-report.json.gz",
+          "note": "Zero critical across initial routes and reversible control states; twelve serious after-control target-size warnings retained. Actual native Tournament/Win82 terminal proof is separately attributed; not every possible account/game state."
+        },
+        "mode_inventory_line": {
+          "status": "PASS_SOURCE_INVENTORY",
+          "evidence": "run3-source-readiness-dc926ad/post-freeze-ledger-source-comparison.json",
+          "note": "Every source mode row is mapped to explicit or grouped governing inventory lines; a row is not full DoD acceptance."
+        },
+        "hub_reachability": {
+          "status": "FAIL_THREE_MOBILE_HOME_TAPS",
+          "evidence": "all-mode-guest-rematches-reverify/report.json;fullcrawl-report.json.gz;source hub inventory",
+          "note": "Twelveactualtrails across3variants×4mobiles require3taps:HomeAllmodes→OpenConstraintfilters→Playvariant."
+        }
+      },
+      "fullAcceptance": "FAIL_WITH_PARTIAL_SCOPE",
+      "failedFields": [
+        "hub_reachability"
+      ],
+      "additionalFail": null
+    },
+    {
+      "id": "no-mvps",
+      "name": "No MVPs",
+      "route": "/clash/no-mvps",
+      "fields": {
+        "route": {
+          "status": "PASS_LOCAL_INITIAL_ROUTE",
+          "evidence": "fullcrawl-report.json.gz",
+          "note": "5 actual initial route/profile checks. Stateful expected mode identity is separately attributed."
+        },
+        "versioned_contract": {
+          "status": "PASS_SOURCE",
+          "evidence": {
+            "path": "docs/constraint-filters/contract.md",
+            "versionDeclaration": "Version: 1.0.0 · Routes: `/clash/filters`, `/clash/one-franchise`, `/clash/one-per-era`, `/clash/no-mvps`."
+          },
+          "note": "Versioned source contract present; source presence is not runtime behavior."
+        },
+        "unit_tests": {
+          "status": "PASS_LISTED_SOURCE_FILES",
+          "evidence": [
+            {
+              "file": "tests/loop-modes-draft.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-foundation-server.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-modes-client.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-modes-career.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-sharing.test.js",
+              "status": "passed"
+            }
+          ],
+          "note": "Matched to actual full100-file Run3 output. Overall full suite remains97/100filesPASS,2failedassertions+1collectionblock; no global unitPASS."
+        },
+        "guest_and_account_journeys": {
+          "status": "PARTIAL_EMULATED_ACCOUNTS",
+          "evidence": "data/validation/loop-foundation/stateful/run-3-final-dc926ada-assessment/mode-data-auth-assessment.md",
+          "note": "Ten Loop modes have actual guest games/cards and saved/history/Breakdown/fresh casual rematch; rooms have fresh emulated two-account boundaries/feed. Real Preview/provider/RLS/SMTP unverified."
+        },
+        "gate_entry": {
+          "status": "PASS_LOOP_GATE",
+          "evidence": [
+            {
+              "command": "node scripts/loop/loopQa.mjs no-mvps",
+              "exit": 0
+            }
+          ],
+          "note": "All11actualLoopgateentriesexit0. Complete88-gate sweep85PASS/3owner-diagnosticFAIL; broad inherited groups are not silently upgraded."
+        },
+        "og_card": {
+          "status": "PASS_LOCAL_ACTUAL_GAME_CRAWLERS",
+          "evidence": "sharing/run3-independent-dc926ad/report.json",
+          "note": "Ten actual source-mode recaps on each flag, three bots, exact headline/scope/scores/all10names and1200×630PNG. Room feeds reference existing public completed games; no room-specific gamecard. Six inherited formats/Challenge invitation do not each have this fresh bot/card/guest matrix."
+        },
+        "events": {
+          "status": "PASS_BOUNDED_LOCAL",
+          "evidence": {
+            "parentReport": "data/validation/loop-foundation/stateful/run-3-final-dc926ada-cdp-replay/report.json",
+            "modeTaggedNames": [
+              "game_completed",
+              "guest_play_started",
+              "mode_started"
+            ],
+            "all10Counts": {
+              "game_completed": 38,
+              "card_created": 38,
+              "card_shared": 2,
+              "card_opened": 1,
+              "rematch_started_from_card": 1,
+              "guest_play_started": 11,
+              "signup_completed": 1,
+              "daily_attempted": 2,
+              "daily_shared": 1,
+              "mode_started": 72
+            }
+          },
+          "note": "Actual accepted local204receipts; all10names occur in the combined parent cohort. Tonight game/guest events use tonight; its parent mode entry used franchise schedule section, so directTonightmode_started is source-only in that report. No per-format durable delivery claim."
+        },
+        "mobile_profiles": {
+          "status": "PARTIAL_STATE_COMBINATIONS",
+          "evidence": "fullcrawl-report.json.gz;native-and-naming-reverify/report.json",
+          "note": "Initial allfive route profiles have no product overflow/minimum-target failures; expanded states preserve after-scroll warnings. Intrinsic42pxfailure is legacy CoachPick,notnewLoopcoachselects. No physical-device acceptance."
+        },
+        "axe_zero_critical": {
+          "status": "PASS_BOUNDED_ZERO_CRITICAL",
+          "evidence": "fullcrawl-report.json.gz",
+          "note": "Zero critical across initial routes and reversible control states; twelve serious after-control target-size warnings retained. Actual native Tournament/Win82 terminal proof is separately attributed; not every possible account/game state."
+        },
+        "mode_inventory_line": {
+          "status": "PASS_SOURCE_INVENTORY",
+          "evidence": "run3-source-readiness-dc926ad/post-freeze-ledger-source-comparison.json",
+          "note": "Every source mode row is mapped to explicit or grouped governing inventory lines; a row is not full DoD acceptance."
+        },
+        "hub_reachability": {
+          "status": "FAIL_THREE_MOBILE_HOME_TAPS",
+          "evidence": "all-mode-guest-rematches-reverify/report.json;fullcrawl-report.json.gz;source hub inventory",
+          "note": "Twelveactualtrails across3variants×4mobiles require3taps:HomeAllmodes→OpenConstraintfilters→Playvariant."
+        }
+      },
+      "fullAcceptance": "FAIL_WITH_PARTIAL_SCOPE",
+      "failedFields": [
+        "hub_reachability"
+      ],
+      "additionalFail": null
+    },
+    {
+      "id": "gauntlet",
+      "name": "Era Gauntlet (seven stages)",
+      "route": "/clash/gauntlet",
+      "fields": {
+        "route": {
+          "status": "PASS_LOCAL_INITIAL_ROUTE",
+          "evidence": "fullcrawl-report.json.gz",
+          "note": "5 actual initial route/profile checks. Stateful expected mode identity is separately attributed."
+        },
+        "versioned_contract": {
+          "status": "PASS_SOURCE",
+          "evidence": {
+            "path": "docs/era-gauntlet/contract.md",
+            "versionDeclaration": "Version: 1.0.0 · Route: `/clash/gauntlet` · Tag: `GAUNTLET`."
+          },
+          "note": "Versioned source contract present; source presence is not runtime behavior."
+        },
+        "unit_tests": {
+          "status": "PASS_LISTED_SOURCE_FILES",
+          "evidence": [
+            {
+              "file": "tests/loop-modes-draft.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-foundation-server.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-modes-client.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-modes-career.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-sharing.test.js",
+              "status": "passed"
+            }
+          ],
+          "note": "Matched to actual full100-file Run3 output. Overall full suite remains97/100filesPASS,2failedassertions+1collectionblock; no global unitPASS."
+        },
+        "guest_and_account_journeys": {
+          "status": "PARTIAL_EMULATED_ACCOUNTS",
+          "evidence": "data/validation/loop-foundation/stateful/run-3-final-dc926ada-assessment/mode-data-auth-assessment.md",
+          "note": "Ten Loop modes have actual guest games/cards and saved/history/Breakdown/fresh casual rematch; rooms have fresh emulated two-account boundaries/feed. Real Preview/provider/RLS/SMTP unverified."
+        },
+        "gate_entry": {
+          "status": "PASS_LOOP_GATE",
+          "evidence": [
+            {
+              "command": "node scripts/loop/loopQa.mjs gauntlet",
+              "exit": 0
+            }
+          ],
+          "note": "All11actualLoopgateentriesexit0. Complete88-gate sweep85PASS/3owner-diagnosticFAIL; broad inherited groups are not silently upgraded."
+        },
+        "og_card": {
+          "status": "PASS_LOCAL_ACTUAL_GAME_CRAWLERS",
+          "evidence": "sharing/run3-independent-dc926ad/report.json",
+          "note": "Ten actual source-mode recaps on each flag, three bots, exact headline/scope/scores/all10names and1200×630PNG. Room feeds reference existing public completed games; no room-specific gamecard. Six inherited formats/Challenge invitation do not each have this fresh bot/card/guest matrix."
+        },
+        "events": {
+          "status": "PASS_BOUNDED_LOCAL",
+          "evidence": {
+            "parentReport": "data/validation/loop-foundation/stateful/run-3-final-dc926ada-cdp-replay/report.json",
+            "modeTaggedNames": [
+              "game_completed",
+              "guest_play_started",
+              "mode_started"
+            ],
+            "all10Counts": {
+              "game_completed": 38,
+              "card_created": 38,
+              "card_shared": 2,
+              "card_opened": 1,
+              "rematch_started_from_card": 1,
+              "guest_play_started": 11,
+              "signup_completed": 1,
+              "daily_attempted": 2,
+              "daily_shared": 1,
+              "mode_started": 72
+            }
+          },
+          "note": "Actual accepted local204receipts; all10names occur in the combined parent cohort. Tonight game/guest events use tonight; its parent mode entry used franchise schedule section, so directTonightmode_started is source-only in that report. No per-format durable delivery claim."
+        },
+        "mobile_profiles": {
+          "status": "PARTIAL_STATE_COMBINATIONS",
+          "evidence": "fullcrawl-report.json.gz;native-and-naming-reverify/report.json",
+          "note": "Initial allfive route profiles have no product overflow/minimum-target failures; expanded states preserve after-scroll warnings. Intrinsic42pxfailure is legacy CoachPick,notnewLoopcoachselects. No physical-device acceptance."
+        },
+        "axe_zero_critical": {
+          "status": "PASS_BOUNDED_ZERO_CRITICAL",
+          "evidence": "fullcrawl-report.json.gz",
+          "note": "Zero critical across initial routes and reversible control states; twelve serious after-control target-size warnings retained. Actual native Tournament/Win82 terminal proof is separately attributed; not every possible account/game state."
+        },
+        "mode_inventory_line": {
+          "status": "PASS_SOURCE_INVENTORY",
+          "evidence": "run3-source-readiness-dc926ad/post-freeze-ledger-source-comparison.json",
+          "note": "Every source mode row is mapped to explicit or grouped governing inventory lines; a row is not full DoD acceptance."
+        },
+        "hub_reachability": {
+          "status": "PASS_SOURCE_AND_OBSERVED_LINK",
+          "evidence": "all-mode-guest-rematches-reverify/report.json;fullcrawl-report.json.gz;source hub inventory",
+          "note": "Direct source hub href is observed and exact destination resolves in fullcrawl; native two-tap count was not independently repeated for every direct entry."
+        }
+      },
+      "fullAcceptance": "PARTIAL",
+      "failedFields": [],
+      "additionalFail": null
+    },
+    {
+      "id": "lab",
+      "name": "What-If Lab",
+      "route": "/clash/lab",
+      "fields": {
+        "route": {
+          "status": "PASS_LOCAL_INITIAL_ROUTE",
+          "evidence": "fullcrawl-report.json.gz",
+          "note": "5 actual initial route/profile checks. Stateful expected mode identity is separately attributed."
+        },
+        "versioned_contract": {
+          "status": "PASS_SOURCE",
+          "evidence": {
+            "path": "docs/what-if-lab/contract.md",
+            "versionDeclaration": "Version: 1.0.0 · Route: `/clash/lab` · Tag: `LAB`."
+          },
+          "note": "Versioned source contract present; source presence is not runtime behavior."
+        },
+        "unit_tests": {
+          "status": "PASS_LISTED_SOURCE_FILES",
+          "evidence": [
+            {
+              "file": "tests/loop-modes-draft.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-foundation-server.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-modes-client.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-modes-career.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-sharing.test.js",
+              "status": "passed"
+            }
+          ],
+          "note": "Matched to actual full100-file Run3 output. Overall full suite remains97/100filesPASS,2failedassertions+1collectionblock; no global unitPASS."
+        },
+        "guest_and_account_journeys": {
+          "status": "PARTIAL_EMULATED_ACCOUNTS",
+          "evidence": "data/validation/loop-foundation/stateful/run-3-final-dc926ada-assessment/mode-data-auth-assessment.md",
+          "note": "Ten Loop modes have actual guest games/cards and saved/history/Breakdown/fresh casual rematch; rooms have fresh emulated two-account boundaries/feed. Real Preview/provider/RLS/SMTP unverified."
+        },
+        "gate_entry": {
+          "status": "PASS_LOOP_GATE",
+          "evidence": [
+            {
+              "command": "node scripts/loop/loopQa.mjs lab",
+              "exit": 0
+            }
+          ],
+          "note": "All11actualLoopgateentriesexit0. Complete88-gate sweep85PASS/3owner-diagnosticFAIL; broad inherited groups are not silently upgraded."
+        },
+        "og_card": {
+          "status": "PASS_LOCAL_ACTUAL_GAME_CRAWLERS",
+          "evidence": "sharing/run3-independent-dc926ad/report.json",
+          "note": "Ten actual source-mode recaps on each flag, three bots, exact headline/scope/scores/all10names and1200×630PNG. Room feeds reference existing public completed games; no room-specific gamecard. Six inherited formats/Challenge invitation do not each have this fresh bot/card/guest matrix."
+        },
+        "events": {
+          "status": "PASS_BOUNDED_LOCAL",
+          "evidence": {
+            "parentReport": "data/validation/loop-foundation/stateful/run-3-final-dc926ada-cdp-replay/report.json",
+            "modeTaggedNames": [
+              "game_completed",
+              "guest_play_started",
+              "mode_started"
+            ],
+            "all10Counts": {
+              "game_completed": 38,
+              "card_created": 38,
+              "card_shared": 2,
+              "card_opened": 1,
+              "rematch_started_from_card": 1,
+              "guest_play_started": 11,
+              "signup_completed": 1,
+              "daily_attempted": 2,
+              "daily_shared": 1,
+              "mode_started": 72
+            }
+          },
+          "note": "Actual accepted local204receipts; all10names occur in the combined parent cohort. Tonight game/guest events use tonight; its parent mode entry used franchise schedule section, so directTonightmode_started is source-only in that report. No per-format durable delivery claim."
+        },
+        "mobile_profiles": {
+          "status": "PARTIAL_STATE_COMBINATIONS",
+          "evidence": "fullcrawl-report.json.gz;native-and-naming-reverify/report.json",
+          "note": "Initial allfive route profiles have no product overflow/minimum-target failures; expanded states preserve after-scroll warnings. Intrinsic42pxfailure is legacy CoachPick,notnewLoopcoachselects. No physical-device acceptance."
+        },
+        "axe_zero_critical": {
+          "status": "PASS_BOUNDED_ZERO_CRITICAL",
+          "evidence": "fullcrawl-report.json.gz",
+          "note": "Zero critical across initial routes and reversible control states; twelve serious after-control target-size warnings retained. Actual native Tournament/Win82 terminal proof is separately attributed; not every possible account/game state."
+        },
+        "mode_inventory_line": {
+          "status": "PASS_SOURCE_INVENTORY",
+          "evidence": "run3-source-readiness-dc926ad/post-freeze-ledger-source-comparison.json",
+          "note": "Every source mode row is mapped to explicit or grouped governing inventory lines; a row is not full DoD acceptance."
+        },
+        "hub_reachability": {
+          "status": "PASS_SOURCE_AND_OBSERVED_LINK",
+          "evidence": "all-mode-guest-rematches-reverify/report.json;fullcrawl-report.json.gz;source hub inventory",
+          "note": "Direct source hub href is observed and exact destination resolves in fullcrawl; native two-tap count was not independently repeated for every direct entry."
+        }
+      },
+      "fullAcceptance": "PARTIAL",
+      "failedFields": [],
+      "additionalFail": null
+    },
+    {
+      "id": "rooms",
+      "name": "Private rooms",
+      "route": "/clash/rooms",
+      "fields": {
+        "route": {
+          "status": "PASS_LOCAL_INITIAL_ROUTE",
+          "evidence": "fullcrawl-report.json.gz",
+          "note": "5 actual initial route/profile checks. Stateful expected mode identity is separately attributed."
+        },
+        "versioned_contract": {
+          "status": "PASS_SOURCE",
+          "evidence": {
+            "path": "docs/private-rooms/contract.md",
+            "versionDeclaration": "# Private rooms contract1.0.0"
+          },
+          "note": "Versioned source contract present; source presence is not runtime behavior."
+        },
+        "unit_tests": {
+          "status": "PASS_LISTED_SOURCE_FILES",
+          "evidence": [
+            {
+              "file": "tests/loop-modes-draft.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-foundation-server.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-modes-client.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-modes-career.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/loop-sharing.test.js",
+              "status": "passed"
+            }
+          ],
+          "note": "Matched to actual full100-file Run3 output. Overall full suite remains97/100filesPASS,2failedassertions+1collectionblock; no global unitPASS."
+        },
+        "guest_and_account_journeys": {
+          "status": "PARTIAL_EMULATED_ACCOUNTS",
+          "evidence": "data/validation/loop-foundation/stateful/run-3-final-dc926ada-assessment/mode-data-auth-assessment.md",
+          "note": "Ten Loop modes have actual guest games/cards and saved/history/Breakdown/fresh casual rematch; rooms have fresh emulated two-account boundaries/feed. Real Preview/provider/RLS/SMTP unverified."
+        },
+        "gate_entry": {
+          "status": "PASS_LOOP_GATE",
+          "evidence": [
+            {
+              "command": "node scripts/loop/loopQa.mjs rooms",
+              "exit": 0
+            }
+          ],
+          "note": "All11actualLoopgateentriesexit0. Complete88-gate sweep85PASS/3owner-diagnosticFAIL; broad inherited groups are not silently upgraded."
+        },
+        "og_card": {
+          "status": "PARTIAL_NO_FORMAT_SPECIFIC_FRESH_CRAWLER_MATRIX",
+          "evidence": "sharing/run3-independent-dc926ad/report.json",
+          "note": "Ten actual source-mode recaps on each flag, three bots, exact headline/scope/scores/all10names and1200×630PNG. Room feeds reference existing public completed games; no room-specific gamecard. Six inherited formats/Challenge invitation do not each have this fresh bot/card/guest matrix."
+        },
+        "events": {
+          "status": "PASS_BOUNDED_LOCAL",
+          "evidence": {
+            "parentReport": "data/validation/loop-foundation/stateful/run-3-final-dc926ada-cdp-replay/report.json",
+            "modeTaggedNames": [
+              "mode_started"
+            ],
+            "all10Counts": {
+              "game_completed": 38,
+              "card_created": 38,
+              "card_shared": 2,
+              "card_opened": 1,
+              "rematch_started_from_card": 1,
+              "guest_play_started": 11,
+              "signup_completed": 1,
+              "daily_attempted": 2,
+              "daily_shared": 1,
+              "mode_started": 72
+            }
+          },
+          "note": "Actual accepted local204receipts; all10names occur in the combined parent cohort. Tonight game/guest events use tonight; its parent mode entry used franchise schedule section, so directTonightmode_started is source-only in that report. No per-format durable delivery claim."
+        },
+        "mobile_profiles": {
+          "status": "PARTIAL_STATE_COMBINATIONS",
+          "evidence": "fullcrawl-report.json.gz;native-and-naming-reverify/report.json",
+          "note": "Initial allfive route profiles have no product overflow/minimum-target failures; expanded states preserve after-scroll warnings. Intrinsic42pxfailure is legacy CoachPick,notnewLoopcoachselects. No physical-device acceptance."
+        },
+        "axe_zero_critical": {
+          "status": "PASS_BOUNDED_ZERO_CRITICAL",
+          "evidence": "fullcrawl-report.json.gz",
+          "note": "Zero critical across initial routes and reversible control states; twelve serious after-control target-size warnings retained. Actual native Tournament/Win82 terminal proof is separately attributed; not every possible account/game state."
+        },
+        "mode_inventory_line": {
+          "status": "PASS_SOURCE_INVENTORY",
+          "evidence": "run3-source-readiness-dc926ad/post-freeze-ledger-source-comparison.json",
+          "note": "Every source mode row is mapped to explicit or grouped governing inventory lines; a row is not full DoD acceptance."
+        },
+        "hub_reachability": {
+          "status": "PASS_SOURCE_AND_OBSERVED_LINK",
+          "evidence": "all-mode-guest-rematches-reverify/report.json;fullcrawl-report.json.gz;source hub inventory",
+          "note": "Direct source hub href is observed and exact destination resolves in fullcrawl; native two-tap count was not independently repeated for every direct entry."
+        }
+      },
+      "fullAcceptance": "PARTIAL",
+      "failedFields": [],
+      "additionalFail": null
+    },
+    {
+      "id": "legacy-chaos",
+      "name": "Chaos Clash",
+      "route": "/play/chaos",
+      "fields": {
+        "route": {
+          "status": "PASS_LOCAL_INITIAL_ROUTE",
+          "evidence": "fullcrawl-report.json.gz",
+          "note": "5 actual initial route/profile checks. Stateful expected mode identity is separately attributed."
+        },
+        "versioned_contract": {
+          "status": "FAIL_STRICT_PATH_REQUIREMENT",
+          "evidence": {
+            "references": [
+              "docs/ui/chaos-clash-state-machine.md",
+              "docs/ui/chaos-clash-guided-flow-v2.md"
+            ],
+            "strictModeContractPath": null,
+            "sourceStatus": "NONSTANDARD_GOVERNING_REFERENCES",
+            "note": "No standalone docs/<legacy-mode>/contract.md located in fresh source; do not count registry/engine versions as the missing mode document."
+          },
+          "note": "Six inherited modes have governing source references but no standalone docs/<mode>/contract.md. No existing contract was rewritten."
+        },
+        "unit_tests": {
+          "status": "PASS_LISTED_SOURCE_FILES",
+          "evidence": [
+            {
+              "file": "tests/v8a-chaos-draft.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/v8a-chaos-api.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/chaos-synchronized-draft.test.js",
+              "status": "passed"
+            }
+          ],
+          "note": "Matched to actual full100-file Run3 output. Overall full suite remains97/100filesPASS,2failedassertions+1collectionblock; no global unitPASS."
+        },
+        "guest_and_account_journeys": {
+          "status": "PARTIAL_EMULATED_ACCOUNTS",
+          "evidence": "data/validation/loop-foundation/stateful/run-3-final-dc926ada-assessment/mode-data-auth-assessment.md",
+          "note": "Inherited entitlement/trial policy preserved. Fresh native legacy terminals and configured suites are supporting proof, not unlimited guest parity or every-format account/card lifecycle."
+        },
+        "gate_entry": {
+          "status": "PARTIAL_INHERITED_GATES",
+          "evidence": [
+            {
+              "command": "node scripts/accounts/accountQa.mjs preflight",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/accountQa.mjs migrations",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/accountQa.mjs rls",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/accountQa.mjs auth",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/accountQa.mjs guest-claim",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/accountQa.mjs cloud-save",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/accountQa.mjs security",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs saved-rosters",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs run-it-back",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs export",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs deletion",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs reauthentication",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs device-reconciliation",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs responsive",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs accessibility",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs performance",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/foundation/goldenFixtureQa.mjs",
+              "exit": 0
+            }
+          ],
+          "note": "All11actualLoopgateentriesexit0. Complete88-gate sweep85PASS/3owner-diagnosticFAIL; broad inherited groups are not silently upgraded."
+        },
+        "og_card": {
+          "status": "PARTIAL_NO_FORMAT_SPECIFIC_FRESH_CRAWLER_MATRIX",
+          "evidence": "sharing/run3-independent-dc926ad/report.json",
+          "note": "Ten actual source-mode recaps on each flag, three bots, exact headline/scope/scores/all10names and1200×630PNG. Room feeds reference existing public completed games; no room-specific gamecard. Six inherited formats/Challenge invitation do not each have this fresh bot/card/guest matrix."
+        },
+        "events": {
+          "status": "PARTIAL_FORMAT_RECEIPTS_UNMATCHED",
+          "evidence": {
+            "parentReport": "data/validation/loop-foundation/stateful/run-3-final-dc926ada-cdp-replay/report.json",
+            "modeTaggedNames": [],
+            "all10Counts": {
+              "game_completed": 38,
+              "card_created": 38,
+              "card_shared": 2,
+              "card_opened": 1,
+              "rematch_started_from_card": 1,
+              "guest_play_started": 11,
+              "signup_completed": 1,
+              "daily_attempted": 2,
+              "daily_shared": 1,
+              "mode_started": 72
+            }
+          },
+          "note": "Actual accepted local204receipts; all10names occur in the combined parent cohort. Tonight game/guest events use tonight; its parent mode entry used franchise schedule section, so directTonightmode_started is source-only in that report. No per-format durable delivery claim."
+        },
+        "mobile_profiles": {
+          "status": "FAIL_LEGACY_SELECTED_COACH_42PX",
+          "evidence": "fullcrawl-report.json.gz;native-and-naming-reverify/report.json",
+          "note": "Initial allfive route profiles have no product overflow/minimum-target failures; expanded states preserve after-scroll warnings. Intrinsic42pxfailure is legacy CoachPick,notnewLoopcoachselects. No physical-device acceptance."
+        },
+        "axe_zero_critical": {
+          "status": "PASS_BOUNDED_ZERO_CRITICAL",
+          "evidence": "fullcrawl-report.json.gz",
+          "note": "Zero critical across initial routes and reversible control states; twelve serious after-control target-size warnings retained. Actual native Tournament/Win82 terminal proof is separately attributed; not every possible account/game state."
+        },
+        "mode_inventory_line": {
+          "status": "PASS_SOURCE_INVENTORY",
+          "evidence": "run3-source-readiness-dc926ad/post-freeze-ledger-source-comparison.json",
+          "note": "Every source mode row is mapped to explicit or grouped governing inventory lines; a row is not full DoD acceptance."
+        },
+        "hub_reachability": {
+          "status": "PASS_SOURCE_AND_OBSERVED_LINK",
+          "evidence": "all-mode-guest-rematches-reverify/report.json;fullcrawl-report.json.gz;source hub inventory",
+          "note": "Direct source hub href is observed and exact destination resolves in fullcrawl; native two-tap count was not independently repeated for every direct entry."
+        }
+      },
+      "fullAcceptance": "FAIL_WITH_PARTIAL_SCOPE",
+      "failedFields": [
+        "versioned_contract",
+        "mobile_profiles"
+      ],
+      "additionalFail": null
+    },
+    {
+      "id": "legacy-dream",
+      "name": "Dream Matchup",
+      "route": "/play/dream",
+      "fields": {
+        "route": {
+          "status": "PASS_LOCAL_INITIAL_ROUTE",
+          "evidence": "fullcrawl-report.json.gz",
+          "note": "5 actual initial route/profile checks. Stateful expected mode identity is separately attributed."
+        },
+        "versioned_contract": {
+          "status": "FAIL_STRICT_PATH_REQUIREMENT",
+          "evidence": {
+            "references": [
+              "docs/ui/play-lobby-polish-v1.md",
+              "src/navigation.js",
+              "src/versions.js"
+            ],
+            "strictModeContractPath": null,
+            "sourceStatus": "NONSTANDARD_GOVERNING_REFERENCES",
+            "note": "No standalone docs/<legacy-mode>/contract.md located in fresh source; do not count registry/engine versions as the missing mode document."
+          },
+          "note": "Six inherited modes have governing source references but no standalone docs/<mode>/contract.md. No existing contract was rewritten."
+        },
+        "unit_tests": {
+          "status": "PASS_LISTED_SOURCE_FILES",
+          "evidence": [
+            {
+              "file": "tests/v3-modes.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/result-contract.test.js",
+              "status": "passed"
+            }
+          ],
+          "note": "Matched to actual full100-file Run3 output. Overall full suite remains97/100filesPASS,2failedassertions+1collectionblock; no global unitPASS."
+        },
+        "guest_and_account_journeys": {
+          "status": "PARTIAL_EMULATED_ACCOUNTS",
+          "evidence": "data/validation/loop-foundation/stateful/run-3-final-dc926ada-assessment/mode-data-auth-assessment.md",
+          "note": "Inherited entitlement/trial policy preserved. Fresh native legacy terminals and configured suites are supporting proof, not unlimited guest parity or every-format account/card lifecycle."
+        },
+        "gate_entry": {
+          "status": "PARTIAL_INHERITED_GATES",
+          "evidence": [
+            {
+              "command": "node scripts/accounts/accountQa.mjs preflight",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/accountQa.mjs migrations",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/accountQa.mjs rls",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/accountQa.mjs auth",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/accountQa.mjs guest-claim",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/accountQa.mjs cloud-save",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/accountQa.mjs security",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs saved-rosters",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs run-it-back",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs export",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs deletion",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs reauthentication",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs device-reconciliation",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs responsive",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs accessibility",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs performance",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/foundation/goldenFixtureQa.mjs",
+              "exit": 0
+            }
+          ],
+          "note": "All11actualLoopgateentriesexit0. Complete88-gate sweep85PASS/3owner-diagnosticFAIL; broad inherited groups are not silently upgraded."
+        },
+        "og_card": {
+          "status": "PARTIAL_NO_FORMAT_SPECIFIC_FRESH_CRAWLER_MATRIX",
+          "evidence": "sharing/run3-independent-dc926ad/report.json",
+          "note": "Ten actual source-mode recaps on each flag, three bots, exact headline/scope/scores/all10names and1200×630PNG. Room feeds reference existing public completed games; no room-specific gamecard. Six inherited formats/Challenge invitation do not each have this fresh bot/card/guest matrix."
+        },
+        "events": {
+          "status": "PARTIAL_FORMAT_RECEIPTS_UNMATCHED",
+          "evidence": {
+            "parentReport": "data/validation/loop-foundation/stateful/run-3-final-dc926ada-cdp-replay/report.json",
+            "modeTaggedNames": [],
+            "all10Counts": {
+              "game_completed": 38,
+              "card_created": 38,
+              "card_shared": 2,
+              "card_opened": 1,
+              "rematch_started_from_card": 1,
+              "guest_play_started": 11,
+              "signup_completed": 1,
+              "daily_attempted": 2,
+              "daily_shared": 1,
+              "mode_started": 72
+            }
+          },
+          "note": "Actual accepted local204receipts; all10names occur in the combined parent cohort. Tonight game/guest events use tonight; its parent mode entry used franchise schedule section, so directTonightmode_started is source-only in that report. No per-format durable delivery claim."
+        },
+        "mobile_profiles": {
+          "status": "FAIL_LEGACY_SELECTED_COACH_42PX",
+          "evidence": "fullcrawl-report.json.gz;native-and-naming-reverify/report.json",
+          "note": "Initial allfive route profiles have no product overflow/minimum-target failures; expanded states preserve after-scroll warnings. Intrinsic42pxfailure is legacy CoachPick,notnewLoopcoachselects. No physical-device acceptance."
+        },
+        "axe_zero_critical": {
+          "status": "PASS_BOUNDED_ZERO_CRITICAL",
+          "evidence": "fullcrawl-report.json.gz",
+          "note": "Zero critical across initial routes and reversible control states; twelve serious after-control target-size warnings retained. Actual native Tournament/Win82 terminal proof is separately attributed; not every possible account/game state."
+        },
+        "mode_inventory_line": {
+          "status": "PASS_SOURCE_INVENTORY",
+          "evidence": "run3-source-readiness-dc926ad/post-freeze-ledger-source-comparison.json",
+          "note": "Every source mode row is mapped to explicit or grouped governing inventory lines; a row is not full DoD acceptance."
+        },
+        "hub_reachability": {
+          "status": "PASS_SOURCE_AND_OBSERVED_LINK",
+          "evidence": "all-mode-guest-rematches-reverify/report.json;fullcrawl-report.json.gz;source hub inventory",
+          "note": "Direct source hub href is observed and exact destination resolves in fullcrawl; native two-tap count was not independently repeated for every direct entry."
+        }
+      },
+      "fullAcceptance": "FAIL_WITH_PARTIAL_SCOPE",
+      "failedFields": [
+        "versioned_contract",
+        "mobile_profiles"
+      ],
+      "additionalFail": null
+    },
+    {
+      "id": "legacy-daily",
+      "name": "Daily Clash (legacy UTC)",
+      "route": "/play/daily",
+      "fields": {
+        "route": {
+          "status": "PASS_LOCAL_INITIAL_ROUTE",
+          "evidence": "fullcrawl-report.json.gz",
+          "note": "5 actual initial route/profile checks. Stateful expected mode identity is separately attributed."
+        },
+        "versioned_contract": {
+          "status": "FAIL_STRICT_PATH_REQUIREMENT",
+          "evidence": {
+            "references": [
+              "docs/simulation-v3/daily-coach-era-integration.md",
+              "docs/simulation-v3/daily-configuration-immutability.md"
+            ],
+            "strictModeContractPath": null,
+            "sourceStatus": "NONSTANDARD_GOVERNING_REFERENCES",
+            "note": "No standalone docs/<legacy-mode>/contract.md located in fresh source; do not count registry/engine versions as the missing mode document."
+          },
+          "note": "Six inherited modes have governing source references but no standalone docs/<mode>/contract.md. No existing contract was rewritten."
+        },
+        "unit_tests": {
+          "status": "PASS_LISTED_SOURCE_FILES",
+          "evidence": [
+            {
+              "file": "tests/daily-verification.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/v5d-daily-coach-era.test.js",
+              "status": "passed"
+            }
+          ],
+          "note": "Matched to actual full100-file Run3 output. Overall full suite remains97/100filesPASS,2failedassertions+1collectionblock; no global unitPASS."
+        },
+        "guest_and_account_journeys": {
+          "status": "PARTIAL_EMULATED_ACCOUNTS",
+          "evidence": "data/validation/loop-foundation/stateful/run-3-final-dc926ada-assessment/mode-data-auth-assessment.md",
+          "note": "Inherited entitlement/trial policy preserved. Fresh native legacy terminals and configured suites are supporting proof, not unlimited guest parity or every-format account/card lifecycle."
+        },
+        "gate_entry": {
+          "status": "PARTIAL_INHERITED_GATES",
+          "evidence": [
+            {
+              "command": "node scripts/accounts/accountQa.mjs preflight",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/accountQa.mjs migrations",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/accountQa.mjs rls",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/accountQa.mjs auth",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/accountQa.mjs guest-claim",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/accountQa.mjs cloud-save",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/accountQa.mjs security",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs saved-rosters",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs run-it-back",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs export",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs deletion",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs reauthentication",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs device-reconciliation",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs responsive",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs accessibility",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs performance",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/foundation/goldenFixtureQa.mjs",
+              "exit": 0
+            }
+          ],
+          "note": "All11actualLoopgateentriesexit0. Complete88-gate sweep85PASS/3owner-diagnosticFAIL; broad inherited groups are not silently upgraded."
+        },
+        "og_card": {
+          "status": "PARTIAL_NO_FORMAT_SPECIFIC_FRESH_CRAWLER_MATRIX",
+          "evidence": "sharing/run3-independent-dc926ad/report.json",
+          "note": "Ten actual source-mode recaps on each flag, three bots, exact headline/scope/scores/all10names and1200×630PNG. Room feeds reference existing public completed games; no room-specific gamecard. Six inherited formats/Challenge invitation do not each have this fresh bot/card/guest matrix."
+        },
+        "events": {
+          "status": "PARTIAL_FORMAT_RECEIPTS_UNMATCHED",
+          "evidence": {
+            "parentReport": "data/validation/loop-foundation/stateful/run-3-final-dc926ada-cdp-replay/report.json",
+            "modeTaggedNames": [],
+            "all10Counts": {
+              "game_completed": 38,
+              "card_created": 38,
+              "card_shared": 2,
+              "card_opened": 1,
+              "rematch_started_from_card": 1,
+              "guest_play_started": 11,
+              "signup_completed": 1,
+              "daily_attempted": 2,
+              "daily_shared": 1,
+              "mode_started": 72
+            }
+          },
+          "note": "Actual accepted local204receipts; all10names occur in the combined parent cohort. Tonight game/guest events use tonight; its parent mode entry used franchise schedule section, so directTonightmode_started is source-only in that report. No per-format durable delivery claim."
+        },
+        "mobile_profiles": {
+          "status": "FAIL_LEGACY_SELECTED_COACH_42PX",
+          "evidence": "fullcrawl-report.json.gz;native-and-naming-reverify/report.json",
+          "note": "Initial allfive route profiles have no product overflow/minimum-target failures; expanded states preserve after-scroll warnings. Intrinsic42pxfailure is legacy CoachPick,notnewLoopcoachselects. No physical-device acceptance."
+        },
+        "axe_zero_critical": {
+          "status": "PASS_BOUNDED_ZERO_CRITICAL",
+          "evidence": "fullcrawl-report.json.gz",
+          "note": "Zero critical across initial routes and reversible control states; twelve serious after-control target-size warnings retained. Actual native Tournament/Win82 terminal proof is separately attributed; not every possible account/game state."
+        },
+        "mode_inventory_line": {
+          "status": "PASS_SOURCE_INVENTORY",
+          "evidence": "run3-source-readiness-dc926ad/post-freeze-ledger-source-comparison.json",
+          "note": "Every source mode row is mapped to explicit or grouped governing inventory lines; a row is not full DoD acceptance."
+        },
+        "hub_reachability": {
+          "status": "FAIL_MISSING_SEPARATE_HUB_ENTRY",
+          "evidence": "all-mode-guest-rematches-reverify/report.json;fullcrawl-report.json.gz;source hub inventory",
+          "note": "Modes-hub Daily points to NewYork /clash/daily; inheritedUTC /play/daily has no separate hub entry. Other navigation is not a hub link."
+        }
+      },
+      "fullAcceptance": "FAIL_WITH_PARTIAL_SCOPE",
+      "failedFields": [
+        "versioned_contract",
+        "mobile_profiles",
+        "hub_reachability"
+      ],
+      "additionalFail": null
+    },
+    {
+      "id": "legacy-bo7",
+      "name": "Best of 7",
+      "route": "/play/best-of-7",
+      "fields": {
+        "route": {
+          "status": "PASS_LOCAL_INITIAL_ROUTE",
+          "evidence": "fullcrawl-report.json.gz",
+          "note": "5 actual initial route/profile checks. Stateful expected mode identity is separately attributed."
+        },
+        "versioned_contract": {
+          "status": "FAIL_STRICT_PATH_REQUIREMENT",
+          "evidence": {
+            "references": [
+              "docs/ui/play-lobby-polish-v1.md",
+              "src/navigation.js",
+              "src/versions.js"
+            ],
+            "strictModeContractPath": null,
+            "sourceStatus": "NONSTANDARD_GOVERNING_REFERENCES",
+            "note": "No standalone docs/<legacy-mode>/contract.md located in fresh source; do not count registry/engine versions as the missing mode document."
+          },
+          "note": "Six inherited modes have governing source references but no standalone docs/<mode>/contract.md. No existing contract was rewritten."
+        },
+        "unit_tests": {
+          "status": "PASS_LISTED_SOURCE_FILES",
+          "evidence": [
+            {
+              "file": "tests/v3-modes.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/result-contract.test.js",
+              "status": "passed"
+            }
+          ],
+          "note": "Matched to actual full100-file Run3 output. Overall full suite remains97/100filesPASS,2failedassertions+1collectionblock; no global unitPASS."
+        },
+        "guest_and_account_journeys": {
+          "status": "PARTIAL_EMULATED_ACCOUNTS",
+          "evidence": "data/validation/loop-foundation/stateful/run-3-final-dc926ada-assessment/mode-data-auth-assessment.md",
+          "note": "Inherited entitlement/trial policy preserved. Fresh native legacy terminals and configured suites are supporting proof, not unlimited guest parity or every-format account/card lifecycle."
+        },
+        "gate_entry": {
+          "status": "PARTIAL_INHERITED_GATES",
+          "evidence": [
+            {
+              "command": "node scripts/accounts/accountQa.mjs preflight",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/accountQa.mjs migrations",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/accountQa.mjs rls",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/accountQa.mjs auth",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/accountQa.mjs guest-claim",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/accountQa.mjs cloud-save",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/accountQa.mjs security",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs saved-rosters",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs run-it-back",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs export",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs deletion",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs reauthentication",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs device-reconciliation",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs responsive",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs accessibility",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs performance",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/foundation/goldenFixtureQa.mjs",
+              "exit": 0
+            }
+          ],
+          "note": "All11actualLoopgateentriesexit0. Complete88-gate sweep85PASS/3owner-diagnosticFAIL; broad inherited groups are not silently upgraded."
+        },
+        "og_card": {
+          "status": "PARTIAL_NO_FORMAT_SPECIFIC_FRESH_CRAWLER_MATRIX",
+          "evidence": "sharing/run3-independent-dc926ad/report.json",
+          "note": "Ten actual source-mode recaps on each flag, three bots, exact headline/scope/scores/all10names and1200×630PNG. Room feeds reference existing public completed games; no room-specific gamecard. Six inherited formats/Challenge invitation do not each have this fresh bot/card/guest matrix."
+        },
+        "events": {
+          "status": "PARTIAL_FORMAT_RECEIPTS_UNMATCHED",
+          "evidence": {
+            "parentReport": "data/validation/loop-foundation/stateful/run-3-final-dc926ada-cdp-replay/report.json",
+            "modeTaggedNames": [],
+            "all10Counts": {
+              "game_completed": 38,
+              "card_created": 38,
+              "card_shared": 2,
+              "card_opened": 1,
+              "rematch_started_from_card": 1,
+              "guest_play_started": 11,
+              "signup_completed": 1,
+              "daily_attempted": 2,
+              "daily_shared": 1,
+              "mode_started": 72
+            }
+          },
+          "note": "Actual accepted local204receipts; all10names occur in the combined parent cohort. Tonight game/guest events use tonight; its parent mode entry used franchise schedule section, so directTonightmode_started is source-only in that report. No per-format durable delivery claim."
+        },
+        "mobile_profiles": {
+          "status": "FAIL_LEGACY_SELECTED_COACH_42PX",
+          "evidence": "fullcrawl-report.json.gz;native-and-naming-reverify/report.json",
+          "note": "Initial allfive route profiles have no product overflow/minimum-target failures; expanded states preserve after-scroll warnings. Intrinsic42pxfailure is legacy CoachPick,notnewLoopcoachselects. No physical-device acceptance."
+        },
+        "axe_zero_critical": {
+          "status": "PASS_BOUNDED_ZERO_CRITICAL",
+          "evidence": "fullcrawl-report.json.gz",
+          "note": "Zero critical across initial routes and reversible control states; twelve serious after-control target-size warnings retained. Actual native Tournament/Win82 terminal proof is separately attributed; not every possible account/game state."
+        },
+        "mode_inventory_line": {
+          "status": "PASS_SOURCE_INVENTORY",
+          "evidence": "run3-source-readiness-dc926ad/post-freeze-ledger-source-comparison.json",
+          "note": "Every source mode row is mapped to explicit or grouped governing inventory lines; a row is not full DoD acceptance."
+        },
+        "hub_reachability": {
+          "status": "PASS_SOURCE_AND_OBSERVED_LINK",
+          "evidence": "all-mode-guest-rematches-reverify/report.json;fullcrawl-report.json.gz;source hub inventory",
+          "note": "Direct source hub href is observed and exact destination resolves in fullcrawl; native two-tap count was not independently repeated for every direct entry."
+        }
+      },
+      "fullAcceptance": "FAIL_WITH_PARTIAL_SCOPE",
+      "failedFields": [
+        "versioned_contract",
+        "mobile_profiles"
+      ],
+      "additionalFail": null
+    },
+    {
+      "id": "legacy-win82",
+      "name": "Win 82",
+      "route": "/play/win-82",
+      "fields": {
+        "route": {
+          "status": "PASS_LOCAL_INITIAL_ROUTE",
+          "evidence": "fullcrawl-report.json.gz",
+          "note": "5 actual initial route/profile checks. Stateful expected mode identity is separately attributed."
+        },
+        "versioned_contract": {
+          "status": "FAIL_STRICT_PATH_REQUIREMENT",
+          "evidence": {
+            "references": [
+              "docs/ui/play-lobby-polish-v1.md",
+              "src/navigation.js",
+              "src/versions.js"
+            ],
+            "strictModeContractPath": null,
+            "sourceStatus": "NONSTANDARD_GOVERNING_REFERENCES",
+            "note": "No standalone docs/<legacy-mode>/contract.md located in fresh source; do not count registry/engine versions as the missing mode document."
+          },
+          "note": "Six inherited modes have governing source references but no standalone docs/<mode>/contract.md. No existing contract was rewritten."
+        },
+        "unit_tests": {
+          "status": "PASS_LISTED_SOURCE_FILES",
+          "evidence": [
+            {
+              "file": "tests/v3-modes.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/result-contract.test.js",
+              "status": "passed"
+            }
+          ],
+          "note": "Matched to actual full100-file Run3 output. Overall full suite remains97/100filesPASS,2failedassertions+1collectionblock; no global unitPASS."
+        },
+        "guest_and_account_journeys": {
+          "status": "PARTIAL_EMULATED_ACCOUNTS",
+          "evidence": "data/validation/loop-foundation/stateful/run-3-final-dc926ada-assessment/mode-data-auth-assessment.md",
+          "note": "Inherited entitlement/trial policy preserved. Fresh native legacy terminals and configured suites are supporting proof, not unlimited guest parity or every-format account/card lifecycle."
+        },
+        "gate_entry": {
+          "status": "PARTIAL_INHERITED_GATES",
+          "evidence": [
+            {
+              "command": "node scripts/accounts/accountQa.mjs preflight",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/accountQa.mjs migrations",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/accountQa.mjs rls",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/accountQa.mjs auth",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/accountQa.mjs guest-claim",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/accountQa.mjs cloud-save",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/accountQa.mjs security",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs saved-rosters",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs run-it-back",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs export",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs deletion",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs reauthentication",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs device-reconciliation",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs responsive",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs accessibility",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs performance",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/foundation/goldenFixtureQa.mjs",
+              "exit": 0
+            }
+          ],
+          "note": "All11actualLoopgateentriesexit0. Complete88-gate sweep85PASS/3owner-diagnosticFAIL; broad inherited groups are not silently upgraded."
+        },
+        "og_card": {
+          "status": "PARTIAL_NO_FORMAT_SPECIFIC_FRESH_CRAWLER_MATRIX",
+          "evidence": "sharing/run3-independent-dc926ad/report.json",
+          "note": "Ten actual source-mode recaps on each flag, three bots, exact headline/scope/scores/all10names and1200×630PNG. Room feeds reference existing public completed games; no room-specific gamecard. Six inherited formats/Challenge invitation do not each have this fresh bot/card/guest matrix."
+        },
+        "events": {
+          "status": "PARTIAL_FORMAT_RECEIPTS_UNMATCHED",
+          "evidence": {
+            "parentReport": "data/validation/loop-foundation/stateful/run-3-final-dc926ada-cdp-replay/report.json",
+            "modeTaggedNames": [],
+            "all10Counts": {
+              "game_completed": 38,
+              "card_created": 38,
+              "card_shared": 2,
+              "card_opened": 1,
+              "rematch_started_from_card": 1,
+              "guest_play_started": 11,
+              "signup_completed": 1,
+              "daily_attempted": 2,
+              "daily_shared": 1,
+              "mode_started": 72
+            }
+          },
+          "note": "Actual accepted local204receipts; all10names occur in the combined parent cohort. Tonight game/guest events use tonight; its parent mode entry used franchise schedule section, so directTonightmode_started is source-only in that report. No per-format durable delivery claim."
+        },
+        "mobile_profiles": {
+          "status": "FAIL_LEGACY_SELECTED_COACH_42PX",
+          "evidence": "fullcrawl-report.json.gz;native-and-naming-reverify/report.json",
+          "note": "Initial allfive route profiles have no product overflow/minimum-target failures; expanded states preserve after-scroll warnings. Intrinsic42pxfailure is legacy CoachPick,notnewLoopcoachselects. No physical-device acceptance."
+        },
+        "axe_zero_critical": {
+          "status": "PASS_BOUNDED_ZERO_CRITICAL",
+          "evidence": "fullcrawl-report.json.gz",
+          "note": "Zero critical across initial routes and reversible control states; twelve serious after-control target-size warnings retained. Actual native Tournament/Win82 terminal proof is separately attributed; not every possible account/game state."
+        },
+        "mode_inventory_line": {
+          "status": "PASS_SOURCE_INVENTORY",
+          "evidence": "run3-source-readiness-dc926ad/post-freeze-ledger-source-comparison.json",
+          "note": "Every source mode row is mapped to explicit or grouped governing inventory lines; a row is not full DoD acceptance."
+        },
+        "hub_reachability": {
+          "status": "PASS_SOURCE_AND_OBSERVED_LINK",
+          "evidence": "all-mode-guest-rematches-reverify/report.json;fullcrawl-report.json.gz;source hub inventory",
+          "note": "Direct source hub href is observed and exact destination resolves in fullcrawl; native two-tap count was not independently repeated for every direct entry."
+        }
+      },
+      "fullAcceptance": "FAIL_WITH_PARTIAL_SCOPE",
+      "failedFields": [
+        "versioned_contract",
+        "mobile_profiles"
+      ],
+      "additionalFail": null
+    },
+    {
+      "id": "legacy-tournament",
+      "name": "Tournament",
+      "route": "/play/tournament",
+      "fields": {
+        "route": {
+          "status": "PASS_LOCAL_INITIAL_ROUTE",
+          "evidence": "fullcrawl-report.json.gz",
+          "note": "5 actual initial route/profile checks. Stateful expected mode identity is separately attributed."
+        },
+        "versioned_contract": {
+          "status": "FAIL_STRICT_PATH_REQUIREMENT",
+          "evidence": {
+            "references": [
+              "docs/ui/play-lobby-polish-v1.md",
+              "src/navigation.js",
+              "src/versions.js"
+            ],
+            "strictModeContractPath": null,
+            "sourceStatus": "NONSTANDARD_GOVERNING_REFERENCES",
+            "note": "No standalone docs/<legacy-mode>/contract.md located in fresh source; do not count registry/engine versions as the missing mode document."
+          },
+          "note": "Six inherited modes have governing source references but no standalone docs/<mode>/contract.md. No existing contract was rewritten."
+        },
+        "unit_tests": {
+          "status": "PASS_LISTED_SOURCE_FILES",
+          "evidence": [
+            {
+              "file": "tests/v3-modes.test.js",
+              "status": "passed"
+            },
+            {
+              "file": "tests/result-contract.test.js",
+              "status": "passed"
+            }
+          ],
+          "note": "Matched to actual full100-file Run3 output. Overall full suite remains97/100filesPASS,2failedassertions+1collectionblock; no global unitPASS."
+        },
+        "guest_and_account_journeys": {
+          "status": "PARTIAL_EMULATED_ACCOUNTS",
+          "evidence": "data/validation/loop-foundation/stateful/run-3-final-dc926ada-assessment/mode-data-auth-assessment.md",
+          "note": "Inherited entitlement/trial policy preserved. Fresh native legacy terminals and configured suites are supporting proof, not unlimited guest parity or every-format account/card lifecycle."
+        },
+        "gate_entry": {
+          "status": "PARTIAL_INHERITED_GATES",
+          "evidence": [
+            {
+              "command": "node scripts/accounts/accountQa.mjs preflight",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/accountQa.mjs migrations",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/accountQa.mjs rls",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/accountQa.mjs auth",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/accountQa.mjs guest-claim",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/accountQa.mjs cloud-save",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/accountQa.mjs security",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs saved-rosters",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs run-it-back",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs export",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs deletion",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs reauthentication",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs device-reconciliation",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs responsive",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs accessibility",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/accounts/careerV2Qa.mjs performance",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/foundation/goldenFixtureQa.mjs",
+              "exit": 0
+            }
+          ],
+          "note": "All11actualLoopgateentriesexit0. Complete88-gate sweep85PASS/3owner-diagnosticFAIL; broad inherited groups are not silently upgraded."
+        },
+        "og_card": {
+          "status": "PARTIAL_NO_FORMAT_SPECIFIC_FRESH_CRAWLER_MATRIX",
+          "evidence": "sharing/run3-independent-dc926ad/report.json",
+          "note": "Ten actual source-mode recaps on each flag, three bots, exact headline/scope/scores/all10names and1200×630PNG. Room feeds reference existing public completed games; no room-specific gamecard. Six inherited formats/Challenge invitation do not each have this fresh bot/card/guest matrix."
+        },
+        "events": {
+          "status": "PARTIAL_FORMAT_RECEIPTS_UNMATCHED",
+          "evidence": {
+            "parentReport": "data/validation/loop-foundation/stateful/run-3-final-dc926ada-cdp-replay/report.json",
+            "modeTaggedNames": [],
+            "all10Counts": {
+              "game_completed": 38,
+              "card_created": 38,
+              "card_shared": 2,
+              "card_opened": 1,
+              "rematch_started_from_card": 1,
+              "guest_play_started": 11,
+              "signup_completed": 1,
+              "daily_attempted": 2,
+              "daily_shared": 1,
+              "mode_started": 72
+            }
+          },
+          "note": "Actual accepted local204receipts; all10names occur in the combined parent cohort. Tonight game/guest events use tonight; its parent mode entry used franchise schedule section, so directTonightmode_started is source-only in that report. No per-format durable delivery claim."
+        },
+        "mobile_profiles": {
+          "status": "FAIL_LEGACY_SELECTED_COACH_42PX",
+          "evidence": "fullcrawl-report.json.gz;native-and-naming-reverify/report.json",
+          "note": "Initial allfive route profiles have no product overflow/minimum-target failures; expanded states preserve after-scroll warnings. Intrinsic42pxfailure is legacy CoachPick,notnewLoopcoachselects. No physical-device acceptance."
+        },
+        "axe_zero_critical": {
+          "status": "PASS_BOUNDED_ZERO_CRITICAL",
+          "evidence": "fullcrawl-report.json.gz",
+          "note": "Zero critical across initial routes and reversible control states; twelve serious after-control target-size warnings retained. Actual native Tournament/Win82 terminal proof is separately attributed; not every possible account/game state."
+        },
+        "mode_inventory_line": {
+          "status": "PASS_SOURCE_INVENTORY",
+          "evidence": "run3-source-readiness-dc926ad/post-freeze-ledger-source-comparison.json",
+          "note": "Every source mode row is mapped to explicit or grouped governing inventory lines; a row is not full DoD acceptance."
+        },
+        "hub_reachability": {
+          "status": "PASS_SOURCE_AND_OBSERVED_LINK",
+          "evidence": "all-mode-guest-rematches-reverify/report.json;fullcrawl-report.json.gz;source hub inventory",
+          "note": "Direct source hub href is observed and exact destination resolves in fullcrawl; native two-tap count was not independently repeated for every direct entry."
+        }
+      },
+      "fullAcceptance": "FAIL_WITH_PARTIAL_SCOPE",
+      "failedFields": [
+        "versioned_contract",
+        "mobile_profiles"
+      ],
+      "additionalFail": null
+    },
+    {
+      "id": "legacy-gauntlet",
+      "name": "Era Gauntlet (legacy planned)",
+      "route": "/play/era-gauntlet",
+      "sourceClassification": "Planned and disabled source; no gameplay completion claimed",
+      "fields": {
+        "route": {
+          "status": "NOT_APPLICABLE_UNIMPLEMENTED",
+          "evidence": {
+            "references": [
+              "docs/ui/play-lobby-polish-v1.md",
+              "src/navigation.js",
+              "src/versions.js"
+            ],
+            "strictModeContractPath": null,
+            "sourceStatus": "NONSTANDARD_GOVERNING_REFERENCES",
+            "note": "No standalone docs/<legacy-mode>/contract.md located in fresh source; do not count registry/engine versions as the missing mode document."
+          },
+          "note": "Planned public information is /modes/era-gauntlet. /play/era-gauntlet is an unrouted legacy gameplay address that falls through the existing Chaos path, not a second completed Gauntlet. Implemented new mode is /clash/gauntlet."
+        },
+        "versioned_contract": {
+          "status": "NOT_APPLICABLE_UNIMPLEMENTED",
+          "evidence": {
+            "references": [
+              "docs/ui/play-lobby-polish-v1.md",
+              "src/navigation.js",
+              "src/versions.js"
+            ],
+            "strictModeContractPath": null,
+            "sourceStatus": "NONSTANDARD_GOVERNING_REFERENCES",
+            "note": "No standalone docs/<legacy-mode>/contract.md located in fresh source; do not count registry/engine versions as the missing mode document."
+          },
+          "note": "Planned public information is /modes/era-gauntlet. /play/era-gauntlet is an unrouted legacy gameplay address that falls through the existing Chaos path, not a second completed Gauntlet. Implemented new mode is /clash/gauntlet."
+        },
+        "unit_tests": {
+          "status": "NOT_APPLICABLE_UNIMPLEMENTED",
+          "evidence": {
+            "references": [
+              "docs/ui/play-lobby-polish-v1.md",
+              "src/navigation.js",
+              "src/versions.js"
+            ],
+            "strictModeContractPath": null,
+            "sourceStatus": "NONSTANDARD_GOVERNING_REFERENCES",
+            "note": "No standalone docs/<legacy-mode>/contract.md located in fresh source; do not count registry/engine versions as the missing mode document."
+          },
+          "note": "Planned public information is /modes/era-gauntlet. /play/era-gauntlet is an unrouted legacy gameplay address that falls through the existing Chaos path, not a second completed Gauntlet. Implemented new mode is /clash/gauntlet."
+        },
+        "guest_and_account_journeys": {
+          "status": "NOT_APPLICABLE_UNIMPLEMENTED",
+          "evidence": {
+            "references": [
+              "docs/ui/play-lobby-polish-v1.md",
+              "src/navigation.js",
+              "src/versions.js"
+            ],
+            "strictModeContractPath": null,
+            "sourceStatus": "NONSTANDARD_GOVERNING_REFERENCES",
+            "note": "No standalone docs/<legacy-mode>/contract.md located in fresh source; do not count registry/engine versions as the missing mode document."
+          },
+          "note": "Planned public information is /modes/era-gauntlet. /play/era-gauntlet is an unrouted legacy gameplay address that falls through the existing Chaos path, not a second completed Gauntlet. Implemented new mode is /clash/gauntlet."
+        },
+        "gate_entry": {
+          "status": "NOT_APPLICABLE_UNIMPLEMENTED",
+          "evidence": {
+            "references": [
+              "docs/ui/play-lobby-polish-v1.md",
+              "src/navigation.js",
+              "src/versions.js"
+            ],
+            "strictModeContractPath": null,
+            "sourceStatus": "NONSTANDARD_GOVERNING_REFERENCES",
+            "note": "No standalone docs/<legacy-mode>/contract.md located in fresh source; do not count registry/engine versions as the missing mode document."
+          },
+          "note": "Planned public information is /modes/era-gauntlet. /play/era-gauntlet is an unrouted legacy gameplay address that falls through the existing Chaos path, not a second completed Gauntlet. Implemented new mode is /clash/gauntlet."
+        },
+        "og_card": {
+          "status": "NOT_APPLICABLE_UNIMPLEMENTED",
+          "evidence": {
+            "references": [
+              "docs/ui/play-lobby-polish-v1.md",
+              "src/navigation.js",
+              "src/versions.js"
+            ],
+            "strictModeContractPath": null,
+            "sourceStatus": "NONSTANDARD_GOVERNING_REFERENCES",
+            "note": "No standalone docs/<legacy-mode>/contract.md located in fresh source; do not count registry/engine versions as the missing mode document."
+          },
+          "note": "Planned public information is /modes/era-gauntlet. /play/era-gauntlet is an unrouted legacy gameplay address that falls through the existing Chaos path, not a second completed Gauntlet. Implemented new mode is /clash/gauntlet."
+        },
+        "events": {
+          "status": "NOT_APPLICABLE_UNIMPLEMENTED",
+          "evidence": {
+            "references": [
+              "docs/ui/play-lobby-polish-v1.md",
+              "src/navigation.js",
+              "src/versions.js"
+            ],
+            "strictModeContractPath": null,
+            "sourceStatus": "NONSTANDARD_GOVERNING_REFERENCES",
+            "note": "No standalone docs/<legacy-mode>/contract.md located in fresh source; do not count registry/engine versions as the missing mode document."
+          },
+          "note": "Planned public information is /modes/era-gauntlet. /play/era-gauntlet is an unrouted legacy gameplay address that falls through the existing Chaos path, not a second completed Gauntlet. Implemented new mode is /clash/gauntlet."
+        },
+        "mobile_profiles": {
+          "status": "NOT_APPLICABLE_UNIMPLEMENTED",
+          "evidence": {
+            "references": [
+              "docs/ui/play-lobby-polish-v1.md",
+              "src/navigation.js",
+              "src/versions.js"
+            ],
+            "strictModeContractPath": null,
+            "sourceStatus": "NONSTANDARD_GOVERNING_REFERENCES",
+            "note": "No standalone docs/<legacy-mode>/contract.md located in fresh source; do not count registry/engine versions as the missing mode document."
+          },
+          "note": "Planned public information is /modes/era-gauntlet. /play/era-gauntlet is an unrouted legacy gameplay address that falls through the existing Chaos path, not a second completed Gauntlet. Implemented new mode is /clash/gauntlet."
+        },
+        "axe_zero_critical": {
+          "status": "NOT_APPLICABLE_UNIMPLEMENTED",
+          "evidence": {
+            "references": [
+              "docs/ui/play-lobby-polish-v1.md",
+              "src/navigation.js",
+              "src/versions.js"
+            ],
+            "strictModeContractPath": null,
+            "sourceStatus": "NONSTANDARD_GOVERNING_REFERENCES",
+            "note": "No standalone docs/<legacy-mode>/contract.md located in fresh source; do not count registry/engine versions as the missing mode document."
+          },
+          "note": "Planned public information is /modes/era-gauntlet. /play/era-gauntlet is an unrouted legacy gameplay address that falls through the existing Chaos path, not a second completed Gauntlet. Implemented new mode is /clash/gauntlet."
+        },
+        "mode_inventory_line": {
+          "status": "NOT_APPLICABLE_UNIMPLEMENTED",
+          "evidence": {
+            "references": [
+              "docs/ui/play-lobby-polish-v1.md",
+              "src/navigation.js",
+              "src/versions.js"
+            ],
+            "strictModeContractPath": null,
+            "sourceStatus": "NONSTANDARD_GOVERNING_REFERENCES",
+            "note": "No standalone docs/<legacy-mode>/contract.md located in fresh source; do not count registry/engine versions as the missing mode document."
+          },
+          "note": "Planned public information is /modes/era-gauntlet. /play/era-gauntlet is an unrouted legacy gameplay address that falls through the existing Chaos path, not a second completed Gauntlet. Implemented new mode is /clash/gauntlet."
+        },
+        "hub_reachability": {
+          "status": "NOT_APPLICABLE_UNIMPLEMENTED",
+          "evidence": {
+            "references": [
+              "docs/ui/play-lobby-polish-v1.md",
+              "src/navigation.js",
+              "src/versions.js"
+            ],
+            "strictModeContractPath": null,
+            "sourceStatus": "NONSTANDARD_GOVERNING_REFERENCES",
+            "note": "No standalone docs/<legacy-mode>/contract.md located in fresh source; do not count registry/engine versions as the missing mode document."
+          },
+          "note": "Planned public information is /modes/era-gauntlet. /play/era-gauntlet is an unrouted legacy gameplay address that falls through the existing Chaos path, not a second completed Gauntlet. Implemented new mode is /clash/gauntlet."
+        }
+      },
+      "fullAcceptance": "UNIMPLEMENTED / DATA_BLOCKER",
+      "note": "Planned public information is /modes/era-gauntlet. /play/era-gauntlet is an unrouted legacy gameplay address that falls through the existing Chaos path, not a second completed Gauntlet. Implemented new mode is /clash/gauntlet."
+    },
+    {
+      "id": "challenges",
+      "name": "Governed Challenges",
+      "route": "/challenges",
+      "fields": {
+        "route": {
+          "status": "PASS_LOCAL_INITIAL_ROUTE",
+          "evidence": "fullcrawl-report.json.gz",
+          "note": "5 actual initial route/profile checks. Stateful expected mode identity is separately attributed."
+        },
+        "versioned_contract": {
+          "status": "PASS_SOURCE",
+          "evidence": {
+            "path": "docs/challenges/challenge-contract-v1.md",
+            "version": "CHALLENGE_VERSION1.0.0; COMPARISON_VERSION1.0.0"
+          },
+          "note": "Versioned source contract present; source presence is not runtime behavior."
+        },
+        "unit_tests": {
+          "status": "PASS_LISTED_SOURCE_FILES",
+          "evidence": [
+            {
+              "file": "tests/v9c-challenges.test.js",
+              "status": "passed"
+            }
+          ],
+          "note": "Matched to actual full100-file Run3 output. Overall full suite remains97/100filesPASS,2failedassertions+1collectionblock; no global unitPASS."
+        },
+        "guest_and_account_journeys": {
+          "status": "PARTIAL_EMULATED_ACCOUNTS",
+          "evidence": "data/validation/loop-foundation/stateful/run-3-final-dc926ada-assessment/mode-data-auth-assessment.md",
+          "note": "Inherited entitlement/trial policy preserved. Fresh native legacy terminals and configured suites are supporting proof, not unlimited guest parity or every-format account/card lifecycle."
+        },
+        "gate_entry": {
+          "status": "PARTIAL_INHERITED_GATES",
+          "evidence": [
+            {
+              "command": "node scripts/challenges/challengeQa.mjs contract",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/challenges/challengeQa.mjs seed",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/challenges/challengeQa.mjs rls",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/challenges/challengeQa.mjs security",
+              "exit": 1
+            },
+            {
+              "command": "node scripts/challenges/challengeQa.mjs history",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/challenges/challengeQa.mjs responsive",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/challenges/challengeQa.mjs accessibility",
+              "exit": 0
+            },
+            {
+              "command": "node scripts/challenges/challengeQa.mjs performance",
+              "exit": 0
+            }
+          ],
+          "note": "All11actualLoopgateentriesexit0. Complete88-gate sweep85PASS/3owner-diagnosticFAIL; broad inherited groups are not silently upgraded."
+        },
+        "og_card": {
+          "status": "PARTIAL_NO_FORMAT_SPECIFIC_FRESH_CRAWLER_MATRIX",
+          "evidence": "sharing/run3-independent-dc926ad/report.json",
+          "note": "Ten actual source-mode recaps on each flag, three bots, exact headline/scope/scores/all10names and1200×630PNG. Room feeds reference existing public completed games; no room-specific gamecard. Six inherited formats/Challenge invitation do not each have this fresh bot/card/guest matrix."
+        },
+        "events": {
+          "status": "PARTIAL_FORMAT_RECEIPTS_UNMATCHED",
+          "evidence": {
+            "parentReport": "data/validation/loop-foundation/stateful/run-3-final-dc926ada-cdp-replay/report.json",
+            "modeTaggedNames": [],
+            "all10Counts": {
+              "game_completed": 38,
+              "card_created": 38,
+              "card_shared": 2,
+              "card_opened": 1,
+              "rematch_started_from_card": 1,
+              "guest_play_started": 11,
+              "signup_completed": 1,
+              "daily_attempted": 2,
+              "daily_shared": 1,
+              "mode_started": 72
+            }
+          },
+          "note": "Actual accepted local204receipts; all10names occur in the combined parent cohort. Tonight game/guest events use tonight; its parent mode entry used franchise schedule section, so directTonightmode_started is source-only in that report. No per-format durable delivery claim."
+        },
+        "mobile_profiles": {
+          "status": "PARTIAL_STATE_COMBINATIONS",
+          "evidence": "fullcrawl-report.json.gz;native-and-naming-reverify/report.json",
+          "note": "Initial allfive route profiles have no product overflow/minimum-target failures; expanded states preserve after-scroll warnings. Intrinsic42pxfailure is legacy CoachPick,notnewLoopcoachselects. No physical-device acceptance."
+        },
+        "axe_zero_critical": {
+          "status": "PASS_BOUNDED_ZERO_CRITICAL",
+          "evidence": "fullcrawl-report.json.gz",
+          "note": "Zero critical across initial routes and reversible control states; twelve serious after-control target-size warnings retained. Actual native Tournament/Win82 terminal proof is separately attributed; not every possible account/game state."
+        },
+        "mode_inventory_line": {
+          "status": "PASS_SOURCE_INVENTORY",
+          "evidence": "run3-source-readiness-dc926ad/post-freeze-ledger-source-comparison.json",
+          "note": "Every source mode row is mapped to explicit or grouped governing inventory lines; a row is not full DoD acceptance."
+        },
+        "hub_reachability": {
+          "status": "PASS_SOURCE_AND_OBSERVED_LINK",
+          "evidence": "all-mode-guest-rematches-reverify/report.json;fullcrawl-report.json.gz;source hub inventory",
+          "note": "Direct source hub href is observed and exact destination resolves in fullcrawl; native two-tap count was not independently repeated for every direct entry."
+        }
+      },
+      "fullAcceptance": "PARTIAL",
+      "failedFields": [],
+      "additionalFail": null
+    },
+    {
+      "id": "salary-cap",
+      "name": "Salary Cap",
+      "route": null,
+      "sourceClassification": "Unavailable data blocker; no fabricated salaries or Play CTA",
+      "fields": {
+        "route": {
+          "status": "NOT_APPLICABLE_UNIMPLEMENTED",
+          "evidence": {
+            "path": "docs/constraint-filters/contract.md",
+            "version": "1.0.0"
+          },
+          "note": "Salary dataset unavailable; no fabricated play."
+        },
+        "versioned_contract": {
+          "status": "NOT_APPLICABLE_UNIMPLEMENTED",
+          "evidence": {
+            "path": "docs/constraint-filters/contract.md",
+            "version": "1.0.0"
+          },
+          "note": "Salary dataset unavailable; no fabricated play."
+        },
+        "unit_tests": {
+          "status": "NOT_APPLICABLE_UNIMPLEMENTED",
+          "evidence": {
+            "path": "docs/constraint-filters/contract.md",
+            "version": "1.0.0"
+          },
+          "note": "Salary dataset unavailable; no fabricated play."
+        },
+        "guest_and_account_journeys": {
+          "status": "NOT_APPLICABLE_UNIMPLEMENTED",
+          "evidence": {
+            "path": "docs/constraint-filters/contract.md",
+            "version": "1.0.0"
+          },
+          "note": "Salary dataset unavailable; no fabricated play."
+        },
+        "gate_entry": {
+          "status": "NOT_APPLICABLE_UNIMPLEMENTED",
+          "evidence": {
+            "path": "docs/constraint-filters/contract.md",
+            "version": "1.0.0"
+          },
+          "note": "Salary dataset unavailable; no fabricated play."
+        },
+        "og_card": {
+          "status": "NOT_APPLICABLE_UNIMPLEMENTED",
+          "evidence": {
+            "path": "docs/constraint-filters/contract.md",
+            "version": "1.0.0"
+          },
+          "note": "Salary dataset unavailable; no fabricated play."
+        },
+        "events": {
+          "status": "NOT_APPLICABLE_UNIMPLEMENTED",
+          "evidence": {
+            "path": "docs/constraint-filters/contract.md",
+            "version": "1.0.0"
+          },
+          "note": "Salary dataset unavailable; no fabricated play."
+        },
+        "mobile_profiles": {
+          "status": "NOT_APPLICABLE_UNIMPLEMENTED",
+          "evidence": {
+            "path": "docs/constraint-filters/contract.md",
+            "version": "1.0.0"
+          },
+          "note": "Salary dataset unavailable; no fabricated play."
+        },
+        "axe_zero_critical": {
+          "status": "NOT_APPLICABLE_UNIMPLEMENTED",
+          "evidence": {
+            "path": "docs/constraint-filters/contract.md",
+            "version": "1.0.0"
+          },
+          "note": "Salary dataset unavailable; no fabricated play."
+        },
+        "mode_inventory_line": {
+          "status": "NOT_APPLICABLE_UNIMPLEMENTED",
+          "evidence": {
+            "path": "docs/constraint-filters/contract.md",
+            "version": "1.0.0"
+          },
+          "note": "Salary dataset unavailable; no fabricated play."
+        },
+        "hub_reachability": {
+          "status": "NOT_APPLICABLE_UNIMPLEMENTED",
+          "evidence": {
+            "path": "docs/constraint-filters/contract.md",
+            "version": "1.0.0"
+          },
+          "note": "Salary dataset unavailable; no fabricated play."
+        }
+      },
+      "fullAcceptance": "UNIMPLEMENTED / DATA_BLOCKER",
+      "note": "Salary dataset unavailable; no fabricated play."
+    }
+  ],
+  "pages": [
+    {
+      "name": "Public entrance and Play lobby",
+      "routes": [
+        "/",
+        "/play"
+      ],
+      "source": [
+        "src/components/lobby/PlayLobby.jsx",
+        "src/navigation.js"
+      ],
+      "contract": "docs/ui/play-lobby-polish-v1.md",
+      "runtimeStatus": "PENDING_INDEPENDENT_EVIDENCE",
+      "sourceFileStatus": [
+        {
+          "requested": "src/components/lobby/PlayLobby.jsx",
+          "exists": true,
+          "basenameMatches": []
+        },
+        {
+          "requested": "src/navigation.js",
+          "exists": true,
+          "basenameMatches": []
+        }
+      ]
+    },
+    {
+      "name": "Modes hub and constraint chooser",
+      "routes": [
+        "/clash/modes",
+        "/clash/filters"
+      ],
+      "source": [
+        "src/loop/modes/LoopModes.jsx"
+      ],
+      "contract": "docs/modes-hub/contract.md",
+      "runtimeStatus": "PENDING_INDEPENDENT_EVIDENCE",
+      "sourceFileStatus": [
+        {
+          "requested": "src/loop/modes/LoopModes.jsx",
+          "exists": true,
+          "basenameMatches": []
+        }
+      ]
+    },
+    {
+      "name": "Franchise programmatic previews",
+      "routes": [
+        "/clash/all-time/:slug"
+      ],
+      "source": [
+        "api/share-page.js",
+        "scripts/loop/franchise-pages.mjs",
+        "scripts/loop/sitemap.mjs"
+      ],
+      "contract": "docs/franchise-clash/contract.md",
+      "sourceCount": 435,
+      "runtimeStatus": "PENDING_INDEPENDENT_EVIDENCE",
+      "sourceFileStatus": [
+        {
+          "requested": "api/share-page.js",
+          "exists": true,
+          "basenameMatches": []
+        },
+        {
+          "requested": "scripts/loop/franchise-pages.mjs",
+          "exists": true,
+          "basenameMatches": []
+        },
+        {
+          "requested": "scripts/loop/sitemap.mjs",
+          "exists": true,
+          "basenameMatches": []
+        }
+      ]
+    },
+    {
+      "name": "Public completed-result cards",
+      "routes": [
+        "/card/:id",
+        "/result/:id"
+      ],
+      "source": [
+        "api/share-page.js",
+        "api/_lib/loopShare.js"
+      ],
+      "contract": "src/cards/contract.js",
+      "runtimeStatus": "PENDING_INDEPENDENT_EVIDENCE",
+      "sourceFileStatus": [
+        {
+          "requested": "api/share-page.js",
+          "exists": true,
+          "basenameMatches": []
+        },
+        {
+          "requested": "api/_lib/loopShare.js",
+          "exists": true,
+          "basenameMatches": []
+        }
+      ]
+    },
+    {
+      "name": "Public governed invitation",
+      "routes": [
+        "/challenge/:id",
+        "/?challenge=EC-…"
+      ],
+      "source": [
+        "api/share-page.js",
+        "src/App.jsx"
+      ],
+      "contract": "docs/challenges/challenge-contract-v1.md",
+      "runtimeStatus": "PENDING_INDEPENDENT_EVIDENCE",
+      "sourceFileStatus": [
+        {
+          "requested": "api/share-page.js",
+          "exists": true,
+          "basenameMatches": []
+        },
+        {
+          "requested": "src/App.jsx",
+          "exists": true,
+          "basenameMatches": []
+        }
+      ]
+    },
+    {
+      "name": "Public profiles",
+      "routes": [
+        "/player/:slug"
+      ],
+      "source": [
+        "src/components/profiles/PublicProfilePage.jsx",
+        "api/public-profile.js"
+      ],
+      "contract": "docs/public-profiles/public-profile-contract-v1.md",
+      "runtimeStatus": "PENDING_INDEPENDENT_EVIDENCE",
+      "sourceFileStatus": [
+        {
+          "requested": "src/components/profiles/PublicProfilePage.jsx",
+          "exists": true,
+          "basenameMatches": []
+        },
+        {
+          "requested": "api/public-profile.js",
+          "exists": false,
+          "basenameMatches": []
+        }
+      ]
+    },
+    {
+      "name": "My EraClash, History, achievements and settings",
+      "routes": [
+        "/my-eraclash",
+        "/my-eraclash?tab=history",
+        "/my-eraclash?tab=achievements"
+      ],
+      "source": [
+        "src/components/accounts/MyEraClash.jsx",
+        "src/App.jsx"
+      ],
+      "contract": "docs/accounts/my-eraclash-career-v2.md",
+      "runtimeStatus": "PENDING_INDEPENDENT_EVIDENCE",
+      "sourceFileStatus": [
+        {
+          "requested": "src/components/accounts/MyEraClash.jsx",
+          "exists": true,
+          "basenameMatches": []
+        },
+        {
+          "requested": "src/App.jsx",
+          "exists": true,
+          "basenameMatches": []
+        }
+      ]
+    },
+    {
+      "name": "Leaderboard",
+      "routes": [
+        "/leaderboard"
+      ],
+      "source": [
+        "src/components/competitive/LeaderboardPage.jsx",
+        "src/competitive/contract.js"
+      ],
+      "contract": "docs/competitive-rating/leaderboard-contract-v1.md",
+      "runtimeStatus": "PENDING_INDEPENDENT_EVIDENCE",
+      "sourceFileStatus": [
+        {
+          "requested": "src/components/competitive/LeaderboardPage.jsx",
+          "exists": true,
+          "basenameMatches": []
+        },
+        {
+          "requested": "src/competitive/contract.js",
+          "exists": true,
+          "basenameMatches": []
+        }
+      ]
+    },
+    {
+      "name": "Privacy, Terms and Founding Player",
+      "routes": [
+        "/privacy",
+        "/terms",
+        "/support"
+      ],
+      "source": [
+        "src/loop/PolicyPages.jsx"
+      ],
+      "contract": "src/loop/PolicyPages.jsx",
+      "lastUpdated": "10-02-2026",
+      "runtimeStatus": "PENDING_INDEPENDENT_EVIDENCE",
+      "sourceFileStatus": [
+        {
+          "requested": "src/loop/PolicyPages.jsx",
+          "exists": true,
+          "basenameMatches": []
+        }
+      ]
+    },
+    {
+      "name": "Membership and mode information",
+      "routes": [
+        "/membership",
+        "/modes/:slug"
+      ],
+      "source": [
+        "src/components/arena/InfoPages.jsx"
+      ],
+      "contract": "docs/ui/play-lobby-polish-v1.md",
+      "runtimeStatus": "PENDING_INDEPENDENT_EVIDENCE",
+      "sourceFileStatus": [
+        {
+          "requested": "src/components/arena/InfoPages.jsx",
+          "exists": true,
+          "basenameMatches": []
+        }
+      ]
+    },
+    {
+      "name": "Fantasy format proposals",
+      "routes": [
+        "/fantasy/eraclash",
+        "/fantasy/live"
+      ],
+      "source": [
+        "src/navigation.js",
+        "src/components/arena/InfoPages.jsx"
+      ],
+      "sourceStatuses": [
+        {
+          "id": "eraclash-fantasy",
+          "label": "EraClash Fantasy",
+          "icon": "🏛️",
+          "route": "/fantasy/eraclash",
+          "status": "IN_DEVELOPMENT",
+          "tagline": "All-time franchises powered by the EraClash simulation.",
+          "description": "Build a franchise across basketball history, draft against other managers, and compete through the EraClash simulation universe rather than real-world box scores.",
+          "differentiator": "Simulated. Your roster plays inside EraClash."
+        },
+        {
+          "id": "eraclash-live",
+          "label": "EraClash Live",
+          "icon": "📡",
+          "route": "/fantasy/live",
+          "status": "PLANNED",
+          "tagline": "Traditional fantasy powered by real-world games.",
+          "description": "Season-long and weekly fantasy using real players and real pro basketball results, sharing an account with the rest of EraClash.",
+          "differentiator": "Real games. Real players. Real-world scoring."
+        }
+      ],
+      "contract": "src/navigation.js",
+      "note": "Format information, not implemented games.",
+      "runtimeStatus": "PENDING_INDEPENDENT_EVIDENCE",
+      "sourceFileStatus": [
+        {
+          "requested": "src/navigation.js",
+          "exists": true,
+          "basenameMatches": []
+        },
+        {
+          "requested": "src/components/arena/InfoPages.jsx",
+          "exists": true,
+          "basenameMatches": []
+        }
+      ]
+    },
+    {
+      "name": "Auth callbacks",
+      "routes": [
+        "/auth/:path*"
+      ],
+      "source": [
+        "src/auth/callback.js",
+        "src/App.jsx"
+      ],
+      "contract": "docs/accounts/email-sign-in-owner-setup.md",
+      "runtimeStatus": "PENDING_INDEPENDENT_EVIDENCE",
+      "sourceFileStatus": [
+        {
+          "requested": "src/auth/callback.js",
+          "exists": false,
+          "basenameMatches": []
+        },
+        {
+          "requested": "src/App.jsx",
+          "exists": true,
+          "basenameMatches": []
+        }
+      ]
+    },
+    {
+      "name": "Clash Cards/Rivalries embedded surfaces",
+      "routes": [],
+      "source": [
+        "src/cards/contract.js",
+        "src/rivalries/contract.js",
+        "src/components/rivalries/RivalriesSection.jsx"
+      ],
+      "contract": "docs/social/clash-cards-rivalries-v1.md",
+      "note": "Embedded in result/history/profile; not independent game routes.",
+      "runtimeStatus": "PENDING_INDEPENDENT_EVIDENCE",
+      "sourceFileStatus": [
+        {
+          "requested": "src/cards/contract.js",
+          "exists": true,
+          "basenameMatches": []
+        },
+        {
+          "requested": "src/rivalries/contract.js",
+          "exists": true,
+          "basenameMatches": []
+        },
+        {
+          "requested": "src/components/rivalries/RivalriesSection.jsx",
+          "exists": true,
+          "basenameMatches": []
+        }
+      ]
+    },
+    {
+      "name": "Clash Breakdown embedded surface",
+      "routes": [],
+      "source": [
+        "src/breakdown/contract.js",
+        "src/components/breakdown/ClashBreakdown.jsx"
+      ],
+      "contract": "docs/breakdown/clash-breakdown-v1.md",
+      "note": "Feature-flagged completed-result projection, not simulation or independent route.",
+      "runtimeStatus": "PENDING_INDEPENDENT_EVIDENCE",
+      "sourceFileStatus": [
+        {
+          "requested": "src/breakdown/contract.js",
+          "exists": true,
+          "basenameMatches": []
+        },
+        {
+          "requested": "src/components/breakdown/ClashBreakdown.jsx",
+          "exists": true,
+          "basenameMatches": []
+        }
+      ]
+    },
+    {
+      "name": "Owner ThemeLab/fixture surfaces",
+      "routes": [
+        "/dev/basketball-theme-lab",
+        "/dev/profile-reference",
+        "/__fixtures/:path*"
+      ],
+      "source": [
+        "src/App.jsx",
+        "vite.config.js"
+      ],
+      "contract": null,
+      "note": "Compile/gate-specific development surfaces; local production fallback is not proof of functionality.",
+      "runtimeStatus": "PENDING_INDEPENDENT_EVIDENCE",
+      "sourceFileStatus": [
+        {
+          "requested": "src/App.jsx",
+          "exists": true,
+          "basenameMatches": []
+        },
+        {
+          "requested": "vite.config.js",
+          "exists": true,
+          "basenameMatches": []
+        }
+      ]
+    }
+  ],
+  "pageScope": "15source families; literal487initialroutes across5profiles. Dynamicprovider/invitation/owned states use separately scoped emulated parent proof,notall5nativeperstate.",
+  "fullDoDAcceptance": "No implemented mode receives unqualified completePASS. Provider/physical/durable scope remainsunverified; strictlegacycontracts/hubUTC,threevariantentry,legacycoachsize/performance remainfailures."
+}

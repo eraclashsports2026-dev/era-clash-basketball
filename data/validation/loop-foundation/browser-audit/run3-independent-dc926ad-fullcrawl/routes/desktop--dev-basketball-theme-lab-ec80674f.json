@@ -1,0 +1,855 @@
+{
+  "path": "/dev/basketball-theme-lab",
+  "kind": "owner-only",
+  "profile": "desktop",
+  "identity": {
+    "origin": "http://localhost:4320",
+    "environment": "local-production-client-actual-handlers-memory-store",
+    "checkoutSha": "dc926adaeebd573f435263265f4251f1814cc0a5",
+    "requestedSha": "dc926adaeebd573f435263265f4251f1814cc0a5",
+    "checkoutDirty": true,
+    "codeFingerprint": "5b887e2c23df77ff43066af1032d62d62b295383059a33799e0ef3e8597bbbea",
+    "engineIdentity": {
+      "enabled": true,
+      "candidateId": "Candidate 4",
+      "candidateCoreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+      "calibrationVersion": "1.4.0"
+    },
+    "actor": "fresh guest context"
+  },
+  "startedAt": "2026-10-02T13:19:13.791Z",
+  "issues": [
+    {
+      "status": "UNVERIFIED",
+      "name": "owner-only surface coverage",
+      "detail": "Owner-only development surface. Production builds compile the theme lab off; deployed middleware denies non-owner /dev/ access. A local harness may serve a fallback lobby with HTTP200, which does not establish theme-lab functionality. Actual response, geometry and axe observations are retained; no owner identity or enabled owner build was supplied."
+    }
+  ],
+  "ownerSurface": {
+    "status": "UNVERIFIED",
+    "acceptanceStatus": "PARTIAL",
+    "probeControls": false,
+    "reason": "Owner-only development surface. Production builds compile the theme lab off; deployed middleware denies non-owner /dev/ access. A local harness may serve a fallback lobby with HTTP200, which does not establish theme-lab functionality. Actual response, geometry and axe observations are retained; no owner identity or enabled owner build was supplied.",
+    "httpStatus": 200,
+    "responseHeaders": {
+      "content-type": "text/html",
+      "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://us.i.posthog.com https://eu.i.posthog.com https://*.supabase.co https://*.supabase.in; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'"
+    }
+  },
+  "statusCode": 200,
+  "finalUrl": "http://localhost:4320/dev/basketball-theme-lab",
+  "title": "EraClash Basketball — Build Your All-Time Squad",
+  "csp": {
+    "bypass": false,
+    "normalPageLoad": true,
+    "header": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://us.i.posthog.com https://eu.i.posthog.com https://*.supabase.co https://*.supabase.in; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'",
+    "axeInstrumentation": "Playwright debugger evaluation after normal UI load"
+  },
+  "geometry": {
+    "viewport": {
+      "width": 1440,
+      "height": 1000
+    },
+    "scrollWidth": 1440,
+    "overflow": false,
+    "theme": "night-court-production-hybrid",
+    "loopBackground": null,
+    "loopTokenBackground": null,
+    "lightCourt": null,
+    "metaViewport": "width=device-width, initial-scale=1.0"
+  },
+  "controls": [
+    {
+      "index": 0,
+      "tag": "button",
+      "type": "submit",
+      "role": null,
+      "name": "EraClash Basketball home",
+      "href": null,
+      "disabled": false,
+      "visible": true,
+      "width": 196.98,
+      "height": 44,
+      "rawWidth": 196.98,
+      "rawHeight": 44,
+      "targetIncludesAssociatedLabel": false,
+      "inline": false,
+      "value": ""
+    },
+    {
+      "index": 1,
+      "tag": "button",
+      "type": "submit",
+      "role": null,
+      "name": "Play\n▾",
+      "href": null,
+      "disabled": false,
+      "visible": true,
+      "width": 72.27,
+      "height": 44,
+      "rawWidth": 72.27,
+      "rawHeight": 44,
+      "targetIncludesAssociatedLabel": false,
+      "inline": false,
+      "value": ""
+    },
+    {
+      "index": 2,
+      "tag": "button",
+      "type": "submit",
+      "role": null,
+      "name": "Fantasy\n▾",
+      "href": null,
+      "disabled": false,
+      "visible": true,
+      "width": 97.98,
+      "height": 44,
+      "rawWidth": 97.98,
+      "rawHeight": 44,
+      "targetIncludesAssociatedLabel": false,
+      "inline": false,
+      "value": ""
+    },
+    {
+      "index": 3,
+      "tag": "button",
+      "type": "submit",
+      "role": null,
+      "name": "Daily",
+      "href": null,
+      "disabled": false,
+      "visible": true,
+      "width": 59.36,
+      "height": 44,
+      "rawWidth": 59.36,
+      "rawHeight": 44,
+      "targetIncludesAssociatedLabel": false,
+      "inline": false,
+      "value": ""
+    },
+    {
+      "index": 4,
+      "tag": "button",
+      "type": "submit",
+      "role": null,
+      "name": "Challenges",
+      "href": null,
+      "disabled": false,
+      "visible": true,
+      "width": 100.42,
+      "height": 44,
+      "rawWidth": 100.42,
+      "rawHeight": 44,
+      "targetIncludesAssociatedLabel": false,
+      "inline": false,
+      "value": ""
+    },
+    {
+      "index": 5,
+      "tag": "button",
+      "type": "submit",
+      "role": null,
+      "name": "Leaderboard",
+      "href": null,
+      "disabled": false,
+      "visible": true,
+      "width": 110.95,
+      "height": 44,
+      "rawWidth": 110.95,
+      "rawHeight": 44,
+      "targetIncludesAssociatedLabel": false,
+      "inline": false,
+      "value": ""
+    },
+    {
+      "index": 6,
+      "tag": "button",
+      "type": "submit",
+      "role": null,
+      "name": "My EraClash",
+      "href": null,
+      "disabled": false,
+      "visible": true,
+      "width": 108.8,
+      "height": 44,
+      "rawWidth": 108.8,
+      "rawHeight": 44,
+      "targetIncludesAssociatedLabel": false,
+      "inline": false,
+      "value": ""
+    },
+    {
+      "index": 7,
+      "tag": "button",
+      "type": "submit",
+      "role": null,
+      "name": "Create free account",
+      "href": null,
+      "disabled": false,
+      "visible": true,
+      "width": 164.72,
+      "height": 44,
+      "rawWidth": 164.72,
+      "rawHeight": 44,
+      "targetIncludesAssociatedLabel": false,
+      "inline": false,
+      "value": ""
+    },
+    {
+      "index": 10,
+      "tag": "button",
+      "type": "submit",
+      "role": null,
+      "name": "ROLL\n🎲",
+      "href": null,
+      "disabled": false,
+      "visible": true,
+      "width": 352,
+      "height": 52,
+      "rawWidth": 352,
+      "rawHeight": 52,
+      "targetIncludesAssociatedLabel": false,
+      "inline": false,
+      "value": ""
+    },
+    {
+      "index": 11,
+      "tag": "button",
+      "type": "submit",
+      "role": null,
+      "name": "📖HOW TO PLAY",
+      "href": null,
+      "disabled": false,
+      "visible": true,
+      "width": 128.64,
+      "height": 44,
+      "rawWidth": 128.64,
+      "rawHeight": 44,
+      "targetIncludesAssociatedLabel": false,
+      "inline": false,
+      "value": ""
+    },
+    {
+      "index": 12,
+      "tag": "button",
+      "type": "submit",
+      "role": null,
+      "name": "🛡STRATEGY GUIDE",
+      "href": null,
+      "disabled": false,
+      "visible": true,
+      "width": 151.08,
+      "height": 44,
+      "rawWidth": 151.08,
+      "rawHeight": 44,
+      "targetIncludesAssociatedLabel": false,
+      "inline": false,
+      "value": ""
+    },
+    {
+      "index": 13,
+      "tag": "button",
+      "type": "submit",
+      "role": null,
+      "name": "🔤GLOSSARY",
+      "href": null,
+      "disabled": false,
+      "visible": true,
+      "width": 109.23,
+      "height": 44,
+      "rawWidth": 109.23,
+      "rawHeight": 44,
+      "targetIncludesAssociatedLabel": false,
+      "inline": false,
+      "value": ""
+    },
+    {
+      "index": 14,
+      "tag": "button",
+      "type": "submit",
+      "role": null,
+      "name": "✎FEEDBACK",
+      "href": null,
+      "disabled": false,
+      "visible": true,
+      "width": 103.5,
+      "height": 44,
+      "rawWidth": 103.5,
+      "rawHeight": 44,
+      "targetIncludesAssociatedLabel": false,
+      "inline": false,
+      "value": ""
+    },
+    {
+      "index": 15,
+      "tag": "button",
+      "type": "submit",
+      "role": null,
+      "name": "⚙SETTINGS",
+      "href": null,
+      "disabled": false,
+      "visible": true,
+      "width": 96.78,
+      "height": 44,
+      "rawWidth": 96.78,
+      "rawHeight": 44,
+      "targetIncludesAssociatedLabel": false,
+      "inline": false,
+      "value": ""
+    },
+    {
+      "index": 16,
+      "tag": "button",
+      "type": "button",
+      "role": null,
+      "name": "HOW IT WORKS",
+      "href": null,
+      "disabled": false,
+      "visible": true,
+      "width": 336,
+      "height": 44,
+      "rawWidth": 336,
+      "rawHeight": 44,
+      "targetIncludesAssociatedLabel": false,
+      "inline": false,
+      "value": ""
+    },
+    {
+      "index": 17,
+      "tag": "a",
+      "type": null,
+      "role": null,
+      "name": "All modes",
+      "href": "/clash/modes",
+      "disabled": false,
+      "visible": true,
+      "width": 87.28,
+      "height": 56.8,
+      "rawWidth": 87.28,
+      "rawHeight": 56.8,
+      "targetIncludesAssociatedLabel": false,
+      "inline": false,
+      "value": ""
+    },
+    {
+      "index": 18,
+      "tag": "a",
+      "type": null,
+      "role": null,
+      "name": "Private rooms",
+      "href": "/clash/rooms",
+      "disabled": false,
+      "visible": true,
+      "width": 115.73,
+      "height": 56.8,
+      "rawWidth": 115.73,
+      "rawHeight": 56.8,
+      "targetIncludesAssociatedLabel": false,
+      "inline": false,
+      "value": ""
+    },
+    {
+      "index": 19,
+      "tag": "a",
+      "type": null,
+      "role": null,
+      "name": "Privacy",
+      "href": "/privacy",
+      "disabled": false,
+      "visible": true,
+      "width": 68.86,
+      "height": 56.8,
+      "rawWidth": 68.86,
+      "rawHeight": 56.8,
+      "targetIncludesAssociatedLabel": false,
+      "inline": false,
+      "value": ""
+    },
+    {
+      "index": 20,
+      "tag": "a",
+      "type": null,
+      "role": null,
+      "name": "Terms",
+      "href": "/terms",
+      "disabled": false,
+      "visible": true,
+      "width": 60.7,
+      "height": 56.8,
+      "rawWidth": 60.7,
+      "rawHeight": 56.8,
+      "targetIncludesAssociatedLabel": false,
+      "inline": false,
+      "value": ""
+    },
+    {
+      "index": 21,
+      "tag": "a",
+      "type": null,
+      "role": null,
+      "name": "Founding Player",
+      "href": "/support",
+      "disabled": false,
+      "visible": true,
+      "width": 132.3,
+      "height": 56.8,
+      "rawWidth": 132.3,
+      "rawHeight": 56.8,
+      "targetIncludesAssociatedLabel": false,
+      "inline": false,
+      "value": ""
+    },
+    {
+      "index": 22,
+      "tag": "button",
+      "type": "submit",
+      "role": null,
+      "name": "Image credits",
+      "href": null,
+      "disabled": false,
+      "visible": true,
+      "width": 84.27,
+      "height": 44,
+      "rawWidth": 84.27,
+      "rawHeight": 44,
+      "targetIncludesAssociatedLabel": false,
+      "inline": false,
+      "value": ""
+    }
+  ],
+  "smallTargets": [],
+  "authGate": false,
+  "availability": "RENDERED",
+  "axe": {
+    "version": "4.13.0",
+    "violations": [],
+    "incomplete": [
+      {
+        "id": "aria-prohibited-attr",
+        "impact": "serious",
+        "description": "Ensure ARIA attributes are not prohibited for an element's role",
+        "help": "Elements must only use permitted ARIA attributes",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-prohibited-attr?application=axeAPI",
+        "nodes": [
+          {
+            "target": [
+              "div[aria-label=\"Empty PG slot, Team Gold\"]"
+            ],
+            "html": "<div class=\"ec-pc-empty\" data-slot=\"PG\" data-team=\"gold\" aria-label=\"Empty PG slot, Team Gold\"><div class=\"ec-pc-empty-slot\">PG</div><div class=\"ec-pc-empty-mark\" aria-hidden=\"true\">EC</div><div class=\"ec-pc-empty-hint\">ROLL TO<br>REVEAL</div></div>",
+            "failureSummary": "Fix all of the following:\n  aria-label attribute is not well supported on a div with no valid role attribute."
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty SG slot, Team Gold\"]"
+            ],
+            "html": "<div class=\"ec-pc-empty\" data-slot=\"SG\" data-team=\"gold\" aria-label=\"Empty SG slot, Team Gold\"><div class=\"ec-pc-empty-slot\">SG</div><div class=\"ec-pc-empty-mark\" aria-hidden=\"true\">EC</div><div class=\"ec-pc-empty-hint\">ROLL TO<br>REVEAL</div></div>",
+            "failureSummary": "Fix all of the following:\n  aria-label attribute is not well supported on a div with no valid role attribute."
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty SF slot, Team Gold\"]"
+            ],
+            "html": "<div class=\"ec-pc-empty\" data-slot=\"SF\" data-team=\"gold\" aria-label=\"Empty SF slot, Team Gold\"><div class=\"ec-pc-empty-slot\">SF</div><div class=\"ec-pc-empty-mark\" aria-hidden=\"true\">EC</div><div class=\"ec-pc-empty-hint\">ROLL TO<br>REVEAL</div></div>",
+            "failureSummary": "Fix all of the following:\n  aria-label attribute is not well supported on a div with no valid role attribute."
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty PF slot, Team Gold\"]"
+            ],
+            "html": "<div class=\"ec-pc-empty\" data-slot=\"PF\" data-team=\"gold\" aria-label=\"Empty PF slot, Team Gold\"><div class=\"ec-pc-empty-slot\">PF</div><div class=\"ec-pc-empty-mark\" aria-hidden=\"true\">EC</div><div class=\"ec-pc-empty-hint\">ROLL TO<br>REVEAL</div></div>",
+            "failureSummary": "Fix all of the following:\n  aria-label attribute is not well supported on a div with no valid role attribute."
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty C slot, Team Gold\"]"
+            ],
+            "html": "<div class=\"ec-pc-empty\" data-slot=\"C\" data-team=\"gold\" aria-label=\"Empty C slot, Team Gold\"><div class=\"ec-pc-empty-slot\">C</div><div class=\"ec-pc-empty-mark\" aria-hidden=\"true\">EC</div><div class=\"ec-pc-empty-hint\">ROLL TO<br>REVEAL</div></div>",
+            "failureSummary": "Fix all of the following:\n  aria-label attribute is not well supported on a div with no valid role attribute."
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty PG slot, Team Blue\"]"
+            ],
+            "html": "<div class=\"ec-pc-empty\" data-slot=\"PG\" data-team=\"blue\" aria-label=\"Empty PG slot, Team Blue\"><div class=\"ec-pc-empty-slot\">PG</div><div class=\"ec-pc-empty-mark\" aria-hidden=\"true\">EC</div><div class=\"ec-pc-empty-hint\">ROLL TO<br>REVEAL</div></div>",
+            "failureSummary": "Fix all of the following:\n  aria-label attribute is not well supported on a div with no valid role attribute."
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty SG slot, Team Blue\"]"
+            ],
+            "html": "<div class=\"ec-pc-empty\" data-slot=\"SG\" data-team=\"blue\" aria-label=\"Empty SG slot, Team Blue\"><div class=\"ec-pc-empty-slot\">SG</div><div class=\"ec-pc-empty-mark\" aria-hidden=\"true\">EC</div><div class=\"ec-pc-empty-hint\">ROLL TO<br>REVEAL</div></div>",
+            "failureSummary": "Fix all of the following:\n  aria-label attribute is not well supported on a div with no valid role attribute."
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty SF slot, Team Blue\"]"
+            ],
+            "html": "<div class=\"ec-pc-empty\" data-slot=\"SF\" data-team=\"blue\" aria-label=\"Empty SF slot, Team Blue\"><div class=\"ec-pc-empty-slot\">SF</div><div class=\"ec-pc-empty-mark\" aria-hidden=\"true\">EC</div><div class=\"ec-pc-empty-hint\">ROLL TO<br>REVEAL</div></div>",
+            "failureSummary": "Fix all of the following:\n  aria-label attribute is not well supported on a div with no valid role attribute."
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty PF slot, Team Blue\"]"
+            ],
+            "html": "<div class=\"ec-pc-empty\" data-slot=\"PF\" data-team=\"blue\" aria-label=\"Empty PF slot, Team Blue\"><div class=\"ec-pc-empty-slot\">PF</div><div class=\"ec-pc-empty-mark\" aria-hidden=\"true\">EC</div><div class=\"ec-pc-empty-hint\">ROLL TO<br>REVEAL</div></div>",
+            "failureSummary": "Fix all of the following:\n  aria-label attribute is not well supported on a div with no valid role attribute."
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty C slot, Team Blue\"]"
+            ],
+            "html": "<div class=\"ec-pc-empty\" data-slot=\"C\" data-team=\"blue\" aria-label=\"Empty C slot, Team Blue\"><div class=\"ec-pc-empty-slot\">C</div><div class=\"ec-pc-empty-mark\" aria-hidden=\"true\">EC</div><div class=\"ec-pc-empty-hint\">ROLL TO<br>REVEAL</div></div>",
+            "failureSummary": "Fix all of the following:\n  aria-label attribute is not well supported on a div with no valid role attribute."
+          }
+        ]
+      },
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+        "nodes": [
+          {
+            "target": [
+              "button[data-active=\"true\"] > span"
+            ],
+            "html": "<span aria-hidden=\"true\" style=\"font-size: 10px; opacity: 0.8;\">▾</span>",
+            "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+          },
+          {
+            "target": [
+              "button[data-browser-audit-control=\"2\"] > span"
+            ],
+            "html": "<span aria-hidden=\"true\" style=\"font-size: 10px; opacity: 0.8;\">▾</span>",
+            "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+          },
+          {
+            "target": [
+              ".ec-ta-team-label:nth-child(1) > .ec-ta-team-name"
+            ],
+            "html": "<div class=\"ec-ta-team-name\" style=\"color: var(--ec-a-gold);\">TEAM GOLD</div>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+          },
+          {
+            "target": [
+              ".ec-ta-team-label:nth-child(1) > .ec-ta-team-sub"
+            ],
+            "html": "<div class=\"ec-ta-team-sub\">YOUR FIVE</div>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+          },
+          {
+            "target": [
+              "h1"
+            ],
+            "html": "<h1 class=\"ec-ta-title-main\">CHAOS CLASH</h1>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+          },
+          {
+            "target": [
+              ".ec-ta-title-sub"
+            ],
+            "html": "<div class=\"ec-ta-title-sub\">ROLL 1 OF 3</div>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+          },
+          {
+            "target": [
+              "div[data-state=\"ACTIVE\"] > .ec-ta-step-dot"
+            ],
+            "html": "<div class=\"ec-ta-step-dot\">1</div>",
+            "failureSummary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+          },
+          {
+            "target": [
+              "div[data-state=\"ACTIVE\"] > .ec-ta-step-label"
+            ],
+            "html": "<div class=\"ec-ta-step-label\">ROLL 1</div>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+          },
+          {
+            "target": [
+              "div[aria-label=\"Roll 2, roll 2 — up next\"] > .ec-ta-step-label"
+            ],
+            "html": "<div class=\"ec-ta-step-label\">ROLL 2</div>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+          },
+          {
+            "target": [
+              "div[aria-label=\"Roll 3, final roll — up next\"] > .ec-ta-step-label"
+            ],
+            "html": "<div class=\"ec-ta-step-label\">FINAL ROLL</div>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+          },
+          {
+            "target": [
+              ".ec-ta-team-label--blue > .ec-ta-team-name"
+            ],
+            "html": "<div class=\"ec-ta-team-name\" style=\"color: var(--ec-a-blue);\">TEAM BLUE</div>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+          },
+          {
+            "target": [
+              ".ec-ta-team-label--blue > .ec-ta-team-sub"
+            ],
+            "html": "<div class=\"ec-ta-team-sub\">LEGEND RIVAL</div>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty PG slot, Team Gold\"] > .ec-pc-empty-slot"
+            ],
+            "html": "<div class=\"ec-pc-empty-slot\">PG</div>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty PG slot, Team Gold\"] > .ec-pc-empty-mark[aria-hidden=\"true\"]"
+            ],
+            "html": "<div class=\"ec-pc-empty-mark\" aria-hidden=\"true\">EC</div>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty PG slot, Team Gold\"] > .ec-pc-empty-hint"
+            ],
+            "html": "<div class=\"ec-pc-empty-hint\">ROLL TO<br>REVEAL</div>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty SG slot, Team Gold\"] > .ec-pc-empty-slot"
+            ],
+            "html": "<div class=\"ec-pc-empty-slot\">SG</div>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty SG slot, Team Gold\"] > .ec-pc-empty-mark[aria-hidden=\"true\"]"
+            ],
+            "html": "<div class=\"ec-pc-empty-mark\" aria-hidden=\"true\">EC</div>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty SG slot, Team Gold\"] > .ec-pc-empty-hint"
+            ],
+            "html": "<div class=\"ec-pc-empty-hint\">ROLL TO<br>REVEAL</div>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty SF slot, Team Gold\"] > .ec-pc-empty-slot"
+            ],
+            "html": "<div class=\"ec-pc-empty-slot\">SF</div>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty SF slot, Team Gold\"] > .ec-pc-empty-mark[aria-hidden=\"true\"]"
+            ],
+            "html": "<div class=\"ec-pc-empty-mark\" aria-hidden=\"true\">EC</div>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty SF slot, Team Gold\"] > .ec-pc-empty-hint"
+            ],
+            "html": "<div class=\"ec-pc-empty-hint\">ROLL TO<br>REVEAL</div>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty PF slot, Team Gold\"] > .ec-pc-empty-slot"
+            ],
+            "html": "<div class=\"ec-pc-empty-slot\">PF</div>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty PF slot, Team Gold\"] > .ec-pc-empty-mark[aria-hidden=\"true\"]"
+            ],
+            "html": "<div class=\"ec-pc-empty-mark\" aria-hidden=\"true\">EC</div>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty PF slot, Team Gold\"] > .ec-pc-empty-hint"
+            ],
+            "html": "<div class=\"ec-pc-empty-hint\">ROLL TO<br>REVEAL</div>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty C slot, Team Gold\"] > .ec-pc-empty-slot"
+            ],
+            "html": "<div class=\"ec-pc-empty-slot\">C</div>",
+            "failureSummary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty C slot, Team Gold\"] > .ec-pc-empty-mark[aria-hidden=\"true\"]"
+            ],
+            "html": "<div class=\"ec-pc-empty-mark\" aria-hidden=\"true\">EC</div>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty C slot, Team Gold\"] > .ec-pc-empty-hint"
+            ],
+            "html": "<div class=\"ec-pc-empty-hint\">ROLL TO<br>REVEAL</div>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty PG slot, Team Blue\"] > .ec-pc-empty-slot"
+            ],
+            "html": "<div class=\"ec-pc-empty-slot\">PG</div>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty PG slot, Team Blue\"] > .ec-pc-empty-mark[aria-hidden=\"true\"]"
+            ],
+            "html": "<div class=\"ec-pc-empty-mark\" aria-hidden=\"true\">EC</div>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty PG slot, Team Blue\"] > .ec-pc-empty-hint"
+            ],
+            "html": "<div class=\"ec-pc-empty-hint\">ROLL TO<br>REVEAL</div>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty SG slot, Team Blue\"] > .ec-pc-empty-slot"
+            ],
+            "html": "<div class=\"ec-pc-empty-slot\">SG</div>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty SG slot, Team Blue\"] > .ec-pc-empty-mark[aria-hidden=\"true\"]"
+            ],
+            "html": "<div class=\"ec-pc-empty-mark\" aria-hidden=\"true\">EC</div>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty SG slot, Team Blue\"] > .ec-pc-empty-hint"
+            ],
+            "html": "<div class=\"ec-pc-empty-hint\">ROLL TO<br>REVEAL</div>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty SF slot, Team Blue\"] > .ec-pc-empty-slot"
+            ],
+            "html": "<div class=\"ec-pc-empty-slot\">SF</div>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty SF slot, Team Blue\"] > .ec-pc-empty-mark[aria-hidden=\"true\"]"
+            ],
+            "html": "<div class=\"ec-pc-empty-mark\" aria-hidden=\"true\">EC</div>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty SF slot, Team Blue\"] > .ec-pc-empty-hint"
+            ],
+            "html": "<div class=\"ec-pc-empty-hint\">ROLL TO<br>REVEAL</div>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty PF slot, Team Blue\"] > .ec-pc-empty-slot"
+            ],
+            "html": "<div class=\"ec-pc-empty-slot\">PF</div>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty PF slot, Team Blue\"] > .ec-pc-empty-mark[aria-hidden=\"true\"]"
+            ],
+            "html": "<div class=\"ec-pc-empty-mark\" aria-hidden=\"true\">EC</div>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty PF slot, Team Blue\"] > .ec-pc-empty-hint"
+            ],
+            "html": "<div class=\"ec-pc-empty-hint\">ROLL TO<br>REVEAL</div>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty C slot, Team Blue\"] > .ec-pc-empty-slot"
+            ],
+            "html": "<div class=\"ec-pc-empty-slot\">C</div>",
+            "failureSummary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty C slot, Team Blue\"] > .ec-pc-empty-mark[aria-hidden=\"true\"]"
+            ],
+            "html": "<div class=\"ec-pc-empty-mark\" aria-hidden=\"true\">EC</div>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty C slot, Team Blue\"] > .ec-pc-empty-hint"
+            ],
+            "html": "<div class=\"ec-pc-empty-hint\">ROLL TO<br>REVEAL</div>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+          },
+          {
+            "target": [
+              ".ec-ta-cta"
+            ],
+            "html": "<button class=\"ec-ta-cta\" aria-describedby=\"ec-ta-cta-sub\" data-browser-audit-control=\"10\">ROLL<span aria-hidden=\"true\"> 🎲</span></button>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+          },
+          {
+            "target": [
+              "#ec-ta-cta-sub"
+            ],
+            "html": "<div id=\"ec-ta-cta-sub\" class=\"ec-ta-cta-sub\">ROLL 1 OF 3 · Three rolls. Hold the legends you want. New players are offered each roll.</div>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+          },
+          {
+            "target": [
+              "button[data-browser-audit-control=\"14\"] > span"
+            ],
+            "html": "<span aria-hidden=\"true\" style=\"margin-right: 5px;\">✎</span>",
+            "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+          },
+          {
+            "target": [
+              "footer"
+            ],
+            "html": "<footer style=\"text-align: center; padding: 20px; font-size: 10.5px; color: var(--ec-t-text-dim, #5a6577); border-top: 1px solid var(--ec-t-border, #d9dee7);\">",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+          }
+        ]
+      }
+    ],
+    "passedRules": 43,
+    "critical": 0,
+    "serious": 0
+  },
+  "screenshot": "screenshots/desktop--dev-basketball-theme-lab.png",
+  "interactions": [
+    {
+      "status": "UNVERIFIED",
+      "reason": "Control probes skipped on the owner-only development surface. Its public response/fallback is not an enabled public gameplay journey."
+    }
+  ],
+  "status": "PARTIAL",
+  "errors": [],
+  "consoleErrors": [],
+  "failedResponses": [],
+  "failedRequests": [],
+  "endedAt": "2026-10-02T13:19:14.855Z"
+}

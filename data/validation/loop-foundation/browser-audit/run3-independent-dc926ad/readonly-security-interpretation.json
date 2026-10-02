@@ -1,0 +1,21 @@
+{
+  "recordedAt": "2026-10-02T13:32:55.373520+00:00",
+  "status": "PASS",
+  "checks": {
+    "actual_http_200": true,
+    "private_top_fields_absent": true,
+    "scenario_absent": true,
+    "mode_preserved": true,
+    "record_identity_present": true,
+    "score_preserved": true
+  },
+  "rawReport": "readonly-security-reverify.json",
+  "rawSHA256": "c4f83f89815f38368b11385aab3695c00335e135bffdf12255bf4904289f572f",
+  "interpretation": "Current-source full-result GET contract strips session, seed and owner-entered Lab scenario; candidate and fingerprint remain accepted full-result fields (api/game.js:59-78; tests/loop-sharing.test.js:28-49). The initial collector used an incorrect query parameter, then the recheck imposed an unsupported fingerprint-absence condition. Those raw collector failures remain preserved and do not establish a product privacy defect. Public recap GET is separately allowlisted and its no-fingerprint assertion passed in both fresh sharing runs.",
+  "securitySummary": {
+    "servedHeaderResponses": 7,
+    "matchedScannedServedAssets": 43,
+    "recognizableSecretFindings": 0,
+    "provider": "UNVERIFIED"
+  }
+}

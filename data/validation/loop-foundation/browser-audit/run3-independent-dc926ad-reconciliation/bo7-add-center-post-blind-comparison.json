@@ -1,0 +1,119 @@
+{
+  "recordedAt": "2026-10-02T14:08:43.106372+00:00",
+  "phase": "POST_BLIND_COMPARISON",
+  "ownFreezeAt": "2026-10-02T13:54:55.892393+00:00",
+  "priorArtifact": "/Users/josephjohnson/Desktop/EraClash/EraClash Basketball/current/data/validation/loop-foundation/browser-audit/run2-final-27630a1-focused/report.json.gz",
+  "priorCompressedSHA256": "22563653ddf67ce16385fadbcbf009cd59496cc45b13a560a327f5ac773bc396",
+  "prior": {
+    "sourceSHA": "27630a151c1c9e89c4a85a271f2b88a3173714fe",
+    "rawRouteStatus": "FAIL",
+    "initialAxe": {
+      "critical": 0,
+      "serious": 0
+    },
+    "AddCenter": [
+      {
+        "index": 16,
+        "actionStatus": "PASS",
+        "serious": 1,
+        "critical": 0,
+        "violations": [
+          {
+            "id": "target-size",
+            "impact": "serious",
+            "nodes": [
+              {
+                "target": [
+                  "button[data-browser-audit-control=\"11\"]"
+                ],
+                "html": "<button aria-label=\"Add a player to Team...\" data-browser-audit-c...=\"11\" style=\"width: 100%; margin-...\">",
+                "failureSummary": "Fix any of the following:\n  Target has insufficient size because it is partially obscured (smallest space is 324px by 16.9px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 23.8px instead of at least 24px."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 24,
+        "actionStatus": "PASS",
+        "serious": 0,
+        "critical": 0,
+        "violations": []
+      }
+    ]
+  },
+  "current": {
+    "sourceSHA": "dc926adaeebd573f435263265f4251f1814cc0a5",
+    "rawRouteStatus": "FAIL",
+    "initialAxe": {
+      "critical": 0,
+      "serious": 0
+    },
+    "AddCenter": [
+      {
+        "index": 16,
+        "actionStatus": "PASS",
+        "serious": 1,
+        "critical": 0,
+        "violations": [
+          {
+            "id": "target-size",
+            "impact": "serious",
+            "nodes": [
+              {
+                "target": [
+                  "button[data-browser-audit-control=\"11\"]"
+                ],
+                "html": "<button aria-label=\"Add a player to Team...\" data-browser-audit-c...=\"11\" style=\"width: 100%; margin-...\">",
+                "failureSummary": "Fix any of the following:\n  Target has insufficient size because it is partially obscured (smallest space is 324px by 16.9px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 23.8px instead of at least 24px."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 24,
+        "actionStatus": "PASS",
+        "serious": 1,
+        "critical": 0,
+        "violations": [
+          {
+            "id": "target-size",
+            "impact": "serious",
+            "nodes": [
+              {
+                "target": [
+                  "button[data-browser-audit-control=\"17\"]"
+                ],
+                "html": "<button data-browser-audit-control=\"17\" style=\"flex: 1 1 0%; padding: 8px 10px; font-size: 12px; font-weight: 800; border-radius: 8px; cursor: pointer; min-height: 44px; border: 1px solid var(--ec-t-border, #d9dee7); background: transparent; color: var(--ec-t-text-dim, #5a6577);\">",
+                "failureSummary": "Fix any of the following:\n  Target has insufficient size because it is partially obscured (smallest space is 118.9px by 9.1px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 16px instead of at least 24px."
+              },
+              {
+                "target": [
+                  "button[data-browser-audit-control=\"18\"]"
+                ],
+                "html": "<button data-browser-audit-c...=\"18\" style=\"flex: 1 1 0%; paddin...\">",
+                "failureSummary": "Fix any of the following:\n  Target has insufficient size because it is partially obscured (smallest space is 118.9px by 9.1px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 16px instead of at least 24px."
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "toolsEqual": true,
+  "priorTools": {
+    "axeVersion": "4.13.0",
+    "playwrightVersion": "1.62.1",
+    "browserVersion": "154.0.8037.95"
+  },
+  "currentTools": {
+    "axeVersion": "4.13.0",
+    "playwrightVersion": "1.62.1",
+    "browserVersion": "154.0.8037.95"
+  },
+  "profileEqual": true,
+  "runnerSHAEqual": true,
+  "classification": "RETAINED_ROUTE_FAILURE_PLUS_COMPARABLE_AFTER_CONTROL_WARNING_REGRESSION",
+  "interpretation": "Earlier iPhone14 BO7 route was already FAIL. Index16 Add Center repeats the same serious partially clipped target. Index24 Add Center was action PASS with zero serious axe warnings in the prior report; it is action PASS with one serious target-size warning now. This is a comparable observed after-control accessibility deterioration under equal runner/tool/profile settings, not a new route PASS\u2192FAIL. The source cause is not established; preserve the raw changed state and avoid any blanket claim that nothing previously passed now fails."
+}

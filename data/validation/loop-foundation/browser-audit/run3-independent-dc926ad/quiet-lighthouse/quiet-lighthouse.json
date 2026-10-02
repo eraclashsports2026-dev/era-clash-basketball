@@ -1,0 +1,1124 @@
+{
+  "label": "run3-independent-dc926ad",
+  "scope": "Quiet independent Run3 mobile Lighthouse: local production-build client plus actual handlers and memory store; fresh actual guest result. No hosted provider, SMTP, RLS or physical-device acceptance.",
+  "startedAt": "2026-10-02T13:06:27.546Z",
+  "origin": "http://localhost:4320",
+  "executionCheckout": "/private/tmp/eraclash-run3-final-20261002",
+  "sourceSHA": "dc926adaeebd573f435263265f4251f1814cc0a5",
+  "runnerSHA256": "0c9e0679ce795e48f10c45c1341873b64103a9cbaadfcaf3b82ca7dd30f7eec8",
+  "productionBuildStamp": "eraclash-assets:2.7.2:2550ae9eb17f",
+  "fixtureBuildStamp": "eraclash-assets:2.7.2:41957b5894a1",
+  "checks": [
+    {
+      "name": "Fresh actual guest result and public card created",
+      "status": "PASS"
+    }
+  ],
+  "errors": [],
+  "targets": [
+    {
+      "name": "home",
+      "path": "/",
+      "startedAt": "2026-10-02T13:06:37.190Z",
+      "endedAt": "2026-10-02T13:06:43.912Z",
+      "status": "UNVERIFIED",
+      "scores": {
+        "performance": 0,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 92
+      },
+      "finalURL": "http://localhost:4320/",
+      "lighthouseVersion": "13.5.0",
+      "throttlingMethod": "simulate",
+      "formFactor": "mobile",
+      "runtimeError": {
+        "code": "NO_NAVSTART",
+        "message": "Something went wrong with recording the trace over your page load. Please run Lighthouse again. (NO_NAVSTART)",
+        "errorStack": "LighthouseError: NO_NAVSTART\n    at LHTraceProcessor.createNoNavstartError (file:///private/tmp/eraclash-browser-audit-tools/node_modules/lighthouse/core/lib/lh-trace-processor.js:17:12)\n    at LHTraceProcessor.computeTimeOrigin (file:///private/tmp/eraclash-browser-audit-tools/node_modules/lighthouse/core/lib/tracehouse/trace-processor.js:1007:33)\n    at LHTraceProcessor.processTrace (file:///private/tmp/eraclash-browser-audit-tools/node_modules/lighthouse/core/lib/tracehouse/trace-processor.js:824:32)\n    at ProcessedTrace.compute_ (file:///private/tmp/eraclash-browser-audit-tools/node_modules/lighthouse/core/computed/processed-trace.js:16:29)\n    at ProcessedTrace.request (file:///private/tmp/eraclash-browser-audit-tools/node_modules/lighthouse/core/computed/computed-artifact.js:72:29)\n    at TraceEngineResult.compute_ (file:///private/tmp/eraclash-browser-audit-tools/node_modules/lighthouse/core/computed/trace-engine-result.js:235:49)\n    at TraceEngineResult.request (file:///private/tmp/eraclash-browser-audit-tools/node_modules/lighthouse/core/computed/computed-artifact.js:72:29)\n    at TraceElements.getArtifact (file:///private/tmp/eraclash-browser-audit-tools/node_modules/lighthouse/core/gather/gatherers/trace-elements.js:330:31)\n    at file:///private/tmp/eraclash-browser-audit-tools/node_modules/lighthouse/core/gather/runner-helpers.js:106:45\n    at async collectPhaseArtifacts (file:///private/tmp/eraclash-browser-audit-tools/node_modules/lighthouse/core/gather/runner-helpers.js:123:5)",
+        "artifactKey": "TraceElements"
+      },
+      "warnings": [],
+      "rawJSONSHA256": "8485b4e72862992016edf1548923a639bc107d956d05e30041b87e952c3463a2",
+      "rawHTMLSHA256": "a36c1abfff2d97a03d889383602aff98b18afb890594eee9a7fad9da0850acb3",
+      "lcpDetails": null,
+      "diagnosticAudits": {
+        "mainthread-work-breakdown": {
+          "title": "Minimizes main-thread work"
+        },
+        "bootup-time": {
+          "title": "JavaScript execution time"
+        },
+        "long-tasks": {
+          "title": "Avoid long main-thread tasks"
+        },
+        "image-redundant-alt": {
+          "title": "Image elements do not have `[alt]` attributes that are redundant text."
+        },
+        "input-image-alt": {
+          "title": "`<input type=\"image\">` elements have `[alt]` text"
+        },
+        "unused-css-rules": {
+          "title": "Reduce unused CSS"
+        },
+        "unused-javascript": {
+          "title": "Reduce unused JavaScript"
+        },
+        "cache-insight": {
+          "title": "Use efficient cache lifetimes"
+        },
+        "dom-size-insight": {
+          "title": "Optimize DOM size"
+        },
+        "font-display-insight": {
+          "title": "Font display"
+        },
+        "image-delivery-insight": {
+          "title": "Improve image delivery"
+        },
+        "lcp-breakdown-insight": {
+          "title": "LCP breakdown"
+        },
+        "lcp-discovery-insight": {
+          "title": "LCP request discovery"
+        },
+        "network-dependency-tree-insight": {
+          "title": "Network dependency tree"
+        },
+        "render-blocking-insight": {
+          "title": "Render-blocking requests"
+        }
+      }
+    },
+    {
+      "name": "daily",
+      "path": "/clash/daily",
+      "startedAt": "2026-10-02T13:06:43.952Z",
+      "endedAt": "2026-10-02T13:06:50.687Z",
+      "status": "PARTIAL",
+      "scores": {
+        "performance": 91,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 92
+      },
+      "lcpMs": 3329.5477,
+      "finalURL": "http://localhost:4320/clash/daily",
+      "lighthouseVersion": "13.5.0",
+      "throttlingMethod": "simulate",
+      "formFactor": "mobile",
+      "runtimeError": null,
+      "warnings": [],
+      "rawJSONSHA256": "1afcb9f2cc92cdce4a693c0d2576b757f66285e93004724e151120130dd829d0",
+      "rawHTMLSHA256": "ef826cfb5fc345c4482b9edc9a667b570105e3a7f43f346673acfc6fc6e4a2d1",
+      "lcpDetails": null,
+      "diagnosticAudits": {
+        "image-redundant-alt": {
+          "title": "Image elements do not have `[alt]` attributes that are redundant text."
+        },
+        "input-image-alt": {
+          "title": "`<input type=\"image\">` elements have `[alt]` text"
+        },
+        "unused-css-rules": {
+          "title": "Reduce unused CSS",
+          "numericValue": 150,
+          "displayValue": "Est savings of 26 KiB",
+          "details": {
+            "type": "opportunity",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "label": "Est Savings"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://localhost:4320/assets/index-eSBgaXU3.css",
+                "wastedBytes": 26722,
+                "wastedPercent": 93.69357168652942,
+                "totalBytes": 28521
+              }
+            ],
+            "overallSavingsMs": 150,
+            "overallSavingsBytes": 26722,
+            "sortedBy": [
+              "wastedBytes"
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "metricSavings": {
+                "FCP": 150,
+                "LCP": 150
+              }
+            }
+          }
+        },
+        "unused-javascript": {
+          "title": "Reduce unused JavaScript",
+          "numericValue": 300,
+          "displayValue": "Est savings of 68 KiB",
+          "details": {
+            "type": "opportunity",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "subItemsHeading": {
+                  "key": "source",
+                  "valueType": "code"
+                },
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "subItemsHeading": {
+                  "key": "sourceBytes"
+                },
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "subItemsHeading": {
+                  "key": "sourceWastedBytes"
+                },
+                "label": "Est Savings"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://localhost:4320/assets/index-Dr5R-os1.js",
+                "totalBytes": 164509,
+                "wastedBytes": 69303,
+                "wastedPercent": 42.12702636710111
+              }
+            ],
+            "overallSavingsMs": 300,
+            "overallSavingsBytes": 69303,
+            "sortedBy": [
+              "wastedBytes"
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "metricSavings": {
+                "FCP": 300,
+                "LCP": 300
+              }
+            }
+          }
+        },
+        "cache-insight": {
+          "title": "Use efficient cache lifetimes",
+          "displayValue": "Est savings of 384 KiB",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "label": "Request"
+              },
+              {
+                "key": "cacheLifetimeMs",
+                "valueType": "ms",
+                "label": "Cache TTL",
+                "displayUnit": "duration"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "label": "Transfer Size",
+                "displayUnit": "kb",
+                "granularity": 1
+              }
+            ],
+            "items": [
+              {
+                "url": "http://localhost:4320/brand/eraclash-logo-mk1-lossless-bf9d137b.png",
+                "cacheLifetimeMs": 0,
+                "totalBytes": 197934,
+                "wastedBytes": 197934
+              },
+              {
+                "url": "http://localhost:4320/assets/index-Dr5R-os1.js",
+                "cacheLifetimeMs": 0,
+                "totalBytes": 165474,
+                "wastedBytes": 165474
+              },
+              {
+                "url": "http://localhost:4320/assets/index-eSBgaXU3.css",
+                "cacheLifetimeMs": 0,
+                "totalBytes": 29309,
+                "wastedBytes": 29309
+              }
+            ],
+            "sortedBy": [
+              "wastedBytes"
+            ],
+            "skipSumming": [
+              "cacheLifetimeMs"
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "wastedBytes": 392717
+            }
+          }
+        },
+        "image-delivery-insight": {
+          "title": "Improve image delivery",
+          "displayValue": "Est savings of 192 KiB",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "node",
+                "valueType": "node",
+                "label": ""
+              },
+              {
+                "key": "url",
+                "valueType": "url",
+                "label": "URL",
+                "subItemsHeading": {
+                  "key": "reason",
+                  "valueType": "text"
+                }
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "label": "Resource Size"
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "label": "Est Savings",
+                "subItemsHeading": {
+                  "key": "wastedBytes",
+                  "valueType": "bytes"
+                }
+              }
+            ],
+            "items": [
+              {
+                "node": {
+                  "type": "node",
+                  "lhId": "page-3-IMG",
+                  "path": "1,HTML,1,BODY,0,DIV,0,DIV,0,HEADER,0,DIV,1,BUTTON,0,IMG",
+                  "selector": "header.ec-brand-header > div.ec-brand-header-row > button.ec-brand-home > img.ec-brand-logo",
+                  "boundingRect": {
+                    "top": 14,
+                    "bottom": 42,
+                    "left": 171,
+                    "right": 241,
+                    "width": 70,
+                    "height": 28
+                  },
+                  "snippet": "<img class=\"ec-brand-logo\" src=\"http://localhost:4320/brand/eraclash-logo-mk1-lossless-bf9d137b.png\" srcset=\"/brand/eraclash-logo-mk1-lossless-bf9d137b.png\" alt=\"\" width=\"760\" height=\"304\" decoding=\"async\" data-brand-mark=\"eraclash-logo-mk1\">",
+                  "nodeLabel": "header.ec-brand-header > div.ec-brand-header-row > button.ec-brand-home > img.ec-brand-logo"
+                },
+                "url": "http://localhost:4320/brand/eraclash-logo-mk1-lossless-bf9d137b.png",
+                "totalBytes": 197189,
+                "wastedBytes": 196189,
+                "subItems": {
+                  "type": "subitems",
+                  "items": [
+                    {
+                      "reason": "Using a modern image format (WebP, AVIF) or increasing the image compression could improve this image's download size.",
+                      "wastedBytes": 158682
+                    },
+                    {
+                      "reason": "This image file is larger than it needs to be (760x304) for its displayed dimensions (123x49). Use responsive images to reduce the image download size.",
+                      "wastedBytes": 192066
+                    }
+                  ]
+                }
+              }
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "wastedBytes": 196189
+            }
+          }
+        },
+        "lcp-discovery-insight": {
+          "title": "LCP request discovery"
+        },
+        "network-dependency-tree-insight": {
+          "title": "Network dependency tree",
+          "details": {
+            "type": "list",
+            "items": [
+              {
+                "type": "list-section",
+                "value": {
+                  "type": "network-tree",
+                  "chains": {
+                    "8F3AAF812A163230243C3E517123413B": {
+                      "url": "http://localhost:4320/clash/daily",
+                      "navStartToEndTime": 14,
+                      "transferSize": 1651,
+                      "isLongest": true,
+                      "children": {
+                        "99120.3": {
+                          "url": "http://localhost:4320/assets/index-Dr5R-os1.js",
+                          "navStartToEndTime": 38,
+                          "transferSize": 165474,
+                          "isLongest": true,
+                          "children": {
+                            "99120.18": {
+                              "url": "http://localhost:4320/api/v3meta",
+                              "navStartToEndTime": 159,
+                              "transferSize": 19260,
+                              "isLongest": true,
+                              "children": {}
+                            },
+                            "99120.13": {
+                              "url": "http://localhost:4320/?buildcheck=1790946406037",
+                              "navStartToEndTime": 154,
+                              "transferSize": 1651,
+                              "children": {}
+                            },
+                            "99120.12": {
+                              "url": "http://localhost:4320/api/health",
+                              "navStartToEndTime": 146,
+                              "transferSize": 1093,
+                              "children": {}
+                            },
+                            "99120.11": {
+                              "url": "http://localhost:4320/api/game",
+                              "navStartToEndTime": 144,
+                              "transferSize": 5917,
+                              "children": {}
+                            }
+                          }
+                        },
+                        "99120.8": {
+                          "url": "http://localhost:4320/manifest.json",
+                          "navStartToEndTime": 35,
+                          "transferSize": 1194,
+                          "children": {}
+                        },
+                        "99120.4": {
+                          "url": "http://localhost:4320/assets/index-eSBgaXU3.css",
+                          "navStartToEndTime": 32,
+                          "transferSize": 29309,
+                          "children": {}
+                        }
+                      }
+                    }
+                  },
+                  "longestChain": {
+                    "duration": 159
+                  }
+                }
+              },
+              {
+                "type": "list-section",
+                "title": "Preconnected origins",
+                "description": "[preconnect](https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/) hints help the browser establish a connection earlier in the page load, saving time when the first request for that origin is made. The following are the origins that the page preconnected to.",
+                "value": {
+                  "type": "text",
+                  "value": "no origins were preconnected"
+                }
+              },
+              {
+                "type": "list-section",
+                "title": "Preconnect candidates",
+                "description": "Add [preconnect](https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/) hints to your most important origins, but try to use no more than 4.",
+                "value": {
+                  "type": "text",
+                  "value": "No additional origins are good candidates for preconnecting"
+                }
+              }
+            ]
+          }
+        },
+        "render-blocking-insight": {
+          "title": "Render-blocking requests",
+          "displayValue": "Est savings of 450 ms",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedMs",
+                "valueType": "timespanMs",
+                "label": "Duration"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://localhost:4320/assets/index-eSBgaXU3.css",
+                "totalBytes": 29309,
+                "wastedMs": 463
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "result",
+      "path": "/card/c7cbbc34e4ddcd6b",
+      "startedAt": "2026-10-02T13:06:50.731Z",
+      "endedAt": "2026-10-02T13:06:57.834Z",
+      "status": "PASS",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "lcpMs": 1121.6741499999998,
+      "finalURL": "http://localhost:4320/card/c7cbbc34e4ddcd6b",
+      "lighthouseVersion": "13.5.0",
+      "throttlingMethod": "simulate",
+      "formFactor": "mobile",
+      "runtimeError": null,
+      "warnings": [],
+      "rawJSONSHA256": "4e64a4bb75c19e9cf5afd8ba4a2873e815707ece8410ee98af43692e46261e54",
+      "rawHTMLSHA256": "a502d19b35ab4df4aac8ab94dfd2a3d6e334348b583fd8caf3ac44ff4c631dd3",
+      "lcpDetails": null,
+      "diagnosticAudits": {
+        "image-alt": {
+          "title": "Image elements have `[alt]` attributes"
+        },
+        "image-redundant-alt": {
+          "title": "Image elements do not have `[alt]` attributes that are redundant text."
+        },
+        "input-image-alt": {
+          "title": "`<input type=\"image\">` elements have `[alt]` text"
+        },
+        "cache-insight": {
+          "title": "Use efficient cache lifetimes",
+          "displayValue": "Est savings of 1 KiB",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "label": "Request"
+              },
+              {
+                "key": "cacheLifetimeMs",
+                "valueType": "ms",
+                "label": "Cache TTL",
+                "displayUnit": "duration"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "label": "Transfer Size",
+                "displayUnit": "kb",
+                "granularity": 1
+              }
+            ],
+            "items": [
+              {
+                "url": "http://localhost:4320/share-entry.js",
+                "cacheLifetimeMs": 0,
+                "totalBytes": 1462,
+                "wastedBytes": 1462
+              }
+            ],
+            "sortedBy": [
+              "wastedBytes"
+            ],
+            "skipSumming": [
+              "cacheLifetimeMs"
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "wastedBytes": 1462
+            }
+          }
+        },
+        "lcp-discovery-insight": {
+          "title": "LCP request discovery"
+        }
+      }
+    },
+    {
+      "name": "programmatic",
+      "path": "/clash/all-time/atlanta-vs-boston",
+      "startedAt": "2026-10-02T13:06:57.887Z",
+      "endedAt": "2026-10-02T13:07:04.452Z",
+      "status": "PASS",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "lcpMs": 1053.4365,
+      "finalURL": "http://localhost:4320/clash/all-time/atlanta-vs-boston",
+      "lighthouseVersion": "13.5.0",
+      "throttlingMethod": "simulate",
+      "formFactor": "mobile",
+      "runtimeError": null,
+      "warnings": [],
+      "rawJSONSHA256": "176389395578d0b4f1f7364696df0188a87aaf85f08e79e3cfbf9635045b30a9",
+      "rawHTMLSHA256": "f17f2006058d645d1f041f69cabf90c252d060d432d06c01a9e9a63c81f36114",
+      "lcpDetails": null,
+      "diagnosticAudits": {
+        "long-tasks": {
+          "title": "Avoid long main-thread tasks",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "label": "URL"
+              },
+              {
+                "key": "startTime",
+                "valueType": "ms",
+                "granularity": 1,
+                "label": "Start Time"
+              },
+              {
+                "key": "duration",
+                "valueType": "ms",
+                "granularity": 1,
+                "label": "Duration"
+              }
+            ],
+            "items": [],
+            "debugData": {
+              "type": "debugdata",
+              "urls": [],
+              "tasks": []
+            }
+          }
+        },
+        "image-alt": {
+          "title": "Image elements have `[alt]` attributes"
+        },
+        "image-redundant-alt": {
+          "title": "Image elements do not have `[alt]` attributes that are redundant text."
+        },
+        "input-image-alt": {
+          "title": "`<input type=\"image\">` elements have `[alt]` text"
+        },
+        "cache-insight": {
+          "title": "Use efficient cache lifetimes",
+          "displayValue": "Est savings of 1 KiB",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "label": "Request"
+              },
+              {
+                "key": "cacheLifetimeMs",
+                "valueType": "ms",
+                "label": "Cache TTL",
+                "displayUnit": "duration"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "label": "Transfer Size",
+                "displayUnit": "kb",
+                "granularity": 1
+              }
+            ],
+            "items": [
+              {
+                "url": "http://localhost:4320/share-entry.js",
+                "cacheLifetimeMs": 0,
+                "totalBytes": 1462,
+                "wastedBytes": 1462
+              }
+            ],
+            "sortedBy": [
+              "wastedBytes"
+            ],
+            "skipSumming": [
+              "cacheLifetimeMs"
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "wastedBytes": 1462
+            }
+          }
+        },
+        "lcp-discovery-insight": {
+          "title": "LCP request discovery"
+        }
+      }
+    },
+    {
+      "name": "modes-hub",
+      "path": "/clash/modes",
+      "startedAt": "2026-10-02T13:07:04.485Z",
+      "endedAt": "2026-10-02T13:07:11.067Z",
+      "status": "PARTIAL",
+      "scores": {
+        "performance": 91,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 92
+      },
+      "lcpMs": 3304.062,
+      "finalURL": "http://localhost:4320/clash/modes",
+      "lighthouseVersion": "13.5.0",
+      "throttlingMethod": "simulate",
+      "formFactor": "mobile",
+      "runtimeError": null,
+      "warnings": [],
+      "rawJSONSHA256": "33914dd4a467c94e2f14c0852e45597f1a76da11f6382e0685a8cc127a037933",
+      "rawHTMLSHA256": "3b743960c3e9ab703535673061c64e47974dd48af9f1f94710a0a9d5b85cc77c",
+      "lcpDetails": null,
+      "diagnosticAudits": {
+        "image-redundant-alt": {
+          "title": "Image elements do not have `[alt]` attributes that are redundant text."
+        },
+        "input-image-alt": {
+          "title": "`<input type=\"image\">` elements have `[alt]` text"
+        },
+        "unused-css-rules": {
+          "title": "Reduce unused CSS",
+          "numericValue": 150,
+          "displayValue": "Est savings of 26 KiB",
+          "details": {
+            "type": "opportunity",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "label": "Est Savings"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://localhost:4320/assets/index-eSBgaXU3.css",
+                "wastedBytes": 26766,
+                "wastedPercent": 93.84770159418046,
+                "totalBytes": 28521
+              }
+            ],
+            "overallSavingsMs": 150,
+            "overallSavingsBytes": 26766,
+            "sortedBy": [
+              "wastedBytes"
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "metricSavings": {
+                "FCP": 300,
+                "LCP": 150
+              }
+            }
+          }
+        },
+        "unused-javascript": {
+          "title": "Reduce unused JavaScript",
+          "numericValue": 300,
+          "displayValue": "Est savings of 70 KiB",
+          "details": {
+            "type": "opportunity",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "subItemsHeading": {
+                  "key": "source",
+                  "valueType": "code"
+                },
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "subItemsHeading": {
+                  "key": "sourceBytes"
+                },
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "subItemsHeading": {
+                  "key": "sourceWastedBytes"
+                },
+                "label": "Est Savings"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://localhost:4320/assets/index-Dr5R-os1.js",
+                "totalBytes": 164509,
+                "wastedBytes": 72171,
+                "wastedPercent": 43.870914090174004
+              }
+            ],
+            "overallSavingsMs": 300,
+            "overallSavingsBytes": 72171,
+            "sortedBy": [
+              "wastedBytes"
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "metricSavings": {
+                "FCP": 450,
+                "LCP": 300
+              }
+            }
+          }
+        },
+        "cache-insight": {
+          "title": "Use efficient cache lifetimes",
+          "displayValue": "Est savings of 384 KiB",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "label": "Request"
+              },
+              {
+                "key": "cacheLifetimeMs",
+                "valueType": "ms",
+                "label": "Cache TTL",
+                "displayUnit": "duration"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "label": "Transfer Size",
+                "displayUnit": "kb",
+                "granularity": 1
+              }
+            ],
+            "items": [
+              {
+                "url": "http://localhost:4320/brand/eraclash-logo-mk1-lossless-bf9d137b.png",
+                "cacheLifetimeMs": 0,
+                "totalBytes": 197934,
+                "wastedBytes": 197934
+              },
+              {
+                "url": "http://localhost:4320/assets/index-Dr5R-os1.js",
+                "cacheLifetimeMs": 0,
+                "totalBytes": 165474,
+                "wastedBytes": 165474
+              },
+              {
+                "url": "http://localhost:4320/assets/index-eSBgaXU3.css",
+                "cacheLifetimeMs": 0,
+                "totalBytes": 29309,
+                "wastedBytes": 29309
+              }
+            ],
+            "sortedBy": [
+              "wastedBytes"
+            ],
+            "skipSumming": [
+              "cacheLifetimeMs"
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "wastedBytes": 392717
+            }
+          }
+        },
+        "image-delivery-insight": {
+          "title": "Improve image delivery",
+          "displayValue": "Est savings of 192 KiB",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "node",
+                "valueType": "node",
+                "label": ""
+              },
+              {
+                "key": "url",
+                "valueType": "url",
+                "label": "URL",
+                "subItemsHeading": {
+                  "key": "reason",
+                  "valueType": "text"
+                }
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "label": "Resource Size"
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "label": "Est Savings",
+                "subItemsHeading": {
+                  "key": "wastedBytes",
+                  "valueType": "bytes"
+                }
+              }
+            ],
+            "items": [
+              {
+                "node": {
+                  "type": "node",
+                  "lhId": "page-1-IMG",
+                  "path": "1,HTML,1,BODY,0,DIV,0,DIV,0,HEADER,0,DIV,1,BUTTON,0,IMG",
+                  "selector": "header.ec-brand-header > div.ec-brand-header-row > button.ec-brand-home > img.ec-brand-logo",
+                  "boundingRect": {
+                    "top": 14,
+                    "bottom": 42,
+                    "left": 171,
+                    "right": 241,
+                    "width": 70,
+                    "height": 28
+                  },
+                  "snippet": "<img class=\"ec-brand-logo\" src=\"http://localhost:4320/brand/eraclash-logo-mk1-lossless-bf9d137b.png\" srcset=\"/brand/eraclash-logo-mk1-lossless-bf9d137b.png\" alt=\"\" width=\"760\" height=\"304\" decoding=\"async\" data-brand-mark=\"eraclash-logo-mk1\">",
+                  "nodeLabel": "header.ec-brand-header > div.ec-brand-header-row > button.ec-brand-home > img.ec-brand-logo"
+                },
+                "url": "http://localhost:4320/brand/eraclash-logo-mk1-lossless-bf9d137b.png",
+                "totalBytes": 197189,
+                "wastedBytes": 196189,
+                "subItems": {
+                  "type": "subitems",
+                  "items": [
+                    {
+                      "reason": "Using a modern image format (WebP, AVIF) or increasing the image compression could improve this image's download size.",
+                      "wastedBytes": 158682
+                    },
+                    {
+                      "reason": "This image file is larger than it needs to be (760x304) for its displayed dimensions (123x49). Use responsive images to reduce the image download size.",
+                      "wastedBytes": 192066
+                    }
+                  ]
+                }
+              }
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "wastedBytes": 196189
+            }
+          }
+        },
+        "lcp-discovery-insight": {
+          "title": "LCP request discovery"
+        },
+        "network-dependency-tree-insight": {
+          "title": "Network dependency tree",
+          "details": {
+            "type": "list",
+            "items": [
+              {
+                "type": "list-section",
+                "value": {
+                  "type": "network-tree",
+                  "chains": {
+                    "EA52E22F5BA9634E017869114E304B60": {
+                      "url": "http://localhost:4320/clash/modes",
+                      "navStartToEndTime": 24,
+                      "transferSize": 1651,
+                      "isLongest": true,
+                      "children": {
+                        "99191.3": {
+                          "url": "http://localhost:4320/assets/index-Dr5R-os1.js",
+                          "navStartToEndTime": 55,
+                          "transferSize": 165474,
+                          "isLongest": true,
+                          "children": {
+                            "99191.15": {
+                              "url": "http://localhost:4320/api/v3meta",
+                              "navStartToEndTime": 149,
+                              "transferSize": 19260,
+                              "isLongest": true,
+                              "children": {}
+                            },
+                            "99191.12": {
+                              "url": "http://localhost:4320/?buildcheck=1790946426519",
+                              "navStartToEndTime": 134,
+                              "transferSize": 1651,
+                              "children": {}
+                            },
+                            "99191.11": {
+                              "url": "http://localhost:4320/api/health",
+                              "navStartToEndTime": 133,
+                              "transferSize": 1093,
+                              "children": {}
+                            }
+                          }
+                        },
+                        "99191.4": {
+                          "url": "http://localhost:4320/assets/index-eSBgaXU3.css",
+                          "navStartToEndTime": 49,
+                          "transferSize": 29309,
+                          "children": {}
+                        },
+                        "99191.8": {
+                          "url": "http://localhost:4320/manifest.json",
+                          "navStartToEndTime": 48,
+                          "transferSize": 1194,
+                          "children": {}
+                        }
+                      }
+                    }
+                  },
+                  "longestChain": {
+                    "duration": 149
+                  }
+                }
+              },
+              {
+                "type": "list-section",
+                "title": "Preconnected origins",
+                "description": "[preconnect](https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/) hints help the browser establish a connection earlier in the page load, saving time when the first request for that origin is made. The following are the origins that the page preconnected to.",
+                "value": {
+                  "type": "text",
+                  "value": "no origins were preconnected"
+                }
+              },
+              {
+                "type": "list-section",
+                "title": "Preconnect candidates",
+                "description": "Add [preconnect](https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/) hints to your most important origins, but try to use no more than 4.",
+                "value": {
+                  "type": "text",
+                  "value": "No additional origins are good candidates for preconnecting"
+                }
+              }
+            ]
+          }
+        },
+        "render-blocking-insight": {
+          "title": "Render-blocking requests",
+          "displayValue": "Est savings of 450 ms",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedMs",
+                "valueType": "timespanMs",
+                "label": "Duration"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://localhost:4320/assets/index-eSBgaXU3.css",
+                "totalBytes": 29309,
+                "wastedMs": 452
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "runtimeHealth": {
+    "httpStatus": 200,
+    "data": {
+      "status": "ok",
+      "build": "2.7.2",
+      "coreEngine": "ok",
+      "persistence": "ok",
+      "aiNarrative": "ok",
+      "simV3": true,
+      "cloudAccounts": {
+        "enabled": false,
+        "ready": false
+      },
+      "preview": {
+        "enabled": true,
+        "candidateId": "Candidate 4",
+        "candidateCoreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+        "calibrationVersion": "1.4.0"
+      }
+    }
+  },
+  "servedBuildStamp": "eraclash-assets:2.7.2:2550ae9eb17f",
+  "servedHTMLSHA256": "d3835fa9ee13cf9e15024828bbf168232596c3b53302794e43c8d2c15e1e253b",
+  "freshResult": {
+    "resultId": "pv_7jrqdks7h5",
+    "path": "/card/c7cbbc34e4ddcd6b",
+    "score": {
+      "gold": 120,
+      "blue": 124
+    },
+    "candidate": {
+      "candidateId": "Candidate 4",
+      "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+      "possessionCalibrationVersion": "1.4.0",
+      "actionLibraryVersion": "2.1.0",
+      "possessionEngineVersion": "1.2.0",
+      "fallbackEngine": "production engineVersion 3.2.0"
+    },
+    "goldIds": [
+      "ai-00s",
+      "dave-60s",
+      "xavier-80s",
+      "bobby-70s",
+      "lucas-m-70s"
+    ],
+    "blueIds": [
+      "hornacek-90s",
+      "monroe-70s",
+      "luka-20s",
+      "leroy-60s",
+      "buck-80s"
+    ],
+    "identity": "new anonymous guest context; no account adapter",
+    "createdAt": "2026-10-02T13:06:36.470Z"
+  },
+  "endedAt": "2026-10-02T13:07:11.106Z",
+  "summary": {
+    "targets": 5,
+    "passed": 2,
+    "partial": 2,
+    "unverified": 1,
+    "errors": 0
+  }
+}

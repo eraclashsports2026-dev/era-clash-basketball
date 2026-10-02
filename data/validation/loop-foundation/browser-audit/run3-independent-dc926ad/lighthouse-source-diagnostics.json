@@ -1,0 +1,913 @@
+{
+  "recordedAt": "2026-10-02T13:32:55.388906+00:00",
+  "criterion": "Lighthouse mobile LCP <=2500ms; three FAIL and two PASS under the requested synthetic profile",
+  "rows": [
+    {
+      "page": "home-retry-01",
+      "lcpMs": 3306.9804,
+      "status": "FAIL",
+      "observedElement": {
+        "type": "node",
+        "lhId": "page-0-IMG",
+        "path": "1,HTML,1,BODY,0,DIV,0,DIV,1,DIV,0,MAIN,0,HEADER,0,IMG",
+        "selector": "div.ec-arena-court > main.ec-lobby > header.ec-lobby-hero > img.ec-lobby-logo",
+        "boundingRect": {
+          "top": 69,
+          "bottom": 198,
+          "left": 45,
+          "right": 367,
+          "width": 321,
+          "height": 129
+        },
+        "snippet": "<img class=\"ec-lobby-logo\" src=\"http://localhost:4320/brand/eraclash-logo-mk1-lossless-bf9d137b.png\" srcset=\"/brand/eraclash-logo-mk1-lossless-bf9d137b.png\" alt=\"EraClash Basketball\" width=\"760\" height=\"304\" decoding=\"async\" loading=\"eager\" fetchpriority=\"high\">",
+        "nodeLabel": "EraClash Basketball"
+      },
+      "throttlingMethod": "simulate",
+      "throttling": {
+        "rttMs": 150,
+        "throughputKbps": 1638.4,
+        "requestLatencyMs": 562.5,
+        "downloadThroughputKbps": 1474.5600000000002,
+        "uploadThroughputKbps": 675,
+        "cpuSlowdownMultiplier": 4
+      },
+      "renderBlocking": {
+        "id": "render-blocking-insight",
+        "title": "Render-blocking requests",
+        "description": "Requests are blocking the page's initial render, which may delay LCP. [Deferring or inlining](https://developer.chrome.com/docs/performance/insights/render-blocking) can move these network requests out of the critical path.",
+        "score": 0,
+        "scoreDisplayMode": "metricSavings",
+        "displayValue": "Est savings of 300\u00a0ms",
+        "metricSavings": {
+          "FCP": 300,
+          "LCP": 0
+        },
+        "details": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "totalBytes",
+              "valueType": "bytes",
+              "label": "Transfer Size"
+            },
+            {
+              "key": "wastedMs",
+              "valueType": "timespanMs",
+              "label": "Duration"
+            }
+          ],
+          "items": [
+            {
+              "url": "http://localhost:4320/assets/index-eSBgaXU3.css",
+              "totalBytes": 29309,
+              "wastedMs": 453
+            }
+          ]
+        },
+        "guidanceLevel": 3
+      },
+      "imageDelivery": {
+        "id": "image-delivery-insight",
+        "title": "Improve image delivery",
+        "description": "Reducing the download time of images can improve the perceived load time of the page and LCP. [Learn more about optimizing image size](https://developer.chrome.com/docs/performance/insights/image-delivery)",
+        "score": 0,
+        "scoreDisplayMode": "metricSavings",
+        "displayValue": "Est savings of 172\u00a0KiB",
+        "metricSavings": {
+          "FCP": 0,
+          "LCP": 950
+        },
+        "details": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "node",
+              "valueType": "node",
+              "label": ""
+            },
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL",
+              "subItemsHeading": {
+                "key": "reason",
+                "valueType": "text"
+              }
+            },
+            {
+              "key": "totalBytes",
+              "valueType": "bytes",
+              "label": "Resource Size"
+            },
+            {
+              "key": "wastedBytes",
+              "valueType": "bytes",
+              "label": "Est Savings",
+              "subItemsHeading": {
+                "key": "wastedBytes",
+                "valueType": "bytes"
+              }
+            }
+          ],
+          "items": [
+            {
+              "node": {
+                "type": "node",
+                "lhId": "page-0-IMG",
+                "path": "1,HTML,1,BODY,0,DIV,0,DIV,1,DIV,0,MAIN,0,HEADER,0,IMG",
+                "selector": "div.ec-arena-court > main.ec-lobby > header.ec-lobby-hero > img.ec-lobby-logo",
+                "boundingRect": {
+                  "top": 69,
+                  "bottom": 198,
+                  "left": 45,
+                  "right": 367,
+                  "width": 321,
+                  "height": 129
+                },
+                "snippet": "<img class=\"ec-lobby-logo\" src=\"http://localhost:4320/brand/eraclash-logo-mk1-lossless-bf9d137b.png\" srcset=\"/brand/eraclash-logo-mk1-lossless-bf9d137b.png\" alt=\"EraClash Basketball\" width=\"760\" height=\"304\" decoding=\"async\" loading=\"eager\" fetchpriority=\"high\">",
+                "nodeLabel": "EraClash Basketball"
+              },
+              "url": "http://localhost:4320/brand/eraclash-logo-mk1-lossless-bf9d137b.png",
+              "totalBytes": 197189,
+              "wastedBytes": 176106,
+              "subItems": {
+                "type": "subitems",
+                "items": [
+                  {
+                    "reason": "Using a modern image format (WebP, AVIF) or increasing the image compression could improve this image's download size.",
+                    "wastedBytes": 158682
+                  },
+                  {
+                    "reason": "This image file is larger than it needs to be (760x304) for its displayed dimensions (562x225). Use responsive images to reduce the image download size.",
+                    "wastedBytes": 89227
+                  }
+                ]
+              }
+            }
+          ],
+          "debugData": {
+            "type": "debugdata",
+            "wastedBytes": 176106
+          }
+        },
+        "guidanceLevel": 3
+      },
+      "network": [
+        [
+          "http://localhost:4320/",
+          1651,
+          2499
+        ],
+        [
+          "http://localhost:4320/brand/eraclash-logo-mk1-lossless-bf9d137b.png",
+          197934,
+          197189
+        ],
+        [
+          "http://localhost:4320/assets/index-Dr5R-os1.js",
+          165474,
+          565756
+        ],
+        [
+          "http://localhost:4320/assets/index-eSBgaXU3.css",
+          29309,
+          155064
+        ],
+        [
+          "http://localhost:4320/manifest.json",
+          1194,
+          445
+        ],
+        [
+          "http://localhost:4320/api/health",
+          1093,
+          319
+        ],
+        [
+          "http://localhost:4320/?buildcheck=1790946531453",
+          1651,
+          2499
+        ],
+        [
+          "http://localhost:4320/favicon.svg",
+          1031,
+          285
+        ],
+        [
+          "http://localhost:4320/icon-192.png",
+          3798,
+          3055
+        ],
+        [
+          "http://localhost:4320/api/v3meta",
+          19260,
+          18472
+        ]
+      ],
+      "rawSHA256": "bbf8e0491562d261a1c0435a21297bb7ac50a541b93c97e54c55d6da02b7419f"
+    },
+    {
+      "page": "daily",
+      "lcpMs": 3329.5477,
+      "status": "FAIL",
+      "observedElement": {
+        "type": "node",
+        "lhId": "page-0-P",
+        "path": "1,HTML,1,BODY,0,DIV,0,DIV,1,MAIN,2,P",
+        "selector": "div#root > div.arena > main.loop-court > p",
+        "boundingRect": {
+          "top": 180,
+          "bottom": 257,
+          "left": 12,
+          "right": 400,
+          "width": 388,
+          "height": 77
+        },
+        "snippet": "<p>",
+        "nodeLabel": "One shared challenge. Three synchronized player-and-coach rolls, then the era r\u2026"
+      },
+      "throttlingMethod": "simulate",
+      "throttling": {
+        "rttMs": 150,
+        "throughputKbps": 1638.4,
+        "requestLatencyMs": 562.5,
+        "downloadThroughputKbps": 1474.5600000000002,
+        "uploadThroughputKbps": 675,
+        "cpuSlowdownMultiplier": 4
+      },
+      "renderBlocking": {
+        "id": "render-blocking-insight",
+        "title": "Render-blocking requests",
+        "description": "Requests are blocking the page's initial render, which may delay LCP. [Deferring or inlining](https://developer.chrome.com/docs/performance/insights/render-blocking) can move these network requests out of the critical path.",
+        "score": 0,
+        "scoreDisplayMode": "metricSavings",
+        "displayValue": "Est savings of 450\u00a0ms",
+        "metricSavings": {
+          "FCP": 450,
+          "LCP": 450
+        },
+        "details": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "totalBytes",
+              "valueType": "bytes",
+              "label": "Transfer Size"
+            },
+            {
+              "key": "wastedMs",
+              "valueType": "timespanMs",
+              "label": "Duration"
+            }
+          ],
+          "items": [
+            {
+              "url": "http://localhost:4320/assets/index-eSBgaXU3.css",
+              "totalBytes": 29309,
+              "wastedMs": 463
+            }
+          ]
+        },
+        "guidanceLevel": 3
+      },
+      "imageDelivery": {
+        "id": "image-delivery-insight",
+        "title": "Improve image delivery",
+        "description": "Reducing the download time of images can improve the perceived load time of the page and LCP. [Learn more about optimizing image size](https://developer.chrome.com/docs/performance/insights/image-delivery)",
+        "score": 0,
+        "scoreDisplayMode": "metricSavings",
+        "displayValue": "Est savings of 192\u00a0KiB",
+        "metricSavings": {
+          "FCP": 0,
+          "LCP": 1000
+        },
+        "details": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "node",
+              "valueType": "node",
+              "label": ""
+            },
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL",
+              "subItemsHeading": {
+                "key": "reason",
+                "valueType": "text"
+              }
+            },
+            {
+              "key": "totalBytes",
+              "valueType": "bytes",
+              "label": "Resource Size"
+            },
+            {
+              "key": "wastedBytes",
+              "valueType": "bytes",
+              "label": "Est Savings",
+              "subItemsHeading": {
+                "key": "wastedBytes",
+                "valueType": "bytes"
+              }
+            }
+          ],
+          "items": [
+            {
+              "node": {
+                "type": "node",
+                "lhId": "page-3-IMG",
+                "path": "1,HTML,1,BODY,0,DIV,0,DIV,0,HEADER,0,DIV,1,BUTTON,0,IMG",
+                "selector": "header.ec-brand-header > div.ec-brand-header-row > button.ec-brand-home > img.ec-brand-logo",
+                "boundingRect": {
+                  "top": 14,
+                  "bottom": 42,
+                  "left": 171,
+                  "right": 241,
+                  "width": 70,
+                  "height": 28
+                },
+                "snippet": "<img class=\"ec-brand-logo\" src=\"http://localhost:4320/brand/eraclash-logo-mk1-lossless-bf9d137b.png\" srcset=\"/brand/eraclash-logo-mk1-lossless-bf9d137b.png\" alt=\"\" width=\"760\" height=\"304\" decoding=\"async\" data-brand-mark=\"eraclash-logo-mk1\">",
+                "nodeLabel": "header.ec-brand-header > div.ec-brand-header-row > button.ec-brand-home > img.ec-brand-logo"
+              },
+              "url": "http://localhost:4320/brand/eraclash-logo-mk1-lossless-bf9d137b.png",
+              "totalBytes": 197189,
+              "wastedBytes": 196189,
+              "subItems": {
+                "type": "subitems",
+                "items": [
+                  {
+                    "reason": "Using a modern image format (WebP, AVIF) or increasing the image compression could improve this image's download size.",
+                    "wastedBytes": 158682
+                  },
+                  {
+                    "reason": "This image file is larger than it needs to be (760x304) for its displayed dimensions (123x49). Use responsive images to reduce the image download size.",
+                    "wastedBytes": 192066
+                  }
+                ]
+              }
+            }
+          ],
+          "debugData": {
+            "type": "debugdata",
+            "wastedBytes": 196189
+          }
+        },
+        "guidanceLevel": 3
+      },
+      "network": [
+        [
+          "http://localhost:4320/clash/daily",
+          1651,
+          2499
+        ],
+        [
+          "http://localhost:4320/brand/eraclash-logo-mk1-lossless-bf9d137b.png",
+          197934,
+          197189
+        ],
+        [
+          "http://localhost:4320/assets/index-Dr5R-os1.js",
+          165474,
+          565756
+        ],
+        [
+          "http://localhost:4320/assets/index-eSBgaXU3.css",
+          29309,
+          155064
+        ],
+        [
+          "http://localhost:4320/manifest.json",
+          1194,
+          445
+        ],
+        [
+          "http://localhost:4320/api/game",
+          5917,
+          5044
+        ],
+        [
+          "http://localhost:4320/api/health",
+          1093,
+          319
+        ],
+        [
+          "http://localhost:4320/?buildcheck=1790946406037",
+          1651,
+          2499
+        ],
+        [
+          "http://localhost:4320/favicon.svg",
+          1031,
+          285
+        ],
+        [
+          "http://localhost:4320/icon-192.png",
+          3798,
+          3055
+        ],
+        [
+          "http://localhost:4320/api/v3meta",
+          19260,
+          18472
+        ]
+      ],
+      "rawSHA256": "1afcb9f2cc92cdce4a693c0d2576b757f66285e93004724e151120130dd829d0"
+    },
+    {
+      "page": "modes-hub",
+      "lcpMs": 3304.062,
+      "status": "FAIL",
+      "observedElement": {
+        "type": "node",
+        "lhId": "page-0-P",
+        "path": "1,HTML,1,BODY,0,DIV,0,DIV,1,MAIN,2,P",
+        "selector": "div#root > div.arena > main.loop-court > p.loop-intro",
+        "boundingRect": {
+          "top": 180,
+          "bottom": 257,
+          "left": 12,
+          "right": 400,
+          "width": 388,
+          "height": 77
+        },
+        "snippet": "<p class=\"loop-intro\">",
+        "nodeLabel": "Pick a five, roll a constraint, or come back for the Daily. They tell you the r\u2026"
+      },
+      "throttlingMethod": "simulate",
+      "throttling": {
+        "rttMs": 150,
+        "throughputKbps": 1638.4,
+        "requestLatencyMs": 562.5,
+        "downloadThroughputKbps": 1474.5600000000002,
+        "uploadThroughputKbps": 675,
+        "cpuSlowdownMultiplier": 4
+      },
+      "renderBlocking": {
+        "id": "render-blocking-insight",
+        "title": "Render-blocking requests",
+        "description": "Requests are blocking the page's initial render, which may delay LCP. [Deferring or inlining](https://developer.chrome.com/docs/performance/insights/render-blocking) can move these network requests out of the critical path.",
+        "score": 0,
+        "scoreDisplayMode": "metricSavings",
+        "displayValue": "Est savings of 450\u00a0ms",
+        "metricSavings": {
+          "FCP": 450,
+          "LCP": 450
+        },
+        "details": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "totalBytes",
+              "valueType": "bytes",
+              "label": "Transfer Size"
+            },
+            {
+              "key": "wastedMs",
+              "valueType": "timespanMs",
+              "label": "Duration"
+            }
+          ],
+          "items": [
+            {
+              "url": "http://localhost:4320/assets/index-eSBgaXU3.css",
+              "totalBytes": 29309,
+              "wastedMs": 452
+            }
+          ]
+        },
+        "guidanceLevel": 3
+      },
+      "imageDelivery": {
+        "id": "image-delivery-insight",
+        "title": "Improve image delivery",
+        "description": "Reducing the download time of images can improve the perceived load time of the page and LCP. [Learn more about optimizing image size](https://developer.chrome.com/docs/performance/insights/image-delivery)",
+        "score": 0,
+        "scoreDisplayMode": "metricSavings",
+        "displayValue": "Est savings of 192\u00a0KiB",
+        "metricSavings": {
+          "FCP": 0,
+          "LCP": 1050
+        },
+        "details": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "node",
+              "valueType": "node",
+              "label": ""
+            },
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL",
+              "subItemsHeading": {
+                "key": "reason",
+                "valueType": "text"
+              }
+            },
+            {
+              "key": "totalBytes",
+              "valueType": "bytes",
+              "label": "Resource Size"
+            },
+            {
+              "key": "wastedBytes",
+              "valueType": "bytes",
+              "label": "Est Savings",
+              "subItemsHeading": {
+                "key": "wastedBytes",
+                "valueType": "bytes"
+              }
+            }
+          ],
+          "items": [
+            {
+              "node": {
+                "type": "node",
+                "lhId": "page-1-IMG",
+                "path": "1,HTML,1,BODY,0,DIV,0,DIV,0,HEADER,0,DIV,1,BUTTON,0,IMG",
+                "selector": "header.ec-brand-header > div.ec-brand-header-row > button.ec-brand-home > img.ec-brand-logo",
+                "boundingRect": {
+                  "top": 14,
+                  "bottom": 42,
+                  "left": 171,
+                  "right": 241,
+                  "width": 70,
+                  "height": 28
+                },
+                "snippet": "<img class=\"ec-brand-logo\" src=\"http://localhost:4320/brand/eraclash-logo-mk1-lossless-bf9d137b.png\" srcset=\"/brand/eraclash-logo-mk1-lossless-bf9d137b.png\" alt=\"\" width=\"760\" height=\"304\" decoding=\"async\" data-brand-mark=\"eraclash-logo-mk1\">",
+                "nodeLabel": "header.ec-brand-header > div.ec-brand-header-row > button.ec-brand-home > img.ec-brand-logo"
+              },
+              "url": "http://localhost:4320/brand/eraclash-logo-mk1-lossless-bf9d137b.png",
+              "totalBytes": 197189,
+              "wastedBytes": 196189,
+              "subItems": {
+                "type": "subitems",
+                "items": [
+                  {
+                    "reason": "Using a modern image format (WebP, AVIF) or increasing the image compression could improve this image's download size.",
+                    "wastedBytes": 158682
+                  },
+                  {
+                    "reason": "This image file is larger than it needs to be (760x304) for its displayed dimensions (123x49). Use responsive images to reduce the image download size.",
+                    "wastedBytes": 192066
+                  }
+                ]
+              }
+            }
+          ],
+          "debugData": {
+            "type": "debugdata",
+            "wastedBytes": 196189
+          }
+        },
+        "guidanceLevel": 3
+      },
+      "network": [
+        [
+          "http://localhost:4320/clash/modes",
+          1651,
+          2499
+        ],
+        [
+          "http://localhost:4320/brand/eraclash-logo-mk1-lossless-bf9d137b.png",
+          197934,
+          197189
+        ],
+        [
+          "http://localhost:4320/assets/index-Dr5R-os1.js",
+          165474,
+          565756
+        ],
+        [
+          "http://localhost:4320/assets/index-eSBgaXU3.css",
+          29309,
+          155064
+        ],
+        [
+          "http://localhost:4320/manifest.json",
+          1194,
+          445
+        ],
+        [
+          "http://localhost:4320/api/health",
+          1093,
+          319
+        ],
+        [
+          "http://localhost:4320/?buildcheck=1790946426519",
+          1651,
+          2499
+        ],
+        [
+          "http://localhost:4320/favicon.svg",
+          1031,
+          285
+        ],
+        [
+          "http://localhost:4320/icon-192.png",
+          3798,
+          3055
+        ],
+        [
+          "http://localhost:4320/api/v3meta",
+          19260,
+          18472
+        ]
+      ],
+      "rawSHA256": "33914dd4a467c94e2f14c0852e45597f1a76da11f6382e0685a8cc127a037933"
+    },
+    {
+      "page": "result",
+      "lcpMs": 1121.6741499999998,
+      "status": "PASS",
+      "observedElement": {
+        "type": "node",
+        "lhId": "page-0-H1",
+        "path": "1,HTML,1,BODY,0,MAIN,1,H1",
+        "selector": "body > main > h1",
+        "boundingRect": {
+          "top": 96,
+          "bottom": 128,
+          "left": 20,
+          "right": 392,
+          "width": 372,
+          "height": 32
+        },
+        "snippet": "<h1>",
+        "nodeLabel": "Blue wins 120\u2013124"
+      },
+      "throttlingMethod": "simulate",
+      "throttling": {
+        "rttMs": 150,
+        "throughputKbps": 1638.4,
+        "requestLatencyMs": 562.5,
+        "downloadThroughputKbps": 1474.5600000000002,
+        "uploadThroughputKbps": 675,
+        "cpuSlowdownMultiplier": 4
+      },
+      "renderBlocking": {
+        "id": "render-blocking-insight",
+        "title": "Render-blocking requests",
+        "description": "Requests are blocking the page's initial render, which may delay LCP. [Deferring or inlining](https://developer.chrome.com/docs/performance/insights/render-blocking) can move these network requests out of the critical path.",
+        "score": 1,
+        "scoreDisplayMode": "metricSavings",
+        "metricSavings": {
+          "FCP": 0,
+          "LCP": 0
+        },
+        "details": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "totalBytes",
+              "valueType": "bytes",
+              "label": "Transfer Size"
+            },
+            {
+              "key": "wastedMs",
+              "valueType": "timespanMs",
+              "label": "Duration"
+            }
+          ],
+          "items": []
+        },
+        "guidanceLevel": 3
+      },
+      "imageDelivery": {
+        "id": "image-delivery-insight",
+        "title": "Improve image delivery",
+        "description": "Reducing the download time of images can improve the perceived load time of the page and LCP. [Learn more about optimizing image size](https://developer.chrome.com/docs/performance/insights/image-delivery)",
+        "score": 1,
+        "scoreDisplayMode": "metricSavings",
+        "metricSavings": {
+          "FCP": 0,
+          "LCP": 0
+        },
+        "details": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "node",
+              "valueType": "node",
+              "label": ""
+            },
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL",
+              "subItemsHeading": {
+                "key": "reason",
+                "valueType": "text"
+              }
+            },
+            {
+              "key": "totalBytes",
+              "valueType": "bytes",
+              "label": "Resource Size"
+            },
+            {
+              "key": "wastedBytes",
+              "valueType": "bytes",
+              "label": "Est Savings",
+              "subItemsHeading": {
+                "key": "wastedBytes",
+                "valueType": "bytes"
+              }
+            }
+          ],
+          "items": [],
+          "debugData": {
+            "type": "debugdata",
+            "wastedBytes": 0
+          }
+        },
+        "guidanceLevel": 3
+      },
+      "network": [
+        [
+          "http://localhost:4320/card/c7cbbc34e4ddcd6b",
+          5216,
+          4389
+        ],
+        [
+          "http://localhost:4320/share-entry.js",
+          1462,
+          1212
+        ],
+        [
+          "http://localhost:4320/api/events",
+          704,
+          0
+        ],
+        [
+          "http://localhost:4320/favicon.svg",
+          1031,
+          285
+        ]
+      ],
+      "rawSHA256": "4e64a4bb75c19e9cf5afd8ba4a2873e815707ece8410ee98af43692e46261e54"
+    },
+    {
+      "page": "programmatic",
+      "lcpMs": 1053.4365,
+      "status": "PASS",
+      "observedElement": {
+        "type": "node",
+        "lhId": "page-0-H1",
+        "path": "1,HTML,1,BODY,0,MAIN,1,H1",
+        "selector": "body > main > h1",
+        "boundingRect": {
+          "top": 96,
+          "bottom": 160,
+          "left": 20,
+          "right": 392,
+          "width": 372,
+          "height": 64
+        },
+        "snippet": "<h1>",
+        "nodeLabel": "Atlanta Hawks vs Boston Celtics"
+      },
+      "throttlingMethod": "simulate",
+      "throttling": {
+        "rttMs": 150,
+        "throughputKbps": 1638.4,
+        "requestLatencyMs": 562.5,
+        "downloadThroughputKbps": 1474.5600000000002,
+        "uploadThroughputKbps": 675,
+        "cpuSlowdownMultiplier": 4
+      },
+      "renderBlocking": {
+        "id": "render-blocking-insight",
+        "title": "Render-blocking requests",
+        "description": "Requests are blocking the page's initial render, which may delay LCP. [Deferring or inlining](https://developer.chrome.com/docs/performance/insights/render-blocking) can move these network requests out of the critical path.",
+        "score": 1,
+        "scoreDisplayMode": "metricSavings",
+        "metricSavings": {
+          "FCP": 0,
+          "LCP": 0
+        },
+        "details": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "totalBytes",
+              "valueType": "bytes",
+              "label": "Transfer Size"
+            },
+            {
+              "key": "wastedMs",
+              "valueType": "timespanMs",
+              "label": "Duration"
+            }
+          ],
+          "items": []
+        },
+        "guidanceLevel": 3
+      },
+      "imageDelivery": {
+        "id": "image-delivery-insight",
+        "title": "Improve image delivery",
+        "description": "Reducing the download time of images can improve the perceived load time of the page and LCP. [Learn more about optimizing image size](https://developer.chrome.com/docs/performance/insights/image-delivery)",
+        "score": 1,
+        "scoreDisplayMode": "metricSavings",
+        "metricSavings": {
+          "FCP": 0,
+          "LCP": 0
+        },
+        "details": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "node",
+              "valueType": "node",
+              "label": ""
+            },
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL",
+              "subItemsHeading": {
+                "key": "reason",
+                "valueType": "text"
+              }
+            },
+            {
+              "key": "totalBytes",
+              "valueType": "bytes",
+              "label": "Resource Size"
+            },
+            {
+              "key": "wastedBytes",
+              "valueType": "bytes",
+              "label": "Est Savings",
+              "subItemsHeading": {
+                "key": "wastedBytes",
+                "valueType": "bytes"
+              }
+            }
+          ],
+          "items": [],
+          "debugData": {
+            "type": "debugdata",
+            "wastedBytes": 0
+          }
+        },
+        "guidanceLevel": 3
+      },
+      "network": [
+        [
+          "http://localhost:4320/clash/all-time/atlanta-vs-boston",
+          12403,
+          11606
+        ],
+        [
+          "http://localhost:4320/share-entry.js",
+          1462,
+          1212
+        ],
+        [
+          "http://localhost:4320/api/events",
+          704,
+          0
+        ],
+        [
+          "http://localhost:4320/favicon.svg",
+          1031,
+          285
+        ]
+      ],
+      "rawSHA256": "176389395578d0b4f1f7364696df0188a87aaf85f08e79e3cfbf9635045b30a9"
+    }
+  ],
+  "initialHomeInstrumentation": "Original NO_NAVSTART raw report retained separately; permitted single fresh-Chrome retry measured3306.9804ms.",
+  "sourceControlledContributors": "All observed main resources are local: initial CSR app JS565756 resource bytes/165474 transfer bytes, render-blocking CSS155064 resource bytes/29309 transfer bytes, and canonical-equivalent PNG197189 resource bytes/197934 transfer bytes. Home LCP is the lobby PNG; Daily/hub LCP is introductory text. Lighthouse estimates CSS savings300-450ms and image delivery savings172-192KiB. Source references index.html:5,37; src/main.jsx:20; src/App.jsx; src/components/PlayLobby.jsx if present.",
+  "confidenceLimit": "The scores are Lighthouse simulated mobile results, not measured production user latency. Contributions above are trace/source observations; no controlled asset removal experiment established exclusive causality. Run3 source freeze prohibits a nontrivial performance refactor; no product or canonical-logo edit was made."
+}

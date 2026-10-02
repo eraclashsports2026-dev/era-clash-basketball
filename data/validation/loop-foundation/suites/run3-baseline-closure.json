@@ -1,0 +1,83 @@
+{
+  "recordedAt": "2026-10-02T13:30:30.617975+00:00",
+  "sourceSha": "dc926adaeebd573f435263265f4251f1814cc0a5",
+  "origin": "http://localhost:4320",
+  "normalStamp": "eraclash-assets:2.7.2:2550ae9eb17f",
+  "fixtureStamp": "eraclash-assets:2.7.2:41957b5894a1",
+  "unit": {
+    "status": "FAIL",
+    "files": 100,
+    "passedFiles": 97,
+    "failedFiles": 3,
+    "passedTests": 2961,
+    "failedTests": 2,
+    "collectionBlocked": 1,
+    "pending": 0,
+    "todo": 0,
+    "initial": "run3-unit-initial-summary.json",
+    "final": "run3-unit-final-summary.json",
+    "recoveredHistoricalPreservationAssertion": "passed"
+  },
+  "browser": {
+    "status": "PASS",
+    "passed": 98,
+    "workers": 1,
+    "retries": 0,
+    "log": "run3-playwright.log",
+    "scope": "all four configured projects; local actual-handler plus explicitly emulated cloud provider"
+  },
+  "gates": {
+    "status": "FAIL",
+    "passed": 85,
+    "total": 88,
+    "failed": 3,
+    "all11LoopPass": true,
+    "failedRows": [
+      {
+        "group": "challenges",
+        "command": "node scripts/challenges/challengeQa.mjs security",
+        "harnessReady": true,
+        "exit": 1,
+        "seconds": 4,
+        "summary": "15/16 passed \u2192 data/validation/9c/challenge-security-qa.json",
+        "fails": [
+          "FAIL  the account provider is configured on this origin \u2026 {\"enabled\":true,\"ready\":true} (operator diagnostics via X-Preview-Key)"
+        ],
+        "error": null
+      },
+      {
+        "group": "competitive",
+        "command": "node scripts/competitive/competitiveQa.mjs security",
+        "harnessReady": true,
+        "exit": 1,
+        "seconds": 6,
+        "summary": "2/2 passed \u2192 data/validation/9e/rating-cross-account-qa.json",
+        "fails": [
+          "FAIL  the account provider is configured on this origin"
+        ],
+        "error": null
+      },
+      {
+        "group": "progression",
+        "command": "node scripts/progression/progressionQa.mjs security",
+        "harnessReady": true,
+        "exit": 1,
+        "seconds": 3,
+        "summary": "2/2 passed \u2192 data/validation/9d/progression-cross-account-qa.json",
+        "fails": [
+          "FAIL  the account provider is configured on this origin"
+        ],
+        "error": null
+      }
+    ],
+    "raw": "../../foundation/loop-run3-final-dc926ad.json"
+  },
+  "boundedExtra": {
+    "boundary": "8/8 PASS;124 protected source bytes equal",
+    "metrics": "9/9 PASS;syntheticactual-handler/emulatedRedis transport, no real retention",
+    "nativeLogo": "20/20 PASS",
+    "nativeLegacyHeadings": "15/15 freshjourneys;155/155 stagechecks plus1 actualTournament terminal PASS;other14 simulationrequests intentionallyabortedaftertransitiondiagnostic"
+  },
+  "realProvider": "UNVERIFIED; no Basketball Preview credentials/database writes/accounts; hosted401privatepreview",
+  "sourceChanges": "None in product/source/engine/calibration; verification-only collector adaptations and exact Git-source-object recovery recorded."
+}

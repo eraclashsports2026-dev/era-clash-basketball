@@ -1,0 +1,2350 @@
+{
+  "recordedAt": "2026-10-02T13:54:55.613799+00:00",
+  "phase": "OWN_OBSERVATIONS_FROZEN_BEFORE_ANY_RUN2_OR_LEDGER_COMPARISON",
+  "independence": "No Run2 report/result/ledger outcome/release summary was read. Current source/tests/contracts and own fresh execution evidence only. Detailed current root/parent reports are deferred until after this marker.",
+  "sourceSHA": "dc926adaeebd573f435263265f4251f1814cc0a5",
+  "normalOrigin": "http://localhost:4320",
+  "neutralOrigin": "http://localhost:4333",
+  "environment": "Local normal production client, actual API handlers and isolated memory stores; neutral ON uses a separately archived byte-equal source/build/server. No hosted runtime, provider account, SMTP, durable vendor or physical device acceptance.",
+  "actualInventory": {
+    "routes": 487,
+    "routeProfileChecks": 2435,
+    "profiles": [
+      {
+        "id": "desktop",
+        "name": "Desktop Chrome",
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "mobile": false
+      },
+      {
+        "id": "iphone-se",
+        "name": "iPhone SE",
+        "device": "iPhone SE",
+        "viewport": {
+          "width": 320,
+          "height": 568
+        },
+        "mobile": true
+      },
+      {
+        "id": "iphone-14",
+        "name": "iPhone 14",
+        "device": "iPhone 14",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "mobile": true
+      },
+      {
+        "id": "iphone-pro-max",
+        "name": "iPhone 14 Pro Max",
+        "device": "iPhone 14 Pro Max",
+        "viewport": {
+          "width": 430,
+          "height": 932
+        },
+        "mobile": true
+      },
+      {
+        "id": "pixel",
+        "name": "Pixel 7",
+        "device": "Pixel 7",
+        "viewport": {
+          "width": 412,
+          "height": 915
+        },
+        "mobile": true
+      }
+    ],
+    "kindCounts": {
+      "application": 7,
+      "auth-callback": 1,
+      "result": 11,
+      "programmatic": 435,
+      "loop-mode": 15,
+      "owner-only": 1,
+      "leaderboard": 1,
+      "mode-information": 8,
+      "account": 1,
+      "mode": 7
+    },
+    "preflightCountIsHistorical": true
+  },
+  "fullCrawl": {
+    "rawStatus": "FAIL",
+    "summary": {
+      "routes": 2435,
+      "routeFailures": 15,
+      "partialRoutes": 5,
+      "criticalAxe": 0,
+      "seriousAxe": 0,
+      "criticalAxeAfterInteraction": 0,
+      "seriousAxeAfterInteraction": 12,
+      "links": 1407,
+      "failedLinks": 0,
+      "unverifiedLinks": 0,
+      "controls": 141934,
+      "observedControls": 1547,
+      "unverifiedControls": 167,
+      "disabledControls": 100,
+      "socialFailures": 0,
+      "lighthouseReports": 0
+    },
+    "routeStatuses": {
+      "PASS": 2415,
+      "FAIL": 15,
+      "PARTIAL": 5
+    },
+    "routesByProfile": {
+      "desktop": 487,
+      "iphone-se": 487,
+      "iphone-14": 487,
+      "iphone-pro-max": 487,
+      "pixel": 487
+    },
+    "sourceStability": {
+      "checkoutShaEnd": "dc926adaeebd573f435263265f4251f1814cc0a5",
+      "changedFiles": [],
+      "resultFixtureUnchanged": true,
+      "status": "PASS"
+    },
+    "rawReport": "/private/tmp/eraclash-run3-final-20261002/data/validation/loop-foundation/browser-audit/run3-independent-dc926ad-fullcrawl/report.json",
+    "rawSHA256": "3dcbb651d47955361e7daad44138c650daa44585f64b3f23b6c11629d7f34aa4"
+  },
+  "failedRoutes": [
+    {
+      "path": "/clash/lab",
+      "profile": "desktop",
+      "rawStatus": "FAIL",
+      "issues": [
+        {
+          "status": "FAIL",
+          "name": "axe violation after control interaction"
+        }
+      ],
+      "artifact": "routes/desktop--clash-lab-18a25d39.json"
+    },
+    {
+      "path": "/leaderboard",
+      "profile": "desktop",
+      "rawStatus": "FAIL",
+      "issues": [
+        {
+          "status": "UNVERIFIED",
+          "name": "environment surface",
+          "detail": "BASKETBALL\nPlay\n▾\nFantasy\n▾\nDaily\nChallenges\nLeaderboard\nMy EraClash\nCreate free account\nLEADERBOARD\nChallenge Rating\n\nBuilt from official EraClash Challenges between accounts. Career XP and levels do not rank anyone here.\n\nYOUR COMPETITIVE RATING\n\nSign in to see your own rating, record and placement. The public rankings below are open to everyone.\n\nSIGN IN\nTOP PLAYERS · TOP 100 · PUBLIC, PLACED ACCOUNTS\n\nThe leaderboard could not be loaded just now.\n\nTRY AGAIN\n\nRanked by Challenge Rating, then rated wins, then fewer losses, then who reached the rating first. Win % is rated wins over rated matches. Rating never changes a roll, a draft, an era, a coach or a score.\n\nAll modes\nPrivate rooms\nPrivacy\nTerms\nFounding Player\nEraClash is not affiliated with, endorsed by, or sponsored by any professional basketball league or team. · Image credits · build 2550ae"
+        },
+        {
+          "status": "FAIL",
+          "name": "console errors",
+          "detail": [
+            "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+            "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+          ]
+        },
+        {
+          "status": "FAIL",
+          "name": "failed network responses",
+          "detail": [
+            {
+              "url": "http://localhost:4320/api/profile",
+              "status": 503,
+              "resourceType": "fetch"
+            },
+            {
+              "url": "http://localhost:4320/api/profile",
+              "status": 503,
+              "resourceType": "fetch"
+            }
+          ]
+        }
+      ],
+      "artifact": "routes/desktop--leaderboard-27cdef98.json"
+    },
+    {
+      "path": "/clash/any-five",
+      "profile": "iphone-se",
+      "rawStatus": "FAIL",
+      "issues": [
+        {
+          "status": "FAIL",
+          "name": "axe violation after control interaction"
+        }
+      ],
+      "artifact": "routes/iphone-se--clash-any-five-6b582a5c.json"
+    },
+    {
+      "path": "/clash/no-mvps",
+      "profile": "iphone-se",
+      "rawStatus": "FAIL",
+      "issues": [
+        {
+          "status": "FAIL",
+          "name": "axe violation after control interaction"
+        }
+      ],
+      "artifact": "routes/iphone-se--clash-no-mvps-1688f7df.json"
+    },
+    {
+      "path": "/clash/one-franchise",
+      "profile": "iphone-se",
+      "rawStatus": "FAIL",
+      "issues": [
+        {
+          "status": "FAIL",
+          "name": "axe violation after control interaction"
+        }
+      ],
+      "artifact": "routes/iphone-se--clash-one-franchise-93da5e0e.json"
+    },
+    {
+      "path": "/clash/one-per-era",
+      "profile": "iphone-se",
+      "rawStatus": "FAIL",
+      "issues": [
+        {
+          "status": "FAIL",
+          "name": "axe violation after control interaction"
+        }
+      ],
+      "artifact": "routes/iphone-se--clash-one-per-era-3d352826.json"
+    },
+    {
+      "path": "/leaderboard",
+      "profile": "iphone-se",
+      "rawStatus": "FAIL",
+      "issues": [
+        {
+          "status": "UNVERIFIED",
+          "name": "environment surface",
+          "detail": "LEADERBOARD\nChallenge Rating\n\nBuilt from official EraClash Challenges between accounts. Career XP and levels do not rank anyone here.\n\nYOUR COMPETITIVE RATING\n\nSign in to see your own rating, record and placement. The public rankings below are open to everyone.\n\nSIGN IN\nTOP PLAYERS · TOP 100 · PUBLIC, PLACED ACCOUNTS\n\nThe leaderboard could not be loaded just now.\n\nTRY AGAIN\n\nRanked by Challenge Rating, then rated wins, then fewer losses, then who reached the rating first. Win % is rated wins over rated matches. Rating never changes a roll, a draft, an era, a coach or a score.\n\nAll modes\nPrivate rooms\nPrivacy\nTerms\nFounding Player\nEraClash is not affiliated with, endorsed by, or sponsored by any professional basketball league or team. · Image credits · build 2550ae"
+        },
+        {
+          "status": "FAIL",
+          "name": "console errors",
+          "detail": [
+            "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+            "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+          ]
+        },
+        {
+          "status": "FAIL",
+          "name": "failed network responses",
+          "detail": [
+            {
+              "url": "http://localhost:4320/api/profile",
+              "status": 503,
+              "resourceType": "fetch"
+            },
+            {
+              "url": "http://localhost:4320/api/profile",
+              "status": 503,
+              "resourceType": "fetch"
+            }
+          ]
+        }
+      ],
+      "artifact": "routes/iphone-se--leaderboard-27cdef98.json"
+    },
+    {
+      "path": "/leaderboard",
+      "profile": "iphone-14",
+      "rawStatus": "FAIL",
+      "issues": [
+        {
+          "status": "UNVERIFIED",
+          "name": "environment surface",
+          "detail": "LEADERBOARD\nChallenge Rating\n\nBuilt from official EraClash Challenges between accounts. Career XP and levels do not rank anyone here.\n\nYOUR COMPETITIVE RATING\n\nSign in to see your own rating, record and placement. The public rankings below are open to everyone.\n\nSIGN IN\nTOP PLAYERS · TOP 100 · PUBLIC, PLACED ACCOUNTS\n\nThe leaderboard could not be loaded just now.\n\nTRY AGAIN\n\nRanked by Challenge Rating, then rated wins, then fewer losses, then who reached the rating first. Win % is rated wins over rated matches. Rating never changes a roll, a draft, an era, a coach or a score.\n\nAll modes\nPrivate rooms\nPrivacy\nTerms\nFounding Player\nEraClash is not affiliated with, endorsed by, or sponsored by any professional basketball league or team. · Image credits · build 2550ae"
+        },
+        {
+          "status": "FAIL",
+          "name": "console errors",
+          "detail": [
+            "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+            "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+          ]
+        },
+        {
+          "status": "FAIL",
+          "name": "failed network responses",
+          "detail": [
+            {
+              "url": "http://localhost:4320/api/profile",
+              "status": 503,
+              "resourceType": "fetch"
+            },
+            {
+              "url": "http://localhost:4320/api/profile",
+              "status": 503,
+              "resourceType": "fetch"
+            }
+          ]
+        }
+      ],
+      "artifact": "routes/iphone-14--leaderboard-27cdef98.json"
+    },
+    {
+      "path": "/play/best-of-7",
+      "profile": "iphone-14",
+      "rawStatus": "FAIL",
+      "issues": [
+        {
+          "status": "FAIL",
+          "name": "axe violation after control interaction"
+        }
+      ],
+      "artifact": "routes/iphone-14--play-best-of-7-aaf6e03c.json"
+    },
+    {
+      "path": "/leaderboard",
+      "profile": "iphone-pro-max",
+      "rawStatus": "FAIL",
+      "issues": [
+        {
+          "status": "UNVERIFIED",
+          "name": "environment surface",
+          "detail": "LEADERBOARD\nChallenge Rating\n\nBuilt from official EraClash Challenges between accounts. Career XP and levels do not rank anyone here.\n\nYOUR COMPETITIVE RATING\n\nSign in to see your own rating, record and placement. The public rankings below are open to everyone.\n\nSIGN IN\nTOP PLAYERS · TOP 100 · PUBLIC, PLACED ACCOUNTS\n\nThe leaderboard could not be loaded just now.\n\nTRY AGAIN\n\nRanked by Challenge Rating, then rated wins, then fewer losses, then who reached the rating first. Win % is rated wins over rated matches. Rating never changes a roll, a draft, an era, a coach or a score.\n\nAll modes\nPrivate rooms\nPrivacy\nTerms\nFounding Player\nEraClash is not affiliated with, endorsed by, or sponsored by any professional basketball league or team. · Image credits · build 2550ae"
+        },
+        {
+          "status": "FAIL",
+          "name": "console errors",
+          "detail": [
+            "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+            "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+          ]
+        },
+        {
+          "status": "FAIL",
+          "name": "failed network responses",
+          "detail": [
+            {
+              "url": "http://localhost:4320/api/profile",
+              "status": 503,
+              "resourceType": "fetch"
+            },
+            {
+              "url": "http://localhost:4320/api/profile",
+              "status": 503,
+              "resourceType": "fetch"
+            }
+          ]
+        }
+      ],
+      "artifact": "routes/iphone-pro-max--leaderboard-27cdef98.json"
+    },
+    {
+      "path": "/clash/any-five",
+      "profile": "pixel",
+      "rawStatus": "FAIL",
+      "issues": [
+        {
+          "status": "FAIL",
+          "name": "axe violation after control interaction"
+        }
+      ],
+      "artifact": "routes/pixel--clash-any-five-6b582a5c.json"
+    },
+    {
+      "path": "/clash/no-mvps",
+      "profile": "pixel",
+      "rawStatus": "FAIL",
+      "issues": [
+        {
+          "status": "FAIL",
+          "name": "axe violation after control interaction"
+        }
+      ],
+      "artifact": "routes/pixel--clash-no-mvps-1688f7df.json"
+    },
+    {
+      "path": "/clash/one-franchise",
+      "profile": "pixel",
+      "rawStatus": "FAIL",
+      "issues": [
+        {
+          "status": "FAIL",
+          "name": "axe violation after control interaction"
+        }
+      ],
+      "artifact": "routes/pixel--clash-one-franchise-93da5e0e.json"
+    },
+    {
+      "path": "/clash/one-per-era",
+      "profile": "pixel",
+      "rawStatus": "FAIL",
+      "issues": [
+        {
+          "status": "FAIL",
+          "name": "axe violation after control interaction"
+        }
+      ],
+      "artifact": "routes/pixel--clash-one-per-era-3d352826.json"
+    },
+    {
+      "path": "/leaderboard",
+      "profile": "pixel",
+      "rawStatus": "FAIL",
+      "issues": [
+        {
+          "status": "UNVERIFIED",
+          "name": "environment surface",
+          "detail": "LEADERBOARD\nChallenge Rating\n\nBuilt from official EraClash Challenges between accounts. Career XP and levels do not rank anyone here.\n\nYOUR COMPETITIVE RATING\n\nSign in to see your own rating, record and placement. The public rankings below are open to everyone.\n\nSIGN IN\nTOP PLAYERS · TOP 100 · PUBLIC, PLACED ACCOUNTS\n\nThe leaderboard could not be loaded just now.\n\nTRY AGAIN\n\nRanked by Challenge Rating, then rated wins, then fewer losses, then who reached the rating first. Win % is rated wins over rated matches. Rating never changes a roll, a draft, an era, a coach or a score.\n\nAll modes\nPrivate rooms\nPrivacy\nTerms\nFounding Player\nEraClash is not affiliated with, endorsed by, or sponsored by any professional basketball league or team. · Image credits · build 2550ae"
+        },
+        {
+          "status": "FAIL",
+          "name": "console errors",
+          "detail": [
+            "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+            "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+          ]
+        },
+        {
+          "status": "FAIL",
+          "name": "failed network responses",
+          "detail": [
+            {
+              "url": "http://localhost:4320/api/profile",
+              "status": 503,
+              "resourceType": "fetch"
+            },
+            {
+              "url": "http://localhost:4320/api/profile",
+              "status": 503,
+              "resourceType": "fetch"
+            }
+          ]
+        }
+      ],
+      "artifact": "routes/pixel--leaderboard-27cdef98.json"
+    }
+  ],
+  "links": {
+    "statuses": {
+      "PASS": 1407
+    },
+    "total": 1407,
+    "external": 39,
+    "nonpass": [],
+    "method": "Exact discovered URL HEAD with redirects; protection, unsupported HEAD and bounded network failure remain UNVERIFIED. No external cap reached."
+  },
+  "controls": {
+    "statuses": {
+      "UNVERIFIED": 167,
+      "PASS": 1547,
+      "LINK": 140120,
+      "N/A": 100
+    },
+    "total": 141934,
+    "remainingReasons": {
+      "No observable change. This is a candidate dead control requiring its exact intended behavior to be checked.": 58,
+      "Action attempted a persistent request; blocked in this read-only audit.": 89,
+      "Disabled control; its enabled-state journey is a separate check.": 100,
+      "Stateful gameplay/save control; the mode journey must verify its server-owned result.": 10,
+      "Provider, account, email, payment or persistent action; covered by its explicitly authorized journey.": 5,
+      "Control probes skipped on the owner-only development surface. Its public response/fallback is not an enabled public gameplay journey.": 5
+    },
+    "coverage": "Reversible initial-state control probes plus separately recorded ten actual guest rematch journeys and mobile native tap trails. Stateful probes are not upgraded en masse from visibility or route loads."
+  },
+  "axe": {
+    "criticalInitial": 0,
+    "criticalAfterControl": 0,
+    "seriousInitial": 0,
+    "seriousAfterControl": 12,
+    "interpretation": "Zero-critical user criterion is distinct from stricter serious warnings. Some target-size warnings follow summary-triggered scrolling that partially clips an input under the fixed header. Bounded rechecks retain warning states and the separately clear scroll-top state. This is not a full accessibility or physical-device claim.",
+    "boundedRecheck": "axe-scroll-recheck/report.json"
+  },
+  "social": {
+    "statuses": {
+      "PASS": 21
+    },
+    "rows": [
+      {
+        "path": "/",
+        "status": "PASS",
+        "issues": [],
+        "httpStatus": 200,
+        "title": "EraClash Basketball — Build Your All-Time Squad",
+        "canonical": "http://localhost:4320/",
+        "metas": {
+          "theme-color": "#0b0e17",
+          "apple-mobile-web-app-capable": "yes",
+          "apple-mobile-web-app-status-bar-style": "black-translucent",
+          "viewport": "width=device-width, initial-scale=1.0",
+          "description": "Build your all-time basketball five and clash across eras with an era-aware possession simulation. Pick legends, play as a guest, and share your result.",
+          "eraclash-build": "eraclash-assets:2.7.2:2550ae9eb17f",
+          "og:type": "website",
+          "og:title": "EraClash Basketball — Build Your All-Time Squad",
+          "og:description": "Build your all-time basketball five, play across eras, and share the matchup.",
+          "og:url": "http://localhost:4320/",
+          "og:image": "http://localhost:4320/og-home.png",
+          "og:image:type": "image/png",
+          "og:image:width": "1200",
+          "og:image:height": "630",
+          "og:image:alt": "EraClash Basketball: build your all-time five and play across eras",
+          "twitter:card": "summary_large_image",
+          "twitter:title": "EraClash Basketball",
+          "twitter:description": "Build your all-time basketball five and play across eras.",
+          "twitter:image": "http://localhost:4320/og-home.png"
+        },
+        "links": [],
+        "image": {
+          "url": "http://localhost:4320/og-home.png",
+          "status": 200,
+          "bytes": 58496,
+          "type": "image/png",
+          "dimensions": [
+            1200,
+            630
+          ]
+        }
+      },
+      {
+        "path": "/card/01baea9ba4efd774",
+        "status": "PASS",
+        "issues": [],
+        "httpStatus": 200,
+        "title": "Blue wins 131–132 | EraClash Basketball",
+        "canonical": "http://localhost:4320/card/01baea9ba4efd774",
+        "metas": {
+          "viewport": "width=device-width,initial-scale=1",
+          "description": "Tonight’s Clash · Final score — Larry Bird: 39 PTS · 11 REB · 4 AST — Kareem Abdul-Jabbar: 37 PTS · 10 REB · 4 AST — Run it back with your five.",
+          "og:type": "website",
+          "og:site_name": "EraClash Basketball",
+          "og:title": "Blue wins 131–132",
+          "og:description": "Tonight’s Clash · Final score — Larry Bird: 39 PTS · 11 REB · 4 AST — Kareem Abdul-Jabbar: 37 PTS · 10 REB · 4 AST — Run it back with your five.",
+          "og:url": "http://localhost:4320/card/01baea9ba4efd774",
+          "og:image": "http://localhost:4320/api/share-page?kind=result&id=01baea9ba4efd774&format=png&v=2",
+          "og:image:type": "image/png",
+          "og:image:width": "1200",
+          "og:image:height": "630",
+          "og:image:alt": "Tonight’s Clash · Final score — Larry Bird: 39 PTS · 11 REB · 4 AST — Kareem Abdul-Jabbar: 37 PTS · 10 REB · 4 AST — Run it back with your five.",
+          "twitter:card": "summary_large_image",
+          "twitter:title": "Blue wins 131–132",
+          "twitter:description": "Tonight’s Clash · Final score — Larry Bird: 39 PTS · 11 REB · 4 AST — Kareem Abdul-Jabbar: 37 PTS · 10 REB · 4 AST — Run it back with your five.",
+          "twitter:image": "http://localhost:4320/api/share-page?kind=result&id=01baea9ba4efd774&format=png&v=2"
+        },
+        "links": [
+          "/clash/any-five?rematch=01baea9ba4efd774",
+          "/",
+          "/privacy",
+          "/terms"
+        ],
+        "image": {
+          "url": "http://localhost:4320/api/share-page?kind=result&id=01baea9ba4efd774&format=png&v=2",
+          "status": 200,
+          "bytes": 65440,
+          "type": "image/png",
+          "dimensions": [
+            1200,
+            630
+          ]
+        }
+      },
+      {
+        "path": "/card/0de3f9e20a31bf64",
+        "status": "PASS",
+        "issues": [],
+        "httpStatus": 200,
+        "title": "Era Gauntlet · 1 of 7 eras | EraClash Basketball",
+        "canonical": "http://localhost:4320/card/0de3f9e20a31bf64",
+        "metas": {
+          "viewport": "width=device-width,initial-scale=1",
+          "description": "Era Gauntlet · 1 of 7 eras won · Run in progress · Latest stage points — Bob Pettit: 46 PTS · 16 REB · 7 AST — Hakeem Olajuwon: 42 PTS · 21 REB · 6 AST — Run it back with your five.",
+          "og:type": "website",
+          "og:site_name": "EraClash Basketball",
+          "og:title": "Era Gauntlet · 1 of 7 eras",
+          "og:description": "Era Gauntlet · 1 of 7 eras won · Run in progress · Latest stage points — Bob Pettit: 46 PTS · 16 REB · 7 AST — Hakeem Olajuwon: 42 PTS · 21 REB · 6 AST — Run it back with your five.",
+          "og:url": "http://localhost:4320/card/0de3f9e20a31bf64",
+          "og:image": "http://localhost:4320/api/share-page?kind=result&id=0de3f9e20a31bf64&format=png&v=2",
+          "og:image:type": "image/png",
+          "og:image:width": "1200",
+          "og:image:height": "630",
+          "og:image:alt": "Era Gauntlet · 1 of 7 eras won · Run in progress · Latest stage points — Bob Pettit: 46 PTS · 16 REB · 7 AST — Hakeem Olajuwon: 42 PTS · 21 REB · 6 AST — Run it back with your five.",
+          "twitter:card": "summary_large_image",
+          "twitter:title": "Era Gauntlet · 1 of 7 eras",
+          "twitter:description": "Era Gauntlet · 1 of 7 eras won · Run in progress · Latest stage points — Bob Pettit: 46 PTS · 16 REB · 7 AST — Hakeem Olajuwon: 42 PTS · 21 REB · 6 AST — Run it back with your five.",
+          "twitter:image": "http://localhost:4320/api/share-page?kind=result&id=0de3f9e20a31bf64&format=png&v=2"
+        },
+        "links": [
+          "/clash/any-five?rematch=0de3f9e20a31bf64",
+          "/",
+          "/privacy",
+          "/terms"
+        ],
+        "image": {
+          "url": "http://localhost:4320/api/share-page?kind=result&id=0de3f9e20a31bf64&format=png&v=2",
+          "status": 200,
+          "bytes": 69158,
+          "type": "image/png",
+          "dimensions": [
+            1200,
+            630
+          ]
+        }
+      },
+      {
+        "path": "/card/20f98c42165a9c69",
+        "status": "PASS",
+        "issues": [],
+        "httpStatus": 200,
+        "title": "Gold wins 148–126 | EraClash Basketball",
+        "canonical": "http://localhost:4320/card/20f98c42165a9c69",
+        "metas": {
+          "viewport": "width=device-width,initial-scale=1",
+          "description": "What-If Lab · Final score · Imagined scenario — Michael Jordan: 34 PTS · 8 REB · 7 AST — Magic Johnson: 32 PTS · 7 REB · 7 AST — Run it back with your five.",
+          "og:type": "website",
+          "og:site_name": "EraClash Basketball",
+          "og:title": "Gold wins 148–126",
+          "og:description": "What-If Lab · Final score · Imagined scenario — Michael Jordan: 34 PTS · 8 REB · 7 AST — Magic Johnson: 32 PTS · 7 REB · 7 AST — Run it back with your five.",
+          "og:url": "http://localhost:4320/card/20f98c42165a9c69",
+          "og:image": "http://localhost:4320/api/share-page?kind=result&id=20f98c42165a9c69&format=png&v=2",
+          "og:image:type": "image/png",
+          "og:image:width": "1200",
+          "og:image:height": "630",
+          "og:image:alt": "What-If Lab · Final score · Imagined scenario — Michael Jordan: 34 PTS · 8 REB · 7 AST — Magic Johnson: 32 PTS · 7 REB · 7 AST — Run it back with your five.",
+          "twitter:card": "summary_large_image",
+          "twitter:title": "Gold wins 148–126",
+          "twitter:description": "What-If Lab · Final score · Imagined scenario — Michael Jordan: 34 PTS · 8 REB · 7 AST — Magic Johnson: 32 PTS · 7 REB · 7 AST — Run it back with your five.",
+          "twitter:image": "http://localhost:4320/api/share-page?kind=result&id=20f98c42165a9c69&format=png&v=2"
+        },
+        "links": [
+          "/clash/any-five?rematch=20f98c42165a9c69",
+          "/",
+          "/privacy",
+          "/terms"
+        ],
+        "image": {
+          "url": "http://localhost:4320/api/share-page?kind=result&id=20f98c42165a9c69&format=png&v=2",
+          "status": 200,
+          "bytes": 66700,
+          "type": "image/png",
+          "dimensions": [
+            1200,
+            630
+          ]
+        }
+      },
+      {
+        "path": "/card/39c274b5686f784d",
+        "status": "PASS",
+        "issues": [],
+        "httpStatus": 200,
+        "title": "Blue wins 96–128 | EraClash Basketball",
+        "canonical": "http://localhost:4320/card/39c274b5686f784d",
+        "metas": {
+          "viewport": "width=device-width,initial-scale=1",
+          "description": "No MVPs · Final score — Luka Doncic: 38 PTS · 12 REB · 6 AST — Stephen Curry: 36 PTS · 4 REB · 5 AST — Run it back with your five.",
+          "og:type": "website",
+          "og:site_name": "EraClash Basketball",
+          "og:title": "Blue wins 96–128",
+          "og:description": "No MVPs · Final score — Luka Doncic: 38 PTS · 12 REB · 6 AST — Stephen Curry: 36 PTS · 4 REB · 5 AST — Run it back with your five.",
+          "og:url": "http://localhost:4320/card/39c274b5686f784d",
+          "og:image": "http://localhost:4320/api/share-page?kind=result&id=39c274b5686f784d&format=png&v=2",
+          "og:image:type": "image/png",
+          "og:image:width": "1200",
+          "og:image:height": "630",
+          "og:image:alt": "No MVPs · Final score — Luka Doncic: 38 PTS · 12 REB · 6 AST — Stephen Curry: 36 PTS · 4 REB · 5 AST — Run it back with your five.",
+          "twitter:card": "summary_large_image",
+          "twitter:title": "Blue wins 96–128",
+          "twitter:description": "No MVPs · Final score — Luka Doncic: 38 PTS · 12 REB · 6 AST — Stephen Curry: 36 PTS · 4 REB · 5 AST — Run it back with your five.",
+          "twitter:image": "http://localhost:4320/api/share-page?kind=result&id=39c274b5686f784d&format=png&v=2"
+        },
+        "links": [
+          "/clash/any-five?rematch=39c274b5686f784d",
+          "/",
+          "/privacy",
+          "/terms"
+        ],
+        "image": {
+          "url": "http://localhost:4320/api/share-page?kind=result&id=39c274b5686f784d&format=png&v=2",
+          "status": 200,
+          "bytes": 64511,
+          "type": "image/png",
+          "dimensions": [
+            1200,
+            630
+          ]
+        }
+      },
+      {
+        "path": "/card/7e8cd37ea95451e1",
+        "status": "PASS",
+        "issues": [],
+        "httpStatus": 200,
+        "title": "Gold wins 134–118 | EraClash Basketball",
+        "canonical": "http://localhost:4320/card/7e8cd37ea95451e1",
+        "metas": {
+          "viewport": "width=device-width,initial-scale=1",
+          "description": "Franchise Clash · Final score — Kareem Abdul-Jabbar: 43 PTS · 8 REB · 5 AST — John Havlicek: 38 PTS · 2 REB · 5 AST — Run it back with your five.",
+          "og:type": "website",
+          "og:site_name": "EraClash Basketball",
+          "og:title": "Gold wins 134–118",
+          "og:description": "Franchise Clash · Final score — Kareem Abdul-Jabbar: 43 PTS · 8 REB · 5 AST — John Havlicek: 38 PTS · 2 REB · 5 AST — Run it back with your five.",
+          "og:url": "http://localhost:4320/card/7e8cd37ea95451e1",
+          "og:image": "http://localhost:4320/api/share-page?kind=result&id=7e8cd37ea95451e1&format=png&v=2",
+          "og:image:type": "image/png",
+          "og:image:width": "1200",
+          "og:image:height": "630",
+          "og:image:alt": "Franchise Clash · Final score — Kareem Abdul-Jabbar: 43 PTS · 8 REB · 5 AST — John Havlicek: 38 PTS · 2 REB · 5 AST — Run it back with your five.",
+          "twitter:card": "summary_large_image",
+          "twitter:title": "Gold wins 134–118",
+          "twitter:description": "Franchise Clash · Final score — Kareem Abdul-Jabbar: 43 PTS · 8 REB · 5 AST — John Havlicek: 38 PTS · 2 REB · 5 AST — Run it back with your five.",
+          "twitter:image": "http://localhost:4320/api/share-page?kind=result&id=7e8cd37ea95451e1&format=png&v=2"
+        },
+        "links": [
+          "/clash/any-five?rematch=7e8cd37ea95451e1",
+          "/",
+          "/privacy",
+          "/terms"
+        ],
+        "image": {
+          "url": "http://localhost:4320/api/share-page?kind=result&id=7e8cd37ea95451e1&format=png&v=2",
+          "status": 200,
+          "bytes": 65826,
+          "type": "image/png",
+          "dimensions": [
+            1200,
+            630
+          ]
+        }
+      },
+      {
+        "path": "/card/8030968161761110",
+        "status": "PASS",
+        "issues": [],
+        "httpStatus": 200,
+        "title": "Blue wins 92–126 | EraClash Basketball",
+        "canonical": "http://localhost:4320/card/8030968161761110",
+        "metas": {
+          "viewport": "width=device-width,initial-scale=1",
+          "description": "Chaos Spin · Final score — Julius Erving: 44 PTS · 8 REB · 7 AST — Stephen Curry: 35 PTS · 4 REB · 5 AST — Run it back with your five.",
+          "og:type": "website",
+          "og:site_name": "EraClash Basketball",
+          "og:title": "Blue wins 92–126",
+          "og:description": "Chaos Spin · Final score — Julius Erving: 44 PTS · 8 REB · 7 AST — Stephen Curry: 35 PTS · 4 REB · 5 AST — Run it back with your five.",
+          "og:url": "http://localhost:4320/card/8030968161761110",
+          "og:image": "http://localhost:4320/api/share-page?kind=result&id=8030968161761110&format=png&v=2",
+          "og:image:type": "image/png",
+          "og:image:width": "1200",
+          "og:image:height": "630",
+          "og:image:alt": "Chaos Spin · Final score — Julius Erving: 44 PTS · 8 REB · 7 AST — Stephen Curry: 35 PTS · 4 REB · 5 AST — Run it back with your five.",
+          "twitter:card": "summary_large_image",
+          "twitter:title": "Blue wins 92–126",
+          "twitter:description": "Chaos Spin · Final score — Julius Erving: 44 PTS · 8 REB · 7 AST — Stephen Curry: 35 PTS · 4 REB · 5 AST — Run it back with your five.",
+          "twitter:image": "http://localhost:4320/api/share-page?kind=result&id=8030968161761110&format=png&v=2"
+        },
+        "links": [
+          "/clash/any-five?rematch=8030968161761110",
+          "/",
+          "/privacy",
+          "/terms"
+        ],
+        "image": {
+          "url": "http://localhost:4320/api/share-page?kind=result&id=8030968161761110&format=png&v=2",
+          "status": 200,
+          "bytes": 62945,
+          "type": "image/png",
+          "dimensions": [
+            1200,
+            630
+          ]
+        }
+      },
+      {
+        "path": "/card/c6b7e1951e200f8e",
+        "status": "PASS",
+        "issues": [],
+        "httpStatus": 200,
+        "title": "Blue wins 92–131 | EraClash Basketball",
+        "canonical": "http://localhost:4320/card/c6b7e1951e200f8e",
+        "metas": {
+          "viewport": "width=device-width,initial-scale=1",
+          "description": "One Franchise · Final score — Stephen Curry: 34 PTS · 3 REB · 6 AST — Kevin Durant: 30 PTS · 8 REB · 3 AST — Run it back with your five.",
+          "og:type": "website",
+          "og:site_name": "EraClash Basketball",
+          "og:title": "Blue wins 92–131",
+          "og:description": "One Franchise · Final score — Stephen Curry: 34 PTS · 3 REB · 6 AST — Kevin Durant: 30 PTS · 8 REB · 3 AST — Run it back with your five.",
+          "og:url": "http://localhost:4320/card/c6b7e1951e200f8e",
+          "og:image": "http://localhost:4320/api/share-page?kind=result&id=c6b7e1951e200f8e&format=png&v=2",
+          "og:image:type": "image/png",
+          "og:image:width": "1200",
+          "og:image:height": "630",
+          "og:image:alt": "One Franchise · Final score — Stephen Curry: 34 PTS · 3 REB · 6 AST — Kevin Durant: 30 PTS · 8 REB · 3 AST — Run it back with your five.",
+          "twitter:card": "summary_large_image",
+          "twitter:title": "Blue wins 92–131",
+          "twitter:description": "One Franchise · Final score — Stephen Curry: 34 PTS · 3 REB · 6 AST — Kevin Durant: 30 PTS · 8 REB · 3 AST — Run it back with your five.",
+          "twitter:image": "http://localhost:4320/api/share-page?kind=result&id=c6b7e1951e200f8e&format=png&v=2"
+        },
+        "links": [
+          "/clash/any-five?rematch=c6b7e1951e200f8e",
+          "/",
+          "/privacy",
+          "/terms"
+        ],
+        "image": {
+          "url": "http://localhost:4320/api/share-page?kind=result&id=c6b7e1951e200f8e&format=png&v=2",
+          "status": 200,
+          "bytes": 61784,
+          "type": "image/png",
+          "dimensions": [
+            1200,
+            630
+          ]
+        }
+      },
+      {
+        "path": "/card/c7cbbc34e4ddcd6b",
+        "status": "PASS",
+        "issues": [],
+        "httpStatus": 200,
+        "title": "Blue wins 120–124 | EraClash Basketball",
+        "canonical": "http://localhost:4320/card/c7cbbc34e4ddcd6b",
+        "metas": {
+          "viewport": "width=device-width,initial-scale=1",
+          "description": "Clash Any Five · Final score — Allen Iverson: 47 PTS · 1 REB · 4 AST — Luka Doncic: 40 PTS · 19 REB · 11 AST — Run it back with your five.",
+          "og:type": "website",
+          "og:site_name": "EraClash Basketball",
+          "og:title": "Blue wins 120–124",
+          "og:description": "Clash Any Five · Final score — Allen Iverson: 47 PTS · 1 REB · 4 AST — Luka Doncic: 40 PTS · 19 REB · 11 AST — Run it back with your five.",
+          "og:url": "http://localhost:4320/card/c7cbbc34e4ddcd6b",
+          "og:image": "http://localhost:4320/api/share-page?kind=result&id=c7cbbc34e4ddcd6b&format=png&v=2",
+          "og:image:type": "image/png",
+          "og:image:width": "1200",
+          "og:image:height": "630",
+          "og:image:alt": "Clash Any Five · Final score — Allen Iverson: 47 PTS · 1 REB · 4 AST — Luka Doncic: 40 PTS · 19 REB · 11 AST — Run it back with your five.",
+          "twitter:card": "summary_large_image",
+          "twitter:title": "Blue wins 120–124",
+          "twitter:description": "Clash Any Five · Final score — Allen Iverson: 47 PTS · 1 REB · 4 AST — Luka Doncic: 40 PTS · 19 REB · 11 AST — Run it back with your five.",
+          "twitter:image": "http://localhost:4320/api/share-page?kind=result&id=c7cbbc34e4ddcd6b&format=png&v=2"
+        },
+        "links": [
+          "/clash/any-five?rematch=c7cbbc34e4ddcd6b",
+          "/",
+          "/privacy",
+          "/terms"
+        ],
+        "image": {
+          "url": "http://localhost:4320/api/share-page?kind=result&id=c7cbbc34e4ddcd6b&format=png&v=2",
+          "status": 200,
+          "bytes": 64161,
+          "type": "image/png",
+          "dimensions": [
+            1200,
+            630
+          ]
+        }
+      },
+      {
+        "path": "/card/d0bc9339b5763afe",
+        "status": "PASS",
+        "issues": [],
+        "httpStatus": 200,
+        "title": "Blue wins 86–122 | EraClash Basketball",
+        "canonical": "http://localhost:4320/card/d0bc9339b5763afe",
+        "metas": {
+          "viewport": "width=device-width,initial-scale=1",
+          "description": "Daily Clash 10-02-2026 · Final score — Luka Doncic: 39 PTS · 13 REB · 8 AST — Elton Brand: 34 PTS · 20 REB · 2 AST — Run it back with your five.",
+          "og:type": "website",
+          "og:site_name": "EraClash Basketball",
+          "og:title": "Blue wins 86–122",
+          "og:description": "Daily Clash 10-02-2026 · Final score — Luka Doncic: 39 PTS · 13 REB · 8 AST — Elton Brand: 34 PTS · 20 REB · 2 AST — Run it back with your five.",
+          "og:url": "http://localhost:4320/card/d0bc9339b5763afe",
+          "og:image": "http://localhost:4320/api/share-page?kind=result&id=d0bc9339b5763afe&format=png&v=2",
+          "og:image:type": "image/png",
+          "og:image:width": "1200",
+          "og:image:height": "630",
+          "og:image:alt": "Daily Clash 10-02-2026 · Final score — Luka Doncic: 39 PTS · 13 REB · 8 AST — Elton Brand: 34 PTS · 20 REB · 2 AST — Run it back with your five.",
+          "twitter:card": "summary_large_image",
+          "twitter:title": "Blue wins 86–122",
+          "twitter:description": "Daily Clash 10-02-2026 · Final score — Luka Doncic: 39 PTS · 13 REB · 8 AST — Elton Brand: 34 PTS · 20 REB · 2 AST — Run it back with your five.",
+          "twitter:image": "http://localhost:4320/api/share-page?kind=result&id=d0bc9339b5763afe&format=png&v=2"
+        },
+        "links": [
+          "/clash/any-five?rematch=d0bc9339b5763afe",
+          "/",
+          "/privacy",
+          "/terms"
+        ],
+        "image": {
+          "url": "http://localhost:4320/api/share-page?kind=result&id=d0bc9339b5763afe&format=png&v=2",
+          "status": 200,
+          "bytes": 64670,
+          "type": "image/png",
+          "dimensions": [
+            1200,
+            630
+          ]
+        }
+      },
+      {
+        "path": "/card/f14ee81345cc5b9c",
+        "status": "PASS",
+        "issues": [],
+        "httpStatus": 200,
+        "title": "Gold wins 145–139 | EraClash Basketball",
+        "canonical": "http://localhost:4320/card/f14ee81345cc5b9c",
+        "metas": {
+          "viewport": "width=device-width,initial-scale=1",
+          "description": "Clash Any Five · Final score — Kevin Durant: 45 PTS · 8 REB · 2 AST — Nikola Jokic: 38 PTS · 15 REB · 9 AST — Run it back with your five.",
+          "og:type": "website",
+          "og:site_name": "EraClash Basketball",
+          "og:title": "Gold wins 145–139",
+          "og:description": "Clash Any Five · Final score — Kevin Durant: 45 PTS · 8 REB · 2 AST — Nikola Jokic: 38 PTS · 15 REB · 9 AST — Run it back with your five.",
+          "og:url": "http://localhost:4320/card/f14ee81345cc5b9c",
+          "og:image": "http://localhost:4320/api/share-page?kind=result&id=f14ee81345cc5b9c&format=png&v=2",
+          "og:image:type": "image/png",
+          "og:image:width": "1200",
+          "og:image:height": "630",
+          "og:image:alt": "Clash Any Five · Final score — Kevin Durant: 45 PTS · 8 REB · 2 AST — Nikola Jokic: 38 PTS · 15 REB · 9 AST — Run it back with your five.",
+          "twitter:card": "summary_large_image",
+          "twitter:title": "Gold wins 145–139",
+          "twitter:description": "Clash Any Five · Final score — Kevin Durant: 45 PTS · 8 REB · 2 AST — Nikola Jokic: 38 PTS · 15 REB · 9 AST — Run it back with your five.",
+          "twitter:image": "http://localhost:4320/api/share-page?kind=result&id=f14ee81345cc5b9c&format=png&v=2"
+        },
+        "links": [
+          "/clash/any-five?rematch=f14ee81345cc5b9c",
+          "/",
+          "/privacy",
+          "/terms"
+        ],
+        "image": {
+          "url": "http://localhost:4320/api/share-page?kind=result&id=f14ee81345cc5b9c&format=png&v=2",
+          "status": 200,
+          "bytes": 65217,
+          "type": "image/png",
+          "dimensions": [
+            1200,
+            630
+          ]
+        }
+      },
+      {
+        "path": "/clash/all-time/atlanta-vs-boston",
+        "status": "PASS",
+        "issues": [],
+        "httpStatus": 200,
+        "title": "Atlanta Hawks vs Boston Celtics | EraClash Basketball",
+        "canonical": "http://localhost:4320/clash/all-time/atlanta-vs-boston",
+        "metas": {
+          "viewport": "width=device-width,initial-scale=1",
+          "description": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+          "og:type": "website",
+          "og:site_name": "EraClash Basketball",
+          "og:title": "Atlanta Hawks vs Boston Celtics",
+          "og:description": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+          "og:url": "http://localhost:4320/clash/all-time/atlanta-vs-boston",
+          "og:image": "http://localhost:4320/api/share-page?kind=franchise&id=atlanta-vs-boston&format=png&v=2",
+          "og:image:type": "image/png",
+          "og:image:width": "1200",
+          "og:image:height": "630",
+          "og:image:alt": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+          "twitter:card": "summary_large_image",
+          "twitter:title": "Atlanta Hawks vs Boston Celtics",
+          "twitter:description": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+          "twitter:image": "http://localhost:4320/api/share-page?kind=franchise&id=atlanta-vs-boston&format=png&v=2"
+        },
+        "links": [
+          "/clash/franchise?gold=atlanta&blue=boston&entry=control",
+          "/clash/franchise?gold=atlanta&blue=boston&entry=watch",
+          "https://www.nba.com/news/history-legend-dominique-wilkins",
+          "https://www.nba.com/news/history-nba-legend-bob-pettit",
+          "https://www.nba.com/news/history-nba-legend-bob-cousy",
+          "/clash/all-time/atlanta-vs-brooklyn",
+          "/clash/all-time/atlanta-vs-charlotte",
+          "/clash/all-time/atlanta-vs-chicago",
+          "/clash/all-time/atlanta-vs-cleveland",
+          "/clash/all-time/atlanta-vs-dallas",
+          "/clash/all-time/atlanta-vs-denver",
+          "/clash/all-time/atlanta-vs-detroit",
+          "/clash/all-time/atlanta-vs-golden-state",
+          "/clash/all-time/atlanta-vs-houston",
+          "/clash/all-time/atlanta-vs-indiana",
+          "/clash/all-time/atlanta-vs-la-clippers",
+          "/clash/all-time/atlanta-vs-la-lakers",
+          "/clash/all-time/atlanta-vs-memphis",
+          "/clash/all-time/atlanta-vs-miami",
+          "/clash/all-time/atlanta-vs-milwaukee",
+          "/clash/all-time/atlanta-vs-minnesota",
+          "/clash/all-time/atlanta-vs-new-orleans",
+          "/clash/all-time/atlanta-vs-new-york",
+          "/clash/all-time/atlanta-vs-oklahoma-city",
+          "/clash/all-time/atlanta-vs-orlando",
+          "/clash/all-time/atlanta-vs-philadelphia",
+          "/clash/all-time/atlanta-vs-phoenix",
+          "/clash/all-time/atlanta-vs-portland",
+          "/clash/all-time/atlanta-vs-sacramento",
+          "/clash/all-time/atlanta-vs-san-antonio",
+          "/clash/all-time/atlanta-vs-toronto",
+          "/clash/all-time/atlanta-vs-utah",
+          "/clash/all-time/atlanta-vs-washington",
+          "/clash/all-time/boston-vs-brooklyn",
+          "/clash/all-time/boston-vs-charlotte",
+          "/clash/all-time/boston-vs-chicago",
+          "/clash/all-time/boston-vs-cleveland",
+          "/clash/all-time/boston-vs-dallas",
+          "/clash/all-time/boston-vs-denver",
+          "/clash/all-time/boston-vs-detroit",
+          "/clash/all-time/boston-vs-golden-state",
+          "/clash/all-time/boston-vs-houston",
+          "/clash/all-time/boston-vs-indiana",
+          "/clash/all-time/boston-vs-la-clippers",
+          "/clash/all-time/boston-vs-la-lakers",
+          "/clash/all-time/boston-vs-memphis",
+          "/clash/all-time/boston-vs-miami",
+          "/clash/all-time/boston-vs-milwaukee",
+          "/clash/all-time/boston-vs-minnesota",
+          "/clash/all-time/boston-vs-new-orleans",
+          "/clash/all-time/boston-vs-new-york",
+          "/clash/all-time/boston-vs-oklahoma-city",
+          "/clash/all-time/boston-vs-orlando",
+          "/clash/all-time/boston-vs-philadelphia",
+          "/clash/all-time/boston-vs-phoenix",
+          "/clash/all-time/boston-vs-portland",
+          "/clash/all-time/boston-vs-sacramento",
+          "/clash/all-time/boston-vs-san-antonio",
+          "/clash/all-time/boston-vs-toronto",
+          "/clash/all-time/boston-vs-utah",
+          "/clash/all-time/boston-vs-washington",
+          "/",
+          "/privacy",
+          "/terms"
+        ],
+        "image": {
+          "url": "http://localhost:4320/api/share-page?kind=franchise&id=atlanta-vs-boston&format=png&v=2",
+          "status": 200,
+          "bytes": 63845,
+          "type": "image/png",
+          "dimensions": [
+            1200,
+            630
+          ]
+        }
+      },
+      {
+        "path": "/clash/all-time/atlanta-vs-la-lakers",
+        "status": "PASS",
+        "issues": [],
+        "httpStatus": 200,
+        "title": "Atlanta Hawks vs Los Angeles Lakers | EraClash Basketball",
+        "canonical": "http://localhost:4320/clash/all-time/atlanta-vs-la-lakers",
+        "metas": {
+          "viewport": "width=device-width,initial-scale=1",
+          "description": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+          "og:type": "website",
+          "og:site_name": "EraClash Basketball",
+          "og:title": "Atlanta Hawks vs Los Angeles Lakers",
+          "og:description": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+          "og:url": "http://localhost:4320/clash/all-time/atlanta-vs-la-lakers",
+          "og:image": "http://localhost:4320/api/share-page?kind=franchise&id=atlanta-vs-la-lakers&format=png&v=2",
+          "og:image:type": "image/png",
+          "og:image:width": "1200",
+          "og:image:height": "630",
+          "og:image:alt": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+          "twitter:card": "summary_large_image",
+          "twitter:title": "Atlanta Hawks vs Los Angeles Lakers",
+          "twitter:description": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+          "twitter:image": "http://localhost:4320/api/share-page?kind=franchise&id=atlanta-vs-la-lakers&format=png&v=2"
+        },
+        "links": [
+          "/clash/franchise?gold=atlanta&blue=la-lakers&entry=control",
+          "/clash/franchise?gold=atlanta&blue=la-lakers&entry=watch",
+          "https://www.nba.com/news/history-legend-dominique-wilkins",
+          "https://www.nba.com/news/history-nba-legend-bob-pettit",
+          "https://www.nba.com/news/history-nba-legend-magic-johnson",
+          "/clash/all-time/atlanta-vs-boston",
+          "/clash/all-time/atlanta-vs-brooklyn",
+          "/clash/all-time/atlanta-vs-charlotte",
+          "/clash/all-time/atlanta-vs-chicago",
+          "/clash/all-time/atlanta-vs-cleveland",
+          "/clash/all-time/atlanta-vs-dallas",
+          "/clash/all-time/atlanta-vs-denver",
+          "/clash/all-time/atlanta-vs-detroit",
+          "/clash/all-time/atlanta-vs-golden-state",
+          "/clash/all-time/atlanta-vs-houston",
+          "/clash/all-time/atlanta-vs-indiana",
+          "/clash/all-time/atlanta-vs-la-clippers",
+          "/clash/all-time/atlanta-vs-memphis",
+          "/clash/all-time/atlanta-vs-miami",
+          "/clash/all-time/atlanta-vs-milwaukee",
+          "/clash/all-time/atlanta-vs-minnesota",
+          "/clash/all-time/atlanta-vs-new-orleans",
+          "/clash/all-time/atlanta-vs-new-york",
+          "/clash/all-time/atlanta-vs-oklahoma-city",
+          "/clash/all-time/atlanta-vs-orlando",
+          "/clash/all-time/atlanta-vs-philadelphia",
+          "/clash/all-time/atlanta-vs-phoenix",
+          "/clash/all-time/atlanta-vs-portland",
+          "/clash/all-time/atlanta-vs-sacramento",
+          "/clash/all-time/atlanta-vs-san-antonio",
+          "/clash/all-time/atlanta-vs-toronto",
+          "/clash/all-time/atlanta-vs-utah",
+          "/clash/all-time/atlanta-vs-washington",
+          "/clash/all-time/boston-vs-la-lakers",
+          "/clash/all-time/brooklyn-vs-la-lakers",
+          "/clash/all-time/charlotte-vs-la-lakers",
+          "/clash/all-time/chicago-vs-la-lakers",
+          "/clash/all-time/cleveland-vs-la-lakers",
+          "/clash/all-time/dallas-vs-la-lakers",
+          "/clash/all-time/denver-vs-la-lakers",
+          "/clash/all-time/detroit-vs-la-lakers",
+          "/clash/all-time/golden-state-vs-la-lakers",
+          "/clash/all-time/houston-vs-la-lakers",
+          "/clash/all-time/indiana-vs-la-lakers",
+          "/clash/all-time/la-clippers-vs-la-lakers",
+          "/clash/all-time/la-lakers-vs-memphis",
+          "/clash/all-time/la-lakers-vs-miami",
+          "/clash/all-time/la-lakers-vs-milwaukee",
+          "/clash/all-time/la-lakers-vs-minnesota",
+          "/clash/all-time/la-lakers-vs-new-orleans",
+          "/clash/all-time/la-lakers-vs-new-york",
+          "/clash/all-time/la-lakers-vs-oklahoma-city",
+          "/clash/all-time/la-lakers-vs-orlando",
+          "/clash/all-time/la-lakers-vs-philadelphia",
+          "/clash/all-time/la-lakers-vs-phoenix",
+          "/clash/all-time/la-lakers-vs-portland",
+          "/clash/all-time/la-lakers-vs-sacramento",
+          "/clash/all-time/la-lakers-vs-san-antonio",
+          "/clash/all-time/la-lakers-vs-toronto",
+          "/clash/all-time/la-lakers-vs-utah",
+          "/clash/all-time/la-lakers-vs-washington",
+          "/",
+          "/privacy",
+          "/terms"
+        ],
+        "image": {
+          "url": "http://localhost:4320/api/share-page?kind=franchise&id=atlanta-vs-la-lakers&format=png&v=2",
+          "status": 200,
+          "bytes": 67841,
+          "type": "image/png",
+          "dimensions": [
+            1200,
+            630
+          ]
+        }
+      },
+      {
+        "path": "/clash/all-time/boston-vs-philadelphia",
+        "status": "PASS",
+        "issues": [],
+        "httpStatus": 200,
+        "title": "Boston Celtics vs Philadelphia 76ers | EraClash Basketball",
+        "canonical": "http://localhost:4320/clash/all-time/boston-vs-philadelphia",
+        "metas": {
+          "viewport": "width=device-width,initial-scale=1",
+          "description": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+          "og:type": "website",
+          "og:site_name": "EraClash Basketball",
+          "og:title": "Boston Celtics vs Philadelphia 76ers",
+          "og:description": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+          "og:url": "http://localhost:4320/clash/all-time/boston-vs-philadelphia",
+          "og:image": "http://localhost:4320/api/share-page?kind=franchise&id=boston-vs-philadelphia&format=png&v=2",
+          "og:image:type": "image/png",
+          "og:image:width": "1200",
+          "og:image:height": "630",
+          "og:image:alt": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+          "twitter:card": "summary_large_image",
+          "twitter:title": "Boston Celtics vs Philadelphia 76ers",
+          "twitter:description": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+          "twitter:image": "http://localhost:4320/api/share-page?kind=franchise&id=boston-vs-philadelphia&format=png&v=2"
+        },
+        "links": [
+          "/clash/franchise?gold=boston&blue=philadelphia&entry=control",
+          "/clash/franchise?gold=boston&blue=philadelphia&entry=watch",
+          "https://www.nba.com/news/history-nba-legend-bob-cousy",
+          "https://www.nba.com/news/history-nba-legend-julius-erving",
+          "/clash/all-time/atlanta-vs-boston",
+          "/clash/all-time/atlanta-vs-philadelphia",
+          "/clash/all-time/boston-vs-brooklyn",
+          "/clash/all-time/boston-vs-charlotte",
+          "/clash/all-time/boston-vs-chicago",
+          "/clash/all-time/boston-vs-cleveland",
+          "/clash/all-time/boston-vs-dallas",
+          "/clash/all-time/boston-vs-denver",
+          "/clash/all-time/boston-vs-detroit",
+          "/clash/all-time/boston-vs-golden-state",
+          "/clash/all-time/boston-vs-houston",
+          "/clash/all-time/boston-vs-indiana",
+          "/clash/all-time/boston-vs-la-clippers",
+          "/clash/all-time/boston-vs-la-lakers",
+          "/clash/all-time/boston-vs-memphis",
+          "/clash/all-time/boston-vs-miami",
+          "/clash/all-time/boston-vs-milwaukee",
+          "/clash/all-time/boston-vs-minnesota",
+          "/clash/all-time/boston-vs-new-orleans",
+          "/clash/all-time/boston-vs-new-york",
+          "/clash/all-time/boston-vs-oklahoma-city",
+          "/clash/all-time/boston-vs-orlando",
+          "/clash/all-time/boston-vs-phoenix",
+          "/clash/all-time/boston-vs-portland",
+          "/clash/all-time/boston-vs-sacramento",
+          "/clash/all-time/boston-vs-san-antonio",
+          "/clash/all-time/boston-vs-toronto",
+          "/clash/all-time/boston-vs-utah",
+          "/clash/all-time/boston-vs-washington",
+          "/clash/all-time/brooklyn-vs-philadelphia",
+          "/clash/all-time/charlotte-vs-philadelphia",
+          "/clash/all-time/chicago-vs-philadelphia",
+          "/clash/all-time/cleveland-vs-philadelphia",
+          "/clash/all-time/dallas-vs-philadelphia",
+          "/clash/all-time/denver-vs-philadelphia",
+          "/clash/all-time/detroit-vs-philadelphia",
+          "/clash/all-time/golden-state-vs-philadelphia",
+          "/clash/all-time/houston-vs-philadelphia",
+          "/clash/all-time/indiana-vs-philadelphia",
+          "/clash/all-time/la-clippers-vs-philadelphia",
+          "/clash/all-time/la-lakers-vs-philadelphia",
+          "/clash/all-time/memphis-vs-philadelphia",
+          "/clash/all-time/miami-vs-philadelphia",
+          "/clash/all-time/milwaukee-vs-philadelphia",
+          "/clash/all-time/minnesota-vs-philadelphia",
+          "/clash/all-time/new-orleans-vs-philadelphia",
+          "/clash/all-time/new-york-vs-philadelphia",
+          "/clash/all-time/oklahoma-city-vs-philadelphia",
+          "/clash/all-time/orlando-vs-philadelphia",
+          "/clash/all-time/philadelphia-vs-phoenix",
+          "/clash/all-time/philadelphia-vs-portland",
+          "/clash/all-time/philadelphia-vs-sacramento",
+          "/clash/all-time/philadelphia-vs-san-antonio",
+          "/clash/all-time/philadelphia-vs-toronto",
+          "/clash/all-time/philadelphia-vs-utah",
+          "/clash/all-time/philadelphia-vs-washington",
+          "/",
+          "/privacy",
+          "/terms"
+        ],
+        "image": {
+          "url": "http://localhost:4320/api/share-page?kind=franchise&id=boston-vs-philadelphia&format=png&v=2",
+          "status": 200,
+          "bytes": 65214,
+          "type": "image/png",
+          "dimensions": [
+            1200,
+            630
+          ]
+        }
+      },
+      {
+        "path": "/clash/all-time/charlotte-vs-detroit",
+        "status": "PASS",
+        "issues": [],
+        "httpStatus": 200,
+        "title": "Charlotte Hornets vs Detroit Pistons | EraClash Basketball",
+        "canonical": "http://localhost:4320/clash/all-time/charlotte-vs-detroit",
+        "metas": {
+          "viewport": "width=device-width,initial-scale=1",
+          "description": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+          "og:type": "website",
+          "og:site_name": "EraClash Basketball",
+          "og:title": "Charlotte Hornets vs Detroit Pistons",
+          "og:description": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+          "og:url": "http://localhost:4320/clash/all-time/charlotte-vs-detroit",
+          "og:image": "http://localhost:4320/api/share-page?kind=franchise&id=charlotte-vs-detroit&format=png&v=2",
+          "og:image:type": "image/png",
+          "og:image:width": "1200",
+          "og:image:height": "630",
+          "og:image:alt": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+          "twitter:card": "summary_large_image",
+          "twitter:title": "Charlotte Hornets vs Detroit Pistons",
+          "twitter:description": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+          "twitter:image": "http://localhost:4320/api/share-page?kind=franchise&id=charlotte-vs-detroit&format=png&v=2"
+        },
+        "links": [
+          "/clash/franchise?gold=charlotte&blue=detroit&entry=control",
+          "/clash/franchise?gold=charlotte&blue=detroit&entry=watch",
+          "https://www.nba.com/hornets/glen-rice-and-charlotte-hornets-crossed-paths-perfect-time-0",
+          "https://www.nba.com/heat/history/hall-fame-alonzo-mourning",
+          "https://www.nba.com/news/history-nba-legend-joe-dumars",
+          "/clash/all-time/atlanta-vs-charlotte",
+          "/clash/all-time/atlanta-vs-detroit",
+          "/clash/all-time/boston-vs-charlotte",
+          "/clash/all-time/boston-vs-detroit",
+          "/clash/all-time/brooklyn-vs-charlotte",
+          "/clash/all-time/brooklyn-vs-detroit",
+          "/clash/all-time/charlotte-vs-chicago",
+          "/clash/all-time/charlotte-vs-cleveland",
+          "/clash/all-time/charlotte-vs-dallas",
+          "/clash/all-time/charlotte-vs-denver",
+          "/clash/all-time/charlotte-vs-golden-state",
+          "/clash/all-time/charlotte-vs-houston",
+          "/clash/all-time/charlotte-vs-indiana",
+          "/clash/all-time/charlotte-vs-la-clippers",
+          "/clash/all-time/charlotte-vs-la-lakers",
+          "/clash/all-time/charlotte-vs-memphis",
+          "/clash/all-time/charlotte-vs-miami",
+          "/clash/all-time/charlotte-vs-milwaukee",
+          "/clash/all-time/charlotte-vs-minnesota",
+          "/clash/all-time/charlotte-vs-new-orleans",
+          "/clash/all-time/charlotte-vs-new-york",
+          "/clash/all-time/charlotte-vs-oklahoma-city",
+          "/clash/all-time/charlotte-vs-orlando",
+          "/clash/all-time/charlotte-vs-philadelphia",
+          "/clash/all-time/charlotte-vs-phoenix",
+          "/clash/all-time/charlotte-vs-portland",
+          "/clash/all-time/charlotte-vs-sacramento",
+          "/clash/all-time/charlotte-vs-san-antonio",
+          "/clash/all-time/charlotte-vs-toronto",
+          "/clash/all-time/charlotte-vs-utah",
+          "/clash/all-time/charlotte-vs-washington",
+          "/clash/all-time/chicago-vs-detroit",
+          "/clash/all-time/cleveland-vs-detroit",
+          "/clash/all-time/dallas-vs-detroit",
+          "/clash/all-time/denver-vs-detroit",
+          "/clash/all-time/detroit-vs-golden-state",
+          "/clash/all-time/detroit-vs-houston",
+          "/clash/all-time/detroit-vs-indiana",
+          "/clash/all-time/detroit-vs-la-clippers",
+          "/clash/all-time/detroit-vs-la-lakers",
+          "/clash/all-time/detroit-vs-memphis",
+          "/clash/all-time/detroit-vs-miami",
+          "/clash/all-time/detroit-vs-milwaukee",
+          "/clash/all-time/detroit-vs-minnesota",
+          "/clash/all-time/detroit-vs-new-orleans",
+          "/clash/all-time/detroit-vs-new-york",
+          "/clash/all-time/detroit-vs-oklahoma-city",
+          "/clash/all-time/detroit-vs-orlando",
+          "/clash/all-time/detroit-vs-philadelphia",
+          "/clash/all-time/detroit-vs-phoenix",
+          "/clash/all-time/detroit-vs-portland",
+          "/clash/all-time/detroit-vs-sacramento",
+          "/clash/all-time/detroit-vs-san-antonio",
+          "/clash/all-time/detroit-vs-toronto",
+          "/clash/all-time/detroit-vs-utah",
+          "/clash/all-time/detroit-vs-washington",
+          "/",
+          "/privacy",
+          "/terms"
+        ],
+        "image": {
+          "url": "http://localhost:4320/api/share-page?kind=franchise&id=charlotte-vs-detroit&format=png&v=2",
+          "status": 200,
+          "bytes": 65425,
+          "type": "image/png",
+          "dimensions": [
+            1200,
+            630
+          ]
+        }
+      },
+      {
+        "path": "/clash/all-time/chicago-vs-utah",
+        "status": "PASS",
+        "issues": [],
+        "httpStatus": 200,
+        "title": "Chicago Bulls vs Utah Jazz | EraClash Basketball",
+        "canonical": "http://localhost:4320/clash/all-time/chicago-vs-utah",
+        "metas": {
+          "viewport": "width=device-width,initial-scale=1",
+          "description": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+          "og:type": "website",
+          "og:site_name": "EraClash Basketball",
+          "og:title": "Chicago Bulls vs Utah Jazz",
+          "og:description": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+          "og:url": "http://localhost:4320/clash/all-time/chicago-vs-utah",
+          "og:image": "http://localhost:4320/api/share-page?kind=franchise&id=chicago-vs-utah&format=png&v=2",
+          "og:image:type": "image/png",
+          "og:image:width": "1200",
+          "og:image:height": "630",
+          "og:image:alt": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+          "twitter:card": "summary_large_image",
+          "twitter:title": "Chicago Bulls vs Utah Jazz",
+          "twitter:description": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+          "twitter:image": "http://localhost:4320/api/share-page?kind=franchise&id=chicago-vs-utah&format=png&v=2"
+        },
+        "links": [
+          "/clash/franchise?gold=chicago&blue=utah&entry=control",
+          "/clash/franchise?gold=chicago&blue=utah&entry=watch",
+          "https://www.nba.com/news/history-nba-legend-michael-jordan",
+          "https://www.nba.com/news/history-nba-legend-karl-malone",
+          "/clash/all-time/atlanta-vs-chicago",
+          "/clash/all-time/atlanta-vs-utah",
+          "/clash/all-time/boston-vs-chicago",
+          "/clash/all-time/boston-vs-utah",
+          "/clash/all-time/brooklyn-vs-chicago",
+          "/clash/all-time/brooklyn-vs-utah",
+          "/clash/all-time/charlotte-vs-chicago",
+          "/clash/all-time/charlotte-vs-utah",
+          "/clash/all-time/chicago-vs-cleveland",
+          "/clash/all-time/chicago-vs-dallas",
+          "/clash/all-time/chicago-vs-denver",
+          "/clash/all-time/chicago-vs-detroit",
+          "/clash/all-time/chicago-vs-golden-state",
+          "/clash/all-time/chicago-vs-houston",
+          "/clash/all-time/chicago-vs-indiana",
+          "/clash/all-time/chicago-vs-la-clippers",
+          "/clash/all-time/chicago-vs-la-lakers",
+          "/clash/all-time/chicago-vs-memphis",
+          "/clash/all-time/chicago-vs-miami",
+          "/clash/all-time/chicago-vs-milwaukee",
+          "/clash/all-time/chicago-vs-minnesota",
+          "/clash/all-time/chicago-vs-new-orleans",
+          "/clash/all-time/chicago-vs-new-york",
+          "/clash/all-time/chicago-vs-oklahoma-city",
+          "/clash/all-time/chicago-vs-orlando",
+          "/clash/all-time/chicago-vs-philadelphia",
+          "/clash/all-time/chicago-vs-phoenix",
+          "/clash/all-time/chicago-vs-portland",
+          "/clash/all-time/chicago-vs-sacramento",
+          "/clash/all-time/chicago-vs-san-antonio",
+          "/clash/all-time/chicago-vs-toronto",
+          "/clash/all-time/chicago-vs-washington",
+          "/clash/all-time/cleveland-vs-utah",
+          "/clash/all-time/dallas-vs-utah",
+          "/clash/all-time/denver-vs-utah",
+          "/clash/all-time/detroit-vs-utah",
+          "/clash/all-time/golden-state-vs-utah",
+          "/clash/all-time/houston-vs-utah",
+          "/clash/all-time/indiana-vs-utah",
+          "/clash/all-time/la-clippers-vs-utah",
+          "/clash/all-time/la-lakers-vs-utah",
+          "/clash/all-time/memphis-vs-utah",
+          "/clash/all-time/miami-vs-utah",
+          "/clash/all-time/milwaukee-vs-utah",
+          "/clash/all-time/minnesota-vs-utah",
+          "/clash/all-time/new-orleans-vs-utah",
+          "/clash/all-time/new-york-vs-utah",
+          "/clash/all-time/oklahoma-city-vs-utah",
+          "/clash/all-time/orlando-vs-utah",
+          "/clash/all-time/philadelphia-vs-utah",
+          "/clash/all-time/phoenix-vs-utah",
+          "/clash/all-time/portland-vs-utah",
+          "/clash/all-time/sacramento-vs-utah",
+          "/clash/all-time/san-antonio-vs-utah",
+          "/clash/all-time/toronto-vs-utah",
+          "/clash/all-time/utah-vs-washington",
+          "/",
+          "/privacy",
+          "/terms"
+        ],
+        "image": {
+          "url": "http://localhost:4320/api/share-page?kind=franchise&id=chicago-vs-utah&format=png&v=2",
+          "status": 200,
+          "bytes": 62630,
+          "type": "image/png",
+          "dimensions": [
+            1200,
+            630
+          ]
+        }
+      },
+      {
+        "path": "/clash/all-time/dallas-vs-sacramento",
+        "status": "PASS",
+        "issues": [],
+        "httpStatus": 200,
+        "title": "Dallas Mavericks vs Sacramento Kings | EraClash Basketball",
+        "canonical": "http://localhost:4320/clash/all-time/dallas-vs-sacramento",
+        "metas": {
+          "viewport": "width=device-width,initial-scale=1",
+          "description": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+          "og:type": "website",
+          "og:site_name": "EraClash Basketball",
+          "og:title": "Dallas Mavericks vs Sacramento Kings",
+          "og:description": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+          "og:url": "http://localhost:4320/clash/all-time/dallas-vs-sacramento",
+          "og:image": "http://localhost:4320/api/share-page?kind=franchise&id=dallas-vs-sacramento&format=png&v=2",
+          "og:image:type": "image/png",
+          "og:image:width": "1200",
+          "og:image:height": "630",
+          "og:image:alt": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+          "twitter:card": "summary_large_image",
+          "twitter:title": "Dallas Mavericks vs Sacramento Kings",
+          "twitter:description": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+          "twitter:image": "http://localhost:4320/api/share-page?kind=franchise&id=dallas-vs-sacramento&format=png&v=2"
+        },
+        "links": [
+          "/clash/franchise?gold=dallas&blue=sacramento&entry=control",
+          "/clash/franchise?gold=dallas&blue=sacramento&entry=watch",
+          "https://www.nba.com/news/archive-75-dirk-nowitzki",
+          "https://www.nba.com/news/history-nba-legend-oscar-robertson",
+          "/clash/all-time/atlanta-vs-dallas",
+          "/clash/all-time/atlanta-vs-sacramento",
+          "/clash/all-time/boston-vs-dallas",
+          "/clash/all-time/boston-vs-sacramento",
+          "/clash/all-time/brooklyn-vs-dallas",
+          "/clash/all-time/brooklyn-vs-sacramento",
+          "/clash/all-time/charlotte-vs-dallas",
+          "/clash/all-time/charlotte-vs-sacramento",
+          "/clash/all-time/chicago-vs-dallas",
+          "/clash/all-time/chicago-vs-sacramento",
+          "/clash/all-time/cleveland-vs-dallas",
+          "/clash/all-time/cleveland-vs-sacramento",
+          "/clash/all-time/dallas-vs-denver",
+          "/clash/all-time/dallas-vs-detroit",
+          "/clash/all-time/dallas-vs-golden-state",
+          "/clash/all-time/dallas-vs-houston",
+          "/clash/all-time/dallas-vs-indiana",
+          "/clash/all-time/dallas-vs-la-clippers",
+          "/clash/all-time/dallas-vs-la-lakers",
+          "/clash/all-time/dallas-vs-memphis",
+          "/clash/all-time/dallas-vs-miami",
+          "/clash/all-time/dallas-vs-milwaukee",
+          "/clash/all-time/dallas-vs-minnesota",
+          "/clash/all-time/dallas-vs-new-orleans",
+          "/clash/all-time/dallas-vs-new-york",
+          "/clash/all-time/dallas-vs-oklahoma-city",
+          "/clash/all-time/dallas-vs-orlando",
+          "/clash/all-time/dallas-vs-philadelphia",
+          "/clash/all-time/dallas-vs-phoenix",
+          "/clash/all-time/dallas-vs-portland",
+          "/clash/all-time/dallas-vs-san-antonio",
+          "/clash/all-time/dallas-vs-toronto",
+          "/clash/all-time/dallas-vs-utah",
+          "/clash/all-time/dallas-vs-washington",
+          "/clash/all-time/denver-vs-sacramento",
+          "/clash/all-time/detroit-vs-sacramento",
+          "/clash/all-time/golden-state-vs-sacramento",
+          "/clash/all-time/houston-vs-sacramento",
+          "/clash/all-time/indiana-vs-sacramento",
+          "/clash/all-time/la-clippers-vs-sacramento",
+          "/clash/all-time/la-lakers-vs-sacramento",
+          "/clash/all-time/memphis-vs-sacramento",
+          "/clash/all-time/miami-vs-sacramento",
+          "/clash/all-time/milwaukee-vs-sacramento",
+          "/clash/all-time/minnesota-vs-sacramento",
+          "/clash/all-time/new-orleans-vs-sacramento",
+          "/clash/all-time/new-york-vs-sacramento",
+          "/clash/all-time/oklahoma-city-vs-sacramento",
+          "/clash/all-time/orlando-vs-sacramento",
+          "/clash/all-time/philadelphia-vs-sacramento",
+          "/clash/all-time/phoenix-vs-sacramento",
+          "/clash/all-time/portland-vs-sacramento",
+          "/clash/all-time/sacramento-vs-san-antonio",
+          "/clash/all-time/sacramento-vs-toronto",
+          "/clash/all-time/sacramento-vs-utah",
+          "/clash/all-time/sacramento-vs-washington",
+          "/",
+          "/privacy",
+          "/terms"
+        ],
+        "image": {
+          "url": "http://localhost:4320/api/share-page?kind=franchise&id=dallas-vs-sacramento&format=png&v=2",
+          "status": 200,
+          "bytes": 70399,
+          "type": "image/png",
+          "dimensions": [
+            1200,
+            630
+          ]
+        }
+      },
+      {
+        "path": "/clash/all-time/detroit-vs-sacramento",
+        "status": "PASS",
+        "issues": [],
+        "httpStatus": 200,
+        "title": "Detroit Pistons vs Sacramento Kings | EraClash Basketball",
+        "canonical": "http://localhost:4320/clash/all-time/detroit-vs-sacramento",
+        "metas": {
+          "viewport": "width=device-width,initial-scale=1",
+          "description": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+          "og:type": "website",
+          "og:site_name": "EraClash Basketball",
+          "og:title": "Detroit Pistons vs Sacramento Kings",
+          "og:description": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+          "og:url": "http://localhost:4320/clash/all-time/detroit-vs-sacramento",
+          "og:image": "http://localhost:4320/api/share-page?kind=franchise&id=detroit-vs-sacramento&format=png&v=2",
+          "og:image:type": "image/png",
+          "og:image:width": "1200",
+          "og:image:height": "630",
+          "og:image:alt": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+          "twitter:card": "summary_large_image",
+          "twitter:title": "Detroit Pistons vs Sacramento Kings",
+          "twitter:description": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+          "twitter:image": "http://localhost:4320/api/share-page?kind=franchise&id=detroit-vs-sacramento&format=png&v=2"
+        },
+        "links": [
+          "/clash/franchise?gold=detroit&blue=sacramento&entry=control",
+          "/clash/franchise?gold=detroit&blue=sacramento&entry=watch",
+          "https://www.nba.com/news/history-nba-legend-joe-dumars",
+          "https://www.nba.com/news/history-nba-legend-oscar-robertson",
+          "/clash/all-time/atlanta-vs-detroit",
+          "/clash/all-time/atlanta-vs-sacramento",
+          "/clash/all-time/boston-vs-detroit",
+          "/clash/all-time/boston-vs-sacramento",
+          "/clash/all-time/brooklyn-vs-detroit",
+          "/clash/all-time/brooklyn-vs-sacramento",
+          "/clash/all-time/charlotte-vs-detroit",
+          "/clash/all-time/charlotte-vs-sacramento",
+          "/clash/all-time/chicago-vs-detroit",
+          "/clash/all-time/chicago-vs-sacramento",
+          "/clash/all-time/cleveland-vs-detroit",
+          "/clash/all-time/cleveland-vs-sacramento",
+          "/clash/all-time/dallas-vs-detroit",
+          "/clash/all-time/dallas-vs-sacramento",
+          "/clash/all-time/denver-vs-detroit",
+          "/clash/all-time/denver-vs-sacramento",
+          "/clash/all-time/detroit-vs-golden-state",
+          "/clash/all-time/detroit-vs-houston",
+          "/clash/all-time/detroit-vs-indiana",
+          "/clash/all-time/detroit-vs-la-clippers",
+          "/clash/all-time/detroit-vs-la-lakers",
+          "/clash/all-time/detroit-vs-memphis",
+          "/clash/all-time/detroit-vs-miami",
+          "/clash/all-time/detroit-vs-milwaukee",
+          "/clash/all-time/detroit-vs-minnesota",
+          "/clash/all-time/detroit-vs-new-orleans",
+          "/clash/all-time/detroit-vs-new-york",
+          "/clash/all-time/detroit-vs-oklahoma-city",
+          "/clash/all-time/detroit-vs-orlando",
+          "/clash/all-time/detroit-vs-philadelphia",
+          "/clash/all-time/detroit-vs-phoenix",
+          "/clash/all-time/detroit-vs-portland",
+          "/clash/all-time/detroit-vs-san-antonio",
+          "/clash/all-time/detroit-vs-toronto",
+          "/clash/all-time/detroit-vs-utah",
+          "/clash/all-time/detroit-vs-washington",
+          "/clash/all-time/golden-state-vs-sacramento",
+          "/clash/all-time/houston-vs-sacramento",
+          "/clash/all-time/indiana-vs-sacramento",
+          "/clash/all-time/la-clippers-vs-sacramento",
+          "/clash/all-time/la-lakers-vs-sacramento",
+          "/clash/all-time/memphis-vs-sacramento",
+          "/clash/all-time/miami-vs-sacramento",
+          "/clash/all-time/milwaukee-vs-sacramento",
+          "/clash/all-time/minnesota-vs-sacramento",
+          "/clash/all-time/new-orleans-vs-sacramento",
+          "/clash/all-time/new-york-vs-sacramento",
+          "/clash/all-time/oklahoma-city-vs-sacramento",
+          "/clash/all-time/orlando-vs-sacramento",
+          "/clash/all-time/philadelphia-vs-sacramento",
+          "/clash/all-time/phoenix-vs-sacramento",
+          "/clash/all-time/portland-vs-sacramento",
+          "/clash/all-time/sacramento-vs-san-antonio",
+          "/clash/all-time/sacramento-vs-toronto",
+          "/clash/all-time/sacramento-vs-utah",
+          "/clash/all-time/sacramento-vs-washington",
+          "/",
+          "/privacy",
+          "/terms"
+        ],
+        "image": {
+          "url": "http://localhost:4320/api/share-page?kind=franchise&id=detroit-vs-sacramento&format=png&v=2",
+          "status": 200,
+          "bytes": 67688,
+          "type": "image/png",
+          "dimensions": [
+            1200,
+            630
+          ]
+        }
+      },
+      {
+        "path": "/clash/all-time/indiana-vs-la-lakers",
+        "status": "PASS",
+        "issues": [],
+        "httpStatus": 200,
+        "title": "Indiana Pacers vs Los Angeles Lakers | EraClash Basketball",
+        "canonical": "http://localhost:4320/clash/all-time/indiana-vs-la-lakers",
+        "metas": {
+          "viewport": "width=device-width,initial-scale=1",
+          "description": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+          "og:type": "website",
+          "og:site_name": "EraClash Basketball",
+          "og:title": "Indiana Pacers vs Los Angeles Lakers",
+          "og:description": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+          "og:url": "http://localhost:4320/clash/all-time/indiana-vs-la-lakers",
+          "og:image": "http://localhost:4320/api/share-page?kind=franchise&id=indiana-vs-la-lakers&format=png&v=2",
+          "og:image:type": "image/png",
+          "og:image:width": "1200",
+          "og:image:height": "630",
+          "og:image:alt": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+          "twitter:card": "summary_large_image",
+          "twitter:title": "Indiana Pacers vs Los Angeles Lakers",
+          "twitter:description": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+          "twitter:image": "http://localhost:4320/api/share-page?kind=franchise&id=indiana-vs-la-lakers&format=png&v=2"
+        },
+        "links": [
+          "/clash/franchise?gold=indiana&blue=la-lakers&entry=control",
+          "/clash/franchise?gold=indiana&blue=la-lakers&entry=watch",
+          "https://www.nba.com/news/history-nba-legend-reggie-miller",
+          "https://www.nba.com/news/history-nba-legend-magic-johnson",
+          "/clash/all-time/atlanta-vs-indiana",
+          "/clash/all-time/atlanta-vs-la-lakers",
+          "/clash/all-time/boston-vs-indiana",
+          "/clash/all-time/boston-vs-la-lakers",
+          "/clash/all-time/brooklyn-vs-indiana",
+          "/clash/all-time/brooklyn-vs-la-lakers",
+          "/clash/all-time/charlotte-vs-indiana",
+          "/clash/all-time/charlotte-vs-la-lakers",
+          "/clash/all-time/chicago-vs-indiana",
+          "/clash/all-time/chicago-vs-la-lakers",
+          "/clash/all-time/cleveland-vs-indiana",
+          "/clash/all-time/cleveland-vs-la-lakers",
+          "/clash/all-time/dallas-vs-indiana",
+          "/clash/all-time/dallas-vs-la-lakers",
+          "/clash/all-time/denver-vs-indiana",
+          "/clash/all-time/denver-vs-la-lakers",
+          "/clash/all-time/detroit-vs-indiana",
+          "/clash/all-time/detroit-vs-la-lakers",
+          "/clash/all-time/golden-state-vs-indiana",
+          "/clash/all-time/golden-state-vs-la-lakers",
+          "/clash/all-time/houston-vs-indiana",
+          "/clash/all-time/houston-vs-la-lakers",
+          "/clash/all-time/indiana-vs-la-clippers",
+          "/clash/all-time/indiana-vs-memphis",
+          "/clash/all-time/indiana-vs-miami",
+          "/clash/all-time/indiana-vs-milwaukee",
+          "/clash/all-time/indiana-vs-minnesota",
+          "/clash/all-time/indiana-vs-new-orleans",
+          "/clash/all-time/indiana-vs-new-york",
+          "/clash/all-time/indiana-vs-oklahoma-city",
+          "/clash/all-time/indiana-vs-orlando",
+          "/clash/all-time/indiana-vs-philadelphia",
+          "/clash/all-time/indiana-vs-phoenix",
+          "/clash/all-time/indiana-vs-portland",
+          "/clash/all-time/indiana-vs-sacramento",
+          "/clash/all-time/indiana-vs-san-antonio",
+          "/clash/all-time/indiana-vs-toronto",
+          "/clash/all-time/indiana-vs-utah",
+          "/clash/all-time/indiana-vs-washington",
+          "/clash/all-time/la-clippers-vs-la-lakers",
+          "/clash/all-time/la-lakers-vs-memphis",
+          "/clash/all-time/la-lakers-vs-miami",
+          "/clash/all-time/la-lakers-vs-milwaukee",
+          "/clash/all-time/la-lakers-vs-minnesota",
+          "/clash/all-time/la-lakers-vs-new-orleans",
+          "/clash/all-time/la-lakers-vs-new-york",
+          "/clash/all-time/la-lakers-vs-oklahoma-city",
+          "/clash/all-time/la-lakers-vs-orlando",
+          "/clash/all-time/la-lakers-vs-philadelphia",
+          "/clash/all-time/la-lakers-vs-phoenix",
+          "/clash/all-time/la-lakers-vs-portland",
+          "/clash/all-time/la-lakers-vs-sacramento",
+          "/clash/all-time/la-lakers-vs-san-antonio",
+          "/clash/all-time/la-lakers-vs-toronto",
+          "/clash/all-time/la-lakers-vs-utah",
+          "/clash/all-time/la-lakers-vs-washington",
+          "/",
+          "/privacy",
+          "/terms"
+        ],
+        "image": {
+          "url": "http://localhost:4320/api/share-page?kind=franchise&id=indiana-vs-la-lakers&format=png&v=2",
+          "status": 200,
+          "bytes": 67948,
+          "type": "image/png",
+          "dimensions": [
+            1200,
+            630
+          ]
+        }
+      },
+      {
+        "path": "/clash/all-time/memphis-vs-orlando",
+        "status": "PASS",
+        "issues": [],
+        "httpStatus": 200,
+        "title": "Memphis Grizzlies vs Orlando Magic | EraClash Basketball",
+        "canonical": "http://localhost:4320/clash/all-time/memphis-vs-orlando",
+        "metas": {
+          "viewport": "width=device-width,initial-scale=1",
+          "description": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+          "og:type": "website",
+          "og:site_name": "EraClash Basketball",
+          "og:title": "Memphis Grizzlies vs Orlando Magic",
+          "og:description": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+          "og:url": "http://localhost:4320/clash/all-time/memphis-vs-orlando",
+          "og:image": "http://localhost:4320/api/share-page?kind=franchise&id=memphis-vs-orlando&format=png&v=2",
+          "og:image:type": "image/png",
+          "og:image:width": "1200",
+          "og:image:height": "630",
+          "og:image:alt": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+          "twitter:card": "summary_large_image",
+          "twitter:title": "Memphis Grizzlies vs Orlando Magic",
+          "twitter:description": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+          "twitter:image": "http://localhost:4320/api/share-page?kind=franchise&id=memphis-vs-orlando&format=png&v=2"
+        },
+        "links": [
+          "/clash/franchise?gold=memphis&blue=orlando&entry=control",
+          "/clash/franchise?gold=memphis&blue=orlando&entry=watch",
+          "https://www.nba.com/team/1610612763",
+          "https://www.nba.com/team/1610612763/franchise-leaders",
+          "https://www.nba.com/team/1610612753/franchise-leaders",
+          "/clash/all-time/atlanta-vs-memphis",
+          "/clash/all-time/atlanta-vs-orlando",
+          "/clash/all-time/boston-vs-memphis",
+          "/clash/all-time/boston-vs-orlando",
+          "/clash/all-time/brooklyn-vs-memphis",
+          "/clash/all-time/brooklyn-vs-orlando",
+          "/clash/all-time/charlotte-vs-memphis",
+          "/clash/all-time/charlotte-vs-orlando",
+          "/clash/all-time/chicago-vs-memphis",
+          "/clash/all-time/chicago-vs-orlando",
+          "/clash/all-time/cleveland-vs-memphis",
+          "/clash/all-time/cleveland-vs-orlando",
+          "/clash/all-time/dallas-vs-memphis",
+          "/clash/all-time/dallas-vs-orlando",
+          "/clash/all-time/denver-vs-memphis",
+          "/clash/all-time/denver-vs-orlando",
+          "/clash/all-time/detroit-vs-memphis",
+          "/clash/all-time/detroit-vs-orlando",
+          "/clash/all-time/golden-state-vs-memphis",
+          "/clash/all-time/golden-state-vs-orlando",
+          "/clash/all-time/houston-vs-memphis",
+          "/clash/all-time/houston-vs-orlando",
+          "/clash/all-time/indiana-vs-memphis",
+          "/clash/all-time/indiana-vs-orlando",
+          "/clash/all-time/la-clippers-vs-memphis",
+          "/clash/all-time/la-clippers-vs-orlando",
+          "/clash/all-time/la-lakers-vs-memphis",
+          "/clash/all-time/la-lakers-vs-orlando",
+          "/clash/all-time/memphis-vs-miami",
+          "/clash/all-time/memphis-vs-milwaukee",
+          "/clash/all-time/memphis-vs-minnesota",
+          "/clash/all-time/memphis-vs-new-orleans",
+          "/clash/all-time/memphis-vs-new-york",
+          "/clash/all-time/memphis-vs-oklahoma-city",
+          "/clash/all-time/memphis-vs-philadelphia",
+          "/clash/all-time/memphis-vs-phoenix",
+          "/clash/all-time/memphis-vs-portland",
+          "/clash/all-time/memphis-vs-sacramento",
+          "/clash/all-time/memphis-vs-san-antonio",
+          "/clash/all-time/memphis-vs-toronto",
+          "/clash/all-time/memphis-vs-utah",
+          "/clash/all-time/memphis-vs-washington",
+          "/clash/all-time/miami-vs-orlando",
+          "/clash/all-time/milwaukee-vs-orlando",
+          "/clash/all-time/minnesota-vs-orlando",
+          "/clash/all-time/new-orleans-vs-orlando",
+          "/clash/all-time/new-york-vs-orlando",
+          "/clash/all-time/oklahoma-city-vs-orlando",
+          "/clash/all-time/orlando-vs-philadelphia",
+          "/clash/all-time/orlando-vs-phoenix",
+          "/clash/all-time/orlando-vs-portland",
+          "/clash/all-time/orlando-vs-sacramento",
+          "/clash/all-time/orlando-vs-san-antonio",
+          "/clash/all-time/orlando-vs-toronto",
+          "/clash/all-time/orlando-vs-utah",
+          "/clash/all-time/orlando-vs-washington",
+          "/",
+          "/privacy",
+          "/terms"
+        ],
+        "image": {
+          "url": "http://localhost:4320/api/share-page?kind=franchise&id=memphis-vs-orlando&format=png&v=2",
+          "status": 200,
+          "bytes": 66934,
+          "type": "image/png",
+          "dimensions": [
+            1200,
+            630
+          ]
+        }
+      },
+      {
+        "path": "/clash/all-time/utah-vs-washington",
+        "status": "PASS",
+        "issues": [],
+        "httpStatus": 200,
+        "title": "Utah Jazz vs Washington Wizards | EraClash Basketball",
+        "canonical": "http://localhost:4320/clash/all-time/utah-vs-washington",
+        "metas": {
+          "viewport": "width=device-width,initial-scale=1",
+          "description": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+          "og:type": "website",
+          "og:site_name": "EraClash Basketball",
+          "og:title": "Utah Jazz vs Washington Wizards",
+          "og:description": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+          "og:url": "http://localhost:4320/clash/all-time/utah-vs-washington",
+          "og:image": "http://localhost:4320/api/share-page?kind=franchise&id=utah-vs-washington&format=png&v=2",
+          "og:image:type": "image/png",
+          "og:image:width": "1200",
+          "og:image:height": "630",
+          "og:image:alt": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+          "twitter:card": "summary_large_image",
+          "twitter:title": "Utah Jazz vs Washington Wizards",
+          "twitter:description": "Curated all-time fives · A simulation preview, not a played result — Take control.",
+          "twitter:image": "http://localhost:4320/api/share-page?kind=franchise&id=utah-vs-washington&format=png&v=2"
+        },
+        "links": [
+          "/clash/franchise?gold=utah&blue=washington&entry=control",
+          "/clash/franchise?gold=utah&blue=washington&entry=watch",
+          "https://www.nba.com/news/history-nba-legend-karl-malone",
+          "https://www.nba.com/news/history-nba-legend-wes-unseld",
+          "/clash/all-time/atlanta-vs-utah",
+          "/clash/all-time/atlanta-vs-washington",
+          "/clash/all-time/boston-vs-utah",
+          "/clash/all-time/boston-vs-washington",
+          "/clash/all-time/brooklyn-vs-utah",
+          "/clash/all-time/brooklyn-vs-washington",
+          "/clash/all-time/charlotte-vs-utah",
+          "/clash/all-time/charlotte-vs-washington",
+          "/clash/all-time/chicago-vs-utah",
+          "/clash/all-time/chicago-vs-washington",
+          "/clash/all-time/cleveland-vs-utah",
+          "/clash/all-time/cleveland-vs-washington",
+          "/clash/all-time/dallas-vs-utah",
+          "/clash/all-time/dallas-vs-washington",
+          "/clash/all-time/denver-vs-utah",
+          "/clash/all-time/denver-vs-washington",
+          "/clash/all-time/detroit-vs-utah",
+          "/clash/all-time/detroit-vs-washington",
+          "/clash/all-time/golden-state-vs-utah",
+          "/clash/all-time/golden-state-vs-washington",
+          "/clash/all-time/houston-vs-utah",
+          "/clash/all-time/houston-vs-washington",
+          "/clash/all-time/indiana-vs-utah",
+          "/clash/all-time/indiana-vs-washington",
+          "/clash/all-time/la-clippers-vs-utah",
+          "/clash/all-time/la-clippers-vs-washington",
+          "/clash/all-time/la-lakers-vs-utah",
+          "/clash/all-time/la-lakers-vs-washington",
+          "/clash/all-time/memphis-vs-utah",
+          "/clash/all-time/memphis-vs-washington",
+          "/clash/all-time/miami-vs-utah",
+          "/clash/all-time/miami-vs-washington",
+          "/clash/all-time/milwaukee-vs-utah",
+          "/clash/all-time/milwaukee-vs-washington",
+          "/clash/all-time/minnesota-vs-utah",
+          "/clash/all-time/minnesota-vs-washington",
+          "/clash/all-time/new-orleans-vs-utah",
+          "/clash/all-time/new-orleans-vs-washington",
+          "/clash/all-time/new-york-vs-utah",
+          "/clash/all-time/new-york-vs-washington",
+          "/clash/all-time/oklahoma-city-vs-utah",
+          "/clash/all-time/oklahoma-city-vs-washington",
+          "/clash/all-time/orlando-vs-utah",
+          "/clash/all-time/orlando-vs-washington",
+          "/clash/all-time/philadelphia-vs-utah",
+          "/clash/all-time/philadelphia-vs-washington",
+          "/clash/all-time/phoenix-vs-utah",
+          "/clash/all-time/phoenix-vs-washington",
+          "/clash/all-time/portland-vs-utah",
+          "/clash/all-time/portland-vs-washington",
+          "/clash/all-time/sacramento-vs-utah",
+          "/clash/all-time/sacramento-vs-washington",
+          "/clash/all-time/san-antonio-vs-utah",
+          "/clash/all-time/san-antonio-vs-washington",
+          "/clash/all-time/toronto-vs-utah",
+          "/clash/all-time/toronto-vs-washington",
+          "/",
+          "/privacy",
+          "/terms"
+        ],
+        "image": {
+          "url": "http://localhost:4320/api/share-page?kind=franchise&id=utah-vs-washington&format=png&v=2",
+          "status": 200,
+          "bytes": 64633,
+          "type": "image/png",
+          "dimensions": [
+            1200,
+            630
+          ]
+        }
+      }
+    ],
+    "sitemap": {
+      "path": "/sitemap.xml",
+      "httpStatus": 200,
+      "entries": 435,
+      "unique": 435,
+      "origins": [
+        "http://localhost:4320"
+      ],
+      "sha256": "06dd3fe01a847e3b9bc1051e66ada650f9bab399d805d5343059582b7da52090",
+      "status": "PASS"
+    },
+    "notFound": [
+      {
+        "path": "/this-page-does-not-exist-browser-audit",
+        "httpStatus": 404,
+        "status": "PASS",
+        "bodyHasNotice": true
+      },
+      {
+        "path": "/clash/all-time/not-a-real-franchise-pairing",
+        "httpStatus": 404,
+        "status": "PASS",
+        "bodyHasNotice": true
+      },
+      {
+        "path": "/card/zzzzzzzzzzzzzzzzzzzzzzzz",
+        "httpStatus": 404,
+        "status": "PASS",
+        "bodyHasNotice": true
+      }
+    ]
+  },
+  "sharing": {
+    "normalReport": "/private/tmp/eraclash-run3-final-20261002/data/validation/loop-foundation/sharing/run3-independent-dc926ad/report.json",
+    "neutralReport": "/private/tmp/eraclash-run3-final-20261002/data/validation/loop-foundation/sharing/run3-independent-dc926ad-neutral-on/report.json",
+    "normalChecks": 102,
+    "normalPassedChecks": 102,
+    "neutralChecks": 102,
+    "neutralPassedChecks": 102,
+    "normalStatus": "PASS",
+    "neutralStatus": "PASS",
+    "normalIdentity": {
+      "checkoutSha": "dc926adaeebd573f435263265f4251f1814cc0a5",
+      "requestedSha": "dc926adaeebd573f435263265f4251f1814cc0a5",
+      "clientBuildStamp": "eraclash-assets:2.7.2:2550ae9eb17f",
+      "clientHtmlSha256": "d3835fa9ee13cf9e15024828bbf168232596c3b53302794e43c8d2c15e1e253b",
+      "serverHealth": {
+        "status": "ok",
+        "build": "2.7.2",
+        "coreEngine": "ok",
+        "persistence": "ok",
+        "aiNarrative": "ok",
+        "simV3": true,
+        "cloudAccounts": {
+          "enabled": false,
+          "ready": false
+        },
+        "preview": {
+          "enabled": true,
+          "candidateId": "Candidate 4",
+          "candidateCoreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+          "calibrationVersion": "1.4.0"
+        }
+      }
+    },
+    "neutralIdentity": {
+      "checkoutSha": "dc926adaeebd573f435263265f4251f1814cc0a5",
+      "requestedSha": "dc926adaeebd573f435263265f4251f1814cc0a5",
+      "clientBuildStamp": "eraclash-assets:2.7.2:c41ca272a814",
+      "clientHtmlSha256": "7407884b03c472559e48ded90f7f0a731808b64ad603fecbf12c0320e01a3e88",
+      "serverHealth": {
+        "status": "ok",
+        "build": "2.7.2",
+        "coreEngine": "ok",
+        "persistence": "ok",
+        "aiNarrative": "ok",
+        "simV3": true,
+        "cloudAccounts": {
+          "enabled": false,
+          "ready": false
+        },
+        "preview": {
+          "enabled": true,
+          "candidateId": "Candidate 4",
+          "candidateCoreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+          "calibrationVersion": "1.4.0"
+        }
+      }
+    },
+    "normalSamples": 10,
+    "neutralSamples": 10,
+    "scope": "Ten actual-handler samples per flag, three crawler user agents and PNG/recap/private projection checks; positive actual headline/scope/scores and all ten names verified in own native/naming replay. Separate random ON/OFF game scores are not paired comparisons."
+  },
+  "nativeNaming": {
+    "counts": {
+      "PASS": 2729,
+      "FAIL": 8,
+      "UNVERIFIED": 0
+    },
+    "sourceAttribution": "neutral-source-attribution.json",
+    "native": [
+      {
+        "profile": "iphone-se",
+        "viewport": {
+          "width": 320,
+          "height": 568
+        },
+        "constraintTrail": [
+          {
+            "path": "/",
+            "taps": 0
+          },
+          {
+            "path": "/clash/modes",
+            "taps": 1
+          },
+          {
+            "path": "/clash/filters",
+            "taps": 2
+          },
+          {
+            "path": "/clash/one-franchise",
+            "taps": 3
+          }
+        ],
+        "coach": [
+          {
+            "label": "Change coach",
+            "width": 236,
+            "height": 42,
+            "minHeight": "42px"
+          },
+          {
+            "label": "Change coach",
+            "width": 236,
+            "height": 42,
+            "minHeight": "42px"
+          }
+        ],
+        "coachTapOpenedDialog": true
+      },
+      {
+        "profile": "iphone-14",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "constraintTrail": [
+          {
+            "path": "/",
+            "taps": 0
+          },
+          {
+            "path": "/clash/modes",
+            "taps": 1
+          },
+          {
+            "path": "/clash/filters",
+            "taps": 2
+          },
+          {
+            "path": "/clash/one-franchise",
+            "taps": 3
+          }
+        ],
+        "coach": [
+          {
+            "label": "Change coach",
+            "width": 294,
+            "height": 42,
+            "minHeight": "42px"
+          },
+          {
+            "label": "Change coach",
+            "width": 294,
+            "height": 42,
+            "minHeight": "42px"
+          }
+        ],
+        "coachTapOpenedDialog": true
+      },
+      {
+        "profile": "iphone-pro-max",
+        "viewport": {
+          "width": 430,
+          "height": 932
+        },
+        "constraintTrail": [
+          {
+            "path": "/",
+            "taps": 0
+          },
+          {
+            "path": "/clash/modes",
+            "taps": 1
+          },
+          {
+            "path": "/clash/filters",
+            "taps": 2
+          },
+          {
+            "path": "/clash/one-franchise",
+            "taps": 3
+          }
+        ],
+        "coach": [
+          {
+            "label": "Change coach",
+            "width": 334,
+            "height": 42,
+            "minHeight": "42px"
+          },
+          {
+            "label": "Change coach",
+            "width": 334,
+            "height": 42,
+            "minHeight": "42px"
+          }
+        ],
+        "coachTapOpenedDialog": true
+      },
+      {
+        "profile": "pixel",
+        "viewport": {
+          "width": 412,
+          "height": 915
+        },
+        "constraintTrail": [
+          {
+            "path": "/",
+            "taps": 0
+          },
+          {
+            "path": "/clash/modes",
+            "taps": 1
+          },
+          {
+            "path": "/clash/filters",
+            "taps": 2
+          },
+          {
+            "path": "/clash/one-franchise",
+            "taps": 3
+          }
+        ],
+        "coach": [
+          {
+            "label": "Change coach",
+            "width": 316,
+            "height": 42,
+            "minHeight": "42px"
+          },
+          {
+            "label": "Change coach",
+            "width": 316,
+            "height": 42,
+            "minHeight": "42px"
+          }
+        ],
+        "coachTapOpenedDialog": true
+      }
+    ],
+    "crawlerChecks": 2610,
+    "namingChecks": 80,
+    "report": "native-and-naming-reverify/report.json"
+  },
+  "guestRematches": {
+    "counts": {
+      "PASS": 172,
+      "FAIL": 12,
+      "UNVERIFIED": 0
+    },
+    "journeys": 10,
+    "report": "all-mode-guest-rematches-reverify/report.json",
+    "scope": "Ten source-mode public cards each followed by an actual new guest Any Five casual game and new public card, opponent inputs and positive actual scores/names preserved. iPhone14 Chromium emulation. This does not replay original-mode rule sets."
+  },
+  "events": {
+    "report": "actual-guest-event-cohort.json",
+    "scope": "Seven of ten required event names observed in own ten-guest cohort and accepted by local HTTP204 sink; signup and Daily event coverage is delegated current-run scope. Day2/day7 retention is censored/null."
+  },
+  "lighthouse": {
+    "sourceSHA": "dc926adaeebd573f435263265f4251f1814cc0a5",
+    "origin": "http://localhost:4320",
+    "criterion": "Literal user acceptance LCP <=2500ms; helper PARTIAL classifications preserved separately as raw tool output",
+    "measurements": [
+      {
+        "name": "home",
+        "path": "/",
+        "lcpMs": 3306.9804,
+        "status": "FAIL",
+        "rawToolStatus": "PARTIAL",
+        "scores": {
+          "performance": 91,
+          "accessibility": 100,
+          "best-practices": 100,
+          "seo": 92
+        }
+      },
+      {
+        "name": "daily",
+        "path": "/clash/daily",
+        "lcpMs": 3329.5477,
+        "status": "FAIL",
+        "rawToolStatus": "PARTIAL",
+        "scores": {
+          "performance": 91,
+          "accessibility": 100,
+          "best-practices": 100,
+          "seo": 92
+        }
+      },
+      {
+        "name": "result",
+        "path": "/card/c7cbbc34e4ddcd6b",
+        "lcpMs": 1121.6741499999998,
+        "status": "PASS",
+        "rawToolStatus": "PASS",
+        "scores": {
+          "performance": 100,
+          "accessibility": 100,
+          "best-practices": 100,
+          "seo": 100
+        }
+      },
+      {
+        "name": "programmatic",
+        "path": "/clash/all-time/atlanta-vs-boston",
+        "lcpMs": 1053.4365,
+        "status": "PASS",
+        "rawToolStatus": "PASS",
+        "scores": {
+          "performance": 100,
+          "accessibility": 100,
+          "best-practices": 100,
+          "seo": 100
+        }
+      },
+      {
+        "name": "modes-hub",
+        "path": "/clash/modes",
+        "lcpMs": 3304.062,
+        "status": "FAIL",
+        "rawToolStatus": "PARTIAL",
+        "scores": {
+          "performance": 91,
+          "accessibility": 100,
+          "best-practices": 100,
+          "seo": 92
+        }
+      }
+    ],
+    "originalHomeTrace": {
+      "status": "UNVERIFIED",
+      "code": "NO_NAVSTART",
+      "artifact": "quiet-lighthouse/home.json"
+    },
+    "productChanges": false
+  },
+  "security": {
+    "report": "readonly-security-interpretation.json",
+    "scope": "43 served text assets byte-equal to the frozen build with bounded secret-pattern scan, seven served security-header targets, cookie-free actual Lab full game GET privacy. No real provider RLS or production/Preview account isolation acceptance."
+  },
+  "sourceDoD": {
+    "report": "source-contract-current.json",
+    "annotations": "source-and-collector-annotations.json",
+    "failedCriteria": [
+      {
+        "status": "FAIL",
+        "criterion": "C.7 every mode within two mobile home taps",
+        "targets": [
+          "/clash/one-franchise",
+          "/clash/one-per-era",
+          "/clash/no-mvps"
+        ],
+        "repro": "Home All modes -> hub Open Constraint filters -> Play variant. Three actual taps, all three variants on each of four mobile profiles (12 trails).",
+        "source": "src/loop/modes/LoopModes.jsx:40"
+      },
+      {
+        "status": "FAIL",
+        "criterion": "44px minimum activation height",
+        "target": "Selected legacy coach Change coach",
+        "repro": "Native Edit coaches -> selected Change coach. Eight measured controls across four profiles are 42px high; all native taps open the actual coach dialog.",
+        "source": "src/components/CoachPick.jsx"
+      },
+      {
+        "status": "FAIL",
+        "criterion": "Lighthouse mobile LCP <=2500ms",
+        "targets": [
+          "home",
+          "Daily",
+          "modes hub"
+        ],
+        "repro": "Quiet five-page Lighthouse with one bounded fresh-Chrome home retry. Valid LCPs 3306.9804, 3329.5477, 3304.062ms; result1121.67415 and programmatic1053.4365ms pass. Raw initial home NO_NAVSTART is infrastructure UNVERIFIED."
+      }
+    ],
+    "allModeProofStatus": "Own source presence and selected actual journeys only. Complete current-run source DoD/test/mode proof from root and parent must be separately attributed after this freeze; real authenticated provider cells remain UNVERIFIED."
+  },
+  "explicitSkippedScope": [
+    "Protected hosted runtime is HTTP401 without bypass credentials; no hosted acceptance.",
+    "Two actual provider Preview accounts, real email/password-reset receipt, live RLS and native production-account isolation.",
+    "Physical iOS Safari/Android Chrome, real OS soft keyboard/share sheet, rotation/safe-area/text-zoom behavior.",
+    "Owner-only development theme surface enablement; public fallback is not private feature acceptance.",
+    "Every dynamic saved/account/challenge/invitation state on all five profiles; initial all-route inventory uses 11 actual fresh public cards. Later new guest cards are exercised on iPhone14 separately.",
+    "Durable external analytics/vendor receipt and completed day2/day7 return windows.",
+    "Manual screen-reader/full accessibility conformance and every combinatorial control state.",
+    "Independent root fullsuites, boundary/synthetic metrics and parent complete mode/account journeys are not observations by this runner and are deferred to attributed current-run reconciliation."
+  ],
+  "productEdits": [],
+  "parentReportsReadBeforeFreeze": false,
+  "priorRunResultsReadBeforeFreeze": false
+}

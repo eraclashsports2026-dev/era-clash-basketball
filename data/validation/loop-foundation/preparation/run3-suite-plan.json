@@ -1,0 +1,26 @@
+{
+  "recordedAt": "2026-10-02T13:06:22.409359+00:00",
+  "sourceSha": "dc926adaeebd573f435263265f4251f1814cc0a5",
+  "status": "PREPARED_NOT_EXECUTED",
+  "root": "/private/tmp/eraclash-run3-final-20261002",
+  "commands": [
+    {
+      "name": "unit",
+      "command": "vitest run --maxWorkers=2 --testTimeout=15000 --reporter=default --reporter=json"
+    },
+    {
+      "name": "browser",
+      "command": "playwright test --workers=1",
+      "reason": "source config serializes shared in-memory harness; no assertions or quotas changed"
+    },
+    {
+      "name": "gates",
+      "command": "node scripts/foundation/fullPassSweep.mjs loop-run3-final-dc926ad"
+    }
+  ],
+  "sourceDeclaredSkippedTodoOnly": [],
+  "runnerHash": "ca5aa89f54010e2bdba423221d2f5db3fad62771987596ccd6b13d603562ad41",
+  "identityScope": "fresh local actual-handler emulation; no real Preview accounts",
+  "normalStamp": "eraclash-assets:2.7.2:2550ae9eb17f",
+  "fixtureStamp": "eraclash-assets:2.7.2:41957b5894a1"
+}

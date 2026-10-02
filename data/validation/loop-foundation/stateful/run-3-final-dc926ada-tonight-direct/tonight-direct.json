@@ -1,0 +1,137 @@
+{
+  "run": "run-3-final-dc926ada-tonight-direct",
+  "target": "http://localhost:4320",
+  "executionPath": "/private/tmp/eraclash-run3-final-20261002",
+  "sourceSHA": "dc926adaeebd573f435263265f4251f1814cc0a5",
+  "runtimeSourceSHA": "dc926adaeebd573f435263265f4251f1814cc0a5",
+  "productionBuildStamp": "eraclash-assets:2.7.2:2550ae9eb17f",
+  "testFileSHA256": "bd35c37cbc2cbee23971b38d57fe8a63da1e98895222b1dad68985ed76add237",
+  "startedAt": "2026-10-02T13:34:15.251Z",
+  "scope": "Fresh direct-route guest actual local source-client companion/Candidate4 handlers. No prior result fixtures, provider credentials, real hosted auth/RLS, physical-device or performance acceptance.",
+  "localBudgetOverrides": {
+    "RL_SIM_PER_MIN_SESSION": 500,
+    "RL_SIM_PER_MIN_IP": 500,
+    "sharedLoopActionsPerMinute": 120,
+    "publicRecapsPerMinute": 20
+  },
+  "checks": [
+    {
+      "name": "Modes hub reaches the distinct direct Tonight route",
+      "status": "PASS"
+    },
+    {
+      "name": "Direct reload preserves Tonight heading and sourced current date",
+      "status": "PASS",
+      "details": {
+        "date": "2026-10-02",
+        "snapshotGames": 0,
+        "honestEmpty": true
+      }
+    },
+    {
+      "name": "Tonight requires an actual scheduled selection before playing",
+      "status": "PASS"
+    },
+    {
+      "name": "Sourced date selection loads exact scheduled all-time fives",
+      "status": "PASS",
+      "details": {
+        "scheduledDate": "2026-10-20",
+        "scheduledGameId": "2026-27-0001",
+        "homeId": "detroit",
+        "awayId": "boston",
+        "selectionInvalidation": "Date and manual franchise changes require a new sourced pairing selection"
+      }
+    },
+    {
+      "name": "Direct Tonight real result preserves scheduled request and accepted engine identity",
+      "status": "PASS",
+      "details": {
+        "resultId": "pv_x8wmh6a68a",
+        "score": {
+          "gold": 90,
+          "blue": 122
+        },
+        "candidate": {
+          "candidateId": "Candidate 4",
+          "coreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+          "possessionCalibrationVersion": "1.4.0",
+          "actionLibraryVersion": "2.1.0",
+          "possessionEngineVersion": "1.2.0",
+          "fallbackEngine": "production engineVersion 3.2.0"
+        }
+      }
+    },
+    {
+      "name": "Actual public Tonight recap preserves exact teams and score without private compute fields",
+      "status": "PASS",
+      "details": {
+        "publicPath": "/card/b45496ad597d29bc",
+        "httpStatus": 200
+      }
+    },
+    {
+      "name": "390px public Tonight card opens a guest-owned fresh-five rematch",
+      "status": "PASS"
+    },
+    {
+      "name": "Guest rematch is a new casual result against exactly the public Tonight Gold five",
+      "status": "PASS",
+      "details": {
+        "originalResultId": "pv_x8wmh6a68a",
+        "freshResultId": "pv_sl2ylwj9nl",
+        "opponentIds": [
+          "isiah-80s",
+          "dumars-90s",
+          "grant-90s",
+          "sheed-2ks",
+          "ben-00s"
+        ],
+        "ownGoldIds": [
+          "tiny-70s",
+          "pippen-90s",
+          "xavier-80s",
+          "tatum-20s",
+          "jermaine-2ks"
+        ]
+      }
+    },
+    {
+      "name": "Fresh guest rematch publishes a distinct exact recap and mobile card",
+      "status": "PASS",
+      "details": {
+        "publicPath": "/card/53609b02537ca60f",
+        "score": {
+          "gold": 100,
+          "blue": 112
+        }
+      }
+    }
+  ],
+  "errors": [],
+  "publications": [
+    {
+      "resultId": "pv_x8wmh6a68a",
+      "status": 200,
+      "path": "/card/b45496ad597d29bc"
+    },
+    {
+      "resultId": "pv_sl2ylwj9nl",
+      "status": 200,
+      "path": "/card/53609b02537ca60f"
+    }
+  ],
+  "actualResultIds": [
+    "pv_x8wmh6a68a",
+    "pv_sl2ylwj9nl"
+  ],
+  "endedAt": "2026-10-02T13:34:20.513Z",
+  "skipped": [],
+  "summary": {
+    "passed": 9,
+    "failed": 0,
+    "skipped": 0,
+    "consoleErrors": 0,
+    "actualGames": 2
+  }
+}

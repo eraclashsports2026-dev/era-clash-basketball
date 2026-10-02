@@ -1,0 +1,24 @@
+{
+  "recordedAt": "2026-10-02T13:54:55.612212+00:00",
+  "sourceSHA": "dc926adaeebd573f435263265f4251f1814cc0a5",
+  "sourceOnlyCorrections": [
+    {
+      "artifact": "source-contract-current.json",
+      "rawCollectorValue": "Private Rooms versionLine MISSING",
+      "interpretation": "The version is present in the first heading: # Private rooms contract1.0.0. The collector only matched a Version: line. This is a collector limitation, not a missing source contract.",
+      "source": "docs/private-rooms/contract.md:1"
+    },
+    {
+      "artifact": "lighthouse-source-diagnostics.json",
+      "interpretation": "The actual lobby source location is src/components/lobby/PlayLobby.jsx; the exploratory parent-directory path in the diagnostic is superseded by this verified location.",
+      "source": "src/components/lobby/PlayLobby.jsx"
+    }
+  ],
+  "rawCollectorFailuresPreserved": [
+    "Initial native naming HTML compared raw escaped apostrophes; decoded fresh reverify retains the original output.",
+    "Initial clipboard assertions ran before the real asynchronous action completed; fresh reverify waits for the product state and reads the actual clipboard.",
+    "Initial event observer missed delayed native beacons; reverify records unchanged serialized envelopes before the native transport.",
+    "Initial Lab GET used resultId instead of source-required id; corrected GET preserves actual id/mode/scores while removing seed/session/scenario.",
+    "The extra fingerprint exclusion expectation was unsupported for full game GET; source tests preserve candidate/fingerprint there. Public recap allowlisting is checked separately."
+  ]
+}

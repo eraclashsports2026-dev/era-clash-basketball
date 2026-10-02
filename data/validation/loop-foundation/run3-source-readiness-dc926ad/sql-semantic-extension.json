@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-02T13:25:20.244319+00:00",
+  "checkoutSha": "dc926adaeebd573f435263265f4251f1814cc0a5",
+  "scope": "Additional fresh AST/source checks only. No database connection or SQL execution.",
+  "artifact": "docs/release/10-02-2026-production-release.sql",
+  "artifactSha256": "987121f7ccc6f444d85de7cbc2387617223bb606f083af32bb767b7dab1df927",
+  "createdPublicTables": [
+    "achievement_unlocks",
+    "challenge_attempts",
+    "challenge_secrets",
+    "challenges",
+    "competitive_profiles",
+    "competitive_rating_events",
+    "profile_featured_achievements",
+    "profiles",
+    "progression_profiles",
+    "public_profiles",
+    "result_claims",
+    "rivalries",
+    "rivalry_blocks",
+    "rivalry_events",
+    "rivalry_periods",
+    "rivalry_request_log",
+    "saved_clashes",
+    "saved_rosters",
+    "schema_migrations",
+    "user_preferences",
+    "xp_ledger"
+  ],
+  "RlsEnabledPublicTables": [
+    "achievement_unlocks",
+    "challenge_attempts",
+    "challenge_secrets",
+    "challenges",
+    "competitive_profiles",
+    "competitive_rating_events",
+    "profile_featured_achievements",
+    "profiles",
+    "progression_profiles",
+    "public_profiles",
+    "result_claims",
+    "rivalries",
+    "rivalry_blocks",
+    "rivalry_events",
+    "rivalry_periods",
+    "rivalry_request_log",
+    "saved_clashes",
+    "saved_rosters",
+    "schema_migrations",
+    "user_preferences",
+    "xp_ledger"
+  ],
+  "exactCreatedAndRlsSetMatch": true,
+  "updatePolicies": [
+    {
+      "table": "profiles",
+      "name": "profiles_update_own",
+      "command": "update",
+      "usingPresent": true,
+      "withCheckPresent": true
+    },
+    {
+      "table": "saved_rosters",
+      "name": "saved_rosters_update_own",
+      "command": "update",
+      "usingPresent": true,
+      "withCheckPresent": true
+    },
+    {
+      "table": "user_preferences",
+      "name": "user_preferences_update_own",
+      "command": "update",
+      "usingPresent": true,
+      "withCheckPresent": true
+    },
+    {
+      "table": "saved_clashes",
+      "name": "saved_clashes_update_own_favorite",
+      "command": "update",
+      "usingPresent": true,
+      "withCheckPresent": true
+    }
+  ],
+  "insertPolicies": [
+    {
+      "table": "saved_rosters",
+      "name": "saved_rosters_insert_own",
+      "command": "insert",
+      "usingPresent": false,
+      "withCheckPresent": true
+    },
+    {
+      "table": "user_preferences",
+      "name": "user_preferences_insert_own",
+      "command": "insert",
+      "usingPresent": false,
+      "withCheckPresent": true
+    }
+  ],
+  "backupPrivilegeStatements": {
+    "schemaRevoke": true,
+    "snapshotRevoke": true,
+    "auditLogRevoke": true
+  },
+  "savedClashClientWriteGrant": "Authenticated UPDATE grant is column-limited to favorite; repair uses privileged operator context.",
+  "sourceChangelogFeatures": {
+    "ltree": false,
+    "PGP encryption": false,
+    "btree_gist": false,
+    "custom operator declaration": false
+  },
+  "primaryReferences": [
+    {
+      "url": "https://supabase.com/docs/guides/database/postgres/row-level-security",
+      "observed": "Official current page loaded; RLS, privileges and view-invoker guidance checked."
+    },
+    {
+      "url": "https://supabase.com/docs/guides/database/functions",
+      "observed": "Official current page loaded; definer/search-path/EXECUTE guidance checked."
+    },
+    {
+      "url": "https://supabase.com/changelog",
+      "observed": "Official HTML fallback loaded after markdown endpoint failed. September25 PostgreSQL minor-release item identifies feature-dependent changes; listed features are absent from this bundle, but installed target schema/version remain unobserved."
+    }
+  ],
+  "limits": [
+    "Syntactic policy predicates are not proof of actual principal isolation.",
+    "No grants were queried from a live database; public-schema CREATE privileges are unobserved.",
+    "No target database version, installed extension inventory, row counts, data types or repair rerun behavior observed.",
+    "Source functions parse under PostgreSQL18.4 grammar; deployment compatibility still requires the target provider."
+  ]
+}

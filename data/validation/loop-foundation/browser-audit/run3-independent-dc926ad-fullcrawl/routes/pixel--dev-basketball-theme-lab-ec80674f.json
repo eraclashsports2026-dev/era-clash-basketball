@@ -1,0 +1,435 @@
+{
+  "path": "/dev/basketball-theme-lab",
+  "kind": "owner-only",
+  "profile": "pixel",
+  "identity": {
+    "origin": "http://localhost:4320",
+    "environment": "local-production-client-actual-handlers-memory-store",
+    "checkoutSha": "dc926adaeebd573f435263265f4251f1814cc0a5",
+    "requestedSha": "dc926adaeebd573f435263265f4251f1814cc0a5",
+    "checkoutDirty": true,
+    "codeFingerprint": "5b887e2c23df77ff43066af1032d62d62b295383059a33799e0ef3e8597bbbea",
+    "engineIdentity": {
+      "enabled": true,
+      "candidateId": "Candidate 4",
+      "candidateCoreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+      "calibrationVersion": "1.4.0"
+    },
+    "actor": "fresh guest context"
+  },
+  "startedAt": "2026-10-02T13:51:38.123Z",
+  "issues": [
+    {
+      "status": "UNVERIFIED",
+      "name": "owner-only surface coverage",
+      "detail": "Owner-only development surface. Production builds compile the theme lab off; deployed middleware denies non-owner /dev/ access. A local harness may serve a fallback lobby with HTTP200, which does not establish theme-lab functionality. Actual response, geometry and axe observations are retained; no owner identity or enabled owner build was supplied."
+    }
+  ],
+  "ownerSurface": {
+    "status": "UNVERIFIED",
+    "acceptanceStatus": "PARTIAL",
+    "probeControls": false,
+    "reason": "Owner-only development surface. Production builds compile the theme lab off; deployed middleware denies non-owner /dev/ access. A local harness may serve a fallback lobby with HTTP200, which does not establish theme-lab functionality. Actual response, geometry and axe observations are retained; no owner identity or enabled owner build was supplied.",
+    "httpStatus": 200,
+    "responseHeaders": {
+      "content-type": "text/html",
+      "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://us.i.posthog.com https://eu.i.posthog.com https://*.supabase.co https://*.supabase.in; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'"
+    }
+  },
+  "statusCode": 200,
+  "finalUrl": "http://localhost:4320/dev/basketball-theme-lab",
+  "title": "EraClash Basketball — Build Your All-Time Squad",
+  "csp": {
+    "bypass": false,
+    "normalPageLoad": true,
+    "header": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://us.i.posthog.com https://eu.i.posthog.com https://*.supabase.co https://*.supabase.in; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'",
+    "axeInstrumentation": "Playwright debugger evaluation after normal UI load"
+  },
+  "geometry": {
+    "viewport": {
+      "width": 412,
+      "height": 915
+    },
+    "scrollWidth": 412,
+    "overflow": false,
+    "theme": "night-court-production-hybrid",
+    "loopBackground": null,
+    "loopTokenBackground": null,
+    "lightCourt": null,
+    "metaViewport": "width=device-width, initial-scale=1.0"
+  },
+  "controls": [
+    {
+      "index": 0,
+      "tag": "button",
+      "type": "submit",
+      "role": null,
+      "name": "Menu",
+      "href": null,
+      "disabled": false,
+      "visible": true,
+      "width": 44,
+      "height": 44,
+      "rawWidth": 44,
+      "rawHeight": 44,
+      "targetIncludesAssociatedLabel": false,
+      "inline": false,
+      "value": ""
+    },
+    {
+      "index": 1,
+      "tag": "button",
+      "type": "submit",
+      "role": null,
+      "name": "EraClash Basketball home",
+      "href": null,
+      "disabled": false,
+      "visible": true,
+      "width": 288,
+      "height": 44,
+      "rawWidth": 288,
+      "rawHeight": 44,
+      "targetIncludesAssociatedLabel": false,
+      "inline": false,
+      "value": ""
+    },
+    {
+      "index": 2,
+      "tag": "button",
+      "type": "submit",
+      "role": null,
+      "name": "Create account",
+      "href": null,
+      "disabled": false,
+      "visible": true,
+      "width": 44,
+      "height": 44,
+      "rawWidth": 44,
+      "rawHeight": 44,
+      "targetIncludesAssociatedLabel": false,
+      "inline": false,
+      "value": ""
+    },
+    {
+      "index": 3,
+      "tag": "button",
+      "type": "submit",
+      "role": "tab",
+      "name": "TEAM GOLD\nYOUR FIVE",
+      "href": null,
+      "disabled": false,
+      "visible": true,
+      "width": 176,
+      "height": 44,
+      "rawWidth": 176,
+      "rawHeight": 44,
+      "targetIncludesAssociatedLabel": false,
+      "inline": false,
+      "value": ""
+    },
+    {
+      "index": 4,
+      "tag": "button",
+      "type": "submit",
+      "role": "tab",
+      "name": "TEAM BLUE\nLEGEND RIVAL",
+      "href": null,
+      "disabled": false,
+      "visible": true,
+      "width": 176,
+      "height": 44,
+      "rawWidth": 176,
+      "rawHeight": 44,
+      "targetIncludesAssociatedLabel": false,
+      "inline": false,
+      "value": ""
+    },
+    {
+      "index": 5,
+      "tag": "button",
+      "type": "submit",
+      "role": null,
+      "name": "ROLL\n🎲",
+      "href": null,
+      "disabled": false,
+      "visible": true,
+      "width": 358,
+      "height": 52,
+      "rawWidth": 358,
+      "rawHeight": 52,
+      "targetIncludesAssociatedLabel": false,
+      "inline": false,
+      "value": ""
+    },
+    {
+      "index": 6,
+      "tag": "button",
+      "type": "submit",
+      "role": null,
+      "name": "📖 HELP & SETTINGS",
+      "href": null,
+      "disabled": false,
+      "visible": true,
+      "width": 152.52,
+      "height": 44,
+      "rawWidth": 152.52,
+      "rawHeight": 44,
+      "targetIncludesAssociatedLabel": false,
+      "inline": false,
+      "value": ""
+    },
+    {
+      "index": 7,
+      "tag": "button",
+      "type": "button",
+      "role": null,
+      "name": "HOW IT WORKS",
+      "href": null,
+      "disabled": false,
+      "visible": true,
+      "width": 360,
+      "height": 44,
+      "rawWidth": 360,
+      "rawHeight": 44,
+      "targetIncludesAssociatedLabel": false,
+      "inline": false,
+      "value": ""
+    },
+    {
+      "index": 8,
+      "tag": "a",
+      "type": null,
+      "role": null,
+      "name": "All modes",
+      "href": "/clash/modes",
+      "disabled": false,
+      "visible": true,
+      "width": 87.28,
+      "height": 56.8,
+      "rawWidth": 87.28,
+      "rawHeight": 56.8,
+      "targetIncludesAssociatedLabel": false,
+      "inline": false,
+      "value": ""
+    },
+    {
+      "index": 9,
+      "tag": "a",
+      "type": null,
+      "role": null,
+      "name": "Private rooms",
+      "href": "/clash/rooms",
+      "disabled": false,
+      "visible": true,
+      "width": 115.73,
+      "height": 56.8,
+      "rawWidth": 115.73,
+      "rawHeight": 56.8,
+      "targetIncludesAssociatedLabel": false,
+      "inline": false,
+      "value": ""
+    },
+    {
+      "index": 10,
+      "tag": "a",
+      "type": null,
+      "role": null,
+      "name": "Privacy",
+      "href": "/privacy",
+      "disabled": false,
+      "visible": true,
+      "width": 68.86,
+      "height": 56.8,
+      "rawWidth": 68.86,
+      "rawHeight": 56.8,
+      "targetIncludesAssociatedLabel": false,
+      "inline": false,
+      "value": ""
+    },
+    {
+      "index": 11,
+      "tag": "a",
+      "type": null,
+      "role": null,
+      "name": "Terms",
+      "href": "/terms",
+      "disabled": false,
+      "visible": true,
+      "width": 60.7,
+      "height": 56.8,
+      "rawWidth": 60.7,
+      "rawHeight": 56.8,
+      "targetIncludesAssociatedLabel": false,
+      "inline": false,
+      "value": ""
+    },
+    {
+      "index": 12,
+      "tag": "a",
+      "type": null,
+      "role": null,
+      "name": "Founding Player",
+      "href": "/support",
+      "disabled": false,
+      "visible": true,
+      "width": 132.3,
+      "height": 56.8,
+      "rawWidth": 132.3,
+      "rawHeight": 56.8,
+      "targetIncludesAssociatedLabel": false,
+      "inline": false,
+      "value": ""
+    },
+    {
+      "index": 13,
+      "tag": "button",
+      "type": "submit",
+      "role": null,
+      "name": "Image credits",
+      "href": null,
+      "disabled": false,
+      "visible": true,
+      "width": 84.27,
+      "height": 44,
+      "rawWidth": 84.27,
+      "rawHeight": 44,
+      "targetIncludesAssociatedLabel": false,
+      "inline": false,
+      "value": ""
+    }
+  ],
+  "smallTargets": [],
+  "authGate": false,
+  "availability": "RENDERED",
+  "axe": {
+    "version": "4.13.0",
+    "violations": [],
+    "incomplete": [
+      {
+        "id": "aria-prohibited-attr",
+        "impact": "serious",
+        "description": "Ensure ARIA attributes are not prohibited for an element's role",
+        "help": "Elements must only use permitted ARIA attributes",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-prohibited-attr?application=axeAPI",
+        "nodes": [
+          {
+            "target": [
+              "div[aria-label=\"Empty PG slot, Team Gold\"]"
+            ],
+            "html": "<div class=\"ec-pc-empty ec-pc-empty--row\" data-slot=\"PG\" data-team=\"gold\" aria-label=\"Empty PG slot, Team Gold\"><span class=\"ec-pr-slot\">PG</span><span class=\"ec-pr-thumb ec-pr-thumb--empty\" aria-hidden=\"true\">EC</span><span class=\"ec-pc-empty-hint ec-pr-empty-hint\">ROLL TO REVEAL</span></div>",
+            "failureSummary": "Fix all of the following:\n  aria-label attribute is not well supported on a div with no valid role attribute."
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty SG slot, Team Gold\"]"
+            ],
+            "html": "<div class=\"ec-pc-empty ec-pc-empty--row\" data-slot=\"SG\" data-team=\"gold\" aria-label=\"Empty SG slot, Team Gold\"><span class=\"ec-pr-slot\">SG</span><span class=\"ec-pr-thumb ec-pr-thumb--empty\" aria-hidden=\"true\">EC</span><span class=\"ec-pc-empty-hint ec-pr-empty-hint\">ROLL TO REVEAL</span></div>",
+            "failureSummary": "Fix all of the following:\n  aria-label attribute is not well supported on a div with no valid role attribute."
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty SF slot, Team Gold\"]"
+            ],
+            "html": "<div class=\"ec-pc-empty ec-pc-empty--row\" data-slot=\"SF\" data-team=\"gold\" aria-label=\"Empty SF slot, Team Gold\"><span class=\"ec-pr-slot\">SF</span><span class=\"ec-pr-thumb ec-pr-thumb--empty\" aria-hidden=\"true\">EC</span><span class=\"ec-pc-empty-hint ec-pr-empty-hint\">ROLL TO REVEAL</span></div>",
+            "failureSummary": "Fix all of the following:\n  aria-label attribute is not well supported on a div with no valid role attribute."
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty PF slot, Team Gold\"]"
+            ],
+            "html": "<div class=\"ec-pc-empty ec-pc-empty--row\" data-slot=\"PF\" data-team=\"gold\" aria-label=\"Empty PF slot, Team Gold\"><span class=\"ec-pr-slot\">PF</span><span class=\"ec-pr-thumb ec-pr-thumb--empty\" aria-hidden=\"true\">EC</span><span class=\"ec-pc-empty-hint ec-pr-empty-hint\">ROLL TO REVEAL</span></div>",
+            "failureSummary": "Fix all of the following:\n  aria-label attribute is not well supported on a div with no valid role attribute."
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty C slot, Team Gold\"]"
+            ],
+            "html": "<div class=\"ec-pc-empty ec-pc-empty--row\" data-slot=\"C\" data-team=\"gold\" aria-label=\"Empty C slot, Team Gold\"><span class=\"ec-pr-slot\">C</span><span class=\"ec-pr-thumb ec-pr-thumb--empty\" aria-hidden=\"true\">EC</span><span class=\"ec-pc-empty-hint ec-pr-empty-hint\">ROLL TO REVEAL</span></div>",
+            "failureSummary": "Fix all of the following:\n  aria-label attribute is not well supported on a div with no valid role attribute."
+          }
+        ]
+      },
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+        "nodes": [
+          {
+            "target": [
+              "div[data-state=\"ACTIVE\"] > .ec-ta-step-dot"
+            ],
+            "html": "<div class=\"ec-ta-step-dot\">1</div>",
+            "failureSummary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty PG slot, Team Gold\"] > .ec-pr-thumb.ec-pr-thumb--empty[aria-hidden=\"true\"]"
+            ],
+            "html": "<span class=\"ec-pr-thumb ec-pr-thumb--empty\" aria-hidden=\"true\">EC</span>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty SG slot, Team Gold\"] > .ec-pr-thumb.ec-pr-thumb--empty[aria-hidden=\"true\"]"
+            ],
+            "html": "<span class=\"ec-pr-thumb ec-pr-thumb--empty\" aria-hidden=\"true\">EC</span>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty SF slot, Team Gold\"] > .ec-pr-thumb.ec-pr-thumb--empty[aria-hidden=\"true\"]"
+            ],
+            "html": "<span class=\"ec-pr-thumb ec-pr-thumb--empty\" aria-hidden=\"true\">EC</span>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty PF slot, Team Gold\"] > .ec-pr-thumb.ec-pr-thumb--empty[aria-hidden=\"true\"]"
+            ],
+            "html": "<span class=\"ec-pr-thumb ec-pr-thumb--empty\" aria-hidden=\"true\">EC</span>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+          },
+          {
+            "target": [
+              "div[aria-label=\"Empty C slot, Team Gold\"] > .ec-pr-thumb.ec-pr-thumb--empty[aria-hidden=\"true\"]"
+            ],
+            "html": "<span class=\"ec-pr-thumb ec-pr-thumb--empty\" aria-hidden=\"true\">EC</span>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+          },
+          {
+            "target": [
+              ".ec-ta-cta"
+            ],
+            "html": "<button class=\"ec-ta-cta\" aria-describedby=\"ec-ta-cta-sub\" data-browser-audit-control=\"5\">ROLL<span aria-hidden=\"true\"> 🎲</span></button>",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+          },
+          {
+            "target": [
+              "footer"
+            ],
+            "html": "<footer style=\"text-align: center; padding: 20px; font-size: 10.5px; color: var(--ec-t-text-dim, #5a6577); border-top: 1px solid var(--ec-t-border, #d9dee7);\">",
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+          }
+        ]
+      }
+    ],
+    "passedRules": 43,
+    "critical": 0,
+    "serious": 0
+  },
+  "screenshot": "screenshots/pixel--dev-basketball-theme-lab.png",
+  "interactions": [
+    {
+      "status": "UNVERIFIED",
+      "reason": "Control probes skipped on the owner-only development surface. Its public response/fallback is not an enabled public gameplay journey."
+    }
+  ],
+  "status": "PARTIAL",
+  "errors": [],
+  "consoleErrors": [],
+  "failedResponses": [],
+  "failedRequests": [],
+  "endedAt": "2026-10-02T13:51:39.130Z"
+}

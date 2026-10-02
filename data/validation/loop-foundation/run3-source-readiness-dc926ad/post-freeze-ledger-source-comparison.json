@@ -1,0 +1,191 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-02T13:25:20.244319+00:00",
+  "checkoutSha": "dc926adaeebd573f435263265f4251f1814cc0a5",
+  "blindManifest": "blind-source-freeze-manifest.json",
+  "scope": "Ledger source/procedure wording comparison after own blind findings freeze. No Run2 report/artifact opened; no runtime claims adopted.",
+  "ledger": "docs/handoffs/10-02-2026-loop-foundation.md",
+  "ledgerSha256": "0b329634beed689bb76dc532b7583777f0d1d16e8043cf297601023ca711cca9",
+  "modeInventoryRows": {
+    "16": "| Surface | Route | Code | Observed state / governing contract |",
+    "17": "|---|---|---|---|",
+    "18": "| Chaos Clash | /play/chaos | src/chaos; api/game.js | Existing server draft; three guest runs; account restriction governed by entitlements |",
+    "19": "| Dream Matchup | /play/dream | src/App.jsx, ManualPicker | Existing manual five; account-gated legacy policy |",
+    "20": "| Legacy Daily | /play/daily | src/dailyChallenge.js, api/daily.js | Existing UTC daily; preserved as separately versioned historical mode |",
+    "21": "| Best of7 | /play/best-of-7 | api/game.js | Existing production-engine series; legacy trial policy |",
+    "22": "| Win82 | /play/win-82 | api/game.js | Existing season/trial |",
+    "23": "| Tournament | /play/tournament | api/game.js | Existing bracket/trial |",
+    "24": "| EraGauntlet proposal | /modes/era-gauntlet | navigation/entitlements registry | Planned flagOFF; new seven-era adapter under /clash/gauntlet |",
+    "25": "| Fantasy / Live | /fantasy/* | InfoPages | Planned, explicitly unavailable, no paid gate |",
+    "26": "| Challenges | /?challenge=code | src/challenges, api/_lib/challenges | Governed same-opportunity invite; account saves |",
+    "27": "| Career / Run It Back | /my-eraclash | src/accounts, api/_lib/cloudAccounts | Saved-row ownership; freshseed same setup |",
+    "28": "| Leaderboard | /leaderboard | src/competitive | Challenge rating and provisional privacy |",
+    "29": "| Profiles | /player/:slug | src/profiles | Visibility-controlled public projection |",
+    "30": "| Clash Cards / Rivalries | result composer / career | src/cards, src/rivalries | CardsV1 spoiler-safe invites, explicit recap publication separate |",
+    "31": "| Breakdown | completed result / saved history | src/breakdown | PR69 single stored-record contract |",
+    "32": "| AnyFive / Spin / filters / Lab | /clash/* | src/loop | New selection/presentation adapters; no engine edits |",
+    "33": "| NY Daily | /clash/daily | src/loop/daily + existing Chaos state machine | New NY calendar wrapper; legacyUTC retained |",
+    "34": "| Franchise / Tonight / pairings | /clash/franchise, /clash/tonight, /clash/all-time/:slug | src/loop/franchises | 30 curated fives,435pairings, official1200released schedulegames;30CupgamesTBD |",
+    "35": "| Private rooms | /clash/rooms | src/loop/PrivateRooms, loopFoundation server | Invite capability, verified membership, notificationsdisabled |",
+    "36": "| SalaryCap | disabled/unlisted | No dataset | EXTERNAL_BLOCKER_WITH_SAFE_FALLBACK; defensible salary data required |"
+  },
+  "perModeInventoryLineMap": {
+    "any-five": [
+      32,
+      72
+    ],
+    "daily": [
+      33,
+      73
+    ],
+    "franchise": [
+      34,
+      74
+    ],
+    "tonight": [
+      34,
+      75
+    ],
+    "spin": [
+      32,
+      77
+    ],
+    "one-franchise": [
+      32,
+      78
+    ],
+    "one-per-era": [
+      32,
+      79
+    ],
+    "no-mvps": [
+      32,
+      80
+    ],
+    "gauntlet": [
+      24,
+      81
+    ],
+    "lab": [
+      32,
+      82
+    ],
+    "rooms": [
+      35,
+      83
+    ],
+    "legacy-chaos": [
+      18
+    ],
+    "legacy-dream": [
+      19
+    ],
+    "legacy-daily": [
+      20
+    ],
+    "legacy-bo7": [
+      21
+    ],
+    "legacy-win82": [
+      22
+    ],
+    "legacy-tournament": [
+      23
+    ],
+    "legacy-gauntlet": [
+      24
+    ],
+    "challenges": [
+      26
+    ],
+    "salary-cap": [
+      36
+    ]
+  },
+  "groupedRowsNote": "Mode inventory line32 groups AnyFive/Spin/filters/Lab; separate source contract table lines72/77-80/82 identifies each route. New Gauntlet is distinguished from the planned old address by line24 and line81.",
+  "boundedImplementationLabels": [
+    {
+      "line": 43,
+      "item": "0.1 branch / absorb PR69"
+    },
+    {
+      "line": 44,
+      "item": "0.2 inventory / 0.3 baseline / 0.4 ledger"
+    },
+    {
+      "line": 45,
+      "item": "A.2 OG / A.3 guest rematch"
+    },
+    {
+      "line": 46,
+      "item": "A.10 dead controls / links"
+    },
+    {
+      "line": 47,
+      "item": "A.4 exposure / neutral naming"
+    },
+    {
+      "line": 48,
+      "item": "A.8 events / metrics"
+    },
+    {
+      "line": 49,
+      "item": "A.6 policies"
+    },
+    {
+      "line": 52,
+      "item": "A.9 support"
+    },
+    {
+      "line": 53,
+      "item": "B.1 AnyFive"
+    },
+    {
+      "line": 54,
+      "item": "B.2 NY Daily"
+    },
+    {
+      "line": 55,
+      "item": "B.3 franchises / Tonight / pairings"
+    },
+    {
+      "line": 56,
+      "item": "C.1 Spin"
+    },
+    {
+      "line": 57,
+      "item": "C.2 three filters"
+    },
+    {
+      "line": 58,
+      "item": "C.3 Gauntlet"
+    },
+    {
+      "line": 59,
+      "item": "C.4 Lab"
+    },
+    {
+      "line": 60,
+      "item": "C.5 rooms"
+    },
+    {
+      "line": 61,
+      "item": "C.6 dormant"
+    },
+    {
+      "line": 62,
+      "item": "C.7 hub"
+    },
+    {
+      "line": 63,
+      "item": "Push / replacement draft PR"
+    }
+  ],
+  "recommendedWording": "Replace broad FIXED_AND_VERIFIED labels with IMPLEMENTED_AND_BOUNDED_CHECKED, and attach current acceptance status and exact fresh evidence per requirement. Source presence, a grouped mode row or a passing subset does not establish the eleven-field definition of done or launch readiness.",
+  "specificSourceClaimRequiringRuntimeCheck": {
+    "line": 62,
+    "claim": "C.7 row says new modes reachable in at most two taps via homepage Allmodes to hub.",
+    "freshFinding": "Source hub links FiltersHub first; each specific constraint variant requires another action on this path. Preserve initial source finding pending independent mobile interaction count."
+  },
+  "runtimeStatus": "PENDING_INDEPENDENT_EVIDENCE"
+}

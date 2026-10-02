@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-02T13:25:20.244319+00:00",
+  "checkoutSha": "dc926adaeebd573f435263265f4251f1814cc0a5",
+  "scope": "Fresh source/procedure cross-check after blind findings freeze; no dashboards, SQL execution, email, merges, payments or deployment actions.",
+  "releaseFile": "docs/release/10-02-2026-production-release.md",
+  "releaseFileSha256": "553e4313aa75be5150426e2c9d2fa500b5d78eccdc889cec55d73c2a6c24afb1",
+  "checks": [
+    {
+      "id": "migration-before-merge",
+      "result": "SOURCE_INSTRUCTIONS_PRESENT",
+      "refs": [
+        "docs/release/10-02-2026-production-release.md:7",
+        "docs/release/10-02-2026-production-release.md:11",
+        "docs/release/10-02-2026-production-release.md:57"
+      ],
+      "detail": "Ordered0001\u20130008 selected separately; successful SQL/RLS checks explicitly precede the GitHub merge/deploy trigger."
+    },
+    {
+      "id": "repair-audit-before-write",
+      "result": "SOURCE_INSTRUCTIONS_PRESENT",
+      "refs": [
+        "docs/release/10-02-2026-production-release.md:13"
+      ],
+      "detail": "Read-only before audit, review irrecoverable/mismatched data, then private backup/repair transaction, after audit and actual changed-row/rerun evidence."
+    },
+    {
+      "id": "exact-project-source-binding",
+      "result": "SOURCE_MATCH",
+      "refs": [
+        "config/projectRefs.js:6",
+        "api/_lib/cloudAccounts.js:57",
+        "vite.config.js:85"
+      ],
+      "detail": "Production and Preview public refs match documented identifiers; Preview browser/server addresses pinned only on hosted Vercel Preview. This does not verify dashboard secrets or live project state."
+    },
+    {
+      "id": "actual-env-names",
+      "result": "SOURCE_MATCH",
+      "refs": [
+        "vite.config.js:112",
+        "src/loop/rights.js:1",
+        "src/loop/PolicyPages.jsx:13",
+        "src/loop/events.js:34",
+        "api/_lib/loopFoundation.js:87",
+        "api/_lib/loopFoundation.js:286"
+      ],
+      "detail": "NEUTRAL_TEAM_NAMING, STRIPE_PAYMENT_LINK, VITE_POSTHOG_KEY/HOST, LOOP_FOUNDATION_ENABLED, ROOM_EMAIL_NOTIFICATIONS_ENABLED and SMTP_VERIFIED are actual source names. Payment URL is validated and omitted if unset; notification verification flag alone supplies no sender."
+    },
+    {
+      "id": "public-origin-build-guard",
+      "result": "SOURCE_MATCH",
+      "refs": [
+        "scripts/loop/sitemap.mjs:6",
+        "vite.config.js:110"
+      ],
+      "detail": "Hosted origin must be public HTTPS; origin derives from explicit PUBLIC_SITE_ORIGIN or Vercel system URL. Local canonical values are verification-only."
+    },
+    {
+      "id": "auth-callback-source",
+      "result": "SOURCE_MATCH",
+      "refs": [
+        "src/accounts/provider.js:51",
+        "src/components/accounts/AuthCallback.jsx",
+        "src/App.jsx:2123"
+      ],
+      "detail": "Source callback path is /auth/callback. Email-token UI is used; no browser password/reset UI is declared. Real SMTP/provider redemption remains pending."
+    },
+    {
+      "id": "physical-and-provider-boundaries",
+      "result": "SOURCE_INSTRUCTIONS_PRESENT",
+      "refs": [
+        "docs/release/10-02-2026-production-release.md:67",
+        "docs/release/10-02-2026-production-release.md:69"
+      ],
+      "detail": "Owner checks distinguish physical mobile/sharing, real two-account provider ownership, receipt and analytics/payment sink confirmation from synthetic local QA."
+    },
+    {
+      "id": "rollback-boundary",
+      "result": "SOURCE_INSTRUCTIONS_PRESENT",
+      "refs": [
+        "docs/release/10-02-2026-production-release.md:75"
+      ],
+      "detail": "Vercel rollback restores application deployment, not SQL/provider/data. Kill switch is documented for Loop-only containment."
+    }
+  ],
+  "noEstablishedSourceInstructionDefect": true,
+  "recommendedClarifications": [
+    {
+      "target": "docs/release/10-02-2026-production-release.md post-release route list",
+      "recommendation": "Include /clash/one-franchise, /clash/one-per-era and /clash/no-mvps explicitly, or state that /clash/filters smoke must open all three variants."
+    },
+    {
+      "target": "docs/release/10-02-2026-production-release.md before-release paragraph",
+      "recommendation": "Reconcile its specific performance/calibration blocker wording only against final current evidence; do not copy prior status into fresh acceptance."
+    }
+  ],
+  "outcomesNotEstablished": [
+    "Current hosted Preview/production route behavior and canonical domain.",
+    "Dashboard secrets, exact target PostgreSQL version, installed schema, live grants/RLS and repair counts.",
+    "SMTP delivery, callback redemption and two real-account durable histories.",
+    "Payments/provider ingestion, rights/license clearance, operator/contact/retention decisions and physical-device behavior."
+  ],
+  "primaryReferences": [
+    "https://supabase.com/docs/guides/database/postgres/row-level-security",
+    "https://supabase.com/docs/guides/database/functions"
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "recordedAt": "2026-10-02T13:40:46.553495+00:00",
+  "sourceSHA": "dc926adaeebd573f435263265f4251f1814cc0a5",
+  "currentSourceContracts": [
+    {
+      "file": "docs/clash-any-five/contract.md",
+      "versionLine": "Version: 1.0.0 \u00b7 Route: `/clash/any-five` \u00b7 Tag: `ANY_FIVE`.",
+      "scope": "Source contract presence/version only; execution evidence remains separately recorded."
+    },
+    {
+      "file": "docs/daily-loop/contract.md",
+      "versionLine": "Version: 1.0.0 \u00b7 Route: `/clash/daily` \u00b7 Tag: `DAILY`.",
+      "scope": "Source contract presence/version only; execution evidence remains separately recorded."
+    },
+    {
+      "file": "docs/franchise-clash/contract.md",
+      "versionLine": "Version: `loop-franchises-1.0.0` \u00b7 Basketball only \u00b7 2026-10-02.",
+      "scope": "Source contract presence/version only; execution evidence remains separately recorded."
+    },
+    {
+      "file": "docs/tonights-clash/contract.md",
+      "versionLine": "Version: `tonight-content-1.0.1` \u00b7 roster dependency `loop-franchises-1.0.0` \u00b7 Basketball only \u00b7 2026-10-02.",
+      "scope": "Source contract presence/version only; execution evidence remains separately recorded."
+    },
+    {
+      "file": "docs/chaos-spin/contract.md",
+      "versionLine": "Version: 1.0.0 \u00b7 Route: `/clash/spin` \u00b7 Tag: `SPIN`.",
+      "scope": "Source contract presence/version only; execution evidence remains separately recorded."
+    },
+    {
+      "file": "docs/constraint-filters/contract.md",
+      "versionLine": "Version: 1.0.0 \u00b7 Routes: `/clash/filters`, `/clash/one-franchise`, `/clash/one-per-era`, `/clash/no-mvps`.",
+      "scope": "Source contract presence/version only; execution evidence remains separately recorded."
+    },
+    {
+      "file": "docs/era-gauntlet/contract.md",
+      "versionLine": "Version: 1.0.0 \u00b7 Route: `/clash/gauntlet` \u00b7 Tag: `GAUNTLET`.",
+      "scope": "Source contract presence/version only; execution evidence remains separately recorded."
+    },
+    {
+      "file": "docs/what-if-lab/contract.md",
+      "versionLine": "Version: 1.0.0 \u00b7 Route: `/clash/lab` \u00b7 Tag: `LAB`.",
+      "scope": "Source contract presence/version only; execution evidence remains separately recorded."
+    },
+    {
+      "file": "docs/private-rooms/contract.md",
+      "versionLine": "MISSING",
+      "scope": "Source contract presence/version only; execution evidence remains separately recorded."
+    },
+    {
+      "file": "docs/modes-hub/contract.md",
+      "versionLine": "Version: 1.0.1 \u00b7 Route: `/clash/modes`.",
+      "scope": "Source contract presence/version only; execution evidence remains separately recorded."
+    }
+  ],
+  "preparationDelta": "Current source inventory includes new direct /clash/tonight; 476 static routes and 11 actual freshly generated public result routes yield487\u00d75=2435. Original b271e783 preparation inventory475 is explicitly preflight-only.",
+  "independentDoDFailures": [
+    {
+      "criterion": "User C.7 every mode two taps from mobile home",
+      "modes": [
+        "one-franchise",
+        "one-per-era",
+        "no-mvps"
+      ],
+      "status": "FAIL",
+      "evidence": "all-mode-guest-rematches-reverify/report.json constraints[];all12native trails3taps"
+    },
+    {
+      "criterion": "44px minimum mobile activation dimensions",
+      "surface": "Selected coach Change coach in legacy builder",
+      "status": "FAIL",
+      "evidence": "native-and-naming-reverify/report.json native[];eightbuttons42px acrossfourprofiles"
+    },
+    {
+      "criterion": "Lighthouse mobile LCP <=2500ms",
+      "surfaces": [
+        "home",
+        "Daily",
+        "modes-hub"
+      ],
+      "status": "FAIL",
+      "evidence": "quiet-lighthouse + lighthouse-literal-acceptance.json"
+    }
+  ],
+  "remainingDoDExecution": "Root source reviewer independently mapped current20modes/15pagefamilies/all11DoD fields; root and parent fresh suites/stateful journey records are intentionally not read until own whole observations freeze. Real authenticated Preview DoD cells remainUNVERIFIED; local emulation isPARTIAL."
+}

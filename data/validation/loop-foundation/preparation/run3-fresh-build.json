@@ -1,0 +1,105 @@
+{
+  "generatedAt": "2026-10-02T13:04:00.079691+00:00",
+  "sourceSha": "dc926adaeebd573f435263265f4251f1814cc0a5",
+  "origin": "http://localhost:4320",
+  "environment": "fresh local production-client actual-handlers memory-store; no real Preview provider",
+  "builds": [
+    {
+      "name": "normal",
+      "exit": 0,
+      "start": "2026-10-02T13:01:49.390017+00:00",
+      "end": "2026-10-02T13:01:51.403279+00:00",
+      "log": "/private/tmp/loop-run3-fresh-normal.log",
+      "sourceSha": "dc926adaeebd573f435263265f4251f1814cc0a5"
+    },
+    {
+      "name": "fixtures",
+      "exit": 0,
+      "start": "2026-10-02T13:01:51.404066+00:00",
+      "end": "2026-10-02T13:01:53.119337+00:00",
+      "log": "/private/tmp/loop-run3-fresh-fixtures.log",
+      "sourceSha": "dc926adaeebd573f435263265f4251f1814cc0a5"
+    },
+    {
+      "name": "pairings",
+      "exit": 0,
+      "start": "2026-10-02T13:01:53.119759+00:00",
+      "end": "2026-10-02T13:02:02.918827+00:00",
+      "log": "/private/tmp/loop-run3-fresh-pairings.log",
+      "sourceSha": "dc926adaeebd573f435263265f4251f1814cc0a5"
+    }
+  ],
+  "previewReadiness": {
+    "sourceSha": "dc926adaeebd573f435263265f4251f1814cc0a5",
+    "deploymentId": 6808986059,
+    "deploymentState": "success",
+    "target": "https://era-clash-basketball-hvswd87pz-era-clash.vercel.app",
+    "requestedAt": "2026-10-02T13:03:09.823761+00:00",
+    "method": "One anonymous GET; no bypass credential present",
+    "status": 401,
+    "contentType": "text/html; charset=utf-8",
+    "bodyPrefix": "<!doctype html><html><head><meta charset=\"utf-8\">\n<meta name=\"robots\" content=\"noindex,nofollow\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n<title>Private preview</title>\n<style>body{font-family:-apple-system,system-ui,sans-serif;background:#0b0d12;color:#e8e8ea;display:flex",
+    "fallback": "http://localhost:4320 production client plus local actual-handler/memory emulation"
+  },
+  "health": {
+    "status": "ok",
+    "build": "2.7.2",
+    "coreEngine": "ok",
+    "persistence": "ok",
+    "aiNarrative": "ok",
+    "simV3": true,
+    "cloudAccounts": {
+      "enabled": false,
+      "ready": false
+    },
+    "preview": {
+      "enabled": true,
+      "candidateId": "Candidate 4",
+      "candidateCoreHash": "55bb26a20e7d9176b25f102eea553820a7ea94cf935953f87cb3c9cc18656fff",
+      "calibrationVersion": "1.4.0"
+    }
+  },
+  "files": [
+    {
+      "file": "dist/index.html",
+      "bytes": 2499,
+      "sha256": "d3835fa9ee13cf9e15024828bbf168232596c3b53302794e43c8d2c15e1e253b"
+    },
+    {
+      "file": "dist-fixtures/index.html",
+      "bytes": 2499,
+      "sha256": "b06ae488d97edf597547929dc556fe90c89314d8a8720f09abb7188f3b64d7ed"
+    },
+    {
+      "file": "scripts/harness.mjs",
+      "bytes": 7342,
+      "sha256": "43a5cd82590ded298b21e9a6eec5b5afcd8d198388caa117a35a6ef052aef976"
+    },
+    {
+      "file": "playwright.config.js",
+      "bytes": 3226,
+      "sha256": "476e9bb5e22e1059d3ca834aaa612d89a0beb7b7d9c5bec9288fa6644523c8f4"
+    },
+    {
+      "file": "scripts/foundation/fullPassSweep.mjs",
+      "bytes": 6917,
+      "sha256": "f812dbe9fe653756acf921ce2d13ba8eea80144cd6e4eaf2e76dd6d6ab4f8dcb"
+    },
+    {
+      "file": "scripts/loop/boundaryAudit.mjs",
+      "bytes": 4064,
+      "sha256": "e438ed236374b0c12efd3584c7b942929e5422b1c987a7d96707ca4b5db33625"
+    },
+    {
+      "file": "scripts/loop/metricsAudit.mjs",
+      "bytes": 5060,
+      "sha256": "83336b748195b643dbc348b878c35070c7f1739a0a5e4ff4bb124cd535f6bc2a"
+    }
+  ],
+  "tools": {
+    "node": "v22.22.3",
+    "npm": "10.9.8",
+    "playwright": "Version 1.62.1",
+    "vitest": "vitest/4.1.11 darwin-arm64 node-v22.22.3"
+  }
+}

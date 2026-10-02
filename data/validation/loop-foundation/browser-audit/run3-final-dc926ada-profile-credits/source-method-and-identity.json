@@ -1,0 +1,98 @@
+{
+  "sourceSHA": "dc926adaeebd573f435263265f4251f1814cc0a5",
+  "origin": "http://localhost:4320",
+  "actualBuildStampOnAllSeven": "eraclash-assets:2.7.2:2550ae9eb17f",
+  "collectedAt": "2026-10-02T14:10:50.486012+00:00",
+  "helperSHA256": "018c8d81806d2be4b4941c729eb609cc13d65ebae31d562fd583d8b1106a1682",
+  "usedPreviousMethodOnlyAsChecklist": true,
+  "priorOutputsUsedAsFixtures": false,
+  "sourcefiles": [
+    {
+      "path": "src/App.jsx",
+      "sha256": "09f5820de3ba51313d0dcbaa84660ff403bb1bec9d0b12168c0531782cb886e4",
+      "matchesCommitted": true
+    },
+    {
+      "path": "src/components/Profile.jsx",
+      "sha256": "8134c2f1aa4a1d114bc68e5a25dd582f19f13139b82f75707a88a5edbe2fa212",
+      "matchesCommitted": true
+    },
+    {
+      "path": "src/components/Credits.jsx",
+      "sha256": "6d6d99ade1903c8e46f74a699b731c1a4941824e9f921e863862d6c14133efb2",
+      "matchesCommitted": true
+    },
+    {
+      "path": "src/components/accounts/MyEraClash.jsx",
+      "sha256": "f43605f972872b0ff4578e8a6ac4616bd1ec114a6d053a6957c908d8b20829aa",
+      "matchesCommitted": true
+    }
+  ],
+  "sourceLinks": {
+    "localProfile": "src/components/Profile.jsx:41",
+    "guestAccountRoute": "src/components/accounts/MyEraClash.jsx:100",
+    "credits": "src/components/Credits.jsx:12",
+    "nativeCreditsNavigation": "src/App.jsx:2357"
+  },
+  "sevenOriginCases": [
+    {
+      "route": "/",
+      "action": "My EraClash",
+      "profile": "desktop",
+      "status": "PASS",
+      "expectedHeading": "Unnamed Baller"
+    },
+    {
+      "route": "/clash/any-five",
+      "action": "My EraClash",
+      "profile": "desktop",
+      "status": "PASS",
+      "expectedHeading": "Unnamed Baller"
+    },
+    {
+      "route": "/my-eraclash",
+      "action": null,
+      "profile": "desktop",
+      "status": "PASS",
+      "expectedHeading": "My EraClash"
+    },
+    {
+      "route": "/",
+      "action": "Image credits",
+      "profile": "desktop",
+      "status": "PASS",
+      "expectedHeading": "\ud83d\udcf7 Image Credits"
+    },
+    {
+      "route": "/clash/any-five",
+      "action": "Image credits",
+      "profile": "desktop",
+      "status": "PASS",
+      "expectedHeading": "\ud83d\udcf7 Image Credits"
+    },
+    {
+      "route": "/privacy",
+      "action": "Image credits",
+      "profile": "iphone-se",
+      "status": "PASS",
+      "expectedHeading": "\ud83d\udcf7 Image Credits"
+    },
+    {
+      "route": "/modes/bo7",
+      "action": "Image credits",
+      "profile": "desktop",
+      "status": "PASS",
+      "expectedHeading": "\ud83d\udcf7 Image Credits"
+    }
+  ],
+  "result": {
+    "cases": 7,
+    "passed": 7,
+    "failed": 0,
+    "unobservedFallback": "Not injected; only seven source-defined native origins tested",
+    "scope": "No unobserved heading fallback state invented"
+  },
+  "unobservedHeadingFallback": "No injected fallback or result state; only source-defined native paths observed",
+  "productSourceChanges": false,
+  "browserErrorsNotClaimed": "Original seven-origin helper did not attach pageerror observer; raw axe/heading/DOM observations are the scope."
+}
