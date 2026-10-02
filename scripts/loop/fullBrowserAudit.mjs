@@ -34,6 +34,7 @@ const AXE_TAGS = ['wcag2a','wcag2aa','wcag21a','wcag21aa','wcag22aa','best-pract
 const htmlDecode = value => value.replace(/&amp;/g,'&').replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&lt;/g,'<').replace(/&gt;/g,'>');
 const slug = value => String(value).replace(/[^a-zA-Z0-9._-]+/g,'-').slice(0,120);
 const hash = value => createHash('sha256').update(value).digest('hex');
+const axeSourceCache = new Map();
 const sleep = ms => new Promise(resolve=>setTimeout(resolve,ms));
 const git = args => { try { return execFileSync('git',args,{cwd:REPO,encoding:'utf8'}).trim(); } catch { return null; } };
 const safeUrl = value => { try { const u=new URL(value); for(const key of [...u.searchParams.keys()]) if(/token|secret|password|key|code/i.test(key))u.searchParams.set(key,'[redacted]'); return u.href; } catch { return String(value); } };
@@ -167,7 +168,11 @@ async function settledPage(page,url,options) {
   return response;
 }
 async function runAxe(page,axePath) {
-  await page.addScriptTag({path:axePath});
+  if(!axeSourceCache.has(axePath))axeSourceCache.set(axePath,await fs.readFile(axePath,'utf8'));
+  // Playwright submits this source through its debugger evaluation transport.
+  // A normal page load retains the server's CSP; no inline script tag or CSP
+  // bypass is needed for this local accessibility instrument.
+  await page.evaluate(axeSourceCache.get(axePath));
   return page.evaluate(async tags=>{
     const result=await window.axe.run(document,{runOnly:{type:'tag',values:tags},resultTypes:['violations','incomplete','passes']});
     const reduce=item=>({id:item.id,impact:item.impact,description:item.description,help:item.help,helpUrl:item.helpUrl,nodes:item.nodes.map(n=>({target:n.target,html:n.html,failureSummary:n.failureSummary}))});
@@ -219,7 +224,7 @@ async function probeControl(browser,profile,route,control,options,axePath,device
 }
 function contextOptions(profile,devices,options) {
   const device=profile.device?devices[profile.device]:null;
-  return {...(device||{}),viewport:profile.viewport,isMobile:profile.mobile,hasTouch:profile.mobile,extraHTTPHeaders:requestHeaders(options.origin).headers,serviceWorkers:'block',locale:'en-US',timezoneId:'America/New_York',bypassCSP:true};
+  return {...(device||{}),viewport:profile.viewport,isMobile:profile.mobile,hasTouch:profile.mobile,extraHTTPHeaders:requestHeaders(options.origin).headers,serviceWorkers:'block',locale:'en-US',timezoneId:'America/New_York',bypassCSP:false};
 }
 
 async function auditRoute(browser,devices,axePath,profile,route,options,links) {
@@ -233,6 +238,7 @@ async function auditRoute(browser,devices,axePath,profile,route,options,links) {
   try {
     const response=await settledPage(page,options.origin+route.path,options);
     row.statusCode=response?.status()??null;row.finalUrl=safeUrl(page.url());row.title=await page.title();
+    row.csp={bypass:false,normalPageLoad:true,header:response?.headers()?.['content-security-policy']||null,axeInstrumentation:'Playwright debugger evaluation after normal UI load'};
     const text=await page.locator('body').innerText();
     row.geometry=await page.evaluate(()=>{
       const court=document.querySelector('.loop-court');let background=null,expected=null,light=null;
@@ -336,7 +342,7 @@ export async function runAudit(options) {
   await fs.mkdir(AUDIT_ROOT,{recursive:true});
   await fs.mkdir(options.output,{recursive:false});
   const inventory=await buildRouteInventory(options);
-  const report={label:options.label,startedAt:new Date().toISOString(),origin:options.origin,environment:options.environment||'inventory-only',requestedSha:options.sha,checkoutSha:git(['rev-parse','HEAD']),checkoutDirty:!!git(['status','--porcelain']),scope:options.inventoryOnly?'PREPARATION_ONLY':options.scope,profiles:PROFILE_DEFINITIONS.filter(p=>options.profiles.includes(p.id)),inventory,sources:{axe:'https://github.com/dequelabs/axe-core/blob/develop/doc/API.md',lighthouse:'https://github.com/GoogleChrome/lighthouse/blob/main/docs/readme.md',emulation:'https://playwright.dev/docs/emulation'},limitations:['Chromium viewport/touch emulation does not verify physical iOS Safari or Android Chrome.','Automated axe findings do not establish full accessibility conformance or screen-reader usability.','Audit contexts bypass CSP solely to inject the local axe instrument; server security headers are not validated by this runner.','Read-only control probes do not establish stateful gameplay, account, private-data, email or payment correctness.','The local checkout SHA and health identity are recorded separately; a caller-provided deployment SHA is not independently verified by this runner.'],physicalDeviceChecklist:['iOS Safari on an actual iPhone SE: keyboard, scrolling, dialogs and tap targets.','Actual iPhone 14 and Pro Max: safe areas, rotation, text zoom and sharing.','Actual Android Pixel Chrome: soft keyboard, back navigation, clipboard/share and touch.']};
+  const report={label:options.label,startedAt:new Date().toISOString(),origin:options.origin,environment:options.environment||'inventory-only',requestedSha:options.sha,checkoutSha:git(['rev-parse','HEAD']),checkoutDirty:!!git(['status','--porcelain']),scope:options.inventoryOnly?'PREPARATION_ONLY':options.scope,profiles:PROFILE_DEFINITIONS.filter(p=>options.profiles.includes(p.id)),inventory,sources:{axe:'https://github.com/dequelabs/axe-core/blob/develop/doc/API.md',lighthouse:'https://github.com/GoogleChrome/lighthouse/blob/main/docs/readme.md',emulation:'https://playwright.dev/docs/emulation'},limitations:['Chromium viewport/touch emulation does not verify physical iOS Safari or Android Chrome.','Automated axe findings do not establish full accessibility conformance or screen-reader usability.','Page loads retain normal CSP; debugger-injected axe is an out-of-band local instrument and does not prove that CSP blocks every malicious script.','Read-only control probes do not establish stateful gameplay, account, private-data, email or payment correctness.','The local checkout SHA and health identity are recorded separately; a caller-provided deployment SHA is not independently verified by this runner.'],physicalDeviceChecklist:['iOS Safari on an actual iPhone SE: keyboard, scrolling, dialogs and tap targets.','Actual iPhone 14 and Pro Max: safe areas, rotation, text zoom and sharing.','Actual Android Pixel Chrome: soft keyboard, back navigation, clipboard/share and touch.']};
   report.fileHashes={};
   for(const file of ['scripts/loop/fullBrowserAudit.mjs','scripts/loop/sitemap.mjs','vite.config.js','index.html','src/App.jsx','src/navigation.js','src/loop/franchises.js','src/loop/modes/LoopModes.jsx','src/loop/components/loop.css','api/share-page.js','dist/index.html','dist/sitemap.xml'])try{report.fileHashes[file]=hash(await fs.readFile(path.join(REPO,file)));}catch{}
   report.codeFingerprint=hash(JSON.stringify(report.fileHashes));
