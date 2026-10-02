@@ -59,7 +59,7 @@ const routes = {
   "/api/v3meta": (await import("../api/v3meta.js")).default,
 };
 
-const MIME = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".png": "image/png", ".svg": "image/svg+xml", ".webmanifest": "application/manifest+json" };
+const MIME = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".png": "image/png", ".webp": "image/webp", ".svg": "image/svg+xml", ".webmanifest": "application/manifest+json" };
 
 const readBody = (req) => new Promise((resolve) => {
   const chunks = [];

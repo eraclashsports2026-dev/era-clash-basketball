@@ -5,7 +5,6 @@
 import { useState } from "react";
 import { T, card } from "../theme.js";
 import { PLAYERS, findCard } from "../players.js";
-import { DECADE_COLORS } from "../players.js";
 import { favoritePlayers, claimCareer } from "../career.js";
 import { getDisplayName, setDisplayName } from "../identity.js";
 
@@ -39,9 +38,9 @@ export default function Profile({ career, badges, BADGES, saved, daily, onLoadTe
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10 }}>
           <div>
             <div style={{ fontSize: 11, letterSpacing: 3, color: T.textDim, fontWeight: 800 }}>MY ERACLASH</div>
-            <div style={{ fontSize: 26, fontWeight: 900, fontStyle: "italic" }}>
+            <h1 style={{ margin: 0, fontSize: 26, fontWeight: 900, fontStyle: "italic" }}>
               {claimed ? getDisplayName() : "Unnamed Baller"}
-            </div>
+            </h1>
           </div>
           {claimed && <span style={{ fontSize: 11, color: T.green, fontWeight: 700 }}>☁️ Career saved</span>}
         </div>
@@ -86,7 +85,7 @@ export default function Profile({ career, badges, BADGES, saved, daily, onLoadTe
             {favs.map(({ p, n }, i) => (
               <div key={p.id} style={{ display: "flex", alignItems: "center", gap: 10 }}>
                 <span style={{ fontWeight: 900, color: i === 0 ? T.gold : T.textDim, width: 18 }}>{i + 1}</span>
-                <div style={{ width: 34, height: 34, borderRadius: 7, background: DECADE_COLORS[p.decade], display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 900, fontSize: 12, color: "#fff" }}>
+                <div style={{ width: 34, height: 34, borderRadius: 7, background: T.bgMuted, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 900, fontSize: 12, color: T.text }}>
                   {p.name.split(" ").map((w) => w[0]).slice(0, 2).join("")}
                 </div>
                 <div style={{ flex: 1 }}>

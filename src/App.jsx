@@ -81,7 +81,7 @@ function deferredScreen(load, message) {
   const Screen = lazy(load);
   return function DeferredScreen(props) {
     return (
-      <Suspense fallback={<div role="status" aria-busy="true" style={{ maxWidth: 1100, margin: "24px auto", padding: 24, minHeight: 120 }}>{message}</div>}>
+      <Suspense fallback={<div role="status" aria-busy="true" style={{ maxWidth: 1100, margin: "0 auto", padding: 24, minHeight: 120 }}>{message}</div>}>
         <Screen {...props} />
       </Suspense>
     );
@@ -2033,7 +2033,7 @@ export default function App() {
     <div style={{ maxWidth: 620, margin: "0 auto" }}>
       <div style={{ ...card, padding: 26, textAlign: "center" }}>
         <div style={{ fontSize: 34 }}>⚔️</div>
-        <h2 style={{ margin: "8px 0 6px" }}>Challenges</h2>
+        <h1 style={{ margin: "8px 0 6px", fontSize: 24 }}>Challenges</h1>
         <p style={{ fontSize: 13.5, color: T.textDim, lineHeight: 1.65 }}>
           Build a five, run a game, then hit <b style={{ color: T.gold }}>Challenge a Friend</b> on the postgame.
           Anyone who opens your link plays against your exact lineup — wins, losses and rematches are tracked as a rivalry.
@@ -2349,7 +2349,7 @@ export default function App() {
         {" · "}
         {/* .ec-footer-link carries the 44px touch target; the inline padding:0
             it used to set is gone so the class can apply. Copy unchanged. */}
-        <button className="ec-footer-link" onClick={() => handleNav("Credits")} style={{ background: "none", border: "none", color: T.textDim, cursor: "pointer", fontSize: 10.5, textDecoration: "underline" }}>
+        <button className="ec-footer-link" onClick={() => { navigate("/"); handleNav("Credits"); }} style={{ background: "none", border: "none", color: T.textDim, cursor: "pointer", fontSize: 10.5, textDecoration: "underline" }}>
           Image credits
         </button>
         {" · "}

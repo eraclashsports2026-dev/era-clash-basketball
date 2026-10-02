@@ -2,7 +2,7 @@ import { teamDisplayName } from "../loop/rights.js";
 // ── Team panel building blocks ─────────────────────────────────────────────────
 // PlayerSlot (empty affordance / filled premium card) and the TeamPanel shell
 // with Gold/Blue identity. Used by the builder for both sides of the matchup.
-import { POSITIONS, DECADE_COLORS } from "../players.js";
+import { POSITIONS } from "../players.js";
 import { displayOVR } from "../rating.js";
 import { playerArchetypes } from "../attributes.js";
 import { T, teamPanel, teamAccent } from "../theme.js";
@@ -27,7 +27,7 @@ export function EmptySlot({ pos, team, onAdd, hint }) {
     </div>
   );
   if (!onAdd) {
-    return <div style={{ padding: "12px 14px", borderRadius: 10, background: T.bgCard, border: `1px solid ${T.border}`, opacity: 0.75 }}>{inner}</div>;
+    return <div style={{ padding: "12px 14px", borderRadius: 10, background: T.bgCard, border: `1px solid ${T.border}` }}>{inner}</div>;
   }
   return (
     <button onClick={onAdd} style={{
@@ -55,7 +55,7 @@ export function FilledSlot({ p, pos, team, fit, hideStats, onSwap, flash }) {
       <div style={{ minWidth: 0, flex: "1 1 0%" }}>
         <div style={{ display: "flex", alignItems: "baseline", gap: 8, minWidth: 0 }}>
           <span style={{ fontWeight: 800, fontSize: 14, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", minWidth: 0 }}>{p.name}</span>
-          <span style={{ fontSize: 11, color: DECADE_COLORS[p.decade], fontWeight: 700, flexShrink: 0 }}>{p.decade}</span>
+          <span style={{ fontSize: 11, color: T.textMuted, fontWeight: 700, flexShrink: 0 }}>{p.decade}</span>
         </div>
         <div style={{ fontSize: 11, color: T.textDim, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
           {teamDisplayName(p.team,p.decade)}{!hideStats && ` · ${p.pts} PTS ${p.reb} REB ${p.ast} AST`}

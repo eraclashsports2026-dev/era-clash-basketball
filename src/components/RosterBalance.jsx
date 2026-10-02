@@ -9,7 +9,7 @@ import { T, S, R, teamAccent } from "../theme.js";
 import { chemistryTags, chemistryScore } from "../chemistryView.js";
 
 const BAND = (score) => (score == null ? null : score >= 80 ? "STRONG" : score >= 62 ? "BALANCED" : score >= 45 ? "UNEVEN" : "CONFLICTED");
-const BAND_COLOR = { STRONG: T.green, BALANCED: T.green, UNEVEN: T.orange, CONFLICTED: T.red };
+const BAND_COLOR = { STRONG: T.green, BALANCED: T.green, UNEVEN: T.textMuted, CONFLICTED: T.red };
 
 export default function RosterBalance({ team, side = "gold", compact }) {
   const filled = (team ?? []).filter(Boolean);
@@ -45,7 +45,7 @@ export default function RosterBalance({ team, side = "gold", compact }) {
       )}
       {concerns?.length > 0 && (
         <div style={{ marginTop: 8 }}>
-          <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: 1, color: T.orange }}>TRADEOFFS</div>
+          <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: 1, color: T.textMuted }}>TRADEOFFS</div>
           {concerns.slice(0, compact ? 2 : 4).map((s, i) => (
             <div key={i} style={{ fontSize: 13, color: T.text, lineHeight: 1.5 }}>
               • {s.label}{s.detail ? <span style={{ color: T.textDim }}> — {s.detail}</span> : null}

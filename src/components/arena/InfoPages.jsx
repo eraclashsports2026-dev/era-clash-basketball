@@ -227,7 +227,7 @@ export function ArenaGuide({ section = "play", onSection, onClose }) {
               minHeight: 44, borderRadius: 9, cursor: "pointer", fontSize: 12, fontWeight: 800,
               border: `1px solid ${active === id ? "var(--ec-a-gold-line)" : "var(--ec-a-border)"}`,
               background: active === id ? "var(--ec-a-gold-soft)" : "transparent",
-              color: active === id ? "var(--ec-a-gold)" : "var(--ec-a-text-secondary)",
+              color: active === id ? "var(--ec-a-text)" : "var(--ec-a-text-secondary)",
             }}>{g.title}</button>
           ))}
         </div>

@@ -160,7 +160,10 @@ function CompactHeader(props) {
           <span aria-hidden="true" /><span aria-hidden="true" /><span aria-hidden="true" />
         </button>
         <button className="ec-brand-home ec-brand-home--compact" onClick={() => props.onNav("Play")} aria-label="EraClash Basketball home">
+          <picture style={{ display: "contents" }}>
+            <source type="image/webp" srcSet="/brand/eraclash-logo-mk1-lossless-3f75f78c.webp" />
           <img className="ec-brand-logo" src="/brand/eraclash-logo-mk1.png" alt="" width="760" height="304" decoding="async" data-brand-mark="eraclash-logo-mk1" />
+          </picture>
         </button>
         <div className="ec-brand-account">
           <AccountControl iconOnly onCreateAccount={props.onCreateAccount} onNavigate={props.onNavigate} onChanged={props.onAccountChanged}
@@ -212,8 +215,11 @@ function DesktopHeader({
               header keeps its 64px contract. Phase 9A.3P: this is the header's ONLY
               image — EraClash's own mark with its BASKETBALL descriptor. No league
               mark, no second crest, nothing added to fill space. */}
+          <picture style={{ display: "contents" }}>
+            <source type="image/webp" srcSet="/brand/eraclash-logo-mk1-lossless-3f75f78c.webp" />
           <img className="ec-brand-logo" src="/brand/eraclash-logo-mk1.png" alt="" width="760" height="304" decoding="async" data-brand-mark="eraclash-logo-mk1"
             style={{ height: 34, width: "auto", display: "block" }} />
+          </picture>
           <span className="ec-brand-sport" style={{ fontSize: 8.5, letterSpacing: 3.4, color: "var(--ec-a-text-secondary, #c3cddd)", fontWeight: 800, lineHeight: 1 }}>BASKETBALL</span>
         </button>
 

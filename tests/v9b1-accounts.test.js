@@ -593,8 +593,18 @@ describe("preservation", () => {
     expect(git(`git ls-files src/components/lobby`)).toBe(files.join("\n"));
     for (const file of files) {
       const current = readFileSync(file, "utf8");
-      const preserved = file === "src/components/lobby/PlayLobby.jsx"
-        ? current.replace(' loading="eager" fetchpriority="high"', "") : current;
+      let preserved = current;
+      if (file === "src/components/lobby/PlayLobby.jsx") {
+        // Only this exact lossless delivery wrapper is reversible here. Every
+        // existing PNG attribute and every other accepted parent byte is pinned.
+        const originalLogo = '        <img className="ec-lobby-logo" src="/brand/eraclash-logo-mk1.png" alt="EraClash Basketball" width="760" height="304" decoding="async" loading="eager" fetchpriority="high" />';
+        const deliveryLogo = "        <picture style={{ display: \"contents\" }}>\n          <source type=\"image/webp\" srcSet=\"/brand/eraclash-logo-mk1-lossless-3f75f78c.webp\" />\n        <img className=\"ec-lobby-logo\" src=\"/brand/eraclash-logo-mk1.png\" alt=\"EraClash Basketball\" width=\"760\" height=\"304\" decoding=\"async\" loading=\"eager\" fetchpriority=\"high\" />\n        </picture>";
+        if (current.includes("<picture")) {
+          expect(current.split(deliveryLogo).length - 1, "one exact delivery wrapper").toBe(1);
+          preserved = current.replace(deliveryLogo, originalLogo);
+        }
+        preserved = preserved.replace(' loading="eager" fetchpriority="high"', "");
+      }
       expect(preserved.trim(), file).toBe(git(`git show ${PARENT}:${file}`));
     }
   });

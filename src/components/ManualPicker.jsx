@@ -8,7 +8,7 @@ import { teamDisplayName } from "../loop/rights.js";
 //     the placement flow, which highlights the legal slots on the grid.
 // Uses the same database and rating logic as everything else.
 import { useMemo, useState } from "react";
-import { PLAYERS, DECADE_COLORS, ERAS, findCard } from "../players.js";
+import { PLAYERS, ERAS, findCard } from "../players.js";
 import { displayOVR, slotRating } from "../rating.js";
 import { playerArchetypes } from "../attributes.js";
 import { T, card } from "../theme.js";
@@ -79,7 +79,7 @@ export default function ManualPicker({ slotPos = null, excludeIds = [], onPick, 
               <PlayerImage player={p} variant="thumbnail" team="gold" />
               <div style={{ minWidth: 0, flex: 1 }}>
                 <div style={{ fontWeight: 800, fontSize: 13.5, display: "flex", alignItems: "baseline", gap: 8, flexWrap: "wrap" }}>
-                  <span>{p.name} <span style={{ color: DECADE_COLORS[p.decade], fontSize: 11, fontWeight: 700 }}>{p.decade}</span></span>
+                  <span>{p.name} <span style={{ color: T.textMuted, fontSize: 11, fontWeight: 700 }}>{p.decade}</span></span>
                   <span className="ec-elig" style={{ color: T.gold, marginTop: 0 }} aria-hidden="true">{eligibleLabel(p)}</span>
                 </div>
                 <div style={{ fontSize: 11, color: T.textDim, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
