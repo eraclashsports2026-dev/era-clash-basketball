@@ -1,3 +1,4 @@
+import { leagueCopy } from "../loop/rights.js";
 // ── Postgame panels: chemistry dial, key moments, period scores ───────────────
 // All three render only real result data. Key moments come from the possession
 // ledger (see api/_lib/previewKeyMoments.js) and are labeled by PERIOD, not by
@@ -20,7 +21,7 @@ export function KeyMoments({ moments }) {
               flexShrink: 0, minWidth: 38, fontSize: 10, fontWeight: 900, letterSpacing: 1,
               color: m.side === "blue" ? T.blue : T.gold, paddingTop: 1,
             }}>{m.period}</span>
-            <span style={{ color: T.text, minWidth: 0 }}>{m.text}</span>
+            <span style={{ color: T.text, minWidth: 0 }}>{leagueCopy(m.text)}</span>
           </li>
         ))}
       </ol>
@@ -43,7 +44,7 @@ export function MatchupPatterns({ patterns }) {
         {patterns.map((m, i) => (
           <li key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start", fontSize: 13, lineHeight: 1.5 }}>
             <span aria-hidden="true" style={{ flexShrink: 0 }}>{PATTERN_ICON[m.kind] ?? "•"}</span>
-            <span style={{ color: T.text, minWidth: 0 }}>{m.text}</span>
+            <span style={{ color: T.text, minWidth: 0 }}>{leagueCopy(m.text)}</span>
           </li>
         ))}
       </ul>

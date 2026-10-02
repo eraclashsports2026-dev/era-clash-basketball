@@ -1,3 +1,4 @@
+import { teamDisplayName } from "../loop/rights.js";
 // ── Roster grid — the concept's five-across card row ─────────────────────────
 // Position header above each card, portrait, name split (given name small /
 // family name bold), OVR beneath. Five columns on desktop, two on tablet, one
@@ -49,7 +50,7 @@ function FilledCard({ p, pos, team, accent, fit, hideStats, flash, onSwap, place
         {hideStats ? "—" : ovr}
       </div>
       <div style={{ fontSize: 9.5, color: DECADE_COLORS[p.decade] ?? T.textMuted, fontWeight: 700, textAlign: "center" }}>
-        {p.decade}<span style={{ color: T.textMuted }}> · {p.team}</span>
+        {p.decade}<span style={{ color: T.textMuted }}> · {teamDisplayName(p.team,p.decade)}</span>
       </div>
       {/* Every eligible position, from the card. The primary reads first. */}
       <div className="ec-elig" style={{ color: T.textDim }} aria-label={`Eligible positions: ${eligibleLabel(p)}`}>

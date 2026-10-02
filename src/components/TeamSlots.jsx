@@ -1,3 +1,4 @@
+import { teamDisplayName } from "../loop/rights.js";
 // ── Team panel building blocks ─────────────────────────────────────────────────
 // PlayerSlot (empty affordance / filled premium card) and the TeamPanel shell
 // with Gold/Blue identity. Used by the builder for both sides of the matchup.
@@ -57,7 +58,7 @@ export function FilledSlot({ p, pos, team, fit, hideStats, onSwap, flash }) {
           <span style={{ fontSize: 11, color: DECADE_COLORS[p.decade], fontWeight: 700, flexShrink: 0 }}>{p.decade}</span>
         </div>
         <div style={{ fontSize: 11, color: T.textDim, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-          {p.team}{!hideStats && ` · ${p.pts} PTS ${p.reb} REB ${p.ast} AST`}
+          {teamDisplayName(p.team,p.decade)}{!hideStats && ` · ${p.pts} PTS ${p.reb} REB ${p.ast} AST`}
         </div>
         {arch.length > 0 && (
           <div style={{ fontSize: 9.5, color: accent, letterSpacing: 1, fontWeight: 700, marginTop: 1, textTransform: "uppercase", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>

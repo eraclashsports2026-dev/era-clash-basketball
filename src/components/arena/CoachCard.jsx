@@ -1,3 +1,4 @@
+import { leagueCopy } from "../../loop/rights.js";
 // ── One coach offer in Coach Chaos ───────────────────────────────────────────
 // Purple, because a coaching staff is a third identity — and deliberately NOT a
 // third team: this colour never appears on a player card or on a score.
@@ -54,7 +55,7 @@ export default function CoachCard({
           <div className="ec-coach-role">{roleLabel}</div>
           <div className="ec-coach-name">{offer.name}</div>
           <div className="ec-coach-meta">
-            <span className="ec-coach-span" title={offer.span}>{offer.span}</span>
+            <span className="ec-coach-span" title={leagueCopy(offer.span)}>{leagueCopy(offer.span)}</span>
             {hasDetail && (
               <button type="button" className="ec-coach-detail-toggle" onClick={() => setOpen((o) => !o)} aria-expanded={open}
                 aria-label={`${open ? "Less detail" : "Scouting detail"}: ${offer.name}`}>
@@ -66,10 +67,10 @@ export default function CoachCard({
         <div className="ec-coach-foot">{control}</div>
         {open && (
           <div className="ec-coach-detail-lines">
-            <div className="ec-coach-blurb">{offer.offense}</div>
-            {offer.roleBlurb && <div>{offer.roleBlurb}</div>}
-            {detail.slice(0, 3).map((line) => <div key={line}>{line}</div>)}
-            {offer.sacrifice && <div className="ec-coach-detail-sacrifice">Gives up: {offer.sacrifice}</div>}
+            <div className="ec-coach-blurb">{leagueCopy(offer.offense)}</div>
+            {offer.roleBlurb && <div>{leagueCopy(offer.roleBlurb)}</div>}
+            {detail.slice(0, 3).map((line) => <div key={line}>{leagueCopy(line)}</div>)}
+            {offer.sacrifice && <div className="ec-coach-detail-sacrifice">Gives up: {leagueCopy(offer.sacrifice)}</div>}
           </div>
         )}
       </div>
@@ -90,16 +91,16 @@ export default function CoachCard({
 
       <div className="ec-coach-body">
         <div className="ec-coach-name">{offer.name}</div>
-        <div className="ec-coach-span" title={offer.span}>{offer.span}</div>
-        <div className="ec-coach-blurb">{open ? offer.roleBlurb : offer.offense}</div>
+        <div className="ec-coach-span" title={leagueCopy(offer.span)}>{leagueCopy(offer.span)}</div>
+        <div className="ec-coach-blurb">{leagueCopy(open ? offer.roleBlurb : offer.offense)}</div>
         {open && detail.length > 0 && (
           <div style={{ display: "grid", gap: 3, marginTop: 2 }}>
             {detail.slice(0, 3).map((line) => (
-              <div key={line} style={{ fontSize: 11, color: "var(--ec-a-text-muted)", lineHeight: 1.35 }}>{line}</div>
+              <div key={line} style={{ fontSize: 11, color: "var(--ec-a-text-muted)", lineHeight: 1.35 }}>{leagueCopy(line)}</div>
             ))}
             {offer.sacrifice && (
               <div style={{ fontSize: 11, color: "var(--ec-a-text-muted)", lineHeight: 1.35, fontStyle: "italic" }}>
-                Gives up: {offer.sacrifice}
+                Gives up: {leagueCopy(offer.sacrifice)}
               </div>
             )}
           </div>

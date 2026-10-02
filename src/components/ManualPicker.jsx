@@ -1,3 +1,4 @@
+import { teamDisplayName } from "../loop/rights.js";
 // ── Manual draft picker ────────────────────────────────────────────────────────
 // Player browser for Manual Draft, in two shapes:
 //   • slot-first (slotPos given): players eligible for that slot, by slot OVR —
@@ -70,7 +71,7 @@ export default function ManualPicker({ slotPos = null, excludeIds = [], onPick, 
         <div style={{ overflowY: "auto", padding: 10, display: "grid", gap: 6 }}>
           {list.map((p) => (
             <button key={p.id} onClick={() => onPick(p)} data-player={p.id}
-              aria-label={`${p.name}, ${p.decade}, ${p.team}. Eligible: ${eligibleLabel(p)}. ${displayOVR(p, slotPos || p.pos)} overall`}
+              aria-label={`${p.name}, ${p.decade}, ${teamDisplayName(p.team,p.decade)}. Eligible: ${eligibleLabel(p)}. ${displayOVR(p, slotPos || p.pos)} overall`}
               style={{
               display: "flex", alignItems: "center", gap: 10, textAlign: "left", padding: "8px 10px", minHeight: 56,
               background: T.bgCardHover, border: `1px solid ${T.border}`, borderRadius: 9, cursor: "pointer", color: T.text,
@@ -82,7 +83,7 @@ export default function ManualPicker({ slotPos = null, excludeIds = [], onPick, 
                   <span className="ec-elig" style={{ color: T.gold, marginTop: 0 }} aria-hidden="true">{eligibleLabel(p)}</span>
                 </div>
                 <div style={{ fontSize: 11, color: T.textDim, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                  {p.team} · {p.pts} PTS {p.reb} REB {p.ast} AST
+                  {teamDisplayName(p.team,p.decade)} · {p.pts} PTS {p.reb} REB {p.ast} AST
                   {playerArchetypes(p.id).length > 0 && <span style={{ color: T.gold }}> · {playerArchetypes(p.id)[0]}</span>}
                 </div>
               </div>

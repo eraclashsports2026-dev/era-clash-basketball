@@ -1,3 +1,4 @@
+import { leagueCopy } from "../loop/rights.js";
 // ── ERA STYLE (per-team tab, shared game era) ──────────────────────────────────
 // Rendered inside each team card's ERA STYLE tab. There is ONE era per game —
 // the environment both teams play in — so selecting here sets the same era
@@ -40,13 +41,13 @@ export default function EraStyleSelect({ eras, selected, onSelect, teamIds, side
           <div style={{ fontSize: 12.5, fontWeight: 900 }}>{era.id} <span style={{ color: T.textDim, fontWeight: 400, fontSize: 11 }}>(anchor {era.anchorSeason})</span></div>
           <div style={{ display: "grid", gap: 2, marginTop: 4 }}>
             {era.styleSummary.map((s, i) => (
-              <div key={i} style={{ fontSize: 11.5, color: T.textDim }}>· {s}</div>
+              <div key={i} style={{ fontSize: 11.5, color: T.textDim }}>· {leagueCopy(s)}</div>
             ))}
           </div>
           {note && (
             <div style={{ marginTop: 8 }}>
               <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: 1.5, color: T.textDim, marginBottom: 3 }}>HOW THIS AFFECTS THIS MATCHUP</div>
-              <div style={{ fontSize: 11.5 }}><b style={{ color: accent }}>{side === "gold" ? "Gold" : "Blue"}:</b> {note}</div>
+              <div style={{ fontSize: 11.5 }}><b style={{ color: accent }}>{side === "gold" ? "Gold" : "Blue"}:</b> {leagueCopy(note)}</div>
             </div>
           )}
           <div style={{ marginTop: 8, fontSize: 10.5, color: T.textMuted }}>One era per game — both teams play in this environment.</div>

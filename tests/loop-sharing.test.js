@@ -60,6 +60,28 @@ describe("public recap ownership, privacy and immutable authority",()=>{
 });
 
 describe("real engine modes have honest score and stat scopes",()=>{
+  it("projects only valid server Gauntlet counts with an honest stage-score scope",async()=>{
+    const record=await play();
+    for(const progress of [{victories:1,totalEras:7,stagesPlayed:1,finished:false},{victories:3,totalEras:7,stagesPlayed:4,finished:true},{victories:7,totalEras:7,stagesPlayed:7,finished:true}]){
+      const recap=publicRecapOf({...record,loop:{mode:'gauntlet',stage:progress.stagesPlayed,gauntlet:{...progress,secret:'Never publish user text'}}});
+      expect(recap.loop.gauntlet).toEqual(progress);expect(recap.headline).toContain(`${progress.victories} of 7 eras`);expect(shareModel(recap).subtitle).toContain('Latest stage points');
+      expect(JSON.stringify(recap)).not.toContain('Never publish user text');expect(recap.score).toEqual(record.core.finalScore);
+    }
+    for(const progress of [{victories:'7',totalEras:7,stagesPlayed:7,finished:true},{victories:8,totalEras:7,stagesPlayed:7,finished:true},{victories:3,totalEras:8,stagesPlayed:4,finished:true},{victories:4,totalEras:7,stagesPlayed:3,finished:true},{victories:3,totalEras:7,stagesPlayed:4,finished:false},{victories:1,totalEras:7,stagesPlayed:1,finished:true}]){
+      const recap=publicRecapOf({...record,loop:{mode:'gauntlet',stage:1,gauntlet:progress}});expect(recap.loop).not.toHaveProperty('gauntlet');expect(recap.headline).not.toContain('of 7 eras');
+    }
+  });
+  it("publishes real Gauntlet progress derived after an unchanged server simulation",async()=>{
+    process.env.PREVIEW_SIM_ENGINE_ENABLED='true';
+    const started=res();await game(req({action:'loop',op:'gauntlet-start',goldIds:GOLD}),started);expect(started.statusCode).toBe(200);
+    const played=res();await game(req({action:'loop',op:'gauntlet-play',gauntletToken:started.body.gauntletToken,stage:0,simulationId:`share-gauntlet-${crypto.randomUUID()}`}),played);expect(played.statusCode).toBe(200);
+    const record=await getJSON(`preview-result:${played.body.resultId}`);
+    const published=await publish(record);expect(published.statusCode).toBe(200);
+    const recap=await getJSON(`re:${published.body.id}`);
+    expect(recap.loop.gauntlet).toEqual({victories:played.body.gauntlet.victories,totalEras:7,stagesPlayed:1,finished:played.body.gauntlet.done});
+    expect(recap.headline).toContain(`${played.body.gauntlet.victories} of 7 eras`);expect(recap.score).toEqual(record.core.finalScore);
+    const image=renderSharePng(shareModel(recap));expect(image.readUInt32BE(16)).toBe(1200);expect(image.length).toBeLessThan(1_000_000);
+  });
   it.each(['single','best7','82','tournament'])("projects a freshly computed %s record",async(mode)=>{
     const record=await play(mode,false);const recap=publicRecapOf(record);expect(recap).not.toBeNull();
     expect(recap.players.gold.map(p=>p.id)).toEqual(record.goldIds);expect(recap.players.blue).toHaveLength(5);

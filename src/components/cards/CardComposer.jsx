@@ -14,6 +14,8 @@ import { resultCardModel, invitationCardModel, cardAltText, shareTextFor, CARD_K
 import { renderCard } from "../../cards/render.js";
 import { copyText } from "../../challenges/client.js";
 import { track } from "../../analytics.js";
+import { publishResult } from "../../share.js";
+import { loopEvent } from "../../loop/events.js";
 
 const ERR = {
   not_found: "This Clash has aged out and cannot be drawn.", not_your_result: "This result was played in another browser.",
@@ -29,6 +31,7 @@ export default function CardComposer({ chaosRunId, accessToken = null, challenge
   const [state, setState] = useState({ step: "loading" });   // loading | ready | error
   const [notice, setNotice] = useState("");
   const [busy, setBusy] = useState(false);
+  const [publicUrl, setPublicUrl] = useState("");
   const canvasRef = useRef(null);
   const fileSupport = useRef(null);
   const authState = accessToken ? "account" : "guest";
@@ -66,10 +69,12 @@ export default function CardComposer({ chaosRunId, accessToken = null, challenge
       track(CARD_EVENTS.SHARED, { cardVersion: "1.0.0", kind, method, withName, authState });
       if (method === "native") {
         const out = await shareFile(file, { text: shareTextFor(model), ...(kind === CARD_KINDS.INVITATION && model.url ? { url: model.url } : {}) });
+        if (out === "shared") loopEvent("card_shared", { channel: "native" });
         setNotice(out === "shared" ? "Share sheet closed. The image is only sent if you completed the share." : out === "cancelled" ? "Share cancelled. Nothing was sent." : out === "unsupported" ? "This browser cannot share images. Use SAVE IMAGE." : "Sharing failed. Nothing was sent — try SAVE IMAGE.");
         track(CARD_EVENTS.EXPORTED, { cardVersion: "1.0.0", kind, method, withName, success: out === "shared" });
       } else {
         const ok = saveFile(file);
+        if (ok) loopEvent("card_shared", { channel: "download" });
         setNotice(ok ? "Image saved to your downloads." : ERR.export_failed);
         track(CARD_EVENTS.EXPORTED, { cardVersion: "1.0.0", kind, method: "save", withName, success: ok });
       }
@@ -78,11 +83,22 @@ export default function CardComposer({ chaosRunId, accessToken = null, challenge
   };
   const save = async () => {
     setBusy(true); setNotice("");
-    try { const ok = saveFile(await exportFile()); setNotice(ok ? "Image saved to your downloads." : ERR.export_failed); track(CARD_EVENTS.EXPORTED, { cardVersion: "1.0.0", kind, method: "save", withName, success: ok }); }
+    try { const ok = saveFile(await exportFile()); if (ok) loopEvent("card_shared", { channel: "download" }); setNotice(ok ? "Image saved to your downloads." : ERR.export_failed); track(CARD_EVENTS.EXPORTED, { cardVersion: "1.0.0", kind, method: "save", withName, success: ok }); }
     catch { setNotice(ERR.export_failed); track(CARD_EVENTS.FAILED, { cardVersion: "1.0.0", kind, failureCode: "export_failed" }); }
     setBusy(false);
   };
   const copyLink = async () => { const ok = await copyText(challengeUrl || model?.url || ""); setNotice(ok ? "Challenge link copied." : "Copy failed — select the link and copy it."); };
+  const copyRecap = async () => {
+    setBusy(true); setNotice("");
+    const url = publicUrl || await publishResult({ chaosRunId });
+    if (url) {
+      setPublicUrl(url);
+      const copied = await copyText(url);
+      if (copied) loopEvent("card_shared", { channel: "copy" });
+      setNotice(copied ? "Public recap link copied. It includes both lineups and game performers." : "Public recap ready. Select the link below to copy it.");
+    } else setNotice("The public recap could not be saved. Your private card is still available.");
+    setBusy(false);
+  };
 
   const nativeFiles = typeof navigator !== "undefined" && typeof navigator.canShare === "function";
   const canInvite = !!challengeCode && !!accessToken;
@@ -119,6 +135,11 @@ export default function CardComposer({ chaosRunId, accessToken = null, challenge
         {kind === CARD_KINDS.INVITATION && <button type="button" className="ec-chal-btn" onClick={copyLink} disabled={!model}>COPY CHALLENGE LINK</button>}
       </div>
       <output className="ec-chal-feedback" aria-live="polite">{notice}</output>
+      {kind === CARD_KINDS.RESULT && <div className="ec-card-public-recap">
+        <p className="ec-card-help">A public recap link includes both lineups, the final score and game performers. Your display name and hidden draft choices stay private. Publish only if you want those game details public.</p>
+        <button type="button" className="ec-chal-btn" onClick={copyRecap} disabled={!model || busy}>PUBLISH &amp; COPY RECAP LINK</button>
+        {publicUrl && <p><a href={publicUrl}>{publicUrl}</a></p>}
+      </div>}
       <p className="ec-card-fine">A saved image cannot be recalled once shared outside EraClash. Withdrawing a Challenge disables its link, not the picture. Official results stay on the server.</p>
     </section>
   );

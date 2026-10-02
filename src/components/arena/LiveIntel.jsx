@@ -1,3 +1,4 @@
+import { leagueCopy } from "../../loop/rights.js";
 // ── Live Intel ───────────────────────────────────────────────────────────────
 // ONE bordered surface that reads the authoritative setup: what this five IS,
 // what it risks, what the Legend CPU brings, how much pressure the draft is
@@ -26,10 +27,10 @@ const Row = ({ label, tone, values, note }) => (
     <div className="ec-intel-label" style={{ color: tone }}>{label}</div>
     <div className="ec-intel-values">
       {values.filter(Boolean).map((v, i) => (
-        <div key={i} className={`ec-intel-value${i > 0 ? " ec-intel-value--sub" : ""}`}>{v}</div>
+        <div key={i} className={`ec-intel-value${i > 0 ? " ec-intel-value--sub" : ""}`}>{leagueCopy(v)}</div>
       ))}
     </div>
-    {note && <div className="ec-intel-note">{note}</div>}
+    {note && <div className="ec-intel-note">{leagueCopy(note)}</div>}
   </div>
 );
 
@@ -84,14 +85,14 @@ export default function LiveIntel({ run, onEraChange, onMembership, compact = fa
           <div style={{ display: "grid", gap: 2, marginTop: 8 }}>
             {(panel === "era" ? [] : (eraCtx?.highlights || [])).filter(Boolean).map((h, i) => (
               <div key={h} className={i === 0 ? "ec-intel-value" : "ec-intel-value ec-intel-value--sub"}
-                style={i === 0 ? { color: "var(--ec-a-coach)" } : undefined}>{h}</div>
+                style={i === 0 ? { color: "var(--ec-a-coach)" } : undefined}>{leagueCopy(h)}</div>
             ))}
           </div>
 
           {rulesOpen && (
             <ul style={{ margin: "8px 0 0", padding: 0, listStyle: "none", display: "grid", gap: 4 }}>
               {[eraCtx?.pace, eraCtx?.rebounding, ...(eraCtx?.ruleFacts || [])].filter(Boolean).map((f) => (
-                <li key={f} className="ec-intel-note">· {f}</li>
+                <li key={f} className="ec-intel-note">· {leagueCopy(f)}</li>
               ))}
             </ul>
           )}

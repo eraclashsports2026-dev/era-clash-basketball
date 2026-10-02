@@ -1,3 +1,4 @@
+import { leagueCopy } from "../loop/rights.js";
 // ── Coaching & Strategy ──────────────────────────────────────────────────────
 // Phase 8B reorganises this tab into three sub-sections instead of two very
 // long parallel columns. It should read as a scouting report and a film-room
@@ -51,7 +52,7 @@ function OffensePanel({ data, side }) {
         <Sub title="PRIMARY MATCHUPS TARGETED">
           <div style={{ display: "grid", gap: 5 }}>
             {attackedMatchups.map((m, i) => (
-              <div key={i} style={{ fontSize: 13.5, color: T.text, lineHeight: 1.55 }}>{m.text}</div>
+              <div key={i} style={{ fontSize: 13.5, color: T.text, lineHeight: 1.55 }}>{leagueCopy(m.text)}</div>
             ))}
           </div>
           <div style={{ fontSize: 11.5, color: T.textMuted, marginTop: 5 }}>
@@ -89,7 +90,7 @@ function DefensePanel({ data }) {
         <Sub title="WHAT LIMITED IT">
           <div style={{ display: "grid", gap: 4 }}>
             {d.constraints.map((c, i) => (
-              <div key={i} style={{ fontSize: 12.5, color: T.textDim, lineHeight: 1.55 }}>· {c.text || c.detail}</div>
+              <div key={i} style={{ fontSize: 12.5, color: T.textDim, lineHeight: 1.55 }}>· {leagueCopy(c.text || c.detail)}</div>
             ))}
           </div>
         </Sub>
@@ -116,7 +117,7 @@ function AdjustmentsPanel({ data }) {
                 {[a.when, a.scoreState].filter(Boolean).join(" — ").toUpperCase()}
               </div>
             )}
-            {a.text}
+            {leagueCopy(a.text)}
           </li>
         ))}
       </ol>
@@ -130,7 +131,7 @@ function AdjustmentsPanel({ data }) {
         <Sub title="CONSIDERED BUT DECLINED">
           {declined.slice(0, 3).map((a, i) => (
             <div key={i} style={{ fontSize: 12.5, color: T.textDim, lineHeight: 1.55, marginTop: 4 }}>
-              {a.when ? <span style={{ fontWeight: 700 }}>{a.when} — </span> : null}{a.text}
+              {a.when ? <span style={{ fontWeight: 700 }}>{a.when} — </span> : null}{leagueCopy(a.text)}
             </div>
           ))}
         </Sub>
@@ -169,7 +170,7 @@ export default function CoachingStrategy({ coaching, eraLabel, eraImpact }) {
     <div style={{ marginTop: 12 }}>
       {(eraLabel || eraImpact) && (
         <div style={{ fontSize: 12.5, color: T.textDim, marginBottom: 8, lineHeight: 1.55 }}>
-          {eraImpact || `Played in the ${eraLabel} Era Style.`}
+          {leagueCopy(eraImpact || `Played in the ${eraLabel} Era Style.`)}
         </div>
       )}
       <div role="tablist" aria-label="Coaching sections" className="coaching-sections">

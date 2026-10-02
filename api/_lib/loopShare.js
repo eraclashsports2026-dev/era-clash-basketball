@@ -32,15 +32,21 @@ export function publicRecapOf(record) {
   const displayMode = MODE_LABELS[record.loop?.mode] ? record.loop.mode : record.chaosDraft ? "chaos" : kind;
   const day = displayMode === "daily" && validDay(record.loop?.day || record.dailyDate) ? record.loop?.day || record.dailyDate : null;
   const stage = displayMode === "gauntlet" && Number.isInteger(record.loop?.stage) && record.loop.stage >= 1 && record.loop.stage <= 7 ? record.loop.stage : null;
-  const scope = MODE_LABELS[displayMode] ? `${MODE_LABELS[displayMode]}${day ? ` ${day}` : ""}${stage ? ` · stage ${stage} of 7` : ""} · ${baseScope}${displayMode === "lab" ? " · Imagined scenario" : ""}` : baseScope;
-  const loop = MODE_LABELS[record.loop?.mode] ? { mode: displayMode, tag: displayMode.replaceAll("-", "_").toUpperCase(), ...(day ? { day } : {}), ...(stage ? { stage } : {}) } : null;
+  const progress = displayMode === "gauntlet" ? record.loop?.gauntlet : null;
+  const gauntlet = progress && Number.isInteger(progress.victories) && progress.victories >= 0 && progress.victories <= 7
+    && progress.totalEras === 7 && Number.isInteger(progress.stagesPlayed) && progress.stagesPlayed >= 1 && progress.stagesPlayed <= 7
+    && progress.victories <= progress.stagesPlayed && typeof progress.finished === "boolean"
+    && (progress.finished ? progress.stagesPlayed === 7 || progress.victories < progress.stagesPlayed : progress.stagesPlayed < 7 && progress.victories === progress.stagesPlayed)
+    ? { victories: progress.victories, totalEras: 7, stagesPlayed: progress.stagesPlayed, finished: progress.finished } : null;
+  const scope = gauntlet ? `Era Gauntlet · ${gauntlet.victories} of 7 eras won · ${gauntlet.finished ? "Completed run" : "Run in progress"} · Latest stage points` : MODE_LABELS[displayMode] ? `${MODE_LABELS[displayMode]}${day ? ` ${day}` : ""}${stage ? ` · stage ${stage} of 7` : ""} · ${baseScope}${displayMode === "lab" ? " · Imagined scenario" : ""}` : baseScope;
+  const loop = MODE_LABELS[record.loop?.mode] ? { mode: displayMode, tag: displayMode.replaceAll("-", "_").toUpperCase(), ...(day ? { day } : {}), ...(stage ? { stage } : {}), ...(gauntlet ? { gauntlet } : {}) } : null;
   const gold = savedRosterOf(record.goldIds, view, "gold");
   const blue = savedRosterOf(view.blueIds, view, "blue");
   if ([...gold, ...blue].some((p) => !p.name)) return null;
   const rows = series ? [...(view.core?.teamAStats || []), ...(view.core?.teamBStats || [])] : [...(view.v3?.fullBox?.gold || view.core?.teamAStats || []), ...(view.v3?.fullBox?.blue || view.core?.teamBStats || [])];
   const performers = rows.filter((p) => p?.name && num(p.pts) !== null).sort((a, b) => b.pts - a.pts || a.name.localeCompare(b.name)).slice(0, 2).map((p) => ({ name: text(p.name, 40), line: pointsLine(p, statScope) }));
   const won = kind === "tournament" ? !!record.won : kind === "82" ? score.gold > score.blue : String(view.core?.winner || "").toLowerCase() === "gold" || score.gold > score.blue;
-  const headline = kind === "82" ? `${score.gold} wins, ${score.blue} losses` : kind === "tournament" ? (record.won ? "Tournament champions" : `Run ended in ${text(lastRound?.name, 40)}`) : `${won ? "Gold wins" : score.gold === score.blue ? "Draw" : "Blue wins"} ${score.gold}–${score.blue}`;
+  const headline = gauntlet ? `Era Gauntlet · ${gauntlet.victories} of 7 eras` : kind === "82" ? `${score.gold} wins, ${score.blue} losses` : kind === "tournament" ? (record.won ? "Tournament champions" : `Run ended in ${text(lastRound?.name, 40)}`) : `${won ? "Gold wins" : score.gold === score.blue ? "Draw" : "Blue wins"} ${score.gold}–${score.blue}`;
   return {
     v: 2, shareVersion: SHARE_VERSION, authoritative: true, kind, displayMode, ...(loop ? { loop } : {}),
     teamIds: gold.map((p) => p.id), oppIds: blue.map((p) => p.id), players: { gold, blue },

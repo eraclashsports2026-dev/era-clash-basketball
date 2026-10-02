@@ -1,3 +1,4 @@
+import { leagueCopy } from "../loop/rights.js";
 // ── Coach selection modal ─────────────────────────────────────────────────────
 // Phase 7B. The coach step previously stacked three long scouting reports in
 // the page and hid the other 22 coaches behind a bare name list, so the choice
@@ -140,10 +141,10 @@ export default function CoachModal({ side, coaches, recommended, selectedId, era
                     <span style={{ minWidth: 0, flex: 1 }}>
                       <span style={{ display: "flex", alignItems: "baseline", gap: 8, flexWrap: "wrap" }}>
                         <b style={{ fontSize: 14.5 }}>{c.name}</b>
-                        <span style={{ fontSize: 12, color: T.textDim }}>{c.span}</span>
+                        <span style={{ fontSize: 12, color: T.textDim }}>{leagueCopy(c.span)}</span>
                       </span>
                       <span style={{ display: "block", fontSize: 12, color: T.textDim, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                        {(c.systemTags ?? []).slice(0, 2).join(" • ")}
+                        {leagueCopy((c.systemTags ?? []).slice(0, 2).join(" • "))}
                       </span>
                     </span>
                     <span className="coach-row-meta">
@@ -165,7 +166,7 @@ export default function CoachModal({ side, coaches, recommended, selectedId, era
                   <div style={{ minWidth: 0 }}>
                     <div style={{ fontSize: 19, fontWeight: 900, fontFamily: FONT.display, color: T.text }}>{focused.name}</div>
                     <div style={{ fontSize: 13, color: T.textDim }}>
-                      {focused.span}{focused.championships ? ` · ${focused.championships}× champion` : ""}
+                      {leagueCopy(focused.span)}{focused.championships ? ` · ${focused.championships}× champion` : ""}
                     </div>
                   </div>
                 </div>
@@ -194,20 +195,20 @@ export default function CoachModal({ side, coaches, recommended, selectedId, era
                 <Section title="SYSTEM IDENTITY">
                   {(focused.systemTags ?? []).map((t, i) => (
                     <div key={i} style={{ fontSize: 14, color: T.text, lineHeight: 1.6 }}>
-                      <span style={{ color: T.green, fontWeight: 800 }}>✓</span> {t}
+                      <span style={{ color: T.green, fontWeight: 800 }}>✓</span> {leagueCopy(t)}
                     </div>
                   ))}
                 </Section>
 
-                {rec?.whyItFits && <Section title="WHY THIS COACH"><p style={{ margin: 0, fontSize: 14, lineHeight: 1.6, color: T.text }}>{rec.whyItFits}</p></Section>}
+                {rec?.whyItFits && <Section title="WHY THIS COACH"><p style={{ margin: 0, fontSize: 14, lineHeight: 1.6, color: T.text }}>{leagueCopy(rec.whyItFits)}</p></Section>}
                 {!rec && (focused.bestWith ?? []).length > 0 && (
                   <Section title="BEST WITH">
-                    {focused.bestWith.map((b, i) => <div key={i} style={{ fontSize: 14, color: T.text, lineHeight: 1.6 }}>• {b}</div>)}
+                    {focused.bestWith.map((b, i) => <div key={i} style={{ fontSize: 14, color: T.text, lineHeight: 1.6 }}>• {leagueCopy(b)}</div>)}
                   </Section>
                 )}
                 {(rec?.concern || focused.concern) && (
                   <Section title="POTENTIAL TRADEOFF">
-                    <p style={{ margin: 0, fontSize: 14, lineHeight: 1.6, color: T.text }}>{rec?.concern || focused.concern}</p>
+                    <p style={{ margin: 0, fontSize: 14, lineHeight: 1.6, color: T.text }}>{leagueCopy(rec?.concern || focused.concern)}</p>
                   </Section>
                 )}
                 {!eraStyleId && (

@@ -53,7 +53,7 @@ export default function ChallengeInvite({ code, accessToken, tier = "GUEST", sig
   const activeRun = anyChallengeRun();
 
   return (
-    <main className="ec-chal-invite" aria-labelledby="ec-chal-invite-title">
+    <main className="ec-chal-invite" aria-labelledby="ec-chal-invite-title" style={{ minHeight: 720 }}>
       <div className="ec-chal-kicker">ERACLASH CHALLENGE</div>
       {view.step === "loading" && <p className="ec-chal-body" role="status">Opening the challenge…</p>}
 
