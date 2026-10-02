@@ -1,3 +1,4 @@
+import { leagueCopy, teamDisplayName } from "../loop/rights.js";
 // ── ERAClash POSTGAME — the broadcast after the buzzer ────────────────────────
 // Same arena environment as the builder; the lights stay on and coverage
 // shifts to postgame. Every number comes from the structured result (validated
@@ -159,7 +160,7 @@ function StoredPregameRead({ pregame }) {
           </div>
         ))}
       </div>
-      {pregame.keyClash && <p style={{ fontSize: 13.5, color: T.text, marginTop: 10, marginBottom: 0, lineHeight: 1.6 }}>{pregame.keyClash}</p>}
+      {pregame.keyClash && <p style={{ fontSize: 13.5, color: T.text, marginTop: 10, marginBottom: 0, lineHeight: 1.6 }}>{leagueCopy(pregame.keyClash)}</p>}
     </div>
   );
 }
@@ -202,7 +203,7 @@ function AnalysisQuad({ sim, center }) {
       <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: 1.5, color, marginBottom: 6 }}>{title}</div>
       {items.map((s, i) => (
         <div key={i} style={{ fontSize: 12, marginBottom: 4, lineHeight: 1.45 }}>
-          <span style={{ color, fontWeight: 800 }}>{sign} </span>{s}
+          <span style={{ color, fontWeight: 800 }}>{sign} </span>{leagueCopy(s)}
         </div>
       ))}
     </div>
@@ -473,7 +474,7 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
                 ⭐ {mode === "best7" ? "SERIES MVP" : "GAME MVP"}
               </div>
               <div style={{ fontWeight: 900, fontSize: 23, fontStyle: "italic", margin: "2px 0" }}>{sim.mvp}</div>
-              {mvpP && <div style={{ fontSize: 11.5, color: T.textDim }}>{mvpP.decade} · {mvpP.team}</div>}
+              {mvpP && <div style={{ fontSize: 11.5, color: T.textDim }}>{mvpP.decade} · {teamDisplayName(mvpP.team,mvpP.decade)}</div>}
               {row && (
                 <div style={{ display: "flex", gap: 14, marginTop: 8, flexWrap: "wrap" }}>
                   {[["PTS", row.pts], ["REB", row.reb], ["AST", row.ast], ["STL", row.stl]].map(([k, v]) => (
@@ -484,7 +485,7 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
                   ))}
                 </div>
               )}
-              {sim.mvpReason && <p style={{ fontSize: 12.5, color: T.text, marginTop: 10, marginBottom: 0, lineHeight: 1.6 }}>{sim.mvpReason}</p>}
+              {sim.mvpReason && <p style={{ fontSize: 12.5, color: T.text, marginTop: 10, marginBottom: 0, lineHeight: 1.6 }}>{leagueCopy(sim.mvpReason)}</p>}
             </div>
           </div>
         )}
@@ -493,7 +494,7 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
             {sim.eraImpact && (
               <div style={{ ...card, padding: 14, marginTop: 12 }}>
                 <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 2, color: T.textDim }}>ERA IMPACT</div>
-                <div style={{ fontSize: 13, color: T.text, lineHeight: 1.6, marginTop: 5 }}>{sim.eraImpact}</div>
+                <div style={{ fontSize: 13, color: T.text, lineHeight: 1.6, marginTop: 5 }}>{leagueCopy(sim.eraImpact)}</div>
               </div>
             )}
             <KeyMoments moments={sim.v3?.keyMoments} />
@@ -511,7 +512,7 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
             {sim.v3.expectedPoints && (
               <span>🎯 shot quality (expected pts): <b style={{ color: T.gold }}>{Math.round(sim.v3.expectedPoints.gold)}</b> · <b style={{ color: T.blue }}>{Math.round(sim.v3.expectedPoints.blue)}</b></span>
             )}
-            {sim.eraId && <span>🕰️ Era Style: <b style={{ color: T.text }}>{sim.eraLabel || sim.eraId}</b></span>}
+            {sim.eraId && <span>🕰️ Era Style: <b style={{ color: T.text }}>{leagueCopy(sim.eraLabel || sim.eraId)}</b></span>}
             {/* Which coach actually ran the game. In the Daily this is the
                 one decision the player owned, so it belongs in the result. */}
             {sim.coachNames?.gold && <span>🧠 Coach: <b style={{ color: T.gold }}>{sim.coachNames.gold}</b>{sim.coachNames.blue ? <> vs <b style={{ color: T.blue }}>{sim.coachNames.blue}</b></> : null}</span>}
@@ -542,9 +543,9 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
         {(sim.story?.body || sim.summary) && (
           <div style={{ marginTop: 14 }}>
             <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 2, color: won ? T.green : T.red }}>
-              {(sim.story?.headline || `How ${won ? "You" : "They"} Won`).toUpperCase()}
+              {leagueCopy(sim.story?.headline || `How ${won ? "You" : "They"} Won`).toUpperCase()}
             </div>
-            <p style={{ fontSize: 13.5, lineHeight: 1.65, margin: "6px 0 0", color: T.text }}>{sim.story?.body || sim.summary}</p>
+            <p style={{ fontSize: 13.5, lineHeight: 1.65, margin: "6px 0 0", color: T.text }}>{leagueCopy(sim.story?.body || sim.summary)}</p>
           </div>
         )}
 
@@ -575,7 +576,7 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
                             {head !== prev && (
                               <span style={{ fontSize: 10, fontWeight: 900, letterSpacing: 0.8, color: T.textDim, display: "block" }}>{head}</span>
                             )}
-                            {e.text}
+                            {leagueCopy(e.text)}
                           </li>
                         );
                       })}
@@ -600,8 +601,8 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
             <div style={{ display: "grid", gap: 10, marginTop: 7 }}>
               {sim.expandedAnalysis.sections.map((sec) => (
                 <div key={sec.heading}>
-                  <div style={{ fontSize: 12, fontWeight: 800, color: T.text }}>{sec.heading}</div>
-                  <div style={{ fontSize: 13, color: T.textDim, lineHeight: 1.6, marginTop: 2 }}>{sec.body}</div>
+                  <div style={{ fontSize: 12, fontWeight: 800, color: T.text }}>{leagueCopy(sec.heading)}</div>
+                  <div style={{ fontSize: 13, color: T.textDim, lineHeight: 1.6, marginTop: 2 }}>{leagueCopy(sec.body)}</div>
                 </div>
               ))}
             </div>
@@ -641,13 +642,13 @@ export default function Postgame({ sim, won, mode, seriesLabel, team, opp, feedb
             <div style={{ fontSize: 10, letterSpacing: 2, color: T.orange, fontWeight: 800 }}>
               ⚡ TURNING POINT{turning.game ? ` — ${turning.game}` : ""}{turning.quarter ? ` · ${turning.quarter}` : ""}
             </div>
-            <p style={{ fontSize: 13, margin: "6px 0 0", lineHeight: 1.6 }}>{turning.text}</p>
+            <p style={{ fontSize: 13, margin: "6px 0 0", lineHeight: 1.6 }}>{leagueCopy(turning.text)}</p>
           </div>
         )}
         </>}
 
         {section === "coaching" && <>
-        <CoachingStrategy coaching={sim.v3?.coaching} eraLabel={sim.eraLabel || sim.eraId} eraImpact={sim.eraImpact} />
+        <CoachingStrategy coaching={sim.v3?.coaching} eraLabel={leagueCopy(sim.eraLabel || sim.eraId)} eraImpact={leagueCopy(sim.eraImpact)} />
         {/* The stored pregame read, near the bottom and never leading. */}
         <StoredPregameRead pregame={sim.pregame} />
         {/* The draft-shaped postgame section was removed in Phase 8B at the

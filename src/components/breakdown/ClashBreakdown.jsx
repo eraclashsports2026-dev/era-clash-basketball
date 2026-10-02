@@ -1,3 +1,4 @@
+import { leagueCopy } from "../../loop/rights.js";
 // ── CLASH BREAKDOWN — the completed result, explained descriptively ───────────
 // Progressive disclosure under the final score (and, for a Challenge
 // recipient, under the comparison): a compact entry with the single largest
@@ -37,7 +38,7 @@ export default function ClashBreakdown({ result, surface = "dock", defaultOpen =
       <div className="ec-bd-entry">
         <div className="ec-bd-entry-text">
           <h2 id={`${id}-t`} className="ec-bd-kicker">CLASH BREAKDOWN</h2>
-          {!open && <p className="ec-bd-teaser">{teaser}</p>}
+          {!open && <p className="ec-bd-teaser">{leagueCopy(teaser)}</p>}
         </div>
         <button type="button" className="ec-bd-btn" aria-expanded={open} aria-controls={`${id}-body`} onClick={toggle}>{open ? "CLOSE" : "OPEN BREAKDOWN"}</button>
       </div>
@@ -53,7 +54,7 @@ export default function ClashBreakdown({ result, surface = "dock", defaultOpen =
                   <li key={d.id} className="ec-bd-diff" data-insight={d.id} data-favours={d.favours}>
                     <div className="ec-bd-diff-title">{d.title}</div>
                     <div className="ec-bd-diff-values">{d.values}</div>
-                    <div className="ec-bd-diff-summary">{d.summary}</div>
+                    <div className="ec-bd-diff-summary">{leagueCopy(d.summary)}</div>
                   </li>
                 ))}
               </ol>
